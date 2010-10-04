@@ -1,0 +1,27 @@
+These are some notes/memo about compiling Pencil on Linux
+Last edited: 2007-10-12
+Pascal Naidon
+
+1) Install Qt if you haven't done it
+2) Install Ming
+3) Open a terminal, go to the directory where pencil.pro is located, and type "qmake"
+4) Type "make"
+
+The Debian directory has been created by Paul Wise for Debian distribution.
+
+====================================================================
+Qt on Linux
+-> The Qt framework is needed to create the graphical interface of Pencil
+Use the installer from Trolltech
+www.trolltech.com
+
+
+====================================================================
+Ming (Flash/SWF library) on Linux
+-> The Ming library enables Pencil to export animation to the Flash/SWF format
+www.libming.org
+
+========================
+Deploying Pencil on Linux systems
+????
+No one has made a package for Linux yet.

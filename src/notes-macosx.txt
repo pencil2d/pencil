@@ -1,0 +1,40 @@
+These are some notes/memo about compiling Pencil on Mac OS X
+Last edited: 2007-10-12
+Pascal Naidon
+
+To compile Pencil for OS X Power PC "out of the box"
+0) Install XCode and Apple Developer Kit if you haven't done it
+1) Install Qt from TrollTech if you haven't done it
+2) open a terminal, and go to the folder where pencil.pro is located
+3) type "qmake"
+4) this generates a file called "pencil.xcodeproj"
+5) open it with XCode and press the build button
+
+====================================================================
+Qt on Mac
+-> The Qt framework is needed to create the graphical interface of Pencil
+Use the installer from Trolltech
+www.trolltech.com
+I've used Qt 4.3.0
+
+====================================================================
+Ming (Flash/SWF library) on Mac
+-> The Ming library enables Pencil to export animation to the Flash/SWF format
+www.libming.org
+I've used Ming 0.3
+Because of some obscure library name conflict on the Mac, I couldn't use Ming as a dynamic library.
+(I think this is because Ming links against libpng which is also present in the System/Library/ApplicationServices as libPng.
+If anyone manages to use Ming (with PNG support) a dynamic library, please let me know.)
+
+Instead I had to use it a static library
+I put the compiled library (libming.a) and the header files (*.h) in
+the "libmacosx" directory, as a convenience, so that you don't need to compile it yourself
+(maybe you need on an Intel Mac, though).
+If needed, you can get the latest files from www.libming.org and compile them yourself.
+
+========================
+Deploying Pencil/Mac OS X
+I chose to ship the Qt libraries within the app.
+In order to link the pencil.app against these local Qt libraries, I made the script "linkmac"
+After Pencil is build, simply run ./linkmac
+(the very first time, please uncomment the first lines in the script in order to copy the Qt libraries from /usr/local to the pencil.app package.)

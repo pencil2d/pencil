@@ -1,0 +1,58 @@
+#make clean
+#qmake -config release
+#make
+
+pencil="build/Release/Pencil.app"
+echo $pencil
+
+#qtlib="/usr/local/Trolltech/Qt-4.2.2/lib/"
+qtlib="/Library/Frameworks"
+#qtlib=""
+echo $qtlib
+
+cp Resources/assembler2 $pencil/Contents/Resources/
+cp Resources/qt.conf    $pencil/Contents/Resources
+
+mkdir $pencil/Contents/Frameworks
+mkdir $pencil/Contents/plugins
+mkdir $pencil/Contents/plugins/imageformats
+
+cp -R $qtlib/QtCore.framework $pencil/Contents/Frameworks/
+cp -R $qtlib/QtGui.framework $pencil/Contents/Frameworks/
+cp -R $qtlib/QtXml.framework $pencil/Contents/Frameworks/
+cp -R $qtlib/QtOpenGL.framework $pencil/Contents/Frameworks/
+cp -R /Developer/Applications/Qt/plugins/imageformats/libqjpeg.dylib $pencil/Contents/plugins/imageformats/
+
+rm $pencil/Contents/Frameworks/QtCore.framework/QtCore_debug
+rm $pencil/Contents/Frameworks/QtCore.framework/QtCore_debug.prl
+rm $pencil/Contents/Frameworks/QtCore.framework/Versions/4/QtCore_debug
+
+rm $pencil/Contents/Frameworks/QtGui.framework/QtGui_debug
+rm $pencil/Contents/Frameworks/QtGui.framework/QtGui_debug.prl
+rm $pencil/Contents/Frameworks/QtGui.framework/Versions/4/QtGui_debug
+
+rm $pencil/Contents/Frameworks/QtXml.framework/QtXml_debug
+rm $pencil/Contents/Frameworks/QtXml.framework/QtXml_debug.prl
+rm $pencil/Contents/Frameworks/QtXml.framework/Versions/4/QtXml_debug
+
+rm $pencil/Contents/Frameworks/QtOpenGL.framework/QtOpenGL_debug
+rm $pencil/Contents/Frameworks/QtOpenGL.framework/QtOpenGL_debug.plr
+rm $pencil/Contents/Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL_debug
+
+#install_name_tool -id @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $pencil/Contents/Frameworks/QtCore.framework/Versions/4/QtCore
+#install_name_tool -id @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui   $pencil/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
+#install_name_tool -id @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml   $pencil/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+#install_name_tool -id @executable_path/../Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL   $pencil/Contents/Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL
+
+#install_name_tool -change $qtlib"QtCore.framework/Versions/4/QtCore" @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $pencil/Contents/MacOs/pencil
+#install_name_tool -change $qtlib"QtGui.framework/Versions/4/QtGui"   @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui   $pencil/Contents/MacOS/pencil
+#install_name_tool -change $qtlib"QtXml.framework/Versions/4/QtXml"   @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml   $pencil/Contents/MacOS/pencil
+#install_name_tool -change $qtlib"QtOpenGL.framework/Versions/4/QtOpenGL"   @executable_path/../Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL   $pencil/Contents/MacOS/pencil
+#install_name_tool -change $qtlib"QtCore.framework/Versions/4/QtCore" @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $pencil/Contents/Frameworks/QtGui.framework/Versions/4/QtGui
+#install_name_tool -change $qtlib"QtCore.framework/Versions/4/QtCore" @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $pencil/Contents/Frameworks/QtXml.framework/Versions/4/QtXml
+#install_name_tool -change $qtlib"QtCore.framework/Versions/4/QtCore" @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $pencil/Contents/Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL
+#install_name_tool -change $qtlib"QtGui.framework/Versions/4/QtGui" @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui $pencil/Contents/Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL
+#install_name_tool -change $qtlib"QtCore.framework/Versions/4/QtCore" @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $pencil/Contents/plugins/imageformats/libqjpeg.dylib
+#install_name_tool -change $qtlib"QtGui.framework/Versions/4/QtGui" @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui $pencil/Contents/plugins/imageformats/libqjpeg.dylib
+
+echo ok
