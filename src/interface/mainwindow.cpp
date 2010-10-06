@@ -61,61 +61,61 @@ void MainWindow::arrangePalettes() {
 }
 
 void MainWindow::createMenus() {
-	// ---------- Actions -------------
-	exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
-	exitAct->setShortcut(tr("Ctrl+Q"));
-	connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+    // ---------- Actions -------------
+    exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
+    exitAct->setShortcut(tr("Ctrl+Q"));
+    connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-	newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
-	newAct->setShortcut(tr("Ctrl+N"));
-	connect(newAct, SIGNAL(triggered()), editor, SLOT(newDocument()));
+    newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
+    newAct->setShortcut(tr("Ctrl+N"));
+    connect(newAct, SIGNAL(triggered()), editor, SLOT(newDocument()));
 
-	openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
+    openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
     openAct->setShortcut(tr("Ctrl+O"));
     connect(openAct, SIGNAL(triggered()), editor, SLOT(openDocument()));
 
     saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
-	saveAct->setShortcut(tr("Ctrl+Shift+S"));
-	connect(saveAct, SIGNAL(triggered()), editor, SLOT(saveDocument()));
+    saveAct->setShortcut(tr("Ctrl+Shift+S"));
+    connect(saveAct, SIGNAL(triggered()), editor, SLOT(saveDocument()));
 
-	savAct = new QAction(QIcon(":icons/saveas.png"), tr("&Save"), this);
-	savAct->setShortcut(tr("Ctrl+S"));
-	connect(savAct, SIGNAL(triggered()), editor, SLOT(saveForce()));
+    savAct = new QAction(QIcon(":icons/saveas.png"), tr("&Save"), this);
+    savAct->setShortcut(tr("Ctrl+S"));
+    connect(savAct, SIGNAL(triggered()), editor, SLOT(saveForce()));
 
-	print = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
-	print->setShortcut(tr("Ctrl+P"));
-	connect(print, SIGNAL(triggered()), editor, SLOT(print()));
+    print = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
+    print->setShortcut(tr("Ctrl+P"));
+    connect(print, SIGNAL(triggered()), editor, SLOT(print()));
 
-	exportXAct = new QAction(tr("&X-Sheet..."), this);
-	exportXAct->setShortcut(tr("Ctrl+Alt+X"));
-	connect(exportXAct, SIGNAL(triggered()), editor, SLOT(exportX()));
+    exportXAct = new QAction(tr("&X-Sheet..."), this);
+    exportXAct->setShortcut(tr("Ctrl+Alt+X"));
+    connect(exportXAct, SIGNAL(triggered()), editor, SLOT(exportX()));
 
-	exportAct = new QAction(tr("&Image Sequence..."), this);
-	exportAct->setShortcut(tr("Shift+Alt+S"));
-	connect(exportAct, SIGNAL(triggered()), editor, SLOT(exportSeq()));
+    exportAct = new QAction(tr("&Image Sequence..."), this);
+    exportAct->setShortcut(tr("Shift+Alt+S"));
+    connect(exportAct, SIGNAL(triggered()), editor, SLOT(exportSeq()));
 
-	exportimageAct = new QAction(tr("&Image..."), this);
-		exportimageAct->setShortcut(tr("Shift+S"));
-		connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
+    exportimageAct = new QAction(tr("&Image..."), this);
+    exportimageAct->setShortcut(tr("Shift+S"));
+    connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
 
-	exportMovAct = new QAction(tr("&Movie..."), this);
-	exportMovAct->setShortcut(tr("Ctrl+Alt+M"));
-	connect(exportMovAct, SIGNAL(triggered()), editor, SLOT(exportMov()));
+    exportMovAct = new QAction(tr("&Movie..."), this);
+    exportMovAct->setShortcut(tr("Ctrl+Alt+M"));
+    connect(exportMovAct, SIGNAL(triggered()), editor, SLOT(exportMov()));
 
-	exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
-	exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
-	connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
+    exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
+    exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
+    connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
-	exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
-	exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
-	connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
+    exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
+    exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
+    connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
-	exportPaletteAct = new QAction(tr("Palette..."), this);
-	connect(exportPaletteAct, SIGNAL(triggered()), editor, SLOT(exportPalette()));
+    exportPaletteAct = new QAction(tr("Palette..."), this);
+    connect(exportPaletteAct, SIGNAL(triggered()), editor, SLOT(exportPalette()));
 
-	importPaletteAct = new QAction(tr("Palette..."), this);
-	connect(importPaletteAct, SIGNAL(triggered()), editor, SLOT(importPalette()));
+    importPaletteAct = new QAction(tr("Palette..."), this);
+    connect(importPaletteAct, SIGNAL(triggered()), editor, SLOT(importPalette()));
 
     importAct = new QAction(tr("&Image..."), this);
     importAct->setShortcut(tr("Ctrl+Shift+R"));
@@ -131,369 +131,369 @@ void MainWindow::createMenus() {
     connect(importSndAct, SIGNAL(triggered()), editor, SLOT(importSound()));
 
     helpMe = new QAction(tr("&Help"), this);
-	helpMe->setShortcut(tr("F1"));
-	connect(helpMe, SIGNAL(triggered()), editor, SLOT(helpBox()));
+    helpMe->setShortcut(tr("F1"));
+    connect(helpMe, SIGNAL(triggered()), editor, SLOT(helpBox()));
 
-	aboutAct = new QAction(tr("&About"), this);
-	    aboutAct->setShortcut(tr("F2"));
+    aboutAct = new QAction(tr("&About"), this);
+    aboutAct->setShortcut(tr("F2"));
     connect(aboutAct, SIGNAL(triggered()), editor, SLOT(about()));
 
     //aboutQtAct = new QAction(tr("About &Qt"), this);
     //connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
-    	undoAct->setShortcut(tr("Ctrl+Z"));
-    	connect(undoAct, SIGNAL(triggered()), editor, SLOT(undo()));
+    undoAct->setShortcut(tr("Ctrl+Z"));
+    connect(undoAct, SIGNAL(triggered()), editor, SLOT(undo()));
 
-    	redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
-    	redoAct->setShortcut(tr("Ctrl+Y"));
-    	connect(redoAct, SIGNAL(triggered()), editor, SLOT(redo()));
+    redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
+    redoAct->setShortcut(tr("Ctrl+Y"));
+    connect(redoAct, SIGNAL(triggered()), editor, SLOT(redo()));
 
-    	cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
-    	cutAct->setShortcut(tr("Ctrl+X"));
-    	connect(cutAct, SIGNAL(triggered()), editor, SLOT(cut()));
+    cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
+    cutAct->setShortcut(tr("Ctrl+X"));
+    connect(cutAct, SIGNAL(triggered()), editor, SLOT(cut()));
 
-    	cropAct = new QAction( tr("Crop"), this);
-    	cropAct->setShortcut(tr("Ctrl+W"));
-    	connect(cropAct, SIGNAL(triggered()), editor, SLOT(crop()));
+    cropAct = new QAction( tr("Crop"), this);
+    cropAct->setShortcut(tr("Ctrl+W"));
+    connect(cropAct, SIGNAL(triggered()), editor, SLOT(crop()));
 
-    	trimAct = new QAction( tr("Crop To Selection"), this);
-    	trimAct->setShortcut(tr("Ctrl+T"));
-    	connect(trimAct, SIGNAL(triggered()), editor, SLOT(croptoselect()));
+    trimAct = new QAction( tr("Crop To Selection"), this);
+    trimAct->setShortcut(tr("Ctrl+T"));
+    connect(trimAct, SIGNAL(triggered()), editor, SLOT(croptoselect()));
 
-    	inbetweenAct = new QAction( tr("Inbetween Frames"), this);
-    	inbetweenAct->setShortcut(tr("Alt+Z"));
-    		connect(inbetweenAct, SIGNAL(triggered()), editor, SLOT(inbetween()));
+    inbetweenAct = new QAction( tr("Inbetween Frames"), this);
+    inbetweenAct->setShortcut(tr("Alt+Z"));
+    connect(inbetweenAct, SIGNAL(triggered()), editor, SLOT(inbetween()));
 
-    	inbetweenActV = new QAction( tr("Inbetween Vector Frames"), this);
-    	inbetweenActV->setShortcut(tr("Alt+Y"));
-    	connect(inbetweenActV, SIGNAL(triggered()), editor, SLOT(inbetweenV()));
+    inbetweenActV = new QAction( tr("Inbetween Vector Frames"), this);
+    inbetweenActV->setShortcut(tr("Alt+Y"));
+    connect(inbetweenActV, SIGNAL(triggered()), editor, SLOT(inbetweenV()));
 
-    	copyAct = new QAction(QIcon(":icons/copy.png"), tr("Copy"), this);
-    	copyAct->setShortcut(tr("Ctrl+C"));
-    	connect(copyAct, SIGNAL(triggered()), editor, SLOT(copy()));
+    copyAct = new QAction(QIcon(":icons/copy.png"), tr("Copy"), this);
+    copyAct->setShortcut(tr("Ctrl+C"));
+    connect(copyAct, SIGNAL(triggered()), editor, SLOT(copy()));
 
-    	copyframesAct = new QAction( tr("Blank Frames"), this);
-    	copyframesAct->setShortcut(tr("Ctrl+F"));
-    	connect(copyframesAct, SIGNAL(triggered()), editor, SLOT(copyFrames()));
+    copyframesAct = new QAction( tr("Blank Frames"), this);
+    copyframesAct->setShortcut(tr("Ctrl+F"));
+    connect(copyframesAct, SIGNAL(triggered()), editor, SLOT(copyFrames()));
 
-    	pasteAct = new QAction(QIcon(":icons/paste.png"), tr("Paste"), this);
-    	pasteAct->setShortcut(tr("Ctrl+V"));
-    	connect(pasteAct, SIGNAL(triggered()), editor, SLOT(paste()));
+    pasteAct = new QAction(QIcon(":icons/paste.png"), tr("Paste"), this);
+    pasteAct->setShortcut(tr("Ctrl+V"));
+    connect(pasteAct, SIGNAL(triggered()), editor, SLOT(paste()));
 
-    	pasteframesAct = new QAction( tr("Duplicate Frames"), this);
-    	pasteframesAct->setShortcut(tr("Ctrl+U"));
-    	connect(pasteframesAct, SIGNAL(triggered()), editor, SLOT(pasteFrames()));
+    pasteframesAct = new QAction( tr("Duplicate Frames"), this);
+    pasteframesAct->setShortcut(tr("Ctrl+U"));
+    connect(pasteframesAct, SIGNAL(triggered()), editor, SLOT(pasteFrames()));
 
-    	deleteAct = new QAction(QIcon(":icons/clear.png"), tr("Delete"), this);
-    	deleteAct->setShortcut(tr("Ctrl+A"));
-    	connect(deleteAct, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
+    deleteAct = new QAction(QIcon(":icons/clear.png"), tr("Delete"), this);
+    deleteAct->setShortcut(tr("Ctrl+A"));
+    connect(deleteAct, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
 
-    	selectAllAct = new QAction(tr("Select All"), this);
-    	selectAllAct->setShortcut(tr("Ctrl+B"));
-    	connect(selectAllAct, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
+    selectAllAct = new QAction(tr("Select All"), this);
+    selectAllAct->setShortcut(tr("Ctrl+B"));
+    connect(selectAllAct, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
 
-    	deselectAllAct = new QAction(tr("Deselect All"), this);
-    	deselectAllAct->setShortcut(tr("Ctrl+D"));
-    	connect(deselectAllAct, SIGNAL(triggered()), editor, SLOT(deselectAll()));
+    deselectAllAct = new QAction(tr("Deselect All"), this);
+    deselectAllAct->setShortcut(tr("Ctrl+D"));
+    connect(deselectAllAct, SIGNAL(triggered()), editor, SLOT(deselectAll()));
 
 
-	preferencesAct = new QAction(tr("Preferences"), this);
-	connect(preferencesAct, SIGNAL(triggered()), editor, SLOT(showPreferences()));
+    preferencesAct = new QAction(tr("Preferences"), this);
+    connect(preferencesAct, SIGNAL(triggered()), editor, SLOT(showPreferences()));
 
 
-	newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
-	connect(newBitmapLayerAct, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
+    newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
+    connect(newBitmapLayerAct, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
 
-	newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
-	connect(newVectorLayerAct, SIGNAL(triggered()), editor, SLOT(newVectorLayer()));
+    newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
+    connect(newVectorLayerAct, SIGNAL(triggered()), editor, SLOT(newVectorLayer()));
 
-	newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
-	connect(newSoundLayerAct, SIGNAL(triggered()), editor, SLOT(newSoundLayer()));
+    newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
+    connect(newSoundLayerAct, SIGNAL(triggered()), editor, SLOT(newSoundLayer()));
 
-	newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
-	connect(newCameraLayerAct, SIGNAL(triggered()), editor, SLOT(newCameraLayer()));
+    newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
+    connect(newCameraLayerAct, SIGNAL(triggered()), editor, SLOT(newCameraLayer()));
 
-	deleteLayerAct = new QAction(tr("Delete Current Layer"), this);
-	connect(deleteLayerAct, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
+    deleteLayerAct = new QAction(tr("Delete Current Layer"), this);
+    connect(deleteLayerAct, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
 
 
-	//dockAllPalettesAct = new QAction(tr("Dock All Palettes"), this);
-	//connect(dockAllPalettesAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
+    //dockAllPalettesAct = new QAction(tr("Dock All Palettes"), this);
+    //connect(dockAllPalettesAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
 
-	//detachAllPalettesAct = new QAction(tr("Detach All Palettes"), this);
-	//connect(detachAllPalettesAct, SIGNAL(triggered()), editor, SLOT(detachAllPalettes()));
-	/*~~~~~~~~View menu~~~~~~~~~*/
-	zoomAct = new QAction(QIcon(":icons/magnify.png"),tr("In"), this);
-		zoomAct->setShortcut(Qt::Key_Up+ Qt::CTRL);
-		connect(zoomAct, SIGNAL(triggered()), editor, SLOT(setzoom()));
+    //detachAllPalettesAct = new QAction(tr("Detach All Palettes"), this);
+    //connect(detachAllPalettesAct, SIGNAL(triggered()), editor, SLOT(detachAllPalettes()));
+    /*~~~~~~~~View menu~~~~~~~~~*/
+    zoomAct = new QAction(QIcon(":icons/magnify.png"),tr("In"), this);
+    zoomAct->setShortcut(Qt::Key_Up+ Qt::CTRL);
+    connect(zoomAct, SIGNAL(triggered()), editor, SLOT(setzoom()));
 
-		zoomAct1 = new QAction(QIcon(":icons/magnify.png"),tr("Out"), this);
-			zoomAct1->setShortcut(Qt::Key_Down+ Qt::CTRL);
-			connect(zoomAct1, SIGNAL(triggered()), editor, SLOT(setzoom1()));
+    zoomAct1 = new QAction(QIcon(":icons/magnify.png"),tr("Out"), this);
+    zoomAct1->setShortcut(Qt::Key_Down+ Qt::CTRL);
+    connect(zoomAct1, SIGNAL(triggered()), editor, SLOT(setzoom1()));
 
-		rotateAct = new QAction(tr("Clockwise"), this);
-		rotateAct->setShortcut(Qt::Key_R);
-		connect(rotateAct, SIGNAL(triggered()), editor, SLOT(rotatecw()));
+    rotateAct = new QAction(tr("Clockwise"), this);
+    rotateAct->setShortcut(Qt::Key_R);
+    connect(rotateAct, SIGNAL(triggered()), editor, SLOT(rotatecw()));
 
-		rotateAct1 = new QAction(tr("AntiClockwise"), this);
-		rotateAct1->setShortcut(Qt::Key_Z);
-		connect(rotateAct1, SIGNAL(triggered()), editor, SLOT(rotateacw()));
+    rotateAct1 = new QAction(tr("AntiClockwise"), this);
+    rotateAct1->setShortcut(Qt::Key_Z);
+    connect(rotateAct1, SIGNAL(triggered()), editor, SLOT(rotateacw()));
 
-		resetpaletteAct = new QAction(tr("Reset Windows"), this);
-		resetpaletteAct->setShortcut(tr("Ctrl+Alt+H"));
-		connect(resetpaletteAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
-
-	horiMirrorAct = new QAction(QIcon(":icons/mirror.png"),tr("Horizontal Flip"), this);
-	horiMirrorAct->setShortcut(Qt::Key_H + Qt::SHIFT);
-			connect(horiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
-
-			vertiMirrorAct = new QAction(QIcon(":icons/mirrorV.png"),tr("Vertical Flip"), this);
-			vertiMirrorAct->setShortcut(Qt::Key_V + Qt::SHIFT);
-					connect(vertiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
-
-		previewAct = new QAction(tr("Add New Colour"), this);
-		previewAct->setShortcut(Qt::Key_P + Qt::ALT);
-		previewAct->setEnabled(true);
-	//#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO Preview view
-		connect(previewAct, SIGNAL(triggered()), editor, SLOT(addcolorbutton()));
-
-		gridAct = new QAction(tr("Grid"), this);
-		gridAct->setShortcut(Qt::Key_G);
-		gridAct->setEnabled(false);
-	//#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO Grid view
-
-		onionskinpAct = new QAction(QIcon(":icons/onionPrev.png"),tr("Previous"), this);
-		onionskinpAct->setShortcut(Qt::Key_O);
-		connect(onionskinpAct, SIGNAL(triggered()), editor, SLOT(onionPrev()));
-
-		onionskinnAct = new QAction(QIcon(":icons/onionNext.png"),tr("Next"), this);
-		onionskinnAct->setShortcut(Qt::Key_O+Qt::ALT);
-		connect(onionskinnAct, SIGNAL(triggered()), editor, SLOT(onionNext()));
-
-	/*~~~~Animation Menu~~~~~~*/
-	playAnimationAct = new QAction(tr("Play/Stop"), this);
-	playAnimationAct->setShortcut(Qt::Key_Return);
-	connect(playAnimationAct, SIGNAL(triggered()), editor, SLOT(play()));
-
-	loopAnimationAct = new QAction(tr("&Loop"), this);
-	loopAnimationAct->setShortcut(tr("Ctrl+L"));
-	connect(loopAnimationAct, SIGNAL(triggered()), editor, SLOT(setLoop()));
-
-	extendFrameAct = new QAction(tr("&Extend Frame"), this);
-	extendFrameAct->setShortcut(Qt::Key_F5);
-	extendFrameAct->setEnabled(false);
-	//connect(extendFrameAct, SIGNAL(triggered()), editor, SLOT(addFrame(editor->currentFrame)));
-
-	addFrameAct = new QAction(QIcon(":icons/add.png"), tr("&Add Frame"), this);
-	addFrameAct->setShortcut(Qt::Key_F7);
-	connect(addFrameAct, SIGNAL(triggered()), editor, SLOT(addKey()));
-
-	duplicateFrameAct = new QAction(tr("&Duplicate Frame"), this);
-	duplicateFrameAct->setShortcut(Qt::Key_F6);
-	connect(duplicateFrameAct, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
-
-	removeFrameAct = new QAction(QIcon(":icons/remove.png"), tr("&Remove Frame"), this);
-	removeFrameAct->setShortcut(tr("Shift+F5"));
-	connect(removeFrameAct, SIGNAL(triggered()), editor, SLOT(removeKey()));
-
-	nextFrameAct = new QAction(QIcon(":icons/next.png"), tr("&Next Frame"), this);
-	nextFrameAct->setShortcut(Qt::Key_Period);
-	connect(nextFrameAct, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
-
-	prevFrameAct = new QAction(QIcon(":icons/prev.png"), tr("&Previous Frame"), this);
-	prevFrameAct->setShortcut(Qt::Key_Comma);
-	connect(prevFrameAct, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
-
-	/*~~~~Tools Menu~~~~~~*/
-	moveToolAct = new QAction(QIcon(":icons/arrow.png"),tr("Move"), this);
-	moveToolAct->setShortcut(Qt::Key_Q);
-	connect(moveToolAct, SIGNAL(triggered()), editor, SLOT(move_clicked()));
-
-	clearToolAct = new QAction(QIcon(":icons/clear.png"), tr("Clear"), this);
-	clearToolAct->setShortcut(Qt::Key_L);
-	connect(clearToolAct, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
-
-		selectToolAct = new QAction(QIcon(":icons/select.png"),tr("Select"), this);
-		selectToolAct->setShortcut(Qt::Key_V);
-		connect(selectToolAct, SIGNAL(triggered()), editor, SLOT(select_clicked()));
-
-		brushToolAct = new QAction(QIcon(":icons/brush.png"),tr("Brush"), this);
-		brushToolAct->setShortcut(Qt::Key_B);
-		connect(brushToolAct, SIGNAL(triggered()), editor, SLOT(color_clicked()));
-
-	polylineToolAct = new QAction(QIcon(":icons/polyline.png"),tr("Polyline"), this);
-	polylineToolAct->setShortcut(Qt::Key_Y);
-	connect(polylineToolAct, SIGNAL(triggered()), editor, SLOT(polyline_clicked()));
-
-	smudgeToolAct = new QAction(QIcon(":icons/smudge.png"),tr("Smudge"), this);
-	smudgeToolAct->setShortcut(Qt::Key_A);
-	connect(smudgeToolAct, SIGNAL(triggered()), editor, SLOT(smudge_clicked()));
-
-		penToolAct = new QAction(QIcon(":icons/pen.png"),tr("Pen"), this);
-		penToolAct->setShortcut(Qt::Key_P);
-		connect(penToolAct, SIGNAL(triggered()), editor, SLOT(pen_clicked()));
-
-		handToolAct = new QAction(QIcon(":icons/hand.png"),tr("Hand"), this);
-		handToolAct->setShortcut(Qt::Key_H);
-		connect(handToolAct, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-
-		zoomToolAct = new QAction(tr("Reset Zoom/Rotate"), this);
-				zoomToolAct->setShortcut(Qt::Key_H + Qt::CTRL);
-				connect(zoomToolAct, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-
-	pencilToolAct = new QAction(QIcon(":icons/pencil2.png"),tr("Pencil"), this);
-	pencilToolAct->setShortcut(Qt::Key_N);
-	connect(pencilToolAct, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
-
-	bucketToolAct = new QAction(QIcon(":icons/bucket.png"),tr("Paintbucket"), this);
-	bucketToolAct->setShortcut(Qt::Key_K);
-	connect(bucketToolAct, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
-
-		eyedropToolAct = new QAction(QIcon(":icons/eyedropper.png"),tr("Eyedropper"), this);
-		eyedropToolAct->setShortcut(Qt::Key_I);
-		connect(eyedropToolAct, SIGNAL(triggered()), editor, SLOT(eyedropper_clicked()));
-
-		eraserToolAct = new QAction(QIcon(":icons/hand.png"),tr("Eraser"), this);
-		eraserToolAct->setShortcut(Qt::Key_E);
-		connect(eraserToolAct, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
-
-	// --------------- Menus ------------------
-	importMenu = new QMenu(tr("Import"), this);
-
-	importMenu->addAction(importAct);
-	importMenu->addAction(importMovAct);
-	importMenu->addAction(importSndAct);
-	importMenu->addSeparator();
-	importMenu->addAction(importPaletteAct);
-
-	exportMenu = new QMenu(tr("Export"), this);
-	exportMenu->addAction(exportimageAct);
-	exportMenu->addAction(exportAct);
-	exportMenu->addAction(exportXAct);
-	exportMenu->addAction(exportMovAct);
-	exportMenu->addAction(exportFlashAct);
-	exportMenu->addSeparator();
-	exportMenu->addAction(exportPaletteAct);
-
-	openRecentMenu = new QMenu(tr("Open recent..."), this);
-
-	fileMenu = new QMenu(tr("&File"), this);
-	fileMenu->addAction(newAct);
-	fileMenu->addAction(openAct);
-	fileMenu->addMenu(openRecentMenu);
-	fileMenu->addAction(savAct);
-	fileMenu->addAction(saveAct);
-	fileMenu->addSeparator();
-	fileMenu->addMenu(importMenu);
-	fileMenu->addMenu(exportMenu);
-	fileMenu->addSeparator();
-	fileMenu->addAction(print);
-	fileMenu->addSeparator();
-	fileMenu->addAction(exitAct);
-
-	zoomMenu = new QMenu(tr("Zoom..."), this);
-		zoomMenu->addAction(zoomAct);
-		zoomMenu->addAction(zoomAct1);
-		rotateMenu= new QMenu(tr("Rotate..."), this) ;
-		rotateMenu->addAction(rotateAct);
-		rotateMenu->addAction(rotateAct1);
-		onionskinMenu= new QMenu(tr("Onion Skin..."), this) ;
-		onionskinMenu->addAction(onionskinpAct);
-		onionskinMenu->addAction(onionskinnAct);
-		InsertMenu= new QMenu(tr("Insert..."), this) ;
-		InsertMenu->addAction(copyframesAct);
-		InsertMenu->addAction(pasteframesAct);
-		InsertMenu->addAction(inbetweenAct);
-		InsertMenu->addAction(inbetweenActV);
-		MirrorMenu= new QMenu(tr("Mirror..."), this) ;
-		MirrorMenu->addAction(horiMirrorAct);
-		MirrorMenu->addAction(vertiMirrorAct);
-
-		     viewMenu = new QMenu(tr("&View"), this);
-		     viewMenu->addAction(resetpaletteAct);
-		     viewMenu->addMenu(zoomMenu);
-		     viewMenu->addAction(zoomToolAct);
-		     viewMenu->addSeparator();
-		     viewMenu->addMenu(rotateMenu);
-		     viewMenu->addMenu(MirrorMenu);
-		     viewMenu->addSeparator();
-		     viewMenu->addAction(previewAct);
-		     viewMenu->addSeparator();
-		     viewMenu->addAction(gridAct);
-		     viewMenu->addSeparator();
-		     viewMenu->addMenu(onionskinMenu);
-		     viewMenu->addSeparator();
-
-		     editMenu = new QMenu(tr("&Edit"), this);
-		     	editMenu->addAction(undoAct);
-		     	editMenu->addAction(redoAct);
-		     	editMenu->addSeparator();
-		     	editMenu->addAction(cutAct);
-		     	editMenu->addAction(copyAct);
-		     	editMenu->addAction(pasteAct);
-		     	editMenu->addMenu(InsertMenu);
-		     	editMenu->addAction(deleteAct);
-		     	editMenu->addSeparator();
-		     	editMenu->addAction(cropAct);
-		     	editMenu->addAction(trimAct);
-		     	editMenu->addSeparator();
-		     	editMenu->addAction(selectAllAct);
-		     	editMenu->addAction(deselectAllAct);
-		     	editMenu->addSeparator();
-		     	editMenu->addAction(preferencesAct);
-
-	layerMenu = new QMenu(tr("&Layer"), this);
-	layerMenu->addAction(newBitmapLayerAct);
-	layerMenu->addAction(newVectorLayerAct);
-	layerMenu->addAction(newSoundLayerAct);
-	layerMenu->addAction(newCameraLayerAct);
-	layerMenu->addSeparator();
-	layerMenu->addAction(deleteLayerAct);
-
-	animationMenu = new QMenu(tr("&Animation"), this);
-	animationMenu->addAction(playAnimationAct);
-	animationMenu->addAction(loopAnimationAct);
-	animationMenu->addSeparator();
-	animationMenu->addAction(nextFrameAct);
-	animationMenu->addAction(prevFrameAct);
-	animationMenu->addSeparator();
-	animationMenu->addAction(extendFrameAct);
-	animationMenu->addAction(addFrameAct);
-	animationMenu->addAction(duplicateFrameAct);
-	animationMenu->addAction(removeFrameAct);
-
-	toolsMenu = new QMenu(tr("Tools"), this);
-	toolsMenu->addAction(moveToolAct);
-	toolsMenu->addAction(clearToolAct);
-		toolsMenu->addAction(selectToolAct);
-		toolsMenu->addAction(brushToolAct);
-	toolsMenu->addAction(polylineToolAct);
-	toolsMenu->addAction(smudgeToolAct);
-		toolsMenu->addAction(penToolAct);
-		toolsMenu->addAction(handToolAct);
-	toolsMenu->addAction(pencilToolAct);
-	toolsMenu->addAction(bucketToolAct);
-		toolsMenu->addAction(eyedropToolAct);
-		toolsMenu->addAction(eraserToolAct);
-
-	//windowsMenu = new QMenu(tr("Windows"), this);
-	//windowsMenu->addAction(dockAllPalettesAct);
-	//windowsMenu->addAction(detachAllPalettesAct);
-
-	helpMenu = new QMenu(tr("&Help"), this);
-	helpMenu->addAction(helpMe);
-	helpMenu->addAction(aboutAct);
-	//helpMenu->addAction(aboutQtAct);
-
-	menuBar()->addMenu(fileMenu);
-	menuBar()->addMenu(editMenu);
-	menuBar()->addMenu(viewMenu);
-	menuBar()->addMenu(animationMenu);
-	menuBar()->addMenu(toolsMenu);
-	menuBar()->addMenu(layerMenu);
-	//menuBar()->addMenu(windowsMenu);
-	menuBar()->addMenu(helpMenu);
+    resetpaletteAct = new QAction(tr("Reset Windows"), this);
+    resetpaletteAct->setShortcut(tr("Ctrl+Alt+H"));
+    connect(resetpaletteAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
+
+    horiMirrorAct = new QAction(QIcon(":icons/mirror.png"),tr("Horizontal Flip"), this);
+    horiMirrorAct->setShortcut(Qt::Key_H + Qt::SHIFT);
+    connect(horiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
+
+    vertiMirrorAct = new QAction(QIcon(":icons/mirrorV.png"),tr("Vertical Flip"), this);
+    vertiMirrorAct->setShortcut(Qt::Key_V + Qt::SHIFT);
+    connect(vertiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
+
+    previewAct = new QAction(tr("Add New Colour"), this);
+    previewAct->setShortcut(Qt::Key_P + Qt::ALT);
+    previewAct->setEnabled(true);
+    //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO Preview view
+    connect(previewAct, SIGNAL(triggered()), editor, SLOT(addcolorbutton()));
+
+    gridAct = new QAction(tr("Grid"), this);
+    gridAct->setShortcut(Qt::Key_G);
+    gridAct->setEnabled(false);
+    //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO Grid view
+
+    onionskinpAct = new QAction(QIcon(":icons/onionPrev.png"),tr("Previous"), this);
+    onionskinpAct->setShortcut(Qt::Key_O);
+    connect(onionskinpAct, SIGNAL(triggered()), editor, SLOT(onionPrev()));
+
+    onionskinnAct = new QAction(QIcon(":icons/onionNext.png"),tr("Next"), this);
+    onionskinnAct->setShortcut(Qt::Key_O+Qt::ALT);
+    connect(onionskinnAct, SIGNAL(triggered()), editor, SLOT(onionNext()));
+
+    /*~~~~Animation Menu~~~~~~*/
+    playAnimationAct = new QAction(tr("Play/Stop"), this);
+    playAnimationAct->setShortcut(Qt::Key_Return);
+    connect(playAnimationAct, SIGNAL(triggered()), editor, SLOT(play()));
+
+    loopAnimationAct = new QAction(tr("&Loop"), this);
+    loopAnimationAct->setShortcut(tr("Ctrl+L"));
+    connect(loopAnimationAct, SIGNAL(triggered()), editor, SLOT(setLoop()));
+
+    extendFrameAct = new QAction(tr("&Extend Frame"), this);
+    extendFrameAct->setShortcut(Qt::Key_F5);
+    extendFrameAct->setEnabled(false);
+    //connect(extendFrameAct, SIGNAL(triggered()), editor, SLOT(addFrame(editor->currentFrame)));
+
+    addFrameAct = new QAction(QIcon(":icons/add.png"), tr("&Add Frame"), this);
+    addFrameAct->setShortcut(Qt::Key_F7);
+    connect(addFrameAct, SIGNAL(triggered()), editor, SLOT(addKey()));
+
+    duplicateFrameAct = new QAction(tr("&Duplicate Frame"), this);
+    duplicateFrameAct->setShortcut(Qt::Key_F6);
+    connect(duplicateFrameAct, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
+
+    removeFrameAct = new QAction(QIcon(":icons/remove.png"), tr("&Remove Frame"), this);
+    removeFrameAct->setShortcut(tr("Shift+F5"));
+    connect(removeFrameAct, SIGNAL(triggered()), editor, SLOT(removeKey()));
+
+    nextFrameAct = new QAction(QIcon(":icons/next.png"), tr("&Next Frame"), this);
+    nextFrameAct->setShortcut(Qt::Key_Period);
+    connect(nextFrameAct, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
+
+    prevFrameAct = new QAction(QIcon(":icons/prev.png"), tr("&Previous Frame"), this);
+    prevFrameAct->setShortcut(Qt::Key_Comma);
+    connect(prevFrameAct, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
+
+    /*~~~~Tools Menu~~~~~~*/
+    moveToolAct = new QAction(QIcon(":icons/arrow.png"),tr("Move"), this);
+    moveToolAct->setShortcut(Qt::Key_Q);
+    connect(moveToolAct, SIGNAL(triggered()), editor, SLOT(move_clicked()));
+
+    clearToolAct = new QAction(QIcon(":icons/clear.png"), tr("Clear"), this);
+    clearToolAct->setShortcut(Qt::Key_L);
+    connect(clearToolAct, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
+
+    selectToolAct = new QAction(QIcon(":icons/select.png"),tr("Select"), this);
+    selectToolAct->setShortcut(Qt::Key_V);
+    connect(selectToolAct, SIGNAL(triggered()), editor, SLOT(select_clicked()));
+
+    brushToolAct = new QAction(QIcon(":icons/brush.png"),tr("Brush"), this);
+    brushToolAct->setShortcut(Qt::Key_B);
+    connect(brushToolAct, SIGNAL(triggered()), editor, SLOT(color_clicked()));
+
+    polylineToolAct = new QAction(QIcon(":icons/polyline.png"),tr("Polyline"), this);
+    polylineToolAct->setShortcut(Qt::Key_Y);
+    connect(polylineToolAct, SIGNAL(triggered()), editor, SLOT(polyline_clicked()));
+
+    smudgeToolAct = new QAction(QIcon(":icons/smudge.png"),tr("Smudge"), this);
+    smudgeToolAct->setShortcut(Qt::Key_A);
+    connect(smudgeToolAct, SIGNAL(triggered()), editor, SLOT(smudge_clicked()));
+
+    penToolAct = new QAction(QIcon(":icons/pen.png"),tr("Pen"), this);
+    penToolAct->setShortcut(Qt::Key_P);
+    connect(penToolAct, SIGNAL(triggered()), editor, SLOT(pen_clicked()));
+
+    handToolAct = new QAction(QIcon(":icons/hand.png"),tr("Hand"), this);
+    handToolAct->setShortcut(Qt::Key_H);
+    connect(handToolAct, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
+
+    zoomToolAct = new QAction(tr("Reset Zoom/Rotate"), this);
+    zoomToolAct->setShortcut(Qt::Key_H + Qt::CTRL);
+    connect(zoomToolAct, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
+
+    pencilToolAct = new QAction(QIcon(":icons/pencil2.png"),tr("Pencil"), this);
+    pencilToolAct->setShortcut(Qt::Key_N);
+    connect(pencilToolAct, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
+
+    bucketToolAct = new QAction(QIcon(":icons/bucket.png"),tr("Paintbucket"), this);
+    bucketToolAct->setShortcut(Qt::Key_K);
+    connect(bucketToolAct, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
+
+    eyedropToolAct = new QAction(QIcon(":icons/eyedropper.png"),tr("Eyedropper"), this);
+    eyedropToolAct->setShortcut(Qt::Key_I);
+    connect(eyedropToolAct, SIGNAL(triggered()), editor, SLOT(eyedropper_clicked()));
+
+    eraserToolAct = new QAction(QIcon(":icons/hand.png"),tr("Eraser"), this);
+    eraserToolAct->setShortcut(Qt::Key_E);
+    connect(eraserToolAct, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
+
+    // --------------- Menus ------------------
+    importMenu = new QMenu(tr("Import"), this);
+
+    importMenu->addAction(importAct);
+    importMenu->addAction(importMovAct);
+    importMenu->addAction(importSndAct);
+    importMenu->addSeparator();
+    importMenu->addAction(importPaletteAct);
+
+    exportMenu = new QMenu(tr("Export"), this);
+    exportMenu->addAction(exportimageAct);
+    exportMenu->addAction(exportAct);
+    exportMenu->addAction(exportXAct);
+    exportMenu->addAction(exportMovAct);
+    exportMenu->addAction(exportFlashAct);
+    exportMenu->addSeparator();
+    exportMenu->addAction(exportPaletteAct);
+
+    openRecentMenu = new QMenu(tr("Open recent..."), this);
+
+    fileMenu = new QMenu(tr("&File"), this);
+    fileMenu->addAction(newAct);
+    fileMenu->addAction(openAct);
+    fileMenu->addMenu(openRecentMenu);
+    fileMenu->addAction(savAct);
+    fileMenu->addAction(saveAct);
+    fileMenu->addSeparator();
+    fileMenu->addMenu(importMenu);
+    fileMenu->addMenu(exportMenu);
+    fileMenu->addSeparator();
+    fileMenu->addAction(print);
+    fileMenu->addSeparator();
+    fileMenu->addAction(exitAct);
+
+    zoomMenu = new QMenu(tr("Zoom..."), this);
+    zoomMenu->addAction(zoomAct);
+    zoomMenu->addAction(zoomAct1);
+    rotateMenu= new QMenu(tr("Rotate..."), this) ;
+    rotateMenu->addAction(rotateAct);
+    rotateMenu->addAction(rotateAct1);
+    onionskinMenu= new QMenu(tr("Onion Skin..."), this) ;
+    onionskinMenu->addAction(onionskinpAct);
+    onionskinMenu->addAction(onionskinnAct);
+    InsertMenu= new QMenu(tr("Insert..."), this) ;
+    InsertMenu->addAction(copyframesAct);
+    InsertMenu->addAction(pasteframesAct);
+    InsertMenu->addAction(inbetweenAct);
+    InsertMenu->addAction(inbetweenActV);
+    MirrorMenu= new QMenu(tr("Mirror..."), this) ;
+    MirrorMenu->addAction(horiMirrorAct);
+    MirrorMenu->addAction(vertiMirrorAct);
+
+    viewMenu = new QMenu(tr("&View"), this);
+    viewMenu->addAction(resetpaletteAct);
+    viewMenu->addMenu(zoomMenu);
+    viewMenu->addAction(zoomToolAct);
+    viewMenu->addSeparator();
+    viewMenu->addMenu(rotateMenu);
+    viewMenu->addMenu(MirrorMenu);
+    viewMenu->addSeparator();
+    viewMenu->addAction(previewAct);
+    viewMenu->addSeparator();
+    viewMenu->addAction(gridAct);
+    viewMenu->addSeparator();
+    viewMenu->addMenu(onionskinMenu);
+    viewMenu->addSeparator();
+
+    editMenu = new QMenu(tr("&Edit"), this);
+    editMenu->addAction(undoAct);
+    editMenu->addAction(redoAct);
+    editMenu->addSeparator();
+    editMenu->addAction(cutAct);
+    editMenu->addAction(copyAct);
+    editMenu->addAction(pasteAct);
+    editMenu->addMenu(InsertMenu);
+    editMenu->addAction(deleteAct);
+    editMenu->addSeparator();
+    editMenu->addAction(cropAct);
+    editMenu->addAction(trimAct);
+    editMenu->addSeparator();
+    editMenu->addAction(selectAllAct);
+    editMenu->addAction(deselectAllAct);
+    editMenu->addSeparator();
+    editMenu->addAction(preferencesAct);
+
+    layerMenu = new QMenu(tr("&Layer"), this);
+    layerMenu->addAction(newBitmapLayerAct);
+    layerMenu->addAction(newVectorLayerAct);
+    layerMenu->addAction(newSoundLayerAct);
+    layerMenu->addAction(newCameraLayerAct);
+    layerMenu->addSeparator();
+    layerMenu->addAction(deleteLayerAct);
+
+    animationMenu = new QMenu(tr("&Animation"), this);
+    animationMenu->addAction(playAnimationAct);
+    animationMenu->addAction(loopAnimationAct);
+    animationMenu->addSeparator();
+    animationMenu->addAction(nextFrameAct);
+    animationMenu->addAction(prevFrameAct);
+    animationMenu->addSeparator();
+    animationMenu->addAction(extendFrameAct);
+    animationMenu->addAction(addFrameAct);
+    animationMenu->addAction(duplicateFrameAct);
+    animationMenu->addAction(removeFrameAct);
+
+    toolsMenu = new QMenu(tr("Tools"), this);
+    toolsMenu->addAction(moveToolAct);
+    toolsMenu->addAction(clearToolAct);
+    toolsMenu->addAction(selectToolAct);
+    toolsMenu->addAction(brushToolAct);
+    toolsMenu->addAction(polylineToolAct);
+    toolsMenu->addAction(smudgeToolAct);
+    toolsMenu->addAction(penToolAct);
+    toolsMenu->addAction(handToolAct);
+    toolsMenu->addAction(pencilToolAct);
+    toolsMenu->addAction(bucketToolAct);
+    toolsMenu->addAction(eyedropToolAct);
+    toolsMenu->addAction(eraserToolAct);
+
+    //windowsMenu = new QMenu(tr("Windows"), this);
+    //windowsMenu->addAction(dockAllPalettesAct);
+    //windowsMenu->addAction(detachAllPalettesAct);
+
+    helpMenu = new QMenu(tr("&Help"), this);
+    helpMenu->addAction(helpMe);
+    helpMenu->addAction(aboutAct);
+    //helpMenu->addAction(aboutQtAct);
+
+    menuBar()->addMenu(fileMenu);
+    menuBar()->addMenu(editMenu);
+    menuBar()->addMenu(viewMenu);
+    menuBar()->addMenu(animationMenu);
+    menuBar()->addMenu(toolsMenu);
+    menuBar()->addMenu(layerMenu);
+    //menuBar()->addMenu(windowsMenu);
+    menuBar()->addMenu(helpMenu);
 }
 
 void MainWindow::loadPlugins() {
