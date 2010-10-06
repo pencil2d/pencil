@@ -272,13 +272,16 @@ void MainWindow::createMenus() {
     connect(onionskinnAct, SIGNAL(triggered()), editor, SLOT(onionNext()));
 
     /*~~~~Animation Menu~~~~~~*/
-    playAnimationAct = new QAction(tr("Play/Stop"), this);
+    playAnimationAct = new QAction(tr("Play/Stop\tReturn"), this);
     playAnimationAct->setShortcut(Qt::Key_Return);
     connect(playAnimationAct, SIGNAL(triggered()), editor, SLOT(play()));
 
     loopAnimationAct = new QAction(tr("&Loop"), this);
+    loopAnimationAct->setCheckable(true);
     loopAnimationAct->setShortcut(tr("Ctrl+L"));
-    connect(loopAnimationAct, SIGNAL(triggered()), editor, SLOT(setLoop()));
+    connect(loopAnimationAct, SIGNAL(triggered(bool)), editor, SLOT(setLoop(bool)));
+    connect(loopAnimationAct, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoop(bool)));
+    connect(editor, SIGNAL(loopToggled(bool)), this, SLOT(toggleLoop(bool)));
 
     extendFrameAct = new QAction(tr("&Extend Frame"), this);
     extendFrameAct->setShortcut(Qt::Key_F5);
@@ -713,4 +716,6 @@ void MainWindow::addRecentFile(QString filePath) {
 	openRecentMenu->addAction(openThisFileAct);
 }
 
-
+void MainWindow::toggleLoop(bool checked) {
+    loopAnimationAct->setChecked(checked);
+}

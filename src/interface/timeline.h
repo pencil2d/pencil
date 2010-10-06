@@ -111,7 +111,9 @@ signals:
 	void deleteCurrentLayer();
 
 	void playClick();
-	void loopClick();
+	void loopClick(bool);
+    void toggleLoop(bool);
+    void loopToggled(bool);
 	void soundClick();
 	void endplayClick();
 	void startplayClick();

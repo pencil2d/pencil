@@ -33,6 +33,7 @@ public slots:
 //#		void ImportSvg();
 private slots:
 		void exportFile();
+    void toggleLoop(bool);
 
 private:
 	void arrangePalettes();

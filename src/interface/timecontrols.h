@@ -32,13 +32,16 @@ signals:
 	void playClick();
 	void endClick();
 	void startClick();
-	void loopClick();
+	void loopClick(bool);
 	void soundClick();
 	void fpsClick(int);
+    
+    void loopToggled(bool);
 
 public slots:
 	//void updateLoopButton(bool);
 	void updateButtons(bool);
+    void toggleLoop(bool);
 
 protected:
 

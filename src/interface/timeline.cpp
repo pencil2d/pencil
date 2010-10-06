@@ -49,22 +49,22 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 	//QFrame* layerButtons = new QFrame(this);
 	QToolBar* layerButtons = new QToolBar(this);
 	//QHBoxLayout* layerButtonLayout = new QHBoxLayout();
-		QLabel* layerLabel = new QLabel(tr("Layers:"));
-		layerLabel->setIndent(5);
-		layerLabel->setFont( QFont("Helvetica", 10) );
-		QToolButton* addLayerButton = new QToolButton(this);
-		addLayerButton->setIcon(QIcon(":icons/add.png"));
-		addLayerButton->setToolTip("Add Layer");
-		addLayerButton->setFixedSize(24,24);
-		QToolButton* removeLayerButton = new QToolButton(this);
-		removeLayerButton->setIcon(QIcon(":icons/remove.png"));
-		removeLayerButton->setToolTip("Remove Layer");
-		removeLayerButton->setFixedSize(24,24);
-		/*layerButtonLayout->addWidget(layerLabel);
-		layerButtonLayout->addWidget(addLayerButton);
-		layerButtonLayout->addWidget(removeLayerButton);
-		layerButtonLayout->setMargin(0);
-		layerButtonLayout->setSpacing(5);
+    QLabel* layerLabel = new QLabel(tr("Layers:"));
+    layerLabel->setIndent(5);
+    layerLabel->setFont( QFont("Helvetica", 10) );
+    QToolButton* addLayerButton = new QToolButton(this);
+    addLayerButton->setIcon(QIcon(":icons/add.png"));
+    addLayerButton->setToolTip("Add Layer");
+    addLayerButton->setFixedSize(24,24);
+    QToolButton* removeLayerButton = new QToolButton(this);
+    removeLayerButton->setIcon(QIcon(":icons/remove.png"));
+    removeLayerButton->setToolTip("Remove Layer");
+    removeLayerButton->setFixedSize(24,24);
+    /*layerButtonLayout->addWidget(layerLabel);
+    layerButtonLayout->addWidget(addLayerButton);
+    layerButtonLayout->addWidget(removeLayerButton);
+    layerButtonLayout->setMargin(0);
+    layerButtonLayout->setSpacing(5);
 	layerButtons->setLayout(layerButtonLayout);*/
 	layerButtons->addWidget(layerLabel);
 	layerButtons->addWidget(addLayerButton);
@@ -101,28 +101,28 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 	QToolBar* keyButtons = new QToolBar(this);
 	//keyButtons->setFixedWidth(90);
 	//QHBoxLayout* keyButtonsLayout = new QHBoxLayout();
-		QLabel* keyLabel = new QLabel(tr("Keys:"));
-		keyLabel->setFont( QFont("Helvetica", 10) );
-		keyLabel->setIndent(5);
-		QToolButton* addKeyButton = new QToolButton(this);
-		addKeyButton->setIcon(QIcon(":icons/add.png"));
-		addKeyButton->setToolTip("Add Frame");
-		addKeyButton->setFixedSize(24,24);
-		QToolButton* removeKeyButton = new QToolButton(this);
-		removeKeyButton->setIcon(QIcon(":icons/remove.png"));
-		removeKeyButton->setToolTip("Remove Frame");
-		removeKeyButton->setFixedSize(24,24);
+    QLabel* keyLabel = new QLabel(tr("Keys:"));
+    keyLabel->setFont( QFont("Helvetica", 10) );
+    keyLabel->setIndent(5);
+    QToolButton* addKeyButton = new QToolButton(this);
+    addKeyButton->setIcon(QIcon(":icons/add.png"));
+    addKeyButton->setToolTip("Add Frame");
+    addKeyButton->setFixedSize(24,24);
+    QToolButton* removeKeyButton = new QToolButton(this);
+    removeKeyButton->setIcon(QIcon(":icons/remove.png"));
+    removeKeyButton->setToolTip("Remove Frame");
+    removeKeyButton->setFixedSize(24,24);
 
-		QToolButton* duplicateKeyButton = new QToolButton(this);
-			duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.png"));
-			duplicateKeyButton->setToolTip("Duplicate Frame");
-			duplicateKeyButton->setFixedSize(24,24);
-		/*keyButtonsLayout->addWidget(keyLabel);
-		keyButtonsLayout->addWidget(addKeyButton);
-		keyButtonsLayout->addWidget(removeKeyButton);
-		keyButtonsLayout->setMargin(0);
-		keyButtonsLayout->setSpacing(0);
-		//keyButtonLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    QToolButton* duplicateKeyButton = new QToolButton(this);
+    duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.png"));
+    duplicateKeyButton->setToolTip("Duplicate Frame");
+    duplicateKeyButton->setFixedSize(24,24);
+    /*keyButtonsLayout->addWidget(keyLabel);
+    keyButtonsLayout->addWidget(addKeyButton);
+    keyButtonsLayout->addWidget(removeKeyButton);
+    keyButtonsLayout->setMargin(0);
+    keyButtonsLayout->setSpacing(0);
+    //keyButtonLayout->setSizeConstraint(QLayout::SetMinimumSize);
 	keyButtons->setLayout(keyButtonsLayout);*/
 	keyButtons->addWidget(keyLabel);
 	keyButtons->addWidget(addKeyButton);
@@ -134,26 +134,26 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 	QToolBar* onionButtons = new QToolBar(this);
 	//onionButtons->setFixedWidth(90);
 	//QHBoxLayout* onionButtonsLayout = new QHBoxLayout();
-		QLabel* onionLabel = new QLabel(tr("Onion skin:"));
-		onionLabel->setFont( QFont("Helvetica", 10) );
-		onionLabel->setIndent(5);
-		QToolButton* onionPrevButton = new QToolButton(this);
-		onionPrevButton->setIcon(QIcon(":icons/onionPrev.png"));
-		onionPrevButton->setToolTip("Show previous frame");
-		onionPrevButton->setFixedSize(24,24);
-		onionPrevButton->setCheckable(true);
-		onionPrevButton->setChecked(true);
-		QToolButton* onionNextButton = new QToolButton(this);
-		onionNextButton->setIcon(QIcon(":icons/onionNext.png"));
-		onionNextButton->setToolTip("Show next frame");
-		onionNextButton->setFixedSize(24,24);
-		onionNextButton->setCheckable(true);
-		onionButtonsLayout->addWidget(onionLabel);
-		onionButtonsLayout->addWidget(onionPrevButton);
-		onionButtonsLayout->addWidget(onionNextButton);
-		onionButtonsLayout->setMargin(0);
-		onionButtonsLayout->setSpacing(0);
-		//keyButtonLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    QLabel* onionLabel = new QLabel(tr("Onion skin:"));
+    onionLabel->setFont( QFont("Helvetica", 10) );
+    onionLabel->setIndent(5);
+    QToolButton* onionPrevButton = new QToolButton(this);
+    onionPrevButton->setIcon(QIcon(":icons/onionPrev.png"));
+    onionPrevButton->setToolTip("Show previous frame");
+    onionPrevButton->setFixedSize(24,24);
+    onionPrevButton->setCheckable(true);
+    onionPrevButton->setChecked(true);
+    QToolButton* onionNextButton = new QToolButton(this);
+    onionNextButton->setIcon(QIcon(":icons/onionNext.png"));
+    onionNextButton->setToolTip("Show next frame");
+    onionNextButton->setFixedSize(24,24);
+    onionNextButton->setCheckable(true);
+    onionButtonsLayout->addWidget(onionLabel);
+    onionButtonsLayout->addWidget(onionPrevButton);
+    onionButtonsLayout->addWidget(onionNextButton);
+    onionButtonsLayout->setMargin(0);
+    onionButtonsLayout->setSpacing(0);
+    //keyButtonLayout->setSizeConstraint(QLayout::SetMinimumSize);
 	onionButtons->setLayout(onionButtonsLayout);
 	onionButtons->addSeparator();
 	onionButtons->addWidget(onionLabel);
@@ -230,10 +230,12 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 	connect(timeControls, SIGNAL(playClick()), this, SIGNAL(playClick()));
 	connect(timeControls, SIGNAL(endClick()), this, SIGNAL(endplayClick()));
 	connect(timeControls, SIGNAL(startClick()), this, SIGNAL(startplayClick()));
-	connect(timeControls, SIGNAL(loopClick()), this, SIGNAL(loopClick()));
+	connect(timeControls, SIGNAL(loopClick(bool)), this, SIGNAL(loopClick(bool)));
 	connect(timeControls, SIGNAL(soundClick()), this, SIGNAL(soundClick()));
 	connect(timeControls, SIGNAL(fpsClick(int)), this, SIGNAL(fpsClick(int)));
-	//connect(this, SIGNAL(topLevelChanged(bool)), timeControls, SLOT(updateButtons(bool))); // when the windows is docked or made floatable
+    
+    //connect(timeControls, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
+	connect(this, SIGNAL(toggleLoop(bool)), timeControls, SLOT(toggleLoop(bool)));
 
 	connect(newBitmapLayerAct, SIGNAL(triggered()), this, SIGNAL(newBitmapLayer()));
 	connect(newVectorLayerAct, SIGNAL(triggered()), this, SIGNAL(newVectorLayer()));
@@ -339,24 +341,6 @@ void TimeLine::mouseDoubleClickEvent(QMouseEvent *event) {
 		editor->switchVisibilityOfLayer(layerNumber);
 	}
 }*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 TimeLineCells::TimeLineCells(TimeLine *parent, Editor *editor, QString type) : QWidget(parent)
 {

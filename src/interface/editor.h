@@ -106,6 +106,8 @@ protected:
 	QRect viewRect;
 signals:
 	void selectAll();
+    void toggleLoop(bool);
+    void loopToggled(bool);
 
 public slots:
 	//tools menu

@@ -108,7 +108,8 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent) {
 	connect(playButton, SIGNAL(clicked()), this, SIGNAL(playClick()));
 	connect(endplayButton, SIGNAL(clicked()), this, SIGNAL(endClick()));
 	connect(startplayButton, SIGNAL(clicked()), this, SIGNAL(startClick()));
-	connect(loopButton, SIGNAL(clicked()), this, SIGNAL(loopClick()));
+	connect(loopButton, SIGNAL(clicked(bool)), this, SIGNAL(loopClick(bool)));
+    //connect(loopButton, SIGNAL(clicked(bool)), this, SIGNAL(loopToggled(bool)));
 	connect(soundButton, SIGNAL(clicked()), this, SIGNAL(soundClick()));
 	connect(fpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
 
@@ -125,10 +126,6 @@ void TimeControls::updateButtons(bool floating) {
 	}*/
 }
 
-/*void TimeControls::updateLoopButton(bool checked) {
-	if(checked) {
-		loopButton->setIcon(QIcon(":icons/controls/loopOn.png"));
-	} else {
-		loopButton->setIcon(QIcon(":icons/controls/loopOff.png"));
-	}
-}*/
+void TimeControls::toggleLoop(bool checked) {
+    loopButton->setChecked(checked);
+}

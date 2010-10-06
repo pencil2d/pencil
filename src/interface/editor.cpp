@@ -68,7 +68,7 @@ Editor::Editor(QMainWindow* parent)
 
 	scribbleArea = new ScribbleArea(this, this);
 	timeLine = new TimeLine(this, this);
-timeControl = new TimeControls();
+    timeControl = new TimeControls();
 	toolSet = new ToolSet();
 	palette = new Palette(this);
 	preferences = new Preferences();
@@ -153,10 +153,13 @@ timeControl = new TimeControls();
 	connect(timeLine, SIGNAL(deleteCurrentLayer()), this, SLOT(deleteCurrentLayer()));
 
 	connect(timeLine, SIGNAL(playClick()), this, SLOT(play()));
-	connect(timeLine, SIGNAL(loopClick()), this, SLOT(setLoop()));
+	connect(timeLine, SIGNAL(loopClick(bool)), this, SLOT(setLoop(bool)));
 	connect(timeLine, SIGNAL(soundClick()), this, SLOT(setSound()));
 	connect(timeLine, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
 
+    connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
+    connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
+    
 	connect(timeLine, SIGNAL(onionPrevClick()), scribbleArea, SLOT(onionPrevSlot()));
 	connect(timeLine, SIGNAL(onionNextClick()), scribbleArea, SLOT(onionNextSlot()));
 
@@ -1840,9 +1843,8 @@ int Editor::getFps() {
 	return fps;
 }
 
-void Editor::setLoop() {
-	if (looping) looping=false;
-	else looping=true;
+void Editor::setLoop(bool checked) {
+    looping = checked;
 }
 
 void Editor::setSound() {
