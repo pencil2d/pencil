@@ -268,7 +268,6 @@ void TimeLine::updateLayerView() {
 	vScrollBar->setPageStep( (height()-cells->getOffsetY()-hScrollBar->height())/cells->getLayerHeight() -2 );
 	vScrollBar->setMinimum( 0 );
 	vScrollBar->setMaximum( qMax(0, numberOfLayers - vScrollBar->pageStep()) );
-	update();
 	updateContent();
 }
 

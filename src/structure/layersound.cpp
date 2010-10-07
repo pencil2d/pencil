@@ -142,7 +142,7 @@ void LayerSound::playSound(int frame) {
 }
 #*/
 void LayerSound::playSound(int frame) {
-    QSettings settings("Pencil","Pencil");
+    static QSettings settings("Pencil","Pencil");
     int fps = settings.value("fps").toInt();
 
     for (int i = 0; i < sound.size(); ++i) {

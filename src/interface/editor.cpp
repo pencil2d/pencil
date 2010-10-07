@@ -97,7 +97,7 @@ Editor::Editor(QMainWindow* parent)
 	connect(toolSet, SIGNAL(rmClick()), this, SLOT(removeKey()));
 	connect(toolSet, SIGNAL(playClick()), this, SLOT(play()));
 	connect(toolSet, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
-	connect(toolSet, SIGNAL(loopClick()), this, SLOT(setLoop()));
+	connect(toolSet, SIGNAL(loopClick(bool)), this, SLOT(setLoop(bool)));
 
 	connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
 	connect(toolSet, SIGNAL(eraserClick()), scribbleArea, SLOT(eraserOn()));
@@ -1641,6 +1641,7 @@ void Editor::scrubTo(int frameNumber) {
 	//timeLine->setCurrentFrame(currentFrame);
 	timeLine->updateFrame(oldFrame);
 	timeLine->updateFrame(currentFrame);
+    timeLine->updateContent();
 	scribbleArea->readCanvasFromCache = true;
 	scribbleArea->update();
 }
