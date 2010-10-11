@@ -134,7 +134,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor* editor)
 	makeInvisible = false;
 	somethingSelected = false;
 	setCursor(Qt::CrossCursor);
-	onionPrev = true;
+	onionPrev = false;
 	onionNext = false;
 	showThinLines = false;
 	showAllLayers = 1;
@@ -2041,14 +2041,16 @@ void ScribbleArea::deselectAll() {
 	updateFrame();
 }
 
-void ScribbleArea::onionNextSlot() {
-	onionNext = !onionNext;
+void ScribbleArea::toggleOnionNext(bool checked) {
+	onionNext = checked;
 	updateAllFrames();
+    emit onionNextChanged(onionNext);
 }
 
-void ScribbleArea::onionPrevSlot() {
-	onionPrev = !onionPrev;
+void ScribbleArea::toggleOnionPrev(bool checked) {
+	onionPrev = checked;
 	updateAllFrames();
+    emit onionPrevChanged(onionPrev);
 }
 
 

@@ -488,8 +488,8 @@ ToolSet::ToolSet() {
 	connect(opacitySlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(opacityClick(qreal)));
 
 	// -- mj
-		connect(onionPrev, SIGNAL(clicked()), this, SIGNAL(prevClick()));
-		connect(onionNext, SIGNAL(clicked()), this, SIGNAL(nextClick()));
+		connect(onionPrev, SIGNAL(clicked(bool)), this, SIGNAL(togglePrev(bool)));
+		connect(onionNext, SIGNAL(clicked(bool)), this, SIGNAL(toggleNext(bool)));
 
 
 	connect(choseColour, SIGNAL(clicked()), this, SIGNAL(colourClick()));
@@ -709,4 +709,12 @@ void ToolSet::deselectAllTools() {
 	smudgeButton->setChecked(false);
 }
 
+void ToolSet::onionPrevChanged(bool checked)
+{
+    onionPrev->setChecked(checked);
+}
 
+void ToolSet::onionNextChanged(bool checked)
+{
+    onionNext->setChecked(checked);
+}

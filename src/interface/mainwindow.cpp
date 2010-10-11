@@ -265,11 +265,15 @@ void MainWindow::createMenus() {
 
     onionskinpAct = new QAction(QIcon(":icons/onionPrev.png"),tr("Previous"), this);
     onionskinpAct->setShortcut(Qt::Key_O);
-    connect(onionskinpAct, SIGNAL(triggered()), editor, SLOT(onionPrev()));
+    onionskinpAct->setCheckable(true);
+    connect(onionskinpAct, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
+    connect(editor, SIGNAL(onionPrevChanged(bool)), onionskinpAct, SLOT(setChecked(bool)));
 
     onionskinnAct = new QAction(QIcon(":icons/onionNext.png"),tr("Next"), this);
     onionskinnAct->setShortcut(Qt::Key_O+Qt::ALT);
-    connect(onionskinnAct, SIGNAL(triggered()), editor, SLOT(onionNext()));
+    onionskinnAct->setCheckable(true);
+    connect(onionskinnAct, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionNext(bool)));
+    connect(editor, SIGNAL(onionNextChanged(bool)), onionskinnAct, SLOT(setChecked(bool)));
 
     /*~~~~Animation Menu~~~~~~*/
     playAnimationAct = new QAction(tr("Play/Stop\tReturn"), this);

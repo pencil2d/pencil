@@ -130,8 +130,17 @@ Editor::Editor(QMainWindow* parent)
 	connect(scribbleArea, SIGNAL(outlinesChanged(bool)), toolSet, SLOT(changeOutlinesButton(bool)));
 	connect(toolSet, SIGNAL(mirrorClick()), this, SLOT(toggleMirror()));
 	connect(toolSet, SIGNAL(mirrorVClick()), this, SLOT(toggleMirrorV()));
-	connect(toolSet, SIGNAL(prevClick()), scribbleArea, SLOT(onionPrevSlot()));
-	connect(toolSet, SIGNAL(nextClick()), scribbleArea, SLOT(onionNextSlot()));
+	connect(toolSet, SIGNAL(togglePrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
+	connect(toolSet, SIGNAL(toggleNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
+    connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
+    connect(this, SIGNAL(toggleOnionNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
+    connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), this, SIGNAL(onionPrevChanged(bool)));
+    connect(scribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
+    connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), toolSet, SLOT(onionPrevChanged(bool)));
+    connect(scribbleArea, SIGNAL(onionNextChanged(bool)), toolSet, SLOT(onionNextChanged(bool)));
+	//connect(timeLine, SIGNAL(onionPrevClick()), scribbleArea, SLOT(onionPrevSlot()));
+	//connect(timeLine, SIGNAL(onionNextClick()), scribbleArea, SLOT(onionNextSlot()));
+    
 ///////TODO connect timeline signals to editor
 	connect(timeLine, SIGNAL(endplayClick()), this, SLOT(endPlay()));
 	connect(timeLine, SIGNAL(startplayClick()), this, SLOT(startPlay()));
@@ -160,9 +169,6 @@ Editor::Editor(QMainWindow* parent)
     connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
     connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
     
-	connect(timeLine, SIGNAL(onionPrevClick()), scribbleArea, SLOT(onionPrevSlot()));
-	connect(timeLine, SIGNAL(onionNextClick()), scribbleArea, SLOT(onionNextSlot()));
-
 	connect(preferences, SIGNAL(windowOpacityChange(int)), mainWindow, SLOT(setOpacity(int)));
 	connect(preferences, SIGNAL(curveOpacityChange(int)), scribbleArea, SLOT(setCurveOpacity(int)));
 	connect(preferences, SIGNAL(curveSmoothingChange(int)), scribbleArea, SLOT(setCurveSmoothing(int)));
@@ -2161,16 +2167,7 @@ if(layer->type == Layer::CAMERA) {
 		}
 
 	}*/
-void Editor::onionNext(){
-	scribbleArea->onionNextSlot();
-//	toolSet->nextClick(); TODO right variable to click button.  it's only a signal
 
-}
-	void Editor::onionPrev(){
-		scribbleArea->onionPrevSlot();
-//		toolSet->prevClick();
-
-	}
 	void Editor::endPlay(){
 
 		int a =frameList.count();

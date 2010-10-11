@@ -108,6 +108,9 @@ signals:
 	void thinLinesChanged(bool);
 	void outlinesChanged(bool);
 	//void showAllLayersChanged(bool);
+    
+    void onionPrevChanged(bool);
+    void onionNextChanged(bool);
 
 public slots:
 	void clearImage();
@@ -119,8 +122,8 @@ public slots:
 	void selectAll();
 	void deselectAll();
 
-	void onionPrevSlot();
-	void onionNextSlot();
+	void toggleOnionPrev(bool);
+	void toggleOnionNext(bool);
 void grid();
 	//void pressureSlot(int);
 	//void invisibleSlot(int);

@@ -85,6 +85,9 @@ public slots:
 	void preserveAlphaClick(bool);
 	void followContourClick(bool);
 
+    void onionPrevChanged(bool);
+    void onionNextChanged(bool);
+    
 signals:
 	void rmClick();
 	void playClick();
@@ -112,8 +115,8 @@ signals:
 	void outlinesClick();
 	void mirrorClick();
 	void mirrorVClick();
-	void prevClick();
-	void nextClick();
+	void togglePrev(bool);
+	void toggleNext(bool);
 	void widthClick(qreal);
 	void featherClick(qreal);
 	void opacityClick(qreal);

@@ -108,6 +108,10 @@ signals:
 	void selectAll();
     void toggleLoop(bool);
     void loopToggled(bool);
+	void toggleOnionNext(bool);
+	void toggleOnionPrev(bool);
+    void onionPrevChanged(bool);
+    void onionNextChanged(bool);
 
 public slots:
 	//tools menu
@@ -248,8 +252,6 @@ public slots:
 	void dockAllPalettes();
 	//void detachAllPalettes();
 	void restorePalettesSettings(bool, bool, bool);
-	void onionNext();
-	void onionPrev();
 //#	void saveSvg();
 	void addcolorbutton();
 
@@ -269,6 +271,7 @@ private slots:
 	void helpBox();
 	void saveLength(QString);
 	void getCameraLayer();
+    
 
 private:
 	bool openObject(QString);
