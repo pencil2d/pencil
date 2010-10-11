@@ -383,7 +383,7 @@ void MainWindow::createMenus() {
     exportMenu->addSeparator();
     exportMenu->addAction(exportPaletteAct);
 
-    openRecentMenu = new QMenu(tr("Open recent..."), this);
+    openRecentMenu = new QMenu(tr("Open recent"), this);
 
     fileMenu = new QMenu(tr("&File"), this);
     fileMenu->addAction(newAct);
@@ -399,21 +399,21 @@ void MainWindow::createMenus() {
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
-    zoomMenu = new QMenu(tr("Zoom..."), this);
+    zoomMenu = new QMenu(tr("Zoom"), this);
     zoomMenu->addAction(zoomAct);
     zoomMenu->addAction(zoomAct1);
-    rotateMenu= new QMenu(tr("Rotate..."), this) ;
+    rotateMenu= new QMenu(tr("Rotate"), this) ;
     rotateMenu->addAction(rotateAct);
     rotateMenu->addAction(rotateAct1);
-    onionskinMenu= new QMenu(tr("Onion Skin..."), this) ;
+    onionskinMenu= new QMenu(tr("Onion Skin"), this) ;
     onionskinMenu->addAction(onionskinpAct);
     onionskinMenu->addAction(onionskinnAct);
-    InsertMenu= new QMenu(tr("Insert..."), this) ;
+    InsertMenu= new QMenu(tr("Insert"), this) ;
     InsertMenu->addAction(copyframesAct);
     InsertMenu->addAction(pasteframesAct);
     InsertMenu->addAction(inbetweenAct);
     InsertMenu->addAction(inbetweenActV);
-    MirrorMenu= new QMenu(tr("Mirror..."), this) ;
+    MirrorMenu= new QMenu(tr("Mirror"), this) ;
     MirrorMenu->addAction(horiMirrorAct);
     MirrorMenu->addAction(vertiMirrorAct);
 
