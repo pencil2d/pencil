@@ -99,6 +99,7 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber) {
         sound[index] = media;
  		soundFilepath[index] = filePathString;
  		framesFilename[index] = fi.fileName();
+        framesModified[index] = true;
  	} else {
 //		sound[index] = NULL;
         sound[index] = NULL;

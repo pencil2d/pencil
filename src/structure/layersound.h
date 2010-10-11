@@ -45,6 +45,7 @@ class LayerSound : public LayerImage
 	void playSound(int frame);
 	void stopSound();
 
+    bool isEmpty() const { return sound.count() == 0; }
 	// graphic representation -- could be put in another class
 	void paintImages(QPainter &painter, TimeLineCells *cells, int x, int y, int width, int height, bool selected, int frameSize);
 

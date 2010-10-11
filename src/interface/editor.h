@@ -143,8 +143,8 @@ public slots:
 	bool maybeSave();
 	void importImage();
 	void importImage(QString filePath);
-	void importSound();
-	void importSound(QString filePath);
+	//void importSound();
+	void importSound(QString filePath = "");
 	void importPalette();
 	void exportPalette();
 	void updateFrame(int frameNumber);

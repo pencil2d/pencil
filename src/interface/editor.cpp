@@ -1584,50 +1584,59 @@ void Editor::importImage(QString filePath)
 }
 
 
-void Editor::importSound()
-{
-	importSound("fromDialog");
-}
+//void Editor::importSound()
+//{
+//	importSound("fromDialog");
+//}
 
 void Editor::importSound(QString filePath)
 {
 	Layer* layer = object->getLayer(currentLayer);
-	if(layer != NULL) {
-		if( layer->type == Layer::SOUND) {
-			if(filePath == "fromDialog") {
-				QSettings settings("Pencil","Pencil");
-//				QString initialPath = settings.value("lastImportPath", QVariant(QDir::homePath())).toString();
-				QString	initialPath = QDir::homePath();
-				if(initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled";
-				filePath = QFileDialog::getOpenFileName(this, tr("Import sound..."),initialPath,tr("WAV(*.wav);;MP3(*.mp3)"));
-				if (!filePath.isEmpty()) settings.setValue("lastImportPath", QVariant(filePath));
-			}
-			if (!filePath.isEmpty()) {
-				((LayerSound*)layer)->loadSoundAtFrame(filePath, currentFrame);
-				timeLine->updateContent();
-
-			}
-		} else {
-			// create a new Sound layer ?
-			int ret = QMessageBox::warning(this, tr("Warning"),
-				tr("Do you want to add a Sound layer to import sounds?"),
-				QMessageBox::Yes,
-				QMessageBox::No);
-
-			if(ret == QMessageBox::Yes){
-				newSoundLayer();
-				importSound();
-
-
-			}
-			else{
-
-
-							}
-			}
-
-			}
-		}
+    if (layer == NULL) {
+        QMessageBox msg;
+        msg.setText("You must select an empty sound layer as the destination for your sound before importing. Please create a new sound layer.");
+        msg.setIcon(QMessageBox::Warning);
+        msg.exec();
+        return;
+    }
+    
+	if(layer->type != Layer::SOUND) {
+        QMessageBox msg;
+        msg.setText("No sound layer exists as a destination for your import. Create a new sound layer?");
+        msg.addButton("Create sound layer", QMessageBox::AcceptRole);
+        msg.addButton("Don't create layer", QMessageBox::RejectRole);
+        
+        msg.exec();
+        if (msg.buttonRole(msg.clickedButton()) == QMessageBox::AcceptRole) {
+            newSoundLayer();
+            layer = object->getLayer(currentLayer);
+        } else {
+            return;
+        }
+    }
+    
+    if (!((LayerSound *)layer)->isEmpty()) {
+        QMessageBox msg;
+        msg.setText("The sound layer you have selected already contains a sound item. Please select another.");
+        msg.exec();
+        return;
+    }
+    
+    if(filePath.isEmpty() || filePath == "fromDialog") {
+        QSettings settings("Pencil","Pencil");
+        QString	initialPath = QDir::homePath();
+        if(initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled";
+        filePath = QFileDialog::getOpenFileName(this, tr("Import sound..."),initialPath,tr("WAV(*.wav);;MP3(*.mp3)"));
+        if (!filePath.isEmpty()) {
+            settings.setValue("lastImportPath", QVariant(filePath));
+        } else {
+            return;
+        }
+    }
+    ((LayerSound*)layer)->loadSoundAtFrame(filePath, currentFrame);
+    timeLine->updateContent();
+    modification(currentLayer);
+}
 
 
 
