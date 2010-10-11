@@ -1421,7 +1421,7 @@ bool Editor::exportImage() {
 		view = scribbleArea->getView() * view;
 
 		updateMaxFrame();
-		object->exportIm(1, maxFrame, view, exportSize, filePath, true, 2);
+		object->exportIm(currentFrame, maxFrame, view, exportSize, filePath, true, 2);
 		return true;
 	}
 }

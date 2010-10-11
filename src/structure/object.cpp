@@ -489,32 +489,14 @@ void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
 }
 
 void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients) {
-	QSettings settings("Pencil","Pencil");
-	qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
-//Needs tidying up!!!##########################
-	int page;
-	page=0;
-	for(int j = frameStart; j <= frameEnd; j=j+15) {
-		QImage xImg(exportSize, QImage::Format_ARGB32_Premultiplied);
-		QPainter xPainter(&xImg);
-		xPainter.fillRect(0,0,2300,3400,Qt::white);
-		int y = j-1;
-		for(int i=j;i<15+page*15 && i<=frameEnd;i++) {
-			QRect source = QRect(  QPoint(0,0)  , exportSize );
-			QRect target = QRect (  QPoint((y%3)*800+30, (y/3)*680+50-page*3400)  , QSize(640,480) );
-			QMatrix thumbView = view * Editor::map(source, target);
-			xPainter.setWorldMatrix( thumbView );
-			xPainter.setClipRegion( thumbView.inverted().map( QRegion(target) ) );
-			paintImage(xPainter, i, false, curveOpacity, antialiasing, gradients);
-
-		}
-
-//#		if(filePath.endsWith(".jpg", Qt::CaseInsensitive)) {
-	//#		filePath = filePath.remove(".jpg", Qt::CaseInsensitive);
-	//#	}
-		xImg.save(filePath +"", "", 60);
-//		page++;
-	}
+    QSettings settings("Pencil","Pencil");
+	qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0;
+	QImage exported(exportSize, QImage::Format_ARGB32_Premultiplied);
+    QPainter painter(&exported);
+    painter.fillRect(exported.rect(), Qt::white);
+    painter.setWorldMatrix(view);
+    paintImage(painter, frameStart, false, curveOpacity, antialiasing, gradients);
+    exported.save(filePath);
 }
 
 void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression) {
