@@ -272,6 +272,8 @@ private slots:
 	void saveLength(QString);
 	void getCameraLayer();
     
+    void printAndPreview(QPrinter *);
+    
 
 private:
 	bool openObject(QString);

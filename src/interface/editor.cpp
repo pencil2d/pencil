@@ -2112,23 +2112,64 @@ void Editor::gridview() {
 }
 
 void Editor::print(){
-	QPrinter printer(QPrinter::HighResolution);
-	printer.setFullPage(true);
-		       printer.setPageSize(QPrinter::A4);
-		       printer.setOrientation(QPrinter::Landscape);
-	     QPrintDialog *printDialog = new QPrintDialog(&printer, this);
-	     if (printDialog->exec() == QDialog::Accepted) {
-	         QPainter painter(&printer);
-	         QRect rect = painter.viewport();
-	         QSize exportSize = scribbleArea->getViewRect().toRect().size();
-	         exportSize.scale(rect.size(), Qt::KeepAspectRatio);
-      painter.setViewport(rect.x(), rect.y(), exportSize.width(), exportSize.height());
-       painter.setWindow(0,0,767,543);
-        scribbleArea->render( &painter );
-	         painter.end();
-
-	     }
+	//QPrinter printer(QPrinter::HighResolution);
+    //printer.setOrientation(QPrinter::Landscape);
+    //printer.setFullPage(false);
+    //printer->setPaperSize(QPrinter::A4);
+    
+    QPrintPreviewDialog printPreviewDialog(this);
+    connect(&printPreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(printAndPreview(QPrinter *)));
+    if (printPreviewDialog.exec() == QDialog::Accepted) {
+        if (!printPreviewDialog.printer()->isValid()) {
+            QMessageBox msg;
+            msg.setText("An invalid printer was selected. The print job will now abort.");
+            msg.setIcon(QMessageBox::Warning);
+            msg.exec();
+            return;
+        }
+        
+        printAndPreview(printPreviewDialog.printer());
+    }
 }
+
+void Editor::printAndPreview(QPrinter *printer) {
+    QRect exportRect = scribbleArea->rect();
+    QSize exportSize = exportRect.size();
+    if (printer->outputFileName() != "") {
+        QPrinter pdfPrinter(QPrinter::ScreenResolution);
+        pdfPrinter.setOutputFileName(printer->outputFileName());
+        pdfPrinter.setOutputFormat(QPrinter::PdfFormat);
+        pdfPrinter.setOrientation(printer->orientation());
+        QPainter painter(&pdfPrinter);
+        painter.setRenderHint(QPainter::HighQualityAntialiasing);
+        QRect pageRect = pdfPrinter.pageRect();
+        pageRect.moveTo(0, 0);
+        qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
+        qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
+        if (exportSize.width() >= exportSize.height()) {
+            // landscape
+        } else {
+            // portrait
+        }
+        //exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
+        //exportRect.setSize(exportSize);
+        painter.setViewport(pageRect);
+        painter.setWindow(exportRect);
+        scribbleArea->render(&painter);
+        painter.end();
+    } else {
+        QRect pageRect = printer->pageRect();
+        pageRect.moveTo(0, 0);
+        exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
+        exportRect.setSize(exportSize);
+        QPainter painter(printer);
+        painter.setViewport(pageRect);
+        painter.setWindow(exportRect);
+        scribbleArea->render( &painter );
+        painter.end();
+    }
+}
+
 void Editor::getCameraLayer(){
 
 	for(int i=0; i < object->getLayerCount(); i++) {
