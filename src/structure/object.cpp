@@ -447,7 +447,7 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 		paintImage(painter, currentFrame, background, curveOpacity, antialiasing, gradients);
 
 		QString frameNumberString = QString::number(currentFrame);
-		while( frameNumberString.length() < 3) frameNumberString.prepend("0");
+		while( frameNumberString.length() < 4) frameNumberString.prepend("0");
 
 		tempImage.save(filePath+frameNumberString+extension, format, quality);
 	}
