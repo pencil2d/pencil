@@ -26,6 +26,7 @@ public:
     MainWindow();
 		//void initialiseStyle();
     void addRecentFile(QString filePath);
+    Editor *editor;
 
 
 public slots:
@@ -49,7 +50,6 @@ private:
 	void writeSettings();
 	QGraphicsItem *m_svgItem;
 	QString path;
-	Editor *editor;
 
 
 	QMenu *fileMenu;

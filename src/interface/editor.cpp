@@ -1349,6 +1349,21 @@ QMatrix Editor::map(QRectF source, QRectF target) { // this method should be put
 	return matrix;
 }
 
+bool Editor::exportSeqCLI(QString filePath = "", QString format = "PNG") {
+	int width = scribbleArea->getViewRect().toRect().width();
+	int height = scribbleArea->getViewRect().toRect().height();
+	
+	QSize exportSize = QSize(width, height);
+	QByteArray exportFormat(format.toLatin1());
+	
+	QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+	view = scribbleArea->getView() * view;
+
+	updateMaxFrame();
+	object->exportFrames(1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, 2);
+	return true;
+}
+
 bool Editor::exportSeq() {
 	QSettings settings("Pencil","Pencil");
 //	QString initialPath = settings.value("lastExportPath", QVariant(QDir::homePath())).toString();

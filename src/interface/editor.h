@@ -99,6 +99,8 @@ public:
 	bool isModified() { return modified; }
 	int allLayers() { return scribbleArea->allLayers(); }
 	static QMatrix map(QRectF, QRectF);
+	bool openObject(QString);
+	bool exportSeqCLI(QString, QString);
 
 protected:
 	void dragEnterEvent(QDragEnterEvent *event);
@@ -276,7 +278,6 @@ private slots:
     
 
 private:
-	bool openObject(QString);
 	bool saveObject(QString);
 
 	ScribbleArea *scribbleArea;

@@ -33,8 +33,84 @@ int main(int argc, char *argv[])
 		QApplication::setLibraryPaths(QStringList(dir.absolutePath()));
 	}*/
 	MainWindow mainWindow;
-	mainWindow.show();
-	//qDebug() << "MainWindow thread" << mainWindow.thread();
-	//qDebug() << "App thread" << app.thread();
-	return app.exec();
+	if(argc<3)
+	{
+		mainWindow.show();
+		if(argc==2) {
+			mainWindow.editor->openObject(argv[1]);
+		}
+		//qDebug() << "MainWindow thread" << mainWindow.thread();
+		//qDebug() << "App thread" << app.thread();
+		return app.exec();
+	} else {
+		QString inputFile = "";
+		
+		bool jobExportSequence = false;
+		QString jobExportSequenceOutput = "";
+		
+		// Extracting options
+		int i;
+		for(i=1;i<argc;i++) {
+			if (jobExportSequence && jobExportSequenceOutput == "") {
+				jobExportSequenceOutput = argv[i];
+				continue;
+			}
+			if (QString(argv[i]) == QString("--export-sequence")){
+				jobExportSequence = true;
+				continue;
+			}
+			if (inputFile == "") {
+				inputFile = QString(argv[i]);
+			}
+		}
+		
+		bool error = false;
+		if ( jobExportSequence ){
+			qDebug() << "Exporting image sequence...";
+			if (inputFile.isEmpty()) {
+				qDebug() << "Error: No input file specified.";
+				error = true;
+			}
+			// TODO: Check if input file exists
+			if (jobExportSequenceOutput.isEmpty()){
+				qDebug() << "Error: No output file specified.";
+				error = true;
+			}
+			// TODO: Check if output path exists
+			
+			if ( not error ){
+				mainWindow.editor->openObject(inputFile);
+				// Detecting format
+				QString format = "";
+				if(jobExportSequenceOutput.endsWith(".png")) {
+					format = "PNG";
+				} else if(jobExportSequenceOutput.endsWith(".jpg")) {
+					format = "JPG";
+				} else if(jobExportSequenceOutput.endsWith(".tif")) {
+					format = "TIF";
+				} else if(jobExportSequenceOutput.endsWith(".bmp")) {
+					format = "BMP";
+				} else {
+					qDebug() << "Warning: Output format is not specified or unsupported.";
+					qDebug() << "         Using PNG.";
+					format = "PNG";
+				}
+				mainWindow.editor->exportSeqCLI(jobExportSequenceOutput, format);
+				qDebug() << "Done.";
+			}
+		} else {
+			qDebug() << "Error: Invalid commandline options.";
+		}
+		
+		if (error) {
+			qDebug() << "Syntax:";
+			qDebug() << "   " << argv[0] << "FILENAME --export-sequence PATH";
+			qDebug() << "Example:";
+			qDebug() << "   " << argv[0] << "/path/to/your/file.pcl --export-sequence /path/to/export/file.png";
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	
 }
