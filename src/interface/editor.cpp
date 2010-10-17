@@ -2127,15 +2127,15 @@ void Editor::gridview() {
 }
 
 void Editor::print(){
-	//QPrinter printer(QPrinter::HighResolution);
+	QPrinter printer(QPrinter::HighResolution);
     //printer.setOrientation(QPrinter::Landscape);
     //printer.setFullPage(false);
     //printer->setPaperSize(QPrinter::A4);
     
-    QPrintPreviewDialog printPreviewDialog(this);
+    QPrintPreviewDialog printPreviewDialog(&printer,this);
     connect(&printPreviewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(printAndPreview(QPrinter *)));
     if (printPreviewDialog.exec() == QDialog::Accepted) {
-        if (!printPreviewDialog.printer()->isValid()) {
+        if (!printer.isValid()) {
             QMessageBox msg;
             msg.setText("An invalid printer was selected. The print job will now abort.");
             msg.setIcon(QMessageBox::Warning);
@@ -2143,7 +2143,7 @@ void Editor::print(){
             return;
         }
         
-        printAndPreview(printPreviewDialog.printer());
+        printAndPreview(&printer);
     }
 }
 
