@@ -1618,11 +1618,11 @@ void Editor::importSound(QString filePath)
 	if(layer->type != Layer::SOUND) {
         QMessageBox msg;
         msg.setText("No sound layer exists as a destination for your import. Create a new sound layer?");
-        msg.addButton("Create sound layer", QMessageBox::AcceptRole);
+        QAbstractButton *acceptButton = msg.addButton("Create sound layer", QMessageBox::AcceptRole);
         msg.addButton("Don't create layer", QMessageBox::RejectRole);
         
         msg.exec();
-        if (msg.buttonRole(msg.clickedButton()) == QMessageBox::AcceptRole) {
+        if (msg.clickedButton() == acceptButton) {
             newSoundLayer();
             layer = object->getLayer(currentLayer);
         } else {
