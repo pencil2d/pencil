@@ -39,10 +39,10 @@ MainWindow::MainWindow() {
 void MainWindow::arrangePalettes() {
 	setCentralWidget(editor);
 	addDockWidget(Qt::RightDockWidgetArea, editor->getPalette());
+	addDockWidget(Qt::RightDockWidgetArea, editor->getToolSet()->displayPalette);
 	//editor->getPalette()->close();
 	addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->drawPalette);
 	addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->optionPalette);
-	addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->displayPalette);
 	//addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->onionPalette);
 	//addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->keyPalette);
 
