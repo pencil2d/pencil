@@ -300,7 +300,7 @@ void Editor::openDocument()
 		QSettings settings("Pencil","Pencil");
 		QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
 //		QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), myPath);
-		QString fileName=QFileDialog::getOpenFileName(this, tr("Open File..."),tr("") ,tr("PCL (*.pcl)"));
+		QString fileName=QFileDialog::getOpenFileName(this, tr("Open File..."),tr("") ,tr("PCL (*.pcl);;Any files (*)"));
 		if (!fileName.isEmpty()) {
 			bool ok = openObject(fileName);
 			if(!ok) {
@@ -333,11 +333,13 @@ bool Editor::saveDocument()
 	QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
 
 //	QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), myPath);
-	QString fileName=QFileDialog::getSaveFileName(this, tr("Save As..."),tr("Untitled") ,tr("PCL (*.pcl)"));
-
+	QString fileName=QFileDialog::getSaveFileName(this, tr("Save As..."),tr("Untitled.pcl") ,tr("PCL (*.pcl)"));
+	
 	if (fileName.isEmpty()) {
 		return false;
 	} else {
+		if(! fileName.endsWith(".pcl"))
+			fileName =  fileName + ".pcl";
 		QSettings settings("Pencil","Pencil");
 		settings.setValue("lastFilePath", QVariant(fileName));
 		return saveObject(fileName);
