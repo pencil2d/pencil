@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 		QApplication::setLibraryPaths(QStringList(dir.absolutePath()));
 	}*/
 	MainWindow mainWindow;
-	if(argc<3)
+	if(argc==1)
 	{
 		mainWindow.show();
 		if(argc==2) {
@@ -98,8 +98,15 @@ int main(int argc, char *argv[])
 				mainWindow.editor->exportSeqCLI(jobExportSequenceOutput, format);
 				qDebug() << "Done.";
 			}
+		} else if ( inputFile != "" ) {
+			mainWindow.show();
+			if(argc==2) {
+				mainWindow.editor->openObject(argv[1]);
+			}
+			return app.exec();
 		} else {
 			qDebug() << "Error: Invalid commandline options.";
+			error = true;
 		}
 		
 		if (error) {
