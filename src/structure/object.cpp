@@ -427,7 +427,7 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 		background = true; // JPG doesn't support transparency so we have to include the background
 	}
 	if(filePath.endsWith(extension, Qt::CaseInsensitive)) {
-		filePath = filePath.remove(extension, Qt::CaseInsensitive);
+		filePath.chop(4);
 	}
 	//qDebug() << "format =" << format << "extension = " << extension;
 
