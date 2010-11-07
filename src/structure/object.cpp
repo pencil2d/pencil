@@ -435,6 +435,9 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 	for(int currentFrame = frameStart; currentFrame <= frameEnd ; currentFrame++) {
 		QImage tempImage(exportSize, QImage::Format_ARGB32_Premultiplied);
 		QPainter painter(&tempImage);
+		
+		// Make sure that old frame is erased before exporting a new one
+		tempImage.fill(0x00000000);
 
 		if(currentLayer->type == Layer::CAMERA) {
 			QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
