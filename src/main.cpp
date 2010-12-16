@@ -32,13 +32,11 @@ int main(int argc, char *argv[])
 	if(dir.cd("plugins")) {
 		QApplication::setLibraryPaths(QStringList(dir.absolutePath()));
 	}*/
+	
 	MainWindow mainWindow;
 	if(argc==1)
 	{
 		mainWindow.show();
-		if(argc==2) {
-			mainWindow.editor->openObject(argv[1]);
-		}
 		//qDebug() << "MainWindow thread" << mainWindow.thread();
 		//qDebug() << "App thread" << app.thread();
 		return app.exec();
@@ -100,9 +98,7 @@ int main(int argc, char *argv[])
 			}
 		} else if ( inputFile != "" ) {
 			mainWindow.show();
-			if(argc==2) {
-				mainWindow.editor->openObject(argv[1]);
-			}
+			mainWindow.editor->openObject(inputFile);
 			return app.exec();
 		} else {
 			qDebug() << "Error: Invalid commandline options.";
