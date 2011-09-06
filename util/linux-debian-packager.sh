@@ -5,7 +5,7 @@
 
 VERSION=0.5
 REVISION=190.beta
-RELEASE=4
+RELEASE=7
 
 set -e
 
@@ -92,7 +92,7 @@ Group:          Applications/Graphics
 License:        GPL
 URL:            http://www.pencil-animation.org/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:	qt >= 4.4.0 qt-x11 libgif
+Requires:	qt >= 4.4.0 qt-x11 giflib
 AutoReqProv: no
 
 %description
@@ -119,7 +119,23 @@ Icon=pencil.png
 Terminal=false
 Type=Application
 Categories=Graphics;Application;
+MimeType=application/x-pencil;
 X-Desktop-File-Install-Version=0.15
+EOF
+
+mkdir -p \$RPM_BUILD_ROOT/usr/share/mime/packages
+cat > \$RPM_BUILD_ROOT/usr/share/mime/packages/pencil.xml <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/x-pencil">
+        <comment xml:lang="en">Pencil Animation</comment>
+        <glob pattern="*.pcl" />
+        <magic priority="80">
+			<match value="&lt;!DOCTYPE PencilDocument" type="string" offset="0:64"/>
+    	</magic>
+    	<icon name="pencil"/>
+  </mime-type>
+</mime-info>
 EOF
 
 mkdir -p \$RPM_BUILD_ROOT/usr/share/pixmaps
@@ -137,8 +153,20 @@ chmod a+x \$RPM_BUILD_ROOT/usr/bin/pencil
 rm -rf \$RPM_BUILD_ROOT
 
 %post
+if [ -x /usr/bin/update-mime-database ]; then
+  update-mime-database /usr/share/mime
+fi
+if [ -x /usr/bin/update-desktop-database ]; then
+  update-desktop-database
+fi
 
 %postun
+if [ -x /usr/bin/update-mime-database ]; then
+  update-mime-database /usr/share/mime
+fi
+if [ -x /usr/bin/update-desktop-database ]; then
+  update-desktop-database
+fi
 
 %files
 %defattr(-,root,root,-)

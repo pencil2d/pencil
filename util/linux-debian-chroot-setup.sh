@@ -21,7 +21,7 @@ else
 	SETARCH='linux64'
 fi
 if ! [ -e $PACKAGES_BUILDROOT.$ARCH/etc/chroot.id ]; then
-debootstrap --arch=$ARCH --variant=buildd  --include=sudo lenny $PACKAGES_BUILDROOT.$ARCH http://mirrors2.kernel.org/debian
+debootstrap --arch=$ARCH --variant=buildd  --include=sudo lenny $PACKAGES_BUILDROOT.$ARCH http://ftp.us.debian.org/debian
 echo "Lenny Buildroot" > $PACKAGES_BUILDROOT.$ARCH/etc/chroot.id
 #keep proxy settings
 		if ! [ -z $http_proxy ]; then 
