@@ -63,6 +63,7 @@ BitmapImage::BitmapImage(const BitmapImage &a) {
 BitmapImage::BitmapImage(Object *parent, QString path, QPoint topLeft) {
 	myParent = parent;
 	image = new QImage(path);
+	if (image->isNull()) qDebug() << "ERROR: Image " << path << " not loaded";
 	boundaries = QRect( topLeft, image->size() );
 	extendable = true;
 }
@@ -425,7 +426,7 @@ void BitmapImage::clear() {
 
 void BitmapImage::clear(QRect rectangle) {
 	QRect clearRectangle = boundaries.intersected( rectangle );
-	clearRectangle.moveTopLeft( rectangle.topLeft() - topLeft() );
+	clearRectangle.moveTopLeft( clearRectangle.topLeft() - topLeft() );
 	QPainter painter(image);
 	painter.setCompositionMode(QPainter::CompositionMode_Clear);
 	painter.fillRect( clearRectangle, QColor(0,0,0,0) );
