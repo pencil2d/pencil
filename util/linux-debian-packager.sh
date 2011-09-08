@@ -44,7 +44,7 @@ install -d ${PREFIX}/lib
 #install ming library
 #install -m755  /usr/lib/libming.so* ${PREFIX}/lib/
 install -m755  /usr/lib/libming* ${PREFIX}/lib/
-install -m755  /usr/lib/libphonon.so.4 ${PREFIX}/lib/
+#install -m755  /usr/lib/libphonon.so.4 ${PREFIX}/lib/
 #install -m755 release/Pencil ${PREFIX}/Pencil
 #install -d ${PREFIX}/plugins
 #install -m644 release/plugins/libpencil_imageplugin.so ${PREFIX}/plugins/libpencil_imageplugin.so
