@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "object.h"
 #include <phonon>
+#include "unistd.h"
 
  LayerSound::LayerSound(Object* object) : LayerImage(object) {
 	type = Layer::SOUND;
@@ -60,9 +61,11 @@ bool LayerSound::addImageAtFrame(int frameNumber) {
 		sound.append(NULL);
 		soundFilepath.append("");
 		framesPosition.append(frameNumber);
+		framesOriginalPosition.append(frameNumber);
 		framesSelected.append(false);
 		framesFilename.append("");
 		framesModified.append(false);
+		soundSize.append(0);
 		bubbleSort();
 		return true;
 	} else {
@@ -72,13 +75,15 @@ bool LayerSound::addImageAtFrame(int frameNumber) {
 
 void LayerSound::removeImageAtFrame(int frameNumber) {
 	int index = getIndexAtFrame(frameNumber);
-	if(index != -1  && framesPosition.size() != 1) {
+	if(index != -1  && framesPosition.size() != 0) {
 		delete sound.at(index);
 		soundFilepath.removeAt(index);
-		framesPosition.removeAt(index);
+ 		framesPosition.removeAt(index);
+		framesOriginalPosition.removeAt(index);
 		framesSelected.removeAt(index);
 		framesFilename.removeAt(index);
 		framesModified.removeAt(index);
+		soundSize.removeAt(index);
 		bubbleSort();
 	}
 }
@@ -96,13 +101,22 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber) {
        Phonon::MediaObject *media = new Phonon::MediaObject();
         connect(media, SIGNAL(totalTimeChanged(qint64)), this, SLOT(addTimelineKey(qint64)));
        media->setCurrentSource(filePathString);
+		// quick and dirty trick to calculate soundSize
+		// totalTime() return a value only after a call to media.play()
+		//  ( and when signal totaltimechanged is emitted totalTime() returns the correct value )
+		Phonon::AudioOutput * audioOutput;
+		audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+		Phonon::createPath(media, audioOutput);
+		media->play();
+		usleep(10000);
+		media->stop();
+		soundSize[index] = media->totalTime(); // totalTime() returns 0 now
         sound[index] = media;
  		soundFilepath[index] = filePathString;
  		framesFilename[index] = fi.fileName();
         framesModified[index] = true;
  	} else {
-//		sound[index] = NULL;
-        sound[index] = NULL;
+		sound[index] = NULL;
  		soundFilepath[index] = "Wrong file";
  		framesFilename[index] = "Wrong file" + filePathString;
  	}
@@ -110,8 +124,7 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber) {
 
  void LayerSound::swap(int i, int j) {
  	 	LayerImage::swap(i, j);
- 	//	sound.swap(i,j);
- 	    sound.swap(i, j);
+		sound.swap(i, j);
  	 	soundFilepath.swap(i,j);
  	 }
 
@@ -142,9 +155,9 @@ void LayerSound::playSound(int frame) {
 	}
 }
 #*/
-void LayerSound::playSound(int frame) {
-    static QSettings settings("Pencil","Pencil");
-    int fps = settings.value("fps").toInt();
+void LayerSound::playSound(int frame,int fps) {
+    //QSettings settings("Pencil","Pencil");
+    //int fps = settings.value("fps").toInt();
 
     for (int i = 0; i < sound.size(); ++i) {
         Phonon::MediaObject *media = sound.at(i);
@@ -168,10 +181,12 @@ void LayerSound::playSound(int frame) {
                 } else {
                     if (frame > position) {
                         media->pause();
-                        media->seek(float(offsetInMs) / fps);
+                        media->seek(offsetInMs);
                     }
-                    Phonon::createPath(media, outputDevices.at(i));
-                    media->play();
+                    if (offsetInMs < soundSize[i]) {
+                        Phonon::createPath(media, outputDevices.at(i));
+                        media->play();
+                    }
                }
             }
         }
@@ -213,7 +228,7 @@ void LayerSound::loadDomElement(QDomElement element, QString filePath) {
 		QDomElement soundElement = soundTag.toElement();
 		if(!soundElement.isNull()) {
 			if(soundElement.tagName() == "sound") {
-				QString path = filePath + ".data/" + soundElement.attribute("src"); // the file is supposed to be in the data irectory
+				QString path = filePath + ".data/" + soundElement.attribute("src"); // the file is supposed to be in the data directory
 				QFileInfo fi(path);
 				if(!fi.exists()) path = soundElement.attribute("src");
 				int position = soundElement.attribute("position").toInt();
@@ -225,7 +240,12 @@ void LayerSound::loadDomElement(QDomElement element, QString filePath) {
 }
 
 void LayerSound::addTimelineKey(qint64 newTotalTime) {
+  for (int i = 0; i < this->sound.size(); i++)
+  {
+  if (!this->soundSize[i])
+      this->soundSize[i] = this->sound[i]->totalTime();
+  }
   QSettings settings("Pencil","Pencil");
-    int fps = settings.value("fps").toInt();
-   addImageAtFrame(fps * ((newTotalTime / 1000) + 2));
+  //int fps = settings.value("fps").toInt();
+  //addImageAtFrame(fps * ((newTotalTime / 1000)));
 }

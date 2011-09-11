@@ -34,6 +34,7 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 	vScrollBar->setMinimum(0);
 	vScrollBar->setMaximum(1);
 	vScrollBar->setPageStep(1);
+	updateLength(getFrameLength());
 
 	QWidget* leftWidget = new QWidget();
 	leftWidget->setMinimumWidth(120);
@@ -167,7 +168,7 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 	QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
 	//rightToolBarLayout->setAlignment(Qt::AlignLeft);
 	rightToolBarLayout->addWidget(keyButtons);
-//#	rightToolBarLayout->addWidget(onionButtons);
+	//rightToolBarLayout->addWidget(onionButtons);
 	rightToolBarLayout->addStretch(1);
 	rightToolBarLayout->addWidget(timeControls);
 	rightToolBarLayout->setMargin(0);
@@ -268,6 +269,7 @@ void TimeLine::updateLayerView() {
 	vScrollBar->setPageStep( (height()-cells->getOffsetY()-hScrollBar->height())/cells->getLayerHeight() -2 );
 	vScrollBar->setMinimum( 0 );
 	vScrollBar->setMaximum( qMax(0, numberOfLayers - vScrollBar->pageStep()) );
+	update();
 	updateContent();
 }
 
@@ -341,6 +343,11 @@ void TimeLine::mouseDoubleClickEvent(QMouseEvent *event) {
 	}
 }*/
 
+void TimeLine::setFps ( int value )
+{
+timeControls->setFps(value);
+}
+
 TimeLineCells::TimeLineCells(TimeLine *parent, Editor *editor, QString type) : QWidget(parent)
 {
 	this->timeLine = parent;
@@ -355,7 +362,7 @@ TimeLineCells::TimeLineCells(TimeLine *parent, Editor *editor, QString type) : Q
 
 	shortScrub = settings.value("shortScrub").toBool();
 
-	fps = editor->fps;
+	//fps = editor->fps;
 
 	//playing = false;
 	//scrubbing = false;
@@ -493,8 +500,9 @@ void TimeLineCells::drawContent() {
 		painter.setBrush(Qt::darkGray);
 		painter.setFont(QFont("helvetica", 10));
 		int incr = 0;
+		int fps = editor->fps;
 		for(int i=frameOffset; i<frameOffset+(width()-offsetX)/frameSize; i++) {
-			if(i < 10) { incr = 4; } else { incr = 0; }
+			if(i < 9) { incr = 4; } else { incr = 0; }
 			if (i%fps==0) painter.drawLine( getFrameX(i), 1, getFrameX(i), 5 );
 			else if (i%fps==fps/2) painter.drawLine( getFrameX(i), 1, getFrameX(i), 5);
 			else painter.drawLine( getFrameX(i), 1, getFrameX(i), 3);
@@ -606,11 +614,13 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent *event) {
 	}
 	int frameNumber = getFrameNumber(event->pos().x());
 	int layerNumber = getLayerNumber(event->pos().y());
-	if(timeLine->scrubbing && type == "tracks") {
-		editor->scrubTo(frameNumber);
-	} else {
-		if(layerNumber != -1 && layerNumber < editor->object->getLayerCount()) {
-			editor->object->getLayer(layerNumber)->mouseMove(event, frameNumber);
+	if ( type == "tracks") {
+		if (timeLine->scrubbing) {
+			editor->scrubTo(frameNumber);
+		} else {
+			if(layerNumber != -1 && layerNumber < editor->object->getLayerCount()) {
+				editor->object->getLayer(layerNumber)->mouseMove(event, frameNumber);
+			}
 		}
 	}
 	timeLine->update();
@@ -708,10 +718,12 @@ void TimeLine::forceUpdateLength(QString newLength) {
 	bool ok;
 	int dec = newLength.toInt(&ok, 10);
 
-	updateLength(dec);
-	updateContent();
-	QSettings settings("Pencil","Pencil");
-	settings.setValue("length", dec);
+	if ( dec > getFrameLength()) {
+		updateLength(dec);
+		updateContent();
+		QSettings settings("Pencil","Pencil");
+		settings.setValue("length", dec);
+	}
 }
 
 void TimeLineCells::hScrollChange(int x) {

@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QScrollBar>
 #include <QSound>
 #include "toolset.h"
+#include "timecontrols.h"
 
 class Editor;
 
@@ -37,7 +38,7 @@ public:
 	TimeLineCells(TimeLine *parent = 0, Editor *editor = 0, QString type = "");
 	//int currentFrame;
 	//int currentLayer;
-	int getFps() { return fps; }
+	//int getFps() { return fps; }
 	int getLayerNumber(int y);
 	int getLayerY(int layerNumber);
 	int getFrameNumber(int x);
@@ -45,6 +46,7 @@ public:
 	int getMouseMoveY() { return mouseMoveY; }
 	int getOffsetY() { return offsetY; }
 	int getLayerHeight() { return layerHeight; }
+	int getFrameLength() {return frameLength;}
 
 signals:
 	void mouseMovedY(int);
@@ -71,7 +73,7 @@ protected:
 	void mouseDoubleClickEvent(QMouseEvent *event);
 
 private:
-  TimeLine *timeLine;
+	TimeLine *timeLine;
 	Editor* editor; // the editor for which this timeLine operates
 
 	QString type;
@@ -81,7 +83,7 @@ private:
 	int frameLength;
 	int frameSize;
 	int fontSize;
-	int fps;
+	//int fps;
 	bool scrubbing;
 	int layerHeight;
 	int offsetX, offsetY;
@@ -136,6 +138,8 @@ public:
 	//int currentLayer;
 	bool scrubbing;
 	void forceUpdateLength(QString newLength); //when Animation -> Add Frame is clicked, this will auto update timeline
+	void setFps ( int );
+	int getFrameLength() {return cells->getFrameLength();}
 
 protected:
 	void resizeEvent(QResizeEvent *event);
@@ -150,6 +154,7 @@ private:
 	TimeLineCells* cells;
 	TimeLineCells* list;
 	int numberOfLayers;
+	TimeControls* timeControls;
 
 };
 

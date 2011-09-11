@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include <interfaces.h>
 
+
 MainWindow::MainWindow() {
 	editor = new Editor(this);
 	//Object* object = new Object();
@@ -95,17 +96,13 @@ void MainWindow::createMenus() {
     connect(exportAct, SIGNAL(triggered()), editor, SLOT(exportSeq()));
 
     exportimageAct = new QAction(tr("&Image..."), this);
-    exportimageAct->setShortcut(tr("Shift+S"));
+    exportimageAct->setShortcut(tr("Ctrl+Alt+S"));
     connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
 
     exportMovAct = new QAction(tr("&Movie..."), this);
     exportMovAct->setShortcut(tr("Ctrl+Alt+M"));
     connect(exportMovAct, SIGNAL(triggered()), editor, SLOT(exportMov()));
-
-    exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
-    exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
-    connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
     exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
     exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
@@ -122,13 +119,17 @@ void MainWindow::createMenus() {
     connect(importAct, SIGNAL(triggered()), editor, SLOT(importImage()));
 
     importMovAct = new QAction(tr("&Image Sequence..."), this);
-    importMovAct->setShortcut(tr("Shift+R"));
+    importMovAct->setShortcut(tr("Ctrl+R"));
     connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
 
     importSndAct = new QAction(tr("&Sound..."), this);
     importSndAct->setShortcut(tr("Ctrl+I"));
     connect(importSndAct, SIGNAL(triggered()), editor, SLOT(importSound()));
+
+    savesvgAct = new QAction(tr("&Svg Image"), this);
+    savesvgAct->setShortcut(tr("Ctrl+I"));
+    connect(savesvgAct, SIGNAL(triggered()), editor, SLOT(saveSvg()));
 
     helpMe = new QAction(tr("&Help"), this);
     helpMe->setShortcut(tr("F1"));
@@ -143,10 +144,12 @@ void MainWindow::createMenus() {
 
     undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
     undoAct->setShortcut(tr("Ctrl+Z"));
+    undoAct->setEnabled(false);
     connect(undoAct, SIGNAL(triggered()), editor, SLOT(undo()));
 
     redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
     redoAct->setShortcut(tr("Ctrl+Y"));
+    redoAct->setEnabled(false);
     connect(redoAct, SIGNAL(triggered()), editor, SLOT(redo()));
 
     cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
@@ -224,6 +227,7 @@ void MainWindow::createMenus() {
     //detachAllPalettesAct = new QAction(tr("Detach All Palettes"), this);
     //connect(detachAllPalettesAct, SIGNAL(triggered()), editor, SLOT(detachAllPalettes()));
     /*~~~~~~~~View menu~~~~~~~~~*/
+
     zoomAct = new QAction(QIcon(":icons/magnify.png"),tr("In"), this);
     zoomAct->setShortcut(Qt::Key_Up+ Qt::CTRL);
     connect(zoomAct, SIGNAL(triggered()), editor, SLOT(setzoom()));
@@ -241,7 +245,7 @@ void MainWindow::createMenus() {
     connect(rotateAct1, SIGNAL(triggered()), editor, SLOT(rotateacw()));
 
     resetpaletteAct = new QAction(tr("Reset Windows"), this);
-    resetpaletteAct->setShortcut(tr("Ctrl+Alt+H"));
+    resetpaletteAct->setShortcut(Qt::Key_H + Qt::CTRL);
     connect(resetpaletteAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
 
     horiMirrorAct = new QAction(QIcon(":icons/mirror.png"),tr("Horizontal Flip"), this);
@@ -252,7 +256,7 @@ void MainWindow::createMenus() {
     vertiMirrorAct->setShortcut(Qt::Key_V + Qt::SHIFT);
     connect(vertiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
 
-    previewAct = new QAction(tr("Add New Colour"), this);
+    previewAct = new QAction(tr("Preview"), this);
     previewAct->setShortcut(Qt::Key_P + Qt::ALT);
     previewAct->setEnabled(true);
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO Preview view
@@ -276,7 +280,7 @@ void MainWindow::createMenus() {
     connect(editor, SIGNAL(onionNextChanged(bool)), onionskinnAct, SLOT(setChecked(bool)));
 
     /*~~~~Animation Menu~~~~~~*/
-    playAnimationAct = new QAction(tr("Play/Stop\tReturn"), this);
+    playAnimationAct = new QAction(tr("Play/Stop"), this);
     playAnimationAct->setShortcut(Qt::Key_Return);
     connect(playAnimationAct, SIGNAL(triggered()), editor, SLOT(play()));
 
@@ -380,6 +384,7 @@ void MainWindow::createMenus() {
     exportMenu->addAction(exportXAct);
     exportMenu->addAction(exportMovAct);
     exportMenu->addAction(exportFlashAct);
+    exportMenu->addAction(savesvgAct);
     exportMenu->addSeparator();
     exportMenu->addAction(exportPaletteAct);
 
@@ -449,6 +454,7 @@ void MainWindow::createMenus() {
     editMenu->addAction(deselectAllAct);
     editMenu->addSeparator();
     editMenu->addAction(preferencesAct);
+    connect(editMenu, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
 
     layerMenu = new QMenu(tr("&Layer"), this);
     layerMenu->addAction(newBitmapLayerAct);
@@ -512,12 +518,12 @@ void MainWindow::loadPlugins() {
 	// foreach (QObject *plugin, QPluginLoader::staticInstances()) populateMenus(plugin); // static plugins
 	QDir pluginsDir = QDir(qApp->applicationDirPath());
  #if defined(Q_OS_WIN)
-     if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-         pluginsDir.cdUp();
+	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+		pluginsDir.cdUp();
  #elif defined(Q_OS_MAC)
-     if (pluginsDir.dirName() == "MacOS") {
-         pluginsDir.cdUp();
-     }
+	if (pluginsDir.dirName() == "MacOS") {
+		pluginsDir.cdUp();
+	}
  #endif
 	pluginsDir.cd("plugins");
 
@@ -706,7 +712,7 @@ void MainWindow::writeSettings() {
 	}
 
 	QDockWidget* displayPalette = editor->getToolSet()->displayPalette;
-	if(optionPalette != NULL) {
+	if(displayPalette != NULL)  {
 		settings.setValue("displayPalettePosition", displayPalette->pos());
 		settings.setValue("displayPaletteSize", displayPalette->size());
 		settings.setValue("displayPaletteFloating", displayPalette->isFloating());
@@ -722,4 +728,29 @@ void MainWindow::addRecentFile(QString filePath) {
 
 void MainWindow::toggleLoop(bool checked) {
     loopAnimationAct->setChecked(checked);
+}
+
+void MainWindow::undoActSetText(void)
+{
+   if (this->editor->backupIndex < 0)
+      {
+      editMenu->actions().at(0)->setText("Undo");
+      editMenu->actions().at(0)->setEnabled(false);
+      }
+     else
+      {
+      editMenu->actions().at(0)->setText("Undo   " + QString::number(this->editor->backupIndex+1) + " " + this->editor->backupList.at(this->editor->backupIndex)->undoText);
+      editMenu->actions().at(0)->setEnabled(true);
+      }
+
+   if (this->editor->backupIndex+2 < this->editor->backupList.size())
+      {
+      editMenu->actions().at(1)->setText("Redo   " + QString::number(this->editor->backupIndex+2) + " " + this->editor->backupList.at(this->editor->backupIndex+1)->undoText);
+      editMenu->actions().at(1)->setEnabled(true);
+      }
+     else
+      {
+      editMenu->actions().at(1)->setText("Redo");
+      editMenu->actions().at(1)->setEnabled(false);
+      }
 }

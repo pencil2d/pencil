@@ -155,7 +155,7 @@ void LayerBitmap::loadDomElement(QDomElement element, QString filePath) {
 		QDomElement imageElement = imageTag.toElement();
 		if(!imageElement.isNull()) {
 			if(imageElement.tagName() == "image") {
-				QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
+				QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
 				QFileInfo fi(path);
 				if(!fi.exists()) path = imageElement.attribute("src");
 				int position = imageElement.attribute("frame").toInt();

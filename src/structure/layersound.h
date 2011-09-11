@@ -42,7 +42,7 @@ class LayerSound : public LayerImage
 	void loadSoundAtFrame( QString filePathString, int frame );
 
 	bool saveImage(int index, QString path, int layerNumber);
-	void playSound(int frame);
+	void playSound(int frame,int fps);
 	void stopSound();
 
     bool isEmpty() const { return sound.count() == 0; }
@@ -53,11 +53,16 @@ class LayerSound : public LayerImage
 	//void mouseMove(QMouseEvent *event, int frameNumber);
 	//void mouseRelease(QMouseEvent *event, int frameNumber);
 
+	QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
+	int getSoundSize() { return sound.size(); }
+	bool soundIsNotNull(int index) { return (sound[index] != NULL); }
+
   protected:
 	//bool modified;
 	//QList<int> startingFrame;
 	//QList<QString> filePath;
 	QList<QString> soundFilepath;
+	QList<qint64> soundSize;
 //#	QList<QSound*> sound;
 	// graphic representation -- could be put in another class
 	void swap(int i, int j);
@@ -65,8 +70,11 @@ class LayerSound : public LayerImage
 
 	QList<Phonon::MediaObject*> sound;
 	QList<Phonon::AudioOutput*> outputDevices;
-  private slots:
+
+
+  public slots:
     void addTimelineKey(qint64 newTotalTime);
+    //void metaInfosUpdated();
 
 };
 

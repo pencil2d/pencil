@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QToolBar>
 #include <QPushButton>
 #include <QToolButton>
+#include <QSpinBox>
 
 class TimeControls : public QToolBar
 {
@@ -27,6 +28,7 @@ class TimeControls : public QToolBar
 
 public:
 	TimeControls(QWidget *parent = 0);
+	void setFps ( int value );
 
 signals:
 	void playClick();
@@ -51,6 +53,7 @@ private:
 	QPushButton* startplayButton;
 	QPushButton* loopButton;
 	QPushButton* soundButton;
+	QSpinBox* fpsBox;
 };
 
 #endif

@@ -27,7 +27,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent) {
 	fpsBox->setFont( QFont("Helvetica", 10) );
 	fpsBox->setFixedHeight(22);
 	fpsBox->setValue(settings.value("fps").toInt());
-	fpsBox->setMinimum(1);
+        fpsBox->setMinimum(1);
 	fpsBox->setMaximum(50);
 	fpsBox->setToolTip("Frames per second");
 	fpsBox->setFocusPolicy(Qt::NoFocus);
@@ -124,6 +124,11 @@ void TimeControls::updateButtons(bool floating) {
 		loopButton->setFixedSize(QSize(26,17));
 		soundButton->setFixedSize(QSize(26,17));
 	}*/
+}
+
+void TimeControls::setFps ( int value )
+{
+fpsBox->setValue(value);
 }
 
 void TimeControls::toggleLoop(bool checked) {

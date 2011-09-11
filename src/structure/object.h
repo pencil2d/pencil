@@ -84,13 +84,14 @@ class Object : public QObject
 		void moveLayer(int i, int j);
 		void deleteLayer(int i);
 
-		void playSoundIfAny(int frame);
+		void playSoundIfAny(int frame,int fps);
 		void stopSoundIfAny();
 
 		void defaultInitialisation();
 
-		void exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients);
-		void exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps);
+		void exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog *progress, int progressMax);
+		void exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog *progress, int progressMax, int fps, int exportFps);
+		void exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat);
 		void exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing, int gradients);
 		void exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing, int gradients);
 		void exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);

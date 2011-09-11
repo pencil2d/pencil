@@ -68,7 +68,7 @@ class ScribbleArea : public QWidget
 public:
 	ScribbleArea(QWidget *parent = 0, Editor* editor = 0);
 
-  void next(const int &i);
+	void next(const int &i);
 
 	void setColour(const int);
 	void setColour(const QColor);
@@ -100,6 +100,7 @@ public:
 	void updateAllVectorLayersAtCurrentFrame();
 	void updateAllVectorLayersAt(int frame);
 	void updateAllVectorLayers();
+	bool getUpdateAll() {return updateAll;};
 
 	QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 signals:
@@ -124,7 +125,7 @@ public slots:
 
 	void toggleOnionPrev(bool);
 	void toggleOnionNext(bool);
-void grid();
+	void grid();
 	//void pressureSlot(int);
 	//void invisibleSlot(int);
 
@@ -234,6 +235,7 @@ private:
 	qreal curveOpacity;
 	qreal curveSmoothing;
 	bool onionPrev, onionNext;
+	bool updateAll;
 
 	Properties pencil;
 	Properties pen;

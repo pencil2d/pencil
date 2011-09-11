@@ -209,11 +209,11 @@ void Object::deleteLayer(int i) {
 	}
 }
 
-void Object::playSoundIfAny(int frame) {
+void Object::playSoundIfAny(int frame,int fps) {
 	for(int i=0; i < getLayerCount(); i++) {
 		Layer* layer = getLayer(i);
 		if( layer->type == Layer::SOUND) {
-			((LayerSound*)layer)->playSound(frame);
+			((LayerSound*)layer)->playSound(frame,fps);
 		}
 	}
 }
@@ -412,7 +412,7 @@ void Object::paintImage(QPainter &painter, int frameNumber, bool background, qre
 	}
 }
 
-void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients) {
+void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog *progress=NULL, int progressMax=50) {
 
 	QSettings settings("Pencil","Pencil");
 	qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
@@ -427,12 +427,13 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 		background = true; // JPG doesn't support transparency so we have to include the background
 	}
 	if(filePath.endsWith(extension, Qt::CaseInsensitive)) {
-		filePath.chop(4);
+		filePath = filePath.remove(extension, Qt::CaseInsensitive);
 	}
 	//qDebug() << "format =" << format << "extension = " << extension;
 
 	qDebug() << "Exporting frames from " << frameStart << "to" << frameEnd << "at size " << exportSize;
 	for(int currentFrame = frameStart; currentFrame <= frameEnd ; currentFrame++) {
+		if ( progress != NULL ) progress->setValue((currentFrame-frameStart)*progressMax/(frameEnd-frameStart));
 		QImage tempImage(exportSize, QImage::Format_ARGB32_Premultiplied);
 		QPainter painter(&tempImage);
 		
@@ -455,6 +456,119 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 		tempImage.save(filePath+frameNumberString+extension, format, quality);
 	}
 }
+
+
+void convertNFrames(int fps,int exportFps,int *frameRepeat,int *frameReminder,int *framePutEvery,int *frameSkipEvery)
+{
+*frameRepeat = exportFps / fps;
+*frameReminder = exportFps % fps;
+if (*frameReminder > (fps - *frameReminder))
+    {*frameSkipEvery = fps / (fps - *frameReminder); *framePutEvery = 0;}
+   else
+    {*framePutEvery = fps / *frameReminder; *frameSkipEvery = 0;}
+}
+
+
+
+void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog *progress, int progressMax, int fps, int exportFps) {
+
+        int frameRepeat;
+        int frameReminder, frameReminder1;
+        int framePutEvery, framePutEvery1;
+        int frameSkipEvery, frameSkipEvery1;
+        int frameNumber;
+        int framePerSecond;
+
+        QSettings settings("Pencil","Pencil");
+        qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
+
+        QString extension = "";
+        QString formatStr = format;
+        if( formatStr == "PNG" || formatStr == "png") {
+                format = "PNG";  extension = ".png";
+        }
+        if( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG") {
+                format = "JPG";  extension = ".jpg";
+                background = true; // JPG doesn't support transparency so we have to include the background
+        }
+        if(filePath.endsWith(extension, Qt::CaseInsensitive)) {
+                filePath = filePath.remove(extension, Qt::CaseInsensitive);
+        }
+        //qDebug() << "format =" << format << "extension = " << extension;
+
+        qDebug() << "Exporting frames from " << frameStart << "to" << frameEnd << "at size " << exportSize;
+        convertNFrames(fps,exportFps,&frameRepeat,&frameReminder,&framePutEvery,&frameSkipEvery);
+        qDebug() << "fps " << fps << " exportFps " << exportFps << " frameRepeat " << frameRepeat << " frameReminder " << frameReminder << " framePutEvery " << framePutEvery << " frameSkipEvery " << frameSkipEvery;
+        frameNumber = 0;
+        framePerSecond = 0;
+        frameReminder1 = frameReminder;
+        framePutEvery1 = framePutEvery;
+        frameSkipEvery1 = frameSkipEvery;
+        for(int currentFrame = frameStart; currentFrame <= frameEnd ; currentFrame++) {
+                if ( progress != NULL ) progress->setValue((currentFrame-frameStart)*progressMax/(frameEnd-frameStart));
+                QImage tempImage(exportSize, QImage::Format_ARGB32_Premultiplied);
+                QPainter painter(&tempImage);
+
+                // Make sure that old frame is erased before exporting a new one
+                tempImage.fill(0x00000000);
+
+                if(currentLayer->type == Layer::CAMERA) {
+                        QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
+                        QMatrix mapView = Editor::map( viewRect, QRectF(QPointF(0,0), exportSize) );
+                        mapView = ((LayerCamera*)currentLayer)->getViewAtFrame(currentFrame) * mapView;
+                        painter.setWorldMatrix(mapView);
+                } else {
+                        painter.setWorldMatrix(view);
+                }
+                paintImage(painter, currentFrame, background, curveOpacity, antialiasing, gradients);
+
+                frameNumber++;
+                framePerSecond++;
+                QString frameNumberString = QString::number(frameNumber);
+                while( frameNumberString.length() < 4) frameNumberString.prepend("0");
+
+                tempImage.save(filePath+frameNumberString+extension, format, quality);
+                int delta = 0;
+                if (framePutEvery)
+                    {
+                    framePutEvery1--;
+                    if (framePutEvery1)
+                        {delta = 1;}
+                       else
+                        {framePutEvery1 = framePutEvery;}
+                    }
+                if (frameSkipEvery)
+                    {
+                    frameSkipEvery1--;
+                    if (!frameSkipEvery1)
+                        {delta = 1;}
+                       else
+                        {frameSkipEvery1 = frameSkipEvery;}
+                    }
+                if (frameReminder1)
+                    {frameReminder1 -= delta;}
+                   else
+                    {delta = 0;}
+                for (int i=0; (i < frameRepeat-1+delta) && (framePerSecond < exportFps); i++)
+                    {
+                    frameNumber++;
+                    framePerSecond++;
+                    QString frameNumberLink = QString::number(frameNumber);
+                    while( frameNumberLink.length() < 4) frameNumberLink.prepend("0");
+//                    QFile::link(filePath+frameNumberString+extension, filePath+frameNumberLink+extension+".lnk");
+                    tempImage.save(filePath+frameNumberLink+extension, format, quality);
+                    }
+                if (framePerSecond == exportFps)
+                    {
+                    framePerSecond = 0;
+                    frameReminder1 = frameReminder;
+                    framePutEvery1 = framePutEvery;
+                    frameSkipEvery1 = frameSkipEvery;
+                    }
+        }
+}
+
+
 
 void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients) {
 	QSettings settings("Pencil","Pencil");
@@ -493,7 +607,7 @@ void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
 
 void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients) {
     QSettings settings("Pencil","Pencil");
-	qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0;
+	qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
 	QImage exported(exportSize, QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&exported);
     painter.fillRect(exported.rect(), Qt::white);

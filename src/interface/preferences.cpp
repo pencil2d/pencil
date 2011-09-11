@@ -321,7 +321,7 @@ TimelinePage::TimelinePage(QWidget *parent) : QWidget(parent) {
 	QSpinBox *frameSize = new QSpinBox(this);
 	QLabel *lengthSizeLabel = new QLabel(tr("Timeline size in Frames"));
 	QLineEdit *lengthSize = new QLineEdit(this);
-	lengthSize->setInputMask("9999");
+	lengthSize->setInputMask("0009");
 
 	QCheckBox *scrubBox = new QCheckBox(tr("Short scrub"));
 	scrubBox->setChecked(false); // default

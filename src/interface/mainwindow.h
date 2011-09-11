@@ -24,14 +24,14 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow();
-		//void initialiseStyle();
+    //void initialiseStyle();
     void addRecentFile(QString filePath);
     Editor *editor;
 
-
 public slots:
 		void setOpacity(int opacity);
-//#		void ImportSvg();
+		void undoActSetText(void);
+
 private slots:
 		void exportFile();
     void toggleLoop(bool);
@@ -48,7 +48,7 @@ private:
 	void keyReleaseEvent( QKeyEvent *e);
 	void readSettings();
 	void writeSettings();
-	QGraphicsItem *m_svgItem;
+	//QGraphicsItem *m_svgItem;
 	QString path;
 
 
@@ -66,7 +66,7 @@ private:
     QMenu *animationMenu;
     QMenu *toolsMenu;
     QMenu *onionskinMenu;
-    	QMenu *windowsMenu;
+    QMenu *windowsMenu;
     QMenu *helpMenu;
 
 
@@ -77,8 +77,8 @@ private:
     QAction *helpMe;
     QAction *aboutAct;
     QAction *aboutQtAct;
-	QAction *exportXAct;
-	QAction *exportAct;
+    QAction *exportXAct;
+    QAction *exportAct;
 
 	QAction *print;
 	QAction *importMovAct;
@@ -111,7 +111,6 @@ private:
 	QAction *selectAllAct;
 	QAction *deselectAllAct;
 	QAction *importSndAct;
-	QAction *importSvgAct;
 	QAction *preferencesAct;
 
 	QAction *newBitmapLayerAct;
@@ -122,34 +121,34 @@ private:
 
 	QAction *playAnimationAct;
 	QAction *loopAnimationAct;
-		QAction *extendFrameAct;
-		QAction *addFrameAct;
-		QAction *duplicateFrameAct;
-		QAction *removeFrameAct;
-		QAction *nextFrameAct;
-		QAction *prevFrameAct;
+	QAction *extendFrameAct;
+	QAction *addFrameAct;
+	QAction *duplicateFrameAct;
+	QAction *removeFrameAct;
+	QAction *nextFrameAct;
+	QAction *prevFrameAct;
 
 	QAction *moveToolAct;
 	QAction *clearToolAct;
-		QAction *selectToolAct;
-		QAction *brushToolAct;
+	QAction *selectToolAct;
+	QAction *brushToolAct;
 	QAction *polylineToolAct;
 	QAction *smudgeToolAct;
-		QAction *penToolAct;
-		QAction *handToolAct;
-		QAction *zoomToolAct;
-		QAction *zoomAct;
-		QAction *zoomAct1;
-		QAction *rotatecw;
-		QAction *rotateacw;
-		QAction *inbetweenAct;
-		QAction *inbetweenActV;
-		QAction *savesvgAct;
+	QAction *penToolAct;
+	QAction *handToolAct;
+	QAction *zoomToolAct;
+	QAction *zoomAct;
+	QAction *zoomAct1;
+	QAction *rotatecw;
+	QAction *rotateacw;
+	QAction *inbetweenAct;
+	QAction *inbetweenActV;
+	QAction *savesvgAct;
 
 	QAction *pencilToolAct;
 	QAction *bucketToolAct;
-		QAction *eyedropToolAct;
-		QAction *eraserToolAct;
+	QAction *eyedropToolAct;
+	QAction *eraserToolAct;
 
 
 	//QAction *dockAllPalettesAct;

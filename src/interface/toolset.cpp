@@ -172,8 +172,9 @@ ToolSet::ToolSet() {
 	outlinesButton = new QToolButton(this);
 	mirrorButton = new QToolButton(this); //  = new QToolButton(this);
 	mirrorButtonV = new QToolButton(this); //  = new QToolButton(this);
-		onionPrev = new QToolButton(this);
-		onionNext = new QToolButton(this);
+	onionPrev = new QToolButton(this);
+	onionNext = new QToolButton(this);
+
 	choseColour = new QToolButton(this);
 	play = new QPushButton(tr("Play"),this);
 
@@ -194,21 +195,21 @@ ToolSet::ToolSet() {
 	smudgeButton->setWhatsThis("Smudge Tool (A)");
 
 	usePressureBox = new QCheckBox("Pressure");
-		pencilButton->setToolTip("Size with pressure");
-			usePressureBox->setFont( QFont("Helvetica", 10) );
-				usePressureBox->setChecked(true);
+	pencilButton->setToolTip("Size with pressure");
+	usePressureBox->setFont( QFont("Helvetica", 10) );
+	usePressureBox->setChecked(true);
 	makeInvisibleBox = new QCheckBox("Invisible");
-		makeInvisibleBox->setToolTip("Make invisible");
-			makeInvisibleBox->setFont( QFont("Helvetica", 10) );
-				makeInvisibleBox->setChecked(false);
+	makeInvisibleBox->setToolTip("Make invisible");
+	makeInvisibleBox->setFont( QFont("Helvetica", 10) );
+	makeInvisibleBox->setChecked(false);
 	preserveAlphaBox = new QCheckBox("Alpha");
-		preserveAlphaBox->setToolTip("Preserve Alpha");
-			preserveAlphaBox->setFont( QFont("Helvetica", 10) );
-				preserveAlphaBox->setChecked(false);
+	preserveAlphaBox->setToolTip("Preserve Alpha");
+	preserveAlphaBox->setFont( QFont("Helvetica", 10) );
+	preserveAlphaBox->setChecked(false);
 	followContourBox = new QCheckBox("Contours");
-		followContourBox->setToolTip("Stop at contours");
-			followContourBox->setFont( QFont("Helvetica", 10) );
-				followContourBox->setChecked(false);
+	followContourBox->setToolTip("Stop at contours");
+	followContourBox->setFont( QFont("Helvetica", 10) );
+	followContourBox->setChecked(false);
 	// -- mj
 	//onionPrevBox = new QCheckBox("Previous");
 	//		onionPrevBox->setFont( QFont("Helvetica", 10) );
@@ -309,18 +310,25 @@ ToolSet::ToolSet() {
 
 	thinLinesButton->setIcon(QIcon(":icons/thinlines5.png"));
 	thinLinesButton->setToolTip("Show invisible lines");
+	thinLinesButton->setIconSize( QSize(21,21) );
 	outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
 	outlinesButton->setToolTip("Show outlines only");
+	outlinesButton->setIconSize( QSize(21,21) );
 
 	mirrorButton->setIcon(QIcon(":icons/mirror.png"));
 	mirrorButton->setToolTip("Horizontal flip");
+	mirrorButton->setIconSize( QSize(21,21) );
 	mirrorButtonV->setIcon(QIcon(":icons/mirrorV.png"));
-			mirrorButtonV->setToolTip("Horizontal flip");
+	mirrorButtonV->setToolTip("Vertical flip");
+	mirrorButtonV->setIconSize( QSize(21,21) );
 
 			onionPrev->setIcon(QIcon(":icons/onionPrev.png"));
 			onionPrev->setToolTip("Onion skin previous frame");
+			onionPrev->setIconSize( QSize(21,21) );
 			onionNext->setIcon(QIcon(":icons/onionNext.png"));
 			onionNext->setToolTip("Onion skin next frame");
+			onionNext->setIconSize( QSize(21,21) );
+
 	clearButton->setIcon(QIcon(":icons/clear.png"));
 	clearButton->setToolTip("Clear Tool <b>(L)</b>: Erases content of selected frame");
 	thinLinesButton->setCheckable(true);
@@ -332,7 +340,7 @@ ToolSet::ToolSet() {
 	mirrorButtonV->setCheckable(true);
 		mirrorButtonV->setChecked(false);
 		onionPrev->setCheckable(true);
-		onionPrev->setChecked(false);
+		onionPrev->setChecked(true);
 		onionNext->setCheckable(true);
 		onionNext->setChecked(false);
 	pencilButton->setCheckable(true);
@@ -414,8 +422,8 @@ ToolSet::ToolSet() {
 	onionLay->setMargin(4);
 	onionLay->setSpacing(0);
 	// -- mj
-	//onionLay->addWidget(onionPrevBox, 0,0);
-	//onionLay->addWidget(onionNextBox, 1,0);
+	//onionLay->addWidget(onionPrev, 0,0);
+	//onionLay->addWidget(onionNext, 1,0);
 
 	timeLay->setMargin(4);
 	timeLay->setSpacing(0);

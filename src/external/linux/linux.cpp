@@ -20,12 +20,41 @@ GNU General Public License for more details.
 #include <QString>
 #include "object.h"
 #include "mainwindow.h"
+#include "layersound.h"
 
-void initialise() {
-  // nothing, for now
+#define MIN(a,b) ((a)>(b)?(b):(a))
+
+
+
+
+qint16 safeSum ( qint16 a, qint16 b)
+{
+if (((int)a + (int)b) > 32767)
+    return 32767;
+if (((int)a + (int)b) < -32768)
+    return -32768;
+return a+b;
 }
 
-void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps) {
+void initialise() {
+	qDebug() << "Initialize: <nothing, for now>";
+	// Phonon capabilities
+	QStringList mimeTypes = Phonon::BackendCapabilities::availableMimeTypes();
+	foreach (QString mimeType, mimeTypes)
+		{if (mimeType.contains("audio")) qDebug() << "Phonon capability: " << mimeType;}
+
+	// QImageReader capabilities
+	QList<QByteArray> formats = QImageReader::supportedImageFormats();
+	foreach (QString format, formats)
+		{qDebug() << "QImageReader capability: " << format;}
+
+	// QImageWriter capabilities
+	formats = QImageWriter::supportedImageFormats();
+	foreach (QString format, formats)
+		{qDebug() << "QImageWriter capability: " << format;}
+}
+
+void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat) {
 	if(!filePath.endsWith(".ogg", Qt::CaseInsensitive)) {
 		filePath = filePath + ".ogg";
 	}
@@ -39,8 +68,8 @@ void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
 	
 	QDir dir2(tempPath);
 	if (QFile::exists(filePath) == true) { dir2.remove(filePath); }
-		
-	exportFrames(startFrame, endFrame, view, currentLayer, exportSize, tempPath+"tmp", "png", 100, true, true, 2);
+	//exportFrames(startFrame, endFrame, view, currentLayer, exportSize, tempPath+"tmp", "png", 100, true, true, 2);
+	exportFrames1(startFrame, endFrame, view, currentLayer, exportSize, tempPath+"tmp", "png", 100, true, true, 2,&progress,50,fps,exportFps);
 	// --------- Quicktime assemble call ----------
 	
 	QProcess ffmpeg;

@@ -33,6 +33,7 @@ class LayerImage : public Layer
 		LayerImage(Object* object);
 		~LayerImage();
 		int getMaxFrame() { return framesPosition.last(); }
+		int getFramePositionAt(int index) { return framesPosition.at(index); }
 		int getIndexAtFrame(int frameNumber);
 		int getLastIndexAtFrame(int frameNumber);
 		

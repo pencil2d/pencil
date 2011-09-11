@@ -39,6 +39,9 @@ class BackupElement : public QObject
 	public:
 		enum types { UNDEFINED, BITMAP_MODIF, VECTOR_MODIF };
 		//int type;
+		QString undoText;
+		bool somethingSelected;
+		QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 		//BackupElement() { type = UNDEFINED; }
 		virtual int type() { return UNDEFINED; }
 		virtual void restore(Editor*) { qDebug() << "Wrong"; };
@@ -101,6 +104,12 @@ public:
 	static QMatrix map(QRectF, QRectF);
 	bool openObject(QString);
 	bool exportSeqCLI(QString, QString);
+
+	// backup
+	int backupIndex;
+	QList<BackupElement*> backupList;
+
+    ScribbleArea* getScribbleArea() {return scribbleArea;};
 
 protected:
 	void dragEnterEvent(QDragEnterEvent *event);
@@ -223,8 +232,8 @@ public slots:
 
 	void modification();
 	void modification(int);
-	void backup();
-	void backup(int layerNumber, int frameNumber);
+	void backup(QString undoText);
+	void backup(int layerNumber, int frameNumber, QString undoText);
 	void undo();
 	void redo();
 	void copy();
@@ -254,7 +263,7 @@ public slots:
 	void dockAllPalettes();
 	//void detachAllPalettes();
 	void restorePalettesSettings(bool, bool, bool);
-//#	void saveSvg();
+	void saveSvg();
 	void addcolorbutton();
 
 private slots:
@@ -297,9 +306,6 @@ private:
 	bool autosave;
 	int autosaveNumber;
 
-	// backup
-	int backupIndex;
-	QList<BackupElement*> backupList;
 	void clearBackup();
 	int lastModifiedFrame, lastModifiedLayer;
 
@@ -324,6 +330,7 @@ private:
 	QSpinBox *exportMovieDialog_hBox;
 	QSpinBox *exportMovieDialog_vBox;
 	QComboBox *exportFramesDialog_format;
+	QSpinBox *exportMovieDialog_fpsBox;
 	QComboBox *exportMovieDialog_format;
 	QSlider* exportFlashDialog_compression;
 
