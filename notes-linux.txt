@@ -2,8 +2,8 @@ These are some notes/memo about compiling Pencil on Linux
 Last edited: 2007-10-12
 Pascal Naidon
 
-1) Install Qt if you haven't done it
-2) Install Ming
+1) Install Qt >= 4.6.0 if you haven't done it
+2) Install Ming >= 0.4.x
 3) Open a terminal, go to the directory where pencil.pro is located, and type "qmake"
 4) Type "make"
 
