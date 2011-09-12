@@ -27,16 +27,19 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "vectorimage.h"
 
+#ifdef Q_OS_LINUX
+#define  SWFSprite    SWFMovieClip
+#endif
+
 class Object;
 
 class Flash
 {	
 	public:
 		static void exportFlash(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
-		static void convertToSWFMovieClip( BitmapImage* image, Object* object, QMatrix view, SWFMovieClip* sprite );
-		static void convertToSWFMovieClip( VectorImage* vectorImage, Object* object, QMatrix view, SWFMovieClip* sprite );
-		static void addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour, QColor borderColour, qreal width, bool fill );
-
+                static void convertToSWFSprite( BitmapImage* image, Object* object, QMatrix view, SWFSprite* sprite );
+                static void convertToSWFSprite( VectorImage* vectorImage, Object* object, QMatrix view, SWFSprite* sprite );
+                static void addShape( SWFSprite* sprite, QPainterPath path, QColor fillColour, QColor borderColour, qreal width, bool fill );
 };
 
 #endif

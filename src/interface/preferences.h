@@ -49,6 +49,10 @@ class Preferences : public QDialog {
 		void labelChange(int);
 		void scrubChange(int);
 
+		void onionLayer1OpacityChange(int);
+		void onionLayer2OpacityChange(int);
+		void onionLayer3OpacityChange(int);
+
 	private:
 		void createIcons();
 
@@ -85,4 +89,13 @@ class FilesPage : public QWidget
 	public:
     FilesPage(QWidget *parent = 0);
 
+};
+
+
+class ToolsPage : public QWidget
+{
+	Q_OBJECT
+
+	public:
+	ToolsPage(QWidget *parent = 0);
 };

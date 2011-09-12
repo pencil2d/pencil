@@ -105,6 +105,12 @@ public:
 	bool openObject(QString);
 	bool exportSeqCLI(QString, QString);
 
+	int getOnionLayer1Opacity() {return onionLayer1Opacity;}
+	int getOnionLayer2Opacity() {return onionLayer2Opacity;}
+	int getOnionLayer3Opacity() {return onionLayer3Opacity;}
+
+	void importMovie (QString filePath, int fps);
+
 	// backup
 	int backupIndex;
 	QList<BackupElement*> backupList;
@@ -156,6 +162,7 @@ public slots:
 	void importImage(QString filePath);
 	//void importSound();
 	void importSound(QString filePath = "");
+	bool importMov();
 	void importPalette();
 	void exportPalette();
 	void updateFrame(int frameNumber);
@@ -229,6 +236,10 @@ public slots:
 
 	void changeAutosave(int);
 	void changeAutosaveNumber(int);
+
+	void onionLayer1OpacityChangeSlot(int);
+	void onionLayer2OpacityChangeSlot(int);
+	void onionLayer3OpacityChangeSlot(int);
 
 	void modification();
 	void modification(int);
@@ -306,6 +317,13 @@ private:
 	bool autosave;
 	int autosaveNumber;
 
+	int onionLayer1Opacity;
+	int onionLayer2Opacity;
+	int onionLayer3Opacity;
+
+
+
+	// backup
 	void clearBackup();
 	int lastModifiedFrame, lastModifiedLayer;
 

@@ -83,6 +83,7 @@ private:
 	QAction *print;
 	QAction *importMovAct;
 	QAction *exportimageAct;
+	QAction *importMovieAct;
 	QAction *trimAct;
 	QAction *cropAct;
 	QAction *gridAct;

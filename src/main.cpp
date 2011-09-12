@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 {
 	qDebug() << "Pencil Animation 0.5 (Morevna Branch)";
 	QApplication app(argc, argv);
+	app.setApplicationName("Pencil");
 #ifndef Q_WS_MAC
 	app.setWindowIcon(QIcon(":/icons/icon.png"));
 #endif

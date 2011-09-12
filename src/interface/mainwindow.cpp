@@ -122,6 +122,9 @@ void MainWindow::createMenus() {
     importMovAct->setShortcut(tr("Ctrl+R"));
     connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
+        importMovieAct = new QAction(tr("&Movie..."), this);
+        importMovieAct->setShortcut(tr("Ctrl+R"));
+        connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
 
     importSndAct = new QAction(tr("&Sound..."), this);
     importSndAct->setShortcut(tr("Ctrl+I"));
@@ -243,7 +246,6 @@ void MainWindow::createMenus() {
     rotateAct1 = new QAction(tr("AntiClockwise"), this);
     rotateAct1->setShortcut(Qt::Key_Z);
     connect(rotateAct1, SIGNAL(triggered()), editor, SLOT(rotateacw()));
-
     resetpaletteAct = new QAction(tr("Reset Windows"), this);
     resetpaletteAct->setShortcut(Qt::Key_H + Qt::CTRL);
     connect(resetpaletteAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
@@ -374,6 +376,7 @@ void MainWindow::createMenus() {
 
     importMenu->addAction(importAct);
     importMenu->addAction(importMovAct);
+	importMenu->addAction(importMovieAct);
     importMenu->addAction(importSndAct);
     importMenu->addSeparator();
     importMenu->addAction(importPaletteAct);

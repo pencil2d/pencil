@@ -1588,12 +1588,37 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
 
 					// previous frame (onion skin)
 					BitmapImage* previousImage = layerBitmap->getLastBitmapImageAtFrame(frame, -1);
-					if(previousImage != NULL && onionPrev) { painter.setOpacity(opacity*0.5); previousImage->paintImage(painter); }
-					//painter.drawImage(previousImage->topLeft(), *(previousImage->image) );
+					if(previousImage != NULL && onionPrev) {
+						painter.setOpacity(opacity*editor->getOnionLayer1Opacity()/100.0);
+						previousImage->paintImage(painter);
+					}
+					BitmapImage* previousImage2 = layerBitmap->getLastBitmapImageAtFrame(frame, -2);
+					if(previousImage2 != NULL && onionPrev) {
+						painter.setOpacity(opacity*editor->getOnionLayer2Opacity()/100.0);
+						previousImage2->paintImage(painter);
+					}
+					BitmapImage* previousImage3 = layerBitmap->getLastBitmapImageAtFrame(frame, -3);
+					if(previousImage3 != NULL && onionPrev) {
+						painter.setOpacity(opacity*editor->getOnionLayer3Opacity()/100.0);
+						previousImage3->paintImage(painter);
+					}
 
 					// next frame (onion skin)
 					BitmapImage* nextImage = layerBitmap->getLastBitmapImageAtFrame(frame, 1);
-					if(nextImage != NULL && onionNext) { painter.setOpacity(opacity*0.5); nextImage->paintImage(painter); }
+					if(nextImage != NULL && onionNext) {
+						painter.setOpacity(opacity*editor->getOnionLayer1Opacity()/100.0);
+						nextImage->paintImage(painter);
+					}
+					BitmapImage* nextImage2 = layerBitmap->getLastBitmapImageAtFrame(frame, 2);
+					if(nextImage2 != NULL && onionNext) {
+						painter.setOpacity(opacity*editor->getOnionLayer2Opacity()/100.0);
+						nextImage2->paintImage(painter);
+					}
+					BitmapImage* nextImage3 = layerBitmap->getLastBitmapImageAtFrame(frame, 3);
+					if(nextImage3 != NULL && onionNext) {
+						painter.setOpacity(opacity*editor->getOnionLayer3Opacity()/100.0);
+						nextImage3->paintImage(painter);
+					}
 
 					// current frame
 					painter.setOpacity(opacity);
@@ -1638,12 +1663,44 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
 					painter.setWorldMatrixEnabled(false);
 
 					// previous frame (onion skin)
-					QImage* previousImage = layerVector->getLastImageAtFrame(frame, -1, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
-					if(previousImage != NULL && onionPrev) { painter.setOpacity(opacity*0.5); painter.drawImage(QPoint(0, 0), *previousImage ); }
+                                        QImage* previousImage = layerVector->getLastImageAtFrame(frame, -1, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
+                                        if(previousImage != NULL && onionPrev)
+                                            {
+                                            painter.setOpacity(opacity*editor->getOnionLayer1Opacity()/100.0);
+                                            painter.drawImage(QPoint(0, 0), *previousImage );
+                                            }
+                                        QImage* previousImage2 = layerVector->getLastImageAtFrame(frame, -2, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
+                                        if(previousImage2 != NULL && onionPrev)
+                                            {
+                                            painter.setOpacity(opacity*editor->getOnionLayer2Opacity()/100.0);
+                                            painter.drawImage(QPoint(0, 0), *previousImage2 );
+                                            }
+                                        QImage* previousImage3 = layerVector->getLastImageAtFrame(frame, -3, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
+                                        if(previousImage3 != NULL && onionPrev)
+                                            {
+                                            painter.setOpacity(opacity*editor->getOnionLayer3Opacity()/100.0);
+                                            painter.drawImage(QPoint(0, 0), *previousImage3 );
+                                            }
 
 					// next frame (onion skin)
-					QImage* nextImage = layerVector->getLastImageAtFrame(frame, 1, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
-					if(nextImage != NULL && onionNext) { painter.setOpacity(opacity*0.5); painter.drawImage(QPoint(0, 0), *nextImage ); }
+                                        QImage* nextImage = layerVector->getLastImageAtFrame(frame, 1, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
+                                        if(nextImage != NULL && onionNext)
+                                            {
+                                            painter.setOpacity(opacity*editor->getOnionLayer1Opacity()/100.0);
+                                            painter.drawImage(QPoint(0, 0), *nextImage );
+                                            }
+                                        QImage* nextImage2 = layerVector->getLastImageAtFrame(frame, 2, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
+                                        if(nextImage2 != NULL && onionNext)
+                                            {
+                                            painter.setOpacity(opacity*editor->getOnionLayer2Opacity()/100.0);
+                                            painter.drawImage(QPoint(0, 0), *nextImage2 );
+                                            }
+                                        QImage* nextImage3 = layerVector->getLastImageAtFrame(frame, 3, size(), simplified, showThinLines, curveOpacity, antialiasing, gradients);
+                                        if(nextImage3 != NULL && onionNext)
+                                            {
+                                            painter.setOpacity(opacity*editor->getOnionLayer3Opacity()/100.0);
+                                            painter.drawImage(QPoint(0, 0), *nextImage3 );
+                                            }
 
 					// current frame
 					painter.setOpacity(opacity);

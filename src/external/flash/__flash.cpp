@@ -27,19 +27,19 @@ GNU General Public License for more details.
 
 void Flash::exportFlash(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression) {
 	qDebug() << "------Flash------" << compression;
-	
+
 	// ************* Requires the MING Library ***************
 	Ming_init();
 
   SWFMovie *movie = new SWFMovie();
-  
+//#  SWFSound *sound =new SWFSound();
 	movie->setDimension(exportSize.width(), exportSize.height());
-	
+
 	movie->setRate(fps); // 12 frames per seconds
-	
+
   //SWFShape *shape = new SWFShape();
 	SWFMovieClip *objectSprite = new SWFMovieClip();
-	
+
 	for(int i=0; i < object->getLayerCount(); i++) {
 		Layer* layer = object->getLayer(i);
 		if(layer->visible) {
@@ -88,16 +88,16 @@ void Flash::exportFlash(Object* object, int startFrame, int endFrame, QMatrix vi
 	objectSprite->nextFrame();
 	//objectSprite->add( new SWFAction("stop();") );
 	//objectSprite->nextFrame();
-	
+
 	movie->add(objectSprite);
 	movie->nextFrame();
 	movie->add( new SWFAction("gotoFrame(0);") );
 	movie->nextFrame();
 
-	
+
 	QByteArray byteArray(filePath.toLatin1()); // is there any problem with accented characters?
   movie->save(byteArray.data(), compression);
-	
+
 	qDebug() << "done.";
 }
 
@@ -123,7 +123,7 @@ void Flash::convertToSWFMovieClip( BitmapImage* bitmapImage, Object* object, QMa
 
 
 void Flash::convertToSWFMovieClip( VectorImage* vectorImage, Object* object, QMatrix view, SWFMovieClip* sprite ) {
-	
+
 	// add filled areas
 	for(int i=0; i< vectorImage->area.size(); i++) {
 		QColor colour = object->getColour(vectorImage->area[i].getColourNumber()).colour;
@@ -162,7 +162,7 @@ void Flash::addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour
 		SWFFill* fill = shape->addSolidFill( fillColour.red(), fillColour.green(), fillColour.blue() );
 		shape->setRightFill(fill);
 	}
-	
+
 	qreal memoP0x = 0.0;
 	qreal memoP0y = 0.0;
 	qreal memoP1x = 0.0;
@@ -201,7 +201,7 @@ void Flash::addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour
 				QPointF P1(memoP1x, memoP1y);
 				QPointF P2(memoP2x, memoP2y);
 				QPointF P3(memoP3x, memoP3y);
-				
+
 				QPointF M2 = (P0+3*P1+3*P2+P3)/8;
 				QPointF C1 = (5*P0+3*P1)/8;
 				QPointF C4 = (5*P3+3*P2)/8;

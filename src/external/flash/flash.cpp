@@ -23,35 +23,36 @@ GNU General Public License for more details.
 #include "beziercurve.h"
 #include "colourref.h"
 
+
 void Flash::exportFlash(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression) {
 	qDebug() << "------Flash------" << compression;
-	
+
 	// ************* Requires the MING Library ***************
 	Ming_init();
 
   SWFMovie *movie = new SWFMovie();
-  
+
 	movie->setDimension(exportSize.width(), exportSize.height());
-	
+
 	movie->setRate(fps); // 12 frames per seconds
-	
+
   //SWFShape *shape = new SWFShape();
-	SWFMovieClip *objectSprite = new SWFMovieClip();
-	
+        SWFSprite *objectSprite = new SWFSprite();
+
 	for(int i=0; i < object->getLayerCount(); i++) {
 		Layer* layer = object->getLayer(i);
 		if(layer->visible) {
 			// paints the bitmap images
 			if(layer->type == Layer::BITMAP) {
 				LayerBitmap* layerBitmap = (LayerBitmap*)layer;
-				SWFMovieClip *layerSprite = new SWFMovieClip();
+                                SWFSprite *layerSprite = new SWFSprite();
 				SWFDisplayItem *previousItem = NULL;
 				for(int frameNumber = startFrame; frameNumber <= endFrame; frameNumber++) {
 					BitmapImage* bitmapImage = layerBitmap->getBitmapImageAtFrame(frameNumber);
 					if(bitmapImage != NULL) {
 						if(previousItem != NULL) layerSprite->remove( previousItem );
-						SWFMovieClip *imageSprite = new SWFMovieClip();
-						convertToSWFMovieClip( bitmapImage, object, view, imageSprite);
+                                                SWFSprite *imageSprite = new SWFSprite();
+						convertToSWFSprite( bitmapImage, object, view, imageSprite);
 						previousItem = layerSprite->add( imageSprite );
 					}
 					layerSprite->nextFrame();
@@ -63,14 +64,14 @@ void Flash::exportFlash(Object* object, int startFrame, int endFrame, QMatrix vi
 			// paints the vector images
 			if(layer->type == Layer::VECTOR) {
 				LayerVector* layerVector = (LayerVector*)layer;
-				SWFMovieClip *layerSprite = new SWFMovieClip();
+                                SWFSprite *layerSprite = new SWFSprite();
 				SWFDisplayItem *previousItem = NULL;
 				for(int frameNumber = startFrame; frameNumber <= endFrame; frameNumber++) {
 					VectorImage* vectorImage = layerVector->getVectorImageAtFrame(frameNumber);
 					if(vectorImage != NULL) {
 						if(previousItem != NULL) layerSprite->remove( previousItem );
-						SWFMovieClip *sprite = new SWFMovieClip();
-						convertToSWFMovieClip( vectorImage, object, view, sprite);
+                                                SWFSprite *sprite = new SWFSprite();
+						convertToSWFSprite( vectorImage, object, view, sprite);
 						previousItem = layerSprite->add( sprite );
 					}
 					layerSprite->nextFrame();
@@ -86,21 +87,22 @@ void Flash::exportFlash(Object* object, int startFrame, int endFrame, QMatrix vi
 	objectSprite->nextFrame();
 	//objectSprite->add( new SWFAction("stop();") );
 	//objectSprite->nextFrame();
-	
+
 	movie->add(objectSprite);
 	movie->nextFrame();
 	movie->add( new SWFAction("gotoFrame(0);") );
 	movie->nextFrame();
+//	int b;
+	//movie->soundobject=new SWFSound(fopen("foo.mp3","rb"),b);
 
-	
 	QByteArray byteArray(filePath.toLatin1()); // is there any problem with accented characters?
   movie->save(byteArray.data(), compression);
-	
+
 	qDebug() << "done.";
 }
 
 
-void Flash::convertToSWFMovieClip( BitmapImage* bitmapImage, Object* object, QMatrix view, SWFMovieClip* sprite ) {
+void Flash::convertToSWFSprite( BitmapImage* bitmapImage, Object* object, QMatrix view, SWFSprite* sprite ) {
 	QString tempPath = QDir::tempPath()+"/penciltemp.png";
 	QByteArray tempPath2( tempPath.toLatin1());
 	bitmapImage->image->save( tempPath , "PNG");
@@ -120,8 +122,8 @@ void Flash::convertToSWFMovieClip( BitmapImage* bitmapImage, Object* object, QMa
 }
 
 
-void Flash::convertToSWFMovieClip( VectorImage* vectorImage, Object* object, QMatrix view, SWFMovieClip* sprite ) {
-	
+void Flash::convertToSWFSprite( VectorImage* vectorImage, Object* object, QMatrix view, SWFSprite* sprite ) {
+
 	// add filled areas
 	for(int i=0; i< vectorImage->area.size(); i++) {
 		QColor colour = object->getColour(vectorImage->area[i].getColourNumber()).colour;
@@ -148,7 +150,7 @@ void Flash::convertToSWFMovieClip( VectorImage* vectorImage, Object* object, QMa
 
 
 
-void Flash::addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour, QColor borderColour, qreal width, bool fill ) {
+void Flash::addShape( SWFSprite* sprite, QPainterPath path, QColor fillColour, QColor borderColour, qreal width, bool fill ) {
 	SWFShape* shape = new SWFShape();
 	//float widthf = static_cast< float >(width);
 	if(width == 0.0) {
@@ -160,7 +162,7 @@ void Flash::addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour
 		SWFFill* fill = shape->addSolidFill( fillColour.red(), fillColour.green(), fillColour.blue() );
 		shape->setRightFill(fill);
 	}
-	
+
 	qreal memoP0x = 0.0;
 	qreal memoP0y = 0.0;
 	qreal memoP1x = 0.0;
@@ -199,7 +201,7 @@ void Flash::addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour
 				QPointF P1(memoP1x, memoP1y);
 				QPointF P2(memoP2x, memoP2y);
 				QPointF P3(memoP3x, memoP3y);
-				
+
 				QPointF M2 = (P0+3*P1+3*P2+P3)/8;
 				QPointF C1 = (5*P0+3*P1)/8;
 				QPointF C4 = (5*P3+3*P2)/8;

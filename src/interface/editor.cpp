@@ -50,6 +50,12 @@ Editor::Editor(QMainWindow* parent)
 	clipboardBitmapOk = false;
 	clipboardVectorOk = false;
 
+	if (settings.value("onionLayer1Opacity").isNull()) settings.setValue("onionLayer1Opacity",50);
+	if (settings.value("onionLayer2Opacity").isNull()) settings.setValue("onionLayer2Opacity",0);
+	if (settings.value("onionLayer3Opacity").isNull()) settings.setValue("onionLayer3Opacity",0);
+	onionLayer1Opacity = settings.value("onionLayer1Opacity").toInt();
+	onionLayer2Opacity = settings.value("onionLayer2Opacity").toInt();
+	onionLayer3Opacity = settings.value("onionLayer3Opacity").toInt();
 
 	fps = settings.value("fps").toInt();
 	if (fps==0) { fps=12; settings.setValue("fps", 12); }
@@ -191,6 +197,10 @@ Editor::Editor(QMainWindow* parent)
 	connect(preferences, SIGNAL(labelChange(int)), timeLine, SIGNAL(labelChange(int)));
 	connect(preferences, SIGNAL(scrubChange(int)), timeLine, SIGNAL(scrubChange(int)));
 
+	connect(preferences, SIGNAL(onionLayer1OpacityChange(int)), this, SLOT(onionLayer1OpacityChangeSlot(int)));
+	connect(preferences, SIGNAL(onionLayer2OpacityChange(int)), this, SLOT(onionLayer2OpacityChangeSlot(int)));
+	connect(preferences, SIGNAL(onionLayer3OpacityChange(int)), this, SLOT(onionLayer3OpacityChangeSlot(int)));
+
 	connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 
 	framelay->addWidget(scribbleArea);
@@ -252,12 +262,15 @@ void Editor::importImageSequence (){
 	    QTreeView *t = w.findChild<QTreeView*>();
 	     if (t) {
 	       t->setSelectionMode(QAbstractItemView::MultiSelection);
-	    } 8*/
+	    } */
 
-	     QStringList files = w.getOpenFileNames(
+		QSettings settings("Pencil","Pencil");
+		QString initialPath = settings.value("lastImportPath", QVariant(QDir::homePath())).toString();
+		if(initialPath.isEmpty()) initialPath = QDir::homePath();
+		QStringList files = w.getOpenFileNames(
 	                              this,
 	                              "Select one or more files to open",
-	                              "/desktop",
+	                              initialPath,
 	                              "Images (*.png *.xpm *.jpg)");
 	     qDebug() << files;
 //#	    w.exec();
@@ -267,7 +280,6 @@ void Editor::importImageSequence (){
 	    	 QString filePath;
 	    	 filePath= files.at(i).toLocal8Bit().constData();
          if(i>0) scrubForward();
-
 	    			 {
 	    			QSettings settings("Pencil","Pencil");
 	    			if(filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
@@ -278,6 +290,19 @@ void Editor::importImageSequence (){
 
    		}
 
+bool Editor::importMov() {
+        QSettings settings("Pencil","Pencil");
+        QString initialPath = settings.value("lastExportPath", QVariant(QDir::homePath())).toString();
+        if(initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled.avi";
+        QString filePath=QFileDialog::getOpenFileName(this, tr("Import movie"),initialPath ,tr("AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)"));
+        if (filePath.isEmpty()) {
+                return false;
+        } else {
+                settings.setValue("lastExportPath", QVariant(filePath));
+                importMovie(filePath,fps);
+                return true;
+        }
+}
 
 
 
@@ -563,6 +588,28 @@ void Editor::changeAutosaveNumber(int number) {
 	QSettings settings("Pencil","Pencil");
 	settings.setValue("autosaveNumber", number);
 }
+
+
+void Editor::onionLayer1OpacityChangeSlot(int number) {
+    onionLayer1Opacity = number;
+    QSettings settings("Pencil","Pencil");
+    settings.setValue("onionLayer1Opacity", number);
+}
+
+
+void Editor::onionLayer2OpacityChangeSlot(int number) {
+    onionLayer2Opacity = number;
+    QSettings settings("Pencil","Pencil");
+    settings.setValue("onionLayer2Opacity", number);
+}
+
+
+void Editor::onionLayer3OpacityChangeSlot(int number) {
+    onionLayer3Opacity = number;
+    QSettings settings("Pencil","Pencil");
+    settings.setValue("onionLayer3Opacity", number);
+}
+
 
 void Editor::modification() {
 	modification(currentLayer);
@@ -979,7 +1026,7 @@ void Editor::about()
 				"<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
 				"Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
 				"Patches by: <i>Mj Mendoza IV and D.F.</i><br>"
-				"Version: <b>0.5</b> (10 sep 2011)<br><br>"
+				"Version: <b>0.5</b> (12 sep 2011)<br><br>"
 				"<b>Thanks to:</b><br>"
 				"Trolltech for the Qt libraries<br>"
 				"Roland for the Movie export functions<br>"

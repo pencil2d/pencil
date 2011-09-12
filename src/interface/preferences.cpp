@@ -30,6 +30,7 @@ Preferences::Preferences()
      pagesWidget->addWidget(new GeneralPage(this));
      pagesWidget->addWidget(new FilesPage(this));
      pagesWidget->addWidget(new TimelinePage(this));
+     pagesWidget->addWidget(new ToolsPage(this));
      //pagesWidget->addWidget(new QueryPage);
 
      QPushButton *closeButton = new QPushButton(tr("Close"));
@@ -65,17 +66,23 @@ Preferences::Preferences()
      generalButton->setTextAlignment(Qt::AlignHCenter);
      generalButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
-		 QListWidgetItem *filesButton = new QListWidgetItem(contentsWidget);
+     QListWidgetItem *filesButton = new QListWidgetItem(contentsWidget);
      filesButton->setIcon(QIcon(":icons/prefs-files.png"));
      filesButton->setText(tr("Files"));
      filesButton->setTextAlignment(Qt::AlignHCenter);
      filesButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
-		 QListWidgetItem *timelineButton = new QListWidgetItem(contentsWidget);
+     QListWidgetItem *timelineButton = new QListWidgetItem(contentsWidget);
      timelineButton->setIcon(QIcon(":icons/prefstimeline.png"));
      timelineButton->setText(tr("Timeline"));
      timelineButton->setTextAlignment(Qt::AlignHCenter);
      timelineButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+     QListWidgetItem *toolsButton = new QListWidgetItem(contentsWidget);
+     toolsButton->setIcon(QIcon(":/icons/prefs-files.png"));
+     toolsButton->setText(tr("Tools"));
+     toolsButton->setTextAlignment(Qt::AlignHCenter);
+     toolsButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
      /*QListWidgetItem *queryButton = new QListWidgetItem(contentsWidget);
      queryButton->setIcon(QIcon(":/images/query.png"));
@@ -399,4 +406,49 @@ FilesPage::FilesPage(QWidget *parent) : QWidget(parent) {
 	lay2->addWidget(autosaveBox);
 	lay2->addStretch(1);
 	setLayout(lay2);
+}
+
+ToolsPage::ToolsPage(QWidget *parent) : QWidget(parent) {
+        QSettings settings("Pencil","Pencil");
+
+        QVBoxLayout *lay = new QVBoxLayout();
+
+        QGroupBox* onionSkinBox = new QGroupBox(tr("Onion skin"));
+        QLabel *onionLayer1OpacityLabel = new QLabel(tr("Onion layer 1 opacity (%):"));
+        QSpinBox *onionLayer1OpacityBox = new QSpinBox();
+        QLabel *onionLayer2OpacityLabel = new QLabel(tr("Onion layer 2 opacity (%):"));
+        QSpinBox *onionLayer2OpacityBox = new QSpinBox();
+        QLabel *onionLayer3OpacityLabel = new QLabel(tr("Onion layer 3 opacity (%):"));
+        QSpinBox *onionLayer3OpacityBox = new QSpinBox();
+
+        onionLayer1OpacityBox->setMinimum(0);
+        onionLayer1OpacityBox->setMaximum(100);
+        onionLayer1OpacityBox->setFixedWidth(50);
+        onionLayer2OpacityBox->setMinimum(0);
+        onionLayer2OpacityBox->setMaximum(100);
+        onionLayer2OpacityBox->setFixedWidth(50);
+        onionLayer3OpacityBox->setMinimum(0);
+        onionLayer3OpacityBox->setMaximum(100);
+        onionLayer3OpacityBox->setFixedWidth(50);
+
+        onionLayer1OpacityBox->setValue(settings.value("onionLayer1Opacity").toInt());
+        onionLayer2OpacityBox->setValue(settings.value("onionLayer2Opacity").toInt());
+        onionLayer3OpacityBox->setValue(settings.value("onionLayer3Opacity").toInt());
+
+        connect(onionLayer1OpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionLayer1OpacityChange(int)));
+        connect(onionLayer2OpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionLayer2OpacityChange(int)));
+        connect(onionLayer3OpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionLayer3OpacityChange(int)));
+
+        lay->addWidget(onionLayer1OpacityLabel);
+        lay->addWidget(onionLayer1OpacityBox);
+        lay->addWidget(onionLayer2OpacityLabel);
+        lay->addWidget(onionLayer2OpacityBox);
+        lay->addWidget(onionLayer3OpacityLabel);
+        lay->addWidget(onionLayer3OpacityBox);
+        onionSkinBox->setLayout(lay);
+
+        QVBoxLayout *lay2 = new QVBoxLayout();
+        lay2->addWidget(onionSkinBox);
+        lay2->addStretch(1);
+        setLayout(lay2);
 }

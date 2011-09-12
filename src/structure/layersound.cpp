@@ -242,7 +242,7 @@ void LayerSound::loadDomElement(QDomElement element, QString filePath) {
 void LayerSound::addTimelineKey(qint64 newTotalTime) {
   for (int i = 0; i < this->sound.size(); i++)
   {
-  if (!this->soundSize[i])
+  if (this->soundSize[i] <= 0)
       this->soundSize[i] = this->sound[i]->totalTime();
   }
   QSettings settings("Pencil","Pencil");
