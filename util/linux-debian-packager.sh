@@ -5,7 +5,7 @@
 
 VERSION=0.5
 REVISION=190.beta
-RELEASE=7
+RELEASE=8
 
 set -e
 
