@@ -414,11 +414,11 @@ ToolsPage::ToolsPage(QWidget *parent) : QWidget(parent) {
         QVBoxLayout *lay = new QVBoxLayout();
 
         QGroupBox* onionSkinBox = new QGroupBox(tr("Onion skin"));
-        QLabel *onionLayer1OpacityLabel = new QLabel(tr("Onion layer 1 opacity (%):"));
+        QLabel *onionLayer1OpacityLabel = new QLabel(tr("Onion layer 1 opacity - % (50 is recommended):"));
         QSpinBox *onionLayer1OpacityBox = new QSpinBox();
-        QLabel *onionLayer2OpacityLabel = new QLabel(tr("Onion layer 2 opacity (%):"));
+        QLabel *onionLayer2OpacityLabel = new QLabel(tr("Onion layer 2 opacity - % (30 is recommended):"));
         QSpinBox *onionLayer2OpacityBox = new QSpinBox();
-        QLabel *onionLayer3OpacityLabel = new QLabel(tr("Onion layer 3 opacity (%):"));
+        QLabel *onionLayer3OpacityLabel = new QLabel(tr("Onion layer 3 opacity - % (20 is recommended):"));
         QSpinBox *onionLayer3OpacityBox = new QSpinBox();
 
         onionLayer1OpacityBox->setMinimum(0);
