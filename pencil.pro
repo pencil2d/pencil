@@ -5,6 +5,8 @@
 CONFIG += qt debug console
 TEMPLATE = app
 TARGET = Pencil
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
 DEPENDPATH += . src
 INCLUDEPATH += . 	src \
 			src/external/flash \
