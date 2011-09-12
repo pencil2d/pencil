@@ -184,10 +184,10 @@ EOS
 
 	rpmbuild -bb pencil.spec
     
-    mv /usr/src/rpm/RPMS/$ARCH/pencil-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm /root
+    mv /root/rpmbuild/RPMS/$ARCH/pencil-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm /root
     cd /root
 	export LD_LIBRARY_PATH=${PREFIX}/lib:${LD_LIBRARY_PATH}
-    alien -k pencil-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm
+    alien -k pencil-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm --scripts
     [ ! -d pencil-${VERSION} ] || rm -rf pencil-${VERSION}
     echo
     echo
