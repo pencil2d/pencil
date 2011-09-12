@@ -7,6 +7,8 @@ VERSION=0.5
 REVISION=190.beta
 RELEASE=8
 
+export EMAIL='ksee.zelgadis@gmail.com'
+
 set -e
 
 PREFIX=/opt/pencil
