@@ -1,0 +1,6 @@
+.moc
+.obj
+*.o
+Pencil
+Makefile
+qrc_pencil.cpp
