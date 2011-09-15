@@ -22,7 +22,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent) {
 
 	//QFrame* frame = new QFrame();
 
-	QSpinBox* fpsBox = new QSpinBox();
+	fpsBox = new QSpinBox();
 	//fpsBox->setFixedWidth(50);
 	fpsBox->setFont( QFont("Helvetica", 10) );
 	fpsBox->setFixedHeight(22);

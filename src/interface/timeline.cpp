@@ -163,7 +163,7 @@ TimeLine::TimeLine(QWidget *parent, Editor *editor) : QDockWidget(parent, Qt::To
 
 
 	// --------- Time controls ---------
-	TimeControls* timeControls = new TimeControls(this);
+	timeControls = new TimeControls(this);
 
 	QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
 	//rightToolBarLayout->setAlignment(Qt::AlignLeft);
