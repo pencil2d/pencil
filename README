@@ -1,3 +1,29 @@
+Pencil Animation v0.5 beta (Morevna Branch)
+
+Changes by Konstantin Dmitriev:
+* Support for some command-line options.
+  Now it's possible to specify file to open:
+    $ Pencil file.pcl
+  Export to image sequence using command-line:
+    $ Pencil file.pcl --export-sequence file.png
+* Load dialog: Allow to choose "Any file" filter - that allows to load files without extension (old Pencil files).
+* Fix transparency issue when exporting to png sequence
+* Desktop integration (linux)
+* Other minor fixes
+
+Changes by davidefa:
+* Export movie exports audio and video. Audio layers are mixed. 
+  To select video format use an 'appropriate' filename extension ( ex: .avi, .mov, .mpg, .mp4 ... ), movie framerate is selectable ( but output codecs don't support all framerates, a safe and usual choice should be 24, 25 or 30 fps )
+* Minor fixes in audio layers ( corrupted audio passed end of 'audio frame' ).
+* Improved undo/redo functionality
+* Fixed saving animation ( removed 'optimization', now saving is slower but safer )
+* Added fps parameter in saved animations
+* 3 'layers' of onion skinning ( configurable trough edit->preferences->tools, to remove a layer set its opacity to 0 )
+* Added import movie ( frames are imported at the current fps, there is no check to limit the imported frames )
+* Compiles fine with min 0.4.x on linux
+* Other minor fixes ( moving selection on bitmap layers, moving layers... )
+
+---------
 Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009
 
 Added export AVI/OGG
