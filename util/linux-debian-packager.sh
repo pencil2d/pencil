@@ -5,7 +5,7 @@
 
 VERSION=0.5
 REVISION=190.beta
-RELEASE=8
+RELEASE=9
 
 export EMAIL='ksee.zelgadis@gmail.com'
 
