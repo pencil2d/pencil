@@ -420,7 +420,7 @@ void BitmapImage::blur2(qreal radius) {
 
 void BitmapImage::clear() {
 	if(image != NULL) delete image;
-	image = new QImage(0, 0, QImage::Format_ARGB32_Premultiplied);
+	image = new QImage(1, 1, QImage::Format_ARGB32_Premultiplied);
 	boundaries = QRect(0,0,0,0);
 }
 
