@@ -491,7 +491,7 @@ void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
                 background = true; // JPG doesn't support transparency so we have to include the background
         }
         if(filePath.endsWith(extension, Qt::CaseInsensitive)) {
-                filePath = filePath.remove(extension, Qt::CaseInsensitive);
+                filePath.chop(extension.size());
         }
         //qDebug() << "format =" << format << "extension = " << extension;
 
@@ -597,7 +597,7 @@ void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
 		}
 
 		if(filePath.endsWith(".jpg", Qt::CaseInsensitive)) {
-			filePath = filePath.remove(".jpg", Qt::CaseInsensitive);
+			filePath.chop(4);
 		}
 		xImg.save(filePath+QString::number(page)+".jpg", "JPG", 60);
 		page++;
