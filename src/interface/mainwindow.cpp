@@ -191,15 +191,15 @@ void MainWindow::createMenus() {
     connect(pasteframesAct, SIGNAL(triggered()), editor, SLOT(pasteFrames()));
 
     deleteAct = new QAction(QIcon(":icons/clear.png"), tr("Delete"), this);
-    deleteAct->setShortcut(tr("Ctrl+A"));
+    deleteAct->setShortcut(tr("Ctrl+D"));
     connect(deleteAct, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
 
     selectAllAct = new QAction(tr("Select All"), this);
-    selectAllAct->setShortcut(tr("Ctrl+B"));
+    selectAllAct->setShortcut(tr("Ctrl+A"));
     connect(selectAllAct, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
 
     deselectAllAct = new QAction(tr("Deselect All"), this);
-    deselectAllAct->setShortcut(tr("Ctrl+D"));
+    deselectAllAct->setShortcut(tr("Ctrl+Shift+A"));
     connect(deselectAllAct, SIGNAL(triggered()), editor, SLOT(deselectAll()));
 
 
