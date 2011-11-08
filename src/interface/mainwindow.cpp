@@ -147,7 +147,6 @@ void MainWindow::createMenus() {
 
     undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
     undoAct->setShortcut(tr("Ctrl+Z"));
-    undoAct->setEnabled(false);
     connect(undoAct, SIGNAL(triggered()), editor, SLOT(undo()));
 
     redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
@@ -458,6 +457,7 @@ void MainWindow::createMenus() {
     editMenu->addSeparator();
     editMenu->addAction(preferencesAct);
     connect(editMenu, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
+    connect(editMenu, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
 
     layerMenu = new QMenu(tr("&Layer"), this);
     layerMenu->addAction(newBitmapLayerAct);
@@ -756,4 +756,10 @@ void MainWindow::undoActSetText(void)
       editMenu->actions().at(1)->setText("Redo");
       editMenu->actions().at(1)->setEnabled(false);
       }
+}
+
+void MainWindow::undoActSetEnabled(void)
+{
+      editMenu->actions().at(0)->setEnabled(true);
+      editMenu->actions().at(1)->setEnabled(true);
 }

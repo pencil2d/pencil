@@ -31,6 +31,7 @@ public:
 public slots:
 		void setOpacity(int opacity);
 		void undoActSetText(void);
+		void undoActSetEnabled(void);
 
 private slots:
 		void exportFile();
