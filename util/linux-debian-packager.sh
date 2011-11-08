@@ -94,7 +94,7 @@ Group:          Applications/Graphics
 License:        GPL
 URL:            http://www.pencil-animation.org/
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:	qt >= 4.4.0 qt-x11 giflib
+Requires:       qt >= 4.4.0 qt-x11 giflib phonon
 AutoReqProv: no
 
 %description
