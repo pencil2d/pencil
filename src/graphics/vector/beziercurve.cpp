@@ -700,9 +700,8 @@ bool BezierCurve::findIntersection(BezierCurve curve1, int i1, BezierCurve curve
 	R1.setTopLeft(P1); R1.setBottomRight(Q1);
 	R2.setTopLeft(P2); R2.setBottomRight(Q2);
 	
-	//QPointF intersectionPoint = QPointF(50.0, 50.0); // bogus point
-	//QPointF* intersection = &intersectionPoint;
-	QPointF* cubicIntersection = &QPointF(50.0, 50.0); // bogus point
+	QPointF intersectionPoint = QPointF(50.0, 50.0); // bogus point
+	QPointF* cubicIntersection = &intersectionPoint;
 	if( R1.intersects(R2) || L2.intersect(L1, cubicIntersection) == QLineF::BoundedIntersection ) {
 	//if(L2.intersect(L1, intersection) == QLineF::BoundedIntersection) {
 		//qDebug() << "                   FOUND rectangle intersection ";
