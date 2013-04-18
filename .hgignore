@@ -1,9 +1,11 @@
+syntax: glob
 .DS_Store
 Thumb.db
 .moc
 .obj
-*.o
-*.user
 Pencil
 Makefile
 qrc_pencil.cpp
+*.o
+*.orig
+*.user
