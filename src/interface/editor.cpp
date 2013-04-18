@@ -320,43 +320,9 @@ bool Editor::importMov()
     }
 }
 
-
-
 void Editor::showCounter(int n)
 {
     toolSet->setCounter(n);
-}
-
-void Editor::newDocument()
-{
-    if (maybeSave())
-    {
-        newObject(); // default size
-    }
-}
-
-void Editor::openDocument()
-{
-    if (maybeSave())
-    {
-        QSettings settings("Pencil","Pencil");
-        QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-        QString fileName = QFileDialog::getOpenFileName(this, tr("Open File..."),myPath ,tr("PCL (*.pcl);;Any files (*)"));
-
-        if (!fileName.isEmpty())
-        {
-            bool ok = openObject(fileName);
-            if (!ok)
-            {
-                QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
-                newObject();
-            }
-            else
-            {
-                updateMaxFrame();
-            }
-        }
-    }
 }
 
 void Editor::openRecent()
@@ -364,10 +330,14 @@ void Editor::openRecent()
     QSettings settings("Pencil","Pencil");
     QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
     bool ok = openObject(myPath);
-    if(!ok)
+    if ( !ok )
     {
         QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
-        newObject();
+        Object* pObject = new Object();
+        pObject->defaultInitialisation();
+
+        setObject(pObject);
+        resetUI();
     }
     else
     {
@@ -376,14 +346,11 @@ void Editor::openRecent()
 }
 
 bool Editor::saveDocument()
-{
-    //QAction *action = qobject_cast<QAction *>(sender()); // ? old code from Patrick?
-    //QByteArray fileFormat = action->data().toByteArray();  // ? old code from Patrick?
+{  
     QSettings settings("Pencil","Pencil");
     QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
     if(myPath.isEmpty()) myPath = QDir::homePath() + "/untitled.pcl";
 
-//	QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), myPath);
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save As..."),myPath ,tr("PCL (*.pcl)"));
 
     if (fileName.isEmpty())
@@ -393,9 +360,12 @@ bool Editor::saveDocument()
     else
     {
         if(! fileName.endsWith(".pcl"))
+        {
             fileName =  fileName + ".pcl";
+        }
         QSettings settings("Pencil","Pencil");
         settings.setValue("lastFilePath", QVariant(fileName));
+
         return saveObject(fileName);
     }
 }
@@ -1273,13 +1243,8 @@ bool Editor::saveObject(QString filePath)
     return true;
 }
 
-void Editor::newObject()
-{
-    //if(object != NULL) delete object;
-    Object* newObject = new Object();
-    newObject->defaultInitialisation();
-
-    setObject(newObject);
+void Editor::resetUI()
+{    
     updateObject();
     savedName = "";
     maxFrame = 0;
@@ -1289,14 +1254,14 @@ void Editor::newObject()
 }
 
 void Editor::setObject(Object* object)
-{
+{ 
     if (this->object != NULL && object != this->object)
     {
         disconnect( this->object, 0, 0, 0); // disconnect the current object from everything
         delete this->object;
     }
     this->object = object;
-    if (object)
+    if (object != NULL)
     {
         connect( object, SIGNAL(imageAdded(int)), this, SLOT(addFrame(int)) );
         connect( object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)) );
@@ -1331,8 +1296,6 @@ void Editor::updateObject()
 bool Editor::openObject(QString filePath)
 {
     // ---- test before opening ----
-    QFileInfo fileInfo(filePath);
-    if( fileInfo.isDir() ) return false;
     QFile* file = new QFile(filePath);
     if (!file->open(QFile::ReadOnly)) return false;
     QDomDocument doc;

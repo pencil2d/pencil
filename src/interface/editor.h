@@ -115,7 +115,7 @@ public:
     int backupIndex;
     QList<BackupElement*> backupList;
 
-    ScribbleArea* getScribbleArea() {return scribbleArea;};
+    ScribbleArea* getScribbleArea() { return scribbleArea; }
 
 protected:
     void dragEnterEvent(QDragEnterEvent* event);
@@ -201,7 +201,8 @@ public slots:
     //void altRelease();
     void showPreferences();
 
-    void newObject();
+    void resetUI();
+    //void newObject();
     void setObject(Object* object);
     void updateObject();
 
@@ -277,9 +278,7 @@ public slots:
     void saveSvg();
     void addcolorbutton();
 
-private slots:
-    void newDocument();
-    void openDocument();
+private slots:    
     bool saveDocument();
 
     bool exportX();

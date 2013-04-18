@@ -23,11 +23,12 @@ GNU General Public License for more details.
 
 MainWindow::MainWindow()
 {
-    Object* pObject = new Object();
-    pObject->defaultInitialisation();
+    object = new Object();
+    object->defaultInitialisation();
 
     editor = new Editor(this);
-    editor->newObject();
+    editor->setObject(object);
+    editor->resetUI();
 
     arrangePalettes();
 
@@ -69,11 +70,11 @@ void MainWindow::createMenus()
 
     newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
     newAct->setShortcut(tr("Ctrl+N"));
-    connect(newAct, SIGNAL(triggered()), editor, SLOT(newDocument()));
+    connect(newAct, SIGNAL(triggered()), this, SLOT(newDocument()));
 
     openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
     openAct->setShortcut(tr("Ctrl+O"));
-    connect(openAct, SIGNAL(triggered()), editor, SLOT(openDocument()));
+    connect(openAct, SIGNAL(triggered()), this, SLOT(openDocument()));
 
     saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
     saveAct->setShortcut(tr("Ctrl+Shift+S"));
@@ -140,9 +141,6 @@ void MainWindow::createMenus()
     aboutAct = new QAction(tr("&About"), this);
     aboutAct->setShortcut(tr("F2"));
     connect(aboutAct, SIGNAL(triggered()), editor, SLOT(about()));
-
-    //aboutQtAct = new QAction(tr("About &Qt"), this);
-    //connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
     undoAct->setShortcut(tr("Ctrl+Z"));
@@ -617,6 +615,64 @@ void MainWindow::closeEvent(QCloseEvent* event)
         event->ignore();
     }
 }
+
+
+// ==== SLOT ====
+
+void MainWindow::newDocument()
+{
+    if ( editor->maybeSave() )
+    {
+        // default size
+        Object* pObject = new Object();
+        pObject->defaultInitialisation();
+
+        editor->setObject(pObject);
+        editor->resetUI();
+    }
+}
+
+void MainWindow::openDocument()
+{
+    if ( editor->maybeSave() )
+    {
+        QSettings settings("Pencil","Pencil");
+
+        QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                                        tr("Open File..."),
+                                                        myPath,
+                                                        tr("PCL (*.pcl);;Any files (*)"));
+        if ( fileName.isEmpty() )
+        {
+            return ;
+        }
+
+        QFileInfo fileInfo(fileName);
+        if( fileInfo.isDir() )
+        {
+            return;
+        }
+
+        bool ok = editor->openObject(fileName);
+        if (!ok)
+        {
+            QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
+            Object* pObject = new Object();
+            pObject->defaultInitialisation();
+
+            editor->setObject(pObject);
+            editor->resetUI();
+        }
+        else
+        {
+            editor->updateMaxFrame();
+        }
+
+    }
+}
+
+// ==== Key Event ====
 
 void MainWindow::keyPressEvent( QKeyEvent* e )
 {

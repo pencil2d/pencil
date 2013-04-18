@@ -30,6 +30,7 @@ public:
 
     //void initialiseStyle();
     void addRecentFile(QString filePath);
+
     Editor* editor;
     Object* object;
 
@@ -41,6 +42,9 @@ public slots:
 private slots:
     void exportFile();
     void toggleLoop(bool);
+
+    void newDocument();
+    void openDocument();
 
 private:
     void arrangePalettes();
