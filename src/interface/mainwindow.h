@@ -59,8 +59,8 @@ private:
     void readSettings();
     void writeSettings();
     //QGraphicsItem *m_svgItem;
-    QString path;
 
+    QString path;
 
     QMenu* fileMenu;
     QMenu* openRecentMenu;
@@ -79,21 +79,6 @@ private:
     QMenu* windowsMenu;
     QMenu* helpMenu;
 
-
-    QAction* newAct;
-    QAction* openAct;
-    QAction* saveAct;
-    QAction* exitAct;
-    QAction* helpMe;
-    QAction* aboutAct;
-    QAction* aboutQtAct;
-    QAction* exportXAct;
-    QAction* exportAct;
-
-    QAction* print;
-    QAction* importMovAct;
-    QAction* exportimageAct;
-    QAction* importMovieAct;
     QAction* trimAct;
     QAction* cropAct;
     QAction* gridAct;

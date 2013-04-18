@@ -64,19 +64,19 @@ void MainWindow::arrangePalettes()
 void MainWindow::createMenus()
 {
     // ---------- Actions -------------
-    exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
+    QAction* exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-    newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
+    QAction* newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
     newAct->setShortcut(tr("Ctrl+N"));
     connect(newAct, SIGNAL(triggered()), this, SLOT(newDocument()));
 
-    openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
+    QAction* openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
     openAct->setShortcut(tr("Ctrl+O"));
     connect(openAct, SIGNAL(triggered()), this, SLOT(openDocument()));
 
-    saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
+    QAction* saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
     saveAct->setShortcut(tr("Ctrl+Shift+S"));
     connect(saveAct, SIGNAL(triggered()), editor, SLOT(saveDocument()));
 
@@ -84,19 +84,19 @@ void MainWindow::createMenus()
     savAct->setShortcut(tr("Ctrl+S"));
     connect(savAct, SIGNAL(triggered()), editor, SLOT(saveForce()));
 
-    print = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
-    print->setShortcut(tr("Ctrl+P"));
-    connect(print, SIGNAL(triggered()), editor, SLOT(print()));
+    QAction* printAct = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
+    printAct->setShortcut(tr("Ctrl+P"));
+    connect(printAct, SIGNAL(triggered()), editor, SLOT(print()));
 
-    exportXAct = new QAction(tr("&X-Sheet..."), this);
+    QAction* exportXAct = new QAction(tr("&X-Sheet..."), this);
     exportXAct->setShortcut(tr("Ctrl+Alt+X"));
     connect(exportXAct, SIGNAL(triggered()), editor, SLOT(exportX()));
 
-    exportAct = new QAction(tr("&Image Sequence..."), this);
+    QAction* exportAct = new QAction(tr("&Image Sequence..."), this);
     exportAct->setShortcut(tr("Shift+Alt+S"));
     connect(exportAct, SIGNAL(triggered()), editor, SLOT(exportSeq()));
 
-    exportimageAct = new QAction(tr("&Image..."), this);
+    QAction* exportimageAct = new QAction(tr("&Image..."), this);
     exportimageAct->setShortcut(tr("Ctrl+Alt+S"));
     connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
@@ -118,11 +118,11 @@ void MainWindow::createMenus()
     importAct->setShortcut(tr("Ctrl+Shift+R"));
     connect(importAct, SIGNAL(triggered()), editor, SLOT(importImage()));
 
-    importMovAct = new QAction(tr("&Image Sequence..."), this);
+    QAction* importMovAct = new QAction(tr("&Image Sequence..."), this);
     importMovAct->setShortcut(tr("Ctrl+R"));
     connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
-    importMovieAct = new QAction(tr("&Movie..."), this);
+    QAction* importMovieAct = new QAction(tr("&Movie..."), this);
     importMovieAct->setShortcut(tr("Ctrl+R"));
     connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
 
@@ -134,11 +134,11 @@ void MainWindow::createMenus()
     savesvgAct->setShortcut(tr("Ctrl+I"));
     connect(savesvgAct, SIGNAL(triggered()), editor, SLOT(saveSvg()));
 
-    helpMe = new QAction(tr("&Help"), this);
-    helpMe->setShortcut(tr("F1"));
-    connect(helpMe, SIGNAL(triggered()), editor, SLOT(helpBox()));
+    QAction* helpMeAct = new QAction(tr("&Help"), this);
+    helpMeAct->setShortcut(tr("F1"));
+    connect(helpMeAct, SIGNAL(triggered()), editor, SLOT(helpBox()));
 
-    aboutAct = new QAction(tr("&About"), this);
+    QAction* aboutAct = new QAction(tr("&About"), this);
     aboutAct->setShortcut(tr("F2"));
     connect(aboutAct, SIGNAL(triggered()), editor, SLOT(about()));
 
@@ -399,7 +399,7 @@ void MainWindow::createMenus()
     fileMenu->addMenu(importMenu);
     fileMenu->addMenu(exportMenu);
     fileMenu->addSeparator();
-    fileMenu->addAction(print);
+    fileMenu->addAction(printAct);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
 
@@ -495,7 +495,7 @@ void MainWindow::createMenus()
     //windowsMenu->addAction(detachAllPalettesAct);
 
     helpMenu = new QMenu(tr("&Help"), this);
-    helpMenu->addAction(helpMe);
+    helpMenu->addAction(helpMeAct);
     helpMenu->addAction(aboutAct);
     //helpMenu->addAction(aboutQtAct);
 

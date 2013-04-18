@@ -227,7 +227,7 @@ Editor::Editor(QMainWindow* parent)
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
-    if (object)
+    if ( object != NULL )
     {
         delete object;
     }
@@ -1147,8 +1147,8 @@ void Editor::about()
 
 void Editor::helpBox()
 {
-//	QSettings settings("Pencil","Pencil");
-//		QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+    qDebug() << "Open help manual.";
+
     QUrl url = QUrl::fromLocalFile(QDir::currentPath() + "/Help/User Manual.pdf" );
     QDesktopServices::openUrl( url );
 }
