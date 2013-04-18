@@ -351,11 +351,14 @@ bool LayerImage::saveImages(QString path, int layerNumber) {
 		qDebug() << "Trying to save " << framesFilename.at(i) << " of layer n. " << layerNumber;
 		saveImage(i, path, layerNumber);
 	}
-	qDebug() << "Layer " << layerNumber << "done";
+    qDebug() << "Layer " << layerNumber << "done";
+    return true;
 }
 
-bool LayerImage::saveImage(int index, QString path, int layerNumber) {
-	// implemented in subclasses
+bool LayerImage::saveImage(int index, QString path, int layerNumber)
+{
+    // implemented in subclasses
+    return true;
 }
 
 QString LayerImage::fileName(int index, int layerNumber) {

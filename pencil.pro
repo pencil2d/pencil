@@ -21,7 +21,6 @@ INCLUDEPATH += . 	src \
 
 # Input
 HEADERS += src/interfaces.h \
-					 src/external/flash/flash.h \
            src/graphics/bitmap/bitmapimage.h \
            src/graphics/vector/bezierarea.h \
            src/graphics/vector/beziercurve.h \
@@ -41,11 +40,10 @@ HEADERS += src/interfaces.h \
            src/interface/palette.h \
            src/interface/preferences.h \
            src/interface/scribblearea.h \
-					 src/interface/timeline.h \
+           src/interface/timeline.h \
            src/interface/timecontrols.h \
            src/interface/toolset.h
-SOURCES += src/external/flash/flash.cpp \
-					 src/graphics/bitmap/blur.cpp \
+SOURCES += src/graphics/bitmap/blur.cpp \
            src/graphics/bitmap/bitmapimage.cpp \
            src/graphics/vector/bezierarea.cpp \
            src/graphics/vector/beziercurve.cpp \
@@ -72,7 +70,7 @@ SOURCES += src/external/flash/flash.cpp \
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp
-	LIBS += -Llibwin32 -lming -lpng
+    LIBS += -Llibwin32
 	RC_FILE = pencil.rc
 }
 macx {

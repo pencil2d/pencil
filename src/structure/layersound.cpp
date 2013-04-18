@@ -17,7 +17,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "object.h"
 #include <phonon>
-#include "unistd.h"
+//#include "unistd.h"
 
  LayerSound::LayerSound(Object* object) : LayerImage(object) {
 	type = Layer::SOUND;
@@ -108,7 +108,6 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber) {
 		audioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
 		Phonon::createPath(media, audioOutput);
 		media->play();
-		usleep(10000);
 		media->stop();
 		soundSize[index] = media->totalTime(); // totalTime() returns 0 now
         sound[index] = media;
@@ -175,10 +174,13 @@ void LayerSound::playSound(int frame,int fps) {
                 }
 
                 int offsetInMs = floor((frame - position) * float(1000) / fps);
-                if (media->state() == Phonon::PlayingState) {
-                    if (fabs(media->currentTime() - offsetInMs) > float(500))
+                if (media->state() == Phonon::PlayingState)
+                {
+                    if (fabs((float)media->currentTime() - offsetInMs) > 500.0f)
                         media->seek(offsetInMs);
-                } else {
+                }
+                else
+                {
                     if (frame > position) {
                         media->pause();
                         media->seek(offsetInMs);

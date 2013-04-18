@@ -15,8 +15,10 @@ GNU General Public License for more details.
 */
 #include <QtGui>
 #include <QObject>
-#include "editor.h"
 #include "timeline.h"
+
+class Editor;
+
 
 class MainWindow : public QMainWindow
 {

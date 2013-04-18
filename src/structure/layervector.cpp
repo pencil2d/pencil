@@ -218,7 +218,9 @@ bool LayerVector::saveImage(int index, QString path, int layerNumber) {
 	framesFilename[index] = theFileName;
 	//qDebug() << "Write " << theFileName;
 	framesVector[index]->write(path +"/"+ theFileName,"VEC");
-	framesModified[index] = false;
+    framesModified[index] = false;
+
+    return true;
 }
 
 QString LayerVector::fileName(int frame, int layerID) {

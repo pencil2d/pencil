@@ -232,7 +232,9 @@ bool LayerCamera::saveImage(int index, QString path, int layerNumber) {
 	//qDebug() << "Write " << framesFilename.at(index);
 	
 	//framesCamera[index]->image->save(path +"/"+ framesFilename.at(index),"PNG");
-	framesModified[index] = false;
+    framesModified[index] = false;
+
+    return true;
 }
 
 

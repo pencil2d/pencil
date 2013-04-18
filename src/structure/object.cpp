@@ -615,21 +615,30 @@ void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSi
     exported.save(filePath);
 }
 
-void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression) {
-	if(!filePath.endsWith(".swf", Qt::CaseInsensitive)) {
+void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression)
+{
+    if(!filePath.endsWith(".swf", Qt::CaseInsensitive))
+    {
 		filePath = filePath + ".swf";
 	}
+
 	// ************* Requires the MING Library ***************
-	Flash::exportFlash(this, startFrame, endFrame, view, exportSize, filePath, fps, compression);
+    // Flash::exportFlash(this, startFrame, endFrame, view, exportSize, filePath, fps, compression);
 	// **********************************************
 }
 
-void Object::imageCheck(int frameNumber) {
+void Object::imageCheck(int frameNumber)
+{
 	bool noImage = true;
-	for(int i=0; i< layer.size() && noImage; i++) {
-		if(layer[i]->type == Layer::BITMAP || layer[i]->type == Layer::VECTOR) {
-			if( ((LayerImage*)layer[i])->getIndexAtFrame( frameNumber ) != -1) noImage = false;
+    for (int i=0; i< layer.size() && noImage; i++)
+    {
+        if (layer[i]->type == Layer::BITMAP || layer[i]->type == Layer::VECTOR)
+        {
+            if ( ((LayerImage*)layer[i])->getIndexAtFrame( frameNumber ) != -1) noImage = false;
 		}
 	}
-	if(noImage) emit imageRemoved(frameNumber);
+    if (noImage)
+    {
+        emit imageRemoved(frameNumber);
+    }
 }

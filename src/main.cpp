@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 #include <QApplication>
 #include <QDir>
+#include "editor.h"
 #include "mainwindow.h"
 
 void initialise();
@@ -22,26 +23,23 @@ void initialise();
 int main(int argc, char *argv[])
 {
 	qDebug() << "Pencil Animation 0.5 (Morevna Branch)";
-	QApplication app(argc, argv);
+
+    QApplication app(argc, argv);
 	app.setApplicationName("Pencil");
 #ifndef Q_WS_MAC
 	app.setWindowIcon(QIcon(":/icons/icon.png"));
 #endif
-	initialise();
-	/*QDir dir(QApplication::applicationDirPath());
-	dir.cdUp();
-	if(dir.cd("plugins")) {
-		QApplication::setLibraryPaths(QStringList(dir.absolutePath()));
-	}*/
+
+    initialise();
 	
 	MainWindow mainWindow;
-	if(argc==1)
+    if (argc == 1)
 	{
 		mainWindow.show();
-		//qDebug() << "MainWindow thread" << mainWindow.thread();
-		//qDebug() << "App thread" << app.thread();
-		return app.exec();
-	} else {
+        return app.exec();
+    }
+    else
+    {
 		QString inputFile = "";
 		
 		bool jobExportSequence = false;
@@ -71,13 +69,14 @@ int main(int argc, char *argv[])
 				error = true;
 			}
 			// TODO: Check if input file exists
-			if (jobExportSequenceOutput.isEmpty()){
+            if ( jobExportSequenceOutput.isEmpty()){
 				qDebug() << "Error: No output file specified.";
 				error = true;
 			}
 			// TODO: Check if output path exists
 			
-			if ( not error ){
+            if ( !error )
+            {
 				mainWindow.editor->openObject(inputFile);
 				// Detecting format
 				QString format = "";

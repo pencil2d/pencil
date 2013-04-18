@@ -116,7 +116,9 @@ bool LayerBitmap::saveImage(int index, QString path, int layerNumber) {
 	framesFilename[index] = theFileName;
 	//qDebug() << "Write " << theFileName;
 	framesBitmap[index]->image->save(path +"/"+ theFileName,"PNG");
-	framesModified[index] = false;
+    framesModified[index] = false;
+
+    return true;
 }
 
 QString LayerBitmap::fileName(int frame, int layerID) {
