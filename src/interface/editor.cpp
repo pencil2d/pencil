@@ -43,9 +43,12 @@ Editor::Editor(QMainWindow* parent)
     altpress=false;
     modified=false;
     numberOfModifications = 0;
-    autosave=settings.value("autosave").toBool();
-    autosaveNumber=settings.value("autosaveNumber").toInt();
-    if (autosaveNumber==0) { autosaveNumber=20; settings.setValue("autosaveNumber", 20); }
+    autosave = settings.value("autosave").toBool();
+    autosaveNumber = settings.value("autosaveNumber").toInt();
+    if (autosaveNumber==0)
+    {
+        autosaveNumber=20; settings.setValue("autosaveNumber", 20);
+    }
     backupIndex = -1;
     clipboardBitmapOk = false;
     clipboardVectorOk = false;
@@ -224,7 +227,10 @@ Editor::Editor(QMainWindow* parent)
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
-    if (object) delete object;
+    if (object)
+    {
+        delete object;
+    }
     clearBackup();
 }
 
@@ -325,11 +331,6 @@ void Editor::newDocument()
 {
     if (maybeSave())
     {
-        //if (!exportFramesDialog) createNewDocumentDialog();
-        //newDocumentDialog->exec();
-        //if(newDocumentDialog->result() == QDialog::Rejected) return;
-        //QSize documentSize = QSize(newDocumentDialog_hBox->value(), newDocumentDialog_vBox->value());
-        //newObject(documentSize);
         newObject(); // default size
     }
 }
@@ -340,12 +341,12 @@ void Editor::openDocument()
     {
         QSettings settings("Pencil","Pencil");
         QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-//		QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), myPath);
         QString fileName = QFileDialog::getOpenFileName(this, tr("Open File..."),myPath ,tr("PCL (*.pcl);;Any files (*)"));
+
         if (!fileName.isEmpty())
         {
             bool ok = openObject(fileName);
-            if(!ok)
+            if (!ok)
             {
                 QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
                 newObject();
@@ -493,7 +494,7 @@ void Editor::applyPressure(int pressure)
 
 void Editor::selectColour(int i)
 {
-    if(i > -1)
+    if (i > -1)
     {
         scribbleArea->setColour(i);
         toolSet->setColour(object->getColour(i).colour);
@@ -1281,21 +1282,21 @@ void Editor::newObject()
     setObject(newObject);
     updateObject();
     savedName = "";
-    maxFrame=0;
-    currentFrame=0;
+    maxFrame = 0;
+    currentFrame = 0;
     scrubTo(0);
     mainWindow->setWindowTitle(tr("Pencil Animation v0.5 (Morevna Branch)"));
 }
 
 void Editor::setObject(Object* object)
 {
-    if ((this->object)&&(object!=this->object))
+    if (this->object != NULL && object != this->object)
     {
         disconnect( this->object, 0, 0, 0); // disconnect the current object from everything
         delete this->object;
     }
     this->object = object;
-    if(object)
+    if (object)
     {
         connect( object, SIGNAL(imageAdded(int)), this, SLOT(addFrame(int)) );
         connect( object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)) );

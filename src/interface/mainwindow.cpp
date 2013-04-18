@@ -23,24 +23,26 @@ GNU General Public License for more details.
 
 MainWindow::MainWindow()
 {
+    Object* pObject = new Object();
+    pObject->defaultInitialisation();
+
     editor = new Editor(this);
-    //Object* object = new Object();
-    //object->defaultInitialisation();
-    //editor->setObject( object );
     editor->newObject();
 
     arrangePalettes();
-
-    //editor->getTimeLine()->close();
 
     createMenus();
     //loadPlugins();
     readSettings();
 }
 
-void MainWindow::arrangePalettes()
+MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::arrangePalettes()
+{
     setCentralWidget(editor);
 
     addDockWidget(Qt::RightDockWidgetArea, editor->getPalette());

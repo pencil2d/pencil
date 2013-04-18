@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include "timeline.h"
 
 class Editor;
-
+class Object;
 
 class MainWindow : public QMainWindow
 {
@@ -26,9 +26,12 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow();
+    ~MainWindow();
+
     //void initialiseStyle();
     void addRecentFile(QString filePath);
     Editor* editor;
+    Object* object;
 
 public slots:
     void setOpacity(int opacity);
