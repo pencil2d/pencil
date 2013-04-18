@@ -19,54 +19,55 @@ class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
 
-class Preferences : public QDialog {
-	Q_OBJECT
+class Preferences : public QDialog
+{
+    Q_OBJECT
 
-	public:
-		Preferences();
+public:
+    Preferences();
 
-	public slots:
-		void changePage(QListWidgetItem *current, QListWidgetItem *previous);
+public slots:
+    void changePage(QListWidgetItem* current, QListWidgetItem* previous);
 
-	signals:
-		void windowOpacityChange(int);
-		void curveOpacityChange(int);
-		void curveSmoothingChange(int);
-		void highResPositionChange(int);
-		void antialiasingChange(int);
-		void gradientsChange(int);
-		void backgroundChange(int);
-		void shadowsChange(int);
-		void toolCursorsChange(int);
-		void styleChange(int);
+signals:
+    void windowOpacityChange(int);
+    void curveOpacityChange(int);
+    void curveSmoothingChange(int);
+    void highResPositionChange(int);
+    void antialiasingChange(int);
+    void gradientsChange(int);
+    void backgroundChange(int);
+    void shadowsChange(int);
+    void toolCursorsChange(int);
+    void styleChange(int);
 
-		void autosaveChange(int);
-		void autosaveNumberChange(int);
+    void autosaveChange(int);
+    void autosaveNumberChange(int);
 
-		void lengthSizeChange(QString);
-		void fontSizeChange(int);
-		void frameSizeChange(int);
-		void labelChange(int);
-		void scrubChange(int);
+    void lengthSizeChange(QString);
+    void fontSizeChange(int);
+    void frameSizeChange(int);
+    void labelChange(int);
+    void scrubChange(int);
 
-		void onionLayer1OpacityChange(int);
-		void onionLayer2OpacityChange(int);
-		void onionLayer3OpacityChange(int);
+    void onionLayer1OpacityChange(int);
+    void onionLayer2OpacityChange(int);
+    void onionLayer3OpacityChange(int);
 
-	private:
-		void createIcons();
+private:
+    void createIcons();
 
-		QListWidget *contentsWidget;
-		QStackedWidget *pagesWidget;
- };
+    QListWidget* contentsWidget;
+    QStackedWidget* pagesWidget;
+};
 
 
 class GeneralPage : public QWidget
 {
     Q_OBJECT
 
-	public:
-    GeneralPage(QWidget *parent = 0);
+public:
+    GeneralPage(QWidget* parent = 0);
 
 };
 
@@ -76,8 +77,8 @@ class TimelinePage : public QWidget
 {
     Q_OBJECT
 
-	public:
-    TimelinePage(QWidget *parent = 0);
+public:
+    TimelinePage(QWidget* parent = 0);
 
 };
 
@@ -86,16 +87,16 @@ class FilesPage : public QWidget
 {
     Q_OBJECT
 
-	public:
-    FilesPage(QWidget *parent = 0);
+public:
+    FilesPage(QWidget* parent = 0);
 
 };
 
 
 class ToolsPage : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-	ToolsPage(QWidget *parent = 0);
+public:
+    ToolsPage(QWidget* parent = 0);
 };

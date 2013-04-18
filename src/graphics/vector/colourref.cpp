@@ -15,28 +15,38 @@ GNU General Public License for more details.
 */
 #include "colourref.h"
 
-ColourRef::ColourRef() {
-	colour = Qt::green;
-	name = QString("Green");
+ColourRef::ColourRef()
+{
+    colour = Qt::green;
+    name = QString("Green");
 }
 
-ColourRef::ColourRef(QColor theColour, QString theName) {
-	colour = theColour;
-	name = theName;
+ColourRef::ColourRef(QColor theColour, QString theName)
+{
+    colour = theColour;
+    name = theName;
 }
 
-bool ColourRef::operator==(ColourRef colourRef1) {
-	if( (colour == colourRef1.colour) && (name == colourRef1.name) ) {
-		return true;
-	} else {
-		return false;
-	}
+bool ColourRef::operator==(ColourRef colourRef1)
+{
+    if( (colour == colourRef1.colour) && (name == colourRef1.name) )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
-bool ColourRef::operator!=(ColourRef colourRef1) {
-	if( (colour != colourRef1.colour) || (name != colourRef1.name) ) {
-		return true;
-	} else {
-		return false;
-	}
+bool ColourRef::operator!=(ColourRef colourRef1)
+{
+    if( (colour != colourRef1.colour) || (name != colourRef1.name) )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

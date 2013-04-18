@@ -34,7 +34,7 @@ GNU General Public License for more details.
 class Object;
 
 class Flash
-{	
+{
 public:
     static void exportFlash(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
     static void convertToSWFSprite( BitmapImage* image, Object* object, QMatrix view, SWFSprite* sprite );

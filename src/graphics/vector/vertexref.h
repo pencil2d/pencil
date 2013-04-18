@@ -19,14 +19,14 @@ GNU General Public License for more details.
 class VertexRef
 {
 public:
-	VertexRef();
-	VertexRef(int curveN, int vertexN);
-	VertexRef nextVertex();
-	VertexRef prevVertex();
-	bool operator==(VertexRef vertexRef1);
-	bool operator!=(VertexRef vertexRef1);
-	int curveNumber;
-	int vertexNumber;
+    VertexRef();
+    VertexRef(int curveN, int vertexN);
+    VertexRef nextVertex();
+    VertexRef prevVertex();
+    bool operator==(VertexRef vertexRef1);
+    bool operator!=(VertexRef vertexRef1);
+    int curveNumber;
+    int vertexNumber;
 };
 
 #endif

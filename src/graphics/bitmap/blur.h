@@ -20,13 +20,13 @@ GNU General Public License for more details.
 
 class Blur
 {
-  public:
-	Blur();
+public:
+    Blur();
 
-	static void expblur(QImage &img, int radius, int aprec, int zprec);
-	
-	static void fastbluralpha(QImage &img, int radius);
-	
+    static void expblur(QImage& img, int radius, int aprec, int zprec);
+
+    static void fastbluralpha(QImage& img, int radius);
+
 };
 
 #endif

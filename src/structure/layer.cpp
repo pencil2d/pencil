@@ -19,171 +19,191 @@ GNU General Public License for more details.
 #include "object.h"
 #include "timeline.h"
 
-Layer::Layer(Object* object) : QObject(0) {
-	this->object = object;
-	type = Layer::UNDEFINED;
-	id = 0;
-	name = QString("Undefined Layer");
-	visible = true;
+Layer::Layer(Object* object) : QObject(0)
+{
+    this->object = object;
+    type = Layer::UNDEFINED;
+    id = 0;
+    name = QString("Undefined Layer");
+    visible = true;
 }
 
 Layer::~Layer() {}
 
 //QImage* Layer::getImageAtFrame(int frameNumber) {
 //	qDebug() << "get image from undefined layer!";
-//	return NULL; // null by default 
+//	return NULL; // null by default
 //}
 
 //QImage* Layer::getLastImageAtFrame(int frameNumber) {
 //	qDebug() << "get last image from undefined layer!";
-//	return NULL; // null by default 
+//	return NULL; // null by default
 //}
 
-QDomElement Layer::createDomElement(QDomDocument &doc) {
-	QDomElement layerTag = doc.createElement("layer");
-	layerTag.setAttribute("name", name);
-	layerTag.setAttribute("visibility", visible);
-	layerTag.setAttribute("type", type);
-	return layerTag;
+QDomElement Layer::createDomElement(QDomDocument& doc)
+{
+    QDomElement layerTag = doc.createElement("layer");
+    layerTag.setAttribute("name", name);
+    layerTag.setAttribute("visibility", visible);
+    layerTag.setAttribute("type", type);
+    return layerTag;
 }
 
-void Layer::loadDomElement(QDomElement element) {
-	name = element.attribute("name");
-	visible = (element.attribute("visibility") == "1");
-	type = element.attribute("type").toInt();
+void Layer::loadDomElement(QDomElement element)
+{
+    name = element.attribute("name");
+    visible = (element.attribute("visibility") == "1");
+    type = element.attribute("type").toInt();
 }
 
-void Layer::paintTrack(QPainter &painter, TimeLineCells *cells, int x, int y, int width, int height, bool selected, int frameSize) {
-	painter.setBrush(Qt::lightGray);
-	painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-	painter.drawRect(x, y, width, height); // empty rectangle  by default
-	//painter.setFont(QFont("helvetica", height/2));
-	//painter.drawText(QPoint(10, y+(2*height)/3), name);
-	//if(selected) {
-	//	painter.setBrush(QColor(0,0,0,80));
-	//	painter.drawRect(x, y-1, width, height);
-	//}
-	if(selected) {
-			QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-			linearGrad.setColorAt(0, QColor(255,255,255,128) );
-			linearGrad.setColorAt(0.40, QColor(255,255,255,0) );
-			linearGrad.setColorAt(0.60, QColor(0,0,0,0) );
-			linearGrad.setColorAt(1, QColor(0,0,0,64) );
-			painter.setBrush( linearGrad );
-			painter.setPen(QPen(QBrush(QColor(70,70,70)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-			painter.drawRect(x, y-1, width, height);
-	}
+void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
+{
+    painter.setBrush(Qt::lightGray);
+    painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+    painter.drawRect(x, y, width, height); // empty rectangle  by default
+    //painter.setFont(QFont("helvetica", height/2));
+    //painter.drawText(QPoint(10, y+(2*height)/3), name);
+    //if(selected) {
+    //	painter.setBrush(QColor(0,0,0,80));
+    //	painter.drawRect(x, y-1, width, height);
+    //}
+    if(selected)
+    {
+        QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+        linearGrad.setColorAt(0, QColor(255,255,255,128) );
+        linearGrad.setColorAt(0.40, QColor(255,255,255,0) );
+        linearGrad.setColorAt(0.60, QColor(0,0,0,0) );
+        linearGrad.setColorAt(1, QColor(0,0,0,64) );
+        painter.setBrush( linearGrad );
+        painter.setPen(QPen(QBrush(QColor(70,70,70)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+        painter.drawRect(x, y-1, width, height);
+    }
 }
 
-void Layer::paintLabel(QPainter &painter, TimeLineCells *cells, int x, int y, int width, int height, bool selected, int allLayers) {
-	painter.setBrush(Qt::lightGray);
-	painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-	painter.drawRect(x, y-1, width, height); // empty rectangle  by default
-	
-	if(visible) {
-		if(allLayers==0)  painter.setBrush(Qt::NoBrush);
-		if(allLayers==1)   painter.setBrush(Qt::darkGray);
-		if((allLayers==2) || selected)  painter.setBrush(Qt::black);
-	} else {
-		painter.setBrush(Qt::NoBrush);
-	}
-	painter.setPen(Qt::black);
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.drawEllipse(x+6, y+4, 9, 9);
-	painter.setRenderHint(QPainter::Antialiasing, false);
-	/*if(selected) {
-		painter.setPen(Qt::NoPen);
-		painter.setBrush(QColor(0,0,0,80));
-		painter.drawRect(x, y-1, width, height);
-	}*/
-	if(selected) {
-		paintSelection(painter, x, y, width, height);
-	}
-	
-	if(type == BITMAP) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-bitmap.png") );
-	if(type == VECTOR) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-vector.png") );
-	if(type == SOUND) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-sound.png") );
-	if(type == CAMERA) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-camera.png") );
-	
-	painter.setFont(QFont("helvetica", height/2));
-	painter.setPen(Qt::black);
-	painter.drawText(QPoint(45, y+(2*height)/3), name);
+void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int allLayers)
+{
+    painter.setBrush(Qt::lightGray);
+    painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+    painter.drawRect(x, y-1, width, height); // empty rectangle  by default
+
+    if(visible)
+    {
+        if(allLayers==0)  painter.setBrush(Qt::NoBrush);
+        if(allLayers==1)   painter.setBrush(Qt::darkGray);
+        if((allLayers==2) || selected)  painter.setBrush(Qt::black);
+    }
+    else
+    {
+        painter.setBrush(Qt::NoBrush);
+    }
+    painter.setPen(Qt::black);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.drawEllipse(x+6, y+4, 9, 9);
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    /*if(selected) {
+    	painter.setPen(Qt::NoPen);
+    	painter.setBrush(QColor(0,0,0,80));
+    	painter.drawRect(x, y-1, width, height);
+    }*/
+    if(selected)
+    {
+        paintSelection(painter, x, y, width, height);
+    }
+
+    if(type == BITMAP) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-bitmap.png") );
+    if(type == VECTOR) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-vector.png") );
+    if(type == SOUND) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-sound.png") );
+    if(type == CAMERA) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-camera.png") );
+
+    painter.setFont(QFont("helvetica", height/2));
+    painter.setPen(Qt::black);
+    painter.drawText(QPoint(45, y+(2*height)/3), name);
 
 }
 
-void Layer::paintSelection(QPainter &painter, int x, int y, int width, int height) {
-			QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-			QSettings settings("Pencil","Pencil");
-			QString style = settings.value("style").toString();
-			if(style == "aqua") {
-				linearGrad.setColorAt(0, QColor(225,225,255,100) );
-				linearGrad.setColorAt(0.10, QColor(225,225,255,80) );
-				linearGrad.setColorAt(0.20, QColor(225,225,255,64) );
-				linearGrad.setColorAt(0.35, QColor(225,225,255,20) );
-				linearGrad.setColorAt(0.351, QColor(0,0,0,32) );
-				linearGrad.setColorAt(0.66, QColor(245,255,235,32) );
-				linearGrad.setColorAt(1, QColor(245,255,235,128) );
-			} else {
-				linearGrad.setColorAt(0, QColor(255,255,255,128) );
-				linearGrad.setColorAt(0.49, QColor(255,255,255,0) );
-				linearGrad.setColorAt(0.50, QColor(0,0,0,0) );
-				linearGrad.setColorAt(1, QColor(0,0,0,48) );
-				
-				/*linearGrad.setColorAt(0, QColor(255,255,255,128) );
-				linearGrad.setColorAt(0.10, QColor(255,255,255,64) );
-				linearGrad.setColorAt(0.49, QColor(0,0,0,32) );
-				linearGrad.setColorAt(0.50, QColor(0,0,0,32) );
-				linearGrad.setColorAt(0.70, QColor(245,255,245,32) );
-				linearGrad.setColorAt(1, QColor(245,255,245,128) );*/
-				
-				/*linearGrad.setColorAt(0, QColor(255,255,255,128) );
-				linearGrad.setColorAt(0.10, QColor(255,255,255,64) );
-				linearGrad.setColorAt(0.20, QColor(0,0,0,32) );
-				linearGrad.setColorAt(0.40, QColor(0,0,0,0) );
-				linearGrad.setColorAt(0.41, QColor(255,255,255,0) );
-				linearGrad.setColorAt(1, QColor(255,255,255,128) );*/
-			}
-			painter.setBrush( linearGrad );
-			painter.setPen( Qt::NoPen );
-			painter.drawRect(x, y, width, height-1);
-			//painter.setBrush( Qt::NoBrush );
-			//painter.setPen(QPen(QBrush(QColor(0,0,0,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-			//painter.drawRect(x, y-1, width, height);
-			/*if(style == "aqua") {
-				QColor col;
-				if(type == BITMAP) col = QColor(65,65,122);
-				if(type == VECTOR) col = QColor(50,102,75);
-				if(type == SOUND) col = QColor(122,65,65);
-				painter.setPen(col);
-				painter.drawLine(x,y-1, x+width, y-1);
-			}*/
+void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height)
+{
+    QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
+    QSettings settings("Pencil","Pencil");
+    QString style = settings.value("style").toString();
+    if(style == "aqua")
+    {
+        linearGrad.setColorAt(0, QColor(225,225,255,100) );
+        linearGrad.setColorAt(0.10, QColor(225,225,255,80) );
+        linearGrad.setColorAt(0.20, QColor(225,225,255,64) );
+        linearGrad.setColorAt(0.35, QColor(225,225,255,20) );
+        linearGrad.setColorAt(0.351, QColor(0,0,0,32) );
+        linearGrad.setColorAt(0.66, QColor(245,255,235,32) );
+        linearGrad.setColorAt(1, QColor(245,255,235,128) );
+    }
+    else
+    {
+        linearGrad.setColorAt(0, QColor(255,255,255,128) );
+        linearGrad.setColorAt(0.49, QColor(255,255,255,0) );
+        linearGrad.setColorAt(0.50, QColor(0,0,0,0) );
+        linearGrad.setColorAt(1, QColor(0,0,0,48) );
+
+        /*linearGrad.setColorAt(0, QColor(255,255,255,128) );
+        linearGrad.setColorAt(0.10, QColor(255,255,255,64) );
+        linearGrad.setColorAt(0.49, QColor(0,0,0,32) );
+        linearGrad.setColorAt(0.50, QColor(0,0,0,32) );
+        linearGrad.setColorAt(0.70, QColor(245,255,245,32) );
+        linearGrad.setColorAt(1, QColor(245,255,245,128) );*/
+
+        /*linearGrad.setColorAt(0, QColor(255,255,255,128) );
+        linearGrad.setColorAt(0.10, QColor(255,255,255,64) );
+        linearGrad.setColorAt(0.20, QColor(0,0,0,32) );
+        linearGrad.setColorAt(0.40, QColor(0,0,0,0) );
+        linearGrad.setColorAt(0.41, QColor(255,255,255,0) );
+        linearGrad.setColorAt(1, QColor(255,255,255,128) );*/
+    }
+    painter.setBrush( linearGrad );
+    painter.setPen( Qt::NoPen );
+    painter.drawRect(x, y, width, height-1);
+    //painter.setBrush( Qt::NoBrush );
+    //painter.setPen(QPen(QBrush(QColor(0,0,0,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+    //painter.drawRect(x, y-1, width, height);
+    /*if(style == "aqua") {
+    	QColor col;
+    	if(type == BITMAP) col = QColor(65,65,122);
+    	if(type == VECTOR) col = QColor(50,102,75);
+    	if(type == SOUND) col = QColor(122,65,65);
+    	painter.setPen(col);
+    	painter.drawLine(x,y-1, x+width, y-1);
+    }*/
 }
 
-void Layer::mousePress(QMouseEvent *event, int frameNumber) {
+void Layer::mousePress(QMouseEvent* event, int frameNumber)
+{
 }
 
-void Layer::mouseDoubleClick(QMouseEvent *event, int frameNumber) {
+void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
+{
 }
 
-void Layer::mouseMove(QMouseEvent *event, int frameNumber) {
+void Layer::mouseMove(QMouseEvent* event, int frameNumber)
+{
 }
 
-void Layer::mouseRelease(QMouseEvent *event, int frameNumber) {
+void Layer::mouseRelease(QMouseEvent* event, int frameNumber)
+{
 }
 
-void Layer::editProperties() {
-	bool ok;
-	QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
-																				tr("Layer name:"), QLineEdit::Normal,
-																				name, &ok);
-	if (ok && !text.isEmpty()) {
-		name = text;
-		//palette->updateList();
-	}
+void Layer::editProperties()
+{
+    bool ok;
+    QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                                         tr("Layer name:"), QLineEdit::Normal,
+                                         name, &ok);
+    if (ok && !text.isEmpty())
+    {
+        name = text;
+        //palette->updateList();
+    }
 }
 
 //void Layer::addImageAtFrame(int frameNumber) {
-	// nothing by default
+// nothing by default
 //}
 
 /*Layer::Layer(QColor theColour, QString theName) {

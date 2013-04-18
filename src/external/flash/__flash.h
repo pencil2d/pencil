@@ -30,12 +30,12 @@ GNU General Public License for more details.
 class Object;
 
 class Flash
-{	
-	public:
-		static void exportFlash(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
-		static void convertToSWFMovieClip( BitmapImage* image, Object* object, QMatrix view, SWFMovieClip* sprite );
-		static void convertToSWFMovieClip( VectorImage* vectorImage, Object* object, QMatrix view, SWFMovieClip* sprite );
-		static void addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour, QColor borderColour, qreal width, bool fill );
+{
+public:
+    static void exportFlash(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
+    static void convertToSWFMovieClip( BitmapImage* image, Object* object, QMatrix view, SWFMovieClip* sprite );
+    static void convertToSWFMovieClip( VectorImage* vectorImage, Object* object, QMatrix view, SWFMovieClip* sprite );
+    static void addShape( SWFMovieClip* sprite, QPainterPath path, QColor fillColour, QColor borderColour, qreal width, bool fill );
 };
 
 #endif

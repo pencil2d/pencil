@@ -28,26 +28,26 @@ class BezierArea
 
 public:
     BezierArea();
-	//BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage);
-	BezierArea(QList<VertexRef> vertexList, int colour);
-	
-	QDomElement createDomElement(QDomDocument &doc);
-	void loadDomElement(QDomElement element);
-	
-	VertexRef getVertexRef(int i);
-	int getColourNumber() { return colourNumber; }
-	void decreaseColourNumber() { colourNumber--; }
-	void setSelected(bool YesOrNo);
-	bool isSelected() const { return selected; }
-	void setColourNumber(int cn) { colourNumber = cn; }
-	
-	QList<VertexRef> vertex;
-	QPainterPath path;
-	int colourNumber;
-	
+    //BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage);
+    BezierArea(QList<VertexRef> vertexList, int colour);
+
+    QDomElement createDomElement(QDomDocument& doc);
+    void loadDomElement(QDomElement element);
+
+    VertexRef getVertexRef(int i);
+    int getColourNumber() { return colourNumber; }
+    void decreaseColourNumber() { colourNumber--; }
+    void setSelected(bool YesOrNo);
+    bool isSelected() const { return selected; }
+    void setColourNumber(int cn) { colourNumber = cn; }
+
+    QList<VertexRef> vertex;
+    QPainterPath path;
+    int colourNumber;
+
 private:
-	//VectorImage* picture;
-	bool selected;
+    //VectorImage* picture;
+    bool selected;
 };
 
 #endif

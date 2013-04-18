@@ -23,16 +23,16 @@ class VectorImage;  // forward declaration
 
 class Gradient
 {
-  public:
-	Gradient();
+public:
+    Gradient();
 
-	static void paint1(QPainter &painter, VectorImage *vectorImage, int areaNumber, int gradients);
-	static void paint2(QPainter &painter, VectorImage *vectorImage, int areaNumber, int gradients);
-	static void paint3(QPainter &painter, VectorImage *vectorImage, int areaNumber, int gradients);
-	static void paint4(QPainter &painter, VectorImage *vectorImage, int areaNumber, int gradients);
-	static void paint5(QPainter &painter, VectorImage *vectorImage, int areaNumber, int gradients);
+    static void paint1(QPainter& painter, VectorImage* vectorImage, int areaNumber, int gradients);
+    static void paint2(QPainter& painter, VectorImage* vectorImage, int areaNumber, int gradients);
+    static void paint3(QPainter& painter, VectorImage* vectorImage, int areaNumber, int gradients);
+    static void paint4(QPainter& painter, VectorImage* vectorImage, int areaNumber, int gradients);
+    static void paint5(QPainter& painter, VectorImage* vectorImage, int areaNumber, int gradients);
 
-	
+
 };
 
 #endif

@@ -22,13 +22,13 @@ GNU General Public License for more details.
 class ColourRef
 {
 public:
-	ColourRef();
-	ColourRef(QColor theColour, QString theName);
-	bool operator==(ColourRef colourRef1);
-	bool operator!=(ColourRef colourRef1); 
-	
-	QColor colour;
-	QString name;
+    ColourRef();
+    ColourRef(QColor theColour, QString theName);
+    bool operator==(ColourRef colourRef1);
+    bool operator!=(ColourRef colourRef1);
+
+    QColor colour;
+    QString name;
 };
 
 #endif

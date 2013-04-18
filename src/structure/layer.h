@@ -27,44 +27,44 @@ class TimeLineCells;
 
 class Layer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	public:
-		Layer(Object* object);
-		virtual ~Layer();
-		//Layer(QColor theColour, QString theName);
-		//bool operator==(ColourRef colourRef1);
-		//bool operator!=(ColourRef colourRef1); 
-		
-		//virtual QImage* getImageAtFrame(int frameNumber);
-		//virtual QImage* getLastImageAtFrame(int frameNumber);
-		//virtual void addImageAtFrame(int frameNumber);
-		
-		Object* object;
-		int type;
-		bool visible;
-		int id;
-		QString name;
-		
-		void switchVisibility() { visible = !visible;}
-		virtual int getMaxFrame() { return -1;}
-		
-		virtual QDomElement createDomElement(QDomDocument &doc); // constructs an dom/xml representation of the layer for the document doc
-		virtual void loadDomElement(QDomElement element); // construct a layer from a dom/xml representation
-		
-		// graphic representation -- could be put in another class
-		virtual void paintTrack(QPainter &painter, TimeLineCells *cells, int x, int y, int height, int width, bool selected, int frameSize);
-		virtual void paintLabel(QPainter &painter, TimeLineCells *cells, int x, int y, int height, int width, bool selected, int allLayers);
-		virtual void paintSelection(QPainter &painter, int x, int y, int height, int width);
-		virtual void mousePress(QMouseEvent *event, int frameNumber);
-		virtual void mouseMove(QMouseEvent *event, int frameNumber);
-		virtual void mouseRelease(QMouseEvent *event, int frameNumber);
-		virtual void mouseDoubleClick(QMouseEvent *event, int frameNumber);
-		
-		virtual void editProperties();
-		
-	public:
-		enum types { UNDEFINED, BITMAP, VECTOR, MOVIE, SOUND, CAMERA };
+public:
+    Layer(Object* object);
+    virtual ~Layer();
+    //Layer(QColor theColour, QString theName);
+    //bool operator==(ColourRef colourRef1);
+    //bool operator!=(ColourRef colourRef1);
+
+    //virtual QImage* getImageAtFrame(int frameNumber);
+    //virtual QImage* getLastImageAtFrame(int frameNumber);
+    //virtual void addImageAtFrame(int frameNumber);
+
+    Object* object;
+    int type;
+    bool visible;
+    int id;
+    QString name;
+
+    void switchVisibility() { visible = !visible;}
+    virtual int getMaxFrame() { return -1;}
+
+    virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc
+    virtual void loadDomElement(QDomElement element); // construct a layer from a dom/xml representation
+
+    // graphic representation -- could be put in another class
+    virtual void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int frameSize);
+    virtual void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
+    virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
+    virtual void mousePress(QMouseEvent* event, int frameNumber);
+    virtual void mouseMove(QMouseEvent* event, int frameNumber);
+    virtual void mouseRelease(QMouseEvent* event, int frameNumber);
+    virtual void mouseDoubleClick(QMouseEvent* event, int frameNumber);
+
+    virtual void editProperties();
+
+public:
+    enum types { UNDEFINED, BITMAP, VECTOR, MOVIE, SOUND, CAMERA };
 };
 
 #endif

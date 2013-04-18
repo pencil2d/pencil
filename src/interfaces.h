@@ -46,12 +46,12 @@ public:
     virtual ~BrushInterface() {}
 
     virtual QStringList brushes() const = 0;
-    virtual QRect mousePress(const QString &brush, QPainter &painter,
-                             const QPoint &pos) = 0;
-    virtual QRect mouseMove(const QString &brush, QPainter &painter,
-                            const QPoint &oldPos, const QPoint &newPos) = 0;
-    virtual QRect mouseRelease(const QString &brush, QPainter &painter,
-                               const QPoint &pos) = 0;
+    virtual QRect mousePress(const QString& brush, QPainter& painter,
+                             const QPoint& pos) = 0;
+    virtual QRect mouseMove(const QString& brush, QPainter& painter,
+                            const QPoint& oldPos, const QPoint& newPos) = 0;
+    virtual QRect mouseRelease(const QString& brush, QPainter& painter,
+                               const QPoint& pos) = 0;
 };
 
 class ShapeInterface
@@ -60,8 +60,8 @@ public:
     virtual ~ShapeInterface() {}
 
     virtual QStringList shapes() const = 0;
-    virtual QPainterPath generateShape(const QString &shape,
-                                       QWidget *parent) = 0;
+    virtual QPainterPath generateShape(const QString& shape,
+                                       QWidget* parent) = 0;
 };
 
 class FilterInterface
@@ -70,17 +70,17 @@ public:
     virtual ~FilterInterface() {}
 
     virtual QStringList filters() const = 0;
-    virtual QImage filterImage(const QString &filter, const QImage &image,
-                               QWidget *parent) = 0;
+    virtual QImage filterImage(const QString& filter, const QImage& image,
+                               QWidget* parent) = 0;
 };
 
 class ExportInterface
 {
 public:
-	virtual ~ExportInterface() {}
-	virtual QString name() const = 0;
-	virtual bool exportFile(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression) const = 0;
-	/*virtual QImage filterImage(const QString &filter, const QImage &image,
+    virtual ~ExportInterface() {}
+    virtual QString name() const = 0;
+    virtual bool exportFile(Object* object, int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression) const = 0;
+    /*virtual QImage filterImage(const QString &filter, const QImage &image,
                                QWidget *parent) = 0;*/
 };
 
@@ -91,6 +91,6 @@ Q_DECLARE_INTERFACE(ShapeInterface,
 Q_DECLARE_INTERFACE(FilterInterface,
                     "com.trolltech.PlugAndPaint.FilterInterface/1.0")
 Q_DECLARE_INTERFACE(ExportInterface,
-										"org.pencil.plugins.ExportInterface/1.0")
+                    "org.pencil.plugins.ExportInterface/1.0")
 
 #endif

@@ -21,47 +21,45 @@ GNU General Public License for more details.
 #include <interfaces.h>
 
 
-MainWindow::MainWindow() {
-	editor = new Editor(this);
-	//Object* object = new Object();
-	//object->defaultInitialisation();
-	//editor->setObject( object );
-	editor->newObject();
+MainWindow::MainWindow()
+{
+    editor = new Editor(this);
+    //Object* object = new Object();
+    //object->defaultInitialisation();
+    //editor->setObject( object );
+    editor->newObject();
 
-	arrangePalettes();
+    arrangePalettes();
 
-	//editor->getTimeLine()->close();
+    //editor->getTimeLine()->close();
 
-	createMenus();
-	//loadPlugins();
-	readSettings();
+    createMenus();
+    //loadPlugins();
+    readSettings();
 }
 
-void MainWindow::arrangePalettes() {
-	setCentralWidget(editor);
-	addDockWidget(Qt::RightDockWidgetArea, editor->getPalette());
-	addDockWidget(Qt::RightDockWidgetArea, editor->getToolSet()->displayPalette);
-	//editor->getPalette()->close();
-	addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->drawPalette);
-	addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->optionPalette);
-	//addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->onionPalette);
-	//addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->keyPalette);
+void MainWindow::arrangePalettes()
+{
 
-	//addDockWidget(Qt::BottomDockWidgetArea, editor->getToolSet()->timePalette);
-	addDockWidget(Qt::BottomDockWidgetArea, editor->getTimeLine());
+    setCentralWidget(editor);
 
-	editor->getToolSet()->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	editor->getToolSet()->optionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	//editor->getToolSet()->keyPalette->setFeatures(QDockWidget::NoDockWidgetFeatures);
-	//editor->getToolSet()->onionPalette->setFeatures(QDockWidget::NoDockWidgetFeatures);
-	editor->getToolSet()->displayPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	editor->getToolSet()->keyPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	editor->getToolSet()->onionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	editor->getToolSet()->timePalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-	editor->getTimeLine()->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    addDockWidget(Qt::RightDockWidgetArea, editor->getPalette());
+    addDockWidget(Qt::RightDockWidgetArea, editor->getToolSet()->displayPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->drawPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->optionPalette);
+    addDockWidget(Qt::BottomDockWidgetArea, editor->getTimeLine());
+
+    editor->getToolSet()->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->getToolSet()->optionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->getToolSet()->displayPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->getToolSet()->keyPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->getToolSet()->onionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->getToolSet()->timePalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->getTimeLine()->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
-void MainWindow::createMenus() {
+void MainWindow::createMenus()
+{
     // ---------- Actions -------------
     exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
@@ -99,7 +97,6 @@ void MainWindow::createMenus() {
     exportimageAct->setShortcut(tr("Ctrl+Alt+S"));
     connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
-
     exportMovAct = new QAction(tr("&Movie..."), this);
     exportMovAct->setShortcut(tr("Ctrl+Alt+M"));
     connect(exportMovAct, SIGNAL(triggered()), editor, SLOT(exportMov()));
@@ -122,9 +119,9 @@ void MainWindow::createMenus() {
     importMovAct->setShortcut(tr("Ctrl+R"));
     connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
-        importMovieAct = new QAction(tr("&Movie..."), this);
-        importMovieAct->setShortcut(tr("Ctrl+R"));
-        connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
+    importMovieAct = new QAction(tr("&Movie..."), this);
+    importMovieAct->setShortcut(tr("Ctrl+R"));
+    connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
 
     importSndAct = new QAction(tr("&Sound..."), this);
     importSndAct->setShortcut(tr("Ctrl+I"));
@@ -375,7 +372,7 @@ void MainWindow::createMenus() {
 
     importMenu->addAction(importAct);
     importMenu->addAction(importMovAct);
-	importMenu->addAction(importMovieAct);
+    importMenu->addAction(importMovieAct);
     importMenu->addAction(importSndAct);
     importMenu->addSeparator();
     importMenu->addAction(importPaletteAct);
@@ -512,254 +509,280 @@ void MainWindow::createMenus() {
     menuBar()->addMenu(helpMenu);
 }
 
-void MainWindow::loadPlugins() {
-	/*
-	 * since this is not yet really implemented, I commented it on MainWindow() -- mj
-	 */
-
-	qDebug() << "MainWindow loadplugins" << this << this->thread();
-	// foreach (QObject *plugin, QPluginLoader::staticInstances()) populateMenus(plugin); // static plugins
-	QDir pluginsDir = QDir(qApp->applicationDirPath());
- #if defined(Q_OS_WIN)
-	if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-		pluginsDir.cdUp();
- #elif defined(Q_OS_MAC)
-	if (pluginsDir.dirName() == "MacOS") {
-		pluginsDir.cdUp();
-	}
- #endif
-	pluginsDir.cd("plugins");
-
-	qDebug() << "Plugin dir = " << pluginsDir.dirName();
-	/*foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader.instance();
-		qDebug() << "loader " << loader.thread();
-		qDebug() << "plugin " << fileName << plugin << plugin->thread();
-		if (plugin) {
-			plugin->moveToThread(this->thread());
-			populateMenus(plugin);
-			//pluginFileNames += fileName;
-		}
-	}*/
-
-	//brushMenu->setEnabled(!brushActionGroup->actions().isEmpty());
-	//shapesMenu->setEnabled(!shapesMenu->actions().isEmpty());
-	//filterMenu->setEnabled(!filterMenu->actions().isEmpty());
-}
-
-void MainWindow::populateMenus(QObject *plugin) {
-	qDebug() << "MainWindow populateMenus" << this << this->thread();
-	qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
-	/*BrushInterface *iBrush = qobject_cast<BrushInterface *>(plugin);
-	if (iBrush) addToMenu(plugin, iBrush->brushes(), brushMenu, SLOT(changeBrush()), brushActionGroup);
-
-	ShapeInterface *iShape = qobject_cast<ShapeInterface *>(plugin);
-	if (iShape) addToMenu(plugin, iShape->shapes(), shapesMenu, SLOT(insertShape()));
-
-	FilterInterface *iFilter = qobject_cast<FilterInterface *>(plugin);
-	if (iFilter) addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));*/
-
-	ExportInterface *exportPlugin = qobject_cast<ExportInterface *>(plugin);
-	if (exportPlugin) addToMenu(plugin, exportPlugin->name(), exportMenu, SLOT(exportFile()));
-}
-
-void MainWindow::addToMenu(QObject *plugin, const QString text, QMenu *menu, const char *member, QActionGroup *actionGroup) {
-	qDebug() << "MainWindow populateMenus" << this << this->thread();
-	qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
-	qDebug() << "addToMenu 1";
-	QAction *action = new QAction(text, plugin);
-	qDebug() << "addToMenu 2";
-	connect(action, SIGNAL(triggered()), this, member);
-	menu->addAction(action);
-	if (actionGroup) {
-		action->setCheckable(true);
-		actionGroup->addAction(action);
-	}
-}
-
-void MainWindow::exportFile() {
-	QAction *action = qobject_cast<QAction *>(sender());
-	ExportInterface *exportPlugin = qobject_cast<ExportInterface *>(action->parent());
-	if(exportPlugin) {
-		//exportPlugin->exportFile();
-	} else {
-		qDebug() << "exportPlugin is null";
-	}
-	//const QImage image = iFilter->filterImage(action->text(), paintArea->image(), this);
-	//paintArea->setImage(image);
-}
-
-void MainWindow::setOpacity(int opacity) {
-	QSettings settings("Pencil","Pencil");
-	settings.setValue("windowOpacity", 100-opacity);
-	setWindowOpacity(opacity/100.0);
-}
-
-void MainWindow::closeEvent(QCloseEvent *event)
+void MainWindow::loadPlugins()
 {
-	if (editor->maybeSave()) {
-		writeSettings();
+    /*
+     * since this is not yet really implemented, I commented it on MainWindow() -- mj
+     */
+
+    qDebug() << "MainWindow loadplugins" << this << this->thread();
+    // foreach (QObject *plugin, QPluginLoader::staticInstances()) populateMenus(plugin); // static plugins
+    QDir pluginsDir = QDir(qApp->applicationDirPath());
+#if defined(Q_OS_WIN)
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+        pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS")
+    {
+        pluginsDir.cdUp();
+    }
+#endif
+    pluginsDir.cd("plugins");
+
+    qDebug() << "Plugin dir = " << pluginsDir.dirName();
+    /*foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        QObject *plugin = loader.instance();
+        qDebug() << "loader " << loader.thread();
+        qDebug() << "plugin " << fileName << plugin << plugin->thread();
+        if (plugin) {
+            plugin->moveToThread(this->thread());
+            populateMenus(plugin);
+            //pluginFileNames += fileName;
+        }
+    }*/
+
+    //brushMenu->setEnabled(!brushActionGroup->actions().isEmpty());
+    //shapesMenu->setEnabled(!shapesMenu->actions().isEmpty());
+    //filterMenu->setEnabled(!filterMenu->actions().isEmpty());
+}
+
+void MainWindow::populateMenus(QObject* plugin)
+{
+    qDebug() << "MainWindow populateMenus" << this << this->thread();
+    qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
+    /*BrushInterface *iBrush = qobject_cast<BrushInterface *>(plugin);
+    if (iBrush) addToMenu(plugin, iBrush->brushes(), brushMenu, SLOT(changeBrush()), brushActionGroup);
+
+    ShapeInterface *iShape = qobject_cast<ShapeInterface *>(plugin);
+    if (iShape) addToMenu(plugin, iShape->shapes(), shapesMenu, SLOT(insertShape()));
+
+    FilterInterface *iFilter = qobject_cast<FilterInterface *>(plugin);
+    if (iFilter) addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));*/
+
+    ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(plugin);
+    if (exportPlugin) addToMenu(plugin, exportPlugin->name(), exportMenu, SLOT(exportFile()));
+}
+
+void MainWindow::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
+{
+    qDebug() << "MainWindow populateMenus" << this << this->thread();
+    qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
+    qDebug() << "addToMenu 1";
+    QAction* action = new QAction(text, plugin);
+    qDebug() << "addToMenu 2";
+    connect(action, SIGNAL(triggered()), this, member);
+    menu->addAction(action);
+    if (actionGroup)
+    {
+        action->setCheckable(true);
+        actionGroup->addAction(action);
+    }
+}
+
+void MainWindow::exportFile()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(action->parent());
+    if(exportPlugin)
+    {
+        //exportPlugin->exportFile();
+    }
+    else
+    {
+        qDebug() << "exportPlugin is null";
+    }
+    //const QImage image = iFilter->filterImage(action->text(), paintArea->image(), this);
+    //paintArea->setImage(image);
+}
+
+void MainWindow::setOpacity(int opacity)
+{
+    QSettings settings("Pencil","Pencil");
+    settings.setValue("windowOpacity", 100-opacity);
+    setWindowOpacity(opacity/100.0);
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    if (editor->maybeSave())
+    {
+        writeSettings();
         event->accept();
-    } else {
+    }
+    else
+    {
         event->ignore();
     }
 }
 
-void MainWindow::keyPressEvent( QKeyEvent *e ) {
-	switch (e->key()) {
-		//case Qt::Key_Y:
-		//	editor->polyline_clicked();
-		//	break;
-		//case Qt::Key_B:
-		//	editor->color_clicked();
-		//	break;
-		/*
-	case Qt::Key_H:
-		//editor->switchVisibilityOfLayer(editor->currentLayer);
-		break;
-	case Qt::Key_D:
-		//editor->scrubForward();
-		break;
-	case Qt::Key_Right:
-		//editor->scrubForward();
-		break;
-	case Qt::Key_S:
-		//editor->scrubBackward();
-		break;
-	case Qt::Key_Left:
-		//editor->scrubBackward();
-		break;
-	case Qt::Key_Up:
-		//editor->previousLayer();
-		break;
-	case Qt::Key_Down:
-		//editor->nextLayer();
-		break;
-	case Qt::Key_Space:
-		//editor->play();addKey();
-		break;
- 	case Qt::Key_Alt:
-		//editor->altPress();
-		break;
-	case Qt::Key_Return:
-		//editor->play();
-		break;
-		*/
-	default:
-	QWidget::keyPressEvent(e);
+void MainWindow::keyPressEvent( QKeyEvent* e )
+{
+    switch (e->key())
+    {
+        //case Qt::Key_Y:
+        //	editor->polyline_clicked();
+        //	break;
+        //case Qt::Key_B:
+        //	editor->color_clicked();
+        //	break;
+        /*
+        case Qt::Key_H:
+            //editor->switchVisibilityOfLayer(editor->currentLayer);
+            break;
+        case Qt::Key_D:
+            //editor->scrubForward();
+            break;
+        case Qt::Key_Right:
+            //editor->scrubForward();
+            break;
+        case Qt::Key_S:
+            //editor->scrubBackward();
+            break;
+        case Qt::Key_Left:
+            //editor->scrubBackward();
+            break;
+        case Qt::Key_Up:
+            //editor->previousLayer();
+            break;
+        case Qt::Key_Down:
+            //editor->nextLayer();
+            break;
+        case Qt::Key_Space:
+            //editor->play();addKey();
+            break;
+        case Qt::Key_Alt:
+            //editor->altPress();
+            break;
+        case Qt::Key_Return:
+            //editor->play();
+            break;
+            */
+    default:
+        QWidget::keyPressEvent(e);
     }
 }
 
-void MainWindow::keyReleaseEvent( QKeyEvent *e ) {
-	switch (e->key()) {
-    	case Qt::Key_Alt:
-			//editor->altRelease();
-	break;
-		default:
-	QWidget::keyPressEvent(e);
+void MainWindow::keyReleaseEvent( QKeyEvent* e )
+{
+    switch (e->key())
+    {
+    case Qt::Key_Alt:
+        //editor->altRelease();
+        break;
+    default:
+        QWidget::keyPressEvent(e);
     }
 }
 
-void MainWindow::readSettings() {
-	QSettings settings("Pencil", "Pencil");
-	QRect desktopRect = QApplication::desktop()->screenGeometry();
-	desktopRect.adjust(80,80,-80,-80);
-	//QPoint pos = settings.value("editorPosition", QPoint( qMax(0, (desktopRect.width()-800)/2), qMax(0, (desktopRect.height()-600)/2) )).toPoint();
-	QPoint pos = settings.value("editorPosition", desktopRect.topLeft() ).toPoint();
-	//QSize size = settings.value("editorSize", QSize(800, 600)).toSize();
-	QSize size = settings.value("editorSize", desktopRect.size() ).toSize();
-	move(pos);
-	resize(size);
+void MainWindow::readSettings()
+{
+    QSettings settings("Pencil", "Pencil");
+    QRect desktopRect = QApplication::desktop()->screenGeometry();
+    desktopRect.adjust(80,80,-80,-80);
+    //QPoint pos = settings.value("editorPosition", QPoint( qMax(0, (desktopRect.width()-800)/2), qMax(0, (desktopRect.height()-600)/2) )).toPoint();
+    QPoint pos = settings.value("editorPosition", desktopRect.topLeft() ).toPoint();
+    //QSize size = settings.value("editorSize", QSize(800, 600)).toSize();
+    QSize size = settings.value("editorSize", desktopRect.size() ).toSize();
+    move(pos);
+    resize(size);
 
-	editor->restorePalettesSettings(true, true, true);
+    editor->restorePalettesSettings(true, true, true);
 
-	QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-	addRecentFile(myPath);
+    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+    addRecentFile(myPath);
 
-	setOpacity(100-settings.value("windowOpacity").toInt());
-	//initialiseStyle();
+    setOpacity(100-settings.value("windowOpacity").toInt());
+    //initialiseStyle();
 }
 
-void MainWindow::writeSettings() {
-	QSettings settings("Pencil", "Pencil");
-	settings.setValue("editorPosition", pos());
-	settings.setValue("editorSize", size());
+void MainWindow::writeSettings()
+{
+    QSettings settings("Pencil", "Pencil");
+    settings.setValue("editorPosition", pos());
+    settings.setValue("editorSize", size());
 
-	Palette* colourPalette = editor->getPalette();
-	if(colourPalette != NULL) {
-		settings.setValue("colourPalettePosition", colourPalette->pos());
-		settings.setValue("colourPaletteSize", colourPalette->size());
-		settings.setValue("colourPaletteFloating", colourPalette->isFloating());
-	}
+    Palette* colourPalette = editor->getPalette();
+    if(colourPalette != NULL)
+    {
+        settings.setValue("colourPalettePosition", colourPalette->pos());
+        settings.setValue("colourPaletteSize", colourPalette->size());
+        settings.setValue("colourPaletteFloating", colourPalette->isFloating());
+    }
 
-	TimeLine* timelinePalette = editor->getTimeLine();
-	if(timelinePalette != NULL) {
-		settings.setValue("timelinePalettePosition", timelinePalette->pos());
-		settings.setValue("timelinePaletteSize", timelinePalette->size());
-		settings.setValue("timelinePaletteFloating", timelinePalette->isFloating());
-	}
+    TimeLine* timelinePalette = editor->getTimeLine();
+    if(timelinePalette != NULL)
+    {
+        settings.setValue("timelinePalettePosition", timelinePalette->pos());
+        settings.setValue("timelinePaletteSize", timelinePalette->size());
+        settings.setValue("timelinePaletteFloating", timelinePalette->isFloating());
+    }
 
-	QDockWidget* drawPalette = editor->getToolSet()->drawPalette;
-	if(drawPalette != NULL) {
-		settings.setValue("drawPalettePosition", drawPalette->pos());
-		settings.setValue("drawPaletteSize", drawPalette->size());
-		settings.setValue("drawPaletteFloating", drawPalette->isFloating());
-	}
+    QDockWidget* drawPalette = editor->getToolSet()->drawPalette;
+    if(drawPalette != NULL)
+    {
+        settings.setValue("drawPalettePosition", drawPalette->pos());
+        settings.setValue("drawPaletteSize", drawPalette->size());
+        settings.setValue("drawPaletteFloating", drawPalette->isFloating());
+    }
 
-	QDockWidget* optionPalette = editor->getToolSet()->optionPalette;
-	if(optionPalette != NULL) {
-		settings.setValue("optionPalettePosition", optionPalette->pos());
-		settings.setValue("optionPaletteSize", optionPalette->size());
-		settings.setValue("optionPaletteFloating", optionPalette->isFloating());
-	}
+    QDockWidget* optionPalette = editor->getToolSet()->optionPalette;
+    if(optionPalette != NULL)
+    {
+        settings.setValue("optionPalettePosition", optionPalette->pos());
+        settings.setValue("optionPaletteSize", optionPalette->size());
+        settings.setValue("optionPaletteFloating", optionPalette->isFloating());
+    }
 
-	QDockWidget* displayPalette = editor->getToolSet()->displayPalette;
-	if(displayPalette != NULL)  {
-		settings.setValue("displayPalettePosition", displayPalette->pos());
-		settings.setValue("displayPaletteSize", displayPalette->size());
-		settings.setValue("displayPaletteFloating", displayPalette->isFloating());
-	}
+    QDockWidget* displayPalette = editor->getToolSet()->displayPalette;
+    if(displayPalette != NULL)
+    {
+        settings.setValue("displayPalettePosition", displayPalette->pos());
+        settings.setValue("displayPaletteSize", displayPalette->size());
+        settings.setValue("displayPaletteFloating", displayPalette->isFloating());
+    }
 
 }
 
-void MainWindow::addRecentFile(QString filePath) {
-	QAction* openThisFileAct = new QAction(filePath, this);
-	connect(openThisFileAct, SIGNAL(triggered()), editor, SLOT(openRecent()));
-	openRecentMenu->addAction(openThisFileAct);
+void MainWindow::addRecentFile(QString filePath)
+{
+    QAction* openThisFileAct = new QAction(filePath, this);
+    connect(openThisFileAct, SIGNAL(triggered()), editor, SLOT(openRecent()));
+    openRecentMenu->addAction(openThisFileAct);
 }
 
-void MainWindow::toggleLoop(bool checked) {
+void MainWindow::toggleLoop(bool checked)
+{
     loopAnimationAct->setChecked(checked);
 }
 
 void MainWindow::undoActSetText(void)
 {
-   if (this->editor->backupIndex < 0)
-      {
-      editMenu->actions().at(0)->setText("Undo");
-      editMenu->actions().at(0)->setEnabled(false);
-      }
-     else
-      {
-      editMenu->actions().at(0)->setText("Undo   " + QString::number(this->editor->backupIndex+1) + " " + this->editor->backupList.at(this->editor->backupIndex)->undoText);
-      editMenu->actions().at(0)->setEnabled(true);
-      }
+    if (this->editor->backupIndex < 0)
+    {
+        editMenu->actions().at(0)->setText("Undo");
+        editMenu->actions().at(0)->setEnabled(false);
+    }
+    else
+    {
+        editMenu->actions().at(0)->setText("Undo   " + QString::number(this->editor->backupIndex+1) + " " + this->editor->backupList.at(this->editor->backupIndex)->undoText);
+        editMenu->actions().at(0)->setEnabled(true);
+    }
 
-   if (this->editor->backupIndex+2 < this->editor->backupList.size())
-      {
-      editMenu->actions().at(1)->setText("Redo   " + QString::number(this->editor->backupIndex+2) + " " + this->editor->backupList.at(this->editor->backupIndex+1)->undoText);
-      editMenu->actions().at(1)->setEnabled(true);
-      }
-     else
-      {
-      editMenu->actions().at(1)->setText("Redo");
-      editMenu->actions().at(1)->setEnabled(false);
-      }
+    if (this->editor->backupIndex+2 < this->editor->backupList.size())
+    {
+        editMenu->actions().at(1)->setText("Redo   " + QString::number(this->editor->backupIndex+2) + " " + this->editor->backupList.at(this->editor->backupIndex+1)->undoText);
+        editMenu->actions().at(1)->setEnabled(true);
+    }
+    else
+    {
+        editMenu->actions().at(1)->setText("Redo");
+        editMenu->actions().at(1)->setEnabled(false);
+    }
 }
 
 void MainWindow::undoActSetEnabled(void)
 {
-      editMenu->actions().at(0)->setEnabled(true);
-      editMenu->actions().at(1)->setEnabled(true);
+    editMenu->actions().at(0)->setEnabled(true);
+    editMenu->actions().at(1)->setEnabled(true);
 }

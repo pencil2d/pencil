@@ -17,57 +17,69 @@ GNU General Public License for more details.
 //#include <CoreFoundation/CoreFoundation.h>
 #include "bezierarea.h"
 
-BezierArea::BezierArea() {
-		selected = false;
-	// nothing;
+BezierArea::BezierArea()
+{
+    selected = false;
+    // nothing;
 }
 
 //BezierArea::BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage) {
-BezierArea::BezierArea(QList<VertexRef> vertexList, int colour) {
-	vertex = vertexList;
-	colourNumber = colour;
-	selected = false;
-	//picture = vectorImage;
+BezierArea::BezierArea(QList<VertexRef> vertexList, int colour)
+{
+    vertex = vertexList;
+    colourNumber = colour;
+    selected = false;
+    //picture = vectorImage;
 }
 
-VertexRef BezierArea::getVertexRef(int i) {
-	while(i >= vertex.size() ) {
-		i = i - vertex.size();
-	}
-	while(i < 0 ) {
-		i = i + vertex.size();
-	}
-	return vertex[i];
+VertexRef BezierArea::getVertexRef(int i)
+{
+    while(i >= vertex.size() )
+    {
+        i = i - vertex.size();
+    }
+    while(i < 0 )
+    {
+        i = i + vertex.size();
+    }
+    return vertex[i];
 }
 
-void BezierArea::setSelected(bool YesOrNo) {
-	selected = YesOrNo;
+void BezierArea::setSelected(bool YesOrNo)
+{
+    selected = YesOrNo;
 }
 
-QDomElement BezierArea::createDomElement(QDomDocument &doc) {
-	QDomElement areaTag = doc.createElement("area");
-	areaTag.setAttribute("colourNumber", colourNumber);
+QDomElement BezierArea::createDomElement(QDomDocument& doc)
+{
+    QDomElement areaTag = doc.createElement("area");
+    areaTag.setAttribute("colourNumber", colourNumber);
 
-	for(int i=0; i < vertex.size() ; i++) {
-		QDomElement vertexTag = doc.createElement("vertex");
-		vertexTag.setAttribute("curve", vertex.at(i).curveNumber);
-		vertexTag.setAttribute("vertex", vertex.at(i).vertexNumber);
-		areaTag.appendChild(vertexTag);
-	}
-	return areaTag;
+    for(int i=0; i < vertex.size() ; i++)
+    {
+        QDomElement vertexTag = doc.createElement("vertex");
+        vertexTag.setAttribute("curve", vertex.at(i).curveNumber);
+        vertexTag.setAttribute("vertex", vertex.at(i).vertexNumber);
+        areaTag.appendChild(vertexTag);
+    }
+    return areaTag;
 }
 
-void BezierArea::loadDomElement(QDomElement element) {
-	colourNumber = element.attribute("colourNumber").toInt();
-	
-	QDomNode vertexTag = element.firstChild();
-	while(!vertexTag.isNull()) {
-		QDomElement vertexElement = vertexTag.toElement();
-		if(!vertexElement.isNull()) {
-			if(vertexElement.tagName() == "vertex") {
-				vertex.append( VertexRef(vertexElement.attribute("curve").toInt() , vertexElement.attribute("vertex").toInt() )  );
-			}
-		}
-		vertexTag = vertexTag.nextSibling();
-	}
+void BezierArea::loadDomElement(QDomElement element)
+{
+    colourNumber = element.attribute("colourNumber").toInt();
+
+    QDomNode vertexTag = element.firstChild();
+    while(!vertexTag.isNull())
+    {
+        QDomElement vertexElement = vertexTag.toElement();
+        if(!vertexElement.isNull())
+        {
+            if(vertexElement.tagName() == "vertex")
+            {
+                vertex.append( VertexRef(vertexElement.attribute("curve").toInt() , vertexElement.attribute("vertex").toInt() )  );
+            }
+        }
+        vertexTag = vertexTag.nextSibling();
+    }
 }

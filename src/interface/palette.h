@@ -28,39 +28,39 @@ class Editor;
 
 class Palette : public QDockWidget
 {
-	Q_OBJECT
-			
-  public:
-		Palette(Editor*);
-		int currentColour() { return listOfColours->currentRow(); }
-	
-  protected:
-		//QSize sizeHint();
-		
-		Editor* editor;
-		QListWidget* listOfColours;
-		QToolButton *addButton, *removeButton;
-		QSlider *sliderRed, *sliderGreen, *sliderBlue, *sliderAlpha;
-		QToolButton *colourSwatch;
-	
-	public slots:
-		void updateList();
-		void updateSwatch(QColor);
-		void selectColour(int i) { listOfColours->setCurrentRow(i); }
-		void setColour(QColor);
-		void setColour(int, int, int, int);
-		
-  private slots:
-		void colourSwatchClicked();
-		void selectColour(QListWidgetItem*, QListWidgetItem*);
-		void selectAndApplyColour(QListWidgetItem*);
-		void updateColour();
-		void changeColour();
-		void changeColour(QListWidgetItem*);
-		void changeColourName(QListWidgetItem*);
-		void addClick();
-		void rmClick();
-		void closeIfDocked(bool);
+    Q_OBJECT
+
+public:
+    Palette(Editor*);
+    int currentColour() { return listOfColours->currentRow(); }
+
+protected:
+    //QSize sizeHint();
+
+    Editor* editor;
+    QListWidget* listOfColours;
+    QToolButton* addButton, *removeButton;
+    QSlider* sliderRed, *sliderGreen, *sliderBlue, *sliderAlpha;
+    QToolButton* colourSwatch;
+
+public slots:
+    void updateList();
+    void updateSwatch(QColor);
+    void selectColour(int i) { listOfColours->setCurrentRow(i); }
+    void setColour(QColor);
+    void setColour(int, int, int, int);
+
+private slots:
+    void colourSwatchClicked();
+    void selectColour(QListWidgetItem*, QListWidgetItem*);
+    void selectAndApplyColour(QListWidgetItem*);
+    void updateColour();
+    void changeColour();
+    void changeColour(QListWidgetItem*);
+    void changeColourName(QListWidgetItem*);
+    void addClick();
+    void rmClick();
+    void closeIfDocked(bool);
 };
 
 #endif

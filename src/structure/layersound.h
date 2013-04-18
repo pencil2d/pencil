@@ -26,53 +26,53 @@ GNU General Public License for more details.
 
 class LayerSound : public LayerImage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-  public:
-	LayerSound(Object* object);
-	~LayerSound();
-	QDomElement createDomElement(QDomDocument &doc);
-	void loadDomElement(QDomElement element, QString filePath);
+public:
+    LayerSound(Object* object);
+    ~LayerSound();
+    QDomElement createDomElement(QDomDocument& doc);
+    void loadDomElement(QDomElement element, QString filePath);
 
-	bool addImageAtFrame(int frameNumber);
-	void removeImageAtFrame(int frameNumber);
+    bool addImageAtFrame(int frameNumber);
+    void removeImageAtFrame(int frameNumber);
 
-	//void setModified(bool trueOrFalse) { modified = trueOrFalse; }
+    //void setModified(bool trueOrFalse) { modified = trueOrFalse; }
 
-	void loadSoundAtFrame( QString filePathString, int frame );
+    void loadSoundAtFrame( QString filePathString, int frame );
 
-	bool saveImage(int index, QString path, int layerNumber);
-	void playSound(int frame,int fps);
-	void stopSound();
+    bool saveImage(int index, QString path, int layerNumber);
+    void playSound(int frame,int fps);
+    void stopSound();
 
     bool isEmpty() const { return sound.count() == 0; }
-	// graphic representation -- could be put in another class
-	void paintImages(QPainter &painter, TimeLineCells *cells, int x, int y, int width, int height, bool selected, int frameSize);
+    // graphic representation -- could be put in another class
+    void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
 
-	//void mousePress(QMouseEvent *event, int frameNumber);
-	//void mouseMove(QMouseEvent *event, int frameNumber);
-	//void mouseRelease(QMouseEvent *event, int frameNumber);
+    //void mousePress(QMouseEvent *event, int frameNumber);
+    //void mouseMove(QMouseEvent *event, int frameNumber);
+    //void mouseRelease(QMouseEvent *event, int frameNumber);
 
-	QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
-	int getSoundSize() { return sound.size(); }
-	bool soundIsNotNull(int index) { return (sound[index] != NULL); }
+    QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
+    int getSoundSize() { return sound.size(); }
+    bool soundIsNotNull(int index) { return (sound[index] != NULL); }
 
-  protected:
-	//bool modified;
-	//QList<int> startingFrame;
-	//QList<QString> filePath;
-	QList<QString> soundFilepath;
-	QList<qint64> soundSize;
+protected:
+    //bool modified;
+    //QList<int> startingFrame;
+    //QList<QString> filePath;
+    QList<QString> soundFilepath;
+    QList<qint64> soundSize;
 //#	QList<QSound*> sound;
-	// graphic representation -- could be put in another class
-	void swap(int i, int j);
+    // graphic representation -- could be put in another class
+    void swap(int i, int j);
 
 
-	QList<Phonon::MediaObject*> sound;
-	QList<Phonon::AudioOutput*> outputDevices;
+    QList<Phonon::MediaObject*> sound;
+    QList<Phonon::AudioOutput*> outputDevices;
 
 
-  public slots:
+public slots:
     void addTimelineKey(qint64 newTotalTime);
     //void metaInfosUpdated();
 
