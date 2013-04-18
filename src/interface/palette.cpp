@@ -25,7 +25,6 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     this->editor = editor;
 
     QWidget* paletteContent = new QWidget();
-    //paletteContent->setWindowFlags(Qt::FramelessWindowHint);
 
     sliderRed = new QSlider(Qt::Horizontal);
     sliderGreen = new QSlider(Qt::Horizontal);
@@ -159,7 +158,6 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
 void Palette::updateList()
 {
-
     //listOfColours->clear(); // for some reason, this creates an bus error when one removes the last element
     while(listOfColours->count() > 0) listOfColours->takeItem(0);
     for(int i=0; i <  editor->object->getColourCount(); i++)

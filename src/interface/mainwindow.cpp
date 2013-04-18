@@ -18,8 +18,8 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "mainwindow.h"
 #include "object.h"
-#include <interfaces.h>
-
+#include "interfaces.h"
+#include "palette.h"
 
 MainWindow::MainWindow()
 {
@@ -27,12 +27,14 @@ MainWindow::MainWindow()
     object->defaultInitialisation();
 
     editor = new Editor(this);
+
+    arrangePalettes();
+    createMenus();
+
+    // must run after 'arragePalettes'
     editor->setObject(object);
     editor->resetUI();
 
-    arrangePalettes();
-
-    createMenus();
     //loadPlugins();
     readSettings();
 }
@@ -46,7 +48,12 @@ void MainWindow::arrangePalettes()
 {
     setCentralWidget(editor);
 
-    addDockWidget(Qt::RightDockWidgetArea, editor->getPalette());
+    m_palette = new Palette(editor);
+
+    // focus policy
+    m_palette->setFocusPolicy(Qt::NoFocus);
+
+    addDockWidget(Qt::RightDockWidgetArea, m_palette);
     addDockWidget(Qt::RightDockWidgetArea, editor->getToolSet()->displayPalette);
     addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->drawPalette);
     addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->optionPalette);
@@ -750,8 +757,7 @@ void MainWindow::readSettings()
     QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
     addRecentFile(myPath);
 
-    setOpacity(100-settings.value("windowOpacity").toInt());
-    //initialiseStyle();
+    setOpacity(100 - settings.value("windowOpacity").toInt());
 }
 
 void MainWindow::writeSettings()
@@ -760,7 +766,7 @@ void MainWindow::writeSettings()
     settings.setValue("editorPosition", pos());
     settings.setValue("editorSize", size());
 
-    Palette* colourPalette = editor->getPalette();
+    Palette* colourPalette = m_palette;
     if(colourPalette != NULL)
     {
         settings.setValue("colourPalettePosition", colourPalette->pos());

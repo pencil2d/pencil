@@ -32,7 +32,7 @@ GNU General Public License for more details.
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
-Editor::Editor(QMainWindow* parent)
+Editor::Editor(MainWindow* parent)
 {
     mainWindow = parent;
 
@@ -81,7 +81,7 @@ Editor::Editor(QMainWindow* parent)
     timeLine = new TimeLine(this, this);
     timeControl = new TimeControls();
     toolSet = new ToolSet();
-    palette = new Palette(this);
+    //palette = new Palette(this);
     preferences = new Preferences();
     exportFramesDialog = NULL; // will be created when needed
     exportMovieDialog = NULL;
@@ -101,7 +101,6 @@ Editor::Editor(QMainWindow* parent)
     scribbleArea->setFocusPolicy(Qt::StrongFocus);
     timeLine->setFocusPolicy(Qt::NoFocus);
     toolSet->setFocusPolicy(Qt::NoFocus);
-    palette->setFocusPolicy(Qt::NoFocus);
 
 
     // CONNECTIONS
@@ -468,8 +467,8 @@ void Editor::selectColour(int i)
     {
         scribbleArea->setColour(i);
         toolSet->setColour(object->getColour(i).colour);
-        palette->selectColour(i);
-        palette->setColour(object->getColour(i).colour);
+        mainWindow->m_palette->selectColour(i);
+        mainWindow->m_palette->setColour(object->getColour(i).colour);
     }
 }
 
@@ -485,7 +484,7 @@ void Editor::setColour(QColor colour)
 {
     scribbleArea->setColour(colour);
     toolSet->setColour(colour);
-    palette->setColour(colour);
+    mainWindow->m_palette->setColour(colour);
 }
 
 void Editor::changeColour(int i)
@@ -515,7 +514,7 @@ void Editor::changeColourName(int i)
         if (ok && !text.isEmpty())
         {
             object->renameColour(i, text);
-            palette->updateList();
+            mainWindow->m_palette->updateList();
         }
     }
 }
@@ -530,7 +529,7 @@ void Editor::changeColour(int i, QColor newColour)
         	if(layer->type == Layer::VECTOR) scribbleArea->setModified(layer, currentFrame);
         }*/
         updateColour(i, newColour);
-        palette->updateList();
+        mainWindow->m_palette->updateList();
         selectColour(i);
     }
 }
@@ -546,7 +545,7 @@ void Editor::updateColour(int i, QColor newColour)
             if(layer->type == Layer::VECTOR) scribbleArea->setModified(currentLayer, currentFrame);
         }
         toolSet->setColour(object->getColour(i).colour);
-        palette->updateSwatch(object->getColour(i).colour);
+        mainWindow->m_palette->updateSwatch(object->getColour(i).colour);
         scribbleArea->setColour(i);
     }
 }
@@ -554,7 +553,7 @@ void Editor::updateColour(int i, QColor newColour)
 void Editor::addColour()
 {
     QColor initialColour = Qt::white;
-    int currentColourIndex = palette->currentColour();
+    int currentColourIndex = mainWindow->m_palette->currentColour();
     if( currentColourIndex > -1 )
     {
         initialColour = object->getColour(currentColourIndex).colour;
@@ -565,7 +564,7 @@ void Editor::addColour()
     if(*ok)
     {
         object->addColour( QColor::fromRgba(qrgba) );
-        palette->updateList();
+        mainWindow->m_palette->updateList();
         selectColour(object->getColourCount()-1);
     }
     delete ok;
@@ -583,7 +582,7 @@ void Editor::removeColour(int i)
 {
     if(object->removeColour(i))
     {
-        palette->updateList();
+        mainWindow->m_palette->updateList();
     }
     else
     {
@@ -1109,13 +1108,13 @@ void Editor::resetMirror()
 
 void Editor::showPalette()
 {
-    if(palette->isVisible())
+    if (mainWindow->m_palette->isVisible())
     {
-        palette->close();
+        mainWindow->m_palette->close();
     }
     else
     {
-        palette->show();
+        mainWindow->m_palette->show();
     }
 }
 
@@ -1278,16 +1277,16 @@ void Editor::setObject(Object* object)
 void Editor::updateObject()
 {
     scribbleArea->resetColours();
-    palette->selectColour(0);
+    mainWindow->m_palette->selectColour(0);
 
     //scribbleArea->resize(object->size);
     //scribbleArea->updateAllFrames();
     //scribbleArea->resetView();
     timeLine->updateLayerNumber(object->getLayerCount());
-    palette->updateList();
+    mainWindow->m_palette->updateList();
     clearBackup();
     scribbleArea->resetColours();
-    palette->selectColour(0);
+    mainWindow->m_palette->selectColour(0);
     scribbleArea->updateAllFrames();
     updateMaxFrame();
     //timeLine->forceUpdateLength(QString::number(maxFrame));
@@ -1774,7 +1773,7 @@ void Editor::importPalette()
     if (!filePath.isEmpty())
     {
         object->importPalette(filePath);
-        palette->updateList();
+        mainWindow->m_palette->updateList();
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
 }
@@ -2272,7 +2271,7 @@ void Editor::dockAllPalettes()
     getToolSet()->displayPalette->setFloating(false);
     getToolSet()->onionPalette->setFloating(false);
     getTimeLine()->setFloating(false);
-    getPalette()->setFloating(false);
+    mainWindow->m_palette->setFloating(false);
 }/*
 
 void Editor::detachAllPalettes() {
@@ -2289,7 +2288,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
 {
     QSettings settings("Pencil", "Pencil");
 
-    Palette* colourPalette = getPalette();
+    Palette* colourPalette = mainWindow->m_palette;
     if(colourPalette != NULL)
     {
         QPoint pos = settings.value("colourPalettePosition", QPoint(100, 100)).toPoint();
@@ -2716,7 +2715,7 @@ void Editor::addcolorbutton()
 {
 
     QColor initialColour = Qt::white;
-    int currentColourIndex = palette->currentColour();
+    int currentColourIndex = mainWindow->m_palette->currentColour();
     /*		  if( currentColourIndex > -1 ) {
     				initialColour = object->getColour(currentColourIndex).colour;
     			}
@@ -2730,6 +2729,6 @@ void Editor::addcolorbutton()
     initialColour = object->getColour(currentColourIndex).colour;
     QRgb qrgba = initialColour.rgba();
     object->addColour(qrgba );
-    palette->updateList();
+    mainWindow->m_palette->updateList();
     selectColour(object->getColourCount()-1);
 }

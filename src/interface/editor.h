@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 class Editor;
+class MainWindow;
 
 class BackupElement : public QObject
 {
@@ -75,7 +76,7 @@ class Editor : public QWidget
     Q_OBJECT
 
 public:
-    Editor(QMainWindow* parent);
+    Editor(MainWindow* parent);
     virtual ~Editor();
 
     //Object* getObject() { return object; }
@@ -93,7 +94,6 @@ public:
     bool looping;
     bool sound;
 
-    Palette* getPalette() { return palette; }
     TimeLine* getTimeLine() { return timeLine; }
     ToolSet* getToolSet() { return toolSet; }
     Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(currentLayer+incr); } else { return NULL; } }
@@ -303,9 +303,8 @@ private:
     TimeLine* timeLine;
     TimeControls* timeControl;
     ToolSet* toolSet;
-    Palette* palette;
     Preferences* preferences;
-    QMainWindow* mainWindow;
+    MainWindow* mainWindow;
 
     QString savedName;
     QString path;
