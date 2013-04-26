@@ -9,3 +9,5 @@ qrc_pencil.cpp
 *.o
 *.orig
 *.user
+.git
+.gitignore
