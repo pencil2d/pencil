@@ -56,19 +56,19 @@ public slots:
     void changeBucketButton();
     void changeEyedropperButton();
     void changeColouringButton();
-    //void changeThinLinesButton(bool);
-    //void changeOutlinesButton(bool);
+    void changeThinLinesButton(bool);
+    void changeOutlinesButton(bool);
     void changeSmudgeButton();
 
-    //void resetMirror();
-    //void resetMirrorV();
+    void resetMirror();
+    void resetMirrorV();
     void pressureClick(bool);
     void invisibleClick(bool);
     void preserveAlphaClick(bool);
     void followContourClick(bool);
 
-    //void onionPrevChanged(bool);
-    //void onionNextChanged(bool);
+    void onionPrevChanged(bool);
+    void onionNextChanged(bool);
 
 signals:
     void pencilClick();

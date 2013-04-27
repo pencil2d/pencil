@@ -460,39 +460,39 @@ void ToolSet::changeSmudgeButton()
     deselectAllTools();
     smudgeButton->setChecked(true);
 }
-/*
+
 void ToolSet::changeOutlinesButton(bool trueOrFalse)
 {
-    outlinesButton->setChecked(trueOrFalse);
+    displayPalette->outlinesButton->setChecked(trueOrFalse);
 }
 
 
 void ToolSet::changeThinLinesButton(bool trueOrFalse)
 {
-    thinLinesButton->setChecked(trueOrFalse);
+    displayPalette->thinLinesButton->setChecked(trueOrFalse);
 }
 
 
 void ToolSet::resetMirror()
 {
-    mirrorButton->setChecked(false);
+    displayPalette->mirrorButton->setChecked(false);
 }
 
 void ToolSet::resetMirrorV()
 {
-    mirrorButtonV->setChecked(false);
+    displayPalette->mirrorButtonV->setChecked(false);
 }
 
 void ToolSet::onionPrevChanged(bool checked)
 {
-    onionPrev->setChecked(checked);
+    displayPalette->onionPrev->setChecked(checked);
 }
 
 void ToolSet::onionNextChanged(bool checked)
 {
-    onionNext->setChecked(checked);
+    displayPalette->onionNext->setChecked(checked);
 }
-*/
+
 
 void ToolSet::deselectAllTools()
 {
