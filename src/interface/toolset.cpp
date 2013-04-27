@@ -104,9 +104,6 @@ ToolSet::ToolSet()
     onionPalette = new QDockWidget(tr("Onion skin"));
     timePalette = new QDockWidget(tr("Controls"));
 
-#ifdef Q_WS_MAC
-    //drawPalette->setTitleBarWidget(new TitleBar(drawPalette));
-#endif
     //drawPalette->setAutoFillBackground(false);
     //drawPalette->setAttribute(Qt::WA_NoSystemBackground, true);
 
@@ -124,24 +121,18 @@ ToolSet::ToolSet()
     //QGroupBox *drawGroup = new QGroupBox(tr("Draw"));
     QFrame* drawGroup = new QFrame();
     QFrame* optionGroup = new QFrame();
-    QFrame* displayGroup = new QFrame();
-
-
     QFrame* onionGroup = new QFrame();
     QFrame* timeGroup = new QFrame();
 
     drawPalette->setWidget(drawGroup);
     optionPalette->setWidget(optionGroup);
-    displayPalette->setWidget(displayGroup);
-
     onionPalette->setWidget(onionGroup);
     timePalette->setWidget(timeGroup);
 
     //QVBoxLayout *framelay = new QVBoxLayout();
     QGridLayout* drawLay = new QGridLayout();
     QGridLayout* optionLay = new QGridLayout();
-    QGridLayout* displayLay = new QGridLayout();
-    QGridLayout* keyLay = new QGridLayout();
+
     QGridLayout* onionLay = new QGridLayout();
     QGridLayout* timeLay = new QGridLayout();
     //QVBoxLayout *butlay = new QVBoxLayout();
@@ -174,21 +165,74 @@ ToolSet::ToolSet()
     rm->setIcon(QIcon(":icons/remove.png"));
     rm->setToolTip("Remove Frame");
 
-    keyLay->setMargin(4);
-    keyLay->setSpacing(0);
-    keyLay->addWidget(add, 0, 0);
-    keyLay->addWidget(rm, 0, 1);
+    QGridLayout* keyLayout = new QGridLayout();
+    keyLayout->setMargin(4);
+    keyLayout->setSpacing(0);
+    keyLayout->addWidget(add, 0, 0);
+    keyLayout->addWidget(rm, 0, 1);
 
-    keyGroup->setLayout(keyLay);
+    keyGroup->setLayout(keyLayout);
     keyGroup->setMaximumHeight(60);
 
 
-    thinLinesButton = new QToolButton(this);
-    outlinesButton = new QToolButton(this);
-    mirrorButton = new QToolButton(this); //  = new QToolButton(this);
-    mirrorButtonV = new QToolButton(this); //  = new QToolButton(this);
-    onionPrev = new QToolButton(this);
-    onionNext = new QToolButton(this);
+    // Create Display Option Tool Buttons
+    QFrame* displayGroup = new QFrame();
+
+    thinLinesButton = new QToolButton(displayGroup);
+    thinLinesButton->setIcon(QIcon(":icons/thinlines5.png"));
+    thinLinesButton->setToolTip("Show invisible lines");
+    thinLinesButton->setIconSize( QSize(21,21) );
+
+    outlinesButton = new QToolButton(displayGroup);
+    outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
+    outlinesButton->setToolTip("Show outlines only");
+    outlinesButton->setIconSize( QSize(21,21) );
+
+    mirrorButton = new QToolButton(displayGroup);
+    mirrorButton->setIcon(QIcon(":icons/mirror.png"));
+    mirrorButton->setToolTip("Horizontal flip");
+    mirrorButton->setIconSize( QSize(21,21) );
+
+    mirrorButtonV = new QToolButton(displayGroup);
+    mirrorButtonV->setIcon(QIcon(":icons/mirrorV.png"));
+    mirrorButtonV->setToolTip("Vertical flip");
+    mirrorButtonV->setIconSize( QSize(21,21) );
+
+    onionPrev = new QToolButton(displayGroup);
+    onionPrev->setIcon(QIcon(":icons/onionPrev.png"));
+    onionPrev->setToolTip("Onion skin previous frame");
+    onionPrev->setIconSize( QSize(21,21) );
+
+    onionNext = new QToolButton(displayGroup);
+    onionNext->setIcon(QIcon(":icons/onionNext.png"));
+    onionNext->setToolTip("Onion skin next frame");
+    onionNext->setIconSize( QSize(21,21) );
+
+    thinLinesButton->setCheckable(true);
+    thinLinesButton->setChecked(false);
+    outlinesButton->setCheckable(true);
+    outlinesButton->setChecked(false);
+    mirrorButton->setCheckable(true);
+    mirrorButton->setChecked(false);
+    mirrorButtonV->setCheckable(true);
+    mirrorButtonV->setChecked(false);
+    onionPrev->setCheckable(true);
+    onionPrev->setChecked(true);
+    onionNext->setCheckable(true);
+    onionNext->setChecked(false);
+
+    QGridLayout* displayLay = new QGridLayout();
+    displayLay->setMargin(4);
+    displayLay->setSpacing(0);
+    displayLay->addWidget(mirrorButton,0,0);
+    displayLay->addWidget(thinLinesButton,0,1);
+    displayLay->addWidget(outlinesButton,1,1);
+    displayLay->addWidget(mirrorButtonV,1,0);
+    displayLay->addWidget(onionPrev,0,2);
+    displayLay->addWidget(onionNext,1,2);
+
+    displayGroup->setLayout(displayLay);
+    displayPalette->setWidget(displayGroup);
 
     choseColour = new QToolButton(this);
     play = new QPushButton(tr("Play"),this);
@@ -320,41 +364,11 @@ ToolSet::ToolSet()
     choseColour->setIcon(colourSwatch);
     choseColour->setToolTip("Display Colors");
 
-    thinLinesButton->setIcon(QIcon(":icons/thinlines5.png"));
-    thinLinesButton->setToolTip("Show invisible lines");
-    thinLinesButton->setIconSize( QSize(21,21) );
-    outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
-    outlinesButton->setToolTip("Show outlines only");
-    outlinesButton->setIconSize( QSize(21,21) );
 
-    mirrorButton->setIcon(QIcon(":icons/mirror.png"));
-    mirrorButton->setToolTip("Horizontal flip");
-    mirrorButton->setIconSize( QSize(21,21) );
-    mirrorButtonV->setIcon(QIcon(":icons/mirrorV.png"));
-    mirrorButtonV->setToolTip("Vertical flip");
-    mirrorButtonV->setIconSize( QSize(21,21) );
-
-    onionPrev->setIcon(QIcon(":icons/onionPrev.png"));
-    onionPrev->setToolTip("Onion skin previous frame");
-    onionPrev->setIconSize( QSize(21,21) );
-    onionNext->setIcon(QIcon(":icons/onionNext.png"));
-    onionNext->setToolTip("Onion skin next frame");
-    onionNext->setIconSize( QSize(21,21) );
 
     clearButton->setIcon(QIcon(":icons/clear.png"));
     clearButton->setToolTip("Clear Tool <b>(L)</b>: Erases content of selected frame");
-    thinLinesButton->setCheckable(true);
-    thinLinesButton->setChecked(false);
-    outlinesButton->setCheckable(true);
-    outlinesButton->setChecked(false);
-    mirrorButton->setCheckable(true);
-    mirrorButton->setChecked(false);
-    mirrorButtonV->setCheckable(true);
-    mirrorButtonV->setChecked(false);
-    onionPrev->setCheckable(true);
-    onionPrev->setChecked(true);
-    onionNext->setCheckable(true);
-    onionNext->setChecked(false);
+
     pencilButton->setCheckable(true);
     penButton->setCheckable(true);
     polylineButton->setCheckable(true);
@@ -429,14 +443,7 @@ ToolSet::ToolSet()
     optionLay->addWidget(makeInvisibleBox,14,0,1,2);
     optionLay->setRowStretch(15,1);
 
-    displayLay->setMargin(4);
-    displayLay->setSpacing(0);
-    displayLay->addWidget(mirrorButton,0,0);
-    displayLay->addWidget(thinLinesButton,0,1);
-    displayLay->addWidget(outlinesButton,1,1);
-    displayLay->addWidget(mirrorButtonV,1,0);
-    displayLay->addWidget(onionPrev,0,2);
-    displayLay->addWidget(onionNext,1,2);
+
 
     onionLay->setMargin(4);
     onionLay->setSpacing(0);
@@ -452,8 +459,7 @@ ToolSet::ToolSet()
     timeLay->addWidget(soundBox,3,0,1,-1);
 
     drawGroup->setLayout(drawLay);
-    optionGroup->setLayout(optionLay);
-    displayGroup->setLayout(displayLay);
+    optionGroup->setLayout(optionLay);    
 
     onionGroup->setLayout(onionLay);
     timeGroup->setLayout(timeLay);
@@ -472,19 +478,6 @@ ToolSet::ToolSet()
     displayPalette->setMaximumHeight(60);
 
     onionGroup->setMaximumHeight(60);
-
-    /*butlay->setMargin(0);
-    butlay->setSpacing(2);
-    butlay->addWidget(drawGroup);
-    	butlay->addWidget(optionGroup);
-    butlay->addWidget(keyGroup);
-    butlay->addWidget(onionGroup);
-    butlay->addWidget(timeGroup);
-
-    framelay->addLayout(butlay);
-    //framelay->addWidget(framecounter);
-
-    setLayout(framelay);*/
 
     connect(add, SIGNAL(clicked()), this, SIGNAL(addClick()));
     connect(rm, SIGNAL(clicked()), this, SIGNAL(rmClick()));
