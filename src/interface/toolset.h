@@ -18,25 +18,7 @@ GNU General Public License for more details.
 
 #include <QtGui>
 
-class SpinSlider : public QWidget
-{
-    Q_OBJECT
-public:
-    SpinSlider(QString text, QString type, QString dataType, qreal min, qreal max, QWidget* parent = 0);
-public slots:
-    void changeValue(qreal);
-    void changeValue(int);
-    void setValue(qreal);
-    void sliderReleased();
-    void sliderMoved(int);
-signals:
-    void valueChanged(qreal);
-private:
-    QLabel* valueLabel;
-    QSlider* slider;
-    qreal value, min, max;
-    QString type, dataType;
-};
+class SpinSlider;
 
 
 class ToolSet : public QWidget
