@@ -205,7 +205,7 @@ ToolSet::ToolSet()
 QDockWidget* ToolSet::createTimePalette()
 {
     QFrame* timeGroup = new QFrame();
-    QGridLayout* timeLay = new QGridLayout();
+    QGridLayout* timeLayout = new QGridLayout();
 
     QSettings settings("Pencil","Pencil");
 
@@ -225,14 +225,14 @@ QDockWidget* ToolSet::createTimePalette()
     fpsBox->setToolTip("FPS");
     fpsBox->setFocusPolicy(Qt::NoFocus);
 
-    timeLay->setMargin(4);
-    timeLay->setSpacing(0);
-    timeLay->addWidget(play,0,0);
-    timeLay->addWidget(fpsBox,1,0);
-    timeLay->addWidget(loopBox,2,0,1,-1);
-    timeLay->addWidget(soundBox,3,0,1,-1);
+    timeLayout->setMargin(4);
+    timeLayout->setSpacing(0);
+    timeLayout->addWidget(play,0,0);
+    timeLayout->addWidget(fpsBox,1,0);
+    timeLayout->addWidget(loopBox,2,0,1,-1);
+    timeLayout->addWidget(soundBox,3,0,1,-1);
 
-    timeGroup->setLayout(timeLay);
+    timeGroup->setLayout(timeLayout);
 
     QDockWidget* dockWidget = new QDockWidget(tr("Controls"));
     dockWidget->setWidget(timeGroup);
