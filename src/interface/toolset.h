@@ -53,6 +53,8 @@ public:
     QDockWidget* onionPalette;
     QDockWidget* timePalette;
 
+    QDockWidget* createDisplayPalette();
+
 public slots:
     void setCounter(int);
     void setWidth(qreal);
@@ -175,8 +177,6 @@ private:
     int fps;
 
     void deselectAllTools();
-
-
 };
 
 #endif
