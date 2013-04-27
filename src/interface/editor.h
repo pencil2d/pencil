@@ -30,45 +30,10 @@ GNU General Public License for more details.
 #include "object.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
+#include "backupelement.h"
 
-class Editor;
+
 class MainWindow;
-
-class BackupElement : public QObject
-{
-    Q_OBJECT
-public:
-    enum types { UNDEFINED, BITMAP_MODIF, VECTOR_MODIF };
-    //int type;
-    QString undoText;
-    bool somethingSelected;
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
-    //BackupElement() { type = UNDEFINED; }
-    virtual int type() { return UNDEFINED; }
-    virtual void restore(Editor*) { qDebug() << "Wrong"; }
-};
-
-class BackupBitmapElement : public BackupElement
-{
-    Q_OBJECT
-public:
-    int layer, frame;
-    BitmapImage bitmapImage;
-    //BackupBitmapElement() { type = BackupElement::BITMAP_MODIF; }
-    int type() { return BackupElement::BITMAP_MODIF; }
-    void restore(Editor*);
-};
-
-class BackupVectorElement : public BackupElement
-{
-    Q_OBJECT
-public:
-    int layer, frame;
-    VectorImage vectorImage;
-    //BackupVectorElement() { type = BackupElement::VECTOR_MODIF; }
-    int type() { return BackupElement::VECTOR_MODIF; }
-    void restore(Editor*);
-};
 
 
 class Editor : public QWidget
@@ -79,10 +44,9 @@ public:
     Editor(MainWindow* parent);
     virtual ~Editor();
 
-    //Object* getObject() { return object; }
-    //bool somethingSelected();
+
     Object* object;  // the object to be edited by the editor
-    //int currentPenColour, currentFillColour;
+
     int currentLayer; // the current layer to be edited/displayed by the editor
     int currentFrame; // the current frame to be edited/displayed by the editor
     int maxFrame; // the number of the last frame for the current object
@@ -197,13 +161,13 @@ public slots:
     int getLastIndexAtFrame(int frameNumber);
     int getLastFrameAtFrame(int frameNumber);
 
-    //void altPress();
-    //void altRelease();
     void showPreferences();
 
     void resetUI();
+
     //void newObject();
     void setObject(Object* object);
+
     void updateObject();
 
     void setCurrentLayer(int layerNumber);

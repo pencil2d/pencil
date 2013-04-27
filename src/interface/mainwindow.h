@@ -152,10 +152,6 @@ private:
     QAction* bucketToolAct;
     QAction* eyedropToolAct;
     QAction* eraserToolAct;
-
-
-    //QAction *dockAllPalettesAct;
-    //QAction *detachAllPalettesAct;
 };
 
 

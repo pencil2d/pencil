@@ -42,7 +42,8 @@ HEADERS += src/interfaces.h \
            src/interface/scribblearea.h \
            src/interface/timeline.h \
            src/interface/timecontrols.h \
-           src/interface/toolset.h
+           src/interface/toolset.h \
+    src/interface/backupelement.h
 SOURCES += src/graphics/bitmap/blur.cpp \
            src/graphics/bitmap/bitmapimage.cpp \
            src/graphics/vector/bezierarea.cpp \
@@ -66,7 +67,8 @@ SOURCES += src/graphics/bitmap/blur.cpp \
            src/interface/timeline.cpp \
            src/interface/timecontrols.cpp \
            src/interface/toolset.cpp \
-           src/main.cpp
+           src/main.cpp \
+    src/interface/backupelement.cpp
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp

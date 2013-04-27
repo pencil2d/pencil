@@ -35,7 +35,6 @@ MainWindow::MainWindow()
     editor->setObject(object);
     editor->resetUI();
 
-    //loadPlugins();
     readSettings();
 }
 
@@ -227,13 +226,7 @@ void MainWindow::createMenus()
     connect(deleteLayerAct, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
 
 
-    //dockAllPalettesAct = new QAction(tr("Dock All Palettes"), this);
-    //connect(dockAllPalettesAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
-
-    //detachAllPalettesAct = new QAction(tr("Detach All Palettes"), this);
-    //connect(detachAllPalettesAct, SIGNAL(triggered()), editor, SLOT(detachAllPalettes()));
     /*~~~~~~~~View menu~~~~~~~~~*/
-
     zoomAct = new QAction(QIcon(":icons/magnify.png"),tr("In"), this);
     zoomAct->setShortcut(Qt::Key_Up+ Qt::CTRL);
     connect(zoomAct, SIGNAL(triggered()), editor, SLOT(setzoom()));
@@ -535,23 +528,6 @@ void MainWindow::loadPlugins()
     }
 #endif
     pluginsDir.cd("plugins");
-
-    qDebug() << "Plugin dir = " << pluginsDir.dirName();
-    /*foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
-        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-        QObject *plugin = loader.instance();
-        qDebug() << "loader " << loader.thread();
-        qDebug() << "plugin " << fileName << plugin << plugin->thread();
-        if (plugin) {
-            plugin->moveToThread(this->thread());
-            populateMenus(plugin);
-            //pluginFileNames += fileName;
-        }
-    }*/
-
-    //brushMenu->setEnabled(!brushActionGroup->actions().isEmpty());
-    //shapesMenu->setEnabled(!shapesMenu->actions().isEmpty());
-    //filterMenu->setEnabled(!filterMenu->actions().isEmpty());
 }
 
 void MainWindow::populateMenus(QObject* plugin)
@@ -745,10 +721,10 @@ void MainWindow::readSettings()
     QSettings settings("Pencil", "Pencil");
     QRect desktopRect = QApplication::desktop()->screenGeometry();
     desktopRect.adjust(80,80,-80,-80);
-    //QPoint pos = settings.value("editorPosition", QPoint( qMax(0, (desktopRect.width()-800)/2), qMax(0, (desktopRect.height()-600)/2) )).toPoint();
+
     QPoint pos = settings.value("editorPosition", desktopRect.topLeft() ).toPoint();
-    //QSize size = settings.value("editorSize", QSize(800, 600)).toSize();
     QSize size = settings.value("editorSize", desktopRect.size() ).toSize();
+
     move(pos);
     resize(size);
 

@@ -238,9 +238,6 @@ void Editor::dragEnterEvent(QDragEnterEvent* event)
     //if (event->mimeData()->hasFormat("text/plain"))
     event->acceptProposedAction();
 }
-/*const QStringList files =
-    QFileDialog::getOpenFileNames(filter, startDirectory, parent,
-                                  "FileBrowser", title);*/
 
 void Editor::dropEvent(QDropEvent* event)
 {
@@ -264,25 +261,15 @@ void Editor::importImageSequence ()
 {
     QFileDialog w;
     w.setFileMode(QFileDialog::AnyFile);
-    /*	    QListView *l = w.findChild<QListView*>("listView");
-    	    if (l) {
-    	         l->setSelectionMode(QAbstractItemView::MultiSelection);
-    	     }
-    	    QTreeView *t = w.findChild<QTreeView*>();
-    	     if (t) {
-    	       t->setSelectionMode(QAbstractItemView::MultiSelection);
-    	    } */
 
     QSettings settings("Pencil","Pencil");
     QString initialPath = settings.value("lastImportPath", QVariant(QDir::homePath())).toString();
     if(initialPath.isEmpty()) initialPath = QDir::homePath();
-    QStringList files = w.getOpenFileNames(
-                            this,
-                            "Select one or more files to open",
-                            initialPath,
-                            "Images (*.png *.xpm *.jpg)");
+    QStringList files = w.getOpenFileNames(this,
+                                           "Select one or more files to open",
+                                           initialPath,
+                                           "Images (*.png *.xpm *.jpg)");
     qDebug() << files;
-//#	    w.exec();
 
     QStringListIterator i(files);
     for (int i = 0; i < files.size(); ++i)
@@ -290,8 +277,7 @@ void Editor::importImageSequence ()
         QString filePath;
         filePath= files.at(i).toLocal8Bit().constData();
         if(i>0) scrubForward();
-        {
-            QSettings settings("Pencil","Pencil");
+        {            
             if(filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
                 importImage(filePath);
         }
@@ -2272,8 +2258,9 @@ void Editor::dockAllPalettes()
     getToolSet()->onionPalette->setFloating(false);
     getTimeLine()->setFloating(false);
     mainWindow->m_palette->setFloating(false);
-}/*
+}
 
+/*
 void Editor::detachAllPalettes() {
 	getToolSet()->drawPalette->setFloating(true);
 	getToolSet()->optionPalette->setFloating(true);
