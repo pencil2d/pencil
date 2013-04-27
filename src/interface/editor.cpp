@@ -81,7 +81,7 @@ Editor::Editor(MainWindow* parent)
     timeLine = new TimeLine(this, this);
     timeControl = new TimeControls();
     toolSet = new ToolSet();
-    //palette = new Palette(this);
+
     preferences = new Preferences();
     exportFramesDialog = NULL; // will be created when needed
     exportMovieDialog = NULL;
@@ -102,8 +102,39 @@ Editor::Editor(MainWindow* parent)
     timeLine->setFocusPolicy(Qt::NoFocus);
     toolSet->setFocusPolicy(Qt::NoFocus);
 
-
     // CONNECTIONS
+    makeConnections();
+
+    framelay->addWidget(scribbleArea);
+    lay->addWidget(toolSet);
+    lay->addLayout(framelay);
+
+    framelay->setMargin(0);
+    framelay->setSpacing(0);
+    lay->setMargin(0);
+    lay->setSpacing(0);
+
+    setLayout(lay);
+
+    qDebug() << QLibraryInfo::location(QLibraryInfo::PluginsPath);
+    qDebug() << QLibraryInfo::location(QLibraryInfo::BinariesPath);
+    qDebug() << QLibraryInfo::location(QLibraryInfo::LibrariesPath);
+
+    setAcceptDrops(true);
+}
+
+Editor::~Editor()
+{
+    // a lot more probably needs to be cleaned here...
+    if ( object != NULL )
+    {
+        delete object;
+    }
+    clearBackup();
+}
+
+void Editor::makeConnections()
+{
     connect(toolSet, SIGNAL(addClick()), this, SLOT(addKey()));
     connect(toolSet, SIGNAL(rmClick()), this, SLOT(removeKey()));
     connect(toolSet, SIGNAL(playClick()), this, SLOT(play()));
@@ -204,33 +235,6 @@ Editor::Editor(MainWindow* parent)
     connect(preferences, SIGNAL(onionLayer3OpacityChange(int)), this, SLOT(onionLayer3OpacityChangeSlot(int)));
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
-
-    framelay->addWidget(scribbleArea);
-    lay->addWidget(toolSet);
-    lay->addLayout(framelay);
-
-    framelay->setMargin(0);
-    framelay->setSpacing(0);
-    lay->setMargin(0);
-    lay->setSpacing(0);
-
-    setLayout(lay);
-
-    qDebug() << QLibraryInfo::location(QLibraryInfo::PluginsPath);
-    qDebug() << QLibraryInfo::location(QLibraryInfo::BinariesPath);
-    qDebug() << QLibraryInfo::location(QLibraryInfo::LibrariesPath);
-
-    setAcceptDrops(true);
-}
-
-Editor::~Editor()
-{
-    // a lot more probably needs to be cleaned here...
-    if ( object != NULL )
-    {
-        delete object;
-    }
-    clearBackup();
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)

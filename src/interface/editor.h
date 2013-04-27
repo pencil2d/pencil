@@ -283,7 +283,7 @@ private:
     int onionLayer2Opacity;
     int onionLayer3Opacity;
 
-
+    void makeConnections();
 
     // backup
     void clearBackup();
