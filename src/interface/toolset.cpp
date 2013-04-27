@@ -25,19 +25,14 @@ GNU General Public License for more details.
 
 ToolSet::ToolSet()
 {
-
     drawPalette = new QDockWidget(tr("Tools"));
 
     QFrame* drawGroup = new QFrame();
     drawPalette->setWidget(drawGroup);
     QGridLayout* drawLay = new QGridLayout();
 
-    timePalette = createTimePalette();
-    keyPalette = createKeyPalette();
     displayPalette = createDisplayPalette();
     optionPalette = createOptionPalette();
-
-    QSettings settings("Pencil","Pencil");
 
     newToolButton(pencilButton);
     newToolButton(selectButton);
@@ -143,14 +138,10 @@ ToolSet::ToolSet()
     drawLay->setAlignment(eyedropperButton, Qt::AlignRight);
     drawLay->addWidget(eraserButton,5,1);
     drawLay->setAlignment(eraserButton, Qt::AlignLeft);
-    //drawLay->addWidget(mirrorButton,5,1); drawLay->setAlignment(mirrorButton, Qt::AlignLeft);
 
     drawGroup->setLayout(drawLay);  
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
-
-    connect(add, SIGNAL(clicked()), this, SIGNAL(addClick()));
-    connect(rm, SIGNAL(clicked()), this, SIGNAL(rmClick()));
 
     connect(pencilButton, SIGNAL(clicked()), this, SIGNAL(pencilClick()));
     connect(selectButton, SIGNAL(clicked()), this, SIGNAL(selectClick()));
@@ -183,12 +174,6 @@ ToolSet::ToolSet()
     connect(mirrorButton, SIGNAL(clicked()), this, SIGNAL(mirrorClick()));
     connect(mirrorButtonV, SIGNAL(clicked()), this, SIGNAL(mirrorVClick()));
 
-    connect(play, SIGNAL(clicked()), this, SIGNAL(playClick()));
-    connect(loopBox, SIGNAL(stateChanged(int)), this, SIGNAL(loopClick()));
-    connect(soundBox, SIGNAL(stateChanged(int)), this, SIGNAL(soundClick()));
-
-    connect(fpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
-
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(changeSelectButton()));
     connect(moveButton, SIGNAL(clicked()), this, SLOT(changeMoveButton()));
@@ -200,69 +185,6 @@ ToolSet::ToolSet()
     connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(changeEyedropperButton()));
     connect(colouringButton, SIGNAL(clicked()), this, SLOT(changeColouringButton()));
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(changeSmudgeButton()));
-}
-
-QDockWidget* ToolSet::createTimePalette()
-{
-    QFrame* timeGroup = new QFrame();
-    QGridLayout* timeLayout = new QGridLayout();
-
-    QSettings settings("Pencil","Pencil");
-
-    play = new QPushButton(tr("Play"), timeGroup);
-    play->setFixedWidth(80);
-    soundBox = new QCheckBox("Sound");
-    soundBox->setFont( QFont("Helvetica", 10) );
-    loopBox = new QCheckBox(tr("Loop"), timeGroup);
-    loopBox->setFont( QFont("Helvetica", 10) );
-
-    fpsBox = new QSpinBox(timeGroup);
-    fpsBox->setFont( QFont("Helvetica", 10) );
-    fpsBox->setFixedHeight(22);
-    fpsBox->setValue(settings.value("fps").toInt());
-    fpsBox->setMinimum(1);
-    fpsBox->setMaximum(50);
-    fpsBox->setToolTip("FPS");
-    fpsBox->setFocusPolicy(Qt::NoFocus);
-
-    timeLayout->setMargin(4);
-    timeLayout->setSpacing(0);
-    timeLayout->addWidget(play,0,0);
-    timeLayout->addWidget(fpsBox,1,0);
-    timeLayout->addWidget(loopBox,2,0,1,-1);
-    timeLayout->addWidget(soundBox,3,0,1,-1);
-
-    timeGroup->setLayout(timeLayout);
-
-    QDockWidget* dockWidget = new QDockWidget(tr("Controls"));
-    dockWidget->setWidget(timeGroup);
-    return dockWidget;
-}
-
-QDockWidget* ToolSet::createKeyPalette()
-{
-    QFrame* keyGroup = new QFrame();
-
-    add = new QToolButton(keyGroup);
-    add->setIcon(QIcon(":icons/add.png"));
-    add->setToolTip("Add Frame");
-
-    rm = new QToolButton(keyGroup);
-    rm->setIcon(QIcon(":icons/remove.png"));
-    rm->setToolTip("Remove Frame");
-
-    QGridLayout* keyLayout = new QGridLayout();
-    keyLayout->setMargin(4);
-    keyLayout->setSpacing(0);
-    keyLayout->addWidget(add, 0, 0);
-    keyLayout->addWidget(rm, 0, 1);
-
-    keyGroup->setLayout(keyLayout);
-    keyGroup->setMaximumHeight(60);
-
-    QDockWidget* dockWidget = new QDockWidget(tr("Keys"));
-    dockWidget->setWidget(keyGroup);
-    return dockWidget;
 }
 
 QDockWidget* ToolSet::createOptionPalette()

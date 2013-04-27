@@ -31,14 +31,10 @@ public:
     QDockWidget* drawPalette;
     QDockWidget* optionPalette;
     QDockWidget* displayPalette;
-    QDockWidget* keyPalette;
     QDockWidget* onionPalette;
-    QDockWidget* timePalette;
 
     QDockWidget* createDisplayPalette();
-    QDockWidget* createKeyPalette();
     QDockWidget* createOptionPalette();
-    QDockWidget* createTimePalette();
 
 public slots:
     void setCounter(int);
@@ -50,7 +46,7 @@ public slots:
     void setPreserveAlpha(int);
     void setFollowContour(int);
     void setColour(QColor);
-    //void playStart();
+
     void changePencilButton();
     void changeEraserButton();
     void changeSelectButton();
@@ -76,9 +72,6 @@ public slots:
     void onionNextChanged(bool);
 
 signals:
-    void rmClick();
-    void playClick();
-    void addClick();
     void pencilClick();
     void eraserClick();
     void selectClick();
@@ -108,8 +101,6 @@ signals:
     void featherClick(qreal);
     void opacityClick(qreal);
     void colourClick();
-    void loopClick();
-    void soundClick();
 
 private:
     void newToolButton(QToolButton*& toolButton);
@@ -138,28 +129,14 @@ private:
     QToolButton* onionNext;
     QToolButton* clearButton;
 
-    QToolButton* add;
-    QToolButton* rm;
-
-    QSpinBox* fpsBox;
-    //QDoubleSpinBox *sizeSlider;
     SpinSlider* sizeSlider;
     SpinSlider* featherSlider;
     SpinSlider* opacitySlider;
-    //QSlider *featherSlider;
-    QLabel* framecounter;
-    QPushButton* play;
 
     QCheckBox* usePressureBox;
     QCheckBox* makeInvisibleBox;
     QCheckBox* preserveAlphaBox;
     QCheckBox* followContourBox;
-
-    QCheckBox* onionPrevBox;
-    QCheckBox* onionNextBox;
-    QCheckBox* loopBox;
-    QCheckBox* soundBox;
-    int fps;
 
     void deselectAllTools();
 };

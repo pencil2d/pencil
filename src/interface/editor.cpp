@@ -131,8 +131,6 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect(toolSet, SIGNAL(addClick()), this, SLOT(addKey()));
-    connect(toolSet, SIGNAL(rmClick()), this, SLOT(removeKey()));
     connect(toolSet, SIGNAL(playClick()), this, SLOT(play()));
     connect(toolSet, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
 
