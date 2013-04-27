@@ -2253,20 +2253,20 @@ void Editor::updateMaxFrame()
 
 void Editor::dockAllPalettes()
 {
-    getToolSet()->drawPalette->setFloating(false);
-    getToolSet()->optionPalette->setFloating(false);
-    getToolSet()->displayPalette->setFloating(false);
-    getToolSet()->onionPalette->setFloating(false);
+    toolSet->drawPalette->setFloating(false);
+    toolSet->optionPalette->setFloating(false);
+    toolSet->displayPalette->setFloating(false);
+    toolSet->onionPalette->setFloating(false);
     getTimeLine()->setFloating(false);
     mainWindow->m_palette->setFloating(false);
 }
 
 /*
 void Editor::detachAllPalettes() {
-	getToolSet()->drawPalette->setFloating(true);
-	getToolSet()->optionPalette->setFloating(true);
-	getToolSet()->displayPalette->setFloating(true);
-	getToolSet()->onionPalette->setFloating(true);
+    toolSet->drawPalette->setFloating(true);
+    toolSet->optionPalette->setFloating(true);
+    toolSet->displayPalette->setFloating(true);
+    toolSet->onionPalette->setFloating(true);
 	getTimeLine()->setFloating(true);
 	getPalette()->setFloating(true);
 	restorePalettesSettings(false, true, true);
@@ -2300,7 +2300,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
         timelinePalette->show();
     }
 
-    QDockWidget* drawPalette = getToolSet()->drawPalette;
+    QDockWidget* drawPalette = toolSet->drawPalette;
     if(drawPalette != NULL)
     {
         QPoint pos = settings.value("drawPalettePosition", QPoint(100, 100)).toPoint();
@@ -2312,7 +2312,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
         drawPalette->show();
     }
 
-    QDockWidget* optionPalette = getToolSet()->optionPalette;
+    QDockWidget* optionPalette = toolSet->optionPalette;
     if(optionPalette != NULL)
     {
         QPoint pos = settings.value("optionPalettePosition", QPoint(100, 100)).toPoint();
@@ -2324,7 +2324,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
         optionPalette->show();
     }
 
-    QDockWidget* displayPalette = getToolSet()->displayPalette;
+    QDockWidget* displayPalette = toolSet->displayPalette;
     if(displayPalette != NULL)
     {
         QPoint pos = settings.value("displayPalettePosition", QPoint(100, 100)).toPoint();

@@ -57,9 +57,9 @@ public:
     bool playing;
     bool looping;
     bool sound;
+    ToolSet* toolSet;
 
     TimeLine* getTimeLine() { return timeLine; }
-    ToolSet* getToolSet() { return toolSet; }
     Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(currentLayer+incr); } else { return NULL; } }
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);
@@ -265,8 +265,7 @@ private:
 
     ScribbleArea* scribbleArea;
     TimeLine* timeLine;
-    TimeControls* timeControl;
-    ToolSet* toolSet;
+    TimeControls* timeControl;    
     Preferences* preferences;
     MainWindow* mainWindow;
 

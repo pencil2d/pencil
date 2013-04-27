@@ -53,17 +53,17 @@ void MainWindow::arrangePalettes()
     m_palette->setFocusPolicy(Qt::NoFocus);
 
     addDockWidget(Qt::RightDockWidgetArea, m_palette);
-    addDockWidget(Qt::RightDockWidgetArea, editor->getToolSet()->displayPalette);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->drawPalette);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->getToolSet()->optionPalette);
+    addDockWidget(Qt::RightDockWidgetArea, editor->toolSet->displayPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->optionPalette);
     addDockWidget(Qt::BottomDockWidgetArea, editor->getTimeLine());
 
-    editor->getToolSet()->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->getToolSet()->optionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->getToolSet()->displayPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->getToolSet()->keyPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->getToolSet()->onionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->getToolSet()->timePalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->optionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->displayPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->keyPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->onionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->timePalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     editor->getTimeLine()->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
@@ -758,7 +758,7 @@ void MainWindow::writeSettings()
         settings.setValue("timelinePaletteFloating", timelinePalette->isFloating());
     }
 
-    QDockWidget* drawPalette = editor->getToolSet()->drawPalette;
+    QDockWidget* drawPalette = editor->toolSet->drawPalette;
     if(drawPalette != NULL)
     {
         settings.setValue("drawPalettePosition", drawPalette->pos());
@@ -766,7 +766,7 @@ void MainWindow::writeSettings()
         settings.setValue("drawPaletteFloating", drawPalette->isFloating());
     }
 
-    QDockWidget* optionPalette = editor->getToolSet()->optionPalette;
+    QDockWidget* optionPalette = editor->toolSet->optionPalette;
     if(optionPalette != NULL)
     {
         settings.setValue("optionPalettePosition", optionPalette->pos());
@@ -774,7 +774,7 @@ void MainWindow::writeSettings()
         settings.setValue("optionPaletteFloating", optionPalette->isFloating());
     }
 
-    QDockWidget* displayPalette = editor->getToolSet()->displayPalette;
+    QDockWidget* displayPalette = editor->toolSet->displayPalette;
     if(displayPalette != NULL)
     {
         settings.setValue("displayPalettePosition", displayPalette->pos());
