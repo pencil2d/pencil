@@ -108,7 +108,6 @@ Editor::Editor(MainWindow* parent)
     // FOCUS POLICY
     scribbleArea->setFocusPolicy(Qt::StrongFocus);
     timeLine->setFocusPolicy(Qt::NoFocus);
-    toolSet->setFocusPolicy(Qt::NoFocus);
 
     // CONNECTIONS
     makeConnections();
