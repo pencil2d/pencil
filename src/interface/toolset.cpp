@@ -25,32 +25,25 @@ GNU General Public License for more details.
 
 ToolSet::ToolSet()
 {
-
     drawPalette = new QDockWidget(tr("Tools"));
-    optionPalette = new QDockWidget(tr("Options"));
     onionPalette = new QDockWidget(tr("Onion skin"));
     timePalette = new QDockWidget(tr("Controls"));
 
     QFrame* drawGroup = new QFrame();
-    QFrame* optionGroup = new QFrame();
     QFrame* onionGroup = new QFrame();
     QFrame* timeGroup = new QFrame();
 
     drawPalette->setWidget(drawGroup);
-    optionPalette->setWidget(optionGroup);
     onionPalette->setWidget(onionGroup);
     timePalette->setWidget(timeGroup);
 
-    //QVBoxLayout *framelay = new QVBoxLayout();
     QGridLayout* drawLay = new QGridLayout();
-    QGridLayout* optionLay = new QGridLayout();
-
     QGridLayout* onionLay = new QGridLayout();
     QGridLayout* timeLay = new QGridLayout();
-    //QVBoxLayout *butlay = new QVBoxLayout();
 
     keyPalette = createKeyPalette();
     displayPalette = createDisplayPalette();
+    optionPalette = createOptionPalette();
 
     QSettings settings("Pencil","Pencil");
 
@@ -68,10 +61,7 @@ ToolSet::ToolSet()
     newToolButton(magnifyButton);
     newToolButton(smudgeButton);
 
-
-    choseColour = new QToolButton(this);
     play = new QPushButton(tr("Play"),this);
-
     play->setFixedWidth(80);
 
     pencilButton->setWhatsThis("Pencil Tool (N)");
@@ -88,32 +78,6 @@ ToolSet::ToolSet()
     magnifyButton->setWhatsThis("Zoom Tool (Z)");
     smudgeButton->setWhatsThis("Smudge Tool (A)");
 
-    usePressureBox = new QCheckBox("Pressure");
-    pencilButton->setToolTip("Size with pressure");
-    usePressureBox->setFont( QFont("Helvetica", 10) );
-    usePressureBox->setChecked(true);
-    makeInvisibleBox = new QCheckBox("Invisible");
-    makeInvisibleBox->setToolTip("Make invisible");
-    makeInvisibleBox->setFont( QFont("Helvetica", 10) );
-    makeInvisibleBox->setChecked(false);
-    preserveAlphaBox = new QCheckBox("Alpha");
-    preserveAlphaBox->setToolTip("Preserve Alpha");
-    preserveAlphaBox->setFont( QFont("Helvetica", 10) );
-    preserveAlphaBox->setChecked(false);
-    followContourBox = new QCheckBox("Contours");
-    followContourBox->setToolTip("Stop at contours");
-    followContourBox->setFont( QFont("Helvetica", 10) );
-    followContourBox->setChecked(false);
-
-    sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
-    sizeSlider->setValue(settings.value("pencilWidth").toDouble());
-
-    featherSlider = new SpinSlider("Feather", "log", "real", 0.2, 200.0, this);
-    featherSlider->setValue(settings.value("pencilFeather").toDouble());
-
-    opacitySlider = new SpinSlider("Opacity", "linear", "real", 0.0, 1.0, this);
-    opacitySlider->setValue(settings.value("pencilOpacity").toDouble());
-
     soundBox = new QCheckBox("Sound");
     soundBox->setFont( QFont("Helvetica", 10) );
     loopBox = new QCheckBox(tr("Loop"), this);
@@ -128,8 +92,6 @@ ToolSet::ToolSet()
     fpsBox->setMaximum(50);
     fpsBox->setToolTip("FPS");
     fpsBox->setFocusPolicy(Qt::NoFocus);
-
-    sizeSlider->setToolTip("Set Pen Width");
 
     pencilButton->setIcon(QIcon(":icons/pencil2.png"));
     pencilButton->setToolTip("Pencil Tool <b>(N)</b>: Sketch with pencil");
@@ -157,14 +119,6 @@ ToolSet::ToolSet()
     smudgeButton->setIcon(QIcon(":icons/smudge.png"));
     smudgeButton->setToolTip("Smudge Tool <b>(A)</b>: Edit polyline/curves");
     smudgeButton->setEnabled(true);
-
-    QPixmap colourSwatch(30,30);
-    colourSwatch.fill(Qt::black);
-    QLabel* colourLabel = new QLabel();
-    colourLabel->setText(tr("Color:"));
-    colourLabel->setFont( QFont("Helvetica", 10) );
-    choseColour->setIcon(colourSwatch);
-    choseColour->setToolTip("Display Colors");
 
     clearButton->setIcon(QIcon(":icons/clear.png"));
     clearButton->setToolTip("Clear Tool <b>(L)</b>: Erases content of selected frame");
@@ -217,20 +171,6 @@ ToolSet::ToolSet()
     drawLay->setAlignment(eraserButton, Qt::AlignLeft);
     //drawLay->addWidget(mirrorButton,5,1); drawLay->setAlignment(mirrorButton, Qt::AlignLeft);
 
-    optionLay->setMargin(8);
-    optionLay->setSpacing(8);
-    optionLay->addWidget(colourLabel,6,0);
-    optionLay->addWidget(choseColour,6,1);
-
-    optionLay->addWidget(sizeSlider,8,0,1,2);
-    optionLay->addWidget(featherSlider,9,0,1,2);
-
-    optionLay->addWidget(usePressureBox,11,0,1,2);
-    optionLay->addWidget(preserveAlphaBox,12,0,1,2);
-    optionLay->addWidget(followContourBox,13,0,1,2);
-    optionLay->addWidget(makeInvisibleBox,14,0,1,2);
-    optionLay->setRowStretch(15,1);
-
     onionLay->setMargin(4);
     onionLay->setSpacing(0);
 
@@ -241,9 +181,7 @@ ToolSet::ToolSet()
     timeLay->addWidget(loopBox,2,0,1,-1);
     timeLay->addWidget(soundBox,3,0,1,-1);
 
-    drawGroup->setLayout(drawLay);
-    optionGroup->setLayout(optionLay);    
-
+    drawGroup->setLayout(drawLay);  
     onionGroup->setLayout(onionLay);
     timeGroup->setLayout(timeLay);
 
@@ -335,6 +273,71 @@ QDockWidget* ToolSet::createKeyPalette()
 
     QDockWidget* dockWidget = new QDockWidget(tr("Keys"));
     dockWidget->setWidget(keyGroup);
+    return dockWidget;
+}
+
+QDockWidget* ToolSet::createOptionPalette()
+{
+    QFrame* optionGroup = new QFrame();
+    QGridLayout* optionLay = new QGridLayout();
+    optionLay->setMargin(8);
+    optionLay->setSpacing(8);
+
+    QSettings settings("Pencil","Pencil");
+
+    QLabel* colourLabel = new QLabel();
+    colourLabel->setText(tr("Color:"));
+    colourLabel->setFont( QFont("Helvetica", 10) );
+
+    QPixmap colourSwatch(30,30);
+    colourSwatch.fill(Qt::black);
+    choseColour = new QToolButton(this);
+    choseColour->setIcon(colourSwatch);
+    choseColour->setToolTip("Display Colors");
+
+    sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
+    sizeSlider->setValue(settings.value("pencilWidth").toDouble());
+    sizeSlider->setToolTip("Set Pen Width");
+
+    featherSlider = new SpinSlider("Feather", "log", "real", 0.2, 200.0, this);
+    featherSlider->setValue(settings.value("pencilFeather").toDouble());
+
+    opacitySlider = new SpinSlider("Opacity", "linear", "real", 0.0, 1.0, this);
+    opacitySlider->setValue(settings.value("pencilOpacity").toDouble());
+
+    usePressureBox = new QCheckBox("Pressure");
+    usePressureBox->setToolTip("Size with pressure");
+    usePressureBox->setFont( QFont("Helvetica", 10) );
+    usePressureBox->setChecked(true);
+    makeInvisibleBox = new QCheckBox("Invisible");
+    makeInvisibleBox->setToolTip("Make invisible");
+    makeInvisibleBox->setFont( QFont("Helvetica", 10) );
+    makeInvisibleBox->setChecked(false);
+    preserveAlphaBox = new QCheckBox("Alpha");
+    preserveAlphaBox->setToolTip("Preserve Alpha");
+    preserveAlphaBox->setFont( QFont("Helvetica", 10) );
+    preserveAlphaBox->setChecked(false);
+    followContourBox = new QCheckBox("Contours");
+    followContourBox->setToolTip("Stop at contours");
+    followContourBox->setFont( QFont("Helvetica", 10) );
+    followContourBox->setChecked(false);
+
+    optionLay->addWidget(colourLabel,6,0);
+    optionLay->addWidget(choseColour,6,1);
+
+    optionLay->addWidget(sizeSlider,8,0,1,2);
+    optionLay->addWidget(featherSlider,9,0,1,2);
+
+    optionLay->addWidget(usePressureBox,11,0,1,2);
+    optionLay->addWidget(preserveAlphaBox,12,0,1,2);
+    optionLay->addWidget(followContourBox,13,0,1,2);
+    optionLay->addWidget(makeInvisibleBox,14,0,1,2);
+    optionLay->setRowStretch(15,1);
+
+    optionGroup->setLayout(optionLay);
+
+    QDockWidget* dockWidget = new QDockWidget(tr("Options"));
+    dockWidget->setWidget(optionGroup);
     return dockWidget;
 }
 
