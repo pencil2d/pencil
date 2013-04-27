@@ -132,9 +132,6 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect(toolSet, SIGNAL(playClick()), this, SLOT(play()));
-    connect(toolSet, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
-
     connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
     connect(toolSet, SIGNAL(eraserClick()), scribbleArea, SLOT(eraserOn()));
     connect(toolSet, SIGNAL(selectClick()), scribbleArea, SLOT(selectOn()));

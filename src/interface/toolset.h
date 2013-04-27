@@ -86,16 +86,15 @@ signals:
     void eyedropperClick();
     void colouringClick();
     void smudgeClick();
-
-    void lengthClick(QString);
-    void fpsClick(int);
     void clearClick();
+
     void thinLinesClick();
     void outlinesClick();
     void mirrorClick();
     void mirrorVClick();
     void togglePrev(bool);
     void toggleNext(bool);
+
     void widthClick(qreal);
     void featherClick(qreal);
     void opacityClick(qreal);
