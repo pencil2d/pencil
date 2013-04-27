@@ -125,29 +125,15 @@ ToolSet::ToolSet()
     QFrame* drawGroup = new QFrame();
     QFrame* optionGroup = new QFrame();
     QFrame* displayGroup = new QFrame();
-    QFrame* keyGroup = new QFrame();
+
+
     QFrame* onionGroup = new QFrame();
     QFrame* timeGroup = new QFrame();
-
-    //QFrame *line = new QFrame();
-    //line->setFrameStyle(QFrame::HLine | QFrame::Raised);
-
-    //drawGroup->setMaximumHeight( 100 );
-    //optionGroup->setFrameStyle(QFrame::Panel | QFrame::Raised);
-    //keyGroup->setFrameStyle(QFrame::Panel | QFrame::Raised);
-    //onionGroup->setFrameStyle(QFrame::Panel | QFrame::Raised);
-    //timeGroup->setFrameStyle(QFrame::Panel | QFrame::Raised);
-
-    //optionGroup->setLineWidth(2);
-    //keyGroup->setLineWidth(2);
-    //displayGroup->setLineWidth(2);
-    //onionGroup->setLineWidth(2);
-    //timeGroup->setLineWidth(2);
 
     drawPalette->setWidget(drawGroup);
     optionPalette->setWidget(optionGroup);
     displayPalette->setWidget(displayGroup);
-    keyPalette->setWidget(keyGroup);
+
     onionPalette->setWidget(onionGroup);
     timePalette->setWidget(timeGroup);
 
@@ -176,8 +162,27 @@ ToolSet::ToolSet()
     newToolButton(magnifyButton);
     newToolButton(smudgeButton);
 
-    add = new QToolButton(this);
-    rm = new QToolButton(this);
+    // Create KeyFrame Tool Buttons
+    QFrame* keyGroup = new QFrame();
+    keyPalette->setWidget(keyGroup);
+
+    add = new QToolButton(keyGroup);
+    add->setIcon(QIcon(":icons/add.png"));
+    add->setToolTip("Add Frame");
+
+    rm = new QToolButton(keyGroup);
+    rm->setIcon(QIcon(":icons/remove.png"));
+    rm->setToolTip("Remove Frame");
+
+    keyLay->setMargin(4);
+    keyLay->setSpacing(0);
+    keyLay->addWidget(add, 0, 0);
+    keyLay->addWidget(rm, 0, 1);
+
+    keyGroup->setLayout(keyLay);
+    keyGroup->setMaximumHeight(60);
+
+
     thinLinesButton = new QToolButton(this);
     outlinesButton = new QToolButton(this);
     mirrorButton = new QToolButton(this); //  = new QToolButton(this);
@@ -305,10 +310,7 @@ ToolSet::ToolSet()
     smudgeButton->setToolTip("Smudge Tool <b>(A)</b>: Edit polyline/curves");
     smudgeButton->setEnabled(true);
 
-    add->setIcon(QIcon(":icons/add.png"));
-    add->setToolTip("Add Frame");
-    rm->setIcon(QIcon(":icons/remove.png"));
-    rm->setToolTip("Remove Frame");
+
 
     QPixmap colourSwatch(30,30);
     colourSwatch.fill(Qt::black);
@@ -436,11 +438,6 @@ ToolSet::ToolSet()
     displayLay->addWidget(onionPrev,0,2);
     displayLay->addWidget(onionNext,1,2);
 
-    keyLay->setMargin(4);
-    keyLay->setSpacing(0);
-    keyLay->addWidget(add,0,0);
-    keyLay->addWidget(rm,0,1);
-
     onionLay->setMargin(4);
     onionLay->setSpacing(0);
     // -- mj
@@ -457,7 +454,7 @@ ToolSet::ToolSet()
     drawGroup->setLayout(drawLay);
     optionGroup->setLayout(optionLay);
     displayGroup->setLayout(displayLay);
-    keyGroup->setLayout(keyLay);
+
     onionGroup->setLayout(onionLay);
     timeGroup->setLayout(timeLay);
 
@@ -473,7 +470,7 @@ ToolSet::ToolSet()
     //optionPalette->setMaximumHeight(300);
     //optionGroup->setMaximumHeight(160);
     displayPalette->setMaximumHeight(60);
-    keyGroup->setMaximumHeight(60);
+
     onionGroup->setMaximumHeight(60);
 
     /*butlay->setMargin(0);
