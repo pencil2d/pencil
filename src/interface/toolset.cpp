@@ -26,19 +26,15 @@ GNU General Public License for more details.
 ToolSet::ToolSet()
 {
     drawPalette = new QDockWidget(tr("Tools"));
-    onionPalette = new QDockWidget(tr("Onion skin"));
     timePalette = new QDockWidget(tr("Controls"));
 
     QFrame* drawGroup = new QFrame();
-    QFrame* onionGroup = new QFrame();
     QFrame* timeGroup = new QFrame();
 
     drawPalette->setWidget(drawGroup);
-    onionPalette->setWidget(onionGroup);
     timePalette->setWidget(timeGroup);
 
     QGridLayout* drawLay = new QGridLayout();
-    QGridLayout* onionLay = new QGridLayout();
     QGridLayout* timeLay = new QGridLayout();
 
     keyPalette = createKeyPalette();
@@ -171,9 +167,6 @@ ToolSet::ToolSet()
     drawLay->setAlignment(eraserButton, Qt::AlignLeft);
     //drawLay->addWidget(mirrorButton,5,1); drawLay->setAlignment(mirrorButton, Qt::AlignLeft);
 
-    onionLay->setMargin(4);
-    onionLay->setSpacing(0);
-
     timeLay->setMargin(4);
     timeLay->setSpacing(0);
     timeLay->addWidget(play,0,0);
@@ -182,14 +175,11 @@ ToolSet::ToolSet()
     timeLay->addWidget(soundBox,3,0,1,-1);
 
     drawGroup->setLayout(drawLay);  
-    onionGroup->setLayout(onionLay);
     timeGroup->setLayout(timeLay);
 
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
     displayPalette->setMaximumHeight(60);
-
-    onionGroup->setMaximumHeight(60);
 
     connect(add, SIGNAL(clicked()), this, SIGNAL(addClick()));
     connect(rm, SIGNAL(clicked()), this, SIGNAL(rmClick()));
@@ -309,14 +299,17 @@ QDockWidget* ToolSet::createOptionPalette()
     usePressureBox->setToolTip("Size with pressure");
     usePressureBox->setFont( QFont("Helvetica", 10) );
     usePressureBox->setChecked(true);
+
     makeInvisibleBox = new QCheckBox("Invisible");
     makeInvisibleBox->setToolTip("Make invisible");
     makeInvisibleBox->setFont( QFont("Helvetica", 10) );
     makeInvisibleBox->setChecked(false);
+
     preserveAlphaBox = new QCheckBox("Alpha");
     preserveAlphaBox->setToolTip("Preserve Alpha");
     preserveAlphaBox->setFont( QFont("Helvetica", 10) );
     preserveAlphaBox->setChecked(false);
+
     followContourBox = new QCheckBox("Contours");
     followContourBox->setToolTip("Stop at contours");
     followContourBox->setFont( QFont("Helvetica", 10) );
