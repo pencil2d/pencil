@@ -28,7 +28,6 @@ ToolSet::ToolSet()
 
     drawPalette = new QDockWidget(tr("Tools"));
     optionPalette = new QDockWidget(tr("Options"));
-    keyPalette = new QDockWidget(tr("Keys"));
     onionPalette = new QDockWidget(tr("Onion skin"));
     timePalette = new QDockWidget(tr("Controls"));
 
@@ -50,6 +49,11 @@ ToolSet::ToolSet()
     QGridLayout* timeLay = new QGridLayout();
     //QVBoxLayout *butlay = new QVBoxLayout();
 
+    keyPalette = createKeyPalette();
+    displayPalette = createDisplayPalette();
+
+
+
     QSettings settings("Pencil","Pencil");
 
     newToolButton(pencilButton);
@@ -66,29 +70,6 @@ ToolSet::ToolSet()
     newToolButton(magnifyButton);
     newToolButton(smudgeButton);
 
-    // Create KeyFrame Tool Buttons
-    QFrame* keyGroup = new QFrame();
-    keyPalette->setWidget(keyGroup);
-
-    add = new QToolButton(keyGroup);
-    add->setIcon(QIcon(":icons/add.png"));
-    add->setToolTip("Add Frame");
-
-    rm = new QToolButton(keyGroup);
-    rm->setIcon(QIcon(":icons/remove.png"));
-    rm->setToolTip("Remove Frame");
-
-    QGridLayout* keyLayout = new QGridLayout();
-    keyLayout->setMargin(4);
-    keyLayout->setSpacing(0);
-    keyLayout->addWidget(add, 0, 0);
-    keyLayout->addWidget(rm, 0, 1);
-
-    keyGroup->setLayout(keyLayout);
-    keyGroup->setMaximumHeight(60);
-
-
-    displayPalette = createDisplayPalette();
 
     choseColour = new QToolButton(this);
     play = new QPushButton(tr("Play"),this);
@@ -392,6 +373,32 @@ ToolSet::ToolSet()
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(changeSmudgeButton()));
 
     //connect(thinLinesButton, SIGNAL(clicked()), this, SLOT(changeThinLinesButton()));
+}
+
+QDockWidget* ToolSet::createKeyPalette()
+{
+    QFrame* keyGroup = new QFrame();
+
+    add = new QToolButton(keyGroup);
+    add->setIcon(QIcon(":icons/add.png"));
+    add->setToolTip("Add Frame");
+
+    rm = new QToolButton(keyGroup);
+    rm->setIcon(QIcon(":icons/remove.png"));
+    rm->setToolTip("Remove Frame");
+
+    QGridLayout* keyLayout = new QGridLayout();
+    keyLayout->setMargin(4);
+    keyLayout->setSpacing(0);
+    keyLayout->addWidget(add, 0, 0);
+    keyLayout->addWidget(rm, 0, 1);
+
+    keyGroup->setLayout(keyLayout);
+    keyGroup->setMaximumHeight(60);
+
+    QDickWidget* dockWidget = new QDockWidget(tr("Keys"));
+    dockWidget->setWidget(keyGroup);
+    return dockWidget;
 }
 
 QDockWidget* ToolSet::createDisplayPalette()

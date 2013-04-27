@@ -36,6 +36,7 @@ public:
     QDockWidget* timePalette;
 
     QDockWidget* createDisplayPalette();
+    QDockWidget* createKeyPalette();
 
 public slots:
     void setCounter(int);
