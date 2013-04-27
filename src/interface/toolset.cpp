@@ -32,21 +32,6 @@ ToolSet::ToolSet()
     onionPalette = new QDockWidget(tr("Onion skin"));
     timePalette = new QDockWidget(tr("Controls"));
 
-    //drawPalette->setAutoFillBackground(false);
-    //drawPalette->setAttribute(Qt::WA_NoSystemBackground, true);
-
-    /*QPalette optionPalettePalette(optionPalette->palette());
-    optionPalettePalette.setColor(QPalette::Light, Qt::red);
-    optionPalettePalette.setColor(QPalette::Midlight, Qt::red);
-    optionPalettePalette.setColor(QPalette::Dark, Qt::red);
-    optionPalettePalette.setColor(QPalette::Shadow, Qt::red);
-    optionPalette->setPalette(optionPalettePalette);*/
-
-    //optionPalette->setWindowFlags(Qt::Tool);
-    //optionPalette->setWindowIconText(tr("Coucou"));
-    //optionPalette->setFont( QFont("Helvetica", 14, QFont::Bold) );
-
-    //QGroupBox *drawGroup = new QGroupBox(tr("Draw"));
     QFrame* drawGroup = new QFrame();
     QFrame* optionGroup = new QFrame();
     QFrame* onionGroup = new QFrame();
