@@ -14,8 +14,6 @@ class BackupElement : public QObject
 public:
     enum types { UNDEFINED, BITMAP_MODIF, VECTOR_MODIF };
 
-    BackupElement(QObject* parent);
-
     QString undoText;
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
