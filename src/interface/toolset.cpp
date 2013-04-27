@@ -25,18 +25,14 @@ GNU General Public License for more details.
 
 ToolSet::ToolSet()
 {
+
     drawPalette = new QDockWidget(tr("Tools"));
-    timePalette = new QDockWidget(tr("Controls"));
 
     QFrame* drawGroup = new QFrame();
-    QFrame* timeGroup = new QFrame();
-
     drawPalette->setWidget(drawGroup);
-    timePalette->setWidget(timeGroup);
-
     QGridLayout* drawLay = new QGridLayout();
-    QGridLayout* timeLay = new QGridLayout();
 
+    timePalette = createTimePalette();
     keyPalette = createKeyPalette();
     displayPalette = createDisplayPalette();
     optionPalette = createOptionPalette();
@@ -57,9 +53,6 @@ ToolSet::ToolSet()
     newToolButton(magnifyButton);
     newToolButton(smudgeButton);
 
-    play = new QPushButton(tr("Play"),this);
-    play->setFixedWidth(80);
-
     pencilButton->setWhatsThis("Pencil Tool (N)");
     selectButton->setWhatsThis("Select Tool (V)");
     moveButton->setWhatsThis("Move Tool (Q)");
@@ -73,21 +66,6 @@ ToolSet::ToolSet()
     clearButton->setWhatsThis("Clear Tool");
     magnifyButton->setWhatsThis("Zoom Tool (Z)");
     smudgeButton->setWhatsThis("Smudge Tool (A)");
-
-    soundBox = new QCheckBox("Sound");
-    soundBox->setFont( QFont("Helvetica", 10) );
-    loopBox = new QCheckBox(tr("Loop"), this);
-    loopBox->setFont( QFont("Helvetica", 10) );
-
-    fpsBox = new QSpinBox(this);
-    //fpsBox->setFixedWidth(50);
-    fpsBox->setFont( QFont("Helvetica", 10) );
-    fpsBox->setFixedHeight(22);
-    fpsBox->setValue(settings.value("fps").toInt());
-    fpsBox->setMinimum(1);
-    fpsBox->setMaximum(50);
-    fpsBox->setToolTip("FPS");
-    fpsBox->setFocusPolicy(Qt::NoFocus);
 
     pencilButton->setIcon(QIcon(":icons/pencil2.png"));
     pencilButton->setToolTip("Pencil Tool <b>(N)</b>: Sketch with pencil");
@@ -167,19 +145,9 @@ ToolSet::ToolSet()
     drawLay->setAlignment(eraserButton, Qt::AlignLeft);
     //drawLay->addWidget(mirrorButton,5,1); drawLay->setAlignment(mirrorButton, Qt::AlignLeft);
 
-    timeLay->setMargin(4);
-    timeLay->setSpacing(0);
-    timeLay->addWidget(play,0,0);
-    timeLay->addWidget(fpsBox,1,0);
-    timeLay->addWidget(loopBox,2,0,1,-1);
-    timeLay->addWidget(soundBox,3,0,1,-1);
-
     drawGroup->setLayout(drawLay);  
-    timeGroup->setLayout(timeLay);
-
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
-    displayPalette->setMaximumHeight(60);
 
     connect(add, SIGNAL(clicked()), this, SIGNAL(addClick()));
     connect(rm, SIGNAL(clicked()), this, SIGNAL(rmClick()));
@@ -198,8 +166,6 @@ ToolSet::ToolSet()
 
     connect(thinLinesButton, SIGNAL(clicked()), this, SIGNAL(thinLinesClick()));
     connect(outlinesButton, SIGNAL(clicked()), this, SIGNAL(outlinesClick()));
-    //connect(outlinesButton, SIGNAL(pressed()), this, SIGNAL(outlinesPressed()));
-    //connect(outlinesButton, SIGNAL(released()), this, SIGNAL(outlinesReleased()));
 
     connect(usePressureBox, SIGNAL(clicked(bool)), this, SLOT(pressureClick(bool)));
     connect(makeInvisibleBox, SIGNAL(clicked(bool)), this, SLOT(invisibleClick(bool)));
@@ -212,8 +178,6 @@ ToolSet::ToolSet()
     // -- mj
     connect(onionPrev, SIGNAL(clicked(bool)), this, SIGNAL(togglePrev(bool)));
     connect(onionNext, SIGNAL(clicked(bool)), this, SIGNAL(toggleNext(bool)));
-
-
     connect(choseColour, SIGNAL(clicked()), this, SIGNAL(colourClick()));
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
     connect(mirrorButton, SIGNAL(clicked()), this, SIGNAL(mirrorClick()));
@@ -236,8 +200,43 @@ ToolSet::ToolSet()
     connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(changeEyedropperButton()));
     connect(colouringButton, SIGNAL(clicked()), this, SLOT(changeColouringButton()));
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(changeSmudgeButton()));
+}
 
-    //connect(thinLinesButton, SIGNAL(clicked()), this, SLOT(changeThinLinesButton()));
+QDockWidget* ToolSet::createTimePalette()
+{
+    QFrame* timeGroup = new QFrame();
+    QGridLayout* timeLay = new QGridLayout();
+
+    QSettings settings("Pencil","Pencil");
+
+    play = new QPushButton(tr("Play"), timeGroup);
+    play->setFixedWidth(80);
+    soundBox = new QCheckBox("Sound");
+    soundBox->setFont( QFont("Helvetica", 10) );
+    loopBox = new QCheckBox(tr("Loop"), timeGroup);
+    loopBox->setFont( QFont("Helvetica", 10) );
+
+    fpsBox = new QSpinBox(timeGroup);
+    fpsBox->setFont( QFont("Helvetica", 10) );
+    fpsBox->setFixedHeight(22);
+    fpsBox->setValue(settings.value("fps").toInt());
+    fpsBox->setMinimum(1);
+    fpsBox->setMaximum(50);
+    fpsBox->setToolTip("FPS");
+    fpsBox->setFocusPolicy(Qt::NoFocus);
+
+    timeLay->setMargin(4);
+    timeLay->setSpacing(0);
+    timeLay->addWidget(play,0,0);
+    timeLay->addWidget(fpsBox,1,0);
+    timeLay->addWidget(loopBox,2,0,1,-1);
+    timeLay->addWidget(soundBox,3,0,1,-1);
+
+    timeGroup->setLayout(timeLay);
+
+    QDockWidget* dockWidget = new QDockWidget(tr("Controls"));
+    dockWidget->setWidget(timeGroup);
+    return dockWidget;
 }
 
 QDockWidget* ToolSet::createKeyPalette()
@@ -396,7 +395,7 @@ QDockWidget* ToolSet::createDisplayPalette()
 
     QDockWidget* dockWidget = new QDockWidget(tr("Display Options"));
     dockWidget->setWidget(displayGroup);
-
+    dockWidget->setMaximumHeight(60);
     return dockWidget;
 }
 
