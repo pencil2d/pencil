@@ -74,14 +74,6 @@ Editor::Editor(MainWindow* parent)
     currentFrame = 1;
     currentLayer = 0;
 
-    QHBoxLayout* lay = new QHBoxLayout();
-    QVBoxLayout* framelay = new QVBoxLayout();
-
-    scribbleArea = new ScribbleArea(this, this);
-    timeLine = new TimeLine(this, this);
-    timeControl = new TimeControls();
-    toolSet = new ToolSet();
-
     preferences = new Preferences();
     exportFramesDialog = NULL; // will be created when needed
     exportMovieDialog = NULL;
@@ -97,6 +89,22 @@ Editor::Editor(MainWindow* parent)
 
     exportFlashDialog_compression = NULL;
 
+    // Layouts
+    QHBoxLayout* mainLayout = new QHBoxLayout();
+
+    scribbleArea = new ScribbleArea(this, this);
+    timeLine = new TimeLine(this, this);
+    timeControl = new TimeControls();
+    toolSet = new ToolSet();
+
+    mainLayout->addWidget(scribbleArea);
+    //mainLayout->addWidget(toolSet);
+
+    mainLayout->setMargin(0);
+    mainLayout->setSpacing(0);
+
+    setLayout(mainLayout);
+
     // FOCUS POLICY
     scribbleArea->setFocusPolicy(Qt::StrongFocus);
     timeLine->setFocusPolicy(Qt::NoFocus);
@@ -104,17 +112,6 @@ Editor::Editor(MainWindow* parent)
 
     // CONNECTIONS
     makeConnections();
-
-    framelay->addWidget(scribbleArea);
-    lay->addWidget(toolSet);
-    lay->addLayout(framelay);
-
-    framelay->setMargin(0);
-    framelay->setSpacing(0);
-    lay->setMargin(0);
-    lay->setSpacing(0);
-
-    setLayout(lay);
 
     qDebug() << QLibraryInfo::location(QLibraryInfo::PluginsPath);
     qDebug() << QLibraryInfo::location(QLibraryInfo::BinariesPath);
