@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "interfaces.h"
 #include "palette.h"
+#include "displayoptiondockwidget.h"
 
 MainWindow::MainWindow()
 {

@@ -44,7 +44,8 @@ HEADERS += src/interfaces.h \
            src/interface/timecontrols.h \
            src/interface/toolset.h \
     src/interface/backupelement.h \
-    src/interface/spinslider.h
+    src/interface/spinslider.h \
+    src/interface/displayoptiondockwidget.h
 SOURCES += src/graphics/bitmap/blur.cpp \
            src/graphics/bitmap/bitmapimage.cpp \
            src/graphics/vector/bezierarea.cpp \
@@ -70,7 +71,8 @@ SOURCES += src/graphics/bitmap/blur.cpp \
            src/interface/toolset.cpp \
            src/main.cpp \
     src/interface/backupelement.cpp \
-    src/interface/spinslider.cpp
+    src/interface/spinslider.cpp \
+    src/interface/displayoptiondockwidget.cpp
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp

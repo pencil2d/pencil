@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layercamera.h"
 #include "mainwindow.h"
+#include "displayoptiondockwidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -1087,7 +1088,7 @@ void Editor::toggleShowAllLayers()
 void Editor::resetMirror()
 {
     object->resetMirror();
-    toolSet->resetMirror();
+    //toolSet->resetMirror();
 }
 
 void Editor::showPalette()

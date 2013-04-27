@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <math.h>
 #include "spinslider.h"
-
+#include "displayoptiondockwidget.h"
 #include "toolset.h"
 
 
@@ -31,7 +31,7 @@ ToolSet::ToolSet()
     drawPalette->setWidget(drawGroup);
     QGridLayout* drawLay = new QGridLayout();
 
-    displayPalette = createDisplayPalette();
+    displayPalette = new DisplayOptionDockWidget(this);
     optionPalette = createOptionPalette();
 
     newToolButton(pencilButton);
@@ -155,8 +155,12 @@ ToolSet::ToolSet()
     connect(colouringButton, SIGNAL(clicked()), this, SIGNAL(colouringClick()));
     connect(smudgeButton, SIGNAL(clicked()), this, SIGNAL(smudgeClick()));
 
-    connect(thinLinesButton, SIGNAL(clicked()), this, SIGNAL(thinLinesClick()));
-    connect(outlinesButton, SIGNAL(clicked()), this, SIGNAL(outlinesClick()));
+    connect(displayPalette->thinLinesButton, SIGNAL(clicked()), this, SIGNAL(thinLinesClick()));
+    connect(displayPalette->outlinesButton, SIGNAL(clicked()), this, SIGNAL(outlinesClick()));
+    connect(displayPalette->onionPrev, SIGNAL(clicked(bool)), this, SIGNAL(togglePrev(bool)));
+    connect(displayPalette->onionNext, SIGNAL(clicked(bool)), this, SIGNAL(toggleNext(bool)));
+    connect(displayPalette->mirrorButton, SIGNAL(clicked()), this, SIGNAL(mirrorClick()));
+    connect(displayPalette->mirrorButtonV, SIGNAL(clicked()), this, SIGNAL(mirrorVClick()));
 
     connect(usePressureBox, SIGNAL(clicked(bool)), this, SLOT(pressureClick(bool)));
     connect(makeInvisibleBox, SIGNAL(clicked(bool)), this, SLOT(invisibleClick(bool)));
@@ -167,12 +171,8 @@ ToolSet::ToolSet()
     connect(opacitySlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(opacityClick(qreal)));
 
     // -- mj
-    connect(onionPrev, SIGNAL(clicked(bool)), this, SIGNAL(togglePrev(bool)));
-    connect(onionNext, SIGNAL(clicked(bool)), this, SIGNAL(toggleNext(bool)));
     connect(choseColour, SIGNAL(clicked()), this, SIGNAL(colourClick()));
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
-    connect(mirrorButton, SIGNAL(clicked()), this, SIGNAL(mirrorClick()));
-    connect(mirrorButtonV, SIGNAL(clicked()), this, SIGNAL(mirrorVClick()));
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(changeSelectButton()));
@@ -255,71 +255,6 @@ QDockWidget* ToolSet::createOptionPalette()
     return dockWidget;
 }
 
-QDockWidget* ToolSet::createDisplayPalette()
-{
-    // Create Display Option Tool Buttons
-    QFrame* displayGroup = new QFrame();
-
-    thinLinesButton = new QToolButton(displayGroup);
-    thinLinesButton->setIcon(QIcon(":icons/thinlines5.png"));
-    thinLinesButton->setToolTip("Show invisible lines");
-    thinLinesButton->setIconSize( QSize(21,21) );
-
-    outlinesButton = new QToolButton(displayGroup);
-    outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
-    outlinesButton->setToolTip("Show outlines only");
-    outlinesButton->setIconSize( QSize(21,21) );
-
-    mirrorButton = new QToolButton(displayGroup);
-    mirrorButton->setIcon(QIcon(":icons/mirror.png"));
-    mirrorButton->setToolTip("Horizontal flip");
-    mirrorButton->setIconSize( QSize(21,21) );
-
-    mirrorButtonV = new QToolButton(displayGroup);
-    mirrorButtonV->setIcon(QIcon(":icons/mirrorV.png"));
-    mirrorButtonV->setToolTip("Vertical flip");
-    mirrorButtonV->setIconSize( QSize(21,21) );
-
-    onionPrev = new QToolButton(displayGroup);
-    onionPrev->setIcon(QIcon(":icons/onionPrev.png"));
-    onionPrev->setToolTip("Onion skin previous frame");
-    onionPrev->setIconSize( QSize(21,21) );
-
-    onionNext = new QToolButton(displayGroup);
-    onionNext->setIcon(QIcon(":icons/onionNext.png"));
-    onionNext->setToolTip("Onion skin next frame");
-    onionNext->setIconSize( QSize(21,21) );
-
-    thinLinesButton->setCheckable(true);
-    thinLinesButton->setChecked(false);
-    outlinesButton->setCheckable(true);
-    outlinesButton->setChecked(false);
-    mirrorButton->setCheckable(true);
-    mirrorButton->setChecked(false);
-    mirrorButtonV->setCheckable(true);
-    mirrorButtonV->setChecked(false);
-    onionPrev->setCheckable(true);
-    onionPrev->setChecked(true);
-    onionNext->setCheckable(true);
-    onionNext->setChecked(false);
-
-    QGridLayout* displayLay = new QGridLayout();
-    displayLay->setMargin(4);
-    displayLay->setSpacing(0);
-    displayLay->addWidget(mirrorButton,0,0);
-    displayLay->addWidget(thinLinesButton,0,1);
-    displayLay->addWidget(outlinesButton,1,1);
-    displayLay->addWidget(mirrorButtonV,1,0);
-    displayLay->addWidget(onionPrev,0,2);
-    displayLay->addWidget(onionNext,1,2);
-
-    displayGroup->setLayout(displayLay);
-
-    QDockWidget* dockWidget = new QDockWidget(tr("Display Options"));
-    dockWidget->setWidget(displayGroup);
-    dockWidget->setMaximumHeight(60);
-    return dockWidget;
-}
 
 void ToolSet::newToolButton(QToolButton*& toolButton)
 {
@@ -525,7 +460,7 @@ void ToolSet::changeSmudgeButton()
     deselectAllTools();
     smudgeButton->setChecked(true);
 }
-
+/*
 void ToolSet::changeOutlinesButton(bool trueOrFalse)
 {
     outlinesButton->setChecked(trueOrFalse);
@@ -548,6 +483,17 @@ void ToolSet::resetMirrorV()
     mirrorButtonV->setChecked(false);
 }
 
+void ToolSet::onionPrevChanged(bool checked)
+{
+    onionPrev->setChecked(checked);
+}
+
+void ToolSet::onionNextChanged(bool checked)
+{
+    onionNext->setChecked(checked);
+}
+*/
+
 void ToolSet::deselectAllTools()
 {
     pencilButton->setChecked(false);
@@ -563,12 +509,3 @@ void ToolSet::deselectAllTools()
     smudgeButton->setChecked(false);
 }
 
-void ToolSet::onionPrevChanged(bool checked)
-{
-    onionPrev->setChecked(checked);
-}
-
-void ToolSet::onionNextChanged(bool checked)
-{
-    onionNext->setChecked(checked);
-}
