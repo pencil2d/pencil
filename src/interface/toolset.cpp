@@ -52,8 +52,6 @@ ToolSet::ToolSet()
     keyPalette = createKeyPalette();
     displayPalette = createDisplayPalette();
 
-
-
     QSettings settings("Pencil","Pencil");
 
     newToolButton(pencilButton);
@@ -106,23 +104,6 @@ ToolSet::ToolSet()
     followContourBox->setToolTip("Stop at contours");
     followContourBox->setFont( QFont("Helvetica", 10) );
     followContourBox->setChecked(false);
-    // -- mj
-    //onionPrevBox = new QCheckBox("Previous");
-    //		onionPrevBox->setFont( QFont("Helvetica", 10) );
-    //			onionPrevBox->setChecked(true);
-    //onionNextBox = new QCheckBox("Next");
-    //		onionNextBox->setFont( QFont("Helvetica", 10) );
-
-
-    /*sizeSlider = new QDoubleSpinBox(this);
-    sizeSlider->setFocusPolicy(Qt::NoFocus);
-    sizeSlider->setFont( QFont("Helvetica", 10) );
-    sizeSlider->setDecimals(1);
-    sizeSlider->setMinimum(0);
-    sizeSlider->setMaximum(200);
-    sizeSlider->setValue(settings.value("width").toInt());
-    sizeSlider->setFixedWidth(50);
-    sizeSlider->setFixedHeight(22);*/
 
     sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
     sizeSlider->setValue(settings.value("pencilWidth").toDouble());
@@ -132,11 +113,6 @@ ToolSet::ToolSet()
 
     opacitySlider = new SpinSlider("Opacity", "linear", "real", 0.0, 1.0, this);
     opacitySlider->setValue(settings.value("pencilOpacity").toDouble());
-
-    /*featherSlider = new QSlider(Qt::Horizontal, this);
-    featherSlider->setMinimum(0);
-    featherSlider->setMaximum(100);
-    featherSlider->setFixedHeight(22);*/
 
     soundBox = new QCheckBox("Sound");
     soundBox->setFont( QFont("Helvetica", 10) );
@@ -153,15 +129,6 @@ ToolSet::ToolSet()
     fpsBox->setToolTip("FPS");
     fpsBox->setFocusPolicy(Qt::NoFocus);
 
-    /*framecounter = new QLabel;
-    framecounter->setText("1");
-    framecounter->setAlignment(Qt::AlignCenter);
-    framecounter->setToolTip("Frame Counter!");
-    framecounter->setFont( QFont("Helvetica", 40, QFont::Bold) );*/
-
-    // -- mj
-    //onionNextBox->setToolTip("Onion skin next frame");
-    //onionPrevBox->setToolTip("Onion skin previous frame");
     sizeSlider->setToolTip("Set Pen Width");
 
     pencilButton->setIcon(QIcon(":icons/pencil2.png"));
@@ -191,8 +158,6 @@ ToolSet::ToolSet()
     smudgeButton->setToolTip("Smudge Tool <b>(A)</b>: Edit polyline/curves");
     smudgeButton->setEnabled(true);
 
-
-
     QPixmap colourSwatch(30,30);
     colourSwatch.fill(Qt::black);
     QLabel* colourLabel = new QLabel();
@@ -200,8 +165,6 @@ ToolSet::ToolSet()
     colourLabel->setFont( QFont("Helvetica", 10) );
     choseColour->setIcon(colourSwatch);
     choseColour->setToolTip("Display Colors");
-
-
 
     clearButton->setIcon(QIcon(":icons/clear.png"));
     clearButton->setToolTip("Clear Tool <b>(L)</b>: Erases content of selected frame");
@@ -258,21 +221,9 @@ ToolSet::ToolSet()
     optionLay->setSpacing(8);
     optionLay->addWidget(colourLabel,6,0);
     optionLay->addWidget(choseColour,6,1);
-//optionLay->addWidget(thinLinesButton,6,2);
-
-    //optionLay->addWidget(sizeSlider,7,0,1,2);
-
-
-    /*QGroupBox* sizeBox = new QGroupBox("Size");
-    QHBoxLayout* sizeBoxLay = new QHBoxLayout();
-    sizeBoxLay->addWidget(sizeSlider2);
-    sizeBoxLay->setMargin(0);
-    sizeBoxLay->setSpacing(0);
-    sizeBox->setLayout(sizeBoxLay);*/
 
     optionLay->addWidget(sizeSlider,8,0,1,2);
     optionLay->addWidget(featherSlider,9,0,1,2);
-    //optionLay->addWidget(opacitySlider,10,0,1,2);
 
     optionLay->addWidget(usePressureBox,11,0,1,2);
     optionLay->addWidget(preserveAlphaBox,12,0,1,2);
@@ -280,13 +231,8 @@ ToolSet::ToolSet()
     optionLay->addWidget(makeInvisibleBox,14,0,1,2);
     optionLay->setRowStretch(15,1);
 
-
-
     onionLay->setMargin(4);
     onionLay->setSpacing(0);
-    // -- mj
-    //onionLay->addWidget(onionPrev, 0,0);
-    //onionLay->addWidget(onionNext, 1,0);
 
     timeLay->setMargin(4);
     timeLay->setSpacing(0);
@@ -301,17 +247,8 @@ ToolSet::ToolSet()
     onionGroup->setLayout(onionLay);
     timeGroup->setLayout(timeLay);
 
-    //keyGroup->setFlat(true);
-    //onionGroup->setFlat(true);
-    //timeGroup->setFlat(true);
-
-    //drawGroup->setMaximumSize( QSize(3*32,6*32+1) );
     drawGroup->setMaximumHeight(6*32+1);
-
     drawPalette->setMaximumHeight(200);
-    //drawPalette->setFeatures(drawPalette->features() | QDockWidget::DockWidgetVerticalTitleBar);
-    //optionPalette->setMaximumHeight(300);
-    //optionGroup->setMaximumHeight(160);
     displayPalette->setMaximumHeight(60);
 
     onionGroup->setMaximumHeight(60);
@@ -396,7 +333,7 @@ QDockWidget* ToolSet::createKeyPalette()
     keyGroup->setLayout(keyLayout);
     keyGroup->setMaximumHeight(60);
 
-    QDickWidget* dockWidget = new QDockWidget(tr("Keys"));
+    QDockWidget* dockWidget = new QDockWidget(tr("Keys"));
     dockWidget->setWidget(keyGroup);
     return dockWidget;
 }
