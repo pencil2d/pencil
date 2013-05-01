@@ -3,7 +3,7 @@
 
 #include <QDockWidget>
 
-
+class Editor;
 class QToolButton;
 
 class DisplayOptionDockWidget : public QDockWidget
@@ -11,10 +11,10 @@ class DisplayOptionDockWidget : public QDockWidget
     Q_OBJECT
 public:
     DisplayOptionDockWidget(QWidget *parent = 0);
+    void makeConnectionToEditor(Editor* editor);
 
     QToolButton* thinLinesButton;
     QToolButton* outlinesButton;
-
     QToolButton* mirrorButton;
     QToolButton* mirrorButtonV;
     QToolButton* onionPrev;

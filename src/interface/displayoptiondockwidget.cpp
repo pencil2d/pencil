@@ -2,6 +2,8 @@
 #include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
+#include "editor.h"
+
 #include "displayoptiondockwidget.h"
 
 
@@ -61,17 +63,22 @@ void DisplayOptionDockWidget::createUI()
     onionNext->setCheckable(true);
     onionNext->setChecked(false);
 
-    QGridLayout* displayLay = new QGridLayout();
-    displayLay->setMargin(4);
-    displayLay->setSpacing(0);
-    displayLay->addWidget(mirrorButton,0,0);
-    displayLay->addWidget(thinLinesButton,0,1);
-    displayLay->addWidget(outlinesButton,1,1);
-    displayLay->addWidget(mirrorButtonV,1,0);
-    displayLay->addWidget(onionPrev,0,2);
-    displayLay->addWidget(onionNext,1,2);
+    QGridLayout* layout = new QGridLayout();
+    layout->setMargin(4);
+    layout->setSpacing(0);
+    layout->addWidget(mirrorButton,0,0);
+    layout->addWidget(thinLinesButton,0,1);
+    layout->addWidget(outlinesButton,1,1);
+    layout->addWidget(mirrorButtonV,1,0);
+    layout->addWidget(onionPrev,0,2);
+    layout->addWidget(onionNext,1,2);
 
-    displayGroup->setLayout(displayLay);
+    displayGroup->setLayout(layout);
 
     setWidget(displayGroup);
+}
+
+void makeConnectionToEditor(Editor* editor)
+{
+
 }
