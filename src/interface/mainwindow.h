@@ -40,6 +40,7 @@ public:
     // UI
     Editor* editor;
     Palette* m_colorPalette;
+    DisplayOptionDockWidget* m_displayOptionWidget;
 
 public slots:
     void setOpacity(int opacity);
@@ -52,6 +53,7 @@ private slots:
 
     void newDocument();
     void openDocument();
+    void dockAllPalettes();
 
 private:
     void arrangePalettes();

@@ -49,22 +49,21 @@ void MainWindow::arrangePalettes()
     setCentralWidget(editor);
 
     m_colorPalette = new Palette(editor);
-
-    // focus policy
     m_colorPalette->setFocusPolicy(Qt::NoFocus);
 
-    // make connections
-    editor->toolSet->displayPalette->makeConnectionToEditor(editor);
+    m_displayOptionWidget = new DisplayOptionDockWidget(this);
+    m_displayOptionWidget->makeConnectionToEditor(editor);
+    //editor->toolSet->displayPalette = m_displayOptionWidget;
 
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
-    addDockWidget(Qt::RightDockWidgetArea, editor->toolSet->displayPalette);
+    addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->optionPalette);
     addDockWidget(Qt::BottomDockWidgetArea, editor->getTimeLine());
 
     editor->toolSet->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     editor->toolSet->optionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->toolSet->displayPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_displayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     editor->getTimeLine()->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
@@ -245,7 +244,7 @@ void MainWindow::createMenus()
     connect(rotateAct1, SIGNAL(triggered()), editor, SLOT(rotateacw()));
     resetpaletteAct = new QAction(tr("Reset Windows"), this);
     resetpaletteAct->setShortcut(Qt::Key_H + Qt::CTRL);
-    connect(resetpaletteAct, SIGNAL(triggered()), editor, SLOT(dockAllPalettes()));
+    connect(resetpaletteAct, SIGNAL(triggered()), this, SLOT(dockAllPalettes()));
 
     horiMirrorAct = new QAction(QIcon(":icons/mirror.png"),tr("Horizontal Flip"), this);
     horiMirrorAct->setShortcut(Qt::Key_H + Qt::SHIFT);
@@ -656,6 +655,16 @@ void MainWindow::openDocument()
     }
 }
 
+void MainWindow::dockAllPalettes()
+{
+    editor->toolSet->drawPalette->setFloating(false);
+    editor->toolSet->optionPalette->setFloating(false);
+    m_displayOptionWidget->setFloating(false);
+    editor->toolSet->onionPalette->setFloating(false);
+    editor->getTimeLine()->setFloating(false);
+    m_colorPalette->setFloating(false);
+}
+
 // ==== Key Event ====
 
 void MainWindow::keyPressEvent( QKeyEvent* e )
@@ -775,7 +784,7 @@ void MainWindow::writeSettings()
         settings.setValue("optionPaletteFloating", optionPalette->isFloating());
     }
 
-    QDockWidget* displayPalette = editor->toolSet->displayPalette;
+    QDockWidget* displayPalette = m_displayOptionWidget;
     if(displayPalette != NULL)
     {
         settings.setValue("displayPalettePosition", displayPalette->pos());
