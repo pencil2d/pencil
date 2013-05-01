@@ -40,15 +40,15 @@ void DisplayOptionDockWidget::createUI()
     mirrorButtonV->setToolTip("Vertical flip");
     mirrorButtonV->setIconSize( QSize(21,21) );
 
-    onionPrev = new QToolButton(displayGroup);
-    onionPrev->setIcon(QIcon(":icons/onionPrev.png"));
-    onionPrev->setToolTip("Onion skin previous frame");
-    onionPrev->setIconSize( QSize(21,21) );
+    onionPrevButton = new QToolButton(displayGroup);
+    onionPrevButton->setIcon(QIcon(":icons/onionPrev.png"));
+    onionPrevButton->setToolTip("Onion skin previous frame");
+    onionPrevButton->setIconSize( QSize(21,21) );
 
-    onionNext = new QToolButton(displayGroup);
-    onionNext->setIcon(QIcon(":icons/onionNext.png"));
-    onionNext->setToolTip("Onion skin next frame");
-    onionNext->setIconSize( QSize(21,21) );
+    onionNextButton = new QToolButton(displayGroup);
+    onionNextButton->setIcon(QIcon(":icons/onionNext.png"));
+    onionNextButton->setToolTip("Onion skin next frame");
+    onionNextButton->setIconSize( QSize(21,21) );
 
     thinLinesButton->setCheckable(true);
     thinLinesButton->setChecked(false);
@@ -58,10 +58,10 @@ void DisplayOptionDockWidget::createUI()
     mirrorButton->setChecked(false);
     mirrorButtonV->setCheckable(true);
     mirrorButtonV->setChecked(false);
-    onionPrev->setCheckable(true);
-    onionPrev->setChecked(true);
-    onionNext->setCheckable(true);
-    onionNext->setChecked(false);
+    onionPrevButton->setCheckable(true);
+    onionPrevButton->setChecked(true);
+    onionNextButton->setCheckable(true);
+    onionNextButton->setChecked(false);
 
     QGridLayout* layout = new QGridLayout();
     layout->setMargin(4);
@@ -70,8 +70,8 @@ void DisplayOptionDockWidget::createUI()
     layout->addWidget(thinLinesButton,0,1);
     layout->addWidget(outlinesButton,1,1);
     layout->addWidget(mirrorButtonV,1,0);
-    layout->addWidget(onionPrev,0,2);
-    layout->addWidget(onionNext,1,2);
+    layout->addWidget(onionPrevButton,0,2);
+    layout->addWidget(onionNextButton,1,2);
 
     displayGroup->setLayout(layout);
 
@@ -82,14 +82,19 @@ void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
 {
     connect(thinLinesButton, SIGNAL(clicked()), editor->getScribbleArea(), SLOT(toggleThinLines()));
     connect(outlinesButton, SIGNAL(clicked()), editor->getScribbleArea(), SLOT(toggleOutlines()));
-    connect(onionPrev, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
-    connect(onionNext, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionNext(bool)));
+    connect(onionPrevButton, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
+    connect(onionNextButton, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionNext(bool)));
     connect(mirrorButton, SIGNAL(clicked()), editor, SLOT(toggleMirror()));
     connect(mirrorButtonV, SIGNAL(clicked()), editor, SLOT(toggleMirrorV()));
 
     connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));
     connect(editor, SIGNAL(changeThinLinesButton(bool)), this, SLOT(changeThinLinesButton(bool)));
+    connect(editor, SIGNAL(onionPrevChanged(bool)), this, SLOT(onionPrevChanged(bool)));
+    connect(editor, SIGNAL(onionNextChanged(bool)), this, SLOT(onionNextChanged(bool)));
 }
+
+
+// ### public slots ###
 
 void DisplayOptionDockWidget::changeOutlinesButton(bool bIsChecked)
 {
@@ -99,4 +104,14 @@ void DisplayOptionDockWidget::changeOutlinesButton(bool bIsChecked)
 void DisplayOptionDockWidget::changeThinLinesButton(bool bIsChecked)
 {
     thinLinesButton->setChecked(bIsChecked);
+}
+
+void DisplayOptionDockWidget::onionPrevChanged(bool checked)
+{
+    onionPrevButton->setChecked(checked);
+}
+
+void DisplayOptionDockWidget::onionNextChanged(bool checked)
+{
+    onionNextButton->setChecked(checked);
 }

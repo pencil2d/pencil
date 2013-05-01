@@ -154,7 +154,6 @@ void Editor::makeConnections()
     connect(toolSet, SIGNAL(opacityClick(qreal)), this, SLOT(applyOpacity(qreal)));
 
     connect(toolSet, SIGNAL(colourClick()), this, SLOT(showPalette()));
-
     connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
 
     connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
@@ -163,8 +162,6 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(outlinesChanged(bool)), this, SIGNAL(changeOutlinesButton(bool)));
     connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), this, SIGNAL(onionPrevChanged(bool)));
     connect(scribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
-    connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), toolSet, SLOT(onionPrevChanged(bool)));
-    connect(scribbleArea, SIGNAL(onionNextChanged(bool)), toolSet, SLOT(onionNextChanged(bool)));
 
 ///////TODO connect timeline signals to editor
     connect(timeLine, SIGNAL(endplayClick()), this, SLOT(endPlay()));

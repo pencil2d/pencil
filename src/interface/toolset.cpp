@@ -155,15 +155,6 @@ ToolSet::ToolSet()
     connect(colouringButton, SIGNAL(clicked()), this, SIGNAL(colouringClick()));
     connect(smudgeButton, SIGNAL(clicked()), this, SIGNAL(smudgeClick()));
 
-    /*
-    connect(displayPalette->thinLinesButton, SIGNAL(clicked()), this, SIGNAL(thinLinesClick()));
-    connect(displayPalette->outlinesButton, SIGNAL(clicked()), this, SIGNAL(outlinesClick()));
-    connect(displayPalette->onionPrev, SIGNAL(clicked(bool)), this, SIGNAL(togglePrev(bool)));
-    connect(displayPalette->onionNext, SIGNAL(clicked(bool)), this, SIGNAL(toggleNext(bool)));
-    connect(displayPalette->mirrorButton, SIGNAL(clicked()), this, SIGNAL(mirrorClick()));
-    connect(displayPalette->mirrorButtonV, SIGNAL(clicked()), this, SIGNAL(mirrorVClick()));
-    */
-
     connect(usePressureBox, SIGNAL(clicked(bool)), this, SLOT(pressureClick(bool)));
     connect(makeInvisibleBox, SIGNAL(clicked(bool)), this, SLOT(invisibleClick(bool)));
     connect(preserveAlphaBox, SIGNAL(clicked(bool)), this, SLOT(preserveAlphaClick(bool)));
@@ -462,27 +453,6 @@ void ToolSet::changeSmudgeButton()
     deselectAllTools();
     smudgeButton->setChecked(true);
 }
-
-void ToolSet::resetMirror()
-{
-    displayPalette->mirrorButton->setChecked(false);
-}
-
-void ToolSet::resetMirrorV()
-{
-    displayPalette->mirrorButtonV->setChecked(false);
-}
-
-void ToolSet::onionPrevChanged(bool checked)
-{
-    displayPalette->onionPrevButton->setChecked(checked);
-}
-
-void ToolSet::onionNextChanged(bool checked)
-{
-    displayPalette->onionNextButton->setChecked(checked);
-}
-
 
 void ToolSet::deselectAllTools()
 {

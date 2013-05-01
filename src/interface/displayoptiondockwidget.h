@@ -25,6 +25,8 @@ signals:
 public slots:
     void changeThinLinesButton(bool bIsChecked);
     void changeOutlinesButton(bool bIsChecked);
+    void onionPrevChanged(bool checked);
+    void onionNextChanged(bool checked);
 
 private:
     void createUI();

@@ -18,8 +18,10 @@ GNU General Public License for more details.
 
 #include <QtGui>
 
+
 class SpinSlider;
 class DisplayOptionDockWidget;
+
 
 class ToolSet : public QWidget
 {
@@ -58,15 +60,10 @@ public slots:
     void changeColouringButton();
     void changeSmudgeButton();
 
-    void resetMirror();
-    void resetMirrorV();
     void pressureClick(bool);
     void invisibleClick(bool);
     void preserveAlphaClick(bool);
     void followContourClick(bool);
-
-    void onionPrevChanged(bool);
-    void onionNextChanged(bool);
 
 signals:
     void pencilClick();
