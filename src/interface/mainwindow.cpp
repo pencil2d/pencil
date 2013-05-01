@@ -53,6 +53,9 @@ void MainWindow::arrangePalettes()
     // focus policy
     m_colorPalette->setFocusPolicy(Qt::NoFocus);
 
+    // make connections
+    editor->toolSet->displayPalette->makeConnectionToEditor(editor);
+
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, editor->toolSet->displayPalette);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);

@@ -78,7 +78,25 @@ void DisplayOptionDockWidget::createUI()
     setWidget(displayGroup);
 }
 
-void makeConnectionToEditor(Editor* editor)
+void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
 {
+    connect(thinLinesButton, SIGNAL(clicked()), editor->getScribbleArea(), SLOT(toggleThinLines()));
+    connect(outlinesButton, SIGNAL(clicked()), editor->getScribbleArea(), SLOT(toggleOutlines()));
+    connect(onionPrev, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
+    connect(onionNext, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionNext(bool)));
+    connect(mirrorButton, SIGNAL(clicked()), editor, SLOT(toggleMirror()));
+    connect(mirrorButtonV, SIGNAL(clicked()), editor, SLOT(toggleMirrorV()));
 
+    connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));
+    connect(editor, SIGNAL(changeThinLinesButton(bool)), this, SLOT(changeThinLinesButton(bool)));
+}
+
+void DisplayOptionDockWidget::changeOutlinesButton(bool bIsChecked)
+{
+    outlinesButton->setChecked(bIsChecked);
+}
+
+void DisplayOptionDockWidget::changeThinLinesButton(bool bIsChecked)
+{
+    thinLinesButton->setChecked(bIsChecked);
 }

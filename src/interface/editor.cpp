@@ -157,22 +157,14 @@ void Editor::makeConnections()
 
     connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
 
-    connect(toolSet, SIGNAL(thinLinesClick()), scribbleArea, SLOT(toggleThinLines()));
-    connect(toolSet, SIGNAL(outlinesClick()), scribbleArea, SLOT(toggleOutlines()));
-    connect(scribbleArea, SIGNAL(thinLinesChanged(bool)), toolSet, SLOT(changeThinLinesButton(bool)));
-    connect(scribbleArea, SIGNAL(outlinesChanged(bool)), toolSet, SLOT(changeOutlinesButton(bool)));
-    connect(toolSet, SIGNAL(mirrorClick()), this, SLOT(toggleMirror()));
-    connect(toolSet, SIGNAL(mirrorVClick()), this, SLOT(toggleMirrorV()));
-    connect(toolSet, SIGNAL(togglePrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
-    connect(toolSet, SIGNAL(toggleNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
     connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
     connect(this, SIGNAL(toggleOnionNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
+    connect(scribbleArea, SIGNAL(thinLinesChanged(bool)), this, SIGNAL(changeThinLinesButton(bool)));
+    connect(scribbleArea, SIGNAL(outlinesChanged(bool)), this, SIGNAL(changeOutlinesButton(bool)));
     connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), this, SIGNAL(onionPrevChanged(bool)));
     connect(scribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
     connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), toolSet, SLOT(onionPrevChanged(bool)));
     connect(scribbleArea, SIGNAL(onionNextChanged(bool)), toolSet, SLOT(onionNextChanged(bool)));
-    //connect(timeLine, SIGNAL(onionPrevClick()), scribbleArea, SLOT(onionPrevSlot()));
-    //connect(timeLine, SIGNAL(onionNextClick()), scribbleArea, SLOT(onionNextSlot()));
 
 ///////TODO connect timeline signals to editor
     connect(timeLine, SIGNAL(endplayClick()), this, SLOT(endPlay()));

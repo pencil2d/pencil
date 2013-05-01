@@ -56,8 +56,6 @@ public slots:
     void changeBucketButton();
     void changeEyedropperButton();
     void changeColouringButton();
-    void changeThinLinesButton(bool);
-    void changeOutlinesButton(bool);
     void changeSmudgeButton();
 
     void resetMirror();
@@ -87,13 +85,6 @@ signals:
     void colouringClick();
     void smudgeClick();
     void clearClick();
-
-    void thinLinesClick();
-    void outlinesClick();
-    void mirrorClick();
-    void mirrorVClick();
-    void togglePrev(bool);
-    void toggleNext(bool);
 
     void widthClick(qreal);
     void featherClick(qreal);

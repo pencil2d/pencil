@@ -93,6 +93,8 @@ signals:
     void toggleOnionPrev(bool);
     void onionPrevChanged(bool);
     void onionNextChanged(bool);
+    void changeThinLinesButton(bool);
+    void changeOutlinesButton(bool);
 
 public slots:
     //tools menu

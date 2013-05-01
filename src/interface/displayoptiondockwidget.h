@@ -23,6 +23,8 @@ public:
 signals:
     
 public slots:
+    void changeThinLinesButton(bool bIsChecked);
+    void changeOutlinesButton(bool bIsChecked);
 
 private:
     void createUI();
