@@ -2235,16 +2235,6 @@ void Editor::updateMaxFrame()
     timeLine->forceUpdateLength(QString::number(maxFrame));
 }
 
-void Editor::dockAllPalettes()
-{
-    toolSet->drawPalette->setFloating(false);
-    toolSet->optionPalette->setFloating(false);
-    toolSet->displayPalette->setFloating(false);
-    toolSet->onionPalette->setFloating(false);
-    getTimeLine()->setFloating(false);
-    mainWindow->m_colorPalette->setFloating(false);
-}
-
 void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition, bool restoreSize)
 {
     QSettings settings("Pencil", "Pencil");

@@ -238,7 +238,6 @@ public slots:
     void openRecent();
     void print();
     void saveForce();
-    void dockAllPalettes();
     //void detachAllPalettes();
     void restorePalettesSettings(bool, bool, bool);
     void saveSvg();
