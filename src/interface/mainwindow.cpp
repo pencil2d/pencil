@@ -48,12 +48,12 @@ void MainWindow::arrangePalettes()
 {
     setCentralWidget(editor);
 
-    m_palette = new Palette(editor);
+    m_colorPalette = new Palette(editor);
 
     // focus policy
-    m_palette->setFocusPolicy(Qt::NoFocus);
+    m_colorPalette->setFocusPolicy(Qt::NoFocus);
 
-    addDockWidget(Qt::RightDockWidgetArea, m_palette);
+    addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, editor->toolSet->displayPalette);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->optionPalette);
@@ -740,7 +740,7 @@ void MainWindow::writeSettings()
     settings.setValue("editorPosition", pos());
     settings.setValue("editorSize", size());
 
-    Palette* colourPalette = m_palette;
+    Palette* colourPalette = m_colorPalette;
     if(colourPalette != NULL)
     {
         settings.setValue("colourPalettePosition", colourPalette->pos());

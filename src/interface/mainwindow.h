@@ -39,7 +39,7 @@ public:
 
     // UI
     Editor* editor;
-    Palette* m_palette;
+    Palette* m_colorPalette;
 
 public slots:
     void setOpacity(int opacity);
