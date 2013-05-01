@@ -17,8 +17,8 @@ public:
     QToolButton* outlinesButton;
     QToolButton* mirrorButton;
     QToolButton* mirrorButtonV;
-    QToolButton* onionPrev;
-    QToolButton* onionNext;
+    QToolButton* onionPrevButton;
+    QToolButton* onionNextButton;
 
 signals:
     

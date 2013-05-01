@@ -475,12 +475,12 @@ void ToolSet::resetMirrorV()
 
 void ToolSet::onionPrevChanged(bool checked)
 {
-    displayPalette->onionPrev->setChecked(checked);
+    displayPalette->onionPrevButton->setChecked(checked);
 }
 
 void ToolSet::onionNextChanged(bool checked)
 {
-    displayPalette->onionNext->setChecked(checked);
+    displayPalette->onionNextButton->setChecked(checked);
 }
 
 
