@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 class SpinSlider;
 class DisplayOptionDockWidget;
-
+class ToolOptionDockWidget;
 
 class ToolSet : public QWidget
 {
@@ -31,7 +31,7 @@ public:
     ToolSet();
 
     QDockWidget* drawPalette;
-    QDockWidget* optionPalette;
+    ToolOptionDockWidget* optionPalette;
     QDockWidget* onionPalette;
 
     QDockWidget* createOptionPalette();
@@ -90,8 +90,6 @@ signals:
 private:
     void newToolButton(QToolButton*& toolButton);
 
-    QToolButton* choseColour;
-    QPixmap* colourSwatch;
     QToolButton* pencilButton;
     QToolButton* selectButton;
     QToolButton* moveButton;
@@ -104,17 +102,7 @@ private:
     QToolButton* eyedropperButton;
     QToolButton* magnifyButton;
     QToolButton* smudgeButton;
-
     QToolButton* clearButton;
-
-    SpinSlider* sizeSlider;
-    SpinSlider* featherSlider;
-    SpinSlider* opacitySlider;
-
-    QCheckBox* usePressureBox;
-    QCheckBox* makeInvisibleBox;
-    QCheckBox* preserveAlphaBox;
-    QCheckBox* followContourBox;
 
     void deselectAllTools();
 };

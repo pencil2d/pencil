@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <math.h>
 #include "spinslider.h"
-#include "displayoptiondockwidget.h"
+#include "tooloptiondockwidget.h"
 #include "toolset.h"
 
 
@@ -31,7 +31,7 @@ ToolSet::ToolSet()
     drawPalette->setWidget(drawGroup);
     QGridLayout* drawLay = new QGridLayout();
 
-    optionPalette = createOptionPalette();
+    optionPalette = new ToolOptionDockWidget(this);
 
     newToolButton(pencilButton);
     newToolButton(selectButton);
@@ -153,18 +153,17 @@ ToolSet::ToolSet()
     connect(eyedropperButton, SIGNAL(clicked()), this, SIGNAL(eyedropperClick()));
     connect(colouringButton, SIGNAL(clicked()), this, SIGNAL(colouringClick()));
     connect(smudgeButton, SIGNAL(clicked()), this, SIGNAL(smudgeClick()));
-
-    connect(usePressureBox, SIGNAL(clicked(bool)), this, SLOT(pressureClick(bool)));
-    connect(makeInvisibleBox, SIGNAL(clicked(bool)), this, SLOT(invisibleClick(bool)));
-    connect(preserveAlphaBox, SIGNAL(clicked(bool)), this, SLOT(preserveAlphaClick(bool)));
-    connect(followContourBox, SIGNAL(clicked(bool)), this, SLOT(followContourClick(bool)));
-    connect(sizeSlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(widthClick(qreal)));
-    connect(featherSlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(featherClick(qreal)));
-    connect(opacitySlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(opacityClick(qreal)));
-
-    // -- mj
-    connect(choseColour, SIGNAL(clicked()), this, SIGNAL(colourClick()));
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
+
+    connect(optionPalette->usePressureBox, SIGNAL(clicked(bool)), this, SLOT(pressureClick(bool)));
+    connect(optionPalette->makeInvisibleBox, SIGNAL(clicked(bool)), this, SLOT(invisibleClick(bool)));
+    connect(optionPalette->preserveAlphaBox, SIGNAL(clicked(bool)), this, SLOT(preserveAlphaClick(bool)));
+    connect(optionPalette->followContourBox, SIGNAL(clicked(bool)), this, SLOT(followContourClick(bool)));
+    connect(optionPalette->sizeSlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(widthClick(qreal)));
+    connect(optionPalette->featherSlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(featherClick(qreal)));
+    //connect(optionPalette->opacitySlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(opacityClick(qreal)));
+    connect(optionPalette->choseColour, SIGNAL(clicked()), this, SIGNAL(colourClick()));
+
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(changeSelectButton()));
@@ -178,75 +177,6 @@ ToolSet::ToolSet()
     connect(colouringButton, SIGNAL(clicked()), this, SLOT(changeColouringButton()));
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(changeSmudgeButton()));
 }
-
-QDockWidget* ToolSet::createOptionPalette()
-{
-    QFrame* optionGroup = new QFrame();
-    QGridLayout* optionLay = new QGridLayout();
-    optionLay->setMargin(8);
-    optionLay->setSpacing(8);
-
-    QSettings settings("Pencil","Pencil");
-
-    QLabel* colourLabel = new QLabel();
-    colourLabel->setText(tr("Color:"));
-    colourLabel->setFont( QFont("Helvetica", 10) );
-
-    QPixmap colourSwatch(30,30);
-    colourSwatch.fill(Qt::black);
-    choseColour = new QToolButton(this);
-    choseColour->setIcon(colourSwatch);
-    choseColour->setToolTip("Display Colors");
-
-    sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
-    sizeSlider->setValue(settings.value("pencilWidth").toDouble());
-    sizeSlider->setToolTip("Set Pen Width");
-
-    featherSlider = new SpinSlider("Feather", "log", "real", 0.2, 200.0, this);
-    featherSlider->setValue(settings.value("pencilFeather").toDouble());
-
-    opacitySlider = new SpinSlider("Opacity", "linear", "real", 0.0, 1.0, this);
-    opacitySlider->setValue(settings.value("pencilOpacity").toDouble());
-
-    usePressureBox = new QCheckBox("Pressure");
-    usePressureBox->setToolTip("Size with pressure");
-    usePressureBox->setFont( QFont("Helvetica", 10) );
-    usePressureBox->setChecked(true);
-
-    makeInvisibleBox = new QCheckBox("Invisible");
-    makeInvisibleBox->setToolTip("Make invisible");
-    makeInvisibleBox->setFont( QFont("Helvetica", 10) );
-    makeInvisibleBox->setChecked(false);
-
-    preserveAlphaBox = new QCheckBox("Alpha");
-    preserveAlphaBox->setToolTip("Preserve Alpha");
-    preserveAlphaBox->setFont( QFont("Helvetica", 10) );
-    preserveAlphaBox->setChecked(false);
-
-    followContourBox = new QCheckBox("Contours");
-    followContourBox->setToolTip("Stop at contours");
-    followContourBox->setFont( QFont("Helvetica", 10) );
-    followContourBox->setChecked(false);
-
-    optionLay->addWidget(colourLabel,6,0);
-    optionLay->addWidget(choseColour,6,1);
-
-    optionLay->addWidget(sizeSlider,8,0,1,2);
-    optionLay->addWidget(featherSlider,9,0,1,2);
-
-    optionLay->addWidget(usePressureBox,11,0,1,2);
-    optionLay->addWidget(preserveAlphaBox,12,0,1,2);
-    optionLay->addWidget(followContourBox,13,0,1,2);
-    optionLay->addWidget(makeInvisibleBox,14,0,1,2);
-    optionLay->setRowStretch(15,1);
-
-    optionGroup->setLayout(optionLay);
-
-    QDockWidget* dockWidget = new QDockWidget(tr("Options"));
-    dockWidget->setWidget(optionGroup);
-    return dockWidget;
-}
-
 
 void ToolSet::newToolButton(QToolButton*& toolButton)
 {
@@ -265,12 +195,12 @@ void ToolSet::setWidth(qreal x)
 {
     if(x < 0)
     {
-        sizeSlider->setEnabled(false);
+        optionPalette->sizeSlider->setEnabled(false);
     }
     else
     {
-        sizeSlider->setEnabled(true);
-        sizeSlider->setValue(x);
+        optionPalette->sizeSlider->setEnabled(true);
+        optionPalette->sizeSlider->setValue(x);
     }
 }
 
@@ -278,12 +208,12 @@ void ToolSet::setFeather(qreal x)
 {
     if(x < 0)
     {
-        featherSlider->setEnabled(false);
+        optionPalette->featherSlider->setEnabled(false);
     }
     else
     {
-        featherSlider->setEnabled(true);
-        featherSlider->setValue(x);
+        optionPalette->featherSlider->setEnabled(true);
+        optionPalette->featherSlider->setValue(x);
     }
 }
 
@@ -291,12 +221,12 @@ void ToolSet::setOpacity(qreal x)
 {
     if(x < 0)
     {
-        opacitySlider->setEnabled(false);
+        //optionPalette->opacitySlider->setEnabled(false);
     }
     else
     {
-        opacitySlider->setEnabled(true);
-        opacitySlider->setValue(x);
+        //optionPalette->opacitySlider->setEnabled(true);
+        //optionPalette->opacitySlider->setValue(x);
     }
 }
 
@@ -304,12 +234,12 @@ void ToolSet::setPressure(int x)   // x = -1, 0, 1
 {
     if(x<0)
     {
-        usePressureBox->setEnabled(false);
+        optionPalette->usePressureBox->setEnabled(false);
     }
     else
     {
-        usePressureBox->setEnabled(true);
-        usePressureBox->setChecked(x>0);
+        optionPalette->usePressureBox->setEnabled(true);
+        optionPalette->usePressureBox->setChecked(x>0);
     }
 }
 
@@ -324,12 +254,12 @@ void ToolSet::setInvisibility(int x)   // x = -1, 0, 1
 {
     if(x<0)
     {
-        makeInvisibleBox->setEnabled(false);
+        optionPalette->makeInvisibleBox->setEnabled(false);
     }
     else
     {
-        makeInvisibleBox->setEnabled(true);
-        makeInvisibleBox->setChecked(x>0);
+        optionPalette->makeInvisibleBox->setEnabled(true);
+        optionPalette->makeInvisibleBox->setChecked(x>0);
     }
 }
 
@@ -344,12 +274,12 @@ void ToolSet::setPreserveAlpha(int x)   // x = -1, 0, 1
 {
     if(x<0)
     {
-        preserveAlphaBox->setEnabled(false);
+        optionPalette->preserveAlphaBox->setEnabled(false);
     }
     else
     {
-        preserveAlphaBox->setEnabled(true);
-        preserveAlphaBox->setChecked(x>0);
+        optionPalette->preserveAlphaBox->setEnabled(true);
+        optionPalette->preserveAlphaBox->setChecked(x>0);
     }
 }
 
@@ -364,12 +294,12 @@ void ToolSet::setFollowContour(int x)   // x = -1, 0, 1
 {
     if(x<0)
     {
-        followContourBox->setEnabled(false);
+        optionPalette->followContourBox->setEnabled(false);
     }
     else
     {
-        followContourBox->setEnabled(true);
-        followContourBox->setChecked(x>0);
+        optionPalette->followContourBox->setEnabled(true);
+        optionPalette->followContourBox->setChecked(x>0);
     }
 }
 
@@ -384,7 +314,7 @@ void ToolSet::setColour(QColor x)
 {
     QPixmap colourSwatch(30,30);
     colourSwatch.fill(x);
-    choseColour->setIcon(colourSwatch);
+    optionPalette->choseColour->setIcon(colourSwatch);
 }
 
 void ToolSet::changePencilButton()

@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "mainwindow.h"
 #include "displayoptiondockwidget.h"
+#include "tooloptiondockwidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 

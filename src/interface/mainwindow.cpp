@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include "interfaces.h"
 #include "palette.h"
 #include "displayoptiondockwidget.h"
+#include "tooloptiondockwidget.h"
+
 
 MainWindow::MainWindow()
 {
@@ -53,7 +55,7 @@ void MainWindow::arrangePalettes()
 
     m_displayOptionWidget = new DisplayOptionDockWidget(this);
     m_displayOptionWidget->makeConnectionToEditor(editor);
-    //editor->toolSet->displayPalette = m_displayOptionWidget;
+
 
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
