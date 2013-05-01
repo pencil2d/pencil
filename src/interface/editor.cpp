@@ -2256,17 +2256,6 @@ void Editor::dockAllPalettes()
     mainWindow->m_palette->setFloating(false);
 }
 
-/*
-void Editor::detachAllPalettes() {
-    toolSet->drawPalette->setFloating(true);
-    toolSet->optionPalette->setFloating(true);
-    toolSet->displayPalette->setFloating(true);
-    toolSet->onionPalette->setFloating(true);
-	getTimeLine()->setFloating(true);
-	getPalette()->setFloating(true);
-	restorePalettesSettings(false, true, true);
-}*/
-
 void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition, bool restoreSize)
 {
     QSettings settings("Pencil", "Pencil");
