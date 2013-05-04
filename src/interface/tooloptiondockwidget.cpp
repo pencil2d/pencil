@@ -5,8 +5,10 @@
 #include <QCheckBox>
 #include <QGridLayout>
 #include <QSettings>
+#include <QDebug>
 #include "spinslider.h"
 #include "tooloptiondockwidget.h"
+#include "editor.h"
 
 ToolOptionDockWidget::ToolOptionDockWidget(QWidget *parent) :
     QDockWidget(parent)
@@ -79,4 +81,19 @@ void ToolOptionDockWidget::createUI()
 
     setWindowTitle(tr("Options"));
     setWidget(optionGroup);
+}
+
+void ToolOptionDockWidget::makeConnectionToEditor(Editor *editor)
+{
+    connect(usePressureBox,   SIGNAL(clicked(bool)), editor, SLOT(applyPressure(bool)));
+    connect(makeInvisibleBox, SIGNAL(clicked(bool)), editor, SLOT(applyInvisibility(bool)));
+    connect(preserveAlphaBox, SIGNAL(clicked(bool)), editor, SLOT(applyPreserveAlpha(bool)));
+    connect(followContourBox, SIGNAL(clicked(bool)), editor, SLOT(applyFollowContour(bool)));
+
+    connect(sizeSlider, SIGNAL(valueChanged(qreal)), editor, SLOT(applyWidth(qreal)));
+    connect(featherSlider, SIGNAL(valueChanged(qreal)), editor, SLOT(applyFeather(qreal)));
+    connect(choseColour, SIGNAL(clicked()), editor, SLOT(showPalette()));
+    //connect(toolSet, SIGNAL(opacityClick(qreal)), editor, SLOT(applyOpacity(qreal)));
+
+    qDebug() << "Tool Option Widget connect to Editor";
 }

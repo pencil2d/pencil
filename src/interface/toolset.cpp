@@ -63,27 +63,38 @@ ToolSet::ToolSet()
 
     pencilButton->setIcon(QIcon(":icons/pencil2.png"));
     pencilButton->setToolTip("Pencil Tool <b>(N)</b>: Sketch with pencil");
+
     selectButton->setIcon(QIcon(":icons/select.png"));
     selectButton->setToolTip("Select Tool <b>(V)</b>: Select an object");
+
     moveButton->setIcon(QIcon(":icons/arrow.png"));
     moveButton->setToolTip("Move Tool <b>(Q)</b>: Move an object");
+
     handButton->setIcon(QIcon(":icons/hand.png"));
     handButton->setToolTip("Hand Tool <b>(H)</b>: Move the canvas");
+
     penButton->setIcon(QIcon(":icons/pen.png"));
     penButton->setToolTip("Pen Tool <b>(P)</b>: Sketch with pen");
+
     eraserButton->setIcon(QIcon(":icons/eraser.png"));
     eraserButton->setToolTip("Eraser Tool <b>(E)</b>: Erase");
+
     polylineButton->setIcon(QIcon(":icons/polyline.png"));
     polylineButton->setToolTip("Polyline Tool <b>(Y)</b>: Create line/curves");
+
     bucketButton->setIcon(QIcon(":icons/bucket.png"));
     bucketButton->setToolTip("Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
+
     colouringButton->setIcon(QIcon(":icons/brush.png"));
     colouringButton->setToolTip("Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
+
     eyedropperButton->setIcon(QIcon(":icons/eyedropper.png"));
     eyedropperButton->setToolTip("Eyedropper Tool <b>(I)</b>: Set color from the stage");
+
     magnifyButton->setIcon(QIcon(":icons/magnify.png"));
     magnifyButton->setToolTip("Zoom Tool <b>(Z)</b>: Adjust the zoom level");
     magnifyButton->setEnabled(false);
+
     smudgeButton->setIcon(QIcon(":icons/smudge.png"));
     smudgeButton->setToolTip("Smudge Tool <b>(A)</b>: Edit polyline/curves");
     smudgeButton->setEnabled(true);
@@ -132,7 +143,6 @@ ToolSet::ToolSet()
     drawLay->addWidget(bucketButton,4,1);
     drawLay->setAlignment(bucketButton, Qt::AlignLeft);
 
-
     drawLay->addWidget(eyedropperButton,5,0);
     drawLay->setAlignment(eyedropperButton, Qt::AlignRight);
     drawLay->addWidget(eraserButton,5,1);
@@ -154,16 +164,6 @@ ToolSet::ToolSet()
     connect(colouringButton, SIGNAL(clicked()), this, SIGNAL(colouringClick()));
     connect(smudgeButton, SIGNAL(clicked()), this, SIGNAL(smudgeClick()));
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
-
-    connect(optionPalette->usePressureBox, SIGNAL(clicked(bool)), this, SLOT(pressureClick(bool)));
-    connect(optionPalette->makeInvisibleBox, SIGNAL(clicked(bool)), this, SLOT(invisibleClick(bool)));
-    connect(optionPalette->preserveAlphaBox, SIGNAL(clicked(bool)), this, SLOT(preserveAlphaClick(bool)));
-    connect(optionPalette->followContourBox, SIGNAL(clicked(bool)), this, SLOT(followContourClick(bool)));
-    connect(optionPalette->sizeSlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(widthClick(qreal)));
-    connect(optionPalette->featherSlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(featherClick(qreal)));
-    //connect(optionPalette->opacitySlider, SIGNAL(valueChanged(qreal)), this, SIGNAL(opacityClick(qreal)));
-    connect(optionPalette->choseColour, SIGNAL(clicked()), this, SIGNAL(colourClick()));
-
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(changeSelectButton()));

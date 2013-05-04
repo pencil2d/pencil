@@ -184,13 +184,13 @@ public slots:
     void setOpacity(qreal);
     void applyOpacity(qreal);
     void setInvisibility(int);
-    void applyInvisibility(int);
+    void applyInvisibility(bool);
     void setPressure(int);
-    void applyPressure(int);
+    void applyPressure(bool);
     void setPreserveAlpha(int);
-    void applyPreserveAlpha(int);
+    void applyPreserveAlpha(bool);
     void setFollowContour(int);
-    void applyFollowContour(int);
+    void applyFollowContour(bool);
     void selectColour(int);
     void selectAndApplyColour(int);
     void setColour(QColor);

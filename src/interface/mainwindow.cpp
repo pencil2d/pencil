@@ -56,6 +56,7 @@ void MainWindow::arrangePalettes()
     m_displayOptionWidget = new DisplayOptionDockWidget(this);
     m_displayOptionWidget->makeConnectionToEditor(editor);
 
+    editor->toolSet->optionPalette->makeConnectionToEditor(editor);
 
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);

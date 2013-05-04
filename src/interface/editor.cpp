@@ -144,17 +144,6 @@ void Editor::makeConnections()
     connect(toolSet, SIGNAL(eyedropperClick()), scribbleArea, SLOT(eyedropperOn()));
     connect(toolSet, SIGNAL(colouringClick()), scribbleArea, SLOT(colouringOn()));
     connect(toolSet, SIGNAL(smudgeClick()), scribbleArea, SLOT(smudgeOn()));
-
-    connect(toolSet, SIGNAL(pressureClick(int)), this, SLOT(applyPressure(int)));
-    connect(toolSet, SIGNAL(invisibleClick(int)), this, SLOT(applyInvisibility(int)));
-    connect(toolSet, SIGNAL(preserveAlphaClick(int)), this, SLOT(applyPreserveAlpha(int)));
-    connect(toolSet, SIGNAL(followContourClick(int)), this, SLOT(applyFollowContour(int)));
-
-    connect(toolSet, SIGNAL(widthClick(qreal)), this, SLOT(applyWidth(qreal)));
-    connect(toolSet, SIGNAL(featherClick(qreal)), this, SLOT(applyFeather(qreal)));
-    connect(toolSet, SIGNAL(opacityClick(qreal)), this, SLOT(applyOpacity(qreal)));
-
-    connect(toolSet, SIGNAL(colourClick()), this, SLOT(showPalette()));
     connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
 
     connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
@@ -389,7 +378,7 @@ void Editor::setInvisibility(int invisibility)
     toolSet->setInvisibility(invisibility);
 }
 
-void Editor::applyInvisibility(int invisibility)
+void Editor::applyInvisibility(bool invisibility)
 {
     setInvisibility(invisibility);
     Layer* layer = getCurrentLayer();
@@ -403,7 +392,7 @@ void Editor::setPreserveAlpha(int preserveAlpha)
     toolSet->setPreserveAlpha(preserveAlpha);
 }
 
-void Editor::applyPreserveAlpha(int preserveAlpha)
+void Editor::applyPreserveAlpha(bool preserveAlpha)
 {
     setPreserveAlpha(preserveAlpha);
 }
@@ -414,18 +403,21 @@ void Editor::setFollowContour(int followContour)
     toolSet->setFollowContour(followContour);
 }
 
-void Editor::applyFollowContour(int followContour)
+void Editor::applyFollowContour(bool followContour)
 {
     setFollowContour(followContour);
 }
 
 void Editor::setPressure(int pressure)
 {
-    if(pressure>=0) scribbleArea->setPressure(pressure>0);
+    if ( pressure >= 0 )
+    {
+        scribbleArea->setPressure( pressure > 0 );
+    }
     toolSet->setPressure(pressure);
 }
 
-void Editor::applyPressure(int pressure)
+void Editor::applyPressure(bool pressure)
 {
     setPressure(pressure);
     Layer* layer = getCurrentLayer();
