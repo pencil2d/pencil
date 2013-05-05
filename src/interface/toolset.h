@@ -59,11 +59,6 @@ public slots:
     void changeColouringButton();
     void changeSmudgeButton();
 
-    void pressureClick(bool);
-    void invisibleClick(bool);
-    void preserveAlphaClick(bool);
-    void followContourClick(bool);
-
 signals:
     void pencilClick();
     void eraserClick();
@@ -71,10 +66,6 @@ signals:
     void moveClick();
     void handClick();
     void penClick();
-    void pressureClick(int);
-    void invisibleClick(int);
-    void preserveAlphaClick(int);
-    void followContourClick(int);
     void polylineClick();
     void bucketClick();
     void eyedropperClick();

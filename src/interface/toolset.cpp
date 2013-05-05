@@ -243,13 +243,6 @@ void ToolSet::setPressure(int x)   // x = -1, 0, 1
     }
 }
 
-void ToolSet::pressureClick(bool x)
-{
-    int y = 0;
-    if(x) y = 1;
-    emit pressureClick(y);
-}
-
 void ToolSet::setInvisibility(int x)   // x = -1, 0, 1
 {
     if(x<0)
@@ -263,36 +256,23 @@ void ToolSet::setInvisibility(int x)   // x = -1, 0, 1
     }
 }
 
-void ToolSet::invisibleClick(bool x)
-{
-    int y = 0;
-    if(x) y = 1;
-    emit invisibleClick(y);
-}
-
 void ToolSet::setPreserveAlpha(int x)   // x = -1, 0, 1
 {
-    if(x<0)
+    qDebug() << "Setting - Preserve Alpha=" << x;
+    if ( x < 0 )
     {
         optionPalette->preserveAlphaBox->setEnabled(false);
     }
     else
     {
         optionPalette->preserveAlphaBox->setEnabled(true);
-        optionPalette->preserveAlphaBox->setChecked(x>0);
+        optionPalette->preserveAlphaBox->setChecked(x > 0);
     }
-}
-
-void ToolSet::preserveAlphaClick(bool x)
-{
-    int y = 0;
-    if(x) y = 1;
-    emit preserveAlphaClick(y);
 }
 
 void ToolSet::setFollowContour(int x)   // x = -1, 0, 1
 {
-    if(x<0)
+    if (x < 0)
     {
         optionPalette->followContourBox->setEnabled(false);
     }
@@ -301,13 +281,6 @@ void ToolSet::setFollowContour(int x)   // x = -1, 0, 1
         optionPalette->followContourBox->setEnabled(true);
         optionPalette->followContourBox->setChecked(x>0);
     }
-}
-
-void ToolSet::followContourClick(bool x)
-{
-    int y = 0;
-    if(x) y = 1;
-    emit followContourClick(y);
 }
 
 void ToolSet::setColour(QColor x)
