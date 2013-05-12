@@ -99,6 +99,7 @@ signals:
     // Tool Option
     void penWidthValueChange(qreal);
     void penFeatherValueChange(qreal);
+    void penInvisiblityValueChange(int);
 
 public slots:
     //tools menu

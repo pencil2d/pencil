@@ -199,19 +199,6 @@ void ToolSet::setPressure(int x)   // x = -1, 0, 1
     }
 }
 
-void ToolSet::setInvisibility(int x)   // x = -1, 0, 1
-{
-    if(x<0)
-    {
-        optionPalette->makeInvisibleBox->setEnabled(false);
-    }
-    else
-    {
-        optionPalette->makeInvisibleBox->setEnabled(true);
-        optionPalette->makeInvisibleBox->setChecked(x>0);
-    }
-}
-
 void ToolSet::setPreserveAlpha(int x)   // x = -1, 0, 1
 {
     qDebug() << "Setting - Preserve Alpha=" << x;

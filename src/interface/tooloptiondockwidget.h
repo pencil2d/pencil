@@ -31,6 +31,7 @@ signals:
 public slots:
     void setPenWidth(qreal);
     void setPenFeather(qreal);
+    void setPenInvisibility(int);
 
 private:
     void createUI();

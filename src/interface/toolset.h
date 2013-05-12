@@ -37,7 +37,6 @@ public:
     QDockWidget* createOptionPalette();
 
 public slots:
-    void setInvisibility(int);
     void setPressure(int);
     void setPreserveAlpha(int);
     void setFollowContour(int);

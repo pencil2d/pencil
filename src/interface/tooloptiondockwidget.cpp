@@ -96,7 +96,7 @@ void ToolOptionDockWidget::makeConnectionToEditor(Editor *editor)
 
     connect(editor, SIGNAL(penWidthValueChange(qreal)), this, SLOT(setPenWidth(qreal)));
     connect(editor, SIGNAL(penFeatherValueChange(qreal)), this, SLOT(setPenFeather(qreal)));
-
+    connect(editor, SIGNAL(penInvisiblityValueChange(int)), this, SLOT(setPenInvisibility(int)));
 
     qDebug() << "Tool Option Widget connect to Editor";
 }
@@ -129,4 +129,16 @@ void ToolOptionDockWidget::setPenFeather(qreal featherValue)
 
     featherSlider->setEnabled(true);
     featherSlider->setValue(featherValue);
+}
+
+void ToolOptionDockWidget::setPenInvisibility(int x)   // x = -1, 0, 1
+{
+    if (x < 0)
+    {
+        makeInvisibleBox->setEnabled(false);
+        return;
+    }
+
+    makeInvisibleBox->setEnabled(true);
+    makeInvisibleBox->setChecked( x > 0 );
 }

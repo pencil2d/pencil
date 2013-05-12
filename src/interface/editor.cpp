@@ -355,8 +355,12 @@ void Editor::applyFeather(qreal feather)
 
 void Editor::setInvisibility(int invisibility)
 {
-    if(invisibility>=0) scribbleArea->setInvisibility(invisibility>0);
-    toolSet->setInvisibility(invisibility);
+    if (invisibility >= 0)
+    {
+        scribbleArea->setInvisibility( invisibility > 0 );
+    }
+    //toolSet->setInvisibility(invisibility);
+    emit penInvisiblityValueChange(invisibility);
 }
 
 void Editor::applyInvisibility(bool invisibility)
