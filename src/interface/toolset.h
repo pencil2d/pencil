@@ -63,13 +63,9 @@ signals:
     void smudgeClick();
     void clearClick();
 
-    void widthClick(qreal);
-    void featherClick(qreal);
-    void opacityClick(qreal);
-    void colourClick();
-
 private:
     void newToolButton(QToolButton*& toolButton);
+    void deselectAllTools();
 
     QToolButton* pencilButton;
     QToolButton* selectButton;
@@ -84,8 +80,6 @@ private:
     QToolButton* magnifyButton;
     QToolButton* smudgeButton;
     QToolButton* clearButton;
-
-    void deselectAllTools();
 };
 
 #endif
