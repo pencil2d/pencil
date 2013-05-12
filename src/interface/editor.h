@@ -96,6 +96,10 @@ signals:
     void changeThinLinesButton(bool);
     void changeOutlinesButton(bool);
 
+    // Tool Option
+    void penWidthValueChange(qreal);
+    void penFeatherValueChange(qreal);
+
 public slots:
     //tools menu
     void move_clicked();
@@ -180,8 +184,6 @@ public slots:
     void applyWidth(qreal);
     void setFeather(qreal);
     void applyFeather(qreal);
-    void setOpacity(qreal);
-    void applyOpacity(qreal);
     void setInvisibility(int);
     void applyInvisibility(bool);
     void setPressure(int);

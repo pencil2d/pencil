@@ -2360,13 +2360,13 @@ void ScribbleArea::setSelection(QRectF rect, bool trueOrFalse)
 void ScribbleArea::displaySelectionProperties()
 {
     Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR)
+    if (layer == NULL) return;
+    if (layer->type == Layer::VECTOR)
     {
         LayerVector* layerVector = (LayerVector*)layer;
         VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(editor->currentFrame, 0);
         //vectorImage->applySelectionTransformation();
-        if(toolMode == MOVE)
+        if (toolMode == MOVE)
         {
             //if(closestCurves.size()>0) {
             int selectedCurve = vectorImage->getFirstSelectedCurve();
@@ -2374,14 +2374,13 @@ void ScribbleArea::displaySelectionProperties()
             {
                 editor->setWidth(vectorImage->curve[selectedCurve].getWidth());
                 editor->setFeather(vectorImage->curve[selectedCurve].getFeather());
-                editor->setOpacity(0);
                 editor->setInvisibility(vectorImage->curve[selectedCurve].isInvisible());
                 editor->setPressure(vectorImage->curve[selectedCurve].getVariableWidth());
                 editor->selectColour(vectorImage->curve[selectedCurve].getColourNumber());
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
-            if(selectedArea != -1)
+            if (selectedArea != -1)
             {
                 editor->selectColour(vectorImage->area[selectedArea].colourNumber);
                 //editor->setFeather(vectorImage->area[selectedArea].getFeather());
@@ -2424,8 +2423,7 @@ void ScribbleArea::deselectAll()
         ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
         if(toolMode == MOVE)
         {
-            editor->setWidth(-1);
-            editor->setOpacity(-1);
+            editor->setWidth(-1);            
             editor->setInvisibility(-1);
             editor->setPressure(-1);
         }
@@ -2943,7 +2941,6 @@ void ScribbleArea::pencilOn()
     editor->setWidth(pencil.width);
     editor->setFeather(pencil.feather);
     editor->setFeather(-1); // by definition the pencil has no feather
-    editor->setOpacity(pencil.opacity);
     editor->setPressure(pencil.pressure);
     editor->setInvisibility(pencil.invisibility);
     editor->setPreserveAlpha(pencil.preserveAlpha);
@@ -2968,7 +2965,6 @@ void ScribbleArea::penOn()
     editor->setFeather(pen.feather);
     editor->setFeather(-1);
     if(pen.opacity<0) pen.opacity = 1.0;
-    editor->setOpacity(pen.opacity);
     editor->setPressure(pen.pressure);
     editor->setInvisibility(pen.invisibility);
     editor->setPreserveAlpha(pen.preserveAlpha);
@@ -2986,7 +2982,6 @@ void ScribbleArea::eraserOn()
     editor->setWidth(eraser.width);
     editor->setFeather(eraser.feather);
     editor->setFeather(-1);
-    editor->setOpacity(eraser.opacity);
     editor->setPressure(eraser.pressure);
     editor->setPreserveAlpha(0);
     editor->setPreserveAlpha(-1);
@@ -3006,7 +3001,6 @@ void ScribbleArea::selectOn()
     if(layer == NULL) return;
     editor->setWidth(-1);
     editor->setFeather(-1);
-    editor->setOpacity(-1);
     editor->setPressure(-1);
     editor->setInvisibility(-1);
     editor->setPreserveAlpha(-1);
@@ -3021,7 +3015,6 @@ void ScribbleArea::moveOn()
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
-    editor->setOpacity(-1);
     editor->setPressure(-1);
     editor->setInvisibility(-1);
     editor->setPreserveAlpha(-1);
@@ -3037,7 +3030,6 @@ void ScribbleArea::handOn()
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
-    editor->setOpacity(-1);
     editor->setPressure(-1);
     editor->setInvisibility(-1);
     editor->setPreserveAlpha(-1);
@@ -3058,7 +3050,6 @@ void ScribbleArea::polylineOn()
     editor->setWidth(pen.width);
     editor->setFeather(pen.feather);
     editor->setFeather(-1);
-    editor->setOpacity(pen.opacity);
     editor->setPressure(pen.pressure);
     editor->setInvisibility(pen.invisibility);
     editor->setPreserveAlpha(pen.preserveAlpha);
@@ -3079,8 +3070,6 @@ void ScribbleArea::bucketOn()
     editor->setWidth(-1);
     editor->setFeather(brush.feather);
     editor->setFeather(-1);
-    editor->setOpacity(1); // the bucket has full opacity (but one should be able to use it with translucent colours)
-    editor->setOpacity(-1); // disable the button
     editor->setPressure(0);
     editor->setPressure(-1); // disable the button
     editor->setInvisibility(0);
@@ -3099,7 +3088,6 @@ void ScribbleArea::eyedropperOn()
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
-    editor->setOpacity(-1);
     editor->setPressure(-1);
     editor->setInvisibility(0);
     editor->setInvisibility(-1);
@@ -3121,7 +3109,6 @@ void ScribbleArea::colouringOn()
     if(layer->type == Layer::BITMAP) editor->setColour(brush.colour);
     editor->setWidth(brush.width);
     editor->setFeather(brush.feather);
-    editor->setOpacity(brush.opacity);
     editor->setPressure(brush.pressure);
     editor->setPreserveAlpha(brush.preserveAlpha);
     editor->setFollowContour(followContour);
@@ -3138,7 +3125,6 @@ void ScribbleArea::smudgeOn()
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
-    editor->setOpacity(-1);
     editor->setPressure(-1);
     editor->setInvisibility(0);
     editor->setInvisibility(-1);
@@ -3148,8 +3134,6 @@ void ScribbleArea::smudgeOn()
     // --- change cursor ---
     updateCursor();
 }
-
-
 
 void ScribbleArea::deleteSelection()
 {

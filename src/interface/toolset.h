@@ -37,9 +37,6 @@ public:
     QDockWidget* createOptionPalette();
 
 public slots:
-    void setWidth(qreal);
-    void setFeather(qreal);
-    void setOpacity(qreal);
     void setInvisibility(int);
     void setPressure(int);
     void setPreserveAlpha(int);

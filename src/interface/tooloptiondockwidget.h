@@ -29,7 +29,9 @@ public:
 signals:
     
 public slots:
-    
+    void setPenWidth(qreal);
+    void setPenFeather(qreal);
+
 private:
     void createUI();
 };

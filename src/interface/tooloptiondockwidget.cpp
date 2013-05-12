@@ -93,7 +93,40 @@ void ToolOptionDockWidget::makeConnectionToEditor(Editor *editor)
     connect(sizeSlider, SIGNAL(valueChanged(qreal)), editor, SLOT(applyWidth(qreal)));
     connect(featherSlider, SIGNAL(valueChanged(qreal)), editor, SLOT(applyFeather(qreal)));
     connect(choseColour, SIGNAL(clicked()), editor, SLOT(showPalette()));
-    //connect(toolSet, SIGNAL(opacityClick(qreal)), editor, SLOT(applyOpacity(qreal)));
+
+    connect(editor, SIGNAL(penWidthValueChange(qreal)), this, SLOT(setPenWidth(qreal)));
+    connect(editor, SIGNAL(penFeatherValueChange(qreal)), this, SLOT(setPenFeather(qreal)));
+
 
     qDebug() << "Tool Option Widget connect to Editor";
+}
+
+// SLOTS
+// ================
+void ToolOptionDockWidget::setPenWidth(qreal width)
+{
+
+    if (width < 0)
+    {
+        // disable tool if -1
+        sizeSlider->setEnabled(false);
+        return;
+    }
+
+    sizeSlider->setEnabled(true);
+    sizeSlider->setValue(width);
+}
+
+void ToolOptionDockWidget::setPenFeather(qreal featherValue)
+{
+    qDebug("Set Feather Value %lf", featherValue);
+    if (featherValue < 0)
+    {
+        //disabled
+        featherSlider->setEnabled(false);
+        return;
+    }
+
+    featherSlider->setEnabled(true);
+    featherSlider->setValue(featherValue);
 }

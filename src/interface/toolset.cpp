@@ -186,45 +186,6 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton->setFixedSize(32,32);
 }
 
-void ToolSet::setWidth(qreal x)
-{
-    if(x < 0)
-    {
-        optionPalette->sizeSlider->setEnabled(false);
-    }
-    else
-    {
-        optionPalette->sizeSlider->setEnabled(true);
-        optionPalette->sizeSlider->setValue(x);
-    }
-}
-
-void ToolSet::setFeather(qreal x)
-{
-    if(x < 0)
-    {
-        optionPalette->featherSlider->setEnabled(false);
-    }
-    else
-    {
-        optionPalette->featherSlider->setEnabled(true);
-        optionPalette->featherSlider->setValue(x);
-    }
-}
-
-void ToolSet::setOpacity(qreal x)
-{
-    if(x < 0)
-    {
-        //optionPalette->opacitySlider->setEnabled(false);
-    }
-    else
-    {
-        //optionPalette->opacitySlider->setEnabled(true);
-        //optionPalette->opacitySlider->setValue(x);
-    }
-}
-
 void ToolSet::setPressure(int x)   // x = -1, 0, 1
 {
     if(x<0)

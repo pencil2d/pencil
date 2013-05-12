@@ -328,7 +328,7 @@ bool Editor::saveDocument()
 void Editor::setWidth(qreal width)
 {
     scribbleArea->setWidth(width);
-    toolSet->setWidth(width);
+    emit penWidthValueChange(width);
 }
 
 void Editor::applyWidth(qreal width)
@@ -342,7 +342,7 @@ void Editor::applyWidth(qreal width)
 void Editor::setFeather(qreal feather)
 {
     scribbleArea->setFeather(feather);
-    toolSet->setFeather(feather);
+    emit penFeatherValueChange(feather);
 }
 
 void Editor::applyFeather(qreal feather)
@@ -351,20 +351,6 @@ void Editor::applyFeather(qreal feather)
     Layer* layer = getCurrentLayer();
     if(layer == NULL) return;
     if(layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyFeatherToSelection(feather);
-}
-
-void Editor::setOpacity(qreal opacity)
-{
-    scribbleArea->setOpacity(opacity);
-    toolSet->setOpacity(opacity);
-}
-
-void Editor::applyOpacity(qreal opacity)
-{
-    setOpacity(opacity);
-    Layer* layer = getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyOpacityToSelection(opacity);
 }
 
 void Editor::setInvisibility(int invisibility)
