@@ -387,8 +387,11 @@ void Editor::applyPreserveAlpha(bool preserveAlpha)
 
 void Editor::setFollowContour(int followContour)
 {
-    if(followContour>=0) scribbleArea->setFollowContour(followContour>0);
-    toolSet->setFollowContour(followContour);
+    if (followContour >= 0)
+    {
+        scribbleArea->setFollowContour(followContour > 0);
+    }
+    emit penFollowContourValueChange(followContour);
 }
 
 void Editor::applyFollowContour(bool followContour)
@@ -418,9 +421,10 @@ void Editor::selectColour(int i)
     if (i > -1)
     {
         scribbleArea->setColour(i);
-        toolSet->setColour(object->getColour(i).colour);
         mainWindow->m_colorPalette->selectColour(i);
         mainWindow->m_colorPalette->setColour(object->getColour(i).colour);
+
+        emit penColorValueChange(object->getColour(i).colour);
     }
 }
 
@@ -428,15 +432,16 @@ void Editor::selectAndApplyColour(int i)
 {
     selectColour(i);
     Layer* layer = getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyColourToSelection(i);
+    if (layer == NULL) return;
+    if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyColourToSelection(i);
 }
 
 void Editor::setColour(QColor colour)
 {
     scribbleArea->setColour(colour);
-    toolSet->setColour(colour);
     mainWindow->m_colorPalette->setColour(colour);
+
+    emit penColorValueChange(colour);
 }
 
 void Editor::changeColour(int i)
@@ -496,7 +501,8 @@ void Editor::updateColour(int i, QColor newColour)
         {
             if(layer->type == Layer::VECTOR) scribbleArea->setModified(currentLayer, currentFrame);
         }
-        toolSet->setColour(object->getColour(i).colour);
+        emit penColorValueChange(object->getColour(i).colour);
+
         mainWindow->m_colorPalette->updateSwatch(object->getColour(i).colour);
         scribbleArea->setColour(i);
     }

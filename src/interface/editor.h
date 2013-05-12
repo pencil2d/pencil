@@ -102,6 +102,8 @@ signals:
     void penInvisiblityValueChange(int);
     void penPreserveAlphaValueChange(int);
     void penPressureValueChange(int);
+    void penFollowContourValueChange(int);
+    void penColorValueChange(QColor);
 
 public slots:
     //tools menu

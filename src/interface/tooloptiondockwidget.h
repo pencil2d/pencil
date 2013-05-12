@@ -34,6 +34,8 @@ public slots:
     void setPenInvisibility(int);
     void setPressure(int);
     void setPreserveAlpha(int);
+    void setFollowContour(int);
+    void setColour(QColor);
 
 private:
     void createUI();

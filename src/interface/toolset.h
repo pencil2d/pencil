@@ -37,9 +37,6 @@ public:
     QDockWidget* createOptionPalette();
 
 public slots:
-    void setFollowContour(int);
-    void setColour(QColor);
-
     void changePencilButton();
     void changeEraserButton();
     void changeSelectButton();

@@ -99,6 +99,8 @@ void ToolOptionDockWidget::makeConnectionToEditor(Editor *editor)
     connect(editor, SIGNAL(penInvisiblityValueChange(int)), this, SLOT(setPenInvisibility(int)));
     connect(editor, SIGNAL(penPreserveAlphaValueChange(int)), this, SLOT(setPreserveAlpha(int)));
     connect(editor, SIGNAL(penPressureValueChange(int)), this, SLOT(setPressure(int)));
+    connect(editor, SIGNAL(penFollowContourValueChange(int)), this, SLOT(setFollowContour(int)));
+    connect(editor, SIGNAL(penColorValueChange(QColor)), this, SLOT(setColour(QColor)));
 
     qDebug() << "Tool Option Widget connect to Editor";
 }
@@ -169,4 +171,23 @@ void ToolOptionDockWidget::setPreserveAlpha(int x)   // x = -1, 0, 1
 
     preserveAlphaBox->setEnabled(true);
     preserveAlphaBox->setChecked(x > 0);
+}
+
+void ToolOptionDockWidget::setFollowContour(int x)   // x = -1, 0, 1
+{
+    if (x < 0)
+    {
+        followContourBox->setEnabled(false);
+        return;
+    }
+
+    followContourBox->setEnabled(true);
+    followContourBox->setChecked(x>0);
+}
+
+void ToolOptionDockWidget::setColour(QColor x)
+{
+    QPixmap colourSwatch(30,30);
+    colourSwatch.fill(x);
+    choseColour->setIcon(colourSwatch);
 }

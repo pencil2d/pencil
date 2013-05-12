@@ -186,26 +186,6 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton->setFixedSize(32,32);
 }
 
-void ToolSet::setFollowContour(int x)   // x = -1, 0, 1
-{
-    if (x < 0)
-    {
-        optionPalette->followContourBox->setEnabled(false);
-    }
-    else
-    {
-        optionPalette->followContourBox->setEnabled(true);
-        optionPalette->followContourBox->setChecked(x>0);
-    }
-}
-
-void ToolSet::setColour(QColor x)
-{
-    QPixmap colourSwatch(30,30);
-    colourSwatch.fill(x);
-    optionPalette->choseColour->setIcon(colourSwatch);
-}
-
 void ToolSet::changePencilButton()
 {
     deselectAllTools();
