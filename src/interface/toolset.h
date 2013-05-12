@@ -37,7 +37,6 @@ public:
     QDockWidget* createOptionPalette();
 
 public slots:
-    void setCounter(int);
     void setWidth(qreal);
     void setFeather(qreal);
     void setOpacity(qreal);

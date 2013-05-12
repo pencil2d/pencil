@@ -122,7 +122,6 @@ public slots:
     void rotateacw();
     void gridview();
 
-    void showCounter(int);
     bool maybeSave();
     void importImage();
     void importImage(QString filePath);

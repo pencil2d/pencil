@@ -280,11 +280,6 @@ bool Editor::importMov()
     }
 }
 
-void Editor::showCounter(int n)
-{
-    toolSet->setCounter(n);
-}
-
 void Editor::openRecent()
 {
     QSettings settings("Pencil","Pencil");
@@ -1916,11 +1911,12 @@ void Editor::updateFrameAndVector(int frameNumber)
 void Editor::scrubTo(int frameNumber)
 {
     if (scribbleArea->getUpdateAll())
+    {
         scribbleArea->updateAllFrames();
+    }
     int oldFrame = currentFrame;
     if(frameNumber < 1) frameNumber = 1;
     currentFrame = frameNumber;
-    //toolSet->setCounter(frameNumber);
     //timeLine->setCurrentFrame(currentFrame);
     timeLine->updateFrame(oldFrame);
     timeLine->updateFrame(currentFrame);

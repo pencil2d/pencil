@@ -186,11 +186,6 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton->setFixedSize(32,32);
 }
 
-void ToolSet::setCounter(int x)
-{
-    //framecounter->setText(QString::number(x));
-}
-
 void ToolSet::setWidth(qreal x)
 {
     if(x < 0)
