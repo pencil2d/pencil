@@ -32,6 +32,8 @@ public slots:
     void setPenWidth(qreal);
     void setPenFeather(qreal);
     void setPenInvisibility(int);
+    void setPressure(int);
+    void setPreserveAlpha(int);
 
 private:
     void createUI();

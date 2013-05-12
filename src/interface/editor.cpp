@@ -373,8 +373,11 @@ void Editor::applyInvisibility(bool invisibility)
 
 void Editor::setPreserveAlpha(int preserveAlpha)
 {
-    if(preserveAlpha>=0) scribbleArea->setPreserveAlpha(preserveAlpha>0);
-    toolSet->setPreserveAlpha(preserveAlpha);
+    if ( preserveAlpha >= 0)
+    {
+        scribbleArea->setPreserveAlpha(preserveAlpha>0);
+    }
+    emit penPreserveAlphaValueChange(preserveAlpha);
 }
 
 void Editor::applyPreserveAlpha(bool preserveAlpha)
@@ -398,8 +401,8 @@ void Editor::setPressure(int pressure)
     if ( pressure >= 0 )
     {
         scribbleArea->setPressure( pressure > 0 );
-    }
-    toolSet->setPressure(pressure);
+    }    
+    emit penPressureValueChange(pressure);
 }
 
 void Editor::applyPressure(bool pressure)

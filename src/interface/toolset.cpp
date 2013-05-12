@@ -186,33 +186,6 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton->setFixedSize(32,32);
 }
 
-void ToolSet::setPressure(int x)   // x = -1, 0, 1
-{
-    if(x<0)
-    {
-        optionPalette->usePressureBox->setEnabled(false);
-    }
-    else
-    {
-        optionPalette->usePressureBox->setEnabled(true);
-        optionPalette->usePressureBox->setChecked(x>0);
-    }
-}
-
-void ToolSet::setPreserveAlpha(int x)   // x = -1, 0, 1
-{
-    qDebug() << "Setting - Preserve Alpha=" << x;
-    if ( x < 0 )
-    {
-        optionPalette->preserveAlphaBox->setEnabled(false);
-    }
-    else
-    {
-        optionPalette->preserveAlphaBox->setEnabled(true);
-        optionPalette->preserveAlphaBox->setChecked(x > 0);
-    }
-}
-
 void ToolSet::setFollowContour(int x)   // x = -1, 0, 1
 {
     if (x < 0)

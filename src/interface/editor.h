@@ -100,6 +100,8 @@ signals:
     void penWidthValueChange(qreal);
     void penFeatherValueChange(qreal);
     void penInvisiblityValueChange(int);
+    void penPreserveAlphaValueChange(int);
+    void penPressureValueChange(int);
 
 public slots:
     //tools menu

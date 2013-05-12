@@ -31,14 +31,12 @@ public:
     ToolSet();
 
     QDockWidget* drawPalette;
-    ToolOptionDockWidget* optionPalette;
     QDockWidget* onionPalette;
+    ToolOptionDockWidget* optionPalette;
 
     QDockWidget* createOptionPalette();
 
 public slots:
-    void setPressure(int);
-    void setPreserveAlpha(int);
     void setFollowContour(int);
     void setColour(QColor);
 

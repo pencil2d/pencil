@@ -97,6 +97,8 @@ void ToolOptionDockWidget::makeConnectionToEditor(Editor *editor)
     connect(editor, SIGNAL(penWidthValueChange(qreal)), this, SLOT(setPenWidth(qreal)));
     connect(editor, SIGNAL(penFeatherValueChange(qreal)), this, SLOT(setPenFeather(qreal)));
     connect(editor, SIGNAL(penInvisiblityValueChange(int)), this, SLOT(setPenInvisibility(int)));
+    connect(editor, SIGNAL(penPreserveAlphaValueChange(int)), this, SLOT(setPreserveAlpha(int)));
+    connect(editor, SIGNAL(penPressureValueChange(int)), this, SLOT(setPressure(int)));
 
     qDebug() << "Tool Option Widget connect to Editor";
 }
@@ -141,4 +143,30 @@ void ToolOptionDockWidget::setPenInvisibility(int x)   // x = -1, 0, 1
 
     makeInvisibleBox->setEnabled(true);
     makeInvisibleBox->setChecked( x > 0 );
+}
+
+void ToolOptionDockWidget::setPressure(int x)   // x = -1, 0, 1
+{
+    if (x < 0)
+    {
+        usePressureBox->setEnabled(false);
+        return;
+    }
+
+    usePressureBox->setEnabled(true);
+    usePressureBox->setChecked(x>0);
+}
+
+void ToolOptionDockWidget::setPreserveAlpha(int x)   // x = -1, 0, 1
+{
+    qDebug() << "Setting - Preserve Alpha=" << x;
+
+    if (x < 0)
+    {
+        preserveAlphaBox->setEnabled(false);
+        return;
+    }
+
+    preserveAlphaBox->setEnabled(true);
+    preserveAlphaBox->setChecked(x > 0);
 }
