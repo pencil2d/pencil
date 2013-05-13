@@ -1,4 +1,4 @@
-Pencil Animation v0.5 beta (Morevna Branch)
+### Pencil Animation v0.5 beta (Morevna Branch) ###
 
 Changes by Konstantin Dmitriev:
 * Support for some command-line options.
@@ -23,8 +23,9 @@ Changes by davidefa:
 * Compiles fine with min 0.4.x on linux
 * Other minor fixes ( moving selection on bitmap layers, moving layers... )
 
----------
+
 Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009
+----------------------------------------------------------------
 
 Added export AVI/OGG
 Added some more icons
@@ -33,8 +34,9 @@ Creek23
 
 http://tinyurl.com/pencilanimation/
 
----------
+
 Pencil Animation 0.4.5b -rev4 - Source Code - January 24th, 2009
+----------------------------------------------------------------
 
 Added Duplicate Frame functionality
 Added Tools menu and fixed shortcut key bugs
