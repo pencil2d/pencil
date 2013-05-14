@@ -100,7 +100,7 @@ public:
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frame);
     void updateAllVectorLayers();
-    bool getUpdateAll() {return updateAll;};
+    bool getUpdateAll() {return updateAll;}
 
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 signals:
