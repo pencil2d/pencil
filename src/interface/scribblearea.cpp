@@ -861,48 +861,63 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     }
     else if ( toolMode == POLYLINE )
     {
-        if( layer->type == Layer::BITMAP || layer->type == Layer::VECTOR )
+        if ( event->button() == Qt::LeftButton )
         {
-            if(mousePoints.size() == 0) editor->backup(tr("Line"));
-            if(layer->type == Layer::VECTOR)
+            if( layer->type == Layer::BITMAP || layer->type == Layer::VECTOR )
             {
-                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
-                if (makeInvisible && !showThinLines)
+                if (mousePoints.size() == 0)
                 {
-                    toggleThinLines();
+                    editor->backup(tr("Line"));
                 }
+
+                if (layer->type == Layer::VECTOR)
+                {
+                    ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
+                    if (makeInvisible && !showThinLines)
+                    {
+                        toggleThinLines();
+                    }
+                }
+                mousePoints << lastPoint;
+                updateAll = true;
             }
-            mousePoints << lastPoint;
-            updateAll = true;
+        }
+    }
+    else if ( toolMode == ScribbleArea::SELECT )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            if ( layer->type == Layer::BITMAP || layer->type == Layer::VECTOR )
+            {
+                if(layer->type == Layer::VECTOR)
+                {
+                    ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
+                }
+                moveMode = ScribbleArea::MIDDLE;
+                editor->backup(tr("Select"));
+                if( somethingSelected )    // there is something selected
+                {
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.topLeft()) < 6) moveMode = ScribbleArea::TOPLEFT;
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.topRight()) < 6) moveMode = ScribbleArea::TOPRIGHT;
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomLeft()) < 6) moveMode = ScribbleArea::BOTTOMLEFT;
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomRight()) < 6) moveMode = ScribbleArea::BOTTOMRIGHT;
+                    if( moveMode == ScribbleArea::MIDDLE )
+                    {
+                        paintTransformedSelection(); deselectAll();
+                    } // the user did not click on one of the corners
+                }
+                else     // there is nothing selected
+                {
+                    mySelection.setTopLeft( lastPoint );
+                    mySelection.setBottomRight( lastPoint );
+                    setSelection(mySelection, true);
+                }
+                update();
+            }
         }
     }
     if (event->button() == Qt::LeftButton)
     {
-        // ----------------------------------------------------------------------
-        if(toolMode == ScribbleArea::SELECT && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
-        {
-            if(layer->type == Layer::VECTOR)
-            {
-                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
-            }
-            moveMode = ScribbleArea::MIDDLE;
-            editor->backup(tr("Select"));
-            if( somethingSelected )    // there is something selected
-            {
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.topLeft()) < 6) moveMode = ScribbleArea::TOPLEFT;
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.topRight()) < 6) moveMode = ScribbleArea::TOPRIGHT;
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomLeft()) < 6) moveMode = ScribbleArea::BOTTOMLEFT;
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomRight()) < 6) moveMode = ScribbleArea::BOTTOMRIGHT;
-                if( moveMode == ScribbleArea::MIDDLE ) { paintTransformedSelection(); deselectAll(); } // the user did not click on one of the corners
-            }
-            else     // there is nothing selected
-            {
-                mySelection.setTopLeft( lastPoint );
-                mySelection.setBottomRight( lastPoint );
-                setSelection(mySelection, true);
-            }
-            update();
-        }
         // ----------------------------------------------------------------------
         if(toolMode == ScribbleArea::EDIT)
         {
