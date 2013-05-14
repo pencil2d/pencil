@@ -916,10 +916,9 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-    if (event->button() == Qt::LeftButton)
+    else if ( toolMode == ScribbleArea::EDIT )
     {
-        // ----------------------------------------------------------------------
-        if(toolMode == ScribbleArea::EDIT)
+        if (event->button() == Qt::LeftButton)
         {
             if(layer->type == Layer::VECTOR)
             {
@@ -934,14 +933,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
                     vectorImage->setSelected(closestVertices, true);
                     vectorSelection.add(closestCurves);
                     vectorSelection.add(closestVertices);
-                    /*calculateSelectionRect();
-                    moveMode == ScribbleArea::MIDDLE;
-                    if( somethingSelected ) {  // there is an area selection
-                    	if( BezierCurve::mLength(lastPoint - myTransformedSelection.topLeft()) < 6) moveMode = ScribbleArea::TOPLEFT;
-                    	if( BezierCurve::mLength(lastPoint - myTransformedSelection.topRight()) < 6) moveMode = ScribbleArea::TOPRIGHT;
-                    	if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomLeft()) < 6) moveMode = ScribbleArea::BOTTOMLEFT;
-                    	if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomRight()) < 6) moveMode = ScribbleArea::BOTTOMRIGHT;
-                    }*/
+
                     update();
                 }
                 else
@@ -950,6 +942,10 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
                 }
             }
         }
+    }
+
+    if (event->button() == Qt::LeftButton)
+    {
         // ----------------------------------------------------------------------
         if(toolMode == ScribbleArea::MOVE && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
         {
