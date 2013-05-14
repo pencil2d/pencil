@@ -943,74 +943,74 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-
-    if (event->button() == Qt::LeftButton)
+    else if ( toolMode == ScribbleArea::MOVE )
     {
-        // ----------------------------------------------------------------------
-        if(toolMode == ScribbleArea::MOVE && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+        if (event->button() == Qt::LeftButton)
         {
-            editor->backup(tr("Move"));
-            moveMode = ScribbleArea::MIDDLE;
-            if( somethingSelected )    // there is an area selection
+            // ----------------------------------------------------------------------
+            if( (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
             {
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.topLeft()) < 6) moveMode = ScribbleArea::TOPLEFT;
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.topRight()) < 6) moveMode = ScribbleArea::TOPRIGHT;
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomLeft()) < 6) moveMode = ScribbleArea::BOTTOMLEFT;
-                if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomRight()) < 6) moveMode = ScribbleArea::BOTTOMRIGHT;
-            }
-            // ---
-            if(moveMode == ScribbleArea::MIDDLE)
-            {
-                if(layer->type == Layer::BITMAP)
+                editor->backup(tr("Move"));
+                moveMode = ScribbleArea::MIDDLE;
+                if( somethingSelected )    // there is an area selection
                 {
-                    if(!(myTransformedSelection.contains(lastPoint)))    // click is outside the transformed selection with the MOVE tool
-                    {
-                        paintTransformedSelection();
-                        deselectAll();
-                    }
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.topLeft()) < 6) moveMode = ScribbleArea::TOPLEFT;
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.topRight()) < 6) moveMode = ScribbleArea::TOPRIGHT;
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomLeft()) < 6) moveMode = ScribbleArea::BOTTOMLEFT;
+                    if( BezierCurve::mLength(lastPoint - myTransformedSelection.bottomRight()) < 6) moveMode = ScribbleArea::BOTTOMRIGHT;
                 }
-                if(layer->type == Layer::VECTOR)
+                // ---
+                if(moveMode == ScribbleArea::MIDDLE)
                 {
-                    VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
-                    if(closestCurves.size() > 0)   // the user clicks near a curve
+                    if(layer->type == Layer::BITMAP)
                     {
-                        //	editor->backup();
-                        if(!vectorImage->isSelected(closestCurves))
+                        if(!(myTransformedSelection.contains(lastPoint)))    // click is outside the transformed selection with the MOVE tool
                         {
                             paintTransformedSelection();
-                            if(event->modifiers() != Qt::ShiftModifier) { deselectAll(); }
-                            vectorImage->setSelected(closestCurves, true);
-                            setSelection( vectorImage->getSelectionRect(), true );
-                            update();
+                            deselectAll();
                         }
                     }
-                    else
+                    if ( layer->type == Layer::VECTOR )
                     {
-                        int areaNumber = vectorImage->getLastAreaNumber(lastPoint);
-                        if(areaNumber != -1)   // the user clicks on an area
+                        VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
+                        if ( closestCurves.size() > 0 )   // the user clicks near a curve
                         {
-                            if(!vectorImage->isAreaSelected(areaNumber))
+                            //	editor->backup();
+                            if(!vectorImage->isSelected(closestCurves))
                             {
+                                paintTransformedSelection();
                                 if(event->modifiers() != Qt::ShiftModifier) { deselectAll(); }
-                                vectorImage->setAreaSelected(areaNumber, true);
-                                //setSelection( vectorImage->getSelectionRect() );
-                                setSelection( QRectF(0,0,0,0), true );
+                                vectorImage->setSelected(closestCurves, true);
+                                setSelection( vectorImage->getSelectionRect(), true );
                                 update();
                             }
                         }
-                        else     // the user doesn't click near a curve or an area
+                        else
                         {
-                            if(!(myTransformedSelection.contains(lastPoint)))    // click is outside the transformed selection with the MOVE tool
+                            int areaNumber = vectorImage->getLastAreaNumber(lastPoint);
+                            if(areaNumber != -1)   // the user clicks on an area
                             {
-                                paintTransformedSelection();
-                                deselectAll();
+                                if(!vectorImage->isAreaSelected(areaNumber))
+                                {
+                                    if(event->modifiers() != Qt::ShiftModifier) { deselectAll(); }
+                                    vectorImage->setAreaSelected(areaNumber, true);
+                                    //setSelection( vectorImage->getSelectionRect() );
+                                    setSelection( QRectF(0,0,0,0), true );
+                                    update();
+                                }
+                            }
+                            else     // the user doesn't click near a curve or an area
+                            {
+                                if(!(myTransformedSelection.contains(lastPoint)))    // click is outside the transformed selection with the MOVE tool
+                                {
+                                    paintTransformedSelection();
+                                    deselectAll();
+                                }
                             }
                         }
                     }
                 }
             }
-            // ---
-
         }
     }
 }
