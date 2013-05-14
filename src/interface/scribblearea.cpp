@@ -805,10 +805,25 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         lastBrushPoint = lastPoint;
     }
 
+    if ( toolMode == ScribbleArea::PENCIL )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+
+            if(layer->type == Layer::VECTOR)
+            {
+                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
+            }
+            mousePath.append(lastPoint);
+            updateAll = true;
+        }
+    }
+
     if (event->button() == Qt::LeftButton)
     {
         //	if(toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::BUCKET || toolMode == ScribbleArea::COLOURING) {
-        if(toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN
+        if ( toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN
                 || toolMode == ScribbleArea::BUCKET || toolMode == ScribbleArea::COLOURING)
         {
 
