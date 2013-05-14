@@ -2,8 +2,8 @@
 
 Simplified and re-organized the code.
 
-Main Repo: [http://bitbucket.org/chchwy/pencil](http://bitbucket.org/chchwy/pencil)
-Mirror: [http://github.com/chchwy/pencil](http://github.com/chchwy/pencil)
+* Main Repo: [http://bitbucket.org/chchwy/pencil](http://bitbucket.org/chchwy/pencil)
+* Mirror: [http://github.com/chchwy/pencil](http://github.com/chchwy/pencil)
 
 ### Pencil Animation v0.5 beta (Morevna Branch) ###
 
