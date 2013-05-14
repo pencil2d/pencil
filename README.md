@@ -1,3 +1,10 @@
+### Pencil Animation v0.5.1 beta (chcwhy Branch) ###
+
+Simplified and re-organized the code.
+
+Main Repo: [http://bitbucket.org/chchwy/pencil](http://bitbucket.org/chchwy/pencil)
+Mirror: [http://github.com/chchwy/pencil](http://github.com/chchwy/pencil)
+
 ### Pencil Animation v0.5 beta (Morevna Branch) ###
 
 Changes by Konstantin Dmitriev:
