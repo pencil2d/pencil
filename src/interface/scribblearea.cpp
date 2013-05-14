@@ -805,15 +805,19 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         lastBrushPoint = lastPoint;
     }
 
+
+    // if-else for all tools
+    // ---------------------------------------
+
     if ( toolMode == ScribbleArea::PENCIL )
     {
         if ( event->button() == Qt::LeftButton )
         {
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
 
-            if(layer->type == Layer::VECTOR)
+            if (!showThinLines)
             {
-                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
+                toggleThinLines();
             }
             mousePath.append(lastPoint);
             updateAll = true;
@@ -824,11 +828,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         if ( event->button() == Qt::LeftButton )
         {
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
-
-            if(layer->type == Layer::VECTOR)
-            {
-                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
-            }
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -838,11 +837,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         if ( event->button() == Qt::LeftButton )
         {
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
-
-            if(layer->type == Layer::VECTOR)
-            {
-                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
-            }
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -852,11 +846,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         if ( event->button() == Qt::LeftButton )
         {
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
-
-            if(layer->type == Layer::VECTOR)
-            {
-                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
-            }
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -866,11 +855,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         if ( event->button() == Qt::LeftButton )
         {
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
-
-            if ( layer->type == Layer::VECTOR )
-            {
-                if (toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
-            }
             mousePath.append(lastPoint);
             updateAll = true;
         }
