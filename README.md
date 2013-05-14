@@ -24,8 +24,10 @@ Changes by davidefa:
 * Other minor fixes ( moving selection on bitmap layers, moving layers... )
 
 
-Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009
 ----------------------------------------------------------------
+
+### Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009 ###
+
 
 Added export AVI/OGG
 Added some more icons
@@ -34,9 +36,10 @@ Creek23
 
 http://tinyurl.com/pencilanimation/
 
-
-Pencil Animation 0.4.5b -rev4 - Source Code - January 24th, 2009
 ----------------------------------------------------------------
+
+### Pencil Animation 0.4.5b -rev4 - Source Code - January 24th, 2009 ###
+
 
 Added Duplicate Frame functionality
 Added Tools menu and fixed shortcut key bugs
@@ -46,7 +49,7 @@ Creek23
 http://tinyurl.com/pencilanimation/
 
 ---------
-Pencil Animation 0.4.5b -rev3 - Source Code - December 7th, 2008
+### Pencil Animation 0.4.5b -rev3 - Source Code - December 7th, 2008 ###
 
 Making it look like a Flash clone (Tools, Shortcuts, Panel names)
 
@@ -56,7 +59,7 @@ http://konsolscript.sourceforge.net/developers/creek23/pencil/
 
 ---------
 
-Pencil 0.4.3b - Source Code - July 1st, 2007
+### Pencil 0.4.3b - Source Code - July 1st, 2007 ###
 
 Source code has been unified for Mac, Windows and Linux.
 Now available on sourceforge SVN repository.
@@ -69,7 +72,7 @@ http://www.les-stooges.org/pascal/pencil/
 
 ---------
 
-Pencil 0.4b - Source Code - January 4th, 2007
+### Pencil 0.4b - Source Code - January 4th, 2007 ###
 
 Added many things, notably vector graphics.
 PLEASE NOTE:
@@ -82,7 +85,7 @@ http://www.les-stooges.org/pascal/pencil/
 
 ---------
 
-Pencil 0.2b - Source Code
+### Pencil 0.2b - Source Code ###
 
 PLEASE NOTE:
 This source code is optimized for compiling on Mac OSX.
