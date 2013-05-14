@@ -859,22 +859,25 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             updateAll = true;
         }
     }
-
-    if (event->button() == Qt::LeftButton)
-    {        
-        // ----------------------------------------------------------------------
-        if(toolMode == POLYLINE && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR) )
+    else if ( toolMode == POLYLINE )
+    {
+        if( layer->type == Layer::BITMAP || layer->type == Layer::VECTOR )
         {
             if(mousePoints.size() == 0) editor->backup(tr("Line"));
             if(layer->type == Layer::VECTOR)
             {
                 ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
-                if(makeInvisible && !showThinLines) toggleThinLines();
+                if (makeInvisible && !showThinLines)
+                {
+                    toggleThinLines();
+                }
             }
             mousePoints << lastPoint;
             updateAll = true;
-            //qDebug() << "--------- " << mousePoints;
         }
+    }
+    if (event->button() == Qt::LeftButton)
+    {
         // ----------------------------------------------------------------------
         if(toolMode == ScribbleArea::SELECT && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
         {
