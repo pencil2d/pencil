@@ -2263,7 +2263,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
         drawPalette->show();
     }
 
-    QDockWidget* optionPalette = toolSet->optionPalette;
+    QDockWidget* optionPalette = mainWindow->m_toolOptionWidget;
     if(optionPalette != NULL)
     {
         QPoint pos = settings.value("optionPalettePosition", QPoint(100, 100)).toPoint();

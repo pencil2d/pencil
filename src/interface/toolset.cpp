@@ -31,8 +31,6 @@ ToolSet::ToolSet()
     drawPalette->setWidget(drawGroup);
     QGridLayout* drawLay = new QGridLayout();
 
-    optionPalette = new ToolOptionDockWidget(this);
-
     newToolButton(pencilButton);
     newToolButton(selectButton);
     newToolButton(moveButton);

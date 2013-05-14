@@ -32,7 +32,6 @@ public:
 
     QDockWidget* drawPalette;
     QDockWidget* onionPalette;
-    ToolOptionDockWidget* optionPalette;
 
     QDockWidget* createOptionPalette();
 

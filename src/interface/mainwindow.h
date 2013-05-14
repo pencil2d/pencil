@@ -21,6 +21,8 @@ GNU General Public License for more details.
 class Editor;
 class Object;
 class Palette;
+class DisplayOptionDockWidget;
+class ToolOptionDockWidget;
 
 
 class MainWindow : public QMainWindow
@@ -31,16 +33,18 @@ public:
     MainWindow();
     ~MainWindow();
 
-    //void initialiseStyle();
     void addRecentFile(QString filePath);
 
     // Data Model
     Object* object;
 
-    // UI
+    // UI: central view
     Editor* editor;
+
+    // UI: Dock widgets
     Palette* m_colorPalette;
     DisplayOptionDockWidget* m_displayOptionWidget;
+    ToolOptionDockWidget*    m_toolOptionWidget;
 
 public slots:
     void setOpacity(int opacity);

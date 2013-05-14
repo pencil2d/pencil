@@ -56,16 +56,17 @@ void MainWindow::arrangePalettes()
     m_displayOptionWidget = new DisplayOptionDockWidget(this);
     m_displayOptionWidget->makeConnectionToEditor(editor);
 
-    editor->toolSet->optionPalette->makeConnectionToEditor(editor);
+    m_toolOptionWidget = new ToolOptionDockWidget(this);
+    m_toolOptionWidget->makeConnectionToEditor(editor);
 
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->optionPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, m_toolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, editor->getTimeLine());
 
     editor->toolSet->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->toolSet->optionPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_toolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_displayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     editor->getTimeLine()->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
@@ -661,7 +662,7 @@ void MainWindow::openDocument()
 void MainWindow::dockAllPalettes()
 {
     editor->toolSet->drawPalette->setFloating(false);
-    editor->toolSet->optionPalette->setFloating(false);
+    m_toolOptionWidget->setFloating(false);
     m_displayOptionWidget->setFloating(false);
     editor->toolSet->onionPalette->setFloating(false);
     editor->getTimeLine()->setFloating(false);
@@ -779,7 +780,7 @@ void MainWindow::writeSettings()
         settings.setValue("drawPaletteFloating", drawPalette->isFloating());
     }
 
-    QDockWidget* optionPalette = editor->toolSet->optionPalette;
+    QDockWidget* optionPalette = m_toolOptionWidget;
     if(optionPalette != NULL)
     {
         settings.setValue("optionPalettePosition", optionPalette->pos());
