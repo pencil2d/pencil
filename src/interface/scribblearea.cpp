@@ -847,10 +847,9 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             updateAll = true;
         }
     }
-
-    if (event->button() == Qt::LeftButton)
-    {        
-        if ( toolMode == ScribbleArea::BUCKET || toolMode == ScribbleArea::COLOURING)
+    else if ( toolMode == ScribbleArea::BUCKET )
+    {
+        if ( event->button() == Qt::LeftButton )
         {
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
 
@@ -861,25 +860,24 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             mousePath.append(lastPoint);
             updateAll = true;
         }
-        // ----------------------------------------------------------------------
-        /*
-        // AF -- This code causes a big blob of paint at the start of a colour
-        // stroke when using a tablet. It appears that this code is not needed
-        // and commenting it out fixes the problem
+    }
+    else if ( toolMode == ScribbleArea::COLOURING )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            editor->backup(tr(myToolModesDescription[(int)toolMode]));
 
-        		if(toolMode == COLOURING) {
-        			if(layer->type == Layer::BITMAP) {
-        				qreal opacity = 1.0;
-        				qreal brushWidth = brush.width +  0.5*brush.feather;
-        				qreal offset = qMax(0.0,brush.width-0.5*brush.feather)/brushWidth;
-        				if(tabletInUse) opacity = tabletPressure;
-        				if(usePressure) brushWidth = brushWidth*tabletPressure;
-        				drawBrush( lastPoint, brushWidth, offset, brush.colour, opacity);
-        				int rad = qRound(brushWidth / 2) + 3;
-        				update(myTempView.mapRect(QRect(lastPoint.toPoint(), lastPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
-        			}
-        		}
-        */
+            if ( layer->type == Layer::VECTOR )
+            {
+                if (toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
+            }
+            mousePath.append(lastPoint);
+            updateAll = true;
+        }
+    }
+
+    if (event->button() == Qt::LeftButton)
+    {        
         // ----------------------------------------------------------------------
         if(toolMode == POLYLINE && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR) )
         {
