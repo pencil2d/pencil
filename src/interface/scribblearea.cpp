@@ -819,14 +819,39 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             updateAll = true;
         }
     }
+    else if ( toolMode == ScribbleArea::ERASER )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+
+            if(layer->type == Layer::VECTOR)
+            {
+                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
+            }
+            mousePath.append(lastPoint);
+            updateAll = true;
+        }
+    }
+    else if ( toolMode == ScribbleArea::PEN )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+
+            if(layer->type == Layer::VECTOR)
+            {
+                if(toolMode == ScribbleArea::PENCIL && !showThinLines) toggleThinLines();
+            }
+            mousePath.append(lastPoint);
+            updateAll = true;
+        }
+    }
 
     if (event->button() == Qt::LeftButton)
-    {
-        //	if(toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::BUCKET || toolMode == ScribbleArea::COLOURING) {
-        if ( toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN
-                || toolMode == ScribbleArea::BUCKET || toolMode == ScribbleArea::COLOURING)
+    {        
+        if ( toolMode == ScribbleArea::BUCKET || toolMode == ScribbleArea::COLOURING)
         {
-
             editor->backup(tr(myToolModesDescription[(int)toolMode]));
 
             if(layer->type == Layer::VECTOR)
