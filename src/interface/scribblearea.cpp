@@ -1063,10 +1063,19 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
-
+    else if ( toolMode == ScribbleArea::ERASER )
+    {
+        if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            if (event->buttons() & Qt::LeftButton)
+            {
+                drawLineTo(currentPixel, currentPoint);
+            }
+        }
+    }
     if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
-        if ((event->buttons() & Qt::LeftButton) && (toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::COLOURING))
+        if ((event->buttons() & Qt::LeftButton) && ( toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::COLOURING))
             drawLineTo(currentPixel, currentPoint);
         if(toolMode == ScribbleArea::POLYLINE)
             drawPolyline();
