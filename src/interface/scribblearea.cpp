@@ -1144,15 +1144,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
                     // transforms the selection
                     selectionTransformation = QMatrix().translate(offset.x(), offset.y());
                     ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->setSelectionTransformation(selectionTransformation);
-                    /*if(moveMode == ScribbleArea::MIDDLE) {
-                    	if(QLineF(lastPixel,currentPixel).length()>4) myTempTransformedSelection = myTransformedSelection.translated(offset);
-                    }
-                    if(moveMode == ScribbleArea::TOPLEFT) myTempTransformedSelection = myTransformedSelection.adjusted(offset.x(), offset.y(), 0, 0);
-                    if(moveMode == ScribbleArea::TOPRIGHT) myTempTransformedSelection = myTransformedSelection.adjusted(0, offset.y(), offset.x(), 0);
-                    if(moveMode == ScribbleArea::BOTTOMLEFT) myTempTransformedSelection = myTransformedSelection.adjusted(offset.x(), 0, 0, offset.y());
-                    if(moveMode == ScribbleArea::BOTTOMRIGHT) myTempTransformedSelection = myTransformedSelection.adjusted(0, 0, offset.x(), offset.y());
-                    calculateSelectionTransformation();*/
-                    //update();
                 }
             }
         }
