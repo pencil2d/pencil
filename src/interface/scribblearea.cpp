@@ -1032,8 +1032,16 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     }
     // ---- end checks ------
 
-    if(tabletInUse  && highResPosition) { currentPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); }
-    else { currentPixel = event->pos(); }
+    if (tabletInUse  && highResPosition)
+    {
+        currentPixel = QPointF(event->pos())
+                + tabletPosition
+                - QPointF(event->globalPos());
+    }
+    else
+    {
+        currentPixel = event->pos();
+    }
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
     if(event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)   // the user is also pressing the mouse (dragging)
@@ -1043,9 +1051,15 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     }
 
     // ----------------------------------------------------------------------
+    if ( toolMode == toolMode == ScribbleArea::PENCIL )
+    {
+
+
+    }
+
     if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
-        if ((event->buttons() & Qt::LeftButton) && (toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::COLOURING))
+        if ((event->buttons() & Qt::LeftButton) && (toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::COLOURING))
             drawLineTo(currentPixel, currentPoint);
         if(toolMode == ScribbleArea::POLYLINE)
             drawPolyline();
