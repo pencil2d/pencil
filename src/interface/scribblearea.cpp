@@ -1073,6 +1073,16 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
+    else if ( toolMode == ScribbleArea::PEN )
+    {
+        if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            if (event->buttons() & Qt::LeftButton)
+            {
+                drawLineTo(currentPixel, currentPoint);
+            }
+        }
+    }
     if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
         if ((event->buttons() & Qt::LeftButton) && ( toolMode == ScribbleArea::PEN || toolMode == ScribbleArea::COLOURING))
