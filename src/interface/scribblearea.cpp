@@ -1044,17 +1044,24 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     }
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
-    if(event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)   // the user is also pressing the mouse (dragging)
+
+    // the user is also pressing the mouse (dragging)
+    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         offset = currentPoint - lastPoint;
         mousePath.append(currentPoint);
     }
 
     // ----------------------------------------------------------------------
-    if ( toolMode == toolMode == ScribbleArea::PENCIL )
+    if ( toolMode == ScribbleArea::PENCIL )
     {
-
-
+        if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            if ( event->buttons() & Qt::LeftButton )
+            {
+                drawLineTo(currentPixel, currentPoint);
+            }
+        }
     }
 
     if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
