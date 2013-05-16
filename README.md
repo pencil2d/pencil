@@ -14,6 +14,7 @@ Simplified and re-organized the code.
 ### Pencil Animation v0.5 beta (Morevna Branch) ###
 
 Changes by Konstantin Dmitriev:
+
 * Support for some command-line options.
   Now it's possible to specify file to open:
     $ Pencil file.pcl
@@ -25,6 +26,7 @@ Changes by Konstantin Dmitriev:
 * Other minor fixes
 
 Changes by davidefa:
+
 * Export movie exports audio and video. Audio layers are mixed.
   To select video format use an 'appropriate' filename extension ( ex: .avi, .mov, .mpg, .mp4 ... ), movie framerate is selectable ( but output codecs don't support all framerates, a safe and usual choice should be 24, 25 or 30 fps )
 * Minor fixes in audio layers ( corrupted audio passed end of 'audio frame' ).
