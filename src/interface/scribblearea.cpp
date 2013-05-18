@@ -15,14 +15,15 @@ GNU General Public License for more details.
 */
 #include <QtGui>
 #include <math.h>
-#include "scribblearea.h"
+
 #include "beziercurve.h"
 #include "editor.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
-
 #include "bitmapimage.h"
+
+#include "scribblearea.h"
 
 void VectorSelection::clear()
 {
@@ -179,22 +180,22 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
 void ScribbleArea::setColour(const int i)
 {
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.colourNumber = i;
         pencil.colour = editor->object->getColour(i).colour;
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.colourNumber = i;
         pen.colour = editor->object->getColour(i).colour;
     }
-    if(toolMode == BUCKET || toolMode == COLOURING)  // || toolMode == EYEDROPPER) {
+    if(currentTool() == BUCKET || currentTool() == COLOURING)  // || currentTool() == EYEDROPPER) {
     {
         brush.colourNumber = i;
         brush.colour = editor->object->getColour(i).colour;
     }
-    if (toolMode == EYEDROPPER)
+    if (currentTool() == EYEDROPPER)
     {
         pencil.colourNumber = i;
         pencil.colour = editor->object->getColour(i).colour;
@@ -209,19 +210,19 @@ void ScribbleArea::setColour(const int i)
 
 void ScribbleArea::setColour(const QColor colour)
 {
-    if(toolMode == PENCIL)  // || toolMode == EYEDROPPER) {
+    if(currentTool() == PENCIL)  // || currentTool() == EYEDROPPER) {
     {
         pencil.colour = colour;
     }
-    if(toolMode == PEN || toolMode == POLYLINE)  // || toolMode == EYEDROPPER) {
+    if(currentTool() == PEN || currentTool() == POLYLINE)  // || currentTool() == EYEDROPPER) {
     {
         pen.colour = colour;
     }
-    if(toolMode == COLOURING || toolMode == BUCKET)  // || toolMode == EYEDROPPER) {
+    if(currentTool() == COLOURING || currentTool() == BUCKET)  // || currentTool() == EYEDROPPER) {
     {
         brush.colour = colour;
     }
-    if (toolMode == EYEDROPPER)
+    if (currentTool() == EYEDROPPER)
     {
         pencil.colour = colour;
         pen.colour = colour;
@@ -241,22 +242,22 @@ void ScribbleArea::resetColours()
 void ScribbleArea::setWidth(const qreal newWidth)
 {
     QSettings settings("Pencil","Pencil");
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.width = newWidth;
         settings.setValue("pencilWidth", newWidth);
     }
-    if(toolMode == ERASER)
+    if(currentTool() == ERASER)
     {
         eraser.width = newWidth;
         settings.setValue("eraserWidth", newWidth);
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.width = newWidth;
         settings.setValue("penWidth", newWidth);
     }
-    if(toolMode == COLOURING)
+    if(currentTool() == COLOURING)
     {
         brush.width = newWidth;
         settings.setValue("brushWidth", newWidth);
@@ -269,17 +270,17 @@ void ScribbleArea::setWidth(const qreal newWidth)
 void ScribbleArea::setFeather(const qreal newFeather)
 {
     QSettings settings("Pencil","Pencil");
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.feather = newFeather;
         settings.setValue("pencilOpacity", newFeather);
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.feather = newFeather;
         settings.setValue("penOpacity", newFeather);
     }
-    if(toolMode == COLOURING)
+    if(currentTool() == COLOURING)
     {
         brush.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
@@ -292,17 +293,17 @@ void ScribbleArea::setFeather(const qreal newFeather)
 void ScribbleArea::setOpacity(const qreal newOpacity)
 {
     QSettings settings("Pencil","Pencil");
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.opacity = newOpacity;
         settings.setValue("pencilOpacity", newOpacity);
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.opacity = newOpacity;
         settings.setValue("penOpacity", newOpacity);
     }
-    if(toolMode == COLOURING)
+    if(currentTool() == COLOURING)
     {
         brush.opacity = newOpacity;
         settings.setValue("brushOpacity", newOpacity);
@@ -314,12 +315,12 @@ void ScribbleArea::setOpacity(const qreal newOpacity)
 void ScribbleArea::setInvisibility(const bool invisibility)
 {
     QSettings settings("Pencil","Pencil");
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.invisibility = invisibility;
         settings.setValue("pencilOpacity", invisibility);
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.invisibility = invisibility;
         settings.setValue("penOpacity", invisibility);
@@ -331,17 +332,17 @@ void ScribbleArea::setInvisibility(const bool invisibility)
 void ScribbleArea::setPressure(const bool pressure)
 {
     QSettings settings("Pencil","Pencil");
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.pressure = pressure;
         settings.setValue("pencilOpacity", pressure);
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.pressure = pressure;
         settings.setValue("penOpacity", pressure);
     }
-    if(toolMode == COLOURING)
+    if(currentTool() == COLOURING)
     {
         brush.pressure = pressure;
         settings.setValue("brushOpacity", pressure);
@@ -353,17 +354,17 @@ void ScribbleArea::setPressure(const bool pressure)
 void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
 {
     QSettings settings("Pencil","Pencil");
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         pencil.preserveAlpha = preserveAlpha;
         //settings.setValue("pencilCompositionMode", preserveAlpha);
     }
-    if(toolMode == PEN || toolMode == POLYLINE)
+    if(currentTool() == PEN || currentTool() == POLYLINE)
     {
         pen.preserveAlpha = preserveAlpha;
         //settings.setValue("penCompositionMode", preserveAlpha);
     }
-    if(toolMode == COLOURING)
+    if(currentTool() == COLOURING)
     {
         brush.preserveAlpha = preserveAlpha;
         //settings.setValue("brushCompositionMode", preserveAlpha);
@@ -605,7 +606,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent* event )
         if(somethingSelected) { paintTransformedSelection(); deselectAll(); }
         else
         {
-            if(toolMode == POLYLINE)
+            if(currentTool() == POLYLINE)
             {
                 endPolyline();
             }
@@ -616,7 +617,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent* event )
         }
         break;
     case Qt::Key_Escape:
-        if(somethingSelected || toolMode == POLYLINE) { escape(); }
+        if(somethingSelected || currentTool() == POLYLINE) { escape(); }
         break;
     case Qt::Key_Backspace:
         if(somethingSelected) deleteSelection();
@@ -680,7 +681,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
         //tabletEraser = true;
         if(tabletEraserBackupToolMode == -1)
         {
-            tabletEraserBackupToolMode = toolMode; // memorise which tool was being used before switching to the eraser
+            tabletEraserBackupToolMode = currentTool(); // memorise which tool was being used before switching to the eraser
             eraserOn();
         }
     }
@@ -709,20 +710,20 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
 
 void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    if(toolMode==ScribbleArea::ERASER)
+    if(currentTool()==ScribbleArea::ERASER)
     {
         //myPenWidth = static_cast<int>(10.0*tabletPressure);
         if(mouseDevice) { currentWidth =  eraser.width; }
         else { currentWidth = (eraser.width*pressure); }
     }
-    if(toolMode==ScribbleArea::PENCIL)
+    if(currentTool()==ScribbleArea::PENCIL)
     {
         currentColour = pencil.colour;
         if(usePressure && !mouseDevice) {currentColour.setAlphaF(pencil.colour.alphaF()*pressure); }
         else { currentColour.setAlphaF(pencil.colour.alphaF()); }
         currentWidth = pencil.width;
     }
-    if(toolMode==ScribbleArea::PEN)
+    if(currentTool()==ScribbleArea::PEN)
     {
         currentColour = pen.colour;
         currentColour.setAlphaF(pen.colour.alphaF());
@@ -749,7 +750,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         if(event->buttons() & Qt::MidButton)
         {
             //qDebug() << "Hand Start " << event->pos();
-            prevMode = toolMode;
+            prevMode = currentTool();
             handOn();
         }
     }
@@ -758,7 +759,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     Layer* layer = editor->getCurrentLayer();
     // ---- checks ------
     if(layer==NULL) return;
-    if(!layer->visible && toolMode != HAND && (event->button() != Qt::RightButton))
+    if(!layer->visible && currentTool() != HAND && (event->button() != Qt::RightButton))
     {
         QMessageBox::warning(this, tr("Warning"),
                              tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
@@ -771,9 +772,9 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
         if (vectorImage == NULL) return;
-        if(toolMode == ScribbleArea::PENCIL) editor->selectColour(pencil.colourNumber);
-        if(toolMode == ScribbleArea::PEN) editor->selectColour(pen.colourNumber);
-        if(toolMode == ScribbleArea::COLOURING || toolMode == ScribbleArea::BUCKET) editor->selectColour(brush.colourNumber);
+        if(currentTool() == ScribbleArea::PENCIL) editor->selectColour(pencil.colourNumber);
+        if(currentTool() == ScribbleArea::PEN) editor->selectColour(pen.colourNumber);
+        if(currentTool() == ScribbleArea::COLOURING || currentTool() == ScribbleArea::BUCKET) editor->selectColour(brush.colourNumber);
     }
     if(layer->type == Layer::BITMAP)
     {
@@ -803,11 +804,11 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     // if-else for all tools
     // ---------------------------------------
 
-    if ( toolMode == ScribbleArea::PENCIL )
+    if ( currentTool() == ScribbleArea::PENCIL )
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+            editor->backup(tr(myToolModesDescription[(int)currentTool()]));
 
             if (!showThinLines)
             {
@@ -817,43 +818,43 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             updateAll = true;
         }
     }
-    else if ( toolMode == ScribbleArea::ERASER )
+    else if ( currentTool() == ScribbleArea::ERASER )
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+            editor->backup(tr(myToolModesDescription[(int)currentTool()]));
             mousePath.append(lastPoint);
             updateAll = true;
         }
     }
-    else if ( toolMode == ScribbleArea::PEN )
+    else if ( currentTool() == ScribbleArea::PEN )
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+            editor->backup(tr(myToolModesDescription[(int)currentTool()]));
             mousePath.append(lastPoint);
             updateAll = true;
         }
     }
-    else if ( toolMode == ScribbleArea::BUCKET )
+    else if ( currentTool() == ScribbleArea::BUCKET )
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+            editor->backup(tr(myToolModesDescription[(int)currentTool()]));
             mousePath.append(lastPoint);
             updateAll = true;
         }
     }
-    else if ( toolMode == ScribbleArea::COLOURING )
+    else if ( currentTool() == ScribbleArea::COLOURING )
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)toolMode]));
+            editor->backup(tr(myToolModesDescription[(int)currentTool()]));
             mousePath.append(lastPoint);
             updateAll = true;
         }
     }
-    else if ( toolMode == POLYLINE )
+    else if ( currentTool() == POLYLINE )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -877,7 +878,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::SELECT )
+    else if ( currentTool() == ScribbleArea::SELECT )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -910,7 +911,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::EDIT )
+    else if ( currentTool() == ScribbleArea::EDIT )
     {
         if (event->button() == Qt::LeftButton)
         {
@@ -937,7 +938,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::MOVE )
+    else if ( currentTool() == ScribbleArea::MOVE )
     {
         if (event->button() == Qt::LeftButton)
         {
@@ -1047,7 +1048,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     }
 
     // ----------------------------------------------------------------------
-    if ( toolMode == ScribbleArea::PENCIL )
+    if ( currentTool() == ScribbleArea::PENCIL )
     {
         if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1057,7 +1058,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::ERASER )
+    else if ( currentTool() == ScribbleArea::ERASER )
     {
         if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1067,7 +1068,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::PEN )
+    else if ( currentTool() == ScribbleArea::PEN )
     {
         if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1077,7 +1078,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::COLOURING )
+    else if ( currentTool() == ScribbleArea::COLOURING )
     {
         if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1087,7 +1088,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::POLYLINE )
+    else if ( currentTool() == ScribbleArea::POLYLINE )
     {
         if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1096,7 +1097,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     }
 
     // ----------------------------------------------------------------------
-    if (toolMode == ScribbleArea::SELECT && (event->buttons() & Qt::LeftButton) && somethingSelected && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if (currentTool() == ScribbleArea::SELECT && (event->buttons() & Qt::LeftButton) && somethingSelected && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
         if(moveMode == ScribbleArea::MIDDLE) mySelection.setBottomRight(currentPoint);
         if(moveMode == ScribbleArea::TOPLEFT) mySelection.setTopLeft(currentPoint);
@@ -1109,7 +1110,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         update();
     }
     // ----------------------------------------------------------------------
-    if (toolMode == ScribbleArea::ERASER && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if (currentTool() == ScribbleArea::ERASER && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
         if(event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
         {
@@ -1127,7 +1128,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         }
     }
     // ----------------------------------------------------------------------
-    if (toolMode == ScribbleArea::EDIT && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if (currentTool() == ScribbleArea::EDIT && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
         if(event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {
         {
@@ -1153,7 +1154,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         updateAll = true;
     }
     // ----------------------------------------------------------------------
-    if (toolMode == ScribbleArea::MOVE  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if (currentTool() == ScribbleArea::MOVE  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
         if(event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
         {
@@ -1202,8 +1203,8 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         }
     }
     // ----------------------------------------------------------------------
-    //	if (  toolMode == ScribbleArea::HAND && (event->buttons() != Qt::NoButton || event->buttons() & Qt::RightButton) ) {
-    if (  toolMode == ScribbleArea::HAND && (event->buttons() != Qt::NoButton))
+    //	if (  currentTool() == ScribbleArea::HAND && (event->buttons() != Qt::NoButton || event->buttons() & Qt::RightButton) ) {
+    if (  currentTool() == ScribbleArea::HAND && (event->buttons() != Qt::NoButton))
     {
         if(event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
         {
@@ -1241,7 +1242,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         updateAll = true;
     }
     // ----------------------------------------------------------------------
-    if( toolMode == EYEDROPPER )
+    if( currentTool() == EYEDROPPER )
     {
         if(layer->type == Layer::BITMAP)
         {
@@ -1287,13 +1288,13 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     //currentWidth = myPenWidth;
     if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
-        if ((event->button() == Qt::LeftButton) && (toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::ERASER || toolMode == ScribbleArea::PEN))
+        if ((event->button() == Qt::LeftButton) && (currentTool() == ScribbleArea::PENCIL || currentTool() == ScribbleArea::ERASER || currentTool() == ScribbleArea::PEN))
         {
             drawLineTo(currentPixel, currentPoint);
         }
     }
 
-    if ( toolMode == BUCKET )
+    if ( currentTool() == BUCKET )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1332,7 +1333,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == EYEDROPPER )
+    else if ( currentTool() == EYEDROPPER )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1353,7 +1354,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == PENCIL )
+    else if ( currentTool() == PENCIL )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1368,7 +1369,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 bufferImg->clear();
                 qreal tol = curveSmoothing/qAbs( myView.m11() );
                 BezierCurve curve(mousePath, mousePressure, tol);
-                if(toolMode == PEN)
+                if(currentTool() == PEN)
                 {
                     curve.setWidth(pen.width);
                     curve.setFeather(0);
@@ -1395,7 +1396,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == PEN )
+    else if ( currentTool() == PEN )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1410,7 +1411,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 bufferImg->clear();
                 qreal tol = curveSmoothing/qAbs( myView.m11() );
                 BezierCurve curve(mousePath, mousePressure, tol);
-                if(toolMode == PEN)
+                if(currentTool() == PEN)
                 {
                     curve.setWidth(pen.width);
                     curve.setFeather(0);
@@ -1440,7 +1441,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ERASER )
+    else if ( currentTool() == ERASER )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1463,7 +1464,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == COLOURING )
+    else if ( currentTool() == COLOURING )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1482,7 +1483,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::MOVE )
+    else if ( currentTool() == ScribbleArea::MOVE )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1498,7 +1499,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( toolMode == ScribbleArea::EDIT )
+    else if ( currentTool() == ScribbleArea::EDIT )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1518,7 +1519,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     }
 
     // ----------------------------------------------------------------------
-    else if( toolMode == ScribbleArea::HAND || (event->button() == Qt::RightButton) )
+    else if( currentTool() == ScribbleArea::HAND || (event->button() == Qt::RightButton) )
     {
         bufferImg->clear();
         if(layer->type == Layer::CAMERA)
@@ -1546,7 +1547,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         //update();
     }
     // ----------------------------------------------------------------------
-    if ( toolMode == ScribbleArea::SELECT )
+    if ( currentTool() == ScribbleArea::SELECT )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1576,13 +1577,13 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    if ( toolMode == ScribbleArea::HAND || event->button() == Qt::RightButton )
+    if ( currentTool() == ScribbleArea::HAND || event->button() == Qt::RightButton )
     {
         resetView();
     }
     else
     {
-        if( toolMode == ScribbleArea::POLYLINE && BezierCurve::eLength(lastPixel.toPoint() - event->pos()) < 2.0 )
+        if( currentTool() == ScribbleArea::POLYLINE && BezierCurve::eLength(lastPixel.toPoint() - event->pos()) < 2.0 )
         {
             endPolyline();
         }
@@ -1603,7 +1604,7 @@ void ScribbleArea::paintBitmapBuffer()
     if(targetImage!=NULL)
     {
         QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
-        switch(toolMode)
+        switch(currentTool())
         {
         case ERASER:
             cm = QPainter::CompositionMode_DestinationOut;
@@ -1664,7 +1665,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     QPainter painter(this);
 
     // draws the background (if necessary)
-    if(mouseInUse && toolMode == HAND)
+    if(mouseInUse && currentTool() == HAND)
     {
         painter.setWorldMatrix(myTempView);
         painter.setWorldMatrixEnabled(true);
@@ -1684,7 +1685,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             QPixmapCache::insert("frame"+QString::number(frameNumber), canvas);
         }
     }
-    if(toolMode == MOVE)
+    if(currentTool() == MOVE)
     {
         Layer* layer = editor->getCurrentLayer();
         if(!layer) return;
@@ -1707,7 +1708,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         {
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
 
-            if(toolMode == EDIT || toolMode == HAND)
+            if(currentTool() == EDIT || currentTool() == HAND)
             {
                 //bufferImg->clear();
                 painter.save();
@@ -1778,7 +1779,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 painter.restore();
             }
 
-            if(toolMode == MOVE)
+            if(currentTool() == MOVE)
             {
                 // ----- paints the closest curves
                 bufferImg->clear();
@@ -1828,7 +1829,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
                 }
                 painter.drawPolygon( tempRect );
 
-                if(layer->type != Layer::VECTOR || toolMode != SELECT)
+                if(layer->type != Layer::VECTOR || currentTool() != SELECT)
                 {
                     painter.setPen(Qt::SolidLine);
                     painter.setBrush(QBrush(Qt::gray));
@@ -1863,7 +1864,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     painter.setBrush(Qt::NoBrush);
     painter.drawRect(QRect(0,0, width(), height()));
     // shadow
-    if(shadows && !editor->playing && (!mouseInUse || toolMode == HAND))
+    if(shadows && !editor->playing && (!mouseInUse || currentTool() == HAND))
     {
         int radius1 = 12;
         int radius2 = 8;
@@ -2148,28 +2149,28 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
         //BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
         //if(bitmapImage == NULL) { qDebug() << "NULL image pointer!" << editor->currentLayer << editor->currentFrame;  return; }
 
-        if (toolMode == ScribbleArea::ERASER)
+        if (currentTool() == ScribbleArea::ERASER)
         {
             QPen pen2 = QPen ( QBrush(QColor(255,255,255,255)), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
             bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(currentWidth / 2) + 2;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
         }
-        if(toolMode == ScribbleArea::PENCIL)
+        if(currentTool() == ScribbleArea::PENCIL)
         {
             QPen pen2 = QPen ( QBrush(currentColour), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
             bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_Source, antialiasing);
             int rad = qRound(currentWidth / 2) + 3;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
         }
-        if(toolMode == ScribbleArea::PEN)
+        if(currentTool() == ScribbleArea::PEN)
         {
             QPen pen2 = QPen ( QBrush(pen.colour), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
             bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(currentWidth / 2) + 3;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
         }
-        if(toolMode == ScribbleArea::COLOURING)
+        if(currentTool() == ScribbleArea::COLOURING)
         {
             qreal opacity = 1.0;
             qreal brushWidth = brush.width +  0.5*brush.feather;
@@ -2196,25 +2197,25 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
     }
     if(layer->type == Layer::VECTOR)
     {
-        if (toolMode == ScribbleArea::ERASER)
+        if (currentTool() == ScribbleArea::ERASER)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::white, currentWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(  (currentWidth/2 + 2)*qAbs( myTempView.m11() )  );
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
-        if(toolMode == ScribbleArea::PENCIL)
+        if(currentTool() == ScribbleArea::PENCIL)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(currentColour, 1, Qt::DotLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(  ( currentWidth/2 + 2)*qAbs( myTempView.m11() )  );
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
-        if(toolMode == ScribbleArea::PEN)
+        if(currentTool() == ScribbleArea::PEN)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(pen.colour, currentWidth*myTempView.m11(), Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(  (currentWidth/2 + 2)* (qAbs(myTempView.m11())+qAbs(myTempView.m22())) );
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
-        if(toolMode == ScribbleArea::COLOURING)
+        if(currentTool() == ScribbleArea::COLOURING)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::gray, 1, Qt::DashLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(   (currentWidth/2 + 2)*qAbs( myTempView.m11() )   );
@@ -2241,7 +2242,7 @@ void ScribbleArea::drawEyedropperPreview(const QColor colour)
 
 void ScribbleArea::drawPolyline()
 {
-    if(toolMode == POLYLINE)
+    if(currentTool() == POLYLINE)
     {
         if(mousePoints.size()>0)
         {
@@ -2492,7 +2493,7 @@ void ScribbleArea::displaySelectionProperties()
         LayerVector* layerVector = (LayerVector*)layer;
         VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(editor->currentFrame, 0);
         //vectorImage->applySelectionTransformation();
-        if (toolMode == MOVE)
+        if (currentTool() == MOVE)
         {
             //if(closestCurves.size()>0) {
             int selectedCurve = vectorImage->getFirstSelectedCurve();
@@ -2547,7 +2548,7 @@ void ScribbleArea::deselectAll()
     if(layer->type == Layer::VECTOR)
     {
         ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
-        if(toolMode == MOVE)
+        if(currentTool() == MOVE)
         {
             editor->setWidth(-1);
             editor->setInvisibility(-1);
@@ -2912,15 +2913,25 @@ void ScribbleArea::floodFillError(int errorType)
 }
 
 
+ScribbleArea::myToolModes ScribbleArea::currentTool()
+{
+    return toolMode;
+}
+
+void ScribbleArea::setCurrentTool(myToolModes eToolMode)
+{
+    toolMode = eToolMode;
+}
+
 void ScribbleArea::switchTool()
 {
-    if(toolMode == ScribbleArea::MOVE) { paintTransformedSelection(); deselectAll(); }
-    if(toolMode == ScribbleArea::POLYLINE) escape();
+    if(currentTool() == ScribbleArea::MOVE) { paintTransformedSelection(); deselectAll(); }
+    if(currentTool() == ScribbleArea::POLYLINE) escape();
 }
 
 void ScribbleArea::updateCursor()
 {
-    if(toolMode == PENCIL)
+    if(currentTool() == PENCIL)
     {
         if(toolCursors)
         {
@@ -2932,7 +2943,7 @@ void ScribbleArea::updateCursor()
             setCursor(Qt::CrossCursor);
         }
     }
-    if(toolMode == PEN)
+    if(currentTool() == PEN)
     {
         if(toolCursors)
         {
@@ -2944,7 +2955,7 @@ void ScribbleArea::updateCursor()
             setCursor(Qt::CrossCursor);
         }
     }
-    if(toolMode == ERASER)
+    if(currentTool() == ERASER)
     {
         QPixmap pixmap(eraser.width,eraser.width);
         pixmap.fill( QColor(255,255,255,0) );
@@ -2959,7 +2970,7 @@ void ScribbleArea::updateCursor()
         painter.end();
         setCursor(pixmap); //setCursor(Qt::CrossCursor);
     }
-    if(toolMode == BUCKET)
+    if(currentTool() == BUCKET)
     {
         if(toolCursors)
         {
@@ -2976,7 +2987,7 @@ void ScribbleArea::updateCursor()
             setCursor(Qt::CrossCursor);
         }
     }
-    if(toolMode == EYEDROPPER)
+    if(currentTool() == EYEDROPPER)
     {
         if(eyedropperCursor == NULL)
         {
@@ -2999,26 +3010,26 @@ void ScribbleArea::updateCursor()
         }
         setCursor( QCursor(*eyedropperCursor, 5, 5) );
     }
-    if(toolMode == SELECT)
+    if(currentTool() == SELECT)
     {
         Layer* layer = editor->getCurrentLayer();
         if(layer->type == Layer::VECTOR) setCursor(Qt::ArrowCursor);
         if(layer->type == Layer::BITMAP) setCursor(Qt::CrossCursor);
     }
-    if(toolMode == MOVE)
+    if(currentTool() == MOVE)
     {
         setCursor(Qt::ArrowCursor);
     }
-    if(toolMode == HAND)
+    if(currentTool() == HAND)
     {
         QPixmap pixmap(":icons/hand.png");
         setCursor(pixmap); //setCursor(Qt::PointingHandCursor);
     }
-    if(toolMode == POLYLINE)
+    if(currentTool() == POLYLINE)
     {
         setCursor(Qt::CrossCursor);
     }
-    if(toolMode == COLOURING)
+    if(currentTool() == COLOURING)
     {
         Layer* layer = editor->getCurrentLayer();
         if(layer->type == Layer::VECTOR)
@@ -3048,7 +3059,7 @@ void ScribbleArea::updateCursor()
             setCursor(pixmap);
         }
     }
-    if(toolMode == EDIT)
+    if(currentTool() == EDIT)
     {
         QCursor cursor(QPixmap(":icons/smudge.png"),3,16);
         setCursor(cursor); //setCursor(Qt::ArrowCursor);
@@ -3058,7 +3069,7 @@ void ScribbleArea::updateCursor()
 void ScribbleArea::pencilOn()
 {
     switchTool();
-    toolMode = ScribbleArea::PENCIL;
+    setCurrentTool( ScribbleArea::PENCIL );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3079,7 +3090,7 @@ void ScribbleArea::pencilOn()
 void ScribbleArea::penOn()
 {
     switchTool();
-    toolMode = ScribbleArea::PEN;
+    setCurrentTool( ScribbleArea::PEN );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3103,7 +3114,7 @@ void ScribbleArea::penOn()
 void ScribbleArea::eraserOn()
 {
     switchTool();
-    toolMode = ScribbleArea::ERASER;
+    setCurrentTool( ScribbleArea::ERASER );
     // --- change properties ---
     editor->setWidth(eraser.width);
     editor->setFeather(eraser.feather);
@@ -3121,7 +3132,7 @@ void ScribbleArea::eraserOn()
 void ScribbleArea::selectOn()
 {
     switchTool();
-    toolMode = ScribbleArea::SELECT;
+    setCurrentTool( ScribbleArea::SELECT );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3137,7 +3148,7 @@ void ScribbleArea::selectOn()
 
 void ScribbleArea::moveOn()
 {
-    toolMode = ScribbleArea::MOVE;
+    setCurrentTool( ScribbleArea::MOVE );
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
@@ -3151,8 +3162,8 @@ void ScribbleArea::moveOn()
 
 void ScribbleArea::handOn()
 {
-    if(toolMode == ScribbleArea::HAND) resetView();
-    toolMode = ScribbleArea::HAND;
+    if(currentTool() == ScribbleArea::HAND) resetView();
+    setCurrentTool( ScribbleArea::HAND );
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
@@ -3167,7 +3178,7 @@ void ScribbleArea::handOn()
 void ScribbleArea::polylineOn()
 {
     switchTool();
-    toolMode = ScribbleArea::POLYLINE;
+    setCurrentTool( ScribbleArea::POLYLINE );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3187,7 +3198,7 @@ void ScribbleArea::polylineOn()
 void ScribbleArea::bucketOn()
 {
     switchTool();
-    toolMode = ScribbleArea::BUCKET;
+    setCurrentTool( ScribbleArea::BUCKET );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3210,7 +3221,7 @@ void ScribbleArea::bucketOn()
 void ScribbleArea::eyedropperOn()
 {
     switchTool();
-    toolMode = ScribbleArea::EYEDROPPER;
+    setCurrentTool( ScribbleArea::EYEDROPPER );
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
@@ -3227,7 +3238,7 @@ void ScribbleArea::eyedropperOn()
 void ScribbleArea::colouringOn()
 {
     switchTool();
-    toolMode = ScribbleArea::COLOURING;
+    setCurrentTool( ScribbleArea::COLOURING );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3247,7 +3258,7 @@ void ScribbleArea::colouringOn()
 void ScribbleArea::smudgeOn()
 {
     switchTool();
-    toolMode = EDIT;
+    setCurrentTool( EDIT );
     // --- change properties ---
     editor->setWidth(-1);
     editor->setFeather(-1);
@@ -3360,8 +3371,8 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 }
 void ScribbleArea::setPrevMode()
 {
-    toolMode = prevMode;
-    switch(toolMode)
+    setCurrentTool( prevMode );
+    switch(currentTool())
     {
     case PENCIL:
         pencilOn();

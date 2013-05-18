@@ -217,7 +217,8 @@ private:
     myToolModes prevMode;
 
     void switchTool();
-
+    myToolModes currentTool();
+    void setCurrentTool(myToolModes eToolMode);
     Editor* editor;
 
     int tabletEraserBackupToolMode;
