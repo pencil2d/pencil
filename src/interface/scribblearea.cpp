@@ -38,9 +38,6 @@ void VectorSelection::add(int curveNumber)
 void VectorSelection::add(QList<int> list)
 {
     if(list.size() > 0) add(list[0]);
-    /*for(int i=0; i<list.size(); i++) {
-    	add(list[i]);
-    }*/
 }
 
 void VectorSelection::add(VertexRef point)
@@ -52,15 +49,12 @@ void VectorSelection::add(VertexRef point)
 void VectorSelection::add(QList<VertexRef> list)
 {
     if(list.size() > 0) add(list[0]);
-    /*for(int i=0; i<list.size(); i++) {
-    	add(list[i]);
-    }*/
 }
 
 ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     : QWidget(parent)
-//ScribbleArea::ScribbleArea(QWidget *parent, Editor* editor)
-//    : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+    //ScribbleArea::ScribbleArea(QWidget *parent, Editor* editor)
+    //    : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
     this->editor = editor;
     QSettings settings("Pencil","Pencil");
@@ -152,7 +146,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
 
     QString background = settings.value("background").toString();
-//	if(background == "")
+    //	if(background == "")
     background = "white";
     setBackgroundBrush(background);
     bufferImg = new BitmapImage(NULL);
@@ -506,8 +500,8 @@ QBrush ScribbleArea::getBackgroundBrush(QString brushName)
     if(brushName == "grid")
     {
         /*	QGraphicsScene* scene = new QGraphicsScene();
-        				    scene->setSceneRect(QRectF(0, 0, 500, 500));
-        				    scene->addPixmap(QPixmap(":background/grid.jpg"));*/
+                            scene->setSceneRect(QRectF(0, 0, 500, 500));
+                            scene->addPixmap(QPixmap(":background/grid.jpg"));*/
         brush.setTextureImage(QImage(":background/grid.jpg"));
 
     }
@@ -527,9 +521,9 @@ void ScribbleArea::updateFrame(int frame)
     int frameNumber = editor->getLastFrameAtFrame( frame );
     QPixmapCache::remove("frame"+QString::number(frameNumber));
     /*if (onionPrev)
-    	QPixmapCache::remove("frame"+QString::number(frameNumber+1));  // !!!!!!!!!!!!
+        QPixmapCache::remove("frame"+QString::number(frameNumber+1));  // !!!!!!!!!!!!
     if (onionNext)
-    	QPixmapCache::remove("frame"+QString::number(frameNumber-1));*/  // !!!!!!!!!!!!
+        QPixmapCache::remove("frame"+QString::number(frameNumber-1));*/  // !!!!!!!!!!!!
     readCanvasFromCache = true;
     update();
 }
@@ -743,8 +737,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     mouseInUse = true;
     /*if(!tabletInUse) { // a mouse is used instead of a tablet
-    	tabletPressure = 1.0;
-    	adjustPressureSensitiveProperties(1.0, true);
+        tabletPressure = 1.0;
+        adjustPressureSensitiveProperties(1.0, true);
     }*/
     if(!tabletInUse)   // a mouse is used instead of a tablet
     {
@@ -790,8 +784,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     while(!mousePath.isEmpty()) mousePath.removeAt(0); // empty the mousePath
     while(!mousePressure.isEmpty()) mousePressure.removeAt(0); // empty the mousePressure
-//	if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
-//		if(tabletInUse && highResPosition) { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); } else { lastPixel = QPointF(event->pos()); }
+    //	if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
+    //		if(tabletInUse && highResPosition) { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); } else { lastPixel = QPointF(event->pos()); }
     //if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
@@ -1232,11 +1226,11 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
                     scale = exp( 0.01*( currentPixel.y()-lastPixel.y() ) );
                 }
                 transMatrix = QMatrix(
-                                  scale*cosine, -scale*sine,
-                                  scale*sine,  scale*cosine,
-                                  0.0,
-                                  0.0
-                              );
+                            scale*cosine, -scale*sine,
+                            scale*sine,  scale*cosine,
+                            0.0,
+                            0.0
+                            );
             }
         }
         else     // translation
