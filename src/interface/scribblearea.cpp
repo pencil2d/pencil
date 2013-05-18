@@ -1208,7 +1208,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         }
     }
     // ----------------------------------------------------------------------
-//	if (  toolMode == ScribbleArea::HAND && (event->buttons() != Qt::NoButton || event->buttons() & Qt::RightButton) ) {
+    //	if (  toolMode == ScribbleArea::HAND && (event->buttons() != Qt::NoButton || event->buttons() & Qt::RightButton) ) {
     if (  toolMode == ScribbleArea::HAND && (event->buttons() != Qt::NoButton))
     {
         if(event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
@@ -1361,18 +1361,35 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     }
     else if ( toolMode == PENCIL )
     {
-        if ( layer->type == Layer::BITMAP )
+        if ( event->button() == Qt::LeftButton )
         {
-            paintBitmapBuffer();
-            updateAll = true;
+            if ( layer->type == Layer::BITMAP )
+            {
+                paintBitmapBuffer();
+                updateAll = true;
+            }
         }
     }
     else if ( toolMode == PEN )
     {
-        if ( layer->type == Layer::BITMAP )
+        if ( event->button() == Qt::LeftButton )
         {
-            paintBitmapBuffer();
-            updateAll = true;
+            if ( layer->type == Layer::BITMAP )
+            {
+                paintBitmapBuffer();
+                updateAll = true;
+            }
+        }
+    }
+    else if ( toolMode == ERASER )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            if ( layer->type == Layer::BITMAP )
+            {
+                paintBitmapBuffer();
+                updateAll = true;
+            }
         }
     }
 
@@ -1380,9 +1397,9 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     {
         // ======================================================================
         if(layer->type == Layer::BITMAP)
-        {              
+        {
             // ----------------------------------------------------------------------
-            if( toolMode == ERASER || toolMode == COLOURING )
+            if( toolMode == COLOURING )
             {
                 paintBitmapBuffer();
                 updateAll = true;
@@ -1650,7 +1667,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     painter.setWorldMatrixEnabled(true);
     painter.setWorldMatrix(  centralView.inverted() * transMatrix * centralView  );
     painter.drawPixmap( QPoint(0,0), canvas );
-//	painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO Success a grid is drawn
+    //	painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO Success a grid is drawn
     Layer* layer = editor->getCurrentLayer();
     if(!layer) return;
 
@@ -2504,7 +2521,7 @@ void ScribbleArea::deselectAll()
         ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->deselectAll();
         if(toolMode == MOVE)
         {
-            editor->setWidth(-1);            
+            editor->setWidth(-1);
             editor->setInvisibility(-1);
             editor->setPressure(-1);
         }
@@ -2714,7 +2731,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
     // 1 --- stop here (for debugging purpose)
     /*qDebug() << "CONTOUR POINTS:";
     for(int i=0; i < contourPoints.size(); i++) {
-    	qDebug() << "(" << contourPoints.at(i).curveNumber << "," << contourPoints.at(i).vertexNumber << ")";
+        qDebug() << "(" << contourPoints.at(i).curveNumber << "," << contourPoints.at(i).vertexNumber << ")";
     }*/
     // -----
     vectorImage->setSelected( contourPoints, true);
@@ -2839,12 +2856,12 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
 
     // -- debug --- (display tree)
     /*for(int indexm=0; indexm < tree.size(); indexm++) {
-    	qDebug() << indexm  << ") " << tree.at(indexm).curveNumber << "," << tree.at(indexm).vertexNumber << " -> " << fatherNode.at(indexm);
-    	//if(leaves.contains(indexm)) vectorImage->setSelected( tree.at(indexm), true);
-    	vectorImage->setSelected( tree.at(indexm), true);
-    	update();
-    	//sleep( 1 );
-    	QMessageBox::warning(this, tr("My Application"), tr("all the tree points"), QMessageBox::Ok, QMessageBox::Ok);
+        qDebug() << indexm  << ") " << tree.at(indexm).curveNumber << "," << tree.at(indexm).vertexNumber << " -> " << fatherNode.at(indexm);
+        //if(leaves.contains(indexm)) vectorImage->setSelected( tree.at(indexm), true);
+        vectorImage->setSelected( tree.at(indexm), true);
+        update();
+        //sleep( 1 );
+        QMessageBox::warning(this, tr("My Application"), tr("all the tree points"), QMessageBox::Ok, QMessageBox::Ok);
     }*/
     delete targetImage;
     update();
@@ -2855,8 +2872,8 @@ void ScribbleArea::floodFillError(int errorType)
     QString message, error;
     if(errorType == 1) message = "There is a gap in your drawing (or maybe you have zoomed too much).";
     if(errorType == 2 || errorType == 3) message = "Sorry! This doesn't always work."
-                "Please try again (zoom a bit, click at another location... )<br>"
-                "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+            "Please try again (zoom a bit, click at another location... )<br>"
+            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
 
     if(errorType == 1) error = "Out of bound.";
     if(errorType == 2) error = "Could not find a closed path.";
