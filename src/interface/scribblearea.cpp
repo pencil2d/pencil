@@ -1489,7 +1489,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            if(layer->type == Layer::VECTOR)
+            if ( layer->type == Layer::VECTOR )
             {
                 VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
                 vectorImage->applySelectionTransformation();
