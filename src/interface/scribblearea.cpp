@@ -1338,19 +1338,33 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-
-    if(event->button() == Qt::LeftButton)
+    else if ( toolMode == EYEDROPPER )
     {
-        // ======================================================================
-        if(layer->type == Layer::BITMAP)
-        {         
-            // ----------------------------------------------------------------------
-            if( toolMode == EYEDROPPER)
+        if ( event->button() == Qt::LeftButton )
+        {
+            if ( layer->type == Layer::BITMAP )
             {
                 BitmapImage* targetImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
                 QColor pickedColour = targetImage->pixel(lastPoint.x(), lastPoint.y());
                 if(pickedColour.alpha() != 0) editor->setColour( pickedColour );
             }
+            else if ( layer->type == Layer::VECTOR )
+            {
+                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
+                int colourNumber = vectorImage->getColourNumber(lastPoint);
+                if( colourNumber != -1)
+                {
+                    editor->selectColour( colourNumber );
+                }
+            }
+        }
+    }
+
+    if(event->button() == Qt::LeftButton)
+    {
+        // ======================================================================
+        if(layer->type == Layer::BITMAP)
+        {              
             // ----------------------------------------------------------------------
             if( toolMode == PENCIL || toolMode == PEN || toolMode == ERASER || toolMode == COLOURING )
             {
@@ -1362,16 +1376,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         // ======================================================================
         if(layer->type == Layer::VECTOR)
         {
-            // ----------------------------------------------------------------------
-            if( toolMode == EYEDROPPER)
-            {
-                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
-                int colourNumber = vectorImage->getColourNumber(lastPoint);
-                if( colourNumber != -1)
-                {
-                    editor->selectColour( colourNumber );
-                }
-            }
             // ----------------------------------------------------------------------
             if( toolMode == COLOURING)
             {
