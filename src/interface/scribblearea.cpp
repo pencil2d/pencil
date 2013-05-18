@@ -1322,6 +1322,20 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 setModified(layerNumber, editor->currentFrame);
                 updateAll = true;
             }
+            else if ( layer->type == Layer::VECTOR )
+            {
+                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
+                if(event->modifiers() == Qt::AltModifier)
+                {
+                    vectorImage->removeArea(lastPoint);
+                }
+                else
+                {
+                    floodFill(vectorImage, lastPixel.toPoint(), qRgba(0,0,0,0), qRgb(200,200,200), 100*100);
+                }
+                setModified(editor->currentLayer, editor->currentFrame);
+                updateAll = true;
+            }
         }
     }
 
@@ -1348,21 +1362,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         // ======================================================================
         if(layer->type == Layer::VECTOR)
         {
-            // ----------------------------------------------------------------------
-            if( toolMode == BUCKET)
-            {
-                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
-                if(event->modifiers() == Qt::AltModifier)
-                {
-                    vectorImage->removeArea(lastPoint);
-                }
-                else
-                {
-                    floodFill(vectorImage, lastPixel.toPoint(), qRgba(0,0,0,0), qRgb(200,200,200), 100*100);
-                }
-                setModified(editor->currentLayer, editor->currentFrame);
-                updateAll = true;
-            }
             // ----------------------------------------------------------------------
             if( toolMode == EYEDROPPER)
             {
@@ -1457,30 +1456,8 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         offset.setX(0);
         offset.setY(0);
         calculateSelectionTransformation();
-        //if(layer->type == Layer::VECTOR) {
-        //	closestCurves = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->getCurvesCloseTo(currentPoint, tol/myView.m11());
-        //	closestVertices = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->getVerticesCloseTo(currentPoint, tol/myView.m11());
-        //}
-        //if(somethingSelected && layer->type == Layer::VECTOR) {
-        //editor->backup();
-        //((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->applySelectionTransformation();
-        //}
-        //if( (mySelection.width() > 1) || (mySelection.height() > 1) ) {
+
         myTransformedSelection = myTempTransformedSelection;
-        //	update();
-        //}
-        //if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR) ((LayerImage*)layer)->setModified(editor->currentFrame, true);
-
-        if(layer->type == Layer::VECTOR)
-        {
-            if(somethingSelected)
-            {
-                //VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
-                //-- we should recalculate the intersections, once the curved are moved!
-                //vectorImage->reinsertSelection();
-            }
-        }
-
         setModified(editor->currentLayer, editor->currentFrame);
         updateAll = true;
     }
