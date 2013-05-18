@@ -1386,20 +1386,20 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-
-    if(event->button() == Qt::LeftButton)
+    else if ( toolMode == COLOURING )
     {
-        // ======================================================================
-        if(layer->type == Layer::BITMAP)
+        if ( event->button() == Qt::LeftButton )
         {
-            // ----------------------------------------------------------------------
-            if( toolMode == COLOURING )
+            if ( layer->type == Layer::BITMAP )
             {
                 paintBitmapBuffer();
                 updateAll = true;
             }
         }
+    }
 
+    if(event->button() == Qt::LeftButton)
+    {
         // ======================================================================
         if(layer->type == Layer::VECTOR)
         {
