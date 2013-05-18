@@ -1482,7 +1482,16 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+    else if ((toolMode == ScribbleArea::MOVE) && (event->button() == Qt::LeftButton)  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    {
+        offset.setX(0);
+        offset.setY(0);
+        calculateSelectionTransformation();
 
+        myTransformedSelection = myTempTransformedSelection;
+        setModified(editor->currentLayer, editor->currentFrame);
+        updateAll = true;
+    }
     // ====================== for all kinds of layers =======================
     // ----------------------------------------------------------------------
     else if ( toolMode == ScribbleArea::EDIT )
@@ -1503,16 +1512,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    if ((toolMode == ScribbleArea::MOVE) && (event->button() == Qt::LeftButton)  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
-    {
-        offset.setX(0);
-        offset.setY(0);
-        calculateSelectionTransformation();
 
-        myTransformedSelection = myTempTransformedSelection;
-        setModified(editor->currentLayer, editor->currentFrame);
-        updateAll = true;
-    }
     // ----------------------------------------------------------------------
     if( toolMode == ScribbleArea::HAND || (event->button() == Qt::RightButton) )
     {
