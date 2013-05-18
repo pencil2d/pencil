@@ -1404,46 +1404,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 paintBitmapBuffer();
                 updateAll = true;
             }
-        }
-    }
-    else if ( toolMode == ERASER )
-    {
-        if ( event->button() == Qt::LeftButton )
-        {
-            if ( layer->type == Layer::BITMAP )
-            {
-                paintBitmapBuffer();
-                updateAll = true;
-            }
-        }
-    }
-    else if ( toolMode == COLOURING )
-    {
-        if ( event->button() == Qt::LeftButton )
-        {
-            if ( layer->type == Layer::BITMAP )
-            {
-                paintBitmapBuffer();
-                updateAll = true;
-            }
-            else if ( layer->type == Layer::VECTOR )
-            {
-                // Clear the temporary pixel path
-                bufferImg->clear();
-                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->colour(mousePath, brush.colourNumber);
-                setModified(editor->currentLayer, editor->currentFrame);
-                updateAll = true;
-            }
-        }
-    }
-
-    if(event->button() == Qt::LeftButton)
-    {
-        // ======================================================================
-        if(layer->type == Layer::VECTOR)
-        {
-            // ----------------------------------------------------------------------
-            if( (toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::PEN) && mousePath.size() > -1 )
+            else if ( layer->type == Layer::VECTOR && mousePath.size() > -1 )
             {
                 // Clear the temporary pixel path
                 bufferImg->clear();
@@ -1477,8 +1438,18 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 setModified(editor->currentLayer, editor->currentFrame);
                 updateAll = true;
             }
-            // ----------------------------------------------------------------------
-            if( toolMode == ScribbleArea::ERASER )
+        }
+    }
+    else if ( toolMode == ERASER )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            if ( layer->type == Layer::BITMAP )
+            {
+                paintBitmapBuffer();
+                updateAll = true;
+            }
+            else if ( layer->type == Layer::VECTOR )
             {
                 VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
                 // Clear the area containing the last point
@@ -1492,22 +1463,44 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+    else if ( toolMode == COLOURING )
+    {
+        if ( event->button() == Qt::LeftButton )
+        {
+            if ( layer->type == Layer::BITMAP )
+            {
+                paintBitmapBuffer();
+                updateAll = true;
+            }
+            else if ( layer->type == Layer::VECTOR )
+            {
+                // Clear the temporary pixel path
+                bufferImg->clear();
+                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->colour(mousePath, brush.colourNumber);
+                setModified(editor->currentLayer, editor->currentFrame);
+                updateAll = true;
+            }
+        }
+    }
 
     // ====================== for all kinds of layers =======================
     // ----------------------------------------------------------------------
-    if ((toolMode == ScribbleArea::EDIT) && (event->button() == Qt::LeftButton))
+    else if ( toolMode == ScribbleArea::EDIT )
     {
-        if(layer->type == Layer::VECTOR)
+        if ( event->button() == Qt::LeftButton )
         {
-            VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
-            vectorImage->applySelectionTransformation();
-            selectionTransformation.reset();
-            for(int k=0; k<vectorSelection.curve.size(); k++)
+            if(layer->type == Layer::VECTOR)
             {
-                int curveNumber = vectorSelection.curve.at(k);
-                vectorImage->curve[curveNumber].smoothCurve();
+                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
+                vectorImage->applySelectionTransformation();
+                selectionTransformation.reset();
+                for(int k=0; k<vectorSelection.curve.size(); k++)
+                {
+                    int curveNumber = vectorSelection.curve.at(k);
+                    vectorImage->curve[curveNumber].smoothCurve();
+                }
+                setModified(editor->currentLayer, editor->currentFrame);
             }
-            setModified(editor->currentLayer, editor->currentFrame);
         }
     }
     if ((toolMode == ScribbleArea::MOVE) && (event->button() == Qt::LeftButton)  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
