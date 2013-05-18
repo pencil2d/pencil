@@ -25,9 +25,12 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
+#include "basetool.h"
+
 
 class Editor;
 class Layer;
+
 
 class Properties
 {
@@ -60,7 +63,6 @@ public:
 	QList<QColor> colours;
 };*/
 
-enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, COLOURING };
 
 
 class ScribbleArea : public QWidget
