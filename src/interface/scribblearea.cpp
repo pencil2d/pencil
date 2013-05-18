@@ -1359,6 +1359,22 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
+    else if ( toolMode == PENCIL )
+    {
+        if ( layer->type == Layer::BITMAP )
+        {
+            paintBitmapBuffer();
+            updateAll = true;
+        }
+    }
+    else if ( toolMode == PEN )
+    {
+        if ( layer->type == Layer::BITMAP )
+        {
+            paintBitmapBuffer();
+            updateAll = true;
+        }
+    }
 
     if(event->button() == Qt::LeftButton)
     {
@@ -1366,7 +1382,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         if(layer->type == Layer::BITMAP)
         {              
             // ----------------------------------------------------------------------
-            if( toolMode == PENCIL || toolMode == PEN || toolMode == ERASER || toolMode == COLOURING )
+            if( toolMode == ERASER || toolMode == COLOURING )
             {
                 paintBitmapBuffer();
                 updateAll = true;
