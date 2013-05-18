@@ -60,7 +60,9 @@ public:
 	QList<QColor> colours;
 };*/
 
-//class ScribbleArea : public QGLWidget
+enum myToolModes { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, COLOURING };
+
+
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
@@ -210,8 +212,8 @@ private:
     void floodFill(VectorImage* vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
 
-    enum myToolModes { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, COLOURING };
     enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+
     myToolModes toolMode;
     myMoveModes moveMode;
     myToolModes prevMode;
