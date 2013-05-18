@@ -2913,12 +2913,12 @@ void ScribbleArea::floodFillError(int errorType)
 }
 
 
-myToolModes ScribbleArea::currentTool()
+ToolType ScribbleArea::currentTool()
 {
     return toolMode;
 }
 
-void ScribbleArea::setCurrentTool(myToolModes eToolMode)
+void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
     toolMode = eToolMode;
 }

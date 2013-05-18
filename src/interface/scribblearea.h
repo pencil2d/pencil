@@ -60,7 +60,7 @@ public:
 	QList<QColor> colours;
 };*/
 
-enum myToolModes { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, COLOURING };
+enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, COLOURING };
 
 
 class ScribbleArea : public QWidget
@@ -214,13 +214,13 @@ private:
 
     enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
 
-    myToolModes toolMode;
+    ToolType toolMode;
     myMoveModes moveMode;
-    myToolModes prevMode;
+    ToolType prevMode;
 
     void switchTool();
-    myToolModes currentTool();
-    void setCurrentTool(myToolModes eToolMode);
+    ToolType currentTool();
+    void setCurrentTool(ToolType eToolMode);
     Editor* editor;
 
     int tabletEraserBackupToolMode;
