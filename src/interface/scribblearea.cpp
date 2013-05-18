@@ -1299,13 +1299,11 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         }
     }
 
-    if(event->button() == Qt::LeftButton)
+    if ( toolMode == BUCKET )
     {
-        // ======================================================================
-        if(layer->type == Layer::BITMAP)
+        if ( event->button() == Qt::LeftButton )
         {
-            // ----------------------------------------------------------------------
-            if( toolMode == BUCKET)
+            if ( layer->type == Layer::BITMAP )
             {
                 BitmapImage* sourceImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
                 Layer* targetLayer = layer; // by default
@@ -1324,6 +1322,14 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 setModified(layerNumber, editor->currentFrame);
                 updateAll = true;
             }
+        }
+    }
+
+    if(event->button() == Qt::LeftButton)
+    {
+        // ======================================================================
+        if(layer->type == Layer::BITMAP)
+        {         
             // ----------------------------------------------------------------------
             if( toolMode == EYEDROPPER)
             {
