@@ -1498,8 +1498,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    // ====================== for all kinds of layers =======================
-    // ----------------------------------------------------------------------
     else if ( toolMode == ScribbleArea::EDIT )
     {
         if ( event->button() == Qt::LeftButton )
@@ -1520,7 +1518,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     }
 
     // ----------------------------------------------------------------------
-    if( toolMode == ScribbleArea::HAND || (event->button() == Qt::RightButton) )
+    else if( toolMode == ScribbleArea::HAND || (event->button() == Qt::RightButton) )
     {
         bufferImg->clear();
         if(layer->type == Layer::CAMERA)
@@ -1548,21 +1546,29 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         //update();
     }
     // ----------------------------------------------------------------------
-    if( toolMode == ScribbleArea::SELECT && (event->button() == Qt::LeftButton)  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if ( toolMode == ScribbleArea::SELECT )
     {
-        if(layer->type == Layer::VECTOR)
+        if ( event->button() == Qt::LeftButton )
         {
-            if(somethingSelected)
+            if(layer->type == Layer::VECTOR)
             {
-                editor->toolSet->changeMoveButton();
-                moveOn();
-                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
-                setSelection( vectorImage->getSelectionRect(), true );
-                if(mySelection.size() == QSizeF(0,0)) somethingSelected = false;
+                if(somethingSelected)
+                {
+                    editor->toolSet->changeMoveButton();
+                    moveOn();
+                    VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
+                    setSelection( vectorImage->getSelectionRect(), true );
+                    if(mySelection.size() == QSizeF(0,0)) somethingSelected = false;
+                }
+                updateFrame();
+                updateAll = true;
+            }
+            else if ( layer->type == Layer::BITMAP )
+            {
+                updateFrame();
+                updateAll = true;
             }
         }
-        updateFrame();
-        updateAll = true;
     }
     // ----------------------------------------------------------------------
     //update();
@@ -1570,7 +1576,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    if( toolMode == ScribbleArea::HAND || event->button() == Qt::RightButton )
+    if ( toolMode == ScribbleArea::HAND || event->button() == Qt::RightButton )
     {
         resetView();
     }
