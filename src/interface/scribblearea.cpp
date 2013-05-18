@@ -1362,6 +1362,37 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 paintBitmapBuffer();
                 updateAll = true;
             }
+            else if ( layer->type == Layer::VECTOR &&  mousePath.size() > -1 )
+            {
+                // Clear the temporary pixel path
+                bufferImg->clear();
+                qreal tol = curveSmoothing/qAbs( myView.m11() );
+                BezierCurve curve(mousePath, mousePressure, tol);
+                if(toolMode == PEN)
+                {
+                    curve.setWidth(pen.width);
+                    curve.setFeather(0);
+                    curve.setInvisibility(false);
+                    curve.setVariableWidth(usePressure);
+                    curve.setColourNumber(pen.colourNumber);
+                }
+                else
+                {
+                    curve.setWidth(0);
+                    curve.setFeather(0);
+                    curve.setInvisibility(true);
+                    curve.setVariableWidth(false);
+                    curve.setColourNumber(pencil.colourNumber);
+                }
+                VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
+
+                //curve.setSelected(true);
+                //qDebug() << "this curve has " << curve.getVertexSize() << "vertices";
+
+                vectorImage->addCurve(curve, qAbs(myView.m11()) );
+                setModified(editor->currentLayer, editor->currentFrame);
+                updateAll = true;
+            }
         }
     }
     else if ( toolMode == PEN )
