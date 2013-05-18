@@ -1646,6 +1646,7 @@ void ScribbleArea::paintBitmapBuffer()
     updateCanvas(editor->currentFrame, rect.adjusted(-1,-1,1,1) );
     update(rect);
 }
+
 void ScribbleArea::grid()
 {
     QPainter painter(this);
