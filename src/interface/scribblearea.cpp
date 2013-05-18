@@ -1395,6 +1395,14 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 paintBitmapBuffer();
                 updateAll = true;
             }
+            else if ( layer->type == Layer::VECTOR )
+            {
+                // Clear the temporary pixel path
+                bufferImg->clear();
+                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->colour(mousePath, brush.colourNumber);
+                setModified(editor->currentLayer, editor->currentFrame);
+                updateAll = true;
+            }
         }
     }
 
@@ -1403,17 +1411,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
         // ======================================================================
         if(layer->type == Layer::VECTOR)
         {
-            // ----------------------------------------------------------------------
-            if( toolMode == COLOURING)
-            {
-                // Clear the temporary pixel path
-                bufferImg->clear();
-                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->colour(mousePath, brush.colourNumber);
-                //((LayerImage*)layer)->setModified(editor->currentFrame, true);
-                //update();
-                setModified(editor->currentLayer, editor->currentFrame);
-                updateAll = true;
-            }
             // ----------------------------------------------------------------------
             if( (toolMode == ScribbleArea::PENCIL || toolMode == ScribbleArea::PEN) && mousePath.size() > -1 )
             {
