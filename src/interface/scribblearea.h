@@ -125,16 +125,18 @@ public slots:
     void eraserOn();
     void selectOn();
     void moveOn();
-    void handOn();
-    void resetView();
-    void setMyView(QMatrix view);
-    QMatrix getMyView();
+    void handOn();    
     void penOn();
     void polylineOn();
     void bucketOn();
     void eyedropperOn();
     void colouringOn();
     void smudgeOn();
+
+    void resetView();
+    void setMyView(QMatrix view);
+    QMatrix getMyView();
+
     void zoom();
     void zoom1();
     void rotatecw();
@@ -233,8 +235,7 @@ private:
     bool onionPrev, onionNext;
     bool updateAll;
 
-    Properties pencil;
-    Properties pen;
+    Properties pencil;    
     Properties brush;
     Properties eraser;
 
