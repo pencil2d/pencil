@@ -66,16 +66,9 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
     QSettings settings("Pencil","Pencil");
 
+
     pencil.width = settings.value("pencilWidth").toDouble();
     if (pencil.width == 0) { pencil.width = 1; settings.setValue("pencilWidth", pencil.width); }
-    pen.width = settings.value("penWidth").toDouble();
-    if (pen.width == 0) { pen.width = 2; settings.setValue("penWidth", pen.width); }
-    brush.width = settings.value("brushWidth").toDouble();
-    if (brush.width == 0) { brush.width = 48; settings.setValue("brushWidth", brush.width); }
-    eraser.width = settings.value("eraserWidth").toDouble();
-    if (eraser.width == 0) { eraser.width = 24; settings.setValue("eraserWidth", brush.width); }
-    currentWidth = pencil.width;
-
     pencil.colour = Qt::black;
     pencil.colourNumber = 0;
     pencil.feather = 0;
@@ -84,6 +77,10 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     pencil.invisibility = 1;
     pencil.preserveAlpha = 0;
 
+    currentWidth = pencil.width;
+
+    pen.width = settings.value("penWidth").toDouble();
+    if (pen.width == 0) { pen.width = 2; settings.setValue("penWidth", pen.width); }
     pen.colour = Qt::black;
     pen.colourNumber = 0;
     pen.feather = 0;
@@ -92,6 +89,8 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     pen.invisibility = 0;
     pen.preserveAlpha = 0;
 
+    brush.width = settings.value("brushWidth").toDouble();
+    if (brush.width == 0) { brush.width = 48; settings.setValue("brushWidth", brush.width); }
     brush.colour = Qt::blue;
     brush.colourNumber = 1;
     brush.feather = settings.value("brushFeather").toDouble();
@@ -101,6 +100,8 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     brush.invisibility = -1;
     brush.preserveAlpha = 0;
 
+    eraser.width = settings.value("eraserWidth").toDouble();
+    if (eraser.width == 0) { eraser.width = 24; settings.setValue("eraserWidth", brush.width); }
     eraser.feather = 0;
     eraser.opacity = 0.5;
     eraser.pressure = 1;
