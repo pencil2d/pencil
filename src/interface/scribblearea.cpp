@@ -3274,13 +3274,10 @@ void ScribbleArea::colouringOn()
     if(layer == NULL) return;
     if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
     if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
-    editor->setWidth(m_toolSetHash.value( BRUSH )->properties.width);
-    editor->setFeather(m_toolSetHash.value( BRUSH )->properties.feather);
-    editor->setPressure(m_toolSetHash.value( BRUSH )->properties.pressure);
-    editor->setPreserveAlpha(m_toolSetHash.value( BRUSH )->properties.preserveAlpha);
+
+    setToolProperties(m_toolSetHash.value( BRUSH )->properties);
+
     editor->setFollowContour(followContour);
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1);
     // --- change cursor ---
     updateCursor();
 }
