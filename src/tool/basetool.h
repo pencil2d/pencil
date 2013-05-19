@@ -11,7 +11,7 @@ class BaseTool : public QObject
     Q_OBJECT
 public:
     explicit BaseTool(QObject *parent = 0);
-    //getType();
+    virtual ToolType type() = 0;
 signals:
     
 public slots:
