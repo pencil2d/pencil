@@ -471,24 +471,24 @@ QBrush ScribbleArea::getBackgroundBrush(QString brushName)
         painter.fillRect( QRect(0,0,8,8), QColor(220,220,220) );
         painter.fillRect( QRect(8,8,8,8), QColor(220,220,220) );
         painter.end();
-        m_toolSetHash.value( BRUSH )->properties.setTexture(pattern);
+        brush.setTexture(pattern);
     }
     if(brushName == "dots")
     {
         QPixmap pattern(":background/dots.png");
-        m_toolSetHash.value( BRUSH )->properties.setTexture(pattern);
+        brush.setTexture(pattern);
     }
     if(brushName == "weave")
     {
         QPixmap pattern(":background/weave.jpg");
-        m_toolSetHash.value( BRUSH )->properties.setTexture(pattern);
+        brush.setTexture(pattern);
     }
     if(brushName == "grid")
     {
         /*	QGraphicsScene* scene = new QGraphicsScene();
                             scene->setSceneRect(QRectF(0, 0, 500, 500));
                             scene->addPixmap(QPixmap(":background/grid.jpg"));*/
-        m_toolSetHash.value( BRUSH )->properties.setTextureImage(QImage(":background/grid.jpg"));
+        brush.setTextureImage(QImage(":background/grid.jpg"));
 
     }
     return brush;
