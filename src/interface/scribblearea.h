@@ -32,19 +32,6 @@ class Editor;
 class Layer;
 
 
-class Properties
-{
-public:
-    qreal width;
-    qreal feather;
-    qreal opacity;
-    QColor colour;
-    int colourNumber;
-    bool pressure;
-    bool invisibility;
-    bool preserveAlpha;
-};
-
 class VectorSelection
 {
 public:
