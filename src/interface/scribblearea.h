@@ -241,11 +241,6 @@ private:
 
     qreal currentWidth;
     QColor currentColour;
-    /*qreal myPencilWidth, currentPencilWidth;
-    qreal myPenWidth, currentPenWidth;
-    qreal myBrushWidth, currentBrushWidth;*/
-    //QColor myPenColour, myFillColour;
-    //int penColourNumber, fillColourNumber;
     bool followContour;
 
     QBrush backgroundBrush;
