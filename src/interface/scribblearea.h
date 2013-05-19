@@ -210,6 +210,7 @@ private:
     myMoveModes moveMode;
     ToolType prevMode;
 
+    void setToolProperties(const Properties&);
     void switchTool();
     ToolType currentToolType();
     void setCurrentTool(ToolType eToolMode);

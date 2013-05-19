@@ -3075,6 +3075,15 @@ void ScribbleArea::updateCursor()
     }
 }
 
+void ScribbleArea::setToolProperties(const Properties& p)
+{
+    editor->setWidth(p.width);
+    editor->setFeather(p.feather);
+    editor->setPressure(p.pressure);
+    editor->setPreserveAlpha(p.preserveAlpha);
+    editor->setInvisibility(p.invisibility);
+}
+
 void ScribbleArea::pencilOn()
 {
     switchTool();
