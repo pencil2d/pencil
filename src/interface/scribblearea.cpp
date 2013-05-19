@@ -104,7 +104,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     tabletEraserBackupToolMode=-1;
     tabletInUse=false;
     tabletPressure=1.0;
-    //setAttribute(Qt::WA_StaticContents); // ?
+    setAttribute(Qt::WA_StaticContents); // ?
     modified = false;
     simplified = false;
     usePressure = true;
@@ -3080,15 +3080,16 @@ void ScribbleArea::pencilOn()
     switchTool();
     setCurrentTool( PENCIL );
     // --- change properties ---
+
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
     if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( PENCIL )->properties.colourNumber);
     if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( PENCIL )->properties.colour);
+
     editor->setWidth(m_toolSetHash.value( PENCIL )->properties.width);
     editor->setFeather(m_toolSetHash.value( PENCIL )->properties.feather);
     editor->setFeather(-1); // by definition the pencil has no feather
     editor->setPressure(m_toolSetHash.value( PENCIL )->properties.pressure);
-    editor->setInvisibility(m_toolSetHash.value( PENCIL )->properties.invisibility);
     editor->setPreserveAlpha(m_toolSetHash.value( PENCIL )->properties.preserveAlpha);
     editor->setFollowContour(-1);
     editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
