@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "pentool.h"
 #include "penciltool.h"
+#include "brushtool.h"
 
 #include "scribblearea.h"
 
@@ -180,7 +181,7 @@ void ScribbleArea::setColour(const int i)
         m_toolSetHash[ PEN ]->properties.colourNumber = i;
         m_toolSetHash[ PEN ]->properties.colour = editor->object->getColour(i).colour;
     }
-    if(currentToolType() == BUCKET || currentToolType() == COLOURING)
+    if(currentToolType() == BUCKET || currentToolType() == BRUSH)
     {
         brush.colourNumber = i;
         brush.colour = editor->object->getColour(i).colour;
@@ -210,7 +211,7 @@ void ScribbleArea::setColour(const QColor colour)
     {
         m_toolSetHash[ PEN ]->properties.colour = colour;
     }
-    if(currentToolType() == COLOURING || currentToolType() == BUCKET)  // || currentTool() == EYEDROPPER) {
+    if(currentToolType() == BRUSH || currentToolType() == BUCKET)  // || currentTool() == EYEDROPPER) {
     {
         brush.colour = colour;
     }
@@ -249,7 +250,7 @@ void ScribbleArea::setWidth(const qreal newWidth)
         m_toolSetHash[ PEN ]->properties.width = newWidth;
         settings.setValue("penWidth", newWidth);
     }
-    if(currentToolType() == COLOURING)
+    if(currentToolType() == BRUSH)
     {
         brush.width = newWidth;
         settings.setValue("brushWidth", newWidth);
@@ -272,7 +273,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
         m_toolSetHash[ PEN ]->properties.feather = newFeather;
         settings.setValue("penOpacity", newFeather);
     }
-    if(currentToolType() == COLOURING)
+    if(currentToolType() == BRUSH)
     {
         brush.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
@@ -295,7 +296,7 @@ void ScribbleArea::setOpacity(const qreal newOpacity)
         m_toolSetHash[ PEN ]->properties.opacity = newOpacity;
         settings.setValue("penOpacity", newOpacity);
     }
-    if(currentToolType() == COLOURING)
+    if(currentToolType() == BRUSH)
     {
         brush.opacity = newOpacity;
         settings.setValue("brushOpacity", newOpacity);
@@ -334,7 +335,7 @@ void ScribbleArea::setPressure(const bool pressure)
         m_toolSetHash[ PEN ]->properties.pressure = pressure;
         settings.setValue("penOpacity", pressure);
     }
-    if(currentToolType() == COLOURING)
+    if(currentToolType() == BRUSH)
     {
         brush.pressure = pressure;
         settings.setValue("brushOpacity", pressure);
@@ -356,7 +357,7 @@ void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
         m_toolSetHash[ PEN ]->properties.preserveAlpha = preserveAlpha;
         //settings.setValue("penCompositionMode", preserveAlpha);
     }
-    if(currentToolType() == COLOURING)
+    if(currentToolType() == BRUSH)
     {
         brush.preserveAlpha = preserveAlpha;
         //settings.setValue("brushCompositionMode", preserveAlpha);
@@ -779,7 +780,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         {
             editor->selectColour(m_toolSetHash[ PEN ]->properties.colourNumber);
         }
-        if(currentToolType() == COLOURING || currentToolType() == BUCKET) editor->selectColour(brush.colourNumber);
+        if(currentToolType() == BRUSH || currentToolType() == BUCKET) editor->selectColour(brush.colourNumber);
     }
     if(layer->type == Layer::BITMAP)
     {
@@ -850,7 +851,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             updateAll = true;
         }
     }
-    else if ( currentToolType() == COLOURING )
+    else if ( currentToolType() == BRUSH )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1083,7 +1084,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( currentToolType() == COLOURING )
+    else if ( currentToolType() == BRUSH )
     {
         if(layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1469,7 +1470,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             }
         }
     }
-    else if ( currentToolType() == COLOURING )
+    else if ( currentToolType() == BRUSH )
     {
         if ( event->button() == Qt::LeftButton )
         {
@@ -1614,7 +1615,7 @@ void ScribbleArea::paintBitmapBuffer()
         case ERASER:
             cm = QPainter::CompositionMode_DestinationOut;
             break;
-        case COLOURING:
+        case BRUSH:
             if(brush.preserveAlpha) cm = QPainter::CompositionMode_SourceAtop;
             if(followContour)
             {
@@ -2175,7 +2176,7 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
             int rad = qRound(currentWidth / 2) + 3;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
         }
-        if(currentToolType() == COLOURING)
+        if(currentToolType() == BRUSH)
         {
             qreal opacity = 1.0;
             qreal brushWidth = brush.width +  0.5*brush.feather;
@@ -2220,7 +2221,7 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
             int rad = qRound(  (currentWidth/2 + 2)* (qAbs(myTempView.m11())+qAbs(myTempView.m22())) );
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
-        if(currentToolType() == COLOURING)
+        if(currentToolType() == BRUSH)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::gray, 1, Qt::DashLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(   (currentWidth/2 + 2)*qAbs( myTempView.m11() )   );
@@ -3059,7 +3060,7 @@ void ScribbleArea::updateCursor()
     {
         setCursor(Qt::CrossCursor);
     }
-    if(currentToolType() == COLOURING)
+    if(currentToolType() == BRUSH)
     {
         Layer* layer = editor->getCurrentLayer();
         if(layer->type == Layer::VECTOR)
@@ -3279,7 +3280,7 @@ void ScribbleArea::eyedropperOn()
 void ScribbleArea::colouringOn()
 {
     switchTool();
-    setCurrentTool( COLOURING );
+    setCurrentTool( BRUSH );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
@@ -3445,7 +3446,7 @@ void ScribbleArea::setPrevMode()
     case EYEDROPPER:
         eyedropperOn();
         break;
-    case COLOURING:
+    case BRUSH:
         colouringOn();
         break;
     default:
