@@ -9,7 +9,7 @@ BrushTool::BrushTool(QObject *parent) :
 
 ToolType BrushTool::type()
 {
-
+    return BRUSH;
 }
 
 void BrushTool::loadSettings()
