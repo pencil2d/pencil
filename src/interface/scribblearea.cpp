@@ -191,7 +191,7 @@ void ScribbleArea::setColour(const int i)
         pen.colourNumber = i;
         pen.colour = editor->object->getColour(i).colour;
     }
-    if(currentToolType() == BUCKET || currentToolType() == COLOURING)  // || currentTool() == EYEDROPPER) {
+    if(currentToolType() == BUCKET || currentToolType() == COLOURING)
     {
         brush.colourNumber = i;
         brush.colour = editor->object->getColour(i).colour;
