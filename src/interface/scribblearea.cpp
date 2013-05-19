@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"
+#include "erasertool.h"
 
 #include "scribblearea.h"
 
@@ -67,6 +68,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_toolSetHash.insert(PEN, new PenTool);
     m_toolSetHash.insert(PENCIL, new PencilTool);
     m_toolSetHash.insert(BRUSH, new BrushTool);
+    m_toolSetHash.insert(ERASER, new EraserTool);
 
     QSettings settings("Pencil","Pencil");
 
@@ -76,15 +78,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
     m_toolSetHash.value( PEN )->loadSettings();
     m_toolSetHash.value( BRUSH )->loadSettings();
-
-
-    eraser.width = settings.value("eraserWidth").toDouble();
-    if (eraser.width == 0) { eraser.width = 24; settings.setValue("eraserWidth", m_toolSetHash.value( BRUSH )->properties.width); }
-    eraser.feather = 0;
-    eraser.opacity = 0.5;
-    eraser.pressure = 1;
-    eraser.invisibility = -1;
-    eraser.preserveAlpha = 0;
+    m_toolSetHash.value( ERASER )->loadSettings();
 
     currentColour = m_toolSetHash.value( PENCIL )->properties.colour;
 
