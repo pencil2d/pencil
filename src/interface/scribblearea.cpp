@@ -74,39 +74,37 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     currentWidth = pencil.width;
 
     pencil.colour = Qt::black;
-    pen.colour = Qt::black;
-    brush.colour = Qt::blue;
-    currentColour = pencil.colour;
-
     pencil.colourNumber = 0;
-    pen.colourNumber = 0;
-    brush.colourNumber = 1;
-
     pencil.feather = 0;
+    pencil.opacity = 0.8;
+    pencil.pressure = 1;
+    pencil.invisibility = 1;
+    pencil.preserveAlpha = 0;
+
+    pen.colour = Qt::black;
+    pen.colourNumber = 0;
     pen.feather = 0;
+    pen.opacity = 1;
+    pen.pressure = 1;
+    pen.invisibility = 0;
+    pen.preserveAlpha = 0;
+
+    brush.colour = Qt::blue;
+    brush.colourNumber = 1;
     brush.feather = settings.value("brushFeather").toDouble();
     if (brush.feather == 0) { brush.feather = 70; settings.setValue("brushFeather", brush.feather); }
-    eraser.feather = 0;
-
-    pencil.opacity = 0.8;
-    pen.opacity = 1;
     brush.opacity = 0.5;
-    eraser.opacity = 0.5;
-
-    pencil.pressure = 1;
-    pen.pressure = 1;
     brush.pressure = 1;
-    eraser.pressure = 1;
-
-    pencil.invisibility = 1;
-    pen.invisibility = 0;
     brush.invisibility = -1;
-    eraser.invisibility = -1;
-
-    pencil.preserveAlpha = 0;
-    pen.preserveAlpha = 0;
     brush.preserveAlpha = 0;
+
+    eraser.feather = 0;
+    eraser.opacity = 0.5;
+    eraser.pressure = 1;
+    eraser.invisibility = -1;
     eraser.preserveAlpha = 0;
+
+    currentColour = pencil.colour;
 
     followContour = 0;
 
