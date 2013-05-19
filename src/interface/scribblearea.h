@@ -235,7 +235,6 @@ private:
     bool onionPrev, onionNext;
     bool updateAll;
 
-    Properties pencil;    
     Properties brush;
     Properties eraser;
 

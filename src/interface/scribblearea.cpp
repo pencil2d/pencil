@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "bitmapimage.h"
 #include "pentool.h"
+#include "penciltool.h"
 
 #include "scribblearea.h"
 
@@ -63,21 +64,13 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_currentTool = NULL;
 
     m_toolSetHash.insert(PEN, new PenTool);
+    m_toolSetHash.insert(PENCIL, new PencilTool);
 
     QSettings settings("Pencil","Pencil");
 
+    m_toolSetHash.value( PENCIL )->loadSettings();
 
-    pencil.width = settings.value("pencilWidth").toDouble();
-    if (pencil.width == 0) { pencil.width = 1; settings.setValue("pencilWidth", pencil.width); }
-    pencil.colour = Qt::black;
-    pencil.colourNumber = 0;
-    pencil.feather = 0;
-    pencil.opacity = 0.8;
-    pencil.pressure = 1;
-    pencil.invisibility = 1;
-    pencil.preserveAlpha = 0;
-
-    currentWidth = pencil.width;
+    currentWidth = m_toolSetHash.value( PENCIL )->properties.width;
 
     m_toolSetHash[ PEN ]->loadSettings();
 
@@ -100,7 +93,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     eraser.invisibility = -1;
     eraser.preserveAlpha = 0;
 
-    currentColour = pencil.colour;
+    currentColour = m_toolSetHash.value( PENCIL )->properties.colour;
 
     followContour = 0;
 
@@ -179,8 +172,8 @@ void ScribbleArea::setColour(const int i)
 {
     if(currentToolType() == PENCIL)
     {
-        pencil.colourNumber = i;
-        pencil.colour = editor->object->getColour(i).colour;
+        m_toolSetHash.value( PENCIL )->properties.colourNumber = i;
+        m_toolSetHash.value( PENCIL )->properties.colour = editor->object->getColour(i).colour;
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
     {
@@ -194,8 +187,8 @@ void ScribbleArea::setColour(const int i)
     }
     if (currentToolType() == EYEDROPPER)
     {
-        pencil.colourNumber = i;
-        pencil.colour = editor->object->getColour(i).colour;
+        m_toolSetHash.value( PENCIL )->properties.colourNumber = i;
+        m_toolSetHash.value( PENCIL )->properties.colour = editor->object->getColour(i).colour;
 
         m_toolSetHash[ PEN ]->properties.colourNumber = i;
         m_toolSetHash[ PEN ]->properties.colour = editor->object->getColour(i).colour;
@@ -211,7 +204,7 @@ void ScribbleArea::setColour(const QColor colour)
 {
     if(currentToolType() == PENCIL)  // || currentTool() == EYEDROPPER) {
     {
-        pencil.colour = colour;
+        m_toolSetHash.value( PENCIL )->properties.colour = colour;
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)  // || currentTool() == EYEDROPPER) {
     {
@@ -223,7 +216,7 @@ void ScribbleArea::setColour(const QColor colour)
     }
     if (currentToolType() == EYEDROPPER)
     {
-        pencil.colour = colour;
+        m_toolSetHash.value( PENCIL )->properties.colour = colour;
         m_toolSetHash[ PEN ]->properties.colour = colour;
         brush.colour = colour;
     }
@@ -234,7 +227,7 @@ void ScribbleArea::setColour(const QColor colour)
 void ScribbleArea::resetColours()
 {
     m_toolSetHash[ PEN ]->properties.colourNumber = 0;
-    pencil.colourNumber = 0;
+    m_toolSetHash.value( PENCIL )->properties.colourNumber = 0;
     brush.colourNumber = 1;
 }
 
@@ -243,7 +236,7 @@ void ScribbleArea::setWidth(const qreal newWidth)
     QSettings settings("Pencil","Pencil");
     if(currentToolType() == PENCIL)
     {
-        pencil.width = newWidth;
+        m_toolSetHash.value( PENCIL )->properties.width = newWidth;
         settings.setValue("pencilWidth", newWidth);
     }
     if(currentToolType() == ERASER)
@@ -271,7 +264,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
     QSettings settings("Pencil","Pencil");
     if(currentToolType() == PENCIL)
     {
-        pencil.feather = newFeather;
+        m_toolSetHash.value( PENCIL )->properties.feather = newFeather;
         settings.setValue("pencilOpacity", newFeather);
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
@@ -294,7 +287,7 @@ void ScribbleArea::setOpacity(const qreal newOpacity)
     QSettings settings("Pencil","Pencil");
     if(currentToolType() == PENCIL)
     {
-        pencil.opacity = newOpacity;
+        m_toolSetHash.value( PENCIL )->properties.opacity = newOpacity;
         settings.setValue("pencilOpacity", newOpacity);
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
@@ -316,7 +309,7 @@ void ScribbleArea::setInvisibility(const bool invisibility)
     QSettings settings("Pencil","Pencil");
     if(currentToolType() == PENCIL)
     {
-        pencil.invisibility = invisibility;
+        m_toolSetHash.value( PENCIL )->properties.invisibility = invisibility;
         settings.setValue("pencilOpacity", invisibility);
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
@@ -333,7 +326,7 @@ void ScribbleArea::setPressure(const bool pressure)
     QSettings settings("Pencil","Pencil");
     if(currentToolType() == PENCIL)
     {
-        pencil.pressure = pressure;
+        m_toolSetHash.value( PENCIL )->properties.pressure = pressure;
         settings.setValue("pencilOpacity", pressure);
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
@@ -355,7 +348,7 @@ void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
     QSettings settings("Pencil","Pencil");
     if(currentToolType() == PENCIL)
     {
-        pencil.preserveAlpha = preserveAlpha;
+        m_toolSetHash.value( PENCIL )->properties.preserveAlpha = preserveAlpha;
         //settings.setValue("pencilCompositionMode", preserveAlpha);
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
@@ -717,10 +710,13 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
     }
     if (currentToolType() == PENCIL)
     {
-        currentColour = pencil.colour;
-        if(usePressure && !mouseDevice) {currentColour.setAlphaF(pencil.colour.alphaF()*pressure); }
-        else { currentColour.setAlphaF(pencil.colour.alphaF()); }
-        currentWidth = pencil.width;
+        currentColour = m_toolSetHash.value( PENCIL )->properties.colour;
+        if(usePressure && !mouseDevice)
+        {
+            currentColour.setAlphaF(m_toolSetHash.value( PENCIL )->properties.colour.alphaF()*pressure);
+        }
+        else { currentColour.setAlphaF(m_toolSetHash.value( PENCIL )->properties.colour.alphaF()); }
+        currentWidth = m_toolSetHash.value( PENCIL )->properties.width;
     }
     if (currentToolType() == PEN)
     {
@@ -778,7 +774,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
         if (vectorImage == NULL) return;
-        if(currentToolType() == PENCIL) editor->selectColour(pencil.colourNumber);
+        if(currentToolType() == PENCIL) editor->selectColour(m_toolSetHash.value( PENCIL )->properties.colourNumber);
         if(currentToolType() == PEN)
         {
             editor->selectColour(m_toolSetHash[ PEN ]->properties.colourNumber);
@@ -1392,7 +1388,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                     curve.setFeather(0);
                     curve.setInvisibility(true);
                     curve.setVariableWidth(false);
-                    curve.setColourNumber(pencil.colourNumber);
+                    curve.setColourNumber(m_toolSetHash.value( PENCIL )->properties.colourNumber);
                 }
                 VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
 
@@ -1434,7 +1430,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                     curve.setFeather(0);
                     curve.setInvisibility(true);
                     curve.setVariableWidth(false);
-                    curve.setColourNumber(pencil.colourNumber);
+                    curve.setColourNumber(m_toolSetHash.value( PENCIL )->properties.colourNumber);
                 }
                 VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
 
@@ -1637,7 +1633,7 @@ void ScribbleArea::paintBitmapBuffer()
             if(m_toolSetHash[ PEN ]->properties.preserveAlpha) cm = QPainter::CompositionMode_SourceAtop;
             break;
         case PENCIL:
-            if(pencil.preserveAlpha) cm = QPainter::CompositionMode_SourceAtop;
+            if(m_toolSetHash.value( PENCIL )->properties.preserveAlpha) cm = QPainter::CompositionMode_SourceAtop;
             break;
         default: //nothing
             break;
@@ -3107,14 +3103,14 @@ void ScribbleArea::pencilOn()
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(pencil.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(pencil.colour);
-    editor->setWidth(pencil.width);
-    editor->setFeather(pencil.feather);
+    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( PENCIL )->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( PENCIL )->properties.colour);
+    editor->setWidth(m_toolSetHash.value( PENCIL )->properties.width);
+    editor->setFeather(m_toolSetHash.value( PENCIL )->properties.feather);
     editor->setFeather(-1); // by definition the pencil has no feather
-    editor->setPressure(pencil.pressure);
-    editor->setInvisibility(pencil.invisibility);
-    editor->setPreserveAlpha(pencil.preserveAlpha);
+    editor->setPressure(m_toolSetHash.value( PENCIL )->properties.pressure);
+    editor->setInvisibility(m_toolSetHash.value( PENCIL )->properties.invisibility);
+    editor->setPreserveAlpha(m_toolSetHash.value( PENCIL )->properties.preserveAlpha);
     editor->setFollowContour(-1);
     editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
     // --- change cursor ---
