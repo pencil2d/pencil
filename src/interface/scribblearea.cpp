@@ -228,7 +228,7 @@ void ScribbleArea::setWidth(const qreal newWidth)
     }
     if(currentToolType() == ERASER)
     {
-        eraser.width = newWidth;
+        m_toolSetHash.value( ERASER )->properties.width = newWidth;
         settings.setValue("eraserWidth", newWidth);
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
@@ -692,8 +692,8 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
     if ( currentToolType() == ERASER)
     {
         //myPenWidth = static_cast<int>(10.0*tabletPressure);
-        if(mouseDevice) { currentWidth =  eraser.width; }
-        else { currentWidth = (eraser.width*pressure); }
+        if(mouseDevice) { currentWidth =  m_toolSetHash.value( ERASER )->properties.width; }
+        else { currentWidth = (m_toolSetHash.value( ERASER )->properties.width*pressure); }
     }
     if (currentToolType() == PENCIL)
     {
@@ -1108,7 +1108,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
         {
             if(layer->type == Layer::VECTOR)
             {
-                qreal radius = (eraser.width/2)/myTempView.m11();
+                qreal radius = (m_toolSetHash.value( ERASER )->properties.width/2)/myTempView.m11();
                 QList<VertexRef> nearbyVertices = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->getVerticesCloseTo(currentPoint, radius);
                 for(int i=0; i< nearbyVertices.size(); i++)
                 {
@@ -2974,16 +2974,16 @@ void ScribbleArea::updateCursor()
     }
     if(currentToolType() == ERASER)
     {
-        QPixmap pixmap(eraser.width,eraser.width);
+        QPixmap pixmap(m_toolSetHash.value( ERASER )->properties.width,m_toolSetHash.value( ERASER )->properties.width);
         pixmap.fill( QColor(255,255,255,0) );
         QPainter painter(&pixmap);
         painter.setPen( QColor(0,0,0,190) );
         painter.setBrush( QColor(255,255,255,100) );
-        painter.drawLine( QPointF(eraser.width/2-2,eraser.width/2), QPointF(eraser.width/2+2,eraser.width/2) );
-        painter.drawLine( QPointF(eraser.width/2,eraser.width/2-2), QPointF(eraser.width/2,eraser.width/2+2) );
+        painter.drawLine( QPointF(m_toolSetHash.value( ERASER )->properties.width/2-2,m_toolSetHash.value( ERASER )->properties.width/2), QPointF(m_toolSetHash.value( ERASER )->properties.width/2+2,m_toolSetHash.value( ERASER )->properties.width/2) );
+        painter.drawLine( QPointF(m_toolSetHash.value( ERASER )->properties.width/2,m_toolSetHash.value( ERASER )->properties.width/2-2), QPointF(m_toolSetHash.value( ERASER )->properties.width/2,m_toolSetHash.value( ERASER )->properties.width/2+2) );
         painter.setRenderHints(QPainter::Antialiasing, true);
         painter.setPen( QColor(0,0,0,100) );
-        painter.drawEllipse( QRectF(1,1,eraser.width-2,eraser.width-2) );
+        painter.drawEllipse( QRectF(1,1,m_toolSetHash.value( ERASER )->properties.width-2,m_toolSetHash.value( ERASER )->properties.width-2) );
         painter.end();
         setCursor(pixmap); //setCursor(Qt::CrossCursor);
     }
@@ -3142,10 +3142,10 @@ void ScribbleArea::eraserOn()
     switchTool();
     setCurrentTool( ERASER );
     // --- change properties ---
-    editor->setWidth(eraser.width);
-    editor->setFeather(eraser.feather);
+    editor->setWidth(m_toolSetHash.value( ERASER )->properties.width);
+    editor->setFeather(m_toolSetHash.value( ERASER )->properties.feather);
     editor->setFeather(-1);
-    editor->setPressure(eraser.pressure);
+    editor->setPressure(m_toolSetHash.value( ERASER )->properties.pressure);
     editor->setPreserveAlpha(0);
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
