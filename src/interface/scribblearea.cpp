@@ -74,7 +74,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
     currentWidth = m_toolSetHash.value( PENCIL )->properties.width;
 
-    m_toolSetHash[ PEN ]->loadSettings();
+    m_toolSetHash.value( PEN )->loadSettings();
     m_toolSetHash.value( BRUSH )->loadSettings();
 
 
