@@ -221,8 +221,10 @@ private:
     ToolType prevMode;
 
     void switchTool();
-    ToolType currentTool();
+    ToolType currentToolType();
     void setCurrentTool(ToolType eToolMode);
+    BaseTool* m_currentTool;
+
     Editor* editor;
 
     int tabletEraserBackupToolMode;
