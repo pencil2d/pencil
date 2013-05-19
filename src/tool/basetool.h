@@ -16,8 +16,7 @@ public:
     int colourNumber;
     int pressure;
     int invisibility;
-    int preserveAlpha;
-    int followContour;
+    int preserveAlpha;    
 };
 
 const int ON = 1;
