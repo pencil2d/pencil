@@ -27,6 +27,7 @@ class BaseTool : public QObject
 public:
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
+    virtual void loadSettings() = 0;
 
     Properties properties;
 signals:
