@@ -50,7 +50,8 @@ HEADERS += src/interfaces.h \
     src/interface/tooloptiondockwidget.h \
     src/tool/basetool.h \
     src/tool/pentool.h \
-    src/tool/penciltool.h
+    src/tool/penciltool.h \
+    src/tool/brushtool.h
 SOURCES += src/graphics/bitmap/blur.cpp \
            src/graphics/bitmap/bitmapimage.cpp \
            src/graphics/vector/bezierarea.cpp \
@@ -81,7 +82,8 @@ SOURCES += src/graphics/bitmap/blur.cpp \
     src/interface/tooloptiondockwidget.cpp \
     src/tool/basetool.cpp \
     src/tool/pentool.cpp \
-    src/tool/penciltool.cpp
+    src/tool/penciltool.cpp \
+    src/tool/brushtool.cpp
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp
