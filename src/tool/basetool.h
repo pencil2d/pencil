@@ -14,9 +14,9 @@ public:
     qreal opacity;
     QColor colour;
     int colourNumber;
-    bool pressure;
-    bool invisibility;
-    bool preserveAlpha;
+    int pressure;
+    int invisibility;
+    int preserveAlpha;
 };
 
 
