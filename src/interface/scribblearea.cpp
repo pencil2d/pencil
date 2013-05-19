@@ -79,7 +79,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
 
     eraser.width = settings.value("eraserWidth").toDouble();
-    if (eraser.width == 0) { eraser.width = 24; settings.setValue("eraserWidth", brush.width); }
+    if (eraser.width == 0) { eraser.width = 24; settings.setValue("eraserWidth", m_toolSetHash.value( BRUSH )->properties.width); }
     eraser.feather = 0;
     eraser.opacity = 0.5;
     eraser.pressure = 1;
@@ -175,8 +175,8 @@ void ScribbleArea::setColour(const int i)
     }
     if(currentToolType() == BUCKET || currentToolType() == BRUSH)
     {
-        brush.colourNumber = i;
-        brush.colour = editor->object->getColour(i).colour;
+        m_toolSetHash.value( BRUSH )->properties.colourNumber = i;
+        m_toolSetHash.value( BRUSH )->properties.colour = editor->object->getColour(i).colour;
     }
     if (currentToolType() == EYEDROPPER)
     {
@@ -186,8 +186,8 @@ void ScribbleArea::setColour(const int i)
         m_toolSetHash[ PEN ]->properties.colourNumber = i;
         m_toolSetHash[ PEN ]->properties.colour = editor->object->getColour(i).colour;
 
-        brush.colourNumber = i;
-        brush.colour = editor->object->getColour(i).colour;
+        m_toolSetHash.value( BRUSH )->properties.colourNumber = i;
+        m_toolSetHash.value( BRUSH )->properties.colour = editor->object->getColour(i).colour;
     }
     updateCursor();
     updateFrame();
@@ -205,13 +205,13 @@ void ScribbleArea::setColour(const QColor colour)
     }
     if(currentToolType() == BRUSH || currentToolType() == BUCKET)  // || currentTool() == EYEDROPPER) {
     {
-        brush.colour = colour;
+        m_toolSetHash.value( BRUSH )->properties.colour = colour;
     }
     if (currentToolType() == EYEDROPPER)
     {
         m_toolSetHash.value( PENCIL )->properties.colour = colour;
         m_toolSetHash[ PEN ]->properties.colour = colour;
-        brush.colour = colour;
+        m_toolSetHash.value( BRUSH )->properties.colour = colour;
     }
     currentColour = colour;
     updateCursor();
@@ -221,7 +221,7 @@ void ScribbleArea::resetColours()
 {
     m_toolSetHash[ PEN ]->properties.colourNumber = 0;
     m_toolSetHash.value( PENCIL )->properties.colourNumber = 0;
-    brush.colourNumber = 1;
+    m_toolSetHash.value( BRUSH )->properties.colourNumber = 1;
 }
 
 void ScribbleArea::setWidth(const qreal newWidth)
@@ -244,7 +244,7 @@ void ScribbleArea::setWidth(const qreal newWidth)
     }
     if(currentToolType() == BRUSH)
     {
-        brush.width = newWidth;
+        m_toolSetHash.value( BRUSH )->properties.width = newWidth;
         settings.setValue("brushWidth", newWidth);
     }
     currentWidth = newWidth;
@@ -267,7 +267,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
     }
     if(currentToolType() == BRUSH)
     {
-        brush.feather = newFeather;
+        m_toolSetHash.value( BRUSH )->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
     }
     //currentWidth = newWidth;
@@ -290,7 +290,7 @@ void ScribbleArea::setOpacity(const qreal newOpacity)
     }
     if(currentToolType() == BRUSH)
     {
-        brush.opacity = newOpacity;
+        m_toolSetHash.value( BRUSH )->properties.opacity = newOpacity;
         settings.setValue("brushOpacity", newOpacity);
     }
     //currentWidth = newWidth;
@@ -329,7 +329,7 @@ void ScribbleArea::setPressure(const bool pressure)
     }
     if(currentToolType() == BRUSH)
     {
-        brush.pressure = pressure;
+        m_toolSetHash.value( BRUSH )->properties.pressure = pressure;
         settings.setValue("brushOpacity", pressure);
     }
     usePressure = pressure;
@@ -351,7 +351,7 @@ void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
     }
     if(currentToolType() == BRUSH)
     {
-        brush.preserveAlpha = preserveAlpha;
+        m_toolSetHash.value( BRUSH )->properties.preserveAlpha = preserveAlpha;
         //settings.setValue("brushCompositionMode", preserveAlpha);
     }
     //this->preserveAlpha = preserveAlpha;
@@ -471,24 +471,24 @@ QBrush ScribbleArea::getBackgroundBrush(QString brushName)
         painter.fillRect( QRect(0,0,8,8), QColor(220,220,220) );
         painter.fillRect( QRect(8,8,8,8), QColor(220,220,220) );
         painter.end();
-        brush.setTexture(pattern);
+        m_toolSetHash.value( BRUSH )->properties.setTexture(pattern);
     }
     if(brushName == "dots")
     {
         QPixmap pattern(":background/dots.png");
-        brush.setTexture(pattern);
+        m_toolSetHash.value( BRUSH )->properties.setTexture(pattern);
     }
     if(brushName == "weave")
     {
         QPixmap pattern(":background/weave.jpg");
-        brush.setTexture(pattern);
+        m_toolSetHash.value( BRUSH )->properties.setTexture(pattern);
     }
     if(brushName == "grid")
     {
         /*	QGraphicsScene* scene = new QGraphicsScene();
                             scene->setSceneRect(QRectF(0, 0, 500, 500));
                             scene->addPixmap(QPixmap(":background/grid.jpg"));*/
-        brush.setTextureImage(QImage(":background/grid.jpg"));
+        m_toolSetHash.value( BRUSH )->properties.setTextureImage(QImage(":background/grid.jpg"));
 
     }
     return brush;
@@ -772,7 +772,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         {
             editor->selectColour(m_toolSetHash[ PEN ]->properties.colourNumber);
         }
-        if(currentToolType() == BRUSH || currentToolType() == BUCKET) editor->selectColour(brush.colourNumber);
+        if(currentToolType() == BRUSH || currentToolType() == BUCKET) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
     }
     if(layer->type == Layer::BITMAP)
     {
@@ -1311,7 +1311,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                     }
                 }
                 BitmapImage* targetImage = ((LayerBitmap*)targetLayer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
-                BitmapImage::floodFill( sourceImage, targetImage, lastPoint.toPoint(), qRgba(0,0,0,0), brush.colour.rgba(), 10*10, true);
+                BitmapImage::floodFill( sourceImage, targetImage, lastPoint.toPoint(), qRgba(0,0,0,0), m_toolSetHash.value( BRUSH )->properties.colour.rgba(), 10*10, true);
                 setModified(layerNumber, editor->currentFrame);
                 updateAll = true;
             }
@@ -1475,7 +1475,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             {
                 // Clear the temporary pixel path
                 bufferImg->clear();
-                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->colour(mousePath, brush.colourNumber);
+                ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->colour(mousePath, m_toolSetHash.value( BRUSH )->properties.colourNumber);
                 setModified(editor->currentLayer, editor->currentFrame);
                 updateAll = true;
             }
@@ -1608,7 +1608,7 @@ void ScribbleArea::paintBitmapBuffer()
             cm = QPainter::CompositionMode_DestinationOut;
             break;
         case BRUSH:
-            if(brush.preserveAlpha) cm = QPainter::CompositionMode_SourceAtop;
+            if(m_toolSetHash.value( BRUSH )->properties.preserveAlpha) cm = QPainter::CompositionMode_SourceAtop;
             if(followContour)
             {
                 // writes on the layer below
@@ -2171,13 +2171,13 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
         if(currentToolType() == BRUSH)
         {
             qreal opacity = 1.0;
-            qreal brushWidth = brush.width +  0.5*brush.feather;
-            qreal offset = qMax(0.0,brush.width-0.5*brush.feather)/brushWidth;
+            qreal brushWidth = m_toolSetHash.value( BRUSH )->properties.width +  0.5*m_toolSetHash.value( BRUSH )->properties.feather;
+            qreal offset = qMax(0.0,m_toolSetHash.value( BRUSH )->properties.width-0.5*m_toolSetHash.value( BRUSH )->properties.feather)/brushWidth;
             if(tabletInUse) opacity = tabletPressure;
             if(usePressure) brushWidth = brushWidth*tabletPressure;
 
             qreal distance = 4*QLineF(endPoint, lastBrushPoint).length();
-            qreal brushStep = 0.5*brush.width + 0.5*brush.feather;
+            qreal brushStep = 0.5*m_toolSetHash.value( BRUSH )->properties.width + 0.5*m_toolSetHash.value( BRUSH )->properties.feather;
             if(usePressure) brushStep = brushStep*tabletPressure;
             brushStep = qMax(1.0, brushStep);
             int steps = qRound( distance)/brushStep ;
@@ -2185,7 +2185,7 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
             for(int i=0; i<steps; i++)
             {
                 QPointF thePoint = lastBrushPoint + (i+1)*(brushStep)*(endPoint -lastBrushPoint)/distance;
-                drawBrush( thePoint, brushWidth, offset, brush.colour, opacity);
+                drawBrush( thePoint, brushWidth, offset, m_toolSetHash.value( BRUSH )->properties.colour, opacity);
                 if(i==steps-1) lastBrushPoint = thePoint;
             }
 
@@ -2853,7 +2853,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
                         {
                             closedPath.prepend(tree.at(pathIndex));
                         }
-                        BezierArea newArea = BezierArea( closedPath, brush.colourNumber );
+                        BezierArea newArea = BezierArea( closedPath, m_toolSetHash.value( BRUSH )->properties.colourNumber );
                         vectorImage->updateArea(newArea);
                         if( newArea.path.contains(initialPoint) )
                         {
@@ -2999,7 +2999,7 @@ void ScribbleArea::updateCursor()
         {
             QPixmap pixmap(":icons/bucketTool.png");
             QPainter painter(&pixmap);
-            painter.setPen( brush.colour );
+            painter.setPen( m_toolSetHash.value( BRUSH )->properties.colour );
             painter.drawLine( QPoint(5,16), QPoint(5,18) );
             painter.end();
             QCursor cursor(pixmap,4,20);
@@ -3061,8 +3061,8 @@ void ScribbleArea::updateCursor()
         }
         if(layer->type == Layer::BITMAP)
         {
-            //qreal width = brush.width*0.66;
-            qreal width = brush.width + 0.5*brush.feather;
+            //qreal width = m_toolSetHash.value( BRUSH )->properties.width*0.66;
+            qreal width = m_toolSetHash.value( BRUSH )->properties.width + 0.5*m_toolSetHash.value( BRUSH )->properties.feather;
             QPixmap pixmap(width,width);
             if(!pixmap.isNull())
             {
@@ -3074,9 +3074,9 @@ void ScribbleArea::updateCursor()
                 painter.drawLine( QPointF(width/2,width/2-2), QPointF(width/2,width/2+2) );
                 painter.setRenderHints(QPainter::Antialiasing, true);
                 painter.setPen( QColor(0,0,0,100) );
-                painter.drawEllipse( QRectF(1+brush.feather/2,1+brush.feather/2,qMax(0.0,brush.width-brush.feather/2-2),qMax(0.0,brush.width-brush.feather/2-2)) );
+                painter.drawEllipse( QRectF(1+m_toolSetHash.value( BRUSH )->properties.feather/2,1+m_toolSetHash.value( BRUSH )->properties.feather/2,qMax(0.0,m_toolSetHash.value( BRUSH )->properties.width-m_toolSetHash.value( BRUSH )->properties.feather/2-2),qMax(0.0,m_toolSetHash.value( BRUSH )->properties.width-m_toolSetHash.value( BRUSH )->properties.feather/2-2)) );
                 painter.setPen( QColor(0,0,0,50) );
-                painter.drawEllipse( QRectF(1+brush.feather/8,1+brush.feather/8,qMax(0.0,width-brush.feather/4-2),qMax(0.0,width-brush.feather/4-2)) );
+                painter.drawEllipse( QRectF(1+m_toolSetHash.value( BRUSH )->properties.feather/8,1+m_toolSetHash.value( BRUSH )->properties.feather/8,qMax(0.0,width-m_toolSetHash.value( BRUSH )->properties.feather/4-2),qMax(0.0,width-m_toolSetHash.value( BRUSH )->properties.feather/4-2)) );
                 painter.end();
             }
             setCursor(pixmap);
@@ -3236,10 +3236,10 @@ void ScribbleArea::bucketOn()
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(brush.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(brush.colour);
+    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
     editor->setWidth(-1);
-    editor->setFeather(brush.feather);
+    editor->setFeather(m_toolSetHash.value( BRUSH )->properties.feather);
     editor->setFeather(-1);
     editor->setPressure(0);
     editor->setPressure(-1); // disable the button
@@ -3276,12 +3276,12 @@ void ScribbleArea::colouringOn()
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(brush.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(brush.colour);
-    editor->setWidth(brush.width);
-    editor->setFeather(brush.feather);
-    editor->setPressure(brush.pressure);
-    editor->setPreserveAlpha(brush.preserveAlpha);
+    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
+    editor->setWidth(m_toolSetHash.value( BRUSH )->properties.width);
+    editor->setFeather(m_toolSetHash.value( BRUSH )->properties.feather);
+    editor->setPressure(m_toolSetHash.value( BRUSH )->properties.pressure);
+    editor->setPreserveAlpha(m_toolSetHash.value( BRUSH )->properties.preserveAlpha);
     editor->setFollowContour(followContour);
     editor->setInvisibility(0);
     editor->setInvisibility(-1);
