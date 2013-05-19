@@ -31,7 +31,7 @@ void BrushTool::loadSettings()
         settings.setValue("brushFeather", properties.feather);
     }
     properties.opacity = 0.5;
-    properties.pressure = 1;
-    properties.invisibility = -1;
-    properties.preserveAlpha = 0;
+    properties.pressure = ON;
+    properties.invisibility = DISABLED;
+    properties.preserveAlpha = OFF;
 }
