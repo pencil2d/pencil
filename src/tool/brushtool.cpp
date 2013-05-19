@@ -1,3 +1,5 @@
+
+#include <QSettings>
 #include "brushtool.h"
 
 BrushTool::BrushTool(QObject *parent) :
