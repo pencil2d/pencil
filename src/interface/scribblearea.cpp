@@ -53,6 +53,7 @@ void VectorSelection::add(QList<VertexRef> list)
     if(list.size() > 0) add(list[0]);
 }
 
+
 ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     : QWidget(parent)
     //ScribbleArea::ScribbleArea(QWidget *parent, Editor* editor)
@@ -60,6 +61,8 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 {
     this->editor = editor;
     m_currentTool = NULL;
+
+    m_toolSetHash.insert(PEN, new PenTool);
 
     QSettings settings("Pencil","Pencil");
 

@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QGLWidget>
 #include <QFrame>
+#include <QHash>
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
@@ -211,6 +212,7 @@ private:
     ToolType currentToolType();
     void setCurrentTool(ToolType eToolMode);
     BaseTool* m_currentTool;
+    QHash<ToolType, BaseTool*> m_toolSetHash;
 
     Editor* editor;
 
