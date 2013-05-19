@@ -2926,8 +2926,13 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     switch (toolMode)
     {
     case PEN:
-        m_currentTool = m_toolSetHash[ PEN ];
-        qDebug("Create Pen!");
+        m_currentTool = m_toolSetHash.value( PEN );
+    case PENCIL:
+        m_currentTool = m_toolSetHash.value( PENCIL );
+    case BRUSH:
+        m_currentTool = m_toolSetHash.value( BRUSH );
+    case ERASER:
+        m_currentTool = m_toolSetHash.value( ERASER );
     }
     toolMode = eToolMode;
 }
