@@ -10,6 +10,7 @@ class PenTool : public BaseTool
 public:
     PenTool();
     ToolType type();
+    void loadSettings();
 };
 
 #endif // PENTOOL_H
