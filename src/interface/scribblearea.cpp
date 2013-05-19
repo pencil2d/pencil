@@ -120,9 +120,6 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     transMatrix = QMatrix();
     centralView = QMatrix();
 
-
-
-
     QString background = settings.value("background").toString();
     //	if(background == "")
     background = "white";
@@ -2916,7 +2913,7 @@ ToolType ScribbleArea::currentToolType()
         switch (toolMode)
         {
         case PEN:
-            //return m_currentTool->type();
+            return m_currentTool->type();
             qDebug("PEN tool Type %p", m_currentTool);
         }
     }
@@ -2926,11 +2923,6 @@ ToolType ScribbleArea::currentToolType()
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    if ( m_currentTool != NULL )
-    {
-        delete m_currentTool;
-    }
-
     switch (toolMode)
     {
     case PEN:
