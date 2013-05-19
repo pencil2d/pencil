@@ -104,7 +104,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     tabletEraserBackupToolMode=-1;
     tabletInUse=false;
     tabletPressure=1.0;
-    setAttribute(Qt::WA_StaticContents); // ?
+    //setAttribute(Qt::WA_StaticContents); // ?
     modified = false;
     simplified = false;
     usePressure = true;

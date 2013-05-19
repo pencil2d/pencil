@@ -14,12 +14,16 @@ public:
     qreal opacity;
     QColor colour;
     int colourNumber;
-    int pressure;
-    int invisibility;
-    int preserveAlpha;
+    bool pressure;
+    bool invisibility;
+    bool preserveAlpha;
+    int followContour;
 };
-
-
+/*
+const int ON = 1;
+const int OFF = 0;
+const int DISABLED = -1;
+*/
 
 class BaseTool : public QObject
 {
