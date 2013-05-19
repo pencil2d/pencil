@@ -66,6 +66,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
     m_toolSetHash.insert(PEN, new PenTool);
     m_toolSetHash.insert(PENCIL, new PencilTool);
+    m_toolSetHash.insert(BRUSH, new BrushTool);
 
     QSettings settings("Pencil","Pencil");
 
@@ -74,17 +75,8 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     currentWidth = m_toolSetHash.value( PENCIL )->properties.width;
 
     m_toolSetHash[ PEN ]->loadSettings();
+    m_toolSetHash.value( BRUSH )->loadSettings();
 
-    brush.width = settings.value("brushWidth").toDouble();
-    if (brush.width == 0) { brush.width = 48; settings.setValue("brushWidth", brush.width); }
-    brush.colour = Qt::blue;
-    brush.colourNumber = 1;
-    brush.feather = settings.value("brushFeather").toDouble();
-    if (brush.feather == 0) { brush.feather = 70; settings.setValue("brushFeather", brush.feather); }
-    brush.opacity = 0.5;
-    brush.pressure = 1;
-    brush.invisibility = -1;
-    brush.preserveAlpha = 0;
 
     eraser.width = settings.value("eraserWidth").toDouble();
     if (eraser.width == 0) { eraser.width = 24; settings.setValue("eraserWidth", brush.width); }
