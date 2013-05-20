@@ -3,8 +3,12 @@
 
 #include <QObject>
 #include <QColor>
+#include <QMap>
+#include <QString>
 
 enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, BRUSH };
+
+QString typeName( ToolType );
 
 class Properties
 {
@@ -34,8 +38,8 @@ public:
 
     Properties properties;
 signals:
-    
-public slots:
+
+    public slots:
 
 };
 
