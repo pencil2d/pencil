@@ -2912,9 +2912,8 @@ ToolType ScribbleArea::currentToolType()
     {
         switch (toolMode)
         {
-        case PEN:
-            return m_currentTool->type();
-            qDebug("PEN tool Type %p", m_currentTool);
+        case PEN:            
+            return toolMode;
             break;
         }
     }
@@ -2949,7 +2948,7 @@ void ScribbleArea::switchTool()
 }
 
 void ScribbleArea::updateCursor()
-{
+{    
     if(currentToolType() == PENCIL)
     {
         if(toolCursors)
@@ -2964,7 +2963,7 @@ void ScribbleArea::updateCursor()
     }
     if(currentToolType() == PEN)
     {
-        if(toolCursors)
+        if (toolCursors)
         {
             QCursor cursor(QPixmap(":icons/pen.png"),7,0);
             setCursor(cursor);
@@ -3120,6 +3119,7 @@ void ScribbleArea::penOn()
 {
     switchTool();
     setCurrentTool( PEN );
+
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
     if(layer == NULL)
