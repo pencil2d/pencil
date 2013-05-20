@@ -1,13 +1,47 @@
 syntax: glob
+
+# Mac
 .DS_Store
+
+# Windows
 Thumb.db
-.moc
+
+# C++
+*.slo
+*.lo
+*.o
+*.a
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
 .obj
+
+# Qt
+.moc
+*.pro.user
+*.pro.user.*
+moc_*.cpp
+qrc_*.cpp
+*-build-*
 Pencil
 Makefile
-qrc_pencil.cpp
-*.o
-*.orig
 *.user
+*.orig
+
+# Git
 .git
 .gitignore
+
+# Visual Studio
+*.sln
+*.vcxproj
+*.sdf
+*.suo
+*.pdb
+*.opensdf
+*.filters
+ipch
+debug
+release
