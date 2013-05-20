@@ -8,7 +8,7 @@ PencilTool::PencilTool(QObject *parent) :
 
 ToolType PencilTool::type()
 {
-
+    return PENCIL;
 }
 
 void PencilTool::loadSettings()
