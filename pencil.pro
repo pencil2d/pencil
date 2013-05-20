@@ -17,7 +17,8 @@ INCLUDEPATH += . 	src \
 			src/graphics/bitmap \
 			src/graphics/vector \
 			src/interface \
-			src/structure
+                        src/structure \
+                        src/tool
 
 # Input
 HEADERS += src/interfaces.h \
@@ -46,7 +47,12 @@ HEADERS += src/interfaces.h \
     src/interface/backupelement.h \
     src/interface/spinslider.h \
     src/interface/displayoptiondockwidget.h \
-    src/interface/tooloptiondockwidget.h
+    src/interface/tooloptiondockwidget.h \
+    src/tool/basetool.h \
+    src/tool/pentool.h \
+    src/tool/penciltool.h \
+    src/tool/brushtool.h \
+    src/tool/erasertool.h
 SOURCES += src/graphics/bitmap/blur.cpp \
            src/graphics/bitmap/bitmapimage.cpp \
            src/graphics/vector/bezierarea.cpp \
@@ -74,7 +80,12 @@ SOURCES += src/graphics/bitmap/blur.cpp \
     src/interface/backupelement.cpp \
     src/interface/spinslider.cpp \
     src/interface/displayoptiondockwidget.cpp \
-    src/interface/tooloptiondockwidget.cpp
+    src/interface/tooloptiondockwidget.cpp \
+    src/tool/basetool.cpp \
+    src/tool/pentool.cpp \
+    src/tool/penciltool.cpp \
+    src/tool/brushtool.cpp \
+    src/tool/erasertool.cpp
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp

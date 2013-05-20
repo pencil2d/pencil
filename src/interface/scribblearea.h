@@ -22,25 +22,16 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QGLWidget>
 #include <QFrame>
+#include <QHash>
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
+#include "basetool.h"
+
 
 class Editor;
 class Layer;
 
-class Properties
-{
-public:
-    qreal width;
-    qreal feather;
-    qreal opacity;
-    QColor colour;
-    int colourNumber;
-    bool pressure;
-    bool invisibility;
-    bool preserveAlpha;
-};
 
 class VectorSelection
 {
@@ -60,7 +51,8 @@ public:
 	QList<QColor> colours;
 };*/
 
-//class ScribbleArea : public QGLWidget
+
+
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
@@ -133,16 +125,18 @@ public slots:
     void eraserOn();
     void selectOn();
     void moveOn();
-    void handOn();
-    void resetView();
-    void setMyView(QMatrix view);
-    QMatrix getMyView();
+    void handOn();    
     void penOn();
     void polylineOn();
     void bucketOn();
     void eyedropperOn();
     void colouringOn();
     void smudgeOn();
+
+    void resetView();
+    void setMyView(QMatrix view);
+    QMatrix getMyView();
+
     void zoom();
     void zoom1();
     void rotatecw();
@@ -210,13 +204,18 @@ private:
     void floodFill(VectorImage* vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
 
-    enum myToolModes { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, COLOURING };
     enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
-    myToolModes toolMode;
-    myMoveModes moveMode;
-    myToolModes prevMode;
 
+    ToolType toolMode;
+    myMoveModes moveMode;
+    ToolType prevMode;
+
+    void setToolProperties(const Properties&);
     void switchTool();
+    ToolType currentToolType();
+    void setCurrentTool(ToolType eToolMode);
+    BaseTool* m_currentTool;
+    QHash<ToolType, BaseTool*> m_toolSetHash;
 
     Editor* editor;
 
@@ -237,18 +236,11 @@ private:
     bool onionPrev, onionNext;
     bool updateAll;
 
-    Properties pencil;
-    Properties pen;
     Properties brush;
     Properties eraser;
 
     qreal currentWidth;
     QColor currentColour;
-    /*qreal myPencilWidth, currentPencilWidth;
-    qreal myPenWidth, currentPenWidth;
-    qreal myBrushWidth, currentBrushWidth;*/
-    //QColor myPenColour, myFillColour;
-    //int penColourNumber, fillColourNumber;
     bool followContour;
 
     QBrush backgroundBrush;
