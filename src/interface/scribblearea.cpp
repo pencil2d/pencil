@@ -100,7 +100,8 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     gradients = 2;
     if( settings.value("gradients").toString() != "") gradients = settings.value("gradients").toInt();;
 
-    setCurrentTool( PENCIL );
+    pencilOn();
+
     tabletEraserBackupToolMode=-1;
     tabletInUse=false;
     tabletPressure=1.0;
