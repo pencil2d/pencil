@@ -3285,7 +3285,7 @@ void ScribbleArea::colouringOn()
     if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
 
     setToolProperties(m_toolSetHash.value( BRUSH )->properties);
-
+    editor->setInvisibility(-1);
     editor->setFollowContour(followContour);
     // --- change cursor ---
     updateCursor();
