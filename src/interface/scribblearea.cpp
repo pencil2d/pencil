@@ -180,7 +180,6 @@ void ScribbleArea::setColour(const int i)
         m_toolSetHash.value( BRUSH )->properties.colourNumber = i;
         m_toolSetHash.value( BRUSH )->properties.colour = editor->object->getColour(i).colour;
     }
-    updateCursor();
     updateFrame();
 }
 
@@ -205,7 +204,6 @@ void ScribbleArea::setColour(const QColor colour)
         m_toolSetHash.value( BRUSH )->properties.colour = colour;
     }
     currentColour = colour;
-    updateCursor();
 }
 
 void ScribbleArea::resetColours()
@@ -240,7 +238,6 @@ void ScribbleArea::setWidth(const qreal newWidth)
     }
     currentWidth = newWidth;
     updateAllFrames();
-    updateCursor();
 }
 
 void ScribbleArea::setFeather(const qreal newFeather)
@@ -263,7 +260,6 @@ void ScribbleArea::setFeather(const qreal newFeather)
     }
     //currentWidth = newWidth;
     updateAllFrames();
-    updateCursor();
 }
 
 void ScribbleArea::setOpacity(const qreal newOpacity)
@@ -2944,52 +2940,6 @@ void ScribbleArea::switchTool()
 {
     if(currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
     if(currentToolType() == POLYLINE) escape();
-}
-
-void ScribbleArea::updateCursor()
-{    
-    if(currentToolType() == PENCIL)
-    {
-    
-    }
-    if(currentToolType() == PEN)
-    {
-
-    }
-    if(currentToolType() == ERASER)
-    {
-
-    }
-    if(currentToolType() == BUCKET)
-    {
-
-    }
-    if(currentToolType() == EYEDROPPER)
-    {
-        
-    }
-    if(currentToolType() == SELECT)
-    {
-      
-    }
-    if(currentToolType() == MOVE)
-    {
-    }
-    if(currentToolType() == HAND)
-    {
-    
-    }
-    if(currentToolType() == POLYLINE)
-    {
-    }
-    if(currentToolType() == BRUSH)
-    {
-      
-    }
-    if(currentToolType() == EDIT)
-    {
-       
-    }
 }
 
 void ScribbleArea::setToolProperties(const Properties& p)

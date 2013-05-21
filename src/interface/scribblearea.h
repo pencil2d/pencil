@@ -198,7 +198,6 @@ private:
     void drawEyedropperPreview(const QColor colour);
     void drawPolyline();
     void endPolyline();
-    void updateCursor();
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     void floodFill(VectorImage* vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
