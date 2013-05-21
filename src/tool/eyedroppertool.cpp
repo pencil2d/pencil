@@ -9,3 +9,8 @@ ToolType EyedropperTool::type()
 {
     return EYEDROPPER;
 }
+
+void EyedropperTool::loadSettings()
+{
+
+}

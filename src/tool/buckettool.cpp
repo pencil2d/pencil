@@ -10,3 +10,8 @@ ToolType BucketTool::type()
 {
     return BUCKET;
 }
+
+void BucketTool::loadSettings()
+{
+
+}

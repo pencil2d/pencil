@@ -10,6 +10,7 @@ class BucketTool : public BaseTool
 public:
     explicit BucketTool(QObject *parent = 0);
     ToolType type();
+    void loadSettings();
 signals:
     
 public slots:

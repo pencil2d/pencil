@@ -10,6 +10,7 @@ class EyedropperTool : public BaseTool
 public:
     explicit EyedropperTool(QObject *parent = 0);
     ToolType type();
+    void loadSettings();
 signals:
     
 public slots:
