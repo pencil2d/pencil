@@ -2436,25 +2436,11 @@ void Editor::rotateacw()
 void Editor::gridview()
 {
     hand_clicked();
-//	scribbleArea->setBackgroundBrush(QPixmap(":/images/cheese.jpg"));
-    //scene->addPixmap(QPixmap(":/images/grid.jpg"));TODO GraphicsScene changes the background
-    /*	QGraphicsScene* scene = new QGraphicsScene();
-    	    scene->setSceneRect(QRectF(0, 0, 500, 500));
-    	    scene->addPixmap(QPixmap(":/images/grid.jpg"));*/
-
-    /*	QPainter painter(&this);
-    	painter.setWorldMatrixEnabled(true);
-    		painter.setWorldMatrix(  centralView.inverted() * transMatrix * centralView  );
-    		painter.drawPixmap( QPoint(0,0), canvas );
-    		painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO The grid is being drawn but the white background over rides it!*/
 
     scribbleArea->grid();
     QMessageBox msgBox;
     msgBox.setText("Would you like to add a camera layer?");
     msgBox.exec();
-
-
-
 }
 
 void Editor::print()
