@@ -52,7 +52,8 @@ HEADERS +=  src/interfaces.h \
             src/tool/pentool.h \
             src/tool/penciltool.h \
             src/tool/brushtool.h \
-            src/tool/erasertool.h 
+            src/tool/erasertool.h \ 
+            src/tool/selecttool.h
             
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -86,7 +87,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/tool/pentool.cpp \
             src/tool/penciltool.cpp \
             src/tool/brushtool.cpp \
-            src/tool/erasertool.cpp
+            src/tool/erasertool.cpp \
+            src/tool/selecttool.cpp
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp
