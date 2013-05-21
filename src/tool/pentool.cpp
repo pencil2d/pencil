@@ -19,11 +19,10 @@ void PenTool::loadSettings()
     properties.width = settings.value("penWidth").toDouble();
     properties.colour = Qt::black;
     properties.colourNumber = 0;
-    properties.feather = 0;
-    properties.opacity = 1;
-    properties.pressure = 1;
-    properties.invisibility = 0;
-    properties.preserveAlpha = 0;
+    properties.feather = 0;    
+    properties.pressure = ON;
+    properties.invisibility = OFF;
+    properties.preserveAlpha = OFF;
 
     if ( properties.width <= 0 )
     {

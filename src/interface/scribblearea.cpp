@@ -3134,15 +3134,9 @@ void ScribbleArea::penOn()
         editor->setColour(m_toolSetHash[ PEN ]->properties.colour);
     }
 
-    m_toolSetHash[ PEN ]->loadSettings();
-
     Properties properties = m_toolSetHash[ PEN ]->properties;
-    editor->setWidth(properties.width);
+    setToolProperties( m_toolSetHash.value( PEN )->properties );
     editor->setFeather(-1);
-    editor->setPressure(properties.pressure);
-    editor->setInvisibility(properties.invisibility);
-    editor->setPreserveAlpha(properties.preserveAlpha);
-    editor->setFollowContour(-1);
     editor->setInvisibility(-1); // by definition the pen is visible in vector mode
     // --- change cursor ---
     updateCursor();
