@@ -3133,11 +3133,8 @@ void ScribbleArea::penOn()
     {
         editor->setColour(m_toolSetHash[ PEN ]->properties.colour);
     }
-
-    Properties properties = m_toolSetHash[ PEN ]->properties;
     setToolProperties( m_toolSetHash.value( PEN )->properties );
-    editor->setFeather(-1);
-    editor->setInvisibility(-1); // by definition the pen is visible in vector mode
+    
     // --- change cursor ---
     updateCursor();
 }
@@ -3146,16 +3143,19 @@ void ScribbleArea::eraserOn()
 {
     switchTool();
     setCurrentTool( ERASER );
+    
     // --- change properties ---
     editor->setWidth(m_toolSetHash.value( ERASER )->properties.width);
     editor->setFeather(m_toolSetHash.value( ERASER )->properties.feather);
-    editor->setFeather(-1);
     editor->setPressure(m_toolSetHash.value( ERASER )->properties.pressure);
     editor->setPreserveAlpha(0);
+    editor->setInvisibility(0);
+    
+    editor->setFeather(-1);
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
-    editor->setInvisibility(0);
     editor->setInvisibility(-1);
+    
     // --- change cursor ---
     updateCursor();
 }
