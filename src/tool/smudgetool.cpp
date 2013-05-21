@@ -9,3 +9,8 @@ ToolType SmudgeTool::type()
 {
     return SMUDGE;
 }
+
+void SmudgeTool::loadSettings()
+{
+
+}
