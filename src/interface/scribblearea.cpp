@@ -2913,7 +2913,6 @@ ToolType ScribbleArea::currentToolType()
         switch (toolMode)
         {
         case PEN:            
-            return toolMode;
             break;
         }
     }
