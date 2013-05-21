@@ -22,12 +22,22 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "bitmapimage.h"
+
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"
+#include "buckettool.h"
+#include "edittool.h"
 #include "erasertool.h"
+#include "eyedroppertool.h"
+#include "handtool.h"
+#include "movetool.h"
+#include "polylinetool.h"
+#include "selecttool.h"
+#include "smudgetool.h"
 
 #include "scribblearea.h"
+
 
 void VectorSelection::clear()
 {
@@ -69,6 +79,14 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_toolSetHash.insert(PENCIL, new PencilTool);
     m_toolSetHash.insert(BRUSH, new BrushTool);
     m_toolSetHash.insert(ERASER, new EraserTool);
+    m_toolSetHash.insert(BUCKET, new BucketTool);
+    m_toolSetHash.insert(EDIT, new EditTool);
+    m_toolSetHash.insert(EYEDROPPER, new EyedropperTool);
+    m_toolSetHash.insert(HAND, new HandTool);
+    m_toolSetHash.insert(MOVE, new MoveTool);
+    m_toolSetHash.insert(POLYLINE, new PolylineTool);
+    m_toolSetHash.insert(SELECT, new SelectTool);
+    m_toolSetHash.insert(SMUDGE, new SmudgeTool);
 
     QSettings settings("Pencil","Pencil");
 
@@ -2905,36 +2923,18 @@ void ScribbleArea::floodFillError(int errorType)
 
 ToolType ScribbleArea::currentToolType()
 {
-    if ( m_currentTool != NULL)
+    if ( m_currentTool == NULL)
     {
-        switch (toolMode)
-        {
-        case PEN:            
-            break;
-        }
+        qDebug() << "Fatal Error: tool should not be null!";
+        return PENCIL;
     }
 
-    return toolMode;
+    return m_currentTool->type();
 }
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    switch (toolMode)
-    {
-    case PEN:
-        m_currentTool = m_toolSetHash.value( PEN );
-        break;
-    case PENCIL:
-        m_currentTool = m_toolSetHash.value( PENCIL );
-        break;
-    case BRUSH:
-        m_currentTool = m_toolSetHash.value( BRUSH );
-        break;
-    case ERASER:
-        m_currentTool = m_toolSetHash.value( ERASER );        
-        break;
-    }
-    toolMode = eToolMode;
+    m_currentTool = m_toolSetHash.value( eToolMode );
 }
 
 void ScribbleArea::switchTool()
