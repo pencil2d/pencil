@@ -60,7 +60,8 @@ HEADERS +=  src/interfaces.h \
     src/tool/smudgetool.h \
     src/tool/polylinetool.h \
     src/tool/buckettool.h \
-    src/tool/eyedroppertool.h
+    src/tool/eyedroppertool.h \
+    src/structure/pencilsettings.h
             
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -102,7 +103,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/smudgetool.cpp \
     src/tool/polylinetool.cpp \
     src/tool/buckettool.cpp \
-    src/tool/eyedroppertool.cpp
+    src/tool/eyedroppertool.cpp \
+    src/structure/pencilsettings.cpp
             
 win32 {
 	INCLUDEPATH += . libwin32

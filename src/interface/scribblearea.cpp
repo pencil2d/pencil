@@ -2959,6 +2959,7 @@ void ScribbleArea::pencilOn()
     editor->setFollowContour(-1);
     editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
     // --- change cursor ---
+    setCursor( currentTool()->cursor() );
      if ( toolCursors )
     {
         QCursor cursor(QPixmap(":icons/pencil2.png"),0,16);
