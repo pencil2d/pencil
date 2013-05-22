@@ -210,6 +210,7 @@ private:
 
     void switchTool();
     ToolType currentToolType();
+    BaseTool* currentTool();
     void setCurrentTool(ToolType eToolMode);
     BaseTool* m_currentTool;
     QHash<ToolType, BaseTool*> m_toolSetHash;

@@ -2923,6 +2923,11 @@ ToolType ScribbleArea::currentToolType()
     return m_currentTool->type();
 }
 
+BaseTool* ScribbleArea::currentTool()
+{
+    return m_currentTool;
+}
+
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
     m_currentTool = m_toolSetHash.value( eToolMode );
@@ -2986,7 +2991,7 @@ void ScribbleArea::penOn()
     }
     editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
     
-    // --- change cursor ---
+    // --- change cursor ---    
     if (toolCursors)
     {
         QCursor cursor(QPixmap(":icons/pen.png"),7,0);
