@@ -2943,14 +2943,6 @@ void ScribbleArea::switchTool()
     if(currentToolType() == POLYLINE) escape();
 }
 
-void ScribbleArea::setToolProperties(const Properties& p)
-{
-    editor->setWidth(p.width);
-    editor->setFeather(p.feather);
-    editor->setPressure(p.pressure);
-    editor->setPreserveAlpha(p.preserveAlpha);
-    editor->setInvisibility(p.invisibility);
-}
 
 void ScribbleArea::pencilOn()
 {
@@ -3001,7 +2993,7 @@ void ScribbleArea::penOn()
     {
         editor->setColour(m_toolSetHash[ PEN ]->properties.colour);
     }
-    setToolProperties( m_toolSetHash.value( PEN )->properties );
+    editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
     
     // --- change cursor ---
     if (toolCursors)
@@ -3202,7 +3194,7 @@ void ScribbleArea::colouringOn()
     if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
     if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
 
-    setToolProperties(m_toolSetHash.value( BRUSH )->properties);
+    editor->setToolProperties(m_toolSetHash.value( BRUSH )->properties);
     editor->setInvisibility(-1);
     editor->setFollowContour(followContour);
     

@@ -185,6 +185,8 @@ public slots:
     void moveLayer(int i, int j);
     void updateMaxFrame();
 
+
+    void setToolProperties(const Properties& p);
     void setWidth(qreal);
     void applyWidth(qreal);
     void setFeather(qreal);

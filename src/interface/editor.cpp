@@ -331,6 +331,15 @@ void Editor::setWidth(qreal width)
     emit penWidthValueChange(width);
 }
 
+void Editor::setToolProperties(const Properties& p)
+{
+    setWidth(p.width);
+    setFeather(p.feather);
+    setPressure(p.pressure);
+    setPreserveAlpha(p.preserveAlpha);
+    setInvisibility(p.invisibility);
+}
+
 void Editor::applyWidth(qreal width)
 {
     setWidth(width);
