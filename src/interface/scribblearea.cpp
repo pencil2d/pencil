@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "bitmapimage.h"
+#include "pencilsettings.h"
 
 #include "pentool.h"
 #include "penciltool.h"
@@ -113,8 +114,6 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     if( settings.value("antialiasing").toString() == "false") antialiasing = false;
     shadows = false; // default value is false
     if( settings.value("shadows").toString() == "true") shadows = true;
-    toolCursors = true; // default value is true
-    if( settings.value("toolCursors").toString() == "false") toolCursors = false;
     gradients = 2;
     if( settings.value("gradients").toString() != "") gradients = settings.value("gradients").toInt();;
 
@@ -428,9 +427,7 @@ void ScribbleArea::setShadows(int x)
 
 void ScribbleArea::setToolCursors(int x)
 {
-    QSettings settings("Pencil","Pencil");
-    if (x==0) { toolCursors=false; settings.setValue("toolCursors","false"); }
-    else { toolCursors=true; settings.setValue("toolCursors","true"); }
+    pencilSettings()->setValue( kSettingToolCursor, (x != 0) );
 }
 
 void ScribbleArea::setStyle(int x)
