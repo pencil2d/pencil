@@ -29,3 +29,9 @@ BaseTool::BaseTool(QObject *parent) :
     QObject(parent)
 {
 }
+
+
+QCursor BaseTool::cursor()
+{
+    return Qt::ArrowCursor;
+}

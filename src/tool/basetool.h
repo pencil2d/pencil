@@ -5,6 +5,8 @@
 #include <QColor>
 #include <QMap>
 #include <QString>
+#include <QCursor>
+
 
 enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, BRUSH };
 
@@ -35,7 +37,7 @@ public:
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
-
+    virtual QCursor cursor();
     Properties properties;
 signals:
 
