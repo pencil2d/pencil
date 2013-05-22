@@ -2,21 +2,14 @@
 #define PENCILSETTINGS_H
 
 #include <QObject>
+#include <QSettings>
 
-class QSettings;
+QSettings* pencilSettings();
 
-class PencilSettings : public QObject
-{
-    Q_OBJECT
-public:
-    explicit PencilSettings(QObject *parent = 0);
-    static PencilSettings* get();
-signals:
-    
-public slots:
-    
-private:
-    static QSettings* m_pSettings;
-};
+// Setting Keys
+#define kSettingToolCursor "toolCursors"
+
+
+
 
 #endif // PENCILSETTINGS_H

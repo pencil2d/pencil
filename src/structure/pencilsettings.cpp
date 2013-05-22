@@ -1,16 +1,16 @@
 
-#include <QSettings>
 #include "pencilsettings.h"
 
+// ==== Singleton ====
+static QSettings* g_pSettings = NULL;
 
-
-PencilSettings::PencilSettings(QObject *parent) :
-    QObject(parent)
+QSettings* pencilSettings()
 {
-    m_pSettings = new QSettings("pencil", "pencil");
+    if ( g_pSettings == NULL )
+    {
+        g_pSettings = new QSettings("pencil", "pencil");
+    }
+    return g_pSettings;
 }
 
-PencilSettings* PencilSettings::get()
-{
 
-}
