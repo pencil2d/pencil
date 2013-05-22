@@ -15,3 +15,8 @@ void MoveTool::loadSettings()
 {
 
 }
+
+QCursor MoveTool::cursor()
+{
+    return Qt::ArrowCursor;
+}

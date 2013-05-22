@@ -3036,7 +3036,7 @@ void ScribbleArea::moveOn()
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
     // --- change cursor ---
-    setCursor(Qt::ArrowCursor);
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::handOn()

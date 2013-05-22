@@ -11,6 +11,7 @@ public:
     MoveTool();
     ToolType type();
     void loadSettings();
+    QCursor cursor();
 };
 
 #endif
