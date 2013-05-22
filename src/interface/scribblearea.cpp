@@ -506,24 +506,16 @@ void ScribbleArea::updateFrame()
 }
 
 void ScribbleArea::updateFrame(int frame)
-{
-    //qDebug() << "updateFrame";
-    //paintCanvas(frame);
+{    
     setView();
     int frameNumber = editor->getLastFrameAtFrame( frame );
-    QPixmapCache::remove("frame"+QString::number(frameNumber));
-    /*if (onionPrev)
-        QPixmapCache::remove("frame"+QString::number(frameNumber+1));  // !!!!!!!!!!!!
-    if (onionNext)
-        QPixmapCache::remove("frame"+QString::number(frameNumber-1));*/  // !!!!!!!!!!!!
+    QPixmapCache::remove("frame"+QString::number(frameNumber));    
     readCanvasFromCache = true;
     update();
 }
 
 void ScribbleArea::updateAllFrames()
 {
-    //qDebug() << "updateAllFrames";
-    //frameList.clear();
     setView();
     QPixmapCache::clear();
     readCanvasFromCache = true;
@@ -629,7 +621,6 @@ void ScribbleArea::keyPressEvent( QKeyEvent* event )
         break;
     default:
         event->ignore();
-        //QWidget::keyPressEvent(e);
     }
 }
 
