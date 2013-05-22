@@ -12,6 +12,7 @@ public:
     PenTool();
     ToolType type();
     void loadSettings();
+    QCursor cursor();
 };
 
 #endif // PENTOOL_H

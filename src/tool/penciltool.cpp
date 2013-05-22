@@ -1,5 +1,8 @@
 #include <QSettings>
+#include <QPixmap>
+#include "pencilsettings.h"
 #include "penciltool.h"
+
 
 PencilTool::PencilTool(QObject *parent) :
     BaseTool(parent)
@@ -28,5 +31,17 @@ void PencilTool::loadSettings()
     {
         properties.width = 1;
         settings.setValue("pencilWidth", properties.width);
+    }
+}
+
+QCursor PencilTool::cursor()
+{
+    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    {
+        return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
+    }
+    else
+    {
+        return Qt::CrossCursor;
     }
 }

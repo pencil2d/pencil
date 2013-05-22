@@ -2957,15 +2957,7 @@ void ScribbleArea::pencilOn()
     editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
     // --- change cursor ---
     setCursor( currentTool()->cursor() );
-     if ( toolCursors )
-    {
-        QCursor cursor(QPixmap(":icons/pencil2.png"),0,16);
-        setCursor(cursor);
-    }
-    else
-    {
-        setCursor(Qt::CrossCursor);
-    }   
+
 }
 
 void ScribbleArea::penOn()
@@ -2990,15 +2982,7 @@ void ScribbleArea::penOn()
     editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
     
     // --- change cursor ---    
-    if (toolCursors)
-    {
-        QCursor cursor(QPixmap(":icons/pen.png"),7,0);
-        setCursor(cursor);
-    }
-    else
-    {
-        setCursor(Qt::CrossCursor);
-    }
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::eraserOn()
@@ -3124,7 +3108,7 @@ void ScribbleArea::bucketOn()
     editor->setPreserveAlpha(-1); // disable the button
     editor->setFollowContour(-1);
     // --- change cursor ---
-    if(toolCursors)
+    if( pencilSettings()->value( kSettingToolCursor ).toBool() )
     {
         QPixmap pixmap(":icons/bucketTool.png");
         QPainter painter(&pixmap);

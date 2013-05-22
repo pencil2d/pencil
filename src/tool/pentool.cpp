@@ -1,5 +1,6 @@
 
-#include <QSettings>
+#include <QPixmap>
+#include "pencilsettings.h"
 #include "pentool.h"
 
 
@@ -33,5 +34,17 @@ void PenTool::loadSettings()
     if ( properties.feather < 0 )
     {
         properties.feather = 0;
+    }
+}
+
+QCursor PenTool::cursor()
+{
+    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    {
+        return QCursor(QPixmap(":icons/pen.png"), 7, 0);
+    }
+    else
+    {
+        return Qt::CrossCursor;
     }
 }
