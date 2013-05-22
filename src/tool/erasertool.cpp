@@ -1,5 +1,7 @@
 
 #include <QSettings>
+#include <QPixmap>
+#include <QPainter>
 #include "erasertool.h"
 
 
@@ -27,4 +29,22 @@ void EraserTool::loadSettings()
         properties.width = 24;
         settings.setValue("eraserWidth", properties.width);
     }
+}
+
+QCursor EraserTool::cursor()
+{
+    QPixmap pixmap( properties.width, properties.width );
+    pixmap.fill( QColor(255,255,255,0) );
+
+    QPainter painter(&pixmap);
+    painter.setPen( QColor(0,0,0,190) );
+    painter.setBrush( QColor(255,255,255,100) );
+    painter.drawLine( QPointF(properties.width/2 - 2, properties.width/2), QPointF(properties.width/2+2, properties.width/2) );
+    painter.drawLine( QPointF(properties.width/2, properties.width/2-2), QPointF(properties.width/2, properties.width/2+2) );
+    painter.setRenderHints(QPainter::Antialiasing, true);
+    painter.setPen( QColor(0,0,0,100) );
+    painter.drawEllipse( QRectF(1, 1, properties.width - 2, properties.width - 2) );
+    painter.end();
+
+    return QCursor(pixmap);
 }

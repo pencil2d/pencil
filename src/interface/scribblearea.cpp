@@ -3003,18 +3003,7 @@ void ScribbleArea::eraserOn()
     editor->setInvisibility(-1);
     
     // --- change cursor ---
-    QPixmap pixmap(m_toolSetHash.value( ERASER )->properties.width,m_toolSetHash.value( ERASER )->properties.width);
-    pixmap.fill( QColor(255,255,255,0) );
-    QPainter painter(&pixmap);
-    painter.setPen( QColor(0,0,0,190) );
-    painter.setBrush( QColor(255,255,255,100) );
-    painter.drawLine( QPointF(m_toolSetHash.value( ERASER )->properties.width/2-2,m_toolSetHash.value( ERASER )->properties.width/2), QPointF(m_toolSetHash.value( ERASER )->properties.width/2+2,m_toolSetHash.value( ERASER )->properties.width/2) );
-    painter.drawLine( QPointF(m_toolSetHash.value( ERASER )->properties.width/2,m_toolSetHash.value( ERASER )->properties.width/2-2), QPointF(m_toolSetHash.value( ERASER )->properties.width/2,m_toolSetHash.value( ERASER )->properties.width/2+2) );
-    painter.setRenderHints(QPainter::Antialiasing, true);
-    painter.setPen( QColor(0,0,0,100) );
-    painter.drawEllipse( QRectF(1,1,m_toolSetHash.value( ERASER )->properties.width-2,m_toolSetHash.value( ERASER )->properties.width-2) );
-    painter.end();
-    setCursor(pixmap); 
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::selectOn()
