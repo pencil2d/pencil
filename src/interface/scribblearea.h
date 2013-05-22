@@ -205,7 +205,6 @@ private:
 
     enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
 
-    ToolType toolMode;
     myMoveModes moveMode;
     ToolType prevMode;
 
