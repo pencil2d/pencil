@@ -127,13 +127,11 @@ linux-g++ {
 }
 RESOURCES += pencil.qrc
 QT += xml \
-opengl \
 phonon \
 core \
 gui \
 xmlpatterns \
 svg \
-opengl \
 script \
 qt3support
 
