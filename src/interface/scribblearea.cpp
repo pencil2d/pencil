@@ -3118,7 +3118,7 @@ void ScribbleArea::eyedropperOn()
     editor->setFollowContour(-1);
     
     // --- change cursor ---
-    
+    setCursor( currentTool()->cursor() );
 }
 
 
