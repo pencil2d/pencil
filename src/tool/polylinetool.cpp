@@ -15,3 +15,8 @@ void PolylineTool::loadSettings()
 {
 
 }
+
+QCursor PolylineTool::cursor()
+{
+    return Qt::CrossCursor;
+}

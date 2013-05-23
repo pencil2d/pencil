@@ -3073,7 +3073,7 @@ void ScribbleArea::polylineOn()
     editor->setPreserveAlpha(properties.preserveAlpha);
     editor->setFollowContour(-1);
     // --- change cursor ---
-    setCursor(Qt::CrossCursor);
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::bucketOn()
