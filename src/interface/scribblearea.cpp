@@ -69,9 +69,7 @@ void VectorSelection::add(QList<VertexRef> list)
 
 
 ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
-    : QWidget(parent)
-    //ScribbleArea::ScribbleArea(QWidget *parent, Editor* editor)
-    //    : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
+    : QWidget(parent)    
 {
     this->editor = editor;
     m_currentTool = NULL;
@@ -88,6 +86,8 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_toolSetHash.insert(POLYLINE, new PolylineTool);
     m_toolSetHash.insert(SELECT, new SelectTool);
     m_toolSetHash.insert(SMUDGE, new SmudgeTool);
+
+    pencilOn();
 
     QSettings settings("Pencil","Pencil");
 
@@ -117,7 +117,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     gradients = 2;
     if( settings.value("gradients").toString() != "") gradients = settings.value("gradients").toInt();;
 
-    pencilOn();
+
 
     tabletEraserBackupToolMode=-1;
     tabletInUse=false;
@@ -2938,8 +2938,8 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 
 void ScribbleArea::switchTool()
 {
-    if(currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
-    if(currentToolType() == POLYLINE) escape();
+    if (currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
+    if (currentToolType() == POLYLINE) escape();
 }
 
 
