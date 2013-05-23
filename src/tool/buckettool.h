@@ -11,6 +11,7 @@ public:
     explicit BucketTool(QObject *parent = 0);
     ToolType type();
     void loadSettings();
+    QCursor cursor();
 signals:
     
 public slots:

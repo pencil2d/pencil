@@ -1,3 +1,6 @@
+#include <QPixmap>
+#include <QPainter>
+#include "pencilsettings.h"
 #include "buckettool.h"
 
 BucketTool::BucketTool(QObject *parent) :
@@ -14,4 +17,22 @@ ToolType BucketTool::type()
 void BucketTool::loadSettings()
 {
 
+}
+
+QCursor BucketTool::cursor()
+{
+    if( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    {
+        QPixmap pixmap(":icons/bucketTool.png");
+        QPainter painter(&pixmap);
+        painter.setPen( properties.colour );
+        painter.drawLine( QPoint(5, 16), QPoint(5, 18) );
+        painter.end();
+
+        return QCursor(pixmap, 4, 20);
+    }
+    else
+    {
+        return Qt::CrossCursor;
+    }
 }

@@ -3096,20 +3096,7 @@ void ScribbleArea::bucketOn()
     editor->setPreserveAlpha(-1); // disable the button
     editor->setFollowContour(-1);
     // --- change cursor ---
-    if( pencilSettings()->value( kSettingToolCursor ).toBool() )
-    {
-        QPixmap pixmap(":icons/bucketTool.png");
-        QPainter painter(&pixmap);
-        painter.setPen( m_toolSetHash.value( BRUSH )->properties.colour );
-        painter.drawLine( QPoint(5,16), QPoint(5,18) );
-        painter.end();
-        QCursor cursor(pixmap,4,20);
-        setCursor(cursor);
-    }
-    else
-    {
-        setCursor(Qt::CrossCursor);
-    }
+    
 }
 
 void ScribbleArea::eyedropperOn()
