@@ -211,9 +211,13 @@ void ScribbleArea::setColour(const QColor colour)
     {
         m_toolSetHash[ PEN ]->properties.colour = colour;
     }
-    if(currentToolType() == BRUSH || currentToolType() == BUCKET)  // || currentTool() == EYEDROPPER) {
+    if(currentToolType() == BRUSH)  // || currentTool() == EYEDROPPER) {
     {
         m_toolSetHash.value( BRUSH )->properties.colour = colour;
+    }
+    if (currentToolType() == BUCKET )
+    {
+        m_toolSetHash.value( BUCKET )->properties.colour = colour;
     }
     if (currentToolType() == EYEDROPPER)
     {
@@ -3096,7 +3100,7 @@ void ScribbleArea::bucketOn()
     editor->setPreserveAlpha(-1); // disable the button
     editor->setFollowContour(-1);
     // --- change cursor ---
-    
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::eyedropperOn()
@@ -3114,26 +3118,7 @@ void ScribbleArea::eyedropperOn()
     editor->setFollowContour(-1);
     
     // --- change cursor ---
-    if (eyedropperCursor == NULL)
-    {
-        eyedropperCursor = new QPixmap(32,32);
-        eyedropperCursor->fill(Qt::white);
-        QPixmap* mask = new QPixmap(32,32);
-        mask->fill(Qt::color0);
-        QPainter painter(eyedropperCursor);
-        painter.drawLine(5,0,5,10);
-        painter.drawLine(0,5,10,5);
-        painter.end();
-        painter.begin(mask);
-        painter.setBrush(Qt::color1);
-        painter.setPen(Qt::color1);
-        painter.drawLine(5,0,5,10);
-        painter.drawLine(0,5,10,5);
-        painter.drawRect(10,10,20,20);
-        painter.end();
-        eyedropperCursor->setMask(*mask);
-    }
-    setCursor( QCursor(*eyedropperCursor, 5, 5) );
+    
 }
 
 
