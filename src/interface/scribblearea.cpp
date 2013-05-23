@@ -3137,32 +3137,8 @@ void ScribbleArea::brushOn()
     editor->setFollowContour(followContour);
     
     // --- change cursor ---
-    if (layer->type == Layer::VECTOR)
-    {
-        setCursor(Qt::CrossCursor);
-    }
-    if (layer->type == Layer::BITMAP)
-    {
-        //qreal width = m_toolSetHash.value( BRUSH )->properties.width*0.66;
-        qreal width = m_toolSetHash.value( BRUSH )->properties.width + 0.5*m_toolSetHash.value( BRUSH )->properties.feather;
-        QPixmap pixmap(width,width);
-        if(!pixmap.isNull())
-        {
-            pixmap.fill( QColor(255,255,255,0) );
-            QPainter painter(&pixmap);
-            painter.setPen( QColor(0,0,0,190) );
-            painter.setBrush( Qt::NoBrush );
-            painter.drawLine( QPointF(width/2-2,width/2), QPointF(width/2+2,width/2) );
-            painter.drawLine( QPointF(width/2,width/2-2), QPointF(width/2,width/2+2) );
-            painter.setRenderHints(QPainter::Antialiasing, true);
-            painter.setPen( QColor(0,0,0,100) );
-            painter.drawEllipse( QRectF(1+m_toolSetHash.value( BRUSH )->properties.feather/2,1+m_toolSetHash.value( BRUSH )->properties.feather/2,qMax(0.0,m_toolSetHash.value( BRUSH )->properties.width-m_toolSetHash.value( BRUSH )->properties.feather/2-2),qMax(0.0,m_toolSetHash.value( BRUSH )->properties.width-m_toolSetHash.value( BRUSH )->properties.feather/2-2)) );
-            painter.setPen( QColor(0,0,0,50) );
-            painter.drawEllipse( QRectF(1+m_toolSetHash.value( BRUSH )->properties.feather/8,1+m_toolSetHash.value( BRUSH )->properties.feather/8,qMax(0.0,width-m_toolSetHash.value( BRUSH )->properties.feather/4-2),qMax(0.0,width-m_toolSetHash.value( BRUSH )->properties.feather/4-2)) );
-            painter.end();
-        }
-        setCursor(pixmap);
-    }
+    
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::smudgeOn()
