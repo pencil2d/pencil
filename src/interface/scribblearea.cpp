@@ -87,6 +87,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_toolSetHash.insert(SELECT, new SelectTool);
     m_toolSetHash.insert(SMUDGE, new SmudgeTool);
 
+    m_currentTool = m_toolSetHash.value( PENCIL );
     pencilOn();
 
     QSettings settings("Pencil","Pencil");
@@ -2933,19 +2934,17 @@ BaseTool* ScribbleArea::currentTool()
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    m_currentTool = m_toolSetHash.value( eToolMode );
+    if ( eToolMode != m_currentTool->type() )
+    {
+        qDebug() << "Set Current Tool" << typeName(eToolMode);
+        if (currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
+        if (currentToolType() == POLYLINE) escape();
+        m_currentTool = m_toolSetHash.value( eToolMode );
+    }
 }
-
-void ScribbleArea::switchTool()
-{
-    if (currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
-    if (currentToolType() == POLYLINE) escape();
-}
-
 
 void ScribbleArea::pencilOn()
-{
-    switchTool();
+{    
     setCurrentTool( PENCIL );
     // --- change properties ---
 
@@ -2967,8 +2966,7 @@ void ScribbleArea::pencilOn()
 }
 
 void ScribbleArea::penOn()
-{
-    switchTool();
+{    
     setCurrentTool( PEN );
 
     // --- change properties ---
@@ -2992,8 +2990,7 @@ void ScribbleArea::penOn()
 }
 
 void ScribbleArea::eraserOn()
-{
-    switchTool();
+{    
     setCurrentTool( ERASER );
     
     // --- change properties ---
@@ -3013,8 +3010,7 @@ void ScribbleArea::eraserOn()
 }
 
 void ScribbleArea::selectOn()
-{
-    switchTool();
+{    
     setCurrentTool( SELECT );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
@@ -3061,8 +3057,7 @@ void ScribbleArea::handOn()
 }
 
 void ScribbleArea::polylineOn()
-{
-    switchTool();
+{    
     setCurrentTool( POLYLINE );
     // --- change properties ---
 
@@ -3083,8 +3078,7 @@ void ScribbleArea::polylineOn()
 }
 
 void ScribbleArea::bucketOn()
-{
-    switchTool();
+{    
     setCurrentTool( BUCKET );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
@@ -3107,7 +3101,6 @@ void ScribbleArea::bucketOn()
 
 void ScribbleArea::eyedropperOn()
 {
-    switchTool();
     setCurrentTool( EYEDROPPER );
     // --- change properties ---
     editor->setWidth(-1);
@@ -3125,8 +3118,7 @@ void ScribbleArea::eyedropperOn()
 
 
 void ScribbleArea::brushOn()
-{
-    switchTool();
+{    
     setCurrentTool( BRUSH );
     // --- change properties ---
     Layer* layer = editor->getCurrentLayer();
@@ -3145,7 +3137,6 @@ void ScribbleArea::brushOn()
 
 void ScribbleArea::smudgeOn()
 {
-    switchTool();
     setCurrentTool( EDIT );
     // --- change properties ---
     editor->setWidth(-1);

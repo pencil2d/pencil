@@ -207,7 +207,6 @@ private:
     myMoveModes moveMode;
     ToolType prevMode;
 
-    void switchTool();
     ToolType currentToolType();
     BaseTool* currentTool();
     void setCurrentTool(ToolType eToolMode);
