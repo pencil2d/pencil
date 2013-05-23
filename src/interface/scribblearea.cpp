@@ -171,22 +171,27 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
 
 void ScribbleArea::setColour(const int i)
 {
-    if(currentToolType() == PENCIL)
+    if (currentToolType() == PENCIL)
     {
         m_toolSetHash.value( PENCIL )->properties.colourNumber = i;
         m_toolSetHash.value( PENCIL )->properties.colour = editor->object->getColour(i).colour;
     }
-    if(currentToolType() == PEN || currentToolType() == POLYLINE)
+    else if (currentToolType() == PEN || currentToolType() == POLYLINE)
     {
         m_toolSetHash[ PEN ]->properties.colourNumber = i;
         m_toolSetHash[ PEN ]->properties.colour = editor->object->getColour(i).colour;
     }
-    if(currentToolType() == BUCKET || currentToolType() == BRUSH)
+    else if ( currentToolType() == BRUSH )
     {
         m_toolSetHash.value( BRUSH )->properties.colourNumber = i;
         m_toolSetHash.value( BRUSH )->properties.colour = editor->object->getColour(i).colour;
     }
-    if (currentToolType() == EYEDROPPER)
+    else if ( currentToolType() == BUCKET )
+    {
+        m_toolSetHash.value( BUCKET )->properties.colourNumber = i;
+        m_toolSetHash.value( BUCKET )->properties.colour = editor->object->getColour(i).colour;
+    }
+    else if (currentToolType() == EYEDROPPER)
     {
         m_toolSetHash.value( PENCIL )->properties.colourNumber = i;
         m_toolSetHash.value( PENCIL )->properties.colour = editor->object->getColour(i).colour;
@@ -237,22 +242,22 @@ void ScribbleArea::resetColours()
 void ScribbleArea::setWidth(const qreal newWidth)
 {
     QSettings settings("Pencil","Pencil");
-    if(currentToolType() == PENCIL)
+    if (currentToolType() == PENCIL)
     {
         m_toolSetHash.value( PENCIL )->properties.width = newWidth;
         settings.setValue("pencilWidth", newWidth);
     }
-    if(currentToolType() == ERASER)
+    else if (currentToolType() == ERASER)
     {
         m_toolSetHash.value( ERASER )->properties.width = newWidth;
         settings.setValue("eraserWidth", newWidth);
     }
-    if(currentToolType() == PEN || currentToolType() == POLYLINE)
+    else if (currentToolType() == PEN || currentToolType() == POLYLINE)
     {
         m_toolSetHash[ PEN ]->properties.width = newWidth;
         settings.setValue("penWidth", newWidth);
     }
-    if(currentToolType() == BRUSH)
+    else if (currentToolType() == BRUSH)
     {
         m_toolSetHash.value( BRUSH )->properties.width = newWidth;
         settings.setValue("brushWidth", newWidth);
@@ -269,12 +274,12 @@ void ScribbleArea::setFeather(const qreal newFeather)
         m_toolSetHash.value( PENCIL )->properties.feather = newFeather;
         settings.setValue("pencilOpacity", newFeather);
     }
-    if(currentToolType() == PEN || currentToolType() == POLYLINE)
+    else if(currentToolType() == PEN || currentToolType() == POLYLINE)
     {
         m_toolSetHash[ PEN ]->properties.feather = newFeather;
         settings.setValue("penOpacity", newFeather);
     }
-    if(currentToolType() == BRUSH)
+    else if(currentToolType() == BRUSH)
     {
         m_toolSetHash.value( BRUSH )->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
