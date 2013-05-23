@@ -244,7 +244,6 @@ private:
     QBrush backgroundBrush;
     BitmapImage* bufferImg; // used to pre-draw vector modifications
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
-    QPixmap* eyedropperCursor;
 
     bool mouseInUse;
     QList<QPointF> mousePoints; // copy of points clicked using polyline tool

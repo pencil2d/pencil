@@ -143,7 +143,6 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     background = "white";
     setBackgroundBrush(background);
     bufferImg = new BitmapImage(NULL);
-    eyedropperCursor = NULL;
 
     QRect newSelection(QPoint(0,0), QSize(0,0));
     mySelection =  newSelection;
@@ -2227,12 +2226,13 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
 
 void ScribbleArea::drawEyedropperPreview(const QColor colour)
 {
-    QPainter painter( eyedropperCursor );
+    QPixmap cursorPixmap;
+    QPainter painter( &cursorPixmap );
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     painter.setBrush(colour);
     painter.drawRect( 10, 10, 20, 20);
     painter.end();
-    setCursor( QCursor(*eyedropperCursor, 5, 5) );
+    setCursor( QCursor(cursorPixmap, 5, 5) );
     update();
 }
 
