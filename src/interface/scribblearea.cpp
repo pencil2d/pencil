@@ -350,25 +350,19 @@ void ScribbleArea::setPressure(const bool pressure)
 }
 
 void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
-{
-    QSettings settings("Pencil","Pencil");
+{    
     if(currentToolType() == PENCIL)
     {
-        m_toolSetHash.value( PENCIL )->properties.preserveAlpha = preserveAlpha;
-        //settings.setValue("pencilCompositionMode", preserveAlpha);
+        m_toolSetHash.value( PENCIL )->properties.preserveAlpha = preserveAlpha;        
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
     {
-        m_toolSetHash[ PEN ]->properties.preserveAlpha = preserveAlpha;
-        //settings.setValue("penCompositionMode", preserveAlpha);
+        m_toolSetHash[ PEN ]->properties.preserveAlpha = preserveAlpha;        
     }
     if(currentToolType() == BRUSH)
     {
-        m_toolSetHash.value( BRUSH )->properties.preserveAlpha = preserveAlpha;
-        //settings.setValue("brushCompositionMode", preserveAlpha);
-    }
-    //this->preserveAlpha = preserveAlpha;
-    //updateAllFrames();
+        m_toolSetHash.value( BRUSH )->properties.preserveAlpha = preserveAlpha;        
+    }    
 }
 
 void ScribbleArea::setFollowContour(const bool followContour)
@@ -2449,9 +2443,12 @@ void ScribbleArea::calculateSelectionTransformation()
 void ScribbleArea::paintTransformedSelection()
 {
     Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
+    if (layer == NULL)
+    {
+        return;
+    }
 
-    if(somethingSelected)    // there is something selected
+    if (somethingSelected)    // there is something selected
     {
         if(layer->type == Layer::BITMAP && (myTransformedSelection != mySelection) )
         {

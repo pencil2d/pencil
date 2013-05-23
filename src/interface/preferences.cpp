@@ -323,8 +323,7 @@ TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* timeLineBox = new QGroupBox(tr("Timeline"));
-    QCheckBox* drawLabel = new QCheckBox(tr("Draw timeline labels"));
-    QLabel* fontSizeLabel = new QLabel(tr("Labels font size"));
+    QCheckBox* drawLabel = new QCheckBox(tr("Draw timeline labels"));    
     QSpinBox* fontSize = new QSpinBox();
     QLabel* frameSizeLabel = new QLabel(tr("Frame size in Pixels"));
     QSpinBox* frameSize = new QSpinBox(this);

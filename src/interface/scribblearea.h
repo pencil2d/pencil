@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QImage>
 #include <QPoint>
 #include <QWidget>
-#include <QGLWidget>
 #include <QFrame>
 #include <QHash>
 #include "vectorimage.h"
