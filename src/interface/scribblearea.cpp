@@ -3051,8 +3051,7 @@ void ScribbleArea::handOn()
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
     // --- change cursor ---
-    QPixmap pixmap(":icons/hand.png");
-    setCursor(pixmap); //setCursor(Qt::PointingHandCursor);
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::polylineOn()

@@ -11,6 +11,7 @@ public:
     HandTool();
     ToolType type();
     void loadSettings();
+    QCursor cursor();
 };
 
 #endif
