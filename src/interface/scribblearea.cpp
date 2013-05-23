@@ -3122,7 +3122,7 @@ void ScribbleArea::eyedropperOn()
 }
 
 
-void ScribbleArea::colouringOn()
+void ScribbleArea::brushOn()
 {
     switchTool();
     setCurrentTool( BRUSH );
@@ -3316,7 +3316,7 @@ void ScribbleArea::setPrevMode()
         eyedropperOn();
         break;
     case BRUSH:
-        colouringOn();
+        brushOn();
         break;
     default:
         break;

@@ -142,7 +142,7 @@ void Editor::makeConnections()
     connect(toolSet, SIGNAL(polylineClick()), scribbleArea, SLOT(polylineOn()));
     connect(toolSet, SIGNAL(bucketClick()), scribbleArea, SLOT(bucketOn()));
     connect(toolSet, SIGNAL(eyedropperClick()), scribbleArea, SLOT(eyedropperOn()));
-    connect(toolSet, SIGNAL(colouringClick()), scribbleArea, SLOT(colouringOn()));
+    connect(toolSet, SIGNAL(colouringClick()), scribbleArea, SLOT(brushOn()));
     connect(toolSet, SIGNAL(smudgeClick()), scribbleArea, SLOT(smudgeOn()));
     connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
 
@@ -2414,7 +2414,7 @@ void Editor::eyedropper_clicked()
 }
 void Editor::color_clicked()
 {
-    scribbleArea->colouringOn();
+    scribbleArea->brushOn();
     toolSet->changeColouringButton();
 }
 void Editor::smudge_clicked()

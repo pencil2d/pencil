@@ -130,7 +130,7 @@ public slots:
     void polylineOn();
     void bucketOn();
     void eyedropperOn();
-    void colouringOn();
+    void brushOn();
     void smudgeOn();
 
     void resetView();
