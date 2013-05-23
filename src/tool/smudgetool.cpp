@@ -1,3 +1,4 @@
+#include <QPixmap>
 #include "smudgetool.h"
 
 SmudgeTool::SmudgeTool(QObject *parent) :
@@ -13,4 +14,9 @@ ToolType SmudgeTool::type()
 void SmudgeTool::loadSettings()
 {
 
+}
+
+QCursor SmudgeTool::cursor()
+{
+    return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
 }

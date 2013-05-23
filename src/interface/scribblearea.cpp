@@ -3179,8 +3179,7 @@ void ScribbleArea::smudgeOn()
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
     // --- change cursor ---
-    QCursor cursor(QPixmap(":icons/smudge.png"),3,16);
-    setCursor(cursor); //setCursor(Qt::ArrowCursor);
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::deleteSelection()
