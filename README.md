@@ -2,9 +2,9 @@
 
 Pencil is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics. Pencil is free and open source.
 
-* Download Link: [https://bitbucket.org/chchwy/pencil/downloads](https://bitbucket.org/chchwy/pencil/downloads)
-* Report Bugs: [https://bitbucket.org/chchwy/pencil/issues](https://bitbucket.org/chchwy/pencil/issues)
-* Official Site: [http://www.pencil-animation.org/](http://www.pencil-animation.org/)
+* [Download pencil](https://bitbucket.org/chchwy/pencil/downloads)
+* [Report Bugs](https://bitbucket.org/chchwy/pencil/issues)
+* Pencil Official Site: [http://www.pencil-animation.org/](http://www.pencil-animation.org/)
 
 
 ----------------------------------------------------------------
