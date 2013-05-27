@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 #include <QtGui>
+#include <QHashIterator>
 #include <math.h>
 
 #include "beziercurve.h"
@@ -86,6 +87,13 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_toolSetHash.insert(POLYLINE, new PolylineTool);
     m_toolSetHash.insert(SELECT, new SelectTool);
     m_toolSetHash.insert(SMUDGE, new SmudgeTool);
+
+    QHashIterator<ToolType, BaseTool*> i(m_toolSetHash);
+    while (i.hasNext())
+    {
+        i.next();
+        i.value()->setEditor(editor);
+    }
 
     m_currentTool = m_toolSetHash.value( PENCIL );
     pencilOn();
@@ -658,9 +666,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
     mousePressure.append(tabletPressure);
     adjustPressureSensitiveProperties(tabletPressure, event->pointerType() == QTabletEvent::Cursor);
     if(event->pointerType() == QTabletEvent::Eraser)
-    {
-        //if(tabletEraser == false) eraserOn();
-        //tabletEraser = true;
+    {        
         if(tabletEraserBackupToolMode == -1)
         {
             tabletEraserBackupToolMode = currentToolType(); // memorise which tool was being used before switching to the eraser
@@ -668,9 +674,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
         }
     }
     else
-    {
-        //if(tabletEraser == true) pencilOn();
-        //tabletEraser = false;
+    {        
         if(tabletEraserBackupToolMode != -1)   // restore the tool in use
         {
             switch(tabletEraserBackupToolMode)
@@ -729,17 +733,14 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     static const QString myToolModesDescription[] = {"Pencil","Eraser","Select","Move","Edit","Hand","Smudge","Pen","Polyline","Bucket","Eyedropper","Colouring"};
 
     mouseInUse = true;
-    /*if(!tabletInUse) { // a mouse is used instead of a tablet
-        tabletPressure = 1.0;
-        adjustPressureSensitiveProperties(1.0, true);
-    }*/
-    if(!tabletInUse)   // a mouse is used instead of a tablet
+
+    if (!tabletInUse)   // a mouse is used instead of a tablet
     {
         tabletPressure = 1.0;
         adjustPressureSensitiveProperties(1.0, true);
 
         //----------------code for starting hand tool when middle mouse is pressed
-        if(event->buttons() & Qt::MidButton)
+        if (event->buttons() & Qt::MidButton)
         {
             //qDebug() << "Hand Start " << event->pos();
             prevMode = currentToolType();

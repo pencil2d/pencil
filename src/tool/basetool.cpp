@@ -1,5 +1,5 @@
 #include "basetool.h"
-
+#include "editor.h"
 
 QString typeName(ToolType type)
 {
@@ -34,4 +34,13 @@ BaseTool::BaseTool(QObject *parent) :
 QCursor BaseTool::cursor()
 {
     return Qt::ArrowCursor;
+}
+
+void BaseTool::setEditor(Editor* editor)
+{
+    if (editor == NULL)
+    {
+        qCritical("ERROR: editor is null!");
+    }
+    m_pEditor = editor;
 }

@@ -8,6 +8,10 @@
 #include <QCursor>
 
 
+
+class Editor;
+
+
 enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, BRUSH };
 
 QString typeName( ToolType );
@@ -38,11 +42,15 @@ public:
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
+
+    void setEditor(Editor* editor);
     Properties properties;
 signals:
 
     public slots:
 
+private:
+    Editor* m_pEditor;
 };
 
 #endif // BASETOOL_H
