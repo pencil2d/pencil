@@ -109,6 +109,7 @@ signals:
 
     void pencilOn();
     void eraserOn();
+    void selectOn();
 
 public slots:
     void clearImage();
@@ -126,7 +127,6 @@ public slots:
     //void pressureSlot(int);
     //void invisibleSlot(int);
 
-    void selectOn();
     void moveOn();
     void handOn();    
     void penOn();

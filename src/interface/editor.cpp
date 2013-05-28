@@ -135,8 +135,8 @@ void Editor::makeConnections()
     //connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
     connect(scribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
     connect(scribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
+    connect(scribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
 
-    connect(toolSet, SIGNAL(selectClick()), scribbleArea, SLOT(selectOn()));
     connect(toolSet, SIGNAL(moveClick()), scribbleArea, SLOT(moveOn()));
     connect(toolSet, SIGNAL(handClick()), scribbleArea, SLOT(handOn()));
     connect(toolSet, SIGNAL(penClick()), scribbleArea, SLOT(penOn()));
@@ -869,7 +869,7 @@ void Editor::inbetweenV()
         if(layer->type == Layer::VECTOR)
         {
             scribbleArea->moveOn();
-            scribbleArea->selectOn();
+            toolSet->selectOn();
             scribbleArea->selectAll();
             clipboardVectorOk = true;
             clipboardVectorImage = *(  ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)  );  // copy the image (that works but I should also provide a copy() method)
@@ -2385,7 +2385,7 @@ void Editor::eraser_clicked()
 }
 void Editor::select_clicked()
 {
-    scribbleArea->selectOn();
+    //scribbleArea->selectOn();
     toolSet->changeSelectButton();
 }
 void Editor::hand_clicked()

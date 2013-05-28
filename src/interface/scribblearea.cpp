@@ -1182,7 +1182,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
 
                 // we switch to the select tool
                 editor->toolSet->changeSelectButton();
-                selectOn();
+                emit selectOn();
                 moveMode = ScribbleArea::MIDDLE;
                 mySelection.setTopLeft( lastPoint );
                 mySelection.setBottomRight( lastPoint );
@@ -2967,20 +2967,6 @@ void ScribbleArea::penOn()
     editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
 }
 
-void ScribbleArea::selectOn()
-{    
-    setCurrentTool( SELECT );
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
 void ScribbleArea::moveOn()
 {
     setCurrentTool( MOVE );
@@ -3198,7 +3184,7 @@ void ScribbleArea::setPrevMode()
         emit eraserOn();
         break;
     case SELECT:
-        selectOn();
+        emit selectOn();
         break;
     case MOVE:
         moveOn();
