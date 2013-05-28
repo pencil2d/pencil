@@ -51,6 +51,7 @@ public slots:
     void changeSmudgeButton();
 
     void pencilOn();
+    void eraserOn();
 
 signals:
     void pencilClick();

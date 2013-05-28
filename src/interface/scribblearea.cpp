@@ -670,7 +670,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
         if(tabletEraserBackupToolMode == -1)
         {
             tabletEraserBackupToolMode = currentToolType(); // memorise which tool was being used before switching to the eraser
-            eraserOn();
+            emit eraserOn();
         }
     }
     else
@@ -2967,23 +2967,6 @@ void ScribbleArea::penOn()
     editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
 }
 
-void ScribbleArea::eraserOn()
-{    
-    setCurrentTool( ERASER );
-    
-    // --- change properties ---
-    editor->setWidth(m_toolSetHash.value( ERASER )->properties.width);
-    editor->setFeather(m_toolSetHash.value( ERASER )->properties.feather);
-    editor->setPressure(m_toolSetHash.value( ERASER )->properties.pressure);
-    editor->setPreserveAlpha(0);
-    editor->setInvisibility(0);
-    
-    editor->setFeather(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-    editor->setInvisibility(-1);
-}
-
 void ScribbleArea::selectOn()
 {    
     setCurrentTool( SELECT );
@@ -3212,7 +3195,7 @@ void ScribbleArea::setPrevMode()
         emit pencilOn();
         break;
     case ERASER:
-        eraserOn();
+        emit eraserOn();
         break;
     case SELECT:
         selectOn();

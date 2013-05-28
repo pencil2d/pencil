@@ -134,8 +134,8 @@ void Editor::makeConnections()
 {
     //connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
     connect(scribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
+    connect(scribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
 
-    connect(toolSet, SIGNAL(eraserClick()), scribbleArea, SLOT(eraserOn()));
     connect(toolSet, SIGNAL(selectClick()), scribbleArea, SLOT(selectOn()));
     connect(toolSet, SIGNAL(moveClick()), scribbleArea, SLOT(moveOn()));
     connect(toolSet, SIGNAL(handClick()), scribbleArea, SLOT(handOn()));
@@ -2380,7 +2380,7 @@ void Editor::pencil_clicked()
 }
 void Editor::eraser_clicked()
 {
-    scribbleArea->eraserOn();
+    //scribbleArea->eraserOn();
     toolSet->changeEraserButton();
 }
 void Editor::select_clicked()

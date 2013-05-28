@@ -108,6 +108,7 @@ signals:
     void onionNextChanged(bool);
 
     void pencilOn();
+    void eraserOn();
 
 public slots:
     void clearImage();
@@ -125,8 +126,6 @@ public slots:
     //void pressureSlot(int);
     //void invisibleSlot(int);
 
-
-    void eraserOn();
     void selectOn();
     void moveOn();
     void handOn();    

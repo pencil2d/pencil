@@ -153,11 +153,11 @@ ToolSet::ToolSet(Editor* editor)
     drawPalette->setMaximumHeight(200);
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
+    connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));
 
     connect(selectButton, SIGNAL(clicked()), this, SIGNAL(selectClick()));
     connect(moveButton, SIGNAL(clicked()), this, SIGNAL(moveClick()));
-    connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));
-    connect(eraserButton, SIGNAL(clicked()), this, SIGNAL(eraserClick()));
+    connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));    
     connect(penButton, SIGNAL(clicked()), this, SIGNAL(penClick()));
     connect(polylineButton, SIGNAL(clicked()), this, SIGNAL(polylineClick()));
     connect(bucketButton, SIGNAL(clicked()), this, SIGNAL(bucketClick()));
@@ -188,8 +188,7 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
 }
 
 void ToolSet::pencilOn()
-{
-    qDebug("KERKER pencil test!");
+{    
     m_pEditor->getScribbleArea()->setCurrentTool( PENCIL );
 
     // --- change properties ---
@@ -206,6 +205,24 @@ void ToolSet::pencilOn()
     m_pEditor->setPreserveAlpha(pBaseTool->properties.preserveAlpha);
     m_pEditor->setFollowContour(-1);
     m_pEditor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
+}
+
+void ToolSet::eraserOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( ERASER );
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+    // --- change properties ---
+    m_pEditor->setWidth(pCurrentTool->properties.width);
+    m_pEditor->setFeather(pCurrentTool->properties.feather);
+    m_pEditor->setPressure(pCurrentTool->properties.pressure);
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setInvisibility(0);
+
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+    m_pEditor->setInvisibility(-1);
 }
 
 void ToolSet::changePencilButton()
