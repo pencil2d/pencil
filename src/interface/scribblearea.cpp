@@ -2940,8 +2940,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         qDebug() << "Set Current Tool" << typeName(eToolMode);
         if (currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
         if (currentToolType() == POLYLINE) escape();
-        m_currentTool = m_toolSetHash.value( eToolMode );
+        m_currentTool = m_toolSetHash.value( eToolMode );               
     }
+    // --- change cursor ---
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::pencilOn()
@@ -2961,9 +2963,6 @@ void ScribbleArea::pencilOn()
     editor->setPreserveAlpha(m_toolSetHash.value( PENCIL )->properties.preserveAlpha);
     editor->setFollowContour(-1);
     editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
-
 }
 
 void ScribbleArea::penOn()
@@ -2985,9 +2984,6 @@ void ScribbleArea::penOn()
         editor->setColour(m_toolSetHash[ PEN ]->properties.colour);
     }
     editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
-    
-    // --- change cursor ---    
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::eraserOn()
@@ -3005,9 +3001,6 @@ void ScribbleArea::eraserOn()
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
     editor->setInvisibility(-1);
-    
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::selectOn()
@@ -3022,10 +3015,6 @@ void ScribbleArea::selectOn()
     editor->setInvisibility(-1);
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
-    
-    // --- change cursor ---
-    if(layer->type == Layer::VECTOR) setCursor(Qt::ArrowCursor);
-    if(layer->type == Layer::BITMAP) setCursor(Qt::CrossCursor);
 }
 
 void ScribbleArea::moveOn()
@@ -3038,8 +3027,6 @@ void ScribbleArea::moveOn()
     editor->setInvisibility(-1);
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::handOn()
@@ -3053,8 +3040,6 @@ void ScribbleArea::handOn()
     editor->setInvisibility(-1);
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::polylineOn()
@@ -3074,8 +3059,6 @@ void ScribbleArea::polylineOn()
     editor->setInvisibility(properties.invisibility);
     editor->setPreserveAlpha(properties.preserveAlpha);
     editor->setFollowContour(-1);
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::bucketOn()
@@ -3096,8 +3079,6 @@ void ScribbleArea::bucketOn()
     editor->setPreserveAlpha(0);
     editor->setPreserveAlpha(-1); // disable the button
     editor->setFollowContour(-1);
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::eyedropperOn()
@@ -3113,8 +3094,6 @@ void ScribbleArea::eyedropperOn()
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
     
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 
@@ -3130,10 +3109,6 @@ void ScribbleArea::brushOn()
     editor->setToolProperties(m_toolSetHash.value( BRUSH )->properties);
     editor->setInvisibility(-1);
     editor->setFollowContour(followContour);
-    
-    // --- change cursor ---
-    
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::smudgeOn()
@@ -3148,8 +3123,6 @@ void ScribbleArea::smudgeOn()
     editor->setPreserveAlpha(0);
     editor->setPreserveAlpha(-1);
     editor->setFollowContour(-1);
-    // --- change cursor ---
-    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::deleteSelection()

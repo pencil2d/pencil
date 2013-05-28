@@ -75,12 +75,10 @@ public:
     bool isModified() const { return modified; }
 
     static QBrush getBackgroundBrush(QString);
-    //QColor penColour() const { return myPenColour; }
-    //double pencilWidth() const { return myPencilWidth; }
-    //double penWidth() const { return myPenWidth; }
-    //double brushWidth() const { return myBrushWidth; }
+
     bool thinLines() const { return showThinLines; }
     int allLayers() const { return showAllLayers; }
+
     QMatrix getView();
     QRectF getViewRect();
     QPointF getCentralPoint();
@@ -94,6 +92,11 @@ public:
     bool getUpdateAll() {return updateAll;}
 
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+
+    ToolType currentToolType();
+    BaseTool* currentTool();
+    void setCurrentTool(ToolType eToolMode);
+
 signals:
     void modification();
     void modification(int);
@@ -207,9 +210,6 @@ private:
     myMoveModes moveMode;
     ToolType prevMode;
 
-    ToolType currentToolType();
-    BaseTool* currentTool();
-    void setCurrentTool(ToolType eToolMode);
     BaseTool* m_currentTool;
     QHash<ToolType, BaseTool*> m_toolSetHash;
 
