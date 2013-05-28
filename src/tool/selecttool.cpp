@@ -15,3 +15,8 @@ void SelectTool::loadSettings()
 {
 
 }
+
+QCursor SelectTool::cursor()
+{
+    return Qt::CrossCursor;
+}

@@ -11,6 +11,7 @@ public:
     SelectTool();
     ToolType type();
     void loadSettings();
+    QCursor cursor();
 };
 
 #endif
