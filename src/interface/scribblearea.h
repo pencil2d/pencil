@@ -107,6 +107,8 @@ signals:
     void onionPrevChanged(bool);
     void onionNextChanged(bool);
 
+    void pencilOn();
+
 public slots:
     void clearImage();
     void calculateSelectionRect();
@@ -123,7 +125,7 @@ public slots:
     //void pressureSlot(int);
     //void invisibleSlot(int);
 
-    void pencilOn();
+
     void eraserOn();
     void selectOn();
     void moveOn();

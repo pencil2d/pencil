@@ -97,7 +97,7 @@ Editor::Editor(MainWindow* parent)
     scribbleArea = new ScribbleArea(this, this);
     timeLine = new TimeLine(this, this);
     timeControl = new TimeControls();
-    toolSet = new ToolSet();
+    toolSet = new ToolSet(this);
 
     mainLayout->addWidget(scribbleArea);
 
@@ -132,7 +132,9 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
+    //connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
+    connect(scribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
+
     connect(toolSet, SIGNAL(eraserClick()), scribbleArea, SLOT(eraserOn()));
     connect(toolSet, SIGNAL(selectClick()), scribbleArea, SLOT(selectOn()));
     connect(toolSet, SIGNAL(moveClick()), scribbleArea, SLOT(moveOn()));
@@ -2373,7 +2375,7 @@ void Editor::clear_clicked()
 }
 void Editor::pencil_clicked()
 {
-    scribbleArea->pencilOn();
+    //scribbleArea->pencilOn();
     toolSet->changePencilButton();
 }
 void Editor::eraser_clicked()

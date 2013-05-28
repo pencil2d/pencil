@@ -96,7 +96,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     }
 
     m_currentTool = m_toolSetHash.value( PENCIL );
-    pencilOn();
+    emit pencilOn();
 
     QSettings settings("Pencil","Pencil");
 
@@ -680,13 +680,13 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
             switch(tabletEraserBackupToolMode)
             {
             case PENCIL:
-                pencilOn();
+                emit pencilOn();
                 break;
             case PEN:
                 penOn();
                 break;
             default:
-                pencilOn();
+                emit pencilOn();
             }
             tabletEraserBackupToolMode = -1;
         }
@@ -2946,25 +2946,6 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     setCursor( currentTool()->cursor() );
 }
 
-void ScribbleArea::pencilOn()
-{    
-    setCurrentTool( PENCIL );
-    // --- change properties ---
-
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( PENCIL )->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( PENCIL )->properties.colour);
-
-    editor->setWidth(m_toolSetHash.value( PENCIL )->properties.width);
-    editor->setFeather(m_toolSetHash.value( PENCIL )->properties.feather);
-    editor->setFeather(-1); // by definition the pencil has no feather
-    editor->setPressure(m_toolSetHash.value( PENCIL )->properties.pressure);
-    editor->setPreserveAlpha(m_toolSetHash.value( PENCIL )->properties.preserveAlpha);
-    editor->setFollowContour(-1);
-    editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
-}
-
 void ScribbleArea::penOn()
 {    
     setCurrentTool( PEN );
@@ -3228,7 +3209,7 @@ void ScribbleArea::setPrevMode()
     switch(currentToolType())
     {
     case PENCIL:
-        pencilOn();
+        emit pencilOn();
         break;
     case ERASER:
         eraserOn();

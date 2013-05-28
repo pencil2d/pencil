@@ -18,13 +18,15 @@ GNU General Public License for more details.
 #include "spinslider.h"
 #include "tooloptiondockwidget.h"
 #include "toolset.h"
-
-
+#include "editor.h"
+#include "basetool.h"
 
 // ----------------------------------------------------------------------------------
 
-ToolSet::ToolSet()
+ToolSet::ToolSet(Editor* editor)
 {
+    m_pEditor = editor;
+
     drawPalette = new QDockWidget(tr("Tools"));
 
     QFrame* drawGroup = new QFrame();
@@ -150,7 +152,8 @@ ToolSet::ToolSet()
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
 
-    connect(pencilButton, SIGNAL(clicked()), this, SIGNAL(pencilClick()));
+    connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
+
     connect(selectButton, SIGNAL(clicked()), this, SIGNAL(selectClick()));
     connect(moveButton, SIGNAL(clicked()), this, SIGNAL(moveClick()));
     connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));
@@ -182,6 +185,27 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton->setAutoRaise(true);
     toolButton->setIconSize( QSize(24,24) );
     toolButton->setFixedSize(32,32);
+}
+
+void ToolSet::pencilOn()
+{
+    qDebug("KERKER pencil test!");
+    m_pEditor->getScribbleArea()->setCurrentTool( PENCIL );
+
+    // --- change properties ---
+    BaseTool* pBaseTool = m_pEditor->getScribbleArea()->currentTool();
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL) return;
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pBaseTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pBaseTool->properties.colour);
+
+    m_pEditor->setWidth(pBaseTool->properties.width);
+    m_pEditor->setFeather(pBaseTool->properties.feather);
+    m_pEditor->setFeather(-1); // by definition the pencil has no feather
+    m_pEditor->setPressure(pBaseTool->properties.pressure);
+    m_pEditor->setPreserveAlpha(pBaseTool->properties.preserveAlpha);
+    m_pEditor->setFollowContour(-1);
+    m_pEditor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
 }
 
 void ToolSet::changePencilButton()
