@@ -175,7 +175,6 @@ public slots:
 
     void resetUI();
 
-    //void newObject();
     void setObject(Object* object);
 
     void updateObject();

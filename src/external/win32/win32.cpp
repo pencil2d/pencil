@@ -45,9 +45,12 @@ void initialise()
     qDebug() << "Initialize win32: <nothing, for now>";
     // Phonon capabilities
     QStringList mimeTypes = Phonon::BackendCapabilities::availableMimeTypes();
+    /*
     foreach (QString mimeType, mimeTypes)
-    {if (mimeType.contains("audio")) qDebug() << "Phonon capability: " << mimeType;}
-
+    {
+        if (mimeType.contains("audio")) qDebug() << "Phonon capability: " << mimeType;
+    }
+    */
     // QImageReader capabilities
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
     foreach (QString format, formats)

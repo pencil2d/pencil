@@ -100,7 +100,6 @@ Editor::Editor(MainWindow* parent)
     toolSet = new ToolSet();
 
     mainLayout->addWidget(scribbleArea);
-    //mainLayout->addWidget(toolSet);
 
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
