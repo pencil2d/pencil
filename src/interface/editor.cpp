@@ -141,7 +141,7 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(polylineOn()), toolSet, SLOT(polylineOn()));
     connect(scribbleArea, SIGNAL(bucketOn()), toolSet, SLOT(bucketOn()));
     connect(scribbleArea, SIGNAL(eyedropperOn()), toolSet, SLOT(eyedropperOn()));
-    connect(scribbleArea, SIGNAL(colouringOn()), toolSet, SLOT(brushOn()));
+    connect(scribbleArea, SIGNAL(brushOn()), toolSet, SLOT(brushOn()));
     connect(scribbleArea, SIGNAL(smudgeOn()), toolSet, SLOT(smudgeOn()));
 
     connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));

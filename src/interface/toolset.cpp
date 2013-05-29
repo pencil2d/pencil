@@ -157,13 +157,13 @@ ToolSet::ToolSet(Editor* editor)
     connect(selectButton, SIGNAL(clicked()), this, SLOT(selectOn()));
     connect(moveButton, SIGNAL(clicked()), this, SLOT(moveOn()));
     connect(penButton, SIGNAL(clicked()), this, SLOT(penOn()));
+    connect(handButton, SIGNAL(clicked()), this, SLOT(handOn()));
+    connect(polylineButton, SIGNAL(clicked()), this, SLOT(polylineOn()));
+    connect(bucketButton, SIGNAL(clicked()), this, SLOT(bucketOn()));
+    connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(eyedropperOn()));
+    connect(colouringButton, SIGNAL(clicked()), this, SLOT(brushOn()));
+    connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
 
-    connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));    
-    connect(polylineButton, SIGNAL(clicked()), this, SIGNAL(polylineClick()));
-    connect(bucketButton, SIGNAL(clicked()), this, SIGNAL(bucketClick()));
-    connect(eyedropperButton, SIGNAL(clicked()), this, SIGNAL(eyedropperClick()));
-    connect(colouringButton, SIGNAL(clicked()), this, SIGNAL(colouringClick()));
-    connect(smudgeButton, SIGNAL(clicked()), this, SIGNAL(smudgeClick()));
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
