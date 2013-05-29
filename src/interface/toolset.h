@@ -54,6 +54,7 @@ public slots:
     void eraserOn();
     void selectOn();
     void moveOn();
+    void penOn();
 
 signals:
     void pencilClick();

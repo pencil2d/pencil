@@ -136,9 +136,9 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
     connect(scribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
     connect(scribbleArea, SIGNAL(moveOn()), toolSet, SLOT(moveOn()));
+    connect(scribbleArea, SIGNAL(penOn()), toolSet, SLOT(penOn()));
 
     connect(toolSet, SIGNAL(handClick()), scribbleArea, SLOT(handOn()));
-    connect(toolSet, SIGNAL(penClick()), scribbleArea, SLOT(penOn()));
     connect(toolSet, SIGNAL(polylineClick()), scribbleArea, SLOT(polylineOn()));
     connect(toolSet, SIGNAL(bucketClick()), scribbleArea, SLOT(bucketOn()));
     connect(toolSet, SIGNAL(eyedropperClick()), scribbleArea, SLOT(eyedropperOn()));
@@ -2394,7 +2394,7 @@ void Editor::hand_clicked()
 }
 void Editor::pen_clicked()
 {
-    scribbleArea->penOn();
+    //scribbleArea->penOn();
     toolSet->changePenButton();
 }
 void Editor::polyline_clicked()

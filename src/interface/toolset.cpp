@@ -156,9 +156,9 @@ ToolSet::ToolSet(Editor* editor)
     connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(selectOn()));
     connect(moveButton, SIGNAL(clicked()), this, SLOT(moveOn()));
+    connect(penButton, SIGNAL(clicked()), this, SLOT(penOn()));
 
     connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));    
-    connect(penButton, SIGNAL(clicked()), this, SIGNAL(penClick()));
     connect(polylineButton, SIGNAL(clicked()), this, SIGNAL(polylineClick()));
     connect(bucketButton, SIGNAL(clicked()), this, SIGNAL(bucketClick()));
     connect(eyedropperButton, SIGNAL(clicked()), this, SIGNAL(eyedropperClick()));
@@ -248,6 +248,30 @@ void ToolSet::moveOn()
     m_pEditor->setInvisibility(-1);
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::penOn()
+{
+    setCurrentTool( PEN );
+
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+    // --- change properties ---
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL)
+    {
+        return;
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    }
+    else if (layer->type == Layer::BITMAP)
+    {
+        m_pEditor->setColour(pCurrentTool->properties.colour);
+    }
+
+    m_pEditor->setToolProperties( pCurrentTool->properties );
 }
 
 void ToolSet::changePencilButton()

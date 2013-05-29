@@ -683,7 +683,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
                 emit pencilOn();
                 break;
             case PEN:
-                penOn();
+                emit penOn();
                 break;
             default:
                 emit pencilOn();
@@ -2946,27 +2946,6 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     setCursor( currentTool()->cursor() );
 }
 
-void ScribbleArea::penOn()
-{    
-    setCurrentTool( PEN );
-
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL)
-    {
-        return;
-    }
-    else if (layer->type == Layer::VECTOR)
-    {
-        editor->selectColour(m_toolSetHash[ PEN ]->properties.colourNumber);
-    }
-    else if (layer->type == Layer::BITMAP)
-    {
-        editor->setColour(m_toolSetHash[ PEN ]->properties.colour);
-    }
-    editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
-}
-
 void ScribbleArea::handOn()
 {
     if(currentToolType() == HAND) resetView();
@@ -3184,7 +3163,7 @@ void ScribbleArea::setPrevMode()
         smudgeOn();
         break;
     case PEN:
-        penOn();
+        emit penOn();
         break;
     case POLYLINE:
         polylineOn();
