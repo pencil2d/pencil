@@ -55,6 +55,12 @@ public slots:
     void selectOn();
     void moveOn();
     void penOn();
+    void handOn();
+    void polylineOn();
+    void bucketOn();
+    void eyedropperOn();
+    void brushOn();
+    void smudgeOn();
 
 signals:
     void pencilClick();

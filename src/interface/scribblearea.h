@@ -112,6 +112,12 @@ signals:
     void selectOn();
     void moveOn();
     void penOn();
+    void handOn();
+    void polylineOn();
+    void bucketOn();
+    void eyedropperOn();
+    void brushOn();
+    void smudgeOn();
 
 public slots:
     void clearImage();
@@ -128,13 +134,6 @@ public slots:
     void grid();
     //void pressureSlot(int);
     //void invisibleSlot(int);
-
-    void handOn();       
-    void polylineOn();
-    void bucketOn();
-    void eyedropperOn();
-    void brushOn();
-    void smudgeOn();
 
     void resetView();
     void setMyView(QMatrix view);

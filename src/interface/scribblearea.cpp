@@ -744,7 +744,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         {
             //qDebug() << "Hand Start " << event->pos();
             prevMode = currentToolType();
-            handOn();
+            emit handOn();
         }
     }
 
@@ -2946,102 +2946,6 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     setCursor( currentTool()->cursor() );
 }
 
-void ScribbleArea::handOn()
-{
-    if(currentToolType() == HAND) resetView();
-    setCurrentTool( HAND );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::polylineOn()
-{    
-    setCurrentTool( POLYLINE );
-    // --- change properties ---
-
-    Properties properties = m_toolSetHash[ PEN ]->properties;
-
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(properties.colour);
-    editor->setWidth(properties.width);
-    editor->setFeather(-1);
-    editor->setPressure(properties.pressure);
-    editor->setInvisibility(properties.invisibility);
-    editor->setPreserveAlpha(properties.preserveAlpha);
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::bucketOn()
-{    
-    setCurrentTool( BUCKET );
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
-    editor->setWidth(-1);
-    editor->setFeather(m_toolSetHash.value( BRUSH )->properties.feather);
-    editor->setFeather(-1);
-    editor->setPressure(0);
-    editor->setPressure(-1); // disable the button
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1); // disable the button
-    editor->setPreserveAlpha(0);
-    editor->setPreserveAlpha(-1); // disable the button
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::eyedropperOn()
-{
-    setCurrentTool( EYEDROPPER );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(0);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-    
-}
-
-
-void ScribbleArea::brushOn()
-{    
-    setCurrentTool( BRUSH );
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
-
-    editor->setToolProperties(m_toolSetHash.value( BRUSH )->properties);
-    editor->setInvisibility(-1);
-    editor->setFollowContour(followContour);
-}
-
-void ScribbleArea::smudgeOn()
-{
-    setCurrentTool( EDIT );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(0);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
 void ScribbleArea::deleteSelection()
 {
     if( somethingSelected )    // there is something selected
@@ -3157,25 +3061,25 @@ void ScribbleArea::setPrevMode()
         emit moveOn();
         break;
     case HAND:
-        handOn();
+        emit handOn();
         break;
     case SMUDGE:
-        smudgeOn();
+        emit smudgeOn();
         break;
     case PEN:
         emit penOn();
         break;
     case POLYLINE:
-        polylineOn();
+        emit polylineOn();
         break;
     case BUCKET:
-        bucketOn();
+        emit bucketOn();
         break;
     case EYEDROPPER:
-        eyedropperOn();
+        emit eyedropperOn();
         break;
     case BRUSH:
-        brushOn();
+        emit brushOn();
         break;
     default:
         break;

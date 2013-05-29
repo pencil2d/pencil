@@ -137,13 +137,13 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
     connect(scribbleArea, SIGNAL(moveOn()), toolSet, SLOT(moveOn()));
     connect(scribbleArea, SIGNAL(penOn()), toolSet, SLOT(penOn()));
+    connect(scribbleArea, SIGNAL(handOn()), toolSet, SLOT(handOn()));
+    connect(scribbleArea, SIGNAL(polylineOn()), toolSet, SLOT(polylineOn()));
+    connect(scribbleArea, SIGNAL(bucketOn()), toolSet, SLOT(bucketOn()));
+    connect(scribbleArea, SIGNAL(eyedropperOn()), toolSet, SLOT(eyedropperOn()));
+    connect(scribbleArea, SIGNAL(colouringOn()), toolSet, SLOT(brushOn()));
+    connect(scribbleArea, SIGNAL(smudgeOn()), toolSet, SLOT(smudgeOn()));
 
-    connect(toolSet, SIGNAL(handClick()), scribbleArea, SLOT(handOn()));
-    connect(toolSet, SIGNAL(polylineClick()), scribbleArea, SLOT(polylineOn()));
-    connect(toolSet, SIGNAL(bucketClick()), scribbleArea, SLOT(bucketOn()));
-    connect(toolSet, SIGNAL(eyedropperClick()), scribbleArea, SLOT(eyedropperOn()));
-    connect(toolSet, SIGNAL(colouringClick()), scribbleArea, SLOT(brushOn()));
-    connect(toolSet, SIGNAL(smudgeClick()), scribbleArea, SLOT(smudgeOn()));
     connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
 
     connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
@@ -2389,7 +2389,7 @@ void Editor::select_clicked()
 }
 void Editor::hand_clicked()
 {
-    scribbleArea->handOn();
+    //scribbleArea->handOn();
     toolSet->changeHandButton();
 }
 void Editor::pen_clicked()
@@ -2399,27 +2399,27 @@ void Editor::pen_clicked()
 }
 void Editor::polyline_clicked()
 {
-    scribbleArea->polylineOn();
+    //scribbleArea->polylineOn();
     toolSet->changePolylineButton();
 }
 void Editor::bucket_clicked()
 {
-    scribbleArea->bucketOn();
+    //scribbleArea->bucketOn();
     toolSet->changeBucketButton();
 }
 void Editor::eyedropper_clicked()
 {
-    scribbleArea->eyedropperOn();
+    //scribbleArea->eyedropperOn();
     toolSet->changeEyedropperButton();
 }
 void Editor::color_clicked()
 {
-    scribbleArea->brushOn();
+    //scribbleArea->brushOn();
     toolSet->changeColouringButton();
 }
 void Editor::smudge_clicked()
 {
-    scribbleArea->smudgeOn();
+    //scribbleArea->smudgeOn();
     toolSet->changeSmudgeButton();
 }
 

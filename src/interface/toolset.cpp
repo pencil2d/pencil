@@ -274,6 +274,111 @@ void ToolSet::penOn()
     m_pEditor->setToolProperties( pCurrentTool->properties );
 }
 
+void ToolSet::handOn()
+{
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+    if (pCurrentTool->type() == HAND)
+    {
+        m_pEditor->getScribbleArea()->resetView();
+    }
+
+     m_pEditor->getScribbleArea()->setCurrentTool( HAND );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::polylineOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( POLYLINE );
+    // --- change properties ---
+
+     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+     Layer* layer = m_pEditor->getCurrentLayer();
+     if(layer == NULL) return;
+     if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+     if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
+     m_pEditor->setWidth(pCurrentTool->properties.width);
+     m_pEditor->setFeather(-1);
+     m_pEditor->setPressure(pCurrentTool->properties.pressure);
+     m_pEditor->setInvisibility(pCurrentTool->properties.invisibility);
+     m_pEditor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
+     m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::bucketOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( BUCKET );
+     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+    // --- change properties ---
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL) return;
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
+
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(pCurrentTool->properties.feather);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(0);
+    m_pEditor->setPressure(-1); // disable the button
+    m_pEditor->setInvisibility(0);
+    m_pEditor->setInvisibility(-1); // disable the button
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setPreserveAlpha(-1); // disable the button
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::eyedropperOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( EYEDROPPER );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(0);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+
+}
+
+
+void ToolSet::brushOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( BRUSH );
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+    // --- change properties ---
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL) return;
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
+
+    m_pEditor->setToolProperties(pCurrentTool->properties);
+    m_pEditor->setInvisibility(-1);
+    //m_pEditor->setFollowContour(followContour); //TODO: clarily what is this?
+}
+
+void ToolSet::smudgeOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( EDIT );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(0);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+}
+
 void ToolSet::changePencilButton()
 {
     deselectAllTools();
