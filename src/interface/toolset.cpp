@@ -252,7 +252,7 @@ void ToolSet::moveOn()
 
 void ToolSet::penOn()
 {
-    setCurrentTool( PEN );
+    m_pEditor->getScribbleArea()->setCurrentTool( PEN );
 
     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
 
