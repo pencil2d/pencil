@@ -131,13 +131,12 @@ Editor::~Editor()
 }
 
 void Editor::makeConnections()
-{
-    //connect(toolSet, SIGNAL(pencilClick()), scribbleArea, SLOT(pencilOn()));
+{    
     connect(scribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
     connect(scribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
     connect(scribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
+    connect(scribbleArea, SIGNAL(moveOn()), toolSet, SLOT(moveOn()));
 
-    connect(toolSet, SIGNAL(moveClick()), scribbleArea, SLOT(moveOn()));
     connect(toolSet, SIGNAL(handClick()), scribbleArea, SLOT(handOn()));
     connect(toolSet, SIGNAL(penClick()), scribbleArea, SLOT(penOn()));
     connect(toolSet, SIGNAL(polylineClick()), scribbleArea, SLOT(polylineOn()));
@@ -868,7 +867,7 @@ void Editor::inbetweenV()
     {
         if(layer->type == Layer::VECTOR)
         {
-            scribbleArea->moveOn();
+            toolSet->moveOn();
             toolSet->selectOn();
             scribbleArea->selectAll();
             clipboardVectorOk = true;
@@ -2365,7 +2364,7 @@ bool Editor::loadDomElement(QDomElement docElem, QString filePath)
 
 void Editor::move_clicked()
 {
-    scribbleArea->moveOn();
+    //scribbleArea->moveOn();
     toolSet->changeMoveButton();
 }
 void Editor::clear_clicked()

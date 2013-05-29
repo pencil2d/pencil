@@ -1552,7 +1552,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 if(somethingSelected)
                 {
                     editor->toolSet->changeMoveButton();
-                    moveOn();
+                    emit moveOn();
                     VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
                     setSelection( vectorImage->getSelectionRect(), true );
                     if(mySelection.size() == QSizeF(0,0)) somethingSelected = false;
@@ -2967,18 +2967,6 @@ void ScribbleArea::penOn()
     editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
 }
 
-void ScribbleArea::moveOn()
-{
-    setCurrentTool( MOVE );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
 void ScribbleArea::handOn()
 {
     if(currentToolType() == HAND) resetView();
@@ -3187,7 +3175,7 @@ void ScribbleArea::setPrevMode()
         emit selectOn();
         break;
     case MOVE:
-        moveOn();
+        emit moveOn();
         break;
     case HAND:
         handOn();

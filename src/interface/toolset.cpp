@@ -155,8 +155,8 @@ ToolSet::ToolSet(Editor* editor)
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
     connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(selectOn()));
+    connect(moveButton, SIGNAL(clicked()), this, SLOT(moveOn()));
 
-    connect(moveButton, SIGNAL(clicked()), this, SIGNAL(moveClick()));
     connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));    
     connect(penButton, SIGNAL(clicked()), this, SIGNAL(penClick()));
     connect(polylineButton, SIGNAL(clicked()), this, SIGNAL(polylineClick()));
@@ -229,6 +229,18 @@ void ToolSet::selectOn()
 {
     m_pEditor->getScribbleArea()->setCurrentTool( SELECT );
 
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::moveOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( MOVE );
     // --- change properties ---
     m_pEditor->setWidth(-1);
     m_pEditor->setFeather(-1);
