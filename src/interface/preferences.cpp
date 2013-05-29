@@ -92,7 +92,8 @@ void Preferences::createIcons()
 
     connect(contentsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
-            this, SLOT(changePage(QListWidgetItem*, QListWidgetItem*)));
+            this,
+            SLOT(changePage(QListWidgetItem*, QListWidgetItem*)));
 }
 
 void Preferences::changePage(QListWidgetItem* current, QListWidgetItem* previous)
