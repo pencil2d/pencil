@@ -96,7 +96,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     }
 
     m_currentTool = m_toolSetHash.value( PENCIL );
-    pencilOn();
+    emit pencilOn();
 
     QSettings settings("Pencil","Pencil");
 
@@ -670,7 +670,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
         if(tabletEraserBackupToolMode == -1)
         {
             tabletEraserBackupToolMode = currentToolType(); // memorise which tool was being used before switching to the eraser
-            eraserOn();
+            emit eraserOn();
         }
     }
     else
@@ -680,13 +680,13 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
             switch(tabletEraserBackupToolMode)
             {
             case PENCIL:
-                pencilOn();
+                emit pencilOn();
                 break;
             case PEN:
-                penOn();
+                emit penOn();
                 break;
             default:
-                pencilOn();
+                emit pencilOn();
             }
             tabletEraserBackupToolMode = -1;
         }
@@ -744,7 +744,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         {
             //qDebug() << "Hand Start " << event->pos();
             prevMode = currentToolType();
-            handOn();
+            emit handOn();
         }
     }
 
@@ -1182,7 +1182,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
 
                 // we switch to the select tool
                 editor->toolSet->changeSelectButton();
-                selectOn();
+                emit selectOn();
                 moveMode = ScribbleArea::MIDDLE;
                 mySelection.setTopLeft( lastPoint );
                 mySelection.setBottomRight( lastPoint );
@@ -1552,7 +1552,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 if(somethingSelected)
                 {
                     editor->toolSet->changeMoveButton();
-                    moveOn();
+                    emit moveOn();
                     VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
                     setSelection( vectorImage->getSelectionRect(), true );
                     if(mySelection.size() == QSizeF(0,0)) somethingSelected = false;
@@ -2946,185 +2946,6 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     setCursor( currentTool()->cursor() );
 }
 
-void ScribbleArea::pencilOn()
-{    
-    setCurrentTool( PENCIL );
-    // --- change properties ---
-
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( PENCIL )->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( PENCIL )->properties.colour);
-
-    editor->setWidth(m_toolSetHash.value( PENCIL )->properties.width);
-    editor->setFeather(m_toolSetHash.value( PENCIL )->properties.feather);
-    editor->setFeather(-1); // by definition the pencil has no feather
-    editor->setPressure(m_toolSetHash.value( PENCIL )->properties.pressure);
-    editor->setPreserveAlpha(m_toolSetHash.value( PENCIL )->properties.preserveAlpha);
-    editor->setFollowContour(-1);
-    editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
-}
-
-void ScribbleArea::penOn()
-{    
-    setCurrentTool( PEN );
-
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL)
-    {
-        return;
-    }
-    else if (layer->type == Layer::VECTOR)
-    {
-        editor->selectColour(m_toolSetHash[ PEN ]->properties.colourNumber);
-    }
-    else if (layer->type == Layer::BITMAP)
-    {
-        editor->setColour(m_toolSetHash[ PEN ]->properties.colour);
-    }
-    editor->setToolProperties( m_toolSetHash.value( PEN )->properties );
-}
-
-void ScribbleArea::eraserOn()
-{    
-    setCurrentTool( ERASER );
-    
-    // --- change properties ---
-    editor->setWidth(m_toolSetHash.value( ERASER )->properties.width);
-    editor->setFeather(m_toolSetHash.value( ERASER )->properties.feather);
-    editor->setPressure(m_toolSetHash.value( ERASER )->properties.pressure);
-    editor->setPreserveAlpha(0);
-    editor->setInvisibility(0);
-    
-    editor->setFeather(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-    editor->setInvisibility(-1);
-}
-
-void ScribbleArea::selectOn()
-{    
-    setCurrentTool( SELECT );
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::moveOn()
-{
-    setCurrentTool( MOVE );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::handOn()
-{
-    if(currentToolType() == HAND) resetView();
-    setCurrentTool( HAND );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::polylineOn()
-{    
-    setCurrentTool( POLYLINE );
-    // --- change properties ---
-
-    Properties properties = m_toolSetHash[ PEN ]->properties;
-
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(properties.colour);
-    editor->setWidth(properties.width);
-    editor->setFeather(-1);
-    editor->setPressure(properties.pressure);
-    editor->setInvisibility(properties.invisibility);
-    editor->setPreserveAlpha(properties.preserveAlpha);
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::bucketOn()
-{    
-    setCurrentTool( BUCKET );
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
-    editor->setWidth(-1);
-    editor->setFeather(m_toolSetHash.value( BRUSH )->properties.feather);
-    editor->setFeather(-1);
-    editor->setPressure(0);
-    editor->setPressure(-1); // disable the button
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1); // disable the button
-    editor->setPreserveAlpha(0);
-    editor->setPreserveAlpha(-1); // disable the button
-    editor->setFollowContour(-1);
-}
-
-void ScribbleArea::eyedropperOn()
-{
-    setCurrentTool( EYEDROPPER );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(0);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-    
-}
-
-
-void ScribbleArea::brushOn()
-{    
-    setCurrentTool( BRUSH );
-    // --- change properties ---
-    Layer* layer = editor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) editor->setColour(m_toolSetHash.value( BRUSH )->properties.colour);
-
-    editor->setToolProperties(m_toolSetHash.value( BRUSH )->properties);
-    editor->setInvisibility(-1);
-    editor->setFollowContour(followContour);
-}
-
-void ScribbleArea::smudgeOn()
-{
-    setCurrentTool( EDIT );
-    // --- change properties ---
-    editor->setWidth(-1);
-    editor->setFeather(-1);
-    editor->setPressure(-1);
-    editor->setInvisibility(0);
-    editor->setInvisibility(-1);
-    editor->setPreserveAlpha(0);
-    editor->setPreserveAlpha(-1);
-    editor->setFollowContour(-1);
-}
-
 void ScribbleArea::deleteSelection()
 {
     if( somethingSelected )    // there is something selected
@@ -3228,37 +3049,37 @@ void ScribbleArea::setPrevMode()
     switch(currentToolType())
     {
     case PENCIL:
-        pencilOn();
+        emit pencilOn();
         break;
     case ERASER:
-        eraserOn();
+        emit eraserOn();
         break;
     case SELECT:
-        selectOn();
+        emit selectOn();
         break;
     case MOVE:
-        moveOn();
+        emit moveOn();
         break;
     case HAND:
-        handOn();
+        emit handOn();
         break;
     case SMUDGE:
-        smudgeOn();
+        emit smudgeOn();
         break;
     case PEN:
-        penOn();
+        emit penOn();
         break;
     case POLYLINE:
-        polylineOn();
+        emit polylineOn();
         break;
     case BUCKET:
-        bucketOn();
+        emit bucketOn();
         break;
     case EYEDROPPER:
-        eyedropperOn();
+        emit eyedropperOn();
         break;
     case BRUSH:
-        brushOn();
+        emit brushOn();
         break;
     default:
         break;

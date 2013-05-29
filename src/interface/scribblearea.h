@@ -107,6 +107,18 @@ signals:
     void onionPrevChanged(bool);
     void onionNextChanged(bool);
 
+    void pencilOn();
+    void eraserOn();
+    void selectOn();
+    void moveOn();
+    void penOn();
+    void handOn();
+    void polylineOn();
+    void bucketOn();
+    void eyedropperOn();
+    void brushOn();
+    void smudgeOn();
+
 public slots:
     void clearImage();
     void calculateSelectionRect();
@@ -122,18 +134,6 @@ public slots:
     void grid();
     //void pressureSlot(int);
     //void invisibleSlot(int);
-
-    void pencilOn();
-    void eraserOn();
-    void selectOn();
-    void moveOn();
-    void handOn();    
-    void penOn();
-    void polylineOn();
-    void bucketOn();
-    void eyedropperOn();
-    void brushOn();
-    void smudgeOn();
 
     void resetView();
     void setMyView(QMatrix view);

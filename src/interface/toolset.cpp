@@ -18,13 +18,15 @@ GNU General Public License for more details.
 #include "spinslider.h"
 #include "tooloptiondockwidget.h"
 #include "toolset.h"
-
-
+#include "editor.h"
+#include "basetool.h"
 
 // ----------------------------------------------------------------------------------
 
-ToolSet::ToolSet()
+ToolSet::ToolSet(Editor* editor)
 {
+    m_pEditor = editor;
+
     drawPalette = new QDockWidget(tr("Tools"));
 
     QFrame* drawGroup = new QFrame();
@@ -150,17 +152,18 @@ ToolSet::ToolSet()
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
 
-    connect(pencilButton, SIGNAL(clicked()), this, SIGNAL(pencilClick()));
-    connect(selectButton, SIGNAL(clicked()), this, SIGNAL(selectClick()));
-    connect(moveButton, SIGNAL(clicked()), this, SIGNAL(moveClick()));
-    connect(handButton, SIGNAL(clicked()), this, SIGNAL(handClick()));
-    connect(eraserButton, SIGNAL(clicked()), this, SIGNAL(eraserClick()));
-    connect(penButton, SIGNAL(clicked()), this, SIGNAL(penClick()));
-    connect(polylineButton, SIGNAL(clicked()), this, SIGNAL(polylineClick()));
-    connect(bucketButton, SIGNAL(clicked()), this, SIGNAL(bucketClick()));
-    connect(eyedropperButton, SIGNAL(clicked()), this, SIGNAL(eyedropperClick()));
-    connect(colouringButton, SIGNAL(clicked()), this, SIGNAL(colouringClick()));
-    connect(smudgeButton, SIGNAL(clicked()), this, SIGNAL(smudgeClick()));
+    connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
+    connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));
+    connect(selectButton, SIGNAL(clicked()), this, SLOT(selectOn()));
+    connect(moveButton, SIGNAL(clicked()), this, SLOT(moveOn()));
+    connect(penButton, SIGNAL(clicked()), this, SLOT(penOn()));
+    connect(handButton, SIGNAL(clicked()), this, SLOT(handOn()));
+    connect(polylineButton, SIGNAL(clicked()), this, SLOT(polylineOn()));
+    connect(bucketButton, SIGNAL(clicked()), this, SLOT(bucketOn()));
+    connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(eyedropperOn()));
+    connect(colouringButton, SIGNAL(clicked()), this, SLOT(brushOn()));
+    connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
+
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
@@ -182,6 +185,198 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton->setAutoRaise(true);
     toolButton->setIconSize( QSize(24,24) );
     toolButton->setFixedSize(32,32);
+}
+
+void ToolSet::pencilOn()
+{    
+    m_pEditor->getScribbleArea()->setCurrentTool( PENCIL );
+
+    // --- change properties ---
+    BaseTool* pBaseTool = m_pEditor->getScribbleArea()->currentTool();
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL) return;
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pBaseTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pBaseTool->properties.colour);
+
+    m_pEditor->setWidth(pBaseTool->properties.width);
+    m_pEditor->setFeather(pBaseTool->properties.feather);
+    m_pEditor->setFeather(-1); // by definition the pencil has no feather
+    m_pEditor->setPressure(pBaseTool->properties.pressure);
+    m_pEditor->setPreserveAlpha(pBaseTool->properties.preserveAlpha);
+    m_pEditor->setFollowContour(-1);
+    m_pEditor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
+}
+
+void ToolSet::eraserOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( ERASER );
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+    // --- change properties ---
+    m_pEditor->setWidth(pCurrentTool->properties.width);
+    m_pEditor->setFeather(pCurrentTool->properties.feather);
+    m_pEditor->setPressure(pCurrentTool->properties.pressure);
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setInvisibility(0);
+
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+    m_pEditor->setInvisibility(-1);
+}
+
+void ToolSet::selectOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( SELECT );
+
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::moveOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( MOVE );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::penOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( PEN );
+
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+    // --- change properties ---
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL)
+    {
+        return;
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    }
+    else if (layer->type == Layer::BITMAP)
+    {
+        m_pEditor->setColour(pCurrentTool->properties.colour);
+    }
+
+    m_pEditor->setToolProperties( pCurrentTool->properties );
+}
+
+void ToolSet::handOn()
+{
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+    if (pCurrentTool->type() == HAND)
+    {
+        m_pEditor->getScribbleArea()->resetView();
+    }
+
+     m_pEditor->getScribbleArea()->setCurrentTool( HAND );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::polylineOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( POLYLINE );
+    // --- change properties ---
+
+     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+     Layer* layer = m_pEditor->getCurrentLayer();
+     if(layer == NULL) return;
+     if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+     if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
+     m_pEditor->setWidth(pCurrentTool->properties.width);
+     m_pEditor->setFeather(-1);
+     m_pEditor->setPressure(pCurrentTool->properties.pressure);
+     m_pEditor->setInvisibility(pCurrentTool->properties.invisibility);
+     m_pEditor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
+     m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::bucketOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( BUCKET );
+     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+
+    // --- change properties ---
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL) return;
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
+
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(pCurrentTool->properties.feather);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(0);
+    m_pEditor->setPressure(-1); // disable the button
+    m_pEditor->setInvisibility(0);
+    m_pEditor->setInvisibility(-1); // disable the button
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setPreserveAlpha(-1); // disable the button
+    m_pEditor->setFollowContour(-1);
+}
+
+void ToolSet::eyedropperOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( EYEDROPPER );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(0);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
+
+}
+
+
+void ToolSet::brushOn()
+{
+    m_pEditor->getScribbleArea()->setCurrentTool( BRUSH );
+    BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
+    // --- change properties ---
+    Layer* layer = m_pEditor->getCurrentLayer();
+    if(layer == NULL) return;
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
+
+    m_pEditor->setToolProperties(pCurrentTool->properties);
+    m_pEditor->setInvisibility(-1);
+    //m_pEditor->setFollowContour(followContour); //TODO: clarily what is this?
+}
+
+void ToolSet::smudgeOn()
+{
+     m_pEditor->getScribbleArea()->setCurrentTool( EDIT );
+    // --- change properties ---
+    m_pEditor->setWidth(-1);
+    m_pEditor->setFeather(-1);
+    m_pEditor->setPressure(-1);
+    m_pEditor->setInvisibility(0);
+    m_pEditor->setInvisibility(-1);
+    m_pEditor->setPreserveAlpha(0);
+    m_pEditor->setPreserveAlpha(-1);
+    m_pEditor->setFollowContour(-1);
 }
 
 void ToolSet::changePencilButton()

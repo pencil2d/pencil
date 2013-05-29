@@ -22,13 +22,15 @@ GNU General Public License for more details.
 class SpinSlider;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
+class Editor;
+
 
 class ToolSet : public QWidget
 {
     Q_OBJECT
 
 public:
-    ToolSet();
+    ToolSet(Editor* editor);
 
     QDockWidget* drawPalette;
     QDockWidget* onionPalette;
@@ -48,6 +50,18 @@ public slots:
     void changeColouringButton();
     void changeSmudgeButton();
 
+    void pencilOn();
+    void eraserOn();
+    void selectOn();
+    void moveOn();
+    void penOn();
+    void handOn();
+    void polylineOn();
+    void bucketOn();
+    void eyedropperOn();
+    void brushOn();
+    void smudgeOn();
+
 signals:
     void pencilClick();
     void eraserClick();
@@ -65,6 +79,8 @@ signals:
 private:
     void newToolButton(QToolButton*& toolButton);
     void deselectAllTools();
+
+    Editor* m_pEditor;
 
     QToolButton* pencilButton;
     QToolButton* selectButton;
