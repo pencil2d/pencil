@@ -16,6 +16,8 @@ GNU General Public License for more details.
 #include <QtGui>
 #include "preferences.h"
 #include "scribblearea.h"
+#include "shortcutspage.h"
+
 
 Preferences::Preferences()
 {
@@ -31,6 +33,7 @@ Preferences::Preferences()
     pagesWidget->addWidget(new FilesPage(this));
     pagesWidget->addWidget(new TimelinePage(this));
     pagesWidget->addWidget(new ToolsPage(this));
+    pagesWidget->addWidget(new ShortcutsPage(this));
     //pagesWidget->addWidget(new QueryPage);
 
     QPushButton* closeButton = new QPushButton(tr("Close"));
@@ -83,6 +86,12 @@ void Preferences::createIcons()
     toolsButton->setText(tr("Tools"));
     toolsButton->setTextAlignment(Qt::AlignHCenter);
     toolsButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    QListWidgetItem* shortcutsButton = new QListWidgetItem(contentsWidget);
+    shortcutsButton->setIcon(QIcon(":/icons/prefs-shortcuts.png"));
+    shortcutsButton->setText(tr("Shortcuts"));
+    shortcutsButton->setTextAlignment(Qt::AlignHCenter);
+    shortcutsButton->setFlags((Qt::ItemIsSelectable | Qt::ItemIsEnabled));
 
     /*QListWidgetItem *queryButton = new QListWidgetItem(contentsWidget);
     queryButton->setIcon(QIcon(":/images/query.png"));
