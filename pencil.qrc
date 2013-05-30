@@ -58,5 +58,6 @@
         <file>icons/exit.png</file>
         <file>icons/printer3.png</file>
         <file>icons/cut.png</file>
+        <file>icons/prefs-shortcuts.png</file>
     </qresource>
 </RCC>
