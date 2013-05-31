@@ -92,6 +92,15 @@ private:
     QMenu* windowsMenu;
     QMenu* helpMenu;
 
+    QAction* exitAct;
+    QAction* newAct;
+    QAction* openAct;
+    QAction* saveAct;
+    QAction* printAct;
+    QAction* exportXAct;
+    QAction* exportAct;
+    QAction* exportimageAct;
+
     QAction* trimAct;
     QAction* cropAct;
     QAction* gridAct;

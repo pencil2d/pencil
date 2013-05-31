@@ -74,19 +74,19 @@ void MainWindow::arrangePalettes()
 void MainWindow::createMenus()
 {
     // ---------- Actions -------------
-    QAction* exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
+    exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
     connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
-    QAction* newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
+    newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
     newAct->setShortcut(tr("Ctrl+N"));
     connect(newAct, SIGNAL(triggered()), this, SLOT(newDocument()));
 
-    QAction* openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
+    openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
     openAct->setShortcut(tr("Ctrl+O"));
     connect(openAct, SIGNAL(triggered()), this, SLOT(openDocument()));
 
-    QAction* saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
+    saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
     saveAct->setShortcut(tr("Ctrl+Shift+S"));
     connect(saveAct, SIGNAL(triggered()), editor, SLOT(saveDocument()));
 
@@ -94,19 +94,19 @@ void MainWindow::createMenus()
     savAct->setShortcut(tr("Ctrl+S"));
     connect(savAct, SIGNAL(triggered()), editor, SLOT(saveForce()));
 
-    QAction* printAct = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
+    printAct = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
     printAct->setShortcut(tr("Ctrl+P"));
     connect(printAct, SIGNAL(triggered()), editor, SLOT(print()));
 
-    QAction* exportXAct = new QAction(tr("&X-Sheet..."), this);
+    exportXAct = new QAction(tr("&X-Sheet..."), this);
     exportXAct->setShortcut(tr("Ctrl+Alt+X"));
     connect(exportXAct, SIGNAL(triggered()), editor, SLOT(exportX()));
 
-    QAction* exportAct = new QAction(tr("&Image Sequence..."), this);
+    exportAct = new QAction(tr("&Image Sequence..."), this);
     exportAct->setShortcut(tr("Shift+Alt+S"));
     connect(exportAct, SIGNAL(triggered()), editor, SLOT(exportSeq()));
 
-    QAction* exportimageAct = new QAction(tr("&Image..."), this);
+    exportimageAct = new QAction(tr("&Image..."), this);
     exportimageAct->setShortcut(tr("Ctrl+Alt+S"));
     connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
@@ -212,7 +212,6 @@ void MainWindow::createMenus()
 
     preferencesAct = new QAction(tr("Preferences"), this);
     connect(preferencesAct, SIGNAL(triggered()), editor, SLOT(showPreferences()));
-
 
     newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
     connect(newBitmapLayerAct, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
