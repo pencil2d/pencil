@@ -15,6 +15,8 @@ GNU General Public License for more details.
 
 */
 #include <QtGui>
+#include <QList>
+#include <QMenu>
 #include "editor.h"
 #include "mainwindow.h"
 #include "object.h"
@@ -493,23 +495,24 @@ void MainWindow::createMenus()
     toolsMenu->addAction(eyedropToolAct);
     toolsMenu->addAction(eraserToolAct);
 
-    //windowsMenu = new QMenu(tr("Windows"), this);
-    //windowsMenu->addAction(dockAllPalettesAct);
-    //windowsMenu->addAction(detachAllPalettesAct);
-
     helpMenu = new QMenu(tr("&Help"), this);
     helpMenu->addAction(helpMeAct);
-    helpMenu->addAction(aboutAct);
-    //helpMenu->addAction(aboutQtAct);
+    helpMenu->addAction(aboutAct);    
 
-    menuBar()->addMenu(fileMenu);
-    menuBar()->addMenu(editMenu);
-    menuBar()->addMenu(viewMenu);
-    menuBar()->addMenu(animationMenu);
-    menuBar()->addMenu(toolsMenu);
-    menuBar()->addMenu(layerMenu);
-    //menuBar()->addMenu(windowsMenu);
-    menuBar()->addMenu(helpMenu);
+    m_pMenuList = new QList<QMenu*>();
+
+    m_pMenuList->append(fileMenu);
+    m_pMenuList->append(editMenu);
+    m_pMenuList->append(viewMenu);
+    m_pMenuList->append(animationMenu);
+    m_pMenuList->append(toolsMenu);
+    m_pMenuList->append(layerMenu);
+    m_pMenuList->append(helpMenu);
+
+    foreach (QMenu* pMenu, *m_pMenuList)
+    {
+        menuBar()->addMenu(pMenu);
+    }
 }
 
 void MainWindow::loadPlugins()

@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 #include <QtGui>
 #include <QObject>
+#include <QList>
 #include "timeline.h"
 
 
@@ -23,6 +24,7 @@ class Object;
 class Palette;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
+template<typename T> class QList;
 
 
 class MainWindow : public QMainWindow
@@ -74,6 +76,7 @@ private:
     //QGraphicsItem *m_svgItem;
 
     QString path;
+    QList<QMenu*>* m_pMenuList;
 
     QMenu* fileMenu;
     QMenu* openRecentMenu;
