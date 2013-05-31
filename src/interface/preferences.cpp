@@ -34,7 +34,6 @@ Preferences::Preferences()
     pagesWidget->addWidget(new TimelinePage(this));
     pagesWidget->addWidget(new ToolsPage(this));
     pagesWidget->addWidget(new ShortcutsPage(this));
-    //pagesWidget->addWidget(new QueryPage);
 
     QPushButton* closeButton = new QPushButton(tr("Close"));
 
