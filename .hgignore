@@ -2,6 +2,9 @@ syntax: glob
 
 # Mac
 .DS_Store
+*.plist
+*.mak
+*.pbxproj
 
 # Windows
 Thumb.db

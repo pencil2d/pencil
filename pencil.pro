@@ -111,7 +111,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
 win32 {
 	INCLUDEPATH += . libwin32
 	SOURCES += src/external/win32/win32.cpp
-    LIBS += -Llibwin32
+        LIBS += -Llibwin32
 	RC_FILE = pencil.rc
 }
 macx {
@@ -119,7 +119,7 @@ macx {
 	HEADERS += src/external/macosx/style.h
 	SOURCES += src/external/macosx/macosx.cpp \
 	 	   src/external/macosx/style.cpp
-	LIBS += -Llibmacosx -lming
+        LIBS += -Llibmacosx
 	RC_FILE = pencil.icns
 }
 linux-g++ {
