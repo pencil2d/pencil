@@ -18,7 +18,8 @@ INCLUDEPATH += . 	src \
             src/graphics/vector \
             src/interface \
             src/structure \
-            src/tool
+            src/tool \
+            src/util
 
 # Input
 HEADERS +=  src/interfaces.h \
@@ -62,7 +63,8 @@ HEADERS +=  src/interfaces.h \
     src/tool/buckettool.h \
     src/tool/eyedroppertool.h \
     src/structure/pencilsettings.h \
-    src/interface/shortcutspage.h
+    src/interface/shortcutspage.h \
+    src/util/keyboardmanager.h
             
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -106,7 +108,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/buckettool.cpp \
     src/tool/eyedroppertool.cpp \
     src/structure/pencilsettings.cpp \
-    src/interface/shortcutspage.cpp
+    src/interface/shortcutspage.cpp \
+    src/util/keyboardmanager.cpp
             
 win32 {
 	INCLUDEPATH += . libwin32
