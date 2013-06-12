@@ -77,7 +77,7 @@ private:
 
     QMenu* openRecentMenu;
     //QMenu* importMenu;
-    QMenu* editMenu;
+    //QMenu* editMenu;
     //QMenu* InsertMenu;
     QMenu* MirrorMenu;
     QMenu* viewMenu;
@@ -97,8 +97,8 @@ private:
     //QAction* helpMeAct;
     //QAction* aboutPencilAct;
 
-    QAction* trimAct;
-    QAction* cropAct;
+    //QAction* trimAct;
+    //QAction* cropAct;
     QAction* gridAct;
     QAction* onionskinpAct;
     QAction* onionskinnAct;
@@ -116,13 +116,13 @@ private:
     //QAction* copyAct;
     QAction* copyframesAct;
     //QAction* cutAct;
-    QAction* deleteAct;
+    //QAction* deleteAct;
     //QAction* pasteAct;
     //QAction* pasteframesAct;
-    QAction* selectAllAct;
-    QAction* deselectAllAct;
+    //QAction* selectAllAct;
+    //QAction* deselectAllAct;
     //QAction* importSndAct;
-    QAction* preferencesAct;
+    //QAction* preferencesAct;
 
     QAction* newBitmapLayerAct;
     QAction* newVectorLayerAct;

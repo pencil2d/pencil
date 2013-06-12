@@ -164,29 +164,22 @@ void MainWindow2::createMenus()
     ui->actionPaste->setShortcut(tr("Ctrl+V"));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
 
-    cropAct = new QAction( tr("Crop"), this);
-    cropAct->setShortcut(tr("Ctrl+W"));
-    connect(cropAct, SIGNAL(triggered()), editor, SLOT(crop()));
+    ui->actionDelete->setShortcut(tr("Ctrl+D"));
+    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
 
-    trimAct = new QAction( tr("Crop To Selection"), this);
-    trimAct->setShortcut(tr("Ctrl+T"));
-    connect(trimAct, SIGNAL(triggered()), editor, SLOT(croptoselect()));
+    ui->actionCrop->setShortcut(tr("Ctrl+W"));
+    connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
 
-    deleteAct = new QAction(QIcon(":icons/clear.png"), tr("Delete"), this);
-    deleteAct->setShortcut(tr("Ctrl+D"));
-    connect(deleteAct, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
+    ui->actionCrop_To_Selection->setShortcut(tr("Ctrl+T"));
+    connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
 
-    selectAllAct = new QAction(tr("Select All"), this);
-    selectAllAct->setShortcut(tr("Ctrl+A"));
-    connect(selectAllAct, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
+    ui->actionSelect_All->setShortcut(tr("Ctrl+A"));
+    connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
 
-    deselectAllAct = new QAction(tr("Deselect All"), this);
-    deselectAllAct->setShortcut(tr("Ctrl+Shift+A"));
-    connect(deselectAllAct, SIGNAL(triggered()), editor, SLOT(deselectAll()));
+    ui->actionDeselect_All->setShortcut(tr("Ctrl+Shift+A"));
+    connect(ui->actionDeselect_All, SIGNAL(triggered()), editor, SLOT(deselectAll()));
 
-
-    preferencesAct = new QAction(tr("Preferences"), this);
-    connect(preferencesAct, SIGNAL(triggered()), editor, SLOT(showPreferences()));
+    connect(ui->actionPreference, SIGNAL(triggered()), editor, SLOT(showPreferences()));
 
     newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
     connect(newBitmapLayerAct, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
@@ -378,18 +371,8 @@ void MainWindow2::createMenus()
     viewMenu->addMenu(onionskinMenu);
     viewMenu->addSeparator();
 
-    editMenu = new QMenu(tr("&Edit"), this);
-    editMenu->addAction(deleteAct);
-    editMenu->addSeparator();
-    editMenu->addAction(cropAct);
-    editMenu->addAction(trimAct);
-    editMenu->addSeparator();
-    editMenu->addAction(selectAllAct);
-    editMenu->addAction(deselectAllAct);
-    editMenu->addSeparator();
-    editMenu->addAction(preferencesAct);
-    connect(editMenu, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
-    connect(editMenu, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
+    connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
+    connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
 
     layerMenu = new QMenu(tr("&Layer"), this);
     layerMenu->addAction(newBitmapLayerAct);
@@ -432,7 +415,7 @@ void MainWindow2::createMenus()
     m_pMenuList = new QList<QMenu*>();
 
     //m_pMenuList->append(fileMenu);
-    m_pMenuList->append(editMenu);
+    //m_pMenuList->append(editMenu);
     m_pMenuList->append(viewMenu);
     m_pMenuList->append(animationMenu);
     m_pMenuList->append(toolsMenu);
@@ -710,8 +693,8 @@ void MainWindow2::undoActSetText(void)
 
 void MainWindow2::undoActSetEnabled(void)
 {
-    editMenu->actions().at(0)->setEnabled(true);
-    editMenu->actions().at(1)->setEnabled(true);
+    ui->actionUndo->setEnabled(true);
+    ui->actionRedo->setEnabled(true);
 }
 
 void MainWindow2::aboutPencil()
