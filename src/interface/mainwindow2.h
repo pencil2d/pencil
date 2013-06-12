@@ -68,8 +68,6 @@ private:
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);
-    void keyPressEvent( QKeyEvent* e);
-    void keyReleaseEvent( QKeyEvent* e);
     void readSettings();
     void writeSettings();
     //QGraphicsItem *m_svgItem;

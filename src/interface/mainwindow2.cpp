@@ -631,67 +631,6 @@ void MainWindow2::dockAllPalettes()
     m_colorPalette->setFloating(false);
 }
 
-// ==== Key Event ====
-
-void MainWindow2::keyPressEvent( QKeyEvent* e )
-{
-    switch (e->key())
-    {
-        //case Qt::Key_Y:
-        //	editor->polyline_clicked();
-        //	break;
-        //case Qt::Key_B:
-        //	editor->color_clicked();
-        //	break;
-        /*
-        case Qt::Key_H:
-            //editor->switchVisibilityOfLayer(editor->currentLayer);
-            break;
-        case Qt::Key_D:
-            //editor->scrubForward();
-            break;
-        case Qt::Key_Right:
-            //editor->scrubForward();
-            break;
-        case Qt::Key_S:
-            //editor->scrubBackward();
-            break;
-        case Qt::Key_Left:
-            //editor->scrubBackward();
-            break;
-        case Qt::Key_Up:
-            //editor->previousLayer();
-            break;
-        case Qt::Key_Down:
-            //editor->nextLayer();
-            break;
-        case Qt::Key_Space:
-            //editor->play();addKey();
-            break;
-        case Qt::Key_Alt:
-            //editor->altPress();
-            break;
-        case Qt::Key_Return:
-            //editor->play();
-            break;
-            */
-    default:
-        QWidget::keyPressEvent(e);
-    }
-}
-
-void MainWindow2::keyReleaseEvent( QKeyEvent* e )
-{
-    switch (e->key())
-    {
-    case Qt::Key_Alt:
-        //editor->altRelease();
-        break;
-    default:
-        QWidget::keyPressEvent(e);
-    }
-}
-
 void MainWindow2::readSettings()
 {
     QSettings settings("Pencil", "Pencil");
