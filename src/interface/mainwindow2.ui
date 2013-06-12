@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -44,6 +44,12 @@
       <string>Export</string>
      </property>
      <addaction name="separator"/>
+     <addaction name="actionExport_X_sheet"/>
+     <addaction name="actionExport_Image_Sequence"/>
+     <addaction name="actionExport_Image"/>
+     <addaction name="actionExport_Movie"/>
+     <addaction name="actionExport_Palette"/>
+     <addaction name="actionExport_Svg_Image"/>
     </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
@@ -113,6 +119,36 @@
    </property>
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionExport_X_sheet">
+   <property name="text">
+    <string>X-sheet ...</string>
+   </property>
+  </action>
+  <action name="actionExport_Image_Sequence">
+   <property name="text">
+    <string>Image Sequence...</string>
+   </property>
+  </action>
+  <action name="actionExport_Image">
+   <property name="text">
+    <string>Image...</string>
+   </property>
+  </action>
+  <action name="actionExport_Movie">
+   <property name="text">
+    <string>Movie...</string>
+   </property>
+  </action>
+  <action name="actionExport_Palette">
+   <property name="text">
+    <string>Palette...</string>
+   </property>
+  </action>
+  <action name="actionExport_Svg_Image">
+   <property name="text">
+    <string>Svg Image...</string>
    </property>
   </action>
  </widget>

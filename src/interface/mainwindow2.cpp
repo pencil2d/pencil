@@ -83,52 +83,50 @@ void MainWindow2::arrangePalettes()
 void MainWindow2::createMenus()
 {
     // ---------- Actions -------------
-    //exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
     ui->actionExit->setShortcut(tr("Ctrl+Q"));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
-    //newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
     ui->actionNew->setShortcut(tr("Ctrl+N"));
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
 
-    //openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
     ui->actionOpen->setShortcut(tr("Ctrl+O"));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openDocument()));
 
-    //saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
     ui->actionSave_as->setShortcut(tr("Ctrl+Shift+S"));
     connect(ui->actionSave_as, SIGNAL(triggered()), editor, SLOT(saveDocument()));
 
-    //savAct = new QAction(QIcon(":icons/saveas.png"), tr("&Save"), this);
     ui->actionSave->setShortcut(tr("Ctrl+S"));
     connect(ui->actionSave, SIGNAL(triggered()), editor, SLOT(saveForce()));
 
-    //printAct = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
     ui->actionPrint->setShortcut(tr("Ctrl+P"));
     connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
 
-    exportXAct = new QAction(tr("&X-Sheet..."), this);
-    exportXAct->setShortcut(tr("Ctrl+Alt+X"));
-    connect(exportXAct, SIGNAL(triggered()), editor, SLOT(exportX()));
+    //exportXAct = new QAction(tr("&X-Sheet..."), this);
+    ui->actionExport_X_sheet->setShortcut(tr("Ctrl+Alt+X"));
+    connect(ui->actionExport_X_sheet , SIGNAL(triggered()), editor, SLOT(exportX()));
 
-    exportAct = new QAction(tr("&Image Sequence..."), this);
-    exportAct->setShortcut(tr("Shift+Alt+S"));
-    connect(exportAct, SIGNAL(triggered()), editor, SLOT(exportSeq()));
+    //exportAct = new QAction(tr("&Image Sequence..."), this);
+    ui->actionExport_Image_Sequence->setShortcut(tr("Shift+Alt+S"));
+    connect(ui->actionExport_Image_Sequence, SIGNAL(triggered()), editor, SLOT(exportSeq()));
 
-    exportimageAct = new QAction(tr("&Image..."), this);
-    exportimageAct->setShortcut(tr("Ctrl+Alt+S"));
-    connect(exportimageAct, SIGNAL(triggered()), editor, SLOT(exportImage()));
+    //exportimageAct = new QAction(tr("&Image..."), this);
+    ui->actionExport_Image->setShortcut(tr("Ctrl+Alt+S"));
+    connect(ui->actionExport_Image, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
-    exportMovAct = new QAction(tr("&Movie..."), this);
-    exportMovAct->setShortcut(tr("Ctrl+Alt+M"));
-    connect(exportMovAct, SIGNAL(triggered()), editor, SLOT(exportMov()));
+    //exportMovAct = new QAction(tr("&Movie..."), this);
+    ui->actionExport_Movie->setShortcut(tr("Ctrl+Alt+M"));
+    connect(ui->actionExport_Movie, SIGNAL(triggered()), editor, SLOT(exportMov()));
 
-    exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
-    exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
-    connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
+    //exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
+    //exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
+    //connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
-    exportPaletteAct = new QAction(tr("Palette..."), this);
-    connect(exportPaletteAct, SIGNAL(triggered()), editor, SLOT(exportPalette()));
+    //exportPaletteAct = new QAction(tr("Palette..."), this);
+    connect(ui->actionExport_Palette, SIGNAL(triggered()), editor, SLOT(exportPalette()));
+
+    //savesvgAct = new QAction(tr("&Svg Image"), this);
+    ui->actionExport_Svg_Image->setShortcut(tr("Ctrl+I"));
+    connect(ui->actionExport_Svg_Image, SIGNAL(triggered()), editor, SLOT(saveSvg()));
 
     importPaletteAct = new QAction(tr("Palette..."), this);
     connect(importPaletteAct, SIGNAL(triggered()), editor, SLOT(importPalette()));
@@ -149,9 +147,6 @@ void MainWindow2::createMenus()
     importSndAct->setShortcut(tr("Ctrl+I"));
     connect(importSndAct, SIGNAL(triggered()), editor, SLOT(importSound()));
 
-    savesvgAct = new QAction(tr("&Svg Image"), this);
-    savesvgAct->setShortcut(tr("Ctrl+I"));
-    connect(savesvgAct, SIGNAL(triggered()), editor, SLOT(saveSvg()));
 
     QAction* helpMeAct = new QAction(tr("&Help"), this);
     helpMeAct->setShortcut(tr("F1"));
@@ -389,33 +384,7 @@ void MainWindow2::createMenus()
     importMenu->addSeparator();
     importMenu->addAction(importPaletteAct);
 
-    exportMenu = new QMenu(tr("Export"), this);
-    exportMenu->addAction(exportimageAct);
-    exportMenu->addAction(exportAct);
-    exportMenu->addAction(exportXAct);
-    exportMenu->addAction(exportMovAct);
-    exportMenu->addAction(exportFlashAct);
-    exportMenu->addAction(savesvgAct);
-    exportMenu->addSeparator();
-    exportMenu->addAction(exportPaletteAct);
-
     openRecentMenu = new QMenu(tr("Open recent"), this);
-
-    /*
-    fileMenu = new QMenu(tr("&File"), this);
-    fileMenu->addAction(newAct);
-    fileMenu->addAction(openAct);
-    fileMenu->addMenu(openRecentMenu);
-    fileMenu->addAction(savAct);
-    fileMenu->addAction(saveAct);
-    fileMenu->addSeparator();
-    fileMenu->addMenu(importMenu);
-    fileMenu->addMenu(exportMenu);
-    fileMenu->addSeparator();
-    fileMenu->addAction(printAct);
-    fileMenu->addSeparator();
-    fileMenu->addAction(exitAct);
-    */
 
     zoomMenu = new QMenu(tr("Zoom"), this);
     zoomMenu->addAction(zoomAct);
@@ -558,8 +527,8 @@ void MainWindow2::populateMenus(QObject* plugin)
     FilterInterface *iFilter = qobject_cast<FilterInterface *>(plugin);
     if (iFilter) addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));*/
 
-    ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(plugin);
-    if (exportPlugin) addToMenu(plugin, exportPlugin->name(), exportMenu, SLOT(exportFile()));
+    //ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(plugin);
+    //if (exportPlugin) addToMenu(plugin, exportPlugin->name(), exportMenu, SLOT(exportFile()));
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
@@ -637,10 +606,12 @@ void MainWindow2::openDocument()
         QSettings settings("Pencil","Pencil");
 
         QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-        QString fileName = QFileDialog::getOpenFileName(this,
-                                                        tr("Open File..."),
-                                                        myPath,
-                                                        tr("PCL (*.pcl);;Any files (*)"));
+        QString fileName = QFileDialog::getOpenFileName(
+                    this,
+                    tr("Open File..."),
+                    myPath,
+                    tr("PCL (*.pcl);;Any files (*)"));
+
         if ( fileName.isEmpty() )
         {
             return ;

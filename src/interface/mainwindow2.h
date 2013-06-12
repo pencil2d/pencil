@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 class QActionGroup;
 class Editor;
 class Object;
@@ -12,7 +13,8 @@ class ToolOptionDockWidget;
 template<typename T> class QList;
 
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow2;
 }
 
@@ -21,11 +23,11 @@ class MainWindow2;
 class MainWindow2 : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow2(QWidget *parent = 0);
     ~MainWindow2();
-    
+
     void addRecentFile(QString filePath);
 
     // Data Model
@@ -75,10 +77,8 @@ private:
     QString path;
     QList<QMenu*>* m_pMenuList;
 
-    //QMenu* fileMenu;
     QMenu* openRecentMenu;
     QMenu* importMenu;
-    QMenu* exportMenu;
     QMenu* editMenu;
     QMenu* InsertMenu;
     QMenu* MirrorMenu;
@@ -93,15 +93,6 @@ private:
     QMenu* helpMenu;
 
 
-    //QAction* newAct;
-    //QAction* openAct;
-    //QAction* saveAct;
-    //QAction* savAct;
-    //QAction* printAct;
-    QAction* exportXAct;
-    QAction* exportAct;
-    //QAction* exitAct;
-    QAction* exportimageAct;
     QAction* importMovAct;
     QAction* importMovieAct;
 
@@ -119,9 +110,6 @@ private:
     QAction* resetpaletteAct;
     QAction* horiMirrorAct;
     QAction* vertiMirrorAct;
-    QAction* exportMovAct;
-    QAction* exportFlashAct;
-    QAction* exportPaletteAct;
     QAction* importPaletteAct;
 
     QAction* importAct;
@@ -168,7 +156,6 @@ private:
     QAction* rotateacw;
     QAction* inbetweenAct;
     QAction* inbetweenActV;
-    QAction* savesvgAct;
 
     QAction* pencilToolAct;
     QAction* bucketToolAct;
