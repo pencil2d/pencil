@@ -361,7 +361,7 @@ void MainWindow::createMenus()
     connect(pencilToolAct, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
 
     bucketToolAct = new QAction(QIcon(":icons/bucket.png"),tr("Paintbucket"), this);
-    bucketToolAct->setShortcut(Qt::Key_K);
+    //bucketToolAct->setShortcut(Qt::Key_K);
     connect(bucketToolAct, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
 
     eyedropToolAct = new QAction(QIcon(":icons/eyedropper.png"),tr("Eyedropper"), this);
@@ -513,6 +513,22 @@ void MainWindow::createMenus()
     {
         menuBar()->addMenu(pMenu);
     }
+    /*
+    QSettings pTmpSett("mysc.ini", QSettings::IniFormat);
+    foreach (QMenu* pMenu, *m_pMenuList)
+    {
+        QList<QAction*> actionList = pMenu->actions();
+
+        foreach ( QAction* pAction, actionList)
+        {
+            QString strCmd = pAction->text();
+            QString strKeys = pAction->shortcut().toString();
+            pTmpSett.setValue( strCmd, strKeys);
+            qDebug("Cmd: %s> Key: %s", strCmd.ascii(), strKeys.ascii());
+        }
+    }
+    pTmpSett.sync();
+    */
 }
 
 void MainWindow::loadPlugins()

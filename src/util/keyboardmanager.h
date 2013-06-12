@@ -5,7 +5,11 @@
 
 
 class QSettings;
+class QAction;
+template<class T1, class T2> class QMap;
 
+
+#define SHORTCUTS_INI "shortcuts.ini"
 
 #define COMMAND_NEW "NewFile"
 #define COMMAND_OPEN "OpenFile"
@@ -14,13 +18,12 @@ class QSettings;
 
 
 
-
 class KeyboardManager : public QObject
 {
     Q_OBJECT
 public:
     explicit KeyboardManager(QObject *parent = 0);
-    //void setShortcut(ACTION eAction, QString strKeys);
+    void setShortcut(QString strCommand, QString strKeys);
     //QString getShortcut(ACTION eAction);
 signals:
     
