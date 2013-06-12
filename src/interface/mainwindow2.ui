@@ -91,8 +91,38 @@
     <addaction name="separator"/>
     <addaction name="actionPreference"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuOnion_Skin">
+     <property name="title">
+      <string>Onion Skin</string>
+     </property>
+     <addaction name="actionOnionPrevious"/>
+     <addaction name="actionOnionNext"/>
+    </widget>
+    <addaction name="actionReset_Windows"/>
+    <addaction name="actionReset_View"/>
+    <addaction name="separator"/>
+    <addaction name="actionZoom_In"/>
+    <addaction name="actionZoom_Out"/>
+    <addaction name="separator"/>
+    <addaction name="actionRotate_Clockwise"/>
+    <addaction name="actionRotate_Anticlosewise"/>
+    <addaction name="separator"/>
+    <addaction name="actionHorizontal_Flip"/>
+    <addaction name="actionVertical_Flip"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreview"/>
+    <addaction name="separator"/>
+    <addaction name="actionGrid"/>
+    <addaction name="separator"/>
+    <addaction name="menuOnion_Skin"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -277,6 +307,96 @@
   <action name="actionPreference">
    <property name="text">
     <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionReset_Windows">
+   <property name="text">
+    <string>Reset Windows</string>
+   </property>
+  </action>
+  <action name="actionZoom_In">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+  </action>
+  <action name="actionZoom_Out">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="actionRotate_Clockwise">
+   <property name="text">
+    <string>Rotate Clockwise</string>
+   </property>
+  </action>
+  <action name="actionRotate_Anticlosewise">
+   <property name="text">
+    <string>Rotate AntiClosewise</string>
+   </property>
+  </action>
+  <action name="actionReset_View">
+   <property name="text">
+    <string>Reset View</string>
+   </property>
+  </action>
+  <action name="actionHorizontal_Flip">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/mirror.png</normaloff>:/icons/mirror.png</iconset>
+   </property>
+   <property name="text">
+    <string>Horizontal Flip</string>
+   </property>
+  </action>
+  <action name="actionVertical_Flip">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/mirrorV.png</normaloff>:/icons/mirrorV.png</iconset>
+   </property>
+   <property name="text">
+    <string>Vertical Flip</string>
+   </property>
+  </action>
+  <action name="actionPreview">
+   <property name="text">
+    <string>Preview</string>
+   </property>
+  </action>
+  <action name="actionGrid">
+   <property name="text">
+    <string>Grid</string>
+   </property>
+  </action>
+  <action name="actionOnionPrevious">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/onionPrev.png</normaloff>:/icons/onionPrev.png</iconset>
+   </property>
+   <property name="text">
+    <string>Previous</string>
+   </property>
+  </action>
+  <action name="actionOnionNext">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/onionNext.png</normaloff>:/icons/onionNext.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next</string>
    </property>
   </action>
  </widget>

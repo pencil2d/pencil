@@ -79,14 +79,14 @@ private:
     //QMenu* importMenu;
     //QMenu* editMenu;
     //QMenu* InsertMenu;
-    QMenu* MirrorMenu;
-    QMenu* viewMenu;
-    QMenu* zoomMenu;
-    QMenu* rotateMenu;
+    //QMenu* MirrorMenu;
+    //QMenu* viewMenu;
+    //QMenu* zoomMenu;
+    //QMenu* rotateMenu;
     QMenu* layerMenu;
     QMenu* animationMenu;
     QMenu* toolsMenu;
-    QMenu* onionskinMenu;
+    //QMenu* onionskinMenu;
     QMenu* windowsMenu;
     QMenu* helpMenu;
 
@@ -99,15 +99,15 @@ private:
 
     //QAction* trimAct;
     //QAction* cropAct;
-    QAction* gridAct;
-    QAction* onionskinpAct;
-    QAction* onionskinnAct;
-    QAction* previewAct;
-    QAction* rotateAct;
-    QAction* rotateAct1;
-    QAction* resetpaletteAct;
-    QAction* horiMirrorAct;
-    QAction* vertiMirrorAct;
+    //QAction* gridAct;
+    //QAction* onionskinpAct;
+    //QAction* onionskinnAct;
+    //QAction* previewAct;
+    //QAction* rotateAct;
+    //QAction* rotateAct1;
+    //QAction* resetpaletteAct;
+    //QAction* horiMirrorAct;
+    //QAction* vertiMirrorAct;
     //QAction* importPaletteAct;
 
     //QAction* importAct;
@@ -148,10 +148,10 @@ private:
     QAction* penToolAct;
     QAction* handToolAct;
     QAction* zoomToolAct;
-    QAction* zoomAct;
-    QAction* zoomAct1;
-    QAction* rotatecw;
-    QAction* rotateacw;
+    //QAction* zoomAct;
+    //QAction* zoomAct1;
+    //QAction* rotatecw;
+    //QAction* rotateacw;
     //QAction* inbetweenAct;
     //QAction* inbetweenActV;
 

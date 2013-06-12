@@ -197,56 +197,48 @@ void MainWindow2::createMenus()
     connect(deleteLayerAct, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
 
 
-    /*~~~~~~~~View menu~~~~~~~~~*/
-    zoomAct = new QAction(QIcon(":icons/magnify.png"),tr("In"), this);
-    zoomAct->setShortcut(Qt::Key_Up+ Qt::CTRL);
-    connect(zoomAct, SIGNAL(triggered()), editor, SLOT(setzoom()));
+    /// --- View Menu ---
+    ui->actionZoom_In->setShortcut(Qt::Key_Up+ Qt::CTRL);
+    connect(ui->actionZoom_In, SIGNAL(triggered()), editor, SLOT(setzoom()));
 
-    zoomAct1 = new QAction(QIcon(":icons/magnify.png"),tr("Out"), this);
-    zoomAct1->setShortcut(Qt::Key_Down+ Qt::CTRL);
-    connect(zoomAct1, SIGNAL(triggered()), editor, SLOT(setzoom1()));
+    ui->actionZoom_Out->setShortcut(Qt::Key_Down+ Qt::CTRL);
+    connect(ui->actionZoom_Out, SIGNAL(triggered()), editor, SLOT(setzoom1()));
 
-    rotateAct = new QAction(tr("Clockwise"), this);
-    rotateAct->setShortcut(Qt::Key_R);
-    connect(rotateAct, SIGNAL(triggered()), editor, SLOT(rotatecw()));
+    ui->actionRotate_Clockwise->setShortcut(Qt::Key_R);
+    connect(ui->actionRotate_Clockwise, SIGNAL(triggered()), editor, SLOT(rotatecw()));
 
-    rotateAct1 = new QAction(tr("AntiClockwise"), this);
-    rotateAct1->setShortcut(Qt::Key_Z);
-    connect(rotateAct1, SIGNAL(triggered()), editor, SLOT(rotateacw()));
-    resetpaletteAct = new QAction(tr("Reset Windows"), this);
-    resetpaletteAct->setShortcut(Qt::Key_H + Qt::CTRL);
-    connect(resetpaletteAct, SIGNAL(triggered()), this, SLOT(dockAllPalettes()));
+    ui->actionRotate_Anticlosewise->setShortcut(Qt::Key_Z);
+    connect(ui->actionRotate_Anticlosewise, SIGNAL(triggered()), editor, SLOT(rotateacw()));
 
-    horiMirrorAct = new QAction(QIcon(":icons/mirror.png"),tr("Horizontal Flip"), this);
-    horiMirrorAct->setShortcut(Qt::Key_H + Qt::SHIFT);
-    connect(horiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
+    ui->actionReset_Windows->setShortcut(Qt::Key_H + Qt::CTRL);
+    connect(ui->actionReset_Windows, SIGNAL(triggered()), this, SLOT(dockAllPalettes()));
 
-    vertiMirrorAct = new QAction(QIcon(":icons/mirrorV.png"),tr("Vertical Flip"), this);
-    vertiMirrorAct->setShortcut(Qt::Key_V + Qt::SHIFT);
-    connect(vertiMirrorAct, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
+    ui->actionReset_View->setShortcut(Qt::Key_H + Qt::CTRL);
+    connect(ui->actionReset_View, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
 
-    previewAct = new QAction(tr("Preview"), this);
-    previewAct->setShortcut(Qt::Key_P + Qt::ALT);
-    previewAct->setEnabled(true);
-    //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO Preview view
-    connect(previewAct, SIGNAL(triggered()), editor, SLOT(addcolorbutton()));
+    ui->actionHorizontal_Flip->setShortcut(Qt::Key_H + Qt::SHIFT);
+    connect(ui->actionHorizontal_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
 
-    gridAct = new QAction(tr("Grid"), this);
-    gridAct->setShortcut(Qt::Key_G);
-    gridAct->setEnabled(false);
-    //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO Grid view
+    ui->actionVertical_Flip->setShortcut(Qt::Key_V + Qt::SHIFT);
+    connect(ui->actionVertical_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
 
-    onionskinpAct = new QAction(QIcon(":icons/onionPrev.png"),tr("Previous"), this);
-    onionskinpAct->setShortcut(Qt::Key_O);
-    onionskinpAct->setCheckable(true);
-    connect(onionskinpAct, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
-    connect(editor, SIGNAL(onionPrevChanged(bool)), onionskinpAct, SLOT(setChecked(bool)));
+    ui->actionPreview->setShortcut(Qt::Key_P + Qt::ALT);
+    ui->actionPreview->setEnabled(false);
+    //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    onionskinnAct = new QAction(QIcon(":icons/onionNext.png"),tr("Next"), this);
-    onionskinnAct->setShortcut(Qt::Key_O+Qt::ALT);
-    onionskinnAct->setCheckable(true);
-    connect(onionskinnAct, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionNext(bool)));
-    connect(editor, SIGNAL(onionNextChanged(bool)), onionskinnAct, SLOT(setChecked(bool)));
+    //gridAct = new QAction(tr("Grid"), this);
+    ui->actionGrid->setShortcut(Qt::Key_G);
+    ui->actionGrid->setEnabled(false);
+    //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
+
+    ui->actionOnionPrevious->setShortcut(Qt::Key_O);
+    connect(ui->actionOnionPrevious, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
+    connect(editor, SIGNAL(onionPrevChanged(bool)), ui->actionOnionPrevious, SLOT(setChecked(bool)));
+
+    ui->actionOnionNext = new QAction(QIcon(":icons/onionNext.png"),tr("Next"), this);
+    ui->actionOnionNext->setShortcut(Qt::Key_O+Qt::ALT);
+    connect(ui->actionOnionNext, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionNext(bool)));
+    connect(editor, SIGNAL(onionNextChanged(bool)), ui->actionOnionNext, SLOT(setChecked(bool)));
 
     /*~~~~Animation Menu~~~~~~*/
     playAnimationAct = new QAction(tr("Play/Stop"), this);
@@ -318,10 +310,6 @@ void MainWindow2::createMenus()
     handToolAct->setShortcut(Qt::Key_H);
     connect(handToolAct, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
 
-    zoomToolAct = new QAction(tr("Reset Zoom/Rotate"), this);
-    zoomToolAct->setShortcut(Qt::Key_H + Qt::CTRL);
-    connect(zoomToolAct, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-
     pencilToolAct = new QAction(QIcon(":icons/pencil2.png"),tr("Pencil"), this);
     pencilToolAct->setShortcut(Qt::Key_N);
     connect(pencilToolAct, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
@@ -341,35 +329,6 @@ void MainWindow2::createMenus()
     // --------------- Menus ------------------
 
     openRecentMenu = new QMenu(tr("Open recent"), this);
-
-    zoomMenu = new QMenu(tr("Zoom"), this);
-    zoomMenu->addAction(zoomAct);
-    zoomMenu->addAction(zoomAct1);
-    rotateMenu= new QMenu(tr("Rotate"), this) ;
-    rotateMenu->addAction(rotateAct);
-    rotateMenu->addAction(rotateAct1);
-    onionskinMenu= new QMenu(tr("Onion Skin"), this) ;
-    onionskinMenu->addAction(onionskinpAct);
-    onionskinMenu->addAction(onionskinnAct);
-
-    MirrorMenu= new QMenu(tr("Mirror"), this) ;
-    MirrorMenu->addAction(horiMirrorAct);
-    MirrorMenu->addAction(vertiMirrorAct);
-
-    viewMenu = new QMenu(tr("&View"), this);
-    viewMenu->addAction(resetpaletteAct);
-    viewMenu->addMenu(zoomMenu);
-    viewMenu->addAction(zoomToolAct);
-    viewMenu->addSeparator();
-    viewMenu->addMenu(rotateMenu);
-    viewMenu->addMenu(MirrorMenu);
-    viewMenu->addSeparator();
-    viewMenu->addAction(previewAct);
-    viewMenu->addSeparator();
-    viewMenu->addAction(gridAct);
-    viewMenu->addSeparator();
-    viewMenu->addMenu(onionskinMenu);
-    viewMenu->addSeparator();
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
@@ -416,7 +375,7 @@ void MainWindow2::createMenus()
 
     //m_pMenuList->append(fileMenu);
     //m_pMenuList->append(editMenu);
-    m_pMenuList->append(viewMenu);
+    //m_pMenuList->append(viewMenu);
     m_pMenuList->append(animationMenu);
     m_pMenuList->append(toolsMenu);
     m_pMenuList->append(layerMenu);
