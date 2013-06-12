@@ -260,8 +260,6 @@ private slots:
     bool exportFlash();
 
     void showPalette();
-    void about();
-    void helpBox();
     void saveLength(QString);
     void getCameraLayer();
 

@@ -11,6 +11,7 @@
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent)
 {
+    /*
     QSettings pKeySettings("shortcuts.ini", QSettings::IniFormat);
 
     pKeySettings.setValue("MoveTool", "Q");
@@ -43,6 +44,7 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
     layout->add(pShortcutsTable);
 
     setLayout(layout);
+    */
 }
 
 void ShortcutsPage::tableItemChangs(QStandardItem* pItem)

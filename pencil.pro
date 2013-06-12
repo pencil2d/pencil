@@ -140,3 +140,6 @@ svg \
 script \
 qt3support
 
+# shortcuts.path = %{buildDir}
+# shortcuts.files += %{sourceDir}/shortcuts.ini
+# INSTALLS += shortcuts
