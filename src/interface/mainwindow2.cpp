@@ -101,15 +101,12 @@ void MainWindow2::createMenus()
     ui->actionPrint->setShortcut(tr("Ctrl+P"));
     connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
 
-    //exportXAct = new QAction(tr("&X-Sheet..."), this);
     ui->actionExport_X_sheet->setShortcut(tr("Ctrl+Alt+X"));
     connect(ui->actionExport_X_sheet , SIGNAL(triggered()), editor, SLOT(exportX()));
 
-    //exportAct = new QAction(tr("&Image Sequence..."), this);
     ui->actionExport_Image_Sequence->setShortcut(tr("Shift+Alt+S"));
     connect(ui->actionExport_Image_Sequence, SIGNAL(triggered()), editor, SLOT(exportSeq()));
 
-    //exportimageAct = new QAction(tr("&Image..."), this);
     ui->actionExport_Image->setShortcut(tr("Ctrl+Alt+S"));
     connect(ui->actionExport_Image, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
