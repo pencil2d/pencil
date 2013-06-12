@@ -373,9 +373,9 @@ void MainWindow2::createMenus()
 
     m_pMenuList = new QList<QMenu*>();
 
-    //m_pMenuList->append(fileMenu);
-    //m_pMenuList->append(editMenu);
-    //m_pMenuList->append(viewMenu);
+    m_pMenuList->append(ui->menuFile);
+    m_pMenuList->append(ui->menuEdit);
+    m_pMenuList->append(ui->menuView);
     m_pMenuList->append(animationMenu);
     m_pMenuList->append(toolsMenu);
     m_pMenuList->append(layerMenu);
