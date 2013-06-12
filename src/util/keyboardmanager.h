@@ -7,11 +7,12 @@
 class QSettings;
 
 
-enum ACTION
-{
-    UNKOWN_ACTION = 0,
-    OPEN_FILE_ATION
-};
+#define COMMAND_NEW "NewFile"
+#define COMMAND_OPEN "OpenFile"
+#define COMMAND_SAVE "Save"
+#define COMMAND_SAVE_AS "SaveAs"
+
+
 
 
 class KeyboardManager : public QObject
@@ -19,8 +20,8 @@ class KeyboardManager : public QObject
     Q_OBJECT
 public:
     explicit KeyboardManager(QObject *parent = 0);
-    void setShortcut(ACTION eAction, QString strKeys);
-    QString getShortcut(ACTION eAction);
+    //void setShortcut(ACTION eAction, QString strKeys);
+    //QString getShortcut(ACTION eAction);
 signals:
     
 public slots:

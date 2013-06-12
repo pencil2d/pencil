@@ -14,8 +14,3 @@ KeyboardManager::KeyboardManager(QObject *parent) :
 
 }
 
-
-void KeyboardManager::setShortcut(ACTION eAction, QString strKeys)
-{
-
-}
