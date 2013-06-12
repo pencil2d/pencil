@@ -63,7 +63,7 @@ HEADERS +=  src/interfaces.h \
     src/tool/polylinetool.h \
     src/tool/buckettool.h \
     src/tool/eyedroppertool.h \
-    src/structure/pencilsettings.h \
+    src/util/pencilsettings.h \
     src/interface/shortcutspage.h \
     src/util/keyboardmanager.h \
     src/interface/mainwindow2.h
@@ -109,7 +109,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/polylinetool.cpp \
     src/tool/buckettool.cpp \
     src/tool/eyedroppertool.cpp \
-    src/structure/pencilsettings.cpp \
+    src/util/pencilsettings.cpp \
     src/interface/shortcutspage.cpp \
     src/util/keyboardmanager.cpp \
     src/interface/mainwindow2.cpp
