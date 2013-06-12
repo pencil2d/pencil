@@ -139,6 +139,18 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionClear"/>
+    <addaction name="actionMove"/>
+    <addaction name="actionSelect"/>
+    <addaction name="actionBrush"/>
+    <addaction name="actionPolyline"/>
+    <addaction name="actionSmudge"/>
+    <addaction name="actionPen"/>
+    <addaction name="actionHand"/>
+    <addaction name="actionPencil"/>
+    <addaction name="actionBucket"/>
+    <addaction name="actionEyedropper"/>
+    <addaction name="actionEraser"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -490,6 +502,114 @@
    </property>
    <property name="text">
     <string>Remove Frame</string>
+   </property>
+  </action>
+  <action name="actionMove">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/move.png</normaloff>:/icons/move.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear</string>
+   </property>
+  </action>
+  <action name="actionSelect">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select</string>
+   </property>
+  </action>
+  <action name="actionBrush">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/brush.png</normaloff>:/icons/brush.png</iconset>
+   </property>
+   <property name="text">
+    <string>Brush</string>
+   </property>
+  </action>
+  <action name="actionPolyline">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/polyline.png</normaloff>:/icons/polyline.png</iconset>
+   </property>
+   <property name="text">
+    <string>Polyline</string>
+   </property>
+  </action>
+  <action name="actionSmudge">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/smudge.png</normaloff>:/icons/smudge.png</iconset>
+   </property>
+   <property name="text">
+    <string>Smudge</string>
+   </property>
+  </action>
+  <action name="actionPen">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/pen.png</normaloff>:/icons/pen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pen</string>
+   </property>
+  </action>
+  <action name="actionHand">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hand</string>
+   </property>
+  </action>
+  <action name="actionPencil">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/pencil2.png</normaloff>:/icons/pencil2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pencil</string>
+   </property>
+  </action>
+  <action name="actionBucket">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/bucket.png</normaloff>:/icons/bucket.png</iconset>
+   </property>
+   <property name="text">
+    <string>Bucket</string>
+   </property>
+  </action>
+  <action name="actionEyedropper">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/eyedropper.png</normaloff>:/icons/eyedropper.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eyedropper</string>
+   </property>
+  </action>
+  <action name="actionEraser">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/eraser.png</normaloff>:/icons/eraser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eraser</string>
    </property>
   </action>
  </widget>

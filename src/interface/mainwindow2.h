@@ -77,7 +77,7 @@ private:
     QMenu* openRecentMenu;
     QMenu* layerMenu;
     //QMenu* animationMenu;
-    QMenu* toolsMenu;
+    //QMenu* toolsMenu;
     QMenu* windowsMenu;
     QMenu* helpMenu;
 
@@ -95,19 +95,6 @@ private:
     //QAction* removeFrameAct;
     //QAction* nextFrameAct;
     //QAction* prevFrameAct;
-
-    QAction* moveToolAct;
-    QAction* clearToolAct;
-    QAction* selectToolAct;
-    QAction* brushToolAct;
-    QAction* polylineToolAct;
-    QAction* smudgeToolAct;
-    QAction* penToolAct;
-    QAction* handToolAct;
-    QAction* pencilToolAct;
-    QAction* bucketToolAct;
-    QAction* eyedropToolAct;
-    QAction* eraserToolAct;
 };
 
 #endif // MAINWINDOW2_H
