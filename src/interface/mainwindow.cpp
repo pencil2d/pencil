@@ -130,11 +130,11 @@ void MainWindow::createMenus()
     importAct->setShortcut(tr("Ctrl+Shift+R"));
     connect(importAct, SIGNAL(triggered()), editor, SLOT(importImage()));
 
-    QAction* importMovAct = new QAction(tr("&Image Sequence..."), this);
+    importMovAct = new QAction(tr("&Image Sequence..."), this);
     importMovAct->setShortcut(tr("Ctrl+R"));
     connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
-    QAction* importMovieAct = new QAction(tr("&Movie..."), this);
+    importMovieAct = new QAction(tr("&Movie..."), this);
     importMovieAct->setShortcut(tr("Ctrl+R"));
     connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
 

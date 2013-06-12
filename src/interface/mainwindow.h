@@ -102,7 +102,9 @@ private:
     QAction* printAct;
     QAction* exportXAct;
     QAction* exportAct;
-    QAction* exportimageAct;
+    QAction* exportimageAct;    
+    QAction* importMovAct;
+    QAction* importMovieAct;
 
     QAction* trimAct;
     QAction* cropAct;
