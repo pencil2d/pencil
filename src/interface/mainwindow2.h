@@ -78,7 +78,7 @@ private:
     QList<QMenu*>* m_pMenuList;
 
     QMenu* openRecentMenu;
-    QMenu* importMenu;
+    //QMenu* importMenu;
     QMenu* editMenu;
     QMenu* InsertMenu;
     QMenu* MirrorMenu;
@@ -93,8 +93,8 @@ private:
     QMenu* helpMenu;
 
 
-    QAction* importMovAct;
-    QAction* importMovieAct;
+    //QAction* importMovAct;
+    //QAction* importMovieAct;
 
     //QAction* helpMeAct;
     //QAction* aboutPencilAct;
@@ -110,9 +110,9 @@ private:
     QAction* resetpaletteAct;
     QAction* horiMirrorAct;
     QAction* vertiMirrorAct;
-    QAction* importPaletteAct;
+    //QAction* importPaletteAct;
 
-    QAction* importAct;
+    //QAction* importAct;
     QAction* undoAct;
     QAction* redoAct;
     QAction* copyAct;
@@ -123,7 +123,7 @@ private:
     QAction* pasteframesAct;
     QAction* selectAllAct;
     QAction* deselectAllAct;
-    QAction* importSndAct;
+    //QAction* importSndAct;
     QAction* preferencesAct;
 
     QAction* newBitmapLayerAct;

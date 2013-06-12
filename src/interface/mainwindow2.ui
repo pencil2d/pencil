@@ -38,6 +38,12 @@
       <string>Import</string>
      </property>
      <addaction name="separator"/>
+     <addaction name="actionImport_Image"/>
+     <addaction name="actionImport_Image_Sequence"/>
+     <addaction name="actionImport_Movie"/>
+     <addaction name="actionImport_Sound"/>
+     <addaction name="separator"/>
+     <addaction name="actionImport_Palette"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -48,8 +54,9 @@
      <addaction name="actionExport_Image_Sequence"/>
      <addaction name="actionExport_Image"/>
      <addaction name="actionExport_Movie"/>
-     <addaction name="actionExport_Palette"/>
      <addaction name="actionExport_Svg_Image"/>
+     <addaction name="separator"/>
+     <addaction name="actionExport_Palette"/>
     </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
@@ -149,6 +156,31 @@
   <action name="actionExport_Svg_Image">
    <property name="text">
     <string>Svg Image...</string>
+   </property>
+  </action>
+  <action name="actionImport_Image">
+   <property name="text">
+    <string>Image...</string>
+   </property>
+  </action>
+  <action name="actionImport_Image_Sequence">
+   <property name="text">
+    <string>Image Sequence...</string>
+   </property>
+  </action>
+  <action name="actionImport_Movie">
+   <property name="text">
+    <string>Movie...</string>
+   </property>
+  </action>
+  <action name="actionImport_Sound">
+   <property name="text">
+    <string>Sound...</string>
+   </property>
+  </action>
+  <action name="actionImport_Palette">
+   <property name="text">
+    <string>Palette...</string>
    </property>
   </action>
  </widget>

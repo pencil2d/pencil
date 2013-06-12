@@ -121,31 +121,23 @@ void MainWindow2::createMenus()
     //exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
     //connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
-    //exportPaletteAct = new QAction(tr("Palette..."), this);
     connect(ui->actionExport_Palette, SIGNAL(triggered()), editor, SLOT(exportPalette()));
 
-    //savesvgAct = new QAction(tr("&Svg Image"), this);
     ui->actionExport_Svg_Image->setShortcut(tr("Ctrl+I"));
     connect(ui->actionExport_Svg_Image, SIGNAL(triggered()), editor, SLOT(saveSvg()));
+    connect(ui->actionImport_Palette, SIGNAL(triggered()), editor, SLOT(importPalette()));
 
-    importPaletteAct = new QAction(tr("Palette..."), this);
-    connect(importPaletteAct, SIGNAL(triggered()), editor, SLOT(importPalette()));
+    ui->actionImport_Image->setShortcut(tr("Ctrl+Shift+R"));
+    connect(ui->actionImport_Image, SIGNAL(triggered()), editor, SLOT(importImage()));
 
-    importAct = new QAction(tr("&Image..."), this);
-    importAct->setShortcut(tr("Ctrl+Shift+R"));
-    connect(importAct, SIGNAL(triggered()), editor, SLOT(importImage()));
+    ui->actionImport_Image_Sequence->setShortcut(tr("Ctrl+R"));
+    connect(ui->actionImport_Image_Sequence, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
-    importMovAct = new QAction(tr("&Image Sequence..."), this);
-    importMovAct->setShortcut(tr("Ctrl+R"));
-    connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
+    ui->actionImport_Movie->setShortcut(tr("Ctrl+R"));
+    connect(ui->actionImport_Movie, SIGNAL(triggered()), editor, SLOT(importMov()));
 
-    importMovieAct = new QAction(tr("&Movie..."), this);
-    importMovieAct->setShortcut(tr("Ctrl+R"));
-    connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
-
-    importSndAct = new QAction(tr("&Sound..."), this);
-    importSndAct->setShortcut(tr("Ctrl+I"));
-    connect(importSndAct, SIGNAL(triggered()), editor, SLOT(importSound()));
+    ui->actionImport_Sound->setShortcut(tr("Ctrl+I"));
+    connect(ui->actionImport_Sound, SIGNAL(triggered()), editor, SLOT(importSound()));
 
 
     QAction* helpMeAct = new QAction(tr("&Help"), this);
@@ -375,14 +367,6 @@ void MainWindow2::createMenus()
     connect(eraserToolAct, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
 
     // --------------- Menus ------------------
-    importMenu = new QMenu(tr("Import"), this);
-
-    importMenu->addAction(importAct);
-    importMenu->addAction(importMovAct);
-    importMenu->addAction(importMovieAct);
-    importMenu->addAction(importSndAct);
-    importMenu->addSeparator();
-    importMenu->addAction(importPaletteAct);
 
     openRecentMenu = new QMenu(tr("Open recent"), this);
 
