@@ -113,8 +113,8 @@ private:
     //QAction* importPaletteAct;
 
     //QAction* importAct;
-    QAction* undoAct;
-    QAction* redoAct;
+    //QAction* undoAct;
+    //QAction* redoAct;
     QAction* copyAct;
     QAction* copyframesAct;
     QAction* cutAct;

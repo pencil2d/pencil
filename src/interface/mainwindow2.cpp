@@ -136,7 +136,6 @@ void MainWindow2::createMenus()
     ui->actionImport_Sound->setShortcut(tr("Ctrl+I"));
     connect(ui->actionImport_Sound, SIGNAL(triggered()), editor, SLOT(importSound()));
 
-
     QAction* helpMeAct = new QAction(tr("&Help"), this);
     helpMeAct->setShortcut(tr("F1"));
     connect(helpMeAct, SIGNAL(triggered()), this, SLOT(helpBox()));
@@ -145,14 +144,14 @@ void MainWindow2::createMenus()
     aboutPencilAct->setShortcut(tr("F2"));
     connect(aboutPencilAct, SIGNAL(triggered()), this, SLOT(aboutPencil()));
 
-    undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
-    undoAct->setShortcut(tr("Ctrl+Z"));
-    connect(undoAct, SIGNAL(triggered()), editor, SLOT(undo()));
+    //undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
+    ui->actionUndo->setShortcut(tr("Ctrl+Z"));
+    connect(ui->actionUndo, SIGNAL(triggered()), editor, SLOT(undo()));
 
-    redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
-    redoAct->setShortcut(tr("Ctrl+Y"));
-    redoAct->setEnabled(false);
-    connect(redoAct, SIGNAL(triggered()), editor, SLOT(redo()));
+    //redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
+    ui->actionRedo->setShortcut(tr("Ctrl+Shift+Z"));
+    ui->actionRedo->setEnabled(false);
+    connect(ui->actionRedo, SIGNAL(triggered()), editor, SLOT(redo()));
 
     cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
     cutAct->setShortcut(tr("Ctrl+X"));
@@ -401,8 +400,8 @@ void MainWindow2::createMenus()
     viewMenu->addSeparator();
 
     editMenu = new QMenu(tr("&Edit"), this);
-    editMenu->addAction(undoAct);
-    editMenu->addAction(redoAct);
+    //editMenu->addAction(undoAct);
+    //editMenu->addAction(redoAct);
     editMenu->addSeparator();
     editMenu->addAction(cutAct);
     editMenu->addAction(copyAct);
@@ -777,24 +776,24 @@ void MainWindow2::undoActSetText(void)
 {
     if (this->editor->backupIndex < 0)
     {
-        editMenu->actions().at(0)->setText("Undo");
-        editMenu->actions().at(0)->setEnabled(false);
+        ui->actionUndo->setText("Undo");
+        ui->actionUndo->setEnabled(false);
     }
     else
     {
-        editMenu->actions().at(0)->setText("Undo   " + QString::number(this->editor->backupIndex+1) + " " + this->editor->backupList.at(this->editor->backupIndex)->undoText);
-        editMenu->actions().at(0)->setEnabled(true);
+        ui->actionUndo->setText("Undo   " + QString::number(this->editor->backupIndex+1) + " " + this->editor->backupList.at(this->editor->backupIndex)->undoText);
+        ui->actionUndo->setEnabled(true);
     }
 
     if (this->editor->backupIndex+2 < this->editor->backupList.size())
     {
-        editMenu->actions().at(1)->setText("Redo   " + QString::number(this->editor->backupIndex+2) + " " + this->editor->backupList.at(this->editor->backupIndex+1)->undoText);
-        editMenu->actions().at(1)->setEnabled(true);
+        ui->actionRedo->setText("Redo   " + QString::number(this->editor->backupIndex+2) + " " + this->editor->backupList.at(this->editor->backupIndex+1)->undoText);
+        ui->actionRedo->setEnabled(true);
     }
     else
     {
-        editMenu->actions().at(1)->setText("Redo");
-        editMenu->actions().at(1)->setEnabled(false);
+        ui->actionRedo->setText("Redo");
+        ui->actionRedo->setEnabled(false);
     }
 }
 
