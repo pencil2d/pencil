@@ -16,7 +16,8 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QDir>
 #include "editor.h"
-#include "mainwindow.h"
+//#include "mainwindow.h"
+#include "mainwindow2.h"
 
 void initialise();
 
@@ -32,7 +33,7 @@ int main(int argc, char* argv[])
 
     initialise();
 
-    MainWindow mainWindow;
+    MainWindow2 mainWindow;
     if (argc == 1)
     {
         mainWindow.show();

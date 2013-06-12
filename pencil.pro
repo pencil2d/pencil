@@ -19,7 +19,8 @@ INCLUDEPATH += . 	src \
             src/interface \
             src/structure \
             src/tool \
-            src/util
+            src/util \
+            src/ui
 
 # Input
 HEADERS +=  src/interfaces.h \
@@ -64,7 +65,8 @@ HEADERS +=  src/interfaces.h \
     src/tool/eyedroppertool.h \
     src/structure/pencilsettings.h \
     src/interface/shortcutspage.h \
-    src/util/keyboardmanager.h
+    src/util/keyboardmanager.h \
+    src/interface/mainwindow2.h
             
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -109,7 +111,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/eyedroppertool.cpp \
     src/structure/pencilsettings.cpp \
     src/interface/shortcutspage.cpp \
-    src/util/keyboardmanager.cpp
+    src/util/keyboardmanager.cpp \
+    src/interface/mainwindow2.cpp
             
 win32 {
 	INCLUDEPATH += . libwin32
@@ -143,3 +146,6 @@ qt3support
 # shortcuts.path = %{buildDir}
 # shortcuts.files += %{sourceDir}/shortcuts.ini
 # INSTALLS += shortcuts
+
+FORMS += \
+    src/interface/mainwindow2.ui

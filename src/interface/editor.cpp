@@ -28,13 +28,13 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layersound.h"
 #include "layercamera.h"
-#include "mainwindow.h"
+#include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
-Editor::Editor(MainWindow* parent)
+Editor::Editor(MainWindow2* parent)
 {
     mainWindow = parent;
 

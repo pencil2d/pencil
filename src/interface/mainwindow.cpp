@@ -31,7 +31,7 @@ MainWindow::MainWindow()
     object = new Object();
     object->defaultInitialisation();
 
-    editor = new Editor(this);
+    //editor = new Editor(this);
 
     arrangePalettes();
     createMenus();

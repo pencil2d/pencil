@@ -33,7 +33,7 @@ GNU General Public License for more details.
 #include "backupelement.h"
 
 
-class MainWindow;
+class MainWindow2;
 
 
 class Editor : public QWidget
@@ -41,7 +41,7 @@ class Editor : public QWidget
     Q_OBJECT
 
 public:
-    Editor(MainWindow* parent);
+    Editor(MainWindow2* parent);
     virtual ~Editor();
 
 
@@ -273,7 +273,7 @@ private:
     TimeLine* timeLine;
     TimeControls* timeControl;    
     Preferences* preferences;
-    MainWindow* mainWindow;
+    MainWindow2* mainWindow;
 
     QString savedName;
     QString path;
