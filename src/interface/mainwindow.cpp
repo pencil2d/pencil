@@ -130,11 +130,11 @@ void MainWindow::createMenus()
     importAct->setShortcut(tr("Ctrl+Shift+R"));
     connect(importAct, SIGNAL(triggered()), editor, SLOT(importImage()));
 
-    QAction* importMovAct = new QAction(tr("&Image Sequence..."), this);
+    importMovAct = new QAction(tr("&Image Sequence..."), this);
     importMovAct->setShortcut(tr("Ctrl+R"));
     connect(importMovAct, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
 
-    QAction* importMovieAct = new QAction(tr("&Movie..."), this);
+    importMovieAct = new QAction(tr("&Movie..."), this);
     importMovieAct->setShortcut(tr("Ctrl+R"));
     connect(importMovieAct, SIGNAL(triggered()), editor, SLOT(importMov()));
 
@@ -146,11 +146,11 @@ void MainWindow::createMenus()
     savesvgAct->setShortcut(tr("Ctrl+I"));
     connect(savesvgAct, SIGNAL(triggered()), editor, SLOT(saveSvg()));
 
-    QAction* helpMeAct = new QAction(tr("&Help"), this);
+    helpMeAct = new QAction(tr("&Help"), this);
     helpMeAct->setShortcut(tr("F1"));
     connect(helpMeAct, SIGNAL(triggered()), editor, SLOT(helpBox()));
 
-    QAction* aboutAct = new QAction(tr("&About"), this);
+    aboutAct = new QAction(tr("&About"), this);
     aboutAct->setShortcut(tr("F2"));
     connect(aboutAct, SIGNAL(triggered()), editor, SLOT(about()));
 
