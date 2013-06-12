@@ -83,29 +83,29 @@ void MainWindow2::arrangePalettes()
 void MainWindow2::createMenus()
 {
     // ---------- Actions -------------
-    exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
-    exitAct->setShortcut(tr("Ctrl+Q"));
-    connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
+    //exitAct = new QAction(QIcon(":icons/exit.png"),tr("E&xit"), this);
+    ui->actionExit->setShortcut(tr("Ctrl+Q"));
+    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
-    newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
-    newAct->setShortcut(tr("Ctrl+N"));
-    connect(newAct, SIGNAL(triggered()), this, SLOT(newDocument()));
+    //newAct = new QAction(QIcon(":icons/new.png"), tr("&New"), this);
+    ui->actionNew->setShortcut(tr("Ctrl+N"));
+    connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
 
-    openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
-    openAct->setShortcut(tr("Ctrl+O"));
-    connect(openAct, SIGNAL(triggered()), this, SLOT(openDocument()));
+    //openAct = new QAction(QIcon(":icons/open.png"), tr("&Open..."), this);
+    ui->actionOpen->setShortcut(tr("Ctrl+O"));
+    connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openDocument()));
 
-    saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
-    saveAct->setShortcut(tr("Ctrl+Shift+S"));
-    connect(saveAct, SIGNAL(triggered()), editor, SLOT(saveDocument()));
+    //saveAct = new QAction(QIcon(":icons/save.png"), tr("Save &As..."), this);
+    ui->actionSave_as->setShortcut(tr("Ctrl+Shift+S"));
+    connect(ui->actionSave_as, SIGNAL(triggered()), editor, SLOT(saveDocument()));
 
-    savAct = new QAction(QIcon(":icons/saveas.png"), tr("&Save"), this);
-    savAct->setShortcut(tr("Ctrl+S"));
-    connect(savAct, SIGNAL(triggered()), editor, SLOT(saveForce()));
+    //savAct = new QAction(QIcon(":icons/saveas.png"), tr("&Save"), this);
+    ui->actionSave->setShortcut(tr("Ctrl+S"));
+    connect(ui->actionSave, SIGNAL(triggered()), editor, SLOT(saveForce()));
 
-    printAct = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
-    printAct->setShortcut(tr("Ctrl+P"));
-    connect(printAct, SIGNAL(triggered()), editor, SLOT(print()));
+    //printAct = new QAction(QIcon(":icons/printer3.png"), tr("&Print"), this);
+    ui->actionPrint->setShortcut(tr("Ctrl+P"));
+    connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
 
     exportXAct = new QAction(tr("&X-Sheet..."), this);
     exportXAct->setShortcut(tr("Ctrl+Alt+X"));
@@ -401,6 +401,7 @@ void MainWindow2::createMenus()
 
     openRecentMenu = new QMenu(tr("Open recent"), this);
 
+    /*
     fileMenu = new QMenu(tr("&File"), this);
     fileMenu->addAction(newAct);
     fileMenu->addAction(openAct);
@@ -414,6 +415,7 @@ void MainWindow2::createMenus()
     fileMenu->addAction(printAct);
     fileMenu->addSeparator();
     fileMenu->addAction(exitAct);
+    */
 
     zoomMenu = new QMenu(tr("Zoom"), this);
     zoomMenu->addAction(zoomAct);
@@ -508,7 +510,7 @@ void MainWindow2::createMenus()
 
     m_pMenuList = new QList<QMenu*>();
 
-    m_pMenuList->append(fileMenu);
+    //m_pMenuList->append(fileMenu);
     m_pMenuList->append(editMenu);
     m_pMenuList->append(viewMenu);
     m_pMenuList->append(animationMenu);

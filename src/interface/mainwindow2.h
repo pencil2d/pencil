@@ -75,7 +75,7 @@ private:
     QString path;
     QList<QMenu*>* m_pMenuList;
 
-    QMenu* fileMenu;
+    //QMenu* fileMenu;
     QMenu* openRecentMenu;
     QMenu* importMenu;
     QMenu* exportMenu;
@@ -92,13 +92,15 @@ private:
     QMenu* windowsMenu;
     QMenu* helpMenu;
 
-    QAction* exitAct;
-    QAction* newAct;
-    QAction* openAct;
-    QAction* saveAct;
-    QAction* printAct;
+
+    //QAction* newAct;
+    //QAction* openAct;
+    //QAction* saveAct;
+    //QAction* savAct;
+    //QAction* printAct;
     QAction* exportXAct;
     QAction* exportAct;
+    //QAction* exitAct;
     QAction* exportimageAct;
     QAction* importMovAct;
     QAction* importMovieAct;
@@ -121,7 +123,7 @@ private:
     QAction* exportFlashAct;
     QAction* exportPaletteAct;
     QAction* importPaletteAct;
-    QAction* savAct;
+
     QAction* importAct;
     QAction* undoAct;
     QAction* redoAct;
