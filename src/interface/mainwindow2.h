@@ -113,11 +113,11 @@ private:
     //QAction* importAct;
     //QAction* undoAct;
     //QAction* redoAct;
-    QAction* copyAct;
+    //QAction* copyAct;
     QAction* copyframesAct;
-    QAction* cutAct;
+    //QAction* cutAct;
     QAction* deleteAct;
-    QAction* pasteAct;
+    //QAction* pasteAct;
     QAction* pasteframesAct;
     QAction* selectAllAct;
     QAction* deselectAllAct;

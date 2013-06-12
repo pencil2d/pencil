@@ -83,9 +83,6 @@ void MainWindow2::arrangePalettes()
 void MainWindow2::createMenus()
 {
     // ---------- Actions -------------
-    ui->actionExit->setShortcut(tr("Ctrl+Q"));
-    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
-
     ui->actionNew->setShortcut(tr("Ctrl+N"));
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
 
@@ -100,6 +97,9 @@ void MainWindow2::createMenus()
 
     ui->actionPrint->setShortcut(tr("Ctrl+P"));
     connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
+
+    ui->actionExit->setShortcut(tr("Ctrl+Q"));
+    connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
     ui->actionExport_X_sheet->setShortcut(tr("Ctrl+Alt+X"));
     connect(ui->actionExport_X_sheet , SIGNAL(triggered()), editor, SLOT(exportX()));
@@ -153,9 +153,17 @@ void MainWindow2::createMenus()
     ui->actionRedo->setEnabled(false);
     connect(ui->actionRedo, SIGNAL(triggered()), editor, SLOT(redo()));
 
-    cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
-    cutAct->setShortcut(tr("Ctrl+X"));
-    connect(cutAct, SIGNAL(triggered()), editor, SLOT(cut()));
+    //cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
+    ui->actionCut->setShortcut(tr("Ctrl+X"));
+    connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
+
+    //copyAct = new QAction(QIcon(":icons/copy.png"), tr("Copy"), this);
+    ui->actionCopy->setShortcut(tr("Ctrl+C"));
+    connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
+
+    //pasteAct = new QAction(QIcon(":icons/paste.png"), tr("Paste"), this);
+    ui->actionPaste->setShortcut(tr("Ctrl+V"));
+    connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
 
     cropAct = new QAction( tr("Crop"), this);
     cropAct->setShortcut(tr("Ctrl+W"));
@@ -173,17 +181,9 @@ void MainWindow2::createMenus()
     inbetweenActV->setShortcut(tr("Alt+Y"));
     connect(inbetweenActV, SIGNAL(triggered()), editor, SLOT(inbetweenV()));
 
-    copyAct = new QAction(QIcon(":icons/copy.png"), tr("Copy"), this);
-    copyAct->setShortcut(tr("Ctrl+C"));
-    connect(copyAct, SIGNAL(triggered()), editor, SLOT(copy()));
-
     copyframesAct = new QAction( tr("Blank Frames"), this);
     copyframesAct->setShortcut(tr("Ctrl+F"));
     connect(copyframesAct, SIGNAL(triggered()), editor, SLOT(copyFrames()));
-
-    pasteAct = new QAction(QIcon(":icons/paste.png"), tr("Paste"), this);
-    pasteAct->setShortcut(tr("Ctrl+V"));
-    connect(pasteAct, SIGNAL(triggered()), editor, SLOT(paste()));
 
     pasteframesAct = new QAction( tr("Duplicate Frames"), this);
     pasteframesAct->setShortcut(tr("Ctrl+U"));
@@ -400,12 +400,6 @@ void MainWindow2::createMenus()
     viewMenu->addSeparator();
 
     editMenu = new QMenu(tr("&Edit"), this);
-    //editMenu->addAction(undoAct);
-    //editMenu->addAction(redoAct);
-    editMenu->addSeparator();
-    editMenu->addAction(cutAct);
-    editMenu->addAction(copyAct);
-    editMenu->addAction(pasteAct);
     editMenu->addMenu(InsertMenu);
     editMenu->addAction(deleteAct);
     editMenu->addSeparator();
