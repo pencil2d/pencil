@@ -78,7 +78,7 @@ private:
     QMenu* openRecentMenu;
     //QMenu* importMenu;
     QMenu* editMenu;
-    QMenu* InsertMenu;
+    //QMenu* InsertMenu;
     QMenu* MirrorMenu;
     QMenu* viewMenu;
     QMenu* zoomMenu;
@@ -118,7 +118,7 @@ private:
     //QAction* cutAct;
     QAction* deleteAct;
     //QAction* pasteAct;
-    QAction* pasteframesAct;
+    //QAction* pasteframesAct;
     QAction* selectAllAct;
     QAction* deselectAllAct;
     //QAction* importSndAct;
@@ -152,8 +152,8 @@ private:
     QAction* zoomAct1;
     QAction* rotatecw;
     QAction* rotateacw;
-    QAction* inbetweenAct;
-    QAction* inbetweenActV;
+    //QAction* inbetweenAct;
+    //QAction* inbetweenActV;
 
     QAction* pencilToolAct;
     QAction* bucketToolAct;

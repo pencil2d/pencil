@@ -82,7 +82,7 @@ void MainWindow2::arrangePalettes()
 
 void MainWindow2::createMenus()
 {
-    // ---------- Actions -------------
+    // ---------- File Menu -------------
     ui->actionNew->setShortcut(tr("Ctrl+N"));
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
 
@@ -101,6 +101,7 @@ void MainWindow2::createMenus()
     ui->actionExit->setShortcut(tr("Ctrl+Q"));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
+    /// --- Export Menu ---
     ui->actionExport_X_sheet->setShortcut(tr("Ctrl+Alt+X"));
     connect(ui->actionExport_X_sheet , SIGNAL(triggered()), editor, SLOT(exportX()));
 
@@ -110,7 +111,6 @@ void MainWindow2::createMenus()
     ui->actionExport_Image->setShortcut(tr("Ctrl+Alt+S"));
     connect(ui->actionExport_Image, SIGNAL(triggered()), editor, SLOT(exportImage()));
 
-    //exportMovAct = new QAction(tr("&Movie..."), this);
     ui->actionExport_Movie->setShortcut(tr("Ctrl+Alt+M"));
     connect(ui->actionExport_Movie, SIGNAL(triggered()), editor, SLOT(exportMov()));
 
@@ -120,9 +120,9 @@ void MainWindow2::createMenus()
 
     connect(ui->actionExport_Palette, SIGNAL(triggered()), editor, SLOT(exportPalette()));
 
+    /// --- Import Menu ---
     ui->actionExport_Svg_Image->setShortcut(tr("Ctrl+I"));
     connect(ui->actionExport_Svg_Image, SIGNAL(triggered()), editor, SLOT(saveSvg()));
-    connect(ui->actionImport_Palette, SIGNAL(triggered()), editor, SLOT(importPalette()));
 
     ui->actionImport_Image->setShortcut(tr("Ctrl+Shift+R"));
     connect(ui->actionImport_Image, SIGNAL(triggered()), editor, SLOT(importImage()));
@@ -136,6 +136,9 @@ void MainWindow2::createMenus()
     ui->actionImport_Sound->setShortcut(tr("Ctrl+I"));
     connect(ui->actionImport_Sound, SIGNAL(triggered()), editor, SLOT(importSound()));
 
+    connect(ui->actionImport_Palette, SIGNAL(triggered()), editor, SLOT(importPalette()));
+
+    /// --- Help Menu ---
     QAction* helpMeAct = new QAction(tr("&Help"), this);
     helpMeAct->setShortcut(tr("F1"));
     connect(helpMeAct, SIGNAL(triggered()), this, SLOT(helpBox()));
@@ -144,24 +147,20 @@ void MainWindow2::createMenus()
     aboutPencilAct->setShortcut(tr("F2"));
     connect(aboutPencilAct, SIGNAL(triggered()), this, SLOT(aboutPencil()));
 
-    //undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
+    /// --- Edit Menu ---
     ui->actionUndo->setShortcut(tr("Ctrl+Z"));
     connect(ui->actionUndo, SIGNAL(triggered()), editor, SLOT(undo()));
 
-    //redoAct = new QAction(QIcon(":icons/redo.png"), tr("Redo"), this);
     ui->actionRedo->setShortcut(tr("Ctrl+Shift+Z"));
     ui->actionRedo->setEnabled(false);
     connect(ui->actionRedo, SIGNAL(triggered()), editor, SLOT(redo()));
 
-    //cutAct = new QAction(QIcon(":icons/cut.png"), tr("Cut"), this);
     ui->actionCut->setShortcut(tr("Ctrl+X"));
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
 
-    //copyAct = new QAction(QIcon(":icons/copy.png"), tr("Copy"), this);
     ui->actionCopy->setShortcut(tr("Ctrl+C"));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
 
-    //pasteAct = new QAction(QIcon(":icons/paste.png"), tr("Paste"), this);
     ui->actionPaste->setShortcut(tr("Ctrl+V"));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
 
@@ -172,22 +171,6 @@ void MainWindow2::createMenus()
     trimAct = new QAction( tr("Crop To Selection"), this);
     trimAct->setShortcut(tr("Ctrl+T"));
     connect(trimAct, SIGNAL(triggered()), editor, SLOT(croptoselect()));
-
-    inbetweenAct = new QAction( tr("Inbetween Frames"), this);
-    inbetweenAct->setShortcut(tr("Alt+Z"));
-    connect(inbetweenAct, SIGNAL(triggered()), editor, SLOT(inbetween()));
-
-    inbetweenActV = new QAction( tr("Inbetween Vector Frames"), this);
-    inbetweenActV->setShortcut(tr("Alt+Y"));
-    connect(inbetweenActV, SIGNAL(triggered()), editor, SLOT(inbetweenV()));
-
-    copyframesAct = new QAction( tr("Blank Frames"), this);
-    copyframesAct->setShortcut(tr("Ctrl+F"));
-    connect(copyframesAct, SIGNAL(triggered()), editor, SLOT(copyFrames()));
-
-    pasteframesAct = new QAction( tr("Duplicate Frames"), this);
-    pasteframesAct->setShortcut(tr("Ctrl+U"));
-    connect(pasteframesAct, SIGNAL(triggered()), editor, SLOT(pasteFrames()));
 
     deleteAct = new QAction(QIcon(":icons/clear.png"), tr("Delete"), this);
     deleteAct->setShortcut(tr("Ctrl+D"));
@@ -293,10 +276,6 @@ void MainWindow2::createMenus()
     addFrameAct->setShortcut(Qt::Key_F7);
     connect(addFrameAct, SIGNAL(triggered()), editor, SLOT(addKey()));
 
-    duplicateFrameAct = new QAction(tr("&Duplicate Frame"), this);
-    duplicateFrameAct->setShortcut(Qt::Key_F6);
-    connect(duplicateFrameAct, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
-
     removeFrameAct = new QAction(QIcon(":icons/remove.png"), tr("&Remove Frame"), this);
     removeFrameAct->setShortcut(tr("Shift+F5"));
     connect(removeFrameAct, SIGNAL(triggered()), editor, SLOT(removeKey()));
@@ -308,6 +287,10 @@ void MainWindow2::createMenus()
     prevFrameAct = new QAction(QIcon(":icons/prev.png"), tr("&Previous Frame"), this);
     prevFrameAct->setShortcut(Qt::Key_Comma);
     connect(prevFrameAct, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
+
+    duplicateFrameAct = new QAction(tr("&Duplicate Frame"), this);
+    duplicateFrameAct->setShortcut(Qt::Key_F6);
+    connect(duplicateFrameAct, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /*~~~~Tools Menu~~~~~~*/
     moveToolAct = new QAction(QIcon(":icons/arrow.png"),tr("Move"), this);
@@ -375,11 +358,7 @@ void MainWindow2::createMenus()
     onionskinMenu= new QMenu(tr("Onion Skin"), this) ;
     onionskinMenu->addAction(onionskinpAct);
     onionskinMenu->addAction(onionskinnAct);
-    InsertMenu= new QMenu(tr("Insert"), this) ;
-    InsertMenu->addAction(copyframesAct);
-    InsertMenu->addAction(pasteframesAct);
-    InsertMenu->addAction(inbetweenAct);
-    InsertMenu->addAction(inbetweenActV);
+
     MirrorMenu= new QMenu(tr("Mirror"), this) ;
     MirrorMenu->addAction(horiMirrorAct);
     MirrorMenu->addAction(vertiMirrorAct);
@@ -400,7 +379,6 @@ void MainWindow2::createMenus()
     viewMenu->addSeparator();
 
     editMenu = new QMenu(tr("&Edit"), this);
-    editMenu->addMenu(InsertMenu);
     editMenu->addAction(deleteAct);
     editMenu->addSeparator();
     editMenu->addAction(cropAct);
