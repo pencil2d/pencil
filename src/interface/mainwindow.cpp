@@ -148,11 +148,11 @@ void MainWindow::createMenus()
 
     QAction* helpMeAct = new QAction(tr("&Help"), this);
     helpMeAct->setShortcut(tr("F1"));
-    connect(helpMeAct, SIGNAL(triggered()), editor, SLOT(helpBox()));
+    connect(helpMeAct, SIGNAL(triggered()), this, SLOT(helpBox()));
 
-    QAction* aboutAct = new QAction(tr("&About"), this);
-    aboutAct->setShortcut(tr("F2"));
-    connect(aboutAct, SIGNAL(triggered()), editor, SLOT(about()));
+    QAction* aboutPencilAct = new QAction(tr("&About"), this);
+    aboutPencilAct->setShortcut(tr("F2"));
+    connect(aboutPencilAct, SIGNAL(triggered()), this, SLOT(aboutPencil()));
 
     undoAct = new QAction(QIcon(":icons/undo.png"), tr("Undo"), this);
     undoAct->setShortcut(tr("Ctrl+Z"));
@@ -497,7 +497,7 @@ void MainWindow::createMenus()
 
     helpMenu = new QMenu(tr("&Help"), this);
     helpMenu->addAction(helpMeAct);
-    helpMenu->addAction(aboutAct);    
+    helpMenu->addAction(aboutPencilAct);
 
     m_pMenuList = new QList<QMenu*>();
 
@@ -841,4 +841,30 @@ void MainWindow::undoActSetEnabled(void)
 {
     editMenu->actions().at(0)->setEnabled(true);
     editMenu->actions().at(1)->setEnabled(true);
+}
+
+void MainWindow::aboutPencil()
+{
+    QMessageBox::about(this, tr("Pencil Animation 0.5 beta (Morevna Branch)"),
+                       tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
+                          "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
+                          "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
+                          "Patches by: <i>Mj Mendoza IV and D.F.</i><br>"
+                          "Version: <b>0.5</b> (12 sep 2011)<br><br>"
+                          "<b>Thanks to:</b><br>"
+                          "Trolltech for the Qt libraries<br>"
+                          "Roland for the Movie export functions<br>"
+                          "Axel for his help with Qt<br>"
+                          "Mark for his help with Qt and SVN<br><br>"
+                          "<a href='http://www.pencil-animation.org'>http://www.pencil-animation.org</a><br><br>"
+                          "Distributed under the <a href='http://www.gnu.org/copyleft/gpl.html'>GPL License</a>."
+                          "</td></tr></table>"));
+}
+
+void MainWindow::helpBox()
+{
+    qDebug() << "Open help manual.";
+
+    QUrl url = QUrl::fromLocalFile(QDir::currentPath() + "/Help/User Manual.pdf" );
+    QDesktopServices::openUrl( url );
 }

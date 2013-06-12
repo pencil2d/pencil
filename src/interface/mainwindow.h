@@ -60,6 +60,8 @@ private slots:
     void newDocument();
     void openDocument();
     void dockAllPalettes();
+    void helpBox();
+    void aboutPencil();
 
 private:
     void arrangePalettes();
@@ -102,9 +104,12 @@ private:
     QAction* printAct;
     QAction* exportXAct;
     QAction* exportAct;
-    QAction* exportimageAct;    
+    QAction* exportimageAct;
     QAction* importMovAct;
     QAction* importMovieAct;
+
+    //QAction* helpMeAct;
+    //QAction* aboutPencilAct;
 
     QAction* trimAct;
     QAction* cropAct;
