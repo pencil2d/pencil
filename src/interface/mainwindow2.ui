@@ -120,9 +120,31 @@
     <addaction name="separator"/>
     <addaction name="menuOnion_Skin"/>
    </widget>
+   <widget class="QMenu" name="menuAnimation">
+    <property name="title">
+     <string>Animation</string>
+    </property>
+    <addaction name="actionPlay"/>
+    <addaction name="actionLoop"/>
+    <addaction name="separator"/>
+    <addaction name="actionNext_Frame"/>
+    <addaction name="actionPrevious_Frame"/>
+    <addaction name="separator"/>
+    <addaction name="actionExtend_Frame"/>
+    <addaction name="actionAdd_Frame"/>
+    <addaction name="actionDuplicate_Frame"/>
+    <addaction name="actionRemove_Frame"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
+   <addaction name="menuAnimation"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -397,6 +419,77 @@
    </property>
    <property name="text">
     <string>Next</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/controls/play.png</normaloff>:/icons/controls/play.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </action>
+  <action name="actionLoop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/controls/loop.png</normaloff>:/icons/controls/loop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Loop</string>
+   </property>
+  </action>
+  <action name="actionNext_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next Frame</string>
+   </property>
+  </action>
+  <action name="actionPrevious_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/prev.png</normaloff>:/icons/prev.png</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Frame</string>
+   </property>
+  </action>
+  <action name="actionExtend_Frame">
+   <property name="text">
+    <string>Extend Frame</string>
+   </property>
+  </action>
+  <action name="actionAdd_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add Frame</string>
+   </property>
+  </action>
+  <action name="actionDuplicate_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/controls/duplicate.png</normaloff>:/icons/controls/duplicate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Duplicate Frame</string>
+   </property>
+  </action>
+  <action name="actionRemove_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove Frame</string>
    </property>
   </action>
  </widget>

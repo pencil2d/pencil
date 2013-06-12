@@ -226,7 +226,6 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled(false);
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    //gridAct = new QAction(tr("Grid"), this);
     ui->actionGrid->setShortcut(Qt::Key_G);
     ui->actionGrid->setEnabled(false);
     //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
@@ -240,42 +239,33 @@ void MainWindow2::createMenus()
     connect(ui->actionOnionNext, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionNext(bool)));
     connect(editor, SIGNAL(onionNextChanged(bool)), ui->actionOnionNext, SLOT(setChecked(bool)));
 
-    /*~~~~Animation Menu~~~~~~*/
-    playAnimationAct = new QAction(tr("Play/Stop"), this);
-    playAnimationAct->setShortcut(Qt::Key_Return);
-    connect(playAnimationAct, SIGNAL(triggered()), editor, SLOT(play()));
+    /// --- Animation Menu ---
+    ui->actionPlay->setShortcut(Qt::Key_Return);
+    connect(ui->actionPlay, SIGNAL(triggered()), editor, SLOT(play()));
 
-    loopAnimationAct = new QAction(tr("&Loop"), this);
-    loopAnimationAct->setCheckable(true);
-    loopAnimationAct->setShortcut(tr("Ctrl+L"));
-    connect(loopAnimationAct, SIGNAL(triggered(bool)), editor, SLOT(setLoop(bool)));
-    connect(loopAnimationAct, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoop(bool)));
-    connect(editor, SIGNAL(loopToggled(bool)), this, SLOT(toggleLoop(bool)));
+    ui->actionLoop->setShortcut(tr("Ctrl+L"));
+    connect(ui->actionLoop, SIGNAL(triggered(bool)), editor, SLOT(setLoop(bool)));
+    connect(ui->actionLoop, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoop(bool))); //TODO: WTF?
+    connect(editor, SIGNAL(loopToggled(bool)), ui->actionLoop, SLOT(setChecked(bool)));
 
-    extendFrameAct = new QAction(tr("&Extend Frame"), this);
-    extendFrameAct->setShortcut(Qt::Key_F5);
-    extendFrameAct->setEnabled(false);
+    ui->actionExtend_Frame->setShortcut(Qt::Key_F5);
+    ui->actionExtend_Frame->setEnabled(false);
     //connect(extendFrameAct, SIGNAL(triggered()), editor, SLOT(addFrame(editor->currentFrame)));
 
-    addFrameAct = new QAction(QIcon(":icons/add.png"), tr("&Add Frame"), this);
-    addFrameAct->setShortcut(Qt::Key_F7);
-    connect(addFrameAct, SIGNAL(triggered()), editor, SLOT(addKey()));
+    ui->actionAdd_Frame->setShortcut(Qt::Key_F7);
+    connect(ui->actionAdd_Frame, SIGNAL(triggered()), editor, SLOT(addKey()));
 
-    removeFrameAct = new QAction(QIcon(":icons/remove.png"), tr("&Remove Frame"), this);
-    removeFrameAct->setShortcut(tr("Shift+F5"));
-    connect(removeFrameAct, SIGNAL(triggered()), editor, SLOT(removeKey()));
+    ui->actionRemove_Frame->setShortcut(tr("Shift+F5"));
+    connect(ui->actionRemove_Frame, SIGNAL(triggered()), editor, SLOT(removeKey()));
 
-    nextFrameAct = new QAction(QIcon(":icons/next.png"), tr("&Next Frame"), this);
-    nextFrameAct->setShortcut(Qt::Key_Period);
-    connect(nextFrameAct, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
+    ui->actionNext_Frame->setShortcut(Qt::Key_Period);
+    connect(ui->actionNext_Frame, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
 
-    prevFrameAct = new QAction(QIcon(":icons/prev.png"), tr("&Previous Frame"), this);
-    prevFrameAct->setShortcut(Qt::Key_Comma);
-    connect(prevFrameAct, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
+    ui->actionPrevious_Frame->setShortcut(Qt::Key_Comma);
+    connect(ui->actionPrevious_Frame, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
 
-    duplicateFrameAct = new QAction(tr("&Duplicate Frame"), this);
-    duplicateFrameAct->setShortcut(Qt::Key_F6);
-    connect(duplicateFrameAct, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
+    ui->actionDuplicate_Frame->setShortcut(Qt::Key_F6);
+    connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /*~~~~Tools Menu~~~~~~*/
     moveToolAct = new QAction(QIcon(":icons/arrow.png"),tr("Move"), this);
@@ -341,18 +331,6 @@ void MainWindow2::createMenus()
     layerMenu->addSeparator();
     layerMenu->addAction(deleteLayerAct);
 
-    animationMenu = new QMenu(tr("&Animation"), this);
-    animationMenu->addAction(playAnimationAct);
-    animationMenu->addAction(loopAnimationAct);
-    animationMenu->addSeparator();
-    animationMenu->addAction(nextFrameAct);
-    animationMenu->addAction(prevFrameAct);
-    animationMenu->addSeparator();
-    animationMenu->addAction(extendFrameAct);
-    animationMenu->addAction(addFrameAct);
-    animationMenu->addAction(duplicateFrameAct);
-    animationMenu->addAction(removeFrameAct);
-
     toolsMenu = new QMenu(tr("Tools"), this);
     toolsMenu->addAction(moveToolAct);
     toolsMenu->addAction(clearToolAct);
@@ -376,7 +354,7 @@ void MainWindow2::createMenus()
     m_pMenuList->append(ui->menuFile);
     m_pMenuList->append(ui->menuEdit);
     m_pMenuList->append(ui->menuView);
-    m_pMenuList->append(animationMenu);
+    m_pMenuList->append(ui->menuAnimation);
     m_pMenuList->append(toolsMenu);
     m_pMenuList->append(layerMenu);
     m_pMenuList->append(helpMenu);
@@ -618,11 +596,6 @@ void MainWindow2::addRecentFile(QString filePath)
     QAction* openThisFileAct = new QAction(filePath, this);
     connect(openThisFileAct, SIGNAL(triggered()), editor, SLOT(openRecent()));
     openRecentMenu->addAction(openThisFileAct);
-}
-
-void MainWindow2::toggleLoop(bool checked)
-{
-    loopAnimationAct->setChecked(checked);
 }
 
 void MainWindow2::undoActSetText(void)

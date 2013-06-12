@@ -52,7 +52,6 @@ public slots:
 
 private slots:
     void exportFile();
-    void toggleLoop(bool);
 
     void newDocument();
     void openDocument();
@@ -76,53 +75,11 @@ private:
     QList<QMenu*>* m_pMenuList;
 
     QMenu* openRecentMenu;
-    //QMenu* importMenu;
-    //QMenu* editMenu;
-    //QMenu* InsertMenu;
-    //QMenu* MirrorMenu;
-    //QMenu* viewMenu;
-    //QMenu* zoomMenu;
-    //QMenu* rotateMenu;
     QMenu* layerMenu;
-    QMenu* animationMenu;
+    //QMenu* animationMenu;
     QMenu* toolsMenu;
-    //QMenu* onionskinMenu;
     QMenu* windowsMenu;
     QMenu* helpMenu;
-
-
-    //QAction* importMovAct;
-    //QAction* importMovieAct;
-
-    //QAction* helpMeAct;
-    //QAction* aboutPencilAct;
-
-    //QAction* trimAct;
-    //QAction* cropAct;
-    //QAction* gridAct;
-    //QAction* onionskinpAct;
-    //QAction* onionskinnAct;
-    //QAction* previewAct;
-    //QAction* rotateAct;
-    //QAction* rotateAct1;
-    //QAction* resetpaletteAct;
-    //QAction* horiMirrorAct;
-    //QAction* vertiMirrorAct;
-    //QAction* importPaletteAct;
-
-    //QAction* importAct;
-    //QAction* undoAct;
-    //QAction* redoAct;
-    //QAction* copyAct;
-    QAction* copyframesAct;
-    //QAction* cutAct;
-    //QAction* deleteAct;
-    //QAction* pasteAct;
-    //QAction* pasteframesAct;
-    //QAction* selectAllAct;
-    //QAction* deselectAllAct;
-    //QAction* importSndAct;
-    //QAction* preferencesAct;
 
     QAction* newBitmapLayerAct;
     QAction* newVectorLayerAct;
@@ -130,14 +87,14 @@ private:
     QAction* newCameraLayerAct;
     QAction* deleteLayerAct;
 
-    QAction* playAnimationAct;
-    QAction* loopAnimationAct;
-    QAction* extendFrameAct;
-    QAction* addFrameAct;
-    QAction* duplicateFrameAct;
-    QAction* removeFrameAct;
-    QAction* nextFrameAct;
-    QAction* prevFrameAct;
+    //QAction* playAnimationAct;
+    //QAction* loopAnimationAct;
+    //QAction* extendFrameAct;
+    //QAction* addFrameAct;
+    //QAction* duplicateFrameAct;
+    //QAction* removeFrameAct;
+    //QAction* nextFrameAct;
+    //QAction* prevFrameAct;
 
     QAction* moveToolAct;
     QAction* clearToolAct;
@@ -147,14 +104,6 @@ private:
     QAction* smudgeToolAct;
     QAction* penToolAct;
     QAction* handToolAct;
-    QAction* zoomToolAct;
-    //QAction* zoomAct;
-    //QAction* zoomAct1;
-    //QAction* rotatecw;
-    //QAction* rotateacw;
-    //QAction* inbetweenAct;
-    //QAction* inbetweenActV;
-
     QAction* pencilToolAct;
     QAction* bucketToolAct;
     QAction* eyedropToolAct;
