@@ -78,8 +78,7 @@ private:
     //QMenu* layerMenu;
     //QMenu* animationMenu;
     //QMenu* toolsMenu;
-    QMenu* windowsMenu;
-    QMenu* helpMenu;
+    //QMenu* helpMenu;
 
     //QAction* newBitmapLayerAct;
     //QAction* newVectorLayerAct;

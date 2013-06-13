@@ -138,14 +138,6 @@ void MainWindow2::createMenus()
 
     connect(ui->actionImport_Palette, SIGNAL(triggered()), editor, SLOT(importPalette()));
 
-    /// --- Help Menu ---
-    QAction* helpMeAct = new QAction(tr("&Help"), this);
-    helpMeAct->setShortcut(tr("F1"));
-    connect(helpMeAct, SIGNAL(triggered()), this, SLOT(helpBox()));
-
-    QAction* aboutPencilAct = new QAction(tr("&About"), this);
-    aboutPencilAct->setShortcut(tr("F2"));
-    connect(aboutPencilAct, SIGNAL(triggered()), this, SLOT(aboutPencil()));
 
     /// --- Edit Menu ---
     ui->actionUndo->setShortcut(tr("Ctrl+Z"));
@@ -316,17 +308,25 @@ void MainWindow2::createMenus()
     ui->actionEraser->setShortcut(Qt::Key_E);
     connect(ui->actionEraser, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
 
-    // --------------- Menus ------------------
+    /// --- Help Menu ---
+    //QAction* helpMeAct = new QAction(tr("&Help"), this);
+    ui->actionHelp->setShortcut(tr("F1"));
+    connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));
 
+    //QAction* aboutPencilAct = new QAction(tr("&About"), this);
+    connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
+    
+    
+    // --------------- Menus ------------------
     openRecentMenu = new QMenu(tr("Open recent"), this);
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
 
 
-    helpMenu = new QMenu(tr("&Help"), this);
-    helpMenu->addAction(helpMeAct);
-    helpMenu->addAction(aboutPencilAct);
+    //helpMenu = new QMenu(tr("&Help"), this);
+    //helpMenu->addAction(helpMeAct);
+    //helpMenu->addAction(aboutPencilAct);
 
     m_pMenuList = new QList<QMenu*>();
 
@@ -336,12 +336,7 @@ void MainWindow2::createMenus()
     m_pMenuList->append(ui->menuAnimation);
     m_pMenuList->append(ui->menuTools);
     m_pMenuList->append(ui->menuLayer);
-    m_pMenuList->append(helpMenu);
-
-    foreach (QMenu* pMenu, *m_pMenuList)
-    {
-        //menuBar()->addMenu(pMenu);
-    }
+    m_pMenuList->append(ui->menuHelp);
 }
 
 void MainWindow2::loadPlugins()
