@@ -75,17 +75,17 @@ private:
     QList<QMenu*>* m_pMenuList;
 
     QMenu* openRecentMenu;
-    QMenu* layerMenu;
+    //QMenu* layerMenu;
     //QMenu* animationMenu;
     //QMenu* toolsMenu;
     QMenu* windowsMenu;
     QMenu* helpMenu;
 
-    QAction* newBitmapLayerAct;
-    QAction* newVectorLayerAct;
-    QAction* newSoundLayerAct;
-    QAction* newCameraLayerAct;
-    QAction* deleteLayerAct;
+    //QAction* newBitmapLayerAct;
+    //QAction* newVectorLayerAct;
+    //QAction* newSoundLayerAct;
+    //QAction* newCameraLayerAct;
+    //QAction* deleteLayerAct;
 
     //QAction* playAnimationAct;
     //QAction* loopAnimationAct;

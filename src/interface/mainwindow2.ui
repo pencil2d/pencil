@@ -152,11 +152,31 @@
     <addaction name="actionEyedropper"/>
     <addaction name="actionEraser"/>
    </widget>
+   <widget class="QMenu" name="menuLayer">
+    <property name="title">
+     <string>Layer</string>
+    </property>
+    <addaction name="actionNew_Bitmap_Layer"/>
+    <addaction name="actionNew_Vector_Layer"/>
+    <addaction name="actionNew_Sound_Layer"/>
+    <addaction name="actionNew_Camera_Layer"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete_Current_Layer"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionAbout"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuAnimation"/>
    <addaction name="menuTools"/>
+   <addaction name="menuLayer"/>
+   <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
@@ -610,6 +630,57 @@
    </property>
    <property name="text">
     <string>Eraser</string>
+   </property>
+  </action>
+  <action name="actionNew_Bitmap_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-bitmap.png</normaloff>:/icons/layer-bitmap.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Bitmap Layer</string>
+   </property>
+  </action>
+  <action name="actionNew_Vector_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-vector.png</normaloff>:/icons/layer-vector.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Vector Layer</string>
+   </property>
+  </action>
+  <action name="actionNew_Sound_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-sound.png</normaloff>:/icons/layer-sound.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Sound Layer</string>
+   </property>
+  </action>
+  <action name="actionNew_Camera_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-camera.png</normaloff>:/icons/layer-camera.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Camera Layer</string>
+   </property>
+  </action>
+  <action name="actionDelete_Current_Layer">
+   <property name="text">
+    <string>Delete Current Layer</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

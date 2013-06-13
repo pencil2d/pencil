@@ -181,20 +181,20 @@ void MainWindow2::createMenus()
 
     connect(ui->actionPreference, SIGNAL(triggered()), editor, SLOT(showPreferences()));
 
-    newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
-    connect(newBitmapLayerAct, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
+    //newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);    
+    connect(ui->actionNew_Bitmap_Layer, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
 
-    newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
-    connect(newVectorLayerAct, SIGNAL(triggered()), editor, SLOT(newVectorLayer()));
+    //newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
+    connect(ui->actionNew_Vector_Layer, SIGNAL(triggered()), editor, SLOT(newVectorLayer()));
 
-    newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
-    connect(newSoundLayerAct, SIGNAL(triggered()), editor, SLOT(newSoundLayer()));
+    //newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
+    connect(ui->actionNew_Sound_Layer, SIGNAL(triggered()), editor, SLOT(newSoundLayer()));
 
-    newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
-    connect(newCameraLayerAct, SIGNAL(triggered()), editor, SLOT(newCameraLayer()));
+    //newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
+    connect(ui->actionNew_Camera_Layer, SIGNAL(triggered()), editor, SLOT(newCameraLayer()));
 
-    deleteLayerAct = new QAction(tr("Delete Current Layer"), this);
-    connect(deleteLayerAct, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
+    //deleteLayerAct = new QAction(tr("Delete Current Layer"), this);
+    connect(ui->actionDelete_Current_Layer, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
 
 
     /// --- View Menu ---
@@ -323,13 +323,6 @@ void MainWindow2::createMenus()
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
 
-    layerMenu = new QMenu(tr("&Layer"), this);
-    layerMenu->addAction(newBitmapLayerAct);
-    layerMenu->addAction(newVectorLayerAct);
-    layerMenu->addAction(newSoundLayerAct);
-    layerMenu->addAction(newCameraLayerAct);
-    layerMenu->addSeparator();
-    layerMenu->addAction(deleteLayerAct);
 
     helpMenu = new QMenu(tr("&Help"), this);
     helpMenu->addAction(helpMeAct);
@@ -342,12 +335,12 @@ void MainWindow2::createMenus()
     m_pMenuList->append(ui->menuView);
     m_pMenuList->append(ui->menuAnimation);
     m_pMenuList->append(ui->menuTools);
-    m_pMenuList->append(layerMenu);
+    m_pMenuList->append(ui->menuLayer);
     m_pMenuList->append(helpMenu);
 
     foreach (QMenu* pMenu, *m_pMenuList)
     {
-        menuBar()->addMenu(pMenu);
+        //menuBar()->addMenu(pMenu);
     }
 }
 
