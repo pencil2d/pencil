@@ -75,25 +75,6 @@ private:
     QList<QMenu*>* m_pMenuList;
 
     QMenu* openRecentMenu;
-    //QMenu* layerMenu;
-    //QMenu* animationMenu;
-    //QMenu* toolsMenu;
-    //QMenu* helpMenu;
-
-    //QAction* newBitmapLayerAct;
-    //QAction* newVectorLayerAct;
-    //QAction* newSoundLayerAct;
-    //QAction* newCameraLayerAct;
-    //QAction* deleteLayerAct;
-
-    //QAction* playAnimationAct;
-    //QAction* loopAnimationAct;
-    //QAction* extendFrameAct;
-    //QAction* addFrameAct;
-    //QAction* duplicateFrameAct;
-    //QAction* removeFrameAct;
-    //QAction* nextFrameAct;
-    //QAction* prevFrameAct;
 };
 
 #endif // MAINWINDOW2_H

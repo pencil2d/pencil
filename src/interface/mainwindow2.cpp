@@ -173,19 +173,16 @@ void MainWindow2::createMenus()
 
     connect(ui->actionPreference, SIGNAL(triggered()), editor, SLOT(showPreferences()));
 
-    //newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);    
+
+    /// --- Layer Menu ---
     connect(ui->actionNew_Bitmap_Layer, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
 
-    //newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
     connect(ui->actionNew_Vector_Layer, SIGNAL(triggered()), editor, SLOT(newVectorLayer()));
 
-    //newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
     connect(ui->actionNew_Sound_Layer, SIGNAL(triggered()), editor, SLOT(newSoundLayer()));
 
-    //newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
     connect(ui->actionNew_Camera_Layer, SIGNAL(triggered()), editor, SLOT(newCameraLayer()));
 
-    //deleteLayerAct = new QAction(tr("Delete Current Layer"), this);
     connect(ui->actionDelete_Current_Layer, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
 
 
@@ -260,60 +257,46 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    //moveToolAct = new QAction(QIcon(":icons/arrow.png"),tr("Move"), this);
     ui->actionMove->setShortcut(Qt::Key_Q);
     connect(ui->actionMove, SIGNAL(triggered()), editor, SLOT(move_clicked()));
 
-    //clearToolAct = new QAction(QIcon(":icons/clear.png"), tr("Clear"), this);
     ui->actionClear->setShortcut(Qt::Key_L);
     connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
 
-    //selectToolAct = new QAction(QIcon(":icons/select.png"),tr("Select"), this);
     ui->actionSelect->setShortcut(Qt::Key_V);
     connect(ui->actionSelect, SIGNAL(triggered()), editor, SLOT(select_clicked()));
 
-    //brushToolAct = new QAction(QIcon(":icons/brush.png"),tr("Brush"), this);
     ui->actionBrush->setShortcut(Qt::Key_B);
     connect(ui->actionBrush, SIGNAL(triggered()), editor, SLOT(color_clicked()));
 
-    //polylineToolAct = new QAction(QIcon(":icons/polyline.png"),tr("Polyline"), this);
     ui->actionPolyline->setShortcut(Qt::Key_Y);
     connect(ui->actionPolyline, SIGNAL(triggered()), editor, SLOT(polyline_clicked()));
 
-    //smudgeToolAct = new QAction(QIcon(":icons/smudge.png"),tr("Smudge"), this);
     ui->actionSmudge->setShortcut(Qt::Key_A);
     connect(ui->actionSmudge, SIGNAL(triggered()), editor, SLOT(smudge_clicked()));
 
-    //penToolAct = new QAction(QIcon(":icons/pen.png"),tr("Pen"), this);
     ui->actionPen->setShortcut(Qt::Key_P);
     connect(ui->actionPen, SIGNAL(triggered()), editor, SLOT(pen_clicked()));
 
-    //handToolAct = new QAction(QIcon(":icons/hand.png"),tr("Hand"), this);
     ui->actionHand->setShortcut(Qt::Key_H);
     connect(ui->actionHand, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
 
-    //pencilToolAct = new QAction(QIcon(":icons/pencil2.png"),tr("Pencil"), this);
     ui->actionPencil->setShortcut(Qt::Key_N);
     connect(ui->actionPencil, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
 
-    //bucketToolAct = new QAction(QIcon(":icons/bucket.png"),tr("Paintbucket"), this);
     ui->actionBucket->setShortcut(Qt::Key_K);
     connect(ui->actionBucket, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
 
-    //eyedropToolAct = new QAction(QIcon(":icons/eyedropper.png"),tr("Eyedropper"), this);
     ui->actionEyedropper->setShortcut(Qt::Key_I);
     connect(ui->actionEyedropper, SIGNAL(triggered()), editor, SLOT(eyedropper_clicked()));
 
-    //eraserToolAct = new QAction(QIcon(":icons/hand.png"),tr("Eraser"), this);
     ui->actionEraser->setShortcut(Qt::Key_E);
     connect(ui->actionEraser, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
 
     /// --- Help Menu ---
-    //QAction* helpMeAct = new QAction(tr("&Help"), this);
     ui->actionHelp->setShortcut(tr("F1"));
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));
 
-    //QAction* aboutPencilAct = new QAction(tr("&About"), this);
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
     
     
@@ -322,11 +305,6 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
-
-
-    //helpMenu = new QMenu(tr("&Help"), this);
-    //helpMenu->addAction(helpMeAct);
-    //helpMenu->addAction(aboutPencilAct);
 
     m_pMenuList = new QList<QMenu*>();
 
@@ -412,8 +390,8 @@ void MainWindow2::exportFile()
 void MainWindow2::setOpacity(int opacity)
 {
     QSettings settings("Pencil","Pencil");
-    settings.setValue("windowOpacity", 100-opacity);
-    setWindowOpacity(opacity/100.0);
+    settings.setValue("windowOpacity", 100 - opacity);
+    setWindowOpacity(opacity / 100.0);
 }
 
 void MainWindow2::closeEvent(QCloseEvent* event)
