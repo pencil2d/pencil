@@ -1,4 +1,4 @@
-### Pencil Animation v0.5 beta (Morevna Branch) ###
+### Pencil Animation v0.5 beta (Morevna Branch) ### - September 15th 2010
 
 Changes by Konstantin Dmitriev:
 
