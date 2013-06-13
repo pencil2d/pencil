@@ -22,9 +22,7 @@ GNU General Public License for more details.
 void initialise();
 
 int main(int argc, char* argv[])
-{
-    qDebug() << "Pencil Animation 0.5 (Morevna Branch)";
-
+{   
     QApplication app(argc, argv);
     app.setApplicationName("Pencil");
 #ifndef Q_WS_MAC
@@ -34,6 +32,8 @@ int main(int argc, char* argv[])
     initialise();
 
     MainWindow2 mainWindow;
+    mainWindow.setWindowTitle("Pencil Animation v0.5.2 (chchwy Branch)");
+
     if (argc == 1)
     {
         mainWindow.show();

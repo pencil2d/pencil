@@ -1189,7 +1189,6 @@ void Editor::resetUI()
     maxFrame = 0;
     currentFrame = 0;
     scrubTo(0);
-    mainWindow->setWindowTitle(tr("Pencil Animation v0.5 (Morevna Branch)"));
 }
 
 void Editor::setObject(Object* object)

@@ -583,18 +583,17 @@ void MainWindow2::undoActSetEnabled(void)
 
 void MainWindow2::aboutPencil()
 {
-    QMessageBox::about(this, tr("Pencil Animation 0.5 beta (Morevna Branch)"),
+    QMessageBox::about(this, tr("Pencil Animation 0.5.0.2 beta (chchwy Branch)"),
                        tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
                           "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
-                          "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
-                          "Patches by: <i>Mj Mendoza IV and D.F.</i><br>"
-                          "Version: <b>0.5</b> (12 sep 2011)<br><br>"
+                          "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"                          
+                          "Version: <b>0.5.2</b> (13 June 2013)<br><br>"
                           "<b>Thanks to:</b><br>"
-                          "Trolltech for the Qt libraries<br>"
+                          "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"
                           "Roland for the Movie export functions<br>"
                           "Axel for his help with Qt<br>"
                           "Mark for his help with Qt and SVN<br><br>"
-                          "<a href='http://www.pencil-animation.org'>http://www.pencil-animation.org</a><br><br>"
+                          "<a href='http://pencil2d.org'>http://pencil2d.org</a><br><br>"
                           "Distributed under the <a href='http://www.gnu.org/copyleft/gpl.html'>GPL License</a>."
                           "</td></tr></table>"));
 }
