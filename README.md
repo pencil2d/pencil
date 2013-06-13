@@ -18,6 +18,7 @@
 2013-06-13
 Simplified and reorganized the code base.
 
+* Upgrade to Qt 4.8.4
 * ToolSet code refactoring.
 * Menubar code refactoring.
 
