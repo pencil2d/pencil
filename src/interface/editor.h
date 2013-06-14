@@ -135,7 +135,6 @@ public slots:
 
     void importImage();
     void importImage(QString filePath);
-    //void importSound();
     void importSound(QString filePath = "");
     bool importMov();
     void importPalette();
@@ -182,7 +181,6 @@ public slots:
     void switchVisibilityOfLayer(int layerNumber);
     void moveLayer(int i, int j);
     void updateMaxFrame();
-
 
     void setToolProperties(const Properties& p);
     void setWidth(qreal);

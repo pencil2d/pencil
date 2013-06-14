@@ -744,13 +744,12 @@ void Editor::croptoselect()
 
 }
 
-
 void Editor::copy()
 {
     Layer* layer = object->getLayer(currentLayer);
-    if(layer != NULL)
+    if (layer != NULL)
     {
-        if(layer->type == Layer::BITMAP)
+        if (layer->type == Layer::BITMAP)
         {
             if(scribbleArea->somethingSelected)
             {
@@ -765,7 +764,7 @@ void Editor::copy()
             clipboardBitmapOk = true;
             if( clipboardBitmapImage.image != NULL ) QApplication::clipboard()->setImage( *(clipboardBitmapImage.image) );
         }
-        if(layer->type == Layer::VECTOR)
+        if (layer->type == Layer::VECTOR)
         {
             clipboardVectorOk = true;
             clipboardVectorImage = *(  ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)  );  // copy the image (that works but I should also provide a copy() method)
@@ -777,11 +776,11 @@ void Editor::copy()
 void Editor::inbetween()
 {
     Layer* layer = object->getLayer(currentLayer);
-    if(layer != NULL)
+    if ( layer != NULL )
     {
-        if(layer->type == Layer::BITMAP)
+        if ( layer->type == Layer::BITMAP )
         {
-            if(scribbleArea->somethingSelected)
+            if ( scribbleArea->somethingSelected )
             {
                 clipboardBitmapImage =   ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(currentFrame, 0)->copy( scribbleArea->getSelection().toRect() );  // copy part of the image
                 //				scribbleArea->deselectAll();
@@ -799,9 +798,6 @@ void Editor::inbetween()
                         move_clicked();
                         scribbleArea->updateFrame();
                     }
-
-
-
                 }
             }
 
@@ -870,7 +866,7 @@ void Editor::copyFrames()
 
 void Editor::pasteFrames()
 {
-    int a =frameList.count();
+    int a = frameList.count();
     QListIterator<int> z( frameList );
     for (int i = 0; i < a; ++i)
     {
@@ -1077,9 +1073,6 @@ void Editor::updateObject()
     scribbleArea->resetColours();
     mainWindow->m_colorPalette->selectColour(0);
 
-    //scribbleArea->resize(object->size);
-    //scribbleArea->updateAllFrames();
-    //scribbleArea->resetView();
     timeLine->updateLayerNumber(object->getLayerCount());
     mainWindow->m_colorPalette->updateList();
     clearBackup();
@@ -1087,7 +1080,6 @@ void Editor::updateObject()
     mainWindow->m_colorPalette->selectColour(0);
     scribbleArea->updateAllFrames();
     updateMaxFrame();
-    //timeLine->forceUpdateLength(QString::number(maxFrame));
 }
 
 bool Editor::openObject(QString filePath)
@@ -1155,8 +1147,6 @@ bool Editor::openObject(QString filePath)
     progress.setValue(100);
     return ok;
 }
-
-
 
 void Editor::createNewDocumentDialog()
 {
@@ -1314,15 +1304,12 @@ void Editor::createExportMovieDialog()
     exportMovieDialog->setModal(true);
 }
 
-
-
 void Editor::createExportFlashDialog()
 {
     exportFlashDialog = new QDialog(this, Qt::Dialog);
     QGridLayout* mainLayout = new QGridLayout;
 
     QSettings settings("Pencil","Pencil");
-
 
     exportFlashDialog_compression = new QSlider(Qt::Horizontal);
     exportFlashDialog_compression->setTickPosition(QSlider::TicksBelow);
@@ -1401,10 +1388,10 @@ bool Editor::exportSeq()
     QSettings settings("Pencil","Pencil");
     QString initialPath = settings.value("lastExportPath", QVariant(QDir::homePath())).toString();
     if(initialPath.isEmpty())
+    {
         QString	initialPath = QDir::homePath() + "/untitled";
-//	QString filePath = QFileDialog::getSaveFileName(this, tr("Export As",".",tr("Spreadsheet files (*.sp)"));
-    QString filePath=QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), initialPath,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
-//	QString filePath = QFileDialog::getSaveFileName(this,tr("Save Spreadsheet"), ".",tr("Spreadsheet files (*.sp)"));
+    }
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), initialPath,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
     if (filePath.isEmpty())
     {
         return false;
@@ -1481,8 +1468,6 @@ bool Editor::exportImage()
         return true;
     }
 }
-
-
 
 bool Editor::exportMov()
 {
@@ -1665,12 +1650,6 @@ void Editor::importImage(QString filePath)
     }
 }
 
-
-//void Editor::importSound()
-//{
-//	importSound("fromDialog");
-//}
-
 void Editor::importSound(QString filePath)
 {
     Layer* layer = object->getLayer(currentLayer);
@@ -1769,14 +1748,6 @@ void Editor::scrubBackward()
     if(currentFrame > 1) scrubTo(currentFrame-1);
 }
 
-/*void Editor::scrubKF() {
-    //timeLine->scrubKF();
-}
-
-void Editor::scrubKB() {
-    //timeLine->scrubKB();
-}*/
-
 void Editor::previousLayer()
 {
     currentLayer--;
@@ -1799,11 +1770,6 @@ void Editor::addKey()
 }
 void Editor::duplicateKey()
 {
-    /*	scribbleArea->selectAll();
-        copy();
-        addKey();
-        paste();*/
-
     Layer* layer = object->getLayer(currentLayer);
     if(layer != NULL)
     {
@@ -1964,7 +1930,7 @@ void Editor::startOrStop()
 
 void Editor::playNextFrame()
 {
-    if(currentFrame < maxFrame)
+    if (currentFrame < maxFrame)
     {
         if(sound) object->playSoundIfAny(currentFrame,fps);
         scrubForward();
@@ -2160,62 +2126,50 @@ bool Editor::loadDomElement(QDomElement docElem, QString filePath)
 
 void Editor::move_clicked()
 {
-    //scribbleArea->moveOn();
     toolSet->changeMoveButton();
 }
 void Editor::clear_clicked()
 {
     scribbleArea->clearImage();
-    //toolSet->clearClick();
 }
 void Editor::pencil_clicked()
 {
-    //scribbleArea->pencilOn();
     toolSet->changePencilButton();
 }
 void Editor::eraser_clicked()
 {
-    //scribbleArea->eraserOn();
     toolSet->changeEraserButton();
 }
 void Editor::select_clicked()
 {
-    //scribbleArea->selectOn();
     toolSet->changeSelectButton();
 }
 void Editor::hand_clicked()
 {
-    //scribbleArea->handOn();
     toolSet->changeHandButton();
 }
 void Editor::pen_clicked()
 {
-    //scribbleArea->penOn();
     toolSet->changePenButton();
 }
 void Editor::polyline_clicked()
 {
-    //scribbleArea->polylineOn();
     toolSet->changePolylineButton();
 }
 void Editor::bucket_clicked()
 {
-    //scribbleArea->bucketOn();
     toolSet->changeBucketButton();
 }
 void Editor::eyedropper_clicked()
-{
-    //scribbleArea->eyedropperOn();
+{    
     toolSet->changeEyedropperButton();
 }
 void Editor::color_clicked()
-{
-    //scribbleArea->brushOn();
+{    
     toolSet->changeColouringButton();
 }
 void Editor::smudge_clicked()
-{
-    //scribbleArea->smudgeOn();
+{    
     toolSet->changeSmudgeButton();
 }
 
@@ -2319,7 +2273,6 @@ void Editor::printAndPreview(QPrinter* printer)
 
 void Editor::getCameraLayer()
 {
-
     for(int i=0; i < object->getLayerCount(); i++)
     {
         Layer* layer = object->getLayer(i);
@@ -2335,52 +2288,9 @@ void Editor::getCameraLayer()
         if(layer->type == Layer::CAMERA)
         {
 
-        }
-        /*if(i=object->getLayerCount()) {
-        QMessageBox msgBox;
-         msgBox.setText("Would you like to add a camera layer?");
-         msgBox.exec();
-        }*/
+        }      
     }
 }
-/*
-    Layer* layer = getCurrentLayer(); if(layer == NULL) return;
-        if(layer->type == Layer::CAMERA) {
-            QMessageBox msgBox;
-                     msgBox.setText("This is the Preview Layer");
-                     msgBox.exec();
-                     for(int i=0; i < object->getLayerCount(); i++);
-                                qDebug()<< object->getLayerCount();
-        } else{
-//			for (int i = 0; i < a; ++i){
-            for(int a=0;a< object->getLayerCount(); a++);{
-                object->getLayer(i);
-
-    //		viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
-            nextLayer();
-            nextLayer();
-            if(layer->type == Layer::CAMERA) {
-                        QMessageBox msgBox;
-                                 msgBox.setText("This is the Preview Layer");
-                                 msgBox.exec();
-                //				 a=object->getLayerCount();
-            }
-            }
-        }
-
-    }*/
-
-/*void Editor::onionNext(bool state){
-        scribbleArea->onionNextSlot(state);
-//	toolSet->nextClick(); TODO right variable to click button.  it's only a signal
-
-}
-
-void Editor::onionPrev(bool state){
-        scribbleArea->onionPrevSlot(state);
-//	toolSet->prevClick();
-
-}*/
 
 void Editor::endPlay()
 {
