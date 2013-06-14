@@ -477,18 +477,10 @@ void Editor::addColour()
     {
         object->addColour( QColor::fromRgba(qrgba) );
         mainWindow->m_colorPalette->updateList();
-        selectColour(object->getColourCount()-1);
+        selectColour(object->getColourCount() - 1);
     }
     delete ok;
-
-    /*QColor newColour = QColorDialog::getColor( initialColour );
-    if (newColour.isValid()) {
-        object->addColour(newColour);
-        palette->updateList();
-        //selectColour(object->getColourCount());
-    }*/
 }
-
 
 void Editor::removeColour(int i)
 {
