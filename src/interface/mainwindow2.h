@@ -63,6 +63,7 @@ public slots:
     void openDocument();
     bool saveAsNewDocument();
     void saveForce();
+    bool maybeSave();
 
 private slots:
     void exportFile();

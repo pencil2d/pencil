@@ -133,7 +133,6 @@ public slots:
     void rotateacw();
     void gridview();
 
-    bool maybeSave();
     void importImage();
     void importImage(QString filePath);
     //void importSound();

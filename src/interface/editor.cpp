@@ -1042,29 +1042,6 @@ void Editor::saveLength(QString x)
     settings.setValue("length", dec);
 }
 
-bool Editor::maybeSave()
-{
-    if (object->modified)
-    {
-        int ret = QMessageBox::warning(this, tr("Warning"),
-                                       tr("This animation has been modified.\n"
-                                          "Do you want to save your changes?"),
-                                       QMessageBox::Yes | QMessageBox::Default,
-                                       QMessageBox::No,
-                                       QMessageBox::Cancel | QMessageBox::Escape);
-        if (ret == QMessageBox::Yes)
-        {
-            mainWindow->saveForce();
-            return true;
-        }
-        else if (ret == QMessageBox::Cancel)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 void Editor::resetUI()
 {
     updateObject();    

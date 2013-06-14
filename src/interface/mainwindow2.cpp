@@ -458,7 +458,7 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
-    if (editor->maybeSave())
+    if ( maybeSave() )
     {
         writeSettings();
         event->accept();
@@ -474,7 +474,7 @@ void MainWindow2::closeEvent(QCloseEvent* event)
 
 void MainWindow2::newDocument()
 {
-    if ( editor->maybeSave() )
+    if ( maybeSave() )
     {
         // default size
         Object* pObject = new Object();
@@ -487,7 +487,7 @@ void MainWindow2::newDocument()
 
 void MainWindow2::openDocument()
 {
-    if ( editor->maybeSave() )
+    if ( maybeSave() )
     {
         QSettings settings("Pencil","Pencil");
 
@@ -634,6 +634,29 @@ void MainWindow2::saveForce()
     {
         saveAsNewDocument();
     }
+}
+
+bool MainWindow2::maybeSave()
+{
+    if (object->modified)
+    {
+        int ret = QMessageBox::warning(this, tr("Warning"),
+            tr("This animation has been modified.\n"
+            "Do you want to save your changes?"),
+            QMessageBox::Yes | QMessageBox::Default,
+            QMessageBox::No,
+            QMessageBox::Cancel | QMessageBox::Escape);
+        if (ret == QMessageBox::Yes)
+        {
+            saveForce();
+            return true;
+        }
+        else if (ret == QMessageBox::Cancel)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 QDomElement MainWindow2::createDomElement(QDomDocument& doc)
