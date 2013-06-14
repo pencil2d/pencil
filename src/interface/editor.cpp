@@ -41,7 +41,7 @@ Editor::Editor(MainWindow2* parent)
     QSettings settings("Pencil","Pencil");
 
     object = NULL; // the editor is initialized with no object
-    savedName = "";
+    
     altpress=false;
     modified=false;
     numberOfModifications = 0;
@@ -1067,8 +1067,7 @@ bool Editor::maybeSave()
 
 void Editor::resetUI()
 {
-    updateObject();
-    savedName = "";
+    updateObject();    
     maxFrame = 0;
     currentFrame = 0;
     scrubTo(0);
@@ -1129,13 +1128,13 @@ bool Editor::openObject(QString filePath)
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    savedName = filePath;
+    object->strCurrentFilePath = filePath;
     QSettings settings("Pencil","Pencil");
-    settings.setValue("lastFilePath", QVariant(savedName) );
-    mainWindow->setWindowTitle(savedName);
+    settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
+    mainWindow->setWindowTitle(object->strCurrentFilePath);
 
     Object* newObject = new Object();
-    if(!newObject->loadPalette(savedName+".data")) newObject->loadDefaultPalette();
+    if(!newObject->loadPalette(object->strCurrentFilePath+".data")) newObject->loadDefaultPalette();
     setObject(newObject);
 
     // ------- reads the XML file -------

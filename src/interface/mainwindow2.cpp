@@ -626,13 +626,11 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
 void MainWindow2::saveForce()
 {
-    /* TODO: move savedName later
-    if ( savedName != "" )
+    if ( object->strCurrentFilePath != "" )
     {
-        saveObject(savedName);
-    }
-    */
-    //else 
+        saveObject(object->strCurrentFilePath);
+    }    
+    else 
     {
         saveDocument();
     }

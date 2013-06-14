@@ -45,6 +45,8 @@ public:
     Object();
     virtual ~Object();
 
+    QString strCurrentFilePath;
+
     QDomElement createDomElement(QDomDocument& doc);
     bool loadDomElement(QDomElement element,  QString filePath);
 

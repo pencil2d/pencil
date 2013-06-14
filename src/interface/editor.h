@@ -270,7 +270,7 @@ private:
     //Preferences* preferences;
     MainWindow2* mainWindow;
 
-    QString savedName;
+    //QString savedName;
     QString path;
     bool altpress;
     bool modified;
