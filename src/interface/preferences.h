@@ -13,6 +13,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#ifndef _PREFERENCES_H_
+#define _PREFERENCES_H_
+
 #include <QtGui>
 
 class QListWidget;
@@ -24,7 +27,7 @@ class Preferences : public QDialog
     Q_OBJECT
 
 public:
-    Preferences();
+    Preferences(QWidget* parent);
 
 public slots:
     void changePage(QListWidgetItem* current, QListWidgetItem* previous);
@@ -100,3 +103,5 @@ class ToolsPage : public QWidget
 public:
     ToolsPage(QWidget* parent = 0);
 };
+
+#endif

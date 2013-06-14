@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include "shortcutspage.h"
 
 
-Preferences::Preferences()
+Preferences::Preferences( QWidget* parent ) : QDialog(parent)
 {
     contentsWidget = new QListWidget;
     contentsWidget->setViewMode(QListView::IconMode);

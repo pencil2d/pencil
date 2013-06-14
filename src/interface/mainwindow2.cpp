@@ -21,10 +21,13 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "mainwindow.h"
 #include "object.h"
+#include "scribblearea.h"
 #include "interfaces.h"
 #include "palette.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "preferences.h"
+#include "timeline.h"
 
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
@@ -39,6 +42,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     object->defaultInitialisation();
 
     editor = new Editor(this);
+    m_pScribbleArea = editor->getScribbleArea();
+    m_pTimeLine = editor->getTimeLine();
 
     arrangePalettes();
     createMenus();
@@ -48,11 +53,65 @@ MainWindow2::MainWindow2(QWidget *parent) :
     editor->resetUI();
 
     readSettings();
+
+    m_pPreferences = new Preferences(this);
+    makePreferenceConnections();
 }
 
 MainWindow2::~MainWindow2()
 {
     delete ui;
+}
+
+void MainWindow2::makePreferenceConnections()
+{
+    connect(m_pPreferences, SIGNAL(windowOpacityChange(int)), this, SLOT(setOpacity(int)));
+    connect(m_pPreferences, SIGNAL(curveOpacityChange(int)), m_pScribbleArea, SLOT(setCurveOpacity(int)));
+    connect(m_pPreferences, SIGNAL(curveSmoothingChange(int)), m_pScribbleArea, SLOT(setCurveSmoothing(int)));
+    connect(m_pPreferences, SIGNAL(highResPositionChange(int)), m_pScribbleArea, SLOT(setHighResPosition(int)));
+    connect(m_pPreferences, SIGNAL(antialiasingChange(int)), m_pScribbleArea, SLOT(setAntialiasing(int)));
+    connect(m_pPreferences, SIGNAL(gradientsChange(int)), m_pScribbleArea, SLOT(setGradients(int)));
+    connect(m_pPreferences, SIGNAL(backgroundChange(int)), m_pScribbleArea, SLOT(setBackground(int)));
+    connect(m_pPreferences, SIGNAL(shadowsChange(int)), m_pScribbleArea, SLOT(setShadows(int)));
+    connect(m_pPreferences, SIGNAL(toolCursorsChange(int)), m_pScribbleArea, SLOT(setToolCursors(int)));
+    connect(m_pPreferences, SIGNAL(styleChange(int)), m_pScribbleArea, SLOT(setStyle(int)));
+
+    connect(m_pPreferences, SIGNAL(autosaveChange(int)), this, SLOT(changeAutosave(int)));
+    connect(m_pPreferences, SIGNAL(autosaveNumberChange(int)), editor, SLOT(changeAutosaveNumber(int)));
+
+    connect(m_pPreferences, SIGNAL(lengthSizeChange(QString)), m_pTimeLine, SIGNAL(lengthChange(QString)));
+    connect(m_pPreferences, SIGNAL(fontSizeChange(int)), m_pTimeLine, SIGNAL(fontSizeChange(int)));
+    connect(m_pPreferences, SIGNAL(frameSizeChange(int)), m_pTimeLine, SIGNAL(frameSizeChange(int)));
+    connect(m_pPreferences, SIGNAL(labelChange(int)), m_pTimeLine, SIGNAL(labelChange(int)));
+    connect(m_pPreferences, SIGNAL(scrubChange(int)), m_pTimeLine, SIGNAL(scrubChange(int)));
+
+    connect(m_pPreferences, SIGNAL(onionLayer1OpacityChange(int)), editor, SLOT(onionLayer1OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(onionLayer2OpacityChange(int)), editor, SLOT(onionLayer2OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(onionLayer3OpacityChange(int)), editor, SLOT(onionLayer3OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(windowOpacityChange(int)), editor, SLOT(setOpacity(int)));
+    connect(m_pPreferences, SIGNAL(curveOpacityChange(int)), m_pScribbleArea, SLOT(setCurveOpacity(int)));
+    connect(m_pPreferences, SIGNAL(curveSmoothingChange(int)), m_pScribbleArea, SLOT(setCurveSmoothing(int)));
+    connect(m_pPreferences, SIGNAL(highResPositionChange(int)), m_pScribbleArea, SLOT(setHighResPosition(int)));
+    connect(m_pPreferences, SIGNAL(antialiasingChange(int)), m_pScribbleArea, SLOT(setAntialiasing(int)));
+    connect(m_pPreferences, SIGNAL(gradientsChange(int)), m_pScribbleArea, SLOT(setGradients(int)));
+    connect(m_pPreferences, SIGNAL(backgroundChange(int)), m_pScribbleArea, SLOT(setBackground(int)));
+    connect(m_pPreferences, SIGNAL(shadowsChange(int)), m_pScribbleArea, SLOT(setShadows(int)));
+    connect(m_pPreferences, SIGNAL(toolCursorsChange(int)), m_pScribbleArea, SLOT(setToolCursors(int)));
+    connect(m_pPreferences, SIGNAL(styleChange(int)), m_pScribbleArea, SLOT(setStyle(int)));
+
+    connect(m_pPreferences, SIGNAL(autosaveChange(int)), editor, SLOT(changeAutosave(int)));
+    connect(m_pPreferences, SIGNAL(autosaveNumberChange(int)), editor, SLOT(changeAutosaveNumber(int)));
+
+    connect(m_pPreferences, SIGNAL(lengthSizeChange(QString)), m_pTimeLine, SIGNAL(lengthChange(QString)));
+    connect(m_pPreferences, SIGNAL(fontSizeChange(int)), m_pTimeLine, SIGNAL(fontSizeChange(int)));
+    connect(m_pPreferences, SIGNAL(frameSizeChange(int)), m_pTimeLine, SIGNAL(frameSizeChange(int)));
+    connect(m_pPreferences, SIGNAL(labelChange(int)), m_pTimeLine, SIGNAL(labelChange(int)));
+    connect(m_pPreferences, SIGNAL(scrubChange(int)), m_pTimeLine, SIGNAL(scrubChange(int)));
+
+    connect(m_pPreferences, SIGNAL(onionLayer1OpacityChange(int)), editor, SLOT(onionLayer1OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(onionLayer2OpacityChange(int)), editor, SLOT(onionLayer2OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(onionLayer3OpacityChange(int)), editor, SLOT(onionLayer3OpacityChangeSlot(int)));
+
 }
 
 void MainWindow2::arrangePalettes()
@@ -171,7 +230,7 @@ void MainWindow2::createMenus()
     ui->actionDeselect_All->setShortcut(tr("Ctrl+Shift+A"));
     connect(ui->actionDeselect_All, SIGNAL(triggered()), editor, SLOT(deselectAll()));
 
-    connect(ui->actionPreference, SIGNAL(triggered()), editor, SLOT(showPreferences()));
+    connect(ui->actionPreference, SIGNAL(triggered()), this, SLOT(showPreferences()));
 
 
     /// --- Layer Menu ---
@@ -463,6 +522,11 @@ void MainWindow2::openDocument()
         }
 
     }
+}
+
+void MainWindow2::showPreferences()
+{
+    m_pPreferences->show();
 }
 
 void MainWindow2::dockAllPalettes()

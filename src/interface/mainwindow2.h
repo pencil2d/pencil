@@ -6,10 +6,13 @@
 
 class QActionGroup;
 class Editor;
+class ScribbleArea;
 class Object;
 class Palette;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
+class TimeLine;
+class Preferences;
 template<typename T> class QList;
 
 
@@ -36,10 +39,17 @@ public:
     // UI: central view
     Editor* editor;
 
+    // UI: central Drawing Area
+    ScribbleArea* m_pScribbleArea;
+
     // UI: Dock widgets
     Palette* m_colorPalette;
     DisplayOptionDockWidget* m_displayOptionWidget;
     ToolOptionDockWidget*    m_toolOptionWidget;
+    TimeLine* m_pTimeLine;
+
+    // Other windows
+    Preferences* m_pPreferences;
 
 private:
     Ui::MainWindow2 *ui;
@@ -58,9 +68,11 @@ private slots:
     void dockAllPalettes();
     void helpBox();
     void aboutPencil();
+    void showPreferences();
 
 private:
     void arrangePalettes();
+    void makePreferenceConnections();
     void createMenus();
     void loadPlugins();
     void populateMenus(QObject* plugin);

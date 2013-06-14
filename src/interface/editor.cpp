@@ -76,7 +76,6 @@ Editor::Editor(MainWindow2* parent)
     currentFrame = 1;
     currentLayer = 0;
 
-    preferences = new Preferences();
     exportFramesDialog = NULL; // will be created when needed
     exportMovieDialog = NULL;
     exportFlashDialog = NULL;
@@ -180,31 +179,7 @@ void Editor::makeConnections()
 
     connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
     connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
-
-    connect(preferences, SIGNAL(windowOpacityChange(int)), mainWindow, SLOT(setOpacity(int)));
-    connect(preferences, SIGNAL(curveOpacityChange(int)), scribbleArea, SLOT(setCurveOpacity(int)));
-    connect(preferences, SIGNAL(curveSmoothingChange(int)), scribbleArea, SLOT(setCurveSmoothing(int)));
-    connect(preferences, SIGNAL(highResPositionChange(int)), scribbleArea, SLOT(setHighResPosition(int)));
-    connect(preferences, SIGNAL(antialiasingChange(int)), scribbleArea, SLOT(setAntialiasing(int)));
-    connect(preferences, SIGNAL(gradientsChange(int)), scribbleArea, SLOT(setGradients(int)));
-    connect(preferences, SIGNAL(backgroundChange(int)), scribbleArea, SLOT(setBackground(int)));
-    connect(preferences, SIGNAL(shadowsChange(int)), scribbleArea, SLOT(setShadows(int)));
-    connect(preferences, SIGNAL(toolCursorsChange(int)), scribbleArea, SLOT(setToolCursors(int)));
-    connect(preferences, SIGNAL(styleChange(int)), scribbleArea, SLOT(setStyle(int)));
-
-    connect(preferences, SIGNAL(autosaveChange(int)), this, SLOT(changeAutosave(int)));
-    connect(preferences, SIGNAL(autosaveNumberChange(int)), this, SLOT(changeAutosaveNumber(int)));
-
-    connect(preferences, SIGNAL(lengthSizeChange(QString)), timeLine, SIGNAL(lengthChange(QString)));
-    connect(preferences, SIGNAL(fontSizeChange(int)), timeLine, SIGNAL(fontSizeChange(int)));
-    connect(preferences, SIGNAL(frameSizeChange(int)), timeLine, SIGNAL(frameSizeChange(int)));
-    connect(preferences, SIGNAL(labelChange(int)), timeLine, SIGNAL(labelChange(int)));
-    connect(preferences, SIGNAL(scrubChange(int)), timeLine, SIGNAL(scrubChange(int)));
-
-    connect(preferences, SIGNAL(onionLayer1OpacityChange(int)), this, SLOT(onionLayer1OpacityChangeSlot(int)));
-    connect(preferences, SIGNAL(onionLayer2OpacityChange(int)), this, SLOT(onionLayer2OpacityChangeSlot(int)));
-    connect(preferences, SIGNAL(onionLayer3OpacityChange(int)), this, SLOT(onionLayer3OpacityChangeSlot(int)));
-
+   
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
 
@@ -2064,12 +2039,6 @@ int Editor::getLastFrameAtFrame(int frameNumber)
     return frameList.at( getLastIndexAtFrame(frameNumber) );
 }
 
-
-
-void Editor::showPreferences()
-{
-    preferences->show();
-}
 
 void Editor::play()
 {

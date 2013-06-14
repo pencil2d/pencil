@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "toolset.h"
 #include "timecontrols.h"
-#include "preferences.h"
 #include "palette.h"
 #include "object.h"
 #include "vectorimage.h"
@@ -171,8 +170,6 @@ public slots:
     int getLastIndexAtFrame(int frameNumber);
     int getLastFrameAtFrame(int frameNumber);
 
-    void showPreferences();
-
     void resetUI();
 
     void setObject(Object* object);
@@ -272,7 +269,7 @@ private:
     ScribbleArea* scribbleArea;
     TimeLine* timeLine;
     TimeControls* timeControl;    
-    Preferences* preferences;
+    //Preferences* preferences;
     MainWindow2* mainWindow;
 
     QString savedName;
