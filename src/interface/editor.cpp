@@ -2588,19 +2588,8 @@ void Editor::saveSvg()
 
 void Editor::addcolorbutton()
 {
-
     QColor initialColour = Qt::white;
     int currentColourIndex = mainWindow->m_colorPalette->currentColour();
-    /*		  if( currentColourIndex > -1 ) {
-                    initialColour = object->getColour(currentColourIndex).colour;
-                }
-                bool *ok;
-                ok = new bool;
-                QRgb qrgba = QColorDialog::getRgba( initialColour.rgba(), ok, this );
-
-
-
-            QColor colour;*/
     initialColour = object->getColour(currentColourIndex).colour;
     QRgb qrgba = initialColour.rgba();
     object->addColour(qrgba );
