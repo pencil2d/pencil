@@ -131,7 +131,7 @@ Editor::~Editor()
 }
 
 void Editor::makeConnections()
-{    
+{
     connect(scribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
     connect(scribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
     connect(scribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
@@ -252,7 +252,7 @@ void Editor::importImageSequence ()
         QString filePath;
         filePath= files.at(i).toLocal8Bit().constData();
         if(i>0) scrubForward();
-        {            
+        {
             if(filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
                 importImage(filePath);
         }
@@ -301,7 +301,7 @@ void Editor::openRecent()
 }
 
 bool Editor::saveDocument()
-{  
+{
     QSettings settings("Pencil","Pencil");
     QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
     if(myPath.isEmpty()) myPath = QDir::homePath() + "/untitled.pcl";
@@ -413,7 +413,7 @@ void Editor::setPressure(int pressure)
     if ( pressure >= 0 )
     {
         scribbleArea->setPressure( pressure > 0 );
-    }    
+    }
     emit penPressureValueChange(pressure);
 }
 
@@ -492,7 +492,7 @@ void Editor::changeColour(int i, QColor newColour)
         /*object->setColour(i, newColour);
         Layer* layer = object->getLayer(currentLayer);
         if(layer != NULL) {
-        	if(layer->type == Layer::VECTOR) scribbleArea->setModified(layer, currentFrame);
+            if(layer->type == Layer::VECTOR) scribbleArea->setModified(layer, currentFrame);
         }*/
         updateColour(i, newColour);
         mainWindow->m_colorPalette->updateList();
@@ -538,9 +538,9 @@ void Editor::addColour()
 
     /*QColor newColour = QColorDialog::getColor( initialColour );
     if (newColour.isValid()) {
-    	object->addColour(newColour);
-    	palette->updateList();
-    	//selectColour(object->getColourCount());
+        object->addColour(newColour);
+        palette->updateList();
+        //selectColour(object->getColourCount());
     }*/
 }
 
@@ -1183,7 +1183,7 @@ bool Editor::saveObject(QString filePath)
 }
 
 void Editor::resetUI()
-{    
+{
     updateObject();
     savedName = "";
     maxFrame = 0;
@@ -1192,7 +1192,7 @@ void Editor::resetUI()
 }
 
 void Editor::setObject(Object* object)
-{ 
+{
     if (this->object != NULL && object != this->object)
     {
         disconnect( this->object, 0, 0, 0); // disconnect the current object from everything
@@ -1916,11 +1916,11 @@ void Editor::scrubBackward()
 }
 
 /*void Editor::scrubKF() {
-	//timeLine->scrubKF();
+    //timeLine->scrubKF();
 }
 
 void Editor::scrubKB() {
-	//timeLine->scrubKB();
+    //timeLine->scrubKB();
 }*/
 
 void Editor::previousLayer()
@@ -1946,9 +1946,9 @@ void Editor::addKey()
 void Editor::duplicateKey()
 {
     /*	scribbleArea->selectAll();
-    	copy();
-    	addKey();
-    	paste();*/
+        copy();
+        addKey();
+        paste();*/
 
     Layer* layer = object->getLayer(currentLayer);
     if(layer != NULL)
@@ -2520,31 +2520,31 @@ void Editor::getCameraLayer()
     }
 }
 /*
-	Layer* layer = getCurrentLayer(); if(layer == NULL) return;
-		if(layer->type == Layer::CAMERA) {
-			QMessageBox msgBox;
-					 msgBox.setText("This is the Preview Layer");
-					 msgBox.exec();
-					 for(int i=0; i < object->getLayerCount(); i++);
-					 			qDebug()<< object->getLayerCount();
-		} else{
+    Layer* layer = getCurrentLayer(); if(layer == NULL) return;
+        if(layer->type == Layer::CAMERA) {
+            QMessageBox msgBox;
+                     msgBox.setText("This is the Preview Layer");
+                     msgBox.exec();
+                     for(int i=0; i < object->getLayerCount(); i++);
+                                qDebug()<< object->getLayerCount();
+        } else{
 //			for (int i = 0; i < a; ++i){
-			for(int a=0;a< object->getLayerCount(); a++);{
-				object->getLayer(i);
+            for(int a=0;a< object->getLayerCount(); a++);{
+                object->getLayer(i);
 
-	//		viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
-			nextLayer();
-			nextLayer();
-			if(layer->type == Layer::CAMERA) {
-						QMessageBox msgBox;
-								 msgBox.setText("This is the Preview Layer");
-								 msgBox.exec();
-				//				 a=object->getLayerCount();
-			}
-			}
-		}
+    //		viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
+            nextLayer();
+            nextLayer();
+            if(layer->type == Layer::CAMERA) {
+                        QMessageBox msgBox;
+                                 msgBox.setText("This is the Preview Layer");
+                                 msgBox.exec();
+                //				 a=object->getLayerCount();
+            }
+            }
+        }
 
-	}*/
+    }*/
 
 /*void Editor::onionNext(bool state){
         scribbleArea->onionNextSlot(state);
@@ -2623,15 +2623,15 @@ void Editor::addcolorbutton()
     QColor initialColour = Qt::white;
     int currentColourIndex = mainWindow->m_colorPalette->currentColour();
     /*		  if( currentColourIndex > -1 ) {
-    				initialColour = object->getColour(currentColourIndex).colour;
-    			}
-    			bool *ok;
-    			ok = new bool;
-    			QRgb qrgba = QColorDialog::getRgba( initialColour.rgba(), ok, this );
+                    initialColour = object->getColour(currentColourIndex).colour;
+                }
+                bool *ok;
+                ok = new bool;
+                QRgb qrgba = QColorDialog::getRgba( initialColour.rgba(), ok, this );
 
 
 
-    		QColor colour;*/
+            QColor colour;*/
     initialColour = object->getColour(currentColourIndex).colour;
     QRgb qrgba = initialColour.rgba();
     object->addColour(qrgba );
