@@ -267,11 +267,9 @@ private:
     ScribbleArea* scribbleArea;
     TimeLine* timeLine;
     TimeControls* timeControl;    
-    //Preferences* preferences;
     MainWindow2* mainWindow;
 
     //QString savedName;
-    QString path;
     bool altpress;
     bool modified;
     int numberOfModifications;
