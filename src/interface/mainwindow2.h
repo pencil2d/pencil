@@ -61,7 +61,7 @@ public slots:
     void undoActSetEnabled(void);
     void newDocument();
     void openDocument();
-    bool saveDocument();
+    bool saveAsNewDocument();
     void saveForce();
 
 private slots:

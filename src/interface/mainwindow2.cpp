@@ -152,7 +152,7 @@ void MainWindow2::createMenus()
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openDocument()));
 
     ui->actionSave_as->setShortcut(tr("Ctrl+Shift+S"));
-    connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveDocument()));
+    connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAsNewDocument()));
 
     ui->actionSave->setShortcut(tr("Ctrl+S"));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveForce()));
@@ -527,7 +527,7 @@ void MainWindow2::openDocument()
     }
 }
 
-bool MainWindow2::saveDocument()
+bool MainWindow2::saveAsNewDocument()
 {
     QSettings settings("Pencil","Pencil");
     
