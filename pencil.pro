@@ -38,8 +38,7 @@ HEADERS +=  src/interfaces.h \
             src/structure/layersound.h \
             src/structure/layervector.h \
             src/structure/object.h \
-            src/interface/editor.h \
-            src/interface/mainwindow.h \
+            src/interface/editor.h \            
             src/interface/palette.h \
             src/interface/preferences.h \
             src/interface/scribblearea.h \
@@ -83,8 +82,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/structure/layersound.cpp \
             src/structure/layervector.cpp \
             src/structure/object.cpp \
-            src/interface/editor.cpp \
-            src/interface/mainwindow.cpp \
+            src/interface/editor.cpp \            
             src/interface/palette.cpp \
             src/interface/preferences.cpp \
             src/interface/scribblearea.cpp \
@@ -149,3 +147,5 @@ qt3support
 
 FORMS += \
     src/interface/mainwindow2.ui
+
+TRANSLATIONS += pencil.ts
