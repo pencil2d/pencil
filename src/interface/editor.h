@@ -269,7 +269,7 @@ private:
     TimeControls* timeControl;    
     MainWindow2* mainWindow;
 
-    //QString savedName;
+    QString path;
     bool altpress;
     bool modified;
     int numberOfModifications;

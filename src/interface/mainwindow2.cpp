@@ -632,7 +632,7 @@ void MainWindow2::saveForce()
     }    
     else 
     {
-        saveDocument();
+        saveAsNewDocument();
     }
 }
 
