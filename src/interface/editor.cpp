@@ -275,31 +275,6 @@ void Editor::openRecent()
     }
 }
 
-bool Editor::saveDocument()
-{
-    QSettings settings("Pencil","Pencil");
-    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-    if(myPath.isEmpty()) myPath = QDir::homePath() + "/untitled.pcl";
-
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save As..."),myPath ,tr("PCL (*.pcl)"));
-
-    if (fileName.isEmpty())
-    {
-        return false;
-    }
-    else
-    {
-        if(! fileName.endsWith(".pcl"))
-        {
-            fileName =  fileName + ".pcl";
-        }
-        QSettings settings("Pencil","Pencil");
-        settings.setValue("lastFilePath", QVariant(fileName));
-
-        return saveObject(fileName);
-    }
-}
-
 void Editor::setWidth(qreal width)
 {
     scribbleArea->setWidth(width);
@@ -588,11 +563,10 @@ void Editor::modification(int layerNumber)
     scribbleArea->update();
     timeLine->updateContent();
     numberOfModifications++;
-    if(autosave && numberOfModifications > autosaveNumber)
+    if (autosave && numberOfModifications > autosaveNumber)
     {
-        numberOfModifications = 0;
-        //saveForce();
-        if (savedName!="") saveObject(savedName);
+        numberOfModifications = 0;        
+        emit needSave();    
     }
 }
 
@@ -1080,7 +1054,7 @@ bool Editor::maybeSave()
                                        QMessageBox::Cancel | QMessageBox::Escape);
         if (ret == QMessageBox::Yes)
         {
-            saveForce();
+            mainWindow->saveForce();
             return true;
         }
         else if (ret == QMessageBox::Cancel)
@@ -1088,72 +1062,6 @@ bool Editor::maybeSave()
             return false;
         }
     }
-    return true;
-}
-
-bool Editor::saveObject(QString filePath)
-{
-    QFileInfo fileInfo(filePath);
-    if(fileInfo.isDir()) return false;
-
-    QFileInfo dataInfo(filePath+".data");
-    if(!dataInfo.exists())
-    {
-        QDir dir(fileInfo.absolutePath()); // the directory where filePath is or will be saved
-        dir.mkpath(filePath+".data"); // creates a directory with the same name +".data"
-    }
-
-    savedName=filePath;
-    mainWindow->setWindowTitle(savedName);
-
-    QProgressDialog progress("Saving document...", "Abort", 0, 100, mainWindow);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-    int progressValue = 0;
-
-    // save data
-    int nLayers = object->getLayerCount();
-    for(int i=0; i < nLayers; i++)
-    {
-        Layer* layer = object->getLayer(i);
-        qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
-        progressValue = (i*100)/nLayers;
-        progress.setValue(progressValue);
-        if(layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
-        if(layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(filePath+".data", i);
-        if(layer->type == Layer::SOUND) ((LayerSound*)layer)->saveImages(filePath+".data", i);
-    }
-
-    // save palette
-    object->savePalette(filePath+".data");
-
-    // -------- save main XML file -----------
-    QFile* file = new QFile(filePath);
-    if (!file->open(QFile::WriteOnly | QFile::Text))
-    {
-        //QMessageBox::warning(this, "Warning", "Cannot write file");
-        return false;
-    }
-    QTextStream out(file);
-    QDomDocument doc("PencilDocument");
-    QDomElement root = doc.createElement("document");
-    doc.appendChild(root);
-
-    // save editor information
-    QDomElement editorElement = createDomElement(doc);
-    root.appendChild(editorElement);
-    // save object
-    QDomElement objectElement = object->createDomElement(doc);
-    root.appendChild(objectElement);
-
-    int IndentSize = 2;
-    doc.save(out, IndentSize);
-    // -----------------------------------
-
-    progress.setValue(100);
-
-    object->modified = false;
-    timeLine->updateContent();
     return true;
 }
 
@@ -1272,12 +1180,7 @@ bool Editor::openObject(QString filePath)
     return ok;
 }
 
-void Editor::saveForce()
-{
-    if (savedName!="")
-        saveObject(savedName);
-    else saveDocument();
-}
+
 
 void Editor::createNewDocumentDialog()
 {
@@ -2238,32 +2141,8 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
     }
 }
 
-QDomElement Editor::createDomElement(QDomDocument& doc)
-{
-    QDomElement tag = doc.createElement("editor");
 
-    QDomElement tag1 = doc.createElement("currentLayer");
-    tag1.setAttribute("value", currentLayer);
-    tag.appendChild(tag1);
-    QDomElement tag2 = doc.createElement("currentFrame");
-    tag2.setAttribute("value", currentFrame);
-    tag.appendChild(tag2);
-    QDomElement tag2a = doc.createElement("currentFps");
-    tag2a.setAttribute("value", fps);
-    tag.appendChild(tag2a);
-    QDomElement tag3 = doc.createElement("currentView");
-    QMatrix myView = scribbleArea->getMyView();
-    tag3.setAttribute("m11", myView.m11());
-    tag3.setAttribute("m12", myView.m12());
-    tag3.setAttribute("m21", myView.m21());
-    tag3.setAttribute("m22", myView.m22());
-    tag3.setAttribute("dx", myView.dx());
-    tag3.setAttribute("dy", myView.dy());
-    tag.appendChild(tag3);
-
-    return tag;
-}
-
+// TODO: need to move to other place
 bool Editor::loadDomElement(QDomElement docElem, QString filePath)
 {
     if(docElem.isNull()) return false;

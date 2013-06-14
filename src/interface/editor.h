@@ -104,6 +104,9 @@ signals:
     void penFollowContourValueChange(int);
     void penColorValueChange(QColor);
 
+    // save
+    void needSave();
+
 public slots:
     //tools menu
     void move_clicked();
@@ -241,15 +244,12 @@ public slots:
 
     void openRecent();
     void print();
-    void saveForce();
     //void detachAllPalettes();
     void restorePalettesSettings(bool, bool, bool);
     void saveSvg();
     void addcolorbutton();
 
-private slots:    
-    bool saveDocument();
-
+private slots:
     bool exportX();
     bool exportImage();
     bool exportSeq();
@@ -264,8 +264,6 @@ private slots:
 
 
 private:
-    bool saveObject(QString);
-
     ScribbleArea* scribbleArea;
     TimeLine* timeLine;
     TimeControls* timeControl;    
@@ -317,7 +315,6 @@ private:
     QSlider* exportFlashDialog_compression;
 
     // saving (XML)
-    QDomElement createDomElement(QDomDocument& doc);
     bool loadDomElement(QDomElement element,  QString filePath);
 };
 

@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW2_H
 #define MAINWINDOW2_H
 
+#include <QDomElement>
 #include <QMainWindow>
-
 
 class QActionGroup;
 class Editor;
@@ -59,16 +59,22 @@ public slots:
     void setOpacity(int opacity);
     void undoActSetText(void);
     void undoActSetEnabled(void);
+    void newDocument();
+    void openDocument();
+    bool saveDocument();
+    void saveForce();
 
 private slots:
     void exportFile();
 
-    void newDocument();
-    void openDocument();
+    bool saveObject(QString strSavedFilename);
     void dockAllPalettes();
     void helpBox();
     void aboutPencil();
     void showPreferences();
+
+    // XML save/load
+    QDomElement createDomElement(QDomDocument& doc);
 
 private:
     void arrangePalettes();
