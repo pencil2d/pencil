@@ -406,12 +406,12 @@ void Editor::setColour(QColor colour)
 void Editor::changeColour(int i)
 {
     //QColor newColour = QColorDialog::getColor(object->getColour(i).colour);
-    if(i>-1)
+    if (i > -1)
     {
         bool* ok;
         ok = new bool;
         QRgb qrgba = QColorDialog::getRgba( object->getColour(i).colour.rgba(), ok, this );
-        if(*ok)
+        if (*ok)
         {
             changeColour(i, QColor::fromRgba(qrgba) );
         }
@@ -421,7 +421,7 @@ void Editor::changeColour(int i)
 
 void Editor::changeColourName(int i)
 {
-    if (i>-1)
+    if (i > -1)
     {
         bool ok;
         QString text = QInputDialog::getText(this, tr("Colour name"),
@@ -439,11 +439,6 @@ void Editor::changeColour(int i, QColor newColour)
 {
     if (newColour.isValid() && i>-1)
     {
-        /*object->setColour(i, newColour);
-        Layer* layer = object->getLayer(currentLayer);
-        if(layer != NULL) {
-            if(layer->type == Layer::VECTOR) scribbleArea->setModified(layer, currentFrame);
-        }*/
         updateColour(i, newColour);
         mainWindow->m_colorPalette->updateList();
         selectColour(i);
@@ -452,11 +447,11 @@ void Editor::changeColour(int i, QColor newColour)
 
 void Editor::updateColour(int i, QColor newColour)
 {
-    if( newColour.isValid() && i>-1)
+    if (newColour.isValid() && i > -1)
     {
         object->setColour(i, newColour);
         Layer* layer = object->getLayer(currentLayer);
-        if(layer != NULL)
+        if (layer != NULL)
         {
             if(layer->type == Layer::VECTOR) scribbleArea->setModified(currentLayer, currentFrame);
         }
