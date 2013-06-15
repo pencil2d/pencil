@@ -231,10 +231,7 @@ void Editor::importImageSequence ()
             if(filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
                 importImage(filePath);
         }
-
     }
-
-
 }
 
 bool Editor::importMov()
@@ -470,16 +467,14 @@ void Editor::addColour()
     {
         initialColour = object->getColour(currentColourIndex).colour;
     }
-    bool* ok;
-    ok = new bool;
-    QRgb qrgba = QColorDialog::getRgba( initialColour.rgba(), ok, this );
-    if(*ok)
+    bool ok;
+    QRgb qrgba = QColorDialog::getRgba( initialColour.rgba(), &ok, this );
+    if ( ok )
     {
         object->addColour( QColor::fromRgba(qrgba) );
         mainWindow->m_colorPalette->updateList();
         selectColour(object->getColourCount() - 1);
     }
-    delete ok;
 }
 
 void Editor::removeColour(int i)
