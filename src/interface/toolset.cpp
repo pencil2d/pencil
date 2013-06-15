@@ -148,7 +148,7 @@ ToolSet::ToolSet(Editor* editor)
     drawLay->addWidget(eraserButton,5,1);
     drawLay->setAlignment(eraserButton, Qt::AlignLeft);
 
-    drawGroup->setLayout(drawLay);  
+    drawGroup->setLayout(drawLay);
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
 
@@ -188,21 +188,21 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
 }
 
 void ToolSet::pencilOn()
-{    
+{
     m_pEditor->getScribbleArea()->setCurrentTool( PENCIL );
 
     // --- change properties ---
-    BaseTool* pBaseTool = m_pEditor->getScribbleArea()->currentTool();
+    BaseTool* pCurTool = m_pEditor->getScribbleArea()->currentTool();
     Layer* layer = m_pEditor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pBaseTool->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pBaseTool->properties.colour);
+    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurTool->properties.colourNumber);
+    if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurTool->properties.colour);
 
-    m_pEditor->setWidth(pBaseTool->properties.width);
-    m_pEditor->setFeather(pBaseTool->properties.feather);
+    m_pEditor->setWidth(pCurTool->properties.width);
+    m_pEditor->setFeather(pCurTool->properties.feather);
     m_pEditor->setFeather(-1); // by definition the pencil has no feather
-    m_pEditor->setPressure(pBaseTool->properties.pressure);
-    m_pEditor->setPreserveAlpha(pBaseTool->properties.preserveAlpha);
+    m_pEditor->setPressure(pCurTool->properties.pressure);
+    m_pEditor->setPreserveAlpha(pCurTool->properties.preserveAlpha);
     m_pEditor->setFollowContour(-1);
     m_pEditor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
 }

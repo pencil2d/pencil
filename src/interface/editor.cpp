@@ -507,14 +507,12 @@ void Editor::changeAutosaveNumber(int number)
     settings.setValue("autosaveNumber", number);
 }
 
-
 void Editor::onionLayer1OpacityChangeSlot(int number)
 {
     onionLayer1Opacity = number;
     QSettings settings("Pencil","Pencil");
     settings.setValue("onionLayer1Opacity", number);
 }
-
 
 void Editor::onionLayer2OpacityChangeSlot(int number)
 {
@@ -523,14 +521,12 @@ void Editor::onionLayer2OpacityChangeSlot(int number)
     settings.setValue("onionLayer2Opacity", number);
 }
 
-
 void Editor::onionLayer3OpacityChangeSlot(int number)
 {
     onionLayer3Opacity = number;
     QSettings settings("Pencil","Pencil");
     settings.setValue("onionLayer3Opacity", number);
 }
-
 
 void Editor::modification()
 {
