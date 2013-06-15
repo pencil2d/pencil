@@ -121,8 +121,8 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(listOfColours, SIGNAL(itemClicked ( QListWidgetItem*)), this, SLOT(selectAndApplyColour( QListWidgetItem*)));
     connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, SLOT(changeColourName( QListWidgetItem*)));
 
-    connect(addButton, SIGNAL(clicked()), this, SLOT(addClick()));
-    connect(removeButton, SIGNAL(clicked()), this, SLOT(rmClick()));
+    connect(addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
+    connect(removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
 
     connect(colourSwatch, SIGNAL(clicked()), this, SLOT(colourSwatchClicked()));
 
@@ -205,12 +205,12 @@ void Palette::changeColourName( QListWidgetItem* item )
     if(item != NULL) editor->changeColourName(listOfColours->row(item));
 }
 
-void Palette::addClick()
+void Palette::clickAddColorButton()
 {
     editor->addColour();
 }
 
-void Palette::rmClick()
+void Palette::clickRemoveColorButton()
 {
     editor->removeColour(listOfColours->currentRow());
 }
