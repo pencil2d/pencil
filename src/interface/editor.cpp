@@ -41,7 +41,7 @@ Editor::Editor(MainWindow2* parent)
     QSettings settings("Pencil","Pencil");
 
     object = NULL; // the editor is initialized with no object
-    
+
     altpress=false;
     modified=false;
     numberOfModifications = 0;
@@ -179,7 +179,7 @@ void Editor::makeConnections()
 
     connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
     connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
-   
+
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
 
@@ -389,7 +389,10 @@ void Editor::selectAndApplyColour(int i)
     selectColour(i);
     Layer* layer = getCurrentLayer();
     if (layer == NULL) return;
-    if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyColourToSelection(i);
+    if (layer->type == Layer::VECTOR)
+    {
+        ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyColourToSelection(i);
+    }
 }
 
 void Editor::setColour(QColor colour)
@@ -405,14 +408,12 @@ void Editor::changeColour(int i)
     //QColor newColour = QColorDialog::getColor(object->getColour(i).colour);
     if (i > -1)
     {
-        bool* ok;
-        ok = new bool;
-        QRgb qrgba = QColorDialog::getRgba( object->getColour(i).colour.rgba(), ok, this );
-        if (*ok)
+        bool ok;
+        QRgb qrgba = QColorDialog::getRgba( object->getColour(i).colour.rgba(), &ok, this );
+        if ( ok )
         {
             changeColour(i, QColor::fromRgba(qrgba) );
         }
-        delete ok;
     }
 }
 
@@ -547,8 +548,8 @@ void Editor::modification(int layerNumber)
     numberOfModifications++;
     if (autosave && numberOfModifications > autosaveNumber)
     {
-        numberOfModifications = 0;        
-        emit needSave();    
+        numberOfModifications = 0;
+        emit needSave();
     }
 }
 
@@ -1022,7 +1023,7 @@ void Editor::saveLength(QString x)
 
 void Editor::resetUI()
 {
-    updateObject();    
+    updateObject();
     maxFrame = 0;
     currentFrame = 0;
     scrubTo(0);
@@ -2143,15 +2144,15 @@ void Editor::bucket_clicked()
     toolSet->changeBucketButton();
 }
 void Editor::eyedropper_clicked()
-{    
+{
     toolSet->changeEyedropperButton();
 }
 void Editor::color_clicked()
-{    
+{
     toolSet->changeColouringButton();
 }
 void Editor::smudge_clicked()
-{    
+{
     toolSet->changeSmudgeButton();
 }
 
@@ -2270,7 +2271,7 @@ void Editor::getCameraLayer()
         if(layer->type == Layer::CAMERA)
         {
 
-        }      
+        }
     }
 }
 
