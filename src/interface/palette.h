@@ -31,7 +31,7 @@ class Palette : public QDockWidget
 
 public:
     Palette(Editor*);
-    int currentColour() { return listOfColours->currentRow(); }
+    int currentColourNumber() { return listOfColours->currentRow(); }
 
 protected:
     //QSize sizeHint();
