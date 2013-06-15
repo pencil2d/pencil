@@ -448,24 +448,6 @@ void Editor::updateColour(int i, QColor newColour)
     }
 }
 
-void Editor::addColour()
-{
-    QColor initialColour = Qt::white;
-    int currentColourIndex = mainWindow->m_colorPalette->currentColourNumber();
-    if( currentColourIndex > -1 )
-    {
-        initialColour = object->getColour(currentColourIndex).colour;
-    }
-    bool ok;
-    QRgb qrgba = QColorDialog::getRgba( initialColour.rgba(), &ok, this );
-    if ( ok )
-    {
-        object->addColour( QColor::fromRgba(qrgba) );
-        mainWindow->m_colorPalette->updateList();
-        selectVectorColourNumber(object->getColourCount() - 1);
-    }
-}
-
 void Editor::removeColour(int i)
 {
     if(object->removeColour(i))

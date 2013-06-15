@@ -207,7 +207,21 @@ void Palette::changeColourName( QListWidgetItem* item )
 
 void Palette::clickAddColorButton()
 {
-    editor->addColour();
+    QColor prevColor = Qt::white;
+
+    if( currentColourNumber() > -1 )
+    {
+        prevColor = editor->object->getColour(currentColourNumber()).colour;
+    }
+
+    bool ok;
+    QRgb qrgba = QColorDialog::getRgba( prevColor.rgba(), &ok, this );
+    if ( ok )
+    {
+        editor->object->addColour( QColor::fromRgba(qrgba) );
+        updateList();
+        editor->selectVectorColourNumber(editor->object->getColourCount() - 1);
+    }
 }
 
 void Palette::clickRemoveColorButton()
@@ -215,7 +229,7 @@ void Palette::clickRemoveColorButton()
     editor->removeColour(listOfColours->currentRow());
 }
 
-void Palette::closeIfDocked(bool floating)
+void Palette::closeIfDocked(bool)
 {
     //if(floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
 }

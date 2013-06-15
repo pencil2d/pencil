@@ -37,7 +37,7 @@ public:
 
 protected:
     Editor* editor;
-    Object* object;
+    //Object* object;
 
     QListWidget* listOfColours;
     QToolButton* addButton;
@@ -62,8 +62,8 @@ private slots:
     void colorSliderMoved();
     void colourSliderValueChange();
     void changeColourName(QListWidgetItem*);
-    void addClick();
-    void rmClick();
+    void clickAddColorButton();
+    void clickRemoveColorButton();
     void closeIfDocked(bool);
 };
 

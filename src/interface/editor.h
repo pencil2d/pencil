@@ -201,7 +201,6 @@ public slots:
     void changeColourName(int);
     void changeColour(int,QColor);
     void updateColour(int, QColor);
-    void addColour();
     void removeColour(int);
 
     void changeAutosave(int);
