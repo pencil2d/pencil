@@ -16,10 +16,6 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <QBoxLayout>
 #include <QLabel>
-#include <QSlider>
-#include <QTableWidget>
-#include <QListWidget>
-#include <QMainWindow>
 #include <QTimer>
 #include <QSvgGenerator>
 
