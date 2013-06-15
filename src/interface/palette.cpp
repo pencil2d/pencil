@@ -107,10 +107,10 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
     setWindowTitle(tr("Colors"));
 
-    connect(sliderRed, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
-    connect(sliderGreen, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
-    connect(sliderBlue, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
-    connect(sliderAlpha, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
+    connect(sliderRed, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
+    connect(sliderGreen, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
+    connect(sliderBlue, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
+    connect(sliderAlpha, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
 
     connect(sliderRed, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
     connect(sliderGreen, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
@@ -187,7 +187,7 @@ void Palette::colourSliderValueChange()
     editor->changeColour(currentColourNumber(), newColour);
 }
 
-void Palette::updateColour()
+void Palette::colorSliderMoved()
 {
     QColor newColour = QColor( sliderRed->value(), sliderGreen->value(), sliderBlue->value(), sliderAlpha->value() );
     editor->updateColour(currentColourNumber(), newColour);

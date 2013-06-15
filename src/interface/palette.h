@@ -59,7 +59,7 @@ private slots:
     void colourSwatchClicked();
     void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
     void selectAndApplyColour(QListWidgetItem*);
-    void updateColour();
+    void colorSliderMoved();
     void colourSliderValueChange();
     void changeColourName(QListWidgetItem*);
     void addClick();
