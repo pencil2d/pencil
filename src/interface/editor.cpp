@@ -395,7 +395,7 @@ void Editor::selectAndApplyColour(int i)
     }
 }
 
-void Editor::setColour(QColor colour)
+void Editor::setBitmapColour(QColor colour)
 {
     scribbleArea->setColour(colour);
     mainWindow->m_colorPalette->setColour(colour);

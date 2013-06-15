@@ -197,7 +197,7 @@ public slots:
     void applyFollowContour(bool);
     void selectVectorColourNumber(int);
     void selectAndApplyColour(int);
-    void setColour(QColor);
+    void setBitmapColour(QColor);
     void changeColour(int);
     void changeColourName(int);
     void changeColour(int,QColor);

@@ -1343,7 +1343,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             {
                 BitmapImage* targetImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
                 QColor pickedColour = targetImage->pixel(lastPoint.x(), lastPoint.y());
-                if(pickedColour.alpha() != 0) editor->setColour( pickedColour );
+                if(pickedColour.alpha() != 0) editor->setBitmapColour( pickedColour );
             }
             else if ( layer->type == Layer::VECTOR )
             {
