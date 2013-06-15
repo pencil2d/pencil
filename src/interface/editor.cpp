@@ -47,9 +47,10 @@ Editor::Editor(MainWindow2* parent)
     numberOfModifications = 0;
     autosave = settings.value("autosave").toBool();
     autosaveNumber = settings.value("autosaveNumber").toInt();
-    if (autosaveNumber==0)
+    if (autosaveNumber == 0)
     {
-        autosaveNumber=20; settings.setValue("autosaveNumber", 20);
+        autosaveNumber = 20;
+        settings.setValue("autosaveNumber", 20);
     }
     backupIndex = -1;
     clipboardBitmapOk = false;
@@ -63,7 +64,12 @@ Editor::Editor(MainWindow2* parent)
     onionLayer3Opacity = settings.value("onionLayer3Opacity").toInt();
 
     fps = settings.value("fps").toInt();
-    if (fps==0) { fps=12; settings.setValue("fps", 12); }
+    if (fps == 0)
+    {
+        fps=12;
+        settings.setValue("fps", 12);
+    }
+
     maxFrame = 1;
     timer = new QTimer(this);
     timer->setInterval(1000/fps);
@@ -405,7 +411,6 @@ void Editor::setBitmapColour(QColor colour)
 
 void Editor::changeColour(int i)
 {
-    //QColor newColour = QColorDialog::getColor(object->getColour(i).colour);
     if (i > -1)
     {
         bool ok;

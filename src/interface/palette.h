@@ -38,8 +38,12 @@ protected:
 
     Editor* editor;
     QListWidget* listOfColours;
-    QToolButton* addButton, *removeButton;
-    QSlider* sliderRed, *sliderGreen, *sliderBlue, *sliderAlpha;
+    QToolButton* addButton;
+    QToolButton* removeButton;
+    QSlider* sliderRed;
+    QSlider* sliderGreen;
+    QSlider* sliderBlue;
+    QSlider* sliderAlpha;
     QToolButton* colourSwatch;
 
 public slots:

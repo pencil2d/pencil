@@ -79,25 +79,12 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     colourSwatch->setFixedSize( 40, 40 );
     QPixmap colourPixmap(30,30);
     colourPixmap.fill( Qt::black );
-    colourSwatch->setIcon(QIcon(colourPixmap)); //colourSwatch->setPixmap(colourPixmap);
-    /*QFrame* colourSwatchFrame = new QFrame();
-    colourSwatchFrame->setFixedSize( 50, 50 );
-    //colourSwatchFrame->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    QVBoxLayout *colourSwatchLayout = new QVBoxLayout();
-    colourSwatchLayout->addWidget(colourSwatch);
-    colourSwatchFrame->setLayout(colourSwatchLayout);*/
+    colourSwatch->setIcon(QIcon(colourPixmap));
 
-    //QGridLayout *buttonLayout = new QGridLayout();
     buttons->addWidget(spacer);
     buttons->addWidget(colourSwatch);
     buttons->addWidget(addButton);
     buttons->addWidget(removeButton);
-    //buttons->setFixedSize(100,34);
-    //buttons->layout()->setMargin(0);
-    //buttons->layout()->setSpacing(0);
-    //buttonLayout->setMargin(0);
-    //buttonLayout->setSpacing(0);
-    //buttons->setLayout(buttonLayout);
 
     listOfColours->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     listOfColours->setLineWidth(1);
@@ -113,20 +100,10 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     paletteContent->setLayout(layout);
     setWidget(paletteContent);
 
-    //setFrameStyle(QFrame::Panel);
-    //setWindowFlags(Qt::Tool);
     setWindowFlags(Qt::WindowStaysOnTopHint);
-    //setWindowFlags(Qt::SubWindow);
     setFloating(true);
-    //setAllowedAreas(Qt::NoDockWidgetArea);
-    //setMinimumSize(100, 300);
     paletteContent->setFixedWidth(150);  /// otherwise the palette is naturally too wide. Someone please fix this.
-    //setFloating(false);
-    //setFixedWidth(130);
 
-    //setGeometry(10,60,100, 300);
-    //setFocusPolicy(Qt::NoFocus);
-    //setWindowOpacity(0.7);
     setWindowTitle(tr("Colors"));
 
     connect(sliderRed, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
@@ -141,7 +118,6 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
     connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
     connect(listOfColours, SIGNAL(itemClicked ( QListWidgetItem*)), this, SLOT(selectAndApplyColour( QListWidgetItem*)));
-    //connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem *)), this, SLOT(changeColour( QListWidgetItem *)));
     connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, SLOT(changeColourName( QListWidgetItem*)));
 
     connect(addButton, SIGNAL(clicked()), this, SLOT(addClick()));
@@ -152,15 +128,15 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
 }
 
-/*QSize Palette::sizeHint() {
-    return QSize(150,600);
-}*/
-
 void Palette::updateList()
 {
     //listOfColours->clear(); // for some reason, this creates an bus error when one removes the last element
-    while(listOfColours->count() > 0) listOfColours->takeItem(0);
-    for(int i=0; i <  editor->object->getColourCount(); i++)
+    while(listOfColours->count() > 0)
+    {
+        listOfColours->takeItem(0);
+    }
+
+    for (int i = 0; i < editor->object->getColourCount(); i++)
     {
         ColourRef colourRef = editor->object->getColour(i);
         QListWidgetItem* colourItem = new QListWidgetItem(listOfColours);
@@ -193,7 +169,10 @@ void Palette::selectAndApplyColour(QListWidgetItem* current)
 
 void Palette::changeColour()
 {
-    QColor newColour = QColor( sliderRed->value(), sliderGreen->value(), sliderBlue->value(), sliderAlpha->value() );
+    QColor newColour = QColor( sliderRed->value(),
+                               sliderGreen->value(),
+                               sliderBlue->value(),
+                               sliderAlpha->value() );
     editor->changeColour(currentColour(), newColour);
 }
 
