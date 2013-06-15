@@ -195,7 +195,7 @@ void ToolSet::pencilOn()
     BaseTool* pCurTool = m_pEditor->getScribbleArea()->currentTool();
     Layer* layer = m_pEditor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurTool->properties.colourNumber);
+    if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurTool->properties.colourNumber);
     if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurTool->properties.colour);
 
     m_pEditor->setWidth(pCurTool->properties.width);
@@ -264,7 +264,7 @@ void ToolSet::penOn()
     }
     else if (layer->type == Layer::VECTOR)
     {
-        m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+        m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
     }
     else if (layer->type == Layer::BITMAP)
     {
@@ -301,7 +301,7 @@ void ToolSet::polylineOn()
 
      Layer* layer = m_pEditor->getCurrentLayer();
      if(layer == NULL) return;
-     if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+     if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
      if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
      m_pEditor->setWidth(pCurrentTool->properties.width);
      m_pEditor->setFeather(-1);
@@ -319,7 +319,7 @@ void ToolSet::bucketOn()
     // --- change properties ---
     Layer* layer = m_pEditor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
     if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
 
     m_pEditor->setWidth(-1);
@@ -357,7 +357,7 @@ void ToolSet::brushOn()
     // --- change properties ---
     Layer* layer = m_pEditor->getCurrentLayer();
     if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectColour(pCurrentTool->properties.colourNumber);
+    if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
     if(layer->type == Layer::BITMAP) m_pEditor->setColour(pCurrentTool->properties.colour);
 
     m_pEditor->setToolProperties(pCurrentTool->properties);

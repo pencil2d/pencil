@@ -372,7 +372,7 @@ void Editor::applyPressure(bool pressure)
     if(layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyVariableWidthToSelection(pressure>0);
 }
 
-void Editor::selectColour(int i)
+void Editor::selectVectorColourNumber(int i)
 {
     if (i > -1)
     {
@@ -386,7 +386,7 @@ void Editor::selectColour(int i)
 
 void Editor::selectAndApplyColour(int i)
 {
-    selectColour(i);
+    selectVectorColourNumber(i);
     Layer* layer = getCurrentLayer();
     if (layer == NULL) return;
     if (layer->type == Layer::VECTOR)
@@ -439,7 +439,7 @@ void Editor::changeColour(int i, QColor newColour)
     {
         updateColour(i, newColour);
         mainWindow->m_colorPalette->updateList();
-        selectColour(i);
+        selectVectorColourNumber(i);
     }
 }
 
@@ -474,7 +474,7 @@ void Editor::addColour()
     {
         object->addColour( QColor::fromRgba(qrgba) );
         mainWindow->m_colorPalette->updateList();
-        selectColour(object->getColourCount() - 1);
+        selectVectorColourNumber(object->getColourCount() - 1);
     }
 }
 
@@ -2338,5 +2338,5 @@ void Editor::addcolorbutton()
     QRgb qrgba = initialColour.rgba();
     object->addColour(qrgba );
     mainWindow->m_colorPalette->updateList();
-    selectColour(object->getColourCount()-1);
+    selectVectorColourNumber(object->getColourCount()-1);
 }

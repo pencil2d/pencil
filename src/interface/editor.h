@@ -195,7 +195,7 @@ public slots:
     void applyPreserveAlpha(bool);
     void setFollowContour(int);
     void applyFollowContour(bool);
-    void selectColour(int);
+    void selectVectorColourNumber(int);
     void selectAndApplyColour(int);
     void setColour(QColor);
     void changeColour(int);
@@ -263,7 +263,7 @@ private slots:
 private:
     ScribbleArea* scribbleArea;
     TimeLine* timeLine;
-    TimeControls* timeControl;    
+    TimeControls* timeControl;
     MainWindow2* mainWindow;
 
     QString path;

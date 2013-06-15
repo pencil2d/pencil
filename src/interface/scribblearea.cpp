@@ -70,7 +70,7 @@ void VectorSelection::add(QList<VertexRef> list)
 
 
 ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
-    : QWidget(parent)    
+    : QWidget(parent)
 {
     this->editor = editor;
     m_currentTool = NULL;
@@ -359,19 +359,19 @@ void ScribbleArea::setPressure(const bool pressure)
 }
 
 void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
-{    
+{
     if(currentToolType() == PENCIL)
     {
-        m_toolSetHash.value( PENCIL )->properties.preserveAlpha = preserveAlpha;        
+        m_toolSetHash.value( PENCIL )->properties.preserveAlpha = preserveAlpha;
     }
     if(currentToolType() == PEN || currentToolType() == POLYLINE)
     {
-        m_toolSetHash[ PEN ]->properties.preserveAlpha = preserveAlpha;        
+        m_toolSetHash[ PEN ]->properties.preserveAlpha = preserveAlpha;
     }
     if(currentToolType() == BRUSH)
     {
-        m_toolSetHash.value( BRUSH )->properties.preserveAlpha = preserveAlpha;        
-    }    
+        m_toolSetHash.value( BRUSH )->properties.preserveAlpha = preserveAlpha;
+    }
 }
 
 void ScribbleArea::setFollowContour(const bool followContour)
@@ -514,10 +514,10 @@ void ScribbleArea::updateFrame()
 }
 
 void ScribbleArea::updateFrame(int frame)
-{    
+{
     setView();
     int frameNumber = editor->getLastFrameAtFrame( frame );
-    QPixmapCache::remove("frame"+QString::number(frameNumber));    
+    QPixmapCache::remove("frame"+QString::number(frameNumber));
     readCanvasFromCache = true;
     update();
 }
@@ -666,7 +666,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
     mousePressure.append(tabletPressure);
     adjustPressureSensitiveProperties(tabletPressure, event->pointerType() == QTabletEvent::Cursor);
     if(event->pointerType() == QTabletEvent::Eraser)
-    {        
+    {
         if(tabletEraserBackupToolMode == -1)
         {
             tabletEraserBackupToolMode = currentToolType(); // memorise which tool was being used before switching to the eraser
@@ -674,7 +674,7 @@ void ScribbleArea::tabletEvent(QTabletEvent* event)
         }
     }
     else
-    {        
+    {
         if(tabletEraserBackupToolMode != -1)   // restore the tool in use
         {
             switch(tabletEraserBackupToolMode)
@@ -761,18 +761,24 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         mouseInUse = false;
         return;
     }
-    if(layer->type == Layer::VECTOR)
+    if (layer->type == Layer::VECTOR)
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
         if (vectorImage == NULL) return;
-        if(currentToolType() == PENCIL) editor->selectColour(m_toolSetHash.value( PENCIL )->properties.colourNumber);
-        if(currentToolType() == PEN)
+        if (currentToolType() == PENCIL)
         {
-            editor->selectColour(m_toolSetHash[ PEN ]->properties.colourNumber);
+            editor->selectVectorColourNumber(currentTool()->properties.colourNumber);
         }
-        if(currentToolType() == BRUSH || currentToolType() == BUCKET) editor->selectColour(m_toolSetHash.value( BRUSH )->properties.colourNumber);
+        if (currentToolType() == PEN)
+        {
+            editor->selectVectorColourNumber(currentTool()->properties.colourNumber);
+        }
+        if(currentToolType() == BRUSH || currentToolType() == BUCKET)
+        {
+            editor->selectVectorColourNumber(m_toolSetHash.value( BRUSH )->properties.colourNumber);
+        }
     }
-    if(layer->type == Layer::BITMAP)
+    if (layer->type == Layer::BITMAP)
     {
         BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
         if (bitmapImage == NULL) return;
@@ -1345,7 +1351,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                 int colourNumber = vectorImage->getColourNumber(lastPoint);
                 if( colourNumber != -1)
                 {
-                    editor->selectColour( colourNumber );
+                    editor->selectVectorColourNumber( colourNumber );
                 }
             }
         }
@@ -2507,13 +2513,13 @@ void ScribbleArea::displaySelectionProperties()
                 editor->setFeather(vectorImage->curve[selectedCurve].getFeather());
                 editor->setInvisibility(vectorImage->curve[selectedCurve].isInvisible());
                 editor->setPressure(vectorImage->curve[selectedCurve].getVariableWidth());
-                editor->selectColour(vectorImage->curve[selectedCurve].getColourNumber());
+                editor->selectVectorColourNumber(vectorImage->curve[selectedCurve].getColourNumber());
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if (selectedArea != -1)
             {
-                editor->selectColour(vectorImage->area[selectedArea].colourNumber);
+                editor->selectVectorColourNumber(vectorImage->area[selectedArea].colourNumber);
                 //editor->setFeather(vectorImage->area[selectedArea].getFeather());
             }
         }
@@ -2940,7 +2946,7 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         qDebug() << "Set Current Tool" << typeName(eToolMode);
         if (currentToolType() == MOVE) { paintTransformedSelection(); deselectAll(); }
         if (currentToolType() == POLYLINE) escape();
-        m_currentTool = m_toolSetHash.value( eToolMode );               
+        m_currentTool = m_toolSetHash.value( eToolMode );
     }
     // --- change cursor ---
     setCursor( currentTool()->cursor() );

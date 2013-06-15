@@ -13,15 +13,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #ifndef PALETTE_H
 #define PALETTE_H
 
-//#include <QSize>
 #include <QDockWidget>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QToolButton>
-//#include <QString>
 #include "toolset.h"
 
 class Editor;
@@ -52,7 +51,7 @@ public slots:
 
 private slots:
     void colourSwatchClicked();
-    void selectColour(QListWidgetItem*, QListWidgetItem*);
+    void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
     void selectAndApplyColour(QListWidgetItem*);
     void updateColour();
     void changeColour();

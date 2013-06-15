@@ -139,7 +139,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(sliderBlue, SIGNAL(sliderReleased()), this, SLOT(changeColour()));
     connect(sliderAlpha, SIGNAL(sliderReleased()), this, SLOT(changeColour()));
 
-    connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(selectColour(QListWidgetItem*, QListWidgetItem*)));
+    connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
     connect(listOfColours, SIGNAL(itemClicked ( QListWidgetItem*)), this, SLOT(selectAndApplyColour( QListWidgetItem*)));
     //connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem *)), this, SLOT(changeColour( QListWidgetItem *)));
     connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, SLOT(changeColourName( QListWidgetItem*)));
@@ -153,7 +153,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 }
 
 /*QSize Palette::sizeHint() {
-	return QSize(150,600);
+    return QSize(150,600);
 }*/
 
 void Palette::updateList()
@@ -180,10 +180,10 @@ void Palette::colourSwatchClicked()
     editor->changeColour(currentColour());
 }
 
-void Palette::selectColour(QListWidgetItem* current, QListWidgetItem* previous)
+void Palette::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
     if (!current) current = previous;
-    editor->selectColour(listOfColours->row(current));
+    editor->selectVectorColourNumber(listOfColours->row(current));
 }
 
 void Palette::selectAndApplyColour(QListWidgetItem* current)
