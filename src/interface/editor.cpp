@@ -409,19 +409,6 @@ void Editor::setBitmapColour(QColor colour)
     emit penColorValueChange(colour);
 }
 
-void Editor::changeColour(int i)
-{
-    if (i > -1)
-    {
-        bool ok;
-        QRgb qrgba = QColorDialog::getRgba( object->getColour(i).colour.rgba(), &ok, this );
-        if ( ok )
-        {
-            changeColour(i, QColor::fromRgba(qrgba) );
-        }
-    }
-}
-
 void Editor::changeColourName(int i)
 {
     if (i > -1)
@@ -440,7 +427,7 @@ void Editor::changeColourName(int i)
 
 void Editor::changeColour(int i, QColor newColour)
 {
-    if (newColour.isValid() && i>-1)
+    if (newColour.isValid() && i > -1)
     {
         updateColour(i, newColour);
         mainWindow->m_colorPalette->updateList();
@@ -468,7 +455,7 @@ void Editor::updateColour(int i, QColor newColour)
 void Editor::addColour()
 {
     QColor initialColour = Qt::white;
-    int currentColourIndex = mainWindow->m_colorPalette->currentColour();
+    int currentColourIndex = mainWindow->m_colorPalette->currentColourNumber();
     if( currentColourIndex > -1 )
     {
         initialColour = object->getColour(currentColourIndex).colour;
@@ -2338,7 +2325,7 @@ void Editor::saveSvg()
 void Editor::addcolorbutton()
 {
     QColor initialColour = Qt::white;
-    int currentColourIndex = mainWindow->m_colorPalette->currentColour();
+    int currentColourIndex = mainWindow->m_colorPalette->currentColourNumber();
     initialColour = object->getColour(currentColourIndex).colour;
     QRgb qrgba = initialColour.rgba();
     object->addColour(qrgba );

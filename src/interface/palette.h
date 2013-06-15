@@ -23,7 +23,9 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include "toolset.h"
 
+class Object;
 class Editor;
+
 
 class Palette : public QDockWidget
 {
@@ -34,9 +36,9 @@ public:
     int currentColourNumber() { return listOfColours->currentRow(); }
 
 protected:
-    //QSize sizeHint();
-
     Editor* editor;
+    Object* object;
+
     QListWidget* listOfColours;
     QToolButton* addButton;
     QToolButton* removeButton;
@@ -58,8 +60,7 @@ private slots:
     void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
     void selectAndApplyColour(QListWidgetItem*);
     void updateColour();
-    void changeColour();
-    void changeColour(QListWidgetItem*);
+    void colourSliderValueChange();
     void changeColourName(QListWidgetItem*);
     void addClick();
     void rmClick();

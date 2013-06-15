@@ -23,6 +23,7 @@ GNU General Public License for more details.
 Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
     this->editor = editor;
+    //this->object = editor->object;
 
     QWidget* paletteContent = new QWidget();
 
@@ -111,10 +112,10 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(sliderBlue, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
     connect(sliderAlpha, SIGNAL(sliderMoved(int)), this, SLOT(updateColour()));
 
-    connect(sliderRed, SIGNAL(sliderReleased()), this, SLOT(changeColour()));
-    connect(sliderGreen, SIGNAL(sliderReleased()), this, SLOT(changeColour()));
-    connect(sliderBlue, SIGNAL(sliderReleased()), this, SLOT(changeColour()));
-    connect(sliderAlpha, SIGNAL(sliderReleased()), this, SLOT(changeColour()));
+    connect(sliderRed, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
+    connect(sliderGreen, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
+    connect(sliderBlue, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
+    connect(sliderAlpha, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
 
     connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
     connect(listOfColours, SIGNAL(itemClicked ( QListWidgetItem*)), this, SLOT(selectAndApplyColour( QListWidgetItem*)));
@@ -153,7 +154,17 @@ void Palette::updateList()
 
 void Palette::colourSwatchClicked()
 {
-    editor->changeColour(currentColour());
+    if (currentColourNumber() > -1)
+    {
+        bool ok;
+        ColourRef colorRef = editor->object->getColour(currentColourNumber());
+        QRgb qrgba = QColorDialog::getRgba( colorRef.colour.rgba(), &ok, this );
+
+        if ( ok )
+        {
+            editor->changeColour(currentColourNumber(), QColor::fromRgba(qrgba) );
+        }
+    }
 }
 
 void Palette::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -167,19 +178,19 @@ void Palette::selectAndApplyColour(QListWidgetItem* current)
     editor->selectAndApplyColour(listOfColours->row(current));
 }
 
-void Palette::changeColour()
+void Palette::colourSliderValueChange()
 {
     QColor newColour = QColor( sliderRed->value(),
                                sliderGreen->value(),
                                sliderBlue->value(),
                                sliderAlpha->value() );
-    editor->changeColour(currentColour(), newColour);
+    editor->changeColour(currentColourNumber(), newColour);
 }
 
 void Palette::updateColour()
 {
     QColor newColour = QColor( sliderRed->value(), sliderGreen->value(), sliderBlue->value(), sliderAlpha->value() );
-    editor->updateColour(currentColour(), newColour);
+    editor->updateColour(currentColourNumber(), newColour);
 }
 
 void Palette::updateSwatch(QColor colour)
@@ -187,11 +198,6 @@ void Palette::updateSwatch(QColor colour)
     QPixmap colourPixmap(30,30);
     colourPixmap.fill( colour );
     if(colourSwatch != NULL) colourSwatch->setIcon(QIcon(colourPixmap)); //colourSwatch->setPixmap(colourPixmap);
-}
-
-void Palette::changeColour( QListWidgetItem* item )
-{
-    if(item != NULL) editor->changeColour(listOfColours->row(item));
 }
 
 void Palette::changeColourName( QListWidgetItem* item )
