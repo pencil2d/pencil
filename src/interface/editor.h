@@ -242,7 +242,6 @@ public slots:
     //void detachAllPalettes();
     void restorePalettesSettings(bool, bool, bool);
     void saveSvg();
-    void addcolorbutton();
 
 private slots:
     bool exportX();

@@ -1650,8 +1650,6 @@ void Editor::importSound(QString filePath)
     modification(currentLayer);
 }
 
-
-
 void Editor::updateFrame(int frameNumber)
 {
     scribbleArea->updateFrame(frameNumber);
@@ -1709,6 +1707,7 @@ void Editor::addKey()
 {
     addKey(currentLayer, currentFrame);
 }
+
 void Editor::duplicateKey()
 {
     Layer* layer = object->getLayer(currentLayer);
@@ -1824,7 +1823,6 @@ int Editor::getLastFrameAtFrame(int frameNumber)
 {
     return frameList.at( getLastIndexAtFrame(frameNumber) );
 }
-
 
 void Editor::play()
 {
@@ -2023,7 +2021,6 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
         displayPalette->show();
     }
 }
-
 
 // TODO: need to move to other place
 bool Editor::loadDomElement(QDomElement docElem, QString filePath)
@@ -2292,13 +2289,3 @@ void Editor::saveSvg()
     painter.end();
 }
 
-void Editor::addcolorbutton()
-{
-    QColor initialColour = Qt::white;
-    int currentColourIndex = mainWindow->m_colorPalette->currentColourNumber();
-    initialColour = object->getColour(currentColourIndex).colour;
-    QRgb qrgba = initialColour.rgba();
-    object->addColour(qrgba );
-    mainWindow->m_colorPalette->updateList();
-    selectVectorColourNumber(object->getColourCount()-1);
-}
