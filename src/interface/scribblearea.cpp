@@ -810,7 +810,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)currentToolType()]));
+            editor->backup( myToolModesDescription[(int)currentToolType()] );
 
             if (!showThinLines)
             {
@@ -824,7 +824,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)currentToolType()]));
+            editor->backup( myToolModesDescription[(int)currentToolType()] );
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -833,7 +833,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)currentToolType()]));
+            editor->backup( myToolModesDescription[(int)currentToolType()] );
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -842,7 +842,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)currentToolType()]));
+            editor->backup( myToolModesDescription[(int)currentToolType()] );
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -851,7 +851,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup(tr(myToolModesDescription[(int)currentToolType()]));
+            editor->backup( myToolModesDescription[(int)currentToolType()] );
             mousePath.append(lastPoint);
             updateAll = true;
         }

@@ -38,8 +38,8 @@ Editor::Editor(MainWindow2* parent)
 
     object = NULL; // the editor is initialized with no object
 
-    altpress=false;
-    modified=false;
+    altpress = false;
+    modified = false;
     numberOfModifications = 0;
     autosave = settings.value("autosave").toBool();
     autosaveNumber = settings.value("autosaveNumber").toInt();
@@ -62,7 +62,7 @@ Editor::Editor(MainWindow2* parent)
     fps = settings.value("fps").toInt();
     if (fps == 0)
     {
-        fps=12;
+        fps = 12;
         settings.setValue("fps", 12);
     }
 
@@ -921,8 +921,9 @@ void Editor::newCameraLayer()
 
 void Editor::deleteCurrentLayer()
 {
-    int ret = QMessageBox::warning(this, tr("Warning"),
-                                   tr("Are you sure you want to delete layer: "+object->getLayer(currentLayer)->name+" ?"),
+    int ret = QMessageBox::warning(this,
+                                   tr("Warning"),
+                                   "Are you sure you want to delete layer: "+object->getLayer(currentLayer)->name+" ?",
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if(ret == QMessageBox::Ok)

@@ -38,7 +38,7 @@ HEADERS +=  src/interfaces.h \
             src/structure/layersound.h \
             src/structure/layervector.h \
             src/structure/object.h \
-            src/interface/editor.h \            
+            src/interface/editor.h \
             src/interface/palette.h \
             src/interface/preferences.h \
             src/interface/scribblearea.h \
@@ -53,10 +53,10 @@ HEADERS +=  src/interfaces.h \
             src/tool/pentool.h \
             src/tool/penciltool.h \
             src/tool/brushtool.h \
-            src/tool/erasertool.h \ 
-            src/tool/selecttool.h \ 
-            src/tool/movetool.h \ 
-            src/tool/edittool.h \ 
+            src/tool/erasertool.h \
+            src/tool/selecttool.h \
+            src/tool/movetool.h \
+            src/tool/edittool.h \
             src/tool/handtool.h \
     src/tool/smudgetool.h \
     src/tool/polylinetool.h \
@@ -66,7 +66,7 @@ HEADERS +=  src/interfaces.h \
     src/interface/shortcutspage.h \
     src/util/keyboardmanager.h \
     src/interface/mainwindow2.h
-            
+
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
             src/graphics/vector/bezierarea.cpp \
@@ -82,13 +82,13 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/structure/layersound.cpp \
             src/structure/layervector.cpp \
             src/structure/object.cpp \
-            src/interface/editor.cpp \            
+            src/interface/editor.cpp \
             src/interface/palette.cpp \
             src/interface/preferences.cpp \
             src/interface/scribblearea.cpp \
             src/interface/timeline.cpp \
             src/interface/timecontrols.cpp \
-            src/interface/toolset.cpp \           
+            src/interface/toolset.cpp \
             src/main.cpp \
             src/interface/backupelement.cpp \
             src/interface/spinslider.cpp \
@@ -99,8 +99,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/tool/penciltool.cpp \
             src/tool/brushtool.cpp \
             src/tool/erasertool.cpp \
-            src/tool/selecttool.cpp \ 
-            src/tool/movetool.cpp \ 
+            src/tool/selecttool.cpp \
+            src/tool/movetool.cpp \
             src/tool/edittool.cpp \
             src/tool/handtool.cpp \
     src/tool/smudgetool.cpp \
@@ -111,25 +111,25 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/interface/shortcutspage.cpp \
     src/util/keyboardmanager.cpp \
     src/interface/mainwindow2.cpp
-            
+
 win32 {
-	INCLUDEPATH += . libwin32
-	SOURCES += src/external/win32/win32.cpp
+    INCLUDEPATH += . libwin32
+    SOURCES += src/external/win32/win32.cpp
         LIBS += -Llibwin32
-	RC_FILE = pencil.rc
+    RC_FILE = pencil.rc
 }
 macx {
-	INCLUDEPATH += . libmacosx
-	HEADERS += src/external/macosx/style.h
-	SOURCES += src/external/macosx/macosx.cpp \
-	 	   src/external/macosx/style.cpp
+    INCLUDEPATH += . libmacosx
+    HEADERS += src/external/macosx/style.h
+    SOURCES += src/external/macosx/macosx.cpp \
+           src/external/macosx/style.cpp
         LIBS += -Llibmacosx
-	RC_FILE = pencil.icns
+    RC_FILE = pencil.icns
 }
 linux-g++ {
-	INCLUDEPATH += . liblinux
-	SOURCES += src/external/linux/linux.cpp
-	LIBS += -Lliblinux -lming -lpng
+    INCLUDEPATH += . liblinux
+    SOURCES += src/external/linux/linux.cpp
+    LIBS += -Lliblinux -lming -lpng
 }
 RESOURCES += pencil.qrc
 QT += xml \
@@ -137,9 +137,7 @@ phonon \
 core \
 gui \
 xmlpatterns \
-svg \
-script \
-qt3support
+svg
 
 # shortcuts.path = %{buildDir}
 # shortcuts.files += %{sourceDir}/shortcuts.ini
