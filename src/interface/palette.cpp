@@ -202,7 +202,11 @@ void Palette::updateSwatch(QColor colour)
 
 void Palette::changeColourName( QListWidgetItem* item )
 {
-    if(item != NULL) editor->changeColourName(listOfColours->row(item));
+    if (item == NULL)
+    {
+        return;
+    }
+    editor->changeColourName(listOfColours->row(item));
 }
 
 void Palette::clickAddColorButton()
@@ -226,7 +230,9 @@ void Palette::clickAddColorButton()
 
 void Palette::clickRemoveColorButton()
 {
-    editor->removeColour(listOfColours->currentRow());
+    int colorNumber = listOfColours->currentRow();
+    editor->object->removeColour(colorNumber);
+    updateList();
 }
 
 void Palette::closeIfDocked(bool)

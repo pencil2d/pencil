@@ -148,8 +148,8 @@ void VectorImage::loadDomElement(QDomElement element)
 
 
 /*void VectorImage::setView(QMatrix newView) {
-	myView = newView;
-	modification();
+    myView = newView;
+    modification();
 }*/
 
 void VectorImage::addPoint(int curveNumber, int vertexNumber, qreal t)
@@ -665,9 +665,9 @@ void VectorImage::deleteSelection()
         else
         {
             /*for(int j=-1; j<curve.at(i).size(); j++) {
-            	if(curve.at(i).isSelected(j)) {
-            		curve.at(i).removeVertex(j);
-            	}
+                if(curve.at(i).isSelected(j)) {
+                    curve.at(i).removeVertex(j);
+                }
             }*/
         }
     }
@@ -886,17 +886,17 @@ void VectorImage::paintImage(QPainter& painter, bool simplified, bool showThinCu
 
             /*buffer = false;
             if(buffer) {
-            		rect = painterMatrix.mapRect( area[i].path.controlPointRect().adjusted(-gradientWidth,-gradientWidth,gradientWidth,gradientWidth) ).toRect();
-            		rect = rect.intersected( mappedViewRect );
-            		bufferImage = new QImage(rect.size(), QImage::Format_ARGB32_Premultiplied );
-            		if(!bufferImage->isNull()) {
-            			bufferImage->fill(qRgba(0,0,0,0));
-            			painter2.begin(bufferImage);
-            			painter2.setCompositionMode(QPainter::CompositionMode_Source);
-            			painter2.setRenderHint(QPainter::Antialiasing, false);
-            			painter2Matrix = painterMatrix;
-            			painter2.setWorldMatrix( painter2Matrix.translate( -rect.left()/scale, -rect.top()/scale ) );
-            		}
+                    rect = painterMatrix.mapRect( area[i].path.controlPointRect().adjusted(-gradientWidth,-gradientWidth,gradientWidth,gradientWidth) ).toRect();
+                    rect = rect.intersected( mappedViewRect );
+                    bufferImage = new QImage(rect.size(), QImage::Format_ARGB32_Premultiplied );
+                    if(!bufferImage->isNull()) {
+                        bufferImage->fill(qRgba(0,0,0,0));
+                        painter2.begin(bufferImage);
+                        painter2.setCompositionMode(QPainter::CompositionMode_Source);
+                        painter2.setRenderHint(QPainter::Antialiasing, false);
+                        painter2Matrix = painterMatrix;
+                        painter2.setWorldMatrix( painter2Matrix.translate( -rect.left()/scale, -rect.top()/scale ) );
+                    }
             }*/
 
             QColor colour = getColour(area[i].colourNumber);
@@ -995,11 +995,11 @@ void VectorImage::applySelectionTransformation(QMatrix transf)
 
 void VectorImage::applyColourToSelection(int colourNumber)
 {
-    for(int i=0; i< curve.size(); i++)
+    for (int i = 0; i < curve.size(); i++)
     {
         if( curve.at(i).isSelected()) curve[i].setColourNumber(colourNumber);
     }
-    for(int i=0; i< area.size(); i++)
+    for (int i = 0; i < area.size(); i++)
     {
         if( area.at(i).isSelected()) area[i].setColourNumber(colourNumber);
     }
@@ -1008,9 +1008,9 @@ void VectorImage::applyColourToSelection(int colourNumber)
 
 void VectorImage::applyWidthToSelection(qreal width)
 {
-    for(int i=0; i< curve.size(); i++)
+    for(int i = 0; i < curve.size(); i++)
     {
-        if( curve.at(i).isSelected()) curve[i].setWidth(width);
+        if( curve.at(i).isSelected() ) curve[ i ].setWidth( width );
     }
     modification();
 }
@@ -1019,7 +1019,7 @@ void VectorImage::applyFeatherToSelection(qreal feather)
 {
     for(int i=0; i< curve.size(); i++)
     {
-        if( curve.at(i).isSelected()) curve[i].setFeather(feather);
+        if( curve.at(i).isSelected() ) curve[i].setFeather(feather);
     }
     modification();
 }

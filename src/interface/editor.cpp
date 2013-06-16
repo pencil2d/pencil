@@ -390,7 +390,10 @@ void Editor::selectAndApplyColour(int i)
 {
     selectVectorColourNumber(i);
     Layer* layer = getCurrentLayer();
-    if (layer == NULL) return;
+    if (layer == NULL)
+    {
+        return;
+    }
     if (layer->type == Layer::VECTOR)
     {
         ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0)->applyColourToSelection(i);
@@ -410,9 +413,12 @@ void Editor::changeColourName(int i)
     if (i > -1)
     {
         bool ok;
-        QString text = QInputDialog::getText(this, tr("Colour name"),
-                                             tr("Colour name:"), QLineEdit::Normal,
-                                             object->getColour(i).name, &ok);
+        QString text = QInputDialog::getText(this,
+                                             tr("Colour name"),
+                                             tr("Colour name:"),
+                                             QLineEdit::Normal,
+                                             object->getColour(i).name,
+                                             &ok );
         if (ok && !text.isEmpty())
         {
             object->renameColour(i, text);
@@ -445,21 +451,6 @@ void Editor::updateColour(int i, QColor newColour)
 
         mainWindow->m_colorPalette->updateSwatch(object->getColour(i).colour);
         scribbleArea->setColour(i);
-    }
-}
-
-void Editor::removeColour(int i)
-{
-    if(object->removeColour(i))
-    {
-        mainWindow->m_colorPalette->updateList();
-    }
-    else
-    {
-        QMessageBox::warning(this, tr("Warning"),
-                             tr("You cannot remove this colour because it is used!"),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
     }
 }
 
