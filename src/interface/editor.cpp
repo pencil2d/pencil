@@ -408,25 +408,6 @@ void Editor::setBitmapColour(QColor colour)
     emit penColorValueChange(colour);
 }
 
-void Editor::changeColourName(int i)
-{
-    if (i > -1)
-    {
-        bool ok;
-        QString text = QInputDialog::getText(this,
-                                             tr("Colour name"),
-                                             tr("Colour name:"),
-                                             QLineEdit::Normal,
-                                             object->getColour(i).name,
-                                             &ok );
-        if (ok && !text.isEmpty())
-        {
-            object->renameColour(i, text);
-            mainWindow->m_colorPalette->updateList();
-        }
-    }
-}
-
 void Editor::changeColour(int i, QColor newColour)
 {
     if (newColour.isValid() && i > -1)

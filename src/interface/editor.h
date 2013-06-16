@@ -198,10 +198,8 @@ public slots:
     void selectVectorColourNumber(int);
     void selectAndApplyColour(int);
     void setBitmapColour(QColor);
-    void changeColourName(int);
     void changeColour(int,QColor);
     void updateColour(int, QColor);
-    //void removeColour(int);
 
     void changeAutosave(int);
     void changeAutosaveNumber(int);

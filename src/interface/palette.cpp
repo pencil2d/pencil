@@ -206,7 +206,22 @@ void Palette::changeColourName( QListWidgetItem* item )
     {
         return;
     }
-    editor->changeColourName(listOfColours->row(item));
+    int colorNumber = listOfColours->row(item);
+    if (colorNumber > -1)
+    {
+        bool ok;
+        QString text = QInputDialog::getText(this,
+                                             tr("Colour name"),
+                                             tr("Colour name:"),
+                                             QLineEdit::Normal,
+                                             editor->object->getColour(colorNumber).name,
+                                             &ok );
+        if (ok && !text.isEmpty())
+        {
+            editor->object->renameColour(colorNumber, text);
+            updateList();
+        }
+    }
 }
 
 void Palette::clickAddColorButton()
