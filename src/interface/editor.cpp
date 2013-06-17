@@ -425,7 +425,7 @@ void Editor::updateColour(int i, QColor newColour)
         Layer* layer = object->getLayer(currentLayer);
         if (layer != NULL)
         {
-            if(layer->type == Layer::VECTOR)
+            if (layer->type == Layer::VECTOR)
                 scribbleArea->setModified(currentLayer, currentFrame);
         }
         emit penColorValueChange(object->getColour(i).colour);
