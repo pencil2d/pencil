@@ -16,7 +16,7 @@ public:
     ToolOptionDockWidget(QWidget *parent = 0);
     void makeConnectionToEditor(Editor* editor);
 
-    QToolButton* choseColour;
+    QToolButton* colorChooseButton;
     QPixmap* colourSwatch;
     QCheckBox* usePressureBox;
     QCheckBox* makeInvisibleBox;
@@ -27,7 +27,7 @@ public:
     //SpinSlider* opacitySlider;
 
 signals:
-    
+
 public slots:
     void setPenWidth(qreal);
     void setPenFeather(qreal);
