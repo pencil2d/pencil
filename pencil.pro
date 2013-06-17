@@ -65,7 +65,8 @@ HEADERS +=  src/interfaces.h \
     src/util/pencilsettings.h \
     src/interface/shortcutspage.h \
     src/util/keyboardmanager.h \
-    src/interface/mainwindow2.h
+    src/interface/mainwindow2.h \
+    src/interface/timelinecells.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -110,7 +111,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/util/pencilsettings.cpp \
     src/interface/shortcutspage.cpp \
     src/util/keyboardmanager.cpp \
-    src/interface/mainwindow2.cpp
+    src/interface/mainwindow2.cpp \
+    src/interface/timelinecells.cpp
 
 win32 {
     INCLUDEPATH += . libwin32
