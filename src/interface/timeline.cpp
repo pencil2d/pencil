@@ -561,22 +561,22 @@ void TimeLineCells::paintEvent(QPaintEvent* event)
     if(type == "tracks")
     {
         // --- draw the position of the current frame
-        if(editor->currentFrame > frameOffset)
+        if(editor->m_nCurrentFrameIndex > frameOffset)
         {
             painter.setBrush(QColor(255,0,0,128));
             painter.setPen(Qt::NoPen);
             painter.setFont(QFont("helvetica", 10));
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
             QRect scrubRect;
-            scrubRect.setTopLeft(QPoint( getFrameX(editor->currentFrame-1), 0));
-            scrubRect.setBottomRight(QPoint( getFrameX(editor->currentFrame), height()));
-            if(shortScrub) scrubRect.setBottomRight(QPoint( getFrameX(editor->currentFrame), 19));
+            scrubRect.setTopLeft(QPoint( getFrameX(editor->m_nCurrentFrameIndex-1), 0));
+            scrubRect.setBottomRight(QPoint( getFrameX(editor->m_nCurrentFrameIndex), height()));
+            if(shortScrub) scrubRect.setBottomRight(QPoint( getFrameX(editor->m_nCurrentFrameIndex), 19));
             painter.drawRect(scrubRect);
             painter.setPen( QColor(70,70,70,255) );
             int incr = 0;
-            if(editor->currentFrame < 10) { incr = 4; }
+            if(editor->m_nCurrentFrameIndex < 10) { incr = 4; }
             else { incr = 0; }
-            painter.drawText(QPoint(getFrameX(editor->currentFrame-1)+incr, 15), QString::number(editor->currentFrame));
+            painter.drawText(QPoint(getFrameX(editor->m_nCurrentFrameIndex-1)+incr, 15), QString::number(editor->m_nCurrentFrameIndex));
         }
     }
     //event->accept();
@@ -624,7 +624,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
     if(type == "tracks")
     {
-        if(frameNumber == editor->currentFrame && (!shortScrub || (shortScrub && startY < 20)) )
+        if(frameNumber == editor->m_nCurrentFrameIndex && (!shortScrub || (shortScrub && startY < 20)) )
         {
             timeLine->scrubbing = true;
         }

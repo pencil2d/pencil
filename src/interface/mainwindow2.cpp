@@ -667,7 +667,7 @@ QDomElement MainWindow2::createDomElement(QDomDocument& doc)
     tag1.setAttribute("value", editor->m_nCurrentLayerIndex);
     tag.appendChild(tag1);
     QDomElement tag2 = doc.createElement("currentFrame");
-    tag2.setAttribute("value", editor->currentFrame);
+    tag2.setAttribute("value", editor->m_nCurrentFrameIndex);
     tag.appendChild(tag2);
     QDomElement tag2a = doc.createElement("currentFps");
     tag2a.setAttribute("value", editor->fps);
