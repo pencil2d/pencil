@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layercamera.h"
 
+#include "flash.h"
 #include "editor.h"
 #include "bitmapimage.h"
 
