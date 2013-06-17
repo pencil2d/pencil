@@ -96,7 +96,6 @@ Editor::Editor(MainWindow2* parent)
 
     scribbleArea = new ScribbleArea(this, this);
     toolSet = new ToolSet(this);
-    //createTimeLine();
 
     mainLayout->addWidget(scribbleArea);
 
@@ -107,7 +106,6 @@ Editor::Editor(MainWindow2* parent)
 
     // FOCUS POLICY
     scribbleArea->setFocusPolicy(Qt::StrongFocus);
-    //
 
     // CONNECTIONS
     makeConnections();
@@ -157,9 +155,6 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), this, SIGNAL(onionPrevChanged(bool)));
     connect(scribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
 
-///////TODO connect timeline signals to editor
-
-///////
     connect(this, SIGNAL(selectAll()), scribbleArea, SLOT(selectAll()));
 
     connect(scribbleArea, SIGNAL(modification()), this, SLOT(modification()));
@@ -170,13 +165,11 @@ void Editor::makeConnections()
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
 {
-    //if (event->mimeData()->hasFormat("text/plain"))
     event->acceptProposedAction();
 }
 
 void Editor::dropEvent(QDropEvent* event)
 {
-
     if( event->mimeData()->hasUrls() )
     {
         for(int i=0; i < event->mimeData()->urls().size(); i++)
@@ -300,7 +293,6 @@ void Editor::setInvisibility(int invisibility)
     {
         scribbleArea->setInvisibility( invisibility > 0 );
     }
-    //toolSet->setInvisibility(invisibility);
     emit penInvisiblityValueChange(invisibility);
 }
 
