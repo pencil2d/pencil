@@ -68,7 +68,7 @@ Editor::Editor(MainWindow2* parent)
 
     maxFrame = 1;
     timer = new QTimer(this);
-    timer->setInterval(1000/fps);
+    timer->setInterval(1000 / fps);
     connect(timer, SIGNAL(timeout()), this, SLOT(playNextFrame()));
     playing = false;
     looping = false;
@@ -96,7 +96,6 @@ Editor::Editor(MainWindow2* parent)
 
     scribbleArea = new ScribbleArea(this, this);
     timeLine = new TimeLine(this, this);
-    timeControl = new TimeControls();
     toolSet = new ToolSet(this);
 
     mainLayout->addWidget(scribbleArea);

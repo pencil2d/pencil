@@ -256,7 +256,6 @@ private slots:
 private:
     ScribbleArea* scribbleArea;
     TimeLine* timeLine;
-    TimeControls* timeControl;
     MainWindow2* mainWindow;
 
     QString path;
