@@ -95,8 +95,8 @@ Editor::Editor(MainWindow2* parent)
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     scribbleArea = new ScribbleArea(this, this);
-    timeLine = new TimeLine(this, this);
     toolSet = new ToolSet(this);
+    //createTimeLine();
 
     mainLayout->addWidget(scribbleArea);
 
@@ -107,7 +107,7 @@ Editor::Editor(MainWindow2* parent)
 
     // FOCUS POLICY
     scribbleArea->setFocusPolicy(Qt::StrongFocus);
-    timeLine->setFocusPolicy(Qt::NoFocus);
+    //
 
     // CONNECTIONS
     makeConnections();
@@ -117,6 +117,43 @@ Editor::Editor(MainWindow2* parent)
     qDebug() << QLibraryInfo::location(QLibraryInfo::LibrariesPath);
 
     setAcceptDrops(true);
+}
+
+TimeLine* Editor::getTimeLine()
+{
+    return mainWindow->m_pTimeLine;
+}
+
+TimeLine* Editor::createTimeLine()
+{
+    TimeLine* timeLine = getTimeLine();
+    //timeLine = new TimeLine(this, this);
+
+    connect(timeLine, SIGNAL(endplayClick()), this, SLOT(endPlay()));
+    connect(timeLine, SIGNAL(startplayClick()), this, SLOT(startPlay()));
+    connect(timeLine, SIGNAL(duplicateKeyClick()), this, SLOT(duplicateKey()));
+
+    connect(timeLine, SIGNAL(modification()), this, SLOT(modification()));
+    connect(timeLine, SIGNAL(addKeyClick()), this, SLOT(addKey()));
+    connect(timeLine, SIGNAL(removeKeyClick()), this, SLOT(removeKey()));
+
+    connect(timeLine, SIGNAL(newBitmapLayer()), this, SLOT(newBitmapLayer()));
+    connect(timeLine, SIGNAL(newVectorLayer()), this, SLOT(newVectorLayer()));
+    connect(timeLine, SIGNAL(newSoundLayer()), this, SLOT(newSoundLayer()));
+    connect(timeLine, SIGNAL(newCameraLayer()), this, SLOT(newCameraLayer()));
+    connect(timeLine, SIGNAL(deleteCurrentLayer()), this, SLOT(deleteCurrentLayer()));
+
+    connect(timeLine, SIGNAL(playClick()), this, SLOT(play()));
+    connect(timeLine, SIGNAL(loopClick(bool)), this, SLOT(setLoop(bool)));
+    connect(timeLine, SIGNAL(soundClick()), this, SLOT(setSound()));
+    connect(timeLine, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
+
+    connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
+    connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
+
+    timeLine->setFocusPolicy(Qt::NoFocus);
+
+    return timeLine;
 }
 
 Editor::~Editor()
@@ -153,32 +190,12 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
 
 ///////TODO connect timeline signals to editor
-    connect(timeLine, SIGNAL(endplayClick()), this, SLOT(endPlay()));
-    connect(timeLine, SIGNAL(startplayClick()), this, SLOT(startPlay()));
-    connect(timeLine, SIGNAL(duplicateKeyClick()), this, SLOT(duplicateKey()));
+
 ///////
     connect(this, SIGNAL(selectAll()), scribbleArea, SLOT(selectAll()));
 
     connect(scribbleArea, SIGNAL(modification()), this, SLOT(modification()));
     connect(scribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
-
-    connect(timeLine, SIGNAL(modification()), this, SLOT(modification()));
-    connect(timeLine, SIGNAL(addKeyClick()), this, SLOT(addKey()));
-    connect(timeLine, SIGNAL(removeKeyClick()), this, SLOT(removeKey()));
-
-    connect(timeLine, SIGNAL(newBitmapLayer()), this, SLOT(newBitmapLayer()));
-    connect(timeLine, SIGNAL(newVectorLayer()), this, SLOT(newVectorLayer()));
-    connect(timeLine, SIGNAL(newSoundLayer()), this, SLOT(newSoundLayer()));
-    connect(timeLine, SIGNAL(newCameraLayer()), this, SLOT(newCameraLayer()));
-    connect(timeLine, SIGNAL(deleteCurrentLayer()), this, SLOT(deleteCurrentLayer()));
-
-    connect(timeLine, SIGNAL(playClick()), this, SLOT(play()));
-    connect(timeLine, SIGNAL(loopClick(bool)), this, SLOT(setLoop(bool)));
-    connect(timeLine, SIGNAL(soundClick()), this, SLOT(setSound()));
-    connect(timeLine, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
-
-    connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
-    connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
@@ -481,7 +498,7 @@ void Editor::modification(int layerNumber)
     lastModifiedFrame = m_nCurrentFrameIndex;
     lastModifiedLayer = layerNumber;
     scribbleArea->update();
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
     numberOfModifications++;
     if (autosave && numberOfModifications > autosaveNumber)
     {
@@ -864,7 +881,7 @@ void Editor::newBitmapLayer()
     if(object != NULL)
     {
         object->addNewBitmapLayer();
-        timeLine->updateLayerNumber( object->getLayerCount() );
+        getTimeLine()->updateLayerNumber( object->getLayerCount() );
         setCurrentLayer( object->getLayerCount()-1 );
     }
 }
@@ -874,7 +891,7 @@ void Editor::newVectorLayer()
     if(object != NULL)
     {
         object->addNewVectorLayer();
-        timeLine->updateLayerNumber( object->getLayerCount() );
+        getTimeLine()->updateLayerNumber( object->getLayerCount() );
         setCurrentLayer( object->getLayerCount()-1 );
     }
 }
@@ -884,7 +901,7 @@ void Editor::newSoundLayer()
     if(object != NULL)
     {
         object->addNewSoundLayer();
-        timeLine->updateLayerNumber( object->getLayerCount() );
+        getTimeLine()->updateLayerNumber( object->getLayerCount() );
         setCurrentLayer( object->getLayerCount()-1 );
     }
 }
@@ -894,7 +911,7 @@ void Editor::newCameraLayer()
     if(object != NULL)
     {
         object->addNewCameraLayer();
-        timeLine->updateLayerNumber( object->getLayerCount() );
+        getTimeLine()->updateLayerNumber( object->getLayerCount() );
         setCurrentLayer( object->getLayerCount()-1 );
     }
 }
@@ -910,7 +927,7 @@ void Editor::deleteCurrentLayer()
     {
         object->deleteLayer(m_nCurrentLayerIndex);
         if(m_nCurrentLayerIndex == object->getLayerCount()) setCurrentLayer( m_nCurrentLayerIndex-1 );
-        timeLine->updateLayerNumber( object->getLayerCount() );
+        getTimeLine()->updateLayerNumber( object->getLayerCount() );
         //timeLine->update();
         scribbleArea->updateAllFrames();
     }
@@ -930,7 +947,7 @@ void Editor::toggleMirrorV()
 void Editor::toggleShowAllLayers()
 {
     scribbleArea->toggleShowAllLayers();
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
 }
 
 void Editor::resetMirror()
@@ -994,7 +1011,7 @@ void Editor::updateObject()
     scribbleArea->resetColours();
     mainWindow->m_colorPalette->selectColour(0);
 
-    timeLine->updateLayerNumber(object->getLayerCount());
+    getTimeLine()->updateLayerNumber(object->getLayerCount());
     mainWindow->m_colorPalette->updateList();
     clearBackup();
     scribbleArea->resetColours();
@@ -1521,7 +1538,7 @@ void Editor::importImage(QString filePath)
                     }
                 }
                 scribbleArea->updateFrame();
-                timeLine->updateContent();
+                getTimeLine()->updateContent();
             }
         }
         else
@@ -1590,7 +1607,7 @@ void Editor::importSound(QString filePath)
         }
     }
     ((LayerSound*)layer)->loadSoundAtFrame(filePath, m_nCurrentFrameIndex);
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
     modification(m_nCurrentLayerIndex);
 }
 
@@ -1614,9 +1631,9 @@ void Editor::scrubTo(int frameNumber)
     if(frameNumber < 1) frameNumber = 1;
     m_nCurrentFrameIndex = frameNumber;
     //timeLine->setCurrentFrame(currentFrame);
-    timeLine->updateFrame(oldFrame);
-    timeLine->updateFrame(m_nCurrentFrameIndex);
-    timeLine->updateContent();
+    getTimeLine()->updateFrame(oldFrame);
+    getTimeLine()->updateFrame(m_nCurrentFrameIndex);
+    getTimeLine()->updateContent();
     scribbleArea->readCanvasFromCache = true;
     scribbleArea->update();
 }
@@ -1635,7 +1652,7 @@ void Editor::previousLayer()
 {
     m_nCurrentLayerIndex--;
     if(m_nCurrentLayerIndex<0) m_nCurrentLayerIndex = 0;
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
     scribbleArea->updateAllFrames();
 }
 
@@ -1643,7 +1660,7 @@ void Editor::nextLayer()
 {
     m_nCurrentLayerIndex++;
     if(m_nCurrentLayerIndex == object->getLayerCount()) m_nCurrentLayerIndex = object->getLayerCount()-1;
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
     scribbleArea->updateAllFrames();
 }
 
@@ -1691,7 +1708,7 @@ void Editor::addKey(int layerNumber, int& frameNumber)
             if(layer->type == Layer::CAMERA) success = ((LayerCamera*)layer)->addImageAtFrame(frameNumber);
             if(success)
             {
-                timeLine->updateContent();
+                getTimeLine()->updateContent();
                 //scribbleArea->addFrame(frameNumber);
             }
             else
@@ -1714,7 +1731,7 @@ void Editor::removeKey()
         if(layer->type == Layer::CAMERA) ((LayerCamera*)layer)->removeImageAtFrame(m_nCurrentFrameIndex);
         //if(layer->type == Layer::SOUND)  ((LayerSound*)layer)->removeImageAtFrame(currentFrame);
         scrubBackward();
-        timeLine->updateContent();
+        getTimeLine()->updateContent();
         scribbleArea->updateFrame();
     }
 }
@@ -1726,7 +1743,7 @@ void Editor::addFrame(int frameNumber)   // adding a frame to the cache
     scribbleArea->updateFrame();
     qDebug()<< frameList;
     qDebug()<< frameNumber;
-    timeLine->update();
+    getTimeLine()->update();
 }
 
 void Editor::addFrame(int frameNumber1, int frameNumber2)   // adding a range of frames to the cache
@@ -1738,14 +1755,14 @@ void Editor::addFrame(int frameNumber1, int frameNumber2)   // adding a range of
     qSort(frameList);
 
     scribbleArea->updateFrame();
-    timeLine->update();
+    getTimeLine()->update();
 }
 
 void Editor::removeFrame(int frameNumber)
 {
     frameList.removeAt( getLastIndexAtFrame(frameNumber) );
     scribbleArea->updateFrame();
-    timeLine->update();
+    getTimeLine()->update();
 }
 
 int Editor::getLastIndexAtFrame(int frameNumber)
@@ -1847,7 +1864,7 @@ void Editor::changeFps(int x)
 //	QSettings settings("Pencil","Pencil");
 //	settings.setValue("fps", x);
     timer->setInterval(1000/fps);
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
 }
 
 int Editor::getFps()
@@ -1869,7 +1886,7 @@ void Editor::setSound()
 void Editor::setCurrentLayer(int layerNumber)
 {
     m_nCurrentLayerIndex = layerNumber;
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
     scribbleArea->updateAllFrames();
 }
 
@@ -1878,7 +1895,7 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     Layer* layer = object->getLayer(layerNumber);
     if(layer != NULL) layer->switchVisibility();
     scribbleArea->updateAllFrames();
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
 }
 
 void Editor::moveLayer(int i, int j)
@@ -1886,7 +1903,7 @@ void Editor::moveLayer(int i, int j)
     object->moveLayer(i, j);
     if(j<i) { m_nCurrentLayerIndex = j; }
     else { m_nCurrentLayerIndex = j-1; }
-    timeLine->updateContent();
+    getTimeLine()->updateContent();
     scribbleArea->updateAllFrames();
 }
 
@@ -1898,7 +1915,7 @@ void Editor::updateMaxFrame()
         int frameNumber = object->getLayer(i)->getMaxFrame();
         if( frameNumber > maxFrame) maxFrame = frameNumber;
     }
-    timeLine->forceUpdateLength(QString::number(maxFrame));
+    getTimeLine()->forceUpdateLength(QString::number(maxFrame));
 }
 
 void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition, bool restoreSize)
@@ -1988,7 +2005,7 @@ bool Editor::loadDomElement(QDomElement docElem, QString filePath)
             {
                 fps = element.attribute("value").toInt();
                 //timer->setInterval(1000/fps);
-                timeLine->setFps(fps);
+                getTimeLine()->setFps(fps);
             }
             if(element.tagName() == "currentView")
             {

@@ -44,7 +44,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     editor = new Editor(this);
     m_pScribbleArea = editor->getScribbleArea();
-    m_pTimeLine = editor->getTimeLine();
+    m_pTimeLine = new TimeLine(this, editor);
+    editor->createTimeLine();
 
     arrangePalettes();
     createMenus();

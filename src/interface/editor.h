@@ -58,7 +58,9 @@ public:
     bool sound;
     ToolSet* toolSet;
 
-    TimeLine* getTimeLine() { return timeLine; }
+    TimeLine* getTimeLine();
+    TimeLine* createTimeLine();
+
     Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(m_nCurrentLayerIndex+incr); } else { return NULL; } }
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);
@@ -255,7 +257,7 @@ private slots:
 
 private:
     ScribbleArea* scribbleArea;
-    TimeLine* timeLine;
+    //TimeLine* timeLine;
     MainWindow2* mainWindow;
 
     QString path;
