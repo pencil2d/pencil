@@ -1,13 +1,14 @@
-Pencil
-Last edited: 2009-02-06
-Pascal Naidon
+Pencil TODO List
+=================================
 
-=====================
+Last edited: 2013-06-18
+Pascal Naidon, chchwy
+
+
 Bugs - things to do
-=====================
+-------------------
 
-
-BUGS:
+### BUGS:
 
 * bug: memory leaks??
 * bug when closing a curve -> straight line or even nothing
@@ -23,7 +24,7 @@ BUGS:
 
 
 
-THINGS TO IMPLEMENT:
+### THINGS TO IMPLEMENT:
 
 * compress the Pencil files (XML + data (images)) into a single ZIP archive - similarly to Open Office Documents.
   implement a open and save function for these ZIP archives
@@ -35,7 +36,7 @@ THINGS TO IMPLEMENT:
 
 
 
-SUGGESTIONS FROM USERS:
+### SUGGESTIONS FROM USERS:
 
 - duplicate frames - DONE
 - rotate - DONE ---> but bug when drawing upside down and very slow
@@ -47,7 +48,7 @@ SUGGESTIONS FROM USERS:
 - import a sequence of images - DONE (drag and drop only)
 
 
-OTHER IDEAS:
+### OTHER IDEAS:
 
 * operate on several (selected?) images at a time
 * morphing/tweening...?
@@ -55,18 +56,17 @@ OTHER IDEAS:
 
 
 
-THINGS TO IMPROVE:
+### THINGS TO IMPROVE:
 
-Flood fill:
-* problem if a corner is too sharp ---> increase tolerance? temporarily change width? - DONE (but for very sharp? DONE! (up to 3 points) )
-* problem: sometimes the final leaves are not next to each other - OBSOLETE
-* reduce contour pixels to pixels which are in the rectangular area - DONE
-* improve intersections!
-* test if the initial point is contained in the area - DONE
-
-* update areas when adding a point - DONE
-* remove points
-* bug when remove colour - DONE
+- Flood fill:
+    * problem if a corner is too sharp ---> increase tolerance? temporarily change width? DONE (but for very sharp? DONE! (up to 3 points) )
+    * problem: sometimes the final leaves are not next to each other - OBSOLETE
+    * reduce contour pixels to pixels which are in the rectangular area - DONE
+    * improve intersections!
+    * test if the initial point is contained in the area - DONE
+    * update areas when adding a point - DONE
+    * remove points
+    * bug when remove colour - DONE
 
 
 * manage colours
