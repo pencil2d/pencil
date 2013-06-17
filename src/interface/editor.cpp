@@ -124,38 +124,6 @@ TimeLine* Editor::getTimeLine()
     return mainWindow->m_pTimeLine;
 }
 
-TimeLine* Editor::createTimeLine()
-{
-    TimeLine* timeLine = getTimeLine();
-    //timeLine = new TimeLine(this, this);
-
-    connect(timeLine, SIGNAL(endplayClick()), this, SLOT(endPlay()));
-    connect(timeLine, SIGNAL(startplayClick()), this, SLOT(startPlay()));
-    connect(timeLine, SIGNAL(duplicateKeyClick()), this, SLOT(duplicateKey()));
-
-    connect(timeLine, SIGNAL(modification()), this, SLOT(modification()));
-    connect(timeLine, SIGNAL(addKeyClick()), this, SLOT(addKey()));
-    connect(timeLine, SIGNAL(removeKeyClick()), this, SLOT(removeKey()));
-
-    connect(timeLine, SIGNAL(newBitmapLayer()), this, SLOT(newBitmapLayer()));
-    connect(timeLine, SIGNAL(newVectorLayer()), this, SLOT(newVectorLayer()));
-    connect(timeLine, SIGNAL(newSoundLayer()), this, SLOT(newSoundLayer()));
-    connect(timeLine, SIGNAL(newCameraLayer()), this, SLOT(newCameraLayer()));
-    connect(timeLine, SIGNAL(deleteCurrentLayer()), this, SLOT(deleteCurrentLayer()));
-
-    connect(timeLine, SIGNAL(playClick()), this, SLOT(play()));
-    connect(timeLine, SIGNAL(loopClick(bool)), this, SLOT(setLoop(bool)));
-    connect(timeLine, SIGNAL(soundClick()), this, SLOT(setSound()));
-    connect(timeLine, SIGNAL(fpsClick(int)), this, SLOT(changeFps(int)));
-
-    connect(this, SIGNAL(toggleLoop(bool)), timeLine, SIGNAL(toggleLoop(bool)));
-    connect(timeLine, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
-
-    timeLine->setFocusPolicy(Qt::NoFocus);
-
-    return timeLine;
-}
-
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...

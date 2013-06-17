@@ -45,7 +45,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     editor = new Editor(this);
     m_pScribbleArea = editor->getScribbleArea();
     m_pTimeLine = new TimeLine(this, editor);
-    editor->createTimeLine();
+    makeTimeLineConnections();
+    //editor->createTimeLine();
 
     arrangePalettes();
     createMenus();
@@ -65,6 +66,33 @@ MainWindow2::MainWindow2(QWidget *parent) :
 MainWindow2::~MainWindow2()
 {
     delete ui;
+}
+
+void MainWindow2::makeTimeLineConnections()
+{
+    connect(m_pTimeLine, SIGNAL(endplayClick()), editor, SLOT(endPlay()));
+    connect(m_pTimeLine, SIGNAL(startplayClick()), editor, SLOT(startPlay()));
+    connect(m_pTimeLine, SIGNAL(duplicateKeyClick()), editor, SLOT(duplicateKey()));
+
+    connect(m_pTimeLine, SIGNAL(modification()), editor, SLOT(modification()));
+    connect(m_pTimeLine, SIGNAL(addKeyClick()), editor, SLOT(addKey()));
+    connect(m_pTimeLine, SIGNAL(removeKeyClick()), editor, SLOT(removeKey()));
+
+    connect(m_pTimeLine, SIGNAL(newBitmapLayer()), editor, SLOT(newBitmapLayer()));
+    connect(m_pTimeLine, SIGNAL(newVectorLayer()), editor, SLOT(newVectorLayer()));
+    connect(m_pTimeLine, SIGNAL(newSoundLayer()), editor, SLOT(newSoundLayer()));
+    connect(m_pTimeLine, SIGNAL(newCameraLayer()), editor, SLOT(newCameraLayer()));
+    connect(m_pTimeLine, SIGNAL(deleteCurrentLayer()), editor, SLOT(deleteCurrentLayer()));
+
+    connect(m_pTimeLine, SIGNAL(playClick()), editor, SLOT(play()));
+    connect(m_pTimeLine, SIGNAL(loopClick(bool)), editor, SLOT(setLoop(bool)));
+    connect(m_pTimeLine, SIGNAL(soundClick()), editor, SLOT(setSound()));
+    connect(m_pTimeLine, SIGNAL(fpsClick(int)), editor, SLOT(changeFps(int)));
+
+    connect(editor, SIGNAL(toggleLoop(bool)), m_pTimeLine, SIGNAL(toggleLoop(bool)));
+    connect(m_pTimeLine, SIGNAL(loopClick(bool)), editor, SIGNAL(loopToggled(bool)));
+
+    m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
 
 void MainWindow2::makePreferenceConnections()

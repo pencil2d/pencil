@@ -80,6 +80,7 @@ private slots:
 private:
     void arrangePalettes();
     void makePreferenceConnections();
+    void makeTimeLineConnections();
     void createMenus();
     void loadPlugins();
     void populateMenus(QObject* plugin);

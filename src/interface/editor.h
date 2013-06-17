@@ -59,7 +59,6 @@ public:
     ToolSet* toolSet;
 
     TimeLine* getTimeLine();
-    TimeLine* createTimeLine();
 
     Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(m_nCurrentLayerIndex+incr); } else { return NULL; } }
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
