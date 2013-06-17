@@ -81,7 +81,6 @@ Editor::Editor(MainWindow2* parent)
     exportFramesDialog = NULL; // will be created when needed
     exportMovieDialog = NULL;
     exportFlashDialog = NULL;
-    newDocumentDialog = NULL;
     exportFramesDialog_hBox = NULL;
     exportFramesDialog_vBox = NULL;
     exportFramesDialog_format = NULL;
@@ -1073,38 +1072,6 @@ bool Editor::openObject(QString filePath)
 
 void Editor::createNewDocumentDialog()
 {
-    /*newDocumentDialog = new QDialog(this, Qt::Dialog);
-    QGridLayout *mainLayout = new QGridLayout;
-
-    QGroupBox *resolutionBox = new QGroupBox(tr("Resolution"));
-    newDocumentDialog_hBox = new QSpinBox(this);
-    newDocumentDialog_hBox->setMinimum(1);
-    newDocumentDialog_hBox->setMaximum(10000);
-    int defaultWidth = 720; int defaultHeight = 540;
-    //if(object != NULL) {
-    //	defaultWidth = object->size.width(); defaultHeight = object->size.height();
-    //}
-    newDocumentDialog_hBox->setValue(defaultWidth);
-    newDocumentDialog_hBox->setFixedWidth(80);
-    newDocumentDialog_vBox = new QSpinBox(this);
-    newDocumentDialog_vBox->setMinimum(1);
-    newDocumentDialog_vBox->setMaximum(10000);
-    newDocumentDialog_vBox->setValue(defaultHeight);
-    newDocumentDialog_vBox->setFixedWidth(80);
-    QGridLayout *resolutionLayout = new QGridLayout;
-    resolutionLayout->addWidget(newDocumentDialog_hBox,0,0);
-    resolutionLayout->addWidget(newDocumentDialog_vBox,0,1);
-    resolutionBox->setLayout(resolutionLayout);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-    connect(buttonBox, SIGNAL(accepted()), newDocumentDialog, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), newDocumentDialog, SLOT(reject()));
-
-    mainLayout->addWidget(resolutionBox, 0, 0);
-    mainLayout->addWidget(buttonBox, 1, 0);
-    newDocumentDialog->setLayout(mainLayout);
-    newDocumentDialog->setWindowTitle(tr("Options"));
-    newDocumentDialog->setModal(true);*/
 }
 
 void Editor::createExportFramesSizeBox()
