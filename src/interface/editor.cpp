@@ -1070,10 +1070,6 @@ bool Editor::openObject(QString filePath)
     return ok;
 }
 
-void Editor::createNewDocumentDialog()
-{
-}
-
 void Editor::createExportFramesSizeBox()
 {
     int defaultWidth = 720;
@@ -1142,7 +1138,7 @@ void Editor::createExportFramesDialog()
     exportFramesDialog_format->addItem("TIF");
     exportFramesDialog_format->addItem("BMP");
     QGridLayout* formatLayout = new QGridLayout;
-    formatLayout->addWidget(exportFramesDialog_format,0,0);
+    formatLayout->addWidget(exportFramesDialog_format, 0, 0);
     formatBox->setLayout(formatLayout);
 
     QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
