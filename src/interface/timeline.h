@@ -69,8 +69,6 @@ public slots:
 public:
     TimeLine(QWidget* parent = 0, Editor* editor = 0);
     QScrollBar* hScrollBar, *vScrollBar;
-    //int currentFrame;
-    //int currentLayer;
     bool scrubbing;
     void forceUpdateLength(QString newLength); //when Animation -> Add Frame is clicked, this will auto update timeline
     void setFps ( int );
@@ -78,10 +76,6 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent* event);
-    //void mousePressEvent(QMouseEvent *event);
-    //void mouseMoveEvent(QMouseEvent *event);
-    //void mouseReleaseEvent(QMouseEvent *event);
-    //void mouseDoubleClickEvent(QMouseEvent *event);
 
 private:
     Editor* editor; // the editor for which this timeLine operates
