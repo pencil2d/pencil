@@ -74,6 +74,9 @@ private slots:
     void aboutPencil();
     void showPreferences();
 
+    void importPalette();
+    void exportPalette();
+
     // XML save/load
     QDomElement createDomElement(QDomDocument& doc);
 

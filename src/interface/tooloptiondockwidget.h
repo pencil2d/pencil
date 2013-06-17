@@ -37,6 +37,9 @@ public slots:
     void setFollowContour(int);
     void setColour(QColor);
 
+private slots:
+    void clickColorChooseButton();
+
 private:
     void createUI();
 };

@@ -185,7 +185,7 @@ void MainWindow2::createMenus()
     //exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
     //connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
-    connect(ui->actionExport_Palette, SIGNAL(triggered()), editor, SLOT(exportPalette()));
+    connect(ui->actionExport_Palette, SIGNAL(triggered()), this, SLOT(exportPalette()));
 
     /// --- Import Menu ---
     ui->actionExport_Svg_Image->setShortcut(tr("Ctrl+I"));
@@ -203,7 +203,7 @@ void MainWindow2::createMenus()
     ui->actionImport_Sound->setShortcut(tr("Ctrl+I"));
     connect(ui->actionImport_Sound, SIGNAL(triggered()), editor, SLOT(importSound()));
 
-    connect(ui->actionImport_Palette, SIGNAL(triggered()), editor, SLOT(importPalette()));
+    connect(ui->actionImport_Palette, SIGNAL(triggered()), this, SLOT(importPalette()));
 
 
     /// --- Edit Menu ---
@@ -809,6 +809,40 @@ void MainWindow2::undoActSetEnabled(void)
 {
     ui->actionUndo->setEnabled(true);
     ui->actionRedo->setEnabled(true);
+}
+
+void MainWindow2::exportPalette()
+{
+    QSettings settings("Pencil","Pencil");
+    QString initialPath = settings.value("lastPalettePath",
+                                         QVariant(QDir::homePath())).toString();
+    if (initialPath.isEmpty())
+    {
+        initialPath = QDir::homePath() + "/untitled.xml";
+    }
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
+    if (!filePath.isEmpty())
+    {
+        object->exportPalette(filePath);
+        settings.setValue("lastPalettePath", QVariant(filePath));
+    }
+}
+
+void MainWindow2::importPalette()
+{
+    QSettings settings("Pencil","Pencil");
+    QString initialPath = settings.value("lastPalettePath", QVariant(QDir::homePath())).toString();
+    if(initialPath.isEmpty())
+    {
+        initialPath = QDir::homePath() + "/untitled.xml";
+    }
+    QString filePath = QFileDialog::getOpenFileName(this, tr("Import"),initialPath);
+    if (!filePath.isEmpty())
+    {
+        object->importPalette(filePath);
+        m_colorPalette->updateList();
+        settings.setValue("lastPalettePath", QVariant(filePath));
+    }
 }
 
 void MainWindow2::aboutPencil()

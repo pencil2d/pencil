@@ -138,8 +138,6 @@ public slots:
     void importImage(QString filePath);
     void importSound(QString filePath = "");
     bool importMov();
-    void importPalette();
-    void exportPalette();
     void updateFrame(int frameNumber);
     void updateFrameAndVector(int frameNumber);
     void scrubTo(int frameNumber);

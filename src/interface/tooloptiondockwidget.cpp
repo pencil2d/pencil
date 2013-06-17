@@ -31,9 +31,9 @@ void ToolOptionDockWidget::createUI()
 
     QPixmap colourSwatch(30,30);
     colourSwatch.fill(Qt::black);
-    choseColour = new QToolButton(this);
-    choseColour->setIcon(colourSwatch);
-    choseColour->setToolTip("Display Colors");
+    colorChooseButton = new QToolButton(this);
+    colorChooseButton->setIcon(colourSwatch);
+    colorChooseButton->setToolTip("Display Colors");
 
     sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
     sizeSlider->setValue(settings.value("pencilWidth").toDouble());
@@ -66,7 +66,7 @@ void ToolOptionDockWidget::createUI()
     followContourBox->setChecked(false);
 
     optionLay->addWidget(colourLabel,6,0);
-    optionLay->addWidget(choseColour,6,1);
+    optionLay->addWidget(colorChooseButton,6,1);
 
     optionLay->addWidget(sizeSlider,8,0,1,2);
     optionLay->addWidget(featherSlider,9,0,1,2);
@@ -92,7 +92,7 @@ void ToolOptionDockWidget::makeConnectionToEditor(Editor *editor)
 
     connect(sizeSlider, SIGNAL(valueChanged(qreal)), editor, SLOT(applyWidth(qreal)));
     connect(featherSlider, SIGNAL(valueChanged(qreal)), editor, SLOT(applyFeather(qreal)));
-    connect(choseColour, SIGNAL(clicked()), editor, SLOT(showPalette()));
+    connect(colorChooseButton, SIGNAL(clicked()), this, SLOT(clickColorChooseButton()));
 
     connect(editor, SIGNAL(penWidthValueChange(qreal)), this, SLOT(setPenWidth(qreal)));
     connect(editor, SIGNAL(penFeatherValueChange(qreal)), this, SLOT(setPenFeather(qreal)));
@@ -189,5 +189,11 @@ void ToolOptionDockWidget::setColour(QColor x)
 {
     QPixmap colourSwatch(30,30);
     colourSwatch.fill(x);
-    choseColour->setIcon(colourSwatch);
+    colorChooseButton->setIcon(colourSwatch);
+}
+
+void ToolOptionDockWidget::clickColorChooseButton()
+{
+    // TODO:
+    qDebug("Clock Colour choose button.");
 }

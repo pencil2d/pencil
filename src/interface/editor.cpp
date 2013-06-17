@@ -1379,33 +1379,6 @@ bool Editor::exportFlash()
     }
 }
 
-void Editor::exportPalette()
-{
-    QSettings settings("Pencil","Pencil");
-    QString initialPath = settings.value("lastPalettePath", QVariant(QDir::homePath())).toString();
-    if(initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled.xml";
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
-    if (!filePath.isEmpty())
-    {
-        object->exportPalette(filePath);
-        settings.setValue("lastPalettePath", QVariant(filePath));
-    }
-}
-
-void Editor::importPalette()
-{
-    QSettings settings("Pencil","Pencil");
-    QString initialPath = settings.value("lastPalettePath", QVariant(QDir::homePath())).toString();
-    if(initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled.xml";
-    QString filePath = QFileDialog::getOpenFileName(this, tr("Import"),initialPath);
-    if (!filePath.isEmpty())
-    {
-        object->importPalette(filePath);
-        mainWindow->m_colorPalette->updateList();
-        settings.setValue("lastPalettePath", QVariant(filePath));
-    }
-}
-
 void Editor::importImage()
 {
     importImage("fromDialog");
