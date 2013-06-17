@@ -118,7 +118,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(sliderAlpha, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
 
     connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
-    connect(listOfColours, SIGNAL(itemClicked ( QListWidgetItem*)), this, SLOT(clickColorListItem( QListWidgetItem*)));
+    connect(listOfColours, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(clickColorListItem( QListWidgetItem*)));
     connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, SLOT(changeColourName( QListWidgetItem*)));
 
     connect(addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
@@ -197,7 +197,10 @@ void Palette::updateSwatch(QColor colour)
 {
     QPixmap colourPixmap(30,30);
     colourPixmap.fill( colour );
-    if(colourSwatch != NULL) colourSwatch->setIcon(QIcon(colourPixmap)); //colourSwatch->setPixmap(colourPixmap);
+    if(colourSwatch != NULL)
+    {
+        colourSwatch->setIcon(QIcon(colourPixmap));
+    }
 }
 
 void Palette::changeColourName( QListWidgetItem* item )
