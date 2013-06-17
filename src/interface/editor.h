@@ -290,7 +290,6 @@ private:
     void createExportFramesDialog();
     void createExportMovieDialog();
     void createExportFlashDialog();
-    void createNewDocumentDialog();
     QDialog* exportFramesDialog;
     QDialog* exportMovieDialog;
     QDialog* exportFlashDialog;
