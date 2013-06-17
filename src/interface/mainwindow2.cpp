@@ -134,12 +134,12 @@ void MainWindow2::arrangePalettes()
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
     addDockWidget(Qt::LeftDockWidgetArea, m_toolOptionWidget);
-    addDockWidget(Qt::BottomDockWidgetArea, editor->getTimeLine());
+    addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
     editor->toolSet->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_toolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_displayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    editor->getTimeLine()->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
 void MainWindow2::createMenus()
@@ -360,8 +360,8 @@ void MainWindow2::createMenus()
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));
 
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
-    
-    
+
+
     // --------------- Menus ------------------
     openRecentMenu = new QMenu(tr("Open recent"), this);
 
@@ -530,9 +530,9 @@ void MainWindow2::openDocument()
 bool MainWindow2::saveAsNewDocument()
 {
     QSettings settings("Pencil","Pencil");
-    
+
     QString strDefaultFileName = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-    if (strDefaultFileName.isEmpty()) 
+    if (strDefaultFileName.isEmpty())
     {
         strDefaultFileName = QDir::homePath() + "/untitled.pcl";
     }
@@ -629,8 +629,8 @@ void MainWindow2::saveForce()
     if ( object->strCurrentFilePath != "" )
     {
         saveObject(object->strCurrentFilePath);
-    }    
-    else 
+    }
+    else
     {
         saveAsNewDocument();
     }
@@ -811,7 +811,7 @@ void MainWindow2::aboutPencil()
     QMessageBox::about(this, tr("Pencil Animation 0.5.0.2 beta (chchwy Branch)"),
                        tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
                           "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
-                          "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"                          
+                          "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
                           "Version: <b>0.5.2</b> (13 June 2013)<br><br>"
                           "<b>Thanks to:</b><br>"
                           "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"

@@ -161,8 +161,8 @@ void Editor::makeConnections()
 
     connect(scribbleArea, SIGNAL(modification()), this, SLOT(modification()));
     connect(scribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
-    connect(timeLine, SIGNAL(modification()), this, SLOT(modification()));
 
+    connect(timeLine, SIGNAL(modification()), this, SLOT(modification()));
     connect(timeLine, SIGNAL(addKeyClick()), this, SLOT(addKey()));
     connect(timeLine, SIGNAL(removeKeyClick()), this, SLOT(removeKey()));
 
