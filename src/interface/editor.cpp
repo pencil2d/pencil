@@ -916,18 +916,6 @@ void Editor::resetMirror()
     //toolSet->resetMirror();
 }
 
-void Editor::showPalette()
-{
-    if (mainWindow->m_colorPalette->isVisible())
-    {
-        mainWindow->m_colorPalette->close();
-    }
-    else
-    {
-        mainWindow->m_colorPalette->show();
-    }
-}
-
 void Editor::saveLength(QString x)
 {
     bool ok;
