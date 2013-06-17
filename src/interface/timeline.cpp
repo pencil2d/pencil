@@ -82,6 +82,7 @@ TimeLine::TimeLine(QWidget* parent, Editor* editor) : QDockWidget(parent, Qt::To
     QAction* newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
     QAction* newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
     QAction* newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
+
     QMenu* layerMenu = new QMenu(tr("&Layer"), this);
     layerMenu->addAction(newBitmapLayerAct);
     layerMenu->addAction(newVectorLayerAct);
@@ -103,10 +104,12 @@ TimeLine::TimeLine(QWidget* parent, Editor* editor) : QDockWidget(parent, Qt::To
     QLabel* keyLabel = new QLabel(tr("Keys:"));
     keyLabel->setFont( QFont("Helvetica", 10) );
     keyLabel->setIndent(5);
+
     QToolButton* addKeyButton = new QToolButton(this);
     addKeyButton->setIcon(QIcon(":icons/add.png"));
     addKeyButton->setToolTip("Add Frame");
     addKeyButton->setFixedSize(24,24);
+
     QToolButton* removeKeyButton = new QToolButton(this);
     removeKeyButton->setIcon(QIcon(":icons/remove.png"));
     removeKeyButton->setToolTip("Remove Frame");

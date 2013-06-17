@@ -37,8 +37,6 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, QString type)
     layerHeight = (settings.value("layerHeight").toInt());
     if(layerHeight==0) { layerHeight=20; settings.setValue("layerHeight", layerHeight); }
 
-    //setMinimumSize(frameLength*frameSize, 3*layerHeight);
-    //setMinimumWidth(500);
     setMinimumSize(500, 4*layerHeight);
     setSizePolicy( QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding) );
     setAttribute(Qt::WA_OpaquePaintEvent, false);
@@ -60,8 +58,15 @@ int TimeLineCells::getFrameX(int frameNumber)
 int TimeLineCells::getLayerNumber(int y)
 {
     int layerNumber = layerOffset + (y-offsetY)/layerHeight;
-    if (y < offsetY) layerNumber = -1;
-    if (layerNumber >= editor->object->getLayerCount()) layerNumber = editor->object->getLayerCount();
+    if (y < offsetY)
+    {
+        layerNumber = -1;
+    }
+
+    if (layerNumber >= editor->object->getLayerCount())
+    {
+        layerNumber = editor->object->getLayerCount();
+    }
     return layerNumber;
 }
 
@@ -84,30 +89,20 @@ void TimeLineCells::updateContent()
 
 void TimeLineCells::drawContent()
 {
-    //qDebug() << "draw content" << QDateTime::currentDateTime() << timeLine->scrubbing;
-    if(cache == NULL) { cache = new QPixmap(size()); }
-    if(cache->isNull()) return;
+    if (cache == NULL) { cache = new QPixmap(size()); }
+    if (cache->isNull()) return;
+
     QPainter painter( cache );
+
     Object* object = editor->object;
-    if(object == NULL) return;
+    if (object == NULL) return;
     Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
-    if(layer == NULL) return;
+    if (layer == NULL) return;
 
     // grey background of the view
     painter.setPen(Qt::NoPen);
     painter.setBrush(Qt::lightGray);
     painter.drawRect(QRect(0,0, width(), height()));
-
-    // --- updates the offsetX
-    /*painter.setPen(Qt::black);
-    painter.setFont(QFont("helvetica", getLayerHeight()/2));
-    for(int i=0; i< object->getLayerCount(); i++) {
-        Layer* layeri = object->getLayer(i);
-        if(layeri != NULL) {
-            int rightmost = 20 + painter.boundingRect(QRect(0,0,300,100), Qt::AlignLeft, layeri->name).width() + 5;
-            if( rightmost > offsetX) offsetX = rightmost;
-        }
-    }*/
 
     // --- draw layers of the current object
     for(int i=0; i< object->getLayerCount(); i++)
@@ -122,7 +117,6 @@ void TimeLineCells::drawContent()
             }
         }
     }
-    //if(timeLine->scrubbing == false && abs(getMouseMoveY()) > 5) {
     if( abs(getMouseMoveY()) > 5 )
     {
         if(type == "tracks") layer->paintTrack(painter, this, offsetX, getLayerY(editor->m_nCurrentLayerIndex)+getMouseMoveY(), width()-offsetX, getLayerHeight(), true, frameSize);
@@ -135,6 +129,7 @@ void TimeLineCells::drawContent()
         if(type == "tracks") layer->paintTrack(painter, this, offsetX, getLayerY(editor->m_nCurrentLayerIndex), width()-offsetX, getLayerHeight(), true, frameSize);
         if(type == "layers") layer->paintLabel(painter, this, 0, getLayerY(editor->m_nCurrentLayerIndex), width()-1, getLayerHeight(), true, editor->allLayers());
     }
+
     // --- draw top
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(220,220,220));
@@ -156,9 +151,6 @@ void TimeLineCells::drawContent()
         painter.setRenderHint(QPainter::Antialiasing, true);
         painter.drawEllipse(6, 4, 9, 9);
         painter.setRenderHint(QPainter::Antialiasing, false);
-        // --- draw right border line
-        //painter.setPen( Qt::lightGray );
-        //painter.drawLine(width()/2-1,0, width()/2-1, height());
     }
 
     if(type == "tracks")
@@ -178,16 +170,7 @@ void TimeLineCells::drawContent()
             else painter.drawLine( getFrameX(i), 1, getFrameX(i), 3);
             if(i==0 || i%fps==fps-1) painter.drawText(QPoint(getFrameX(i)+incr, 15), QString::number(i+1));
         }
-        // --- indicates the cached images by a line ---
-        /*painter.setPen( Qt::red );
-        QList<int> frameList = editor->frameList;
-        for(int i=0; i<frameList.size(); i++) {
-            //painter.setBrush( Qt::red );
-            int j = frameList.at(i);
-            if( j > frameOffset ) {
-                painter.drawLine( getFrameX(j-1-frameOffset), 1, getFrameX(j-frameOffset), 1);
-            }
-        }*/
+
         // --- draw left border line
         painter.setPen( Qt::darkGray );
         painter.drawLine(0,0, 0, height());
@@ -226,12 +209,10 @@ void TimeLineCells::paintEvent(QPaintEvent* event)
             painter.drawText(QPoint(getFrameX(editor->m_nCurrentFrameIndex-1)+incr, 15), QString::number(editor->m_nCurrentFrameIndex));
         }
     }
-    //event->accept();
 }
 
 void TimeLineCells::resizeEvent(QResizeEvent* event)
 {
-    //QWidget::resizeEvent(event);
     if(cache) delete cache;
     cache = new QPixmap(size());
     updateContent();
@@ -298,7 +279,6 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
-    //if(event->pos().x() < offsetX) endY = event->pos().y();
     if(type == "layers")
     {
         endY = event->pos().y();
@@ -335,7 +315,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     {
         editor->object->getLayer(layerNumber)->mouseRelease(event, frameNumber);
     }
-    //if(event->pos().x() < offsetX && layerNumber != startLayerNumber && startLayerNumber != -1 && layerNumber != -1) {
     if(type == "layers" && layerNumber != startLayerNumber && startLayerNumber != -1 && layerNumber != -1)
     {
         editor->moveLayer(startLayerNumber, layerNumber);
@@ -381,16 +360,9 @@ void TimeLineCells::fontSizeChange(int x)
 
 void TimeLineCells::frameSizeChange(int x)
 {
-    //int old;
-    //old=frameSize;
     frameSize = x;
     QSettings settings("Pencil","Pencil");
     settings.setValue("frameSize", x);
-    /*int i;
-    for(i=0;i<frame.size();i++) {
-        frame[i].moveTopLeft(QPoint((frame[i].x()/old)*frameSize,0));
-        frame[i].setWidth(frameSize);
-    }*/
     updateContent();
 }
 
@@ -416,8 +388,6 @@ void TimeLineCells::lengthChange(QString x)
     int dec = x.toInt(&ok, 10);
     frameLength=dec;
     timeLine->updateLength(frameLength);
-    //setMinimumSize(dec*frameSize,40);
-    //setFixedWidth(dec*frameSize);
     updateContent();
     QSettings settings("Pencil","Pencil");
     settings.setValue("length", dec);

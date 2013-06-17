@@ -62,7 +62,6 @@ private:
     int frameLength;
     int frameSize;
     int fontSize;
-    //int fps;
     bool scrubbing;
     int layerHeight;
     int offsetX, offsetY;
