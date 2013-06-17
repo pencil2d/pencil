@@ -46,7 +46,7 @@ public:
 
     Object* object;  // the object to be edited by the editor
 
-    int currentLayer; // the current layer to be edited/displayed by the editor
+    int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
     int currentFrame; // the current frame to be edited/displayed by the editor
     int maxFrame; // the number of the last frame for the current object
     QList<int> frameList; // the frames that are to be cached -- should we use a QMap, or a QHash?
@@ -59,7 +59,7 @@ public:
     ToolSet* toolSet;
 
     TimeLine* getTimeLine() { return timeLine; }
-    Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(currentLayer+incr); } else { return NULL; } }
+    Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(m_nCurrentLayerIndex+incr); } else { return NULL; } }
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);
     bool isModified() { return modified; }
