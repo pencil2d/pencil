@@ -68,7 +68,8 @@ public slots:
 
 public:
     TimeLine(QWidget* parent = 0, Editor* editor = 0);
-    QScrollBar* hScrollBar, *vScrollBar;
+    QScrollBar* hScrollBar;
+    QScrollBar* vScrollBar;
     bool scrubbing;
     void forceUpdateLength(QString newLength); //when Animation -> Add Frame is clicked, this will auto update timeline
     void setFps ( int );

@@ -701,7 +701,7 @@ void MainWindow2::dockAllPalettes()
     m_toolOptionWidget->setFloating(false);
     m_displayOptionWidget->setFloating(false);
     editor->toolSet->onionPalette->setFloating(false);
-    editor->getTimeLine()->setFloating(false);
+    m_pTimeLine->setFloating(false);
     m_colorPalette->setFloating(false);
 }
 
