@@ -114,7 +114,6 @@ public slots:
     void select_clicked();
     void hand_clicked();
     void eyedropper_clicked();
-
     void clear_clicked();
     void eraser_clicked();
     void pen_clicked();
@@ -122,6 +121,7 @@ public slots:
     void bucket_clicked();
     void color_clicked();
     void smudge_clicked();
+
     void importImageSequence();
     void cut();
     void crop();
@@ -153,8 +153,6 @@ public slots:
     void setLoop(bool checked);
     void setSound();
 
-    //void scrubKF();
-    //void scrubKB();
     void previousLayer();
     void nextLayer();
     void endPlay();

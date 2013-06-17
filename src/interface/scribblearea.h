@@ -166,14 +166,7 @@ public slots:
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
-
-//#	void print();
-
     void escape();
-    //void undo();
-    //void redo();
-    //void copy();
-    //void paste();
 
 protected:
     void tabletEvent(QTabletEvent* event);
