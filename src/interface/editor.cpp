@@ -354,7 +354,7 @@ void Editor::selectVectorColourNumber(int i)
     if (i > -1)
     {
         scribbleArea->setColour(i);
-        mainWindow->m_colorPalette->selectColour(i);
+        mainWindow->m_colorPalette->selectColorListRow(i);
         mainWindow->m_colorPalette->setColour(object->getColour(i).colour);
 
         emit penColorValueChange(object->getColour(i).colour);
@@ -383,31 +383,19 @@ void Editor::setBitmapColour(QColor colour)
     emit penColorValueChange(colour);
 }
 
-void Editor::changeColour(int i, QColor newColour)
+void Editor::setFrontColour(int i, QColor newColour)
 {
     if (newColour.isValid() && i > -1)
     {
-        updateColour(i, newColour);
-        mainWindow->m_colorPalette->updateList();
-        selectVectorColourNumber(i);
-    }
-}
-
-void Editor::updateColour(int i, QColor newColour)
-{
-    if (newColour.isValid() && i > -1)
-    {
-        object->setColour(i, newColour);
         Layer* layer = object->getLayer(m_nCurrentLayerIndex);
         if (layer != NULL)
         {
             if (layer->type == Layer::VECTOR)
+            {
                 scribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
+            }
         }
-        emit penColorValueChange(object->getColour(i).colour);
-
-        mainWindow->m_colorPalette->updateSwatch(object->getColour(i).colour);
-        scribbleArea->setColour(i);
+        scribbleArea->setColour( i );
     }
 }
 
@@ -893,17 +881,18 @@ void Editor::deleteCurrentLayer()
     }
 }
 
-
 void Editor::toggleMirror()
 {
     object->toggleMirror();
     scribbleArea->toggleMirror();
 }
+
 void Editor::toggleMirrorV()
 {
     object->toggleMirror();
     scribbleArea->toggleMirrorV();
 }
+
 void Editor::toggleShowAllLayers()
 {
     scribbleArea->toggleShowAllLayers();
@@ -957,13 +946,13 @@ void Editor::setObject(Object* object)
 void Editor::updateObject()
 {
     scribbleArea->resetColours();
-    mainWindow->m_colorPalette->selectColour(0);
+    mainWindow->m_colorPalette->selectColorListRow(0);
 
     getTimeLine()->updateLayerNumber(object->getLayerCount());
     mainWindow->m_colorPalette->updateList();
     clearBackup();
     scribbleArea->resetColours();
-    mainWindow->m_colorPalette->selectColour(0);
+    mainWindow->m_colorPalette->selectColorListRow(0);
     scribbleArea->updateAllFrames();
     updateMaxFrame();
 }

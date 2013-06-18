@@ -23,7 +23,6 @@ GNU General Public License for more details.
 Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
     this->editor = editor;
-    //this->object = editor->object;
 
     QWidget* paletteContent = new QWidget();
 
@@ -57,10 +56,6 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     sliderLayout->setMargin(10);
     sliderLayout->setSpacing(2);
 
-    //QWidget* sliders = new QWidget();
-    //sliders->setLayout(sliderLayout);
-    //sliders->setFixedHeight(60);
-
     listOfColours = new QListWidget();
 
     QToolBar* buttons = new QToolBar();
@@ -90,7 +85,6 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     listOfColours->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     listOfColours->setLineWidth(1);
     listOfColours->setFocusPolicy(Qt::NoFocus);
-    //listOfColours->setMinimumWidth(100);
 
     QVBoxLayout* layout = new QVBoxLayout();
     layout->addLayout(sliderLayout);
@@ -131,7 +125,6 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
 void Palette::updateList()
 {
-    //listOfColours->clear(); // for some reason, this creates an bus error when one removes the last element
     while(listOfColours->count() > 0)
     {
         listOfColours->takeItem(0);
@@ -162,7 +155,14 @@ void Palette::colourSwatchClicked()
 
         if ( ok )
         {
-            editor->changeColour(currentColourNumber(), QColor::fromRgba(qrgba) );
+            QColor newColor = QColor::fromRgba(qrgba);
+            int colorIndex = currentColourNumber();
+            editor->object->setColour(colorIndex, newColor);
+            editor->setFrontColour(colorIndex, newColor );
+
+            updateList();
+            selectColorListRow(colorIndex);
+            setColour(newColor);
         }
     }
 }
@@ -180,17 +180,27 @@ void Palette::clickColorListItem(QListWidgetItem* current)
 
 void Palette::colourSliderValueChange()
 {
-    QColor newColour = QColor( sliderRed->value(),
-                               sliderGreen->value(),
-                               sliderBlue->value(),
-                               sliderAlpha->value() );
-    editor->changeColour(currentColourNumber(), newColour);
+    QColor newColor = QColor( sliderRed->value(),
+                              sliderGreen->value(),
+                              sliderBlue->value(),
+                              sliderAlpha->value() );
+
+    int colorIndex = currentColourNumber();
+    editor->object->setColour(colorIndex, newColor);
+    editor->setFrontColour(colorIndex, newColor);
+
+    updateList();
+    selectColorListRow(colorIndex);
+    setColour(newColor);
 }
 
 void Palette::colorSliderMoved()
 {
-    QColor newColour = QColor( sliderRed->value(), sliderGreen->value(), sliderBlue->value(), sliderAlpha->value() );
-    editor->updateColour(currentColourNumber(), newColour);
+    QColor newColour = QColor( sliderRed->value(),
+                               sliderGreen->value(),
+                               sliderBlue->value(),
+                               sliderAlpha->value() );
+    editor->setFrontColour(currentColourNumber(), newColour);
 }
 
 void Palette::updateSwatch(QColor colour)

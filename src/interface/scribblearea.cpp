@@ -216,28 +216,6 @@ void ScribbleArea::setColour(const int i)
 
 void ScribbleArea::setColour(const QColor colour)
 {
-    if(currentToolType() == PENCIL)  // || currentTool() == EYEDROPPER) {
-    {
-        m_toolSetHash.value( PENCIL )->properties.colour = colour;
-    }
-    if(currentToolType() == PEN || currentToolType() == POLYLINE)  // || currentTool() == EYEDROPPER) {
-    {
-        m_toolSetHash[ PEN ]->properties.colour = colour;
-    }
-    if(currentToolType() == BRUSH)  // || currentTool() == EYEDROPPER) {
-    {
-        m_toolSetHash.value( BRUSH )->properties.colour = colour;
-    }
-    if (currentToolType() == BUCKET )
-    {
-        m_toolSetHash.value( BUCKET )->properties.colour = colour;
-    }
-    if (currentToolType() == EYEDROPPER)
-    {
-        m_toolSetHash.value( PENCIL )->properties.colour = colour;
-        m_toolSetHash[ PEN ]->properties.colour = colour;
-        m_toolSetHash.value( BRUSH )->properties.colour = colour;
-    }
     currentColour = colour;
 }
 

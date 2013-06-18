@@ -51,7 +51,7 @@ protected:
 public slots:
     void updateList();
     void updateSwatch(QColor);
-    void selectColour(int i) { listOfColours->setCurrentRow(i); }
+    void selectColorListRow(int i) { listOfColours->setCurrentRow(i); }
     void setColour(QColor);
     void setColour(int, int, int, int);
 

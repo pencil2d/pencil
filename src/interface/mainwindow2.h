@@ -92,7 +92,6 @@ private:
     void closeEvent(QCloseEvent*);
     void readSettings();
     void writeSettings();
-    //QGraphicsItem *m_svgItem;
 
     QString path;
     QList<QMenu*>* m_pMenuList;
