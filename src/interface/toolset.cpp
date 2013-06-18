@@ -193,14 +193,10 @@ void ToolSet::pencilOn()
 
     // --- change properties ---
     BaseTool* pCurTool = m_pEditor->getScribbleArea()->currentTool();
-    Layer* layer = m_pEditor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurTool->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) m_pEditor->setBitmapColour(pCurTool->properties.colour);
 
     m_pEditor->setWidth(pCurTool->properties.width);
     m_pEditor->setFeather(pCurTool->properties.feather);
-    m_pEditor->setFeather(-1); // by definition the pencil has no feather
+    m_pEditor->setFeather( -1 ); // by definition the pencil has no feather
     m_pEditor->setPressure(pCurTool->properties.pressure);
     m_pEditor->setPreserveAlpha(pCurTool->properties.preserveAlpha);
     m_pEditor->setFollowContour(-1);
@@ -299,10 +295,6 @@ void ToolSet::polylineOn()
 
      BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
 
-     Layer* layer = m_pEditor->getCurrentLayer();
-     if(layer == NULL) return;
-     if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
-     if(layer->type == Layer::BITMAP) m_pEditor->setBitmapColour(pCurrentTool->properties.colour);
      m_pEditor->setWidth(pCurrentTool->properties.width);
      m_pEditor->setFeather(-1);
      m_pEditor->setPressure(pCurrentTool->properties.pressure);
@@ -317,10 +309,6 @@ void ToolSet::bucketOn()
      BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
 
     // --- change properties ---
-    Layer* layer = m_pEditor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) m_pEditor->setBitmapColour(pCurrentTool->properties.colour);
 
     m_pEditor->setWidth(-1);
     m_pEditor->setFeather(pCurrentTool->properties.feather);
@@ -355,10 +343,6 @@ void ToolSet::brushOn()
     m_pEditor->getScribbleArea()->setCurrentTool( BRUSH );
     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
     // --- change properties ---
-    Layer* layer = m_pEditor->getCurrentLayer();
-    if(layer == NULL) return;
-    if(layer->type == Layer::VECTOR) m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
-    if(layer->type == Layer::BITMAP) m_pEditor->setBitmapColour(pCurrentTool->properties.colour);
 
     m_pEditor->setToolProperties(pCurrentTool->properties);
     m_pEditor->setInvisibility(-1);
