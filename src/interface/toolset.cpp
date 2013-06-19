@@ -253,20 +253,6 @@ void ToolSet::penOn()
     BaseTool* pCurrentTool = m_pEditor->getScribbleArea()->currentTool();
 
     // --- change properties ---
-    Layer* layer = m_pEditor->getCurrentLayer();
-    if(layer == NULL)
-    {
-        return;
-    }
-    else if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(pCurrentTool->properties.colourNumber);
-    }
-    else if (layer->type == Layer::BITMAP)
-    {
-        m_pEditor->setBitmapColour(pCurrentTool->properties.colour);
-    }
-
     m_pEditor->setToolProperties( pCurrentTool->properties );
 }
 

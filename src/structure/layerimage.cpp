@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "layerimage.h"
 #include "object.h"
 #include "timeline.h"
+#include "timelinecells.h"
 
 LayerImage::LayerImage(Object* object) : Layer(object)
 {

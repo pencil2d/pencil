@@ -60,6 +60,8 @@ public:
 
     TimeLine* getTimeLine();
 
+    QColor currentColor;
+
     Layer* getCurrentLayer(int incr) { if(object != NULL) { return object->getLayer(m_nCurrentLayerIndex+incr); } else { return NULL; } }
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);

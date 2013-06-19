@@ -17,8 +17,7 @@ ToolType PenTool::type()
 void PenTool::loadSettings()
 {
     QSettings settings("Pencil","Pencil");
-    properties.width = settings.value("penWidth").toDouble();
-    properties.colour = Qt::black;
+    properties.width = settings.value("penWidth").toDouble();    
     properties.colourNumber = 0;
     properties.feather = 0;    
     properties.pressure = ON;

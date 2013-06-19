@@ -25,7 +25,7 @@ QCursor BucketTool::cursor()
     {
         QPixmap pixmap(":icons/bucketTool.png");
         QPainter painter(&pixmap);
-        painter.setPen( properties.colour );
+        painter.setPen( Qt::blue );   // FIXED: need to get current color
         painter.drawLine( QPoint(5, 16), QPoint(5, 18) );
         painter.end();
 

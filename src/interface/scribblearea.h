@@ -229,7 +229,7 @@ private:
     Properties eraser;
 
     qreal currentWidth;
-    QColor currentColour;
+    QColor currentPressuredColor;
     bool followContour;
 
     QBrush backgroundBrush;

@@ -18,8 +18,7 @@ void BrushTool::loadSettings()
 {
     QSettings settings("pencil", "pencil");
 
-    properties.width = settings.value("brushWidth").toDouble();    
-    properties.colour = Qt::blue;
+    properties.width = settings.value("brushWidth").toDouble();        
     properties.colourNumber = 1;
     properties.feather = settings.value("brushFeather").toDouble();    
     properties.opacity = 0.5;

@@ -108,7 +108,7 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     m_toolSetHash.value( BRUSH )->loadSettings();
     m_toolSetHash.value( ERASER )->loadSettings();
 
-    currentColour = m_toolSetHash.value( PENCIL )->properties.colour;
+    editor->currentColor = editor->currentColor;
 
     followContour = 0;
 
@@ -182,41 +182,33 @@ void ScribbleArea::setColour(const int i)
 {
     if (currentToolType() == PENCIL)
     {
-        m_toolSetHash.value( PENCIL )->properties.colourNumber = i;
-        m_toolSetHash.value( PENCIL )->properties.colour = editor->object->getColour(i).colour;
+        m_toolSetHash.value( PENCIL )->properties.colourNumber = i;        
     }
     else if (currentToolType() == PEN || currentToolType() == POLYLINE)
     {
         m_toolSetHash[ PEN ]->properties.colourNumber = i;
-        m_toolSetHash[ PEN ]->properties.colour = editor->object->getColour(i).colour;
     }
     else if ( currentToolType() == BRUSH )
     {
         m_toolSetHash.value( BRUSH )->properties.colourNumber = i;
-        m_toolSetHash.value( BRUSH )->properties.colour = editor->object->getColour(i).colour;
     }
     else if ( currentToolType() == BUCKET )
     {
         m_toolSetHash.value( BUCKET )->properties.colourNumber = i;
-        m_toolSetHash.value( BUCKET )->properties.colour = editor->object->getColour(i).colour;
     }
     else if (currentToolType() == EYEDROPPER)
     {
         m_toolSetHash.value( PENCIL )->properties.colourNumber = i;
-        m_toolSetHash.value( PENCIL )->properties.colour = editor->object->getColour(i).colour;
-
         m_toolSetHash[ PEN ]->properties.colourNumber = i;
-        m_toolSetHash[ PEN ]->properties.colour = editor->object->getColour(i).colour;
-
         m_toolSetHash.value( BRUSH )->properties.colourNumber = i;
-        m_toolSetHash.value( BRUSH )->properties.colour = editor->object->getColour(i).colour;
     }
+    editor->currentColor = editor->object->getColour(i).colour;
     updateFrame();
 }
 
 void ScribbleArea::setColour(const QColor colour)
 {
-    currentColour = colour;
+    editor->currentColor = colour;
 }
 
 void ScribbleArea::resetColours()
@@ -682,18 +674,20 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
     }
     if (currentToolType() == PENCIL)
     {
-        currentColour = m_toolSetHash.value( PENCIL )->properties.colour;
         if(usePressure && !mouseDevice)
         {
-            currentColour.setAlphaF(m_toolSetHash.value( PENCIL )->properties.colour.alphaF()*pressure);
+            currentPressuredColor.setAlphaF( editor->currentColor.alphaF() * pressure);
         }
-        else { currentColour.setAlphaF(m_toolSetHash.value( PENCIL )->properties.colour.alphaF()); }
+        else
+        {
+            currentPressuredColor.setAlphaF( editor->currentColor.alphaF());
+        }
         currentWidth = m_toolSetHash.value( PENCIL )->properties.width;
     }
     if (currentToolType() == PEN)
     {
-        currentColour = m_toolSetHash[ PEN ]->properties.colour;
-        //currentColour.setAlphaF(pen.colour.alphaF());
+        //editor->currentColor = m_toolSetHash[ PEN ]->properties.colour;
+        //editor->currentColor.setAlphaF(pen.colour.alphaF());
         if(usePressure && !mouseDevice)
         {
             double width = m_toolSetHash[ PEN ]->properties.width;
@@ -702,7 +696,8 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
         else
         {
             currentWidth = m_toolSetHash[ PEN ]->properties.width;
-        }   // we choose the "normal" width to correspond to a pressure 0.5
+        }
+        // we choose the "normal" width to correspond to a pressure 0.5
     }
 }
 
@@ -1293,13 +1288,22 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
                     }
                 }
                 BitmapImage* targetImage = ((LayerBitmap*)targetLayer)->getLastBitmapImageAtFrame(editor->m_nCurrentFrameIndex, 0);
-                BitmapImage::floodFill( sourceImage, targetImage, lastPoint.toPoint(), qRgba(0,0,0,0), m_toolSetHash.value( BRUSH )->properties.colour.rgba(), 10*10, true);
+
+                BitmapImage::floodFill( sourceImage,
+                                        targetImage,
+                                        lastPoint.toPoint(),
+                                        qRgba(0,0,0,0),
+                                        editor->currentColor.rgba(),
+                                        10*10,
+                                        true);
+
                 setModified(layerNumber, editor->m_nCurrentFrameIndex);
                 updateAll = true;
             }
             else if ( layer->type == Layer::VECTOR )
             {
                 VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
+
                 if(event->modifiers() == Qt::AltModifier)
                 {
                     vectorImage->removeArea(lastPoint);
@@ -2138,14 +2142,14 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
         }
         if(currentToolType() == PENCIL)
         {
-            QPen pen2 = QPen ( QBrush(currentColour), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+            QPen pen2 = QPen ( QBrush(editor->currentColor), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
             bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_Source, antialiasing);
             int rad = qRound(currentWidth / 2) + 3;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
         }
         if(currentToolType() == PEN)
         {
-            QPen pen2 = QPen ( QBrush(m_toolSetHash[ PEN ]->properties.colour), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+            QPen pen2 = QPen ( editor->currentColor , currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
             bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(currentWidth / 2) + 3;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
@@ -2167,8 +2171,12 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
             for(int i=0; i<steps; i++)
             {
                 QPointF thePoint = lastBrushPoint + (i+1)*(brushStep)*(endPoint -lastBrushPoint)/distance;
-                drawBrush( thePoint, brushWidth, offset, m_toolSetHash.value( BRUSH )->properties.colour, opacity);
-                if(i==steps-1) lastBrushPoint = thePoint;
+                drawBrush( thePoint, brushWidth, offset, editor->currentColor, opacity);
+
+                if (i == (steps - 1))
+                {
+                    lastBrushPoint = thePoint;
+                }
             }
 
             int rad = qRound(brushWidth / 2) + 3;
@@ -2185,13 +2193,13 @@ void ScribbleArea::drawLineTo(const QPointF& endPixel, const QPointF& endPoint)
         }
         if(currentToolType() == PENCIL)
         {
-            bufferImg->drawLine(lastPixel, currentPixel, QPen(currentColour, 1, Qt::DotLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
+            bufferImg->drawLine(lastPixel, currentPixel, QPen(editor->currentColor, 1, Qt::DotLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(  ( currentWidth/2 + 2)*qAbs( myTempView.m11() )  );
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
         if(currentToolType() == PEN)
         {
-            bufferImg->drawLine(lastPixel, currentPixel, QPen(m_toolSetHash[ PEN ]->properties.colour, currentWidth*myTempView.m11(), Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
+            bufferImg->drawLine(lastPixel, currentPixel, QPen( editor->currentColor, currentWidth*myTempView.m11(), Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound(  (currentWidth/2 + 2)* (qAbs(myTempView.m11())+qAbs(myTempView.m22())) );
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
@@ -2227,7 +2235,7 @@ void ScribbleArea::drawPolyline()
     {
         if(mousePoints.size()>0)
         {
-            QPen pen2(m_toolSetHash[ PEN ]->properties.colour,
+            QPen pen2(editor->currentColor,
                       m_toolSetHash[ PEN ]->properties.width,
                       Qt::SolidLine,
                       Qt::RoundCap,
