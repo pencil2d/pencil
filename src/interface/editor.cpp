@@ -98,7 +98,6 @@ Editor::Editor(MainWindow2* parent)
     toolSet = new ToolSet(this);
 
     mainLayout->addWidget(scribbleArea);
-
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
@@ -176,7 +175,7 @@ void Editor::dropEvent(QDropEvent* event)
     {
         for(int i=0; i < event->mimeData()->urls().size(); i++)
         {
-            if (i>0) scrubForward();
+            if (i > 0) scrubForward();
             QUrl url = event->mimeData()->urls()[i];
             QString filePath = url.toLocalFile();
             if (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
@@ -205,8 +204,8 @@ void Editor::importImageSequence ()
     for (int i = 0; i < files.size(); ++i)
     {
         QString filePath;
-        filePath= files.at(i).toLocal8Bit().constData();
-        if (i>0) scrubForward();
+        filePath = files.at(i).toLocal8Bit().constData();
+        if (i > 0) scrubForward();
         {
             if (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
                 importImage(filePath);
@@ -1378,90 +1377,92 @@ void Editor::importImage()
 void Editor::importImage(QString filePath)
 {
     Layer* layer = object->getLayer(m_nCurrentLayerIndex);
-    if (layer != NULL)
+    if (layer == NULL)
     {
-        if ( layer->type == Layer::BITMAP || layer->type == Layer::VECTOR )
-        {
-            if (filePath == "fromDialog")
-            {
-                QSettings settings("Pencil","Pencil");
-                QString initialPath = settings.value("lastImportPath", QVariant(QDir::homePath())).toString();
-                if (initialPath.isEmpty()) initialPath = QDir::homePath();
-                filePath = QFileDialog::getOpenFileName(this, tr("Import image..."),initialPath ,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
-                if (!filePath.isEmpty()) settings.setValue("lastImportPath", QVariant(filePath));
-            }
-            if (!filePath.isEmpty())
-            {
-                backup(tr("ImportImg"));
-                // --- option 1
-                //((LayerBitmap*)layer)->loadImageAtFrame(filePath, currentFrame);
-                // --- option 2
-                // TO BE IMPROVED
-                if (layer->type == Layer::BITMAP)
-                {
-                    BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex);
-                    if (bitmapImage == NULL) { addKey(); bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex); }
-                    QImage* importedImage = new QImage(filePath);
-                    if (!importedImage->isNull())
-                    {
-                        QRect boundaries = importedImage->rect();
-                        //boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
-                        boundaries.moveTopLeft( scribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width()/2, boundaries.height()/2) );
-                        BitmapImage* importedBitmapImage = new BitmapImage(NULL, boundaries, *importedImage);
-                        if (scribbleArea->somethingSelected)
-                        {
-                            QRectF selection = scribbleArea->getSelection();
-                            if ( importedImage->width() <= selection.width() && importedImage->height() <= selection.height() )
-                            {
-                                importedBitmapImage->boundaries.moveTopLeft( selection.topLeft().toPoint() );
-                            }
-                            else
-                            {
-                                importedBitmapImage->transform( selection.toRect(), true );
-                            }
-                        }
-                        bitmapImage->paste( importedBitmapImage );
-                    }
-                    else
-                    {
-                        QMessageBox::warning(this, tr("Warning"),
-                                             tr("Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
-                                             QMessageBox::Ok,
-                                             QMessageBox::Ok);
-                    }
-                }
-                if (layer->type == Layer::VECTOR)
-                {
-                    VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(m_nCurrentFrameIndex);
-                    if (vectorImage == NULL) { addKey(); vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(m_nCurrentFrameIndex); }
-                    VectorImage* importedVectorImage = new VectorImage(NULL);
-                    bool ok = importedVectorImage->read(filePath);
-                    if (ok)
-                    {
-                        importedVectorImage->selectAll();
-                        vectorImage->paste( *importedVectorImage );
-                    }
-                    else
-                    {
-                        QMessageBox::warning(this, tr("Warning"),
-                                             tr("Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors."),
-                                             QMessageBox::Ok,
-                                             QMessageBox::Ok);
-                    }
-                }
-                scribbleArea->updateFrame();
-                getTimeLine()->updateContent();
-            }
-        }
-        else
-        {
-            // create a new Bitmap layer ?
-            QMessageBox::warning(this, tr("Warning"),
-                                 tr("Please select a Bitmap or Vector layer to import images."),
-                                 QMessageBox::Ok,
-                                 QMessageBox::Ok);
-        }
+        return;
     }
+    if ( layer->type != Layer::BITMAP || layer->type != Layer::VECTOR )
+    {
+        // create a new Bitmap layer ?
+        QMessageBox::warning(this, tr("Warning"),
+                             tr("Please select a Bitmap or Vector layer to import images."),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
+        return;
+    }
+
+    if (filePath == "fromDialog")
+    {
+        QSettings settings("Pencil","Pencil");
+        QString initialPath = settings.value("lastImportPath", QVariant(QDir::homePath())).toString();
+        if (initialPath.isEmpty()) initialPath = QDir::homePath();
+        filePath = QFileDialog::getOpenFileName(this, tr("Import image..."),initialPath ,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
+        if (!filePath.isEmpty()) settings.setValue("lastImportPath", QVariant(filePath));
+    }
+
+    if (!filePath.isEmpty())
+    {
+        backup(tr("ImportImg"));
+        // --- option 1
+        //((LayerBitmap*)layer)->loadImageAtFrame(filePath, currentFrame);
+        // --- option 2
+        // TO BE IMPROVED
+        if (layer->type == Layer::BITMAP)
+        {
+            BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex);
+            if (bitmapImage == NULL) { addKey(); bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex); }
+            QImage* importedImage = new QImage(filePath);
+            if (!importedImage->isNull())
+            {
+                QRect boundaries = importedImage->rect();
+                //boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
+                boundaries.moveTopLeft( scribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width()/2, boundaries.height()/2) );
+                BitmapImage* importedBitmapImage = new BitmapImage(NULL, boundaries, *importedImage);
+                if (scribbleArea->somethingSelected)
+                {
+                    QRectF selection = scribbleArea->getSelection();
+                    if ( importedImage->width() <= selection.width() && importedImage->height() <= selection.height() )
+                    {
+                        importedBitmapImage->boundaries.moveTopLeft( selection.topLeft().toPoint() );
+                    }
+                    else
+                    {
+                        importedBitmapImage->transform( selection.toRect(), true );
+                    }
+                }
+                bitmapImage->paste( importedBitmapImage );
+            }
+            else
+            {
+                QMessageBox::warning(this, tr("Warning"),
+                                     tr("Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+            }
+        }
+        if (layer->type == Layer::VECTOR)
+        {
+            VectorImage* vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(m_nCurrentFrameIndex);
+            if (vectorImage == NULL) { addKey(); vectorImage = ((LayerVector*)layer)->getVectorImageAtFrame(m_nCurrentFrameIndex); }
+            VectorImage* importedVectorImage = new VectorImage(NULL);
+            bool ok = importedVectorImage->read(filePath);
+            if (ok)
+            {
+                importedVectorImage->selectAll();
+                vectorImage->paste( *importedVectorImage );
+            }
+            else
+            {
+                QMessageBox::warning(this, tr("Warning"),
+                                     tr("Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors."),
+                                     QMessageBox::Ok,
+                                     QMessageBox::Ok);
+            }
+        }
+        scribbleArea->updateFrame();
+        getTimeLine()->updateContent();
+    }
+
 }
 
 void Editor::importSound(QString filePath)
