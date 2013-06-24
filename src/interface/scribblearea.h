@@ -26,24 +26,12 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "colourref.h"
 #include "basetool.h"
-
+#include "vectorselection.h"
 
 class Editor;
 class Layer;
 
 
-class VectorSelection
-{
-public:
-    QList<VertexRef> vertex;
-    QList<int> curve;
-    //QList<int> area;
-    void clear();
-    void add(int curveNumber);
-    void add(QList<int> curveNumbers);
-    void add(VertexRef point);
-    void add(QList<VertexRef> points);
-};
 
 class ScribbleArea : public QWidget
 {

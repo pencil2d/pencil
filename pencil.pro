@@ -66,7 +66,8 @@ HEADERS +=  src/interfaces.h \
     src/interface/shortcutspage.h \
     src/util/keyboardmanager.h \
     src/interface/mainwindow2.h \
-    src/interface/timelinecells.h
+    src/interface/timelinecells.h \
+    src/graphics/vector/vectorselection.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -112,7 +113,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/interface/shortcutspage.cpp \
     src/util/keyboardmanager.cpp \
     src/interface/mainwindow2.cpp \
-    src/interface/timelinecells.cpp
+    src/interface/timelinecells.cpp \
+    src/graphics/vector/vectorselection.cpp
 
 win32 {
     INCLUDEPATH += . libwin32

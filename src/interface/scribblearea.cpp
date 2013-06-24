@@ -41,33 +41,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 
-void VectorSelection::clear()
-{
-    vertex.clear();
-    curve.clear();
-}
-
-void VectorSelection::add(int curveNumber)
-{
-    curve << curveNumber;
-}
-
-void VectorSelection::add(QList<int> list)
-{
-    if (list.size() > 0) add(list[0]);
-}
-
-void VectorSelection::add(VertexRef point)
-{
-    vertex << point;
-    add(point.curveNumber);
-}
-
-void VectorSelection::add(QList<VertexRef> list)
-{
-    if (list.size() > 0) add(list[0]);
-}
-
 
 ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
     : QWidget(parent)
