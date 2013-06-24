@@ -207,8 +207,12 @@ void Editor::importImageSequence ()
         filePath = files.at(i).toLocal8Bit().constData();
         if (i > 0) scrubForward();
         {
-            if (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jpeg"))
+            if (filePath.endsWith(".png") ||
+                filePath.endsWith(".jpg") ||
+                filePath.endsWith(".jpeg"))
+            {
                 importImage(filePath);
+            }
         }
     }
 }
