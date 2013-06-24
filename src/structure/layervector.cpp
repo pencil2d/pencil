@@ -36,7 +36,7 @@ LayerVector::~LayerVector()
 
 QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
 {
-    if( index < 0 || index >= framesImage.size() )
+    if ( index < 0 || index >= framesImage.size() )
     {
         return NULL;
     }
@@ -44,9 +44,9 @@ QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, boo
     {
         VectorImage* vectorImage = getVectorImageAtIndex(index);
         QImage* image = framesImage.at(index);
-        if(vectorImage->isModified() || size != image->size() )
+        if (vectorImage->isModified() || size != image->size() )
         {
-            if( image->size() != size)
+            if ( image->size() != size)
             {
                 delete image;
                 framesImage[index] = image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
@@ -61,7 +61,7 @@ QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, boo
 QImage* LayerVector::getImageAtFrame(int frameNumber, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
     {
         return NULL;
     }
@@ -75,7 +75,7 @@ QImage* LayerVector::getImageAtFrame(int frameNumber, QSize size, bool simplifie
 QImage* LayerVector::getLastImageAtFrame(int frameNumber, int increment, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
 {
     int index = getLastIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
     {
         return NULL;
     }
@@ -89,7 +89,7 @@ QImage* LayerVector::getLastImageAtFrame(int frameNumber, int increment, QSize s
 
 VectorImage* LayerVector::getVectorImageAtIndex(int index)
 {
-    if( index < 0 || index >= framesVector.size() )
+    if ( index < 0 || index >= framesVector.size() )
     {
         return NULL;
     }
@@ -137,7 +137,7 @@ bool LayerVector::usesColour(int index)
 {
     for(int i=0; i < framesVector.size(); i++)
     {
-        if( framesVector[i]->usesColour(index) ) return true;
+        if ( framesVector[i]->usesColour(index) ) return true;
     }
     return false;
 }
@@ -155,7 +155,7 @@ void LayerVector::removeColour(int index)
 	painter.setPen(QPen(QBrush(Qt::black), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
 	painter.drawRect(0, verticalPosition, timeLineWidth, layerHeight);
 	for(int i=0; i < framesPosition.size(); i++) {
-		if(framesSelected.at(i)) {
+		if (framesSelected.at(i)) {
 			painter.setBrush(QColor(10,10,10));
 			painter.drawRect((framesPosition.at(i)+frameOffset-1)*frameSize, verticalPosition, frameSize, layerHeight);
 		}
@@ -171,7 +171,7 @@ void LayerVector::removeColour(int index)
 void LayerBitmap::mousePress(int frameNumber) {
 	frameClicked = frameNumber;
 	int index = getIndexAtFrame(frameNumber);
-	if(index == -1) {
+	if (index == -1) {
 		// deselect all
 		for(int i=0; i < framesPosition.size(); i++) {
 			framesSelected[i] = false;
@@ -184,7 +184,7 @@ void LayerBitmap::mousePress(int frameNumber) {
 bool LayerVector::addImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
     {
         //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
         framesVector.append(new VectorImage(object));
@@ -208,7 +208,7 @@ bool LayerVector::addImageAtFrame(int frameNumber)
 void LayerVector::removeImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index != -1 && framesPosition.size() != 1)
+    if (index != -1 && framesPosition.size() != 1)
     {
         delete framesVector.at(index);
         framesVector.removeAt(index);
@@ -228,7 +228,7 @@ void LayerVector::removeImageAtFrame(int frameNumber)
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
-    if(getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
+    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
     framesVector[index]->read(path);
     QFileInfo fi(path);
@@ -236,7 +236,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 }
 
 /*void LayerVector::loadImageAtFrame(VectorImage* picture, int frameNumber) {
-	if(getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
+	if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
 	int index = getIndexAtFrame(frameNumber);
 	//image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 	framesVector[index] = picture;
@@ -266,8 +266,8 @@ QString LayerVector::fileName(int frame, int layerID)
 {
     QString layerNumberString = QString::number(layerID);
     QString frameNumberString = QString::number(frame);
-    while( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while( frameNumberString.length() < 3) frameNumberString.prepend("0");
+    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
     return layerNumberString+"."+frameNumberString+".vec";
 }
 
@@ -291,24 +291,24 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 
 void LayerVector::loadDomElement(QDomElement element, QString filePath)
 {
-    if(!element.attribute("id").isNull()) id = element.attribute("id").toInt();
+    if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
     type = element.attribute("type").toInt();
 
     QDomNode imageTag = element.firstChild();
-    while(!imageTag.isNull())
+    while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if(!imageElement.isNull())
+        if (!imageElement.isNull())
         {
-            if(imageElement.tagName() == "image")
+            if (imageElement.tagName() == "image")
             {
-                if(!imageElement.attribute("src").isNull())
+                if (!imageElement.attribute("src").isNull())
                 {
                     QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
                     QFileInfo fi(path);
-                    if(!fi.exists()) path = imageElement.attribute("src");
+                    if (!fi.exists()) path = imageElement.attribute("src");
                     int position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame( path, position );
                 }

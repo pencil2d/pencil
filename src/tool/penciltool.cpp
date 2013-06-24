@@ -18,8 +18,7 @@ void PencilTool::loadSettings()
 {
     QSettings settings("pencil", "pencil");
 
-    properties.width = settings.value("pencilWidth").toDouble();
-    properties.colour = Qt::black;
+    properties.width = settings.value("pencilWidth").toDouble();    
     properties.colourNumber = 0;
     properties.feather = -1;
     properties.opacity = 0.8;

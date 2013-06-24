@@ -113,7 +113,7 @@ LayerCamera::LayerCamera(Object* object) : LayerImage(object)
 
 LayerCamera::~LayerCamera()
 {
-    while(!framesCamera.empty())
+    while (!framesCamera.empty())
         delete framesCamera.takeFirst();
 }
 
@@ -121,7 +121,7 @@ LayerCamera::~LayerCamera()
 
 Camera* LayerCamera::getCameraAtIndex(int index)
 {
-    if( index < 0 || index >= framesCamera.size() )
+    if ( index < 0 || index >= framesCamera.size() )
     {
         return NULL;
     }
@@ -150,22 +150,22 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
     int frame1 = -1;
     int frame2 = -1;
     Camera* camera1 = getCameraAtIndex(index);
-    if(camera1) frame1 = framesPosition.at(index);
+    if (camera1) frame1 = framesPosition.at(index);
     Camera* camera2 = getCameraAtIndex(index+1);
-    if(camera2) frame2 = framesPosition.at(index+1);
-    if(camera1 == NULL && camera2 == NULL)
+    if (camera2) frame2 = framesPosition.at(index+1);
+    if (camera1 == NULL && camera2 == NULL)
     {
         return QMatrix();
     }
-    if(camera1 == NULL && camera2 != NULL)
+    if (camera1 == NULL && camera2 != NULL)
     {
         return camera2->view;
     }
-    if(camera2 == NULL && camera1 != NULL)
+    if (camera2 == NULL && camera1 != NULL)
     {
         return camera1->view;
     }
-    if(camera1 != NULL && camera2 != NULL)
+    if (camera1 != NULL && camera2 != NULL)
     {
         // linear interpolation
         qreal c2 = (frameNumber-frame1+0.0)/(frame2-frame1);
@@ -189,7 +189,7 @@ QRect LayerCamera::getViewRect()
 
 QImage* LayerCamera::getImageAtIndex(int index)
 {
-    /*if( index < 0 || index >= framesImage.size() ) {
+    /*if ( index < 0 || index >= framesImage.size() ) {
     	return NULL;
     } else {
     	return framesImage.at(index);
@@ -200,7 +200,7 @@ QImage* LayerCamera::getImageAtIndex(int index)
 bool LayerCamera::addImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
     {
         //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
         Camera* camera = new Camera();
@@ -213,8 +213,8 @@ bool LayerCamera::addImageAtFrame(int frameNumber)
         bubbleSort();
         int frameNumber1 = frameNumber;
         int frameNumber2 = frameNumber;
-        if(index>0) frameNumber1 = framesPosition.at(index-1);
-        if(index<framesPosition.size()-1) frameNumber1 = framesPosition.at(index+1);
+        if (index>0) frameNumber1 = framesPosition.at(index-1);
+        if (index<framesPosition.size()-1) frameNumber1 = framesPosition.at(index+1);
         emit imageAdded(frameNumber1, frameNumber2);
         return true;
     }
@@ -227,7 +227,7 @@ bool LayerCamera::addImageAtFrame(int frameNumber)
 void LayerCamera::removeImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index != -1  && framesPosition.size() != 1)
+    if (index != -1  && framesPosition.size() != 1)
     {
         delete framesCamera.at(index);
         framesCamera.removeAt(index);
@@ -242,7 +242,7 @@ void LayerCamera::removeImageAtFrame(int frameNumber)
 
 void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
 {
-    if(getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
+    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
     framesCamera[index] = new Camera();
     framesCamera[index]->view = view;
@@ -259,8 +259,8 @@ bool LayerCamera::saveImage(int index, QString path, int layerNumber)
 {
     QString layerNumberString = QString::number(layerNumber);
     QString frameNumberString = QString::number(framesPosition.at(index));
-    while( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while( frameNumberString.length() < 3) frameNumberString.prepend("0");
+    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
     //framesFilename[index] = path+"/"+layerNumberString+"."+frameNumberString+".png";
     framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
     //qDebug() << "Write " << framesFilename.at(index);
@@ -275,12 +275,12 @@ bool LayerCamera::saveImage(int index, QString path, int layerNumber)
 void LayerCamera::editProperties()
 {
     bool ok;
-    if(dialog == NULL) dialog = new CameraPropertiesDialog(name, viewRect.width(), viewRect.height());
+    if (dialog == NULL) dialog = new CameraPropertiesDialog(name, viewRect.width(), viewRect.height());
     dialog->setName(name);
     dialog->setWidth(viewRect.width());
     dialog->setHeight(viewRect.height());
     int result = dialog->exec();
-    if(result == QDialog::Accepted)
+    if (result == QDialog::Accepted)
     {
         name = dialog->getName();
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
@@ -323,12 +323,12 @@ void LayerCamera::loadDomElement(QDomElement element, QString filePath)
     viewRect = QRect(-width/2,-height/2,width,height);
 
     QDomNode imageTag = element.firstChild();
-    while(!imageTag.isNull())
+    while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if(!imageElement.isNull())
+        if (!imageElement.isNull())
         {
-            if(imageElement.tagName() == "camera")
+            if (imageElement.tagName() == "camera")
             {
                 int frame = imageElement.attribute("frame").toInt();
 
@@ -341,7 +341,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString filePath)
 
                 loadImageAtFrame(frame, QMatrix(m11,m12,m21,m22,dx,dy) );
             }
-            /*if(imageElement.tagName() == "image") {
+            /*if (imageElement.tagName() == "image") {
             	int frame = imageElement.attribute("frame").toInt();
             	addImageAtFrame( frame );
             	getBitmapImageAtFrame( frame )->loadDomElement(imageElement, filePath);

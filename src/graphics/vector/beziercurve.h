@@ -47,7 +47,7 @@ public:
     void decreaseColourNumber() { colourNumber--; }
     int getVertexSize() const { return vertex.size(); }
     QPointF getOrigin() const {	return origin; }
-    QPointF getVertex(int i) const { if(i==-1) { return origin; } else { return vertex.at(i);} }
+    QPointF getVertex(int i) const { if (i==-1) { return origin; } else { return vertex.at(i);} }
     QPointF getC1(int i) const { return c1.at(i); }
     QPointF getC2(int i) const { return c2.at(i); }
     qreal getPressure(int i) const { return pressure.at(i); }

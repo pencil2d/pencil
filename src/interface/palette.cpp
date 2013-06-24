@@ -125,7 +125,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
 void Palette::updateList()
 {
-    while(listOfColours->count() > 0)
+    while (listOfColours->count() > 0)
     {
         listOfColours->takeItem(0);
     }
@@ -207,7 +207,7 @@ void Palette::updateSwatch(QColor colour)
 {
     QPixmap colourPixmap(30,30);
     colourPixmap.fill( colour );
-    if(colourSwatch != NULL)
+    if (colourSwatch != NULL)
     {
         colourSwatch->setIcon(QIcon(colourPixmap));
     }
@@ -241,7 +241,7 @@ void Palette::clickAddColorButton()
 {
     QColor prevColor = Qt::white;
 
-    if( currentColourNumber() > -1 )
+    if ( currentColourNumber() > -1 )
     {
         prevColor = editor->object->getColour(currentColourNumber()).colour;
     }
@@ -265,7 +265,7 @@ void Palette::clickRemoveColorButton()
 
 void Palette::closeIfDocked(bool)
 {
-    //if(floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
+    //if (floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
 }
 
 void Palette::setColour(QColor colour)

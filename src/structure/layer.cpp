@@ -63,11 +63,11 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, in
     painter.drawRect(x, y, width, height); // empty rectangle  by default
     //painter.setFont(QFont("helvetica", height/2));
     //painter.drawText(QPoint(10, y+(2*height)/3), name);
-    //if(selected) {
+    //if (selected) {
     //	painter.setBrush(QColor(0,0,0,80));
     //	painter.drawRect(x, y-1, width, height);
     //}
-    if(selected)
+    if (selected)
     {
         QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
         linearGrad.setColorAt(0, QColor(255,255,255,128) );
@@ -86,11 +86,11 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
     painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     painter.drawRect(x, y-1, width, height); // empty rectangle  by default
 
-    if(visible)
+    if (visible)
     {
-        if(allLayers==0)  painter.setBrush(Qt::NoBrush);
-        if(allLayers==1)   painter.setBrush(Qt::darkGray);
-        if((allLayers==2) || selected)  painter.setBrush(Qt::black);
+        if (allLayers==0)  painter.setBrush(Qt::NoBrush);
+        if (allLayers==1)   painter.setBrush(Qt::darkGray);
+        if ((allLayers==2) || selected)  painter.setBrush(Qt::black);
     }
     else
     {
@@ -100,20 +100,20 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawEllipse(x+6, y+4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
-    /*if(selected) {
+    /*if (selected) {
     	painter.setPen(Qt::NoPen);
     	painter.setBrush(QColor(0,0,0,80));
     	painter.drawRect(x, y-1, width, height);
     }*/
-    if(selected)
+    if (selected)
     {
         paintSelection(painter, x, y, width, height);
     }
 
-    if(type == BITMAP) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-bitmap.png") );
-    if(type == VECTOR) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-vector.png") );
-    if(type == SOUND) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-sound.png") );
-    if(type == CAMERA) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-camera.png") );
+    if (type == BITMAP) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-bitmap.png") );
+    if (type == VECTOR) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-vector.png") );
+    if (type == SOUND) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-sound.png") );
+    if (type == CAMERA) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-camera.png") );
 
     painter.setFont(QFont("helvetica", height/2));
     painter.setPen(Qt::black);
@@ -126,7 +126,7 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
     QSettings settings("Pencil","Pencil");
     QString style = settings.value("style").toString();
-    if(style == "aqua")
+    if (style == "aqua")
     {
         linearGrad.setColorAt(0, QColor(225,225,255,100) );
         linearGrad.setColorAt(0.10, QColor(225,225,255,80) );
@@ -163,11 +163,11 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
     //painter.setBrush( Qt::NoBrush );
     //painter.setPen(QPen(QBrush(QColor(0,0,0,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     //painter.drawRect(x, y-1, width, height);
-    /*if(style == "aqua") {
+    /*if (style == "aqua") {
     	QColor col;
-    	if(type == BITMAP) col = QColor(65,65,122);
-    	if(type == VECTOR) col = QColor(50,102,75);
-    	if(type == SOUND) col = QColor(122,65,65);
+    	if (type == BITMAP) col = QColor(65,65,122);
+    	if (type == VECTOR) col = QColor(50,102,75);
+    	if (type == SOUND) col = QColor(122,65,65);
     	painter.setPen(col);
     	painter.drawLine(x,y-1, x+width, y-1);
     }*/
@@ -212,7 +212,7 @@ void Layer::editProperties()
 }*/
 
 /*bool Layer::operator==(Layer colourRef1) {
-	if( (colour == colourRef1.colour) && (name == colourRef1.name) ) {
+	if ( (colour == colourRef1.colour) && (name == colourRef1.name) ) {
 		return true;
 	} else {
 		return false;
@@ -220,7 +220,7 @@ void Layer::editProperties()
 }
 
 bool Layer::operator!=(Layer colourRef1) {
-	if( (colour != colourRef1.colour) || (name != colourRef1.name) ) {
+	if ( (colour != colourRef1.colour) || (name != colourRef1.name) ) {
 		return true;
 	} else {
 		return false;

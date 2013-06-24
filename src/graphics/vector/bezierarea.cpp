@@ -34,11 +34,11 @@ BezierArea::BezierArea(QList<VertexRef> vertexList, int colour)
 
 VertexRef BezierArea::getVertexRef(int i)
 {
-    while(i >= vertex.size() )
+    while (i >= vertex.size() )
     {
         i = i - vertex.size();
     }
-    while(i < 0 )
+    while (i < 0 )
     {
         i = i + vertex.size();
     }
@@ -70,12 +70,12 @@ void BezierArea::loadDomElement(QDomElement element)
     colourNumber = element.attribute("colourNumber").toInt();
 
     QDomNode vertexTag = element.firstChild();
-    while(!vertexTag.isNull())
+    while (!vertexTag.isNull())
     {
         QDomElement vertexElement = vertexTag.toElement();
-        if(!vertexElement.isNull())
+        if (!vertexElement.isNull())
         {
-            if(vertexElement.tagName() == "vertex")
+            if (vertexElement.tagName() == "vertex")
             {
                 vertex.append( VertexRef(vertexElement.attribute("curve").toInt() , vertexElement.attribute("vertex").toInt() )  );
             }

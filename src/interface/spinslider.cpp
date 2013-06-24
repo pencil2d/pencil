@@ -42,7 +42,7 @@ SpinSlider::SpinSlider(QString text, QString type, QString dataType, qreal min, 
 void SpinSlider::changeValue(qreal value)
 {
     this->value = value;
-    if(dataType == "integer")
+    if (dataType == "integer")
     {
         valueLabel->setText( QString::number(qRound(value)) );
     }
@@ -55,16 +55,16 @@ void SpinSlider::changeValue(qreal value)
 void SpinSlider::changeValue(int value)
 {
     qreal value2 = 0.0;
-    if(type=="linear") value2 = min + value*(max-min)/100;
-    if(type=="log") value2 = min * std::exp( value*std::log(max/min) / 100 );
+    if (type=="linear") value2 = min + value*(max-min)/100;
+    if (type=="log") value2 = min * std::exp( value*std::log(max/min) / 100 );
     changeValue(value2);
 }
 
 void SpinSlider::setValue(qreal value)
 {
     qreal value2 = 0.0;
-    if(type=="linear") value2 = qRound( 100*(value-min)/(max-min) );
-    if(type=="log") value2 = qRound( 100.0*std::log(value/0.2)/log(1000.0) );
+    if (type=="linear") value2 = qRound( 100*(value-min)/(max-min) );
+    if (type=="log") value2 = qRound( 100.0*std::log(value/0.2)/log(1000.0) );
     slider->setSliderPosition(value2);
     changeValue(value);
 }

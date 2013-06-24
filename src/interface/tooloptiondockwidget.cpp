@@ -187,7 +187,7 @@ void ToolOptionDockWidget::setFollowContour(int x)   // x = -1, 0, 1
 
 void ToolOptionDockWidget::setColour(QColor x)
 {
-    QPixmap colourSwatch(30,30);
+    QPixmap colourSwatch(30, 30);
     colourSwatch.fill(x);
     colorChooseButton->setIcon(colourSwatch);
 }

@@ -39,7 +39,7 @@ VertexRef VertexRef::prevVertex()
 
 bool VertexRef::operator==(VertexRef vertexRef1)
 {
-    if( (curveNumber == vertexRef1.curveNumber) && (vertexNumber == vertexRef1.vertexNumber))
+    if ( (curveNumber == vertexRef1.curveNumber) && (vertexNumber == vertexRef1.vertexNumber))
     {
         return true;
     }
@@ -51,7 +51,7 @@ bool VertexRef::operator==(VertexRef vertexRef1)
 
 bool VertexRef::operator!=(VertexRef vertexRef1)
 {
-    if( (curveNumber != vertexRef1.curveNumber) || (vertexNumber != vertexRef1.vertexNumber))
+    if ( (curveNumber != vertexRef1.curveNumber) || (vertexNumber != vertexRef1.vertexNumber))
     {
         return true;
     }

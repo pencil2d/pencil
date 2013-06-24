@@ -29,7 +29,7 @@ LayerBitmap::LayerBitmap(Object* object) : LayerImage(object)
 
 LayerBitmap::~LayerBitmap()
 {
-    while(!framesBitmap.empty())
+    while (!framesBitmap.empty())
         delete framesBitmap.takeFirst();
 }
 
@@ -37,7 +37,7 @@ LayerBitmap::~LayerBitmap()
 
 BitmapImage* LayerBitmap::getBitmapImageAtIndex(int index)
 {
-    if( index < 0 || index >= framesBitmap.size() )
+    if ( index < 0 || index >= framesBitmap.size() )
     {
         return NULL;
     }
@@ -64,7 +64,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 
 QImage* LayerBitmap::getImageAtIndex(int index)
 {
-    /*if( index < 0 || index >= framesImage.size() ) {
+    /*if ( index < 0 || index >= framesImage.size() ) {
     	return NULL;
     } else {
     	return framesImage.at(index);
@@ -75,7 +75,7 @@ QImage* LayerBitmap::getImageAtIndex(int index)
 bool LayerBitmap::addImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
     {
         //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
         framesBitmap.append(new BitmapImage(object));
@@ -97,7 +97,7 @@ bool LayerBitmap::addImageAtFrame(int frameNumber)
 void LayerBitmap::removeImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index != -1  && framesPosition.size() != 1)
+    if (index != -1  && framesPosition.size() != 1)
     {
         delete framesBitmap.at(index);
         framesBitmap.removeAt(index);
@@ -114,7 +114,7 @@ void LayerBitmap::removeImageAtFrame(int frameNumber)
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
     //qDebug() << path;
-    if(getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
+    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
     framesBitmap[index] = new BitmapImage(object, path, topLeft);
     QFileInfo fi(path);
@@ -143,8 +143,8 @@ QString LayerBitmap::fileName(int frame, int layerID)
 {
     QString layerNumberString = QString::number(layerID);
     QString frameNumberString = QString::number(frame);
-    while( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while( frameNumberString.length() < 3) frameNumberString.prepend("0");
+    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
     return layerNumberString+"."+frameNumberString+".png";
 }
 
@@ -169,28 +169,28 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
 
 void LayerBitmap::loadDomElement(QDomElement element, QString filePath)
 {
-    if(!element.attribute("id").isNull()) id = element.attribute("id").toInt();
+    if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
     type = element.attribute("type").toInt();
 
     QDomNode imageTag = element.firstChild();
-    while(!imageTag.isNull())
+    while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if(!imageElement.isNull())
+        if (!imageElement.isNull())
         {
-            if(imageElement.tagName() == "image")
+            if (imageElement.tagName() == "image")
             {
                 QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
                 QFileInfo fi(path);
-                if(!fi.exists()) path = imageElement.attribute("src");
+                if (!fi.exists()) path = imageElement.attribute("src");
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
                 loadImageAtFrame( path, QPoint(x,y), position );
             }
-            /*if(imageElement.tagName() == "image") {
+            /*if (imageElement.tagName() == "image") {
             	int frame = imageElement.attribute("frame").toInt();
             	addImageAtFrame( frame );
             	getBitmapImageAtFrame( frame )->loadDomElement(imageElement, filePath);

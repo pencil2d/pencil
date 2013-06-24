@@ -88,19 +88,19 @@ int main(int argc, char* argv[])
                 mainWindow.editor->openObject(inputFile);
                 // Detecting format
                 QString format = "";
-                if(jobExportSequenceOutput.endsWith(".png"))
+                if (jobExportSequenceOutput.endsWith(".png"))
                 {
                     format = "PNG";
                 }
-                else if(jobExportSequenceOutput.endsWith(".jpg"))
+                else if (jobExportSequenceOutput.endsWith(".jpg"))
                 {
                     format = "JPG";
                 }
-                else if(jobExportSequenceOutput.endsWith(".tif"))
+                else if (jobExportSequenceOutput.endsWith(".tif"))
                 {
                     format = "TIF";
                 }
-                else if(jobExportSequenceOutput.endsWith(".bmp"))
+                else if (jobExportSequenceOutput.endsWith(".bmp"))
                 {
                     format = "BMP";
                 }

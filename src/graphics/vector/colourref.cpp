@@ -29,7 +29,7 @@ ColourRef::ColourRef(QColor theColour, QString theName)
 
 bool ColourRef::operator==(ColourRef colourRef1)
 {
-    if( (colour == colourRef1.colour) && (name == colourRef1.name) )
+    if ( (colour == colourRef1.colour) && (name == colourRef1.name) )
     {
         return true;
     }
@@ -41,7 +41,7 @@ bool ColourRef::operator==(ColourRef colourRef1)
 
 bool ColourRef::operator!=(ColourRef colourRef1)
 {
-    if( (colour != colourRef1.colour) || (name != colourRef1.name) )
+    if ( (colour != colourRef1.colour) || (name != colourRef1.name) )
     {
         return true;
     }

@@ -442,7 +442,7 @@ void MainWindow2::exportFile()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(action->parent());
-    if(exportPlugin)
+    if (exportPlugin)
     {
         //exportPlugin->exportFile();
     }
@@ -509,7 +509,7 @@ void MainWindow2::openDocument()
         }
 
         QFileInfo fileInfo(fileName);
-        if( fileInfo.isDir() )
+        if ( fileInfo.isDir() )
         {
             return;
         }
@@ -550,7 +550,7 @@ bool MainWindow2::saveAsNewDocument()
     }
     else
     {
-        if(! fileName.endsWith(".pcl"))
+        if (! fileName.endsWith(".pcl"))
         {
             fileName =  fileName + ".pcl";
         }
@@ -566,10 +566,10 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     QString filePath = strSavedFilename;
 
     QFileInfo fileInfo(filePath);
-    if(fileInfo.isDir()) return false;
+    if (fileInfo.isDir()) return false;
 
     QFileInfo dataInfo(filePath+".data");
-    if(!dataInfo.exists())
+    if (!dataInfo.exists())
     {
         QDir dir(fileInfo.absolutePath()); // the directory where filePath is or will be saved
         dir.mkpath(filePath+".data"); // creates a directory with the same name +".data"
@@ -591,9 +591,9 @@ bool MainWindow2::saveObject(QString strSavedFilename)
         qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
         progressValue = (i*100)/nLayers;
         progress.setValue(progressValue);
-        if(layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
-        if(layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(filePath+".data", i);
-        if(layer->type == Layer::SOUND) ((LayerSound*)layer)->saveImages(filePath+".data", i);
+        if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
+        if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(filePath+".data", i);
+        if (layer->type == Layer::SOUND) ((LayerSound*)layer)->saveImages(filePath+".data", i);
     }
 
     // save palette
@@ -732,7 +732,7 @@ void MainWindow2::writeSettings()
     settings.setValue("editorSize", size());
 
     Palette* colourPalette = m_colorPalette;
-    if(colourPalette != NULL)
+    if (colourPalette != NULL)
     {
         settings.setValue("colourPalettePosition", colourPalette->pos());
         settings.setValue("colourPaletteSize", colourPalette->size());
@@ -740,7 +740,7 @@ void MainWindow2::writeSettings()
     }
 
     TimeLine* timelinePalette = editor->getTimeLine();
-    if(timelinePalette != NULL)
+    if (timelinePalette != NULL)
     {
         settings.setValue("timelinePalettePosition", timelinePalette->pos());
         settings.setValue("timelinePaletteSize", timelinePalette->size());
@@ -748,7 +748,7 @@ void MainWindow2::writeSettings()
     }
 
     QDockWidget* drawPalette = editor->toolSet->drawPalette;
-    if(drawPalette != NULL)
+    if (drawPalette != NULL)
     {
         settings.setValue("drawPalettePosition", drawPalette->pos());
         settings.setValue("drawPaletteSize", drawPalette->size());
@@ -756,7 +756,7 @@ void MainWindow2::writeSettings()
     }
 
     QDockWidget* optionPalette = m_toolOptionWidget;
-    if(optionPalette != NULL)
+    if (optionPalette != NULL)
     {
         settings.setValue("optionPalettePosition", optionPalette->pos());
         settings.setValue("optionPaletteSize", optionPalette->size());
@@ -764,7 +764,7 @@ void MainWindow2::writeSettings()
     }
 
     QDockWidget* displayPalette = m_displayOptionWidget;
-    if(displayPalette != NULL)
+    if (displayPalette != NULL)
     {
         settings.setValue("displayPalettePosition", displayPalette->pos());
         settings.setValue("displayPaletteSize", displayPalette->size());
@@ -832,7 +832,7 @@ void MainWindow2::importPalette()
 {
     QSettings settings("Pencil","Pencil");
     QString initialPath = settings.value("lastPalettePath", QVariant(QDir::homePath())).toString();
-    if(initialPath.isEmpty())
+    if (initialPath.isEmpty())
     {
         initialPath = QDir::homePath() + "/untitled.xml";
     }

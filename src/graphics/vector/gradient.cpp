@@ -43,7 +43,7 @@ void Gradient::paint1(QPainter& painter, VectorImage* v, int i, int gradients)
     for( int j=0; j<v->area[i].vertex.size(); j++)
     {
         qreal width = v->curve[ v->area[i].getVertexRef(j).curveNumber ].getFeather();
-        if( width > gradientWidth) gradientWidth = width;
+        if ( width > gradientWidth) gradientWidth = width;
     }
 
     QPainterPath path;
@@ -57,9 +57,9 @@ void Gradient::paint1(QPainter& painter, VectorImage* v, int i, int gradients)
         P2 = v->getVertex( P2Ref );
         bool P1invisible = v->curve[ P1Ref.curveNumber ].isInvisible();
         bool P2invisible = v->curve[ P2Ref.curveNumber ].isInvisible();
-        if( P1invisible || P2invisible )
+        if ( P1invisible || P2invisible )
         {
-            if(P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
+            if (P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
             {
                 C1 = v->getC1( P2Ref );
                 C2 = v->getC2( P2Ref );
@@ -69,7 +69,7 @@ void Gradient::paint1(QPainter& painter, VectorImage* v, int i, int gradients)
                 C2 =  v->getC1( P1Ref );
                 C1 =  v->getC2( P1Ref );
             }
-            if( j==1 || !P1invisible) path.moveTo(P1);
+            if ( j==1 || !P1invisible) path.moveTo(P1);
             path.cubicTo(C1,C2,P2);
         }
     }
@@ -108,7 +108,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
     for( int j=0; j<v->area[i].vertex.size(); j++)
     {
         qreal width = v->curve[ v->area[i].getVertexRef(j).curveNumber ].getFeather();
-        if( width > gradientWidth) gradientWidth = width;
+        if ( width > gradientWidth) gradientWidth = width;
     }
 
     QLinearGradient linearGrad(QPointF(0,0), QPointF(0,1));
@@ -159,7 +159,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
         qreal width2 = v->curve[ P2Ref.curveNumber ].getFeather();
         gradientWidth = qMax(width1, width2);
 
-        if(P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
+        if (P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
         {
             C1 = v->getC1( P2Ref );
             C2 = v->getC2( P2Ref );
@@ -170,15 +170,15 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
             C1 =  v->getC2( P1Ref );
         }
         // -------------------------------------------------------------------------------------------------
-        if( (P1invisible || P2invisible) && gradientWidth != 0.0 )     //if( QLineF(P1,P2).length() <= 0.5)
+        if ( (P1invisible || P2invisible) && gradientWidth != 0.0 )     //if ( QLineF(P1,P2).length() <= 0.5)
         {
 
-            if(  (P1Ref.curveNumber != P2Ref.curveNumber) || (j==v->area[i].vertex.size()) )
+            if (  (P1Ref.curveNumber != P2Ref.curveNumber) || (j==v->area[i].vertex.size()) )
             {
                 QPointF prevPoint, nextPoint, prevC1, prevC2, nextC1, nextC2;
-                if(true)   // j > 1 && j < v->area[i].vertex.size()-1
+                if (true)   // j > 1 && j < v->area[i].vertex.size()-1
                 {
-                    if( P1Ref.curveNumber != v->area[i].getVertexRef(j-2).curveNumber)   // just to be sure
+                    if ( P1Ref.curveNumber != v->area[i].getVertexRef(j-2).curveNumber)   // just to be sure
                     {
                         VertexRef swap = P1Ref;
                         P1Ref = P2Ref;
@@ -191,39 +191,39 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                         prevIndex++;
                         prevPoint = v->getVertex( v->area[i].getVertexRef(j-2-prevIndex) );
                     }
-                    while( prevPoint == P1);
+                    while ( prevPoint == P1);
                     int nextIndex = -1;
                     do
                     {
                         nextIndex++;
                         nextPoint = v->getVertex( v->area[i].getVertexRef(j+1+nextIndex) );
                     }
-                    while( nextPoint == P2);
+                    while ( nextPoint == P2);
                     //qDebug() << "indices =" << prevIndex << nextIndex;
 
-                    if(v->area[i].getVertexRef(j-2).vertexNumber < P1Ref.vertexNumber )   // the points follow the curve progression
+                    if (v->area[i].getVertexRef(j-2).vertexNumber < P1Ref.vertexNumber )   // the points follow the curve progression
                     {
                         prevC2 = v->getC2( v->area[i].getVertexRef(j-1-prevIndex) );
                         prevC1 = v->getC1( v->area[i].getVertexRef(j-1-prevIndex) );
-                        if(prevC2 == P1) prevC2 = prevC1;
+                        if (prevC2 == P1) prevC2 = prevC1;
                     }
                     else
                     {
                         prevC2 = v->getC1( v->area[i].getVertexRef(j-2-prevIndex) );
                         prevC1 = v->getC2( v->area[i].getVertexRef(j-2-prevIndex) );
-                        if(prevC2 == P1) prevC2 = prevC1;
+                        if (prevC2 == P1) prevC2 = prevC1;
                     }
-                    if(P2Ref.vertexNumber < v->area[i].getVertexRef(j+1).vertexNumber )   // the points follow the curve progression
+                    if (P2Ref.vertexNumber < v->area[i].getVertexRef(j+1).vertexNumber )   // the points follow the curve progression
                     {
                         nextC1 = v->getC1( v->area[i].getVertexRef(j+1+nextIndex) );
                         nextC2 = v->getC2( v->area[i].getVertexRef(j+1+nextIndex) );
-                        if(nextC1 == P2) nextC1 = nextC2;
+                        if (nextC1 == P2) nextC1 = nextC2;
                     }
                     else
                     {
                         nextC1 = v->getC2( v->area[i].getVertexRef(j+nextIndex) );
                         nextC2 = v->getC1( v->area[i].getVertexRef(j+nextIndex) );
-                        if(nextC1 == P2) nextC1 = nextC2;
+                        if (nextC1 == P2) nextC1 = nextC2;
                     }
                     QLineF tangent1, tangent2, normal1, normal2;
                     tangent1 = QLineF(prevC2, P1).unitVector();
@@ -237,12 +237,12 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
 
                     qreal t1 = 0.2;
                     QPointF prevClosePoint = P1*(1-t1)*(1-t1)*(1-t1) + 3*prevC2*(1-t1)*(1-t1)*t1 + 3*prevC1*(1-t1)*t1*t1 + t1*t1*t1*prevPoint;
-                    if( v->area[i].path.contains( prevClosePoint + 0.01*normalVec1 ) )  	// we make sure the normal vector points outwards
+                    if ( v->area[i].path.contains( prevClosePoint + 0.01*normalVec1 ) )  	// we make sure the normal vector points outwards
                     {
                         normalVec1 = -normalVec1;
                     }
                     QPointF nextClosePoint = P2*(1-t1)*(1-t1)*(1-t1) + 3*nextC1*(1-t1)*(1-t1)*t1 + 3*nextC2*(1-t1)*t1*t1 + t1*t1*t1*nextPoint;
-                    if( v->area[i].path.contains( nextClosePoint + 0.01*normalVec2 ) )  	// we make sure the normal vector points outwards
+                    if ( v->area[i].path.contains( nextClosePoint + 0.01*normalVec2 ) )  	// we make sure the normal vector points outwards
                     {
                         normalVec2 = -normalVec2;
                     }
@@ -252,19 +252,19 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                     //QPointF midVector = midLine.p2() - midLine.p1();
 
                     QPointF vec1, vec2, midVector;
-                    if(P1invisible && P2invisible)
+                    if (P1invisible && P2invisible)
                     {
                         vec1 = normalVec1;
                         vec2 = normalVec2;
                         midVector = normalVec1 + normalVec2;
                     }
-                    if(P1invisible && !P2invisible)
+                    if (P1invisible && !P2invisible)
                     {
                         vec1 = normalVec1;
                         vec2 = -tangentVec2;
                         midVector = -tangentVec1 - tangentVec2;
                     }
-                    if(!P1invisible && P2invisible)
+                    if (!P1invisible && P2invisible)
                     {
                         vec1 = tangentVec1;
                         vec2 = normalVec2;
@@ -284,16 +284,16 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                     radialGrad.setFocalPoint(P1);
                     radialGrad.setRadius(gradientWidth);
 
-                    if(buffer)
+                    if (buffer)
                     {
                         // -- mask --
                         //int areaNumber = -1;
                         //int areaNumber = getAreaNumber(P1 + 0.1*(-tangentVec1 + 0.1*normalVec1) );
                         //int areaNumber = getAreaNumber(prevClosePoint + 0.01*normalVec1 );
-                        //if( areaNumber == -1 || areaNumber == i) areaNumber = getAreaNumber(nextClosePoint + 0.01*normalVec2 );
+                        //if ( areaNumber == -1 || areaNumber == i) areaNumber = getAreaNumber(nextClosePoint + 0.01*normalVec2 );
                         int areaNumber = v->getFirstAreaNumber(midPoint + 0.01*midVector);
                         QPainterPath maskPath;
-                        if( areaNumber != -1 && areaNumber != i)
+                        if ( areaNumber != -1 && areaNumber != i)
                         {
                             maskPath = painterMatrix.map( v->area[areaNumber].path );
                         }
@@ -301,7 +301,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                         subRect = painterMatrix.mapRect( extension.controlPointRect() ).toRect();
                         subRect = subRect.intersected( rect );
                         subBufferImage = new QImage(subRect.size(), QImage::Format_ARGB32_Premultiplied );
-                        if(!subBufferImage->isNull())
+                        if (!subBufferImage->isNull())
                         {
                             subBufferImage->fill(qRgba(0,0,0,0));
                             painter3.begin(subBufferImage);
@@ -320,17 +320,17 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                                 {
                                     int newX = subRect.left()-rect.left()+x;
                                     int newY = subRect.top()-rect.top()+y;
-                                    if( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height())
+                                    if ( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height())
                                     {
-                                        if( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) )
+                                        if ( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) )
                                         {
-                                            if(areaNumber == -1 || areaNumber == i)
+                                            if (areaNumber == -1 || areaNumber == i)
                                             {
                                                 bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
                                             }
                                             else
                                             {
-                                                if( maskPath.contains(subRect.topLeft() + QPointF(x,y)) )
+                                                if ( maskPath.contains(subRect.topLeft() + QPointF(x,y)) )
                                                 {
                                                     bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
                                                 }
@@ -373,14 +373,14 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                 }
             }
             // -------------------------------------------------------------------------------------------------
-            if( (P1Ref.curveNumber == P2Ref.curveNumber) && (j!=v->area[i].vertex.size()) && (P1 != P2))   // therefore both P1 and P2 are invisible
+            if ( (P1Ref.curveNumber == P2Ref.curveNumber) && (j!=v->area[i].vertex.size()) && (P1 != P2))   // therefore both P1 and P2 are invisible
             {
                 QLineF normal = QLineF(P1, P2).normalVector().unitVector();
                 QPointF normalVec = normal.p2() - normal.p1();
 
                 QPointF midPoint = 0.125*(P1 + 3*C1 + 3*C2 + P2);
                 int sign = 1;
-                if( v->area[i].path.contains( midPoint - 0.01*normalVec ) )  	// the path of the area (probably) has a negative orientation
+                if ( v->area[i].path.contains( midPoint - 0.01*normalVec ) )  	// the path of the area (probably) has a negative orientation
                 {
                     sign = -1;
                 }
@@ -389,19 +389,19 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                 //int areaNumber = -1;
                 int areaNumber = v->getFirstAreaNumber(midPoint - 0.01*sign*normalVec);
                 QPainterPath maskPath;
-                if( areaNumber != -1 )
+                if ( areaNumber != -1 )
                 {
                     maskPath = painterMatrix.map( v->area[areaNumber].path );
                 }
                 // ----------
 
                 int subdivisions = 1;
-                if(gradients == 1) subdivisions = 4;
+                if (gradients == 1) subdivisions = 4;
                 for(int incr = 0; incr < subdivisions; incr++)
                 {
                     qreal t1 = (incr-0.0001/scale)/subdivisions;
                     qreal t2 = (incr+1+0.0001/scale)/subdivisions;
-                    if(buffer)
+                    if (buffer)
                     {
                         t1 = (incr-0.03/scale)/subdivisions;
                         t2 = (incr+1+0.03/scale)/subdivisions;
@@ -423,7 +423,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
 
                     QPainterPath extension;
                     extension.moveTo(Q1 + 4.0*normalVec1/subdivisions);
-                    if( normal1.intersect(normal2, intersectionPoint) == QLineF::BoundedIntersection)
+                    if ( normal1.intersect(normal2, intersectionPoint) == QLineF::BoundedIntersection)
                     {
                         extension.lineTo( *intersectionPoint );
                     }
@@ -439,15 +439,15 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                     linearGrad.setStart(Q1);
                     linearGrad.setFinalStop(Q1 - gradientWidth*normalVec3);
 
-                    if(buffer)
+                    if (buffer)
                     {
-                        if(subBuffer)
+                        if (subBuffer)
                         {
 
                             subRect = painterMatrix.mapRect( extension.controlPointRect() ).toRect().adjusted(-1,-1,1,1);
                             subRect = subRect.intersected( rect );
                             subBufferImage = new QImage(subRect.size(), QImage::Format_ARGB32_Premultiplied );
-                            if(!subBufferImage->isNull())
+                            if (!subBufferImage->isNull())
                             {
                                 subBufferImage->fill(qRgba(0,0,0,0));
                                 painter3.begin(subBufferImage);
@@ -466,18 +466,18 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                                     {
                                         int newX = subRect.left()-rect.left()+x;
                                         int newY = subRect.top()-rect.top()+y;
-                                        if( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height())
+                                        if ( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height())
                                         {
-                                            if( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) )
+                                            if ( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) )
                                             {
                                                 //bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
-                                                if(areaNumber == -1)
+                                                if (areaNumber == -1)
                                                 {
                                                     bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
                                                 }
                                                 else
                                                 {
-                                                    if( maskPath.contains(subRect.topLeft() + QPointF(x,y)) )
+                                                    if ( maskPath.contains(subRect.topLeft() + QPointF(x,y)) )
                                                     {
                                                         bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
                                                     }
@@ -522,7 +522,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
         }
     }
 
-    if(buffer && !bufferImage->isNull())
+    if (buffer && !bufferImage->isNull())
     {
         painter2.end();
         painter.setWorldMatrixEnabled(false);
@@ -552,13 +552,13 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
     qreal gradientWidth = 0.0;
     for( int j=0; j<v->area[i].vertex.size(); j++)
     {
-        if( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() )
+        if ( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() )
         {
             qreal width = v->curve[ v->area[i].getVertexRef(j).curveNumber ].getFeather();
-            if( width > gradientWidth) gradientWidth = width;
+            if ( width > gradientWidth) gradientWidth = width;
         }
     }
-    if(gradientWidth == 0.0) return;
+    if (gradientWidth == 0.0) return;
 
     // ---- linear and radial gradient of exponentially decaying colour ---
     QLinearGradient linearGrad(QPointF(0,0), QPointF(0,1));
@@ -611,7 +611,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
         qreal width2 = v->curve[ P2Ref.curveNumber ].getFeather();
         gradientWidth = qMax(width1, width2);
 
-        if(P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
+        if (P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
         {
             C1 = v->getC1( P2Ref );
             C2 = v->getC2( P2Ref );
@@ -622,16 +622,16 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
             C1 =  v->getC2( P1Ref );
         }
         // -------------------------- one of the two points is invisible ------------------------------------
-        if( (P1invisible || P2invisible) && gradientWidth != 0.0 )     //if( QLineF(P1,P2).length() <= 0.5)
+        if ( (P1invisible || P2invisible) && gradientWidth != 0.0 )     //if ( QLineF(P1,P2).length() <= 0.5)
         {
 
             // ----------------------- junction between two curves ("angular point") -----------------------------
-            if(  (P1Ref.curveNumber != P2Ref.curveNumber) || (j==v->area[i].vertex.size()) )
+            if (  (P1Ref.curveNumber != P2Ref.curveNumber) || (j==v->area[i].vertex.size()) )
             {
                 QPointF prevPoint, nextPoint, prevC1, prevC2, nextC1, nextC2;
-                if(true)   // j > 1 && j < v->area[i].vertex.size()-1
+                if (true)   // j > 1 && j < v->area[i].vertex.size()-1
                 {
-                    if( P1Ref.curveNumber != v->area[i].getVertexRef(j-2).curveNumber)   // just to be sure
+                    if ( P1Ref.curveNumber != v->area[i].getVertexRef(j-2).curveNumber)   // just to be sure
                     {
                         VertexRef swap = P1Ref;
                         P1Ref = P2Ref;
@@ -644,39 +644,39 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                         prevIndex++;
                         prevPoint = v->getVertex( v->area[i].getVertexRef(j-2-prevIndex) );
                     }
-                    while( prevPoint == P1);
+                    while ( prevPoint == P1);
                     int nextIndex = -1;
                     do
                     {
                         nextIndex++;
                         nextPoint = v->getVertex( v->area[i].getVertexRef(j+1+nextIndex) );
                     }
-                    while( nextPoint == P2);
+                    while ( nextPoint == P2);
                     //qDebug() << "indices =" << prevIndex << nextIndex;
 
-                    if(v->area[i].getVertexRef(j-2).vertexNumber < P1Ref.vertexNumber )   // the points follow the curve progression
+                    if (v->area[i].getVertexRef(j-2).vertexNumber < P1Ref.vertexNumber )   // the points follow the curve progression
                     {
                         prevC2 = v->getC2( v->area[i].getVertexRef(j-1-prevIndex) );
                         prevC1 = v->getC1( v->area[i].getVertexRef(j-1-prevIndex) );
-                        if(prevC2 == P1) prevC2 = prevC1;
+                        if (prevC2 == P1) prevC2 = prevC1;
                     }
                     else
                     {
                         prevC2 = v->getC1( v->area[i].getVertexRef(j-2-prevIndex) );
                         prevC1 = v->getC2( v->area[i].getVertexRef(j-2-prevIndex) );
-                        if(prevC2 == P1) prevC2 = prevC1;
+                        if (prevC2 == P1) prevC2 = prevC1;
                     }
-                    if(P2Ref.vertexNumber < v->area[i].getVertexRef(j+1).vertexNumber )   // the points follow the curve progression
+                    if (P2Ref.vertexNumber < v->area[i].getVertexRef(j+1).vertexNumber )   // the points follow the curve progression
                     {
                         nextC1 = v->getC1( v->area[i].getVertexRef(j+1+nextIndex) );
                         nextC2 = v->getC2( v->area[i].getVertexRef(j+1+nextIndex) );
-                        if(nextC1 == P2) nextC1 = nextC2;
+                        if (nextC1 == P2) nextC1 = nextC2;
                     }
                     else
                     {
                         nextC1 = v->getC2( v->area[i].getVertexRef(j+nextIndex) );
                         nextC2 = v->getC1( v->area[i].getVertexRef(j+nextIndex) );
-                        if(nextC1 == P2) nextC1 = nextC2;
+                        if (nextC1 == P2) nextC1 = nextC2;
                     }
                     QLineF tangent1, tangent2, normal1, normal2;
                     tangent1 = QLineF(prevC2, P1).unitVector();
@@ -690,12 +690,12 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 
                     qreal t1 = 0.2;
                     QPointF prevClosePoint = P1*(1-t1)*(1-t1)*(1-t1) + 3*prevC2*(1-t1)*(1-t1)*t1 + 3*prevC1*(1-t1)*t1*t1 + t1*t1*t1*prevPoint;
-                    if( v->area[i].path.contains( prevClosePoint + 0.01*normalVec1 ) )  	// we make sure the normal vector points outwards
+                    if ( v->area[i].path.contains( prevClosePoint + 0.01*normalVec1 ) )  	// we make sure the normal vector points outwards
                     {
                         normalVec1 = -normalVec1;
                     }
                     QPointF nextClosePoint = P2*(1-t1)*(1-t1)*(1-t1) + 3*nextC1*(1-t1)*(1-t1)*t1 + 3*nextC2*(1-t1)*t1*t1 + t1*t1*t1*nextPoint;
-                    if( v->area[i].path.contains( nextClosePoint + 0.01*normalVec2 ) )  	// we make sure the normal vector points outwards
+                    if ( v->area[i].path.contains( nextClosePoint + 0.01*normalVec2 ) )  	// we make sure the normal vector points outwards
                     {
                         normalVec2 = -normalVec2;
                     }
@@ -705,19 +705,19 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                     //QPointF midVector = midLine.p2() - midLine.p1();
 
                     QPointF vec1, vec2, midVector;
-                    if(P1invisible && P2invisible)
+                    if (P1invisible && P2invisible)
                     {
                         vec1 = normalVec1;
                         vec2 = normalVec2;
                         midVector = normalVec1 + normalVec2;
                     }
-                    if(P1invisible && !P2invisible)
+                    if (P1invisible && !P2invisible)
                     {
                         vec1 = normalVec1;
                         vec2 = -tangentVec2;
                         midVector = -tangentVec1 - tangentVec2;
                     }
-                    if(!P1invisible && P2invisible)
+                    if (!P1invisible && P2invisible)
                     {
                         vec1 = tangentVec1;
                         vec2 = normalVec2;
@@ -738,7 +738,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                     radialGrad.setRadius(gradientWidth);
 
                     int areaNumber = v->getFirstAreaNumber(midPoint + 1.01*(vec1+vec2) );
-                    if(areaNumber != -1)
+                    if (areaNumber != -1)
                     {
                         painter.setClipping(true);
                         painter.setClipPath( v->area[areaNumber].path );
@@ -746,23 +746,23 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                         //painter.setClipPath( v->area[i].path, Qt::UniteClip );
                         painter.fillPath( extension, QBrush(radialGrad) );
                         painter.setClipping(false);
-                        //if(niceGradients) painter.strokePath( extension, QPen(Qt::gray) );
+                        //if (niceGradients) painter.strokePath( extension, QPen(Qt::gray) );
                     }
                     //painter.strokePath( extension, QPen(Qt::gray) );
-                    //if(areaNumber!=-1) painter.fillRect( QRectF(midPoint + 1.01*(vec1+vec2), QSizeF(0.2,0.2) ), Qt::red );
-                    //if(areaNumber==-1) painter.fillRect( QRectF(midPoint + 1.01*(vec1+vec2), QSizeF(0.2,0.2) ), Qt::blue );
+                    //if (areaNumber!=-1) painter.fillRect( QRectF(midPoint + 1.01*(vec1+vec2), QSizeF(0.2,0.2) ), Qt::red );
+                    //if (areaNumber==-1) painter.fillRect( QRectF(midPoint + 1.01*(vec1+vec2), QSizeF(0.2,0.2) ), Qt::blue );
                 }
             }
 
             // -------------------- the two points are separated and on the same curve ------------------------------
-            if( (P1Ref.curveNumber == P2Ref.curveNumber) && (j!=v->area[i].vertex.size()) && (P1 != P2))   // therefore both P1 and P2 are invisible
+            if ( (P1Ref.curveNumber == P2Ref.curveNumber) && (j!=v->area[i].vertex.size()) && (P1 != P2))   // therefore both P1 and P2 are invisible
             {
                 QLineF normal = QLineF(P1, P2).normalVector().unitVector();
                 QPointF normalVec = normal.p2() - normal.p1();
 
                 QPointF midPoint = 0.125*(P1 + 3*C1 + 3*C2 + P2);
                 int sign = 1;
-                if( v->area[i].path.contains( midPoint - 0.01*normalVec ) )  	// the path of the area (probably) has a negative orientation
+                if ( v->area[i].path.contains( midPoint - 0.01*normalVec ) )  	// the path of the area (probably) has a negative orientation
                 {
                     sign = -1;
                 }
@@ -772,7 +772,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                 //int areaNumber = -1;
                 int areaNumber = v->getFirstAreaNumber(midPoint - 0.01*sign*normalVec);
                 //QPainterPath maskPath;
-                /*if( areaNumber != -1 ) {
+                /*if ( areaNumber != -1 ) {
                 	//maskPath = painterMatrix.map( v->area[areaNumber].path );
                 	painter.setClipping(true);
                 	painter.setClipPath( v->area[areaNumber].path );
@@ -785,12 +785,12 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                 // ----------
 
                 int subdivisions = 1;
-                if(gradients == 1) subdivisions = 4;
+                if (gradients == 1) subdivisions = 4;
                 for(int incr = 0; incr < subdivisions; incr++)
                 {
                     qreal t1 = (incr-0.0001/scale)/subdivisions;
                     qreal t2 = (incr+1+0.0001/scale)/subdivisions;
-                    //if(buffer) {
+                    //if (buffer) {
                     //	t1 = (incr-0.03/scale)/subdivisions;
                     //	t2 = (incr+1+0.03/scale)/subdivisions;
                     //}
@@ -811,7 +811,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 
                     QPainterPath extension;
                     extension.moveTo(Q1 + 4.0*normalVec1/subdivisions);
-                    if( normal1.intersect(normal2, intersectionPoint) == QLineF::BoundedIntersection)
+                    if ( normal1.intersect(normal2, intersectionPoint) == QLineF::BoundedIntersection)
                     {
                         extension.lineTo( *intersectionPoint );
                     }
@@ -827,14 +827,14 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                     linearGrad.setStart(Q1);
                     linearGrad.setFinalStop(Q1 - gradientWidth*normalVec3);
 
-                    if(buffer)
+                    if (buffer)
                     {
-                        /*if(subBuffer) {
+                        /*if (subBuffer) {
 
                         	subRect = painterMatrix.mapRect( extension.controlPointRect() ).toRect().adjusted(-1,-1,1,1);
                         	subRect = subRect.intersected( rect );
                         	subBufferImage = new QImage(subRect.size(), QImage::Format_ARGB32_Premultiplied );
-                        	if(!subBufferImage->isNull()) {
+                        	if (!subBufferImage->isNull()) {
                         		subBufferImage->fill(qRgba(0,0,0,0));
                         		painter3.begin(subBufferImage);
                         		painter3.setCompositionMode(QPainter::CompositionMode_Source);
@@ -850,13 +850,13 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                         			for(int y=0; y < subRect.height(); y++ ) {
                         				int newX = subRect.left()-rect.left()+x;
                         				int newY = subRect.top()-rect.top()+y;
-                        				if( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height()) {
-                        					if( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) ) {
+                        				if ( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height()) {
+                        					if ( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) ) {
                         						//bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
-                        							if(areaNumber == -1) {
+                        							if (areaNumber == -1) {
                         								bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
                         							} else {
-                        								if( maskPath.contains(subRect.topLeft() + QPointF(x,y)) ) {
+                        								if ( maskPath.contains(subRect.topLeft() + QPointF(x,y)) ) {
                         									bufferImage->setPixel( newX, newY, subBufferImage->pixel(x,y) );
                         								}
                         							}
@@ -877,7 +877,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                     }
                     else
                     {
-                        if( areaNumber != -1 )
+                        if ( areaNumber != -1 )
                         {
                             painter.setClipping(true);
                             painter.setClipPath( v->area[areaNumber].path );
@@ -890,7 +890,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                         {
                             //painter.fillPath( extension, QBrush(linearGrad) );
                         }
-                        //if(niceGradients) painter.strokePath( extension, QPen(Qt::gray) );
+                        //if (niceGradients) painter.strokePath( extension, QPen(Qt::gray) );
                     }
                     painter.setPen( colour );
                     painter.drawLine( Q1, Q2 );
@@ -908,7 +908,7 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
         }
     }
 
-    /*if(buffer && !bufferImage->isNull()) {
+    /*if (buffer && !bufferImage->isNull()) {
     	painter2.end();
     	painter.setWorldMatrixEnabled(false);
     	painter.drawImage( rect.topLeft(), *bufferImage);
@@ -932,13 +932,13 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
     qreal gradientWidth = 0.0;
     for( int j=0; j<v->area[i].vertex.size(); j++)
     {
-        if( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() )
+        if ( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() )
         {
             qreal width = v->curve[ v->area[i].getVertexRef(j).curveNumber ].getFeather();
-            if( width > gradientWidth) gradientWidth = width;
+            if ( width > gradientWidth) gradientWidth = width;
         }
     }
-    if(gradientWidth == 0.0)
+    if (gradientWidth == 0.0)
     {
         return;
     }
@@ -948,7 +948,7 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
     QPointF midPoint;
     bool pointInside = false;
     int j=1;
-    while(!pointInside && j<=v->area[i].vertex.size())
+    while (!pointInside && j<=v->area[i].vertex.size())
     {
         P1Ref = v->area[i].getVertexRef(0);
         P2Ref = v->area[i].getVertexRef(j);
@@ -956,10 +956,10 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
         pointInside = v->area[i].path.contains( midPoint );
         j++;
     }
-    if(!pointInside) return;
+    if (!pointInside) return;
 
     int areaNumber = v->getFirstAreaNumber(midPoint);
-    if(areaNumber != -1)
+    if (areaNumber != -1)
     {
         painter.setClipping(true);
         painter.setClipPath( v->area[areaNumber].path );
@@ -972,12 +972,12 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
 
     /*qreal gradientWidth = 0.0;
     for( int j=0; j<v->area[i].vertex.size(); j++) {
-    	if( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() ) {
+    	if ( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() ) {
     		qreal width = v->curve[ v->area[i].getVertexRef(j).curveNumber ].getFeather();
-    		if( width > gradientWidth) gradientWidth = width;
+    		if ( width > gradientWidth) gradientWidth = width;
     	}
     }
-    if(gradientWidth == 0.0) return;*/
+    if (gradientWidth == 0.0) return;*/
 
     // ---- radial gradient with gaussian decaying ---
     QRadialGradient radialGrad(QPointF(0,0), gradientWidth, QPointF(0,0));
@@ -1127,18 +1127,18 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
         gradientWidth = qMax(width1, width2);
 
         // -------------------------------------------------------------------------------------------------
-        //if( (P1invisible || P2invisible) && gradientWidth != 0.0 ) {   //if( QLineF(P1,P2).length() <= 0.5)
-        if(gradientWidth != 0.0)
+        //if ( (P1invisible || P2invisible) && gradientWidth != 0.0 ) {   //if ( QLineF(P1,P2).length() <= 0.5)
+        if (gradientWidth != 0.0)
         {
-            if(!lastPointExists)
+            if (!lastPointExists)
             {
                 lastPoint = P1;
             }
 
             QPointF midPoint;
-            if(P1Ref.curveNumber == P1Ref.curveNumber)
+            if (P1Ref.curveNumber == P1Ref.curveNumber)
             {
-                if(P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
+                if (P1Ref.vertexNumber < P2Ref.vertexNumber )   // the points follow the curve progression
                 {
                     C1 = v->getC1( P2Ref );
                     C2 = v->getC2( P2Ref );
@@ -1156,12 +1156,12 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
             }
             /*QLineF normal = QLineF(P1, P2).normalVector().unitVector();
             QPointF normalVec = normal.p2() - normal.p1();
-            if( v->area[i].path.contains( midPoint + 0.1*normalVec ) ) {
+            if ( v->area[i].path.contains( midPoint + 0.1*normalVec ) ) {
             	normalVec = -normalVec;
             }
             int areaNumber = v->getAreaNumber(midPoint + 0.1*normalVec);
 
-            if(areaNumber != -1 && areaNumber != i) {
+            if (areaNumber != -1 && areaNumber != i) {
             	painter.setClipping(true);
             	painter.setClipPath( v->area[areaNumber].path );
             } else {
@@ -1172,8 +1172,8 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
             int steps = qRound( distance /gradientWidth );
             for(int i=0; i<steps; i++)
             {
-                //if(i>0 || !lastPointExists) {
-                if(true)
+                //if (i>0 || !lastPointExists) {
+                if (true)
                 {
                     //QPointF thePoint = lastPoint + (i)*(gradientWidth)*(P2 -lastPoint)/distance;
                     qreal t1 = i*gradientWidth/distance;
@@ -1187,7 +1187,7 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
                     QRectF rectangle(thePoint2.x()-gradientWidth, thePoint2.y()-gradientWidth, 2*gradientWidth, 2*gradientWidth);
 
 
-                    if(buffer)
+                    if (buffer)
                     {
                         BitmapImage* subBuffer = new BitmapImage(NULL);
                         subBuffer->drawRect( rectangle, Qt::NoPen, radialGrad, QPainter::CompositionMode_SourceOver, false);
@@ -1204,10 +1204,10 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
                     //painter.setPen( Qt::red );
                     //painter.drawRect( QRectF(thePoint, QSizeF(2,2)) );
 
-                    if(i==steps-1) lastPoint = thePoint;
+                    if (i==steps-1) lastPoint = thePoint;
                 }
             }
-            if(!lastPointExists)
+            if (!lastPointExists)
             {
                 lastPointExists = true;
             }
@@ -1217,9 +1217,9 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
             //lastPointExists = false;
         }
     }
-    if(buffer)
+    if (buffer)
     {
-        if(buffer->image) painter.drawImage(buffer->topLeft(), *(buffer->image));
+        if (buffer->image) painter.drawImage(buffer->topLeft(), *(buffer->image));
         delete buffer;
     }
 }
@@ -1241,13 +1241,13 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     qreal gradientWidth = 0.0;
     for( int j=0; j<v->area[i].vertex.size(); j++)
     {
-        if( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() )
+        if ( v->curve[ v->area[i].getVertexRef(j).curveNumber ].isInvisible() )
         {
             qreal width = v->curve[ v->area[i].getVertexRef(j).curveNumber ].getFeather();
-            if( width > gradientWidth) gradientWidth = width;
+            if ( width > gradientWidth) gradientWidth = width;
         }
     }
-    if(gradientWidth == 0.0)
+    if (gradientWidth == 0.0)
     {
         painter.fillPath( v->area[i].path, colour );
         return;
@@ -1259,7 +1259,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     QPointF midPoint;
     bool pointInside = false;
     int j=1;
-    while(!pointInside && j<=v->area[i].vertex.size())
+    while (!pointInside && j<=v->area[i].vertex.size())
     {
         P1Ref = v->area[i].getVertexRef(0);
         P2Ref = v->area[i].getVertexRef(j);
@@ -1267,10 +1267,10 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
         pointInside = v->area[i].path.contains( midPoint );
         j++;
     }
-    if(!pointInside) return;
+    if (!pointInside) return;
 
     int areaNumber = v->getFirstAreaNumber(midPoint);
-    if(areaNumber != -1)
+    if (areaNumber != -1)
     {
         painter.setClipping(true);
         painter.setClipPath( v->area[areaNumber].path );
@@ -1287,8 +1287,8 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     BitmapImage* buffer = new BitmapImage(NULL);
     //buffer->drawPath( path, Qt::NoPen, colour, QPainter::CompositionMode_SourceOver, false);
     buffer->drawPath( path, QPen(colour, gradientWidth), colour, QPainter::CompositionMode_SourceOver, false);
-    if(gradients == 3) buffer->blur2(0.9*gradientWidth);
-    if(gradients == 4) buffer->blur(0.9*gradientWidth);
+    if (gradients == 3) buffer->blur2(0.9*gradientWidth);
+    if (gradients == 4) buffer->blur(0.9*gradientWidth);
 
 
     /*QPointF P1, P2, C1, C2;
@@ -1304,18 +1304,18 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     	qreal width1 = v->curve[ P1Ref.curveNumber ].getFeather();
     	qreal width2 = v->curve[ P2Ref.curveNumber ].getFeather();
     	localGradientWidth = qMax(width1, width2);
-    	if(localGradientWidth == 0.0) localGradientWidth = gradientWidth;
+    	if (localGradientWidth == 0.0) localGradientWidth = gradientWidth;
 
     	// -------------------------------------------------------------------------------------------------
-    	if( (P1invisible || P2invisible) && gradientWidth != 0.0 ) {   //if( QLineF(P1,P2).length() <= 0.5)
-    	//if(localGradientWidth != 0.0) {
-    		//if(!lastPointExists) {
+    	if ( (P1invisible || P2invisible) && gradientWidth != 0.0 ) {   //if ( QLineF(P1,P2).length() <= 0.5)
+    	//if (localGradientWidth != 0.0) {
+    		//if (!lastPointExists) {
     		//	lastPoint = P1;
     		//	lastPointExists = true;
     		//}
 
-    			if(P1Ref.curveNumber == P1Ref.curveNumber) {
-    				if(P1Ref.vertexNumber < P2Ref.vertexNumber ) { // the points follow the curve progression
+    			if (P1Ref.curveNumber == P1Ref.curveNumber) {
+    				if (P1Ref.vertexNumber < P2Ref.vertexNumber ) { // the points follow the curve progression
     					C1 = v->getC1( P2Ref );
     					C2 = v->getC2( P2Ref );
     				} else {
@@ -1327,7 +1327,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     		qreal distance = 2.0*QLineF(P2, lastPoint).length();
     		int steps = qRound( distance /localGradientWidth );
     		for(int i=0; i<steps; i++) {
-    			if(i>=0) {
+    			if (i>=0) {
     				QPointF thePoint = P1 + (i)*(localGradientWidth)*(P2 -P1)/distance;
     				QPointF thePoint2 = thePoint;
     				radialGrad.setCenter( thePoint2 );
@@ -1336,7 +1336,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     				QRectF rectangle(thePoint2.x()-localGradientWidth, thePoint2.y()-localGradientWidth, 2*localGradientWidth, 2*localGradientWidth);
 
 
-    				if(buffer) {
+    				if (buffer) {
     					BitmapImage* subBuffer = new BitmapImage(NULL);
     					subBuffer->drawRect( rectangle, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, false);
     					buffer->add(subBuffer);
@@ -1347,10 +1347,10 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
 
     				//painter.setPen( Qt::black );
     				//painter.drawEllipse( rectangle );
-    				if(i==steps-1) lastPoint = thePoint;
+    				if (i==steps-1) lastPoint = thePoint;
     			}
     		}
-    		//if(!lastPointExists) {
+    		//if (!lastPointExists) {
     		//	lastPointExists = true;
     		//}
     	}
@@ -1366,7 +1366,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
 
 
     painter.setWorldMatrixEnabled(false);
-    if(buffer->image) painter.drawImage(buffer->topLeft(), *(buffer->image));
+    if (buffer->image) painter.drawImage(buffer->topLeft(), *(buffer->image));
     painter.setWorldMatrixEnabled(true);
 
     delete buffer;
@@ -1516,18 +1516,18 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     	qreal width1 = v->curve[ P1Ref.curveNumber ].getFeather();
     	qreal width2 = v->curve[ P2Ref.curveNumber ].getFeather();
     	localGradientWidth = qMax(width1, width2);
-    	if(localGradientWidth == 0.0) localGradientWidth = gradientWidth;
+    	if (localGradientWidth == 0.0) localGradientWidth = gradientWidth;
 
     	// -------------------------------------------------------------------------------------------------
-    	//if( (P1invisible || P2invisible) && gradientWidth != 0.0 ) {   //if( QLineF(P1,P2).length() <= 0.5)
-    	if(localGradientWidth != 0.0) {
-    		if(!lastPointExists) {
+    	//if ( (P1invisible || P2invisible) && gradientWidth != 0.0 ) {   //if ( QLineF(P1,P2).length() <= 0.5)
+    	if (localGradientWidth != 0.0) {
+    		if (!lastPointExists) {
     			lastPoint = P1;
     			lastPointExists = true;
     		}
 
-    			if(P1Ref.curveNumber == P1Ref.curveNumber) {
-    				if(P1Ref.vertexNumber < P2Ref.vertexNumber ) { // the points follow the curve progression
+    			if (P1Ref.curveNumber == P1Ref.curveNumber) {
+    				if (P1Ref.vertexNumber < P2Ref.vertexNumber ) { // the points follow the curve progression
     					C1 = v->getC1( P2Ref );
     					C2 = v->getC2( P2Ref );
     				} else {
@@ -1539,7 +1539,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     		qreal distance = 2.0*QLineF(P2, lastPoint).length();
     		int steps = qRound( distance /localGradientWidth );
     		for(int i=0; i<steps; i++) {
-    			if(i>=0) {
+    			if (i>=0) {
     				QPointF thePoint = lastPoint + (i)*(localGradientWidth)*(P2 -lastPoint)/distance;
     				QPointF thePoint2 = thePoint;
     				radialGrad.setCenter( thePoint2 );
@@ -1548,7 +1548,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     				QRectF rectangle(thePoint2.x()-localGradientWidth, thePoint2.y()-localGradientWidth, 2*localGradientWidth, 2*localGradientWidth);
 
 
-    				if(buffer) {
+    				if (buffer) {
     					BitmapImage* subBuffer = new BitmapImage(NULL);
     					subBuffer->drawRect( rectangle, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, false);
     					buffer->add(subBuffer);
@@ -1559,10 +1559,10 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
 
     				//painter.setPen( Qt::black );
     				//painter.drawEllipse( rectangle );
-    				if(i==steps-1) lastPoint = thePoint;
+    				if (i==steps-1) lastPoint = thePoint;
     			}
     		}
-    		//if(!lastPointExists) {
+    		//if (!lastPointExists) {
     		//	lastPointExists = true;
     		//}
     	}
@@ -1570,8 +1570,8 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     	//	lastPointExists = false;
     	//}
     }
-    if(buffer) {
-    	if(buffer->image) painter.drawImage(buffer->topLeft(), *(buffer->image));
+    if (buffer) {
+    	if (buffer->image) painter.drawImage(buffer->topLeft(), *(buffer->image));
     	delete buffer;
     }*/
 
