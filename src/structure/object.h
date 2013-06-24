@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "colourref.h"
 
-#include "flash.h"
 
 class Object : public QObject
 {
