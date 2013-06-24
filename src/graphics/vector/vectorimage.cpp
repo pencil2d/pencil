@@ -121,7 +121,7 @@ QDomElement VectorImage::createDomElement(QDomDocument& doc)
 void VectorImage::loadDomElement(QDomElement element)
 {
     QDomNode atomTag = element.firstChild(); // an atom in a vector picture is a curve or an area
-    while(!atomTag.isNull())
+    while (!atomTag.isNull())
     {
         QDomElement atomElement = atomTag.toElement();
         if (!atomElement.isNull())
@@ -964,8 +964,8 @@ void VectorImage::outputImage(QImage* image, QSize size, QMatrix myView, bool si
 void VectorImage::clear()
 {
     //image.fill(qRgba(0,0,0,0));
-    while(curve.size() > 0) { curve.removeAt(0); }
-    while(area.size() > 0) { area.removeAt(0); }
+    while (curve.size() > 0) { curve.removeAt(0); }
+    while (area.size() > 0) { area.removeAt(0); }
     modification();
 }
 

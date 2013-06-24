@@ -191,14 +191,14 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                         prevIndex++;
                         prevPoint = v->getVertex( v->area[i].getVertexRef(j-2-prevIndex) );
                     }
-                    while( prevPoint == P1);
+                    while ( prevPoint == P1);
                     int nextIndex = -1;
                     do
                     {
                         nextIndex++;
                         nextPoint = v->getVertex( v->area[i].getVertexRef(j+1+nextIndex) );
                     }
-                    while( nextPoint == P2);
+                    while ( nextPoint == P2);
                     //qDebug() << "indices =" << prevIndex << nextIndex;
 
                     if (v->area[i].getVertexRef(j-2).vertexNumber < P1Ref.vertexNumber )   // the points follow the curve progression
@@ -644,14 +644,14 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
                         prevIndex++;
                         prevPoint = v->getVertex( v->area[i].getVertexRef(j-2-prevIndex) );
                     }
-                    while( prevPoint == P1);
+                    while ( prevPoint == P1);
                     int nextIndex = -1;
                     do
                     {
                         nextIndex++;
                         nextPoint = v->getVertex( v->area[i].getVertexRef(j+1+nextIndex) );
                     }
-                    while( nextPoint == P2);
+                    while ( nextPoint == P2);
                     //qDebug() << "indices =" << prevIndex << nextIndex;
 
                     if (v->area[i].getVertexRef(j-2).vertexNumber < P1Ref.vertexNumber )   // the points follow the curve progression
@@ -948,7 +948,7 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
     QPointF midPoint;
     bool pointInside = false;
     int j=1;
-    while(!pointInside && j<=v->area[i].vertex.size())
+    while (!pointInside && j<=v->area[i].vertex.size())
     {
         P1Ref = v->area[i].getVertexRef(0);
         P2Ref = v->area[i].getVertexRef(j);
@@ -1259,7 +1259,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
     QPointF midPoint;
     bool pointInside = false;
     int j=1;
-    while(!pointInside && j<=v->area[i].vertex.size())
+    while (!pointInside && j<=v->area[i].vertex.size())
     {
         P1Ref = v->area[i].getVertexRef(0);
         P2Ref = v->area[i].getVertexRef(j);

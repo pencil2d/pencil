@@ -28,7 +28,7 @@ LayerSound::LayerSound(Object* object) : LayerImage(object)
 
 LayerSound::~LayerSound()
 {
-    while(!sound.empty())
+    while (!sound.empty())
         delete sound.takeFirst();
 }
 
@@ -149,8 +149,8 @@ bool LayerSound::saveImage(int index, QString path, int layerNumber)
 {
     /*QString layerNumberString = QString::number(layerNumber);
     QString frameNumberString = QString::number(framesPosition.at(index));
-    while( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while( frameNumberString.length() < 3) frameNumberString.prepend("0");*/
+    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");*/
     //framesFilename[index] = path+"/"+layerNumberString+"."+frameNumberString+".png";
     //framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
     //framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
@@ -260,7 +260,7 @@ void LayerSound::loadDomElement(QDomElement element, QString filePath)
     type = element.attribute("type").toInt();
 
     QDomNode soundTag = element.firstChild();
-    while(!soundTag.isNull())
+    while (!soundTag.isNull())
     {
         QDomElement soundElement = soundTag.toElement();
         if (!soundElement.isNull())

@@ -546,7 +546,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
             j = -1;
             condition =  (point.x() + j > targetImage->left());
             if (!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
-            while( replaceImage->pixel(point.x()+j, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance && condition)
+            while ( replaceImage->pixel(point.x()+j, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance && condition)
             {
                 j = j - 1;
                 condition =  (point.x() + j > targetImage->left());
@@ -556,7 +556,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
             k = 1;
             condition = ( point.x() + k < targetImage->right()-1);
             if (!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
-            while( replaceImage->pixel(point.x()+k, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance && condition)
+            while ( replaceImage->pixel(point.x()+k, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance && condition)
             {
                 k = k + 1;
                 condition = ( point.x() + k < targetImage->right()-1);

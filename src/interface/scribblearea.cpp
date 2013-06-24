@@ -758,8 +758,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     }
     // --- end checks ----
 
-    while(!mousePath.isEmpty()) mousePath.removeAt(0); // empty the mousePath
-    while(!mousePressure.isEmpty()) mousePressure.removeAt(0); // empty the mousePressure
+    while (!mousePath.isEmpty()) mousePath.removeAt(0); // empty the mousePath
+    while (!mousePressure.isEmpty()) mousePressure.removeAt(0); // empty the mousePressure
     //	if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
     //		if (tabletInUse && highResPosition) { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); } else { lastPixel = QPointF(event->pos()); }
     //if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
@@ -2282,7 +2282,7 @@ void ScribbleArea::endPolyline()
         bitmapImage->paste(bufferImg);
     }
     bufferImg->clear();
-    while(!mousePoints.isEmpty()) mousePoints.removeAt(0); // empty the mousePoints
+    while (!mousePoints.isEmpty()) mousePoints.removeAt(0); // empty the mousePoints
     setModified(editor->m_nCurrentLayerIndex, editor->m_nCurrentFrameIndex);
 }
 
@@ -2554,7 +2554,7 @@ void ScribbleArea::deselectAll()
     somethingSelected = false;
     bufferImg->clear();
     vectorSelection.clear();
-    while(!mousePoints.isEmpty()) mousePoints.removeAt(0); // empty the mousePoints
+    while (!mousePoints.isEmpty()) mousePoints.removeAt(0); // empty the mousePoints
     updateFrame();
 }
 
@@ -2614,7 +2614,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
             //image.setPixel( point.x(), point.y(), replacementColour);
             j = -1;
             condition =  (point.x() + j > 0);
-            while( replaceImage->pixel(point.x()+j, point.y()) != replacementColour  && BitmapImage::rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance && condition)
+            while ( replaceImage->pixel(point.x()+j, point.y()) != replacementColour  && BitmapImage::rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance && condition)
             {
                 j = j - 1;
                 condition =  (point.x() + j > 0);
@@ -2627,7 +2627,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
 
             k = 1;
             condition = ( point.x() + k < targetImage->width()-1);
-            while( replaceImage->pixel(point.x()+k, point.y()) != replacementColour  && BitmapImage::rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance && condition)
+            while ( replaceImage->pixel(point.x()+k, point.y()) != replacementColour  && BitmapImage::rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance && condition)
             {
                 k = k + 1;
                 condition = ( point.x() + k < targetImage->width()-1);
@@ -2768,7 +2768,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
     // 2 --- or continue
 
     // Step 2: finds closed paths among the selected vertices: we start from a vertex and build a tree of connected vertices
-    //while(contourPoints.size() > 0) {
+    //while (contourPoints.size() > 0) {
     QList<VertexRef> tree;
     QList<int> fatherNode; // given the index in tree (of a vertex), return the index (in tree) of its father vertex; this will define the tree structure
     QList<int> leaves; // list of indices in tree which correspond to end of branches (leaves)
@@ -2776,7 +2776,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
     // Step 2.1: build tree
     int rootIndex = -1;
     bool rootIndexFound = false;
-    while(!rootIndexFound && rootIndex < contourPoints.size()-1)
+    while (!rootIndexFound && rootIndex < contourPoints.size()-1)
     {
         rootIndex++;
         if ( vectorImage->getVerticesCloseTo( vectorImage->getVertex(contourPoints.at(rootIndex)), tol2, &contourPoints).size() > 1)
@@ -2795,7 +2795,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
     j=0;
     bool success = false;
     int counter = 0;
-    while(!success && j>-1 && counter<1000)
+    while (!success && j>-1 && counter<1000)
     {
         counter++;
         //qDebug() << "------";
@@ -2843,7 +2843,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
                         int pathIndex = j;
                         if (dist > 0) closedPath.prepend(vertex0);
                         closedPath.prepend(tree.at(pathIndex));
-                        while( (pathIndex = fatherNode.at(pathIndex)) != -1)
+                        while ( (pathIndex = fatherNode.at(pathIndex)) != -1)
                         {
                             closedPath.prepend(tree.at(pathIndex));
                         }

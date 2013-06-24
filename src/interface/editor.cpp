@@ -471,11 +471,11 @@ void Editor::backup(QString undoText)
 
 void Editor::backup(int backupLayer, int backupFrame, QString undoText)
 {
-    while(backupList.size()-1 > backupIndex && backupList.size() > 0)
+    while (backupList.size()-1 > backupIndex && backupList.size() > 0)
     {
         delete backupList.takeLast();
     }
-    while(backupList.size() > 19)   // we authorize only 20 levels of cancellation
+    while (backupList.size() > 19)   // we authorize only 20 levels of cancellation
     {
         delete backupList.takeFirst();
         backupIndex--;
@@ -602,7 +602,7 @@ void Editor::redo()
 void Editor::clearBackup()
 {
     backupIndex = -1;
-    while( !backupList.isEmpty() )
+    while ( !backupList.isEmpty() )
     {
         delete backupList.takeLast();
     }
@@ -991,7 +991,7 @@ bool Editor::openObject(QString filePath)
     if (docElem.tagName() == "document")
     {
         QDomNode tag = docElem.firstChild();
-        while(!tag.isNull())
+        while (!tag.isNull())
         {
             QDomElement element = tag.toElement(); // try to convert the node to an element.
             if (!element.isNull())
@@ -1900,7 +1900,7 @@ bool Editor::loadDomElement(QDomElement docElem, QString filePath)
 {
     if (docElem.isNull()) return false;
     QDomNode tag = docElem.firstChild();
-    while(!tag.isNull())
+    while (!tag.isNull())
     {
         QDomElement element = tag.toElement(); // try to convert the node to an element.
         if (!element.isNull())

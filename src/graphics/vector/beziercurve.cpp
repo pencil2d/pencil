@@ -112,7 +112,7 @@ void BezierCurve::loadDomElement(QDomElement element)
     selected.append(false);
 
     QDomNode segmentTag = element.firstChild();
-    while(!segmentTag.isNull())
+    while (!segmentTag.isNull())
     {
         QDomElement segmentElement = segmentTag.toElement();
         if (!segmentElement.isNull())
@@ -570,11 +570,11 @@ void BezierCurve::createCurve(QList<QPointF>& pointList, QList<qreal>& pressureL
     int n = pointList.size();
     // generate the Bezier (cubic) curve from the simplified path and mouse pressure
     // first, empty everything
-    while(c1.size()>0) c1.removeAt(0);
-    while(c2.size()>0) c2.removeAt(0);
-    while(vertex.size()>0) vertex.removeAt(0);
-    while(selected.size()>0) selected.removeAt(0);
-    while(pressure.size()>0) pressure.removeAt(0);
+    while (c1.size()>0) c1.removeAt(0);
+    while (c2.size()>0) c2.removeAt(0);
+    while (vertex.size()>0) vertex.removeAt(0);
+    while (selected.size()>0) selected.removeAt(0);
+    while (pressure.size()>0) pressure.removeAt(0);
 
     setOrigin( pointList.at(0) );
     selected.append(false);
@@ -645,7 +645,7 @@ void BezierCurve::createCurve(QList<QPointF> *pointList, QList<qreal> *pressureL
 	int p = 0; int n = pointList->size(); QPointF c1, c2, c2old, tangentVec, normalVec;
 	// generate the Bezier (cubic) curve from the simplified path and mouse pressure
 	setOrigin( pointList->at(0) );
-	while(selected.size()>0) selected.removeAt(0);
+	while (selected.size()>0) selected.removeAt(0);
 	selected.append(false);
 	c2old = QPointF(-100,-100); // bogus point
 	for(p=1; p<n-1; p++) {

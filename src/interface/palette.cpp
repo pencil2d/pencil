@@ -125,7 +125,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
 void Palette::updateList()
 {
-    while(listOfColours->count() > 0)
+    while (listOfColours->count() > 0)
     {
         listOfColours->takeItem(0);
     }

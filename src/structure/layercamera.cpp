@@ -113,7 +113,7 @@ LayerCamera::LayerCamera(Object* object) : LayerImage(object)
 
 LayerCamera::~LayerCamera()
 {
-    while(!framesCamera.empty())
+    while (!framesCamera.empty())
         delete framesCamera.takeFirst();
 }
 
@@ -259,8 +259,8 @@ bool LayerCamera::saveImage(int index, QString path, int layerNumber)
 {
     QString layerNumberString = QString::number(layerNumber);
     QString frameNumberString = QString::number(framesPosition.at(index));
-    while( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while( frameNumberString.length() < 3) frameNumberString.prepend("0");
+    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
     //framesFilename[index] = path+"/"+layerNumberString+"."+frameNumberString+".png";
     framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
     //qDebug() << "Write " << framesFilename.at(index);
@@ -323,7 +323,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString filePath)
     viewRect = QRect(-width/2,-height/2,width,height);
 
     QDomNode imageTag = element.firstChild();
-    while(!imageTag.isNull())
+    while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
         if (!imageElement.isNull())

@@ -266,8 +266,8 @@ QString LayerVector::fileName(int frame, int layerID)
 {
     QString layerNumberString = QString::number(layerID);
     QString frameNumberString = QString::number(frame);
-    while( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while( frameNumberString.length() < 3) frameNumberString.prepend("0");
+    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
     return layerNumberString+"."+frameNumberString+".vec";
 }
 
@@ -297,7 +297,7 @@ void LayerVector::loadDomElement(QDomElement element, QString filePath)
     type = element.attribute("type").toInt();
 
     QDomNode imageTag = element.firstChild();
-    while(!imageTag.isNull())
+    while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
         if (!imageElement.isNull())

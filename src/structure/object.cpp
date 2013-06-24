@@ -42,7 +42,7 @@ Object::Object() : QObject(0)
 
 Object::~Object()
 {
-    while(!layer.empty())
+    while (!layer.empty())
     {
         delete layer.takeLast();
     }
@@ -52,7 +52,7 @@ QDomElement Object::createDomElement(QDomDocument& doc)
 {
     QDomElement tag = doc.createElement("object");
 
-    for(int i=0; i < getLayerCount(); i++)
+    for (int i=0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
         QDomElement layerTag = layer->createDomElement(doc);
@@ -67,7 +67,7 @@ bool Object::loadDomElement(QDomElement docElem, QString filePath)
     int layerNumber = -1;
     QDomNode tag = docElem.firstChild();
     bool someRelevantData = false;
-    while(!tag.isNull())
+    while (!tag.isNull())
     {
         QDomElement element = tag.toElement(); // try to convert the node to an element.
         if (!element.isNull())
@@ -283,19 +283,19 @@ void Object::addColour(QColor colour)
 
 bool Object::removeColour(int index)
 {
-    for(int i=0; i< getLayerCount(); i++)
+    for(int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if ( layer->type == Layer::VECTOR)
+        if (layer->type == Layer::VECTOR)
         {
             LayerVector* layerVector = ((LayerVector*)layer);
             if (layerVector->usesColour(index)) return false;
         }
     }
-    for(int i=0; i< getLayerCount(); i++)
+    for (int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if ( layer->type == Layer::VECTOR)
+        if (layer->type == Layer::VECTOR)
         {
             LayerVector* layerVector = ((LayerVector*)layer);
             layerVector->removeColour(index);
@@ -368,7 +368,7 @@ bool Object::importPalette(QString filePath)
     myPalette.clear();
     QDomElement docElem = doc.documentElement();
     QDomNode tag = docElem.firstChild();
-    while(!tag.isNull())
+    while (!tag.isNull())
     {
         QDomElement e = tag.toElement(); // try to convert the node to an element.
         if (!e.isNull())
@@ -526,7 +526,7 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         paintImage(painter, currentFrame, background, curveOpacity, antialiasing, gradients);
 
         QString frameNumberString = QString::number(currentFrame);
-        while( frameNumberString.length() < 4) frameNumberString.prepend("0");
+        while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
         tempImage.save(filePath+frameNumberString+extension, format, quality);
     }
 }
@@ -609,7 +609,7 @@ void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
         frameNumber++;
         framePerSecond++;
         QString frameNumberString = QString::number(frameNumber);
-        while( frameNumberString.length() < 4) frameNumberString.prepend("0");
+        while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
 
         tempImage.save(filePath+frameNumberString+extension, format, quality);
         int delta = 0;
@@ -638,7 +638,7 @@ void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
             frameNumber++;
             framePerSecond++;
             QString frameNumberLink = QString::number(frameNumber);
-            while( frameNumberLink.length() < 4) frameNumberLink.prepend("0");
+            while ( frameNumberLink.length() < 4) frameNumberLink.prepend("0");
 //                    QFile::link(filePath+frameNumberString+extension, filePath+frameNumberLink+extension+".lnk");
             tempImage.save(filePath+frameNumberLink+extension, format, quality);
         }

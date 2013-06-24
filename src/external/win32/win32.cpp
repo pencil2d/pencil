@@ -307,7 +307,7 @@ void Editor::importMovie (QString filePath, int fps)
         int nFiles = dir1.entryList().count();
         i=1;
         QString frameNumberString = QString::number(i);
-        while( frameNumberString.length() < 4) frameNumberString.prepend("0");
+        while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
         while (QFile::exists(tempPath+"tmp_import"+frameNumberString+".png"))
         {
             progress.setValue(50+i*50/nFiles);
@@ -315,7 +315,7 @@ void Editor::importMovie (QString filePath, int fps)
             importImage(tempPath+"tmp_import"+frameNumberString+".png");
             i++;
             frameNumberString = QString::number(i);
-            while( frameNumberString.length() < 4) frameNumberString.prepend("0");
+            while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
         }
         progress.setValue(100);
         // --------- Clean up temp directory ---------
