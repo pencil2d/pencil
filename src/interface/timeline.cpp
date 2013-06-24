@@ -207,7 +207,7 @@ void TimeLine::resizeEvent(QResizeEvent*)
 
 void TimeLine::updateFrame(int frameNumber)
 {
-    if(cells) cells->updateFrame(frameNumber);
+    if (cells) cells->updateFrame(frameNumber);
 }
 
 void TimeLine::updateLayerView()

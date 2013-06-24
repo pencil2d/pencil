@@ -121,7 +121,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
 
 void TimeControls::updateButtons(bool floating)
 {
-    /*if(floating) {
+    /*if (floating) {
     	loopButton->setFixedSize(QSize(45,22));
     	soundButton->setFixedSize(QSize(45,22));
     } else {

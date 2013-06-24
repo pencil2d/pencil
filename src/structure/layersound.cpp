@@ -39,7 +39,7 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
     for(int i=0; i < sound.size(); i++)
     {
         qreal h = x + (framesPosition.at(i)-1)*frameSize+2;
-        if(framesSelected.at(i))
+        if (framesSelected.at(i))
         {
             painter.setBrush(QColor(60,60,60));
             h = h + frameOffset*frameSize;
@@ -47,7 +47,7 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
         }
         else
         {
-            //	if(framesModified.at(i))
+            //	if (framesModified.at(i))
             //		painter.setBrush(QColor(255,125,125));
             //	else
             //painter.setPen(QPen(QBrush(QColor(40,40,40)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
@@ -64,7 +64,7 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
 bool LayerSound::addImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
     {
         sound.append(NULL);
         soundFilepath.append("");
@@ -86,7 +86,7 @@ bool LayerSound::addImageAtFrame(int frameNumber)
 void LayerSound::removeImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if(index != -1  && framesPosition.size() != 0)
+    if (index != -1  && framesPosition.size() != 0)
     {
         delete sound.at(index);
         soundFilepath.removeAt(index);
@@ -102,14 +102,14 @@ void LayerSound::removeImageAtFrame(int frameNumber)
 
 void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
 {
-//	if(getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
+//	if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
-    if(index == -1)
+    if (index == -1)
         addImageAtFrame(frameNumber);
     index = getIndexAtFrame(frameNumber);
 
     QFileInfo fi(filePathString);
-    if(fi.exists())
+    if (fi.exists())
     {
 //		sound[index] = new QSound(filePathString, NULL);
         Phonon::MediaObject* media = new Phonon::MediaObject();
@@ -166,8 +166,8 @@ bool LayerSound::saveImage(int index, QString path, int layerNumber)
 /*#
 void LayerSound::playSound(int frame) {
 	for(int i=0; i < sound.size(); i++) {
-		if(frame == framesPosition.at(i)) {
-			if(sound.at(i) != NULL && visible) sound[i]->play();
+		if (frame == framesPosition.at(i)) {
+			if (sound.at(i) != NULL && visible) sound[i]->play();
 		}
 	}
 }
@@ -230,7 +230,7 @@ void LayerSound::stopSound()
 {
     for(int i=0; i < sound.size(); i++)
     {
-        if(sound.at(i) != NULL) sound[i]->stop();
+        if (sound.at(i) != NULL) sound[i]->stop();
     }
 }
 
@@ -254,7 +254,7 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
 
 void LayerSound::loadDomElement(QDomElement element, QString filePath)
 {
-    if(!element.attribute("id").isNull()) id = element.attribute("id").toInt();
+    if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
     type = element.attribute("type").toInt();
@@ -263,13 +263,13 @@ void LayerSound::loadDomElement(QDomElement element, QString filePath)
     while(!soundTag.isNull())
     {
         QDomElement soundElement = soundTag.toElement();
-        if(!soundElement.isNull())
+        if (!soundElement.isNull())
         {
-            if(soundElement.tagName() == "sound")
+            if (soundElement.tagName() == "sound")
             {
                 QString path = filePath + ".data/" + soundElement.attribute("src"); // the file is supposed to be in the data directory
                 QFileInfo fi(path);
-                if(!fi.exists()) path = soundElement.attribute("src");
+                if (!fi.exists()) path = soundElement.attribute("src");
                 int position = soundElement.attribute("position").toInt();
                 loadSoundAtFrame( path, position );
             }

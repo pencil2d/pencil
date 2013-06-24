@@ -73,9 +73,9 @@ void BezierArea::loadDomElement(QDomElement element)
     while(!vertexTag.isNull())
     {
         QDomElement vertexElement = vertexTag.toElement();
-        if(!vertexElement.isNull())
+        if (!vertexElement.isNull())
         {
-            if(vertexElement.tagName() == "vertex")
+            if (vertexElement.tagName() == "vertex")
             {
                 vertex.append( VertexRef(vertexElement.attribute("curve").toInt() , vertexElement.attribute("vertex").toInt() )  );
             }

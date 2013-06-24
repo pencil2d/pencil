@@ -63,41 +63,41 @@ QDomElement Object::createDomElement(QDomDocument& doc)
 
 bool Object::loadDomElement(QDomElement docElem, QString filePath)
 {
-    if(docElem.isNull()) return false;
+    if (docElem.isNull()) return false;
     int layerNumber = -1;
     QDomNode tag = docElem.firstChild();
     bool someRelevantData = false;
     while(!tag.isNull())
     {
         QDomElement element = tag.toElement(); // try to convert the node to an element.
-        if(!element.isNull())
+        if (!element.isNull())
         {
-            if(element.tagName() == "layer")
+            if (element.tagName() == "layer")
             {
                 someRelevantData = true;
                 // --- bitmap layer ---
-                if(element.attribute("type").toInt() == Layer::BITMAP)
+                if (element.attribute("type").toInt() == Layer::BITMAP)
                 {
                     addNewBitmapLayer();
                     layerNumber++;
                     ((LayerBitmap*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
                 }
                 // --- vector layer ---
-                if(element.attribute("type").toInt() == Layer::VECTOR)
+                if (element.attribute("type").toInt() == Layer::VECTOR)
                 {
                     addNewVectorLayer();
                     layerNumber++;
                     ((LayerVector*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
                 }
                 // --- sound layer ---
-                if(element.attribute("type").toInt() == Layer::SOUND)
+                if (element.attribute("type").toInt() == Layer::SOUND)
                 {
                     addNewSoundLayer();
                     layerNumber++;
                     ((LayerSound*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
                 }
                 // --- camera layer ---
-                if(element.attribute("type").toInt() == Layer::CAMERA)
+                if (element.attribute("type").toInt() == Layer::CAMERA)
                 {
                     addNewCameraLayer();
                     layerNumber++;
@@ -115,7 +115,7 @@ bool Object::loadDomElement(QDomElement docElem, QString filePath)
 bool Object::read(QString filePath)
 {
     QFileInfo fileInfo(filePath);
-    if( fileInfo.isDir() ) return false;
+    if ( fileInfo.isDir() ) return false;
 
     QFile* file = new QFile(filePath);
     if (!file->open(QFile::ReadOnly)) return false;
@@ -199,14 +199,14 @@ int Object::getMaxID()
     for(int i=0; i< getLayerCount(); i++)
     {
         Layer* layeri = getLayer(i);
-        if(layeri->id > result) result = layeri->id;
+        if (layeri->id > result) result = layeri->id;
     }
     return result;
 }
 
 Layer* Object::getLayer(int i)
 {
-    if(i > -1 && i < getLayerCount())
+    if (i > -1 && i < getLayerCount())
     {
         return layer.at(i);
     }
@@ -218,10 +218,10 @@ Layer* Object::getLayer(int i)
 
 void Object::moveLayer(int i, int j)
 {
-    if(i != j)
+    if (i != j)
     {
         layer.insert(j, layer.at(i));
-        if(i>j)
+        if (i>j)
         {
             layer.removeAt(i+1);
         }
@@ -234,7 +234,7 @@ void Object::moveLayer(int i, int j)
 
 void Object::deleteLayer(int i)
 {
-    if(i > -1 && i < layer.size())
+    if (i > -1 && i < layer.size())
     {
         //layer.removeAt(i);
         disconnect( layer[i], 0, this, 0); // disconnect the layer from this object
@@ -247,7 +247,7 @@ void Object::playSoundIfAny(int frame,int fps)
     for(int i=0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if( layer->type == Layer::SOUND)
+        if ( layer->type == Layer::SOUND)
         {
             ((LayerSound*)layer)->playSound(frame,fps);
         }
@@ -259,7 +259,7 @@ void Object::stopSoundIfAny()
     for(int i=0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if( layer->type == Layer::SOUND)
+        if ( layer->type == Layer::SOUND)
         {
             ((LayerSound*)layer)->stopSound();
         }
@@ -269,7 +269,7 @@ void Object::stopSoundIfAny()
 ColourRef Object::getColour(int i)
 {
     ColourRef result(Qt::white, "error");
-    if( i > -1 && i < myPalette.size() )
+    if ( i > -1 && i < myPalette.size() )
     {
         result = myPalette.at(i);
     }
@@ -286,16 +286,16 @@ bool Object::removeColour(int index)
     for(int i=0; i< getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if( layer->type == Layer::VECTOR)
+        if ( layer->type == Layer::VECTOR)
         {
             LayerVector* layerVector = ((LayerVector*)layer);
-            if(layerVector->usesColour(index)) return false;
+            if (layerVector->usesColour(index)) return false;
         }
     }
     for(int i=0; i< getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if( layer->type == Layer::VECTOR)
+        if ( layer->type == Layer::VECTOR)
         {
             LayerVector* layerVector = ((LayerVector*)layer);
             layerVector->removeColour(index);
@@ -371,7 +371,7 @@ bool Object::importPalette(QString filePath)
     while(!tag.isNull())
     {
         QDomElement e = tag.toElement(); // try to convert the node to an element.
-        if(!e.isNull())
+        if (!e.isNull())
         {
             QString name = e.attribute("name");
             int r = e.attribute("red").toInt();
@@ -436,7 +436,7 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     // paints the background
-    if(background)
+    if (background)
     {
         painter.setPen(Qt::NoPen);
         painter.setBrush(Qt::white);
@@ -448,18 +448,18 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
     for(int i=0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if(layer->visible)
+        if (layer->visible)
         {
             painter.setOpacity(1.0);
 
             // paints the bitmap images
-            if(layer->type == Layer::BITMAP)
+            if (layer->type == Layer::BITMAP)
             {
                 LayerBitmap* layerBitmap = (LayerBitmap*)layer;
                 /*BitmapImage* bitmapImage = layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0);
                 // TO BE FIXED
-                if(bitmapImage != NULL) {
-                	if( mirror) {
+                if (bitmapImage != NULL) {
+                	if ( mirror) {
                 		painter.drawImage(target, (*(bitmapImage->image)).mirrored(true, false), source);
                 	} else {
                 		painter.drawImage(target, *(bitmapImage->image), source);
@@ -468,7 +468,7 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
                 layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0)->paintImage(painter);
             }
             // paints the vector images
-            if(layer->type == Layer::VECTOR)
+            if (layer->type == Layer::VECTOR)
             {
                 LayerVector* layerVector = (LayerVector*)layer;
                 layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter, false, false, curveOpacity, antialiasing, gradients);
@@ -485,18 +485,18 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 
     QString extension = "";
     QString formatStr = format;
-    if( formatStr == "PNG" || formatStr == "png")
+    if ( formatStr == "PNG" || formatStr == "png")
     {
         format = "PNG";
         extension = ".png";
     }
-    if( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG")
+    if ( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG")
     {
         format = "JPG";
         extension = ".jpg";
         background = true; // JPG doesn't support transparency so we have to include the background
     }
-    if(filePath.endsWith(extension, Qt::CaseInsensitive))
+    if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());
     }
@@ -512,7 +512,7 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         // Make sure that old frame is erased before exporting a new one
         tempImage.fill(0x00000000);
 
-        if(currentLayer->type == Layer::CAMERA)
+        if (currentLayer->type == Layer::CAMERA)
         {
             QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
             QMatrix mapView = Editor::map( viewRect, QRectF(QPointF(0,0), exportSize) );
@@ -559,18 +559,18 @@ void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
 
     QString extension = "";
     QString formatStr = format;
-    if( formatStr == "PNG" || formatStr == "png")
+    if ( formatStr == "PNG" || formatStr == "png")
     {
         format = "PNG";
         extension = ".png";
     }
-    if( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG")
+    if ( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG")
     {
         format = "JPG";
         extension = ".jpg";
         background = true; // JPG doesn't support transparency so we have to include the background
     }
-    if(filePath.endsWith(extension, Qt::CaseInsensitive))
+    if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());
     }
@@ -593,7 +593,7 @@ void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
         // Make sure that old frame is erased before exporting a new one
         tempImage.fill(0x00000000);
 
-        if(currentLayer->type == Layer::CAMERA)
+        if (currentLayer->type == Layer::CAMERA)
         {
             QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
             QMatrix mapView = Editor::map( viewRect, QRectF(QPointF(0,0), exportSize) );
@@ -684,7 +684,7 @@ void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
             y++;
         }
 
-        if(filePath.endsWith(".jpg", Qt::CaseInsensitive))
+        if (filePath.endsWith(".jpg", Qt::CaseInsensitive))
         {
             filePath.chop(4);
         }
@@ -707,7 +707,7 @@ void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSi
 
 void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression)
 {
-    if(!filePath.endsWith(".swf", Qt::CaseInsensitive))
+    if (!filePath.endsWith(".swf", Qt::CaseInsensitive))
     {
         filePath = filePath + ".swf";
     }

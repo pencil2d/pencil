@@ -49,7 +49,7 @@ BitmapImage::BitmapImage(Object* parent, QRect rectangle, QImage image)
     boundaries = rectangle.normalized();
     extendable = true;
     this->image = new QImage(image);
-    if(this->image->width() != rectangle.width() || this->image->height() != rectangle.height()) qDebug() << "Error instancing bitmapImage.";
+    if (this->image->width() != rectangle.width() || this->image->height() != rectangle.height()) qDebug() << "Error instancing bitmapImage.";
 }
 
 /*BitmapImage::BitmapImage(Object *parent, QImage image, QPoint topLeft) {
@@ -77,7 +77,7 @@ BitmapImage::BitmapImage(Object* parent, QString path, QPoint topLeft)
 
 BitmapImage::~BitmapImage()
 {
-    if(image) delete image;
+    if (image) delete image;
 }
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
@@ -97,12 +97,12 @@ void BitmapImage::loadDomElement(QDomElement imageElement, QString filePath)
 {
     QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
     QFileInfo fi(path);
-    if(!fi.exists()) path = imageElement.attribute("src");
+    if (!fi.exists()) path = imageElement.attribute("src");
     int x = imageElement.attribute("topLeftX").toInt();
     int y = imageElement.attribute("topLeftY").toInt();
     //loadImageAtFrame( path, position );
     image = new QImage(path);
-    if( !image->isNull() )
+    if ( !image->isNull() )
     {
         boundaries = QRect( QPoint(x, y), image->size() );
     }
@@ -154,7 +154,7 @@ void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
 {
     QImage* image2 = bitmapImage->image;
     QRect newBoundaries;
-    if( image->width() == 0 || image->height() == 0 )
+    if ( image->width() == 0 || image->height() == 0 )
     {
         newBoundaries = bitmapImage->boundaries;
     }
@@ -173,7 +173,7 @@ void BitmapImage::add(BitmapImage* bitmapImage)
 {
     QImage* image2 = bitmapImage->image;
     QRect newBoundaries;
-    if( image->width() == 0 || image->height() == 0 )
+    if ( image->width() == 0 || image->height() == 0 )
     {
         newBoundaries = bitmapImage->boundaries;
     }
@@ -196,7 +196,7 @@ void BitmapImage::add(BitmapImage* bitmapImage)
             r=0; g=0; b=0; a=0;
             for(int u=0; u<1; u++) {
             	for(int v=0; v<1;v++) {
-            	  if(boundaries.contains(  bitmapImage->boundaries.topLeft() + QPoint(x+u,y+v) )) {
+            	  if (boundaries.contains(  bitmapImage->boundaries.topLeft() + QPoint(x+u,y+v) )) {
             			QRgb p1  = image->pixel(offset.x()+x+u,offset.y()+y+v);
             			int r1 = qRed(p1);
             			int g1 = qGreen(p1);
@@ -284,7 +284,7 @@ void BitmapImage::add(BitmapImage* bitmapImage)
             qDebug() << r << g << b << a;
             qDebug() << qRed(mix) << qGreen(mix) << qBlue(mix) << qAlpha(mix);*/
             //QRgb mix = qRgba(r2, g2, b2, a);
-            if(a2 != 0)
+            if (a2 != 0)
                 image->setPixel(offset.x()+x,offset.y()+y, mix);
         }
     }
@@ -297,7 +297,7 @@ void BitmapImage::moveTopLeft(QPoint point)
 
 void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 {
-    if(boundaries != newBoundaries)
+    if (boundaries != newBoundaries)
     {
         boundaries = newBoundaries;
         newBoundaries.moveTopLeft( QPoint(0,0) );
@@ -310,7 +310,7 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.drawImage(newBoundaries, *image );
         painter.end();
-        //if(image != NULL) delete image;
+        //if (image != NULL) delete image;
         image = newImage;
     }
 }
@@ -329,7 +329,7 @@ BitmapImage BitmapImage::transformed(QRect newBoundaries, bool smoothTransform)
 
 void BitmapImage::extend(QPoint P)
 {
-    if(boundaries.contains( P ))
+    if (boundaries.contains( P ))
     {
         // nothing
     }
@@ -341,10 +341,10 @@ void BitmapImage::extend(QPoint P)
 
 void BitmapImage::extend(QRect rectangle)
 {
-    if(!extendable) return;
-    if(rectangle.width() <= 0) rectangle.setWidth(1);
-    if(rectangle.height() <= 0) rectangle.setHeight(1);
-    if(boundaries.contains( rectangle ))
+    if (!extendable) return;
+    if (rectangle.width() <= 0) rectangle.setWidth(1);
+    if (rectangle.height() <= 0) rectangle.setHeight(1);
+    if (boundaries.contains( rectangle ))
     {
         // nothing
     }
@@ -353,13 +353,13 @@ void BitmapImage::extend(QRect rectangle)
         QRect newBoundaries = boundaries.united(rectangle).normalized();
         QImage* newImage = new QImage( newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
         newImage->fill(qRgba(0,0,0,0));
-        if(!newImage->isNull())
+        if (!newImage->isNull())
         {
             QPainter painter(newImage);
             painter.drawImage(boundaries.topLeft() - newBoundaries.topLeft(), *image);
             painter.end();
         }
-        if(image != NULL) delete image;
+        if (image != NULL) delete image;
         image = newImage;
         boundaries = newBoundaries;
     }
@@ -373,7 +373,7 @@ QRgb BitmapImage::pixel(int x, int y)
 QRgb BitmapImage::pixel(QPoint P)
 {
     QRgb result = qRgba(0,0,0,0); // black
-    if( boundaries.contains( P ) ) result = image->pixel(P - topLeft());
+    if ( boundaries.contains( P ) ) result = image->pixel(P - topLeft());
     return result;
 }
 
@@ -385,7 +385,7 @@ void BitmapImage::setPixel(int x, int y, QRgb colour)
 void BitmapImage::setPixel(QPoint P, QRgb colour)
 {
     extend( P );
-    if( boundaries.contains(P) ) image->setPixel(P-topLeft(), colour);
+    if ( boundaries.contains(P) ) image->setPixel(P-topLeft(), colour);
     //drawLine( QPointF(P), QPointF(P), QPen(QColor(colour)), QPainter::CompositionMode_SourceOver, false);
 }
 
@@ -394,7 +394,7 @@ void BitmapImage::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::Composit
 {
     int width = 2+pen.width();
     extend( QRect(P1.toPoint(), P2.toPoint()).normalized().adjusted(-width,-width,width,width) );
-    if(image != NULL && !image->isNull() )
+    if (image != NULL && !image->isNull() )
     {
         QPainter painter(image);
         painter.setCompositionMode(cm);
@@ -409,13 +409,13 @@ void BitmapImage::drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::
 {
     int width = pen.width();
     extend( rectangle.adjusted(-width,-width,width,width).toRect() );
-    if(brush.style() == Qt::RadialGradientPattern)
+    if (brush.style() == Qt::RadialGradientPattern)
     {
         QRadialGradient* gradient = (QRadialGradient*)brush.gradient();
         gradient->setCenter( gradient->center() - topLeft() );
         gradient->setFocalPoint( gradient->focalPoint() - topLeft() );
     }
-    if(image != NULL && !image->isNull() )
+    if (image != NULL && !image->isNull() )
     {
         QPainter painter(image);
         painter.setCompositionMode(cm);
@@ -433,14 +433,14 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
 {
     int width = pen.width();
     extend( rectangle.adjusted(-width,-width,width,width).toRect() );
-    if(image != NULL && !image->isNull() )
+    if (image != NULL && !image->isNull() )
     {
         QPainter painter(image);
         painter.setCompositionMode(cm);
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
-        //if(brush == Qt::NoBrush)
+        //if (brush == Qt::NoBrush)
         painter.drawEllipse( rectangle.translated(-topLeft()) );
         painter.end();
     }
@@ -450,7 +450,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
 {
     int width = pen.width();
     extend( path.controlPointRect().adjusted(-width,-width,width,width).toRect() );
-    if(image != NULL && !image->isNull() )
+    if (image != NULL && !image->isNull() )
     {
         QPainter painter(image);
         painter.setCompositionMode(cm);
@@ -466,7 +466,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
 
 void BitmapImage::blur(qreal radius)
 {
-    if(image == NULL) return;
+    if (image == NULL) return;
     int rad = qRound(0.5*radius);
     extend( boundaries.adjusted(-rad, -rad, rad, rad) );
     Blur::fastbluralpha(*image, rad);
@@ -474,7 +474,7 @@ void BitmapImage::blur(qreal radius)
 
 void BitmapImage::blur2(qreal radius)
 {
-    if(image == NULL) return;
+    if (image == NULL) return;
     int rad = qRound(0.5*radius);
     extend( boundaries.adjusted(-rad, -rad, rad, rad) );
     Blur::expblur(*image, rad, 16, 7);
@@ -482,7 +482,7 @@ void BitmapImage::blur2(qreal radius)
 
 void BitmapImage::clear()
 {
-    if(image != NULL) delete image;
+    if (image != NULL) delete image;
     image = new QImage(1, 1, QImage::Format_ARGB32_Premultiplied);
     boundaries = QRect(0,0,0,0);
 }
@@ -514,7 +514,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     int j, k;
     bool condition;
     BitmapImage* replaceImage;
-    if(extendFillImage)
+    if (extendFillImage)
     {
         replaceImage = new BitmapImage(NULL, targetImage->boundaries.united(fillImage->boundaries), QColor(0,0,0,0));
     }
@@ -531,7 +531,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     myPen = QPen( QColor(replacementColour) , 1.0, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin);
 
     targetColour = targetImage->pixel(point.x(), point.y());
-    //if(  rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) > tolerance ) return;
+    //if (  rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) > tolerance ) return;
     queue.append( point );
     // ----- flood fill
     // ----- from the standard flood fill algorithm
@@ -541,26 +541,26 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     for(int i=0; i< queue.size(); i++ )
     {
         point = queue.at(i);
-        if(  replaceImage->pixel(point.x(), point.y()) != replacementColour  && rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) < tolerance )
+        if (  replaceImage->pixel(point.x(), point.y()) != replacementColour  && rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) < tolerance )
         {
             j = -1;
             condition =  (point.x() + j > targetImage->left());
-            if(!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
+            if (!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
             while( replaceImage->pixel(point.x()+j, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance && condition)
             {
                 j = j - 1;
                 condition =  (point.x() + j > targetImage->left());
-                if(!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
+                if (!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
             }
 
             k = 1;
             condition = ( point.x() + k < targetImage->right()-1);
-            if(!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
+            if (!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
             while( replaceImage->pixel(point.x()+k, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance && condition)
             {
                 k = k + 1;
                 condition = ( point.x() + k < targetImage->right()-1);
-                if(!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
+                if (!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
             }
 
             //painter1.drawLine( point.x()+j, point.y(), point.x()+k+1, point.y() );
@@ -574,12 +574,12 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
             {
                 //replaceImage->setPixel( point.x()+x, point.y(), replacementColour);
                 condition = point.y() - 1 > targetImage->top();
-                if(!extendFillImage) condition = condition && (point.y() - 1 > replaceImage->top());
-                if( condition && queue.size() < targetImage->height() * targetImage->width() )
+                if (!extendFillImage) condition = condition && (point.y() - 1 > replaceImage->top());
+                if ( condition && queue.size() < targetImage->height() * targetImage->width() )
                 {
-                    if( replaceImage->pixel(point.x()+x, point.y()-1) != replacementColour)
+                    if ( replaceImage->pixel(point.x()+x, point.y()-1) != replacementColour)
                     {
-                        if(rgbDistance(targetImage->pixel( point.x()+x, point.y() - 1), targetColour) < tolerance)
+                        if (rgbDistance(targetImage->pixel( point.x()+x, point.y() - 1), targetColour) < tolerance)
                         {
                             queue.append( point + QPoint(x,-1) );
                         }
@@ -590,12 +590,12 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
                     }
                 }
                 condition = point.y() + 1 < targetImage->bottom();
-                if(!extendFillImage) condition = condition && (point.y() + 1 < replaceImage->bottom());
-                if( condition && queue.size() < targetImage->height() * targetImage->width() )
+                if (!extendFillImage) condition = condition && (point.y() + 1 < replaceImage->bottom());
+                if ( condition && queue.size() < targetImage->height() * targetImage->width() )
                 {
-                    if( replaceImage->pixel(point.x()+x, point.y()+1) != replacementColour)
+                    if ( replaceImage->pixel(point.x()+x, point.y()+1) != replacementColour)
                     {
-                        if(rgbDistance(targetImage->pixel( point.x()+x, point.y() + 1), targetColour) < tolerance)
+                        if (rgbDistance(targetImage->pixel( point.x()+x, point.y() + 1), targetColour) < tolerance)
                         {
                             queue.append( point + QPoint(x, 1) );
                         }

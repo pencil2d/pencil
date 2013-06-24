@@ -176,11 +176,11 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     backgroundLayout->addWidget(greyBackgroundButton);
     backgroundLayout->addWidget(dotsBackgroundButton);
     backgroundLayout->addWidget(weaveBackgroundButton);
-    if( settings.value("background").toString() == "checkerboard" ) checkerBackgroundButton->setChecked(true);
-    if( settings.value("background").toString() == "white" ) whiteBackgroundButton->setChecked(true);
-    if( settings.value("background").toString() == "grey" ) greyBackgroundButton->setChecked(true);
-    if( settings.value("background").toString() == "dots" ) dotsBackgroundButton->setChecked(true);
-    if( settings.value("background").toString() == "weave" ) weaveBackgroundButton->setChecked(true);
+    if ( settings.value("background").toString() == "checkerboard" ) checkerBackgroundButton->setChecked(true);
+    if ( settings.value("background").toString() == "white" ) whiteBackgroundButton->setChecked(true);
+    if ( settings.value("background").toString() == "grey" ) greyBackgroundButton->setChecked(true);
+    if ( settings.value("background").toString() == "dots" ) dotsBackgroundButton->setChecked(true);
+    if ( settings.value("background").toString() == "weave" ) weaveBackgroundButton->setChecked(true);
 
     QCheckBox* shadowsBox = new QCheckBox(tr("Shadows"));
     shadowsBox->setChecked(false); // default
@@ -218,11 +218,11 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     gradientsLayout->addWidget(gradient2Button);
     gradientsLayout->addWidget(gradient3Button);
     gradientsLayout->addWidget(gradient4Button);
-    if( settings.value("gradients").toString() == "1" ) gradient1Button->setChecked(true);
-    if( settings.value("gradients").toString() == "2" ) gradient2Button->setChecked(true);
-    if( settings.value("gradients").toString() == "" )  gradient2Button->setChecked(true); // default
-    if( settings.value("gradients").toString() == "3" ) gradient3Button->setChecked(true);
-    if( settings.value("gradients").toString() == "4" ) gradient4Button->setChecked(true);
+    if ( settings.value("gradients").toString() == "1" ) gradient1Button->setChecked(true);
+    if ( settings.value("gradients").toString() == "2" ) gradient2Button->setChecked(true);
+    if ( settings.value("gradients").toString() == "" )  gradient2Button->setChecked(true); // default
+    if ( settings.value("gradients").toString() == "3" ) gradient3Button->setChecked(true);
+    if ( settings.value("gradients").toString() == "4" ) gradient4Button->setChecked(true);
 
 
     /*QCheckBox *gradientsBox = new QCheckBox(tr("Gradients"));

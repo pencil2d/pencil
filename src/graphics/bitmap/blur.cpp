@@ -48,7 +48,7 @@ static inline void blurcol( QImage& im, int col, int alpha, int aprec, int zprec
 */
 void Blur::expblur( QImage& img, int radius, int aprec,int zprec )
 {
-    if(radius<1)
+    if (radius<1)
         return;
 
     /* Calculate the alpha such that 90% of
