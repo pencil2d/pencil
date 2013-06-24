@@ -216,9 +216,6 @@ public slots:
     void copyFrames();
     void pasteFrames();
 
-    void inbetween();
-    void inbetweenV();
-
     void paste();
     void clipboardChanged();
 
