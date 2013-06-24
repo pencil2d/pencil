@@ -45,13 +45,6 @@ public:
     void add(QList<VertexRef> points);
 };
 
-/*struct Buffer {
-	QList<QPoint> points;
-	QList<QColor> colours;
-};*/
-
-
-
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
