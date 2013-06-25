@@ -521,23 +521,67 @@ void ScribbleArea::keyPressEvent( QKeyEvent* event )
     switch (event->key())
     {
     case Qt::Key_Right:
-        if (somethingSelected) { myTempTransformedSelection.translate(1,0); myTransformedSelection = myTempTransformedSelection; calculateSelectionTransformation(); update(); }
-        else { editor->scrubForward(); event->ignore(); }
+        if (somethingSelected) 
+        { 
+            myTempTransformedSelection.translate(1,0); 
+            myTransformedSelection = myTempTransformedSelection; 
+            calculateSelectionTransformation(); 
+            update(); 
+        }
+        else 
+        { 
+            editor->scrubForward(); 
+            event->ignore(); 
+        }
         break;
     case Qt::Key_Left:
-        if (somethingSelected) { myTempTransformedSelection.translate(-1,0);  myTransformedSelection = myTempTransformedSelection; calculateSelectionTransformation(); update(); }
-        else { editor->scrubBackward(); event->ignore(); }
+        if (somethingSelected) 
+        {
+            myTempTransformedSelection.translate(-1,0);  
+            myTransformedSelection = myTempTransformedSelection; 
+            calculateSelectionTransformation(); 
+            update(); 
+        }
+        else 
+        { 
+            editor->scrubBackward(); 
+            event->ignore(); 
+        }
         break;
     case Qt::Key_Up:
-        if (somethingSelected) { myTempTransformedSelection.translate(0,-1); myTransformedSelection = myTempTransformedSelection; calculateSelectionTransformation(); update(); }
-        else { editor->previousLayer(); event->ignore(); }
+        if (somethingSelected) 
+        { 
+            myTempTransformedSelection.translate(0, -1); 
+            myTransformedSelection = myTempTransformedSelection; 
+            calculateSelectionTransformation(); 
+            update(); 
+        }
+        else 
+        { 
+            editor->previousLayer();
+            event->ignore();
+        }
         break;
     case Qt::Key_Down:
-        if (somethingSelected) { myTempTransformedSelection.translate(0,1); myTransformedSelection = myTempTransformedSelection; calculateSelectionTransformation(); update(); }
-        else { editor->nextLayer(); event->ignore(); }
+        if (somethingSelected) 
+        { 
+            myTempTransformedSelection.translate(0, 1); 
+            myTransformedSelection = myTempTransformedSelection; 
+            calculateSelectionTransformation(); 
+            update(); 
+        }
+        else 
+        { 
+            editor->nextLayer(); 
+            event->ignore(); 
+        }
         break;
     case Qt::Key_Return:
-        if (somethingSelected) { paintTransformedSelection(); deselectAll(); }
+        if (somethingSelected) 
+        { 
+            paintTransformedSelection(); 
+            deselectAll();
+        }
         else
         {
             if (currentToolType() == POLYLINE)
@@ -551,10 +595,16 @@ void ScribbleArea::keyPressEvent( QKeyEvent* event )
         }
         break;
     case Qt::Key_Escape:
-        if (somethingSelected || currentToolType() == POLYLINE) { escape(); }
+        if (somethingSelected || currentToolType() == POLYLINE) 
+        { 
+            escape(); 
+        }
         break;
     case Qt::Key_Backspace:
-        if (somethingSelected) deleteSelection();
+        if (somethingSelected)
+        {
+            deleteSelection();
+        }
         break;
     case Qt::Key_F1:
         simplified = true;

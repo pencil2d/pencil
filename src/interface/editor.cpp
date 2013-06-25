@@ -1484,12 +1484,15 @@ void Editor::scrubTo(int frameNumber)
 
 void Editor::scrubForward()
 {
-    scrubTo(m_nCurrentFrameIndex+1);
+    scrubTo( m_nCurrentFrameIndex + 1 );
 }
 
 void Editor::scrubBackward()
 {
-    if (m_nCurrentFrameIndex > 1) scrubTo(m_nCurrentFrameIndex-1);
+    if (m_nCurrentFrameIndex > 1) 
+    {
+        scrubTo(m_nCurrentFrameIndex - 1);
+    }
 }
 
 void Editor::previousLayer()
