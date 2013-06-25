@@ -644,25 +644,30 @@ void ScribbleArea::keyReleaseEvent( QKeyEvent* event )
         updateAllVectorLayersAtCurrentFrame();
         break;
     default:
-        event->ignore();
-        //QWidget::keyPressEvent(e);
+        event->ignore();        
     }
 }
 
 void ScribbleArea::tabletEvent(QTabletEvent* event)
 {
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
+        
     if (event->type() == QEvent::TabletPress) tabletInUse = true;
     if (event->type() == QEvent::TabletRelease) tabletInUse = false;
+
     tabletPosition = event->hiResGlobalPos();
     tabletPressure = event->pressure();
+
     mousePressure.append(tabletPressure);
+
     adjustPressureSensitiveProperties(tabletPressure, event->pointerType() == QTabletEvent::Cursor);
+
     if (event->pointerType() == QTabletEvent::Eraser)
     {
         if (tabletEraserBackupToolMode == -1)
         {
-            tabletEraserBackupToolMode = currentToolType(); // memorise which tool was being used before switching to the eraser
+            tabletEraserBackupToolMode = currentToolType(); 
+            // memorise which tool was being used before switching to the eraser
             emit eraserOn();
         }
     }
@@ -692,8 +697,14 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
     if ( currentToolType() == ERASER)
     {
         //myPenWidth = static_cast<int>(10.0*tabletPressure);
-        if (mouseDevice) { currentWidth =  m_toolSetHash.value( ERASER )->properties.width; }
-        else { currentWidth = (m_toolSetHash.value( ERASER )->properties.width*pressure); }
+        if (mouseDevice) 
+        { 
+            currentWidth =  m_toolSetHash.value( ERASER )->properties.width; 
+        }
+        else 
+        { 
+            currentWidth = (m_toolSetHash.value( ERASER )->properties.width*pressure); 
+        }
     }
     if (currentToolType() == PENCIL)
     {
