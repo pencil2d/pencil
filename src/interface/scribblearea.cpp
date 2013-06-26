@@ -736,7 +736,8 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
 
 void ScribbleArea::mousePressEvent(QMouseEvent* event)
 {
-    static const QString myToolModesDescription[] = {
+    static const QString myToolModesDescription[] = 
+    {
         "Pencil",
         "Eraser",
         "Select",
@@ -748,7 +749,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         "Polyline",
         "Bucket",
         "Eyedropper",
-        "Colouring" };
+        "Colouring" 
+    };
 
     mouseInUse = true;
 
