@@ -830,7 +830,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     {
         if ( event->button() == Qt::LeftButton )
         {
-            editor->backup( myToolModesDescription[(int)currentToolType()] );
+            editor->backup( "Pencil" );
 
             if (!showThinLines)
             {
@@ -1036,7 +1036,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
 {
     Layer* layer = editor->getCurrentLayer();
     // ---- checks ------
-    if (layer==NULL) return;
+    if (layer == NULL) return;
     if (layer->type == Layer::VECTOR)
     {
         VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
