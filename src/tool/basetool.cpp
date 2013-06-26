@@ -1,5 +1,8 @@
-#include "basetool.h"
+
 #include "editor.h"
+#include "basetool.h"
+
+
 
 QString typeName(ToolType type)
 {
@@ -43,4 +46,19 @@ void BaseTool::setEditor(Editor* editor)
         qCritical("ERROR: editor is null!");
     }
     m_pEditor = editor;
+}
+
+void BaseTool::mousePressEvent( QMouseEvent* )
+{
+
+}
+
+void BaseTool::mouseMoveEvent( QMouseEvent* )
+{
+
+}
+
+void BaseTool::mouseReleaseEvent( QMouseEvent* )
+{
+
 }

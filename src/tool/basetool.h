@@ -10,6 +10,7 @@
 
 
 class Editor;
+class QMouseEvent;
 
 
 enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, BRUSH };
@@ -44,9 +45,14 @@ public:
 
     void setEditor(Editor* editor);
     Properties properties;
+
+    void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseReleaseEvent(QMouseEvent*);
+
 signals:
 
-    public slots:
+public slots:
 
 private:
     Editor* m_pEditor;
