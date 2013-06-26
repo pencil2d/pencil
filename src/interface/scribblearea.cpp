@@ -489,7 +489,6 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
     updateFrame(editor->m_nCurrentFrameIndex);
 }
 
-
 void ScribbleArea::updateAllVectorLayers()
 {
     for(int i=0; i< editor->object->getLayerCount(); i++)
@@ -737,7 +736,19 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
 
 void ScribbleArea::mousePressEvent(QMouseEvent* event)
 {
-    static const QString myToolModesDescription[] = {"Pencil","Eraser","Select","Move","Edit","Hand","Smudge","Pen","Polyline","Bucket","Eyedropper","Colouring"};
+    static const QString myToolModesDescription[] = {
+        "Pencil",
+        "Eraser",
+        "Select",
+        "Move",
+        "Edit",
+        "Hand",
+        "Smudge",
+        "Pen",
+        "Polyline",
+        "Bucket",
+        "Eyedropper",
+        "Colouring" };
 
     mouseInUse = true;
 
@@ -1156,8 +1167,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             if (layer->type == Layer::VECTOR)
             {
                 closestVertices = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0)->getVerticesCloseTo(currentPoint, tol/myTempView.m11());
-            }
-            //update();
+            }            
         }
         update();
         updateAll = true;
@@ -1677,6 +1687,7 @@ void ScribbleArea::grid()
 
 
 }
+
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
     //qDebug() << "paint event!" << QDateTime::currentDateTime() << event->rect(); //readCanvasFromCache << mouseInUse << editor->currentFrame;
@@ -2320,7 +2331,6 @@ void ScribbleArea::endPolyline()
     setModified(editor->m_nCurrentLayerIndex, editor->m_nCurrentFrameIndex);
 }
 
-
 void ScribbleArea::resizeEvent(QResizeEvent* event)
 {
     //resize( size() );
@@ -2329,6 +2339,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     recentre();
     updateAllFrames();
 }
+
 void ScribbleArea::zoom()
 {
     centralView.scale(1.2,1.2);
@@ -2360,7 +2371,7 @@ void ScribbleArea::rotateacw()
 
 void ScribbleArea::recentre()
 {
-    centralView = QMatrix(1,0,0,1, 0.5*width(), 0.5*height());
+    centralView = QMatrix(1, 0, 0, 1, 0.5 * width(), 0.5 * height());
     setView();
     QPixmapCache::clear();
     update();
@@ -2405,7 +2416,10 @@ void ScribbleArea::resetView()
 QMatrix ScribbleArea::getView()
 {
     Layer* layer = editor->getCurrentLayer();
-    if (layer == NULL) return QMatrix(); // error
+    if (layer == NULL) 
+    {
+        return QMatrix(); // TODO: error
+    }
     if (layer->type == Layer::CAMERA)
     {
         return ((LayerCamera*)layer)->getViewAtFrame(editor->m_nCurrentFrameIndex);
@@ -2482,7 +2496,13 @@ void ScribbleArea::paintTransformedSelection()
         {
             //backup();
             BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->m_nCurrentFrameIndex, 0);
-            if (bitmapImage == NULL) { qDebug() << "NULL image pointer!" << editor->m_nCurrentLayerIndex << editor->m_nCurrentFrameIndex;  return; }
+            if (bitmapImage == NULL) 
+            { 
+                qDebug() << "NULL image pointer!" 
+                         << editor->m_nCurrentLayerIndex 
+                         << editor->m_nCurrentFrameIndex;  
+                return; 
+            }
 
             bool smoothTransform = false;
             if (myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() ) smoothTransform = true;
@@ -2498,9 +2518,7 @@ void ScribbleArea::paintTransformedSelection()
             VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
             vectorImage->applySelectionTransformation();
             selectionTransformation.reset();
-        }
-        //deselectAll();
-        //emit modification();
+        }        
         setModified(editor->m_nCurrentLayerIndex, editor->m_nCurrentFrameIndex);
     }
 }
@@ -2524,8 +2542,7 @@ void ScribbleArea::displaySelectionProperties()
         VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
         //vectorImage->applySelectionTransformation();
         if (currentToolType() == MOVE)
-        {
-            //if (closestCurves.size()>0) {
+        {            
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if (selectedCurve != -1)
             {
@@ -2573,6 +2590,7 @@ void ScribbleArea::deselectAll()
     mySelection.setRect(10,10,20,20);
     myTransformedSelection.setRect(10,10,20,20);
     myTempTransformedSelection.setRect(10,10,20,20);
+
     Layer* layer = editor->getCurrentLayer();
     if (layer == NULL) return;
     if (layer->type == Layer::VECTOR)
@@ -2606,13 +2624,12 @@ void ScribbleArea::toggleOnionPrev(bool checked)
     emit onionPrevChanged(onionPrev);
 }
 
-
-
-
 void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance)
 {
     bool invertible;
+
     QPointF initialPoint = myTempView.inverted(&invertible).map(QPointF(point));
+    
     // Step 1: peforms a standard (pixel-based) flood fill, and finds the vertices on the contour of the filled area
     qreal tol = 8.0/qAbs(myTempView.m11()); // tolerance for finding vertices along the contour of the flood-filled area
     qreal tol2 = 1.5/qAbs(myTempView.m11()); // tolerance for connecting contour vertices from different curves // should be small as close points of different curves are supposed to coincide
@@ -2795,10 +2812,7 @@ void ScribbleArea::floodFill(VectorImage* vectorImage, QPoint point, QRgb target
     // -----
     vectorImage->setSelected( contourPoints, true);
     update();
-    //replaceImage->fill(qRgba(0,0,0,0));
-    //QMessageBox::warning(this, tr("My Application"), tr("all the contour points"), QMessageBox::Ok, QMessageBox::Ok);
-    //vectorImage->deselectAll();
-    //return;
+   
     // 2 --- or continue
 
     // Step 2: finds closed paths among the selected vertices: we start from a vertex and build a tree of connected vertices
@@ -2942,7 +2956,6 @@ void ScribbleArea::floodFillError(int errorType)
     deselectAll();
 }
 
-
 ToolType ScribbleArea::currentToolType()
 {
     if ( m_currentTool == NULL)
@@ -3033,27 +3046,14 @@ void ScribbleArea::toggleMirrorV()
 void ScribbleArea::toggleShowAllLayers()
 {
     showAllLayers++;
-    if (showAllLayers==3) showAllLayers = 0;
+    if (showAllLayers == 3) 
+    {
+        showAllLayers = 0;
+    }
     //emit showAllLayersChanged(showAllLayers);
     setView(myView);
     updateAllFrames();
 }
-/*
-void ScribbleArea::print()
- {
-     QPrinter printer(QPrinter::HighResolution);
-
-     QPrintDialog *printDialog = new QPrintDialog(&printer, this);
-     if (printDialog->exec() == QDialog::Accepted) {
-         QPainter painter(&printer);
-         QRect rect = painter.viewport();
-         QSize size = image.size();
-         size.scale(rect.size(), Qt::KeepAspectRatio);
-         painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
-         painter.setWindow(image.rect());
-         painter.drawImage(0, 0, image);
-     }
- } */
 
 void ScribbleArea::wheelEvent(QWheelEvent* event)
 {
