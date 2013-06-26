@@ -67,7 +67,8 @@ HEADERS +=  src/interfaces.h \
     src/util/keyboardmanager.h \
     src/interface/mainwindow2.h \
     src/interface/timelinecells.h \
-    src/graphics/vector/vectorselection.h
+    src/graphics/vector/vectorselection.h \
+    src/util/pencildef.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
