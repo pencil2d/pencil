@@ -807,9 +807,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
 
     while (!mousePath.isEmpty()) mousePath.removeAt(0); // empty the mousePath
     while (!mousePressure.isEmpty()) mousePressure.removeAt(0); // empty the mousePressure
-    //	if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
-    //		if (tabletInUse && highResPosition) { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); } else { lastPixel = QPointF(event->pos()); }
-    //if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {  // if the user is pressing the left or right button
+    
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
         if (tabletInUse && highResPosition)
@@ -826,6 +824,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     // if-else for all tools
     // ---------------------------------------
 
+    currentTool()->mousePressEvent( event );
+
     if ( currentToolType() == PENCIL )
     {
         if ( event->button() == Qt::LeftButton )
@@ -835,7 +835,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             if (!showThinLines)
             {
                 toggleThinLines();
-            }
+            }            
             mousePath.append(lastPoint);
             updateAll = true;
         }
