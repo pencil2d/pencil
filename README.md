@@ -5,7 +5,7 @@
 * [Download it!](https://bitbucket.org/chchwy/pencil2d/downloads)
 * [Report Bugs, Request Features](https://github.com/pencil2d/pencil/issues)
 * Pencil Open Source Community: [http://www.pencil2d.org/](http://www.pencil2d.org/)
-* User Forum: [http://www.pencil2d.org/?post_type=forum](http://www.pencil2d.org/?post_type=forum)
+* [User Forum](http://www.pencil2d.org/?post_type=forum)
 
 ### Source code
 
