@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <QList>
 #include <QMenu>
+#include "pencildef.h"
 #include "editor.h"
 #include "mainwindow.h"
 #include "object.h"
@@ -49,6 +50,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     arrangePalettes();
     createMenus();
+    loadShortcuts();
 
     // must run after 'arragePalettes'
     editor->setObject(object);
@@ -256,6 +258,8 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
+
+
 }
 
 void MainWindow2::loadPlugins()
@@ -644,6 +648,13 @@ void MainWindow2::writeSettings()
         settings.setValue("displayPaletteFloating", displayPalette->isFloating());
     }
 
+}
+
+void MainWindow2::loadShortcuts()
+{
+    QSettings setting("kb.ini", QSettings::IniFormat);
+
+    setting.value( CMD_NEW_FILE, )
 }
 
 void MainWindow2::addRecentFile(QString filePath)
