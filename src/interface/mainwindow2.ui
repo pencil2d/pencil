@@ -130,7 +130,6 @@
     <addaction name="actionNext_Frame"/>
     <addaction name="actionPrevious_Frame"/>
     <addaction name="separator"/>
-    <addaction name="actionExtend_Frame"/>
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
