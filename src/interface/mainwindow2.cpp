@@ -33,6 +33,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
+
 MainWindow2::MainWindow2(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow2)
@@ -399,23 +400,6 @@ void MainWindow2::loadPlugins()
     }
 #endif
     pluginsDir.cd("plugins");
-}
-
-void MainWindow2::populateMenus(QObject* plugin)
-{
-    qDebug() << "MainWindow populateMenus" << this << this->thread();
-    qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
-    /*BrushInterface *iBrush = qobject_cast<BrushInterface *>(plugin);
-    if (iBrush) addToMenu(plugin, iBrush->brushes(), brushMenu, SLOT(changeBrush()), brushActionGroup);
-
-    ShapeInterface *iShape = qobject_cast<ShapeInterface *>(plugin);
-    if (iShape) addToMenu(plugin, iShape->shapes(), shapesMenu, SLOT(insertShape()));
-
-    FilterInterface *iFilter = qobject_cast<FilterInterface *>(plugin);
-    if (iFilter) addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));*/
-
-    //ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(plugin);
-    //if (exportPlugin) addToMenu(plugin, exportPlugin->name(), exportMenu, SLOT(exportFile()));
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
