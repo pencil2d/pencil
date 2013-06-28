@@ -19,7 +19,6 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include "editor.h"
-#include "mainwindow.h"
 #include "object.h"
 #include "layersound.h"
 #include "scribblearea.h"
