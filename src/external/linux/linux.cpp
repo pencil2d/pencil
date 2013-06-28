@@ -19,7 +19,8 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QString>
 #include "object.h"
-#include "mainwindow.h"
+#include "editor.h"
+#include "mainwindow2.h"
 #include "layersound.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))

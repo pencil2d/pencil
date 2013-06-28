@@ -4,22 +4,33 @@
 // ==== Singleton ====
 static QSettings* g_pSettings = NULL;
 
-void checkSettings(QSettings* pSettings)
-{
-    if ( !pSettings->contains(kSettingToolCursor) )
-    {
-        pSettings->setValue( kSettingToolCursor, true );
-    }
-}
 
 QSettings* pencilSettings()
 {
     if ( g_pSettings == NULL )
     {
         g_pSettings = new QSettings("pencil", "pencil");
-        checkSettings(g_pSettings);
+
+        if ( !g_pSettings->contains("InitPencilSetting") )
+        {
+            restoreToDefaultSetting();
+            g_pSettings->setValue("InitPencilSetting", true);
+        }
     }
     return g_pSettings;
 }
 
+void restoreToDefaultSetting()
+{
+    QSettings* s = g_pSettings;
 
+    s->setValue("penWidth", 2.0);
+    s->setValue("pencilWidth", 1.0);
+    s->setValue("eraserWidth", 10.0);
+    s->setValue("brushWidth", 15.0);
+    
+    s->setValue("autosaveNumber", 15);
+    s->setValue("toolCursors", true);
+
+    s->sync();
+}

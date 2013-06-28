@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QMenu>
 #include "pencildef.h"
 #include "editor.h"
-#include "mainwindow.h"
 #include "object.h"
 #include "layersound.h"
 #include "scribblearea.h"
@@ -30,9 +29,11 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "preferences.h"
 #include "timeline.h"
+#include "pencilsettings.h"
 
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
+
 
 MainWindow2::MainWindow2(QWidget *parent) :
     QMainWindow(parent),
@@ -281,23 +282,6 @@ void MainWindow2::loadPlugins()
     }
 #endif
     pluginsDir.cd("plugins");
-}
-
-void MainWindow2::populateMenus(QObject* plugin)
-{
-    qDebug() << "MainWindow populateMenus" << this << this->thread();
-    qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
-    /*BrushInterface *iBrush = qobject_cast<BrushInterface *>(plugin);
-    if (iBrush) addToMenu(plugin, iBrush->brushes(), brushMenu, SLOT(changeBrush()), brushActionGroup);
-
-    ShapeInterface *iShape = qobject_cast<ShapeInterface *>(plugin);
-    if (iShape) addToMenu(plugin, iShape->shapes(), shapesMenu, SLOT(insertShape()));
-
-    FilterInterface *iFilter = qobject_cast<FilterInterface *>(plugin);
-    if (iFilter) addToMenu(plugin, iFilter->filters(), filterMenu, SLOT(applyFilter()));*/
-
-    //ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(plugin);
-    //if (exportPlugin) addToMenu(plugin, exportPlugin->name(), exportMenu, SLOT(exportFile()));
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
@@ -584,22 +568,23 @@ void MainWindow2::dockAllPalettes()
 
 void MainWindow2::readSettings()
 {
-    QSettings settings("Pencil", "Pencil");
+
+    QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
     desktopRect.adjust(80,80,-80,-80);
 
-    QPoint pos = settings.value("editorPosition", desktopRect.topLeft() ).toPoint();
-    QSize size = settings.value("editorSize", desktopRect.size() ).toSize();
+    QPoint pos = settings->value("editorPosition", desktopRect.topLeft() ).toPoint();
+    QSize size = settings->value("editorSize", desktopRect.size() ).toSize();
 
     move(pos);
     resize(size);
 
     editor->restorePalettesSettings(true, true, true);
 
-    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+    QString myPath = settings->value("lastFilePath", QVariant(QDir::homePath())).toString();
     addRecentFile(myPath);
 
-    setOpacity(100 - settings.value("windowOpacity").toInt());
+    setOpacity(100 - settings->value("windowOpacity").toInt());
 }
 
 void MainWindow2::writeSettings()
@@ -731,11 +716,11 @@ void MainWindow2::importPalette()
 
 void MainWindow2::aboutPencil()
 {
-    QMessageBox::about(this, tr("Pencil Animation 0.5.0.2 beta (chchwy Branch)"),
+    QMessageBox::about(this, tr("Pencil Animation 0.5.3 beta"),
                        tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
                           "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
                           "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
-                          "Version: <b>0.5.2</b> (13 June 2013)<br><br>"
+                          "Version: <b>0.5.3</b> (28 June 2013)<br><br>"
                           "<b>Thanks to:</b><br>"
                           "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"
                           "Roland for the Movie export functions<br>"

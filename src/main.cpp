@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     initialise();
 
     MainWindow2 mainWindow;
-    mainWindow.setWindowTitle("Pencil Animation v0.5.2 (chchwy Branch)");
+    mainWindow.setWindowTitle("Pencil Animation v0.5.3");
 
     if (argc == 1)
     {

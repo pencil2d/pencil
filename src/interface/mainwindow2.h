@@ -28,7 +28,7 @@ class MainWindow2 : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow2(QWidget *parent = 0);
+    explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
     void addRecentFile(QString filePath);
@@ -52,7 +52,7 @@ public:
     Preferences* m_pPreferences;
 
 private:
-    Ui::MainWindow2 *ui;
+    Ui::MainWindow2* ui;
 
     // Old code migration
 public slots:
@@ -85,8 +85,7 @@ private:
     void makePreferenceConnections();
     void makeTimeLineConnections();
     void createMenus();
-    void loadPlugins();
-    void populateMenus(QObject* plugin);
+    void loadPlugins();    
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);
