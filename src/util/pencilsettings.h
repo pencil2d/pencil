@@ -3,8 +3,12 @@
 
 #include <QObject>
 #include <QSettings>
+#include "pencildef.h"
+
 
 QSettings* pencilSettings();
+void restoreToDefaultSetting();
+
 
 // Setting Keys
 #define kSettingToolCursor "toolCursors"
