@@ -25,7 +25,7 @@ Simplified and reorganized the code base.
 * Color Palette code refactoring.
 * Bug fixed: brush cannot change color in 0.5.2
 
-### Pencil Animation v0.5 beta (Morevna Branch) ### - September 15th 2010
+### Pencil Animation v0.5 beta (Morevna Branch) - September 15th 2010
 
 Changes by Konstantin Dmitriev:
 
