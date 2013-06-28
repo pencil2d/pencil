@@ -93,9 +93,9 @@ private:
     void readSettings();
     void writeSettings();
 
-    QString path;
-    QList<QMenu*>* m_pMenuList;
+    void loadShortcuts();
 
+    QString path;
     QMenu* openRecentMenu;
 };
 
