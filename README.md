@@ -14,12 +14,16 @@
 
 ----------------------------------------------------------------
 
-### Pencil Animation v0.5.2 beta (chcwhy Branch)
+### Pencil Animation v0.5.3 beta
 
-2013-06-13
+2013-06-28
 Simplified and reorganized the code base.
 
 * Upgrade to Qt 4.8.4
 * ToolSet code refactoring.
 * Menubar code refactoring.
+* Color Palette code refactoring.
+
+* Bug fixed: brush cannot change color in 0.5.2
+
 
