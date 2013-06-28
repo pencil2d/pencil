@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "preferences.h"
 #include "timeline.h"
+#include "pencilsettings.h"
 
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
@@ -685,22 +686,23 @@ void MainWindow2::dockAllPalettes()
 
 void MainWindow2::readSettings()
 {
-    QSettings settings("Pencil", "Pencil");
+
+    QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
     desktopRect.adjust(80,80,-80,-80);
 
-    QPoint pos = settings.value("editorPosition", desktopRect.topLeft() ).toPoint();
-    QSize size = settings.value("editorSize", desktopRect.size() ).toSize();
+    QPoint pos = settings->value("editorPosition", desktopRect.topLeft() ).toPoint();
+    QSize size = settings->value("editorSize", desktopRect.size() ).toSize();
 
     move(pos);
     resize(size);
 
     editor->restorePalettesSettings(true, true, true);
 
-    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+    QString myPath = settings->value("lastFilePath", QVariant(QDir::homePath())).toString();
     addRecentFile(myPath);
 
-    setOpacity(100 - settings.value("windowOpacity").toInt());
+    setOpacity(100 - settings->value("windowOpacity").toInt());
 }
 
 void MainWindow2::writeSettings()
@@ -825,11 +827,11 @@ void MainWindow2::importPalette()
 
 void MainWindow2::aboutPencil()
 {
-    QMessageBox::about(this, tr("Pencil Animation 0.5.0.2 beta (chchwy Branch)"),
+    QMessageBox::about(this, tr("Pencil Animation 0.5.3 beta"),
                        tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
                           "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
                           "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
-                          "Version: <b>0.5.2</b> (13 June 2013)<br><br>"
+                          "Version: <b>0.5.3</b> (28 June 2013)<br><br>"
                           "<b>Thanks to:</b><br>"
                           "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"
                           "Roland for the Movie export functions<br>"
