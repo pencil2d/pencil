@@ -85,7 +85,6 @@ private:
     void makePreferenceConnections();
     void makeTimeLineConnections();
     void createMenus();
-    void loadPlugins();    
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);

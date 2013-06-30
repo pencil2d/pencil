@@ -263,27 +263,6 @@ void MainWindow2::createMenus()
 
 }
 
-void MainWindow2::loadPlugins()
-{
-    /*
-     * since this is not yet really implemented, I commented it on MainWindow2() -- mj
-     */
-
-    qDebug() << "MainWindow loadplugins" << this << this->thread();
-    // foreach (QObject *plugin, QPluginLoader::staticInstances()) populateMenus(plugin); // static plugins
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-#if defined(Q_OS_WIN)
-    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-        pluginsDir.cdUp();
-#elif defined(Q_OS_MAC)
-    if (pluginsDir.dirName() == "MacOS")
-    {
-        pluginsDir.cdUp();
-    }
-#endif
-    pluginsDir.cd("plugins");
-}
-
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
 {
     qDebug() << "MainWindow populateMenus" << this << this->thread();
