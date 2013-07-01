@@ -618,7 +618,7 @@ void MainWindow2::loadShortcuts()
 {
     QSettings setting("kb.ini", QSettings::IniFormat);
 
-    setting.value( CMD_NEW_FILE, )
+    //setting.value( CMD_NEW_FILE, )
 }
 
 void MainWindow2::addRecentFile(QString filePath)
