@@ -617,8 +617,16 @@ void MainWindow2::writeSettings()
 void MainWindow2::loadShortcuts()
 {
     QSettings setting("kb.ini", QSettings::IniFormat);
-
-    //setting.value( CMD_NEW_FILE, )
+        
+    ui->actionNew->setShortcut( setting.value( CMD_NEW_FILE ).toString() );
+    ui->actionOpen->setShortcut( setting.value( CMD_OPEN_FILE ).toString() );
+    ui->actionSave->setShortcut( setting.value( CMD_SAVE_FILE ).toString() );
+    ui->actionSave_as->setShortcut( setting.value( CMD_SAVE_AS ).toString() );
+    ui->actionPrint->setShortcut( setting.value( CMD_PRINT ).toString() );
+    
+    ui->actionImport_Image->setShortcut( setting.value( CMD_NEW_FILE ).toString() );
+    ui->actionImport_Image_Sequence->setShortcut( setting.value( CMD_NEW_FILE ).toString() );
+    ui->actionImport_Movie->setShortcut( setting.value( CMD_IMPORT_MOVIE ).toString() );
 }
 
 void MainWindow2::addRecentFile(QString filePath)
