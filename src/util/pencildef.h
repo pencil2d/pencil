@@ -12,6 +12,7 @@
 #define CMD_IMPORT_IMAGE "CmdImportImage"
 #define CMD_IMPORT_IMAGE_SEQ "CmdImportImageSequence"
 #define CMD_IMPORT_MOVIE "CmdImportMovie"
+#define CMD_IMPORT_PALETTE "CmdImportPalette"
 #define CMD_IMPORT_SOUND "CmdImportSound"
 #define CMD_EXPORT_XSHEET "CmdExportXsheet"
 #define CMD_EXRPOT_IMAGE_SEQ "CmdExportImageSequence"
