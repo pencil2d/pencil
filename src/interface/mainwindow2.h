@@ -91,7 +91,8 @@ private:
     void readSettings();
     void writeSettings();
 
-    void loadShortcuts();
+    void loadShortcutsSetting();
+    QString sc(QString);
 
     QString path;
     QMenu* openRecentMenu;

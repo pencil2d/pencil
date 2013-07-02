@@ -51,7 +51,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     arrangePalettes();
     createMenus();
-    loadShortcuts();
+    loadShortcutsSetting();
 
     // must run after 'arragePalettes'
     editor->setObject(object);
@@ -614,19 +614,66 @@ void MainWindow2::writeSettings()
 
 }
 
-void MainWindow2::loadShortcuts()
+void MainWindow2::loadShortcutsSetting()
 {
-    QSettings setting("kb.ini", QSettings::IniFormat);
-        
-    ui->actionNew->setShortcut( setting.value( CMD_NEW_FILE ).toString() );
-    ui->actionOpen->setShortcut( setting.value( CMD_OPEN_FILE ).toString() );
-    ui->actionSave->setShortcut( setting.value( CMD_SAVE_FILE ).toString() );
-    ui->actionSave_as->setShortcut( setting.value( CMD_SAVE_AS ).toString() );
-    ui->actionPrint->setShortcut( setting.value( CMD_PRINT ).toString() );
-    
-    ui->actionImport_Image->setShortcut( setting.value( CMD_NEW_FILE ).toString() );
-    ui->actionImport_Image_Sequence->setShortcut( setting.value( CMD_NEW_FILE ).toString() );
-    ui->actionImport_Movie->setShortcut( setting.value( CMD_IMPORT_MOVIE ).toString() );
+    QSettings defaultSetting(":resources/kb.ini", QSettings::IniFormat);
+
+    pencilSettings()->beginGroup("shortcuts");
+    foreach (QString pKey, defaultSetting.allKeys())
+    {
+        pencilSettings()->setValue(pKey, defaultSetting.value(pKey));
+    }
+    pencilSettings()->endGroup();
+
+    ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
+    ui->actionOpen->setShortcut( sc(CMD_OPEN_FILE) );
+    ui->actionSave->setShortcut( sc(CMD_SAVE_FILE) );
+    ui->actionSave_as->setShortcut( sc(CMD_SAVE_AS) );
+    ui->actionPrint->setShortcut( sc(CMD_PRINT) );
+
+    ui->actionImport_Image->setShortcut( sc(CMD_IMPORT_IMAGE) );
+    ui->actionImport_Image_Sequence->setShortcut( sc(CMD_IMPORT_IMAGE_SEQ) );
+    ui->actionImport_Movie->setShortcut( sc(CMD_IMPORT_MOVIE) );
+    ui->actionImport_Palette->setShortcut( sc(CMD_IMPORT_PALETTE) );
+    ui->actionImport_Sound->setShortcut( sc(CMD_IMPORT_SOUND) );
+
+    ui->actionExport_Image->setShortcut( sc(CMD_EXPORT_IMAGE) );
+    ui->actionExport_Image_Sequence->setShortcut( sc(CMD_EXPORT_IMAGE_SEQ) );
+    ui->actionExport_Movie->setShortcut( sc(CMD_EXPORT_MOVIE) );
+    ui->actionExport_Palette->setShortcut( sc(CMD_EXPORT_PALETTE) );
+    ui->actionExport_Svg_Image->setShortcut( sc(CMD_EXPORT_SVG) );
+    ui->actionExport_X_sheet->setShortcut( sc(CMD_EXPORT_XSHEET) );
+
+    ui->actionUndo->setShortcut( sc(CMD_UNDO) );
+    ui->actionRedo->setShortcut( sc(CMD_REDO) );
+    ui->actionCut->setShortcut( sc(CMD_CUT) );
+    ui->actionCopy->setShortcut( sc(CMD_COPY) );
+    ui->actionPaste->setShortcut( sc(CMD_PASTE) );
+    ui->actionSelect_All->setShortcut( sc(CMD_SELECT_ALL));
+    ui->actionDeselect_All->setShortcut( sc(CMD_DESELECT_ALL) );
+    ui->actionPreference->setShortcut( sc(CMD_PREFERENCE) );
+
+    ui->actionReset_Windows->setShortcut( sc(CMD_RESET_WINDOWS) );
+    ui->actionReset_View->setShortcut( sc(CMD_RESET_VIEW) );
+    ui->actionZoom_In->setShortcut( sc(CMD_ZOOM_IN) );
+    ui->actionZoom_Out->setShortcut(sc(CMD_ZOOM_OUT));
+    ui->actionRotate_Clockwise->setShortcut(sc(CMD_ROTATE_CLOCK));
+    ui->actionRotate_Anticlosewise->setShortcut(sc(CMD_ROTATE_ANTI_CLOCK));
+    ui->actionHorizontal_Flip->setShortcut(sc(CMD_FLIP_HORIZONTAL));
+    ui->actionVertical_Flip->setShortcut(sc(CMD_FLIP_VERTICAL));
+    ui->actionPreview->setShortcut(sc(CMD_PREVIEW));
+    ui->actionGrid->setShortcut(sc(CMD_GRID));
+    ui->actionOnionPrevious->setShortcut(sc(CMD_ONIONSKIN_PREV));
+    ui->actionOnionNext->setShortcut(sc(CMD_ONIONSKIN_NEXT));
+}
+
+QString MainWindow2::sc(QString strActionName)
+{
+    QString strSettingKey = QString("shortcuts/") + strActionName;
+
+    qDebug() << strActionName << ": " << pencilSettings()->value( strSettingKey ).toString();
+
+    return pencilSettings()->value(strSettingKey).toString();
 }
 
 void MainWindow2::addRecentFile(QString filePath)
