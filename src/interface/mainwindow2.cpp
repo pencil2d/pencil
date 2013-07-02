@@ -665,6 +665,14 @@ void MainWindow2::loadShortcutsSetting()
     ui->actionGrid->setShortcut(sc(CMD_GRID));
     ui->actionOnionPrevious->setShortcut(sc(CMD_ONIONSKIN_PREV));
     ui->actionOnionNext->setShortcut(sc(CMD_ONIONSKIN_NEXT));
+
+    ui->actionPlay->setShortcut(sc(CMD_PLAY));
+    ui->actionLoop->setShortcut(sc(CMD_LOOP));
+    ui->actionPrevious_Frame->setShortcut(CMD_GOTO_PREV_FRAME);
+    ui->actionNext_Frame->setShortcut(sc(CMD_GOTO_NEXT_FRAME));
+    ui->actionAdd_Frame->setShortcut(sc(CMD_ADD_FRAME));
+    ui->actionDuplicate_Frame->setShortcut(sc(CMD_DUPLICATE_FRAME));
+    ui->actionRemove_Frame->setShortcut(sc(CMD_REMOVE_FRAME));
 }
 
 QString MainWindow2::sc(QString strActionName)
