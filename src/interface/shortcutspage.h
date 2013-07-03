@@ -5,22 +5,25 @@
 #include <QModelIndex>
 
 class QStandardItem;
+class QStandardItemModel;
+class QDialog;
 
 
 class ShortcutsPage : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ShortcutsPage(QWidget *parent = 0);
+    explicit ShortcutsPage(QWidget* parent = 0);
     
 signals:
     
 public slots:
     void tableItemChangs(QStandardItem*);
-    void tableItemDoubleClicked(const QModelIndex &);
+    void tableItemDoubleClicked(const QModelIndex&);
 
-protected:
-    void keyPressEvent ( QKeyEvent * event );
+private:
+    QStandardItemModel* m_pTableModel;
+    QDialog* m_pChooseKeyDialog;
 };
 
 #endif // SHORTCUTSPAGE_H
