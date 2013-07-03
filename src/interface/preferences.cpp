@@ -314,13 +314,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect(curveOpacityLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveOpacityChange(int)));
     connect(curveSmoothingLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveSmoothingChange(int)));
     connect(highResBox, SIGNAL(stateChanged(int)), parent, SIGNAL(highResPositionChange(int)));
-
-    /*lay->addWidget(fontSizeLabel);
-    lay->addWidget(fontSize);
-    lay->addWidget(frameSizeLabel);
-    lay->addWidget(frameSize);
-    lay->addWidget(lengthSizeLabel);
-    lay->addWidget(lengthSize);*/
+    
     setLayout(lay);
 }
 
@@ -367,10 +361,7 @@ TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
     connect(lengthSize, SIGNAL(textChanged(QString)), parent, SIGNAL(lengthSizeChange(QString)));
     connect(drawLabel, SIGNAL(stateChanged(int)), parent, SIGNAL(labelChange(int)));
     connect(scrubBox, SIGNAL(stateChanged(int)), parent, SIGNAL(scrubChange(int)));
-
-    //lay->addWidget(drawLabel);
-    //lay->addWidget(fontSizeLabel);
-    //lay->addWidget(fontSize);
+    
     lay->addWidget(frameSizeLabel);
     lay->addWidget(frameSize);
     lay->addWidget(lengthSizeLabel);
