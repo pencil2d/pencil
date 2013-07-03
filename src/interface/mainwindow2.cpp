@@ -616,14 +616,7 @@ void MainWindow2::writeSettings()
 
 void MainWindow2::loadShortcutsSetting()
 {
-    QSettings defaultSetting(":resources/kb.ini", QSettings::IniFormat);
-
-    pencilSettings()->beginGroup("shortcuts");
-    foreach (QString pKey, defaultSetting.allKeys())
-    {
-        pencilSettings()->setValue(pKey, defaultSetting.value(pKey));
-    }
-    pencilSettings()->endGroup();
+    importDefaultShortcutsSetting();
 
     ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
     ui->actionOpen->setShortcut( sc(CMD_OPEN_FILE) );
@@ -668,20 +661,54 @@ void MainWindow2::loadShortcutsSetting()
 
     ui->actionPlay->setShortcut(sc(CMD_PLAY));
     ui->actionLoop->setShortcut(sc(CMD_LOOP));
-    ui->actionPrevious_Frame->setShortcut(CMD_GOTO_PREV_FRAME);
+    ui->actionPrevious_Frame->setShortcut(sc(CMD_GOTO_PREV_FRAME));
     ui->actionNext_Frame->setShortcut(sc(CMD_GOTO_NEXT_FRAME));
     ui->actionAdd_Frame->setShortcut(sc(CMD_ADD_FRAME));
     ui->actionDuplicate_Frame->setShortcut(sc(CMD_DUPLICATE_FRAME));
     ui->actionRemove_Frame->setShortcut(sc(CMD_REMOVE_FRAME));
+
+    ui->actionMove->setShortcut(sc(CMD_TOOL_MOVE));
+    ui->actionClear->setShortcut(sc(CMD_TOOL_CLEAR));
+    ui->actionSelect->setShortcut(sc(CMD_TOOL_SELECT));
+    ui->actionBrush->setShortcut(sc(CMD_TOOL_BRUSH));
+    ui->actionPolyline->setShortcut(sc(CMD_TOOL_POLYLINE));
+    ui->actionSmudge->setShortcut(sc(CMD_TOOL_SMUDGE));
+    ui->actionPen->setShortcut(sc(CMD_TOOL_PEN));
+    ui->actionHand->setShortcut(sc(CMD_TOOL_HAND));
+    ui->actionPencil->setShortcut(sc(CMD_TOOL_PENCIL));
+    ui->actionBucket->setShortcut(sc(CMD_TOOL_BUCKET));
+    ui->actionEyedropper->setShortcut(sc(CMD_TOOL_EYEDROPPER));
+    ui->actionEraser->setShortcut(sc(CMD_TOOL_ERASER));
+
+    ui->actionNew_Bitmap_Layer->setShortcut(sc(CMD_NEW_BITMAP_LAYER));
+    ui->actionNew_Vector_Layer->setShortcut(sc(CMD_NEW_VECTOR_LAYER));
+    ui->actionNew_Camera_Layer->setShortcut(sc(CMD_NEW_CAMERA_LAYER));
+    ui->actionNew_Sound_Layer->setShortcut(sc(CMD_NEW_SOUND_LAYER));
+
+    ui->actionHelp->setShortcut(sc(CMD_HELP));
+}
+
+void MainWindow2::importDefaultShortcutsSetting()
+{
+    QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
+
+    pencilSettings()->beginGroup("shortcuts");
+    foreach (QString pKey, defaultKey.allKeys())
+    {
+        pencilSettings()->setValue(pKey, defaultKey.value(pKey));
+    }
+    pencilSettings()->endGroup();
 }
 
 QString MainWindow2::sc(QString strActionName)
-{
-    QString strSettingKey = QString("shortcuts/") + strActionName;
+{    
+    pencilSettings()->beginGroup("shortcuts");
+    QString strKeySequence = pencilSettings()->value( strActionName ).toString();
+    pencilSettings()->endGroup();
 
-    qDebug() << strActionName << ": " << pencilSettings()->value( strSettingKey ).toString();
+    qDebug() << strActionName << ": " << strKeySequence;
 
-    return pencilSettings()->value(strSettingKey).toString();
+    return strKeySequence;
 }
 
 void MainWindow2::addRecentFile(QString filePath)

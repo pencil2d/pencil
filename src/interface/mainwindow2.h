@@ -88,10 +88,12 @@ private:
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);
+
+
     void readSettings();
     void writeSettings();
-
     void loadShortcutsSetting();
+    void importDefaultShortcutsSetting();
     QString sc(QString);
 
     QString path;
