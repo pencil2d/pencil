@@ -152,3 +152,5 @@ FORMS += \
     src/interface/mainwindow2.ui
 
 TRANSLATIONS += pencil.ts
+
+QMAKE_CXXFLAGS += -std=c++11
