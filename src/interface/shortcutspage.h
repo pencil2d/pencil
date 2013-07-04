@@ -22,9 +22,8 @@ public slots:
     void tableItemClicked(const QModelIndex&);
 
 protected:
-    void keyPressEvent(QKeyEvent*);
-    void keyReleaseEvent(QKeyEvent*);
-
+    void keyPressEvent(QKeyEvent*);    
+    bool eventFilter(QObject*, QEvent*);
 private:
     QStandardItemModel* m_pTableModel;
     QTableView* m_pTableView;

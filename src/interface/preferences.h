@@ -74,17 +74,13 @@ public:
 
 };
 
-
-
 class TimelinePage : public QWidget
 {
     Q_OBJECT
-
 public:
     TimelinePage(QWidget* parent = 0);
 
 };
-
 
 class FilesPage : public QWidget
 {

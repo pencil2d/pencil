@@ -49,6 +49,8 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
 
     connect(m_pTableModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(tableItemChangs(QStandardItem*)));
     connect(m_pTableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableItemClicked(const QModelIndex&)));
+
+    m_pTableView->installEventFilter(this);
 }
 
 void ShortcutsPage::tableItemChangs(QStandardItem* pItem)
@@ -86,7 +88,6 @@ void ShortcutsPage::keyPressEvent(QKeyEvent* event)
         return;
     }
 
-
     int keyInt = event->key();
 
     if (event->modifiers() & Qt::Key_Control)
@@ -108,8 +109,25 @@ void ShortcutsPage::keyPressEvent(QKeyEvent* event)
     qDebug() << "Current Item:" << m_pCurrentEditItem->text();
 }
 
-void ShortcutsPage::keyReleaseEvent(QKeyEvent* event)
+bool ShortcutsPage::eventFilter(QObject* object, QEvent* event)
 {
+    if (object == m_pTableView)
+    {
+        if (event->type() == QEvent::KeyPress)
+        {
+            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+            qDebug() << "Key Press!" << keyEvent->text();
 
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        return QObject::eventFilter(object, event);
+    }
 }
 
