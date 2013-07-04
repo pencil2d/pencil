@@ -29,7 +29,6 @@ Gradient::Gradient()
 
 void Gradient::paint1(QPainter& painter, VectorImage* v, int i, int gradients)
 {
-
     QMatrix painterMatrix = painter.worldMatrix();
     //qreal scale = qAbs(painterMatrix.m11()) + qAbs(painterMatrix.m12()); // quick overestimation of sqrt( m11*m22 - m12*m21 )
     QColor colour = v->getColour(v->area[i].colourNumber);
@@ -533,8 +532,6 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
 
 }
 
-
-
 void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 {
     QMatrix painterMatrix = painter.worldMatrix();
@@ -918,7 +915,6 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 
 }
 
-
 void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
 {
     //QMatrix painterMatrix = painter.worldMatrix();
@@ -1223,13 +1219,6 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
         delete buffer;
     }
 }
-
-
-
-
-
-
-
 
 void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
 {
