@@ -7,7 +7,14 @@
 class QTreeView;
 class QStandardItem;
 class QStandardItemModel;
+class QLabel;
+class QLineEdit;
 
+
+namespace Ui
+{
+    class ShortcutsPage;
+};
 
 class ShortcutsPage : public QWidget
 {
@@ -22,12 +29,15 @@ public slots:
     void tableItemClicked(const QModelIndex&);
 
 protected:
-    void keyPressEvent(QKeyEvent*);    
-    bool eventFilter(QObject*, QEvent*);
+    bool    eventFilter(QObject*, QEvent*);
+
 private:
+    QString captureKeySequence(QKeyEvent*);
     QStandardItemModel* m_treeModel;
-    QTreeView* m_treeView;
-    QStandardItem* m_pCurrentEditItem;
+    QStandardItem* m_currentActionItem;
+    QStandardItem* m_currentKeySeqItem;
+
+    Ui::ShortcutsPage* ui;
 };
 
 #endif // SHORTCUTSPAGE_H

@@ -149,7 +149,8 @@ svg
 # INSTALLS += shortcuts
 
 FORMS += \
-    src/interface/mainwindow2.ui
+    src/interface/mainwindow2.ui \
+    src/interface/shortcutspage.ui
 
 TRANSLATIONS += pencil.ts
 

@@ -63,6 +63,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     makePreferenceConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
+
+    showPreferences();
 }
 
 MainWindow2::~MainWindow2()
@@ -701,7 +703,7 @@ void MainWindow2::importDefaultShortcutsSetting()
 }
 
 QString MainWindow2::sc(QString strActionName)
-{    
+{
     pencilSettings()->beginGroup("shortcuts");
     QString strKeySequence = pencilSettings()->value( strActionName ).toString();
     pencilSettings()->endGroup();
