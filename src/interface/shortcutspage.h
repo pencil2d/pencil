@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QModelIndex>
 
-class QTableView;
+class QTreeView;
 class QStandardItem;
 class QStandardItemModel;
 
@@ -25,8 +25,8 @@ protected:
     void keyPressEvent(QKeyEvent*);    
     bool eventFilter(QObject*, QEvent*);
 private:
-    QStandardItemModel* m_pTableModel;
-    QTableView* m_pTableView;
+    QStandardItemModel* m_treeModel;
+    QTreeView* m_treeView;
     QStandardItem* m_pCurrentEditItem;
 };
 

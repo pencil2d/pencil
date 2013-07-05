@@ -3,7 +3,7 @@
 #include <QMap>
 #include <QSettings>
 #include <QVBoxLayout>
-#include <QTableView>
+#include <QTreeView>
 #include <QStandardItemModel>
 #include <QKeyEvent>
 #include <QKeySequence>
@@ -15,42 +15,42 @@
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent),
     m_pCurrentEditItem( nullptr ),
-    m_pTableModel( nullptr ),
-    m_pTableView( nullptr )
+    m_treeModel( nullptr ),
+    m_treeView( nullptr )
 {
     QSettings* pSettings = pencilSettings();
 
     pSettings->beginGroup("shortcuts");
 
-    m_pTableModel = new QStandardItemModel(pSettings->allKeys().size(), 2, this);
+    m_treeModel = new QStandardItemModel(pSettings->allKeys().size(), 2, this);
 
     int i = 0;
     foreach (QString strCmdName, pSettings->allKeys())
     {
         QString strKeySequence = pSettings->value(strCmdName).toString();
 
-        m_pTableModel->setItem(i, 0, new QStandardItem(strCmdName));
-        m_pTableModel->setItem(i, 1, new QStandardItem(strKeySequence));
+        m_treeModel->setItem(i, 0, new QStandardItem(strCmdName));
+        m_treeModel->setItem(i, 1, new QStandardItem(strKeySequence));
 
-        m_pTableModel->item(i, 0)->setEditable(false);
-        m_pTableModel->item(i, 1)->setEditable(true);
+        m_treeModel->item(i, 0)->setEditable(false);
+        m_treeModel->item(i, 1)->setEditable(true);
 
         i++;
     }
     pSettings->endGroup();
 
-    m_pTableView = new QTableView(this);
-    m_pTableView->setModel(m_pTableModel);
+    m_treeView = new QTreeView(this);
+    m_treeView->setModel(m_treeModel);
 
     QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->addWidget(m_pTableView);
+    layout->addWidget(m_treeView);
 
     setLayout(layout);
 
-    connect(m_pTableModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(tableItemChangs(QStandardItem*)));
-    connect(m_pTableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableItemClicked(const QModelIndex&)));
+    connect(m_treeModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(tableItemChangs(QStandardItem*)));
+    connect(m_treeView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableItemClicked(const QModelIndex&)));
 
-    m_pTableView->installEventFilter(this);
+    m_treeView->installEventFilter(this);
 }
 
 void ShortcutsPage::tableItemChangs(QStandardItem* pItem)
@@ -62,8 +62,8 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 {
     qDebug("Clicked!");
 
-    m_pTableView->edit(modelIndex);
-    m_pCurrentEditItem = m_pTableModel->itemFromIndex(modelIndex);
+    m_treeView->edit(modelIndex);
+    m_pCurrentEditItem = m_treeModel->itemFromIndex(modelIndex);
 
     //m_pCurrentEditItem->setText("kerker");
     //int rowIndex = modelIndex.row();
@@ -111,7 +111,7 @@ void ShortcutsPage::keyPressEvent(QKeyEvent* event)
 
 bool ShortcutsPage::eventFilter(QObject* object, QEvent* event)
 {
-    if (object == m_pTableView)
+    if (object == m_treeView)
     {
         if (event->type() == QEvent::KeyPress)
         {
