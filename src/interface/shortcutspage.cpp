@@ -2,7 +2,10 @@
 #include <QDebug>
 #include <QMap>
 #include <QSettings>
+#include <QGroupBox>
 #include <QVBoxLayout>
+#include <QLabel>
+#include <QLineEdit>
 #include <QTreeView>
 #include <QStandardItemModel>
 #include <QKeyEvent>
@@ -42,8 +45,16 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
     m_treeView = new QTreeView(this);
     m_treeView->setModel(m_treeModel);
 
+    QVBoxLayout* vLayout = new QVBoxLayout(this);
+    vLayout->addWidget(new QLabel("Action Name:"));
+    vLayout->addWidget(new QLineEdit());
+
+    QGroupBox* groupbox = new QGroupBox("Set Shortcuts", this);
+    groupbox->setLayout(vLayout);
+
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->addWidget(m_treeView);
+    layout->addWidget(groupbox);
 
     setLayout(layout);
 
