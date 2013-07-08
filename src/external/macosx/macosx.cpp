@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "editor.h"
-#include "mainwindow.h"
+#include "mainwindow2.h"
 #include "style.h"
 
 #include <CoreFoundation/CoreFoundation.h>
