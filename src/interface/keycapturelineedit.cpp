@@ -8,7 +8,6 @@
 KeyCaptureLineEdit::KeyCaptureLineEdit(QWidget *parent) :
     QLineEdit(parent)
 {
-    //qDebug("Key Capture!!!!!!!!!!!!");
 }
 
 void KeyCaptureLineEdit::keyPressEvent(QKeyEvent* event)
@@ -28,7 +27,6 @@ void KeyCaptureLineEdit::keyPressEvent(QKeyEvent* event)
     if (event->modifiers() & Qt::CTRL)
     {
         keyInt += Qt::CTRL;
-        qDebug() << "Command!";
     }
     if (event->modifiers() & Qt::SHIFT)
     {
@@ -43,10 +41,11 @@ void KeyCaptureLineEdit::keyPressEvent(QKeyEvent* event)
         keyInt += Qt::META;
     }
 
-    QString strKeySeq = QKeySequence(keyInt).toString(QKeySequence::NativeText);
+    QKeySequence keySeq(keyInt);
+    QString strKeySeq = keySeq.toString(QKeySequence::NativeText);
 
-    //m_currentKeySeqItem->setText(strKeySeq);
-    //qDebug() << "Current Item:" << m_currentKeySeqItem->text();
+    emit keyCaptured(keySeq);
 
-    qDebug() << strKeySeq;
+    this->setText(strKeySeq);
+    //qDebug() << strKeySeq;
 }
