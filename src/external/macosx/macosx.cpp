@@ -52,7 +52,7 @@ void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     qDebug() << "-------QuickTime------" << filePath << QDir::temp().absolutePath();
     // --------- Export all the temporary frames ----------
 
-    QDir::temp().mkdir("pencil");g
+    QDir::temp().mkdir("pencil");
     QString tempPath = QDir::tempPath()+"pencil/";
     QProgressDialog progress("Exporting movie...", "Abort", 0, 100, NULL);
     progress.setWindowModality(Qt::WindowModal);
