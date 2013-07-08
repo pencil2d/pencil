@@ -35,6 +35,9 @@ LayerSound::~LayerSound()
 
 void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {
+    Q_UNUSED(cells);
+    Q_UNUSED(width);
+    Q_UNUSED(selected);
 
     for(int i=0; i < sound.size(); i++)
     {
@@ -147,6 +150,7 @@ void LayerSound::swap(int i, int j)
 
 bool LayerSound::saveImage(int index, QString path, int layerNumber)
 {
+    Q_UNUSED(layerNumber);
     /*QString layerNumberString = QString::number(layerNumber);
     QString frameNumberString = QString::number(framesPosition.at(index));
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
@@ -280,6 +284,7 @@ void LayerSound::loadDomElement(QDomElement element, QString filePath)
 
 void LayerSound::addTimelineKey(qint64 newTotalTime)
 {
+    Q_UNUSED(newTotalTime);
     for (int i = 0; i < this->sound.size(); i++)
     {
         if (this->soundSize[i] <= 0)

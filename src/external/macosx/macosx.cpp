@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "editor.h"
-#include "mainwindow.h"
+#include "mainwindow2.h"
 #include "style.h"
 
 #include <CoreFoundation/CoreFoundation.h>
@@ -35,6 +35,15 @@ void initialise()
 
 void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
 {
+    Q_UNUSED(startFrame);
+    Q_UNUSED(endFrame);
+    Q_UNUSED(view);
+    Q_UNUSED(currentLayer);
+    Q_UNUSED(exportSize);
+    Q_UNUSED(filePath);
+    Q_UNUSED(fps);
+    Q_UNUSED(exportFps);
+    Q_UNUSED(exportFormat);
     /*
     if(!filePath.endsWith(".mov", Qt::CaseInsensitive))
     {
@@ -43,7 +52,7 @@ void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     qDebug() << "-------QuickTime------" << filePath << QDir::temp().absolutePath();
     // --------- Export all the temporary frames ----------
 
-    QDir::temp().mkdir("pencil");
+    QDir::temp().mkdir("pencil");g
     QString tempPath = QDir::tempPath()+"pencil/";
     QProgressDialog progress("Exporting movie...", "Abort", 0, 100, NULL);
     progress.setWindowModality(Qt::WindowModal);

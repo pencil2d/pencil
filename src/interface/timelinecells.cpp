@@ -179,6 +179,7 @@ void TimeLineCells::drawContent()
 
 void TimeLineCells::paintEvent(QPaintEvent* event)
 {
+    Q_UNUSED(event);
     Object* object = editor->object;
     if(object == NULL) return;
     Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
