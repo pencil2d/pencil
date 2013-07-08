@@ -35,6 +35,15 @@ void initialise()
 
 void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
 {
+    Q_UNUSED(startFrame);
+    Q_UNUSED(endFrame);
+    Q_UNUSED(view);
+    Q_UNUSED(currentLayer);
+    Q_UNUSED(exportSize);
+    Q_UNUSED(filePath);
+    Q_UNUSED(fps);
+    Q_UNUSED(exportFps);
+    Q_UNUSED(exportFormat);
     /*
     if(!filePath.endsWith(".mov", Qt::CaseInsensitive))
     {

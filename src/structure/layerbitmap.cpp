@@ -64,6 +64,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 
 QImage* LayerBitmap::getImageAtIndex(int index)
 {
+    Q_UNUSED(index);
     /*if ( index < 0 || index >= framesImage.size() ) {
     	return NULL;
     } else {
@@ -129,6 +130,7 @@ void LayerBitmap::swap(int i, int j)
 
 bool LayerBitmap::saveImage(int index, QString path, int layerNumber)
 {
+    Q_UNUSED(layerNumber);
     int theFrame = framesPosition.at(index);
     QString theFileName = fileName(theFrame, id);
     framesFilename[index] = theFileName;

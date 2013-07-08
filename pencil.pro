@@ -130,7 +130,6 @@ macx {
     HEADERS += src/external/macosx/style.h
     SOURCES += src/external/macosx/macosx.cpp \
            src/external/macosx/style.cpp
-        LIBS += -Llibmacosx
     RC_FILE = pencil.icns
 }
 linux-g++ {

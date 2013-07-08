@@ -98,7 +98,6 @@ void MainWindow2::makeTimeLineConnections()
 
 void MainWindow2::makePreferenceConnections()
 {
-
 }
 
 void MainWindow2::arrangePalettes()

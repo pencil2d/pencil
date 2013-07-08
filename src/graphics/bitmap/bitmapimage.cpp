@@ -90,6 +90,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 
 QDomElement BitmapImage::createDomElement(QDomDocument& doc)
 {
+    Q_UNUSED(doc);
     return QDomElement();  // empty
 }
 
@@ -130,6 +131,9 @@ void BitmapImage::paintImage(QPainter& painter)
 
 void outputImage(QImage* image, QSize size, QMatrix myView)
 {
+    Q_UNUSED(image);
+    Q_UNUSED(size);
+    Q_UNUSED(myView);
 }
 
 BitmapImage BitmapImage::copy()
