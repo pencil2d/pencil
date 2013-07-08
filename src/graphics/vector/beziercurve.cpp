@@ -451,6 +451,8 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
         //qreal squareWidth = max(6.0, 1.2*myCurve.getWidth());
         //squareWidth = squareWidth/painter.matrix().m11();
         qreal squareWidth = 5.0/painter.matrix().m11();
+        Q_UNUSED(squareWidth);
+
         for(int i=-1; i< vertex.size(); i++)
         {
             if (isSelected(i))
