@@ -93,6 +93,7 @@ private:
     void readSettings();
     void writeSettings();
     void loadShortcutsSetting();
+    void unloadAllShortcuts();
     void importDefaultShortcutsSetting();
     QString sc(QString);
 

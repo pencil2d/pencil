@@ -535,6 +535,8 @@ void MainWindow2::showPreferences()
     connect(m_pPreferences, SIGNAL(onionLayer2OpacityChange(int)), editor, SLOT(onionLayer2OpacityChangeSlot(int)));
     connect(m_pPreferences, SIGNAL(onionLayer3OpacityChange(int)), editor, SLOT(onionLayer3OpacityChangeSlot(int)));
 
+    unloadAllShortcuts();
+
     m_pPreferences->show();
 }
 
@@ -618,7 +620,10 @@ void MainWindow2::writeSettings()
 
 void MainWindow2::loadShortcutsSetting()
 {
-    importDefaultShortcutsSetting();
+    if ( !pencilSettings()->contains(QString("shortcuts/%0").arg(CMD_NEW_FILE)) )
+    {
+        importDefaultShortcutsSetting();
+    }
 
     ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
     ui->actionOpen->setShortcut( sc(CMD_OPEN_FILE) );
@@ -690,6 +695,15 @@ void MainWindow2::loadShortcutsSetting()
     ui->actionHelp->setShortcut(sc(CMD_HELP));
 }
 
+void MainWindow2::unloadAllShortcuts()
+{
+    QList<QAction*> actionList = this->findChildren<QAction*>();
+    foreach (QAction* action, actionList)
+    {
+        action->setShortcut(QKeySequence(0));
+    }
+}
+
 void MainWindow2::importDefaultShortcutsSetting()
 {
     QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
@@ -708,7 +722,7 @@ QString MainWindow2::sc(QString strActionName)
     QString strKeySequence = pencilSettings()->value( strActionName ).toString();
     pencilSettings()->endGroup();
 
-    qDebug() << strActionName << ": " << strKeySequence;
+    //qDebug() << strActionName << ": " << strKeySequence;
 
     return strKeySequence;
 }
