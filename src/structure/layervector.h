@@ -40,7 +40,7 @@ public:
 
     void loadImageAtFrame(QString, int);
     //void loadImageAtFrame(VectorImage, int);
-    QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int);
+    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int);
     QImage* getImageAtFrame(int, QSize, bool, bool, qreal, bool, int);
     QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool, int);
 
@@ -51,7 +51,7 @@ public:
     void setModified(int frameNumber, bool trueOrFalse);
 
     QDomElement createDomElement(QDomDocument& doc);
-    void loadDomElement(QDomElement element,  QString filePath);
+    virtual void loadDomElement(QDomElement element,  QString filePath);
 
     // graphic representation -- could be put in another class
     //void paint(QPainter &painter, int verticalPosition, int layerHeight, int frameSize, int timeLineWidth);
