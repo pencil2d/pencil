@@ -317,7 +317,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect(gradientsButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(gradientsChange(int)));
     connect(shadowsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(shadowsChange(int)));
     connect(toolCursorsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(toolCursorsChange(int)));
-    connect(aquaBox, SIGNAL(stateChanged(int)), parent, SIGNAL(styleChange(int)));
+    connect(aquaBox, SIGNAL(stateChanged(int)), parent, SIGNAL(styleChanged(int)));
     connect(antialiasingBox, SIGNAL(stateChanged(int)), parent, SIGNAL(antialiasingChange(int)));
     connect(curveOpacityLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveOpacityChange(int)));
     connect(curveSmoothingLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveSmoothingChange(int)));

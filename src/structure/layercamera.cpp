@@ -178,6 +178,7 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
                         c1*camera1->view.dx() + c2*camera2->view.dx(),
                         c1*camera1->view.dy() + c2*camera2->view.dy()	);
     }
+    return QMatrix();
 }
 
 QRect LayerCamera::getViewRect()
@@ -189,6 +190,7 @@ QRect LayerCamera::getViewRect()
 
 QImage* LayerCamera::getImageAtIndex(int index)
 {
+    Q_UNUSED(index);
     /*if ( index < 0 || index >= framesImage.size() ) {
     	return NULL;
     } else {
@@ -257,6 +259,7 @@ void LayerCamera::swap(int i, int j)
 
 bool LayerCamera::saveImage(int index, QString path, int layerNumber)
 {
+    Q_UNUSED(path);
     QString layerNumberString = QString::number(layerNumber);
     QString frameNumberString = QString::number(framesPosition.at(index));
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
@@ -274,7 +277,6 @@ bool LayerCamera::saveImage(int index, QString path, int layerNumber)
 
 void LayerCamera::editProperties()
 {
-    bool ok;
     if (dialog == NULL) dialog = new CameraPropertiesDialog(name, viewRect.width(), viewRect.height());
     dialog->setName(name);
     dialog->setWidth(viewRect.width());
@@ -313,6 +315,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc)
 
 void LayerCamera::loadDomElement(QDomElement element, QString filePath)
 {
+    Q_UNUSED(filePath);
     name = element.attribute("name");
     //visible = (element.attribute("visibility") == "1");
     visible = true;

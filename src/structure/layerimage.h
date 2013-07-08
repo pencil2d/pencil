@@ -38,6 +38,9 @@ public:
     int getLastIndexAtFrame(int frameNumber);
 
     virtual QImage* getImageAtIndex(int index);
+    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int) {
+        return NULL;
+    }
     QImage* getImageAtFrame(int frameNumber);
     QImage* getLastImageAtFrame(int frameNumber, int increment);
     virtual bool addImageAtFrame(int frameNumber);

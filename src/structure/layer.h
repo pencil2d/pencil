@@ -51,6 +51,7 @@ public:
 
     virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc
     virtual void loadDomElement(QDomElement element); // construct a layer from a dom/xml representation
+    virtual void loadDomElement(QDomElement element, QString filePath) = 0;
 
     // graphic representation -- could be put in another class
     virtual void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int frameSize);

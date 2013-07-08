@@ -29,6 +29,8 @@ Gradient::Gradient()
 
 void Gradient::paint1(QPainter& painter, VectorImage* v, int i, int gradients)
 {
+    Q_UNUSED(gradients);
+
     QMatrix painterMatrix = painter.worldMatrix();
     //qreal scale = qAbs(painterMatrix.m11()) + qAbs(painterMatrix.m12()); // quick overestimation of sqrt( m11*m22 - m12*m21 )
     QColor colour = v->getColour(v->area[i].colourNumber);
@@ -96,7 +98,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
     bool subBuffer = true;
     QPainter painter2;
     QMatrix painter2Matrix;
-    QImage* bufferImage;
+    QImage* bufferImage = NULL;
     QRect rect;
     QPainter painter3;
     QMatrix painter3Matrix;
@@ -319,6 +321,7 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
                                 {
                                     int newX = subRect.left()-rect.left()+x;
                                     int newY = subRect.top()-rect.top()+y;
+                                    Q_ASSERT(bufferImage != NULL);
                                     if ( newX >= 0 && newX < bufferImage->width() && newY >=0 && newY < bufferImage->height())
                                     {
                                         if ( qAlpha(subBufferImage->pixel(x,y)) > qAlpha(bufferImage->pixel(newX,newY)) )
@@ -917,6 +920,8 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 
 void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
 {
+    Q_UNUSED(gradients);
+
     //QMatrix painterMatrix = painter.worldMatrix();
     //qreal scale = qAbs(painterMatrix.m11()) + qAbs(painterMatrix.m12()); // quick overestimation of sqrt( m11*m22 - m12*m21 )
     QColor colour = v->getColour(v->area[i].colourNumber);
@@ -1118,6 +1123,10 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
         P2 = v->getVertex( P2Ref );
         bool P1invisible = v->curve[ P1Ref.curveNumber ].isInvisible();
         bool P2invisible = v->curve[ P2Ref.curveNumber ].isInvisible();
+
+        Q_UNUSED(P1invisible);
+        Q_UNUSED(P2invisible);
+
         qreal width1 = v->curve[ P1Ref.curveNumber ].getFeather();
         qreal width2 = v->curve[ P2Ref.curveNumber ].getFeather();
         gradientWidth = qMax(width1, width2);

@@ -49,7 +49,6 @@ bool VectorImage::read(QString filePath)
     QDomDocumentType type = doc.doctype();
     if (type.name() != "PencilVectorImage") return false; // this is not a Pencil document
 
-    int layerNumber = -1;
     QDomElement element = doc.documentElement();
     if (element.tagName() == "image")
     {
@@ -871,7 +870,8 @@ void VectorImage::paintImage(QPainter& painter, bool simplified, bool showThinCu
     painter.setClipping(false);
     painter.setOpacity(1.0);
     QMatrix painterMatrix = painter.worldMatrix();
-    qreal scale = qAbs(painterMatrix.m11()) + qAbs(painterMatrix.m12()); // quick overestimation of sqrt( m11*m22 - m12*m21 )
+    qreal scale = qAbs(painterMatrix.m11()) + qAbs(painterMatrix.m12()); // quick overestimation of sqrt( m11*m22 - m12*m21
+    Q_UNUSED(scale);
     QRect mappedViewRect = QRect(0,0, painter.device()->width(), painter.device()->height() );
     QRectF viewRect = painterMatrix.inverted().mapRect( mappedViewRect );
 
@@ -950,6 +950,7 @@ void VectorImage::paintImage(QPainter& painter, bool simplified, bool showThinCu
 
 void VectorImage::outputImage(QImage* image, QSize size, QMatrix myView, bool simplified, bool showThinCurves, qreal curveOpacity, bool antialiasing, int gradients)
 {
+    Q_UNUSED(size);
     //if ( image->size() != size) {
     //	delete image;
     //	image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
@@ -1026,6 +1027,7 @@ void VectorImage::applyFeatherToSelection(qreal feather)
 
 void VectorImage::applyOpacityToSelection(qreal opacity)
 {
+    Q_UNUSED(opacity);
     for(int i=0; i< curve.size(); i++)
     {
         //if ( curve.at(i).isSelected()) curve[i].setOpacity(width);
