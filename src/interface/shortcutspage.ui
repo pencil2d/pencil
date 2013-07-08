@@ -48,7 +48,7 @@
       <item row="0" column="1">
        <widget class="QLabel" name="actionNameLabel">
         <property name="text">
-         <string>ActionName</string>
+         <string>None</string>
         </property>
        </widget>
       </item>
@@ -60,13 +60,20 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="keySeqLineEdit"/>
+       <widget class="KeyCaptureLineEdit" name="keySeqLineEdit"/>
       </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>KeyCaptureLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>keycapturelineedit.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

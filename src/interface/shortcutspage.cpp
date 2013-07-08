@@ -12,8 +12,9 @@
 #include <QKeySequence>
 #include "pencilsettings.h"
 #include "shortcutspage.h"
-
+#include "keycapturelineedit.h"
 #include "ui_shortcutspage.h"
+
 
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent),
@@ -49,7 +50,9 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
     connect(m_treeModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(tableItemChangs(QStandardItem*)));
     connect(ui->treeView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableItemClicked(const QModelIndex&)));
 
-    ui->keySeqLineEdit->installEventFilter(this);
+    qDebug() << "zz";
+    //KeyCaptureLineEdit* k = ui->keySeqLineEdit;
+    //ui->keySeqLineEdit->installEventFilter(this);
 }
 
 void ShortcutsPage::tableItemChangs(QStandardItem* pItem)
@@ -59,8 +62,6 @@ void ShortcutsPage::tableItemChangs(QStandardItem* pItem)
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 {
-    //qDebug("Clicked!");
-
     const int ACT_NAME_COLUMN = 0;
     const int KEY_SEQ_COLUMN  = 1;
 
@@ -79,62 +80,3 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
     ui->keySeqLineEdit->setFocus();
 }
 
-bool ShortcutsPage::eventFilter(QObject* object, QEvent* event)
-{
-    if (object == ui->keySeqLineEdit)
-    {
-        if (event->type() == QEvent::KeyPress)
-        {
-            QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
-            qDebug() << "Filter Key!" << keyEvent->text();
-            QString strKeySeq = captureKeySequence(keyEvent);
-            ui->keySeqLineEdit->setText(strKeySeq);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    else
-    {
-        return QObject::eventFilter(object, event);
-    }
-}
-
-QString ShortcutsPage::captureKeySequence(QKeyEvent* event)
-{
-
-    if (event->key() == Qt::Key_Control ||
-        event->key() == Qt::Key_Shift   ||
-        event->key() == Qt::Key_Alt     ||
-        event->key() == Qt::Key_Meta )
-    {
-        // only modifier key is not allowed.
-        return "";
-    }
-
-    int keyInt = event->key();
-
-    if (event->modifiers() & Qt::Key_Control)
-    {
-        keyInt += Qt::Key_Control;
-        qDebug() << "Command!";
-    }
-    if (event->modifiers() & Qt::Key_Shift)
-    {
-        keyInt += Qt::Key_Shift;
-    }
-    if (event->modifiers() & Qt::Key_Alt)
-    {
-        keyInt += Qt::Key_Alt;
-    }
-
-    QString strKeySeq = QKeySequence(keyInt).toString(QKeySequence::NativeText);
-
-    //m_currentKeySeqItem->setText(strKeySeq);
-    //qDebug() << "Current Item:" << m_currentKeySeqItem->text();
-
-    //qDebug() << strKeySeq;
-    return strKeySeq;
-}

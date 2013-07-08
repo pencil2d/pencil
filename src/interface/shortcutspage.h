@@ -28,11 +28,9 @@ public slots:
     void tableItemChangs(QStandardItem*);
     void tableItemClicked(const QModelIndex&);
 
-protected:
-    bool    eventFilter(QObject*, QEvent*);
+protected:    
 
-private:
-    QString captureKeySequence(QKeyEvent*);
+private:    
     QStandardItemModel* m_treeModel;
     QStandardItem* m_currentActionItem;
     QStandardItem* m_currentKeySeqItem;
