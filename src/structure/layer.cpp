@@ -58,6 +58,8 @@ void Layer::loadDomElement(QDomElement element)
 
 void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {
+    Q_UNUSED(cells);
+    Q_UNUSED(frameSize);
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     painter.drawRect(x, y, width, height); // empty rectangle  by default
@@ -82,6 +84,7 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, in
 
 void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int allLayers)
 {
+    Q_UNUSED(cells);
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     painter.drawRect(x, y-1, width, height); // empty rectangle  by default
@@ -175,18 +178,26 @@ void Layer::paintSelection(QPainter& painter, int x, int y, int width, int heigh
 
 void Layer::mousePress(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
+    Q_UNUSED(frameNumber);
 }
 
 void Layer::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
+    Q_UNUSED(frameNumber);
 }
 
 void Layer::mouseMove(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
+    Q_UNUSED(frameNumber);
 }
 
 void Layer::mouseRelease(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
+    Q_UNUSED(frameNumber);
 }
 
 void Layer::editProperties()

@@ -696,6 +696,7 @@ void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
 
 void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
 {
+    Q_UNUSED(frameEnd);
     QSettings settings("Pencil","Pencil");
     qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
     QImage exported(exportSize, QImage::Format_ARGB32_Premultiplied);
@@ -708,6 +709,12 @@ void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSi
 
 void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression)
 {
+    Q_UNUSED(exportSize);
+    Q_UNUSED(startFrame);
+    Q_UNUSED(endFrame);
+    Q_UNUSED(view);
+    Q_UNUSED(fps);
+    Q_UNUSED(compression);
     if (!filePath.endsWith(".swf", Qt::CaseInsensitive))
     {
         filePath = filePath + ".swf";

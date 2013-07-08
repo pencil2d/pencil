@@ -16,6 +16,8 @@ KeyboardManager::KeyboardManager(QObject *parent) :
 
 void KeyboardManager::setShortcut(QString strCommand, QString strKeys)
 {
+    Q_UNUSED(strCommand);
+    Q_UNUSED(strKeys);
 
 }
 

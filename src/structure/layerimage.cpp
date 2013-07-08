@@ -58,6 +58,7 @@ int LayerImage::getLastIndexAtFrame(int frameNumber)
 
 QImage* LayerImage::getImageAtIndex(int index)
 {
+    Q_UNUSED(index);
     return NULL; // no image -> implemented in subclasses
 }
 
@@ -143,6 +144,8 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
 
 void LayerImage::paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {
+    Q_UNUSED(x);
+    Q_UNUSED(width);
     painter.setPen(QPen(QBrush(QColor(40,40,40)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     if (visible)
     {
@@ -196,6 +199,7 @@ void LayerImage::mousePress(QMouseEvent* event, int frameNumber)
 
 void LayerImage::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
     int index = getIndexAtFrame(frameNumber);
     if (index != -1)
     {
@@ -209,6 +213,7 @@ void LayerImage::mouseDoubleClick(QMouseEvent* event, int frameNumber)
 
 void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
     frameOffset = frameNumber - frameClicked;
     bool ok = true;
     for(int i=0; i < framesPosition.size(); i++)
@@ -233,6 +238,9 @@ void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
 
 void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
 {
+    Q_UNUSED(event);
+    Q_UNUSED(frameNumber);
+
     for(int i=0; i < framesPosition.size(); i++)
     {
         if (framesSelected.at(i) && frameOffset != 0)
@@ -420,12 +428,20 @@ bool LayerImage::saveImages(QString path, int layerNumber)
 
 bool LayerImage::saveImage(int index, QString path, int layerNumber)
 {
+    Q_UNUSED(index);
+    Q_UNUSED(path);
+    Q_UNUSED(layerNumber);
+    // XXX make abstract?
+
     // implemented in subclasses
     return true;
 }
 
 QString LayerImage::fileName(int index, int layerNumber)
 {
+    Q_UNUSED(index);
+    Q_UNUSED(layerNumber);
+    // XXX make abstract?
     // implemented in subclasses
     return "";
 }

@@ -1833,6 +1833,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
 // TODO: need to move to other place
 bool Editor::loadDomElement(QDomElement docElem, QString filePath)
 {
+    Q_UNUSED(filePath);
     if (docElem.isNull()) return false;
     QDomNode tag = docElem.firstChild();
     while (!tag.isNull())
