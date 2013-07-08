@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QModelIndex>
+#include <QKeySequence>
 
 class QTreeView;
 class QStandardItem;
@@ -14,7 +15,7 @@ class QLineEdit;
 namespace Ui
 {
     class ShortcutsPage;
-};
+}
 
 class ShortcutsPage : public QWidget
 {
@@ -25,12 +26,14 @@ public:
 signals:
 
 public slots:
-    void tableItemChangs(QStandardItem*);
     void tableItemClicked(const QModelIndex&);
+    void keyCapLineEditTextChanged(QKeySequence);
 
-protected:    
+protected:
 
-private:    
+private:
+    void loadShortcutsFromSetting();
+
     QStandardItemModel* m_treeModel;
     QStandardItem* m_currentActionItem;
     QStandardItem* m_currentKeySeqItem;

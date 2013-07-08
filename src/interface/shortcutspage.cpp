@@ -18,46 +18,24 @@
 
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent),
-    m_currentKeySeqItem( nullptr ),
     m_treeModel( nullptr ),
+    m_currentActionItem( nullptr ),
+    m_currentKeySeqItem( nullptr ),
     ui( new Ui::ShortcutsPage )
 {
     ui->setupUi(this);
+    m_treeModel = new QStandardItemModel(this);
 
-    QSettings* pSettings = pencilSettings();
-
-    pSettings->beginGroup("shortcuts");
-
-    m_treeModel = new QStandardItemModel(pSettings->allKeys().size(), 2, this);
-
-    int i = 0;
-    foreach (QString strCmdName, pSettings->allKeys())
-    {
-        QString strKeySequence = pSettings->value(strCmdName).toString();
-
-        m_treeModel->setItem(i, 0, new QStandardItem(strCmdName));
-        m_treeModel->setItem(i, 1, new QStandardItem(strKeySequence));
-
-        m_treeModel->item(i, 0)->setEditable(false);
-        m_treeModel->item(i, 1)->setEditable(true);
-
-        i++;
-    }
-    pSettings->endGroup();
+    loadShortcutsFromSetting();
 
     ui->treeView->setModel(m_treeModel);
 
-    connect(m_treeModel, SIGNAL(itemChanged(QStandardItem*)), this, SLOT(tableItemChangs(QStandardItem*)));
-    connect(ui->treeView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableItemClicked(const QModelIndex&)));
+    connect(ui->treeView, SIGNAL(clicked(const QModelIndex&)),
+            this, SLOT(tableItemClicked(const QModelIndex&)));
 
-    qDebug() << "zz";
-    //KeyCaptureLineEdit* k = ui->keySeqLineEdit;
-    //ui->keySeqLineEdit->installEventFilter(this);
-}
+    connect(ui->keySeqLineEdit, SIGNAL(keyCaptured(QKeySequence)),
+            this, SLOT(keyCapLineEditTextChanged(QKeySequence)));
 
-void ShortcutsPage::tableItemChangs(QStandardItem* pItem)
-{
-    qDebug("Item Changes! at(%d, %d) = %s", pItem->row(), pItem->column(), pItem->text().toStdString().c_str());
 }
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
@@ -78,5 +56,48 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
     qDebug() << "You Select Item:" << m_currentKeySeqItem->text();
 
     ui->keySeqLineEdit->setFocus();
+}
+
+void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
+{
+    QString strCmdName = m_currentActionItem->text();
+    QString strKeySeq  = keySeqence.toString( QKeySequence::PortableText );
+
+    pencilSettings()->beginGroup("shortcuts");
+    pencilSettings()->setValue(strCmdName, strKeySeq);
+    pencilSettings()->endGroup();
+    pencilSettings()->sync();
+
+    m_currentKeySeqItem->setText( keySeqence.toString(QKeySequence::NativeText) );
+
+    qDebug() << "Shortcut " << strCmdName << " = " << strKeySeq;
+}
+
+void ShortcutsPage::loadShortcutsFromSetting()
+{
+    // Load shortcuts from settings
+    QSettings* pSettings = pencilSettings();
+    pSettings->beginGroup("shortcuts");
+
+    m_treeModel->setRowCount( pSettings->allKeys().size());
+    m_treeModel->setColumnCount( 2 );
+
+    int i = 0;
+    foreach (QString strCmdName, pSettings->allKeys())
+    {
+        QString strKeySequence = pSettings->value(strCmdName).toString();
+
+        //convert to native format
+        strKeySequence = QKeySequence(strKeySequence).toString( QKeySequence::NativeText );
+
+        m_treeModel->setItem(i, 0, new QStandardItem(strCmdName));
+        m_treeModel->setItem(i, 1, new QStandardItem(strKeySequence));
+
+        m_treeModel->item(i, 0)->setEditable(false);
+        m_treeModel->item(i, 1)->setEditable(true);
+
+        i++;
+    }
+    pSettings->endGroup();
 }
 
