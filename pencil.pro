@@ -132,7 +132,7 @@ macx {
            src/external/macosx/style.cpp
     RC_FILE = pencil.icns
 }
-unix {
+linux-* {
     INCLUDEPATH += . liblinux
     SOURCES += src/external/linux/linux.cpp
     LIBS += -Lliblinux -lming -lpng
