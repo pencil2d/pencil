@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <QList>
 #include <QMenu>
+#include "pencildef.h"
 #include "editor.h"
 #include "object.h"
 #include "layersound.h"
@@ -50,6 +51,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     arrangePalettes();
     createMenus();
+    loadAllShortcuts();
 
     // must run after 'arragePalettes'
     editor->setObject(object);
@@ -57,10 +59,9 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
-    m_pPreferences = new Preferences(this);
-    makePreferenceConnections();
-
     connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
+
+    showPreferences();
 }
 
 MainWindow2::~MainWindow2()
@@ -97,30 +98,6 @@ void MainWindow2::makeTimeLineConnections()
 
 void MainWindow2::makePreferenceConnections()
 {
-    connect(m_pPreferences, SIGNAL(lengthSizeChange(QString)), m_pTimeLine, SIGNAL(lengthChange(QString)));
-    connect(m_pPreferences, SIGNAL(fontSizeChange(int)), m_pTimeLine, SIGNAL(fontSizeChange(int)));
-    connect(m_pPreferences, SIGNAL(frameSizeChange(int)), m_pTimeLine, SIGNAL(frameSizeChange(int)));
-    connect(m_pPreferences, SIGNAL(labelChange(int)), m_pTimeLine, SIGNAL(labelChange(int)));
-    connect(m_pPreferences, SIGNAL(scrubChange(int)), m_pTimeLine, SIGNAL(scrubChange(int)));
-
-    connect(m_pPreferences, SIGNAL(windowOpacityChange(int)), this, SLOT(setOpacity(int)));
-    connect(m_pPreferences, SIGNAL(curveOpacityChange(int)), m_pScribbleArea, SLOT(setCurveOpacity(int)));
-    connect(m_pPreferences, SIGNAL(curveSmoothingChange(int)), m_pScribbleArea, SLOT(setCurveSmoothing(int)));
-    connect(m_pPreferences, SIGNAL(highResPositionChange(int)), m_pScribbleArea, SLOT(setHighResPosition(int)));
-    connect(m_pPreferences, SIGNAL(antialiasingChange(int)), m_pScribbleArea, SLOT(setAntialiasing(int)));
-    connect(m_pPreferences, SIGNAL(gradientsChange(int)), m_pScribbleArea, SLOT(setGradients(int)));
-    connect(m_pPreferences, SIGNAL(backgroundChange(int)), m_pScribbleArea, SLOT(setBackground(int)));
-    connect(m_pPreferences, SIGNAL(shadowsChange(int)), m_pScribbleArea, SLOT(setShadows(int)));
-    connect(m_pPreferences, SIGNAL(toolCursorsChange(int)), m_pScribbleArea, SLOT(setToolCursors(int)));
-    connect(m_pPreferences, SIGNAL(styleChanged(int)), m_pScribbleArea, SLOT(setStyle(int)));
-
-    connect(m_pPreferences, SIGNAL(autosaveChange(int)), editor, SLOT(changeAutosave(int)));
-    connect(m_pPreferences, SIGNAL(autosaveNumberChange(int)), editor, SLOT(changeAutosaveNumber(int)));
-
-    connect(m_pPreferences, SIGNAL(onionLayer1OpacityChange(int)), editor, SLOT(onionLayer1OpacityChangeSlot(int)));
-    connect(m_pPreferences, SIGNAL(onionLayer2OpacityChange(int)), editor, SLOT(onionLayer2OpacityChangeSlot(int)));
-    connect(m_pPreferences, SIGNAL(onionLayer3OpacityChange(int)), editor, SLOT(onionLayer3OpacityChangeSlot(int)));
-
 }
 
 void MainWindow2::arrangePalettes()
@@ -151,35 +128,17 @@ void MainWindow2::arrangePalettes()
 void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
-    ui->actionNew->setShortcut(tr("Ctrl+N"));
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
-
-    ui->actionOpen->setShortcut(tr("Ctrl+O"));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openDocument()));
-
-    ui->actionSave_as->setShortcut(tr("Ctrl+Shift+S"));
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAsNewDocument()));
-
-    ui->actionSave->setShortcut(tr("Ctrl+S"));
     connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveForce()));
-
-    ui->actionPrint->setShortcut(tr("Ctrl+P"));
     connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
-
-    ui->actionExit->setShortcut(tr("Ctrl+Q"));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
     /// --- Export Menu ---
-    ui->actionExport_X_sheet->setShortcut(tr("Ctrl+Alt+X"));
     connect(ui->actionExport_X_sheet , SIGNAL(triggered()), editor, SLOT(exportX()));
-
-    ui->actionExport_Image_Sequence->setShortcut(tr("Shift+Alt+S"));
     connect(ui->actionExport_Image_Sequence, SIGNAL(triggered()), editor, SLOT(exportSeq()));
-
-    ui->actionExport_Image->setShortcut(tr("Ctrl+Alt+S"));
     connect(ui->actionExport_Image, SIGNAL(triggered()), editor, SLOT(exportImage()));
-
-    ui->actionExport_Movie->setShortcut(tr("Ctrl+Alt+M"));
     connect(ui->actionExport_Movie, SIGNAL(triggered()), editor, SLOT(exportMov()));
 
     //exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
@@ -189,58 +148,27 @@ void MainWindow2::createMenus()
     connect(ui->actionExport_Palette, SIGNAL(triggered()), this, SLOT(exportPalette()));
 
     /// --- Import Menu ---
-    ui->actionExport_Svg_Image->setShortcut(tr("Ctrl+I"));
     connect(ui->actionExport_Svg_Image, SIGNAL(triggered()), editor, SLOT(saveSvg()));
-
-    ui->actionImport_Image->setShortcut(tr("Ctrl+Shift+R"));
     connect(ui->actionImport_Image, SIGNAL(triggered()), editor, SLOT(importImage()));
-
-    ui->actionImport_Image_Sequence->setShortcut(tr("Ctrl+R"));
     connect(ui->actionImport_Image_Sequence, SIGNAL(triggered()), editor, SLOT(importImageSequence()));
-
-    ui->actionImport_Movie->setShortcut(tr("Ctrl+R"));
     connect(ui->actionImport_Movie, SIGNAL(triggered()), editor, SLOT(importMov()));
-
-    ui->actionImport_Sound->setShortcut(tr("Ctrl+I"));
     connect(ui->actionImport_Sound, SIGNAL(triggered()), editor, SLOT(importSound()));
-
     connect(ui->actionImport_Palette, SIGNAL(triggered()), this, SLOT(importPalette()));
 
-
     /// --- Edit Menu ---
-    ui->actionUndo->setShortcut(tr("Ctrl+Z"));
     connect(ui->actionUndo, SIGNAL(triggered()), editor, SLOT(undo()));
-
-    ui->actionRedo->setShortcut(tr("Ctrl+Shift+Z"));
-    ui->actionRedo->setEnabled(false);
     connect(ui->actionRedo, SIGNAL(triggered()), editor, SLOT(redo()));
-
-    ui->actionCut->setShortcut(tr("Ctrl+X"));
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
-
-    ui->actionCopy->setShortcut(tr("Ctrl+C"));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
-
-    ui->actionPaste->setShortcut(tr("Ctrl+V"));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
-
-    ui->actionDelete->setShortcut(tr("Ctrl+D"));
     connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
-
-    ui->actionCrop->setShortcut(tr("Ctrl+W"));
     connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
-
-    ui->actionCrop_To_Selection->setShortcut(tr("Ctrl+T"));
     connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
-
-    ui->actionSelect_All->setShortcut(tr("Ctrl+A"));
     connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
-
-    ui->actionDeselect_All->setShortcut(tr("Ctrl+Shift+A"));
     connect(ui->actionDeselect_All, SIGNAL(triggered()), editor, SLOT(deselectAll()));
-
     connect(ui->actionPreference, SIGNAL(triggered()), this, SLOT(showPreferences()));
 
+    ui->actionRedo->setEnabled(false);
 
     /// --- Layer Menu ---
     connect(ui->actionNew_Bitmap_Layer, SIGNAL(triggered()), editor, SLOT(newBitmapLayer()));
@@ -249,120 +177,57 @@ void MainWindow2::createMenus()
     connect(ui->actionNew_Camera_Layer, SIGNAL(triggered()), editor, SLOT(newCameraLayer()));
     connect(ui->actionDelete_Current_Layer, SIGNAL(triggered()), editor, SLOT(deleteCurrentLayer()));
 
-
     /// --- View Menu ---
-    ui->actionZoom_In->setShortcut(Qt::Key_Up+ Qt::CTRL);
     connect(ui->actionZoom_In, SIGNAL(triggered()), editor, SLOT(setzoom()));
-
-    ui->actionZoom_Out->setShortcut(Qt::Key_Down+ Qt::CTRL);
     connect(ui->actionZoom_Out, SIGNAL(triggered()), editor, SLOT(setzoom1()));
-
-    ui->actionRotate_Clockwise->setShortcut(Qt::Key_R);
     connect(ui->actionRotate_Clockwise, SIGNAL(triggered()), editor, SLOT(rotatecw()));
-
-    ui->actionRotate_Anticlosewise->setShortcut(Qt::Key_Z);
     connect(ui->actionRotate_Anticlosewise, SIGNAL(triggered()), editor, SLOT(rotateacw()));
-
-    ui->actionReset_Windows->setShortcut(Qt::Key_H + Qt::CTRL);
     connect(ui->actionReset_Windows, SIGNAL(triggered()), this, SLOT(dockAllPalettes()));
-
-    ui->actionReset_View->setShortcut(Qt::Key_H + Qt::CTRL);
     connect(ui->actionReset_View, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-
-    ui->actionHorizontal_Flip->setShortcut(Qt::Key_H + Qt::SHIFT);
     connect(ui->actionHorizontal_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
-
-    ui->actionVertical_Flip->setShortcut(Qt::Key_V + Qt::SHIFT);
     connect(ui->actionVertical_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
 
-    ui->actionPreview->setShortcut(Qt::Key_P + Qt::ALT);
     ui->actionPreview->setEnabled(false);
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    ui->actionGrid->setShortcut(Qt::Key_G);
     ui->actionGrid->setEnabled(false);
     //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
 
-    ui->actionOnionPrevious->setShortcut(Qt::Key_O);
     connect(ui->actionOnionPrevious, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
     connect(editor, SIGNAL(onionPrevChanged(bool)), ui->actionOnionPrevious, SLOT(setChecked(bool)));
 
-    ui->actionOnionNext = new QAction(QIcon(":icons/onionNext.png"),tr("Next"), this);
-    ui->actionOnionNext->setShortcut(Qt::Key_O+Qt::ALT);
     connect(ui->actionOnionNext, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionNext(bool)));
     connect(editor, SIGNAL(onionNextChanged(bool)), ui->actionOnionNext, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    ui->actionPlay->setShortcut(Qt::Key_Return);
     connect(ui->actionPlay, SIGNAL(triggered()), editor, SLOT(play()));
-
-    ui->actionLoop->setShortcut(tr("Ctrl+L"));
     connect(ui->actionLoop, SIGNAL(triggered(bool)), editor, SLOT(setLoop(bool)));
     connect(ui->actionLoop, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoop(bool))); //TODO: WTF?
     connect(editor, SIGNAL(loopToggled(bool)), ui->actionLoop, SLOT(setChecked(bool)));
 
-    ui->actionExtend_Frame->setShortcut(Qt::Key_F5);
-    ui->actionExtend_Frame->setEnabled(false);
-    //connect(extendFrameAct, SIGNAL(triggered()), editor, SLOT(addFrame(editor->currentFrame)));
-
-    ui->actionAdd_Frame->setShortcut(Qt::Key_F7);
     connect(ui->actionAdd_Frame, SIGNAL(triggered()), editor, SLOT(addKey()));
-
-    ui->actionRemove_Frame->setShortcut(tr("Shift+F5"));
     connect(ui->actionRemove_Frame, SIGNAL(triggered()), editor, SLOT(removeKey()));
-
-    ui->actionNext_Frame->setShortcut(Qt::Key_Period);
     connect(ui->actionNext_Frame, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
-
-    ui->actionPrevious_Frame->setShortcut(Qt::Key_Comma);
     connect(ui->actionPrevious_Frame, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
-
-    ui->actionDuplicate_Frame->setShortcut(Qt::Key_F6);
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    ui->actionMove->setShortcut(Qt::Key_Q);
     connect(ui->actionMove, SIGNAL(triggered()), editor, SLOT(move_clicked()));
-
-    ui->actionClear->setShortcut(Qt::Key_L);
     connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
-
-    ui->actionSelect->setShortcut(Qt::Key_V);
     connect(ui->actionSelect, SIGNAL(triggered()), editor, SLOT(select_clicked()));
-
-    ui->actionBrush->setShortcut(Qt::Key_B);
     connect(ui->actionBrush, SIGNAL(triggered()), editor, SLOT(color_clicked()));
-
-    ui->actionPolyline->setShortcut(Qt::Key_Y);
     connect(ui->actionPolyline, SIGNAL(triggered()), editor, SLOT(polyline_clicked()));
-
-    ui->actionSmudge->setShortcut(Qt::Key_A);
     connect(ui->actionSmudge, SIGNAL(triggered()), editor, SLOT(smudge_clicked()));
-
-    ui->actionPen->setShortcut(Qt::Key_P);
     connect(ui->actionPen, SIGNAL(triggered()), editor, SLOT(pen_clicked()));
-
-    ui->actionHand->setShortcut(Qt::Key_H);
     connect(ui->actionHand, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-
-    ui->actionPencil->setShortcut(Qt::Key_N);
     connect(ui->actionPencil, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
-
-    ui->actionBucket->setShortcut(Qt::Key_K);
     connect(ui->actionBucket, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
-
-    ui->actionEyedropper->setShortcut(Qt::Key_I);
     connect(ui->actionEyedropper, SIGNAL(triggered()), editor, SLOT(eyedropper_clicked()));
-
-    ui->actionEraser->setShortcut(Qt::Key_E);
     connect(ui->actionEraser, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
 
     /// --- Help Menu ---
-    ui->actionHelp->setShortcut(tr("F1"));
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));
-
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
-
 
     // --------------- Menus ------------------
     openRecentMenu = new QMenu(tr("Open recent"), this);
@@ -370,36 +235,7 @@ void MainWindow2::createMenus()
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
 
-    m_pMenuList = new QList<QMenu*>();
 
-    m_pMenuList->append(ui->menuFile);
-    m_pMenuList->append(ui->menuEdit);
-    m_pMenuList->append(ui->menuView);
-    m_pMenuList->append(ui->menuAnimation);
-    m_pMenuList->append(ui->menuTools);
-    m_pMenuList->append(ui->menuLayer);
-    m_pMenuList->append(ui->menuHelp);
-}
-
-void MainWindow2::loadPlugins()
-{
-    /*
-     * since this is not yet really implemented, I commented it on MainWindow2() -- mj
-     */
-
-    qDebug() << "MainWindow loadplugins" << this << this->thread();
-    // foreach (QObject *plugin, QPluginLoader::staticInstances()) populateMenus(plugin); // static plugins
-    QDir pluginsDir = QDir(qApp->applicationDirPath());
-#if defined(Q_OS_WIN)
-    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
-        pluginsDir.cdUp();
-#elif defined(Q_OS_MAC)
-    if (pluginsDir.dirName() == "MacOS")
-    {
-        pluginsDir.cdUp();
-    }
-#endif
-    pluginsDir.cd("plugins");
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
@@ -672,6 +508,37 @@ QDomElement MainWindow2::createDomElement(QDomDocument& doc)
 
 void MainWindow2::showPreferences()
 {
+    m_pPreferences = new Preferences(this);
+
+    connect(m_pPreferences, SIGNAL(lengthSizeChange(QString)), m_pTimeLine, SIGNAL(lengthChange(QString)));
+    connect(m_pPreferences, SIGNAL(fontSizeChange(int)), m_pTimeLine, SIGNAL(fontSizeChange(int)));
+    connect(m_pPreferences, SIGNAL(frameSizeChange(int)), m_pTimeLine, SIGNAL(frameSizeChange(int)));
+    connect(m_pPreferences, SIGNAL(labelChange(int)), m_pTimeLine, SIGNAL(labelChange(int)));
+    connect(m_pPreferences, SIGNAL(scrubChange(int)), m_pTimeLine, SIGNAL(scrubChange(int)));
+
+    connect(m_pPreferences, SIGNAL(windowOpacityChange(int)), this, SLOT(setOpacity(int)));
+    connect(m_pPreferences, SIGNAL(curveOpacityChange(int)), m_pScribbleArea, SLOT(setCurveOpacity(int)));
+    connect(m_pPreferences, SIGNAL(curveSmoothingChange(int)), m_pScribbleArea, SLOT(setCurveSmoothing(int)));
+    connect(m_pPreferences, SIGNAL(highResPositionChange(int)), m_pScribbleArea, SLOT(setHighResPosition(int)));
+    connect(m_pPreferences, SIGNAL(antialiasingChange(int)), m_pScribbleArea, SLOT(setAntialiasing(int)));
+    connect(m_pPreferences, SIGNAL(gradientsChange(int)), m_pScribbleArea, SLOT(setGradients(int)));
+    connect(m_pPreferences, SIGNAL(backgroundChange(int)), m_pScribbleArea, SLOT(setBackground(int)));
+    connect(m_pPreferences, SIGNAL(shadowsChange(int)), m_pScribbleArea, SLOT(setShadows(int)));
+    connect(m_pPreferences, SIGNAL(toolCursorsChange(int)), m_pScribbleArea, SLOT(setToolCursors(int)));
+    connect(m_pPreferences, SIGNAL(styleChanged(int)), m_pScribbleArea, SLOT(setStyle(int)));
+
+    connect(m_pPreferences, SIGNAL(autosaveChange(int)), editor, SLOT(changeAutosave(int)));
+    connect(m_pPreferences, SIGNAL(autosaveNumberChange(int)), editor, SLOT(changeAutosaveNumber(int)));
+
+    connect(m_pPreferences, SIGNAL(onionLayer1OpacityChange(int)), editor, SLOT(onionLayer1OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(onionLayer2OpacityChange(int)), editor, SLOT(onionLayer2OpacityChangeSlot(int)));
+    connect(m_pPreferences, SIGNAL(onionLayer3OpacityChange(int)), editor, SLOT(onionLayer3OpacityChangeSlot(int)));
+
+    unloadAllShortcuts();
+
+    connect(m_pPreferences, SIGNAL(destroyed()),
+            this, SLOT(loadAllShortcuts()));
+
     m_pPreferences->show();
 }
 
@@ -751,6 +618,103 @@ void MainWindow2::writeSettings()
         settings.setValue("displayPaletteFloating", displayPalette->isFloating());
     }
 
+}
+
+void MainWindow2::loadAllShortcuts()
+{
+    if ( !pencilSettings()->contains(QString("shortcuts/%0").arg(CMD_NEW_FILE)) )
+    {
+        restoreShortcutsToDefault();
+    }
+
+    ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
+    ui->actionOpen->setShortcut( sc(CMD_OPEN_FILE) );
+    ui->actionSave->setShortcut( sc(CMD_SAVE_FILE) );
+    ui->actionSave_as->setShortcut( sc(CMD_SAVE_AS) );
+    ui->actionPrint->setShortcut( sc(CMD_PRINT) );
+
+    ui->actionImport_Image->setShortcut( sc(CMD_IMPORT_IMAGE) );
+    ui->actionImport_Image_Sequence->setShortcut( sc(CMD_IMPORT_IMAGE_SEQ) );
+    ui->actionImport_Movie->setShortcut( sc(CMD_IMPORT_MOVIE) );
+    ui->actionImport_Palette->setShortcut( sc(CMD_IMPORT_PALETTE) );
+    ui->actionImport_Sound->setShortcut( sc(CMD_IMPORT_SOUND) );
+
+    ui->actionExport_Image->setShortcut( sc(CMD_EXPORT_IMAGE) );
+    ui->actionExport_Image_Sequence->setShortcut( sc(CMD_EXPORT_IMAGE_SEQ) );
+    ui->actionExport_Movie->setShortcut( sc(CMD_EXPORT_MOVIE) );
+    ui->actionExport_Palette->setShortcut( sc(CMD_EXPORT_PALETTE) );
+    ui->actionExport_Svg_Image->setShortcut( sc(CMD_EXPORT_SVG) );
+    ui->actionExport_X_sheet->setShortcut( sc(CMD_EXPORT_XSHEET) );
+
+    ui->actionUndo->setShortcut( sc(CMD_UNDO) );
+    ui->actionRedo->setShortcut( sc(CMD_REDO) );
+    ui->actionCut->setShortcut( sc(CMD_CUT) );
+    ui->actionCopy->setShortcut( sc(CMD_COPY) );
+    ui->actionPaste->setShortcut( sc(CMD_PASTE) );
+    ui->actionSelect_All->setShortcut( sc(CMD_SELECT_ALL));
+    ui->actionDeselect_All->setShortcut( sc(CMD_DESELECT_ALL) );
+    ui->actionPreference->setShortcut( sc(CMD_PREFERENCE) );
+
+    ui->actionReset_Windows->setShortcut( sc(CMD_RESET_WINDOWS) );
+    ui->actionReset_View->setShortcut( sc(CMD_RESET_VIEW) );
+    ui->actionZoom_In->setShortcut( sc(CMD_ZOOM_IN) );
+    ui->actionZoom_Out->setShortcut(sc(CMD_ZOOM_OUT));
+    ui->actionRotate_Clockwise->setShortcut(sc(CMD_ROTATE_CLOCK));
+    ui->actionRotate_Anticlosewise->setShortcut(sc(CMD_ROTATE_ANTI_CLOCK));
+    ui->actionHorizontal_Flip->setShortcut(sc(CMD_FLIP_HORIZONTAL));
+    ui->actionVertical_Flip->setShortcut(sc(CMD_FLIP_VERTICAL));
+    ui->actionPreview->setShortcut(sc(CMD_PREVIEW));
+    ui->actionGrid->setShortcut(sc(CMD_GRID));
+    ui->actionOnionPrevious->setShortcut(sc(CMD_ONIONSKIN_PREV));
+    ui->actionOnionNext->setShortcut(sc(CMD_ONIONSKIN_NEXT));
+
+    ui->actionPlay->setShortcut(sc(CMD_PLAY));
+    ui->actionLoop->setShortcut(sc(CMD_LOOP));
+    ui->actionPrevious_Frame->setShortcut(sc(CMD_GOTO_PREV_FRAME));
+    ui->actionNext_Frame->setShortcut(sc(CMD_GOTO_NEXT_FRAME));
+    ui->actionAdd_Frame->setShortcut(sc(CMD_ADD_FRAME));
+    ui->actionDuplicate_Frame->setShortcut(sc(CMD_DUPLICATE_FRAME));
+    ui->actionRemove_Frame->setShortcut(sc(CMD_REMOVE_FRAME));
+
+    ui->actionMove->setShortcut(sc(CMD_TOOL_MOVE));
+    ui->actionClear->setShortcut(sc(CMD_TOOL_CLEAR));
+    ui->actionSelect->setShortcut(sc(CMD_TOOL_SELECT));
+    ui->actionBrush->setShortcut(sc(CMD_TOOL_BRUSH));
+    ui->actionPolyline->setShortcut(sc(CMD_TOOL_POLYLINE));
+    ui->actionSmudge->setShortcut(sc(CMD_TOOL_SMUDGE));
+    ui->actionPen->setShortcut(sc(CMD_TOOL_PEN));
+    ui->actionHand->setShortcut(sc(CMD_TOOL_HAND));
+    ui->actionPencil->setShortcut(sc(CMD_TOOL_PENCIL));
+    ui->actionBucket->setShortcut(sc(CMD_TOOL_BUCKET));
+    ui->actionEyedropper->setShortcut(sc(CMD_TOOL_EYEDROPPER));
+    ui->actionEraser->setShortcut(sc(CMD_TOOL_ERASER));
+
+    ui->actionNew_Bitmap_Layer->setShortcut(sc(CMD_NEW_BITMAP_LAYER));
+    ui->actionNew_Vector_Layer->setShortcut(sc(CMD_NEW_VECTOR_LAYER));
+    ui->actionNew_Camera_Layer->setShortcut(sc(CMD_NEW_CAMERA_LAYER));
+    ui->actionNew_Sound_Layer->setShortcut(sc(CMD_NEW_SOUND_LAYER));
+
+    ui->actionHelp->setShortcut(sc(CMD_HELP));
+}
+
+void MainWindow2::unloadAllShortcuts()
+{
+    QList<QAction*> actionList = this->findChildren<QAction*>();
+    foreach (QAction* action, actionList)
+    {
+        action->setShortcut(QKeySequence(0));
+    }
+}
+
+QString MainWindow2::sc(QString strActionName)
+{
+    pencilSettings()->beginGroup("shortcuts");
+    QString strKeySequence = pencilSettings()->value( strActionName ).toString();
+    pencilSettings()->endGroup();
+
+    //qDebug() << strActionName << ": " << strKeySequence;
+
+    return strKeySequence;
 }
 
 void MainWindow2::addRecentFile(QString filePath)

@@ -28,6 +28,7 @@ class Preferences : public QDialog
 
 public:
     Preferences(QWidget* parent);
+    ~Preferences();
 
 public slots:
     void changePage(QListWidgetItem* current, QListWidgetItem* previous);
@@ -59,6 +60,7 @@ signals:
 
 private:
     void createIcons();
+    void closeEvent(QCloseEvent*);
 
     QListWidget* contentsWidget;
     QStackedWidget* pagesWidget;
@@ -74,17 +76,13 @@ public:
 
 };
 
-
-
 class TimelinePage : public QWidget
 {
     Q_OBJECT
-
 public:
     TimelinePage(QWidget* parent = 0);
 
 };
-
 
 class FilesPage : public QWidget
 {

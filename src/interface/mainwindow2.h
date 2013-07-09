@@ -64,15 +64,17 @@ public slots:
     bool saveAsNewDocument();
     void saveForce();
     bool maybeSave();
+    void showPreferences();
 
 private slots:
     void exportFile();
-
     bool saveObject(QString strSavedFilename);
     void dockAllPalettes();
     void helpBox();
     void aboutPencil();
-    void showPreferences();
+
+    void loadAllShortcuts();
+    void unloadAllShortcuts();
 
     void importPalette();
     void exportPalette();
@@ -85,16 +87,16 @@ private:
     void makePreferenceConnections();
     void makeTimeLineConnections();
     void createMenus();
-    void loadPlugins();    
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);
+
+
     void readSettings();
     void writeSettings();
+    QString sc(QString);
 
     QString path;
-    QList<QMenu*>* m_pMenuList;
-
     QMenu* openRecentMenu;
 };
 

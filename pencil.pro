@@ -68,7 +68,8 @@ HEADERS +=  src/interfaces.h \
     src/interface/mainwindow2.h \
     src/interface/timelinecells.h \
     src/graphics/vector/vectorselection.h \
-    src/util/pencildef.h
+    src/util/pencildef.h \
+    src/interface/keycapturelineedit.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -115,7 +116,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/util/keyboardmanager.cpp \
     src/interface/mainwindow2.cpp \
     src/interface/timelinecells.cpp \
-    src/graphics/vector/vectorselection.cpp
+    src/graphics/vector/vectorselection.cpp \
+    src/interface/keycapturelineedit.cpp
 
 win32 {
     INCLUDEPATH += . libwin32
@@ -130,7 +132,7 @@ macx {
            src/external/macosx/style.cpp
     RC_FILE = pencil.icns
 }
-linux-g++ {
+linux-* {
     INCLUDEPATH += . liblinux
     SOURCES += src/external/linux/linux.cpp
     LIBS += -Lliblinux -lming -lpng
@@ -148,6 +150,9 @@ svg
 # INSTALLS += shortcuts
 
 FORMS += \
-    src/interface/mainwindow2.ui
+    src/interface/mainwindow2.ui \
+    src/interface/shortcutspage.ui
 
 TRANSLATIONS += pencil.ts
+
+# QMAKE_CXXFLAGS += -std=c++11

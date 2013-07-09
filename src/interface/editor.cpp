@@ -220,9 +220,19 @@ void Editor::importImageSequence ()
 bool Editor::importMov()
 {
     QSettings settings("Pencil","Pencil");
-    QString initialPath = settings.value("lastExportPath", QVariant(QDir::homePath())).toString();
-    if (initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled.avi";
-    QString filePath=QFileDialog::getOpenFileName(this, tr("Import movie"),initialPath ,tr("AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)"));
+    
+    QString initialPath = settings.value("lastExportPath", QDir::homePath()).toString();
+
+    if (initialPath.isEmpty()) 
+    {
+        initialPath = QDir::homePath() + "/untitled.avi";
+    }
+    QString filePath = QFileDialog::getOpenFileName(
+        this,
+        tr("Import movie"),
+        initialPath ,
+        tr("AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)")
+        );
     if (filePath.isEmpty())
     {
         return false;
@@ -230,7 +240,7 @@ bool Editor::importMov()
     else
     {
         settings.setValue("lastExportPath", QVariant(filePath));
-        importMovie(filePath,fps);
+        importMovie(filePath, fps);
         return true;
     }
 }
