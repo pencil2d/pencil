@@ -1,4 +1,5 @@
 
+#include <QStringList>
 #include "pencilsettings.h"
 
 // ==== Singleton ====
@@ -28,9 +29,22 @@ void restoreToDefaultSetting()
     s->setValue("pencilWidth", 1.0);
     s->setValue("eraserWidth", 10.0);
     s->setValue("brushWidth", 15.0);
-    
+
     s->setValue("autosaveNumber", 15);
     s->setValue("toolCursors", true);
 
     s->sync();
+}
+
+
+void restoreShortcutsToDefault()
+{
+    QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
+
+    pencilSettings()->beginGroup("shortcuts");
+    foreach (QString pKey, defaultKey.allKeys())
+    {
+        pencilSettings()->setValue(pKey, defaultKey.value(pKey));
+    }
+    pencilSettings()->endGroup();
 }

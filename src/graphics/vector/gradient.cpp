@@ -535,8 +535,6 @@ void Gradient::paint2(QPainter& painter, VectorImage* v, int i, int gradients)
 
 }
 
-
-
 void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 {
     QMatrix painterMatrix = painter.worldMatrix();
@@ -920,7 +918,6 @@ void Gradient::paint3(QPainter& painter, VectorImage* v, int i, int gradients)
 
 }
 
-
 void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
 {
     Q_UNUSED(gradients);
@@ -1231,13 +1228,6 @@ void Gradient::paint4(QPainter& painter, VectorImage* v, int i, int gradients)
         delete buffer;
     }
 }
-
-
-
-
-
-
-
 
 void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
 {

@@ -48,6 +48,7 @@ ui_*.h
 *.pdb
 *.opensdf
 *.filters
+*.aps
 ipch
 debug
 release

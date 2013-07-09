@@ -59,5 +59,6 @@
         <file>icons/printer3.png</file>
         <file>icons/cut.png</file>
         <file>icons/prefs-shortcuts.png</file>
+        <file>resources/kb.ini</file>
     </qresource>
 </RCC>

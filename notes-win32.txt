@@ -1,18 +1,23 @@
+# Notes
+
 These are some notes/memo about compiling Pencil on Windows
 Last edited: 2007-10-12
 Pascal Naidon
 
 To compile Pencil for Windows "out of the box"
-1) Install Qt from TrollTech if you haven't done it
+
+1. Install Qt from TrollTech if you haven't done it
    (the installer will propose to install MinGW if you don't have any C++ compiler)
-2) From the Start menu (for example), launch the Qt Command Prompt (a kind of DOS Terminal)
-4) (Using DOS commands like cd) go to the directory where you saved Pencil source, 
+2. From the Start menu (for example), launch the Qt Command Prompt (a kind of DOS Terminal)
+3. (Using DOS commands like cd) go to the directory where you saved Pencil source, 
    ie the directory where the file pencil.pro is located.
    Then type "qmake". This should generate a makefile from the pencil.pro file.
-5) Then type "make". This should compile Pencil.
+4. Then type "make". This should compile Pencil.
 
-====================================================================
-Qt on Windows
+-----------------------------
+
+## Qt on Windows
+
 -> The Qt framework is needed to create the graphical interface of Pencil
 Use the installer from Trolltech
 www.trolltech.com

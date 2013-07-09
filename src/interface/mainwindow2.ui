@@ -130,7 +130,6 @@
     <addaction name="actionNext_Frame"/>
     <addaction name="actionPrevious_Frame"/>
     <addaction name="separator"/>
-    <addaction name="actionExtend_Frame"/>
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
@@ -398,7 +397,7 @@
   </action>
   <action name="actionReset_View">
    <property name="text">
-    <string>Reset View</string>
+    <string>Reset Zoom/Rotate</string>
    </property>
   </action>
   <action name="actionHorizontal_Flip">
