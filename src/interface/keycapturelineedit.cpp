@@ -19,6 +19,7 @@ void KeyCaptureLineEdit::keyPressEvent(QKeyEvent* event)
     {
         // only modifier key is not allowed.
         qDebug() << "only!";
+        event->accept();
         return;
     }
 
@@ -47,5 +48,4 @@ void KeyCaptureLineEdit::keyPressEvent(QKeyEvent* event)
     emit keyCaptured(keySeq);
 
     this->setText(strKeySeq);
-    //qDebug() << strKeySeq;
 }

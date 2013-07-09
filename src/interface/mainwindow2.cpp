@@ -51,7 +51,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     arrangePalettes();
     createMenus();
-    loadShortcutsSetting();
+    loadAllShortcuts();
 
     // must run after 'arragePalettes'
     editor->setObject(object);
@@ -525,7 +525,7 @@ void MainWindow2::showPreferences()
     connect(m_pPreferences, SIGNAL(backgroundChange(int)), m_pScribbleArea, SLOT(setBackground(int)));
     connect(m_pPreferences, SIGNAL(shadowsChange(int)), m_pScribbleArea, SLOT(setShadows(int)));
     connect(m_pPreferences, SIGNAL(toolCursorsChange(int)), m_pScribbleArea, SLOT(setToolCursors(int)));
-    connect(m_pPreferences, SIGNAL(styleChange(int)), m_pScribbleArea, SLOT(setStyle(int)));
+    connect(m_pPreferences, SIGNAL(styleChanged(int)), m_pScribbleArea, SLOT(setStyle(int)));
 
     connect(m_pPreferences, SIGNAL(autosaveChange(int)), editor, SLOT(changeAutosave(int)));
     connect(m_pPreferences, SIGNAL(autosaveNumberChange(int)), editor, SLOT(changeAutosaveNumber(int)));
@@ -535,6 +535,9 @@ void MainWindow2::showPreferences()
     connect(m_pPreferences, SIGNAL(onionLayer3OpacityChange(int)), editor, SLOT(onionLayer3OpacityChangeSlot(int)));
 
     unloadAllShortcuts();
+
+    connect(m_pPreferences, SIGNAL(destroyed()),
+            this, SLOT(loadAllShortcuts()));
 
     m_pPreferences->show();
 }
@@ -617,11 +620,11 @@ void MainWindow2::writeSettings()
 
 }
 
-void MainWindow2::loadShortcutsSetting()
+void MainWindow2::loadAllShortcuts()
 {
     if ( !pencilSettings()->contains(QString("shortcuts/%0").arg(CMD_NEW_FILE)) )
     {
-        importDefaultShortcutsSetting();
+        restoreShortcutsToDefault();
     }
 
     ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
@@ -701,18 +704,6 @@ void MainWindow2::unloadAllShortcuts()
     {
         action->setShortcut(QKeySequence(0));
     }
-}
-
-void MainWindow2::importDefaultShortcutsSetting()
-{
-    QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
-
-    pencilSettings()->beginGroup("shortcuts");
-    foreach (QString pKey, defaultKey.allKeys())
-    {
-        pencilSettings()->setValue(pKey, defaultKey.value(pKey));
-    }
-    pencilSettings()->endGroup();
 }
 
 QString MainWindow2::sc(QString strActionName)

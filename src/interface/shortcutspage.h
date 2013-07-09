@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QModelIndex>
 #include <QKeySequence>
+#include <QSettings>
 
 class QTreeView;
 class QStandardItem;
@@ -25,18 +26,20 @@ public:
 
 signals:
 
-public slots:
+private slots:
     void tableItemClicked(const QModelIndex&);
     void keyCapLineEditTextChanged(QKeySequence);
-
-protected:
+    void pressRestoreShortcutsButton();
 
 private:
+    bool isKeySequenceExist(const QSettings&, QString, QKeySequence);
+    void removeDuplicateKeySequenc(QSettings*, QKeySequence);
     void loadShortcutsFromSetting();
 
     QStandardItemModel* m_treeModel;
     QStandardItem* m_currentActionItem;
     QStandardItem* m_currentKeySeqItem;
+
 
     Ui::ShortcutsPage* ui;
 };

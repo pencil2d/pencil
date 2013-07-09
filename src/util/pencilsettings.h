@@ -9,6 +9,7 @@
 QSettings* pencilSettings();
 void restoreToDefaultSetting();
 
+void restoreShortcutsToDefault();
 
 // Setting Keys
 #define kSettingToolCursor "toolCursors"
