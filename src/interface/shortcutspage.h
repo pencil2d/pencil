@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QModelIndex>
 #include <QKeySequence>
+#include <QSettings>
 
 class QTreeView;
 class QStandardItem;
@@ -31,7 +32,7 @@ private slots:
     void pressRestoreShortcutsButton();
 
 private:
-    bool isKeySequenceExist(QString, QKeySequence);
+    bool isKeySequenceExist(const QSettings&, QString, QKeySequence);
     void loadShortcutsFromSetting();
 
     QStandardItemModel* m_treeModel;

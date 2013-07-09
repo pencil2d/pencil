@@ -74,9 +74,10 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
     QString strCmdName = QString("Cmd") + m_currentActionItem->text();
     QString strKeySeq  = keySeqence.toString( QKeySequence::PortableText );
 
-    pencilSettings()->beginGroup("shortcuts");
+    QSettings setting("pencil", "pencil");
+    setting.beginGroup("shortcuts");
 
-    if (isKeySequenceExist(strCmdName, keySeqence))
+    if (isKeySequenceExist(setting, strCmdName, keySeqence))
     {
         QMessageBox msgBox;
         msgBox.setText("Shortcut Conflict!");
@@ -84,6 +85,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         msgBox.setIcon( QMessageBox::Warning );
+
         int result = msgBox.exec();
 
         if ( result != QMessageBox::Yes )
@@ -91,9 +93,10 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
             return;
         }
     }
-    pencilSettings()->setValue(strCmdName, strKeySeq);
-    pencilSettings()->endGroup();
-    pencilSettings()->sync();
+
+    setting.setValue(strCmdName, strKeySeq);
+    setting.endGroup();
+    setting.sync();
 
     m_currentKeySeqItem->setText( keySeqence.toString(QKeySequence::NativeText) );
 
@@ -106,22 +109,22 @@ void ShortcutsPage::pressRestoreShortcutsButton()
     loadShortcutsFromSetting();
 }
 
-bool ShortcutsPage::isKeySequenceExist(QString strTargetCmdName, QKeySequence targetkeySeq)
+bool ShortcutsPage::isKeySequenceExist(const QSettings& settings, QString strTargetCmdName, QKeySequence targetkeySeq)
 {
-    foreach (QString strCmdName, pencilSettings()->allKeys())
+    foreach (QString strCmdName, settings.allKeys())
     {
         if (strTargetCmdName == strCmdName)
         {
             continue;
         }
 
-        QString strCmdKeySeq = pencilSettings()->value(strCmdName).toString();
-
+        QString strCmdKeySeq = settings.value(strCmdName).toString();
+        /*
         qDebug() << "Compare:"
                  << QKeySequence(strCmdKeySeq).toString()
                  << "|"
                  << targetkeySeq.toString();
-
+        */
         if (QKeySequence(strCmdKeySeq) == targetkeySeq)
         {
             return true;
@@ -133,16 +136,16 @@ bool ShortcutsPage::isKeySequenceExist(QString strTargetCmdName, QKeySequence ta
 void ShortcutsPage::loadShortcutsFromSetting()
 {
     // Load shortcuts from settings
-    QSettings* pSettings = pencilSettings();
-    pSettings->beginGroup("shortcuts");
+    QSettings settings("pencil", "pencil");
+    settings.beginGroup("shortcuts");
 
-    m_treeModel->setRowCount( pSettings->allKeys().size());
+    m_treeModel->setRowCount( settings.allKeys().size());
     m_treeModel->setColumnCount( 2 );
 
     int i = 0;
-    foreach (QString strCmdName, pSettings->allKeys())
+    foreach (QString strCmdName, settings.allKeys())
     {
-        QString strKeySequence = pSettings->value(strCmdName).toString();
+        QString strKeySequence = settings.value(strCmdName).toString();
 
         //convert to native format
         strKeySequence = QKeySequence(strKeySequence).toString( QKeySequence::NativeText );
@@ -157,6 +160,6 @@ void ShortcutsPage::loadShortcutsFromSetting()
 
         i++;
     }
-    pSettings->endGroup();
+    settings.endGroup();
 }
 
