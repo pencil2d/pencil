@@ -92,13 +92,15 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
         {
             return;
         }
+        removeDuplicateKeySequenc(&setting, keySeqence);
     }
 
     setting.setValue(strCmdName, strKeySeq);
     setting.endGroup();
     setting.sync();
 
-    m_currentKeySeqItem->setText( keySeqence.toString(QKeySequence::NativeText) );
+    //m_currentKeySeqItem->setText( keySeqence.toString(QKeySequence::NativeText) );
+    loadShortcutsFromSetting();
 
     qDebug() << "Shortcut " << strCmdName << " = " << strKeySeq;
 }
@@ -131,6 +133,19 @@ bool ShortcutsPage::isKeySequenceExist(const QSettings& settings, QString strTar
         }
     }
     return false;
+}
+
+void ShortcutsPage::removeDuplicateKeySequenc(QSettings* settings, QKeySequence keySeq)
+{
+    foreach(QString strCmdName, settings->allKeys())
+    {
+        QString strCmdKeySeq = settings->value(strCmdName).toString();
+
+        if ( strCmdKeySeq == keySeq.toString(QKeySequence::PortableText))
+        {
+            settings->setValue(strCmdName, "");
+        }
+    }
 }
 
 void ShortcutsPage::loadShortcutsFromSetting()
