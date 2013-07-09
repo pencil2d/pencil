@@ -51,7 +51,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     arrangePalettes();
     createMenus();
-    loadShortcutsSetting();
+    loadAllShortcuts();
 
     // must run after 'arragePalettes'
     editor->setObject(object);
@@ -536,6 +536,9 @@ void MainWindow2::showPreferences()
 
     unloadAllShortcuts();
 
+    connect(m_pPreferences, SIGNAL(destroyed()),
+            this, SLOT(loadAllShortcuts()));
+
     m_pPreferences->show();
 }
 
@@ -617,11 +620,11 @@ void MainWindow2::writeSettings()
 
 }
 
-void MainWindow2::loadShortcutsSetting()
+void MainWindow2::loadAllShortcuts()
 {
     if ( !pencilSettings()->contains(QString("shortcuts/%0").arg(CMD_NEW_FILE)) )
     {
-        importDefaultShortcutsSetting();
+        restoreShortcutsToDefault();
     }
 
     ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
@@ -701,18 +704,6 @@ void MainWindow2::unloadAllShortcuts()
     {
         action->setShortcut(QKeySequence(0));
     }
-}
-
-void MainWindow2::importDefaultShortcutsSetting()
-{
-    QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
-
-    pencilSettings()->beginGroup("shortcuts");
-    foreach (QString pKey, defaultKey.allKeys())
-    {
-        pencilSettings()->setValue(pKey, defaultKey.value(pKey));
-    }
-    pencilSettings()->endGroup();
 }
 
 QString MainWindow2::sc(QString strActionName)

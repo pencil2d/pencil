@@ -64,15 +64,17 @@ public slots:
     bool saveAsNewDocument();
     void saveForce();
     bool maybeSave();
+    void showPreferences();
 
 private slots:
     void exportFile();
-
     bool saveObject(QString strSavedFilename);
     void dockAllPalettes();
     void helpBox();
     void aboutPencil();
-    void showPreferences();
+
+    void loadAllShortcuts();
+    void unloadAllShortcuts();
 
     void importPalette();
     void exportPalette();
@@ -92,9 +94,6 @@ private:
 
     void readSettings();
     void writeSettings();
-    void loadShortcutsSetting();
-    void unloadAllShortcuts();
-    void importDefaultShortcutsSetting();
     QString sc(QString);
 
     QString path;
