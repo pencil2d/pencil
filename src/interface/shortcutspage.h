@@ -25,18 +25,19 @@ public:
 
 signals:
 
-public slots:
+private slots:
     void tableItemClicked(const QModelIndex&);
     void keyCapLineEditTextChanged(QKeySequence);
-
-protected:
+    void pressRestoreShortcutsButton();
 
 private:
+    bool isKeySequenceExist(QString, QKeySequence);
     void loadShortcutsFromSetting();
 
     QStandardItemModel* m_treeModel;
     QStandardItem* m_currentActionItem;
     QStandardItem* m_currentKeySeqItem;
+
 
     Ui::ShortcutsPage* ui;
 };
