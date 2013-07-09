@@ -155,4 +155,4 @@ FORMS += \
 
 TRANSLATIONS += pencil.ts
 
-QMAKE_CXXFLAGS += -std=c++11
+# QMAKE_CXXFLAGS += -std=c++11

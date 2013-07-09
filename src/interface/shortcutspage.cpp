@@ -20,9 +20,9 @@
 
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent),
-    m_treeModel( nullptr ),
-    m_currentActionItem( nullptr ),
-    m_currentKeySeqItem( nullptr ),
+    m_treeModel( NULL ),
+    m_currentActionItem( NULL ),
+    m_currentKeySeqItem( NULL ),
     ui( new Ui::ShortcutsPage )
 {
     ui->setupUi(this);
@@ -65,8 +65,8 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 
 void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
 {
-    if ( m_currentActionItem == nullptr ||
-         m_currentKeySeqItem == nullptr )
+    if ( m_currentActionItem == NULL ||
+         m_currentKeySeqItem == NULL )
     {
         return;
     }
@@ -84,7 +84,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         msgBox.setIcon( QMessageBox::Warning );
-        auto result = msgBox.exec();
+        int result = msgBox.exec();
 
         if ( result != QMessageBox::Yes )
         {
