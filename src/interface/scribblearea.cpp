@@ -216,6 +216,7 @@ void ScribbleArea::setWidth(const qreal newWidth)
     }
     currentWidth = newWidth;
     updateAllFrames();
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::setFeather(const qreal newFeather)
@@ -238,6 +239,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
     }
     //currentWidth = newWidth;
     updateAllFrames();
+    setCursor( currentTool()->cursor() );
 }
 
 void ScribbleArea::setOpacity(const qreal newOpacity)
