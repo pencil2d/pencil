@@ -37,18 +37,6 @@ public:
     QDockWidget* createOptionPalette();
 
 public slots:
-    void changePencilButton();
-    void changeEraserButton();
-    void changeSelectButton();
-    void changeMoveButton();
-    void changeHandButton();
-    void changePenButton();
-    void changePolylineButton();
-    void changeBucketButton();
-    void changeEyedropperButton();
-    void changeColouringButton();
-    void changeSmudgeButton();
-
     void pencilOn();
     void eraserOn();
     void selectOn();

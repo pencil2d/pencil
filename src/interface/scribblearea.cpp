@@ -1207,8 +1207,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
                 //VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
                 //setSelection( vectorImage->getSelectionRect() );
 
-                // we switch to the select tool
-                editor->toolSet->changeSelectButton();
+                // we switch to the select tool                
                 emit selectOn();
                 moveMode = ScribbleArea::MIDDLE;
                 mySelection.setTopLeft( lastPoint );
@@ -1586,8 +1585,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
             if (layer->type == Layer::VECTOR)
             {
                 if (somethingSelected)
-                {
-                    editor->toolSet->changeMoveButton();
+                {                    
                     emit moveOn();
                     VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
                     setSelection( vectorImage->getSelectionRect(), true );
