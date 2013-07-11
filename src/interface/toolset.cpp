@@ -23,14 +23,16 @@ GNU General Public License for more details.
 
 // ----------------------------------------------------------------------------------
 
-ToolSet::ToolSet(Editor* editor)
+ToolSet::ToolSet(const QString title, Editor* editor) :
+    QDockWidget(title, editor)
 {
     m_pEditor = editor;
 
-    drawPalette = new QDockWidget(tr("Tools"));
+    //drawPalette = new QDockWidget(tr("Tools"));
 
     QFrame* drawGroup = new QFrame();
-    drawPalette->setWidget(drawGroup);
+    setWidget(drawGroup);
+
     QGridLayout* drawLay = new QGridLayout();
 
     newToolButton(pencilButton);
@@ -150,7 +152,8 @@ ToolSet::ToolSet(Editor* editor)
 
     drawGroup->setLayout(drawLay);
     drawGroup->setMaximumHeight(6*32+1);
-    drawPalette->setMaximumHeight(200);
+    
+    this->setMaximumHeight(200);
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
     connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));

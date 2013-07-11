@@ -25,14 +25,14 @@ class ToolOptionDockWidget;
 class Editor;
 
 
-class ToolSet : public QWidget
+class ToolSet : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    ToolSet(Editor* editor);
+    ToolSet(const QString title, Editor* editor);
 
-    QDockWidget* drawPalette;
+    //QDockWidget* drawPalette;
 
 
 public slots:
