@@ -165,18 +165,6 @@ ToolSet::ToolSet(Editor* editor)
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
 
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
-
-    connect(pencilButton, SIGNAL(clicked()), this, SLOT(changePencilButton()));
-    connect(selectButton, SIGNAL(clicked()), this, SLOT(changeSelectButton()));
-    connect(moveButton, SIGNAL(clicked()), this, SLOT(changeMoveButton()));
-    connect(handButton, SIGNAL(clicked()), this, SLOT(changeHandButton()));
-    connect(eraserButton, SIGNAL(clicked()), this, SLOT(changeEraserButton()));
-    connect(penButton, SIGNAL(clicked()), this, SLOT(changePenButton()));
-    connect(polylineButton, SIGNAL(clicked()), this, SLOT(changePolylineButton()));
-    connect(bucketButton, SIGNAL(clicked()), this, SLOT(changeBucketButton()));
-    connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(changeEyedropperButton()));
-    connect(colouringButton, SIGNAL(clicked()), this, SLOT(changeColouringButton()));
-    connect(smudgeButton, SIGNAL(clicked()), this, SLOT(changeSmudgeButton()));
 }
 
 void ToolSet::newToolButton(QToolButton*& toolButton)
@@ -201,6 +189,9 @@ void ToolSet::pencilOn()
     m_pEditor->setPreserveAlpha(pCurTool->properties.preserveAlpha);
     m_pEditor->setFollowContour(-1);
     m_pEditor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
+
+    deselectAllTools();
+    pencilButton->setChecked(true);
 }
 
 void ToolSet::eraserOn()
@@ -219,6 +210,9 @@ void ToolSet::eraserOn()
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
     m_pEditor->setInvisibility(-1);
+
+    deselectAllTools();
+    eraserButton->setChecked(true);
 }
 
 void ToolSet::selectOn()
@@ -232,6 +226,9 @@ void ToolSet::selectOn()
     m_pEditor->setInvisibility(-1);
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
+
+    deselectAllTools();
+    selectButton->setChecked(true);
 }
 
 void ToolSet::moveOn()
@@ -244,6 +241,9 @@ void ToolSet::moveOn()
     m_pEditor->setInvisibility(-1);
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
+
+    deselectAllTools();
+    moveButton->setChecked(true);
 }
 
 void ToolSet::penOn()
@@ -254,6 +254,9 @@ void ToolSet::penOn()
 
     // --- change properties ---
     m_pEditor->setToolProperties( pCurrentTool->properties );
+
+    deselectAllTools();
+    penButton->setChecked(true);
 }
 
 void ToolSet::handOn()
@@ -272,6 +275,9 @@ void ToolSet::handOn()
     m_pEditor->setInvisibility(-1);
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
+
+    deselectAllTools();
+    handButton->setChecked(true);
 }
 
 void ToolSet::polylineOn()
@@ -287,6 +293,9 @@ void ToolSet::polylineOn()
      m_pEditor->setInvisibility(pCurrentTool->properties.invisibility);
      m_pEditor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
      m_pEditor->setFollowContour(-1);
+
+     deselectAllTools();
+     polylineButton->setChecked(true);
 }
 
 void ToolSet::bucketOn()
@@ -306,6 +315,9 @@ void ToolSet::bucketOn()
     m_pEditor->setPreserveAlpha(0);
     m_pEditor->setPreserveAlpha(-1); // disable the button
     m_pEditor->setFollowContour(-1);
+
+    deselectAllTools();
+    bucketButton->setChecked(true);
 }
 
 void ToolSet::eyedropperOn()
@@ -321,8 +333,9 @@ void ToolSet::eyedropperOn()
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
 
+    deselectAllTools();
+    eyedropperButton->setChecked(true);
 }
-
 
 void ToolSet::brushOn()
 {
@@ -333,6 +346,9 @@ void ToolSet::brushOn()
     m_pEditor->setToolProperties(pCurrentTool->properties);
     m_pEditor->setInvisibility(-1);
     //m_pEditor->setFollowContour(followContour); //TODO: clarily what is this?
+
+    deselectAllTools();
+    colouringButton->setChecked(true);
 }
 
 void ToolSet::smudgeOn()
@@ -347,72 +363,63 @@ void ToolSet::smudgeOn()
     m_pEditor->setPreserveAlpha(0);
     m_pEditor->setPreserveAlpha(-1);
     m_pEditor->setFollowContour(-1);
+
+    deselectAllTools();
+    smudgeButton->setChecked(true);
 }
 
 void ToolSet::changePencilButton()
 {
-    deselectAllTools();
-    pencilButton->setChecked(true);
+   
 }
 
 void ToolSet::changeEraserButton()
 {
-    deselectAllTools();
-    eraserButton->setChecked(true);
+
 }
 
 void ToolSet::changeSelectButton()
 {
-    deselectAllTools();
-    selectButton->setChecked(true);
+
 }
 
 void ToolSet::changeMoveButton()
 {
-    deselectAllTools();
-    moveButton->setChecked(true);
+
 }
 
 void ToolSet::changeHandButton()
 {
-    deselectAllTools();
-    handButton->setChecked(true);
+  
 }
 
 void ToolSet::changePenButton()
 {
-    deselectAllTools();
-    penButton->setChecked(true);
+  
 }
 
 void ToolSet::changePolylineButton()
 {
-    deselectAllTools();
-    polylineButton->setChecked(true);
+  
 }
 
 void ToolSet::changeBucketButton()
 {
-    deselectAllTools();
-    bucketButton->setChecked(true);
+  
 }
 
 void ToolSet::changeEyedropperButton()
 {
-    deselectAllTools();
-    eyedropperButton->setChecked(true);
+  
 }
 
 void ToolSet::changeColouringButton()
 {
-    deselectAllTools();
-    colouringButton->setChecked(true);
+
 }
 
 void ToolSet::changeSmudgeButton()
 {
-    deselectAllTools();
-    smudgeButton->setChecked(true);
 }
 
 void ToolSet::deselectAllTools()
