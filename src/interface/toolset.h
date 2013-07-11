@@ -80,7 +80,7 @@ private:
     QToolButton* bucketButton;
     QToolButton* colouringButton;
     QToolButton* eyedropperButton;
-    QToolButton* magnifyButton;
+    //QToolButton* magnifyButton;
     QToolButton* smudgeButton;
     QToolButton* clearButton;
 };

@@ -46,7 +46,7 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     newToolButton(colouringButton);
     newToolButton(eyedropperButton);
     newToolButton(clearButton);
-    newToolButton(magnifyButton);
+    //newToolButton(magnifyButton);
     newToolButton(smudgeButton);
 
     pencilButton->setWhatsThis("Pencil Tool (N)");
@@ -60,7 +60,7 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     colouringButton->setWhatsThis("Brush Tool(B)");
     eyedropperButton->setWhatsThis("Eyedropper Tool (I)");
     clearButton->setWhatsThis("Clear Tool");
-    magnifyButton->setWhatsThis("Zoom Tool (Z)");
+    //magnifyButton->setWhatsThis("Zoom Tool (Z)");
     smudgeButton->setWhatsThis("Smudge Tool (A)");
 
     pencilButton->setIcon(QIcon(":icons/pencil2.png"));
@@ -93,9 +93,9 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     eyedropperButton->setIcon(QIcon(":icons/eyedropper.png"));
     eyedropperButton->setToolTip("Eyedropper Tool <b>(I)</b>: Set color from the stage");
 
-    magnifyButton->setIcon(QIcon(":icons/magnify.png"));
-    magnifyButton->setToolTip("Zoom Tool <b>(Z)</b>: Adjust the zoom level");
-    magnifyButton->setEnabled(false);
+    //magnifyButton->setIcon(QIcon(":icons/magnify.png"));
+    //magnifyButton->setToolTip("Zoom Tool <b>(Z)</b>: Adjust the zoom level");
+    //magnifyButton->setEnabled(false);
 
     smudgeButton->setIcon(QIcon(":icons/smudge.png"));
     smudgeButton->setToolTip("Smudge Tool <b>(A)</b>: Edit polyline/curves");
