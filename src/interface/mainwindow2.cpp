@@ -60,6 +60,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
     readSettings();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
+    connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
 
     showPreferences();
 }
@@ -113,6 +114,8 @@ void MainWindow2::arrangePalettes()
     m_toolOptionWidget = new ToolOptionDockWidget(this);
     m_toolOptionWidget->makeConnectionToEditor(editor);
 
+    m_toolSet = editor->toolSet;
+
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
@@ -161,7 +164,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
-    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
+    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
     connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
     connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
     connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
@@ -212,18 +215,19 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, SIGNAL(triggered()), editor, SLOT(move_clicked()));
-    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
-    connect(ui->actionSelect, SIGNAL(triggered()), editor, SLOT(select_clicked()));
-    connect(ui->actionBrush, SIGNAL(triggered()), editor, SLOT(color_clicked()));
-    connect(ui->actionPolyline, SIGNAL(triggered()), editor, SLOT(polyline_clicked()));
-    connect(ui->actionSmudge, SIGNAL(triggered()), editor, SLOT(smudge_clicked()));
-    connect(ui->actionPen, SIGNAL(triggered()), editor, SLOT(pen_clicked()));
-    connect(ui->actionHand, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-    connect(ui->actionPencil, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
-    connect(ui->actionBucket, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
-    connect(ui->actionEyedropper, SIGNAL(triggered()), editor, SLOT(eyedropper_clicked()));
-    connect(ui->actionEraser, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
+    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
+
+    connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));    
+    connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
+    connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
+    connect(ui->actionPolyline, SIGNAL(triggered()), m_toolSet, SLOT(polylineOn()));
+    connect(ui->actionSmudge, SIGNAL(triggered()), m_toolSet, SLOT(smudgeOn()));
+    connect(ui->actionPen, SIGNAL(triggered()), m_toolSet, SLOT(penOn()));
+    connect(ui->actionHand, SIGNAL(triggered()), m_toolSet, SLOT(handOn()));
+    connect(ui->actionPencil, SIGNAL(triggered()), m_toolSet, SLOT(pencilOn()));
+    connect(ui->actionBucket, SIGNAL(triggered()), m_toolSet, SLOT(bucketOn()));
+    connect(ui->actionEyedropper, SIGNAL(triggered()), m_toolSet, SLOT(eyedropperOn()));
+    connect(ui->actionEraser, SIGNAL(triggered()), m_toolSet, SLOT(eraserOn()));
 
     /// --- Help Menu ---
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));

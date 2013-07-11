@@ -73,7 +73,7 @@ signals:
     void eyedropperClick();
     void colouringClick();
     void smudgeClick();
-    void clearClick();
+    void clearButtonClicked();
 
 private:
     void newToolButton(QToolButton*& toolButton);

@@ -117,7 +117,7 @@ public slots:
     void select_clicked();
     void hand_clicked();
     void eyedropper_clicked();
-    void clear_clicked();
+    void clearCurrentFrame();
     void eraser_clicked();
     void pen_clicked();
     void polyline_clicked();

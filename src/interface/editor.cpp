@@ -146,9 +146,7 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(eyedropperOn()), toolSet, SLOT(eyedropperOn()));
     connect(scribbleArea, SIGNAL(brushOn()), toolSet, SLOT(brushOn()));
     connect(scribbleArea, SIGNAL(smudgeOn()), toolSet, SLOT(smudgeOn()));
-
-    connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
-
+    
     connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
     connect(this, SIGNAL(toggleOnionNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
     connect(scribbleArea, SIGNAL(thinLinesChanged(bool)), this, SIGNAL(changeThinLinesButton(bool)));
@@ -639,7 +637,7 @@ void Editor::croptoselect()
 {
     select_clicked();
     copy();
-    clear_clicked();
+    clearCurrentFrame();
     paste();
 
 }
@@ -1885,7 +1883,7 @@ void Editor::move_clicked()
 {
     toolSet->changeMoveButton();
 }
-void Editor::clear_clicked()
+void Editor::clearCurrentFrame()
 {
     scribbleArea->clearImage();
 }

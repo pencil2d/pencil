@@ -164,7 +164,7 @@ ToolSet::ToolSet(Editor* editor)
     connect(colouringButton, SIGNAL(clicked()), this, SLOT(brushOn()));
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
 
-    connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
+    connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearButtonClicked()));
 }
 
 void ToolSet::newToolButton(QToolButton*& toolButton)
