@@ -32,9 +32,6 @@ class ToolSet : public QDockWidget
 public:
     ToolSet(const QString title, Editor* editor);
 
-    //QDockWidget* drawPalette;
-
-
 public slots:
     void pencilOn();
     void eraserOn();
@@ -51,24 +48,13 @@ public slots:
     void setCurrentTool(ToolType);
 
 signals:
-    void pencilClick();
-    void eraserClick();
-    void selectClick();
-    void moveClick();
-    void handClick();
-    void penClick();
-    void polylineClick();
-    void bucketClick();
-    void eyedropperClick();
-    void colouringClick();
-    void smudgeClick();
     void clearButtonClicked();
 
 private:
     void newToolButton(QToolButton*& toolButton);
     void deselectAllTools();
 
-    Editor* m_pEditor;
+    Editor* m_editor;
 
     QToolButton* pencilButton;
     QToolButton* selectButton;
