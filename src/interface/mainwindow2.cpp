@@ -62,7 +62,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
     connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
-    showPreferences();
+    //showPreferences();
 }
 
 MainWindow2::~MainWindow2()
@@ -118,14 +118,15 @@ void MainWindow2::arrangePalettes()
 
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet);
     addDockWidget(Qt::LeftDockWidgetArea, m_toolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
-    editor->toolSet->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_toolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_displayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_colorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
 void MainWindow2::createMenus()
@@ -548,7 +549,7 @@ void MainWindow2::showPreferences()
 
 void MainWindow2::dockAllPalettes()
 {
-    editor->toolSet->drawPalette->setFloating(false);
+    editor->toolSet->setFloating(false);
     m_toolOptionWidget->setFloating(false);
     m_displayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
@@ -598,12 +599,12 @@ void MainWindow2::writeSettings()
         settings.setValue("timelinePaletteFloating", timelinePalette->isFloating());
     }
 
-    QDockWidget* drawPalette = editor->toolSet->drawPalette;
-    if (drawPalette != NULL)
+    QDockWidget* toolWidget = editor->toolSet;
+    if (toolWidget != NULL)
     {
-        settings.setValue("drawPalettePosition", drawPalette->pos());
-        settings.setValue("drawPaletteSize", drawPalette->size());
-        settings.setValue("drawPaletteFloating", drawPalette->isFloating());
+        settings.setValue("drawPalettePosition", toolWidget->pos());
+        settings.setValue("drawPaletteSize", toolWidget->size());
+        settings.setValue("drawPaletteFloating", toolWidget->isFloating());
     }
 
     QDockWidget* optionPalette = m_toolOptionWidget;

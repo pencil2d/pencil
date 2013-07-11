@@ -95,7 +95,7 @@ Editor::Editor(MainWindow2* parent)
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     scribbleArea = new ScribbleArea(this, this);
-    toolSet = new ToolSet(this);
+    toolSet = new ToolSet(tr("Tools"), this);
 
     mainLayout->addWidget(scribbleArea);
     mainLayout->setMargin(0);
@@ -1802,16 +1802,16 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
         timelinePalette->show();
     }
 
-    QDockWidget* drawPalette = toolSet->drawPalette;
-    if (drawPalette != NULL)
+    QDockWidget* toolWidget = toolSet;
+    if (toolWidget != NULL)
     {
         QPoint pos = settings.value("drawPalettePosition", QPoint(100, 100)).toPoint();
         QSize size = settings.value("drawPaletteSize", QSize(400, 300)).toSize();
         bool floating = settings.value("drawPaletteFloating", false).toBool();
-        if (restoreFloating) drawPalette->setFloating(floating);
-        if (restorePosition) drawPalette->move(pos);
-        if (restoreSize) drawPalette->resize(size);
-        drawPalette->show();
+        if (restoreFloating) toolWidget->setFloating(floating);
+        if (restorePosition) toolWidget->move(pos);
+        if (restoreSize) toolWidget->resize(size);
+        toolWidget->show();
     }
 
     QDockWidget* optionPalette = mainWindow->m_toolOptionWidget;

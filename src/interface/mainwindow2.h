@@ -12,7 +12,7 @@ class Palette;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
 class TimeLine;
-class ToolSet;
+class ToolSetWidget;
 class Preferences;
 template<typename T> class QList;
 
@@ -48,7 +48,7 @@ public:
     DisplayOptionDockWidget* m_displayOptionWidget;
     ToolOptionDockWidget*    m_toolOptionWidget;
     TimeLine* m_pTimeLine;
-    ToolSet* m_toolSet;
+    ToolSetWidget* m_toolSet;
 
     // Other windows
     Preferences* m_pPreferences;
