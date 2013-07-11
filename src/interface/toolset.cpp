@@ -33,19 +33,18 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
 
     QGridLayout* layout = new QGridLayout();
 
-    newToolButton(pencilButton);
-    newToolButton(selectButton);
-    newToolButton(moveButton);
-    newToolButton(handButton);
-    newToolButton(penButton);
-    newToolButton(eraserButton);
-    newToolButton(polylineButton);
-    newToolButton(bucketButton);
-    newToolButton(colouringButton);
-    newToolButton(eyedropperButton);
-    newToolButton(clearButton);
-    //newToolButton(magnifyButton);
-    newToolButton(smudgeButton);
+    pencilButton = newToolButton(QIcon(":icons/pencil2.png"), "Pencil Tool <b>(N)</b>: Sketch with pencil");
+    selectButton = newToolButton(QIcon(":icons/select.png"), "Select Tool <b>(V)</b>: Select an object");
+    moveButton = newToolButton(QIcon(":icons/arrow.png"), "Move Tool <b>(Q)</b>: Move an object");
+    handButton = newToolButton(QIcon(":icons/hand.png"), "Hand Tool <b>(H)</b>: Move the canvas");
+    penButton = newToolButton(QIcon(":icons/pen.png"), "Pen Tool <b>(P)</b>: Sketch with pen");
+    eraserButton = newToolButton(QIcon(":icons/eraser.png"), "Eraser Tool <b>(E)</b>: Erase");
+    polylineButton = newToolButton(QIcon(":icons/polyline.png"), "Polyline Tool <b>(Y)</b>: Create line/curves");
+    bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
+    colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
+    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage");
+    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Tool <b>(L)</b>: Erases content of selected frame");    
+    smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>: Edit polyline/curves");
 
     pencilButton->setWhatsThis("Pencil Tool (N)");
     selectButton->setWhatsThis("Select Tool (V)");
@@ -58,49 +57,15 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     colouringButton->setWhatsThis("Brush Tool(B)");
     eyedropperButton->setWhatsThis("Eyedropper Tool (I)");
     clearButton->setWhatsThis("Clear Tool");
-    //magnifyButton->setWhatsThis("Zoom Tool (Z)");
     smudgeButton->setWhatsThis("Smudge Tool (A)");
+    //magnifyButton->setWhatsThis("Zoom Tool (Z)");
 
-    pencilButton->setIcon(QIcon(":icons/pencil2.png"));
-    pencilButton->setToolTip("Pencil Tool <b>(N)</b>: Sketch with pencil");
-
-    selectButton->setIcon(QIcon(":icons/select.png"));
-    selectButton->setToolTip("Select Tool <b>(V)</b>: Select an object");
-
-    moveButton->setIcon(QIcon(":icons/arrow.png"));
-    moveButton->setToolTip("Move Tool <b>(Q)</b>: Move an object");
-
-    handButton->setIcon(QIcon(":icons/hand.png"));
-    handButton->setToolTip("Hand Tool <b>(H)</b>: Move the canvas");
-
-    penButton->setIcon(QIcon(":icons/pen.png"));
-    penButton->setToolTip("Pen Tool <b>(P)</b>: Sketch with pen");
-
-    eraserButton->setIcon(QIcon(":icons/eraser.png"));
-    eraserButton->setToolTip("Eraser Tool <b>(E)</b>: Erase");
-
-    polylineButton->setIcon(QIcon(":icons/polyline.png"));
-    polylineButton->setToolTip("Polyline Tool <b>(Y)</b>: Create line/curves");
-
-    bucketButton->setIcon(QIcon(":icons/bucket.png"));
-    bucketButton->setToolTip("Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
-
-    colouringButton->setIcon(QIcon(":icons/brush.png"));
-    colouringButton->setToolTip("Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
-
-    eyedropperButton->setIcon(QIcon(":icons/eyedropper.png"));
-    eyedropperButton->setToolTip("Eyedropper Tool <b>(I)</b>: Set color from the stage");
 
     //magnifyButton->setIcon(QIcon(":icons/magnify.png"));
     //magnifyButton->setToolTip("Zoom Tool <b>(Z)</b>: Adjust the zoom level");
     //magnifyButton->setEnabled(false);
 
-    smudgeButton->setIcon(QIcon(":icons/smudge.png"));
-    smudgeButton->setToolTip("Smudge Tool <b>(A)</b>: Edit polyline/curves");
-    smudgeButton->setEnabled(true);
-
-    clearButton->setIcon(QIcon(":icons/clear.png"));
-    clearButton->setToolTip("Clear Tool <b>(L)</b>: Erases content of selected frame");
+    //smudgeButton->setEnabled(true);
 
     pencilButton->setCheckable(true);
     penButton->setCheckable(true);
@@ -165,15 +130,20 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     connect(colouringButton, SIGNAL(clicked()), this, SLOT(brushOn()));
     connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
 
+    // pass to editor
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearButtonClicked()));
 }
 
-void ToolSet::newToolButton(QToolButton*& toolButton)
+QToolButton* ToolSet::newToolButton(QIcon& icon, QString strToolTip)
 {
-    toolButton = new QToolButton(this);
+    QToolButton* toolButton = new QToolButton(this);
     toolButton->setAutoRaise(true);
     toolButton->setIconSize( QSize(24,24) );
     toolButton->setFixedSize(32, 32);
+    toolButton->setIcon(icon);
+    toolButton->setToolTip(strToolTip);
+
+    return toolButton;
 }
 
 void ToolSet::pencilOn()

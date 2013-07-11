@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include "pencildef.h"
 
+class QIcon;
 class SpinSlider;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
@@ -51,7 +52,7 @@ signals:
     void clearButtonClicked();
 
 private:
-    void newToolButton(QToolButton*& toolButton);
+    QToolButton* newToolButton(QIcon&, QString);
     void deselectAllTools();
 
     Editor* m_editor;
