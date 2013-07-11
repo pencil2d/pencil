@@ -19,22 +19,19 @@ GNU General Public License for more details.
 #include <QtGui>
 #include "pencildef.h"
 
+class QIcon;
 class SpinSlider;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
 class Editor;
 
 
-class ToolSet : public QWidget
+class ToolSet : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    ToolSet(Editor* editor);
-
-    QDockWidget* drawPalette;
-
-    QDockWidget* createOptionPalette();
+    ToolSet(const QString title, Editor* editor);
 
 public slots:
     void pencilOn();
@@ -52,24 +49,13 @@ public slots:
     void setCurrentTool(ToolType);
 
 signals:
-    void pencilClick();
-    void eraserClick();
-    void selectClick();
-    void moveClick();
-    void handClick();
-    void penClick();
-    void polylineClick();
-    void bucketClick();
-    void eyedropperClick();
-    void colouringClick();
-    void smudgeClick();
     void clearButtonClicked();
 
 private:
-    void newToolButton(QToolButton*& toolButton);
+    QToolButton* newToolButton(QIcon&, QString);
     void deselectAllTools();
 
-    Editor* m_pEditor;
+    Editor* m_editor;
 
     QToolButton* pencilButton;
     QToolButton* selectButton;
@@ -81,7 +67,7 @@ private:
     QToolButton* bucketButton;
     QToolButton* colouringButton;
     QToolButton* eyedropperButton;
-    QToolButton* magnifyButton;
+    //QToolButton* magnifyButton;
     QToolButton* smudgeButton;
     QToolButton* clearButton;
 };
