@@ -33,7 +33,7 @@ private slots:
 
 private:
     bool isKeySequenceExist(const QSettings&, QString, QKeySequence);
-    void removeDuplicateKeySequenc(QSettings*, QKeySequence);
+    void removeDuplicateKeySequence(QSettings*, QKeySequence);
     void loadShortcutsFromSetting();
 
     QStandardItemModel* m_treeModel;
