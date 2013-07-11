@@ -30,10 +30,10 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
 
     //drawPalette = new QDockWidget(tr("Tools"));
 
-    QFrame* drawGroup = new QFrame();
-    setWidget(drawGroup);
+    QFrame* toolGroup = new QFrame();
+    setWidget(toolGroup);
 
-    QGridLayout* drawLay = new QGridLayout();
+    QGridLayout* layout = new QGridLayout();
 
     newToolButton(pencilButton);
     newToolButton(selectButton);
@@ -117,41 +117,41 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     eraserButton->setCheckable(true);
     pencilButton->setChecked(true);
 
-    drawLay->setMargin(2);
-    drawLay->setSpacing(0);
+    layout->setMargin(2);
+    layout->setSpacing(0);
 
-    drawLay->addWidget(moveButton,0,0);
-    drawLay->setAlignment(moveButton, Qt::AlignRight);
-    drawLay->addWidget(clearButton,0,1);
-    drawLay->setAlignment(clearButton, Qt::AlignLeft);
+    layout->addWidget(moveButton,0,0);
+    layout->setAlignment(moveButton, Qt::AlignRight);
+    layout->addWidget(clearButton,0,1);
+    layout->setAlignment(clearButton, Qt::AlignLeft);
 
-    drawLay->addWidget(selectButton,1,0);
-    drawLay->setAlignment(selectButton, Qt::AlignRight);
-    drawLay->addWidget(colouringButton,1,1);
-    drawLay->setAlignment(colouringButton, Qt::AlignLeft);
+    layout->addWidget(selectButton,1,0);
+    layout->setAlignment(selectButton, Qt::AlignRight);
+    layout->addWidget(colouringButton,1,1);
+    layout->setAlignment(colouringButton, Qt::AlignLeft);
 
-    drawLay->addWidget(polylineButton,2,0);
-    drawLay->setAlignment(polylineButton, Qt::AlignRight);
-    drawLay->addWidget(smudgeButton,2,1);
-    drawLay->setAlignment(smudgeButton, Qt::AlignLeft);
+    layout->addWidget(polylineButton,2,0);
+    layout->setAlignment(polylineButton, Qt::AlignRight);
+    layout->addWidget(smudgeButton,2,1);
+    layout->setAlignment(smudgeButton, Qt::AlignLeft);
 
-    drawLay->addWidget(penButton,3,0);
-    drawLay->setAlignment(penButton, Qt::AlignRight);
-    drawLay->addWidget(handButton,3,1);
-    drawLay->setAlignment(handButton, Qt::AlignLeft);
+    layout->addWidget(penButton,3,0);
+    layout->setAlignment(penButton, Qt::AlignRight);
+    layout->addWidget(handButton,3,1);
+    layout->setAlignment(handButton, Qt::AlignLeft);
 
-    drawLay->addWidget(pencilButton,4,0);
-    drawLay->setAlignment(pencilButton, Qt::AlignRight);
-    drawLay->addWidget(bucketButton,4,1);
-    drawLay->setAlignment(bucketButton, Qt::AlignLeft);
+    layout->addWidget(pencilButton,4,0);
+    layout->setAlignment(pencilButton, Qt::AlignRight);
+    layout->addWidget(bucketButton,4,1);
+    layout->setAlignment(bucketButton, Qt::AlignLeft);
 
-    drawLay->addWidget(eyedropperButton,5,0);
-    drawLay->setAlignment(eyedropperButton, Qt::AlignRight);
-    drawLay->addWidget(eraserButton,5,1);
-    drawLay->setAlignment(eraserButton, Qt::AlignLeft);
+    layout->addWidget(eyedropperButton,5,0);
+    layout->setAlignment(eyedropperButton, Qt::AlignRight);
+    layout->addWidget(eraserButton,5,1);
+    layout->setAlignment(eraserButton, Qt::AlignLeft);
 
-    drawGroup->setLayout(drawLay);
-    drawGroup->setMaximumHeight(6*32+1);
+    toolGroup->setLayout(layout);
+    toolGroup->setMaximumHeight(6*32+1);
     
     this->setMaximumHeight(200);
 
