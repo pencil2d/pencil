@@ -115,8 +115,7 @@ signals:
 public slots:
     
     void setTool(ToolType);     
-    void clearCurrentFrame();
-    
+    void clearCurrentFrame();    
 
     void importImageSequence();
     void cut();

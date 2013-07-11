@@ -40,7 +40,6 @@ private:
     QStandardItem* m_currentActionItem;
     QStandardItem* m_currentKeySeqItem;
 
-
     Ui::ShortcutsPage* ui;
 };
 
