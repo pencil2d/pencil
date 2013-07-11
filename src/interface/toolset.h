@@ -17,7 +17,7 @@ GNU General Public License for more details.
 #define TOOLSET_H
 
 #include <QtGui>
-
+#include "pencildef.h"
 
 class SpinSlider;
 class DisplayOptionDockWidget;
@@ -60,6 +60,8 @@ public slots:
     void eyedropperOn();
     void brushOn();
     void smudgeOn();
+
+    void setCurrentTool(ToolType);
 
 signals:
     void pencilClick();

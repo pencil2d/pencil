@@ -254,6 +254,7 @@ void ToolSet::penOn()
 
     // --- change properties ---
     m_pEditor->setToolProperties( pCurrentTool->properties );
+    m_pEditor->setWidth(2);
 
     deselectAllTools();
     penButton->setChecked(true);
@@ -436,4 +437,47 @@ void ToolSet::deselectAllTools()
     colouringButton->setChecked(false);
     smudgeButton->setChecked(false);
 }
+
+void ToolSet::setCurrentTool( ToolType toolType )
+{    
+    switch(toolType)
+    {
+    case PENCIL:
+        emit pencilOn();
+        break;
+    case ERASER:
+        emit eraserOn();
+        break;
+    case SELECT:
+        emit selectOn();
+        break;
+    case MOVE:
+        emit moveOn();
+        break;
+    case HAND:
+        emit handOn();
+        break;
+    case SMUDGE:
+        emit smudgeOn();
+        break;
+    case PEN:
+        emit penOn();
+        break;
+    case POLYLINE:
+        emit polylineOn();
+        break;
+    case BUCKET:
+        emit bucketOn();
+        break;
+    case EYEDROPPER:
+        emit eyedropperOn();
+        break;
+    case BRUSH:
+        emit brushOn();
+        break;
+    default:
+        break;
+    }
+}
+
 
