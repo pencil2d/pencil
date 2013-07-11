@@ -34,7 +34,6 @@ public:
 
     QDockWidget* drawPalette;
 
-    QDockWidget* createOptionPalette();
 
 public slots:
     void pencilOn();
