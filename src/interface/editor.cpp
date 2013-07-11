@@ -30,6 +30,7 @@ GNU General Public License for more details.
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
+
 Editor::Editor(MainWindow2* parent)
 {
     mainWindow = parent;
@@ -314,7 +315,12 @@ void Editor::applyInvisibility(bool invisibility)
     setInvisibility(invisibility);
     Layer* layer = getCurrentLayer();
     if (layer == NULL) return;
-    if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)->applyInvisibilityToSelection(invisibility>0);
+    if (layer->type == Layer::VECTOR) 
+    {
+        ((LayerVector*)layer)
+            ->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)
+            ->applyInvisibilityToSelection(invisibility);
+    }
 }
 
 void Editor::setPreserveAlpha(int preserveAlpha)
@@ -361,7 +367,9 @@ void Editor::applyPressure(bool pressure)
     if (layer == NULL) return;
     if (layer->type == Layer::VECTOR) 
     {
-        ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)->applyVariableWidthToSelection(pressure>0);
+        ((LayerVector*)layer)
+            ->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)
+            ->applyVariableWidthToSelection(pressure);
     }
 }
 
