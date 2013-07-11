@@ -26,12 +26,12 @@ class ToolOptionDockWidget;
 class Editor;
 
 
-class ToolSet : public QDockWidget
+class ToolSetWidget : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    ToolSet(const QString title, Editor* editor);
+    ToolSetWidget(const QString title, Editor* editor);
 
 public slots:
     void pencilOn();

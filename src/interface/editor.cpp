@@ -95,7 +95,7 @@ Editor::Editor(MainWindow2* parent)
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     scribbleArea = new ScribbleArea(this, this);
-    toolSet = new ToolSet(tr("Tools"), this);
+    toolSet = new ToolSetWidget(tr("Tools"), this);
 
     mainLayout->addWidget(scribbleArea);
     mainLayout->setMargin(0);
@@ -359,7 +359,10 @@ void Editor::applyPressure(bool pressure)
     setPressure(pressure);
     Layer* layer = getCurrentLayer();
     if (layer == NULL) return;
-    if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)->applyVariableWidthToSelection(pressure>0);
+    if (layer->type == Layer::VECTOR) 
+    {
+        ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)->applyVariableWidthToSelection(pressure>0);
+    }
 }
 
 void Editor::selectVectorColourNumber(int i)

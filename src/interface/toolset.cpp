@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 // ----------------------------------------------------------------------------------
 
-ToolSet::ToolSet(const QString title, Editor* editor) :
+ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     QDockWidget(title, editor)
 {
     m_editor = editor;    
@@ -134,7 +134,7 @@ ToolSet::ToolSet(const QString title, Editor* editor) :
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearButtonClicked()));
 }
 
-QToolButton* ToolSet::newToolButton(QIcon& icon, QString strToolTip)
+QToolButton* ToolSetWidget::newToolButton(QIcon& icon, QString strToolTip)
 {
     QToolButton* toolButton = new QToolButton(this);
     toolButton->setAutoRaise(true);
@@ -146,7 +146,7 @@ QToolButton* ToolSet::newToolButton(QIcon& icon, QString strToolTip)
     return toolButton;
 }
 
-void ToolSet::pencilOn()
+void ToolSetWidget::pencilOn()
 {
     m_editor->getScribbleArea()->setCurrentTool( PENCIL );
 
@@ -165,7 +165,7 @@ void ToolSet::pencilOn()
     pencilButton->setChecked(true);
 }
 
-void ToolSet::eraserOn()
+void ToolSetWidget::eraserOn()
 {
     m_editor->getScribbleArea()->setCurrentTool( ERASER );
     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
@@ -186,7 +186,7 @@ void ToolSet::eraserOn()
     eraserButton->setChecked(true);
 }
 
-void ToolSet::selectOn()
+void ToolSetWidget::selectOn()
 {
     m_editor->getScribbleArea()->setCurrentTool( SELECT );
 
@@ -202,7 +202,7 @@ void ToolSet::selectOn()
     selectButton->setChecked(true);
 }
 
-void ToolSet::moveOn()
+void ToolSetWidget::moveOn()
 {
     m_editor->getScribbleArea()->setCurrentTool( MOVE );
     // --- change properties ---
@@ -217,7 +217,7 @@ void ToolSet::moveOn()
     moveButton->setChecked(true);
 }
 
-void ToolSet::penOn()
+void ToolSetWidget::penOn()
 {
     m_editor->getScribbleArea()->setCurrentTool( PEN );
 
@@ -231,7 +231,7 @@ void ToolSet::penOn()
     penButton->setChecked(true);
 }
 
-void ToolSet::handOn()
+void ToolSetWidget::handOn()
 {
     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
     if (pCurrentTool->type() == HAND)
@@ -252,7 +252,7 @@ void ToolSet::handOn()
     handButton->setChecked(true);
 }
 
-void ToolSet::polylineOn()
+void ToolSetWidget::polylineOn()
 {
      m_editor->getScribbleArea()->setCurrentTool( POLYLINE );
     // --- change properties ---
@@ -270,7 +270,7 @@ void ToolSet::polylineOn()
      polylineButton->setChecked(true);
 }
 
-void ToolSet::bucketOn()
+void ToolSetWidget::bucketOn()
 {
      m_editor->getScribbleArea()->setCurrentTool( BUCKET );
      BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
@@ -292,7 +292,7 @@ void ToolSet::bucketOn()
     bucketButton->setChecked(true);
 }
 
-void ToolSet::eyedropperOn()
+void ToolSetWidget::eyedropperOn()
 {
      m_editor->getScribbleArea()->setCurrentTool( EYEDROPPER );
     // --- change properties ---
@@ -309,7 +309,7 @@ void ToolSet::eyedropperOn()
     eyedropperButton->setChecked(true);
 }
 
-void ToolSet::brushOn()
+void ToolSetWidget::brushOn()
 {
     m_editor->getScribbleArea()->setCurrentTool( BRUSH );
     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
@@ -323,7 +323,7 @@ void ToolSet::brushOn()
     colouringButton->setChecked(true);
 }
 
-void ToolSet::smudgeOn()
+void ToolSetWidget::smudgeOn()
 {
      m_editor->getScribbleArea()->setCurrentTool( EDIT );
     // --- change properties ---
@@ -340,7 +340,7 @@ void ToolSet::smudgeOn()
     smudgeButton->setChecked(true);
 }
 
-void ToolSet::deselectAllTools()
+void ToolSetWidget::deselectAllTools()
 {
     pencilButton->setChecked(false);
     eraserButton->setChecked(false);
@@ -355,7 +355,7 @@ void ToolSet::deselectAllTools()
     smudgeButton->setChecked(false);
 }
 
-void ToolSet::setCurrentTool( ToolType toolType )
+void ToolSetWidget::setCurrentTool( ToolType toolType )
 {    
     switch(toolType)
     {

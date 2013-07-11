@@ -56,7 +56,7 @@ public:
     bool playing;
     bool looping;
     bool sound;
-    ToolSet* toolSet;
+    ToolSetWidget* toolSet;
 
     TimeLine* getTimeLine();
 
