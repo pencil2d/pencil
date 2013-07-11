@@ -52,7 +52,7 @@ signals:
     void clearButtonClicked();
 
 private:
-    QToolButton* newToolButton(QIcon&, QString);
+    QToolButton* newToolButton(const QIcon&, QString);
     void deselectAllTools();
 
     Editor* m_editor;
