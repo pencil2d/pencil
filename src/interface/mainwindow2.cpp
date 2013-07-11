@@ -61,7 +61,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-
+    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
     showPreferences();
 }
 
@@ -186,7 +186,7 @@ void MainWindow2::createMenus()
     connect(ui->actionRotate_Clockwise, SIGNAL(triggered()), editor, SLOT(rotatecw()));
     connect(ui->actionRotate_Anticlosewise, SIGNAL(triggered()), editor, SLOT(rotateacw()));
     connect(ui->actionReset_Windows, SIGNAL(triggered()), this, SLOT(dockAllPalettes()));
-    connect(ui->actionReset_View, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
+    connect(ui->actionReset_View, SIGNAL(triggered()), editor, SLOT(resetView()));
     connect(ui->actionHorizontal_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
     connect(ui->actionVertical_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
 
@@ -194,7 +194,7 @@ void MainWindow2::createMenus()
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     ui->actionGrid->setEnabled(false);
-    //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
+    connect(ui->actionGrid, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
 
     connect(ui->actionOnionPrevious, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
     connect(editor, SIGNAL(onionPrevChanged(bool)), ui->actionOnionPrevious, SLOT(setChecked(bool)));

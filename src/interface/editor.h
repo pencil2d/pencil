@@ -99,6 +99,8 @@ signals:
     void changeOutlinesButton(bool);
 
     // Tool Option
+    void changeTool(ToolType);
+
     void penWidthValueChange(qreal);
     void penFeatherValueChange(qreal);
     void penInvisiblityValueChange(int);
@@ -111,19 +113,10 @@ signals:
     void needSave();
 
 public slots:
-    //tools menu
-    void move_clicked();
-    void pencil_clicked();
-    void select_clicked();
-    void hand_clicked();
-    void eyedropper_clicked();
+    
+    void setTool(ToolType);     
     void clearCurrentFrame();
-    void eraser_clicked();
-    void pen_clicked();
-    void polyline_clicked();
-    void bucket_clicked();
-    void color_clicked();
-    void smudge_clicked();
+    
 
     void importImageSequence();
     void cut();
@@ -135,6 +128,7 @@ public slots:
     void rotatecw();
     void rotateacw();
     void gridview();
+    void resetView();
 
     void importImage();
     void importImage(QString filePath);
