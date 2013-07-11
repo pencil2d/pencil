@@ -172,7 +172,7 @@ void ToolSet::newToolButton(QToolButton*& toolButton)
     toolButton = new QToolButton(this);
     toolButton->setAutoRaise(true);
     toolButton->setIconSize( QSize(24,24) );
-    toolButton->setFixedSize(32,32);
+    toolButton->setFixedSize(32, 32);
 }
 
 void ToolSet::pencilOn()
@@ -367,60 +367,6 @@ void ToolSet::smudgeOn()
 
     deselectAllTools();
     smudgeButton->setChecked(true);
-}
-
-void ToolSet::changePencilButton()
-{
-   
-}
-
-void ToolSet::changeEraserButton()
-{
-
-}
-
-void ToolSet::changeSelectButton()
-{
-
-}
-
-void ToolSet::changeMoveButton()
-{
-
-}
-
-void ToolSet::changeHandButton()
-{
-  
-}
-
-void ToolSet::changePenButton()
-{
-  
-}
-
-void ToolSet::changePolylineButton()
-{
-  
-}
-
-void ToolSet::changeBucketButton()
-{
-  
-}
-
-void ToolSet::changeEyedropperButton()
-{
-  
-}
-
-void ToolSet::changeColouringButton()
-{
-
-}
-
-void ToolSet::changeSmudgeButton()
-{
 }
 
 void ToolSet::deselectAllTools()
