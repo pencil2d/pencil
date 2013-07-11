@@ -218,7 +218,7 @@ void MainWindow2::createMenus()
     /// --- Tool Menu ---
     connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
 
-    connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));    
+    connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));
     connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
     connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
     connect(ui->actionPolyline, SIGNAL(triggered()), m_toolSet, SLOT(polylineOn()));
@@ -358,6 +358,7 @@ bool MainWindow2::saveAsNewDocument()
     QSettings settings("Pencil","Pencil");
 
     QString strDefaultFileName = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+
     if (strDefaultFileName.isEmpty())
     {
         strDefaultFileName = QDir::homePath() + "/untitled.pcl";
@@ -406,11 +407,11 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     // save data
     int nLayers = object->getLayerCount();
-    for (int i=0; i < nLayers; i++)
+    for (int i = 0; i < nLayers; i++)
     {
         Layer* layer = object->getLayer(i);
         qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
-        progressValue = (i*100)/nLayers;
+        progressValue = (i * 100) / nLayers;
         progress.setValue(progressValue);
         if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
         if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(filePath+".data", i);
@@ -499,6 +500,7 @@ QDomElement MainWindow2::createDomElement(QDomDocument& doc)
     tag2a.setAttribute("value", editor->fps);
     tag.appendChild(tag2a);
     QDomElement tag3 = doc.createElement("currentView");
+
     QMatrix myView = m_pScribbleArea->getMyView();
     tag3.setAttribute("m11", myView.m11());
     tag3.setAttribute("m12", myView.m12());

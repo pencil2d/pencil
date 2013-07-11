@@ -26,7 +26,7 @@ GNU General Public License for more details.
 ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     QDockWidget(title, editor)
 {
-    m_editor = editor;    
+    m_editor = editor;
 
     QFrame* toolGroup = new QFrame();
     setWidget(toolGroup);
@@ -43,7 +43,7 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
     colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
     eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage");
-    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Tool <b>(L)</b>: Erases content of selected frame");    
+    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Tool <b>(L)</b>: Erases content of selected frame");
     smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>: Edit polyline/curves");
 
     pencilButton->setWhatsThis("Pencil Tool (N)");
@@ -115,7 +115,7 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
 
     toolGroup->setLayout(layout);
     toolGroup->setMaximumHeight(6*32+1);
-    
+
     this->setMaximumHeight(200);
 
     connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
@@ -134,7 +134,7 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearButtonClicked()));
 }
 
-QToolButton* ToolSetWidget::newToolButton(QIcon& icon, QString strToolTip)
+QToolButton* ToolSetWidget::newToolButton(const QIcon& icon, QString strToolTip)
 {
     QToolButton* toolButton = new QToolButton(this);
     toolButton->setAutoRaise(true);
@@ -356,7 +356,7 @@ void ToolSetWidget::deselectAllTools()
 }
 
 void ToolSetWidget::setCurrentTool( ToolType toolType )
-{    
+{
     switch(toolType)
     {
     case PENCIL:

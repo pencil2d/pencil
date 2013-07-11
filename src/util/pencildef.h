@@ -2,7 +2,21 @@
 #define PENCILDEF_H
 
 
-enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, BRUSH };
+enum ToolType
+{
+    PENCIL,
+    ERASER,
+    SELECT,
+    MOVE,
+    EDIT,
+    HAND,
+    SMUDGE,
+    PEN,
+    POLYLINE,
+    BUCKET,
+    EYEDROPPER,
+    BRUSH
+};
 
 
 // shortcuts command code
