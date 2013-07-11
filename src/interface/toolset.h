@@ -17,7 +17,7 @@ GNU General Public License for more details.
 #define TOOLSET_H
 
 #include <QtGui>
-
+#include "pencildef.h"
 
 class SpinSlider;
 class DisplayOptionDockWidget;
@@ -37,18 +37,6 @@ public:
     QDockWidget* createOptionPalette();
 
 public slots:
-    void changePencilButton();
-    void changeEraserButton();
-    void changeSelectButton();
-    void changeMoveButton();
-    void changeHandButton();
-    void changePenButton();
-    void changePolylineButton();
-    void changeBucketButton();
-    void changeEyedropperButton();
-    void changeColouringButton();
-    void changeSmudgeButton();
-
     void pencilOn();
     void eraserOn();
     void selectOn();
@@ -60,6 +48,8 @@ public slots:
     void eyedropperOn();
     void brushOn();
     void smudgeOn();
+
+    void setCurrentTool(ToolType);
 
 signals:
     void pencilClick();
@@ -73,7 +63,7 @@ signals:
     void eyedropperClick();
     void colouringClick();
     void smudgeClick();
-    void clearClick();
+    void clearButtonClicked();
 
 private:
     void newToolButton(QToolButton*& toolButton);

@@ -42,6 +42,7 @@ void restoreShortcutsToDefault()
     QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
 
     pencilSettings()->beginGroup("shortcuts");
+    pencilSettings()->remove("");
     foreach (QString pKey, defaultKey.allKeys())
     {
         pencilSettings()->setValue(pKey, defaultKey.value(pKey));

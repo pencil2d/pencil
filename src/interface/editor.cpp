@@ -146,9 +146,7 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(eyedropperOn()), toolSet, SLOT(eyedropperOn()));
     connect(scribbleArea, SIGNAL(brushOn()), toolSet, SLOT(brushOn()));
     connect(scribbleArea, SIGNAL(smudgeOn()), toolSet, SLOT(smudgeOn()));
-
-    connect(toolSet,SIGNAL(clearClick()), scribbleArea, SLOT(clearImage()));
-
+    
     connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
     connect(this, SIGNAL(toggleOnionNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
     connect(scribbleArea, SIGNAL(thinLinesChanged(bool)), this, SIGNAL(changeThinLinesButton(bool)));
@@ -631,17 +629,18 @@ void Editor::cut()
 
 void Editor::crop()
 {
-    select_clicked();
-    move_clicked();
+    // FIXME:
+    //select_clicked();
+    //move_clicked();
 }
 
 void Editor::croptoselect()
 {
-    select_clicked();
-    copy();
-    clear_clicked();
-    paste();
-
+    // FIXME:
+    //select_clicked();
+    //copy();
+    //clearCurrentFrame();
+    //paste();
 }
 
 void Editor::copy()
@@ -731,7 +730,7 @@ void Editor::paste()
                 }
             }
             ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(m_nCurrentFrameIndex, 0)->paste( &tobePasted ); // paste the clipboard
-            move_clicked();
+            setTool(MOVE);
         }
         if (layer->type == Layer::VECTOR && clipboardVectorOk)
         {
@@ -741,7 +740,7 @@ void Editor::paste()
             vectorImage->paste( clipboardVectorImage );  // paste the clipboard
             scribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
-            move_clicked();
+            setTool(MOVE);
         }
     }
     scribbleArea->updateFrame();
@@ -1881,53 +1880,9 @@ bool Editor::loadDomElement(QDomElement docElem, QString filePath)
     return true;
 }
 
-void Editor::move_clicked()
-{
-    toolSet->changeMoveButton();
-}
-void Editor::clear_clicked()
+void Editor::clearCurrentFrame()
 {
     scribbleArea->clearImage();
-}
-void Editor::pencil_clicked()
-{
-    toolSet->changePencilButton();
-}
-void Editor::eraser_clicked()
-{
-    toolSet->changeEraserButton();
-}
-void Editor::select_clicked()
-{
-    toolSet->changeSelectButton();
-}
-void Editor::hand_clicked()
-{
-    toolSet->changeHandButton();
-}
-void Editor::pen_clicked()
-{
-    toolSet->changePenButton();
-}
-void Editor::polyline_clicked()
-{
-    toolSet->changePolylineButton();
-}
-void Editor::bucket_clicked()
-{
-    toolSet->changeBucketButton();
-}
-void Editor::eyedropper_clicked()
-{
-    toolSet->changeEyedropperButton();
-}
-void Editor::color_clicked()
-{
-    toolSet->changeColouringButton();
-}
-void Editor::smudge_clicked()
-{
-    toolSet->changeSmudgeButton();
 }
 
 void Editor::setzoom()
@@ -1950,8 +1905,8 @@ void Editor::rotateacw()
 }
 
 void Editor::gridview()
-{
-    hand_clicked();
+{    
+    resetView();
 
     scribbleArea->grid();
     QMessageBox msgBox;
@@ -2106,5 +2061,17 @@ void Editor::saveSvg()
         }
     }
     painter.end();
+}
+
+void Editor::resetView()
+{
+    getScribbleArea()->resetView();
+}
+
+void Editor::setTool( ToolType toolType)
+{
+    getScribbleArea()->setCurrentTool(toolType);
+
+    emit changeTool(toolType);
 }
 
