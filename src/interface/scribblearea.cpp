@@ -738,7 +738,7 @@ void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseD
 
 void ScribbleArea::mousePressEvent(QMouseEvent* event)
 {
-    static const QString myToolModesDescription[] = 
+    static const QString myToolModesDescription[] =
     {
         "Pencil",
         "Eraser",
@@ -751,7 +751,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         "Polyline",
         "Bucket",
         "Eyedropper",
-        "Colouring" 
+        "Colouring"
     };
 
     mouseInUse = true;
@@ -770,6 +770,29 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         }
     }
 
+    while (!mousePath.isEmpty()) mousePath.removeAt(0); // empty the mousePath
+    while (!mousePressure.isEmpty()) mousePressure.removeAt(0); // empty the mousePressure
+
+    if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
+    {
+        if (tabletInUse && highResPosition)
+        { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); }
+        else
+        { lastPixel = QPointF(event->pos()); }
+
+        bool invertible = true;
+        lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
+        lastBrushPoint = lastPoint;
+    }
+
+    // cursor/brush pointer rescaling
+    if (event->modifiers() == Qt::ShiftModifier){
+        scalingBrush = true;
+        return;
+    } else {
+        scalingBrush = false;
+    }
+    //
 
     Layer* layer = editor->getCurrentLayer();
     // ---- checks ------
@@ -807,20 +830,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
     }
     // --- end checks ----
 
-    while (!mousePath.isEmpty()) mousePath.removeAt(0); // empty the mousePath
-    while (!mousePressure.isEmpty()) mousePressure.removeAt(0); // empty the mousePressure
-    
-    if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
-    {
-        if (tabletInUse && highResPosition)
-        { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); }
-        else
-        { lastPixel = QPointF(event->pos()); }
-
-        bool invertible = true;
-        lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
-        lastBrushPoint = lastPoint;
-    }
 
 
     // if-else for all tools
@@ -837,7 +846,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
             if (!showThinLines)
             {
                 toggleThinLines();
-            }            
+            }
             mousePath.append(lastPoint);
             updateAll = true;
         }
@@ -1068,6 +1077,13 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         offset = currentPoint - lastPoint;
+        //[shift]+mouse/pen <=> scalingBrush=true
+        //Todo1: change following line to: if (scalingBrush && (ui)->WidthSlider.enabled) (cirus)
+        if (scalingBrush && (currentToolType()==BRUSH || currentToolType()==ERASER) ) {
+            emit editor->applyWidth( sqrt( offset.x()*offset.x() + offset.y()*offset.y() )+0.1 );
+            return;
+        }
+        //
         mousePath.append(currentPoint);
     }
 
@@ -1171,7 +1187,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             if (layer->type == Layer::VECTOR)
             {
                 closestVertices = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0)->getVerticesCloseTo(currentPoint, tol/myTempView.m11());
-            }            
+            }
         }
         update();
         updateAll = true;
@@ -1292,8 +1308,14 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
 {
     mouseInUse = false;
 
-    Layer* layer = editor->getCurrentLayer();
     // ---- checks ------
+    // beg: [shift]+mouse/pen => scaling=true
+    if (scalingBrush) {
+        return;
+    }
+    // end
+
+    Layer* layer = editor->getCurrentLayer();
     if (layer==NULL) return;
     if (layer->type == Layer::VECTOR)
     {
