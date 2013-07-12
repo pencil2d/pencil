@@ -60,8 +60,9 @@ MainWindow2::MainWindow2(QWidget *parent) :
     readSettings();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
-
-    showPreferences();
+    connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
+    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
+    //showPreferences();
 }
 
 MainWindow2::~MainWindow2()
@@ -113,16 +114,19 @@ void MainWindow2::arrangePalettes()
     m_toolOptionWidget = new ToolOptionDockWidget(this);
     m_toolOptionWidget->makeConnectionToEditor(editor);
 
+    m_toolSet = editor->toolSet;
+
     addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet->drawPalette);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet);
     addDockWidget(Qt::LeftDockWidgetArea, m_toolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
-    editor->toolSet->drawPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_toolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_displayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_colorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
 void MainWindow2::createMenus()
@@ -161,7 +165,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
-    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
+    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
     connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
     connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
     connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
@@ -183,7 +187,7 @@ void MainWindow2::createMenus()
     connect(ui->actionRotate_Clockwise, SIGNAL(triggered()), editor, SLOT(rotatecw()));
     connect(ui->actionRotate_Anticlosewise, SIGNAL(triggered()), editor, SLOT(rotateacw()));
     connect(ui->actionReset_Windows, SIGNAL(triggered()), this, SLOT(dockAllPalettes()));
-    connect(ui->actionReset_View, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
+    connect(ui->actionReset_View, SIGNAL(triggered()), editor, SLOT(resetView()));
     connect(ui->actionHorizontal_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirror()));
     connect(ui->actionVertical_Flip, SIGNAL(triggered()), editor, SLOT(toggleMirrorV()));
 
@@ -191,7 +195,7 @@ void MainWindow2::createMenus()
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     ui->actionGrid->setEnabled(false);
-    //#	connect(gridAct, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
+    connect(ui->actionGrid, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
 
     connect(ui->actionOnionPrevious, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
     connect(editor, SIGNAL(onionPrevChanged(bool)), ui->actionOnionPrevious, SLOT(setChecked(bool)));
@@ -212,18 +216,19 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, SIGNAL(triggered()), editor, SLOT(move_clicked()));
-    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clear_clicked()));
-    connect(ui->actionSelect, SIGNAL(triggered()), editor, SLOT(select_clicked()));
-    connect(ui->actionBrush, SIGNAL(triggered()), editor, SLOT(color_clicked()));
-    connect(ui->actionPolyline, SIGNAL(triggered()), editor, SLOT(polyline_clicked()));
-    connect(ui->actionSmudge, SIGNAL(triggered()), editor, SLOT(smudge_clicked()));
-    connect(ui->actionPen, SIGNAL(triggered()), editor, SLOT(pen_clicked()));
-    connect(ui->actionHand, SIGNAL(triggered()), editor, SLOT(hand_clicked()));
-    connect(ui->actionPencil, SIGNAL(triggered()), editor, SLOT(pencil_clicked()));
-    connect(ui->actionBucket, SIGNAL(triggered()), editor, SLOT(bucket_clicked()));
-    connect(ui->actionEyedropper, SIGNAL(triggered()), editor, SLOT(eyedropper_clicked()));
-    connect(ui->actionEraser, SIGNAL(triggered()), editor, SLOT(eraser_clicked()));
+    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
+
+    connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));
+    connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
+    connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
+    connect(ui->actionPolyline, SIGNAL(triggered()), m_toolSet, SLOT(polylineOn()));
+    connect(ui->actionSmudge, SIGNAL(triggered()), m_toolSet, SLOT(smudgeOn()));
+    connect(ui->actionPen, SIGNAL(triggered()), m_toolSet, SLOT(penOn()));
+    connect(ui->actionHand, SIGNAL(triggered()), m_toolSet, SLOT(handOn()));
+    connect(ui->actionPencil, SIGNAL(triggered()), m_toolSet, SLOT(pencilOn()));
+    connect(ui->actionBucket, SIGNAL(triggered()), m_toolSet, SLOT(bucketOn()));
+    connect(ui->actionEyedropper, SIGNAL(triggered()), m_toolSet, SLOT(eyedropperOn()));
+    connect(ui->actionEraser, SIGNAL(triggered()), m_toolSet, SLOT(eraserOn()));
 
     /// --- Help Menu ---
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));
@@ -353,6 +358,7 @@ bool MainWindow2::saveAsNewDocument()
     QSettings settings("Pencil","Pencil");
 
     QString strDefaultFileName = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+
     if (strDefaultFileName.isEmpty())
     {
         strDefaultFileName = QDir::homePath() + "/untitled.pcl";
@@ -401,11 +407,11 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     // save data
     int nLayers = object->getLayerCount();
-    for (int i=0; i < nLayers; i++)
+    for (int i = 0; i < nLayers; i++)
     {
         Layer* layer = object->getLayer(i);
         qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
-        progressValue = (i*100)/nLayers;
+        progressValue = (i * 100) / nLayers;
         progress.setValue(progressValue);
         if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
         if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(filePath+".data", i);
@@ -494,6 +500,7 @@ QDomElement MainWindow2::createDomElement(QDomDocument& doc)
     tag2a.setAttribute("value", editor->fps);
     tag.appendChild(tag2a);
     QDomElement tag3 = doc.createElement("currentView");
+
     QMatrix myView = m_pScribbleArea->getMyView();
     tag3.setAttribute("m11", myView.m11());
     tag3.setAttribute("m12", myView.m12());
@@ -544,7 +551,7 @@ void MainWindow2::showPreferences()
 
 void MainWindow2::dockAllPalettes()
 {
-    editor->toolSet->drawPalette->setFloating(false);
+    editor->toolSet->setFloating(false);
     m_toolOptionWidget->setFloating(false);
     m_displayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
@@ -594,12 +601,12 @@ void MainWindow2::writeSettings()
         settings.setValue("timelinePaletteFloating", timelinePalette->isFloating());
     }
 
-    QDockWidget* drawPalette = editor->toolSet->drawPalette;
-    if (drawPalette != NULL)
+    QDockWidget* toolWidget = editor->toolSet;
+    if (toolWidget != NULL)
     {
-        settings.setValue("drawPalettePosition", drawPalette->pos());
-        settings.setValue("drawPaletteSize", drawPalette->size());
-        settings.setValue("drawPaletteFloating", drawPalette->isFloating());
+        settings.setValue("drawPalettePosition", toolWidget->pos());
+        settings.setValue("drawPaletteSize", toolWidget->size());
+        settings.setValue("drawPaletteFloating", toolWidget->isFloating());
     }
 
     QDockWidget* optionPalette = m_toolOptionWidget;

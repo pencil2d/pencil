@@ -17,38 +17,23 @@ GNU General Public License for more details.
 #define TOOLSET_H
 
 #include <QtGui>
+#include "pencildef.h"
 
-
+class QIcon;
 class SpinSlider;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
 class Editor;
 
 
-class ToolSet : public QWidget
+class ToolSetWidget : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    ToolSet(Editor* editor);
-
-    QDockWidget* drawPalette;
-
-    QDockWidget* createOptionPalette();
+    ToolSetWidget(const QString title, Editor* editor);
 
 public slots:
-    void changePencilButton();
-    void changeEraserButton();
-    void changeSelectButton();
-    void changeMoveButton();
-    void changeHandButton();
-    void changePenButton();
-    void changePolylineButton();
-    void changeBucketButton();
-    void changeEyedropperButton();
-    void changeColouringButton();
-    void changeSmudgeButton();
-
     void pencilOn();
     void eraserOn();
     void selectOn();
@@ -61,25 +46,16 @@ public slots:
     void brushOn();
     void smudgeOn();
 
+    void setCurrentTool(ToolType);
+
 signals:
-    void pencilClick();
-    void eraserClick();
-    void selectClick();
-    void moveClick();
-    void handClick();
-    void penClick();
-    void polylineClick();
-    void bucketClick();
-    void eyedropperClick();
-    void colouringClick();
-    void smudgeClick();
-    void clearClick();
+    void clearButtonClicked();
 
 private:
-    void newToolButton(QToolButton*& toolButton);
+    QToolButton* newToolButton(const QIcon&, QString);
     void deselectAllTools();
 
-    Editor* m_pEditor;
+    Editor* m_editor;
 
     QToolButton* pencilButton;
     QToolButton* selectButton;
@@ -91,7 +67,7 @@ private:
     QToolButton* bucketButton;
     QToolButton* colouringButton;
     QToolButton* eyedropperButton;
-    QToolButton* magnifyButton;
+    //QToolButton* magnifyButton;
     QToolButton* smudgeButton;
     QToolButton* clearButton;
 };
