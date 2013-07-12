@@ -152,7 +152,8 @@ ToolSet::ToolSet(Editor* editor)
     drawGroup->setMaximumHeight(6*32+1);
     drawPalette->setMaximumHeight(200);
 
-    connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
+    //Was causing problems with the shortcuts on Windows (cirus)
+    /*connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
     connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));
     connect(selectButton, SIGNAL(clicked()), this, SLOT(selectOn()));
     connect(moveButton, SIGNAL(clicked()), this, SLOT(moveOn()));
@@ -162,7 +163,7 @@ ToolSet::ToolSet(Editor* editor)
     connect(bucketButton, SIGNAL(clicked()), this, SLOT(bucketOn()));
     connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(eyedropperOn()));
     connect(colouringButton, SIGNAL(clicked()), this, SLOT(brushOn()));
-    connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
+    connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));*/
 
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearClick()));
 
@@ -351,66 +352,77 @@ void ToolSet::smudgeOn()
 
 void ToolSet::changePencilButton()
 {
+    pencilOn();
     deselectAllTools();
     pencilButton->setChecked(true);
 }
 
 void ToolSet::changeEraserButton()
 {
+    eraserOn();
     deselectAllTools();
     eraserButton->setChecked(true);
 }
 
 void ToolSet::changeSelectButton()
 {
+    selectOn();
     deselectAllTools();
     selectButton->setChecked(true);
 }
 
 void ToolSet::changeMoveButton()
 {
+    moveOn();
     deselectAllTools();
     moveButton->setChecked(true);
 }
 
 void ToolSet::changeHandButton()
 {
+    handOn();
     deselectAllTools();
     handButton->setChecked(true);
 }
 
 void ToolSet::changePenButton()
 {
+    penOn();
     deselectAllTools();
     penButton->setChecked(true);
 }
 
 void ToolSet::changePolylineButton()
 {
+    polylineOn();
     deselectAllTools();
     polylineButton->setChecked(true);
 }
 
 void ToolSet::changeBucketButton()
 {
+    bucketOn();
     deselectAllTools();
     bucketButton->setChecked(true);
 }
 
 void ToolSet::changeEyedropperButton()
 {
+    eyedropperOn();
     deselectAllTools();
     eyedropperButton->setChecked(true);
 }
 
 void ToolSet::changeColouringButton()
 {
+    brushOn();
     deselectAllTools();
     colouringButton->setChecked(true);
 }
 
 void ToolSet::changeSmudgeButton()
 {
+    smudgeOn();
     deselectAllTools();
     smudgeButton->setChecked(true);
 }
