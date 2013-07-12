@@ -6,14 +6,12 @@
 #include <QMap>
 #include <QString>
 #include <QCursor>
-
+#include "pencildef.h"
 
 
 class Editor;
 class QMouseEvent;
 
-
-enum ToolType { PENCIL, ERASER, SELECT, MOVE, EDIT, HAND, SMUDGE, PEN, POLYLINE, BUCKET, EYEDROPPER, BRUSH };
 
 QString typeName( ToolType );
 

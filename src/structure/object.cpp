@@ -331,7 +331,7 @@ bool Object::exportPalette(QString filePath)
     QDomDocument doc("PencilPalette");
     QDomElement root = doc.createElement("palette");
     doc.appendChild(root);
-    for(int i=0; i < myPalette.size(); i++)
+    for (int i=0; i < myPalette.size(); i++)
     {
         QDomElement tag = doc.createElement("Colour");
         tag.setAttribute("name", myPalette.at(i).name);
@@ -460,11 +460,11 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
                 /*BitmapImage* bitmapImage = layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0);
                 // TO BE FIXED
                 if (bitmapImage != NULL) {
-                	if ( mirror) {
-                		painter.drawImage(target, (*(bitmapImage->image)).mirrored(true, false), source);
-                	} else {
-                		painter.drawImage(target, *(bitmapImage->image), source);
-                	}
+                    if ( mirror) {
+                        painter.drawImage(target, (*(bitmapImage->image)).mirrored(true, false), source);
+                    } else {
+                        painter.drawImage(target, *(bitmapImage->image), source);
+                    }
                 }*/
                 layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0)->paintImage(painter);
             }

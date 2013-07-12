@@ -168,7 +168,7 @@ void Object::exportMovie(int startFrame,
                         audioDataValid = true;
                         int delta = fframe * 44100 * 2;
                         qDebug() << "audio delta " << delta;
-                        int indexMax = MIN(audioSize/2,audioDataSize/2-delta);
+                        int indexMax = MIN(audioSize/2, audioDataSize/2 - delta);
                         // audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
                         for (int index = 0; index < indexMax; index++)
                         {audioData[index+delta] = safeSum(audioData[index+delta],data[index]);}
