@@ -230,6 +230,7 @@ private:
     QList<int> closestCurves;
     QList<VertexRef> closestVertices;
     QPointF offset;
+    bool scalingBrush; //for interactive brush resizing
 
     VectorSelection vectorSelection;
     //bool selectionChanged;
