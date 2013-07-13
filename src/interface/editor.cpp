@@ -969,7 +969,10 @@ bool Editor::openObject(QString filePath)
         }
     }
     // ------------------------------
-    if (ok) updateObject();
+    if (ok)
+    {
+        updateObject();
+    }
 
     progress.setValue(100);
     return ok;

@@ -195,7 +195,7 @@ void MainWindow2::createMenus()
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     ui->actionGrid->setEnabled(false);
-    connect(ui->actionGrid, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
+    connect(ui->actionGrid, SIGNAL(triggered()), editor, SLOT(gridview())); //TODO: Grid view
 
     connect(ui->actionOnionPrevious, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
     connect(editor, SIGNAL(onionPrevChanged(bool)), ui->actionOnionPrevious, SLOT(setChecked(bool)));
@@ -324,7 +324,7 @@ void MainWindow2::openDocument()
                     myPath,
                     tr("PCL (*.pcl);;Any files (*)"));
 
-        if ( fileName.isEmpty() )
+        if (fileName.isEmpty())
         {
             return ;
         }
@@ -336,6 +336,7 @@ void MainWindow2::openDocument()
         }
 
         bool ok = editor->openObject(fileName);
+
         if (!ok)
         {
             QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
@@ -407,10 +408,13 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     // save data
     int nLayers = object->getLayerCount();
+    qDebug("Layer Count=%d", nLayers);
+
     for (int i = 0; i < nLayers; i++)
     {
         Layer* layer = object->getLayer(i);
         qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
+
         progressValue = (i * 100) / nLayers;
         progress.setValue(progressValue);
         if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
@@ -436,9 +440,12 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     // save editor information
     QDomElement editorElement = createDomElement(doc);
     root.appendChild(editorElement);
+    qDebug("Save Editor Node.");
+
     // save object
     QDomElement objectElement = object->createDomElement(doc);
     root.appendChild(objectElement);
+    qDebug("Save Object Node.");
 
     int IndentSize = 2;
     doc.save(out, IndentSize);
