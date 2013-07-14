@@ -555,15 +555,16 @@ class SWFBitmap : public SWFBlock
 
       else if(strcmp(filename+strlen(filename)-4, ".jpg") == 0)
       {
-	if(alpha != NULL)
-	  this->bitmap = (c_SWFBitmap) newSWFJpegWithAlpha(fopen(filename, "rb"),
-					     fopen(alpha, "rb"));
-	else
-	  this->bitmap = (c_SWFBitmap) newSWFJpegBitmap(fopen(filename, "rb"));
+          if(alpha != NULL)
+              this->bitmap = (c_SWFBitmap) newSWFJpegWithAlpha(fopen(filename, "rb"),
+                                                               fopen(alpha, "rb"));
+          else
+              this->bitmap = (c_SWFBitmap) newSWFJpegBitmap(fopen(filename, "rb"));
       }
-
       else
-	; // XXX - throw exception
+      {
+          ; // XXX - throw exception
+      }
     }
   }
 
