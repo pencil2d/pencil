@@ -67,8 +67,7 @@ public:
     Layer* getLayer(int i);
     bool isModified() { return modified; }
     int allLayers() { return scribbleArea->allLayers(); }
-    static QMatrix map(QRectF, QRectF);
-    bool openObject(QString);
+    static QMatrix map(QRectF, QRectF);    
     bool exportSeqCLI(QString, QString);
 
     int getOnionLayer1Opacity() {return onionLayer1Opacity;}
@@ -223,7 +222,6 @@ public slots:
     void toggleShowAllLayers();
     void resetMirror();
 
-    void openRecent();
     void print();
     //void detachAllPalettes();
     void restorePalettesSettings(bool, bool, bool);
@@ -288,8 +286,7 @@ private:
     QComboBox* exportMovieDialog_format;
     QSlider* exportFlashDialog_compression;
 
-    // saving (XML)
-    bool loadDomElement(QDomElement element,  QString filePath);
+    // saving (XML)    
 };
 
 #endif

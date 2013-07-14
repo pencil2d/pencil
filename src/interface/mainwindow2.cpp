@@ -335,7 +335,7 @@ void MainWindow2::openDocument()
             return;
         }
 
-        bool ok = editor->openObject(fileName);
+        bool ok = openObject(fileName);
 
         if (!ok)
         {
@@ -382,6 +382,139 @@ bool MainWindow2::saveAsNewDocument()
 
         return saveObject(fileName);
     }
+}
+
+void MainWindow2::openRecent()
+{
+    QSettings settings("Pencil","Pencil");
+    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+    bool ok = openObject(myPath);
+    if ( !ok )
+    {
+        QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
+        Object* pObject = new Object();
+        pObject->defaultInitialisation();
+
+        editor->setObject(pObject);
+        editor->resetUI();
+    }
+    else
+    {
+        editor->updateMaxFrame();
+    }
+}
+
+bool MainWindow2::openObject(QString filePath)
+{
+    // ---- test before opening ----
+    QFile* file = new QFile(filePath);
+    if (!file->open(QFile::ReadOnly)) return false;
+    QDomDocument doc;
+    if (!doc.setContent(file)) return false; // this is not a XML file
+    QDomDocumentType type = doc.doctype();
+    if (type.name() != "PencilDocument" && type.name() != "MyObject") return false; // this is not a Pencil document
+    // -----------------------------
+
+    QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();
+
+    object->strCurrentFilePath = filePath;
+    QSettings settings("Pencil","Pencil");
+    settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
+
+    setWindowTitle(object->strCurrentFilePath);
+
+    Object* newObject = new Object();
+    if (!newObject->loadPalette(object->strCurrentFilePath+".data")) newObject->loadDefaultPalette();
+    editor->setObject(newObject);
+
+    // ------- reads the XML file -------
+    bool ok = true;
+    int prog = 0;
+    QDomElement docElem = doc.documentElement();
+    if (docElem.isNull()) return false;
+    if (docElem.tagName() == "document")
+    {
+        QDomNode tag = docElem.firstChild();
+        while (!tag.isNull())
+        {
+            QDomElement element = tag.toElement(); // try to convert the node to an element.
+            if (!element.isNull())
+            {
+                prog += std::min(prog + 10, 100);
+                progress.setValue(prog);
+                if (element.tagName() == "editor")
+                {
+                    loadDomElement(element, filePath);
+                }
+                if (element.tagName() == "object")
+                {
+                    ok = newObject->loadDomElement(element, filePath);
+                    qDebug() << "filePath:" << filePath;
+                }
+            }
+            tag = tag.nextSibling();
+        }
+    }
+    else
+    {
+        if (docElem.tagName() == "object" || docElem.tagName() == "MyOject")   // old Pencil format (<=0.4.3)
+        {
+            ok = newObject->loadDomElement(docElem, filePath);
+        }
+    }
+    // ------------------------------
+    if (ok)
+    {
+        editor->updateObject();
+    }
+
+    progress.setValue(100);
+    return ok;
+}
+
+// TODO: need to move to other place
+bool MainWindow2::loadDomElement(QDomElement docElem, QString filePath)
+{
+    Q_UNUSED(filePath);
+
+    if (docElem.isNull()) return false;
+    QDomNode tag = docElem.firstChild();
+    while (!tag.isNull())
+    {
+        QDomElement element = tag.toElement(); // try to convert the node to an element.
+        if (!element.isNull())
+        {
+            if (element.tagName() == "currentLayer")
+            {
+                int nCurrentLayerIndex = element.attribute("value").toInt();
+                editor->setCurrentLayer(nCurrentLayerIndex);
+            }
+            if (element.tagName() == "currentFrame")
+            {
+                editor->m_nCurrentFrameIndex = element.attribute("value").toInt();
+            }
+            if (element.tagName() == "currentFps")
+            {
+                editor->fps = element.attribute("value").toInt();
+                //timer->setInterval(1000/fps);
+                m_pTimeLine->setFps(editor->fps);
+            }
+            if (element.tagName() == "currentView")
+            {
+                qreal m11 = element.attribute("m11").toDouble();
+                qreal m12 = element.attribute("m12").toDouble();
+                qreal m21 = element.attribute("m21").toDouble();
+                qreal m22 = element.attribute("m22").toDouble();
+                qreal dx = element.attribute("dx").toDouble();
+                qreal dy = element.attribute("dy").toDouble();
+                m_pScribbleArea->setMyView( QMatrix(m11,m12,m21,m22,dx,dy) );
+            }
+        }
+        tag = tag.nextSibling();
+    }
+    return true;
 }
 
 bool MainWindow2::saveObject(QString strSavedFilename)
