@@ -721,10 +721,9 @@ void MainWindow2::unloadAllShortcuts()
 }
 
 QString MainWindow2::sc(QString strActionName)
-{
-    pencilSettings()->beginGroup("shortcuts");
-    QString strKeySequence = pencilSettings()->value( strActionName ).toString();
-    pencilSettings()->endGroup();
+{    
+    strActionName = QString("shortcuts/") + strActionName;
+    QString strKeySequence = pencilSettings()->value( strActionName ).toString();    
 
     //qDebug() << strActionName << ": " << strKeySequence;
 
