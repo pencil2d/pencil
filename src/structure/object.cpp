@@ -68,9 +68,13 @@ QDomElement Object::createDomElement(QDomDocument& doc)
 
 bool Object::loadDomElement(QDomElement docElem, QString filePath)
 {
-    if (docElem.isNull()) return false;
+    if (docElem.isNull())
+    {
+        return false;
+    }
     int layerNumber = -1;
     QDomNode tag = docElem.firstChild();
+    
     bool someRelevantData = false;
     while (!tag.isNull())
     {
@@ -113,6 +117,7 @@ bool Object::loadDomElement(QDomElement docElem, QString filePath)
         }
         tag = tag.nextSibling();
     }
+    qDebug() << "  Load object finish.  Layer Count=" << getLayerCount();
     return someRelevantData;
 }
 

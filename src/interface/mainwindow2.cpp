@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <QList>
 #include <QMenu>
+#include <QScopedPointer>
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -407,35 +408,56 @@ void MainWindow2::openRecent()
 bool MainWindow2::openObject(QString filePath)
 {
     // ---- test before opening ----
-    QFile* file = new QFile(filePath);
-    if (!file->open(QFile::ReadOnly)) return false;
+    QScopedPointer<QFile> file(new QFile(filePath));
+
+    //QFile* file = new QFile(filePath);
+    if (!file->open(QFile::ReadOnly)) 
+    {
+        return false;
+    }
+
     QDomDocument doc;
-    if (!doc.setContent(file)) return false; // this is not a XML file
+    if (!doc.setContent(file.data())) 
+    {
+        return false; // this is not a XML file
+    }
     QDomDocumentType type = doc.doctype();
-    if (type.name() != "PencilDocument" && type.name() != "MyObject") return false; // this is not a Pencil document
+    if (type.name() != "PencilDocument" && type.name() != "MyObject")
+    {
+        return false; // this is not a Pencil document
+    }
+    
     // -----------------------------
 
     QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
     progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-
-    object->strCurrentFilePath = filePath;
-    QSettings settings("Pencil","Pencil");
-    settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
-
-    setWindowTitle(object->strCurrentFilePath);
+    progress.show();    
+    
+    //QSettings settings("Pencil","Pencil");
+    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );    
 
     Object* newObject = new Object();
-    if (!newObject->loadPalette(object->strCurrentFilePath+".data")) newObject->loadDefaultPalette();
+    if (!newObject->loadPalette(filePath+".data"))
+    {
+        newObject->loadDefaultPalette();
+    }
     editor->setObject(newObject);
+    
+    newObject->strCurrentFilePath = filePath;
 
     // ------- reads the XML file -------
     bool ok = true;
     int prog = 0;
     QDomElement docElem = doc.documentElement();
-    if (docElem.isNull()) return false;
+    if (docElem.isNull()) 
+    {
+        return false;
+    }
+
     if (docElem.tagName() == "document")
     {
+        qDebug("Object Loader: start.");
+
         QDomNode tag = docElem.firstChild();
         while (!tag.isNull())
         {
@@ -444,14 +466,17 @@ bool MainWindow2::openObject(QString filePath)
             {
                 prog += std::min(prog + 10, 100);
                 progress.setValue(prog);
+
                 if (element.tagName() == "editor")
                 {
+                    qDebug("  Load editor");
                     loadDomElement(element, filePath);
                 }
-                if (element.tagName() == "object")
+                else if (element.tagName() == "object")
                 {
+                    qDebug("  Load object");
                     ok = newObject->loadDomElement(element, filePath);
-                    qDebug() << "filePath:" << filePath;
+                    qDebug() << "    filePath:" << filePath;
                 }
             }
             tag = tag.nextSibling();
@@ -464,12 +489,19 @@ bool MainWindow2::openObject(QString filePath)
             ok = newObject->loadDomElement(docElem, filePath);
         }
     }
+
     // ------------------------------
     if (ok)
     {
         editor->updateObject();
-    }
 
+        qDebug() << "Current File Path=" << newObject->strCurrentFilePath;
+        setWindowTitle(newObject->strCurrentFilePath);
+
+        // FIXME: need to free the old object. but delete object will crash app, don't know why.
+        object = newObject;
+    }
+  
     progress.setValue(100);
     return ok;
 }
