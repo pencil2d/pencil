@@ -3,7 +3,8 @@
 
 #include <QObject>
 #include <QString>
-#include "object.h"
+
+class Object;
 
 
 class ObjectSaveLoader : public QObject
