@@ -157,4 +157,16 @@ FORMS += \
 
 TRANSLATIONS += pencil.ts
 
-# QMAKE_CXXFLAGS += -std=c++11
+win32-g++ {
+    QMAKE_CXXFLAGS += -std=c++11
+}
+
+macx {
+    QMAKE_CXXFLAGS += -std=c++11
+}
+
+linux-* {
+    QMAKE_CXXFLAGS += -std=c++11
+}
+
+
