@@ -7,7 +7,7 @@ ObjectSaveLoader::ObjectSaveLoader(QObject *parent) :
 {
 }
 
-Object* ObjectSaveLoader::load(QString strFilename)
+Object* ObjectSaveLoader::load(QString strFilename, std::function<void(float)> progress)
 {
     // ---- test before opening ----
     QScopedPointer<QFile> file(new QFile(strFilename));
@@ -32,7 +32,7 @@ Object* ObjectSaveLoader::load(QString strFilename)
 
 }
 
-bool ObjectSaveLoader::save(Object* object, QString strFileName)
+bool ObjectSaveLoader::save(Object* object, QString strFileName, std::function<void(float)> progress)
 {
 
 }
