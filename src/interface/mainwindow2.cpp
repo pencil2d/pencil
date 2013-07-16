@@ -426,7 +426,13 @@ bool MainWindow2::openObject(QString filePath)
     {
         return false; // this is not a Pencil document
     }
-    
+
+    // delete old object
+    if (object != NULL)
+    {
+        object->deleteLater();
+    }
+
     // -----------------------------
 
     QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
