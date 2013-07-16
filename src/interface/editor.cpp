@@ -1246,7 +1246,7 @@ void Editor::importImage(QString filePath)
     {
         return;
     }
-    if ( layer->type != Layer::BITMAP || layer->type != Layer::VECTOR )
+    if ( layer->type != Layer::BITMAP && layer->type != Layer::VECTOR )
     {
         // create a new Bitmap layer ?
         QMessageBox::warning(this, tr("Warning"),
