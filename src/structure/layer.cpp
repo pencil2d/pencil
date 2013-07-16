@@ -46,6 +46,8 @@ QDomElement Layer::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type);
+
+    qDebug() << "    Layer name=" << name << " visi=" << visible << " type=" << type;
     return layerTag;
 }
 

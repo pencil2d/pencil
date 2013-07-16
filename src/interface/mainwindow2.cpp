@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <QList>
 #include <QMenu>
+#include <QScopedPointer>
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -195,7 +196,7 @@ void MainWindow2::createMenus()
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     ui->actionGrid->setEnabled(false);
-    connect(ui->actionGrid, SIGNAL(triggered()), editor, SLOT(gridview()));//TODO: Grid view
+    connect(ui->actionGrid, SIGNAL(triggered()), editor, SLOT(gridview())); //TODO: Grid view
 
     connect(ui->actionOnionPrevious, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
     connect(editor, SIGNAL(onionPrevChanged(bool)), ui->actionOnionPrevious, SLOT(setChecked(bool)));
@@ -324,7 +325,7 @@ void MainWindow2::openDocument()
                     myPath,
                     tr("PCL (*.pcl);;Any files (*)"));
 
-        if ( fileName.isEmpty() )
+        if (fileName.isEmpty())
         {
             return ;
         }
@@ -335,7 +336,8 @@ void MainWindow2::openDocument()
             return;
         }
 
-        bool ok = editor->openObject(fileName);
+        bool ok = openObject(fileName);
+
         if (!ok)
         {
             QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
@@ -383,6 +385,170 @@ bool MainWindow2::saveAsNewDocument()
     }
 }
 
+void MainWindow2::openRecent()
+{
+    QSettings settings("Pencil","Pencil");
+    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
+    bool ok = openObject(myPath);
+    if ( !ok )
+    {
+        QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
+        Object* pObject = new Object();
+        pObject->defaultInitialisation();
+
+        editor->setObject(pObject);
+        editor->resetUI();
+    }
+    else
+    {
+        editor->updateMaxFrame();
+    }
+}
+
+bool MainWindow2::openObject(QString filePath)
+{
+    // ---- test before opening ----
+    QScopedPointer<QFile> file(new QFile(filePath));
+
+    //QFile* file = new QFile(filePath);
+    if (!file->open(QFile::ReadOnly)) 
+    {
+        return false;
+    }
+
+    QDomDocument doc;
+    if (!doc.setContent(file.data())) 
+    {
+        return false; // this is not a XML file
+    }
+    QDomDocumentType type = doc.doctype();
+    if (type.name() != "PencilDocument" && type.name() != "MyObject")
+    {
+        return false; // this is not a Pencil document
+    }
+    
+    // -----------------------------
+
+    QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
+    progress.setWindowModality(Qt::WindowModal);
+    progress.show();    
+    
+    //QSettings settings("Pencil","Pencil");
+    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );    
+
+    Object* newObject = new Object();
+    if (!newObject->loadPalette(filePath+".data"))
+    {
+        newObject->loadDefaultPalette();
+    }
+    editor->setObject(newObject);
+    
+    newObject->strCurrentFilePath = filePath;
+
+    // ------- reads the XML file -------
+    bool ok = true;
+    int prog = 0;
+    QDomElement docElem = doc.documentElement();
+    if (docElem.isNull()) 
+    {
+        return false;
+    }
+
+    if (docElem.tagName() == "document")
+    {
+        qDebug("Object Loader: start.");
+
+        QDomNode tag = docElem.firstChild();
+        while (!tag.isNull())
+        {
+            QDomElement element = tag.toElement(); // try to convert the node to an element.
+            if (!element.isNull())
+            {
+                prog += std::min(prog + 10, 100);
+                progress.setValue(prog);
+
+                if (element.tagName() == "editor")
+                {
+                    qDebug("  Load editor");
+                    loadDomElement(element, filePath);
+                }
+                else if (element.tagName() == "object")
+                {
+                    qDebug("  Load object");
+                    ok = newObject->loadDomElement(element, filePath);
+                    qDebug() << "    filePath:" << filePath;
+                }
+            }
+            tag = tag.nextSibling();
+        }
+    }
+    else
+    {
+        if (docElem.tagName() == "object" || docElem.tagName() == "MyOject")   // old Pencil format (<=0.4.3)
+        {
+            ok = newObject->loadDomElement(docElem, filePath);
+        }
+    }
+
+    // ------------------------------
+    if (ok)
+    {
+        editor->updateObject();
+
+        qDebug() << "Current File Path=" << newObject->strCurrentFilePath;
+        setWindowTitle(newObject->strCurrentFilePath);
+
+        // FIXME: need to free the old object. but delete object will crash app, don't know why.
+        object = newObject;
+    }
+  
+    progress.setValue(100);
+    return ok;
+}
+
+// TODO: need to move to other place
+bool MainWindow2::loadDomElement(QDomElement docElem, QString filePath)
+{
+    Q_UNUSED(filePath);
+
+    if (docElem.isNull()) return false;
+    QDomNode tag = docElem.firstChild();
+    while (!tag.isNull())
+    {
+        QDomElement element = tag.toElement(); // try to convert the node to an element.
+        if (!element.isNull())
+        {
+            if (element.tagName() == "currentLayer")
+            {
+                int nCurrentLayerIndex = element.attribute("value").toInt();
+                editor->setCurrentLayer(nCurrentLayerIndex);
+            }
+            if (element.tagName() == "currentFrame")
+            {
+                editor->m_nCurrentFrameIndex = element.attribute("value").toInt();
+            }
+            if (element.tagName() == "currentFps")
+            {
+                editor->fps = element.attribute("value").toInt();
+                //timer->setInterval(1000/fps);
+                m_pTimeLine->setFps(editor->fps);
+            }
+            if (element.tagName() == "currentView")
+            {
+                qreal m11 = element.attribute("m11").toDouble();
+                qreal m12 = element.attribute("m12").toDouble();
+                qreal m21 = element.attribute("m21").toDouble();
+                qreal m22 = element.attribute("m22").toDouble();
+                qreal dx = element.attribute("dx").toDouble();
+                qreal dy = element.attribute("dy").toDouble();
+                m_pScribbleArea->setMyView( QMatrix(m11,m12,m21,m22,dx,dy) );
+            }
+        }
+        tag = tag.nextSibling();
+    }
+    return true;
+}
+
 bool MainWindow2::saveObject(QString strSavedFilename)
 {
     QString filePath = strSavedFilename;
@@ -407,10 +573,13 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     // save data
     int nLayers = object->getLayerCount();
+    qDebug("Layer Count=%d", nLayers);
+
     for (int i = 0; i < nLayers; i++)
     {
         Layer* layer = object->getLayer(i);
         qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
+
         progressValue = (i * 100) / nLayers;
         progress.setValue(progressValue);
         if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
@@ -436,9 +605,12 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     // save editor information
     QDomElement editorElement = createDomElement(doc);
     root.appendChild(editorElement);
+    qDebug("Save Editor Node.");
+
     // save object
     QDomElement objectElement = object->createDomElement(doc);
     root.appendChild(objectElement);
+    qDebug("Save Object Node.");
 
     int IndentSize = 2;
     doc.save(out, IndentSize);
@@ -714,10 +886,9 @@ void MainWindow2::unloadAllShortcuts()
 }
 
 QString MainWindow2::sc(QString strActionName)
-{
-    pencilSettings()->beginGroup("shortcuts");
-    QString strKeySequence = pencilSettings()->value( strActionName ).toString();
-    pencilSettings()->endGroup();
+{    
+    strActionName = QString("shortcuts/") + strActionName;
+    QString strKeySequence = pencilSettings()->value( strActionName ).toString();    
 
     //qDebug() << strActionName << ": " << strKeySequence;
 
