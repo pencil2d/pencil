@@ -67,10 +67,12 @@ public slots:
     void saveForce();
     bool maybeSave();
     void showPreferences();
+    bool openObject(QString strFilename);
 
 private slots:
     void exportFile();
     bool saveObject(QString strSavedFilename);
+    void openRecent();
     void dockAllPalettes();
     void helpBox();
     void aboutPencil();
@@ -83,6 +85,7 @@ private slots:
 
     // XML save/load
     QDomElement createDomElement(QDomDocument& doc);
+    bool loadDomElement(QDomElement element,  QString filePath);
 
 private:
     void arrangePalettes();

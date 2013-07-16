@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 
             if ( !error )
             {
-                mainWindow.editor->openObject(inputFile);
+                mainWindow.openObject(inputFile);
                 // Detecting format
                 QString format = "";
                 if (jobExportSequenceOutput.endsWith(".png"))
@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
         else if ( inputFile != "" )
         {
             mainWindow.show();
-            mainWindow.editor->openObject(inputFile);
+            mainWindow.openObject(inputFile);
             return app.exec();
         }
         else
