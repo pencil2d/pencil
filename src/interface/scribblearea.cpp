@@ -259,7 +259,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
         m_toolSetHash.value( BRUSH )->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
     }
-    //currentWidth = newWidth;
+    currentWidth = currentTool()->properties.width; // could be unassigned the first time, must be assigned (to avoid black screenings)
     updateAllFrames();
     setCursor( currentTool()->cursor() );
 }
@@ -1125,7 +1125,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             {   editor->applyWidth( round(newSize) ); }
             else if ( resizingToolMode==rtmFEATHER )
             {   editor->applyFeather( round(newSize) ); }
-
             return;
         }
         //
