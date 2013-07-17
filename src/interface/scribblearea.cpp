@@ -63,50 +63,17 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_toolSetHash.insert(SELECT, new SelectTool);
     m_toolSetHash.insert(SMUDGE, new SmudgeTool);
 
-    QHashIterator<ToolType, BaseTool *> i(m_toolSetHash);
-    while (i.hasNext())
+    foreach (BaseTool *tool, getTools())
     {
-        i.next();
-        i.value()->setEditor(editor);
+        tool->initialize(editor);
     }
-
-    // --- The following code is temporarily necessary ---
-    getTool(SELECT)->properties.width = -1;     // SELECT tool: width unused
-    getTool(SELECT)->properties.feather = -1;   // SELECT tool: feather unused
-    getTool(MOVE)->properties.width = -1;
-    getTool(MOVE)->properties.feather = -1;
-    getTool(EDIT)->properties.width = -1;
-    getTool(EDIT)->properties.feather = -1;
-    getTool(HAND)->properties.width = -1;
-    getTool(HAND)->properties.feather = -1;
-    getTool(SMUDGE)->properties.width = -1;
-    getTool(SMUDGE)->properties.feather = -1;
-    getTool(POLYLINE)->properties.width = 1;      //no loaded settings nor default values
-    getTool(POLYLINE)->properties.feather = -1;
-    getTool(BUCKET)->properties.width = -1;
-    getTool(BUCKET)->properties.feather = -1;
-    getTool(EYEDROPPER)->properties.width = -1;
-    getTool(EYEDROPPER)->properties.feather = -1;
-    getTool(PENCIL)->properties.feather = -1;   // pencil feather is unused by default
-    //getTool( ERASER )->properties.feather = -1; // TODO: eraser feather.
-    // --- the above lines will become redundant when all the loadSetting() funcs are implemented below ---
-
 
     m_currentTool = getTool(PENCIL);
     emit pencilOn();
 
     QSettings settings("Pencil", "Pencil");
 
-    getTool(PENCIL)->loadSettings();
-
     currentWidth = getTool(PENCIL)->properties.width;
-
-    getTool(PEN)->loadSettings();
-    getTool(BRUSH)->loadSettings();
-    getTool(ERASER)->loadSettings();
-
-    editor->currentColor = editor->currentColor;
-
     followContour = 0;
 
     curveOpacity = (100 - settings.value("curveOpacity").toInt()) / 100.0; // default value is 1.0
@@ -122,8 +89,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     if (settings.value("shadows").toString() == "true") { shadows = true; }
     gradients = 2;
     if (settings.value("gradients").toString() != "") { gradients = settings.value("gradients").toInt(); };
-
-
 
     tabletEraserBackupToolMode = -1;
     tabletInUse = false;
