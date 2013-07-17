@@ -35,7 +35,7 @@ public:
     void addRecentFile(QString filePath);
 
     // Data Model
-    Object* object;
+    Object* m_object;
 
     // UI: central view
     Editor* editor;
@@ -64,7 +64,7 @@ public slots:
     void newDocument();
     void openDocument();
     bool saveAsNewDocument();
-    void saveForce();
+    void saveDocument();
     bool maybeSave();
     void showPreferences();
     bool openObject(QString strFilename);

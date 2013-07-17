@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QtGui>
 #include "pencildef.h"
 
+class QToolButton;
 class QIcon;
 class SpinSlider;
 class DisplayOptionDockWidget;

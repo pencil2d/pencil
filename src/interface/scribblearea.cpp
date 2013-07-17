@@ -15,7 +15,7 @@ GNU General Public License for more details.
 */
 #include <QtGui>
 #include <QHashIterator>
-#include <math.h>
+#include <cmath>
 
 #include "beziercurve.h"
 #include "editor.h"
@@ -40,6 +40,8 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 
+
+#define round(f) ((int)(f + 0.5))
 
 
 ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
@@ -1120,7 +1122,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
             {  newSize = 0.2; }
             else if (newSize>200)
             { newSize = 200; }
-
+            
             if ( resizingToolMode==rtmWIDTH )
             {   editor->applyWidth( round(newSize) ); }
             else if ( resizingToolMode==rtmFEATHER )
