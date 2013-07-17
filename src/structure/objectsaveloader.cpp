@@ -34,5 +34,5 @@ Object* ObjectSaveLoader::load(QString strFilename, std::function<void(float)> p
 
 bool ObjectSaveLoader::save(Object* object, QString strFileName, std::function<void(float)> progress)
 {
-
+    return true;
 }
