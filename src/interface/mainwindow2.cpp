@@ -42,8 +42,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    object = new Object();
-    object->defaultInitialisation();
+    m_object = new Object();
+    m_object->defaultInitialisation();
 
     editor = new Editor(this);
     m_pScribbleArea = editor->getScribbleArea();
@@ -55,12 +55,12 @@ MainWindow2::MainWindow2(QWidget *parent) :
     loadAllShortcuts();
 
     // must run after 'arragePalettes'
-    editor->setObject(object);
+    editor->setObject(m_object);
     editor->resetUI();
 
     readSettings();
 
-    connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
+    connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
     connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
     //showPreferences();
@@ -136,7 +136,7 @@ void MainWindow2::createMenus()
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openDocument()));
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAsNewDocument()));
-    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveForce()));
+    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveDocument()));
     connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -303,12 +303,17 @@ void MainWindow2::newDocument()
 {
     if ( maybeSave() )
     {
+        // 
+        m_object->deleteLater();
         // default size
-        Object* pObject = new Object();
-        pObject->defaultInitialisation();
+        
+        m_object = new Object();
+        m_object->defaultInitialisation();
 
-        editor->setObject(pObject);
+        editor->setObject(m_object);
         editor->resetUI();
+
+        setWindowTitle( PENCIL_WINDOW_TITLE );
     }
 }
 
@@ -341,11 +346,7 @@ void MainWindow2::openDocument()
         if (!ok)
         {
             QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
-            Object* pObject = new Object();
-            pObject->defaultInitialisation();
-
-            editor->setObject(pObject);
-            editor->resetUI();
+            newDocument();
         }
         else
         {
@@ -428,9 +429,9 @@ bool MainWindow2::openObject(QString filePath)
     }
 
     // delete old object
-    if (object != NULL)
+    if (m_object != NULL)
     {
-        object->deleteLater();
+        m_object->deleteLater();
     }
 
     // -----------------------------
@@ -505,7 +506,7 @@ bool MainWindow2::openObject(QString filePath)
         setWindowTitle(newObject->strCurrentFilePath);
 
         // FIXME: need to free the old object. but delete object will crash app, don't know why.
-        object = newObject;
+        m_object = newObject;
     }
   
     progress.setValue(100);
@@ -578,12 +579,12 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     int progressValue = 0;
 
     // save data
-    int nLayers = object->getLayerCount();
+    int nLayers = m_object->getLayerCount();
     qDebug("Layer Count=%d", nLayers);
 
     for (int i = 0; i < nLayers; i++)
     {
-        Layer* layer = object->getLayer(i);
+        Layer* layer = m_object->getLayer(i);
         qDebug() << "Saving Layer " << i << "(" <<layer->name << ")";
 
         progressValue = (i * 100) / nLayers;
@@ -594,7 +595,7 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     }
 
     // save palette
-    object->savePalette(filePath+".data");
+    m_object->savePalette(filePath+".data");
 
     // -------- save main XML file -----------
     QFile* file = new QFile(filePath);
@@ -614,7 +615,7 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     qDebug("Save Editor Node.");
 
     // save object
-    QDomElement objectElement = object->createDomElement(doc);
+    QDomElement objectElement = m_object->createDomElement(doc);
     root.appendChild(objectElement);
     qDebug("Save Object Node.");
 
@@ -624,16 +625,16 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     progress.setValue(100);
 
-    object->modified = false;
+    m_object->modified = false;
     m_pTimeLine->updateContent();
     return true;
 }
 
-void MainWindow2::saveForce()
+void MainWindow2::saveDocument()
 {
-    if ( object->strCurrentFilePath != "" )
+    if ( !m_object->strCurrentFilePath.isEmpty() )
     {
-        saveObject(object->strCurrentFilePath);
+        saveObject(m_object->strCurrentFilePath);
     }
     else
     {
@@ -643,7 +644,7 @@ void MainWindow2::saveForce()
 
 bool MainWindow2::maybeSave()
 {
-    if (object->modified)
+    if (m_object->modified)
     {
         int ret = QMessageBox::warning(this, tr("Warning"),
             tr("This animation has been modified.\n"
@@ -653,7 +654,7 @@ bool MainWindow2::maybeSave()
             QMessageBox::Cancel | QMessageBox::Escape);
         if (ret == QMessageBox::Yes)
         {
-            saveForce();
+            saveDocument();
             return true;
         }
         else if (ret == QMessageBox::Cancel)
@@ -841,7 +842,7 @@ void MainWindow2::loadAllShortcuts()
     ui->actionPreference->setShortcut( sc(CMD_PREFERENCE) );
 
     ui->actionReset_Windows->setShortcut( sc(CMD_RESET_WINDOWS) );
-    ui->actionReset_View->setShortcut( sc(CMD_RESET_VIEW) );
+    ui->actionReset_View->setShortcut( sc(CMD_RESET_ZOOM_ROTATE) );
     ui->actionZoom_In->setShortcut( sc(CMD_ZOOM_IN) );
     ui->actionZoom_Out->setShortcut(sc(CMD_ZOOM_OUT));
     ui->actionRotate_Clockwise->setShortcut(sc(CMD_ROTATE_CLOCK));
@@ -951,7 +952,7 @@ void MainWindow2::exportPalette()
     QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
     if (!filePath.isEmpty())
     {
-        object->exportPalette(filePath);
+        m_object->exportPalette(filePath);
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
 }
@@ -967,7 +968,7 @@ void MainWindow2::importPalette()
     QString filePath = QFileDialog::getOpenFileName(this, tr("Import"),initialPath);
     if (!filePath.isEmpty())
     {
-        object->importPalette(filePath);
+        m_object->importPalette(filePath);
         m_colorPalette->updateList();
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
