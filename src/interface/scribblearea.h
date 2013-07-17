@@ -230,7 +230,11 @@ private:
     QList<int> closestCurves;
     QList<VertexRef> closestVertices;
     QPointF offset;
-    bool scalingBrush; //for interactive brush resizing
+
+    bool resizingTool; //whether or not resizing
+    enum myResizingToolMode {rtmWIDTH, rtmFEATHER}; //interactive brush resizing modes
+    myResizingToolMode resizingToolMode ;
+    qreal brushOrgSize; //start resizing from previous width or feather
 
     VectorSelection vectorSelection;
     //bool selectionChanged;

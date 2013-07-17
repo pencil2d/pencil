@@ -68,6 +68,28 @@ ScribbleArea::ScribbleArea(QWidget* parent, Editor* editor)
         i.value()->setEditor(editor);
     }
 
+    // --- The following code is temporarily necessary ---
+    m_toolSetHash.value( SELECT )->properties.width = -1;   // SELECT tool: width unused
+    m_toolSetHash.value( SELECT )->properties.feather = -1; // SELECT tool: feather unused
+    m_toolSetHash.value( MOVE )->properties.width = -1;
+    m_toolSetHash.value( MOVE )->properties.feather = -1;
+    m_toolSetHash.value( EDIT )->properties.width = -1;
+    m_toolSetHash.value( EDIT )->properties.feather = -1;
+    m_toolSetHash.value( HAND )->properties.width = -1;
+    m_toolSetHash.value( HAND )->properties.feather = -1;
+    m_toolSetHash.value( SMUDGE )->properties.width = -1;
+    m_toolSetHash.value( SMUDGE )->properties.feather = -1;
+    m_toolSetHash.value( POLYLINE )->properties.width = 1;    //no loaded settings nor default values
+    m_toolSetHash.value( POLYLINE )->properties.feather = -1;
+    m_toolSetHash.value( BUCKET )->properties.width = -1;
+    m_toolSetHash.value( BUCKET )->properties.feather = -1;
+    m_toolSetHash.value( EYEDROPPER )->properties.width = -1;
+    m_toolSetHash.value( EYEDROPPER )->properties.feather = -1;
+    m_toolSetHash.value( PENCIL )->properties.feather = -1; // pencil feather is unused by default
+    //m_toolSetHash.value( ERASER )->properties.feather = -1; // TODO: eraser feather.
+    // --- the above lines will become redundant when all the loadSetting() funcs are implemented below ---
+
+
     m_currentTool = m_toolSetHash.value( PENCIL );
     emit pencilOn();
 
@@ -237,7 +259,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
         m_toolSetHash.value( BRUSH )->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
     }
-    //currentWidth = newWidth;
+    currentWidth = currentTool()->properties.width; // could be unassigned the first time, must be assigned (to avoid black screenings)
     updateAllFrames();
     setCursor( currentTool()->cursor() );
 }
@@ -785,14 +807,26 @@ void ScribbleArea::mousePressEvent(QMouseEvent* event)
         lastBrushPoint = lastPoint;
     }
 
-    // cursor/brush pointer rescaling
-    if (event->modifiers() == Qt::ShiftModifier){
-        scalingBrush = true;
+    // --- interactive cursor/brush pointer resizing
+    if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width>-1) ){ //resize width not locked
+        qDebug() << "resizing tool width from " << currentTool()->properties.width; //@
+        resizingTool = true;
+        resizingToolMode = rtmWIDTH;
+        brushOrgSize = currentTool()->properties.width;
+        return;
+    } else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) ){ //resize feather not locked
+        qDebug() << "resizing tool feather from " << currentTool()->properties.feather; //@
+        resizingTool = true;
+        resizingToolMode = rtmFEATHER;
+        brushOrgSize = currentTool()->properties.feather;
         return;
     } else {
-        scalingBrush = false;
+        qDebug() << "tool #" << currentToolType(); //@
+        qDebug() << "pressEvt tool width " << currentTool()->properties.width;
+        qDebug() << "pressEvt tool feather " << currentTool()->properties.feather;
+        resizingTool = false;
     }
-    //
+    // ---
 
     Layer* layer = editor->getCurrentLayer();
     // ---- checks ------
@@ -1077,10 +1111,20 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* event)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         offset = currentPoint - lastPoint;
-        //[shift]+mouse/pen <=> scalingBrush=true
-        //Todo1: change following line to: if (scalingBrush && (ui)->WidthSlider.enabled) (cirus)
-        if (scalingBrush && (currentToolType()==BRUSH || currentToolType()==ERASER) ) {
-            emit editor->applyWidth( sqrt( offset.x()*offset.x() + offset.y()*offset.y() )+0.1 );
+        //Use: [SHIFT]+mouse/pen => scalingBrush=true
+        if (resizingTool)
+        {
+            qreal newSize = brushOrgSize+offset.x();
+
+            if (newSize<0.2)
+            {  newSize = 0.2; }
+            else if (newSize>200)
+            { newSize = 200; }
+
+            if ( resizingToolMode==rtmWIDTH )
+            {   editor->applyWidth( round(newSize) ); }
+            else if ( resizingToolMode==rtmFEATHER )
+            {   editor->applyFeather( round(newSize) ); }
             return;
         }
         //
@@ -1309,11 +1353,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent* event)
     mouseInUse = false;
 
     // ---- checks ------
-    // beg: [shift]+mouse/pen => scaling=true
-    if (scalingBrush) {
-        return;
-    }
-    // end
+    if (resizingTool) return; // [SHIFT]+drag OR [CTRL]+drag
 
     Layer* layer = editor->getCurrentLayer();
     if (layer==NULL) return;
