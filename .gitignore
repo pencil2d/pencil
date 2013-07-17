@@ -4,3 +4,5 @@
 Pencil
 Makefile
 qrc_pencil.cpp
+pencil-buildroot.amd64
+pencil-buildroot.i386
