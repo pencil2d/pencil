@@ -29,7 +29,7 @@ Object* ObjectSaveLoader::load(QString strFilename, std::function<void(float)> p
         return NULL; // this is not a Pencil document
     }
 
-
+    return NULL;
 }
 
 bool ObjectSaveLoader::save(Object* object, QString strFileName, std::function<void(float)> progress)
