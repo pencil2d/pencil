@@ -60,7 +60,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
-    connect(editor, SIGNAL(needSave()), this, SLOT(saveForce()));
+    connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
     connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
     //showPreferences();
@@ -136,7 +136,7 @@ void MainWindow2::createMenus()
     connect(ui->actionNew, SIGNAL(triggered()), this, SLOT(newDocument()));
     connect(ui->actionOpen, SIGNAL(triggered()), this, SLOT(openDocument()));
     connect(ui->actionSave_as, SIGNAL(triggered()), this, SLOT(saveAsNewDocument()));
-    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveForce()));
+    connect(ui->actionSave, SIGNAL(triggered()), this, SLOT(saveDocument()));
     connect(ui->actionPrint, SIGNAL(triggered()), editor, SLOT(print()));
     connect(ui->actionExit, SIGNAL(triggered()), this, SLOT(close()));
 
@@ -630,9 +630,9 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     return true;
 }
 
-void MainWindow2::saveForce()
+void MainWindow2::saveDocument()
 {
-    if ( m_object->strCurrentFilePath != "" )
+    if ( !m_object->strCurrentFilePath.isEmpty() )
     {
         saveObject(m_object->strCurrentFilePath);
     }
@@ -654,7 +654,7 @@ bool MainWindow2::maybeSave()
             QMessageBox::Cancel | QMessageBox::Escape);
         if (ret == QMessageBox::Yes)
         {
-            saveForce();
+            saveDocument();
             return true;
         }
         else if (ret == QMessageBox::Cancel)

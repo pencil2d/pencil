@@ -64,7 +64,7 @@ public slots:
     void newDocument();
     void openDocument();
     bool saveAsNewDocument();
-    void saveForce();
+    void saveDocument();
     bool maybeSave();
     void showPreferences();
     bool openObject(QString strFilename);
