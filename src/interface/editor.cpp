@@ -855,24 +855,24 @@ void Editor::resetUI()
 
 void Editor::setObject(Object* object)
 {
-    if (this->object != NULL && object != this->object)
+    if (object == NULL)
     {
-        disconnect( this->object, 0, 0, 0); // disconnect the current object from everything
-        delete this->object;
+        return;
+    }
+    if (object == this->object)
+    {
+        return;
     }
     this->object = object;
-    if (object != NULL)
-    {
-        connect( object, SIGNAL(imageAdded(int)), this, SLOT(addFrame(int)) );
-        connect( object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)) );
-        connect( object, SIGNAL(imageRemoved(int)), this, SLOT(removeFrame(int)) );
 
-        //currentLayer = object->getLayerCount()-1; // the default selected layer is the last one
-        m_nCurrentLayerIndex = 0; // the default selected layer is the first one
-        m_nCurrentFrameIndex = 1;
-        frameList.clear();
-        frameList << 1;
-    }
+    connect(object, SIGNAL(imageAdded(int)), this, SLOT(addFrame(int)));
+    connect(object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)));
+    connect(object, SIGNAL(imageRemoved(int)), this, SLOT(removeFrame(int)));
+
+    m_nCurrentLayerIndex = 0; // the default selected layer is the first one
+    m_nCurrentFrameIndex = 1;
+    frameList.clear();
+    frameList << 1;
 }
 
 void Editor::updateObject()

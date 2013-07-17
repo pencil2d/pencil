@@ -15,11 +15,12 @@ GNU General Public License for more details.
 */
 #include <QApplication>
 #include <QDir>
+#include "pencildef.h"
 #include "editor.h"
-//#include "mainwindow.h"
 #include "mainwindow2.h"
 
 void initialise();
+
 
 int main(int argc, char* argv[])
 {   
@@ -32,7 +33,7 @@ int main(int argc, char* argv[])
     initialise();
 
     MainWindow2 mainWindow;
-    mainWindow.setWindowTitle("Pencil Animation v0.5.3");
+    mainWindow.setWindowTitle( PENCIL_WINDOW_TITLE );
 
     if (argc == 1)
     {

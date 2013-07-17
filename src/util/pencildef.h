@@ -1,6 +1,7 @@
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
+#define PENCIL_WINDOW_TITLE "Pencil2D Animation v0.5.3 dev"
 
 enum ToolType
 {
@@ -52,7 +53,7 @@ enum ToolType
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
 #define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClosewise"
-#define CMD_RESET_VIEW "CmdResetView"
+#define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
 #define CMD_FLIP_HORIZONTAL "CmdFlipHorizontal"
 #define CMD_FLIP_VERTICAL "CmdFlipVertical"
 #define CMD_PREVIEW "CmdPreview"
