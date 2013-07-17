@@ -313,7 +313,7 @@ void MainWindow2::newDocument()
         editor->setObject(m_object);
         editor->resetUI();
 
-        setWindowTitle("Pencil2D");
+        setWindowTitle( PENCIL_WINDOW_TITLE );
     }
 }
 
