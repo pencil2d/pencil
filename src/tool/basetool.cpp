@@ -39,7 +39,7 @@ QCursor BaseTool::cursor()
     return Qt::ArrowCursor;
 }
 
-void BaseTool::setEditor(Editor* editor)
+void BaseTool::initialize(Editor* editor)
 {
     if (editor == NULL)
     {

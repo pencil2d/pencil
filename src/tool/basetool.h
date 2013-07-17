@@ -41,12 +41,13 @@ public:
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    void setEditor(Editor* editor);
-    Properties properties;
+    void initialize(Editor* editor);
 
     void mousePressEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
+
+    Properties properties;
 
 signals:
 
