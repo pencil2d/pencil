@@ -13,7 +13,8 @@ ToolType SelectTool::type()
 
 void SelectTool::loadSettings()
 {
-
+    properties.width = -1;
+    properties.feather = -1;
 }
 
 QCursor SelectTool::cursor()

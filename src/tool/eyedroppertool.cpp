@@ -15,7 +15,8 @@ ToolType EyedropperTool::type()
 
 void EyedropperTool::loadSettings()
 {
-
+    properties.width = -1;
+    properties.feather = -1;
 }
 
 QCursor EyedropperTool::cursor()

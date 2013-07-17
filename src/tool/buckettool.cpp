@@ -16,7 +16,8 @@ ToolType BucketTool::type()
 
 void BucketTool::loadSettings()
 {
-
+    properties.width = -1;
+    properties.feather = -1;
 }
 
 QCursor BucketTool::cursor()

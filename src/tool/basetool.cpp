@@ -46,6 +46,8 @@ void BaseTool::initialize(Editor* editor)
         qCritical("ERROR: editor is null!");
     }
     m_pEditor = editor;
+
+    loadSettings();
 }
 
 void BaseTool::mousePressEvent( QMouseEvent* )

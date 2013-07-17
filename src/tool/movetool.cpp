@@ -13,7 +13,8 @@ ToolType MoveTool::type()
 
 void MoveTool::loadSettings()
 {
-
+    properties.width = -1;
+    properties.feather = -1;
 }
 
 QCursor MoveTool::cursor()
