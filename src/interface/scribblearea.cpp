@@ -845,17 +845,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     if (currentToolType() == PENCIL)
     {
-        if (event->button() == Qt::LeftButton)
-        {
-            editor->backup("Pencil");
-
-            if (!showThinLines)
-            {
-                toggleThinLines();
-            }
-            mousePath.append(lastPoint);
-            updateAll = true;
-        }
     }
     else if (currentToolType() == ERASER)
     {
