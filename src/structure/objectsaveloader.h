@@ -1,6 +1,8 @@
 #ifndef OBJECTSAVELOADER_H
 #define OBJECTSAVELOADER_H
 
+#include <functional>
+
 #include <QObject>
 #include <QString>
 #include <functional>
