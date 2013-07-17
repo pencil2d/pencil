@@ -13,7 +13,8 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
-
+    properties.width = 1;
+    properties.feather = -1;
 }
 
 QCursor PolylineTool::cursor()

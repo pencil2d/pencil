@@ -13,7 +13,8 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
-
+    properties.width = -1;
+    properties.feather = -1;
 }
 
 QCursor SmudgeTool::cursor()

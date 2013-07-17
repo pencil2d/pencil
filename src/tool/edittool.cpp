@@ -13,5 +13,6 @@ ToolType EditTool::type()
 
 void EditTool::loadSettings()
 {
-
+    properties.width = -1;
+    properties.feather = -1;
 }
