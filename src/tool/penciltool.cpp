@@ -1,5 +1,10 @@
 #include <QSettings>
 #include <QPixmap>
+#include <QMouseEvent>
+
+#include "editor.h"
+#include "scribblearea.h"
+
 #include "pencilsettings.h"
 #include "penciltool.h"
 
@@ -42,5 +47,20 @@ QCursor PencilTool::cursor()
     else
     {
         return Qt::CrossCursor;
+    }
+}
+
+void PencilTool::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        m_pEditor->backup("Pencil");
+
+        if (!m_pScribbleArea->showThinLines)
+        {
+            m_pScribbleArea->toggleThinLines();
+        }
+        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
+        m_pScribbleArea->updateAll = true;
     }
 }

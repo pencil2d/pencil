@@ -32,10 +32,11 @@ class Editor;
 class Layer;
 
 
-
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
+
+    friend class PencilTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *editor = 0);
@@ -166,7 +167,7 @@ protected:
     void setView();
     void setView(QMatrix);
 
-private:
+protected:
     void setPrevMode();
     void paintBitmapBuffer();
     void updateCanvas(int frame, QRect rect);
