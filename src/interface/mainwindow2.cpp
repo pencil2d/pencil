@@ -842,7 +842,7 @@ void MainWindow2::loadAllShortcuts()
     ui->actionPreference->setShortcut( sc(CMD_PREFERENCE) );
 
     ui->actionReset_Windows->setShortcut( sc(CMD_RESET_WINDOWS) );
-    ui->actionReset_View->setShortcut( sc(CMD_RESET_VIEW) );
+    ui->actionReset_View->setShortcut( sc(CMD_RESET_ZOOM_ROTATE) );
     ui->actionZoom_In->setShortcut( sc(CMD_ZOOM_IN) );
     ui->actionZoom_Out->setShortcut(sc(CMD_ZOOM_OUT));
     ui->actionRotate_Clockwise->setShortcut(sc(CMD_ROTATE_CLOCK));
