@@ -46,6 +46,7 @@ void BaseTool::initialize(Editor* editor)
         qCritical("ERROR: editor is null!");
     }
     m_pEditor = editor;
+    m_pScribbleArea = editor->getScribbleArea();
 
     loadSettings();
 }

@@ -11,7 +11,7 @@
 
 class Editor;
 class QMouseEvent;
-
+class ScribbleArea;
 
 QString typeName( ToolType );
 
@@ -47,14 +47,25 @@ public:
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
 
+    void setColour(const int i);
+    void setColour(const QColor colour);
+
+    void setWidth(const qreal width);
+    void setFeather(const qreal feather);
+    void setOpacity(const qreal opacity);
+    void setInvisibility(const qreal invisibility);
+    void setPressure(const bool pressure);
+    void setPreserveAlpha(const bool preserveAlpha);
+
     Properties properties;
 
 signals:
 
 public slots:
 
-private:
+protected:
     Editor* m_pEditor;
+    ScribbleArea* m_pScribbleArea;
 };
 
 #endif // BASETOOL_H
