@@ -3062,6 +3062,11 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     setCursor(currentTool()->cursor());
 }
 
+QList<BaseTool *> ScribbleArea::getTools()
+{
+    return m_toolSetHash.values();
+}
+
 void ScribbleArea::deleteSelection()
 {
     if (somethingSelected)      // there is something selected

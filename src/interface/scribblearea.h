@@ -78,6 +78,7 @@ public:
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
+    QList<BaseTool *> getTools();
 
 signals:
     void modification();
