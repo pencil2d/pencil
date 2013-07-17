@@ -76,6 +76,7 @@ public:
 
     ToolType currentToolType();
     BaseTool* currentTool();
+    BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
 
 signals:
