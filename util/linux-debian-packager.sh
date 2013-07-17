@@ -21,16 +21,16 @@
 # exit
 # umount ./pencil-buildroot.amd64/mnt/
 
-VERSION=0.5.3
-REVISION=190.beta
-RELEASE=9
-
+export VERSION=0.5.3
+export RELEASE=1
 export EMAIL='ksee.zelgadis@gmail.com'
 
 set -e
 
 export SCRIPTPATH=`dirname "$0"`
 cd $SCRIPTPATH/..
+
+REVISION=`git show --pretty=format:%ci HEAD |  head -c 10 | tr -d '-'`
 
 PREFIX=/opt/pencil
 MACHINE_TYPE=`uname -m`
