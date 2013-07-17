@@ -1,15 +1,36 @@
 #!/bin/sh
 #
-# Pencil Package - Build script
-# Copyright (c) 2009 Konstantin Dmitriev
+# Pencil 2D - Package build script
+# Copyright (c) 2009-2013 Konstantin Dmitriev
+#
+#
+# 1. Set up chroots (you need to do that only once)
+# bash ./util/linux-debian-chroot-setup.sh
+#
+# 2. Build i386 binary:
+# mount -o bind ./ ./pencil-buildroot.i386/mnt/
+# linux32 chroot ./pencil-buildroot.i386
+# bash /mnt/util/linux-debian-packager.sh
+# exit
+# umount ./pencil-buildroot.i386/mnt/
+#
+# 3. Build x86_64 binary:
+# mount -o bind ./ ./pencil-buildroot.amd64/mnt/
+# chroot ./pencil-buildroot.amd64
+# bash /mnt/util/linux-debian-packager.sh
+# exit
+# umount ./pencil-buildroot.amd64/mnt/
 
-VERSION=0.5
-REVISION=190.beta
-RELEASE=9
-
+export VERSION=0.5.3
+export RELEASE=1
 export EMAIL='ksee.zelgadis@gmail.com'
 
 set -e
+
+export SCRIPTPATH=`dirname "$0"`
+cd $SCRIPTPATH/..
+
+REVISION=`git show --pretty=format:%ci HEAD |  head -c 10 | tr -d '-'`
 
 PREFIX=/opt/pencil
 MACHINE_TYPE=`uname -m`
@@ -86,7 +107,7 @@ chmod uga+x ${PREFIX}/pencil
 #%define __spec_install_post /bin/true
 cat > pencil.spec << EOS
 
-Name:           pencil
+Name:           pencil2d
 Version:        ${VERSION}
 Release:        ${REVISION}.$RELEASE
 Summary:        2D Traditional Animation package
@@ -114,9 +135,9 @@ mkdir -p \$RPM_BUILD_ROOT/usr/share/applications
 cat > \$RPM_BUILD_ROOT/usr/share/applications/pencil.desktop << EOF
 [Desktop Entry]
 Encoding=UTF-8
-Name=Pencil 
+Name=Pencil 2D
 Comment=2D Traditional Animation
-Exec=pencil
+Exec=pencil2d
 Icon=pencil.png
 Terminal=false
 Type=Application
@@ -144,12 +165,12 @@ mkdir -p \$RPM_BUILD_ROOT/usr/share/pixmaps
 mv \$RPM_BUILD_ROOT/${PREFIX}/pencil.png \$RPM_BUILD_ROOT/usr/share/pixmaps/pencil.png
 
 mkdir -p \$RPM_BUILD_ROOT/usr/bin
-cat > \$RPM_BUILD_ROOT/usr/bin/pencil << EOF
+cat > \$RPM_BUILD_ROOT/usr/bin/pencil2d << EOF
 #!/bin/sh
 
 ${PREFIX}/pencil \\\${1+"\\\$@"} 2>&1 | sed -e 's|${PREFIX}/pencil|pencil|'
 EOF
-chmod a+x \$RPM_BUILD_ROOT/usr/bin/pencil
+chmod a+x \$RPM_BUILD_ROOT/usr/bin/pencil2d
 
 %clean
 rm -rf \$RPM_BUILD_ROOT
@@ -184,12 +205,13 @@ EOS
 
 	rpmbuild -bb pencil.spec
     
-    mv /root/rpmbuild/RPMS/$ARCH/pencil-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm /root
+    mv /root/rpmbuild/RPMS/$ARCH/pencil2d-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm /root
     cd /root
 	export LD_LIBRARY_PATH=${PREFIX}/lib:${LD_LIBRARY_PATH}
-    alien -k pencil-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm --scripts
-    [ ! -d pencil-${VERSION} ] || rm -rf pencil-${VERSION}
+    alien -k pencil2d-${VERSION}-${REVISION}.$RELEASE.${ARCH}.rpm --scripts
+    [ ! -d pencil2d-${VERSION} ] || rm -rf pencil2d-${VERSION}
+    mv /root/pencil2d*${VERSION}*${REVISION}*$RELEASE* /mnt
     echo
     echo
     echo "Generated packages:"
-    ls -1 /root/pencil*${VERSION}*${REVISION}*$RELEASE*
+    ls -1 /mnt/pencil2d*${VERSION}*${REVISION}*$RELEASE*
