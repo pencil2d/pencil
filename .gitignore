@@ -6,3 +6,6 @@ Makefile
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
+Pencil.app
+Pencil.pro.user
+ui_*
