@@ -35,7 +35,7 @@ public:
     void addRecentFile(QString filePath);
 
     // Data Model
-    Object* object;
+    Object* m_object;
 
     // UI: central view
     Editor* editor;
