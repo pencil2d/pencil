@@ -47,6 +47,8 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*);
     virtual void mouseReleaseEvent(QMouseEvent*);
 
+    virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
     void setColour(const int i);
     void setColour(const QColor colour);
 
