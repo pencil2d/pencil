@@ -108,3 +108,12 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
         m_pScribbleArea->updateAll = true;
     }
 }
+
+void HandTool::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        m_pScribbleArea->resetView();
+    }
+
+}

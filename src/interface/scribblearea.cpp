@@ -1227,19 +1227,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
 {
 
-
-    if (currentTool()->type() == HAND || event->button() == Qt::RightButton)
-    {
-        resetView();
-    }
-    else if (currentTool()->type() == POLYLINE && BezierCurve::eLength(lastPixel.toPoint() - event->pos()) < 2.0)
-    {
-        endPolyline();
-    }
-    else
-    {
-        currentTool()->mouseDoubleClickEvent(event);
-    }
+    currentTool()->mouseDoubleClickEvent(event);
 }
 
 void ScribbleArea::paintBitmapBuffer()

@@ -71,3 +71,11 @@ void PolylineTool::mouseMoveEvent(QMouseEvent *event)
         m_pScribbleArea->drawPolyline();
     }
 }
+
+void PolylineTool::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if (BezierCurve::eLength(m_pScribbleArea->lastPixel.toPoint() - event->pos()) < 2.0)
+    {
+        m_pScribbleArea->endPolyline();
+    }
+}
