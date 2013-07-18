@@ -13,8 +13,6 @@ class Editor;
 class QMouseEvent;
 class ScribbleArea;
 
-QString typeName( ToolType );
-
 class Properties
 {
 public:
@@ -36,6 +34,8 @@ class BaseTool : public QObject
 {
     Q_OBJECT
 public:
+    static QString typeName( ToolType );
+
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;

@@ -4,7 +4,7 @@
 
 
 
-QString typeName(ToolType type)
+QString BaseTool::typeName(ToolType type)
 {
     static QMap<ToolType, QString>* map = NULL;
 
