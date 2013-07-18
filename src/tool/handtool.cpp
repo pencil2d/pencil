@@ -67,10 +67,8 @@ void HandTool::mouseReleaseEvent(QMouseEvent *event)
 
 void HandTool::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug() << "hand tool move button";
-    if (event->button() != Qt::NoButton)
+    if (event->buttons() != Qt::NoButton)
     {
-        qDebug() << "hand tool move";
         if (event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
         {
             QPoint centralPixel(m_pScribbleArea->width() / 2, m_pScribbleArea->height() / 2);

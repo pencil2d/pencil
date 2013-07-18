@@ -788,6 +788,12 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     // if-else for all tools
     // ---------------------------------------
 
+    if (event->button() == Qt::RightButton)
+    {
+        getTool(HAND)->mousePressEvent(event);
+        return;
+    }
+
     currentTool()->mousePressEvent(event);
 
     if (currentTool()->type() == SELECT)
@@ -977,6 +983,12 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         mousePath.append(currentPoint);
     }
 
+    if (event->buttons() == Qt::RightButton)
+    {
+        getTool(HAND)->mouseMoveEvent(event);
+        return;
+    }
+
     currentTool()->mouseMoveEvent(event);
 
     // ----------------------------------------------------------------------
@@ -1116,11 +1128,13 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
     // ---- end checks ------
 
-    currentTool()->mouseReleaseEvent(event);
     if (event->button() == Qt::RightButton)
     {
         getTool(HAND)->mouseReleaseEvent(event);
+        return;
     }
+
+    currentTool()->mouseReleaseEvent(event);
 
     if (currentTool()->type() == EYEDROPPER)
     {
