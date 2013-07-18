@@ -13,6 +13,8 @@ public:
     QCursor cursor();
 
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 
 signals:
     

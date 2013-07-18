@@ -1093,16 +1093,11 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         mousePath.append(currentPoint);
     }
 
+    currentTool()->mouseMoveEvent(event);
+
     // ----------------------------------------------------------------------
     if (currentToolType() == PENCIL)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            if (event->buttons() & Qt::LeftButton)
-            {
-                drawLineTo(currentPixel, currentPoint);
-            }
-        }
     }
     else if (currentToolType() == ERASER)
     {
@@ -1340,6 +1335,8 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         }
     }
 
+    currentTool()->mouseReleaseEvent(event);
+
     if (currentToolType() == BUCKET)
     {
         if (event->button() == Qt::LeftButton)
@@ -1411,45 +1408,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
     else if (currentToolType() == PENCIL)
     {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::BITMAP)
-            {
-                paintBitmapBuffer();
-                updateAll = true;
-            }
-            else if (layer->type == Layer::VECTOR &&  mousePath.size() > -1)
-            {
-                // Clear the temporary pixel path
-                bufferImg->clear();
-                qreal tol = curveSmoothing / qAbs(myView.m11());
-                BezierCurve curve(mousePath, mousePressure, tol);
-                if (currentToolType() == PEN)
-                {
-                    curve.setWidth(getTool( PEN )->properties.width);
-                    curve.setFeather(0);
-                    curve.setInvisibility(false);
-                    curve.setVariableWidth(usePressure);
-                    curve.setColourNumber(getTool( PEN )->properties.colourNumber);
-                }
-                else
-                {
-                    curve.setWidth(0);
-                    curve.setFeather(0);
-                    curve.setInvisibility(true);
-                    curve.setVariableWidth(false);
-                    curve.setColourNumber(getTool(PENCIL)->properties.colourNumber);
-                }
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
-
-                //curve.setSelected(true);
-                //qDebug() << "this curve has " << curve.getVertexSize() << "vertices";
-
-                vectorImage->addCurve(curve, qAbs(myView.m11()));
-                setModified(editor->m_nCurrentLayerIndex, editor->m_nCurrentFrameIndex);
-                updateAll = true;
-            }
-        }
     }
     else if (currentToolType() == PEN)
     {
