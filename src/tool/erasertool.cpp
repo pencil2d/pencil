@@ -2,7 +2,12 @@
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+
+#include "editor.h"
+#include "scribblearea.h"
+
 #include "erasertool.h"
+#include "layer.h"
 
 
 EraserTool::EraserTool(QObject *parent) :
@@ -47,4 +52,89 @@ QCursor EraserTool::cursor()
     painter.end();
 
     return QCursor(pixmap);
+}
+
+void EraserTool::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        m_pEditor->backup(typeName());
+        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
+        m_pScribbleArea->updateAll = true;
+    }
+}
+
+void EraserTool::mouseMoveEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (event->buttons() & Qt::LeftButton)
+    {
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+        }
+
+        if (layer->type == Layer::VECTOR)
+        {
+            qreal radius = (properties.width / 2) / m_pScribbleArea->myTempView.m11();
+            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
+                    ->getVerticesCloseTo(m_pScribbleArea->currentPoint, radius);
+            for (int i = 0; i < nearbyVertices.size(); i++)
+            {
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
+            }
+            //update();
+            m_pScribbleArea->updateAll = true;
+        }
+    }
+}
+
+void EraserTool::mouseReleaseEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL)
+    {
+        return;
+    }
+
+
+    if (event->button() == Qt::LeftButton)
+    {
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+        }
+
+        if (layer->type == Layer::BITMAP)
+        {
+            m_pScribbleArea->paintBitmapBuffer();
+            m_pScribbleArea->updateAll = true;
+        }
+        else if (layer->type == Layer::VECTOR)
+        {
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            // Clear the area containing the last point
+            //vectorImage->removeArea(lastPoint);
+            // Clear the temporary pixel path
+            m_pScribbleArea->bufferImg->clear();
+            vectorImage->deleteSelectedPoints();
+            //update();
+            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
+            m_pScribbleArea->updateAll = true;
+        }
+    }
+}
+
+void EraserTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+{
+    //myPenWidth = static_cast<int>(10.0*tabletPressure);
+    if (mouseDevice)
+    {
+        m_pScribbleArea->currentWidth =  properties.width;
+    }
+    else
+    {
+        m_pScribbleArea->currentWidth = properties.width * pressure;
+    }
+
 }

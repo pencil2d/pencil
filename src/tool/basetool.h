@@ -11,9 +11,7 @@
 
 class Editor;
 class QMouseEvent;
-
-
-QString typeName( ToolType );
+class ScribbleArea;
 
 class Properties
 {
@@ -36,24 +34,42 @@ class BaseTool : public QObject
 {
     Q_OBJECT
 public:
+    static QString TypeName( ToolType );
+
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
+    QString typeName() { return TypeName(type()); }
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    void setEditor(Editor* editor);
-    Properties properties;
+    virtual void initialize(Editor* editor, ScribbleArea *scribbleArea);
 
-    void mousePressEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
+    virtual void mousePressEvent(QMouseEvent*);
+    virtual void mouseMoveEvent(QMouseEvent*);
+    virtual void mouseReleaseEvent(QMouseEvent*);
+    virtual void mouseDoubleClickEvent(QMouseEvent*);
+
+    virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
+    void setColour(const int i);
+    void setColour(const QColor colour);
+
+    void setWidth(const qreal width);
+    void setFeather(const qreal feather);
+    void setOpacity(const qreal opacity);
+    void setInvisibility(const qreal invisibility);
+    void setPressure(const bool pressure);
+    void setPreserveAlpha(const bool preserveAlpha);
+
+    Properties properties;
 
 signals:
 
 public slots:
 
-private:
+protected:
     Editor* m_pEditor;
+    ScribbleArea* m_pScribbleArea;
 };
 
 #endif // BASETOOL_H
