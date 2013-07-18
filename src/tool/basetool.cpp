@@ -66,6 +66,11 @@ void BaseTool::mouseReleaseEvent( QMouseEvent* )
 
 }
 
+void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    mousePressEvent(event);
+}
+
 void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
     Q_UNUSED(pressure);

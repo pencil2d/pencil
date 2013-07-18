@@ -43,9 +43,10 @@ class ScribbleArea : public QWidget
     friend class PencilTool;
     friend class EraserTool;
     friend class PenTool;
+    friend class BucketTool;
 
 public:
-    ScribbleArea(QWidget *parent = 0, Editor *editor = 0);
+    ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
 
     void next(const int &i);
 
@@ -196,7 +197,7 @@ protected:
     BaseTool *m_currentTool;
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
-    Editor *editor;
+    Editor *m_pEditor;
 
     int tabletEraserBackupToolMode;
     bool modified;
