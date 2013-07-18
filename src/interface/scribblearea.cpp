@@ -757,8 +757,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
     // ---
 
-    Layer *layer = m_pEditor->getCurrentLayer();
     // ---- checks ------
+    Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
     if (layer->type == Layer::VECTOR)
@@ -790,31 +790,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     currentTool()->mousePressEvent(event);
 
-    if (currentTool()->type() == POLYLINE)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-            {
-                if (mousePoints.size() == 0)
-                {
-                    m_pEditor->backup(tr("Line"));
-                }
-
-                if (layer->type == Layer::VECTOR)
-                {
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
-                    if (makeInvisible && !showThinLines)
-                    {
-                        toggleThinLines();
-                    }
-                }
-                mousePoints << lastPoint;
-                updateAll = true;
-            }
-        }
-    }
-    else if (currentTool()->type() == SELECT)
+    if (currentTool()->type() == SELECT)
     {
         if (event->button() == Qt::LeftButton)
         {
@@ -1004,15 +980,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     currentTool()->mouseMoveEvent(event);
 
     // ----------------------------------------------------------------------
-    if (currentTool()->type() == POLYLINE)
-    {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            drawPolyline();
-        }
-    }
-
-    // ----------------------------------------------------------------------
     if (currentTool()->type() == SELECT && (event->buttons() & Qt::LeftButton) && somethingSelected && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
         if (moveMode == ScribbleArea::MIDDLE) { mySelection.setBottomRight(currentPoint); }
@@ -1102,40 +1069,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     //  if (  currentTool() == ScribbleArea::HAND && (event->buttons() != Qt::NoButton || event->buttons() & Qt::RightButton) ) {
     if (currentTool()->type() == HAND && (event->buttons() != Qt::NoButton))
     {
-        if (event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
-        {
-            QPoint centralPixel(width() / 2, height() / 2);
-            if (lastPixel.x() != centralPixel.x())
-            {
-                qreal scale = 1.0;
-                qreal cosine = 1.0;
-                qreal sine = 0.0;
-                if (event->modifiers() & Qt::AltModifier)    // rotation
-                {
-                    QPointF V1 = lastPixel - centralPixel;
-                    QPointF V2 = currentPixel - centralPixel;
-                    cosine = (V1.x() * V2.x() + V1.y() * V2.y()) / (BezierCurve::eLength(V1) * BezierCurve::eLength(V2));
-                    sine = (-V1.x() * V2.y() + V1.y() * V2.x()) / (BezierCurve::eLength(V1) * BezierCurve::eLength(V2));
-
-                }
-                if (event->modifiers() & Qt::ControlModifier || event->buttons() & Qt::RightButton)    // scale
-                {
-                    scale = exp(0.01 * (currentPixel.y() - lastPixel.y()));
-                }
-                transMatrix = QMatrix(
-                                  scale * cosine, -scale * sine,
-                                  scale * sine,  scale * cosine,
-                                  0.0,
-                                  0.0
-                              );
-            }
-        }
-        else     // translation
-        {
-            transMatrix.setMatrix(1.0, 0.0, 0.0, 1.0, currentPixel.x() - lastPixel.x(), currentPixel.y() - lastPixel.y());
-        }
-        update();
-        updateAll = true;
     }
     // ----------------------------------------------------------------------
     if (currentTool()->type() == EYEDROPPER)
@@ -1184,6 +1117,10 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- end checks ------
 
     currentTool()->mouseReleaseEvent(event);
+    if (event->button() == Qt::RightButton)
+    {
+        getTool(HAND)->mouseReleaseEvent(event);
+    }
 
     if (currentTool()->type() == EYEDROPPER)
     {
@@ -1244,30 +1181,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ----------------------------------------------------------------------
     else if (currentTool()->type() == HAND || (event->button() == Qt::RightButton))
     {
-        bufferImg->clear();
-        if (layer->type == Layer::CAMERA)
-        {
-            LayerCamera *layerCamera = (LayerCamera *)layer;
-            QMatrix view = layerCamera->getViewAtFrame(m_pEditor->m_nCurrentFrameIndex);
-            layerCamera->loadImageAtFrame(m_pEditor->m_nCurrentFrameIndex, view * transMatrix);
-            //Camera* camera = ((LayerCamera*)layer)->getLastCameraAtFrame(editor->currentFrame, 0);
-            //camera->view = camera->view * transMatrix;
-        }
-        else
-        {
-            myView =  myView * transMatrix;
-        }
-        transMatrix.reset();
-        updateAllVectorLayers();
-        updateAll = true;
-        //---- stop the hand tool if this was mid button
-        if (event->button() == Qt::MidButton)
-        {
-            //qDebug("Stop Hand Tool");
-            setPrevMode();
-        }
-
-        //update();
     }
     // ----------------------------------------------------------------------
     if (currentTool()->type() == SELECT)

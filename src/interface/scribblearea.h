@@ -45,6 +45,13 @@ class ScribbleArea : public QWidget
     friend class PenTool;
     friend class BucketTool;
     friend class BrushTool;
+    friend class PolylineTool;
+    friend class HandTool;
+    friend class EditTool;
+    friend class EyeDropperTool;
+    friend class MoveTool;
+    friend class SelectTool;
+    friend class SmudgeTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
