@@ -2734,7 +2734,7 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
     if (eToolMode != m_currentTool->type())
     {
-        qDebug() << "Set Current Tool" << BaseTool::typeName(eToolMode);
+        qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
         if (currentTool()->type() == MOVE) { paintTransformedSelection(); deselectAll(); }
         if (currentTool()->type() == POLYLINE) { escape(); }
         m_currentTool = getTool(eToolMode);

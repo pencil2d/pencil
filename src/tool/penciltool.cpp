@@ -72,7 +72,7 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        m_pEditor->backup(typeName(type()));
+        m_pEditor->backup(typeName());
 
         if (!m_pScribbleArea->showThinLines)
         {

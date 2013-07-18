@@ -34,10 +34,11 @@ class BaseTool : public QObject
 {
     Q_OBJECT
 public:
-    static QString typeName( ToolType );
+    static QString TypeName( ToolType );
 
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
+    QString typeName() { return TypeName(type()); }
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 

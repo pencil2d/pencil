@@ -58,7 +58,7 @@ void EraserTool::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        m_pEditor->backup(typeName(type()));
+        m_pEditor->backup(typeName());
         m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
         m_pScribbleArea->updateAll = true;
     }
