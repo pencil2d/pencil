@@ -79,8 +79,19 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
 void EraserTool::mouseReleaseEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL)
+    {
+        return;
+    }
+
+
     if (event->button() == Qt::LeftButton)
     {
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+        }
+
         if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();

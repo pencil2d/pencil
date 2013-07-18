@@ -53,6 +53,23 @@ QCursor PencilTool::cursor()
 
 void PencilTool::mousePressEvent(QMouseEvent *event)
 {
+    // sanity checks
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL)
+    {
+        return;
+    }
+
+    VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+    if (vectorImage == NULL) {
+        return;
+    }
+
+    if (layer->type == Layer::VECTOR)
+    {
+        m_pEditor->selectVectorColourNumber(properties.colourNumber);
+    }
+
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName(type()));
@@ -81,9 +98,19 @@ void PencilTool::mouseMoveEvent(QMouseEvent *event)
 void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL)
+    {
+        return;
+    }
+
 
     if (event->button() == Qt::LeftButton)
     {
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+        }
+
         if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
