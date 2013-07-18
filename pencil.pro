@@ -158,7 +158,8 @@ FORMS += \
 TRANSLATIONS += pencil.ts
 
 win32-g++ {
-    QMAKE_CXXFLAGS += -std=c++11
+    # MinGW version <= 4.6
+    QMAKE_CXXFLAGS += -std=c++0x
 }
 
 macx {
