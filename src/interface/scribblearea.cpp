@@ -760,6 +760,18 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     // ---- checks ------
     if (layer == NULL) { return; }
+
+    if (layer->type == Layer::VECTOR)
+    {
+        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        if (vectorImage == NULL) { return; }
+    }
+    if (layer->type == Layer::BITMAP)
+    {
+        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        if (bitmapImage == NULL) { return; }
+    }
+
     if (!layer->visible && currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
         QMessageBox::warning(this, tr("Warning"),
@@ -769,20 +781,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         mouseInUse = false;
         return;
     }
-    if (layer->type == Layer::VECTOR)
-    {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (vectorImage == NULL) { return; }
-        if (currentTool()->type() == BRUSH)
-        {
-            m_pEditor->selectVectorColourNumber(getTool(BRUSH)->properties.colourNumber);
-        }
-    }
-    if (layer->type == Layer::BITMAP)
-    {
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (bitmapImage == NULL) { return; }
-    }
+
     // --- end checks ----
 
 
@@ -791,16 +790,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     currentTool()->mousePressEvent(event);
 
-    if (currentTool()->type() == BRUSH)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
-            m_pEditor->backup(myToolModesDescription[(int)currentTool()->type()]);
-            mousePath.append(lastPoint);
-            updateAll = true;
-        }
-    }
-    else if (currentTool()->type() == POLYLINE)
+    if (currentTool()->type() == POLYLINE)
     {
         if (event->button() == Qt::LeftButton)
         {
@@ -1014,17 +1004,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     currentTool()->mouseMoveEvent(event);
 
     // ----------------------------------------------------------------------
-    if (currentTool()->type() == BRUSH)
-    {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            if (event->buttons() & Qt::LeftButton)
-            {
-                drawLineTo(currentPixel, currentPoint);
-            }
-        }
-    }
-    else if (currentTool()->type() == POLYLINE)
+    if (currentTool()->type() == POLYLINE)
     {
         if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
@@ -1223,10 +1203,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 
     currentTool()->mouseReleaseEvent(event);
 
-    if (currentTool()->type() == BUCKET)
-    {
-    }
-    else if (currentTool()->type() == EYEDROPPER)
+    if (currentTool()->type() == EYEDROPPER)
     {
         if (event->button() == Qt::LeftButton)
         {
@@ -1244,25 +1221,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
                 {
                     m_pEditor->selectVectorColourNumber(colourNumber);
                 }
-            }
-        }
-    }
-    else if (currentTool()->type() == BRUSH)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::BITMAP)
-            {
-                paintBitmapBuffer();
-                updateAll = true;
-            }
-            else if (layer->type == Layer::VECTOR)
-            {
-                // Clear the temporary pixel path
-                bufferImg->clear();
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->colour(mousePath, getTool(BRUSH)->properties.colourNumber);
-                setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
-                updateAll = true;
             }
         }
     }
@@ -2707,17 +2665,6 @@ void ScribbleArea::floodFillError(int errorType)
     QMessageBox::warning(this, tr("Flood fill error"), message + "<br><br>Error: " + error, QMessageBox::Ok, QMessageBox::Ok);
     bufferImg->clear();
     deselectAll();
-}
-
-ToolType ScribbleArea::currentTool()->type()
-{
-    if (m_currentTool == NULL)
-    {
-        qDebug() << "Fatal Error: tool should not be null!";
-        return PENCIL;
-    }
-
-    return m_currentTool->type();
 }
 
 BaseTool *ScribbleArea::currentTool()
