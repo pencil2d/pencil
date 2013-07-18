@@ -685,28 +685,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
 void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
     currentTool()->adjustPressureSensitiveProperties(pressure, mouseDevice);
-
-    if (currentToolType() == ERASER)
-    {
-    }
-    if (currentToolType() == PENCIL)
-    {
-    }
-    if (currentToolType() == PEN)
-    {
-        //editor->currentColor = getTool( PEN )->properties.colour;
-        //editor->currentColor.setAlphaF(pen.colour.alphaF());
-        if (usePressure && !mouseDevice)
-        {
-            double width = getTool( PEN )->properties.width;
-            currentWidth = 2.0 * width * pressure;
-        }
-        else
-        {
-            currentWidth = getTool( PEN )->properties.width;
-        }
-        // we choose the "normal" width to correspond to a pressure 0.5
-    }
 }
 
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
@@ -800,14 +778,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     {
         VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
         if (vectorImage == NULL) { return; }
-        if (currentToolType() == PENCIL)
-        {
-            editor->selectVectorColourNumber(currentTool()->properties.colourNumber);
-        }
-        if (currentToolType() == PEN)
-        {
-            editor->selectVectorColourNumber(currentTool()->properties.colourNumber);
-        }
         if (currentToolType() == BRUSH || currentToolType() == BUCKET)
         {
             editor->selectVectorColourNumber(getTool(BRUSH)->properties.colourNumber);
@@ -819,7 +789,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         if (bitmapImage == NULL) { return; }
     }
     // --- end checks ----
-
 
 
     // if-else for all tools
@@ -835,12 +804,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
     else if (currentToolType() == PEN)
     {
-        if (event->button() == Qt::LeftButton)
-        {
-            editor->backup(myToolModesDescription[(int)currentToolType()]);
-            mousePath.append(lastPoint);
-            updateAll = true;
-        }
     }
     else if (currentToolType() == BUCKET)
     {
@@ -1083,13 +1046,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     }
     else if (currentToolType() == PEN)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            if (event->buttons() & Qt::LeftButton)
-            {
-                drawLineTo(currentPixel, currentPoint);
-            }
-        }
     }
     else if (currentToolType() == BRUSH)
     {
@@ -1298,15 +1254,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
     // ---- end checks ------
 
-    //currentWidth = myPenWidth;
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-    {
-        if ((event->button() == Qt::LeftButton) && (currentToolType() == PENCIL || currentToolType() == ERASER || currentToolType() == PEN))
-        {
-            drawLineTo(currentPixel, currentPoint);
-        }
-    }
-
     currentTool()->mouseReleaseEvent(event);
 
     if (currentToolType() == BUCKET)
@@ -1383,48 +1330,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
     else if (currentToolType() == PEN)
     {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::BITMAP)
-            {
-                paintBitmapBuffer();
-                updateAll = true;
-            }
-            else if (layer->type == Layer::VECTOR && mousePath.size() > -1)
-            {
-                // Clear the temporary pixel path
-                bufferImg->clear();
-                qreal tol = curveSmoothing / qAbs(myView.m11());
-                BezierCurve curve(mousePath, mousePressure, tol);
-                if (currentToolType() == PEN)
-                {
-                    curve.setWidth(getTool( PEN )->properties.width);
-                    curve.setFeather(0);
-                    curve.setInvisibility(false);
-                    curve.setVariableWidth(usePressure);
-                    curve.setColourNumber(getTool( PEN )->properties.colourNumber);
-                }
-                else
-                {
-                    curve.setWidth(0);
-                    curve.setFeather(0);
-                    curve.setInvisibility(true);
-                    curve.setVariableWidth(false);
-                    curve.setColourNumber(getTool(PENCIL)->properties.colourNumber);
-                }
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
-
-                //curve.setSelected(true);
-                //qDebug() << "this curve has " << curve.getVertexSize() << "vertices";
-
-                vectorImage->addCurve(curve, qAbs(myView.m11()));
-
-                //if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR) ((LayerImage*)layer)->setModified(editor->currentFrame, true);
-                //update();
-                setModified(editor->m_nCurrentLayerIndex, editor->m_nCurrentFrameIndex);
-                updateAll = true;
-            }
-        }
     }
     else if (currentToolType() == ERASER)
     {

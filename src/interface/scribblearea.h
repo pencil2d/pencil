@@ -42,6 +42,7 @@ class ScribbleArea : public QWidget
     // and a drawing facade responsible for updating the scribblearea
     friend class PencilTool;
     friend class EraserTool;
+    friend class PenTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *editor = 0);
