@@ -12,6 +12,13 @@ public:
     ToolType type();
     void loadSettings();
     QCursor cursor();
+
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+
+    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
 signals:
     
 public slots:

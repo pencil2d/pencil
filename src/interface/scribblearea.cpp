@@ -832,12 +832,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
     else if (currentToolType() == ERASER)
     {
-        if (event->button() == Qt::LeftButton)
-        {
-            editor->backup(myToolModesDescription[(int)currentToolType()]);
-            mousePath.append(lastPoint);
-            updateAll = true;
-        }
     }
     else if (currentToolType() == PEN)
     {
@@ -1085,13 +1079,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     }
     else if (currentToolType() == ERASER)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            if (event->buttons() & Qt::LeftButton)
-            {
-                drawLineTo(currentPixel, currentPoint);
-            }
-        }
+
     }
     else if (currentToolType() == PEN)
     {
@@ -1440,26 +1428,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
     else if (currentToolType() == ERASER)
     {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::BITMAP)
-            {
-                paintBitmapBuffer();
-                updateAll = true;
-            }
-            else if (layer->type == Layer::VECTOR)
-            {
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(editor->m_nCurrentFrameIndex, 0);
-                // Clear the area containing the last point
-                //vectorImage->removeArea(lastPoint);
-                // Clear the temporary pixel path
-                bufferImg->clear();
-                vectorImage->deleteSelectedPoints();
-                //update();
-                setModified(editor->m_nCurrentLayerIndex, editor->m_nCurrentFrameIndex);
-                updateAll = true;
-            }
-        }
+
     }
     else if (currentToolType() == BRUSH)
     {

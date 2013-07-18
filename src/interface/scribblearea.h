@@ -36,7 +36,12 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
+    // we declare them all friends for now until we move out all the tool relevant code to the tool classes
+    // we'll then try to find some sensible interfaces between the tools and the scribble area
+    // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
+    // and a drawing facade responsible for updating the scribblearea
     friend class PencilTool;
+    friend class EraserTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *editor = 0);
