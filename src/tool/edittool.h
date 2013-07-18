@@ -11,6 +11,10 @@ public:
     EditTool();
     ToolType type();
     void loadSettings();
+
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
 };
 
 #endif

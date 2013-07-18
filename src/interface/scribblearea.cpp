@@ -830,33 +830,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
             }
         }
     }
-    else if (currentTool()->type() == EDIT)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::VECTOR)
-            {
-                closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->getCurvesCloseTo(currentPoint, tol / myTempView.m11());
-                closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->getVerticesCloseTo(currentPoint, tol / myTempView.m11());
-                if (closestVertices.size() > 0 || closestCurves.size() > 0)      // the user clicks near a vertex or a curve
-                {
-                    //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
-                    m_pEditor->backup(tr("Edit"));
-                    VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-                    if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(closestVertices)) { paintTransformedSelection(); deselectAll(); }
-                    vectorImage->setSelected(closestVertices, true);
-                    vectorSelection.add(closestCurves);
-                    vectorSelection.add(closestVertices);
-
-                    update();
-                }
-                else
-                {
-                    deselectAll();
-                }
-            }
-        }
-    }
     else if (currentTool()->type() == MOVE)
     {
         if (event->button() == Qt::LeftButton)
@@ -1005,30 +978,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         update();
     }
     // ----------------------------------------------------------------------
-    if (currentTool()->type() == EDIT && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
-    {
-        if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {
-        {
-            if (layer->type == Layer::VECTOR)
-            {
-                if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
-                {
-                    // transforms the selection
-                    selectionTransformation = QMatrix().translate(offset.x(), offset.y());
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelectionTransformation(selectionTransformation);
-                }
-            }
-        }
-        else     // the user is moving the mouse without pressing it
-        {
-            if (layer->type == Layer::VECTOR)
-            {
-                closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->getVerticesCloseTo(currentPoint, tol / myTempView.m11());
-            }
-        }
-        update();
-        updateAll = true;
-    }
     // ----------------------------------------------------------------------
     if (currentTool()->type() == MOVE  && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
@@ -1076,11 +1025,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
             }
             update();
         }
-    }
-    // ----------------------------------------------------------------------
-    //  if (  currentTool() == ScribbleArea::HAND && (event->buttons() != Qt::NoButton || event->buttons() & Qt::RightButton) ) {
-    if (currentTool()->type() == HAND && (event->buttons() != Qt::NoButton))
-    {
     }
     // ----------------------------------------------------------------------
     if (currentTool()->type() == EYEDROPPER)
@@ -1172,29 +1116,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
                 updateAll = true;
             }
         }
-    }
-    else if (currentTool()->type() == EDIT)
-    {
-        if (event->button() == Qt::LeftButton)
-        {
-            if (layer->type == Layer::VECTOR)
-            {
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-                vectorImage->applySelectionTransformation();
-                selectionTransformation.reset();
-                for (int k = 0; k < vectorSelection.curve.size(); k++)
-                {
-                    int curveNumber = vectorSelection.curve.at(k);
-                    vectorImage->curve[curveNumber].smoothCurve();
-                }
-                setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
-            }
-        }
-    }
-
-    // ----------------------------------------------------------------------
-    else if (currentTool()->type() == HAND || (event->button() == Qt::RightButton))
-    {
     }
     // ----------------------------------------------------------------------
     if (currentTool()->type() == SELECT)
