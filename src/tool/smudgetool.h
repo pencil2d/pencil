@@ -13,6 +13,10 @@ public:
     void loadSettings();
     QCursor cursor();
 
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
+
 signals:
     
 public slots:

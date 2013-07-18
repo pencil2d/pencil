@@ -3,6 +3,11 @@
 #include <QBitmap>
 #include "eyedroppertool.h"
 
+#include "editor.h"
+#include "layer.h"
+#include "scribblearea.h"
+
+
 EyedropperTool::EyedropperTool(QObject *parent) :
     BaseTool(parent)
 {
@@ -42,4 +47,65 @@ QCursor EyedropperTool::cursor()
     pixmap.setMask(QBitmap(mask));
 
     return QCursor(pixmap, 5, 5);
+}
+
+void EyedropperTool::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL) { return; }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        if (layer->type == Layer::BITMAP)
+        {
+            BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            QColor pickedColour = targetImage->pixel(m_pScribbleArea->lastPoint.x(), m_pScribbleArea->lastPoint.y());
+            if (pickedColour.alpha() != 0)
+            {
+                m_pEditor->setBitmapColour(pickedColour);
+            }
+        }
+        else if (layer->type == Layer::VECTOR)
+        {
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            int colourNumber = vectorImage->getColourNumber(m_pScribbleArea->lastPoint);
+            if (colourNumber != -1)
+            {
+                m_pEditor->selectVectorColourNumber(colourNumber);
+            }
+        }
+    }
+}
+
+void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL) { return; }
+
+    if (layer->type == Layer::BITMAP)
+    {
+        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        if (targetImage->contains(m_pScribbleArea->currentPoint))
+        {
+            QColor pickedColour = targetImage->pixel(m_pScribbleArea->currentPoint.x(), m_pScribbleArea->currentPoint.y());
+            if (pickedColour.alpha() != 0)
+            {
+                m_pScribbleArea->drawEyedropperPreview(pickedColour);
+            }
+        }
+    }
+    if (layer->type == Layer::VECTOR)
+    {
+        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        int colourNumber = vectorImage->getColourNumber(m_pScribbleArea->currentPoint);
+        if (colourNumber != -1)
+        {
+            m_pScribbleArea->drawEyedropperPreview(m_pEditor->object->getColour(colourNumber).colour);
+        }
+    }
 }

@@ -48,7 +48,7 @@ class ScribbleArea : public QWidget
     friend class PolylineTool;
     friend class HandTool;
     friend class EditTool;
-    friend class EyeDropperTool;
+    friend class EyedropperTool;
     friend class MoveTool;
     friend class SelectTool;
     friend class SmudgeTool;
@@ -93,6 +93,7 @@ public:
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
+    void switchTool(ToolType type);
     QList<BaseTool *> getTools();
 
 signals:

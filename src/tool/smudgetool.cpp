@@ -1,4 +1,8 @@
 #include <QPixmap>
+#include "editor.h"
+#include "layer.h"
+#include "scribblearea.h"
+
 #include "smudgetool.h"
 
 SmudgeTool::SmudgeTool(QObject *parent) :
@@ -20,4 +24,19 @@ void SmudgeTool::loadSettings()
 QCursor SmudgeTool::cursor()
 {
     return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
+}
+
+void SmudgeTool::mousePressEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
+}
+
+void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event);
 }
