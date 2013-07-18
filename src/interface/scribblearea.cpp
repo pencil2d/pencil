@@ -684,29 +684,13 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
 
 void ScribbleArea::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
+    currentTool()->adjustPressureSensitiveProperties(pressure, mouseDevice);
+
     if (currentToolType() == ERASER)
     {
-        //myPenWidth = static_cast<int>(10.0*tabletPressure);
-        if (mouseDevice)
-        {
-            currentWidth =  getTool(ERASER)->properties.width;
-        }
-        else
-        {
-            currentWidth = (getTool(ERASER)->properties.width * pressure);
-        }
     }
     if (currentToolType() == PENCIL)
     {
-        if (usePressure && !mouseDevice)
-        {
-            currentPressuredColor.setAlphaF(editor->currentColor.alphaF() * pressure);
-        }
-        else
-        {
-            currentPressuredColor.setAlphaF(editor->currentColor.alphaF());
-        }
-        currentWidth = getTool(PENCIL)->properties.width;
     }
     if (currentToolType() == PEN)
     {

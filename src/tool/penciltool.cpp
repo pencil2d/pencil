@@ -112,3 +112,16 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
     }
 
 }
+
+void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+{
+    if (m_pScribbleArea->usePressure && !mouseDevice)
+    {
+        m_pScribbleArea->currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF() * pressure);
+    }
+    else
+    {
+        m_pScribbleArea->currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF());
+    }
+    m_pScribbleArea->currentWidth = properties.width;
+}
