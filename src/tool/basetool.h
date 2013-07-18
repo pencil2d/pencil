@@ -41,11 +41,11 @@ public:
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    void initialize(Editor* editor);
+    virtual void initialize(Editor* editor, ScribbleArea *scribbleArea);
 
-    void mousePressEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
+    virtual void mousePressEvent(QMouseEvent*);
+    virtual void mouseMoveEvent(QMouseEvent*);
+    virtual void mouseReleaseEvent(QMouseEvent*);
 
     void setColour(const int i);
     void setColour(const QColor colour);

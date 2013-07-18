@@ -65,7 +65,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
     foreach (BaseTool *tool, getTools())
     {
-        tool->initialize(editor);
+        tool->initialize(editor, this);
     }
 
     m_currentTool = getTool(PENCIL);
