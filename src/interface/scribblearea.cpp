@@ -1026,24 +1026,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         update();
     }
     // ----------------------------------------------------------------------
-    if (currentTool()->type() == ERASER && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
-    {
-        if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
-        {
-            if (layer->type == Layer::VECTOR)
-            {
-                qreal radius = (getTool(ERASER)->properties.width / 2) / myTempView.m11();
-                QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->getVerticesCloseTo(currentPoint, radius);
-                for (int i = 0; i < nearbyVertices.size(); i++)
-                {
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
-                }
-                //update();
-                updateAll = true;
-            }
-        }
-    }
-    // ----------------------------------------------------------------------
     if (currentTool()->type() == EDIT && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
         if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {

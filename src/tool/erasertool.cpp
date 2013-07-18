@@ -67,11 +67,24 @@ void EraserTool::mousePressEvent(QMouseEvent *event)
 void EraserTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (event->buttons() & Qt::LeftButton)
     {
-        if (event->buttons() & Qt::LeftButton)
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
             m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+        }
+
+        if (layer->type == Layer::VECTOR)
+        {
+            qreal radius = (properties.width / 2) / m_pScribbleArea->myTempView.m11();
+            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
+                    ->getVerticesCloseTo(m_pScribbleArea->currentPoint, radius);
+            for (int i = 0; i < nearbyVertices.size(); i++)
+            {
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
+            }
+            //update();
+            m_pScribbleArea->updateAll = true;
         }
     }
 }
