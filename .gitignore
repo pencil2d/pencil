@@ -6,3 +6,9 @@ Makefile
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
+
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sdf
+*.opensdf
