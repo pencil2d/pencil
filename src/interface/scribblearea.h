@@ -82,7 +82,6 @@ public:
 
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
-    ToolType currentToolType();
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
@@ -184,7 +183,6 @@ protected:
     void drawEyedropperPreview(const QColor colour);
     void drawPolyline();
     void endPolyline();
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
