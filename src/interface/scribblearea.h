@@ -32,15 +32,31 @@ class Editor;
 class Layer;
 
 
-
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-public:
-    ScribbleArea(QWidget* parent = 0, Editor* editor = 0);
+    // we declare them all friends for now until we move out all the tool relevant code to the tool classes
+    // we'll then try to find some sensible interfaces between the tools and the scribble area
+    // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
+    // and a drawing facade responsible for updating the scribblearea
+    friend class PencilTool;
+    friend class EraserTool;
+    friend class PenTool;
+    friend class BucketTool;
+    friend class BrushTool;
+    friend class PolylineTool;
+    friend class HandTool;
+    friend class EditTool;
+    friend class EyedropperTool;
+    friend class MoveTool;
+    friend class SelectTool;
+    friend class SmudgeTool;
 
-    void next(const int& i);
+public:
+    ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
+
+    void next(const int &i);
 
     void setColour(const int);
     void setColour(const QColor);
@@ -74,9 +90,11 @@ public:
 
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
-    ToolType currentToolType();
-    BaseTool* currentTool();
+    BaseTool *currentTool();
+    BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
+    void switchTool(ToolType type);
+    QList<BaseTool *> getTools();
 
 signals:
     void modification();
@@ -150,33 +168,32 @@ public slots:
     void escape();
 
 protected:
-    void tabletEvent(QTabletEvent* event);
-    void wheelEvent(QWheelEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mouseDoubleClickEvent(QMouseEvent* event);
-    void keyPressEvent(QKeyEvent* event);
-    void keyReleaseEvent(QKeyEvent* event);
-    void paintEvent(QPaintEvent* event);
-    void resizeEvent(QResizeEvent* event);
+    void tabletEvent(QTabletEvent *event);
+    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void resizeEvent(QResizeEvent *event);
     void recentre();
     void setView();
     void setView(QMatrix);
 
-private:
+protected:
     void setPrevMode();
     void paintBitmapBuffer();
     void updateCanvas(int frame, QRect rect);
-    void setGaussianGradient(QGradient& gradient, QColor colour, qreal opacity, qreal offset);
+    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
-    void drawLineTo(const QPointF& endPixel, const QPointF& endPoint);
+    void drawLineTo(const QPointF &endPixel, const QPointF &endPoint);
     void drawEyedropperPreview(const QColor colour);
     void drawPolyline();
     void endPolyline();
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
-    void floodFill(VectorImage* vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
+    void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
 
     enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
@@ -184,10 +201,10 @@ private:
     myMoveModes moveMode;
     ToolType prevMode;
 
-    BaseTool* m_currentTool;
-    QHash<ToolType, BaseTool*> m_toolSetHash;
+    BaseTool *m_currentTool;
+    QHash<ToolType, BaseTool *> m_toolSetHash;
 
-    Editor* editor;
+    Editor *m_pEditor;
 
     int tabletEraserBackupToolMode;
     bool modified;
@@ -214,7 +231,7 @@ private:
     bool followContour;
 
     QBrush backgroundBrush;
-    BitmapImage* bufferImg; // used to pre-draw vector modifications
+    BitmapImage *bufferImg; // used to pre-draw vector modifications
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
 
     bool mouseInUse;

@@ -4,7 +4,7 @@
 
 
 
-QString typeName(ToolType type)
+QString BaseTool::TypeName(ToolType type)
 {
     static QMap<ToolType, QString>* map = NULL;
 
@@ -39,13 +39,16 @@ QCursor BaseTool::cursor()
     return Qt::ArrowCursor;
 }
 
-void BaseTool::setEditor(Editor* editor)
+void BaseTool::initialize(Editor* editor, ScribbleArea *scribbleArea)
 {
     if (editor == NULL)
     {
         qCritical("ERROR: editor is null!");
     }
     m_pEditor = editor;
+    m_pScribbleArea = scribbleArea;
+
+    loadSettings();
 }
 
 void BaseTool::mousePressEvent( QMouseEvent* )
@@ -61,4 +64,15 @@ void BaseTool::mouseMoveEvent( QMouseEvent* )
 void BaseTool::mouseReleaseEvent( QMouseEvent* )
 {
 
+}
+
+void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    mousePressEvent(event);
+}
+
+void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+{
+    Q_UNUSED(pressure);
+    Q_UNUSED(mouseDevice);
 }
