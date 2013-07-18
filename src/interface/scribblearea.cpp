@@ -784,10 +784,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     // --- end checks ----
 
-
-    // if-else for all tools
-    // ---------------------------------------
-
     if (event->button() == Qt::RightButton)
     {
         getTool(HAND)->mousePressEvent(event);
@@ -865,7 +861,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     mouseInUse = false;
 
     // ---- checks ------
-    if (resizingTool) { return; } // [SHIFT]+drag OR [CTRL]+drag
+    if (resizingTool) { return; } // [SHIFT]+drag OR [CTRL]+drag -> XXX make into its own tool
 
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
