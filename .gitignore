@@ -19,5 +19,6 @@ ui_*
 *.sdf
 *.opensdf
 *.suo
+*.pdb
 release
 debug
