@@ -12,6 +12,11 @@ public:
     ToolType type();
     void loadSettings();
     QCursor cursor();
+
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
+
 signals:
     
 public slots:

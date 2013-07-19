@@ -36,10 +36,25 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
+    // we declare them all friends for now until we move out all the tool relevant code to the tool classes
+    // we'll then try to find some sensible interfaces between the tools and the scribble area
+    // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
+    // and a drawing facade responsible for updating the scribblearea
     friend class PencilTool;
+    friend class EraserTool;
+    friend class PenTool;
+    friend class BucketTool;
+    friend class BrushTool;
+    friend class PolylineTool;
+    friend class HandTool;
+    friend class EditTool;
+    friend class EyedropperTool;
+    friend class MoveTool;
+    friend class SelectTool;
+    friend class SmudgeTool;
 
 public:
-    ScribbleArea(QWidget *parent = 0, Editor *editor = 0);
+    ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
 
     void next(const int &i);
 
@@ -75,10 +90,10 @@ public:
 
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
-    ToolType currentToolType();
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
+    void switchTool(ToolType type);
     QList<BaseTool *> getTools();
 
 signals:
@@ -177,7 +192,6 @@ protected:
     void drawEyedropperPreview(const QColor colour);
     void drawPolyline();
     void endPolyline();
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
@@ -190,7 +204,7 @@ protected:
     BaseTool *m_currentTool;
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
-    Editor *editor;
+    Editor *m_pEditor;
 
     int tabletEraserBackupToolMode;
     bool modified;

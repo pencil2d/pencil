@@ -2,6 +2,11 @@
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+
+#include "layer.h"
+#include "scribblearea.h"
+#include "editor.h"
+
 #include "brushtool.h"
 
 BrushTool::BrushTool(QObject *parent) :
@@ -63,5 +68,67 @@ QCursor BrushTool::cursor()
         painter.end();
     }
     return QCursor(pixmap);
+
+}
+
+void BrushTool::mousePressEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    // ---- checks ------
+    if (layer == NULL) { return; }
+
+    if (layer->type == Layer::VECTOR)
+    {
+        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        if (vectorImage == NULL) { return; }
+        m_pEditor->selectVectorColourNumber(properties.colourNumber);
+    }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        m_pEditor->backup(typeName());
+        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
+        m_pScribbleArea->updateAll = true;
+    }
+
+}
+
+void BrushTool::mouseReleaseEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    // ---- checks ------
+    if (layer == NULL) { return; }
+
+    if (event->button() == Qt::LeftButton)
+    {
+        if (layer->type == Layer::BITMAP)
+        {
+            m_pScribbleArea->paintBitmapBuffer();
+            m_pScribbleArea->updateAll = true;
+        }
+        else if (layer->type == Layer::VECTOR)
+        {
+            // Clear the temporary pixel path
+            m_pScribbleArea->bufferImg->clear();
+            ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->colour(m_pScribbleArea->mousePath, properties.colourNumber);
+            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
+            m_pScribbleArea->updateAll = true;
+        }
+    }
+}
+
+void BrushTool::mouseMoveEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    // ---- checks ------
+    if (layer == NULL) { return; }
+
+    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    {
+        if (event->buttons() & Qt::LeftButton)
+        {
+            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+        }
+    }
 
 }
