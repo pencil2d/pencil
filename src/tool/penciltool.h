@@ -18,9 +18,14 @@ public:
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
+    void drawStrokes();
+
 signals:
     
 public slots:
+
+protected:
+    bool m_firstDraw;
     
 };
 

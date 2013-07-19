@@ -8,6 +8,8 @@
 #include "pencilsettings.h"
 #include "penciltool.h"
 
+#include "strokemanager.h"
+
 #include "layer.h"
 
 PencilTool::PencilTool(QObject *parent) :
@@ -80,18 +82,71 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
         }
         m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
         m_pScribbleArea->updateAll = true;
+
+        m_firstDraw = true;
+        lastPixel = event->pos();
     }
+}
+
+void PencilTool::drawStrokes()
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    QPen pen;
+    float width = 1;
+    int rad;
+
+    if (layer->type == Layer::BITMAP)
+    {
+        pen = QPen(QBrush(m_pEditor->currentColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        width = properties.width;
+        rad = qRound(properties.width / 2) + 3;
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        pen = QPen(m_pEditor->currentColor, 1, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
+        rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->myTempView.m11()));
+    }
+
+    QList<QPoint> pixels = m_pScribbleArea->getStrokeManager()->applyStroke(width);
+    QPointF lastPoint = m_pScribbleArea->pixelToPoint(lastPixel);
+
+    foreach (QPoint pixel, pixels) {
+        if (pixel != lastPixel || !m_firstDraw)
+        {
+            m_firstDraw = false;
+
+            if (layer->type == Layer::BITMAP)
+            {
+                QPointF currentPoint = m_pScribbleArea->pixelToPoint(pixel);
+                m_pScribbleArea->bufferImg->drawLine(lastPoint, currentPoint, pen,
+                                                     QPainter::CompositionMode_Source, m_pScribbleArea->antialiasing);
+                m_pScribbleArea->update(m_pScribbleArea->myTempView.
+                                        mapRect(QRect(lastPoint.toPoint(),
+                                                      currentPoint.toPoint())
+                                                .normalized().adjusted(-rad, -rad, +rad, +rad)));
+                lastPoint = currentPoint;
+            }
+            else if (layer->type == Layer::VECTOR)
+            {
+                m_pScribbleArea->bufferImg->drawLine(lastPixel, pixel,
+                                                     pen,
+                                                     QPainter::CompositionMode_SourceOver,
+                                                     m_pScribbleArea->antialiasing);
+                m_pScribbleArea->update(QRect(lastPixel.toPoint(), pixel).normalized().adjusted(-rad, -rad, +rad, +rad));
+
+            }
+
+            lastPixel = pixel;
+        }
+    }
+
 }
 
 void PencilTool::mouseMoveEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (event->buttons() & Qt::LeftButton)
     {
-        if (event->buttons() & Qt::LeftButton)
-        {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
-        }
+        drawStrokes();
     }
 }
 
@@ -106,10 +161,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
-        }
+        drawStrokes();
 
         if (layer->type == Layer::BITMAP)
         {

@@ -87,13 +87,13 @@ void StrokeManager::strokeStart(QPointF pos, float pressure)
 {
     reset();
     m_strokeStarted = true;
-    qDebug() << "stroke start" << pos << pressure;
+//    qDebug() << "stroke start" << pos << pressure;
 }
 
 void StrokeManager::tabletEvent(QTabletEvent *event)
 {
-    if (event->type() == QEvent::TabletPress) { tabletInUse = true; }
-    if (event->type() == QEvent::TabletRelease) { tabletInUse = false; }
+    if (event->type() == QEvent::TabletPress) { m_tabletInUse = true; }
+    if (event->type() == QEvent::TabletRelease) { m_tabletInUse = false; }
 
     m_tabletPosition = event->hiResGlobalPos();
     m_tabletPressure = event->pressure();
@@ -121,7 +121,7 @@ void StrokeManager::strokeMove(QPointF pos, float pressure)
     if (!m_strokeStarted)
         return;
 
-    qDebug() << "mouse at " << pos.x() << pos.y();
+//    qDebug() << "mouse at " << pos.x() << pos.y();
 
     // shift queue
     while (nQueued >= STROKE_QUEUE_LENGTH)
@@ -200,5 +200,5 @@ void StrokeManager::strokeEnd(QPointF pos, float pressure)
     strokeMove(pos, pressure);
     strokeMove(pos, pressure);
     m_strokeStarted = false;
-    qDebug() << "stroke end" << pos << pressure;
+//    qDebug() << "stroke end" << pos << pressure;
 }

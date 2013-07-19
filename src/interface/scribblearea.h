@@ -97,7 +97,9 @@ public:
     void switchTool(ToolType type);
     QList<BaseTool *> getTools();
 
-    StrokeManager *getStrokeManager();
+    QPointF pixelToPoint(QPointF pixel);
+
+    StrokeManager *getStrokeManager() { return m_strokeManager; }
 
 signals:
     void modification();

@@ -143,6 +143,9 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     updateAll = false;
 }
 
+/************************************************************************************/
+// properties setters
+
 void ScribbleArea::setColour(const int i)
 {
     if (currentTool()->type() == PENCIL)
@@ -445,6 +448,9 @@ QBrush ScribbleArea::getBackgroundBrush(QString brushName)
     return brush;
 }
 
+/************************************************************************************/
+// update methods
+
 void ScribbleArea::updateFrame()
 {
     updateFrame(m_pEditor->m_nCurrentFrameIndex);
@@ -503,6 +509,9 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     //updateFrame(frame);
     updateAllFrames();
 }
+
+/************************************************************************************/
+// key event handlers
 
 void ScribbleArea::escape()
 {
@@ -641,6 +650,24 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+/************************************************************************************/
+// mouse and tablet event handlers
+
+void ScribbleArea::wheelEvent(QWheelEvent *event)
+{
+    if (event->modifiers() & Qt::ControlModifier)
+    {
+        if (event->delta() > 0) //+ve for wheel up
+        {
+            zoom();
+        }
+        else
+        {
+            zoom1();
+        }
+    }
+}
+
 void ScribbleArea::tabletEvent(QTabletEvent *event)
 {
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
@@ -686,24 +713,14 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     event->ignore(); // indicates that the tablet event is not accepted yet, so that it is propagated as a mouse event)
 }
 
+QPointF ScribbleArea::pixelToPoint(QPointF pixel)
+{
+    bool invertible = true;
+    return myTempView.inverted(&invertible).map(QPointF(pixel));
+}
+
 void ScribbleArea::mousePressEvent(QMouseEvent *event)
 {
-    static const QString myToolModesDescription[] =
-    {
-        "Pencil",
-        "Eraser",
-        "Select",
-        "Move",
-        "Edit",
-        "Hand",
-        "Smudge",
-        "Pen",
-        "Polyline",
-        "Bucket",
-        "Eyedropper",
-        "Colouring"
-    };
-
     mouseInUse = true;
 
     if (!tabletInUse)   // a mouse is used instead of a tablet
@@ -921,6 +938,9 @@ void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
     currentTool()->mouseDoubleClickEvent(event);
 }
 
+/************************************************************************************/
+// paint methods
+
 void ScribbleArea::paintBitmapBuffer()
 {
     Layer *layer = m_pEditor->getCurrentLayer();
@@ -983,8 +1003,6 @@ void ScribbleArea::grid()
     painter.drawPixmap(QPoint(0, 0), canvas);
     painter.drawImage(QPoint(100, 100), QImage(":background/grid")); //TODO The grid is being drawn but the white background over rides it!
     //      updateCanvas(editor->currentFrame, event.rect());
-
-
 }
 
 void ScribbleArea::paintEvent(QPaintEvent *event)
@@ -1484,13 +1502,6 @@ void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
             int rad = qRound(currentWidth / 2) + 2;
             update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
         }
-        if (currentTool()->type() == PENCIL)
-        {
-            QPen pen2 = QPen(QBrush(m_pEditor->currentColor), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-            bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_Source, antialiasing);
-            int rad = qRound(currentWidth / 2) + 3;
-            update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
-        }
         if (currentTool()->type() == PEN)
         {
             QPen pen2 = QPen(m_pEditor->currentColor , currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
@@ -1532,12 +1543,6 @@ void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
         if (currentTool()->type() == ERASER)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::white, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
-            int rad = qRound((currentWidth / 2 + 2) * qAbs(myTempView.m11()));
-            update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
-        }
-        if (currentTool()->type() == PENCIL)
-        {
-            bufferImg->drawLine(lastPixel, currentPixel, QPen(m_pEditor->currentColor, 1, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
             int rad = qRound((currentWidth / 2 + 2) * qAbs(myTempView.m11()));
             update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
@@ -2402,20 +2407,6 @@ void ScribbleArea::toggleShowAllLayers()
     updateAllFrames();
 }
 
-void ScribbleArea::wheelEvent(QWheelEvent *event)
-{
-    if (event->modifiers() & Qt::ControlModifier)
-    {
-        if (event->delta() > 0) //+ve for wheel up
-        {
-            zoom();
-        }
-        else
-        {
-            zoom1();
-        }
-    }
-}
 
 void ScribbleArea::setPrevMode()
 {

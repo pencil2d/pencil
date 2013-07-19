@@ -8,6 +8,7 @@
 #include <QCursor>
 #include "pencildef.h"
 
+#include <QPointF>
 
 class Editor;
 class QMouseEvent;
@@ -70,6 +71,8 @@ public slots:
 protected:
     Editor* m_pEditor;
     ScribbleArea* m_pScribbleArea;
+
+    QPointF lastPixel;
 };
 
 #endif // BASETOOL_H
