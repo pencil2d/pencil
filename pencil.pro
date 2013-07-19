@@ -70,7 +70,9 @@ HEADERS +=  src/interfaces.h \
     src/graphics/vector/vectorselection.h \
     src/util/pencildef.h \
     src/interface/keycapturelineedit.h \
-    src/structure/objectsaveloader.h
+    src/structure/objectsaveloader.h \
+    src/tool/strokemanager.h \
+    src/util/bspline.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -119,7 +121,9 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/interface/timelinecells.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/interface/keycapturelineedit.cpp \
-    src/structure/objectsaveloader.cpp
+    src/structure/objectsaveloader.cpp \
+    src/tool/strokemanager.cpp \
+    src/util/bspline.cpp
 
 win32 {
     INCLUDEPATH += . libwin32

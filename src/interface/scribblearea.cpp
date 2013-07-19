@@ -40,6 +40,7 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 
+#include "strokemanager.h"
 
 #define round(f) ((int)(f + 0.5))
 
@@ -70,6 +71,8 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
     m_currentTool = getTool(PENCIL);
     emit pencilOn();
+
+    m_strokeManager = new StrokeManager();
 
     QSettings settings("Pencil", "Pencil");
 
@@ -641,6 +644,7 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 void ScribbleArea::tabletEvent(QTabletEvent *event)
 {
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
+    m_strokeManager->tabletEvent(event);
 
     if (event->type() == QEvent::TabletPress) { tabletInUse = true; }
     if (event->type() == QEvent::TabletRelease) { tabletInUse = false; }
@@ -784,6 +788,15 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     // --- end checks ----
 
+
+    QPointF pos;
+    if (tabletInUse && highResPosition) {
+        pos = event->pos() - tabletPosition - event->globalPos();
+    } else {
+        pos = event->pos();
+    }
+    m_strokeManager->strokeStart(pos, tabletPressure);
+
     if (event->button() == Qt::RightButton)
     {
         getTool(HAND)->mousePressEvent(event);
@@ -847,6 +860,14 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         mousePath.append(currentPoint);
     }
 
+    QPointF pos;
+    if (tabletInUse && highResPosition) {
+        pos = event->pos() - tabletPosition - event->globalPos();
+    } else {
+        pos = event->pos();
+    }
+    m_strokeManager->strokeMove(pos, tabletPressure);
+
     if (event->buttons() == Qt::RightButton)
     {
         getTool(HAND)->mouseMoveEvent(event);
@@ -876,6 +897,14 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         if (bitmapImage == NULL) { return; }
     }
     // ---- end checks ------
+
+    QPointF pos;
+    if (tabletInUse && highResPosition) {
+        pos = event->pos() - tabletPosition - event->globalPos();
+    } else {
+        pos = event->pos();
+    }
+    m_strokeManager->strokeEnd(pos, tabletPressure);
 
     if (event->button() == Qt::RightButton)
     {

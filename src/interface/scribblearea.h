@@ -30,6 +30,7 @@ GNU General Public License for more details.
 
 class Editor;
 class Layer;
+class StrokeManager;
 
 
 class ScribbleArea : public QWidget
@@ -95,6 +96,8 @@ public:
     void setCurrentTool(ToolType eToolMode);
     void switchTool(ToolType type);
     QList<BaseTool *> getTools();
+
+    StrokeManager *getStrokeManager();
 
 signals:
     void modification();
@@ -201,6 +204,7 @@ protected:
     myMoveModes moveMode;
     ToolType prevMode;
 
+    StrokeManager *m_strokeManager;
     BaseTool *m_currentTool;
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
