@@ -1,8 +1,9 @@
 #ifndef POLYLINETOOL_H
 #define POLYLINETOOL_H
 
-#include "basetool.h"
+#include <QPointF>
 
+#include "basetool.h"
 
 class PolylineTool : public BaseTool
 {
@@ -17,11 +18,16 @@ public:
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
     void mouseDoubleClickEvent(QMouseEvent *);
+    bool keyPressEvent(QKeyEvent *event);
+
+    void clear();
 
 signals:
     
 public slots:
     
+protected:
+    QList<QPointF> points;
 };
 
 #endif // POLYLINETOOL_H

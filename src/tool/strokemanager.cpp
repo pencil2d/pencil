@@ -174,8 +174,6 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
         setPressure(1.0);
     }
 
-//    qDebug() << "mouse at " << pos.x() << pos.y();
-
     // shift queue
     while (nQueued >= STROKE_QUEUE_LENGTH)
     {

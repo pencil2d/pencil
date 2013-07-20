@@ -4,6 +4,8 @@
 #include "editor.h"
 #include "scribblearea.h"
 
+#include "strokemanager.h"
+
 
 PolylineTool::PolylineTool(QObject *parent) :
     BaseTool(parent)
@@ -26,16 +28,20 @@ QCursor PolylineTool::cursor()
     return Qt::CrossCursor;
 }
 
+void PolylineTool::clear()
+{
+    points.clear();
+}
+
 void PolylineTool::mousePressEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
         if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
-            if (m_pScribbleArea->mousePoints.size() == 0)
+            if (points.size() == 0)
             {
                 m_pEditor->backup(tr("Line"));
             }
@@ -48,7 +54,7 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
                     m_pScribbleArea->toggleThinLines();
                 }
             }
-            m_pScribbleArea->mousePoints << m_pScribbleArea->lastPoint;
+            points << m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPosition());
             m_pScribbleArea->updateAll = true;
         }
     }
@@ -63,19 +69,45 @@ void PolylineTool::mouseReleaseEvent(QMouseEvent *event)
 void PolylineTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    // ---- checks ------
-    if (layer == NULL) { return; }
 
     if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
-        m_pScribbleArea->drawPolyline();
+        m_pScribbleArea->drawPolyline(points, m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPosition()));
     }
 }
 
 void PolylineTool::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if (BezierCurve::eLength(m_pScribbleArea->lastPixel.toPoint() - event->pos()) < 2.0)
+    // XXX highres position ??
+    if (BezierCurve::eLength(m_pStrokeManager->getLastPressPosition() - event->pos()) < 2.0)
     {
-        m_pScribbleArea->endPolyline();
+        m_pScribbleArea->endPolyline(points);
+        clear();
     }
+}
+
+bool PolylineTool::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Return:
+        if (points.size() > 0 )
+        {
+            m_pScribbleArea->endPolyline(points);
+            clear();
+            return true;
+        }
+        break;
+
+    case Qt::Key_Escape:
+        if (points.size() > 0) {
+            clear();
+            return true;
+        }
+        break;
+
+    default:
+        return false;
+    }
+
+    return false;
 }

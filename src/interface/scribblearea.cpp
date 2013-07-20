@@ -49,6 +49,8 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     : QWidget(parent)
 {
     this->m_pEditor = editor;
+    m_strokeManager = new StrokeManager();
+
     m_currentTool = NULL;
 
     m_toolSetHash.insert(PEN, new PenTool);
@@ -71,8 +73,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
     m_currentTool = getTool(PENCIL);
     emit pencilOn();
-
-    m_strokeManager = new StrokeManager();
 
     QSettings settings("Pencil", "Pencil");
 
@@ -527,6 +527,11 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
+    if (currentTool()->keyPressEvent(event)) {
+        // has been handled by tool
+        return;
+    }
+
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -593,18 +598,11 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         }
         else
         {
-            if (currentTool()->type() == POLYLINE)
-            {
-                endPolyline();
-            }
-            else
-            {
-                event->ignore();
-            }
+            event->ignore();
         }
         break;
     case Qt::Key_Escape:
-        if (somethingSelected || currentTool()->type() == POLYLINE)
+        if (somethingSelected)
         {
             escape();
         }
@@ -1550,46 +1548,59 @@ void ScribbleArea::drawEyedropperPreview(const QColor colour)
     update();
 }
 
-void ScribbleArea::drawPolyline()
+void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
-    if (currentTool()->type() == POLYLINE)
+    if (!areLayersSane())
     {
-        if (mousePoints.size() > 0)
+        return;
+    }
+
+    if (points.size() > 0)
+    {
+        QPen pen2(m_pEditor->currentColor,
+                  getTool( PEN )->properties.width,
+                  Qt::SolidLine,
+                  Qt::RoundCap,
+                  Qt::RoundJoin);
+        QPainterPath tempPath = BezierCurve(points).getSimplePath();
+        tempPath.lineTo(endPoint);
+        QRect updateRect = myTempView.mapRect(tempPath.boundingRect().toRect()).adjusted(-10, -10, 10, 10);
+        if (m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
-            QPen pen2(m_pEditor->currentColor,
-                      getTool( PEN )->properties.width,
-                      Qt::SolidLine,
-                      Qt::RoundCap,
-                      Qt::RoundJoin);
-            QPainterPath tempPath = BezierCurve(mousePoints).getSimplePath();
-            tempPath.lineTo(currentPoint);
-            QRect updateRect = myTempView.mapRect(tempPath.boundingRect().toRect()).adjusted(-10, -10, 10, 10);
-            if (m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
-            {
-                tempPath = myTempView.map(tempPath);
-                if (makeInvisible) { pen2.setWidth(0); pen2.setStyle(Qt::DotLine);}
-                else { pen2.setWidth(getTool( PEN )->properties.width * myTempView.m11()); }
-            }
-            bufferImg->clear();
-            bufferImg->drawPath(tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, antialiasing);
-            update(updateRect);
-            //update( QRect(lastPixel.toPoint(), currentPixel.toPoint()).normalized() );
-            //bufferImg->drawRect(tempPath.boundingRect().toRect());
-            //update( QRect(lastPixel.toPoint()-QPoint(10,10), lastPixel.toPoint()+QPoint(10,10)) );
-            //update();
+            tempPath = myTempView.map(tempPath);
+            if (makeInvisible) { pen2.setWidth(0); pen2.setStyle(Qt::DotLine);}
+            else { pen2.setWidth(getTool( PEN )->properties.width * myTempView.m11()); }
         }
+        bufferImg->clear();
+        bufferImg->drawPath(tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, antialiasing);
+        update(updateRect);
+        //update( QRect(lastPixel.toPoint(), currentPixel.toPoint()).normalized() );
+        //bufferImg->drawRect(tempPath.boundingRect().toRect());
+        //update( QRect(lastPixel.toPoint()-QPoint(10,10), lastPixel.toPoint()+QPoint(10,10)) );
+        //update();
     }
 }
 
-void ScribbleArea::endPolyline()
+void ScribbleArea::endPolyline(QList<QPointF> points)
 {
+    if (!areLayersSane())
+    {
+        return;
+    }
+
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL) { return; }
+
     if (layer->type == Layer::VECTOR)
     {
-        BezierCurve curve = BezierCurve(mousePoints);
-        if (makeInvisible) { curve.setWidth(0); }
-        else { curve.setWidth(getTool( PEN )->properties.width); }
+        BezierCurve curve = BezierCurve(points);
+        if (makeInvisible)
+        {
+            curve.setWidth(0);
+        }
+        else
+        {
+            curve.setWidth(getTool( PEN )->properties.width);
+        }
         curve.setColourNumber(getTool( PEN )->properties.colourNumber);
         curve.setVariableWidth(false);
         curve.setInvisibility(makeInvisible);
@@ -1598,12 +1609,11 @@ void ScribbleArea::endPolyline()
     }
     if (layer->type == Layer::BITMAP)
     {
-        drawPolyline();
+        drawPolyline(points, points.last());
         BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
         bitmapImage->paste(bufferImg);
     }
     bufferImg->clear();
-    while (!mousePoints.isEmpty()) { mousePoints.removeAt(0); } // empty the mousePoints
     setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
 }
 
@@ -1882,7 +1892,12 @@ void ScribbleArea::deselectAll()
     somethingSelected = false;
     bufferImg->clear();
     vectorSelection.clear();
-    while (!mousePoints.isEmpty()) { mousePoints.removeAt(0); } // empty the mousePoints
+
+    // clear all the data tools may have accumulated
+    foreach (BaseTool *tool, getTools()) {
+        tool->clear();
+    }
+
     updateFrame();
 }
 

@@ -187,6 +187,10 @@ protected:
     void setView();
     void setView(QMatrix);
 
+public:
+    void drawPolyline(QList<QPointF> points, QPointF lastPoint);
+    void endPolyline(QList<QPointF> points);
+
 protected:
     void setPrevMode();
     void paintBitmapBuffer();
@@ -195,8 +199,6 @@ protected:
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
     void drawLineTo(const QPointF &endPixel, const QPointF &endPoint);
     void drawEyedropperPreview(const QColor colour);
-    void drawPolyline();
-    void endPolyline();
 
     bool areLayersSane();
 
@@ -242,7 +244,6 @@ protected:
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
 
     bool mouseInUse;
-    QList<QPointF> mousePoints; // copy of points clicked using polyline tool
     QList<QPointF> mousePath; // copy of points drawn using pencil, pen, eraser, etc, tools
     QList<qreal> mousePressure;
     QPointF lastPixel, currentPixel;
