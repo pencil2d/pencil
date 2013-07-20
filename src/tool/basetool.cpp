@@ -47,6 +47,7 @@ void BaseTool::initialize(Editor* editor, ScribbleArea *scribbleArea)
     }
     m_pEditor = editor;
     m_pScribbleArea = scribbleArea;
+    m_pStrokeManager = scribbleArea->getStrokeManager();
 
     loadSettings();
 }

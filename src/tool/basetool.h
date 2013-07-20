@@ -13,6 +13,7 @@
 class Editor;
 class QMouseEvent;
 class ScribbleArea;
+class QKeyEvent;
 
 class Properties
 {
@@ -30,6 +31,7 @@ const int ON = 1;
 const int OFF = 0;
 const int DISABLED = -1;
 
+class StrokeManager;
 
 class BaseTool : public QObject
 {
@@ -49,8 +51,12 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*);
     virtual void mouseReleaseEvent(QMouseEvent*);
     virtual void mouseDoubleClickEvent(QMouseEvent*);
+    // return true if handled
+    virtual bool keyPressEvent(QKeyEvent *) { return false; }
 
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
+    virtual void clear() { }
 
     void setColour(const int i);
     void setColour(const QColor colour);
@@ -71,6 +77,7 @@ public slots:
 protected:
     Editor* m_pEditor;
     ScribbleArea* m_pScribbleArea;
+    StrokeManager* m_pStrokeManager;
 
     QPointF lastPixel;
 };
