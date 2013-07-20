@@ -35,34 +35,14 @@ void HandTool::mousePressEvent(QMouseEvent *event)
 
 void HandTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL) { return; }
-
-    m_pScribbleArea->clearBitmapBuffer();
-    if (layer->type == Layer::CAMERA)
-    {
-        LayerCamera *layerCamera = (LayerCamera *)layer;
-        QMatrix view = layerCamera->getViewAtFrame(m_pEditor->m_nCurrentFrameIndex);
-        layerCamera->loadImageAtFrame(m_pEditor->m_nCurrentFrameIndex, view * m_pScribbleArea->transMatrix);
-        //Camera* camera = ((LayerCamera*)layer)->getLastCameraAtFrame(editor->currentFrame, 0);
-        //camera->view = camera->view * transMatrix;
-    }
-    else
-    {
-        m_pScribbleArea->myView =  m_pScribbleArea->myView * m_pScribbleArea->transMatrix;
-    }
-    m_pScribbleArea->transMatrix.reset();
-    m_pScribbleArea->updateAllVectorLayers();
-    m_pScribbleArea->setAllDirty();
+    m_pScribbleArea->applyTransformationMatrix();
 
     //---- stop the hand tool if this was mid button
     if (event->button() == Qt::MidButton)
     {
         //qDebug("Stop Hand Tool");
-        m_pScribbleArea->setPrevMode();
+        m_pScribbleArea->setPrevTool();
     }
-
-    //update();
 }
 
 void HandTool::mouseMoveEvent(QMouseEvent *event)
@@ -72,40 +52,39 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
         if (event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
         {
             QPoint centralPixel(m_pScribbleArea->width() / 2, m_pScribbleArea->height() / 2);
-            if (m_pScribbleArea->lastPixel.x() != centralPixel.x())
+            if (getLastPixel().x() != centralPixel.x())
             {
                 qreal scale = 1.0;
                 qreal cosine = 1.0;
                 qreal sine = 0.0;
                 if (event->modifiers() & Qt::AltModifier)    // rotation
                 {
-                    QPointF V1 = m_pScribbleArea->lastPixel - centralPixel;
-                    QPointF V2 = m_pScribbleArea->currentPixel - centralPixel;
+                    QPointF V1 = getLastPixel() - centralPixel;
+                    QPointF V2 = getCurrentPixel() - centralPixel;
                     cosine = (V1.x() * V2.x() + V1.y() * V2.y()) / (BezierCurve::eLength(V1) * BezierCurve::eLength(V2));
                     sine = (-V1.x() * V2.y() + V1.y() * V2.x()) / (BezierCurve::eLength(V1) * BezierCurve::eLength(V2));
 
                 }
                 if (event->modifiers() & Qt::ControlModifier || event->buttons() & Qt::RightButton)    // scale
                 {
-                    scale = exp(0.01 * (m_pScribbleArea->currentPixel.y() - m_pScribbleArea->lastPixel.y()));
+                    scale = exp(0.01 * (getCurrentPixel().y() - getLastPixel().y()));
                 }
-                m_pScribbleArea->transMatrix = QMatrix(
-                                  scale * cosine, -scale * sine,
-                                  scale * sine,  scale * cosine,
-                                  0.0,
-                                  0.0
-                              );
+                m_pScribbleArea->setTransformationMatrix(QMatrix(
+                                                             scale * cosine, -scale * sine,
+                                                             scale * sine,  scale * cosine,
+                                                             0.0,
+                                                             0.0
+                                                             ));
             }
         }
         else     // translation
         {
-            m_pScribbleArea->transMatrix.setMatrix(1.0, 0.0, 0.0,
-                                                   1.0,
-                                                   m_pScribbleArea->currentPixel.x() - m_pScribbleArea->lastPixel.x(),
-                                                   m_pScribbleArea->currentPixel.y() - m_pScribbleArea->lastPixel.y());
+            m_pScribbleArea->setTransformationMatrix(QMatrix(
+                                                         1.0, 0.0, 0.0,
+                                                         1.0,
+                                                         getCurrentPixel().x() - getLastPixel().x(),
+                                                         getCurrentPixel().y() - getLastPixel().y()));
         }
-        m_pScribbleArea->update();
-        m_pScribbleArea->setAllDirty();
     }
 }
 

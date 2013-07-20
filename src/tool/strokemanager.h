@@ -27,8 +27,9 @@ public:
     bool isUsingHighResPosition() { return m_useHighResPosition; }
     void useHighResPosition(bool val) { m_useHighResPosition = val; }
 
-    QPointF getLastPressPixel() { return m_lastPressPixel; }
-    QPointF getCurrentPixel() { return m_currentPixel; }
+    QPointF getLastPressPixel() const { return m_lastPressPixel; }
+    QPointF getCurrentPixel() const { return m_currentPixel; }
+    QPointF getLastPixel() const { return m_lastPixel; }
 
 protected:
     static const int STROKE_QUEUE_LENGTH = 3;
@@ -54,6 +55,7 @@ protected:
     QPointF m_lastPressPixel;
     QPointF m_lastReleasePosition;
     QPointF m_currentPixel;
+    QPointF m_lastPixel;
 
     bool m_strokeStarted;
 

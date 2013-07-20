@@ -14,6 +14,7 @@ class Editor;
 class QMouseEvent;
 class ScribbleArea;
 class QKeyEvent;
+class StrokeManager;
 
 class Properties
 {
@@ -30,8 +31,6 @@ public:
 const int ON = 1;
 const int OFF = 0;
 const int DISABLED = -1;
-
-class StrokeManager;
 
 class BaseTool : public QObject
 {
@@ -69,6 +68,11 @@ public:
     void setPreserveAlpha(const bool preserveAlpha);
 
     Properties properties;
+
+    QPointF getCurrentPixel();
+    QPointF getCurrentPoint();
+    QPointF getLastPixel();
+    QPointF getLastPoint();
 
 signals:
 

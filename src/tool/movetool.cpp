@@ -36,33 +36,33 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
         if ((layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
         {
             m_pEditor->backup(tr("Move"));
-            m_pScribbleArea->moveMode = ScribbleArea::MIDDLE;
+            m_pScribbleArea->setMoveMode(ScribbleArea::MIDDLE);
 
             if (m_pScribbleArea->somethingSelected)      // there is an area selection
             {
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.topLeft()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.topLeft()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::TOPLEFT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
                 }
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.topRight()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.topRight()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::TOPRIGHT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
                 }
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.bottomLeft()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.bottomLeft()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::BOTTOMLEFT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
                 }
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.bottomRight()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.bottomRight()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::BOTTOMRIGHT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
                 }
             }
 
-            if (m_pScribbleArea->moveMode == ScribbleArea::MIDDLE)
+            if (m_pScribbleArea->getMoveMode() == ScribbleArea::MIDDLE)
             {
                 if (layer->type == Layer::BITMAP)
                 {
-                    if (!(m_pScribbleArea->myTransformedSelection.contains(m_pScribbleArea->lastPoint)))    // click is outside the transformed selection with the MOVE tool
+                    if (!(m_pScribbleArea->myTransformedSelection.contains(getLastPoint())))    // click is outside the transformed selection with the MOVE tool
                     {
                         m_pScribbleArea->paintTransformedSelection();
                         m_pScribbleArea->deselectAll();
@@ -88,7 +88,7 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
                     }
                     else
                     {
-                        int areaNumber = vectorImage->getLastAreaNumber(m_pScribbleArea->lastPoint);
+                        int areaNumber = vectorImage->getLastAreaNumber(getLastPoint());
                         if (areaNumber != -1)   // the user clicks on an area
                         {
                             if (!vectorImage->isAreaSelected(areaNumber))
@@ -105,7 +105,7 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
                         }
                         else     // the user doesn't click near a curve or an area
                         {
-                            if (!(m_pScribbleArea->myTransformedSelection.contains(m_pScribbleArea->lastPoint)))    // click is outside the transformed selection with the MOVE tool
+                            if (!(m_pScribbleArea->myTransformedSelection.contains(getLastPoint())))    // click is outside the transformed selection with the MOVE tool
                             {
                                 m_pScribbleArea->paintTransformedSelection();
                                 m_pScribbleArea->deselectAll();
@@ -153,10 +153,10 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
             {
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
-                    switch (m_pScribbleArea->moveMode)
+                    switch (m_pScribbleArea->m_moveMode)
                     {
                     case ScribbleArea::MIDDLE:
-                        if (QLineF(m_pScribbleArea->lastPixel, m_pScribbleArea->currentPixel).length() > 4)
+                        if (QLineF(getLastPixel(), getCurrentPixel()).length() > 4)
                         {
                             m_pScribbleArea->myTempTransformedSelection = m_pScribbleArea->myTransformedSelection.translated(m_pScribbleArea->offset);
                         }
@@ -201,9 +201,9 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
 
                 // we switch to the select tool
                 m_pScribbleArea->switchTool(MOVE);
-                m_pScribbleArea->moveMode = ScribbleArea::MIDDLE;
-                m_pScribbleArea->mySelection.setTopLeft(m_pScribbleArea->lastPoint);
-                m_pScribbleArea->mySelection.setBottomRight(m_pScribbleArea->lastPoint);
+                m_pScribbleArea->m_moveMode = ScribbleArea::MIDDLE;
+                m_pScribbleArea->mySelection.setTopLeft(getLastPoint());
+                m_pScribbleArea->mySelection.setBottomRight(getLastPoint());
                 m_pScribbleArea->setSelection(m_pScribbleArea->mySelection, true);
             }
         }
@@ -213,7 +213,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
             {
                 m_pScribbleArea->closestCurves =
                         ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                        ->getCurvesCloseTo(m_pScribbleArea->currentPoint, m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
+                        ->getCurvesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
             }
             m_pScribbleArea->update();
         }

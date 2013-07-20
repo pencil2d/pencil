@@ -57,7 +57,7 @@ void BucketTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-//        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
+//        m_pScribbleArea->mousePath.append(getLastPoint());
         m_pScribbleArea->setAllDirty();
     }
 }
@@ -87,7 +87,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
 
             BitmapImage::floodFill(sourceImage,
                                    targetImage,
-                                   m_pScribbleArea->lastPoint.toPoint(),
+                                   getLastPoint().toPoint(),
                                    qRgba(0, 0, 0, 0),
                                    m_pEditor->currentColor.rgba(),
                                    10 * 10,
@@ -102,11 +102,11 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
 
             if (event->modifiers() == Qt::AltModifier)
             {
-                vectorImage->removeArea(m_pScribbleArea->lastPoint);
+                vectorImage->removeArea(getLastPoint());
             }
             else
             {
-                m_pScribbleArea->floodFill(vectorImage, m_pScribbleArea->lastPixel.toPoint(), qRgba(0, 0, 0, 0), qRgb(200, 200, 200), 100 * 100);
+                m_pScribbleArea->floodFill(vectorImage, getLastPixel().toPoint(), qRgba(0, 0, 0, 0), qRgb(200, 200, 200), 100 * 100);
             }
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
             m_pScribbleArea->setAllDirty();

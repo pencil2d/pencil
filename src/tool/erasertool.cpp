@@ -79,7 +79,7 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
         {
             qreal radius = (properties.width / 2) / m_pScribbleArea->getTempViewScaleX();
             QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                    ->getVerticesCloseTo(m_pScribbleArea->currentPoint, radius);
+                    ->getVerticesCloseTo(getCurrentPoint(), radius);
             for (int i = 0; i < nearbyVertices.size(); i++)
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
@@ -150,23 +150,21 @@ void EraserTool::drawStroke()
             QPointF a = m_pScribbleArea->pixelToPoint(segment.first);
             QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
 
-            m_pScribbleArea->bufferImg->drawLine(a, b, pen2, QPainter::CompositionMode_SourceOver, m_pScribbleArea->useAntialiasing());
-            m_pScribbleArea->update(m_pScribbleArea->myTempView.
-                                    mapRect(QRect(a.toPoint(), b.toPoint())
-                                            .normalized().adjusted(-rad, -rad, +rad, +rad)));
+            m_pScribbleArea->drawLine(a, b, pen2, QPainter::CompositionMode_SourceOver);
+            m_pScribbleArea->refreshBitmap(QRect(a.toPoint(), b.toPoint()), rad);
         }
     }
     else if (layer->type == Layer::VECTOR)
     {
         QPen pen(Qt::white, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->myTempView.m22())));
+        int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));
 
         foreach (QSegment segment, calculateStroke(currentWidth))
         {
             QPointF a = segment.first;
             QPointF b = segment.second;
-            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->useAntialiasing());
-            m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
+            m_pScribbleArea->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver);
+            m_pScribbleArea->refreshVector(QRect(a.toPoint(), b.toPoint()), rad);
         }
     }
 }

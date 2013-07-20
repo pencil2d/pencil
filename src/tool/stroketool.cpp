@@ -12,7 +12,7 @@ StrokeTool::StrokeTool(QObject *parent) :
 void StrokeTool::startStroke()
 {
     m_firstDraw = true;
-    lastPixel = m_pStrokeManager->getCurrentPixel();
+    lastPixel = getCurrentPixel();
     strokePoints.clear();
     strokePoints << m_pScribbleArea->pixelToPoint(lastPixel);
     strokePressures.clear();

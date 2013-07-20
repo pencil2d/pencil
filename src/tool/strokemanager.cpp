@@ -165,6 +165,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
 void StrokeManager::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF pos = getEventPosition(event);
+    m_lastPixel = m_currentPixel;
     m_currentPixel = pos;
 
     if (!m_strokeStarted)

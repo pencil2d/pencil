@@ -30,9 +30,9 @@ void EditTool::mousePressEvent(QMouseEvent *event)
         if (layer->type == Layer::VECTOR)
         {
             m_pScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                    ->getCurvesCloseTo(m_pScribbleArea->currentPoint, m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
+                    ->getCurvesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
             m_pScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                    ->getVerticesCloseTo(m_pScribbleArea->currentPoint, m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
+                    ->getVerticesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
 
             if (m_pScribbleArea->closestVertices.size() > 0 || m_pScribbleArea->closestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
@@ -108,7 +108,7 @@ void EditTool::mouseMoveEvent(QMouseEvent *event)
             if (layer->type == Layer::VECTOR)
             {
                 m_pScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                        ->getVerticesCloseTo(m_pScribbleArea->currentPoint, m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
+                        ->getVerticesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
             }
         }
         m_pScribbleArea->update();

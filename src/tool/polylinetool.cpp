@@ -49,12 +49,12 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
             if (layer->type == Layer::VECTOR)
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
-                if (m_pScribbleArea->m_makeInvisible && !m_pScribbleArea->m_showThinLines)
+                if (m_pScribbleArea->makeInvisible() && !m_pScribbleArea->showThinLines())
                 {
                     m_pScribbleArea->toggleThinLines();
                 }
             }
-            points << m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPixel());
+            points << getCurrentPoint();
             m_pScribbleArea->setAllDirty();
         }
     }
@@ -73,7 +73,7 @@ void PolylineTool::mouseMoveEvent(QMouseEvent *event)
 
     if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
-        m_pScribbleArea->drawPolyline(points, m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPixel()));
+        m_pScribbleArea->drawPolyline(points, getCurrentPoint());
     }
 }
 

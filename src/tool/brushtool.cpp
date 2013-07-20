@@ -149,7 +149,7 @@ void BrushTool::drawStroke()
 //        currentWidth = properties.width;
 
         QPointF a = m_pScribbleArea->pixelToPoint(lastPixel);
-        QPointF b = m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPixel());
+        QPointF b = getCurrentPoint();
 
         qreal opacity = 1.0;
         qreal brushWidth = currentWidth +  0.5 * properties.feather;

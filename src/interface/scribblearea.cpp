@@ -1667,6 +1667,36 @@ QPointF ScribbleArea::getCentralPoint()
     return myTempView.inverted().map(QPoint(width() / 2, height() / 2));
 }
 
+void ScribbleArea::setTransformationMatrix(QMatrix matrix)
+{
+    transMatrix = matrix;
+    update();
+    setAllDirty();
+}
+
+void ScribbleArea::applyTransformationMatrix()
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL) { return; }
+
+    clearBitmapBuffer();
+    if (layer->type == Layer::CAMERA)
+    {
+        LayerCamera *layerCamera = (LayerCamera *)layer;
+        QMatrix view = layerCamera->getViewAtFrame(m_pEditor->m_nCurrentFrameIndex);
+        layerCamera->loadImageAtFrame(m_pEditor->m_nCurrentFrameIndex, view * transMatrix);
+        //Camera* camera = ((LayerCamera*)layer)->getLastCameraAtFrame(editor->currentFrame, 0);
+        //camera->view = camera->view * transMatrix;
+    }
+    else
+    {
+        myView =  myView * transMatrix;
+    }
+    transMatrix.reset();
+    updateAllVectorLayers();
+    setAllDirty();
+}
+
 /************************************************************************************/
 // selection handling
 
@@ -2331,7 +2361,7 @@ void ScribbleArea::toggleShowAllLayers()
 }
 
 
-void ScribbleArea::setPrevMode()
+void ScribbleArea::setPrevTool()
 {
     setCurrentTool(prevMode);
     switchTool(prevMode);

@@ -95,7 +95,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type == Layer::BITMAP)
         {
             BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-            QColor pickedColour = targetImage->pixel(m_pScribbleArea->lastPoint.x(), m_pScribbleArea->lastPoint.y());
+            QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
             if (pickedColour.alpha() != 0)
             {
                 m_pEditor->setBitmapColour(pickedColour);
@@ -104,7 +104,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
         else if (layer->type == Layer::VECTOR)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-            int colourNumber = vectorImage->getColourNumber(m_pScribbleArea->lastPoint);
+            int colourNumber = vectorImage->getColourNumber(getLastPoint());
             if (colourNumber != -1)
             {
                 m_pEditor->selectVectorColourNumber(colourNumber);
@@ -123,10 +123,10 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
     if (layer->type == Layer::BITMAP)
     {
         BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (targetImage->contains(m_pScribbleArea->currentPoint))
+        if (targetImage->contains(getCurrentPoint()))
         {
             QColor pickedColour;
-            pickedColour.setRgba(targetImage->pixel(m_pScribbleArea->currentPoint.x(), m_pScribbleArea->currentPoint.y()));
+            pickedColour.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
             if (pickedColour.alpha() != 0)
             {
                 m_pScribbleArea->setCursor(cursor(pickedColour));
@@ -140,7 +140,7 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
     if (layer->type == Layer::VECTOR)
     {
         VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        int colourNumber = vectorImage->getColourNumber(m_pScribbleArea->currentPoint);
+        int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
         if (colourNumber != -1)
         {
             m_pScribbleArea->setCursor(cursor(m_pEditor->object->getColour(colourNumber).colour));

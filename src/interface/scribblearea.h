@@ -25,32 +25,21 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
-#include "basetool.h"
 #include "vectorselection.h"
+#include "basetool.h"
 
 class Editor;
 class Layer;
 class StrokeManager;
+class BaseTool;
 
 
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-    // we declare them all friends for now until we move out all the tool relevant code to the tool classes
-    // we'll then try to find some sensible interfaces between the tools and the scribble area
-    // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
-    // and a drawing facade responsible for updating the scribblearea
-    friend class EraserTool;
-    friend class BucketTool;
-    friend class PolylineTool;
-    friend class HandTool;
-    friend class EditTool;
-    friend class EyedropperTool;
     friend class MoveTool;
-    friend class SelectTool;
-    friend class SmudgeTool;
-    friend class StrokeTool;
+    friend class EditTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
@@ -80,6 +69,11 @@ public:
     qreal getCurveSmoothing() const { return curveSmoothing; }
     bool useAntialiasing() const { return m_antialiasing; }
     bool usePressure() const { return m_usePressure; }
+    bool makeInvisible() const { return m_makeInvisible; }
+
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+    MoveMode getMoveMode() const { return m_moveMode; }
+    void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
     QMatrix getView();
     QRectF getViewRect();
@@ -88,7 +82,11 @@ public:
     qreal getViewScaleX() const { return myView.m11(); }
     qreal getTempViewScaleX() const { return myTempView.m11(); }
     qreal getViewScaleY() const { return myView.m22(); }
-    qreal getTempViewScaleY() const { return myTempView.m22(); }
+    qreal getTempViewScaleY() const { return getTempViewScaleY(); }
+
+    QMatrix getTransformationMatrix() const { return transMatrix; }
+    void setTransformationMatrix(QMatrix matrix);
+    void applyTransformationMatrix();
 
     void updateFrame();
     void updateFrame(int frame);
@@ -105,6 +103,8 @@ public:
     void setCurrentTool(ToolType eToolMode);
     void switchTool(ToolType type);
     QList<BaseTool *> getTools();
+
+    void setPrevTool();
 
     QPointF pixelToPoint(QPointF pixel);
 
@@ -202,6 +202,7 @@ public:
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
+    void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
@@ -209,16 +210,12 @@ public:
     void refreshVector(QRect rect, int rad);
 
 protected:
-    void setPrevMode();
     void updateCanvas(int frame, QRect rect);
     void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
-    void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
 
-    enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
-
-    myMoveModes moveMode;
+    MoveMode m_moveMode;
     ToolType prevMode;
 
     StrokeManager *m_strokeManager;

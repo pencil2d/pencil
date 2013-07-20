@@ -1,8 +1,8 @@
-
 #include "editor.h"
 #include "basetool.h"
 
-
+#include "scribblearea.h"
+#include "strokemanager.h"
 
 QString BaseTool::TypeName(ToolType type)
 {
@@ -76,4 +76,25 @@ void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevic
 {
     Q_UNUSED(pressure);
     Q_UNUSED(mouseDevice);
+}
+
+QPointF BaseTool::getCurrentPixel()
+{
+    return m_pStrokeManager->getCurrentPixel();
+}
+
+QPointF BaseTool::getCurrentPoint()
+{
+    return m_pScribbleArea->pixelToPoint(getCurrentPixel());
+}
+
+
+QPointF BaseTool::getLastPixel()
+{
+    return m_pStrokeManager->getLastPixel();
+}
+
+QPointF BaseTool::getLastPoint()
+{
+    return m_pScribbleArea->pixelToPoint(getLastPixel());
 }
