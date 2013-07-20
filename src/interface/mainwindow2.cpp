@@ -231,6 +231,8 @@ void MainWindow2::createMenus()
     connect(ui->actionEyedropper, SIGNAL(triggered()), m_toolSet, SLOT(eyedropperOn()));
     connect(ui->actionEraser, SIGNAL(triggered()), m_toolSet, SLOT(eraserOn()));
 
+    connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
+
     /// --- Help Menu ---
     connect(ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()));
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
@@ -504,6 +506,16 @@ bool MainWindow2::openObject(QString filePath)
   
     progress.setValue(100);
     return ok;
+}
+
+// Added here (mainWindow2) to be easily located
+// TODO: Find a better place for this function
+void MainWindow2::resetToolsSettings()
+{
+    m_pScribbleArea->resetTools();
+    writeSettings();
+    editor->setTool(m_pScribbleArea->currentToolType());
+    qDebug("tools restored to default settings");
 }
 
 // TODO: need to move to other place

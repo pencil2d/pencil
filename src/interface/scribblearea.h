@@ -46,6 +46,8 @@ public:
     void setColour(const QColor);
     void resetColours();
 
+    void resetTools();
+
     void deleteSelection();
     void setSelection(QRectF rect, bool);
     void displaySelectionProperties();
@@ -231,10 +233,15 @@ private:
     QList<VertexRef> closestVertices;
     QPointF offset;
 
-    bool resizingTool; //whether or not resizing
-    enum myResizingToolMode {rtmWIDTH, rtmFEATHER}; //interactive brush resizing modes
-    myResizingToolMode resizingToolMode ;
-    qreal brushOrgSize; //start resizing from previous width or feather
+    //WYWIWYG tool adjustments
+    bool adjustingTool; //whether or not resizing
+    enum myWysiToolAdjustment {wtaWIDTH, wtaFEATHER, wtaTRANSPARENCY, wtaERASER};
+    myWysiToolAdjustment wysiToolAdjustment;
+    qreal toolOrgValue; //start resizing from previous width or feather
+
+    //instant tool (temporal eg. eraser)
+    bool instantTool; //whether or not using temporal tool
+    ToolType recoverToolType; //to recover current tool
 
     VectorSelection vectorSelection;
     //bool selectionChanged;
