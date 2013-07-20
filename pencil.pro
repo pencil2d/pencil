@@ -22,6 +22,8 @@ INCLUDEPATH += . 	src \
             src/util \
             src/ui
 
+DEPENDPATH += INCLUDEPATH
+
 # Input
 HEADERS +=  src/interfaces.h \
             src/graphics/bitmap/bitmapimage.h \
