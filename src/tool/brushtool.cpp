@@ -76,7 +76,7 @@ QCursor BrushTool::cursor()
 
 void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    if (m_pScribbleArea->usePressure && !mouseDevice)
+    if (m_pScribbleArea->m_usePressure && !mouseDevice)
     {
         currentWidth = properties.width * pressure;
     }
@@ -99,7 +99,7 @@ void BrushTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-        m_pScribbleArea->updateAll = true;
+        m_pScribbleArea->setAllDirty();
     }
 
     startStroke();
@@ -119,7 +119,7 @@ void BrushTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
         else if (layer->type == Layer::VECTOR)
         {
@@ -186,7 +186,7 @@ void BrushTool::drawStroke()
         {
             QPointF a = segment.first;
             QPointF b = segment.second;
-            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->useAntialiasing());
             m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
     }

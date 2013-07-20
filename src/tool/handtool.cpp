@@ -38,7 +38,7 @@ void HandTool::mouseReleaseEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    m_pScribbleArea->bufferImg->clear();
+    m_pScribbleArea->clearBitmapBuffer();
     if (layer->type == Layer::CAMERA)
     {
         LayerCamera *layerCamera = (LayerCamera *)layer;
@@ -53,7 +53,7 @@ void HandTool::mouseReleaseEvent(QMouseEvent *event)
     }
     m_pScribbleArea->transMatrix.reset();
     m_pScribbleArea->updateAllVectorLayers();
-    m_pScribbleArea->updateAll = true;
+    m_pScribbleArea->setAllDirty();
 
     //---- stop the hand tool if this was mid button
     if (event->button() == Qt::MidButton)
@@ -105,7 +105,7 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
                                                    m_pScribbleArea->currentPixel.y() - m_pScribbleArea->lastPixel.y());
         }
         m_pScribbleArea->update();
-        m_pScribbleArea->updateAll = true;
+        m_pScribbleArea->setAllDirty();
     }
 }
 

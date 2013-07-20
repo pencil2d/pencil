@@ -58,7 +58,7 @@ void BucketTool::mousePressEvent(QMouseEvent *event)
     {
         m_pEditor->backup(typeName());
 //        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
-        m_pScribbleArea->updateAll = true;
+        m_pScribbleArea->setAllDirty();
     }
 }
 
@@ -94,7 +94,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                                    true);
 
             m_pScribbleArea->setModified(layerNumber, m_pEditor->m_nCurrentFrameIndex);
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
         else if (layer->type == Layer::VECTOR)
         {
@@ -109,7 +109,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                 m_pScribbleArea->floodFill(vectorImage, m_pScribbleArea->lastPixel.toPoint(), qRgba(0, 0, 0, 0), qRgb(200, 200, 200), 100 * 100);
             }
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
     }
 

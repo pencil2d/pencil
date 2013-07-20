@@ -70,6 +70,7 @@ public:
     QRectF getSelection() const { return mySelection; }
     bool somethingSelected;
     bool readCanvasFromCache;
+    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -77,12 +78,18 @@ public:
 
     static QBrush getBackgroundBrush(QString);
 
-    bool thinLines() const { return showThinLines; }
-    int allLayers() const { return showAllLayers; }
+    bool showThinLines() const { return m_showThinLines; }
+    int showAllLayers() const { return m_showAllLayers; }
+    qreal getCurveSmoothing() const { return curveSmoothing; }
+    bool useAntialiasing() const { return m_antialiasing; }
+    bool usePressure() const { return m_usePressure; }
 
     QMatrix getView();
     QRectF getViewRect();
     QPointF getCentralPoint();
+
+    qreal getViewScale() const { return myView.m11(); }
+    qreal getTempViewScale() const { return myTempView.m11(); }
 
     void updateFrame();
     void updateFrame(int frame);
@@ -90,9 +97,9 @@ public:
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frame);
     void updateAllVectorLayers();
-    bool getUpdateAll() const {  return updateAll; }
 
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    bool shouldUpdateAll() const {  return updateAll; }
+    void setAllDirty() { updateAll = true; }
 
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
@@ -219,22 +226,19 @@ protected:
     bool modified;
     bool simplified;
 
-    bool showThinLines;
-    int showAllLayers;
-    bool usePressure, makeInvisible;
-    bool antialiasing;
+    bool m_showThinLines;
+    int  m_showAllLayers;
+    bool m_usePressure;
+    bool m_makeInvisible;
+    bool m_antialiasing;
     bool shadows;
     bool toolCursors;
-    int gradients;
+    int  gradients;
     qreal curveOpacity;
     qreal curveSmoothing;
     bool onionPrev, onionNext;
     bool updateAll;
 
-    Properties brush;
-    Properties eraser;
-
-    QColor currentPressuredColor;
     bool followContour;
 
     QBrush backgroundBrush;
@@ -244,7 +248,6 @@ protected:
     bool mouseInUse;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
-    QPointF lastBrushPoint;
     //QBrush brush; // the current brush
 
     qreal tol;

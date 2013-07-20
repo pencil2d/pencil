@@ -112,7 +112,7 @@ void EditTool::mouseMoveEvent(QMouseEvent *event)
             }
         }
         m_pScribbleArea->update();
-        m_pScribbleArea->updateAll = true;
+        m_pScribbleArea->setAllDirty();
     }
 
 }

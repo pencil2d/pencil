@@ -134,7 +134,7 @@ void MoveTool::mouseReleaseEvent(QMouseEvent *event)
 
             m_pScribbleArea->myTransformedSelection = m_pScribbleArea->myTempTransformedSelection;
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
     }
 
@@ -188,7 +188,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
 
                     m_pScribbleArea->calculateSelectionTransformation();
                     m_pScribbleArea->update();
-                    m_pScribbleArea->updateAll = true;
+                    m_pScribbleArea->setAllDirty();
                 }
             }
             else     // there is nothing selected

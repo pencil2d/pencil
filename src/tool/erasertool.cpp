@@ -59,7 +59,7 @@ void EraserTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-        m_pScribbleArea->updateAll = true;
+        m_pScribbleArea->setAllDirty();
     }
 
     startStroke();
@@ -85,7 +85,7 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
             }
             //update();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
     }
 }
@@ -104,7 +104,7 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
         else if (layer->type == Layer::VECTOR)
         {
@@ -112,11 +112,11 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
             // Clear the area containing the last point
             //vectorImage->removeArea(lastPoint);
             // Clear the temporary pixel path
-            m_pScribbleArea->bufferImg->clear();
+            m_pScribbleArea->clearBitmapBuffer();
             vectorImage->deleteSelectedPoints();
             //update();
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
     }
 }
@@ -150,7 +150,7 @@ void EraserTool::drawStroke()
             QPointF a = m_pScribbleArea->pixelToPoint(segment.first);
             QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
 
-            m_pScribbleArea->bufferImg->drawLine(a, b, pen2, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen2, QPainter::CompositionMode_SourceOver, m_pScribbleArea->useAntialiasing());
             m_pScribbleArea->update(m_pScribbleArea->myTempView.
                                     mapRect(QRect(a.toPoint(), b.toPoint())
                                             .normalized().adjusted(-rad, -rad, +rad, +rad)));
@@ -165,7 +165,7 @@ void EraserTool::drawStroke()
         {
             QPointF a = segment.first;
             QPointF b = segment.second;
-            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->useAntialiasing());
             m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
         }
     }

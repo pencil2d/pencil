@@ -97,12 +97,12 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
                 }
             }
             m_pScribbleArea->updateFrame();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
         else if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->updateFrame();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
     }
 
