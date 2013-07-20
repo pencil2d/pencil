@@ -967,6 +967,26 @@ void ScribbleArea::paintBitmapBuffer()
     update(rect);
 }
 
+void ScribbleArea::clearBitmapBuffer()
+{
+    bufferImg->clear();
+}
+
+void ScribbleArea::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm)
+{
+    bufferImg->drawLine(P1, P2, pen, cm, m_antialiasing);
+}
+
+void ScribbleArea::refreshBitmap(QRect rect, int rad)
+{
+    update(myTempView.mapRect(rect.normalized().adjusted(-rad, -rad, +rad, +rad)));
+}
+
+void ScribbleArea::refreshVector(QRect rect, int rad)
+{
+    update(rect.normalized().adjusted(-rad, -rad, +rad, +rad));
+}
+
 void ScribbleArea::grid()
 {
     QPainter painter(this);

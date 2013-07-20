@@ -41,7 +41,6 @@ class ScribbleArea : public QWidget
     // we'll then try to find some sensible interfaces between the tools and the scribble area
     // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
     // and a drawing facade responsible for updating the scribblearea
-    friend class PencilTool;
     friend class EraserTool;
     friend class PenTool;
     friend class BucketTool;
@@ -201,9 +200,15 @@ public:
     void drawPolyline(QList<QPointF> points, QPointF lastPoint);
     void endPolyline(QList<QPointF> points);
 
+    void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
+
+    void paintBitmapBuffer();
+    void clearBitmapBuffer();
+    void refreshBitmap(QRect rect, int rad);
+    void refreshVector(QRect rect, int rad);
+
 protected:
     void setPrevMode();
-    void paintBitmapBuffer();
     void updateCanvas(int frame, QRect rect);
     void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
