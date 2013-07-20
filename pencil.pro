@@ -22,7 +22,7 @@ INCLUDEPATH += . 	src \
             src/util \
             src/ui
 
-DEPENDPATH += INCLUDEPATH
+DEPENDPATH += ${INCLUDEPATH}
 
 # Input
 HEADERS +=  src/interfaces.h \
