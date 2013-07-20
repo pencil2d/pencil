@@ -26,8 +26,8 @@ public:
     bool isUsingHighResPosition() { return m_useHighResPosition; }
     void useHighResPosition(bool val) { m_useHighResPosition = val; }
 
-    QPointF getLastPressPosition() { return m_lastPressPosition; }
-    QPointF getCurrentPosition() { return m_currentPosition; }
+    QPointF getLastPressPixel() { return m_lastPressPixel; }
+    QPointF getCurrentPixel() { return m_currentPixel; }
 
 protected:
     static const int STROKE_QUEUE_LENGTH = 3;
@@ -50,9 +50,9 @@ protected:
     float velocity[2];
 
 
-    QPointF m_lastPressPosition;
+    QPointF m_lastPressPixel;
     QPointF m_lastReleasePosition;
-    QPointF m_currentPosition;
+    QPointF m_currentPixel;
 
     bool m_strokeStarted;
 

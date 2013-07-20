@@ -120,7 +120,7 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     reset();
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
-        m_lastPressPosition = getEventPosition(event);
+        m_lastPressPixel = getEventPosition(event);
     }
 
     m_strokeStarted = true;
@@ -163,7 +163,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
 void StrokeManager::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF pos = getEventPosition(event);
-    m_currentPosition = pos;
+    m_currentPixel = pos;
 
     if (!m_strokeStarted)
         return;

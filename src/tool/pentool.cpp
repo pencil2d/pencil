@@ -65,19 +65,6 @@ void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice
     // we choose the "normal" width to correspond to a pressure 0.5
 }
 
-void PenTool::mouseMoveEvent(QMouseEvent *event)
-{
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-    {
-        if (event->buttons() & Qt::LeftButton)
-        {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
-        }
-    }
-
-}
-
 void PenTool::mousePressEvent(QMouseEvent *event)
 {
     // sanity checks
@@ -91,37 +78,31 @@ void PenTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
         m_pScribbleArea->updateAll = true;
     }
+
+    startStroke();
 }
 
 void PenTool::mouseReleaseEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL)
-    {
-        return;
-    }
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
-        }
+        drawStroke();
 
         if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->updateAll = true;
         }
-        else if (layer->type == Layer::VECTOR && m_pScribbleArea->mousePath.size() > -1)
+        else if (layer->type == Layer::VECTOR && strokePoints.size() > -1)
         {
             // Clear the temporary pixel path
             m_pScribbleArea->bufferImg->clear();
             qreal tol = m_pScribbleArea->curveSmoothing / qAbs(m_pScribbleArea->myView.m11());
-            BezierCurve curve(m_pScribbleArea->mousePath, m_pScribbleArea->mousePressure, tol);
+            BezierCurve curve(strokePoints, strokePressures, tol);
             curve.setWidth(properties.width);
             curve.setFeather(0);
             curve.setInvisibility(false);
@@ -130,15 +111,11 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
-            //curve.setSelected(true);
-            //qDebug() << "this curve has " << curve.getVertexSize() << "vertices";
-
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->myView.m11()));
-
-            //if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR) ((LayerImage*)layer)->setModified(editor->currentFrame, true);
-            //update();
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
             m_pScribbleArea->updateAll = true;
         }
     }
+
+    endStroke();
 }

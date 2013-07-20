@@ -745,7 +745,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
-        lastPixel = m_strokeManager->getLastPressPosition();
+        lastPixel = m_strokeManager->getLastPressPixel();
         bool invertible = true;
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
         lastBrushPoint = lastPoint;
@@ -842,7 +842,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     }
 
     m_strokeManager->mouseMoveEvent(event);
-    currentPixel = m_strokeManager->getCurrentPosition();
+    currentPixel = m_strokeManager->getCurrentPixel();
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
 

@@ -1,11 +1,13 @@
 #ifndef PENTOOL_H
 #define PENTOOL_H
 
+#include <QList>
+#include <QPointF>
+
 #include "basetool.h"
+#include "penciltool.h"
 
-
-
-class PenTool : public BaseTool
+class PenTool : public PencilTool
 {
     Q_OBJECT
 public:
@@ -15,10 +17,10 @@ public:
     QCursor cursor();
 
     void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
 };
 
 #endif // PENTOOL_H

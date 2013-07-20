@@ -78,8 +78,6 @@ protected:
     Editor* m_pEditor;
     ScribbleArea* m_pScribbleArea;
     StrokeManager* m_pStrokeManager;
-
-    QPointF lastPixel;
 };
 
 #endif // BASETOOL_H
