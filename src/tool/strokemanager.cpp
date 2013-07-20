@@ -113,6 +113,7 @@ void StrokeManager::interpolate(float t, int &x, int &y)
         x = xQueue[nQueued];
         y = yQueue[nQueued];
     }
+
 }
 
 void StrokeManager::mousePressEvent(QMouseEvent *event)

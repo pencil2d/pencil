@@ -1,12 +1,9 @@
 #ifndef PENCILTOOL_H
 #define PENCILTOOL_H
 
-#include <QList>
-#include <QPointF>
+#include "stroketool.h"
 
-#include "basetool.h"
-
-class PencilTool : public BaseTool
+class PencilTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -19,22 +16,14 @@ public:
     void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+    void drawStroke();
 
-    virtual void startStroke();
-    virtual void drawStroke();
-    virtual void endStroke();
+    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
 signals:
     
 public slots:
 
-protected:
-    bool m_firstDraw;
-
-    QPointF lastPixel;
-    QList<QPointF> strokePoints;
-    QList<qreal> strokePressures;
     
 };
 

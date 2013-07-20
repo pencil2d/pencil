@@ -11,7 +11,7 @@
 
 
 EraserTool::EraserTool(QObject *parent) :
-    BaseTool(parent)
+    StrokeTool(parent)
 {
 }
 
@@ -59,9 +59,10 @@ void EraserTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
         m_pScribbleArea->updateAll = true;
     }
+
+    startStroke();
 }
 
 void EraserTool::mouseMoveEvent(QMouseEvent *event)
@@ -71,7 +72,7 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
     {
         if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+            drawStroke();
         }
 
         if (layer->type == Layer::VECTOR)
@@ -92,17 +93,12 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
 void EraserTool::mouseReleaseEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL)
-    {
-        return;
-    }
-
 
     if (event->button() == Qt::LeftButton)
     {
         if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
         {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+            drawStroke();
         }
 
         if (layer->type == Layer::BITMAP)
@@ -130,11 +126,47 @@ void EraserTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
     //myPenWidth = static_cast<int>(10.0*tabletPressure);
     if (mouseDevice)
     {
-        m_pScribbleArea->currentWidth =  properties.width;
+        currentWidth =  properties.width;
     }
     else
     {
-        m_pScribbleArea->currentWidth = properties.width * pressure;
+        currentWidth = properties.width * pressure;
     }
 
+}
+
+void EraserTool::drawStroke()
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+
+    if (layer->type == Layer::BITMAP)
+    {
+        QPen pen2 = QPen(QBrush(QColor(255, 255, 255, 255)), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        int rad = qRound(currentWidth / 2) + 3;
+
+
+        foreach (QSegment segment, calculateStroke(currentWidth))
+        {
+            QPointF a = m_pScribbleArea->pixelToPoint(segment.first);
+            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
+
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen2, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(m_pScribbleArea->myTempView.
+                                    mapRect(QRect(a.toPoint(), b.toPoint())
+                                            .normalized().adjusted(-rad, -rad, +rad, +rad)));
+        }
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        QPen pen(Qt::white, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->myTempView.m11()) + qAbs(m_pScribbleArea->myTempView.m22())));
+
+        foreach (QSegment segment, calculateStroke(currentWidth))
+        {
+            QPointF a = segment.first;
+            QPointF b = segment.second;
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
+        }
+    }
 }

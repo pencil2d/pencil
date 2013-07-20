@@ -74,7 +74,8 @@ HEADERS +=  src/interfaces.h \
     src/interface/keycapturelineedit.h \
     src/structure/objectsaveloader.h \
     src/tool/strokemanager.h \
-    src/util/bspline.h
+    src/util/bspline.h \
+    src/tool/stroketool.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -125,7 +126,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/interface/keycapturelineedit.cpp \
     src/structure/objectsaveloader.cpp \
     src/tool/strokemanager.cpp \
-    src/util/bspline.cpp
+    src/util/bspline.cpp \
+    src/tool/stroketool.cpp
 
 win32 {
     INCLUDEPATH += . libwin32

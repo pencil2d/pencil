@@ -1,23 +1,22 @@
 #ifndef PENTOOL_H
 #define PENTOOL_H
 
-#include <QList>
-#include <QPointF>
+#include "stroketool.h"
 
-#include "basetool.h"
-#include "penciltool.h"
-
-class PenTool : public PencilTool
+class PenTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    PenTool();
+    PenTool(QObject *parent = 0);
     ToolType type();
     void loadSettings();
     QCursor cursor();
 
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
+
+    void drawStroke();
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 

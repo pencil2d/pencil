@@ -6,7 +6,7 @@
 #include "editor.h"
 #include "scribblearea.h"
 
-PenTool::PenTool()
+PenTool::PenTool(QObject *parent) : StrokeTool(parent)
 {
 
 }
@@ -36,6 +36,8 @@ void PenTool::loadSettings()
     {
         properties.feather = 0;
     }
+
+    currentWidth = properties.width;
 }
 
 QCursor PenTool::cursor()
@@ -56,11 +58,11 @@ void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice
     //editor->currentColor.setAlphaF(pen.colour.alphaF());
     if (m_pScribbleArea->usePressure && !mouseDevice)
     {
-        m_pScribbleArea->currentWidth = 2.0 * properties.width * pressure;
+        currentWidth = 2.0 * properties.width * pressure;
     }
     else
     {
-        m_pScribbleArea->currentWidth = properties.width;
+        currentWidth = properties.width;
     }
     // we choose the "normal" width to correspond to a pressure 0.5
 }
@@ -90,7 +92,10 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        drawStroke();
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            drawStroke();
+        }
 
         if (layer->type == Layer::BITMAP)
         {
@@ -119,3 +124,51 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 
     endStroke();
 }
+
+void PenTool::mouseMoveEvent(QMouseEvent *event)
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    {
+        if (event->buttons() & Qt::LeftButton)
+        {
+            drawStroke();
+        }
+    }
+}
+
+void PenTool::drawStroke()
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+
+    if (layer->type == Layer::BITMAP)
+    {
+        QPen pen2 = QPen(m_pEditor->currentColor, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        int rad = qRound(currentWidth / 2) + 3;
+
+        foreach (QSegment segment, calculateStroke(currentWidth))
+        {
+            QPointF a = m_pScribbleArea->pixelToPoint(segment.first);
+            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
+
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen2, QPainter::CompositionMode_Source, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(m_pScribbleArea->myTempView.
+                                    mapRect(QRect(a.toPoint(), b.toPoint())
+                                            .normalized().adjusted(-rad, -rad, +rad, +rad)));
+        }
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->myTempView.m11()) + qAbs(m_pScribbleArea->myTempView.m22())));
+        QPen pen(m_pEditor->currentColor, currentWidth * m_pScribbleArea->myTempView.m11(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+
+        foreach (QSegment segment, calculateStroke(currentWidth))
+        {
+            QPointF a = segment.first;
+            QPointF b = segment.second;
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
+        }
+    }
+}
+

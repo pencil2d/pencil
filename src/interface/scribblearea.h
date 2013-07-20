@@ -53,6 +53,7 @@ class ScribbleArea : public QWidget
     friend class MoveTool;
     friend class SelectTool;
     friend class SmudgeTool;
+    friend class StrokeTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
@@ -244,8 +245,6 @@ protected:
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
 
     bool mouseInUse;
-    QList<QPointF> mousePath; // copy of points drawn using pencil, pen, eraser, etc, tools
-    QList<qreal> mousePressure;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
     QPointF lastBrushPoint;

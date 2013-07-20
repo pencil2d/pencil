@@ -1,10 +1,10 @@
 #ifndef ERASERTOOL_H
 #define ERASERTOOL_H
 
-#include "basetool.h"
+#include "stroketool.h"
 
 
-class EraserTool : public BaseTool
+class EraserTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -16,6 +16,8 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
+
+    void drawStroke();
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 

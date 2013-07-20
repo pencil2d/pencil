@@ -678,8 +678,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     m_strokeManager->tabletEvent(event);
 
-    mousePressure.append(m_strokeManager->getPressure());
-
     currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
                                                      event->pointerType() == QTabletEvent::Cursor);
 
@@ -739,9 +737,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
             emit handOn();
         }
     }
-
-    while (!mousePath.isEmpty()) { mousePath.removeAt(0); } // empty the mousePath
-    while (!mousePressure.isEmpty()) { mousePressure.removeAt(0); } // empty the mousePressure
 
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
@@ -866,8 +861,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
             {   m_pEditor->applyFeather(round(newSize)); }
             return;
         }
-        //
-        mousePath.append(currentPoint);
     }
 
     if (event->buttons() == Qt::RightButton)
@@ -1465,20 +1458,6 @@ void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
         //BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
         //if (bitmapImage == NULL) { qDebug() << "NULL image pointer!" << editor->currentLayer << editor->currentFrame;  return; }
 
-        if (currentTool()->type() == ERASER)
-        {
-            QPen pen2 = QPen(QBrush(QColor(255, 255, 255, 255)), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-            bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_SourceOver, antialiasing);
-            int rad = qRound(currentWidth / 2) + 2;
-            update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
-        }
-        if (currentTool()->type() == PEN)
-        {
-            QPen pen2 = QPen(m_pEditor->currentColor , currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-            bufferImg->drawLine(lastPoint, endPoint, pen2, QPainter::CompositionMode_SourceOver, antialiasing);
-            int rad = qRound(currentWidth / 2) + 3;
-            update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
-        }
         if (currentTool()->type() == BRUSH)
         {
             qreal opacity = 1.0;
@@ -1510,18 +1489,6 @@ void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
     }
     if (layer->type == Layer::VECTOR)
     {
-        if (currentTool()->type() == ERASER)
-        {
-            bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::white, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
-            int rad = qRound((currentWidth / 2 + 2) * qAbs(myTempView.m11()));
-            update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
-        }
-        if (currentTool()->type() == PEN)
-        {
-            bufferImg->drawLine(lastPixel, currentPixel, QPen(m_pEditor->currentColor, currentWidth * myTempView.m11(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
-            int rad = qRound((currentWidth / 2 + 2) * (qAbs(myTempView.m11()) + qAbs(myTempView.m22())));
-            update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
-        }
         if (currentTool()->type() == BRUSH)
         {
             bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);

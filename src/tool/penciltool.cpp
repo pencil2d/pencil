@@ -13,7 +13,7 @@
 #include "layer.h"
 
 PencilTool::PencilTool(QObject *parent) :
-    BaseTool(parent)
+    StrokeTool(parent)
 {
 }
 
@@ -76,77 +76,6 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
     startStroke();
 }
 
-void PencilTool::startStroke()
-{
-    m_firstDraw = true;
-    lastPixel = m_pStrokeManager->getCurrentPixel();
-    strokePoints.clear();
-    strokePoints << m_pScribbleArea->pixelToPoint(lastPixel);
-    strokePressures.clear();
-    strokePressures << m_pStrokeManager->getPressure();
-}
-
-void PencilTool::endStroke()
-{
-    strokePoints.clear();
-    strokePressures.clear();
-}
-
-void PencilTool::drawStroke()
-{
-    Layer *layer = m_pEditor->getCurrentLayer();
-    QPen pen;
-    float width = 1;
-    int rad;
-
-    if (layer->type == Layer::BITMAP)
-    {
-        pen = QPen(QBrush(m_pEditor->currentColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        width = properties.width;
-        rad = qRound(properties.width / 2) + 3;
-    }
-    else if (layer->type == Layer::VECTOR)
-    {
-        pen = QPen(m_pEditor->currentColor, 1, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
-        rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->myTempView.m11()));
-    }
-
-    QList<QPoint> pixels = m_pStrokeManager->applyStroke(width);
-    QPointF lastPoint = m_pScribbleArea->pixelToPoint(lastPixel);
-
-    foreach (QPoint pixel, pixels) {
-        if (pixel != lastPixel || !m_firstDraw)
-        {
-            m_firstDraw = false;
-
-            if (layer->type == Layer::BITMAP)
-            {
-                QPointF currentPoint = m_pScribbleArea->pixelToPoint(pixel);
-                m_pScribbleArea->bufferImg->drawLine(lastPoint, currentPoint, pen,
-                                                     QPainter::CompositionMode_Source, m_pScribbleArea->antialiasing);
-                m_pScribbleArea->update(m_pScribbleArea->myTempView.
-                                        mapRect(QRect(lastPoint.toPoint(),
-                                                      currentPoint.toPoint())
-                                                .normalized().adjusted(-rad, -rad, +rad, +rad)));
-                lastPoint = currentPoint;
-            }
-            else if (layer->type == Layer::VECTOR)
-            {
-                m_pScribbleArea->bufferImg->drawLine(lastPixel, pixel,
-                                                     pen,
-                                                     QPainter::CompositionMode_SourceOver,
-                                                     m_pScribbleArea->antialiasing);
-                m_pScribbleArea->update(QRect(lastPixel.toPoint(), pixel).normalized().adjusted(-rad, -rad, +rad, +rad));
-
-            }
-
-            lastPixel = pixel;
-            strokePoints << m_pScribbleArea->pixelToPoint(pixel);
-            strokePressures << m_pStrokeManager->getPressure();
-        }
-    }
-}
-
 void PencilTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
@@ -206,3 +135,44 @@ void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
     }
     m_pScribbleArea->currentWidth = properties.width;
 }
+
+void PencilTool::drawStroke()
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    float width = 1;
+    int rad;
+
+    if (layer->type == Layer::BITMAP)
+    {
+        QPen pen(QBrush(m_pEditor->currentColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        width = properties.width;
+        rad = qRound(properties.width / 2) + 3;
+
+        foreach (QSegment segment, calculateStroke(width))
+        {
+            QPointF a = m_pScribbleArea->pixelToPoint(segment.first);
+            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen,
+                                                 QPainter::CompositionMode_Source, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(m_pScribbleArea->myTempView.
+                                    mapRect(QRect(a.toPoint(), b.toPoint())
+                                            .normalized().adjusted(-rad, -rad, +rad, +rad)));
+        }
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        QPen pen(m_pEditor->currentColor, 1, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
+        rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->myTempView.m11()));
+        foreach (QSegment segment, calculateStroke(width))
+        {
+            QPointF a = segment.first;
+            QPointF b = segment.second;
+            m_pScribbleArea->bufferImg->drawLine(a, b,
+                                                 pen,
+                                                 QPainter::CompositionMode_SourceOver,
+                                                 m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
+        }
+    }
+}
+
