@@ -25,6 +25,8 @@ signals:
 public slots:
 
     
+protected:
+    QColor currentPressuredColor;
 };
 
 #endif // PENCILTOOL_H
