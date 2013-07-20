@@ -79,6 +79,7 @@ void StrokeManager::reset()
     m_strokeStarted = false;
     meter = 0;
     nQueued = 0;
+    nQueued_p = 0;
     pressure = 0.0f;
     velocity[0] = 0;
     velocity[1] = 0;
