@@ -84,8 +84,11 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     if (curveSmoothingLevel == 0) { curveSmoothingLevel = 20; settings.setValue("curveSmoothing", curveSmoothingLevel); } // default
     curveSmoothing = curveSmoothingLevel / 20.0; // default value is 1.0
 
-    highResPosition = false; // default is false (because it does not work on Windows)
-    if (settings.value("highResPosition").toString() == "true") { highResPosition = true; }
+    if (settings.value("highResPosition").toString() == "true")
+    {
+        m_strokeManager->useHighResPosition(true);
+    }
+
     antialiasing = true; // default value is true (because it's prettier)
     if (settings.value("antialiasing").toString() == "false") { antialiasing = false; }
     shadows = false; // default value is false
@@ -94,8 +97,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     if (settings.value("gradients").toString() != "") { gradients = settings.value("gradients").toInt(); };
 
     tabletEraserBackupToolMode = -1;
-    tabletInUse = false;
-    tabletPressure = 1.0;
     setAttribute(Qt::WA_StaticContents); // ?
     modified = false;
     simplified = false;
@@ -337,8 +338,14 @@ void ScribbleArea::setCurveSmoothing(int newSmoothingLevel)
 void ScribbleArea::setHighResPosition(int x)
 {
     QSettings settings("Pencil", "Pencil");
-    if (x == 0) { highResPosition = false; settings.setValue("highResPosition", "false"); }
-    else { highResPosition = true; settings.setValue("highResPosition", "true"); }
+    if (x == 0)
+    {
+        m_strokeManager->useHighResPosition(false);
+        settings.setValue("highResPosition", "false");
+    } else {
+        m_strokeManager->useHighResPosition(true);
+        settings.setValue("highResPosition", "true");
+    }
 }
 
 void ScribbleArea::setAntialiasing(int x)
@@ -673,15 +680,10 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     m_strokeManager->tabletEvent(event);
 
-    if (event->type() == QEvent::TabletPress) { tabletInUse = true; }
-    if (event->type() == QEvent::TabletRelease) { tabletInUse = false; }
+    mousePressure.append(m_strokeManager->getPressure());
 
-    tabletPosition = event->hiResGlobalPos();
-    tabletPressure = event->pressure();
-
-    mousePressure.append(tabletPressure);
-
-    currentTool()->adjustPressureSensitiveProperties(tabletPressure, event->pointerType() == QTabletEvent::Cursor);
+    currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
+                                                     event->pointerType() == QTabletEvent::Cursor);
 
     if (event->pointerType() == QTabletEvent::Eraser)
     {
@@ -723,9 +725,12 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 {
     mouseInUse = true;
 
-    if (!tabletInUse)   // a mouse is used instead of a tablet
+    m_strokeManager->mousePressEvent(event);
+
+
+    if (!m_strokeManager->isTabletInUse())   // a mouse is used instead of a tablet
     {
-        tabletPressure = 1.0;
+        m_strokeManager->setPressure(1.0);
         currentTool()->adjustPressureSensitiveProperties(1.0, true);
 
         //----------------code for starting hand tool when middle mouse is pressed
@@ -742,11 +747,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
-        if (tabletInUse && highResPosition)
-        { lastPixel = QPointF(event->pos()) + tabletPosition - QPointF(event->globalPos()); }
-        else
-        { lastPixel = QPointF(event->pos()); }
-
+        lastPixel = m_strokeManager->getLastPressPosition();
         bool invertible = true;
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
         lastBrushPoint = lastPoint;
@@ -806,14 +807,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     // --- end checks ----
 
 
-    QPointF pos;
-    if (tabletInUse && highResPosition) {
-        pos = event->pos() - tabletPosition - event->globalPos();
-    } else {
-        pos = event->pos();
-    }
-    m_strokeManager->strokeStart(pos, tabletPressure);
-
     if (event->button() == Qt::RightButton)
     {
         getTool(HAND)->mousePressEvent(event);
@@ -823,33 +816,35 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     currentTool()->mousePressEvent(event);
 }
 
-void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
+bool ScribbleArea::areLayersSane()
 {
     Layer *layer = m_pEditor->getCurrentLayer();
     // ---- checks ------
-    if (layer == NULL) { return; }
+    if (layer == NULL) { return false; }
     if (layer->type == Layer::VECTOR)
     {
         VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (vectorImage == NULL) { return; }
+        if (vectorImage == NULL) { return false; }
     }
     if (layer->type == Layer::BITMAP)
     {
         BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (bitmapImage == NULL) { return; }
+        if (bitmapImage == NULL) { return false; }
     }
     // ---- end checks ------
 
-    if (tabletInUse  && highResPosition)
+    return true;
+}
+
+void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!areLayersSane())
     {
-        currentPixel = QPointF(event->pos())
-                       + tabletPosition
-                       - QPointF(event->globalPos());
+        return;
     }
-    else
-    {
-        currentPixel = event->pos();
-    }
+
+    m_strokeManager->mouseMoveEvent(event);
+    currentPixel = m_strokeManager->getCurrentPosition();
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
 
@@ -877,14 +872,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         mousePath.append(currentPoint);
     }
 
-    QPointF pos;
-    if (tabletInUse && highResPosition) {
-        pos = event->pos() - tabletPosition - event->globalPos();
-    } else {
-        pos = event->pos();
-    }
-    m_strokeManager->strokeMove(pos, tabletPressure);
-
     if (event->buttons() == Qt::RightButton)
     {
         getTool(HAND)->mouseMoveEvent(event);
@@ -901,27 +888,12 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- checks ------
     if (resizingTool) { return; } // [SHIFT]+drag OR [CTRL]+drag -> XXX make into its own tool
 
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL) { return; }
-    if (layer->type == Layer::VECTOR)
+    if (!areLayersSane())
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (vectorImage == NULL) { return; }
+        return;
     }
-    if (layer->type == Layer::BITMAP)
-    {
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (bitmapImage == NULL) { return; }
-    }
-    // ---- end checks ------
 
-    QPointF pos;
-    if (tabletInUse && highResPosition) {
-        pos = event->pos() - tabletPosition - event->globalPos();
-    } else {
-        pos = event->pos();
-    }
-    m_strokeManager->strokeEnd(pos, tabletPressure);
+    m_strokeManager->mouseReleaseEvent(event);
 
     if (event->button() == Qt::RightButton)
     {
@@ -1514,12 +1486,12 @@ void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
             qreal opacity = 1.0;
             qreal brushWidth = getTool(BRUSH)->properties.width +  0.5 * getTool(BRUSH)->properties.feather;
             qreal offset = qMax(0.0, getTool(BRUSH)->properties.width - 0.5 * getTool(BRUSH)->properties.feather) / brushWidth;
-            if (tabletInUse) { opacity = tabletPressure; }
-            if (usePressure) { brushWidth = brushWidth * tabletPressure; }
+//            if (tabletInUse) { opacity = tabletPressure; }
+//            if (usePressure) { brushWidth = brushWidth * tabletPressure; }
 
             qreal distance = 4 * QLineF(endPoint, lastBrushPoint).length();
             qreal brushStep = 0.5 * getTool(BRUSH)->properties.width + 0.5 * getTool(BRUSH)->properties.feather;
-            if (usePressure) { brushStep = brushStep * tabletPressure; }
+//            if (usePressure) { brushStep = brushStep * tabletPressure; }
             brushStep = qMax(1.0, brushStep);
             int steps = qRound(distance) / brushStep ;
 

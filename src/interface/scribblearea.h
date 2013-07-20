@@ -198,6 +198,8 @@ protected:
     void drawPolyline();
     void endPolyline();
 
+    bool areLayersSane();
+
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
 
@@ -219,7 +221,6 @@ protected:
     bool showThinLines;
     int showAllLayers;
     bool usePressure, makeInvisible;
-    bool highResPosition;
     bool antialiasing;
     bool shadows;
     bool toolCursors;
@@ -262,11 +263,6 @@ protected:
     VectorSelection vectorSelection;
     //bool selectionChanged;
     QMatrix selectionTransformation;
-
-
-    bool tabletInUse;
-    qreal tabletPressure;
-    QPointF tabletPosition;
 
     QMatrix myView, myTempView, centralView, transMatrix;
 
