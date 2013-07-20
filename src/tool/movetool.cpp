@@ -213,7 +213,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
             {
                 m_pScribbleArea->closestCurves =
                         ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                        ->getCurvesCloseTo(m_pScribbleArea->currentPoint, m_pScribbleArea->tol / m_pScribbleArea->myTempView.m11());
+                        ->getCurvesCloseTo(m_pScribbleArea->currentPoint, m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
             }
             m_pScribbleArea->update();
         }

@@ -42,7 +42,6 @@ class ScribbleArea : public QWidget
     // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
     // and a drawing facade responsible for updating the scribblearea
     friend class EraserTool;
-    friend class PenTool;
     friend class BucketTool;
     friend class BrushTool;
     friend class PolylineTool;
@@ -87,8 +86,10 @@ public:
     QRectF getViewRect();
     QPointF getCentralPoint();
 
-    qreal getViewScale() const { return myView.m11(); }
-    qreal getTempViewScale() const { return myTempView.m11(); }
+    qreal getViewScaleX() const { return myView.m11(); }
+    qreal getTempViewScaleX() const { return myTempView.m11(); }
+    qreal getViewScaleY() const { return myView.m22(); }
+    qreal getTempViewScaleY() const { return myTempView.m22(); }
 
     void updateFrame();
     void updateFrame(int frame);
