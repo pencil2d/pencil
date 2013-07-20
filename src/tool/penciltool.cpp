@@ -94,7 +94,10 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        drawStroke();
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            drawStroke();
+        }
 
         if (layer->type == Layer::BITMAP)
         {
@@ -133,7 +136,8 @@ void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
     {
         m_pScribbleArea->currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF());
     }
-    m_pScribbleArea->currentWidth = properties.width;
+
+    currentWidth = properties.width;
 }
 
 void PencilTool::drawStroke()

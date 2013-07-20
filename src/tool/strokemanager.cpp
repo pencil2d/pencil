@@ -214,7 +214,35 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
     m_timeshot = t;
 }
 
-QList<QPoint> StrokeManager::applyStroke(int radius)
+QList<QPoint> StrokeManager::interpolateStrokeInSteps(int steps)
+{
+    int sx0, sx1;
+    int sy0, sy1;
+
+    QList<QPoint> result;
+
+    interpolate(0, sx0, sy0);
+    interpolate(1, sx1, sy1);
+
+    int strokeLen = 0;
+
+    for (int j = 0; j < steps && strokeLen < 1024; j++)
+    {
+        interpolate((float)j/(float)steps, sx0, sy0);
+
+        if (abs (sx0 - sx1) > 1 ||
+                abs (sy0 - sy1) > 1 ||
+                j == 0) {
+            result.append(QPoint(sx0, sy0));
+            sx1 = sx0;
+            sy1 = sy0;
+        }
+    }
+
+    return result;
+}
+
+QList<QPoint> StrokeManager::interpolateStroke(int radius)
 {
     int sx0, sx1;
     int sy0, sy1;

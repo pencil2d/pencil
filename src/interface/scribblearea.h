@@ -67,11 +67,13 @@ public:
     void deleteSelection();
     void setSelection(QRectF rect, bool);
     void displaySelectionProperties();
-    QRectF getSelection() { return mySelection; }
+    QRectF getSelection() const { return mySelection; }
     bool somethingSelected;
     bool readCanvasFromCache;
 
     bool isModified() const { return modified; }
+    bool areLayersSane() const;
+    bool isLayerPaintable() const;
 
     static QBrush getBackgroundBrush(QString);
 
@@ -88,7 +90,7 @@ public:
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frame);
     void updateAllVectorLayers();
-    bool getUpdateAll() {return updateAll;}
+    bool getUpdateAll() const {  return updateAll; }
 
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
@@ -100,7 +102,7 @@ public:
 
     QPointF pixelToPoint(QPointF pixel);
 
-    StrokeManager *getStrokeManager() { return m_strokeManager; }
+    StrokeManager *getStrokeManager() const { return m_strokeManager; }
 
 signals:
     void modification();
@@ -201,7 +203,6 @@ protected:
     void drawLineTo(const QPointF &endPixel, const QPointF &endPoint);
     void drawEyedropperPreview(const QColor colour);
 
-    bool areLayersSane();
 
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
@@ -236,7 +237,6 @@ protected:
     Properties brush;
     Properties eraser;
 
-    qreal currentWidth;
     QColor currentPressuredColor;
     bool followContour;
 

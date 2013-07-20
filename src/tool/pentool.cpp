@@ -92,7 +92,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (m_pScribbleArea->isLayerPaintable())
         {
             drawStroke();
         }

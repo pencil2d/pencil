@@ -27,7 +27,7 @@ void StrokeTool::endStroke()
 
 QList<QPair<QPointF, QPointF> > StrokeTool::calculateStroke(float width)
 {
-    QList<QPoint> pixels = m_pStrokeManager->applyStroke(width);
+    QList<QPoint> pixels = m_pStrokeManager->interpolateStroke(width);
     QList<QPair<QPointF, QPointF> > segments;
 
     foreach (QPoint pixel, pixels) {

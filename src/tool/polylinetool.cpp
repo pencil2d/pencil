@@ -54,7 +54,7 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
                     m_pScribbleArea->toggleThinLines();
                 }
             }
-            points << m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPosition());
+            points << m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPixel());
             m_pScribbleArea->updateAll = true;
         }
     }
@@ -72,14 +72,14 @@ void PolylineTool::mouseMoveEvent(QMouseEvent *event)
 
     if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
-        m_pScribbleArea->drawPolyline(points, m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPosition()));
+        m_pScribbleArea->drawPolyline(points, m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPixel()));
     }
 }
 
 void PolylineTool::mouseDoubleClickEvent(QMouseEvent *event)
 {
     // XXX highres position ??
-    if (BezierCurve::eLength(m_pStrokeManager->getLastPressPosition() - event->pos()) < 2.0)
+    if (BezierCurve::eLength(m_pStrokeManager->getLastPressPixel() - event->pos()) < 2.0)
     {
         m_pScribbleArea->endPolyline(points);
         clear();

@@ -76,7 +76,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
     QSettings settings("Pencil", "Pencil");
 
-    currentWidth = getTool(PENCIL)->properties.width;
     followContour = 0;
 
     curveOpacity = (100 - settings.value("curveOpacity").toInt()) / 100.0; // default value is 1.0
@@ -193,24 +192,27 @@ void ScribbleArea::setWidth(const qreal newWidth)
     if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.width = newWidth;
+        // update width of tool XXX
         settings.setValue("pencilWidth", newWidth);
     }
     else if (currentTool()->type() == ERASER)
     {
         getTool(ERASER)->properties.width = newWidth;
+        // update width of tool XXX
         settings.setValue("eraserWidth", newWidth);
     }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.width = newWidth;
+        // update width of tool XXX
         settings.setValue("penWidth", newWidth);
     }
     else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.width = newWidth;
+        // update width of tool XXX
         settings.setValue("brushWidth", newWidth);
     }
-    currentWidth = newWidth;
     updateAllFrames();
     setCursor(currentTool()->cursor());
 }
@@ -233,7 +235,6 @@ void ScribbleArea::setFeather(const qreal newFeather)
         getTool(BRUSH)->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
     }
-    currentWidth = currentTool()->properties.width; // could be unassigned the first time, must be assigned (to avoid black screenings)
     updateAllFrames();
     setCursor(currentTool()->cursor());
 }
@@ -809,7 +810,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     currentTool()->mousePressEvent(event);
 }
 
-bool ScribbleArea::areLayersSane()
+bool ScribbleArea::areLayersSane() const
 {
     Layer *layer = m_pEditor->getCurrentLayer();
     // ---- checks ------
@@ -827,6 +828,15 @@ bool ScribbleArea::areLayersSane()
     // ---- end checks ------
 
     return true;
+}
+
+bool ScribbleArea::isLayerPaintable() const
+{
+    if (!areLayersSane())
+        return false;
+
+    Layer *layer = m_pEditor->getCurrentLayer();
+    return layer->type == Layer::BITMAP || layer->type == Layer::VECTOR;
 }
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
@@ -1458,43 +1468,9 @@ void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
         //BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
         //if (bitmapImage == NULL) { qDebug() << "NULL image pointer!" << editor->currentLayer << editor->currentFrame;  return; }
 
-        if (currentTool()->type() == BRUSH)
-        {
-            qreal opacity = 1.0;
-            qreal brushWidth = getTool(BRUSH)->properties.width +  0.5 * getTool(BRUSH)->properties.feather;
-            qreal offset = qMax(0.0, getTool(BRUSH)->properties.width - 0.5 * getTool(BRUSH)->properties.feather) / brushWidth;
-//            if (tabletInUse) { opacity = tabletPressure; }
-//            if (usePressure) { brushWidth = brushWidth * tabletPressure; }
-
-            qreal distance = 4 * QLineF(endPoint, lastBrushPoint).length();
-            qreal brushStep = 0.5 * getTool(BRUSH)->properties.width + 0.5 * getTool(BRUSH)->properties.feather;
-//            if (usePressure) { brushStep = brushStep * tabletPressure; }
-            brushStep = qMax(1.0, brushStep);
-            int steps = qRound(distance) / brushStep ;
-
-            for (int i = 0; i < steps; i++)
-            {
-                QPointF thePoint = lastBrushPoint + (i + 1) * (brushStep) * (endPoint - lastBrushPoint) / distance;
-                drawBrush(thePoint, brushWidth, offset, m_pEditor->currentColor, opacity);
-
-                if (i == (steps - 1))
-                {
-                    lastBrushPoint = thePoint;
-                }
-            }
-
-            int rad = qRound(brushWidth / 2) + 3;
-            update(myTempView.mapRect(QRect(lastPoint.toPoint(), endPoint.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad)));
-        }
     }
     if (layer->type == Layer::VECTOR)
     {
-        if (currentTool()->type() == BRUSH)
-        {
-            bufferImg->drawLine(lastPixel, currentPixel, QPen(Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin), QPainter::CompositionMode_SourceOver, antialiasing);
-            int rad = qRound((currentWidth / 2 + 2) * qAbs(myTempView.m11()));
-            update(QRect(lastPixel.toPoint(), endPixel.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
-        }
     }
 
     //emit modification();
@@ -1630,6 +1606,9 @@ void ScribbleArea::recentre()
     update();
 }
 
+/************************************************************************************/
+// view handling
+
 void ScribbleArea::setMyView(QMatrix view)
 {
     myView = view;
@@ -1703,6 +1682,9 @@ QPointF ScribbleArea::getCentralPoint()
 {
     return myTempView.inverted().map(QPoint(width() / 2, height() / 2));
 }
+
+/************************************************************************************/
+// selection handling
 
 void ScribbleArea::calculateSelectionRect()
 {
@@ -2213,6 +2195,9 @@ void ScribbleArea::floodFillError(int errorType)
     bufferImg->clear();
     deselectAll();
 }
+
+/************************************************************************************/
+// tool handling
 
 BaseTool *ScribbleArea::currentTool()
 {

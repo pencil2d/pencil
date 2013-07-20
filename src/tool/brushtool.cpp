@@ -6,11 +6,13 @@
 #include "layer.h"
 #include "scribblearea.h"
 #include "editor.h"
+#include "strokemanager.h"
 
 #include "brushtool.h"
+#include "blitrect.h"
 
 BrushTool::BrushTool(QObject *parent) :
-    BaseTool(parent)
+    StrokeTool(parent)
 {
 }
 
@@ -71,36 +73,49 @@ QCursor BrushTool::cursor()
 
 }
 
+
+void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+{
+    if (m_pScribbleArea->usePressure && !mouseDevice)
+    {
+        currentWidth = properties.width * pressure;
+    }
+    else
+    {
+        currentWidth = properties.width;
+    }
+    // we choose the "normal" width to correspond to a pressure 0.5
+}
+
 void BrushTool::mousePressEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    // ---- checks ------
-    if (layer == NULL) { return; }
 
     if (layer->type == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (vectorImage == NULL) { return; }
         m_pEditor->selectVectorColourNumber(properties.colourNumber);
     }
 
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
         m_pScribbleArea->updateAll = true;
     }
 
+    startStroke();
 }
 
 void BrushTool::mouseReleaseEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    // ---- checks ------
-    if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
+        if (m_pScribbleArea->isLayerPaintable())
+        {
+            drawStroke();
+        }
+
         if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
@@ -108,11 +123,6 @@ void BrushTool::mouseReleaseEvent(QMouseEvent *event)
         }
         else if (layer->type == Layer::VECTOR)
         {
-            // Clear the temporary pixel path
-            m_pScribbleArea->bufferImg->clear();
-            ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->colour(m_pScribbleArea->mousePath, properties.colourNumber);
-            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
-            m_pScribbleArea->updateAll = true;
         }
     }
 }
@@ -120,15 +130,64 @@ void BrushTool::mouseReleaseEvent(QMouseEvent *event)
 void BrushTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    // ---- checks ------
-    if (layer == NULL) { return; }
 
     if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)
         {
-            m_pScribbleArea->drawLineTo(m_pScribbleArea->currentPixel, m_pScribbleArea->currentPoint);
+            drawStroke();
         }
     }
+}
 
+void BrushTool::drawStroke()
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+
+    if (layer->type == Layer::BITMAP)
+    {
+//        currentWidth = properties.width;
+
+        QPointF a = m_pScribbleArea->pixelToPoint(lastPixel);
+        QPointF b = m_pScribbleArea->pixelToPoint(m_pStrokeManager->getCurrentPixel());
+
+        qreal opacity = 1.0;
+        qreal brushWidth = currentWidth +  0.5 * properties.feather;
+        qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
+        //            if (tabletInUse) { opacity = tabletPressure; }
+        //            if (usePressure) { brushWidth = brushWidth * tabletPressure; }
+
+        qreal brushStep = 0.5 * currentWidth + 0.5 * properties.feather;
+        //            if (usePressure) { brushStep = brushStep * tabletPressure; }
+        brushStep = qMax(1.0, brushStep);
+
+        qreal distance = 4 * QLineF(b, a).length();
+        int steps = qRound(distance) / brushStep + 1;
+
+        QList<QPoint> pixels =  m_pStrokeManager->interpolateStrokeInSteps(steps);
+
+        BlitRect rect;
+
+        foreach (QPointF pixel, pixels) {
+            QPointF point = m_pScribbleArea->pixelToPoint(pixel);
+            rect.extend(point.toPoint());
+            m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
+        }
+
+        int rad = qRound(brushWidth) / 2 + 2;
+        m_pScribbleArea->update(m_pScribbleArea->myTempView.mapRect(rect).normalized().adjusted(-rad, -rad, +rad, +rad));
+    }
+    else if (layer->type == Layer::VECTOR)
+    {
+        QPen pen(Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
+        int rad = qRound((currentWidth / 2 + 2) * qAbs(m_pScribbleArea->myTempView.m11()));
+
+        foreach (QSegment segment, calculateStroke(currentWidth))
+        {
+            QPointF a = segment.first;
+            QPointF b = segment.second;
+            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->antialiasing);
+            m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
+        }
+    }
 }

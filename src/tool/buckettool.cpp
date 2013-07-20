@@ -46,8 +46,6 @@ QCursor BucketTool::cursor()
 void BucketTool::mousePressEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    // ---- checks ------
-    if (layer == NULL) { return; }
 
     if (layer->type == Layer::VECTOR)
     {
@@ -59,7 +57,7 @@ void BucketTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
+//        m_pScribbleArea->mousePath.append(m_pScribbleArea->lastPoint);
         m_pScribbleArea->updateAll = true;
     }
 }
