@@ -1456,29 +1456,6 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
-void ScribbleArea::drawLineTo(const QPointF &endPixel, const QPointF &endPoint)
-{
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL) { return; }
-
-    if (layer->type == Layer::BITMAP)
-    {
-        //int index = ((LayerImage*)layer)->getLastIndexAtFrame(editor->currentFrame);
-        //if (index == -1) return;
-        //BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(editor->currentFrame, 0);
-        //if (bitmapImage == NULL) { qDebug() << "NULL image pointer!" << editor->currentLayer << editor->currentFrame;  return; }
-
-    }
-    if (layer->type == Layer::VECTOR)
-    {
-    }
-
-    //emit modification();
-
-    lastPixel = endPixel;
-    lastPoint = endPoint;
-}
-
 void ScribbleArea::drawEyedropperPreview(const QColor colour)
 {
     QPixmap cursorPixmap;

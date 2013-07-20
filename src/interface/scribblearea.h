@@ -200,7 +200,6 @@ protected:
     void updateCanvas(int frame, QRect rect);
     void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
-    void drawLineTo(const QPointF &endPixel, const QPointF &endPoint);
     void drawEyedropperPreview(const QColor colour);
 
 
