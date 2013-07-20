@@ -124,6 +124,7 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     {
         m_lastPressPixel = getEventPosition(event);
     }
+    m_lastPixel = getEventPosition(event);
 
     m_strokeStarted = true;
 }

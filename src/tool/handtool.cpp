@@ -52,14 +52,14 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
         if (event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
         {
             QPoint centralPixel(m_pScribbleArea->width() / 2, m_pScribbleArea->height() / 2);
-            if (getLastPixel().x() != centralPixel.x())
+            if (getLastPressPixel().x() != centralPixel.x())
             {
                 qreal scale = 1.0;
                 qreal cosine = 1.0;
                 qreal sine = 0.0;
                 if (event->modifiers() & Qt::AltModifier)    // rotation
                 {
-                    QPointF V1 = getLastPixel() - centralPixel;
+                    QPointF V1 = getLastPressPixel() - centralPixel;
                     QPointF V2 = getCurrentPixel() - centralPixel;
                     cosine = (V1.x() * V2.x() + V1.y() * V2.y()) / (BezierCurve::eLength(V1) * BezierCurve::eLength(V2));
                     sine = (-V1.x() * V2.y() + V1.y() * V2.x()) / (BezierCurve::eLength(V1) * BezierCurve::eLength(V2));
@@ -67,7 +67,7 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
                 }
                 if (event->modifiers() & Qt::ControlModifier || event->buttons() & Qt::RightButton)    // scale
                 {
-                    scale = exp(0.01 * (getCurrentPixel().y() - getLastPixel().y()));
+                    scale = exp(0.01 * (getCurrentPixel().y() - getLastPressPixel().y()));
                 }
                 m_pScribbleArea->setTransformationMatrix(QMatrix(
                                                              scale * cosine, -scale * sine,
@@ -82,8 +82,8 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
             m_pScribbleArea->setTransformationMatrix(QMatrix(
                                                          1.0, 0.0, 0.0,
                                                          1.0,
-                                                         getCurrentPixel().x() - getLastPixel().x(),
-                                                         getCurrentPixel().y() - getLastPixel().y()));
+                                                         getCurrentPixel().x() - getLastPressPixel().x(),
+                                                         getCurrentPixel().y() - getLastPressPixel().y()));
         }
     }
 }

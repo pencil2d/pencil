@@ -88,7 +88,6 @@ QPointF BaseTool::getCurrentPoint()
     return m_pScribbleArea->pixelToPoint(getCurrentPixel());
 }
 
-
 QPointF BaseTool::getLastPixel()
 {
     return m_pStrokeManager->getLastPixel();
@@ -97,4 +96,14 @@ QPointF BaseTool::getLastPixel()
 QPointF BaseTool::getLastPoint()
 {
     return m_pScribbleArea->pixelToPoint(getLastPixel());
+}
+
+QPointF BaseTool::getLastPressPixel()
+{
+    return m_pStrokeManager->getLastPressPixel();
+}
+
+QPointF BaseTool::getLastPressPoint()
+{
+    return m_pScribbleArea->pixelToPoint(getLastPressPixel());
 }

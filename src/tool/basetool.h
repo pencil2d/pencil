@@ -73,6 +73,8 @@ public:
     QPointF getCurrentPoint();
     QPointF getLastPixel();
     QPointF getLastPoint();
+    QPointF getLastPressPixel();
+    QPointF getLastPressPoint();
 
 signals:
 
