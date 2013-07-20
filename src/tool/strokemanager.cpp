@@ -69,6 +69,7 @@ StrokeManager::StrokeManager()
 
     m_tabletInUse = false;
     m_tabletPressure = 0;
+    m_useHighResPosition = false;
 
     reset();
 }
@@ -83,20 +84,18 @@ void StrokeManager::reset()
     velocity[1] = 0;
 }
 
-void StrokeManager::strokeStart(QPointF pos, float pressure)
-{
-    reset();
-    m_strokeStarted = true;
-//    qDebug() << "stroke start" << pos << pressure;
-}
+void StrokeManager::setPressure(float pressure) {
+    while (nQueued_p >= STROKE_PRESSURE_QUEUE_LENGTH) {
+        for (int i = 0; i < nQueued_p - 1; i++) {
+            pressQueue[i] = pressQueue[i+1];
+        }
+        nQueued_p--;
+    }
 
-void StrokeManager::tabletEvent(QTabletEvent *event)
-{
-    if (event->type() == QEvent::TabletPress) { m_tabletInUse = true; }
-    if (event->type() == QEvent::TabletRelease) { m_tabletInUse = false; }
+    pressQueue[nQueued_p] = pressure;
+    nQueued_p++;
 
-    m_tabletPosition = event->hiResGlobalPos();
-    m_tabletPressure = event->pressure();
+    m_tabletPressure = pressure;
 
 }
 
@@ -116,10 +115,64 @@ void StrokeManager::interpolate(float t, int &x, int &y)
     }
 }
 
-void StrokeManager::strokeMove(QPointF pos, float pressure)
+void StrokeManager::mousePressEvent(QMouseEvent *event)
 {
+    reset();
+    if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
+    {
+        m_lastPressPosition = getEventPosition(event);
+    }
+
+    m_strokeStarted = true;
+}
+
+void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
+{
+    // flush out stroke
+    if (m_strokeStarted) {
+        mouseMoveEvent(event);
+        mouseMoveEvent(event);
+    }
+    m_lastReleasePosition = getEventPosition(event);
+
+    m_strokeStarted = false;
+}
+
+void StrokeManager::tabletEvent(QTabletEvent *event)
+{
+    if (event->type() == QEvent::TabletPress) { m_tabletInUse = true; }
+    if (event->type() == QEvent::TabletRelease) { m_tabletInUse = false; }
+
+    m_tabletPosition = event->hiResGlobalPos();
+    setPressure(event->pressure());
+}
+
+QPointF StrokeManager::getEventPosition(QMouseEvent *event)
+{
+    QPointF pos;
+
+    if (m_tabletInUse && m_useHighResPosition) {
+        pos = event->pos() + m_tabletPosition - event->globalPos();
+    } else {
+        pos = event->pos();
+    }
+
+    return pos;
+}
+
+void StrokeManager::mouseMoveEvent(QMouseEvent *event)
+{
+    QPointF pos = getEventPosition(event);
+    m_currentPosition = pos;
+
     if (!m_strokeStarted)
         return;
+
+
+    if (!m_tabletInUse)   // a mouse is used instead of a tablet
+    {
+        setPressure(1.0);
+    }
 
 //    qDebug() << "mouse at " << pos.x() << pos.y();
 
@@ -194,11 +247,3 @@ QList<QPoint> StrokeManager::applyStroke(int radius)
     return result;
 }
 
-void StrokeManager::strokeEnd(QPointF pos, float pressure)
-{
-    // flush out stroke
-    strokeMove(pos, pressure);
-    strokeMove(pos, pressure);
-    m_strokeStarted = false;
-//    qDebug() << "stroke end" << pos << pressure;
-}
