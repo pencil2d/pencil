@@ -129,6 +129,9 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/util/bspline.cpp \
     src/tool/stroketool.cpp
 
+# Track dependencies for all includes
+DEPENDPATH *= $${INCLUDEPATH}
+
 win32 {
     INCLUDEPATH += . libwin32
     SOURCES += src/external/win32/win32.cpp
