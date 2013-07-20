@@ -1,15 +1,13 @@
 #ifndef PENTOOL_H
 #define PENTOOL_H
 
-#include "basetool.h"
+#include "stroketool.h"
 
-
-
-class PenTool : public BaseTool
+class PenTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    PenTool();
+    PenTool(QObject *parent = 0);
     ToolType type();
     void loadSettings();
     QCursor cursor();
@@ -18,7 +16,10 @@ public:
     void mouseMoveEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 
+    void drawStroke();
+
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
 };
 
 #endif // PENTOOL_H

@@ -8,10 +8,13 @@
 #include <QCursor>
 #include "pencildef.h"
 
+#include <QPointF>
 
 class Editor;
 class QMouseEvent;
 class ScribbleArea;
+class QKeyEvent;
+class StrokeManager;
 
 class Properties
 {
@@ -28,7 +31,6 @@ public:
 const int ON = 1;
 const int OFF = 0;
 const int DISABLED = -1;
-
 
 class BaseTool : public QObject
 {
@@ -48,8 +50,12 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*);
     virtual void mouseReleaseEvent(QMouseEvent*);
     virtual void mouseDoubleClickEvent(QMouseEvent*);
+    // return true if handled
+    virtual bool keyPressEvent(QKeyEvent *) { return false; }
 
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
+    virtual void clear() { }
 
     void setColour(const int i);
     void setColour(const QColor colour);
@@ -63,6 +69,13 @@ public:
 
     Properties properties;
 
+    QPointF getCurrentPixel();
+    QPointF getCurrentPoint();
+    QPointF getLastPixel();
+    QPointF getLastPoint();
+    QPointF getLastPressPixel();
+    QPointF getLastPressPoint();
+
 signals:
 
 public slots:
@@ -70,6 +83,7 @@ public slots:
 protected:
     Editor* m_pEditor;
     ScribbleArea* m_pScribbleArea;
+    StrokeManager* m_pStrokeManager;
 };
 
 #endif // BASETOOL_H

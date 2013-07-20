@@ -627,6 +627,9 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     m_object->modified = false;
     m_pTimeLine->updateContent();
+
+    m_object->strCurrentFilePath = strSavedFilename;
+
     return true;
 }
 

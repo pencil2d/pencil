@@ -66,7 +66,7 @@ public:
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);
     bool isModified() { return modified; }
-    int allLayers() { return scribbleArea->allLayers(); }
+    int allLayers() { return scribbleArea->showAllLayers(); }
     static QMatrix map(QRectF, QRectF);    
     bool exportSeqCLI(QString, QString);
 
