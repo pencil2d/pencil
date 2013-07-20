@@ -76,7 +76,7 @@ QCursor BrushTool::cursor()
 
 void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    if (m_pScribbleArea->m_usePressure && !mouseDevice)
+    if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
         currentWidth = properties.width * pressure;
     }
@@ -175,7 +175,7 @@ void BrushTool::drawStroke()
         }
 
         int rad = qRound(brushWidth) / 2 + 2;
-        m_pScribbleArea->update(m_pScribbleArea->myTempView.mapRect(rect).normalized().adjusted(-rad, -rad, +rad, +rad));
+        m_pScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type == Layer::VECTOR)
     {
@@ -186,8 +186,8 @@ void BrushTool::drawStroke()
         {
             QPointF a = segment.first;
             QPointF b = segment.second;
-            m_pScribbleArea->bufferImg->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver, m_pScribbleArea->useAntialiasing());
-            m_pScribbleArea->update(QRect(a.toPoint(), b.toPoint()).normalized().adjusted(-rad, -rad, +rad, +rad));
+            m_pScribbleArea->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver);
+            m_pScribbleArea->refreshVector(QRect(a.toPoint(), b.toPoint()), rad);
         }
     }
 }

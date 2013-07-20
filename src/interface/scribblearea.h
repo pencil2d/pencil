@@ -43,7 +43,6 @@ class ScribbleArea : public QWidget
     // and a drawing facade responsible for updating the scribblearea
     friend class EraserTool;
     friend class BucketTool;
-    friend class BrushTool;
     friend class PolylineTool;
     friend class HandTool;
     friend class EditTool;
@@ -202,6 +201,7 @@ public:
     void endPolyline(QList<QPointF> points);
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
@@ -212,7 +212,6 @@ protected:
     void setPrevMode();
     void updateCanvas(int frame, QRect rect);
     void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
 
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
