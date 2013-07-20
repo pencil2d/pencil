@@ -82,15 +82,6 @@ void PenTool::mousePressEvent(QMouseEvent *event)
 {
     // sanity checks
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer == NULL)
-    {
-        return;
-    }
-
-    VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-    if (vectorImage == NULL) {
-        return;
-    }
 
     if (layer->type == Layer::VECTOR)
     {
