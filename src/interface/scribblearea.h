@@ -200,8 +200,6 @@ protected:
     void updateCanvas(int frame, QRect rect);
     void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
-    void drawEyedropperPreview(const QColor colour);
-
 
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);

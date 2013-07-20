@@ -1456,18 +1456,6 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
-void ScribbleArea::drawEyedropperPreview(const QColor colour)
-{
-    QPixmap cursorPixmap;
-    QPainter painter(&cursorPixmap);
-    painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter.setBrush(colour);
-    painter.drawRect(10, 10, 20, 20);
-    painter.end();
-    setCursor(QCursor(cursorPixmap, 5, 5));
-    update();
-}
-
 void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (!areLayersSane())

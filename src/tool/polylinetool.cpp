@@ -68,6 +68,7 @@ void PolylineTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PolylineTool::mouseMoveEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     Layer *layer = m_pEditor->getCurrentLayer();
 
     if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)

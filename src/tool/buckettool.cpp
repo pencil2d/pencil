@@ -117,5 +117,5 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
 
 void BucketTool::mouseMoveEvent(QMouseEvent *event)
 {
-
+    Q_UNUSED(event);
 }
