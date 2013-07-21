@@ -138,7 +138,8 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
     QPointF pos;
 
     if (m_tabletInUse && m_useHighResPosition) {
-        pos = event->pos() + m_tabletPosition - event->globalPos();
+//        pos = event->pos() + m_tabletPosition - event->globalPos();
+        pos = event->pos();
     } else {
         pos = event->pos();
     }
@@ -254,12 +255,14 @@ qreal splint(QVector<qreal> xa, QVector<qreal> ya, QVector<qreal> y2a, float x) 
 }
 
 
-QList<QPoint> StrokeManager::interpolateStroke(int radius)
+QList<QPointF> StrokeManager::interpolateStroke(int radius)
 {
-    QList<QPoint> result;
+    QList<QPointF> result;
+
+    QPointF p0 = strokeQueue[0];
+    result << p0;
 
     if (strokeQueue.size() < 3 || false) {
-        result << strokeQueue[0].toPoint();
         return result;
     }
 
@@ -274,18 +277,16 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
     QVector<qreal> x2a = spline(t, x);
     QVector<qreal> y2a = spline(t, y);
 
-    QPointF p0 = strokeQueue[0];
     QPointF p1 = strokeQueue[1];
 
     QLineF line(p0, p1);
 
     const int span   = 1 + line.length();
-    static const float strokeQuality = 10;
+    static const float strokeQuality = 1;
     const int step  = qMax (1.0f, radius / strokeQuality);
 
     int strokeLen = 0;
 
-    result << p0.toPoint();
     p1 = p0;
 
     for (int j = step; j <= span && strokeLen < 1024; j += step)
@@ -296,11 +297,13 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
         p0 = QPointF(x0, y0);
 
         QLineF line(p0, p1);
-        if (line.length() > 1) {
-            result << p0.toPoint();
+        if (line.length() > (radius / 2.0)) {
+            result << p0;
             p1 = p0;
         }
     }
+
+//    qDebug() << "interpolated " << strokeQueue << "to" << result;
 
     return result;
 }

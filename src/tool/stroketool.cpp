@@ -27,10 +27,10 @@ void StrokeTool::endStroke()
 
 QList<QPair<QPointF, QPointF> > StrokeTool::calculateStroke(float width)
 {
-    QList<QPoint> pixels = m_pStrokeManager->interpolateStroke(width);
+    QList<QPointF> pixels = m_pStrokeManager->interpolateStroke(width);
     QList<QPair<QPointF, QPointF> > segments;
 
-    foreach (QPoint pixel, pixels) {
+    foreach (QPointF pixel, pixels) {
         if (pixel != lastPixel || !m_firstDraw)
         {
             m_firstDraw = false;

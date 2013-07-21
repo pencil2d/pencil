@@ -21,8 +21,7 @@ public:
     float getPressure() { return m_tabletPressure; }
     bool isTabletInUse() { return m_tabletInUse; }
 
-    QList<QPoint> interpolateStroke(int radius);
-    QList<QPoint> interpolateStrokeInSteps(int steps);
+    QList<QPointF> interpolateStroke(int radius);
 
     bool isUsingHighResPosition() { return m_useHighResPosition; }
     void useHighResPosition(bool val) { m_useHighResPosition = val; }
