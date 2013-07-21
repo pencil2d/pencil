@@ -126,6 +126,8 @@ void BrushTool::mouseReleaseEvent(QMouseEvent *event)
         {
         }
     }
+
+    endStroke();
 }
 
 void BrushTool::mouseMoveEvent(QMouseEvent *event)

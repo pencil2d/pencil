@@ -20,6 +20,7 @@
 
 #include <QDebug>
 #include <QLineF>
+#include <QPainterPath>
 
 #include <math.h>
 
@@ -83,6 +84,7 @@ void StrokeManager::reset()
     nQueued_p = 0;
     pressure = 0.0f;
     velocity = QPointF(0,0);
+    hasTangent = false;
 }
 
 void StrokeManager::setPressure(float pressure) {
@@ -100,6 +102,21 @@ void StrokeManager::setPressure(float pressure) {
 
 }
 
+
+QPointF StrokeManager::getEventPosition(QMouseEvent *event)
+{
+    QPointF pos;
+
+    if (m_tabletInUse && m_useHighResPosition) {
+//        pos = event->pos() + m_tabletPosition - event->globalPos();
+        pos = event->pos();
+    } else {
+        pos = event->pos();
+    }
+
+    return pos;
+}
+
 void StrokeManager::mousePressEvent(QMouseEvent *event)
 {
     reset();
@@ -110,6 +127,8 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     m_lastPixel = getEventPosition(event);
 
     m_strokeStarted = true;
+    singleshotTime.start();
+    previousTime = singleshotTime.elapsed();
 }
 
 void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
@@ -131,20 +150,6 @@ void StrokeManager::tabletEvent(QTabletEvent *event)
 
     m_tabletPosition = event->hiResGlobalPos();
     setPressure(event->pressure());
-}
-
-QPointF StrokeManager::getEventPosition(QMouseEvent *event)
-{
-    QPointF pos;
-
-    if (m_tabletInUse && m_useHighResPosition) {
-//        pos = event->pos() + m_tabletPosition - event->globalPos();
-        pos = event->pos();
-    } else {
-        pos = event->pos();
-    }
-
-    return pos;
 }
 
 void StrokeManager::mouseMoveEvent(QMouseEvent *event)
@@ -169,23 +174,8 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
         strokeQueue.removeFirst();
     }
 
-    strokeQueue.append(pos);
+    strokeQueue << pos;
 
-    clock_t t = clock();
-    if (m_timeshot && strokeQueue.size() > 2)
-    {
-        float dt = (t - m_timeshot) / (float)CLOCKS_PER_SEC;
-        if (IS_SIGNIFICANT(dt))
-        {
-            QPointF f = pos - strokeQueue[strokeQueue.size() - 2];
-            f /= (100.0f * dt);
-
-            f.setX(MATH::CLAMP(f.x(), -10.0f, +10.0f));
-            f.setY(MATH::CLAMP(f.y(), -10.0f, +10.0f));
-            velocity = 0.9f * f + 0.1f * velocity;
-        }
-    }
-    m_timeshot = t;
 }
 
 
@@ -259,6 +249,41 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
 {
     QList<QPointF> result;
 
+    int time = singleshotTime.elapsed();
+    static const qreal smoothness = 1.0;
+    QLineF line(m_lastPixel, m_currentPixel);
+    if (!hasTangent)
+    {
+        if (line.length() > 10) {
+            hasTangent = true;
+            m_previousTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * (line.length()));
+        }
+        result << m_lastPixel << m_currentPixel;
+    } else {
+        qreal scaleFactor = line.length();
+        if (line.length() < 10) {
+            result << m_lastPixel << m_currentPixel;
+            hasTangent = false;
+        } else {
+            QPointF c1 = m_lastPixel + m_previousTangent * scaleFactor;
+            QPointF newTangent = (m_currentPixel - c1) * smoothness / (3.0 * line.length());
+            qDebug() << "scale factor" << scaleFactor << m_previousTangent << newTangent;
+            QPointF c2 = m_currentPixel - newTangent * scaleFactor;
+
+            QPainterPath path(m_lastPixel);
+            path.cubicTo(c1, c2, m_currentPixel);
+
+            result << m_lastPixel << c1 << c2 << m_currentPixel;
+
+            m_previousTangent = newTangent;
+        }
+
+
+    }
+
+    previousTime = time;
+
+/*
     QPointF p0 = strokeQueue[0];
     result << p0;
 
@@ -302,6 +327,7 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
             p1 = p0;
         }
     }
+    */
 
 //    qDebug() << "interpolated " << strokeQueue << "to" << result;
 

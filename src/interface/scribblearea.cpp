@@ -977,6 +977,11 @@ void ScribbleArea::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::Composit
     bufferImg->drawLine(P1, P2, pen, cm, m_antialiasing);
 }
 
+void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
+{
+    bufferImg->drawPath(path, pen, brush, cm, m_antialiasing);
+}
+
 void ScribbleArea::refreshBitmap(QRect rect, int rad)
 {
     update(myTempView.mapRect(rect.normalized().adjusted(-rad, -rad, +rad, +rad)));

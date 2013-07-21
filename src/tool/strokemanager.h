@@ -6,6 +6,8 @@
 #include <QPoint>
 #include <time.h>
 #include <QTabletEvent>
+#include <QTimer>
+#include <QTime>
 
 class StrokeManager
 {
@@ -44,6 +46,8 @@ protected:
     float pressQueue[STROKE_PRESSURE_QUEUE_LENGTH + 1];
     int nQueued_p;
 
+    QTime singleshotTime;
+
     long meter;
     QPointF velocity;
 
@@ -51,6 +55,10 @@ protected:
     QPointF m_lastReleasePosition;
     QPointF m_currentPixel;
     QPointF m_lastPixel;
+
+    QPointF m_previousTangent;
+    bool hasTangent;
+    int previousTime;
 
     bool m_strokeStarted;
 

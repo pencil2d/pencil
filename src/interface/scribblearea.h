@@ -201,6 +201,7 @@ public:
     void endPolyline(QList<QPointF> points);
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
+    void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
@@ -244,7 +245,9 @@ protected:
     bool followContour;
 
     QBrush backgroundBrush;
+public:
     BitmapImage *bufferImg; // used to pre-draw vector modifications
+protected:
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
 
     bool mouseInUse;

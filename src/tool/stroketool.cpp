@@ -33,13 +33,15 @@ QList<QPair<QPointF, QPointF> > StrokeTool::calculateStroke(float width)
     foreach (QPointF pixel, pixels) {
         if (pixel != lastPixel || !m_firstDraw)
         {
-            m_firstDraw = false;
-
             segments << QPair<QPointF, QPointF>(lastPixel, pixel);
 
             lastPixel = pixel;
             strokePoints << m_pScribbleArea->pixelToPoint(pixel);
             strokePressures << m_pStrokeManager->getPressure();
+        }
+        else
+        {
+            m_firstDraw = false;
         }
     }
 
