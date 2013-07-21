@@ -334,7 +334,7 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
         }
     }
 
-    qDebug() << "span" << span << "step" << step << "points" << result.size();
+//    qDebug() << "span" << span << "step" << step << "points" << result.size();
 
     return result;
 }
