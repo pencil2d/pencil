@@ -25,33 +25,21 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
-#include "basetool.h"
 #include "vectorselection.h"
+#include "basetool.h"
 
 class Editor;
 class Layer;
+class StrokeManager;
+class BaseTool;
 
 
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-    // we declare them all friends for now until we move out all the tool relevant code to the tool classes
-    // we'll then try to find some sensible interfaces between the tools and the scribble area
-    // more specifically, i'm thinking of a stroke handler that will contain all the information about the current mouse stroke
-    // and a drawing facade responsible for updating the scribblearea
-    friend class PencilTool;
-    friend class EraserTool;
-    friend class PenTool;
-    friend class BucketTool;
-    friend class BrushTool;
-    friend class PolylineTool;
-    friend class HandTool;
-    friend class EditTool;
-    friend class EyedropperTool;
     friend class MoveTool;
-    friend class SelectTool;
-    friend class SmudgeTool;
+    friend class EditTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
@@ -65,20 +53,40 @@ public:
     void deleteSelection();
     void setSelection(QRectF rect, bool);
     void displaySelectionProperties();
-    QRectF getSelection() { return mySelection; }
+    QRectF getSelection() const { return mySelection; }
     bool somethingSelected;
     bool readCanvasFromCache;
+    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
 
     bool isModified() const { return modified; }
+    bool areLayersSane() const;
+    bool isLayerPaintable() const;
 
     static QBrush getBackgroundBrush(QString);
 
-    bool thinLines() const { return showThinLines; }
-    int allLayers() const { return showAllLayers; }
+    bool showThinLines() const { return m_showThinLines; }
+    int showAllLayers() const { return m_showAllLayers; }
+    qreal getCurveSmoothing() const { return curveSmoothing; }
+    bool useAntialiasing() const { return m_antialiasing; }
+    bool usePressure() const { return m_usePressure; }
+    bool makeInvisible() const { return m_makeInvisible; }
+
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+    MoveMode getMoveMode() const { return m_moveMode; }
+    void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
     QMatrix getView();
     QRectF getViewRect();
     QPointF getCentralPoint();
+
+    qreal getViewScaleX() const { return myView.m11(); }
+    qreal getTempViewScaleX() const { return myTempView.m11(); }
+    qreal getViewScaleY() const { return myView.m22(); }
+    qreal getTempViewScaleY() const { return myTempView.m22(); }
+
+    QMatrix getTransformationMatrix() const { return transMatrix; }
+    void setTransformationMatrix(QMatrix matrix);
+    void applyTransformationMatrix();
 
     void updateFrame();
     void updateFrame(int frame);
@@ -86,15 +94,21 @@ public:
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt(int frame);
     void updateAllVectorLayers();
-    bool getUpdateAll() {return updateAll;}
 
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    bool shouldUpdateAll() const {  return updateAll; }
+    void setAllDirty() { updateAll = true; }
 
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
     void switchTool(ToolType type);
     QList<BaseTool *> getTools();
+
+    void setPrevTool();
+
+    QPointF pixelToPoint(QPointF pixel);
+
+    StrokeManager *getStrokeManager() const { return m_strokeManager; }
 
 signals:
     void modification();
@@ -182,25 +196,30 @@ protected:
     void setView();
     void setView(QMatrix);
 
-protected:
-    void setPrevMode();
+public:
+    void drawPolyline(QList<QPointF> points, QPointF lastPoint);
+    void endPolyline(QList<QPointF> points);
+
+    void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
+    void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
+    void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
+
     void paintBitmapBuffer();
+    void clearBitmapBuffer();
+    void refreshBitmap(QRect rect, int rad);
+    void refreshVector(QRect rect, int rad);
+
+protected:
     void updateCanvas(int frame, QRect rect);
     void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
-    void drawLineTo(const QPointF &endPixel, const QPointF &endPoint);
-    void drawEyedropperPreview(const QColor colour);
-    void drawPolyline();
-    void endPolyline();
 
-    void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
     void floodFillError(int errorType);
 
-    enum myMoveModes { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
-
-    myMoveModes moveMode;
+    MoveMode m_moveMode;
     ToolType prevMode;
 
+    StrokeManager *m_strokeManager;
     BaseTool *m_currentTool;
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
@@ -210,37 +229,30 @@ protected:
     bool modified;
     bool simplified;
 
-    bool showThinLines;
-    int showAllLayers;
-    bool usePressure, makeInvisible;
-    bool highResPosition;
-    bool antialiasing;
+    bool m_showThinLines;
+    int  m_showAllLayers;
+    bool m_usePressure;
+    bool m_makeInvisible;
+    bool m_antialiasing;
     bool shadows;
     bool toolCursors;
-    int gradients;
+    int  gradients;
     qreal curveOpacity;
     qreal curveSmoothing;
     bool onionPrev, onionNext;
     bool updateAll;
 
-    Properties brush;
-    Properties eraser;
-
-    qreal currentWidth;
-    QColor currentPressuredColor;
     bool followContour;
 
     QBrush backgroundBrush;
+public:
     BitmapImage *bufferImg; // used to pre-draw vector modifications
+protected:
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
 
     bool mouseInUse;
-    QList<QPointF> mousePoints; // copy of points clicked using polyline tool
-    QList<QPointF> mousePath; // copy of points drawn using pencil, pen, eraser, etc, tools
-    QList<qreal> mousePressure;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
-    QPointF lastBrushPoint;
     //QBrush brush; // the current brush
 
     qreal tol;
@@ -256,11 +268,6 @@ protected:
     VectorSelection vectorSelection;
     //bool selectionChanged;
     QMatrix selectionTransformation;
-
-
-    bool tabletInUse;
-    qreal tabletPressure;
-    QPointF tabletPosition;
 
     QMatrix myView, myTempView, centralView, transMatrix;
 
