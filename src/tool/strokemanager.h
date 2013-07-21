@@ -41,6 +41,7 @@ protected:
 
     float pressure; // last pressure
     QList<QPointF> strokeQueue;
+    QList<qreal> timeQueue;
 
     float pressQueue[STROKE_PRESSURE_QUEUE_LENGTH + 1];
     int nQueued_p;

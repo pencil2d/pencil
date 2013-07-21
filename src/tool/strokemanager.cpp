@@ -80,6 +80,7 @@ void StrokeManager::reset()
     m_strokeStarted = false;
     meter = 0;
     strokeQueue.clear();
+    timeQueue.clear();
     nQueued_p = 0;
     pressure = 0.0f;
     velocity = QPointF(0,0);
@@ -166,25 +167,28 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
     while (strokeQueue.size()  >= STROKE_QUEUE_LENGTH)
     {
         strokeQueue.removeFirst();
+        timeQueue.removeFirst();
     }
-
-    strokeQueue.append(pos);
 
     clock_t t = clock();
-    if (m_timeshot && strokeQueue.size() > 2)
-    {
-        float dt = (t - m_timeshot) / (float)CLOCKS_PER_SEC;
-        if (IS_SIGNIFICANT(dt))
-        {
-            QPointF f = pos - strokeQueue[strokeQueue.size() - 2];
-            f /= (100.0f * dt);
 
-            f.setX(MATH::CLAMP(f.x(), -10.0f, +10.0f));
-            f.setY(MATH::CLAMP(f.y(), -10.0f, +10.0f));
-            velocity = 0.9f * f + 0.1f * velocity;
-        }
-    }
-    m_timeshot = t;
+    strokeQueue.append(pos);
+    timeQueue.append(t);
+
+//    if (m_timeshot && strokeQueue.size() > 2)
+//    {
+//        float dt = (t - m_timeshot) / (float)CLOCKS_PER_SEC;
+//        if (IS_SIGNIFICANT(dt))
+//        {
+//            QPointF f = pos - strokeQueue[strokeQueue.size() - 2];
+//            f /= (100.0f * dt);
+
+//            f.setX(MATH::CLAMP(f.x(), -10.0f, +10.0f));
+//            f.setY(MATH::CLAMP(f.y(), -10.0f, +10.0f));
+//            velocity = 0.9f * f + 0.1f * velocity;
+//        }
+//    }
+//    m_timeshot = t;
 }
 
 //QList<QPoint> StrokeManager::interpolateStrokeInSteps(int steps)
@@ -295,7 +299,7 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
     for (int i = 0; i < n; i++) {
         x[i] = strokeQueue[i].x();
         y[i] = strokeQueue[i].y();
-        t[i] = i;
+        t[i] = (timeQueue[i] - timeQueue[0]) / (timeQueue[1] - timeQueue[0]);
     }
 
     QVector<qreal> x2a = spline(t, x);
@@ -334,7 +338,7 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
         }
     }
 
-    qDebug() << "span" << span << "step" << step << "points" << result.size();
+    qDebug() << timeQueue[0] << timeQueue[1] << "span" << span << "step" << step << "points" << result.size();
 
     return result;
 }
