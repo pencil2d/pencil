@@ -103,6 +103,7 @@ void BrushTool::mousePressEvent(QMouseEvent *event)
     }
 
     startStroke();
+    lastBrushPoint = getCurrentPoint();
 }
 
 void BrushTool::mouseReleaseEvent(QMouseEvent *event)
@@ -146,11 +147,6 @@ void BrushTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-//        currentWidth = properties.width;
-
-        QPointF a = m_pScribbleArea->pixelToPoint(lastPixel);
-        QPointF b = getCurrentPoint();
-
         qreal opacity = 1.0;
         qreal brushWidth = currentWidth +  0.5 * properties.feather;
         qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
@@ -161,17 +157,31 @@ void BrushTool::drawStroke()
         //            if (usePressure) { brushStep = brushStep * tabletPressure; }
         brushStep = qMax(1.0, brushStep);
 
-        qreal distance = 4 * QLineF(b, a).length();
-        int steps = qRound(distance) / brushStep + 1;
-
-        QList<QPoint> pixels =  m_pStrokeManager->interpolateStrokeInSteps(steps);
-
+        //        currentWidth = properties.width;
         BlitRect rect;
 
-        foreach (QPointF pixel, pixels) {
-            QPointF point = m_pScribbleArea->pixelToPoint(pixel);
-            rect.extend(point.toPoint());
-            m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
+        QPointF a = lastBrushPoint;
+        QPointF b = getCurrentPoint();
+
+        foreach (QSegment segment, calculateStroke(brushWidth))
+        {
+            QPointF a = lastBrushPoint;
+            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
+
+            qreal distance = 4 * QLineF(b, a).length();
+            int steps = qRound(distance) / brushStep;
+
+            for (int i = 0; i < steps; i++)
+            {
+                QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+                rect.extend(point.toPoint());
+                m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
+
+                if (i == (steps - 1))
+                {
+                    lastBrushPoint = point;
+                }
+            }
         }
 
         int rad = qRound(brushWidth) / 2 + 2;

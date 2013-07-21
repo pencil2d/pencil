@@ -32,25 +32,22 @@ public:
     QPointF getLastPixel() const { return m_lastPixel; }
 
 protected:
-    static const int STROKE_QUEUE_LENGTH = 3;
+    static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
     static const int STROKE_PRESSURE_QUEUE_LENGTH = 16;
 
     void reset();
-    void interpolate(float t, int &x, int &y);
+    QPointF interpolate(float t);
 
     QPointF getEventPosition(QMouseEvent *);
 
     float pressure; // last pressure
-    int xQueue[STROKE_QUEUE_LENGTH + 1];
-    int yQueue[STROKE_QUEUE_LENGTH + 1];
-    int nQueued;
+    QList<QPointF> strokeQueue;
 
     float pressQueue[STROKE_PRESSURE_QUEUE_LENGTH + 1];
     int nQueued_p;
 
     long meter;
-    float velocity[2];
-
+    QPointF velocity;
 
     QPointF m_lastPressPixel;
     QPointF m_lastReleasePosition;

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QDebug>
+#include <QLineF>
 
 #include <math.h>
 
@@ -78,11 +79,10 @@ void StrokeManager::reset()
 {
     m_strokeStarted = false;
     meter = 0;
-    nQueued = 0;
+    strokeQueue.clear();
     nQueued_p = 0;
     pressure = 0.0f;
-    velocity[0] = 0;
-    velocity[1] = 0;
+    velocity = QPointF(0,0);
 }
 
 void StrokeManager::setPressure(float pressure) {
@@ -100,19 +100,18 @@ void StrokeManager::setPressure(float pressure) {
 
 }
 
-void StrokeManager::interpolate(float t, int &x, int &y)
+QPointF cubicSpline(const QPointF &p1, const QPointF &p2, const QPointF &p3, float t)
 {
-    if (nQueued < 3)
-    {
-        x = xQueue[0]; // XXX jitter
-        y = yQueue[0];
-    } else {
-        BSpline::interpolate_quad(xQueue + nQueued - 3,
-                                  yQueue + nQueued - 3,
-                                  t);
+    return p1;
+}
 
-        x = xQueue[nQueued];
-        y = yQueue[nQueued];
+QPointF StrokeManager::interpolate(float t)
+{
+    if (strokeQueue.size() < 3)
+    {
+        return strokeQueue[0];
+    } else {
+        return cubicSpline(strokeQueue[0], strokeQueue[1], strokeQueue[2], t);
     }
 
 }
@@ -179,71 +178,58 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
     }
 
     // shift queue
-    while (nQueued >= STROKE_QUEUE_LENGTH)
+
+    while (strokeQueue.size()  >= STROKE_QUEUE_LENGTH)
     {
-        for (int i = 0; i < nQueued - 1; i++) {
-            xQueue[i] = xQueue[i+1];
-            yQueue[i] = yQueue[i+1];
-        }
-        nQueued--;
+        strokeQueue.removeFirst();
     }
 
-    // update meter
-    if (nQueued)
-    {
-        meter += abs(pos.x() - xQueue[nQueued - 1]) +
-                abs(pos.y() - yQueue[nQueued - 1]);
-    }
-
-    xQueue[nQueued] = pos.x();
-    yQueue[nQueued] = pos.y();
-    nQueued++;
+    strokeQueue.append(pos);
 
     clock_t t = clock();
-    if (m_timeshot && nQueued > 2)
+    if (m_timeshot && strokeQueue.size() > 2)
     {
         float dt = (t - m_timeshot) / (float)CLOCKS_PER_SEC;
         if (IS_SIGNIFICANT(dt))
         {
-            float u = (pos.x() - xQueue[nQueued - 2]) / (100.0f * dt);
-            float v = (pos.y() - yQueue[nQueued - 2]) / (100.0f * dt);
+            QPointF f = pos - strokeQueue[strokeQueue.size() - 2];
+            f /= (100.0f * dt);
 
-            u = MATH::CLAMP(u, -10.0f, +10.0f);
-            v = MATH::CLAMP(v, -10.0f, +10.0f);
-            velocity[0] = 0.9f * u + 0.1f * velocity[0];
-            velocity[1] = 0.9f * v + 0.1f * velocity[1];
+            f.setX(MATH::CLAMP(f.x(), -10.0f, +10.0f));
+            f.setY(MATH::CLAMP(f.y(), -10.0f, +10.0f));
+            velocity = 0.9f * f + 0.1f * velocity;
         }
     }
     m_timeshot = t;
 }
 
-QList<QPoint> StrokeManager::interpolateStrokeInSteps(int steps)
-{
-    int sx0, sx1;
-    int sy0, sy1;
+//QList<QPoint> StrokeManager::interpolateStrokeInSteps(int steps)
+//{
+//    int sx0, sx1;
+//    int sy0, sy1;
 
-    QList<QPoint> result;
+//    QList<QPoint> result;
 
-    interpolate(0, sx0, sy0);
-    interpolate(1, sx1, sy1);
+//    interpolate(0, sx0, sy0);
+//    interpolate(1, sx1, sy1);
 
-    int strokeLen = 0;
+//    int strokeLen = 0;
 
-    for (int j = 0; j < steps && strokeLen < 1024; j++)
-    {
-        interpolate((float)j/(float)steps, sx0, sy0);
+//    for (int j = 0; j < steps && strokeLen < 1024; j++)
+//    {
+//        interpolate((float)j/(float)steps, sx0, sy0);
 
-        if (abs (sx0 - sx1) > 1 ||
-                abs (sy0 - sy1) > 1 ||
-                j == 0) {
-            result.append(QPoint(sx0, sy0));
-            sx1 = sx0;
-            sy1 = sy0;
-        }
-    }
+//        if (abs (sx0 - sx1) > 1 ||
+//                abs (sy0 - sy1) > 1 ||
+//                j == 0) {
+//            result.append(QPoint(sx0, sy0));
+//            sx1 = sx0;
+//            sy1 = sy0;
+//        }
+//    }
 
-    return result;
-}
+//    return result;
+//}
 
 QList<QPoint> StrokeManager::interpolateStroke(int radius)
 {
@@ -252,25 +238,30 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
 
     QList<QPoint> result;
 
-    interpolate(0, sx0, sy0);
-    interpolate(1, sx1, sy1);
+    QPointF p0 = interpolate(0);
+    QPointF p1 = interpolate(1);
 
-    const int span   = 1 + qMax(abs (sx1 - sx0), abs (sy1 - sy0));
+    QLineF line(p0, p1);
+
+    const int span   = 1 + line.length();
     static const int strokeQuality = 1;
     const int step  = qMax (1, radius / strokeQuality);
 
+//    qDebug() << "span " << span << "step " << step;
+
     int strokeLen = 0;
 
-    for (int j = 0; j < span && strokeLen < 1024; j += step)
-    {
-        interpolate((float)j/span, sx0, sy0);
+    result << p0.toPoint();
+    p1 = p0;
 
-        if (abs (sx0 - sx1) > 1 ||
-                abs (sy0 - sy1) > 1 ||
-                j == 0) {
-            result.append(QPoint(sx0, sy0));
-            sx1 = sx0;
-            sy1 = sy0;
+    for (int j = step; j <= span && strokeLen < 1024; j += step)
+    {
+//        qDebug() << "interpolate at " << (float)j/span;
+        p0 = interpolate((float)j/span);
+        QLineF line(p0, p1);
+        if (line.length() > 1) {
+            result << p0.toPoint();
+            p1 = p0;
         }
     }
 
