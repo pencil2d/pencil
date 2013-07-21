@@ -20,6 +20,7 @@
 
 #include <QDebug>
 #include <QLineF>
+#include <QPainterPath>
 
 #include <math.h>
 
@@ -167,13 +168,11 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
     while (strokeQueue.size()  >= STROKE_QUEUE_LENGTH)
     {
         strokeQueue.removeFirst();
-        timeQueue.removeFirst();
     }
 
     clock_t t = clock();
 
     strokeQueue.append(pos);
-    timeQueue.append(t);
 
 //    if (m_timeshot && strokeQueue.size() > 2)
 //    {
@@ -190,34 +189,6 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
 //    }
 //    m_timeshot = t;
 }
-
-//QList<QPoint> StrokeManager::interpolateStrokeInSteps(int steps)
-//{
-//    int sx0, sx1;
-//    int sy0, sy1;
-
-//    QList<QPoint> result;
-
-//    interpolate(0, sx0, sy0);
-//    interpolate(1, sx1, sy1);
-
-//    int strokeLen = 0;
-
-//    for (int j = 0; j < steps && strokeLen < 1024; j++)
-//    {
-//        interpolate((float)j/(float)steps, sx0, sy0);
-
-//        if (abs (sx0 - sx1) > 1 ||
-//                abs (sy0 - sy1) > 1 ||
-//                j == 0) {
-//            result.append(QPoint(sx0, sy0));
-//            sx1 = sx0;
-//            sy1 = sy0;
-//        }
-//    }
-
-//    return result;
-//}
 
 QVector<qreal> spline(QVector<qreal> x, QVector<qreal> y) {
   float p, qn, sig, un;
@@ -289,17 +260,55 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
 {
     QList<QPoint> result;
 
-    if (strokeQueue.size() < 3 || false) {
+    if (strokeQueue.size() < 4 || false) {
+        qDebug() << "not enough points";
         result << strokeQueue[0].toPoint();
         return result;
     }
+
+
+    QList<QPointF> &p = strokeQueue;
+    QPointF d1 = (p[2] - p[1]) / 3;
+    QPointF d2 = (p[3] - p[2]) / 3;
+
+    QPainterPath path(p[1]);
+    path.cubicTo(p[1] + d1, p[2] - d2, p[2]);
+
+    QLineF line(p[1], p[2]);
+    const float span   = 1 + line.length();
+    static const float strokeQuality = 10;
+    const float steps  = span / qMax (1.0f, radius / strokeQuality);
+    const float step = 1.0f / steps;
+
+    QPointF p0, p1;
+    p0 = p[1];
+    result << p0.toPoint();
+    p1 = p0;
+
+    for (float t = 0.0; t <= 1.0; t += step)
+    {
+        p0 = path.pointAtPercent(t);
+        QLineF line(p0, p1);
+        if (line.length() > 1) {
+            result << p0.toPoint();
+            p1 = p0;
+        }
+    }
+
+    qDebug() << "span" << span << "step" << steps << "points" << result.size();
+
+    return result;
+
+//    qDebug() << "interpolate " << x << y;
+
+    /*
 
     int n = 3;
     QVector<qreal> x(n), y(n), t(n);
     for (int i = 0; i < n; i++) {
         x[i] = strokeQueue[i].x();
         y[i] = strokeQueue[i].y();
-        t[i] = (timeQueue[i] - timeQueue[0]) / (timeQueue[1] - timeQueue[0]);
+        t[i] = i;
     }
 
     QVector<qreal> x2a = spline(t, x);
@@ -338,8 +347,9 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
         }
     }
 
-    qDebug() << timeQueue[0] << timeQueue[1] << "span" << span << "step" << step << "points" << result.size();
+    qDebug() << "span" << span << "step" << step << "points" << result.size();
 
     return result;
+    */
 }
 

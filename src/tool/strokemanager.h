@@ -32,7 +32,7 @@ public:
     QPointF getLastPixel() const { return m_lastPixel; }
 
 protected:
-    static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
+    static const int STROKE_QUEUE_LENGTH = 4; // 4 points for cubic bezier
     static const int STROKE_PRESSURE_QUEUE_LENGTH = 16;
 
     void reset();
