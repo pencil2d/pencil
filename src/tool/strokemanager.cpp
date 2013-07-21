@@ -187,33 +187,6 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
     m_timeshot = t;
 }
 
-//QList<QPoint> StrokeManager::interpolateStrokeInSteps(int steps)
-//{
-//    int sx0, sx1;
-//    int sy0, sy1;
-
-//    QList<QPoint> result;
-
-//    interpolate(0, sx0, sy0);
-//    interpolate(1, sx1, sy1);
-
-//    int strokeLen = 0;
-
-//    for (int j = 0; j < steps && strokeLen < 1024; j++)
-//    {
-//        interpolate((float)j/(float)steps, sx0, sy0);
-
-//        if (abs (sx0 - sx1) > 1 ||
-//                abs (sy0 - sy1) > 1 ||
-//                j == 0) {
-//            result.append(QPoint(sx0, sy0));
-//            sx1 = sx0;
-//            sy1 = sy0;
-//        }
-//    }
-
-//    return result;
-//}
 
 QVector<qreal> spline(QVector<qreal> x, QVector<qreal> y) {
   float p, qn, sig, un;
@@ -310,22 +283,17 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
     static const float strokeQuality = 10;
     const int step  = qMax (1.0f, radius / strokeQuality);
 
-//    qDebug() << "span " << span << "step " << step;
-
     int strokeLen = 0;
 
     result << p0.toPoint();
     p1 = p0;
 
-//    qDebug() << "interpolate " << x << y;
     for (int j = step; j <= span && strokeLen < 1024; j += step)
     {
-//        qDebug() << "interpolate at " << (float)j/span;
         float _t = (float)j/span;
         qreal x0 = splint(t, x, x2a, _t);
         qreal y0 = splint(t, y, y2a, _t);
         p0 = QPointF(x0, y0);
-//        qDebug() << _t << ":" << p0;
 
         QLineF line(p0, p1);
         if (line.length() > 1) {
@@ -333,8 +301,6 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
             p1 = p0;
         }
     }
-
-//    qDebug() << "span" << span << "step" << step << "points" << result.size();
 
     return result;
 }
