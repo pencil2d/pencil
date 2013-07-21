@@ -36,7 +36,6 @@ protected:
     static const int STROKE_PRESSURE_QUEUE_LENGTH = 16;
 
     void reset();
-    QPointF interpolate(float t);
 
     QPointF getEventPosition(QMouseEvent *);
 

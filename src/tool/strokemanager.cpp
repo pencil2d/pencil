@@ -100,22 +100,6 @@ void StrokeManager::setPressure(float pressure) {
 
 }
 
-QPointF cubicSpline(const QPointF &p1, const QPointF &p2, const QPointF &p3, float t)
-{
-    return p1;
-}
-
-QPointF StrokeManager::interpolate(float t)
-{
-    if (strokeQueue.size() < 3)
-    {
-        return strokeQueue[0];
-    } else {
-        return cubicSpline(strokeQueue[0], strokeQueue[1], strokeQueue[2], t);
-    }
-
-}
-
 void StrokeManager::mousePressEvent(QMouseEvent *event)
 {
     reset();
@@ -231,21 +215,100 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
 //    return result;
 //}
 
+QVector<qreal> spline(QVector<qreal> x, QVector<qreal> y) {
+  float p, qn, sig, un;
+
+  int n = y.size();
+
+  QVector<qreal> y2(n);
+  QVector<qreal> u(n);
+
+  // the lower boundary condition is set either to be natural
+  y2[0] = u[0] = 0.0;
+
+  for (int i = 1; i < n - 1; i++) {
+    // decomposition loop of the tridiagonal algorithm
+    // y2 and u are used for temporary storage of the decomposed factors
+    sig = (x[i] -x[i-1]) / (x[i+1] -x[i-1]);
+    p = sig * y2[i-1] + 2.0;
+    y2[i] = (sig - 1.0) / p;
+    u[i] = (y[i+1] - y[i]) / (x[i+1] - x[i]) -
+      (y[i] - y[i-1]) / (x[i] - x[i-1]);
+    u[i] = (6.0* u[i] / (x[i+1] - x[i-1]) - sig * u[i-1]) / p;
+  }
+
+  // the upper boundary condition is set either to be natural
+  qn = un = 0.0;
+
+  y2[n-1] = (un - qn * u[n-2]) / (qn * y2[n-2] + 1.0);
+
+  for (int k = n-2; k >= 0; k--) {
+    y2[k] = y2[k] * y2[k+1] + u[k];
+  }
+
+  return y2;
+}
+
+qreal splint(QVector<qreal> xa, QVector<qreal> ya, QVector<qreal> y2a, float x) {
+  int klo, khi, k;
+  float h, b, a;
+
+  int n = xa.size();
+
+  klo = 0;
+  khi = n-1;
+
+  while (khi - klo > 1) {
+    k = (khi + klo) >> 1;
+    if (xa[k] > x) {
+      khi = k;
+    } else {
+      klo = k;
+    }
+  }
+
+  h = xa[khi] - xa[klo];
+  if (h == 0.0) {
+      qDebug() << "Bad xa input to routine splint" << xa;
+      return NAN;
+  }
+  a = (xa[khi] - x) / h;
+  b = (x - xa[klo]) / h;
+  qreal y = a * ya[klo] + b * ya[khi]
+    + ((a * a * a - a) * y2a[klo]
+       + (b * b * b - b) * y2a[khi]) * (h * h) / 6.0;
+  return y;
+}
+
+
 QList<QPoint> StrokeManager::interpolateStroke(int radius)
 {
-    int sx0, sx1;
-    int sy0, sy1;
-
     QList<QPoint> result;
 
-    QPointF p0 = interpolate(0);
-    QPointF p1 = interpolate(1);
+    if (strokeQueue.size() < 3 || false) {
+        result << strokeQueue[0].toPoint();
+        return result;
+    }
+
+    int n = 3;
+    QVector<qreal> x(n), y(n), t(n);
+    for (int i = 0; i < n; i++) {
+        x[i] = strokeQueue[i].x();
+        y[i] = strokeQueue[i].y();
+        t[i] = i;
+    }
+
+    QVector<qreal> x2a = spline(t, x);
+    QVector<qreal> y2a = spline(t, y);
+
+    QPointF p0 = strokeQueue[0];
+    QPointF p1 = strokeQueue[1];
 
     QLineF line(p0, p1);
 
     const int span   = 1 + line.length();
-    static const int strokeQuality = 1;
-    const int step  = qMax (1, radius / strokeQuality);
+    static const float strokeQuality = 10;
+    const int step  = qMax (1.0f, radius / strokeQuality);
 
 //    qDebug() << "span " << span << "step " << step;
 
@@ -254,16 +317,24 @@ QList<QPoint> StrokeManager::interpolateStroke(int radius)
     result << p0.toPoint();
     p1 = p0;
 
+//    qDebug() << "interpolate " << x << y;
     for (int j = step; j <= span && strokeLen < 1024; j += step)
     {
 //        qDebug() << "interpolate at " << (float)j/span;
-        p0 = interpolate((float)j/span);
+        float _t = (float)j/span;
+        qreal x0 = splint(t, x, x2a, _t);
+        qreal y0 = splint(t, y, y2a, _t);
+        p0 = QPointF(x0, y0);
+//        qDebug() << _t << ":" << p0;
+
         QLineF line(p0, p1);
         if (line.length() > 1) {
             result << p0.toPoint();
             p1 = p0;
         }
     }
+
+    qDebug() << "span" << span << "step" << step << "points" << result.size();
 
     return result;
 }
