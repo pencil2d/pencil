@@ -21,7 +21,7 @@ QSettings* pencilSettings()
     return g_pSettings;
 }
 
-void restoreToDefaultSetting()
+void restoreToDefaultSetting() // TODO: finish reset list
 {
     QSettings* s = g_pSettings;
 
@@ -29,11 +29,14 @@ void restoreToDefaultSetting()
     s->setValue("pencilWidth", 1.0);
     s->setValue("eraserWidth", 10.0);
     s->setValue("brushWidth", 15.0);
+    s->setValue("brushFeather", 15.0);
 
     s->setValue("autosaveNumber", 15);
     s->setValue("toolCursors", true);
 
     s->sync();
+    qDebug("restored default tools");
+
 }
 
 

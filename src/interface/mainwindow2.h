@@ -68,6 +68,7 @@ public slots:
     bool maybeSave();
     void showPreferences();
     bool openObject(QString strFilename);
+    void resetToolsSettings();
 
 private slots:
     void exportFile();
