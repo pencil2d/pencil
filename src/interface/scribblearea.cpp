@@ -69,10 +69,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     foreach (BaseTool *tool, getTools())
     {
         tool->initialize(editor, this);
-    }
-
-    m_currentTool = getTool(PENCIL);
-    emit pencilOn();
+    }       
 
     QSettings settings("Pencil", "Pencil");
 
@@ -102,7 +99,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_usePressure = true;
     m_makeInvisible = false;
     somethingSelected = false;
-    setCursor(Qt::CrossCursor);
+    
     onionPrev = true;
     onionNext = false;
     m_showThinLines = false;
@@ -113,7 +110,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     centralView = QMatrix();
 
     QString background = settings.value("background").toString();
-    //  if (background == "")
+    
     background = "white";
     setBackgroundBrush(background);
     bufferImg = new BitmapImage(NULL);
@@ -2230,7 +2227,7 @@ BaseTool *ScribbleArea::getTool(ToolType eToolMode)
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    if (eToolMode != currentTool()->type())
+    if (currentTool() != NULL && eToolMode != currentTool()->type())
     {
         qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
         // XXX tool->setActive()
@@ -2241,9 +2238,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         if (currentTool()->type() == POLYLINE)
         {
             escape();
-        }
-        m_currentTool = getTool(eToolMode);
+        }        
     }
+    m_currentTool = getTool(eToolMode);
+
     // --- change cursor ---
     setCursor(currentTool()->cursor());
 }
