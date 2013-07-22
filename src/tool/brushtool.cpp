@@ -23,7 +23,7 @@ ToolType BrushTool::type()
 
 void BrushTool::loadSettings()
 {
-    QSettings settings("pencil", "pencil");
+    QSettings settings("Pencil", "Pencil");
 
     properties.width = settings.value("brushWidth").toDouble();        
     properties.colourNumber = 1;

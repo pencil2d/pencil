@@ -74,7 +74,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
     QString strCmdName = QString("Cmd") + m_currentActionItem->text();
     QString strKeySeq  = keySeqence.toString( QKeySequence::PortableText );
 
-    QSettings setting("pencil", "pencil");
+    QSettings setting("Pencil", "Pencil");
     setting.beginGroup("shortcuts");
 
     if (isKeySequenceExist(setting, strCmdName, keySeqence))
@@ -151,7 +151,7 @@ void ShortcutsPage::removeDuplicateKeySequence(QSettings* settings, QKeySequence
 void ShortcutsPage::loadShortcutsFromSetting()
 {
     // Load shortcuts from settings
-    QSettings settings("pencil", "pencil");
+    QSettings settings("Pencil", "Pencil");
     settings.beginGroup("shortcuts");
 
     m_treeModel->setRowCount( settings.allKeys().size());
