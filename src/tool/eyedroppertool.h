@@ -12,6 +12,7 @@ public:
     ToolType type();
     void loadSettings();
     QCursor cursor();
+    QCursor cursor(const QColor colour);
 
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);

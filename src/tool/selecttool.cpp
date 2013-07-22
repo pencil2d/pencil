@@ -38,28 +38,28 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
             }
-            m_pScribbleArea->moveMode = ScribbleArea::MIDDLE;
+            m_pScribbleArea->setMoveMode(ScribbleArea::MIDDLE);
             m_pEditor->backup(typeName());
 
             if (m_pScribbleArea->somethingSelected)      // there is something selected
             {
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.topLeft()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.topLeft()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::TOPLEFT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
                 }
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.topRight()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.topRight()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::TOPRIGHT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
                 }
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.bottomLeft()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.bottomLeft()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::BOTTOMLEFT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
                 }
-                if (BezierCurve::mLength(m_pScribbleArea->lastPoint - m_pScribbleArea->myTransformedSelection.bottomRight()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.bottomRight()) < 6)
                 {
-                    m_pScribbleArea->moveMode = ScribbleArea::BOTTOMRIGHT;
+                    m_pScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
                 }
-                if (m_pScribbleArea->moveMode == ScribbleArea::MIDDLE)
+                if (m_pScribbleArea->getMoveMode() == ScribbleArea::MIDDLE)
                 {
                     m_pScribbleArea->paintTransformedSelection();
                     m_pScribbleArea->deselectAll();
@@ -67,8 +67,8 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
             }
             else     // there is nothing selected
             {
-                m_pScribbleArea->mySelection.setTopLeft(m_pScribbleArea->lastPoint);
-                m_pScribbleArea->mySelection.setBottomRight(m_pScribbleArea->lastPoint);
+                m_pScribbleArea->mySelection.setTopLeft(getLastPoint());
+                m_pScribbleArea->mySelection.setBottomRight(getLastPoint());
                 m_pScribbleArea->setSelection(m_pScribbleArea->mySelection, true);
             }
             m_pScribbleArea->update();
@@ -97,12 +97,12 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
                 }
             }
             m_pScribbleArea->updateFrame();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
         else if (layer->type == Layer::BITMAP)
         {
             m_pScribbleArea->updateFrame();
-            m_pScribbleArea->updateAll = true;
+            m_pScribbleArea->setAllDirty();
         }
     }
 
@@ -115,26 +115,26 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
 
     if ((event->buttons() & Qt::LeftButton) && m_pScribbleArea->somethingSelected && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
     {
-        switch (m_pScribbleArea->moveMode)
+        switch (m_pScribbleArea->getMoveMode())
         {
         case ScribbleArea::MIDDLE:
-            m_pScribbleArea->mySelection.setBottomRight(m_pScribbleArea->currentPoint);
+            m_pScribbleArea->mySelection.setBottomRight(getCurrentPoint());
             break;
 
         case ScribbleArea::TOPLEFT:
-            m_pScribbleArea->mySelection.setTopLeft(m_pScribbleArea->currentPoint);
+            m_pScribbleArea->mySelection.setTopLeft(getCurrentPoint());
             break;
 
         case ScribbleArea::TOPRIGHT:
-            m_pScribbleArea->mySelection.setTopRight(m_pScribbleArea->currentPoint);
+            m_pScribbleArea->mySelection.setTopRight(getCurrentPoint());
             break;
 
         case ScribbleArea::BOTTOMLEFT:
-            m_pScribbleArea->mySelection.setBottomLeft(m_pScribbleArea->currentPoint);
+            m_pScribbleArea->mySelection.setBottomLeft(getCurrentPoint());
             break;
 
         case ScribbleArea::BOTTOMRIGHT:
-            m_pScribbleArea->mySelection.setBottomRight(m_pScribbleArea->currentPoint);
+            m_pScribbleArea->mySelection.setBottomRight(getCurrentPoint());
             break;
         }
 

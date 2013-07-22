@@ -1,10 +1,9 @@
 #ifndef BRUSHTOOL_H
 #define BRUSHTOOL_H
 
-#include "basetool.h"
+#include "stroketool.h"
 
-
-class BrushTool : public BaseTool
+class BrushTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -17,9 +16,16 @@ public:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
 
+    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+
+    void drawStroke();
+
 signals:
     
 public slots:
+
+protected:
+    QPointF lastBrushPoint;
     
 };
 

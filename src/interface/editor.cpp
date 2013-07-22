@@ -1401,7 +1401,7 @@ void Editor::updateFrameAndVector(int frameNumber)
 
 void Editor::scrubTo(int frameNumber)
 {
-    if (scribbleArea->getUpdateAll())
+    if (scribbleArea->shouldUpdateAll())
     {
         scribbleArea->updateAllFrames();
     }
