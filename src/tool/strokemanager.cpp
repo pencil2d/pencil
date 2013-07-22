@@ -18,14 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
+#include <cmath>
+#include <limits>
+
 #include <QDebug>
 #include <QLineF>
 #include <QPainterPath>
 
-#include <math.h>
-
 #include "bspline.h"
 #include "strokemanager.h"
+
+#ifndef NAN
+    // VS2010 did not implement NAN yet.
+    #define NAN (std::numeric_limits<float>::quiet_NaN())
+#endif
 
 template<class T> inline bool IS_SIGNIFICANT (T x) {
     return x > 0.001f;

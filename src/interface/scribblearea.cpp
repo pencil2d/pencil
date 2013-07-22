@@ -69,10 +69,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     foreach (BaseTool *tool, getTools())
     {
         tool->initialize(editor, this);
-    }
-
-    m_currentTool = getTool(PENCIL);
-    emit pencilOn();
+    }       
 
     QSettings settings("Pencil", "Pencil");
 
@@ -102,7 +99,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_usePressure = true;
     m_makeInvisible = false;
     somethingSelected = false;
-    setCursor(Qt::CrossCursor);
+    
     onionPrev = true;
     onionNext = false;
     m_showThinLines = false;
@@ -113,7 +110,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     centralView = QMatrix();
 
     QString background = settings.value("background").toString();
-    //  if (background == "")
+    
     background = "white";
     setBackgroundBrush(background);
     bufferImg = new BitmapImage(NULL);
@@ -184,6 +181,15 @@ void ScribbleArea::resetColours()
     getTool( PEN )->properties.colourNumber = 0;
     getTool(PENCIL)->properties.colourNumber = 0;
     getTool(BRUSH)->properties.colourNumber = 1;
+}
+
+void ScribbleArea::resetTools()
+{
+    getTool( PEN )->properties.width = 2.0;
+    getTool( PENCIL )->properties.width = 1.0;
+    getTool( ERASER )->properties.width = 10.0;
+    getTool( BRUSH )->properties.width = 15.0;
+    getTool( BRUSH )->properties.feather = 200.0;
 }
 
 void ScribbleArea::setWidth(const qreal newWidth)
@@ -746,31 +752,46 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
     }
 
-    // --- interactive cursor/brush pointer resizing
-    if ((event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1))  //resize width not locked
+    // ----- wysiwyg tool adjusment
+    if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
     {
-        qDebug() << "resizing tool width from " << currentTool()->properties.width; //@
-        resizingTool = true;
-        resizingToolMode = rtmWIDTH;
-        brushOrgSize = currentTool()->properties.width;
+        //adjust width if not locked
+        qDebug() << "adjusting tool width from " << currentTool()->properties.width;
+        adjustingTool = true;
+        wysiToolAdjustment = wtaWIDTH;
+        toolOrgValue = currentTool()->properties.width;
         return;
-    }
-    else if ((event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather > -1))    //resize feather not locked
-    {
-        qDebug() << "resizing tool feather from " << currentTool()->properties.feather; //@
-        resizingTool = true;
-        resizingToolMode = rtmFEATHER;
-        brushOrgSize = currentTool()->properties.feather;
+    } 
+    else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
+    { 
+        //adjust feather if not locked
+        qDebug() << "adjusting tool feather from " << currentTool()->properties.feather;
+        adjustingTool = true;
+        wysiToolAdjustment = wtaFEATHER;
+        toolOrgValue = currentTool()->properties.feather;
         return;
-    }
-    else
+    } 
+    else 
     {
-        qDebug() << "tool #" << currentTool()->type(); //@
-        qDebug() << "pressEvt tool width " << currentTool()->properties.width;
-        qDebug() << "pressEvt tool feather " << currentTool()->properties.feather;
-        resizingTool = false;
+        adjustingTool = false;
     }
-    // ---
+
+    // ----- temporal tools (while key pressed)
+    if ( (event->modifiers() == (Qt::ShiftModifier + Qt::ControlModifier)) )
+    { 
+        //temporal eraser
+        instantTool = true;
+        qreal width = currentTool()->properties.width;
+        qreal feather = currentTool()->properties.feather;
+        recoverToolType = currentTool()->type();
+        setCurrentTool( ERASER );
+        setWidth(width);
+        setFeather(feather);
+    } 
+    else 
+    {
+        instantTool = false;
+    }
 
     // ---- checks ------
     Layer *layer = m_pEditor->getCurrentLayer();
@@ -796,9 +817,54 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         mouseInUse = false;
         return;
     }
-
+    
     // --- end checks ----
+    
 
+    bool invertible = true;
+    currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
+
+    // the user is also pressing the mouse (dragging)
+    if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
+    {
+        offset = currentPoint - lastPoint;
+        // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
+        if (adjustingTool)
+        {
+            qreal incx = pow(toolOrgValue*100,0.5);
+            qreal newValue = incx + offset.x();
+            
+            if (newValue<0) 
+            {
+                newValue=0;
+            }
+            newValue = pow(newValue,2)/100;
+
+            if (newValue<0.2)
+            {  
+                newValue = 0.2; 
+            }
+            else if (newValue>200)
+            { 
+                newValue = 200; 
+            }
+
+            if ( wysiToolAdjustment==wtaWIDTH )
+            {   
+                m_pEditor->applyWidth( newValue ); 
+            }
+            else if ( wysiToolAdjustment==wtaFEATHER )
+            {   
+                m_pEditor->applyFeather( newValue ); 
+            }
+            else if ( wysiToolAdjustment==wtaTRANSPARENCY )
+            {
+                //todo
+            } 
+            return;
+        }
+        // ------        
+    }
 
     if (event->button() == Qt::RightButton)
     {
@@ -854,20 +920,38 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         offset = currentPoint - lastPoint;
-        //Use: [SHIFT]+mouse/pen => scalingBrush=true
-        if (resizingTool)
+        // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
+        if (adjustingTool)
         {
-            qreal newSize = brushOrgSize + offset.x();
+            qreal incx = pow(toolOrgValue*100,0.5);
+            qreal newValue = incx + offset.x();
+            if (newValue < 0) 
+            {
+                newValue = 0;
+            }
+            newValue = pow(newValue, 2) / 100;
 
-            if (newSize < 0.2)
-            {  newSize = 0.2; }
-            else if (newSize > 200)
-            { newSize = 200; }
+            if (newValue < 0.2)
+            {  
+                newValue = 0.2; 
+            }
+            else if (newValue > 200)
+            { 
+                newValue = 200; 
+            }
 
-            if (resizingToolMode == rtmWIDTH)
-            {   m_pEditor->applyWidth(round(newSize)); }
-            else if (resizingToolMode == rtmFEATHER)
-            {   m_pEditor->applyFeather(round(newSize)); }
+            if ( wysiToolAdjustment==wtaWIDTH )
+            {   
+                m_pEditor->applyWidth( newValue ); 
+            }
+            else if ( wysiToolAdjustment==wtaFEATHER )
+            {   
+                m_pEditor->applyFeather( newValue ); 
+            }
+            else if ( wysiToolAdjustment==wtaTRANSPARENCY )
+            {
+                //todo
+            } 
             return;
         }
     }
@@ -886,7 +970,15 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     mouseInUse = false;
 
     // ---- checks ------
-    if (resizingTool) { return; } // [SHIFT]+drag OR [CTRL]+drag -> XXX make into its own tool
+    if (adjustingTool)
+    {
+        return; // [SHIFT]+drag OR [CTRL]+drag
+    }
+    
+    if (instantTool) 
+    {
+        setCurrentTool( recoverToolType );  //eg. eraser, color picker(todo)
+    }
 
     if (!areLayersSane())
     {
@@ -2230,7 +2322,7 @@ BaseTool *ScribbleArea::getTool(ToolType eToolMode)
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    if (eToolMode != currentTool()->type())
+    if (currentTool() != NULL && eToolMode != currentTool()->type())
     {
         qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
         // XXX tool->setActive()
@@ -2241,9 +2333,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         if (currentTool()->type() == POLYLINE)
         {
             escape();
-        }
-        m_currentTool = getTool(eToolMode);
+        }        
     }
+    m_currentTool = getTool(eToolMode);
+
     // --- change cursor ---
     setCursor(currentTool()->cursor());
 }

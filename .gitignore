@@ -6,6 +6,20 @@ Makefile
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
+
 Pencil.app
 Pencil.pro.user
 ui_*
+
+# -- Visual Studio --
+*.sln
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+*.sdf
+*.opensdf
+*.suo
+*.pdb
+release
+debug
+ipch
