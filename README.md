@@ -58,3 +58,7 @@ Changes by davidefa:
 * Added import movie ( frames are imported at the current fps, there is no check to limit the imported frames )
 * Compiles fine with min 0.4.x on linux
 * Other minor fixes ( moving selection on bitmap layers, moving layers... )
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pencil2d/pencil/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
