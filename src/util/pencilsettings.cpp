@@ -10,7 +10,7 @@ QSettings* pencilSettings()
 {
     if ( g_pSettings == NULL )
     {
-        g_pSettings = new QSettings("pencil", "pencil");
+        g_pSettings = new QSettings("Pencil", "Pencil");
 
         if ( !g_pSettings->contains("InitPencilSetting") )
         {
