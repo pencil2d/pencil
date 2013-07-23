@@ -157,7 +157,7 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
         return result;
     }
 
-    qreal scaleFactor = time - previousTime;
+    qreal scaleFactor = line.length();
 
     if (!hasTangent && scaleFactor > 0.01f)
     {
