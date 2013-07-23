@@ -24,7 +24,7 @@ ToolType PencilTool::type()
 
 void PencilTool::loadSettings()
 {
-    QSettings settings("pencil", "pencil");
+    QSettings settings("Pencil", "Pencil");
 
     properties.width = settings.value("pencilWidth").toDouble();    
     properties.colourNumber = 0;
