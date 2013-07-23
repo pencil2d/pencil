@@ -158,14 +158,13 @@ void PencilTool::drawStroke()
         }
 
         if (p.size() == 2) {
-            qDebug() << "draw line";
             m_pScribbleArea->drawLine(p[0], p[1], pen, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshBitmap(QRectF(p[0], p[1]).toRect(), rad);
         }
 
         if (p.size() == 4) {
 
-            qDebug() << "curve" << p[0] << p[3] << p[1] << p[2];
+            // qDebug() << "curve" << p[0] << p[3] << p[1] << p[2];
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],

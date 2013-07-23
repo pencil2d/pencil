@@ -261,20 +261,31 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
     QLineF line(m_lastPixel, m_currentPixel);
     if (!hasTangent)
     {
-        if (line.length() > 10) {
+        if (line.length() > 0) {
             hasTangent = true;
-            m_previousTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * (line.length()));
+            m_previousTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * (time - previousTime));
+            QLineF _line(QPointF(0,0), m_previousTangent);
+            if (_line.length() < 2) {
+                m_previousTangent = QPointF(0,0);
+            }
         }
         result << m_lastPixel << m_currentPixel;
     } else {
-        qreal scaleFactor = line.length();
-        if (line.length() < 10) {
+        qreal scaleFactor = time - previousTime;
+        if (line.length() < 0) {
             result << m_lastPixel << m_currentPixel;
             hasTangent = false;
         } else {
             QPointF c1 = m_lastPixel + m_previousTangent * scaleFactor;
-            QPointF newTangent = (m_currentPixel - c1) * smoothness / (3.0 * line.length());
-            qDebug() << "scale factor" << scaleFactor << m_previousTangent << newTangent;
+            QPointF newTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * scaleFactor);
+            if (scaleFactor == 0) {
+                newTangent = QPointF(0,0);
+            } else {
+                QLineF _line(QPointF(0,0), newTangent);
+                if (_line.length() < 2) {
+                    newTangent = QPointF(0,0);
+                }
+            }
             QPointF c2 = m_currentPixel - newTangent * scaleFactor;
 
             QPainterPath path(m_lastPixel);
