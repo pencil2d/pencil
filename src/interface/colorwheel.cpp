@@ -45,7 +45,7 @@ void ColorWheel::setColor(const QColor &color)
 }
 
 
-QColor ColorWheel::posColor(const QPoint &point)
+QColor ColorWheel::pickColor(const QPoint &point)
 {
     if ( ! wheel.rect().contains(point) ) 
     {
@@ -55,6 +55,7 @@ QColor ColorWheel::posColor(const QPoint &point)
     {
         qreal hue = 0;
         int r = qMin(width(), height()) / 2;
+        
         if ( point.x() > r )
         {
             if(point.y() < r )
@@ -82,7 +83,7 @@ QColor ColorWheel::posColor(const QPoint &point)
             }
         }
         
-        hue = (hue > 359) ?359 : hue;
+        hue = (hue > 359) ? 359 : hue;
         hue = (hue < 0) ? 0 : hue;
 
         return QColor::fromHsv(hue,
@@ -124,14 +125,14 @@ void ColorWheel::mousePressEvent(QMouseEvent *event)
     {
         inWheel = true;
         inSquare = false;
-        QColor color = posColor(lastPos);
+        QColor color = pickColor(lastPos);
         hueChanged(color.hue());
     }
     else if (squareRegion.contains(lastPos))
     {
         inWheel = false;
         inSquare = true;
-        QColor color = posColor(lastPos);
+        QColor color = pickColor(lastPos);
         svChanged(color);
     }
     mouseDown = true;
@@ -146,12 +147,12 @@ void ColorWheel::mouseMoveEvent(QMouseEvent *event)
     }
     if (wheelRegion.contains(lastPos) && inWheel)
     {
-        QColor color = posColor(lastPos);
+        QColor color = pickColor(lastPos);
         hueChanged(color.hue());
     } 
     else if(squareRegion.contains(lastPos) && inSquare)
     {
-        QColor color = posColor(lastPos);
+        QColor color = pickColor(lastPos);
         svChanged(color);
     } 
     else 
