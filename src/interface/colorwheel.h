@@ -36,7 +36,7 @@ private:
     int wheelWidth;
     QRegion wheelRegion;
     QRegion squareRegion;
-    QColor current;
+    QColor currentColor;
     bool inWheel;
     bool inSquare;
     QColor posColor(const QPoint &point);
