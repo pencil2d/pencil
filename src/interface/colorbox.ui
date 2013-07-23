@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ColorBox</class>
+ <widget class="QWidget" name="ColorBox">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>265</width>
+    <height>132</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="ColorWheel" name="colorWheel" native="true"/>
+   </item>
+   <item>
+    <widget class="ColorSpinBoxGroup" name="colorSpinBoxGroup" native="true">
+     <property name="toolTip">
+      <string>Color SpinBox Group</string>
+     </property>
+     <property name="whatsThis">
+      <string>The color spin box group contains spin box about colors.</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ColorSpinBoxGroup</class>
+   <extends>QWidget</extends>
+   <header>colorspinboxgroup.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ColorWheel</class>
+   <extends>QWidget</extends>
+   <header>colorwheel.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

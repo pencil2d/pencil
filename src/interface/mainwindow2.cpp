@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "preferences.h"
 #include "timeline.h"
 #include "pencilsettings.h"
+#include "colorbox.h"
 
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
@@ -64,6 +65,15 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
     connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
     //showPreferences();
+
+    ColorBox* cbox = new ColorBox(this);
+    //cbox->show();
+
+    QDockWidget* pDock = new QDockWidget(this);
+    pDock->setWidget(cbox);
+
+    //pDock->show();
+    addDockWidget(Qt::RightDockWidgetArea, pDock);
 }
 
 MainWindow2::~MainWindow2()

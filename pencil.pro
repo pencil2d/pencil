@@ -76,7 +76,13 @@ HEADERS +=  src/interfaces.h \
     src/tool/strokemanager.h \
     src/util/bspline.h \
     src/tool/stroketool.h \
-    src/util/blitrect.h
+    src/util/blitrect.h \
+    src/interface/colorwheel.h \
+    src/interface/colorspinboxgroup.h \
+    src/interface/colorgriditem.h \
+    src/interface/colorgrid.h \
+    src/interface/colorbox.h \
+    src/interface/flowlayout.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -129,7 +135,13 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/strokemanager.cpp \
     src/util/bspline.cpp \
     src/tool/stroketool.cpp \
-    src/util/blitrect.cpp
+    src/util/blitrect.cpp \
+    src/interface/colorwheel.cpp \
+    src/interface/colorspinboxgroup.cpp \
+    src/interface/colorgriditem.cpp \
+    src/interface/colorgrid.cpp \
+    src/interface/colorbox.cpp \
+    src/interface/flowlayout.cpp
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}
@@ -166,7 +178,9 @@ svg
 
 FORMS += \
     src/interface/mainwindow2.ui \
-    src/interface/shortcutspage.ui
+    src/interface/shortcutspage.ui \
+    src/interface/colorspinboxgroup.ui \
+    src/interface/colorbox.ui
 
 TRANSLATIONS += pencil.ts
 
