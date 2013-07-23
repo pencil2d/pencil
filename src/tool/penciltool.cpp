@@ -157,11 +157,6 @@ void PencilTool::drawStroke()
             p[i] = m_pScribbleArea->pixelToPoint(p[i]);
         }
 
-        if (p.size() == 2) {
-            m_pScribbleArea->drawLine(p[0], p[1], pen, QPainter::CompositionMode_Source);
-            m_pScribbleArea->refreshBitmap(QRectF(p[0], p[1]).toRect(), rad);
-        }
-
         if (p.size() == 4) {
 
             // qDebug() << "curve" << p[0] << p[3] << p[1] << p[2];
