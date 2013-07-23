@@ -41,7 +41,7 @@ void ColorWheel::setColor(const QColor &color)
     }
 
     update();
-    emit colorChange(color);
+    emit colorChanged(color);
 }
 
 
@@ -246,29 +246,25 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
 
 void ColorWheel::drawSquareImage(const int &hue)
 {
-//    QPainter painter(&squarePixmap);
-//    painter.setRenderHint(QPainter::Antialiasing);
-
     // region of the widget
     int w = qMin(width(), height());
     // radius of outer circle
-    qreal r = w/2-margin;
+    qreal r = w / 2-margin;
     // radius of inner circle
-    qreal ir = r-wheelWidth;
+    qreal ir = r - wheelWidth;
     // left corner of square
-    qreal m = w/2.0-ir/qSqrt(2);
-    //painter.translate(m, m);
-    //painter.setPen(Qt::NoPen);
-    QImage square(255,255, QImage::Format_ARGB32_Premultiplied);
+    qreal m = (w /2.0) - (ir / qSqrt(2));
+
+    QImage square(255, 255, QImage::Format_ARGB32_Premultiplied);
     QColor color;
     QRgb vv;
     for (int i = 0; i < 255; ++i)
     {
         for (int j = 0; j < 255; ++j)
         {
-            color = QColor::fromHsv(hue, i, j);
+            color = QColor::fromHsv(hue, i, 255 - j);
             vv = qRgb(color.red(),color.green(),color.blue());
-            square.setPixel(j, i, vv);
+            square.setPixel(i, j, vv);
         }
     }
     qreal SquareWidth = 2 * ir / qSqrt(2);
@@ -356,7 +352,7 @@ void ColorWheel::hueChanged(const int &hue)
     drawSquareImage(hue);
 
     repaint();
-    emit colorChange(currentColor);
+    emit colorChanged(currentColor);
 }
 
 void ColorWheel::svChanged(const QColor &newcolor)
@@ -371,5 +367,5 @@ void ColorWheel::svChanged(const QColor &newcolor)
     }
 
     repaint();
-    emit colorChange(currentColor);
+    emit colorChanged(currentColor);
 }

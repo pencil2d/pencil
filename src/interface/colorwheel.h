@@ -14,7 +14,7 @@ public:
     QColor color();
     
 signals:
-    void colorChange(const QColor &color);
+    void colorChanged(const QColor &color);
     
 public slots:
     void setColor(const QColor &color);
