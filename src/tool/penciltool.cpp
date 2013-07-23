@@ -174,7 +174,7 @@ void PencilTool::drawStroke()
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
 
-            if (true) {
+            if (false) {
                 QRectF rect(p[0], size);
 
                 QPen penBlue(Qt::blue);
