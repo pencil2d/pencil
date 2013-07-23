@@ -39,7 +39,7 @@ private:
     QColor currentColor;
     bool inWheel;
     bool inSquare;
-    QColor posColor(const QPoint &point);
+    QColor pickColor(const QPoint &point);
     void drawWheelImage(const QSize &newSize);
     void drawIndicator(const int &hue);
     void drawPicker(const QColor &color);
