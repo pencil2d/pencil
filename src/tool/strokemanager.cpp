@@ -53,6 +53,7 @@ void StrokeManager::reset()
     pressure = 0.0f;
     velocity = QPointF(0,0);
     hasTangent = false;
+    qDebug() << "reset";
 }
 
 void StrokeManager::setPressure(float pressure) {
@@ -95,6 +96,7 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     m_strokeStarted = true;
     singleshotTime.start();
     previousTime = singleshotTime.elapsed();
+    qDebug() << "";
 }
 
 void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
@@ -149,25 +151,29 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
     QList<QPointF> result;
 
     int time = singleshotTime.elapsed();
-    static const qreal smoothness = 1.0;
+    static const qreal smoothness = 0.5f;
     QLineF line(m_lastPixel, m_currentPixel);
     if (line.length() == 0) {
         return result;
     }
 
-    if (!hasTangent)
+    qreal scaleFactor = time - previousTime;
+
+    if (!hasTangent && scaleFactor > 0.01f)
     {
         hasTangent = true;
-        m_previousTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * (time - previousTime));
+//        qDebug() << "scaleFactor" << scaleFactor << "current pixel " << m_currentPixel << "last pixel" << m_lastPixel;
+        m_previousTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * scaleFactor);
+//        qDebug() << "previous tangent" << m_previousTangent;
         QLineF _line(QPointF(0,0), m_previousTangent);
         // don't bother for small tangents, as they can induce single pixel wobbliness
         if (_line.length() < 2) {
             m_previousTangent = QPointF(0,0);
         }
     } else {
-        qreal scaleFactor = time - previousTime;
         QPointF c1 = m_lastPixel + m_previousTangent * scaleFactor;
-        QPointF newTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * scaleFactor);
+        QPointF newTangent = (m_currentPixel - c1) * smoothness / (3.0 * scaleFactor);
+//        qDebug() << "scalefactor1" << scaleFactor << m_previousTangent << newTangent;
         if (scaleFactor == 0) {
             newTangent = QPointF(0,0);
         } else {
@@ -177,6 +183,7 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
         }
         }
         QPointF c2 = m_currentPixel - newTangent * scaleFactor;
+//        qDebug() << "scalefactor2" << scaleFactor << m_previousTangent << newTangent;
 
         result << m_lastPixel << c1 << c2 << m_currentPixel;
 
