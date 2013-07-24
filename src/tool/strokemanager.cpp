@@ -33,6 +33,11 @@
     #define NAN (std::numeric_limits<float>::quiet_NaN())
 #endif
 
+extern "C" {
+void disableCoalescing();
+void enableCoalescing();
+}
+
 StrokeManager::StrokeManager()
 {
     m_timeshot = 0;
@@ -53,7 +58,7 @@ void StrokeManager::reset()
     pressure = 0.0f;
     velocity = QPointF(0,0);
     hasTangent = false;
-    qDebug() << "reset";
+
 }
 
 void StrokeManager::setPressure(float pressure) {
@@ -97,6 +102,9 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     singleshotTime.start();
     previousTime = singleshotTime.elapsed();
     qDebug() << "";
+    qDebug() << "reset";
+    disableCoalescing();
+
 }
 
 void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
@@ -109,6 +117,7 @@ void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
     m_lastReleasePosition = getEventPosition(event);
 
     m_strokeStarted = false;
+    enableCoalescing();
 }
 
 void StrokeManager::tabletEvent(QTabletEvent *event)

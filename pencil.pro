@@ -129,6 +129,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp
 
+OBJECTIVE_SOURCES += src/tool/test.m
+
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}
 
@@ -180,5 +182,8 @@ macx {
 linux-* {
     QMAKE_CXXFLAGS += -std=c++11
 }
+
+OTHER_FILES += \
+    src/tool/test.m
 
 
