@@ -92,7 +92,7 @@ QColor ColorWheel::pickColor(const QPoint& point)
         qreal SquareWidth = 2 * ir / qSqrt(2);
         return QColor::fromHsvF( currentColor.hueF(),
                                  p.x() / SquareWidth,
-                                 p.y() / SquareWidth);
+                                 1.0 - (p.y() / SquareWidth));
     }
     return QColor();
 }
@@ -266,28 +266,25 @@ void ColorWheel::drawPicker(const QColor &color)
 {
     QPainter painter(&wheel);
     painter.setRenderHint(QPainter::Antialiasing);
+
+    QPoint squareTopLeft = squareRegion.boundingRect().topLeft();
+
+    painter.translate(squareTopLeft.x(), squareTopLeft.y());
+    
+    QSize squareSize = squareRegion.boundingRect().size();
+
+    qreal S = color.saturationF() * squareSize.width();
+    qreal V = squareSize.height() - (color.valueF() * squareSize.height());
+ 
     QPen pen;
-
-    // region of the widget
-    int w = qMin(width(), height());
-    // radius of outer circle
-    qreal r = w / 2;
-    // radius of inner circle
-    qreal ir = r - wheelWidth;
-    // left corner of square
-    qreal m = (w / 2.0) - (ir/qSqrt(2));
-    painter.translate(m - 5, m - 5);
-    qreal SquareWidth = 2 * ir / qSqrt(2);
-    qreal S = color.saturationF()*SquareWidth;
-    qreal V = color.valueF()*SquareWidth;
-
-    if(color.saturation() > 30 ||color.value() < 50)
+    pen.setWidth(3);
+    if (color.saturation() > 30 || color.value() < 50)
     {
         pen.setColor(Qt::white);
     }
-    pen.setWidth(3);
     painter.setPen(pen);
-    painter.drawEllipse(S,V,10,10);
+    
+    painter.drawEllipse(S - 5, V - 5, 10, 10);
 }
 
 void ColorWheel::composeWheel( QPixmap& pixmap )
