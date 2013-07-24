@@ -99,9 +99,9 @@ void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     QProcess ffmpeg;
 
     qDebug() << "Trying to export VIDEO";
-    qint32 audioDataSize = 44100*2*2*(endFrame-1)/fps;
+    quint32 audioDataSize = 44100*2*2*(endFrame-1)/fps;
     qint16* audioData =(qint16*) malloc(audioDataSize);
-    for (int i = 0; i < audioDataSize/2; i++ ) audioData[i] = 0;
+    for (uint i = 0; i < audioDataSize/2; i++ ) audioData[i] = 0;
     quint16 header1[22];
     bool audioDataValid = false;
     for(int i = 0; i < this->getLayerCount() ; i++)

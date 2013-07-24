@@ -920,7 +920,7 @@ QString MainWindow2::sc(QString strActionName)
 void MainWindow2::addRecentFile(QString filePath)
 {
     QAction* openThisFileAct = new QAction(filePath, this);
-    connect(openThisFileAct, SIGNAL(triggered()), editor, SLOT(openRecent()));
+    connect(openThisFileAct, SIGNAL(triggered()), this, SLOT(openRecent()));
     openRecentMenu->addAction(openThisFileAct);
 }
 
