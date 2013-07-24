@@ -33,10 +33,20 @@
     #define NAN (std::numeric_limits<float>::quiet_NaN())
 #endif
 
+#ifdef Q_OS_MAC
 extern "C" {
 void disableCoalescing();
 void enableCoalescing();
 }
+#else
+extern "C" {
+void disableCoalescing() {
+}
+
+void enableCoalescing() {
+}
+}
+#endif
 
 StrokeManager::StrokeManager()
 {
