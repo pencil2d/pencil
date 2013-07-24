@@ -25,6 +25,26 @@ GNU General Public License for more details.
 #include "style.h"
 
 #include <CoreFoundation/CoreFoundation.h>
+#include <Carbon/Carbon.h>
+
+extern "C" {
+// this is not declared in Carbon.h anymore, but it's in the framework
+OSStatus
+SetMouseCoalescingEnabled(
+ Boolean    inNewState,
+ Boolean *  outOldState);
+}
+
+extern "C" {
+void disableCoalescing() {
+    SetMouseCoalescingEnabled(false, NULL);
+}
+
+
+void enableCoalescing() {
+    SetMouseCoalescingEnabled(true, NULL);
+}
+}
 
 void initialise()
 {

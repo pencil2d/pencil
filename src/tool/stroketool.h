@@ -16,9 +16,8 @@ public:
     explicit StrokeTool(QObject *parent = 0);
     
     virtual void startStroke();
-    virtual void drawStroke() = 0;
+    virtual void drawStroke();
     virtual void endStroke();
-    QList<QSegment> calculateStroke(float width);
 
 signals:
     

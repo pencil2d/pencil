@@ -25,26 +25,18 @@ void StrokeTool::endStroke()
     strokePressures.clear();
 }
 
-QList<QPair<QPointF, QPointF> > StrokeTool::calculateStroke(float width)
+void StrokeTool::drawStroke()
 {
-    QList<QPointF> pixels = m_pStrokeManager->interpolateStroke(width);
-    QList<QPair<QPointF, QPointF> > segments;
 
-    foreach (QPointF pixel, pixels) {
-        if (pixel != lastPixel || !m_firstDraw)
-        {
-            segments << QPair<QPointF, QPointF>(lastPixel, pixel);
-
-            lastPixel = pixel;
-            strokePoints << m_pScribbleArea->pixelToPoint(pixel);
-            strokePressures << m_pStrokeManager->getPressure();
-        }
-        else
-        {
-            m_firstDraw = false;
-        }
+    QPointF pixel = getCurrentPixel();
+    if (pixel != lastPixel || !m_firstDraw)
+    {
+        lastPixel = pixel;
+        strokePoints << m_pScribbleArea->pixelToPoint(pixel);
+        strokePressures << m_pStrokeManager->getPressure();
     }
-
-    return segments;
-
+    else
+    {
+        m_firstDraw = false;
+    }
 }

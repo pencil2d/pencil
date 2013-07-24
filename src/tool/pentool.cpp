@@ -2,6 +2,7 @@
 
 #include "pentool.h"
 
+#include "strokemanager.h"
 #include "pencilsettings.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -139,20 +140,28 @@ void PenTool::mouseMoveEvent(QMouseEvent *event)
 
 void PenTool::drawStroke()
 {
+    StrokeTool::drawStroke();
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke(currentWidth);
+
     Layer *layer = m_pEditor->getCurrentLayer();
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen2 = QPen(m_pEditor->currentColor, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen = QPen(m_pEditor->currentColor, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         int rad = qRound(currentWidth / 2) + 3;
 
-        foreach (QSegment segment, calculateStroke(currentWidth))
-        {
-            QPointF a = m_pScribbleArea->pixelToPoint(segment.first);
-            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
+        for (int i = 0; i < p.size(); i++) {
+            p[i] = m_pScribbleArea->pixelToPoint(p[i]);
+        }
 
-            m_pScribbleArea->drawLine(a, b, pen2, QPainter::CompositionMode_Source);
-            m_pScribbleArea->refreshBitmap(QRect(a.toPoint(), b.toPoint()), rad);
+        if (p.size() == 4) {
+            QSizeF size(2,2);
+            QPainterPath path(p[0]);
+            path.cubicTo(p[1],
+                    p[2],
+                    p[3]);
+            m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
         }
     }
     else if (layer->type == Layer::VECTOR)
@@ -160,12 +169,14 @@ void PenTool::drawStroke()
         int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));
         QPen pen(m_pEditor->currentColor, currentWidth * m_pScribbleArea->getTempViewScaleX(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
-        foreach (QSegment segment, calculateStroke(currentWidth))
-        {
-            QPointF a = segment.first;
-            QPointF b = segment.second;
-            m_pScribbleArea->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver);
-            m_pScribbleArea->refreshVector(QRect(a.toPoint(), b.toPoint()), rad);
+        if (p.size() == 4) {
+            QSizeF size(2,2);
+            QPainterPath path(p[0]);
+            path.cubicTo(p[1],
+                    p[2],
+                    p[3]);
+            m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }
