@@ -25,29 +25,31 @@ protected:
     void mouseReleaseEvent(QMouseEvent *);
     void resizeEvent(QResizeEvent *event);
     void paintEvent(QPaintEvent *);
+
 private:
-    QSize initSize;
-    QImage wheelImage;
-    QImage squareImage;
-    QPixmap wheel;
-    bool mouseDown;
-    QPoint lastPos;
-    int margin;
-    int wheelWidth;
-    QRegion wheelRegion;
-    QRegion squareRegion;
-    QColor currentColor;
-    bool inWheel;
-    bool inSquare;
+    void hueChanged(const int &hue);
+    void svChanged(const QColor &newcolor);
+
     QColor pickColor(const QPoint &point);
     void drawWheelImage(const QSize &newSize);
     void drawIndicator(const int &hue);
     void drawPicker(const QColor &color);
     void drawSquareImage(const int &hue);
     void composeWheel();
-private slots:
-    void hueChanged(const int &hue);
-    void svChanged(const QColor &newcolor);
+
+    QSize initSize;
+    QImage wheelImage;
+    QImage squareImage;
+    QPixmap wheel;
+    bool mouseDown;    
+   
+    int wheelWidth;
+    QRegion wheelRegion;
+    QRegion squareRegion;
+    QColor currentColor;
+    bool inWheel;
+    bool inSquare;
+    
 };
 
 #endif // COLORWHEEL_H

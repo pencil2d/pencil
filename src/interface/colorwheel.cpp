@@ -1,14 +1,16 @@
-#include "colorwheel.h"
+
+#include <cmath>
 #include <QPainter>
 #include <QResizeEvent>
 #include <QStyleOption>
 #include <QtCore/qmath.h>
 #include <QDebug>
 
+#include "colorwheel.h"
+
 ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent),
     initSize(200, 200),
     mouseDown(false),
-    margin(0),
     wheelWidth(30),
     currentColor(Qt::red),
     inWheel(false),
@@ -45,7 +47,7 @@ void ColorWheel::setColor(const QColor &color)
 }
 
 
-QColor ColorWheel::pickColor(const QPoint &point)
+QColor ColorWheel::pickColor(const QPoint& point)
 {
     if ( ! wheel.rect().contains(point) ) 
     {
@@ -55,34 +57,21 @@ QColor ColorWheel::pickColor(const QPoint &point)
     {
         qreal hue = 0;
         int r = qMin(width(), height()) / 2;
+        QString strDebug = "";
+        strDebug += QString("Radius=%1").arg(r);
+
+        QPoint center(width() / 2, height() / 2);
+
+        QPoint diff = point - center;
+        strDebug += QString(" Atan2=%1").arg(qAtan2(diff.x(), diff.y()));               
         
-        if ( point.x() > r )
-        {
-            if(point.y() < r )
-            {
-                //1
-                hue = 90 - (qAtan2( (point.x() - r) , (r - point.y()) )  / 3.14 / 2 * 360);
-            }
-            else
-            {
-                //4
-                hue = 270 + (qAtan2( (point.x() - r) , (point.y() - r ) )  / 3.14 / 2 * 360);
-            }
-        }
-        else
-        {
-            if(point.y() < r )
-            {
-                //2
-                hue =  90 + (qAtan2( (r - point.x()) , (r - point.y()) )  / 3.14 / 2 * 360);
-            }
-            else
-            {
-                //3
-                hue =  270 - (qAtan2( (r - point.x()) , (point.y() - r ))  / 3.14 / 2 * 360);
-            }
-        }
+        hue = qAtan2( diff.x(), diff.y() ) / M_PI * 180;
         
+        hue = hue + 180; // shift -180~180 to 0~360
+        
+        strDebug += QString(" Hue=%1").arg(hue);
+        //qDebug() << strDebug;
+
         hue = (hue > 359) ? 359 : hue;
         hue = (hue < 0) ? 0 : hue;
 
@@ -95,7 +84,7 @@ QColor ColorWheel::pickColor(const QPoint &point)
         // region of the widget
         int w = qMin(width(), height());
         // radius of outer circle
-        qreal r = w/2-margin;
+        qreal r = w / 2 ;
         // radius of inner circle
         qreal ir = r - wheelWidth;
         // left corner of square
@@ -113,6 +102,7 @@ QSize ColorWheel::sizeHint () const
 {
     return QSize(height(),height());
 }
+
 QSize ColorWheel::minimumSizeHint () const
 {
     return initSize;
@@ -120,7 +110,7 @@ QSize ColorWheel::minimumSizeHint () const
 
 void ColorWheel::mousePressEvent(QMouseEvent *event)
 {
-    lastPos = event->pos();
+    QPoint lastPos = event->pos();
     if (wheelRegion.contains(lastPos))
     {
         inWheel = true;
@@ -138,9 +128,9 @@ void ColorWheel::mousePressEvent(QMouseEvent *event)
     mouseDown = true;
 }
 
-void ColorWheel::mouseMoveEvent(QMouseEvent *event)
+void ColorWheel::mouseMoveEvent(QMouseEvent* event)
 {
-    lastPos = event->pos();
+    QPoint lastPos = event->pos();
     if ( !mouseDown )
     {
         return;
@@ -197,7 +187,7 @@ void ColorWheel::paintEvent(QPaintEvent *)
     QStyleOption opt;
     opt.initFrom(this);
     composeWheel();
-    painter.drawPixmap(0,0,wheel);
+    painter.drawPixmap(0, 0, wheel);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
 
@@ -216,13 +206,11 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     painter.setRenderHint(QPainter::Antialiasing);
 
     QConicalGradient conicalGradient(0, 0, 0);
-    conicalGradient.setColorAt(0.0, Qt::red);
-    conicalGradient.setColorAt(60.0 / 360.0, Qt::yellow);
-    conicalGradient.setColorAt(120.0 / 360.0, Qt::green);
-    conicalGradient.setColorAt(180.0 / 360.0, Qt::cyan);
-    conicalGradient.setColorAt(240.0 / 360.0, Qt::blue);
-    conicalGradient.setColorAt(300.0 / 360.0, Qt::magenta);
-    conicalGradient.setColorAt(1.0, Qt::red);
+
+    for (int hue = 0; hue < 360; hue +=1)
+    {        
+        conicalGradient.setColorAt( hue / 360.0,  QColor::fromHsv(hue, 255, 255));
+    }
 
     /* outer circle */
     painter.translate(r / 2, r / 2);
@@ -230,19 +218,15 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QBrush brush(conicalGradient);
     painter.setPen(Qt::NoPen);
     painter.setBrush(brush);
-    painter.drawEllipse(QPoint(0, 0), r/2 - margin, r/2 - margin);
+    painter.rotate( -90 );
+    painter.drawEllipse(QPoint(0, 0), r/2, r/2);
     /* inner circle */
+    
     painter.setBrush(background);
-    painter.drawEllipse(QPoint(0, 0), r/2 - margin - wheelWidth, r/2-margin-wheelWidth);
+    painter.drawEllipse(QPoint(0, 0), r/2 - wheelWidth, r/2 - wheelWidth);
 
     //caculate wheel region
-    wheelRegion = QRegion(r/2, r/2, r-2*margin, r-2*margin, QRegion::Ellipse);
-    wheelRegion.translate(-(r-2*margin)/2, -(r-2*margin)/2);
-
-    int tmp = 2*(margin+wheelWidth);
-    QRegion subRe( r/2, r/2, r-tmp, r-tmp, QRegion::Ellipse );
-    subRe.translate(-(r-tmp)/2, -(r-tmp)/2);
-    wheelRegion -= subRe;
+    wheelRegion = QRegion(0, 0, r, r, QRegion::Ellipse);        
 }
 
 void ColorWheel::drawSquareImage(const int &hue)
@@ -250,7 +234,7 @@ void ColorWheel::drawSquareImage(const int &hue)
     // region of the widget
     int w = qMin(width(), height());
     // radius of outer circle
-    qreal r = w / 2-margin;
+    qreal r = w / 2;
     // radius of inner circle
     qreal ir = r - wheelWidth;
     // left corner of square
@@ -292,9 +276,10 @@ void ColorWheel::drawIndicator(const int &hue)
     painter.setPen(pen);
     qreal r = qMin(height(), width()) / 2.0;
     painter.translate(r, r);
-    painter.rotate( -hue );
-    r = qMin(height(), width()) / 2.0 - margin - wheelWidth/2;
-    painter.drawEllipse(QPointF(r,0.0),5,5);
+    painter.rotate( -hue - 90 );
+
+    r = qMin(height(), width()) / 2.0 - wheelWidth/2;
+    painter.drawEllipse(QPointF(r, 0.0), 7, 7);
 }
 
 void ColorWheel::drawPicker(const QColor &color)
@@ -306,7 +291,7 @@ void ColorWheel::drawPicker(const QColor &color)
     // region of the widget
     int w = qMin(width(), height());
     // radius of outer circle
-    qreal r = w / 2 - margin;
+    qreal r = w / 2;
     // radius of inner circle
     qreal ir = r - wheelWidth;
     // left corner of square
@@ -316,7 +301,8 @@ void ColorWheel::drawPicker(const QColor &color)
     qreal S = color.saturationF()*SquareWidth;
     qreal V = color.valueF()*SquareWidth;
 
-    if(color.saturation() > 30 ||color.value() < 50){
+    if(color.saturation() > 30 ||color.value() < 50)
+    {
         pen.setColor(Qt::white);
     }
     pen.setWidth(3);
@@ -362,7 +348,7 @@ void ColorWheel::svChanged(const QColor &newcolor)
     currentColor.setHsv(hue, 
                         newcolor.saturation(), 
                         newcolor.value());
-    if(!isVisible())
+    if( !isVisible() )
     {
         return;
     }
