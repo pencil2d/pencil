@@ -143,25 +143,31 @@ void BrushTool::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-//void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
-//{
-//    int r = colour.red();
-//    int g = colour.green();
-//    int b = colour.blue();
-//    qreal a = colour.alphaF();
-//    gradient.setColorAt(0.0, QColor(r, g, b, qRound(a * 255 * opacity)));
-//    gradient.setColorAt(offset + 0.0 * (1.0 - offset), QColor(r, g, b, qRound(a * 255 * opacity)));
-//    gradient.setColorAt(offset + 0.1 * (1.0 - offset), QColor(r, g, b, qRound(a * 245 * opacity)));
-//    gradient.setColorAt(offset + 0.2 * (1.0 - offset), QColor(r, g, b, qRound(a * 217 * opacity)));
-//    gradient.setColorAt(offset + 0.3 * (1.0 - offset), QColor(r, g, b, qRound(a * 178 * opacity)));
-//    gradient.setColorAt(offset + 0.4 * (1.0 - offset), QColor(r, g, b, qRound(a * 134 * opacity)));
-//    gradient.setColorAt(offset + 0.5 * (1.0 - offset), QColor(r, g, b, qRound(a * 94 * opacity)));
-//    gradient.setColorAt(offset + 0.6 * (1.0 - offset), QColor(r, g, b, qRound(a * 60 * opacity)));
-//    gradient.setColorAt(offset + 0.7 * (1.0 - offset), QColor(r, g, b, qRound(a * 36 * opacity)));
-//    gradient.setColorAt(offset + 0.8 * (1.0 - offset), QColor(r, g, b, qRound(a * 20 * opacity)));
-//    gradient.setColorAt(offset + 0.9 * (1.0 - offset), QColor(r, g, b, qRound(a * 10 * opacity)));
-//    gradient.setColorAt(offset + 1.0 * (1.0 - offset), QColor(r, g, b, 0));
-//}
+// draw a single paint dab at the given location
+void BrushTool::paintAt(QPointF point)
+{
+
+}
+
+void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
+{
+    int r = colour.red();
+    int g = colour.green();
+    int b = colour.blue();
+    qreal a = colour.alphaF();
+    gradient.setColorAt(0.0, QColor(r, g, b, qRound(a * 255 * opacity)));
+    gradient.setColorAt(offset + 0.0 * (1.0 - offset), QColor(r, g, b, qRound(a * 255 * opacity)));
+    gradient.setColorAt(offset + 0.1 * (1.0 - offset), QColor(r, g, b, qRound(a * 245 * opacity)));
+    gradient.setColorAt(offset + 0.2 * (1.0 - offset), QColor(r, g, b, qRound(a * 217 * opacity)));
+    gradient.setColorAt(offset + 0.3 * (1.0 - offset), QColor(r, g, b, qRound(a * 178 * opacity)));
+    gradient.setColorAt(offset + 0.4 * (1.0 - offset), QColor(r, g, b, qRound(a * 134 * opacity)));
+    gradient.setColorAt(offset + 0.5 * (1.0 - offset), QColor(r, g, b, qRound(a * 94 * opacity)));
+    gradient.setColorAt(offset + 0.6 * (1.0 - offset), QColor(r, g, b, qRound(a * 60 * opacity)));
+    gradient.setColorAt(offset + 0.7 * (1.0 - offset), QColor(r, g, b, qRound(a * 36 * opacity)));
+    gradient.setColorAt(offset + 0.8 * (1.0 - offset), QColor(r, g, b, qRound(a * 20 * opacity)));
+    gradient.setColorAt(offset + 0.9 * (1.0 - offset), QColor(r, g, b, qRound(a * 10 * opacity)));
+    gradient.setColorAt(offset + 1.0 * (1.0 - offset), QColor(r, g, b, 0));
+}
 
 void BrushTool::drawStroke()
 {
@@ -189,8 +195,8 @@ void BrushTool::drawStroke()
         currentWidth = properties.width;
         BlitRect rect;
 
-//        QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
-//        setGaussianGradient(radialGrad, m_pEditor->currentColor, opacity, offset);
+        QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
+        setGaussianGradient(radialGrad, m_pEditor->currentColor, opacity, offset);
 
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
@@ -200,24 +206,24 @@ void BrushTool::drawStroke()
 //            QPointF a = lastBrushPoint;
 //            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
 
-//            qreal distance = 4 * QLineF(b, a).length();
-//            int steps = qRound(distance) / brushStep;
+            qreal distance = 4 * QLineF(b, a).length();
+            int steps = qRound(distance) / brushStep;
 
-//            for (int i = 0; i < steps; i++)
-//            {
-//                QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
-//                rect.extend(point.toPoint());
-//                m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
+            for (int i = 0; i < steps; i++)
+            {
+                QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+                rect.extend(point.toPoint());
+                m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
 
-//                if (i == (steps - 1))
-//                {
-//                    lastBrushPoint = point;
-//                }
-//            }
+                if (i == (steps - 1))
+                {
+                    lastBrushPoint = point;
+                }
+            }
 //        }
 
-//        int rad = qRound(brushWidth) / 2 + 2;
-//        m_pScribbleArea->refreshBitmap(rect, rad);
+        int rad = qRound(brushWidth) / 2 + 2;
+        m_pScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type == Layer::VECTOR)
     {
@@ -231,5 +237,15 @@ void BrushTool::drawStroke()
 //            m_pScribbleArea->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver);
 //            m_pScribbleArea->refreshVector(QRect(a.toPoint(), b.toPoint()), rad);
 //        }
+        if (p.size() == 4) {
+            QSizeF size(2,2);
+            QPainterPath path(p[0]);
+            path.cubicTo(p[1],
+                    p[2],
+                    p[3]);
+            m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
+        }
+
     }
 }
