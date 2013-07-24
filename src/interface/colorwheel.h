@@ -3,6 +3,7 @@
 
 #include <QWidget>
 
+
 class ColorWheel : public QWidget
 {
     Q_OBJECT
@@ -35,13 +36,13 @@ private:
     void drawIndicator(const int &hue);
     void drawPicker(const QColor &color);
     void drawSquareImage(const int &hue);
-    void composeWheel();
+    void composeWheel(QPixmap& pixmap);
 
     QSize initSize;
+
     QImage wheelImage;
     QImage squareImage;
     QPixmap wheel;
-    bool mouseDown;    
    
     int wheelWidth;
     QRegion wheelRegion;

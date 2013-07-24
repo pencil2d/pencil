@@ -10,7 +10,6 @@
 
 ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent),
     initSize(200, 200),
-    mouseDown(false),
     wheelWidth(30),
     currentColor(Qt::red),
     inWheel(false),
@@ -111,63 +110,44 @@ QSize ColorWheel::minimumSizeHint () const
 void ColorWheel::mousePressEvent(QMouseEvent *event)
 {
     QPoint lastPos = event->pos();
-    if (wheelRegion.contains(lastPos))
-    {
-        inWheel = true;
-        inSquare = false;
-        QColor color = pickColor(lastPos);
-        hueChanged(color.hue());
-    }
-    else if (squareRegion.contains(lastPos))
+    if (squareRegion.contains(lastPos))
     {
         inWheel = false;
         inSquare = true;
         QColor color = pickColor(lastPos);
         svChanged(color);
     }
-    mouseDown = true;
+    else if (wheelRegion.contains(lastPos))
+    {
+        inWheel = true;
+        inSquare = false;
+        QColor color = pickColor(lastPos);
+        hueChanged(color.hue());
+    }
+    
 }
 
 void ColorWheel::mouseMoveEvent(QMouseEvent* event)
 {
     QPoint lastPos = event->pos();
-    if ( !mouseDown )
+    if ( event->buttons() == Qt::NoButton )    
     {
         return;
     }
-    if (wheelRegion.contains(lastPos) && inWheel)
-    {
-        QColor color = pickColor(lastPos);
-        hueChanged(color.hue());
-    } 
-    else if(squareRegion.contains(lastPos) && inSquare)
+    if(squareRegion.contains(lastPos) && inSquare)
     {
         QColor color = pickColor(lastPos);
         svChanged(color);
-    } 
-    else 
-    {
-        // TODO: due with cursor out of region after press
-        //        int length = qMin(width(), height());
-        //        QPoint center(length/2, length/2);
-        //        int R = qSqrt(qPow(qAbs(lastPos.x()), 2)
-        //                      + qPow(qAbs(lastPos.y()), 2));
-        //        if(inWheel){
-        //            int r =  length / 2;
-        //            r += qSqrt(qPow(center.x(), 2) + qPow(center.y(), 2));
-        //            int x0 = r/R * qAbs(lastPos.x());
-        //            int y0 = r/R * qAbs(lastPos.y());
-        //            QColor color = posColor(QPoint(x0, y0));
-        //            hueChanged(color.hue());
-        //        }else if(inSquare){
-        //            //
-        //        }
     }
+    else if (wheelRegion.contains(lastPos) && inWheel)
+    {
+        QColor color = pickColor(lastPos);
+        hueChanged(color.hue());
+    }          
 }
 
 void ColorWheel::mouseReleaseEvent(QMouseEvent *)
-{
-    mouseDown = false;
+{    
     inWheel = false;
     inSquare = false;
 }
@@ -186,7 +166,7 @@ void ColorWheel::paintEvent(QPaintEvent *)
     QPainter painter(this);
     QStyleOption opt;
     opt.initFrom(this);
-    composeWheel();
+    composeWheel(wheel);
     painter.drawPixmap(0, 0, wheel);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
@@ -310,9 +290,9 @@ void ColorWheel::drawPicker(const QColor &color)
     painter.drawEllipse(S,V,10,10);
 }
 
-void ColorWheel::composeWheel()
+void ColorWheel::composeWheel( QPixmap& pixmap )
 {
-    QPainter composePainter(&wheel);
+    QPainter composePainter(&pixmap);
     composePainter.drawImage(0, 0, wheelImage);
     composePainter.drawImage(squareRegion.boundingRect().topLeft(), squareImage);
     composePainter.end();
