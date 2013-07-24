@@ -906,23 +906,6 @@ bool ScribbleArea::isLayerPaintable() const
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
-    static QTime eventCounter;
-    static bool eventCounterStarted = false;
-    static int events = 0;
-
-    if (!eventCounterStarted) {
-        eventCounterStarted = true;
-        eventCounter.start();
-    }
-
-    if (eventCounter.elapsed() > 1000) {
-        qDebug() << events << "per sec";
-        eventCounter.restart();
-        events = 0;
-    }
-
-    events++;
-
     if (!areLayersSane())
     {
         return;

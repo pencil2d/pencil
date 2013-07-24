@@ -111,8 +111,6 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     m_strokeStarted = true;
     singleshotTime.start();
     previousTime = singleshotTime.elapsed();
-    qDebug() << "";
-    qDebug() << "reset";
     disableCoalescing();
 
 }
