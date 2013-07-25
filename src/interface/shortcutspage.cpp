@@ -167,8 +167,21 @@ void ShortcutsPage::loadShortcutsFromSetting()
 
         QStringRef strHumanReadCmdName (&strCmdName, 3, strCmdName.size() - 3);
 
-        m_treeModel->setItem(i, 0, new QStandardItem(strHumanReadCmdName.toString()));
-        m_treeModel->setItem(i, 1, new QStandardItem(strKeySequence));
+        QStandardItem *nameItem = new QStandardItem(strHumanReadCmdName.toString());
+        QStandardItem *keyseqItem = new QStandardItem(strKeySequence);
+        int currentRow = -1;
+
+        if (m_currentActionItem != NULL && i == m_currentActionItem->row()) {
+            currentRow = m_currentActionItem->row();
+            m_currentActionItem = NULL;
+        }
+        m_treeModel->setItem(i, 0, nameItem);
+        m_treeModel->setItem(i, 1, keyseqItem);
+
+        if (currentRow == i) {
+            m_currentActionItem = nameItem;
+        }
+
 
         m_treeModel->item(i, 0)->setEditable(false);
         m_treeModel->item(i, 1)->setEditable(true);

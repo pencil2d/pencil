@@ -10,9 +10,6 @@ OBJECTS_DIR = .obj
 DEPENDPATH += . src
 INCLUDEPATH += . 	src \
             src/external/flash \
-            src/external/linux \
-            src/external/macosx \
-            src/external/win32 \
             src/graphics \
             src/graphics/bitmap \
             src/graphics/vector \
@@ -21,6 +18,13 @@ INCLUDEPATH += . 	src \
             src/tool \
             src/util \
             src/ui
+
+QT += xml \
+phonon \
+core \
+gui \
+xmlpatterns \
+svg
 
 DEPENDPATH += ${INCLUDEPATH}
 
@@ -58,7 +62,6 @@ HEADERS +=  src/interfaces.h \
             src/tool/erasertool.h \
             src/tool/selecttool.h \
             src/tool/movetool.h \
-            src/tool/edittool.h \
             src/tool/handtool.h \
     src/tool/smudgetool.h \
     src/tool/polylinetool.h \
@@ -74,7 +77,6 @@ HEADERS +=  src/interfaces.h \
     src/interface/keycapturelineedit.h \
     src/structure/objectsaveloader.h \
     src/tool/strokemanager.h \
-    src/util/bspline.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
     src/interface/colorwheel.h \
@@ -118,7 +120,6 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/tool/erasertool.cpp \
             src/tool/selecttool.cpp \
             src/tool/movetool.cpp \
-            src/tool/edittool.cpp \
             src/tool/handtool.cpp \
     src/tool/smudgetool.cpp \
     src/tool/polylinetool.cpp \
@@ -133,7 +134,6 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/interface/keycapturelineedit.cpp \
     src/structure/objectsaveloader.cpp \
     src/tool/strokemanager.cpp \
-    src/util/bspline.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
     src/interface/colorwheel.cpp \
@@ -149,10 +149,13 @@ DEPENDPATH *= $${INCLUDEPATH}
 win32 {
     INCLUDEPATH += . libwin32
     SOURCES += src/external/win32/win32.cpp
-        LIBS += -Llibwin32
+    INCLUDEPATH += src/external/win32
+    LIBS += -Llibwin32
     RC_FILE = pencil.rc
 }
 macx {
+    INCLUDEPATH +=  src/external/macosx
+    LIBS += -lobjc -framework AppKit -framework Carbon
     INCLUDEPATH += . libmacosx
     HEADERS += src/external/macosx/style.h
     SOURCES += src/external/macosx/macosx.cpp \
@@ -161,16 +164,11 @@ macx {
 }
 linux-* {
     INCLUDEPATH += . liblinux
+    INCLUDEPATH += src/external/linux
     SOURCES += src/external/linux/linux.cpp
     LIBS += -Lliblinux -lming -lpng
 }
 RESOURCES += pencil.qrc
-QT += xml \
-phonon \
-core \
-gui \
-xmlpatterns \
-svg
 
 # shortcuts.path = %{buildDir}
 # shortcuts.files += %{sourceDir}/shortcuts.ini
@@ -196,5 +194,8 @@ macx {
 linux-* {
     QMAKE_CXXFLAGS += -std=c++11
 }
+
+OTHER_FILES += \
+    src/tool/test.m
 
 

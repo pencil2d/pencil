@@ -25,7 +25,7 @@ public:
     int colourNumber;
     int pressure;
     int invisibility;
-    int preserveAlpha;    
+    int preserveAlpha;
 };
 
 const int ON = 1;

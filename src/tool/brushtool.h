@@ -20,6 +20,8 @@ public:
 
     void drawStroke();
 
+    void paintAt(QPointF point);
+
 signals:
     
 public slots:

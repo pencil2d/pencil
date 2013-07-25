@@ -25,15 +25,33 @@ GNU General Public License for more details.
 #include "style.h"
 
 #include <CoreFoundation/CoreFoundation.h>
+#include <Carbon/Carbon.h>
+
+extern "C" {
+// this is not declared in Carbon.h anymore, but it's in the framework
+OSStatus
+SetMouseCoalescingEnabled(
+ Boolean    inNewState,
+ Boolean *  outOldState);
+}
+
+extern "C" {
+void disableCoalescing() {
+    SetMouseCoalescingEnabled(false, NULL);
+}
+
+
+void enableCoalescing() {
+    SetMouseCoalescingEnabled(true, NULL);
+}
+}
 
 void initialise()
 {
     qApp->setStyle(new AquaStyle());
 }
 
-//void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat);
-
-void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
+bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
 {
     Q_UNUSED(startFrame);
     Q_UNUSED(endFrame);
@@ -96,6 +114,8 @@ void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     for(int i=0; i<entries.size(); i++)
         dir.remove(entries[i]);
         */
+
+    return false;
 }
 
 void Editor::importMovie (QString filePath, int fps)
