@@ -23,12 +23,14 @@ void SmudgeTool::loadSettings()
 
 QCursor SmudgeTool::cursor()
 {
+    qDebug() << "smudge tool";
     return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
 }
 
 void SmudgeTool::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
+    qDebug() << "smudge event";
 }
 
 void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
