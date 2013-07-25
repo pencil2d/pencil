@@ -15,7 +15,6 @@ QString BaseTool::TypeName(ToolType type)
         map->insert(ERASER, "Eraser");
         map->insert(SELECT, "Select");
         map->insert(MOVE, "Move");
-        map->insert(EDIT, "Edit");
         map->insert(HAND, "Hand");
         map->insert(SMUDGE, "Smudge");
         map->insert(PEN, "Pen");
@@ -29,7 +28,7 @@ QString BaseTool::TypeName(ToolType type)
 }
 
 BaseTool::BaseTool(QObject *parent) :
-    QObject(parent)
+QObject(parent)
 {
 }
 

@@ -62,7 +62,6 @@ HEADERS +=  src/interfaces.h \
             src/tool/erasertool.h \
             src/tool/selecttool.h \
             src/tool/movetool.h \
-            src/tool/edittool.h \
             src/tool/handtool.h \
     src/tool/smudgetool.h \
     src/tool/polylinetool.h \
@@ -115,7 +114,6 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/tool/erasertool.cpp \
             src/tool/selecttool.cpp \
             src/tool/movetool.cpp \
-            src/tool/edittool.cpp \
             src/tool/handtool.cpp \
     src/tool/smudgetool.cpp \
     src/tool/polylinetool.cpp \
