@@ -29,7 +29,6 @@ GNU General Public License for more details.
 #include "penciltool.h"
 #include "brushtool.h"
 #include "buckettool.h"
-#include "edittool.h"
 #include "erasertool.h"
 #include "eyedroppertool.h"
 #include "handtool.h"
@@ -57,8 +56,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_toolSetHash.insert(PENCIL, new PencilTool);
     m_toolSetHash.insert(BRUSH, new BrushTool);
     m_toolSetHash.insert(ERASER, new EraserTool);
-    m_toolSetHash.insert(BUCKET, new BucketTool);
-    m_toolSetHash.insert(EDIT, new EditTool);
+    m_toolSetHash.insert(BUCKET, new BucketTool);    
     m_toolSetHash.insert(EYEDROPPER, new EyedropperTool);
     m_toolSetHash.insert(HAND, new HandTool);
     m_toolSetHash.insert(MOVE, new MoveTool);
