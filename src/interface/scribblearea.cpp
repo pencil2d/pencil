@@ -1684,7 +1684,7 @@ void ScribbleArea::recentre()
     centralView = QMatrix(1, 0, 0, 1, 0.5 * width(), 0.5 * height());
     setView();
     QPixmapCache::clear();
-    update();
+    updateAllFrames();
 }
 
 /************************************************************************************/
