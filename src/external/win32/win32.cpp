@@ -71,7 +71,7 @@ void initialise()
 
 // added parameter exportFps -> frame rate of exported video
 // added parameter exportFormat -> to set ffmpeg parameters
-void Object::exportMovie(int startFrame, 
+bool Object::exportMovie(int startFrame,
                          int endFrame, 
                          QMatrix view, 
                          Layer* currentLayer, 
@@ -263,6 +263,8 @@ void Object::exportMovie(int startFrame,
         qDebug() << "Please place ffmpeg.exe in plugins directory";
     }
     qDebug() << "-----";
+
+    return true;
 }
 
 

@@ -51,9 +51,7 @@ void initialise()
     qApp->setStyle(new AquaStyle());
 }
 
-//void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat);
-
-void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
+bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
 {
     Q_UNUSED(startFrame);
     Q_UNUSED(endFrame);
@@ -116,6 +114,8 @@ void Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     for(int i=0; i<entries.size(); i++)
         dir.remove(entries[i]);
         */
+
+    return false;
 }
 
 void Editor::importMovie (QString filePath, int fps)
