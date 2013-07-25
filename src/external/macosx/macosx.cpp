@@ -175,7 +175,7 @@ void Editor::importMovie (QString filePath, int fps)
     // --------- Clean up temp directory ---------
     QDir dir(tempPath);
     QStringList filtername("*.*");
-    lQStringList entries = dir.entryList(filtername,QDir::Files,QDir::Type);
+    QStringList entries = dir.entryList(filtername,QDir::Files,QDir::Type);
     for(int i=0; i<entries.size(); i++)
         dir.remove(entries[i]);
 
