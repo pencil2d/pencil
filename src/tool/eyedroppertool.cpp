@@ -3,6 +3,8 @@
 #include <QBitmap>
 #include "eyedroppertool.h"
 
+#include "pencilsettings.h"
+
 #include "editor.h"
 #include "layer.h"
 #include "scribblearea.h"
@@ -26,57 +28,29 @@ void EyedropperTool::loadSettings()
 
 QCursor EyedropperTool::cursor()
 {
-    QPixmap pixmap(32, 32);
-    pixmap.fill(Qt::white);
-    
-    QPainter painter(&pixmap);
-    painter.drawLine(5,0,5,10);
-    painter.drawLine(0,5,10,5);
-    painter.end();
-
-    QPixmap mask(32,32);
-    mask.fill(Qt::color0);
-    
-    painter.begin(&mask);
-    painter.setBrush(Qt::color1);
-    painter.setPen(Qt::color1);
-    painter.drawLine(5,0,5,10);
-    painter.drawLine(0,5,10,5);
-//    painter.drawRect(10,10,20,20);
-    painter.end();
-    pixmap.setMask(QBitmap(mask));
-
-    return QCursor(pixmap, 5, 5);
+    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    {
+        return QCursor(QPixmap(":icons/eyedropper.png"), 0, 15);
+    } else {
+        return Qt::CrossCursor;
+    }
 }
 
 QCursor EyedropperTool::cursor(const QColor colour)
 {
+    QPixmap icon(":icons/eyedropper.png");
+
     QPixmap pixmap(32, 32);
-    pixmap.fill(Qt::white);
+    pixmap.fill(Qt::transparent);
 
     QPainter painter(&pixmap);
-    painter.drawLine(5,0,5,10);
-    painter.drawLine(0,5,10,5);
-
+    painter.drawPixmap(0, 0, icon);
     painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     painter.setBrush(colour);
-    painter.drawRect(10, 10, 20, 20);
-
+    painter.drawRect(16, 16, 15, 15);
     painter.end();
 
-    QPixmap mask(32,32);
-    mask.fill(Qt::color0);
-
-    painter.begin(&mask);
-    painter.setBrush(Qt::color1);
-    painter.setPen(Qt::color1);
-    painter.drawLine(5,0,5,10);
-    painter.drawLine(0,5,10,5);
-    painter.drawRect(10,10,20,20);
-    painter.end();
-    pixmap.setMask(QBitmap(mask));
-
-    return QCursor(pixmap, 5, 5);
+    return QCursor(pixmap, 0, 15);
 }
 
 
