@@ -325,7 +325,7 @@ void ToolSetWidget::brushOn()
 
 void ToolSetWidget::smudgeOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( EDIT );
+     m_editor->getScribbleArea()->setCurrentTool( SMUDGE );
     // --- change properties ---
     m_editor->setWidth(-1);
     m_editor->setFeather(-1);
