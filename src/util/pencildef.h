@@ -9,7 +9,6 @@ enum ToolType
     ERASER,
     SELECT,
     MOVE,
-    EDIT,
     HAND,
     SMUDGE,
     PEN,

@@ -40,6 +40,7 @@ class ScribbleArea : public QWidget
 
     friend class MoveTool;
     friend class EditTool;
+    friend class SmudgeTool;
 
 public:
     ScribbleArea(QWidget *parent = 0, Editor *m_pEditor = 0);
