@@ -487,7 +487,7 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
     }
 }
 
-void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress=NULL, int progressMax=50)
+bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress=NULL, int progressMax=50)
 {
 
     QSettings settings("Pencil","Pencil");
@@ -539,6 +539,9 @@ void Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
         tempImage.save(filePath+frameNumberString+extension, format, quality);
     }
+
+    // XXX no error handling done yet
+    return true;
 }
 
 
@@ -554,7 +557,7 @@ void convertNFrames(int fps,int exportFps,int* frameRepeat,int* frameReminder,in
 
 
 
-void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress, int progressMax, int fps, int exportFps)
+bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress, int progressMax, int fps, int exportFps)
 {
 
     int frameRepeat;
@@ -660,11 +663,14 @@ void Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
             frameSkipEvery1 = frameSkipEvery;
         }
     }
+
+    // XXX no error handling yet
+    return true;
 }
 
 
 
-void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
+bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
 {
     QSettings settings("Pencil","Pencil");
     qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
@@ -698,12 +704,16 @@ void Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
         {
             filePath.chop(4);
         }
-        xImg.save(filePath+QString::number(page)+".jpg", "JPG", 60);
+        if (!xImg.save(filePath+QString::number(page)+".jpg", "JPG", 60)) {
+            return false;
+        }
         page++;
     }
+
+    return true;
 }
 
-void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
+bool Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
 {
     Q_UNUSED(frameEnd);
     QSettings settings("Pencil","Pencil");
@@ -713,10 +723,10 @@ void Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSi
     painter.fillRect(exported.rect(), Qt::white);
     painter.setWorldMatrix(view);
     paintImage(painter, frameStart, false, curveOpacity, antialiasing, gradients);
-    exported.save(filePath);
+    return exported.save(filePath);
 }
 
-void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression)
+bool Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression)
 {
     Q_UNUSED(exportSize);
     Q_UNUSED(startFrame);
@@ -732,6 +742,8 @@ void Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize expor
     // ************* Requires the MING Library ***************
     // Flash::exportFlash(this, startFrame, endFrame, view, exportSize, filePath, fps, compression);
     // **********************************************
+
+    return false;
 }
 
 void Object::imageCheck(int frameNumber)

@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QTimer>
 #include <QSvgGenerator>
+#include <QMessageBox>
 
 #include "editor.h"
 #include "layerbitmap.h"
@@ -1145,7 +1146,13 @@ bool Editor::exportX()
         view = scribbleArea->getView() * view;
 
         updateMaxFrame();
-        object->exportX(1, maxFrame, view, exportSize, filePath, true, 2);
+        if (!object->exportX(1, maxFrame, view, exportSize, filePath, true, 2)) {
+            QMessageBox::warning(this, tr("Warning"),
+                                 tr("Unable to export image."),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+            return false;
+        }
         return true;
     }
 }
@@ -1154,9 +1161,19 @@ bool Editor::exportImage()
 {
     QSettings settings("Pencil","Pencil");
     QString initialPath = settings.value("lastExportPath", QVariant(QDir::homePath())).toString();
-    if (initialPath.isEmpty()) initialPath = QDir::homePath() + "/untitled.png";
-//	QString filePath = QFileDialog::getSaveFileName(this, tr("Save As"),initialPath);
-    QString filePath=QFileDialog::getSaveFileName(this, tr("Save Image"), initialPath,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
+    if (initialPath.isEmpty())
+    {
+        initialPath = QDir::homePath() + "/untitled.png";
+    }
+
+    QString filePath=QFileDialog::getSaveFileName(this, tr("Save Image"), initialPath, tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
+    QFileInfo fi(filePath);
+
+    if (fi.suffix().isEmpty()) {
+        // add PNG per default if the name has no suffix
+        filePath += ".png";
+    }
+
     if (filePath.isEmpty())
     {
         qDebug() << "empty file";
@@ -1171,7 +1188,14 @@ bool Editor::exportImage()
         view = scribbleArea->getView() * view;
 
         updateMaxFrame();
-        object->exportIm(m_nCurrentFrameIndex, maxFrame, view, exportSize, filePath, true, 2);
+        if (!object->exportIm(m_nCurrentFrameIndex, maxFrame, view, exportSize, filePath, true, 2)) {
+            QMessageBox::warning(this, tr("Warning"),
+                                 tr("Unable to export image."),
+                                 QMessageBox::Ok,
+                                 QMessageBox::Ok);
+            return false;
+        }
+
         return true;
     }
 }
