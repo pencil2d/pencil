@@ -58,7 +58,6 @@ void EditTool::mousePressEvent(QMouseEvent *event)
             }
         }
     }
-
 }
 
 void EditTool::mouseReleaseEvent(QMouseEvent *event)

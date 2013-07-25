@@ -1143,7 +1143,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
-            if (currentTool()->type() == EDIT || currentTool()->type() == HAND)
+            if (currentTool()->type() == SMUDGE || currentTool()->type() == HAND)
             {
                 //bufferImg->clear();
                 painter.save();
