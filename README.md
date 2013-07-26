@@ -4,7 +4,7 @@
 
 ### Download ###
 
-* [Pencil2D v0.5.3 for Windows](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil-dev-0.5.3b-win.zip)
+* [Pencil2D v0.5.3 for Windows](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip)
 * [Pencil2D v0.5.3 for Mac OS X](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil-dev-0.5.3b-mac.zip)
 * [Pencil2D v0.5.3 for Linux](http://goo.gl/BP40t)
 
