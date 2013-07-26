@@ -21,8 +21,13 @@ GNU General Public License for more details.
 #include <QList>
 #include <QString>
 #include <QPainter>
+#include <QDialog>
 #include "layerimage.h"
 #include "bitmapimage.h"
+
+class QLineEdit;
+class QSpinBox;
+
 
 class Camera
 {

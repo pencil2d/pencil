@@ -16,9 +16,9 @@ GNU General Public License for more details.
 #ifndef GRADIENT_H
 #define GRADIENT_H
 
-#include <QtGui>
 //#include "vectorimage.h"
 
+class QPainter;
 class VectorImage;  // forward declaration
 
 class Gradient

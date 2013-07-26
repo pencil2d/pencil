@@ -14,7 +14,6 @@ GNU General Public License for more details.
 
 */
 #include <QtDebug>
-#include <QtGui>
 #include "palette.h"
 #include "colourref.h"
 #include "object.h"

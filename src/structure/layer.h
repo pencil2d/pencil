@@ -19,9 +19,9 @@ GNU General Public License for more details.
 #include <QImage>
 #include <QString>
 #include <QPainter>
-#include <QtGui>
 #include <QtXml>
 
+class QMouseEvent;
 class Object;
 class TimeLineCells;
 

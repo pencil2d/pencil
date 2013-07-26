@@ -24,6 +24,8 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "colourref.h"
 
+class QProgressDialog;
+
 
 class Object : public QObject
 {

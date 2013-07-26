@@ -13,8 +13,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtGui>
-#include <math.h>
+
+#include <cmath>
+#include <QList>
 #include "beziercurve.h"
 #include "object.h"
 
