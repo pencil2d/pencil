@@ -13,8 +13,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtGui>
-#include <math.h>
+
+#include <cmath>
 #include "gradient.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"

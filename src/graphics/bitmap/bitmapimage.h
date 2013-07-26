@@ -16,8 +16,8 @@ GNU General Public License for more details.
 #ifndef BITMAP_IMAGE_H
 #define BITMAP_IMAGE_H
 
-#include <QtGui>
 #include <QtXml>
+#include <QPainter>
 
 class Object;  // forward declaration
 
