@@ -4,7 +4,7 @@
 
 ### Download ###
 
-* [Pencil2D v0.5.3 for Windows](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip)
+* [Pencil2D v0.5.4 for Windows](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip)
 * [Pencil2D v0.5.3 for Mac OS X](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil-dev-0.5.3b-mac.zip)
 * [Pencil2D v0.5.3 for Linux](http://goo.gl/BP40t)
 
@@ -21,10 +21,20 @@
 
 ----------------------------------------------------------------
 
+### Pencil2D v0.5.4 beta ###
+
+2013-07-26
+
+* ScribbleArea code refactoring.
+* Custom keyboard shortcuts (Preferences->Shoftcuts)
+* Interactive brush resizing. SHIFT + Mouse Drag to change brush size, CTRL + Mouse Drag for FEATHER,  CTRL+SHIFT applies brush size to the eraser and temporarily selects it. 
+* Smoother brush stroke on Mac OS X.
+* Saving/loading project is more stable now.
+* Misc bug fixes.
+
 ### Pencil2D v0.5.3 beta ###
 
 2013-06-28
-Simplified and reorganized the code base.
 
 * Upgrade to Qt 4.8.4
 * ToolSet code refactoring.
