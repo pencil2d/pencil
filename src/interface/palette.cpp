@@ -70,7 +70,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     QLabel* spacer = new QLabel();
     spacer->setFixedWidth(10);
 
-    colourSwatch = new QToolButton(); //QLabel();
+    colourSwatch = new QToolButton();
     colourSwatch->setFixedSize( 40, 40 );
     QPixmap colourPixmap(30,30);
     colourPixmap.fill( Qt::black );
@@ -144,7 +144,7 @@ void Palette::updateList()
     update();
 }
 
-void Palette::colourSwatchClicked()
+void Palette::colourSwatchClicked() 
 {
     if (currentColourNumber() > -1)
     {

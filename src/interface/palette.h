@@ -36,8 +36,7 @@ public:
     int currentColourNumber() { return listOfColours->currentRow(); }
 
 protected:
-    Editor* editor;
-    //Object* object;
+    Editor* editor;    
 
     QListWidget* listOfColours;
     QToolButton* addButton;
@@ -53,7 +52,7 @@ public slots:
     void updateSwatch(QColor);
     void selectColorListRow(int i) { listOfColours->setCurrentRow(i); }
     void setColour(QColor);
-    void setColour(int, int, int, int);
+    void setColour(int r, int g, int b, int a = 255);
 
 private slots:
     void colourSwatchClicked();

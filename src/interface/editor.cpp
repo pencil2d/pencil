@@ -409,8 +409,16 @@ void Editor::setFrontColour(int i, QColor newColour)
 void Editor::changeAutosave(int x)
 {
     QSettings settings("Pencil","Pencil");
-    if (x==0) { autosave=false; settings.setValue("autosave","false"); }
-    else { autosave=true; settings.setValue("autosave","true"); }
+    if (x == 0) 
+    { 
+        autosave = false; 
+        settings.setValue("autosave","false"); 
+    }
+    else 
+    { 
+        autosave = true; 
+        settings.setValue("autosave","true"); 
+    }
 }
 
 void Editor::changeAutosaveNumber(int number)
