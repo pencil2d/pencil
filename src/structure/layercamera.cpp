@@ -192,9 +192,9 @@ QImage* LayerCamera::getImageAtIndex(int index)
 {
     Q_UNUSED(index);
     /*if ( index < 0 || index >= framesImage.size() ) {
-    	return NULL;
+        return NULL;
     } else {
-    	return framesImage.at(index);
+        return framesImage.at(index);
     }*/
     return NULL;
 }
@@ -345,9 +345,9 @@ void LayerCamera::loadDomElement(QDomElement element, QString filePath)
                 loadImageAtFrame(frame, QMatrix(m11,m12,m21,m22,dx,dy) );
             }
             /*if (imageElement.tagName() == "image") {
-            	int frame = imageElement.attribute("frame").toInt();
-            	addImageAtFrame( frame );
-            	getBitmapImageAtFrame( frame )->loadDomElement(imageElement, filePath);
+                int frame = imageElement.attribute("frame").toInt();
+                addImageAtFrame( frame );
+                getBitmapImageAtFrame( frame )->loadDomElement(imageElement, filePath);
             }*/
         }
         imageTag = imageTag.nextSibling();
