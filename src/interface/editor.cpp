@@ -199,7 +199,7 @@ void Editor::importImageSequence ()
     QStringList files = w.getOpenFileNames(this,
                                            "Select one or more files to open",
                                            initialPath,
-                                           "Images (*.png *.xpm *.jpg)");
+                                           "Images (*.png *.xpm *.jpg *.jpeg)");
     qDebug() << files;
 
     QStringListIterator i(files);
@@ -1107,7 +1107,7 @@ bool Editor::exportSeq()
     {
         QString	initialPath = QDir::homePath() + "/untitled";
     }
-    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), initialPath,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
+    QString filePath = QFileDialog::getSaveFileName(this, tr("Save Image Sequence"), initialPath,tr("PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
     if (filePath.isEmpty())
     {
         return false;
@@ -1174,7 +1174,7 @@ bool Editor::exportImage()
         initialPath = QDir::homePath() + "/untitled.png";
     }
 
-    QString filePath=QFileDialog::getSaveFileName(this, tr("Save Image"), initialPath, tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
+    QString filePath=QFileDialog::getSaveFileName(this, tr("Save Image"), initialPath, tr("PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
     QFileInfo fi(filePath);
 
     if (fi.suffix().isEmpty()) {
@@ -1295,7 +1295,7 @@ void Editor::importImage(QString filePath)
         QSettings settings("Pencil","Pencil");
         QString initialPath = settings.value("lastImportPath", QVariant(QDir::homePath())).toString();
         if (initialPath.isEmpty()) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName(this, tr("Import image..."),initialPath ,tr("PNG (*.png);;JPG(*.jpg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
+        filePath = QFileDialog::getOpenFileName(this, tr("Import image..."),initialPath ,tr("PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)"));
         if (!filePath.isEmpty()) settings.setValue("lastImportPath", QVariant(filePath));
     }
 

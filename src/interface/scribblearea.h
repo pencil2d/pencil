@@ -265,13 +265,13 @@ protected:
 
     //WYWIWYG tool adjustments
     bool adjustingTool; //whether or not resizing
-    enum myWysiToolAdjustment {wtaWIDTH, wtaFEATHER, wtaTRANSPARENCY, wtaERASER};
+    enum myWysiToolAdjustment {wtaWIDTH, wtaFEATHER, wtaTRANSPARENCY};
     myWysiToolAdjustment wysiToolAdjustment;
     qreal toolOrgValue; //start resizing from previous width or feather
 
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool
-    ToolType recoverToolType; //to recover current tool
+    ToolType prevToolType; //to recover current tool
 
     VectorSelection vectorSelection;
     //bool selectionChanged;
