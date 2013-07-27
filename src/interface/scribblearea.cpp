@@ -537,6 +537,20 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         return;
     }
 
+    // Temporary eraser. If you decide to change shortcut, please, consider that ALT is commonly used to pick color
+    if ( event->modifiers().testFlag(Qt::ShiftModifier)&& event->modifiers().testFlag(Qt::ControlModifier) )
+    {
+        qreal width = currentTool()->properties.width;
+        qreal feather = currentTool()->properties.feather;
+        instantTool = true; // used to return to previous tool when finished (keyRelease).
+        prevToolType = currentTool()->type();
+        setCurrentTool( ERASER );
+        setWidth(width+(200-width)/52); // minimum size: 0.2 + 3.8 = 4 units. maximum size 200 + 0.
+        setFeather(feather); //not used yet but prevents future usage of feather.
+        qDebug()<<"ctrl-shift";
+        return;
+    }
+
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -639,6 +653,11 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
 
 void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 {
+    if ( instantTool ) //temporal tool eg. eraser, todo:color picker ...
+    {
+        setCurrentTool( prevToolType );
+        instantTool = false;
+    }
     switch (event->key())
     {
     case Qt::Key_F1:
@@ -759,36 +778,19 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         wysiToolAdjustment = wtaWIDTH;
         toolOrgValue = currentTool()->properties.width;
         return;
-    } 
+    }
     else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
-    { 
+    {
         //adjust feather if not locked
         qDebug() << "adjusting tool feather from " << currentTool()->properties.feather;
         adjustingTool = true;
         wysiToolAdjustment = wtaFEATHER;
         toolOrgValue = currentTool()->properties.feather;
         return;
-    } 
-    else 
+    }
+    else
     {
         adjustingTool = false;
-    }
-
-    // ----- temporal tools (while key pressed)
-    if ( (event->modifiers() == (Qt::ShiftModifier + Qt::ControlModifier)) )
-    { 
-        //temporal eraser
-        instantTool = true;
-        qreal width = currentTool()->properties.width;
-        qreal feather = currentTool()->properties.feather;
-        recoverToolType = currentTool()->type();
-        setCurrentTool( ERASER );
-        setWidth(width);
-        setFeather(feather);
-    } 
-    else 
-    {
-        instantTool = false;
     }
 
     // ---- checks ------
@@ -973,11 +975,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
     
-    if (instantTool) 
-    {
-        setCurrentTool( recoverToolType );  //eg. eraser, color picker(todo)
-    }
-
     if (!areLayersSane())
     {
         return;
