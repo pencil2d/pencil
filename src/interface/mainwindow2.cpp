@@ -305,10 +305,10 @@ void MainWindow2::newDocument()
 {
     if ( maybeSave() )
     {
-        // 
+        //
         m_object->deleteLater();
         // default size
-        
+
         m_object = new Object();
         m_object->defaultInitialisation();
 
@@ -414,13 +414,13 @@ bool MainWindow2::openObject(QString filePath)
     QScopedPointer<QFile> file(new QFile(filePath));
 
     //QFile* file = new QFile(filePath);
-    if (!file->open(QFile::ReadOnly)) 
+    if (!file->open(QFile::ReadOnly))
     {
         return false;
     }
 
     QDomDocument doc;
-    if (!doc.setContent(file.data())) 
+    if (!doc.setContent(file.data()))
     {
         return false; // this is not a XML file
     }
@@ -440,10 +440,10 @@ bool MainWindow2::openObject(QString filePath)
 
     QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
     progress.setWindowModality(Qt::WindowModal);
-    progress.show();    
-    
+    progress.show();
+
     //QSettings settings("Pencil","Pencil");
-    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );    
+    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
 
     Object* newObject = new Object();
     if (!newObject->loadPalette(filePath+".data"))
@@ -451,14 +451,14 @@ bool MainWindow2::openObject(QString filePath)
         newObject->loadDefaultPalette();
     }
     editor->setObject(newObject);
-    
+
     newObject->strCurrentFilePath = filePath;
 
     // ------- reads the XML file -------
     bool ok = true;
     int prog = 0;
     QDomElement docElem = doc.documentElement();
-    if (docElem.isNull()) 
+    if (docElem.isNull())
     {
         return false;
     }
@@ -510,7 +510,7 @@ bool MainWindow2::openObject(QString filePath)
         // FIXME: need to free the old object. but delete object will crash app, don't know why.
         m_object = newObject;
     }
-  
+
     progress.setValue(100);
     return ok;
 }
@@ -908,9 +908,9 @@ void MainWindow2::unloadAllShortcuts()
 }
 
 QString MainWindow2::sc(QString strActionName)
-{    
+{
     strActionName = QString("shortcuts/") + strActionName;
-    QString strKeySequence = pencilSettings()->value( strActionName ).toString();    
+    QString strKeySequence = pencilSettings()->value( strActionName ).toString();
 
     //qDebug() << strActionName << ": " << strKeySequence;
 
@@ -991,16 +991,15 @@ void MainWindow2::importPalette()
 
 void MainWindow2::aboutPencil()
 {
-    QMessageBox::about(this, tr("Pencil Animation 0.5.3 beta"),
+    QMessageBox::about(this, tr("Pencil2D Animation 0.5.4 beta"),
                        tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
                           "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
                           "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
-                          "Version: <b>0.5.3</b> (28 June 2013)<br><br>"
+                          "Version: <b>0.5.4</b> (26 July 2013)<br><br>"
                           "<b>Thanks to:</b><br>"
                           "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"
                           "Roland for the Movie export functions<br>"
-                          "Axel for his help with Qt<br>"
-                          "Mark for his help with Qt and SVN<br><br>"
+                          "<br>"
                           "<a href='http://pencil2d.org'>http://pencil2d.org</a><br><br>"
                           "Distributed under the <a href='http://www.gnu.org/copyleft/gpl.html'>GPL License</a>."
                           "</td></tr></table>"));
