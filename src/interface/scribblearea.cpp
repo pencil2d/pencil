@@ -1215,11 +1215,21 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                 bufferImg->clear();
                 QPen pen2(Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
                 QColor colour = QColor(100, 100, 255);
+
                 for (int k = 0; k < closestCurves.size(); k++)
                 {
                     qreal scale = myTempView.det();
+                    int idx = closestCurves[k];
+                    if (vectorImage->curve.size() <= idx)
+                    {
+                        // safety check
+                        continue;
+                    }
                     BezierCurve myCurve = vectorImage->curve[closestCurves[k]];
-                    if (myCurve.isPartlySelected()) { myCurve.transform(selectionTransformation); }
+                    if (myCurve.isPartlySelected())
+                    {
+                        myCurve.transform(selectionTransformation);
+                    }
                     QPainterPath path = myCurve.getStrokedPath(1.2 / scale, false);
                     bufferImg->drawPath((myView * transMatrix * centralView).map(path), pen2, colour, QPainter::CompositionMode_SourceOver, m_antialiasing);
                 }
@@ -2402,8 +2412,16 @@ void ScribbleArea::clearImage()
     m_pEditor->backup(tr("ClearImg"));
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
-    if (layer->type == Layer::VECTOR) { ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(); }
-    if (layer->type == Layer::BITMAP) { ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(); }
+    if (layer->type == Layer::VECTOR)
+    {
+        ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
+        closestCurves.clear();
+        closestVertices.clear();
+    }
+    if (layer->type == Layer::BITMAP)
+    {
+        ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
+    }
     //emit modification();
     //update();
     setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
