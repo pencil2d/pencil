@@ -2402,8 +2402,16 @@ void ScribbleArea::clearImage()
     m_pEditor->backup(tr("ClearImg"));
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
-    if (layer->type == Layer::VECTOR) { ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(); }
-    if (layer->type == Layer::BITMAP) { ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(); }
+    if (layer->type == Layer::VECTOR)
+    {
+        ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
+        closestCurves.clear();
+        closestVertices.clear();
+    }
+    if (layer->type == Layer::BITMAP)
+    {
+        ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
+    }
     //emit modification();
     //update();
     setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
