@@ -6,7 +6,7 @@
 
 * [Pencil2D 0.5.4 beta for Windows](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip)
 * [Pencil2D 0.5.4 beta for Mac OS X](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip)
-* [Pencil2D 0.5.3 beta for Linux](http://goo.gl/BP40t)
+* [Pencil2D 0.5.4 beta for Linux](http://goo.gl/BP40t)
 
 ### Links ###
 

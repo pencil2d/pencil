@@ -21,7 +21,7 @@
 # exit
 # umount ./pencil-buildroot.amd64/mnt/
 
-export VERSION=0.5.3
+export VERSION=0.5.4
 export RELEASE=1
 export EMAIL='ksee.zelgadis@gmail.com'
 
