@@ -253,6 +253,7 @@ public:
 protected:
     //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
 
+    bool keyboardInUse;
     bool mouseInUse;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
