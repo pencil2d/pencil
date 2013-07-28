@@ -127,6 +127,8 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     mouseInUse = false;
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
 
+    keyboardInUse = false;
+
     debugRect = QRectF(0, 0, 0, 0);
 
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
@@ -532,25 +534,26 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
+    keyboardInUse = true;
+    if (mouseInUse) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
     if (currentTool()->keyPressEvent(event)) {
         // has been handled by tool
         return;
     }
-
-    // Temporary eraser. If you decide to change shortcut, please, consider that ALT is commonly used to pick color
-    if ( event->modifiers().testFlag(Qt::ShiftModifier)&& event->modifiers().testFlag(Qt::ControlModifier) )
+    // ---- multiple keys ----
+    if ( event->modifiers().testFlag(Qt::ShiftModifier) && event->modifiers().testFlag(Qt::ControlModifier) ) // temp. eraser
     {
         qreal width = currentTool()->properties.width;
         qreal feather = currentTool()->properties.feather;
         instantTool = true; // used to return to previous tool when finished (keyRelease).
         prevToolType = currentTool()->type();
         setCurrentTool( ERASER );
-        setWidth(width+(200-width)/52); // minimum size: 0.2 + 3.8 = 4 units. maximum size 200 + 0.
-        setFeather(feather); //not used yet but prevents future usage of feather.
-        qDebug()<<"ctrl-shift";
+        setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        setFeather(feather); //anticipates future implementation of feather (not used yet).
+        qDebug() << "ctrl-shift";
         return;
     }
-
+    // ---- single keys ----
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -653,7 +656,9 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
 
 void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 {
-    if ( instantTool ) //temporal tool eg. eraser, todo:color picker ...
+    keyboardInUse = false;
+    if ( mouseInUse ) { return; }
+    if ( instantTool ) // temporary tool
     {
         setCurrentTool( prevToolType );
         instantTool = false;
@@ -974,7 +979,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     {
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
-    
+
     if (!areLayersSane())
     {
         return;
@@ -989,6 +994,14 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
 
     currentTool()->mouseReleaseEvent(event);
+
+    // ---- last check (at the very bottom of mouseRelease) ----
+    if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
+    {
+        setCurrentTool( prevToolType ); // abandon temporary tool !
+        instantTool = false;
+    }
+
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
