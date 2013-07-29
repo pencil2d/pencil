@@ -13,6 +13,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
+#include <climits>
 #include <QtDebug>
 #include "layer.h"
 #include "object.h"
@@ -29,15 +31,33 @@ Layer::Layer(Object* object) : QObject(0)
 
 Layer::~Layer() {}
 
-//QImage* Layer::getImageAtFrame(int frameNumber) {
-//	qDebug() << "get image from undefined layer!";
-//	return NULL; // null by default
-//}
+bool Layer::hasKeyframeAtPosition(int frameIndex)
+{
+    Q_UNUSED(frameIndex);
+    return false;
+}
 
-//QImage* Layer::getLastImageAtFrame(int frameNumber) {
-//	qDebug() << "get last image from undefined layer!";
-//	return NULL; // null by default
-//}
+int Layer::getPreviousKeyframePosition(int frameIndex)
+{
+    Q_UNUSED(frameIndex);
+    return NO_KEYFRAME;
+}
+
+int Layer::getNextKeyframePosition(int frameIndex)
+{
+    Q_UNUSED(frameIndex);
+    return NO_KEYFRAME;
+}
+
+int Layer::getFirstKeyframePosition()
+{
+    return getNextKeyframePosition(NO_KEYFRAME);
+}
+
+int Layer::getLastKeyframePosition()
+{
+    return getPreviousKeyframePosition(INT_MAX);
+}
 
 QDomElement Layer::createDomElement(QDomDocument& doc)
 {
@@ -213,29 +233,3 @@ void Layer::editProperties()
         //palette->updateList();
     }
 }
-
-//void Layer::addImageAtFrame(int frameNumber) {
-// nothing by default
-//}
-
-/*Layer::Layer(QColor theColour, QString theName) {
-	colour = theColour;
-	name = theName;
-}*/
-
-/*bool Layer::operator==(Layer colourRef1) {
-	if ( (colour == colourRef1.colour) && (name == colourRef1.name) ) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-bool Layer::operator!=(Layer colourRef1) {
-	if ( (colour != colourRef1.colour) || (name != colourRef1.name) ) {
-		return true;
-	} else {
-		return false;
-	}
-}*/
-

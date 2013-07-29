@@ -31,12 +31,86 @@ LayerImage::~LayerImage()
 {
 }
 
+bool LayerImage::hasKeyframeAtPosition(int position)
+{
+    for (int i = 0; i < framesPosition.size(); i++)
+    {
+        if (framesPosition.at(i) == position)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int LayerImage::getPreviousKeyframePosition(int position)
+{
+    int prevIndex = -1;
+    for (int i = 0; i < framesPosition.size(); i++)
+    {
+        if (framesPosition.at(i) >= position)
+        {
+            break;
+        }
+        prevIndex = i;
+    }
+
+    return getFramePositionAt(prevIndex);
+}
+
+int LayerImage::getNextKeyframePosition(int frameIndex)
+{
+    int prevIndex = -1;
+    for (int i = framesPosition.size() - 1; i >= 0; i--)
+    {
+        if (framesPosition.at(i) <= frameIndex)
+        {
+            break;
+        }
+        prevIndex = i;
+    }
+
+    return getFramePositionAt(prevIndex);
+}
+
+int LayerImage::getMaxFramePosition()
+{
+    return getFramePositionAt(getMaxFrameIndex());
+}
+
+int LayerImage::getMaxFrameIndex()
+{
+    return framesPosition.last();
+}
+
+int LayerImage::getFramePositionAt(int index)
+{
+    qDebug() << "index" << index << "size" << framesPosition.size();
+    if (index == NO_KEYFRAME)
+    {
+        return NO_KEYFRAME;
+    }
+
+    if (index >= framesPosition.size())
+    {
+        return NO_KEYFRAME;
+    } else {
+        return framesPosition.at(index);
+    }
+
+}
+
+// keyframe interface
+
 int LayerImage::getIndexAtFrame(int frameNumber)
 {
     int index = -1;
-    for(int i=0; i< framesPosition.size(); i++)
+    for (int i = 0; i < framesPosition.size(); i++)
     {
-        if (framesPosition.at(i) == frameNumber) index = i;
+        if (framesPosition.at(i) == frameNumber)
+        {
+            index = i;
+        }
     }
     return index;
 }

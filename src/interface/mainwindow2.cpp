@@ -223,6 +223,8 @@ void MainWindow2::createMenus()
     connect(ui->actionRemove_Frame, SIGNAL(triggered()), editor, SLOT(removeKey()));
     connect(ui->actionNext_Frame, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
     connect(ui->actionPrevious_Frame, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
+    connect(ui->actionNext_Keyframe, SIGNAL(triggered()), editor, SLOT(scrubNextKeyframe()));
+    connect(ui->actionPrev_Keyframe, SIGNAL(triggered()), editor, SLOT(scrubPreviousKeyframe()));
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---

@@ -16,31 +16,23 @@ GNU General Public License for more details.
 #ifndef LAYERCAMERA_H
 #define LAYERCAMERA_H
 
+#include <QDialog>
 #include <QImage>
 #include <QSize>
 #include <QList>
 #include <QString>
 #include <QPainter>
-#include <QDialog>
+#include "camera.h"
 #include "layerimage.h"
 #include "bitmapimage.h"
+
 
 class QLineEdit;
 class QSpinBox;
 
-
-class Camera
-{
-public:
-    Camera();
-    ~Camera();
-    QMatrix view;
-};
-
 class CameraPropertiesDialog : public QDialog
 {
     Q_OBJECT
-
 public:
     CameraPropertiesDialog(QString name, int width, int height);
     ~CameraPropertiesDialog();

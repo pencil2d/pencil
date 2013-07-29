@@ -84,7 +84,9 @@ HEADERS +=  src/interfaces.h \
     src/interface/colorgriditem.h \
     src/interface/colorgrid.h \
     src/interface/colorbox.h \
-    src/interface/flowlayout.h
+    src/interface/flowlayout.h \
+    src/structure/keyframe.h \
+    src/structure/camera.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -141,7 +143,10 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/interface/colorgriditem.cpp \
     src/interface/colorgrid.cpp \
     src/interface/colorbox.cpp \
-    src/interface/flowlayout.cpp
+    src/interface/flowlayout.cpp \
+    src/structure/keyframe.cpp \
+    src/structure/camera.cpp
+
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}

@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layersound.h"
 #include "layercamera.h"
+#include "layerimage.h"
 #include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
@@ -1457,6 +1458,13 @@ void Editor::scrubTo(int frameNumber)
 
 void Editor::scrubForward()
 {
+    Layer* layer = object->getLayer(m_nCurrentLayerIndex);
+
+    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR || layer->type == Layer::CAMERA)
+    {
+        LayerImage *_layer = (LayerImage *)layer;
+    }
+
     scrubTo( m_nCurrentFrameIndex + 1 );
 }
 
@@ -1468,10 +1476,24 @@ void Editor::scrubBackward()
     }
 }
 
+/*
+void Editor::scrubNextDrawing()
+{
+    Layer *layer = object->getLayer(m_nCurrentLayerIndex);
+    if (layer->type == Layer::VECTOR)
+    {
+
+    }
+}
+*/
+
 void Editor::previousLayer()
 {
     m_nCurrentLayerIndex--;
-    if (m_nCurrentLayerIndex<0) m_nCurrentLayerIndex = 0;
+    if (m_nCurrentLayerIndex<0)
+    {
+        m_nCurrentLayerIndex = 0;
+    }
     getTimeLine()->updateContent();
     scribbleArea->updateAllFrames();
 }
@@ -1479,7 +1501,10 @@ void Editor::previousLayer()
 void Editor::nextLayer()
 {
     m_nCurrentLayerIndex++;
-    if (m_nCurrentLayerIndex == object->getLayerCount()) m_nCurrentLayerIndex = object->getLayerCount()-1;
+    if (m_nCurrentLayerIndex == object->getLayerCount())
+    {
+        m_nCurrentLayerIndex = object->getLayerCount()-1;
+    }
     getTimeLine()->updateContent();
     scribbleArea->updateAllFrames();
 }
@@ -1648,6 +1673,54 @@ void Editor::startOrStop()
     }
 }
 
+
+void Editor::scrubNextKeyframe()
+{
+    Layer* layer = object->getLayer(m_nCurrentLayerIndex);
+    if (layer == NULL)
+    {
+        return;
+    }
+
+    int position = layer->getNextKeyframePosition(m_nCurrentFrameIndex);
+    if (position != Layer::NO_KEYFRAME)
+    {
+        scrubTo(position);
+    } else {
+        if (looping) {
+            // scrubto first key frame
+            position = layer->getFirstKeyframePosition();
+            if (position != Layer::NO_KEYFRAME) {
+                scrubTo(position);
+            }
+        }
+    }
+
+}
+
+void Editor::scrubPreviousKeyframe()
+{
+    Layer* layer = object->getLayer(m_nCurrentLayerIndex);
+    if (layer == NULL)
+    {
+        return;
+    }
+
+    int position = layer->getPreviousKeyframePosition(m_nCurrentFrameIndex);
+    if (position != Layer::NO_KEYFRAME)
+    {
+        scrubTo(position);
+    } else {
+        if (looping) {
+            // scrubto first key frame
+            position = layer->getLastKeyframePosition();
+            if (position != Layer::NO_KEYFRAME) {
+                scrubTo(position);
+            }
+        }
+    }
+}
+
 void Editor::playNextFrame()
 {
     if (m_nCurrentFrameIndex < maxFrame)
@@ -1732,8 +1805,11 @@ void Editor::updateMaxFrame()
     maxFrame = -1;
     for(int i=0; i < object->getLayerCount(); i++)
     {
-        int frameNumber = object->getLayer(i)->getMaxFrame();
-        if ( frameNumber > maxFrame) maxFrame = frameNumber;
+        int frameNumber = object->getLayer(i)->getMaxFrameIndex();
+        if ( frameNumber > maxFrame)
+        {
+            maxFrame = frameNumber;
+        }
     }
     getTimeLine()->forceUpdateLength(QString::number(maxFrame));
 }
