@@ -79,21 +79,14 @@ QColor ColorWheel::pickColor(const QPoint& point)
                                currentColor.saturation(),
                                currentColor.value());
     }
-    if (inSquare) 
+    else if (inSquare) 
     {
-        // region of the widget
-        int w = qMin(width(), height());
-        // radius of outer circle
-        qreal r = w / 2 ;
-        // radius of inner circle
-        qreal ir = r - wheelWidth;
-        // left corner of square
-        qreal m = (w / 2.0) - (ir / qSqrt(2));
-        QPoint p = point - QPoint(m, m);
-        qreal SquareWidth = 2 * ir / qSqrt(2);
+        QRect rect = squareRegion.boundingRect();
+        QPoint p = point - rect.topLeft();
+        QSizeF regionSize = rect.size();
         return QColor::fromHsvF( currentColor.hueF(),
-                                 p.x() / SquareWidth,
-                                 1.0 - (p.y() / SquareWidth));
+                                 p.x() / regionSize.width(),
+                                 1.0 - (p.y() / regionSize.height()));
     }
     return QColor();
 }
