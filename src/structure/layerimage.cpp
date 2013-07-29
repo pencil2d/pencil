@@ -31,12 +31,66 @@ LayerImage::~LayerImage()
 {
 }
 
+bool LayerImage::hasKeyframeAt(int frameIndex)
+{
+    for (int i = 0; i < framesPosition.size(); i++)
+    {
+        if (framesPosition.at(i) == frameIndex)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+int LayerImage::getPreviousKeyframe(int frameIndex)
+{
+    int prevIndex = -1;
+    for (int i = 0; i < framesPosition.size(); i++)
+    {
+        if (framesPosition.at(i) >= frameIndex)
+        {
+            return prevIndex;
+        }
+        prevIndex = i;
+    }
+
+    return prevIndex;
+}
+
+int LayerImage::getNextKeyframe(int frameIndex)
+{
+    int prevIndex = -1;
+    for (int i = framesPosition.size() - 1; i >= 0; i--)
+    {
+        if (framesPosition.at(i) <= frameIndex)
+        {
+            return prevIndex;
+        }
+        prevIndex = i;
+    }
+
+    return prevIndex;
+
+}
+
+int LayerImage::getMaxFrame()
+{
+    return framesPosition.last();
+}
+
+
+// keyframe interface
+
 int LayerImage::getIndexAtFrame(int frameNumber)
 {
     int index = -1;
-    for(int i=0; i< framesPosition.size(); i++)
+    for (int i = 0; i < framesPosition.size(); i++)
     {
-        if (framesPosition.at(i) == frameNumber) index = i;
+        if (framesPosition.at(i) == frameNumber)
+        {
+            index = i;
+        }
     }
     return index;
 }

@@ -16,7 +16,6 @@ GNU General Public License for more details.
 #ifndef LAYER_H
 #define LAYER_H
 
-#include <QImage>
 #include <QString>
 #include <QPainter>
 #include <QtGui>
@@ -32,13 +31,6 @@ class Layer : public QObject
 public:
     Layer(Object* object);
     virtual ~Layer();
-    //Layer(QColor theColour, QString theName);
-    //bool operator==(ColourRef colourRef1);
-    //bool operator!=(ColourRef colourRef1);
-
-    //virtual QImage* getImageAtFrame(int frameNumber);
-    //virtual QImage* getLastImageAtFrame(int frameNumber);
-    //virtual void addImageAtFrame(int frameNumber);
 
     Object* object;
     int type;
@@ -47,8 +39,15 @@ public:
     QString name;
 
     void switchVisibility() { visible = !visible;}
-    virtual int getMaxFrame() { return -1;}
 
+    // keyframe interface
+    static const int NO_KEYFRAME = -1;
+    virtual int getMaxFrame() { return NO_KEYFRAME; }
+    virtual bool hasKeyframeAt(int frameIndex);
+    virtual int getPreviousKeyframe(int frameIndex);
+    virtual int getNextKeyframe(int frameIndex);
+
+    // export element
     virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc
     virtual void loadDomElement(QDomElement element); // construct a layer from a dom/xml representation
     virtual void loadDomElement(QDomElement element, QString filePath) = 0;

@@ -21,7 +21,9 @@ GNU General Public License for more details.
 #include <QList>
 #include <QString>
 #include <QPainter>
+
 #include "layer.h"
+#include "keyframe.h"
 
 class TimeLineCells;
 
@@ -32,7 +34,14 @@ class LayerImage : public Layer
 public:
     LayerImage(Object* object);
     ~LayerImage();
-    int getMaxFrame() { return framesPosition.last(); }
+
+    // keyframe interface
+    virtual bool hasKeyframeAt(int frameIndex);
+    virtual int getPreviousKeyframe(int frameIndex);
+    virtual int getNextKeyframe(int frameIndex);
+    virtual int getMaxFrame();
+
+    // frame <-> image API
     int getFramePositionAt(int index) { return framesPosition.at(index); }
     int getIndexAtFrame(int frameNumber);
     int getLastIndexAtFrame(int frameNumber);
@@ -41,6 +50,7 @@ public:
     virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int) {
         return NULL;
     }
+
     QImage* getImageAtFrame(int frameNumber);
     QImage* getLastImageAtFrame(int frameNumber, int increment);
     virtual bool addImageAtFrame(int frameNumber);
@@ -66,18 +76,20 @@ signals:
     void imageRemoved(int);
 
 protected:
-    //QSize imageSize;
-    //QList<QImage*> framesImage;
-    //QList<QImage> framesAlpha;
+    QList<Keyframe> keyframes;
+
+    // list of frame positions, sorted from lowest to largest
     QList<int> framesPosition;
     QList<int> framesOriginalPosition;
     QList<QString> framesFilename;
     QList<bool> framesModified;
+
     // graphic representation -- could be put in another class
     QList<bool> framesSelected;
     int frameClicked;
     int frameOffset;
 
+    // sorts all QList according to frame position
     void bubbleSort();
     virtual void swap(int i, int j);
 };

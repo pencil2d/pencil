@@ -32,6 +32,7 @@ public:
     LayerBitmap(Object* object);
     ~LayerBitmap();
 
+
     // method from layerImage
     QImage* getImageAtIndex(int index);
     bool addImageAtFrame(int frameNumber);
