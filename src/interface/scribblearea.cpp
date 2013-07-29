@@ -2343,6 +2343,12 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     if (currentTool() != NULL && eToolMode != currentTool()->type())
     {
         qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
+        if (BaseTool::TypeName(eToolMode) == "")
+        {
+            // tool does not exist
+            return;
+        }
+
         // XXX tool->setActive()
         if (currentTool()->type() == MOVE) {
             paintTransformedSelection();
