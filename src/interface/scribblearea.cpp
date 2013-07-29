@@ -2410,9 +2410,9 @@ void ScribbleArea::deleteSelection()
 {
     if (somethingSelected)      // there is something selected
     {
-        m_pEditor->backup(tr("DeleteSel"));
         Layer *layer = m_pEditor->getCurrentLayer();
         if (layer == NULL) { return; }
+        m_pEditor->backup(tr("DeleteSel"));
         closestCurves.clear();
         if (layer->type == Layer::VECTOR) { ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deleteSelection(); }
         if (layer->type == Layer::BITMAP) { ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(mySelection); }
@@ -2422,21 +2422,27 @@ void ScribbleArea::deleteSelection()
 
 void ScribbleArea::clearImage()
 {
-    m_pEditor->backup(tr("ClearImg"));
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
     if (layer->type == Layer::VECTOR)
     {
+        m_pEditor->backup(tr("ClearImg")); // undo: only before change (just before)
         ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
         closestCurves.clear();
         closestVertices.clear();
     }
-    if (layer->type == Layer::BITMAP)
+    else if (layer->type == Layer::BITMAP)
     {
+        m_pEditor->backup(tr("ClearImg"));
         ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
     }
-    //emit modification();
-    //update();
+    else
+    {
+        return; // skip updates when nothing changes
+    }
+    //todo: confirm 1 and 2 are not necessary and remove comments
+    //emit modification(); //1
+    //update(); //2
     setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
 }
 
