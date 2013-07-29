@@ -4,6 +4,7 @@
 #include <QResizeEvent>
 #include <QStyleOption>
 #include <QtCore/qmath.h>
+#include <QRect>
 #include <QDebug>
 
 #include "colorwheel.h"
@@ -134,8 +135,28 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
     {
         return;
     }
-    if(squareRegion.contains(lastPos) && inSquare)
+    if (inSquare)
     {
+        QRect rect = squareRegion.boundingRect();
+
+        if ( lastPos.x() < rect.topLeft().x() )
+        {
+            lastPos.setX( rect.topLeft().x() );
+        } 
+        else if ( lastPos.x() > rect.bottomRight().x() )
+        {
+            lastPos.setX( rect.bottomRight().x() );
+        }
+
+        if ( lastPos.y() < rect.topLeft().y() )
+        {
+            lastPos.setY( rect.topLeft().y() );
+        }
+        else if ( lastPos.y() > rect.bottomRight().y() )
+        {
+            lastPos.setY( rect.bottomRight().y() );
+        }
+
         QColor color = pickColor(lastPos);
         svChanged(color);
     }
@@ -222,14 +243,14 @@ void ColorWheel::drawSquareImage(const int &hue)
 
     QImage square(255, 255, QImage::Format_ARGB32_Premultiplied);
     QColor color;
-    QRgb vv;
+    
     for (int i = 0; i < 255; ++i)
     {
         for (int j = 0; j < 255; ++j)
         {
             color = QColor::fromHsv(hue, i, 255 - j);
-            vv = qRgb(color.red(),color.green(),color.blue());
-            square.setPixel(i, j, vv);
+            QRgb rgb = qRgb(color.red(), color.green(), color.blue());
+            square.setPixel(i, j, rgb);
         }
     }
     qreal SquareWidth = 2 * ir / qSqrt(2);
@@ -237,7 +258,7 @@ void ColorWheel::drawSquareImage(const int &hue)
     squareRegion = QRegion(m, m, SquareWidth, SquareWidth);
 }
 
-void ColorWheel::drawIndicator(const int &hue)
+void ColorWheel::drawHueIndicator(const int &hue)
 {
     QPainter painter(&wheel);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -293,7 +314,7 @@ void ColorWheel::composeWheel( QPixmap& pixmap )
     composePainter.drawImage(0, 0, wheelImage);
     composePainter.drawImage(squareRegion.boundingRect().topLeft(), squareImage);
     composePainter.end();
-    drawIndicator(currentColor.hue());
+    drawHueIndicator(currentColor.hue());
     drawPicker(currentColor);
 }
 
