@@ -501,7 +501,7 @@ bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         format = "PNG";
         extension = ".png";
     }
-    if ( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG")
+    if ( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG" || formatStr == "jpeg")
     {
         format = "JPG";
         extension = ".jpg";

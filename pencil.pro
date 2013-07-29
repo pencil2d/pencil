@@ -168,18 +168,6 @@ FORMS += \
 
 TRANSLATIONS += pencil.ts
 
-win32-g++ {
-    # MinGW version <= 4.6
-    QMAKE_CXXFLAGS += -std=c++0x
-}
-
-macx {
-    QMAKE_CXXFLAGS += -std=c++11
-}
-
-linux-* {
-    QMAKE_CXXFLAGS += -std=c++11
-}
 
 OTHER_FILES += \
     src/tool/test.m

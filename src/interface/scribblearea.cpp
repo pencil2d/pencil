@@ -127,6 +127,8 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     mouseInUse = false;
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
 
+    keyboardInUse = false;
+
     debugRect = QRectF(0, 0, 0, 0);
 
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
@@ -532,11 +534,26 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
+    keyboardInUse = true;
+    if (mouseInUse) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
     if (currentTool()->keyPressEvent(event)) {
         // has been handled by tool
         return;
     }
-
+    // ---- multiple keys ----
+    if ( event->modifiers().testFlag(Qt::ShiftModifier) && event->modifiers().testFlag(Qt::ControlModifier) ) // temp. eraser
+    {
+        qreal width = currentTool()->properties.width;
+        qreal feather = currentTool()->properties.feather;
+        instantTool = true; // used to return to previous tool when finished (keyRelease).
+        prevToolType = currentTool()->type();
+        setCurrentTool( ERASER );
+        setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        setFeather(feather); //anticipates future implementation of feather (not used yet).
+        qDebug() << "ctrl-shift";
+        return;
+    }
+    // ---- single keys ----
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -639,6 +656,13 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
 
 void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 {
+    keyboardInUse = false;
+    if ( mouseInUse ) { return; }
+    if ( instantTool ) // temporary tool
+    {
+        setCurrentTool( prevToolType );
+        instantTool = false;
+    }
     switch (event->key())
     {
     case Qt::Key_F1:
@@ -759,36 +783,19 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         wysiToolAdjustment = wtaWIDTH;
         toolOrgValue = currentTool()->properties.width;
         return;
-    } 
+    }
     else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
-    { 
+    {
         //adjust feather if not locked
         qDebug() << "adjusting tool feather from " << currentTool()->properties.feather;
         adjustingTool = true;
         wysiToolAdjustment = wtaFEATHER;
         toolOrgValue = currentTool()->properties.feather;
         return;
-    } 
-    else 
+    }
+    else
     {
         adjustingTool = false;
-    }
-
-    // ----- temporal tools (while key pressed)
-    if ( (event->modifiers() == (Qt::ShiftModifier + Qt::ControlModifier)) )
-    { 
-        //temporal eraser
-        instantTool = true;
-        qreal width = currentTool()->properties.width;
-        qreal feather = currentTool()->properties.feather;
-        recoverToolType = currentTool()->type();
-        setCurrentTool( ERASER );
-        setWidth(width);
-        setFeather(feather);
-    } 
-    else 
-    {
-        instantTool = false;
     }
 
     // ---- checks ------
@@ -972,11 +979,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     {
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
-    
-    if (instantTool) 
-    {
-        setCurrentTool( recoverToolType );  //eg. eraser, color picker(todo)
-    }
 
     if (!areLayersSane())
     {
@@ -992,6 +994,14 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     }
 
     currentTool()->mouseReleaseEvent(event);
+
+    // ---- last check (at the very bottom of mouseRelease) ----
+    if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
+    {
+        setCurrentTool( prevToolType ); // abandon temporary tool !
+        instantTool = false;
+    }
+
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
@@ -1218,11 +1228,21 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                 bufferImg->clear();
                 QPen pen2(Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
                 QColor colour = QColor(100, 100, 255);
+
                 for (int k = 0; k < closestCurves.size(); k++)
                 {
                     qreal scale = myTempView.det();
+                    int idx = closestCurves[k];
+                    if (vectorImage->curve.size() <= idx)
+                    {
+                        // safety check
+                        continue;
+                    }
                     BezierCurve myCurve = vectorImage->curve[closestCurves[k]];
-                    if (myCurve.isPartlySelected()) { myCurve.transform(selectionTransformation); }
+                    if (myCurve.isPartlySelected())
+                    {
+                        myCurve.transform(selectionTransformation);
+                    }
                     QPainterPath path = myCurve.getStrokedPath(1.2 / scale, false);
                     bufferImg->drawPath((myView * transMatrix * centralView).map(path), pen2, colour, QPainter::CompositionMode_SourceOver, m_antialiasing);
                 }
@@ -2405,8 +2425,16 @@ void ScribbleArea::clearImage()
     m_pEditor->backup(tr("ClearImg"));
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
-    if (layer->type == Layer::VECTOR) { ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(); }
-    if (layer->type == Layer::BITMAP) { ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear(); }
+    if (layer->type == Layer::VECTOR)
+    {
+        ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
+        closestCurves.clear();
+        closestVertices.clear();
+    }
+    if (layer->type == Layer::BITMAP)
+    {
+        ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->clear();
+    }
     //emit modification();
     //update();
     setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
