@@ -134,13 +134,18 @@ public slots:
     bool importMov();
     void updateFrame(int frameNumber);
     void updateFrameAndVector(int frameNumber);
+
     void scrubTo(int frameNumber);
+    void scrubNextKeyframe();
+    void scrubPreviousKeyframe();
     void scrubForward();
     void scrubBackward();
+
     void play();
     void startOrStop();
     void playNextFrame();
     void playPrevFrame();
+
     void changeFps(int);
     int getFps();
     void setLoop(bool checked);

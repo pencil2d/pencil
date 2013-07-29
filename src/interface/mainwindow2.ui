@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>18</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -129,6 +129,8 @@
     <addaction name="separator"/>
     <addaction name="actionNext_Frame"/>
     <addaction name="actionPrevious_Frame"/>
+    <addaction name="actionNext_Keyframe"/>
+    <addaction name="actionPrev_Keyframe"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
@@ -690,6 +692,38 @@
    </property>
    <property name="toolTip">
     <string>Reset to default</string>
+   </property>
+  </action>
+  <action name="actionNext_Keyframe">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/next.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Next_Keyframe</string>
+   </property>
+   <property name="toolTip">
+    <string>Next Keyframe</string>
+   </property>
+   <property name="shortcut">
+    <string>&gt;</string>
+   </property>
+  </action>
+  <action name="actionPrev_Keyframe">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/prev.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Prev_Keyframe</string>
+   </property>
+   <property name="toolTip">
+    <string>Previous keyframe</string>
+   </property>
+   <property name="shortcut">
+    <string>&lt;</string>
    </property>
   </action>
  </widget>
