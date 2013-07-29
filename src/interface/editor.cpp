@@ -1715,6 +1715,8 @@ void Editor::scrubPreviousKeyframe()
 
 void Editor::playNextFrame()
 {
+    updateMaxFrame();
+
     if (m_nCurrentFrameIndex < maxFrame)
     {
         if (sound) object->playSoundIfAny(m_nCurrentFrameIndex,fps);
