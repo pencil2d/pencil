@@ -42,10 +42,13 @@ public:
 
     // keyframe interface
     static const int NO_KEYFRAME = -1;
-    virtual int getMaxFrame() { return NO_KEYFRAME; }
-    virtual bool hasKeyframeAt(int frameIndex);
-    virtual int getPreviousKeyframe(int frameIndex);
-    virtual int getNextKeyframe(int frameIndex);
+    virtual int getMaxFrameIndex() { return NO_KEYFRAME; }
+    virtual int getMaxFramePosition() { return NO_KEYFRAME; }
+    virtual bool hasKeyframeAtPosition(int position);
+    virtual int getPreviousKeyframePosition(int position);
+    virtual int getNextKeyframePosition(int position);
+    virtual int getFirstKeyframePosition();
+    virtual int getLastKeyframePosition();
 
     // export element
     virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc

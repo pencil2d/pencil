@@ -13,6 +13,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
+#include <limits.h>
+
 #include <QtGui>
 #include <QtDebug>
 #include "layer.h"
@@ -30,22 +33,32 @@ Layer::Layer(Object* object) : QObject(0)
 
 Layer::~Layer() {}
 
-bool Layer::hasKeyframeAt(int frameIndex)
+bool Layer::hasKeyframeAtPosition(int frameIndex)
 {
     Q_UNUSED(frameIndex);
     return false;
 }
 
-int Layer::getPreviousKeyframe(int frameIndex)
+int Layer::getPreviousKeyframePosition(int frameIndex)
 {
     Q_UNUSED(frameIndex);
     return NO_KEYFRAME;
 }
 
-int Layer::getNextKeyframe(int frameIndex)
+int Layer::getNextKeyframePosition(int frameIndex)
 {
     Q_UNUSED(frameIndex);
     return NO_KEYFRAME;
+}
+
+int Layer::getFirstKeyframePosition()
+{
+    return getNextKeyframePosition(NO_KEYFRAME);
+}
+
+int Layer::getLastKeyframePosition()
+{
+    return getPreviousKeyframePosition(INT_MAX);
 }
 
 QDomElement Layer::createDomElement(QDomDocument& doc)

@@ -36,13 +36,14 @@ public:
     ~LayerImage();
 
     // keyframe interface
-    virtual bool hasKeyframeAt(int frameIndex);
-    virtual int getPreviousKeyframe(int frameIndex);
-    virtual int getNextKeyframe(int frameIndex);
-    virtual int getMaxFrame();
+    virtual bool hasKeyframeAtPosition(int position);
+    virtual int getPreviousKeyframePosition(int position);
+    virtual int getNextKeyframePosition(int position);
+    virtual int getMaxFramePosition();
+    virtual int getMaxFrameIndex();
 
     // frame <-> image API
-    int getFramePositionAt(int index) { return framesPosition.at(index); }
+    int getFramePositionAt(int index);
     int getIndexAtFrame(int frameNumber);
     int getLastIndexAtFrame(int frameNumber);
 
