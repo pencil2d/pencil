@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include <QScopedPointer>
+
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -30,6 +31,8 @@ GNU General Public License for more details.
 #include "preferences.h"
 #include "timeline.h"
 #include "pencilsettings.h"
+
+#include "recentfilemenu.h"
 
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
@@ -239,7 +242,12 @@ void MainWindow2::createMenus()
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
 
     // --------------- Menus ------------------
-    openRecentMenu = new QMenu(tr("Open recent"), this);
+    m_recentFileMenu = new RecentFileMenu("Open Recent", this);
+    m_recentFileMenu->loadFromDisk();
+    ui->menuFile->insertMenu(ui->actionSave, m_recentFileMenu);
+
+    QObject::connect(m_recentFileMenu, SIGNAL(loadRecentFile(QString)),
+                     this, SLOT(openFile(QString)));
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
@@ -389,11 +397,11 @@ bool MainWindow2::saveAsNewDocument()
     }
 }
 
-void MainWindow2::openRecent()
+void MainWindow2::openFile(QString filename)
 {
     QSettings settings("Pencil","Pencil");
-    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-    bool ok = openObject(myPath);
+    qDebug() << "open recent file" << filename;
+    bool ok = openObject(filename);
     if ( !ok )
     {
         QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
@@ -504,6 +512,9 @@ bool MainWindow2::openObject(QString filePath)
     if (ok)
     {
         editor->updateObject();
+
+        m_recentFileMenu->addRecentFile(filePath);
+        m_recentFileMenu->saveToDisk();
 
         qDebug() << "Current File Path=" << newObject->strCurrentFilePath;
         setWindowTitle(newObject->strCurrentFilePath);
@@ -643,6 +654,9 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     m_object->strCurrentFilePath = strSavedFilename;
 
+    m_recentFileMenu->addRecentFile(strSavedFilename);
+    m_recentFileMenu->saveToDisk();
+
     return true;
 }
 
@@ -769,7 +783,7 @@ void MainWindow2::readSettings()
     editor->restorePalettesSettings(true, true, true);
 
     QString myPath = settings->value("lastFilePath", QVariant(QDir::homePath())).toString();
-    addRecentFile(myPath);
+    m_recentFileMenu->addRecentFile(myPath);
 
     setOpacity(100 - settings->value("windowOpacity").toInt());
 }
@@ -916,13 +930,6 @@ QString MainWindow2::sc(QString strActionName)
     //qDebug() << strActionName << ": " << strKeySequence;
 
     return strKeySequence;
-}
-
-void MainWindow2::addRecentFile(QString filePath)
-{
-    QAction* openThisFileAct = new QAction(filePath, this);
-    connect(openThisFileAct, SIGNAL(triggered()), this, SLOT(openRecent()));
-    openRecentMenu->addAction(openThisFileAct);
 }
 
 void MainWindow2::undoActSetText(void)
