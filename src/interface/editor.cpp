@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtGui>
+
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTimer>
@@ -1302,8 +1302,13 @@ void Editor::importImage(QString filePath)
         if (layer->type == Layer::BITMAP)
         {
             BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex);
-            if (bitmapImage == NULL) { addKey(); bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex); }
+            if (bitmapImage == NULL) 
+            { 
+                addKey(); 
+                bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame(m_nCurrentFrameIndex); 
+            }
             QImage* importedImage = new QImage(filePath);
+
             if (!importedImage->isNull())
             {
                 QRect boundaries = importedImage->rect();

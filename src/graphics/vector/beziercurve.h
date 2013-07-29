@@ -16,8 +16,8 @@ GNU General Public License for more details.
 #ifndef BEZIERCURVE_H
 #define BEZIERCURVE_H
 
-#include <QtGui>
 #include <QtXml>
+#include <QPainter>
 
 class Object;
 

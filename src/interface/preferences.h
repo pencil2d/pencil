@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #ifndef _PREFERENCES_H_
 #define _PREFERENCES_H_
 
-#include <QtGui>
+#include <QDialog>
 
 class QListWidget;
 class QListWidgetItem;

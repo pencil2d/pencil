@@ -15,7 +15,6 @@ GNU General Public License for more details.
 
 */
 
-#include <QtGui>
 #include <QList>
 #include <QMenu>
 #include <QScopedPointer>
@@ -999,9 +998,7 @@ void MainWindow2::aboutPencil()
                           "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
                           "Version: <b>0.5.4</b> (26 July 2013)<br><br>"
                           "<b>Thanks to:</b><br>"
-                          "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"
-                          "Roland for the Movie export functions<br>"
-                          "<br>"
+                          "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"                          
                           "<a href='http://pencil2d.org'>http://pencil2d.org</a><br><br>"
                           "Distributed under the <a href='http://www.gnu.org/copyleft/gpl.html'>GPL License</a>."
                           "</td></tr></table>"));

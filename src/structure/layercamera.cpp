@@ -13,8 +13,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "layercamera.h"
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
 #include <QtDebug>
+#include "layercamera.h"
+
 
 // ------
 

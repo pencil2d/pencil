@@ -13,7 +13,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtGui>
+
+#include <QListWidget>
+#include <QStackedWidget>
+#include <QButtonGroup>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QRadioButton>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QLabel>
+#include <QPushButton>
 #include "preferences.h"
 #include "scribblearea.h"
 #include "shortcutspage.h"

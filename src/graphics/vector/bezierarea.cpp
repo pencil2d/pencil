@@ -13,8 +13,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtGui>
-//#include <CoreFoundation/CoreFoundation.h>
+
+
 #include "bezierarea.h"
 
 BezierArea::BezierArea()
@@ -23,13 +23,11 @@ BezierArea::BezierArea()
     // nothing;
 }
 
-//BezierArea::BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage) {
 BezierArea::BezierArea(QList<VertexRef> vertexList, int colour)
 {
     vertex = vertexList;
     colourNumber = colour;
     selected = false;
-    //picture = vectorImage;
 }
 
 VertexRef BezierArea::getVertexRef(int i)

@@ -14,9 +14,7 @@ GNU General Public License for more details.
 
 */
 
-#include <limits.h>
-
-#include <QtGui>
+#include <climits>
 #include <QtDebug>
 #include "layer.h"
 #include "object.h"

@@ -16,13 +16,16 @@ GNU General Public License for more details.
 #ifndef VECTORIMAGE_H
 #define VECTORIMAGE_H
 
-#include <QtGui>
+
 #include <QtXml>
+#include <QMatrix>
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
 
 class Object;  // forward declaration
+class QPainter;
+
 
 //class VectorImage : public QObject
 class VectorImage

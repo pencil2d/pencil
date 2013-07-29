@@ -16,8 +16,9 @@ GNU General Public License for more details.
 #ifndef BEZIERAREA_H
 #define BEZIERAREA_H
 
-#include <QtGui>
+
 #include <QtXml>
+#include <QPainterPath>
 
 #include "vertexref.h"
 
