@@ -78,7 +78,8 @@ HEADERS +=  src/interfaces.h \
     src/structure/objectsaveloader.h \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
-    src/util/blitrect.h
+    src/util/blitrect.h \
+    src/structure/keyframe.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -129,7 +130,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/structure/objectsaveloader.cpp \
     src/tool/strokemanager.cpp \
     src/tool/stroketool.cpp \
-    src/util/blitrect.cpp
+    src/util/blitrect.cpp \
+    src/structure/keyframe.cpp
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}
