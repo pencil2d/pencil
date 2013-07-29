@@ -21,16 +21,11 @@ GNU General Public License for more details.
 #include <QList>
 #include <QString>
 #include <QPainter>
+
+#include "camera.h"
+
 #include "layerimage.h"
 #include "bitmapimage.h"
-
-class Camera
-{
-public:
-    Camera();
-    ~Camera();
-    QMatrix view;
-};
 
 class CameraPropertiesDialog : public QDialog
 {

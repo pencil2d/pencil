@@ -16,15 +16,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include <QtDebug>
 
-Camera::Camera()
-{
-    view = QMatrix();
-}
-
-Camera::~Camera()
-{
-}
-
 // ------
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()
