@@ -11,6 +11,8 @@
 #include "strokemanager.h"
 
 #include "layer.h"
+#include "layervector.h"
+#include "layerbitmap.h"
 
 PencilTool::PencilTool(QObject *parent) :
     StrokeTool(parent)

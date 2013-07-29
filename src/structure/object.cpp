@@ -170,38 +170,45 @@ bool Object::write(QString filePath)
     return true;
 }
 
-void Object::addNewBitmapLayer()
+LayerBitmap *Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap(this);
     layerBitmap->id = 1+getMaxID();
     layer.append( layerBitmap );
     connect( layerBitmap, SIGNAL(imageAdded(int)), this, SIGNAL(imageAdded(int)) );
     connect( layerBitmap, SIGNAL(imageRemoved(int)), this, SLOT(imageCheck(int)) );
+
+    return layerBitmap;
 }
 
-void Object::addNewVectorLayer()
+LayerVector *Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector(this);
     layerVector->id = 1+getMaxID();
     layer.append( layerVector );
     connect( layerVector, SIGNAL(imageAdded(int)), this, SIGNAL(imageAdded(int)) );
     connect( layerVector, SIGNAL(imageRemoved(int)), this, SLOT(imageCheck(int)) );
+
+    return layerVector;
 }
 
-void Object::addNewSoundLayer()
+LayerSound *Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound(this);
     layerSound->id = 1+getMaxID();
     layer.append( layerSound );
+    return layerSound;
 }
 
-void Object::addNewCameraLayer()
+LayerCamera *Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera(this);
     layerCamera->id = 1+getMaxID();
     layer.append( layerCamera );
     connect( layerCamera, SIGNAL(imageAdded(int,int)), this, SIGNAL(imageAdded(int,int)) );
     connect( layerCamera, SIGNAL(imageRemoved(int)), this, SLOT(imageCheck(int)) );
+
+    return layerCamera;
 }
 
 int Object::getMaxID()

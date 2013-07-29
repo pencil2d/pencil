@@ -34,6 +34,10 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
+#include "layer.h"
+#include "layerbitmap.h"
+#include "layervector.h"
+
 
 MainWindow2::MainWindow2(QWidget *parent) :
     QMainWindow(parent),
