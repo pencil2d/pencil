@@ -32,14 +32,15 @@ private:
     void svChanged(const QColor &newcolor);
 
     QColor pickColor(const QPoint &point);
-    void drawWheelImage(const QSize &newSize);
-    void drawIndicator(const int &hue);
+    
+    void drawHueIndicator(const int &hue);
     void drawPicker(const QColor &color);
+
+    void drawWheelImage(const QSize &newSize);
     void drawSquareImage(const int &hue);
     void composeWheel(QPixmap& pixmap);
 
     QSize initSize;
-
     QImage wheelImage;
     QImage squareImage;
     QPixmap wheel;
