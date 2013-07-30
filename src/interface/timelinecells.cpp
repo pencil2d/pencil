@@ -347,6 +347,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         if(type == "layers")
         {
             layer->editProperties();
+            update();
         }
     }
 }
