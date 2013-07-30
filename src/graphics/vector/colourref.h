@@ -23,7 +23,7 @@ class ColourRef
 {
 public:
     ColourRef();
-    ColourRef(QColor theColour, QString theName);
+    ColourRef(QColor theColour, QString theName = "");
     bool operator==(ColourRef colourRef1);
     bool operator!=(ColourRef colourRef1);
 
