@@ -200,7 +200,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
                 //setSelection( vectorImage->getSelectionRect() );
 
                 // we switch to the select tool
-                m_pScribbleArea->switchTool(MOVE);
+                m_pScribbleArea->switchTool(SELECT);
                 m_pScribbleArea->m_moveMode = ScribbleArea::MIDDLE;
                 m_pScribbleArea->mySelection.setTopLeft(getLastPoint());
                 m_pScribbleArea->mySelection.setBottomRight(getLastPoint());
