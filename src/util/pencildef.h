@@ -63,6 +63,8 @@ enum ToolType
 #define CMD_LOOP "CmdLoop"
 #define CMD_GOTO_NEXT_FRAME "CmdGotoNextFrame"
 #define CMD_GOTO_PREV_FRAME "CmdGotoPreviousFrame"
+#define CMD_GOTO_NEXT_KEY_FRAME "CmdGotoNextKeyFrame"
+#define CMD_GOTO_PREV_KEY_FRAME "CmdGotoPreviousKeyFrame"
 #define CMD_ADD_FRAME "CmdAddFrame"
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
