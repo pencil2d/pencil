@@ -33,20 +33,7 @@
     #define NAN (std::numeric_limits<float>::quiet_NaN())
 #endif
 
-#ifdef Q_OS_MAC
-extern "C" {
-void disableCoalescing();
-void enableCoalescing();
-}
-#else
-extern "C" {
-void disableCoalescing() {
-}
 
-void enableCoalescing() {
-}
-}
-#endif
 
 StrokeManager::StrokeManager()
 {
@@ -111,7 +98,6 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
     m_strokeStarted = true;
     singleshotTime.start();
     previousTime = singleshotTime.elapsed();
-    disableCoalescing();
 
 }
 
@@ -125,7 +111,6 @@ void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
     m_lastReleasePosition = getEventPosition(event);
 
     m_strokeStarted = false;
-    enableCoalescing();
 }
 
 void StrokeManager::tabletEvent(QTabletEvent *event)
