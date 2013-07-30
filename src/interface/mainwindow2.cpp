@@ -843,10 +843,7 @@ void MainWindow2::writeSettings()
 
 void MainWindow2::loadAllShortcuts()
 {
-    if ( !pencilSettings()->contains(QString("shortcuts/%0").arg(CMD_NEW_FILE)) )
-    {
-        restoreShortcutsToDefault();
-    }
+    checkExistingShortcuts();
 
     ui->actionNew->setShortcut( cmdKeySeq(CMD_NEW_FILE) );
     ui->actionOpen->setShortcut( cmdKeySeq(CMD_OPEN_FILE) );

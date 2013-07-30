@@ -23,7 +23,7 @@ QSettings* pencilSettings()
 
 void restoreToDefaultSetting() // TODO: finish reset list
 {
-    QSettings* s = g_pSettings;
+    QSettings* s = pencilSettings();
 
     s->setValue("penWidth", 2.0);
     s->setValue("pencilWidth", 1.0);
@@ -36,7 +36,23 @@ void restoreToDefaultSetting() // TODO: finish reset list
 
     s->sync();
     qDebug("restored default tools");
+}
 
+
+void checkExistingShortcuts()
+{
+    QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
+
+    pencilSettings()->beginGroup("shortcuts");
+    pencilSettings()->remove("");
+    foreach (QString pKey, defaultKey.allKeys())
+    {
+        if ( !pencilSettings()->contains(pKey) )
+        {
+            pencilSettings()->setValue(pKey, defaultKey.value(pKey));
+        }
+    }
+    pencilSettings()->endGroup();
 }
 
 
