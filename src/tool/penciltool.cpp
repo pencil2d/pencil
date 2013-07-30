@@ -155,7 +155,7 @@ void PencilTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen(QBrush(m_pEditor->currentColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         width = properties.width;
         rad = qRound(properties.width / 2) + 3;
 

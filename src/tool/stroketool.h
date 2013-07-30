@@ -31,6 +31,7 @@ protected:
     QList<qreal> strokePressures;
 
     qreal currentWidth;
+    qreal currentPressure;
 };
 
 #endif // STROKETOOL_H
