@@ -699,9 +699,6 @@
    <property name="toolTip">
     <string>Next Keyframe</string>
    </property>
-   <property name="shortcut">
-    <string>&gt;</string>
-   </property>
   </action>
   <action name="actionPrev_Keyframe">
    <property name="icon">
@@ -714,9 +711,6 @@
    </property>
    <property name="toolTip">
     <string>Previous keyframe</string>
-   </property>
-   <property name="shortcut">
-    <string>&lt;</string>
    </property>
   </action>
  </widget>
