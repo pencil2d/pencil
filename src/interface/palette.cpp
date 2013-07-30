@@ -58,6 +58,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     listOfColours->setFrameStyle(QFrame::Panel | QFrame::Sunken);
     listOfColours->setLineWidth(1);
     listOfColours->setFocusPolicy(Qt::NoFocus);
+	listOfColours->setCurrentRow( 0 );
 
     m_colorBox = new ColorBox(this);
 
@@ -76,17 +77,41 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
     setWindowTitle(tr("Colors"));
 
-    connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
-    connect(listOfColours, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(clickColorListItem( QListWidgetItem*)));
-    connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, SLOT(changeColourName( QListWidgetItem*)));
+    connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), 
+			this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
+
+    connect(listOfColours, SIGNAL(itemClicked(QListWidgetItem*)), 
+			this, SLOT(clickColorListItem( QListWidgetItem*)));
+
+    connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, 
+			SLOT(changeColourName( QListWidgetItem*)));
 
     connect(addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
     connect(colourSwatch, SIGNAL(clicked()), this, SLOT(colourSwatchClicked()));
-    connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
-
+    
+	connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
+	
     connect(m_colorBox, SIGNAL(colorChanged(QColor)), 
             this, SLOT(colorWheelChanged(QColor)));
+}
+
+void Palette::selectColorListRow(int row)
+{
+	qDebug() << "set Row = " << row;
+	listOfColours->setCurrentRow(row);
+}
+
+int Palette::currentColourNumber()
+{
+	int selectedRow = listOfColours->currentRow();
+
+	if ( selectedRow < 0 )
+	{
+		listOfColours->setCurrentRow( 0 );
+		selectedRow = listOfColours->currentRow();
+	}
+	return selectedRow;
 }
 
 void Palette::updateList()
@@ -99,6 +124,7 @@ void Palette::updateList()
     for (int i = 0; i < editor->object->getColourCount(); i++)
     {
         ColourRef colourRef = editor->object->getColour(i);
+
         QListWidgetItem* colourItem = new QListWidgetItem(listOfColours);
         colourItem->setText( colourRef.name );
         QPixmap colourSwatch(32,32);
@@ -108,7 +134,7 @@ void Palette::updateList()
         painter.drawRect( QRect(0,-1,31,31) );
         colourItem->setIcon( colourSwatch );
     }
-    update();
+    update();	
 }
 
 void Palette::colourSwatchClicked() 
@@ -135,7 +161,10 @@ void Palette::colourSwatchClicked()
 
 void Palette::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-    if (!current) current = previous;
+    if (!current) 
+	{
+		current = previous;
+	}
     editor->selectVectorColourNumber(listOfColours->row(current));
 }
 
@@ -147,12 +176,12 @@ void Palette::clickColorListItem(QListWidgetItem* current)
 void Palette::colorWheelChanged(QColor newColor)
 {
     int colorIndex = currentColourNumber();
-
+	
     editor->object->setColour(colorIndex, newColor);
     editor->setFrontColour(colorIndex, newColor);
 
     updateList();
-    selectColorListRow(colorIndex);    
+    selectColorListRow(colorIndex);
 }
 
 void Palette::updateSwatch(QColor colour)

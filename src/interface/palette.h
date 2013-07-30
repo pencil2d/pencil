@@ -34,20 +34,20 @@ class Palette : public QDockWidget
 
 public:
     Palette(Editor*);
-    int currentColourNumber() { return listOfColours->currentRow(); }
+    int currentColourNumber();
 
 protected:
     Editor* editor;
     ColorBox* m_colorBox;
     QListWidget* listOfColours;
     QToolButton* addButton;
-    QToolButton* removeButton;    
+    QToolButton* removeButton;
     QToolButton* colourSwatch;
 signals:
     //void colorChanged(QColor);
 
 public slots:    
-    void selectColorListRow(int i) { listOfColours->setCurrentRow(i); }
+    void selectColorListRow(int);
     void setColour(QColor);
     void updateList();
 

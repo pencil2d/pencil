@@ -361,10 +361,7 @@ void Editor::selectVectorColourNumber(int i)
 {
     if (i > -1)
     {
-        scribbleArea->setColour(i);
-        mainWindow->m_colorPalette->selectColorListRow(i);
-        mainWindow->m_colorPalette->setColour(object->getColour(i).colour);
-
+        scribbleArea->setColour(i);        
         emit penColorValueChange(object->getColour(i).colour);
     }
 }
@@ -929,7 +926,6 @@ void Editor::updateObject()
     mainWindow->m_colorPalette->updateList();
     clearBackup();
     scribbleArea->resetColours();
-    mainWindow->m_colorPalette->selectColorListRow(0);
     scribbleArea->updateAllFrames();
     updateMaxFrame();
 }
