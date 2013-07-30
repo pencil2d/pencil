@@ -4,6 +4,21 @@
 #include "strokemanager.h"
 #include "editor.h"
 
+#ifdef Q_OS_MAC
+extern "C" {
+void disableCoalescing();
+void enableCoalescing();
+}
+#else
+extern "C" {
+void disableCoalescing() {
+}
+
+void enableCoalescing() {
+}
+}
+#endif
+
 StrokeTool::StrokeTool(QObject *parent) :
     BaseTool(parent)
 {
@@ -17,12 +32,14 @@ void StrokeTool::startStroke()
     strokePoints << m_pScribbleArea->pixelToPoint(lastPixel);
     strokePressures.clear();
     strokePressures << m_pStrokeManager->getPressure();
+    disableCoalescing();
 }
 
 void StrokeTool::endStroke()
 {
     strokePoints.clear();
     strokePressures.clear();
+    enableCoalescing();
 }
 
 void StrokeTool::drawStroke()
