@@ -1,6 +1,8 @@
 #include "editor.h"
-#include "layer.h"
 #include "scribblearea.h"
+
+#include "layer.h"
+#include "layervector.h"
 
 #include "movetool.h"
 
@@ -156,7 +158,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
                     switch (m_pScribbleArea->m_moveMode)
                     {
                     case ScribbleArea::MIDDLE:
-                        if (QLineF(getLastPixel(), getCurrentPixel()).length() > 4)
+                        if (QLineF(getLastPressPixel(), getCurrentPixel()).length() > 4)
                         {
                             m_pScribbleArea->myTempTransformedSelection = m_pScribbleArea->myTransformedSelection.translated(m_pScribbleArea->offset);
                         }
@@ -200,7 +202,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
                 //setSelection( vectorImage->getSelectionRect() );
 
                 // we switch to the select tool
-                m_pScribbleArea->switchTool(MOVE);
+                m_pScribbleArea->switchTool(SELECT);
                 m_pScribbleArea->m_moveMode = ScribbleArea::MIDDLE;
                 m_pScribbleArea->mySelection.setTopLeft(getLastPoint());
                 m_pScribbleArea->mySelection.setBottomRight(getLastPoint());

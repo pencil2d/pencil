@@ -27,12 +27,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <widget class="QMenu" name="menuOpen_Recnt">
-     <property name="title">
-      <string>Open recent ..</string>
-     </property>
-     <addaction name="separator"/>
-    </widget>
     <widget class="QMenu" name="menuImport">
      <property name="title">
       <string>Import</string>
@@ -60,7 +54,6 @@
     </widget>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
-    <addaction name="menuOpen_Recnt"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>
@@ -706,9 +699,6 @@
    <property name="toolTip">
     <string>Next Keyframe</string>
    </property>
-   <property name="shortcut">
-    <string>&gt;</string>
-   </property>
   </action>
   <action name="actionPrev_Keyframe">
    <property name="icon">
@@ -721,9 +711,6 @@
    </property>
    <property name="toolTip">
     <string>Previous keyframe</string>
-   </property>
-   <property name="shortcut">
-    <string>&lt;</string>
    </property>
   </action>
  </widget>

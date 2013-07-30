@@ -9,6 +9,7 @@
 
 #include "erasertool.h"
 #include "layer.h"
+#include "layervector.h"
 
 
 EraserTool::EraserTool(QObject *parent) :
@@ -120,6 +121,8 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
             m_pScribbleArea->setAllDirty();
         }
     }
+
+    endStroke();
 }
 
 void EraserTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)

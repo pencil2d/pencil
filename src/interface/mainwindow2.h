@@ -14,6 +14,8 @@ class ToolOptionDockWidget;
 class TimeLine;
 class ToolSetWidget;
 class Preferences;
+class RecentFileMenu;
+
 template<typename T> class QList;
 
 
@@ -31,8 +33,6 @@ class MainWindow2 : public QMainWindow
 public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
-
-    void addRecentFile(QString filePath);
 
     // Data Model
     Object* m_object;
@@ -53,6 +53,9 @@ public:
     // Other windows
     Preferences* m_pPreferences;
 
+protected:
+    RecentFileMenu *m_recentFileMenu;
+
 private:
     Ui::MainWindow2* ui;
 
@@ -69,11 +72,11 @@ public slots:
     void showPreferences();
     bool openObject(QString strFilename);
     void resetToolsSettings();
+    void openFile(QString filename);
 
 private slots:
     void exportFile();
     bool saveObject(QString strSavedFilename);
-    void openRecent();
     void dockAllPalettes();
     void helpBox();
     void aboutPencil();
@@ -97,13 +100,10 @@ private:
 
     void closeEvent(QCloseEvent*);
 
-
     void readSettings();
-    void writeSettings();
-    QString sc(QString);
+    void writeSettings();    
 
     QString path;
-    QMenu* openRecentMenu;
 };
 
 #endif // MAINWINDOW2_H

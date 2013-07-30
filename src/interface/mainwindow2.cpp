@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include <QScopedPointer>
+
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -31,9 +32,16 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "pencilsettings.h"
 #include "colorbox.h"
+#include "util.h"
+
+#include "recentfilemenu.h"
 
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
+
+#include "layer.h"
+#include "layerbitmap.h"
+#include "layervector.h"
 
 
 MainWindow2::MainWindow2(QWidget *parent) :
@@ -249,7 +257,12 @@ void MainWindow2::createMenus()
     connect(ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()));
 
     // --------------- Menus ------------------
-    openRecentMenu = new QMenu(tr("Open recent"), this);
+    m_recentFileMenu = new RecentFileMenu("Open Recent", this);
+    m_recentFileMenu->loadFromDisk();
+    ui->menuFile->insertMenu(ui->actionSave, m_recentFileMenu);
+
+    QObject::connect(m_recentFileMenu, SIGNAL(loadRecentFile(QString)),
+                     this, SLOT(openFile(QString)));
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
@@ -399,11 +412,11 @@ bool MainWindow2::saveAsNewDocument()
     }
 }
 
-void MainWindow2::openRecent()
+void MainWindow2::openFile(QString filename)
 {
     QSettings settings("Pencil","Pencil");
-    QString myPath = settings.value("lastFilePath", QVariant(QDir::homePath())).toString();
-    bool ok = openObject(myPath);
+    qDebug() << "open recent file" << filename;
+    bool ok = openObject(filename);
     if ( !ok )
     {
         QMessageBox::warning(this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import.");
@@ -514,6 +527,9 @@ bool MainWindow2::openObject(QString filePath)
     if (ok)
     {
         editor->updateObject();
+
+        m_recentFileMenu->addRecentFile(filePath);
+        m_recentFileMenu->saveToDisk();
 
         qDebug() << "Current File Path=" << newObject->strCurrentFilePath;
         setWindowTitle(newObject->strCurrentFilePath);
@@ -653,6 +669,9 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
     m_object->strCurrentFilePath = strSavedFilename;
 
+    m_recentFileMenu->addRecentFile(strSavedFilename);
+    m_recentFileMenu->saveToDisk();
+
     return true;
 }
 
@@ -779,7 +798,7 @@ void MainWindow2::readSettings()
     editor->restorePalettesSettings(true, true, true);
 
     QString myPath = settings->value("lastFilePath", QVariant(QDir::homePath())).toString();
-    addRecentFile(myPath);
+    m_recentFileMenu->addRecentFile(myPath);
 
     setOpacity(100 - settings->value("windowOpacity").toInt());
 }
@@ -834,79 +853,78 @@ void MainWindow2::writeSettings()
 
 void MainWindow2::loadAllShortcuts()
 {
-    if ( !pencilSettings()->contains(QString("shortcuts/%0").arg(CMD_NEW_FILE)) )
-    {
-        restoreShortcutsToDefault();
-    }
+    checkExistingShortcuts();
 
-    ui->actionNew->setShortcut( sc(CMD_NEW_FILE) );
-    ui->actionOpen->setShortcut( sc(CMD_OPEN_FILE) );
-    ui->actionSave->setShortcut( sc(CMD_SAVE_FILE) );
-    ui->actionSave_as->setShortcut( sc(CMD_SAVE_AS) );
-    ui->actionPrint->setShortcut( sc(CMD_PRINT) );
+    ui->actionNew->setShortcut( cmdKeySeq(CMD_NEW_FILE) );
+    ui->actionOpen->setShortcut( cmdKeySeq(CMD_OPEN_FILE) );
+    ui->actionSave->setShortcut( cmdKeySeq(CMD_SAVE_FILE) );
+    ui->actionSave_as->setShortcut( cmdKeySeq(CMD_SAVE_AS) );
+    ui->actionPrint->setShortcut( cmdKeySeq(CMD_PRINT) );
 
-    ui->actionImport_Image->setShortcut( sc(CMD_IMPORT_IMAGE) );
-    ui->actionImport_Image_Sequence->setShortcut( sc(CMD_IMPORT_IMAGE_SEQ) );
-    ui->actionImport_Movie->setShortcut( sc(CMD_IMPORT_MOVIE) );
-    ui->actionImport_Palette->setShortcut( sc(CMD_IMPORT_PALETTE) );
-    ui->actionImport_Sound->setShortcut( sc(CMD_IMPORT_SOUND) );
+    ui->actionImport_Image->setShortcut( cmdKeySeq(CMD_IMPORT_IMAGE) );
+    ui->actionImport_Image_Sequence->setShortcut( cmdKeySeq(CMD_IMPORT_IMAGE_SEQ) );
+    ui->actionImport_Movie->setShortcut( cmdKeySeq(CMD_IMPORT_MOVIE) );
+    ui->actionImport_Palette->setShortcut( cmdKeySeq(CMD_IMPORT_PALETTE) );
+    ui->actionImport_Sound->setShortcut( cmdKeySeq(CMD_IMPORT_SOUND) );
 
-    ui->actionExport_Image->setShortcut( sc(CMD_EXPORT_IMAGE) );
-    ui->actionExport_Image_Sequence->setShortcut( sc(CMD_EXPORT_IMAGE_SEQ) );
-    ui->actionExport_Movie->setShortcut( sc(CMD_EXPORT_MOVIE) );
-    ui->actionExport_Palette->setShortcut( sc(CMD_EXPORT_PALETTE) );
-    ui->actionExport_Svg_Image->setShortcut( sc(CMD_EXPORT_SVG) );
-    ui->actionExport_X_sheet->setShortcut( sc(CMD_EXPORT_XSHEET) );
+    ui->actionExport_Image->setShortcut( cmdKeySeq(CMD_EXPORT_IMAGE) );
+    ui->actionExport_Image_Sequence->setShortcut( cmdKeySeq(CMD_EXPORT_IMAGE_SEQ) );
+    ui->actionExport_Movie->setShortcut( cmdKeySeq(CMD_EXPORT_MOVIE) );
+    ui->actionExport_Palette->setShortcut( cmdKeySeq(CMD_EXPORT_PALETTE) );
+    ui->actionExport_Svg_Image->setShortcut( cmdKeySeq(CMD_EXPORT_SVG) );
+    ui->actionExport_X_sheet->setShortcut( cmdKeySeq(CMD_EXPORT_XSHEET) );
 
-    ui->actionUndo->setShortcut( sc(CMD_UNDO) );
-    ui->actionRedo->setShortcut( sc(CMD_REDO) );
-    ui->actionCut->setShortcut( sc(CMD_CUT) );
-    ui->actionCopy->setShortcut( sc(CMD_COPY) );
-    ui->actionPaste->setShortcut( sc(CMD_PASTE) );
-    ui->actionSelect_All->setShortcut( sc(CMD_SELECT_ALL));
-    ui->actionDeselect_All->setShortcut( sc(CMD_DESELECT_ALL) );
-    ui->actionPreference->setShortcut( sc(CMD_PREFERENCE) );
+    ui->actionUndo->setShortcut( cmdKeySeq(CMD_UNDO) );
+    ui->actionRedo->setShortcut( cmdKeySeq(CMD_REDO) );
+    ui->actionCut->setShortcut( cmdKeySeq(CMD_CUT) );
+    ui->actionCopy->setShortcut( cmdKeySeq(CMD_COPY) );
+    ui->actionPaste->setShortcut( cmdKeySeq(CMD_PASTE) );
+    ui->actionSelect_All->setShortcut( cmdKeySeq(CMD_SELECT_ALL));
+    ui->actionDeselect_All->setShortcut( cmdKeySeq(CMD_DESELECT_ALL) );
+    ui->actionPreference->setShortcut( cmdKeySeq(CMD_PREFERENCE) );
 
-    ui->actionReset_Windows->setShortcut( sc(CMD_RESET_WINDOWS) );
-    ui->actionReset_View->setShortcut( sc(CMD_RESET_ZOOM_ROTATE) );
-    ui->actionZoom_In->setShortcut( sc(CMD_ZOOM_IN) );
-    ui->actionZoom_Out->setShortcut(sc(CMD_ZOOM_OUT));
-    ui->actionRotate_Clockwise->setShortcut(sc(CMD_ROTATE_CLOCK));
-    ui->actionRotate_Anticlosewise->setShortcut(sc(CMD_ROTATE_ANTI_CLOCK));
-    ui->actionHorizontal_Flip->setShortcut(sc(CMD_FLIP_HORIZONTAL));
-    ui->actionVertical_Flip->setShortcut(sc(CMD_FLIP_VERTICAL));
-    ui->actionPreview->setShortcut(sc(CMD_PREVIEW));
-    ui->actionGrid->setShortcut(sc(CMD_GRID));
-    ui->actionOnionPrevious->setShortcut(sc(CMD_ONIONSKIN_PREV));
-    ui->actionOnionNext->setShortcut(sc(CMD_ONIONSKIN_NEXT));
+    ui->actionReset_Windows->setShortcut( cmdKeySeq(CMD_RESET_WINDOWS) );
+    ui->actionReset_View->setShortcut( cmdKeySeq(CMD_RESET_ZOOM_ROTATE) );
+    ui->actionZoom_In->setShortcut( cmdKeySeq(CMD_ZOOM_IN) );
+    ui->actionZoom_Out->setShortcut(cmdKeySeq(CMD_ZOOM_OUT));
+    ui->actionRotate_Clockwise->setShortcut(cmdKeySeq(CMD_ROTATE_CLOCK));
+    ui->actionRotate_Anticlosewise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
+    ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
+    ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
+    ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
+    ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
+    ui->actionOnionPrevious->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
+    ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
 
-    ui->actionPlay->setShortcut(sc(CMD_PLAY));
-    ui->actionLoop->setShortcut(sc(CMD_LOOP));
-    ui->actionPrevious_Frame->setShortcut(sc(CMD_GOTO_PREV_FRAME));
-    ui->actionNext_Frame->setShortcut(sc(CMD_GOTO_NEXT_FRAME));
-    ui->actionAdd_Frame->setShortcut(sc(CMD_ADD_FRAME));
-    ui->actionDuplicate_Frame->setShortcut(sc(CMD_DUPLICATE_FRAME));
-    ui->actionRemove_Frame->setShortcut(sc(CMD_REMOVE_FRAME));
+    ui->actionPlay->setShortcut(cmdKeySeq(CMD_PLAY));
+    ui->actionLoop->setShortcut(cmdKeySeq(CMD_LOOP));
+    ui->actionPrevious_Frame->setShortcut(cmdKeySeq(CMD_GOTO_PREV_FRAME));
+    ui->actionNext_Frame->setShortcut(cmdKeySeq(CMD_GOTO_NEXT_FRAME));
+    ui->actionPrev_Keyframe->setShortcut(cmdKeySeq(CMD_GOTO_PREV_KEY_FRAME));
+    ui->actionNext_Keyframe->setShortcut(cmdKeySeq(CMD_GOTO_NEXT_KEY_FRAME));
+    ui->actionAdd_Frame->setShortcut(cmdKeySeq(CMD_ADD_FRAME));
+    ui->actionDuplicate_Frame->setShortcut(cmdKeySeq(CMD_DUPLICATE_FRAME));
+    ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
 
-    ui->actionMove->setShortcut(sc(CMD_TOOL_MOVE));
-    ui->actionClear->setShortcut(sc(CMD_TOOL_CLEAR));
-    ui->actionSelect->setShortcut(sc(CMD_TOOL_SELECT));
-    ui->actionBrush->setShortcut(sc(CMD_TOOL_BRUSH));
-    ui->actionPolyline->setShortcut(sc(CMD_TOOL_POLYLINE));
-    ui->actionSmudge->setShortcut(sc(CMD_TOOL_SMUDGE));
-    ui->actionPen->setShortcut(sc(CMD_TOOL_PEN));
-    ui->actionHand->setShortcut(sc(CMD_TOOL_HAND));
-    ui->actionPencil->setShortcut(sc(CMD_TOOL_PENCIL));
-    ui->actionBucket->setShortcut(sc(CMD_TOOL_BUCKET));
-    ui->actionEyedropper->setShortcut(sc(CMD_TOOL_EYEDROPPER));
-    ui->actionEraser->setShortcut(sc(CMD_TOOL_ERASER));
+    ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
+    ui->actionClear->setShortcut(cmdKeySeq(CMD_TOOL_CLEAR));
+    ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
+    ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
+    ui->actionPolyline->setShortcut(cmdKeySeq(CMD_TOOL_POLYLINE));
+    ui->actionSmudge->setShortcut(cmdKeySeq(CMD_TOOL_SMUDGE));
+    ui->actionPen->setShortcut(cmdKeySeq(CMD_TOOL_PEN));
+    ui->actionHand->setShortcut(cmdKeySeq(CMD_TOOL_HAND));
+    ui->actionPencil->setShortcut(cmdKeySeq(CMD_TOOL_PENCIL));
+    ui->actionBucket->setShortcut(cmdKeySeq(CMD_TOOL_BUCKET));
+    ui->actionEyedropper->setShortcut(cmdKeySeq(CMD_TOOL_EYEDROPPER));
+    ui->actionEraser->setShortcut(cmdKeySeq(CMD_TOOL_ERASER));
 
-    ui->actionNew_Bitmap_Layer->setShortcut(sc(CMD_NEW_BITMAP_LAYER));
-    ui->actionNew_Vector_Layer->setShortcut(sc(CMD_NEW_VECTOR_LAYER));
-    ui->actionNew_Camera_Layer->setShortcut(sc(CMD_NEW_CAMERA_LAYER));
-    ui->actionNew_Sound_Layer->setShortcut(sc(CMD_NEW_SOUND_LAYER));
+    ui->actionNew_Bitmap_Layer->setShortcut(cmdKeySeq(CMD_NEW_BITMAP_LAYER));
+    ui->actionNew_Vector_Layer->setShortcut(cmdKeySeq(CMD_NEW_VECTOR_LAYER));
+    ui->actionNew_Camera_Layer->setShortcut(cmdKeySeq(CMD_NEW_CAMERA_LAYER));
+    ui->actionNew_Sound_Layer->setShortcut(cmdKeySeq(CMD_NEW_SOUND_LAYER));
 
-    ui->actionHelp->setShortcut(sc(CMD_HELP));
+    ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
 }
 
 void MainWindow2::unloadAllShortcuts()
@@ -916,23 +934,6 @@ void MainWindow2::unloadAllShortcuts()
     {
         action->setShortcut(QKeySequence(0));
     }
-}
-
-QString MainWindow2::sc(QString strActionName)
-{
-    strActionName = QString("shortcuts/") + strActionName;
-    QString strKeySequence = pencilSettings()->value( strActionName ).toString();
-
-    //qDebug() << strActionName << ": " << strKeySequence;
-
-    return strKeySequence;
-}
-
-void MainWindow2::addRecentFile(QString filePath)
-{
-    QAction* openThisFileAct = new QAction(filePath, this);
-    connect(openThisFileAct, SIGNAL(triggered()), this, SLOT(openRecent()));
-    openRecentMenu->addAction(openThisFileAct);
 }
 
 void MainWindow2::undoActSetText(void)

@@ -249,9 +249,20 @@ void Palette::clickAddColorButton()
     QRgb qrgba = QColorDialog::getRgba( prevColor.rgba(), &ok, this );
     if ( ok )
     {
-        editor->object->addColour( QColor::fromRgba(qrgba) );
-        updateList();
-        editor->selectVectorColourNumber(editor->object->getColourCount() - 1);
+        ColourRef ref = ColourRef(QColor::fromRgba(qrgba));
+        bool ok;
+        QString text = QInputDialog::getText(this,
+                                             tr("Colour name"),
+                                             tr("Colour name:"),
+                                             QLineEdit::Normal,
+                                             QString(tr("Colour %1")).arg(listOfColours->count()),
+                                             &ok );
+        if (ok) {
+            ref.name = text;
+            editor->object->addColour(ref);
+            updateList();
+            editor->selectVectorColourNumber(editor->object->getColourCount() - 1);
+        }
     }
 }
 
