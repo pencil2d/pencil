@@ -101,8 +101,7 @@ private:
     void closeEvent(QCloseEvent*);
 
     void readSettings();
-    void writeSettings();
-    QString sc(QString);
+    void writeSettings();    
 
     QString path;
 };

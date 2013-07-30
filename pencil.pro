@@ -69,7 +69,6 @@ HEADERS +=  src/interfaces.h \
     src/tool/eyedroppertool.h \
     src/util/pencilsettings.h \
     src/interface/shortcutspage.h \
-    src/util/keyboardmanager.h \
     src/interface/mainwindow2.h \
     src/interface/timelinecells.h \
     src/graphics/vector/vectorselection.h \
@@ -81,7 +80,8 @@ HEADERS +=  src/interfaces.h \
     src/util/blitrect.h \
     src/structure/keyframe.h \
     src/structure/camera.h \
-    src/interface/recentfilemenu.h
+    src/interface/recentfilemenu.h \
+    src/util/util.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -124,7 +124,6 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/eyedroppertool.cpp \
     src/util/pencilsettings.cpp \
     src/interface/shortcutspage.cpp \
-    src/util/keyboardmanager.cpp \
     src/interface/mainwindow2.cpp \
     src/interface/timelinecells.cpp \
     src/graphics/vector/vectorselection.cpp \
@@ -135,7 +134,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/util/blitrect.cpp \
     src/structure/keyframe.cpp \
     src/structure/camera.cpp \
-    src/interface/recentfilemenu.cpp
+    src/interface/recentfilemenu.cpp \
+    src/util/util.cpp
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}
