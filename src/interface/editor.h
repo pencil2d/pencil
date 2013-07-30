@@ -62,11 +62,12 @@ public:
 
     QColor currentColor;
 
+
     Layer* getCurrentLayer(int incr) 
     { 
         if (object != NULL) 
         { 
-            return object->getLayer(m_nCurrentLayerIndex+incr); 
+            return object->getLayer(m_nCurrentLayerIndex + incr); 
         } 
         else 
         { 
