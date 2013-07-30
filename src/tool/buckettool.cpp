@@ -7,6 +7,8 @@
 #include "editor.h"
 #include "scribblearea.h"
 #include "layer.h"
+#include "layervector.h"
+#include "layerbitmap.h"
 
 BucketTool::BucketTool(QObject *parent) :
     BaseTool(parent)

@@ -1,10 +1,13 @@
 #include "polylinetool.h"
 
-#include "layer.h"
 #include "editor.h"
 #include "scribblearea.h"
 
 #include "strokemanager.h"
+
+#include "layer.h"
+#include "layervector.h"
+#include "layerbitmap.h"
 
 
 PolylineTool::PolylineTool(QObject *parent) :

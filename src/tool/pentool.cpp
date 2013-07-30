@@ -7,6 +7,8 @@
 #include "editor.h"
 #include "scribblearea.h"
 
+#include "layervector.h"
+
 PenTool::PenTool(QObject *parent) : StrokeTool(parent)
 {
 

@@ -6,8 +6,11 @@
 #include "pencilsettings.h"
 
 #include "editor.h"
-#include "layer.h"
 #include "scribblearea.h"
+
+#include "layer.h"
+#include "layervector.h"
+#include "layerbitmap.h"
 
 
 EyedropperTool::EyedropperTool(QObject *parent) :

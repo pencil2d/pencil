@@ -20,11 +20,14 @@ GNU General Public License for more details.
 #include <QList>
 #include <QColor>
 #include "layer.h"
-#include "layerbitmap.h"
-#include "layervector.h"
 #include "colourref.h"
 
 class QProgressDialog;
+
+class LayerBitmap;
+class LayerVector;
+class LayerCamera;
+class LayerSound;
 
 
 class Object : public QObject
@@ -77,10 +80,10 @@ public:
     void loadDefaultPalette();
 
 
-    void addNewBitmapLayer();
-    void addNewVectorLayer();
-    void addNewSoundLayer();
-    void addNewCameraLayer();
+    LayerBitmap *addNewBitmapLayer();
+    LayerVector *addNewVectorLayer();
+    LayerSound *addNewSoundLayer();
+    LayerCamera * addNewCameraLayer();
     Layer* getLayer(int i);
     int getLayerCount() { return layer.size(); }
     int getMaxID();
