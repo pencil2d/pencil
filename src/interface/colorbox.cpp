@@ -1,25 +1,33 @@
+
+#include <QVBoxLayout>
+#include "colorwheel.h"
+#include "colorspinboxgroup.h"
 #include "colorbox.h"
-#include "ui_colorbox.h"
 
 ColorBox::ColorBox(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::ColorBox)
+    QWidget(parent) 
 {
-    ui->setupUi(this);
-    connect(ui->colorWheel,SIGNAL(colorChanged(QColor)),
+    QVBoxLayout* layout = new QVBoxLayout(this);
+
+    m_colorWheel = new ColorWheel(this);
+    m_colorInspector = new ColorSpinBoxGroup(this);
+
+    layout->addWidget(m_colorWheel);
+    layout->addWidget(m_colorInspector);
+    
+    connect(m_colorWheel, SIGNAL(colorChanged(QColor)),
             this, SLOT(onWheelChange(QColor)));
-    connect(ui->colorSpinBoxGroup,SIGNAL(colorChange(QColor)),
+    connect(m_colorInspector, SIGNAL(colorChange(QColor)),
             this, SLOT(onSpinboxChange(QColor)));
 }
 
 ColorBox::~ColorBox()
 {
-    delete ui;
 }
 
 QColor ColorBox::color()
 {
-    return ui->colorWheel->color();
+    return m_colorWheel->color();
 }
 
 void ColorBox::setColor(const QColor &c)
@@ -29,18 +37,18 @@ void ColorBox::setColor(const QColor &c)
 
 void ColorBox::onSpinboxChange(const QColor &c)
 {
-    if ( ui->colorWheel->color() != c )
+    if ( m_colorWheel->color() != c )
     {
-        ui->colorWheel->setColor(c);
+        m_colorWheel->setColor(c);
         emit colorChanged(c);
     }
 }
 
 void ColorBox::onWheelChange(const QColor &c)
 {
-    if ( ui->colorSpinBoxGroup->color() != c )
+    if ( m_colorInspector->color() != c )
     {
-        ui->colorSpinBoxGroup->setColor(c);
+        m_colorInspector->setColor(c);
         emit colorChanged(c);
     }
 }

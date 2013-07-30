@@ -3,9 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui {
-class ColorBox;
-}
+class ColorWheel;
+class ColorSpinBoxGroup;
 
 class ColorBox : public QWidget
 {
@@ -19,11 +18,14 @@ signals:
     void colorChanged(const QColor &);
 public slots:
     void setColor(const QColor &);
+
+
 private slots:
     void onSpinboxChange(const QColor &);
     void onWheelChange(const QColor &);
 private:
-    Ui::ColorBox *ui;
+    ColorWheel* m_colorWheel;
+    ColorSpinBoxGroup* m_colorInspector;
 };
 
 #endif // COLORBOX_H
