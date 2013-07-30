@@ -76,15 +76,15 @@ QCursor BrushTool::cursor()
 
 void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
+    currentWidth = properties.width;
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
-        currentWidth = properties.width * pressure;
+        currentPressure = pressure;
     }
     else
     {
-        currentWidth = properties.width;
+        currentPressure = 1.0;
     }
-    // we choose the "normal" width to correspond to a pressure 0.5
 }
 
 void BrushTool::mousePressEvent(QMouseEvent *event)
@@ -185,10 +185,15 @@ void BrushTool::drawStroke()
         qreal opacity = 1.0;
         qreal brushWidth = currentWidth +  0.5 * properties.feather;
         qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
+        opacity = currentPressure;
+        brushWidth = brushWidth * currentPressure;
+
 //        if (tabletInUse) { opacity = tabletPressure; }
 //        if (usePressure) { brushWidth = brushWidth * tabletPressure; }
 
         qreal brushStep = 0.5 * currentWidth + 0.5 * properties.feather;
+        brushStep = brushStep * currentPressure;
+
 //        if (usePressure) { brushStep = brushStep * tabletPressure; }
         brushStep = qMax(1.0, brushStep);
 
