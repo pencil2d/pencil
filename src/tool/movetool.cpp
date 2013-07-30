@@ -158,7 +158,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
                     switch (m_pScribbleArea->m_moveMode)
                     {
                     case ScribbleArea::MIDDLE:
-                        if (QLineF(getLastPixel(), getCurrentPixel()).length() > 4)
+                        if (QLineF(getLastPressPixel(), getCurrentPixel()).length() > 4)
                         {
                             m_pScribbleArea->myTempTransformedSelection = m_pScribbleArea->myTransformedSelection.translated(m_pScribbleArea->offset);
                         }
