@@ -9,6 +9,7 @@
 
 #include "erasertool.h"
 #include "layer.h"
+#include "layervector.h"
 
 
 EraserTool::EraserTool(QObject *parent) :

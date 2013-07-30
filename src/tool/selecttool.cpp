@@ -1,5 +1,6 @@
 #include "editor.h"
 #include "layer.h"
+#include "layervector.h"
 #include "scribblearea.h"
 
 #include "selecttool.h"

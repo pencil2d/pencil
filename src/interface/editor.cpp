@@ -764,9 +764,18 @@ void Editor::newBitmapLayer()
 {
     if (object != NULL)
     {
-        object->addNewBitmapLayer();
-        getTimeLine()->updateLayerNumber( object->getLayerCount() );
-        setCurrentLayer( object->getLayerCount()-1 );
+        bool ok;
+        QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                                             tr("Layer name:"), QLineEdit::Normal,
+                                             "Bitmap Layer", &ok);
+        if (ok && !text.isEmpty())
+        {
+            Layer *layer = object->addNewBitmapLayer();
+            layer->name = text;
+            getTimeLine()->updateLayerNumber( object->getLayerCount() );
+            setCurrentLayer( object->getLayerCount()-1 );
+
+        }
     }
 }
 
@@ -774,9 +783,17 @@ void Editor::newVectorLayer()
 {
     if (object != NULL)
     {
-        object->addNewVectorLayer();
-        getTimeLine()->updateLayerNumber( object->getLayerCount() );
-        setCurrentLayer( object->getLayerCount()-1 );
+        bool ok;
+        QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                                             tr("Layer name:"), QLineEdit::Normal,
+                                             "Bitmap Layer", &ok);
+        if (ok && !text.isEmpty())
+        {
+            Layer *layer = object->addNewVectorLayer();
+            layer->name = text;
+            getTimeLine()->updateLayerNumber( object->getLayerCount() );
+            setCurrentLayer( object->getLayerCount()-1 );
+        }
     }
 }
 
@@ -784,9 +801,17 @@ void Editor::newSoundLayer()
 {
     if (object != NULL)
     {
-        object->addNewSoundLayer();
-        getTimeLine()->updateLayerNumber( object->getLayerCount() );
-        setCurrentLayer( object->getLayerCount()-1 );
+        bool ok;
+        QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                                             tr("Layer name:"), QLineEdit::Normal,
+                                             "Bitmap Layer", &ok);
+        if (ok && !text.isEmpty())
+        {
+            Layer *layer = object->addNewSoundLayer();
+            layer->name = text;
+            getTimeLine()->updateLayerNumber( object->getLayerCount() );
+            setCurrentLayer( object->getLayerCount()-1 );
+        }
     }
 }
 
@@ -794,9 +819,17 @@ void Editor::newCameraLayer()
 {
     if (object != NULL)
     {
-        object->addNewCameraLayer();
-        getTimeLine()->updateLayerNumber( object->getLayerCount() );
-        setCurrentLayer( object->getLayerCount()-1 );
+        bool ok;
+        QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                                             tr("Layer name:"), QLineEdit::Normal,
+                                             "Bitmap Layer", &ok);
+        if (ok && !text.isEmpty())
+        {
+            Layer *layer = object->addNewCameraLayer();
+            layer->name = text;
+            getTimeLine()->updateLayerNumber( object->getLayerCount() );
+            setCurrentLayer( object->getLayerCount()-1 );
+        }
     }
 }
 

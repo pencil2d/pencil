@@ -1,7 +1,9 @@
 #include <QPixmap>
 #include "editor.h"
-#include "layer.h"
 #include "scribblearea.h"
+
+#include "layer.h"
+#include "layervector.h"
 
 #include "smudgetool.h"
 
