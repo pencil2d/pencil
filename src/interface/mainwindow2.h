@@ -15,7 +15,6 @@ class TimeLine;
 class ToolSetWidget;
 class Preferences;
 class RecentFileMenu;
-
 template<typename T> class QList;
 
 

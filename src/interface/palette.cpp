@@ -14,46 +14,19 @@ GNU General Public License for more details.
 
 */
 #include <QtDebug>
-#include "palette.h"
+
 #include "colourref.h"
 #include "object.h"
 #include "editor.h"
+#include "colorbox.h"
+#include "palette.h"
+
 
 Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
     this->editor = editor;
 
     QWidget* paletteContent = new QWidget();
-
-    sliderRed = new QSlider(Qt::Horizontal);
-    sliderGreen = new QSlider(Qt::Horizontal);
-    sliderBlue = new QSlider(Qt::Horizontal);
-    sliderAlpha = new QSlider(Qt::Horizontal);
-    sliderRed->setRange(0,255);
-    sliderGreen->setRange(0,255);
-    sliderBlue->setRange(0,255);
-    sliderAlpha->setRange(0,255);
-    QLabel* labelRed = new QLabel(tr("Red"));
-    QLabel* labelGreen = new QLabel(tr("Green"));
-    QLabel* labelBlue = new QLabel(tr("Blue"));
-    QLabel* labelAlpha = new QLabel(tr("Alpha"));
-    labelRed->setFont( QFont("Helvetica", 10) );
-    labelGreen->setFont( QFont("Helvetica", 10) );
-    labelBlue->setFont( QFont("Helvetica", 10) );
-    labelAlpha->setFont( QFont("Helvetica", 10) );
-
-    QGridLayout* sliderLayout = new QGridLayout();
-    sliderLayout->setSpacing(3);
-    sliderLayout->addWidget(labelRed, 0, 0);
-    sliderLayout->addWidget(sliderRed, 0, 1);
-    sliderLayout->addWidget(labelGreen, 1, 0);
-    sliderLayout->addWidget(sliderGreen, 1, 1);
-    sliderLayout->addWidget(labelBlue, 2, 0);
-    sliderLayout->addWidget(sliderBlue, 2, 1);
-    sliderLayout->addWidget(labelAlpha, 3, 0);
-    sliderLayout->addWidget(sliderAlpha, 3, 1);
-    sliderLayout->setMargin(10);
-    sliderLayout->setSpacing(2);
 
     listOfColours = new QListWidget();
 
@@ -85,8 +58,10 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     listOfColours->setLineWidth(1);
     listOfColours->setFocusPolicy(Qt::NoFocus);
 
+    m_colorBox = new ColorBox(this);
+
     QVBoxLayout* layout = new QVBoxLayout();
-    layout->addLayout(sliderLayout);
+    layout->addWidget(m_colorBox);    
     layout->addWidget(buttons);
     layout->addWidget(listOfColours);
     layout->setMargin(0);
@@ -96,19 +71,9 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
     setFloating(true);
-    paletteContent->setFixedWidth(150);  /// otherwise the palette is naturally too wide. Someone please fix this.
+    paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
 
     setWindowTitle(tr("Colors"));
-
-    connect(sliderRed, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-    connect(sliderGreen, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-    connect(sliderBlue, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-    connect(sliderAlpha, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-
-    connect(sliderRed, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-    connect(sliderGreen, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-    connect(sliderBlue, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-    connect(sliderAlpha, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
 
     connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
     connect(listOfColours, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(clickColorListItem( QListWidgetItem*)));
@@ -116,10 +81,11 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
     connect(addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
-
     connect(colourSwatch, SIGNAL(clicked()), this, SLOT(colourSwatchClicked()));
-
     connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
+
+    connect(m_colorBox, SIGNAL(colorChanged(QColor)), 
+            this, SLOT(setColour(QColor)));
 }
 
 void Palette::updateList()
@@ -177,13 +143,8 @@ void Palette::clickColorListItem(QListWidgetItem* current)
     editor->selectAndApplyColour(listOfColours->row(current));
 }
 
-void Palette::colourSliderValueChange()
+void Palette::colorChanged(QColor newColor)
 {
-    QColor newColor = QColor( sliderRed->value(),
-                              sliderGreen->value(),
-                              sliderBlue->value(),
-                              sliderAlpha->value() );
-
     int colorIndex = currentColourNumber();
     editor->object->setColour(colorIndex, newColor);
     editor->setFrontColour(colorIndex, newColor);
@@ -191,15 +152,6 @@ void Palette::colourSliderValueChange()
     updateList();
     selectColorListRow(colorIndex);
     setColour(newColor);
-}
-
-void Palette::colorSliderMoved()
-{
-    QColor newColour = QColor( sliderRed->value(),
-                               sliderGreen->value(),
-                               sliderBlue->value(),
-                               sliderAlpha->value() );
-    editor->setFrontColour(currentColourNumber(), newColour);
 }
 
 void Palette::updateSwatch(QColor colour)
@@ -257,7 +209,8 @@ void Palette::clickAddColorButton()
                                              QLineEdit::Normal,
                                              QString(tr("Colour %1")).arg(listOfColours->count()),
                                              &ok );
-        if (ok) {
+        if (ok) 
+        {
             ref.name = text;
             editor->object->addColour(ref);
             updateList();
@@ -278,16 +231,7 @@ void Palette::closeIfDocked(bool)
     //if (floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
 }
 
-void Palette::setColour(QColor colour)
+void Palette::setColour(QColor color)
 {
-    setColour(colour.red(), colour.green(), colour.blue(), colour.alpha());
-    updateSwatch(colour);
-}
-
-void Palette::setColour(int r, int g, int b, int a)
-{
-    sliderRed->setValue(r);
-    sliderGreen->setValue(g);
-    sliderBlue->setValue(b);
-    sliderAlpha->setValue(a);
+    //m_colorBox->setColor(color);
 }

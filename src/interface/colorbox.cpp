@@ -15,6 +15,8 @@ ColorBox::ColorBox(QWidget *parent) :
     layout->addWidget(m_colorWheel);
     layout->addWidget(m_colorInspector);
     
+    setLayout(layout);
+
     connect(m_colorWheel, SIGNAL(colorChanged(QColor)),
             this, SLOT(onWheelChange(QColor)));
     connect(m_colorInspector, SIGNAL(colorChange(QColor)),

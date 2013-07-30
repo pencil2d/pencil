@@ -70,17 +70,7 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
-    //showPreferences();
-
-    ColorBox* cbox = new ColorBox(this);
-    //cbox->show();
-
-    QDockWidget* pDock = new QDockWidget(this);
-    pDock->setWidget(cbox);
-
-    //pDock->show();
-    addDockWidget(Qt::RightDockWidgetArea, pDock);
+    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));        
 }
 
 MainWindow2::~MainWindow2()

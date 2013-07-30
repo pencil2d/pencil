@@ -25,6 +25,7 @@ GNU General Public License for more details.
 
 class Object;
 class Editor;
+class ColorBox;
 
 
 class Palette : public QDockWidget
@@ -36,34 +37,30 @@ public:
     int currentColourNumber() { return listOfColours->currentRow(); }
 
 protected:
-    Editor* editor;    
-
+    Editor* editor;
+    ColorBox* m_colorBox;
     QListWidget* listOfColours;
     QToolButton* addButton;
-    QToolButton* removeButton;
-    QSlider* sliderRed;
-    QSlider* sliderGreen;
-    QSlider* sliderBlue;
-    QSlider* sliderAlpha;
+    QToolButton* removeButton;    
     QToolButton* colourSwatch;
 
-public slots:
-    void updateList();
-    void updateSwatch(QColor);
+public slots:    
     void selectColorListRow(int i) { listOfColours->setCurrentRow(i); }
     void setColour(QColor);
-    void setColour(int r, int g, int b, int a = 255);
+    void updateList();
 
-private slots:
+private slots:    
+    void updateSwatch(QColor);
     void colourSwatchClicked();
     void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
-    void clickColorListItem(QListWidgetItem*);
-    void colorSliderMoved();
-    void colourSliderValueChange();
+    void clickColorListItem(QListWidgetItem*);    
+    void colorChanged(QColor);
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
     void closeIfDocked(bool);
+private:
+
 };
 
 #endif
