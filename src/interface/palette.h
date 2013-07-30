@@ -43,6 +43,8 @@ protected:
     QToolButton* addButton;
     QToolButton* removeButton;    
     QToolButton* colourSwatch;
+signals:
+    //void colorChanged(QColor);
 
 public slots:    
     void selectColorListRow(int i) { listOfColours->setCurrentRow(i); }
@@ -54,7 +56,7 @@ private slots:
     void colourSwatchClicked();
     void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);    
-    void colorChanged(QColor);
+    void colorWheelChanged(QColor);
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();

@@ -30,12 +30,12 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
     listOfColours = new QListWidget();
 
-    QToolBar* buttons = new QToolBar();
     addButton = new QToolButton();
-    removeButton = new QToolButton();
     addButton->setIcon(QIcon(":icons/add.png"));
     addButton->setToolTip("Add Color");
     addButton->setFixedSize(30, 30);
+
+    removeButton = new QToolButton();
     removeButton->setIcon(QIcon(":icons/remove.png"));
     removeButton->setToolTip("Remove Color");
     removeButton->setFixedSize(30, 30);
@@ -49,6 +49,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     colourPixmap.fill( Qt::black );
     colourSwatch->setIcon(QIcon(colourPixmap));
 
+    QToolBar* buttons = new QToolBar();
     buttons->addWidget(spacer);
     buttons->addWidget(colourSwatch);
     buttons->addWidget(addButton);
@@ -85,7 +86,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
 
     connect(m_colorBox, SIGNAL(colorChanged(QColor)), 
-            this, SLOT(colorChanged(QColor)));
+            this, SLOT(colorWheelChanged(QColor)));
 }
 
 void Palette::updateList()
@@ -143,15 +144,15 @@ void Palette::clickColorListItem(QListWidgetItem* current)
     editor->selectAndApplyColour(listOfColours->row(current));
 }
 
-void Palette::colorChanged(QColor newColor)
+void Palette::colorWheelChanged(QColor newColor)
 {
     int colorIndex = currentColourNumber();
+
     editor->object->setColour(colorIndex, newColor);
     editor->setFrontColour(colorIndex, newColor);
 
     updateList();
-    selectColorListRow(colorIndex);
-    setColour(newColor);
+    selectColorListRow(colorIndex);    
 }
 
 void Palette::updateSwatch(QColor colour)
@@ -233,5 +234,5 @@ void Palette::closeIfDocked(bool)
 
 void Palette::setColour(QColor color)
 {
-    //m_colorBox->setColor(color);
+    m_colorBox->setColor(color);
 }
