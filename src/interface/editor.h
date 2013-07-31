@@ -35,14 +35,39 @@ GNU General Public License for more details.
 class MainWindow2;
 
 
+class ColorManager : public QObject
+{
+    Q_OBJECT
+public:
+    ColorManager(Object* object, QObject* parent = 0) : QObject( parent )
+    {
+        Q_ASSERT( object != NULL );
+        m_object = object;
+    }
+    QColor frontColor() { return m_object->getColour( m_frontColorIndex ).colour; }
+    void   pickColorNumber( int n )
+    {
+        Q_ASSERT( n >= 0 );
+        m_frontColorIndex = n;
+    }
+
+signals:
+    void colorChanged(QColor);
+
+private:
+    Object* m_object;
+    int m_frontColorIndex;
+};
+
 class Editor : public QWidget
 {
     Q_OBJECT
-
+    Q_PROPERTY( ColorManager* colorManager READ colorManager );
 public:
     Editor(MainWindow2* parent);
     virtual ~Editor();
-
+    
+    ColorManager* colorManager() const { return m_colorManager; }
 
     Object* object;  // the object to be edited by the editor
 
@@ -261,6 +286,8 @@ private:
     ScribbleArea* scribbleArea;
     //TimeLine* timeLine;
     MainWindow2* mainWindow;
+
+    ColorManager* m_colorManager;
 
     QString path;
     bool altpress;
