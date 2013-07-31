@@ -45,14 +45,16 @@ void PenTool::loadSettings()
 
 QCursor PenTool::cursor()
 {
+    if (isAdjusting) // being dynamically resized
+    {
+        return QCursor(wswgCursor()); // circular cursor
+    }
     if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
     {
         return QCursor(QPixmap(":icons/pen.png"), 7, 0);
     }
-    else
-    {
-        return Qt::CrossCursor;
-    }
+    return Qt::CrossCursor;
+
 }
 
 void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)

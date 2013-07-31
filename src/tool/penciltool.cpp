@@ -45,14 +45,16 @@ void PencilTool::loadSettings()
 
 QCursor PencilTool::cursor()
 {
+    if (isAdjusting) // being dynamically resized
+    {
+        return QCursor(wswgCursor()); // circular cursor
+    }
     if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
-    else
-    {
-        return Qt::CrossCursor;
-    }
+    return Qt::CrossCursor;
+
 }
 
 void PencilTool::mousePressEvent(QMouseEvent *event)
@@ -155,7 +157,7 @@ void PencilTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen(QBrush(m_pEditor->currentColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         width = properties.width;
         rad = qRound(properties.width / 2) + 3;
 

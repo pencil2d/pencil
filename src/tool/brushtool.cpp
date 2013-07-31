@@ -1,10 +1,11 @@
-
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
 
 #include "layer.h"
 #include "scribblearea.h"
+
+#include "pencilsettings.h"
 #include "editor.h"
 #include "strokemanager.h"
 
@@ -48,43 +49,29 @@ void BrushTool::loadSettings()
 
 QCursor BrushTool::cursor()
 {
-    qreal width = properties.width + 0.5 * properties.feather;
-    QPixmap pixmap(width,width);
-    if (!pixmap.isNull())
+    if (isAdjusting) // being dynamically resized
     {
-        pixmap.fill( QColor(255,255,255,0) );
-        QPainter painter(&pixmap);
-        painter.setPen( QColor(0,0,0,190) );
-        painter.setBrush( Qt::NoBrush );
-        painter.drawLine( QPointF(width/2-2,width/2), QPointF(width/2+2,width/2) );
-        painter.drawLine( QPointF(width/2,width/2-2), QPointF(width/2,width/2+2) );
-        painter.setRenderHints(QPainter::Antialiasing, true);
-        painter.setPen( QColor(0,0,0,100) );
-        painter.drawEllipse( QRectF( 
-            1 + properties.feather/2, 
-            1 + properties.feather/2,
-            qMax(0.0, properties.width - properties.feather/2-2),
-            qMax(0.0, properties.width - properties.feather/2-2)) );
-        painter.setPen( QColor(0,0,0,50) );
-        painter.drawEllipse( QRectF(1+properties.feather/8,1+properties.feather/8,qMax(0.0,width-properties.feather/4-2),qMax(0.0,width-properties.feather/4-2)) );
-        painter.end();
+        return QCursor(wswgCursor()); // circular cursor
     }
-    return QCursor(pixmap);
+    if ( pencilSettings()->value( kSettingToolCursor ).toBool() ) // doesn't need else
+    {
+        return QCursor(QPixmap(":icons/brush.png"), 0, 13);
+    }
+    return Qt::CrossCursor;
 
 }
 
-
 void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
+    currentWidth = properties.width;
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
-        currentWidth = properties.width * pressure;
+        currentPressure = pressure;
     }
     else
     {
-        currentWidth = properties.width;
+        currentPressure = 1.0;
     }
-    // we choose the "normal" width to correspond to a pressure 0.5
 }
 
 void BrushTool::mousePressEvent(QMouseEvent *event)
@@ -185,10 +172,15 @@ void BrushTool::drawStroke()
         qreal opacity = 1.0;
         qreal brushWidth = currentWidth +  0.5 * properties.feather;
         qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
+        opacity = currentPressure;
+        brushWidth = brushWidth * currentPressure;
+
 //        if (tabletInUse) { opacity = tabletPressure; }
 //        if (usePressure) { brushWidth = brushWidth * tabletPressure; }
 
         qreal brushStep = 0.5 * currentWidth + 0.5 * properties.feather;
+        brushStep = brushStep * currentPressure;
+
 //        if (usePressure) { brushStep = brushStep * tabletPressure; }
         brushStep = qMax(1.0, brushStep);
 
