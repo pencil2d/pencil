@@ -28,7 +28,8 @@ QString BaseTool::TypeName(ToolType type)
 }
 
 BaseTool::BaseTool(QObject *parent) :
-QObject(parent)
+QObject(parent),
+isAdjusting(false)
 {
 }
 
@@ -73,9 +74,11 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
 
 QCursor BaseTool::wswgCursor() //wysywig circular cursor (dynamic adjustments)
 {
-    qreal propWidth = m_pScribbleArea->currentTool()->properties.width;
-    qreal propFeather = m_pScribbleArea->currentTool()->properties.feather;
+    qreal propWidth = properties.width;
+    qreal propFeather = properties.feather;
     qreal width = propWidth + 0.5 * propFeather;
+
+    if (width < 1) { width = 1; }
     qreal radius = width/2;
     qreal xyA = 1 + propFeather/2;
     qreal xyB = 1 + propFeather/8;
