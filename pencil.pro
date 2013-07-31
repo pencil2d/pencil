@@ -184,8 +184,7 @@ RESOURCES += pencil.qrc
 FORMS += \
     src/interface/mainwindow2.ui \
     src/interface/shortcutspage.ui \
-    src/interface/colorspinboxgroup.ui \
-    src/interface/colorbox.ui
+    src/interface/colorspinboxgroup.ui
 
 TRANSLATIONS += pencil.ts
 
