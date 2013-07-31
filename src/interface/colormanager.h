@@ -14,19 +14,10 @@ class ColorManager : public QObject
 {
     Q_OBJECT
 public:
-    ColorManager(Editor* editor, QObject* parent = 0) : QObject( parent )
-    {
-        Q_ASSERT( editor != NULL );
-        m_editor = editor;
-    }
-
-    QColor frontColor() { return m_editor->getObject()->getColour( m_frontColorIndex ).colour; }
-    void   pickColorNumber( int n )
-    {
-        Q_ASSERT( n >= 0 );
-        m_frontColorIndex = n;
-    }
-
+    ColorManager(Editor* editor, QObject* parent = 0);
+    QColor frontColor();
+    void   pickColorNumber( int n );
+    
 signals:
     void colorChanged(QColor);
 
