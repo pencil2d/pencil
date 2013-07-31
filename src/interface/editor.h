@@ -33,16 +33,16 @@ GNU General Public License for more details.
 
 
 class MainWindow2;
-
+class Editor;
 
 class ColorManager : public QObject
 {
     Q_OBJECT
 public:
-    ColorManager(Object* object, QObject* parent = 0) : QObject( parent )
+    ColorManager(Editor* editor, QObject* parent = 0) : QObject( parent )
     {
-        Q_ASSERT( object != NULL );
-        m_object = object;
+        Q_ASSERT( editor != NULL );
+        m_editor = editor;
     }
     QColor frontColor() { return m_object->getColour( m_frontColorIndex ).colour; }
     void   pickColorNumber( int n )
@@ -55,7 +55,7 @@ signals:
     void colorChanged(QColor);
 
 private:
-    Object* m_object;
+    Editor* m_editor;
     int m_frontColorIndex;
 };
 
@@ -70,6 +70,7 @@ public:
     ColorManager* colorManager() const { return m_colorManager; }
 
     Object* object;  // the object to be edited by the editor
+    Object* Object() const { return object; }   
 
     int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
     int m_nCurrentFrameIndex; // the current frame to be edited/displayed by the editor
