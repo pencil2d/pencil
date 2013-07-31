@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "colormanager.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -40,6 +41,8 @@ Editor::Editor(MainWindow2* parent)
     QSettings settings("Pencil","Pencil");
 
     object = NULL; // the editor is initialized with no object
+
+    m_colorManager = new ColorManager(this, this);
 
     altpress = false;
     modified = false;
@@ -895,17 +898,17 @@ void Editor::resetUI()
     scrubTo(0);
 }
 
-void Editor::setObject(Object* object)
+void Editor::setObject(Object* newObject)
 {
-    if (object == NULL)
+    if (newObject == NULL)
     {
         return;
     }
-    if (object == this->object)
+    if (newObject == this->object)
     {
         return;
     }
-    this->object = object;
+    this->object = newObject;
 
     connect(object, SIGNAL(imageAdded(int)), this, SLOT(addFrame(int)));
     connect(object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)));
