@@ -87,7 +87,8 @@ HEADERS +=  src/interfaces.h \
     src/structure/keyframe.h \
     src/structure/camera.h \
     src/interface/recentfilemenu.h \
-    src/util/util.h
+    src/util/util.h \
+    src/interface/colormanager.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -147,7 +148,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/structure/keyframe.cpp \
     src/structure/camera.cpp \
     src/interface/recentfilemenu.cpp \
-    src/util/util.cpp
+    src/util/util.cpp \
+    src/interface/colormanager.cpp
 
 
 # Track dependencies for all includes
