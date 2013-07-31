@@ -1,10 +1,11 @@
-
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
 
 #include "layer.h"
 #include "scribblearea.h"
+
+#include "pencilsettings.h"
 #include "editor.h"
 #include "strokemanager.h"
 
@@ -48,31 +49,17 @@ void BrushTool::loadSettings()
 
 QCursor BrushTool::cursor()
 {
-    qreal width = properties.width + 0.5 * properties.feather;
-    QPixmap pixmap(width,width);
-    if (!pixmap.isNull())
+    if (isAdjusting) // being dynamically resized
     {
-        pixmap.fill( QColor(255,255,255,0) );
-        QPainter painter(&pixmap);
-        painter.setPen( QColor(0,0,0,190) );
-        painter.setBrush( Qt::NoBrush );
-        painter.drawLine( QPointF(width/2-2,width/2), QPointF(width/2+2,width/2) );
-        painter.drawLine( QPointF(width/2,width/2-2), QPointF(width/2,width/2+2) );
-        painter.setRenderHints(QPainter::Antialiasing, true);
-        painter.setPen( QColor(0,0,0,100) );
-        painter.drawEllipse( QRectF( 
-            1 + properties.feather/2, 
-            1 + properties.feather/2,
-            qMax(0.0, properties.width - properties.feather/2-2),
-            qMax(0.0, properties.width - properties.feather/2-2)) );
-        painter.setPen( QColor(0,0,0,50) );
-        painter.drawEllipse( QRectF(1+properties.feather/8,1+properties.feather/8,qMax(0.0,width-properties.feather/4-2),qMax(0.0,width-properties.feather/4-2)) );
-        painter.end();
+        return QCursor(wswgCursor()); // circular cursor
     }
-    return QCursor(pixmap);
+    if ( pencilSettings()->value( kSettingToolCursor ).toBool() ) // doesn't need else
+    {
+        return QCursor(QPixmap(":icons/brush.png"), 0, 13);
+    }
+    return Qt::CrossCursor;
 
 }
-
 
 void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {

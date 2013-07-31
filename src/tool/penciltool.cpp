@@ -45,14 +45,16 @@ void PencilTool::loadSettings()
 
 QCursor PencilTool::cursor()
 {
+    if (isAdjusting) // being dynamically resized
+    {
+        return QCursor(wswgCursor()); // circular cursor
+    }
     if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
-    else
-    {
-        return Qt::CrossCursor;
-    }
+    return Qt::CrossCursor;
+
 }
 
 void PencilTool::mousePressEvent(QMouseEvent *event)
