@@ -40,6 +40,10 @@ void EraserTool::loadSettings()
 
 QCursor EraserTool::cursor()
 {
+    if (isAdjusting) // being dynamically resized
+    {
+        return QCursor(wswgCursor()); // circular cursor
+    }
     QPixmap pixmap( properties.width, properties.width );
     pixmap.fill( QColor(255,255,255,0) );
 
@@ -52,7 +56,6 @@ QCursor EraserTool::cursor()
     painter.setPen( QColor(0,0,0,100) );
     painter.drawEllipse( QRectF(1, 1, properties.width - 2, properties.width - 2) );
     painter.end();
-
     return QCursor(pixmap);
 }
 

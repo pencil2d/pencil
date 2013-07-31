@@ -28,6 +28,9 @@ void PolylineTool::loadSettings()
 
 QCursor PolylineTool::cursor()
 {
+    //if (isAdjusting) { // being dynamically resized
+    //    return QCursor(wswgCursor()); // not working yet
+    //} // issue: see scribblearea.cpp (about line 777)
     return Qt::CrossCursor;
 }
 

@@ -71,6 +71,36 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
     mousePressEvent(event);
 }
 
+QCursor BaseTool::wswgCursor() //wysywig circular cursor (dynamic adjustments)
+{
+    qreal propWidth = m_pScribbleArea->currentTool()->properties.width;
+    qreal propFeather = m_pScribbleArea->currentTool()->properties.feather;
+    qreal width = propWidth + 0.5 * propFeather;
+    qreal radius = width/2;
+    qreal xyA = 1 + propFeather/2;
+    qreal xyB = 1 + propFeather/8;
+    qreal whA = qMax(0.0, propWidth-xyA - 1);
+    qreal whB = qMax(0.0, width-propFeather/4 - 2);
+    QPixmap pixmap(width, width);
+    if (!pixmap.isNull())
+    {
+        pixmap.fill( QColor(255,255,255,0) );
+        QPainter painter(&pixmap);
+        painter.setPen( QColor(0,0,0,190) );
+        painter.setBrush( Qt::NoBrush );
+        painter.drawLine( QPointF(radius-2,radius), QPointF(radius+2,radius) );
+        painter.drawLine( QPointF(radius,radius-2), QPointF(radius,radius+2) );
+        painter.setRenderHints(QPainter::Antialiasing, true);
+        painter.setPen( QColor(0,0,0,100) );
+        painter.drawEllipse( QRectF( xyA, xyA, whA, whA) );
+        painter.setPen( QColor(0,0,0,50) );
+        painter.drawEllipse( QRectF(xyB, xyB, whB, whB) );
+        painter.end();
+    }
+    return QCursor(pixmap);
+
+}
+
 void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
     Q_UNUSED(pressure);
