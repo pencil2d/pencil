@@ -16,7 +16,7 @@ class ColorManager : public QObject
 public:
     ColorManager(Editor* editor, QObject* parent = 0);
     QColor frontColor();
-    void   pickColorNumber( int n );
+    void pickColorNumber(int n);
     
 signals:
     void colorChanged(QColor);

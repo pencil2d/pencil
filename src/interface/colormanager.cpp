@@ -16,8 +16,12 @@ QColor ColorManager::frontColor()
 void ColorManager::pickColorNumber( int n )
 {
     Q_ASSERT( n >= 0 );
-    m_frontColorIndex = n;
 
-    QColor currentColor = m_editor->getObject()->getColour( m_frontColorIndex ).colour;
-    emit colorChanged(currentColor);
+    if ( m_frontColorIndex != n )
+    {
+        m_frontColorIndex = n;
+
+        QColor currentColor = m_editor->getObject()->getColour( m_frontColorIndex ).colour;
+        emit colorChanged(currentColor);
+    }
 }
