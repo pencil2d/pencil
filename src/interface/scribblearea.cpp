@@ -779,9 +779,11 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     {
         //adjust width if not locked
         qDebug() << "adjusting tool width from " << currentTool()->properties.width;
+        currentTool()->isAdjusting = true;
         adjustingTool = true;
         wysiToolAdjustment = wtaWIDTH;
         toolOrgValue = currentTool()->properties.width;
+        setCursor(currentTool()->cursor());
         return;
     }
     else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
@@ -789,8 +791,10 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         //adjust feather if not locked
         qDebug() << "adjusting tool feather from " << currentTool()->properties.feather;
         adjustingTool = true;
+        currentTool()->isAdjusting = true;
         wysiToolAdjustment = wtaFEATHER;
         toolOrgValue = currentTool()->properties.feather;
+        setCursor(currentTool()->cursor());
         return;
     }
     else
@@ -977,6 +981,8 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- checks ------
     if (adjustingTool)
     {
+        currentTool()->isAdjusting = false;
+        setCursor(currentTool()->cursor());
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
