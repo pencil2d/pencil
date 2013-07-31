@@ -1,5 +1,5 @@
 These are some notes/memo about compiling Pencil on Mac OS X
-Last edited: 2013-31-07 by François Téchené
+Last edited: 2013-07-31 by François Téchené
 Pascal Naidon
 
 To compile Pencil for OS X Power PC "out of the box"
