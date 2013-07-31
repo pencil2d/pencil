@@ -1,24 +1,34 @@
 These are some notes/memo about compiling Pencil on Mac OS X
-Last edited: 2007-10-12
+Last edited: 2013-31-07 by Franois TŽchenŽ
 Pascal Naidon
 
 To compile Pencil for OS X Power PC "out of the box"
 0) Install XCode and Apple Developer Kit if you haven't done it
 1) Install Qt from TrollTech if you haven't done it
-2) open a terminal, and go to the folder where pencil.pro is located
-3) type "qmake"
-4) this generates a file called "pencil.xcodeproj"
-5) open it with XCode and press the build button
+2) Open pencil.pro with Qt Creator
+3) Go to Qt Creator->Preferences->Build & Run
+4) Under "Qt Versions" make sure qmake is located
+5) Under "Compilers" make sure Clang x64 is present
+6) Under "Kits" select default and chose your Compiler and QT Version
+7) Now everything is ready, Just click the Run button to build and run Pencil
+
+A complete step by step can be found here : 
+http://www.pencil2d.org/wiki/tutorials/how-to-build-pencil-step-by-step/
+
 
 ====================================================================
 Qt on Mac
+
 -> The Qt framework is needed to create the graphical interface of Pencil
-Use the installer from Trolltech
-www.trolltech.com
-I've used Qt 4.3.0
+Use the installer from http://qt-project.org/downloads
+
+I've used Qt 4.7.4 on the current version
+
+You could also install Qt through a package manager such as Homebrew
+
 
 ====================================================================
-Ming (Flash/SWF library) on Mac
+Ming (Flash/SWF library) on Mac (This feature is not implemented in v0.5)
 -> The Ming library enables Pencil to export animation to the Flash/SWF format
 www.libming.org
 I've used Ming 0.3
@@ -32,9 +42,16 @@ the "libmacosx" directory, as a convenience, so that you don't need to compile i
 (maybe you need on an Intel Mac, though).
 If needed, you can get the latest files from www.libming.org and compile them yourself.
 
-========================
+
+====================================================================
 Deploying Pencil/Mac OS X
 I chose to ship the Qt libraries within the app.
-In order to link the pencil.app against these local Qt libraries, I made the script "linkmac"
-After Pencil is build, simply run ./linkmac
-(the very first time, please uncomment the first lines in the script in order to copy the Qt libraries from /usr/local to the pencil.app package.)
+In order to link the pencil.app against these local Qt libraries, I made the script "macdeploy.sh"
+
+Make sure your Pencil application is built and follow these steps :
+
+0) Open macdeploy.sh in a text editor
+1) Set the app path and QT lib path based on your environment.
+2) Open a terminal, and go to the folder where macdeploy.sh is located
+3) type "sudo sh ./macdeploy.sh"
+4) You should have a stand alone version of your application and a ready to share .dmg file in your build folder
