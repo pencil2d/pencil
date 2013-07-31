@@ -145,23 +145,23 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
 void ScribbleArea::setColour(const int i)
 {
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.colourNumber = i;
     }
-    else if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.colourNumber = i;
     }
-    else if (m_currentTool->type() == BRUSH)
+    else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.colourNumber = i;
     }
-    else if (m_currentTool->type() == BUCKET)
+    else if (currentTool()->type() == BUCKET)
     {
         getTool(BUCKET)->properties.colourNumber = i;
     }
-    else if (m_currentTool->type() == EYEDROPPER)
+    else if (currentTool()->type() == EYEDROPPER)
     {
         getTool(PENCIL)->properties.colourNumber = i;
         getTool( PEN )->properties.colourNumber = i;
@@ -195,70 +195,70 @@ void ScribbleArea::resetTools()
 void ScribbleArea::setWidth(const qreal newWidth)
 {
     QSettings settings("Pencil", "Pencil");
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.width = newWidth;
         // update width of tool XXX
         settings.setValue("pencilWidth", newWidth);
     }
-    else if (m_currentTool->type() == ERASER)
+    else if (currentTool()->type() == ERASER)
     {
         getTool(ERASER)->properties.width = newWidth;
         // update width of tool XXX
         settings.setValue("eraserWidth", newWidth);
     }
-    else if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.width = newWidth;
         // update width of tool XXX
         settings.setValue("penWidth", newWidth);
     }
-    else if (m_currentTool->type() == BRUSH)
+    else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.width = newWidth;
         // update width of tool XXX
         settings.setValue("brushWidth", newWidth);
     }
     updateAllFrames();
-    setCursor(m_currentTool->cursor());
+    setCursor(currentTool()->cursor());
 }
 
 void ScribbleArea::setFeather(const qreal newFeather)
 {
     QSettings settings("Pencil", "Pencil");
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.feather = newFeather;
         settings.setValue("pencilOpacity", newFeather);
     }
-    else if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.feather = newFeather;
         settings.setValue("penOpacity", newFeather);
     }
-    else if (m_currentTool->type() == BRUSH)
+    else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
     }
     updateAllFrames();
-    setCursor(m_currentTool->cursor());
+    setCursor(currentTool()->cursor());
 }
 
 void ScribbleArea::setOpacity(const qreal newOpacity)
 {
     QSettings settings("Pencil", "Pencil");
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.opacity = newOpacity;
         settings.setValue("pencilOpacity", newOpacity);
     }
-    if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.opacity = newOpacity;
         settings.setValue("penOpacity", newOpacity);
     }
-    if (m_currentTool->type() == BRUSH)
+    if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.opacity = newOpacity;
         settings.setValue("brushOpacity", newOpacity);
@@ -270,12 +270,12 @@ void ScribbleArea::setOpacity(const qreal newOpacity)
 void ScribbleArea::setInvisibility(const bool invisibility)
 {
     QSettings settings("Pencil", "Pencil");
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.invisibility = invisibility;
         settings.setValue("pencilOpacity", invisibility);
     }
-    if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.invisibility = invisibility;
         settings.setValue("penOpacity", invisibility);
@@ -287,17 +287,17 @@ void ScribbleArea::setInvisibility(const bool invisibility)
 void ScribbleArea::setPressure(const bool pressure)
 {
     QSettings settings("Pencil", "Pencil");
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.pressure = pressure;
         settings.setValue("pencilOpacity", pressure);
     }
-    if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.pressure = pressure;
         settings.setValue("penOpacity", pressure);
     }
-    if (m_currentTool->type() == BRUSH)
+    if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.pressure = pressure;
         settings.setValue("brushOpacity", pressure);
@@ -308,15 +308,15 @@ void ScribbleArea::setPressure(const bool pressure)
 
 void ScribbleArea::setPreserveAlpha(const bool preserveAlpha)
 {
-    if (m_currentTool->type() == PENCIL)
+    if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.preserveAlpha = preserveAlpha;
     }
-    if (m_currentTool->type() == PEN || m_currentTool->type() == POLYLINE)
+    if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.preserveAlpha = preserveAlpha;
     }
-    if (m_currentTool->type() == BRUSH)
+    if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.preserveAlpha = preserveAlpha;
     }
@@ -536,17 +536,17 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
     keyboardInUse = true;
     if (mouseInUse) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
-    if (m_currentTool->keyPressEvent(event)) {
+    if (currentTool()->keyPressEvent(event)) {
         // has been handled by tool
         return;
     }
     // ---- multiple keys ----
     if ( event->modifiers().testFlag(Qt::ShiftModifier) && event->modifiers().testFlag(Qt::ControlModifier) ) // temp. eraser
     {
-        qreal width = m_currentTool->properties.width;
-        qreal feather = m_currentTool->properties.feather;
+        qreal width = currentTool()->properties.width;
+        qreal feather = currentTool()->properties.feather;
         instantTool = true; // used to return to previous tool when finished (keyRelease).
-        prevToolType = m_currentTool->type();
+        prevToolType = currentTool()->type();
         setCurrentTool( ERASER );
         setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
         setFeather(feather); //anticipates future implementation of feather (not used yet).
@@ -707,14 +707,14 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     m_strokeManager->tabletEvent(event);
 
-    m_currentTool->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
+    currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
                                                      event->pointerType() == QTabletEvent::Cursor);
 
     if (event->pointerType() == QTabletEvent::Eraser)
     {
         if (tabletEraserBackupToolMode == -1)
         {
-            tabletEraserBackupToolMode = m_currentTool->type();
+            tabletEraserBackupToolMode = currentTool()->type();
             // memorise which tool was being used before switching to the eraser
             emit eraserOn();
         }
@@ -756,13 +756,13 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     if (!m_strokeManager->isTabletInUse())   // a mouse is used instead of a tablet
     {
         m_strokeManager->setPressure(1.0);
-        m_currentTool->adjustPressureSensitiveProperties(1.0, true);
+        currentTool()->adjustPressureSensitiveProperties(1.0, true);
 
         //----------------code for starting hand tool when middle mouse is pressed
         if (event->buttons() & Qt::MidButton)
         {
             //qDebug() << "Hand Start " << event->pos();
-            prevMode = m_currentTool->type();
+            prevMode = currentTool()->type();
             emit handOn();
         }
     }
@@ -775,24 +775,22 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
 
     // ----- wysiwyg tool adjusment
-    if ( (event->modifiers() == Qt::ShiftModifier) && (m_currentTool->properties.width > -1) ) //adjust width if not locked
+    if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
     {
-        qDebug() << "adjusting tool width from " << m_currentTool->properties.width;
+        //adjust width if not locked
+        qDebug() << "adjusting tool width from " << currentTool()->properties.width;
         adjustingTool = true;
         wysiToolAdjustment = wtaWIDTH;
-        toolOrgValue = m_currentTool->properties.width;
-        m_currentTool->isAdjusting = true;
-        setCursor(m_currentTool->wswgCursor()); // TODO: check why it's not working for polyline
+        toolOrgValue = currentTool()->properties.width;
         return;
     }
-    else if ( (event->modifiers() == Qt::ControlModifier) && (m_currentTool->properties.feather>-1) )
+    else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
     {
-        qDebug() << "adjusting tool feather from " << m_currentTool->properties.feather;
+        //adjust feather if not locked
+        qDebug() << "adjusting tool feather from " << currentTool()->properties.feather;
         adjustingTool = true;
         wysiToolAdjustment = wtaFEATHER;
-        toolOrgValue = m_currentTool->properties.feather;
-        m_currentTool->isAdjusting = true;
-        setCursor(m_currentTool->wswgCursor());
+        toolOrgValue = currentTool()->properties.feather;
         return;
     }
     else
@@ -815,7 +813,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         if (bitmapImage == NULL) { return; }
     }
 
-    if (!layer->visible && m_currentTool->type() != HAND && (event->button() != Qt::RightButton))
+    if (!layer->visible && currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
         QMessageBox::warning(this, tr("Warning"),
                              tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
@@ -879,7 +877,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    m_currentTool->mousePressEvent(event);
+    currentTool()->mousePressEvent(event);
 }
 
 bool ScribbleArea::areLayersSane() const
@@ -969,7 +967,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
-    m_currentTool->mouseMoveEvent(event);
+    currentTool()->mouseMoveEvent(event);
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
@@ -979,8 +977,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- checks ------
     if (adjustingTool)
     {
-        m_currentTool->isAdjusting = false;
-        setCursor(m_currentTool->cursor());
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
@@ -997,7 +993,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         return;
     }
 
-    m_currentTool->mouseReleaseEvent(event);
+    currentTool()->mouseReleaseEvent(event);
 
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
@@ -1011,7 +1007,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
 {
 
-    m_currentTool->mouseDoubleClickEvent(event);
+    currentTool()->mouseDoubleClickEvent(event);
 }
 
 /************************************************************************************/
@@ -1027,7 +1023,7 @@ void ScribbleArea::paintBitmapBuffer()
     if (targetImage != NULL)
     {
         QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
-        switch (m_currentTool->type())
+        switch (currentTool()->type())
         {
         case ERASER:
             cm = QPainter::CompositionMode_DestinationOut;
@@ -1112,7 +1108,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
     QPainter painter(this);
 
     // draws the background (if necessary)
-    if (mouseInUse && m_currentTool->type() == HAND)
+    if (mouseInUse && currentTool()->type() == HAND)
     {
         painter.setWorldMatrix(myTempView);
         painter.setWorldMatrixEnabled(true);
@@ -1132,7 +1128,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
             QPixmapCache::insert("frame" + QString::number(frameNumber), canvas);
         }
     }
-    if (m_currentTool->type() == MOVE)
+    if (currentTool()->type() == MOVE)
     {
         Layer *layer = m_pEditor->getCurrentLayer();
         if (!layer) { return; }
@@ -1155,7 +1151,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
-            if (m_currentTool->type() == SMUDGE || m_currentTool->type() == HAND)
+            if (currentTool()->type() == SMUDGE || currentTool()->type() == HAND)
             {
                 //bufferImg->clear();
                 painter.save();
@@ -1226,7 +1222,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                 painter.restore();
             }
 
-            if (m_currentTool->type() == MOVE)
+            if (currentTool()->type() == MOVE)
             {
                 // ----- paints the closest curves
                 bufferImg->clear();
@@ -1286,7 +1282,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                 }
                 painter.drawPolygon(tempRect);
 
-                if (layer->type != Layer::VECTOR || m_currentTool->type() != SELECT)
+                if (layer->type != Layer::VECTOR || currentTool()->type() != SELECT)
                 {
                     painter.setPen(Qt::SolidLine);
                     painter.setBrush(QBrush(Qt::gray));
@@ -1321,7 +1317,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
     painter.setBrush(Qt::NoBrush);
     painter.drawRect(QRect(0, 0, width(), height()));
     // shadow
-    if (shadows && !m_pEditor->playing && (!mouseInUse || m_currentTool->type() == HAND))
+    if (shadows && !m_pEditor->playing && (!mouseInUse || currentTool()->type() == HAND))
     {
         int radius1 = 12;
         int radius2 = 8;
@@ -1909,7 +1905,7 @@ void ScribbleArea::displaySelectionProperties()
         LayerVector *layerVector = (LayerVector *)layer;
         VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
         //vectorImage->applySelectionTransformation();
-        if (m_currentTool->type() == MOVE)
+        if (currentTool()->type() == MOVE)
         {
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if (selectedCurve != -1)
@@ -1964,7 +1960,7 @@ void ScribbleArea::deselectAll()
     if (layer->type == Layer::VECTOR)
     {
         ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
-        if (m_currentTool->type() == MOVE)
+        if (currentTool()->type() == MOVE)
         {
             m_pEditor->setWidth(-1);
             m_pEditor->setInvisibility(-1);
@@ -2332,7 +2328,7 @@ void ScribbleArea::floodFillError(int errorType)
 /************************************************************************************/
 // tool handling
 
-BaseTool *ScribbleArea::currentTool() // force public access
+BaseTool *ScribbleArea::currentTool()
 {
     return m_currentTool;
 }
@@ -2344,7 +2340,7 @@ BaseTool *ScribbleArea::getTool(ToolType eToolMode)
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
 {
-    if (m_currentTool != NULL && eToolMode != m_currentTool->type())
+    if (currentTool() != NULL && eToolMode != currentTool()->type())
     {
         qDebug() << "Set Current Tool" << BaseTool::TypeName(eToolMode);
         if (BaseTool::TypeName(eToolMode) == "")
@@ -2354,11 +2350,11 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         }
 
         // XXX tool->setActive()
-        if (m_currentTool->type() == MOVE) {
+        if (currentTool()->type() == MOVE) {
             paintTransformedSelection();
             deselectAll();
         }
-        if (m_currentTool->type() == POLYLINE)
+        if (currentTool()->type() == POLYLINE)
         {
             escape();
         }        
@@ -2366,7 +2362,7 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     m_currentTool = getTool(eToolMode);
 
     // --- change cursor ---
-    setCursor(m_currentTool->cursor());
+    setCursor(currentTool()->cursor());
 }
 
 void ScribbleArea::switchTool(ToolType type)
