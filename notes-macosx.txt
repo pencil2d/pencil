@@ -51,7 +51,7 @@ In order to link the pencil.app against these local Qt libraries, I made the scr
 Make sure your Pencil application is built and follow these steps :
 
 0) Open macdeploy.sh in a text editor
-1) Set the app path and QT lib path based on your environment.
-2) Open a terminal, and go to the folder where macdeploy.sh is located
-3) type "sudo sh ./macdeploy.sh"
+1) Set the app path and QT lib path based on your environment
+2) Open a terminal, and go to the project's root folder
+3) type "sudo sh util/macdeploy.sh"
 4) You should have a stand alone version of your application and a ready to share .dmg file in your build folder
