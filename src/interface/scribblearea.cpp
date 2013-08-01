@@ -545,12 +545,9 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     {
         qreal width = currentTool()->properties.width;
         qreal feather = currentTool()->properties.feather;
-        instantTool = true; // used to return to previous tool when finished (keyRelease).
-        prevToolType = currentTool()->type();
-        setCurrentTool( ERASER );
+        setTemporaryTool( ERASER );
         setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
         setFeather(feather); //anticipates future implementation of feather (not used yet).
-        qDebug() << "ctrl-shift";
         return;
     }
     // ---- single keys ----
@@ -648,6 +645,12 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     case Qt::Key_F3:
         gradients = 2;
         updateAllVectorLayersAtCurrentFrame();
+        break;
+    case Qt::Key_Alt:
+        setTemporaryTool( EYEDROPPER );
+        break;
+    case Qt::Key_Space:
+        setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
         break;
     default:
         event->ignore();
@@ -2369,6 +2372,13 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 
     // --- change cursor ---
     setCursor(currentTool()->cursor());
+}
+
+void ScribbleArea::setTemporaryTool(ToolType eToolMode)
+{
+    instantTool = true; // used to return to previous tool when finished (keyRelease).
+    prevToolType = currentTool()->type();
+    setCurrentTool( eToolMode );
 }
 
 void ScribbleArea::switchTool(ToolType type)
