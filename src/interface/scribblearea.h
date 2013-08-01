@@ -104,6 +104,7 @@ public:
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
+    void setTemporaryTool(ToolType eToolMode);
     void switchTool(ToolType type);
     QList<BaseTool *> getTools();
 
