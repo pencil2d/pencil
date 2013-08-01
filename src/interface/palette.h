@@ -43,7 +43,8 @@ protected:
     QToolButton* addButton;
     QToolButton* removeButton;    
 signals:
-    //void colorChanged(QColor);
+    void colorChanged(QColor);
+	void colorNumberChanged(int);
 
 public slots:    
     void selectColorListRow(int);
