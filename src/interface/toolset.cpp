@@ -225,7 +225,6 @@ void ToolSetWidget::penOn()
 
     // --- change properties ---
     m_editor->setToolProperties( pCurrentTool->properties );
-    m_editor->setWidth(2);
 
     deselectAllTools();
     penButton->setChecked(true);
