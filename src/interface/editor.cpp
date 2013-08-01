@@ -250,12 +250,14 @@ bool Editor::importMov()
 
 void Editor::setWidth(qreal width)
 {
+    qDebug() << "editor setWdith" << width;
     scribbleArea->setWidth(width);
     emit penWidthValueChange(width);
 }
 
 void Editor::setToolProperties(const Properties& p)
 {
+    qDebug() << "set tool properties";
     setWidth(p.width);
     setFeather(p.feather);
     setPressure(p.pressure);
@@ -265,6 +267,7 @@ void Editor::setToolProperties(const Properties& p)
 
 void Editor::applyWidth(qreal width)
 {
+    qDebug() << "apply width";
     setWidth(width);
     Layer* layer = getCurrentLayer();
     if (layer == NULL) return;
