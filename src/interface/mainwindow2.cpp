@@ -986,7 +986,7 @@ void MainWindow2::importPalette()
     if (!filePath.isEmpty())
     {
         m_object->importPalette(filePath);
-        m_colorPalette->updateList();
+        m_colorPalette->refreshColorList();
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
 }

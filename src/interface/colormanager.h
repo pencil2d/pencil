@@ -3,8 +3,6 @@
 
 #include <QObject>
 #include <QColor>
-#include "object.h"
-#include "editor.h"
 
 class Editor;
 
@@ -16,6 +14,7 @@ class ColorManager : public QObject
 public:
     ColorManager(Editor* editor, QObject* parent = 0);
     QColor frontColor();
+    int frontColorNumber();
     void pickColorNumber(int n);
     
 signals:

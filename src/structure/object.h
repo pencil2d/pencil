@@ -68,7 +68,7 @@ public:
     ColourRef getColour(int i);
     void setColour(int index, QColor newColour) 
 	{
-        Q_ASSERT( index < 0 );
+        Q_ASSERT( index >= 0 );
 	    myPalette[index].colour = newColour; 		
 	}
     void addColour(QColor);

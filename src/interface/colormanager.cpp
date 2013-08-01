@@ -1,7 +1,10 @@
+
+#include "object.h"
+#include "editor.h"
 #include "colormanager.h"
 
 
-ColorManager::ColorManager(Editor* editor, QObject* parent = 0) 
+ColorManager::ColorManager(Editor* editor, QObject* parent) 
     : QObject( parent )
 {
     Q_ASSERT( editor != NULL );
@@ -24,4 +27,9 @@ void ColorManager::pickColorNumber( int n )
         QColor currentColor = m_editor->getObject()->getColour( m_frontColorIndex ).colour;
         emit colorChanged(currentColor);
     }
+}
+
+int ColorManager::frontColorNumber()
+{
+    return m_frontColorIndex;
 }

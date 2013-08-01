@@ -20,75 +20,67 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colorbox.h"
 #include "palette.h"
+#include "scribblearea.h"
 
 
 Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
     this->editor = editor;
+    
+    setWindowTitle(tr("Colors"));
 
-    QWidget* paletteContent = new QWidget();
-
-    listOfColours = new QListWidget();
-
-    addButton = new QToolButton();
+    addButton = new QToolButton(this);
     addButton->setIcon(QIcon(":icons/add.png"));
     addButton->setToolTip("Add Color");
     addButton->setFixedSize(30, 30);
 
-    removeButton = new QToolButton();
+    removeButton = new QToolButton(this);
     removeButton->setIcon(QIcon(":icons/remove.png"));
     removeButton->setToolTip("Remove Color");
     removeButton->setFixedSize(30, 30);
 
     QLabel* spacer = new QLabel();
     spacer->setFixedWidth(10);
-
-    colourSwatch = new QToolButton();
-    colourSwatch->setFixedSize( 40, 40 );
-    QPixmap colourPixmap(30, 30);
-    colourPixmap.fill( Qt::black );
-    colourSwatch->setIcon(QIcon(colourPixmap));
-
-    QToolBar* buttons = new QToolBar();
+    
+    QToolBar* buttons = new QToolBar(this);    
     buttons->addWidget(spacer);
-    buttons->addWidget(colourSwatch);
     buttons->addWidget(addButton);
     buttons->addWidget(removeButton);
 
-    listOfColours->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    listOfColours->setLineWidth(1);
-    listOfColours->setFocusPolicy(Qt::NoFocus);
-	listOfColours->setCurrentRow( 0 );
+    m_colorListView = new QListWidget(this);
+    m_colorListView->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    m_colorListView->setLineWidth(1);
+    m_colorListView->setFocusPolicy(Qt::NoFocus);
+	m_colorListView->setCurrentRow( 0 );
 
     m_colorBox = new ColorBox(this);
 
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(m_colorBox);    
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(m_colorBox);
     layout->addWidget(buttons);
-    layout->addWidget(listOfColours);
+    layout->addWidget(m_colorListView);
     layout->setMargin(0);
 
+    QWidget* paletteContent = new QWidget(this);
     paletteContent->setLayout(layout);
+    paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
+
     setWidget(paletteContent);
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
     setFloating(true);
-    paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
-
-    setWindowTitle(tr("Colors"));
-
-    connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), 
-			this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
-
-    connect(listOfColours, SIGNAL(itemClicked(QListWidgetItem*)), 
+    
+    connect(m_colorListView, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), 
+			this, SLOT(colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*)));
+    
+    connect(m_colorListView, SIGNAL(itemClicked(QListWidgetItem*)),
 			this, SLOT(clickColorListItem( QListWidgetItem*)));
 
-    connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, 
+    connect(m_colorListView, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, 
 			SLOT(changeColourName( QListWidgetItem*)));
-
+    
     connect(addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
     connect(removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
-    connect(colourSwatch, SIGNAL(clicked()), this, SLOT(colourSwatchClicked()));
     
 	connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
 	
@@ -98,43 +90,37 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
 
 void Palette::selectColorListRow(int row)
 {
-	qDebug() << "set Row = " << row;
-	listOfColours->setCurrentRow(row);
+	m_colorListView->setCurrentRow(row);
 }
 
 int Palette::currentColourNumber()
-{
-	int selectedRow = listOfColours->currentRow();
-
-	if ( selectedRow < 0 )
-	{
-		listOfColours->setCurrentRow( 0 );
-		selectedRow = listOfColours->currentRow();
+{    	
+	if ( m_colorListView->currentRow() < 0 )
+	{        
+		m_colorListView->setCurrentRow( 0 );
 	}
-	return selectedRow;
+	return m_colorListView->currentRow();
 }
 
-void Palette::updateList()
+void Palette::refreshColorList()
 {
-    while (listOfColours->count() > 0)
+    if (m_colorListView->count() > 0)
     {
-        listOfColours->takeItem(0);
+        m_colorListView->clear();
     }
 
     for (int i = 0; i < editor->object->getColourCount(); i++)
     {
         ColourRef colourRef = editor->object->getColour(i);
 
-        QListWidgetItem* colourItem = new QListWidgetItem(listOfColours);
+        QListWidgetItem* colourItem = new QListWidgetItem(m_colorListView);
         colourItem->setText( colourRef.name );
+
         QPixmap colourSwatch(32,32);
         colourSwatch.fill( colourRef.colour );
-        QPainter painter(&colourSwatch);
-        painter.setPen( QColor(0,0,0,128) );
-        painter.drawRect( QRect(0,-1,31,31) );
         colourItem->setIcon( colourSwatch );
     }
-    update();	
+    update();
 }
 
 void Palette::colourSwatchClicked() 
@@ -152,55 +138,42 @@ void Palette::colourSwatchClicked()
             editor->object->setColour(colorIndex, newColor);
             editor->setFrontColour(colorIndex, newColor );
 
-            updateList();
+            refreshColorList();
             selectColorListRow(colorIndex);
             setColour(newColor);
         }
     }
 }
 
-void Palette::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
+void Palette::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
     if (!current) 
 	{
 		current = previous;
 	}
-    editor->selectVectorColourNumber(listOfColours->row(current));
+    editor->selectVectorColourNumber(m_colorListView->row(current));
 }
 
 void Palette::clickColorListItem(QListWidgetItem* current)
 {
-    editor->selectAndApplyColour(listOfColours->row(current));
+    editor->selectAndApplyColour(m_colorListView->row(current));
 }
 
 void Palette::colorWheelChanged(QColor newColor)
-{
+{    
     int colorIndex = currentColourNumber();
 	
-    editor->object->setColour(colorIndex, newColor);
-    editor->setFrontColour(colorIndex, newColor);
+    editor->object->setColour(colorIndex, newColor);    
+    editor->getScribbleArea()->updateFrame();
 
-    updateList();
-    selectColorListRow(colorIndex);
-}
-
-void Palette::updateSwatch(QColor colour)
-{
-    QPixmap colourPixmap(30,30);
-    colourPixmap.fill( colour );
-    if (colourSwatch != NULL)
-    {
-        colourSwatch->setIcon(QIcon(colourPixmap));
-    }
+    updateItemColor(colorIndex, newColor);
 }
 
 void Palette::changeColourName( QListWidgetItem* item )
 {
-    if (item == NULL)
-    {
-        return;
-    }
-    int colorNumber = listOfColours->row(item);
+    Q_ASSERT( item != NULL );
+
+    int colorNumber = m_colorListView->row(item);
     if (colorNumber > -1)
     {
         bool ok;
@@ -213,7 +186,7 @@ void Palette::changeColourName( QListWidgetItem* item )
         if (ok && !text.isEmpty())
         {
             editor->object->renameColour(colorNumber, text);
-            updateList();
+            refreshColorList();
         }
     }
 }
@@ -237,13 +210,13 @@ void Palette::clickAddColorButton()
                                              tr("Colour name"),
                                              tr("Colour name:"),
                                              QLineEdit::Normal,
-                                             QString(tr("Colour %1")).arg(listOfColours->count()),
+                                             QString(tr("Colour %1")).arg(m_colorListView->count()),
                                              &ok );
         if (ok) 
         {
             ref.name = text;
             editor->object->addColour(ref);
-            updateList();
+            refreshColorList();
             editor->selectVectorColourNumber(editor->object->getColourCount() - 1);
         }
     }
@@ -251,17 +224,21 @@ void Palette::clickAddColorButton()
 
 void Palette::clickRemoveColorButton()
 {
-    int colorNumber = listOfColours->currentRow();
+    int colorNumber = m_colorListView->currentRow();
     editor->object->removeColour(colorNumber);
-    updateList();
-}
 
-void Palette::closeIfDocked(bool)
-{
-    //if (floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
+    refreshColorList();
 }
 
 void Palette::setColour(QColor color)
 {
     m_colorBox->setColor(color);
+}
+
+void Palette::updateItemColor( int itemIndex, QColor newColor )
+{
+    QPixmap colourSwatch(32, 32);
+    colourSwatch.fill( newColor );
+
+    m_colorListView->item( itemIndex )->setIcon( colourSwatch );
 }

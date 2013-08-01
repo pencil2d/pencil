@@ -39,28 +39,27 @@ public:
 protected:
     Editor* editor;
     ColorBox* m_colorBox;
-    QListWidget* listOfColours;
+    QListWidget* m_colorListView;
     QToolButton* addButton;
-    QToolButton* removeButton;
-    QToolButton* colourSwatch;
+    QToolButton* removeButton;    
 signals:
     //void colorChanged(QColor);
 
 public slots:    
     void selectColorListRow(int);
     void setColour(QColor);
-    void updateList();
+    
+    void refreshColorList();
 
 private slots:    
-    void updateSwatch(QColor);
+    void updateItemColor(int, QColor);    
     void colourSwatchClicked();
-    void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
-    void clickColorListItem(QListWidgetItem*);    
+    void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
+    void clickColorListItem(QListWidgetItem*);
     void colorWheelChanged(QColor);
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
-    void closeIfDocked(bool);
 private:
 
 };

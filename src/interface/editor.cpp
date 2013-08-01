@@ -371,7 +371,6 @@ void Editor::selectVectorColourNumber(int i)
 
 void Editor::selectAndApplyColour(int i)
 {
-    selectVectorColourNumber(i);
     Layer* layer = getCurrentLayer();
     if (layer == NULL)
     {
@@ -926,7 +925,7 @@ void Editor::updateObject()
     mainWindow->m_colorPalette->selectColorListRow(0);
 
     getTimeLine()->updateLayerNumber(object->getLayerCount());
-    mainWindow->m_colorPalette->updateList();
+    mainWindow->m_colorPalette->refreshColorList();
     clearBackup();
     scribbleArea->resetColours();
     scribbleArea->updateAllFrames();
