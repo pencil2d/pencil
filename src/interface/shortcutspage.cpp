@@ -29,7 +29,7 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
     ui->setupUi(this);
     m_treeModel = new QStandardItemModel(this);
 
-    loadShortcutsFromSetting();
+    treeModelLoadShortcutsSetting();
 
     ui->treeView->setModel(m_treeModel);
     ui->treeView->resizeColumnToContents(0);
@@ -42,6 +42,9 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
 
     connect(ui->restoreShortcutsButton, SIGNAL(clicked()),
             this, SLOT(restoreShortcutsButtonClicked()));
+
+    connect(ui->clearButton, SIGNAL(clicked()),
+            this, SLOT(clearButtonClicked()));
 }
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
@@ -65,6 +68,11 @@ void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 
 void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
 {
+    if ( !m_currentItemIndex.isValid() )
+    {
+        return;
+    }
+
     int row = m_currentItemIndex.row();
     QStandardItem* actionItem = m_treeModel->item(row, ACT_NAME_COLUMN);
     QStandardItem* keyseqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
@@ -97,8 +105,8 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
     setting.setValue(strCmdName, strKeySeq);
     setting.endGroup();
     setting.sync();
-    
-    loadShortcutsFromSetting();
+
+    treeModelLoadShortcutsSetting();
 
     qDebug() << "Shortcut " << strCmdName << " = " << strKeySeq;
 }
@@ -106,7 +114,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
 void ShortcutsPage::restoreShortcutsButtonClicked()
 {
     restoreShortcutsToDefault();
-    loadShortcutsFromSetting();
+    treeModelLoadShortcutsSetting();
 }
 
 bool ShortcutsPage::isKeySequenceExist(const QSettings& settings, QString strTargetCmdName, QKeySequence targetkeySeq)
@@ -146,7 +154,7 @@ void ShortcutsPage::removeDuplicateKeySequence(QSettings* settings, QKeySequence
     }
 }
 
-void ShortcutsPage::loadShortcutsFromSetting()
+void ShortcutsPage::treeModelLoadShortcutsSetting()
 {
     // Load shortcuts from settings
     QSettings settings("Pencil", "Pencil");
@@ -170,8 +178,7 @@ void ShortcutsPage::loadShortcutsFromSetting()
 
         QStandardItem* nameItem = new QStandardItem(strHumanReadCmdName.toString());
         QStandardItem* keyseqItem = new QStandardItem(strKeySequence);
-        int currentRow = -1;
-      
+
         m_treeModel->setItem(row, 0, nameItem);
         m_treeModel->setItem(row, 1, keyseqItem);
 
@@ -183,5 +190,26 @@ void ShortcutsPage::loadShortcutsFromSetting()
     settings.endGroup();
 
     ui->treeView->resizeColumnToContents( 0 );
+}
+
+void ShortcutsPage::clearButtonClicked()
+{
+    if ( !m_currentItemIndex.isValid() )
+    {
+        return;
+    }
+
+    int row = m_currentItemIndex.row();
+    QStandardItem* actionItem = m_treeModel->item(row, ACT_NAME_COLUMN);
+
+    QString strCmdName = QString("shortcuts/Cmd%1").arg( actionItem->text() );
+
+    QSettings setting("Pencil", "Pencil");
+    setting.setValue( strCmdName, "" );
+    setting.sync();
+
+    ui->keySeqLineEdit->setText("");
+
+    treeModelLoadShortcutsSetting();
 }
 

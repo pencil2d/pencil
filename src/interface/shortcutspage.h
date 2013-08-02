@@ -30,11 +30,12 @@ private slots:
     void tableItemClicked(const QModelIndex&);
     void keyCapLineEditTextChanged(QKeySequence);
     void restoreShortcutsButtonClicked();
+    void clearButtonClicked();
 
 private:
     bool isKeySequenceExist(const QSettings&, QString, QKeySequence);
     void removeDuplicateKeySequence(QSettings*, QKeySequence);
-    void loadShortcutsFromSetting();
+    void treeModelLoadShortcutsSetting();
 
     QStandardItemModel* m_treeModel;
     QModelIndex m_currentItemIndex;
