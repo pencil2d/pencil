@@ -45,7 +45,6 @@ void KeyCaptureLineEdit::keyPressEvent(QKeyEvent* event)
     QKeySequence keySeq(keyInt);
     QString strKeySeq = keySeq.toString(QKeySequence::NativeText);
 
-    emit keyCaptured(keySeq);
-
     this->setText(strKeySeq);
+    emit keyCaptured(keySeq);
 }

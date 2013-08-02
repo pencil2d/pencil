@@ -1,5 +1,6 @@
 
 #include <QStringList>
+#include <QDebug>
 #include "pencilsettings.h"
 
 // ==== Singleton ====
@@ -42,29 +43,25 @@ void restoreToDefaultSetting() // TODO: finish reset list
 void checkExistingShortcuts()
 {
     QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
-
-    pencilSettings()->beginGroup("shortcuts");
-    pencilSettings()->remove("");
-    foreach (QString pKey, defaultKey.allKeys())
-    {
-        if ( !pencilSettings()->contains(pKey) )
-        {
-            pencilSettings()->setValue(pKey, defaultKey.value(pKey));
+    
+    foreach (QString pShortcutsKey, defaultKey.allKeys())
+    {        
+        if ( !pencilSettings()->contains(pShortcutsKey) )
+        {            
+            pencilSettings()->setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
         }
     }
-    pencilSettings()->endGroup();
 }
 
 
 void restoreShortcutsToDefault()
 {
     QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
+    
+    pencilSettings()->remove("shortcuts");
 
-    pencilSettings()->beginGroup("shortcuts");
-    pencilSettings()->remove("");
-    foreach (QString pKey, defaultKey.allKeys())
+    foreach (QString pShortcutsKey, defaultKey.allKeys())
     {
-        pencilSettings()->setValue(pKey, defaultKey.value(pKey));
-    }
-    pencilSettings()->endGroup();
+        pencilSettings()->setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
+    }    
 }

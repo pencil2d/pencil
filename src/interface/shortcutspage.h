@@ -29,16 +29,16 @@ signals:
 private slots:
     void tableItemClicked(const QModelIndex&);
     void keyCapLineEditTextChanged(QKeySequence);
-    void pressRestoreShortcutsButton();
+    void restoreShortcutsButtonClicked();
+    void clearButtonClicked();
 
 private:
     bool isKeySequenceExist(const QSettings&, QString, QKeySequence);
     void removeDuplicateKeySequence(QSettings*, QKeySequence);
-    void loadShortcutsFromSetting();
+    void treeModelLoadShortcutsSetting();
 
     QStandardItemModel* m_treeModel;
-    QStandardItem* m_currentActionItem;
-    QStandardItem* m_currentKeySeqItem;
+    QModelIndex m_currentItemIndex;
 
     Ui::ShortcutsPage* ui;
 };

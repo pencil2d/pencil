@@ -185,6 +185,7 @@ void ScribbleArea::resetColours()
 
 void ScribbleArea::resetTools()
 {
+    qDebug() << "reset tools";
     getTool( PEN )->properties.width = 2.0;
     getTool( PENCIL )->properties.width = 1.0;
     getTool( ERASER )->properties.width = 10.0;
@@ -194,6 +195,7 @@ void ScribbleArea::resetTools()
 
 void ScribbleArea::setWidth(const qreal newWidth)
 {
+    qDebug() << "setWidth " << newWidth;
     QSettings settings("Pencil", "Pencil");
     if (currentTool()->type() == PENCIL)
     {
