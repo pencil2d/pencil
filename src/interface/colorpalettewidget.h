@@ -27,12 +27,12 @@ class Object;
 class Editor;
 
 
-class Palette : public QDockWidget
+class ColorPaletteWidget : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    Palette(Editor*);
+    ColorPaletteWidget(Editor*);
     int currentColourNumber() { return listOfColours->currentRow(); }
 
 protected:
