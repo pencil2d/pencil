@@ -34,15 +34,17 @@ bool RecentFileMenu::loadFromDisk()
 {
     QSettings settings("Pencil", "Pencil");
     QVariant _recent = settings.value("RecentFiles");
-    if (_recent.isNull()) {
+    if (_recent.isNull())
+    {
         return false;
     }
-    QList<QString> _list = _recent.toStringList();
-    setRecentFiles(_list);
+    QList<QString> recentFileList = _recent.toStringList();
+    setRecentFiles(recentFileList);
     return true;
 }
 
-bool RecentFileMenu::saveToDisk(){
+bool RecentFileMenu::saveToDisk()
+{
     QSettings settings("Pencil", "Pencil");
     settings.setValue("RecentFiles", QVariant(m_recentFiles));
     return true;
@@ -50,7 +52,8 @@ bool RecentFileMenu::saveToDisk(){
 
 void RecentFileMenu::addRecentFile(QString filename)
 {
-    if (m_recentFiles.contains(filename)) {
+    if (m_recentFiles.contains(filename)) 
+    {
         removeRecentFile(filename);
     }
 
@@ -60,16 +63,21 @@ void RecentFileMenu::addRecentFile(QString filename)
     }
 
     m_recentFiles.prepend(filename);
-    QAction *action = new QAction(filename, this);
+
+    QAction* action = new QAction(filename, this);
     action->setData(QVariant(filename));
+
     QObject::connect(action, SIGNAL(triggered()), this, SLOT(onRecentFileTriggered()));
 
     m_recentActions.insert(filename, action);
-    if (m_recentFiles.size() == 1) {
+    if (m_recentFiles.size() == 1) 
+    {
         addAction(action);
-    } else {
+    } 
+    else 
+    {
         QString firstFile = m_recentFiles[1];
-        qDebug() << "first file" << firstFile;
+        qDebug() << "Recent file" << firstFile;
         insertAction(m_recentActions[firstFile], action);
     }
 
@@ -77,7 +85,8 @@ void RecentFileMenu::addRecentFile(QString filename)
 
 void RecentFileMenu::removeRecentFile(QString filename)
 {
-    if (m_recentFiles.contains(filename)) {
+    if (m_recentFiles.contains(filename))
+    {
         QAction *action = m_recentActions[filename];
         removeAction(action);
         m_recentActions.remove(filename);
@@ -86,12 +95,13 @@ void RecentFileMenu::removeRecentFile(QString filename)
     }
 }
 
-void RecentFileMenu::onRecentFileTriggered() {
-    QAction *action = (QAction *)QObject::sender();
-    QString _file = action->data().toString();
+void RecentFileMenu::onRecentFileTriggered()
+{
+    QAction*action = (QAction*)QObject::sender();
+    QString filePath = action->data().toString();
 
-    if (_file != "")
+    if ( !filePath.isEmpty() )
     {
-        emit loadRecentFile(_file);
+        emit loadRecentFile( filePath );
     }
 }
