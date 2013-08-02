@@ -18,6 +18,16 @@ enum ToolType
     BRUSH
 };
 
+enum ToolPropertyType
+{
+    WIDTH,
+    FEATHER,
+    OPACITY,
+    COLOURNUMBER,
+    PRESSURE,
+    INVISIBILITY,
+    PRESERVEALPHA
+};
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"

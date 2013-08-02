@@ -123,7 +123,7 @@ void ToolOptionDockWidget::setPenWidth(qreal width)
 
 void ToolOptionDockWidget::setPenFeather(qreal featherValue)
 {
-    qDebug("Set Feather Value %lf", featherValue);
+    //qDebug("Set Feather Value %lf", featherValue);
     if (featherValue < 0)
     {
         //disabled
