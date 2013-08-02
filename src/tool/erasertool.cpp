@@ -42,7 +42,7 @@ QCursor EraserTool::cursor()
 {
     if (isAdjusting) // being dynamically resized
     {
-        return QCursor(wswgCursor()); // circular cursor
+         return QCursor(circleCursors()); // width and feather cursors
     }
     QPixmap pixmap( properties.width, properties.width );
     pixmap.fill( QColor(255,255,255,0) );

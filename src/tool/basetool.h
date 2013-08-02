@@ -58,7 +58,7 @@ public:
     virtual void clear() { }
 
     bool isAdjusting;
-    QCursor wswgCursor(); //precision circular cursor: used for wysiwyg cursor adjustments
+    QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
 
     void setColour(const int i);
     void setColour(const QColor colour);

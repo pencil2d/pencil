@@ -26,11 +26,12 @@ void PolylineTool::loadSettings()
     properties.feather = -1;
 }
 
-QCursor PolylineTool::cursor()
+QCursor PolylineTool::cursor() //Not working, any C++ + QT guru to fix it?
 {
-    //if (isAdjusting) { // being dynamically resized
-    //    return QCursor(wswgCursor()); // not working yet
-    //} // issue: see scribblearea.cpp (about line 777)
+    if (isAdjusting) { // being dynamically resized
+         return QCursor(this->circleCursors()); // width and feather cursors
+         qDebug() << "adjusting";
+    }
     return Qt::CrossCursor;
 }
 
