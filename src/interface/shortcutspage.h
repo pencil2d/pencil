@@ -29,7 +29,7 @@ signals:
 private slots:
     void tableItemClicked(const QModelIndex&);
     void keyCapLineEditTextChanged(QKeySequence);
-    void pressRestoreShortcutsButton();
+    void restoreShortcutsButtonClicked();
 
 private:
     bool isKeySequenceExist(const QSettings&, QString, QKeySequence);
@@ -37,8 +37,7 @@ private:
     void loadShortcutsFromSetting();
 
     QStandardItemModel* m_treeModel;
-    QStandardItem* m_currentActionItem;
-    QStandardItem* m_currentKeySeqItem;
+    QModelIndex m_currentItemIndex;
 
     Ui::ShortcutsPage* ui;
 };

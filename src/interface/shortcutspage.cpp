@@ -17,12 +17,13 @@
 #include "keycapturelineedit.h"
 #include "ui_shortcutspage.h"
 
+static const int ACT_NAME_COLUMN = 0;
+static const int KEY_SEQ_COLUMN  = 1;
+
 
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent),
-    m_treeModel( NULL ),
-    m_currentActionItem( NULL ),
-    m_currentKeySeqItem( NULL ),
+    m_treeModel( NULL ),    
     ui( new Ui::ShortcutsPage )
 {
     ui->setupUi(this);
@@ -40,38 +41,35 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
             this, SLOT(keyCapLineEditTextChanged(QKeySequence)));
 
     connect(ui->restoreShortcutsButton, SIGNAL(clicked()),
-            this, SLOT(pressRestoreShortcutsButton()));
+            this, SLOT(restoreShortcutsButtonClicked()));
 }
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
 {
-    const int ACT_NAME_COLUMN = 0;
-    const int KEY_SEQ_COLUMN  = 1;
-
     int row = modelIndex.row();
 
     // extract action name
-    m_currentActionItem = m_treeModel->item(row, ACT_NAME_COLUMN);
-    ui->actionNameLabel->setText(m_currentActionItem->text());
+    QStandardItem* actionItem = m_treeModel->item(row, ACT_NAME_COLUMN);
+    ui->actionNameLabel->setText(actionItem->text());
 
     // extract key sequence
-    m_currentKeySeqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
-    ui->keySeqLineEdit->setText(m_currentKeySeqItem->text());
+    QStandardItem* keyseqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
+    ui->keySeqLineEdit->setText(keyseqItem->text());
 
-    qDebug() << "You Select Item:" << m_currentKeySeqItem->text();
+    qDebug() << "Command Selected:" << actionItem->text();
+
+    m_currentItemIndex = modelIndex;
 
     ui->keySeqLineEdit->setFocus();
 }
 
 void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
 {
-    if ( m_currentActionItem == NULL ||
-         m_currentKeySeqItem == NULL )
-    {
-        return;
-    }
+    int row = m_currentItemIndex.row();
+    QStandardItem* actionItem = m_treeModel->item(row, ACT_NAME_COLUMN);
+    QStandardItem* keyseqItem = m_treeModel->item(row, KEY_SEQ_COLUMN);
 
-    QString strCmdName = QString("Cmd") + m_currentActionItem->text();
+    QString strCmdName = QString("Cmd%1").arg( actionItem->text() );
     QString strKeySeq  = keySeqence.toString( QKeySequence::PortableText );
 
     QSettings setting("Pencil", "Pencil");
@@ -90,7 +88,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
 
         if ( result != QMessageBox::Yes )
         {
-            ui->keySeqLineEdit->setText("");
+            ui->keySeqLineEdit->setText( keyseqItem->text() );
             return;
         }
         removeDuplicateKeySequence(&setting, keySeqence);
@@ -105,7 +103,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
     qDebug() << "Shortcut " << strCmdName << " = " << strKeySeq;
 }
 
-void ShortcutsPage::pressRestoreShortcutsButton()
+void ShortcutsPage::restoreShortcutsButtonClicked()
 {
     restoreShortcutsToDefault();
     loadShortcutsFromSetting();
@@ -154,10 +152,12 @@ void ShortcutsPage::loadShortcutsFromSetting()
     QSettings settings("Pencil", "Pencil");
     settings.beginGroup("shortcuts");
 
-    m_treeModel->setRowCount( settings.allKeys().size());
+    m_treeModel->clear(); // release all existing items.
+
+    m_treeModel->setRowCount( settings.allKeys().size() );
     m_treeModel->setColumnCount( 2 );
 
-    int i = 0;
+    int row = 0;
     foreach (QString strCmdName, settings.allKeys())
     {
         QString strKeySequence = settings.value(strCmdName).toString();
@@ -165,29 +165,23 @@ void ShortcutsPage::loadShortcutsFromSetting()
         //convert to native format
         strKeySequence = QKeySequence(strKeySequence).toString( QKeySequence::NativeText );
 
+        // strip the first 3 chars "Cmd"
         QStringRef strHumanReadCmdName (&strCmdName, 3, strCmdName.size() - 3);
 
-        QStandardItem *nameItem = new QStandardItem(strHumanReadCmdName.toString());
-        QStandardItem *keyseqItem = new QStandardItem(strKeySequence);
+        QStandardItem* nameItem = new QStandardItem(strHumanReadCmdName.toString());
+        QStandardItem* keyseqItem = new QStandardItem(strKeySequence);
         int currentRow = -1;
+      
+        m_treeModel->setItem(row, 0, nameItem);
+        m_treeModel->setItem(row, 1, keyseqItem);
 
-        if (m_currentActionItem != NULL && i == m_currentActionItem->row()) {
-            currentRow = m_currentActionItem->row();
-            m_currentActionItem = NULL;
-        }
-        m_treeModel->setItem(i, 0, nameItem);
-        m_treeModel->setItem(i, 1, keyseqItem);
+        m_treeModel->item(row, 0)->setEditable(false);
+        m_treeModel->item(row, 1)->setEditable(false);
 
-        if (currentRow == i) {
-            m_currentActionItem = nameItem;
-        }
-
-
-        m_treeModel->item(i, 0)->setEditable(false);
-        m_treeModel->item(i, 1)->setEditable(true);
-
-        i++;
+        row++;
     }
     settings.endGroup();
+
+    ui->treeView->resizeColumnToContents( 0 );
 }
 
