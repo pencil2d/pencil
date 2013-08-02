@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "palette.h"
 #include "scribblearea.h"
+#include "colormanager.h"
 
 
 Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
@@ -152,21 +153,31 @@ void Palette::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetI
 		current = previous;
 	}
     editor->selectVectorColourNumber(m_colorListView->row(current));
+
+	emit colorNumberChanged( m_colorListView->row(current));
 }
 
-void Palette::clickColorListItem(QListWidgetItem* current)
+void Palette::clickColorListItem(QListWidgetItem* currentItem)
 {
-    editor->selectAndApplyColour(m_colorListView->row(current));
+	int colorIndex = m_colorListView->row(currentItem);
+
+	m_colorBox->setColor( editor->getObject()->getColour(colorIndex).colour );
+
+    editor->selectAndApplyColour( colorIndex );
+
+	emit colorNumberChanged( colorIndex );
 }
 
 void Palette::colorWheelChanged(QColor newColor)
 {    
     int colorIndex = currentColourNumber();
-	
+
     editor->object->setColour(colorIndex, newColor);    
     editor->getScribbleArea()->updateFrame();
 
     updateItemColor(colorIndex, newColor);
+
+	emit colorChanged( newColor );
 }
 
 void Palette::changeColourName( QListWidgetItem* item )

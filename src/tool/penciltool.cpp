@@ -29,7 +29,7 @@ void PencilTool::loadSettings()
     QSettings settings("Pencil", "Pencil");
 
     properties.width = settings.value("pencilWidth").toDouble();    
-    properties.colourNumber = 0;
+    //properties.colourNumber = 0;
     properties.feather = -1;
     properties.opacity = 0.8;
     properties.pressure = 1;
