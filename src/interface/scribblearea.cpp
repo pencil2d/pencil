@@ -125,9 +125,8 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
     readCanvasFromCache = true;
     mouseInUse = false;
-    setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
-
     keyboardInUse = false;
+    setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
 
     debugRect = QRectF(0, 0, 0, 0);
 
@@ -195,7 +194,7 @@ void ScribbleArea::resetTools()
 
 void ScribbleArea::setWidth(const qreal newWidth)
 {
-    qDebug() << "setWidth " << newWidth;
+    //qDebug() << "setWidth " << newWidth;
     QSettings settings("Pencil", "Pencil");
     if (currentTool()->type() == PENCIL)
     {
@@ -548,8 +547,8 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         qreal width = currentTool()->properties.width;
         qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
-        setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-        setFeather(feather); //anticipates future implementation of feather (not used yet).
+        m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
         return;
     }
     // ---- single keys ----
@@ -665,7 +664,7 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
     if ( mouseInUse ) { return; }
     if ( instantTool ) // temporary tool
     {
-        setCurrentTool( prevToolType );
+        this->m_pEditor->setTool( prevToolType );
         instantTool = false;
     }
     switch (event->key())
@@ -779,14 +778,12 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
     }
 
-    // ----- wysiwyg tool adjusment
+    // ----- assisted tool adjusment (wywiwyg)
     if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
     {
         //adjust width if not locked
-        qDebug() << "adjusting tool width from " << currentTool()->properties.width;
         currentTool()->isAdjusting = true;
-        adjustingTool = true;
-        wysiToolAdjustment = wtaWIDTH;
+        assistedSetting = WIDTH;
         toolOrgValue = currentTool()->properties.width;
         setCursor(currentTool()->cursor());
         return;
@@ -794,17 +791,11 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
     {
         //adjust feather if not locked
-        qDebug() << "adjusting tool feather from " << currentTool()->properties.feather;
-        adjustingTool = true;
         currentTool()->isAdjusting = true;
-        wysiToolAdjustment = wtaFEATHER;
+        assistedSetting = FEATHER;
         toolOrgValue = currentTool()->properties.feather;
         setCursor(currentTool()->cursor());
         return;
-    }
-    else
-    {
-        adjustingTool = false;
     }
 
     // ---- checks ------
@@ -843,7 +834,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     {
         offset = currentPoint - lastPoint;
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
-        if (adjustingTool)
+        if (currentTool()->isAdjusting)
         {
             qreal incx = pow(toolOrgValue*100,0.5);
             qreal newValue = incx + offset.x();
@@ -863,15 +854,15 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
                 newValue = 200; 
             }
 
-            if ( wysiToolAdjustment==wtaWIDTH )
+            if ( assistedSetting == WIDTH )
             {   
-                m_pEditor->applyWidth( newValue ); 
+                m_pEditor->applyWidth( newValue );
             }
-            else if ( wysiToolAdjustment==wtaFEATHER )
+            else if ( assistedSetting == FEATHER )
             {   
-                m_pEditor->applyFeather( newValue ); 
+                m_pEditor->applyFeather( newValue );
             }
-            else if ( wysiToolAdjustment==wtaTRANSPARENCY )
+            else if ( assistedSetting == OPACITY )
             {
                 //todo
             } 
@@ -935,17 +926,17 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     {
         offset = currentPoint - lastPoint;
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
-        if (adjustingTool)
+        if (currentTool()->isAdjusting)
         {
             qreal incx = pow(toolOrgValue*100,0.5);
             qreal newValue = incx + offset.x();
-            if (newValue < 0) 
+            if (newValue < 0)
             {
                 newValue = 0;
             }
             newValue = pow(newValue, 2) / 100;
 
-            if (newValue < 0.2)
+            if (newValue < 0.2) // can be optimized for size: min(200,max(0.2,newValue))
             {  
                 newValue = 0.2; 
             }
@@ -954,15 +945,15 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
                 newValue = 200; 
             }
 
-            if ( wysiToolAdjustment==wtaWIDTH )
+            if ( assistedSetting == WIDTH )
             {   
-                m_pEditor->applyWidth( newValue ); 
+                m_pEditor->applyWidth( newValue );
             }
-            else if ( wysiToolAdjustment==wtaFEATHER )
+            else if ( assistedSetting == FEATHER )
             {   
-                m_pEditor->applyFeather( newValue ); 
+                m_pEditor->applyFeather( newValue );
             }
-            else if ( wysiToolAdjustment==wtaTRANSPARENCY )
+            else if ( assistedSetting == OPACITY )
             {
                 //todo
             } 
@@ -984,7 +975,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     mouseInUse = false;
 
     // ---- checks ------
-    if (adjustingTool)
+    if (currentTool()->isAdjusting)
     {
         currentTool()->isAdjusting = false;
         setCursor(currentTool()->cursor());
@@ -1009,7 +1000,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
     {
-        setCurrentTool( prevToolType ); // abandon temporary tool !
+        this->m_pEditor->setTool( prevToolType ); // abandon temporary tool !
         instantTool = false;
     }
 
@@ -2380,7 +2371,7 @@ void ScribbleArea::setTemporaryTool(ToolType eToolMode)
 {
     instantTool = true; // used to return to previous tool when finished (keyRelease).
     prevToolType = currentTool()->type();
-    setCurrentTool( eToolMode );
+    this->m_pEditor->setTool( eToolMode );
 }
 
 void ScribbleArea::switchTool(ToolType type)

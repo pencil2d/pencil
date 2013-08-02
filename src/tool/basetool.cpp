@@ -72,7 +72,7 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
     mousePressEvent(event);
 }
 
-QCursor BaseTool::wswgCursor() //wysywig circular cursor (dynamic adjustments)
+QCursor BaseTool::circleCursors() // cursor for dynamic adjustments. Todo: why isn't it called from polylinetool?
 {
     qreal propWidth = properties.width;
     qreal propFeather = properties.feather;

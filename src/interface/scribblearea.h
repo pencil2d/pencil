@@ -265,10 +265,8 @@ protected:
     QList<VertexRef> closestVertices;
     QPointF offset;
 
-    //WYWIWYG tool adjustments
-    bool adjustingTool; //whether or not resizing
-    enum myWysiToolAdjustment {wtaWIDTH, wtaFEATHER, wtaTRANSPARENCY};
-    myWysiToolAdjustment wysiToolAdjustment;
+    //assisted tool settings (for adjustment)
+    ToolPropertyType assistedSetting;
     qreal toolOrgValue; //start resizing from previous width or feather
 
     //instant tool (temporal eg. eraser)
