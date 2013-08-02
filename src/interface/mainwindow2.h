@@ -8,7 +8,7 @@ class QActionGroup;
 class Editor;
 class ScribbleArea;
 class Object;
-class Palette;
+class ColorPaletteWidget;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
 class TimeLine;
@@ -43,7 +43,7 @@ public:
     ScribbleArea* m_pScribbleArea;
 
     // UI: Dock widgets
-    Palette* m_colorPalette;
+    ColorPaletteWidget* m_colorPalette;
     DisplayOptionDockWidget* m_displayOptionWidget;
     ToolOptionDockWidget*    m_toolOptionWidget;
     TimeLine* m_pTimeLine;

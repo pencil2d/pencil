@@ -8,7 +8,7 @@ TARGET = Pencil
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 DEPENDPATH += . src
-INCLUDEPATH += . 	src \
+INCLUDEPATH += . src \
             src/external/flash \
             src/graphics \
             src/graphics/bitmap \
@@ -45,7 +45,7 @@ HEADERS +=  src/interfaces.h \
             src/structure/layervector.h \
             src/structure/object.h \
             src/interface/editor.h \
-            src/interface/palette.h \
+            src/interface/colorpalettewidget.h \
             src/interface/preferences.h \
             src/interface/scribblearea.h \
             src/interface/timeline.h \
@@ -106,7 +106,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/structure/layervector.cpp \
             src/structure/object.cpp \
             src/interface/editor.cpp \
-            src/interface/palette.cpp \
+            src/interface/colorpalettewidget.cpp \
             src/interface/preferences.cpp \
             src/interface/scribblearea.cpp \
             src/interface/timeline.cpp \
@@ -189,9 +189,3 @@ FORMS += \
     src/interface/colorspinboxgroup.ui
 
 TRANSLATIONS += pencil.ts
-
-
-OTHER_FILES += \
-    src/tool/test.m
-
-

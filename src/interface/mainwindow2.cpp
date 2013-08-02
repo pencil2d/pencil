@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "scribblearea.h"
 #include "interfaces.h"
-#include "palette.h"
+#include "colorpalettewidget.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
 #include "preferences.h"
@@ -113,7 +113,7 @@ void MainWindow2::arrangePalettes()
 {
     setCentralWidget(editor);
 
-    m_colorPalette = new Palette(editor);
+    m_colorPalette = new ColorPaletteWidget(editor);
     m_colorPalette->setFocusPolicy(Qt::NoFocus);
 
     m_displayOptionWidget = new DisplayOptionDockWidget(this);
@@ -799,7 +799,7 @@ void MainWindow2::writeSettings()
     settings.setValue("editorPosition", pos());
     settings.setValue("editorSize", size());
 
-    Palette* colourPalette = m_colorPalette;
+    ColorPaletteWidget* colourPalette = m_colorPalette;
     if (colourPalette != NULL)
     {
         settings.setValue("colourPalettePosition", colourPalette->pos());
