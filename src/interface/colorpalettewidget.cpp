@@ -14,12 +14,13 @@ GNU General Public License for more details.
 
 */
 #include <QtDebug>
-#include "palette.h"
 #include "colourref.h"
 #include "object.h"
 #include "editor.h"
+#include "colorpalettewidget.h"
 
-Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
+
+ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
     this->editor = editor;
 
@@ -122,7 +123,7 @@ Palette::Palette(Editor* editor) : QDockWidget(editor, Qt::Tool)
     connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
 }
 
-void Palette::updateList()
+void ColorPaletteWidget::updateList()
 {
     while (listOfColours->count() > 0)
     {
@@ -144,7 +145,7 @@ void Palette::updateList()
     update();
 }
 
-void Palette::colourSwatchClicked()
+void ColorPaletteWidget::colourSwatchClicked()
 {
     if (currentColourNumber() > -1)
     {
@@ -166,18 +167,18 @@ void Palette::colourSwatchClicked()
     }
 }
 
-void Palette::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
+void ColorPaletteWidget::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
     if (!current) current = previous;
     editor->selectVectorColourNumber(listOfColours->row(current));
 }
 
-void Palette::clickColorListItem(QListWidgetItem* current)
+void ColorPaletteWidget::clickColorListItem(QListWidgetItem* current)
 {
     editor->selectAndApplyColour(listOfColours->row(current));
 }
 
-void Palette::colourSliderValueChange()
+void ColorPaletteWidget::colourSliderValueChange()
 {
     QColor newColor = QColor( sliderRed->value(),
                               sliderGreen->value(),
@@ -193,7 +194,7 @@ void Palette::colourSliderValueChange()
     setColour(newColor);
 }
 
-void Palette::colorSliderMoved()
+void ColorPaletteWidget::colorSliderMoved()
 {
     QColor newColour = QColor( sliderRed->value(),
                                sliderGreen->value(),
@@ -202,7 +203,7 @@ void Palette::colorSliderMoved()
     editor->setFrontColour(currentColourNumber(), newColour);
 }
 
-void Palette::updateSwatch(QColor colour)
+void ColorPaletteWidget::updateSwatch(QColor colour)
 {
     QPixmap colourPixmap(30,30);
     colourPixmap.fill( colour );
@@ -212,7 +213,7 @@ void Palette::updateSwatch(QColor colour)
     }
 }
 
-void Palette::changeColourName( QListWidgetItem* item )
+void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
 {
     if (item == NULL)
     {
@@ -236,7 +237,7 @@ void Palette::changeColourName( QListWidgetItem* item )
     }
 }
 
-void Palette::clickAddColorButton()
+void ColorPaletteWidget::clickAddColorButton()
 {
     QColor prevColor = Qt::white;
 
@@ -266,25 +267,25 @@ void Palette::clickAddColorButton()
     }
 }
 
-void Palette::clickRemoveColorButton()
+void ColorPaletteWidget::clickRemoveColorButton()
 {
     int colorNumber = listOfColours->currentRow();
     editor->object->removeColour(colorNumber);
     updateList();
 }
 
-void Palette::closeIfDocked(bool)
+void ColorPaletteWidget::closeIfDocked(bool)
 {
     //if (floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
 }
 
-void Palette::setColour(QColor colour)
+void ColorPaletteWidget::setColour(QColor colour)
 {
     setColour(colour.red(), colour.green(), colour.blue(), colour.alpha());
     updateSwatch(colour);
 }
 
-void Palette::setColour(int r, int g, int b, int a)
+void ColorPaletteWidget::setColour(int r, int g, int b, int a)
 {
     sliderRed->setValue(r);
     sliderGreen->setValue(g);

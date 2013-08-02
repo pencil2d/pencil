@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "colorpalettewidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -1848,7 +1849,7 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
 {
     QSettings settings("Pencil", "Pencil");
 
-    Palette* colourPalette = mainWindow->m_colorPalette;
+    ColorPaletteWidget* colourPalette = mainWindow->m_colorPalette;
     if (colourPalette != NULL)
     {
         QPoint pos = settings.value("colourPalettePosition", QPoint(100, 100)).toPoint();
