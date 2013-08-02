@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "toolset.h"
 #include "timecontrols.h"
-#include "palette.h"
 #include "object.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
