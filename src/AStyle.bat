@@ -1,1 +1,0 @@
-AStyle.exe --style=allman --indent=spaces=4 --align-pointer=type --keep-one-line-blocks --recursive  *.cpp  *.h

@@ -51,7 +51,7 @@ QCursor BrushTool::cursor()
 {
     if (isAdjusting) // being dynamically resized
     {
-        return QCursor(wswgCursor()); // circular cursor
+        return QCursor(circleCursors()); // width and feather cursors
     }
     if ( pencilSettings()->value( kSettingToolCursor ).toBool() ) // doesn't need else
     {
