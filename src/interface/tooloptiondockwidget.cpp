@@ -18,6 +18,7 @@ ToolOptionDockWidget::ToolOptionDockWidget(QWidget *parent) :
 
 void ToolOptionDockWidget::createUI()
 {
+    setMinimumWidth(110);
     QFrame* optionGroup = new QFrame();
     QGridLayout* optionLay = new QGridLayout();
     optionLay->setMargin(8);
