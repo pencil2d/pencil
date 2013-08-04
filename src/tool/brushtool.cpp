@@ -136,26 +136,6 @@ void BrushTool::paintAt(QPointF point)
 
 }
 
-void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset)
-{
-    int r = colour.red();
-    int g = colour.green();
-    int b = colour.blue();
-    qreal a = colour.alphaF();
-    gradient.setColorAt(0.0, QColor(r, g, b, qRound(a * 255 * opacity)));
-    gradient.setColorAt(offset + 0.0 * (1.0 - offset), QColor(r, g, b, qRound(a * 255 * opacity)));
-    gradient.setColorAt(offset + 0.1 * (1.0 - offset), QColor(r, g, b, qRound(a * 245 * opacity)));
-    gradient.setColorAt(offset + 0.2 * (1.0 - offset), QColor(r, g, b, qRound(a * 217 * opacity)));
-    gradient.setColorAt(offset + 0.3 * (1.0 - offset), QColor(r, g, b, qRound(a * 178 * opacity)));
-    gradient.setColorAt(offset + 0.4 * (1.0 - offset), QColor(r, g, b, qRound(a * 134 * opacity)));
-    gradient.setColorAt(offset + 0.5 * (1.0 - offset), QColor(r, g, b, qRound(a * 94 * opacity)));
-    gradient.setColorAt(offset + 0.6 * (1.0 - offset), QColor(r, g, b, qRound(a * 60 * opacity)));
-    gradient.setColorAt(offset + 0.7 * (1.0 - offset), QColor(r, g, b, qRound(a * 36 * opacity)));
-    gradient.setColorAt(offset + 0.8 * (1.0 - offset), QColor(r, g, b, qRound(a * 20 * opacity)));
-    gradient.setColorAt(offset + 0.9 * (1.0 - offset), QColor(r, g, b, qRound(a * 10 * opacity)));
-    gradient.setColorAt(offset + 1.0 * (1.0 - offset), QColor(r, g, b, 0));
-}
-
 void BrushTool::drawStroke()
 {
     StrokeTool::drawStroke();
@@ -188,7 +168,7 @@ void BrushTool::drawStroke()
         BlitRect rect;
 
         QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
-        setGaussianGradient(radialGrad, m_pEditor->currentColor, opacity, offset);
+        m_pScribbleArea->setGaussianGradient(radialGrad, m_pEditor->currentColor, opacity, offset);
 
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();

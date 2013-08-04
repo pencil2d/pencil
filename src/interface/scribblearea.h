@@ -213,10 +213,10 @@ public:
     void clearBitmapBuffer();
     void refreshBitmap(QRect rect, int rad);
     void refreshVector(QRect rect, int rad);
+    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
 protected:
     void updateCanvas(int frame, QRect rect);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
     void floodFillError(int errorType);
 

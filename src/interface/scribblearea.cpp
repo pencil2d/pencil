@@ -232,6 +232,11 @@ void ScribbleArea::setFeather(const qreal newFeather)
         getTool(PENCIL)->properties.feather = newFeather;
         settings.setValue("pencilOpacity", newFeather);
     }
+    else if (currentTool()->type() == ERASER)
+    {
+        getTool(ERASER)->properties.feather = newFeather;
+        settings.setValue("eraserOpacity", newFeather);
+    }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.feather = newFeather;
@@ -548,6 +553,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
         m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        //m_pEditor->setWidth(width);
         m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
         return;
     }

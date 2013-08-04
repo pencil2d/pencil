@@ -177,7 +177,6 @@ void ToolSetWidget::eraserOn()
     m_editor->setPreserveAlpha(0);
     m_editor->setInvisibility(0);
 
-    m_editor->setFeather(-1);
     m_editor->setPreserveAlpha(-1);
     m_editor->setFollowContour(-1);
     m_editor->setInvisibility(-1);

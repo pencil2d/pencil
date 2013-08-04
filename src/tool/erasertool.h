@@ -3,7 +3,6 @@
 
 #include "stroketool.h"
 
-
 class EraserTool : public StrokeTool
 {
     Q_OBJECT
@@ -13,18 +12,24 @@ public:
     void loadSettings();
     QCursor cursor();
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-
-    void drawStroke();
+    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *);
+    void mouseReleaseEvent(QMouseEvent *);
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
+    void drawStroke();
+
+    void paintAt(QPointF point);
+
 signals:
-    
+
 public slots:
-    
+
+protected:
+    QPointF lastBrushPoint;
+
 };
 
 #endif // ERASERTOOL_H
+
