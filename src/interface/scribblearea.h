@@ -47,10 +47,6 @@ public:
 
     void next(const int &i);
 
-    void setColour(const int);
-    void setColour(const QColor);
-    void resetColours();
-
     void resetTools();
 
     void deleteSelection();

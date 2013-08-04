@@ -151,9 +151,9 @@ void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, Q
 	{
 		current = previous;
 	}
-    editor->selectVectorColourNumber(m_colorListView->row(current));
+	editor->colorManager()->pickColorNumber( m_colorListView->row(current) );
 
-	emit colorNumberChanged( m_colorListView->row(current));
+	emit colorNumberChanged( m_colorListView->row(current) );
 }
 
 void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
@@ -227,7 +227,7 @@ void ColorPaletteWidget::clickAddColorButton()
             ref.name = text;
             editor->object->addColour(ref);
             refreshColorList();
-            editor->selectVectorColourNumber(editor->object->getColourCount() - 1);
+			editor->colorManager()->pickColor( editor->getObject()->getColourCount() - 1 );
         }
     }
 }

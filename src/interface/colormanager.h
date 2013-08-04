@@ -16,6 +16,7 @@ public:
     QColor frontColor();
     int frontColorNumber();
     void pickColorNumber(int n);
+	void pickColor(const QColor& color);
     
 signals:
     void colorChanged(QColor);

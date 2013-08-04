@@ -363,15 +363,6 @@ void Editor::applyPressure(bool pressure)
     }
 }
 
-void Editor::selectVectorColourNumber(int i)
-{
-    if (i > -1)
-    {
-        scribbleArea->setColour(i);        
-        emit penColorValueChange(object->getColour(i).colour);
-    }
-}
-
 void Editor::selectAndApplyColour(int i)
 {
     Layer* layer = getCurrentLayer();
@@ -385,13 +376,15 @@ void Editor::selectAndApplyColour(int i)
     }
 }
 
+/*
 void Editor::setBitmapColour(QColor colour)
 {
-    scribbleArea->setColour(colour);
+    colorManager()->pickColor(colour);
     mainWindow->m_colorPalette->setColour(colour);
 
     emit penColorValueChange(colour);
 }
+*/
 
 void Editor::setFrontColour(int i, QColor newColour)
 {
@@ -405,7 +398,7 @@ void Editor::setFrontColour(int i, QColor newColour)
                 scribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
             }
         }
-        scribbleArea->setColour( i );
+		colorManager()->pickColorNumber( i );
     }
 }
 
@@ -923,14 +916,13 @@ void Editor::setObject(Object* newObject)
 }
 
 void Editor::updateObject()
-{
-    scribbleArea->resetColours();
+{    
     mainWindow->m_colorPalette->selectColorListRow(0);
 
     getTimeLine()->updateLayerNumber(object->getLayerCount());
     mainWindow->m_colorPalette->refreshColorList();
     clearBackup();
-    scribbleArea->resetColours();
+    
     scribbleArea->updateAllFrames();
     updateMaxFrame();
 }
@@ -1492,13 +1484,6 @@ void Editor::scrubTo(int frameNumber)
 
 void Editor::scrubForward()
 {
-    Layer* layer = object->getLayer(m_nCurrentLayerIndex);
-
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR || layer->type == Layer::CAMERA)
-    {
-        LayerImage *_layer = (LayerImage *)layer;
-    }
-
     scrubTo( m_nCurrentFrameIndex + 1 );
 }
 

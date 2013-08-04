@@ -32,25 +32,25 @@ QColor ColorBox::color()
     return m_colorWheel->color();
 }
 
-void ColorBox::setColor(const QColor &c)
+void ColorBox::setColor(const QColor& color)
 {
-    onSpinboxChange(c);
+    onSpinboxChange(color);
 }
 
-void ColorBox::onSpinboxChange(const QColor &c)
+void ColorBox::onSpinboxChange(const QColor& color)
 {
-    if ( m_colorWheel->color() != c )
+    if ( m_colorWheel->color() != color )
     {
-        m_colorWheel->setColor(c);
-        emit colorChanged(c);
+        m_colorWheel->setColor(color);
+        emit colorChanged(color);
     }
 }
 
-void ColorBox::onWheelChange(const QColor &c)
+void ColorBox::onWheelChange(const QColor& color)
 {
-    if ( m_colorInspector->color() != c )
+    if ( m_colorInspector->color() != color )
     {
-        m_colorInspector->setColor(c);
-        emit colorChanged(c);
+        m_colorInspector->setColor(color);
+        emit colorChanged(color);
     }
 }

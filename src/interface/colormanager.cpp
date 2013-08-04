@@ -29,6 +29,11 @@ void ColorManager::pickColorNumber( int n )
     }
 }
 
+void ColorManager::pickColor(const QColor& newColor)
+{
+	m_editor->getObject()->setColour( m_frontColorIndex, newColor );
+}
+
 int ColorManager::frontColorNumber()
 {
     return m_frontColorIndex;

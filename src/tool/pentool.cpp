@@ -1,13 +1,13 @@
 #include <QPixmap>
 
-#include "pentool.h"
-
+#include "colormanager.h"
 #include "strokemanager.h"
 #include "pencilsettings.h"
 #include "editor.h"
 #include "scribblearea.h"
-
 #include "layervector.h"
+#include "pentool.h"
+
 
 PenTool::PenTool(QObject *parent) : StrokeTool(parent)
 {
@@ -22,8 +22,8 @@ ToolType PenTool::type()
 void PenTool::loadSettings()
 {
     QSettings settings("Pencil","Pencil");
+
     properties.width = settings.value("penWidth").toDouble();    
-    properties.colourNumber = 0;
     properties.feather = 0;    
     properties.pressure = ON;
     properties.invisibility = OFF;
@@ -74,14 +74,6 @@ void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice
 
 void PenTool::mousePressEvent(QMouseEvent *event)
 {
-    // sanity checks
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
@@ -117,7 +109,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setFeather(0);
             curve.setInvisibility(false);
             curve.setVariableWidth(m_pScribbleArea->usePressure());
-            curve.setColourNumber(properties.colourNumber);
+			curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
 
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 

@@ -26,8 +26,7 @@ void BrushTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
 
-    properties.width = settings.value("brushWidth").toDouble();        
-    properties.colourNumber = 1;
+    properties.width = settings.value("brushWidth").toDouble();            
     properties.feather = settings.value("brushFeather").toDouble();    
     properties.opacity = 0.5;
 
@@ -77,11 +76,6 @@ void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevi
 void BrushTool::mousePressEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
 
     if (event->button() == Qt::LeftButton)
     {

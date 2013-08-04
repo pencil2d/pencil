@@ -33,7 +33,7 @@ QCursor BucketTool::cursor()
     {
         QPixmap pixmap(":icons/bucketTool.png");
         QPainter painter(&pixmap);
-        painter.setPen( Qt::blue );   // FIXED: need to get current color
+        painter.setPen( Qt::blue );   // FIXME: need to get current color
         painter.drawLine( QPoint(5, 16), QPoint(5, 18) );
         painter.end();
 
@@ -47,19 +47,9 @@ QCursor BucketTool::cursor()
 
 void BucketTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (vectorImage == NULL) { return; }
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-//        m_pScribbleArea->mousePath.append(getLastPoint());
         m_pScribbleArea->setAllDirty();
     }
 }

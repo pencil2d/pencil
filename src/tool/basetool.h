@@ -21,8 +21,7 @@ class Properties
 public:
     qreal width;
     qreal feather;
-    qreal opacity;    
-    int colourNumber;
+    qreal opacity;
     int pressure;
     int invisibility;
     int preserveAlpha;
@@ -59,10 +58,7 @@ public:
 
     bool isAdjusting;
     QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
-
-    void setColour(const int i);
-    void setColour(const QColor colour);
-
+    
     void setWidth(const qreal width);
     void setFeather(const qreal feather);
     void setOpacity(const qreal opacity);

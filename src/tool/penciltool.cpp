@@ -2,9 +2,9 @@
 #include <QPixmap>
 #include <QMouseEvent>
 
+#include "colormanager.h"
 #include "editor.h"
 #include "scribblearea.h"
-
 #include "pencilsettings.h"
 #include "penciltool.h"
 
@@ -29,7 +29,6 @@ void PencilTool::loadSettings()
     QSettings settings("Pencil", "Pencil");
 
     properties.width = settings.value("pencilWidth").toDouble();    
-    //properties.colourNumber = 0;
     properties.feather = -1;
     properties.opacity = 0.8;
     properties.pressure = 1;
@@ -59,13 +58,6 @@ QCursor PencilTool::cursor()
 
 void PencilTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
@@ -115,12 +107,13 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
             qreal tol = m_pScribbleArea->getCurveSmoothing() / qAbs(m_pScribbleArea->getViewScaleX());
             qDebug() << "pressures " << strokePressures;
             BezierCurve curve(strokePoints, strokePressures, tol);
+
             curve.setWidth(0);
             curve.setFeather(0);
             curve.setInvisibility(true);
             curve.setVariableWidth(false);
-            curve.setColourNumber(properties.colourNumber);
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+			curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
@@ -175,7 +168,8 @@ void PencilTool::drawStroke()
                     p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
 
-            if (false) {
+            if (false) 
+			{
                 QRectF rect(p[0], size);
 
                 QPen penBlue(Qt::blue);

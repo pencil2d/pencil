@@ -205,9 +205,7 @@ public slots:
     void applyPreserveAlpha(bool);
     void setFollowContour(int);
     void applyFollowContour(bool);
-    void selectVectorColourNumber(int);
-    void selectAndApplyColour(int);
-    void setBitmapColour(QColor);
+    void selectAndApplyColour(int);    
     void setFrontColour(int, QColor);
 
     void changeAutosave(int);
