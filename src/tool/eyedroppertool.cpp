@@ -1,17 +1,18 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
-#include "eyedroppertool.h"
 
 #include "pencilsettings.h"
-
-#include "editor.h"
-#include "scribblearea.h"
 
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "colormanager.h"
 
+#include "editor.h"
+#include "scribblearea.h"
+
+#include "eyedroppertool.h"
 
 EyedropperTool::EyedropperTool(QObject *parent) :
     BaseTool(parent)
@@ -75,7 +76,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
             QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
             if (pickedColour.alpha() != 0)
             {
-                m_pEditor->setBitmapColour(pickedColour);
+                m_pEditor->colorManager()->pickColor(pickedColour);
             }
         }
         else if (layer->type == Layer::VECTOR)
@@ -84,7 +85,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
             int colourNumber = vectorImage->getColourNumber(getLastPoint());
             if (colourNumber != -1)
             {
-                m_pEditor->selectVectorColourNumber(colourNumber);
+				m_pEditor->colorManager()->pickColorNumber(colourNumber);
             }
         }
     }

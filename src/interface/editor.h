@@ -32,18 +32,22 @@ GNU General Public License for more details.
 
 
 class MainWindow2;
+class ColorManager;
 
 
 class Editor : public QWidget
 {
     Q_OBJECT
-
+    Q_PROPERTY( ColorManager* colorManager READ colorManager );
 public:
     Editor(MainWindow2* parent);
     virtual ~Editor();
-
+    
+    ColorManager* colorManager() const { return m_colorManager; }
 
     Object* object;  // the object to be edited by the editor
+    Object* getObject() const { return object; } 
+    void setObject(Object* object);
 
     int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
     int m_nCurrentFrameIndex; // the current frame to be edited/displayed by the editor
@@ -59,9 +63,18 @@ public:
 
     TimeLine* getTimeLine();
 
-    QColor currentColor;
+    Layer* getCurrentLayer(int incr) 
+    { 
+        if (object != NULL) 
+        { 
+            return object->getLayer(m_nCurrentLayerIndex + incr); 
+        } 
+        else 
+        { 
+            return NULL; 
+        } 
+    }
 
-    Layer* getCurrentLayer(int incr) { if (object != NULL) { return object->getLayer(m_nCurrentLayerIndex+incr); } else { return NULL; } }
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);
     bool isModified() { return modified; }
@@ -167,8 +180,7 @@ public slots:
     int getLastFrameAtFrame(int frameNumber);
 
     void resetUI();
-
-    void setObject(Object* object);
+    
 
     void updateObject();
 
@@ -190,9 +202,7 @@ public slots:
     void applyPreserveAlpha(bool);
     void setFollowContour(int);
     void applyFollowContour(bool);
-    void selectVectorColourNumber(int);
-    void selectAndApplyColour(int);
-    void setBitmapColour(QColor);
+    void selectAndApplyColour(int);    
     void setFrontColour(int, QColor);
 
     void changeAutosave(int);
@@ -248,6 +258,8 @@ private:
     ScribbleArea* scribbleArea;
     //TimeLine* timeLine;
     MainWindow2* mainWindow;
+
+    ColorManager* m_colorManager;
 
     QString path;
     bool altpress;

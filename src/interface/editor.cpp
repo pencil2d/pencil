@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "colormanager.h"
 #include "colorpalettewidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
@@ -41,6 +42,8 @@ Editor::Editor(MainWindow2* parent)
     QSettings settings("Pencil","Pencil");
 
     object = NULL; // the editor is initialized with no object
+
+    m_colorManager = new ColorManager(this, this);
 
     altpress = false;
     modified = false;
@@ -117,8 +120,6 @@ Editor::Editor(MainWindow2* parent)
     qDebug() << QLibraryInfo::location(QLibraryInfo::BinariesPath);
     qDebug() << QLibraryInfo::location(QLibraryInfo::LibrariesPath);
 
-    currentColor = Qt::black;
-    
     setTool(PENCIL);
     
     setAcceptDrops(true);
@@ -360,21 +361,8 @@ void Editor::applyPressure(bool pressure)
     }
 }
 
-void Editor::selectVectorColourNumber(int i)
-{
-    if (i > -1)
-    {
-        scribbleArea->setColour(i);
-        mainWindow->m_colorPalette->selectColorListRow(i);
-        mainWindow->m_colorPalette->setColour(object->getColour(i).colour);
-
-        emit penColorValueChange(object->getColour(i).colour);
-    }
-}
-
 void Editor::selectAndApplyColour(int i)
 {
-    selectVectorColourNumber(i);
     Layer* layer = getCurrentLayer();
     if (layer == NULL)
     {
@@ -386,13 +374,15 @@ void Editor::selectAndApplyColour(int i)
     }
 }
 
+/*
 void Editor::setBitmapColour(QColor colour)
 {
-    scribbleArea->setColour(colour);
+    colorManager()->pickColor(colour);
     mainWindow->m_colorPalette->setColour(colour);
 
     emit penColorValueChange(colour);
 }
+*/
 
 void Editor::setFrontColour(int i, QColor newColour)
 {
@@ -406,15 +396,23 @@ void Editor::setFrontColour(int i, QColor newColour)
                 scribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
             }
         }
-        scribbleArea->setColour( i );
+		colorManager()->pickColorNumber( i );
     }
 }
 
 void Editor::changeAutosave(int x)
 {
     QSettings settings("Pencil","Pencil");
-    if (x==0) { autosave=false; settings.setValue("autosave","false"); }
-    else { autosave=true; settings.setValue("autosave","true"); }
+    if (x == 0) 
+    { 
+        autosave = false; 
+        settings.setValue("autosave","false"); 
+    }
+    else 
+    { 
+        autosave = true; 
+        settings.setValue("autosave","true"); 
+    }
 }
 
 void Editor::changeAutosaveNumber(int number)
@@ -893,17 +891,17 @@ void Editor::resetUI()
     scrubTo(0);
 }
 
-void Editor::setObject(Object* object)
+void Editor::setObject(Object* newObject)
 {
-    if (object == NULL)
+    if (newObject == NULL)
     {
         return;
     }
-    if (object == this->object)
+    if (newObject == this->object)
     {
         return;
     }
-    this->object = object;
+    this->object = newObject;
 
     connect(object, SIGNAL(imageAdded(int)), this, SLOT(addFrame(int)));
     connect(object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)));
@@ -916,15 +914,13 @@ void Editor::setObject(Object* object)
 }
 
 void Editor::updateObject()
-{
-    scribbleArea->resetColours();
+{    
     mainWindow->m_colorPalette->selectColorListRow(0);
 
     getTimeLine()->updateLayerNumber(object->getLayerCount());
-    mainWindow->m_colorPalette->updateList();
+    mainWindow->m_colorPalette->refreshColorList();
     clearBackup();
-    scribbleArea->resetColours();
-    mainWindow->m_colorPalette->selectColorListRow(0);
+    
     scribbleArea->updateAllFrames();
     updateMaxFrame();
 }
@@ -1486,13 +1482,6 @@ void Editor::scrubTo(int frameNumber)
 
 void Editor::scrubForward()
 {
-    Layer* layer = object->getLayer(m_nCurrentLayerIndex);
-
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR || layer->type == Layer::CAMERA)
-    {
-        LayerImage *_layer = (LayerImage *)layer;
-    }
-
     scrubTo( m_nCurrentFrameIndex + 1 );
 }
 
