@@ -1493,21 +1493,10 @@ void Editor::scrubBackward()
     }
 }
 
-/*
-void Editor::scrubNextDrawing()
-{
-    Layer *layer = object->getLayer(m_nCurrentLayerIndex);
-    if (layer->type == Layer::VECTOR)
-    {
-
-    }
-}
-*/
-
 void Editor::previousLayer()
 {
     m_nCurrentLayerIndex--;
-    if (m_nCurrentLayerIndex<0)
+    if (m_nCurrentLayerIndex < 0)
     {
         m_nCurrentLayerIndex = 0;
     }

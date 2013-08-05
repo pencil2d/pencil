@@ -535,7 +535,7 @@
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
-    <string>Clear</string>
+    <string>Clear Frame</string>
    </property>
   </action>
   <action name="actionSelect">

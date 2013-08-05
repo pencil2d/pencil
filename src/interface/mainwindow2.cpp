@@ -785,7 +785,7 @@ void MainWindow2::readSettings()
 {
     QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
-    desktopRect.adjust(80,80,-80,-80);
+    desktopRect.adjust(80, 80, -80, -80);
 
     QPoint pos = settings->value("editorPosition", desktopRect.topLeft() ).toPoint();
     QSize size = settings->value("editorSize", desktopRect.size() ).toSize();
@@ -872,6 +872,7 @@ void MainWindow2::loadAllShortcuts()
     ui->actionExport_Svg_Image->setShortcut( cmdKeySeq(CMD_EXPORT_SVG) );
     ui->actionExport_X_sheet->setShortcut( cmdKeySeq(CMD_EXPORT_XSHEET) );
 
+    // edit manu
     ui->actionUndo->setShortcut( cmdKeySeq(CMD_UNDO) );
     ui->actionRedo->setShortcut( cmdKeySeq(CMD_REDO) );
     ui->actionCut->setShortcut( cmdKeySeq(CMD_CUT) );
@@ -905,7 +906,7 @@ void MainWindow2::loadAllShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
 
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
-    ui->actionClear->setShortcut(cmdKeySeq(CMD_TOOL_CLEAR));
+    ui->actionClear->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
     ui->actionPolyline->setShortcut(cmdKeySeq(CMD_TOOL_POLYLINE));
