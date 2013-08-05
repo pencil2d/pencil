@@ -36,21 +36,14 @@ public:
     ColorPaletteWidget(Editor*);
     int currentColourNumber();
 
-protected:
-    Editor* editor;
-    ColorBox* m_colorBox;
-    QListWidget* m_colorListView;
-    QToolButton* addButton;
-    QToolButton* removeButton;    
-signals:
-    void colorChanged(QColor);
-	void colorNumberChanged(int);
-
 public slots:    
     void selectColorListRow(int);
     void setColour(QColor);
-    
     void refreshColorList();
+
+signals:
+    void colorChanged(QColor);
+    void colorNumberChanged(int);
 
 private slots:    
     void updateItemColor(int, QColor);    
@@ -61,8 +54,13 @@ private slots:
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
-private:
 
+private:
+    Editor* editor;
+    ColorBox* m_colorBox;
+    QListWidget* m_colorListView;
+    QToolButton* addButton;
+    QToolButton* removeButton;
 };
 
 #endif
