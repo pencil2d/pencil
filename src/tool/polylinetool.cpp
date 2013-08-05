@@ -26,10 +26,10 @@ void PolylineTool::loadSettings()
     properties.feather = -1;
 }
 
-QCursor PolylineTool::cursor() //Not working, any C++ + QT guru to fix it?
+QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
 {
     if (isAdjusting) { // being dynamically resized
-         return QCursor(this->circleCursors()); // width and feather cursors
+         return QCursor(this->circleCursors()); // two circles cursor
          qDebug() << "adjusting";
     }
     return Qt::CrossCursor;

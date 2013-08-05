@@ -4,6 +4,11 @@
 #include "scribblearea.h"
 #include "strokemanager.h"
 
+// ---- shared static variables ---- ( only one instance for all the tools )
+ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
+qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
+bool BaseTool::isAdjusting = false;
+
 QString BaseTool::TypeName(ToolType type)
 {
     static QMap<ToolType, QString>* map = NULL;
@@ -28,8 +33,7 @@ QString BaseTool::TypeName(ToolType type)
 }
 
 BaseTool::BaseTool(QObject *parent) :
-QObject(parent),
-isAdjusting(false)
+QObject(parent)
 {
 }
 
@@ -72,7 +76,7 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
     mousePressEvent(event);
 }
 
-QCursor BaseTool::circleCursors() // cursor for dynamic adjustments. Todo: why isn't it called from polylinetool?
+QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn static?
 {
     qreal propWidth = properties.width;
     qreal propFeather = properties.feather;
@@ -103,6 +107,61 @@ QCursor BaseTool::circleCursors() // cursor for dynamic adjustments. Todo: why i
     return QCursor(pixmap);
 
 }
+
+void BaseTool::startAdjusting( ToolPropertyType argSettingType )
+{
+    isAdjusting = true;
+    assistedSettingType = argSettingType;
+    if ( argSettingType == WIDTH )
+    {
+        OriginalSettingValue = properties.width;
+    }
+    else if ( argSettingType == FEATHER )
+    {
+        OriginalSettingValue = properties.feather;
+    }
+    m_pScribbleArea->setCursor(cursor()); // cursor() changes in brushtool, erasertool, ...
+
+}
+
+void BaseTool::stopAdjusting()
+{
+    isAdjusting = false;
+    OriginalSettingValue = 0;
+    m_pScribbleArea->setCursor(cursor());
+}
+
+void BaseTool::adjustCursor(qreal argOffsetX ) //offsetx x-lastx
+{
+    qreal incx = pow(OriginalSettingValue*100,0.5);
+    qreal newValue = incx + argOffsetX;
+
+    if (newValue < 0)
+    {
+        newValue = 0;
+    }
+    newValue = pow(newValue, 2) / 100;
+
+    if (newValue < 0.2) // can be optimized for size: min(200,max(0.2,newValue))
+    {
+        newValue = 0.2;
+    }
+    else if (newValue > 200)
+    {
+        newValue = 200;
+    }
+
+    if ( assistedSettingType == WIDTH ) // can be optimized (not necessarily)
+    {
+        m_pEditor->applyWidth( newValue );
+    }
+    else if ( assistedSettingType == FEATHER )
+    {
+        m_pEditor->applyFeather( newValue );
+    }
+
+}
+
 
 void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
