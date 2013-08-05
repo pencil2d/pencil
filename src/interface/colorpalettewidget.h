@@ -18,13 +18,14 @@ GNU General Public License for more details.
 #define PALETTE_H
 
 #include <QDockWidget>
-#include <QListWidget>
-#include <QListWidgetItem>
 #include <QToolButton>
 #include "toolset.h"
 
+class QListWidget;
+class QListWidgetItem;
 class Object;
 class Editor;
+class ColorBox;
 
 
 class ColorPaletteWidget : public QDockWidget
@@ -33,38 +34,33 @@ class ColorPaletteWidget : public QDockWidget
 
 public:
     ColorPaletteWidget(Editor*);
-    int currentColourNumber() { return listOfColours->currentRow(); }
+    int currentColourNumber();
 
-protected:
-    Editor* editor;
-    //Object* object;
-
-    QListWidget* listOfColours;
-    QToolButton* addButton;
-    QToolButton* removeButton;
-    QSlider* sliderRed;
-    QSlider* sliderGreen;
-    QSlider* sliderBlue;
-    QSlider* sliderAlpha;
-    QToolButton* colourSwatch;
-
-public slots:
-    void updateList();
-    void updateSwatch(QColor);
-    void selectColorListRow(int i) { listOfColours->setCurrentRow(i); }
+public slots:    
+    void selectColorListRow(int);
     void setColour(QColor);
-    void setColour(int, int, int, int);
+    void refreshColorList();
 
-private slots:
+signals:
+    void colorChanged(QColor);
+    void colorNumberChanged(int);
+
+private slots:    
+    void updateItemColor(int, QColor);    
     void colourSwatchClicked();
-    void colorListItemChanged(QListWidgetItem*, QListWidgetItem*);
+    void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
-    void colorSliderMoved();
-    void colourSliderValueChange();
+    void colorWheelChanged(QColor);
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
-    void closeIfDocked(bool);
+
+private:
+    Editor* m_editor;
+    ColorBox* m_colorBox;
+    QListWidget* m_colorListView;
+    QToolButton* m_addButton;
+    QToolButton* m_removeButton;
 };
 
 #endif

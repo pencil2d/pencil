@@ -25,6 +25,9 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "pencilsettings.h"
 
+#include "colormanager.h"
+#include "strokemanager.h"
+
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"
@@ -39,7 +42,6 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 
-#include "strokemanager.h"
 
 #define round(f) ((int)(f + 0.5))
 
@@ -141,46 +143,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
 /************************************************************************************/
 // properties setters
-
-void ScribbleArea::setColour(const int i)
-{
-    if (currentTool()->type() == PENCIL)
-    {
-        getTool(PENCIL)->properties.colourNumber = i;
-    }
-    else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
-    {
-        getTool( PEN )->properties.colourNumber = i;
-    }
-    else if (currentTool()->type() == BRUSH)
-    {
-        getTool(BRUSH)->properties.colourNumber = i;
-    }
-    else if (currentTool()->type() == BUCKET)
-    {
-        getTool(BUCKET)->properties.colourNumber = i;
-    }
-    else if (currentTool()->type() == EYEDROPPER)
-    {
-        getTool(PENCIL)->properties.colourNumber = i;
-        getTool( PEN )->properties.colourNumber = i;
-        getTool(BRUSH)->properties.colourNumber = i;
-    }
-    m_pEditor->currentColor = m_pEditor->object->getColour(i).colour;
-    updateFrame();
-}
-
-void ScribbleArea::setColour(const QColor colour)
-{
-    m_pEditor->currentColor = colour;
-}
-
-void ScribbleArea::resetColours()
-{
-    getTool( PEN )->properties.colourNumber = 0;
-    getTool(PENCIL)->properties.colourNumber = 0;
-    getTool(BRUSH)->properties.colourNumber = 1;
-}
 
 void ScribbleArea::resetTools()
 {
@@ -521,12 +483,18 @@ void ScribbleArea::updateAllVectorLayers()
 
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
 {
-    Layer *layer = m_pEditor->object->getLayer(layerNumber);
-    //if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(frameNumber, 0)->setModified(true);
-    if (layer->type == Layer::VECTOR) { ((LayerVector *)layer)->setModified(frameNumber, true); }
-    if (layer->type == Layer::BITMAP) { ((LayerImage *)layer)->setModified(frameNumber, true); }
-    emit modification(layerNumber);
-    //updateFrame(frame);
+    Layer *layer = m_pEditor->object->getLayer(layerNumber);    
+    if (layer->type == Layer::VECTOR) 
+	{ 
+		((LayerVector *)layer)->setModified(frameNumber, true); 
+	}
+    if (layer->type == Layer::BITMAP) 
+	{ 
+		((LayerImage *)layer)->setModified(frameNumber, true); 
+	}
+    
+	emit modification(layerNumber);
+    
     updateAllFrames();
 }
 
@@ -1534,7 +1502,7 @@ void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
 
     if (points.size() > 0)
     {
-        QPen pen2(m_pEditor->currentColor,
+        QPen pen2(m_pEditor->colorManager()->frontColor(),
                   getTool( PEN )->properties.width,
                   Qt::SolidLine,
                   Qt::RoundCap,
@@ -1578,7 +1546,7 @@ void ScribbleArea::endPolyline(QList<QPointF> points)
         {
             curve.setWidth(getTool( PEN )->properties.width);
         }
-        curve.setColourNumber(getTool( PEN )->properties.colourNumber);
+		curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
         curve.setVariableWidth(false);
         curve.setInvisibility(m_makeInvisible);
         //curve.setSelected(true);
@@ -1849,14 +1817,14 @@ void ScribbleArea::displaySelectionProperties()
                 m_pEditor->setFeather(vectorImage->curve[selectedCurve].getFeather());
                 m_pEditor->setInvisibility(vectorImage->curve[selectedCurve].isInvisible());
                 m_pEditor->setPressure(vectorImage->curve[selectedCurve].getVariableWidth());
-                m_pEditor->selectVectorColourNumber(vectorImage->curve[selectedCurve].getColourNumber());
+				m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[selectedCurve].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if (selectedArea != -1)
             {
-                m_pEditor->selectVectorColourNumber(vectorImage->area[selectedArea].colourNumber);
-                //editor->setFeather(vectorImage->area[selectedArea].getFeather());
+				m_pEditor->colorManager()->pickColorNumber( vectorImage->area[selectedArea].colourNumber );
+                
             }
         }
     }
@@ -2199,7 +2167,7 @@ void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb target
                         {
                             closedPath.prepend(tree.at(pathIndex));
                         }
-                        BezierArea newArea = BezierArea(closedPath, getTool(BRUSH)->properties.colourNumber);
+						BezierArea newArea = BezierArea(closedPath, m_pEditor->colorManager()->frontColorNumber() );
                         vectorImage->updateArea(newArea);
                         if (newArea.path.contains(initialPoint))
                         {

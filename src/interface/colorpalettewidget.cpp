@@ -14,132 +14,110 @@ GNU General Public License for more details.
 
 */
 #include <QtDebug>
+#include <QListWidget>
+#include <QListWidgetItem>
 #include "colourref.h"
 #include "object.h"
 #include "editor.h"
+#include "colorbox.h"
+#include "scribblearea.h"
+#include "colormanager.h"
 #include "colorpalettewidget.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
-    this->editor = editor;
+    this->m_editor = editor;
+    
+    setWindowTitle(tr("Colors"));
 
-    QWidget* paletteContent = new QWidget();
+    m_addButton = new QToolButton(this);
+    m_addButton->setIcon(QIcon(":icons/add.png"));
+    m_addButton->setToolTip("Add Color");
+    m_addButton->setFixedSize(30, 30);
 
-    sliderRed = new QSlider(Qt::Horizontal);
-    sliderGreen = new QSlider(Qt::Horizontal);
-    sliderBlue = new QSlider(Qt::Horizontal);
-    sliderAlpha = new QSlider(Qt::Horizontal);
-    sliderRed->setRange(0,255);
-    sliderGreen->setRange(0,255);
-    sliderBlue->setRange(0,255);
-    sliderAlpha->setRange(0,255);
-    QLabel* labelRed = new QLabel(tr("Red"));
-    QLabel* labelGreen = new QLabel(tr("Green"));
-    QLabel* labelBlue = new QLabel(tr("Blue"));
-    QLabel* labelAlpha = new QLabel(tr("Alpha"));
-    labelRed->setFont( QFont("Helvetica", 10) );
-    labelGreen->setFont( QFont("Helvetica", 10) );
-    labelBlue->setFont( QFont("Helvetica", 10) );
-    labelAlpha->setFont( QFont("Helvetica", 10) );
-
-    QGridLayout* sliderLayout = new QGridLayout();
-    sliderLayout->setSpacing(3);
-    sliderLayout->addWidget(labelRed, 0, 0);
-    sliderLayout->addWidget(sliderRed, 0, 1);
-    sliderLayout->addWidget(labelGreen, 1, 0);
-    sliderLayout->addWidget(sliderGreen, 1, 1);
-    sliderLayout->addWidget(labelBlue, 2, 0);
-    sliderLayout->addWidget(sliderBlue, 2, 1);
-    sliderLayout->addWidget(labelAlpha, 3, 0);
-    sliderLayout->addWidget(sliderAlpha, 3, 1);
-    sliderLayout->setMargin(10);
-    sliderLayout->setSpacing(2);
-
-    listOfColours = new QListWidget();
-
-    QToolBar* buttons = new QToolBar();
-    addButton = new QToolButton();
-    removeButton = new QToolButton();
-    addButton->setIcon(QIcon(":icons/add.png"));
-    addButton->setToolTip("Add Color");
-    addButton->setFixedSize(30,30);
-    removeButton->setIcon(QIcon(":icons/remove.png"));
-    removeButton->setToolTip("Remove Color");
-    removeButton->setFixedSize(30,30);
+    m_removeButton = new QToolButton(this);
+    m_removeButton->setIcon(QIcon(":icons/remove.png"));
+    m_removeButton->setToolTip("Remove Color");
+    m_removeButton->setFixedSize(30, 30);
 
     QLabel* spacer = new QLabel();
     spacer->setFixedWidth(10);
-
-    colourSwatch = new QToolButton(); //QLabel();
-    colourSwatch->setFixedSize( 40, 40 );
-    QPixmap colourPixmap(30,30);
-    colourPixmap.fill( Qt::black );
-    colourSwatch->setIcon(QIcon(colourPixmap));
-
+    
+    QToolBar* buttons = new QToolBar(this);    
     buttons->addWidget(spacer);
-    buttons->addWidget(colourSwatch);
-    buttons->addWidget(addButton);
-    buttons->addWidget(removeButton);
+    buttons->addWidget(m_addButton);
+    buttons->addWidget(m_removeButton);
 
-    listOfColours->setFrameStyle(QFrame::Panel | QFrame::Sunken);
-    listOfColours->setLineWidth(1);
-    listOfColours->setFocusPolicy(Qt::NoFocus);
+    m_colorListView = new QListWidget(this);
+    m_colorListView->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+    m_colorListView->setLineWidth(1);
+    m_colorListView->setFocusPolicy(Qt::NoFocus);
+	m_colorListView->setCurrentRow( 0 );
 
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->addLayout(sliderLayout);
+    m_colorBox = new ColorBox(this);
+
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    layout->addWidget(m_colorBox);
     layout->addWidget(buttons);
-    layout->addWidget(listOfColours);
+    layout->addWidget(m_colorListView);
     layout->setMargin(0);
 
+    QWidget* paletteContent = new QWidget(this);
     paletteContent->setLayout(layout);
+    paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
+
     setWidget(paletteContent);
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
     setFloating(true);
-    paletteContent->setFixedWidth(150);  /// otherwise the palette is naturally too wide. Someone please fix this.
+    
+    connect(m_colorListView, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), 
+			this, SLOT(colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*)));
+    
+    connect(m_colorListView, SIGNAL(itemClicked(QListWidgetItem*)),
+			this, SLOT(clickColorListItem( QListWidgetItem*)));
 
-    setWindowTitle(tr("Colors"));
-
-    connect(sliderRed, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-    connect(sliderGreen, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-    connect(sliderBlue, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-    connect(sliderAlpha, SIGNAL(sliderMoved(int)), this, SLOT(colorSliderMoved()));
-
-    connect(sliderRed, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-    connect(sliderGreen, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-    connect(sliderBlue, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-    connect(sliderAlpha, SIGNAL(sliderReleased()), this, SLOT(colourSliderValueChange()));
-
-    connect(listOfColours, SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), this, SLOT(colorListItemChanged(QListWidgetItem*, QListWidgetItem*)));
-    connect(listOfColours, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(clickColorListItem( QListWidgetItem*)));
-    connect(listOfColours, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, SLOT(changeColourName( QListWidgetItem*)));
-
-    connect(addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
-    connect(removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
-
-    connect(colourSwatch, SIGNAL(clicked()), this, SLOT(colourSwatchClicked()));
-
-    connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
+    connect(m_colorListView, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this, 
+			SLOT(changeColourName( QListWidgetItem*)));
+    
+    connect(m_addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
+    connect(m_removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
+    	
+    connect(m_colorBox, SIGNAL(colorChanged(QColor)), 
+            this, SLOT(colorWheelChanged(QColor)));
 }
 
-void ColorPaletteWidget::updateList()
+void ColorPaletteWidget::selectColorListRow(int row)
 {
-    while (listOfColours->count() > 0)
+	m_colorListView->setCurrentRow(row);
+}
+
+int ColorPaletteWidget::currentColourNumber()
+{    	
+	if ( m_colorListView->currentRow() < 0 )
+	{        
+		m_colorListView->setCurrentRow( 0 );
+	}
+	return m_colorListView->currentRow();
+}
+
+void ColorPaletteWidget::refreshColorList()
+{
+    if (m_colorListView->count() > 0)
     {
-        listOfColours->takeItem(0);
+        m_colorListView->clear();
     }
 
-    for (int i = 0; i < editor->object->getColourCount(); i++)
+    for (int i = 0; i < m_editor->object->getColourCount(); i++)
     {
-        ColourRef colourRef = editor->object->getColour(i);
-        QListWidgetItem* colourItem = new QListWidgetItem(listOfColours);
+        ColourRef colourRef = m_editor->object->getColour(i);
+
+        QListWidgetItem* colourItem = new QListWidgetItem(m_colorListView);
         colourItem->setText( colourRef.name );
+
         QPixmap colourSwatch(32,32);
         colourSwatch.fill( colourRef.colour );
-        QPainter painter(&colourSwatch);
-        painter.setPen( QColor(0,0,0,128) );
-        painter.drawRect( QRect(0,-1,31,31) );
         colourItem->setIcon( colourSwatch );
     }
     update();
@@ -150,76 +128,62 @@ void ColorPaletteWidget::colourSwatchClicked()
     if (currentColourNumber() > -1)
     {
         bool ok;
-        ColourRef colorRef = editor->object->getColour(currentColourNumber());
+        ColourRef colorRef = m_editor->object->getColour(currentColourNumber());
         QRgb qrgba = QColorDialog::getRgba( colorRef.colour.rgba(), &ok, this );
 
         if ( ok )
         {
             QColor newColor = QColor::fromRgba(qrgba);
             int colorIndex = currentColourNumber();
-            editor->object->setColour(colorIndex, newColor);
-            editor->setFrontColour(colorIndex, newColor );
+            m_editor->object->setColour(colorIndex, newColor);
+            m_editor->setFrontColour(colorIndex, newColor );
 
-            updateList();
+            refreshColorList();
             selectColorListRow(colorIndex);
             setColour(newColor);
         }
     }
 }
 
-void ColorPaletteWidget::colorListItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
+void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
-    if (!current) current = previous;
-    editor->selectVectorColourNumber(listOfColours->row(current));
+    if (!current) 
+	{
+		current = previous;
+	}
+	m_editor->colorManager()->pickColorNumber( m_colorListView->row(current) );
+
+	emit colorNumberChanged( m_colorListView->row(current) );
 }
 
-void ColorPaletteWidget::clickColorListItem(QListWidgetItem* current)
+void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
 {
-    editor->selectAndApplyColour(listOfColours->row(current));
+	int colorIndex = m_colorListView->row(currentItem);
+
+	m_colorBox->setColor( m_editor->getObject()->getColour(colorIndex).colour );
+
+    m_editor->selectAndApplyColour( colorIndex );
+
+	emit colorNumberChanged( colorIndex );
 }
 
-void ColorPaletteWidget::colourSliderValueChange()
-{
-    QColor newColor = QColor( sliderRed->value(),
-                              sliderGreen->value(),
-                              sliderBlue->value(),
-                              sliderAlpha->value() );
-
+void ColorPaletteWidget::colorWheelChanged(QColor newColor)
+{    
     int colorIndex = currentColourNumber();
-    editor->object->setColour(colorIndex, newColor);
-    editor->setFrontColour(colorIndex, newColor);
 
-    updateList();
-    selectColorListRow(colorIndex);
-    setColour(newColor);
-}
+    m_editor->object->setColour(colorIndex, newColor);    
+    m_editor->getScribbleArea()->updateFrame();
 
-void ColorPaletteWidget::colorSliderMoved()
-{
-    QColor newColour = QColor( sliderRed->value(),
-                               sliderGreen->value(),
-                               sliderBlue->value(),
-                               sliderAlpha->value() );
-    editor->setFrontColour(currentColourNumber(), newColour);
-}
+    updateItemColor(colorIndex, newColor);
 
-void ColorPaletteWidget::updateSwatch(QColor colour)
-{
-    QPixmap colourPixmap(30,30);
-    colourPixmap.fill( colour );
-    if (colourSwatch != NULL)
-    {
-        colourSwatch->setIcon(QIcon(colourPixmap));
-    }
+	emit colorChanged( newColor );
 }
 
 void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
 {
-    if (item == NULL)
-    {
-        return;
-    }
-    int colorNumber = listOfColours->row(item);
+    Q_ASSERT( item != NULL );
+
+    int colorNumber = m_colorListView->row(item);
     if (colorNumber > -1)
     {
         bool ok;
@@ -227,12 +191,12 @@ void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
                                              tr("Colour name"),
                                              tr("Colour name:"),
                                              QLineEdit::Normal,
-                                             editor->object->getColour(colorNumber).name,
+                                             m_editor->object->getColour(colorNumber).name,
                                              &ok );
         if (ok && !text.isEmpty())
         {
-            editor->object->renameColour(colorNumber, text);
-            updateList();
+            m_editor->object->renameColour(colorNumber, text);
+            refreshColorList();
         }
     }
 }
@@ -243,7 +207,7 @@ void ColorPaletteWidget::clickAddColorButton()
 
     if ( currentColourNumber() > -1 )
     {
-        prevColor = editor->object->getColour(currentColourNumber()).colour;
+        prevColor = m_editor->object->getColour(currentColourNumber()).colour;
     }
 
     bool ok;
@@ -256,39 +220,34 @@ void ColorPaletteWidget::clickAddColorButton()
                                              tr("Colour name"),
                                              tr("Colour name:"),
                                              QLineEdit::Normal,
-                                             QString(tr("Colour %1")).arg(listOfColours->count()),
+                                             QString(tr("Colour %1")).arg(m_colorListView->count()),
                                              &ok );
-        if (ok) {
+        if (ok) 
+        {
             ref.name = text;
-            editor->object->addColour(ref);
-            updateList();
-            editor->selectVectorColourNumber(editor->object->getColourCount() - 1);
+            m_editor->object->addColour(ref);
+            refreshColorList();
+			m_editor->colorManager()->pickColor( m_editor->getObject()->getColourCount() - 1 );
         }
     }
 }
 
 void ColorPaletteWidget::clickRemoveColorButton()
 {
-    int colorNumber = listOfColours->currentRow();
-    editor->object->removeColour(colorNumber);
-    updateList();
+    int colorNumber = m_colorListView->currentRow();
+    m_editor->object->removeColour(colorNumber);
+
+    refreshColorList();
 }
 
-void ColorPaletteWidget::closeIfDocked(bool)
+void ColorPaletteWidget::setColour(QColor color)
 {
-    //if (floating == false) close(); // we don't want to dock the palette in the mainwindow (or do we?)
+    m_colorBox->setColor(color);
 }
 
-void ColorPaletteWidget::setColour(QColor colour)
+void ColorPaletteWidget::updateItemColor( int itemIndex, QColor newColor )
 {
-    setColour(colour.red(), colour.green(), colour.blue(), colour.alpha());
-    updateSwatch(colour);
-}
-
-void ColorPaletteWidget::setColour(int r, int g, int b, int a)
-{
-    sliderRed->setValue(r);
-    sliderGreen->setValue(g);
-    sliderBlue->setValue(b);
-    sliderAlpha->setValue(a);
+    QPixmap colourSwatch(32, 32);
+    colourSwatch.fill( newColor );
+    m_colorListView->item( itemIndex )->setIcon( colourSwatch );
 }

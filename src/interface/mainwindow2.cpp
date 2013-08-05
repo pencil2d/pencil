@@ -19,10 +19,19 @@ GNU General Public License for more details.
 #include <QMenu>
 #include <QScopedPointer>
 
+
 #include "pencildef.h"
-#include "editor.h"
+#include "pencilsettings.h"
+
 #include "object.h"
+#include "layer.h"
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
+
+#include "editor.h"
+#include "colormanager.h"
+
 #include "scribblearea.h"
 #include "interfaces.h"
 #include "colorpalettewidget.h"
@@ -30,7 +39,8 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "preferences.h"
 #include "timeline.h"
-#include "pencilsettings.h"
+
+#include "colorbox.h"
 #include "util.h"
 
 #include "recentfilemenu.h"
@@ -38,9 +48,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
-#include "layer.h"
-#include "layerbitmap.h"
-#include "layervector.h"
+
 
 
 MainWindow2::MainWindow2(QWidget *parent) :
@@ -67,10 +75,11 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
+    connectColorPalette();
+
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
-    //showPreferences();
+    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));        
 }
 
 MainWindow2::~MainWindow2()
@@ -105,8 +114,10 @@ void MainWindow2::makeTimeLineConnections()
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
 
-void MainWindow2::makePreferenceConnections()
+void MainWindow2::connectColorPalette()
 {
+    connect( m_colorPalette, SIGNAL(colorChanged(QColor)),
+             editor->colorManager(), SLOT(pickColor(QColor)) );
 }
 
 void MainWindow2::arrangePalettes()
@@ -256,8 +267,6 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
-
-
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
@@ -774,7 +783,6 @@ void MainWindow2::dockAllPalettes()
 
 void MainWindow2::readSettings()
 {
-
     QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
     desktopRect.adjust(80,80,-80,-80);
@@ -986,7 +994,7 @@ void MainWindow2::importPalette()
     if (!filePath.isEmpty())
     {
         m_object->importPalette(filePath);
-        m_colorPalette->updateList();
+        m_colorPalette->refreshColorList();
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
 }

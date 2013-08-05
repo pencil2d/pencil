@@ -1,13 +1,15 @@
 #include <QPixmap>
 
-#include "pentool.h"
-
+#include "layervector.h"
+#include "colormanager.h"
 #include "strokemanager.h"
+
 #include "pencilsettings.h"
 #include "editor.h"
 #include "scribblearea.h"
 
-#include "layervector.h"
+#include "pentool.h"
+
 
 PenTool::PenTool(QObject *parent) : StrokeTool(parent)
 {
@@ -22,8 +24,8 @@ ToolType PenTool::type()
 void PenTool::loadSettings()
 {
     QSettings settings("Pencil","Pencil");
+
     properties.width = settings.value("penWidth").toDouble();    
-    properties.colourNumber = 0;
     properties.feather = 0;    
     properties.pressure = ON;
     properties.invisibility = OFF;
@@ -74,14 +76,6 @@ void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice
 
 void PenTool::mousePressEvent(QMouseEvent *event)
 {
-    // sanity checks
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
@@ -117,7 +111,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setFeather(0);
             curve.setInvisibility(false);
             curve.setVariableWidth(m_pScribbleArea->usePressure());
-            curve.setColourNumber(properties.colourNumber);
+			curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
 
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
@@ -151,7 +145,12 @@ void PenTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen = QPen(m_pEditor->currentColor, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen = QPen(m_pEditor->colorManager()->frontColor(),
+                        currentWidth, 
+                        Qt::SolidLine, 
+                        Qt::RoundCap, 
+                        Qt::RoundJoin);
+
         int rad = qRound(currentWidth / 2) + 3;
 
         for (int i = 0; i < p.size(); i++) {
@@ -171,9 +170,15 @@ void PenTool::drawStroke()
     else if (layer->type == Layer::VECTOR)
     {
         int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));
-        QPen pen(m_pEditor->currentColor, currentWidth * m_pScribbleArea->getTempViewScaleX(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
-        if (p.size() == 4) {
+        QPen pen(m_pEditor->colorManager()->frontColor(),
+                 currentWidth * m_pScribbleArea->getTempViewScaleX(), 
+                 Qt::SolidLine, 
+                 Qt::RoundCap, 
+                 Qt::RoundJoin);
+
+        if (p.size() == 4) 
+        {
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],

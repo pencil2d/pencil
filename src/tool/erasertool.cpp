@@ -28,7 +28,6 @@ void EraserTool::loadSettings()
     QSettings settings("Pencil", "Pencil");
 
     properties.width = settings.value("eraserWidth").toDouble();
-    properties.colourNumber = 1;
     properties.feather = settings.value("eraserFeather").toDouble();
     properties.opacity = 0.5;
 
@@ -77,13 +76,6 @@ void EraserTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
 
 void EraserTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());

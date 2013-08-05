@@ -2,15 +2,16 @@
 #include <QPixmap>
 #include <QPainter>
 
-#include "layer.h"
-#include "scribblearea.h"
-
 #include "pencilsettings.h"
-#include "editor.h"
+#include "layer.h"
+#include "colormanager.h"
 #include "strokemanager.h"
+#include "editor.h"
+#include "scribblearea.h"
+#include "blitrect.h"
 
 #include "brushtool.h"
-#include "blitrect.h"
+
 
 BrushTool::BrushTool(QObject *parent) :
     StrokeTool(parent)
@@ -26,8 +27,7 @@ void BrushTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
 
-    properties.width = settings.value("brushWidth").toDouble();        
-    properties.colourNumber = 1;
+    properties.width = settings.value("brushWidth").toDouble();            
     properties.feather = settings.value("brushFeather").toDouble();    
     properties.opacity = 0.5;
 
@@ -77,11 +77,6 @@ void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevi
 void BrushTool::mousePressEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
 
     if (event->button() == Qt::LeftButton)
     {
@@ -168,7 +163,10 @@ void BrushTool::drawStroke()
         BlitRect rect;
 
         QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
-        m_pScribbleArea->setGaussianGradient(radialGrad, m_pEditor->currentColor, opacity, offset);
+        m_pScribbleArea->setGaussianGradient(radialGrad, 
+                                             m_pEditor->colorManager()->frontColor(),
+                                             opacity, 
+                                             offset);
 
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
@@ -185,7 +183,11 @@ void BrushTool::drawStroke()
             {
                 QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
                 rect.extend(point.toPoint());
-                m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
+                m_pScribbleArea->drawBrush( point, 
+                                            brushWidth, 
+                                            offset, 
+                                            m_pEditor->colorManager()->frontColor(),
+                                            opacity);
 
                 if (i == (steps - 1))
                 {
