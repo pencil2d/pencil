@@ -194,6 +194,11 @@ void ScribbleArea::setFeather(const qreal newFeather)
         getTool(PENCIL)->properties.feather = newFeather;
         settings.setValue("pencilOpacity", newFeather);
     }
+    else if (currentTool()->type() == ERASER)
+    {
+        getTool(ERASER)->properties.feather = newFeather;
+        settings.setValue("eraserOpacity", newFeather);
+    }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.feather = newFeather;
@@ -516,6 +521,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
         m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        //m_pEditor->setWidth(width);
         m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
         return;
     }
@@ -724,7 +730,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 
     m_strokeManager->mousePressEvent(event);
 
-
     if (!m_strokeManager->isTabletInUse())   // a mouse is used instead of a tablet
     {
         m_strokeManager->setPressure(1.0);
@@ -746,27 +751,21 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
     }
 
-    // ----- assisted tool adjusment (wywiwyg)
+    // ----- assisted tool adjusment
     if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
     {
         //adjust width if not locked
-        currentTool()->isAdjusting = true;
-        assistedSetting = WIDTH;
-        toolOrgValue = currentTool()->properties.width;
-        setCursor(currentTool()->cursor());
+        currentTool()->startAdjusting( WIDTH );
         return;
     }
     else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
     {
         //adjust feather if not locked
-        currentTool()->isAdjusting = true;
-        assistedSetting = FEATHER;
-        toolOrgValue = currentTool()->properties.feather;
-        setCursor(currentTool()->cursor());
+        currentTool()->startAdjusting( FEATHER );
         return;
     }
 
-    // ---- checks ------
+    // ---- checks layer availability ------
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
@@ -775,6 +774,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
         if (vectorImage == NULL) { return; }
     }
+
     if (layer->type == Layer::BITMAP)
     {
         BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
@@ -790,53 +790,15 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         mouseInUse = false;
         return;
     }
-    
-    // --- end checks ----
-    
+    // ---
 
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
 
-    // the user is also pressing the mouse (dragging)
+    // the user is also pressing the mouse
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         offset = currentPoint - lastPoint;
-        // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
-        if (currentTool()->isAdjusting)
-        {
-            qreal incx = pow(toolOrgValue*100,0.5);
-            qreal newValue = incx + offset.x();
-            
-            if (newValue<0) 
-            {
-                newValue=0;
-            }
-            newValue = pow(newValue,2)/100;
-
-            if (newValue<0.2)
-            {  
-                newValue = 0.2; 
-            }
-            else if (newValue>200)
-            { 
-                newValue = 200; 
-            }
-
-            if ( assistedSetting == WIDTH )
-            {   
-                m_pEditor->applyWidth( newValue );
-            }
-            else if ( assistedSetting == FEATHER )
-            {   
-                m_pEditor->applyFeather( newValue );
-            }
-            else if ( assistedSetting == OPACITY )
-            {
-                //todo
-            } 
-            return;
-        }
-        // ------        
     }
 
     if (event->button() == Qt::RightButton)
@@ -889,42 +851,14 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
 
-    // the user is also pressing the mouse (dragging)
+    // the user is also pressing the mouse (= dragging)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
     {
         offset = currentPoint - lastPoint;
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if (currentTool()->isAdjusting)
         {
-            qreal incx = pow(toolOrgValue*100,0.5);
-            qreal newValue = incx + offset.x();
-            if (newValue < 0)
-            {
-                newValue = 0;
-            }
-            newValue = pow(newValue, 2) / 100;
-
-            if (newValue < 0.2) // can be optimized for size: min(200,max(0.2,newValue))
-            {  
-                newValue = 0.2; 
-            }
-            else if (newValue > 200)
-            { 
-                newValue = 200; 
-            }
-
-            if ( assistedSetting == WIDTH )
-            {   
-                m_pEditor->applyWidth( newValue );
-            }
-            else if ( assistedSetting == FEATHER )
-            {   
-                m_pEditor->applyFeather( newValue );
-            }
-            else if ( assistedSetting == OPACITY )
-            {
-                //todo
-            } 
+            currentTool()->adjustCursor(offset.x()); //updates cursors given org width or feather and x
             return;
         }
     }
@@ -945,8 +879,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- checks ------
     if (currentTool()->isAdjusting)
     {
-        currentTool()->isAdjusting = false;
-        setCursor(currentTool()->cursor());
+        currentTool()->stopAdjusting();
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 

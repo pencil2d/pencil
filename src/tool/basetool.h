@@ -37,6 +37,9 @@ class BaseTool : public QObject
 public:
     static QString TypeName( ToolType );
 
+    static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
+    static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
+
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
     QString typeName() { return TypeName(type()); }
@@ -52,11 +55,15 @@ public:
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent *) { return false; }
 
+    virtual void startAdjusting( ToolPropertyType argSettingType );
+    virtual void stopAdjusting();
+    virtual void adjustCursor(qreal argOffsetX);
+
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     virtual void clear() { }
 
-    bool isAdjusting;
+    static bool isAdjusting;
     QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
     
     void setWidth(const qreal width);

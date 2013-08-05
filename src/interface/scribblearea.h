@@ -209,10 +209,10 @@ public:
     void clearBitmapBuffer();
     void refreshBitmap(QRect rect, int rad);
     void refreshVector(QRect rect, int rad);
+    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
 protected:
     void updateCanvas(int frame, QRect rect);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
     void floodFillError(int errorType);
 
@@ -260,10 +260,6 @@ protected:
     QList<int> closestCurves;
     QList<VertexRef> closestVertices;
     QPointF offset;
-
-    //assisted tool settings (for adjustment)
-    ToolPropertyType assistedSetting;
-    qreal toolOrgValue; //start resizing from previous width or feather
 
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool
