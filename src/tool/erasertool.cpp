@@ -52,7 +52,7 @@ QCursor EraserTool::cursor()
 {
     if (isAdjusting) // being dynamically resized
     {
-        return QCursor(circleCursors()); // width and feather cursors
+        return QCursor(circleCursors()); // two circles cursor
     }
     if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
     {
