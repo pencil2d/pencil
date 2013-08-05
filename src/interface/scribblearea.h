@@ -265,10 +265,6 @@ protected:
     QList<VertexRef> closestVertices;
     QPointF offset;
 
-    //assisted tool settings (for adjustment)
-    ToolPropertyType assistedSetting;
-    qreal toolOrgValue; //start resizing from previous width or feather
-
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool
     ToolType prevToolType; //to recover current tool
