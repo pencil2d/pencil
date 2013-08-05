@@ -256,8 +256,6 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
-
-
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
@@ -774,7 +772,6 @@ void MainWindow2::dockAllPalettes()
 
 void MainWindow2::readSettings()
 {
-
     QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
     desktopRect.adjust(80,80,-80,-80);

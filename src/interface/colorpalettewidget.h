@@ -18,11 +18,11 @@ GNU General Public License for more details.
 #define PALETTE_H
 
 #include <QDockWidget>
-#include <QListWidget>
-#include <QListWidgetItem>
 #include <QToolButton>
 #include "toolset.h"
 
+class QListWidget;
+class QListWidgetItem;
 class Object;
 class Editor;
 class ColorBox;
@@ -56,11 +56,11 @@ private slots:
     void clickRemoveColorButton();
 
 private:
-    Editor* editor;
+    Editor* m_editor;
     ColorBox* m_colorBox;
     QListWidget* m_colorListView;
-    QToolButton* addButton;
-    QToolButton* removeButton;
+    QToolButton* m_addButton;
+    QToolButton* m_removeButton;
 };
 
 #endif
