@@ -92,7 +92,7 @@ private slots:
 
 private:
     void arrangePalettes();
-    void makePreferenceConnections();
+    void connectColorPalette();
     void makeTimeLineConnections();
     void createMenus();
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);

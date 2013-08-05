@@ -83,9 +83,7 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
     
     connect(m_addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
     connect(m_removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
-    
-	connect(this, SIGNAL(topLevelChanged(bool)), this, SLOT(closeIfDocked(bool)));
-	
+    	
     connect(m_colorBox, SIGNAL(colorChanged(QColor)), 
             this, SLOT(colorWheelChanged(QColor)));
 }

@@ -2,17 +2,18 @@
 #include <QPixmap>
 #include <QMouseEvent>
 
-#include "colormanager.h"
-#include "editor.h"
-#include "scribblearea.h"
-#include "pencilsettings.h"
-#include "penciltool.h"
-
-#include "strokemanager.h"
-
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "colormanager.h"
+#include "strokemanager.h"
+
+#include "editor.h"
+#include "scribblearea.h"
+#include "pencilsettings.h"
+
+#include "penciltool.h"
+
 
 PencilTool::PencilTool(QObject *parent) :
     StrokeTool(parent)
@@ -126,13 +127,15 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
+    QColor currentColor = m_pEditor->colorManager()->frontColor();
+
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
-        currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF() * pressure);
+        currentPressuredColor.setAlphaF(currentColor.alphaF() * pressure);
     }
     else
     {
-        currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF());
+        currentPressuredColor.setAlphaF(currentColor.alphaF());
     }
 
     currentWidth = properties.width;
@@ -189,7 +192,12 @@ void PencilTool::drawStroke()
     }
     else if (layer->type == Layer::VECTOR)
     {
-        QPen pen(m_pEditor->currentColor, 1, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(m_pEditor->colorManager()->frontColor(),
+                 1, 
+                 Qt::DotLine, 
+                 Qt::RoundCap, 
+                 Qt::RoundJoin);
+
         rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->getTempViewScaleX()));
 
         if (p.size() == 4) {

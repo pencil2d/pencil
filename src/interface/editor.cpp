@@ -120,8 +120,6 @@ Editor::Editor(MainWindow2* parent)
     qDebug() << QLibraryInfo::location(QLibraryInfo::BinariesPath);
     qDebug() << QLibraryInfo::location(QLibraryInfo::LibrariesPath);
 
-    currentColor = Qt::black;
-    
     setTool(PENCIL);
     
     setAcceptDrops(true);

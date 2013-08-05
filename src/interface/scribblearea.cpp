@@ -1502,7 +1502,7 @@ void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
 
     if (points.size() > 0)
     {
-        QPen pen2(m_pEditor->currentColor,
+        QPen pen2(m_pEditor->colorManager()->frontColor(),
                   getTool( PEN )->properties.width,
                   Qt::SolidLine,
                   Qt::RoundCap,

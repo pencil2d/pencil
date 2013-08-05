@@ -19,10 +19,19 @@ GNU General Public License for more details.
 #include <QMenu>
 #include <QScopedPointer>
 
+
 #include "pencildef.h"
-#include "editor.h"
+#include "pencilsettings.h"
+
 #include "object.h"
+#include "layer.h"
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
+
+#include "editor.h"
+#include "colormanager.h"
+
 #include "scribblearea.h"
 #include "interfaces.h"
 #include "colorpalettewidget.h"
@@ -30,7 +39,7 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "preferences.h"
 #include "timeline.h"
-#include "pencilsettings.h"
+
 #include "colorbox.h"
 #include "util.h"
 
@@ -39,9 +48,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
-#include "layer.h"
-#include "layerbitmap.h"
-#include "layervector.h"
+
 
 
 MainWindow2::MainWindow2(QWidget *parent) :
@@ -67,6 +74,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     editor->resetUI();
 
     readSettings();
+
+    connectColorPalette();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
@@ -105,8 +114,10 @@ void MainWindow2::makeTimeLineConnections()
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
 
-void MainWindow2::makePreferenceConnections()
+void MainWindow2::connectColorPalette()
 {
+    connect( m_colorPalette, SIGNAL(colorChanged(QColor)),
+             editor->colorManager(), SLOT(pickColor(QColor)) );
 }
 
 void MainWindow2::arrangePalettes()

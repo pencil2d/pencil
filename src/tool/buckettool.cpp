@@ -1,14 +1,16 @@
 #include <QPixmap>
 #include <QPainter>
 
-#include "pencilsettings.h"
-#include "buckettool.h"
-
-#include "editor.h"
-#include "scribblearea.h"
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "colormanager.h"
+
+#include "pencilsettings.h"
+#include "editor.h"
+#include "scribblearea.h"
+
+#include "buckettool.h"
 
 BucketTool::BucketTool(QObject *parent) :
     BaseTool(parent)
@@ -81,7 +83,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                                    targetImage,
                                    getLastPoint().toPoint(),
                                    qRgba(0, 0, 0, 0),
-                                   m_pEditor->currentColor.rgba(),
+                                   m_pEditor->colorManager()->frontColor().rgba(),
                                    10 * 10,
                                    true);
 

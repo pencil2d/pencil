@@ -1,11 +1,13 @@
 #include <QPixmap>
 
+#include "layervector.h"
 #include "colormanager.h"
 #include "strokemanager.h"
+
 #include "pencilsettings.h"
 #include "editor.h"
 #include "scribblearea.h"
-#include "layervector.h"
+
 #include "pentool.h"
 
 
@@ -143,7 +145,12 @@ void PenTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen = QPen(m_pEditor->currentColor, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen = QPen(m_pEditor->colorManager()->frontColor(),
+                        currentWidth, 
+                        Qt::SolidLine, 
+                        Qt::RoundCap, 
+                        Qt::RoundJoin);
+
         int rad = qRound(currentWidth / 2) + 3;
 
         for (int i = 0; i < p.size(); i++) {
@@ -163,9 +170,15 @@ void PenTool::drawStroke()
     else if (layer->type == Layer::VECTOR)
     {
         int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));
-        QPen pen(m_pEditor->currentColor, currentWidth * m_pScribbleArea->getTempViewScaleX(), Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 
-        if (p.size() == 4) {
+        QPen pen(m_pEditor->colorManager()->frontColor(),
+                 currentWidth * m_pScribbleArea->getTempViewScaleX(), 
+                 Qt::SolidLine, 
+                 Qt::RoundCap, 
+                 Qt::RoundJoin);
+
+        if (p.size() == 4) 
+        {
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],

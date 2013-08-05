@@ -63,9 +63,6 @@ public:
 
     TimeLine* getTimeLine();
 
-    QColor currentColor;
-
-
     Layer* getCurrentLayer(int incr) 
     { 
         if (object != NULL) 

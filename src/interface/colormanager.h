@@ -7,7 +7,6 @@
 class Editor;
 
 
-
 class ColorManager : public QObject
 {
     Q_OBJECT
@@ -15,6 +14,8 @@ public:
     ColorManager(Editor* editor, QObject* parent = 0);
     QColor frontColor();
     int frontColorNumber();
+
+public slots:
     void pickColorNumber(int n);
 	void pickColor(const QColor& color);
     

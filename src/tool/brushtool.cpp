@@ -2,15 +2,16 @@
 #include <QPixmap>
 #include <QPainter>
 
-#include "layer.h"
-#include "scribblearea.h"
-
 #include "pencilsettings.h"
-#include "editor.h"
+#include "layer.h"
+#include "colormanager.h"
 #include "strokemanager.h"
+#include "editor.h"
+#include "scribblearea.h"
+#include "blitrect.h"
 
 #include "brushtool.h"
-#include "blitrect.h"
+
 
 BrushTool::BrushTool(QObject *parent) :
     StrokeTool(parent)
@@ -162,7 +163,10 @@ void BrushTool::drawStroke()
         BlitRect rect;
 
         QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
-        m_pScribbleArea->setGaussianGradient(radialGrad, m_pEditor->currentColor, opacity, offset);
+        m_pScribbleArea->setGaussianGradient(radialGrad, 
+                                             m_pEditor->colorManager()->frontColor(),
+                                             opacity, 
+                                             offset);
 
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
@@ -179,7 +183,11 @@ void BrushTool::drawStroke()
             {
                 QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
                 rect.extend(point.toPoint());
-                m_pScribbleArea->drawBrush(point, brushWidth, offset, m_pEditor->currentColor, opacity);
+                m_pScribbleArea->drawBrush( point, 
+                                            brushWidth, 
+                                            offset, 
+                                            m_pEditor->colorManager()->frontColor(),
+                                            opacity);
 
                 if (i == (steps - 1))
                 {
