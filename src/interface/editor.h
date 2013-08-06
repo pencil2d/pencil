@@ -255,8 +255,7 @@ private slots:
 
 
 private:
-    ScribbleArea* scribbleArea;
-    //TimeLine* timeLine;
+    ScribbleArea* scribbleArea;    
     MainWindow2* mainWindow;
 
     ColorManager* m_colorManager;
@@ -300,9 +299,7 @@ private:
     QComboBox* exportFramesDialog_format;
     QSpinBox* exportMovieDialog_fpsBox;
     QComboBox* exportMovieDialog_format;
-    QSlider* exportFlashDialog_compression;
-
-    // saving (XML)    
+    QSlider* exportFlashDialog_compression;    
 };
 
 #endif
