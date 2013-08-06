@@ -26,26 +26,27 @@ ColorSpinBoxGroup::~ColorSpinBoxGroup()
     delete ui;
 }
 
-void ColorSpinBoxGroup::setColor(const QColor &c)
+void ColorSpinBoxGroup::setColor(const QColor &newColor)
 {
-    if (c == m_color)
+    if (newColor == m_color)
     {
         return;
     }
     noColorUpdate = true;
+
     if(isRgbColors)
     {
-        ui->RedspinBox->setValue(c.red());
-        ui->GreenspinBox->setValue(c.green());
-        ui->BluespinBox->setValue(c.blue());
+        ui->RedspinBox->setValue(newColor.red());
+        ui->GreenspinBox->setValue(newColor.green());
+        ui->BluespinBox->setValue(newColor.blue());
     }
     else
     {
-        ui->RedspinBox->setValue( qBound(0.0, c.hsvHueF() * 359, 359.0) );
-        ui->GreenspinBox->setValue( qBound(0.0, c.hsvSaturationF() * 100, 100.0) );
-        ui->BluespinBox->setValue( qBound(0.0, c.valueF() * 100, 100.0) );
+        ui->RedspinBox->setValue( qBound(0.0, newColor.hsvHueF() * 359, 359.0) );
+        ui->GreenspinBox->setValue( qBound(0.0, newColor.hsvSaturationF() * 100, 100.0) );
+        ui->BluespinBox->setValue( qBound(0.0, newColor.valueF() * 100, 100.0) );
     }
-    m_color = c;
+    m_color = newColor;
 
     QPalette p = ui->label->palette();
     p.setColor(QPalette::Background, m_color);

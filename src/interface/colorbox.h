@@ -16,13 +16,14 @@ public:
     QColor color();
 signals:
     void colorChanged(const QColor &);
+
 public slots:
     void setColor(const QColor &);
-
 
 private slots:
     void onSpinboxChange(const QColor &);
     void onWheelChange(const QColor &);
+
 private:
     ColorWheel* m_colorWheel;
     ColorSpinBoxGroup* m_colorInspector;

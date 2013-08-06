@@ -19,8 +19,12 @@ ColorBox::ColorBox(QWidget *parent) :
 
     connect(m_colorWheel, SIGNAL(colorChanged(QColor)),
             this, SLOT(onWheelChange(QColor)));
+
     connect(m_colorInspector, SIGNAL(colorChange(QColor)),
             this, SLOT(onSpinboxChange(QColor)));
+
+    m_colorWheel->setColor(Qt::red);
+    m_colorInspector->setColor(Qt::red);
 }
 
 ColorBox::~ColorBox()
@@ -32,9 +36,15 @@ QColor ColorBox::color()
     return m_colorWheel->color();
 }
 
-void ColorBox::setColor(const QColor& color)
+void ColorBox::setColor(const QColor& newColor)
 {
-    onSpinboxChange(color);
+    if ( newColor != m_colorWheel->color() )
+    {
+        m_colorWheel->setColor(newColor);
+        m_colorInspector->setColor(newColor);
+
+        emit colorChanged(newColor);
+    }
 }
 
 void ColorBox::onSpinboxChange(const QColor& color)
