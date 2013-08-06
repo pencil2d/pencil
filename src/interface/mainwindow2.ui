@@ -74,7 +74,7 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
-    <addaction name="actionDelete"/>
+    <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
     <addaction name="actionCrop"/>
     <addaction name="actionCrop_To_Selection"/>
@@ -133,7 +133,6 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionClear"/>
     <addaction name="actionMove"/>
     <addaction name="actionSelect"/>
     <addaction name="actionBrush"/>
@@ -349,9 +348,13 @@
     <string>Deselect All</string>
    </property>
   </action>
-  <action name="actionDelete">
+  <action name="actionClearFrame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+   </property>
    <property name="text">
-    <string>Delete</string>
+    <string>Clear Frame</string>
    </property>
   </action>
   <action name="actionPreference">

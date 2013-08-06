@@ -184,7 +184,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
-    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
+    connect(ui->actionClearFrame, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
     connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
     connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
     connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
@@ -237,8 +237,6 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
-
     connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));
     connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
     connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
@@ -878,6 +876,7 @@ void MainWindow2::loadAllShortcuts()
     ui->actionCut->setShortcut( cmdKeySeq(CMD_CUT) );
     ui->actionCopy->setShortcut( cmdKeySeq(CMD_COPY) );
     ui->actionPaste->setShortcut( cmdKeySeq(CMD_PASTE) );
+    ui->actionClearFrame->setShortcut( cmdKeySeq(CMD_CLEAR_FRAME) );
     ui->actionSelect_All->setShortcut( cmdKeySeq(CMD_SELECT_ALL));
     ui->actionDeselect_All->setShortcut( cmdKeySeq(CMD_DESELECT_ALL) );
     ui->actionPreference->setShortcut( cmdKeySeq(CMD_PREFERENCE) );
