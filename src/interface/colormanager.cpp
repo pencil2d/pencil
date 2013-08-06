@@ -32,7 +32,7 @@ void ColorManager::pickColorNumber( int n )
 void ColorManager::pickColor(const QColor& newColor)
 {
 	m_editor->getObject()->setColour( m_frontColorIndex, newColor );
-    qDebug("Pick Color(R=%d, G=%d, B=%d)", newColor.red(), newColor.green(), newColor.blue());
+    //qDebug("Pick Color(R=%d, G=%d, B=%d)", newColor.red(), newColor.green(), newColor.blue());
 }
 
 int ColorManager::frontColorNumber()
