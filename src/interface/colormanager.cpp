@@ -32,9 +32,12 @@ void ColorManager::pickColorNumber( int n )
 
 void ColorManager::pickColor(const QColor& newColor)
 {
-	m_editor->getObject()->setColour( m_frontColorIndex, newColor );
-
-    emit colorChanged(newColor);
+    QColor currentColor = m_editor->getObject()->getColour( m_frontColorIndex ).colour;
+    if (currentColor != newColor)
+    {
+        m_editor->getObject()->setColour( m_frontColorIndex, newColor );
+        emit colorChanged(newColor);
+    }
     //qDebug("Pick Color(R=%d, G=%d, B=%d)", newColor.red(), newColor.green(), newColor.blue());
 }
 
