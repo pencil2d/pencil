@@ -18,8 +18,10 @@ public:
 signals:
     void colorChange(const QColor &c);
     void modeChange(const bool &isRgb);
+
 public slots:
     void setColor(const QColor &c);
+
 private slots:
     void onModeChanged();
     void onColorChanged();
@@ -28,7 +30,7 @@ private:
     Ui::ColorSpinBoxGroup *ui;
     bool isRgbColors;
     bool noColorUpdate;
-    QColor color_;
+    QColor m_color;
 };
 
 #endif // COLORSPINBOXGROUP_H
