@@ -905,7 +905,6 @@ void MainWindow2::loadAllShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
 
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
-    ui->actionClear->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
     ui->actionPolyline->setShortcut(cmdKeySeq(CMD_TOOL_POLYLINE));
