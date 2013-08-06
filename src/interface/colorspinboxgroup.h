@@ -16,7 +16,7 @@ public:
     ~ColorSpinBoxGroup();
     QColor color();
 signals:
-    void colorChange(const QColor& c);
+    void colorChanged(const QColor& c);
     void modeChange(const bool& isRgb);
 
 public slots:

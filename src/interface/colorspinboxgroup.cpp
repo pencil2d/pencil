@@ -132,5 +132,5 @@ void ColorSpinBoxGroup::onColorChanged()
     }
 
     m_color = c;
-    emit colorChange(c);
+    emit colorChanged(c);
 }

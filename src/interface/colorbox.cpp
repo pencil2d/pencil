@@ -20,7 +20,7 @@ ColorBox::ColorBox(QWidget *parent) :
     connect(m_colorWheel, SIGNAL(colorChanged(QColor)),
             this, SLOT(onWheelChange(QColor)));
 
-    connect(m_colorInspector, SIGNAL(colorChange(QColor)),
+    connect(m_colorInspector, SIGNAL(colorChanged(QColor)),
             this, SLOT(onSpinboxChange(QColor)));
 
     m_colorWheel->setColor(Qt::red);
