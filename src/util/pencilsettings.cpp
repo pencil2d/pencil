@@ -51,6 +51,15 @@ void checkExistingShortcuts()
             pencilSettings()->setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
         }
     }
+
+    foreach (QString pKey, pencilSettings()->allKeys())
+    {
+        if ( !defaultKey.contains(pKey) )
+        {
+            pencilSettings()->remove(pKey);
+        }
+    }
+    pencilSettings()->sync();
 }
 
 
@@ -63,5 +72,5 @@ void restoreShortcutsToDefault()
     foreach (QString pShortcutsKey, defaultKey.allKeys())
     {
         pencilSettings()->setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
-    }    
+    }
 }

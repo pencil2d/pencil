@@ -1513,16 +1513,20 @@ void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
         if (m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
             tempPath = myTempView.map(tempPath);
-            if (m_makeInvisible) { pen2.setWidth(0); pen2.setStyle(Qt::DotLine);}
-            else { pen2.setWidth(getTool( PEN )->properties.width * myTempView.m11()); }
+            if (m_makeInvisible) 
+            { 
+                pen2.setWidth(0); 
+                pen2.setStyle(Qt::DotLine);
+            }
+            else 
+            { 
+                pen2.setWidth(getTool( PEN )->properties.width * myTempView.m11()); 
+            }
         }
         bufferImg->clear();
         bufferImg->drawPath(tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, m_antialiasing);
+
         update(updateRect);
-        //update( QRect(lastPixel.toPoint(), currentPixel.toPoint()).normalized() );
-        //bufferImg->drawRect(tempPath.boundingRect().toRect());
-        //update( QRect(lastPixel.toPoint()-QPoint(10,10), lastPixel.toPoint()+QPoint(10,10)) );
-        //update();
     }
 }
 
