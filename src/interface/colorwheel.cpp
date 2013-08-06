@@ -204,7 +204,7 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QPainter painter(&m_wheelImage);
     painter.setRenderHint(QPainter::Antialiasing);
 
-	painter.fillRect(m_wheelImage.rect(), backgroundBrush);
+    painter.fillRect(m_wheelImage.rect(), backgroundBrush);
 
     QConicalGradient conicalGradient(0, 0, 0);
 
