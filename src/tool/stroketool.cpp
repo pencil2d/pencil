@@ -11,11 +11,8 @@ void enableCoalescing();
 }
 #else
 extern "C" {
-void disableCoalescing() {
-}
-
-void enableCoalescing() {
-}
+void disableCoalescing() {}
+void enableCoalescing() {}
 }
 #endif
 

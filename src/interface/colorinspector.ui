@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <author>liuyanghejerry@126.com</author>
- <class>ColorSpinBoxGroup</class>
- <widget class="QWidget" name="ColorSpinBoxGroup">
+ <class>ColorInspector</class>
+ <widget class="QWidget" name="ColorInspector">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>92</width>
+    <width>100</width>
     <height>122</height>
    </rect>
   </property>
@@ -15,16 +15,7 @@
    <property name="spacing">
     <number>2</number>
    </property>
-   <property name="leftMargin">
-    <number>2</number>
-   </property>
-   <property name="topMargin">
-    <number>2</number>
-   </property>
-   <property name="rightMargin">
-    <number>2</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>2</number>
    </property>
    <item>

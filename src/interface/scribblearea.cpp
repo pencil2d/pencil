@@ -909,7 +909,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
 {
-
     currentTool()->mouseDoubleClickEvent(event);
 }
 

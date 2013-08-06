@@ -4,20 +4,20 @@
 #include <QWidget>
 
 namespace Ui {
-class ColorSpinBoxGroup;
+class ColorInspector;
 }
 
-class ColorSpinBoxGroup : public QWidget
+class ColorInspector : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit ColorSpinBoxGroup(QWidget *parent = 0);
-    ~ColorSpinBoxGroup();
+    explicit ColorInspector(QWidget *parent = 0);
+    ~ColorInspector();
     QColor color();
 signals:
-    void colorChange(const QColor &c);
-    void modeChange(const bool &isRgb);
+    void colorChanged(const QColor& c);
+    void modeChange(const bool& isRgb);
 
 public slots:
     void setColor(const QColor &c);
@@ -27,7 +27,7 @@ private slots:
     void onColorChanged();
     
 private:
-    Ui::ColorSpinBoxGroup *ui;
+    Ui::ColorInspector *ui;
     bool isRgbColors;
     bool noColorUpdate;
     QColor m_color;

@@ -915,7 +915,7 @@ void Editor::setObject(Object* newObject)
 
 void Editor::updateObject()
 {    
-    mainWindow->m_colorPalette->selectColorListRow(0);
+    mainWindow->m_colorPalette->selectColorNumber(0);
 
     getTimeLine()->updateLayerNumber(object->getLayerCount());
     mainWindow->m_colorPalette->refreshColorList();
