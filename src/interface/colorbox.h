@@ -4,7 +4,7 @@
 #include <QWidget>
 
 class ColorWheel;
-class ColorSpinBoxGroup;
+class ColorInspector;
 
 class ColorBox : public QWidget
 {
@@ -26,7 +26,7 @@ private slots:
 
 private:
     ColorWheel* m_colorWheel;
-    ColorSpinBoxGroup* m_colorInspector;
+    ColorInspector* m_colorInspector;
 };
 
 #endif // COLORBOX_H

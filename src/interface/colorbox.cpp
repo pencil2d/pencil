@@ -1,7 +1,7 @@
 
 #include <QVBoxLayout>
 #include "colorwheel.h"
-#include "colorspinboxgroup.h"
+#include "colorinspector.h"
 #include "colorbox.h"
 
 ColorBox::ColorBox(QWidget *parent) :
@@ -10,7 +10,7 @@ ColorBox::ColorBox(QWidget *parent) :
     QVBoxLayout* layout = new QVBoxLayout(this);
 
     m_colorWheel = new ColorWheel(this);
-    m_colorInspector = new ColorSpinBoxGroup(this);
+    m_colorInspector = new ColorInspector(this);
 
     layout->addWidget(m_colorWheel);
     layout->addWidget(m_colorInspector);
