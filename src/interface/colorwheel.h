@@ -40,17 +40,17 @@ private:
     void drawSquareImage(const int &hue);
     void composeWheel(QPixmap& pixmap);
 
-    QSize initSize;
-    QImage wheelImage;
-    QImage squareImage;
-    QPixmap wheel;
+    QSize m_initSize;
+    QImage m_wheelImage;
+    QImage m_squareImage;
+    QPixmap m_wheelPixmap;
    
-    int wheelWidth;
-    QRegion wheelRegion;
-    QRegion squareRegion;
-    QColor currentColor;
-    bool inWheel;
-    bool inSquare;
+    int m_wheelWidth;
+    QRegion m_wheelRegion;
+    QRegion m_squareRegion;
+    QColor m_currentColor;
+    bool m_isInWheel;
+    bool m_isInSquare;
     
 };
 

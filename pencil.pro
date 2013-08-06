@@ -79,7 +79,7 @@ HEADERS +=  src/interfaces.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
     src/interface/colorwheel.h \
-    src/interface/colorspinboxgroup.h \
+    src/interface/colorinspector.h \
     src/interface/colorgriditem.h \
     src/interface/colorgrid.h \
     src/interface/colorbox.h \
@@ -140,7 +140,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
     src/interface/colorwheel.cpp \
-    src/interface/colorspinboxgroup.cpp \
+    src/interface/colorinspector.cpp \
     src/interface/colorgriditem.cpp \
     src/interface/colorgrid.cpp \
     src/interface/colorbox.cpp \
@@ -186,6 +186,6 @@ RESOURCES += pencil.qrc
 FORMS += \
     src/interface/mainwindow2.ui \
     src/interface/shortcutspage.ui \
-    src/interface/colorspinboxgroup.ui
+    src/interface/colorinspector.ui
 
 TRANSLATIONS += pencil.ts

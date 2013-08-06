@@ -4,7 +4,7 @@
 #include <QWidget>
 
 class ColorWheel;
-class ColorSpinBoxGroup;
+class ColorInspector;
 
 class ColorBox : public QWidget
 {
@@ -16,16 +16,17 @@ public:
     QColor color();
 signals:
     void colorChanged(const QColor &);
+
 public slots:
     void setColor(const QColor &);
-
 
 private slots:
     void onSpinboxChange(const QColor &);
     void onWheelChange(const QColor &);
+
 private:
     ColorWheel* m_colorWheel;
-    ColorSpinBoxGroup* m_colorInspector;
+    ColorInspector* m_colorInspector;
 };
 
 #endif // COLORBOX_H

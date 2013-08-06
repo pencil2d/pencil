@@ -21,6 +21,7 @@ public slots:
     
 signals:
     void colorChanged(QColor);
+    void colorNumberChanged(int);
 
 private:
     Editor* m_editor;

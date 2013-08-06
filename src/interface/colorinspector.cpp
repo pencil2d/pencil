@@ -1,15 +1,16 @@
-#include "colorspinboxgroup.h"
-#include "ui_colorspinboxgroup.h"
+#include "colorinspector.h"
+#include "ui_colorinspector.h"
 
 #include <QDebug>
 
-ColorSpinBoxGroup::ColorSpinBoxGroup(QWidget *parent) :
+ColorInspector::ColorInspector(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ColorSpinBoxGroup),
+    ui(new Ui::ColorInspector),
     isRgbColors(true),
     noColorUpdate(false)
 {
     ui->setupUi(this);
+
     connect(ui->RedspinBox, SIGNAL(valueChanged(int)),
             this, SLOT(onColorChanged()));
     connect(ui->GreenspinBox, SIGNAL(valueChanged(int)),
@@ -20,50 +21,57 @@ ColorSpinBoxGroup::ColorSpinBoxGroup(QWidget *parent) :
             this, SLOT(onModeChanged()));
 }
 
-ColorSpinBoxGroup::~ColorSpinBoxGroup()
+ColorInspector::~ColorInspector()
 {
     delete ui;
 }
 
-void ColorSpinBoxGroup::setColor(const QColor &c)
+void ColorInspector::setColor(const QColor &newColor)
 {
-    if(c == color_) return;
-    noColorUpdate = true;
-    if(isRgbColors){
-        ui->RedspinBox->setValue(c.red());
-        ui->GreenspinBox->setValue(c.green());
-        ui->BluespinBox->setValue(c.blue());
-    }else{
-        ui->RedspinBox->setValue(
-                    qBound(0.0, c.hsvHueF()*359, 359.0)
-                    );
-        ui->GreenspinBox->setValue(
-                    qBound(0.0, c.hsvSaturationF()*100, 100.0)
-                    );
-        ui->BluespinBox->setValue(
-                    qBound(0.0, c.valueF()*100, 100.0)
-                    );
+    if (newColor == m_color)
+    {
+        return;
     }
-    color_ = c;
+    noColorUpdate = true;
+
+    if(isRgbColors)
+    {
+        ui->RedspinBox->setValue(newColor.red());
+        ui->GreenspinBox->setValue(newColor.green());
+        ui->BluespinBox->setValue(newColor.blue());
+    }
+    else
+    {
+        ui->RedspinBox->setValue( qBound(0.0, newColor.hsvHueF() * 359, 359.0) );
+        ui->GreenspinBox->setValue( qBound(0.0, newColor.hsvSaturationF() * 100, 100.0) );
+        ui->BluespinBox->setValue( qBound(0.0, newColor.valueF() * 100, 100.0) );
+    }
+    m_color = newColor;
 
     QPalette p = ui->label->palette();
-    p.setColor(QPalette::Background, color_);
+    p.setColor(QPalette::Background, m_color);
     ui->label->setPalette(p);
     noColorUpdate = false;
 }
 
-QColor ColorSpinBoxGroup::color()
+QColor ColorInspector::color()
 {
-    return color_;
+    return m_color;
 }
 
-void ColorSpinBoxGroup::onModeChanged()
+void ColorInspector::onModeChanged()
 {
     bool newValue = ui->rgb->isChecked();
-    if(isRgbColors == newValue) return;
+    if (isRgbColors == newValue)
+    {
+        return;
+    }
+
     isRgbColors = newValue;
     noColorUpdate = true;
-    if(!isRgbColors){
+
+    if (!isRgbColors)
+    {
         ui->red->setText(tr("Hue"));
         ui->green->setText(tr("Saturation"));
         ui->blue->setText(tr("Value"));
@@ -73,17 +81,14 @@ void ColorSpinBoxGroup::onModeChanged()
         ui->GreenspinBox->setSuffix("%");
         ui->BluespinBox->setRange(0,100);
         ui->BluespinBox->setSuffix("%");
-        color_ = color_.toHsv();
-        ui->RedspinBox->setValue(
-                    qBound(0.0, color_.hsvHueF()*359, 359.0)
-                    );
-        ui->GreenspinBox->setValue(
-                    qBound(0.0, color_.hsvSaturationF()*100, 100.0)
-                    );
-        ui->BluespinBox->setValue(
-                    qBound(0.0, color_.valueF()*100, 100.0)
-                    );
-    }else{
+
+        m_color = m_color.toHsv();
+        ui->RedspinBox->setValue( qBound(0.0, m_color.hsvHueF()*359, 359.0) );
+        ui->GreenspinBox->setValue( qBound(0.0, m_color.hsvSaturationF()*100, 100.0) );
+        ui->BluespinBox->setValue( qBound(0.0, m_color.valueF()*100, 100.0) );
+    }
+    else
+    {
         ui->red->setText(tr("Red"));
         ui->green->setText(tr("Green"));
         ui->blue->setText(tr("Blue"));
@@ -93,16 +98,16 @@ void ColorSpinBoxGroup::onModeChanged()
         ui->GreenspinBox->setSuffix("");
         ui->BluespinBox->setRange(0,255);
         ui->BluespinBox->setSuffix("");
-        color_ = color_.toRgb();
-        ui->RedspinBox->setValue(color_.red());
-        ui->GreenspinBox->setValue(color_.green());
-        ui->BluespinBox->setValue(color_.blue());
+        m_color = m_color.toRgb();
+        ui->RedspinBox->setValue(m_color.red());
+        ui->GreenspinBox->setValue(m_color.green());
+        ui->BluespinBox->setValue(m_color.blue());
     }
     noColorUpdate = false;
     emit modeChange(isRgbColors);
 }
 
-void ColorSpinBoxGroup::onColorChanged()
+void ColorInspector::onColorChanged()
 {
     if(noColorUpdate) return;
 
@@ -126,6 +131,6 @@ void ColorSpinBoxGroup::onColorChanged()
                              );
     }
 
-    color_ = c;
-    emit colorChange(c);
+    m_color = c;
+    emit colorChanged(c);
 }
