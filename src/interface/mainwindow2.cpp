@@ -184,7 +184,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
-    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
+    connect(ui->actionClearFrame, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
     connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
     connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
     connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
@@ -237,8 +237,6 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
-
     connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));
     connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
     connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
@@ -785,7 +783,7 @@ void MainWindow2::readSettings()
 {
     QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
-    desktopRect.adjust(80,80,-80,-80);
+    desktopRect.adjust(80, 80, -80, -80);
 
     QPoint pos = settings->value("editorPosition", desktopRect.topLeft() ).toPoint();
     QSize size = settings->value("editorSize", desktopRect.size() ).toSize();
@@ -872,11 +870,13 @@ void MainWindow2::loadAllShortcuts()
     ui->actionExport_Svg_Image->setShortcut( cmdKeySeq(CMD_EXPORT_SVG) );
     ui->actionExport_X_sheet->setShortcut( cmdKeySeq(CMD_EXPORT_XSHEET) );
 
+    // edit manu
     ui->actionUndo->setShortcut( cmdKeySeq(CMD_UNDO) );
     ui->actionRedo->setShortcut( cmdKeySeq(CMD_REDO) );
     ui->actionCut->setShortcut( cmdKeySeq(CMD_CUT) );
     ui->actionCopy->setShortcut( cmdKeySeq(CMD_COPY) );
     ui->actionPaste->setShortcut( cmdKeySeq(CMD_PASTE) );
+    ui->actionClearFrame->setShortcut( cmdKeySeq(CMD_CLEAR_FRAME) );
     ui->actionSelect_All->setShortcut( cmdKeySeq(CMD_SELECT_ALL));
     ui->actionDeselect_All->setShortcut( cmdKeySeq(CMD_DESELECT_ALL) );
     ui->actionPreference->setShortcut( cmdKeySeq(CMD_PREFERENCE) );
@@ -905,7 +905,6 @@ void MainWindow2::loadAllShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
 
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
-    ui->actionClear->setShortcut(cmdKeySeq(CMD_TOOL_CLEAR));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
     ui->actionPolyline->setShortcut(cmdKeySeq(CMD_TOOL_POLYLINE));

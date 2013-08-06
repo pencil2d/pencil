@@ -43,7 +43,7 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
     colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
     eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage");
-    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Tool <b>(L)</b>: Erases content of selected frame");
+    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame");
     smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>: Edit polyline/curves");
 
     pencilButton->setWhatsThis("Pencil Tool (N)");
@@ -58,14 +58,6 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     eyedropperButton->setWhatsThis("Eyedropper Tool (I)");
     clearButton->setWhatsThis("Clear Tool");
     smudgeButton->setWhatsThis("Smudge Tool (A)");
-    //magnifyButton->setWhatsThis("Zoom Tool (Z)");
-
-
-    //magnifyButton->setIcon(QIcon(":icons/magnify.png"));
-    //magnifyButton->setToolTip("Zoom Tool <b>(Z)</b>: Adjust the zoom level");
-    //magnifyButton->setEnabled(false);
-
-    //smudgeButton->setEnabled(true);
 
     pencilButton->setCheckable(true);
     penButton->setCheckable(true);
