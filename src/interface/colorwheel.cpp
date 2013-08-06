@@ -195,12 +195,16 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QStyleOption option;
     option.initFrom(this);
 
-    QBrush background = option.palette.window();
+    QBrush backgroundBrush = option.palette.window();
 
     m_wheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
-    m_wheelImage.fill(background.color());
+
+    //m_wheelImage.fill(background.color());  // Only in 4.8
+
     QPainter painter(&m_wheelImage);
     painter.setRenderHint(QPainter::Antialiasing);
+
+	painter.fillRect(m_wheelImage.rect(), backgroundBrush);
 
     QConicalGradient conicalGradient(0, 0, 0);
 
@@ -218,8 +222,8 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     painter.rotate( -90 );
     painter.drawEllipse(QPoint(0, 0), r/2, r/2);
     /* inner circle */
-    
-    painter.setBrush(background);
+
+    painter.setBrush(backgroundBrush);
     painter.drawEllipse(QPoint(0, 0), r/2 - m_wheelWidth, r/2 - m_wheelWidth);
 
     //caculate wheel region
