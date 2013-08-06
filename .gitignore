@@ -1,4 +1,8 @@
+# -- Mac stuff --
 .DS_Store
+Info.plist
+*.pbproj
+
 .moc
 .obj
 *.o

@@ -37,8 +37,8 @@ public:
     int currentColourNumber();
 
 public slots:    
-    void selectColorListRow(int);
-    void setColour(QColor);
+    void selectColorNumber(int);
+    void setColor(QColor);
     void refreshColorList();
 
 signals:

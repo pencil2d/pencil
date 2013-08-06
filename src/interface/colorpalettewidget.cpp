@@ -88,9 +88,9 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
             this, SLOT(colorWheelChanged(QColor)));
 }
 
-void ColorPaletteWidget::selectColorListRow(int row)
+void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
-	m_colorListView->setCurrentRow(row);
+	m_colorListView->setCurrentRow(colorNumber);
 }
 
 int ColorPaletteWidget::currentColourNumber()
@@ -116,7 +116,7 @@ void ColorPaletteWidget::refreshColorList()
         QListWidgetItem* colourItem = new QListWidgetItem(m_colorListView);
         colourItem->setText( colourRef.name );
 
-        QPixmap colourSwatch(32,32);
+        QPixmap colourSwatch(32, 32);
         colourSwatch.fill( colourRef.colour );
         colourItem->setIcon( colourSwatch );
     }
@@ -139,8 +139,8 @@ void ColorPaletteWidget::colourSwatchClicked()
             m_editor->setFrontColour(colorIndex, newColor );
 
             refreshColorList();
-            selectColorListRow(colorIndex);
-            setColour(newColor);
+            selectColorNumber(colorIndex);
+            setColor(newColor);
         }
     }
 }
@@ -151,8 +151,6 @@ void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, Q
 	{
 		current = previous;
 	}
-	m_editor->colorManager()->pickColorNumber( m_colorListView->row(current) );
-
 	emit colorNumberChanged( m_colorListView->row(current) );
 }
 
@@ -240,7 +238,7 @@ void ColorPaletteWidget::clickRemoveColorButton()
     refreshColorList();
 }
 
-void ColorPaletteWidget::setColour(QColor color)
+void ColorPaletteWidget::setColor(QColor color)
 {
     m_colorBox->setColor(color);
 }

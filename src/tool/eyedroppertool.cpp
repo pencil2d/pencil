@@ -108,10 +108,14 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
             if (pickedColour.alpha() != 0)
             {
                 m_pScribbleArea->setCursor(cursor(pickedColour));
-            } else {
+            }
+            else 
+            {
                 m_pScribbleArea->setCursor(cursor());
             }
-        } else {
+        }
+        else
+        {
             m_pScribbleArea->setCursor(cursor());
         }
     }
@@ -122,7 +126,9 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
         if (colourNumber != -1)
         {
             m_pScribbleArea->setCursor(cursor(m_pEditor->object->getColour(colourNumber).colour));
-        } else {
+        } 
+        else 
+        {
             m_pScribbleArea->setCursor(cursor());
         }
     }

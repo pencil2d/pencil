@@ -118,6 +118,15 @@ void MainWindow2::connectColorPalette()
 {
     connect( m_colorPalette, SIGNAL(colorChanged(QColor)),
              editor->colorManager(), SLOT(pickColor(QColor)) );
+
+    connect( m_colorPalette, SIGNAL(colorNumberChanged(int)),
+             editor->colorManager(), SLOT(pickColorNumber(int)) );
+
+    connect( editor->colorManager(), SIGNAL(colorChanged(QColor)),
+             m_colorPalette, SLOT(setColor(QColor)));
+
+    connect( editor->colorManager(), SIGNAL(colorNumberChanged(int)),
+             m_colorPalette, SLOT(selectColorNumber(int)));
 }
 
 void MainWindow2::arrangePalettes()
