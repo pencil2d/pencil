@@ -1,4 +1,3 @@
-
 #include <cmath>
 #include <QPainter>
 #include <QResizeEvent>
@@ -31,7 +30,7 @@ void ColorWheel::setColor(const QColor &color)
     {
         return;
     }
-    if (color.hue() != m_currentColor.hue()) 
+    if (color.hue() != m_currentColor.hue())
     {
         hueChanged(color.hue());
     }
@@ -46,10 +45,9 @@ void ColorWheel::setColor(const QColor &color)
     emit colorChanged(color);
 }
 
-
 QColor ColorWheel::pickColor(const QPoint& point)
 {
-    if ( ! m_wheelPixmap.rect().contains(point) ) 
+    if ( ! m_wheelPixmap.rect().contains(point) )
     {
         return QColor();
     }
@@ -63,12 +61,12 @@ QColor ColorWheel::pickColor(const QPoint& point)
         QPoint center(width() / 2, height() / 2);
 
         QPoint diff = point - center;
-        strDebug += QString(" Atan2=%1").arg(qAtan2(diff.x(), diff.y()));               
-        
+        strDebug += QString(" Atan2=%1").arg(qAtan2(diff.x(), diff.y()));
+
         hue = qAtan2( diff.x(), diff.y() ) / M_PI * 180;
-        
+
         hue = hue + 180; // shift -180~180 to 0~360
-        
+
         strDebug += QString(" Hue=%1").arg(hue);
         //qDebug() << strDebug;
 
@@ -76,10 +74,10 @@ QColor ColorWheel::pickColor(const QPoint& point)
         hue = (hue < 0) ? 0 : hue;
 
         return QColor::fromHsv(hue,
-                               m_currentColor.saturation(),
-                               m_currentColor.value());
+            m_currentColor.saturation(),
+            m_currentColor.value());
     }
-    else if (m_isInSquare) 
+    else if (m_isInSquare)
     {
         QRect rect = m_squareRegion.boundingRect();
         QPoint p = point - rect.topLeft();
@@ -88,8 +86,8 @@ QColor ColorWheel::pickColor(const QPoint& point)
 
         //qDebug("p(%d, %d), Region(%.1f, %.1f)", p.x(), p.y(), regionSize.width(), regionSize.height());
         return QColor::fromHsvF( m_currentColor.hueF(),
-                                 p.x() / regionSize.width(),
-                                 1.0 - (p.y() / regionSize.height()));
+            p.x() / regionSize.width(),
+            1.0 - (p.y() / regionSize.height()));
     }
     return QColor();
 }
@@ -121,13 +119,12 @@ void ColorWheel::mousePressEvent(QMouseEvent *event)
         QColor color = pickColor(lastPos);
         hueChanged(color.hue());
     }
-    
 }
 
 void ColorWheel::mouseMoveEvent(QMouseEvent* event)
 {
     QPoint lastPos = event->pos();
-    if ( event->buttons() == Qt::NoButton )    
+    if ( event->buttons() == Qt::NoButton )
     {
         return;
     }
@@ -138,7 +135,7 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
         if ( lastPos.x() < rect.topLeft().x() )
         {
             lastPos.setX( rect.topLeft().x() );
-        } 
+        }
         else if ( lastPos.x() > rect.bottomRight().x() )
         {
             lastPos.setX( rect.bottomRight().x() );
@@ -160,11 +157,11 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
     {
         QColor color = pickColor(lastPos);
         hueChanged(color.hue());
-    }          
+    }
 }
 
 void ColorWheel::mouseReleaseEvent(QMouseEvent *)
-{    
+{
     m_isInWheel = false;
     m_isInSquare = false;
 }
@@ -209,7 +206,7 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QConicalGradient conicalGradient(0, 0, 0);
 
     for (int hue = 0; hue < 360; hue +=1)
-    {        
+    {
         conicalGradient.setColorAt( hue / 360.0,  QColor::fromHsv(hue, 255, 255));
     }
 
@@ -243,7 +240,7 @@ void ColorWheel::drawSquareImage(const int &hue)
 
     QImage square(255, 255, QImage::Format_ARGB32_Premultiplied);
     QColor color;
-    
+
     for (int i = 0; i < 255; ++i)
     {
         for (int j = 0; j < 255; ++j)
@@ -291,12 +288,12 @@ void ColorWheel::drawPicker(const QColor &color)
     QPoint squareTopLeft = m_squareRegion.boundingRect().topLeft();
 
     painter.translate(squareTopLeft.x(), squareTopLeft.y());
-    
+
     QSize squareSize = m_squareRegion.boundingRect().size();
 
     qreal S = color.saturationF() * squareSize.width();
     qreal V = squareSize.height() - (color.valueF() * squareSize.height());
- 
+
     QPen pen;
     pen.setWidth(3);
     if (color.saturation() > 30 || color.value() < 50)
@@ -304,7 +301,7 @@ void ColorWheel::drawPicker(const QColor &color)
         pen.setColor(Qt::white);
     }
     painter.setPen(pen);
-    
+
     painter.drawEllipse(S - 5, V - 5, 10, 10);
 }
 
@@ -343,9 +340,9 @@ void ColorWheel::hueChanged(const int &hue)
 void ColorWheel::svChanged(const QColor &newcolor)
 {
     int hue = m_currentColor.hue();
-    m_currentColor.setHsv(hue, 
-                        newcolor.saturation(), 
-                        newcolor.value());
+    m_currentColor.setHsv(hue,
+        newcolor.saturation(),
+        newcolor.value());
     if( !isVisible() )
     {
         return;
