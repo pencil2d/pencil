@@ -9,6 +9,9 @@
 
 class Object;
 
+class ProgressInterface
+{
+};
 
 class ObjectSaveLoader : public QObject
 {
@@ -21,8 +24,7 @@ public:
 
 signals:
 
-public slots:
-
+    public slots:
 };
 
 #endif // OBJECTSAVELOADER_H
