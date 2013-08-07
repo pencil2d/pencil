@@ -16,7 +16,6 @@ ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent),
     m_isInSquare(false)
 {
     m_currentColor = m_currentColor.toHsv();
-    setCursor(Qt::CrossCursor);
 }
 
 QColor ColorWheel::color()

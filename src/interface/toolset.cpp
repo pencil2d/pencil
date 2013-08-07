@@ -229,7 +229,7 @@ void ToolSetWidget::handOn()
         m_editor->getScribbleArea()->resetView();
     }
 
-     m_editor->getScribbleArea()->setCurrentTool( HAND );
+    m_editor->getScribbleArea()->setCurrentTool( HAND );
     // --- change properties ---
     m_editor->setWidth(-1);
     m_editor->setFeather(-1);
@@ -244,26 +244,26 @@ void ToolSetWidget::handOn()
 
 void ToolSetWidget::polylineOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( POLYLINE );
+    m_editor->getScribbleArea()->setCurrentTool( POLYLINE );
     // --- change properties ---
 
-     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
+    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
 
-     m_editor->setWidth(pCurrentTool->properties.width);
-     m_editor->setFeather(-1);
-     m_editor->setPressure(pCurrentTool->properties.pressure);
-     m_editor->setInvisibility(pCurrentTool->properties.invisibility);
-     m_editor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
-     m_editor->setFollowContour(-1);
+    m_editor->setWidth(pCurrentTool->properties.width);
+    m_editor->setFeather(-1);
+    m_editor->setPressure(pCurrentTool->properties.pressure);
+    m_editor->setInvisibility(pCurrentTool->properties.invisibility);
+    m_editor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
+    m_editor->setFollowContour(-1);
 
-     deselectAllTools();
-     polylineButton->setChecked(true);
+    deselectAllTools();
+    polylineButton->setChecked(true);
 }
 
 void ToolSetWidget::bucketOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( BUCKET );
-     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
+    m_editor->getScribbleArea()->setCurrentTool( BUCKET );
+    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
 
     // --- change properties ---
 
@@ -284,7 +284,7 @@ void ToolSetWidget::bucketOn()
 
 void ToolSetWidget::eyedropperOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( EYEDROPPER );
+    m_editor->getScribbleArea()->setCurrentTool( EYEDROPPER );
     // --- change properties ---
     m_editor->setWidth(-1);
     m_editor->setFeather(-1);
@@ -315,7 +315,7 @@ void ToolSetWidget::brushOn()
 
 void ToolSetWidget::smudgeOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( SMUDGE );
+    m_editor->getScribbleArea()->setCurrentTool( SMUDGE );
     // --- change properties ---
     m_editor->setWidth(-1);
     m_editor->setFeather(-1);
@@ -386,5 +386,3 @@ void ToolSetWidget::setCurrentTool( ToolType toolType )
         break;
     }
 }
-
-

@@ -1,4 +1,3 @@
-
 #include <QDebug>
 #include <QMap>
 #include <QStringRef>
@@ -20,10 +19,9 @@
 static const int ACT_NAME_COLUMN = 0;
 static const int KEY_SEQ_COLUMN  = 1;
 
-
 ShortcutsPage::ShortcutsPage(QWidget *parent) :
     QWidget(parent),
-    m_treeModel( NULL ),    
+    m_treeModel( NULL ),
     ui( new Ui::ShortcutsPage )
 {
     ui->setupUi(this);
@@ -35,16 +33,16 @@ ShortcutsPage::ShortcutsPage(QWidget *parent) :
     ui->treeView->resizeColumnToContents(0);
 
     connect(ui->treeView, SIGNAL(clicked(const QModelIndex&)),
-            this, SLOT(tableItemClicked(const QModelIndex&)));
+        this, SLOT(tableItemClicked(const QModelIndex&)));
 
     connect(ui->keySeqLineEdit, SIGNAL(keyCaptured(QKeySequence)),
-            this, SLOT(keyCapLineEditTextChanged(QKeySequence)));
+        this, SLOT(keyCapLineEditTextChanged(QKeySequence)));
 
     connect(ui->restoreShortcutsButton, SIGNAL(clicked()),
-            this, SLOT(restoreShortcutsButtonClicked()));
+        this, SLOT(restoreShortcutsButtonClicked()));
 
     connect(ui->clearButton, SIGNAL(clicked()),
-            this, SLOT(clearButtonClicked()));
+        this, SLOT(clearButtonClicked()));
 }
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )
@@ -129,9 +127,9 @@ bool ShortcutsPage::isKeySequenceExist(const QSettings& settings, QString strTar
         QString strCmdKeySeq = settings.value(strCmdName).toString();
         /*
         qDebug() << "Compare:"
-                 << QKeySequence(strCmdKeySeq).toString()
-                 << "|"
-                 << targetkeySeq.toString();
+        << QKeySequence(strCmdKeySeq).toString()
+        << "|"
+        << targetkeySeq.toString();
         */
         if (QKeySequence(strCmdKeySeq) == targetkeySeq)
         {
@@ -212,4 +210,3 @@ void ShortcutsPage::clearButtonClicked()
 
     treeModelLoadShortcutsSetting();
 }
-

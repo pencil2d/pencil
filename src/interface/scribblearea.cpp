@@ -42,9 +42,7 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 
-
 #define round(f) ((int)(f + 0.5))
-
 
 ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     : QWidget(parent)
@@ -58,7 +56,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_toolSetHash.insert(PENCIL, new PencilTool);
     m_toolSetHash.insert(BRUSH, new BrushTool);
     m_toolSetHash.insert(ERASER, new EraserTool);
-    m_toolSetHash.insert(BUCKET, new BucketTool);    
+    m_toolSetHash.insert(BUCKET, new BucketTool);
     m_toolSetHash.insert(EYEDROPPER, new EyedropperTool);
     m_toolSetHash.insert(HAND, new HandTool);
     m_toolSetHash.insert(MOVE, new MoveTool);
@@ -69,7 +67,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     foreach (BaseTool *tool, getTools())
     {
         tool->initialize(editor, this);
-    }       
+    }
 
     QSettings settings("Pencil", "Pencil");
 
@@ -99,7 +97,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_usePressure = true;
     m_makeInvisible = false;
     somethingSelected = false;
-    
+
     onionPrev = true;
     onionNext = false;
     m_showThinLines = false;
@@ -110,7 +108,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     centralView = QMatrix();
 
     QString background = settings.value("background").toString();
-    
+
     background = "white";
     setBackgroundBrush(background);
     bufferImg = new BitmapImage(NULL);
@@ -422,10 +420,9 @@ QBrush ScribbleArea::getBackgroundBrush(QString brushName)
     if (brushName == "grid")
     {
         /*  QGraphicsScene* scene = new QGraphicsScene();
-                            scene->setSceneRect(QRectF(0, 0, 500, 500));
-                            scene->addPixmap(QPixmap(":background/grid.jpg"));*/
+        scene->setSceneRect(QRectF(0, 0, 500, 500));
+        scene->addPixmap(QPixmap(":background/grid.jpg"));*/
         brush.setTextureImage(QImage(":background/grid.jpg"));
-
     }
     return brush;
 }
@@ -483,18 +480,18 @@ void ScribbleArea::updateAllVectorLayers()
 
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
 {
-    Layer *layer = m_pEditor->object->getLayer(layerNumber);    
-    if (layer->type == Layer::VECTOR) 
-	{ 
-		((LayerVector *)layer)->setModified(frameNumber, true); 
-	}
-    if (layer->type == Layer::BITMAP) 
-	{ 
-		((LayerImage *)layer)->setModified(frameNumber, true); 
-	}
-    
-	emit modification(layerNumber);
-    
+    Layer *layer = m_pEditor->object->getLayer(layerNumber);
+    if (layer->type == Layer::VECTOR)
+    {
+        ((LayerVector *)layer)->setModified(frameNumber, true);
+    }
+    if (layer->type == Layer::BITMAP)
+    {
+        ((LayerImage *)layer)->setModified(frameNumber, true);
+    }
+
+    emit modification(layerNumber);
+
     updateAllFrames();
 }
 
@@ -686,7 +683,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     m_strokeManager->tabletEvent(event);
 
     currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
-                                                     event->pointerType() == QTabletEvent::Cursor);
+        event->pointerType() == QTabletEvent::Cursor);
 
     if (event->pointerType() == QTabletEvent::Eraser)
     {
@@ -784,9 +781,9 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     if (!layer->visible && currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
         QMessageBox::warning(this, tr("Warning"),
-                             tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
+            tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
+            QMessageBox::Ok,
+            QMessageBox::Ok);
         mouseInUse = false;
         return;
     }
@@ -904,7 +901,6 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
         this->m_pEditor->setTool( prevToolType ); // abandon temporary tool !
         instantTool = false;
     }
-
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent *event)
@@ -1077,12 +1073,10 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                         QRectF rectangle = QRectF((myView * transMatrix * centralView).map(vertexPoint) - QPointF(3.0, 3.0), QSizeF(7, 7));
                         if (rect().contains((myView * transMatrix * centralView).map(vertexPoint).toPoint()))
                         {
-
                             painter.drawRect(rectangle.toRect());
                             //bufferImg->drawRect( rectangle.toRect(), pen2, colour, QPainter::CompositionMode_SourceOver, false);
                         }
                     }
-
                 }
                 // ------------ selected vertices of the edited curves
                 colour = QColor(100, 100, 255);
@@ -1149,7 +1143,6 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                     bufferImg->drawPath((myView * transMatrix * centralView).map(path), pen2, colour, QPainter::CompositionMode_SourceOver, m_antialiasing);
                 }
             }
-
         }
 
         // paints the  buffer image
@@ -1195,7 +1188,6 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
                 }
             }
         }
-
     }
     // clips to the frame of the camera
     if (layer->type == Layer::CAMERA)
@@ -1502,24 +1494,24 @@ void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
     if (points.size() > 0)
     {
         QPen pen2(m_pEditor->colorManager()->frontColor(),
-                  getTool( PEN )->properties.width,
-                  Qt::SolidLine,
-                  Qt::RoundCap,
-                  Qt::RoundJoin);
+            getTool( PEN )->properties.width,
+            Qt::SolidLine,
+            Qt::RoundCap,
+            Qt::RoundJoin);
         QPainterPath tempPath = BezierCurve(points).getSimplePath();
         tempPath.lineTo(endPoint);
         QRect updateRect = myTempView.mapRect(tempPath.boundingRect().toRect()).adjusted(-10, -10, 10, 10);
         if (m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
             tempPath = myTempView.map(tempPath);
-            if (m_makeInvisible) 
-            { 
-                pen2.setWidth(0); 
+            if (m_makeInvisible)
+            {
+                pen2.setWidth(0);
                 pen2.setStyle(Qt::DotLine);
             }
-            else 
-            { 
-                pen2.setWidth(getTool( PEN )->properties.width * myTempView.m11()); 
+            else
+            {
+                pen2.setWidth(getTool( PEN )->properties.width * myTempView.m11());
             }
         }
         bufferImg->clear();
@@ -1549,7 +1541,7 @@ void ScribbleArea::endPolyline(QList<QPointF> points)
         {
             curve.setWidth(getTool( PEN )->properties.width);
         }
-		curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+        curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
         curve.setVariableWidth(false);
         curve.setInvisibility(m_makeInvisible);
         //curve.setSelected(true);
@@ -1601,7 +1593,6 @@ void ScribbleArea::rotateacw()
     setView();
     updateAllFrames();
 }
-
 
 void ScribbleArea::recentre()
 {
@@ -1769,8 +1760,8 @@ void ScribbleArea::paintTransformedSelection()
             if (bitmapImage == NULL)
             {
                 qDebug() << "NULL image pointer!"
-                         << m_pEditor->m_nCurrentLayerIndex
-                         << m_pEditor->m_nCurrentFrameIndex;
+                    << m_pEditor->m_nCurrentLayerIndex
+                    << m_pEditor->m_nCurrentFrameIndex;
                 return;
             }
 
@@ -1820,14 +1811,13 @@ void ScribbleArea::displaySelectionProperties()
                 m_pEditor->setFeather(vectorImage->curve[selectedCurve].getFeather());
                 m_pEditor->setInvisibility(vectorImage->curve[selectedCurve].isInvisible());
                 m_pEditor->setPressure(vectorImage->curve[selectedCurve].getVariableWidth());
-				m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[selectedCurve].getColourNumber() );
+                m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[selectedCurve].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if (selectedArea != -1)
             {
-				m_pEditor->colorManager()->pickColorNumber( vectorImage->area[selectedArea].colourNumber );
-                
+                m_pEditor->colorManager()->pickColorNumber( vectorImage->area[selectedArea].colourNumber );
             }
         }
     }
@@ -2082,7 +2072,7 @@ void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb target
     // 1 --- stop here (for debugging purpose)
     /*qDebug() << "CONTOUR POINTS:";
     for(int i=0; i < contourPoints.size(); i++) {
-        qDebug() << "(" << contourPoints.at(i).curveNumber << "," << contourPoints.at(i).vertexNumber << ")";
+    qDebug() << "(" << contourPoints.at(i).curveNumber << "," << contourPoints.at(i).vertexNumber << ")";
     }*/
     // -----
     vectorImage->setSelected(contourPoints, true);
@@ -2170,7 +2160,7 @@ void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb target
                         {
                             closedPath.prepend(tree.at(pathIndex));
                         }
-						BezierArea newArea = BezierArea(closedPath, m_pEditor->colorManager()->frontColorNumber() );
+                        BezierArea newArea = BezierArea(closedPath, m_pEditor->colorManager()->frontColorNumber() );
                         vectorImage->updateArea(newArea);
                         if (newArea.path.contains(initialPoint))
                         {
@@ -2204,12 +2194,12 @@ void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb target
 
     // -- debug --- (display tree)
     /*for(int indexm=0; indexm < tree.size(); indexm++) {
-        qDebug() << indexm  << ") " << tree.at(indexm).curveNumber << "," << tree.at(indexm).vertexNumber << " -> " << fatherNode.at(indexm);
-        //if (leaves.contains(indexm)) vectorImage->setSelected( tree.at(indexm), true);
-        vectorImage->setSelected( tree.at(indexm), true);
-        update();
-        //sleep( 1 );
-        QMessageBox::warning(this, tr("My Application"), tr("all the tree points"), QMessageBox::Ok, QMessageBox::Ok);
+    qDebug() << indexm  << ") " << tree.at(indexm).curveNumber << "," << tree.at(indexm).vertexNumber << " -> " << fatherNode.at(indexm);
+    //if (leaves.contains(indexm)) vectorImage->setSelected( tree.at(indexm), true);
+    vectorImage->setSelected( tree.at(indexm), true);
+    update();
+    //sleep( 1 );
+    QMessageBox::warning(this, tr("My Application"), tr("all the tree points"), QMessageBox::Ok, QMessageBox::Ok);
     }*/
     delete targetImage;
     update();
@@ -2220,8 +2210,8 @@ void ScribbleArea::floodFillError(int errorType)
     QString message, error;
     if (errorType == 1) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
     if (errorType == 2 || errorType == 3) message = "Sorry! This doesn't always work."
-                "Please try again (zoom a bit, click at another location... )<br>"
-                "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+        "Please try again (zoom a bit, click at another location... )<br>"
+        "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
 
     if (errorType == 1) { error = "Out of bound."; }
     if (errorType == 2) { error = "Could not find a closed path."; }
@@ -2263,7 +2253,7 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         if (currentTool()->type() == POLYLINE)
         {
             escape();
-        }        
+        }
     }
     m_currentTool = getTool(eToolMode);
 
@@ -2408,7 +2398,6 @@ void ScribbleArea::toggleShowAllLayers()
     setView(myView);
     updateAllFrames();
 }
-
 
 void ScribbleArea::setPrevTool()
 {

@@ -14,7 +14,6 @@
 
 #include "penciltool.h"
 
-
 PencilTool::PencilTool(QObject *parent) :
     StrokeTool(parent)
 {
@@ -29,7 +28,7 @@ void PencilTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
 
-    properties.width = settings.value("pencilWidth").toDouble();    
+    properties.width = settings.value("pencilWidth").toDouble();
     properties.feather = -1;
     properties.opacity = 0.8;
     properties.pressure = 1;
@@ -47,14 +46,14 @@ QCursor PencilTool::cursor()
 {
     if (isAdjusting) // being dynamically resized
     {
-         return QCursor(circleCursors()); // two circles cursor
+        return QCursor(circleCursors()); // two circles cursor
     }
+
     if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
     return Qt::CrossCursor;
-
 }
 
 void PencilTool::mousePressEvent(QMouseEvent *event)
@@ -113,7 +112,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setFeather(0);
             curve.setInvisibility(true);
             curve.setVariableWidth(false);
-			curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+            curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
             VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
@@ -162,17 +161,16 @@ void PencilTool::drawStroke()
         }
 
         if (p.size() == 4) {
-
-//            qDebug() << p;
+            //            qDebug() << p;
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
-                    p[2],
-                    p[3]);
+                p[2],
+                p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
 
-            if (false) 
-			{
+            if (false)
+            {
                 QRectF rect(p[0], size);
 
                 QPen penBlue(Qt::blue);
@@ -193,10 +191,10 @@ void PencilTool::drawStroke()
     else if (layer->type == Layer::VECTOR)
     {
         QPen pen(m_pEditor->colorManager()->frontColor(),
-                 1, 
-                 Qt::DotLine, 
-                 Qt::RoundCap, 
-                 Qt::RoundJoin);
+            1,
+            Qt::DotLine,
+            Qt::RoundCap,
+            Qt::RoundJoin);
 
         rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->getTempViewScaleX()));
 
@@ -204,11 +202,10 @@ void PencilTool::drawStroke()
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
-                    p[2],
-                    p[3]);
+                p[2],
+                p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }
-
