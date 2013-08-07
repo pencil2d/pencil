@@ -98,5 +98,6 @@ enum ToolPropertyType
 
 // Settings Group/Key Name
 #define SHORTCUTS_GROUP "shortcuts"
+#define SETTING_TOOL_CURSOR "toolCursors"
 
 #endif // PENCILDEF_H

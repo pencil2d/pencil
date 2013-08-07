@@ -53,7 +53,7 @@ QCursor EraserTool::cursor()
     {
         return QCursor(circleCursors()); // two circles cursor
     }
-    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
     {
         return QCursor(circleCursors());
     }

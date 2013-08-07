@@ -53,7 +53,7 @@ QCursor BrushTool::cursor()
     {
         return QCursor(circleCursors()); // two circles cursor
     }
-    if ( pencilSettings()->value( kSettingToolCursor ).toBool() ) // doesn't need else
+    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() ) // doesn't need else
     {
         return QCursor(QPixmap(":icons/brush.png"), 0, 13);
     }

@@ -358,7 +358,7 @@ void ScribbleArea::setShadows(int x)
 
 void ScribbleArea::setToolCursors(int x)
 {
-    pencilSettings()->setValue(kSettingToolCursor, (x != 0));
+    pencilSettings()->setValue(SETTING_TOOL_CURSOR, (x != 0));
 }
 
 void ScribbleArea::setStyle(int x)
