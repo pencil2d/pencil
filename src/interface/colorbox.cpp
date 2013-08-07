@@ -1,11 +1,10 @@
-
 #include <QVBoxLayout>
 #include "colorwheel.h"
 #include "colorinspector.h"
 #include "colorbox.h"
 
 ColorBox::ColorBox(QWidget *parent) :
-    QWidget(parent) 
+    QWidget(parent)
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
@@ -14,14 +13,14 @@ ColorBox::ColorBox(QWidget *parent) :
 
     layout->addWidget(m_colorWheel);
     layout->addWidget(m_colorInspector);
-    
+
     setLayout(layout);
 
     connect(m_colorWheel, SIGNAL(colorChanged(QColor)),
-            this, SLOT(onWheelChange(QColor)));
+        this, SLOT(onWheelChange(QColor)));
 
     connect(m_colorInspector, SIGNAL(colorChanged(QColor)),
-            this, SLOT(onSpinboxChange(QColor)));
+        this, SLOT(onSpinboxChange(QColor)));
 
     m_colorWheel->setColor(Qt::black);
     m_colorInspector->setColor(Qt::black);

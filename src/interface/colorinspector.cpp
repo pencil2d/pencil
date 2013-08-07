@@ -12,13 +12,13 @@ ColorInspector::ColorInspector(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->RedspinBox, SIGNAL(valueChanged(int)),
-            this, SLOT(onColorChanged()));
+        this, SLOT(onColorChanged()));
     connect(ui->GreenspinBox, SIGNAL(valueChanged(int)),
-            this, SLOT(onColorChanged()));
+        this, SLOT(onColorChanged()));
     connect(ui->BluespinBox, SIGNAL(valueChanged(int)),
-            this, SLOT(onColorChanged()));
+        this, SLOT(onColorChanged()));
     connect(ui->rgb, SIGNAL(toggled(bool)),
-            this, SLOT(onModeChanged()));
+        this, SLOT(onModeChanged()));
 }
 
 ColorInspector::~ColorInspector()
@@ -114,21 +114,20 @@ void ColorInspector::onColorChanged()
     QColor c;
     if(isRgbColors){
         c = QColor::fromRgb(ui->RedspinBox->value(),
-                            ui->GreenspinBox->value(),
-                            ui->BluespinBox->value()
-                            );
-
+            ui->GreenspinBox->value(),
+            ui->BluespinBox->value()
+            );
     }else{
         c = QColor::fromHsvF(qBound(0.0,
-                                    ui->RedspinBox->value()/359.0,
-                                    1.0),
-                             qBound(0.0,
-                                    ui->GreenspinBox->value()/100.0,
-                                    1.0),
-                             qBound(0.0,
-                                    ui->BluespinBox->value()/100.0,
-                                    1.0)
-                             );
+            ui->RedspinBox->value()/359.0,
+            1.0),
+            qBound(0.0,
+            ui->GreenspinBox->value()/100.0,
+            1.0),
+            qBound(0.0,
+            ui->BluespinBox->value()/100.0,
+            1.0)
+            );
     }
 
     m_color = c;
