@@ -32,7 +32,7 @@ void EyedropperTool::loadSettings()
 
 QCursor EyedropperTool::cursor()
 {
-    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
     {
         return QCursor(QPixmap(":icons/eyedropper.png"), 0, 15);
     } else {
@@ -56,7 +56,6 @@ QCursor EyedropperTool::cursor(const QColor colour)
 
     return QCursor(pixmap, 0, 15);
 }
-
 
 void EyedropperTool::mousePressEvent(QMouseEvent *event)
 {
@@ -85,7 +84,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
             int colourNumber = vectorImage->getColourNumber(getLastPoint());
             if (colourNumber != -1)
             {
-				m_pEditor->colorManager()->pickColorNumber(colourNumber);
+                m_pEditor->colorManager()->pickColorNumber(colourNumber);
             }
         }
     }
@@ -109,7 +108,7 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
             {
                 m_pScribbleArea->setCursor(cursor(pickedColour));
             }
-            else 
+            else
             {
                 m_pScribbleArea->setCursor(cursor());
             }
@@ -126,8 +125,8 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
         if (colourNumber != -1)
         {
             m_pScribbleArea->setCursor(cursor(m_pEditor->object->getColour(colourNumber).colour));
-        } 
-        else 
+        }
+        else
         {
             m_pScribbleArea->setCursor(cursor());
         }

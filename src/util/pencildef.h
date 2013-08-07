@@ -96,4 +96,8 @@ enum ToolPropertyType
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
 #define CMD_HELP "CmdHelp"
 
+// Settings Group/Key Name
+#define SHORTCUTS_GROUP "shortcuts"
+#define SETTING_TOOL_CURSOR "toolCursors"
+
 #endif // PENCILDEF_H

@@ -5,17 +5,10 @@
 #include <QSettings>
 #include "pencildef.h"
 
-
 QSettings* pencilSettings();
 void restoreToDefaultSetting();
 
 void restoreShortcutsToDefault();
 void checkExistingShortcuts();
-
-// Setting Keys
-#define kSettingToolCursor "toolCursors"
-
-
-
 
 #endif // PENCILSETTINGS_H
