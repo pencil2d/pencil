@@ -148,7 +148,7 @@ void ScribbleArea::resetTools()
 {
     // Reset can be useful to solve some pencil settings problems.
     // Betatesters should be recommended to reset before sending tool related issues.
-    // This can prevent from users to keep working on their project.
+    // This can prevent from users to stop working on their project.
     getTool( PEN )->properties.width = 2.0; // Default property values are a bit arbitrary
     getTool( PENCIL )->properties.width = 1.0; // so don't hesitate to refined them.
     getTool( ERASER )->properties.width = 10.0;
