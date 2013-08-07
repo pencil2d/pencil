@@ -144,12 +144,16 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
 void ScribbleArea::resetTools()
 {
-    qDebug() << "reset tools";
-    getTool( PEN )->properties.width = 2.0;
-    getTool( PENCIL )->properties.width = 1.0;
+    // Reset can be useful to solve some pencil settings problems.
+    // Betatesters should be recommended to reset before sending tool related issues.
+    // This can prevent from users to keep working on their project.
+    getTool( PEN )->properties.width = 2.0; // Default property values are a bit arbitrary
+    getTool( PENCIL )->properties.width = 1.0; // so don't hesitate to refined them.
     getTool( ERASER )->properties.width = 10.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
+    pencilSettings()->setValue(kSettingToolCursor, true);
+    // todo: add all the default settings
 }
 
 void ScribbleArea::setWidth(const qreal newWidth)
@@ -182,6 +186,8 @@ void ScribbleArea::setWidth(const qreal newWidth)
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
+    qDebug() << "fn: setWidth " << "call: setCursor()" << "current tool" << currentTool()->typeName();
+
 }
 
 void ScribbleArea::setFeather(const qreal newFeather)
@@ -209,6 +215,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
+    qDebug() << "fn: setFeather " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setOpacity(const qreal newOpacity)
@@ -2258,7 +2265,8 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     m_currentTool = getTool(eToolMode);
 
     // --- change cursor ---
-    setCursor(currentTool()->cursor());
+    setCursor(m_currentTool->cursor());
+    qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setTemporaryTool(ToolType eToolMode)
