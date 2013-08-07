@@ -46,7 +46,7 @@ QCursor PencilTool::cursor()
 {
     if (isAdjusting) // being dynamically resized
     {
-        return QCursor(circleCursors()); // two circles cursor
+        return circleCursors(); // two circles cursor
     }
 
     if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
