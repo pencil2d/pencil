@@ -29,7 +29,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "backupelement.h"
-
+#include "colorbox.h"
 
 class MainWindow2;
 class ColorManager;
@@ -61,6 +61,12 @@ public:
     bool sound;
     ToolSetWidget* toolSet;
 
+    //cirus
+    QWidget* m_popupColorWidget;
+    ColorBox* m_colorBox;
+    QVBoxLayout* clayout;
+    //-----
+
     TimeLine* getTimeLine();
 
     Layer* getCurrentLayer(int incr) 
@@ -87,6 +93,8 @@ public:
     int getOnionLayer3Opacity() {return onionLayer3Opacity;}
 
     void importMovie (QString filePath, int fps);
+
+    void popupColorPalette(QPoint argMousePoint); // brings palette to cursor position
 
     // backup
     int backupIndex;

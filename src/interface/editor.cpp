@@ -123,6 +123,16 @@ Editor::Editor(MainWindow2* parent)
     setTool(PENCIL);
     
     setAcceptDrops(true);
+
+    // color wheel popup
+    m_popupColorWidget = new QWidget(this);
+    m_popupColorWidget->setVisible(false);
+    //m_popupColorWidget->setPalette( QPalette( Qt::color0) );
+    m_colorBox = new ColorBox(m_popupColorWidget);
+    m_colorBox->adjustSize();
+    m_popupColorWidget->adjustSize();
+    clayout = new QVBoxLayout(m_popupColorWidget);
+    clayout->addWidget(m_colorBox);
 }
 
 TimeLine* Editor::getTimeLine()
@@ -167,6 +177,24 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
+}
+
+void Editor::popupColorPalette(QPoint argMousePoint)
+{
+    QPoint centeredPos;
+    int radius = m_popupColorWidget->width()/2;
+    if (m_popupColorWidget->isVisible())
+    {
+        mainWindow->m_colorPalette->setColor(m_colorBox->color());
+        m_popupColorWidget->setVisible(false);
+        return;
+    }
+    m_popupColorWidget->setVisible(true);
+    centeredPos.setX(argMousePoint.x()-radius);
+    centeredPos.setY(argMousePoint.y()-radius);
+
+    m_popupColorWidget->move(centeredPos);
+    m_popupColorWidget->show();
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
