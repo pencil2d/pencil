@@ -146,7 +146,7 @@ void ScribbleArea::resetTools()
 {
     // Reset can be useful to solve some pencil settings problems.
     // Betatesters should be recommended to reset before sending tool related issues.
-    // This can prevent from users to keep working on their project.
+    // This can prevent from users to stop working on their project.
     getTool( PEN )->properties.width = 2.0; // Default property values are a bit arbitrary
     getTool( PENCIL )->properties.width = 1.0; // so don't hesitate to refined them.
     getTool( ERASER )->properties.width = 10.0;
@@ -519,15 +519,23 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         return;
     }
     // ---- multiple keys ----
-    if ( event->modifiers().testFlag(Qt::ShiftModifier) && event->modifiers().testFlag(Qt::ControlModifier) ) // temp. eraser
+    if ( event->modifiers().testFlag(Qt::ControlModifier))
     {
-        qreal width = currentTool()->properties.width;
-        qreal feather = currentTool()->properties.feather;
-        setTemporaryTool( ERASER );
-        m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-        //m_pEditor->setWidth(width);
-        m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
-        return;
+        if ( event->modifiers().testFlag(Qt::ShiftModifier) ) // [SHIFT][CTRL] temp. eraser
+        {
+            qreal width = currentTool()->properties.width;
+            qreal feather = currentTool()->properties.feather;
+            setTemporaryTool( ERASER );
+            m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+            m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
+            return;
+        }
+        else if ( event->modifiers().testFlag(Qt::AltModifier) ) // [ALT][CTRL] bring color palette to cursor
+        {
+            // Another comfortable and easy to remember shortcut (can be changed though)
+            m_pEditor->popupColorPalette( globalCursorPos ); // currentMousePoint updated from mainWindow2::mouseMoveEvent()
+            return;
+        }
     }
     // ---- single keys ----
     switch (event->key())
@@ -854,6 +862,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     currentPixel = m_strokeManager->getCurrentPixel();
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
+    globalCursorPos = mapTo(m_pEditor, event->pos());
 
     // the user is also pressing the mouse (= dragging)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
