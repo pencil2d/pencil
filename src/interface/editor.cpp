@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "colormanager.h"
 #include "colorpalettewidget.h"
+#include "popupcolorpalettewidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -123,6 +124,9 @@ Editor::Editor(MainWindow2* parent)
     setTool(PENCIL);
     
     setAcceptDrops(true);
+
+    // color wheel popup
+    m_popupColorWidget = new PopupColorPaletteWidget(this);
 }
 
 TimeLine* Editor::getTimeLine()
@@ -167,6 +171,42 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
+}
+
+void Editor::popupColorPalette(QPoint argMousePoint)
+{
+    QPoint centeredPos;
+    int w = m_popupColorWidget->width();
+    int h = m_popupColorWidget->height();
+    int radius = w/2;
+
+    if (m_popupColorWidget->isVisible())
+    {
+        mainWindow->m_colorPalette->setColor(m_popupColorWidget->m_colorBox->color());
+        m_popupColorWidget->setVisible(false);
+        return;
+    }
+    centeredPos.setX(argMousePoint.x()-radius);
+    centeredPos.setY(argMousePoint.y()-radius);
+
+    if ( centeredPos.x()<2 )
+    {
+        centeredPos.setX(2);
+    }
+    else if ( centeredPos.x()+ w > width()-7)
+    {
+        centeredPos.setX( width()-w-7 );
+    }
+    if ( centeredPos.y()<2 )
+    {
+        centeredPos.setY(2);
+    }
+    else if ( centeredPos.y()+ h > height()-7)
+    {
+        centeredPos.setY( height()-h-7 );
+    }
+    m_popupColorWidget->move(centeredPos);
+    m_popupColorWidget->show();
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
