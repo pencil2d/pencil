@@ -29,11 +29,11 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "backupelement.h"
-
+#include "colorbox.h"
 
 class MainWindow2;
 class ColorManager;
-
+class PopupColorPaletteWidget;
 
 class Editor : public QWidget
 {
@@ -61,6 +61,8 @@ public:
     bool sound;
     ToolSetWidget* toolSet;
 
+    PopupColorPaletteWidget* m_popupColorWidget; // color palette popup
+
     TimeLine* getTimeLine();
 
     Layer* getCurrentLayer(int incr) 
@@ -87,6 +89,8 @@ public:
     int getOnionLayer3Opacity() {return onionLayer3Opacity;}
 
     void importMovie (QString filePath, int fps);
+
+    void popupColorPalette(QPoint argMousePoint); // brings palette to cursor position
 
     // backup
     int backupIndex;
