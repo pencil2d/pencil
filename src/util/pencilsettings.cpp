@@ -50,6 +50,7 @@ void checkExistingShortcuts()
     }
 
     pencilSettings()->beginGroup(SHORTCUTS_GROUP);
+    defaultKey.beginGroup(SHORTCUTS_GROUP);
     foreach (QString pKey, pencilSettings()->allKeys())
     {
         if ( !defaultKey.contains(pKey) )
@@ -57,6 +58,7 @@ void checkExistingShortcuts()
             pencilSettings()->remove(pKey);
         }
     }
+    defaultKey.endGroup();
     pencilSettings()->endGroup();
     pencilSettings()->sync();
 }
