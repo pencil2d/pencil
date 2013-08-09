@@ -33,7 +33,7 @@ GNU General Public License for more details.
 
 class MainWindow2;
 class ColorManager;
-
+class PopupColorPaletteWidget;
 
 class Editor : public QWidget
 {
@@ -61,11 +61,7 @@ public:
     bool sound;
     ToolSetWidget* toolSet;
 
-    //cirus
-    QWidget* m_popupColorWidget;
-    ColorBox* m_colorBox;
-    QVBoxLayout* clayout;
-    //-----
+    PopupColorPaletteWidget* m_popupColorWidget; // color palette popup
 
     TimeLine* getTimeLine();
 

@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "colormanager.h"
 #include "colorpalettewidget.h"
+#include "popupcolorpalettewidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -125,14 +126,7 @@ Editor::Editor(MainWindow2* parent)
     setAcceptDrops(true);
 
     // color wheel popup
-    m_popupColorWidget = new QWidget(this);
-    m_popupColorWidget->setVisible(false);
-    //m_popupColorWidget->setPalette( QPalette( Qt::color0) );
-    m_colorBox = new ColorBox(m_popupColorWidget);
-    m_colorBox->adjustSize();
-    m_popupColorWidget->adjustSize();
-    clayout = new QVBoxLayout(m_popupColorWidget);
-    clayout->addWidget(m_colorBox);
+    m_popupColorWidget = new PopupColorPaletteWidget(this);
 }
 
 TimeLine* Editor::getTimeLine()
@@ -185,11 +179,10 @@ void Editor::popupColorPalette(QPoint argMousePoint)
     int radius = m_popupColorWidget->width()/2;
     if (m_popupColorWidget->isVisible())
     {
-        mainWindow->m_colorPalette->setColor(m_colorBox->color());
+        mainWindow->m_colorPalette->setColor(m_popupColorWidget->m_colorBox->color());
         m_popupColorWidget->setVisible(false);
         return;
     }
-    m_popupColorWidget->setVisible(true);
     centeredPos.setX(argMousePoint.x()-radius);
     centeredPos.setY(argMousePoint.y()-radius);
 
