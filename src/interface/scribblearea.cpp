@@ -188,7 +188,7 @@ void ScribbleArea::setWidth(const qreal newWidth)
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
-    qDebug() << "fn: setWidth " << "call: setCursor()" << "current tool" << currentTool()->typeName();
+    //qDebug() << "fn: setWidth " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 
 }
 
@@ -217,7 +217,7 @@ void ScribbleArea::setFeather(const qreal newFeather)
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
-    qDebug() << "fn: setFeather " << "call: setCursor()" << "current tool" << currentTool()->typeName();
+    //qDebug() << "fn: setFeather " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setOpacity(const qreal newOpacity)

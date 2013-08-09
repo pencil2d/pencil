@@ -1,3 +1,4 @@
+#include <QtGui>
 #include "colorbox.h"
 #include "popupcolorpalettewidget.h"
 
@@ -12,6 +13,12 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
     m_colorBox->adjustSize();
     clayout->addWidget(m_colorBox);
     adjustSize();
-    this->setWindowOpacity(0.5);
+    setWindowOpacity(0.5);
+    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
+    effect->setXOffset(2);
+    effect->setYOffset(2);
+    effect->setBlurRadius(5);
+    setGraphicsEffect(effect);
+
 }
 
