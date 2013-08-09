@@ -188,21 +188,22 @@ void Editor::popupColorPalette(QPoint argMousePoint)
     }
     centeredPos.setX(argMousePoint.x()-radius);
     centeredPos.setY(argMousePoint.y()-radius);
-    if ( centeredPos.x()<-5 )
+
+    if ( centeredPos.x()<2 )
     {
-        centeredPos.setX(-5);
+        centeredPos.setX(2);
     }
-    else if ( centeredPos.x()+ w > width()+5)
+    else if ( centeredPos.x()+ w > width()-7)
     {
-        centeredPos.setX( width()-w+5 );
+        centeredPos.setX( width()-w-7 );
     }
-    if ( centeredPos.y()<-5 )
+    if ( centeredPos.y()<2 )
     {
-        centeredPos.setY(-5);
+        centeredPos.setY(2);
     }
-    else if ( centeredPos.y()+ h > height()+5)
+    else if ( centeredPos.y()+ h > height()-7)
     {
-        centeredPos.setY( height()-h+5 );
+        centeredPos.setY( height()-h-7 );
     }
     m_popupColorWidget->move(centeredPos);
     m_popupColorWidget->show();
