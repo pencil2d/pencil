@@ -1,17 +1,17 @@
 #include <QtGui>
+#include <QBoxLayout>
 #include "colorbox.h"
 #include "popupcolorpalettewidget.h"
 
 PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
     QWidget ( parent )
 {
-    QVBoxLayout *clayout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
     setVisible(false);
-    //m_popupColorWidget->setPalette( QPalette( Qt::color0) );
     m_colorBox = new ColorBox(this);
     m_colorBox->adjustSize();
-    clayout->addWidget(m_colorBox);
+    layout->addWidget(m_colorBox);
     adjustSize();
     setWindowOpacity(0.5);
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
@@ -19,6 +19,7 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
     effect->setYOffset(2);
     effect->setBlurRadius(5);
     setGraphicsEffect(effect);
+    setAutoFillBackground(true);
 
 }
 
