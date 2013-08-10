@@ -1,3 +1,6 @@
+
+#include "pencildef.h"
+#include "JlCompress.h"
 #include "object.h"
 #include "objectsaveloader.h"
 
@@ -6,16 +9,55 @@ ObjectSaveLoader::ObjectSaveLoader(QObject *parent) :
 {
 }
 
-Object* ObjectSaveLoader::load(QString strFilename)
+Object* ObjectSaveLoader::loadFile(QString strFilename, PencilError* error)
 {
-    // ---- test before opening ----
-    QScopedPointer<QFile> file(new QFile(strFilename));
+    Q_ASSERT_X(error != NULL, "loadFile()", "error is NULL!");
 
-    if (!file->open(QFile::ReadOnly))
+    // ---- test before opening ----
+
+    QFileInfo fileInfo(strFilename);
+
+    if ( !fileInfo.exists() )
     {
+        error->message = tr("File doesn't exist.");
         return NULL;
     }
 
+    QString workDirectory;
+
+    if ( fileInfo.suffix() == "pclx" )
+    {
+
+        // decompress file
+        QString strTmpFilePath = QDir::homePath() + "/" + fileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT;
+
+        QDir dir(QDir::tempPath());
+        if (dir.exists())
+        {
+            dir.rmpath(strTmpFilePath); // --removes an old decompression directory
+        }
+        dir.mkpath(strTmpFilePath); // --creates a new decompression directory
+
+        workDirectory = strTmpFilePath;
+    }
+    else if ( fileInfo.suffix() == "pcl" )
+    {
+        //workDirectory =
+    }
+    else
+    {
+
+    }
+
+    QScopedPointer<QFile> file(new QFile(strFilename));
+
+    if ( !file->open(QFile::ReadOnly) )
+    {
+        error->message = tr("Cannot open file.");
+        return NULL;
+    }
+
+    /*
     QDomDocument doc;
     if (!doc.setContent(file.data()))
     {
@@ -29,12 +71,12 @@ Object* ObjectSaveLoader::load(QString strFilename)
 
     // -----------------------------
 
-    QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
 
-    //QSettings settings("Pencil","Pencil");
-    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
+    //QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
+    //progress.setWindowModality(Qt::WindowModal);
+    //progress.show();
+
+    emit loadingProgressUpdated( 0.0f );
 
     Object* newObject = new Object();
     if (!newObject->loadPalette(filePath+".data"))
@@ -106,11 +148,11 @@ Object* ObjectSaveLoader::load(QString strFilename)
     }
 
     progress.setValue(100);
-
+    */
     return NULL;
 }
 
-bool ObjectSaveLoader::save(Object* object, QString strFileName)
+bool ObjectSaveLoader::saveFile(Object* object, QString strFileName, PencilError* error)
 {
     Q_UNUSED(object);
     Q_UNUSED(strFileName);
