@@ -697,6 +697,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     m_strokeManager->tabletEvent(event);
 
+    //qDebug() << event->hiResGlobalPos();
     currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
         event->pointerType() == QTabletEvent::Cursor);
 
