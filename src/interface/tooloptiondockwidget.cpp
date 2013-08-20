@@ -38,10 +38,11 @@ void ToolOptionDockWidget::createUI()
 
     sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
     sizeSlider->setValue(settings.value("pencilWidth").toDouble());
-    sizeSlider->setToolTip("Set Pen Width");
+    sizeSlider->setToolTip("Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment");
 
     featherSlider = new SpinSlider("Feather", "log", "real", 0.2, 200.0, this);
     featherSlider->setValue(settings.value("pencilFeather").toDouble());
+    featherSlider->setToolTip("Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment");
 
     //opacitySlider = new SpinSlider("Opacity", "linear", "real", 0.0, 1.0, this);
     //opacitySlider->setValue(settings.value("pencilOpacity").toDouble());
