@@ -11,8 +11,13 @@ class PopupColorPaletteWidget : public QWidget
 
 public:
     PopupColorPaletteWidget( QWidget *parent = 0 );
-    ColorBox* m_colorBox;
+    QColor color;
+    bool popup();
 
+protected:
+    QWidget* m_container; // the editor, here
+    ColorBox* m_colorBox;
+    void keyPressEvent(QKeyEvent *event);
 };
 
 #endif // POPUPCOLORPALETTEWIDGET_H

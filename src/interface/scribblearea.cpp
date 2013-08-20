@@ -533,7 +533,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         else if ( event->modifiers().testFlag(Qt::AltModifier) ) // [ALT][CTRL] bring color palette to cursor
         {
             // Another comfortable and easy to remember shortcut (can be changed though)
-            m_pEditor->popupColorPalette( globalCursorPos ); // currentMousePoint updated from mainWindow2::mouseMoveEvent()
+            m_pEditor->popupColorPalette(); // currentMousePoint updated from mainWindow2::mouseMoveEvent()
             return;
         }
     }
@@ -862,7 +862,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     currentPixel = m_strokeManager->getCurrentPixel();
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
-    globalCursorPos = mapTo(m_pEditor, event->pos());
 
     // the user is also pressing the mouse (= dragging)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)
