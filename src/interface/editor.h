@@ -90,7 +90,7 @@ public:
 
     void importMovie (QString filePath, int fps);
 
-    void popupColorPalette(QPoint argMousePoint); // brings palette to cursor position
+    void popupColorPalette(); // brings palette to cursor position
 
     // backup
     int backupIndex;

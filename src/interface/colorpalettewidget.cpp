@@ -56,7 +56,7 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
 
     m_colorBox = new ColorBox(this);
 
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout();
     layout->addWidget(m_colorBox);
     layout->addWidget(buttons);
     layout->addWidget(m_colorListView);
