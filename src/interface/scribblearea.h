@@ -254,7 +254,6 @@ protected:
     bool mouseInUse;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
-    QPoint globalCursorPos; // absolute cursor pos
     //QBrush brush; // the current brush
 
     qreal tol;

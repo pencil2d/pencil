@@ -126,7 +126,7 @@ Editor::Editor(MainWindow2* parent)
     setAcceptDrops(true);
 
     // color wheel popup
-    m_popupColorWidget = new PopupColorPaletteWidget(this);
+    m_popupColorWidget = new PopupColorPaletteWidget(this->scribbleArea);
 }
 
 TimeLine* Editor::getTimeLine()
@@ -173,9 +173,10 @@ void Editor::makeConnections()
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
 
-void Editor::popupColorPalette(QPoint argMousePoint)
+/*
+void Editor::popupColorPalette()
 {
-    QPoint centeredPos;
+    QPoint cPos = this->mapFromGlobal(QCursor::pos()); // cursor position to local
     int w = m_popupColorWidget->width();
     int h = m_popupColorWidget->height();
     int radius = w/2;
@@ -186,27 +187,38 @@ void Editor::popupColorPalette(QPoint argMousePoint)
         m_popupColorWidget->setVisible(false);
         return;
     }
-    centeredPos.setX(argMousePoint.x()-radius);
-    centeredPos.setY(argMousePoint.y()-radius);
 
-    if ( centeredPos.x()<2 )
+    cPos.setX(cPos.x()-radius); // adjust cPos to center widget
+    cPos.setY(cPos.y()-radius);
+
+    if ( cPos.x()<2 )
     {
-        centeredPos.setX(2);
+        cPos.setX(2);
     }
-    else if ( centeredPos.x()+ w > width()-7)
+    else if ( cPos.x()+ w > width()-7)
     {
-        centeredPos.setX( width()-w-7 );
+        cPos.setX( width()-w-7 );
     }
-    if ( centeredPos.y()<2 )
+    if ( cPos.y()<2 )
     {
-        centeredPos.setY(2);
+        cPos.setY(2);
     }
-    else if ( centeredPos.y()+ h > height()-7)
+    else if ( cPos.y()+ h > height()-7)
     {
-        centeredPos.setY( height()-h-7 );
+        cPos.setY( height()-h-7 );
     }
-    m_popupColorWidget->move(centeredPos);
+    m_popupColorWidget->move(cPos);
     m_popupColorWidget->show();
+
+}
+*/
+
+void Editor::popupColorPalette()
+{
+    if (m_popupColorWidget->popup())
+    {
+        mainWindow->m_colorPalette->setColor(m_popupColorWidget->color);
+    }
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
