@@ -110,6 +110,8 @@ public:
 
     StrokeManager *getStrokeManager() const { return m_strokeManager; }
 
+    void keyPressed(QKeyEvent *event);
+
 signals:
     void modification();
     void modification(int);

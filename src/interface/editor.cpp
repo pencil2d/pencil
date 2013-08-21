@@ -181,6 +181,11 @@ void Editor::popupColorPalette()
     }
 }
 
+void Editor::keyPressEvent(QKeyEvent *event)
+{
+    scribbleArea->keyPressed( event );
+}
+
 void Editor::dragEnterEvent(QDragEnterEvent* event)
 {
     event->acceptProposedAction();

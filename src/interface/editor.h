@@ -99,6 +99,7 @@ public:
     ScribbleArea* getScribbleArea() { return scribbleArea; }
 
 protected:
+    void keyPressEvent(QKeyEvent *event);
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     QRect viewRect;

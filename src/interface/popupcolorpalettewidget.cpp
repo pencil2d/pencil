@@ -3,8 +3,8 @@
 #include "colorbox.h"
 #include "popupcolorpalettewidget.h"
 
-PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
-    QWidget ( parent ),
+PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
+    QWidget ( parent, Qt::Window ),
     m_container ( parent )
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -13,14 +13,13 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
     m_colorBox->adjustSize();
     layout->addWidget(m_colorBox);
     adjustSize();
-    setWindowOpacity(0.5);
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setXOffset(2);
     effect->setYOffset(2);
     effect->setBlurRadius(5);
     setGraphicsEffect(effect);
     setAutoFillBackground(true);
-
+    setWindowTitle("Color palette");
 }
 
 bool PopupColorPaletteWidget::popup()
@@ -31,7 +30,7 @@ bool PopupColorPaletteWidget::popup()
         hide();
         return true;
     }
-    QPoint cPos = m_container->mapFromGlobal(QCursor::pos()); // cursor position to local
+    QPoint cPos = QCursor::pos();
     int w = width();
     int h = height();
     int radius = w/2;
@@ -62,6 +61,6 @@ bool PopupColorPaletteWidget::popup()
 
 void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 {
-    QWidget::keyPressEvent( event );
+    m_container->keyPressed( event );
 }
 

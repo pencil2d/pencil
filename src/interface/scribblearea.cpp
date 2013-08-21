@@ -135,7 +135,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     //setAutoFillBackground (false);
     //setAttribute(Qt::WA_OpaquePaintEvent, false);
     //setAttribute(Qt::WA_NoSystemBackground, true);
-
     updateAll = false;
 }
 
@@ -512,6 +511,11 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
+    keyPressed( event );
+}
+
+void ScribbleArea::keyPressed(QKeyEvent *event)
+{
     keyboardInUse = true;
     if (mouseInUse) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
     if (currentTool()->keyPressEvent(event)) {
@@ -530,12 +534,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
             return;
         }
-        else if ( event->modifiers().testFlag(Qt::AltModifier) ) // [ALT][CTRL] bring color palette to cursor
-        {
-            // Another comfortable and easy to remember shortcut (can be changed though)
-            m_pEditor->popupColorPalette(); // currentMousePoint updated from mainWindow2::mouseMoveEvent()
-            return;
-        }
+        // more combinations here
     }
     // ---- single keys ----
     switch (event->key())
@@ -639,6 +638,9 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Space:
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
         break;
+    case Qt::Key_C:
+        m_pEditor->popupColorPalette(); // switches widget visibility just under the cursor
+        return;
     default:
         event->ignore();
     }

@@ -2,6 +2,7 @@
 #define POPUPCOLORPALETTEWIDGET_H
 
 #include <QWidget>
+#include "editor.h"
 
 class ColorBox;
 
@@ -10,12 +11,12 @@ class PopupColorPaletteWidget : public QWidget
   Q_OBJECT
 
 public:
-    PopupColorPaletteWidget( QWidget *parent = 0 );
+    PopupColorPaletteWidget( ScribbleArea *parent = 0 );
     QColor color;
     bool popup();
 
 protected:
-    QWidget* m_container; // the editor, here
+    ScribbleArea* m_container;
     ColorBox* m_colorBox;
     void keyPressEvent(QKeyEvent *event);
 };
