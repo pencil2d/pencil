@@ -173,46 +173,6 @@ void Editor::makeConnections()
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
 
-/*
-void Editor::popupColorPalette()
-{
-    QPoint cPos = this->mapFromGlobal(QCursor::pos()); // cursor position to local
-    int w = m_popupColorWidget->width();
-    int h = m_popupColorWidget->height();
-    int radius = w/2;
-
-    if (m_popupColorWidget->isVisible())
-    {
-        mainWindow->m_colorPalette->setColor(m_popupColorWidget->m_colorBox->color());
-        m_popupColorWidget->setVisible(false);
-        return;
-    }
-
-    cPos.setX(cPos.x()-radius); // adjust cPos to center widget
-    cPos.setY(cPos.y()-radius);
-
-    if ( cPos.x()<2 )
-    {
-        cPos.setX(2);
-    }
-    else if ( cPos.x()+ w > width()-7)
-    {
-        cPos.setX( width()-w-7 );
-    }
-    if ( cPos.y()<2 )
-    {
-        cPos.setY(2);
-    }
-    else if ( cPos.y()+ h > height()-7)
-    {
-        cPos.setY( height()-h-7 );
-    }
-    m_popupColorWidget->move(cPos);
-    m_popupColorWidget->show();
-
-}
-*/
-
 void Editor::popupColorPalette()
 {
     if (m_popupColorWidget->popup())

@@ -27,13 +27,11 @@ bool PopupColorPaletteWidget::popup()
 {
     if ( this->isVisible() )
     {
-        //mainWindow->m_colorPalette->setColor(m_colorBox->color());
         this->color = m_colorBox->color();
         hide();
         return true;
     }
     QPoint cPos = m_container->mapFromGlobal(QCursor::pos()); // cursor position to local
-    //QPoint cPos = QCursor::pos() - m_container->pos();
     int w = width();
     int h = height();
     int radius = w/2;
@@ -64,7 +62,6 @@ bool PopupColorPaletteWidget::popup()
 
 void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 {
-    //event->ignore();
     QWidget::keyPressEvent( event );
 }
 
