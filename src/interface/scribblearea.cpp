@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "polylinetool.h"
 #include "selecttool.h"
 #include "smudgetool.h"
+#include "popupcolorpalettewidget.h"
 
 #include "scribblearea.h"
 
@@ -136,6 +137,10 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     //setAttribute(Qt::WA_OpaquePaintEvent, false);
     //setAttribute(Qt::WA_NoSystemBackground, true);
     updateAll = false;
+
+    // color wheel popup
+    m_popupColorWidget = new PopupColorPaletteWidget(this);
+
 }
 
 /************************************************************************************/
@@ -501,6 +506,15 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     updateAllFrames();
 }
 
+void ScribbleArea::popupColorPalette()
+{
+    if (m_popupColorWidget->popup())
+    {
+        m_pEditor->setColor(m_popupColorWidget->color);
+    }
+}
+
+
 /************************************************************************************/
 // key event handlers
 
@@ -639,8 +653,8 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
         break;
     case Qt::Key_C:
-        m_pEditor->popupColorPalette(); // switches widget visibility just under the cursor
-        return;
+        popupColorPalette(); // switches widget visibility just under the cursor
+        break;
     default:
         event->ignore();
     }

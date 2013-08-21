@@ -31,7 +31,6 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "colormanager.h"
 #include "colorpalettewidget.h"
-#include "popupcolorpalettewidget.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -125,8 +124,6 @@ Editor::Editor(MainWindow2* parent)
     
     setAcceptDrops(true);
 
-    // color wheel popup
-    m_popupColorWidget = new PopupColorPaletteWidget(this->scribbleArea);
 }
 
 TimeLine* Editor::getTimeLine()
@@ -173,12 +170,9 @@ void Editor::makeConnections()
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
 
-void Editor::popupColorPalette()
+void Editor::setColor(QColor argColor)
 {
-    if (m_popupColorWidget->popup())
-    {
-        mainWindow->m_colorPalette->setColor(m_popupColorWidget->color);
-    }
+    mainWindow->m_colorPalette->setColor(argColor);
 }
 
 void Editor::keyPressEvent(QKeyEvent *event)

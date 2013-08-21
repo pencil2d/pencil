@@ -19,6 +19,7 @@ protected:
     ScribbleArea* m_container;
     ColorBox* m_colorBox;
     void keyPressEvent(QKeyEvent *event);
+    void closeEvent(QCloseEvent* event);
 };
 
 #endif // POPUPCOLORPALETTEWIDGET_H

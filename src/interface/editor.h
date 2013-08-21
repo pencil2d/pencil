@@ -33,7 +33,6 @@ GNU General Public License for more details.
 
 class MainWindow2;
 class ColorManager;
-class PopupColorPaletteWidget;
 
 class Editor : public QWidget
 {
@@ -60,8 +59,6 @@ public:
     bool looping;
     bool sound;
     ToolSetWidget* toolSet;
-
-    PopupColorPaletteWidget* m_popupColorWidget; // color palette popup
 
     TimeLine* getTimeLine();
 
@@ -97,6 +94,7 @@ public:
     QList<BackupElement*> backupList;
 
     ScribbleArea* getScribbleArea() { return scribbleArea; }
+    void setColor(QColor argColor);
 
 protected:
     void keyPressEvent(QKeyEvent *event);

@@ -20,16 +20,21 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     setGraphicsEffect(effect);
     setAutoFillBackground(true);
     setWindowTitle("Color palette");
+    setWindowFlags( ( (windowFlags()
+                       | Qt::CustomizeWindowHint)
+                      & ~Qt::WindowMaximizeButtonHint
+                      & ~Qt::WindowMinimizeButtonHint) );
 }
 
 bool PopupColorPaletteWidget::popup()
 {
     if ( this->isVisible() )
     {
-        this->color = m_colorBox->color();
+        color = m_colorBox->color();
         hide();
         return true;
     }
+    m_colorBox->setFocus();
     QPoint cPos = QCursor::pos();
     int w = width();
     int h = height();
@@ -61,6 +66,15 @@ bool PopupColorPaletteWidget::popup()
 
 void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 {
+    if (event->key()==Qt::Key_Enter) {
+        m_colorBox->setFocus();
+        return;
+    }
     m_container->keyPressed( event );
 }
 
+void PopupColorPaletteWidget::closeEvent(QCloseEvent* event)
+{
+    m_container->popupColorPalette();
+    event->ignore(); // delegates close to popup() function
+}
