@@ -38,11 +38,11 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     moveButton = newToolButton(QIcon(":icons/arrow.png"), "Move Tool <b>(Q)</b>: Move an object");
     handButton = newToolButton(QIcon(":icons/hand.png"), "Hand Tool <b>(H)</b>: Move the canvas");
     penButton = newToolButton(QIcon(":icons/pen.png"), "Pen Tool <b>(P)</b>: Sketch with pen");
-    eraserButton = newToolButton(QIcon(":icons/eraser.png"), "Eraser Tool <b>(E)</b>: Erase");
+    eraserButton = newToolButton(QIcon(":icons/eraser.png"), "Eraser Tool <b>(E)</b>: Erase<br><b>(C)</b>: switches mobile palette");
     polylineButton = newToolButton(QIcon(":icons/polyline.png"), "Polyline Tool <b>(Y)</b>: Create line/curves");
     bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
     colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
-    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage");
+    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access");
     clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame");
     smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>: Edit polyline/curves");
 

@@ -32,7 +32,7 @@ class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
-
+class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
 {
@@ -109,6 +109,11 @@ public:
     QPointF pixelToPoint(QPointF pixel);
 
     StrokeManager *getStrokeManager() const { return m_strokeManager; }
+
+    PopupColorPaletteWidget* m_popupColorWidget; // color palette popup
+    void popupColorPalette();
+
+    void keyPressed(QKeyEvent *event);
 
 signals:
     void modification();

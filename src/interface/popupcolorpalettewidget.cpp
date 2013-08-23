@@ -3,8 +3,8 @@
 #include "colorbox.h"
 #include "popupcolorpalettewidget.h"
 
-PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
-    QWidget ( parent ),
+PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
+    QWidget ( parent, Qt::Window ),
     m_container ( parent )
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -13,27 +13,29 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( QWidget *parent ) :
     m_colorBox->adjustSize();
     layout->addWidget(m_colorBox);
     adjustSize();
-    setWindowOpacity(0.5);
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setXOffset(2);
     effect->setYOffset(2);
     effect->setBlurRadius(5);
     setGraphicsEffect(effect);
     setAutoFillBackground(true);
-
+    setWindowTitle("Color palette");
+    setWindowFlags( ( (windowFlags()
+                       | Qt::CustomizeWindowHint)
+                      & ~Qt::WindowMaximizeButtonHint
+                      & ~Qt::WindowMinimizeButtonHint) );
 }
 
 bool PopupColorPaletteWidget::popup()
 {
     if ( this->isVisible() )
     {
-        //mainWindow->m_colorPalette->setColor(m_colorBox->color());
-        this->color = m_colorBox->color();
+        color = m_colorBox->color();
         hide();
         return true;
     }
-    QPoint cPos = m_container->mapFromGlobal(QCursor::pos()); // cursor position to local
-    //QPoint cPos = QCursor::pos() - m_container->pos();
+    m_colorBox->setFocus();
+    QPoint cPos = QCursor::pos();
     int w = width();
     int h = height();
     int radius = w/2;
@@ -64,7 +66,15 @@ bool PopupColorPaletteWidget::popup()
 
 void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 {
-    //event->ignore();
-    QWidget::keyPressEvent( event );
+    if (event->key()==Qt::Key_Enter) {
+        m_colorBox->setFocus();
+        return;
+    }
+    m_container->keyPressed( event );
 }
 
+void PopupColorPaletteWidget::closeEvent(QCloseEvent* event)
+{
+    m_container->popupColorPalette();
+    event->ignore(); // delegates close to popup() function
+}
