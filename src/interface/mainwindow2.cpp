@@ -328,6 +328,10 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     }
 }
 
+void MainWindow2::tabletEvent(QTabletEvent *event)
+{
+    event->ignore();
+}
 
 // ==== SLOT ====
 
