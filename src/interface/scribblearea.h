@@ -110,10 +110,11 @@ public:
 
     StrokeManager *getStrokeManager() const { return m_strokeManager; }
 
-    PopupColorPaletteWidget* m_popupColorWidget; // color palette popup
-    void popupColorPalette();
+    PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
     void keyPressed(QKeyEvent *event);
+
+    Editor *getEditor() { return m_pEditor; }
 
 signals:
     void modification();
@@ -186,6 +187,8 @@ public slots:
     void toggleShowAllLayers();
     void escape();
 
+    void togglePopupPalette();
+
 protected:
     void tabletEvent(QTabletEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -229,6 +232,8 @@ protected:
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
     Editor *m_pEditor;
+
+    PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
     int tabletEraserBackupToolMode;
     bool modified;
