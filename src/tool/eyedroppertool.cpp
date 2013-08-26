@@ -72,7 +72,9 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type == Layer::BITMAP)
         {
             BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-            QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
+            //QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
+            QColor pickedColour;
+            pickedColour.setRgba(targetImage->pixel(getLastPoint().x(), getLastPoint().y()));
             if (pickedColour.alpha() != 0)
             {
                 m_pEditor->colorManager()->pickColor(pickedColour);

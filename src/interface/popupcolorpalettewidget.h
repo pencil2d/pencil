@@ -13,13 +13,16 @@ class PopupColorPaletteWidget : public QWidget
 public:
     PopupColorPaletteWidget( ScribbleArea *parent = 0 );
     QColor color;
+    QPushButton *closeButton;
     bool popup();
+
+private slots:
+    void onColorChanged(const QColor& color);
 
 protected:
     ScribbleArea* m_container;
     ColorBox* m_colorBox;
     void keyPressEvent(QKeyEvent *event);
-    void closeEvent(QCloseEvent* event);
 };
 
 #endif // POPUPCOLORPALETTEWIDGET_H
