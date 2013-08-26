@@ -55,7 +55,7 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
     m_colorListView->setCurrentRow( 0 );
 
     m_colorBox = new ColorBox(this);
-    m_colorBox->setToolTip("color palette:<br>use <b>[CTRL:ALT]</b><br>for quick access");
+    m_colorBox->setToolTip("color palette:<br>use <b>(C)</b><br>toggle at cursor");
 
     QVBoxLayout* layout = new QVBoxLayout();
     layout->addWidget(m_colorBox);
