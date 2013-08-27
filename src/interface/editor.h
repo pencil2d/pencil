@@ -87,8 +87,6 @@ public:
 
     void importMovie (QString filePath, int fps);
 
-    void popupColorPalette(); // brings palette to cursor position
-
     // backup
     int backupIndex;
     QList<BackupElement*> backupList;

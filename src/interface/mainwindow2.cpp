@@ -37,6 +37,7 @@ GNU General Public License for more details.
 #include "colorpalettewidget.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "popupcolorpalettewidget.h"
 #include "preferences.h"
 #include "timeline.h"
 
@@ -257,7 +258,7 @@ void MainWindow2::createMenus()
     connect(ui->actionBucket, SIGNAL(triggered()), m_toolSet, SLOT(bucketOn()));
     connect(ui->actionEyedropper, SIGNAL(triggered()), m_toolSet, SLOT(eyedropperOn()));
     connect(ui->actionEraser, SIGNAL(triggered()), m_toolSet, SLOT(eraserOn()));
-
+    connect(ui->actionTogglePalette, SIGNAL(triggered()),m_pScribbleArea,SLOT(togglePopupPalette()));
     connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
 
     /// --- Help Menu ---
@@ -274,6 +275,7 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
+
 }
 
 void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup)
@@ -928,6 +930,9 @@ void MainWindow2::loadAllShortcuts()
     ui->actionBucket->setShortcut(cmdKeySeq(CMD_TOOL_BUCKET));
     ui->actionEyedropper->setShortcut(cmdKeySeq(CMD_TOOL_EYEDROPPER));
     ui->actionEraser->setShortcut(cmdKeySeq(CMD_TOOL_ERASER));
+    ui->actionTogglePalette->setShortcut(cmdKeySeq(CMD_TOGGLE_PALETTE));
+    m_pScribbleArea->getPopupPalette()->closeButton->setText( "close/toggle (" + pencilSettings()->value(QString("shortcuts/")+CMD_TOGGLE_PALETTE ).toString() + ")" );
+    m_pScribbleArea->getPopupPalette()->closeButton->setShortcut(cmdKeySeq(CMD_TOGGLE_PALETTE));
 
     ui->actionNew_Bitmap_Layer->setShortcut(cmdKeySeq(CMD_NEW_BITMAP_LAYER));
     ui->actionNew_Vector_Layer->setShortcut(cmdKeySeq(CMD_NEW_VECTOR_LAYER));

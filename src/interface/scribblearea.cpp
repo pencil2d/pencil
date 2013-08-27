@@ -139,8 +139,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     updateAll = false;
 
     // color wheel popup
-    m_popupColorWidget = new PopupColorPaletteWidget(this);
-
+    m_popupPaletteWidget = new PopupColorPaletteWidget(this);
 }
 
 /************************************************************************************/
@@ -506,11 +505,11 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     updateAllFrames();
 }
 
-void ScribbleArea::popupColorPalette()
+void ScribbleArea::togglePopupPalette()
 {
-    if (m_popupColorWidget->popup())
+    if (m_popupPaletteWidget->popup())
     {
-        m_pEditor->setColor(m_popupColorWidget->color);
+        m_pEditor->setColor(m_popupPaletteWidget->color);
     }
 }
 
@@ -651,9 +650,6 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         break;
     case Qt::Key_Space:
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
-        break;
-    case Qt::Key_C:
-        popupColorPalette(); // switches widget visibility just under the cursor
         break;
     default:
         event->ignore();
