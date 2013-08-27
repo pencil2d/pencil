@@ -53,6 +53,7 @@ public:
     Preferences* m_pPreferences;
 
 protected:
+    void tabletEvent(QTabletEvent *event);
     RecentFileMenu *m_recentFileMenu;
 
 private:

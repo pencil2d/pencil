@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "polylinetool.h"
 #include "selecttool.h"
 #include "smudgetool.h"
+#include "popupcolorpalettewidget.h"
 
 #include "scribblearea.h"
 
@@ -135,8 +136,10 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     //setAutoFillBackground (false);
     //setAttribute(Qt::WA_OpaquePaintEvent, false);
     //setAttribute(Qt::WA_NoSystemBackground, true);
-
     updateAll = false;
+
+    // color wheel popup
+    m_popupPaletteWidget = new PopupColorPaletteWidget(this);
 }
 
 /************************************************************************************/
@@ -502,6 +505,15 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     updateAllFrames();
 }
 
+void ScribbleArea::togglePopupPalette()
+{
+    if (m_popupPaletteWidget->popup())
+    {
+        m_pEditor->setColor(m_popupPaletteWidget->color);
+    }
+}
+
+
 /************************************************************************************/
 // key event handlers
 
@@ -511,6 +523,11 @@ void ScribbleArea::escape()
 }
 
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
+{
+    keyPressed( event );
+}
+
+void ScribbleArea::keyPressed(QKeyEvent *event)
 {
     keyboardInUse = true;
     if (mouseInUse) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
@@ -530,12 +547,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
             m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
             return;
         }
-        else if ( event->modifiers().testFlag(Qt::AltModifier) ) // [ALT][CTRL] bring color palette to cursor
-        {
-            // Another comfortable and easy to remember shortcut (can be changed though)
-            m_pEditor->popupColorPalette( globalCursorPos ); // currentMousePoint updated from mainWindow2::mouseMoveEvent()
-            return;
-        }
+        // more combinations here
     }
     // ---- single keys ----
     switch (event->key())
@@ -697,6 +709,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     m_strokeManager->tabletEvent(event);
 
+    //qDebug() << event->hiResGlobalPos();
     currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
         event->pointerType() == QTabletEvent::Cursor);
 
@@ -862,7 +875,6 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
     currentPixel = m_strokeManager->getCurrentPixel();
     bool invertible = true;
     currentPoint = myTempView.inverted(&invertible).map(QPointF(currentPixel));
-    globalCursorPos = mapTo(m_pEditor, event->pos());
 
     // the user is also pressing the mouse (= dragging)
     if (event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton)

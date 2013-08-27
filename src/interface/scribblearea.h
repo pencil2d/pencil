@@ -32,7 +32,7 @@ class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
-
+class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
 {
@@ -110,6 +110,12 @@ public:
 
     StrokeManager *getStrokeManager() const { return m_strokeManager; }
 
+    PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
+
+    void keyPressed(QKeyEvent *event);
+
+    Editor *getEditor() { return m_pEditor; }
+
 signals:
     void modification();
     void modification(int);
@@ -181,6 +187,8 @@ public slots:
     void toggleShowAllLayers();
     void escape();
 
+    void togglePopupPalette();
+
 protected:
     void tabletEvent(QTabletEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -225,6 +233,8 @@ protected:
 
     Editor *m_pEditor;
 
+    PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
+
     int tabletEraserBackupToolMode;
     bool modified;
     bool simplified;
@@ -254,7 +264,6 @@ protected:
     bool mouseInUse;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
-    QPoint globalCursorPos; // absolute cursor pos
     //QBrush brush; // the current brush
 
     qreal tol;
