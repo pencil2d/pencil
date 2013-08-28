@@ -155,6 +155,8 @@ void ScribbleArea::resetTools()
     getTool( ERASER )->properties.width = 10.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
+    getTool( SMUDGE )->properties.width = 15.0;
+    getTool( SMUDGE )->properties.feather = 200.0;
 
     pencilSettings()->setValue(SETTING_TOOL_CURSOR, true);
     // todo: add all the default settings
@@ -188,6 +190,12 @@ void ScribbleArea::setWidth(const qreal newWidth)
         // update width of tool XXX
         settings.setValue("brushWidth", newWidth);
     }
+    else if (currentTool()->type() == SMUDGE)
+    {
+        getTool(SMUDGE)->properties.width = newWidth;
+        // update width of tool XXX
+        settings.setValue("smudgeWidth", newWidth);
+    }
     updateAllFrames();
     setCursor(currentTool()->cursor());
     //qDebug() << "fn: setWidth " << "call: setCursor()" << "current tool" << currentTool()->typeName();
@@ -215,6 +223,11 @@ void ScribbleArea::setFeather(const qreal newFeather)
     {
         getTool(BRUSH)->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
+    }
+    else if (currentTool()->type() == SMUDGE)
+    {
+        getTool(SMUDGE)->properties.feather = newFeather;
+        settings.setValue("smudgeOpacity", newFeather);
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
