@@ -109,7 +109,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
     {
         if (layer->type == Layer::BITMAP)
         {
-            //drawStroke();
+            drawStroke();
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->setAllDirty();
             endStroke();
@@ -182,21 +182,15 @@ void SmudgeTool::drawStroke()
     }
 
     qreal opacity = 1.0;
-    qreal brushWidth = currentWidth +  0.5 * properties.feather;
+    qreal brushWidth = currentWidth +  0.0 * properties.feather;
     qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
-    opacity = currentPressure;
-    brushWidth = brushWidth * currentPressure;
+    //opacity = currentPressure; // todo: Probably not interesting?!
+    brushWidth = brushWidth * opacity;
 
-    //        if (tabletInUse) { opacity = tabletPressure; }
-    //        if (usePressure) { brushWidth = brushWidth * tabletPressure; }
+    qreal brushStep = 0.2 * currentWidth + 0.2 * properties.feather;
+    brushStep = qMax( 1.0, brushStep * opacity );
 
-    qreal brushStep = 0.5 * currentWidth + 0.5 * properties.feather;
-    brushStep = brushStep * currentPressure;
-
-    //        if (usePressure) { brushStep = brushStep * tabletPressure; }
-    brushStep = qMax(1.0, brushStep);
-
-    currentWidth = properties.width;
+    currentWidth = properties.width; // here ?
     BlitRect rect;
 
     QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
@@ -208,33 +202,23 @@ void SmudgeTool::drawStroke()
     QPointF a = lastBrushPoint;
     QPointF b = getCurrentPoint();
 
-    //        foreach (QSegment segment, calculateStroke(brushWidth))
-    //        {
-    //            QPointF a = lastBrushPoint;
-    //            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
-
     qreal distance = 4 * QLineF(b, a).length();
     int steps = qRound(distance) / brushStep;
-    QColor newColor;
-    //newColor.setRgba( targetImage->pixel( getLastPoint().x(), getLastPoint().y() ) );
-    newColor.setRgba( targetImage->pixel( lastBrushPoint.x(), lastBrushPoint.y() ) );
-    int transp = 255 - newColor.alpha();
-    newColor.setRed( newColor.red() + transp );
-    newColor.setGreen( newColor.green() + transp );
-    newColor.setBlue( newColor.blue() + transp );
+
     for (int i = 0; i < steps; i++)
     {
-        QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
-        rect.extend(point.toPoint());
-        m_pScribbleArea->drawBrush( point,
-            brushWidth,
-            offset,
-            newColor,
-            opacity);
+        QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+        rect.extend(targetPoint.toPoint());
+        m_pScribbleArea->drawTexturedBrush( targetImage,
+                                            lastBrushPoint,
+                                            targetPoint,
+                                            brushWidth,
+                                            offset,                                            
+                                            opacity);
 
         if (i == (steps - 1))
         {
-            lastBrushPoint = point;
+            lastBrushPoint = targetPoint;
         }
     }
     //        }
