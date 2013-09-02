@@ -1524,6 +1524,24 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
+//
+void ScribbleArea::drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity)
+{
+    QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
+    setGaussianGradient(radialGrad, QColor(255,255,255,255), opacity, offset);
+
+    QRectF srcRect(srcPoint.x() - 0.5 * brushWidth, srcPoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+    QRectF trgRect(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+
+    BitmapImage selectionClip = argImg->copy(srcRect.toRect());
+    BitmapImage *tempBitmapImage = new BitmapImage(NULL);
+    tempBitmapImage->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing);
+    selectionClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceIn );
+    bufferImg->paste( tempBitmapImage );
+    delete tempBitmapImage;
+}
+
 void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (!areLayersSane())
