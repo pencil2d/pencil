@@ -41,7 +41,7 @@ StrokeManager::StrokeManager()
 
     m_tabletInUse = false;
     m_tabletPressure = 0;
-    m_useHighResPosition = false;
+    m_useHighResPosition = true;
 
     reset();
 }
@@ -76,10 +76,14 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
 {
     QPointF pos;
 
-    if (m_tabletInUse && m_useHighResPosition) {
-//        pos = event->pos() + m_tabletPosition - event->globalPos();
-        pos = event->pos();
-    } else {
+    if (m_tabletInUse && m_useHighResPosition)
+    {
+        pos = event->pos() + m_tabletPosition - event->globalPos();
+        //pos = event->pos();
+        qDebug() << pos;
+    }
+    else
+    {
         pos = event->pos();
     }
 

@@ -101,4 +101,16 @@ enum ToolPropertyType
 #define SHORTCUTS_GROUP "shortcuts"
 #define SETTING_TOOL_CURSOR "toolCursors"
 
+
+//Pencil File Format consts...
+//PFF - acronym for "Pencil File Format"
+#define PFF_EXTENSION      ".pclx"
+#define PFF_BIG_LETTER_EXTENSION "PCLX"
+#define PFF_SINGLE_FILTER    "Pencil Animation File PCLZ (*.pclx)"
+#define PFF_ALL_FILE_FILTER    "Pencil Animation File PCL (*.pclx);;Any files (*)"
+#define PFF_LAYERS_DIR       "data"
+#define PFF_XML_FILE_NAME     "main.xml"
+#define PFF_TMP_COMPRESS_EXT   ".Y2xC"
+#define PFF_TMP_DECOMPRESS_EXT   ".Y2xD"
+
 #endif // PENCILDEF_H

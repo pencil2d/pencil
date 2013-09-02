@@ -26,6 +26,7 @@ gui \
 xmlpatterns \
 svg
 
+
 DEPENDPATH += ${INCLUDEPATH}
 
 # Input
@@ -191,3 +192,7 @@ FORMS += \
     src/interface/colorinspector.ui
 
 TRANSLATIONS += pencil.ts
+
+DEFINES += QUAZIP_STATIC
+INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
+include(src/external/quazip.pri)
