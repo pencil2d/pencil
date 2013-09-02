@@ -29,11 +29,10 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "backupelement.h"
-
+#include "colorbox.h"
 
 class MainWindow2;
 class ColorManager;
-
 
 class Editor : public QWidget
 {
@@ -93,8 +92,10 @@ public:
     QList<BackupElement*> backupList;
 
     ScribbleArea* getScribbleArea() { return scribbleArea; }
+    void setColor(QColor argColor);
 
 protected:
+    void keyPressEvent(QKeyEvent *event);
     void dragEnterEvent(QDragEnterEvent* event);
     void dropEvent(QDropEvent* event);
     QRect viewRect;

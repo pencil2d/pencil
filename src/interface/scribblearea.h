@@ -32,7 +32,7 @@ class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
-
+class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
 {
@@ -110,6 +110,12 @@ public:
 
     StrokeManager *getStrokeManager() const { return m_strokeManager; }
 
+    PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
+
+    void keyPressed(QKeyEvent *event);
+
+    Editor *getEditor() { return m_pEditor; }
+
 signals:
     void modification();
     void modification(int);
@@ -181,6 +187,8 @@ public slots:
     void toggleShowAllLayers();
     void escape();
 
+    void togglePopupPalette();
+
 protected:
     void tabletEvent(QTabletEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -203,6 +211,7 @@ public:
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
+    void drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity);
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
     void paintBitmapBuffer();
@@ -224,6 +233,8 @@ protected:
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
     Editor *m_pEditor;
+
+    PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
     int tabletEraserBackupToolMode;
     bool modified;

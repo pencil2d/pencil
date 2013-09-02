@@ -123,6 +123,7 @@ Editor::Editor(MainWindow2* parent)
     setTool(PENCIL);
     
     setAcceptDrops(true);
+
 }
 
 TimeLine* Editor::getTimeLine()
@@ -167,6 +168,16 @@ void Editor::makeConnections()
     connect(scribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
+}
+
+void Editor::setColor(QColor argColor)
+{
+    mainWindow->m_colorPalette->setColor(argColor);
+}
+
+void Editor::keyPressEvent(QKeyEvent *event)
+{
+    scribbleArea->keyPressed( event );
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)

@@ -46,6 +46,7 @@ HEADERS +=  src/interfaces.h \
             src/structure/object.h \
             src/interface/editor.h \
             src/interface/colorpalettewidget.h \
+            src/interface/popupcolorpalettewidget.h \
             src/interface/preferences.h \
             src/interface/scribblearea.h \
             src/interface/timeline.h \
@@ -107,6 +108,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/structure/object.cpp \
             src/interface/editor.cpp \
             src/interface/colorpalettewidget.cpp \
+            src/interface/popupcolorpalettewidget.cpp \
             src/interface/preferences.cpp \
             src/interface/scribblearea.cpp \
             src/interface/timeline.cpp \

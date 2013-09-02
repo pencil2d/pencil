@@ -3,12 +3,16 @@
 #include "scribblearea.h"
 
 #include "layer.h"
+#include "colormanager.h"
+#include "layerbitmap.h"
 #include "layervector.h"
+#include "strokemanager.h"
+#include "blitrect.h"
 
 #include "smudgetool.h"
 
 SmudgeTool::SmudgeTool(QObject *parent) :
-    BaseTool(parent)
+    StrokeTool(parent)
 {
 }
 
@@ -19,14 +23,32 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
+    QSettings settings("Pencil", "Pencil");
+    properties.width = settings.value("smudgeWidth").toDouble();
+    properties.feather = settings.value("smudgeFeather").toDouble();
 }
 
 QCursor SmudgeTool::cursor()
 {
     qDebug() << "smudge tool";
+    if (isAdjusting) // being dynamically resized
+    {
+        return circleCursors(); // two circles cursor
+    }
     return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
+}
+
+void SmudgeTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+{
+    currentWidth = properties.width;
+    if (m_pScribbleArea->usePressure() && !mouseDevice)
+    {
+        currentPressure = pressure;
+    }
+    else
+    {
+        currentPressure = 1.0;
+    }
 }
 
 void SmudgeTool::mousePressEvent(QMouseEvent *event)
@@ -38,7 +60,14 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::VECTOR)
+        if (layer->type == Layer::BITMAP)
+        {
+            m_pEditor->backup(typeName());
+            m_pScribbleArea->setAllDirty();
+            startStroke();
+            lastBrushPoint = getCurrentPoint();
+        }
+        else if (layer->type == Layer::VECTOR)
         {
             m_pScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
                 ->getCurvesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
@@ -78,7 +107,14 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::VECTOR)
+        if (layer->type == Layer::BITMAP)
+        {
+            drawStroke();
+            m_pScribbleArea->paintBitmapBuffer();
+            m_pScribbleArea->setAllDirty();
+            endStroke();
+        }
+        else if (layer->type == Layer::VECTOR)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
             vectorImage->applySelectionTransformation();
@@ -102,7 +138,11 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
     {
         if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {
         {
-            if (layer->type == Layer::VECTOR)
+            if (layer->type == Layer::BITMAP)
+            {
+                drawStroke();
+            }
+            else if (layer->type == Layer::VECTOR)
             {
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
@@ -124,4 +164,65 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
         m_pScribbleArea->setAllDirty();
     }
 
+}
+
+void SmudgeTool::drawStroke()
+{
+    if ( !m_pScribbleArea->isLayerPaintable() ) return;
+
+    Layer *layer = m_pEditor->getCurrentLayer();
+    if (layer == NULL) { return; }
+
+    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+    StrokeTool::drawStroke();
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke(currentWidth);
+
+    for (int i = 0; i < p.size(); i++) {
+        p[i] = m_pScribbleArea->pixelToPoint(p[i]);
+    }
+
+    qreal opacity = 1.0;
+    qreal brushWidth = currentWidth +  0.0 * properties.feather;
+    qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
+    //opacity = currentPressure; // todo: Probably not interesting?!
+    brushWidth = brushWidth * opacity;
+
+    qreal brushStep = 0.2 * currentWidth + 0.2 * properties.feather;
+    brushStep = qMax( 1.0, brushStep * opacity );
+
+    currentWidth = properties.width; // here ?
+    BlitRect rect;
+
+    QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
+    m_pScribbleArea->setGaussianGradient(radialGrad,
+        m_pEditor->colorManager()->frontColor(),
+        opacity,
+        offset);
+
+    QPointF a = lastBrushPoint;
+    QPointF b = getCurrentPoint();
+
+    qreal distance = 4 * QLineF(b, a).length();
+    int steps = qRound(distance) / brushStep;
+
+    for (int i = 0; i < steps; i++)
+    {
+        QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+        rect.extend(targetPoint.toPoint());
+        m_pScribbleArea->drawTexturedBrush( targetImage,
+                                            lastBrushPoint,
+                                            targetPoint,
+                                            brushWidth,
+                                            offset,                                            
+                                            opacity);
+
+        if (i == (steps - 1))
+        {
+            lastBrushPoint = targetPoint;
+        }
+    }
+    //        }
+
+    int rad = qRound(brushWidth) / 2 + 2;
+    m_pScribbleArea->refreshBitmap(rect, rad);
 }

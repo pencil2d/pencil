@@ -72,7 +72,13 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type == Layer::BITMAP)
         {
             BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-            QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
+            //QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
+            QColor pickedColour;
+            pickedColour.setRgba( targetImage->pixel( getLastPoint().x(), getLastPoint().y() ) );
+            int transp = 255 - pickedColour.alpha();
+            pickedColour.setRed( pickedColour.red() + transp );
+            pickedColour.setGreen( pickedColour.green() + transp );
+            pickedColour.setBlue( pickedColour.blue() + transp );
             if (pickedColour.alpha() != 0)
             {
                 m_pEditor->colorManager()->pickColor(pickedColour);
@@ -103,7 +109,12 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
         if (targetImage->contains(getCurrentPoint()))
         {
             QColor pickedColour;
-            pickedColour.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
+            //pickedColour.setRgba(targetImage->pixel(getCurrentPoint().x(), getCurrentPoint().y()));
+            pickedColour.setRgba( targetImage->pixel( getCurrentPoint().x(), getCurrentPoint().y() ) );
+            int transp = 255 - pickedColour.alpha();
+            pickedColour.setRed( pickedColour.red() + transp );
+            pickedColour.setGreen( pickedColour.green() + transp );
+            pickedColour.setBlue( pickedColour.blue() + transp );
             if (pickedColour.alpha() != 0)
             {
                 m_pScribbleArea->setCursor(cursor(pickedColour));

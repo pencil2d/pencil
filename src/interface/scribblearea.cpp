@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "polylinetool.h"
 #include "selecttool.h"
 #include "smudgetool.h"
+#include "popupcolorpalettewidget.h"
 
 #include "scribblearea.h"
 
@@ -135,8 +136,10 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     //setAutoFillBackground (false);
     //setAttribute(Qt::WA_OpaquePaintEvent, false);
     //setAttribute(Qt::WA_NoSystemBackground, true);
-
     updateAll = false;
+
+    // color wheel popup
+    m_popupPaletteWidget = new PopupColorPaletteWidget(this);
 }
 
 /************************************************************************************/
@@ -144,12 +147,19 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
 void ScribbleArea::resetTools()
 {
-    qDebug() << "reset tools";
-    getTool( PEN )->properties.width = 2.0;
-    getTool( PENCIL )->properties.width = 1.0;
+    // Reset can be useful to solve some pencil settings problems.
+    // Betatesters should be recommended to reset before sending tool related issues.
+    // This can prevent from users to stop working on their project.
+    getTool( PEN )->properties.width = 2.0; // Default property values are a bit arbitrary
+    getTool( PENCIL )->properties.width = 1.0; // so don't hesitate to refined them.
     getTool( ERASER )->properties.width = 10.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
+    getTool( SMUDGE )->properties.width = 15.0;
+    getTool( SMUDGE )->properties.feather = 200.0;
+
+    pencilSettings()->setValue(SETTING_TOOL_CURSOR, true);
+    // todo: add all the default settings
 }
 
 void ScribbleArea::setWidth(const qreal newWidth)
@@ -180,8 +190,15 @@ void ScribbleArea::setWidth(const qreal newWidth)
         // update width of tool XXX
         settings.setValue("brushWidth", newWidth);
     }
+    else if (currentTool()->type() == SMUDGE)
+    {
+        getTool(SMUDGE)->properties.width = newWidth;
+        // update width of tool XXX
+        settings.setValue("smudgeWidth", newWidth);
+    }
     updateAllFrames();
     setCursor(currentTool()->cursor());
+    //qDebug() << "fn: setWidth " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setFeather(const qreal newFeather)
@@ -207,8 +224,14 @@ void ScribbleArea::setFeather(const qreal newFeather)
         getTool(BRUSH)->properties.feather = newFeather;
         settings.setValue("brushOpacity", newFeather);
     }
+    else if (currentTool()->type() == SMUDGE)
+    {
+        getTool(SMUDGE)->properties.feather = newFeather;
+        settings.setValue("smudgeOpacity", newFeather);
+    }
     updateAllFrames();
     setCursor(currentTool()->cursor());
+    //qDebug() << "fn: setFeather " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setOpacity(const qreal newOpacity)
@@ -495,6 +518,15 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     updateAllFrames();
 }
 
+void ScribbleArea::togglePopupPalette()
+{
+    if (m_popupPaletteWidget->popup())
+    {
+        m_pEditor->setColor(m_popupPaletteWidget->color);
+    }
+}
+
+
 /************************************************************************************/
 // key event handlers
 
@@ -505,6 +537,11 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent(QKeyEvent *event)
 {
+    keyPressed( event );
+}
+
+void ScribbleArea::keyPressed(QKeyEvent *event)
+{
     keyboardInUse = true;
     if (mouseInUse) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
     if (currentTool()->keyPressEvent(event)) {
@@ -512,15 +549,18 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
         return;
     }
     // ---- multiple keys ----
-    if ( event->modifiers().testFlag(Qt::ShiftModifier) && event->modifiers().testFlag(Qt::ControlModifier) ) // temp. eraser
+    if ( event->modifiers().testFlag(Qt::ControlModifier))
     {
-        qreal width = currentTool()->properties.width;
-        qreal feather = currentTool()->properties.feather;
-        setTemporaryTool( ERASER );
-        m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-        //m_pEditor->setWidth(width);
-        m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
-        return;
+        if ( event->modifiers().testFlag(Qt::ShiftModifier) ) // [SHIFT][CTRL] temp. eraser
+        {
+            qreal width = currentTool()->properties.width;
+            qreal feather = currentTool()->properties.feather;
+            setTemporaryTool( ERASER );
+            m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+            m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
+            return;
+        }
+        // more combinations here
     }
     // ---- single keys ----
     switch (event->key())
@@ -1484,6 +1524,24 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
+//
+void ScribbleArea::drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity)
+{
+    QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
+    setGaussianGradient(radialGrad, QColor(255,255,255,255), opacity, offset);
+
+    QRectF srcRect(srcPoint.x() - 0.5 * brushWidth, srcPoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+    QRectF trgRect(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+
+    BitmapImage selectionClip = argImg->copy(srcRect.toRect());
+    BitmapImage *tempBitmapImage = new BitmapImage(NULL);
+    tempBitmapImage->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing);
+    selectionClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceIn );
+    bufferImg->paste( tempBitmapImage );
+    delete tempBitmapImage;
+}
+
 void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (!areLayersSane())
@@ -2258,7 +2316,8 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     m_currentTool = getTool(eToolMode);
 
     // --- change cursor ---
-    setCursor(currentTool()->cursor());
+    setCursor(m_currentTool->cursor());
+    qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
 void ScribbleArea::setTemporaryTool(ToolType eToolMode)
