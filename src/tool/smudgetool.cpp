@@ -25,16 +25,17 @@ void SmudgeTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
     properties.width = settings.value("smudgeWidth").toDouble();
-    properties.feather = settings.value("smudgeOpacity").toDouble();
-    if (properties.feather == 0)
+    properties.feather = settings.value("smudgeFeather").toDouble();
+
+    if (properties.width <= 0)
+    {
+        properties.width = 25;
+        settings.setValue("smudgeWidth", properties.width);
+    }
+    if (properties.feather <= 0)
     {
         properties.feather = 200;
-        settings.setValue("brushFeather", properties.feather);
-    }
-    if (properties.width == 0)
-    {
-        properties.width = 10;
-        settings.setValue("brushWidth", properties.width);
+        settings.setValue("smudgeFeather", properties.feather);
     }
 
 }
