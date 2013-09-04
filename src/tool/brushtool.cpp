@@ -34,16 +34,17 @@ void BrushTool::loadSettings()
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
 
-    if (properties.feather == 0)
+    if (properties.width <= 0)
     {
-        properties.feather = 70;
-        settings.setValue("brushFeather", properties.feather);
-    }
-    if (properties.width == 0)
-    {
-        properties.width = 48;
+        properties.width = 15;
         settings.setValue("brushWidth", properties.width);
     }
+    if (properties.feather <= 0)
+    {
+        properties.feather = 200;
+        settings.setValue("brushFeather", properties.feather);
+    }
+
 }
 
 QCursor BrushTool::cursor()

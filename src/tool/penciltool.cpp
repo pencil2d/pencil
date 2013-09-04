@@ -29,16 +29,21 @@ void PencilTool::loadSettings()
     QSettings settings("Pencil", "Pencil");
 
     properties.width = settings.value("pencilWidth").toDouble();
-    properties.feather = -1;
+    properties.feather = settings.value("pencilFeather").toDouble();
     properties.opacity = 0.8;
     properties.pressure = 1;
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
 
-    if (properties.width == 0)
+    if (properties.width <= 0)
     {
         properties.width = 1;
         settings.setValue("pencilWidth", properties.width);
+    }
+    if (properties.feather > -1) // replace with: <=0 to allow feather
+    {
+        properties.feather = -1;
+        settings.setValue("pencilFeather", properties.feather);
     }
 }
 

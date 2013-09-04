@@ -150,12 +150,15 @@ void ScribbleArea::resetTools()
     // Reset can be useful to solve some pencil settings problems.
     // Betatesters should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
-    getTool( PEN )->properties.width = 2.0; // Default property values are a bit arbitrary
-    getTool( PENCIL )->properties.width = 1.0; // so don't hesitate to refined them.
-    getTool( ERASER )->properties.width = 10.0;
+    getTool( PEN )->properties.width = 1.5; // not supposed to use feather
+    getTool( POLYLINE )->properties.width = 1.5; // PEN dependent
+    getTool( PENCIL )->properties.width = 1.0;
+    getTool( PENCIL )->properties.feather = -1.0; // locks feather usage (can be changed)
+    getTool( ERASER )->properties.width = 25.0;
+    getTool( ERASER )->properties.feather = 50.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
-    getTool( SMUDGE )->properties.width = 15.0;
+    getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
 
     pencilSettings()->setValue(SETTING_TOOL_CURSOR, true);
@@ -207,27 +210,27 @@ void ScribbleArea::setFeather(const qreal newFeather)
     if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.feather = newFeather;
-        settings.setValue("pencilOpacity", newFeather);
+        settings.setValue("pencilFeather", newFeather);
     }
     else if (currentTool()->type() == ERASER)
     {
         getTool(ERASER)->properties.feather = newFeather;
-        settings.setValue("eraserOpacity", newFeather);
+        settings.setValue("eraserFeather", newFeather);
     }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.feather = newFeather;
-        settings.setValue("penOpacity", newFeather);
+        settings.setValue("penFeather", newFeather);
     }
     else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.feather = newFeather;
-        settings.setValue("brushOpacity", newFeather);
+        settings.setValue("brushFeather", newFeather);
     }
     else if (currentTool()->type() == SMUDGE)
     {
         getTool(SMUDGE)->properties.feather = newFeather;
-        settings.setValue("smudgeOpacity", newFeather);
+        settings.setValue("smudgeFeather", newFeather);
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
