@@ -26,6 +26,18 @@ void SmudgeTool::loadSettings()
     QSettings settings("Pencil", "Pencil");
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();
+
+    if (properties.width <= 0)
+    {
+        properties.width = 25;
+        settings.setValue("smudgeWidth", properties.width);
+    }
+    if (properties.feather <= 0)
+    {
+        properties.feather = 200;
+        settings.setValue("smudgeFeather", properties.feather);
+    }
+
 }
 
 QCursor SmudgeTool::cursor()
@@ -187,7 +199,7 @@ void SmudgeTool::drawStroke()
     //opacity = currentPressure; // todo: Probably not interesting?!
     brushWidth = brushWidth * opacity;
 
-    qreal brushStep = 0.2 * currentWidth + 0.2 * properties.feather;
+    qreal brushStep = 0.1 * currentWidth + 0.1 * properties.feather;
     brushStep = qMax( 1.0, brushStep * opacity );
 
     currentWidth = properties.width; // here ?
@@ -202,7 +214,7 @@ void SmudgeTool::drawStroke()
     QPointF a = lastBrushPoint;
     QPointF b = getCurrentPoint();
 
-    qreal distance = 4 * QLineF(b, a).length();
+    qreal distance = 8 * QLineF(b, a).length();
     int steps = qRound(distance) / brushStep;
 
     for (int i = 0; i < steps; i++)
@@ -221,7 +233,6 @@ void SmudgeTool::drawStroke()
             lastBrushPoint = targetPoint;
         }
     }
-    //        }
 
     int rad = qRound(brushWidth) / 2 + 2;
     m_pScribbleArea->refreshBitmap(rect, rad);
