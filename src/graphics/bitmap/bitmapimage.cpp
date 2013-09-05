@@ -301,8 +301,8 @@ void BitmapImage::moveTopLeft(QPoint point)
 
 void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 {
-    if (boundaries != newBoundaries)
-    {
+    //if (boundaries != newBoundaries)
+    //{
         boundaries = newBoundaries;
         newBoundaries.moveTopLeft( QPoint(0,0) );
         QImage* newImage = new QImage( boundaries.size(), QImage::Format_ARGB32_Premultiplied);
@@ -316,7 +316,7 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
         painter.end();
         //if (image != NULL) delete image;
         image = newImage;
-    }
+    //}
 }
 
 BitmapImage BitmapImage::transformed(QRect newBoundaries, bool smoothTransform)

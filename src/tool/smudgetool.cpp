@@ -214,7 +214,7 @@ void SmudgeTool::drawStroke()
     QPointF a = lastBrushPoint;
     QPointF b = getCurrentPoint();
 
-    qreal distance = 8 * QLineF(b, a).length();
+    qreal distance = 4 * QLineF(b, a).length();
     int steps = qRound(distance) / brushStep;
 
     for (int i = 0; i < steps; i++)

@@ -56,6 +56,7 @@ public:
     bool somethingSelected;
     bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    qreal myRotatedAngle;
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -70,7 +71,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION};
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
