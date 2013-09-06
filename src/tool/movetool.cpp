@@ -69,8 +69,13 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
                         m_pScribbleArea->paintTransformedSelection();
                         m_pScribbleArea->deselectAll();
                     }
+                    else if (event->modifiers() == Qt::ControlModifier ) // --- rotation
+                    {
+                        m_pScribbleArea->setMoveMode(ScribbleArea::ROTATION );
+                        //qDebug() << "ROTATION";
+                    }
                 }
-                if (layer->type == Layer::VECTOR)
+                else if (layer->type == Layer::VECTOR)
                 {
                     VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
                     if (m_pScribbleArea->closestCurves.size() > 0)     // the user clicks near a curve
@@ -185,6 +190,12 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
                     case ScribbleArea::BOTTOMRIGHT:
                         m_pScribbleArea->myTempTransformedSelection =
                                 m_pScribbleArea->myTransformedSelection.adjusted(0, 0, m_pScribbleArea->offset.x(), m_pScribbleArea->offset.y());
+                        break;
+                    case ScribbleArea::ROTATION:
+                        m_pScribbleArea->myTempTransformedSelection =
+                                m_pScribbleArea->myTransformedSelection; // @ necessary?
+                        m_pScribbleArea->myRotatedAngle = getCurrentPixel().x() - getLastPressPixel().x();
+                        //qDebug() << "rotation" << m_pScribbleArea->myRotatedAngle;
                         break;
                     }
 

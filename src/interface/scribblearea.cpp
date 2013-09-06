@@ -1199,7 +1199,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
         }
 
         // paints the selection outline
-        if (somethingSelected && myTempTransformedSelection.isValid())
+        if (somethingSelected && (myTempTransformedSelection.isValid() || m_moveMode==ROTATION )) // @revise
         {
             // outline of the transformed selection
             painter.setWorldMatrixEnabled(false);
@@ -1378,7 +1378,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
 
                     // current frame
                     painter.setOpacity(opacity);
-                    if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && (myTempTransformedSelection != mySelection))
+                    if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection))
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         painter.setClipping(true);
@@ -1391,9 +1391,18 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                         painter.setClipping(false);
                         // transforms the bitmap selection
                         bool smoothTransform = false;
-                        if (myTempTransformedSelection.width() != mySelection.width() || myTempTransformedSelection.height() != mySelection.height()) { smoothTransform = true; }
+
+                        if (myTempTransformedSelection.width() != mySelection.width() || myTempTransformedSelection.height() != mySelection.height() || myRotatedAngle != 0  ) { smoothTransform = true; }
                         BitmapImage selectionClip = bitmapImage->copy(mySelection.toRect());
-                        selectionClip.transform(myTempTransformedSelection, smoothTransform);
+                        selectionClip.transform(myTransformedSelection, smoothTransform);
+                        QMatrix rm;
+                        //TODO: complete matrix calls ( sounds funny :)
+                        rm.rotate(myRotatedAngle);
+                        QImage rotImg = selectionClip.image->transformed( rm );
+                        QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
+                                            ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
+                        *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
+                        selectionClip.boundaries.translate( dxy );
                         selectionClip.paintImage(painter);
                         //painter.drawImage(selectionClip.topLeft(), *(selectionClip.image));
                     }
@@ -1787,7 +1796,7 @@ void ScribbleArea::calculateSelectionRect()
     }
 }
 
-void ScribbleArea::calculateSelectionTransformation()
+void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 {
     qreal c1x, c1y , c2x, c2y, scaleX, scaleY;
     c1x = 0.5 * (myTempTransformedSelection.left() + myTempTransformedSelection.right());
@@ -1815,7 +1824,7 @@ void ScribbleArea::paintTransformedSelection()
 
     if (somethingSelected)    // there is something selected
     {
-        if (layer->type == Layer::BITMAP && (myTransformedSelection != mySelection))
+        if (layer->type == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection))
         {
             //backup();
             BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
@@ -1828,9 +1837,16 @@ void ScribbleArea::paintTransformedSelection()
             }
 
             bool smoothTransform = false;
-            if (myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height()) { smoothTransform = true; }
+            if (myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() || m_moveMode == ROTATION ) { smoothTransform = true; }
+            QMatrix rm;
+            rm.rotate(myRotatedAngle);
             BitmapImage selectionClip = bitmapImage->copy(mySelection.toRect());
             selectionClip.transform(myTransformedSelection, smoothTransform);
+            QImage rotImg = selectionClip.image->transformed( rm, Qt::SmoothTransformation );
+            QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
+                                ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
+            *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
+            selectionClip.boundaries.translate( dxy );
             bitmapImage->clear(mySelection.toRect());
             bitmapImage->paste(&selectionClip);
         }
