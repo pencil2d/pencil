@@ -1,10 +1,9 @@
 #ifndef SMUDGETOOL_H
 #define SMUDGETOOL_H
 
-#include "basetool.h"
+#include "stroketool.h"
 
-
-class SmudgeTool : public BaseTool
+class SmudgeTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -17,10 +16,15 @@ public:
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
 
+    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+    void drawStroke();
+
 signals:
     
 public slots:
-    
+
+protected:
+    QPointF lastBrushPoint;
 };
 
 #endif // SMUDGETOOL_H

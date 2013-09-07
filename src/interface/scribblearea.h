@@ -56,6 +56,7 @@ public:
     bool somethingSelected;
     bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    qreal myRotatedAngle;
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -70,7 +71,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION};
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
@@ -211,6 +212,7 @@ public:
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
+    void drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity);
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
     void paintBitmapBuffer();

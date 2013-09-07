@@ -559,7 +559,6 @@ bool MainWindow2::openObject(QString filePath)
 void MainWindow2::resetToolsSettings()
 {
     m_pScribbleArea->resetTools();
-    writeSettings();
     editor->setTool(m_pScribbleArea->currentTool()->type());
     qDebug("tools restored to default settings");
 }

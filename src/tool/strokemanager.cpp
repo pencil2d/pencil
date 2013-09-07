@@ -78,7 +78,12 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
 
     if (m_tabletInUse && m_useHighResPosition)
     {
-        pos = event->pos() + m_tabletPosition - event->globalPos();
+        // QT BUG (Wacom Tablets): updates are not synchronised in Windows giving different coordinates.
+        // Clue: Not a Microsoft nor Wacom problem because other windows apps are working fine in the same tablet mode.
+        // Solved: Qt bug in Wacom coding -> a lot of patches but no real solutions.
+        //pos = event->pos() + m_tabletPosition - event->globalPos();
+        // Patch: next line skips the coordinate problem and it seems safe .
+        pos = event->pos() + m_tabletPosition - m_tabletPosition.toPoint();
         //pos = event->pos();
         qDebug() << pos;
     }
