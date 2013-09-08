@@ -1550,7 +1550,7 @@ void ScribbleArea::drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPoi
     BitmapImage *tempBitmapImage = new BitmapImage(NULL);
     tempBitmapImage->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing);
     selectionClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
-    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceIn );
+    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceAtop );
     bufferImg->paste( tempBitmapImage );
     delete tempBitmapImage;
 }

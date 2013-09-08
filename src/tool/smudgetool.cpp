@@ -199,7 +199,7 @@ void SmudgeTool::drawStroke()
     //opacity = currentPressure; // todo: Probably not interesting?!
     brushWidth = brushWidth * opacity;
 
-    qreal brushStep = 0.1 * currentWidth + 0.1 * properties.feather;
+    qreal brushStep = 0.01 * currentWidth + 0.01 * properties.feather;
     brushStep = qMax( 1.0, brushStep * opacity );
 
     currentWidth = properties.width; // here ?
@@ -214,7 +214,7 @@ void SmudgeTool::drawStroke()
     QPointF a = lastBrushPoint;
     QPointF b = getCurrentPoint();
 
-    qreal distance = 4 * QLineF(b, a).length();
+    qreal distance = 1 * QLineF(b, a).length();
     int steps = qRound(distance) / brushStep;
 
     for (int i = 0; i < steps; i++)
