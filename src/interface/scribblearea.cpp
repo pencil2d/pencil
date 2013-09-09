@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "pencilsettings.h"
 
-#include "colormanager.h"
+//#include "colormanager.h"
 #include "strokemanager.h"
 
 #include "pentool.h"
@@ -139,7 +139,9 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     updateAll = false;
 
     // color wheel popup
-    m_popupPaletteWidget = new PopupColorPaletteWidget(this);
+    m_popupPaletteWidget = new PopupColorPaletteWidget( this );
+    //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
+    colorManager = m_pEditor->colorManager();
 }
 
 /************************************************************************************/
@@ -523,10 +525,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 
 void ScribbleArea::togglePopupPalette()
 {
-    if (m_popupPaletteWidget->popup())
-    {
-        m_pEditor->setColor(m_popupPaletteWidget->color);
-    }
+    m_popupPaletteWidget->popup();
 }
 
 

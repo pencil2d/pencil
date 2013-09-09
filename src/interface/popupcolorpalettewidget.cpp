@@ -36,14 +36,16 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     connect( m_colorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
 }
 
-bool PopupColorPaletteWidget::popup()
+void PopupColorPaletteWidget::popup()
 {
     if ( this->isVisible() )
     {
-        color = m_colorBox->color();
+        //color = m_colorBox->color();
         hide();
-        return true;
+        return;
     }
+    // opening palette
+    m_colorBox->setColor( m_container->colorManager->frontColor() );
     m_colorBox->setFocus();
 
     QPoint cPos = QCursor::pos();
@@ -54,7 +56,7 @@ bool PopupColorPaletteWidget::popup()
 
     move( cPos );
     show();
-    return false;
+    return;
 }
 
 void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
@@ -62,6 +64,7 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
     if (event->key()==Qt::Key_Enter)
     {
         m_colorBox->setFocus();
+        qDebug() << "sent key_enter";
         return;
     }
     else if (event->key()==Qt::Key_Escape)
@@ -71,6 +74,7 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
     else
     {
         event->ignore();
+        qDebug() << "sent event.ignore()";
         QCoreApplication::sendEvent(m_container, event);
     }
 }
@@ -79,5 +83,6 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 
 void PopupColorPaletteWidget::onColorChanged(const QColor& color)
 {
-    m_container->getEditor()->setColor( m_colorBox->color() );
+    m_container->getEditor()->setColor( color );
+    m_container->colorManager->pickColor( color );
 }

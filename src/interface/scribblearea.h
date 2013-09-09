@@ -27,11 +27,13 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "vectorselection.h"
 #include "basetool.h"
+#include "colormanager.h"
 
 class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
+class ColorManager;
 class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
@@ -116,6 +118,7 @@ public:
     void keyPressed(QKeyEvent *event);
 
     Editor *getEditor() { return m_pEditor; }
+    ColorManager *colorManager;
 
 signals:
     void modification();
