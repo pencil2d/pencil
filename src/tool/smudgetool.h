@@ -9,6 +9,7 @@ class SmudgeTool : public StrokeTool
 public:
     explicit SmudgeTool(QObject *parent = 0);
     ToolType type();
+    uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
     void loadSettings();
     QCursor cursor();
 

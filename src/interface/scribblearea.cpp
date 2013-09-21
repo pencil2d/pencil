@@ -565,6 +565,7 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         // more combinations here
     }
     // ---- single keys ----
+    ToolType toolType = currentTool()->type();
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -661,7 +662,16 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         updateAllVectorLayersAtCurrentFrame();
         break;
     case Qt::Key_Alt:
-        setTemporaryTool( EYEDROPPER );
+
+        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
+             (toolType == BUCKET) || (toolType == POLYLINE) )
+        {
+            setTemporaryTool( EYEDROPPER );
+        }
+        else
+        {
+            event->ignore();
+        }
         break;
     case Qt::Key_Space:
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
@@ -1536,22 +1546,70 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
-//
-void ScribbleArea::drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity)
+
+void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
 {
-    QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
-    setGaussianGradient(radialGrad, QColor(255,255,255,255), opacity, offset);
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
 
-    QRectF srcRect(srcPoint.x() - 0.5 * brushWidth, srcPoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-    QRectF trgRect(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
-    BitmapImage selectionClip = argImg->copy(srcRect.toRect());
-    BitmapImage *tempBitmapImage = new BitmapImage(NULL);
-    tempBitmapImage->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing);
-    selectionClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
-    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceAtop );
-    bufferImg->paste( tempBitmapImage );
-    delete tempBitmapImage;
+    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
+    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiTmpClip->paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
+    bufferImg->paste( bmiTmpClip );
+    delete bmiTmpClip;
+}
+
+void ScribbleArea::slideTexturedBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_)
+{
+    QPointF delta = (thePoint_ - srcPoint_) / 1.0 ; // increment vector
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
+
+    // Create gradient brush
+    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+
+    // Slide texture/pixels of the source image
+    qreal factor;
+    int xb, yb, xa, ya;
+
+    for (yb=bmiTmpClip->boundaries.top(); yb<bmiTmpClip->boundaries.bottom(); yb++)
+    {
+        for (xb=bmiTmpClip->boundaries.left(); xb<bmiTmpClip->boundaries.right(); xb++)
+        {
+            QColor color;
+            color.setRgba( bmiTmpClip->pixel (xb, yb) );
+            factor = color.alphaF(); // any from r g b a is ok
+            //qreal premult = 1.0/(factor+0.01);
+
+            xa = xb-factor*delta.x();
+            ya = yb-factor*delta.y();
+
+            color.setRgba( bmiSource_->pixel( xa, ya ) );
+            factor = color.alphaF();
+
+            if (factor>0.0)
+            {
+                //qreal invFactor = 1.0/factor; // TODO: almost done, use inverse factor instead of sum
+                int sum = 255-color.alpha();
+                color.setRed( color.red() + sum );
+                color.setGreen( color.green() + sum );
+                color.setBlue( color.blue() + sum );
+                color.setAlpha( 255 ); // Premultiplied color
+
+                //bmiTmpClip->setPixel( xb, yb, color.rgba() );
+                bufferImg->setPixel( xb, yb, color.rgba() );
+            }
+        }
+    }
+    delete bmiTmpClip;
 }
 
 void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
