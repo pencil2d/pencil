@@ -1604,11 +1604,12 @@ void ScribbleArea::slideTexturedBrush(BitmapImage *bmiSource_, QPointF srcPoint_
                 color.setBlue( color.blue() + sum );
                 color.setAlpha( 255 ); // Premultiplied color
 
-                //bmiTmpClip->setPixel( xb, yb, color.rgba() );
-                bufferImg->setPixel( xb, yb, color.rgba() );
+                bmiTmpClip->setPixel( xb, yb, color.rgba() );
+                //bufferImg->setPixel( xb, yb, color.rgba() );
             }
         }
     }
+    bufferImg->paste(bmiTmpClip);
     delete bmiTmpClip;
 }
 
