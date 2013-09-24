@@ -214,8 +214,8 @@ void SmudgeTool::drawStroke()
 
 
     if (toolMode == 0) { // normal (smoothed)
-        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 40; // full brushsize/40 = 0..5
-        qreal distance = 1 * QLineF(b, a).length();
+        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 80;
+        qreal distance = QLineF(b, a).length();
         brushStep = qMax( 1.0, brushStep * opacity );
         //currentWidth = properties.width; // here ?
         int steps = qRound(distance) / brushStep;
@@ -242,8 +242,8 @@ void SmudgeTool::drawStroke()
     }
     else // smudge (liquified)
     {
-        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 10; // full brushsize/20 = 0..10
-        qreal distance = 1 * QLineF(b, a).length();
+        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 80;
+        qreal distance = QLineF(b, a).length()/4;
         brushStep = qMax( 1.0, brushStep * opacity );
         //currentWidth = properties.width; // here ?
         int steps = qRound(distance) / brushStep;
