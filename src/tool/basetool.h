@@ -21,8 +21,7 @@ class Properties
 public:
     qreal width;
     qreal feather;
-    qreal opacity;    
-    int colourNumber;
+    qreal opacity;
     int pressure;
     int invisibility;
     int preserveAlpha;
@@ -37,6 +36,9 @@ class BaseTool : public QObject
     Q_OBJECT
 public:
     static QString TypeName( ToolType );
+
+    static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
+    static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
     explicit BaseTool(QObject *parent = 0);
     virtual ToolType type() = 0;
@@ -53,13 +55,17 @@ public:
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent *) { return false; }
 
+    virtual void startAdjusting( ToolPropertyType argSettingType );
+    virtual void stopAdjusting();
+    virtual void adjustCursor(qreal argOffsetX);
+
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
     virtual void clear() { }
 
-    void setColour(const int i);
-    void setColour(const QColor colour);
-
+    static bool isAdjusting;
+    QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
+    
     void setWidth(const qreal width);
     void setFeather(const qreal feather);
     void setOpacity(const qreal opacity);

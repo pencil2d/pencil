@@ -27,12 +27,14 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "vectorselection.h"
 #include "basetool.h"
+#include "colormanager.h"
 
 class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
-
+class ColorManager;
+class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
 {
@@ -47,10 +49,6 @@ public:
 
     void next(const int &i);
 
-    void setColour(const int);
-    void setColour(const QColor);
-    void resetColours();
-
     void resetTools();
 
     void deleteSelection();
@@ -60,6 +58,7 @@ public:
     bool somethingSelected;
     bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    qreal myRotatedAngle;
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -74,7 +73,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION};
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
@@ -104,6 +103,7 @@ public:
     BaseTool *currentTool();
     BaseTool *getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
+    void setTemporaryTool(ToolType eToolMode);
     void switchTool(ToolType type);
     QList<BaseTool *> getTools();
 
@@ -112,6 +112,13 @@ public:
     QPointF pixelToPoint(QPointF pixel);
 
     StrokeManager *getStrokeManager() const { return m_strokeManager; }
+
+    PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
+
+    void keyPressed(QKeyEvent *event);
+
+    Editor *getEditor() { return m_pEditor; }
+    ColorManager *colorManager;
 
 signals:
     void modification();
@@ -184,6 +191,8 @@ public slots:
     void toggleShowAllLayers();
     void escape();
 
+    void togglePopupPalette();
+
 protected:
     void tabletEvent(QTabletEvent *event);
     void wheelEvent(QWheelEvent *event);
@@ -206,16 +215,18 @@ public:
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
+    void drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
+    void slideTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
     void refreshBitmap(QRect rect, int rad);
     void refreshVector(QRect rect, int rad);
+    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
 protected:
     void updateCanvas(int frame, QRect rect);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
 
     void floodFillError(int errorType);
 
@@ -227,6 +238,8 @@ protected:
     QHash<ToolType, BaseTool *> m_toolSetHash;
 
     Editor *m_pEditor;
+
+    PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
     int tabletEraserBackupToolMode;
     bool modified;
@@ -263,12 +276,6 @@ protected:
     QList<int> closestCurves;
     QList<VertexRef> closestVertices;
     QPointF offset;
-
-    //WYWIWYG tool adjustments
-    bool adjustingTool; //whether or not resizing
-    enum myWysiToolAdjustment {wtaWIDTH, wtaFEATHER, wtaTRANSPARENCY};
-    myWysiToolAdjustment wysiToolAdjustment;
-    qreal toolOrgValue; //start resizing from previous width or feather
 
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool

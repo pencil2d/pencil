@@ -71,7 +71,7 @@ Bugs - things to do
 
 * manage colours
 ----> "transparent" colour; for shade contour
-interactive change of colour - DONE???
+interactive change of colour - DONE??
 
 * write/read vectorial data - DONE
 

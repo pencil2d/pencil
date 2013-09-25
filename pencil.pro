@@ -8,7 +8,7 @@ TARGET = Pencil
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 DEPENDPATH += . src
-INCLUDEPATH += . 	src \
+INCLUDEPATH += . src \
             src/external/flash \
             src/graphics \
             src/graphics/bitmap \
@@ -45,7 +45,8 @@ HEADERS +=  src/interfaces.h \
             src/structure/layervector.h \
             src/structure/object.h \
             src/interface/editor.h \
-            src/interface/palette.h \
+            src/interface/colorpalettewidget.h \
+            src/interface/popupcolorpalettewidget.h \
             src/interface/preferences.h \
             src/interface/scribblearea.h \
             src/interface/timeline.h \
@@ -78,10 +79,17 @@ HEADERS +=  src/interfaces.h \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
+    src/interface/colorwheel.h \
+    src/interface/colorinspector.h \
+    src/interface/colorgriditem.h \
+    src/interface/colorgrid.h \
+    src/interface/colorbox.h \
+    src/interface/flowlayout.h \
     src/structure/keyframe.h \
     src/structure/camera.h \
     src/interface/recentfilemenu.h \
-    src/util/util.h
+    src/util/util.h \
+    src/interface/colormanager.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -99,7 +107,8 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/structure/layervector.cpp \
             src/structure/object.cpp \
             src/interface/editor.cpp \
-            src/interface/palette.cpp \
+            src/interface/colorpalettewidget.cpp \
+            src/interface/popupcolorpalettewidget.cpp \
             src/interface/preferences.cpp \
             src/interface/scribblearea.cpp \
             src/interface/timeline.cpp \
@@ -132,10 +141,18 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/strokemanager.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
+    src/interface/colorwheel.cpp \
+    src/interface/colorinspector.cpp \
+    src/interface/colorgriditem.cpp \
+    src/interface/colorgrid.cpp \
+    src/interface/colorbox.cpp \
+    src/interface/flowlayout.cpp \
     src/structure/keyframe.cpp \
     src/structure/camera.cpp \
     src/interface/recentfilemenu.cpp \
-    src/util/util.cpp
+    src/util/util.cpp \
+    src/interface/colormanager.cpp
+
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}
@@ -170,12 +187,7 @@ RESOURCES += pencil.qrc
 
 FORMS += \
     src/interface/mainwindow2.ui \
-    src/interface/shortcutspage.ui
+    src/interface/shortcutspage.ui \
+    src/interface/colorinspector.ui
 
 TRANSLATIONS += pencil.ts
-
-
-OTHER_FILES += \
-    src/tool/test.m
-
-

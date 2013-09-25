@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -74,7 +74,7 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
-    <addaction name="actionDelete"/>
+    <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
     <addaction name="actionCrop"/>
     <addaction name="actionCrop_To_Selection"/>
@@ -133,7 +133,6 @@
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionClear"/>
     <addaction name="actionMove"/>
     <addaction name="actionSelect"/>
     <addaction name="actionBrush"/>
@@ -145,6 +144,8 @@
     <addaction name="actionBucket"/>
     <addaction name="actionEyedropper"/>
     <addaction name="actionEraser"/>
+    <addaction name="separator"/>
+    <addaction name="actionTogglePalette"/>
     <addaction name="separator"/>
     <addaction name="actionResetToolsDefault"/>
    </widget>
@@ -349,9 +350,13 @@
     <string>Deselect All</string>
    </property>
   </action>
-  <action name="actionDelete">
+  <action name="actionClearFrame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+   </property>
    <property name="text">
-    <string>Delete</string>
+    <string>Clear Frame</string>
    </property>
   </action>
   <action name="actionPreference">
@@ -535,7 +540,7 @@
      <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
    </property>
    <property name="text">
-    <string>Clear</string>
+    <string>Clear Frame</string>
    </property>
   </action>
   <action name="actionSelect">
@@ -677,6 +682,14 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionTogglePalette">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle palette</string>
    </property>
   </action>
   <action name="actionResetToolsDefault">

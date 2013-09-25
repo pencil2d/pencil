@@ -2,17 +2,17 @@
 #include <QPixmap>
 #include <QMouseEvent>
 
-#include "editor.h"
-#include "scribblearea.h"
-
-#include "pencilsettings.h"
-#include "penciltool.h"
-
-#include "strokemanager.h"
-
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "colormanager.h"
+#include "strokemanager.h"
+
+#include "editor.h"
+#include "scribblearea.h"
+#include "pencilsettings.h"
+
+#include "penciltool.h"
 
 PencilTool::PencilTool(QObject *parent) :
     StrokeTool(parent)
@@ -28,42 +28,41 @@ void PencilTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
 
-    properties.width = settings.value("pencilWidth").toDouble();    
-    properties.colourNumber = 0;
-    properties.feather = -1;
+    properties.width = settings.value("pencilWidth").toDouble();
+    properties.feather = settings.value("pencilFeather").toDouble();
     properties.opacity = 0.8;
     properties.pressure = 1;
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
 
-    if (properties.width == 0)
+    if (properties.width <= 0)
     {
         properties.width = 1;
         settings.setValue("pencilWidth", properties.width);
+    }
+    if (properties.feather > -1) // replace with: <=0 to allow feather
+    {
+        properties.feather = -1;
+        settings.setValue("pencilFeather", properties.feather);
     }
 }
 
 QCursor PencilTool::cursor()
 {
-    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    if (isAdjusting) // being dynamically resized
+    {
+        return circleCursors(); // two circles cursor
+    }
+
+    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
-    else
-    {
-        return Qt::CrossCursor;
-    }
+    return Qt::CrossCursor;
 }
 
 void PencilTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
@@ -113,12 +112,13 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
             qreal tol = m_pScribbleArea->getCurveSmoothing() / qAbs(m_pScribbleArea->getViewScaleX());
             qDebug() << "pressures " << strokePressures;
             BezierCurve curve(strokePoints, strokePressures, tol);
+
             curve.setWidth(0);
             curve.setFeather(0);
             curve.setInvisibility(true);
             curve.setVariableWidth(false);
-            curve.setColourNumber(properties.colourNumber);
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
             m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
@@ -131,13 +131,15 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
+    QColor currentColor = m_pEditor->colorManager()->frontColor();
+
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
-        currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF() * pressure);
+        currentPressuredColor.setAlphaF(currentColor.alphaF() * pressure);
     }
     else
     {
-        currentPressuredColor.setAlphaF(m_pEditor->currentColor.alphaF());
+        currentPressuredColor.setAlphaF(currentColor.alphaF());
     }
 
     currentWidth = properties.width;
@@ -155,7 +157,7 @@ void PencilTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen(QBrush(m_pEditor->currentColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         width = properties.width;
         rad = qRound(properties.width / 2) + 3;
 
@@ -164,16 +166,16 @@ void PencilTool::drawStroke()
         }
 
         if (p.size() == 4) {
-
-//            qDebug() << p;
+            //            qDebug() << p;
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
-                    p[2],
-                    p[3]);
+                p[2],
+                p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
 
-            if (false) {
+            if (false)
+            {
                 QRectF rect(p[0], size);
 
                 QPen penBlue(Qt::blue);
@@ -193,18 +195,22 @@ void PencilTool::drawStroke()
     }
     else if (layer->type == Layer::VECTOR)
     {
-        QPen pen(m_pEditor->currentColor, 1, Qt::DotLine, Qt::RoundCap, Qt::RoundJoin);
+        QPen pen(m_pEditor->colorManager()->frontColor(),
+            1,
+            Qt::DotLine,
+            Qt::RoundCap,
+            Qt::RoundJoin);
+
         rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->getTempViewScaleX()));
 
         if (p.size() == 4) {
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
-                    p[2],
-                    p[3]);
+                p[2],
+                p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }
-

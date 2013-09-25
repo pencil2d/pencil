@@ -1,14 +1,16 @@
 #include <QPixmap>
 #include <QPainter>
 
-#include "pencilsettings.h"
-#include "buckettool.h"
-
-#include "editor.h"
-#include "scribblearea.h"
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "colormanager.h"
+
+#include "pencilsettings.h"
+#include "editor.h"
+#include "scribblearea.h"
+
+#include "buckettool.h"
 
 BucketTool::BucketTool(QObject *parent) :
     BaseTool(parent)
@@ -29,11 +31,11 @@ void BucketTool::loadSettings()
 
 QCursor BucketTool::cursor()
 {
-    if ( pencilSettings()->value( kSettingToolCursor ).toBool() )
+    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
     {
         QPixmap pixmap(":icons/bucketTool.png");
         QPainter painter(&pixmap);
-        painter.setPen( Qt::blue );   // FIXED: need to get current color
+        painter.setPen( Qt::blue );   // FIXME: need to get current color
         painter.drawLine( QPoint(5, 16), QPoint(5, 18) );
         painter.end();
 
@@ -47,19 +49,9 @@ QCursor BucketTool::cursor()
 
 void BucketTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
-    if (layer->type == Layer::VECTOR)
-    {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
-        if (vectorImage == NULL) { return; }
-        m_pEditor->selectVectorColourNumber(properties.colourNumber);
-    }
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
-//        m_pScribbleArea->mousePath.append(getLastPoint());
         m_pScribbleArea->setAllDirty();
     }
 }
@@ -91,7 +83,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                                    targetImage,
                                    getLastPoint().toPoint(),
                                    qRgba(0, 0, 0, 0),
-                                   m_pEditor->currentColor.rgba(),
+                                   m_pEditor->colorManager()->frontColor().rgba(),
                                    10 * 10,
                                    true);
 

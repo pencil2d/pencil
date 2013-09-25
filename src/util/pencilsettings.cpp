@@ -1,10 +1,9 @@
-
 #include <QStringList>
+#include <QDebug>
 #include "pencilsettings.h"
 
 // ==== Singleton ====
 static QSettings* g_pSettings = NULL;
-
 
 QSettings* pencilSettings()
 {
@@ -38,33 +37,40 @@ void restoreToDefaultSetting() // TODO: finish reset list
     qDebug("restored default tools");
 }
 
-
 void checkExistingShortcuts()
 {
     QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
 
-    pencilSettings()->beginGroup("shortcuts");
-    pencilSettings()->remove("");
-    foreach (QString pKey, defaultKey.allKeys())
+    foreach (QString pShortcutsKey, defaultKey.allKeys())
     {
-        if ( !pencilSettings()->contains(pKey) )
+        if ( !pencilSettings()->contains(pShortcutsKey) )
         {
-            pencilSettings()->setValue(pKey, defaultKey.value(pKey));
+            pencilSettings()->setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
         }
     }
-    pencilSettings()->endGroup();
-}
 
+    pencilSettings()->beginGroup(SHORTCUTS_GROUP);
+    defaultKey.beginGroup(SHORTCUTS_GROUP);
+    foreach (QString pKey, pencilSettings()->allKeys())
+    {
+        if ( !defaultKey.contains(pKey) )
+        {
+            pencilSettings()->remove(pKey);
+        }
+    }
+    defaultKey.endGroup();
+    pencilSettings()->endGroup();
+    pencilSettings()->sync();
+}
 
 void restoreShortcutsToDefault()
 {
     QSettings defaultKey(":resources/kb.ini", QSettings::IniFormat);
 
-    pencilSettings()->beginGroup("shortcuts");
-    pencilSettings()->remove("");
-    foreach (QString pKey, defaultKey.allKeys())
+    pencilSettings()->remove("shortcuts");
+
+    foreach (QString pShortcutsKey, defaultKey.allKeys())
     {
-        pencilSettings()->setValue(pKey, defaultKey.value(pKey));
+        pencilSettings()->setValue(pShortcutsKey, defaultKey.value(pShortcutsKey));
     }
-    pencilSettings()->endGroup();
 }

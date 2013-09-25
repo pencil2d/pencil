@@ -22,12 +22,28 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
-    properties.width = 1;
+    QSettings settings("Pencil","Pencil");
+
+    properties.width = settings.value("penWidth").toDouble();
     properties.feather = -1;
+    properties.pressure = ON;
+    properties.invisibility = OFF;
+    properties.preserveAlpha = OFF;
+
+    if ( properties.width <= 0 )
+    {
+        properties.width = 1.5;
+        settings.setValue("penWidth", properties.width);
+    }
+
 }
 
-QCursor PolylineTool::cursor()
+QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
 {
+    if (isAdjusting) { // being dynamically resized
+         return QCursor(this->circleCursors()); // two circles cursor
+         qDebug() << "adjusting";
+    }
     return Qt::CrossCursor;
 }
 

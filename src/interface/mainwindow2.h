@@ -8,14 +8,13 @@ class QActionGroup;
 class Editor;
 class ScribbleArea;
 class Object;
-class Palette;
+class ColorPaletteWidget;
 class DisplayOptionDockWidget;
 class ToolOptionDockWidget;
 class TimeLine;
 class ToolSetWidget;
 class Preferences;
 class RecentFileMenu;
-
 template<typename T> class QList;
 
 
@@ -44,7 +43,7 @@ public:
     ScribbleArea* m_pScribbleArea;
 
     // UI: Dock widgets
-    Palette* m_colorPalette;
+    ColorPaletteWidget* m_colorPalette;
     DisplayOptionDockWidget* m_displayOptionWidget;
     ToolOptionDockWidget*    m_toolOptionWidget;
     TimeLine* m_pTimeLine;
@@ -54,6 +53,7 @@ public:
     Preferences* m_pPreferences;
 
 protected:
+    void tabletEvent(QTabletEvent *event);
     RecentFileMenu *m_recentFileMenu;
 
 private:
@@ -93,7 +93,7 @@ private slots:
 
 private:
     void arrangePalettes();
-    void makePreferenceConnections();
+    void connectColorPalette();
     void makeTimeLineConnections();
     void createMenus();
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);

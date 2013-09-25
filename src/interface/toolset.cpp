@@ -38,12 +38,12 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     moveButton = newToolButton(QIcon(":icons/arrow.png"), "Move Tool <b>(Q)</b>: Move an object");
     handButton = newToolButton(QIcon(":icons/hand.png"), "Hand Tool <b>(H)</b>: Move the canvas");
     penButton = newToolButton(QIcon(":icons/pen.png"), "Pen Tool <b>(P)</b>: Sketch with pen");
-    eraserButton = newToolButton(QIcon(":icons/eraser.png"), "Eraser Tool <b>(E)</b>: Erase");
+    eraserButton = newToolButton(QIcon(":icons/eraser.png"), "Eraser Tool <b>(E)</b>: Erase<br><b>(C)</b>: switches mobile palette");
     polylineButton = newToolButton(QIcon(":icons/polyline.png"), "Polyline Tool <b>(Y)</b>: Create line/curves");
     bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
     colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
-    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage");
-    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Tool <b>(L)</b>: Erases content of selected frame");
+    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access");
+    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame");
     smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>: Edit polyline/curves");
 
     pencilButton->setWhatsThis("Pencil Tool (N)");
@@ -58,14 +58,6 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     eyedropperButton->setWhatsThis("Eyedropper Tool (I)");
     clearButton->setWhatsThis("Clear Tool");
     smudgeButton->setWhatsThis("Smudge Tool (A)");
-    //magnifyButton->setWhatsThis("Zoom Tool (Z)");
-
-
-    //magnifyButton->setIcon(QIcon(":icons/magnify.png"));
-    //magnifyButton->setToolTip("Zoom Tool <b>(Z)</b>: Adjust the zoom level");
-    //magnifyButton->setEnabled(false);
-
-    //smudgeButton->setEnabled(true);
 
     pencilButton->setCheckable(true);
     penButton->setCheckable(true);
@@ -177,7 +169,6 @@ void ToolSetWidget::eraserOn()
     m_editor->setPreserveAlpha(0);
     m_editor->setInvisibility(0);
 
-    m_editor->setFeather(-1);
     m_editor->setPreserveAlpha(-1);
     m_editor->setFollowContour(-1);
     m_editor->setInvisibility(-1);
@@ -225,7 +216,6 @@ void ToolSetWidget::penOn()
 
     // --- change properties ---
     m_editor->setToolProperties( pCurrentTool->properties );
-    m_editor->setWidth(2);
 
     deselectAllTools();
     penButton->setChecked(true);
@@ -239,7 +229,7 @@ void ToolSetWidget::handOn()
         m_editor->getScribbleArea()->resetView();
     }
 
-     m_editor->getScribbleArea()->setCurrentTool( HAND );
+    m_editor->getScribbleArea()->setCurrentTool( HAND );
     // --- change properties ---
     m_editor->setWidth(-1);
     m_editor->setFeather(-1);
@@ -254,26 +244,26 @@ void ToolSetWidget::handOn()
 
 void ToolSetWidget::polylineOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( POLYLINE );
+    m_editor->getScribbleArea()->setCurrentTool( POLYLINE );
     // --- change properties ---
 
-     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
+    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
 
-     m_editor->setWidth(pCurrentTool->properties.width);
-     m_editor->setFeather(-1);
-     m_editor->setPressure(pCurrentTool->properties.pressure);
-     m_editor->setInvisibility(pCurrentTool->properties.invisibility);
-     m_editor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
-     m_editor->setFollowContour(-1);
+    m_editor->setWidth(pCurrentTool->properties.width);
+    m_editor->setFeather(-1);
+    m_editor->setPressure(pCurrentTool->properties.pressure);
+    m_editor->setInvisibility(pCurrentTool->properties.invisibility);
+    m_editor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
+    m_editor->setFollowContour(-1);
 
-     deselectAllTools();
-     polylineButton->setChecked(true);
+    deselectAllTools();
+    polylineButton->setChecked(true);
 }
 
 void ToolSetWidget::bucketOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( BUCKET );
-     BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
+    m_editor->getScribbleArea()->setCurrentTool( BUCKET );
+    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
 
     // --- change properties ---
 
@@ -294,7 +284,7 @@ void ToolSetWidget::bucketOn()
 
 void ToolSetWidget::eyedropperOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( EYEDROPPER );
+    m_editor->getScribbleArea()->setCurrentTool( EYEDROPPER );
     // --- change properties ---
     m_editor->setWidth(-1);
     m_editor->setFeather(-1);
@@ -325,10 +315,12 @@ void ToolSetWidget::brushOn()
 
 void ToolSetWidget::smudgeOn()
 {
-     m_editor->getScribbleArea()->setCurrentTool( SMUDGE );
-    // --- change properties ---
-    m_editor->setWidth(-1);
-    m_editor->setFeather(-1);
+    m_editor->getScribbleArea()->setCurrentTool( SMUDGE );
+    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();    // --- change properties ---
+    m_editor->setWidth(pCurrentTool->properties.width);
+    m_editor->setFeather(pCurrentTool->properties.feather);
+    //m_editor->setWidth(10);
+    //m_editor->setFeather(50);
     m_editor->setPressure(-1);
     m_editor->setInvisibility(0);
     m_editor->setInvisibility(-1);
@@ -396,5 +388,3 @@ void ToolSetWidget::setCurrentTool( ToolType toolType )
         break;
     }
 }
-
-

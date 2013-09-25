@@ -1,16 +1,17 @@
-
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
 
-#include "editor.h"
+#include "layer.h"
 #include "scribblearea.h"
+
+#include "pencilsettings.h"
+#include "editor.h"
 #include "strokemanager.h"
 
 #include "erasertool.h"
-#include "layer.h"
+#include "blitrect.h"
 #include "layervector.h"
-
 
 EraserTool::EraserTool(QObject *parent) :
     StrokeTool(parent)
@@ -25,35 +26,51 @@ ToolType EraserTool::type()
 void EraserTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
-    properties.width = settings.value("eraserWidth").toDouble();    
-    properties.feather = 0;
-    properties.pressure = 1;
-    properties.invisibility = -1;
-    properties.preserveAlpha = 0;
 
-    if (properties.width == 0)
+    properties.width = settings.value("eraserWidth").toDouble();
+    properties.feather = settings.value("eraserFeather").toDouble();
+    properties.opacity = 0.5;
+
+    properties.pressure = ON;
+    properties.invisibility = DISABLED;
+    properties.preserveAlpha = OFF;
+
+    if (properties.width <= 0)
     {
-        properties.width = 24;
+        properties.width = 25;
         settings.setValue("eraserWidth", properties.width);
+    }
+    if (properties.feather <= 0)
+    {
+        properties.feather = 50;
+        settings.setValue("eraserFeather", properties.feather);
     }
 }
 
 QCursor EraserTool::cursor()
 {
-    QPixmap pixmap( properties.width, properties.width );
-    pixmap.fill( QColor(255,255,255,0) );
+    if (isAdjusting) // being dynamically resized
+    {
+        return circleCursors(); // two circles cursor
+    }
+    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
+    {
+        return circleCursors();
+    }
+    return Qt::CrossCursor;
+}
 
-    QPainter painter(&pixmap);
-    painter.setPen( QColor(0,0,0,190) );
-    painter.setBrush( QColor(255,255,255,100) );
-    painter.drawLine( QPointF(properties.width/2 - 2, properties.width/2), QPointF(properties.width/2+2, properties.width/2) );
-    painter.drawLine( QPointF(properties.width/2, properties.width/2-2), QPointF(properties.width/2, properties.width/2+2) );
-    painter.setRenderHints(QPainter::Antialiasing, true);
-    painter.setPen( QColor(0,0,0,100) );
-    painter.drawEllipse( QRectF(1, 1, properties.width - 2, properties.width - 2) );
-    painter.end();
-
-    return QCursor(pixmap);
+void EraserTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+{
+    currentWidth = properties.width;
+    if (m_pScribbleArea->usePressure() && !mouseDevice)
+    {
+        currentPressure = pressure;
+    }
+    else
+    {
+        currentPressure = 1.0;
+    }
 }
 
 void EraserTool::mousePressEvent(QMouseEvent *event)
@@ -65,31 +82,7 @@ void EraserTool::mousePressEvent(QMouseEvent *event)
     }
 
     startStroke();
-}
-
-void EraserTool::mouseMoveEvent(QMouseEvent *event)
-{
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if (event->buttons() & Qt::LeftButton)
-    {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
-        {
-            drawStroke();
-        }
-
-        if (layer->type == Layer::VECTOR)
-        {
-            qreal radius = (properties.width / 2) / m_pScribbleArea->getTempViewScaleX();
-            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
-                    ->getVerticesCloseTo(getCurrentPoint(), radius);
-            for (int i = 0; i < nearbyVertices.size(); i++)
-            {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
-            }
-            //update();
-            m_pScribbleArea->setAllDirty();
-        }
-    }
+    lastBrushPoint = getCurrentPoint();
 }
 
 void EraserTool::mouseReleaseEvent(QMouseEvent *event)
@@ -98,7 +91,7 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (m_pScribbleArea->isLayerPaintable())
         {
             drawStroke();
         }
@@ -125,17 +118,34 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
     endStroke();
 }
 
-void EraserTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
+void EraserTool::mouseMoveEvent(QMouseEvent *event)
 {
-    if (mouseDevice)
-    {
-        currentWidth =  properties.width;
-    }
-    else
-    {
-        currentWidth = properties.width * pressure;
-    }
+    Layer *layer = m_pEditor->getCurrentLayer();
 
+    if (event->buttons() & Qt::LeftButton)
+    {
+        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        {
+            drawStroke();
+        }
+        if (layer->type == Layer::VECTOR)
+        {
+            qreal radius = (properties.width / 2) / m_pScribbleArea->getTempViewScaleX();
+            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
+                ->getVerticesCloseTo(getCurrentPoint(), radius);
+            for (int i = 0; i < nearbyVertices.size(); i++)
+            {
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
+            }
+            //update();
+            m_pScribbleArea->setAllDirty();
+        }
+    }
+}
+
+// draw a single paint dab at the given location
+void EraserTool::paintAt(QPointF point)
+{
 }
 
 void EraserTool::drawStroke()
@@ -147,22 +157,57 @@ void EraserTool::drawStroke()
 
     if (layer->type == Layer::BITMAP)
     {
-        QPen pen = QPen(QBrush(QColor(255, 255, 255, 255)), currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        int rad = qRound(currentWidth / 2) + 3;
-
         for (int i = 0; i < p.size(); i++) {
             p[i] = m_pScribbleArea->pixelToPoint(p[i]);
         }
 
-        if (p.size() == 4) {
-            QSizeF size(2,2);
-            QPainterPath path(p[0]);
-            path.cubicTo(p[1],
-                    p[2],
-                    p[3]);
-            m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
+        qreal opacity = 1.0;
+        qreal brushWidth = currentWidth +  0.5 * properties.feather;
+        qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
+        opacity = currentPressure;
+        brushWidth = brushWidth * currentPressure;
+
+        //        if (tabletInUse) { opacity = tabletPressure; }
+        //        if (usePressure) { brushWidth = brushWidth * tabletPressure; }
+
+        qreal brushStep = 0.5 * currentWidth + 0.5 * properties.feather;
+        brushStep = brushStep * currentPressure;
+
+        //        if (usePressure) { brushStep = brushStep * tabletPressure; }
+        brushStep = qMax(1.0, brushStep);
+
+        currentWidth = properties.width;
+        BlitRect rect;
+
+        QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
+        m_pScribbleArea->setGaussianGradient(radialGrad, QColor(255,255,255), opacity, offset);
+
+        QPointF a = lastBrushPoint;
+        QPointF b = getCurrentPoint();
+
+        //        foreach (QSegment segment, calculateStroke(brushWidth))
+        //        {
+        //            QPointF a = lastBrushPoint;
+        //            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
+
+        qreal distance = 4 * QLineF(b, a).length();
+        int steps = qRound(distance) / brushStep;
+
+        for (int i = 0; i < steps; i++)
+        {
+            QPointF point = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+            rect.extend(point.toPoint());
+            m_pScribbleArea->drawBrush(point, brushWidth, offset, QColor(255,255,255), opacity);
+
+            if (i == (steps - 1))
+            {
+                lastBrushPoint = point;
+            }
         }
+        //        }
+
+        int rad = qRound(brushWidth) / 2 + 2;
+        m_pScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type == Layer::VECTOR)
     {
@@ -173,8 +218,8 @@ void EraserTool::drawStroke()
             QSizeF size(2,2);
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
-                    p[2],
-                    p[3]);
+                p[2],
+                p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }

@@ -1,15 +1,15 @@
 #ifndef SMUDGETOOL_H
 #define SMUDGETOOL_H
 
-#include "basetool.h"
+#include "stroketool.h"
 
-
-class SmudgeTool : public BaseTool
+class SmudgeTool : public StrokeTool
 {
     Q_OBJECT
 public:
     explicit SmudgeTool(QObject *parent = 0);
     ToolType type();
+    uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
     void loadSettings();
     QCursor cursor();
 
@@ -17,10 +17,15 @@ public:
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
 
+    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+    void drawStroke();
+
 signals:
     
 public slots:
-    
+
+protected:
+    QPointF lastBrushPoint;
 };
 
 #endif // SMUDGETOOL_H

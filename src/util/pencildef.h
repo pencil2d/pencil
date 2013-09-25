@@ -18,6 +18,16 @@ enum ToolType
     BRUSH
 };
 
+enum ToolPropertyType
+{
+    WIDTH,
+    FEATHER,
+    OPACITY,
+    COLOURNUMBER,
+    PRESSURE,
+    INVISIBILITY,
+    PRESERVEALPHA
+};
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
@@ -45,7 +55,7 @@ enum ToolType
 #define CMD_PASTE "CmdPaste"
 #define CMD_SELECT_ALL "CmdSelectAll"
 #define CMD_DESELECT_ALL "CmdDeselectAll"
-#define CMD_CLEAR "CmdClear"
+#define CMD_CLEAR_FRAME "CmdClearFrame"
 #define CMD_PREFERENCE "CmdPreferences"
 #define CMD_RESET_WINDOWS "CmdResetWindows"
 #define CMD_ZOOM_IN "CmdZoomIn"
@@ -69,7 +79,6 @@ enum ToolType
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
 #define CMD_TOOL_MOVE "CmdToolMove"
-#define CMD_TOOL_CLEAR "CmdToolClear"
 #define CMD_TOOL_SELECT "CmdToolSelect"
 #define CMD_TOOL_BRUSH "CmdToolBrush"
 #define CMD_TOOL_POLYLINE "CmdToolPolyline"
@@ -80,11 +89,16 @@ enum ToolType
 #define CMD_TOOL_BUCKET "CmdToolBucket"
 #define CMD_TOOL_EYEDROPPER "CmdToolEyedropper"
 #define CMD_TOOL_ERASER "CmdToolEraser"
+#define CMD_TOGGLE_PALETTE "CmdTogglePalette"
 #define CMD_NEW_BITMAP_LAYER "CmdNewBitmapLayer"
 #define CMD_NEW_VECTOR_LAYER "CmdNewVectorLayer"
 #define CMD_NEW_SOUND_LAYER "CmdNewSoundLayer"
 #define CMD_NEW_CAMERA_LAYER "CmdNewCameraLayer"
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
 #define CMD_HELP "CmdHelp"
+
+// Settings Group/Key Name
+#define SHORTCUTS_GROUP "shortcuts"
+#define SETTING_TOOL_CURSOR "toolCursors"
 
 #endif // PENCILDEF_H

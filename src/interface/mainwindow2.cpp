@@ -19,18 +19,29 @@ GNU General Public License for more details.
 #include <QMenu>
 #include <QScopedPointer>
 
+
 #include "pencildef.h"
-#include "editor.h"
+#include "pencilsettings.h"
+
 #include "object.h"
+#include "layer.h"
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
+
+#include "editor.h"
+#include "colormanager.h"
+
 #include "scribblearea.h"
 #include "interfaces.h"
-#include "palette.h"
+#include "colorpalettewidget.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "popupcolorpalettewidget.h"
 #include "preferences.h"
 #include "timeline.h"
-#include "pencilsettings.h"
+
+#include "colorbox.h"
 #include "util.h"
 
 #include "recentfilemenu.h"
@@ -38,9 +49,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
-#include "layer.h"
-#include "layerbitmap.h"
-#include "layervector.h"
+
 
 
 MainWindow2::MainWindow2(QWidget *parent) :
@@ -67,10 +76,11 @@ MainWindow2::MainWindow2(QWidget *parent) :
 
     readSettings();
 
+    connectColorPalette();
+
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));
-    //showPreferences();
+    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));        
 }
 
 MainWindow2::~MainWindow2()
@@ -105,15 +115,26 @@ void MainWindow2::makeTimeLineConnections()
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
 
-void MainWindow2::makePreferenceConnections()
+void MainWindow2::connectColorPalette()
 {
+    connect( m_colorPalette, SIGNAL(colorChanged(QColor)),
+             editor->colorManager(), SLOT(pickColor(QColor)) );
+
+    connect( m_colorPalette, SIGNAL(colorNumberChanged(int)),
+             editor->colorManager(), SLOT(pickColorNumber(int)) );
+
+    connect( editor->colorManager(), SIGNAL(colorChanged(QColor)),
+             m_colorPalette, SLOT(setColor(QColor)));
+
+    connect( editor->colorManager(), SIGNAL(colorNumberChanged(int)),
+             m_colorPalette, SLOT(selectColorNumber(int)));
 }
 
 void MainWindow2::arrangePalettes()
 {
     setCentralWidget(editor);
 
-    m_colorPalette = new Palette(editor);
+    m_colorPalette = new ColorPaletteWidget(editor);
     m_colorPalette->setFocusPolicy(Qt::NoFocus);
 
     m_displayOptionWidget = new DisplayOptionDockWidget(this);
@@ -173,7 +194,7 @@ void MainWindow2::createMenus()
     connect(ui->actionCut, SIGNAL(triggered()), editor, SLOT(cut()));
     connect(ui->actionCopy, SIGNAL(triggered()), editor, SLOT(copy()));
     connect(ui->actionPaste, SIGNAL(triggered()), editor, SLOT(paste()));
-    connect(ui->actionDelete, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
+    connect(ui->actionClearFrame, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
     connect(ui->actionCrop, SIGNAL(triggered()), editor, SLOT(crop()));
     connect(ui->actionCrop_To_Selection, SIGNAL(triggered()), editor, SLOT(croptoselect()));
     connect(ui->actionSelect_All, SIGNAL(triggered()), editor, SIGNAL(selectAll()));
@@ -226,8 +247,6 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    connect(ui->actionClear, SIGNAL(triggered()), editor, SLOT(clearCurrentFrame()));
-
     connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));
     connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
     connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
@@ -239,7 +258,7 @@ void MainWindow2::createMenus()
     connect(ui->actionBucket, SIGNAL(triggered()), m_toolSet, SLOT(bucketOn()));
     connect(ui->actionEyedropper, SIGNAL(triggered()), m_toolSet, SLOT(eyedropperOn()));
     connect(ui->actionEraser, SIGNAL(triggered()), m_toolSet, SLOT(eraserOn()));
-
+    connect(ui->actionTogglePalette, SIGNAL(triggered()),m_pScribbleArea,SLOT(togglePopupPalette()));
     connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
 
     /// --- Help Menu ---
@@ -256,7 +275,6 @@ void MainWindow2::createMenus()
 
     connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
     connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
-
 
 }
 
@@ -312,6 +330,10 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     }
 }
 
+void MainWindow2::tabletEvent(QTabletEvent *event)
+{
+    event->ignore();
+}
 
 // ==== SLOT ====
 
@@ -537,7 +559,6 @@ bool MainWindow2::openObject(QString filePath)
 void MainWindow2::resetToolsSettings()
 {
     m_pScribbleArea->resetTools();
-    writeSettings();
     editor->setTool(m_pScribbleArea->currentTool()->type());
     qDebug("tools restored to default settings");
 }
@@ -774,10 +795,9 @@ void MainWindow2::dockAllPalettes()
 
 void MainWindow2::readSettings()
 {
-
     QSettings* settings = pencilSettings();
     QRect desktopRect = QApplication::desktop()->screenGeometry();
-    desktopRect.adjust(80,80,-80,-80);
+    desktopRect.adjust(80, 80, -80, -80);
 
     QPoint pos = settings->value("editorPosition", desktopRect.topLeft() ).toPoint();
     QSize size = settings->value("editorSize", desktopRect.size() ).toSize();
@@ -799,7 +819,7 @@ void MainWindow2::writeSettings()
     settings.setValue("editorPosition", pos());
     settings.setValue("editorSize", size());
 
-    Palette* colourPalette = m_colorPalette;
+    ColorPaletteWidget* colourPalette = m_colorPalette;
     if (colourPalette != NULL)
     {
         settings.setValue("colourPalettePosition", colourPalette->pos());
@@ -864,11 +884,13 @@ void MainWindow2::loadAllShortcuts()
     ui->actionExport_Svg_Image->setShortcut( cmdKeySeq(CMD_EXPORT_SVG) );
     ui->actionExport_X_sheet->setShortcut( cmdKeySeq(CMD_EXPORT_XSHEET) );
 
+    // edit manu
     ui->actionUndo->setShortcut( cmdKeySeq(CMD_UNDO) );
     ui->actionRedo->setShortcut( cmdKeySeq(CMD_REDO) );
     ui->actionCut->setShortcut( cmdKeySeq(CMD_CUT) );
     ui->actionCopy->setShortcut( cmdKeySeq(CMD_COPY) );
     ui->actionPaste->setShortcut( cmdKeySeq(CMD_PASTE) );
+    ui->actionClearFrame->setShortcut( cmdKeySeq(CMD_CLEAR_FRAME) );
     ui->actionSelect_All->setShortcut( cmdKeySeq(CMD_SELECT_ALL));
     ui->actionDeselect_All->setShortcut( cmdKeySeq(CMD_DESELECT_ALL) );
     ui->actionPreference->setShortcut( cmdKeySeq(CMD_PREFERENCE) );
@@ -897,7 +919,6 @@ void MainWindow2::loadAllShortcuts()
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
 
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
-    ui->actionClear->setShortcut(cmdKeySeq(CMD_TOOL_CLEAR));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
     ui->actionPolyline->setShortcut(cmdKeySeq(CMD_TOOL_POLYLINE));
@@ -908,6 +929,9 @@ void MainWindow2::loadAllShortcuts()
     ui->actionBucket->setShortcut(cmdKeySeq(CMD_TOOL_BUCKET));
     ui->actionEyedropper->setShortcut(cmdKeySeq(CMD_TOOL_EYEDROPPER));
     ui->actionEraser->setShortcut(cmdKeySeq(CMD_TOOL_ERASER));
+    ui->actionTogglePalette->setShortcut(cmdKeySeq(CMD_TOGGLE_PALETTE));
+    m_pScribbleArea->getPopupPalette()->closeButton->setText( "close/toggle (" + pencilSettings()->value(QString("shortcuts/")+CMD_TOGGLE_PALETTE ).toString() + ")" );
+    m_pScribbleArea->getPopupPalette()->closeButton->setShortcut(cmdKeySeq(CMD_TOGGLE_PALETTE));
 
     ui->actionNew_Bitmap_Layer->setShortcut(cmdKeySeq(CMD_NEW_BITMAP_LAYER));
     ui->actionNew_Vector_Layer->setShortcut(cmdKeySeq(CMD_NEW_VECTOR_LAYER));
@@ -986,7 +1010,7 @@ void MainWindow2::importPalette()
     if (!filePath.isEmpty())
     {
         m_object->importPalette(filePath);
-        m_colorPalette->updateList();
+        m_colorPalette->refreshColorList();
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
 }
