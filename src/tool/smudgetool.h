@@ -16,6 +16,8 @@ public:
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    bool keyPressEvent(QKeyEvent *);
+    bool keyReleaseEvent(QKeyEvent *);
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
     void drawStroke();
