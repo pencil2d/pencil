@@ -52,9 +52,12 @@ public:
     virtual void mouseMoveEvent(QMouseEvent*);
     virtual void mouseReleaseEvent(QMouseEvent*);
     virtual void mouseDoubleClickEvent(QMouseEvent*);
+
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent *) { return false; }
+    virtual bool keyReleaseEvent(QKeyEvent *) { return false; }
 
+    // dynamic cursor adjustment
     virtual void startAdjusting( ToolPropertyType argSettingType );
     virtual void stopAdjusting();
     virtual void adjustCursor(qreal argOffsetX);

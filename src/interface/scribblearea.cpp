@@ -690,6 +690,10 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
         this->m_pEditor->setTool( prevToolType );
         instantTool = false;
     }
+    if (currentTool()->keyReleaseEvent(event)) {
+        // has been handled by tool
+        return;
+    }
     switch (event->key())
     {
     case Qt::Key_F1:
@@ -1549,6 +1553,8 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
 
 void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
 {
+    // drawTexturedBrush() is not used anymore although code can be used for textured brushes.
+    // TODO: Add argument "pixelStep_", send texture through "bmiSource_"; texture brush should work.
     QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
     setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
 
@@ -1564,9 +1570,28 @@ void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_
     delete bmiTmpClip;
 }
 
-void ScribbleArea::slideTexturedBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_)
+void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
 {
-    QPointF delta = (thePoint_ - srcPoint_) / 1.0 ; // increment vector
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,127 ), opacity_, offset_ );
+
+    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+
+    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
+    //BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    BitmapImage bmiTmpClip = bmiSource_->copy( srcRect.toRect() );
+
+    bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
+    bufferImg->paste( &bmiTmpClip );
+    //delete bmiTmpClip;
+}
+
+void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_)
+{
+    QPointF delta = (thePoint_ - srcPoint_) ; // increment vector
     QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
     QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
@@ -1587,7 +1612,6 @@ void ScribbleArea::slideTexturedBrush(BitmapImage *bmiSource_, QPointF srcPoint_
             QColor color;
             color.setRgba( bmiTmpClip->pixel (xb, yb) );
             factor = color.alphaF(); // any from r g b a is ok
-            //qreal premult = 1.0/(factor+0.01);
 
             xa = xb-factor*delta.x();
             ya = yb-factor*delta.y();
@@ -1605,7 +1629,6 @@ void ScribbleArea::slideTexturedBrush(BitmapImage *bmiSource_, QPointF srcPoint_
                 color.setAlpha( 255 ); // Premultiplied color
 
                 bmiTmpClip->setPixel( xb, yb, color.rgba() );
-                //bufferImg->setPixel( xb, yb, color.rgba() );
             }
         }
     }

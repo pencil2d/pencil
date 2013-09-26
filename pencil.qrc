@@ -60,5 +60,6 @@
         <file>icons/cut.png</file>
         <file>icons/prefs-shortcuts.png</file>
         <file>resources/kb.ini</file>
+        <file>icons/liquify.png</file>
     </qresource>
 </RCC>
