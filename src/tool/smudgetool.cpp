@@ -48,7 +48,11 @@ QCursor SmudgeTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
-    return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
+    if ( toolMode == 0 ) { //normal mode
+        return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
+    } else { // blured mode
+        return QCursor(QPixmap(":icons/liquify.png"),3,16);
+    }
 }
 
 void SmudgeTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
@@ -64,6 +68,20 @@ void SmudgeTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
     }
 }
 
+bool SmudgeTool::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Alt) {
+        toolMode = 1; // alternative mode
+        m_pScribbleArea->setCursor( cursor() ); // update cursor
+    }
+}
+
+bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
+{
+    toolMode = 0; // default mode
+    m_pScribbleArea->setCursor( cursor() ); // update cursor
+}
+
 void SmudgeTool::mousePressEvent(QMouseEvent *event)
 {
     qDebug() << "smudge event";
@@ -75,14 +93,6 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
     {
         if (layer->type == Layer::BITMAP)
         {
-            if (event->modifiers())
-            {
-                toolMode = 1; // not a temporary tool but toolMode
-            }
-            else
-            {
-                toolMode = 0;
-            }
             m_pEditor->backup(typeName());
             m_pScribbleArea->setAllDirty();
             startStroke();
@@ -213,20 +223,23 @@ void SmudgeTool::drawStroke()
     QPointF b = getCurrentPoint();
 
 
-    if (toolMode == 0) { // normal (smoothed)
-        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 80;
-        qreal distance = QLineF(b, a).length();
+    if (toolMode == 0) // default mode = blur smudge
+    {
+        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 40.0;
+        qreal distance = QLineF(b, a).length()*2;
         brushStep = qMax( 1.0, brushStep * opacity );
+        //brushStep = 2.0;
         //currentWidth = properties.width; // here ?
-        int steps = qRound(distance) / brushStep;
-        int rad = qRound(brushWidth) / 2 + 2;
+        int steps = qRound(distance / brushStep);
+        int rad = qRound(brushWidth / 2.0) + 2;
 
+        QPointF sourcePoint = lastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
             QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            m_pScribbleArea->drawTexturedBrush( targetImage,
-                                                lastBrushPoint,
+            m_pScribbleArea->blurBrush( targetImage,
+                                                sourcePoint,
                                                 targetPoint,
                                                 brushWidth,
                                                 offset,
@@ -236,25 +249,26 @@ void SmudgeTool::drawStroke()
             {
                 lastBrushPoint = targetPoint;
             }
+            sourcePoint = targetPoint;
+            m_pScribbleArea->refreshBitmap(rect, rad);
+            m_pScribbleArea->paintBitmapBuffer();
         }
-        m_pScribbleArea->refreshBitmap(rect, rad);
-        m_pScribbleArea->paintBitmapBuffer();
     }
-    else // smudge (liquified)
+    else // hard smudge (liquify)
     {
-        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 80;
-        qreal distance = QLineF(b, a).length()/4;
+        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 80.0;
+        qreal distance = QLineF(b, a).length()/4.0;
         brushStep = qMax( 1.0, brushStep * opacity );
         //currentWidth = properties.width; // here ?
-        int steps = qRound(distance) / brushStep;
-        int rad = qRound(brushWidth) / 2 + 2;
+        int steps = qRound(distance / brushStep);
+        int rad = qRound(brushWidth / 2.0) + 2;
 
         QPointF sourcePoint = lastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
             QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            m_pScribbleArea->slideTexturedBrush( targetImage,
+            m_pScribbleArea->liquifyBrush( targetImage,
                                                 sourcePoint,
                                                 targetPoint,
                                                 brushWidth,
