@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "pencilsettings.h"
 
-#include "colormanager.h"
+//#include "colormanager.h"
 #include "strokemanager.h"
 
 #include "pentool.h"
@@ -139,7 +139,9 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     updateAll = false;
 
     // color wheel popup
-    m_popupPaletteWidget = new PopupColorPaletteWidget(this);
+    m_popupPaletteWidget = new PopupColorPaletteWidget( this );
+    //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
+    colorManager = m_pEditor->colorManager();
 }
 
 /************************************************************************************/
@@ -150,12 +152,15 @@ void ScribbleArea::resetTools()
     // Reset can be useful to solve some pencil settings problems.
     // Betatesters should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
-    getTool( PEN )->properties.width = 2.0; // Default property values are a bit arbitrary
-    getTool( PENCIL )->properties.width = 1.0; // so don't hesitate to refined them.
-    getTool( ERASER )->properties.width = 10.0;
+    getTool( PEN )->properties.width = 1.5; // not supposed to use feather
+    getTool( POLYLINE )->properties.width = 1.5; // PEN dependent
+    getTool( PENCIL )->properties.width = 1.0;
+    getTool( PENCIL )->properties.feather = -1.0; // locks feather usage (can be changed)
+    getTool( ERASER )->properties.width = 25.0;
+    getTool( ERASER )->properties.feather = 50.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
-    getTool( SMUDGE )->properties.width = 15.0;
+    getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
 
     pencilSettings()->setValue(SETTING_TOOL_CURSOR, true);
@@ -207,27 +212,27 @@ void ScribbleArea::setFeather(const qreal newFeather)
     if (currentTool()->type() == PENCIL)
     {
         getTool(PENCIL)->properties.feather = newFeather;
-        settings.setValue("pencilOpacity", newFeather);
+        settings.setValue("pencilFeather", newFeather);
     }
     else if (currentTool()->type() == ERASER)
     {
         getTool(ERASER)->properties.feather = newFeather;
-        settings.setValue("eraserOpacity", newFeather);
+        settings.setValue("eraserFeather", newFeather);
     }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.feather = newFeather;
-        settings.setValue("penOpacity", newFeather);
+        settings.setValue("penFeather", newFeather);
     }
     else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.feather = newFeather;
-        settings.setValue("brushOpacity", newFeather);
+        settings.setValue("brushFeather", newFeather);
     }
     else if (currentTool()->type() == SMUDGE)
     {
         getTool(SMUDGE)->properties.feather = newFeather;
-        settings.setValue("smudgeOpacity", newFeather);
+        settings.setValue("smudgeFeather", newFeather);
     }
     updateAllFrames();
     setCursor(currentTool()->cursor());
@@ -520,10 +525,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 
 void ScribbleArea::togglePopupPalette()
 {
-    if (m_popupPaletteWidget->popup())
-    {
-        m_pEditor->setColor(m_popupPaletteWidget->color);
-    }
+    m_popupPaletteWidget->popup();
 }
 
 
@@ -563,6 +565,7 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         // more combinations here
     }
     // ---- single keys ----
+    ToolType toolType = currentTool()->type();
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -659,7 +662,16 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         updateAllVectorLayersAtCurrentFrame();
         break;
     case Qt::Key_Alt:
-        setTemporaryTool( EYEDROPPER );
+
+        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
+             (toolType == BUCKET) || (toolType == POLYLINE) )
+        {
+            setTemporaryTool( EYEDROPPER );
+        }
+        else
+        {
+            event->ignore();
+        }
         break;
     case Qt::Key_Space:
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
@@ -677,6 +689,10 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
     {
         this->m_pEditor->setTool( prevToolType );
         instantTool = false;
+    }
+    if (currentTool()->keyReleaseEvent(event)) {
+        // has been handled by tool
+        return;
     }
     switch (event->key())
     {
@@ -1196,7 +1212,7 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
         }
 
         // paints the selection outline
-        if (somethingSelected && myTempTransformedSelection.isValid())
+        if (somethingSelected && (myTempTransformedSelection.isValid() || m_moveMode==ROTATION )) // @revise
         {
             // outline of the transformed selection
             painter.setWorldMatrixEnabled(false);
@@ -1375,7 +1391,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
 
                     // current frame
                     painter.setOpacity(opacity);
-                    if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && (myTempTransformedSelection != mySelection))
+                    if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection))
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         painter.setClipping(true);
@@ -1388,9 +1404,18 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                         painter.setClipping(false);
                         // transforms the bitmap selection
                         bool smoothTransform = false;
-                        if (myTempTransformedSelection.width() != mySelection.width() || myTempTransformedSelection.height() != mySelection.height()) { smoothTransform = true; }
+
+                        if (myTempTransformedSelection.width() != mySelection.width() || myTempTransformedSelection.height() != mySelection.height() || myRotatedAngle != 0  ) { smoothTransform = true; }
                         BitmapImage selectionClip = bitmapImage->copy(mySelection.toRect());
-                        selectionClip.transform(myTempTransformedSelection, smoothTransform);
+                        selectionClip.transform(myTransformedSelection, smoothTransform);
+                        QMatrix rm;
+                        //TODO: complete matrix calls ( sounds funny :)
+                        rm.rotate(myRotatedAngle);
+                        QImage rotImg = selectionClip.image->transformed( rm );
+                        QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
+                                            ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
+                        *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
+                        selectionClip.boundaries.translate( dxy );
                         selectionClip.paintImage(painter);
                         //painter.drawImage(selectionClip.topLeft(), *(selectionClip.image));
                     }
@@ -1525,22 +1550,90 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
-//
-void ScribbleArea::drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity)
+
+void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
 {
-    QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
-    setGaussianGradient(radialGrad, QColor(255,255,255,255), opacity, offset);
+    // drawTexturedBrush() is not used anymore although code can be used for textured brushes.
+    // TODO: Add argument "pixelStep_", send texture through "bmiSource_"; texture brush should work.
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
 
-    QRectF srcRect(srcPoint.x() - 0.5 * brushWidth, srcPoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-    QRectF trgRect(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
-    BitmapImage selectionClip = argImg->copy(srcRect.toRect());
-    BitmapImage *tempBitmapImage = new BitmapImage(NULL);
-    tempBitmapImage->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing);
-    selectionClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
-    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceIn );
-    bufferImg->paste( tempBitmapImage );
-    delete tempBitmapImage;
+    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
+    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiTmpClip->paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
+    bufferImg->paste( bmiTmpClip );
+    delete bmiTmpClip;
+}
+
+void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
+{
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,127 ), opacity_, offset_ );
+
+    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+
+    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
+    //BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    BitmapImage bmiTmpClip = bmiSource_->copy( srcRect.toRect() );
+
+    bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
+    bufferImg->paste( &bmiTmpClip );
+    //delete bmiTmpClip;
+}
+
+void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_)
+{
+    QPointF delta = (thePoint_ - srcPoint_) ; // increment vector
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
+
+    // Create gradient brush
+    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+
+    // Slide texture/pixels of the source image
+    qreal factor;
+    int xb, yb, xa, ya;
+
+    for (yb=bmiTmpClip->boundaries.top(); yb<bmiTmpClip->boundaries.bottom(); yb++)
+    {
+        for (xb=bmiTmpClip->boundaries.left(); xb<bmiTmpClip->boundaries.right(); xb++)
+        {
+            QColor color;
+            color.setRgba( bmiTmpClip->pixel (xb, yb) );
+            factor = color.alphaF(); // any from r g b a is ok
+
+            xa = xb-factor*delta.x();
+            ya = yb-factor*delta.y();
+
+            color.setRgba( bmiSource_->pixel( xa, ya ) );
+            factor = color.alphaF();
+
+            if (factor>0.0)
+            {
+                //qreal invFactor = 1.0/factor; // TODO: almost done, use inverse factor instead of sum
+                int sum = 255-color.alpha();
+                color.setRed( color.red() + sum );
+                color.setGreen( color.green() + sum );
+                color.setBlue( color.blue() + sum );
+                color.setAlpha( 255 ); // Premultiplied color
+
+                bmiTmpClip->setPixel( xb, yb, color.rgba() );
+            }
+        }
+    }
+    bufferImg->paste(bmiTmpClip);
+    delete bmiTmpClip;
 }
 
 void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
@@ -1784,7 +1877,7 @@ void ScribbleArea::calculateSelectionRect()
     }
 }
 
-void ScribbleArea::calculateSelectionTransformation()
+void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 {
     qreal c1x, c1y , c2x, c2y, scaleX, scaleY;
     c1x = 0.5 * (myTempTransformedSelection.left() + myTempTransformedSelection.right());
@@ -1812,7 +1905,7 @@ void ScribbleArea::paintTransformedSelection()
 
     if (somethingSelected)    // there is something selected
     {
-        if (layer->type == Layer::BITMAP && (myTransformedSelection != mySelection))
+        if (layer->type == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection))
         {
             //backup();
             BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
@@ -1825,9 +1918,16 @@ void ScribbleArea::paintTransformedSelection()
             }
 
             bool smoothTransform = false;
-            if (myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height()) { smoothTransform = true; }
+            if (myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() || m_moveMode == ROTATION ) { smoothTransform = true; }
+            QMatrix rm;
+            rm.rotate(myRotatedAngle);
             BitmapImage selectionClip = bitmapImage->copy(mySelection.toRect());
             selectionClip.transform(myTransformedSelection, smoothTransform);
+            QImage rotImg = selectionClip.image->transformed( rm, Qt::SmoothTransformation );
+            QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
+                                ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
+            *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
+            selectionClip.boundaries.translate( dxy );
             bitmapImage->clear(mySelection.toRect());
             bitmapImage->paste(&selectionClip);
         }

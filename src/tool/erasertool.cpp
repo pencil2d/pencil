@@ -35,15 +35,15 @@ void EraserTool::loadSettings()
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
 
-    if (properties.feather == 0)
+    if (properties.width <= 0)
     {
-        properties.feather = 70;
-        settings.setValue("eraserFeather", properties.feather);
-    }
-    if (properties.width == 0)
-    {
-        properties.width = 48;
+        properties.width = 25;
         settings.setValue("eraserWidth", properties.width);
+    }
+    if (properties.feather <= 0)
+    {
+        properties.feather = 50;
+        settings.setValue("eraserFeather", properties.feather);
     }
 }
 

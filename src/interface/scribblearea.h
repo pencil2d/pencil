@@ -27,11 +27,13 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "vectorselection.h"
 #include "basetool.h"
+#include "colormanager.h"
 
 class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
+class ColorManager;
 class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
@@ -56,6 +58,7 @@ public:
     bool somethingSelected;
     bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    qreal myRotatedAngle;
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -70,7 +73,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT };
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION};
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
@@ -115,6 +118,7 @@ public:
     void keyPressed(QKeyEvent *event);
 
     Editor *getEditor() { return m_pEditor; }
+    ColorManager *colorManager;
 
 signals:
     void modification();
@@ -211,7 +215,9 @@ public:
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
-    void drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity);
+    void drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
+    void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
+    void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
     void paintBitmapBuffer();

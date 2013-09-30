@@ -31,6 +31,8 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
+    m_pScribbleArea->myRotatedAngle = 0;
+
     if (event->button() == Qt::LeftButton)
     {
         if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
