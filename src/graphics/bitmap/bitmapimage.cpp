@@ -450,7 +450,7 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
     }
 }
 
-void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
+/*void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = pen.width();
     extend( path.controlPointRect().adjusted(-width,-width,width,width).toRect() );
@@ -463,7 +463,52 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
         painter.setBrush(brush);
         painter.setWorldMatrix(QMatrix().translate(-topLeft().x(), -topLeft().y()));
         painter.setMatrixEnabled(true);
-        painter.drawPath( path );
+        if (path.length() > 0) {
+            painter.drawPath( path );
+        } else { // forces drawing when points are the same (mousedown)
+            painter.drawPoint( path.elementAt(0).x, path.elementAt(0).y );
+        }
+        painter.end();
+    }
+}*/
+
+void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
+{
+    int width = pen.width();
+    qreal inc = 1.0+width/20.0; // qreal?
+    //if (inc<1) { inc=1.0; }
+    extend( path.controlPointRect().adjusted(-width,-width,width,width).toRect() );
+
+    if (image != NULL && !image->isNull() )
+    {
+        QPainter painter(image);
+        painter.setCompositionMode(cm);
+        painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+        painter.setPen(pen);
+        painter.setBrush(brush);
+        painter.setWorldMatrix(QMatrix().translate(-topLeft().x(), -topLeft().y()));
+        painter.setMatrixEnabled(true);
+        if (path.length() > 0)
+        {
+            for (int pt = 0; pt<path.elementCount()-1; pt++ )
+            {
+                qreal dx = path.elementAt(pt+1).x - path.elementAt(pt).x;
+                qreal dy = path.elementAt(pt+1).y - path.elementAt(pt).y;
+                qreal m = sqrt(dx*dx+dy*dy);
+                qreal factorx = dx/m;
+                qreal factory = dy/m;
+                for ( int h=0; h<m; h+=inc )
+                {
+                    int x = path.elementAt(pt).x + factorx*h;
+                    int y = path.elementAt(pt).y + factory*h;
+                    painter.drawPoint( x, y );
+                }
+            }
+        }
+        else
+        { // forces drawing when points are coincident (mousedown)
+            painter.drawPoint( path.elementAt(0).x, path.elementAt(0).y );
+        }
         painter.end();
     }
 }
