@@ -164,9 +164,10 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
     int time = singleshotTime.elapsed();
     static const qreal smoothness = 0.5f;
     QLineF line(m_lastPixel, m_currentPixel);
-    if (line.length() == 0) {
-        return result;
-    }
+
+    /* if (line.length() == 0 ) {
+        return result; // return void?
+    }*/
 
     qreal scaleFactor = line.length();
 
