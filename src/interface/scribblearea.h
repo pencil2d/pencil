@@ -280,7 +280,6 @@ protected:
 
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool
-    ToolType prevToolType; //to recover current tool
 
     VectorSelection vectorSelection;
     //bool selectionChanged;

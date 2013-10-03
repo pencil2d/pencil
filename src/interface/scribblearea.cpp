@@ -687,8 +687,9 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
     if ( mouseInUse ) { return; }
     if ( instantTool ) // temporary tool
     {
-        this->m_pEditor->setTool( prevToolType );
-        instantTool = false;
+        currentTool()->keyReleaseEvent(event);
+        setPrevTool();
+        return;
     }
     if (currentTool()->keyReleaseEvent(event)) {
         // has been handled by tool
@@ -806,17 +807,19 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
 
     // ----- assisted tool adjusment
-    if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
-    {
-        //adjust width if not locked
-        currentTool()->startAdjusting( WIDTH );
-        return;
-    }
-    else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting( FEATHER );
-        return;
+    if ( event->button() == Qt::LeftButton ) {
+        if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
+        {
+            //adjust width if not locked
+            currentTool()->startAdjusting( WIDTH );
+            return;
+        }
+        else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
+        {
+            //adjust feather if not locked
+            currentTool()->startAdjusting( FEATHER );
+            return;
+        }
     }
 
     // ---- checks layer availability ------
@@ -955,8 +958,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
     {
-        this->m_pEditor->setTool( prevToolType ); // abandon temporary tool !
-        instantTool = false;
+        setPrevTool();
     }
 }
 
@@ -2424,8 +2426,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 void ScribbleArea::setTemporaryTool(ToolType eToolMode)
 {
     instantTool = true; // used to return to previous tool when finished (keyRelease).
-    prevToolType = currentTool()->type();
-    this->m_pEditor->setTool( eToolMode );
+    prevMode = currentTool()->type();
+    //m_pEditor->setTool( eToolMode );
+    switchTool( eToolMode ); // emits for each case
+
 }
 
 void ScribbleArea::switchTool(ToolType type)
@@ -2563,4 +2567,5 @@ void ScribbleArea::setPrevTool()
 {
     setCurrentTool(prevMode);
     switchTool(prevMode);
+    instantTool = false;
 }
