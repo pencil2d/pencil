@@ -142,6 +142,9 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
     //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
     colorManager = m_pEditor->colorManager();
+
+    useGridA = false;
+    useGridB = false;
 }
 
 /************************************************************************************/
@@ -687,8 +690,9 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
     if ( mouseInUse ) { return; }
     if ( instantTool ) // temporary tool
     {
-        this->m_pEditor->setTool( prevToolType );
-        instantTool = false;
+        currentTool()->keyReleaseEvent(event);
+        setPrevTool();
+        return;
     }
     if (currentTool()->keyReleaseEvent(event)) {
         // has been handled by tool
@@ -806,17 +810,19 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
 
     // ----- assisted tool adjusment
-    if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
-    {
-        //adjust width if not locked
-        currentTool()->startAdjusting( WIDTH );
-        return;
-    }
-    else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting( FEATHER );
-        return;
+    if ( event->button() == Qt::LeftButton ) {
+        if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
+        {
+            //adjust width if not locked
+            currentTool()->startAdjusting( WIDTH );
+            return;
+        }
+        else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
+        {
+            //adjust feather if not locked
+            currentTool()->startAdjusting( FEATHER );
+            return;
+        }
     }
 
     // ---- checks layer availability ------
@@ -955,8 +961,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
     {
-        this->m_pEditor->setTool( prevToolType ); // abandon temporary tool !
-        instantTool = false;
+        setPrevTool();
     }
 }
 
@@ -1312,24 +1317,39 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     painter.setWorldMatrixEnabled(true);
 
     // background
-    painter.setPen(Qt::NoPen);
+    painter.setPen(Qt::NoPen );
     painter.setBrush(backgroundBrush);
     painter.drawRect(myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3)));  // this is necessary to have the background move with the view
 
     // grid
-    bool drawGrid = false;
-    if (drawGrid)
+    //QRect gridRect( myTempView.inverted().mapRect(QRect(0 , 0 , width() , height() ) ) );
+    QRect gridRect = this->getViewRect().toRect();
+    //gridRect.setWidth(gridRect.width()*);
+    //gridRect.moveTo(-width()/2,-height()/2);
+    //gridRect.setCoords();
+    painter.setOpacity(1.0);
+    painter.setPen(Qt::red);
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRect( gridRect );
+    // What kind of grid do we want?
+    if (useGridA)
     {
-        painter.setOpacity(1.0);
         painter.setPen(Qt::gray);
-        painter.setBrush(Qt::NoBrush);
-        // What kind of grid do we want?
-        //painter.drawRect(QRect(0,0, mySize.width(), mySize.height()));
-        //painter.drawLine( QPoint(0,mySize.height()/2), QPoint(mySize.width(), mySize.height()/2) );
-        //painter.drawLine( QPoint(mySize.width()/3, 0), QPoint(mySize.width()/3, mySize.height()) );
-        //painter.drawLine( QPoint(mySize.width()*2/3, 0), QPoint(mySize.width()*2/3, mySize.height()) );
+        painter.drawLine( QPoint(gridRect.left(), gridRect.top()+gridRect.height()/3 ),
+                          QPoint(gridRect.right(), gridRect.top()+gridRect.height()/3 ) );
+        painter.drawLine( QPoint(gridRect.left(), gridRect.bottom()-gridRect.height()/3 ),
+                          QPoint(gridRect.right(), gridRect.bottom()-gridRect.height()/3 ) );
+        painter.drawLine( QPoint(gridRect.left()+gridRect.width()/3, gridRect.top() ),
+                          QPoint(gridRect.left()+gridRect.width()/3, gridRect.bottom() ) );
+        painter.drawLine( QPoint(gridRect.right()-gridRect.width()/3, gridRect.top() ),
+                          QPoint(gridRect.right()-gridRect.width()/3, gridRect.bottom() ) );
     }
-
+    if (useGridB)
+    {
+        //painter.setPen( Qt::red );
+        painter.drawLine(gridRect.topLeft(),gridRect.bottomRight());
+        painter.drawLine(gridRect.bottomLeft(),gridRect.topRight());
+    }
     Object *object = m_pEditor->object;
     qreal opacity;
     for (int i = 0; i < object->getLayerCount(); i++)
@@ -2048,6 +2068,18 @@ void ScribbleArea::toggleOnionPrev(bool checked)
     emit onionPrevChanged(onionPrev);
 }
 
+void ScribbleArea::toggleGridA(bool checked)
+{
+    useGridA = checked;
+    updateFrame();
+}
+
+void ScribbleArea::toggleGridB(bool checked)
+{
+    useGridB = checked;
+    updateFrame();
+}
+
 void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance)
 {
     bool invertible;
@@ -2424,8 +2456,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 void ScribbleArea::setTemporaryTool(ToolType eToolMode)
 {
     instantTool = true; // used to return to previous tool when finished (keyRelease).
-    prevToolType = currentTool()->type();
-    this->m_pEditor->setTool( eToolMode );
+    prevMode = currentTool()->type();
+    //m_pEditor->setTool( eToolMode );
+    switchTool( eToolMode ); // emits for each case
+
 }
 
 void ScribbleArea::switchTool(ToolType type)
@@ -2563,4 +2597,5 @@ void ScribbleArea::setPrevTool()
 {
     setCurrentTool(prevMode);
     switchTool(prevMode);
+    instantTool = false;
 }

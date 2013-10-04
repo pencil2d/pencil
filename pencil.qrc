@@ -61,5 +61,7 @@
         <file>icons/prefs-shortcuts.png</file>
         <file>resources/kb.ini</file>
         <file>icons/liquify.png</file>
+        <file>icons/grid-a.png</file>
+        <file>icons/grid-b.png</file>
     </qresource>
 </RCC>
