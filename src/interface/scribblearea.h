@@ -154,6 +154,8 @@ public slots:
 
     void toggleOnionPrev(bool);
     void toggleOnionNext(bool);
+    void toggleGridA(bool);
+    void toggleGridB(bool);
     void grid();
     //void pressureSlot(int);
     //void invisibleSlot(int);
@@ -260,6 +262,9 @@ protected:
     bool updateAll;
 
     bool followContour;
+
+    bool useGridA;
+    bool useGridB;
 
     QBrush backgroundBrush;
 public:
