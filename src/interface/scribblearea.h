@@ -154,6 +154,8 @@ public slots:
 
     void toggleOnionPrev(bool);
     void toggleOnionNext(bool);
+    void toggleGridA(bool);
+    void toggleGridB(bool);
     void grid();
     //void pressureSlot(int);
     //void invisibleSlot(int);
@@ -261,6 +263,9 @@ protected:
 
     bool followContour;
 
+    bool useGridA;
+    bool useGridB;
+
     QBrush backgroundBrush;
 public:
     BitmapImage *bufferImg; // used to pre-draw vector modifications
@@ -280,7 +285,6 @@ protected:
 
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool
-    ToolType prevToolType; //to recover current tool
 
     VectorSelection vectorSelection;
     //bool selectionChanged;
