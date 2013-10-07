@@ -10,7 +10,7 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     QVBoxLayout *mainLayout = new QVBoxLayout( this );
     setVisible( false );
     this->setFixedWidth(200);
-    m_colorBox = new ColorBox(this );
+    m_colorBox = new ColorBox();
     m_colorBox->adjustSize();
     mainLayout->addWidget(m_colorBox);
     adjustSize();
@@ -26,7 +26,7 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
                       & ~Qt::WindowMaximizeButtonHint
                       & ~Qt::WindowMinimizeButtonHint) );    
     // --- bottom buttons layout ---
-    QHBoxLayout *buttonsLayout = new QHBoxLayout( this );
+    QHBoxLayout *buttonsLayout = new QHBoxLayout();
     mainLayout->addLayout(buttonsLayout);
     closeButton = new QPushButton(this);
     closeButton->setText("close/toggle");

@@ -407,9 +407,9 @@ bool Object::importPalette(QString filePath)
 void Object::defaultInitialisation()
 {
     // default layers
-    addNewBitmapLayer();
-    addNewVectorLayer();
     addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
+    addNewVectorLayer();
+    addNewBitmapLayer();
 
     // default palette
     loadDefaultPalette();
