@@ -58,6 +58,7 @@ int TimeLineCells::getFrameX(int frameNumber)
 int TimeLineCells::getLayerNumber(int y)
 {
     int layerNumber = layerOffset + (y-offsetY)/layerHeight;
+    layerNumber = editor->getObject()->getLayerCount()-1-layerNumber;
     if (y < offsetY)
     {
         layerNumber = -1;
@@ -72,7 +73,8 @@ int TimeLineCells::getLayerNumber(int y)
 
 int TimeLineCells::getLayerY(int layerNumber)
 {
-    return offsetY + (layerNumber-layerOffset)*layerHeight;
+    //return offsetY + (layerNumber-layerOffset)*layerHeight;
+    return offsetY + (editor->getObject()->getLayerCount()-1-layerNumber-layerOffset)*layerHeight;
 }
 
 void TimeLineCells::updateFrame(int frameNumber)
