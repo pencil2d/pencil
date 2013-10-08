@@ -553,22 +553,31 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         // has been handled by tool
         return;
     }
-    // ---- multiple keys ----
-    if ( event->modifiers().testFlag(Qt::ControlModifier))
+
+    ToolType toolType = currentTool()->type();
+
+    // --- fixed control key shortcuts ---
+    if ( event->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier) )
     {
-        if ( event->modifiers().testFlag(Qt::ShiftModifier) ) // [SHIFT][CTRL] temp. eraser
+        qreal width = currentTool()->properties.width;
+        qreal feather = currentTool()->properties.feather;
+        setTemporaryTool( ERASER );
+        m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
+        return;
+    }
+
+    if ( event->modifiers() == Qt::AltModifier )
+    {
+        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
+             (toolType == BUCKET) || (toolType == POLYLINE) )
         {
-            qreal width = currentTool()->properties.width;
-            qreal feather = currentTool()->properties.feather;
-            setTemporaryTool( ERASER );
-            m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-            m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
+            setTemporaryTool( EYEDROPPER );
             return;
         }
-        // more combinations here
     }
-    // ---- single keys ----
-    ToolType toolType = currentTool()->type();
+
+    // ---- fixed normal keys ----
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -663,18 +672,6 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
     case Qt::Key_F3:
         gradients = 2;
         updateAllVectorLayersAtCurrentFrame();
-        break;
-    case Qt::Key_Alt:
-
-        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
-             (toolType == BUCKET) || (toolType == POLYLINE) )
-        {
-            setTemporaryTool( EYEDROPPER );
-        }
-        else
-        {
-            event->ignore();
-        }
         break;
     case Qt::Key_Space:
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
