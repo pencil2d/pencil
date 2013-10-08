@@ -50,6 +50,16 @@ void DisplayOptionDockWidget::createUI()
     onionNextButton->setToolTip("Onion skin next frame");
     onionNextButton->setIconSize( QSize(21,21) );
 
+    gridAButton = new QToolButton(displayGroup);
+    gridAButton->setIcon(QIcon(":icons/grid-a.png"));
+    gridAButton->setToolTip("Grid A - composition");
+    gridAButton->setIconSize( QSize(21,21) );
+
+    gridBButton = new QToolButton(displayGroup);
+    gridBButton->setIcon(QIcon(":icons/grid-b.png"));
+    gridBButton->setToolTip("Grid B - perspective");
+    gridBButton->setIconSize( QSize(21,21) );
+
     thinLinesButton->setCheckable(true);
     thinLinesButton->setChecked(false);
     outlinesButton->setCheckable(true);
@@ -62,16 +72,22 @@ void DisplayOptionDockWidget::createUI()
     onionPrevButton->setChecked(true);
     onionNextButton->setCheckable(true);
     onionNextButton->setChecked(false);
+    gridAButton->setCheckable(true);
+    gridAButton->setChecked(false);
+    gridBButton->setCheckable(true);
+    gridBButton->setChecked(false);
 
     QGridLayout* layout = new QGridLayout();
     layout->setMargin(4);
     layout->setSpacing(0);
     layout->addWidget(mirrorButton,0,0);
+    layout->addWidget(mirrorButtonV,1,0);
     layout->addWidget(thinLinesButton,0,1);
     layout->addWidget(outlinesButton,1,1);
-    layout->addWidget(mirrorButtonV,1,0);
     layout->addWidget(onionPrevButton,0,2);
     layout->addWidget(onionNextButton,1,2);
+    layout->addWidget(gridAButton,0,3);
+    layout->addWidget(gridBButton,1,3);
 
     displayGroup->setLayout(layout);
 
@@ -86,6 +102,8 @@ void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
     connect(onionNextButton, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionNext(bool)));
     connect(mirrorButton, SIGNAL(clicked()), editor, SLOT(toggleMirror()));
     connect(mirrorButtonV, SIGNAL(clicked()), editor, SLOT(toggleMirrorV()));
+    connect(gridAButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridA(bool)));
+    connect(gridBButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridB(bool)));
 
     connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));
     connect(editor, SIGNAL(changeThinLinesButton(bool)), this, SLOT(changeThinLinesButton(bool)));
