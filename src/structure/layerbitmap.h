@@ -43,7 +43,7 @@ public:
     QString fileName(int index, int layerNumber);
 
     QDomElement createDomElement(QDomDocument& doc);
-    void loadDomElement(QDomElement element, QString filePath);
+    void loadDomElement(QDomElement element, QString dataDirPath);
 
     // graphic representation -- could be put in another class
     BitmapImage* getBitmapImageAtIndex(int index);

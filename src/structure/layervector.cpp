@@ -290,7 +290,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
     return layerTag;
 }
 
-void LayerVector::loadDomElement(QDomElement element, QString filePath)
+void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
@@ -307,7 +307,8 @@ void LayerVector::loadDomElement(QDomElement element, QString filePath)
             {
                 if (!imageElement.attribute("src").isNull())
                 {
-                    QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
+                    QString path =  dataDirPath +"/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
+      //qDebug() << "LAY_VECTOR  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
                     QFileInfo fi(path);
                     if (!fi.exists()) path = imageElement.attribute("src");
                     int position = imageElement.attribute("frame").toInt();
