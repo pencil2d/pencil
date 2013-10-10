@@ -44,6 +44,8 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "util.h"
 
+#include "fileformat.h"		//contains constants used by Pencil File Format
+#include "JlCompress.h"		//compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
 
 #include "mainwindow2.h"
@@ -366,7 +368,7 @@ void MainWindow2::openDocument()
                     this,
                     tr("Open File..."),
                     myPath,
-                    tr("PCL (*.pcl);;Any files (*)"));
+                    tr(PFF_OPEN_ALL_FILE_FILTER));
 
         if (fileName.isEmpty())
         {
@@ -402,10 +404,10 @@ bool MainWindow2::saveAsNewDocument()
 
     if (strDefaultFileName.isEmpty())
     {
-        strDefaultFileName = QDir::homePath() + "/untitled.pcl";
+        strDefaultFileName = QDir::homePath() + "/" + PFF_DEFAULT_FILENAME;
     }
 
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Save As..."),strDefaultFileName ,tr("PCL (*.pcl)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save As..."),strDefaultFileName ,tr(PFF_CLOSE_ALL_FILE_FILTER));
 
     if (fileName.isEmpty())
     {
@@ -413,9 +415,9 @@ bool MainWindow2::saveAsNewDocument()
     }
     else
     {
-        if (! fileName.endsWith(".pcl"))
+        if ( ! fileName.endsWith(PFF_OLD_EXTENSION) && ! fileName.endsWith(PFF_EXTENSION) )
         {
-            fileName =  fileName + ".pcl";
+            fileName =  fileName + PFF_EXTENSION;
         }
         QSettings settings("Pencil","Pencil");
         settings.setValue("lastFilePath", QVariant(fileName));
@@ -446,23 +448,64 @@ void MainWindow2::openFile(QString filename)
 
 bool MainWindow2::openObject(QString filePath)
 {
+	bool openingTheOLDWAY = true;
+	QString realXMLFilePath = filePath;
+	QString tmpFilePath;
+	
     // ---- test before opening ----
-    QScopedPointer<QFile> file(new QFile(filePath));
+	QStringList zippedFileList = JlCompress::getFileList(filePath);
+	if (!zippedFileList.empty())
+	{
+		qDebug() << "Recognized New zipped Pencil File Format !";
+		openingTheOLDWAY = false;
+		
+	    // ---- now decompress PFF -----
+		QFileInfo fileInfo(filePath);
+		QDir dir(QDir::tempPath());
+		tmpFilePath = QDir::tempPath() + "/" + fileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT;
+		if(fileInfo.exists()) {
+			dir.rmpath(tmpFilePath); // --removes an old decompression directory
+			removePFFTmpDirectory(tmpFilePath); // --removes an old decompression directory - better approach
+		}
+		dir.mkpath(tmpFilePath); // --creates a new decompression directory
+
+		JlCompress::extractDir(filePath, tmpFilePath);
+		
+		realXMLFilePath = tmpFilePath + "/" + PFF_XML_FILE_NAME;
+	}
+	else
+	{
+		qDebug() << "Recognized Old Pencil File Format !";
+	}
+
+    QScopedPointer<QFile> file(new QFile(realXMLFilePath));
 
     //QFile* file = new QFile(filePath);
     if (!file->open(QFile::ReadOnly))
     {
+		if (!openingTheOLDWAY)
+		{
+			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
+		}
         return false;
     }
 
     QDomDocument doc;
     if (!doc.setContent(file.data()))
     {
+		if (!openingTheOLDWAY)
+		{
+			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
+		}
         return false; // this is not a XML file
     }
     QDomDocumentType type = doc.doctype();
     if (type.name() != "PencilDocument" && type.name() != "MyObject")
     {
+		if (!openingTheOLDWAY)
+		{
+			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
+		}
         return false; // this is not a Pencil document
     }
 
@@ -481,8 +524,18 @@ bool MainWindow2::openObject(QString filePath)
     //QSettings settings("Pencil","Pencil");
     //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
 
+	QString dataLayersDir;
+	if (openingTheOLDWAY)
+	{
+		dataLayersDir = filePath + "." + PFF_LAYERS_DIR;
+	}
+	else
+	{
+		dataLayersDir = tmpFilePath + "/" + PFF_LAYERS_DIR;
+	}
+
     Object* newObject = new Object();
-    if (!newObject->loadPalette(filePath+".data"))
+    if (!newObject->loadPalette(dataLayersDir))
     {
         newObject->loadDefaultPalette();
     }
@@ -520,8 +573,8 @@ bool MainWindow2::openObject(QString filePath)
                 else if (element.tagName() == "object")
                 {
                     qDebug("  Load object");
-                    ok = newObject->loadDomElement(element, filePath);
-                    qDebug() << "    filePath:" << filePath;
+                    ok = newObject->loadDomElement(element, dataLayersDir);
+                    qDebug() << "    dataDir:" << dataLayersDir;
                 }
             }
             tag = tag.nextSibling();
@@ -540,6 +593,11 @@ bool MainWindow2::openObject(QString filePath)
     {
         editor->updateObject();
 
+		if (!openingTheOLDWAY)
+		{
+			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
+		}
+
         m_recentFileMenu->addRecentFile(filePath);
         m_recentFileMenu->saveToDisk();
 
@@ -547,7 +605,10 @@ bool MainWindow2::openObject(QString filePath)
         setWindowTitle(newObject->strCurrentFilePath);
 
         // FIXME: need to free the old object. but delete object will crash app, don't know why.
+        // fixed by shoshon... don't know if it's right
+        Object* objectToDelete = m_object;
         m_object = newObject;
+        delete objectToDelete;
     }
 
     progress.setValue(100);
@@ -610,14 +671,42 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 {
     QString filePath = strSavedFilename;
 
+	bool savingTheOLDWAY = filePath.endsWith(PFF_OLD_EXTENSION);
+	
     QFileInfo fileInfo(filePath);
     if (fileInfo.isDir()) return false;
+    
+    QString tmpFilePath;
+    if (!savingTheOLDWAY)
+    {// create temporary directory for compressing files
+		tmpFilePath = QDir::tempPath() + "/" + fileInfo.completeBaseName() + PFF_TMP_COMPRESS_EXT;
+		QFileInfo tmpDataInfo(tmpFilePath);
+		if(!tmpDataInfo.exists())
+		{
+			QDir dir(QDir::tempPath()); // --the directory where filePath is or will be saved
+			dir.mkpath(tmpFilePath); // --creates a directory with the same name +".data"
+		}
+	}
+	else
+	{
+		tmpFilePath = fileInfo.absolutePath();
+	}
 
-    QFileInfo dataInfo(filePath+".data");
+	
+    QString dataLayersDir;
+    if (savingTheOLDWAY)
+    {
+		dataLayersDir = filePath + "." + PFF_LAYERS_DIR;
+	}
+	else
+	{
+		dataLayersDir = tmpFilePath + "/" + PFF_LAYERS_DIR;
+	}
+    QFileInfo dataInfo(dataLayersDir);
     if (!dataInfo.exists())
     {
-        QDir dir(fileInfo.absolutePath()); // the directory where filePath is or will be saved
-        dir.mkpath(filePath+".data"); // creates a directory with the same name +".data"
+        QDir dir(tmpFilePath); // the directory where filePath is or will be saved
+        dir.mkpath(dataLayersDir); // creates a directory with the same name +".data"
     }
 
     //savedName = filePath;
@@ -639,16 +728,25 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
         progressValue = (i * 100) / nLayers;
         progress.setValue(progressValue);
-        if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(filePath+".data", i);
-        if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(filePath+".data", i);
-        if (layer->type == Layer::SOUND) ((LayerSound*)layer)->saveImages(filePath+".data", i);
+        if (layer->type == Layer::BITMAP) ((LayerBitmap*)layer)->saveImages(dataLayersDir, i);
+        if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->saveImages(dataLayersDir, i);
+        if (layer->type == Layer::SOUND) ((LayerSound*)layer)->saveImages(dataLayersDir, i);
     }
 
     // save palette
-    m_object->savePalette(filePath+".data");
+    m_object->savePalette(dataLayersDir);
 
     // -------- save main XML file -----------
-    QFile* file = new QFile(filePath);
+    QString mainXMLfile;
+    if (!savingTheOLDWAY)
+    {
+		mainXMLfile = tmpFilePath + "/" + PFF_XML_FILE_NAME;
+	}
+	else
+	{
+		mainXMLfile = filePath;
+	}
+    QFile* file = new QFile(mainXMLfile);
     if (!file->open(QFile::WriteOnly | QFile::Text))
     {
         //QMessageBox::warning(this, "Warning", "Cannot write file");
@@ -672,6 +770,16 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     int IndentSize = 2;
     doc.save(out, IndentSize);
     // -----------------------------------
+
+    if (!savingTheOLDWAY)
+    {
+		qDebug() << "Now compressing data to PFF - PCLX ...";
+
+		JlCompress::compressDir(filePath, tmpFilePath);
+		removePFFTmpDirectory(tmpFilePath); // --removing temporary files
+
+		qDebug() << "Compressed. File saved.";
+	}
 
     progress.setValue(100);
 

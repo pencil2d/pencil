@@ -10,6 +10,7 @@ OBJECTS_DIR = .obj
 DEPENDPATH += . src
 INCLUDEPATH += . src \
             src/external/flash \
+            src/external/quazip \
             src/graphics \
             src/graphics/bitmap \
             src/graphics/vector \
@@ -89,7 +90,18 @@ HEADERS +=  src/interfaces.h \
     src/structure/camera.h \
     src/interface/recentfilemenu.h \
     src/util/util.h \
-    src/interface/colormanager.h
+    src/interface/colormanager.h \
+    src/external/quazip/crypt.h \
+    src/external/quazip/JlCompress.h \
+    src/external/quazip/ioapi.h \
+    src/external/quazip/quazip.h \
+    src/external/quazip/quazip_global.h \
+    src/external/quazip/quazipfile.h \
+    src/external/quazip/quazipfileinfo.h \
+    src/external/quazip/quazipnewinfo.h \
+    src/external/quazip/unzip.h \
+    src/external/quazip/zip.h \
+    src/util/fileformat.h
 
 SOURCES +=  src/graphics/bitmap/blur.cpp \
             src/graphics/bitmap/bitmapimage.cpp \
@@ -151,7 +163,17 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/structure/camera.cpp \
     src/interface/recentfilemenu.cpp \
     src/util/util.cpp \
-    src/interface/colormanager.cpp
+    src/interface/colormanager.cpp \
+    src/external/quazip/JlCompress.cpp \
+    src/external/quazip/qioapi.cpp \
+    src/external/quazip/quazip.cpp \
+    src/external/quazip/quazipfile.cpp \
+    src/external/quazip/quazipfileinfo.cpp \
+    src/external/quazip/quazipnewinfo.cpp \
+    src/external/quazip/unzip.c \
+    src/external/quazip/zip.c \
+    src/util/fileformat.cpp
+
 
 
 # Track dependencies for all includes
@@ -177,7 +199,7 @@ linux-* {
     INCLUDEPATH += . liblinux
     INCLUDEPATH += src/external/linux
     SOURCES += src/external/linux/linux.cpp
-    LIBS += -Lliblinux -lming -lpng
+    LIBS += -Lliblinux -lming -lpng -lz
 }
 RESOURCES += pencil.qrc
 
