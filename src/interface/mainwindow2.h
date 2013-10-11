@@ -75,7 +75,6 @@ public slots:
     void openFile(QString filename);
 
 private slots:
-    void exportFile();
     bool saveObject(QString strSavedFilename);
     void dockAllPalettes();
     void helpBox();

@@ -8,12 +8,14 @@ Info.plist
 *.o
 Pencil
 Makefile
+Makefile.Debug
+Makefile.Release
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
 
 Pencil.app
-Pencil.pro.user
+*.pro.user
 ui_*
 
 # -- Visual Studio --
