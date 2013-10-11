@@ -33,7 +33,6 @@ GNU General Public License for more details.
 #include "colormanager.h"
 
 #include "scribblearea.h"
-#include "interfaces.h"
 #include "colorpalettewidget.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
@@ -294,22 +293,6 @@ void MainWindow2::addToMenu(QObject* plugin, const QString text, QMenu* menu, co
         action->setCheckable(true);
         actionGroup->addAction(action);
     }
-}
-
-void MainWindow2::exportFile()
-{
-    QAction* action = qobject_cast<QAction*>(sender());
-    ExportInterface* exportPlugin = qobject_cast<ExportInterface*>(action->parent());
-    if (exportPlugin)
-    {
-        //exportPlugin->exportFile();
-    }
-    else
-    {
-        qDebug() << "exportPlugin is null";
-    }
-    //const QImage image = iFilter->filterImage(action->text(), paintArea->image(), this);
-    //paintArea->setImage(image);
 }
 
 void MainWindow2::setOpacity(int opacity)

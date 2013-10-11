@@ -740,7 +740,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     m_strokeManager->tabletEvent(event);
 
     //qDebug() << event->hiResGlobalPos();
-    currentTool()->adjustPressureSensitiveProperties(pow(m_strokeManager->getPressure(),2.0),
+    currentTool()->adjustPressureSensitiveProperties(pow((float)m_strokeManager->getPressure(), 2.0f),
         event->pointerType() == QTabletEvent::Cursor);
 
     if (event->pointerType() == QTabletEvent::Eraser)
