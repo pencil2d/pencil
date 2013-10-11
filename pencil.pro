@@ -11,41 +11,13 @@ DEPENDPATH += . src
 
 QT += core gui xml xmlpatterns phonon svg
 
-include(pencil.pri)
+include(src/pencil.pri)
 
 SOURCES += src/main.cpp
-
-# QuaZip 
-DEFINES += QUAZIP_STATIC
-INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
-include(src/external/quazip.pri)
-
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}
 
-win32 {
-    INCLUDEPATH += . libwin32
-    SOURCES += src/external/win32/win32.cpp
-    INCLUDEPATH += src/external/win32
-    LIBS += -Llibwin32
-    RC_FILE = pencil.rc
-}
-macx {
-    INCLUDEPATH +=  src/external/macosx
-    LIBS += -lobjc -framework AppKit -framework Carbon
-    INCLUDEPATH += . libmacosx
-    HEADERS += src/external/macosx/style.h
-    SOURCES += src/external/macosx/macosx.cpp \
-           src/external/macosx/style.cpp
-    RC_FILE = pencil.icns
-}
-linux-* {
-    INCLUDEPATH += . liblinux
-    INCLUDEPATH += src/external/linux
-    SOURCES += src/external/linux/linux.cpp
-    LIBS += -Lliblinux -lming -lpng -lz
-}
 RESOURCES += pencil.qrc
 
 

@@ -12,12 +12,17 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-include($$PWD/../pencil.pri)
-
-SOURCES += tests/test_objectsaveloader.cpp \
-    tests/main.cpp
-DEFINES += SRCDIR=\\\"$$PWD/\\\"
+include($$PWD/../src/pencil.pri)
 
 HEADERS += \
-    tests/AutoTest.h \
-    tests/test_objectsaveloader.h
+    AutoTest.h \
+    test_objectsaveloader.h
+
+SOURCES += \
+    test_objectsaveloader.cpp \
+    main.cpp
+    
+DEFINES += SRCDIR=\\\"$$PWD/\\\"
+
+    
+RESOURCES += $$PWD/../pencil.qrc
