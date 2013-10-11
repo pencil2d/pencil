@@ -52,7 +52,7 @@ public:
     QString strCurrentFilePath;
 
     QDomElement createDomElement(QDomDocument& doc);
-    bool loadDomElement(QDomElement element,  QString filePath);
+    bool loadDomElement(QDomElement element,  QString dataDirPath);
 
     bool read(QString filePath);
     bool write(QString filePath);

@@ -310,9 +310,9 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc)
     return layerTag;
 }
 
-void LayerCamera::loadDomElement(QDomElement element, QString filePath)
+void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
 {
-    Q_UNUSED(filePath);
+    Q_UNUSED(dataDirPath);
     name = element.attribute("name");
     //visible = (element.attribute("visibility") == "1");
     visible = true;
