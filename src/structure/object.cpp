@@ -557,10 +557,18 @@ void convertNFrames(int fps,int exportFps,int* frameRepeat,int* frameReminder,in
 {
     *frameRepeat = exportFps / fps;
     *frameReminder = exportFps % fps;
+
     if (*frameReminder > (fps - *frameReminder))
-    {*frameSkipEvery = fps / (fps - *frameReminder); *framePutEvery = 0;}
+    {
+        if (*frameReminder>0) 
+        {
+            *frameSkipEvery = fps / (fps - *frameReminder); *framePutEvery = 0;
+        }
+    }
     else
-    {*framePutEvery = fps / *frameReminder; *frameSkipEvery = 0;}
+    {
+        *framePutEvery = fps / *frameReminder; *frameSkipEvery = 0;
+    }
 }
 
 
