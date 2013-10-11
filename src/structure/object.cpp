@@ -67,7 +67,7 @@ QDomElement Object::createDomElement(QDomDocument& doc)
     return tag;
 }
 
-bool Object::loadDomElement(QDomElement docElem, QString filePath)
+bool Object::loadDomElement(QDomElement docElem, QString dataDirPath)
 {
     if (docElem.isNull())
     {
@@ -90,28 +90,28 @@ bool Object::loadDomElement(QDomElement docElem, QString filePath)
                 {
                     addNewBitmapLayer();
                     layerNumber++;
-                    ((LayerBitmap*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerBitmap*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
                 // --- vector layer ---
                 if (element.attribute("type").toInt() == Layer::VECTOR)
                 {
                     addNewVectorLayer();
                     layerNumber++;
-                    ((LayerVector*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerVector*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
                 // --- sound layer ---
                 if (element.attribute("type").toInt() == Layer::SOUND)
                 {
                     addNewSoundLayer();
                     layerNumber++;
-                    ((LayerSound*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerSound*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
                 // --- camera layer ---
                 if (element.attribute("type").toInt() == Layer::CAMERA)
                 {
                     addNewCameraLayer();
                     layerNumber++;
-                    ((LayerCamera*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerCamera*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
 
             }
@@ -407,9 +407,9 @@ bool Object::importPalette(QString filePath)
 void Object::defaultInitialisation()
 {
     // default layers
-    addNewBitmapLayer();
-    addNewVectorLayer();
     addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
+    addNewVectorLayer();
+    addNewBitmapLayer();
 
     // default palette
     loadDefaultPalette();

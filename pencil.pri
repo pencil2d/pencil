@@ -51,6 +51,7 @@ HEADERS +=  src/interfaces.h \
     src/tool/buckettool.h \
     src/tool/eyedroppertool.h \
     src/util/pencilsettings.h \
+    src/util/fileformat.h \
     src/interface/shortcutspage.h \
     src/interface/mainwindow2.h \
     src/interface/timelinecells.h \
@@ -113,6 +114,7 @@ SOURCES +=  src/graphics/bitmap/blur.cpp \
     src/tool/buckettool.cpp \
     src/tool/eyedroppertool.cpp \
     src/util/pencilsettings.cpp \
+    src/util/fileformat.cpp \
     src/interface/shortcutspage.cpp \
     src/interface/mainwindow2.cpp \
     src/interface/timelinecells.cpp \

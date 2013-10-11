@@ -67,7 +67,7 @@ public:
     void editProperties();
 
     QDomElement createDomElement(QDomDocument& doc);
-    void loadDomElement(QDomElement element, QString filePath);
+    void loadDomElement(QDomElement element, QString dataDirPath);
 
     Camera* getCameraAtIndex(int index);
     Camera* getCameraAtFrame(int frameNumber);

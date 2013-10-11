@@ -12,7 +12,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-include(pencil.pri)
+include($$PWD/../pencil.pri)
 
 SOURCES += tests/test_objectsaveloader.cpp \
     tests/main.cpp

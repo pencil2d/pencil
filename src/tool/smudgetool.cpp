@@ -89,7 +89,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
 
 void SmudgeTool::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << "smudge event";
+    //qDebug() << "smudgetool: mousePressEvent";
 
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
