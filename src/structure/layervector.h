@@ -51,7 +51,7 @@ public:
     void setModified(int frameNumber, bool trueOrFalse);
 
     QDomElement createDomElement(QDomDocument& doc);
-    virtual void loadDomElement(QDomElement element,  QString filePath);
+    virtual void loadDomElement(QDomElement element,  QString dataDirPath);
 
     // graphic representation -- could be put in another class
     //void paint(QPainter &painter, int verticalPosition, int layerHeight, int frameSize, int timeLineWidth);
