@@ -1318,35 +1318,6 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     painter.setBrush(backgroundBrush);
     painter.drawRect(myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3)));  // this is necessary to have the background move with the view
 
-    // grid
-    //QRect gridRect( myTempView.inverted().mapRect(QRect(0 , 0 , width() , height() ) ) );
-    QRect gridRect = this->getViewRect().toRect();
-    //gridRect.setWidth(gridRect.width()*);
-    //gridRect.moveTo(-width()/2,-height()/2);
-    //gridRect.setCoords();
-    painter.setOpacity(1.0);
-    painter.setPen(Qt::red);
-    painter.setBrush(Qt::NoBrush);
-    painter.drawRect( gridRect );
-    // What kind of grid do we want?
-    if (useGridA)
-    {
-        painter.setPen(Qt::gray);
-        painter.drawLine( QPoint(gridRect.left(), gridRect.top()+gridRect.height()/3 ),
-                          QPoint(gridRect.right(), gridRect.top()+gridRect.height()/3 ) );
-        painter.drawLine( QPoint(gridRect.left(), gridRect.bottom()-gridRect.height()/3 ),
-                          QPoint(gridRect.right(), gridRect.bottom()-gridRect.height()/3 ) );
-        painter.drawLine( QPoint(gridRect.left()+gridRect.width()/3, gridRect.top() ),
-                          QPoint(gridRect.left()+gridRect.width()/3, gridRect.bottom() ) );
-        painter.drawLine( QPoint(gridRect.right()-gridRect.width()/3, gridRect.top() ),
-                          QPoint(gridRect.right()-gridRect.width()/3, gridRect.bottom() ) );
-    }
-    if (useGridB)
-    {
-        //painter.setPen( Qt::red );
-        painter.drawLine(gridRect.topLeft(),gridRect.bottomRight());
-        painter.drawLine(gridRect.bottomLeft(),gridRect.topRight());
-    }
     Object *object = m_pEditor->object;
     qreal opacity;
     for (int i = 0; i < object->getLayerCount(); i++)
@@ -1510,6 +1481,54 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             }
         }
     }
+    // --- grids ---
+    QRect gridRect = getViewRect().toRect();
+    //painter.setWorldMatrixEnabled(true);
+    //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+    painter.setPen(Qt::red);
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
+    // What kind of grid do we want?
+    QPen pen(Qt::gray );
+    if (useGridA)
+    {
+        qreal step;
+        pen.setWidth(1);
+        painter.setOpacity(0.25);
+        // horizontal lines
+        step = gridRect.height()/24.0f;
+        painter.setPen(Qt::red);
+        painter.drawLine( gridRect.left(),0,gridRect.right(),0);
+        for (int y=1; y<12; y++){
+            if ( y % 3 == 0 )
+            { painter.setPen(Qt::gray); }
+            else
+            { painter.setPen(Qt::lightGray); }
+            painter.drawLine( gridRect.left(),y*step,gridRect.right(),y*step );
+            painter.drawLine( gridRect.left(),-y*step,gridRect.right(),-y*step );
+        }
+        // vertical lines
+        step = gridRect.width()/24.0f;
+        painter.setPen(Qt::red);
+        painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
+        for (int x=1; x<12; x++){
+            if ( x % 3 == 0 )
+            { painter.setPen(Qt::gray); }
+            else
+            { painter.setPen(Qt::lightGray); }
+            painter.drawLine( x*step,gridRect.top(),x*step,gridRect.bottom());
+            painter.drawLine( -x*step,gridRect.top(),-x*step,gridRect.bottom());
+        }
+    }
+    if (useGridB)
+    {
+        painter.setPen( Qt::gray );
+        painter.drawLine(gridRect.left(),gridRect.top(),0,0);       // diagonals always start x=0 and y=0 (like grid)
+        painter.drawLine(0,0,gridRect.right(),gridRect.bottom());   // in order to center even sizes (not odd)
+        painter.drawLine(gridRect.left(),gridRect.bottom(),0,0);    // Else, zoom would increase the 1 pixel separation.
+        painter.drawLine(0,0,gridRect.right(),gridRect.top());
+    }
+    // --- eo grids
     painter.end();
 }
 
