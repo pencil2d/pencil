@@ -143,12 +143,13 @@ win32 {
     INCLUDEPATH += . libwin32
     SOURCES += $$PWD/external/win32/win32.cpp
     INCLUDEPATH += $$PWD/external/win32
+    INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
     LIBS += -Llibwin32
     RC_FILE = $$PWD/../pencil.rc
 }
 macx {
     INCLUDEPATH +=  $$PWD/external/macosx
-    LIBS += -lobjc -framework AppKit -framework Carbon
+    LIBS += -lobjc -lz -framework AppKit -framework Carbon
     INCLUDEPATH += . libmacosx
     HEADERS += $$PWD/external/macosx/style.h
     SOURCES += $$PWD/external/macosx/macosx.cpp \
@@ -159,7 +160,9 @@ linux-* {
     INCLUDEPATH += . liblinux
     INCLUDEPATH += $$PWD/external/linux
     SOURCES += $$PWD/external/linux/linux.cpp
-    LIBS += -Lliblinux -lming -lpng
+    LIBS += -Lliblinux -lming -lpng -lz
+    LIBS += -L/usr/local/zlib/lib
+    INCLUDEPATH+=/usr/local/zlib/include
 }
 
 
@@ -170,5 +173,4 @@ FORMS += \
 
 # QuaZip
 DEFINES += QUAZIP_STATIC
-INCLUDEPATH += $$[QT_INSTALL_PREFIX]/src/3rdparty/zlib
 include($$PWD/external/quazip.pri)
