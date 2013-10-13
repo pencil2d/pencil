@@ -11,9 +11,8 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     setVisible( false );
     this->setFixedWidth(200);
     m_colorBox = new ColorBox();
-    m_colorBox->adjustSize();
     mainLayout->addWidget(m_colorBox);
-    adjustSize();
+    m_colorBox->adjustSize();
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setXOffset(2);
     effect->setYOffset(2);
