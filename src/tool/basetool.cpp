@@ -94,14 +94,15 @@ QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn s
         pixmap.fill( QColor(255,255,255,0) );
         QPainter painter(&pixmap);
         painter.setPen( QColor(0,0,0,190) );
-        painter.setBrush( Qt::NoBrush );
         painter.drawLine( QPointF(radius-2,radius), QPointF(radius+2,radius) );
         painter.drawLine( QPointF(radius,radius-2), QPointF(radius,radius+2) );
         painter.setRenderHints(QPainter::Antialiasing, true);
-        painter.setPen( QColor(0,0,0,100) );
-        painter.drawEllipse( QRectF( xyA, xyA, whA, whA) );
-        painter.setPen( QColor(0,0,0,50) );
-        painter.drawEllipse( QRectF(xyB, xyB, whB, whB) );
+        painter.setPen( QColor(0,0,0,255) );
+        painter.setBrush( QColor(192,192,192,64) );
+        painter.setCompositionMode(QPainter::CompositionMode_Exclusion);
+        painter.drawEllipse( QRectF(xyB, xyB, whB, whB) ); // outside circle
+        painter.setBrush( QColor(255,255,255,127) );
+        painter.drawEllipse( QRectF( xyA, xyA, whA, whA) ); // inside circle
         painter.end();
     }
     return QCursor(pixmap);

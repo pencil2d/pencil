@@ -72,9 +72,16 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
             m_pScribbleArea->toggleThinLines();
         }
         m_pScribbleArea->setAllDirty();
+        startStroke(); //start and appends first stroke
+
+        //Layer *layer = m_pEditor->getCurrentLayer();
+
+        if ( m_pEditor->getCurrentLayer()->type == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
+        {
+            drawStroke();
+        }
     }
 
-    startStroke();
 }
 
 void PencilTool::mouseMoveEvent(QMouseEvent *event)
@@ -158,6 +165,7 @@ void PencilTool::drawStroke()
     if (layer->type == Layer::BITMAP)
     {
         QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+        QBrush brush(currentPressuredColor, Qt::SolidPattern);
         width = properties.width;
         rad = qRound(properties.width / 2) + 3;
 
@@ -166,16 +174,16 @@ void PencilTool::drawStroke()
         }
 
         if (p.size() == 4) {
-            //            qDebug() << p;
-            QSizeF size(2,2);
+            // qDebug() << p;
             QPainterPath path(p[0]);
             path.cubicTo(p[1],
                 p[2],
                 p[3]);
-            m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
 
-            if (false)
+            if (false) // debug
             {
+                QSizeF size(2,2);
                 QRectF rect(p[0], size);
 
                 QPen penBlue(Qt::blue);

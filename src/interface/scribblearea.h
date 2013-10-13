@@ -27,11 +27,13 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "vectorselection.h"
 #include "basetool.h"
+#include "colormanager.h"
 
 class Editor;
 class Layer;
 class StrokeManager;
 class BaseTool;
+class ColorManager;
 class PopupColorPaletteWidget;
 
 class ScribbleArea : public QWidget
@@ -116,6 +118,7 @@ public:
     void keyPressed(QKeyEvent *event);
 
     Editor *getEditor() { return m_pEditor; }
+    ColorManager *colorManager;
 
 signals:
     void modification();
@@ -151,6 +154,8 @@ public slots:
 
     void toggleOnionPrev(bool);
     void toggleOnionNext(bool);
+    void toggleGridA(bool);
+    void toggleGridB(bool);
     void grid();
     //void pressureSlot(int);
     //void invisibleSlot(int);
@@ -212,7 +217,9 @@ public:
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity);
-    void drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity);
+    void drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
+    void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
+    void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance);
 
     void paintBitmapBuffer();
@@ -256,6 +263,9 @@ protected:
 
     bool followContour;
 
+    bool useGridA;
+    bool useGridB;
+
     QBrush backgroundBrush;
 public:
     BitmapImage *bufferImg; // used to pre-draw vector modifications
@@ -275,7 +285,6 @@ protected:
 
     //instant tool (temporal eg. eraser)
     bool instantTool; //whether or not using temporal tool
-    ToolType prevToolType; //to recover current tool
 
     VectorSelection vectorSelection;
     //bool selectionChanged;

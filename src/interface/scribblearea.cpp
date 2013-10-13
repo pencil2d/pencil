@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "pencilsettings.h"
 
-#include "colormanager.h"
+//#include "colormanager.h"
 #include "strokemanager.h"
 
 #include "pentool.h"
@@ -139,7 +139,12 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     updateAll = false;
 
     // color wheel popup
-    m_popupPaletteWidget = new PopupColorPaletteWidget(this);
+    m_popupPaletteWidget = new PopupColorPaletteWidget( this );
+    //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
+    colorManager = m_pEditor->colorManager();
+
+    useGridA = false;
+    useGridB = false;
 }
 
 /************************************************************************************/
@@ -523,10 +528,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
 
 void ScribbleArea::togglePopupPalette()
 {
-    if (m_popupPaletteWidget->popup())
-    {
-        m_pEditor->setColor(m_popupPaletteWidget->color);
-    }
+    m_popupPaletteWidget->popup();
 }
 
 
@@ -551,21 +553,31 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         // has been handled by tool
         return;
     }
-    // ---- multiple keys ----
-    if ( event->modifiers().testFlag(Qt::ControlModifier))
+
+    ToolType toolType = currentTool()->type();
+
+    // --- fixed control key shortcuts ---
+    if ( event->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier) )
     {
-        if ( event->modifiers().testFlag(Qt::ShiftModifier) ) // [SHIFT][CTRL] temp. eraser
+        qreal width = currentTool()->properties.width;
+        qreal feather = currentTool()->properties.feather;
+        setTemporaryTool( ERASER );
+        m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
+        return;
+    }
+
+    if ( event->modifiers() == Qt::AltModifier )
+    {
+        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
+             (toolType == BUCKET) || (toolType == POLYLINE) )
         {
-            qreal width = currentTool()->properties.width;
-            qreal feather = currentTool()->properties.feather;
-            setTemporaryTool( ERASER );
-            m_pEditor->setWidth(width+(200-width)/41); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-            m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
+            setTemporaryTool( EYEDROPPER );
             return;
         }
-        // more combinations here
     }
-    // ---- single keys ----
+
+    // ---- fixed normal keys ----
     switch (event->key())
     {
     case Qt::Key_Right:
@@ -661,9 +673,6 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         gradients = 2;
         updateAllVectorLayersAtCurrentFrame();
         break;
-    case Qt::Key_Alt:
-        setTemporaryTool( EYEDROPPER );
-        break;
     case Qt::Key_Space:
         setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
         break;
@@ -678,8 +687,13 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
     if ( mouseInUse ) { return; }
     if ( instantTool ) // temporary tool
     {
-        this->m_pEditor->setTool( prevToolType );
-        instantTool = false;
+        currentTool()->keyReleaseEvent(event);
+        setPrevTool();
+        return;
+    }
+    if (currentTool()->keyReleaseEvent(event)) {
+        // has been handled by tool
+        return;
     }
     switch (event->key())
     {
@@ -726,7 +740,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
     m_strokeManager->tabletEvent(event);
 
     //qDebug() << event->hiResGlobalPos();
-    currentTool()->adjustPressureSensitiveProperties(m_strokeManager->getPressure(),
+    currentTool()->adjustPressureSensitiveProperties(pow((float)m_strokeManager->getPressure(), 2.0f),
         event->pointerType() == QTabletEvent::Cursor);
 
     if (event->pointerType() == QTabletEvent::Eraser)
@@ -793,17 +807,19 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     }
 
     // ----- assisted tool adjusment
-    if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
-    {
-        //adjust width if not locked
-        currentTool()->startAdjusting( WIDTH );
-        return;
-    }
-    else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
-    {
-        //adjust feather if not locked
-        currentTool()->startAdjusting( FEATHER );
-        return;
+    if ( event->button() == Qt::LeftButton ) {
+        if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
+        {
+            //adjust width if not locked
+            currentTool()->startAdjusting( WIDTH );
+            return;
+        }
+        else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
+        {
+            //adjust feather if not locked
+            currentTool()->startAdjusting( FEATHER );
+            return;
+        }
     }
 
     // ---- checks layer availability ------
@@ -942,8 +958,7 @@ void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
     {
-        this->m_pEditor->setTool( prevToolType ); // abandon temporary tool !
-        instantTool = false;
+        setPrevTool();
     }
 }
 
@@ -1299,23 +1314,9 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     painter.setWorldMatrixEnabled(true);
 
     // background
-    painter.setPen(Qt::NoPen);
+    painter.setPen(Qt::NoPen );
     painter.setBrush(backgroundBrush);
     painter.drawRect(myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3)));  // this is necessary to have the background move with the view
-
-    // grid
-    bool drawGrid = false;
-    if (drawGrid)
-    {
-        painter.setOpacity(1.0);
-        painter.setPen(Qt::gray);
-        painter.setBrush(Qt::NoBrush);
-        // What kind of grid do we want?
-        //painter.drawRect(QRect(0,0, mySize.width(), mySize.height()));
-        //painter.drawLine( QPoint(0,mySize.height()/2), QPoint(mySize.width(), mySize.height()/2) );
-        //painter.drawLine( QPoint(mySize.width()/3, 0), QPoint(mySize.width()/3, mySize.height()) );
-        //painter.drawLine( QPoint(mySize.width()*2/3, 0), QPoint(mySize.width()*2/3, mySize.height()) );
-    }
 
     Object *object = m_pEditor->object;
     qreal opacity;
@@ -1480,6 +1481,54 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             }
         }
     }
+    // --- grids ---
+    QRect gridRect = getViewRect().toRect();
+    //painter.setWorldMatrixEnabled(true);
+    //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+    painter.setPen(Qt::red);
+    painter.setBrush(Qt::NoBrush);
+    painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
+    // What kind of grid do we want?
+    QPen pen(Qt::gray );
+    if (useGridA)
+    {
+        qreal step;
+        pen.setWidth(1);
+        painter.setOpacity(0.25);
+        // horizontal lines
+        step = gridRect.height()/24.0f;
+        painter.setPen(Qt::red);
+        painter.drawLine( gridRect.left(),0,gridRect.right(),0);
+        for (int y=1; y<12; y++){
+            if ( y % 3 == 0 )
+            { painter.setPen(Qt::gray); }
+            else
+            { painter.setPen(Qt::lightGray); }
+            painter.drawLine( gridRect.left(),y*step,gridRect.right(),y*step );
+            painter.drawLine( gridRect.left(),-y*step,gridRect.right(),-y*step );
+        }
+        // vertical lines
+        step = gridRect.width()/24.0f;
+        painter.setPen(Qt::red);
+        painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
+        for (int x=1; x<12; x++){
+            if ( x % 3 == 0 )
+            { painter.setPen(Qt::gray); }
+            else
+            { painter.setPen(Qt::lightGray); }
+            painter.drawLine( x*step,gridRect.top(),x*step,gridRect.bottom());
+            painter.drawLine( -x*step,gridRect.top(),-x*step,gridRect.bottom());
+        }
+    }
+    if (useGridB)
+    {
+        painter.setPen( Qt::gray );
+        painter.drawLine(gridRect.left(),gridRect.top(),0,0);       // diagonals always start x=0 and y=0 (like grid)
+        painter.drawLine(0,0,gridRect.right(),gridRect.bottom());   // in order to center even sizes (not odd)
+        painter.drawLine(gridRect.left(),gridRect.bottom(),0,0);    // Else, zoom would increase the 1 pixel separation.
+        painter.drawLine(0,0,gridRect.right(),gridRect.top());
+    }
+    // --- eo grids
     painter.end();
 }
 
@@ -1537,22 +1586,90 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, Q
     delete tempBitmapImage;
 }
 
-//
-void ScribbleArea::drawTexturedBrush(BitmapImage *argImg, QPointF srcPoint, QPointF thePoint, qreal brushWidth, qreal offset, qreal opacity)
+
+void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
 {
-    QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
-    setGaussianGradient(radialGrad, QColor(255,255,255,255), opacity, offset);
+    // drawTexturedBrush() is not used anymore although code can be used for textured brushes.
+    // TODO: Add argument "pixelStep_", send texture through "bmiSource_"; texture brush should work.
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
 
-    QRectF srcRect(srcPoint.x() - 0.5 * brushWidth, srcPoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-    QRectF trgRect(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
-    BitmapImage selectionClip = argImg->copy(srcRect.toRect());
-    BitmapImage *tempBitmapImage = new BitmapImage(NULL);
-    tempBitmapImage->drawRect(trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing);
-    selectionClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
-    tempBitmapImage->paste( &selectionClip, QPainter::CompositionMode_SourceIn );
-    bufferImg->paste( tempBitmapImage );
-    delete tempBitmapImage;
+    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
+    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiTmpClip->paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
+    bufferImg->paste( bmiTmpClip );
+    delete bmiTmpClip;
+}
+
+void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
+{
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,127 ), opacity_, offset_ );
+
+    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+
+    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
+    //BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    BitmapImage bmiTmpClip = bmiSource_->copy( srcRect.toRect() );
+
+    bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
+    bufferImg->paste( &bmiTmpClip );
+    //delete bmiTmpClip;
+}
+
+void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_)
+{
+    QPointF delta = (thePoint_ - srcPoint_) ; // increment vector
+    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
+
+    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
+    setGaussianGradient( radialGrad, QColor( 255,255,255,255 ), opacity_, offset_ );
+
+    // Create gradient brush
+    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
+
+    // Slide texture/pixels of the source image
+    qreal factor;
+    int xb, yb, xa, ya;
+
+    for (yb=bmiTmpClip->boundaries.top(); yb<bmiTmpClip->boundaries.bottom(); yb++)
+    {
+        for (xb=bmiTmpClip->boundaries.left(); xb<bmiTmpClip->boundaries.right(); xb++)
+        {
+            QColor color;
+            color.setRgba( bmiTmpClip->pixel (xb, yb) );
+            factor = color.alphaF(); // any from r g b a is ok
+
+            xa = xb-factor*delta.x();
+            ya = yb-factor*delta.y();
+
+            color.setRgba( bmiSource_->pixel( xa, ya ) );
+            factor = color.alphaF();
+
+            if (factor>0.0)
+            {
+                //qreal invFactor = 1.0/factor; // TODO: almost done, use inverse factor instead of sum
+                int sum = 255-color.alpha();
+                color.setRed( color.red() + sum );
+                color.setGreen( color.green() + sum );
+                color.setBlue( color.blue() + sum );
+                color.setAlpha( 255 ); // Premultiplied color
+
+                bmiTmpClip->setPixel( xb, yb, color.rgba() );
+            }
+        }
+    }
+    bufferImg->paste(bmiTmpClip);
+    delete bmiTmpClip;
 }
 
 void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
@@ -1967,6 +2084,18 @@ void ScribbleArea::toggleOnionPrev(bool checked)
     emit onionPrevChanged(onionPrev);
 }
 
+void ScribbleArea::toggleGridA(bool checked)
+{
+    useGridA = checked;
+    updateFrame();
+}
+
+void ScribbleArea::toggleGridB(bool checked)
+{
+    useGridB = checked;
+    updateFrame();
+}
+
 void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance)
 {
     bool invertible;
@@ -2343,8 +2472,10 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
 void ScribbleArea::setTemporaryTool(ToolType eToolMode)
 {
     instantTool = true; // used to return to previous tool when finished (keyRelease).
-    prevToolType = currentTool()->type();
-    this->m_pEditor->setTool( eToolMode );
+    prevMode = currentTool()->type();
+    //m_pEditor->setTool( eToolMode );
+    switchTool( eToolMode ); // emits for each case
+
 }
 
 void ScribbleArea::switchTool(ToolType type)
@@ -2482,4 +2613,5 @@ void ScribbleArea::setPrevTool()
 {
     setCurrentTool(prevMode);
     switchTool(prevMode);
+    instantTool = false;
 }

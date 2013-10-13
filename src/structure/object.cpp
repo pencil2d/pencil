@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layercamera.h"
 
-#include "flash.h"
+//#include "flash.h"
 #include "editor.h"
 #include "bitmapimage.h"
 
@@ -67,7 +67,7 @@ QDomElement Object::createDomElement(QDomDocument& doc)
     return tag;
 }
 
-bool Object::loadDomElement(QDomElement docElem, QString filePath)
+bool Object::loadDomElement(QDomElement docElem, QString dataDirPath)
 {
     if (docElem.isNull())
     {
@@ -90,28 +90,28 @@ bool Object::loadDomElement(QDomElement docElem, QString filePath)
                 {
                     addNewBitmapLayer();
                     layerNumber++;
-                    ((LayerBitmap*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerBitmap*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
                 // --- vector layer ---
                 if (element.attribute("type").toInt() == Layer::VECTOR)
                 {
                     addNewVectorLayer();
                     layerNumber++;
-                    ((LayerVector*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerVector*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
                 // --- sound layer ---
                 if (element.attribute("type").toInt() == Layer::SOUND)
                 {
                     addNewSoundLayer();
                     layerNumber++;
-                    ((LayerSound*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerSound*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
                 // --- camera layer ---
                 if (element.attribute("type").toInt() == Layer::CAMERA)
                 {
                     addNewCameraLayer();
                     layerNumber++;
-                    ((LayerCamera*)(getLayer(layerNumber)))->loadDomElement( element, filePath );
+                    ((LayerCamera*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
 
             }
@@ -407,9 +407,9 @@ bool Object::importPalette(QString filePath)
 void Object::defaultInitialisation()
 {
     // default layers
-    addNewBitmapLayer();
-    addNewVectorLayer();
     addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
+    addNewVectorLayer();
+    addNewBitmapLayer();
 
     // default palette
     loadDefaultPalette();
@@ -555,12 +555,18 @@ bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
 
 void convertNFrames(int fps,int exportFps,int* frameRepeat,int* frameReminder,int* framePutEvery,int* frameSkipEvery)
 {
-    *frameRepeat = exportFps / fps;
-    *frameReminder = exportFps % fps;
-    if (*frameReminder > (fps - *frameReminder))
-    {*frameSkipEvery = fps / (fps - *frameReminder); *framePutEvery = 0;}
-    else
-    {*framePutEvery = fps / *frameReminder; *frameSkipEvery = 0;}
+    /// --- simple conversion ---
+    *frameRepeat = exportFps / fps;     // identic frames to export per frame
+    *frameReminder = exportFps % fps;   // additional frames to export in an fps cycle (= 1 second)
+
+    /// --- modulo frames and their redistribution in time ---
+    if (*frameReminder == 0)                            /// frames left = 0 -> no need to add extra frames
+    { *framePutEvery = 0; *frameSkipEvery = 0; }        //  so, frameSkipEvery and framePutEvery will not be used.
+    else if (*frameReminder > (fps - *frameReminder))   /// frames to add > frames to skip -> frameSkipEvery will be used.
+    { *frameSkipEvery = fps / (fps - *frameReminder); *framePutEvery = 0; }
+    else                                                /// Frames to add < frames to skip -> framePutEvery will be used.
+    { *framePutEvery = fps / *frameReminder; *frameSkipEvery = 0; }
+    qDebug() << "-->convertedNFrames";
 }
 
 
@@ -637,18 +643,20 @@ bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
         if (framePutEvery)
         {
             framePutEvery1--;
+            qDebug() << "-->framePutEvery1" << framePutEvery1;
             if (framePutEvery1)
-            {delta = 1;}
+            {delta = 0;}
             else
-            {framePutEvery1 = framePutEvery;}
+            {delta = 1; framePutEvery1 = framePutEvery;}
         }
         if (frameSkipEvery)
         {
             frameSkipEvery1--;
-            if (!frameSkipEvery1)
+            qDebug() << "-->frameSkipEvery1" << frameSkipEvery1;
+            if (frameSkipEvery1)
             {delta = 1;}
             else
-            {frameSkipEvery1 = frameSkipEvery;}
+            {delta = 0; frameSkipEvery1 = frameSkipEvery;}
         }
         if (frameReminder1)
         {frameReminder1 -= delta;}
