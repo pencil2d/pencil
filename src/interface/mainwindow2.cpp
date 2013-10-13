@@ -1108,16 +1108,14 @@ void MainWindow2::importPalette()
 
 void MainWindow2::aboutPencil()
 {
-    QMessageBox::about(this, tr("Pencil2D Animation 0.5.4 beta"),
-                       tr("<table style='background-color: #DDDDDD' border='0'><tr><td valign='top'>"
-                          "<img src=':icons/logo.png' width='318' height='123' border='0'><br></td></tr><tr><td>"
-                          "Developed by: <i>Pascal Naidon</i> &  <i>Patrick Corrieri</i><br>"
-                          "Version: <b>0.5.4</b> (26 July 2013)<br><br>"
-                          "<b>Thanks to:</b><br>"
-                          "the Qt libraries <a href='http://qt-project.org'>http://qt-project.org</a><br>"                          
-                          "<a href='http://pencil2d.org'>http://pencil2d.org</a><br><br>"
-                          "Distributed under the <a href='http://www.gnu.org/copyleft/gpl.html'>GPL License</a>."
-                          "</td></tr></table>"));
+    QFile aboutFile(":resources/about.html");
+    bool isOpenOK = aboutFile.open ( QIODevice::ReadOnly | QIODevice::Text );
+
+    if ( isOpenOK )
+    {
+        QString strAboutText = QTextStream(&aboutFile).readAll();
+        QMessageBox::about(this, tr( PENCIL_WINDOW_TITLE ), strAboutText);
+    }
 }
 
 void MainWindow2::helpBox()
