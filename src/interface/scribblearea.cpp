@@ -143,6 +143,11 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
     colorManager = m_pEditor->colorManager();
 
+    onionBlue = true;
+    onionRed = true;
+    //onionColor = Qt::blue;
+    toggledOnionColor();
+
     useGridA = false;
     useGridB = false;
 }
@@ -1376,7 +1381,13 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                         painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
                         nextImage3->paintImage(painter);
                     }
-
+                    if (onionBlue || onionRed) {
+                        painter.setOpacity(1.0);
+                        painter.setCompositionMode(QPainter::CompositionMode_Lighten);
+                        painter.fillRect(getViewRect().toRect() ,onionColor);
+                        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                        qDebug() << "--->setCompositionMode lighten onioncolor:" << onionColor;
+                    }
                     // current frame
                     painter.setOpacity(opacity);
                     if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection))
@@ -2088,16 +2099,43 @@ void ScribbleArea::toggleOnionPrev(bool checked)
     emit onionPrevChanged(onionPrev);
 }
 
+void ScribbleArea::toggledOnionColor()
+{
+    if (onionBlue) {
+        if (onionRed) {
+            onionColor = QColor(232,48,255,255); // subtle violet ( blue + red )
+        } else {
+            onionColor = Qt::blue;
+        }
+    } else if (onionRed) {
+        onionColor = Qt::red;
+    }
+}
+
+void ScribbleArea::toggleOnionBlue(bool checked)
+{
+    onionBlue = checked;
+    toggledOnionColor();
+    updateAllFrames();
+}
+
+void ScribbleArea::toggleOnionRed(bool checked)
+{
+    onionRed = checked;
+    toggledOnionColor();
+    updateAllFrames();
+}
+
 void ScribbleArea::toggleGridA(bool checked)
 {
     useGridA = checked;
-    updateFrame();
+    updateAllFrames();
 }
 
 void ScribbleArea::toggleGridB(bool checked)
 {
     useGridB = checked;
-    updateFrame();
+    updateAllFrames();
 }
 
 void ScribbleArea::floodFill(VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance)

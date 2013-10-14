@@ -64,5 +64,7 @@
         <file>icons/liquify.png</file>
         <file>icons/grid-a.png</file>
         <file>icons/grid-b.png</file>
+        <file>icons/onion-blue.png</file>
+        <file>icons/onion-red.png</file>
     </qresource>
 </RCC>
