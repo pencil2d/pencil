@@ -21,7 +21,8 @@ GNU General Public License for more details.
 #include <QList>
 #include <QString>
 #include <QPainter>
-#include <phonon>
+#include <phonon/MediaObject>
+#include <phonon/AudioOutput>
 #include "layerimage.h"
 
 class LayerSound : public LayerImage
