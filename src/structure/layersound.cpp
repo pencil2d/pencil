@@ -16,8 +16,7 @@ GNU General Public License for more details.
 #include <QtDebug>
 #include "layersound.h"
 #include "object.h"
-#include <phonon>
-//#include "unistd.h"
+
 
 LayerSound::LayerSound(Object* object) : LayerImage(object)
 {
