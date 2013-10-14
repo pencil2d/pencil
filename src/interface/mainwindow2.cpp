@@ -82,6 +82,9 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
     connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));        
+
+    editor->setCurrentLayer( this->editor->object->getLayerCount()-1 );
+
 }
 
 MainWindow2::~MainWindow2()
