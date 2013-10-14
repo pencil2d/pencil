@@ -1482,51 +1482,55 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
         }
     }
     // --- grids ---
-    QRect gridRect = getViewRect().toRect();
-    //painter.setWorldMatrixEnabled(true);
-    //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
-    painter.setPen(Qt::red);
-    painter.setBrush(Qt::NoBrush);
-    painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
-    // What kind of grid do we want?
-    QPen pen(Qt::gray );
-    if (useGridA)
-    {
-        qreal step;
-        pen.setWidth(1);
-        painter.setOpacity(0.25);
-        // horizontal lines
-        step = gridRect.height()/24.0f;
-        painter.setPen(Qt::red);
-        painter.drawLine( gridRect.left(),0,gridRect.right(),0);
-        for (int y=1; y<12; y++){
-            if ( y % 3 == 0 )
-            { painter.setPen(Qt::gray); }
-            else
-            { painter.setPen(Qt::lightGray); }
-            painter.drawLine( gridRect.left(),y*step,gridRect.right(),y*step );
-            painter.drawLine( gridRect.left(),-y*step,gridRect.right(),-y*step );
+    if (m_pEditor->getCurrentLayer()->type == Layer::BITMAP || m_pEditor->getCurrentLayer()->type == Layer::VECTOR) {
+        QRect gridRect = getViewRect().toRect();
+        //painter.setWorldMatrixEnabled(true);
+        //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+        painter.setPen(Qt::magenta);
+        painter.setBrush(Qt::NoBrush);
+        painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
+        // What kind of grid do we want?
+        QPen pen(Qt::gray );
+        qreal factorY = gridRect.height()/24.0f;
+        qreal factorX = gridRect.width()/24.0f;
+        if (useGridA)
+        {
+            pen.setWidth(1);
+            painter.setOpacity(0.25);
+            // horizontal lines
+            painter.setPen(Qt::magenta);
+            painter.drawLine( gridRect.left(),0,gridRect.right(),0);
+            for (int y=1; y<12; y++){
+                if ( y % 3 == 0 )
+                { painter.setPen(Qt::gray); }
+                else
+                { painter.setPen(Qt::lightGray); }
+                painter.drawLine( gridRect.left(),y*factorY,gridRect.right(),y*factorY );
+                painter.drawLine( gridRect.left(),-y*factorY,gridRect.right(),-y*factorY );
+            }
+            // vertical lines
+            painter.setPen(Qt::magenta);
+            painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
+            for (int x=1; x<12; x++){
+                if ( x % 3 == 0 )
+                { painter.setPen(Qt::gray); }
+                else
+                { painter.setPen(Qt::lightGray); }
+                painter.drawLine( x*factorX,gridRect.top(),x*factorX,gridRect.bottom());
+                painter.drawLine( -x*factorX,gridRect.top(),-x*factorX,gridRect.bottom());
+            }
         }
-        // vertical lines
-        step = gridRect.width()/24.0f;
-        painter.setPen(Qt::red);
-        painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
-        for (int x=1; x<12; x++){
-            if ( x % 3 == 0 )
-            { painter.setPen(Qt::gray); }
-            else
-            { painter.setPen(Qt::lightGray); }
-            painter.drawLine( x*step,gridRect.top(),x*step,gridRect.bottom());
-            painter.drawLine( -x*step,gridRect.top(),-x*step,gridRect.bottom());
+        if (useGridB)
+        {
+            painter.setOpacity(0.5);
+            painter.setPen( Qt::gray );
+            for (int n=1; n<12; n++){
+                painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
+                painter.drawText(-n*factorX, n*factorY, QString("%2").arg(n));
+                painter.drawText(n*factorX, -n*factorY, QString("%2").arg(n));
+                painter.drawText(-n*factorX, -n*factorY, QString("%2").arg(n));
+            }
         }
-    }
-    if (useGridB)
-    {
-        painter.setPen( Qt::gray );
-        painter.drawLine(gridRect.left(),gridRect.top(),0,0);       // diagonals always start x=0 and y=0 (like grid)
-        painter.drawLine(0,0,gridRect.right(),gridRect.bottom());   // in order to center even sizes (not odd)
-        painter.drawLine(gridRect.left(),gridRect.bottom(),0,0);    // Else, zoom would increase the 1 pixel separation.
-        painter.drawLine(0,0,gridRect.right(),gridRect.top());
     }
     // --- eo grids
     painter.end();
