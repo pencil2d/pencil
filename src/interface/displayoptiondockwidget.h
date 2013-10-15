@@ -19,6 +19,8 @@ public:
     QToolButton* mirrorButtonV;
     QToolButton* onionPrevButton;
     QToolButton* onionNextButton;
+    QToolButton* onionBlueButton;
+    QToolButton* onionRedButton;
     QToolButton* gridAButton;
     QToolButton* gridBButton;
 
