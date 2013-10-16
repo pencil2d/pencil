@@ -1319,12 +1319,13 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     painter.setWorldMatrixEnabled(true);
 
     // background
-    QRectF viewRect = myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3));
     painter.setPen(Qt::NoPen );
     painter.setBrush(backgroundBrush);
-    painter.drawRect( viewRect );  // this is necessary to have the background move with the view
+    painter.drawRect( myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3)) );  // this is necessary to have the background move with the view
 
-    viewRect = getViewRect(); // todo: check why vector layers do not match size when bitmap layer are are not visible
+    QRectF viewRect = getViewRect();
+    QRectF vectorViewRect = viewRect.translated(-viewRect.left(),-viewRect.top() );
+    QSize sz = viewRect.size().toSize();
 
     Object *object = m_pEditor->object;
     qreal opacity;
@@ -1423,33 +1424,33 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             {
                 LayerVector *layerVector = (LayerVector *)layer;
                 VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(frame, 0);
-                if (somethingSelected)
+                /*if (somethingSelected)
                 {
                     // transforms the vector selection
                     //calculateSelectionTransformation();
                     vectorImage->setSelectionTransformation(selectionTransformation);
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
-                }
-                QImage *image = layerVector->getLastImageAtFrame(frame, 0, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                }*/
+                QImage *image = layerVector->getLastImageAtFrame(frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                 if (image != NULL)
                 {
                     painter.setWorldMatrixEnabled(false);
 
                     // previous frame (onion skin)
                     if (onionPrev) {
-                        QImage *previousImage = layerVector->getLastImageAtFrame(frame, -1, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        QImage *previousImage = layerVector->getLastImageAtFrame(frame, -1, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                         if (previousImage != NULL)
                         {
                             painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
                             painter.drawImage(QPoint(0, 0), *previousImage);
                         }
-                        QImage *previousImage2 = layerVector->getLastImageAtFrame(frame, -2, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        QImage *previousImage2 = layerVector->getLastImageAtFrame(frame, -2, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                         if (previousImage2 != NULL)
                         {
                             painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
                             painter.drawImage(QPoint(0, 0), *previousImage2);
                         }
-                        QImage *previousImage3 = layerVector->getLastImageAtFrame(frame, -3, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        QImage *previousImage3 = layerVector->getLastImageAtFrame(frame, -3, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                         if (previousImage3 != NULL)
                         {
                             painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
@@ -1459,9 +1460,9 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                             painter.setOpacity(1.0);
                             painter.setCompositionMode(QPainter::CompositionMode_Lighten);
                             if (onionBlue && onionRed && onionNext) {
-                                painter.fillRect( viewRect ,Qt::red);
+                                painter.fillRect( vectorViewRect ,Qt::red);
                             } else {
-                                painter.fillRect( viewRect ,onionColor);
+                                painter.fillRect( vectorViewRect ,onionColor);
                             }
                             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
                         }
@@ -1469,19 +1470,19 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
 
                     // next frame (onion skin)
                     if (onionNext) {
-                        QImage *nextImage = layerVector->getLastImageAtFrame(frame, 1, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        QImage *nextImage = layerVector->getLastImageAtFrame(frame, 1, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                         if (nextImage != NULL)
                         {
                             painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
                             painter.drawImage(QPoint(0, 0), *nextImage);
                         }
-                        QImage *nextImage2 = layerVector->getLastImageAtFrame(frame, 2, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        QImage *nextImage2 = layerVector->getLastImageAtFrame(frame, 2, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                         if (nextImage2 != NULL)
                         {
                             painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
                             painter.drawImage(QPoint(0, 0), *nextImage2);
                         }
-                        QImage *nextImage3 = layerVector->getLastImageAtFrame(frame, 3, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        QImage *nextImage3 = layerVector->getLastImageAtFrame(frame, 3, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                         if (nextImage3 != NULL)
                         {
                             painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
@@ -1491,9 +1492,9 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                             painter.setOpacity(1.0);
                             painter.setCompositionMode(QPainter::CompositionMode_Lighten);
                             if (onionBlue && onionRed && onionPrev) {
-                                painter.fillRect( viewRect ,Qt::blue);
+                                painter.fillRect( vectorViewRect ,Qt::blue);
                             } else {
-                                painter.fillRect( viewRect ,onionColor);
+                                painter.fillRect( vectorViewRect ,onionColor);
                             }
                             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
                         }
@@ -1571,7 +1572,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                     vectorImage->setSelectionTransformation(selectionTransformation);
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
-                QImage *image = layerVector->getLastImageAtFrame(frame, 0, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                QImage *image = layerVector->getLastImageAtFrame(frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                 if (image != NULL)
                 {
                     painter.setWorldMatrixEnabled(false);
@@ -1584,41 +1585,40 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
 
     // --- grids ---
     if (m_pEditor->getCurrentLayer()->type == Layer::BITMAP || m_pEditor->getCurrentLayer()->type == Layer::VECTOR) {
-        QRectF gridRect = viewRect;
         //painter.setWorldMatrixEnabled(true);
         //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
         painter.setPen(Qt::magenta);
         painter.setBrush(Qt::NoBrush);
-        painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
+        painter.drawRect( viewRect.left(), viewRect.top(), viewRect.width(), viewRect.height() );
         // What kind of grid do we want?
         QPen pen(Qt::gray );
-        qreal factorY = gridRect.height()/24.0f;
-        qreal factorX = gridRect.width()/24.0f;
+        qreal factorY = viewRect.height()/24.0f;
+        qreal factorX = viewRect.width()/24.0f;
         if (useGridA)
         {
             pen.setWidth(1);
             painter.setOpacity(0.25);
             // horizontal lines
             painter.setPen(Qt::magenta);
-            painter.drawLine( gridRect.left(),0,gridRect.right(),0);
+            painter.drawLine( viewRect.left(),0,viewRect.right(),0);
             for (int y=1; y<12; y++){
                 if ( y % 3 == 0 )
                 { painter.setPen(Qt::gray); }
                 else
                 { painter.setPen(Qt::lightGray); }
-                painter.drawLine( gridRect.left(),y*factorY,gridRect.right(),y*factorY );
-                painter.drawLine( gridRect.left(),-y*factorY,gridRect.right(),-y*factorY );
+                painter.drawLine( viewRect.left(),y*factorY,viewRect.right(),y*factorY );
+                painter.drawLine( viewRect.left(),-y*factorY,viewRect.right(),-y*factorY );
             }
             // vertical lines
             painter.setPen(Qt::magenta);
-            painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
+            painter.drawLine( 0,viewRect.top(),0,viewRect.bottom());
             for (int x=1; x<12; x++){
                 if ( x % 3 == 0 )
                 { painter.setPen(Qt::gray); }
                 else
                 { painter.setPen(Qt::lightGray); }
-                painter.drawLine( x*factorX,gridRect.top(),x*factorX,gridRect.bottom());
-                painter.drawLine( -x*factorX,gridRect.top(),-x*factorX,gridRect.bottom());
+                painter.drawLine( x*factorX,viewRect.top(),x*factorX,viewRect.bottom());
+                painter.drawLine( -x*factorX,viewRect.top(),-x*factorX,viewRect.bottom());
             }
         }
         if (useGridB)
