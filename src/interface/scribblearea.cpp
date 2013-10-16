@@ -746,7 +746,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *event)
 
     //qDebug() << event->hiResGlobalPos();
     currentTool()->adjustPressureSensitiveProperties(pow((float)m_strokeManager->getPressure(), 2.0f),
-        event->pointerType() == QTabletEvent::Cursor);
+                                                     event->pointerType() == QTabletEvent::Cursor);
 
     if (event->pointerType() == QTabletEvent::Eraser)
     {
@@ -846,9 +846,9 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
     if (!layer->visible && currentTool()->type() != HAND && (event->button() != Qt::RightButton))
     {
         QMessageBox::warning(this, tr("Warning"),
-            tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
-            QMessageBox::Ok,
-            QMessageBox::Ok);
+                             tr("You are drawing on a hidden layer! Please select another layer (or make the current layer visible)."),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
         mouseInUse = false;
         return;
     }
@@ -1412,7 +1412,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                         rm.rotate(myRotatedAngle);
                         QImage rotImg = selectionClip.image->transformed( rm );
                         QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
-                                            ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
+                                             ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
                         *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
                         selectionClip.boundaries.translate( dxy );
                         selectionClip.paintImage(painter);
@@ -1493,53 +1493,71 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
         }
     }
     // --- grids ---
-    if (m_pEditor->getCurrentLayer()->type == Layer::BITMAP || m_pEditor->getCurrentLayer()->type == Layer::VECTOR) {
-        QRect gridRect = getViewRect().toRect();
-        //painter.setWorldMatrixEnabled(true);
-        //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
-        painter.setPen(Qt::magenta);
-        painter.setBrush(Qt::NoBrush);
-        painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
-        // What kind of grid do we want?
-        QPen pen(Qt::gray );
-        qreal factorY = gridRect.height()/24.0f;
-        qreal factorX = gridRect.width()/24.0f;
-        if (useGridA)
+
+    if ( m_pEditor->getCurrentLayer() != NULL )
+    {
+        if (m_pEditor->getCurrentLayer()->type == Layer::BITMAP ||
+                m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
-            pen.setWidth(1);
-            painter.setOpacity(0.25);
-            // horizontal lines
+            QRect gridRect = getViewRect().toRect();
+            //painter.setWorldMatrixEnabled(true);
+            //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
             painter.setPen(Qt::magenta);
-            painter.drawLine( gridRect.left(),0,gridRect.right(),0);
-            for (int y=1; y<12; y++){
-                if ( y % 3 == 0 )
-                { painter.setPen(Qt::gray); }
-                else
-                { painter.setPen(Qt::lightGray); }
-                painter.drawLine( gridRect.left(),y*factorY,gridRect.right(),y*factorY );
-                painter.drawLine( gridRect.left(),-y*factorY,gridRect.right(),-y*factorY );
+            painter.setBrush(Qt::NoBrush);
+            painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
+            // What kind of grid do we want?
+            QPen pen(Qt::gray );
+            qreal factorY = gridRect.height() / 24.0f;
+            qreal factorX = gridRect.width() / 24.0f;
+
+            if (useGridA)
+            {
+                pen.setWidth(1);
+                painter.setOpacity(0.25);
+
+                // horizontal lines
+                painter.setPen(Qt::magenta);
+                painter.drawLine( gridRect.left(), 0, gridRect.right(), 0);
+                for (int y = 1; y < 12; y++)
+                {
+                    if ( y % 3 == 0 )
+                    {
+                        painter.setPen(Qt::gray);
+                    }
+                    else
+                    {
+                        painter.setPen(Qt::lightGray);
+                    }
+                    painter.drawLine( gridRect.left(), y * factorY, gridRect.right(), y * factorY );
+                    painter.drawLine( gridRect.left(), -y * factorY, gridRect.right(), -y * factorY );
+                }
+                // vertical lines
+                painter.setPen(Qt::magenta);
+                painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
+                for (int x = 1; x < 12; x++)
+                {
+                    if ( x % 3 == 0 )
+                    {
+                        painter.setPen(Qt::gray);
+                    }
+                    else
+                    {
+                        painter.setPen(Qt::lightGray);
+                    }
+                    painter.drawLine( x*factorX, gridRect.top(), x*factorX, gridRect.bottom() );
+                    painter.drawLine( -x*factorX, gridRect.top(), -x*factorX, gridRect.bottom() );
+                }
             }
-            // vertical lines
-            painter.setPen(Qt::magenta);
-            painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
-            for (int x=1; x<12; x++){
-                if ( x % 3 == 0 )
-                { painter.setPen(Qt::gray); }
-                else
-                { painter.setPen(Qt::lightGray); }
-                painter.drawLine( x*factorX,gridRect.top(),x*factorX,gridRect.bottom());
-                painter.drawLine( -x*factorX,gridRect.top(),-x*factorX,gridRect.bottom());
-            }
-        }
-        if (useGridB)
-        {
-            painter.setOpacity(0.5);
-            painter.setPen( Qt::gray );
-            for (int n=1; n<12; n++){
-                painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
-                painter.drawText(-n*factorX, n*factorY, QString("%2").arg(n));
-                painter.drawText(n*factorX, -n*factorY, QString("%2").arg(n));
-                painter.drawText(-n*factorX, -n*factorY, QString("%2").arg(n));
+            if (useGridB)
+            {
+                painter.setOpacity(0.5);
+                painter.setPen( Qt::gray );
+                for (int n=1; n<12; n++){
+                    painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
+                    painter.drawText(-n*factorX, n*factorY, QString("%2").arg(n));
+                    painter.drawText(n*factorX, -n*factorY, QString("%2").arg(n));
+                    painter.drawText(-n*factorX, -n*factorY, QString("%2").arg(n));
+                }
             }
         }
     }
@@ -1697,10 +1715,10 @@ void ScribbleArea::drawPolyline(QList<QPointF> points, QPointF endPoint)
     if (points.size() > 0)
     {
         QPen pen2(m_pEditor->colorManager()->frontColor(),
-            getTool( PEN )->properties.width,
-            Qt::SolidLine,
-            Qt::RoundCap,
-            Qt::RoundJoin);
+                  getTool( PEN )->properties.width,
+                  Qt::SolidLine,
+                  Qt::RoundCap,
+                  Qt::RoundJoin);
         QPainterPath tempPath = BezierCurve(points).getSimplePath();
         tempPath.lineTo(endPoint);
         QRect updateRect = myTempView.mapRect(tempPath.boundingRect().toRect()).adjusted(-10, -10, 10, 10);
@@ -1963,8 +1981,8 @@ void ScribbleArea::paintTransformedSelection()
             if (bitmapImage == NULL)
             {
                 qDebug() << "NULL image pointer!"
-                    << m_pEditor->m_nCurrentLayerIndex
-                    << m_pEditor->m_nCurrentFrameIndex;
+                         << m_pEditor->m_nCurrentLayerIndex
+                         << m_pEditor->m_nCurrentFrameIndex;
                 return;
             }
 
@@ -1976,7 +1994,7 @@ void ScribbleArea::paintTransformedSelection()
             selectionClip.transform(myTransformedSelection, smoothTransform);
             QImage rotImg = selectionClip.image->transformed( rm, Qt::SmoothTransformation );
             QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
-                                ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
+                                 ( myTempTransformedSelection.height()-rotImg.rect().height() ) / 2 );
             *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
             selectionClip.boundaries.translate( dxy );
             bitmapImage->clear(mySelection.toRect());
@@ -2459,8 +2477,8 @@ void ScribbleArea::floodFillError(int errorType)
     QString message, error;
     if (errorType == 1) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
     if (errorType == 2 || errorType == 3) message = "Sorry! This doesn't always work."
-        "Please try again (zoom a bit, click at another location... )<br>"
-        "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+            "Please try again (zoom a bit, click at another location... )<br>"
+            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
 
     if (errorType == 1) { error = "Out of bound."; }
     if (errorType == 2) { error = "Could not find a closed path."; }
