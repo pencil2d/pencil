@@ -283,8 +283,14 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     curveSmoothingLevel->setValue( value );
 
     QCheckBox* highResBox = new QCheckBox(tr("Tablet high-resolution position"));
-    if (settings.value("highResPosition")=="true") highResBox->setChecked(true);
-    else highResBox->setChecked(false);
+    if (settings.value(SETTING_HIGH_RESOLUTION) == "true")
+    {
+        highResBox->setChecked(true);
+    }
+    else
+    {
+        highResBox->setChecked(false);
+    }
 
     QGridLayout* editingLayout = new QGridLayout();
     editingBox->setLayout(editingLayout);

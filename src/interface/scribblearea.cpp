@@ -77,17 +77,26 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     if (curveSmoothingLevel == 0) { curveSmoothingLevel = 20; settings.setValue("curveSmoothing", curveSmoothingLevel); } // default
     curveSmoothing = curveSmoothingLevel / 20.0; // default value is 1.0
 
-    if (settings.value("highResPosition").toString() == "true")
+    if (settings.value( SETTING_HIGH_RESOLUTION ).toString() == "true")
     {
         m_strokeManager->useHighResPosition(true);
     }
 
     m_antialiasing = true; // default value is true (because it's prettier)
-    if (settings.value("antialiasing").toString() == "false") { m_antialiasing = false; }
+    if (settings.value("antialiasing").toString() == "false")
+    {
+        m_antialiasing = false;
+    }
     shadows = false; // default value is false
-    if (settings.value("shadows").toString() == "true") { shadows = true; }
+    if (settings.value("shadows").toString() == "true")
+    {
+        shadows = true;
+    }
     gradients = 2;
-    if (settings.value("gradients").toString() != "") { gradients = settings.value("gradients").toInt(); };
+    if (settings.value("gradients").toString() != "")
+    {
+        gradients = settings.value("gradients").toInt();
+    };
 
     tabletEraserBackupToolMode = -1;
     setAttribute(Qt::WA_StaticContents); // ?
@@ -348,10 +357,10 @@ void ScribbleArea::setHighResPosition(int x)
     if (x == 0)
     {
         m_strokeManager->useHighResPosition(false);
-        settings.setValue("highResPosition", "false");
+        settings.setValue(SETTING_HIGH_RESOLUTION, "false");
     } else {
         m_strokeManager->useHighResPosition(true);
-        settings.setValue("highResPosition", "true");
+        settings.setValue(SETTING_HIGH_RESOLUTION, "true");
     }
 }
 
