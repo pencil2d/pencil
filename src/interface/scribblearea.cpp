@@ -811,18 +811,30 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
     }
 
-    // ----- assisted tool adjusment
+    // ----- assisted tool adjusment -- todo: simplify this
     if ( event->button() == Qt::LeftButton ) {
         if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
         {
             //adjust width if not locked
-            currentTool()->startAdjusting( WIDTH );
+            currentTool()->startAdjusting( WIDTH, 1 );
             return;
         }
-        else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
+        if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
         {
             //adjust feather if not locked
-            currentTool()->startAdjusting( FEATHER );
+            currentTool()->startAdjusting( FEATHER, 1 );
+            return;
+        }
+        if ( (event->modifiers() == (Qt::ShiftModifier | Qt::AltModifier)) && (currentTool()->properties.width > -1) )
+        {
+            //adjust width if not locked
+            currentTool()->startAdjusting( WIDTH, 0 );
+            return;
+        }
+        if ( (event->modifiers() == (Qt::ControlModifier | Qt::AltModifier)) && (currentTool()->properties.feather>-1) )
+        {
+            //adjust feather if not locked
+            currentTool()->startAdjusting( FEATHER, 0 );
             return;
         }
     }
