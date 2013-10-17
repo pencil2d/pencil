@@ -100,6 +100,7 @@ enum ToolPropertyType
 // Settings Group/Key Name
 #define SHORTCUTS_GROUP "shortcuts"
 #define SETTING_TOOL_CURSOR "toolCursors"
+#define SETTING_HIGH_RESOLUTION "highResPosition"
 
 
 //Pencil File Format consts...

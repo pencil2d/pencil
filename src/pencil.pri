@@ -8,7 +8,8 @@ INCLUDEPATH += . src \
             $$PWD/structure \
             $$PWD/tool \
             $$PWD/util \
-            $$PWD/ui
+            $$PWD/ui \
+            $$PWD/managers
 
 # Input
 HEADERS +=  $$PWD/interfaces.h \
@@ -72,7 +73,8 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/structure/camera.h \
     $$PWD/interface/recentfilemenu.h \
     $$PWD/util/util.h \
-    $$PWD/interface/colormanager.h
+    $$PWD/managers/colormanager.h \
+    $$PWD/managers/toolmanager.h
 
 SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/graphics/bitmap/bitmapimage.cpp \
@@ -134,7 +136,8 @@ SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/structure/camera.cpp \
     $$PWD/interface/recentfilemenu.cpp \
     $$PWD/util/util.cpp \
-    $$PWD/interface/colormanager.cpp
+    $$PWD/managers/colormanager.cpp \
+    $$PWD/managers/toolmanager.cpp
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}

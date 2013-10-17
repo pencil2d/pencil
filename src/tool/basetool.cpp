@@ -33,8 +33,8 @@ QString BaseTool::TypeName(ToolType type)
 }
 
 BaseTool::BaseTool(QObject *parent) :
-QObject(parent),
-adjustmentStep(0)
+    QObject(parent),
+    adjustmentStep(0)
 {
 }
 

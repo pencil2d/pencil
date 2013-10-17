@@ -105,7 +105,6 @@ public:
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);
     void switchTool(ToolType type);
-    QList<BaseTool *> getTools();
 
     void setPrevTool();
 
@@ -118,7 +117,6 @@ public:
     void keyPressed(QKeyEvent *event);
 
     Editor *getEditor() { return m_pEditor; }
-    ColorManager *colorManager;
 
 signals:
     void modification();
@@ -240,8 +238,6 @@ protected:
     ToolType prevMode;
 
     StrokeManager *m_strokeManager;
-    BaseTool *m_currentTool;
-    QHash<ToolType, BaseTool *> m_toolSetHash;
 
     Editor *m_pEditor;
 
@@ -275,15 +271,12 @@ protected:
 
     QBrush backgroundBrush;
 public:
-    BitmapImage *bufferImg; // used to pre-draw vector modifications
+    BitmapImage* bufferImg; // used to pre-draw vector modifications
 protected:
-    //Buffer buffer; // used to pre-draw bitmap modifications, such as lines, brushes, etc.
-
     bool keyboardInUse;
     bool mouseInUse;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
-    //QBrush brush; // the current brush
 
     qreal tol;
     QList<int> closestCurves;
@@ -294,11 +287,9 @@ protected:
     bool instantTool; //whether or not using temporal tool
 
     VectorSelection vectorSelection;
-    //bool selectionChanged;
     QMatrix selectionTransformation;
 
     QMatrix myView, myTempView, centralView, transMatrix;
-
     QPixmap canvas;
 
     // debug

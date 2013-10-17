@@ -87,7 +87,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
         // Patch: next line skips the coordinate problem and it seems safe .
         pos = event->pos() + m_tabletPosition - m_tabletPosition.toPoint();
         //pos = event->pos();
-        qDebug() << "New pos" << pos << ", Old pos" << pos2;
+        //qDebug() << "New pos" << pos << ", Old pos" << pos2;
     }
     else
     {
