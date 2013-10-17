@@ -134,8 +134,10 @@ void StrokeManager::tabletEvent(QTabletEvent *event)
 void StrokeManager::mouseMoveEvent(QMouseEvent *event)
 {
     QPointF pos = getEventPosition(event);
+    QPointF smoothPos = QPointF( ( pos.x()+m_lastPixel.x() )/2.0, ( pos.y()+m_lastPixel.y() )/2.0 );
+
     m_lastPixel = m_currentPixel;
-    m_currentPixel = pos;
+    m_currentPixel = smoothPos;
 
     if (!m_strokeStarted)
         return;
@@ -153,7 +155,7 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
         strokeQueue.removeFirst();
     }
 
-    strokeQueue << pos;
+    strokeQueue << smoothPos;
 
 }
 

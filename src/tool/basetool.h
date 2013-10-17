@@ -58,7 +58,7 @@ public:
     virtual bool keyReleaseEvent(QKeyEvent *) { return false; }
 
     // dynamic cursor adjustment
-    virtual void startAdjusting( ToolPropertyType argSettingType );
+    virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
     virtual void stopAdjusting();
     virtual void adjustCursor(qreal argOffsetX);
 
@@ -93,6 +93,7 @@ protected:
     Editor* m_pEditor;
     ScribbleArea* m_pScribbleArea;
     StrokeManager* m_pStrokeManager;
+    qreal adjustmentStep;
 };
 
 #endif // BASETOOL_H

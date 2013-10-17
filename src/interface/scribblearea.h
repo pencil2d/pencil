@@ -263,6 +263,7 @@ protected:
     qreal curveSmoothing;
     bool onionPrev, onionNext;
     bool onionBlue, onionRed;
+    bool multiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
 
     bool updateAll;

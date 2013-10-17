@@ -25,9 +25,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "pencilsettings.h"
 
-//#include "colormanager.h"
 #include "strokemanager.h"
-
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"
@@ -811,18 +809,30 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
         lastPoint = myTempView.inverted(&invertible).map(QPointF(lastPixel));
     }
 
-    // ----- assisted tool adjusment
+    // ----- assisted tool adjusment -- todo: simplify this
     if ( event->button() == Qt::LeftButton ) {
         if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
         {
             //adjust width if not locked
-            currentTool()->startAdjusting( WIDTH );
+            currentTool()->startAdjusting( WIDTH, 1 );
             return;
         }
-        else if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
+        if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather>-1) )
         {
             //adjust feather if not locked
-            currentTool()->startAdjusting( FEATHER );
+            currentTool()->startAdjusting( FEATHER, 1 );
+            return;
+        }
+        if ( (event->modifiers() == (Qt::ShiftModifier | Qt::AltModifier)) && (currentTool()->properties.width > -1) )
+        {
+            //adjust width if not locked
+            currentTool()->startAdjusting( WIDTH, 0 );
+            return;
+        }
+        if ( (event->modifiers() == (Qt::ControlModifier | Qt::AltModifier)) && (currentTool()->properties.feather>-1) )
+        {
+            //adjust feather if not locked
+            currentTool()->startAdjusting( FEATHER, 0 );
             return;
         }
     }
@@ -1321,10 +1331,190 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     // background
     painter.setPen(Qt::NoPen );
     painter.setBrush(backgroundBrush);
-    painter.drawRect(myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3)));  // this is necessary to have the background move with the view
+    painter.drawRect( myTempView.inverted().mapRect(QRect(-2, -2, width() + 3, height() + 3)) );  // this is necessary to have the background move with the view
+
+    QRectF viewRect = getViewRect();
+    QRectF vectorViewRect = viewRect.translated(-viewRect.left(),-viewRect.top() );
+    QSize sz = viewRect.size().toSize();
 
     Object *object = m_pEditor->object;
     qreal opacity;
+
+    // --- onionskins ---
+    int iStart=0;
+    int iEnd=object->getLayerCount()-1;
+    if ( multiLayerOnionSkin ) {
+        iStart = iEnd = m_pEditor->m_nCurrentLayerIndex;
+    }
+    for (int i = iStart; i <= iEnd; i++)
+    {
+        opacity = 1.0;
+        if (i != m_pEditor->m_nCurrentLayerIndex && (m_showAllLayers == 1)) { opacity = 0.4; }
+        if (m_pEditor->getCurrentLayer()->type == Layer::CAMERA) { opacity = 1.0; }
+        Layer *layer = (object->getLayer(i));
+        if (layer->visible && (m_showAllLayers > 0 || i == m_pEditor->m_nCurrentLayerIndex)) // change && to || for all layers
+        {
+            // paints the bitmap images
+            if (layer->type == Layer::BITMAP)
+            {
+                LayerBitmap *layerBitmap = (LayerBitmap *)layer;
+                BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame(frame, 0);
+                if (bitmapImage != NULL)
+                {
+                    painter.setWorldMatrixEnabled(true);
+
+                    // previous frame (onion skin)
+                    if ( onionPrev ) {
+                        BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame(frame, -1);
+                        if (previousImage != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
+                            previousImage->paintImage(painter);
+                        }
+                        BitmapImage *previousImage2 = layerBitmap->getLastBitmapImageAtFrame(frame, -2);
+                        if (previousImage2 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
+                            previousImage2->paintImage(painter);
+                        }
+                        BitmapImage *previousImage3 = layerBitmap->getLastBitmapImageAtFrame(frame, -3);
+                        if (previousImage3 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
+                            previousImage3->paintImage(painter);
+                        }
+                        if ( onionBlue || onionRed ) {
+                            painter.setOpacity(1.0);
+                            painter.setCompositionMode(QPainter::CompositionMode_Lighten);
+                            if (onionBlue && onionRed && onionNext ) {
+                                painter.fillRect( viewRect ,Qt::red);
+                            } else {
+                                painter.fillRect( viewRect ,onionColor);
+                            }
+                            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                        }
+                    }
+
+                    // next frame (onion skin)
+                    if ( onionNext ) {
+                        BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame(frame, 1);
+                        if (nextImage != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
+                            nextImage->paintImage(painter);
+                        }
+                        BitmapImage *nextImage2 = layerBitmap->getLastBitmapImageAtFrame(frame, 2);
+                        if (nextImage2 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
+                            nextImage2->paintImage(painter);
+                        }
+                        BitmapImage *nextImage3 = layerBitmap->getLastBitmapImageAtFrame(frame, 3);
+                        if (nextImage3 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
+                            nextImage3->paintImage(painter);
+                        }
+                        if ( onionBlue || onionRed ) {
+                            painter.setOpacity(1.0);
+                            painter.setCompositionMode(QPainter::CompositionMode_Lighten);
+                            if (onionBlue && onionRed && onionPrev) {
+                                painter.fillRect( viewRect ,Qt::blue);
+                            } else {
+                                painter.fillRect( viewRect ,onionColor);
+                            }
+                            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                        }
+                    }
+                }
+            }
+
+            // paints the vector images onion skins
+            if (layer->type == Layer::VECTOR)
+            {
+                LayerVector *layerVector = (LayerVector *)layer;
+                VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(frame, 0);
+                /*if (somethingSelected)
+                {
+                    // transforms the vector selection
+                    //calculateSelectionTransformation();
+                    vectorImage->setSelectionTransformation(selectionTransformation);
+                    //vectorImage->setTransformedSelection(myTempTransformedSelection);
+                }*/
+                QImage *image = layerVector->getLastImageAtFrame(frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                if (image != NULL)
+                {
+                    painter.setWorldMatrixEnabled(false);
+
+                    // previous frame (onion skin)
+                    if (onionPrev) {
+                        QImage *previousImage = layerVector->getLastImageAtFrame(frame, -1, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        if (previousImage != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
+                            painter.drawImage(QPoint(0, 0), *previousImage);
+                        }
+                        QImage *previousImage2 = layerVector->getLastImageAtFrame(frame, -2, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        if (previousImage2 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
+                            painter.drawImage(QPoint(0, 0), *previousImage2);
+                        }
+                        QImage *previousImage3 = layerVector->getLastImageAtFrame(frame, -3, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        if (previousImage3 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
+                            painter.drawImage(QPoint(0, 0), *previousImage3);
+                        }
+                        if ( onionBlue || onionRed ) {
+                            painter.setOpacity(1.0);
+                            painter.setCompositionMode(QPainter::CompositionMode_Lighten);
+                            if (onionBlue && onionRed && onionNext) {
+                                painter.fillRect( vectorViewRect ,Qt::red);
+                            } else {
+                                painter.fillRect( vectorViewRect ,onionColor);
+                            }
+                            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                        }
+                    }
+
+                    // next frame (onion skin)
+                    if (onionNext) {
+                        QImage *nextImage = layerVector->getLastImageAtFrame(frame, 1, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        if (nextImage != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
+                            painter.drawImage(QPoint(0, 0), *nextImage);
+                        }
+                        QImage *nextImage2 = layerVector->getLastImageAtFrame(frame, 2, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        if (nextImage2 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
+                            painter.drawImage(QPoint(0, 0), *nextImage2);
+                        }
+                        QImage *nextImage3 = layerVector->getLastImageAtFrame(frame, 3, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                        if (nextImage3 != NULL)
+                        {
+                            painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
+                            painter.drawImage(QPoint(0, 0), *nextImage3);
+                        }
+                        if ( onionBlue || onionRed ) {
+                            painter.setOpacity(1.0);
+                            painter.setCompositionMode(QPainter::CompositionMode_Lighten);
+                            if (onionBlue && onionRed && onionPrev) {
+                                painter.fillRect( vectorViewRect ,Qt::blue);
+                            } else {
+                                painter.fillRect( vectorViewRect ,onionColor);
+                            }
+                            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                        }
+                    }
+                }
+            }
+        }
+    } // --- end onion skins
+
+    // --- current frame ---
     for (int i = 0; i < object->getLayerCount(); i++)
     {
         opacity = 1.0;
@@ -1341,54 +1531,6 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                 if (bitmapImage != NULL)
                 {
                     painter.setWorldMatrixEnabled(true);
-
-                    // previous frame (onion skin)
-                    BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame(frame, -1);
-                    if (previousImage != NULL && onionPrev)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
-                        previousImage->paintImage(painter);
-                    }
-                    BitmapImage *previousImage2 = layerBitmap->getLastBitmapImageAtFrame(frame, -2);
-                    if (previousImage2 != NULL && onionPrev)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
-                        previousImage2->paintImage(painter);
-                    }
-                    BitmapImage *previousImage3 = layerBitmap->getLastBitmapImageAtFrame(frame, -3);
-                    if (previousImage3 != NULL && onionPrev)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
-                        previousImage3->paintImage(painter);
-                    }
-
-                    // next frame (onion skin)
-                    BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame(frame, 1);
-                    if (nextImage != NULL && onionNext)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
-                        nextImage->paintImage(painter);
-                    }
-                    BitmapImage *nextImage2 = layerBitmap->getLastBitmapImageAtFrame(frame, 2);
-                    if (nextImage2 != NULL && onionNext)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
-                        nextImage2->paintImage(painter);
-                    }
-                    BitmapImage *nextImage3 = layerBitmap->getLastBitmapImageAtFrame(frame, 3);
-                    if (nextImage3 != NULL && onionNext)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
-                        nextImage3->paintImage(painter);
-                    }
-                    if (onionBlue || onionRed) {
-                        painter.setOpacity(1.0);
-                        painter.setCompositionMode(QPainter::CompositionMode_Lighten);
-                        painter.fillRect(getViewRect().toRect() ,onionColor);
-                        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-                        qDebug() << "--->setCompositionMode lighten onioncolor:" << onionColor;
-                    }
-                    // current frame
                     painter.setOpacity(opacity);
                     if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection))
                     {
@@ -1440,123 +1582,68 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                     vectorImage->setSelectionTransformation(selectionTransformation);
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
-                QImage *image = layerVector->getLastImageAtFrame(frame, 0, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+                QImage *image = layerVector->getLastImageAtFrame(frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
                 if (image != NULL)
                 {
                     painter.setWorldMatrixEnabled(false);
-
-                    // previous frame (onion skin)
-                    QImage *previousImage = layerVector->getLastImageAtFrame(frame, -1, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
-                    if (previousImage != NULL && onionPrev)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
-                        painter.drawImage(QPoint(0, 0), *previousImage);
-                    }
-                    QImage *previousImage2 = layerVector->getLastImageAtFrame(frame, -2, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
-                    if (previousImage2 != NULL && onionPrev)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
-                        painter.drawImage(QPoint(0, 0), *previousImage2);
-                    }
-                    QImage *previousImage3 = layerVector->getLastImageAtFrame(frame, -3, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
-                    if (previousImage3 != NULL && onionPrev)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
-                        painter.drawImage(QPoint(0, 0), *previousImage3);
-                    }
-
-                    // next frame (onion skin)
-                    QImage *nextImage = layerVector->getLastImageAtFrame(frame, 1, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
-                    if (nextImage != NULL && onionNext)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer1Opacity() / 100.0);
-                        painter.drawImage(QPoint(0, 0), *nextImage);
-                    }
-                    QImage *nextImage2 = layerVector->getLastImageAtFrame(frame, 2, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
-                    if (nextImage2 != NULL && onionNext)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer2Opacity() / 100.0);
-                        painter.drawImage(QPoint(0, 0), *nextImage2);
-                    }
-                    QImage *nextImage3 = layerVector->getLastImageAtFrame(frame, 3, size(), simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
-                    if (nextImage3 != NULL && onionNext)
-                    {
-                        painter.setOpacity(opacity * m_pEditor->getOnionLayer3Opacity() / 100.0);
-                        painter.drawImage(QPoint(0, 0), *nextImage3);
-                    }
-
-                    // current frame
                     painter.setOpacity(opacity);
                     painter.drawImage(QPoint(0, 0), *image);
                 }
             }
         }
     }
-    // --- grids ---
 
+    // --- grids ---
     if ( m_pEditor->getCurrentLayer() != NULL )
     {
-        if (m_pEditor->getCurrentLayer()->type == Layer::BITMAP ||
-                m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
+        if ( m_pEditor->getCurrentLayer()->type == Layer::BITMAP ||
+             m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
-            QRect gridRect = getViewRect().toRect();
             //painter.setWorldMatrixEnabled(true);
             //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
             painter.setPen(Qt::magenta);
             painter.setBrush(Qt::NoBrush);
-            painter.drawRect( gridRect.left(), gridRect.top(), gridRect.width(), gridRect.height() );
+            painter.drawRect( viewRect.left(), viewRect.top(), viewRect.width(), viewRect.height() );
             // What kind of grid do we want?
             QPen pen(Qt::gray );
-            qreal factorY = gridRect.height() / 24.0f;
-            qreal factorX = gridRect.width() / 24.0f;
-
+            qreal factorY = viewRect.height()/24.0f;
+            qreal factorX = viewRect.width()/24.0f;
             if (useGridA)
             {
-                pen.setWidth(1);
-                painter.setOpacity(0.25);
-
-                // horizontal lines
+                QRect gridRect = getViewRect().toRect();
+                //painter.setWorldMatrixEnabled(true);
+                //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
                 painter.setPen(Qt::magenta);
-                painter.drawLine( gridRect.left(), 0, gridRect.right(), 0);
-                for (int y = 1; y < 12; y++)
-                {
+                painter.drawLine( viewRect.left(),0,viewRect.right(),0);
+                for (int y=1; y<12; y++){
                     if ( y % 3 == 0 )
-                    {
-                        painter.setPen(Qt::gray);
-                    }
+                    { painter.setPen(Qt::gray); }
                     else
-                    {
-                        painter.setPen(Qt::lightGray);
-                    }
-                    painter.drawLine( gridRect.left(), y * factorY, gridRect.right(), y * factorY );
-                    painter.drawLine( gridRect.left(), -y * factorY, gridRect.right(), -y * factorY );
+                    { painter.setPen(Qt::lightGray); }
+                    painter.drawLine( viewRect.left(),y*factorY,viewRect.right(),y*factorY );
+                    painter.drawLine( viewRect.left(),-y*factorY,viewRect.right(),-y*factorY );
                 }
                 // vertical lines
                 painter.setPen(Qt::magenta);
-                painter.drawLine( 0,gridRect.top(),0,gridRect.bottom());
-                for (int x = 1; x < 12; x++)
-                {
+                painter.drawLine( 0,viewRect.top(),0,viewRect.bottom());
+                for (int x=1; x<12; x++){
                     if ( x % 3 == 0 )
-                    {
-                        painter.setPen(Qt::gray);
-                    }
+                    { painter.setPen(Qt::gray); }
                     else
-                    {
-                        painter.setPen(Qt::lightGray);
-                    }
-                    painter.drawLine( x*factorX, gridRect.top(), x*factorX, gridRect.bottom() );
-                    painter.drawLine( -x*factorX, gridRect.top(), -x*factorX, gridRect.bottom() );
+                    { painter.setPen(Qt::lightGray); }
+                    painter.drawLine( x*factorX,viewRect.top(),x*factorX,viewRect.bottom());
+                    painter.drawLine( -x*factorX,viewRect.top(),-x*factorX,viewRect.bottom());
                 }
-            }
-            if (useGridB)
-            {
-                painter.setOpacity(0.5);
-                painter.setPen( Qt::gray );
-                for (int n=1; n<12; n++){
-                    painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
-                    painter.drawText(-n*factorX, n*factorY, QString("%2").arg(n));
-                    painter.drawText(n*factorX, -n*factorY, QString("%2").arg(n));
-                    painter.drawText(-n*factorX, -n*factorY, QString("%2").arg(n));
+                if (useGridB)
+                {
+                    painter.setOpacity(0.5);
+                    painter.setPen( Qt::gray );
+                    for (int n=1; n<12; n++){
+                        painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
+                        painter.drawText(-n*factorX, n*factorY, QString("%2").arg(n));
+                        painter.drawText(n*factorX, -n*factorY, QString("%2").arg(n));
+                        painter.drawText(-n*factorX, -n*factorY, QString("%2").arg(n));
+                    }
                 }
             }
         }
@@ -2664,6 +2751,7 @@ void ScribbleArea::toggleShowAllLayers()
     {
         m_showAllLayers = 0;
     }
+    //m_showAllLayers = ( m_showAllLayers + 1 ) % 3; // 0 1 2 repeated todo: subst. prev. lines
     //emit showAllLayersChanged(showAllLayers);
     setView(myView);
     updateAllFrames();
