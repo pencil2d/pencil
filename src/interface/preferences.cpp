@@ -298,32 +298,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     editingLayout->addWidget(curveSmoothingLevel, 1, 0);
     editingLayout->addWidget(highResBox, 2, 0);
 
-    //QLabel *fontSizeLabel = new QLabel(tr("Labels font size"));
-    //QDoubleSpinBox *fontSize = new QDoubleSpinBox();
-
-    /*fontSize->setMinimum(4);
-    fontSize->setMaximum(20);
-    frameSize->setMinimum(4);
-    frameSize->setMaximum(20);
-
-    fontSize->setFixedWidth(50);
-    frameSize->setFixedWidth(50);
-    lengthSize->setFixedWidth(50);
-
-    if (settings.value("drawLabel")=="false") drawLabel->setChecked(false);
-    else drawLabel->setChecked(true);
-    fontSize->setValue(settings.value("labelFontSize").toInt());
-    frameSize->setValue(settings.value("frameSize").toInt());
-    if (settings.value("labelFontSize").toInt()==0) fontSize->setValue(12);
-    if (settings.value("frameSize").toInt()==0) frameSize->setValue(6);
-    lengthSize->setText(settings.value("length").toString());
-    if (settings.value("length").toInt()==0) lengthSize->setText("240");
-
-    connect(fontSize, SIGNAL(valueChanged(int)), this, SIGNAL(fontSizeChange(int)));
-    connect(frameSize, SIGNAL(valueChanged(int)), this, SIGNAL(frameSizeChange(int)));
-    connect(lengthSize, SIGNAL(textChanged(QString)), this, SIGNAL(lengthSizeChange(QString)));
-    connect(drawLabel, SIGNAL(stateChanged(int)), this, SIGNAL(labelChange(int)));*/
-
     lay->addWidget(windowOpacityBox);
     lay->addWidget(appearanceBox);
     lay->addWidget(backgroundBox);
