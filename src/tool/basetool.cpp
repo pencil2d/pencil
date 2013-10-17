@@ -79,8 +79,10 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
 
 QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn static?
 {
-    qreal propWidth = properties.width;
-    qreal propFeather = properties.feather;
+    qreal zoomFactor= m_pScribbleArea->getCentralViewScale(); //scale factor
+    //qDebug() << "--->" << zoomFactor;
+    qreal propWidth = properties.width * zoomFactor;
+    qreal propFeather = properties.feather * zoomFactor;
     qreal width = propWidth + 0.5 * propFeather;
 
     if (width < 1) { width = 1; }

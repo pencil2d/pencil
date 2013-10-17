@@ -188,25 +188,21 @@ void ScribbleArea::setWidth(const qreal newWidth)
     else if (currentTool()->type() == ERASER)
     {
         getTool(ERASER)->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("eraserWidth", newWidth);
     }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("penWidth", newWidth);
     }
     else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("brushWidth", newWidth);
     }
     else if (currentTool()->type() == SMUDGE)
     {
         getTool(SMUDGE)->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("smudgeWidth", newWidth);
     }
     updateAllFrames();
@@ -1203,7 +1199,8 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 
                 for (int k = 0; k < closestCurves.size(); k++)
                 {
-                    qreal scale = myTempView.det();
+                    qreal scale = myTempView.det(); //todo: check whether it's correct (det = area?)
+                    //qreal scale = sqrt(myTempView.det()); or qreal scale = sqrt(myTempView.m11()*myTempView.m22());
                     int idx = closestCurves[k];
                     if (vectorImage->curve.size() <= idx)
                     {
@@ -1668,6 +1665,7 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal
     gradient.setColorAt(offset + 0.9 * (1.0 - offset), QColor(r, g, b, qRound(a * 10 * opacity)));
     gradient.setColorAt(offset + 1.0 * (1.0 - offset), QColor(r, g, b, 0));
 }
+
 
 void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity)
 {
