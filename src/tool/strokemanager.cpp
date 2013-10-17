@@ -55,12 +55,14 @@ void StrokeManager::reset()
     pressure = 0.0f;
     velocity = QPointF(0,0);
     hasTangent = false;
-
 }
 
-void StrokeManager::setPressure(float pressure) {
-    while (nQueued_p >= STROKE_PRESSURE_QUEUE_LENGTH) {
-        for (int i = 0; i < nQueued_p - 1; i++) {
+void StrokeManager::setPressure(float pressure)
+{
+    while (nQueued_p >= STROKE_PRESSURE_QUEUE_LENGTH)
+    {
+        for (int i = 0; i < nQueued_p - 1; i++)
+        {
             pressQueue[i] = pressQueue[i+1];
         }
         nQueued_p--;
@@ -81,11 +83,11 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
         // QT BUG (Wacom Tablets): updates are not synchronised in Windows giving different coordinates.
         // Clue: Not a Microsoft nor Wacom problem because other windows apps are working fine in the same tablet mode.
         // Solved: Qt bug in Wacom coding -> a lot of patches but no real solutions.
-        //pos = event->pos() + m_tabletPosition - event->globalPos();
+        QPointF pos2 = event->pos() + m_tabletPosition - event->globalPos();
         // Patch: next line skips the coordinate problem and it seems safe .
         pos = event->pos() + m_tabletPosition - m_tabletPosition.toPoint();
         //pos = event->pos();
-        //qDebug() << pos;
+        //qDebug() << "New pos" << pos << ", Old pos" << pos2;
     }
     else
     {
@@ -113,7 +115,8 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
 void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
 {
     // flush out stroke
-    if (m_strokeStarted) {
+    if (m_strokeStarted)
+    {
         mouseMoveEvent(event);
         mouseMoveEvent(event);
     }
@@ -149,7 +152,6 @@ void StrokeManager::mouseMoveEvent(QMouseEvent *event)
     }
 
     // shift queue
-
     while (strokeQueue.size()  >= STROKE_QUEUE_LENGTH)
     {
         strokeQueue.removeFirst();
@@ -167,9 +169,6 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
     static const qreal smoothness = 0.5f;
     QLineF line(m_lastPixel, m_currentPixel);
 
-    /* if (line.length() == 0 ) {
-        return result; // return void?
-    }*/
 
     qreal scaleFactor = line.length();
 

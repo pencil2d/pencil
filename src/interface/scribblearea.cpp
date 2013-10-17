@@ -24,19 +24,8 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "bitmapimage.h"
 #include "pencilsettings.h"
-
+#include "toolmanager.h"
 #include "strokemanager.h"
-#include "pentool.h"
-#include "penciltool.h"
-#include "brushtool.h"
-#include "buckettool.h"
-#include "erasertool.h"
-#include "eyedroppertool.h"
-#include "handtool.h"
-#include "movetool.h"
-#include "polylinetool.h"
-#include "selecttool.h"
-#include "smudgetool.h"
 #include "popupcolorpalettewidget.h"
 
 #include "scribblearea.h"
@@ -49,25 +38,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     this->m_pEditor = editor;
     m_strokeManager = new StrokeManager();
 
-    m_currentTool = NULL;
-
-    m_toolSetHash.insert(PEN, new PenTool);
-    m_toolSetHash.insert(PENCIL, new PencilTool);
-    m_toolSetHash.insert(BRUSH, new BrushTool);
-    m_toolSetHash.insert(ERASER, new EraserTool);
-    m_toolSetHash.insert(BUCKET, new BucketTool);
-    m_toolSetHash.insert(EYEDROPPER, new EyedropperTool);
-    m_toolSetHash.insert(HAND, new HandTool);
-    m_toolSetHash.insert(MOVE, new MoveTool);
-    m_toolSetHash.insert(POLYLINE, new PolylineTool);
-    m_toolSetHash.insert(SELECT, new SelectTool);
-    m_toolSetHash.insert(SMUDGE, new SmudgeTool);
-
-    foreach (BaseTool *tool, getTools())
-    {
-        tool->initialize(editor, this);
-    }
-
     QSettings settings("Pencil", "Pencil");
 
     followContour = 0;
@@ -77,17 +47,26 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     if (curveSmoothingLevel == 0) { curveSmoothingLevel = 20; settings.setValue("curveSmoothing", curveSmoothingLevel); } // default
     curveSmoothing = curveSmoothingLevel / 20.0; // default value is 1.0
 
-    if (settings.value("highResPosition").toString() == "true")
+    if (settings.value( SETTING_HIGH_RESOLUTION ).toString() == "true")
     {
         m_strokeManager->useHighResPosition(true);
     }
 
     m_antialiasing = true; // default value is true (because it's prettier)
-    if (settings.value("antialiasing").toString() == "false") { m_antialiasing = false; }
+    if (settings.value("antialiasing").toString() == "false")
+    {
+        m_antialiasing = false;
+    }
     shadows = false; // default value is false
-    if (settings.value("shadows").toString() == "true") { shadows = true; }
+    if (settings.value("shadows").toString() == "true")
+    {
+        shadows = true;
+    }
     gradients = 2;
-    if (settings.value("gradients").toString() != "") { gradients = settings.value("gradients").toInt(); };
+    if (settings.value("gradients").toString() != "")
+    {
+        gradients = settings.value("gradients").toInt();
+    };
 
     tabletEraserBackupToolMode = -1;
     setAttribute(Qt::WA_StaticContents); // ?
@@ -138,8 +117,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
 
     // color wheel popup
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
-    //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
-    colorManager = m_pEditor->colorManager();
 
     onionBlue = true;
     onionRed = true;
@@ -348,10 +325,10 @@ void ScribbleArea::setHighResPosition(int x)
     if (x == 0)
     {
         m_strokeManager->useHighResPosition(false);
-        settings.setValue("highResPosition", "false");
+        settings.setValue(SETTING_HIGH_RESOLUTION, "false");
     } else {
         m_strokeManager->useHighResPosition(true);
-        settings.setValue("highResPosition", "true");
+        settings.setValue(SETTING_HIGH_RESOLUTION, "true");
     }
 }
 
@@ -2183,9 +2160,7 @@ void ScribbleArea::deselectAll()
     vectorSelection.clear();
 
     // clear all the data tools may have accumulated
-    foreach (BaseTool *tool, getTools()) {
-        tool->clear();
-    }
+    getEditor()->toolManager()->cleanupAllToolsData();
 
     updateFrame();
 }
@@ -2580,12 +2555,12 @@ void ScribbleArea::floodFillError(int errorType)
 
 BaseTool *ScribbleArea::currentTool()
 {
-    return m_currentTool;
+    return getEditor()->toolManager()->currentTool();
 }
 
-BaseTool *ScribbleArea::getTool(ToolType eToolMode)
+BaseTool* ScribbleArea::getTool(ToolType eToolType)
 {
-    return m_toolSetHash.value(eToolMode);
+    return getEditor()->toolManager()->getTool( eToolType );
 }
 
 void ScribbleArea::setCurrentTool(ToolType eToolMode)
@@ -2600,19 +2575,20 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
         }
 
         // XXX tool->setActive()
-        if (currentTool()->type() == MOVE) {
+        if (currentTool()->type() == MOVE)
+        {
             paintTransformedSelection();
             deselectAll();
         }
-        if (currentTool()->type() == POLYLINE)
+        else if (currentTool()->type() == POLYLINE)
         {
             escape();
         }
     }
-    m_currentTool = getTool(eToolMode);
+    getEditor()->toolManager()->setCurrentTool(eToolMode);
 
     // --- change cursor ---
-    setCursor(m_currentTool->cursor());
+    setCursor(currentTool()->cursor());
     qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
@@ -2620,9 +2596,7 @@ void ScribbleArea::setTemporaryTool(ToolType eToolMode)
 {
     instantTool = true; // used to return to previous tool when finished (keyRelease).
     prevMode = currentTool()->type();
-    //m_pEditor->setTool( eToolMode );
     switchTool( eToolMode ); // emits for each case
-
 }
 
 void ScribbleArea::switchTool(ToolType type)
@@ -2665,11 +2639,6 @@ void ScribbleArea::switchTool(ToolType type)
     default:
         break;
     }
-}
-
-QList<BaseTool *> ScribbleArea::getTools()
-{
-    return m_toolSetHash.values();
 }
 
 void ScribbleArea::deleteSelection()
