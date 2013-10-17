@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "colormanager.h"
 #include "colorpalettewidget.h"
+#include "toolmanager.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -101,17 +102,19 @@ Editor::Editor(MainWindow2* parent)
     // Layouts
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
-    scribbleArea = new ScribbleArea(this, this);
+    m_pScribbleArea = new ScribbleArea(this, this);
+    m_pToolManager = new ToolManager(this, this, m_pScribbleArea);
+
     toolSet = new ToolSetWidget(tr("Tools"), this);
 
-    mainLayout->addWidget(scribbleArea);
+    mainLayout->addWidget(m_pScribbleArea);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
     setLayout(mainLayout);
 
     // FOCUS POLICY
-    scribbleArea->setFocusPolicy(Qt::StrongFocus);
+    m_pScribbleArea->setFocusPolicy(Qt::StrongFocus);
 
     // CONNECTIONS
     makeConnections();
@@ -143,29 +146,29 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect(scribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
-    connect(scribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
-    connect(scribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
-    connect(scribbleArea, SIGNAL(moveOn()), toolSet, SLOT(moveOn()));
-    connect(scribbleArea, SIGNAL(penOn()), toolSet, SLOT(penOn()));
-    connect(scribbleArea, SIGNAL(handOn()), toolSet, SLOT(handOn()));
-    connect(scribbleArea, SIGNAL(polylineOn()), toolSet, SLOT(polylineOn()));
-    connect(scribbleArea, SIGNAL(bucketOn()), toolSet, SLOT(bucketOn()));
-    connect(scribbleArea, SIGNAL(eyedropperOn()), toolSet, SLOT(eyedropperOn()));
-    connect(scribbleArea, SIGNAL(brushOn()), toolSet, SLOT(brushOn()));
-    connect(scribbleArea, SIGNAL(smudgeOn()), toolSet, SLOT(smudgeOn()));
+    connect(m_pScribbleArea, SIGNAL(pencilOn()), toolSet, SLOT(pencilOn()));
+    connect(m_pScribbleArea, SIGNAL(eraserOn()), toolSet, SLOT(eraserOn()));
+    connect(m_pScribbleArea, SIGNAL(selectOn()), toolSet, SLOT(selectOn()));
+    connect(m_pScribbleArea, SIGNAL(moveOn()), toolSet, SLOT(moveOn()));
+    connect(m_pScribbleArea, SIGNAL(penOn()), toolSet, SLOT(penOn()));
+    connect(m_pScribbleArea, SIGNAL(handOn()), toolSet, SLOT(handOn()));
+    connect(m_pScribbleArea, SIGNAL(polylineOn()), toolSet, SLOT(polylineOn()));
+    connect(m_pScribbleArea, SIGNAL(bucketOn()), toolSet, SLOT(bucketOn()));
+    connect(m_pScribbleArea, SIGNAL(eyedropperOn()), toolSet, SLOT(eyedropperOn()));
+    connect(m_pScribbleArea, SIGNAL(brushOn()), toolSet, SLOT(brushOn()));
+    connect(m_pScribbleArea, SIGNAL(smudgeOn()), toolSet, SLOT(smudgeOn()));
     
-    connect(this, SIGNAL(toggleOnionPrev(bool)), scribbleArea, SLOT(toggleOnionPrev(bool)));
-    connect(this, SIGNAL(toggleOnionNext(bool)), scribbleArea, SLOT(toggleOnionNext(bool)));
-    connect(scribbleArea, SIGNAL(thinLinesChanged(bool)), this, SIGNAL(changeThinLinesButton(bool)));
-    connect(scribbleArea, SIGNAL(outlinesChanged(bool)), this, SIGNAL(changeOutlinesButton(bool)));
-    connect(scribbleArea, SIGNAL(onionPrevChanged(bool)), this, SIGNAL(onionPrevChanged(bool)));
-    connect(scribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
+    connect(this, SIGNAL(toggleOnionPrev(bool)), m_pScribbleArea, SLOT(toggleOnionPrev(bool)));
+    connect(this, SIGNAL(toggleOnionNext(bool)), m_pScribbleArea, SLOT(toggleOnionNext(bool)));
+    connect(m_pScribbleArea, SIGNAL(thinLinesChanged(bool)), this, SIGNAL(changeThinLinesButton(bool)));
+    connect(m_pScribbleArea, SIGNAL(outlinesChanged(bool)), this, SIGNAL(changeOutlinesButton(bool)));
+    connect(m_pScribbleArea, SIGNAL(onionPrevChanged(bool)), this, SIGNAL(onionPrevChanged(bool)));
+    connect(m_pScribbleArea, SIGNAL(onionNextChanged(bool)), this, SIGNAL(onionNextChanged(bool)));
 
-    connect(this, SIGNAL(selectAll()), scribbleArea, SLOT(selectAll()));
+    connect(this, SIGNAL(selectAll()), m_pScribbleArea, SLOT(selectAll()));
 
-    connect(scribbleArea, SIGNAL(modification()), this, SLOT(modification()));
-    connect(scribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
+    connect(m_pScribbleArea, SIGNAL(modification()), this, SLOT(modification()));
+    connect(m_pScribbleArea, SIGNAL(modification(int)), this, SLOT(modification(int)));
 
     connect(QApplication::clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()) );
 }
@@ -177,7 +180,7 @@ void Editor::setColor(QColor argColor)
 
 void Editor::keyPressEvent(QKeyEvent *event)
 {
-    scribbleArea->keyPressed( event );
+    m_pScribbleArea->keyPressed( event );
 }
 
 void Editor::dragEnterEvent(QDragEnterEvent* event)
@@ -264,7 +267,7 @@ bool Editor::importMov()
 void Editor::setWidth(qreal width)
 {
     //qDebug() << "editor setWdith" << width;
-    scribbleArea->setWidth(width);
+    m_pScribbleArea->setWidth(width);
     emit penWidthValueChange(width);
 }
 
@@ -288,7 +291,7 @@ void Editor::applyWidth(qreal width)
 
 void Editor::setFeather(qreal feather)
 {
-    scribbleArea->setFeather(feather);
+    m_pScribbleArea->setFeather(feather);
     emit penFeatherValueChange(feather);
 }
 
@@ -304,7 +307,7 @@ void Editor::setInvisibility(int invisibility)
 {
     if (invisibility >= 0)
     {
-        scribbleArea->setInvisibility( invisibility > 0 );
+        m_pScribbleArea->setInvisibility( invisibility > 0 );
     }
     emit penInvisiblityValueChange(invisibility);
 }
@@ -326,7 +329,7 @@ void Editor::setPreserveAlpha(int preserveAlpha)
 {
     if ( preserveAlpha >= 0)
     {
-        scribbleArea->setPreserveAlpha(preserveAlpha>0);
+        m_pScribbleArea->setPreserveAlpha(preserveAlpha>0);
     }
     emit penPreserveAlphaValueChange(preserveAlpha);
 }
@@ -340,7 +343,7 @@ void Editor::setFollowContour(int followContour)
 {
     if (followContour >= 0)
     {
-        scribbleArea->setFollowContour(followContour > 0);
+        m_pScribbleArea->setFollowContour(followContour > 0);
     }
     emit penFollowContourValueChange(followContour);
 }
@@ -354,7 +357,7 @@ void Editor::setPressure(int pressure)
 {
     if ( pressure >= 0 )
     {
-        scribbleArea->setPressure( pressure > 0 );
+        m_pScribbleArea->setPressure( pressure > 0 );
     }
     emit penPressureValueChange(pressure);
 }
@@ -404,7 +407,7 @@ void Editor::setFrontColour(int i, QColor newColour)
         {
             if (layer->type == Layer::VECTOR)
             {
-                scribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
+                m_pScribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
             }
         }
 		colorManager()->pickColorNumber( i );
@@ -465,7 +468,7 @@ void Editor::modification(int layerNumber)
     if (object != NULL) object->modification();
     lastModifiedFrame = m_nCurrentFrameIndex;
     lastModifiedLayer = layerNumber;
-    scribbleArea->update();
+    m_pScribbleArea->update();
     getTimeLine()->updateContent();
     numberOfModifications++;
     if (autosave && numberOfModifications > autosaveNumber)
@@ -604,7 +607,7 @@ void Editor::undo()
         //
         backupList[backupIndex]->restore(this);
         backupIndex--;
-        scribbleArea->calculateSelectionRect(); // really ugly -- to improve
+        m_pScribbleArea->calculateSelectionRect(); // really ugly -- to improve
     }
 }
 
@@ -630,8 +633,8 @@ void Editor::clearBackup()
 
 void Editor::cut()
 {
-    scribbleArea->deleteSelection();
-    scribbleArea->deselectAll();
+    m_pScribbleArea->deleteSelection();
+    m_pScribbleArea->deselectAll();
 }
 
 void Editor::crop()
@@ -657,15 +660,15 @@ void Editor::copy()
     {
         if (layer->type == Layer::BITMAP)
         {
-            if (scribbleArea->somethingSelected)
+            if (m_pScribbleArea->somethingSelected)
             {
-                clipboardBitmapImage =   ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(m_nCurrentFrameIndex, 0)->copy( scribbleArea->getSelection().toRect() );  // copy part of the image
-                scribbleArea->deselectAll();
+                clipboardBitmapImage =   ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(m_nCurrentFrameIndex, 0)->copy( m_pScribbleArea->getSelection().toRect() );  // copy part of the image
+                m_pScribbleArea->deselectAll();
             }
             else
             {
                 clipboardBitmapImage =   ((LayerBitmap*)layer)->getLastBitmapImageAtFrame(m_nCurrentFrameIndex, 0)->copy();  // copy the whole image
-                scribbleArea->deselectAll();
+                m_pScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
             if ( clipboardBitmapImage.image != NULL ) QApplication::clipboard()->setImage( *(clipboardBitmapImage.image) );
@@ -674,7 +677,7 @@ void Editor::copy()
         {
             clipboardVectorOk = true;
             clipboardVectorImage = *(  ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)  );  // copy the image (that works but I should also provide a copy() method)
-            scribbleArea->deselectAll();
+            m_pScribbleArea->deselectAll();
         }
     }
 }
@@ -724,9 +727,9 @@ void Editor::paste()
             backup(tr("Paste"));
             BitmapImage tobePasted = clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image->size();
-            if (scribbleArea->somethingSelected)
+            if (m_pScribbleArea->somethingSelected)
             {
-                QRectF selection = scribbleArea->getSelection();
+                QRectF selection = m_pScribbleArea->getSelection();
                 if ( clipboardBitmapImage.width() <= selection.width() && clipboardBitmapImage.height() <= selection.height() )
                 {
                     tobePasted.moveTopLeft( selection.topLeft() );
@@ -742,20 +745,20 @@ void Editor::paste()
         if (layer->type == Layer::VECTOR && clipboardVectorOk)
         {
             backup(tr("Paste"));
-            scribbleArea->deselectAll();
+            m_pScribbleArea->deselectAll();
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0);
             vectorImage->paste( clipboardVectorImage );  // paste the clipboard
-            scribbleArea->setSelection( vectorImage->getSelectionRect(), true );
+            m_pScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
             setTool(MOVE);
         }
     }
-    scribbleArea->updateFrame();
+    m_pScribbleArea->updateFrame();
 }
 
 void Editor::deselectAll()
 {
-    scribbleArea->deselectAll();
+    m_pScribbleArea->deselectAll();
 }
 void Editor::clipboardChanged()
 {
@@ -858,25 +861,25 @@ void Editor::deleteCurrentLayer()
         if (m_nCurrentLayerIndex == object->getLayerCount()) setCurrentLayer( m_nCurrentLayerIndex-1 );
         getTimeLine()->updateLayerNumber( object->getLayerCount() );
         //timeLine->update();
-        scribbleArea->updateAllFrames();
+        m_pScribbleArea->updateAllFrames();
     }
 }
 
 void Editor::toggleMirror()
 {
     object->toggleMirror();
-    scribbleArea->toggleMirror();
+    m_pScribbleArea->toggleMirror();
 }
 
 void Editor::toggleMirrorV()
 {
     object->toggleMirror();
-    scribbleArea->toggleMirrorV();
+    m_pScribbleArea->toggleMirrorV();
 }
 
 void Editor::toggleShowAllLayers()
 {
-    scribbleArea->toggleShowAllLayers();
+    m_pScribbleArea->toggleShowAllLayers();
     getTimeLine()->updateContent();
 }
 
@@ -932,7 +935,7 @@ void Editor::updateObject()
     mainWindow->m_colorPalette->refreshColorList();
     clearBackup();
     
-    scribbleArea->updateAllFrames();
+    m_pScribbleArea->updateAllFrames();
     updateMaxFrame();
 }
 
@@ -1121,14 +1124,14 @@ QMatrix Editor::map(QRectF source, QRectF target)   // this method should be put
 
 bool Editor::exportSeqCLI(QString filePath = "", QString format = "PNG")
 {
-    int width = scribbleArea->getViewRect().toRect().width();
-    int height = scribbleArea->getViewRect().toRect().height();
+    int width = m_pScribbleArea->getViewRect().toRect().width();
+    int height = m_pScribbleArea->getViewRect().toRect().height();
 
     QSize exportSize = QSize(width, height);
     QByteArray exportFormat(format.toLatin1());
 
-    QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
-    view = scribbleArea->getView() * view;
+    QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+    view = m_pScribbleArea->getView() * view;
 
     updateMaxFrame();
     object->exportFrames(1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, 2,NULL,0);
@@ -1153,15 +1156,15 @@ bool Editor::exportSeq()
         settings.setValue("lastExportPath", QVariant(filePath));
 
         if (!exportFramesDialog) createExportFramesDialog();
-        exportFramesDialog_hBox->setValue( scribbleArea->getViewRect().toRect().width() );
-        exportFramesDialog_vBox->setValue( scribbleArea->getViewRect().toRect().height() );
+        exportFramesDialog_hBox->setValue( m_pScribbleArea->getViewRect().toRect().width() );
+        exportFramesDialog_vBox->setValue( m_pScribbleArea->getViewRect().toRect().height() );
         exportFramesDialog->exec();
         if (exportFramesDialog->result() == QDialog::Rejected) return false;
 
         QSize exportSize = QSize(exportFramesDialog_hBox->value(), exportFramesDialog_vBox->value());
         //QMatrix view = map( QRectF(QPointF(0,0), scribbleArea->size() ), QRectF(QPointF(0,0), exportSize) );
-        QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
-        view = scribbleArea->getView() * view;
+        QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+        view = m_pScribbleArea->getView() * view;
 
         QByteArray exportFormat(exportFramesDialog_format->currentText().toLatin1());
         updateMaxFrame();
@@ -1185,9 +1188,9 @@ bool Editor::exportX()
     {
         settings.setValue("lastExportPath", QVariant(filePath));
 
-        QSize exportSize = scribbleArea->getViewRect().toRect().size();
-        QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
-        view = scribbleArea->getView() * view;
+        QSize exportSize = m_pScribbleArea->getViewRect().toRect().size();
+        QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+        view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
         if (!object->exportX(1, maxFrame, view, exportSize, filePath, true, 2)) {
@@ -1227,9 +1230,9 @@ bool Editor::exportImage()
     {
         settings.setValue("lastExportPath", QVariant(filePath));
 
-        QSize exportSize = scribbleArea->getViewRect().toRect().size();
-        QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
-        view = scribbleArea->getView() * view;
+        QSize exportSize = m_pScribbleArea->getViewRect().toRect().size();
+        QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+        view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
         if (!object->exportIm(m_nCurrentFrameIndex, maxFrame, view, exportSize, filePath, true, 2)) {
@@ -1259,14 +1262,14 @@ bool Editor::exportMov()
     {
         settings.setValue("lastExportPath", QVariant(filePath));
         if (!exportMovieDialog) createExportMovieDialog();
-        exportMovieDialog_hBox->setValue( scribbleArea->getViewRect().toRect().width() );
-        exportMovieDialog_vBox->setValue( scribbleArea->getViewRect().toRect().height() );
+        exportMovieDialog_hBox->setValue( m_pScribbleArea->getViewRect().toRect().width() );
+        exportMovieDialog_vBox->setValue( m_pScribbleArea->getViewRect().toRect().height() );
         exportMovieDialog->exec();
         if (exportMovieDialog->result() == QDialog::Rejected) return false;
 
         QSize exportSize = QSize(exportMovieDialog_hBox->value(), exportMovieDialog_vBox->value());
-        QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
-        view = scribbleArea->getView() * view;
+        QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+        view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
         object->exportMovie(1, maxFrame, view, getCurrentLayer(), exportSize, filePath, fps, exportMovieDialog_fpsBox->value(),exportMovieDialog_format->currentText());
@@ -1294,9 +1297,9 @@ bool Editor::exportFlash()
 
         settings.setValue("flashCompressionLevel", 10-exportFlashDialog_compression->value() );
 
-        QSize exportSize = scribbleArea->getViewRect().toRect().size();
-        QMatrix view = map( scribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
-        view = scribbleArea->getView() * view;
+        QSize exportSize = m_pScribbleArea->getViewRect().toRect().size();
+        QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF(QPointF(0,0), exportSize) );
+        view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
         object->exportFlash(1, maxFrame, view, exportSize, filePath, fps, exportFlashDialog_compression->value());
@@ -1356,11 +1359,11 @@ void Editor::importImage(QString filePath)
             {
                 QRect boundaries = importedImage->rect();
                 //boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
-                boundaries.moveTopLeft( scribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width()/2, boundaries.height()/2) );
+                boundaries.moveTopLeft( m_pScribbleArea->getCentralPoint().toPoint() - QPoint(boundaries.width()/2, boundaries.height()/2) );
                 BitmapImage* importedBitmapImage = new BitmapImage(NULL, boundaries, *importedImage);
-                if (scribbleArea->somethingSelected)
+                if (m_pScribbleArea->somethingSelected)
                 {
-                    QRectF selection = scribbleArea->getSelection();
+                    QRectF selection = m_pScribbleArea->getSelection();
                     if ( importedImage->width() <= selection.width() && importedImage->height() <= selection.height() )
                     {
                         importedBitmapImage->boundaries.moveTopLeft( selection.topLeft().toPoint() );
@@ -1399,7 +1402,7 @@ void Editor::importImage(QString filePath)
                                      QMessageBox::Ok);
             }
         }
-        scribbleArea->updateFrame();
+        m_pScribbleArea->updateFrame();
         getTimeLine()->updateContent();
     }
 
@@ -1466,19 +1469,19 @@ void Editor::importSound(QString filePath)
 
 void Editor::updateFrame(int frameNumber)
 {
-    scribbleArea->updateFrame(frameNumber);
+    m_pScribbleArea->updateFrame(frameNumber);
 }
 
 void Editor::updateFrameAndVector(int frameNumber)
 {
-    scribbleArea->updateAllVectorLayersAt(frameNumber);
+    m_pScribbleArea->updateAllVectorLayersAt(frameNumber);
 }
 
 void Editor::scrubTo(int frameNumber)
 {
-    if (scribbleArea->shouldUpdateAll())
+    if (m_pScribbleArea->shouldUpdateAll())
     {
-        scribbleArea->updateAllFrames();
+        m_pScribbleArea->updateAllFrames();
     }
     int oldFrame = m_nCurrentFrameIndex;
     if (frameNumber < 1) frameNumber = 1;
@@ -1487,8 +1490,8 @@ void Editor::scrubTo(int frameNumber)
     getTimeLine()->updateFrame(oldFrame);
     getTimeLine()->updateFrame(m_nCurrentFrameIndex);
     getTimeLine()->updateContent();
-    scribbleArea->readCanvasFromCache = true;
-    scribbleArea->update();
+    m_pScribbleArea->readCanvasFromCache = true;
+    m_pScribbleArea->update();
 }
 
 void Editor::scrubForward()
@@ -1512,7 +1515,7 @@ void Editor::previousLayer()
         m_nCurrentLayerIndex = 0;
     }
     getTimeLine()->updateContent();
-    scribbleArea->updateAllFrames();
+    m_pScribbleArea->updateAllFrames();
 }
 
 void Editor::nextLayer()
@@ -1523,7 +1526,7 @@ void Editor::nextLayer()
         m_nCurrentLayerIndex = object->getLayerCount()-1;
     }
     getTimeLine()->updateContent();
-    scribbleArea->updateAllFrames();
+    m_pScribbleArea->updateAllFrames();
 }
 
 void Editor::addKey()
@@ -1538,18 +1541,18 @@ void Editor::duplicateKey()
     {
         if (layer->type == Layer::VECTOR)
         {
-            scribbleArea->selectAll();
+            m_pScribbleArea->selectAll();
             clipboardVectorOk = true;
             clipboardVectorImage = *(  ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0)  );  // copy the image (that works but I should also provide a copy() method)
             addKey();
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(m_nCurrentFrameIndex, 0);
             vectorImage->paste( clipboardVectorImage ); // paste the clipboard
-            scribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
+            m_pScribbleArea->setModified(m_nCurrentLayerIndex, m_nCurrentFrameIndex);
             update();
         }
         if (layer->type == Layer::BITMAP)
         {
-            scribbleArea->selectAll();
+            m_pScribbleArea->selectAll();
             copy();
             addKey();
             paste();
@@ -1594,7 +1597,7 @@ void Editor::removeKey()
         //if (layer->type == Layer::SOUND)  ((LayerSound*)layer)->removeImageAtFrame(currentFrame);
         scrubBackward();
         getTimeLine()->updateContent();
-        scribbleArea->updateFrame();
+        m_pScribbleArea->updateFrame();
     }
 }
 
@@ -1602,7 +1605,7 @@ void Editor::addFrame(int frameNumber)   // adding a frame to the cache
 {
     frameList << frameNumber;
     qSort(frameList);
-    scribbleArea->updateFrame();
+    m_pScribbleArea->updateFrame();
     qDebug()<< frameList;
     qDebug()<< frameNumber;
     getTimeLine()->update();
@@ -1616,14 +1619,14 @@ void Editor::addFrame(int frameNumber1, int frameNumber2)   // adding a range of
     }
     qSort(frameList);
 
-    scribbleArea->updateFrame();
+    m_pScribbleArea->updateFrame();
     getTimeLine()->update();
 }
 
 void Editor::removeFrame(int frameNumber)
 {
     frameList.removeAt( getLastIndexAtFrame(frameNumber) );
-    scribbleArea->updateFrame();
+    m_pScribbleArea->updateFrame();
     getTimeLine()->update();
 }
 
@@ -1799,14 +1802,14 @@ void Editor::setCurrentLayer(int layerNumber)
 {
     m_nCurrentLayerIndex = layerNumber;
     getTimeLine()->updateContent();
-    scribbleArea->updateAllFrames();
+    m_pScribbleArea->updateAllFrames();
 }
 
 void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = object->getLayer(layerNumber);
     if (layer != NULL) layer->switchVisibility();
-    scribbleArea->updateAllFrames();
+    m_pScribbleArea->updateAllFrames();
     getTimeLine()->updateContent();
 }
 
@@ -1816,7 +1819,7 @@ void Editor::moveLayer(int i, int j)
     if (j<i) { m_nCurrentLayerIndex = j; }
     else { m_nCurrentLayerIndex = j-1; }
     getTimeLine()->updateContent();
-    scribbleArea->updateAllFrames();
+    m_pScribbleArea->updateAllFrames();
 }
 
 void Editor::updateMaxFrame()
@@ -1900,33 +1903,33 @@ void Editor::restorePalettesSettings(bool restoreFloating, bool restorePosition,
 
 void Editor::clearCurrentFrame()
 {
-    scribbleArea->clearImage();
+    m_pScribbleArea->clearImage();
 }
 
 void Editor::setzoom()
 {
-    scribbleArea->zoom();
+    m_pScribbleArea->zoom();
 }
 
 void Editor::setzoom1()
 {
-    scribbleArea->zoom1();
+    m_pScribbleArea->zoom1();
 }
 void Editor::rotatecw()
 {
-    scribbleArea->rotatecw();
+    m_pScribbleArea->rotatecw();
 }
 
 void Editor::rotateacw()
 {
-    scribbleArea->rotateacw();
+    m_pScribbleArea->rotateacw();
 }
 
 void Editor::gridview()
 {    
     resetView();
 
-    scribbleArea->grid();
+    m_pScribbleArea->grid();
     QMessageBox msgBox;
     msgBox.setText("Would you like to add a camera layer?");
     msgBox.exec();
@@ -1958,7 +1961,7 @@ void Editor::print()
 
 void Editor::printAndPreview(QPrinter* printer)
 {
-    QRect exportRect = scribbleArea->rect();
+    QRect exportRect = m_pScribbleArea->rect();
     QSize exportSize = exportRect.size();
     if (printer->outputFileName() != "")
     {
@@ -1984,7 +1987,7 @@ void Editor::printAndPreview(QPrinter* printer)
         //exportRect.setSize(exportSize);
         painter.setViewport(pageRect);
         painter.setWindow(exportRect);
-        scribbleArea->render(&painter);
+        m_pScribbleArea->render(&painter);
         painter.end();
     }
     else
@@ -1996,7 +1999,7 @@ void Editor::printAndPreview(QPrinter* printer)
         QPainter painter(printer);
         painter.setViewport(pageRect);
         painter.setWindow(exportRect);
-        scribbleArea->render( &painter );
+        m_pScribbleArea->render( &painter );
         painter.end();
     }
 }
@@ -2073,9 +2076,9 @@ void Editor::saveSvg()
     {
         if (layer->type == Layer::VECTOR)
         {
-            scribbleArea->selectAll();
+            m_pScribbleArea->selectAll();
             //VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0);
-            scribbleArea->render(&painter);
+            m_pScribbleArea->render(&painter);
         }
     }
     painter.end();

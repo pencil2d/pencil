@@ -31,18 +31,22 @@ GNU General Public License for more details.
 #include "backupelement.h"
 #include "colorbox.h"
 
+
 class MainWindow2;
 class ColorManager;
+class ToolManager;
 
 class Editor : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY( ColorManager* colorManager READ colorManager );
+    Q_PROPERTY( ColorManager* colorManager READ colorManager )
+
 public:
     Editor(MainWindow2* parent);
     virtual ~Editor();
     
     ColorManager* colorManager() const { return m_colorManager; }
+    ToolManager* toolManager() const { return m_pToolManager; }
 
     Object* object;  // the object to be edited by the editor
     Object* getObject() const { return object; } 
@@ -77,7 +81,7 @@ public:
     Layer* getCurrentLayer() { return getCurrentLayer(0); }
     Layer* getLayer(int i);
     bool isModified() { return modified; }
-    int allLayers() { return scribbleArea->showAllLayers(); }
+    int allLayers() { return m_pScribbleArea->showAllLayers(); }
     static QMatrix map(QRectF, QRectF);    
     bool exportSeqCLI(QString, QString);
 
@@ -91,7 +95,7 @@ public:
     int backupIndex;
     QList<BackupElement*> backupList;
 
-    ScribbleArea* getScribbleArea() { return scribbleArea; }
+    ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
     void setColor(QColor argColor);
 
 protected:
@@ -256,10 +260,11 @@ private slots:
 
 
 private:
-    ScribbleArea* scribbleArea;    
+    ScribbleArea* m_pScribbleArea;
     MainWindow2* mainWindow;
 
     ColorManager* m_colorManager;
+    ToolManager* m_pToolManager;
 
     QString path;
     bool altpress;

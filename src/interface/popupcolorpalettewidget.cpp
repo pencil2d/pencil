@@ -44,11 +44,11 @@ void PopupColorPaletteWidget::popup()
         return;
     }
     // opening palette
-    m_colorBox->setColor( m_container->colorManager->frontColor() );
+    m_colorBox->setColor( m_container->getEditor()->colorManager()->frontColor() );
     m_colorBox->setFocus();
 
     QPoint cPos = QCursor::pos();
-    int radius = width()/2;
+    int radius = width() / 2;
 
     cPos.setX(cPos.x()-radius); // adjust cPos to center widget
     cPos.setY(cPos.y()-radius);
@@ -83,5 +83,5 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 void PopupColorPaletteWidget::onColorChanged(const QColor& color)
 {
     m_container->getEditor()->setColor( color );
-    m_container->colorManager->pickColor( color );
+    m_container->getEditor()->colorManager()->pickColor( color );
 }
