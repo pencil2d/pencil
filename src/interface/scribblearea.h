@@ -105,7 +105,6 @@ public:
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);
     void switchTool(ToolType type);
-    QList<BaseTool *> getTools();
 
     void setPrevTool();
 
@@ -239,8 +238,6 @@ protected:
     ToolType prevMode;
 
     StrokeManager *m_strokeManager;
-    BaseTool *m_currentTool;
-    QHash<ToolType, BaseTool *> m_toolSetHash;
 
     Editor *m_pEditor;
 
