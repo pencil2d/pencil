@@ -154,6 +154,8 @@ public slots:
 
     void toggleOnionPrev(bool);
     void toggleOnionNext(bool);
+    void toggleOnionBlue(bool);
+    void toggleOnionRed(bool);
     void toggleGridA(bool);
     void toggleGridB(bool);
     void grid();
@@ -206,6 +208,7 @@ protected:
     void keyReleaseEvent(QKeyEvent *event);
     void paintEvent(QPaintEvent *event);
     void resizeEvent(QResizeEvent *event);
+    void toggledOnionColor();
     void recentre();
     void setView();
     void setView(QMatrix);
@@ -259,6 +262,10 @@ protected:
     qreal curveOpacity;
     qreal curveSmoothing;
     bool onionPrev, onionNext;
+    bool onionBlue, onionRed;
+    bool multiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    QColor onionColor;
+
     bool updateAll;
 
     bool followContour;

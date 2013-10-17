@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QProcess>
 #include <QDir>
 #include <QString>
+#include <phonon/BackendCapabilities>
 #include "object.h"
 #include "editor.h"
 #include "mainwindow2.h"

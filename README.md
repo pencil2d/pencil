@@ -4,9 +4,17 @@
 
 ### Download ###
 
-* [Pencil2D 0.5.4 beta for Windows](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip)
-* [Pencil2D 0.5.4 beta for Mac OS X](https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip)
-* [Pencil2D 0.5.4 beta for Linux](http://goo.gl/BP40t)
+* [Pencil2D 0.5.4 beta for Windows][0]
+* [Pencil2D 0.5.4 beta for Mac OS X][1]
+* [Pencil2D 0.5.4 beta for Linux][2]
+
+Wanna try the bleeding edge version of Pencil2D? 
+Download the [nightly builds][3]!
+
+[0]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip
+[1]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip
+[2]: http://goo.gl/BP40t
+[3]: http://www.pencil2d.org/forums/topic/nightly-builds/ "Pencil2D nightly builds"
 
 ### Links ###
 
