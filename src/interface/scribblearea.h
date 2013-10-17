@@ -118,7 +118,6 @@ public:
     void keyPressed(QKeyEvent *event);
 
     Editor *getEditor() { return m_pEditor; }
-    ColorManager *colorManager;
 
 signals:
     void modification();

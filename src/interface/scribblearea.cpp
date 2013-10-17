@@ -148,7 +148,6 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     // color wheel popup
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
     //connect( this, SIGNAL(colorChanged(QColor)), this->m_pEditor->colorManager(), SLOT(pickColor(QColor)) );
-    colorManager = m_pEditor->colorManager();
 
     onionBlue = true;
     onionRed = true;
