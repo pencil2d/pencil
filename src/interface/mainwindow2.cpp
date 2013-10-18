@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layerbitmap.h"
 #include "layervector.h"
+#include "objectsaveloader.h"
 
 #include "editor.h"
 #include "colormanager.h"
@@ -414,7 +415,6 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile(QString filename)
 {
-    QSettings settings("Pencil","Pencil");
     qDebug() << "open recent file" << filename;
     bool ok = openObject(filename);
     if ( !ok )
@@ -434,91 +434,28 @@ void MainWindow2::openFile(QString filename)
 
 bool MainWindow2::openObject(QString filePath)
 {
-	bool openingTheOLDWAY = true;
-	QString realXMLFilePath = filePath;
-	QString tmpFilePath;
-	
-    // ---- test before opening ----
-	QStringList zippedFileList = JlCompress::getFileList(filePath);
-	if (!zippedFileList.empty())
-	{
-		qDebug() << "Recognized New zipped Pencil File Format !";
-		openingTheOLDWAY = false;
-		
-	    // ---- now decompress PFF -----
-		QFileInfo fileInfo(filePath);
-		QDir dir(QDir::tempPath());
-		tmpFilePath = QDir::tempPath() + "/" + fileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT;
-		if(fileInfo.exists()) {
-			dir.rmpath(tmpFilePath); // --removes an old decompression directory
-			removePFFTmpDirectory(tmpFilePath); // --removes an old decompression directory - better approach
-		}
-		dir.mkpath(tmpFilePath); // --creates a new decompression directory
-
-		JlCompress::extractDir(filePath, tmpFilePath);
-		
-		realXMLFilePath = tmpFilePath + "/" + PFF_XML_FILE_NAME;
-	}
-	else
-	{
-		qDebug() << "Recognized Old Pencil File Format !";
-	}
-
-    QScopedPointer<QFile> file(new QFile(realXMLFilePath));
-
-    //QFile* file = new QFile(filePath);
-    if (!file->open(QFile::ReadOnly))
-    {
-		if (!openingTheOLDWAY)
-		{
-			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
-		}
-        return false;
-    }
-
-    QDomDocument doc;
-    if (!doc.setContent(file.data()))
-    {
-		if (!openingTheOLDWAY)
-		{
-			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
-		}
-        return false; // this is not a XML file
-    }
-    QDomDocumentType type = doc.doctype();
-    if (type.name() != "PencilDocument" && type.name() != "MyObject")
-    {
-		if (!openingTheOLDWAY)
-		{
-			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
-		}
-        return false; // this is not a Pencil document
-    }
-
-    // delete old object
-    if (m_object != NULL)
-    {
-        m_object->deleteLater();
-    }
-
-    // -----------------------------
-
     QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
+
+    ObjectSaveLoader objectLoader(this);
+    Object* pObject = objectLoader.loadFromFile( filePath );
+
+    if ( pObject != NULL && objectLoader.error().isEmpty() )
+    {
+        SafeDelete( m_object );
+        m_object = pObject;
+    }
+    return true;
+
+    // -----------------------------
+
+
     //QSettings settings("Pencil","Pencil");
     //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
 
-	QString dataLayersDir;
-	if (openingTheOLDWAY)
-	{
-		dataLayersDir = filePath + "." + PFF_LAYERS_DIR;
-	}
-	else
-	{
-		dataLayersDir = tmpFilePath + "/" + PFF_LAYERS_DIR;
-	}
+
 
     Object* newObject = new Object();
     if (!newObject->loadPalette(dataLayersDir))
@@ -587,8 +524,8 @@ bool MainWindow2::openObject(QString filePath)
         m_recentFileMenu->addRecentFile(filePath);
         m_recentFileMenu->saveToDisk();
 
-        qDebug() << "Current File Path=" << newObject->strCurrentFilePath;
-        setWindowTitle(newObject->strCurrentFilePath);
+        qDebug() << "Current File Path=" << newObject->filePath();
+        setWindowTitle(newObject->filePath());
 
         // FIXME: need to free the old object. but delete object will crash app, don't know why.
         // fixed by shoshon... don't know if it's right
@@ -772,7 +709,7 @@ bool MainWindow2::saveObject(QString strSavedFilename)
     m_object->modified = false;
     m_pTimeLine->updateContent();
 
-    m_object->strCurrentFilePath = strSavedFilename;
+    m_object->setFilePath( strSavedFilename );
 
     m_recentFileMenu->addRecentFile(strSavedFilename);
     m_recentFileMenu->saveToDisk();
@@ -782,9 +719,9 @@ bool MainWindow2::saveObject(QString strSavedFilename)
 
 void MainWindow2::saveDocument()
 {
-    if ( !m_object->strCurrentFilePath.isEmpty() )
+    if ( !m_object->filePath().isEmpty() )
     {
-        saveObject(m_object->strCurrentFilePath);
+        saveObject(m_object->filePath());
     }
     else
     {
@@ -953,6 +890,14 @@ void MainWindow2::writeSettings()
         settings.setValue("displayPaletteFloating", displayPalette->isFloating());
     }
 
+}
+
+QKeySequence cmdKeySeq(QString strCommandName)
+{
+    strCommandName = QString("shortcuts/") + strCommandName;
+    QKeySequence keySequence( pencilSettings()->value( strCommandName ).toString() );
+
+    return keySequence;
 }
 
 void MainWindow2::loadAllShortcuts()

@@ -1,8 +1,12 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <QKeySequence>
-
-QKeySequence cmdKeySeq(QString);
+// for QObject
+template<typename T>
+void SafeDelete( T*& p )
+{
+    p->deleteLater();
+    p = NULL;
+}
 
 #endif // UTIL_H

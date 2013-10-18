@@ -9,11 +9,6 @@
 
 class Object;
 
-class PencilError
-{
-public:
-    QString message;
-};
 
 class ObjectSaveLoader : public QObject
 {
@@ -21,14 +16,21 @@ class ObjectSaveLoader : public QObject
 
 public:
     explicit ObjectSaveLoader(QObject *parent = 0);
-    Object* loadFile(QString strFilename, PencilError* error);
-    bool    saveFile(Object* object, QString strFileName, PencilError* error);
+
+    Object* loadFromFile(QString strFilename);
+    bool    saveToFile(Object* pObject, QString strFileName);
+
+    void    cleanUpTempFolder();
+    QString error() { return m_strLastErrorMessage; }
 
 signals:
-    void loadingProgressUpdated(float);
-    void savingProgressUpdated(float);
-public slots:
+    void progressValueChanged(float);
 
+private:
+    QString extractZipToTempFolder( QString strZipFile );
+
+    QString m_strLastErrorMessage;
+    QString m_strLastTempWorkingFolder;
 };
 
 #endif // OBJECTSAVELOADER_H
