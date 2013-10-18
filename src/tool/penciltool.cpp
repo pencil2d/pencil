@@ -179,7 +179,8 @@ void PencilTool::drawStroke()
             path.cubicTo(p[1],
                 p[2],
                 p[3]);
-            m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            //m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SourceOver );
 
             if (false) // debug
             {
