@@ -139,7 +139,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
     QColor currentColor = m_pEditor->colorManager()->frontColor();
-
+    currentPressuredColor = currentColor;
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
         currentPressuredColor.setAlphaF(currentColor.alphaF() * pressure);
