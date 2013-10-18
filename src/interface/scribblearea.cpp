@@ -1317,7 +1317,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     // --- onionskins ---
     int iStart=0;
     int iEnd=object->getLayerCount()-1;
-    if ( multiLayerOnionSkin ) {
+    if ( multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI )
         iStart = iEnd = m_pEditor->m_nCurrentLayerIndex;
     }
     for (int i = iStart; i <= iEnd; i++)
@@ -1407,15 +1407,8 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             if (layer->type == Layer::VECTOR)
             {
                 LayerVector *layerVector = (LayerVector *)layer;
-                VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(frame, 0);
-                /*if (somethingSelected)
-                {
-                    // transforms the vector selection
-                    //calculateSelectionTransformation();
-                    vectorImage->setSelectionTransformation(selectionTransformation);
-                    //vectorImage->setTransformedSelection(myTempTransformedSelection);
-                }*/
                 QImage *image = layerVector->getLastImageAtFrame(frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+
                 if (image != NULL)
                 {
                     painter.setWorldMatrixEnabled(false);
@@ -1573,8 +1566,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
         if ( m_pEditor->getCurrentLayer()->type == Layer::BITMAP ||
              m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
-            //painter.setWorldMatrixEnabled(true);
-            //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+            painter.setWorldMatrixEnabled(true);
             painter.setPen(Qt::magenta);
             painter.setBrush(Qt::NoBrush);
             painter.drawRect( viewRect.left(), viewRect.top(), viewRect.width(), viewRect.height() );
@@ -1584,9 +1576,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             qreal factorX = viewRect.width()/24.0f;
             if (useGridA)
             {
-                QRect gridRect = getViewRect().toRect();
-                //painter.setWorldMatrixEnabled(true);
-                //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+                painter.setOpacity(0.5);
                 painter.setPen(Qt::magenta);
                 painter.drawLine( viewRect.left(),0,viewRect.right(),0);
                 for (int y=1; y<12; y++){
@@ -1610,7 +1600,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                 }
                 if (useGridB)
                 {
-                    painter.setOpacity(0.5);
+                    //painter.setOpacity(0.5);
                     painter.setPen( Qt::gray );
                     for (int n=1; n<12; n++){
                         painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
