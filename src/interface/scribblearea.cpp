@@ -163,25 +163,21 @@ void ScribbleArea::setWidth(const qreal newWidth)
     else if (currentTool()->type() == ERASER)
     {
         getTool(ERASER)->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("eraserWidth", newWidth);
     }
     else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
     {
         getTool( PEN )->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("penWidth", newWidth);
     }
     else if (currentTool()->type() == BRUSH)
     {
         getTool(BRUSH)->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("brushWidth", newWidth);
     }
     else if (currentTool()->type() == SMUDGE)
     {
         getTool(SMUDGE)->properties.width = newWidth;
-        // update width of tool XXX
         settings.setValue("smudgeWidth", newWidth);
     }
     updateAllFrames();
@@ -1178,7 +1174,8 @@ void ScribbleArea::paintEvent(QPaintEvent *event)
 
                 for (int k = 0; k < closestCurves.size(); k++)
                 {
-                    qreal scale = myTempView.det();
+                    qreal scale = myTempView.det(); //todo: check whether it's correct (det = area?)
+                    //qreal scale = sqrt(myTempView.det()); or qreal scale = sqrt(myTempView.m11()*myTempView.m22());
                     int idx = closestCurves[k];
                     if (vectorImage->curve.size() <= idx)
                     {
@@ -1320,7 +1317,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     // --- onionskins ---
     int iStart=0;
     int iEnd=object->getLayerCount()-1;
-    if ( multiLayerOnionSkin ) {
+    if ( multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI )
         iStart = iEnd = m_pEditor->m_nCurrentLayerIndex;
     }
     for (int i = iStart; i <= iEnd; i++)
@@ -1410,15 +1407,8 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             if (layer->type == Layer::VECTOR)
             {
                 LayerVector *layerVector = (LayerVector *)layer;
-                VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(frame, 0);
-                /*if (somethingSelected)
-                {
-                    // transforms the vector selection
-                    //calculateSelectionTransformation();
-                    vectorImage->setSelectionTransformation(selectionTransformation);
-                    //vectorImage->setTransformedSelection(myTempTransformedSelection);
-                }*/
                 QImage *image = layerVector->getLastImageAtFrame(frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients);
+
                 if (image != NULL)
                 {
                     painter.setWorldMatrixEnabled(false);
@@ -1576,8 +1566,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
         if ( m_pEditor->getCurrentLayer()->type == Layer::BITMAP ||
              m_pEditor->getCurrentLayer()->type == Layer::VECTOR)
         {
-            //painter.setWorldMatrixEnabled(true);
-            //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+            painter.setWorldMatrixEnabled(true);
             painter.setPen(Qt::magenta);
             painter.setBrush(Qt::NoBrush);
             painter.drawRect( viewRect.left(), viewRect.top(), viewRect.width(), viewRect.height() );
@@ -1587,9 +1576,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
             qreal factorX = viewRect.width()/24.0f;
             if (useGridA)
             {
-                QRect gridRect = getViewRect().toRect();
-                //painter.setWorldMatrixEnabled(true);
-                //painter.setWorldMatrix(centralView.inverted() * transMatrix * centralView);
+                painter.setOpacity(0.5);
                 painter.setPen(Qt::magenta);
                 painter.drawLine( viewRect.left(),0,viewRect.right(),0);
                 for (int y=1; y<12; y++){
@@ -1613,7 +1600,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                 }
                 if (useGridB)
                 {
-                    painter.setOpacity(0.5);
+                    //painter.setOpacity(0.5);
                     painter.setPen( Qt::gray );
                     for (int n=1; n<12; n++){
                         painter.drawText(n*factorX, n*factorY, QString("%2").arg(n));
@@ -1648,6 +1635,7 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor colour, qreal
     gradient.setColorAt(offset + 0.9 * (1.0 - offset), QColor(r, g, b, qRound(a * 10 * opacity)));
     gradient.setColorAt(offset + 1.0 * (1.0 - offset), QColor(r, g, b, 0));
 }
+
 
 void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity)
 {
