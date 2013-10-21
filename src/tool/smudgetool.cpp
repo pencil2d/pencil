@@ -230,11 +230,8 @@ void SmudgeTool::drawStroke()
 
     if (toolMode == 0) // default mode = blur smudge
     {
-        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 40.0;
-        qreal distance = QLineF(b, a).length()*2;
-        brushStep = qMax( 1.0, brushStep * opacity );
-        //brushStep = 2.0;
-        //currentWidth = properties.width; // here ?
+        qreal brushStep = 2.0;
+        qreal distance = QLineF(b, a).length();
         int steps = qRound(distance / brushStep);
         int rad = qRound(brushWidth / 2.0) + 2;
 
@@ -261,10 +258,8 @@ void SmudgeTool::drawStroke()
     }
     else // hard smudge (liquify)
     {
-        qreal brushStep = 0.5 * ( currentWidth + properties.feather ) / 80.0;
+        qreal brushStep = 2;
         qreal distance = QLineF(b, a).length()/4.0;
-        brushStep = qMax( 1.0, brushStep * opacity );
-        //currentWidth = properties.width; // here ?
         int steps = qRound(distance / brushStep);
         int rad = qRound(brushWidth / 2.0) + 2;
 
