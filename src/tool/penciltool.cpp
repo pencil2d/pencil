@@ -139,7 +139,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
     QColor currentColor = m_pEditor->colorManager()->frontColor();
-
+    currentPressuredColor = currentColor;
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
         currentPressuredColor.setAlphaF(currentColor.alphaF() * pressure);
@@ -179,7 +179,8 @@ void PencilTool::drawStroke()
             path.cubicTo(p[1],
                 p[2],
                 p[3]);
-            m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            //m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SourceOver );
 
             if (false) // debug
             {
