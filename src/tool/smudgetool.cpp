@@ -74,9 +74,9 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
     {
         toolMode = 1; // alternative mode
         m_pScribbleArea->setCursor( cursor() ); // update cursor
+        return true;
     }
-
-    return true;
+    return false;
 }
 
 bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
@@ -228,10 +228,10 @@ void SmudgeTool::drawStroke()
     QPointF b = getCurrentPoint();
 
 
-    if (toolMode == 0) // default mode = blur smudge
+    if (toolMode == 0) // liquify hard (default)
     {
-        qreal brushStep = 2.0;
-        qreal distance = QLineF(b, a).length();
+        qreal brushStep = 2;
+        qreal distance = QLineF(b, a).length()/2.0;
         int steps = qRound(distance / brushStep);
         int rad = qRound(brushWidth / 2.0) + 2;
 
@@ -240,7 +240,7 @@ void SmudgeTool::drawStroke()
         {
             QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            m_pScribbleArea->blurBrush( targetImage,
+            m_pScribbleArea->liquifyBrush( targetImage,
                                                 sourcePoint,
                                                 targetPoint,
                                                 brushWidth,
@@ -256,10 +256,10 @@ void SmudgeTool::drawStroke()
             m_pScribbleArea->paintBitmapBuffer();
         }
     }
-    else // hard smudge (liquify)
+    else // liquify smooth
     {
-        qreal brushStep = 2;
-        qreal distance = QLineF(b, a).length()/4.0;
+        qreal brushStep = 2.0;
+        qreal distance = QLineF(b, a).length();
         int steps = qRound(distance / brushStep);
         int rad = qRound(brushWidth / 2.0) + 2;
 
@@ -268,7 +268,7 @@ void SmudgeTool::drawStroke()
         {
             QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            m_pScribbleArea->liquifyBrush( targetImage,
+            m_pScribbleArea->blurBrush( targetImage,
                                                 sourcePoint,
                                                 targetPoint,
                                                 brushWidth,
