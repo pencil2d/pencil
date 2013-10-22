@@ -1700,14 +1700,12 @@ void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPoint
     QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
     BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
-    //BitmapImage *bmiTmpClip = new BitmapImage( NULL );
-    BitmapImage bmiTmpClip = bmiSource_->copy( srcRect.toRect() );
+    BitmapImage bmiTmpClip = bmiSrcClip; // todo: find a shorter way
 
     bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
     bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
     bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
     bufferImg->paste( &bmiTmpClip );
-    //delete bmiTmpClip;
 }
 
 void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_)
@@ -1742,14 +1740,13 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
 
             if (factor>0.0)
             {
-                //qreal invFactor = 1.0/factor; // TODO: almost done, use inverse factor instead of sum
-                int sum = 255-color.alpha();
-                color.setRed( color.red() + sum );
-                color.setGreen( color.green() + sum );
-                color.setBlue( color.blue() + sum );
+                color.setRed( color.red()/factor );
+                color.setGreen( color.green()/factor );
+                color.setBlue( color.blue()/factor );
                 color.setAlpha( 255 ); // Premultiplied color
-
                 bmiTmpClip->setPixel( xb, yb, color.rgba() );
+            } else {
+                bmiTmpClip->setPixel( xb, yb, qRgba(255,255,255,255) );
             }
         }
     }
