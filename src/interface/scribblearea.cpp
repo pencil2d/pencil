@@ -1721,7 +1721,7 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
     bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
 
     // Slide texture/pixels of the source image
-    qreal factor;
+    qreal factor, factorGrad;
     int xb, yb, xa, ya;
 
     for (yb=bmiTmpClip->boundaries.top(); yb<bmiTmpClip->boundaries.bottom(); yb++)
@@ -1730,10 +1730,10 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
         {
             QColor color;
             color.setRgba( bmiTmpClip->pixel (xb, yb) );
-            factor = color.alphaF(); // any from r g b a is ok
+            factorGrad = color.alphaF(); // any from r g b a is ok
 
-            xa = xb-factor*delta.x();
-            ya = yb-factor*delta.y();
+            xa = xb-factorGrad*delta.x();
+            ya = yb-factorGrad*delta.y();
 
             color.setRgba( bmiSource_->pixel( xa, ya ) );
             factor = color.alphaF();
@@ -1744,6 +1744,12 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
                 color.setGreen( color.green()/factor );
                 color.setBlue( color.blue()/factor );
                 color.setAlpha( 255 ); // Premultiplied color
+
+                color.setRed( color.red()*factorGrad );
+                color.setGreen( color.green()*factorGrad );
+                color.setBlue( color.blue()*factorGrad );
+                color.setAlpha( 255*factorGrad ); // Premultiplied color
+
                 bmiTmpClip->setPixel( xb, yb, color.rgba() );
             } else {
                 bmiTmpClip->setPixel( xb, yb, qRgba(255,255,255,255) );
