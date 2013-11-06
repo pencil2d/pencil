@@ -493,11 +493,11 @@ bool MainWindow2::openObject(QString filePath)
         return false; // this is not a Pencil document
     }
 
-    // delete old object
-    if (m_object != NULL)
+    // delete old object @sent foreward -> if (ok)
+    /*if (m_object != NULL)
     {
         m_object->deleteLater();
-    }
+    }*/
 
     // -----------------------------
 
@@ -529,7 +529,7 @@ bool MainWindow2::openObject(QString filePath)
 
     // ------- reads the XML file -------
     bool ok = true;
-    int prog = 0;
+    int progVal = 0;
     QDomElement docElem = doc.documentElement();
     if (docElem.isNull())
     {
@@ -540,14 +540,19 @@ bool MainWindow2::openObject(QString filePath)
     {
         qDebug("Object Loader: start.");
 
+        qreal rProgressValue = 0;
+        qreal rProgressDelta = 100/docElem.childNodes().count();
+
         QDomNode tag = docElem.firstChild();
+
         while (!tag.isNull())
         {
             QDomElement element = tag.toElement(); // try to convert the node to an element.
             if (!element.isNull())
             {
-                prog += std::min(prog + 10, 100);
-                progress.setValue(prog);
+                progVal = qMin( (int)rProgressValue , 100 );
+                progress.setValue(progVal);
+                rProgressValue += rProgressDelta;
 
                 if (element.tagName() == "editor")
                 {
@@ -592,7 +597,10 @@ bool MainWindow2::openObject(QString filePath)
         // fixed by shoshon... don't know if it's right
         Object* objectToDelete = m_object;
         m_object = newObject;
-        delete objectToDelete;
+        if (objectToDelete != NULL)
+        {
+            delete objectToDelete;
+        }
     }
 
     progress.setValue(100);
