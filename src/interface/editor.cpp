@@ -921,7 +921,7 @@ void Editor::setObject(Object* newObject)
     connect(object, SIGNAL(imageAdded(int,int)), this, SLOT(addFrame(int,int)));
     connect(object, SIGNAL(imageRemoved(int)), this, SLOT(removeFrame(int)));
 
-    m_nCurrentLayerIndex = 0; // the default selected layer is the first one
+    m_nCurrentLayerIndex = this->object->getLayerCount()-1; // the default selected layer is the last one
     m_nCurrentFrameIndex = 1;
     frameList.clear();
     frameList << 1;

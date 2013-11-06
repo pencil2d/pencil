@@ -69,6 +69,8 @@ void initialise()
 
 
 
+// crashes when there is an empty sound layer (windows 95)
+// does not save audio
 // added parameter exportFps -> frame rate of exported video
 // added parameter exportFormat -> to set ffmpeg parameters
 bool Object::exportMovie(int startFrame,
@@ -260,7 +262,7 @@ bool Object::exportMovie(int startFrame,
     }
     else
     {
-        qDebug() << "Please place ffmpeg.exe in plugins directory";
+        qDebug() << "Please place ffmpeg.exe in " << QDir::current().currentPath() << "/plugins directory";
     }
     qDebug() << "-----";
 
