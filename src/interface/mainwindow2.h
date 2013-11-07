@@ -100,9 +100,7 @@ private:
     void closeEvent(QCloseEvent*);
 
     void readSettings();
-    void writeSettings();    
-
-    QString path;
+    void writeSettings();
 };
 
 #endif // MAINWINDOW2_H
