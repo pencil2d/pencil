@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QString>
 #include "pencildef.h"
+#include "colourref.h"
 
 class Object;
 
@@ -19,8 +20,9 @@ public:
 
     Object* loadFromFile(QString strFilename);
     bool    saveToFile(Object* pObject, QString strFileName);
+    QList<ColourRef> loadPaletteFile( QString strFilename );
 
-    void    cleanUpTempFolder();
+
     PencilError error() { return m_error; }
 
 signals:
@@ -28,6 +30,8 @@ signals:
 
 private:
     QString extractZipToTempFolder( QString strZipFile );
+    void    cleanUpTempFolder();
+
 
     PencilError m_error;
     QString m_strLastTempWorkingFolder;

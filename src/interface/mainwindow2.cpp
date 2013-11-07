@@ -432,14 +432,14 @@ void MainWindow2::openFile(QString filename)
     }
 }
 
-bool MainWindow2::openObject(QString filePath)
+bool MainWindow2::openObject(QString strFilePath)
 {
     QProgressDialog progress("Opening document...", "Abort", 0, 100, this);
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
     ObjectSaveLoader objectLoader(this);
-    Object* pObject = objectLoader.loadFromFile( filePath );
+    Object* pObject = objectLoader.loadFromFile( strFilePath );
 
     if ( pObject != NULL && objectLoader.error().code() == PCL_OK )
     {

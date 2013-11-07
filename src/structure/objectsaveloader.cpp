@@ -81,7 +81,9 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
         strDataLayersDirPath = workingDir.absolutePath();
     }
 
+    // TODO:
 
+    return pObject;
 }
 
 bool ObjectSaveLoader::saveToFile(Object* object, QString strFileName)
@@ -115,4 +117,14 @@ QString ObjectSaveLoader::extractZipToTempFolder(QString strZipFile)
 
     m_strLastTempWorkingFolder = strTempWorkingPath;
     return strTempWorkingPath + "/" + PFF_XML_FILE_NAME;
+}
+
+QList<ColourRef> ObjectSaveLoader::loadPaletteFile( QString strFilename )
+{
+    QFileInfo fileInfo( strFilename );
+    if ( !fileInfo.exists() )
+    {
+        return QList<ColourRef>();
+    }
+
 }
