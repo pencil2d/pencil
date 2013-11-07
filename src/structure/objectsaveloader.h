@@ -21,7 +21,7 @@ public:
     bool    saveToFile(Object* pObject, QString strFileName);
 
     void    cleanUpTempFolder();
-    QString errorMessage() { return m_strLastErrorMessage; }
+    //QString errorMessage() { return m_strLastErrorMessage; }
     PencilError error() { return m_error; }
 
 signals:
@@ -31,7 +31,7 @@ private:
     QString extractZipToTempFolder( QString strZipFile );
 
     PencilError m_error;
-    QString m_strLastErrorMessage;
+    //QString m_strLastErrorMessage;
     QString m_strLastTempWorkingFolder;
 };
 

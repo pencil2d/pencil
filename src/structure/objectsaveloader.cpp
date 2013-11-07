@@ -7,7 +7,6 @@
 
 ObjectSaveLoader::ObjectSaveLoader(QObject *parent) :
     QObject(parent),
-    m_strLastErrorMessage( "" ),
     m_strLastTempWorkingFolder( "" )
 {
 }
