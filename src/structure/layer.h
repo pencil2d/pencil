@@ -67,7 +67,15 @@ public:
     virtual void editProperties();
 
 public:
-    enum types { UNDEFINED, BITMAP, VECTOR, MOVIE, SOUND, CAMERA };
+    enum types
+    {
+        UNDEFINED = 0,
+        BITMAP = 1,
+        VECTOR = 2,
+        MOVIE = 3,
+        SOUND = 4,
+        CAMERA = 5
+    };
 };
 
 #endif
