@@ -438,11 +438,10 @@ bool MainWindow2::openObject(QString filePath)
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-
     ObjectSaveLoader objectLoader(this);
     Object* pObject = objectLoader.loadFromFile( filePath );
 
-    if ( pObject != NULL && objectLoader.error().isEmpty() )
+    if ( pObject != NULL && objectLoader.error().code() == PCL_OK )
     {
         SafeDelete( m_object );
         m_object = pObject;
@@ -456,7 +455,7 @@ bool MainWindow2::openObject(QString filePath)
     //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
 
 
-
+    /*
     Object* newObject = new Object();
     if (!newObject->loadPalette(dataLayersDir))
     {
@@ -536,6 +535,7 @@ bool MainWindow2::openObject(QString filePath)
 
     progress.setValue(100);
     return ok;
+    */
 }
 
 // Added here (mainWindow2) to be easily located
@@ -544,6 +544,7 @@ void MainWindow2::resetToolsSettings()
 {
     m_pScribbleArea->resetTools();
     editor->setTool(m_pScribbleArea->currentTool()->type());
+
     qDebug("tools restored to default settings");
 }
 

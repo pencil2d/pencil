@@ -18,7 +18,8 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     QFileInfo fileInfo(strFilename);
     if ( !fileInfo.exists() )
     {
-        m_strLastErrorMessage = tr("File doesn't exist.");
+        //m_strLastErrorMessage = tr("File doesn't exist.");
+        m_error = PencilError( PCL_ERROR_FILE_NOT_EXIST );
         return NULL;
     }
 
@@ -26,7 +27,7 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     QStringList zippedFileList = JlCompress::getFileList( strFilename );
 
     // -- Test file format: new zipped pclx or old pcl ?
-    bool bIsOldPencilFile = (zippedFileList.empty());
+    bool bIsOldPencilFile = zippedFileList.empty();
     if ( !bIsOldPencilFile )
     {
         strMainXMLFilePath = extractZipToTempFolder( strFilename );
@@ -36,12 +37,14 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     {
         qDebug() << "Recognized Old Pencil File Format !";
     }
+
     // -- test before opening
     QScopedPointer<QFile> file(new QFile(strMainXMLFilePath));
 
     if ( !file->open(QFile::ReadOnly) )
     {
-        m_strLastErrorMessage = tr("Cannot open file.");
+        //m_strLastErrorMessage = tr("Cannot open file.");
+        m_error = PencilError( PCL_ERROR_FILE_CANNOT_OPEN );
         cleanUpTempFolder();
         return NULL;
     }
@@ -49,14 +52,17 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     QDomDocument xmlDoc;
     if ( !xmlDoc.setContent(file.data()) )
     {
-        m_strLastErrorMessage = tr("This file is not a valid XML document.");
+        //m_strLastErrorMessage = tr("This file is not a valid XML document.");
+        m_error = PencilError( PCL_ERROR_INVALID_XML_FILE );
         cleanUpTempFolder();
         return NULL;
     }
+
     QDomDocumentType type = xmlDoc.doctype();
     if (type.name() != "PencilDocument" && type.name() != "MyObject")
     {
-        m_strLastErrorMessage = tr("This file is not a Pencil2D document.");
+        //m_strLastErrorMessage = tr("This file is not a Pencil2D document.");
+        m_error = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
         cleanUpTempFolder();
         return NULL; // this is not a Pencil document
     }

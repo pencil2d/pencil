@@ -1,13 +1,13 @@
 #ifndef OBJECTSAVELOADER_H
 #define OBJECTSAVELOADER_H
 
-#include <functional>
 
 #include <QObject>
 #include <QString>
-
+#include "pencildef.h"
 
 class Object;
+
 
 
 class ObjectSaveLoader : public QObject
@@ -21,7 +21,8 @@ public:
     bool    saveToFile(Object* pObject, QString strFileName);
 
     void    cleanUpTempFolder();
-    QString error() { return m_strLastErrorMessage; }
+    QString errorMessage() { return m_strLastErrorMessage; }
+    PencilError error() { return m_error; }
 
 signals:
     void progressValueChanged(float);
@@ -29,6 +30,7 @@ signals:
 private:
     QString extractZipToTempFolder( QString strZipFile );
 
+    PencilError m_error;
     QString m_strLastErrorMessage;
     QString m_strLastTempWorkingFolder;
 };
