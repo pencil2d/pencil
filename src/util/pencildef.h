@@ -103,15 +103,27 @@ enum ToolPropertyType
 #define SETTING_HIGH_RESOLUTION "highResPosition"
 
 
-//Pencil File Format consts...
-//PFF - acronym for "Pencil File Format"
-#define PFF_EXTENSION      ".pclx"
-#define PFF_BIG_LETTER_EXTENSION "PCLX"
-#define PFF_SINGLE_FILTER    "Pencil Animation File PCLZ (*.pclx)"
-#define PFF_ALL_FILE_FILTER    "Pencil Animation File PCL (*.pclx);;Any files (*)"
-#define PFF_LAYERS_DIR       "data"
-#define PFF_XML_FILE_NAME     "main.xml"
-#define PFF_TMP_COMPRESS_EXT   ".Y2xC"
-#define PFF_TMP_DECOMPRESS_EXT   ".Y2xD"
+enum PencilErrorCode
+{
+    PCL_OK = 0,
+
+    // for Object loading
+    PCL_ERROR_FILE_NOT_EXIST,
+    PCL_ERROR_FILE_CANNOT_OPEN,
+    PCL_ERROR_INVALID_XML_FILE,
+    PCL_ERROR_INVALID_PENCIL_FILE,
+};
+
+
+class PencilError
+{
+public:
+    PencilError() { m_eCode = PCL_OK; }
+    PencilError( PencilErrorCode eCode ) { m_eCode = eCode; }
+    PencilErrorCode code() { return m_eCode; }
+private:
+    PencilErrorCode m_eCode;
+};
+
 
 #endif // PENCILDEF_H
