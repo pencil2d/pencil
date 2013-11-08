@@ -14,10 +14,9 @@ ObjectSaveLoader::ObjectSaveLoader(QObject *parent) :
 Object* ObjectSaveLoader::loadFromFile(QString strFilename)
 {
     // ---- test before opening ----
-    QFileInfo fileInfo(strFilename);
-    if ( !fileInfo.exists() )
+
+    if ( !isFileExists(strFilename) )
     {
-        //m_strLastErrorMessage = tr("File doesn't exist.");
         m_error = PencilError( PCL_ERROR_FILE_NOT_EXIST );
         return NULL;
     }
@@ -81,7 +80,71 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
         strDataLayersDirPath = workingDir.absolutePath();
     }
 
-    // TODO:
+    Object* newObject = pObject;
+    if (!newObject->loadPalette(strDataLayersDirPath))
+    {
+        newObject->loadDefaultPalette();
+    }
+
+    // ------- reads the XML file -------
+    bool ok = true;
+    int prog = 0;
+    QDomElement docElem = xmlDoc.documentElement();
+    if (docElem.isNull())
+    {
+        return NULL;
+    }
+
+    if (docElem.tagName() == "document")
+    {
+        qDebug("Object Loader: start.");
+
+        QDomNode tag = docElem.firstChild();
+        while (!tag.isNull())
+        {
+            QDomElement element = tag.toElement(); // try to convert the node to an element.
+            if (!element.isNull())
+            {
+                prog += std::min(prog + 10, 100);
+                //progress.setValue(prog);
+                emit progressValueChanged( prog );
+
+                if (element.tagName() == "editor")
+                {
+                    qDebug("  Load editor");
+                    loadDomElement( element );
+                }
+                else if (element.tagName() == "object")
+                {
+                    qDebug("  Load object");
+                    ok = newObject->loadDomElement(element, strDataLayersDirPath);
+                    qDebug() << "    dataDir:" << strDataLayersDirPath;
+                }
+            }
+            tag = tag.nextSibling();
+        }
+    }
+    else
+    {
+        if (docElem.tagName() == "object" || docElem.tagName() == "MyOject")   // old Pencil format (<=0.4.3)
+        {
+            ok = newObject->loadDomElement(docElem, strFilename);
+        }
+    }
+
+    if (ok)
+    {
+        /*
+        if (!openingTheOLDWAY)
+        {
+            removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
+        }
+        */
+    }
+    else
+    {
+        return NULL;
+    }
 
     return pObject;
 }
@@ -93,9 +156,55 @@ bool ObjectSaveLoader::saveToFile(Object* object, QString strFileName)
     return true;
 }
 
+bool ObjectSaveLoader::loadDomElement( QDomElement docElem )
+{
+    if (docElem.isNull()) return false;
+    QDomNode tag = docElem.firstChild();
+    while (!tag.isNull())
+    {
+        QDomElement element = tag.toElement(); // try to convert the node to an element.
+        if (!element.isNull())
+        {
+            if (element.tagName() == "currentLayer")
+            {
+                int nCurrentLayerIndex = element.attribute("value").toInt();
+                //editor->setCurrentLayer(nCurrentLayerIndex);
+            }
+            if (element.tagName() == "currentFrame")
+            {
+                //editor->m_nCurrentFrameIndex = element.attribute("value").toInt();
+            }
+            if (element.tagName() == "currentFps")
+            {
+                //editor->fps = element.attribute("value").toInt();
+                //timer->setInterval(1000/fps);
+                //m_pTimeLine->setFps(editor->fps);
+            }
+            if (element.tagName() == "currentView")
+            {
+                qreal m11 = element.attribute("m11").toDouble();
+                qreal m12 = element.attribute("m12").toDouble();
+                qreal m21 = element.attribute("m21").toDouble();
+                qreal m22 = element.attribute("m22").toDouble();
+                qreal dx = element.attribute("dx").toDouble();
+                qreal dy = element.attribute("dy").toDouble();
+                //m_pScribbleArea->setMyView( QMatrix(m11,m12,m21,m22,dx,dy) );
+            }
+        }
+        tag = tag.nextSibling();
+    }
+    return true;
+}
+
+
 void ObjectSaveLoader::cleanUpTempFolder()
 {
     removePFFTmpDirectory( m_strLastTempWorkingFolder );
+}
+
+bool ObjectSaveLoader::isFileExists(QString strFilename)
+{
+    return QFileInfo(strFilename).exists();
 }
 
 QString ObjectSaveLoader::extractZipToTempFolder(QString strZipFile)

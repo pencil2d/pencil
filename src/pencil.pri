@@ -74,7 +74,8 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/interface/recentfilemenu.h \
     $$PWD/util/util.h \
     $$PWD/managers/colormanager.h \
-    $$PWD/managers/toolmanager.h
+    $$PWD/managers/toolmanager.h \
+    src/util/pencilerror.h
 
 SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/graphics/bitmap/bitmapimage.cpp \
@@ -137,7 +138,8 @@ SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/interface/recentfilemenu.cpp \
     $$PWD/util/util.cpp \
     $$PWD/managers/colormanager.cpp \
-    $$PWD/managers/toolmanager.cpp
+    $$PWD/managers/toolmanager.cpp \
+    src/util/pencilerror.cpp
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}

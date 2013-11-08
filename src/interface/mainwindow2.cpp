@@ -445,97 +445,27 @@ bool MainWindow2::openObject(QString strFilePath)
     {
         SafeDelete( m_object );
         m_object = pObject;
+
+        pObject->setFilePath( strFilePath );
+        QSettings settings("Pencil","Pencil");
+        settings.setValue("lastFilePath", QVariant(pObject->filePath()) );
+
+        editor->setObject(pObject);
+        editor->updateObject();
+
+        m_recentFileMenu->addRecentFile( pObject->filePath() );
+        m_recentFileMenu->saveToDisk();
+
+        qDebug() << "Current File Path=" << pObject->filePath();
+        setWindowTitle( pObject->filePath() );
     }
-    return true;
-
-    // -----------------------------
-
-
-    //QSettings settings("Pencil","Pencil");
-    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
-
-
-    /*
-    Object* newObject = new Object();
-    if (!newObject->loadPalette(dataLayersDir))
-    {
-        newObject->loadDefaultPalette();
-    }
-    editor->setObject(newObject);
-
-    newObject->strCurrentFilePath = filePath;
-
-    // ------- reads the XML file -------
-    bool ok = true;
-    int prog = 0;
-    QDomElement docElem = doc.documentElement();
-    if (docElem.isNull())
+    else
     {
         return false;
     }
 
-    if (docElem.tagName() == "document")
-    {
-        qDebug("Object Loader: start.");
-
-        QDomNode tag = docElem.firstChild();
-        while (!tag.isNull())
-        {
-            QDomElement element = tag.toElement(); // try to convert the node to an element.
-            if (!element.isNull())
-            {
-                prog += std::min(prog + 10, 100);
-                progress.setValue(prog);
-
-                if (element.tagName() == "editor")
-                {
-                    qDebug("  Load editor");
-                    loadDomElement(element, filePath);
-                }
-                else if (element.tagName() == "object")
-                {
-                    qDebug("  Load object");
-                    ok = newObject->loadDomElement(element, dataLayersDir);
-                    qDebug() << "    dataDir:" << dataLayersDir;
-                }
-            }
-            tag = tag.nextSibling();
-        }
-    }
-    else
-    {
-        if (docElem.tagName() == "object" || docElem.tagName() == "MyOject")   // old Pencil format (<=0.4.3)
-        {
-            ok = newObject->loadDomElement(docElem, filePath);
-        }
-    }
-
-    // ------------------------------
-    if (ok)
-    {
-        editor->updateObject();
-
-		if (!openingTheOLDWAY)
-		{
-			removePFFTmpDirectory(tmpFilePath); // --removes temporary decompression directory
-		}
-
-        m_recentFileMenu->addRecentFile(filePath);
-        m_recentFileMenu->saveToDisk();
-
-        qDebug() << "Current File Path=" << newObject->filePath();
-        setWindowTitle(newObject->filePath());
-
-        // FIXME: need to free the old object. but delete object will crash app, don't know why.
-        // fixed by shoshon... don't know if it's right
-        Object* objectToDelete = m_object;
-        m_object = newObject;
-        delete objectToDelete;
-    }
-
     progress.setValue(100);
-    return ok;
-    */
+    return true;
 }
 
 // Added here (mainWindow2) to be easily located
@@ -548,48 +478,6 @@ void MainWindow2::resetToolsSettings()
     qDebug("tools restored to default settings");
 }
 
-// TODO: need to move to other place
-bool MainWindow2::loadDomElement(QDomElement docElem, QString filePath)
-{
-    Q_UNUSED(filePath);
-
-    if (docElem.isNull()) return false;
-    QDomNode tag = docElem.firstChild();
-    while (!tag.isNull())
-    {
-        QDomElement element = tag.toElement(); // try to convert the node to an element.
-        if (!element.isNull())
-        {
-            if (element.tagName() == "currentLayer")
-            {
-                int nCurrentLayerIndex = element.attribute("value").toInt();
-                editor->setCurrentLayer(nCurrentLayerIndex);
-            }
-            if (element.tagName() == "currentFrame")
-            {
-                editor->m_nCurrentFrameIndex = element.attribute("value").toInt();
-            }
-            if (element.tagName() == "currentFps")
-            {
-                editor->fps = element.attribute("value").toInt();
-                //timer->setInterval(1000/fps);
-                m_pTimeLine->setFps(editor->fps);
-            }
-            if (element.tagName() == "currentView")
-            {
-                qreal m11 = element.attribute("m11").toDouble();
-                qreal m12 = element.attribute("m12").toDouble();
-                qreal m21 = element.attribute("m21").toDouble();
-                qreal m22 = element.attribute("m22").toDouble();
-                qreal dx = element.attribute("dx").toDouble();
-                qreal dy = element.attribute("dy").toDouble();
-                m_pScribbleArea->setMyView( QMatrix(m11,m12,m21,m22,dx,dy) );
-            }
-        }
-        tag = tag.nextSibling();
-    }
-    return true;
-}
 
 bool MainWindow2::saveObject(QString strSavedFilename)
 {
