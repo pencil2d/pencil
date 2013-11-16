@@ -20,11 +20,5 @@ DEPENDPATH *= $${INCLUDEPATH}
 
 RESOURCES += pencil.qrc
 
-
-FORMS += \
-    src/interface/mainwindow2.ui \
-    src/interface/shortcutspage.ui \
-    src/interface/colorinspector.ui
-
 TRANSLATIONS += pencil.ts
 

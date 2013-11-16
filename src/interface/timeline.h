@@ -20,71 +20,66 @@ GNU General Public License for more details.
 #include "toolset.h"
 #include "timecontrols.h"
 
-
 class Editor;
 class TimeLineCells;
 class ScrollBar;
 
-
-
 class TimeLine : public QDockWidget //DockPalette
 {
-    Q_OBJECT
+	Q_OBJECT
 
-signals:
-    void modification();
-    void lengthChange(QString);
-    void frameSizeChange(int);
-    void fontSizeChange(int);
-    void labelChange(int);
-    void scrubChange(int);
-    void addKeyClick();
-    void removeKeyClick();
-    void duplicateKeyClick();
-    void newBitmapLayer();
-    void newVectorLayer();
-    void newSoundLayer();
-    void newCameraLayer();
-    void deleteCurrentLayer();
+signals :
+	void modification();
+	void lengthChange( QString );
+	void frameSizeChange( int );
+	void fontSizeChange( int );
+	void labelChange( int );
+	void scrubChange( int );
+	void addKeyClick();
+	void removeKeyClick();
+	void duplicateKeyClick();
+	void newBitmapLayer();
+	void newVectorLayer();
+	void newSoundLayer();
+	void newCameraLayer();
+	void deleteCurrentLayer();
 
-    void playClick();
-    void loopClick(bool);
-    void toggleLoop(bool);
-    void loopToggled(bool);
-    void soundClick();
-    void endplayClick();
-    void startplayClick();
-    void fpsClick(int);
-    void onionPrevClick();
-    void onionNextClick();
+	void playClick();
+	void loopClick( bool );
+	void toggleLoop( bool );
+	void loopToggled( bool );
+	void soundClick();
+	void endplayClick();
+	void startplayClick();
+	void fpsClick( int );
+	void onionPrevClick();
+	void onionNextClick();
 
-
-public slots:
-    void updateFrame(int frameNumber);
-    void updateLayerNumber(int number);
-    void updateLayerView();
-    void updateLength(int frameLength);
-    void updateContent();
+	public slots:
+	void updateFrame( int frameNumber );
+	void updateLayerNumber( int number );
+	void updateLayerView();
+	void updateLength( int frameLength );
+	void updateContent();
 
 public:
-    TimeLine(QWidget* parent = 0, Editor* editor = 0);
-    QScrollBar* hScrollBar;
-    QScrollBar* vScrollBar;
-    bool scrubbing;
-    void forceUpdateLength(QString newLength); //when Animation -> Add Frame is clicked, this will auto update timeline
-    void setFps ( int );
-    int getFrameLength();
+	TimeLine( QWidget* parent = 0, Editor* editor = 0 );
+	QScrollBar* hScrollBar;
+	QScrollBar* vScrollBar;
+	bool scrubbing;
+	void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
+	void setFps( int );
+	int getFrameLength();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
+	void resizeEvent( QResizeEvent* event );
 
 private:
-    Editor* editor; // the editor for which this timeLine operates
-    TimeLineCells* cells;
-    TimeLineCells* list;
-    int numberOfLayers;
-    TimeControls* timeControls;
-
+	Editor* editor; // the editor for which this timeLine operates
+	TimeLineCells* cells;
+	TimeLineCells* list;
+	int numberOfLayers;
+	TimeControls* timeControls;
 };
 
 #endif
