@@ -1650,24 +1650,21 @@ void Editor::play()
 	{
 		scrubTo( maxFrame );
 	}
-	else
+	else if ( m_nCurrentFrameIndex == maxFrame )
 	{
-		if ( m_nCurrentFrameIndex == maxFrame )
+		if ( !playing )
 		{
-			if ( !playing )
-			{
-				scrubTo( 0 );
-			}
-			else
-			{
-				if ( looping ) { scrubTo( 0 ); }
-				else { startOrStop(); }
-			}
+			scrubTo( 0 );
 		}
 		else
 		{
-			startOrStop();
+			if ( looping ) { scrubTo( 0 ); }
+			else { startOrStop(); }
 		}
+	}
+	else
+	{
+		startOrStop();
 	}
 }
 
@@ -1769,8 +1766,6 @@ void Editor::playPrevFrame()
 void Editor::changeFps( int x )
 {
 	fps = x;
-	//	QSettings settings("Pencil","Pencil");
-	//	settings.setValue("fps", x);
 	timer->setInterval( 1000 / fps );
 	getTimeLine()->updateContent();
 }
