@@ -1720,11 +1720,14 @@ void Editor::scrubPreviousKeyframe()
 	{
 		scrubTo( position );
 	}
-	else {
-		if ( looping ) {
+	else
+	{
+		if ( looping )
+		{
 			// scrubto first key frame
 			position = layer->getLastKeyframePosition();
-			if ( position != Layer::NO_KEYFRAME ) {
+			if ( position != Layer::NO_KEYFRAME )
+			{
 				scrubTo( position );
 			}
 		}
