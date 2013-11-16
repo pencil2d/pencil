@@ -34,6 +34,7 @@ class MainWindow2;
 class ColorManager;
 class ToolManager;
 
+
 class Editor : public QWidget
 {
 	Q_OBJECT
