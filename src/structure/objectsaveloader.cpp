@@ -1,21 +1,20 @@
-
 #include "pencildef.h"
 #include "JlCompress.h"
 #include "fileformat.h"
 #include "object.h"
 #include "objectsaveloader.h"
 
-ObjectSaveLoader::ObjectSaveLoader(QObject *parent) :
-    QObject(parent),
+ObjectSaveLoader::ObjectSaveLoader( QObject *parent ) :
+    QObject( parent ),
     m_strLastTempWorkingFolder( "" )
 {
 }
 
-Object* ObjectSaveLoader::loadFromFile(QString strFilename)
+Object* ObjectSaveLoader::loadFromFile( QString strFilename )
 {
     // ---- test before opening ----
 
-    if ( !isFileExists(strFilename) )
+    if ( !isFileExists( strFilename ) )
     {
         m_error = PencilError( PCL_ERROR_FILE_NOT_EXIST );
         return NULL;
@@ -37,9 +36,9 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     }
 
     // -- test before opening
-    QScopedPointer<QFile> file(new QFile(strMainXMLFilePath));
+    QScopedPointer<QFile> file( new QFile( strMainXMLFilePath ) );
 
-    if ( !file->open(QFile::ReadOnly) )
+    if ( !file->open( QFile::ReadOnly ) )
     {
         //m_strLastErrorMessage = tr("Cannot open file.");
         m_error = PencilError( PCL_ERROR_FILE_CANNOT_OPEN );
@@ -48,7 +47,7 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     }
 
     QDomDocument xmlDoc;
-    if ( !xmlDoc.setContent(file.data()) )
+    if ( !xmlDoc.setContent( file.data() ) )
     {
         //m_strLastErrorMessage = tr("This file is not a valid XML document.");
         m_error = PencilError( PCL_ERROR_INVALID_XML_FILE );
@@ -57,7 +56,7 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     }
 
     QDomDocumentType type = xmlDoc.doctype();
-    if (type.name() != "PencilDocument" && type.name() != "MyObject")
+    if ( type.name() != "PencilDocument" && type.name() != "MyObject" )
     {
         //m_strLastErrorMessage = tr("This file is not a Pencil2D document.");
         m_error = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
@@ -81,7 +80,7 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     }
 
     Object* newObject = pObject;
-    if (!newObject->loadPalette(strDataLayersDirPath))
+    if ( !newObject->loadPalette( strDataLayersDirPath ) )
     {
         newObject->loadDefaultPalette();
     }
@@ -90,34 +89,34 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     bool ok = true;
     int prog = 0;
     QDomElement docElem = xmlDoc.documentElement();
-    if (docElem.isNull())
+    if ( docElem.isNull() )
     {
         return NULL;
     }
 
-    if (docElem.tagName() == "document")
+    if ( docElem.tagName() == "document" )
     {
-        qDebug("Object Loader: start.");
+        qDebug( "Object Loader: start." );
 
         QDomNode tag = docElem.firstChild();
-        while (!tag.isNull())
+        while ( !tag.isNull() )
         {
             QDomElement element = tag.toElement(); // try to convert the node to an element.
-            if (!element.isNull())
+            if ( !element.isNull() )
             {
-                prog += std::min(prog + 10, 100);
+                prog += std::min( prog + 10, 100 );
                 //progress.setValue(prog);
                 emit progressValueChanged( prog );
 
-                if (element.tagName() == "editor")
+                if ( element.tagName() == "editor" )
                 {
-                    qDebug("  Load editor");
-                    loadDomElement( element );
+                    qDebug( "  Load editor" );
+                    //loadDomElement( element );
                 }
-                else if (element.tagName() == "object")
+                else if ( element.tagName() == "object" )
                 {
-                    qDebug("  Load object");
-                    ok = newObject->loadDomElement(element, strDataLayersDirPath);
+                    qDebug( "  Load object" );
+                    ok = newObject->loadDomElement( element, strDataLayersDirPath );
                     qDebug() << "    dataDir:" << strDataLayersDirPath;
                 }
             }
@@ -126,18 +125,18 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     }
     else
     {
-        if (docElem.tagName() == "object" || docElem.tagName() == "MyOject")   // old Pencil format (<=0.4.3)
+        if ( docElem.tagName() == "object" || docElem.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
         {
-            ok = newObject->loadDomElement(docElem, strFilename);
+            ok = newObject->loadDomElement( docElem, strFilename );
         }
     }
 
-    if (ok)
+    if ( ok )
     {
         /*
         if (!openingTheOLDWAY)
         {
-            removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
+        removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
         }
         */
     }
@@ -149,45 +148,45 @@ Object* ObjectSaveLoader::loadFromFile(QString strFilename)
     return pObject;
 }
 
-bool ObjectSaveLoader::saveToFile(Object* object, QString strFileName)
+bool ObjectSaveLoader::saveToFile( Object* object, QString strFileName )
 {
-    Q_UNUSED(object);
-    Q_UNUSED(strFileName);
+    Q_UNUSED( object );
+    Q_UNUSED( strFileName );
     return true;
 }
 
 bool ObjectSaveLoader::loadDomElement( QDomElement docElem )
 {
-    if (docElem.isNull()) return false;
+    if ( docElem.isNull() ) return false;
     QDomNode tag = docElem.firstChild();
-    while (!tag.isNull())
+    while ( !tag.isNull() )
     {
         QDomElement element = tag.toElement(); // try to convert the node to an element.
-        if (!element.isNull())
+        if ( !element.isNull() )
         {
-            if (element.tagName() == "currentLayer")
+            if ( element.tagName() == "currentLayer" )
             {
-                int nCurrentLayerIndex = element.attribute("value").toInt();
+                int nCurrentLayerIndex = element.attribute( "value" ).toInt();
                 //editor->setCurrentLayer(nCurrentLayerIndex);
             }
-            if (element.tagName() == "currentFrame")
+            if ( element.tagName() == "currentFrame" )
             {
                 //editor->m_nCurrentFrameIndex = element.attribute("value").toInt();
             }
-            if (element.tagName() == "currentFps")
+            if ( element.tagName() == "currentFps" )
             {
                 //editor->fps = element.attribute("value").toInt();
                 //timer->setInterval(1000/fps);
                 //m_pTimeLine->setFps(editor->fps);
             }
-            if (element.tagName() == "currentView")
+            if ( element.tagName() == "currentView" )
             {
-                qreal m11 = element.attribute("m11").toDouble();
-                qreal m12 = element.attribute("m12").toDouble();
-                qreal m21 = element.attribute("m21").toDouble();
-                qreal m22 = element.attribute("m22").toDouble();
-                qreal dx = element.attribute("dx").toDouble();
-                qreal dy = element.attribute("dy").toDouble();
+                qreal m11 = element.attribute( "m11" ).toDouble();
+                qreal m12 = element.attribute( "m12" ).toDouble();
+                qreal m21 = element.attribute( "m21" ).toDouble();
+                qreal m22 = element.attribute( "m22" ).toDouble();
+                qreal dx = element.attribute( "dx" ).toDouble();
+                qreal dy = element.attribute( "dy" ).toDouble();
                 //m_pScribbleArea->setMyView( QMatrix(m11,m12,m21,m22,dx,dy) );
             }
         }
@@ -202,15 +201,15 @@ void ObjectSaveLoader::cleanUpTempFolder()
     removePFFTmpDirectory( m_strLastTempWorkingFolder );
 }
 
-bool ObjectSaveLoader::isFileExists(QString strFilename)
+bool ObjectSaveLoader::isFileExists( QString strFilename )
 {
-    return QFileInfo(strFilename).exists();
+    return QFileInfo( strFilename ).exists();
 }
 
-QString ObjectSaveLoader::extractZipToTempFolder(QString strZipFile)
+QString ObjectSaveLoader::extractZipToTempFolder( QString strZipFile )
 {
     // ---- now decompress PFF -----
-    QFileInfo zipFileInfo(strZipFile);
+    QFileInfo zipFileInfo( strZipFile );
 
     QString strTempWorkingPath = QDir::tempPath() + "/" + zipFileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT;
     //qDebug() << "tmpFilePath" << tmpFilePath ;
@@ -219,10 +218,10 @@ QString ObjectSaveLoader::extractZipToTempFolder(QString strZipFile)
     removePFFTmpDirectory( strTempWorkingPath );
 
     // --creates a new decompression directory
-    QDir dir(QDir::tempPath());
+    QDir dir( QDir::tempPath() );
     dir.mkpath( strTempWorkingPath );
 
-    JlCompress::extractDir(strZipFile, strTempWorkingPath);
+    JlCompress::extractDir( strZipFile, strTempWorkingPath );
 
     m_strLastTempWorkingFolder = strTempWorkingPath;
     return strTempWorkingPath + "/" + PFF_XML_FILE_NAME;
@@ -235,5 +234,4 @@ QList<ColourRef> ObjectSaveLoader::loadPaletteFile( QString strFilename )
     {
         return QList<ColourRef>();
     }
-
 }

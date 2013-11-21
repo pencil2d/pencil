@@ -37,272 +37,274 @@ class ToolManager;
 
 class Editor : public QWidget
 {
-	Q_OBJECT
-	Q_PROPERTY( ColorManager* colorManager READ colorManager )
+    Q_OBJECT
+    Q_PROPERTY( ColorManager* colorManager READ colorManager )
 
 public:
-	Editor( MainWindow2* parent );
-	virtual ~Editor();
+    Editor( MainWindow2* parent );
+    virtual ~Editor();
 
-	ColorManager* colorManager() const { return m_colorManager; }
-	ToolManager* toolManager() const { return m_pToolManager; }
+    ColorManager* colorManager() const { return m_colorManager; }
+    ToolManager* toolManager() const { return m_pToolManager; }
 
-	Object* object;  // the object to be edited by the editor
-	Object* getObject() const { return object; }
-	void setObject( Object* object );
+    Object* object;  // the object to be edited by the editor
+    Object* getObject() const { return object; }
+    void setObject( Object* object );
 
-	int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
-	int m_nCurrentFrameIndex; // the current frame to be edited/displayed by the editor
-	int maxFrame; // the number of the last frame for the current object
-	QList<int> frameList; // the frames that are to be cached -- should we use a QMap, or a QHash?
+    int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
+    int m_nCurrentFrameIndex; // the current frame to be edited/displayed by the editor
+    int maxFrame; // the number of the last frame for the current object
 
-	int fps; // the number of frames per second used by the editor
-	QTimer* timer; // the timer used for animation in the editor
-	bool playing;
-	bool looping;
-	bool sound;
-	ToolSetWidget* toolSet;
+    int fps; // the number of frames per second used by the editor
+    QTimer* timer; // the timer used for animation in the editor
+    bool playing;
+    bool looping;
+    bool sound;
+    ToolSetWidget* toolSet;
 
-	TimeLine* getTimeLine();
+    TimeLine* getTimeLine();
 
-	Layer* getCurrentLayer( int incr )
-	{
-		if ( object != NULL )
-		{
-			return object->getLayer( m_nCurrentLayerIndex + incr );
-		}
-		else
-		{
-			return NULL;
-		}
-	}
+    Layer* getCurrentLayer( int incr )
+    {
+        if ( object != NULL )
+        {
+            return object->getLayer( m_nCurrentLayerIndex + incr );
+        }
+        else
+        {
+            return NULL;
+        }
+    }
 
-	Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
-	Layer* getLayer( int i );
-	bool isModified() { return modified; }
-	int allLayers() { return m_pScribbleArea->showAllLayers(); }
-	static QMatrix map( QRectF, QRectF );
-	bool exportSeqCLI( QString, QString );
+    Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
+    Layer* getLayer( int i );
+    bool isModified() { return modified; }
+    int allLayers() { return m_pScribbleArea->showAllLayers(); }
+    static QMatrix map( QRectF, QRectF );
+    bool exportSeqCLI( QString, QString );
 
-	int getOnionLayer1Opacity() { return onionLayer1Opacity; }
-	int getOnionLayer2Opacity() { return onionLayer2Opacity; }
-	int getOnionLayer3Opacity() { return onionLayer3Opacity; }
+    int getOnionLayer1Opacity() { return onionLayer1Opacity; }
+    int getOnionLayer2Opacity() { return onionLayer2Opacity; }
+    int getOnionLayer3Opacity() { return onionLayer3Opacity; }
 
-	void importMovie( QString filePath, int fps );
+    void importMovie( QString filePath, int fps );
 
-	// backup
-	int backupIndex;
-	QList<BackupElement*> backupList;
+    // backup
+    int backupIndex;
+    QList<BackupElement*> backupList;
 
-	ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
-	void setColor( QColor argColor );
+    ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
+    void setColor( QColor argColor );
 
 protected:
-	void keyPressEvent( QKeyEvent *event );
-	void dragEnterEvent( QDragEnterEvent* event );
-	void dropEvent( QDropEvent* event );
-	QRect viewRect;
-signals:
-	void selectAll();
-	void toggleLoop( bool );
-	void loopToggled( bool );
-	void toggleOnionNext( bool );
-	void toggleOnionPrev( bool );
-	void onionPrevChanged( bool );
-	void onionNextChanged( bool );
-	void changeThinLinesButton( bool );
-	void changeOutlinesButton( bool );
+    void keyPressEvent( QKeyEvent *event );
+    void dragEnterEvent( QDragEnterEvent* event );
+    void dropEvent( QDropEvent* event );
+    QRect viewRect;
+    signals:
+    void selectAll();
+    void toggleLoop( bool );
+    void loopToggled( bool );
+    void toggleOnionNext( bool );
+    void toggleOnionPrev( bool );
+    void onionPrevChanged( bool );
+    void onionNextChanged( bool );
+    void changeThinLinesButton( bool );
+    void changeOutlinesButton( bool );
 
-	// Tool Option
-	void changeTool( ToolType );
+    // Tool Option
+    void changeTool( ToolType );
 
-	void penWidthValueChange( qreal );
-	void penFeatherValueChange( qreal );
-	void penInvisiblityValueChange( int );
-	void penPreserveAlphaValueChange( int );
-	void penPressureValueChange( int );
-	void penFollowContourValueChange( int );
-	void penColorValueChange( QColor );
+    void penWidthValueChange( qreal );
+    void penFeatherValueChange( qreal );
+    void penInvisiblityValueChange( int );
+    void penPreserveAlphaValueChange( int );
+    void penPressureValueChange( int );
+    void penFollowContourValueChange( int );
+    void penColorValueChange( QColor );
 
-	// save
-	void needSave();
+    // save
+    void needSave();
 
-	public slots:
+    public slots:
 
-	void setTool( ToolType );
-	void clearCurrentFrame();
+    void setTool( ToolType );
+    void clearCurrentFrame();
 
-	void importImageSequence();
-	void cut();
-	void crop();
-	void croptoselect();
-	void deselectAll();
-	void setzoom();
-	void setzoom1();
-	void rotatecw();
-	void rotateacw();
-	void gridview();
-	void resetView();
+    void importImageSequence();
+    void cut();
+    void crop();
+    void croptoselect();
+    void deselectAll();
+    void setzoom();
+    void setzoom1();
+    void rotatecw();
+    void rotateacw();
+    void gridview();
+    void resetView();
 
-	void importImage();
-	void importImage( QString filePath );
-	void importSound( QString filePath = "" );
-	bool importMov();
-	void updateFrame( int frameNumber );
-	void updateFrameAndVector( int frameNumber );
+    void importImage();
+    void importImage( QString filePath );
+    void importSound( QString filePath = "" );
+    bool importMov();
+    void updateFrame( int frameNumber );
+    void updateFrameAndVector( int frameNumber );
 
-	void scrubTo( int frameNumber );
-	void scrubNextKeyframe();
-	void scrubPreviousKeyframe();
-	void scrubForward();
-	void scrubBackward();
+    void scrubTo( int frameNumber );
+    void scrubNextKeyframe();
+    void scrubPreviousKeyframe();
+    void scrubForward();
+    void scrubBackward();
 
-	void play();
-	void startOrStop();
-	void playNextFrame();
-	void playPrevFrame();
+    void play();
+    void startOrStop();
+    void playNextFrame();
+    void playPrevFrame();
 
-	void changeFps( int );
-	int getFps();
-	void setLoop( bool checked );
-	void setSound();
+    void changeFps( int );
+    int getFps();
+    void setLoop( bool checked );
+    void setSound();
 
-	void previousLayer();
-	void nextLayer();
-	void endPlay();
-	void startPlay();
+    void previousLayer();
+    void nextLayer();
+    void endPlay();
+    void startPlay();
 
-	void addKey();
-	void duplicateKey();
-	void addKey( int layerNumber, int& frameNumber );
-	void removeKey();
+    void addKey();
+    void duplicateKey();
+    void addKey( int layerNumber, int& frameNumber );
+    void removeKey();
 
-	void addFrame( int frameNumber );
-	void addFrame( int frameNumber1, int frameNumber2 );
-	void removeFrame( int frameNumber );
-	int getLastIndexAtFrame( int frameNumber );
-	int getLastFrameAtFrame( int frameNumber );
+    void addFrame( int frameNumber );
+    void addFrame( int frameNumber1, int frameNumber2 );
+    void removeFrame( int frameNumber );
+    int getLastIndexAtFrame( int frameNumber );
+    int getLastFrameAtFrame( int frameNumber );
 
-	void resetUI();
+    void resetUI();
 
-	void updateObject();
+    void updateObject();
 
-	void setCurrentLayer( int layerNumber );
-	void switchVisibilityOfLayer( int layerNumber );
-	void moveLayer( int i, int j );
-	void updateMaxFrame();
+    void setCurrentLayer( int layerNumber );
+    void switchVisibilityOfLayer( int layerNumber );
+    void moveLayer( int i, int j );
+    void updateMaxFrame();
 
-	void setToolProperties( const Properties& p );
-	void setWidth( qreal );
-	void applyWidth( qreal );
-	void setFeather( qreal );
-	void applyFeather( qreal );
-	void setInvisibility( int );
-	void applyInvisibility( bool );
-	void setPressure( int );
-	void applyPressure( bool );
-	void setPreserveAlpha( int );
-	void applyPreserveAlpha( bool );
-	void setFollowContour( int );
-	void applyFollowContour( bool );
-	void selectAndApplyColour( int );
-	void setFrontColour( int, QColor );
+    void setToolProperties( const Properties& p );
+    void setWidth( qreal );
+    void applyWidth( qreal );
+    void setFeather( qreal );
+    void applyFeather( qreal );
+    void setInvisibility( int );
+    void applyInvisibility( bool );
+    void setPressure( int );
+    void applyPressure( bool );
+    void setPreserveAlpha( int );
+    void applyPreserveAlpha( bool );
+    void setFollowContour( int );
+    void applyFollowContour( bool );
+    void selectAndApplyColour( int );
+    void setFrontColour( int, QColor );
 
-	void changeAutosave( int );
-	void changeAutosaveNumber( int );
+    void changeAutosave( int );
+    void changeAutosaveNumber( int );
 
-	void onionLayer1OpacityChangeSlot( int );
-	void onionLayer2OpacityChangeSlot( int );
-	void onionLayer3OpacityChangeSlot( int );
+    void onionLayer1OpacityChangeSlot( int );
+    void onionLayer2OpacityChangeSlot( int );
+    void onionLayer3OpacityChangeSlot( int );
 
-	void modification();
-	void modification( int );
-	void backup( QString undoText );
-	void backup( int layerNumber, int frameNumber, QString undoText );
-	void undo();
-	void redo();
-	void copy();
-	void copyFrames();
-	void pasteFrames();
+    void modification();
+    void modification( int );
+    void backup( QString undoText );
+    void backup( int layerNumber, int frameNumber, QString undoText );
+    void undo();
+    void redo();
+    void copy();
+    //void copyFrames();
+    //void pasteFrames();
 
-	void paste();
-	void clipboardChanged();
+    void paste();
+    void clipboardChanged();
 
-	void newBitmapLayer();
-	void newVectorLayer();
-	void newSoundLayer();
-	void newCameraLayer();
-	void deleteCurrentLayer();
+    void newBitmapLayer();
+    void newVectorLayer();
+    void newSoundLayer();
+    void newCameraLayer();
+    void deleteCurrentLayer();
 
-	void toggleMirror();
-	void toggleMirrorV();
-	void toggleShowAllLayers();
-	void resetMirror();
+    void toggleMirror();
+    void toggleMirrorV();
+    void toggleShowAllLayers();
+    void resetMirror();
 
-	void print();
-	//void detachAllPalettes();
-	void restorePalettesSettings( bool, bool, bool );
-	void saveSvg();
+    void print();
+    //void detachAllPalettes();
+    void restorePalettesSettings( bool, bool, bool );
+    void saveSvg();
 
-	private slots:
-	bool exportX();
-	bool exportImage();
-	bool exportSeq();
-	bool exportMov();
-	bool exportFlash();
+    private slots:
 
-	void saveLength( QString );
-	void getCameraLayer();
+    bool exportX();
+    bool exportImage();
+    bool exportSeq();
+    bool exportMov();
+    bool exportFlash();
 
-	void printAndPreview( QPrinter* );
+    void saveLength( QString );
+    void getCameraLayer();
+
+    void printAndPreview( QPrinter* );
 
 private:
-	ScribbleArea* m_pScribbleArea;
-	MainWindow2* mainWindow;
+    ScribbleArea* m_pScribbleArea;
+    MainWindow2* mainWindow;
 
-	ColorManager* m_colorManager;
-	ToolManager* m_pToolManager;
+    ColorManager* m_colorManager;
+    ToolManager* m_pToolManager;
 
-	QString path;
-	bool altpress;
-	bool modified;
-	int numberOfModifications;
+    QList<int> frameList; // the frames that are to be cached -- should we use a QMap, or a QHash?
 
-	bool autosave;
-	int autosaveNumber;
+    QString path;
+    bool altpress;
+    bool modified;
+    int numberOfModifications;
 
-	int onionLayer1Opacity;
-	int onionLayer2Opacity;
-	int onionLayer3Opacity;
+    bool autosave;
+    int autosaveNumber;
 
-	void makeConnections();
+    int onionLayer1Opacity;
+    int onionLayer2Opacity;
+    int onionLayer3Opacity;
 
-	// backup
-	void clearBackup();
-	int lastModifiedFrame, lastModifiedLayer;
+    void makeConnections();
 
-	// clipboard
-	bool clipboardBitmapOk, clipboardVectorOk;
-	BitmapImage clipboardBitmapImage;
-	VectorImage clipboardVectorImage;
+    // backup
+    void clearBackup();
+    int lastModifiedFrame, lastModifiedLayer;
 
-	// dialogs
-	void createExportFramesSizeBox();
-	void createExportMovieSizeBox();
-	void createExportFramesDialog();
-	void createExportMovieDialog();
-	void createExportFlashDialog();
-	QDialog* exportFramesDialog;
-	QDialog* exportMovieDialog;
-	QDialog* exportFlashDialog;
-	QSpinBox* exportFramesDialog_hBox;
-	QSpinBox* exportFramesDialog_vBox;
-	QSpinBox* exportMovieDialog_hBox;
-	QSpinBox* exportMovieDialog_vBox;
-	QComboBox* exportFramesDialog_format;
-	QSpinBox* exportMovieDialog_fpsBox;
-	QComboBox* exportMovieDialog_format;
-	QSlider* exportFlashDialog_compression;
+    // clipboard
+    bool clipboardBitmapOk, clipboardVectorOk;
+    BitmapImage clipboardBitmapImage;
+    VectorImage clipboardVectorImage;
+
+    // dialogs
+    void createExportFramesSizeBox();
+    void createExportMovieSizeBox();
+    void createExportFramesDialog();
+    void createExportMovieDialog();
+    void createExportFlashDialog();
+    QDialog* exportFramesDialog;
+    QDialog* exportMovieDialog;
+    QDialog* exportFlashDialog;
+    QSpinBox* exportFramesDialog_hBox;
+    QSpinBox* exportFramesDialog_vBox;
+    QSpinBox* exportMovieDialog_hBox;
+    QSpinBox* exportMovieDialog_vBox;
+    QComboBox* exportFramesDialog_format;
+    QSpinBox* exportMovieDialog_fpsBox;
+    QComboBox* exportMovieDialog_format;
+    QSlider* exportFlashDialog_compression;
 };
 
 #endif

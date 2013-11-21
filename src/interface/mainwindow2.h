@@ -88,6 +88,7 @@ private slots:
 
     // XML save/load
     QDomElement createDomElement(QDomDocument& doc);
+    bool loadDomElement(QDomElement docElem, QString filePath);
 
 private:
     void arrangePalettes();
