@@ -212,9 +212,9 @@ void Editor::importImageSequence()
 	QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
 	if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
 	QStringList files = w.getOpenFileNames( this,
-		"Select one or more files to open",
-		initialPath,
-		"Images (*.png *.xpm *.jpg *.jpeg)" );
+                                            "Select one or more files to open",
+                                            initialPath,
+                                            "Images (*.png *.xpm *.jpg *.jpeg)" );
 	qDebug() << files;
 
 	QStringListIterator i( files );
@@ -225,8 +225,8 @@ void Editor::importImageSequence()
 		if ( i > 0 ) scrubForward();
 		{
 			if ( filePath.endsWith( ".png" ) ||
-				filePath.endsWith( ".jpg" ) ||
-				filePath.endsWith( ".jpeg" ) )
+				 filePath.endsWith( ".jpg" ) ||
+				 filePath.endsWith( ".jpeg" ) )
 			{
 				importImage( filePath );
 			}
