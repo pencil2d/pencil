@@ -33,12 +33,14 @@ GNU General Public License for more details.
 class MainWindow2;
 class ColorManager;
 class ToolManager;
+class LayerManager;
 
 
 class Editor : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( ColorManager* colorManager READ colorManager )
+    Q_PROPERTY( LayerManager* layerManager READ layerManager )
 
 public:
     Editor( MainWindow2* parent );
@@ -46,9 +48,10 @@ public:
 
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
+    LayerManager* layerManager() const { return m_pLayerManager; }
 
-    Object* object;  // the object to be edited by the editor
-    Object* getObject() const { return object; }
+    Object* m_pObject;  // the object to be edited by the editor
+    Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
     int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
@@ -66,9 +69,9 @@ public:
 
     Layer* getCurrentLayer( int incr )
     {
-        if ( object != NULL )
+        if ( m_pObject != NULL )
         {
-            return object->getLayer( m_nCurrentLayerIndex + incr );
+            return m_pObject->getLayer( m_nCurrentLayerIndex + incr );
         }
         else
         {
@@ -262,6 +265,7 @@ private:
 
     ColorManager* m_colorManager;
     ToolManager* m_pToolManager;
+    LayerManager* m_pLayerManager;
 
     QList<int> m_cachedFrameList; // the frames that are to be cached -- should we use a QMap, or a QHash?
 

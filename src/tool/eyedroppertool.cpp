@@ -135,7 +135,7 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
         if (colourNumber != -1)
         {
-            m_pScribbleArea->setCursor(cursor(m_pEditor->object->getColour(colourNumber).colour));
+            m_pScribbleArea->setCursor(cursor(m_pEditor->m_pObject->getColour(colourNumber).colour));
         }
         else
         {
