@@ -81,7 +81,7 @@ Editor::Editor( MainWindow2* parent )
     looping = false;
     sound = true;
 
-    frameList << 1;
+    m_cachedFrameList << 1;
     m_nCurrentFrameIndex = 1;
     m_nCurrentLayerIndex = 0;
 
@@ -910,8 +910,8 @@ void Editor::setObject( Object* newObject )
 
     m_nCurrentLayerIndex = this->object->getLayerCount() - 1; // the default selected layer is the last one
     m_nCurrentFrameIndex = 1;
-    frameList.clear();
-    frameList << 1;
+    m_cachedFrameList.clear();
+    m_cachedFrameList << 1;
 }
 
 void Editor::updateObject()
@@ -1588,10 +1588,11 @@ void Editor::removeKey()
 
 void Editor::addFrame( int frameNumber )   // adding a frame to the cache
 {
-    frameList << frameNumber;
-    qSort( frameList );
+    m_cachedFrameList << frameNumber;
+    qSort( m_cachedFrameList );
     m_pScribbleArea->updateFrame();
-    qDebug() << frameList;
+
+    qDebug() << m_cachedFrameList;
     qDebug() << frameNumber;
     getTimeLine()->update();
 }
@@ -1600,9 +1601,9 @@ void Editor::addFrame( int frameNumber1, int frameNumber2 )   // adding a range 
 {
     for ( int i = frameNumber1; i <= frameNumber2; i++ )
     {
-        frameList << i;
+        m_cachedFrameList << i;
     }
-    qSort( frameList );
+    qSort( m_cachedFrameList );
 
     m_pScribbleArea->updateFrame();
     getTimeLine()->update();
@@ -1610,7 +1611,7 @@ void Editor::addFrame( int frameNumber1, int frameNumber2 )   // adding a range 
 
 void Editor::removeFrame( int frameNumber )
 {
-    frameList.removeAt( getLastIndexAtFrame( frameNumber ) );
+    m_cachedFrameList.removeAt( getLastIndexAtFrame( frameNumber ) );
     m_pScribbleArea->updateFrame();
     getTimeLine()->update();
 }
@@ -1619,20 +1620,21 @@ int Editor::getLastIndexAtFrame( int frameNumber )
 {
     int position = -1;
     int index = -1;
-    for ( int i = 0; i < frameList.size(); i++ )
+    for ( int i = 0; i < m_cachedFrameList.size(); i++ )
     {
-        if ( frameList.at( i ) > position && frameList.at( i ) <= frameNumber )
+        if ( m_cachedFrameList.at( i ) > position && m_cachedFrameList.at( i ) <= frameNumber )
         {
-            position = frameList.at( i );
+            position = m_cachedFrameList.at( i );
             index = i;
         }
     }
+    qDebug("GetLastIndex: frameNum=%d index=%d", frameNumber, index);
     return index;
 }
 
 int Editor::getLastFrameAtFrame( int frameNumber )
 {
-    return frameList.at( getLastIndexAtFrame( frameNumber ) );
+    return m_cachedFrameList.at( getLastIndexAtFrame( frameNumber ) );
 }
 
 void Editor::play()
@@ -2009,12 +2011,12 @@ void Editor::getCameraLayer()
 
 void Editor::endPlay()
 {
-    scrubTo( frameList.last() );
+    scrubTo( m_cachedFrameList.last() );
 }
 
 void Editor::startPlay()
 {
-    scrubTo( frameList.first() );
+    scrubTo( m_cachedFrameList.first() );
 }
 
 void Editor::saveSvg()

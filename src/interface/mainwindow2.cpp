@@ -434,7 +434,7 @@ bool MainWindow2::openObject( QString strFilePath )
     QProgressDialog progress( "Opening document...", "Abort", 0, 100, this );
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
-    /*
+    
     editor->setCurrentLayer( 0 );
     editor->m_nCurrentFrameIndex = 1;
     editor->fps = 12;
@@ -467,7 +467,7 @@ bool MainWindow2::openObject( QString strFilePath )
         return false;
     }
     return true;
-    */
+    
     //-------------------
     QString filePath = strFilePath;
 

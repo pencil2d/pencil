@@ -444,7 +444,6 @@ void Object::loadDefaultPalette()
     addColour(  ColourRef(QColor(227,177,105), QString("Dark Skin - shade"))  );
 }
 
-//void Object::paintImage(QPainter &painter, int frameNumber, const QRectF &source, const QRectF &target, bool background, qreal curveOpacity, bool antialiasing, bool niceGradients) {
 void Object::paintImage(QPainter& painter, int frameNumber, bool background, qreal curveOpacity, bool antialiasing, int gradients)
 {
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -474,15 +473,6 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
             if (layer->type == Layer::BITMAP)
             {
                 LayerBitmap* layerBitmap = (LayerBitmap*)layer;
-                /*BitmapImage* bitmapImage = layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0);
-                // TO BE FIXED
-                if (bitmapImage != NULL) {
-                    if ( mirror) {
-                        painter.drawImage(target, (*(bitmapImage->image)).mirrored(true, false), source);
-                    } else {
-                        painter.drawImage(target, *(bitmapImage->image), source);
-                    }
-                }*/
                 layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0)->paintImage(painter);
             }
             // paints the vector images
@@ -668,7 +658,6 @@ bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
             framePerSecond++;
             QString frameNumberLink = QString::number(frameNumber);
             while ( frameNumberLink.length() < 4) frameNumberLink.prepend("0");
-//                    QFile::link(filePath+frameNumberString+extension, filePath+frameNumberLink+extension+".lnk");
             tempImage.save(filePath+frameNumberLink+extension, format, quality);
         }
         if (framePerSecond == exportFps)

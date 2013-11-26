@@ -1050,7 +1050,7 @@ void ScribbleArea::grid()
 
 void ScribbleArea::paintEvent( QPaintEvent *event )
 {
-    //qDebug() << "paint event!" << QDateTime::currentDateTime() << event->rect(); //readCanvasFromCache << mouseInUse << editor->currentFrame;
+    //qDebug() << "paint event!" << QDateTime::currentDateTime() << event->rect(); 
     QPainter painter( this );
 
     // draws the background (if necessary)
