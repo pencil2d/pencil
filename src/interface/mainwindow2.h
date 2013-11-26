@@ -43,18 +43,18 @@ public:
     ScribbleArea* m_pScribbleArea;
 
     // UI: Dock widgets
-    ColorPaletteWidget* m_colorPalette;
-    DisplayOptionDockWidget* m_displayOptionWidget;
-    ToolOptionDockWidget*    m_toolOptionWidget;
+    ColorPaletteWidget* m_pColorPalette;
+    DisplayOptionDockWidget* m_pDisplayOptionWidget;
+    ToolOptionDockWidget*    m_pToolOptionWidget;
     TimeLine* m_pTimeLine;
-    ToolSetWidget* m_toolSet;
+    ToolSetWidget* m_pToolSet;
 
     // Other windows
     Preferences* m_pPreferences;
 
 protected:
-    void tabletEvent(QTabletEvent *event);
-    RecentFileMenu *m_recentFileMenu;
+    void tabletEvent(QTabletEvent* event);
+    RecentFileMenu* m_recentFileMenu;
 
 private:
     Ui::MainWindow2* ui;

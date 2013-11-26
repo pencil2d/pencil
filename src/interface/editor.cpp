@@ -173,7 +173,7 @@ void Editor::makeConnections()
 
 void Editor::setColor( QColor argColor )
 {
-	mainWindow->m_colorPalette->setColor( argColor );
+	mainWindow->m_pColorPalette->setColor( argColor );
 }
 
 void Editor::keyPressEvent( QKeyEvent *event )
@@ -924,10 +924,10 @@ void Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-	mainWindow->m_colorPalette->selectColorNumber( 0 );
+	mainWindow->m_pColorPalette->selectColorNumber( 0 );
 
 	getTimeLine()->updateLayerNumber( object->getLayerCount() );
-	mainWindow->m_colorPalette->refreshColorList();
+	mainWindow->m_pColorPalette->refreshColorList();
 	clearBackup();
 
 	m_pScribbleArea->updateAllFrames();
@@ -1831,7 +1831,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
 {
 	QSettings settings( "Pencil", "Pencil" );
 
-	ColorPaletteWidget* colourPalette = mainWindow->m_colorPalette;
+	ColorPaletteWidget* colourPalette = mainWindow->m_pColorPalette;
 	if ( colourPalette != NULL )
 	{
 		QPoint pos = settings.value( "colourPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1867,7 +1867,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
 		toolWidget->show();
 	}
 
-	QDockWidget* optionPalette = mainWindow->m_toolOptionWidget;
+	QDockWidget* optionPalette = mainWindow->m_pToolOptionWidget;
 	if ( optionPalette != NULL )
 	{
 		QPoint pos = settings.value( "optionPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1879,7 +1879,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
 		optionPalette->show();
 	}
 
-	QDockWidget* displayPalette = mainWindow->m_displayOptionWidget;
+	QDockWidget* displayPalette = mainWindow->m_pDisplayOptionWidget;
 	if ( displayPalette != NULL )
 	{
 		QPoint pos = settings.value( "displayPalettePosition", QPoint( 100, 100 ) ).toPoint();

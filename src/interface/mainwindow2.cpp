@@ -80,8 +80,8 @@ MainWindow2::MainWindow2(QWidget *parent) :
     connectColorPalette();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
-    connect(m_toolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_toolSet, SLOT(setCurrentTool(ToolType)));        
+    connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
+    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolSet, SLOT(setCurrentTool(ToolType)));        
 
 }
 
@@ -119,45 +119,45 @@ void MainWindow2::makeTimeLineConnections()
 
 void MainWindow2::connectColorPalette()
 {
-    connect( m_colorPalette, SIGNAL(colorChanged(QColor)),
+    connect( m_pColorPalette, SIGNAL(colorChanged(QColor)),
              editor->colorManager(), SLOT(pickColor(QColor)) );
 
-    connect( m_colorPalette, SIGNAL(colorNumberChanged(int)),
+    connect( m_pColorPalette, SIGNAL(colorNumberChanged(int)),
              editor->colorManager(), SLOT(pickColorNumber(int)) );
 
     connect( editor->colorManager(), SIGNAL(colorChanged(QColor)),
-             m_colorPalette, SLOT(setColor(QColor)));
+             m_pColorPalette, SLOT(setColor(QColor)));
 
     connect( editor->colorManager(), SIGNAL(colorNumberChanged(int)),
-             m_colorPalette, SLOT(selectColorNumber(int)));
+             m_pColorPalette, SLOT(selectColorNumber(int)));
 }
 
 void MainWindow2::arrangePalettes()
 {
     setCentralWidget(editor);
 
-    m_colorPalette = new ColorPaletteWidget(editor);
-    m_colorPalette->setFocusPolicy(Qt::NoFocus);
+    m_pColorPalette = new ColorPaletteWidget(editor);
+    m_pColorPalette->setFocusPolicy(Qt::NoFocus);
 
-    m_displayOptionWidget = new DisplayOptionDockWidget(this);
-    m_displayOptionWidget->makeConnectionToEditor(editor);
+    m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
+    m_pDisplayOptionWidget->makeConnectionToEditor(editor);
 
-    m_toolOptionWidget = new ToolOptionDockWidget(this);
-    m_toolOptionWidget->makeConnectionToEditor(editor);
+    m_pToolOptionWidget = new ToolOptionDockWidget(this);
+    m_pToolOptionWidget->makeConnectionToEditor(editor);
 
-    m_toolSet = editor->toolSet;
+    m_pToolSet = editor->toolSet;
 
-    addDockWidget(Qt::RightDockWidgetArea, m_colorPalette);
-    addDockWidget(Qt::RightDockWidgetArea, m_displayOptionWidget);
+    addDockWidget(Qt::RightDockWidgetArea, m_pColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea, m_pDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet);
-    addDockWidget(Qt::LeftDockWidgetArea, m_toolOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea, m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
     editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_toolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_displayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_colorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
 }
 
 void MainWindow2::createMenus()
@@ -249,17 +249,17 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, SIGNAL(triggered()), m_toolSet, SLOT(moveOn()));
-    connect(ui->actionSelect, SIGNAL(triggered()), m_toolSet, SLOT(selectOn()));
-    connect(ui->actionBrush, SIGNAL(triggered()), m_toolSet, SLOT(brushOn()));
-    connect(ui->actionPolyline, SIGNAL(triggered()), m_toolSet, SLOT(polylineOn()));
-    connect(ui->actionSmudge, SIGNAL(triggered()), m_toolSet, SLOT(smudgeOn()));
-    connect(ui->actionPen, SIGNAL(triggered()), m_toolSet, SLOT(penOn()));
-    connect(ui->actionHand, SIGNAL(triggered()), m_toolSet, SLOT(handOn()));
-    connect(ui->actionPencil, SIGNAL(triggered()), m_toolSet, SLOT(pencilOn()));
-    connect(ui->actionBucket, SIGNAL(triggered()), m_toolSet, SLOT(bucketOn()));
-    connect(ui->actionEyedropper, SIGNAL(triggered()), m_toolSet, SLOT(eyedropperOn()));
-    connect(ui->actionEraser, SIGNAL(triggered()), m_toolSet, SLOT(eraserOn()));
+    connect(ui->actionMove, SIGNAL(triggered()), m_pToolSet, SLOT(moveOn()));
+    connect(ui->actionSelect, SIGNAL(triggered()), m_pToolSet, SLOT(selectOn()));
+    connect(ui->actionBrush, SIGNAL(triggered()), m_pToolSet, SLOT(brushOn()));
+    connect(ui->actionPolyline, SIGNAL(triggered()), m_pToolSet, SLOT(polylineOn()));
+    connect(ui->actionSmudge, SIGNAL(triggered()), m_pToolSet, SLOT(smudgeOn()));
+    connect(ui->actionPen, SIGNAL(triggered()), m_pToolSet, SLOT(penOn()));
+    connect(ui->actionHand, SIGNAL(triggered()), m_pToolSet, SLOT(handOn()));
+    connect(ui->actionPencil, SIGNAL(triggered()), m_pToolSet, SLOT(pencilOn()));
+    connect(ui->actionBucket, SIGNAL(triggered()), m_pToolSet, SLOT(bucketOn()));
+    connect(ui->actionEyedropper, SIGNAL(triggered()), m_pToolSet, SLOT(eyedropperOn()));
+    connect(ui->actionEraser, SIGNAL(triggered()), m_pToolSet, SLOT(eraserOn()));
     connect(ui->actionTogglePalette, SIGNAL(triggered()),m_pScribbleArea,SLOT(togglePopupPalette()));
     connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
 
@@ -887,10 +887,10 @@ void MainWindow2::showPreferences()
 void MainWindow2::dockAllPalettes()
 {
     editor->toolSet->setFloating(false);
-    m_toolOptionWidget->setFloating(false);
-    m_displayOptionWidget->setFloating(false);
+    m_pToolOptionWidget->setFloating(false);
+    m_pDisplayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
-    m_colorPalette->setFloating(false);
+    m_pColorPalette->setFloating(false);
 }
 
 void MainWindow2::readSettings()
@@ -919,7 +919,7 @@ void MainWindow2::writeSettings()
     settings.setValue("editorPosition", pos());
     settings.setValue("editorSize", size());
 
-    ColorPaletteWidget* colourPalette = m_colorPalette;
+    ColorPaletteWidget* colourPalette = m_pColorPalette;
     if (colourPalette != NULL)
     {
         settings.setValue("colourPalettePosition", colourPalette->pos());
@@ -943,7 +943,7 @@ void MainWindow2::writeSettings()
         settings.setValue("drawPaletteFloating", toolWidget->isFloating());
     }
 
-    QDockWidget* optionPalette = m_toolOptionWidget;
+    QDockWidget* optionPalette = m_pToolOptionWidget;
     if (optionPalette != NULL)
     {
         settings.setValue("optionPalettePosition", optionPalette->pos());
@@ -951,7 +951,7 @@ void MainWindow2::writeSettings()
         settings.setValue("optionPaletteFloating", optionPalette->isFloating());
     }
 
-    QDockWidget* displayPalette = m_displayOptionWidget;
+    QDockWidget* displayPalette = m_pDisplayOptionWidget;
     if (displayPalette != NULL)
     {
         settings.setValue("displayPalettePosition", displayPalette->pos());
@@ -1110,7 +1110,7 @@ void MainWindow2::importPalette()
     if (!filePath.isEmpty())
     {
         m_object->importPalette(filePath);
-        m_colorPalette->refreshColorList();
+        m_pColorPalette->refreshColorList();
         settings.setValue("lastPalettePath", QVariant(filePath));
     }
 }
