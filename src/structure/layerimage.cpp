@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 #include <QtDebug>
+#include <QMouseEvent>
 #include "layerimage.h"
 #include "object.h"
 #include "timeline.h"

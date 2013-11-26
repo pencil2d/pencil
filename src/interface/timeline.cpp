@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "timelinecells.h"
 #include "timeline.h"
 
-TimeLine::TimeLine(QWidget* parent, Editor* editor) : QDockWidget(parent, Qt::Tool) // DockPalette("")
+TimeLine::TimeLine(QWidget* parent, Editor* editor) : QDockWidget(parent, Qt::Tool)
 {
     QWidget* timeLineContent = new QWidget(this);
 
