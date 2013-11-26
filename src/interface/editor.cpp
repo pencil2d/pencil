@@ -731,7 +731,7 @@ void Editor::paste()
                 }
             }
             ((LayerBitmap*)layer)->getLastBitmapImageAtFrame( m_nCurrentFrameIndex, 0 )->paste( &tobePasted ); // paste the clipboard
-            setTool( MOVE );
+            // setTool( MOVE );
         }
         if ( layer->type == Layer::VECTOR && clipboardVectorOk )
         {
@@ -741,7 +741,7 @@ void Editor::paste()
             vectorImage->paste( clipboardVectorImage );  // paste the clipboard
             m_pScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
-            setTool( MOVE );
+            // setTool( MOVE );
         }
     }
     m_pScribbleArea->updateFrame();
@@ -922,7 +922,7 @@ void Editor::updateObject()
 {
 	mainWindow->m_pColorPalette->selectColorNumber( 0 );
 
-	getTimeLine()->updateLayerNumber( object->getLayerCount() );
+	getTimeLine()->updateLayerNumber( object()->getLayerCount() );
 	mainWindow->m_pColorPalette->refreshColorList();
 	clearBackup();
 
