@@ -177,7 +177,7 @@ void Editor::makeConnections()
 
 void Editor::setColor( QColor argColor )
 {
-    mainWindow->m_colorPalette->setColor( argColor );
+	mainWindow->m_pColorPalette->setColor( argColor );
 }
 
 void Editor::keyPressEvent( QKeyEvent *event )
@@ -212,14 +212,14 @@ void Editor::importImageSequence()
     QFileDialog w;
     w.setFileMode( QFileDialog::AnyFile );
 
-    QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-    QStringList files = w.getOpenFileNames( this,
-        "Select one or more files to open",
-        initialPath,
-        "Images (*.png *.xpm *.jpg *.jpeg)" );
-    qDebug() << files;
+	QSettings settings( "Pencil", "Pencil" );
+	QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
+	if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
+	QStringList files = w.getOpenFileNames( this,
+                                            "Select one or more files to open",
+                                            initialPath,
+                                            "Images (*.png *.xpm *.jpg *.jpeg)" );
+	qDebug() << files;
 
     QStringListIterator i( files );
     for ( int i = 0; i < files.size(); ++i )
@@ -920,11 +920,11 @@ void Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    mainWindow->m_colorPalette->selectColorNumber( 0 );
+	mainWindow->m_pColorPalette->selectColorNumber( 0 );
 
-    getTimeLine()->updateLayerNumber( m_pObject->getLayerCount() );
-    mainWindow->m_colorPalette->refreshColorList();
-    clearBackup();
+	getTimeLine()->updateLayerNumber( object->getLayerCount() );
+	mainWindow->m_pColorPalette->refreshColorList();
+	clearBackup();
 
     m_pScribbleArea->updateAllFrames();
     updateMaxFrame();
@@ -1829,17 +1829,17 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
 {
     QSettings settings( "Pencil", "Pencil" );
 
-    ColorPaletteWidget* colourPalette = mainWindow->m_colorPalette;
-    if ( colourPalette != NULL )
-    {
-        QPoint pos = settings.value( "colourPalettePosition", QPoint( 100, 100 ) ).toPoint();
-        QSize size = settings.value( "colourPaletteSize", QSize( 400, 300 ) ).toSize();
-        bool floating = settings.value( "colourPaletteFloating", false ).toBool();
-        if ( restoreFloating ) colourPalette->setFloating( floating );
-        if ( restorePosition ) colourPalette->move( pos );
-        if ( restoreSize ) colourPalette->resize( size );
-        colourPalette->show();
-    }
+	ColorPaletteWidget* colourPalette = mainWindow->m_pColorPalette;
+	if ( colourPalette != NULL )
+	{
+		QPoint pos = settings.value( "colourPalettePosition", QPoint( 100, 100 ) ).toPoint();
+		QSize size = settings.value( "colourPaletteSize", QSize( 400, 300 ) ).toSize();
+		bool floating = settings.value( "colourPaletteFloating", false ).toBool();
+		if ( restoreFloating ) colourPalette->setFloating( floating );
+		if ( restorePosition ) colourPalette->move( pos );
+		if ( restoreSize ) colourPalette->resize( size );
+		colourPalette->show();
+	}
 
     TimeLine* timelinePalette = getTimeLine();
     if ( timelinePalette != NULL )
@@ -1865,29 +1865,29 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         toolWidget->show();
     }
 
-    QDockWidget* optionPalette = mainWindow->m_toolOptionWidget;
-    if ( optionPalette != NULL )
-    {
-        QPoint pos = settings.value( "optionPalettePosition", QPoint( 100, 100 ) ).toPoint();
-        QSize size = settings.value( "optionPaletteSize", QSize( 400, 300 ) ).toSize();
-        bool floating = settings.value( "optionPaletteFloating", false ).toBool();
-        if ( restoreFloating ) optionPalette->setFloating( floating );
-        if ( restorePosition ) optionPalette->move( pos );
-        if ( restoreSize ) optionPalette->resize( size );
-        optionPalette->show();
-    }
+	QDockWidget* optionPalette = mainWindow->m_pToolOptionWidget;
+	if ( optionPalette != NULL )
+	{
+		QPoint pos = settings.value( "optionPalettePosition", QPoint( 100, 100 ) ).toPoint();
+		QSize size = settings.value( "optionPaletteSize", QSize( 400, 300 ) ).toSize();
+		bool floating = settings.value( "optionPaletteFloating", false ).toBool();
+		if ( restoreFloating ) optionPalette->setFloating( floating );
+		if ( restorePosition ) optionPalette->move( pos );
+		if ( restoreSize ) optionPalette->resize( size );
+		optionPalette->show();
+	}
 
-    QDockWidget* displayPalette = mainWindow->m_displayOptionWidget;
-    if ( displayPalette != NULL )
-    {
-        QPoint pos = settings.value( "displayPalettePosition", QPoint( 100, 100 ) ).toPoint();
-        QSize size = settings.value( "displayPaletteSize", QSize( 400, 300 ) ).toSize();
-        bool floating = settings.value( "displayPaletteFloating", false ).toBool();
-        if ( restoreFloating ) displayPalette->setFloating( floating );
-        if ( restorePosition ) displayPalette->move( pos );
-        if ( restoreSize ) displayPalette->resize( size );
-        displayPalette->show();
-    }
+	QDockWidget* displayPalette = mainWindow->m_pDisplayOptionWidget;
+	if ( displayPalette != NULL )
+	{
+		QPoint pos = settings.value( "displayPalettePosition", QPoint( 100, 100 ) ).toPoint();
+		QSize size = settings.value( "displayPaletteSize", QSize( 400, 300 ) ).toSize();
+		bool floating = settings.value( "displayPaletteFloating", false ).toBool();
+		if ( restoreFloating ) displayPalette->setFloating( floating );
+		if ( restorePosition ) displayPalette->move( pos );
+		if ( restoreSize ) displayPalette->resize( size );
+		displayPalette->show();
+	}
 }
 
 void Editor::clearCurrentFrame()

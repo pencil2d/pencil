@@ -17,14 +17,14 @@ GNU General Public License for more details.
 #define TIMELINE_H
 
 #include <QDockWidget>
-#include "toolset.h"
 #include "timecontrols.h"
 
+class QScrollBar;
 class Editor;
 class TimeLineCells;
-class ScrollBar;
 
-class TimeLine : public QDockWidget //DockPalette
+
+class TimeLine : public QDockWidget
 {
 	Q_OBJECT
 
@@ -64,8 +64,7 @@ signals :
 
 public:
 	TimeLine( QWidget* parent = 0, Editor* editor = 0 );
-	QScrollBar* hScrollBar;
-	QScrollBar* vScrollBar;
+	
 	bool scrubbing;
 	void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
 	void setFps( int );
@@ -76,6 +75,8 @@ protected:
 
 private:
 	Editor* editor; // the editor for which this timeLine operates
+    QScrollBar* hScrollBar;
+    QScrollBar* vScrollBar;
 	TimeLineCells* cells;
 	TimeLineCells* list;
 	int numberOfLayers;

@@ -16,6 +16,8 @@ GNU General Public License for more details.
 
 #include <climits>
 #include <QtDebug>
+#include <QInputDialog>
+#include <QLineEdit>
 #include "layer.h"
 #include "object.h"
 #include "timeline.h"

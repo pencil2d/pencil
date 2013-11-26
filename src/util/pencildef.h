@@ -1,7 +1,7 @@
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
-#define PENCIL_WINDOW_TITLE "Pencil2D Animation v0.5.4 dev"
+#define PENCIL_WINDOW_TITLE "Pencil2D v0.5.4 Nightly build Nov 26 2013"
 
 enum ToolType
 {
