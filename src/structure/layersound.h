@@ -59,9 +59,7 @@ public:
     bool soundIsNotNull(int index) { return (sound[index] != NULL); }
 
 protected:
-    //bool modified;
-    //QList<int> startingFrame;
-    //QList<QString> filePath;
+
     QList<QString> soundFilepath;
     QList<qint64> soundSize;
 //#	QList<QSound*> sound;
@@ -75,8 +73,6 @@ protected:
 
 public slots:
     void addTimelineKey(qint64 newTotalTime);
-    //void metaInfosUpdated();
-
 };
 
 #endif

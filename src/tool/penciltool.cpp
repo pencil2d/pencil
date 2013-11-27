@@ -81,7 +81,6 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
             drawStroke();
         }
     }
-
 }
 
 void PencilTool::mouseMoveEvent(QMouseEvent *event)
