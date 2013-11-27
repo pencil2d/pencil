@@ -191,7 +191,6 @@ bool LayerVector::addImageAtFrame(int frameNumber)
         framesImage.append(new QImage( QSize(2,2), QImage::Format_ARGB32_Premultiplied)); // very small image to begin with
 
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
@@ -217,7 +216,6 @@ void LayerVector::removeImageAtFrame(int frameNumber)
         framesImage.removeAt(index);
 
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);

@@ -338,7 +338,6 @@ bool LayerImage::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
@@ -358,7 +357,6 @@ void LayerImage::removeImageAtFrame(int frameNumber)
     if (index != -1)
     {
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
@@ -398,7 +396,6 @@ void LayerImage::bubbleSort()
 void LayerImage::swap(int i, int j)
 {
     framesPosition.swap(i,j);
-    framesOriginalPosition.swap(i,j);
     framesSelected.swap(i,j);
     framesFilename.swap(i,j);
     framesModified.swap(i,j);
@@ -430,7 +427,6 @@ bool LayerImage::saveImages(QString path, int layerNumber)
     // always saves all frames, no optimization
     for(int i=0; i < framesPosition.size(); i++)
     {
-        framesOriginalPosition[i]=framesPosition[i];
         qDebug() << "Trying to save " << framesFilename.at(i) << " of layer n. " << layerNumber;
         saveImage(i, path, layerNumber);
     }

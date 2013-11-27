@@ -76,7 +76,6 @@ bool LayerBitmap::addImageAtFrame(int frameNumber)
         //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
         framesBitmap.append(new BitmapImage(m_pObject));
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
@@ -98,7 +97,6 @@ void LayerBitmap::removeImageAtFrame(int frameNumber)
         delete framesBitmap.at(index);
         framesBitmap.removeAt(index);
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);

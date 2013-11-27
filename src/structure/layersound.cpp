@@ -71,7 +71,6 @@ bool LayerSound::addImageAtFrame(int frameNumber)
         sound.append(NULL);
         soundFilepath.append("");
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
@@ -93,7 +92,6 @@ void LayerSound::removeImageAtFrame(int frameNumber)
         delete sound.at(index);
         soundFilepath.removeAt(index);
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);

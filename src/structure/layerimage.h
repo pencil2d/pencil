@@ -82,7 +82,6 @@ private:
 protected:
     // list of frame positions, sorted from lowest to largest
     QList<int> framesPosition;
-    QList<int> framesOriginalPosition;
     QList<QString> framesFilename;
     QList<bool> framesModified;
 
