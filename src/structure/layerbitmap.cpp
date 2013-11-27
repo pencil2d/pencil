@@ -65,11 +65,6 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 QImage* LayerBitmap::getImageAtIndex(int index)
 {
     Q_UNUSED(index);
-    /*if ( index < 0 || index >= framesImage.size() ) {
-    	return NULL;
-    } else {
-    	return framesImage.at(index);
-    }*/
     return NULL;
 }
 

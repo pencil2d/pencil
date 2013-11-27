@@ -673,41 +673,7 @@ void Editor::copy()
         }
     }
 }
-/*
-void Editor::copyFrames()
-{
-bool ok;
-QString name;
-QString text = QInputDialog::getText( NULL, tr( "Number of Frames\r\nEnter digits only" ), tr( "Blank Frames:\r\n(Enter digits only)" ), QLineEdit::Normal, name, &ok );
-if ( ok && !text.isEmpty() )
-{
-name = text;
-}
-int a = text.toInt();
-QListIterator<int> z( frameList );
-for ( int i = 0; i < a; ++i )
-{
-addKey();
-}
-}
 
-void Editor::pasteFrames()
-{
-int a = frameList.count();
-QListIterator<int> z( frameList );
-for ( int i = 0; i < a; ++i )
-{
-int b = z.next();
-qDebug() << i;
-qDebug() << a;
-scrubTo( i );
-copy();
-//int d = b+a;  Give us the interval between the frames
-scrubTo( b );//TODO scrub to selected frame copy() scrub to starting frame and paste()
-duplicateKey();
-}
-}
-*/
 void Editor::paste()
 {
     Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );

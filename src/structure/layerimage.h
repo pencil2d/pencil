@@ -76,9 +76,10 @@ signals:
     void imageAdded(int,int);
     void imageRemoved(int);
 
-protected:
+private:
     QList<Keyframe> keyframes;
 
+protected:
     // list of frame positions, sorted from lowest to largest
     QList<int> framesPosition;
     QList<int> framesOriginalPosition;
