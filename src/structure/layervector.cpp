@@ -136,36 +136,6 @@ void LayerVector::removeColour(int index)
     }
 }
 
-/*void LayerBitmap::paint(QPainter &painter, int verticalPosition, int layerHeight, int frameSize, int timeLineWidth) {
-	painter.setBrush(QColor(128,128,255));
-	painter.setPen(QPen(QBrush(Qt::black), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-	painter.drawRect(0, verticalPosition, timeLineWidth, layerHeight);
-	for(int i=0; i < framesPosition.size(); i++) {
-		if (framesSelected.at(i)) {
-			painter.setBrush(QColor(10,10,10));
-			painter.drawRect((framesPosition.at(i)+frameOffset-1)*frameSize, verticalPosition, frameSize, layerHeight);
-		}
-		else {
-			painter.setBrush(QColor(75,75,75));
-			painter.drawRect((framesPosition.at(i)-1)*frameSize, verticalPosition, frameSize, layerHeight);
-		}
-	}
-	//painter.setFont(QFont("helvetica", layerHeight/2));
-	//painter.drawText(QPoint(10, verticalPosition+(2*layerHeight)/3),"Undefined Layer");
-}
-
-void LayerBitmap::mousePress(int frameNumber) {
-	frameClicked = frameNumber;
-	int index = getIndexAtFrame(frameNumber);
-	if (index == -1) {
-		// deselect all
-		for(int i=0; i < framesPosition.size(); i++) {
-			framesSelected[i] = false;
-		}
-	} else {
-		framesSelected[index] = true;
-	}
-}*/
 
 bool LayerVector::addImageAtFrame(int frameNumber)
 {
@@ -309,4 +279,3 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
         imageTag = imageTag.nextSibling();
     }
 }
-
