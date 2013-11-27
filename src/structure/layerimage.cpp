@@ -90,10 +90,9 @@ int LayerImage::getFramePositionAt(int index)
     if (index >= framesPosition.size())
     {
         return NO_KEYFRAME;
-    } else {
-        return framesPosition.at(index);
-    }
-
+    } 
+    
+    return framesPosition.at(index);
 }
 
 // keyframe interface

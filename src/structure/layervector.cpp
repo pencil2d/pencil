@@ -58,16 +58,16 @@ QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, boo
     }
 }
 
-QImage* LayerVector::getImageAtFrame(int frameNumber, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
+QImage* LayerVector::getImageAtFrame( int frameNumber, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients )
 {
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
+    int index = getIndexAtFrame( frameNumber );
+    if ( index == -1 )
     {
         return NULL;
     }
     else
     {
-        return getImageAtIndex(index, size, simplified, showThinLines, curveOpacity, antialiasing, gradients);
+        return getImageAtIndex( index, size, simplified, showThinLines, curveOpacity, antialiasing, gradients );
     }
 }
 

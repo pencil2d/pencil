@@ -25,6 +25,8 @@ private slots:
     void testLayerType();
     void testBitmapLayerAddImage();
     void testGetMaxFramePosition();
+    void testHasKeyframeAtPosition();
+    void testGetFramePositionAt();
 
 private:
     Object* m_pObject;

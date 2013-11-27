@@ -33,6 +33,7 @@ public:
     ~LayerBitmap();
 
     // method from layerImage
+    //virtual QImage* getImageAtIndex(int index);
     virtual bool addImageAtFrame(int frameNumber);
     virtual void removeImageAtFrame(int frameNumber);
 

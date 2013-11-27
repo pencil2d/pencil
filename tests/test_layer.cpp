@@ -28,6 +28,8 @@ void TestLayer::testLayerType()
 {
     LayerBitmap* pLayer = new LayerBitmap( m_pObject );
     QVERIFY( pLayer->type() == Layer::BITMAP );
+
+    delete pLayer;
 }
 
 
@@ -46,11 +48,16 @@ void TestLayer::testBitmapLayerAddImage()
     bOK = pLayer->addImageAtFrame( 2 );
     QCOMPARE( bOK, true );
     QCOMPARE( pLayer->getMaxFramePosition(), 2 );
+
+    delete pLayer;
 }
 
 void TestLayer::testGetMaxFramePosition()
 {
     LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+
+    // 1 at beginning.
+    QCOMPARE( pLayer->getMaxFramePosition(), 1 );
 
     QVERIFY( pLayer->addImageAtFrame( 3 ) );
     QCOMPARE( pLayer->getMaxFramePosition(), 3 );
@@ -60,6 +67,41 @@ void TestLayer::testGetMaxFramePosition()
 
     QVERIFY( pLayer->addImageAtFrame( 100 ) );
     QCOMPARE( pLayer->getMaxFramePosition(), 100 );
+
+    QVERIFY( pLayer->addImageAtFrame( 80 ) );
+    QCOMPARE( pLayer->getMaxFramePosition(), 100 );
+
+    delete pLayer;
+}
+
+void TestLayer::testHasKeyframeAtPosition()
+{
+    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 1 ), true ); // there is a frame at 1 in default.
+
+    QVERIFY( pLayer->addImageAtFrame( 15 ) );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 15 ), true );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 10 ), false );
+
+    QVERIFY( pLayer->addImageAtFrame( 10 ) );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 10 ), true );
+
+    // test false case
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 0 ), false );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 1000 ), false );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( -333 ), false );
+
+    delete pLayer;
+}
+
+void TestLayer::testGetFramePositionAt()
+{
+    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+
+    //QVERIFY( pLayer )
+
+    delete pLayer;
 }
 
 
