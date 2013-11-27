@@ -68,18 +68,23 @@ QImage* LayerBitmap::getImageAtIndex(int index)
     return NULL;
 }
 
-bool LayerBitmap::addImageAtFrame(int frameNumber)
+bool LayerBitmap::addImageAtFrame( int frameNumber )
 {
+    if ( frameNumber <= 0 )
+    {
+        return false;
+    }
+
     int index = getIndexAtFrame(frameNumber);
     if (index == -1)
     {
-        //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
         m_framesBitmap.append(new BitmapImage(m_pObject));
         framesPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
         bubbleSort();
+
         emit imageAdded(frameNumber);
         return true;
     }

@@ -7,6 +7,8 @@
 #include <QtTest>
 #include "AutoTest.h"
 
+class Object;
+
 
 class TestLayer : public QObject
 {
@@ -15,9 +17,17 @@ class TestLayer : public QObject
 public:
     TestLayer();
 
-private Q_SLOTS:
+private slots:
+    void initTestCase();
+    void cleanupTestCase();
+
     void testCase1();
-    void testAddImage();
+    void testLayerType();
+    void testBitmapLayerAddImage();
+    void testGetMaxFramePosition();
+
+private:
+    Object* m_pObject;
 };
 
 DECLARE_TEST(TestLayer)

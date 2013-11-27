@@ -76,11 +76,6 @@ int LayerImage::getNextKeyframePosition(int frameIndex)
 
 int LayerImage::getMaxFramePosition()
 {
-    return getFramePositionAt(getMaxFrameIndex());
-}
-
-int LayerImage::getMaxFrameIndex()
-{
     return framesPosition.last();
 }
 

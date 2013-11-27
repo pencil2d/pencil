@@ -51,7 +51,6 @@ public:
     void switchVisibility() { visible = !visible;}
     // keyframe interface
     static const int NO_KEYFRAME = -1;
-    virtual int getMaxFrameIndex() { return NO_KEYFRAME; }
     virtual int getMaxFramePosition() { return NO_KEYFRAME; }
     virtual bool hasKeyframeAtPosition(int position);
     virtual int getPreviousKeyframePosition(int position);

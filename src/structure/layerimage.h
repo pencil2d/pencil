@@ -40,7 +40,6 @@ public:
     virtual int getPreviousKeyframePosition(int position);
     virtual int getNextKeyframePosition(int position);
     virtual int getMaxFramePosition();
-    virtual int getMaxFrameIndex();
 
     // frame <-> image API
     int getFramePositionAt(int index);
