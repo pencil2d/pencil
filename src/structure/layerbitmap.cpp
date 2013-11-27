@@ -74,7 +74,7 @@ bool LayerBitmap::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
-        framesBitmap.append(new BitmapImage(object));
+        framesBitmap.append(new BitmapImage(m_pObject));
         framesPosition.append(frameNumber);
         framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
@@ -112,7 +112,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     //qDebug() << path;
     if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
-    framesBitmap[index] = new BitmapImage(object, path, topLeft);
+    framesBitmap[index] = new BitmapImage(m_pObject, path, topLeft);
     QFileInfo fi(path);
     framesFilename[index] = fi.fileName();
 }

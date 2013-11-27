@@ -39,7 +39,7 @@ public:
         CAMERA = 5
     };
 
-    Layer(Object* object);
+    Layer(Object*);
     virtual ~Layer();
 
     QString name;
@@ -77,7 +77,7 @@ public:
 
 protected:
     LAYER_TYPE m_eType;
-    Object* object;
+    Object* m_pObject;
 };
 
 #endif

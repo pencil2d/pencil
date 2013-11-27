@@ -187,7 +187,7 @@ bool LayerVector::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
-        framesVector.append(new VectorImage(object));
+        framesVector.append(new VectorImage(m_pObject));
         framesImage.append(new QImage( QSize(2,2), QImage::Format_ARGB32_Premultiplied)); // very small image to begin with
 
         framesPosition.append(frameNumber);

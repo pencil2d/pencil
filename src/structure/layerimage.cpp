@@ -325,7 +325,7 @@ void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
             //framesModified[i] = true;
             emit imageRemoved(originalFrame); // this is to indicate to the cache that an image have been removed here
             emit imageAdded(originalFrame + frameOffset); // this is to indicate to the cache that an image have been added here
-            object->modification();
+            m_pObject->modification();
         }
     }
     bubbleSort();
@@ -410,7 +410,7 @@ void LayerImage::setModified(int frameNumber, bool trueOrFalse)
     if (index != -1)
     {
         framesModified[index] = trueOrFalse;
-        object->modification();
+        m_pObject->modification();
     }
 }
 
@@ -426,70 +426,7 @@ bool LayerImage::saveImages(QString path, int layerNumber)
 {
     qDebug() << "Saving images of layer n. " << layerNumber;
     QDir dir(path);
-    //qDebug() << dir.exists() << dir.path();
-    //qDebug() << framesPosition;
-    //qDebug() << framesOriginalPosition;
-
-    /*
-    // commented because this optimization does not work as expected
-    // --- we test if all the files already exists
-    for(int i=0; i < framesPosition.size(); i++) {
-    	QString fileName = framesFilename.at(i);
-    	qDebug() << "Testing if (" << i << ") " << fileName << " exists";
-    	bool test = dir.exists(fileName);
-    	if (!test) {
-            qDebug() << "The file (" << i << ", frame " << framesPosition.at(i) << " ) " << fileName << " does not exist";
-            framesModified[i] = true;
-    	} else {
-    	    qDebug() << "The file (" << i << ", frame " << framesPosition.at(i) << " ) " << fileName << " exists";
-    	}
-    }
-    // --- we rename the files for the images which have been moved (if such files exist)
-    // --- we do that in two steps, with temporary names in the first step, in order to avoid conflicting names
-    // don't rename audio files
-    if (this->type != Layer::SOUND ) {
-    for(int i=0; i < framesPosition.size(); i++) {
-    	int frame1 = framesPosition.at(i);
-    	int frame0 = framesOriginalPosition.at(i);
-    	if (frame1 != frame0 && framesFilename.at(i) != "") {
-    		QString fileName0 = fileName(frame0,layerNumber);
-    		QString fileName1 = fileName(frame1,layerNumber);
-    		//qDebug() << fileName0 << fileName1;
-    		bool rename = dir.rename( fileName0, "tmp"+fileName0 );
-    		if (rename) { }
-    	}
-    }
-    for(int i=0; i < framesPosition.size(); i++) {
-    	int frame1 = framesPosition.at(i);
-    	int frame0 = framesOriginalPosition.at(i);
-    	if (frame1 != frame0 && framesFilename.at(i) != "") {
-    		QString fileName0 = fileName(frame0,layerNumber);
-    		QString fileName1 = fileName(frame1,layerNumber);
-    		bool rename = dir.rename( "tmp"+fileName0, fileName1 );
-    		if (rename) {
-    			framesOriginalPosition[i] = frame1;
-    			framesFilename[i] = fileName1;
-    			qDebug() << "File " << fileName0 << " renamed to " << fileName1 << " " << framesFilename.at(i);
-    		} else { // the file doesn't exist, we probably need to create it
-    			qDebug() << "Could not rename to " << framesFilename.at(i);
-    			framesFilename[i] = "";
-    			framesModified[i] = true;
-    		}
-    		}
-    	}
-    }
-    // --- we now save the files for the images which have been modified
-    for(int i=0; i < framesPosition.size(); i++) {
-    	framesOriginalPosition[i]=framesPosition[i];
-    	QString fileName1 = fileName(framesPosition.at(i),layerNumber);
-    	if ( fileName1.compare(framesFilename.at(i)))
-    	qDebug() << "Inconsistent filename: " << framesFilename.at(i);
-    	if (framesModified.at(i)) {
-    		qDebug() << "Trying to save " << framesFilename.at(i);
-    		saveImage(i, path, layerNumber);
-    }
-    }*/
-
+ 
     // always saves all frames, no optimization
     for(int i=0; i < framesPosition.size(); i++)
     {

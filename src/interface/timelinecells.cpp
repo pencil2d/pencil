@@ -64,9 +64,9 @@ int TimeLineCells::getLayerNumber(int y)
         layerNumber = -1;
     }
 
-    if (layerNumber >= editor->m_pObject->getLayerCount())
+    if (layerNumber >= editor->object()->getLayerCount())
     {
-        layerNumber = editor->m_pObject->getLayerCount();
+        layerNumber = editor->object()->getLayerCount();
     }
     return layerNumber;
 }
@@ -96,7 +96,7 @@ void TimeLineCells::drawContent()
 
     QPainter painter( cache );
 
-    Object* object = editor->m_pObject;
+    Object* object = editor->object();
     if (object == NULL) return;
     Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
     if (layer == NULL) return;
@@ -182,7 +182,7 @@ void TimeLineCells::drawContent()
 void TimeLineCells::paintEvent(QPaintEvent* event)
 {
     Q_UNUSED(event);
-    Object* object = editor->m_pObject;
+    Object* object = editor->object();
     if(object == NULL) return;
     Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
     if(layer == NULL) return;
@@ -232,7 +232,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
     if(type == "layers")
     {
-        if(layerNumber != -1 && layerNumber < editor->m_pObject->getLayerCount() )
+        if(layerNumber != -1 && layerNumber < editor->object()->getLayerCount() )
         {
             if(event->pos().x() < 15)
             {
@@ -261,9 +261,9 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         }
         else
         {
-            if( (layerNumber != -1) && layerNumber < editor->m_pObject->getLayerCount())
+            if( (layerNumber != -1) && layerNumber < editor->object()->getLayerCount())
             {
-                editor->m_pObject->getLayer(layerNumber)->mousePress(event, frameNumber);
+                editor->object()->getLayer( layerNumber )->mousePress( event, frameNumber );
                 //if(event->pos().x() > 15) editor->setCurrentLayer(layerNumber);
                 editor->setCurrentLayer(layerNumber);
                 update();
@@ -285,10 +285,10 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
     if(type == "layers")
     {
         endY = event->pos().y();
-        emit mouseMovedY(endY-startY);
+        emit mouseMovedY(endY - startY);
     }
-    int frameNumber = getFrameNumber(event->pos().x());
-    int layerNumber = getLayerNumber(event->pos().y());
+    int frameNumber = getFrameNumber( event->pos().x() );
+    int layerNumber = getLayerNumber( event->pos().y() );
     if ( type == "tracks")
     {
         if (timeLine->scrubbing)
@@ -297,9 +297,9 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
         }
         else
         {
-            if(layerNumber != -1 && layerNumber < editor->m_pObject->getLayerCount())
+            if(layerNumber != -1 && layerNumber < editor->object()->getLayerCount())
             {
-                editor->m_pObject->getLayer(layerNumber)->mouseMove(event, frameNumber);
+                editor->object()->getLayer(layerNumber)->mouseMove(event, frameNumber);
             }
         }
     }
@@ -314,9 +314,9 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     int frameNumber = getFrameNumber(event->pos().x());
     if(frameNumber < 1) frameNumber = -1;
     int layerNumber = getLayerNumber(event->pos().y());
-    if(type == "tracks" && layerNumber != -1 && layerNumber < editor->m_pObject->getLayerCount() )
+    if(type == "tracks" && layerNumber != -1 && layerNumber < editor->object()->getLayerCount() )
     {
-        editor->m_pObject->getLayer(layerNumber)->mouseRelease(event, frameNumber);
+        editor->object()->getLayer(layerNumber)->mouseRelease(event, frameNumber);
     }
     if(type == "layers" && layerNumber != startLayerNumber && startLayerNumber != -1 && layerNumber != -1)
     {
@@ -338,13 +338,13 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     }
 
     // -- layer --
-    Layer* layer = editor->m_pObject->getLayer( layerNumber );
+    Layer* layer = editor->object()->getLayer( layerNumber );
     //if(layerNumber != -1 && layerNumber < editor->object->getLayerCount() ) {
     if(layer)
     {
-        if(type == "tracks" && (layerNumber != -1) && (frameNumber > 0) && layerNumber < editor->m_pObject->getLayerCount())
+        if(type == "tracks" && (layerNumber != -1) && (frameNumber > 0) && layerNumber < editor->object()->getLayerCount())
         {
-            editor->m_pObject->getLayer(layerNumber)->mouseDoubleClick(event, frameNumber);
+            editor->object()->getLayer(layerNumber)->mouseDoubleClick(event, frameNumber);
         }
         if(type == "layers")
         {
