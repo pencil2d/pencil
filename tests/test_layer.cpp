@@ -1,16 +1,19 @@
 
 #include "layer.h"
 #include "layerbitmap.h"
-#include "test_objectsaveloader.h"
+#include "test_layer.h"
 
-TestObjectSaveLoader::TestObjectSaveLoader()
+TestLayer::TestLayer()
 {
 }
 
-void TestObjectSaveLoader::testCase1()
+void TestLayer::testCase1()
 {
     //ObjectSaveLoader* pSaveLoader = new ObjectSaveLoader(this);
     QVERIFY2(true, "Failure");
 }
 
+void TestLayer::testAddImage()
+{
 
+}

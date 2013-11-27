@@ -17,7 +17,7 @@ public:
 
 private Q_SLOTS:
     void testCase1();
-    
+    void testAddImage();
 };
 
 DECLARE_TEST(TestLayer)
