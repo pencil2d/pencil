@@ -59,15 +59,6 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return getBitmapImageAtIndex(index + increment);
 }
 
-
-// -----
-
-QImage* LayerBitmap::getImageAtIndex(int index)
-{
-    Q_UNUSED(index);
-    return NULL;
-}
-
 bool LayerBitmap::addImageAtFrame( int frameNumber )
 {
     if ( frameNumber <= 0 )
