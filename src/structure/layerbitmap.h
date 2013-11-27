@@ -32,11 +32,10 @@ public:
     LayerBitmap(Object* object);
     ~LayerBitmap();
 
-
     // method from layerImage
-    QImage* getImageAtIndex(int index);
-    bool addImageAtFrame(int frameNumber);
-    void removeImageAtFrame(int frameNumber);
+    virtual QImage* getImageAtIndex(int index);
+    virtual bool addImageAtFrame(int frameNumber);
+    virtual void removeImageAtFrame(int frameNumber);
 
     void loadImageAtFrame(QString, QPoint, int);
     bool saveImage(int, QString, int);
