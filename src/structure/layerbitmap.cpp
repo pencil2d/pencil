@@ -29,21 +29,21 @@ LayerBitmap::LayerBitmap(Object* object) : LayerImage(object)
 
 LayerBitmap::~LayerBitmap()
 {
-    while (!framesBitmap.empty())
-        delete framesBitmap.takeFirst();
+    while (!m_framesBitmap.empty())
+        delete m_framesBitmap.takeFirst();
 }
 
 // ------
 
 BitmapImage* LayerBitmap::getBitmapImageAtIndex(int index)
 {
-    if ( index < 0 || index >= framesBitmap.size() )
+    if ( index < 0 || index >= m_framesBitmap.size() )
     {
         return NULL;
     }
     else
     {
-        return framesBitmap.at(index);
+        return m_framesBitmap.at(index);
     }
 }
 
@@ -74,7 +74,7 @@ bool LayerBitmap::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
-        framesBitmap.append(new BitmapImage(m_pObject));
+        m_framesBitmap.append(new BitmapImage(m_pObject));
         framesPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
@@ -94,8 +94,8 @@ void LayerBitmap::removeImageAtFrame(int frameNumber)
     int index = getIndexAtFrame(frameNumber);
     if (index != -1  && framesPosition.size() != 1)
     {
-        delete framesBitmap.at(index);
-        framesBitmap.removeAt(index);
+        delete m_framesBitmap.at(index);
+        m_framesBitmap.removeAt(index);
         framesPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
@@ -110,7 +110,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     //qDebug() << path;
     if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
-    framesBitmap[index] = new BitmapImage(m_pObject, path, topLeft);
+    m_framesBitmap[index] = new BitmapImage(m_pObject, path, topLeft);
     QFileInfo fi(path);
     framesFilename[index] = fi.fileName();
 }
@@ -118,7 +118,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
 void LayerBitmap::swap(int i, int j)
 {
     LayerImage::swap(i, j);
-    framesBitmap.swap(i,j);
+    m_framesBitmap.swap(i,j);
 }
 
 bool LayerBitmap::saveImage(int index, QString path, int layerNumber)
@@ -128,7 +128,7 @@ bool LayerBitmap::saveImage(int index, QString path, int layerNumber)
     QString theFileName = fileName(theFrame, id);
     framesFilename[index] = theFileName;
     //qDebug() << "Write " << theFileName;
-    framesBitmap[index]->image->save(path +"/"+ theFileName,"PNG");
+    m_framesBitmap[index]->image->save(path +"/"+ theFileName,"PNG");
     framesModified[index] = false;
 
     return true;
@@ -155,8 +155,8 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
         QDomElement imageTag = doc.createElement("image");
         imageTag.setAttribute("frame", framesPosition.at(index));
         imageTag.setAttribute("src", framesFilename.at(index));
-        imageTag.setAttribute("topLeftX", framesBitmap[index]->topLeft().x());
-        imageTag.setAttribute("topLeftY", framesBitmap[index]->topLeft().y());
+        imageTag.setAttribute("topLeftX", m_framesBitmap[index]->topLeft().x());
+        imageTag.setAttribute("topLeftY", m_framesBitmap[index]->topLeft().y());
         layerTag.appendChild(imageTag);
     }
     return layerTag;

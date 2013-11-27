@@ -50,8 +50,8 @@ public:
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment);
 
-protected:
-    QList<BitmapImage*> framesBitmap;
+private:
+    QList<BitmapImage*> m_framesBitmap;
     void swap(int i, int j);
 };
 
