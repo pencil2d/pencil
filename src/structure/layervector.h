@@ -41,7 +41,6 @@ public:
     void loadImageAtFrame(QString, int);
     //void loadImageAtFrame(VectorImage, int);
     virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int);
-    QImage* getImageAtFrame(int, QSize, bool, bool, qreal, bool, int);
     QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool, int);
 
     bool saveImage(int, QString, int);

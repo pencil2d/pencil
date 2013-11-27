@@ -131,20 +131,6 @@ QImage* LayerImage::getImageAtIndex(int index)
     return NULL; // no image -> implemented in subclasses
 }
 
-QImage* LayerImage::getImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        return NULL;
-    }
-    else
-    {
-        return getImageAtIndex(index);
-    }
-}
-
-
 QImage* LayerImage::getLastImageAtFrame(int frameNumber, int increment)
 {
     int index = getLastIndexAtFrame(frameNumber);
