@@ -1,4 +1,3 @@
-
 #include "layer.h"
 #include "layerbitmap.h"
 #include "object.h"
@@ -99,10 +98,20 @@ void TestLayer::testGetFramePositionAt()
 {
     LayerBitmap* pLayer = new LayerBitmap( m_pObject );
 
+    //
     QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
-    //QVERIFY( pLayer )
+
+    QVERIFY( pLayer->addImageAtFrame( 2 ) ); // (1, 2)
+    QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
+
+    QVERIFY( pLayer->addImageAtFrame( 4 ) ); // (1, 2, 4)
+    QCOMPARE( pLayer->getFramePositionAt( 2 ), 4 );
+
+    QVERIFY( pLayer->addImageAtFrame( 3 ) ); // (1, 2, 3, 4)
+    QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
+    QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
+    QCOMPARE( pLayer->getFramePositionAt( 2 ), 3 );
+    QCOMPARE( pLayer->getFramePositionAt( 3 ), 4 );
 
     delete pLayer;
 }
-
-

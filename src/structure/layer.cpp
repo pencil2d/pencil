@@ -86,7 +86,7 @@ void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, in
     painter.setBrush(Qt::lightGray);
     painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     painter.drawRect(x, y, width, height); // empty rectangle  by default
-    
+
     if (selected)
     {
         QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
@@ -121,7 +121,7 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.drawEllipse(x+6, y+4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
-    
+
     if (selected)
     {
         paintSelection(painter, x, y, width, height);
@@ -135,7 +135,6 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
     painter.setFont(QFont("helvetica", height/2));
     painter.setPen(Qt::black);
     painter.drawText(QPoint(45, y+(2*height)/3), name);
-
 }
 
 void Layer::paintSelection(QPainter& painter, int x, int y, int width, int height)
