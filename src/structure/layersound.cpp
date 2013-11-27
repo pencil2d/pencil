@@ -260,7 +260,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = element.attribute("type").toInt();
+    type = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())

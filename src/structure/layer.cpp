@@ -25,7 +25,7 @@ GNU General Public License for more details.
 Layer::Layer(Object* object) : QObject(0)
 {
     this->object = object;
-    type = Layer::UNDEFINED;
+    m_eType = Layer::UNDEFINED;
     id = 0;
     name = QString("Undefined Layer");
     visible = true;
@@ -66,9 +66,9 @@ QDomElement Layer::createDomElement(QDomDocument& doc)
     QDomElement layerTag = doc.createElement("layer");
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute( "type", m_eType );
 
-    qDebug() << "    Layer name=" << name << " visi=" << visible << " type=" << type;
+    qDebug( ) << "    Layer name=" << name << " visi=" << visible << " type=" << m_eType;
     return layerTag;
 }
 
@@ -76,7 +76,7 @@ void Layer::loadDomElement(QDomElement element)
 {
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = element.attribute("type").toInt();
+    m_eType = static_cast<LAYER_TYPE>( element.attribute( "type" ).toInt() );
 }
 
 void Layer::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
@@ -136,10 +136,10 @@ void Layer::paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, in
         paintSelection(painter, x, y, width, height);
     }
 
-    if (type == BITMAP) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-bitmap.png") );
-    if (type == VECTOR) painter.drawPixmap( QPoint(20, y+2), QPixmap(":/icons/layer-vector.png") );
-    if (type == SOUND) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-sound.png") );
-    if (type == CAMERA) painter.drawPixmap( QPoint(21, y+2), QPixmap(":/icons/layer-camera.png") );
+    if ( type() == BITMAP ) painter.drawPixmap( QPoint( 20, y + 2 ), QPixmap( ":/icons/layer-bitmap.png" ) );
+    if ( type() == VECTOR ) painter.drawPixmap( QPoint( 20, y + 2 ), QPixmap( ":/icons/layer-vector.png" ) );
+    if ( type() == SOUND ) painter.drawPixmap( QPoint( 21, y + 2 ), QPixmap( ":/icons/layer-sound.png" ) );
+    if ( type() == CAMERA ) painter.drawPixmap( QPoint( 21, y + 2 ), QPixmap( ":/icons/layer-camera.png" ) );
 
     painter.setFont(QFont("helvetica", height/2));
     painter.setPen(Qt::black);

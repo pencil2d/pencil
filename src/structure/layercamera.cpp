@@ -316,7 +316,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
     name = element.attribute("name");
     //visible = (element.attribute("visibility") == "1");
     visible = true;
-    type = element.attribute("type").toInt();
+    type = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     int width = element.attribute("width").toInt();
     int height = element.attribute("height").toInt();

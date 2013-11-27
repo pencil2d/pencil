@@ -29,17 +29,26 @@ class Layer : public QObject
     Q_OBJECT
 
 public:
+    enum LAYER_TYPE
+    {
+        UNDEFINED = 0,
+        BITMAP = 1,
+        VECTOR = 2,
+        MOVIE = 3,
+        SOUND = 4,
+        CAMERA = 5
+    };
+
     Layer(Object* object);
     virtual ~Layer();
 
-    Object* object;
-    int type;
+    QString name;
     bool visible;
     int id;
-    QString name;
+
+    LAYER_TYPE type() { return m_eType; }
 
     void switchVisibility() { visible = !visible;}
-
     // keyframe interface
     static const int NO_KEYFRAME = -1;
     virtual int getMaxFrameIndex() { return NO_KEYFRAME; }
@@ -66,16 +75,9 @@ public:
 
     virtual void editProperties();
 
-public:
-    enum types
-    {
-        UNDEFINED = 0,
-        BITMAP = 1,
-        VECTOR = 2,
-        MOVIE = 3,
-        SOUND = 4,
-        CAMERA = 5
-    };
+protected:
+    
+    Object* object;
 };
 
 #endif
