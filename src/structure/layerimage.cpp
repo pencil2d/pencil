@@ -175,35 +175,17 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
         if (type() == SOUND) col = QColor(245,130,130);
         if (type() == CAMERA) col = QColor(100,128,140);
         if (!selected) col = QColor( (1*col.red() + 2*200)/3, (1*col.green()+2*200)/3, (1*col.blue()+2*200)/3 );
-        //QColor lcol = QColor( (col.red() + 2*255)/3, (col.green()+2*255)/3, (col.blue()+2*255)/3 );
-        //QColor mcol = QColor( (3*col.red() + 200)/4, (3*col.green()+200)/4, (3*col.blue()+200)/4 );
+        
         painter.setBrush( col );
         painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         painter.drawRect(x, y-1, width, height);
-        //painter.setFont(QFont("helvetica", height/2));
+        
         paintImages(painter, cells, x, y, width, height, selected, frameSize);
-        //painter.drawText(QPoint(10, y+(2*height)/3), name);
-
+        
         // changes the apparence if selected
         if (selected)
         {
             paintSelection(painter, x, y, width, height);
-            /*QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-            linearGrad.setColorAt(0, QColor(255,255,255,128) );
-            linearGrad.setColorAt(0.40, QColor(255,255,255,0) );
-            linearGrad.setColorAt(0.60, QColor(0,0,0,0) );
-            linearGrad.setColorAt(1, QColor(0,0,0,64) );
-            painter.setBrush( linearGrad );
-            painter.setPen(QPen(QBrush(QColor(70,70,70)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-            painter.drawRect(x, y-1, width, height);*/
-            /*for(int i=0; i< 4; i++) {
-            	//painter.setBrush(QColor(0,0,0,(80*(8-i))/8));
-            	painter.setPen(QColor(255, 255, 255, (255*(4-i))/4));
-            	painter.drawLine(0, y+i, width, y+i);
-            	painter.setPen(QColor(0, 0, 0, (80*(4-i))/4));
-            	painter.drawLine(0, y+height-2-i, width, y+height-2-i);
-            }*/
-            //painter.drawRect(0, y, width, height);
         }
     }
     else
@@ -211,10 +193,7 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
         painter.setBrush(Qt::gray);
         painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         painter.drawRect(x, y-1, width, height); // empty rectangle  by default
-        //painter.setFont(QFont("helvetica", height/2));
-        //painter.drawText(QPoint(10, y+(2*height)/3), name+" (hidden)");
     }
-    //painter.drawText(QPoint(10, y+(2*height)/3),"Undefined Layer");
 }
 
 void LayerImage::paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
@@ -291,12 +270,12 @@ void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
     Q_UNUSED(event);
     frameOffset = frameNumber - frameClicked;
     bool ok = true;
-    for(int i=0; i < framesPosition.size(); i++)
+    for ( int i = 0; i < framesPosition.size(); i++ )
     {
         if (framesSelected.at(i))
         {
             if (framesPosition.at(i) + frameOffset < 1) ok = false;
-            for(int j=0; j < framesPosition.size(); j++)
+            for ( int j = 0; j < framesPosition.size(); j++ )
             {
                 if (!framesSelected.at(j))
                 {
@@ -316,9 +295,10 @@ void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
     Q_UNUSED(event);
     Q_UNUSED(frameNumber);
 
-    for(int i=0; i < framesPosition.size(); i++)
+    qDebug( "LayerImage: mouse release." );
+    for ( int i = 0; i < framesPosition.size(); i++ )
     {
-        if (framesSelected.at(i) && frameOffset != 0)
+        if ( framesSelected.at( i ) && frameOffset != 0 )
         {
             int originalFrame = framesPosition[i];
             framesPosition[i] = originalFrame + frameOffset;
