@@ -33,24 +33,6 @@ Layer::Layer(Object* pObject) : QObject( pObject )
 
 Layer::~Layer() {}
 
-bool Layer::hasKeyframeAtPosition(int frameIndex)
-{
-    Q_UNUSED(frameIndex);
-    return false;
-}
-
-int Layer::getPreviousKeyframePosition(int frameIndex)
-{
-    Q_UNUSED(frameIndex);
-    return NO_KEYFRAME;
-}
-
-int Layer::getNextKeyframePosition(int frameIndex)
-{
-    Q_UNUSED(frameIndex);
-    return NO_KEYFRAME;
-}
-
 int Layer::getFirstKeyframePosition()
 {
     return getNextKeyframePosition(NO_KEYFRAME);
