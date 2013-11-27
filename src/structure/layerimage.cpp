@@ -170,10 +170,10 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
     if (visible)
     {
         QColor col;
-        if (type == BITMAP) col = QColor(130,130,245);
-        if (type == VECTOR) col = QColor(100,205,150);
-        if (type == SOUND) col = QColor(245,130,130);
-        if (type == CAMERA) col = QColor(100,128,140);
+        if (type() == BITMAP) col = QColor(130,130,245);
+        if (type() == VECTOR) col = QColor(100,205,150);
+        if (type() == SOUND) col = QColor(245,130,130);
+        if (type() == CAMERA) col = QColor(100,128,140);
         if (!selected) col = QColor( (1*col.red() + 2*200)/3, (1*col.green()+2*200)/3, (1*col.blue()+2*200)/3 );
         //QColor lcol = QColor( (col.red() + 2*255)/3, (col.green()+2*255)/3, (col.blue()+2*255)/3 );
         //QColor mcol = QColor( (3*col.red() + 200)/4, (3*col.green()+200)/4, (3*col.blue()+200)/4 );

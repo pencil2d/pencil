@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 LayerBitmap::LayerBitmap(Object* object) : LayerImage(object)
 {
-    type = Layer::BITMAP;
+    m_eType = Layer::BITMAP;
     name = QString("Bitmap Layer");
     addImageAtFrame(1);
 
@@ -151,7 +151,7 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("id", id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute("type", type());
     for(int index=0; index < framesPosition.size() ; index++)
     {
         QDomElement imageTag = doc.createElement("image");
@@ -169,7 +169,7 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
+    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

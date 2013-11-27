@@ -265,7 +265,7 @@ void Object::playSoundIfAny(int frame,int fps)
     for(int i=0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if ( layer->type == Layer::SOUND)
+        if ( layer->type() == Layer::SOUND)
         {
             ((LayerSound*)layer)->playSound(frame,fps);
         }
@@ -277,7 +277,7 @@ void Object::stopSoundIfAny()
     for(int i=0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if ( layer->type == Layer::SOUND)
+        if ( layer->type() == Layer::SOUND)
         {
             ((LayerSound*)layer)->stopSound();
         }
@@ -304,7 +304,7 @@ bool Object::removeColour(int index)
     for(int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = ((LayerVector*)layer);
             if (layerVector->usesColour(index)) return false;
@@ -313,7 +313,7 @@ bool Object::removeColour(int index)
     for (int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = ((LayerVector*)layer);
             layerVector->removeColour(index);
@@ -470,13 +470,13 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
             painter.setOpacity(1.0);
 
             // paints the bitmap images
-            if (layer->type == Layer::BITMAP)
+            if (layer->type() == Layer::BITMAP)
             {
                 LayerBitmap* layerBitmap = (LayerBitmap*)layer;
                 layerBitmap->getLastBitmapImageAtFrame(frameNumber, 0)->paintImage(painter);
             }
             // paints the vector images
-            if (layer->type == Layer::VECTOR)
+            if (layer->type() == Layer::VECTOR)
             {
                 LayerVector* layerVector = (LayerVector*)layer;
                 layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter, false, false, curveOpacity, antialiasing, gradients);
@@ -520,7 +520,7 @@ bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         // Make sure that old frame is erased before exporting a new one
         tempImage.fill(0x00000000);
 
-        if (currentLayer->type == Layer::CAMERA)
+        if (currentLayer->type() == Layer::CAMERA)
         {
             QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
             QMatrix mapView = Editor::map( viewRect, QRectF(QPointF(0,0), exportSize) );
@@ -610,7 +610,7 @@ bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
         // Make sure that old frame is erased before exporting a new one
         tempImage.fill(0x00000000);
 
-        if (currentLayer->type == Layer::CAMERA)
+        if (currentLayer->type() == Layer::CAMERA)
         {
             QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
             QMatrix mapView = Editor::map( viewRect, QRectF(QPointF(0,0), exportSize) );
@@ -756,7 +756,7 @@ void Object::imageCheck(int frameNumber)
     bool noImage = true;
     for (int i=0; i< layer.size() && noImage; i++)
     {
-        if (layer[i]->type == Layer::BITMAP || layer[i]->type == Layer::VECTOR)
+        if (layer[i]->type() == Layer::BITMAP || layer[i]->type() == Layer::VECTOR)
         {
             if ( ((LayerImage*)layer[i])->getIndexAtFrame( frameNumber ) != -1) noImage = false;
         }

@@ -96,14 +96,14 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             m_pEditor->backup(typeName());
             m_pScribbleArea->setAllDirty();
             startStroke();
             lastBrushPoint = getCurrentPoint();
         }
-        else if (layer->type == Layer::VECTOR)
+        else if (layer->type() == Layer::VECTOR)
         {
             m_pScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
                 ->getCurvesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
@@ -143,14 +143,14 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             drawStroke();
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->setAllDirty();
             endStroke();
         }
-        else if (layer->type == Layer::VECTOR)
+        else if (layer->type() == Layer::VECTOR)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
             vectorImage->applySelectionTransformation();
@@ -170,15 +170,15 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {
         {
-            if (layer->type == Layer::BITMAP)
+            if (layer->type() == Layer::BITMAP)
             {
                 drawStroke();
             }
-            else if (layer->type == Layer::VECTOR)
+            else if (layer->type() == Layer::VECTOR)
             {
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
@@ -190,7 +190,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
         }
         else     // the user is moving the mouse without pressing it
         {
-            if (layer->type == Layer::VECTOR)
+            if (layer->type() == Layer::VECTOR)
             {
                 m_pScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
                     ->getVerticesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());

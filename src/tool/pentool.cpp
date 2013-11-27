@@ -91,12 +91,12 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             drawStroke();
         }
 
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::VECTOR && strokePoints.size() > -1)
+        else if (layer->type() == Layer::VECTOR && strokePoints.size() > -1)
         {
             // Clear the temporary pixel path
             m_pScribbleArea->clearBitmapBuffer();
@@ -122,7 +122,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 void PenTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)
         {
@@ -138,7 +138,7 @@ void PenTool::drawStroke()
 
     Layer *layer = m_pEditor->getCurrentLayer();
 
-    if (layer->type == Layer::BITMAP)
+    if (layer->type() == Layer::BITMAP)
     {
         QPen pen = QPen(m_pEditor->colorManager()->frontColor(),
                         currentWidth, 
@@ -162,7 +162,7 @@ void PenTool::drawStroke()
             m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
         }
     }
-    else if (layer->type == Layer::VECTOR)
+    else if (layer->type() == Layer::VECTOR)
     {
         int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));
 

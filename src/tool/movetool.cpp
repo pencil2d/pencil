@@ -35,7 +35,7 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton)
     {
         // ----------------------------------------------------------------------
-        if ((layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+        if ((layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR))
         {
             m_pEditor->backup(tr("Move"));
             m_pScribbleArea->setMoveMode(ScribbleArea::MIDDLE);
@@ -62,7 +62,7 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
 
             if (m_pScribbleArea->getMoveMode() == ScribbleArea::MIDDLE)
             {
-                if (layer->type == Layer::BITMAP)
+                if (layer->type() == Layer::BITMAP)
                 {
                     if (!(m_pScribbleArea->myTransformedSelection.contains(getLastPoint())))    // click is outside the transformed selection with the MOVE tool
                     {
@@ -75,7 +75,7 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
                         //qDebug() << "ROTATION";
                     }
                 }
-                else if (layer->type == Layer::VECTOR)
+                else if (layer->type() == Layer::VECTOR)
                 {
                     VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
                     if (m_pScribbleArea->closestCurves.size() > 0)     // the user clicks near a curve
@@ -133,7 +133,7 @@ void MoveTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
             m_pScribbleArea->offset.setX(0);
             m_pScribbleArea->offset.setY(0);
@@ -152,7 +152,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging)
         {
@@ -207,7 +207,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
             else     // there is nothing selected
             {
                 //selectionTransformation = selectionTransformation.translate(offset.x(), offset.y());
-                //if (layer->type == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->setSelectionTransformation(selectionTransformation);
+                //if (layer->type() == Layer::VECTOR) ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0)->setSelectionTransformation(selectionTransformation);
 
                 //VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(editor->currentFrame, 0);
                 //setSelection( vectorImage->getSelectionRect() );
@@ -222,7 +222,7 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
         }
         else     // the user is moving the mouse without pressing it
         {
-            if (layer->type == Layer::VECTOR)
+            if (layer->type() == Layer::VECTOR)
             {
                 m_pScribbleArea->closestCurves =
                         ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)

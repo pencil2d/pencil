@@ -756,9 +756,9 @@ bool MainWindow2::saveObject( QString strSavedFilename )
 
         progressValue = (i * 100) / nLayers;
         progress.setValue( progressValue );
-        if ( layer->type == Layer::BITMAP ) ((LayerBitmap*)layer)->saveImages( dataLayersDir, i );
-        if ( layer->type == Layer::VECTOR ) ((LayerVector*)layer)->saveImages( dataLayersDir, i );
-        if ( layer->type == Layer::SOUND ) ((LayerSound*)layer)->saveImages( dataLayersDir, i );
+        if ( layer->type() == Layer::BITMAP ) ((LayerBitmap*)layer)->saveImages( dataLayersDir, i );
+        if ( layer->type() == Layer::VECTOR ) ((LayerVector*)layer)->saveImages( dataLayersDir, i );
+        if ( layer->type() == Layer::SOUND ) ((LayerSound*)layer)->saveImages( dataLayersDir, i );
     }
 
     // save palette

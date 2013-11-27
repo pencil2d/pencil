@@ -20,7 +20,7 @@ GNU General Public License for more details.
 
 LayerSound::LayerSound(Object* object) : LayerImage(object)
 {
-    type = Layer::SOUND;
+    m_eType = Layer::SOUND;
     //modified = false;
     name = QString("Sound Layer");
 }
@@ -244,7 +244,7 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("id",id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute("type", type());
     for(int index=0; index < framesPosition.size() ; index++)
     {
         QDomElement soundTag = doc.createElement("sound");
@@ -260,7 +260,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
+    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())

@@ -58,14 +58,14 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
             if (points.size() == 0)
             {
                 m_pEditor->backup(tr("Line"));
             }
 
-            if (layer->type == Layer::VECTOR)
+            if (layer->type() == Layer::VECTOR)
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
                 if (m_pScribbleArea->makeInvisible() && !m_pScribbleArea->showThinLines())
@@ -90,7 +90,7 @@ void PolylineTool::mouseMoveEvent(QMouseEvent *event)
     Q_UNUSED(event);
     Layer *layer = m_pEditor->getCurrentLayer();
 
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         m_pScribbleArea->drawPolyline(points, getCurrentPoint());
     }

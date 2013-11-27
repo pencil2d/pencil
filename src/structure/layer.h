@@ -76,7 +76,7 @@ public:
     virtual void editProperties();
 
 protected:
-    
+    LAYER_TYPE m_eType;
     Object* object;
 };
 

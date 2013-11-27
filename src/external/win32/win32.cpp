@@ -127,7 +127,7 @@ bool Object::exportMovie(int startFrame,
         for(int i = 0; i < this->getLayerCount() ; i++)
         {
             Layer* layer = this->getLayer(i);
-            if (layer->type == Layer::SOUND)
+            if (layer->type() == Layer::SOUND)
             {
                 for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++)
                 {
@@ -196,7 +196,7 @@ bool Object::exportMovie(int startFrame,
         for(int i = 0; i < this->getLayerCount() ; i++)
            {
             Layer* layer = this->getLayer(i);
-            if (layer->type == Layer::SOUND)
+            if (layer->type() == Layer::SOUND)
                {
                int lmax = ((LayerSound*)layer)->getSoundSize() ;
                for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++)

@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 LayerVector::LayerVector(Object* object) : LayerImage(object)
 {
-    type = Layer::VECTOR;
+    m_eType = Layer::VECTOR;
     name = QString("Vector Layer");
     addImageAtFrame(1);
     //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
@@ -278,7 +278,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("id", id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute("type", type());
     for(int index=0; index < framesPosition.size() ; index++)
     {
         //QDomElement imageTag = framesVector[index]->createDomElement(doc); // if we want to embed the data
@@ -295,7 +295,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
+    m_eType = static_cast<LAYER_TYPE>( element.attribute( "type" ).toInt( ) );
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

@@ -35,9 +35,9 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
-            if (layer->type == Layer::VECTOR)
+            if (layer->type() == Layer::VECTOR)
             {
                 ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
             }
@@ -87,7 +87,7 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
             if (m_pScribbleArea->somethingSelected)
             {
@@ -102,7 +102,7 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
             m_pScribbleArea->updateFrame();
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::BITMAP)
+        else if (layer->type() == Layer::BITMAP)
         {
             m_pScribbleArea->updateFrame();
             m_pScribbleArea->setAllDirty();
@@ -116,7 +116,7 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    if ((event->buttons() & Qt::LeftButton) && m_pScribbleArea->somethingSelected && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if ((event->buttons() & Qt::LeftButton) && m_pScribbleArea->somethingSelected && (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR))
     {
         switch (m_pScribbleArea->getMoveMode())
         {
@@ -144,7 +144,7 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
         m_pScribbleArea->myTransformedSelection = m_pScribbleArea->mySelection.adjusted(0, 0, 0, 0);
         m_pScribbleArea->myTempTransformedSelection = m_pScribbleArea->mySelection.adjusted(0, 0, 0, 0);
 
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
             ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->select(m_pScribbleArea->mySelection);
         }

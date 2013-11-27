@@ -76,7 +76,7 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
 
         //Layer *layer = m_pEditor->getCurrentLayer();
 
-        if ( m_pEditor->getCurrentLayer()->type == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
+        if ( m_pEditor->getCurrentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
             drawStroke();
         }
@@ -87,7 +87,7 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
 void PencilTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)
         {
@@ -102,17 +102,17 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
             drawStroke();
         }
 
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::VECTOR &&  strokePoints.size() > -1)
+        else if (layer->type() == Layer::VECTOR &&  strokePoints.size() > -1)
         {
             // Clear the temporary pixel path
             m_pScribbleArea->clearBitmapBuffer();
@@ -162,7 +162,7 @@ void PencilTool::drawStroke()
     Layer *layer = m_pEditor->getCurrentLayer();
     int rad;
 
-    if (layer->type == Layer::BITMAP)
+    if (layer->type() == Layer::BITMAP)
     {
         QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QBrush brush(currentPressuredColor, Qt::SolidPattern);
@@ -202,7 +202,7 @@ void PencilTool::drawStroke()
             m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
         }
     }
-    else if (layer->type == Layer::VECTOR)
+    else if (layer->type() == Layer::VECTOR)
     {
         QPen pen(m_pEditor->colorManager()->frontColor(),
             1,

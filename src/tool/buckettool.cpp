@@ -63,7 +63,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             BitmapImage *sourceImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
             Layer *targetLayer = layer; // by default
@@ -71,7 +71,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
             if (m_pEditor->m_nCurrentLayerIndex > 0)
             {
                 Layer *layer2 = m_pEditor->getCurrentLayer(-1);
-                if (layer2->type == Layer::BITMAP)
+                if (layer2->type() == Layer::BITMAP)
                 {
                     targetLayer = layer2;
                     layerNumber = layerNumber - 1;
@@ -90,7 +90,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
             m_pScribbleArea->setModified(layerNumber, m_pEditor->m_nCurrentFrameIndex);
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::VECTOR)
+        else if (layer->type() == Layer::VECTOR)
         {
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
 
