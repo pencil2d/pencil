@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <phonon/AudioOutput>
 #include "layerimage.h"
 
+
 class LayerSound : public LayerImage
 {
     Q_OBJECT
