@@ -99,6 +99,7 @@ void TestLayer::testGetFramePositionAt()
 {
     LayerBitmap* pLayer = new LayerBitmap( m_pObject );
 
+    QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
     //QVERIFY( pLayer )
 
     delete pLayer;
