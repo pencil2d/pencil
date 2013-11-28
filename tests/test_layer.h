@@ -23,10 +23,11 @@ private slots:
 
     void testCase1();
     void testLayerType();
-    void testBitmapLayerAddImage();
+    void testAddImageAtFrame();
     void testGetMaxFramePosition();
     void testHasKeyframeAtPosition();
     void testGetFramePositionAt();
+    void testRemoveImageAtFrame();
 
 private:
     Object* m_pObject;

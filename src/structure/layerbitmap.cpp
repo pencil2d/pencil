@@ -88,7 +88,7 @@ bool LayerBitmap::addImageAtFrame( int frameNumber )
 void LayerBitmap::removeImageAtFrame(int frameNumber)
 {
     int index = getIndexAtFrame(frameNumber);
-    if (index != -1  && framesPosition.size() != 1)
+    if (index != -1  && framesPosition.size() > 1)  // TODO: maybe size=0 is acceptable?
     {
         delete m_framesBitmap.at(index);
         m_framesBitmap.removeAt(index);

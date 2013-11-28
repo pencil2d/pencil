@@ -81,7 +81,7 @@ int LayerImage::getMaxFramePosition()
 
 int LayerImage::getFramePositionAt(int index)
 {
-    qDebug() << "index" << index << "size" << framesPosition.size();
+    //qDebug() << "index" << index << "size" << framesPosition.size();
     if ( index < 0 )
     {
         return NO_KEYFRAME;

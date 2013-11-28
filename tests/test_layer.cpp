@@ -32,7 +32,7 @@ void TestLayer::testLayerType()
 }
 
 
-void TestLayer::testBitmapLayerAddImage()
+void TestLayer::testAddImageAtFrame()
 {
     LayerBitmap* pLayer = new LayerBitmap( m_pObject );
 
@@ -112,6 +112,37 @@ void TestLayer::testGetFramePositionAt()
     QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
     QCOMPARE( pLayer->getFramePositionAt( 2 ), 3 );
     QCOMPARE( pLayer->getFramePositionAt( 3 ), 4 );
+
+    delete pLayer;
+}
+
+void TestLayer::testRemoveImageAtFrame()
+{
+    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+
+    pLayer->removeImageAtFrame( 1 );
+    QCOMPARE( pLayer->getMaxFramePosition(), 1 ); // you can't delete the only 1 keyframe
+    
+    for ( int i = 2; i <= 20; ++i )
+    {
+        QVERIFY( pLayer->addImageAtFrame( i ) );
+    }
+    
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 20 ), true );
+    pLayer->removeImageAtFrame( 20 );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 20 ), false );
+    
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 8 ), true );
+    pLayer->removeImageAtFrame( 8 );
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 8 ), false );
+
+    QCOMPARE( pLayer->hasKeyframeAtPosition( 19 ), true );
+
+    pLayer->removeImageAtFrame( 19 );
+    QCOMPARE( pLayer->getMaxFramePosition(), 18 );
+
+    pLayer->removeImageAtFrame( 18 );
+    QCOMPARE( pLayer->getMaxFramePosition(), 17 );
 
     delete pLayer;
 }
