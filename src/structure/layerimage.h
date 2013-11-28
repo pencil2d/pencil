@@ -16,16 +16,18 @@ GNU General Public License for more details.
 #ifndef LAYERIMAGE_H
 #define LAYERIMAGE_H
 
-#include <QImage>
+
 #include <QSize>
 #include <QList>
 #include <QString>
-#include <QPainter>
 
 #include "layer.h"
 #include "keyframe.h"
 
+class QImage;
+class QPainter;
 class TimeLineCells;
+
 
 class LayerImage : public Layer
 {

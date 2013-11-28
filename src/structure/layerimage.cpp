@@ -15,10 +15,13 @@ GNU General Public License for more details.
 */
 #include <QtDebug>
 #include <QMouseEvent>
-#include "layerimage.h"
+#include <QImage>
+#include <QPainter>
 #include "object.h"
 #include "timeline.h"
 #include "timelinecells.h"
+
+#include "layerimage.h"
 
 LayerImage::LayerImage(Object* object) : Layer(object)
 {
