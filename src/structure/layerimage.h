@@ -46,12 +46,9 @@ public:
     int getIndexAtFrame(int frameNumber);
     int getLastIndexAtFrame(int frameNumber);
 
+    // FIXME: this API only used in vector layer
+    virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 
-    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int) {
-        return NULL;
-    }
-
-    QImage* getLastImageAtFrame(int frameNumber, int increment);
     virtual bool addImageAtFrame(int frameNumber);
     virtual void removeImageAtFrame(int frameNumber);
     virtual void setModified(int frameNumber, bool trueOrFalse);
@@ -73,9 +70,6 @@ signals:
     void imageAdded(int);
     void imageAdded(int,int);
     void imageRemoved(int);
-
-protected:
-    virtual QImage* getImageAtIndex( int index );
 
 private:
     QList<Keyframe*> keyframes;

@@ -125,25 +125,6 @@ int LayerImage::getLastIndexAtFrame(int frameNumber)
     return index;
 }
 
-QImage* LayerImage::getImageAtIndex(int index)
-{
-    Q_UNUSED(index);
-    return NULL; // no image -> implemented in subclasses
-}
-
-QImage* LayerImage::getLastImageAtFrame(int frameNumber, int increment)
-{
-    int index = getLastIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        return NULL;
-    }
-    else
-    {
-        return getImageAtIndex(index + increment);
-    }
-}
-
 void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {
     painter.setFont(QFont("helvetica", height/2));
