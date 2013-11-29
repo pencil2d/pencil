@@ -29,30 +29,28 @@ class LayerBitmap : public LayerImage
     Q_OBJECT
 
 public:
-    LayerBitmap(Object* object);
+    LayerBitmap( Object* object );
     ~LayerBitmap();
 
-
     // method from layerImage
-    QImage* getImageAtIndex(int index);
-    bool addImageAtFrame(int frameNumber);
-    void removeImageAtFrame(int frameNumber);
+    virtual bool addImageAtFrame( int frameNumber );
+    virtual void removeImageAtFrame( int frameNumber );
 
-    void loadImageAtFrame(QString, QPoint, int);
-    bool saveImage(int, QString, int);
-    QString fileName(int index, int layerNumber);
+    void loadImageAtFrame( QString, QPoint, int );
+    bool saveImage( int, QString, int );
+    QString fileName( int index, int layerNumber );
 
-    QDomElement createDomElement(QDomDocument& doc);
-    void loadDomElement(QDomElement element, QString dataDirPath);
+    QDomElement createDomElement( QDomDocument& doc );
+    void loadDomElement( QDomElement element, QString dataDirPath );
 
     // graphic representation -- could be put in another class
-    BitmapImage* getBitmapImageAtIndex(int index);
-    BitmapImage* getBitmapImageAtFrame(int frameNumber);
-    BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment);
+    BitmapImage* getBitmapImageAtIndex( int index );
+    BitmapImage* getBitmapImageAtFrame( int frameNumber );
+    BitmapImage* getLastBitmapImageAtFrame( int frameNumber, int increment );
 
-protected:
-    QList<BitmapImage*> framesBitmap;
-    void swap(int i, int j);
+private:
+    QList<BitmapImage*> m_framesBitmap;
+    void swap( int i, int j );
 };
 
 #endif

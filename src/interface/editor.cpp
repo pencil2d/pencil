@@ -1782,7 +1782,7 @@ void Editor::updateMaxFrame()
     maxFrame = -1;
     for ( int i = 0; i < m_pObject->getLayerCount(); i++ )
     {
-        int frameNumber = m_pObject->getLayer( i )->getMaxFrameIndex();
+        int frameNumber = m_pObject->getLayer( i )->getMaxFramePosition();
         if ( frameNumber > maxFrame )
         {
             maxFrame = frameNumber;

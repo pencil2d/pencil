@@ -15,10 +15,13 @@ GNU General Public License for more details.
 */
 #include <QtDebug>
 #include <QMouseEvent>
-#include "layerimage.h"
+#include <QImage>
+#include <QPainter>
 #include "object.h"
 #include "timeline.h"
 #include "timelinecells.h"
+
+#include "layerimage.h"
 
 LayerImage::LayerImage(Object* object) : Layer(object)
 {
@@ -76,29 +79,23 @@ int LayerImage::getNextKeyframePosition(int frameIndex)
 
 int LayerImage::getMaxFramePosition()
 {
-    return getFramePositionAt(getMaxFrameIndex());
-}
-
-int LayerImage::getMaxFrameIndex()
-{
     return framesPosition.last();
 }
 
 int LayerImage::getFramePositionAt(int index)
 {
-    qDebug() << "index" << index << "size" << framesPosition.size();
-    if (index == NO_KEYFRAME)
+    //qDebug() << "index" << index << "size" << framesPosition.size();
+    if ( index < 0 )
     {
         return NO_KEYFRAME;
     }
 
-    if (index >= framesPosition.size())
+    if ( index >= framesPosition.size() )
     {
         return NO_KEYFRAME;
-    } else {
-        return framesPosition.at(index);
-    }
-
+    } 
+    
+    return framesPosition.at(index);
 }
 
 // keyframe interface
@@ -131,39 +128,6 @@ int LayerImage::getLastIndexAtFrame(int frameNumber)
     return index;
 }
 
-QImage* LayerImage::getImageAtIndex(int index)
-{
-    Q_UNUSED(index);
-    return NULL; // no image -> implemented in subclasses
-}
-
-QImage* LayerImage::getImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        return NULL;
-    }
-    else
-    {
-        return getImageAtIndex(index);
-    }
-}
-
-
-QImage* LayerImage::getLastImageAtFrame(int frameNumber, int increment)
-{
-    int index = getLastIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        return NULL;
-    }
-    else
-    {
-        return getImageAtIndex(index + increment);
-    }
-}
-
 void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {
     painter.setFont(QFont("helvetica", height/2));
@@ -175,35 +139,17 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
         if (type() == SOUND) col = QColor(245,130,130);
         if (type() == CAMERA) col = QColor(100,128,140);
         if (!selected) col = QColor( (1*col.red() + 2*200)/3, (1*col.green()+2*200)/3, (1*col.blue()+2*200)/3 );
-        //QColor lcol = QColor( (col.red() + 2*255)/3, (col.green()+2*255)/3, (col.blue()+2*255)/3 );
-        //QColor mcol = QColor( (3*col.red() + 200)/4, (3*col.green()+200)/4, (3*col.blue()+200)/4 );
+        
         painter.setBrush( col );
         painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         painter.drawRect(x, y-1, width, height);
-        //painter.setFont(QFont("helvetica", height/2));
+        
         paintImages(painter, cells, x, y, width, height, selected, frameSize);
-        //painter.drawText(QPoint(10, y+(2*height)/3), name);
-
+        
         // changes the apparence if selected
         if (selected)
         {
             paintSelection(painter, x, y, width, height);
-            /*QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
-            linearGrad.setColorAt(0, QColor(255,255,255,128) );
-            linearGrad.setColorAt(0.40, QColor(255,255,255,0) );
-            linearGrad.setColorAt(0.60, QColor(0,0,0,0) );
-            linearGrad.setColorAt(1, QColor(0,0,0,64) );
-            painter.setBrush( linearGrad );
-            painter.setPen(QPen(QBrush(QColor(70,70,70)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-            painter.drawRect(x, y-1, width, height);*/
-            /*for(int i=0; i< 4; i++) {
-            	//painter.setBrush(QColor(0,0,0,(80*(8-i))/8));
-            	painter.setPen(QColor(255, 255, 255, (255*(4-i))/4));
-            	painter.drawLine(0, y+i, width, y+i);
-            	painter.setPen(QColor(0, 0, 0, (80*(4-i))/4));
-            	painter.drawLine(0, y+height-2-i, width, y+height-2-i);
-            }*/
-            //painter.drawRect(0, y, width, height);
         }
     }
     else
@@ -211,10 +157,7 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
         painter.setBrush(Qt::gray);
         painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         painter.drawRect(x, y-1, width, height); // empty rectangle  by default
-        //painter.setFont(QFont("helvetica", height/2));
-        //painter.drawText(QPoint(10, y+(2*height)/3), name+" (hidden)");
     }
-    //painter.drawText(QPoint(10, y+(2*height)/3),"Undefined Layer");
 }
 
 void LayerImage::paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
@@ -291,12 +234,12 @@ void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
     Q_UNUSED(event);
     frameOffset = frameNumber - frameClicked;
     bool ok = true;
-    for(int i=0; i < framesPosition.size(); i++)
+    for ( int i = 0; i < framesPosition.size(); i++ )
     {
         if (framesSelected.at(i))
         {
             if (framesPosition.at(i) + frameOffset < 1) ok = false;
-            for(int j=0; j < framesPosition.size(); j++)
+            for ( int j = 0; j < framesPosition.size(); j++ )
             {
                 if (!framesSelected.at(j))
                 {
@@ -316,16 +259,17 @@ void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
     Q_UNUSED(event);
     Q_UNUSED(frameNumber);
 
-    for(int i=0; i < framesPosition.size(); i++)
+    qDebug( "LayerImage: mouse release." );
+    for ( int i = 0; i < framesPosition.size(); i++ )
     {
-        if (framesSelected.at(i) && frameOffset != 0)
+        if ( framesSelected.at( i ) && frameOffset != 0 )
         {
             int originalFrame = framesPosition[i];
             framesPosition[i] = originalFrame + frameOffset;
             //framesModified[i] = true;
             emit imageRemoved(originalFrame); // this is to indicate to the cache that an image have been removed here
             emit imageAdded(originalFrame + frameOffset); // this is to indicate to the cache that an image have been added here
-            object->modification();
+            m_pObject->modification();
         }
     }
     bubbleSort();
@@ -338,7 +282,6 @@ bool LayerImage::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
@@ -358,7 +301,6 @@ void LayerImage::removeImageAtFrame(int frameNumber)
     if (index != -1)
     {
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
@@ -398,7 +340,6 @@ void LayerImage::bubbleSort()
 void LayerImage::swap(int i, int j)
 {
     framesPosition.swap(i,j);
-    framesOriginalPosition.swap(i,j);
     framesSelected.swap(i,j);
     framesFilename.swap(i,j);
     framesModified.swap(i,j);
@@ -410,7 +351,7 @@ void LayerImage::setModified(int frameNumber, bool trueOrFalse)
     if (index != -1)
     {
         framesModified[index] = trueOrFalse;
-        object->modification();
+        m_pObject->modification();
     }
 }
 
@@ -426,74 +367,10 @@ bool LayerImage::saveImages(QString path, int layerNumber)
 {
     qDebug() << "Saving images of layer n. " << layerNumber;
     QDir dir(path);
-    //qDebug() << dir.exists() << dir.path();
-    //qDebug() << framesPosition;
-    //qDebug() << framesOriginalPosition;
-
-    /*
-    // commented because this optimization does not work as expected
-    // --- we test if all the files already exists
-    for(int i=0; i < framesPosition.size(); i++) {
-    	QString fileName = framesFilename.at(i);
-    	qDebug() << "Testing if (" << i << ") " << fileName << " exists";
-    	bool test = dir.exists(fileName);
-    	if (!test) {
-            qDebug() << "The file (" << i << ", frame " << framesPosition.at(i) << " ) " << fileName << " does not exist";
-            framesModified[i] = true;
-    	} else {
-    	    qDebug() << "The file (" << i << ", frame " << framesPosition.at(i) << " ) " << fileName << " exists";
-    	}
-    }
-    // --- we rename the files for the images which have been moved (if such files exist)
-    // --- we do that in two steps, with temporary names in the first step, in order to avoid conflicting names
-    // don't rename audio files
-    if (this->type != Layer::SOUND ) {
-    for(int i=0; i < framesPosition.size(); i++) {
-    	int frame1 = framesPosition.at(i);
-    	int frame0 = framesOriginalPosition.at(i);
-    	if (frame1 != frame0 && framesFilename.at(i) != "") {
-    		QString fileName0 = fileName(frame0,layerNumber);
-    		QString fileName1 = fileName(frame1,layerNumber);
-    		//qDebug() << fileName0 << fileName1;
-    		bool rename = dir.rename( fileName0, "tmp"+fileName0 );
-    		if (rename) { }
-    	}
-    }
-    for(int i=0; i < framesPosition.size(); i++) {
-    	int frame1 = framesPosition.at(i);
-    	int frame0 = framesOriginalPosition.at(i);
-    	if (frame1 != frame0 && framesFilename.at(i) != "") {
-    		QString fileName0 = fileName(frame0,layerNumber);
-    		QString fileName1 = fileName(frame1,layerNumber);
-    		bool rename = dir.rename( "tmp"+fileName0, fileName1 );
-    		if (rename) {
-    			framesOriginalPosition[i] = frame1;
-    			framesFilename[i] = fileName1;
-    			qDebug() << "File " << fileName0 << " renamed to " << fileName1 << " " << framesFilename.at(i);
-    		} else { // the file doesn't exist, we probably need to create it
-    			qDebug() << "Could not rename to " << framesFilename.at(i);
-    			framesFilename[i] = "";
-    			framesModified[i] = true;
-    		}
-    		}
-    	}
-    }
-    // --- we now save the files for the images which have been modified
-    for(int i=0; i < framesPosition.size(); i++) {
-    	framesOriginalPosition[i]=framesPosition[i];
-    	QString fileName1 = fileName(framesPosition.at(i),layerNumber);
-    	if ( fileName1.compare(framesFilename.at(i)))
-    	qDebug() << "Inconsistent filename: " << framesFilename.at(i);
-    	if (framesModified.at(i)) {
-    		qDebug() << "Trying to save " << framesFilename.at(i);
-    		saveImage(i, path, layerNumber);
-    }
-    }*/
-
+ 
     // always saves all frames, no optimization
     for(int i=0; i < framesPosition.size(); i++)
     {
-        framesOriginalPosition[i]=framesPosition[i];
         qDebug() << "Trying to save " << framesFilename.at(i) << " of layer n. " << layerNumber;
         saveImage(i, path, layerNumber);
     }
