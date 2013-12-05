@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QTimer>
 #include <QSvgGenerator>
 #include <QMessageBox>
+#include <QImageReader>
 
 #include "editor.h"
 #include "layerbitmap.h"
@@ -1338,33 +1339,50 @@ void Editor::importImage( QString filePath )
 		// TO BE IMPROVED
 		if ( layer->type == Layer::BITMAP )
 		{
-			BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame( m_nCurrentFrameIndex );
-			if ( bitmapImage == NULL )
-			{
-				addKey();
-				bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame( m_nCurrentFrameIndex );
-			}
-			QImage* importedImage = new QImage( filePath );
+      QImageReader* importedImageReader = new QImageReader( filePath );
+			QImage* importedImage;
+      QImage importedIm = importedImageReader->read();
+      importedImage = &importedIm;
+      int numImages = importedImageReader->imageCount();
+      int timeLeft = importedImageReader->nextImageDelay();
 
 			if ( !importedImage->isNull() )
 			{
-				QRect boundaries = importedImage->rect();
-				//boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
-				boundaries.moveTopLeft( m_pScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
-				BitmapImage* importedBitmapImage = new BitmapImage( NULL, boundaries, *importedImage );
-				if ( m_pScribbleArea->somethingSelected )
-				{
-					QRectF selection = m_pScribbleArea->getSelection();
-					if ( importedImage->width() <= selection.width() && importedImage->height() <= selection.height() )
-					{
-						importedBitmapImage->boundaries.moveTopLeft( selection.topLeft().toPoint() );
-					}
-					else
-					{
-						importedBitmapImage->transform( selection.toRect(), true );
-					}
-				}
-				bitmapImage->paste( importedBitmapImage );
+        do 
+        {
+          BitmapImage* bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame( m_nCurrentFrameIndex );
+			    if ( bitmapImage == NULL )
+			    {
+				    addKey();
+				    bitmapImage = ((LayerBitmap*)layer)->getBitmapImageAtFrame( m_nCurrentFrameIndex );
+			    }
+          QRect boundaries = importedImage->rect();
+          //boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
+          boundaries.moveTopLeft( m_pScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
+          BitmapImage* importedBitmapImage = new BitmapImage( NULL, boundaries, *importedImage );
+          if ( m_pScribbleArea->somethingSelected )
+          {
+            QRectF selection = m_pScribbleArea->getSelection();
+            if ( importedImage->width() <= selection.width() && importedImage->height() <= selection.height() )
+            {
+              importedBitmapImage->boundaries.moveTopLeft( selection.topLeft().toPoint() );
+            }
+            else
+            {
+              importedBitmapImage->transform( selection.toRect(), true );
+            }
+          }
+          bitmapImage->paste( importedBitmapImage );
+          timeLeft -= (timeLeft/(1000/fps) + 1)*(1000/fps);
+          while (timeLeft<0 && numImages > 0)
+          {
+            importedImageReader->read(importedImage);
+            numImages--;
+            if (importedImage->isNull() || importedImageReader->nextImageDelay() <= 0 ) break;
+            timeLeft += importedImageReader->nextImageDelay();
+            scrubTo(m_nCurrentFrameIndex + (timeLeft/(1000/fps)));
+          }
+        } while ( numImages > 0 && !importedImage->isNull() );
 			}
 			else
 			{
