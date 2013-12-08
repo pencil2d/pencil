@@ -165,10 +165,15 @@ void ScribbleArea::setWidth(const qreal newWidth)
         getTool(ERASER)->properties.width = newWidth;
         settings.setValue("eraserWidth", newWidth);
     }
-    else if (currentTool()->type() == PEN || currentTool()->type() == POLYLINE)
+    else if (currentTool()->type() == PEN)
     {
         getTool( PEN )->properties.width = newWidth;
         settings.setValue("penWidth", newWidth);
+    }
+    else if (currentTool()->type() == POLYLINE)
+    {
+        getTool( POLYLINE )->properties.width = newWidth;
+        settings.setValue("polyLineWidth", newWidth);
     }
     else if (currentTool()->type() == BRUSH)
     {
