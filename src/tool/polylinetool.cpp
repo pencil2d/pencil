@@ -24,7 +24,7 @@ void PolylineTool::loadSettings()
 {
     QSettings settings("Pencil","Pencil");
 
-    properties.width = settings.value("penWidth").toDouble();
+    properties.width = settings.value("polyLineWidth").toDouble();
     properties.feather = -1;
     properties.pressure = ON;
     properties.invisibility = OFF;
@@ -33,7 +33,7 @@ void PolylineTool::loadSettings()
     if ( properties.width <= 0 )
     {
         properties.width = 1.5;
-        settings.setValue("penWidth", properties.width);
+        settings.setValue("polyLineWidth", properties.width);
     }
 
 }
