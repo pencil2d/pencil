@@ -26,6 +26,7 @@ void restoreToDefaultSetting() // TODO: finish reset list
 
     s->setValue("penWidth", 2.0);
     s->setValue("pencilWidth", 1.0);
+    s->setValue("polyLineWidth", 1.5);
     s->setValue("eraserWidth", 10.0);
     s->setValue("brushWidth", 15.0);
     s->setValue("brushFeather", 15.0);
