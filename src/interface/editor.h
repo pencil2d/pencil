@@ -55,7 +55,7 @@ public:
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
-    int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
+    //int layerManager()->currentLayerIndex();
     int maxFrame; // the number of the last frame for the current object
 
     int fps; // the number of frames per second used by the editor

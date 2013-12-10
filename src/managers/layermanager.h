@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class Editor;
+class Object;
 class Layer;
 
 class LayerManager : public QObject
@@ -14,17 +14,24 @@ public:
     LayerManager( QObject* pParant );
     ~LayerManager();
 
-    bool init( Editor* );
+    bool setObject( Object* );
+
     Layer* currentLayer();
     Layer* currentLayer( int incr );
+    int currentLayerIndex();
+    void setCurrentLayerIndex( int );
+
+    void gotoNextLayer();
+    void gotoPreviouslayer();
 
     int  currentFrameIndex();
     void setCurrentFrameIndex( int );
 
 private:
-    Editor* m_pEditor;
+    Object* m_pObject;
 
-    int m_currentFrameIndex;
+    int m_currentLayerIndex; // the current layer to be edited/displayed
+    int m_currentFrameIndex; // the current key frame to be edited/displayed
 };
 
 #endif

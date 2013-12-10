@@ -863,7 +863,7 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     QDomElement tag = doc.createElement( "editor" );
 
     QDomElement tag1 = doc.createElement( "currentLayer" );
-    tag1.setAttribute( "value", editor->m_nCurrentLayerIndex );
+    tag1.setAttribute( "value", editor->layerManager()->currentLayerIndex() );
     tag.appendChild( tag1 );
     QDomElement tag2 = doc.createElement( "currentFrame" );
     tag2.setAttribute( "value", editor->layerManager()->currentFrameIndex() );

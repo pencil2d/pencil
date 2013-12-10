@@ -68,8 +68,8 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
         {
             BitmapImage *sourceImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
             Layer *targetLayer = layer; // by default
-            int layerNumber = m_pEditor->m_nCurrentLayerIndex; // by default
-            if (m_pEditor->m_nCurrentLayerIndex > 0)
+            int layerNumber = m_pEditor->layerManager()->currentLayerIndex(); // by default
+            if (m_pEditor->layerManager()->currentLayerIndex() > 0)
             {
                 Layer *layer2 = m_pEditor->getCurrentLayer(-1);
                 if (layer2->type() == Layer::BITMAP)
@@ -103,7 +103,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
             {
                 m_pScribbleArea->floodFill(vectorImage, getLastPixel().toPoint(), qRgba(0, 0, 0, 0), qRgb(200, 200, 200), 100 * 100);
             }
-            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->layerManager()->currentFrameIndex());
+            m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex());
             m_pScribbleArea->setAllDirty();
         }
     }

@@ -48,7 +48,7 @@ Editor::Editor( MainWindow2* parent )
 
     m_colorManager = new ColorManager( this, this );
     m_pLayerManager = new LayerManager( this );
-    m_pLayerManager->init( this );
+    m_pLayerManager->setObject( object() );
 
     altpress = false;
     modified = false;
@@ -88,7 +88,7 @@ Editor::Editor( MainWindow2* parent )
 
     m_cachedFrameList << 1;
     layerManager()->setCurrentFrameIndex( 1 );
-    m_nCurrentLayerIndex = 0;
+    layerManager()->setCurrentLayerIndex( 0 );
 
     exportFramesDialog = NULL; // will be created when needed
     exportMovieDialog = NULL;
@@ -396,12 +396,12 @@ void Editor::setFrontColour( int i, QColor newColour )
 {
     if ( newColour.isValid() && i > -1 )
     {
-        Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+        Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
         if ( layer != NULL )
         {
             if ( layer->type() == Layer::VECTOR )
             {
-                m_pScribbleArea->setModified( m_nCurrentLayerIndex, layerManager()->currentFrameIndex() );
+                m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
             }
         }
         colorManager()->pickColorNumber( i );
@@ -453,7 +453,7 @@ void Editor::onionLayer3OpacityChangeSlot( int number )
 
 void Editor::modification()
 {
-    modification( m_nCurrentLayerIndex );
+    modification( layerManager()->currentLayerIndex() );
 }
 
 void Editor::modification( int layerNumber )
@@ -478,9 +478,9 @@ void Editor::backup( QString undoText )
     {
         backup( lastModifiedLayer, lastModifiedFrame, undoText );
     }
-    if ( lastModifiedLayer != m_nCurrentLayerIndex || lastModifiedFrame != layerManager()->currentFrameIndex() )
+    if ( lastModifiedLayer != layerManager()->currentLayerIndex() || lastModifiedFrame != layerManager()->currentFrameIndex() )
     {
-        backup( m_nCurrentLayerIndex, layerManager()->currentFrameIndex(), undoText );
+        backup( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex(), undoText );
     }
 }
 
@@ -648,7 +648,7 @@ void Editor::croptoselect()
 
 void Editor::copy()
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::BITMAP )
@@ -677,7 +677,7 @@ void Editor::copy()
 
 void Editor::paste()
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::BITMAP && clipboardBitmapImage.image != NULL )   // clipboardBitmapOk
@@ -810,13 +810,13 @@ void Editor::deleteCurrentLayer()
 {
     int ret = QMessageBox::warning( this,
                                     tr( "Warning" ),
-                                    "Are you sure you want to delete layer: " + m_pObject->getLayer( m_nCurrentLayerIndex )->name + " ?",
+                                    "Are you sure you want to delete layer: " + m_pObject->getLayer( layerManager()->currentLayerIndex() )->name + " ?",
                                     QMessageBox::Ok | QMessageBox::Cancel,
                                     QMessageBox::Ok );
     if ( ret == QMessageBox::Ok )
     {
-        m_pObject->deleteLayer( m_nCurrentLayerIndex );
-        if ( m_nCurrentLayerIndex == m_pObject->getLayerCount() ) setCurrentLayer( m_nCurrentLayerIndex - 1 );
+        m_pObject->deleteLayer( layerManager()->currentLayerIndex() );
+        if ( layerManager()->currentLayerIndex() == m_pObject->getLayerCount() ) setCurrentLayer( layerManager()->currentLayerIndex() - 1 );
         getTimeLine()->updateLayerNumber( m_pObject->getLayerCount() );
         //timeLine->update();
         m_pScribbleArea->updateAllFrames();
@@ -873,14 +873,19 @@ void Editor::setObject( Object* newObject )
     {
         return;
     }
-    this->m_pObject = newObject;
+    m_pObject = newObject;
+
 
     connect( m_pObject, SIGNAL( imageAdded( int ) ), this, SLOT( addFrame( int ) ) );
     connect( m_pObject, SIGNAL( imageAdded( int, int ) ), this, SLOT( addFrame( int, int ) ) );
     connect( m_pObject, SIGNAL( imageRemoved( int ) ), this, SLOT( removeFrame( int ) ) );
 
-    m_nCurrentLayerIndex = this->m_pObject->getLayerCount() - 1; // the default selected layer is the last one
+    layerManager( )->setObject( m_pObject );
+
+    // the default selected layer is the last one
+    layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
     layerManager()->setCurrentFrameIndex( 1 );
+
     m_cachedFrameList.clear();
     m_cachedFrameList << 1;
 }
@@ -1271,7 +1276,7 @@ void Editor::importImage()
 
 void Editor::importImage( QString filePath )
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer == NULL )
     {
         return;
@@ -1389,7 +1394,7 @@ void Editor::importImage( QString filePath )
 
 void Editor::importSound( QString filePath )
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer == NULL )
     {
         QMessageBox msg;
@@ -1410,7 +1415,7 @@ void Editor::importSound( QString filePath )
         if ( msg.clickedButton() == acceptButton )
         {
             newSoundLayer();
-            layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+            layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
         }
         else
         {
@@ -1443,7 +1448,7 @@ void Editor::importSound( QString filePath )
     }
     ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, layerManager()->currentFrameIndex() );
     getTimeLine()->updateContent();
-    modification( m_nCurrentLayerIndex );
+    modification( layerManager()->currentLayerIndex() );
 }
 
 void Editor::updateFrame( int frameNumber )
@@ -1488,34 +1493,28 @@ void Editor::scrubBackward()
 
 void Editor::previousLayer()
 {
-    m_nCurrentLayerIndex--;
-    if ( m_nCurrentLayerIndex < 0 )
-    {
-        m_nCurrentLayerIndex = 0;
-    }
+    layerManager()->gotoPreviouslayer();
+
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();
 }
 
 void Editor::nextLayer()
 {
-    m_nCurrentLayerIndex++;
-    if ( m_nCurrentLayerIndex == m_pObject->getLayerCount() )
-    {
-        m_nCurrentLayerIndex = m_pObject->getLayerCount() - 1;
-    }
+    layerManager()->gotoNextLayer();
+
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();
 }
 
 void Editor::addKey()
 {
-    addKey( m_nCurrentLayerIndex, layerManager()->currentFrameIndex() );
+    addKey( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
 }
 
 void Editor::duplicateKey()
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::VECTOR )
@@ -1526,7 +1525,7 @@ void Editor::duplicateKey()
             addKey();
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
             vectorImage->paste( clipboardVectorImage ); // paste the clipboard
-            m_pScribbleArea->setModified( m_nCurrentLayerIndex, layerManager()->currentFrameIndex() );
+            m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
             update();
         }
         if ( layer->type() == Layer::BITMAP )
@@ -1576,7 +1575,7 @@ void Editor::addKey( int layerNumber, int frameIndex )
 
 void Editor::removeKey()
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::BITMAP ) ( ( LayerBitmap* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
@@ -1682,7 +1681,7 @@ void Editor::startOrStop()
 
 void Editor::scrubNextKeyframe()
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer == NULL )
     {
         return;
@@ -1706,7 +1705,7 @@ void Editor::scrubNextKeyframe()
 
 void Editor::scrubPreviousKeyframe()
 {
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer == NULL )
     {
         return;
@@ -1788,7 +1787,7 @@ void Editor::setSound()
 
 void Editor::setCurrentLayer( int layerNumber )
 {
-    m_nCurrentLayerIndex = layerNumber;
+    layerManager()->setCurrentLayerIndex( layerNumber );
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();
 }
@@ -1804,8 +1803,14 @@ void Editor::switchVisibilityOfLayer( int layerNumber )
 void Editor::moveLayer( int i, int j )
 {
     m_pObject->moveLayer( i, j );
-    if ( j < i ) { m_nCurrentLayerIndex = j; }
-    else { m_nCurrentLayerIndex = j - 1; }
+    if ( j < i )
+    {
+        layerManager()->setCurrentLayerIndex( j );
+    }
+    else
+    {
+        layerManager()->setCurrentLayerIndex( j - 1 );
+    }
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();
 }
@@ -2042,7 +2047,7 @@ void Editor::saveSvg()
 
     QPainter painter;
     painter.begin( &generator );
-    Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
+    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::VECTOR )

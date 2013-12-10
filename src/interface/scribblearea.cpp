@@ -985,7 +985,7 @@ void ScribbleArea::paintBitmapBuffer()
             if ( followContour )
             {
                 // writes on the layer below
-                if ( m_pEditor->m_nCurrentLayerIndex > 0 )
+                if ( m_pEditor->layerManager()->currentLayerIndex() > 0 )
                 {
                     Layer *layer2 = m_pEditor->getCurrentLayer( -1 );
                     if ( layer2->type() == Layer::BITMAP )
@@ -1325,12 +1325,12 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     int iStart = 0;
     int iEnd = object->getLayerCount() - 1;
     if ( multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI )
-        iStart = iEnd = m_pEditor->m_nCurrentLayerIndex;
+        iStart = iEnd = m_pEditor->layerManager()->currentLayerIndex();
     }
     for ( int i = iStart; i < iEnd; i++ )
     {
         opacity = 1.0;
-        if ( i != m_pEditor->m_nCurrentLayerIndex && (m_showAllLayers == 1) ) { opacity = 0.4; }
+        if ( i != m_pEditor->layerManager()->currentLayerIndex() && (m_showAllLayers == 1) ) { opacity = 0.4; }
         Q_ASSERT_X( m_pEditor != NULL, "ScribbleArea.cpp", "Editor should not be null." );
         Q_ASSERT_X( m_pEditor->getCurrentLayer(), "", "Layer should not be null." );
 
@@ -1338,7 +1338,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
 
         if ( m_pEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = (object->getLayer( i ));
-        if ( layer->visible && (m_showAllLayers > 0 || i == m_pEditor->m_nCurrentLayerIndex) ) // change && to || for all layers
+        if ( layer->visible && (m_showAllLayers > 0 || i == m_pEditor->layerManager()->currentLayerIndex()) ) // change && to || for all layers
         {
             // paints the bitmap images
             if ( layer->type() == Layer::BITMAP )
@@ -1501,11 +1501,11 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     for ( int i = 0; i < object->getLayerCount(); i++ )
     {
         opacity = 1.0;
-        if ( i != m_pEditor->m_nCurrentLayerIndex && (m_showAllLayers == 1) ) { opacity = 0.4; }
+        if ( i != m_pEditor->layerManager()->currentLayerIndex() && (m_showAllLayers == 1) ) { opacity = 0.4; }
 
         if ( m_pEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = (object->getLayer( i ));
-        if ( layer->visible && (m_showAllLayers > 0 || i == m_pEditor->m_nCurrentLayerIndex) )
+        if ( layer->visible && (m_showAllLayers > 0 || i == m_pEditor->layerManager()->currentLayerIndex()) )
         {
             // paints the bitmap images
             if ( layer->type() == Layer::BITMAP )
@@ -1516,7 +1516,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                 {
                     painter.setWorldMatrixEnabled( true );
                     painter.setOpacity( opacity );
-                    if ( i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && (myRotatedAngle != 0 || myTempTransformedSelection != mySelection) )
+                    if ( i == m_pEditor->layerManager()->currentLayerIndex() && somethingSelected && (myRotatedAngle != 0 || myTempTransformedSelection != mySelection) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         painter.setClipping( true );
@@ -1682,7 +1682,7 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
         int index = ((LayerImage *)layer)->getLastIndexAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
         if ( index == -1 ) { return; }
         BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
-        if ( bitmapImage == NULL ) { qDebug() << "NULL image pointer!" << m_pEditor->m_nCurrentLayerIndex << m_pEditor->layerManager()->currentFrameIndex();  return; }
+        if ( bitmapImage == NULL ) { qDebug() << "NULL image pointer!" << m_pEditor->layerManager()->currentLayerIndex() << m_pEditor->layerManager()->currentFrameIndex();  return; }
         BitmapImage::floodFill( bitmapImage, tempBitmapImage, thePoint.toPoint(), qRgba( 255, 255, 255, 0 ), fillColour.rgb(), 20 * 20, false );
         tempBitmapImage->drawRect( rectangle.toRect(), Qt::NoPen, radialGrad, QPainter::CompositionMode_SourceIn, m_antialiasing );
     }
@@ -1856,7 +1856,7 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
         bitmapImage->paste( bufferImg );
     }
     bufferImg->clear();
-    setModified( m_pEditor->m_nCurrentLayerIndex, m_pEditor->layerManager()->currentFrameIndex() );
+    setModified( m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex() );
 }
 
 void ScribbleArea::resizeEvent( QResizeEvent *event )
@@ -2062,7 +2062,7 @@ void ScribbleArea::paintTransformedSelection()
             if ( bitmapImage == NULL )
             {
                 qDebug() << "NULL image pointer!"
-                         << m_pEditor->m_nCurrentLayerIndex
+                         << m_pEditor->layerManager()->currentLayerIndex()
                          << m_pEditor->layerManager()->currentFrameIndex();
                 return;
             }
@@ -2089,7 +2089,7 @@ void ScribbleArea::paintTransformedSelection()
             vectorImage->applySelectionTransformation();
             selectionTransformation.reset();
         }
-        setModified( m_pEditor->m_nCurrentLayerIndex, m_pEditor->layerManager()->currentFrameIndex() );
+        setModified( m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex() );
     }
 }
 
@@ -2697,7 +2697,7 @@ void ScribbleArea::clearImage()
     //todo: confirm 1 and 2 are not necessary and remove comments
     //emit modification(); //1
     //update(); //2
-    setModified( m_pEditor->m_nCurrentLayerIndex, m_pEditor->layerManager()->currentFrameIndex() );
+    setModified( m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex() );
 }
 
 void ScribbleArea::toggleThinLines()

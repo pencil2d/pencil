@@ -99,7 +99,7 @@ void TimeLineCells::drawContent()
 
     Object* object = editor->object();
     if (object == NULL) return;
-    Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
+    Layer* layer = object->getLayer(editor->layerManager()->currentLayerIndex());
     if (layer == NULL) return;
 
     // grey background of the view
@@ -110,7 +110,7 @@ void TimeLineCells::drawContent()
     // --- draw layers of the current object
     for ( int i = 0; i < object->getLayerCount(); i++ )
     {
-        if ( i != editor->m_nCurrentLayerIndex )
+        if ( i != editor->layerManager()->currentLayerIndex() )
         {
             Layer* layeri = object->getLayer(i);
             if ( layeri != NULL )
@@ -122,15 +122,15 @@ void TimeLineCells::drawContent()
     }
     if ( abs( getMouseMoveY() ) > 5 )
     {
-        if ( type == "tracks" ) layer->paintTrack( painter, this, offsetX, getLayerY( editor->m_nCurrentLayerIndex ) + getMouseMoveY(), width() - offsetX, getLayerHeight(), true, frameSize );
-        if ( type == "layers" ) layer->paintLabel( painter, this, 0, getLayerY( editor->m_nCurrentLayerIndex ) + getMouseMoveY(), width() - 1, getLayerHeight(), true, editor->allLayers() );
+        if ( type == "tracks" ) layer->paintTrack( painter, this, offsetX, getLayerY( editor->layerManager()->currentLayerIndex() ) + getMouseMoveY(), width() - offsetX, getLayerHeight(), true, frameSize );
+        if ( type == "layers" ) layer->paintLabel( painter, this, 0, getLayerY( editor->layerManager()->currentLayerIndex() ) + getMouseMoveY(), width() - 1, getLayerHeight(), true, editor->allLayers() );
         painter.setPen( Qt::black );
         painter.drawRect(0, getLayerY( getLayerNumber(endY) ) -1, width(), 2);
     }
     else
     {
-        if(type == "tracks") layer->paintTrack(painter, this, offsetX, getLayerY(editor->m_nCurrentLayerIndex), width()-offsetX, getLayerHeight(), true, frameSize);
-        if(type == "layers") layer->paintLabel(painter, this, 0, getLayerY(editor->m_nCurrentLayerIndex), width()-1, getLayerHeight(), true, editor->allLayers());
+        if(type == "tracks") layer->paintTrack(painter, this, offsetX, getLayerY(editor->layerManager()->currentLayerIndex()), width()-offsetX, getLayerHeight(), true, frameSize);
+        if(type == "layers") layer->paintLabel(painter, this, 0, getLayerY(editor->layerManager()->currentLayerIndex()), width()-1, getLayerHeight(), true, editor->allLayers());
     }
 
     // --- draw top
@@ -197,7 +197,7 @@ void TimeLineCells::paintEvent(QPaintEvent* event)
     Q_UNUSED(event);
     Object* object = editor->object();
     if(object == NULL) return;
-    Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
+    Layer* layer = editor->layerManager()->currentLayer();
     if(layer == NULL) return;
 
     QPainter painter( this );
