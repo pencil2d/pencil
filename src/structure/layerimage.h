@@ -68,11 +68,6 @@ public:
     void mouseRelease(QMouseEvent* event, int frameNumber);
     void mouseDoubleClick(QMouseEvent* event, int frameNumber);
 
-signals:
-    void imageAdded(int);
-    void imageAdded(int,int);
-    void imageRemoved(int);
-
 private:
     QList<Keyframe*> keyframes;
 

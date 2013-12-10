@@ -93,8 +93,8 @@ int LayerImage::getFramePositionAt(int index)
     if ( index >= framesPosition.size() )
     {
         return NO_KEYFRAME;
-    } 
-    
+    }
+
     return framesPosition.at(index);
 }
 
@@ -139,13 +139,13 @@ void LayerImage::paintTrack(QPainter& painter, TimeLineCells* cells, int x, int 
         if (type() == SOUND) col = QColor(245,130,130);
         if (type() == CAMERA) col = QColor(100,128,140);
         if (!selected) col = QColor( (1*col.red() + 2*200)/3, (1*col.green()+2*200)/3, (1*col.blue()+2*200)/3 );
-        
+
         painter.setBrush( col );
         painter.setPen(QPen(QBrush(QColor(100,100,100)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         painter.drawRect(x, y-1, width, height);
-        
+
         paintImages(painter, cells, x, y, width, height, selected, frameSize);
-        
+
         // changes the apparence if selected
         if (selected)
         {
@@ -267,8 +267,6 @@ void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
             int originalFrame = framesPosition[i];
             framesPosition[i] = originalFrame + frameOffset;
             //framesModified[i] = true;
-            emit imageRemoved(originalFrame); // this is to indicate to the cache that an image have been removed here
-            emit imageAdded(originalFrame + frameOffset); // this is to indicate to the cache that an image have been added here
             m_pObject->modification();
         }
     }
@@ -286,7 +284,7 @@ bool LayerImage::addImageAtFrame(int frameNumber)
         framesFilename.append("");
         framesModified.append(false);
         bubbleSort();
-        emit imageAdded(frameNumber);
+
         return true;
     }
     else
@@ -304,7 +302,6 @@ void LayerImage::removeImageAtFrame(int frameNumber)
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
-        emit imageRemoved(frameNumber);
     }
     bubbleSort();
 }
@@ -367,7 +364,7 @@ bool LayerImage::saveImages(QString path, int layerNumber)
 {
     qDebug() << "Saving images of layer n. " << layerNumber;
     QDir dir(path);
- 
+
     // always saves all frames, no optimization
     for(int i=0; i < framesPosition.size(); i++)
     {
