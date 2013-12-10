@@ -1569,7 +1569,7 @@ void Editor::addKey( int layerNumber, int frameIndex )
     }
     else
     {
-        addKey( layerNumber, frameIndex++ );
+        addKey( layerNumber, frameIndex + 1 );
         updateMaxFrame();
     }
 }
