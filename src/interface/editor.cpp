@@ -48,7 +48,7 @@ Editor::Editor( MainWindow2* parent )
 
     m_colorManager = new ColorManager( this, this );
     m_pLayerManager = new LayerManager( this );
-    m_pLayerManager->Initialize( this );
+    m_pLayerManager->init( this );
 
     altpress = false;
     modified = false;
@@ -1313,7 +1313,6 @@ void Editor::importImage( QString filePath )
             int numImages = importedImageReader->imageCount();
             int timeLeft = importedImageReader->nextImageDelay();
 
-
             if ( !importedImage->isNull() )
             {
                 do
@@ -1351,11 +1350,10 @@ void Editor::importImage( QString filePath )
                         numImages--;
                         if ( importedImage->isNull() || importedImageReader->nextImageDelay() <= 0 ) break;
                         timeLeft += importedImageReader->nextImageDelay();
-                        int offset =  ( timeLeft / ( 1000 / fps ) );
+
                         scrubTo( m_nCurrentFrameIndex + ( timeLeft / ( 1000 / fps ) ) );
                     }
                 } while ( numImages > 0 && !importedImage->isNull() );
-
             }
             else
             {
@@ -2058,4 +2056,9 @@ void Editor::setTool( ToolType toolType )
     getScribbleArea()->setCurrentTool( toolType );
 
     emit changeTool( toolType );
+}
+
+Layer* Editor::getCurrentLayer( int incr )
+{
+    return layerManager()->currentLayer( incr );
 }

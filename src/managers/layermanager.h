@@ -1,11 +1,10 @@
-
 #ifndef LAYER_MANAGER_H
 #define LAYER_MANAGER_H
 
 #include <QObject>
 
 class Editor;
-
+class Layer;
 
 class LayerManager : public QObject
 {
@@ -15,7 +14,9 @@ public:
     LayerManager( QObject* pParant );
     ~LayerManager();
 
-    bool Initialize( Editor* pEditor );
+    bool init( Editor* pEditor );
+    Layer* currentLayer();
+    Layer* currentLayer( int incr );
 
 private:
     Editor* m_pEditor;

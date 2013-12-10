@@ -40,6 +40,7 @@ class Editor : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( ColorManager* colorManager READ colorManager )
+    Q_PROPERTY( ToolManager*  toolManager  READ toolManager )
     Q_PROPERTY( LayerManager* layerManager READ layerManager )
 
 public:
@@ -67,18 +68,7 @@ public:
 
     TimeLine* getTimeLine();
 
-    Layer* getCurrentLayer( int incr )
-    {
-        if ( m_pObject != NULL )
-        {
-            return m_pObject->getLayer( m_nCurrentLayerIndex + incr );
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-
+    Layer* getCurrentLayer( int incr );
     Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
     Layer* getLayer( int i );
     bool isModified() { return modified; }
