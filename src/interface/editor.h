@@ -165,12 +165,8 @@ protected:
 
     void addKey();
     void duplicateKey();
-
     void removeKey();
 
-    void addFrame( int frameNumber );
-    void addFrame( int frameNumber1, int frameNumber2 );
-    void removeFrame( int frameNumber );
 
     void resetUI();
 
@@ -253,8 +249,6 @@ private:
     ColorManager* m_colorManager;
     ToolManager* m_pToolManager;
     LayerManager* m_pLayerManager;
-
-    QList<int> m_cachedFrameList; // the frames that are to be cached -- should we use a QMap, or a QHash?
 
     QString path;
     bool altpress;

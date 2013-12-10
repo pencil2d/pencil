@@ -28,6 +28,8 @@ public:
 
     int  currentFrameIndex();
     void setCurrentFrameIndex( int );
+    int firstKeyFrameIndex();
+    int lastKeyFrameIndex();
 
 private:
     Object* m_pObject;

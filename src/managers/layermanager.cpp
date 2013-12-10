@@ -89,3 +89,37 @@ int LayerManager::LastFrameAtFrame( int frameIndex )
     }
     return -1;
 }
+
+int LayerManager::firstKeyFrameIndex()
+{
+    int minPosition = INT_MAX;
+
+    for ( int i = 0; i < m_pObject->getLayerCount(); ++i )
+    {
+        Layer* pLayer = m_pObject->getLayer( i );
+
+        int position = pLayer->getFirstKeyframePosition();
+        if ( position < minPosition )
+        {
+            minPosition = position;
+        }
+    }
+    return minPosition;
+}
+
+int LayerManager::lastKeyFrameIndex()
+{
+    int maxPosition = 0;
+
+    for ( int i = 0; i < m_pObject->getLayerCount(); ++i )
+    {
+        Layer* pLayer = m_pObject->getLayer( i );
+
+        int position = pLayer->getFirstKeyframePosition();
+        if ( position > maxPosition )
+        {
+            maxPosition = position;
+        }
+    }
+    return maxPosition;
+}

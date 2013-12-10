@@ -86,7 +86,6 @@ Editor::Editor( MainWindow2* parent )
     looping = false;
     sound = true;
 
-    m_cachedFrameList << 1;
     layerManager()->setCurrentFrameIndex( 1 );
     layerManager()->setCurrentLayerIndex( 0 );
 
@@ -875,19 +874,11 @@ void Editor::setObject( Object* newObject )
     }
     m_pObject = newObject;
 
-
-    connect( m_pObject, SIGNAL( imageAdded( int ) ), this, SLOT( addFrame( int ) ) );
-    connect( m_pObject, SIGNAL( imageAdded( int, int ) ), this, SLOT( addFrame( int, int ) ) );
-    connect( m_pObject, SIGNAL( imageRemoved( int ) ), this, SLOT( removeFrame( int ) ) );
-
     layerManager( )->setObject( m_pObject );
 
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
     layerManager()->setCurrentFrameIndex( 1 );
-
-    m_cachedFrameList.clear();
-    m_cachedFrameList << 1;
 }
 
 void Editor::updateObject()
@@ -1589,36 +1580,6 @@ void Editor::removeKey()
     }
 }
 
-void Editor::addFrame( int frameNumber )   // adding a frame to the cache
-{
-    m_cachedFrameList << frameNumber;
-    qSort( m_cachedFrameList );
-    m_pScribbleArea->updateFrame();
-
-    qDebug() << m_cachedFrameList;
-    qDebug() << frameNumber;
-    getTimeLine()->update();
-}
-
-void Editor::addFrame( int frameNumber1, int frameNumber2 )   // adding a range of frames to the cache
-{
-    for ( int i = frameNumber1; i <= frameNumber2; i++ )
-    {
-        m_cachedFrameList << i;
-    }
-    qSort( m_cachedFrameList );
-
-    m_pScribbleArea->updateFrame();
-    getTimeLine()->update();
-}
-
-void Editor::removeFrame( int frameNumber )
-{
-    //m_cachedFrameList.removeAt( getLastIndexAtFrame( frameNumber ) );
-    m_pScribbleArea->updateFrame();
-    getTimeLine()->update();
-}
-
 void Editor::play()
 {
     updateMaxFrame();
@@ -1999,12 +1960,12 @@ void Editor::getCameraLayer()
 
 void Editor::endPlay()
 {
-    scrubTo( m_cachedFrameList.last() );
+    scrubTo( layerManager()->lastKeyFrameIndex() );
 }
 
 void Editor::startPlay()
 {
-    scrubTo( m_cachedFrameList.first() );
+    scrubTo( layerManager()->firstKeyFrameIndex() );
 }
 
 void Editor::saveSvg()
