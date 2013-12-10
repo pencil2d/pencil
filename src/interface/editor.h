@@ -171,8 +171,6 @@ protected:
     void addFrame( int frameNumber );
     void addFrame( int frameNumber1, int frameNumber2 );
     void removeFrame( int frameNumber );
-    int getLastIndexAtFrame( int frameNumber );
-    int getLastFrameAtFrame( int frameNumber );
 
     void resetUI();
 

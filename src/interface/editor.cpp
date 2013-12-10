@@ -1564,6 +1564,7 @@ void Editor::addKey( int layerNumber, int frameIndex )
     if ( isOK )
     {
         getTimeLine()->updateContent();
+        getScribbleArea()->updateFrame();
         layerManager()->setCurrentFrameIndex( frameIndex );
     }
     else
@@ -1613,30 +1614,9 @@ void Editor::addFrame( int frameNumber1, int frameNumber2 )   // adding a range 
 
 void Editor::removeFrame( int frameNumber )
 {
-    m_cachedFrameList.removeAt( getLastIndexAtFrame( frameNumber ) );
+    //m_cachedFrameList.removeAt( getLastIndexAtFrame( frameNumber ) );
     m_pScribbleArea->updateFrame();
     getTimeLine()->update();
-}
-
-int Editor::getLastIndexAtFrame( int frameNumber )
-{
-    int position = -1;
-    int index = -1;
-    for ( int i = 0; i < m_cachedFrameList.size(); i++ )
-    {
-        if ( m_cachedFrameList.at( i ) > position && m_cachedFrameList.at( i ) <= frameNumber )
-        {
-            position = m_cachedFrameList.at( i );
-            index = i;
-        }
-    }
-    qDebug( "GetLastIndex: frameNum=%d index=%d", frameNumber, index );
-    return index;
-}
-
-int Editor::getLastFrameAtFrame( int frameNumber )
-{
-    return m_cachedFrameList.at( getLastIndexAtFrame( frameNumber ) );
 }
 
 void Editor::play()
