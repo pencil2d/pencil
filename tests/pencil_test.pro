@@ -17,12 +17,14 @@ include($$PWD/../src/pencil.pri)
 HEADERS += \
     AutoTest.h \
     test_objectsaveloader.h \
-    test_layer.h
+    test_layer.h \
+    test_layermanager.h
 
 SOURCES += \
     main.cpp \
     test_objectsaveloader.cpp \
-    test_layer.cpp
+    test_layer.cpp \
+    test_layermanager.cpp
 
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 

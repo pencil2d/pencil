@@ -32,6 +32,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "colormanager.h"
+#include "layermanager.h"
 
 #include "scribblearea.h"
 #include "colorpalettewidget.h"
@@ -82,7 +83,7 @@ ui( new Ui::MainWindow2 )
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolSet, SLOT(setCurrentTool(ToolType)));        
+    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolSet, SLOT(setCurrentTool(ToolType)));
 
     editor->setCurrentLayer( this->editor->m_pObject->getLayerCount() - 1 );
 }
@@ -434,9 +435,9 @@ bool MainWindow2::openObject( QString strFilePath )
     QProgressDialog progress( "Opening document...", "Abort", 0, 100, this );
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
-    
+
     editor->setCurrentLayer( 0 );
-    editor->m_nCurrentFrameIndex = 1;
+    editor->layerManager()->setCurrentFrameIndex( 1 );
     editor->fps = 12;
     m_pTimeLine->setFps( editor->fps );
     m_pScribbleArea->setMyView( QMatrix() );
@@ -467,7 +468,7 @@ bool MainWindow2::openObject( QString strFilePath )
         return false;
     }
     return true;
-    
+
     //-------------------
     QString filePath = strFilePath;
 
@@ -661,7 +662,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
             }
             if ( element.tagName() == "currentFrame" )
             {
-                editor->m_nCurrentFrameIndex = element.attribute( "value" ).toInt();
+                editor->layerManager()->setCurrentFrameIndex( element.attribute( "value" ).toInt() );
             }
             if ( element.tagName() == "currentFps" )
             {
@@ -862,10 +863,10 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     QDomElement tag = doc.createElement( "editor" );
 
     QDomElement tag1 = doc.createElement( "currentLayer" );
-    tag1.setAttribute( "value", editor->m_nCurrentLayerIndex );
+    tag1.setAttribute( "value", editor->layerManager()->currentLayerIndex() );
     tag.appendChild( tag1 );
     QDomElement tag2 = doc.createElement( "currentFrame" );
-    tag2.setAttribute( "value", editor->m_nCurrentFrameIndex );
+    tag2.setAttribute( "value", editor->layerManager()->currentFrameIndex() );
     tag.appendChild( tag2 );
     QDomElement tag2a = doc.createElement( "currentFps" );
     tag2a.setAttribute( "value", editor->fps );

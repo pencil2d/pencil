@@ -3,6 +3,7 @@
 #include <QSettings>
 #include "editor.h"
 #include "timeline.h"
+#include "layermanager.h"
 
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, QString type)
     : QWidget(parent)
@@ -98,7 +99,7 @@ void TimeLineCells::drawContent()
 
     Object* object = editor->object();
     if (object == NULL) return;
-    Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
+    Layer* layer = object->getLayer(editor->layerManager()->currentLayerIndex());
     if (layer == NULL) return;
 
     // grey background of the view
@@ -109,7 +110,7 @@ void TimeLineCells::drawContent()
     // --- draw layers of the current object
     for ( int i = 0; i < object->getLayerCount(); i++ )
     {
-        if ( i != editor->m_nCurrentLayerIndex )
+        if ( i != editor->layerManager()->currentLayerIndex() )
         {
             Layer* layeri = object->getLayer(i);
             if ( layeri != NULL )
@@ -121,15 +122,15 @@ void TimeLineCells::drawContent()
     }
     if ( abs( getMouseMoveY() ) > 5 )
     {
-        if ( type == "tracks" ) layer->paintTrack( painter, this, offsetX, getLayerY( editor->m_nCurrentLayerIndex ) + getMouseMoveY(), width() - offsetX, getLayerHeight(), true, frameSize );
-        if ( type == "layers" ) layer->paintLabel( painter, this, 0, getLayerY( editor->m_nCurrentLayerIndex ) + getMouseMoveY(), width() - 1, getLayerHeight(), true, editor->allLayers() );
+        if ( type == "tracks" ) layer->paintTrack( painter, this, offsetX, getLayerY( editor->layerManager()->currentLayerIndex() ) + getMouseMoveY(), width() - offsetX, getLayerHeight(), true, frameSize );
+        if ( type == "layers" ) layer->paintLabel( painter, this, 0, getLayerY( editor->layerManager()->currentLayerIndex() ) + getMouseMoveY(), width() - 1, getLayerHeight(), true, editor->allLayers() );
         painter.setPen( Qt::black );
         painter.drawRect(0, getLayerY( getLayerNumber(endY) ) -1, width(), 2);
     }
     else
     {
-        if(type == "tracks") layer->paintTrack(painter, this, offsetX, getLayerY(editor->m_nCurrentLayerIndex), width()-offsetX, getLayerHeight(), true, frameSize);
-        if(type == "layers") layer->paintLabel(painter, this, 0, getLayerY(editor->m_nCurrentLayerIndex), width()-1, getLayerHeight(), true, editor->allLayers());
+        if(type == "tracks") layer->paintTrack(painter, this, offsetX, getLayerY(editor->layerManager()->currentLayerIndex()), width()-offsetX, getLayerHeight(), true, frameSize);
+        if(type == "layers") layer->paintLabel(painter, this, 0, getLayerY(editor->layerManager()->currentLayerIndex()), width()-1, getLayerHeight(), true, editor->allLayers());
     }
 
     // --- draw top
@@ -196,7 +197,7 @@ void TimeLineCells::paintEvent(QPaintEvent* event)
     Q_UNUSED(event);
     Object* object = editor->object();
     if(object == NULL) return;
-    Layer* layer = object->getLayer(editor->m_nCurrentLayerIndex);
+    Layer* layer = editor->layerManager()->currentLayer();
     if(layer == NULL) return;
 
     QPainter painter( this );
@@ -212,29 +213,29 @@ void TimeLineCells::paintEvent(QPaintEvent* event)
     if ( type == "tracks" )
     {
         // --- draw the position of the current frame
-        if(editor->m_nCurrentFrameIndex > frameOffset)
+        if(editor->layerManager()->currentFrameIndex() > frameOffset)
         {
             painter.setBrush( QColor( 255, 0, 0, 128 ) );
             painter.setPen( Qt::NoPen );
             painter.setFont( QFont( "helvetica", 10 ) );
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
             QRect scrubRect;
-            scrubRect.setTopLeft( QPoint( getFrameX( editor->m_nCurrentFrameIndex - 1 ), 0 ) );
-            scrubRect.setBottomRight( QPoint( getFrameX( editor->m_nCurrentFrameIndex ), height() ) );
+            scrubRect.setTopLeft( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() - 1 ), 0 ) );
+            scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() ), height() ) );
             if ( shortScrub )
             {
-                scrubRect.setBottomRight( QPoint( getFrameX( editor->m_nCurrentFrameIndex ), 19 ) );
+                scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() ), 19 ) );
             }
             painter.drawRect( scrubRect );
             painter.setPen( QColor( 70, 70, 70, 255 ) );
             int incr = 0;
-            if(editor->m_nCurrentFrameIndex < 10) 
-            { 
-                incr = 4; 
+            if(editor->layerManager()->currentFrameIndex() < 10)
+            {
+                incr = 4;
             }
             else { incr = 0; }
-            painter.drawText( QPoint( getFrameX( editor->m_nCurrentFrameIndex - 1 ) + incr, 15 ), 
-                              QString::number( editor->m_nCurrentFrameIndex ) );
+            painter.drawText( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() - 1 ) + incr, 15 ),
+                              QString::number( editor->layerManager()->currentFrameIndex() ) );
         }
     }
 }
@@ -280,7 +281,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
     }
     else if ( type == "tracks" )
     {
-        if ( frameNumber == editor->m_nCurrentFrameIndex && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
+        if ( frameNumber == editor->layerManager()->currentFrameIndex() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
         {
             timeLine->scrubbing = true;
         }
@@ -433,4 +434,3 @@ void TimeLineCells::vScrollChange(int x)
     layerOffset = x;
     update();
 }
-

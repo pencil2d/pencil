@@ -40,6 +40,7 @@ class Editor : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY( ColorManager* colorManager READ colorManager )
+    Q_PROPERTY( ToolManager*  toolManager  READ toolManager )
     Q_PROPERTY( LayerManager* layerManager READ layerManager )
 
 public:
@@ -54,8 +55,7 @@ public:
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
-    int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
-    int m_nCurrentFrameIndex; // the current frame to be edited/displayed by the editor
+    //int layerManager()->currentLayerIndex();
     int maxFrame; // the number of the last frame for the current object
 
     int fps; // the number of frames per second used by the editor
@@ -67,18 +67,7 @@ public:
 
     TimeLine* getTimeLine();
 
-    Layer* getCurrentLayer( int incr )
-    {
-        if ( m_pObject != NULL )
-        {
-            return m_pObject->getLayer( m_nCurrentLayerIndex + incr );
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-
+    Layer* getCurrentLayer( int incr );
     Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
     Layer* getLayer( int i );
     bool isModified() { return modified; }
@@ -176,14 +165,8 @@ protected:
 
     void addKey();
     void duplicateKey();
-    void addKey( int layerNumber, int& frameNumber );
     void removeKey();
 
-    void addFrame( int frameNumber );
-    void addFrame( int frameNumber1, int frameNumber2 );
-    void removeFrame( int frameNumber );
-    int getLastIndexAtFrame( int frameNumber );
-    int getLastFrameAtFrame( int frameNumber );
 
     void resetUI();
 
@@ -267,8 +250,6 @@ private:
     ToolManager* m_pToolManager;
     LayerManager* m_pLayerManager;
 
-    QList<int> m_cachedFrameList; // the frames that are to be cached -- should we use a QMap, or a QHash?
-
     QString path;
     bool altpress;
     bool modified;
@@ -282,6 +263,7 @@ private:
     int onionLayer3Opacity;
 
     void makeConnections();
+    void addKey( int layerNumber, int frameNumber );
 
     // backup
     void clearBackup();

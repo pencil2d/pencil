@@ -75,8 +75,6 @@ void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevi
 
 void BrushTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
