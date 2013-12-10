@@ -58,8 +58,8 @@ public:
 
     // method from layerImage
     QImage* getImageAtIndex(int index);
-    bool addImageAtFrame(int frameNumber);
-    void removeImageAtFrame(int frameNumber);
+    virtual bool addImageAtFrame(int frameNumber);
+    virtual void removeImageAtFrame(int frameNumber);
 
     void loadImageAtFrame(int, QMatrix);
     bool saveImage(int, QString, int);
