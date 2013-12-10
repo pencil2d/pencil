@@ -4,8 +4,8 @@
 #include "scribblearea.h"
 
 #include "strokemanager.h"
+#include "layermanager.h"
 
-#include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
 
@@ -35,7 +35,6 @@ void PolylineTool::loadSettings()
         properties.width = 1.5;
         settings.setValue("polyLineWidth", properties.width);
     }
-
 }
 
 QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
@@ -67,7 +66,7 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
 
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)->deselectAll();
                 if (m_pScribbleArea->makeInvisible() && !m_pScribbleArea->showThinLines())
                 {
                     m_pScribbleArea->toggleThinLines();
@@ -77,7 +76,6 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
             m_pScribbleArea->setAllDirty();
         }
     }
-
 }
 
 void PolylineTool::mouseReleaseEvent(QMouseEvent *event)

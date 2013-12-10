@@ -2,12 +2,12 @@
 #include <QPixmap>
 #include <QMouseEvent>
 
-#include "layer.h"
+#include "layermanager.h"
 #include "layervector.h"
 #include "layerbitmap.h"
 #include "colormanager.h"
 #include "strokemanager.h"
-
+#include "layermanager.h"
 #include "editor.h"
 #include "scribblearea.h"
 #include "pencilsettings.h"
@@ -124,10 +124,10 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setInvisibility(true);
             curve.setVariableWidth(false);
             curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
-            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
 
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
-            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
+            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->layerManager()->currentFrameIndex());
             m_pScribbleArea->setAllDirty();
         }
     }

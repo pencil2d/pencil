@@ -56,7 +56,6 @@ public:
     void setObject( Object* object );
 
     int m_nCurrentLayerIndex; // the current layer to be edited/displayed by the editor
-    int m_nCurrentFrameIndex; // the current frame to be edited/displayed by the editor
     int maxFrame; // the number of the last frame for the current object
 
     int fps; // the number of frames per second used by the editor
@@ -166,7 +165,7 @@ protected:
 
     void addKey();
     void duplicateKey();
-    void addKey( int layerNumber, int& frameNumber );
+
     void removeKey();
 
     void addFrame( int frameNumber );
@@ -272,6 +271,7 @@ private:
     int onionLayer3Opacity;
 
     void makeConnections();
+    void addKey( int layerNumber, int frameNumber );
 
     // backup
     void clearBackup();

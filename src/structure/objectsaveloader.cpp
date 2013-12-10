@@ -171,7 +171,7 @@ bool ObjectSaveLoader::loadDomElement( QDomElement docElem )
             }
             if ( element.tagName() == "currentFrame" )
             {
-                //editor->m_nCurrentFrameIndex = element.attribute("value").toInt();
+                //editor->layerManager()->currentFrameIndex() = element.attribute("value").toInt();
             }
             if ( element.tagName() == "currentFps" )
             {

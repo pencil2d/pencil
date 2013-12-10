@@ -32,3 +32,13 @@ Layer* LayerManager::currentLayer( int incr )
 
     return m_pEditor->object()->getLayer( m_pEditor->m_nCurrentLayerIndex + incr );
 }
+
+int LayerManager::currentFrameIndex()
+{
+    return m_currentFrameIndex;
+}
+
+void LayerManager::setCurrentFrameIndex( int frameIndex )
+{
+    m_currentFrameIndex = frameIndex;
+}

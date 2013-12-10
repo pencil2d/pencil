@@ -87,7 +87,7 @@ Editor::Editor( MainWindow2* parent )
     sound = true;
 
     m_cachedFrameList << 1;
-    m_nCurrentFrameIndex = 1;
+    layerManager()->setCurrentFrameIndex( 1 );
     m_nCurrentLayerIndex = 0;
 
     exportFramesDialog = NULL; // will be created when needed
@@ -289,7 +289,7 @@ void Editor::applyWidth( qreal width )
     setWidth( width );
     Layer* layer = getCurrentLayer();
     if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 )->applyWidthToSelection( width );
+    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyWidthToSelection( width );
 }
 
 void Editor::setFeather( qreal feather )
@@ -303,7 +303,7 @@ void Editor::applyFeather( qreal feather )
     setFeather( feather );
     Layer* layer = getCurrentLayer();
     if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 )->applyFeatherToSelection( feather );
+    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyFeatherToSelection( feather );
 }
 
 void Editor::setInvisibility( int invisibility )
@@ -323,7 +323,7 @@ void Editor::applyInvisibility( bool invisibility )
     if ( layer->type() == Layer::VECTOR )
     {
         ( ( LayerVector* )layer )
-            ->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 )
+            ->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )
             ->applyInvisibilityToSelection( invisibility );
     }
 }
@@ -373,7 +373,7 @@ void Editor::applyPressure( bool pressure )
     if ( layer->type() == Layer::VECTOR )
     {
         ( ( LayerVector* )layer )
-            ->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 )
+            ->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )
             ->applyVariableWidthToSelection( pressure );
     }
 }
@@ -387,7 +387,7 @@ void Editor::selectAndApplyColour( int i )
     }
     if ( layer->type() == Layer::VECTOR )
     {
-        ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 )->applyColourToSelection( i );
+        ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyColourToSelection( i );
     }
 }
 
@@ -401,7 +401,7 @@ void Editor::setFrontColour( int i, QColor newColour )
         {
             if ( layer->type() == Layer::VECTOR )
             {
-                m_pScribbleArea->setModified( m_nCurrentLayerIndex, m_nCurrentFrameIndex );
+                m_pScribbleArea->setModified( m_nCurrentLayerIndex, layerManager()->currentFrameIndex() );
             }
         }
         colorManager()->pickColorNumber( i );
@@ -460,7 +460,7 @@ void Editor::modification( int layerNumber )
 {
     modified = true;
     if ( m_pObject != NULL ) m_pObject->modification();
-    lastModifiedFrame = m_nCurrentFrameIndex;
+    lastModifiedFrame = layerManager()->currentFrameIndex();
     lastModifiedLayer = layerNumber;
     m_pScribbleArea->update();
     getTimeLine()->updateContent();
@@ -478,9 +478,9 @@ void Editor::backup( QString undoText )
     {
         backup( lastModifiedLayer, lastModifiedFrame, undoText );
     }
-    if ( lastModifiedLayer != m_nCurrentLayerIndex || lastModifiedFrame != m_nCurrentFrameIndex )
+    if ( lastModifiedLayer != m_nCurrentLayerIndex || lastModifiedFrame != layerManager()->currentFrameIndex() )
     {
-        backup( m_nCurrentLayerIndex, m_nCurrentFrameIndex, undoText );
+        backup( m_nCurrentLayerIndex, layerManager()->currentFrameIndex(), undoText );
     }
 }
 
@@ -655,12 +655,12 @@ void Editor::copy()
         {
             if ( m_pScribbleArea->somethingSelected )
             {
-                clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( m_nCurrentFrameIndex, 0 )->copy( m_pScribbleArea->getSelection().toRect() );  // copy part of the image
+                clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->copy( m_pScribbleArea->getSelection().toRect() );  // copy part of the image
                 m_pScribbleArea->deselectAll();
             }
             else
             {
-                clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( m_nCurrentFrameIndex, 0 )->copy();  // copy the whole image
+                clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->copy();  // copy the whole image
                 m_pScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
@@ -669,7 +669,7 @@ void Editor::copy()
         if ( layer->type() == Layer::VECTOR )
         {
             clipboardVectorOk = true;
-            clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 ) );  // copy the image (that works but I should also provide a copy() method)
+            clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
             m_pScribbleArea->deselectAll();
         }
     }
@@ -697,14 +697,14 @@ void Editor::paste()
                     tobePasted.transform( selection, true );
                 }
             }
-            ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( m_nCurrentFrameIndex, 0 )->paste( &tobePasted ); // paste the clipboard
+            ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->paste( &tobePasted ); // paste the clipboard
             // setTool( MOVE );
         }
         if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
         {
             backup( tr( "Paste" ) );
             m_pScribbleArea->deselectAll();
-            VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 );
+            VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
             vectorImage->paste( clipboardVectorImage );  // paste the clipboard
             m_pScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
@@ -859,7 +859,7 @@ void Editor::resetUI()
 {
     updateObject();
     maxFrame = 0;
-    m_nCurrentFrameIndex = 0;
+    layerManager()->setCurrentFrameIndex( 0 );
     scrubTo( 0 );
 }
 
@@ -880,7 +880,7 @@ void Editor::setObject( Object* newObject )
     connect( m_pObject, SIGNAL( imageRemoved( int ) ), this, SLOT( removeFrame( int ) ) );
 
     m_nCurrentLayerIndex = this->m_pObject->getLayerCount() - 1; // the default selected layer is the last one
-    m_nCurrentFrameIndex = 1;
+    layerManager()->setCurrentFrameIndex( 1 );
     m_cachedFrameList.clear();
     m_cachedFrameList << 1;
 }
@@ -1192,7 +1192,7 @@ bool Editor::exportImage()
         view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
-        if ( !m_pObject->exportIm( m_nCurrentFrameIndex, maxFrame, view, exportSize, filePath, true, 2 ) ) {
+        if ( !m_pObject->exportIm( layerManager()->currentFrameIndex(), maxFrame, view, exportSize, filePath, true, 2 ) ) {
             QMessageBox::warning( this, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
@@ -1317,11 +1317,11 @@ void Editor::importImage( QString filePath )
             {
                 do
                 {
-                    BitmapImage* bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( m_nCurrentFrameIndex );
+                    BitmapImage* bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( layerManager()->currentFrameIndex() );
                     if ( bitmapImage == NULL )
                     {
                         addKey();
-                        bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( m_nCurrentFrameIndex );
+                        bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( layerManager()->currentFrameIndex() );
                     }
 
                     QRect boundaries = importedImage->rect();
@@ -1351,7 +1351,7 @@ void Editor::importImage( QString filePath )
                         if ( importedImage->isNull() || importedImageReader->nextImageDelay() <= 0 ) break;
                         timeLeft += importedImageReader->nextImageDelay();
 
-                        scrubTo( m_nCurrentFrameIndex + ( timeLeft / ( 1000 / fps ) ) );
+                        scrubTo( layerManager()->currentFrameIndex() + ( timeLeft / ( 1000 / fps ) ) );
                     }
                 } while ( numImages > 0 && !importedImage->isNull() );
             }
@@ -1365,8 +1365,8 @@ void Editor::importImage( QString filePath )
         }
         if ( layer->type() == Layer::VECTOR )
         {
-            VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( m_nCurrentFrameIndex );
-            if ( vectorImage == NULL ) { addKey(); vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( m_nCurrentFrameIndex ); }
+            VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() );
+            if ( vectorImage == NULL ) { addKey(); vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() ); }
             VectorImage* importedVectorImage = new VectorImage( NULL );
             bool ok = importedVectorImage->read( filePath );
             if ( ok )
@@ -1441,7 +1441,7 @@ void Editor::importSound( QString filePath )
             return;
         }
     }
-    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, m_nCurrentFrameIndex );
+    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, layerManager()->currentFrameIndex() );
     getTimeLine()->updateContent();
     modification( m_nCurrentLayerIndex );
 }
@@ -1462,12 +1462,12 @@ void Editor::scrubTo( int frameNumber )
     {
         m_pScribbleArea->updateAllFrames();
     }
-    int oldFrame = m_nCurrentFrameIndex;
+    int oldFrame = layerManager()->currentFrameIndex();
     if ( frameNumber < 1 ) frameNumber = 1;
-    m_nCurrentFrameIndex = frameNumber;
+    layerManager()->setCurrentFrameIndex( frameNumber );
 
     getTimeLine()->updateFrame( oldFrame );
-    getTimeLine()->updateFrame( m_nCurrentFrameIndex );
+    getTimeLine()->updateFrame( layerManager()->currentFrameIndex() );
     getTimeLine()->updateContent();
     m_pScribbleArea->readCanvasFromCache = true;
     m_pScribbleArea->update();
@@ -1475,14 +1475,14 @@ void Editor::scrubTo( int frameNumber )
 
 void Editor::scrubForward()
 {
-    scrubTo( m_nCurrentFrameIndex + 1 );
+    scrubTo( layerManager()->currentFrameIndex() + 1 );
 }
 
 void Editor::scrubBackward()
 {
-    if ( m_nCurrentFrameIndex > 1 )
+    if ( layerManager()->currentFrameIndex() > 1 )
     {
-        scrubTo( m_nCurrentFrameIndex - 1 );
+        scrubTo( layerManager()->currentFrameIndex() - 1 );
     }
 }
 
@@ -1510,7 +1510,7 @@ void Editor::nextLayer()
 
 void Editor::addKey()
 {
-    addKey( m_nCurrentLayerIndex, m_nCurrentFrameIndex );
+    addKey( m_nCurrentLayerIndex, layerManager()->currentFrameIndex() );
 }
 
 void Editor::duplicateKey()
@@ -1522,11 +1522,11 @@ void Editor::duplicateKey()
         {
             m_pScribbleArea->selectAll();
             clipboardVectorOk = true;
-            clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 ) );  // copy the image (that works but I should also provide a copy() method)
+            clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
             addKey();
-            VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( m_nCurrentFrameIndex, 0 );
+            VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
             vectorImage->paste( clipboardVectorImage ); // paste the clipboard
-            m_pScribbleArea->setModified( m_nCurrentLayerIndex, m_nCurrentFrameIndex );
+            m_pScribbleArea->setModified( m_nCurrentLayerIndex, layerManager()->currentFrameIndex() );
             update();
         }
         if ( layer->type() == Layer::BITMAP )
@@ -1539,29 +1539,38 @@ void Editor::duplicateKey()
     }
 }
 
-void Editor::addKey( int layerNumber, int& frameNumber )
+void Editor::addKey( int layerNumber, int frameIndex )
 {
     Layer* layer = m_pObject->getLayer( layerNumber );
-    if ( layer != NULL )
+    if ( layer == NULL )
     {
-        if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR || layer->type() == Layer::CAMERA )
-        {
-            bool success = false;
-            if ( layer->type() == Layer::BITMAP ) success = ( ( LayerBitmap* )layer )->addImageAtFrame( frameNumber );
-            if ( layer->type() == Layer::VECTOR ) success = ( ( LayerVector* )layer )->addImageAtFrame( frameNumber );
-            if ( layer->type() == Layer::CAMERA ) success = ( ( LayerCamera* )layer )->addImageAtFrame( frameNumber );
-            if ( success )
-            {
-                getTimeLine()->updateContent();
-                //scribbleArea->addFrame(frameNumber);
-            }
-            else
-            {
-                frameNumber++;
-                addKey(); // is this necessary?
-                updateMaxFrame();
-            }
-        }
+        return;
+    }
+
+    bool isOK = false;
+
+    switch ( layer->type() )
+    {
+    case Layer::BITMAP:
+        isOK = ( ( LayerBitmap* )layer )->addImageAtFrame( frameIndex );
+        break;
+    case Layer::VECTOR:
+        isOK = ( ( LayerVector* )layer )->addImageAtFrame( frameIndex );
+        break;
+    case Layer::CAMERA:
+        isOK = ( ( LayerCamera* )layer )->addImageAtFrame( frameIndex );
+        break;
+    }
+
+    if ( isOK )
+    {
+        getTimeLine()->updateContent();
+        layerManager()->setCurrentFrameIndex( frameIndex );
+    }
+    else
+    {
+        addKey( layerNumber, frameIndex++ );
+        updateMaxFrame();
     }
 }
 
@@ -1570,9 +1579,9 @@ void Editor::removeKey()
     Layer* layer = m_pObject->getLayer( m_nCurrentLayerIndex );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP ) ( ( LayerBitmap* )layer )->removeImageAtFrame( m_nCurrentFrameIndex );
-        if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->removeImageAtFrame( m_nCurrentFrameIndex );
-        if ( layer->type() == Layer::CAMERA ) ( ( LayerCamera* )layer )->removeImageAtFrame( m_nCurrentFrameIndex );
+        if ( layer->type() == Layer::BITMAP ) ( ( LayerBitmap* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
+        if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
+        if ( layer->type() == Layer::CAMERA ) ( ( LayerCamera* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
         //if (layer->type() == Layer::SOUND)  ((LayerSound*)layer)->removeImageAtFrame(currentFrame);
         scrubBackward();
         getTimeLine()->updateContent();
@@ -1634,11 +1643,11 @@ int Editor::getLastFrameAtFrame( int frameNumber )
 void Editor::play()
 {
     updateMaxFrame();
-    if ( m_nCurrentFrameIndex > maxFrame )
+    if ( layerManager()->currentFrameIndex() > maxFrame )
     {
         scrubTo( maxFrame );
     }
-    else if ( m_nCurrentFrameIndex == maxFrame )
+    else if ( layerManager()->currentFrameIndex() == maxFrame )
     {
         if ( !playing )
         {
@@ -1679,7 +1688,7 @@ void Editor::scrubNextKeyframe()
         return;
     }
 
-    int position = layer->getNextKeyframePosition( m_nCurrentFrameIndex );
+    int position = layer->getNextKeyframePosition( layerManager()->currentFrameIndex() );
     if ( position != Layer::NO_KEYFRAME )
     {
         scrubTo( position );
@@ -1703,7 +1712,7 @@ void Editor::scrubPreviousKeyframe()
         return;
     }
 
-    int position = layer->getPreviousKeyframePosition( m_nCurrentFrameIndex );
+    int position = layer->getPreviousKeyframePosition( layerManager()->currentFrameIndex() );
     if ( position != Layer::NO_KEYFRAME )
     {
         scrubTo( position );
@@ -1726,9 +1735,9 @@ void Editor::playNextFrame()
 {
     updateMaxFrame();
 
-    if ( m_nCurrentFrameIndex < maxFrame )
+    if ( layerManager()->currentFrameIndex() < maxFrame )
     {
-        if ( sound ) m_pObject->playSoundIfAny( m_nCurrentFrameIndex, fps );
+        if ( sound ) m_pObject->playSoundIfAny( layerManager()->currentFrameIndex(), fps );
         scrubForward();
     }
     else
@@ -1747,9 +1756,9 @@ void Editor::playNextFrame()
 
 void Editor::playPrevFrame()
 {
-    if ( m_nCurrentFrameIndex > 0 )
+    if ( layerManager()->currentFrameIndex() > 0 )
     {
-        if ( sound ) m_pObject->playSoundIfAny( m_nCurrentFrameIndex, fps );
+        if ( sound ) m_pObject->playSoundIfAny( layerManager()->currentFrameIndex(), fps );
         scrubBackward();
     }
 }

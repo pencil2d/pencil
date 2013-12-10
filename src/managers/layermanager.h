@@ -14,12 +14,17 @@ public:
     LayerManager( QObject* pParant );
     ~LayerManager();
 
-    bool init( Editor* pEditor );
+    bool init( Editor* );
     Layer* currentLayer();
     Layer* currentLayer( int incr );
 
+    int  currentFrameIndex();
+    void setCurrentFrameIndex( int );
+
 private:
     Editor* m_pEditor;
+
+    int m_currentFrameIndex;
 };
 
 #endif
