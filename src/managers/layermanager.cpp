@@ -1,4 +1,5 @@
 #include "object.h"
+#include "layerimage.h"
 #include "layermanager.h"
 
 
@@ -71,4 +72,20 @@ void LayerManager::gotoPreviouslayer()
     {
         m_currentLayerIndex -= 1;
     }
+}
+
+int LayerManager::LastFrameAtFrame( int frameIndex )
+{
+    for ( int i = frameIndex; i >= 0; i -= 1 )
+    {
+        for ( int layerIndex = 0; layerIndex < m_pObject->getLayerCount( ); ++layerIndex )
+        {
+            LayerImage* pLayer = static_cast<LayerImage*>( m_pObject->getLayer( layerIndex ) );
+            if ( pLayer->hasKeyframeAtPosition( i ) )
+            {
+                return i;
+            }
+        }
+    }
+    return -1;
 }

@@ -452,7 +452,7 @@ void ScribbleArea::updateFrame()
 void ScribbleArea::updateFrame( int frame )
 {
     setView();
-    int frameNumber = m_pEditor->getLastFrameAtFrame( frame );
+    int frameNumber = m_pEditor->layerManager()->LastFrameAtFrame( frame );
     QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
     readCanvasFromCache = true;
     update();
@@ -1073,11 +1073,14 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     if ( !mouseInUse && readCanvasFromCache )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
-        int frameNumber = m_pEditor->getLastFrameAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
-        if ( !QPixmapCache::find( "frame" + QString::number( frameNumber ), canvas ) )
+        int curIndex = m_pEditor->layerManager()->currentFrameIndex();
+        int frameNumber = m_pEditor->layerManager()->LastFrameAtFrame( curIndex );
+
+        QString strCachedFrameKey = "frame" + QString::number( frameNumber );
+        if ( !QPixmapCache::find( strCachedFrameKey, canvas ) )
         {
             updateCanvas( m_pEditor->layerManager()->currentFrameIndex(), event->rect() );
-            QPixmapCache::insert( "frame" + QString::number( frameNumber ), canvas );
+            QPixmapCache::insert( strCachedFrameKey, canvas );
         }
     }
     if ( currentTool()->type() == MOVE )

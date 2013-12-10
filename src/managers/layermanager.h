@@ -24,6 +24,8 @@ public:
     void gotoNextLayer();
     void gotoPreviouslayer();
 
+    int LastFrameAtFrame( int frameIndex );
+
     int  currentFrameIndex();
     void setCurrentFrameIndex( int );
 
