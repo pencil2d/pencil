@@ -108,11 +108,22 @@ void MainWindow2::makeTimeLineConnections()
 
     connect(m_pTimeLine, SIGNAL(playClick()), editor, SLOT(play()));
     connect(m_pTimeLine, SIGNAL(loopClick(bool)), editor, SLOT(setLoop(bool)));
+
+    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), editor, SLOT(setLoopControl(bool))); // adding LoopControlClick needs setLoopControl(bool)
+    connect(m_pTimeLine, SIGNAL(loopStartClick(int)), editor, SLOT(changeLoopStart(int)));
+    connect(m_pTimeLine, SIGNAL(loopEndClick(int)), editor, SLOT(changeLoopEnd(int)));
+
+
     connect(m_pTimeLine, SIGNAL(soundClick()), editor, SLOT(setSound()));
     connect(m_pTimeLine, SIGNAL(fpsClick(int)), editor, SLOT(changeFps(int)));
 
     connect(editor, SIGNAL(toggleLoop(bool)), m_pTimeLine, SIGNAL(toggleLoop(bool)));
     connect(m_pTimeLine, SIGNAL(loopClick(bool)), editor, SIGNAL(loopToggled(bool)));
+
+
+    connect(editor, SIGNAL(toggleLoopControl(bool)), m_pTimeLine, SIGNAL(toggleLoopControl(bool)));
+    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), editor, SIGNAL(loopControlToggled(bool)));//adding loopControlClick needs loopControlToggled(bool)
+
 
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
@@ -239,6 +250,10 @@ void MainWindow2::createMenus()
     connect(ui->actionLoop, SIGNAL(triggered(bool)), editor, SLOT(setLoop(bool)));
     connect(ui->actionLoop, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoop(bool))); //TODO: WTF?
     connect(editor, SIGNAL(loopToggled(bool)), ui->actionLoop, SLOT(setChecked(bool)));
+
+    connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));//adding loopControl
+    connect(ui->actionLoopControl, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoopControl(bool)));
+    connect(editor, SIGNAL(loopControlToggled(bool)), ui->actionLoopControl, SLOT(setChecked(bool)));
 
     connect(ui->actionAdd_Frame, SIGNAL(triggered()), editor, SLOT(addKey()));
     connect(ui->actionRemove_Frame, SIGNAL(triggered()), editor, SLOT(removeKey()));

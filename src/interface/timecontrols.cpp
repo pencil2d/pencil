@@ -33,6 +33,28 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     fpsBox->setToolTip("Frames per second");
     fpsBox->setFocusPolicy(Qt::NoFocus);
 
+    loopStart = new QSpinBox();
+    loopStart->setFont( QFont("Helvetica", 10) );
+    loopStart->setFixedHeight(22);
+    loopStart->setValue(settings.value("loopStart").toInt());
+    loopStart->setMinimum(1);
+    loopStart->setToolTip("Start of loop");
+    loopStart->setFocusPolicy(Qt::NoFocus);
+
+    loopEnd= new QSpinBox();
+    loopEnd->setFont( QFont("Helvetica", 10) );
+    loopEnd->setFixedHeight(22);
+    loopEnd->setValue(settings.value("loopEnd").toInt());
+    loopEnd->setMinimum(2);
+    loopEnd->setToolTip("End of loop");
+    loopEnd->setFocusPolicy(Qt::NoFocus);
+
+    loopControl = new QPushButton("Loop Control");
+    loopControl->setFont( QFont("Helvetica", 10) );
+    loopControl->setFixedHeight(26);
+    loopControl->setToolTip(tr("Loop control"));
+    loopControl->setCheckable(true);
+
     QPushButton* playButton = new QPushButton();
     loopButton = new QPushButton();
     soundButton = new QPushButton();
@@ -82,9 +104,13 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     addWidget(playButton);
     addWidget(endplayButton);
     addWidget(loopButton);
+    addWidget(loopControl);
+    addWidget(loopStart);
+    addWidget(loopEnd);
     addWidget(soundButton);
     addWidget(fpsLabel);
     addWidget(fpsBox);
+
 
     /*QHBoxLayout* frameLayout = new QHBoxLayout();
     frameLayout->setMargin(0);
@@ -112,6 +138,11 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     connect(endplayButton, SIGNAL(clicked()), this, SIGNAL(endClick()));
     connect(startplayButton, SIGNAL(clicked()), this, SIGNAL(startClick()));
     connect(loopButton, SIGNAL(clicked(bool)), this, SIGNAL(loopClick(bool)));
+
+    connect(loopControl, SIGNAL(clicked(bool)), this, SIGNAL(loopControlClick(bool)));//adding loopcontrol
+    connect(loopStart, SIGNAL(valueChanged(int)), this, SIGNAL(loopStartClick(int)));
+    connect(loopEnd, SIGNAL(valueChanged(int)), this, SIGNAL(loopEndClick(int)));
+
     //connect(loopButton, SIGNAL(clicked(bool)), this, SIGNAL(loopToggled(bool)));
     connect(soundButton, SIGNAL(clicked()), this, SIGNAL(soundClick()));
     connect(fpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
@@ -140,3 +171,13 @@ void TimeControls::toggleLoop(bool checked)
 {
     loopButton->setChecked(checked);
 }
+
+void TimeControls::toggleLoopControl(bool checked)
+{
+    loopControl->setChecked(checked);
+}
+
+void TimeControls::setLoopStart ( int value )
+{
+    loopStart->setValue(value);
+                                  }
