@@ -1330,7 +1330,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     if ( multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI )
         iStart = iEnd = m_pEditor->layerManager()->currentLayerIndex();
     }
-    for ( int i = iStart; i < iEnd; i++ )
+    for ( int i = iStart; i <= iEnd; i++ )
     {
         opacity = 1.0;
         if ( i != m_pEditor->layerManager()->currentLayerIndex() && (m_showAllLayers == 1) ) { opacity = 0.4; }
