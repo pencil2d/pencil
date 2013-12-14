@@ -77,6 +77,7 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     somethingSelected = false;
 
     onionPrev = true;
+    multiLayerOnionSkin = true;
     onionNext = false;
     m_showThinLines = false;
     m_showAllLayers = 1;
@@ -1317,7 +1318,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
     // --- onionskins ---
     int iStart=0;
     int iEnd=object->getLayerCount()-1;
-    if ( multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI )
+    if ( !multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI ) // is used now for Single/multiple onionskin Layers
         iStart = iEnd = m_pEditor->m_nCurrentLayerIndex;
     }
     for (int i = iStart; i <= iEnd; i++)
@@ -1326,7 +1327,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
         if (i != m_pEditor->m_nCurrentLayerIndex && (m_showAllLayers == 1)) { opacity = 0.4; }
         if (m_pEditor->getCurrentLayer()->type == Layer::CAMERA) { opacity = 1.0; }
         Layer *layer = (object->getLayer(i));
-        if (layer->visible && (m_showAllLayers > 0 || i == m_pEditor->m_nCurrentLayerIndex)) // change && to || for all layers
+        if (layer->visible || (m_showAllLayers > 0 && i == m_pEditor->m_nCurrentLayerIndex)) // changed && to || for Single/multiple onionskin Layers to work
         {
             // paints the bitmap images
             if (layer->type == Layer::BITMAP)
@@ -2169,6 +2170,14 @@ void ScribbleArea::toggleOnionPrev(bool checked)
     updateAllFrames();
     emit onionPrevChanged(onionPrev);
 }
+
+void ScribbleArea::toggleMultiLayerOnionSkin(bool checked)
+{
+    multiLayerOnionSkin = checked;
+    updateAllFrames();
+    emit multiLayerOnionSkinChanged(multiLayerOnionSkin);
+}
+
 
 void ScribbleArea::toggledOnionColor()
 {

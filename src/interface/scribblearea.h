@@ -128,6 +128,7 @@ signals:
 
     void onionPrevChanged(bool);
     void onionNextChanged(bool);
+    void multiLayerOnionSkinChanged(bool);
 
     void pencilOn();
     void eraserOn();
@@ -193,6 +194,8 @@ public slots:
     void toggleMirrorV();
     void toggleShowAllLayers();
     void escape();
+
+   void toggleMultiLayerOnionSkin(bool);
 
     void togglePopupPalette();
 

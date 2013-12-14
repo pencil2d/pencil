@@ -12,7 +12,7 @@ DisplayOptionDockWidget::DisplayOptionDockWidget(QWidget *parent) :
 {
     createUI();
     setWindowTitle(tr("Display Options"));
-    setMaximumHeight(60);
+    setMaximumHeight(100);
 }
 
 void DisplayOptionDockWidget::createUI()
@@ -60,6 +60,21 @@ void DisplayOptionDockWidget::createUI()
     onionRedButton->setToolTip("Onion skin color: red");
     onionRedButton->setIconSize( QSize(21,21) );
 
+    //onionBlueNextButton = new QToolButton(displayGroup);
+    //onionBlueNextButton->setIcon(QIcon(":icons/onion-blue.png"));
+    //onionBlueNextButton->setToolTip("Onion skin color: blue");
+    //onionBlueNextButton->setIconSize( QSize(21,21) );
+
+    //onionRedNextButton = new QToolButton(displayGroup);
+    //onionRedNextButton->setIcon(QIcon(":icons/onion-red.png"));
+    //onionRedNextButton->setToolTip("Onion skin color: red");
+    //onionRedNextButton->setIconSize( QSize(21,21) );
+
+    multiLayerOnionSkinButton = new QToolButton(displayGroup);
+    multiLayerOnionSkinButton->setText(QString("M"));
+    multiLayerOnionSkinButton->setToolTip("enable onionskin on multiple layers");
+    multiLayerOnionSkinButton->setIconSize( QSize(21,21) );
+
     gridAButton = new QToolButton(displayGroup);
     gridAButton->setIcon(QIcon(":icons/grid-a.png"));
     gridAButton->setToolTip("Grid A - composition");
@@ -85,25 +100,36 @@ void DisplayOptionDockWidget::createUI()
     onionBlueButton->setCheckable(true);
     onionBlueButton->setChecked(true);
     onionRedButton->setCheckable(true);
-    onionRedButton->setChecked(true);
+    onionRedButton->setChecked(false);
+    //onionBlueNextButton->setCheckable(true);
+    //onionBlueNextButton->setChecked(false);
+    //onionRedNextButton->setCheckable(true);
+    //onionRedNextButton->setChecked(true);
     gridAButton->setCheckable(true);
     gridAButton->setChecked(false);
     gridBButton->setCheckable(true);
     gridBButton->setChecked(false);
+    multiLayerOnionSkinButton->setCheckable(true);
+    multiLayerOnionSkinButton->setChecked(true);
+
 
     QGridLayout* layout = new QGridLayout();
     layout->setMargin(4);
     layout->setSpacing(0);
     layout->addWidget(mirrorButton,0,0);
-    layout->addWidget(mirrorButtonV,1,0);
-    layout->addWidget(thinLinesButton,0,1);
-    layout->addWidget(outlinesButton,1,1);
-    layout->addWidget(onionPrevButton,0,2);
-    layout->addWidget(onionNextButton,1,2);
+    layout->addWidget(onionPrevButton,1,2);
+    layout->addWidget(onionNextButton,0,2);
     layout->addWidget(onionBlueButton,0,3);
+    layout->addWidget(mirrorButtonV,1,0);
+    layout->addWidget(outlinesButton,1,1);
+    layout->addWidget(thinLinesButton,0,1);
     layout->addWidget(onionRedButton,1,3);
-    layout->addWidget(gridAButton,0,4);
-    layout->addWidget(gridBButton,1,4);
+    //layout->addWidget(onionBlueNextButton,0,4);hide until separate onionskin colors works
+    //layout->addWidget(onionRedNextButton,1,4);
+    layout->addWidget(gridAButton,2,0);
+    layout->addWidget(gridBButton,2,1);
+    layout->addWidget(multiLayerOnionSkinButton,2,2);
+
 
     displayGroup->setLayout(layout);
 
@@ -122,6 +148,8 @@ void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
     connect(mirrorButtonV, SIGNAL(clicked()), editor, SLOT(toggleMirrorV()));
     connect(gridAButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridA(bool)));
     connect(gridBButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridB(bool)));
+
+    connect(multiLayerOnionSkinButton,SIGNAL(clicked(bool)), editor->getScribbleArea(),SLOT(toggleMultiLayerOnionSkin(bool)));
 
     connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));
     connect(editor, SIGNAL(changeThinLinesButton(bool)), this, SLOT(changeThinLinesButton(bool)));
@@ -145,6 +173,16 @@ void DisplayOptionDockWidget::changeThinLinesButton(bool bIsChecked)
 void DisplayOptionDockWidget::onionPrevChanged(bool checked)
 {
     onionPrevButton->setChecked(checked);
+}
+
+void DisplayOptionDockWidget::changeMultiLayerOnionSkin(bool bIsChecked)
+{
+    multiLayerOnionSkinButton->setChecked(bIsChecked);
+}
+
+void DisplayOptionDockWidget::multiLayerOnionSkinButtonChanged(bool checked)
+{
+    multiLayerOnionSkinButton->setChecked(checked);
 }
 
 void DisplayOptionDockWidget::onionNextChanged(bool checked)

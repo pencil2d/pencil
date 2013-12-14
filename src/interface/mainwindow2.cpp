@@ -245,6 +245,9 @@ void MainWindow2::createMenus()
     connect(ui->actionOnionNext, SIGNAL(triggered(bool)), editor, SIGNAL(toggleOnionNext(bool)));
     connect(editor, SIGNAL(onionNextChanged(bool)), ui->actionOnionNext, SLOT(setChecked(bool)));
 
+    connect(ui->actionMultiLayerOnionSkin, SIGNAL(triggered(bool)), editor, SIGNAL(toggleMultiLayerOnionSkin(bool)));
+    connect(editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
+
     /// --- Animation Menu ---
     connect(ui->actionPlay, SIGNAL(triggered()), editor, SLOT(play()));
     connect(ui->actionLoop, SIGNAL(triggered(bool)), editor, SLOT(setLoop(bool)));
