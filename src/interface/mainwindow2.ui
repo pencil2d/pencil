@@ -120,6 +120,7 @@
     </property>
     <addaction name="actionPlay"/>
     <addaction name="actionLoop"/>
+    <addaction name="actionLoopcontrol"/>
     <addaction name="separator"/>
     <addaction name="actionNext_Frame"/>
     <addaction name="actionPrevious_Frame"/>
@@ -736,6 +737,17 @@
    </property>
    <property name="text">
     <string>MultiLayerOnionSkin</string>
+   </property>
+  </action>
+  <action name="actionLoopcontrol">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>loopcontrol</string>
    </property>
   </action>
  </widget>
