@@ -162,9 +162,11 @@ void Editor::makeConnections()
 
 	connect( this, SIGNAL( toggleOnionPrev( bool ) ), m_pScribbleArea, SLOT( toggleOnionPrev( bool ) ) );
 	connect( this, SIGNAL( toggleOnionNext( bool ) ), m_pScribbleArea, SLOT( toggleOnionNext( bool ) ) );
+    connect( this, SIGNAL( toggleMultiLayerOnionSkin( bool)), m_pScribbleArea, SLOT(toggleMultiLayerOnionSkin(bool )) );
 	connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
 	connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
 	connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
+    connect( m_pScribbleArea, SIGNAL( multiLayerOnionSkin( bool ) ), this, SIGNAL( multiLayerOnionSkin( bool ) ) );
 	connect( m_pScribbleArea, SIGNAL( onionNextChanged( bool ) ), this, SIGNAL( onionNextChanged( bool ) ) );
 
 	connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
