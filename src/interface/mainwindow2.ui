@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>18</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -94,6 +94,7 @@
      </property>
      <addaction name="actionOnionPrevious"/>
      <addaction name="actionOnionNext"/>
+     <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
     <addaction name="actionReset_Windows"/>
     <addaction name="actionReset_View"/>
@@ -119,6 +120,7 @@
     </property>
     <addaction name="actionPlay"/>
     <addaction name="actionLoop"/>
+    <addaction name="actionLoopcontrol"/>
     <addaction name="separator"/>
     <addaction name="actionNext_Frame"/>
     <addaction name="actionPrevious_Frame"/>
@@ -724,6 +726,28 @@
    </property>
    <property name="toolTip">
     <string>Previous keyframe</string>
+   </property>
+  </action>
+  <action name="actionMultiLayerOnionSkin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>MultiLayerOnionSkin</string>
+   </property>
+  </action>
+  <action name="actionLoopcontrol">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>loopcontrol</string>
    </property>
   </action>
  </widget>

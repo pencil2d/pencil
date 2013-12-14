@@ -80,6 +80,9 @@ Editor::Editor( MainWindow2* parent )
 	connect( timer, SIGNAL( timeout() ), this, SLOT( playNextFrame() ) );
 	playing = false;
 	looping = false;
+    loopControl = false;
+    loopStart = 1;
+    loopEnd =2;
 	sound = true;
 
 	frameList << 1;
@@ -159,9 +162,11 @@ void Editor::makeConnections()
 
 	connect( this, SIGNAL( toggleOnionPrev( bool ) ), m_pScribbleArea, SLOT( toggleOnionPrev( bool ) ) );
 	connect( this, SIGNAL( toggleOnionNext( bool ) ), m_pScribbleArea, SLOT( toggleOnionNext( bool ) ) );
+    connect( this, SIGNAL( toggleMultiLayerOnionSkin( bool)), m_pScribbleArea, SLOT(toggleMultiLayerOnionSkin(bool )) );
 	connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
 	connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
 	connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
+    connect( m_pScribbleArea, SIGNAL( multiLayerOnionSkin( bool ) ), this, SIGNAL( multiLayerOnionSkin( bool ) ) );
 	connect( m_pScribbleArea, SIGNAL( onionNextChanged( bool ) ), this, SIGNAL( onionNextChanged( bool ) ) );
 
 	connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
@@ -1662,28 +1667,54 @@ int Editor::getLastFrameAtFrame( int frameNumber )
 }
 
 void Editor::play()
+
 {
-	updateMaxFrame();
-	if ( m_nCurrentFrameIndex > maxFrame )
-	{
-		scrubTo( maxFrame );
-	}
-	else if ( m_nCurrentFrameIndex == maxFrame )
-	{
-		if ( !playing )
-		{
-			scrubTo( 0 );
-		}
-		else
-		{
-			if ( looping ) { scrubTo( 0 ); }
-			else { startOrStop(); }
-		}
-	}
-	else
-	{
-		startOrStop();
-	}
+    int loopStarts = loopStart;
+    int loopEnds = loopEnd;
+        updateMaxFrame();
+        if ( m_nCurrentFrameIndex == loopEnds )
+                   {
+                       if (loopControl)
+                           {
+                           scrubTo( loopStarts );
+                       }
+                   }
+        else if ( m_nCurrentFrameIndex > maxFrame )
+        {
+                if ( loopControl )
+                { scrubTo(  loopStarts );}
+                else
+                {scrubTo( maxFrame );}
+        }
+        else if ( m_nCurrentFrameIndex == maxFrame )
+        {
+                if ( !playing )
+                {
+                    if (loopControl){
+                        scrubTo( loopStarts );
+                    }
+                    else{
+                    scrubTo( 0 );
+                    }
+                }
+                else
+                {
+                    if ( looping ) {
+                        if ( loopControl ){
+                            scrubTo( loopStarts );
+                        }
+                        else{
+                        scrubTo( 0 );
+                    }}
+                        else {
+                        startOrStop();
+                    }
+                }
+        }
+        else
+        {
+                startOrStop();
+        }
 }
 
 void Editor::startOrStop()
@@ -1717,7 +1748,7 @@ void Editor::scrubNextKeyframe()
 	else {
 		if ( looping ) {
 			// scrubto first key frame
-			position = layer->getFirstKeyframePosition();
+            layer->getFirstKeyframePosition();
 			if ( position != Layer::NO_KEYFRAME ) {
 				scrubTo( position );
 			}
@@ -1755,7 +1786,14 @@ void Editor::scrubPreviousKeyframe()
 void Editor::playNextFrame()
 {
 	updateMaxFrame();
-
+    int loopStarts = loopStart;
+    int loopEnds = loopEnd;
+    if (m_nCurrentFrameIndex == loopEnds)
+    {
+        if (loopControl){
+            scrubTo( loopStarts);
+        }
+    }
 	if ( m_nCurrentFrameIndex < maxFrame )
 	{
 		if ( sound ) object->playSoundIfAny( m_nCurrentFrameIndex, fps );
@@ -1799,6 +1837,21 @@ int Editor::getFps()
 void Editor::setLoop( bool checked )
 {
 	looping = checked;
+}
+
+void Editor::setLoopControl( bool checked )
+{
+    loopControl = checked;
+}
+
+void Editor::changeLoopStart(int x)
+{
+    loopStart = x;
+}
+
+void Editor::changeLoopEnd(int x)
+{
+    loopEnd = x;
 }
 
 void Editor::setSound()

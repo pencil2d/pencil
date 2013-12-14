@@ -29,21 +29,31 @@ class TimeControls : public QToolBar
 public:
     TimeControls(QWidget* parent = 0);
     void setFps ( int value );
+    void setLoopStart (int value);
 
 signals:
     void playClick();
     void endClick();
     void startClick();
     void loopClick(bool);
+    void loopControlClick(bool);//adding loopControl
+
     void soundClick();
     void fpsClick(int);
 
     void loopToggled(bool);
 
+    void loopControlToggled(bool);
+    void loopStartClick(int);
+    void loopEndClick(int);
+
+
 public slots:
     //void updateLoopButton(bool);
     void updateButtons(bool);
     void toggleLoop(bool);
+    void toggleLoopControl(bool);
+
 
 protected:
 
@@ -54,6 +64,9 @@ private:
     QPushButton* loopButton;
     QPushButton* soundButton;
     QSpinBox* fpsBox;
+    QPushButton* loopControl;
+    QSpinBox* loopStart;
+    QSpinBox* loopEnd;
 };
 
 #endif
