@@ -60,6 +60,11 @@ public:
 	QTimer* timer; // the timer used for animation in the editor
 	bool playing;
 	bool looping;
+    bool loopControl;
+    int loopStart;
+    int loopStarts;
+    int loopEnd;
+    int loopEnds;
 	bool sound;
 	ToolSetWidget* toolSet;
 
@@ -91,7 +96,7 @@ public:
 	void importMovie( QString filePath, int fps );
 
 	// backup
-	int backupIndex;
+    int backupIndex;
 	QList<BackupElement*> backupList;
 
 	ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
@@ -104,11 +109,14 @@ protected:
 	QRect viewRect;
 signals:
 	void selectAll();
-	void toggleLoop( bool );
+    void toggleLoop( bool );
+    void toggleLoopControl( bool ) ;
 	void loopToggled( bool );
+    void toggleMultiLayerOnionSkin(bool);
 	void toggleOnionNext( bool );
 	void toggleOnionPrev( bool );
 	void onionPrevChanged( bool );
+    void multiLayerOnionSkinChanged(bool);
 	void onionNextChanged( bool );
 	void changeThinLinesButton( bool );
 	void changeOutlinesButton( bool );
@@ -165,6 +173,9 @@ signals:
 	void changeFps( int );
 	int getFps();
 	void setLoop( bool checked );
+    void setLoopControl( bool checked );
+    void changeLoopStart (int);
+    void changeLoopEnd (int);
 	void setSound();
 
 	void previousLayer();
@@ -255,6 +266,8 @@ signals:
 	void getCameraLayer();
 
 	void printAndPreview( QPrinter* );
+
+    //void on_actionLoopControl_triggered();  //possibly accidently put here by mainWindow_2.ui??
 
 private:
 	ScribbleArea* m_pScribbleArea;

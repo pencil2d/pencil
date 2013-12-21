@@ -46,7 +46,12 @@ signals :
 
 	void playClick();
 	void loopClick( bool );
-	void toggleLoop( bool );
+
+    void loopControlClick( bool );//adding loopControl
+    void loopStartClick(int);
+    void loopEndClick(int);
+
+    void toggleLoop( bool );
 	void loopToggled( bool );
 	void soundClick();
 	void endplayClick();
