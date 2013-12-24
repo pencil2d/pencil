@@ -79,7 +79,7 @@ ui( new Ui::MainWindow2 )
 
     readSettings();
 
-    connectColorPalette();
+    makeColorPaletteConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
@@ -131,7 +131,7 @@ void MainWindow2::makeTimeLineConnections()
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
 
-void MainWindow2::connectColorPalette()
+void MainWindow2::makeColorPaletteConnections()
 {
     connect( m_pColorPalette, SIGNAL(colorChanged(QColor)),
              editor->colorManager(), SLOT(pickColor(QColor)) );
