@@ -78,6 +78,7 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     somethingSelected = false;
 
     onionPrev = true;
+    multiLayerOnionSkin = true;
     onionNext = false;
     m_showThinLines = false;
     m_showAllLayers = 1;
@@ -1327,7 +1328,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     // --- onionskins ---
     int iStart = 0;
     int iEnd = object->getLayerCount() - 1;
-    if ( multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI )
+    if ( !multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI ) // is used now for Single/multiple onionskin Layers
         iStart = iEnd = m_pEditor->layerManager()->currentLayerIndex();
     }
     for ( int i = iStart; i <= iEnd; i++ )
@@ -2198,6 +2199,14 @@ void ScribbleArea::toggleOnionPrev( bool checked )
     updateAllFrames();
     emit onionPrevChanged( onionPrev );
 }
+
+void ScribbleArea::toggleMultiLayerOnionSkin(bool checked)
+{
+    multiLayerOnionSkin = checked;
+    updateAllFrames();
+    emit multiLayerOnionSkinChanged(multiLayerOnionSkin);
+}
+
 
 void ScribbleArea::toggledOnionColor()
 {

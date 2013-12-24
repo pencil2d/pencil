@@ -58,12 +58,17 @@ public:
     //int layerManager()->currentLayerIndex();
     int maxFrame; // the number of the last frame for the current object
 
-    int fps; // the number of frames per second used by the editor
-    QTimer* timer; // the timer used for animation in the editor
-    bool playing;
-    bool looping;
-    bool sound;
-    ToolSetWidget* toolSet;
+	int fps; // the number of frames per second used by the editor
+	QTimer* timer; // the timer used for animation in the editor
+	bool playing;
+	bool looping;
+    bool loopControl;
+    int loopStart;
+    int loopStarts;
+    int loopEnd;
+    int loopEnds;
+	bool sound;
+	ToolSetWidget* toolSet;
 
     TimeLine* getTimeLine();
 
@@ -89,20 +94,23 @@ public:
     void setColor( QColor argColor );
 
 protected:
-    void keyPressEvent( QKeyEvent *event );
-    void dragEnterEvent( QDragEnterEvent* event );
-    void dropEvent( QDropEvent* event );
-    QRect viewRect;
-    signals:
-    void selectAll();
+	void keyPressEvent( QKeyEvent *event );
+	void dragEnterEvent( QDragEnterEvent* event );
+	void dropEvent( QDropEvent* event );
+	QRect viewRect;
+signals:
+	void selectAll();
     void toggleLoop( bool );
-    void loopToggled( bool );
-    void toggleOnionNext( bool );
-    void toggleOnionPrev( bool );
+    void toggleLoopControl( bool ) ;
+	void loopToggled( bool );
+    void toggleMultiLayerOnionSkin(bool);
+	void toggleOnionNext( bool );
+	void toggleOnionPrev( bool );
+    void multiLayerOnionSkinChanged(bool);
     void onionPrevChanged( bool );
-    void onionNextChanged( bool );
-    void changeThinLinesButton( bool );
-    void changeOutlinesButton( bool );
+	void onionNextChanged( bool );
+	void changeThinLinesButton( bool );
+	void changeOutlinesButton( bool );
 
     // Tool Option
     void changeTool( ToolType );
@@ -153,10 +161,13 @@ protected:
     void playNextFrame();
     void playPrevFrame();
 
-    void changeFps( int );
-    int getFps();
-    void setLoop( bool checked );
-    void setSound();
+	void changeFps( int );
+	int getFps();
+	void setLoop( bool checked );
+    void setLoopControl( bool checked );
+    void changeLoopStart (int);
+    void changeLoopEnd (int);
+	void setSound();
 
     void previousLayer();
     void nextLayer();
@@ -240,7 +251,7 @@ protected:
     void saveLength( QString );
     void getCameraLayer();
 
-    void printAndPreview( QPrinter* );
+    //void on_actionLoopControl_triggered();  //possibly accidently put here by mainWindow_2.ui??
 
 private:
     ScribbleArea* m_pScribbleArea;
