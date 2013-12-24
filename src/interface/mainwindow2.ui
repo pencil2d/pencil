@@ -169,12 +169,24 @@
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuWIndows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+    <addaction name="actionToolsWidget"/>
+    <addaction name="actionTimeline"/>
+    <addaction name="actionOptionsWidget"/>
+    <addaction name="actionColorWheel"/>
+    <addaction name="actionColorPalette"/>
+    <addaction name="actionDisplayOptions"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuAnimation"/>
    <addaction name="menuTools"/>
    <addaction name="menuLayer"/>
+   <addaction name="menuWIndows"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -748,6 +760,54 @@
    </property>
    <property name="text">
     <string>loopcontrol</string>
+   </property>
+  </action>
+  <action name="actionToolsWidget">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tools</string>
+   </property>
+  </action>
+  <action name="actionTimeline">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Timeline</string>
+   </property>
+  </action>
+  <action name="actionOptionsWidget">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Options</string>
+   </property>
+  </action>
+  <action name="actionColorWheel">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color Wheel</string>
+   </property>
+  </action>
+  <action name="actionColorPalette">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color Palette</string>
+   </property>
+  </action>
+  <action name="actionDisplayOptions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display Options</string>
    </property>
   </action>
  </widget>
