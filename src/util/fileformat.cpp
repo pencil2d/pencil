@@ -20,11 +20,16 @@ GNU General Public License for more details.
 #include "fileformat.h"
 
 
-bool removePFFTmpDirectory (const QString & dirName)
+bool removePFFTmpDirectory (const QString& dirName)
 {
 	bool result;
 	QDir dir(dirName + "/" + PFF_LAYERS_DIR);
 	
+    if ( !dir.exists() )
+    {
+        return false;
+    }
+
 	Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files, QDir::DirsFirst))
 	{
 		result = QFile::remove(info.absoluteFilePath());

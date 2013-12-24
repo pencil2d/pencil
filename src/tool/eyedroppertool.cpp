@@ -4,6 +4,7 @@
 
 #include "pencilsettings.h"
 
+#include "layermanager.h"
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
@@ -69,9 +70,9 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
             //QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
             QColor pickedColour;
             pickedColour.setRgba( targetImage->pixel( getLastPoint().x(), getLastPoint().y() ) );
@@ -84,9 +85,9 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
                 m_pEditor->colorManager()->pickColor(pickedColour);
             }
         }
-        else if (layer->type == Layer::VECTOR)
+        else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
             int colourNumber = vectorImage->getColourNumber(getLastPoint());
             if (colourNumber != -1)
             {
@@ -103,9 +104,9 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    if (layer->type == Layer::BITMAP)
+    if (layer->type() == Layer::BITMAP)
     {
-        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
         if (targetImage->contains(getCurrentPoint()))
         {
             QColor pickedColour;
@@ -129,13 +130,13 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
             m_pScribbleArea->setCursor(cursor());
         }
     }
-    if (layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
         if (colourNumber != -1)
         {
-            m_pScribbleArea->setCursor(cursor(m_pEditor->object->getColour(colourNumber).colour));
+            m_pScribbleArea->setCursor(cursor(m_pEditor->m_pObject->getColour(colourNumber).colour));
         }
         else
         {

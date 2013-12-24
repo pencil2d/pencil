@@ -20,7 +20,7 @@ GNU General Public License for more details.
 
 LayerSound::LayerSound(Object* object) : LayerImage(object)
 {
-    type = Layer::SOUND;
+    m_eType = Layer::SOUND;
     //modified = false;
     name = QString("Sound Layer");
 }
@@ -71,7 +71,6 @@ bool LayerSound::addImageAtFrame(int frameNumber)
         sound.append(NULL);
         soundFilepath.append("");
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
@@ -93,7 +92,6 @@ void LayerSound::removeImageAtFrame(int frameNumber)
         delete sound.at(index);
         soundFilepath.removeAt(index);
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
@@ -150,15 +148,7 @@ void LayerSound::swap(int i, int j)
 bool LayerSound::saveImage(int index, QString path, int layerNumber)
 {
     Q_UNUSED(layerNumber);
-    /*QString layerNumberString = QString::number(layerNumber);
-    QString frameNumberString = QString::number(framesPosition.at(index));
-    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");*/
-    //framesFilename[index] = path+"/"+layerNumberString+"."+frameNumberString+".png";
-    //framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
-    //framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
-    //qDebug() << "Write " << framesFilename.at(index);
-    //framesImage[index]->save(framesFilename.at(index),"PNG");
+    
     QFile originalFile( soundFilepath.at(index) );
     originalFile.copy( path + "/" + framesFilename.at(index) );
     framesModified[index] = false;
@@ -166,20 +156,8 @@ bool LayerSound::saveImage(int index, QString path, int layerNumber)
     return true;
 }
 
-/*#
-void LayerSound::playSound(int frame) {
-	for(int i=0; i < sound.size(); i++) {
-		if (frame == framesPosition.at(i)) {
-			if (sound.at(i) != NULL && visible) sound[i]->play();
-		}
-	}
-}
-#*/
 void LayerSound::playSound(int frame,int fps)
 {
-    //QSettings settings("Pencil","Pencil");
-    //int fps = settings.value("fps").toInt();
-
     for (int i = 0; i < sound.size(); ++i)
     {
         Phonon::MediaObject* media = sound.at(i);
@@ -244,7 +222,7 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("id",id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute("type", type());
     for(int index=0; index < framesPosition.size() ; index++)
     {
         QDomElement soundTag = doc.createElement("sound");
@@ -260,7 +238,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = element.attribute("type").toInt();
+    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())
@@ -291,6 +269,5 @@ void LayerSound::addTimelineKey(qint64 newTotalTime)
             this->soundSize[i] = this->sound[i]->totalTime();
     }
     QSettings settings("Pencil","Pencil");
-    //int fps = settings.value("fps").toInt();
-    //addImageAtFrame(fps * ((newTotalTime / 1000)));
+
 }

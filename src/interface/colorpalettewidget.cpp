@@ -109,9 +109,9 @@ void ColorPaletteWidget::refreshColorList()
         m_colorListView->clear();
     }
 
-    for (int i = 0; i < m_editor->object->getColourCount(); i++)
+    for (int i = 0; i < m_editor->object()->getColourCount(); i++)
     {
-        ColourRef colourRef = m_editor->object->getColour(i);
+        ColourRef colourRef = m_editor->object()->getColour(i);
 
         QListWidgetItem* colourItem = new QListWidgetItem(m_colorListView);
         colourItem->setText( colourRef.name );
@@ -128,14 +128,14 @@ void ColorPaletteWidget::colourSwatchClicked()
     if (currentColourNumber() > -1)
     {
         bool ok;
-        ColourRef colorRef = m_editor->object->getColour(currentColourNumber());
+        ColourRef colorRef = m_editor->object()->getColour(currentColourNumber());
         QRgb qrgba = QColorDialog::getRgba( colorRef.colour.rgba(), &ok, this );
 
         if ( ok )
         {
             QColor newColor = QColor::fromRgba(qrgba);
             int colorIndex = currentColourNumber();
-            m_editor->object->setColour(colorIndex, newColor);
+            m_editor->object()->setColour(colorIndex, newColor);
             m_editor->setFrontColour(colorIndex, newColor );
 
             refreshColorList();
@@ -158,7 +158,7 @@ void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
 {
     int colorIndex = m_colorListView->row(currentItem);
 
-    m_colorBox->setColor( m_editor->getObject()->getColour(colorIndex).colour );
+    m_colorBox->setColor( m_editor->object()->getColour(colorIndex).colour );
 
     m_editor->selectAndApplyColour( colorIndex );
 
@@ -169,7 +169,7 @@ void ColorPaletteWidget::colorWheelChanged(QColor newColor)
 {
     int colorIndex = currentColourNumber();
 
-    m_editor->object->setColour(colorIndex, newColor);
+    m_editor->m_pObject->setColour(colorIndex, newColor);
     m_editor->getScribbleArea()->updateFrame();
 
     updateItemColor(colorIndex, newColor);
@@ -189,11 +189,11 @@ void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
             tr("Colour name"),
             tr("Colour name:"),
             QLineEdit::Normal,
-            m_editor->object->getColour(colorNumber).name,
+            m_editor->m_pObject->getColour(colorNumber).name,
             &ok );
         if (ok && !text.isEmpty())
         {
-            m_editor->object->renameColour(colorNumber, text);
+            m_editor->m_pObject->renameColour(colorNumber, text);
             refreshColorList();
         }
     }
@@ -205,7 +205,7 @@ void ColorPaletteWidget::clickAddColorButton()
 
     if ( currentColourNumber() > -1 )
     {
-        prevColor = m_editor->object->getColour(currentColourNumber()).colour;
+        prevColor = m_editor->m_pObject->getColour(currentColourNumber()).colour;
     }
 
     bool ok;
@@ -223,9 +223,9 @@ void ColorPaletteWidget::clickAddColorButton()
         if (ok)
         {
             ref.name = text;
-            m_editor->object->addColour(ref);
+            m_editor->m_pObject->addColour(ref);
             refreshColorList();
-            m_editor->colorManager()->pickColor( m_editor->getObject()->getColourCount() - 1 );
+            m_editor->colorManager()->pickColor( m_editor->object()->getColourCount() - 1 );
         }
     }
 }
@@ -233,7 +233,7 @@ void ColorPaletteWidget::clickAddColorButton()
 void ColorPaletteWidget::clickRemoveColorButton()
 {
     int colorNumber = m_colorListView->currentRow();
-    m_editor->object->removeColour(colorNumber);
+    m_editor->m_pObject->removeColour(colorNumber);
 
     refreshColorList();
 }

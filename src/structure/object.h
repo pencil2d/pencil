@@ -49,7 +49,8 @@ public:
     Object();
     virtual ~Object();
 
-    QString strCurrentFilePath;
+    QString filePath() { return m_strFilePath; }
+    void    setFilePath( QString strFileName ) { m_strFilePath = strFileName; }
 
     QDomElement createDomElement(QDomDocument& doc);
     bool loadDomElement(QDomElement element,  QString dataDirPath);
@@ -105,6 +106,8 @@ public:
     bool exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing, int gradients);
     bool exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
 
+private:
+    QString m_strFilePath;
 };
 
 #endif

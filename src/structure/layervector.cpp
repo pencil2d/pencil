@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 LayerVector::LayerVector(Object* object) : LayerImage(object)
 {
-    type = Layer::VECTOR;
+    m_eType = Layer::VECTOR;
     name = QString("Vector Layer");
     addImageAtFrame(1);
     //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
@@ -57,20 +57,6 @@ QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, boo
         return image;
     }
 }
-
-QImage* LayerVector::getImageAtFrame(int frameNumber, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        return NULL;
-    }
-    else
-    {
-        return getImageAtIndex(index, size, simplified, showThinLines, curveOpacity, antialiasing, gradients);
-    }
-}
-
 
 QImage* LayerVector::getLastImageAtFrame(int frameNumber, int increment, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
 {
@@ -150,36 +136,6 @@ void LayerVector::removeColour(int index)
     }
 }
 
-/*void LayerBitmap::paint(QPainter &painter, int verticalPosition, int layerHeight, int frameSize, int timeLineWidth) {
-	painter.setBrush(QColor(128,128,255));
-	painter.setPen(QPen(QBrush(Qt::black), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-	painter.drawRect(0, verticalPosition, timeLineWidth, layerHeight);
-	for(int i=0; i < framesPosition.size(); i++) {
-		if (framesSelected.at(i)) {
-			painter.setBrush(QColor(10,10,10));
-			painter.drawRect((framesPosition.at(i)+frameOffset-1)*frameSize, verticalPosition, frameSize, layerHeight);
-		}
-		else {
-			painter.setBrush(QColor(75,75,75));
-			painter.drawRect((framesPosition.at(i)-1)*frameSize, verticalPosition, frameSize, layerHeight);
-		}
-	}
-	//painter.setFont(QFont("helvetica", layerHeight/2));
-	//painter.drawText(QPoint(10, verticalPosition+(2*layerHeight)/3),"Undefined Layer");
-}
-
-void LayerBitmap::mousePress(int frameNumber) {
-	frameClicked = frameNumber;
-	int index = getIndexAtFrame(frameNumber);
-	if (index == -1) {
-		// deselect all
-		for(int i=0; i < framesPosition.size(); i++) {
-			framesSelected[i] = false;
-		}
-	} else {
-		framesSelected[index] = true;
-	}
-}*/
 
 bool LayerVector::addImageAtFrame(int frameNumber)
 {
@@ -187,16 +143,14 @@ bool LayerVector::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
-        framesVector.append(new VectorImage(object));
+        framesVector.append(new VectorImage(m_pObject));
         framesImage.append(new QImage( QSize(2,2), QImage::Format_ARGB32_Premultiplied)); // very small image to begin with
 
         framesPosition.append(frameNumber);
-        framesOriginalPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
         framesModified.append(false);
         bubbleSort();
-        emit imageAdded(frameNumber);
         return true;
     }
     else
@@ -217,12 +171,10 @@ void LayerVector::removeImageAtFrame(int frameNumber)
         framesImage.removeAt(index);
 
         framesPosition.removeAt(index);
-        framesOriginalPosition.removeAt(index);
         framesSelected.removeAt(index);
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
         bubbleSort();
-        emit imageRemoved(frameNumber);
     }
 }
 
@@ -278,7 +230,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("id", id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute("type", type());
     for(int index=0; index < framesPosition.size() ; index++)
     {
         //QDomElement imageTag = framesVector[index]->createDomElement(doc); // if we want to embed the data
@@ -295,7 +247,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    type = element.attribute("type").toInt();
+    m_eType = static_cast<LAYER_TYPE>( element.attribute( "type" ).toInt( ) );
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -325,4 +277,3 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
         imageTag = imageTag.nextSibling();
     }
 }
-

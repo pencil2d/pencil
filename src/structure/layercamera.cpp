@@ -26,7 +26,6 @@ GNU General Public License for more details.
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()
 {
-
     QLabel* nameLabel = new QLabel(tr("Camera name:"));
     nameBox = new QLineEdit();
     nameBox->setText(name);
@@ -101,7 +100,7 @@ void CameraPropertiesDialog::setHeight(int height)
 
 LayerCamera::LayerCamera(Object* object) : LayerImage(object)
 {
-    type = Layer::CAMERA;
+    m_eType = Layer::CAMERA;
     name = QString("Camera Layer");
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
@@ -211,10 +210,8 @@ bool LayerCamera::addImageAtFrame(int frameNumber)
         framesModified.append(false);
         bubbleSort();
         int frameNumber1 = frameNumber;
-        int frameNumber2 = frameNumber;
         if (index>0) frameNumber1 = framesPosition.at(index-1);
         if (index<framesPosition.size()-1) frameNumber1 = framesPosition.at(index+1);
-        emit imageAdded(frameNumber1, frameNumber2);
         return true;
     }
     else
@@ -235,7 +232,6 @@ void LayerCamera::removeImageAtFrame(int frameNumber)
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
         bubbleSort();
-        emit imageRemoved(frameNumber);
     }
 }
 
@@ -245,7 +241,6 @@ void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
     int index = getIndexAtFrame(frameNumber);
     framesCamera[index] = new Camera();
     framesCamera[index]->view = view;
-    emit imageAdded(frameNumber);
 }
 
 void LayerCamera::swap(int i, int j)
@@ -291,7 +286,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc)
     QDomElement layerTag = doc.createElement("layer");
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type);
+    layerTag.setAttribute("type", type());
     layerTag.setAttribute("width", viewRect.width());
     layerTag.setAttribute("height", viewRect.height());
     for(int index=0; index < framesPosition.size() ; index++)
@@ -316,7 +311,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
     name = element.attribute("name");
     //visible = (element.attribute("visibility") == "1");
     visible = true;
-    type = element.attribute("type").toInt();
+    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     int width = element.attribute("width").toInt();
     int height = element.attribute("height").toInt();

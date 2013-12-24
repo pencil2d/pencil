@@ -88,7 +88,7 @@ private slots:
 
     // XML save/load
     QDomElement createDomElement(QDomDocument& doc);
-    bool loadDomElement(QDomElement element,  QString filePath);
+    bool loadDomElement(QDomElement docElem, QString filePath);
 
 private:
     void arrangePalettes();
@@ -100,9 +100,7 @@ private:
     void closeEvent(QCloseEvent*);
 
     void readSettings();
-    void writeSettings();    
-
-    QString path;
+    void writeSettings();
 };
 
 #endif // MAINWINDOW2_H

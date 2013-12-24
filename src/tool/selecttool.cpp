@@ -1,13 +1,11 @@
 #include "editor.h"
-#include "layer.h"
 #include "layervector.h"
 #include "scribblearea.h"
-
+#include "layermanager.h"
 #include "selecttool.h"
 
 SelectTool::SelectTool()
 {
-
 }
 
 ToolType SelectTool::type()
@@ -35,11 +33,11 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
-            if (layer->type == Layer::VECTOR)
+            if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->deselectAll();
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)->deselectAll();
             }
             m_pScribbleArea->setMoveMode(ScribbleArea::MIDDLE);
             m_pEditor->backup(typeName());
@@ -77,7 +75,6 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
             m_pScribbleArea->update();
         }
     }
-
 }
 
 void SelectTool::mouseReleaseEvent(QMouseEvent *event)
@@ -87,12 +84,12 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
             if (m_pScribbleArea->somethingSelected)
             {
                 m_pScribbleArea->switchTool(MOVE);
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
                 m_pScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
                 if (m_pScribbleArea->mySelection.size() == QSizeF(0, 0))
                 {
@@ -102,13 +99,12 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
             m_pScribbleArea->updateFrame();
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::BITMAP)
+        else if (layer->type() == Layer::BITMAP)
         {
             m_pScribbleArea->updateFrame();
             m_pScribbleArea->setAllDirty();
         }
     }
-
 }
 
 void SelectTool::mouseMoveEvent(QMouseEvent *event)
@@ -116,7 +112,7 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    if ((event->buttons() & Qt::LeftButton) && m_pScribbleArea->somethingSelected && (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR))
+    if ((event->buttons() & Qt::LeftButton) && m_pScribbleArea->somethingSelected && (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR))
     {
         switch (m_pScribbleArea->getMoveMode())
         {
@@ -144,11 +140,10 @@ void SelectTool::mouseMoveEvent(QMouseEvent *event)
         m_pScribbleArea->myTransformedSelection = m_pScribbleArea->mySelection.adjusted(0, 0, 0, 0);
         m_pScribbleArea->myTempTransformedSelection = m_pScribbleArea->mySelection.adjusted(0, 0, 0, 0);
 
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
-            ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->select(m_pScribbleArea->mySelection);
+            ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)->select(m_pScribbleArea->mySelection);
         }
         m_pScribbleArea->update();
     }
-
 }

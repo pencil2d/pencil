@@ -21,5 +21,4 @@ SOURCES += $$PWD/qioapi.cpp \
            $$PWD/quazipfileinfo.cpp \
            $$PWD/quazipnewinfo.cpp \
            $$PWD/unzip.c \
-           $$PWD/zip.c \           
-           
+           $$PWD/zip.c

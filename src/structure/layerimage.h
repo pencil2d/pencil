@@ -16,16 +16,18 @@ GNU General Public License for more details.
 #ifndef LAYERIMAGE_H
 #define LAYERIMAGE_H
 
-#include <QImage>
+
 #include <QSize>
 #include <QList>
 #include <QString>
-#include <QPainter>
 
 #include "layer.h"
 #include "keyframe.h"
 
+class QImage;
+class QPainter;
 class TimeLineCells;
+
 
 class LayerImage : public Layer
 {
@@ -40,20 +42,15 @@ public:
     virtual int getPreviousKeyframePosition(int position);
     virtual int getNextKeyframePosition(int position);
     virtual int getMaxFramePosition();
-    virtual int getMaxFrameIndex();
 
     // frame <-> image API
     int getFramePositionAt(int index);
     int getIndexAtFrame(int frameNumber);
     int getLastIndexAtFrame(int frameNumber);
 
-    virtual QImage* getImageAtIndex(int index);
-    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int) {
-        return NULL;
-    }
+    // FIXME: this API only used in vector layer
+    virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 
-    QImage* getImageAtFrame(int frameNumber);
-    QImage* getLastImageAtFrame(int frameNumber, int increment);
     virtual bool addImageAtFrame(int frameNumber);
     virtual void removeImageAtFrame(int frameNumber);
     virtual void setModified(int frameNumber, bool trueOrFalse);
@@ -71,17 +68,12 @@ public:
     void mouseRelease(QMouseEvent* event, int frameNumber);
     void mouseDoubleClick(QMouseEvent* event, int frameNumber);
 
-signals:
-    void imageAdded(int);
-    void imageAdded(int,int);
-    void imageRemoved(int);
+private:
+    QList<Keyframe*> keyframes;
 
 protected:
-    QList<Keyframe> keyframes;
-
     // list of frame positions, sorted from lowest to largest
     QList<int> framesPosition;
-    QList<int> framesOriginalPosition;
     QList<QString> framesFilename;
     QList<bool> framesModified;
 

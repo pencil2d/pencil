@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
 {   
     QApplication app(argc, argv);
     app.setApplicationName("Pencil");
+
 #ifndef Q_WS_MAC
     app.setWindowIcon(QIcon(":/icons/icon.png"));
 #endif
@@ -49,7 +50,7 @@ int main(int argc, char* argv[])
 
         // Extracting options
         int i;
-        for(i=1; i<argc; i++)
+        for (i = 1; i < argc; i++)
         {
             if (jobExportSequence && jobExportSequenceOutput == "")
             {

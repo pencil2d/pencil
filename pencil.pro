@@ -21,3 +21,4 @@ DEPENDPATH *= $${INCLUDEPATH}
 RESOURCES += pencil.qrc
 
 TRANSLATIONS += pencil.ts
+

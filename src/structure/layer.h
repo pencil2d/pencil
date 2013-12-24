@@ -29,24 +29,32 @@ class Layer : public QObject
     Q_OBJECT
 
 public:
-    Layer(Object* object);
+    enum LAYER_TYPE
+    {
+        UNDEFINED = 0,
+        BITMAP = 1,
+        VECTOR = 2,
+        MOVIE = 3,
+        SOUND = 4,
+        CAMERA = 5
+    };
+
+    Layer(Object*);
     virtual ~Layer();
 
-    Object* object;
-    int type;
+    QString name;
     bool visible;
     int id;
-    QString name;
+
+    LAYER_TYPE type() { return m_eType; }
 
     void switchVisibility() { visible = !visible;}
-
     // keyframe interface
     static const int NO_KEYFRAME = -1;
-    virtual int getMaxFrameIndex() { return NO_KEYFRAME; }
     virtual int getMaxFramePosition() { return NO_KEYFRAME; }
-    virtual bool hasKeyframeAtPosition(int position);
-    virtual int getPreviousKeyframePosition(int position);
-    virtual int getNextKeyframePosition(int position);
+    virtual bool hasKeyframeAtPosition(int position) = 0;
+    virtual int getPreviousKeyframePosition(int position) = 0;
+    virtual int getNextKeyframePosition(int position) = 0;
     virtual int getFirstKeyframePosition();
     virtual int getLastKeyframePosition();
 
@@ -59,15 +67,16 @@ public:
     virtual void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int frameSize);
     virtual void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
-    virtual void mousePress(QMouseEvent* event, int frameNumber);
-    virtual void mouseMove(QMouseEvent* event, int frameNumber);
-    virtual void mouseRelease(QMouseEvent* event, int frameNumber);
-    virtual void mouseDoubleClick(QMouseEvent* event, int frameNumber);
+    virtual void mousePress(QMouseEvent* event, int frameNumber) = 0;
+    virtual void mouseMove(QMouseEvent* event, int frameNumber) = 0;
+    virtual void mouseRelease(QMouseEvent* event, int frameNumber) = 0;
+    virtual void mouseDoubleClick(QMouseEvent* event, int frameNumber) = 0;
 
     virtual void editProperties();
 
-public:
-    enum types { UNDEFINED, BITMAP, VECTOR, MOVIE, SOUND, CAMERA };
+protected:
+    LAYER_TYPE m_eType;
+    Object* m_pObject;
 };
 
 #endif

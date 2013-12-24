@@ -2,16 +2,16 @@
 #include <QPixmap>
 #include <QPainter>
 
-#include "layer.h"
 #include "scribblearea.h"
 
 #include "pencilsettings.h"
-#include "editor.h"
 #include "strokemanager.h"
-
-#include "erasertool.h"
+#include "layermanager.h"
+#include "editor.h"
 #include "blitrect.h"
 #include "layervector.h"
+#include "erasertool.h"
+
 
 EraserTool::EraserTool(QObject *parent) :
     StrokeTool(parent)
@@ -96,21 +96,21 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
             drawStroke();
         }
 
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::VECTOR)
+        else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
             // Clear the area containing the last point
             //vectorImage->removeArea(lastPoint);
             // Clear the temporary pixel path
             m_pScribbleArea->clearBitmapBuffer();
             vectorImage->deleteSelectedPoints();
             //update();
-            m_pScribbleArea->setModified(m_pEditor->m_nCurrentLayerIndex, m_pEditor->m_nCurrentFrameIndex);
+            m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex());
             m_pScribbleArea->setAllDirty();
         }
     }
@@ -124,18 +124,18 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
 
     if (event->buttons() & Qt::LeftButton)
     {
-        if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
             drawStroke();
         }
-        if (layer->type == Layer::VECTOR)
+        if (layer->type() == Layer::VECTOR)
         {
             qreal radius = (properties.width / 2) / m_pScribbleArea->getTempViewScaleX();
-            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)
+            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)
                 ->getVerticesCloseTo(getCurrentPoint(), radius);
             for (int i = 0; i < nearbyVertices.size(); i++)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0)->setSelected(nearbyVertices.at(i), true);
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)->setSelected(nearbyVertices.at(i), true);
             }
             //update();
             m_pScribbleArea->setAllDirty();
@@ -155,7 +155,7 @@ void EraserTool::drawStroke()
 
     Layer *layer = m_pEditor->getCurrentLayer();
 
-    if (layer->type == Layer::BITMAP)
+    if (layer->type() == Layer::BITMAP)
     {
         for (int i = 0; i < p.size(); i++) {
             p[i] = m_pScribbleArea->pixelToPoint(p[i]);
@@ -209,7 +209,7 @@ void EraserTool::drawStroke()
         int rad = qRound(brushWidth) / 2 + 2;
         m_pScribbleArea->refreshBitmap(rect, rad);
     }
-    else if (layer->type == Layer::VECTOR)
+    else if (layer->type() == Layer::VECTOR)
     {
         QPen pen(Qt::white, currentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));

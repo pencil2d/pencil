@@ -75,8 +75,6 @@ void BrushTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevi
 
 void BrushTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
-
     if (event->button() == Qt::LeftButton)
     {
         m_pEditor->backup(typeName());
@@ -98,12 +96,12 @@ void BrushTool::mouseReleaseEvent(QMouseEvent *event)
             drawStroke();
         }
 
-        if (layer->type == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             m_pScribbleArea->paintBitmapBuffer();
             m_pScribbleArea->setAllDirty();
         }
-        else if (layer->type == Layer::VECTOR)
+        else if (layer->type() == Layer::VECTOR)
         {
         }
     }
@@ -115,7 +113,7 @@ void BrushTool::mouseMoveEvent(QMouseEvent *event)
 {
     Layer *layer = m_pEditor->getCurrentLayer();
 
-    if (layer->type == Layer::BITMAP || layer->type == Layer::VECTOR)
+    if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)
         {
@@ -136,7 +134,7 @@ void BrushTool::drawStroke()
 
     Layer *layer = m_pEditor->getCurrentLayer();
 
-    if (layer->type == Layer::BITMAP)
+    if (layer->type() == Layer::BITMAP)
     {
         for (int i = 0; i < p.size(); i++) {
             p[i] = m_pScribbleArea->pixelToPoint(p[i]);
@@ -197,7 +195,7 @@ void BrushTool::drawStroke()
         int rad = qRound(brushWidth) / 2 + 2;
         m_pScribbleArea->refreshBitmap(rect, rad);
     }
-    else if (layer->type == Layer::VECTOR)
+    else if (layer->type() == Layer::VECTOR)
     {
         QPen pen(Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin);
         int rad = qRound((currentWidth / 2 + 2) * qAbs(m_pScribbleArea->getTempViewScaleX()));

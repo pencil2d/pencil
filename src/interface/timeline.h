@@ -60,7 +60,7 @@ signals :
 	void onionPrevClick();
 	void onionNextClick();
 
-	public slots:
+public slots:
 	void updateFrame( int frameNumber );
 	void updateLayerNumber( int number );
 	void updateLayerView();
