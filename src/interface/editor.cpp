@@ -78,16 +78,16 @@ Editor::Editor( MainWindow2* parent )
         settings.setValue( "fps", 12 );
     }
 
-	maxFrame = 1;
-	timer = new QTimer( this );
-	timer->setInterval( 1000 / fps );
-	connect( timer, SIGNAL( timeout() ), this, SLOT( playNextFrame() ) );
-	playing = false;
-	looping = false;
+    maxFrame = 1;
+    timer = new QTimer( this );
+    timer->setInterval( 1000 / fps );
+    connect( timer, SIGNAL( timeout() ), this, SLOT( playNextFrame() ) );
+    playing = false;
+    looping = false;
     loopControl = false;
     loopStart = 1;
     loopEnd =2;
-	sound = true;
+    sound = true;
 
     layerManager()->setCurrentFrameIndex( 1 );
     layerManager()->setCurrentLayerIndex( 0 );
@@ -163,13 +163,13 @@ void Editor::makeConnections()
     connect( m_pScribbleArea, SIGNAL( brushOn() ), toolSet, SLOT( brushOn() ) );
     connect( m_pScribbleArea, SIGNAL( smudgeOn() ), toolSet, SLOT( smudgeOn() ) );
 
-	connect( this, SIGNAL( toggleOnionPrev( bool ) ), m_pScribbleArea, SLOT( toggleOnionPrev( bool ) ) );
-	connect( this, SIGNAL( toggleOnionNext( bool ) ), m_pScribbleArea, SLOT( toggleOnionNext( bool ) ) );
+    connect( this, SIGNAL( toggleOnionPrev( bool ) ), m_pScribbleArea, SLOT( toggleOnionPrev( bool ) ) );
+    connect( this, SIGNAL( toggleOnionNext( bool ) ), m_pScribbleArea, SLOT( toggleOnionNext( bool ) ) );
     connect( this, SIGNAL( toggleMultiLayerOnionSkin( bool)), m_pScribbleArea, SLOT(toggleMultiLayerOnionSkin(bool )) );
-	connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
-	connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
-	connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
-	connect( m_pScribbleArea, SIGNAL( onionNextChanged( bool ) ), this, SIGNAL( onionNextChanged( bool ) ) );
+    connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
+    connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
+    connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
+    connect( m_pScribbleArea, SIGNAL( onionNextChanged( bool ) ), this, SIGNAL( onionNextChanged( bool ) ) );
     connect( m_pScribbleArea, SIGNAL( multiLayerOnionSkin( bool ) ), this, SIGNAL( multiLayerOnionSkin( bool ) ) );
 
     connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
@@ -1590,50 +1590,59 @@ void Editor::play()
 {
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
-        updateMaxFrame();
-        if ( m_nCurrentFrameIndex == loopEnds )
-                   {
-                       if (loopControl)
-                           {
-                           scrubTo( loopStarts );
-                       }
-                   }
-        else if ( m_nCurrentFrameIndex > maxFrame )
+    updateMaxFrame();
+    if ( layerManager()->currentLayerIndex() == loopEnds )
+    {
+        if (loopControl)
         {
-                if ( loopControl )
-                { scrubTo(  loopStarts );}
-                else
-                {scrubTo( maxFrame );}
+            scrubTo( loopStarts );
         }
-        else if ( m_nCurrentFrameIndex == maxFrame )
+    }
+    else if ( layerManager()->currentLayerIndex() > maxFrame )
+    {
+        if ( loopControl )
         {
-                if ( !playing )
-                {
-                    if (loopControl){
-                        scrubTo( loopStarts );
-                    }
-                    else{
-                    scrubTo( 0 );
-                    }
-                }
-                else
-                {
-                    if ( looping ) {
-                        if ( loopControl ){
-                            scrubTo( loopStarts );
-                        }
-                        else{
-                        scrubTo( 0 );
-                    }}
-                        else {
-                        startOrStop();
-                    }
-                }
+            scrubTo(  loopStarts );
         }
         else
         {
-                startOrStop();
+            scrubTo( maxFrame );
         }
+    }
+    else if ( layerManager()->currentLayerIndex() == maxFrame )
+    {
+        if ( !playing )
+        {
+            if ( loopControl )
+            {
+                scrubTo( loopStarts );
+            }
+            else{
+                scrubTo( 0 );
+            }
+        }
+        else
+        {
+            if ( looping )
+            {
+                if ( loopControl )
+                {
+                    scrubTo( loopStarts );
+                }
+                else{
+                    scrubTo( 0 );
+                }
+            }
+            else
+            {
+                startOrStop();
+            }
+        }
+    }
+    else
+    {
+        startOrStop();
+    }
 }
 
 void Editor::startOrStop()
@@ -1707,9 +1716,10 @@ void Editor::playNextFrame()
     updateMaxFrame();
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
-    if (m_nCurrentFrameIndex == loopEnds)
+    if ( layerManager()->currentLayerIndex() == loopEnds)
     {
-        if (loopControl){
+        if (loopControl)
+        {
             scrubTo( loopStarts);
         }
     }
