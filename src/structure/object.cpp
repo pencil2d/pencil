@@ -75,7 +75,7 @@ bool Object::loadDomElement(QDomElement docElem, QString dataDirPath)
     }
     int layerNumber = -1;
     QDomNode tag = docElem.firstChild();
-    
+
     bool someRelevantData = false;
     while (!tag.isNull())
     {
@@ -175,8 +175,6 @@ LayerBitmap *Object::addNewBitmapLayer()
     LayerBitmap* layerBitmap = new LayerBitmap(this);
     layerBitmap->id = 1+getMaxID();
     layer.append( layerBitmap );
-    connect( layerBitmap, SIGNAL(imageAdded(int)), this, SIGNAL(imageAdded(int)) );
-    connect( layerBitmap, SIGNAL(imageRemoved(int)), this, SLOT(imageCheck(int)) );
 
     return layerBitmap;
 }
@@ -186,8 +184,6 @@ LayerVector *Object::addNewVectorLayer()
     LayerVector* layerVector = new LayerVector(this);
     layerVector->id = 1+getMaxID();
     layer.append( layerVector );
-    connect( layerVector, SIGNAL(imageAdded(int)), this, SIGNAL(imageAdded(int)) );
-    connect( layerVector, SIGNAL(imageRemoved(int)), this, SLOT(imageCheck(int)) );
 
     return layerVector;
 }
@@ -205,8 +201,6 @@ LayerCamera *Object::addNewCameraLayer()
     LayerCamera* layerCamera = new LayerCamera(this);
     layerCamera->id = 1+getMaxID();
     layer.append( layerCamera );
-    connect( layerCamera, SIGNAL(imageAdded(int,int)), this, SIGNAL(imageAdded(int,int)) );
-    connect( layerCamera, SIGNAL(imageRemoved(int)), this, SLOT(imageCheck(int)) );
 
     return layerCamera;
 }

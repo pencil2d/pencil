@@ -180,11 +180,16 @@ TimeLine::TimeLine(QWidget* parent, Editor* editor) : QDockWidget(parent, Qt::To
     connect(timeControls, SIGNAL(endClick()), this, SIGNAL(endplayClick()));
     connect(timeControls, SIGNAL(startClick()), this, SIGNAL(startplayClick()));
     connect(timeControls, SIGNAL(loopClick(bool)), this, SIGNAL(loopClick(bool)));
+
+    connect(timeControls, SIGNAL(loopControlClick(bool)), this, SIGNAL(loopControlClick(bool)));//adding loopControl
+    connect(timeControls, SIGNAL(loopStartClick(int)), this, SIGNAL(loopStartClick(int)));
+    connect(timeControls, SIGNAL(loopEndClick(int)), this, SIGNAL(loopEndClick(int)));
+
     connect(timeControls, SIGNAL(soundClick()), this, SIGNAL(soundClick()));
     connect(timeControls, SIGNAL(fpsClick(int)), this, SIGNAL(fpsClick(int)));
 
-    //connect(timeControls, SIGNAL(loopClick(bool)), this, SIGNAL(loopToggled(bool)));
     connect(this, SIGNAL(toggleLoop(bool)), timeControls, SLOT(toggleLoop(bool)));
+    connect(this, SIGNAL(toggleLoopControl(bool)), timeControls, SLOT(toggleLoopControl(bool)));
 
     connect(newBitmapLayerAct, SIGNAL(triggered()), this, SIGNAL(newBitmapLayer()));
     connect(newVectorLayerAct, SIGNAL(triggered()), this, SIGNAL(newVectorLayer()));

@@ -151,7 +151,6 @@ bool LayerVector::addImageAtFrame(int frameNumber)
         framesFilename.append("");
         framesModified.append(false);
         bubbleSort();
-        emit imageAdded(frameNumber);
         return true;
     }
     else
@@ -176,7 +175,6 @@ void LayerVector::removeImageAtFrame(int frameNumber)
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
         bubbleSort();
-        emit imageRemoved(frameNumber);
     }
 }
 

@@ -76,7 +76,6 @@ bool LayerBitmap::addImageAtFrame( int frameNumber )
         framesModified.append(false);
         bubbleSort();
 
-        emit imageAdded(frameNumber);
         return true;
     }
     else
@@ -97,7 +96,6 @@ void LayerBitmap::removeImageAtFrame(int frameNumber)
         framesFilename.removeAt(index);
         framesModified.removeAt(index);
         bubbleSort();
-        emit imageRemoved(frameNumber);
     }
 }
 

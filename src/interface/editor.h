@@ -62,6 +62,11 @@ public:
     QTimer* timer; // the timer used for animation in the editor
     bool playing;
     bool looping;
+    bool loopControl;
+    int loopStart;
+    int loopStarts;
+    int loopEnd;
+    int loopEnds;
     bool sound;
     ToolSetWidget* toolSet;
 
@@ -93,12 +98,15 @@ protected:
     void dragEnterEvent( QDragEnterEvent* event );
     void dropEvent( QDropEvent* event );
     QRect viewRect;
-    signals:
+signals:
     void selectAll();
     void toggleLoop( bool );
+    void toggleLoopControl( bool ) ;
     void loopToggled( bool );
+    void toggleMultiLayerOnionSkin(bool);
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
+    void multiLayerOnionSkinChanged(bool);
     void onionPrevChanged( bool );
     void onionNextChanged( bool );
     void changeThinLinesButton( bool );
@@ -118,7 +126,7 @@ protected:
     // save
     void needSave();
 
-    public slots:
+public slots:
 
     void setTool( ToolType );
     void clearCurrentFrame();
@@ -156,6 +164,9 @@ protected:
     void changeFps( int );
     int getFps();
     void setLoop( bool checked );
+    void setLoopControl( bool checked );
+    void changeLoopStart (int);
+    void changeLoopEnd (int);
     void setSound();
 
     void previousLayer();
@@ -167,7 +178,7 @@ protected:
     void duplicateKey();
     void removeKey();
 
-
+    void printAndPreview( QPrinter* printer );
     void resetUI();
 
     void updateObject();
@@ -240,7 +251,7 @@ protected:
     void saveLength( QString );
     void getCameraLayer();
 
-    void printAndPreview( QPrinter* );
+    //void on_actionLoopControl_triggered();  //possibly accidently put here by mainWindow_2.ui??
 
 private:
     ScribbleArea* m_pScribbleArea;

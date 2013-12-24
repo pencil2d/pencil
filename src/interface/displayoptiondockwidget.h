@@ -23,6 +23,9 @@ public:
     QToolButton* onionRedButton;
     QToolButton* gridAButton;
     QToolButton* gridBButton;
+    QToolButton* multiLayerOnionSkinButton;
+    QToolButton* onionBlueNextButton;
+    QToolButton* onionRedNextButton;
 
 signals:
     
@@ -31,6 +34,9 @@ public slots:
     void changeOutlinesButton(bool bIsChecked);
     void onionPrevChanged(bool checked);
     void onionNextChanged(bool checked);
+
+    void changeMultiLayerOnionSkin(bool);
+    void multiLayerOnionSkinButtonChanged(bool checked);
 
 private:
     void createUI();
