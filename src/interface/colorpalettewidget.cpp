@@ -54,17 +54,13 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
     m_colorListView->setFocusPolicy(Qt::NoFocus);
     m_colorListView->setCurrentRow( 0 );
 
-    m_colorBox = new ColorBox(this);
-    m_colorBox->setToolTip("color palette:<br>use <b>(C)</b><br>toggle at cursor");
-
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(m_colorBox);
-    layout->addWidget(buttons);
-    layout->addWidget(m_colorListView);
-    layout->setMargin(0);
+    QVBoxLayout* pLayout = new QVBoxLayout();
+    pLayout->addWidget(buttons);
+    pLayout->addWidget(m_colorListView);
+    pLayout->setMargin(0);
 
     QWidget* paletteContent = new QWidget(this);
-    paletteContent->setLayout(layout);
+    paletteContent->setLayout(pLayout);
     paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
 
     setWidget(paletteContent);
@@ -84,8 +80,15 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
     connect(m_addButton, SIGNAL(clicked()), this, SLOT(clickAddColorButton()));
     connect(m_removeButton, SIGNAL(clicked()), this, SLOT(clickRemoveColorButton()));
 
-    connect(m_colorBox, SIGNAL(colorChanged(QColor)),
-        this, SLOT(colorWheelChanged(QColor)));
+    //connect(m_colorBox, SIGNAL(colorChanged(QColor)), this, SLOT(colorWheelChanged(QColor)));
+}
+
+void ColorPaletteWidget::setColor(QColor newColor)
+{
+    int colorIndex = currentColourNumber();
+    updateItemColor(colorIndex, newColor);
+
+    emit colorChanged( newColor );
 }
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
@@ -158,7 +161,7 @@ void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
 {
     int colorIndex = m_colorListView->row(currentItem);
 
-    m_colorBox->setColor( m_editor->object()->getColour(colorIndex).colour );
+    //m_colorBox->setColor( m_editor->object()->getColour(colorIndex).colour );
 
     m_editor->selectAndApplyColour( colorIndex );
 
@@ -169,12 +172,8 @@ void ColorPaletteWidget::colorWheelChanged(QColor newColor)
 {
     int colorIndex = currentColourNumber();
 
-    m_editor->m_pObject->setColour(colorIndex, newColor);
+    m_editor->object()->setColour(colorIndex, newColor);
     m_editor->getScribbleArea()->updateFrame();
-
-    updateItemColor(colorIndex, newColor);
-
-    emit colorChanged( newColor );
 }
 
 void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
@@ -223,7 +222,7 @@ void ColorPaletteWidget::clickAddColorButton()
         if (ok)
         {
             ref.name = text;
-            m_editor->m_pObject->addColour(ref);
+            m_editor->object()->addColour(ref);
             refreshColorList();
             m_editor->colorManager()->pickColor( m_editor->object()->getColourCount() - 1 );
         }
@@ -233,14 +232,9 @@ void ColorPaletteWidget::clickAddColorButton()
 void ColorPaletteWidget::clickRemoveColorButton()
 {
     int colorNumber = m_colorListView->currentRow();
-    m_editor->m_pObject->removeColour(colorNumber);
+    m_editor->object()->removeColour(colorNumber);
 
     refreshColorList();
-}
-
-void ColorPaletteWidget::setColor(QColor color)
-{
-    m_colorBox->setColor(color);
 }
 
 void ColorPaletteWidget::updateItemColor( int itemIndex, QColor newColor )

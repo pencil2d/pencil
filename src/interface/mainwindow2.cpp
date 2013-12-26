@@ -150,8 +150,15 @@ void MainWindow2::arrangePalettes()
 {
     setCentralWidget(editor);
 
+    m_pColorWheelWidget = new QDockWidget( "Color Wheel", this );
+    m_pColorWheelWidget->setFocusPolicy( Qt::NoFocus );
+    ColorBox* pColorBox = new ColorBox(this);
+    pColorBox->setToolTip("color palette:<br>use <b>(C)</b><br>toggle at cursor");
+    m_pColorWheelWidget->setWidget( pColorBox );
+
     m_pColorPalette = new ColorPaletteWidget(editor);
-    m_pColorPalette->setFocusPolicy(Qt::NoFocus);
+    m_pColorPalette->setFocusPolicy( Qt::NoFocus );
+
 
     m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
     m_pDisplayOptionWidget->makeConnectionToEditor(editor);
@@ -161,6 +168,7 @@ void MainWindow2::arrangePalettes()
 
     m_pToolSet = editor->toolSet;
 
+    addDockWidget(Qt::RightDockWidgetArea, m_pColorWheelWidget);
     addDockWidget(Qt::RightDockWidgetArea, m_pColorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_pDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet);
@@ -173,6 +181,12 @@ void MainWindow2::arrangePalettes()
     m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pColorWheelWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+}
+
+void MainWindow2::makeColorWheelConnections()
+{
+
 }
 
 void MainWindow2::createMenus()
