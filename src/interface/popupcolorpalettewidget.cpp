@@ -5,14 +5,14 @@
 
 PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     QWidget ( parent, Qt::Window ),
-    m_container ( parent )
+    m_pContainer ( parent )
 {
     QVBoxLayout *mainLayout = new QVBoxLayout( this );
     setVisible( false );
     this->setFixedWidth(200);
-    m_colorBox = new ColorBox();
-    mainLayout->addWidget(m_colorBox);
-    m_colorBox->adjustSize();
+    m_pColorBox = new ColorBox();
+    mainLayout->addWidget(m_pColorBox);
+    m_pColorBox->adjustSize();
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setXOffset(2);
     effect->setYOffset(2);
@@ -23,7 +23,7 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     setWindowFlags( ( (windowFlags()
                        | Qt::CustomizeWindowHint)
                       & ~Qt::WindowMaximizeButtonHint
-                      & ~Qt::WindowMinimizeButtonHint) );    
+                      & ~Qt::WindowMinimizeButtonHint) );
     // --- bottom buttons layout ---
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     mainLayout->addLayout(buttonsLayout);
@@ -31,8 +31,8 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     closeButton->setText("close/toggle");
     buttonsLayout->addWidget(closeButton);
     // --- connections ---
-    connect( closeButton , SIGNAL( clicked() ) , m_container , SLOT( togglePopupPalette() ) );
-    connect( m_colorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
+    connect( closeButton , SIGNAL( clicked() ) , m_pContainer , SLOT( togglePopupPalette() ) );
+    connect( m_pColorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
 }
 
 void PopupColorPaletteWidget::popup()
@@ -44,8 +44,8 @@ void PopupColorPaletteWidget::popup()
         return;
     }
     // opening palette
-    m_colorBox->setColor( m_container->getEditor()->colorManager()->frontColor() );
-    m_colorBox->setFocus();
+    m_pColorBox->setColor( m_pContainer->getEditor()->colorManager()->frontColor() );
+    m_pColorBox->setFocus();
 
     QPoint cPos = QCursor::pos();
     int radius = width() / 2;
@@ -60,13 +60,13 @@ void PopupColorPaletteWidget::popup()
 
 void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key()==Qt::Key_Enter)
+    if (event->key() == Qt::Key_Enter)
     {
-        m_colorBox->setFocus();
+        m_pColorBox->setFocus();
         qDebug() << "sent key_enter";
         return;
     }
-    else if (event->key()==Qt::Key_Escape)
+    else if (event->key() == Qt::Key_Escape)
     {
         close();
     }
@@ -74,7 +74,7 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
     {
         event->ignore();
         qDebug() << "sent event.ignore()";
-        QCoreApplication::sendEvent(m_container, event);
+        QCoreApplication::sendEvent(m_pContainer, event);
     }
 }
 
@@ -82,6 +82,6 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 
 void PopupColorPaletteWidget::onColorChanged(const QColor& color)
 {
-    m_container->getEditor()->setColor( color );
-    m_container->getEditor()->colorManager()->pickColor( color );
+    m_pContainer->getEditor()->setColor( color );
+    m_pContainer->getEditor()->colorManager()->pickColor( color );
 }
