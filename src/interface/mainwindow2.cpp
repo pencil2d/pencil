@@ -148,7 +148,7 @@ void MainWindow2::makeColorPaletteConnections()
 
 void MainWindow2::arrangePalettes()
 {
-    setCentralWidget( editor );
+    setCentralWidget(editor);
 
     m_pColorPalette = new ColorPaletteWidget(editor);
     m_pColorPalette->setFocusPolicy(Qt::NoFocus);
@@ -167,11 +167,12 @@ void MainWindow2::arrangePalettes()
     addDockWidget(Qt::LeftDockWidgetArea, m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
-    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
 }
 
 void MainWindow2::createMenus()
@@ -284,9 +285,21 @@ void MainWindow2::createMenus()
     connect(ui->actionTogglePalette, SIGNAL(triggered()),m_pScribbleArea,SLOT(togglePopupPalette()));
     connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
 
+    /// --- Window Menu ---
+    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), editor->toolSet, SLOT(setVisible(bool)));
+    connect(editor->toolSet, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionOptionsWidget, SIGNAL(toggled(bool)), m_pToolOptionWidget, SLOT(setVisible(bool)));
+    connect(m_pToolOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionOptionsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionColorWheel, SIGNAL(toggled(bool)), m_pColorPalette, SLOT(setVisible(bool)));
+    connect(m_pColorPalette, SIGNAL(visibilityChanged(bool)), ui->actionColorWheel, SLOT(setChecked(bool)));
+    connect(ui->actionTimeline, SIGNAL(toggled(bool)), m_pTimeLine, SLOT(setVisible(bool)));
+    connect(m_pTimeLine, SIGNAL(visibilityChanged(bool)), ui->actionTimeline, SLOT(setChecked(bool)));
+    connect(ui->actionDisplayOptions, SIGNAL(toggled(bool)), m_pDisplayOptionWidget, SLOT(setVisible(bool)));
+    connect(m_pDisplayOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionDisplayOptions, SLOT(setChecked(bool)));
+
     /// --- Help Menu ---
-    connect( ui->actionHelp, SIGNAL( triggered() ), this, SLOT( helpBox() ) );
-    connect( ui->actionAbout, SIGNAL( triggered() ), this, SLOT( aboutPencil() ) );
+    connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()) );
+    connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()) );
 
     // --------------- Menus ------------------
     m_recentFileMenu = new RecentFileMenu( "Open Recent", this );
