@@ -267,10 +267,10 @@ void MainWindow2::createMenus()
     connect(editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    connect( ui->actionPlay, SIGNAL( triggered() ), editor, SLOT( play() ) );
-    connect( ui->actionLoop, SIGNAL( triggered( bool ) ), editor, SLOT( setLoop( bool ) ) );
-    connect( ui->actionLoop, SIGNAL( toggled( bool ) ), editor, SIGNAL( toggleLoop( bool ) ) ); //TODO: WTF?
-    connect( editor, SIGNAL( loopToggled( bool ) ), ui->actionLoop, SLOT( setChecked( bool ) ) );
+    connect( ui->actionPlay, SIGNAL(triggered() ), editor, SLOT(play()) );
+    connect( ui->actionLoop, SIGNAL(triggered(bool) ), editor, SLOT(setLoop(bool)) );
+    connect( ui->actionLoop, SIGNAL(toggled(bool) ), editor, SIGNAL(toggleLoop(bool)) ); //TODO: WTF?
+    connect( editor, SIGNAL( loopToggled(bool) ), ui->actionLoop, SLOT(setChecked(bool)) );
 
     connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));//adding loopControl
     connect(ui->actionLoopControl, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoopControl(bool)));
