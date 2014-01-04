@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "colourref.h"
 
 class QProgressDialog;
-
 class LayerBitmap;
 class LayerVector;
 class LayerCamera;
@@ -63,15 +62,15 @@ public:
     bool mirror; // if true, the returned image is flipped horizontally
     QList<Layer*> layer;
     QList<ColourRef> myPalette;
-    
+
     void paintImage(QPainter& painter, int frameNumber, bool background, qreal curveOpacity, bool antialiasing, int gradients);
 
     ColourRef getColour(int i);
-    void setColour(int index, QColor newColour) 
-	{
+    void setColour(int index, QColor newColour)
+    {
         Q_ASSERT( index >= 0 );
-	    myPalette[index].colour = newColour; 		
-	}
+        myPalette[index].colour = newColour;
+    }
     void addColour(QColor);
     void addColour(ColourRef newColour) { myPalette.append(newColour); }
     bool removeColour(int index);

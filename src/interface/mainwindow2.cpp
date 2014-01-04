@@ -80,6 +80,7 @@ ui( new Ui::MainWindow2 )
     readSettings();
 
     makeColorPaletteConnections();
+	makeColorWheelConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
@@ -127,23 +128,7 @@ void MainWindow2::makeTimeLineConnections()
     connect(editor, SIGNAL(toggleLoopControl(bool)), m_pTimeLine, SIGNAL(toggleLoopControl(bool)));
     connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), editor, SIGNAL(loopControlToggled(bool)));//adding loopControlClick needs loopControlToggled(bool)
 
-
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
-}
-
-void MainWindow2::makeColorPaletteConnections()
-{
-    connect( m_pColorPalette, SIGNAL(colorChanged(QColor)),
-             editor->colorManager(), SLOT(pickColor(QColor)) );
-
-    connect( m_pColorPalette, SIGNAL(colorNumberChanged(int)),
-             editor->colorManager(), SLOT(pickColorNumber(int)) );
-
-    connect( editor->colorManager(), SIGNAL(colorChanged(QColor)),
-             m_pColorPalette, SLOT(setColor(QColor)));
-
-    connect( editor->colorManager(), SIGNAL(colorNumberChanged(int)),
-             m_pColorPalette, SLOT(selectColorNumber(int)));
 }
 
 void MainWindow2::arrangePalettes()
@@ -152,13 +137,13 @@ void MainWindow2::arrangePalettes()
 
     m_pColorWheelWidget = new QDockWidget( "Color Wheel", this );
     m_pColorWheelWidget->setFocusPolicy( Qt::NoFocus );
+
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip("color palette:<br>use <b>(C)</b><br>toggle at cursor");
     m_pColorWheelWidget->setWidget( pColorBox );
 
     m_pColorPalette = new ColorPaletteWidget(editor);
     m_pColorPalette->setFocusPolicy( Qt::NoFocus );
-
 
     m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
     m_pDisplayOptionWidget->makeConnectionToEditor(editor);
@@ -184,9 +169,28 @@ void MainWindow2::arrangePalettes()
     m_pColorWheelWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
 }
 
+void MainWindow2::makeColorPaletteConnections()
+{
+	connect(m_pColorPalette, SIGNAL(colorChanged(QColor)),
+		editor->colorManager(), SLOT(pickColor(QColor)));
+
+	connect(m_pColorPalette, SIGNAL(colorNumberChanged(int)),
+		editor->colorManager(), SLOT(pickColorNumber(int)));
+
+	connect(editor->colorManager(), SIGNAL(colorChanged(QColor)),
+		m_pColorPalette, SLOT(setColor(QColor)));
+
+	connect(editor->colorManager(), SIGNAL(colorNumberChanged(int)),
+		m_pColorPalette, SLOT(selectColorNumber(int)));
+}
+
 void MainWindow2::makeColorWheelConnections()
 {
+    ColorBox* pColorBox = static_cast<ColorBox*>(m_pColorWheelWidget->widget());
+    Q_ASSERT( pColorBox );
 
+    connect( pColorBox, SIGNAL(colorChanged(QColor)), editor->colorManager(), SLOT(pickColor(QColor)));
+	connect( editor->colorManager(), SIGNAL(colorChanged(QColor)), pColorBox, SLOT(setColor(QColor)));
 }
 
 void MainWindow2::createMenus()

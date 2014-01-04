@@ -8,28 +8,34 @@ PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     m_pContainer ( parent )
 {
     QVBoxLayout *mainLayout = new QVBoxLayout( this );
+
     setVisible( false );
+
     this->setFixedWidth(200);
     m_pColorBox = new ColorBox();
     mainLayout->addWidget(m_pColorBox);
     m_pColorBox->adjustSize();
+
     QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
     effect->setXOffset(2);
     effect->setYOffset(2);
     effect->setBlurRadius(5);
     setGraphicsEffect(effect);
+
     setAutoFillBackground(true);
     setWindowTitle("Color palette");
     setWindowFlags( ( (windowFlags()
                        | Qt::CustomizeWindowHint)
                       & ~Qt::WindowMaximizeButtonHint
                       & ~Qt::WindowMinimizeButtonHint) );
+
     // --- bottom buttons layout ---
     QHBoxLayout *buttonsLayout = new QHBoxLayout();
     mainLayout->addLayout(buttonsLayout);
     closeButton = new QPushButton(this);
     closeButton->setText("close/toggle");
     buttonsLayout->addWidget(closeButton);
+
     // --- connections ---
     connect( closeButton , SIGNAL( clicked() ) , m_pContainer , SLOT( togglePopupPalette() ) );
     connect( m_pColorBox, SIGNAL( colorChanged(QColor) ), this, SLOT( onColorChanged(QColor) ) );
@@ -82,6 +88,5 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 
 void PopupColorPaletteWidget::onColorChanged(const QColor& color)
 {
-    m_pContainer->getEditor()->setColor( color );
     m_pContainer->getEditor()->colorManager()->pickColor( color );
 }

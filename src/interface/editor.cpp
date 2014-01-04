@@ -180,11 +180,6 @@ void Editor::makeConnections()
     connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
 }
 
-void Editor::setColor( QColor argColor )
-{
-    mainWindow->m_pColorPalette->setColor( argColor );
-}
-
 void Editor::keyPressEvent( QKeyEvent *event )
 {
     m_pScribbleArea->keyPressed( event );

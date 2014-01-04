@@ -50,13 +50,12 @@ private slots:
     void colourSwatchClicked();
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
-    void colorWheelChanged(QColor);
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
 
 private:
-    Editor* m_editor;
+    Editor* m_pEditor;
     QListWidget* m_colorListView;
     QToolButton* m_addButton;
     QToolButton* m_removeButton;
