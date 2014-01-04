@@ -55,7 +55,6 @@ public:
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
-    //int layerManager()->currentLayerIndex();
     int maxFrame; // the number of the last frame for the current object
 
     int fps; // the number of frames per second used by the editor
@@ -91,7 +90,6 @@ public:
     QList<BackupElement*> backupList;
 
     ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
-    void setColor( QColor argColor );
 
 protected:
     void keyPressEvent( QKeyEvent *event );

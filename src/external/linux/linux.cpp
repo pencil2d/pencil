@@ -67,11 +67,6 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     {
         filePath = filePath + ".avi";
     }
-    /*if(!filePath.endsWith(".avi", Qt::CaseInsensitive)) {
-    	filePath = filePath + ".avi";
-    }*/
-
-
 
     //  additional parameters for ffmpeg
     QString ffmpegParameter = "";
@@ -108,7 +103,7 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
     for(int i = 0; i < this->getLayerCount() ; i++)
     {
         Layer* layer = this->getLayer(i);
-        if(layer->type == Layer::SOUND)
+        if(layer->type() == Layer::SOUND)
         {
             for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++)
             {
@@ -184,17 +179,17 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
 
     /*QString soundDelay = "";
     for(int i = 0; i < this->getLayerCount() ; i++) {
-    	Layer* layer = this->getLayer(i);
-    	if(layer->type == Layer::SOUND) {
-    		int lmax = ((LayerSound*)layer)->getSoundSize() ;
-    		for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++) {
-    			if (((LayerSound*)layer)->soundIsNotNull(l)) {
-    				int frame = ((LayerSound*)layer)->getFramePositionAt(l)-1;
-    				float fframe = (float)frame/(float)fps;
-    				soundDelay.append("-itsoffset "+QString::number(fframe)+" -i \""+((LayerSound*)layer)->getSoundFilepathAt(l)+"\" ");
-    			}
-    		}
-    	}
+        Layer* layer = this->getLayer(i);
+        if(layer->type == Layer::SOUND) {
+            int lmax = ((LayerSound*)layer)->getSoundSize() ;
+            for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++) {
+                if (((LayerSound*)layer)->soundIsNotNull(l)) {
+                    int frame = ((LayerSound*)layer)->getFramePositionAt(l)-1;
+                    float fframe = (float)frame/(float)fps;
+                    soundDelay.append("-itsoffset "+QString::number(fframe)+" -i \""+((LayerSound*)layer)->getSoundFilepathAt(l)+"\" ");
+                }
+            }
+        }
     }*/
 
     // video input:  frame sequence ( -i tmp%03d.png )

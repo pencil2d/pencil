@@ -1338,7 +1338,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
         Q_ASSERT_X( m_pEditor != NULL, "ScribbleArea.cpp", "Editor should not be null." );
         Q_ASSERT_X( m_pEditor->getCurrentLayer(), "", "Layer should not be null." );
 
-        qDebug( "Layer Count = %d, current=%d", object->getLayerCount(), i );
+        //qDebug( "Layer Count = %d, current=%d", object->getLayerCount(), i );
 
         if ( m_pEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = (object->getLayer( i ));

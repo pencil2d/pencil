@@ -43,6 +43,7 @@ public:
     ScribbleArea* m_pScribbleArea;
 
     // UI: Dock widgets
+    QDockWidget* m_pColorWheelWidget;
     ColorPaletteWidget* m_pColorPalette;
     DisplayOptionDockWidget* m_pDisplayOptionWidget;
     ToolOptionDockWidget*    m_pToolOptionWidget;
@@ -92,7 +93,8 @@ private slots:
 
 private:
     void arrangePalettes();
-    void connectColorPalette();
+    void makeColorWheelConnections();
+    void makeColorPaletteConnections();
     void makeTimeLineConnections();
     void createMenus();
     void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
