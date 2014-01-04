@@ -79,7 +79,8 @@ ui( new Ui::MainWindow2 )
 
     readSettings();
 
-    connectColorPalette();
+    makeColorPaletteConnections();
+	makeColorWheelConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
@@ -127,31 +128,22 @@ void MainWindow2::makeTimeLineConnections()
     connect(editor, SIGNAL(toggleLoopControl(bool)), m_pTimeLine, SIGNAL(toggleLoopControl(bool)));
     connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), editor, SIGNAL(loopControlToggled(bool)));//adding loopControlClick needs loopControlToggled(bool)
 
-
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
-}
-
-void MainWindow2::connectColorPalette()
-{
-    connect( m_pColorPalette, SIGNAL(colorChanged(QColor)),
-             editor->colorManager(), SLOT(pickColor(QColor)) );
-
-    connect( m_pColorPalette, SIGNAL(colorNumberChanged(int)),
-             editor->colorManager(), SLOT(pickColorNumber(int)) );
-
-    connect( editor->colorManager(), SIGNAL(colorChanged(QColor)),
-             m_pColorPalette, SLOT(setColor(QColor)));
-
-    connect( editor->colorManager(), SIGNAL(colorNumberChanged(int)),
-             m_pColorPalette, SLOT(selectColorNumber(int)));
 }
 
 void MainWindow2::arrangePalettes()
 {
-    setCentralWidget( editor );
+    setCentralWidget(editor);
+
+    m_pColorWheelWidget = new QDockWidget( "Color Wheel", this );
+    m_pColorWheelWidget->setFocusPolicy( Qt::NoFocus );
+
+    ColorBox* pColorBox = new ColorBox(this);
+    pColorBox->setToolTip("color palette:<br>use <b>(C)</b><br>toggle at cursor");
+    m_pColorWheelWidget->setWidget( pColorBox );
 
     m_pColorPalette = new ColorPaletteWidget(editor);
-    m_pColorPalette->setFocusPolicy(Qt::NoFocus);
+    m_pColorPalette->setFocusPolicy( Qt::NoFocus );
 
     m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
     m_pDisplayOptionWidget->makeConnectionToEditor(editor);
@@ -161,17 +153,44 @@ void MainWindow2::arrangePalettes()
 
     m_pToolSet = editor->toolSet;
 
+    addDockWidget(Qt::RightDockWidgetArea, m_pColorWheelWidget);
     addDockWidget(Qt::RightDockWidgetArea, m_pColorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_pDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet);
     addDockWidget(Qt::LeftDockWidgetArea, m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
-    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pColorWheelWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+}
+
+void MainWindow2::makeColorPaletteConnections()
+{
+	connect(m_pColorPalette, SIGNAL(colorChanged(QColor)),
+		editor->colorManager(), SLOT(pickColor(QColor)));
+
+	connect(m_pColorPalette, SIGNAL(colorNumberChanged(int)),
+		editor->colorManager(), SLOT(pickColorNumber(int)));
+
+	connect(editor->colorManager(), SIGNAL(colorChanged(QColor)),
+		m_pColorPalette, SLOT(setColor(QColor)));
+
+	connect(editor->colorManager(), SIGNAL(colorNumberChanged(int)),
+		m_pColorPalette, SLOT(selectColorNumber(int)));
+}
+
+void MainWindow2::makeColorWheelConnections()
+{
+    ColorBox* pColorBox = static_cast<ColorBox*>(m_pColorWheelWidget->widget());
+    Q_ASSERT( pColorBox );
+
+    connect( pColorBox, SIGNAL(colorChanged(QColor)), editor->colorManager(), SLOT(pickColor(QColor)));
+	connect( editor->colorManager(), SIGNAL(colorChanged(QColor)), pColorBox, SLOT(setColor(QColor)));
 }
 
 void MainWindow2::createMenus()
@@ -252,10 +271,10 @@ void MainWindow2::createMenus()
     connect(editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    connect( ui->actionPlay, SIGNAL( triggered() ), editor, SLOT( play() ) );
-    connect( ui->actionLoop, SIGNAL( triggered( bool ) ), editor, SLOT( setLoop( bool ) ) );
-    connect( ui->actionLoop, SIGNAL( toggled( bool ) ), editor, SIGNAL( toggleLoop( bool ) ) ); //TODO: WTF?
-    connect( editor, SIGNAL( loopToggled( bool ) ), ui->actionLoop, SLOT( setChecked( bool ) ) );
+    connect( ui->actionPlay, SIGNAL(triggered() ), editor, SLOT(play()) );
+    connect( ui->actionLoop, SIGNAL(triggered(bool) ), editor, SLOT(setLoop(bool)) );
+    connect( ui->actionLoop, SIGNAL(toggled(bool) ), editor, SIGNAL(toggleLoop(bool)) ); //TODO: WTF?
+    connect( editor, SIGNAL( loopToggled(bool) ), ui->actionLoop, SLOT(setChecked(bool)) );
 
     connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));//adding loopControl
     connect(ui->actionLoopControl, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoopControl(bool)));
@@ -284,9 +303,21 @@ void MainWindow2::createMenus()
     connect(ui->actionTogglePalette, SIGNAL(triggered()),m_pScribbleArea,SLOT(togglePopupPalette()));
     connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
 
+    /// --- Window Menu ---
+    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), editor->toolSet, SLOT(setVisible(bool)));
+    connect(editor->toolSet, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionOptionsWidget, SIGNAL(toggled(bool)), m_pToolOptionWidget, SLOT(setVisible(bool)));
+    connect(m_pToolOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionOptionsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionColorWheel, SIGNAL(toggled(bool)), m_pColorPalette, SLOT(setVisible(bool)));
+    connect(m_pColorPalette, SIGNAL(visibilityChanged(bool)), ui->actionColorWheel, SLOT(setChecked(bool)));
+    connect(ui->actionTimeline, SIGNAL(toggled(bool)), m_pTimeLine, SLOT(setVisible(bool)));
+    connect(m_pTimeLine, SIGNAL(visibilityChanged(bool)), ui->actionTimeline, SLOT(setChecked(bool)));
+    connect(ui->actionDisplayOptions, SIGNAL(toggled(bool)), m_pDisplayOptionWidget, SLOT(setVisible(bool)));
+    connect(m_pDisplayOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionDisplayOptions, SLOT(setChecked(bool)));
+
     /// --- Help Menu ---
-    connect( ui->actionHelp, SIGNAL( triggered() ), this, SLOT( helpBox() ) );
-    connect( ui->actionAbout, SIGNAL( triggered() ), this, SLOT( aboutPencil() ) );
+    connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()) );
+    connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()) );
 
     // --------------- Menus ------------------
     m_recentFileMenu = new RecentFileMenu( "Open Recent", this );
