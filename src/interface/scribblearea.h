@@ -159,8 +159,6 @@ signals:
     void toggleGridA( bool );
     void toggleGridB( bool );
     void grid();
-    //void pressureSlot(int);
-    //void invisibleSlot(int);
 
     void resetView();
     void setMyView( QMatrix view );
