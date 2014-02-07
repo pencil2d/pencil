@@ -18,7 +18,10 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include <QScopedPointer>
-
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QProgressDialog>
+#include <QDesktopWidget>
 
 #include "pencildef.h"
 #include "pencilsettings.h"
@@ -60,7 +63,7 @@ QMainWindow( parent ),
 ui( new Ui::MainWindow2 )
 {
     ui->setupUi( this );
-
+    
     m_object = new Object();
     m_object->defaultInitialisation();
 

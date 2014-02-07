@@ -13,9 +13,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include <cmath>
 #include <QtGui>
 #include <QHashIterator>
-#include <cmath>
+#include <QMessageBox>
 
 #include "beziercurve.h"
 #include "editor.h"
@@ -1185,7 +1186,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
 
                 for ( int k = 0; k < closestCurves.size(); k++ )
                 {
-                    qreal scale = myTempView.det(); //todo: check whether it's correct (det = area?)
+                    qreal scale = myTempView.determinant(); //todo: check whether it's correct (det = area?)
                     //qreal scale = sqrt(myTempView.det()); or qreal scale = sqrt(myTempView.m11()*myTempView.m22());
                     int idx = closestCurves[k];
                     if ( vectorImage->curve.size() <= idx )
@@ -1299,7 +1300,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     //qDebug() << "paint canvas!" << QDateTime::currentDateTime();
     // merge the different layers into the ScribbleArea
     QPainter painter( &canvas );
-    if ( myTempView.det() == 1.0 )
+    if ( myTempView.determinant() == 1.0 )
     {
         painter.setRenderHint( QPainter::SmoothPixmapTransform, false );
     }

@@ -1250,7 +1250,7 @@ void Gradient::paint5(QPainter& painter, VectorImage* v, int i, int gradients)
         painter.fillPath( v->area[i].path, colour );
         return;
     }
-    gradientWidth = gradientWidth * sqrt(painter.worldMatrix().det());
+    gradientWidth = gradientWidth * sqrt( painter.worldMatrix().determinant() );
 
     // ---- find the area just below that area
     VertexRef P1Ref, P2Ref;

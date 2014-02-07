@@ -85,7 +85,7 @@ public:
     qreal getTempViewScaleX() const { return myTempView.m11(); }
     qreal getViewScaleY() const { return myView.m22(); }
     qreal getTempViewScaleY() const { return myTempView.m22(); }
-    qreal getCentralViewScale() const { return (sqrt( centralView.det() )); }
+    qreal getCentralViewScale() const { return (sqrt( centralView.determinant())); }
 
     QMatrix getTransformationMatrix() const { return transMatrix; }
     void setTransformationMatrix( QMatrix matrix );

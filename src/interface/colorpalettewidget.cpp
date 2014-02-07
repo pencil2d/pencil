@@ -16,6 +16,10 @@ GNU General Public License for more details.
 #include <QtDebug>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QVBoxLayout>
+#include <QInputDialog>
+#include <QColorDialog>
+
 #include "colourref.h"
 #include "object.h"
 #include "editor.h"

@@ -21,8 +21,8 @@ GNU General Public License for more details.
 #include <QList>
 #include <QString>
 #include <QPainter>
-#include <phonon/MediaObject>
-#include <phonon/AudioOutput>
+//#include <phonon/MediaObject>
+//#include <phonon/AudioOutput>
 #include "layerimage.h"
 
 
@@ -63,14 +63,13 @@ protected:
 
     QList<QString> soundFilepath;
     QList<qint64> soundSize;
-//#	QList<QSound*> sound;
+    
     // graphic representation -- could be put in another class
     void swap(int i, int j);
 
-
-    QList<Phonon::MediaObject*> sound;
-    QList<Phonon::AudioOutput*> outputDevices;
-
+    //QList<Phonon::MediaObject*> sound;
+    //QList<Phonon::AudioOutput*> outputDevices;
+    QList<QString> sound;
 
 public slots:
     void addTimelineKey(qint64 newTotalTime);
