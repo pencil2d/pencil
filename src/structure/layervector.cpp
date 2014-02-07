@@ -34,7 +34,12 @@ LayerVector::~LayerVector()
 
 // ------
 
-QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
+QImage* LayerVector::getImageAtIndex( int index,
+									  QSize size,
+									  bool simplified,
+									  bool showThinLines,
+									  qreal curveOpacity,
+									  bool antialiasing)
 {
     if ( index < 0 || index >= framesImage.size() )
     {
@@ -51,14 +56,21 @@ QImage* LayerVector::getImageAtIndex(int index, QSize size, bool simplified, boo
                 delete image;
                 framesImage[index] = image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
             }
-            vectorImage->outputImage(image, size, myView, simplified, showThinLines, curveOpacity, antialiasing, gradients);
+            vectorImage->outputImage(image, size, myView,
+									 simplified, showThinLines,
+									 curveOpacity, antialiasing );
             vectorImage->setModified(false);
         }
         return image;
     }
 }
 
-QImage* LayerVector::getLastImageAtFrame(int frameNumber, int increment, QSize size, bool simplified, bool showThinLines, qreal curveOpacity, bool antialiasing, int gradients)
+QImage* LayerVector::getLastImageAtFrame(int frameNumber,
+										 int increment,
+										 QSize size,
+										 bool simplified, bool showThinLines,
+										 qreal curveOpacity,
+										 bool antialiasing )
 {
     int index = getLastIndexAtFrame(frameNumber);
     if (index == -1)
@@ -67,7 +79,7 @@ QImage* LayerVector::getLastImageAtFrame(int frameNumber, int increment, QSize s
     }
     else
     {
-        return getImageAtIndex(index + increment, size, simplified, showThinLines, curveOpacity, antialiasing, gradients);
+        return getImageAtIndex(index + increment, size, simplified, showThinLines, curveOpacity, antialiasing );
     }
 }
 

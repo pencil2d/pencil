@@ -180,7 +180,6 @@ signals:
     void setCurveSmoothing( int );
     void setHighResPosition( int );
     void setAntialiasing( int );
-    void setGradients( int );
     void setBackground( int );
     void setBackgroundBrush( QString );
     void setShadows( int );
@@ -247,7 +246,7 @@ protected:
 
     int tabletEraserBackupToolMode;
     bool modified;
-    bool simplified;
+    bool m_isSimplified;
 
     bool m_showThinLines;
     int  m_showAllLayers;
@@ -256,7 +255,6 @@ protected:
     bool m_antialiasing;
     bool shadows;
     bool toolCursors;
-    int  gradients;
     qreal curveOpacity;
     qreal curveSmoothing;
     bool onionPrev, onionNext;

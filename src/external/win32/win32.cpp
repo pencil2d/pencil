@@ -43,7 +43,7 @@ qint16 safeSum ( qint16 a, qint16 b)
 void initialise()
 {
     qDebug() << "Initialize win32: <nothing, for now>";
-    
+
     // Phonon capabilities
     QStringList mimeTypes = Phonon::BackendCapabilities::availableMimeTypes();
     /*
@@ -74,16 +74,15 @@ void initialise()
 // added parameter exportFps -> frame rate of exported video
 // added parameter exportFormat -> to set ffmpeg parameters
 bool Object::exportMovie(int startFrame,
-                         int endFrame, 
-                         QMatrix view, 
-                         Layer* currentLayer, 
-                         QSize exportSize, 
-                         QString filePath, 
-                         int fps, 
-                         int exportFps, 
+                         int endFrame,
+                         QMatrix view,
+                         Layer* currentLayer,
+                         QSize exportSize,
+                         QString filePath,
+                         int fps,
+                         int exportFps,
                          QString exportFormat)
 {
-
     //  additional parameters for ffmpeg
     QString ffmpegParameter = "";
     if (filePath.endsWith(".avi", Qt::CaseInsensitive))
@@ -112,7 +111,16 @@ bool Object::exportMovie(int startFrame,
     {
         if (QFile::exists(filePath) == true) { dir2.remove(filePath); }
 
-        exportFrames1(startFrame, endFrame, view, currentLayer, exportSize, tempPath+"tmp", "png", 100, true, true, 2,&progress,50,fps,exportFps);
+        exportFrames1(startFrame, endFrame,
+					  view, currentLayer,
+					  exportSize,
+					  tempPath+"tmp",
+					  "png",
+					  100,
+					  true, true,
+					  &progress,
+					  50, fps,
+					  exportFps);
         // --------- Quicktime assemble call ----------
         QDir sampledir;
         qDebug() << "testmic:" << sampledir.filePath(filePath);
@@ -155,7 +163,7 @@ bool Object::exportMovie(int startFrame,
                             qDebug() << "ERROR: Could not execute FFmpeg.";
                         }
                         int frame = ((LayerSound*)layer)->getFramePositionAt(l) - 1;
-                        
+
                         float fframe = (float)frame/(float)fps;
                         QFile file(tempPath+"tmpaudio0.wav");
                         qDebug() << "audio file " + tempPath+"tmpaudio0.wav";
@@ -230,7 +238,6 @@ bool Object::exportMovie(int startFrame,
         {
             if (ffmpeg.waitForFinished() == true)
             {
-
                 qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
                 qDebug() << "stderr: " + ffmpeg.readAllStandardError();
 
@@ -274,7 +281,6 @@ bool Object::exportMovie(int startFrame,
 
 void Editor::importMovie (QString filePath, int fps)
 {
-
     int i;
     QSettings settings("Pencil","Pencil");
 
@@ -331,8 +337,4 @@ void Editor::importMovie (QString filePath, int fps)
     }
     else
     {qDebug() << "Please place ffmpeg.exe in plugins directory";}
-
 }
-
-
-

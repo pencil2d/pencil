@@ -1087,7 +1087,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     view = m_pScribbleArea->getView() * view;
 
     updateMaxFrame();
-    m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, 2, NULL, 0 );
+    m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
@@ -1121,7 +1121,7 @@ bool Editor::exportSeq()
 
         QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
         updateMaxFrame();
-        m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, 2, NULL, 0 );
+        m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
         return true;
     }
 }
@@ -1146,7 +1146,7 @@ bool Editor::exportX()
         view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
-        if ( !m_pObject->exportX( 1, maxFrame, view, exportSize, filePath, true, 2 ) ) {
+        if ( !m_pObject->exportX( 1, maxFrame, view, exportSize, filePath, true ) ) {
             QMessageBox::warning( this, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
@@ -1188,7 +1188,7 @@ bool Editor::exportImage()
         view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
-        if ( !m_pObject->exportIm( layerManager()->currentFrameIndex(), maxFrame, view, exportSize, filePath, true, 2 ) ) {
+        if ( !m_pObject->exportIm( layerManager()->currentFrameIndex(), maxFrame, view, exportSize, filePath, true ) ) {
             QMessageBox::warning( this, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,

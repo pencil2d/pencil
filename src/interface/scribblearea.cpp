@@ -63,16 +63,11 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     {
         shadows = true;
     }
-    gradients = 2;
-    if ( settings.value( "gradients" ).toString() != "" )
-    {
-        gradients = settings.value( "gradients" ).toInt();
-    };
 
     tabletEraserBackupToolMode = -1;
     setAttribute( Qt::WA_StaticContents ); // ?
     modified = false;
-    simplified = false;
+    m_isSimplified = false;
     m_usePressure = true;
     m_makeInvisible = false;
     somethingSelected = false;
@@ -341,25 +336,6 @@ void ScribbleArea::setAntialiasing( int x )
     QSettings settings( "Pencil", "Pencil" );
     if ( x == 0 ) { m_antialiasing = false; settings.setValue( "antialiasing", "false" ); }
     else { m_antialiasing = true; settings.setValue( "antialiasing", "true" ); }
-    updateAllVectorLayers();
-}
-
-void ScribbleArea::setGradients( int x )
-{
-    //if (x==0) { gradients = x; } else { gradients = x; }
-    QSettings settings( "Pencil", "Pencil" );
-    if ( x > 0 )
-    {
-        gradients = x;
-        settings.setValue( "gradients", gradients );
-    }
-    else
-    {
-        gradients = 2;
-        gradients = settings.value( "gradients" ).toInt();
-    }
-    //if (x==0) { antialiasing=false; settings.setValue("antialiasing","false"); }
-    //else { antialiasing=true; settings.setValue("antialiasing","true"); }
     updateAllVectorLayers();
 }
 
@@ -645,17 +621,14 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
         }
         break;
     case Qt::Key_F1:
-        simplified = true;
-        emit outlinesChanged( simplified );
-        gradients = 0;
+        m_isSimplified = true;
+        emit outlinesChanged( m_isSimplified );
         updateAllVectorLayersAtCurrentFrame();
         break;
     case Qt::Key_F2:
-        gradients = 1;
         updateAllVectorLayersAtCurrentFrame();
         break;
     case Qt::Key_F3:
-        gradients = 2;
         updateAllVectorLayersAtCurrentFrame();
         break;
     case Qt::Key_Space:
@@ -676,28 +649,10 @@ void ScribbleArea::keyReleaseEvent( QKeyEvent *event )
         setPrevTool();
         return;
     }
-    if ( currentTool()->keyReleaseEvent( event ) ) {
+    if ( currentTool()->keyReleaseEvent( event ) )
+	{
         // has been handled by tool
         return;
-    }
-    switch ( event->key() )
-    {
-    case Qt::Key_F1:
-        simplified = false;
-        emit outlinesChanged( simplified );
-        setGradients( -1 );
-        updateAllVectorLayersAtCurrentFrame();
-        break;
-    case Qt::Key_F2:
-        setGradients( -1 );
-        updateAllVectorLayersAtCurrentFrame();
-        break;
-    case Qt::Key_F3:
-        setGradients( -1 );
-        updateAllVectorLayersAtCurrentFrame();
-        break;
-    default:
-        event->ignore();
     }
 }
 
@@ -1388,7 +1343,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     }
 
                     // next frame (onion skin)
-                    if ( onionNext ) {
+                    if ( onionNext )
+					{
                         BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, 1 );
                         if ( nextImage != NULL )
                         {
@@ -1407,7 +1363,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
                             nextImage3->paintImage( painter );
                         }
-                        if ( onionBlue || onionRed ) {
+                        if ( onionBlue || onionRed )
+						{
                             painter.setOpacity( 1.0 );
                             painter.setCompositionMode( QPainter::CompositionMode_Lighten );
                             if ( onionBlue && onionRed && onionPrev ) {
@@ -1426,27 +1383,43 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             if ( layer->type() == Layer::VECTOR )
             {
                 LayerVector *layerVector = (LayerVector *)layer;
-                QImage *image = layerVector->getLastImageAtFrame( frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                QImage *pImage = layerVector->getLastImageAtFrame( frame, 0,
+																  sz,
+																  m_isSimplified, m_showThinLines,
+																  curveOpacity,
+																  m_antialiasing );
 
-                if ( image != NULL )
+                if ( pImage != NULL )
                 {
                     painter.setWorldMatrixEnabled( false );
 
                     // previous frame (onion skin)
                     if ( onionPrev ) {
-                        QImage *previousImage = layerVector->getLastImageAtFrame( frame, -1, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                        QImage *previousImage = layerVector->getLastImageAtFrame( frame, -1, sz,
+																				 m_isSimplified,
+																				 m_showThinLines,
+																				 curveOpacity,
+																				 m_antialiasing );
                         if ( previousImage != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *previousImage );
                         }
-                        QImage *previousImage2 = layerVector->getLastImageAtFrame( frame, -2, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                        QImage* previousImage2 = layerVector->getLastImageAtFrame( frame, -2, sz,
+																				  m_isSimplified,
+																				  m_showThinLines,
+																				  curveOpacity,
+																				  m_antialiasing );
                         if ( previousImage2 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *previousImage2 );
                         }
-                        QImage *previousImage3 = layerVector->getLastImageAtFrame( frame, -3, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                        QImage *previousImage3 = layerVector->getLastImageAtFrame(frame, -3, sz,
+																				  m_isSimplified,
+																				  m_showThinLines,
+																				  curveOpacity,
+																				  m_antialiasing );
                         if ( previousImage3 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
@@ -1467,19 +1440,20 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
 
                     // next frame (onion skin)
                     if ( onionNext ) {
-                        QImage *nextImage = layerVector->getLastImageAtFrame( frame, 1, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                        QImage* nextImage = layerVector->getLastImageAtFrame( frame, 1, sz, m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
                         if ( nextImage != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *nextImage );
                         }
-                        QImage *nextImage2 = layerVector->getLastImageAtFrame( frame, 2, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                        QImage* nextImage2 = layerVector->getLastImageAtFrame( frame, 2, sz,
+																			  m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
                         if ( nextImage2 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *nextImage2 );
                         }
-                        QImage *nextImage3 = layerVector->getLastImageAtFrame( frame, 3, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                        QImage* nextImage3 = layerVector->getLastImageAtFrame( frame, 3, sz, m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
                         if ( nextImage3 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
@@ -1571,7 +1545,9 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     vectorImage->setSelectionTransformation( selectionTransformation );
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
-                QImage *image = layerVector->getLastImageAtFrame( frame, 0, sz, simplified, m_showThinLines, curveOpacity, m_antialiasing, gradients );
+                QImage* image = layerVector->getLastImageAtFrame( frame, 0, sz,
+																 m_isSimplified, m_showThinLines,
+																 curveOpacity, m_antialiasing );
                 if ( image != NULL )
                 {
                     painter.setWorldMatrixEnabled( false );
@@ -2265,7 +2241,7 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
     bool condition;
     //vectorImage->update(true, showThinLines); // update the vector image with simplified curves (all width=1)
     QImage *targetImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
-    vectorImage->outputImage( targetImage, size(), myTempView, true, m_showThinLines, 1.0, true, false ); // the target image is the vector image with simplified curves (all width=1)
+    vectorImage->outputImage( targetImage, size(), myTempView, true, m_showThinLines, 1.0, true ); // the target image is the vector image with simplified curves (all width=1)
     //QImage* replaceImage = &bufferImg;
     QImage *replaceImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
     QList<VertexRef> points = vectorImage->getAllVertices(); // refs of all the points
@@ -2723,8 +2699,8 @@ void ScribbleArea::toggleThinLines()
 
 void ScribbleArea::toggleOutlines()
 {
-    simplified = !simplified;
-    emit outlinesChanged( simplified );
+    m_isSimplified = !m_isSimplified;
+    emit outlinesChanged( m_isSimplified );
     setView( myView );
     updateAllFrames();
 }
