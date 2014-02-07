@@ -4,11 +4,11 @@
 #include "colormanager.h"
 
 
-ColorManager::ColorManager(Editor* editor, QObject* parent) : QObject( parent ),
+ColorManager::ColorManager(Editor* pEditor, QObject* parent) : QObject( parent ),
     m_frontColorIndex( 0 )
 {
-    Q_ASSERT( editor != NULL );
-    m_pEditor = editor;
+    Q_ASSERT( pEditor != NULL );
+    m_pEditor = pEditor;
 }
 
 QColor ColorManager::frontColor()
