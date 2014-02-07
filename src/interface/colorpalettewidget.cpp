@@ -62,7 +62,6 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
 
     QWidget* paletteContent = new QWidget(this);
     paletteContent->setLayout(pLayout);
-    //paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
 
     setWidget(paletteContent);
 

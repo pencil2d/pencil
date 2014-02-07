@@ -14,8 +14,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef PALETTE_H
-#define PALETTE_H
+#ifndef COLOR_PALETTE_WIDGET_H
+#define COLOR_PALETTE_WIDGET_H
 
 #include <QDockWidget>
 #include <QToolButton>

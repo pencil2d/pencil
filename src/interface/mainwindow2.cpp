@@ -331,22 +331,6 @@ void MainWindow2::createMenus()
     connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
 }
 
-void MainWindow2::addToMenu( QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup )
-{
-    qDebug() << "MainWindow populateMenus" << this << this->thread();
-    qDebug() << "MainWindow populateMenus" << plugin << plugin->thread();
-    qDebug() << "addToMenu 1";
-    QAction* action = new QAction( text, plugin );
-    qDebug() << "addToMenu 2";
-    connect( action, SIGNAL( triggered() ), this, member );
-    menu->addAction( action );
-    if ( actionGroup )
-    {
-        action->setCheckable( true );
-        actionGroup->addAction( action );
-    }
-}
-
 void MainWindow2::setOpacity( int opacity )
 {
     QSettings settings( "Pencil", "Pencil" );

@@ -456,7 +456,8 @@ void ScribbleArea::updateFrame( int frame )
     int frameNumber = m_pEditor->layerManager()->LastFrameAtFrame( frame );
     QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
     readCanvasFromCache = true;
-    update();
+
+	update();
 }
 
 void ScribbleArea::updateAllFrames()

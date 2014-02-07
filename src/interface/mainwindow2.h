@@ -36,7 +36,7 @@ public:
     // Data Model
     Object* m_object;
 
-    // UI: central view
+    // Core controller
     Editor* editor;
 
     // UI: central Drawing Area
@@ -97,7 +97,6 @@ private:
     void makeColorPaletteConnections();
     void makeTimeLineConnections();
     void createMenus();
-    void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);
 
