@@ -135,11 +135,11 @@ void MainWindow2::arrangePalettes()
 {
     setCentralWidget(editor);
 
-    m_pColorWheelWidget = new QDockWidget( "Color Wheel", this );
+    m_pColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
     m_pColorWheelWidget->setFocusPolicy( Qt::NoFocus );
 
     ColorBox* pColorBox = new ColorBox(this);
-    pColorBox->setToolTip("color palette:<br>use <b>(C)</b><br>toggle at cursor");
+    pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     m_pColorWheelWidget->setWidget( pColorBox );
 
     m_pColorPalette = new ColorPaletteWidget(editor);
@@ -320,7 +320,7 @@ void MainWindow2::createMenus()
     connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()) );
 
     // --------------- Menus ------------------
-    m_recentFileMenu = new RecentFileMenu( "Open Recent", this );
+    m_recentFileMenu = new RecentFileMenu( tr("Open Recent"), this );
     m_recentFileMenu->loadFromDisk();
     ui->menuFile->insertMenu( ui->actionSave, m_recentFileMenu );
 
@@ -420,7 +420,7 @@ void MainWindow2::openDocument()
 
         if ( !ok )
         {
-            QMessageBox::warning( this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import." );
+            QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
             newDocument();
         }
         else
@@ -466,7 +466,7 @@ void MainWindow2::openFile( QString filename )
     bool ok = openObject( filename );
     if ( !ok )
     {
-        QMessageBox::warning( this, "Warning", "Pencil cannot read this file. If you want to import images, use the command import." );
+        QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
         Object* pObject = new Object();
         pObject->defaultInitialisation();
 
@@ -481,7 +481,7 @@ void MainWindow2::openFile( QString filename )
 
 bool MainWindow2::openObject( QString strFilePath )
 {
-    QProgressDialog progress( "Opening document...", "Abort", 0, 100, this );
+    QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
@@ -790,7 +790,7 @@ bool MainWindow2::saveObject( QString strSavedFilename )
     //savedName = filePath;
     this->setWindowTitle( filePath );
 
-    QProgressDialog progress( "Saving document...", "Abort", 0, 100, this );
+    QProgressDialog progress( tr("Saving document..."), tr("Abort"), 0, 100, this );
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
     int progressValue = 0;

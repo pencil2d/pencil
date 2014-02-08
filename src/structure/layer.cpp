@@ -27,7 +27,7 @@ Layer::Layer(Object* pObject) : QObject( pObject )
     this->m_pObject = pObject;
     m_eType = Layer::UNDEFINED;
     id = 0;
-    name = QString("Undefined Layer");
+    name = QString(tr("Undefined Layer"));
     visible = true;
 }
 
