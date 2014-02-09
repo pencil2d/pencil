@@ -1,115 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="it">
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
         <source>Camera name:</source>
-        <translation type="unfinished">Nome camera:</translation>
+        <translation>Nome camera:</translation>
     </message>
     <message>
         <source>Camera size:</source>
-        <translation type="unfinished">Dimens. camera:</translation>
+        <translation>Dimens. camera:</translation>
     </message>
     <message>
         <source>Ok</source>
-        <translation type="unfinished">OK</translation>
+        <translation>OK</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
     <name>ColorGridItem</name>
     <message>
         <source>Pick</source>
-        <translation type="unfinished">Scegli</translation>
+        <translation>Scegli</translation>
     </message>
     <message>
         <source>Tint</source>
-        <translation type="unfinished">Tinta</translation>
+        <translation>Tinta</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished">Cancella</translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
 </context>
 <context>
     <name>ColorInspector</name>
     <message>
         <source>HSV</source>
-        <translation type="unfinished">HSV</translation>
+        <translation>HSV</translation>
     </message>
     <message>
         <source>RGB</source>
-        <translation type="unfinished">RGB</translation>
+        <translation>RGB</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Rosso</translation>
+        <translation>Rosso</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Verde</translation>
+        <translation>Verde</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Blu</translation>
+        <translation>Blu</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished">Alfa</translation>
+        <translation>Alfa</translation>
     </message>
     <message>
         <source>Hue</source>
-        <translation type="unfinished">Hue</translation>
+        <translation>Hue</translation>
     </message>
     <message>
         <source>Saturation</source>
-        <translation type="unfinished">Saturazione</translation>
+        <translation>Saturazione</translation>
     </message>
     <message>
         <source>Value</source>
-        <translation type="unfinished">Valore</translation>
+        <translation>Valore</translation>
     </message>
 </context>
 <context>
     <name>ColorPaletteWidget</name>
     <message>
         <source>Colors</source>
-        <translation type="unfinished">Colori</translation>
+        <translation>Colori</translation>
     </message>
     <message>
         <source>Add Color</source>
-        <translation type="unfinished">Aggiungi colore</translation>
+        <translation>Aggiungi colore</translation>
     </message>
     <message>
         <source>Remove Color</source>
-        <translation type="unfinished">Togli colore</translation>
+        <translation>Togli colore</translation>
     </message>
     <message>
         <source>Colour name</source>
-        <translation type="unfinished">Nome colore</translation>
+        <translation>Nome colore</translation>
     </message>
     <message>
         <source>Colour name:</source>
-        <translation type="unfinished">Nome colore:</translation>
+        <translation>Nome colore:</translation>
     </message>
     <message>
         <source>Colour %1</source>
-        <translation type="unfinished">Colore %1</translation>
+        <translation>Colore %1</translation>
     </message>
 </context>
 <context>
     <name>DisplayOptionDockWidget</name>
     <message>
         <source>Display Options</source>
-        <translation type="unfinished">Opzioni schermo</translation>
+        <translation>Opzioni schermo</translation>
     </message>
     <message>
         <source>Show invisible lines</source>
@@ -160,228 +160,228 @@
     <name>Editor</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Attrezzi</translation>
+        <translation>Attrezzi</translation>
     </message>
     <message>
         <source>Import movie</source>
-        <translation type="unfinished">Importa video</translation>
-    </message>
-    <message>
-        <source>Paste</source>
-        <translation type="unfinished">Incolla</translation>
-    </message>
-    <message>
-        <source>Layer Properties</source>
-        <translation type="unfinished">Proprietà livello</translation>
-    </message>
-    <message>
-        <source>Layer name:</source>
-        <translation type="unfinished">Nome livello:</translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="unfinished">Attenzione</translation>
-    </message>
-    <message>
-        <source>Resolution</source>
-        <translation type="unfinished">Risoluzione</translation>
-    </message>
-    <message>
-        <source>Format</source>
-        <translation type="unfinished">Formato</translation>
-    </message>
-    <message>
-        <source>Options</source>
-        <translation type="unfinished">Opzioni</translation>
-    </message>
-    <message>
-        <source>Compression</source>
-        <translation type="unfinished">Compressione</translation>
-    </message>
-    <message>
-        <source>Export SWF Options</source>
-        <translation type="unfinished">Opzioni esporta SWF</translation>
-    </message>
-    <message>
-        <source>Save Image Sequence</source>
-        <translation type="unfinished">Salva sequenza immagini</translation>
-    </message>
-    <message>
-        <source>Save As</source>
-        <translation type="unfinished">Salva con nome</translation>
-    </message>
-    <message>
-        <source>Unable to export image.</source>
-        <translation type="unfinished">Impossibile esportare immagine.</translation>
-    </message>
-    <message>
-        <source>Save Image</source>
-        <translation type="unfinished">Salva immagine</translation>
-    </message>
-    <message>
-        <source>Export Movie As...</source>
-        <translation type="unfinished">Esporta animazione con nome...</translation>
-    </message>
-    <message>
-        <source>Please select a Bitmap or Vector layer to import images.</source>
-        <translation type="unfinished">Scegli un livello bitmap o vettoriale per importare immagini.</translation>
-    </message>
-    <message>
-        <source>Import image...</source>
-        <translation type="unfinished">Importa immagine...</translation>
-    </message>
-    <message>
-        <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation type="unfinished">Impossibile caricare immagini bitmap.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; Usare un livello bitmap per importare.</translation>
-    </message>
-    <message>
-        <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
-        <translation type="unfinished">Impossibile caricare un&apos;immagine vettoriale.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; Usare un livello vettoriale per importare.</translation>
-    </message>
-    <message>
-        <source>Import sound...</source>
-        <translation type="unfinished">Importa suono...</translation>
-    </message>
-    <message>
-        <source>Save SVG</source>
-        <translation type="unfinished">Salva SVG</translation>
-    </message>
-    <message>
-        <source>SVG files (*.svg)</source>
-        <translation type="unfinished">File SVG (*.svg)</translation>
-    </message>
-    <message>
-        <source>SVG Generator Example Drawing</source>
-        <translation type="unfinished">Disegno campione del generatore SVG</translation>
-    </message>
-    <message>
-        <source>An SVG drawing created by the SVG Generator Example provided with Qt.</source>
-        <translation type="unfinished">Un disegno SVG creato dal generatore SVG fornito con Qt.</translation>
+        <translation>Importa video</translation>
     </message>
     <message>
         <source>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Paste</source>
+        <translation>Incolla</translation>
+    </message>
+    <message>
+        <source>Layer Properties</source>
+        <translation>Proprietà livello</translation>
+    </message>
+    <message>
+        <source>Layer name:</source>
+        <translation>Nome livello:</translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation>Attenzione</translation>
+    </message>
+    <message>
+        <source>Resolution</source>
+        <translation>Risoluzione</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Formato</translation>
+    </message>
+    <message>
+        <source>Options</source>
+        <translation>Opzioni</translation>
+    </message>
+    <message>
+        <source>Compression</source>
+        <translation>Compressione</translation>
+    </message>
+    <message>
+        <source>Export SWF Options</source>
+        <translation>Opzioni esporta SWF</translation>
+    </message>
+    <message>
+        <source>Save Image Sequence</source>
+        <translation>Salva sequenza immagini</translation>
     </message>
     <message>
         <source>PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Save As</source>
+        <translation>Salva con nome</translation>
+    </message>
+    <message>
+        <source>Unable to export image.</source>
+        <translation>Impossibile esportare immagine.</translation>
+    </message>
+    <message>
+        <source>Save Image</source>
+        <translation>Salva immagine</translation>
+    </message>
+    <message>
+        <source>Export Movie As...</source>
+        <translation>Esporta animazione con nome...</translation>
     </message>
     <message>
         <source>AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>SWF (*.swf)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Please select a Bitmap or Vector layer to import images.</source>
+        <translation>Scegli un livello bitmap o vettoriale per importare immagini.</translation>
+    </message>
+    <message>
+        <source>Import image...</source>
+        <translation>Importa immagine...</translation>
     </message>
     <message>
         <source>ImportImg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
+        <translation>Impossibile caricare immagini bitmap.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; Usare un livello bitmap per importare.</translation>
+    </message>
+    <message>
+        <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
+        <translation>Impossibile caricare un&apos;immagine vettoriale.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; Usare un livello vettoriale per importare.</translation>
+    </message>
+    <message>
+        <source>Import sound...</source>
+        <translation>Importa suono...</translation>
     </message>
     <message>
         <source>WAV(*.wav);;MP3(*.mp3)</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Save SVG</source>
+        <translation>Salva SVG</translation>
+    </message>
+    <message>
+        <source>SVG files (*.svg)</source>
+        <translation>File SVG (*.svg)</translation>
+    </message>
+    <message>
+        <source>SVG Generator Example Drawing</source>
+        <translation>Disegno campione del generatore SVG</translation>
+    </message>
+    <message>
+        <source>An SVG drawing created by the SVG Generator Example provided with Qt.</source>
+        <translation>Un disegno SVG creato dal generatore SVG fornito con Qt.</translation>
     </message>
 </context>
 <context>
     <name>FilesPage</name>
     <message>
         <source>Autosave documents</source>
-        <translation type="unfinished">Salvataggio automatico documenti</translation>
+        <translation>Salvataggio automatico documenti</translation>
     </message>
     <message>
         <source>Enable autosave</source>
-        <translation type="unfinished">Abilita salvataggio automatico</translation>
+        <translation>Abilita salvataggio automatico</translation>
     </message>
     <message>
         <source>Number of modifications before autosaving:</source>
-        <translation type="unfinished">Numero di modifiche prima del salvataggio automatico:</translation>
+        <translation>Numero di modifiche prima del salvataggio automatico:</translation>
     </message>
 </context>
 <context>
     <name>GeneralPage</name>
     <message>
         <source>Window opacity</source>
-        <translation type="unfinished">Opacitàù finestra</translation>
+        <translation>Opacitàù finestra</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Sfondo</translation>
+        <translation>Sfondo</translation>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Aspetto</translation>
-    </message>
-    <message>
-        <source>Editing</source>
-        <translation type="unfinished">Modifica</translation>
-    </message>
-    <message>
-        <source>Opacity</source>
-        <translation type="unfinished">Opacità</translation>
-    </message>
-    <message>
-        <source>Shadows</source>
-        <translation type="unfinished">Ombre</translation>
-    </message>
-    <message>
-        <source>Tool Cursors</source>
-        <translation type="unfinished">Cursori dell&apos;attrezzo</translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished">Nessuno</translation>
-    </message>
-    <message>
-        <source>Quick</source>
-        <translation type="unfinished">Veloce</translation>
-    </message>
-    <message>
-        <source>Gradient1</source>
-        <translation type="unfinished">Gradiente1</translation>
-    </message>
-    <message>
-        <source>Gradient2</source>
-        <translation type="unfinished">Gradiente2</translation>
-    </message>
-    <message>
-        <source>Gradients</source>
-        <translation type="unfinished">Gradienti</translation>
-    </message>
-    <message>
-        <source>Vector curve opacity</source>
-        <translation type="unfinished">Opacità della curva vettoriale</translation>
-    </message>
-    <message>
-        <source>Vector curve smoothing</source>
-        <translation type="unfinished">Arrotondamento curva vettoriale</translation>
-    </message>
-    <message>
-        <source>Tablet high-resolution position</source>
-        <translation type="unfinished">Posizione HR della tavoletta</translation>
+        <translation>Aspetto</translation>
     </message>
     <message>
         <source>Rendering</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Editing</source>
+        <translation>Modifica</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Opacità</translation>
+    </message>
+    <message>
+        <source>Shadows</source>
+        <translation>Ombre</translation>
+    </message>
+    <message>
+        <source>Tool Cursors</source>
+        <translation>Cursori dell&apos;attrezzo</translation>
     </message>
     <message>
         <source>Aqua Style</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Antialiasing</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation>Nessuno</translation>
+    </message>
+    <message>
+        <source>Quick</source>
+        <translation>Veloce</translation>
+    </message>
+    <message>
+        <source>Gradient1</source>
+        <translation>Gradiente1</translation>
+    </message>
+    <message>
+        <source>Gradient2</source>
+        <translation>Gradiente2</translation>
+    </message>
+    <message>
+        <source>Gradients</source>
+        <translation>Gradienti</translation>
+    </message>
+    <message>
+        <source>Vector curve opacity</source>
+        <translation>Opacità della curva vettoriale</translation>
+    </message>
+    <message>
+        <source>Vector curve smoothing</source>
+        <translation>Arrotondamento curva vettoriale</translation>
+    </message>
+    <message>
+        <source>Tablet high-resolution position</source>
+        <translation>Posizione HR della tavoletta</translation>
     </message>
 </context>
 <context>
     <name>Layer</name>
     <message>
         <source>Layer Properties</source>
-        <translation type="unfinished">Proprietà livello</translation>
+        <translation>Proprietà livello</translation>
     </message>
     <message>
         <source>Layer name:</source>
-        <translation type="unfinished">Nome livello:</translation>
+        <translation>Nome livello:</translation>
     </message>
     <message>
         <source>Undefined Layer</source>
@@ -424,369 +424,369 @@
     <name>MainWindow2</name>
     <message>
         <source>MainWindow</source>
-        <translation type="unfinished">FinestraPrincipale</translation>
+        <translation>FinestraPrincipale</translation>
     </message>
     <message>
         <source>File</source>
-        <translation type="unfinished">File</translation>
+        <translation>File</translation>
     </message>
     <message>
         <source>Import</source>
-        <translation type="unfinished">Importa</translation>
+        <translation>Importa</translation>
     </message>
     <message>
         <source>Export</source>
-        <translation type="unfinished">Esporta</translation>
+        <translation>Esporta</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation type="unfinished">Modifica</translation>
+        <translation>Modifica</translation>
     </message>
     <message>
         <source>View</source>
-        <translation type="unfinished">Vista</translation>
+        <translation>Vista</translation>
     </message>
     <message>
         <source>Onion Skin</source>
-        <translation type="unfinished">Pellicola</translation>
+        <translation>Pellicola</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation type="unfinished">Animazione</translation>
+        <translation>Animazione</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Attrezzi</translation>
+        <translation>Attrezzi</translation>
     </message>
     <message>
         <source>Layer</source>
-        <translation type="unfinished">Livello</translation>
+        <translation>Livello</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation type="unfinished">Aiuto</translation>
+        <translation>Aiuto</translation>
     </message>
     <message>
         <source>Windows</source>
-        <translation type="unfinished">Finestre</translation>
+        <translation>Finestre</translation>
     </message>
     <message>
         <source>New</source>
-        <translation type="unfinished">Nuovo</translation>
+        <translation>Nuovo</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="unfinished">Apri</translation>
+        <translation>Apri</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished">Salva</translation>
+        <translation>Salva</translation>
     </message>
     <message>
         <source>Save As ..</source>
-        <translation type="unfinished">Salva con nome ..</translation>
+        <translation>Salva con nome ..</translation>
     </message>
     <message>
         <source>Print</source>
-        <translation type="unfinished">Stampa</translation>
+        <translation>Stampa</translation>
     </message>
     <message>
         <source>Exit</source>
-        <translation type="unfinished">Esci</translation>
+        <translation>Esci</translation>
     </message>
     <message>
         <source>X-sheet ...</source>
-        <translation type="unfinished">Foglio-X ...</translation>
+        <translation>Foglio-X ...</translation>
     </message>
     <message>
         <source>Image Sequence...</source>
-        <translation type="unfinished">Sequenza immagini...</translation>
+        <translation>Sequenza immagini...</translation>
     </message>
     <message>
         <source>Image...</source>
-        <translation type="unfinished">Immagine...</translation>
+        <translation>Immagine...</translation>
     </message>
     <message>
         <source>Movie...</source>
-        <translation type="unfinished">Animazione...</translation>
+        <translation>Animazione...</translation>
     </message>
     <message>
         <source>Palette...</source>
-        <translation type="unfinished">Tavolozza...</translation>
+        <translation>Tavolozza...</translation>
     </message>
     <message>
         <source>Svg Image...</source>
-        <translation type="unfinished">Immagine SVG...</translation>
+        <translation>Immagine SVG...</translation>
     </message>
     <message>
         <source>Sound...</source>
-        <translation type="unfinished">Suono...</translation>
+        <translation>Suono...</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation type="unfinished">Annulla</translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished">Rifai</translation>
+        <translation>Rifai</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished">Taglia</translation>
+        <translation>Taglia</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished">Copia</translation>
+        <translation>Copia</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished">Incolla</translation>
+        <translation>Incolla</translation>
     </message>
     <message>
         <source>Crop</source>
-        <translation type="unfinished">Ritaglia</translation>
+        <translation>Ritaglia</translation>
     </message>
     <message>
         <source>Crop To Selection</source>
-        <translation type="unfinished">Ritaglia a selezione</translation>
+        <translation>Ritaglia a selezione</translation>
     </message>
     <message>
         <source>Select All</source>
-        <translation type="unfinished">Selez tutto</translation>
+        <translation>Selez tutto</translation>
     </message>
     <message>
         <source>Deselect All</source>
-        <translation type="unfinished">Deselez tutto</translation>
+        <translation>Deselez tutto</translation>
     </message>
     <message>
         <source>Clear Frame</source>
-        <translation type="unfinished">Cancella fotogramma</translation>
+        <translation>Cancella fotogramma</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Preferenze</translation>
+        <translation>Preferenze</translation>
     </message>
     <message>
         <source>Reset Windows</source>
-        <translation type="unfinished">Ripristina finestra</translation>
+        <translation>Ripristina finestra</translation>
+    </message>
+    <message>
+        <source>Zoom In</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Zoom Out</source>
+        <translation></translation>
     </message>
     <message>
         <source>Rotate Clockwise</source>
-        <translation type="unfinished">Ruota senso orario</translation>
+        <translation>Ruota senso orario</translation>
     </message>
     <message>
         <source>Rotate AntiClosewise</source>
-        <translation type="unfinished">Ruota antiorario</translation>
+        <translation>Ruota antiorario</translation>
     </message>
     <message>
         <source>Reset Zoom/Rotate</source>
-        <translation type="unfinished">Ripristina zoom/rotazione</translation>
+        <translation>Ripristina zoom/rotazione</translation>
     </message>
     <message>
         <source>Horizontal Flip</source>
-        <translation type="unfinished">Rifletti orizzontale</translation>
+        <translation>Rifletti orizzontale</translation>
     </message>
     <message>
         <source>Vertical Flip</source>
-        <translation type="unfinished">Rifletti verticale</translation>
+        <translation>Rifletti verticale</translation>
     </message>
     <message>
         <source>Preview</source>
-        <translation type="unfinished">Anteprima</translation>
+        <translation>Anteprima</translation>
     </message>
     <message>
         <source>Grid</source>
-        <translation type="unfinished">Griglia</translation>
+        <translation>Griglia</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation type="unfinished">Prec</translation>
+        <translation>Prec</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation type="unfinished">Succ</translation>
+        <translation>Succ</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Esegui</translation>
+        <translation>Esegui</translation>
+    </message>
+    <message>
+        <source>Loop</source>
+        <translation></translation>
     </message>
     <message>
         <source>Next Frame</source>
-        <translation type="unfinished">Fotogramma succ</translation>
+        <translation>Fotogramma succ</translation>
     </message>
     <message>
         <source>Previous Frame</source>
-        <translation type="unfinished">Fotogramma prec</translation>
+        <translation>Fotogramma prec</translation>
     </message>
     <message>
         <source>Extend Frame</source>
-        <translation type="unfinished">Estendi fotogramma</translation>
+        <translation>Estendi fotogramma</translation>
     </message>
     <message>
         <source>Add Frame</source>
-        <translation type="unfinished">Agg fotogramma</translation>
+        <translation>Agg fotogramma</translation>
     </message>
     <message>
         <source>Duplicate Frame</source>
-        <translation type="unfinished">Duplica fotogramma</translation>
+        <translation>Duplica fotogramma</translation>
     </message>
     <message>
         <source>Remove Frame</source>
-        <translation type="unfinished">Togli fotogramma</translation>
+        <translation>Togli fotogramma</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation type="unfinished">Sposta</translation>
+        <translation>Sposta</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation type="unfinished">Seleziona</translation>
+        <translation>Seleziona</translation>
     </message>
     <message>
         <source>Brush</source>
-        <translation type="unfinished">Pennello</translation>
+        <translation>Pennello</translation>
     </message>
     <message>
         <source>Polyline</source>
-        <translation type="unfinished">Polilinea</translation>
+        <translation>Polilinea</translation>
     </message>
     <message>
         <source>Smudge</source>
-        <translation type="unfinished">Sfuma</translation>
+        <translation>Sfuma</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation type="unfinished">Penna</translation>
+        <translation>Penna</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation type="unfinished">Mano</translation>
+        <translation>Mano</translation>
     </message>
     <message>
         <source>Pencil</source>
-        <translation type="unfinished">Matita</translation>
+        <translation>Matita</translation>
     </message>
     <message>
         <source>Bucket</source>
-        <translation type="unfinished">Secchiello</translation>
+        <translation>Secchiello</translation>
     </message>
     <message>
         <source>Eyedropper</source>
-        <translation type="unfinished">Contagocce</translation>
+        <translation>Contagocce</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation type="unfinished">Gomma</translation>
+        <translation>Gomma</translation>
     </message>
     <message>
         <source>New Bitmap Layer</source>
-        <translation type="unfinished">Nuovo livello bitmap</translation>
+        <translation>Nuovo livello bitmap</translation>
     </message>
     <message>
         <source>New Vector Layer</source>
-        <translation type="unfinished">Nuovo livello vettoriale</translation>
+        <translation>Nuovo livello vettoriale</translation>
     </message>
     <message>
         <source>New Sound Layer</source>
-        <translation type="unfinished">Nuovo livello suono</translation>
+        <translation>Nuovo livello suono</translation>
     </message>
     <message>
         <source>New Camera Layer</source>
-        <translation type="unfinished">Nuovo livello camera</translation>
+        <translation>Nuovo livello camera</translation>
     </message>
     <message>
         <source>Delete Current Layer</source>
-        <translation type="unfinished">Cancella livello</translation>
+        <translation>Cancella livello</translation>
     </message>
     <message>
         <source>About</source>
-        <translation type="unfinished">A proposito</translation>
+        <translation>A proposito</translation>
     </message>
     <message>
         <source>Toggle palette</source>
-        <translation type="unfinished">Alterna tavolozza</translation>
+        <translation>Alterna tavolozza</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation type="unfinished">Ripristina</translation>
+        <translation>Ripristina</translation>
+    </message>
+    <message>
+        <source>Next_Keyframe</source>
+        <translation></translation>
     </message>
     <message>
         <source>Next Keyframe</source>
-        <translation type="unfinished">Keyframe succ</translation>
+        <translation>Keyframe succ</translation>
+    </message>
+    <message>
+        <source>Prev_Keyframe</source>
+        <translation></translation>
     </message>
     <message>
         <source>Previous keyframe</source>
-        <translation type="unfinished">Keyframe prec</translation>
+        <translation>Keyframe prec</translation>
     </message>
     <message>
         <source>MultiLayerOnionSkin</source>
-        <translation type="unfinished">Pellicola multi-livello</translation>
+        <translation>Pellicola multi-livello</translation>
+    </message>
+    <message>
+        <source>loopcontrol</source>
+        <translation></translation>
     </message>
     <message>
         <source>Timeline</source>
-        <translation type="unfinished">Linea del tempo</translation>
+        <translation>Linea del tempo</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Opzioni</translation>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <source>Color Wheel</source>
-        <translation type="unfinished">Ruota dei colori</translation>
+        <translation>Ruota dei colori</translation>
     </message>
     <message>
         <source>Color Palette</source>
-        <translation type="unfinished">Tavolozza colori</translation>
+        <translation>Tavolozza colori</translation>
     </message>
     <message>
         <source>Display Options</source>
-        <translation type="unfinished">Opzioni schermo</translation>
+        <translation>Opzioni schermo</translation>
     </message>
     <message>
         <source>Open File...</source>
-        <translation type="unfinished">Apri file...</translation>
+        <translation>Apri file...</translation>
     </message>
     <message>
         <source>Save As...</source>
-        <translation type="unfinished">Salva con nome...</translation>
+        <translation>Salva con nome...</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="unfinished">Attenzione</translation>
+        <translation>Attenzione</translation>
     </message>
     <message>
         <source>This animation has been modified.
 Do you want to save your changes?</source>
-        <translation type="unfinished">Questa animazione è stata modificata.
+        <translation>Questa animazione è stata modificata.
 Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Export As</source>
-        <translation type="unfinished">Esporta come</translation>
-    </message>
-    <message>
-        <source>Zoom In</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Next_Keyframe</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Prev_Keyframe</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>loopcontrol</source>
-        <translation type="unfinished"></translation>
+        <translation>Esporta come</translation>
     </message>
     <message>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
@@ -817,7 +817,7 @@ Vuoi salvare le modifiche?</translation>
     <name>MoveTool</name>
     <message>
         <source>Move</source>
-        <translation type="unfinished">Sposta</translation>
+        <translation>Sposta</translation>
     </message>
 </context>
 <context>
@@ -923,118 +923,126 @@ Vuoi salvare le modifiche?</translation>
     <name>PolylineTool</name>
     <message>
         <source>Line</source>
-        <translation type="unfinished">Linea</translation>
+        <translation>Linea</translation>
     </message>
 </context>
 <context>
     <name>Preferences</name>
     <message>
         <source>Close</source>
-        <translation type="unfinished">Chiudi</translation>
+        <translation>Chiudi</translation>
     </message>
     <message>
         <source>Preferences</source>
-        <translation type="unfinished">Preferenze</translation>
+        <translation>Preferenze</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished">Generale</translation>
+        <translation>Generale</translation>
     </message>
     <message>
         <source>Files</source>
-        <translation type="unfinished">File</translation>
+        <translation>File</translation>
     </message>
     <message>
         <source>Timeline</source>
-        <translation type="unfinished">Linea del tempo</translation>
+        <translation>Linea del tempo</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Attrezzi</translation>
+        <translation>Attrezzi</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished">Scorciatoie</translation>
+        <translation>Scorciatoie</translation>
     </message>
 </context>
 <context>
     <name>QuaZipFilePrivate</name>
     <message>
         <source>ZIP/UNZIP API error %1</source>
-        <translation type="unfinished">errore API ZIP/UNZIP %1</translation>
+        <translation>errore API ZIP/UNZIP %1</translation>
     </message>
 </context>
 <context>
     <name>ScribbleArea</name>
     <message>
         <source>Warning</source>
-        <translation type="unfinished">Attenzione</translation>
+        <translation>Attenzione</translation>
     </message>
     <message>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished">Stai disegnando su un livello nascosto! Scegli un altro livello (o rendi visibile questo livello).</translation>
+        <translation>Stai disegnando su un livello nascosto! Scegli un altro livello (o rendi visibile questo livello).</translation>
     </message>
     <message>
         <source>Flood fill error</source>
-        <translation type="unfinished">Errore di riempimento</translation>
+        <translation>Errore di riempimento</translation>
     </message>
     <message>
         <source>DeleteSel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>ClearImg</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>ShortcutsPage</name>
     <message>
+        <source>Form</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>Action:</source>
-        <translation type="unfinished">Azione:</translation>
+        <translation>Azione:</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Nessuna</translation>
+        <translation>Nessuna</translation>
     </message>
     <message>
         <source>Shortcuts:</source>
-        <translation type="unfinished">Scorciatoie:</translation>
+        <translation>Scorciatoie:</translation>
     </message>
     <message>
         <source>clear</source>
-        <translation type="unfinished">cancella</translation>
+        <translation>cancella</translation>
     </message>
     <message>
         <source>Restore Default Shortcuts</source>
-        <translation type="unfinished">Ripristina scorciatoie predefinite</translation>
-    </message>
-    <message>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation>Ripristina scorciatoie predefinite</translation>
     </message>
 </context>
 <context>
     <name>TimeControls</name>
     <message>
         <source>Loop control</source>
-        <translation type="unfinished">Controllo loop</translation>
+        <translation>Controllo loop</translation>
     </message>
     <message>
         <source>Fps: </source>
-        <translation type="unfinished">FPS: </translation>
+        <translation>FPS: </translation>
+    </message>
+    <message>
+        <source>Play</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Loop</source>
+        <translation></translation>
     </message>
     <message>
         <source>Sound on/off</source>
-        <translation type="unfinished">Suono on/off</translation>
+        <translation>Suono on/off</translation>
     </message>
     <message>
         <source>End</source>
-        <translation type="unfinished">Fine</translation>
+        <translation>Fine</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation type="unfinished">Inizio</translation>
+        <translation>Inizio</translation>
     </message>
     <message>
         <source>Start of loop</source>
@@ -1048,78 +1056,70 @@ Vuoi salvare le modifiche?</translation>
         <source>Loop Control</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Play</source>
-        <translation type="unfinished">Esegui</translation>
-    </message>
-    <message>
-        <source>Loop</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TimeLine</name>
     <message>
         <source>Layers:</source>
-        <translation type="unfinished">Livelli:</translation>
+        <translation>Livelli:</translation>
     </message>
     <message>
         <source>New Bitmap Layer</source>
-        <translation type="unfinished">Nuovo livello bitmap</translation>
+        <translation>Nuovo livello bitmap</translation>
     </message>
     <message>
         <source>New Vector Layer</source>
-        <translation type="unfinished">Nuovo livello vettoriale</translation>
+        <translation>Nuovo livello vettoriale</translation>
     </message>
     <message>
         <source>New Sound Layer</source>
-        <translation type="unfinished">Nuovo livello suono</translation>
+        <translation>Nuovo livello suono</translation>
     </message>
     <message>
         <source>New Camera Layer</source>
-        <translation type="unfinished">Nuovo livello camera</translation>
+        <translation>Nuovo livello camera</translation>
     </message>
     <message>
         <source>&amp;Layer</source>
-        <translation type="unfinished">&amp;Livello</translation>
+        <translation>&amp;Livello</translation>
     </message>
     <message>
         <source>Keys:</source>
-        <translation type="unfinished">Tasti:</translation>
+        <translation>Tasti:</translation>
     </message>
 </context>
 <context>
     <name>TimelinePage</name>
     <message>
         <source>Timeline</source>
-        <translation type="unfinished">Linea del tempo</translation>
+        <translation>Linea del tempo</translation>
     </message>
     <message>
         <source>Draw timeline labels</source>
-        <translation type="unfinished">Inserisci etichette sulla linea</translation>
+        <translation>Inserisci etichette sulla linea</translation>
     </message>
     <message>
         <source>Frame size in Pixels</source>
-        <translation type="unfinished">Dimensioni fotogramma (in px)</translation>
+        <translation>Dimensioni fotogramma (in px)</translation>
     </message>
     <message>
         <source>Timeline size in Frames</source>
-        <translation type="unfinished">Dimensioni linea del tempo (in fotogrammi)</translation>
+        <translation>Dimensioni linea del tempo (in fotogrammi)</translation>
     </message>
     <message>
         <source>Short scrub</source>
-        <translation type="unfinished">Scorri veloce</translation>
+        <translation>Scorri veloce</translation>
     </message>
 </context>
 <context>
     <name>ToolOptionDockWidget</name>
     <message>
         <source>Color:</source>
-        <translation type="unfinished">Colore:</translation>
+        <translation>Colore:</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished">Opzioni</translation>
+        <translation>Opzioni</translation>
     </message>
     <message>
         <source>Display Colors</source>
@@ -1277,19 +1277,19 @@ Vuoi salvare le modifiche?</translation>
     <name>ToolsPage</name>
     <message>
         <source>Onion skin</source>
-        <translation type="unfinished">Pellicola</translation>
+        <translation>Pellicola</translation>
     </message>
     <message>
         <source>Onion layer 1 opacity - % (50 is recommended):</source>
-        <translation type="unfinished">Opacità strato 1 pellicola % (raccomandato 50):</translation>
+        <translation>Opacità strato 1 pellicola % (raccomandato 50):</translation>
     </message>
     <message>
         <source>Onion layer 2 opacity - % (30 is recommended):</source>
-        <translation type="unfinished">Opacità strato 2 pellicola % (raccomandato 30):</translation>
+        <translation>Opacità strato 2 pellicola % (raccomandato 30):</translation>
     </message>
     <message>
         <source>Onion layer 3 opacity - % (20 is recommended):</source>
-        <translation type="unfinished">Opacità strato 3 pellicola % (raccomandato 20):</translation>
+        <translation>Opacità strato 3 pellicola % (raccomandato 20):</translation>
     </message>
 </context>
 </TS>
