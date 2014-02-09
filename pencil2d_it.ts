@@ -985,6 +985,13 @@ Vuoi salvare le modifiche?</translation>
     </message>
 </context>
 <context>
+    <name>RecentFileMenu</name>
+    <message>
+        <source>Open Recent</source>
+        <translation>Apri recenti</translation>
+    </message>
+</context>
+<context>
     <name>ScribbleArea</name>
     <message>
         <source>Warning</source>

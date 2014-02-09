@@ -1261,6 +1261,14 @@ Do you want to save your changes?</source>
     </message>
 </context>
 <context>
+    <name>RecentFileMenu</name>
+    <message>
+        <location filename="src/interface/recentfilemenu.h" line="19"/>
+        <source>Open Recent</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ScribbleArea</name>
     <message>
         <location filename="src/interface/scribblearea.cpp" line="839"/>
