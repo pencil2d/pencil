@@ -809,7 +809,7 @@ void Editor::deleteCurrentLayer()
 {
     int ret = QMessageBox::warning( this,
                                     tr( "Warning" ),
-                                    tr( "Are you sure you want to delete layer: " ) s+ m_pObject->getLayer( layerManager()->currentLayerIndex() )->name + " ?",
+                                    tr( "Are you sure you want to delete layer: " ) + m_pObject->getLayer( layerManager()->currentLayerIndex() )->name + " ?",
                                     QMessageBox::Ok | QMessageBox::Cancel,
                                     QMessageBox::Ok );
     if ( ret == QMessageBox::Ok )
