@@ -67,7 +67,7 @@
     </message>
     <message>
         <source>Hue</source>
-        <translation>Hue</translation>
+        <translation>Tinta</translation>
     </message>
     <message>
         <source>Saturation</source>
@@ -113,47 +113,47 @@
     </message>
     <message>
         <source>Show invisible lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra linee invisibili</translation>
     </message>
     <message>
         <source>Show outlines only</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra solo contorni</translation>
     </message>
     <message>
         <source>Horizontal flip</source>
-        <translation type="unfinished"></translation>
+        <translation>Specchia orizzontale</translation>
     </message>
     <message>
         <source>Vertical flip</source>
-        <translation type="unfinished"></translation>
+        <translation>Specchia verticale</translation>
     </message>
     <message>
         <source>Onion skin previous frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Pellicola fotogramma prec</translation>
     </message>
     <message>
         <source>Onion skin next frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Pellicola fotogramma succ</translation>
     </message>
     <message>
         <source>Onion skin color: blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore pellicola: blu</translation>
     </message>
     <message>
         <source>Onion skin color: red</source>
-        <translation type="unfinished"></translation>
+        <translation>Colore pellicola: rosso</translation>
     </message>
     <message>
         <source>enable onionskin on multiple layers</source>
-        <translation type="unfinished"></translation>
+        <translation>abilita pellicola su più livelli</translation>
     </message>
     <message>
         <source>Grid A - composition</source>
-        <translation type="unfinished"></translation>
+        <translation>Griglia A - composizione</translation>
     </message>
     <message>
         <source>Grid B - perspective</source>
-        <translation type="unfinished"></translation>
+        <translation>Griglia B - prospettiva</translation>
     </message>
 </context>
 <context>
@@ -282,6 +282,14 @@
         <source>An SVG drawing created by the SVG Generator Example provided with Qt.</source>
         <translation>Un disegno SVG creato dal generatore SVG fornito con Qt.</translation>
     </message>
+    <message>
+        <source>Bitmap Layer</source>
+        <translation>Livello bitmap</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete layer: </source>
+        <translation>Sei sicuro di cancellare il livello: </translation>
+    </message>
 </context>
 <context>
     <name>FilesPage</name>
@@ -302,7 +310,7 @@
     <name>GeneralPage</name>
     <message>
         <source>Window opacity</source>
-        <translation>Opacitàù finestra</translation>
+        <translation>Opacità finestra</translation>
     </message>
     <message>
         <source>Background</source>
@@ -385,39 +393,39 @@
     </message>
     <message>
         <source>Undefined Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello indefinito</translation>
     </message>
 </context>
 <context>
     <name>LayerBitmap</name>
     <message>
         <source>Bitmap Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello bitmap</translation>
     </message>
 </context>
 <context>
     <name>LayerCamera</name>
     <message>
         <source>Camera Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello camera</translation>
     </message>
 </context>
 <context>
     <name>LayerSound</name>
     <message>
         <source>Sound Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello suono</translation>
     </message>
     <message>
         <source>Wrong file</source>
-        <translation type="unfinished"></translation>
+        <translation>File errato</translation>
     </message>
 </context>
 <context>
     <name>LayerVector</name>
     <message>
         <source>Vector Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Livello vettoriale</translation>
     </message>
 </context>
 <context>
@@ -484,7 +492,7 @@
     </message>
     <message>
         <source>Save As ..</source>
-        <translation>Salva con nome ..</translation>
+        <translation>Salva con nome...</translation>
     </message>
     <message>
         <source>Print</source>
@@ -496,7 +504,7 @@
     </message>
     <message>
         <source>X-sheet ...</source>
-        <translation>Foglio-X ...</translation>
+        <translation>Foglio-X...</translation>
     </message>
     <message>
         <source>Image Sequence...</source>
@@ -608,11 +616,11 @@
     </message>
     <message>
         <source>Previous</source>
-        <translation>Prec</translation>
+        <translation>Precedente</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Succ</translation>
+        <translation>Successivo</translation>
     </message>
     <message>
         <source>Play</source>
@@ -790,27 +798,39 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open Recent</source>
-        <translation type="unfinished"></translation>
+        <translation>tavolozza colori:&lt;br&gt;usare&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;per aprire/chiudere al cursore</translation>
     </message>
     <message>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pencil non può leggere questo file. Se vuoi importare immagini usa il comando Importa.</translation>
     </message>
     <message>
         <source>Opening document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Apertura documento...</translation>
     </message>
     <message>
         <source>Abort</source>
-        <translation type="unfinished"></translation>
+        <translation>Annulla</translation>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation type="unfinished"></translation>
+        <translation>Salvataggio documento...</translation>
+    </message>
+    <message>
+        <source>close/toggle (</source>
+        <translation>apre/chiude (</translation>
+    </message>
+    <message>
+        <source>Redo   </source>
+        <translation>Rifai   </translation>
+    </message>
+    <message>
+        <source>Open Recent</source>
+        <translation>Apri recenti</translation>
+    </message>
+    <message>
+        <source>Undo   </source>
+        <translation>Ripeti</translation>
     </message>
 </context>
 <context>
@@ -824,99 +844,99 @@ Vuoi salvare le modifiche?</translation>
     <name>Object</name>
     <message>
         <source>Black</source>
-        <translation type="unfinished"></translation>
+        <translation>Nero</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Rosso</translation>
+        <translation>Rosso</translation>
     </message>
     <message>
         <source>Dark Red</source>
-        <translation type="unfinished"></translation>
+        <translation>Rosso scuro</translation>
     </message>
     <message>
         <source>Orange</source>
-        <translation type="unfinished"></translation>
+        <translation>Arancio</translation>
     </message>
     <message>
         <source>Dark Orange</source>
-        <translation type="unfinished"></translation>
+        <translation>Arancio scuro</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Giallo</translation>
     </message>
     <message>
         <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
+        <translation>Giallo scuro</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Verde</translation>
+        <translation>Verde</translation>
     </message>
     <message>
         <source>Dark Green</source>
-        <translation type="unfinished"></translation>
+        <translation>Verde scuro</translation>
     </message>
     <message>
         <source>Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Ciano</translation>
     </message>
     <message>
         <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
+        <translation>Ciano scuro</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Blu</translation>
+        <translation>Blu</translation>
     </message>
     <message>
         <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
+        <translation>Blu scuro</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished"></translation>
+        <translation>Bianco</translation>
     </message>
     <message>
         <source>Very Light Grey</source>
-        <translation type="unfinished"></translation>
+        <translation>Grigio chiarissimo</translation>
     </message>
     <message>
         <source>Light Grey</source>
-        <translation type="unfinished"></translation>
+        <translation>Grigio chiaro</translation>
     </message>
     <message>
         <source>Grey</source>
-        <translation type="unfinished"></translation>
+        <translation>Grigio</translation>
     </message>
     <message>
         <source>Dark Grey</source>
-        <translation type="unfinished"></translation>
+        <translation>Grigio scuro</translation>
     </message>
     <message>
         <source>Light Skin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelle chiaro</translation>
     </message>
     <message>
         <source>Light Skin - shade</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelle chiaro - sfumato</translation>
     </message>
     <message>
         <source>Skin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelle</translation>
     </message>
     <message>
         <source>Skin - shade</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelle - sfumato</translation>
     </message>
     <message>
         <source>Dark Skin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelle scuro</translation>
     </message>
     <message>
         <source>Dark Skin - shade</source>
-        <translation type="unfinished"></translation>
+        <translation>Pelle scuro - sfumato</translation>
     </message>
 </context>
 <context>
@@ -1045,16 +1065,16 @@ Vuoi salvare le modifiche?</translation>
         <translation>Inizio</translation>
     </message>
     <message>
+        <source>Loop Control</source>
+        <translation>Controllo loop</translation>
+    </message>
+    <message>
         <source>Start of loop</source>
-        <translation type="unfinished"></translation>
+        <translation>Inizio del loop</translation>
     </message>
     <message>
         <source>End of loop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loop Control</source>
-        <translation type="unfinished"></translation>
+        <translation>Fine del loop</translation>
     </message>
 </context>
 <context>
@@ -1085,7 +1105,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Keys:</source>
-        <translation>Tasti:</translation>
+        <translation>Chiave:</translation>
     </message>
 </context>
 <context>
@@ -1123,154 +1143,154 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Display Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostra colori</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Dimensione</translation>
     </message>
     <message>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta dimensione penna &lt;br&gt;&lt;b&gt;[MAIUSC]+trascina&lt;/b&gt;&lt;br&gt;per modificare rapidamente</translation>
     </message>
     <message>
         <source>Feather</source>
-        <translation type="unfinished"></translation>
+        <translation>Precisione</translation>
     </message>
     <message>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Imposta distanza pennello &lt;br&gt;&lt;b&gt;[CTRL]+trascina&lt;/b&gt;&lt;br&gt;per modificare rapidamente</translation>
     </message>
     <message>
         <source>Pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Pressione</translation>
     </message>
     <message>
         <source>Size with pressure</source>
-        <translation type="unfinished"></translation>
+        <translation>Aumenta dimens con la pressione</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Invisibile</translation>
     </message>
     <message>
         <source>Make invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendi invisibile</translation>
     </message>
     <message>
         <source>Alpha</source>
-        <translation type="unfinished">Alfa</translation>
+        <translation>Alfa</translation>
     </message>
     <message>
         <source>Preserve Alpha</source>
-        <translation type="unfinished"></translation>
+        <translation>Conserva canale alfa</translation>
     </message>
     <message>
         <source>Contours</source>
-        <translation type="unfinished"></translation>
+        <translation>Contorni</translation>
     </message>
     <message>
         <source>Stop at contours</source>
-        <translation type="unfinished"></translation>
+        <translation>Fermati ai contorni</translation>
     </message>
 </context>
 <context>
     <name>ToolSetWidget</name>
     <message>
         <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
-        <translation type="unfinished"></translation>
+        <translation>Matita &lt;b&gt;(N)&lt;/b&gt;: disegna a matita</translation>
     </message>
     <message>
         <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
-        <translation type="unfinished"></translation>
+        <translation>Selezione &lt;b&gt;(V)&lt;/b&gt;: seleziona un oggetto</translation>
     </message>
     <message>
         <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta &lt;b&gt;(Q)&lt;/b&gt;: sposta un oggetto</translation>
     </message>
     <message>
         <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
-        <translation type="unfinished"></translation>
+        <translation>Mano &lt;b&gt;(H)&lt;/b&gt;: sposta la pagina</translation>
     </message>
     <message>
         <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
-        <translation type="unfinished"></translation>
+        <translation>Penna &lt;b&gt;(P)&lt;/b&gt;: disegna a penna</translation>
     </message>
     <message>
         <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
-        <translation type="unfinished"></translation>
+        <translation>Gomma &lt;b&gt;(E)&lt;/b&gt;: cancella</translation>
     </message>
     <message>
         <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
-        <translation type="unfinished"></translation>
+        <translation>Polilinea &lt;b&gt;(Y)&lt;/b&gt;: crea curve/linee</translation>
     </message>
     <message>
         <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
-        <translation type="unfinished"></translation>
+        <translation>Secchiello &lt;b&gt;(K)&lt;/b&gt;: riempi aree selezionate con un colore</translation>
     </message>
     <message>
         <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
-        <translation type="unfinished"></translation>
+        <translation>Pennello &lt;b&gt;(B)&lt;/b&gt;: disegna tratti con un pennello</translation>
     </message>
     <message>
         <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
-        <translation type="unfinished"></translation>
+        <translation>Contagocce &lt;b&gt;(I)&lt;/b&gt;: imposta il colore prelevando dall&apos;immagine&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt;per accesso al cursore</translation>
     </message>
     <message>
         <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella fotogramma &lt;b&gt;(CTRL+D)&lt;/b&gt;: cancella il contenuto del fotogramma selezionato</translation>
     </message>
     <message>
         <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfuma &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Modifica curve/polilinee&lt;br&gt;Fonde pixel bitmap&lt;br&gt;+[ALT]&lt;/b&gt;: arrotonda</translation>
     </message>
     <message>
         <source>Pencil Tool (N)</source>
-        <translation type="unfinished"></translation>
+        <translation>Matita (N)</translation>
     </message>
     <message>
         <source>Select Tool (V)</source>
-        <translation type="unfinished"></translation>
+        <translation>Seleziona (V)</translation>
     </message>
     <message>
         <source>Move Tool (Q)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sposta (Q)</translation>
     </message>
     <message>
         <source>Hand Tool (H)</source>
-        <translation type="unfinished"></translation>
+        <translation>Mano (H)</translation>
     </message>
     <message>
         <source>Pen Tool (P)</source>
-        <translation type="unfinished"></translation>
+        <translation>Penna (P)</translation>
     </message>
     <message>
         <source>Eraser Tool (E)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gomma (E)</translation>
     </message>
     <message>
         <source>Polyline Tool (Y)</source>
-        <translation type="unfinished"></translation>
+        <translation>Polilinea (Y)</translation>
     </message>
     <message>
         <source>Paint Bucket Tool(K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Secchiello (K)</translation>
     </message>
     <message>
         <source>Brush Tool(B)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pennello (B)</translation>
     </message>
     <message>
         <source>Eyedropper Tool (I)</source>
-        <translation type="unfinished"></translation>
+        <translation>Contagocce (I)</translation>
     </message>
     <message>
         <source>Clear Tool</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancella</translation>
     </message>
     <message>
         <source>Smudge Tool (A)</source>
-        <translation type="unfinished"></translation>
+        <translation>Sfuma (A)</translation>
     </message>
 </context>
 <context>

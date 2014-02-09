@@ -1123,7 +1123,7 @@ void MainWindow2::loadAllShortcuts()
     ui->actionEyedropper->setShortcut( cmdKeySeq( CMD_TOOL_EYEDROPPER ) );
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
-    m_pScribbleArea->getPopupPalette()->closeButton->setText( "close/toggle (" + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
+    m_pScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
     m_pScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
 
     ui->actionNew_Bitmap_Layer->setShortcut( cmdKeySeq( CMD_NEW_BITMAP_LAYER ) );
@@ -1147,23 +1147,23 @@ void MainWindow2::undoActSetText( void )
 {
     if ( this->editor->backupIndex < 0 )
     {
-        ui->actionUndo->setText( "Undo" );
+        ui->actionUndo->setText( tr("Undo") );
         ui->actionUndo->setEnabled( false );
     }
     else
     {
-        ui->actionUndo->setText( "Undo   " + QString::number( this->editor->backupIndex + 1 ) + " " + this->editor->backupList.at( this->editor->backupIndex )->undoText );
+        ui->actionUndo->setText( tr("Undo   ") + QString::number( this->editor->backupIndex + 1 ) + " " + this->editor->backupList.at( this->editor->backupIndex )->undoText );
         ui->actionUndo->setEnabled( true );
     }
 
     if ( this->editor->backupIndex + 2 < this->editor->backupList.size() )
     {
-        ui->actionRedo->setText( "Redo   " + QString::number( this->editor->backupIndex + 2 ) + " " + this->editor->backupList.at( this->editor->backupIndex + 1 )->undoText );
+        ui->actionRedo->setText( tr("Redo   ") + QString::number( this->editor->backupIndex + 2 ) + " " + this->editor->backupList.at( this->editor->backupIndex + 1 )->undoText );
         ui->actionRedo->setEnabled( true );
     }
     else
     {
-        ui->actionRedo->setText( "Redo" );
+        ui->actionRedo->setText( tr("Redo") );
         ui->actionRedo->setEnabled( false );
     }
 }

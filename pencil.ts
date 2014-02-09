@@ -227,6 +227,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="src/interface/editor.cpp" line="743"/>
+        <location filename="src/interface/editor.cpp" line="761"/>
+        <location filename="src/interface/editor.cpp" line="779"/>
+        <location filename="src/interface/editor.cpp" line="797"/>
+        <source>Bitmap Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/editor.cpp" line="812"/>
+        <source>Are you sure you want to delete layer: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="src/interface/editor.cpp" line="946"/>
         <location filename="src/interface/editor.cpp" line="983"/>
         <source>Resolution</source>
@@ -678,11 +691,13 @@
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="308"/>
+        <location filename="src/interface/mainwindow2.cpp" line="1150"/>
         <source>Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="317"/>
+        <location filename="src/interface/mainwindow2.cpp" line="1166"/>
         <source>Redo</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1037,6 +1052,21 @@
         <location filename="src/interface/mainwindow2.cpp" line="892"/>
         <source>This animation has been modified.
 Do you want to save your changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/mainwindow2.cpp" line="1126"/>
+        <source>close/toggle (</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/mainwindow2.cpp" line="1155"/>
+        <source>Undo   </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="src/interface/mainwindow2.cpp" line="1161"/>
+        <source>Redo   </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
