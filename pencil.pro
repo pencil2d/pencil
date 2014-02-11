@@ -9,7 +9,7 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 DEPENDPATH += . src
 
-QT += core gui xml xmlpatterns svg
+QT += core gui xml xmlpatterns svg multimedia
 
 include(src/pencil.pri)
 

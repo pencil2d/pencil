@@ -16,7 +16,6 @@ GNU General Public License for more details.
 #ifndef LAYERSOUND_H
 #define LAYERSOUND_H
 
-#include <QImage>
 #include <QSize>
 #include <QList>
 #include <QString>
@@ -25,6 +24,7 @@ GNU General Public License for more details.
 //#include <phonon/AudioOutput>
 #include "layerimage.h"
 
+class QMediaPlayer;
 
 class LayerSound : public LayerImage
 {
@@ -39,8 +39,6 @@ public:
     bool addImageAtFrame(int frameNumber);
     void removeImageAtFrame(int frameNumber);
 
-    //void setModified(bool trueOrFalse) { modified = trueOrFalse; }
-
     void loadSoundAtFrame( QString filePathString, int frame );
 
     bool saveImage(int index, QString path, int layerNumber);
@@ -50,10 +48,6 @@ public:
     bool isEmpty() const { return sound.count() == 0; }
     // graphic representation -- could be put in another class
     void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-
-    //void mousePress(QMouseEvent *event, int frameNumber);
-    //void mouseMove(QMouseEvent *event, int frameNumber);
-    //void mouseRelease(QMouseEvent *event, int frameNumber);
 
     QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
     int getSoundSize() { return sound.size(); }
@@ -67,12 +61,7 @@ protected:
     // graphic representation -- could be put in another class
     void swap(int i, int j);
 
-    //QList<Phonon::MediaObject*> sound;
-    //QList<Phonon::AudioOutput*> outputDevices;
-    QList<QString> sound;
-
-public slots:
-    void addTimelineKey(qint64 newTotalTime);
+    QList<QMediaPlayer*> sound;
 };
 
 #endif
