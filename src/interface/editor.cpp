@@ -172,9 +172,10 @@ void Editor::makeConnections()
     connect( m_pScribbleArea, SIGNAL( brushOn() ), toolSet, SLOT( brushOn() ) );
     connect( m_pScribbleArea, SIGNAL( smudgeOn() ), toolSet, SLOT( smudgeOn() ) );
 
-    connect( this, SIGNAL( toggleOnionPrev( bool ) ), m_pScribbleArea, SLOT( toggleOnionPrev( bool ) ) );
-    connect( this, SIGNAL( toggleOnionNext( bool ) ), m_pScribbleArea, SLOT( toggleOnionNext( bool ) ) );
-    connect( this, SIGNAL( toggleMultiLayerOnionSkin( bool)), m_pScribbleArea, SLOT(toggleMultiLayerOnionSkin(bool )) );
+    connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
+    connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
+    connect( this, &Editor::toggleMultiLayerOnionSkin, m_pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
+
     connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
     connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
     connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
