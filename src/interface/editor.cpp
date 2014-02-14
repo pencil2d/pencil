@@ -749,7 +749,7 @@ void Editor::newBitmapLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              "Bitmap Layer", &ok );
+                                              tr( "Bitmap Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = m_pObject->addNewBitmapLayer();
@@ -767,7 +767,7 @@ void Editor::newVectorLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              "Bitmap Layer", &ok );
+                                              tr( "Bitmap Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = m_pObject->addNewVectorLayer();
@@ -785,7 +785,7 @@ void Editor::newSoundLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              "Bitmap Layer", &ok );
+                                              tr( "Bitmap Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = m_pObject->addNewSoundLayer();
@@ -803,7 +803,7 @@ void Editor::newCameraLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              "Bitmap Layer", &ok );
+                                              tr( "Bitmap Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = m_pObject->addNewCameraLayer();
@@ -818,7 +818,7 @@ void Editor::deleteCurrentLayer()
 {
     int ret = QMessageBox::warning( this,
                                     tr( "Warning" ),
-                                    "Are you sure you want to delete layer: " + m_pObject->getLayer( layerManager()->currentLayerIndex() )->name + " ?",
+                                    tr( "Are you sure you want to delete layer: " ) + m_pObject->getLayer( layerManager()->currentLayerIndex() )->name + " ?",
                                     QMessageBox::Ok | QMessageBox::Cancel,
                                     QMessageBox::Ok );
     if ( ret == QMessageBox::Ok )

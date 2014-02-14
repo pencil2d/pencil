@@ -37,31 +37,31 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
 
     QGridLayout* layout = new QGridLayout();
 
-    pencilButton = newToolButton(QIcon(":icons/pencil2.png"), "Pencil Tool <b>(N)</b>: Sketch with pencil");
-    selectButton = newToolButton(QIcon(":icons/select.png"), "Select Tool <b>(V)</b>: Select an object");
-    moveButton = newToolButton(QIcon(":icons/arrow.png"), "Move Tool <b>(Q)</b>: Move an object");
-    handButton = newToolButton(QIcon(":icons/hand.png"), "Hand Tool <b>(H)</b>: Move the canvas");
-    penButton = newToolButton(QIcon(":icons/pen.png"), "Pen Tool <b>(P)</b>: Sketch with pen");
-    eraserButton = newToolButton(QIcon(":icons/eraser.png"), "Eraser Tool <b>(E)</b>: Erase");
-    polylineButton = newToolButton(QIcon(":icons/polyline.png"), "Polyline Tool <b>(Y)</b>: Create line/curves");
-    bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
-    colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
-    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access");
-    clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame");
-    smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth");
+    pencilButton = newToolButton(QIcon(":icons/pencil2.png"), tr("Pencil Tool <b>(N)</b>: Sketch with pencil"));
+    selectButton = newToolButton(QIcon(":icons/select.png"), tr("Select Tool <b>(V)</b>: Select an object"));
+    moveButton = newToolButton(QIcon(":icons/arrow.png"), tr("Move Tool <b>(Q)</b>: Move an object"));
+    handButton = newToolButton(QIcon(":icons/hand.png"), tr("Hand Tool <b>(H)</b>: Move the canvas"));
+    penButton = newToolButton(QIcon(":icons/pen.png"), tr("Pen Tool <b>(P)</b>: Sketch with pen"));
+    eraserButton = newToolButton(QIcon(":icons/eraser.png"), tr("Eraser Tool <b>(E)</b>: Erase"));
+    polylineButton = newToolButton(QIcon(":icons/polyline.png"), tr("Polyline Tool <b>(Y)</b>: Create line/curves"));
+    bucketButton = newToolButton(QIcon(":icons/bucket.png"), tr("Paint Bucket Tool <b>(K)</b>: Fill selected area with a color"));
+    colouringButton = newToolButton(QIcon(":icons/brush.png"), tr("Brush Tool <b>(B)</b>: Paint smooth stroke with a brush"));
+    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), tr("Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access"));
+    clearButton = newToolButton(QIcon(":icons/clear.png"), tr("Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame"));
+    smudgeButton = newToolButton(QIcon(":icons/smudge.png"), tr("Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth"));
 
-    pencilButton->setWhatsThis("Pencil Tool (N)");
-    selectButton->setWhatsThis("Select Tool (V)");
-    moveButton->setWhatsThis("Move Tool (Q)");
-    handButton->setWhatsThis("Hand Tool (H)");
-    penButton->setWhatsThis("Pen Tool (P)");
-    eraserButton->setWhatsThis("Eraser Tool (E)");
-    polylineButton->setWhatsThis("Polyline Tool (Y)");
-    bucketButton->setWhatsThis("Paint Bucket Tool(K)");
-    colouringButton->setWhatsThis("Brush Tool(B)");
-    eyedropperButton->setWhatsThis("Eyedropper Tool (I)");
-    clearButton->setWhatsThis("Clear Tool");
-    smudgeButton->setWhatsThis("Smudge Tool (A)");
+    pencilButton->setWhatsThis(tr("Pencil Tool (N)"));
+    selectButton->setWhatsThis(tr("Select Tool (V)"));
+    moveButton->setWhatsThis(tr("Move Tool (Q)"));
+    handButton->setWhatsThis(tr("Hand Tool (H)"));
+    penButton->setWhatsThis(tr("Pen Tool (P)"));
+    eraserButton->setWhatsThis(tr("Eraser Tool (E)"));
+    polylineButton->setWhatsThis(tr("Polyline Tool (Y)"));
+    bucketButton->setWhatsThis(tr("Paint Bucket Tool(K)"));
+    colouringButton->setWhatsThis(tr("Brush Tool(B)"));
+    eyedropperButton->setWhatsThis(tr("Eyedropper Tool (I)"));
+    clearButton->setWhatsThis(tr("Clear Tool"));
+    smudgeButton->setWhatsThis(tr("Smudge Tool (A)"));
 
     pencilButton->setCheckable(true);
     penButton->setCheckable(true);

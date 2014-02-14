@@ -19,7 +19,7 @@ GNU General Public License for more details.
 LayerVector::LayerVector(Object* object) : LayerImage(object)
 {
     m_eType = Layer::VECTOR;
-    name = QString("Vector Layer");
+    name = QString(tr("Vector Layer"));
     addImageAtFrame(1);
     //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
 }

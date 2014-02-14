@@ -411,30 +411,30 @@ void Object::defaultInitialisation()
 void Object::loadDefaultPalette()
 {
     myPalette.clear();
-    addColour(  ColourRef(QColor(Qt::black), QString("Black"))  );
-    addColour(  ColourRef(QColor(Qt::red), QString("Red"))  );
-    addColour(  ColourRef(QColor(Qt::darkRed), QString("Dark Red"))  );
-    addColour(  ColourRef(QColor(255,128,0), QString("Orange"))  );
-    addColour(  ColourRef(QColor(128,64,0), QString("Dark Orange"))  );
-    addColour(  ColourRef(QColor(Qt::yellow), QString("Yellow"))  );
-    addColour(  ColourRef(QColor(Qt::darkYellow), QString("Dark Yellow"))  );
-    addColour(  ColourRef(QColor(Qt::green), QString("Green"))  );
-    addColour(  ColourRef(QColor(Qt::darkGreen), QString("Dark Green"))  );
-    addColour(  ColourRef(QColor(Qt::cyan), QString("Cyan"))  );
-    addColour(  ColourRef(QColor(Qt::darkCyan), QString("Dark Cyan"))  );
-    addColour(  ColourRef(QColor(Qt::blue), QString("Blue"))  );
-    addColour(  ColourRef(QColor(Qt::darkBlue), QString("Dark Blue"))  );
-    addColour(  ColourRef(QColor(255,255,255), QString("White"))  );
-    addColour(  ColourRef(QColor(220,220,229), QString("Very Light Grey"))  );
-    addColour(  ColourRef(QColor(Qt::lightGray), QString("Light Grey"))  );
-    addColour(  ColourRef(QColor(Qt::gray), QString("Grey"))  );
-    addColour(  ColourRef(QColor(Qt::darkGray), QString("Dark Grey"))  );
-    addColour(  ColourRef(QColor(255,227,187), QString("Light Skin"))  );
-    addColour(  ColourRef(QColor(221,196,161), QString("Light Skin - shade"))  );
-    addColour(  ColourRef(QColor(255,214,156), QString("Skin"))  );
-    addColour(  ColourRef(QColor(207,174,127), QString("Skin - shade"))  );
-    addColour(  ColourRef(QColor(255,198,116), QString("Dark Skin"))  );
-    addColour(  ColourRef(QColor(227,177,105), QString("Dark Skin - shade"))  );
+    addColour(  ColourRef(QColor(Qt::black), QString(tr("Black")))  );
+    addColour(  ColourRef(QColor(Qt::red), QString(tr("Red")))  );
+    addColour(  ColourRef(QColor(Qt::darkRed), QString(tr("Dark Red")))  );
+    addColour(  ColourRef(QColor(255,128,0), QString(tr("Orange")))  );
+    addColour(  ColourRef(QColor(128,64,0), QString(tr("Dark Orange")))  );
+    addColour(  ColourRef(QColor(Qt::yellow), QString(tr("Yellow")))  );
+    addColour(  ColourRef(QColor(Qt::darkYellow), QString(tr("Dark Yellow")))  );
+    addColour(  ColourRef(QColor(Qt::green), QString(tr("Green")))  );
+    addColour(  ColourRef(QColor(Qt::darkGreen), QString(tr("Dark Green")))  );
+    addColour(  ColourRef(QColor(Qt::cyan), QString(tr("Cyan")))  );
+    addColour(  ColourRef(QColor(Qt::darkCyan), QString(tr("Dark Cyan")))  );
+    addColour(  ColourRef(QColor(Qt::blue), QString(tr("Blue")))  );
+    addColour(  ColourRef(QColor(Qt::darkBlue), QString(tr("Dark Blue")))  );
+    addColour(  ColourRef(QColor(255,255,255), QString(tr("White")))  );
+    addColour(  ColourRef(QColor(220,220,229), QString(tr("Very Light Grey")))  );
+    addColour(  ColourRef(QColor(Qt::lightGray), QString(tr("Light Grey")))  );
+    addColour(  ColourRef(QColor(Qt::gray), QString(tr("Grey")))  );
+    addColour(  ColourRef(QColor(Qt::darkGray), QString(tr("Dark Grey")))  );
+    addColour(  ColourRef(QColor(255,227,187), QString(tr("Light Skin")))  );
+    addColour(  ColourRef(QColor(221,196,161), QString(tr("Light Skin - shade")))  );
+    addColour(  ColourRef(QColor(255,214,156), QString(tr("Skin")))  );
+    addColour(  ColourRef(QColor(207,174,127), QString(tr("Skin - shade")))  );
+    addColour(  ColourRef(QColor(255,198,116), QString(tr("Dark Skin")))  );
+    addColour(  ColourRef(QColor(227,177,105), QString(tr("Dark Skin - shade")))  );
 }
 
 void Object::paintImage(QPainter& painter, int frameNumber,

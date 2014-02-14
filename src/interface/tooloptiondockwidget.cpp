@@ -34,36 +34,36 @@ void ToolOptionDockWidget::createUI()
     colourSwatch.fill(Qt::black);
     colorChooseButton = new QToolButton(this);
     colorChooseButton->setIcon(colourSwatch);
-    colorChooseButton->setToolTip("Display Colors");
+    colorChooseButton->setToolTip(tr("Display Colors"));
 
-    sizeSlider = new SpinSlider("Size", "log", "real", 0.2, 200.0, this);
+    sizeSlider = new SpinSlider(tr("Size"), "log", "real", 0.2, 200.0, this);
     sizeSlider->setValue(settings.value("pencilWidth").toDouble());
-    sizeSlider->setToolTip("Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment");
+    sizeSlider->setToolTip(tr("Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment"));
 
-    featherSlider = new SpinSlider("Feather", "log", "real", 0.2, 200.0, this);
+    featherSlider = new SpinSlider(tr("Feather"), "log", "real", 0.2, 200.0, this);
     featherSlider->setValue(settings.value("pencilFeather").toDouble());
-    featherSlider->setToolTip("Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment");
+    featherSlider->setToolTip(tr("Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment"));
 
     //opacitySlider = new SpinSlider("Opacity", "linear", "real", 0.0, 1.0, this);
     //opacitySlider->setValue(settings.value("pencilOpacity").toDouble());
 
-    usePressureBox = new QCheckBox("Pressure");
-    usePressureBox->setToolTip("Size with pressure");
+    usePressureBox = new QCheckBox(tr("Pressure"));
+    usePressureBox->setToolTip(tr("Size with pressure"));
     usePressureBox->setFont( QFont("Helvetica", 10) );
     usePressureBox->setChecked(true);
 
-    makeInvisibleBox = new QCheckBox("Invisible");
-    makeInvisibleBox->setToolTip("Make invisible");
+    makeInvisibleBox = new QCheckBox(tr("Invisible"));
+    makeInvisibleBox->setToolTip(tr("Make invisible"));
     makeInvisibleBox->setFont( QFont("Helvetica", 10) );
     makeInvisibleBox->setChecked(false);
 
-    preserveAlphaBox = new QCheckBox("Alpha");
-    preserveAlphaBox->setToolTip("Preserve Alpha");
+    preserveAlphaBox = new QCheckBox(tr("Alpha"));
+    preserveAlphaBox->setToolTip(tr("Preserve Alpha"));
     preserveAlphaBox->setFont( QFont("Helvetica", 10) );
     preserveAlphaBox->setChecked(false);
 
-    followContourBox = new QCheckBox("Contours");
-    followContourBox->setToolTip("Stop at contours");
+    followContourBox = new QCheckBox(tr("Contours"));
+    followContourBox->setToolTip(tr("Stop at contours"));
     followContourBox->setFont( QFont("Helvetica", 10) );
     followContourBox->setChecked(false);
 

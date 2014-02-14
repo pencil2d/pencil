@@ -22,42 +22,42 @@ void DisplayOptionDockWidget::createUI()
 
     thinLinesButton = new QToolButton(displayGroup);
     thinLinesButton->setIcon(QIcon(":icons/thinlines5.png"));
-    thinLinesButton->setToolTip("Show invisible lines");
+    thinLinesButton->setToolTip(tr("Show invisible lines"));
     thinLinesButton->setIconSize( QSize(21,21) );
 
     outlinesButton = new QToolButton(displayGroup);
     outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
-    outlinesButton->setToolTip("Show outlines only");
+    outlinesButton->setToolTip(tr("Show outlines only"));
     outlinesButton->setIconSize( QSize(21,21) );
 
     mirrorButton = new QToolButton(displayGroup);
     mirrorButton->setIcon(QIcon(":icons/mirror.png"));
-    mirrorButton->setToolTip("Horizontal flip");
+    mirrorButton->setToolTip(tr("Horizontal flip"));
     mirrorButton->setIconSize( QSize(21,21) );
 
     mirrorButtonV = new QToolButton(displayGroup);
     mirrorButtonV->setIcon(QIcon(":icons/mirrorV.png"));
-    mirrorButtonV->setToolTip("Vertical flip");
+    mirrorButtonV->setToolTip(tr("Vertical flip"));
     mirrorButtonV->setIconSize( QSize(21,21) );
 
     onionPrevButton = new QToolButton(displayGroup);
     onionPrevButton->setIcon(QIcon(":icons/onionPrev.png"));
-    onionPrevButton->setToolTip("Onion skin previous frame");
+    onionPrevButton->setToolTip(tr("Onion skin previous frame"));
     onionPrevButton->setIconSize( QSize(21,21) );
 
     onionNextButton = new QToolButton(displayGroup);
     onionNextButton->setIcon(QIcon(":icons/onionNext.png"));
-    onionNextButton->setToolTip("Onion skin next frame");
+    onionNextButton->setToolTip(tr("Onion skin next frame"));
     onionNextButton->setIconSize( QSize(21,21) );
 
     onionBlueButton = new QToolButton(displayGroup);
     onionBlueButton->setIcon(QIcon(":icons/onion-blue.png"));
-    onionBlueButton->setToolTip("Onion skin color: blue");
+    onionBlueButton->setToolTip(tr("Onion skin color: blue"));
     onionBlueButton->setIconSize( QSize(21,21) );
 
     onionRedButton = new QToolButton(displayGroup);
     onionRedButton->setIcon(QIcon(":icons/onion-red.png"));
-    onionRedButton->setToolTip("Onion skin color: red");
+    onionRedButton->setToolTip(tr("Onion skin color: red"));
     onionRedButton->setIconSize( QSize(21,21) );
 
     //onionBlueNextButton = new QToolButton(displayGroup);
@@ -72,17 +72,17 @@ void DisplayOptionDockWidget::createUI()
 
     multiLayerOnionSkinButton = new QToolButton(displayGroup);
     multiLayerOnionSkinButton->setText(QString("M"));
-    multiLayerOnionSkinButton->setToolTip("enable onionskin on multiple layers");
+    multiLayerOnionSkinButton->setToolTip(tr("enable onionskin on multiple layers"));
     multiLayerOnionSkinButton->setIconSize( QSize(21,21) );
 
     gridAButton = new QToolButton(displayGroup);
     gridAButton->setIcon(QIcon(":icons/grid-a.png"));
-    gridAButton->setToolTip("Grid A - composition");
+    gridAButton->setToolTip(tr("Grid A - composition"));
     gridAButton->setIconSize( QSize(21,21) );
 
     gridBButton = new QToolButton(displayGroup);
     gridBButton->setIcon(QIcon(":icons/grid-b.png"));
-    gridBButton->setToolTip("Grid B - perspective");
+    gridBButton->setToolTip(tr("Grid B - perspective"));
     gridBButton->setIconSize( QSize(21,21) );
 
     thinLinesButton->setCheckable(true);

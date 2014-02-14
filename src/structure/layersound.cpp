@@ -22,7 +22,7 @@ GNU General Public License for more details.
 LayerSound::LayerSound(Object* object) : LayerImage(object)
 {
     m_eType = Layer::SOUND;
-    name = QString("Sound Layer");
+    name = QString(tr("Sound Layer"));
 }
 
 LayerSound::~LayerSound()
@@ -38,7 +38,7 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
     Q_UNUSED(width);
     Q_UNUSED(selected);
 
-    for (int i=0; i < sound.size(); i++)
+    for (int i = 0; i < sound.size(); i++)
     {
         qreal h = x + (framesPosition.at(i)-1)*frameSize+2;
         if (framesSelected.at(i))
@@ -122,8 +122,8 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
     else
     {
         sound[index] = NULL;
-        soundFilepath[index] = "Wrong file";
-        framesFilename[index] = "Wrong file" + filePathString;
+        soundFilepath[index] = tr("Wrong file");
+        framesFilename[index] = tr("Wrong file") + filePathString;
     }
 }
 
