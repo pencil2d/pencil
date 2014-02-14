@@ -30,6 +30,10 @@ GNU General Public License for more details.
 #include "backupelement.h"
 #include "colorbox.h"
 
+class QComboBox;
+//class QPrinter;
+class QSlider;
+
 class MainWindow2;
 class ColorManager;
 class ToolManager;
@@ -176,7 +180,7 @@ public slots:
     void duplicateKey();
     void removeKey();
 
-    void printAndPreview( QPrinter* printer );
+    //void printAndPreview( QPrinter* printer );
     void resetUI();
 
     void updateObject();
@@ -233,7 +237,7 @@ public slots:
     void toggleShowAllLayers();
     void resetMirror();
 
-    void print();
+    //void print();
     //void detachAllPalettes();
     void restorePalettesSettings( bool, bool, bool );
     void saveSvg();

@@ -1,7 +1,11 @@
+
+
 #include <QtGui>
 #include <QBoxLayout>
+#include <QGraphicsDropShadowEffect>
 #include "colorbox.h"
 #include "popupcolorpalettewidget.h"
+
 
 PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     QWidget ( parent, Qt::Window ),

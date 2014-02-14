@@ -14,12 +14,21 @@ GNU General Public License for more details.
 
 */
 #include <iostream>
+
+#include <QApplication>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTimer>
 #include <QSvgGenerator>
 #include <QMessageBox>
 #include <QImageReader>
+// #include <QPrinter>
+#include <QComboBox>
+#include <QSlider>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QGroupBox>
+#include <QDialogButtonBox>
 
 #include "editor.h"
 #include "layerbitmap.h"
@@ -1926,7 +1935,7 @@ void Editor::gridview()
     msgBox.setText( "Would you like to add a camera layer?" );
     msgBox.exec();
 }
-
+/*
 void Editor::print()
 {
     QPrinter printer( QPrinter::HighResolution );
@@ -1947,10 +1956,11 @@ void Editor::print()
             return;
         }
 
-        printAndPreview( &printer );
+        //printAndPreview( &printer );
     }
 }
-
+*/
+/*
 void Editor::printAndPreview( QPrinter* printer )
 {
     QRect exportRect = m_pScribbleArea->rect();
@@ -1995,6 +2005,7 @@ void Editor::printAndPreview( QPrinter* printer )
         painter.end();
     }
 }
+*/
 
 void Editor::getCameraLayer()
 {
