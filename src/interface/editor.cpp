@@ -2063,7 +2063,6 @@ void Editor::saveSvg()
         if ( layer->type() == Layer::VECTOR )
         {
             m_pScribbleArea->selectAll();
-            //VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0);
             m_pScribbleArea->render( &painter );
         }
     }

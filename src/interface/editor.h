@@ -30,8 +30,9 @@ GNU General Public License for more details.
 #include "backupelement.h"
 #include "colorbox.h"
 
-class QComboBox;
+
 //class QPrinter;
+class QComboBox;
 class QSlider;
 
 class MainWindow2;
@@ -238,12 +239,10 @@ public slots:
     void resetMirror();
 
     //void print();
-    //void detachAllPalettes();
     void restorePalettesSettings( bool, bool, bool );
     void saveSvg();
 
-    private slots:
-
+private slots:
     bool exportX();
     bool exportImage();
     bool exportSeq();
@@ -252,8 +251,6 @@ public slots:
 
     void saveLength( QString );
     void getCameraLayer();
-
-    //void on_actionLoopControl_triggered();  //possibly accidently put here by mainWindow_2.ui??
 
 private:
     ScribbleArea* m_pScribbleArea;
