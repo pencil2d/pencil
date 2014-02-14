@@ -19,7 +19,7 @@ GNU General Public License for more details.
 LayerBitmap::LayerBitmap(Object* object) : LayerImage(object)
 {
     m_eType = Layer::BITMAP;
-    name = QString("Bitmap Layer");
+    name = QString(tr("Bitmap Layer"));
     addImageAtFrame(1);
 
     //imageSize = desiredSize;

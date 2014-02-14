@@ -16,7 +16,7 @@ class RecentFileMenu : public QMenu
                  READ getRecentFiles
                  WRITE setRecentFiles )
 public:
-    explicit RecentFileMenu(QString title = "Open Recent", QWidget *parent = 0);
+    explicit RecentFileMenu(QString title = tr("Open Recent"), QWidget *parent = 0);
 
     static const int MAX_RECENT_FILES = 10;
 

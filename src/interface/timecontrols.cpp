@@ -38,7 +38,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     loopStart->setFixedHeight(22);
     loopStart->setValue(settings.value("loopStart").toInt());
     loopStart->setMinimum(1);
-    loopStart->setToolTip("Start of loop");
+    loopStart->setToolTip(tr("Start of loop"));
     loopStart->setFocusPolicy(Qt::NoFocus);
 
     loopEnd= new QSpinBox();
@@ -46,10 +46,10 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     loopEnd->setFixedHeight(22);
     loopEnd->setValue(settings.value("loopEnd").toInt());
     loopEnd->setMinimum(2);
-    loopEnd->setToolTip("End of loop");
+    loopEnd->setToolTip(tr("End of loop"));
     loopEnd->setFocusPolicy(Qt::NoFocus);
 
-    loopControl = new QPushButton("Loop Control");
+    loopControl = new QPushButton(tr("Loop Control"));
     loopControl->setFont( QFont("Helvetica", 10) );
     loopControl->setFixedHeight(26);
     loopControl->setToolTip(tr("Loop control"));

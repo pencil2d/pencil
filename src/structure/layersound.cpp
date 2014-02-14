@@ -22,7 +22,7 @@ LayerSound::LayerSound(Object* object) : LayerImage(object)
 {
     m_eType = Layer::SOUND;
     //modified = false;
-    name = QString("Sound Layer");
+    name = QString(tr("Sound Layer"));
 }
 
 LayerSound::~LayerSound()
@@ -132,8 +132,8 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
     else
     {
         sound[index] = NULL;
-        soundFilepath[index] = "Wrong file";
-        framesFilename[index] = "Wrong file" + filePathString;
+        soundFilepath[index] = tr("Wrong file");
+        framesFilename[index] = tr("Wrong file") + filePathString;
     }
 }
 
