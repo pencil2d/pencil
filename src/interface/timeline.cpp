@@ -33,8 +33,9 @@ TimeLine::TimeLine(QWidget* parent, Editor* editor) : QDockWidget(parent, Qt::To
 {
     QWidget* timeLineContent = new QWidget(this);
 
-    list = new TimeLineCells(this, editor, "layers");
-    cells = new TimeLineCells(this, editor, "tracks");
+    list = new TimeLineCells(this, editor, TIMELINE_CELL_TYPE::Layers );
+    cells = new TimeLineCells(this, editor, TIMELINE_CELL_TYPE::Tracks );
+
     connect(list, SIGNAL(mouseMovedY(int)), list, SLOT(setMouseMoveY(int)));
     connect(list, SIGNAL(mouseMovedY(int)), cells, SLOT(setMouseMoveY(int)));
 
