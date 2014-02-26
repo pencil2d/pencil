@@ -283,7 +283,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
 
     //qDebug() << "Timeline Type = " << m_eType;
 
-    switch( m_eType )
+    switch ( m_eType )
     {
     case TIMELINE_CELL_TYPE::Layers:
         if ( layerNumber != -1 && layerNumber < editor->object()->getLayerCount() )
@@ -434,8 +434,16 @@ void TimeLineCells::scrubChange( int x )
 void TimeLineCells::labelChange( int x )
 {
     QSettings settings( "Pencil", "Pencil" );
-    if ( x == 0 ) { drawFrameNumber = false; settings.setValue( "drawLabel", "false" ); }
-    else { drawFrameNumber = true; settings.setValue( "drawLabel", "true" ); }
+    if ( x == 0 )
+    {
+        drawFrameNumber = false;
+        settings.setValue( "drawLabel", "false" );
+    }
+    else
+    {
+        drawFrameNumber = true;
+        settings.setValue( "drawLabel", "true" );
+    }
     updateContent();
 }
 
