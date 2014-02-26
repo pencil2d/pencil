@@ -60,7 +60,6 @@ Editor::Editor( MainWindow2* parent )
     m_pLayerManager->setObject( object() );
 
     altpress = false;
-    modified = false;
     numberOfModifications = 0;
     autosave = settings.value( "autosave" ).toBool();
     autosaveNumber = settings.value( "autosaveNumber" ).toInt();
@@ -120,7 +119,7 @@ Editor::Editor( MainWindow2* parent )
     m_pScribbleArea = new ScribbleArea( this, this );
     m_pToolManager = new ToolManager( this, this, m_pScribbleArea );
 
-    toolSet = new ToolSetWidget( tr( "Tools" ), this );
+    m_pToolSet = new ToolSetWidget( tr( "Tools" ), this );
 
     mainLayout->addWidget( m_pScribbleArea );
     mainLayout->setMargin( 0 );
@@ -160,17 +159,17 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect( m_pScribbleArea, SIGNAL( pencilOn() ), toolSet, SLOT( pencilOn() ) );
-    connect( m_pScribbleArea, SIGNAL( eraserOn() ), toolSet, SLOT( eraserOn() ) );
-    connect( m_pScribbleArea, SIGNAL( selectOn() ), toolSet, SLOT( selectOn() ) );
-    connect( m_pScribbleArea, SIGNAL( moveOn() ), toolSet, SLOT( moveOn() ) );
-    connect( m_pScribbleArea, SIGNAL( penOn() ), toolSet, SLOT( penOn() ) );
-    connect( m_pScribbleArea, SIGNAL( handOn() ), toolSet, SLOT( handOn() ) );
-    connect( m_pScribbleArea, SIGNAL( polylineOn() ), toolSet, SLOT( polylineOn() ) );
-    connect( m_pScribbleArea, SIGNAL( bucketOn() ), toolSet, SLOT( bucketOn() ) );
-    connect( m_pScribbleArea, SIGNAL( eyedropperOn() ), toolSet, SLOT( eyedropperOn() ) );
-    connect( m_pScribbleArea, SIGNAL( brushOn() ), toolSet, SLOT( brushOn() ) );
-    connect( m_pScribbleArea, SIGNAL( smudgeOn() ), toolSet, SLOT( smudgeOn() ) );
+    connect( m_pScribbleArea, SIGNAL( pencilOn() ), m_pToolSet, SLOT( pencilOn() ) );
+    connect( m_pScribbleArea, SIGNAL( eraserOn() ), m_pToolSet, SLOT( eraserOn() ) );
+    connect( m_pScribbleArea, SIGNAL( selectOn() ), m_pToolSet, SLOT( selectOn() ) );
+    connect( m_pScribbleArea, SIGNAL( moveOn() ), m_pToolSet, SLOT( moveOn() ) );
+    connect( m_pScribbleArea, SIGNAL( penOn() ), m_pToolSet, SLOT( penOn() ) );
+    connect( m_pScribbleArea, SIGNAL( handOn() ), m_pToolSet, SLOT( handOn() ) );
+    connect( m_pScribbleArea, SIGNAL( polylineOn() ), m_pToolSet, SLOT( polylineOn() ) );
+    connect( m_pScribbleArea, SIGNAL( bucketOn() ), m_pToolSet, SLOT( bucketOn() ) );
+    connect( m_pScribbleArea, SIGNAL( eyedropperOn() ), m_pToolSet, SLOT( eyedropperOn() ) );
+    connect( m_pScribbleArea, SIGNAL( brushOn() ), m_pToolSet, SLOT( brushOn() ) );
+    connect( m_pScribbleArea, SIGNAL( smudgeOn() ), m_pToolSet, SLOT( smudgeOn() ) );
 
     connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
@@ -467,12 +466,16 @@ void Editor::modification()
 
 void Editor::modification( int layerNumber )
 {
-    modified = true;
-    if ( m_pObject != NULL ) m_pObject->modification();
+    if ( m_pObject != NULL )
+    {
+        m_pObject->modification();
+    }
     lastModifiedFrame = layerManager()->currentFrameIndex();
     lastModifiedLayer = layerNumber;
+    
     m_pScribbleArea->update();
     getTimeLine()->updateContent();
+    
     numberOfModifications++;
     if ( autosave && numberOfModifications > autosaveNumber )
     {
@@ -1866,7 +1869,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         timelinePalette->show();
     }
 
-    QDockWidget* toolWidget = toolSet;
+    QDockWidget* toolWidget = m_pToolSet;
     if ( toolWidget != NULL )
     {
         QPoint pos = settings.value( "drawPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -2036,38 +2039,6 @@ void Editor::endPlay()
 void Editor::startPlay()
 {
     scrubTo( layerManager()->firstKeyFrameIndex() );
-}
-
-void Editor::saveSvg()
-{
-    QString newPath = QFileDialog::getSaveFileName( this, tr( "Save SVG" ),
-                                                    path, tr( "SVG files (*.svg)" ) );
-
-    if ( newPath.isEmpty() )
-        return;
-
-    path = newPath;
-
-    QSvgGenerator generator;
-    generator.setFileName( path );
-    generator.setSize( QSize( 700, 500 ) );
-    generator.setViewBox( QRect( 0, 0, 700, 500 ) );
-    generator.setTitle( tr( "SVG Generator Example Drawing" ) );
-    generator.setDescription( tr( "An SVG drawing created by the SVG Generator "
-        "Example provided with Qt." ) );
-
-    QPainter painter;
-    painter.begin( &generator );
-    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-    if ( layer != NULL )
-    {
-        if ( layer->type() == Layer::VECTOR )
-        {
-            m_pScribbleArea->selectAll();
-            m_pScribbleArea->render( &painter );
-        }
-    }
-    painter.end();
 }
 
 void Editor::resetView()

@@ -154,17 +154,17 @@ void MainWindow2::arrangePalettes()
     m_pToolOptionWidget = new ToolOptionDockWidget(this);
     m_pToolOptionWidget->makeConnectionToEditor(editor);
 
-    m_pToolSet = editor->toolSet;
+    m_pToolSet = editor->m_pToolSet;
 
     addDockWidget(Qt::RightDockWidgetArea, m_pColorWheelWidget);
     addDockWidget(Qt::RightDockWidgetArea, m_pColorPalette);
     addDockWidget(Qt::RightDockWidgetArea, m_pDisplayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->toolSet);
+    addDockWidget(Qt::LeftDockWidgetArea, editor->m_pToolSet);
     addDockWidget(Qt::LeftDockWidgetArea, m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
 
-    editor->toolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    editor->m_pToolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
@@ -307,8 +307,8 @@ void MainWindow2::createMenus()
     connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
 
     /// --- Window Menu ---
-    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), editor->toolSet, SLOT(setVisible(bool)));
-    connect(editor->toolSet, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), editor->m_pToolSet, SLOT(setVisible(bool)));
+    connect(editor->m_pToolSet, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
     connect(ui->actionOptionsWidget, SIGNAL(toggled(bool)), m_pToolOptionWidget, SLOT(setVisible(bool)));
     connect(m_pToolOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionOptionsWidget, SLOT(setChecked(bool)));
     connect(ui->actionColorWheel, SIGNAL(toggled(bool)), m_pColorPalette, SLOT(setVisible(bool)));
@@ -959,7 +959,7 @@ void MainWindow2::showPreferences()
 
 void MainWindow2::dockAllPalettes()
 {
-    editor->toolSet->setFloating(false);
+    editor->m_pToolSet->setFloating(false);
     m_pToolOptionWidget->setFloating(false);
     m_pDisplayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
@@ -1008,7 +1008,7 @@ void MainWindow2::writeSettings()
         settings.setValue( "timelinePaletteFloating", timelinePalette->isFloating() );
     }
 
-    QDockWidget* toolWidget = editor->toolSet;
+    QDockWidget* toolWidget = editor->m_pToolSet;
     if ( toolWidget != NULL )
     {
         settings.setValue( "drawPalettePosition", toolWidget->pos() );
