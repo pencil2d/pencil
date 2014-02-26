@@ -31,7 +31,6 @@ GNU General Public License for more details.
 #include "colorbox.h"
 
 class QComboBox;
-//class QPrinter;
 class QSlider;
 
 class MainWindow2;
@@ -54,7 +53,7 @@ public:
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
-
+    
     Object* m_pObject;  // the object to be edited by the editor
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
@@ -67,18 +66,16 @@ public:
     bool looping;
     bool loopControl;
     int loopStart;
-    int loopStarts;
     int loopEnd;
     int loopEnds;
     bool sound;
-    ToolSetWidget* toolSet;
 
+    ToolSetWidget* m_pToolSet;
     TimeLine* getTimeLine();
 
     Layer* getCurrentLayer( int incr );
     Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
     Layer* getLayer( int i );
-    bool isModified() { return modified; }
     int allLayers() { return m_pScribbleArea->showAllLayers(); }
     static QMatrix map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
@@ -240,9 +237,8 @@ public slots:
     //void print();
     //void detachAllPalettes();
     void restorePalettesSettings( bool, bool, bool );
-    void saveSvg();
 
-    private slots:
+private slots:
 
     bool exportX();
     bool exportImage();
@@ -263,9 +259,7 @@ private:
     ToolManager* m_pToolManager;
     LayerManager* m_pLayerManager;
 
-    QString path;
     bool altpress;
-    bool modified;
     int numberOfModifications;
 
     bool autosave;
