@@ -42,7 +42,7 @@ ToolSetWidget::ToolSetWidget(const QString title, Editor* editor) :
     polylineButton = newToolButton(QIcon(":icons/polyline.png"), "Polyline Tool <b>(Y)</b>: Create line/curves");
     bucketButton = newToolButton(QIcon(":icons/bucket.png"), "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color");
     colouringButton = newToolButton(QIcon(":icons/brush.png"), "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush");
-    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access");
+    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), "Eyedropper Tool <b>(I)</b>: Set color from the stage");
     clearButton = newToolButton(QIcon(":icons/clear.png"), "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame");
     smudgeButton = newToolButton(QIcon(":icons/smudge.png"), "Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth");
 
