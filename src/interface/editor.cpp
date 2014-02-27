@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #include <iostream>
 
 #include <QApplication>
+#include <QClipboard>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTimer>
@@ -687,13 +688,45 @@ void Editor::copy()
     }
 }
 
+void Editor::copyFrames()
+{
+    bool ok;
+    QString name;
+    QString text = QInputDialog::getText( NULL, tr( "Number of Frames\r\nEnter digits only" ), tr( "Blank Frames:\r\n(Enter digits only)" ), QLineEdit::Normal, name, &ok );
+    if ( ok && !text.isEmpty() )
+    {
+        name = text;
+    }
+    int a = text.toInt();
+    QListIterator<int> z( frameList );
+    for ( int i = 0; i < a; ++i )
+    {
+        addKey();
+    }
+}
+
+void Editor::pasteFrames()
+{
+    int a = frameList.count();
+    QListIterator<int> z( frameList );
+    for ( int i = 0; i < a; ++i )
+    {
+        int b = z.next();
+        qDebug() << i;
+        qDebug() << a;
+        scrubTo( i );
+        copy();
+        //int d = b+a;  Give us the interval between the frames
+        scrubTo( b );//TODO scrub to selected frame copy() scrub to starting frame and paste()
+        duplicateKey();
+    }
+}
+
 void Editor::paste()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-    if ( layer != NULL )
-    {
-        if ( layer->type() == Layer::BITMAP && clipboardBitmapImage.image != NULL )   // clipboardBitmapOk
-        {
+    if (layer != NULL)    {
+        if (layer->type == Layer::BITMAP && clipboardBitmapImage.image != NULL)   // clipboardBitmapOk        {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image->size();
@@ -709,7 +742,7 @@ void Editor::paste()
                     tobePasted.transform( selection, true );
                 }
             }
-            ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->paste( &tobePasted ); // paste the clipboard
+            setTool(MOVE);
             // setTool( MOVE );
         }
         if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
@@ -1110,7 +1143,7 @@ bool Editor::exportSeq()
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
-        QString	initialPath = QDir::homePath() + "/untitled";
+        QString initialPath = QDir::homePath() + "/untitled";
     }
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Save Image Sequence" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     if ( filePath.isEmpty() )
@@ -1248,7 +1281,7 @@ bool Editor::exportFlash()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.swf";
-    //	QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
+    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "SWF (*.swf)" ) );
     if ( filePath.isEmpty() )
     {
@@ -1317,10 +1350,6 @@ void Editor::importImage( QString filePath )
             QImage* importedImage;
             QImage importedIm = importedImageReader->read();
 
-            importedImage = &importedIm;
-
-            int numImages = importedImageReader->imageCount();
-            int timeLeft = importedImageReader->nextImageDelay();
 
             if ( !importedImage->isNull() )
             {
@@ -1548,6 +1577,7 @@ void Editor::addKey( int layerNumber, int frameIndex )
     if ( layer == NULL )
     {
         return;
+
     }
 
     bool isOK = false;
@@ -1594,7 +1624,6 @@ void Editor::removeKey()
 }
 
 void Editor::play()
-
 {
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
@@ -1610,8 +1639,7 @@ void Editor::play()
     {
         if ( loopControl )
         {
-            scrubTo(  loopStarts );
-        }
+            scrubTo(  loopStarts );        }
         else
         {
             scrubTo( maxFrame );

@@ -237,6 +237,7 @@ protected:
 
     MoveMode m_moveMode;
     ToolType prevMode;
+    ToolType prevToolType; // previous tool (except temporal)
 
     StrokeManager *m_strokeManager;
 

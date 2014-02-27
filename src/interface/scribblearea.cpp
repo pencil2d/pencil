@@ -529,7 +529,7 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
         return;
     }
 
-    if ( event->modifiers() == Qt::AltModifier )
+    /*if ( event->modifiers() == Qt::AltModifier )
     {
         if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
              (toolType == BUCKET) || (toolType == POLYLINE) )
@@ -537,7 +537,7 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
             setTemporaryTool( EYEDROPPER );
             return;
         }
-    }
+    }*/
 
     // ---- fixed normal keys ----
     switch ( event->key() )
@@ -868,7 +868,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if ( currentTool()->isAdjusting )
         {
-            currentTool()->adjustCursor( offset.x() ); //updates cursors given org width or feather and x
+            currentTool()->adjustCursor(offset.x(),offset.y()); //updates cursors given org width or feather and x
             return;
         }
     }
@@ -907,6 +907,13 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseReleaseEvent( event );
+
+    if (currentTool()->type() == EYEDROPPER)
+    {
+        setCurrentTool(prevToolType);
+        switchTool(currentTool()->type());
+
+    }
 
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?
@@ -2594,7 +2601,10 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
             escape();
         }
     }
-    getEditor()->toolManager()->setCurrentTool( eToolMode );
+
+    prevToolType = currentTool()->type();
+
+    getEditor()->toolManager()->setCurrentTool(eToolMode);
 
     // --- change cursor ---
     setCursor( currentTool()->cursor() );

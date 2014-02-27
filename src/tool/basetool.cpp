@@ -96,15 +96,15 @@ QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn s
     {
         pixmap.fill( QColor(255,255,255,0) );
         QPainter painter(&pixmap);
-        painter.setPen( QColor(0,0,0,190) );
+        painter.setPen( QColor(0,0,0,255) );
         painter.drawLine( QPointF(radius-2,radius), QPointF(radius+2,radius) );
         painter.drawLine( QPointF(radius,radius-2), QPointF(radius,radius+2) );
         painter.setRenderHints(QPainter::Antialiasing, true);
-        painter.setPen( QColor(0,0,0,255) );
-        painter.setBrush( QColor(192,192,192,64) );
+        painter.setPen( QColor(0,0,0,0) );
+        painter.setBrush( QColor(0,255,127,64) );
         painter.setCompositionMode(QPainter::CompositionMode_Exclusion);
         painter.drawEllipse( QRectF(xyB, xyB, whB, whB) ); // outside circle
-        painter.setBrush( QColor(255,255,255,127) );
+        painter.setBrush( QColor(255,64,0,255) );
         painter.drawEllipse( QRectF( xyA, xyA, whA, whA) ); // inside circle
         painter.end();
     }
@@ -137,7 +137,7 @@ void BaseTool::stopAdjusting()
     m_pScribbleArea->setCursor(cursor());
 }
 
-void BaseTool::adjustCursor(qreal argOffsetX ) //offsetx x-lastx
+/*void BaseTool::adjustCursor(qreal argOffsetX ) //offsetx x-lastx
 {
     qreal incx = pow(OriginalSettingValue*100,0.5);
     qreal newValue = incx + argOffsetX;
@@ -170,9 +170,60 @@ void BaseTool::adjustCursor(qreal argOffsetX ) //offsetx x-lastx
     {
         m_pEditor->applyFeather( newValue );
     }
+}*/
+
+void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-lastx ...
+{
+    qreal incx = pow(OriginalSettingValue*100,0.5);
+    qreal incy = incx;
+    qreal newValueX = incx + argOffsetX;
+    qreal newValueY = incy + argOffsetY;
+
+    if (newValueX < 0)
+    {
+        newValueX = 0;
+    }
+    if (newValueY < 0)
+    {
+        newValueY = 0;
+    }
+
+    newValueX = pow(newValueX, 2) / 100;
+    newValueY = pow(newValueY, 2) / 100;
+
+    if (adjustmentStep>0) {
+        int tempValueX = (int)(newValueX/adjustmentStep); // + 0.5 ?
+        int tempValueY = (int)(newValueY/adjustmentStep); // + 0.5 ?
+        newValueX = tempValueX * adjustmentStep;
+        newValueY = tempValueY * adjustmentStep;
+    }
+
+    if (newValueX < 1) // can be optimized for size: min(200,max(0.2,newValueX))
+    {
+        newValueX = 1;
+    }
+    else if (newValueX > 200)
+    {
+        newValueX = 200;
+    }
+
+    if (newValueY < 1) // can be optimized for size: min(200,max(0.2,newValueX))
+    {
+        newValueY = 1;
+    }
+    else if (newValueY > 200)
+    {
+        newValueY = 200;
+    }
+
+    m_pEditor->applyWidth( newValueX );
+
+    if ( (this->type() == BRUSH) || (this->type() == ERASER) || (this->type() == SMUDGE) )
+    {
+        m_pEditor->applyFeather( newValueY );
+    }
 
 }
-
 
 void BaseTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
