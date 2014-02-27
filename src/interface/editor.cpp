@@ -95,7 +95,7 @@ Editor::Editor( MainWindow2* parent )
     looping = false;
     loopControl = false;
     loopStart = 1;
-    loopEnd =2;
+    loopEnd = 2;
     sound = true;
 
     layerManager()->setCurrentFrameIndex( 1 );
@@ -473,10 +473,10 @@ void Editor::modification( int layerNumber )
     }
     lastModifiedFrame = layerManager()->currentFrameIndex();
     lastModifiedLayer = layerNumber;
-    
+
     m_pScribbleArea->update();
     getTimeLine()->updateContent();
-    
+
     numberOfModifications++;
     if ( autosave && numberOfModifications > autosaveNumber )
     {
@@ -688,45 +688,13 @@ void Editor::copy()
     }
 }
 
-void Editor::copyFrames()
-{
-    bool ok;
-    QString name;
-    QString text = QInputDialog::getText( NULL, tr( "Number of Frames\r\nEnter digits only" ), tr( "Blank Frames:\r\n(Enter digits only)" ), QLineEdit::Normal, name, &ok );
-    if ( ok && !text.isEmpty() )
-    {
-        name = text;
-    }
-    int a = text.toInt();
-    QListIterator<int> z( frameList );
-    for ( int i = 0; i < a; ++i )
-    {
-        addKey();
-    }
-}
-
-void Editor::pasteFrames()
-{
-    int a = frameList.count();
-    QListIterator<int> z( frameList );
-    for ( int i = 0; i < a; ++i )
-    {
-        int b = z.next();
-        qDebug() << i;
-        qDebug() << a;
-        scrubTo( i );
-        copy();
-        //int d = b+a;  Give us the interval between the frames
-        scrubTo( b );//TODO scrub to selected frame copy() scrub to starting frame and paste()
-        duplicateKey();
-    }
-}
-
 void Editor::paste()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-    if (layer != NULL)    {
-        if (layer->type == Layer::BITMAP && clipboardBitmapImage.image != NULL)   // clipboardBitmapOk        {
+    if ( layer != NULL )
+    {
+        if ( layer->type() == Layer::BITMAP && clipboardBitmapImage.image != NULL )
+        {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image->size();
@@ -742,7 +710,7 @@ void Editor::paste()
                     tobePasted.transform( selection, true );
                 }
             }
-            setTool(MOVE);
+            setTool( MOVE );
             // setTool( MOVE );
         }
         if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
@@ -920,7 +888,7 @@ void Editor::setObject( Object* newObject )
     }
     m_pObject = newObject;
 
-    layerManager( )->setObject( m_pObject );
+    layerManager()->setObject( m_pObject );
 
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
@@ -1318,6 +1286,7 @@ void Editor::importImage( QString filePath )
     {
         return;
     }
+
     if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
     {
         // create a new Bitmap layer ?
@@ -1347,9 +1316,12 @@ void Editor::importImage( QString filePath )
         if ( layer->type() == Layer::BITMAP )
         {
             QImageReader* importedImageReader = new QImageReader( filePath );
-            QImage* importedImage;
             QImage importedIm = importedImageReader->read();
 
+            QImage* importedImage = &importedIm;
+
+            int numImages = importedImageReader->imageCount();
+            int timeLeft = importedImageReader->nextImageDelay();
 
             if ( !importedImage->isNull() )
             {
@@ -1630,7 +1602,7 @@ void Editor::play()
     updateMaxFrame();
     if ( layerManager()->currentLayerIndex() == loopEnds )
     {
-        if (loopControl)
+        if ( loopControl )
         {
             scrubTo( loopStarts );
         }
@@ -1639,7 +1611,8 @@ void Editor::play()
     {
         if ( loopControl )
         {
-            scrubTo(  loopStarts );        }
+            scrubTo( loopStarts );
+        }
         else
         {
             scrubTo( maxFrame );
@@ -1752,11 +1725,11 @@ void Editor::playNextFrame()
     updateMaxFrame();
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
-    if ( layerManager()->currentLayerIndex() == loopEnds)
+    if ( layerManager()->currentLayerIndex() == loopEnds )
     {
-        if (loopControl)
+        if ( loopControl )
         {
-            scrubTo( loopStarts);
+            scrubTo( loopStarts );
         }
     }
     if ( layerManager()->currentFrameIndex() < maxFrame )
@@ -1809,12 +1782,12 @@ void Editor::setLoopControl( bool checked )
     loopControl = checked;
 }
 
-void Editor::changeLoopStart(int x)
+void Editor::changeLoopStart( int x )
 {
     loopStart = x;
 }
 
-void Editor::changeLoopEnd(int x)
+void Editor::changeLoopEnd( int x )
 {
     loopEnd = x;
 }
@@ -1970,72 +1943,72 @@ void Editor::gridview()
 /*
 void Editor::print()
 {
-    QPrinter printer( QPrinter::HighResolution );
-    //printer.setOrientation(QPrinter::Landscape);
-    //printer.setFullPage(false);
-    //printer->setPaperSize(QPrinter::A4);
+QPrinter printer( QPrinter::HighResolution );
+//printer.setOrientation(QPrinter::Landscape);
+//printer.setFullPage(false);
+//printer->setPaperSize(QPrinter::A4);
 
-    QPrintPreviewDialog printPreviewDialog( &printer, this );
-    connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
-    if ( printPreviewDialog.exec() == QDialog::Accepted )
-    {
-        if ( !printer.isValid() )
-        {
-            QMessageBox msg;
-            msg.setText( "An invalid printer was selected. The print job will now abort." );
-            msg.setIcon( QMessageBox::Warning );
-            msg.exec();
-            return;
-        }
+QPrintPreviewDialog printPreviewDialog( &printer, this );
+connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
+if ( printPreviewDialog.exec() == QDialog::Accepted )
+{
+if ( !printer.isValid() )
+{
+QMessageBox msg;
+msg.setText( "An invalid printer was selected. The print job will now abort." );
+msg.setIcon( QMessageBox::Warning );
+msg.exec();
+return;
+}
 
-        //printAndPreview( &printer );
-    }
+//printAndPreview( &printer );
+}
 }
 */
 /*
 void Editor::printAndPreview( QPrinter* printer )
 {
-    QRect exportRect = m_pScribbleArea->rect();
-    QSize exportSize = exportRect.size();
-    if ( printer->outputFileName() != "" )
-    {
-        QPrinter pdfPrinter( QPrinter::ScreenResolution );
-        pdfPrinter.setOutputFileName( printer->outputFileName() );
-        pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
-        pdfPrinter.setOrientation( printer->orientation() );
-        QPainter painter( &pdfPrinter );
-        painter.setRenderHint( QPainter::HighQualityAntialiasing );
-        QRect pageRect = pdfPrinter.pageRect();
-        pageRect.moveTo( 0, 0 );
-        qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
-        qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
-        if ( exportSize.width() >= exportSize.height() )
-        {
-            // landscape
-        }
-        else
-        {
-            // portrait
-        }
-        //exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
-        //exportRect.setSize(exportSize);
-        painter.setViewport( pageRect );
-        painter.setWindow( exportRect );
-        m_pScribbleArea->render( &painter );
-        painter.end();
-    }
-    else
-    {
-        QRect pageRect = printer->pageRect();
-        pageRect.moveTo( 0, 0 );
-        exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
-        exportRect.setSize( exportSize );
-        QPainter painter( printer );
-        painter.setViewport( pageRect );
-        painter.setWindow( exportRect );
-        m_pScribbleArea->render( &painter );
-        painter.end();
-    }
+QRect exportRect = m_pScribbleArea->rect();
+QSize exportSize = exportRect.size();
+if ( printer->outputFileName() != "" )
+{
+QPrinter pdfPrinter( QPrinter::ScreenResolution );
+pdfPrinter.setOutputFileName( printer->outputFileName() );
+pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
+pdfPrinter.setOrientation( printer->orientation() );
+QPainter painter( &pdfPrinter );
+painter.setRenderHint( QPainter::HighQualityAntialiasing );
+QRect pageRect = pdfPrinter.pageRect();
+pageRect.moveTo( 0, 0 );
+qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
+qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
+if ( exportSize.width() >= exportSize.height() )
+{
+// landscape
+}
+else
+{
+// portrait
+}
+//exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
+//exportRect.setSize(exportSize);
+painter.setViewport( pageRect );
+painter.setWindow( exportRect );
+m_pScribbleArea->render( &painter );
+painter.end();
+}
+else
+{
+QRect pageRect = printer->pageRect();
+pageRect.moveTo( 0, 0 );
+exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
+exportRect.setSize( exportSize );
+QPainter painter( printer );
+painter.setViewport( pageRect );
+painter.setWindow( exportRect );
+m_pScribbleArea->render( &painter );
+painter.end();
+}
 }
 */
 
