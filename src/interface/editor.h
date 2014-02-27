@@ -129,7 +129,6 @@ signals:
 
 public slots:
 
-    void setTool( ToolType );
     void clearCurrentFrame();
 
     void importImageSequence();
@@ -144,7 +143,7 @@ public slots:
     void gridview();
     void resetView();
 
-    void importImage();
+    void importImageFromDialog();
     void importImage( QString filePath );
     void importSound( QString filePath = "" );
     bool importMov();
@@ -175,7 +174,7 @@ public slots:
     void endPlay();
     void startPlay();
 
-    void addKey();
+    void addNewKey();
     void duplicateKey();
     void removeKey();
 
@@ -239,13 +238,13 @@ public slots:
     //void print();
     void restorePalettesSettings( bool, bool, bool );
 
-private slots:
     bool exportX();
     bool exportImage();
     bool exportSeq();
     bool exportMov();
     bool exportFlash();
 
+private slots:
     void saveLength( QString );
     void getCameraLayer();
 

@@ -2587,6 +2587,7 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
         if ( BaseTool::TypeName( eToolMode ) == "" )
         {
             // tool does not exist
+            Q_ASSERT_X( false, "", "" );
             return;
         }
 

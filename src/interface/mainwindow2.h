@@ -43,12 +43,12 @@ public:
     ScribbleArea* m_pScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget* m_pColorWheelWidget;
-    ColorPaletteWidget* m_pColorPalette;
+    QDockWidget*             m_pColorWheelWidget;
+    ColorPaletteWidget*      m_pColorPalette;
     DisplayOptionDockWidget* m_pDisplayOptionWidget;
     ToolOptionDockWidget*    m_pToolOptionWidget;
-    TimeLine* m_pTimeLine;
-    ToolSetWidget* m_pToolSet;
+    TimeLine*                m_pTimeLine;
+    ToolSetWidget*           m_pToolSet;
 
     // Other windows
     Preferences* m_pPreferences;

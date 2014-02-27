@@ -199,79 +199,78 @@ void MainWindow2::makeColorWheelConnections()
 void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
-    connect( ui->actionNew, SIGNAL( triggered() ), this, SLOT( newDocument() ) );
-    connect( ui->actionOpen, SIGNAL( triggered() ), this, SLOT( openDocument() ) );
-    connect( ui->actionSave_as, SIGNAL( triggered() ), this, SLOT( saveAsNewDocument() ) );
-    connect( ui->actionSave, SIGNAL( triggered() ), this, SLOT( saveDocument() ) );
-    connect( ui->actionPrint, SIGNAL( triggered() ), editor, SLOT( print() ) );
-    connect( ui->actionExit, SIGNAL( triggered() ), this, SLOT( close() ) );
+    connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
+    connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
+    connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
+    connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
 
     /// --- Export Menu ---
-    connect( ui->actionExport_X_sheet, SIGNAL( triggered() ), editor, SLOT( exportX() ) );
-    connect( ui->actionExport_Image_Sequence, SIGNAL( triggered() ), editor, SLOT( exportSeq() ) );
-    connect( ui->actionExport_Image, SIGNAL( triggered() ), editor, SLOT( exportImage() ) );
-    connect( ui->actionExport_Movie, SIGNAL( triggered() ), editor, SLOT( exportMov() ) );
+    connect( ui->actionExport_X_sheet, &QAction::triggered, editor, &Editor::exportX );
+    connect( ui->actionExport_Image_Sequence, &QAction::triggered, editor, &Editor::exportSeq );
+    connect( ui->actionExport_Image, &QAction::triggered, editor, &Editor::exportImage );
+    connect( ui->actionExport_Movie, &QAction::triggered, editor, &Editor::exportMov );
 
     //exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
     //exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
     //connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
-    connect( ui->actionExport_Palette, SIGNAL( triggered() ), this, SLOT( exportPalette() ) );
-
+    connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
+    
     /// --- Import Menu ---
-    connect( ui->actionExport_Svg_Image, SIGNAL( triggered() ), editor, SLOT( saveSvg() ) );
-    connect( ui->actionImport_Image, SIGNAL( triggered() ), editor, SLOT( importImage() ) );
-    connect( ui->actionImport_Image_Sequence, SIGNAL( triggered() ), editor, SLOT( importImageSequence() ) );
-    connect( ui->actionImport_Movie, SIGNAL( triggered() ), editor, SLOT( importMov() ) );
-    connect( ui->actionImport_Sound, SIGNAL( triggered() ), editor, SLOT( importSound() ) );
-    connect( ui->actionImport_Palette, SIGNAL( triggered() ), this, SLOT( importPalette() ) );
-
+    //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
+    connect( ui->actionImport_Image, &QAction::triggered, editor, &Editor::importImageFromDialog );
+    connect( ui->actionImport_Image_Sequence, &QAction::triggered, editor, &Editor::importImageSequence );
+    connect( ui->actionImport_Movie, &QAction::triggered, editor, &Editor::importMov );
+    //connect( ui->actionImport_Sound, &QAction::triggered, editor, &Editor::importSound );
+    ui->actionImport_Sound->setEnabled( false );
+    connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
+    
     /// --- Edit Menu ---
-    connect( ui->actionUndo, SIGNAL( triggered() ), editor, SLOT( undo() ) );
-    connect( ui->actionRedo, SIGNAL( triggered() ), editor, SLOT( redo() ) );
-    connect( ui->actionCut, SIGNAL( triggered() ), editor, SLOT( cut() ) );
-    connect( ui->actionCopy, SIGNAL( triggered() ), editor, SLOT( copy() ) );
-    connect( ui->actionPaste, SIGNAL( triggered() ), editor, SLOT( paste() ) );
-    connect( ui->actionClearFrame, SIGNAL( triggered() ), editor, SLOT( clearCurrentFrame() ) );
-    connect( ui->actionCrop, SIGNAL( triggered() ), editor, SLOT( crop() ) );
-    connect( ui->actionCrop_To_Selection, SIGNAL( triggered() ), editor, SLOT( croptoselect() ) );
-    connect( ui->actionSelect_All, SIGNAL( triggered() ), editor, SIGNAL( selectAll() ) );
-    connect( ui->actionDeselect_All, SIGNAL( triggered() ), editor, SLOT( deselectAll() ) );
-    connect( ui->actionPreference, SIGNAL( triggered() ), this, SLOT( showPreferences() ) );
+    connect( ui->actionUndo, &QAction::triggered, editor, &Editor::undo );
+    connect( ui->actionRedo, &QAction::triggered, editor, &Editor::redo );
+    connect( ui->actionCut, &QAction::triggered, editor, &Editor::cut );
+    connect( ui->actionCopy, &QAction::triggered, editor, &Editor::copy );
+    connect( ui->actionPaste, &QAction::triggered, editor, &Editor::paste );
+    connect( ui->actionClearFrame, &QAction::triggered, editor, &Editor::clearCurrentFrame );
+    connect( ui->actionCrop, &QAction::triggered, editor, &Editor::crop );
+    connect( ui->actionCrop_To_Selection, &QAction::triggered, editor, &Editor::croptoselect );
+    connect( ui->actionSelect_All, &QAction::triggered, editor, &Editor::selectAll );
+    connect( ui->actionDeselect_All, &QAction::triggered, editor, &Editor::deselectAll );
+    connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::showPreferences );
 
     ui->actionRedo->setEnabled( false );
-
+    
     /// --- Layer Menu ---
-    connect( ui->actionNew_Bitmap_Layer, SIGNAL( triggered() ), editor, SLOT( newBitmapLayer() ) );
-    connect( ui->actionNew_Vector_Layer, SIGNAL( triggered() ), editor, SLOT( newVectorLayer() ) );
-    connect( ui->actionNew_Sound_Layer, SIGNAL( triggered() ), editor, SLOT( newSoundLayer() ) );
-    connect( ui->actionNew_Camera_Layer, SIGNAL( triggered() ), editor, SLOT( newCameraLayer() ) );
-    connect( ui->actionDelete_Current_Layer, SIGNAL( triggered() ), editor, SLOT( deleteCurrentLayer() ) );
+    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, editor, &Editor::newBitmapLayer );
+    connect( ui->actionNew_Vector_Layer, &QAction::triggered, editor, &Editor::newVectorLayer );
+    connect( ui->actionNew_Sound_Layer, &QAction::triggered, editor, &Editor::newSoundLayer );
+    connect( ui->actionNew_Camera_Layer, &QAction::triggered, editor, &Editor::newCameraLayer );
+    connect( ui->actionDelete_Current_Layer, &QAction::triggered, editor, &Editor::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In, SIGNAL( triggered() ), editor, SLOT( setzoom() ) );
-    connect( ui->actionZoom_Out, SIGNAL( triggered() ), editor, SLOT( setzoom1() ) );
-    connect( ui->actionRotate_Clockwise, SIGNAL( triggered() ), editor, SLOT( rotatecw() ) );
-    connect( ui->actionRotate_Anticlosewise, SIGNAL( triggered() ), editor, SLOT( rotateacw() ) );
-    connect( ui->actionReset_Windows, SIGNAL( triggered() ), this, SLOT( dockAllPalettes() ) );
-    connect( ui->actionReset_View, SIGNAL( triggered() ), editor, SLOT( resetView() ) );
-    connect( ui->actionHorizontal_Flip, SIGNAL( triggered() ), editor, SLOT( toggleMirror() ) );
-    connect( ui->actionVertical_Flip, SIGNAL( triggered() ), editor, SLOT( toggleMirrorV() ) );
+    connect( ui->actionZoom_In, &QAction::triggered, editor, &Editor::setzoom );
+    connect( ui->actionZoom_Out, &QAction::triggered, editor, &Editor::setzoom1 );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, editor, &Editor::rotatecw );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, editor, &Editor::rotateacw );
+    connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
+    connect( ui->actionReset_View, &QAction::triggered, editor, &Editor::resetView );
+    connect( ui->actionHorizontal_Flip, &QAction::triggered, editor, &Editor::toggleMirror );
+    connect( ui->actionVertical_Flip, &QAction::triggered, editor, &Editor::toggleMirrorV );
 
     ui->actionPreview->setEnabled( false );
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     ui->actionGrid->setEnabled( false );
-    connect( ui->actionGrid, SIGNAL( triggered() ), editor, SLOT( gridview() ) ); //TODO: Grid view
+    connect( ui->actionGrid, &QAction::triggered, editor, &Editor::gridview ); //TODO: Grid view
 
-    connect( ui->actionOnionPrevious, SIGNAL( triggered( bool ) ), editor, SIGNAL( toggleOnionPrev( bool ) ) );
+    connect( ui->actionOnionPrevious, &QAction::triggered, editor, &Editor::toggleOnionPrev );
+    connect( ui->actionOnionNext, &QAction::triggered, editor, &Editor::toggleOnionNext );
+    connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, editor, &Editor::toggleMultiLayerOnionSkin );
+
     connect( editor, SIGNAL( onionPrevChanged( bool ) ), ui->actionOnionPrevious, SLOT( setChecked( bool ) ) );
-
-    connect( ui->actionOnionNext, SIGNAL( triggered( bool ) ), editor, SIGNAL( toggleOnionNext( bool ) ) );
     connect( editor, SIGNAL( onionNextChanged( bool ) ), ui->actionOnionNext, SLOT( setChecked( bool ) ) );
-
-    connect(ui->actionMultiLayerOnionSkin, SIGNAL(triggered(bool)), editor, SIGNAL(toggleMultiLayerOnionSkin(bool)));
-    connect(editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
+    connect( editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
     connect( ui->actionPlay, SIGNAL(triggered() ), editor, SLOT(play()) );
@@ -279,32 +278,34 @@ void MainWindow2::createMenus()
     connect( ui->actionLoop, SIGNAL(toggled(bool) ), editor, SIGNAL(toggleLoop(bool)) ); //TODO: WTF?
     connect( editor, SIGNAL( loopToggled(bool) ), ui->actionLoop, SLOT(setChecked(bool)) );
 
-    connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));//adding loopControl
+    // Loop Control
+    connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));
     connect(ui->actionLoopControl, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoopControl(bool)));
     connect(editor, SIGNAL(loopControlToggled(bool)), ui->actionLoopControl, SLOT(setChecked(bool)));
+    // Loop Control
 
-    connect(ui->actionAdd_Frame, SIGNAL(triggered()), editor, SLOT(addKey()));
-    connect(ui->actionRemove_Frame, SIGNAL(triggered()), editor, SLOT(removeKey()));
-    connect(ui->actionNext_Frame, SIGNAL(triggered()), editor, SLOT(playNextFrame()));
-    connect(ui->actionPrevious_Frame, SIGNAL(triggered()), editor, SLOT(playPrevFrame()));
-    connect(ui->actionNext_Keyframe, SIGNAL(triggered()), editor, SLOT(scrubNextKeyframe()));
-    connect(ui->actionPrev_Keyframe, SIGNAL(triggered()), editor, SLOT(scrubPreviousKeyframe()));
-    connect(ui->actionDuplicate_Frame, SIGNAL(triggered()), editor, SLOT(duplicateKey()));
+    connect(ui->actionAdd_Frame, &QAction::triggered, editor, &Editor::addNewKey );
+    connect(ui->actionRemove_Frame, &QAction::triggered, editor, &Editor::removeKey );
+    connect(ui->actionNext_Frame, &QAction::triggered, editor, &Editor::playNextFrame );
+    connect(ui->actionPrevious_Frame, &QAction::triggered, editor, &Editor::playPrevFrame );
+    connect(ui->actionNext_Keyframe, &QAction::triggered, editor, &Editor::scrubNextKeyframe );
+    connect(ui->actionPrev_Keyframe, &QAction::triggered, editor, &Editor::scrubPreviousKeyframe );
+    connect(ui->actionDuplicate_Frame, &QAction::triggered, editor, &Editor::duplicateKey );
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, SIGNAL(triggered()), m_pToolSet, SLOT(moveOn()));
-    connect(ui->actionSelect, SIGNAL(triggered()), m_pToolSet, SLOT(selectOn()));
-    connect(ui->actionBrush, SIGNAL(triggered()), m_pToolSet, SLOT(brushOn()));
-    connect(ui->actionPolyline, SIGNAL(triggered()), m_pToolSet, SLOT(polylineOn()));
-    connect(ui->actionSmudge, SIGNAL(triggered()), m_pToolSet, SLOT(smudgeOn()));
-    connect(ui->actionPen, SIGNAL(triggered()), m_pToolSet, SLOT(penOn()));
-    connect(ui->actionHand, SIGNAL(triggered()), m_pToolSet, SLOT(handOn()));
-    connect(ui->actionPencil, SIGNAL(triggered()), m_pToolSet, SLOT(pencilOn()));
-    connect(ui->actionBucket, SIGNAL(triggered()), m_pToolSet, SLOT(bucketOn()));
-    connect(ui->actionEyedropper, SIGNAL(triggered()), m_pToolSet, SLOT(eyedropperOn()));
-    connect(ui->actionEraser, SIGNAL(triggered()), m_pToolSet, SLOT(eraserOn()));
-    connect(ui->actionTogglePalette, SIGNAL(triggered()),m_pScribbleArea,SLOT(togglePopupPalette()));
-    connect(ui->actionResetToolsDefault, SIGNAL(triggered()), this, SLOT(resetToolsSettings()));
+    connect(ui->actionMove, &QAction::triggered, m_pToolSet, &ToolSetWidget::moveOn );
+    connect(ui->actionSelect, &QAction::triggered, m_pToolSet, &ToolSetWidget::selectOn );
+    connect(ui->actionBrush, &QAction::triggered, m_pToolSet, &ToolSetWidget::brushOn );
+    connect(ui->actionPolyline, &QAction::triggered, m_pToolSet, &ToolSetWidget::polylineOn );
+    connect(ui->actionSmudge, &QAction::triggered, m_pToolSet, &ToolSetWidget::smudgeOn );
+    connect(ui->actionPen, &QAction::triggered, m_pToolSet, &ToolSetWidget::penOn );
+    connect(ui->actionHand, &QAction::triggered, m_pToolSet, &ToolSetWidget::handOn );
+    connect(ui->actionPencil, &QAction::triggered, m_pToolSet, &ToolSetWidget::pencilOn );
+    connect(ui->actionBucket, &QAction::triggered, m_pToolSet, &ToolSetWidget::bucketOn );
+    connect(ui->actionEyedropper, &QAction::triggered, m_pToolSet, &ToolSetWidget::eyedropperOn );
+    connect(ui->actionEraser, &QAction::triggered, m_pToolSet, &ToolSetWidget::eraserOn );
+    connect(ui->actionTogglePalette, &QAction::triggered, m_pScribbleArea,&ScribbleArea::togglePopupPalette );
+    connect(ui->actionResetToolsDefault, &QAction::triggered, this, &MainWindow2::resetToolsSettings );
 
     /// --- Window Menu ---
     connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), editor->m_pToolSet, SLOT(setVisible(bool)));
@@ -319,8 +320,8 @@ void MainWindow2::createMenus()
     connect(m_pDisplayOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionDisplayOptions, SLOT(setChecked(bool)));
 
     /// --- Help Menu ---
-    connect( ui->actionHelp, SIGNAL(triggered()), this, SLOT(helpBox()) );
-    connect( ui->actionAbout, SIGNAL(triggered()), this, SLOT(aboutPencil()) );
+    connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
+    connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
 
     // --------------- Menus ------------------
     m_recentFileMenu = new RecentFileMenu( tr("Open Recent"), this );

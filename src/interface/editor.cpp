@@ -138,7 +138,7 @@ Editor::Editor( MainWindow2* parent )
     qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
     qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
 
-    setTool( PENCIL );
+    toolManager()->setCurrentTool( PENCIL );
 
     setAcceptDrops( true );
 }
@@ -710,8 +710,6 @@ void Editor::paste()
                     tobePasted.transform( selection, true );
                 }
             }
-            setTool( MOVE );
-            // setTool( MOVE );
         }
         if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
         {
@@ -721,7 +719,6 @@ void Editor::paste()
             vectorImage->paste( clipboardVectorImage );  // paste the clipboard
             m_pScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
-            // setTool( MOVE );
         }
     }
     m_pScribbleArea->updateFrame();
@@ -1274,7 +1271,7 @@ bool Editor::exportFlash()
     }
 }
 
-void Editor::importImage()
+void Editor::importImageFromDialog()
 {
     importImage( "fromDialog" );
 }
@@ -1330,7 +1327,7 @@ void Editor::importImage( QString filePath )
                     BitmapImage* bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( layerManager()->currentFrameIndex() );
                     if ( bitmapImage == NULL )
                     {
-                        addKey();
+                        addNewKey();
                         bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( layerManager()->currentFrameIndex() );
                     }
 
@@ -1376,7 +1373,11 @@ void Editor::importImage( QString filePath )
         if ( layer->type() == Layer::VECTOR )
         {
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() );
-            if ( vectorImage == NULL ) { addKey(); vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() ); }
+            if ( vectorImage == NULL )
+            {
+                addNewKey();
+                vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() );
+            }
             VectorImage* importedVectorImage = new VectorImage( NULL );
             bool ok = importedVectorImage->read( filePath );
             if ( ok )
@@ -1512,7 +1513,7 @@ void Editor::nextLayer()
     m_pScribbleArea->updateAllFrames();
 }
 
-void Editor::addKey()
+void Editor::addNewKey()
 {
     addKey( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
 }
@@ -1527,7 +1528,7 @@ void Editor::duplicateKey()
             m_pScribbleArea->selectAll();
             clipboardVectorOk = true;
             clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
-            addKey();
+            addNewKey();
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
             vectorImage->paste( clipboardVectorImage ); // paste the clipboard
             m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
@@ -1537,7 +1538,7 @@ void Editor::duplicateKey()
         {
             m_pScribbleArea->selectAll();
             copy();
-            addKey();
+            addNewKey();
             paste();
         }
     }
@@ -2046,14 +2047,14 @@ void Editor::resetView()
 {
     getScribbleArea()->resetView();
 }
-
+/*
 void Editor::setTool( ToolType toolType )
 {
-    getScribbleArea()->setCurrentTool( toolType );
+getScribbleArea()->setCurrentTool( toolType );
 
-    emit changeTool( toolType );
+emit changeTool( toolType );
 }
-
+*/
 Layer* Editor::getCurrentLayer( int incr )
 {
     return layerManager()->currentLayer( incr );
