@@ -101,10 +101,10 @@ signals:
     void toggleLoop( bool );
     void toggleLoopControl( bool ) ;
     void loopToggled( bool );
-    void toggleMultiLayerOnionSkin(bool);
+    void toggleMultiLayerOnionSkin( bool );
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
-    void multiLayerOnionSkinChanged(bool);
+    void multiLayerOnionSkinChanged( bool );
     void onionPrevChanged( bool );
     void onionNextChanged( bool );
     void changeThinLinesButton( bool );
@@ -238,7 +238,7 @@ public slots:
     void restorePalettesSettings( bool, bool, bool );
     void saveSvg();
 
-    private slots:
+private slots:
 
     bool exportX();
     bool exportImage();
