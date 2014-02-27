@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "tooloptiondockwidget.h"
 #include "toolset.h"
 #include "editor.h"
-#include "basetool.h"
+#include "toolmanager.h"
 
 // ----------------------------------------------------------------------------------
 
@@ -147,7 +147,7 @@ void ToolSetWidget::pencilOn()
     m_editor->getScribbleArea()->setCurrentTool( PENCIL );
 
     // --- change properties ---
-    BaseTool* pCurTool = m_editor->getScribbleArea()->currentTool();
+    BaseTool* pCurTool = m_editor->toolManager()->currentTool();
 
     m_editor->setWidth(pCurTool->properties.width);
     m_editor->setFeather(pCurTool->properties.feather);

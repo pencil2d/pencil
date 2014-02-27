@@ -18,6 +18,8 @@ public:
     BaseTool* getTool( ToolType eToolType );
     void      setCurrentTool( ToolType eToolType );
     void      cleanupAllToolsData();
+
+    void      resetAllToolsData();
 signals:
     
 public slots:

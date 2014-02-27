@@ -11,6 +11,7 @@
 #include "selecttool.h"
 #include "smudgetool.h"
 #include "toolmanager.h"
+#include "pencilsettings.h"
 
 
 ToolManager::ToolManager(QObject* parent, Editor* pEditor, ScribbleArea* pScribbleArea) :
@@ -57,4 +58,24 @@ void ToolManager::cleanupAllToolsData()
     {
         pTool->clear();
     }
+}
+
+void ToolManager::resetAllToolsData()
+{
+    // Reset can be useful to solve some pencil settings problems.
+    // Betatesters should be recommended to reset before sending tool related issues.
+    // This can prevent from users to stop working on their project.
+    getTool( PEN )->properties.width = 1.5; // not supposed to use feather
+    getTool( POLYLINE )->properties.width = 1.5; // PEN dependent
+    getTool( PENCIL )->properties.width = 1.0;
+    getTool( PENCIL )->properties.feather = -1.0; // locks feather usage (can be changed)
+    getTool( ERASER )->properties.width = 25.0;
+    getTool( ERASER )->properties.feather = 50.0;
+    getTool( BRUSH )->properties.width = 15.0;
+    getTool( BRUSH )->properties.feather = 200.0;
+    getTool( SMUDGE )->properties.width = 25.0;
+    getTool( SMUDGE )->properties.feather = 200.0;
+
+    pencilSettings()->setValue( SETTING_TOOL_CURSOR, true );
+    // todo: add all the default settings
 }

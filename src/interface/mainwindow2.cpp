@@ -36,6 +36,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"
+#include "toolmanager.h"
 
 #include "scribblearea.h"
 #include "colorpalettewidget.h"
@@ -726,9 +727,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
 // TODO: Find a better place for this function
 void MainWindow2::resetToolsSettings()
 {
-    m_pScribbleArea->resetTools();
-    editor->setTool( m_pScribbleArea->currentTool()->type() );
-
+    editor->toolManager()->resetAllToolsData();
     qDebug( "tools restored to default settings" );
 }
 
