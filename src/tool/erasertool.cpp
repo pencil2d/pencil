@@ -29,7 +29,6 @@ void EraserTool::loadSettings()
 
     properties.width = settings.value("eraserWidth").toDouble();
     properties.feather = settings.value("eraserFeather").toDouble();
-    properties.opacity = 0.5;
 
     properties.pressure = ON;
     properties.invisibility = DISABLED;

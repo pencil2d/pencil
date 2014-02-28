@@ -10,7 +10,7 @@ class ScribbleArea;
 class Object;
 class ColorPaletteWidget;
 class DisplayOptionDockWidget;
-class ToolOptionDockWidget;
+class ToolOptionWidget;
 class TimeLine;
 class ToolSetWidget;
 class Preferences;
@@ -46,7 +46,7 @@ public:
     QDockWidget*             m_pColorWheelWidget;
     ColorPaletteWidget*      m_pColorPalette;
     DisplayOptionDockWidget* m_pDisplayOptionWidget;
-    ToolOptionDockWidget*    m_pToolOptionWidget;
+    ToolOptionWidget*    m_pToolOptionWidget;
     TimeLine*                m_pTimeLine;
     ToolSetWidget*           m_pToolSet;
 

@@ -1,8 +1,9 @@
 #include "editor.h"
 #include "basetool.h"
-
+#include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
+
 
 // ---- shared static variables ---- ( only one instance for all the tools )
 ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
@@ -137,41 +138,6 @@ void BaseTool::stopAdjusting()
     m_pScribbleArea->setCursor(cursor());
 }
 
-/*void BaseTool::adjustCursor(qreal argOffsetX ) //offsetx x-lastx
-{
-    qreal incx = pow(OriginalSettingValue*100,0.5);
-    qreal newValue = incx + argOffsetX;
-
-    if (newValue < 0)
-    {
-        newValue = 0;
-    }
-    newValue = pow(newValue, 2) / 100;
-
-    if (adjustmentStep>0) {
-        int tempValue = (int)(newValue/adjustmentStep); // + 0.5 ?
-        newValue = tempValue * adjustmentStep;
-    }
-
-    if (newValue < 0.2) // can be optimized for size: min(200,max(0.2,newValue))
-    {
-        newValue = 0.2;
-    }
-    else if (newValue > 200)
-    {
-        newValue = 200;
-    }
-
-    if ( assistedSettingType == WIDTH ) // can be optimized (not necessarily)
-    {
-        m_pEditor->applyWidth( newValue );
-    }
-    else if ( assistedSettingType == FEATHER )
-    {
-        m_pEditor->applyFeather( newValue );
-    }
-}*/
-
 void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-lastx ...
 {
     qreal incx = pow(OriginalSettingValue*100,0.5);
@@ -216,11 +182,11 @@ void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-las
         newValueY = 200;
     }
 
-    m_pEditor->applyWidth( newValueX );
+    m_pEditor->toolManager()->setWidth( newValueX );
 
     if ( (this->type() == BRUSH) || (this->type() == ERASER) || (this->type() == SMUDGE) )
     {
-        m_pEditor->applyFeather( newValueY );
+        m_pEditor->toolManager()->setFeather( newValueY );
     }
 
 }

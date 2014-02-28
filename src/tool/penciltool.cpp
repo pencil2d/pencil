@@ -30,7 +30,6 @@ void PencilTool::loadSettings()
 
     properties.width = settings.value("pencilWidth").toDouble();
     properties.feather = settings.value("pencilFeather").toDouble();
-    properties.opacity = 0.8;
     properties.pressure = 1;
     properties.invisibility = 1;
     properties.preserveAlpha = 0;

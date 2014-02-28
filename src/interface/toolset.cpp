@@ -144,18 +144,7 @@ QToolButton* ToolSetWidget::newToolButton(const QIcon& icon, QString strToolTip)
 
 void ToolSetWidget::pencilOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( PENCIL );
-
-    // --- change properties ---
-    BaseTool* pCurTool = m_editor->toolManager()->currentTool();
-
-    m_editor->setWidth(pCurTool->properties.width);
-    m_editor->setFeather(pCurTool->properties.feather);
-    m_editor->setFeather( -1 ); // by definition the pencil has no feather
-    m_editor->setPressure(pCurTool->properties.pressure);
-    m_editor->setPreserveAlpha(pCurTool->properties.preserveAlpha);
-    m_editor->setFollowContour(-1);
-    m_editor->setInvisibility(-1); // by definition the pencil is invisible in vector mode
+    m_editor->toolManager()->setCurrentTool( PENCIL );
 
     deselectAllTools();
     pencilButton->setChecked(true);
@@ -163,19 +152,7 @@ void ToolSetWidget::pencilOn()
 
 void ToolSetWidget::eraserOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( ERASER );
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
-
-    // --- change properties ---
-    m_editor->setWidth(pCurrentTool->properties.width);
-    m_editor->setFeather(pCurrentTool->properties.feather);
-    m_editor->setPressure(pCurrentTool->properties.pressure);
-    m_editor->setPreserveAlpha(0);
-    m_editor->setInvisibility(0);
-
-    m_editor->setPreserveAlpha(-1);
-    m_editor->setFollowContour(-1);
-    m_editor->setInvisibility(-1);
+    m_editor->toolManager()->setCurrentTool( ERASER );
 
     deselectAllTools();
     eraserButton->setChecked(true);
@@ -183,15 +160,7 @@ void ToolSetWidget::eraserOn()
 
 void ToolSetWidget::selectOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( SELECT );
-
-    // --- change properties ---
-    m_editor->setWidth(-1);
-    m_editor->setFeather(-1);
-    m_editor->setPressure(-1);
-    m_editor->setInvisibility(-1);
-    m_editor->setPreserveAlpha(-1);
-    m_editor->setFollowContour(-1);
+    m_editor->toolManager()->setCurrentTool( SELECT );
 
     deselectAllTools();
     selectButton->setChecked(true);
@@ -199,14 +168,7 @@ void ToolSetWidget::selectOn()
 
 void ToolSetWidget::moveOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( MOVE );
-    // --- change properties ---
-    m_editor->setWidth(-1);
-    m_editor->setFeather(-1);
-    m_editor->setPressure(-1);
-    m_editor->setInvisibility(-1);
-    m_editor->setPreserveAlpha(-1);
-    m_editor->setFollowContour(-1);
+    m_editor->toolManager()->setCurrentTool( MOVE );
 
     deselectAllTools();
     moveButton->setChecked(true);
@@ -214,12 +176,7 @@ void ToolSetWidget::moveOn()
 
 void ToolSetWidget::penOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( PEN );
-
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
-
-    // --- change properties ---
-    m_editor->setToolProperties( pCurrentTool->properties );
+    m_editor->toolManager()->setCurrentTool( PEN );
 
     deselectAllTools();
     penButton->setChecked(true);
@@ -227,38 +184,15 @@ void ToolSetWidget::penOn()
 
 void ToolSetWidget::handOn()
 {
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
-    if (pCurrentTool->type() == HAND)
-    {
-        m_editor->getScribbleArea()->resetView();
-    }
-
-    m_editor->getScribbleArea()->setCurrentTool( HAND );
-    // --- change properties ---
-    m_editor->setWidth(-1);
-    m_editor->setFeather(-1);
-    m_editor->setPressure(-1);
-    m_editor->setInvisibility(-1);
-    m_editor->setPreserveAlpha(-1);
-    m_editor->setFollowContour(-1);
-
+    m_editor->toolManager()->setCurrentTool( HAND );
+    
     deselectAllTools();
     handButton->setChecked(true);
 }
 
 void ToolSetWidget::polylineOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( POLYLINE );
-    // --- change properties ---
-
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
-
-    m_editor->setWidth(pCurrentTool->properties.width);
-    m_editor->setFeather(-1);
-    m_editor->setPressure(pCurrentTool->properties.pressure);
-    m_editor->setInvisibility(pCurrentTool->properties.invisibility);
-    m_editor->setPreserveAlpha(pCurrentTool->properties.preserveAlpha);
-    m_editor->setFollowContour(-1);
+    m_editor->toolManager()->setCurrentTool( POLYLINE );
 
     deselectAllTools();
     polylineButton->setChecked(true);
@@ -266,21 +200,7 @@ void ToolSetWidget::polylineOn()
 
 void ToolSetWidget::bucketOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( BUCKET );
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
-
-    // --- change properties ---
-
-    m_editor->setWidth(-1);
-    m_editor->setFeather(pCurrentTool->properties.feather);
-    m_editor->setFeather(-1);
-    m_editor->setPressure(0);
-    m_editor->setPressure(-1); // disable the button
-    m_editor->setInvisibility(0);
-    m_editor->setInvisibility(-1); // disable the button
-    m_editor->setPreserveAlpha(0);
-    m_editor->setPreserveAlpha(-1); // disable the button
-    m_editor->setFollowContour(-1);
+    m_editor->toolManager()->setCurrentTool( BUCKET );
 
     deselectAllTools();
     bucketButton->setChecked(true);
@@ -288,16 +208,7 @@ void ToolSetWidget::bucketOn()
 
 void ToolSetWidget::eyedropperOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( EYEDROPPER );
-    // --- change properties ---
-    m_editor->setWidth(-1);
-    m_editor->setFeather(-1);
-    m_editor->setPressure(-1);
-    m_editor->setInvisibility(0);
-    m_editor->setInvisibility(-1);
-    m_editor->setPreserveAlpha(0);
-    m_editor->setPreserveAlpha(-1);
-    m_editor->setFollowContour(-1);
+    m_editor->toolManager()->setCurrentTool( EYEDROPPER );
 
     deselectAllTools();
     eyedropperButton->setChecked(true);
@@ -305,32 +216,15 @@ void ToolSetWidget::eyedropperOn()
 
 void ToolSetWidget::brushOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( BRUSH );
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();
-    // --- change properties ---
-
-    m_editor->setToolProperties(pCurrentTool->properties);
-    m_editor->setInvisibility(-1);
-    //m_pEditor->setFollowContour(followContour); //TODO: clarily what is this?
-
+    m_editor->toolManager()->setCurrentTool( BRUSH );
+  
     deselectAllTools();
     colouringButton->setChecked(true);
 }
 
 void ToolSetWidget::smudgeOn()
 {
-    m_editor->getScribbleArea()->setCurrentTool( SMUDGE );
-    BaseTool* pCurrentTool = m_editor->getScribbleArea()->currentTool();    // --- change properties ---
-    m_editor->setWidth(pCurrentTool->properties.width);
-    m_editor->setFeather(pCurrentTool->properties.feather);
-    //m_editor->setWidth(10);
-    //m_editor->setFeather(50);
-    m_editor->setPressure(-1);
-    m_editor->setInvisibility(0);
-    m_editor->setInvisibility(-1);
-    m_editor->setPreserveAlpha(0);
-    m_editor->setPreserveAlpha(-1);
-    m_editor->setFollowContour(-1);
+    m_editor->toolManager()->setCurrentTool( SMUDGE );
 
     deselectAllTools();
     smudgeButton->setChecked(true);

@@ -116,14 +116,6 @@ signals:
     // Tool Option
     void changeTool( ToolType );
 
-    void penWidthValueChange( qreal );
-    void penFeatherValueChange( qreal );
-    void penInvisiblityValueChange( int );
-    void penPreserveAlphaValueChange( int );
-    void penPressureValueChange( int );
-    void penFollowContourValueChange( int );
-    void penColorValueChange( QColor );
-
     // save
     void needSave();
 
@@ -188,19 +180,6 @@ public slots:
     void moveLayer( int i, int j );
     void updateMaxFrame();
 
-    void setToolProperties( const Properties& p );
-    void setWidth( qreal );
-    void applyWidth( qreal );
-    void setFeather( qreal );
-    void applyFeather( qreal );
-    void setInvisibility( int );
-    void applyInvisibility( bool );
-    void setPressure( int );
-    void applyPressure( bool );
-    void setPreserveAlpha( int );
-    void applyPreserveAlpha( bool );
-    void setFollowContour( int );
-    void applyFollowContour( bool );
     void selectAndApplyColour( int );
     void setFrontColour( int, QColor );
 

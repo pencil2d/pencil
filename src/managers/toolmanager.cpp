@@ -37,19 +37,25 @@ ToolManager::ToolManager(QObject* parent, Editor* pEditor, ScribbleArea* pScribb
     m_pCurrentTool = getTool( PENCIL );
 }
 
-BaseTool* ToolManager::currentTool()
-{
-    return m_pCurrentTool;
-}
-
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
     return m_toolSetHash[ eToolType ];
 }
 
-void ToolManager::setCurrentTool(ToolType eToolType)
+void ToolManager::setCurrentTool( ToolType eToolType )
 {
-    m_pCurrentTool = getTool( eToolType );
+    if ( m_pCurrentTool->type() != eToolType )
+    {
+        m_pCurrentTool = getTool( eToolType );
+
+        setWidth( m_pCurrentTool->properties.width );
+        setFeather( m_pCurrentTool->properties.feather );
+        setPressure( m_pCurrentTool->properties.pressure );
+        setPreserveAlpha( m_pCurrentTool->properties.preserveAlpha );
+        setInvisibility( m_pCurrentTool->properties.invisibility ); // by definition the pencil is invisible in vector mode
+
+        emit toolChanged( eToolType );
+    }
 }
 
 void ToolManager::cleanupAllToolsData()
@@ -60,7 +66,7 @@ void ToolManager::cleanupAllToolsData()
     }
 }
 
-void ToolManager::resetAllToolsData()
+void ToolManager::resetAllTools()
 {
     // Reset can be useful to solve some pencil settings problems.
     // Betatesters should be recommended to reset before sending tool related issues.
@@ -78,4 +84,56 @@ void ToolManager::resetAllToolsData()
 
     pencilSettings()->setValue( SETTING_TOOL_CURSOR, true );
     // todo: add all the default settings
+
+    qDebug( "tools restored to default settings" );
+}
+
+void ToolManager::setWidth( float newWidth )
+{
+    if ( currentTool()->properties.width != newWidth )
+    {
+        currentTool()->properties.width = newWidth;
+        emit penWidthValueChange( newWidth );
+        emit toolPropertyChanged();
+    }
+}
+
+void ToolManager::setFeather( float newFeather )
+{
+    if ( currentTool()->properties.feather != newFeather )
+    {
+        currentTool()->properties.feather = newFeather;
+        emit penFeatherValueChange( newFeather );
+        emit toolPropertyChanged();
+    }
+}
+
+void ToolManager::setInvisibility( int isInvisible  )
+{
+    if ( currentTool()->properties.invisibility != isInvisible )
+    {
+        currentTool()->properties.invisibility = isInvisible;
+        emit penInvisiblityValueChange( isInvisible );
+        emit toolPropertyChanged();
+    }
+}
+
+void ToolManager::setPreserveAlpha( int isPreserveAlpha )
+{
+    if ( currentTool()->properties.preserveAlpha != isPreserveAlpha )
+    {
+        currentTool()->properties.preserveAlpha = isPreserveAlpha;
+        emit penPreserveAlphaValueChange( isPreserveAlpha );
+        emit toolPropertyChanged();
+    }
+}
+
+void ToolManager::setPressure( int isPressureOn )
+{
+    if ( currentTool()->properties.pressure != isPressureOn )
+    {
+        currentTool()->properties.pressure = isPressureOn;
+        emit penPressureValueChange( isPressureOn );
+        emit toolPropertyChanged();
+    }
 }

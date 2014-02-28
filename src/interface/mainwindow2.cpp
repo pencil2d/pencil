@@ -152,7 +152,7 @@ void MainWindow2::arrangePalettes()
     m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
     m_pDisplayOptionWidget->makeConnectionToEditor(editor);
 
-    m_pToolOptionWidget = new ToolOptionDockWidget(this);
+    m_pToolOptionWidget = new ToolOptionWidget(this);
     m_pToolOptionWidget->makeConnectionToEditor(editor);
 
     m_pToolSet = editor->m_pToolSet;
@@ -274,8 +274,8 @@ void MainWindow2::createMenus()
     connect( editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    connect( ui->actionPlay, SIGNAL(triggered() ), editor, SLOT(play()) );
-    connect( ui->actionLoop, SIGNAL(triggered(bool) ), editor, SLOT(setLoop(bool)) );
+    connect( ui->actionPlay, &QAction::triggered, editor, &Editor::play );
+    connect( ui->actionLoop, &QAction::triggered, editor, &Editor::setLoop );
     connect( ui->actionLoop, SIGNAL(toggled(bool) ), editor, SIGNAL(toggleLoop(bool)) ); //TODO: WTF?
     connect( editor, SIGNAL( loopToggled(bool) ), ui->actionLoop, SLOT(setChecked(bool)) );
 
@@ -727,8 +727,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
 // TODO: Find a better place for this function
 void MainWindow2::resetToolsSettings()
 {
-    editor->toolManager()->resetAllToolsData();
-    qDebug( "tools restored to default settings" );
+    editor->toolManager()->resetAllTools();
 }
 
 

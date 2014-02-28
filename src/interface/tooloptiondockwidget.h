@@ -9,22 +9,18 @@ class SpinSlider;
 class QCheckBox;
 class Editor;
 
-class ToolOptionDockWidget : public QDockWidget
+class ToolOptionWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    ToolOptionDockWidget(QWidget *parent = 0);
+    ToolOptionWidget(QWidget *parent = 0);
     void makeConnectionToEditor(Editor* editor);
 
-    QToolButton* colorChooseButton;
-    QPixmap* colourSwatch;
     QCheckBox* usePressureBox;
     QCheckBox* makeInvisibleBox;
     QCheckBox* preserveAlphaBox;
-    QCheckBox* followContourBox;
     SpinSlider* sizeSlider;
     SpinSlider* featherSlider;
-    //SpinSlider* opacitySlider;
 
 signals:
 
@@ -34,11 +30,6 @@ public slots:
     void setPenInvisibility(int);
     void setPressure(int);
     void setPreserveAlpha(int);
-    void setFollowContour(int);
-    void setColour(QColor);
-
-private slots:
-    void clickColorChooseButton();
 
 private:
     void createUI();

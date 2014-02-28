@@ -24,7 +24,7 @@ class QToolButton;
 class QIcon;
 class SpinSlider;
 class DisplayOptionDockWidget;
-class ToolOptionDockWidget;
+class ToolOptionWidget;
 class Editor;
 
 
@@ -34,6 +34,8 @@ class ToolSetWidget : public QDockWidget
 
 public:
     ToolSetWidget(const QString title, Editor* editor);
+
+    void setCurrentTool( ToolType );
 
 public slots:
     void pencilOn();
@@ -47,8 +49,6 @@ public slots:
     void eyedropperOn();
     void brushOn();
     void smudgeOn();
-
-    void setCurrentTool(ToolType);
 
 signals:
     void clearButtonClicked();

@@ -21,7 +21,6 @@ class Properties
 public:
     qreal width;
     qreal feather;
-    qreal opacity;
     int pressure;
     int invisibility;
     int preserveAlpha;

@@ -168,13 +168,6 @@ signals:
     void zoom1();
     void rotatecw();
     void rotateacw();
-    void setWidth( const qreal );
-    void setFeather( const qreal );
-    void setOpacity( const qreal );
-    void setPressure( const bool );
-    void setInvisibility( const bool );
-    void setPreserveAlpha( const bool );
-    void setFollowContour( const bool );
 
     void setCurveOpacity( int );
     void setCurveSmoothing( int );
@@ -192,9 +185,12 @@ signals:
     void toggleShowAllLayers();
     void escape();
 
-   void toggleMultiLayerOnionSkin(bool);
+    void toggleMultiLayerOnionSkin(bool);
 
     void togglePopupPalette();
+
+public slots:
+    void updateToolCursor();
 
 protected:
     void tabletEvent( QTabletEvent *event );
@@ -260,7 +256,7 @@ protected:
     qreal curveSmoothing;
     bool onionPrev, onionNext;
     bool onionBlue, onionRed;
-    bool multiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool m_isMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
 
     bool updateAll;

@@ -160,27 +160,30 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect( m_pScribbleArea, SIGNAL( pencilOn() ), m_pToolSet, SLOT( pencilOn() ) );
-    connect( m_pScribbleArea, SIGNAL( eraserOn() ), m_pToolSet, SLOT( eraserOn() ) );
-    connect( m_pScribbleArea, SIGNAL( selectOn() ), m_pToolSet, SLOT( selectOn() ) );
-    connect( m_pScribbleArea, SIGNAL( moveOn() ), m_pToolSet, SLOT( moveOn() ) );
-    connect( m_pScribbleArea, SIGNAL( penOn() ), m_pToolSet, SLOT( penOn() ) );
-    connect( m_pScribbleArea, SIGNAL( handOn() ), m_pToolSet, SLOT( handOn() ) );
-    connect( m_pScribbleArea, SIGNAL( polylineOn() ), m_pToolSet, SLOT( polylineOn() ) );
-    connect( m_pScribbleArea, SIGNAL( bucketOn() ), m_pToolSet, SLOT( bucketOn() ) );
-    connect( m_pScribbleArea, SIGNAL( eyedropperOn() ), m_pToolSet, SLOT( eyedropperOn() ) );
-    connect( m_pScribbleArea, SIGNAL( brushOn() ), m_pToolSet, SLOT( brushOn() ) );
-    connect( m_pScribbleArea, SIGNAL( smudgeOn() ), m_pToolSet, SLOT( smudgeOn() ) );
+    connect( toolManager(), &ToolManager::toolChanged, m_pScribbleArea, &ScribbleArea::setCurrentTool );
+    connect( toolManager(), &ToolManager::toolPropertyChanged, m_pScribbleArea, &ScribbleArea::updateToolCursor );
+
+    connect( m_pScribbleArea, &ScribbleArea::pencilOn, m_pToolSet, &ToolSetWidget::pencilOn );
+    connect( m_pScribbleArea, &ScribbleArea::eraserOn, m_pToolSet, &ToolSetWidget::eraserOn );
+    connect( m_pScribbleArea, &ScribbleArea::selectOn, m_pToolSet, &ToolSetWidget::selectOn );
+    connect( m_pScribbleArea, &ScribbleArea::moveOn, m_pToolSet, &ToolSetWidget::moveOn );
+    connect( m_pScribbleArea, &ScribbleArea::penOn, m_pToolSet, &ToolSetWidget::penOn );
+    connect( m_pScribbleArea, &ScribbleArea::handOn, m_pToolSet, &ToolSetWidget::handOn );
+    connect( m_pScribbleArea, &ScribbleArea::polylineOn, m_pToolSet, &ToolSetWidget::polylineOn );
+    connect( m_pScribbleArea, &ScribbleArea::bucketOn, m_pToolSet, &ToolSetWidget::bucketOn );
+    connect( m_pScribbleArea, &ScribbleArea::eyedropperOn, m_pToolSet, &ToolSetWidget::eyedropperOn );
+    connect( m_pScribbleArea, &ScribbleArea::brushOn, m_pToolSet, &ToolSetWidget::brushOn );
+    connect( m_pScribbleArea, &ScribbleArea::smudgeOn, m_pToolSet, &ToolSetWidget::smudgeOn );
 
     connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
     connect( this, &Editor::toggleMultiLayerOnionSkin, m_pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
 
-    connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( onionNextChanged( bool ) ), this, SIGNAL( onionNextChanged( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( multiLayerOnionSkin( bool ) ), this, SIGNAL( multiLayerOnionSkin( bool ) ) );
+    connect( m_pScribbleArea, &ScribbleArea::thinLinesChanged, this, &Editor::changeThinLinesButton );
+    connect( m_pScribbleArea, &ScribbleArea::outlinesChanged, this, &Editor::changeOutlinesButton );
+    connect( m_pScribbleArea, &ScribbleArea::onionPrevChanged, this, &Editor::onionPrevChanged );
+    connect( m_pScribbleArea, &ScribbleArea::onionNextChanged, this, &Editor::onionNextChanged );
+    //connect( m_pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
 
     connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
 
@@ -273,117 +276,6 @@ bool Editor::importMov()
         settings.setValue( "lastExportPath", QVariant( filePath ) );
         importMovie( filePath, fps );
         return true;
-    }
-}
-
-void Editor::setWidth( qreal width )
-{
-    //qDebug() << "editor setWdith" << width;
-    m_pScribbleArea->setWidth( width );
-    emit penWidthValueChange( width );
-}
-
-void Editor::setToolProperties( const Properties& p )
-{
-    qDebug() << "set tool properties";
-    setWidth( p.width );
-    setFeather( p.feather );
-    setPressure( p.pressure );
-    setPreserveAlpha( p.preserveAlpha );
-    setInvisibility( p.invisibility );
-}
-
-void Editor::applyWidth( qreal width )
-{
-    setWidth( width );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyWidthToSelection( width );
-}
-
-void Editor::setFeather( qreal feather )
-{
-    m_pScribbleArea->setFeather( feather );
-    emit penFeatherValueChange( feather );
-}
-
-void Editor::applyFeather( qreal feather )
-{
-    setFeather( feather );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyFeatherToSelection( feather );
-}
-
-void Editor::setInvisibility( int invisibility )
-{
-    if ( invisibility >= 0 )
-    {
-        m_pScribbleArea->setInvisibility( invisibility > 0 );
-    }
-    emit penInvisiblityValueChange( invisibility );
-}
-
-void Editor::applyInvisibility( bool invisibility )
-{
-    setInvisibility( invisibility );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR )
-    {
-        ( ( LayerVector* )layer )
-            ->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )
-            ->applyInvisibilityToSelection( invisibility );
-    }
-}
-
-void Editor::setPreserveAlpha( int preserveAlpha )
-{
-    if ( preserveAlpha >= 0 )
-    {
-        m_pScribbleArea->setPreserveAlpha( preserveAlpha > 0 );
-    }
-    emit penPreserveAlphaValueChange( preserveAlpha );
-}
-
-void Editor::applyPreserveAlpha( bool preserveAlpha )
-{
-    setPreserveAlpha( preserveAlpha );
-}
-
-void Editor::setFollowContour( int followContour )
-{
-    if ( followContour >= 0 )
-    {
-        m_pScribbleArea->setFollowContour( followContour > 0 );
-    }
-    emit penFollowContourValueChange( followContour );
-}
-
-void Editor::applyFollowContour( bool followContour )
-{
-    setFollowContour( followContour );
-}
-
-void Editor::setPressure( int pressure )
-{
-    if ( pressure >= 0 )
-    {
-        m_pScribbleArea->setPressure( pressure > 0 );
-    }
-    emit penPressureValueChange( pressure );
-}
-
-void Editor::applyPressure( bool pressure )
-{
-    setPressure( pressure );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR )
-    {
-        ( ( LayerVector* )layer )
-            ->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )
-            ->applyVariableWidthToSelection( pressure );
     }
 }
 

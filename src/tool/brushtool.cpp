@@ -28,7 +28,6 @@ void BrushTool::loadSettings()
 
     properties.width = settings.value("brushWidth").toDouble();
     properties.feather = settings.value("brushFeather").toDouble();
-    properties.opacity = 0.5;
 
     properties.pressure = ON;
     properties.invisibility = DISABLED;
@@ -190,7 +189,6 @@ void BrushTool::drawStroke()
                 lastBrushPoint = point;
             }
         }
-        //        }
 
         int rad = qRound(brushWidth) / 2 + 2;
         m_pScribbleArea->refreshBitmap(rect, rad);

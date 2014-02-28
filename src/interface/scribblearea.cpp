@@ -74,7 +74,7 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     somethingSelected = false;
 
     onionPrev = true;
-    multiLayerOnionSkin = true;
+    m_isMultiLayerOnionSkin = true;
     onionNext = false;
     m_showThinLines = false;
     m_showAllLayers = 1;
@@ -108,9 +108,6 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
 
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
     QPixmapCache::setCacheLimit( 30 * 2 * 1024 );
-    //setAutoFillBackground (false);
-    //setAttribute(Qt::WA_OpaquePaintEvent, false);
-    //setAttribute(Qt::WA_NoSystemBackground, true);
     updateAll = false;
 
     // color wheel popup
@@ -125,167 +122,9 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     useGridB = false;
 }
 
-/************************************************************************************/
-// properties setters
-
-void ScribbleArea::resetTools()
+void ScribbleArea::updateToolCursor()
 {
-   
-}
-
-void ScribbleArea::setWidth( const qreal newWidth )
-{
-    //qDebug() << "setWidth " << newWidth;
-    QSettings settings( "Pencil", "Pencil" );
-    if ( currentTool()->type() == PENCIL )
-    {
-        getTool( PENCIL )->properties.width = newWidth;
-        // update width of tool XXX
-        settings.setValue( "pencilWidth", newWidth );
-    }
-    else if ( currentTool()->type() == ERASER )
-    {
-        getTool( ERASER )->properties.width = newWidth;
-        settings.setValue( "eraserWidth", newWidth );
-    }
-    else if (currentTool()->type() == PEN)
-    {
-        getTool( PEN )->properties.width = newWidth;
-        settings.setValue( "penWidth", newWidth );
-    }
-    else if (currentTool()->type() == POLYLINE)
-    {
-        getTool( POLYLINE )->properties.width = newWidth;
-        settings.setValue("polyLineWidth", newWidth);
-    }
-    else if (currentTool()->type() == BRUSH)
-    {
-        getTool( BRUSH )->properties.width = newWidth;
-        settings.setValue( "brushWidth", newWidth );
-    }
-    else if ( currentTool()->type() == SMUDGE )
-    {
-        getTool( SMUDGE )->properties.width = newWidth;
-        settings.setValue( "smudgeWidth", newWidth );
-    }
-    updateAllFrames();
     setCursor( currentTool()->cursor() );
-    //qDebug() << "fn: setWidth " << "call: setCursor()" << "current tool" << currentTool()->typeName();
-}
-
-void ScribbleArea::setFeather( const qreal newFeather )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( currentTool()->type() == PENCIL )
-    {
-        getTool( PENCIL )->properties.feather = newFeather;
-        settings.setValue( "pencilFeather", newFeather );
-    }
-    else if ( currentTool()->type() == ERASER )
-    {
-        getTool( ERASER )->properties.feather = newFeather;
-        settings.setValue( "eraserFeather", newFeather );
-    }
-    else if ( currentTool()->type() == PEN || currentTool()->type() == POLYLINE )
-    {
-        getTool( PEN )->properties.feather = newFeather;
-        settings.setValue( "penFeather", newFeather );
-    }
-    else if ( currentTool()->type() == BRUSH )
-    {
-        getTool( BRUSH )->properties.feather = newFeather;
-        settings.setValue( "brushFeather", newFeather );
-    }
-    else if ( currentTool()->type() == SMUDGE )
-    {
-        getTool( SMUDGE )->properties.feather = newFeather;
-        settings.setValue( "smudgeFeather", newFeather );
-    }
-    updateAllFrames();
-    setCursor( currentTool()->cursor() );
-    //qDebug() << "fn: setFeather " << "call: setCursor()" << "current tool" << currentTool()->typeName();
-}
-
-void ScribbleArea::setOpacity( const qreal newOpacity )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( currentTool()->type() == PENCIL )
-    {
-        getTool( PENCIL )->properties.opacity = newOpacity;
-        settings.setValue( "pencilOpacity", newOpacity );
-    }
-    if ( currentTool()->type() == PEN || currentTool()->type() == POLYLINE )
-    {
-        getTool( PEN )->properties.opacity = newOpacity;
-        settings.setValue( "penOpacity", newOpacity );
-    }
-    if ( currentTool()->type() == BRUSH )
-    {
-        getTool( BRUSH )->properties.opacity = newOpacity;
-        settings.setValue( "brushOpacity", newOpacity );
-    }
-    //currentWidth = newWidth;
-    updateAllFrames();
-}
-
-void ScribbleArea::setInvisibility( const bool invisibility )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( currentTool()->type() == PENCIL )
-    {
-        getTool( PENCIL )->properties.invisibility = invisibility;
-        settings.setValue( "pencilOpacity", invisibility );
-    }
-    if ( currentTool()->type() == PEN || currentTool()->type() == POLYLINE )
-    {
-        getTool( PEN )->properties.invisibility = invisibility;
-        settings.setValue( "penOpacity", invisibility );
-    }
-    m_makeInvisible = invisibility;
-    updateAllFrames();
-}
-
-void ScribbleArea::setPressure( const bool pressure )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( currentTool()->type() == PENCIL )
-    {
-        getTool( PENCIL )->properties.pressure = pressure;
-        settings.setValue( "pencilOpacity", pressure );
-    }
-    if ( currentTool()->type() == PEN || currentTool()->type() == POLYLINE )
-    {
-        getTool( PEN )->properties.pressure = pressure;
-        settings.setValue( "penOpacity", pressure );
-    }
-    if ( currentTool()->type() == BRUSH )
-    {
-        getTool( BRUSH )->properties.pressure = pressure;
-        settings.setValue( "brushOpacity", pressure );
-    }
-    m_usePressure = pressure;
-    updateAllFrames();
-}
-
-void ScribbleArea::setPreserveAlpha( const bool preserveAlpha )
-{
-    if ( currentTool()->type() == PENCIL )
-    {
-        getTool( PENCIL )->properties.preserveAlpha = preserveAlpha;
-    }
-    if ( currentTool()->type() == PEN || currentTool()->type() == POLYLINE )
-    {
-        getTool( PEN )->properties.preserveAlpha = preserveAlpha;
-    }
-    if ( currentTool()->type() == BRUSH )
-    {
-        getTool( BRUSH )->properties.preserveAlpha = preserveAlpha;
-    }
-}
-
-void ScribbleArea::setFollowContour( const bool followContour )
-{
-    this->followContour = followContour;
 }
 
 void ScribbleArea::setCurveOpacity( int newOpacity )
@@ -396,9 +235,6 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
     }
     if ( brushName == "grid" )
     {
-        /*  QGraphicsScene* scene = new QGraphicsScene();
-        scene->setSceneRect(QRectF(0, 0, 500, 500));
-        scene->addPixmap(QPixmap(":background/grid.jpg"));*/
         brush.setTextureImage( QImage( ":background/grid.jpg" ) );
     }
     return brush;
@@ -509,8 +345,8 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
         qreal width = currentTool()->properties.width;
         qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
-        m_pEditor->setWidth( width + (200 - width) / 41 ); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-        m_pEditor->setFeather( feather ); //anticipates future implementation of feather (not used yet).
+        m_pEditor->toolManager()->setWidth( width + (200 - width) / 41 ); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        m_pEditor->toolManager()->setFeather( feather ); //anticipates future implementation of feather (not used yet).
         return;
     }
 
@@ -1276,7 +1112,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     // --- onionskins ---
     int iStart = 0;
     int iEnd = object->getLayerCount() - 1;
-    if ( !multiLayerOnionSkin ) { // not used ( if required, just make a connection from UI ) // is used now for Single/multiple onionskin Layers
+    if ( !m_isMultiLayerOnionSkin ) { // not used ( if required, just make a connection from UI ) // is used now for Single/multiple onionskin Layers
         iStart = iEnd = m_pEditor->layerManager()->currentLayerIndex();
     }
     for ( int i = iStart; i <= iEnd; i++ )
@@ -2089,10 +1925,10 @@ void ScribbleArea::displaySelectionProperties()
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if ( selectedCurve != -1 )
             {
-                m_pEditor->setWidth( vectorImage->curve[selectedCurve].getWidth() );
-                m_pEditor->setFeather( vectorImage->curve[selectedCurve].getFeather() );
-                m_pEditor->setInvisibility( vectorImage->curve[selectedCurve].isInvisible() );
-                m_pEditor->setPressure( vectorImage->curve[selectedCurve].getVariableWidth() );
+                m_pEditor->toolManager()->setWidth( vectorImage->curve[selectedCurve].getWidth() );
+                m_pEditor->toolManager()->setFeather( vectorImage->curve[ selectedCurve ].getFeather() );
+                m_pEditor->toolManager()->setInvisibility( vectorImage->curve[ selectedCurve ].isInvisible() );
+                m_pEditor->toolManager()->setPressure( vectorImage->curve[ selectedCurve ].getVariableWidth() );
                 m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[selectedCurve].getColourNumber() );
             }
 
@@ -2138,12 +1974,6 @@ void ScribbleArea::deselectAll()
     if ( layer->type() == Layer::VECTOR )
     {
         ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->deselectAll();
-        if ( currentTool()->type() == MOVE )
-        {
-            m_pEditor->setWidth( -1 );
-            m_pEditor->setInvisibility( -1 );
-            m_pEditor->setPressure( -1 );
-        }
     }
     somethingSelected = false;
     bufferImg->clear();
@@ -2171,9 +2001,9 @@ void ScribbleArea::toggleOnionPrev( bool checked )
 
 void ScribbleArea::toggleMultiLayerOnionSkin(bool checked)
 {
-    multiLayerOnionSkin = checked;
+    m_isMultiLayerOnionSkin = checked;
     updateAllFrames();
-    emit multiLayerOnionSkinChanged(multiLayerOnionSkin);
+    emit multiLayerOnionSkinChanged( m_isMultiLayerOnionSkin );
 }
 
 
@@ -2571,7 +2401,7 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
         if ( BaseTool::TypeName( eToolMode ) == "" )
         {
             // tool does not exist
-            Q_ASSERT_X( false, "", "" );
+            //Q_ASSERT_X( false, "", "" );
             return;
         }
 
@@ -2588,8 +2418,6 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
     }
 
     prevToolType = currentTool()->type();
-
-    getEditor()->toolManager()->setCurrentTool(eToolMode);
 
     // --- change cursor ---
     setCursor( currentTool()->cursor() );
