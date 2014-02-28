@@ -16,6 +16,7 @@ pencil-buildroot.i386
 
 Pencil.app
 *.pro.user
+*.pro.user.*
 ui_*
 
 # -- Visual Studio --
