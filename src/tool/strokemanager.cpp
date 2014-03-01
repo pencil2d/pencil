@@ -130,7 +130,7 @@ void StrokeManager::tabletEvent(QTabletEvent *event)
     if (event->type() == QEvent::TabletPress) { m_tabletInUse = true; }
     if (event->type() == QEvent::TabletRelease) { m_tabletInUse = false; }
 
-    m_tabletPosition = event->hiResGlobalPos();
+    m_tabletPosition = event->posF();
     setPressure(event->pressure());
 }
 

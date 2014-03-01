@@ -63,7 +63,7 @@ public:
     QList<Layer*> layer;
     QList<ColourRef> myPalette;
 
-    void paintImage(QPainter& painter, int frameNumber, bool background, qreal curveOpacity, bool antialiasing, int gradients);
+    void paintImage(QPainter& painter, int frameNumber, bool background, qreal curveOpacity, bool antialiasing );
 
     ColourRef getColour(int i);
     void setColour(int index, QColor newColour)
@@ -98,11 +98,11 @@ public:
 
     void defaultInitialisation();
 
-    bool exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress, int progressMax);
-    bool exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress, int progressMax, int fps, int exportFps);
+    bool exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax);
+    bool exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax, int fps, int exportFps);
     bool exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat);
-    bool exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing, int gradients);
-    bool exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing, int gradients);
+    bool exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing );
+    bool exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing );
     bool exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
 
 private:

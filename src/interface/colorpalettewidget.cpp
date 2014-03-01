@@ -16,6 +16,10 @@ GNU General Public License for more details.
 #include <QtDebug>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QVBoxLayout>
+#include <QInputDialog>
+#include <QColorDialog>
+
 #include "colourref.h"
 #include "object.h"
 #include "editor.h"
@@ -62,7 +66,6 @@ ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt:
 
     QWidget* paletteContent = new QWidget(this);
     paletteContent->setLayout(pLayout);
-    //paletteContent->setFixedWidth(180);  /// otherwise the palette is naturally too wide. Someone please fix this.
 
     setWidget(paletteContent);
 

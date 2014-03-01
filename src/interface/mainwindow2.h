@@ -10,7 +10,7 @@ class ScribbleArea;
 class Object;
 class ColorPaletteWidget;
 class DisplayOptionDockWidget;
-class ToolOptionDockWidget;
+class ToolOptionWidget;
 class TimeLine;
 class ToolSetWidget;
 class Preferences;
@@ -36,19 +36,19 @@ public:
     // Data Model
     Object* m_object;
 
-    // UI: central view
+    // Core controller
     Editor* editor;
 
     // UI: central Drawing Area
     ScribbleArea* m_pScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget* m_pColorWheelWidget;
-    ColorPaletteWidget* m_pColorPalette;
+    QDockWidget*             m_pColorWheelWidget;
+    ColorPaletteWidget*      m_pColorPalette;
     DisplayOptionDockWidget* m_pDisplayOptionWidget;
-    ToolOptionDockWidget*    m_pToolOptionWidget;
-    TimeLine* m_pTimeLine;
-    ToolSetWidget* m_pToolSet;
+    ToolOptionWidget*    m_pToolOptionWidget;
+    TimeLine*                m_pTimeLine;
+    ToolSetWidget*           m_pToolSet;
 
     // Other windows
     Preferences* m_pPreferences;
@@ -97,7 +97,6 @@ private:
     void makeColorPaletteConnections();
     void makeTimeLineConnections();
     void createMenus();
-    void addToMenu(QObject* plugin, const QString text, QMenu* menu, const char* member, QActionGroup* actionGroup = 0);
 
     void closeEvent(QCloseEvent*);
 

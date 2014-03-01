@@ -30,6 +30,11 @@ GNU General Public License for more details.
 #include "backupelement.h"
 #include "colorbox.h"
 
+
+//class QPrinter;
+class QComboBox;
+class QSlider;
+
 class MainWindow2;
 class ColorManager;
 class ToolManager;
@@ -50,7 +55,7 @@ public:
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
-
+    
     Object* m_pObject;  // the object to be edited by the editor
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
@@ -63,18 +68,16 @@ public:
     bool looping;
     bool loopControl;
     int loopStart;
-    int loopStarts;
     int loopEnd;
     int loopEnds;
     bool sound;
-    ToolSetWidget* toolSet;
 
+    ToolSetWidget* m_pToolSet;
     TimeLine* getTimeLine();
 
     Layer* getCurrentLayer( int incr );
     Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
     Layer* getLayer( int i );
-    bool isModified() { return modified; }
     int allLayers() { return m_pScribbleArea->showAllLayers(); }
     static QMatrix map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
@@ -101,10 +104,10 @@ signals:
     void toggleLoop( bool );
     void toggleLoopControl( bool ) ;
     void loopToggled( bool );
-    void toggleMultiLayerOnionSkin(bool);
+    void toggleMultiLayerOnionSkin( bool );
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
-    void multiLayerOnionSkinChanged(bool);
+    void multiLayerOnionSkinChanged( bool );
     void onionPrevChanged( bool );
     void onionNextChanged( bool );
     void changeThinLinesButton( bool );
@@ -113,20 +116,11 @@ signals:
     // Tool Option
     void changeTool( ToolType );
 
-    void penWidthValueChange( qreal );
-    void penFeatherValueChange( qreal );
-    void penInvisiblityValueChange( int );
-    void penPreserveAlphaValueChange( int );
-    void penPressureValueChange( int );
-    void penFollowContourValueChange( int );
-    void penColorValueChange( QColor );
-
     // save
     void needSave();
 
 public slots:
 
-    void setTool( ToolType );
     void clearCurrentFrame();
 
     void importImageSequence();
@@ -141,7 +135,7 @@ public slots:
     void gridview();
     void resetView();
 
-    void importImage();
+    void importImageFromDialog();
     void importImage( QString filePath );
     void importSound( QString filePath = "" );
     bool importMov();
@@ -172,11 +166,11 @@ public slots:
     void endPlay();
     void startPlay();
 
-    void addKey();
+    void addNewKey();
     void duplicateKey();
     void removeKey();
 
-    void printAndPreview( QPrinter* printer );
+    //void printAndPreview( QPrinter* printer );
     void resetUI();
 
     void updateObject();
@@ -186,19 +180,6 @@ public slots:
     void moveLayer( int i, int j );
     void updateMaxFrame();
 
-    void setToolProperties( const Properties& p );
-    void setWidth( qreal );
-    void applyWidth( qreal );
-    void setFeather( qreal );
-    void applyFeather( qreal );
-    void setInvisibility( int );
-    void applyInvisibility( bool );
-    void setPressure( int );
-    void applyPressure( bool );
-    void setPreserveAlpha( int );
-    void applyPreserveAlpha( bool );
-    void setFollowContour( int );
-    void applyFollowContour( bool );
     void selectAndApplyColour( int );
     void setFrontColour( int, QColor );
 
@@ -233,12 +214,8 @@ public slots:
     void toggleShowAllLayers();
     void resetMirror();
 
-    void print();
-    //void detachAllPalettes();
+    //void print();
     void restorePalettesSettings( bool, bool, bool );
-    void saveSvg();
-
-    private slots:
 
     bool exportX();
     bool exportImage();
@@ -246,10 +223,9 @@ public slots:
     bool exportMov();
     bool exportFlash();
 
+private slots:
     void saveLength( QString );
     void getCameraLayer();
-
-    //void on_actionLoopControl_triggered();  //possibly accidently put here by mainWindow_2.ui??
 
 private:
     ScribbleArea* m_pScribbleArea;
@@ -259,9 +235,7 @@ private:
     ToolManager* m_pToolManager;
     LayerManager* m_pLayerManager;
 
-    QString path;
     bool altpress;
-    bool modified;
     int numberOfModifications;
 
     bool autosave;

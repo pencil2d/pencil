@@ -85,7 +85,7 @@ public:
     qreal getTempViewScaleX() const { return myTempView.m11(); }
     qreal getViewScaleY() const { return myView.m22(); }
     qreal getTempViewScaleY() const { return myTempView.m22(); }
-    qreal getCentralViewScale() const { return (sqrt( centralView.det() )); }
+    qreal getCentralViewScale() const { return (sqrt( centralView.determinant())); }
 
     QMatrix getTransformationMatrix() const { return transMatrix; }
     void setTransformationMatrix( QMatrix matrix );
@@ -159,8 +159,6 @@ signals:
     void toggleGridA( bool );
     void toggleGridB( bool );
     void grid();
-    //void pressureSlot(int);
-    //void invisibleSlot(int);
 
     void resetView();
     void setMyView( QMatrix view );
@@ -170,19 +168,11 @@ signals:
     void zoom1();
     void rotatecw();
     void rotateacw();
-    void setWidth( const qreal );
-    void setFeather( const qreal );
-    void setOpacity( const qreal );
-    void setPressure( const bool );
-    void setInvisibility( const bool );
-    void setPreserveAlpha( const bool );
-    void setFollowContour( const bool );
 
     void setCurveOpacity( int );
     void setCurveSmoothing( int );
     void setHighResPosition( int );
     void setAntialiasing( int );
-    void setGradients( int );
     void setBackground( int );
     void setBackgroundBrush( QString );
     void setShadows( int );
@@ -195,9 +185,12 @@ signals:
     void toggleShowAllLayers();
     void escape();
 
-   void toggleMultiLayerOnionSkin(bool);
+    void toggleMultiLayerOnionSkin(bool);
 
     void togglePopupPalette();
+
+public slots:
+    void updateToolCursor();
 
 protected:
     void tabletEvent( QTabletEvent *event );
@@ -240,6 +233,7 @@ protected:
 
     MoveMode m_moveMode;
     ToolType prevMode;
+    ToolType prevToolType; // previous tool (except temporal)
 
     StrokeManager *m_strokeManager;
 
@@ -249,7 +243,7 @@ protected:
 
     int tabletEraserBackupToolMode;
     bool modified;
-    bool simplified;
+    bool m_isSimplified;
 
     bool m_showThinLines;
     int  m_showAllLayers;
@@ -258,12 +252,11 @@ protected:
     bool m_antialiasing;
     bool shadows;
     bool toolCursors;
-    int  gradients;
     qreal curveOpacity;
     qreal curveSmoothing;
     bool onionPrev, onionNext;
     bool onionBlue, onionRed;
-    bool multiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool m_isMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
 
     bool updateAll;

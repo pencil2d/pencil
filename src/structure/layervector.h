@@ -37,8 +37,8 @@ public:
     virtual void removeImageAtFrame(int frameNumber);
 
     void loadImageAtFrame(QString, int);
-    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool, int);
-    QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool, int);
+    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool );
+    QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool );
 
     bool saveImage(int, QString, int);
     void setView(QMatrix view);

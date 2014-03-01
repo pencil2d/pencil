@@ -113,7 +113,6 @@ bool Object::loadDomElement(QDomElement docElem, QString dataDirPath)
                     layerNumber++;
                     ((LayerCamera*)(getLayer(layerNumber)))->loadDomElement( element, dataDirPath );
                 }
-
             }
         }
         tag = tag.nextSibling();
@@ -438,7 +437,10 @@ void Object::loadDefaultPalette()
     addColour(  ColourRef(QColor(227,177,105), QString(tr("Dark Skin - shade")))  );
 }
 
-void Object::paintImage(QPainter& painter, int frameNumber, bool background, qreal curveOpacity, bool antialiasing, int gradients)
+void Object::paintImage(QPainter& painter, int frameNumber,
+						bool background,
+						qreal curveOpacity,
+						bool antialiasing )
 {
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
@@ -473,15 +475,23 @@ void Object::paintImage(QPainter& painter, int frameNumber, bool background, qre
             if (layer->type() == Layer::VECTOR)
             {
                 LayerVector* layerVector = (LayerVector*)layer;
-                layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter, false, false, curveOpacity, antialiasing, gradients);
+                layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter,
+																				   false,
+																				   false,
+																				   curveOpacity,
+																				   antialiasing);
             }
         }
     }
 }
 
-bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress=NULL, int progressMax=50)
+bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer,
+						  QSize exportSize, QString filePath,
+						  const char* format, int quality,
+						  bool background, bool antialiasing,
+						  QProgressDialog* progress=NULL,
+						  int progressMax=50)
 {
-
     QSettings settings("Pencil","Pencil");
     qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
 
@@ -525,7 +535,7 @@ bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         {
             painter.setWorldMatrix(view);
         }
-        paintImage(painter, currentFrame, background, curveOpacity, antialiasing, gradients);
+        paintImage(painter, currentFrame, background, curveOpacity, antialiasing);
 
         QString frameNumberString = QString::number(currentFrame);
         while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
@@ -555,9 +565,19 @@ void convertNFrames(int fps,int exportFps,int* frameRepeat,int* frameReminder,in
 
 
 
-bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, int gradients, QProgressDialog* progress, int progressMax, int fps, int exportFps)
+bool Object::exportFrames1(int frameStart, int frameEnd,
+						   QMatrix view,
+						   Layer* currentLayer,
+						   QSize exportSize,
+						   QString filePath,
+						   const char* format,
+						   int quality,
+						   bool background,
+						   bool antialiasing,
+						   QProgressDialog* progress,
+						   int progressMax,
+						   int fps, int exportFps)
 {
-
     int frameRepeat;
     int frameReminder, frameReminder1;
     int framePutEvery, framePutEvery1;
@@ -615,7 +635,7 @@ bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
         {
             painter.setWorldMatrix(view);
         }
-        paintImage(painter, currentFrame, background, curveOpacity, antialiasing, gradients);
+        paintImage(painter, currentFrame, background, curveOpacity, antialiasing);
 
         frameNumber++;
         framePerSecond++;
@@ -669,7 +689,7 @@ bool Object::exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* cu
 
 
 
-bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
+bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing)
 {
     QSettings settings("Pencil","Pencil");
     qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
@@ -689,7 +709,7 @@ bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
             QMatrix thumbView = view * Editor::map(source, target);
             xPainter.setWorldMatrix( thumbView );
             xPainter.setClipRegion( thumbView.inverted().map( QRegion(target) ) );
-            paintImage(xPainter, i, false, curveOpacity, antialiasing, gradients);
+            paintImage(xPainter, i, false, curveOpacity, antialiasing);
             xPainter.resetMatrix();
             xPainter.setClipping(false);
             xPainter.setPen( Qt::black );
@@ -712,7 +732,7 @@ bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
     return true;
 }
 
-bool Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing, int gradients)
+bool Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing)
 {
     Q_UNUSED(frameEnd);
     QSettings settings("Pencil","Pencil");
@@ -721,7 +741,7 @@ bool Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSi
     QPainter painter(&exported);
     painter.fillRect(exported.rect(), Qt::white);
     painter.setWorldMatrix(view);
-    paintImage(painter, frameStart, false, curveOpacity, antialiasing, gradients);
+    paintImage(painter, frameStart, false, curveOpacity, antialiasing);
     return exported.save(filePath);
 }
 

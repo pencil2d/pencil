@@ -17,8 +17,7 @@ GNU General Public License for more details.
 #include <math.h>
 #include "vectorimage.h"
 #include "object.h"
-#include "gradient.h"
-//#include "beziercurve.h"
+
 
 VectorImage::VectorImage()
 {
@@ -752,7 +751,6 @@ void VectorImage::removeVertex(int i, int m)   // curve number i and vertex numb
         removeCurveAt(i);
         i--;
     }
-
 }
 
 void VectorImage::deleteSelectedPoints()
@@ -864,7 +862,9 @@ void VectorImage::removeColour(int index)
     }
 }
 
-void VectorImage::paintImage(QPainter& painter, bool simplified, bool showThinCurves, qreal curveOpacity, bool antialiasing, int gradients)
+void VectorImage::paintImage(QPainter& painter,
+							 bool simplified, bool showThinCurves,
+							 qreal curveOpacity, bool antialiasing)
 {
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
     painter.setClipping(false);
@@ -884,55 +884,22 @@ void VectorImage::paintImage(QPainter& painter, bool simplified, bool showThinCu
 
             // --- fill areas ---- //
 
-            /*buffer = false;
-            if (buffer) {
-                    rect = painterMatrix.mapRect( area[i].path.controlPointRect().adjusted(-gradientWidth,-gradientWidth,gradientWidth,gradientWidth) ).toRect();
-                    rect = rect.intersected( mappedViewRect );
-                    bufferImage = new QImage(rect.size(), QImage::Format_ARGB32_Premultiplied );
-                    if (!bufferImage->isNull()) {
-                        bufferImage->fill(qRgba(0,0,0,0));
-                        painter2.begin(bufferImage);
-                        painter2.setCompositionMode(QPainter::CompositionMode_Source);
-                        painter2.setRenderHint(QPainter::Antialiasing, false);
-                        painter2Matrix = painterMatrix;
-                        painter2.setWorldMatrix( painter2Matrix.translate( -rect.left()/scale, -rect.top()/scale ) );
-                    }
-            }*/
 
             QColor colour = getColour(area[i].colourNumber);
-            //if (buffer) painter2.fillPath( area[i].path, colour );
-            //else
 
-            // ---- smooth edge ---- //
-            //int method = 0;
-            //if (method == 1) Gradient::paint1(painter, this, i, gradients);
-            //if (method == 2) Gradient::paint2(painter, this, i, gradients);
-
-            if (gradients == 2) Gradient::paint3(painter, this, i, gradients);
-            if (gradients >= 3) Gradient::paint5(painter, this, i, gradients);
-            if (gradients <= 1)
-            {
-                painter.setClipRect( viewRect );
-                painter.setClipping(true);
-                painter.fillPath( area[i].path, colour );
-            }
             if (area[i].isSelected())
             {
-                //QBrush brush = painter.brush();
                 painter.save();
                 painter.setWorldMatrixEnabled(false);
 
                 painter.setBrush( QBrush( QColor(255-colour.red(),255-colour.green(),255-colour.blue()), Qt::Dense6Pattern) );
-                //painter.setCompositionMode( QPainter::CompositionMode_Screen );
                 painter.drawPath( painter.worldMatrix().map( area[i].path ) );
-                //painter.setBrush( brush );
                 painter.restore();
                 painter.setWorldMatrixEnabled(true);
             }
             // --
             painter.setRenderHint(QPainter::Antialiasing, antialiasing);
             painter.setClipping(false);
-
         }
     }
 
@@ -948,18 +915,20 @@ void VectorImage::paintImage(QPainter& painter, bool simplified, bool showThinCu
     painter.setClipping(false);
 }
 
-void VectorImage::outputImage(QImage* image, QSize size, QMatrix myView, bool simplified, bool showThinCurves, qreal curveOpacity, bool antialiasing, int gradients)
+void VectorImage::outputImage(QImage* image,
+							  QSize size,
+							  QMatrix myView,
+							  bool simplified, bool showThinCurves,
+							  qreal curveOpacity,
+							  bool antialiasing)
 {
     Q_UNUSED(size);
-    //if ( image->size() != size) {
-    //	delete image;
-    //	image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
-    //}
-    image->fill(qRgba(0,0,0,0));
+
+	image->fill(qRgba(0,0,0,0));
     QPainter painter(image);
     painter.setWorldMatrix(myView);
     //painter.setClipRegion( QRegion( myView.inverted().mapToPolygon(  QRect(40, 40, size.width()-80, size.height()-80) ) ) );
-    paintImage(painter, simplified, showThinCurves, curveOpacity, antialiasing, gradients);
+    paintImage(painter, simplified, showThinCurves, curveOpacity, antialiasing );
 }
 
 void VectorImage::clear()
@@ -1460,4 +1429,3 @@ qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)
     qreal dist = BezierCurve::eLength(getVertex(r1)-getVertex(r2));
     return dist;
 }
-

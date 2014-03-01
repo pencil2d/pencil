@@ -21,7 +21,6 @@ class Properties
 public:
     qreal width;
     qreal feather;
-    qreal opacity;
     int pressure;
     int invisibility;
     int preserveAlpha;
@@ -60,7 +59,7 @@ public:
     // dynamic cursor adjustment
     virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
     virtual void stopAdjusting();
-    virtual void adjustCursor(qreal argOffsetX);
+    virtual void adjustCursor(qreal argOffsetX, qreal argOffsetY);
 
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 

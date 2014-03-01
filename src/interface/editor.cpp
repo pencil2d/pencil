@@ -14,12 +14,22 @@ GNU General Public License for more details.
 
 */
 #include <iostream>
+
+#include <QApplication>
+#include <QClipboard>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QTimer>
 #include <QSvgGenerator>
 #include <QMessageBox>
 #include <QImageReader>
+// #include <QPrinter>
+#include <QComboBox>
+#include <QSlider>
+#include <QFileDialog>
+#include <QInputDialog>
+#include <QGroupBox>
+#include <QDialogButtonBox>
 
 #include "editor.h"
 #include "layerbitmap.h"
@@ -51,7 +61,6 @@ Editor::Editor( MainWindow2* parent )
     m_pLayerManager->setObject( object() );
 
     altpress = false;
-    modified = false;
     numberOfModifications = 0;
     autosave = settings.value( "autosave" ).toBool();
     autosaveNumber = settings.value( "autosaveNumber" ).toInt();
@@ -86,7 +95,7 @@ Editor::Editor( MainWindow2* parent )
     looping = false;
     loopControl = false;
     loopStart = 1;
-    loopEnd =2;
+    loopEnd = 2;
     sound = true;
 
     layerManager()->setCurrentFrameIndex( 1 );
@@ -111,7 +120,7 @@ Editor::Editor( MainWindow2* parent )
     m_pScribbleArea = new ScribbleArea( this, this );
     m_pToolManager = new ToolManager( this, this, m_pScribbleArea );
 
-    toolSet = new ToolSetWidget( tr( "Tools" ), this );
+    m_pToolSet = new ToolSetWidget( tr( "Tools" ), this );
 
     mainLayout->addWidget( m_pScribbleArea );
     mainLayout->setMargin( 0 );
@@ -129,7 +138,7 @@ Editor::Editor( MainWindow2* parent )
     qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
     qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
 
-    setTool( PENCIL );
+    toolManager()->setCurrentTool( PENCIL );
 
     setAcceptDrops( true );
 }
@@ -151,26 +160,30 @@ Editor::~Editor()
 
 void Editor::makeConnections()
 {
-    connect( m_pScribbleArea, SIGNAL( pencilOn() ), toolSet, SLOT( pencilOn() ) );
-    connect( m_pScribbleArea, SIGNAL( eraserOn() ), toolSet, SLOT( eraserOn() ) );
-    connect( m_pScribbleArea, SIGNAL( selectOn() ), toolSet, SLOT( selectOn() ) );
-    connect( m_pScribbleArea, SIGNAL( moveOn() ), toolSet, SLOT( moveOn() ) );
-    connect( m_pScribbleArea, SIGNAL( penOn() ), toolSet, SLOT( penOn() ) );
-    connect( m_pScribbleArea, SIGNAL( handOn() ), toolSet, SLOT( handOn() ) );
-    connect( m_pScribbleArea, SIGNAL( polylineOn() ), toolSet, SLOT( polylineOn() ) );
-    connect( m_pScribbleArea, SIGNAL( bucketOn() ), toolSet, SLOT( bucketOn() ) );
-    connect( m_pScribbleArea, SIGNAL( eyedropperOn() ), toolSet, SLOT( eyedropperOn() ) );
-    connect( m_pScribbleArea, SIGNAL( brushOn() ), toolSet, SLOT( brushOn() ) );
-    connect( m_pScribbleArea, SIGNAL( smudgeOn() ), toolSet, SLOT( smudgeOn() ) );
+    connect( toolManager(), &ToolManager::toolChanged, m_pScribbleArea, &ScribbleArea::setCurrentTool );
+    connect( toolManager(), &ToolManager::toolPropertyChanged, m_pScribbleArea, &ScribbleArea::updateToolCursor );
 
-    connect( this, SIGNAL( toggleOnionPrev( bool ) ), m_pScribbleArea, SLOT( toggleOnionPrev( bool ) ) );
-    connect( this, SIGNAL( toggleOnionNext( bool ) ), m_pScribbleArea, SLOT( toggleOnionNext( bool ) ) );
-    connect( this, SIGNAL( toggleMultiLayerOnionSkin( bool)), m_pScribbleArea, SLOT(toggleMultiLayerOnionSkin(bool )) );
-    connect( m_pScribbleArea, SIGNAL( thinLinesChanged( bool ) ), this, SIGNAL( changeThinLinesButton( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( outlinesChanged( bool ) ), this, SIGNAL( changeOutlinesButton( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( onionPrevChanged( bool ) ), this, SIGNAL( onionPrevChanged( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( onionNextChanged( bool ) ), this, SIGNAL( onionNextChanged( bool ) ) );
-    connect( m_pScribbleArea, SIGNAL( multiLayerOnionSkin( bool ) ), this, SIGNAL( multiLayerOnionSkin( bool ) ) );
+    connect( m_pScribbleArea, &ScribbleArea::pencilOn, m_pToolSet, &ToolSetWidget::pencilOn );
+    connect( m_pScribbleArea, &ScribbleArea::eraserOn, m_pToolSet, &ToolSetWidget::eraserOn );
+    connect( m_pScribbleArea, &ScribbleArea::selectOn, m_pToolSet, &ToolSetWidget::selectOn );
+    connect( m_pScribbleArea, &ScribbleArea::moveOn, m_pToolSet, &ToolSetWidget::moveOn );
+    connect( m_pScribbleArea, &ScribbleArea::penOn, m_pToolSet, &ToolSetWidget::penOn );
+    connect( m_pScribbleArea, &ScribbleArea::handOn, m_pToolSet, &ToolSetWidget::handOn );
+    connect( m_pScribbleArea, &ScribbleArea::polylineOn, m_pToolSet, &ToolSetWidget::polylineOn );
+    connect( m_pScribbleArea, &ScribbleArea::bucketOn, m_pToolSet, &ToolSetWidget::bucketOn );
+    connect( m_pScribbleArea, &ScribbleArea::eyedropperOn, m_pToolSet, &ToolSetWidget::eyedropperOn );
+    connect( m_pScribbleArea, &ScribbleArea::brushOn, m_pToolSet, &ToolSetWidget::brushOn );
+    connect( m_pScribbleArea, &ScribbleArea::smudgeOn, m_pToolSet, &ToolSetWidget::smudgeOn );
+
+    connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
+    connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
+    connect( this, &Editor::toggleMultiLayerOnionSkin, m_pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
+
+    connect( m_pScribbleArea, &ScribbleArea::thinLinesChanged, this, &Editor::changeThinLinesButton );
+    connect( m_pScribbleArea, &ScribbleArea::outlinesChanged, this, &Editor::changeOutlinesButton );
+    connect( m_pScribbleArea, &ScribbleArea::onionPrevChanged, this, &Editor::onionPrevChanged );
+    connect( m_pScribbleArea, &ScribbleArea::onionNextChanged, this, &Editor::onionNextChanged );
+    //connect( m_pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
 
     connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
 
@@ -266,117 +279,6 @@ bool Editor::importMov()
     }
 }
 
-void Editor::setWidth( qreal width )
-{
-    //qDebug() << "editor setWdith" << width;
-    m_pScribbleArea->setWidth( width );
-    emit penWidthValueChange( width );
-}
-
-void Editor::setToolProperties( const Properties& p )
-{
-    qDebug() << "set tool properties";
-    setWidth( p.width );
-    setFeather( p.feather );
-    setPressure( p.pressure );
-    setPreserveAlpha( p.preserveAlpha );
-    setInvisibility( p.invisibility );
-}
-
-void Editor::applyWidth( qreal width )
-{
-    setWidth( width );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyWidthToSelection( width );
-}
-
-void Editor::setFeather( qreal feather )
-{
-    m_pScribbleArea->setFeather( feather );
-    emit penFeatherValueChange( feather );
-}
-
-void Editor::applyFeather( qreal feather )
-{
-    setFeather( feather );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyFeatherToSelection( feather );
-}
-
-void Editor::setInvisibility( int invisibility )
-{
-    if ( invisibility >= 0 )
-    {
-        m_pScribbleArea->setInvisibility( invisibility > 0 );
-    }
-    emit penInvisiblityValueChange( invisibility );
-}
-
-void Editor::applyInvisibility( bool invisibility )
-{
-    setInvisibility( invisibility );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR )
-    {
-        ( ( LayerVector* )layer )
-            ->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )
-            ->applyInvisibilityToSelection( invisibility );
-    }
-}
-
-void Editor::setPreserveAlpha( int preserveAlpha )
-{
-    if ( preserveAlpha >= 0 )
-    {
-        m_pScribbleArea->setPreserveAlpha( preserveAlpha > 0 );
-    }
-    emit penPreserveAlphaValueChange( preserveAlpha );
-}
-
-void Editor::applyPreserveAlpha( bool preserveAlpha )
-{
-    setPreserveAlpha( preserveAlpha );
-}
-
-void Editor::setFollowContour( int followContour )
-{
-    if ( followContour >= 0 )
-    {
-        m_pScribbleArea->setFollowContour( followContour > 0 );
-    }
-    emit penFollowContourValueChange( followContour );
-}
-
-void Editor::applyFollowContour( bool followContour )
-{
-    setFollowContour( followContour );
-}
-
-void Editor::setPressure( int pressure )
-{
-    if ( pressure >= 0 )
-    {
-        m_pScribbleArea->setPressure( pressure > 0 );
-    }
-    emit penPressureValueChange( pressure );
-}
-
-void Editor::applyPressure( bool pressure )
-{
-    setPressure( pressure );
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL ) return;
-    if ( layer->type() == Layer::VECTOR )
-    {
-        ( ( LayerVector* )layer )
-            ->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )
-            ->applyVariableWidthToSelection( pressure );
-    }
-}
-
 void Editor::selectAndApplyColour( int i )
 {
     Layer* layer = getCurrentLayer();
@@ -457,12 +359,16 @@ void Editor::modification()
 
 void Editor::modification( int layerNumber )
 {
-    modified = true;
-    if ( m_pObject != NULL ) m_pObject->modification();
+    if ( m_pObject != NULL )
+    {
+        m_pObject->modification();
+    }
     lastModifiedFrame = layerManager()->currentFrameIndex();
     lastModifiedLayer = layerNumber;
+
     m_pScribbleArea->update();
     getTimeLine()->updateContent();
+
     numberOfModifications++;
     if ( autosave && numberOfModifications > autosaveNumber )
     {
@@ -679,7 +585,7 @@ void Editor::paste()
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP && clipboardBitmapImage.image != NULL )   // clipboardBitmapOk
+        if ( layer->type() == Layer::BITMAP && clipboardBitmapImage.image != NULL )
         {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = clipboardBitmapImage.copy();
@@ -696,8 +602,6 @@ void Editor::paste()
                     tobePasted.transform( selection, true );
                 }
             }
-            ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->paste( &tobePasted ); // paste the clipboard
-            // setTool( MOVE );
         }
         if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
         {
@@ -707,7 +611,6 @@ void Editor::paste()
             vectorImage->paste( clipboardVectorImage );  // paste the clipboard
             m_pScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
-            // setTool( MOVE );
         }
     }
     m_pScribbleArea->updateFrame();
@@ -874,7 +777,7 @@ void Editor::setObject( Object* newObject )
     }
     m_pObject = newObject;
 
-    layerManager( )->setObject( m_pObject );
+    layerManager()->setObject( m_pObject );
 
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
@@ -1087,7 +990,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     view = m_pScribbleArea->getView() * view;
 
     updateMaxFrame();
-    m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, 2, NULL, 0 );
+    m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
@@ -1097,7 +1000,7 @@ bool Editor::exportSeq()
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
-        QString	initialPath = QDir::homePath() + "/untitled";
+        QString initialPath = QDir::homePath() + "/untitled";
     }
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Save Image Sequence" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     if ( filePath.isEmpty() )
@@ -1121,7 +1024,7 @@ bool Editor::exportSeq()
 
         QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
         updateMaxFrame();
-        m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, 2, NULL, 0 );
+        m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
         return true;
     }
 }
@@ -1146,7 +1049,7 @@ bool Editor::exportX()
         view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
-        if ( !m_pObject->exportX( 1, maxFrame, view, exportSize, filePath, true, 2 ) ) {
+        if ( !m_pObject->exportX( 1, maxFrame, view, exportSize, filePath, true ) ) {
             QMessageBox::warning( this, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
@@ -1188,7 +1091,7 @@ bool Editor::exportImage()
         view = m_pScribbleArea->getView() * view;
 
         updateMaxFrame();
-        if ( !m_pObject->exportIm( layerManager()->currentFrameIndex(), maxFrame, view, exportSize, filePath, true, 2 ) ) {
+        if ( !m_pObject->exportIm( layerManager()->currentFrameIndex(), maxFrame, view, exportSize, filePath, true ) ) {
             QMessageBox::warning( this, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
@@ -1235,7 +1138,7 @@ bool Editor::exportFlash()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.swf";
-    //	QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
+    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "SWF (*.swf)" ) );
     if ( filePath.isEmpty() )
     {
@@ -1260,7 +1163,7 @@ bool Editor::exportFlash()
     }
 }
 
-void Editor::importImage()
+void Editor::importImageFromDialog()
 {
     importImage( "fromDialog" );
 }
@@ -1272,6 +1175,7 @@ void Editor::importImage( QString filePath )
     {
         return;
     }
+
     if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
     {
         // create a new Bitmap layer ?
@@ -1301,10 +1205,9 @@ void Editor::importImage( QString filePath )
         if ( layer->type() == Layer::BITMAP )
         {
             QImageReader* importedImageReader = new QImageReader( filePath );
-            QImage* importedImage;
             QImage importedIm = importedImageReader->read();
 
-            importedImage = &importedIm;
+            QImage* importedImage = &importedIm;
 
             int numImages = importedImageReader->imageCount();
             int timeLeft = importedImageReader->nextImageDelay();
@@ -1316,7 +1219,7 @@ void Editor::importImage( QString filePath )
                     BitmapImage* bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( layerManager()->currentFrameIndex() );
                     if ( bitmapImage == NULL )
                     {
-                        addKey();
+                        addNewKey();
                         bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( layerManager()->currentFrameIndex() );
                     }
 
@@ -1362,7 +1265,11 @@ void Editor::importImage( QString filePath )
         if ( layer->type() == Layer::VECTOR )
         {
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() );
-            if ( vectorImage == NULL ) { addKey(); vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() ); }
+            if ( vectorImage == NULL )
+            {
+                addNewKey();
+                vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( layerManager()->currentFrameIndex() );
+            }
             VectorImage* importedVectorImage = new VectorImage( NULL );
             bool ok = importedVectorImage->read( filePath );
             if ( ok )
@@ -1498,7 +1405,7 @@ void Editor::nextLayer()
     m_pScribbleArea->updateAllFrames();
 }
 
-void Editor::addKey()
+void Editor::addNewKey()
 {
     addKey( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
 }
@@ -1513,7 +1420,7 @@ void Editor::duplicateKey()
             m_pScribbleArea->selectAll();
             clipboardVectorOk = true;
             clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
-            addKey();
+            addNewKey();
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
             vectorImage->paste( clipboardVectorImage ); // paste the clipboard
             m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
@@ -1523,7 +1430,7 @@ void Editor::duplicateKey()
         {
             m_pScribbleArea->selectAll();
             copy();
-            addKey();
+            addNewKey();
             paste();
         }
     }
@@ -1535,6 +1442,7 @@ void Editor::addKey( int layerNumber, int frameIndex )
     if ( layer == NULL )
     {
         return;
+
     }
 
     bool isOK = false;
@@ -1581,14 +1489,13 @@ void Editor::removeKey()
 }
 
 void Editor::play()
-
 {
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
     updateMaxFrame();
     if ( layerManager()->currentLayerIndex() == loopEnds )
     {
-        if (loopControl)
+        if ( loopControl )
         {
             scrubTo( loopStarts );
         }
@@ -1597,7 +1504,7 @@ void Editor::play()
     {
         if ( loopControl )
         {
-            scrubTo(  loopStarts );
+            scrubTo( loopStarts );
         }
         else
         {
@@ -1711,11 +1618,11 @@ void Editor::playNextFrame()
     updateMaxFrame();
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
-    if ( layerManager()->currentLayerIndex() == loopEnds)
+    if ( layerManager()->currentLayerIndex() == loopEnds )
     {
-        if (loopControl)
+        if ( loopControl )
         {
-            scrubTo( loopStarts);
+            scrubTo( loopStarts );
         }
     }
     if ( layerManager()->currentFrameIndex() < maxFrame )
@@ -1768,12 +1675,12 @@ void Editor::setLoopControl( bool checked )
     loopControl = checked;
 }
 
-void Editor::changeLoopStart(int x)
+void Editor::changeLoopStart( int x )
 {
     loopStart = x;
 }
 
-void Editor::changeLoopEnd(int x)
+void Editor::changeLoopEnd( int x )
 {
     loopEnd = x;
 }
@@ -1856,7 +1763,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         timelinePalette->show();
     }
 
-    QDockWidget* toolWidget = toolSet;
+    QDockWidget* toolWidget = m_pToolSet;
     if ( toolWidget != NULL )
     {
         QPoint pos = settings.value( "drawPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1926,75 +1833,77 @@ void Editor::gridview()
     msgBox.setText( "Would you like to add a camera layer?" );
     msgBox.exec();
 }
-
+/*
 void Editor::print()
 {
-    QPrinter printer( QPrinter::HighResolution );
-    //printer.setOrientation(QPrinter::Landscape);
-    //printer.setFullPage(false);
-    //printer->setPaperSize(QPrinter::A4);
+QPrinter printer( QPrinter::HighResolution );
+//printer.setOrientation(QPrinter::Landscape);
+//printer.setFullPage(false);
+//printer->setPaperSize(QPrinter::A4);
 
-    QPrintPreviewDialog printPreviewDialog( &printer, this );
-    connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
-    if ( printPreviewDialog.exec() == QDialog::Accepted )
-    {
-        if ( !printer.isValid() )
-        {
-            QMessageBox msg;
-            msg.setText( "An invalid printer was selected. The print job will now abort." );
-            msg.setIcon( QMessageBox::Warning );
-            msg.exec();
-            return;
-        }
-
-        printAndPreview( &printer );
-    }
+QPrintPreviewDialog printPreviewDialog( &printer, this );
+connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
+if ( printPreviewDialog.exec() == QDialog::Accepted )
+{
+if ( !printer.isValid() )
+{
+QMessageBox msg;
+msg.setText( "An invalid printer was selected. The print job will now abort." );
+msg.setIcon( QMessageBox::Warning );
+msg.exec();
+return;
 }
 
+//printAndPreview( &printer );
+}
+}
+*/
+/*
 void Editor::printAndPreview( QPrinter* printer )
 {
-    QRect exportRect = m_pScribbleArea->rect();
-    QSize exportSize = exportRect.size();
-    if ( printer->outputFileName() != "" )
-    {
-        QPrinter pdfPrinter( QPrinter::ScreenResolution );
-        pdfPrinter.setOutputFileName( printer->outputFileName() );
-        pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
-        pdfPrinter.setOrientation( printer->orientation() );
-        QPainter painter( &pdfPrinter );
-        painter.setRenderHint( QPainter::HighQualityAntialiasing );
-        QRect pageRect = pdfPrinter.pageRect();
-        pageRect.moveTo( 0, 0 );
-        qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
-        qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
-        if ( exportSize.width() >= exportSize.height() )
-        {
-            // landscape
-        }
-        else
-        {
-            // portrait
-        }
-        //exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
-        //exportRect.setSize(exportSize);
-        painter.setViewport( pageRect );
-        painter.setWindow( exportRect );
-        m_pScribbleArea->render( &painter );
-        painter.end();
-    }
-    else
-    {
-        QRect pageRect = printer->pageRect();
-        pageRect.moveTo( 0, 0 );
-        exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
-        exportRect.setSize( exportSize );
-        QPainter painter( printer );
-        painter.setViewport( pageRect );
-        painter.setWindow( exportRect );
-        m_pScribbleArea->render( &painter );
-        painter.end();
-    }
+QRect exportRect = m_pScribbleArea->rect();
+QSize exportSize = exportRect.size();
+if ( printer->outputFileName() != "" )
+{
+QPrinter pdfPrinter( QPrinter::ScreenResolution );
+pdfPrinter.setOutputFileName( printer->outputFileName() );
+pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
+pdfPrinter.setOrientation( printer->orientation() );
+QPainter painter( &pdfPrinter );
+painter.setRenderHint( QPainter::HighQualityAntialiasing );
+QRect pageRect = pdfPrinter.pageRect();
+pageRect.moveTo( 0, 0 );
+qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
+qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
+if ( exportSize.width() >= exportSize.height() )
+{
+// landscape
 }
+else
+{
+// portrait
+}
+//exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
+//exportRect.setSize(exportSize);
+painter.setViewport( pageRect );
+painter.setWindow( exportRect );
+m_pScribbleArea->render( &painter );
+painter.end();
+}
+else
+{
+QRect pageRect = printer->pageRect();
+pageRect.moveTo( 0, 0 );
+exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
+exportRect.setSize( exportSize );
+QPainter painter( printer );
+painter.setViewport( pageRect );
+painter.setWindow( exportRect );
+m_pScribbleArea->render( &painter );
+painter.end();
+}
+}
+*/
 
 void Editor::getCameraLayer()
 {
@@ -2026,51 +1935,18 @@ void Editor::startPlay()
     scrubTo( layerManager()->firstKeyFrameIndex() );
 }
 
-void Editor::saveSvg()
-{
-    QString newPath = QFileDialog::getSaveFileName( this, tr( "Save SVG" ),
-                                                    path, tr( "SVG files (*.svg)" ) );
-
-    if ( newPath.isEmpty() )
-        return;
-
-    path = newPath;
-
-    QSvgGenerator generator;
-    generator.setFileName( path );
-    generator.setSize( QSize( 700, 500 ) );
-    generator.setViewBox( QRect( 0, 0, 700, 500 ) );
-    generator.setTitle( tr( "SVG Generator Example Drawing" ) );
-    generator.setDescription( tr( "An SVG drawing created by the SVG Generator "
-        "Example provided with Qt." ) );
-
-    QPainter painter;
-    painter.begin( &generator );
-    Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-    if ( layer != NULL )
-    {
-        if ( layer->type() == Layer::VECTOR )
-        {
-            m_pScribbleArea->selectAll();
-            //VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame, 0);
-            m_pScribbleArea->render( &painter );
-        }
-    }
-    painter.end();
-}
-
 void Editor::resetView()
 {
     getScribbleArea()->resetView();
 }
-
+/*
 void Editor::setTool( ToolType toolType )
 {
-    getScribbleArea()->setCurrentTool( toolType );
+getScribbleArea()->setCurrentTool( toolType );
 
-    emit changeTool( toolType );
+emit changeTool( toolType );
 }
-
+*/
 Layer* Editor::getCurrentLayer( int incr )
 {
     return layerManager()->currentLayer( incr );

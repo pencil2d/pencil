@@ -17,7 +17,6 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/graphics/vector/bezierarea.h \
     $$PWD/graphics/vector/beziercurve.h \
     $$PWD/graphics/vector/colourref.h \
-    $$PWD/graphics/vector/gradient.h \
     $$PWD/graphics/vector/vectorimage.h \
     $$PWD/graphics/vector/vertexref.h \
     $$PWD/structure/layer.h \
@@ -77,14 +76,13 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/managers/toolmanager.h \
     $$PWD/managers/layermanager.h \
     $$PWD/util/pencilerror.h
-    
+
 
 SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/graphics/bitmap/bitmapimage.cpp \
     $$PWD/graphics/vector/bezierarea.cpp \
     $$PWD/graphics/vector/beziercurve.cpp \
     $$PWD/graphics/vector/colourref.cpp \
-    $$PWD/graphics/vector/gradient.cpp \
     $$PWD/graphics/vector/vectorimage.cpp \
     $$PWD/graphics/vector/vertexref.cpp \
     $$PWD/structure/layer.cpp \
