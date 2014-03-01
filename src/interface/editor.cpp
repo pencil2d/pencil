@@ -650,6 +650,20 @@ void Editor::croptoselect()
 	//paste();
 }
 
+void Editor::flipX()
+{
+    m_pScribbleArea->setCurrentTool(MOVE);
+    m_pScribbleArea->switchTool(MOVE);
+    m_pScribbleArea->myFlipX = -m_pScribbleArea->myFlipX;
+}
+
+void Editor::flipY()
+{
+    m_pScribbleArea->setCurrentTool(MOVE);
+    m_pScribbleArea->switchTool(MOVE);
+    m_pScribbleArea->myFlipY = -m_pScribbleArea->myFlipY;
+}
+
 void Editor::copy()
 {
 	Layer* layer = object->getLayer( m_nCurrentLayerIndex );

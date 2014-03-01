@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>18</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -68,6 +68,13 @@
     <property name="title">
      <string>Edit</string>
     </property>
+    <widget class="QMenu" name="menuSelection">
+     <property name="title">
+      <string>Selection</string>
+     </property>
+     <addaction name="actionFlip_X"/>
+     <addaction name="actionFlip_Y"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -78,6 +85,7 @@
     <addaction name="separator"/>
     <addaction name="actionCrop"/>
     <addaction name="actionCrop_To_Selection"/>
+    <addaction name="menuSelection"/>
     <addaction name="separator"/>
     <addaction name="actionSelect_All"/>
     <addaction name="actionDeselect_All"/>
@@ -724,6 +732,16 @@
    </property>
    <property name="toolTip">
     <string>Previous keyframe</string>
+   </property>
+  </action>
+  <action name="actionFlip_X">
+   <property name="text">
+    <string>Flip X</string>
+   </property>
+  </action>
+  <action name="actionFlip_Y">
+   <property name="text">
+    <string>Flip Y</string>
    </property>
   </action>
  </widget>

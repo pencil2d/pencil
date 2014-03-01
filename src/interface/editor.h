@@ -136,6 +136,8 @@ signals:
 	void cut();
 	void crop();
 	void croptoselect();
+    void flipX();
+    void flipY();
 	void deselectAll();
 	void setzoom();
 	void setzoom1();

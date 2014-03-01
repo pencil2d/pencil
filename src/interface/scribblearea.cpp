@@ -115,6 +115,9 @@ ScribbleArea::ScribbleArea(QWidget *parent, Editor *editor)
     //setAttribute(Qt::WA_NoSystemBackground, true);
     updateAll = false;
 
+    myFlipX = 1.0; // can be used as "scale"
+    myFlipY = 1.0; // idem
+
     // color wheel popup
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
@@ -542,16 +545,6 @@ void ScribbleArea::keyPressed(QKeyEvent *event)
         m_pEditor->setFeather(feather); //anticipates future implementation of feather (not used yet).
         return;
     }
-
-    /*if ( event->modifiers() == Qt::AltModifier )
-    {
-        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
-             (toolType == BUCKET) || (toolType == POLYLINE) )
-        {
-            setTemporaryTool( EYEDROPPER );
-            return;
-        }
-    }*/
 
     // ---- fixed normal keys ----
     switch (event->key())
@@ -1506,7 +1499,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                 {
                     painter.setWorldMatrixEnabled(true);
                     painter.setOpacity(opacity);
-                    if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection))
+                    if (i == m_pEditor->m_nCurrentLayerIndex && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         painter.setClipping(true);
@@ -1525,6 +1518,7 @@ void ScribbleArea::updateCanvas(int frame, QRect rect)
                         selectionClip.transform(myTransformedSelection, smoothTransform);
                         QMatrix rm;
                         //TODO: complete matrix calls ( sounds funny :)
+                        rm.scale(myFlipX,myFlipY);
                         rm.rotate(myRotatedAngle);
                         QImage rotImg = selectionClip.image->transformed( rm );
                         QPoint dxy = QPoint( ( myTempTransformedSelection.width()-rotImg.rect().width() ) / 2,
@@ -2036,7 +2030,7 @@ void ScribbleArea::paintTransformedSelection()
 
     if (somethingSelected)    // there is something selected
     {
-        if (layer->type == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection))
+        if (layer->type == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1))
         {
             //backup();
             BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->m_nCurrentFrameIndex, 0);
@@ -2051,6 +2045,7 @@ void ScribbleArea::paintTransformedSelection()
             bool smoothTransform = false;
             if (myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() || m_moveMode == ROTATION ) { smoothTransform = true; }
             QMatrix rm;
+            rm.scale(myFlipX,myFlipY);
             rm.rotate(myRotatedAngle);
             BitmapImage selectionClip = bitmapImage->copy(mySelection.toRect());
             selectionClip.transform(myTransformedSelection, smoothTransform);

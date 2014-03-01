@@ -59,6 +59,7 @@ public:
     bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
+    qreal myFlipX, myFlipY; // scale -1.0 or +1.0
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -73,7 +74,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION};
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY};
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode(MoveMode moveMode) { m_moveMode = moveMode; }
 
