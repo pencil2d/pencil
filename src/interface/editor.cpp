@@ -1504,7 +1504,7 @@ void Editor::removeKey()
 }
 
 void Editor::play()
-void Editor::addFrame(int frameNumber1, int frameNumber2)   // adding a range of frames to the cache{
+{    
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
     updateMaxFrame();

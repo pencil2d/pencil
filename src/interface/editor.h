@@ -219,8 +219,6 @@ public slots:
     //void print();
     void restorePalettesSettings( bool, bool, bool );
 
-private slots:
-
     bool exportX();
     bool exportImage();
     bool exportSeq();
