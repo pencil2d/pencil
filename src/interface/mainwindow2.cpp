@@ -100,33 +100,33 @@ MainWindow2::~MainWindow2()
 
 void MainWindow2::makeTimeLineConnections()
 {
-    connect( m_pTimeLine, SIGNAL( endplayClick() ), editor, SLOT( endPlay() ) );
-    connect( m_pTimeLine, SIGNAL( startplayClick() ), editor, SLOT( startPlay() ) );
-    connect( m_pTimeLine, SIGNAL( duplicateKeyClick() ), editor, SLOT( duplicateKey() ) );
+    connect( m_pTimeLine, &TimeLine::endplayClick, editor, &Editor::endPlay );
+    connect( m_pTimeLine, &TimeLine::startplayClick, editor, &Editor::startPlay );
+    connect( m_pTimeLine, &TimeLine::duplicateKeyClick, editor, &Editor::duplicateKey );
 
-    connect( m_pTimeLine, SIGNAL( modification() ), editor, SLOT( modification() ) );
-    connect( m_pTimeLine, SIGNAL( addKeyClick() ), editor, SLOT( addNewKey() ) );
-    connect( m_pTimeLine, SIGNAL( removeKeyClick() ), editor, SLOT( removeKey() ) );
+    connect( m_pTimeLine, &TimeLine::modification, editor, &Editor::modification );
+    connect( m_pTimeLine, &TimeLine::addKeyClick, editor, &Editor::addNewKey );
+    connect( m_pTimeLine, &TimeLine::removeKeyClick, editor, &Editor::removeKey );
 
-    connect( m_pTimeLine, SIGNAL( newBitmapLayer() ), editor, SLOT( newBitmapLayer() ) );
-    connect( m_pTimeLine, SIGNAL( newVectorLayer() ), editor, SLOT( newVectorLayer() ) );
-    connect( m_pTimeLine, SIGNAL( newSoundLayer() ), editor, SLOT( newSoundLayer() ) );
-    connect( m_pTimeLine, SIGNAL( newCameraLayer() ), editor, SLOT( newCameraLayer() ) );
-    connect( m_pTimeLine, SIGNAL( deleteCurrentLayer() ), editor, SLOT( deleteCurrentLayer() ) );
+    connect( m_pTimeLine, &TimeLine::newBitmapLayer, editor, &Editor::newBitmapLayer );
+    connect( m_pTimeLine, &TimeLine::newVectorLayer, editor, &Editor::newVectorLayer );
+    connect( m_pTimeLine, &TimeLine::newSoundLayer, editor, &Editor::newSoundLayer );
+    connect( m_pTimeLine, &TimeLine::newCameraLayer, editor, &Editor::newCameraLayer );
+    connect( m_pTimeLine, &TimeLine::deleteCurrentLayer, editor, &Editor::deleteCurrentLayer );
 
-    connect(m_pTimeLine, SIGNAL(playClick()), editor, SLOT(play()));
-    connect(m_pTimeLine, SIGNAL(loopClick(bool)), editor, SLOT(setLoop(bool)));
+    connect( m_pTimeLine, &TimeLine::playClick, editor, &Editor::play );
+    connect( m_pTimeLine, &TimeLine::loopClick, editor, &Editor::setLoop );
 
-    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), editor, SLOT(setLoopControl(bool))); // adding LoopControlClick needs setLoopControl(bool)
-    connect(m_pTimeLine, SIGNAL(loopStartClick(int)), editor, SLOT(changeLoopStart(int)));
-    connect(m_pTimeLine, SIGNAL(loopEndClick(int)), editor, SLOT(changeLoopEnd(int)));
+    connect( m_pTimeLine, &TimeLine::loopControlClick, editor, &Editor::setLoopControl ); // adding LoopControlClick needs setLoopControl(bool)
+    connect( m_pTimeLine, &TimeLine::loopStartClick, editor, &Editor::changeLoopStart );
+    connect( m_pTimeLine, &TimeLine::loopEndClick, editor, &Editor::changeLoopEnd );
 
 
-    connect(m_pTimeLine, SIGNAL(soundClick()), editor, SLOT(setSound()));
-    connect(m_pTimeLine, SIGNAL(fpsClick(int)), editor, SLOT(changeFps(int)));
+    connect( m_pTimeLine, &TimeLine::soundClick, editor, &Editor::setSound );
+    connect( m_pTimeLine, &TimeLine::fpsClick, editor, &Editor::changeFps );
 
-    connect( editor, SIGNAL( toggleLoop( bool ) ), m_pTimeLine, SIGNAL( toggleLoop( bool ) ) );
-    connect( m_pTimeLine, SIGNAL( loopClick( bool ) ), editor, SIGNAL( loopToggled( bool ) ) );
+    connect( editor, &Editor::toggleLoop, m_pTimeLine, &TimeLine::toggleLoop );
+    connect( m_pTimeLine, &TimeLine::loopClick, editor, &Editor::loopToggled );
 
 
     connect(editor, SIGNAL(toggleLoopControl(bool)), m_pTimeLine, SIGNAL(toggleLoopControl(bool)));
