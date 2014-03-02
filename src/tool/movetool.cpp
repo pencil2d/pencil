@@ -73,6 +73,11 @@ void MoveTool::mousePressEvent(QMouseEvent *event)
                         m_pScribbleArea->setMoveMode(ScribbleArea::ROTATION );
                         //qDebug() << "ROTATION";
                     }
+                    else if (event->modifiers() == Qt::AltModifier ) // --- symmetry
+                    {
+                        m_pScribbleArea->setMoveMode(ScribbleArea::SYMMETRY );
+                        //qDebug() << "SYMMETRY";
+                    }
                 }
                 else if (layer->type() == Layer::VECTOR)
                 {
@@ -193,6 +198,22 @@ void MoveTool::mouseMoveEvent(QMouseEvent *event)
                                 m_pScribbleArea->myTransformedSelection; // @ necessary?
                         m_pScribbleArea->myRotatedAngle = getCurrentPixel().x() - getLastPressPixel().x();
                         //qDebug() << "rotation" << m_pScribbleArea->myRotatedAngle;
+                        break;
+                    case ScribbleArea::SYMMETRY:
+                        m_pScribbleArea->myTempTransformedSelection =
+                                m_pScribbleArea->myTransformedSelection; // @ necessary?
+                        int sx = getCurrentPixel().x() - getLastPressPixel().x();
+                        int sy = getCurrentPixel().y() - getLastPressPixel().y();
+                        if ( sx > sy)
+                        {
+                            if (sx<0) m_pScribbleArea->myFlipX = 1.0;
+                            else if (sx>0) m_pScribbleArea->myFlipX = -1.0;
+                        } else if ( sy > sx )
+                        {
+                            if (sy<0) m_pScribbleArea->myFlipY = 1.0;
+                            else if (sy>0) m_pScribbleArea->myFlipY = -1.0;
+                        }
+                        qDebug() << "symmetry" ;
                         break;
                     }
 

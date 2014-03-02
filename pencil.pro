@@ -9,7 +9,7 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 DEPENDPATH += . src
 
-QT += core gui xml xmlpatterns phonon svg
+QT += core gui xml xmlpatterns svg multimedia
 
 include(src/pencil.pri)
 
@@ -21,7 +21,7 @@ DEPENDPATH *= $${INCLUDEPATH}
 RESOURCES += pencil.qrc
 
 TRANSLATIONS += pencil.ts \
-		pencil2d_it.ts
+                pencil2d_it.ts
 
 isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe

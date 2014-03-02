@@ -133,6 +133,8 @@ public slots:
     void cut();
     void crop();
     void croptoselect();
+    void flipX();
+    void flipY();
     void deselectAll();
     void setzoom();
     void setzoom1();
@@ -238,7 +240,7 @@ public slots:
     void restorePalettesSettings( bool, bool, bool );
     void saveSvg();
 
-    private slots:
+private slots:
 
     bool exportX();
     bool exportImage();

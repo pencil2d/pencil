@@ -80,7 +80,7 @@ ui( new Ui::MainWindow2 )
     readSettings();
 
     makeColorPaletteConnections();
-	makeColorWheelConnections();
+    makeColorWheelConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
@@ -232,6 +232,8 @@ void MainWindow2::createMenus()
     connect( ui->actionClearFrame, SIGNAL( triggered() ), editor, SLOT( clearCurrentFrame() ) );
     connect( ui->actionCrop, SIGNAL( triggered() ), editor, SLOT( crop() ) );
     connect( ui->actionCrop_To_Selection, SIGNAL( triggered() ), editor, SLOT( croptoselect() ) );
+    connect( ui->actionFlip_X, SIGNAL(triggered()), editor, SLOT(flipX()));
+    connect( ui->actionFlip_Y, SIGNAL(triggered()), editor, SLOT(flipY()));
     connect( ui->actionSelect_All, SIGNAL( triggered() ), editor, SIGNAL( selectAll() ) );
     connect( ui->actionDeselect_All, SIGNAL( triggered() ), editor, SLOT( deselectAll() ) );
     connect( ui->actionPreference, SIGNAL( triggered() ), this, SLOT( showPreferences() ) );

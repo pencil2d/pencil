@@ -117,6 +117,9 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     //setAttribute(Qt::WA_NoSystemBackground, true);
     updateAll = false;
 
+    myFlipX = 1.0; // can be used as "scale"
+    myFlipY = 1.0; // idem
+
     // color wheel popup
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
@@ -551,16 +554,6 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
         return;
     }
 
-    if ( event->modifiers() == Qt::AltModifier )
-    {
-        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
-             (toolType == BUCKET) || (toolType == POLYLINE) )
-        {
-            setTemporaryTool( EYEDROPPER );
-            return;
-        }
-    }
-
     // ---- fixed normal keys ----
     switch ( event->key() )
     {
@@ -950,6 +943,13 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseReleaseEvent( event );
+
+    if (currentTool()->type() == EYEDROPPER)
+    {
+        setCurrentTool(prevToolType);
+        switchTool(currentTool()->type());
+
+    }
 
     // ---- last check (at the very bottom of mouseRelease) ----
     if ( instantTool && !keyboardInUse ) // temp tool and released all keys ?

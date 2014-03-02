@@ -29,6 +29,8 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
     Layer *layer = m_pEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
+    m_pScribbleArea->myFlipX = 1.0;
+    m_pScribbleArea->myFlipY = 1.0;
     m_pScribbleArea->myRotatedAngle = 0;
 
     if (event->button() == Qt::LeftButton)

@@ -645,6 +645,20 @@ void Editor::croptoselect()
     //paste();
 }
 
+void Editor::flipX()
+{
+    m_pScribbleArea->setCurrentTool(MOVE);
+    m_pScribbleArea->switchTool(MOVE);
+    m_pScribbleArea->myFlipX = -m_pScribbleArea->myFlipX;
+}
+
+void Editor::flipY()
+{
+    m_pScribbleArea->setCurrentTool(MOVE);
+    m_pScribbleArea->switchTool(MOVE);
+    m_pScribbleArea->myFlipY = -m_pScribbleArea->myFlipY;
+}
+
 void Editor::copy()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
@@ -673,6 +687,7 @@ void Editor::copy()
         }
     }
 }
+
 
 void Editor::paste()
 {
@@ -1097,7 +1112,7 @@ bool Editor::exportSeq()
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
-        QString	initialPath = QDir::homePath() + "/untitled";
+        QString initialPath = QDir::homePath() + "/untitled";
     }
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Save Image Sequence" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     if ( filePath.isEmpty() )
@@ -1205,7 +1220,7 @@ bool Editor::exportMov()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
-    //	QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
+    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
     if ( filePath.isEmpty() )
     {
@@ -1235,7 +1250,7 @@ bool Editor::exportFlash()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.swf";
-    //	QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
+    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "SWF (*.swf)" ) );
     if ( filePath.isEmpty() )
     {
@@ -1582,7 +1597,7 @@ void Editor::removeKey()
 
 void Editor::play()
 
-{
+void Editor::addFrame(int frameNumber1, int frameNumber2)   // adding a range of frames to the cache{
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
     updateMaxFrame();
