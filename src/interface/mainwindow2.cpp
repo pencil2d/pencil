@@ -105,7 +105,7 @@ void MainWindow2::makeTimeLineConnections()
     connect( m_pTimeLine, SIGNAL( duplicateKeyClick() ), editor, SLOT( duplicateKey() ) );
 
     connect( m_pTimeLine, SIGNAL( modification() ), editor, SLOT( modification() ) );
-    connect( m_pTimeLine, SIGNAL( addKeyClick() ), editor, SLOT( addKey() ) );
+    connect( m_pTimeLine, SIGNAL( addKeyClick() ), editor, SLOT( addNewKey() ) );
     connect( m_pTimeLine, SIGNAL( removeKeyClick() ), editor, SLOT( removeKey() ) );
 
     connect( m_pTimeLine, SIGNAL( newBitmapLayer() ), editor, SLOT( newBitmapLayer() ) );
@@ -236,6 +236,8 @@ void MainWindow2::createMenus()
     connect( ui->actionClearFrame, &QAction::triggered, editor, &Editor::clearCurrentFrame );
     connect( ui->actionCrop, &QAction::triggered, editor, &Editor::crop );
     connect( ui->actionCrop_To_Selection, &QAction::triggered, editor, &Editor::croptoselect );
+    connect( ui->actionFlip_X, &QAction::triggered, editor, &Editor::flipX );
+    connect( ui->actionFlip_Y, &QAction::triggered, editor, &Editor::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, editor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, editor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::showPreferences );

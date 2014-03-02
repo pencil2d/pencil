@@ -1304,7 +1304,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                 {
                     painter.setWorldMatrixEnabled( true );
                     painter.setOpacity( opacity );
-                    if ( i == m_pEditor->layerManager()->currentLayerIndex() && somethingSelected && (myRotatedAngle != 0 || myTempTransformedSelection != mySelection) )
+                    if ( i == m_pEditor->layerManager()->currentLayerIndex() && somethingSelected && (myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         painter.setClipping( true );
@@ -1323,6 +1323,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         selectionClip.transform( myTransformedSelection, smoothTransform );
                         QMatrix rm;
                         //TODO: complete matrix calls ( sounds funny :)
+                        rm.scale( myFlipX, myFlipY );
                         rm.rotate( myRotatedAngle );
                         QImage rotImg = selectionClip.image->transformed( rm );
                         QPoint dxy = QPoint( (myTempTransformedSelection.width() - rotImg.rect().width()) / 2,
@@ -1845,7 +1846,7 @@ void ScribbleArea::paintTransformedSelection()
 
     if ( somethingSelected )    // there is something selected
     {
-        if ( layer->type() == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection) )
+        if ( layer->type() == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1) )
         {
             //backup();
             BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
@@ -1860,6 +1861,7 @@ void ScribbleArea::paintTransformedSelection()
             bool smoothTransform = false;
             if ( myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() || m_moveMode == ROTATION ) { smoothTransform = true; }
             QMatrix rm;
+            rm.scale( myFlipX, myFlipY );
             rm.rotate( myRotatedAngle );
             BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
             selectionClip.transform( myTransformedSelection, smoothTransform );
