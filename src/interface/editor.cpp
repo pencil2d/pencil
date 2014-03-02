@@ -551,6 +551,20 @@ void Editor::croptoselect()
     //paste();
 }
 
+void Editor::flipX()
+{
+    m_pScribbleArea->setCurrentTool(MOVE);
+    m_pScribbleArea->switchTool(MOVE);
+    m_pScribbleArea->myFlipX = -m_pScribbleArea->myFlipX;
+}
+
+void Editor::flipY()
+{
+    m_pScribbleArea->setCurrentTool(MOVE);
+    m_pScribbleArea->switchTool(MOVE);
+    m_pScribbleArea->myFlipY = -m_pScribbleArea->myFlipY;
+}
+
 void Editor::copy()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
@@ -579,6 +593,7 @@ void Editor::copy()
         }
     }
 }
+
 
 void Editor::paste()
 {
@@ -1108,7 +1123,7 @@ bool Editor::exportMov()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
-    //	QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
+    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
     if ( filePath.isEmpty() )
     {
@@ -1489,7 +1504,7 @@ void Editor::removeKey()
 }
 
 void Editor::play()
-{
+void Editor::addFrame(int frameNumber1, int frameNumber2)   // adding a range of frames to the cache{
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
     updateMaxFrame();
@@ -1836,10 +1851,10 @@ void Editor::gridview()
 /*
 void Editor::print()
 {
-QPrinter printer( QPrinter::HighResolution );
-//printer.setOrientation(QPrinter::Landscape);
-//printer.setFullPage(false);
-//printer->setPaperSize(QPrinter::A4);
+    QPrinter printer( QPrinter::HighResolution );
+    //printer.setOrientation(QPrinter::Landscape);
+    //printer.setFullPage(false);
+    //printer->setPaperSize(QPrinter::A4);
 
 QPrintPreviewDialog printPreviewDialog( &printer, this );
 connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
@@ -1861,23 +1876,47 @@ return;
 /*
 void Editor::printAndPreview( QPrinter* printer )
 {
-QRect exportRect = m_pScribbleArea->rect();
-QSize exportSize = exportRect.size();
-if ( printer->outputFileName() != "" )
-{
-QPrinter pdfPrinter( QPrinter::ScreenResolution );
-pdfPrinter.setOutputFileName( printer->outputFileName() );
-pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
-pdfPrinter.setOrientation( printer->orientation() );
-QPainter painter( &pdfPrinter );
-painter.setRenderHint( QPainter::HighQualityAntialiasing );
-QRect pageRect = pdfPrinter.pageRect();
-pageRect.moveTo( 0, 0 );
-qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
-qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
-if ( exportSize.width() >= exportSize.height() )
-{
-// landscape
+    QRect exportRect = m_pScribbleArea->rect();
+    QSize exportSize = exportRect.size();
+    if ( printer->outputFileName() != "" )
+    {
+        QPrinter pdfPrinter( QPrinter::ScreenResolution );
+        pdfPrinter.setOutputFileName( printer->outputFileName() );
+        pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
+        pdfPrinter.setOrientation( printer->orientation() );
+        QPainter painter( &pdfPrinter );
+        painter.setRenderHint( QPainter::HighQualityAntialiasing );
+        QRect pageRect = pdfPrinter.pageRect();
+        pageRect.moveTo( 0, 0 );
+        qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
+        qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
+        if ( exportSize.width() >= exportSize.height() )
+        {
+            // landscape
+        }
+        else
+        {
+            // portrait
+        }
+        //exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
+        //exportRect.setSize(exportSize);
+        painter.setViewport( pageRect );
+        painter.setWindow( exportRect );
+        m_pScribbleArea->render( &painter );
+        painter.end();
+    }
+    else
+    {
+        QRect pageRect = printer->pageRect();
+        pageRect.moveTo( 0, 0 );
+        exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
+        exportRect.setSize( exportSize );
+        QPainter painter( printer );
+        painter.setViewport( pageRect );
+        painter.setWindow( exportRect );
+        m_pScribbleArea->render( &painter );
+        painter.end();
+    }
 }
 else
 {

@@ -84,7 +84,7 @@ ui( new Ui::MainWindow2 )
     readSettings();
 
     makeColorPaletteConnections();
-	makeColorWheelConnections();
+    makeColorWheelConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));

@@ -73,6 +73,11 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                         m_pScribbleArea->setMoveMode( ScribbleArea::ROTATION );
                         //qDebug() << "ROTATION";
                     }
+                    else if (event->modifiers() == Qt::AltModifier ) // --- symmetry
+                    {
+                        m_pScribbleArea->setMoveMode(ScribbleArea::SYMMETRY );
+                        //qDebug() << "SYMMETRY";
+                    }
                 }
                 else if ( layer->type() == Layer::VECTOR )
                 {

@@ -110,6 +110,9 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     QPixmapCache::setCacheLimit( 30 * 2 * 1024 );
     updateAll = false;
 
+    myFlipX = 1.0; // can be used as "scale"
+    myFlipY = 1.0; // idem
+
     // color wheel popup
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
@@ -349,16 +352,6 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
         m_pEditor->toolManager()->setFeather( feather ); //anticipates future implementation of feather (not used yet).
         return;
     }
-
-    /*if ( event->modifiers() == Qt::AltModifier )
-    {
-        if ( (toolType == BRUSH) || (toolType == PENCIL) || (toolType == PEN) ||
-             (toolType == BUCKET) || (toolType == POLYLINE) )
-        {
-            setTemporaryTool( EYEDROPPER );
-            return;
-        }
-    }*/
 
     // ---- fixed normal keys ----
     switch ( event->key() )
