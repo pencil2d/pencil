@@ -33,7 +33,7 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/interface/scribblearea.h \
     $$PWD/interface/timeline.h \
     $$PWD/interface/timecontrols.h \
-    $$PWD/interface/toolset.h \
+    $$PWD/interface/toolbox.h \
     $$PWD/interface/backupelement.h \
     $$PWD/interface/spinslider.h \
     $$PWD/interface/displayoptiondockwidget.h \
@@ -100,7 +100,7 @@ SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/interface/scribblearea.cpp \
     $$PWD/interface/timeline.cpp \
     $$PWD/interface/timecontrols.cpp \
-    $$PWD/interface/toolset.cpp \
+    $$PWD/interface/toolbox.cpp \
     $$PWD/interface/backupelement.cpp \
     $$PWD/interface/spinslider.cpp \
     $$PWD/interface/displayoptiondockwidget.cpp \

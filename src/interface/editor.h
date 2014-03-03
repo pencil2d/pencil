@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include "timeline.h"
 #include "scribblearea.h"
-#include "toolset.h"
 #include "timecontrols.h"
 #include "object.h"
 #include "vectorimage.h"
@@ -39,6 +38,7 @@ class MainWindow2;
 class ColorManager;
 class ToolManager;
 class LayerManager;
+class ScribbleArea;
 
 
 class Editor : public QWidget

@@ -30,8 +30,9 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QGroupBox>
 #include <QDialogButtonBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
-#include "editor.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layersound.h"
@@ -40,11 +41,12 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "toolbox.h"
 #include "colormanager.h"
 #include "colorpalettewidget.h"
 #include "toolmanager.h"
 #include "layermanager.h"
-
+#include "editor.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -1777,7 +1779,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         timelinePalette->show();
     }
 
-    QDockWidget* toolWidget = mainWindow->m_pToolSet;
+    QDockWidget* toolWidget = mainWindow->m_pToolBox;
     if ( toolWidget != NULL )
     {
         QPoint pos = settings.value( "drawPalettePosition", QPoint( 100, 100 ) ).toPoint();

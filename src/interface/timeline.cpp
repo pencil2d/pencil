@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include <QSplitter>
 
 #include "editor.h"
-#include "toolset.h"
+#include "toolbox.h"
 #include "timecontrols.h"
 #include "timelinecells.h"
 #include "timeline.h"

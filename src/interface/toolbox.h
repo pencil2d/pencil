@@ -28,12 +28,12 @@ class ToolOptionWidget;
 class Editor;
 
 
-class ToolSetWidget : public QDockWidget
+class ToolBoxWidget : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    ToolSetWidget(const QString title, Editor* editor);
+    ToolBoxWidget(const QString title, Editor* editor);
 
     void setCurrentTool( ToolType );
 

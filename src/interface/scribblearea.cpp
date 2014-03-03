@@ -35,7 +35,8 @@ GNU General Public License for more details.
 #define round(f) ((int)(f + 0.5))
 
 ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
-: QWidget( parent )
+    : QWidget( parent )
+    , instantTool( false )
 {
     this->m_pEditor = editor;
     m_strokeManager = new StrokeManager();

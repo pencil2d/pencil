@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "popupcolorpalettewidget.h"
 #include "preferences.h"
 #include "timeline.h"
+#include "toolbox.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -89,8 +90,8 @@ MainWindow2::MainWindow2( QWidget *parent )
     makeColorWheelConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
-    connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolSet, SLOT(setCurrentTool(ToolType)));
+    connect(m_pToolBox, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
+    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolBox, SLOT(setCurrentTool(ToolType)));
 
     editor->setCurrentLayer( this->editor->object()->getLayerCount() - 1 );
 }
@@ -157,17 +158,17 @@ void MainWindow2::arrangePalettes()
     m_pToolOptionWidget = new ToolOptionWidget(this);
     m_pToolOptionWidget->makeConnectionToEditor(editor);
 
-    m_pToolSet = new ToolSetWidget( tr( "Tools" ), editor );
+    m_pToolBox = new ToolBoxWidget( tr( "Tools" ), editor );
 
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorPalette);
     addDockWidget(Qt::RightDockWidgetArea,  m_pDisplayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea,   m_pToolSet);
+    addDockWidget(Qt::LeftDockWidgetArea,   m_pToolBox);
     addDockWidget(Qt::LeftDockWidgetArea,   m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
 
-    m_pToolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pToolBox->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
@@ -298,23 +299,23 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, &QAction::triggered, editor, &Editor::duplicateKey );
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, &QAction::triggered, m_pToolSet, &ToolSetWidget::moveOn );
-    connect(ui->actionSelect, &QAction::triggered, m_pToolSet, &ToolSetWidget::selectOn );
-    connect(ui->actionBrush, &QAction::triggered, m_pToolSet, &ToolSetWidget::brushOn );
-    connect(ui->actionPolyline, &QAction::triggered, m_pToolSet, &ToolSetWidget::polylineOn );
-    connect(ui->actionSmudge, &QAction::triggered, m_pToolSet, &ToolSetWidget::smudgeOn );
-    connect(ui->actionPen, &QAction::triggered, m_pToolSet, &ToolSetWidget::penOn );
-    connect(ui->actionHand, &QAction::triggered, m_pToolSet, &ToolSetWidget::handOn );
-    connect(ui->actionPencil, &QAction::triggered, m_pToolSet, &ToolSetWidget::pencilOn );
-    connect(ui->actionBucket, &QAction::triggered, m_pToolSet, &ToolSetWidget::bucketOn );
-    connect(ui->actionEyedropper, &QAction::triggered, m_pToolSet, &ToolSetWidget::eyedropperOn );
-    connect(ui->actionEraser, &QAction::triggered, m_pToolSet, &ToolSetWidget::eraserOn );
+    connect(ui->actionMove, &QAction::triggered, m_pToolBox, &ToolBoxWidget::moveOn );
+    connect(ui->actionSelect, &QAction::triggered, m_pToolBox, &ToolBoxWidget::selectOn );
+    connect(ui->actionBrush, &QAction::triggered, m_pToolBox, &ToolBoxWidget::brushOn );
+    connect(ui->actionPolyline, &QAction::triggered, m_pToolBox, &ToolBoxWidget::polylineOn );
+    connect(ui->actionSmudge, &QAction::triggered, m_pToolBox, &ToolBoxWidget::smudgeOn );
+    connect(ui->actionPen, &QAction::triggered, m_pToolBox, &ToolBoxWidget::penOn );
+    connect(ui->actionHand, &QAction::triggered, m_pToolBox, &ToolBoxWidget::handOn );
+    connect(ui->actionPencil, &QAction::triggered, m_pToolBox, &ToolBoxWidget::pencilOn );
+    connect(ui->actionBucket, &QAction::triggered, m_pToolBox, &ToolBoxWidget::bucketOn );
+    connect(ui->actionEyedropper, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eyedropperOn );
+    connect(ui->actionEraser, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eraserOn );
     connect(ui->actionTogglePalette, &QAction::triggered, m_pScribbleArea,&ScribbleArea::togglePopupPalette );
     connect(ui->actionResetToolsDefault, &QAction::triggered, this, &MainWindow2::resetToolsSettings );
 
     /// --- Window Menu ---
-    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), m_pToolSet, SLOT(setVisible(bool)));
-    connect(m_pToolSet, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), m_pToolBox, SLOT(setVisible(bool)));
+    connect(m_pToolBox, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
     connect(ui->actionOptionsWidget, SIGNAL(toggled(bool)), m_pToolOptionWidget, SLOT(setVisible(bool)));
     connect(m_pToolOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionOptionsWidget, SLOT(setChecked(bool)));
     connect(ui->actionColorWheel, SIGNAL(toggled(bool)), m_pColorPalette, SLOT(setVisible(bool)));
@@ -962,7 +963,7 @@ void MainWindow2::showPreferences()
 
 void MainWindow2::dockAllPalettes()
 {
-    m_pToolSet->setFloating(false);
+    m_pToolBox->setFloating(false);
     m_pToolOptionWidget->setFloating(false);
     m_pDisplayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
@@ -1011,7 +1012,7 @@ void MainWindow2::writeSettings()
         settings.setValue( "timelinePaletteFloating", timelinePalette->isFloating() );
     }
 
-    QDockWidget* toolWidget = m_pToolSet;
+    QDockWidget* toolWidget = m_pToolBox;
     if ( toolWidget != NULL )
     {
         settings.setValue( "drawPalettePosition", toolWidget->pos() );
