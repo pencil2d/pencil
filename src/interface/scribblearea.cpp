@@ -66,7 +66,9 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
     }
 
     tabletEraserBackupToolMode = -1;
-    setAttribute( Qt::WA_StaticContents ); // ?
+
+    // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner and don't change when the widget is resized.
+    setAttribute( Qt::WA_StaticContents ); 
     modified = false;
     m_isSimplified = false;
     m_usePressure = true;

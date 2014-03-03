@@ -74,7 +74,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY};
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY };
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode( MoveMode moveMode ) { m_moveMode = moveMode; }
 
@@ -86,7 +86,7 @@ public:
     qreal getTempViewScaleX() const { return myTempView.m11(); }
     qreal getViewScaleY() const { return myView.m22(); }
     qreal getTempViewScaleY() const { return myTempView.m22(); }
-    qreal getCentralViewScale() const { return (sqrt( centralView.determinant())); }
+    qreal getCentralViewScale() const { return ( sqrt( centralView.determinant() ) ); }
 
     QMatrix getTransformationMatrix() const { return transMatrix; }
     void setTransformationMatrix( QMatrix matrix );
@@ -118,7 +118,7 @@ public:
 
     void keyPressed( QKeyEvent *event );
 
-    Editor *getEditor() { return m_pEditor; }
+    Editor* getEditor() { return m_pEditor; }
 
 signals:
     void modification();
@@ -129,7 +129,7 @@ signals:
 
     void onionPrevChanged( bool );
     void onionNextChanged( bool );
-    void multiLayerOnionSkinChanged(bool);
+    void multiLayerOnionSkinChanged( bool );
 
     void pencilOn();
     void eraserOn();
@@ -186,11 +186,10 @@ signals:
     void toggleShowAllLayers();
     void escape();
 
-    void toggleMultiLayerOnionSkin(bool);
-
+    void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
-public slots:
+    public slots:
     void updateToolCursor();
 
 protected:
