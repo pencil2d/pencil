@@ -173,7 +173,7 @@ public slots:
     void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
-    public slots:
+public slots:
     void updateToolCursor();
 
 protected:
