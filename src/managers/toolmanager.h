@@ -4,16 +4,19 @@
 #include <QObject>
 #include <QHash>
 #include "basetool.h"
+#include "basemanager.h"
 
 class ScribbleArea;
-class Editor;
 
-class ToolManager : public QObject
+
+class ToolManager : public BaseManager
 {
     Q_OBJECT
 public:
-    explicit ToolManager(QObject* parent, Editor* pEditor, ScribbleArea* pScribbleArea);
+    explicit ToolManager( QObject* parent );
     
+    bool initialize() override;
+
     BaseTool* currentTool() { return m_pCurrentTool; }
     BaseTool* getTool( ToolType eToolType );
     void      setCurrentTool( ToolType eToolType );

@@ -48,17 +48,24 @@ GNU General Public License for more details.
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
-Editor::Editor( MainWindow2* parent )
+Editor::Editor( MainWindow2* parent ) 
+    : QWidget( parent )
+    , m_pObject( nullptr )
+    , exportFramesDialog( nullptr ) // will be created when needed
+    , exportMovieDialog( nullptr )
+    , exportFlashDialog( nullptr )
+    , exportFramesDialog_hBox( nullptr )
+    , exportFramesDialog_vBox( nullptr )
+    , exportFramesDialog_format( nullptr )
+    , exportMovieDialog_hBox( nullptr )
+    , exportMovieDialog_vBox( nullptr )
+    , exportMovieDialog_format( nullptr )
+    , exportMovieDialog_fpsBox( nullptr )
+    , exportFlashDialog_compression( nullptr )
 {
     mainWindow = parent;
 
     QSettings settings( "Pencil", "Pencil" );
-
-    m_pObject = NULL; // the editor is initialized with no object
-
-    m_colorManager = new ColorManager( this, this );
-    m_pLayerManager = new LayerManager( this );
-    m_pLayerManager->setObject( object() );
 
     altpress = false;
     numberOfModifications = 0;
@@ -98,27 +105,10 @@ Editor::Editor( MainWindow2* parent )
     loopEnd = 2;
     sound = true;
 
-    layerManager()->setCurrentFrameIndex( 1 );
-    layerManager()->setCurrentLayerIndex( 0 );
-
-    exportFramesDialog = NULL; // will be created when needed
-    exportMovieDialog = NULL;
-    exportFlashDialog = NULL;
-    exportFramesDialog_hBox = NULL;
-    exportFramesDialog_vBox = NULL;
-    exportFramesDialog_format = NULL;
-    exportMovieDialog_hBox = NULL;
-    exportMovieDialog_vBox = NULL;
-    exportMovieDialog_format = NULL;
-    exportMovieDialog_fpsBox = NULL;
-
-    exportFlashDialog_compression = NULL;
-
     // Layouts
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     m_pScribbleArea = new ScribbleArea( this, this );
-    m_pToolManager = new ToolManager( this, this, m_pScribbleArea );
 
     m_pToolSet = new ToolSetWidget( tr( "Tools" ), this );
 
@@ -131,21 +121,9 @@ Editor::Editor( MainWindow2* parent )
     // FOCUS POLICY
     m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
 
-    // CONNECTIONS
-    makeConnections();
-
     qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
     qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
     qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
-
-    toolManager()->setCurrentTool( PENCIL );
-
-    setAcceptDrops( true );
-}
-
-TimeLine* Editor::getTimeLine()
-{
-    return mainWindow->m_pTimeLine;
 }
 
 Editor::~Editor()
@@ -156,6 +134,45 @@ Editor::~Editor()
         delete m_pObject;
     }
     clearBackup();
+}
+
+bool Editor::initialize()
+{
+    // Initialize managers
+    m_colorManager = new ColorManager( this );
+    m_pLayerManager = new LayerManager( this );
+    m_pToolManager = new ToolManager( this );
+
+    BaseManager* allManagers[] = 
+    {
+        m_colorManager,
+        m_pToolManager,
+        m_pLayerManager
+    };
+
+    for ( BaseManager* pManager : allManagers )
+    {
+        pManager->setEditor( this );
+        pManager->initialize();
+    }
+
+    layerManager()->setCurrentFrameIndex( 1 );
+    layerManager()->setCurrentLayerIndex( 0 );
+
+    toolManager()->setCurrentTool( PENCIL );
+
+    setAcceptDrops( true );
+
+    // CONNECTIONS
+    makeConnections();
+
+    return true;
+}
+
+
+TimeLine* Editor::getTimeLine()
+{
+    return mainWindow->m_pTimeLine;
 }
 
 void Editor::makeConnections()
@@ -792,7 +809,8 @@ void Editor::setObject( Object* newObject )
     }
     m_pObject = newObject;
 
-    layerManager()->setObject( m_pObject );
+    // TODO: need to reload object
+    //layerManager()->setObject( m_pObject );
 
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );

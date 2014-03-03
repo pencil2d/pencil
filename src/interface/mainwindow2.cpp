@@ -59,9 +59,9 @@ GNU General Public License for more details.
 
 
 
-MainWindow2::MainWindow2( QWidget *parent ) :
-QMainWindow( parent ),
-ui( new Ui::MainWindow2 )
+MainWindow2::MainWindow2( QWidget *parent )
+    : QMainWindow( parent )
+    , ui( new Ui::MainWindow2 )
 {
     ui->setupUi( this );
     
@@ -69,6 +69,8 @@ ui( new Ui::MainWindow2 )
     m_object->defaultInitialisation();
 
     editor = new Editor( this );
+    editor->initialize();
+
     m_pScribbleArea = editor->getScribbleArea();
     m_pTimeLine = new TimeLine( this, editor );
     makeTimeLineConnections();

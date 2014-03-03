@@ -342,8 +342,6 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
         return;
     }
 
-    ToolType toolType = currentTool()->type();
-
     // --- fixed control key shortcuts ---
     if ( event->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier) )
     {

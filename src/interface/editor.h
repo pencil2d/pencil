@@ -52,6 +52,8 @@ public:
     Editor( MainWindow2* parent );
     virtual ~Editor();
 
+    bool initialize();
+
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }

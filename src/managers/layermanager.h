@@ -1,20 +1,18 @@
 #ifndef LAYER_MANAGER_H
 #define LAYER_MANAGER_H
 
-#include <QObject>
+#include "basemanager.h"
 
-class Object;
 class Layer;
 
-class LayerManager : public QObject
+class LayerManager : public BaseManager
 {
     Q_OBJECT
 
 public:
     LayerManager( QObject* pParant );
     ~LayerManager();
-
-    bool setObject( Object* );
+    bool initialize() override;
 
     Layer* currentLayer();
     Layer* currentLayer( int incr );
@@ -32,8 +30,6 @@ public:
     int lastKeyFrameIndex();
 
 private:
-    Object* m_pObject;
-
     int m_currentLayerIndex; // the current layer to be edited/displayed
     int m_currentFrameIndex; // the current key frame to be edited/displayed
 };
