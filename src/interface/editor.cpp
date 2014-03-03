@@ -110,8 +110,6 @@ Editor::Editor( MainWindow2* parent )
 
     m_pScribbleArea = new ScribbleArea( this, this );
 
-    m_pToolSet = new ToolSetWidget( tr( "Tools" ), this );
-
     mainLayout->addWidget( m_pScribbleArea );
     mainLayout->setMargin( 0 );
     mainLayout->setSpacing( 0 );
@@ -794,9 +792,6 @@ void Editor::setObject( Object* newObject )
         return;
     }
     m_pObject = newObject;
-
-    // TODO: need to reload object
-    //layerManager()->setObject( m_pObject );
 
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
@@ -1782,7 +1777,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         timelinePalette->show();
     }
 
-    QDockWidget* toolWidget = m_pToolSet;
+    QDockWidget* toolWidget = mainWindow->m_pToolSet;
     if ( toolWidget != NULL )
     {
         QPoint pos = settings.value( "drawPalettePosition", QPoint( 100, 100 ) ).toPoint();

@@ -46,7 +46,7 @@ public:
     QDockWidget*             m_pColorWheelWidget;
     ColorPaletteWidget*      m_pColorPalette;
     DisplayOptionDockWidget* m_pDisplayOptionWidget;
-    ToolOptionWidget*    m_pToolOptionWidget;
+    ToolOptionWidget*        m_pToolOptionWidget;
     TimeLine*                m_pTimeLine;
     ToolSetWidget*           m_pToolSet;
 

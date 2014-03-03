@@ -72,7 +72,6 @@ public:
     int loopEnd;
     bool sound;
 
-    ToolSetWidget* m_pToolSet;
     TimeLine* getTimeLine();
 
     Layer* getCurrentLayer( int incr );
