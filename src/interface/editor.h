@@ -58,7 +58,6 @@ public:
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
     
-    Object* m_pObject;  // the object to be edited by the editor
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
@@ -231,6 +230,8 @@ private slots:
     void getCameraLayer();
 
 private:
+    Object* m_pObject;  // the object to be edited by the editor
+
     ScribbleArea* m_pScribbleArea;
     MainWindow2* mainWindow;
 

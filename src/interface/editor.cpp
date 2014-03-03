@@ -449,7 +449,7 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 
 void BackupBitmapElement::restore( Editor* editor )
 {
-    Layer* layer = editor->m_pObject->getLayer( this->layer );
+    Layer* layer = editor->object()->getLayer( this->layer );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::BITMAP )
@@ -468,7 +468,7 @@ void BackupBitmapElement::restore( Editor* editor )
 
 void BackupVectorElement::restore( Editor* editor )
 {
-    Layer* layer = editor->m_pObject->getLayer( this->layer );
+    Layer* layer = editor->object()->getLayer( this->layer );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::VECTOR )

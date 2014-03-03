@@ -92,7 +92,7 @@ MainWindow2::MainWindow2( QWidget *parent )
     connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
     connect(editor, SIGNAL(changeTool(ToolType)), m_pToolSet, SLOT(setCurrentTool(ToolType)));
 
-    editor->setCurrentLayer( this->editor->m_pObject->getLayerCount() - 1 );
+    editor->setCurrentLayer( this->editor->object()->getLayerCount() - 1 );
 }
 
 MainWindow2::~MainWindow2()

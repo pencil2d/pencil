@@ -179,11 +179,11 @@ void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
             tr("Colour name"),
             tr("Colour name:"),
             QLineEdit::Normal,
-            m_pEditor->m_pObject->getColour(colorNumber).name,
+            m_pEditor->object()->getColour(colorNumber).name,
             &ok );
         if (ok && !text.isEmpty())
         {
-            m_pEditor->m_pObject->renameColour(colorNumber, text);
+            m_pEditor->object()->renameColour(colorNumber, text);
             refreshColorList();
         }
     }
@@ -195,7 +195,7 @@ void ColorPaletteWidget::clickAddColorButton()
 
     if ( currentColourNumber() > -1 )
     {
-        prevColor = m_pEditor->m_pObject->getColour(currentColourNumber()).colour;
+        prevColor = m_pEditor->object()->getColour(currentColourNumber()).colour;
     }
 
     bool ok;

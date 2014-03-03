@@ -277,9 +277,9 @@ void ScribbleArea::updateAllVectorLayersAtCurrentFrame()
 
 void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
 {
-    for ( int i = 0; i < m_pEditor->m_pObject->getLayerCount(); i++ )
+    for ( int i = 0; i < m_pEditor->object()->getLayerCount(); i++ )
     {
-        Layer *layer = m_pEditor->m_pObject->getLayer( i );
+        Layer *layer = m_pEditor->object()->getLayer( i );
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true ); }
     }
     updateFrame( m_pEditor->layerManager()->currentFrameIndex() );
@@ -287,9 +287,9 @@ void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
 
 void ScribbleArea::updateAllVectorLayers()
 {
-    for ( int i = 0; i < m_pEditor->m_pObject->getLayerCount(); i++ )
+    for ( int i = 0; i < m_pEditor->object()->getLayerCount(); i++ )
     {
-        Layer *layer = m_pEditor->m_pObject->getLayer( i );
+        Layer *layer = m_pEditor->object()->getLayer( i );
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->setModified( true ); }
     }
     updateAllFrames();
@@ -297,7 +297,7 @@ void ScribbleArea::updateAllVectorLayers()
 
 void ScribbleArea::setModified( int layerNumber, int frameNumber )
 {
-    Layer *layer = m_pEditor->m_pObject->getLayer( layerNumber );
+    Layer *layer = m_pEditor->object()->getLayer( layerNumber );
     if ( layer->type() == Layer::VECTOR )
     {
         ( ( LayerVector * )layer )->setModified( frameNumber, true );
@@ -1064,7 +1064,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
     QSize sz = viewRect.size().toSize();
 
-    Object *object = m_pEditor->m_pObject;
+    Object *object = m_pEditor->object();
     qreal opacity;
 
     // --- onionskins ---
@@ -1692,9 +1692,9 @@ void ScribbleArea::setView()
 
 void ScribbleArea::setView( QMatrix view )
 {
-    for ( int i = 0; i < m_pEditor->m_pObject->getLayerCount(); i++ )
+    for ( int i = 0; i < m_pEditor->object()->getLayerCount(); i++ )
     {
-        Layer *layer = m_pEditor->m_pObject->getLayer( i );
+        Layer *layer = m_pEditor->object()->getLayer( i );
         if ( layer->type() == Layer::VECTOR )
         {
             ( ( LayerVector * )layer )->setView( view * centralView );
