@@ -1,9 +1,13 @@
+
+
 #include "editor.h"
+#include "toolmanager.h"
 #include "scribblearea.h"
 
 #include "layer.h"
 #include "layervector.h"
 #include "layermanager.h"
+
 #include "movetool.h"
 
 MoveTool::MoveTool()
@@ -211,7 +215,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         else     // there is nothing selected
         {
             // we switch to the select tool
-            m_pScribbleArea->switchTool( SELECT );
+            m_pEditor->toolManager()->setCurrentTool( SELECT );
             m_pScribbleArea->m_moveMode = ScribbleArea::MIDDLE;
             m_pScribbleArea->mySelection.setTopLeft( getLastPoint() );
             m_pScribbleArea->mySelection.setBottomRight( getLastPoint() );

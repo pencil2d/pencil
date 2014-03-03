@@ -5,7 +5,8 @@
 
 enum ToolType
 {
-    PENCIL,
+    INVALID_TOOL = -1,
+    PENCIL = 0,
     ERASER,
     SELECT,
     MOVE,

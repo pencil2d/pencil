@@ -22,6 +22,9 @@ public:
     void      setCurrentTool( ToolType eToolType );
     void      cleanupAllToolsData();
 
+    void      tabletSwitchToEraser();
+    void      tabletRestorePrevTool();
+
 signals:
     void penWidthValueChange( float );
     void penFeatherValueChange( float );
@@ -43,6 +46,7 @@ public slots:
 
 private:
     BaseTool* m_pCurrentTool;
+    ToolType  m_eTabletBackupTool;
     QHash<ToolType, BaseTool*> m_toolSetHash;
 
 };

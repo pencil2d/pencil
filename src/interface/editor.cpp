@@ -570,15 +570,13 @@ void Editor::croptoselect()
 
 void Editor::flipX()
 {
-    m_pScribbleArea->setCurrentTool(MOVE);
-    m_pScribbleArea->switchTool(MOVE);
+    toolManager()->setCurrentTool( MOVE );
     m_pScribbleArea->myFlipX = -m_pScribbleArea->myFlipX;
 }
 
 void Editor::flipY()
 {
-    m_pScribbleArea->setCurrentTool(MOVE);
-    m_pScribbleArea->switchTool(MOVE);
+    toolManager()->setCurrentTool( MOVE );
     m_pScribbleArea->myFlipY = -m_pScribbleArea->myFlipY;
 }
 

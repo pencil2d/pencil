@@ -104,8 +104,6 @@ public:
     BaseTool* getTool( ToolType eToolMode );
     void setCurrentTool( ToolType eToolMode );
     void setTemporaryTool( ToolType eToolMode );
-    void switchTool( ToolType type );
-
     void setPrevTool();
 
     QPointF pixelToPoint( QPointF pixel );
@@ -239,7 +237,6 @@ protected:
 
     PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
-    int tabletEraserBackupToolMode;
     bool modified;
     bool m_isSimplified;
 

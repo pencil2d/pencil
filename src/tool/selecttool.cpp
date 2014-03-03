@@ -2,6 +2,7 @@
 #include "layervector.h"
 #include "scribblearea.h"
 #include "layermanager.h"
+#include "toolmanager.h"
 #include "selecttool.h"
 
 SelectTool::SelectTool()
@@ -90,7 +91,8 @@ void SelectTool::mouseReleaseEvent(QMouseEvent *event)
         {
             if (m_pScribbleArea->somethingSelected)
             {
-                m_pScribbleArea->switchTool(MOVE);
+                m_pEditor->toolManager()->setCurrentTool( MOVE );
+
                 VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
                 m_pScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
                 if (m_pScribbleArea->mySelection.size() == QSizeF(0, 0))

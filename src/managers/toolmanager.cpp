@@ -15,8 +15,10 @@
 #include "pencilsettings.h"
 
 
-ToolManager::ToolManager(QObject* parent ) :
-    BaseManager( parent )
+ToolManager::ToolManager(QObject* parent ) 
+    : BaseManager( parent )
+    , m_pCurrentTool( nullptr )
+    , m_eTabletBackupTool( INVALID_TOOL )
 {
 }
 
@@ -144,5 +146,26 @@ void ToolManager::setPressure( int isPressureOn )
         currentTool()->properties.pressure = isPressureOn;
         emit penPressureValueChange( isPressureOn );
         emit toolPropertyChanged();
+    }
+}
+
+void ToolManager::tabletSwitchToEraser()
+{
+    if ( currentTool()->type() != ERASER )
+    {
+        m_eTabletBackupTool = currentTool()->type();
+        setCurrentTool( ERASER );
+    }
+}
+
+void ToolManager::tabletRestorePrevTool()
+{
+    if ( currentTool()->type() != ERASER )
+    {
+        if ( m_eTabletBackupTool == INVALID_TOOL )
+        {
+            m_eTabletBackupTool = PEN;
+        }
+        setCurrentTool( m_eTabletBackupTool );
     }
 }

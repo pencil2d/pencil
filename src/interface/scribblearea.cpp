@@ -44,7 +44,7 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
 
     followContour = 0;
 
-    curveOpacity = (100 - settings.value( "curveOpacity" ).toInt()) / 100.0; // default value is 1.0
+    curveOpacity = ( 100 - settings.value( "curveOpacity" ).toInt() ) / 100.0; // default value is 1.0
     int curveSmoothingLevel = settings.value( "curveSmoothing" ).toInt();
     if ( curveSmoothingLevel == 0 ) { curveSmoothingLevel = 20; settings.setValue( "curveSmoothing", curveSmoothingLevel ); } // default
     curveSmoothing = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -65,10 +65,8 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
         shadows = true;
     }
 
-    tabletEraserBackupToolMode = -1;
-
     // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner and don't change when the widget is resized.
-    setAttribute( Qt::WA_StaticContents ); 
+    setAttribute( Qt::WA_StaticContents );
     modified = false;
     m_isSimplified = false;
     m_usePressure = true;
@@ -179,7 +177,7 @@ void ScribbleArea::setShadows( int x )
 
 void ScribbleArea::setToolCursors( int x )
 {
-    pencilSettings()->setValue( SETTING_TOOL_CURSOR, (x != 0) );
+    pencilSettings()->setValue( SETTING_TOOL_CURSOR, ( x != 0 ) );
 }
 
 void ScribbleArea::setStyle( int x )
@@ -260,7 +258,7 @@ void ScribbleArea::updateFrame( int frame )
     QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
     readCanvasFromCache = true;
 
-	update();
+    update();
 }
 
 void ScribbleArea::updateAllFrames()
@@ -282,7 +280,7 @@ void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
     for ( int i = 0; i < m_pEditor->m_pObject->getLayerCount(); i++ )
     {
         Layer *layer = m_pEditor->m_pObject->getLayer( i );
-        if ( layer->type() == Layer::VECTOR ) { ((LayerVector *)layer)->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true ); }
     }
     updateFrame( m_pEditor->layerManager()->currentFrameIndex() );
 }
@@ -292,7 +290,7 @@ void ScribbleArea::updateAllVectorLayers()
     for ( int i = 0; i < m_pEditor->m_pObject->getLayerCount(); i++ )
     {
         Layer *layer = m_pEditor->m_pObject->getLayer( i );
-        if ( layer->type() == Layer::VECTOR ) { ((LayerVector *)layer)->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->setModified( true ); }
     }
     updateAllFrames();
 }
@@ -302,11 +300,11 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
     Layer *layer = m_pEditor->m_pObject->getLayer( layerNumber );
     if ( layer->type() == Layer::VECTOR )
     {
-        ((LayerVector *)layer)->setModified( frameNumber, true );
+        ( ( LayerVector * )layer )->setModified( frameNumber, true );
     }
     if ( layer->type() == Layer::BITMAP )
     {
-        ((LayerImage *)layer)->setModified( frameNumber, true );
+        ( ( LayerImage * )layer )->setModified( frameNumber, true );
     }
 
     emit modification( layerNumber );
@@ -343,12 +341,12 @@ void ScribbleArea::keyPressed( QKeyEvent *event )
     }
 
     // --- fixed control key shortcuts ---
-    if ( event->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier) )
+    if ( event->modifiers() == ( Qt::ControlModifier | Qt::ShiftModifier ) )
     {
         qreal width = currentTool()->properties.width;
         qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
-        m_pEditor->toolManager()->setWidth( width + (200 - width) / 41 ); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
+        m_pEditor->toolManager()->setWidth( width + ( 200 - width ) / 41 ); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
         m_pEditor->toolManager()->setFeather( feather ); //anticipates future implementation of feather (not used yet).
         return;
     }
@@ -465,7 +463,7 @@ void ScribbleArea::keyReleaseEvent( QKeyEvent *event )
         return;
     }
     if ( currentTool()->keyReleaseEvent( event ) )
-	{
+    {
         // has been handled by tool
         return;
     }
@@ -495,35 +493,16 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
     m_strokeManager->tabletEvent( event );
 
     //qDebug() << event->hiResGlobalPos();
-    currentTool()->adjustPressureSensitiveProperties( pow( (float)m_strokeManager->getPressure(), 2.0f ),
-                                                     event->pointerType() == QTabletEvent::Cursor );
+    currentTool()->adjustPressureSensitiveProperties( pow( ( float )m_strokeManager->getPressure(), 2.0f ),
+                                                      event->pointerType() == QTabletEvent::Cursor );
 
     if ( event->pointerType() == QTabletEvent::Eraser )
     {
-        if ( tabletEraserBackupToolMode == -1 )
-        {
-            tabletEraserBackupToolMode = currentTool()->type();
-            // memorise which tool was being used before switching to the eraser
-            emit eraserOn();
-        }
+        getEditor()->toolManager()->tabletSwitchToEraser();
     }
     else
     {
-        if ( tabletEraserBackupToolMode != -1 )   // restore the tool in use
-        {
-            switch ( tabletEraserBackupToolMode )
-            {
-            case PENCIL:
-                emit pencilOn();
-                break;
-            case PEN:
-                emit penOn();
-                break;
-            default:
-                emit pencilOn();
-            }
-            tabletEraserBackupToolMode = -1;
-        }
+        getEditor()->toolManager()->tabletRestorePrevTool();
     }
     event->ignore(); // indicates that the tablet event is not accepted yet, so that it is propagated as a mouse event)
 }
@@ -554,7 +533,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
         }
     }
 
-    if ( !(event->button() == Qt::NoButton) )    // if the user is pressing the left or right button
+    if ( !( event->button() == Qt::NoButton ) )    // if the user is pressing the left or right button
     {
         lastPixel = m_strokeManager->getLastPressPixel();
         bool invertible = true;
@@ -563,25 +542,25 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
 
     // ----- assisted tool adjusment -- todo: simplify this
     if ( event->button() == Qt::LeftButton ) {
-        if ( (event->modifiers() == Qt::ShiftModifier) && (currentTool()->properties.width > -1) )
+        if ( ( event->modifiers() == Qt::ShiftModifier ) && ( currentTool()->properties.width > -1 ) )
         {
             //adjust width if not locked
             currentTool()->startAdjusting( WIDTH, 1 );
             return;
         }
-        if ( (event->modifiers() == Qt::ControlModifier) && (currentTool()->properties.feather > -1) )
+        if ( ( event->modifiers() == Qt::ControlModifier ) && ( currentTool()->properties.feather > -1 ) )
         {
             //adjust feather if not locked
             currentTool()->startAdjusting( FEATHER, 1 );
             return;
         }
-        if ( (event->modifiers() == (Qt::ShiftModifier | Qt::AltModifier)) && (currentTool()->properties.width > -1) )
+        if ( ( event->modifiers() == ( Qt::ShiftModifier | Qt::AltModifier ) ) && ( currentTool()->properties.width > -1 ) )
         {
             //adjust width if not locked
             currentTool()->startAdjusting( WIDTH, 0 );
             return;
         }
-        if ( (event->modifiers() == (Qt::ControlModifier | Qt::AltModifier)) && (currentTool()->properties.feather > -1) )
+        if ( ( event->modifiers() == ( Qt::ControlModifier | Qt::AltModifier ) ) && ( currentTool()->properties.feather > -1 ) )
         {
             //adjust feather if not locked
             currentTool()->startAdjusting( FEATHER, 0 );
@@ -595,22 +574,22 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
 
     if ( layer->type() == Layer::VECTOR )
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         if ( vectorImage == NULL ) { return; }
     }
 
     if ( layer->type() == Layer::BITMAP )
     {
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         if ( bitmapImage == NULL ) { return; }
     }
 
-    if ( !layer->visible && currentTool()->type() != HAND && (event->button() != Qt::RightButton) )
+    if ( !layer->visible && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
     {
         QMessageBox::warning( this, tr( "Warning" ),
-                             tr( "You are drawing on a hidden layer! Please select another layer (or make the current layer visible)." ),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok );
+                              tr( "You are drawing on a hidden layer! Please select another layer (or make the current layer visible)." ),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok );
         mouseInUse = false;
         return;
     }
@@ -641,12 +620,12 @@ bool ScribbleArea::areLayersSane() const
     if ( layer == NULL ) { return false; }
     if ( layer->type() == Layer::VECTOR )
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         if ( vectorImage == NULL ) { return false; }
     }
     if ( layer->type() == Layer::BITMAP )
     {
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         if ( bitmapImage == NULL ) { return false; }
     }
     // ---- end checks ------
@@ -682,7 +661,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if ( currentTool()->isAdjusting )
         {
-            currentTool()->adjustCursor(offset.x(),offset.y()); //updates cursors given org width or feather and x
+            currentTool()->adjustCursor( offset.x(), offset.y() ); //updates cursors given org width or feather and x
             return;
         }
     }
@@ -722,11 +701,9 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
 
     currentTool()->mouseReleaseEvent( event );
 
-    if (currentTool()->type() == EYEDROPPER)
+    if ( currentTool()->type() == EYEDROPPER )
     {
-        setCurrentTool(prevToolType);
-        switchTool(currentTool()->type());
-
+        setCurrentTool( prevToolType );
     }
 
     // ---- last check (at the very bottom of mouseRelease) ----
@@ -750,7 +727,7 @@ void ScribbleArea::paintBitmapBuffer()
     // ---- checks ------
     if ( layer == NULL ) { return; }
     // Clear the temporary pixel path
-    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+    BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
     if ( targetImage != NULL )
     {
         QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
@@ -769,7 +746,7 @@ void ScribbleArea::paintBitmapBuffer()
                     Layer *layer2 = m_pEditor->getCurrentLayer( -1 );
                     if ( layer2->type() == Layer::BITMAP )
                     {
-                        targetImage = ((LayerBitmap *)layer2)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+                        targetImage = ( ( LayerBitmap * )layer2 )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
                     }
                 }
             }
@@ -790,7 +767,7 @@ void ScribbleArea::paintBitmapBuffer()
     bufferImg->clear();
 
     //setModified(layer, editor->currentFrame);
-    ((LayerImage *)layer)->setModified( m_pEditor->layerManager()->currentFrameIndex(), true );
+    ( ( LayerImage * )layer )->setModified( m_pEditor->layerManager()->currentFrameIndex(), true );
     emit modification();
     QPixmapCache::remove( "frame" + QString::number( m_pEditor->layerManager()->currentFrameIndex() ) );
     readCanvasFromCache = false;
@@ -844,7 +821,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         painter.setWorldMatrixEnabled( true );
         painter.setPen( Qt::NoPen );
         painter.setBrush( backgroundBrush );
-        painter.drawRect( (myTempView).inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
+        painter.drawRect( ( myTempView ).inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
     }
 
     // process the canvas (or not)
@@ -865,7 +842,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     {
         Layer *layer = m_pEditor->getCurrentLayer();
         if ( !layer ) { return; }
-        if ( layer->type() == Layer::VECTOR ) { ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->setModified( true ); }
         updateCanvas( m_pEditor->layerManager()->currentFrameIndex(), event->rect() );
     }
     // paints the canvas
@@ -882,7 +859,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
 
         if ( layer->type() == Layer::VECTOR )
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+            VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
 
             if ( currentTool()->type() == SMUDGE || currentTool()->type() == HAND )
             {
@@ -905,8 +882,8 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                     for ( int vertexNumber = -1; vertexNumber < vectorImage->getCurveSize( curveNumber ); vertexNumber++ )
                     {
                         QPointF vertexPoint = vectorImage->getVertex( curveNumber, vertexNumber );
-                        QRectF rectangle = QRectF( (myView * transMatrix * centralView).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                        if ( rect().contains( (myView * transMatrix * centralView).map( vertexPoint ).toPoint() ) )
+                        QRectF rectangle = QRectF( ( myView * transMatrix * centralView ).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                        if ( rect().contains( ( myView * transMatrix * centralView ).map( vertexPoint ).toPoint() ) )
                         {
                             painter.drawRect( rectangle.toRect() );
                             //bufferImg->drawRect( rectangle.toRect(), pen2, colour, QPainter::CompositionMode_SourceOver, false);
@@ -920,7 +897,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                 {
                     VertexRef vertexRef = vectorSelection.vertex.at( k );
                     QPointF vertexPoint = vectorImage->getVertex( vertexRef );
-                    QRectF rectangle0 = QRectF( (myView * transMatrix * centralView).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                    QRectF rectangle0 = QRectF( ( myView * transMatrix * centralView ).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
                     painter.drawRect( rectangle0.toRect() );
                 }
                 // ----- paints the closest vertices
@@ -933,7 +910,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                         VertexRef vertexRef = closestVertices.at( k );
                         QPointF vertexPoint = vectorImage->getVertex( vertexRef );
                         //if ( vectorImage->isSelected(vertexRef) ) vertexPoint = selectionTransformation.map( vertexPoint );
-                        QRectF rectangle = QRectF( (myView * transMatrix * centralView).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                        QRectF rectangle = QRectF( ( myView * transMatrix * centralView ).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
                         painter.drawRect( rectangle.toRect() );
                         //bufferImg->drawRect( rectangle.toRect(), pen2, colour, QPainter::CompositionMode_SourceOver, false);
                     }
@@ -952,19 +929,19 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                 {
                     qreal scale = myTempView.determinant(); //todo: check whether it's correct (det = area?)
                     //qreal scale = sqrt(myTempView.det()); or qreal scale = sqrt(myTempView.m11()*myTempView.m22());
-                    int idx = closestCurves[k];
+                    int idx = closestCurves[ k ];
                     if ( vectorImage->curve.size() <= idx )
                     {
                         // safety check
                         continue;
                     }
-                    BezierCurve myCurve = vectorImage->curve[closestCurves[k]];
+                    BezierCurve myCurve = vectorImage->curve[ closestCurves[ k ] ];
                     if ( myCurve.isPartlySelected() )
                     {
                         myCurve.transform( selectionTransformation );
                     }
                     QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
-                    bufferImg->drawPath( (myView * transMatrix * centralView).map( path ), pen2, colour, QPainter::CompositionMode_SourceOver, m_antialiasing );
+                    bufferImg->drawPath( ( myView * transMatrix * centralView ).map( path ), pen2, colour, QPainter::CompositionMode_SourceOver, m_antialiasing );
                 }
             }
         }
@@ -979,12 +956,12 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         }
 
         // paints the selection outline
-        if ( somethingSelected && (myTempTransformedSelection.isValid() || m_moveMode == ROTATION) ) // @revise
+        if ( somethingSelected && ( myTempTransformedSelection.isValid() || m_moveMode == ROTATION ) ) // @revise
         {
             // outline of the transformed selection
             painter.setWorldMatrixEnabled( false );
             painter.setOpacity( 1.0 );
-            QPolygon tempRect = (myView * transMatrix * centralView).mapToPolygon( myTempTransformedSelection.normalized().toRect() );
+            QPolygon tempRect = ( myView * transMatrix * centralView ).mapToPolygon( myTempTransformedSelection.normalized().toRect() );
 
             Layer *layer = m_pEditor->getCurrentLayer();
             if ( layer != NULL )
@@ -1016,15 +993,15 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     // clips to the frame of the camera
     if ( layer->type() == Layer::CAMERA )
     {
-        QRect rect = ((LayerCamera *)layer)->getViewRect();
+        QRect rect = ( ( LayerCamera * )layer )->getViewRect();
         rect.translate( width() / 2, height() / 2 );
         painter.setWorldMatrixEnabled( false );
         painter.setPen( Qt::NoPen );
         painter.setBrush( QColor( 0, 0, 0, 160 ) );
-        painter.drawRect( QRect( 0, 0, width(), (height() - rect.height()) / 2 ) );
-        painter.drawRect( QRect( 0, rect.bottom(), width(), (height() - rect.height()) / 2 ) );
-        painter.drawRect( QRect( 0, rect.top(), (width() - rect.width()) / 2, rect.height() - 1 ) );
-        painter.drawRect( QRect( (width() + rect.width()) / 2, rect.top(), (width() - rect.width()) / 2, rect.height() - 1 ) );
+        painter.drawRect( QRect( 0, 0, width(), ( height() - rect.height() ) / 2 ) );
+        painter.drawRect( QRect( 0, rect.bottom(), width(), ( height() - rect.height() ) / 2 ) );
+        painter.drawRect( QRect( 0, rect.top(), ( width() - rect.width() ) / 2, rect.height() - 1 ) );
+        painter.drawRect( QRect( ( width() + rect.width() ) / 2, rect.top(), ( width() - rect.width() ) / 2, rect.height() - 1 ) );
         painter.setPen( Qt::black );
         painter.setBrush( Qt::NoBrush );
         painter.drawRect( rect );
@@ -1035,7 +1012,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( QRect( 0, 0, width(), height() ) );
     // shadow
-    if ( shadows && !m_pEditor->playing && (!mouseInUse || currentTool()->type() == HAND) )
+    if ( shadows && !m_pEditor->playing && ( !mouseInUse || currentTool()->type() == HAND ) )
     {
         int radius1 = 12;
         int radius2 = 8;
@@ -1099,20 +1076,20 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     for ( int i = iStart; i <= iEnd; i++ )
     {
         opacity = 1.0;
-        if ( i != m_pEditor->layerManager()->currentLayerIndex() && (m_showAllLayers == 1) ) { opacity = 0.4; }
+        if ( i != m_pEditor->layerManager()->currentLayerIndex() && ( m_showAllLayers == 1 ) ) { opacity = 0.4; }
         Q_ASSERT_X( m_pEditor != NULL, "ScribbleArea.cpp", "Editor should not be null." );
         Q_ASSERT_X( m_pEditor->getCurrentLayer(), "", "Layer should not be null." );
 
         //qDebug( "Layer Count = %d, current=%d", object->getLayerCount(), i );
 
         if ( m_pEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
-        Layer *layer = (object->getLayer( i ));
-        if ( layer->visible && (m_showAllLayers > 0 || i == m_pEditor->layerManager()->currentLayerIndex()) ) // change && to || for all layers
+        Layer *layer = ( object->getLayer( i ) );
+        if ( layer->visible && ( m_showAllLayers > 0 || i == m_pEditor->layerManager()->currentLayerIndex() ) ) // change && to || for all layers
         {
             // paints the bitmap images
             if ( layer->type() == Layer::BITMAP )
             {
-                LayerBitmap *layerBitmap = (LayerBitmap *)layer;
+                LayerBitmap *layerBitmap = ( LayerBitmap * )layer;
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
@@ -1153,7 +1130,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
 
                     // next frame (onion skin)
                     if ( onionNext )
-					{
+                    {
                         BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, 1 );
                         if ( nextImage != NULL )
                         {
@@ -1173,7 +1150,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                             nextImage3->paintImage( painter );
                         }
                         if ( onionBlue || onionRed )
-						{
+                        {
                             painter.setOpacity( 1.0 );
                             painter.setCompositionMode( QPainter::CompositionMode_Lighten );
                             if ( onionBlue && onionRed && onionPrev ) {
@@ -1191,12 +1168,12 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             // paints the vector images onion skins
             if ( layer->type() == Layer::VECTOR )
             {
-                LayerVector *layerVector = (LayerVector *)layer;
+                LayerVector *layerVector = ( LayerVector * )layer;
                 QImage *pImage = layerVector->getLastImageAtFrame( frame, 0,
-																  sz,
-																  m_isSimplified, m_showThinLines,
-																  curveOpacity,
-																  m_antialiasing );
+                                                                   sz,
+                                                                   m_isSimplified, m_showThinLines,
+                                                                   curveOpacity,
+                                                                   m_antialiasing );
 
                 if ( pImage != NULL )
                 {
@@ -1205,30 +1182,30 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     // previous frame (onion skin)
                     if ( onionPrev ) {
                         QImage *previousImage = layerVector->getLastImageAtFrame( frame, -1, sz,
-																				 m_isSimplified,
-																				 m_showThinLines,
-																				 curveOpacity,
-																				 m_antialiasing );
+                                                                                  m_isSimplified,
+                                                                                  m_showThinLines,
+                                                                                  curveOpacity,
+                                                                                  m_antialiasing );
                         if ( previousImage != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *previousImage );
                         }
                         QImage* previousImage2 = layerVector->getLastImageAtFrame( frame, -2, sz,
-																				  m_isSimplified,
-																				  m_showThinLines,
-																				  curveOpacity,
-																				  m_antialiasing );
+                                                                                   m_isSimplified,
+                                                                                   m_showThinLines,
+                                                                                   curveOpacity,
+                                                                                   m_antialiasing );
                         if ( previousImage2 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *previousImage2 );
                         }
-                        QImage *previousImage3 = layerVector->getLastImageAtFrame(frame, -3, sz,
-																				  m_isSimplified,
-																				  m_showThinLines,
-																				  curveOpacity,
-																				  m_antialiasing );
+                        QImage *previousImage3 = layerVector->getLastImageAtFrame( frame, -3, sz,
+                                                                                   m_isSimplified,
+                                                                                   m_showThinLines,
+                                                                                   curveOpacity,
+                                                                                   m_antialiasing );
                         if ( previousImage3 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
@@ -1256,7 +1233,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                             painter.drawImage( QPoint( 0, 0 ), *nextImage );
                         }
                         QImage* nextImage2 = layerVector->getLastImageAtFrame( frame, 2, sz,
-																			  m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
+                                                                               m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
                         if ( nextImage2 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
@@ -1289,22 +1266,22 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
     for ( int i = 0; i < object->getLayerCount(); i++ )
     {
         opacity = 1.0;
-        if ( i != m_pEditor->layerManager()->currentLayerIndex() && (m_showAllLayers == 1) ) { opacity = 0.4; }
+        if ( i != m_pEditor->layerManager()->currentLayerIndex() && ( m_showAllLayers == 1 ) ) { opacity = 0.4; }
 
         if ( m_pEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
-        Layer *layer = (object->getLayer( i ));
-        if ( layer->visible && (m_showAllLayers > 0 || i == m_pEditor->layerManager()->currentLayerIndex()) )
+        Layer *layer = ( object->getLayer( i ) );
+        if ( layer->visible && ( m_showAllLayers > 0 || i == m_pEditor->layerManager()->currentLayerIndex() ) )
         {
             // paints the bitmap images
             if ( layer->type() == Layer::BITMAP )
             {
-                LayerBitmap *layerBitmap = (LayerBitmap *)layer;
+                LayerBitmap *layerBitmap = ( LayerBitmap * )layer;
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
                     painter.setWorldMatrixEnabled( true );
                     painter.setOpacity( opacity );
-                    if ( i == m_pEditor->layerManager()->currentLayerIndex() && somethingSelected && (myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
+                    if ( i == m_pEditor->layerManager()->currentLayerIndex() && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         painter.setClipping( true );
@@ -1326,8 +1303,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         rm.scale( myFlipX, myFlipY );
                         rm.rotate( myRotatedAngle );
                         QImage rotImg = selectionClip.image->transformed( rm );
-                        QPoint dxy = QPoint( (myTempTransformedSelection.width() - rotImg.rect().width()) / 2,
-                                             (myTempTransformedSelection.height() - rotImg.rect().height()) / 2 );
+                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
+                                             ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
                         *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
                         selectionClip.boundaries.translate( dxy );
                         selectionClip.paintImage( painter );
@@ -1346,7 +1323,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             // paints the vector images
             if ( layer->type() == Layer::VECTOR )
             {
-                LayerVector *layerVector = (LayerVector *)layer;
+                LayerVector *layerVector = ( LayerVector * )layer;
                 VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( frame, 0 );
                 if ( somethingSelected )
                 {
@@ -1356,8 +1333,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
                 QImage* image = layerVector->getLastImageAtFrame( frame, 0, sz,
-																 m_isSimplified, m_showThinLines,
-																 curveOpacity, m_antialiasing );
+                                                                  m_isSimplified, m_showThinLines,
+                                                                  curveOpacity, m_antialiasing );
                 if ( image != NULL )
                 {
                     painter.setWorldMatrixEnabled( false );
@@ -1439,17 +1416,17 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     int b = colour.blue();
     qreal a = colour.alphaF();
     gradient.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( offset + 0.0 * (1.0 - offset), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( offset + 0.1 * (1.0 - offset), QColor( r, g, b, qRound( a * 245 * opacity ) ) );
-    gradient.setColorAt( offset + 0.2 * (1.0 - offset), QColor( r, g, b, qRound( a * 217 * opacity ) ) );
-    gradient.setColorAt( offset + 0.3 * (1.0 - offset), QColor( r, g, b, qRound( a * 178 * opacity ) ) );
-    gradient.setColorAt( offset + 0.4 * (1.0 - offset), QColor( r, g, b, qRound( a * 134 * opacity ) ) );
-    gradient.setColorAt( offset + 0.5 * (1.0 - offset), QColor( r, g, b, qRound( a * 94 * opacity ) ) );
-    gradient.setColorAt( offset + 0.6 * (1.0 - offset), QColor( r, g, b, qRound( a * 60 * opacity ) ) );
-    gradient.setColorAt( offset + 0.7 * (1.0 - offset), QColor( r, g, b, qRound( a * 36 * opacity ) ) );
-    gradient.setColorAt( offset + 0.8 * (1.0 - offset), QColor( r, g, b, qRound( a * 20 * opacity ) ) );
-    gradient.setColorAt( offset + 0.9 * (1.0 - offset), QColor( r, g, b, qRound( a * 10 * opacity ) ) );
-    gradient.setColorAt( offset + 1.0 * (1.0 - offset), QColor( r, g, b, 0 ) );
+    gradient.setColorAt( offset + 0.0 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
+    gradient.setColorAt( offset + 0.1 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 245 * opacity ) ) );
+    gradient.setColorAt( offset + 0.2 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 217 * opacity ) ) );
+    gradient.setColorAt( offset + 0.3 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 178 * opacity ) ) );
+    gradient.setColorAt( offset + 0.4 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 134 * opacity ) ) );
+    gradient.setColorAt( offset + 0.5 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 94 * opacity ) ) );
+    gradient.setColorAt( offset + 0.6 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 60 * opacity ) ) );
+    gradient.setColorAt( offset + 0.7 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 36 * opacity ) ) );
+    gradient.setColorAt( offset + 0.8 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 20 * opacity ) ) );
+    gradient.setColorAt( offset + 0.9 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 10 * opacity ) ) );
+    gradient.setColorAt( offset + 1.0 * ( 1.0 - offset ), QColor( r, g, b, 0 ) );
 }
 
 
@@ -1470,9 +1447,9 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
         //tempBitmapImage->drawRect( rectangle, Qt::NoPen, QColor(0,0,0,0), QPainter::CompositionMode_Source, antialiasing);
         Layer *layer = m_pEditor->getCurrentLayer();
         if ( layer == NULL ) { return; }
-        int index = ((LayerImage *)layer)->getLastIndexAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
+        int index = ( ( LayerImage * )layer )->getLastIndexAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
         if ( index == -1 ) { return; }
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         if ( bitmapImage == NULL ) { qDebug() << "NULL image pointer!" << m_pEditor->layerManager()->currentLayerIndex() << m_pEditor->layerManager()->currentFrameIndex();  return; }
         BitmapImage::floodFill( bitmapImage, tempBitmapImage, thePoint.toPoint(), qRgba( 255, 255, 255, 0 ), fillColour.rgb(), 20 * 20, false );
         tempBitmapImage->drawRect( rectangle.toRect(), Qt::NoPen, radialGrad, QPainter::CompositionMode_SourceIn, m_antialiasing );
@@ -1526,7 +1503,7 @@ void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPoint
 
 void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
 {
-    QPointF delta = (thePoint_ - srcPoint_); // increment vector
+    QPointF delta = ( thePoint_ - srcPoint_ ); // increment vector
     QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
     QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
@@ -1587,10 +1564,10 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
     if ( points.size() > 0 )
     {
         QPen pen2( m_pEditor->colorManager()->frontColor(),
-                  getTool( PEN )->properties.width,
-                  Qt::SolidLine,
-                  Qt::RoundCap,
-                  Qt::RoundJoin );
+                   getTool( PEN )->properties.width,
+                   Qt::SolidLine,
+                   Qt::RoundCap,
+                   Qt::RoundJoin );
         QPainterPath tempPath = BezierCurve( points ).getSimplePath();
         tempPath.lineTo( endPoint );
         QRect updateRect = myTempView.mapRect( tempPath.boundingRect().toRect() ).adjusted( -10, -10, 10, 10 );
@@ -1638,12 +1615,12 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
         curve.setVariableWidth( false );
         curve.setInvisibility( m_makeInvisible );
         //curve.setSelected(true);
-        ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->addCurve( curve, qAbs( myTempView.m11() ) );
+        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->addCurve( curve, qAbs( myTempView.m11() ) );
     }
     if ( layer->type() == Layer::BITMAP )
     {
         drawPolyline( points, points.last() );
-        BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         bitmapImage->paste( bufferImg );
     }
     bufferImg->clear();
@@ -1720,7 +1697,7 @@ void ScribbleArea::setView( QMatrix view )
         Layer *layer = m_pEditor->m_pObject->getLayer( i );
         if ( layer->type() == Layer::VECTOR )
         {
-            ((LayerVector *)layer)->setView( view * centralView );
+            ( ( LayerVector * )layer )->setView( view * centralView );
         }
     }
     myTempView = view * centralView;
@@ -1743,8 +1720,8 @@ QMatrix ScribbleArea::getView()
     }
     if ( layer->type() == Layer::CAMERA )
     {
-        return ((LayerCamera *)layer)->getViewAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
-        qDebug() << "viewCamera" << ((LayerCamera *)layer)->getViewAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
+        return ( ( LayerCamera * )layer )->getViewAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
+        qDebug() << "viewCamera" << ( ( LayerCamera * )layer )->getViewAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
     }
     else
     {
@@ -1759,7 +1736,7 @@ QRectF ScribbleArea::getViewRect()
     if ( layer == NULL ) { return rect; }
     if ( layer->type() == Layer::CAMERA )
     {
-        return ((LayerCamera *)layer)->getViewRect();
+        return ( ( LayerCamera * )layer )->getViewRect();
     }
     else
     {
@@ -1787,7 +1764,7 @@ void ScribbleArea::applyTransformationMatrix()
     clearBitmapBuffer();
     if ( layer->type() == Layer::CAMERA )
     {
-        LayerCamera *layerCamera = (LayerCamera *)layer;
+        LayerCamera *layerCamera = ( LayerCamera * )layer;
         QMatrix view = layerCamera->getViewAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
         layerCamera->loadImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), view * transMatrix );
         //Camera* camera = ((LayerCamera*)layer)->getLastCameraAtFrame(editor->currentFrame, 0);
@@ -1812,7 +1789,7 @@ void ScribbleArea::calculateSelectionRect()
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         vectorImage->calculateSelectionRect();
         setSelection( vectorImage->getSelectionRect(), true );
     }
@@ -1821,10 +1798,10 @@ void ScribbleArea::calculateSelectionRect()
 void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 {
     qreal c1x, c1y, c2x, c2y, scaleX, scaleY;
-    c1x = 0.5 * (myTempTransformedSelection.left() + myTempTransformedSelection.right());
-    c1y = 0.5 * (myTempTransformedSelection.top() + myTempTransformedSelection.bottom());
-    c2x = 0.5 * (mySelection.left() + mySelection.right());
-    c2y = 0.5 * (mySelection.top() + mySelection.bottom());
+    c1x = 0.5 * ( myTempTransformedSelection.left() + myTempTransformedSelection.right() );
+    c1y = 0.5 * ( myTempTransformedSelection.top() + myTempTransformedSelection.bottom() );
+    c2x = 0.5 * ( mySelection.left() + mySelection.right() );
+    c2y = 0.5 * ( mySelection.top() + mySelection.bottom() );
     if ( mySelection.width() == 0 ) { scaleX = 1.0; }
     else { scaleX = myTempTransformedSelection.width() / mySelection.width(); }
     if ( mySelection.height() == 0 ) { scaleY = 1.0; }
@@ -1846,15 +1823,15 @@ void ScribbleArea::paintTransformedSelection()
 
     if ( somethingSelected )    // there is something selected
     {
-        if ( layer->type() == Layer::BITMAP && (myRotatedAngle != 0.0 || myTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1) )
+        if ( layer->type() == Layer::BITMAP && ( myRotatedAngle != 0.0 || myTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
         {
             //backup();
-            BitmapImage *bitmapImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+            BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
             if ( bitmapImage == NULL )
             {
                 qDebug() << "NULL image pointer!"
-                         << m_pEditor->layerManager()->currentLayerIndex()
-                         << m_pEditor->layerManager()->currentFrameIndex();
+                    << m_pEditor->layerManager()->currentLayerIndex()
+                    << m_pEditor->layerManager()->currentFrameIndex();
                 return;
             }
 
@@ -1866,8 +1843,8 @@ void ScribbleArea::paintTransformedSelection()
             BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
             selectionClip.transform( myTransformedSelection, smoothTransform );
             QImage rotImg = selectionClip.image->transformed( rm, Qt::SmoothTransformation );
-            QPoint dxy = QPoint( (myTempTransformedSelection.width() - rotImg.rect().width()) / 2,
-                                 (myTempTransformedSelection.height() - rotImg.rect().height()) / 2 );
+            QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
+                                 ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
             *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
             selectionClip.boundaries.translate( dxy );
             bitmapImage->clear( mySelection.toRect() );
@@ -1876,7 +1853,7 @@ void ScribbleArea::paintTransformedSelection()
         if ( layer->type() == Layer::VECTOR )
         {
             // vector transformation
-            LayerVector *layerVector = (LayerVector *)layer;
+            LayerVector *layerVector = ( LayerVector * )layer;
             VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
             vectorImage->applySelectionTransformation();
             selectionTransformation.reset();
@@ -1900,7 +1877,7 @@ void ScribbleArea::displaySelectionProperties()
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
-        LayerVector *layerVector = (LayerVector *)layer;
+        LayerVector *layerVector = ( LayerVector * )layer;
         VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         //vectorImage->applySelectionTransformation();
         if ( currentTool()->type() == MOVE )
@@ -1908,17 +1885,17 @@ void ScribbleArea::displaySelectionProperties()
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if ( selectedCurve != -1 )
             {
-                m_pEditor->toolManager()->setWidth( vectorImage->curve[selectedCurve].getWidth() );
+                m_pEditor->toolManager()->setWidth( vectorImage->curve[ selectedCurve ].getWidth() );
                 m_pEditor->toolManager()->setFeather( vectorImage->curve[ selectedCurve ].getFeather() );
                 m_pEditor->toolManager()->setInvisibility( vectorImage->curve[ selectedCurve ].isInvisible() );
                 m_pEditor->toolManager()->setPressure( vectorImage->curve[ selectedCurve ].getVariableWidth() );
-                m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[selectedCurve].getColourNumber() );
+                m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[ selectedCurve ].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if ( selectedArea != -1 )
             {
-                m_pEditor->colorManager()->pickColorNumber( vectorImage->area[selectedArea].colourNumber );
+                m_pEditor->colorManager()->pickColorNumber( vectorImage->area[ selectedArea ].colourNumber );
             }
         }
     }
@@ -1936,7 +1913,7 @@ void ScribbleArea::selectAll()
     }
     if ( layer->type() == Layer::VECTOR )
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
         vectorImage->selectAll();
         setSelection( vectorImage->getSelectionRect(), true );
     }
@@ -1956,7 +1933,7 @@ void ScribbleArea::deselectAll()
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
-        ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->deselectAll();
+        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->deselectAll();
     }
     somethingSelected = false;
     bufferImg->clear();
@@ -1982,7 +1959,7 @@ void ScribbleArea::toggleOnionPrev( bool checked )
     emit onionPrevChanged( onionPrev );
 }
 
-void ScribbleArea::toggleMultiLayerOnionSkin(bool checked)
+void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
 {
     m_isMultiLayerOnionSkin = checked;
     updateAllFrames();
@@ -2071,11 +2048,11 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
         {
             //image.setPixel( point.x(), point.y(), replacementColour);
             j = -1;
-            condition = (point.x() + j > 0);
+            condition = ( point.x() + j > 0 );
             while ( replaceImage->pixel( point.x() + j, point.y() ) != replacementColour  && BitmapImage::rgbDistance( targetImage->pixel( point.x() + j, point.y() ), targetColour ) < tolerance && condition )
             {
                 j = j - 1;
-                condition = (point.x() + j > 0);
+                condition = ( point.x() + j > 0 );
             }
             if ( !condition ) { floodFillError( 1 ); return; }
             if ( BitmapImage::rgbDistance( targetImage->pixel( point.x() + j, point.y() ), targetColour ) >= tolerance )      // bumps into the contour
@@ -2084,11 +2061,11 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
             }
 
             k = 1;
-            condition = (point.x() + k < targetImage->width() - 1);
+            condition = ( point.x() + k < targetImage->width() - 1 );
             while ( replaceImage->pixel( point.x() + k, point.y() ) != replacementColour  && BitmapImage::rgbDistance( targetImage->pixel( point.x() + k, point.y() ), targetColour ) < tolerance && condition )
             {
                 k = k + 1;
-                condition = (point.x() + k < targetImage->width() - 1);
+                condition = ( point.x() + k < targetImage->width() - 1 );
             }
             if ( !condition ) { floodFillError( 1 ); return; }
             if ( BitmapImage::rgbDistance( targetImage->pixel( point.x() + k, point.y() ), targetColour ) >= tolerance )      // bumps into the contour
@@ -2165,7 +2142,7 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
     // ---- points of sharp peaks may be missing in contourPoints ---> we correct for that
     for ( int i = 0; i < contourPoints.size(); i++ )
     {
-        VertexRef theNextVertex = contourPoints[i].nextVertex();
+        VertexRef theNextVertex = contourPoints[ i ].nextVertex();
         if ( !contourPoints.contains( theNextVertex ) )     // if the next vertex is not in the list of contour points
         {
             if ( contourPoints.contains( theNextVertex.nextVertex() ) )       // but the next-next vertex is...
@@ -2176,18 +2153,18 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
             QList<VertexRef> closePoints = vectorImage->getVerticesCloseTo( theNextVertex, tol2 );
             for ( int j = 0; j < closePoints.size(); j++ )
             {
-                if ( closePoints[j] != theNextVertex )     // ...or a point connected to the next vertex is
+                if ( closePoints[ j ] != theNextVertex )     // ...or a point connected to the next vertex is
                 {
-                    if ( contourPoints.contains( closePoints[j].nextVertex() ) || contourPoints.contains( closePoints[j].prevVertex() ) )
+                    if ( contourPoints.contains( closePoints[ j ].nextVertex() ) || contourPoints.contains( closePoints[ j ].prevVertex() ) )
                     {
                         contourPoints.append( theNextVertex );
-                        contourPoints.append( closePoints[j] );
+                        contourPoints.append( closePoints[ j ] );
                         //qDebug() << "----- found SHARP point (type 2a) ------";
                     }
                 }
             }
         }
-        VertexRef thePreviousVertex = contourPoints[i].prevVertex();
+        VertexRef thePreviousVertex = contourPoints[ i ].prevVertex();
         if ( !contourPoints.contains( thePreviousVertex ) )     // if the previous vertex is not in the list of contour points
         {
             if ( contourPoints.contains( thePreviousVertex.prevVertex() ) )       // but the prev-prev vertex is...
@@ -2198,12 +2175,12 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
             QList<VertexRef> closePoints = vectorImage->getVerticesCloseTo( thePreviousVertex, tol2 );
             for ( int j = 0; j < closePoints.size(); j++ )
             {
-                if ( closePoints[j] != thePreviousVertex )     // ...or a point connected to the previous vertex is
+                if ( closePoints[ j ] != thePreviousVertex )     // ...or a point connected to the previous vertex is
                 {
-                    if ( contourPoints.contains( closePoints[j].nextVertex() ) || contourPoints.contains( closePoints[j].prevVertex() ) )
+                    if ( contourPoints.contains( closePoints[ j ].nextVertex() ) || contourPoints.contains( closePoints[ j ].prevVertex() ) )
                     {
                         contourPoints.append( thePreviousVertex );
-                        contourPoints.append( closePoints[j] );
+                        contourPoints.append( closePoints[ j ] );
                         //qDebug() << "----- found SHARP point (type 2b) ------";
                     }
                 }
@@ -2291,14 +2268,14 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
                 {
                     qreal dist = vectorImage->getDistance( vertex, vertex0 );
                     //qDebug() << "is it a leave ? " << j << "dist = " << dist << "-" << tol2;
-                    if ( ((vertex.curveNumber == vertex0.curveNumber) && (qAbs( vertex.vertexNumber - vertex0.vertexNumber ) == 1)) || (dist < tol2) )
+                    if ( ( ( vertex.curveNumber == vertex0.curveNumber ) && ( qAbs( vertex.vertexNumber - vertex0.vertexNumber ) == 1 ) ) || ( dist < tol2 ) )
                     {
                         // we found a leaf close to the root of the tree - does the closed path contain the initial point?
                         QList<VertexRef> closedPath;
                         int pathIndex = j;
                         if ( dist > 0 ) { closedPath.prepend( vertex0 ); }
                         closedPath.prepend( tree.at( pathIndex ) );
-                        while ( (pathIndex = fatherNode.at( pathIndex )) != -1 )
+                        while ( ( pathIndex = fatherNode.at( pathIndex ) ) != -1 )
                         {
                             closedPath.prepend( tree.at( pathIndex ) );
                         }
@@ -2352,8 +2329,8 @@ void ScribbleArea::floodFillError( int errorType )
     QString message, error;
     if ( errorType == 1 ) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
     if ( errorType == 2 || errorType == 3 ) message = "Sorry! This doesn't always work."
-            "Please try again (zoom a bit, click at another location... )<br>"
-            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+        "Please try again (zoom a bit, click at another location... )<br>"
+        "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
 
     if ( errorType == 1 ) { error = "Out of bound."; }
     if ( errorType == 2 ) { error = "Could not find a closed path."; }
@@ -2376,6 +2353,7 @@ BaseTool* ScribbleArea::getTool( ToolType eToolType )
     return getEditor()->toolManager()->getTool( eToolType );
 }
 
+// TODO: check this method
 void ScribbleArea::setCurrentTool( ToolType eToolMode )
 {
     if ( currentTool() != NULL && eToolMode != currentTool()->type() )
@@ -2411,49 +2389,7 @@ void ScribbleArea::setTemporaryTool( ToolType eToolMode )
 {
     instantTool = true; // used to return to previous tool when finished (keyRelease).
     prevMode = currentTool()->type();
-    switchTool( eToolMode ); // emits for each case
-}
-
-void ScribbleArea::switchTool( ToolType type )
-{
-    switch ( type )
-    {
-    case PENCIL:
-        emit pencilOn();
-        break;
-    case ERASER:
-        emit eraserOn();
-        break;
-    case SELECT:
-        emit selectOn();
-        break;
-    case MOVE:
-        emit moveOn();
-        break;
-    case HAND:
-        emit handOn();
-        break;
-    case SMUDGE:
-        emit smudgeOn();
-        break;
-    case PEN:
-        emit penOn();
-        break;
-    case POLYLINE:
-        emit polylineOn();
-        break;
-    case BUCKET:
-        emit bucketOn();
-        break;
-    case EYEDROPPER:
-        emit eyedropperOn();
-        break;
-    case BRUSH:
-        emit brushOn();
-        break;
-    default:
-        break;
-    }
+    getEditor()->toolManager()->setCurrentTool( eToolMode );
 }
 
 void ScribbleArea::deleteSelection()
@@ -2464,8 +2400,8 @@ void ScribbleArea::deleteSelection()
         if ( layer == NULL ) { return; }
         m_pEditor->backup( tr( "DeleteSel" ) );
         closestCurves.clear();
-        if ( layer->type() == Layer::VECTOR ) { ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->deleteSelection(); }
-        if ( layer->type() == Layer::BITMAP ) { ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->clear( mySelection ); }
+        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->deleteSelection(); }
+        if ( layer->type() == Layer::BITMAP ) { ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->clear( mySelection ); }
         updateAllFrames();
     }
 }
@@ -2477,14 +2413,14 @@ void ScribbleArea::clearImage()
     if ( layer->type() == Layer::VECTOR )
     {
         m_pEditor->backup( tr( "ClearImg" ) ); // undo: only before change (just before)
-        ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->clear();
+        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->clear();
         closestCurves.clear();
         closestVertices.clear();
     }
     else if ( layer->type() == Layer::BITMAP )
     {
         m_pEditor->backup( tr( "ClearImg" ) );
-        ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->clear();
+        ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )->clear();
     }
     else
     {
@@ -2543,7 +2479,6 @@ void ScribbleArea::toggleShowAllLayers()
 
 void ScribbleArea::setPrevTool()
 {
-    setCurrentTool( prevMode );
-    switchTool( prevMode );
+    getEditor()->toolManager()->setCurrentTool( prevMode );
     instantTool = false;
 }
