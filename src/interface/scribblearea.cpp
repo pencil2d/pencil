@@ -529,7 +529,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
         {
             //qDebug() << "Hand Start " << event->pos();
             prevMode = currentTool()->type();
-            emit handOn();
+            getEditor()->toolManager()->setCurrentTool( HAND );
         }
     }
 

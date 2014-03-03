@@ -127,19 +127,7 @@ signals:
     void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
 
-    void pencilOn();
-    void eraserOn();
-    void selectOn();
-    void moveOn();
-    void penOn();
-    void handOn();
-    void polylineOn();
-    void bucketOn();
-    void eyedropperOn();
-    void brushOn();
-    void smudgeOn();
-
-    public slots:
+public slots:
     void clearImage();
     void calculateSelectionRect();
     void calculateSelectionTransformation();

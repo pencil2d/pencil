@@ -180,18 +180,6 @@ void Editor::makeConnections()
     connect( toolManager(), &ToolManager::toolChanged, m_pScribbleArea, &ScribbleArea::setCurrentTool );
     connect( toolManager(), &ToolManager::toolPropertyChanged, m_pScribbleArea, &ScribbleArea::updateToolCursor );
 
-    connect( m_pScribbleArea, &ScribbleArea::pencilOn, m_pToolSet, &ToolSetWidget::pencilOn );
-    connect( m_pScribbleArea, &ScribbleArea::eraserOn, m_pToolSet, &ToolSetWidget::eraserOn );
-    connect( m_pScribbleArea, &ScribbleArea::selectOn, m_pToolSet, &ToolSetWidget::selectOn );
-    connect( m_pScribbleArea, &ScribbleArea::moveOn, m_pToolSet, &ToolSetWidget::moveOn );
-    connect( m_pScribbleArea, &ScribbleArea::penOn, m_pToolSet, &ToolSetWidget::penOn );
-    connect( m_pScribbleArea, &ScribbleArea::handOn, m_pToolSet, &ToolSetWidget::handOn );
-    connect( m_pScribbleArea, &ScribbleArea::polylineOn, m_pToolSet, &ToolSetWidget::polylineOn );
-    connect( m_pScribbleArea, &ScribbleArea::bucketOn, m_pToolSet, &ToolSetWidget::bucketOn );
-    connect( m_pScribbleArea, &ScribbleArea::eyedropperOn, m_pToolSet, &ToolSetWidget::eyedropperOn );
-    connect( m_pScribbleArea, &ScribbleArea::brushOn, m_pToolSet, &ToolSetWidget::brushOn );
-    connect( m_pScribbleArea, &ScribbleArea::smudgeOn, m_pToolSet, &ToolSetWidget::smudgeOn );
-
     connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
     connect( this, &Editor::toggleMultiLayerOnionSkin, m_pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
