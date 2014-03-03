@@ -252,7 +252,7 @@ protected:
     QBrush backgroundBrush;
 public:
     BitmapImage* bufferImg; // used to pre-draw vector modifications
-protected:
+private:
     bool keyboardInUse;
     bool mouseInUse;
     QPointF lastPixel, currentPixel;
