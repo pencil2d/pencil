@@ -47,8 +47,6 @@ class ScribbleArea : public QWidget
 public:
     ScribbleArea( QWidget *parent = 0, Editor *m_pEditor = 0 );
 
-    void next( const int &i );
-
     void resetTools();
 
     void deleteSelection();

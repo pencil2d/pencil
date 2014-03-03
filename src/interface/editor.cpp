@@ -187,8 +187,8 @@ void Editor::makeConnections()
 
     connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
 
-    connect( m_pScribbleArea, SIGNAL( modification() ), this, SLOT( modification() ) );
-    connect( m_pScribbleArea, SIGNAL( modification( int ) ), this, SLOT( modification( int ) ) );
+    connect( m_pScribbleArea, SIGNAL( currentKeyFrameModification() ), this, SLOT( currentKeyFrameModification() ) );
+    connect( m_pScribbleArea, SIGNAL( currentKeyFrameModification( int ) ), this, SLOT( currentKeyFrameModification( int ) ) );
 
     connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
 }
@@ -352,7 +352,7 @@ void Editor::onionLayer3OpacityChangeSlot( int number )
     settings.setValue( "onionLayer3Opacity", number );
 }
 
-void Editor::modification()
+void Editor::currentKeyFrameModification()
 {
     modification( layerManager()->currentLayerIndex() );
 }

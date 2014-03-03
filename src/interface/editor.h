@@ -69,7 +69,6 @@ public:
     bool loopControl;
     int loopStart;
     int loopEnd;
-    int loopEnds;
     bool sound;
 
     ToolSetWidget* m_pToolSet;
@@ -123,7 +122,6 @@ public slots:
 
     void clearCurrentFrame();
 
-    void importImageSequence();
     void cut();
     void crop();
     void croptoselect();
@@ -139,6 +137,7 @@ public slots:
 
     void importImageFromDialog();
     void importImage( QString filePath );
+    void importImageSequence();
     void importSound( QString filePath = "" );
     bool importMov();
     void updateFrame( int frameNumber );
@@ -192,7 +191,7 @@ public slots:
     void onionLayer2OpacityChangeSlot( int );
     void onionLayer3OpacityChangeSlot( int );
 
-    void modification();
+    void currentKeyFrameModification();
     void modification( int );
     void backup( QString undoText );
     void backup( int layerNumber, int frameNumber, QString undoText );

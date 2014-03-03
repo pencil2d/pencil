@@ -104,7 +104,7 @@ void MainWindow2::makeTimeLineConnections()
     connect( m_pTimeLine, &TimeLine::startplayClick, editor, &Editor::startPlay );
     connect( m_pTimeLine, &TimeLine::duplicateKeyClick, editor, &Editor::duplicateKey );
 
-    connect( m_pTimeLine, &TimeLine::modification, editor, &Editor::modification );
+    connect( m_pTimeLine, &TimeLine::modification, editor, &Editor::currentKeyFrameModification );
     connect( m_pTimeLine, &TimeLine::addKeyClick, editor, &Editor::addNewKey );
     connect( m_pTimeLine, &TimeLine::removeKeyClick, editor, &Editor::removeKey );
 
