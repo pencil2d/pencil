@@ -21,25 +21,28 @@ LayerVector::LayerVector(Object* object) : LayerImage(object)
     m_eType = Layer::VECTOR;
     name = QString(tr("Vector Layer"));
     addImageAtFrame(1);
-    //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
 }
 
 LayerVector::~LayerVector()
 {
     while (!framesVector.empty())
+    {
         delete framesVector.takeFirst();
+    }
     while (!framesImage.empty())
+    {
         delete framesImage.takeFirst();
+    }
 }
 
 // ------
 
 QImage* LayerVector::getImageAtIndex( int index,
-									  QSize size,
-									  bool simplified,
-									  bool showThinLines,
-									  qreal curveOpacity,
-									  bool antialiasing)
+                                      QSize size,
+                                      bool simplified,
+                                      bool showThinLines,
+                                      qreal curveOpacity,
+                                      bool antialiasing)
 {
     if ( index < 0 || index >= framesImage.size() )
     {
@@ -57,8 +60,8 @@ QImage* LayerVector::getImageAtIndex( int index,
                 framesImage[index] = image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
             }
             vectorImage->outputImage(image, size, myView,
-									 simplified, showThinLines,
-									 curveOpacity, antialiasing );
+                                     simplified, showThinLines,
+                                     curveOpacity, antialiasing );
             vectorImage->setModified(false);
         }
         return image;
@@ -66,11 +69,11 @@ QImage* LayerVector::getImageAtIndex( int index,
 }
 
 QImage* LayerVector::getLastImageAtFrame(int frameNumber,
-										 int increment,
-										 QSize size,
-										 bool simplified, bool showThinLines,
-										 qreal curveOpacity,
-										 bool antialiasing )
+                                         int increment,
+                                         QSize size,
+                                         bool simplified, bool showThinLines,
+                                         qreal curveOpacity,
+                                         bool antialiasing )
 {
     int index = getLastIndexAtFrame(frameNumber);
     if (index == -1)
@@ -200,10 +203,10 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 }
 
 /*void LayerVector::loadImageAtFrame(VectorImage* picture, int frameNumber) {
-	if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
-	int index = getIndexAtFrame(frameNumber);
-	//image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-	framesVector[index] = picture;
+    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
+    int index = getIndexAtFrame(frameNumber);
+    //image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    framesVector[index] = picture;
 }*/
 
 void LayerVector::swap(int i, int j)

@@ -33,21 +33,21 @@ public:
     ~LayerVector();
 
     // method from layerImage
-    virtual bool addImageAtFrame(int frameNumber);
-    virtual void removeImageAtFrame(int frameNumber);
+    virtual bool addImageAtFrame(int frameNumber) override;
+    virtual void removeImageAtFrame(int frameNumber) override;
 
     void loadImageAtFrame(QString, int);
-    virtual QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool );
+    QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool );
     QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool );
 
-    bool saveImage(int, QString, int);
+    bool saveImage(int, QString, int) override;
     void setView(QMatrix view);
-    QString fileName(int index, int layerNumber);
+    QString fileName(int index, int layerNumber) override;
     void setModified(bool trueOrFalse);
-    void setModified(int frameNumber, bool trueOrFalse);
+    void setModified(int frameNumber, bool trueOrFalse) override;
 
-    QDomElement createDomElement(QDomDocument& doc);
-    virtual void loadDomElement(QDomElement element,  QString dataDirPath);
+    QDomElement createDomElement(QDomDocument& doc) override;
+    void loadDomElement(QDomElement element,  QString dataDirPath) override;
 
     // graphic representation -- could be put in another class
     VectorImage* getVectorImageAtIndex(int index);

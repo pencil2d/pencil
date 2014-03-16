@@ -61,12 +61,12 @@ public:
     virtual QString fileName(int index, int layerNumber);
 
     // graphic representation -- could be put in another class
-    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
+    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize) override;
     virtual void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-    void mousePress(QMouseEvent* event, int frameNumber);
-    void mouseMove(QMouseEvent* event, int frameNumber);
-    void mouseRelease(QMouseEvent* event, int frameNumber);
-    void mouseDoubleClick(QMouseEvent* event, int frameNumber);
+    void mousePress(QMouseEvent* event, int frameNumber) override;
+    void mouseMove(QMouseEvent* event, int frameNumber) override;
+    void mouseRelease(QMouseEvent* event, int frameNumber) override;
+    void mouseDoubleClick(QMouseEvent* event, int frameNumber) override;
 
 private:
     QList<Keyframe*> keyframes;
