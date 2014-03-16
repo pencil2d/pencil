@@ -57,7 +57,7 @@ public:
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
-    
+
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
@@ -232,16 +232,16 @@ private:
     Object* m_pObject;  // the object to be edited by the editor
 
     ScribbleArea* m_pScribbleArea;
-    MainWindow2* mainWindow;
+    MainWindow2* m_pMainWindow;
 
     ColorManager* m_colorManager;
     ToolManager* m_pToolManager;
     LayerManager* m_pLayerManager;
 
-    bool altpress;
+    bool m_isAltPressed;
     int numberOfModifications;
 
-    bool autosave;
+    bool m_isAutosave;
     int autosaveNumber;
 
     int onionLayer1Opacity;
@@ -253,12 +253,13 @@ private:
 
     // backup
     void clearBackup();
-    int lastModifiedFrame, lastModifiedLayer;
+    int lastModifiedFrame;
+    int lastModifiedLayer;
 
     // clipboard
     bool clipboardBitmapOk, clipboardVectorOk;
-    BitmapImage clipboardBitmapImage;
-    VectorImage clipboardVectorImage;
+    BitmapImage m_clipboardBitmapImage;
+    VectorImage m_clipboardVectorImage;
 
     // dialogs
     void createExportFramesSizeBox();

@@ -50,7 +50,7 @@ GNU General Public License for more details.
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
-Editor::Editor( MainWindow2* parent ) 
+Editor::Editor( MainWindow2* parent )
     : QWidget( parent )
     , m_pObject( nullptr )
     , exportFramesDialog( nullptr ) // will be created when needed
@@ -65,13 +65,13 @@ Editor::Editor( MainWindow2* parent )
     , exportMovieDialog_fpsBox( nullptr )
     , exportFlashDialog_compression( nullptr )
 {
-    mainWindow = parent;
+    m_pMainWindow = parent;
 
     QSettings settings( "Pencil", "Pencil" );
 
-    altpress = false;
+    m_isAltPressed = false;
     numberOfModifications = 0;
-    autosave = settings.value( "autosave" ).toBool();
+    m_isAutosave = settings.value( "autosave" ).toBool();
     autosaveNumber = settings.value( "autosaveNumber" ).toInt();
     if ( autosaveNumber == 0 )
     {
@@ -143,7 +143,7 @@ bool Editor::initialize()
     m_pLayerManager = new LayerManager( this );
     m_pToolManager = new ToolManager( this );
 
-    BaseManager* allManagers[] = 
+    BaseManager* allManagers[] =
     {
         m_colorManager,
         m_pToolManager,
@@ -172,7 +172,7 @@ bool Editor::initialize()
 
 TimeLine* Editor::getTimeLine()
 {
-    return mainWindow->m_pTimeLine;
+    return m_pMainWindow->m_pTimeLine;
 }
 
 void Editor::makeConnections()
@@ -319,12 +319,12 @@ void Editor::changeAutosave( int x )
     QSettings settings( "Pencil", "Pencil" );
     if ( x == 0 )
     {
-        autosave = false;
+        m_isAutosave = false;
         settings.setValue( "autosave", "false" );
     }
     else
     {
-        autosave = true;
+        m_isAutosave = true;
         settings.setValue( "autosave", "true" );
     }
 }
@@ -375,7 +375,7 @@ void Editor::modification( int layerNumber )
     getTimeLine()->updateContent();
 
     numberOfModifications++;
-    if ( autosave && numberOfModifications > autosaveNumber )
+    if ( m_isAutosave && numberOfModifications > autosaveNumber )
     {
         numberOfModifications = 0;
         emit needSave();
@@ -577,21 +577,21 @@ void Editor::copy()
         {
             if ( m_pScribbleArea->somethingSelected )
             {
-                clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->copy( m_pScribbleArea->getSelection().toRect() );  // copy part of the image
+                m_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->copy( m_pScribbleArea->getSelection().toRect() );  // copy part of the image
                 m_pScribbleArea->deselectAll();
             }
             else
             {
-                clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->copy();  // copy the whole image
+                m_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layerManager()->currentFrameIndex(), 0 )->copy();  // copy the whole image
                 m_pScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
-            if ( clipboardBitmapImage.image != NULL ) QApplication::clipboard()->setImage( *( clipboardBitmapImage.image ) );
+            if ( m_clipboardBitmapImage.image != NULL ) QApplication::clipboard()->setImage( *( m_clipboardBitmapImage.image ) );
         }
         if ( layer->type() == Layer::VECTOR )
         {
             clipboardVectorOk = true;
-            clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
+            m_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
             m_pScribbleArea->deselectAll();
         }
     }
@@ -603,15 +603,15 @@ void Editor::paste()
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP && clipboardBitmapImage.image != NULL )
+        if ( layer->type() == Layer::BITMAP && m_clipboardBitmapImage.image != NULL )
         {
             backup( tr( "Paste" ) );
-            BitmapImage tobePasted = clipboardBitmapImage.copy();
+            BitmapImage tobePasted = m_clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image->size();
             if ( m_pScribbleArea->somethingSelected )
             {
                 QRectF selection = m_pScribbleArea->getSelection();
-                if ( clipboardBitmapImage.width() <= selection.width() && clipboardBitmapImage.height() <= selection.height() )
+                if ( m_clipboardBitmapImage.width() <= selection.width() && m_clipboardBitmapImage.height() <= selection.height() )
                 {
                     tobePasted.moveTopLeft( selection.topLeft() );
                 }
@@ -626,7 +626,7 @@ void Editor::paste()
             backup( tr( "Paste" ) );
             m_pScribbleArea->deselectAll();
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
-            vectorImage->paste( clipboardVectorImage );  // paste the clipboard
+            vectorImage->paste( m_clipboardVectorImage );  // paste the clipboard
             m_pScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
         }
@@ -643,9 +643,9 @@ void Editor::clipboardChanged()
 {
     if ( clipboardBitmapOk == false )
     {
-        clipboardBitmapImage.image = new QImage( QApplication::clipboard()->image() );
-        clipboardBitmapImage.boundaries = QRect( clipboardBitmapImage.topLeft(), clipboardBitmapImage.image->size() );
-        qDebug() << "New clipboard image" << clipboardBitmapImage.image->size();
+        m_clipboardBitmapImage.image = new QImage( QApplication::clipboard()->image() );
+        m_clipboardBitmapImage.boundaries = QRect( m_clipboardBitmapImage.topLeft(), m_clipboardBitmapImage.image->size() );
+        qDebug() << "New clipboard image" << m_clipboardBitmapImage.image->size();
     }
     else
     {
@@ -802,10 +802,10 @@ void Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    mainWindow->m_pColorPalette->selectColorNumber( 0 );
+    m_pMainWindow->m_pColorPalette->selectColorNumber( 0 );
 
     getTimeLine()->updateLayerNumber( object()->getLayerCount() );
-    mainWindow->m_pColorPalette->refreshColorList();
+    m_pMainWindow->m_pColorPalette->refreshColorList();
     clearBackup();
 
     m_pScribbleArea->updateAllFrames();
@@ -1435,10 +1435,10 @@ void Editor::duplicateKey()
         {
             m_pScribbleArea->selectAll();
             clipboardVectorOk = true;
-            clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
+            m_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
             addNewKey();
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
-            vectorImage->paste( clipboardVectorImage ); // paste the clipboard
+            vectorImage->paste( m_clipboardVectorImage ); // paste the clipboard
             m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
             update();
         }
@@ -1505,7 +1505,7 @@ void Editor::removeKey()
 }
 
 void Editor::play()
-{    
+{
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
     updateMaxFrame();
@@ -1755,7 +1755,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
 {
     QSettings settings( "Pencil", "Pencil" );
 
-    ColorPaletteWidget* colourPalette = mainWindow->m_pColorPalette;
+    ColorPaletteWidget* colourPalette = m_pMainWindow->m_pColorPalette;
     if ( colourPalette != NULL )
     {
         QPoint pos = settings.value( "colourPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1779,7 +1779,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         timelinePalette->show();
     }
 
-    QDockWidget* toolWidget = mainWindow->m_pToolBox;
+    QDockWidget* toolWidget = m_pMainWindow->m_pToolBox;
     if ( toolWidget != NULL )
     {
         QPoint pos = settings.value( "drawPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1791,7 +1791,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         toolWidget->show();
     }
 
-    QDockWidget* optionPalette = mainWindow->m_pToolOptionWidget;
+    QDockWidget* optionPalette = m_pMainWindow->m_pToolOptionWidget;
     if ( optionPalette != NULL )
     {
         QPoint pos = settings.value( "optionPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1803,7 +1803,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         optionPalette->show();
     }
 
-    QDockWidget* displayPalette = mainWindow->m_pDisplayOptionWidget;
+    QDockWidget* displayPalette = m_pMainWindow->m_pDisplayOptionWidget;
     if ( displayPalette != NULL )
     {
         QPoint pos = settings.value( "displayPalettePosition", QPoint( 100, 100 ) ).toPoint();
