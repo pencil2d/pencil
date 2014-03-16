@@ -155,6 +155,10 @@ win32 {
     LIBS += -Llibwin32
     RC_FILE = $$PWD/../pencil.rc
 }
+win32-g++ {
+    QMAKE_CXXFLAGS += -std=c++11
+}
+
 macx {
     INCLUDEPATH +=  $$PWD/external/macosx
     LIBS += -lobjc -lz -framework AppKit -framework Carbon
@@ -163,6 +167,7 @@ macx {
     SOURCES += $$PWD/external/macosx/macosx.cpp \
            $$PWD/external/macosx/style.cpp
     RC_FILE = $$PWD/../pencil.icns
+    QMAKE_CXXFLAGS += -std=c++11
 }
 linux-* {
     INCLUDEPATH += . liblinux
@@ -171,6 +176,7 @@ linux-* {
     LIBS += -Lliblinux -lming -lpng -lz
     LIBS += -L/usr/local/zlib/lib
     INCLUDEPATH+=/usr/local/zlib/include
+    QMAKE_CXXFLAGS += -std=c++11
 }
 
 
