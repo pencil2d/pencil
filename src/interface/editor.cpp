@@ -30,8 +30,9 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QGroupBox>
 #include <QDialogButtonBox>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 
-#include "editor.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layersound.h"
@@ -40,25 +41,33 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
+#include "toolbox.h"
 #include "colormanager.h"
 #include "colorpalettewidget.h"
 #include "toolmanager.h"
 #include "layermanager.h"
-
+#include "editor.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
-Editor::Editor( MainWindow2* parent )
+Editor::Editor( MainWindow2* parent ) 
+    : QWidget( parent )
+    , m_pObject( nullptr )
+    , exportFramesDialog( nullptr ) // will be created when needed
+    , exportMovieDialog( nullptr )
+    , exportFlashDialog( nullptr )
+    , exportFramesDialog_hBox( nullptr )
+    , exportFramesDialog_vBox( nullptr )
+    , exportFramesDialog_format( nullptr )
+    , exportMovieDialog_hBox( nullptr )
+    , exportMovieDialog_vBox( nullptr )
+    , exportMovieDialog_format( nullptr )
+    , exportMovieDialog_fpsBox( nullptr )
+    , exportFlashDialog_compression( nullptr )
 {
     mainWindow = parent;
 
     QSettings settings( "Pencil", "Pencil" );
-
-    m_pObject = NULL; // the editor is initialized with no object
-
-    m_colorManager = new ColorManager( this, this );
-    m_pLayerManager = new LayerManager( this );
-    m_pLayerManager->setObject( object() );
 
     altpress = false;
     numberOfModifications = 0;
@@ -98,29 +107,10 @@ Editor::Editor( MainWindow2* parent )
     loopEnd = 2;
     sound = true;
 
-    layerManager()->setCurrentFrameIndex( 1 );
-    layerManager()->setCurrentLayerIndex( 0 );
-
-    exportFramesDialog = NULL; // will be created when needed
-    exportMovieDialog = NULL;
-    exportFlashDialog = NULL;
-    exportFramesDialog_hBox = NULL;
-    exportFramesDialog_vBox = NULL;
-    exportFramesDialog_format = NULL;
-    exportMovieDialog_hBox = NULL;
-    exportMovieDialog_vBox = NULL;
-    exportMovieDialog_format = NULL;
-    exportMovieDialog_fpsBox = NULL;
-
-    exportFlashDialog_compression = NULL;
-
     // Layouts
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
     m_pScribbleArea = new ScribbleArea( this, this );
-    m_pToolManager = new ToolManager( this, this, m_pScribbleArea );
-
-    m_pToolSet = new ToolSetWidget( tr( "Tools" ), this );
 
     mainLayout->addWidget( m_pScribbleArea );
     mainLayout->setMargin( 0 );
@@ -131,21 +121,9 @@ Editor::Editor( MainWindow2* parent )
     // FOCUS POLICY
     m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
 
-    // CONNECTIONS
-    makeConnections();
-
     qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
     qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
     qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
-
-    toolManager()->setCurrentTool( PENCIL );
-
-    setAcceptDrops( true );
-}
-
-TimeLine* Editor::getTimeLine()
-{
-    return mainWindow->m_pTimeLine;
 }
 
 Editor::~Editor()
@@ -158,22 +136,49 @@ Editor::~Editor()
     clearBackup();
 }
 
+bool Editor::initialize()
+{
+    // Initialize managers
+    m_colorManager = new ColorManager( this );
+    m_pLayerManager = new LayerManager( this );
+    m_pToolManager = new ToolManager( this );
+
+    BaseManager* allManagers[] = 
+    {
+        m_colorManager,
+        m_pToolManager,
+        m_pLayerManager
+    };
+
+    for ( BaseManager* pManager : allManagers )
+    {
+        pManager->setEditor( this );
+        pManager->initialize();
+    }
+
+    layerManager()->setCurrentFrameIndex( 1 );
+    layerManager()->setCurrentLayerIndex( 0 );
+
+    toolManager()->setCurrentTool( PENCIL );
+
+    setAcceptDrops( true );
+
+    // CONNECTIONS
+    makeConnections();
+
+    return true;
+}
+
+
+TimeLine* Editor::getTimeLine()
+{
+    return mainWindow->m_pTimeLine;
+}
+
 void Editor::makeConnections()
 {
     connect( toolManager(), &ToolManager::toolChanged, m_pScribbleArea, &ScribbleArea::setCurrentTool );
     connect( toolManager(), &ToolManager::toolPropertyChanged, m_pScribbleArea, &ScribbleArea::updateToolCursor );
-
-    connect( m_pScribbleArea, &ScribbleArea::pencilOn, m_pToolSet, &ToolSetWidget::pencilOn );
-    connect( m_pScribbleArea, &ScribbleArea::eraserOn, m_pToolSet, &ToolSetWidget::eraserOn );
-    connect( m_pScribbleArea, &ScribbleArea::selectOn, m_pToolSet, &ToolSetWidget::selectOn );
-    connect( m_pScribbleArea, &ScribbleArea::moveOn, m_pToolSet, &ToolSetWidget::moveOn );
-    connect( m_pScribbleArea, &ScribbleArea::penOn, m_pToolSet, &ToolSetWidget::penOn );
-    connect( m_pScribbleArea, &ScribbleArea::handOn, m_pToolSet, &ToolSetWidget::handOn );
-    connect( m_pScribbleArea, &ScribbleArea::polylineOn, m_pToolSet, &ToolSetWidget::polylineOn );
-    connect( m_pScribbleArea, &ScribbleArea::bucketOn, m_pToolSet, &ToolSetWidget::bucketOn );
-    connect( m_pScribbleArea, &ScribbleArea::eyedropperOn, m_pToolSet, &ToolSetWidget::eyedropperOn );
-    connect( m_pScribbleArea, &ScribbleArea::brushOn, m_pToolSet, &ToolSetWidget::brushOn );
-    connect( m_pScribbleArea, &ScribbleArea::smudgeOn, m_pToolSet, &ToolSetWidget::smudgeOn );
 
     connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
@@ -187,8 +192,8 @@ void Editor::makeConnections()
 
     connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
 
-    connect( m_pScribbleArea, SIGNAL( modification() ), this, SLOT( modification() ) );
-    connect( m_pScribbleArea, SIGNAL( modification( int ) ), this, SLOT( modification( int ) ) );
+    connect( m_pScribbleArea, SIGNAL( currentKeyFrameModification() ), this, SLOT( currentKeyFrameModification() ) );
+    connect( m_pScribbleArea, SIGNAL( currentKeyFrameModification( int ) ), this, SLOT( currentKeyFrameModification( int ) ) );
 
     connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
 }
@@ -352,7 +357,7 @@ void Editor::onionLayer3OpacityChangeSlot( int number )
     settings.setValue( "onionLayer3Opacity", number );
 }
 
-void Editor::modification()
+void Editor::currentKeyFrameModification()
 {
     modification( layerManager()->currentLayerIndex() );
 }
@@ -444,7 +449,7 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 
 void BackupBitmapElement::restore( Editor* editor )
 {
-    Layer* layer = editor->m_pObject->getLayer( this->layer );
+    Layer* layer = editor->object()->getLayer( this->layer );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::BITMAP )
@@ -463,7 +468,7 @@ void BackupBitmapElement::restore( Editor* editor )
 
 void BackupVectorElement::restore( Editor* editor )
 {
-    Layer* layer = editor->m_pObject->getLayer( this->layer );
+    Layer* layer = editor->object()->getLayer( this->layer );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::VECTOR )
@@ -551,6 +556,18 @@ void Editor::croptoselect()
     //paste();
 }
 
+void Editor::flipX()
+{
+    toolManager()->setCurrentTool( MOVE );
+    m_pScribbleArea->myFlipX = -m_pScribbleArea->myFlipX;
+}
+
+void Editor::flipY()
+{
+    toolManager()->setCurrentTool( MOVE );
+    m_pScribbleArea->myFlipY = -m_pScribbleArea->myFlipY;
+}
+
 void Editor::copy()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
@@ -579,6 +596,7 @@ void Editor::copy()
         }
     }
 }
+
 
 void Editor::paste()
 {
@@ -776,8 +794,6 @@ void Editor::setObject( Object* newObject )
         return;
     }
     m_pObject = newObject;
-
-    layerManager()->setObject( m_pObject );
 
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
@@ -1108,7 +1124,7 @@ bool Editor::exportMov()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
-    //	QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
+    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
     if ( filePath.isEmpty() )
     {
@@ -1489,7 +1505,7 @@ void Editor::removeKey()
 }
 
 void Editor::play()
-{
+{    
     int loopStarts = loopStart;
     int loopEnds = loopEnd;
     updateMaxFrame();
@@ -1763,7 +1779,7 @@ void Editor::restorePalettesSettings( bool restoreFloating, bool restorePosition
         timelinePalette->show();
     }
 
-    QDockWidget* toolWidget = m_pToolSet;
+    QDockWidget* toolWidget = mainWindow->m_pToolBox;
     if ( toolWidget != NULL )
     {
         QPoint pos = settings.value( "drawPalettePosition", QPoint( 100, 100 ) ).toPoint();
@@ -1836,10 +1852,10 @@ void Editor::gridview()
 /*
 void Editor::print()
 {
-QPrinter printer( QPrinter::HighResolution );
-//printer.setOrientation(QPrinter::Landscape);
-//printer.setFullPage(false);
-//printer->setPaperSize(QPrinter::A4);
+    QPrinter printer( QPrinter::HighResolution );
+    //printer.setOrientation(QPrinter::Landscape);
+    //printer.setFullPage(false);
+    //printer->setPaperSize(QPrinter::A4);
 
 QPrintPreviewDialog printPreviewDialog( &printer, this );
 connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
@@ -1861,23 +1877,47 @@ return;
 /*
 void Editor::printAndPreview( QPrinter* printer )
 {
-QRect exportRect = m_pScribbleArea->rect();
-QSize exportSize = exportRect.size();
-if ( printer->outputFileName() != "" )
-{
-QPrinter pdfPrinter( QPrinter::ScreenResolution );
-pdfPrinter.setOutputFileName( printer->outputFileName() );
-pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
-pdfPrinter.setOrientation( printer->orientation() );
-QPainter painter( &pdfPrinter );
-painter.setRenderHint( QPainter::HighQualityAntialiasing );
-QRect pageRect = pdfPrinter.pageRect();
-pageRect.moveTo( 0, 0 );
-qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
-qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
-if ( exportSize.width() >= exportSize.height() )
-{
-// landscape
+    QRect exportRect = m_pScribbleArea->rect();
+    QSize exportSize = exportRect.size();
+    if ( printer->outputFileName() != "" )
+    {
+        QPrinter pdfPrinter( QPrinter::ScreenResolution );
+        pdfPrinter.setOutputFileName( printer->outputFileName() );
+        pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
+        pdfPrinter.setOrientation( printer->orientation() );
+        QPainter painter( &pdfPrinter );
+        painter.setRenderHint( QPainter::HighQualityAntialiasing );
+        QRect pageRect = pdfPrinter.pageRect();
+        pageRect.moveTo( 0, 0 );
+        qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
+        qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
+        if ( exportSize.width() >= exportSize.height() )
+        {
+            // landscape
+        }
+        else
+        {
+            // portrait
+        }
+        //exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
+        //exportRect.setSize(exportSize);
+        painter.setViewport( pageRect );
+        painter.setWindow( exportRect );
+        m_pScribbleArea->render( &painter );
+        painter.end();
+    }
+    else
+    {
+        QRect pageRect = printer->pageRect();
+        pageRect.moveTo( 0, 0 );
+        exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
+        exportRect.setSize( exportSize );
+        QPainter painter( printer );
+        painter.setViewport( pageRect );
+        painter.setWindow( exportRect );
+        m_pScribbleArea->render( &painter );
+        painter.end();
+    }
 }
 else
 {

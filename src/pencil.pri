@@ -33,7 +33,7 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/interface/scribblearea.h \
     $$PWD/interface/timeline.h \
     $$PWD/interface/timecontrols.h \
-    $$PWD/interface/toolset.h \
+    $$PWD/interface/toolbox.h \
     $$PWD/interface/backupelement.h \
     $$PWD/interface/spinslider.h \
     $$PWD/interface/displayoptiondockwidget.h \
@@ -75,7 +75,8 @@ HEADERS +=  $$PWD/interfaces.h \
     $$PWD/managers/colormanager.h \
     $$PWD/managers/toolmanager.h \
     $$PWD/managers/layermanager.h \
-    $$PWD/util/pencilerror.h
+    $$PWD/util/pencilerror.h \
+    $$PWD/managers/basemanager.h
 
 
 SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
@@ -99,7 +100,7 @@ SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/interface/scribblearea.cpp \
     $$PWD/interface/timeline.cpp \
     $$PWD/interface/timecontrols.cpp \
-    $$PWD/interface/toolset.cpp \
+    $$PWD/interface/toolbox.cpp \
     $$PWD/interface/backupelement.cpp \
     $$PWD/interface/spinslider.cpp \
     $$PWD/interface/displayoptiondockwidget.cpp \
@@ -140,7 +141,8 @@ SOURCES +=  $$PWD/graphics/bitmap/blur.cpp \
     $$PWD/managers/colormanager.cpp \
     $$PWD/managers/toolmanager.cpp \
     $$PWD/managers/layermanager.cpp \
-    $$PWD/util/pencilerror.cpp
+    $$PWD/util/pencilerror.cpp \
+    $$PWD/managers/basemanager.cpp
 
 # Track dependencies for all includes
 DEPENDPATH *= $${INCLUDEPATH}

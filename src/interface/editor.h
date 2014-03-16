@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include "timeline.h"
 #include "scribblearea.h"
-#include "toolset.h"
 #include "timecontrols.h"
 #include "object.h"
 #include "vectorimage.h"
@@ -39,6 +38,7 @@ class MainWindow2;
 class ColorManager;
 class ToolManager;
 class LayerManager;
+class ScribbleArea;
 
 
 class Editor : public QWidget
@@ -52,11 +52,12 @@ public:
     Editor( MainWindow2* parent );
     virtual ~Editor();
 
+    bool initialize();
+
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
     
-    Object* m_pObject;  // the object to be edited by the editor
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
@@ -69,10 +70,8 @@ public:
     bool loopControl;
     int loopStart;
     int loopEnd;
-    int loopEnds;
     bool sound;
 
-    ToolSetWidget* m_pToolSet;
     TimeLine* getTimeLine();
 
     Layer* getCurrentLayer( int incr );
@@ -123,10 +122,11 @@ public slots:
 
     void clearCurrentFrame();
 
-    void importImageSequence();
     void cut();
     void crop();
     void croptoselect();
+    void flipX();
+    void flipY();
     void deselectAll();
     void setzoom();
     void setzoom1();
@@ -137,6 +137,7 @@ public slots:
 
     void importImageFromDialog();
     void importImage( QString filePath );
+    void importImageSequence();
     void importSound( QString filePath = "" );
     bool importMov();
     void updateFrame( int frameNumber );
@@ -190,7 +191,7 @@ public slots:
     void onionLayer2OpacityChangeSlot( int );
     void onionLayer3OpacityChangeSlot( int );
 
-    void modification();
+    void currentKeyFrameModification();
     void modification( int );
     void backup( QString undoText );
     void backup( int layerNumber, int frameNumber, QString undoText );
@@ -228,6 +229,8 @@ private slots:
     void getCameraLayer();
 
 private:
+    Object* m_pObject;  // the object to be edited by the editor
+
     ScribbleArea* m_pScribbleArea;
     MainWindow2* mainWindow;
 

@@ -6,12 +6,12 @@
 #include <QMap>
 #include <QString>
 #include <QCursor>
+#include <QMouseEvent>
 #include "pencildef.h"
 
 #include <QPointF>
 
 class Editor;
-class QMouseEvent;
 class ScribbleArea;
 class QKeyEvent;
 class StrokeManager;

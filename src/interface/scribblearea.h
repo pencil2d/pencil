@@ -47,8 +47,6 @@ class ScribbleArea : public QWidget
 public:
     ScribbleArea( QWidget *parent = 0, Editor *m_pEditor = 0 );
 
-    void next( const int &i );
-
     void resetTools();
 
     void deleteSelection();
@@ -59,6 +57,7 @@ public:
     bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
+    qreal myFlipX, myFlipY; // scale -1.0 or +1.0
 
     bool isModified() const { return modified; }
     bool areLayersSane() const;
@@ -73,7 +72,7 @@ public:
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION };
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY };
     MoveMode getMoveMode() const { return m_moveMode; }
     void setMoveMode( MoveMode moveMode ) { m_moveMode = moveMode; }
 
@@ -85,7 +84,7 @@ public:
     qreal getTempViewScaleX() const { return myTempView.m11(); }
     qreal getViewScaleY() const { return myView.m22(); }
     qreal getTempViewScaleY() const { return myTempView.m22(); }
-    qreal getCentralViewScale() const { return (sqrt( centralView.determinant())); }
+    qreal getCentralViewScale() const { return ( sqrt( centralView.determinant() ) ); }
 
     QMatrix getTransformationMatrix() const { return transMatrix; }
     void setTransformationMatrix( QMatrix matrix );
@@ -105,8 +104,6 @@ public:
     BaseTool* getTool( ToolType eToolMode );
     void setCurrentTool( ToolType eToolMode );
     void setTemporaryTool( ToolType eToolMode );
-    void switchTool( ToolType type );
-
     void setPrevTool();
 
     QPointF pixelToPoint( QPointF pixel );
@@ -117,7 +114,7 @@ public:
 
     void keyPressed( QKeyEvent *event );
 
-    Editor *getEditor() { return m_pEditor; }
+    Editor* getEditor() { return m_pEditor; }
 
 signals:
     void modification();
@@ -128,21 +125,9 @@ signals:
 
     void onionPrevChanged( bool );
     void onionNextChanged( bool );
-    void multiLayerOnionSkinChanged(bool);
+    void multiLayerOnionSkinChanged( bool );
 
-    void pencilOn();
-    void eraserOn();
-    void selectOn();
-    void moveOn();
-    void penOn();
-    void handOn();
-    void polylineOn();
-    void bucketOn();
-    void eyedropperOn();
-    void brushOn();
-    void smudgeOn();
-
-    public slots:
+public slots:
     void clearImage();
     void calculateSelectionRect();
     void calculateSelectionTransformation();
@@ -185,8 +170,7 @@ signals:
     void toggleShowAllLayers();
     void escape();
 
-    void toggleMultiLayerOnionSkin(bool);
-
+    void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
 public slots:
@@ -241,7 +225,6 @@ protected:
 
     PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
-    int tabletEraserBackupToolMode;
     bool modified;
     bool m_isSimplified;
 
@@ -269,7 +252,7 @@ protected:
     QBrush backgroundBrush;
 public:
     BitmapImage* bufferImg; // used to pre-draw vector modifications
-protected:
+private:
     bool keyboardInUse;
     bool mouseInUse;
     QPointF lastPixel, currentPixel;

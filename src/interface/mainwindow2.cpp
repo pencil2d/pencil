@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "popupcolorpalettewidget.h"
 #include "preferences.h"
 #include "timeline.h"
+#include "toolbox.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -59,9 +60,9 @@ GNU General Public License for more details.
 
 
 
-MainWindow2::MainWindow2( QWidget *parent ) :
-QMainWindow( parent ),
-ui( new Ui::MainWindow2 )
+MainWindow2::MainWindow2( QWidget *parent )
+    : QMainWindow( parent )
+    , ui( new Ui::MainWindow2 )
 {
     ui->setupUi( this );
     
@@ -69,6 +70,8 @@ ui( new Ui::MainWindow2 )
     m_object->defaultInitialisation();
 
     editor = new Editor( this );
+    editor->initialize();
+
     m_pScribbleArea = editor->getScribbleArea();
     m_pTimeLine = new TimeLine( this, editor );
     makeTimeLineConnections();
@@ -84,13 +87,13 @@ ui( new Ui::MainWindow2 )
     readSettings();
 
     makeColorPaletteConnections();
-	makeColorWheelConnections();
+    makeColorWheelConnections();
 
     connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
-    connect(m_pToolSet, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
-    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolSet, SLOT(setCurrentTool(ToolType)));
+    connect(m_pToolBox, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
+    connect(editor, SIGNAL(changeTool(ToolType)), m_pToolBox, SLOT(setCurrentTool(ToolType)));
 
-    editor->setCurrentLayer( this->editor->m_pObject->getLayerCount() - 1 );
+    editor->setCurrentLayer( this->editor->object()->getLayerCount() - 1 );
 }
 
 MainWindow2::~MainWindow2()
@@ -100,33 +103,33 @@ MainWindow2::~MainWindow2()
 
 void MainWindow2::makeTimeLineConnections()
 {
-    connect( m_pTimeLine, SIGNAL( endplayClick() ), editor, SLOT( endPlay() ) );
-    connect( m_pTimeLine, SIGNAL( startplayClick() ), editor, SLOT( startPlay() ) );
-    connect( m_pTimeLine, SIGNAL( duplicateKeyClick() ), editor, SLOT( duplicateKey() ) );
+    connect( m_pTimeLine, &TimeLine::endplayClick, editor, &Editor::endPlay );
+    connect( m_pTimeLine, &TimeLine::startplayClick, editor, &Editor::startPlay );
+    connect( m_pTimeLine, &TimeLine::duplicateKeyClick, editor, &Editor::duplicateKey );
 
-    connect( m_pTimeLine, SIGNAL( modification() ), editor, SLOT( modification() ) );
-    connect( m_pTimeLine, SIGNAL( addKeyClick() ), editor, SLOT( addKey() ) );
-    connect( m_pTimeLine, SIGNAL( removeKeyClick() ), editor, SLOT( removeKey() ) );
+    connect( m_pTimeLine, &TimeLine::modification, editor, &Editor::currentKeyFrameModification );
+    connect( m_pTimeLine, &TimeLine::addKeyClick, editor, &Editor::addNewKey );
+    connect( m_pTimeLine, &TimeLine::removeKeyClick, editor, &Editor::removeKey );
 
-    connect( m_pTimeLine, SIGNAL( newBitmapLayer() ), editor, SLOT( newBitmapLayer() ) );
-    connect( m_pTimeLine, SIGNAL( newVectorLayer() ), editor, SLOT( newVectorLayer() ) );
-    connect( m_pTimeLine, SIGNAL( newSoundLayer() ), editor, SLOT( newSoundLayer() ) );
-    connect( m_pTimeLine, SIGNAL( newCameraLayer() ), editor, SLOT( newCameraLayer() ) );
-    connect( m_pTimeLine, SIGNAL( deleteCurrentLayer() ), editor, SLOT( deleteCurrentLayer() ) );
+    connect( m_pTimeLine, &TimeLine::newBitmapLayer, editor, &Editor::newBitmapLayer );
+    connect( m_pTimeLine, &TimeLine::newVectorLayer, editor, &Editor::newVectorLayer );
+    connect( m_pTimeLine, &TimeLine::newSoundLayer, editor, &Editor::newSoundLayer );
+    connect( m_pTimeLine, &TimeLine::newCameraLayer, editor, &Editor::newCameraLayer );
+    connect( m_pTimeLine, &TimeLine::deleteCurrentLayer, editor, &Editor::deleteCurrentLayer );
 
-    connect(m_pTimeLine, SIGNAL(playClick()), editor, SLOT(play()));
-    connect(m_pTimeLine, SIGNAL(loopClick(bool)), editor, SLOT(setLoop(bool)));
+    connect( m_pTimeLine, &TimeLine::playClick, editor, &Editor::play );
+    connect( m_pTimeLine, &TimeLine::loopClick, editor, &Editor::setLoop );
 
-    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), editor, SLOT(setLoopControl(bool))); // adding LoopControlClick needs setLoopControl(bool)
-    connect(m_pTimeLine, SIGNAL(loopStartClick(int)), editor, SLOT(changeLoopStart(int)));
-    connect(m_pTimeLine, SIGNAL(loopEndClick(int)), editor, SLOT(changeLoopEnd(int)));
+    connect( m_pTimeLine, &TimeLine::loopControlClick, editor, &Editor::setLoopControl ); // adding LoopControlClick needs setLoopControl(bool)
+    connect( m_pTimeLine, &TimeLine::loopStartClick, editor, &Editor::changeLoopStart );
+    connect( m_pTimeLine, &TimeLine::loopEndClick, editor, &Editor::changeLoopEnd );
 
 
-    connect(m_pTimeLine, SIGNAL(soundClick()), editor, SLOT(setSound()));
-    connect(m_pTimeLine, SIGNAL(fpsClick(int)), editor, SLOT(changeFps(int)));
+    connect( m_pTimeLine, &TimeLine::soundClick, editor, &Editor::setSound );
+    connect( m_pTimeLine, &TimeLine::fpsClick, editor, &Editor::changeFps );
 
-    connect( editor, SIGNAL( toggleLoop( bool ) ), m_pTimeLine, SIGNAL( toggleLoop( bool ) ) );
-    connect( m_pTimeLine, SIGNAL( loopClick( bool ) ), editor, SIGNAL( loopToggled( bool ) ) );
+    connect( editor, &Editor::toggleLoop, m_pTimeLine, &TimeLine::toggleLoop );
+    connect( m_pTimeLine, &TimeLine::loopClick, editor, &Editor::loopToggled );
 
 
     connect(editor, SIGNAL(toggleLoopControl(bool)), m_pTimeLine, SIGNAL(toggleLoopControl(bool)));
@@ -155,17 +158,17 @@ void MainWindow2::arrangePalettes()
     m_pToolOptionWidget = new ToolOptionWidget(this);
     m_pToolOptionWidget->makeConnectionToEditor(editor);
 
-    m_pToolSet = editor->m_pToolSet;
+    m_pToolBox = new ToolBoxWidget( tr( "Tools" ), editor );
 
-    addDockWidget(Qt::RightDockWidgetArea, m_pColorWheelWidget);
-    addDockWidget(Qt::RightDockWidgetArea, m_pColorPalette);
-    addDockWidget(Qt::RightDockWidgetArea, m_pDisplayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea, editor->m_pToolSet);
-    addDockWidget(Qt::LeftDockWidgetArea, m_pToolOptionWidget);
+    addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);
+    addDockWidget(Qt::RightDockWidgetArea,  m_pColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea,  m_pDisplayOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea,   m_pToolBox);
+    addDockWidget(Qt::LeftDockWidgetArea,   m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
 
-    editor->m_pToolSet->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    m_pToolBox->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
     m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
@@ -236,6 +239,8 @@ void MainWindow2::createMenus()
     connect( ui->actionClearFrame, &QAction::triggered, editor, &Editor::clearCurrentFrame );
     connect( ui->actionCrop, &QAction::triggered, editor, &Editor::crop );
     connect( ui->actionCrop_To_Selection, &QAction::triggered, editor, &Editor::croptoselect );
+    connect( ui->actionFlip_X, &QAction::triggered, editor, &Editor::flipX );
+    connect( ui->actionFlip_Y, &QAction::triggered, editor, &Editor::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, editor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, editor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::showPreferences );
@@ -294,23 +299,23 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, &QAction::triggered, editor, &Editor::duplicateKey );
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, &QAction::triggered, m_pToolSet, &ToolSetWidget::moveOn );
-    connect(ui->actionSelect, &QAction::triggered, m_pToolSet, &ToolSetWidget::selectOn );
-    connect(ui->actionBrush, &QAction::triggered, m_pToolSet, &ToolSetWidget::brushOn );
-    connect(ui->actionPolyline, &QAction::triggered, m_pToolSet, &ToolSetWidget::polylineOn );
-    connect(ui->actionSmudge, &QAction::triggered, m_pToolSet, &ToolSetWidget::smudgeOn );
-    connect(ui->actionPen, &QAction::triggered, m_pToolSet, &ToolSetWidget::penOn );
-    connect(ui->actionHand, &QAction::triggered, m_pToolSet, &ToolSetWidget::handOn );
-    connect(ui->actionPencil, &QAction::triggered, m_pToolSet, &ToolSetWidget::pencilOn );
-    connect(ui->actionBucket, &QAction::triggered, m_pToolSet, &ToolSetWidget::bucketOn );
-    connect(ui->actionEyedropper, &QAction::triggered, m_pToolSet, &ToolSetWidget::eyedropperOn );
-    connect(ui->actionEraser, &QAction::triggered, m_pToolSet, &ToolSetWidget::eraserOn );
+    connect(ui->actionMove, &QAction::triggered, m_pToolBox, &ToolBoxWidget::moveOn );
+    connect(ui->actionSelect, &QAction::triggered, m_pToolBox, &ToolBoxWidget::selectOn );
+    connect(ui->actionBrush, &QAction::triggered, m_pToolBox, &ToolBoxWidget::brushOn );
+    connect(ui->actionPolyline, &QAction::triggered, m_pToolBox, &ToolBoxWidget::polylineOn );
+    connect(ui->actionSmudge, &QAction::triggered, m_pToolBox, &ToolBoxWidget::smudgeOn );
+    connect(ui->actionPen, &QAction::triggered, m_pToolBox, &ToolBoxWidget::penOn );
+    connect(ui->actionHand, &QAction::triggered, m_pToolBox, &ToolBoxWidget::handOn );
+    connect(ui->actionPencil, &QAction::triggered, m_pToolBox, &ToolBoxWidget::pencilOn );
+    connect(ui->actionBucket, &QAction::triggered, m_pToolBox, &ToolBoxWidget::bucketOn );
+    connect(ui->actionEyedropper, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eyedropperOn );
+    connect(ui->actionEraser, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eraserOn );
     connect(ui->actionTogglePalette, &QAction::triggered, m_pScribbleArea,&ScribbleArea::togglePopupPalette );
     connect(ui->actionResetToolsDefault, &QAction::triggered, this, &MainWindow2::resetToolsSettings );
 
     /// --- Window Menu ---
-    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), editor->m_pToolSet, SLOT(setVisible(bool)));
-    connect(editor->m_pToolSet, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
+    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), m_pToolBox, SLOT(setVisible(bool)));
+    connect(m_pToolBox, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
     connect(ui->actionOptionsWidget, SIGNAL(toggled(bool)), m_pToolOptionWidget, SLOT(setVisible(bool)));
     connect(m_pToolOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionOptionsWidget, SLOT(setChecked(bool)));
     connect(ui->actionColorWheel, SIGNAL(toggled(bool)), m_pColorPalette, SLOT(setVisible(bool)));
@@ -958,7 +963,7 @@ void MainWindow2::showPreferences()
 
 void MainWindow2::dockAllPalettes()
 {
-    editor->m_pToolSet->setFloating(false);
+    m_pToolBox->setFloating(false);
     m_pToolOptionWidget->setFloating(false);
     m_pDisplayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
@@ -1007,7 +1012,7 @@ void MainWindow2::writeSettings()
         settings.setValue( "timelinePaletteFloating", timelinePalette->isFloating() );
     }
 
-    QDockWidget* toolWidget = editor->m_pToolSet;
+    QDockWidget* toolWidget = m_pToolBox;
     if ( toolWidget != NULL )
     {
         settings.setValue( "drawPalettePosition", toolWidget->pos() );

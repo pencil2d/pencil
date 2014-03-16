@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include <QDockWidget>
 #include <QToolButton>
-#include "toolset.h"
+
 
 class QListWidget;
 class QListWidgetItem;

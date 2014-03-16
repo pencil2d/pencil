@@ -12,7 +12,7 @@ class ColorPaletteWidget;
 class DisplayOptionDockWidget;
 class ToolOptionWidget;
 class TimeLine;
-class ToolSetWidget;
+class ToolBoxWidget;
 class Preferences;
 class RecentFileMenu;
 template<typename T> class QList;
@@ -46,9 +46,9 @@ public:
     QDockWidget*             m_pColorWheelWidget;
     ColorPaletteWidget*      m_pColorPalette;
     DisplayOptionDockWidget* m_pDisplayOptionWidget;
-    ToolOptionWidget*    m_pToolOptionWidget;
+    ToolOptionWidget*        m_pToolOptionWidget;
     TimeLine*                m_pTimeLine;
-    ToolSetWidget*           m_pToolSet;
+    ToolBoxWidget*           m_pToolBox;
 
     // Other windows
     Preferences* m_pPreferences;

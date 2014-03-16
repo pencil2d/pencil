@@ -19,6 +19,8 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QString>
 #include <QProgressDialog>
+#include <QImageReader>
+#include <QImageWriter>
 
 #include "object.h"
 #include "editor.h"

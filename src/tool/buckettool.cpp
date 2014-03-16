@@ -1,5 +1,6 @@
 #include <QPixmap>
 #include <QPainter>
+#include <QMouseEvent>
 
 #include "layer.h"
 #include "layervector.h"

@@ -157,7 +157,8 @@ void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-las
     newValueX = pow(newValueX, 2) / 100;
     newValueY = pow(newValueY, 2) / 100;
 
-    if (adjustmentStep>0) {
+    if (adjustmentStep > 0) 
+	{
         int tempValueX = (int)(newValueX/adjustmentStep); // + 0.5 ?
         int tempValueY = (int)(newValueY/adjustmentStep); // + 0.5 ?
         newValueX = tempValueX * adjustmentStep;

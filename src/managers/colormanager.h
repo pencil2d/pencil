@@ -1,17 +1,19 @@
 #ifndef COLORMANAGER_H
 #define COLORMANAGER_H
 
-#include <QObject>
 #include <QColor>
+#include "basemanager.h"
 
-class Editor;
 
 
-class ColorManager : public QObject
+class ColorManager : public BaseManager
 {
     Q_OBJECT
 public:
-    ColorManager(Editor*, QObject* parent = 0);
+    ColorManager( QObject* parent = 0 );
+    ~ColorManager();
+    bool initialize() override;
+
     QColor frontColor();
     int frontColorNumber();
 
@@ -24,8 +26,8 @@ signals:
     void colorNumberChanged(int);
 
 private:
-    Editor* m_pEditor;
     int m_frontColorIndex;
+
 };
 
 #endif // COLORMANAGER_H

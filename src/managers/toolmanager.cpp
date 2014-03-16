@@ -11,31 +11,42 @@
 #include "selecttool.h"
 #include "smudgetool.h"
 #include "toolmanager.h"
+#include "editor.h"
 #include "pencilsettings.h"
 
 
-ToolManager::ToolManager(QObject* parent, Editor* pEditor, ScribbleArea* pScribbleArea) :
-    QObject( parent )
+ToolManager::ToolManager(QObject* parent ) 
+    : BaseManager( parent )
+    , m_pCurrentTool( nullptr )
+    , m_eTabletBackupTool( INVALID_TOOL )
 {
-    m_toolSetHash.insert(PEN, new PenTool);
-    m_toolSetHash.insert(PENCIL, new PencilTool);
-    m_toolSetHash.insert(BRUSH, new BrushTool);
-    m_toolSetHash.insert(ERASER, new EraserTool);
-    m_toolSetHash.insert(BUCKET, new BucketTool);
-    m_toolSetHash.insert(EYEDROPPER, new EyedropperTool);
-    m_toolSetHash.insert(HAND, new HandTool);
-    m_toolSetHash.insert(MOVE, new MoveTool);
-    m_toolSetHash.insert(POLYLINE, new PolylineTool);
-    m_toolSetHash.insert(SELECT, new SelectTool);
-    m_toolSetHash.insert(SMUDGE, new SmudgeTool);
+}
 
-    foreach ( BaseTool* pTool, m_toolSetHash.values() )
+
+bool ToolManager::initialize()
+{
+    m_toolSetHash.insert( PEN, new PenTool );
+    m_toolSetHash.insert( PENCIL, new PencilTool );
+    m_toolSetHash.insert( BRUSH, new BrushTool );
+    m_toolSetHash.insert( ERASER, new EraserTool );
+    m_toolSetHash.insert( BUCKET, new BucketTool );
+    m_toolSetHash.insert( EYEDROPPER, new EyedropperTool );
+    m_toolSetHash.insert( HAND, new HandTool );
+    m_toolSetHash.insert( MOVE, new MoveTool );
+    m_toolSetHash.insert( POLYLINE, new PolylineTool );
+    m_toolSetHash.insert( SELECT, new SelectTool );
+    m_toolSetHash.insert( SMUDGE, new SmudgeTool );
+
+    foreach( BaseTool* pTool, m_toolSetHash.values() )
     {
-        pTool->initialize(pEditor, pScribbleArea);
+        pTool->initialize( editor(), editor()->getScribbleArea() );
     }
 
     m_pCurrentTool = getTool( PENCIL );
+
+    return true;
 }
+
 
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
@@ -135,5 +146,26 @@ void ToolManager::setPressure( int isPressureOn )
         currentTool()->properties.pressure = isPressureOn;
         emit penPressureValueChange( isPressureOn );
         emit toolPropertyChanged();
+    }
+}
+
+void ToolManager::tabletSwitchToEraser()
+{
+    if ( currentTool()->type() != ERASER )
+    {
+        m_eTabletBackupTool = currentTool()->type();
+        setCurrentTool( ERASER );
+    }
+}
+
+void ToolManager::tabletRestorePrevTool()
+{
+    if ( currentTool()->type() != ERASER )
+    {
+        if ( m_eTabletBackupTool == INVALID_TOOL )
+        {
+            m_eTabletBackupTool = PEN;
+        }
+        setCurrentTool( m_eTabletBackupTool );
     }
 }
