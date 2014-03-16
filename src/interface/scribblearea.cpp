@@ -1303,10 +1303,10 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         //TODO: complete matrix calls ( sounds funny :)
                         rm.scale( myFlipX, myFlipY );
                         rm.rotate( myRotatedAngle );
-                        QImage rotImg = selectionClip.image->transformed( rm );
+                        QImage rotImg = selectionClip.m_pImage->transformed( rm );
                         QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
                                              ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
-                        *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
+                        *selectionClip.m_pImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
                         selectionClip.boundaries.translate( dxy );
                         selectionClip.paintImage( painter );
                         //painter.drawImage(selectionClip.topLeft(), *(selectionClip.image));
@@ -1843,10 +1843,10 @@ void ScribbleArea::paintTransformedSelection()
             rm.rotate( myRotatedAngle );
             BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
             selectionClip.transform( myTransformedSelection, smoothTransform );
-            QImage rotImg = selectionClip.image->transformed( rm, Qt::SmoothTransformation );
+            QImage rotImg = selectionClip.m_pImage->transformed( rm, Qt::SmoothTransformation );
             QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
                                  ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
-            *selectionClip.image = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
+            *selectionClip.m_pImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
             selectionClip.boundaries.translate( dxy );
             bitmapImage->clear( mySelection.toRect() );
             bitmapImage->paste( &selectionClip );

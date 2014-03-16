@@ -586,7 +586,7 @@ void Editor::copy()
                 m_pScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
-            if ( m_clipboardBitmapImage.image != NULL ) QApplication::clipboard()->setImage( *( m_clipboardBitmapImage.image ) );
+            if ( m_clipboardBitmapImage.m_pImage != NULL ) QApplication::clipboard()->setImage( *( m_clipboardBitmapImage.m_pImage ) );
         }
         if ( layer->type() == Layer::VECTOR )
         {
@@ -603,11 +603,11 @@ void Editor::paste()
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP && m_clipboardBitmapImage.image != NULL )
+        if ( layer->type() == Layer::BITMAP && m_clipboardBitmapImage.m_pImage != NULL )
         {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = m_clipboardBitmapImage.copy();
-            qDebug() << "to be pasted --->" << tobePasted.image->size();
+            qDebug() << "to be pasted --->" << tobePasted.m_pImage->size();
             if ( m_pScribbleArea->somethingSelected )
             {
                 QRectF selection = m_pScribbleArea->getSelection();
@@ -643,9 +643,9 @@ void Editor::clipboardChanged()
 {
     if ( clipboardBitmapOk == false )
     {
-        m_clipboardBitmapImage.image = new QImage( QApplication::clipboard()->image() );
-        m_clipboardBitmapImage.boundaries = QRect( m_clipboardBitmapImage.topLeft(), m_clipboardBitmapImage.image->size() );
-        qDebug() << "New clipboard image" << m_clipboardBitmapImage.image->size();
+        m_clipboardBitmapImage.m_pImage = new QImage( QApplication::clipboard()->image() );
+        m_clipboardBitmapImage.boundaries = QRect( m_clipboardBitmapImage.topLeft(), m_clipboardBitmapImage.m_pImage->size() );
+        qDebug() << "New clipboard image" << m_clipboardBitmapImage.m_pImage->size();
     }
     else
     {
@@ -1423,7 +1423,7 @@ void Editor::nextLayer()
 
 void Editor::addNewKey()
 {
-    addKey( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
+    addKeyFame( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
 }
 
 void Editor::duplicateKey()
@@ -1452,13 +1452,12 @@ void Editor::duplicateKey()
     }
 }
 
-void Editor::addKey( int layerNumber, int frameIndex )
+void Editor::addKeyFame( int layerNumber, int frameIndex )
 {
-    Layer* layer = m_pObject->getLayer( layerNumber );
+    LayerImage* layer = static_cast<LayerImage*>( m_pObject->getLayer( layerNumber ) );
     if ( layer == NULL )
     {
         return;
-
     }
 
     bool isOK = false;
@@ -1466,13 +1465,11 @@ void Editor::addKey( int layerNumber, int frameIndex )
     switch ( layer->type() )
     {
     case Layer::BITMAP:
-        isOK = ( ( LayerBitmap* )layer )->addImageAtFrame( frameIndex );
-        break;
     case Layer::VECTOR:
-        isOK = ( ( LayerVector* )layer )->addImageAtFrame( frameIndex );
-        break;
     case Layer::CAMERA:
-        isOK = ( ( LayerCamera* )layer )->addImageAtFrame( frameIndex );
+        isOK = layer->addImageAtFrame( frameIndex );
+        break;
+    default:
         break;
     }
 
@@ -1484,7 +1481,7 @@ void Editor::addKey( int layerNumber, int frameIndex )
     }
     else
     {
-        addKey( layerNumber, frameIndex + 1 );
+        addKeyFame( layerNumber, frameIndex + 1 );
         updateMaxFrame();
     }
 }

@@ -33,8 +33,8 @@ public:
     ~LayerVector();
 
     // method from layerImage
-    virtual bool addImageAtFrame(int frameNumber) override;
-    virtual void removeImageAtFrame(int frameNumber) override;
+    bool addImageAtFrame(int frameNumber) override;
+    void removeImageAtFrame(int frameNumber) override;
 
     void loadImageAtFrame(QString, int);
     QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool );

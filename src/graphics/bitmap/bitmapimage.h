@@ -30,8 +30,7 @@ public:
     BitmapImage(const BitmapImage&);
     BitmapImage(Object* parent);
     BitmapImage(Object* parent, QRect boundaries, QColor colour);
-    BitmapImage(Object* parent, QRect boundaries, QImage image);
-    //BitmapImage(Object* parent, QImage image, QPoint topLeft);
+    BitmapImage(Object* parent, QRect boundaries, QImage m_pImage);
     BitmapImage(Object* parent, QString path, QPoint topLeft);
 
     ~BitmapImage();
@@ -45,7 +44,7 @@ public:
     void setModified(bool);
 
     void paintImage(QPainter& painter);
-    void outputImage(QImage* image, QSize size, QMatrix myView);
+    void outputImage(QImage* m_pImage, QSize size, QMatrix myView);
 
     BitmapImage copy();
     BitmapImage copy(QRect rectangle);
@@ -95,11 +94,11 @@ public:
     int height() { return boundaries.height(); }
 
 public:
-    QImage* image;
+    QImage* m_pImage;
     QRect boundaries;
     bool extendable;
 
-protected:
+private:
     Object* myParent;
 };
 

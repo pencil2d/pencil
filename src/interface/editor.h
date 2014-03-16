@@ -249,7 +249,7 @@ private:
     int onionLayer3Opacity;
 
     void makeConnections();
-    void addKey( int layerNumber, int frameNumber );
+    void addKeyFame( int layerNumber, int frameNumber );
 
     // backup
     void clearBackup();
