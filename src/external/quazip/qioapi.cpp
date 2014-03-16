@@ -1,11 +1,26 @@
-/* ioapi.c -- IO base function header for compress/uncompress .zip
-   files using zlib + zip or unzip API
+/*
+ioapi.c -- IO base function header for compress/uncompress .zip
+files using zlib + zip or unzip API
 
-   Version 1.01e, February 12th, 2005
+Version 1.01e, February 12th, 2005
 
-   Copyright (C) 1998-2005 Gilles Vollant
+Copyright (C) 1998-2010 Gilles Vollant
+Copyright (C) 2009-2010 Mathias Svensson
+Copyright (C) 2005-2011 Sergey A. Tachenov
 
-   Modified by Sergey A. Tachenov to integrate with Qt.
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation; either version 2 of the License, or (at
+your option) any later version.
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program; if not, write to the Free Software Foundation,
+Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
 #include <stdio.h>
