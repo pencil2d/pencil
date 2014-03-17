@@ -177,16 +177,10 @@
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
-   <widget class="QMenu" name="menuWIndows">
+   <widget class="QMenu" name="menuWindows">
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionToolsWidget"/>
-    <addaction name="actionTimeline"/>
-    <addaction name="actionOptionsWidget"/>
-    <addaction name="actionColorWheel"/>
-    <addaction name="actionColorPalette"/>
-    <addaction name="actionDisplayOptions"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -194,7 +188,7 @@
    <addaction name="menuAnimation"/>
    <addaction name="menuTools"/>
    <addaction name="menuLayer"/>
-   <addaction name="menuWIndows"/>
+   <addaction name="menuWindows"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

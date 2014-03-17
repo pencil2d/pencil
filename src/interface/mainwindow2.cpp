@@ -167,28 +167,22 @@ void MainWindow2::arrangePalettes()
     addDockWidget(Qt::LeftDockWidgetArea,   m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
-
-    m_pToolBox->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-    m_pToolOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-    m_pDisplayOptionWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-    m_pTimeLine->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-    m_pColorPalette->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
-    m_pColorWheelWidget->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetClosable);
+    
+    m_pToolBox->setFeatures( QDockWidget::AllDockWidgetFeatures );
+    m_pToolOptionWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
+    m_pDisplayOptionWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
+    m_pTimeLine->setFeatures( QDockWidget::AllDockWidgetFeatures );
+    m_pColorPalette->setFeatures( QDockWidget::AllDockWidgetFeatures );
+    m_pColorWheelWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
 }
 
 void MainWindow2::makeColorPaletteConnections()
 {
-	connect(m_pColorPalette, SIGNAL(colorChanged(QColor)),
-		editor->colorManager(), SLOT(pickColor(QColor)));
+	connect(m_pColorPalette, &ColorPaletteWidget::colorChanged, editor->colorManager(), &ColorManager::pickColor);
+    connect(m_pColorPalette, &ColorPaletteWidget::colorNumberChanged, editor->colorManager(), &ColorManager::pickColorNumber);
 
-	connect(m_pColorPalette, SIGNAL(colorNumberChanged(int)),
-		editor->colorManager(), SLOT(pickColorNumber(int)));
-
-	connect(editor->colorManager(), SIGNAL(colorChanged(QColor)),
-		m_pColorPalette, SLOT(setColor(QColor)));
-
-	connect(editor->colorManager(), SIGNAL(colorNumberChanged(int)),
-		m_pColorPalette, SLOT(selectColorNumber(int)));
+    connect(editor->colorManager(), &ColorManager::colorChanged, m_pColorPalette, &ColorPaletteWidget::setColor);
+    connect(editor->colorManager(), &ColorManager::colorNumberChanged, m_pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
 void MainWindow2::makeColorWheelConnections()
@@ -281,8 +275,8 @@ void MainWindow2::createMenus()
     /// --- Animation Menu ---
     connect( ui->actionPlay, &QAction::triggered, editor, &Editor::play );
     connect( ui->actionLoop, &QAction::triggered, editor, &Editor::setLoop );
-    connect( ui->actionLoop, SIGNAL(toggled(bool) ), editor, SIGNAL(toggleLoop(bool)) ); //TODO: WTF?
-    connect( editor, SIGNAL( loopToggled(bool) ), ui->actionLoop, SLOT(setChecked(bool)) );
+    connect( ui->actionLoop, &QAction::toggled, editor, &Editor::toggleLoop ); //TODO: WTF?
+    connect( editor, &Editor::loopToggled, ui->actionLoop, &QAction::setChecked );
 
     // Loop Control
     connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));
@@ -314,16 +308,13 @@ void MainWindow2::createMenus()
     connect(ui->actionResetToolsDefault, &QAction::triggered, this, &MainWindow2::resetToolsSettings );
 
     /// --- Window Menu ---
-    connect(ui->actionToolsWidget, SIGNAL(toggled(bool)), m_pToolBox, SLOT(setVisible(bool)));
-    connect(m_pToolBox, SIGNAL(visibilityChanged(bool)), ui->actionToolsWidget, SLOT(setChecked(bool)));
-    connect(ui->actionOptionsWidget, SIGNAL(toggled(bool)), m_pToolOptionWidget, SLOT(setVisible(bool)));
-    connect(m_pToolOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionOptionsWidget, SLOT(setChecked(bool)));
-    connect(ui->actionColorWheel, SIGNAL(toggled(bool)), m_pColorPalette, SLOT(setVisible(bool)));
-    connect(m_pColorPalette, SIGNAL(visibilityChanged(bool)), ui->actionColorWheel, SLOT(setChecked(bool)));
-    connect(ui->actionTimeline, SIGNAL(toggled(bool)), m_pTimeLine, SLOT(setVisible(bool)));
-    connect(m_pTimeLine, SIGNAL(visibilityChanged(bool)), ui->actionTimeline, SLOT(setChecked(bool)));
-    connect(ui->actionDisplayOptions, SIGNAL(toggled(bool)), m_pDisplayOptionWidget, SLOT(setVisible(bool)));
-    connect(m_pDisplayOptionWidget, SIGNAL(visibilityChanged(bool)), ui->actionDisplayOptions, SLOT(setChecked(bool)));
+    QMenu* pWinMenu = ui->menuWindows;
+    pWinMenu->addAction( m_pToolBox->toggleViewAction() );
+    pWinMenu->addAction( m_pToolOptionWidget->toggleViewAction() );
+    pWinMenu->addAction( m_pColorWheelWidget->toggleViewAction() );
+    pWinMenu->addAction( m_pColorPalette->toggleViewAction() );
+    pWinMenu->addAction( m_pTimeLine->toggleViewAction() );
+    pWinMenu->addAction( m_pDisplayOptionWidget->toggleViewAction() );
 
     /// --- Help Menu ---
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
