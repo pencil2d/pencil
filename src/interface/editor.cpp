@@ -1467,7 +1467,7 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     case Layer::BITMAP:
     case Layer::VECTOR:
     case Layer::CAMERA:
-        isOK = layer->addImageAtFrame( frameIndex );
+        isOK = layer->addNewKeyFrameAt( frameIndex );
         break;
     default:
         break;

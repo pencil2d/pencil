@@ -20,13 +20,13 @@ GNU General Public License for more details.
 #include <QSize>
 #include <QList>
 #include <QString>
-
 #include "layer.h"
-#include "keyframe.h"
+
 
 class QImage;
 class QPainter;
 class TimeLineCells;
+class Keyframe;
 
 
 class LayerImage : public Layer
@@ -42,6 +42,7 @@ public:
     virtual int getPreviousKeyframePosition(int position);
     virtual int getNextKeyframePosition(int position);
     virtual int getMaxFramePosition();
+    bool addKeyFrame( int position, Keyframe* );
 
     // frame <-> image API
     int getFramePositionAt(int index);
@@ -51,7 +52,7 @@ public:
     // FIXME: this API only used in vector layer
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 
-    virtual bool addImageAtFrame(int frameNumber);
+    virtual bool addNewKeyFrameAt(int frameNumber);
     virtual void removeImageAtFrame(int frameNumber);
     virtual void setModified(int frameNumber, bool trueOrFalse);
     void deselectAllFrames();
@@ -69,9 +70,8 @@ public:
     void mouseDoubleClick(QMouseEvent* event, int frameNumber) override;
 
 private:
-    QList<Keyframe*> m_keyframes;
+    QMap<int, Keyframe*> m_keyframes;
 
-protected:
     // list of frame positions, sorted from lowest to largest
     QList<int> framesPosition;
     QList<QString> framesFilename;

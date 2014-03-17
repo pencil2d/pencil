@@ -28,10 +28,6 @@ LayerVector::~LayerVector()
     {
         delete framesVector.takeFirst();
     }
-    while (!framesImage.empty())
-    {
-        delete framesImage.takeFirst();
-    }
 }
 
 // ------
@@ -151,45 +147,9 @@ void LayerVector::removeColour(int index)
 }
 
 
-bool LayerVector::addImageAtFrame(int frameNumber)
+bool LayerVector::addNewKeyFrameAt( int frameNumber )
 {
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
-        framesVector.append(new VectorImage(object()));
-        framesImage.append(new QImage( QSize(2,2), QImage::Format_ARGB32_Premultiplied)); // very small image to begin with
-
-        framesPosition.append(frameNumber);
-        framesSelected.append(false);
-        framesFilename.append("");
-        framesModified.append(false);
-        bubbleSort();
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-void LayerVector::removeImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index != -1 && framesPosition.size() != 1)
-    {
-        delete framesVector.at(index);
-        framesVector.removeAt(index);
-
-        delete framesImage.at(index);
-        framesImage.removeAt(index);
-
-        framesPosition.removeAt(index);
-        framesSelected.removeAt(index);
-        framesFilename.removeAt(index);
-        framesModified.removeAt(index);
-        bubbleSort();
-    }
+    return addKeyFrame( frameNumber, new VectorImage( object() ) );
 }
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)

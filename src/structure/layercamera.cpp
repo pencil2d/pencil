@@ -194,44 +194,11 @@ QImage* LayerCamera::getImageAtIndex(int index)
     return NULL;
 }
 
-bool LayerCamera::addImageAtFrame(int frameNumber)
+bool LayerCamera::addNewKeyFrameAt( int frameNumber )
 {
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        //framesImage.append(new QImage(imageSize, QImage::Format_ARGB32_Premultiplied));
-        Camera* camera = new Camera();
-        camera->view = getViewAtFrame(frameNumber);
-        framesCamera.append(camera);
-        framesPosition.append(frameNumber);
-        framesSelected.append(false);
-        framesFilename.append("");
-        framesModified.append(false);
-        bubbleSort();
-        int frameNumber1 = frameNumber;
-        if (index>0) frameNumber1 = framesPosition.at(index-1);
-        if (index<framesPosition.size()-1) frameNumber1 = framesPosition.at(index+1);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
+    QMatrix viewMatrix = getViewAtFrame( frameNumber );
 
-void LayerCamera::removeImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index != -1  && framesPosition.size() != 1)
-    {
-        delete framesCamera.at(index);
-        framesCamera.removeAt(index);
-        framesPosition.removeAt(index);
-        framesSelected.removeAt(index);
-        framesFilename.removeAt(index);
-        framesModified.removeAt(index);
-        bubbleSort();
-    }
+    return addKeyFrame( frameNumber, new Camera( viewMatrix ) );
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
@@ -255,11 +222,8 @@ bool LayerCamera::saveImage(int index, QString path, int layerNumber)
     QString frameNumberString = QString::number(framesPosition.at(index));
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
     while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
-    //framesFilename[index] = path+"/"+layerNumberString+"."+frameNumberString+".png";
-    framesFilename[index] = layerNumberString+"."+frameNumberString+".png";
-    //qDebug() << "Write " << framesFilename.at(index);
+    framesFilename[ index ] = layerNumberString + "." + frameNumberString + ".png";
 
-    //framesCamera[index]->image->save(path +"/"+ framesFilename.at(index),"PNG");
     framesModified[index] = false;
 
     return true;

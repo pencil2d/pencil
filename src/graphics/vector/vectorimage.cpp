@@ -13,21 +13,24 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtGui>
-#include <math.h>
+#include <cmath>
+#include <QImage>
 #include "vectorimage.h"
 #include "object.h"
+#include "util.h"
 
-
-VectorImage::VectorImage()
-{
-    // nothing
-}
 
 VectorImage::VectorImage(Object* parent)
 {
     myParent = parent;
+    m_pCacheImage = new QImage( QSize( 2, 2 ), QImage::Format_ARGB32_Premultiplied );
     deselectAll();
+}
+
+
+VectorImage::~VectorImage()
+{
+    delete m_pCacheImage;
 }
 
 

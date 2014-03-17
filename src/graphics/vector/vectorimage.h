@@ -22,21 +22,17 @@ GNU General Public License for more details.
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
+#include "keyframe.h"
 
 class Object;  // forward declaration
 class QPainter;
 
 
-//class VectorImage : public QObject
-class VectorImage
+class VectorImage : public Keyframe
 {
-    //Q_OBJECT
-
 public:
-    VectorImage();
     VectorImage(Object* parent);
-    //VectorImage(QSize size, QImage::Format format, Object* parent);
-    //VectorImage(QImage newImage, Object* parent);
+    virtual ~VectorImage();
 
     bool read(QString filePath);
     bool write(QString filePath, QString format);
@@ -134,8 +130,9 @@ private:
     Object* myParent;
 
     QRectF selectionRect;
-    //, transformedSelection;
     QMatrix selectionTransformation;
+
+    QImage* m_pCacheImage;
 };
 
 #endif

@@ -1,8 +1,8 @@
 #include "camera.h"
 
-Camera::Camera()
+Camera::Camera( QMatrix viewMatrix )
 {
-    view = QMatrix();
+    view = viewMatrix;
 }
 
 Camera::~Camera()

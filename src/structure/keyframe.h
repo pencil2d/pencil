@@ -7,7 +7,7 @@ class Keyframe
 {
 public:
     Keyframe();
-    ~Keyframe();
+    virtual ~Keyframe();
 
 private:
     int m_position;

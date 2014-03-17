@@ -18,13 +18,25 @@ GNU General Public License for more details.
 
 #include <QSize>
 #include <QList>
+
+#include <cstdint>
 #include <QString>
 #include <QPainter>
-//#include <phonon/MediaObject>
-//#include <phonon/AudioOutput>
 #include "layerimage.h"
+#include "keyframe.h"
+
 
 class QMediaPlayer;
+
+
+class SoundClip : public Keyframe
+{
+public:
+    QString m_strFilePath;
+    QMediaPlayer* m_pPlayer;
+    uint64_t m_soundSize;
+};
+
 
 class LayerSound : public LayerImage
 {
@@ -53,7 +65,7 @@ public:
     int getSoundSize() { return sound.size(); }
     bool soundIsNotNull(int index) { return (sound[index] != NULL); }
 
-protected:
+private:
 
     QList<QString> soundFilepath;
     QList<qint64> soundSize;

@@ -38,13 +38,13 @@ void TestLayer::testAddImageAtFrame()
 
     bool bOK = false;
 
-    bOK = pLayer->addImageAtFrame( 0 );
+    bOK = pLayer->addNewKeyFrameAt( 0 );
     QVERIFY2( bOK == false, "Frame Number must > 0." );
 
-    bOK = pLayer->addImageAtFrame( 1 );
+    bOK = pLayer->addNewKeyFrameAt( 1 );
     QVERIFY2( bOK == false, "Already has a key frame at position 1." );
 
-    bOK = pLayer->addImageAtFrame( 2 );
+    bOK = pLayer->addNewKeyFrameAt( 2 );
     QCOMPARE( bOK, true );
     QCOMPARE( pLayer->getMaxFramePosition(), 2 );
 
@@ -58,16 +58,16 @@ void TestLayer::testGetMaxFramePosition()
     // 1 at beginning.
     QCOMPARE( pLayer->getMaxFramePosition(), 1 );
 
-    QVERIFY( pLayer->addImageAtFrame( 3 ) );
+    QVERIFY( pLayer->addNewKeyFrameAt( 3 ) );
     QCOMPARE( pLayer->getMaxFramePosition(), 3 );
 
-    QVERIFY( pLayer->addImageAtFrame( 8 ) );
+    QVERIFY( pLayer->addNewKeyFrameAt( 8 ) );
     QCOMPARE( pLayer->getMaxFramePosition(), 8 );
 
-    QVERIFY( pLayer->addImageAtFrame( 100 ) );
+    QVERIFY( pLayer->addNewKeyFrameAt( 100 ) );
     QCOMPARE( pLayer->getMaxFramePosition(), 100 );
 
-    QVERIFY( pLayer->addImageAtFrame( 80 ) );
+    QVERIFY( pLayer->addNewKeyFrameAt( 80 ) );
     QCOMPARE( pLayer->getMaxFramePosition(), 100 );
 
     delete pLayer;
@@ -79,11 +79,11 @@ void TestLayer::testHasKeyframeAtPosition()
 
     QCOMPARE( pLayer->hasKeyframeAtPosition( 1 ), true ); // there is a frame at 1 in default.
 
-    QVERIFY( pLayer->addImageAtFrame( 15 ) );
+    QVERIFY( pLayer->addNewKeyFrameAt( 15 ) );
     QCOMPARE( pLayer->hasKeyframeAtPosition( 15 ), true );
     QCOMPARE( pLayer->hasKeyframeAtPosition( 10 ), false );
 
-    QVERIFY( pLayer->addImageAtFrame( 10 ) );
+    QVERIFY( pLayer->addNewKeyFrameAt( 10 ) );
     QCOMPARE( pLayer->hasKeyframeAtPosition( 10 ), true );
 
     // test false case
@@ -100,13 +100,13 @@ void TestLayer::testGetFramePositionAt()
 
     QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
 
-    QVERIFY( pLayer->addImageAtFrame( 2 ) ); // (1, 2)
+    QVERIFY( pLayer->addNewKeyFrameAt( 2 ) ); // (1, 2)
     QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
 
-    QVERIFY( pLayer->addImageAtFrame( 4 ) ); // (1, 2, 4)
+    QVERIFY( pLayer->addNewKeyFrameAt( 4 ) ); // (1, 2, 4)
     QCOMPARE( pLayer->getFramePositionAt( 2 ), 4 );
 
-    QVERIFY( pLayer->addImageAtFrame( 3 ) ); // (1, 2, 3, 4)
+    QVERIFY( pLayer->addNewKeyFrameAt( 3 ) ); // (1, 2, 3, 4)
     QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
     QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
     QCOMPARE( pLayer->getFramePositionAt( 2 ), 3 );
@@ -124,7 +124,7 @@ void TestLayer::testRemoveImageAtFrame()
     
     for ( int i = 2; i <= 20; ++i )
     {
-        QVERIFY( pLayer->addImageAtFrame( i ) );
+        QVERIFY( pLayer->addNewKeyFrameAt( i ) );
     }
     
     QCOMPARE( pLayer->hasKeyframeAtPosition( 20 ), true );

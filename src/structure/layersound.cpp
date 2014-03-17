@@ -36,7 +36,9 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
     Q_UNUSED(cells);
     Q_UNUSED(width);
     Q_UNUSED(selected);
-
+    
+    // TODO: re-write here.
+    /*
     for (int i = 0; i < sound.size(); i++)
     {
         qreal h = x + (framesPosition.at(i)-1)*frameSize+2;
@@ -53,44 +55,12 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
         painter.drawPolygon( points, 3 );
         painter.drawText(QPoint( h + 20, y+(2*height)/3), framesFilename.at(i) );
     }
+    */
 }
 
 bool LayerSound::addImageAtFrame(int frameNumber)
 {
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        sound.append(NULL);
-        soundFilepath.append("");
-        framesPosition.append(frameNumber);
-        framesSelected.append(false);
-        framesFilename.append("");
-        framesModified.append(false);
-        soundSize.append(0);
-        bubbleSort();
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-void LayerSound::removeImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index != -1  && framesPosition.size() != 0)
-    {
-        delete sound.at(index);
-
-        soundFilepath.removeAt(index);
-        framesPosition.removeAt(index);
-        framesSelected.removeAt(index);
-        framesFilename.removeAt(index);
-        framesModified.removeAt(index);
-        soundSize.removeAt(index);
-        bubbleSort();
-    }
+    return addImageAtFrame( frameNumber, new SoundClip );
 }
 
 void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
@@ -103,26 +73,14 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
     QFileInfo fi(filePathString);
     if (fi.exists())
     {
-        //Phonon::MediaObject* media = new Phonon::MediaObject();
-        //connect(media, SIGNAL(totalTimeChanged(qint64)), this, SLOT(addTimelineKey(qint64)));
-        //media->setCurrentSource(filePathString);
         QMediaPlayer* pPlayer = new QMediaPlayer( this );
         pPlayer->setMedia( QUrl::fromLocalFile(filePathString) );
 
-        // quick and dirty trick to calculate soundSize
-        // totalTime() return a value only after a call to media.play()
-        //  ( and when signal totaltimechanged is emitted totalTime() returns the correct value )
-        
         sound[index] = pPlayer;
         soundFilepath[index] = filePathString;
-        framesFilename[index] = fi.fileName();
-        framesModified[index] = true;
     }
     else
     {
-        sound[index] = NULL;
-        soundFilepath[index] = tr("Wrong file");
-        framesFilename[index] = tr("Wrong file") + filePathString;
     }
 }
 

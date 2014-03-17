@@ -2,12 +2,16 @@
 #define CAMERA_H
 
 #include <QMatrix>
+#include "keyframe.h"
 
-class Camera
+
+class Camera : public Keyframe
 {
 public:
-    Camera();
+    Camera( QMatrix );
     ~Camera();
+
+
     QMatrix view;
 };
 

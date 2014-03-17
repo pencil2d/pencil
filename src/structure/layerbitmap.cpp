@@ -19,7 +19,7 @@ GNU General Public License for more details.
 LayerBitmap::LayerBitmap( Object* object ) : LayerImage( object, Layer::BITMAP )
 {
     name = QString(tr("Bitmap Layer"));
-    addImageAtFrame(1);
+    addNewKeyFrameAt(1);
 }
 
 LayerBitmap::~LayerBitmap()
@@ -54,54 +54,22 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return getBitmapImageAtIndex(index + increment);
 }
 
-bool LayerBitmap::addImageAtFrame( int frameNumber )
+bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
 {
     if ( frameNumber <= 0 )
     {
         return false;
     }
-
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-        m_framesBitmap.append(new BitmapImage);
-        framesPosition.append(frameNumber);
-        framesSelected.append(false);
-        framesFilename.append("");
-        framesModified.append(false);
-        bubbleSort();
-
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-
-void LayerBitmap::removeImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    if (index != -1  && framesPosition.size() > 1)  // TODO: maybe size=0 is acceptable?
-    {
-        delete m_framesBitmap.at(index);
-        m_framesBitmap.removeAt(index);
-        framesPosition.removeAt(index);
-        framesSelected.removeAt(index);
-        framesFilename.removeAt(index);
-        framesModified.removeAt(index);
-        bubbleSort();
-    }
+    return addKeyFrame( frameNumber, new BitmapImage );
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
-    //qDebug() << path;
-    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
-    int index = getIndexAtFrame(frameNumber);
-    m_framesBitmap[index] = new BitmapImage(path, topLeft);
-    QFileInfo fi(path);
-    framesFilename[index] = fi.fileName();
+    if ( hasKeyframeAtPosition( frameNumber ) )
+    {
+        removeImageAtFrame( frameNumber );
+    }
+    addKeyFrame( frameNumber, new BitmapImage( path, topLeft ) );
 }
 
 void LayerBitmap::swap(int i, int j)
@@ -116,7 +84,6 @@ bool LayerBitmap::saveImage(int index, QString path, int layerNumber)
     int theFrame = framesPosition.at(index);
     QString theFileName = fileName(theFrame, id);
     framesFilename[index] = theFileName;
-    //qDebug() << "Write " << theFileName;
     m_framesBitmap[index]->m_pImage->save(path +"/"+ theFileName,"PNG");
     framesModified[index] = false;
 

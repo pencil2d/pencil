@@ -31,33 +31,35 @@ LayerImage::LayerImage(Object* object, LAYER_TYPE eType ) : Layer( object, eType
 
 LayerImage::~LayerImage()
 {
+    for ( auto it : m_keyframes )
+    {
+        Keyframe* pKeyframe = it.value();
+        delete pKeyframe;
+    }
+    m_keyframes.clear();
 }
 
 bool LayerImage::hasKeyframeAtPosition(int position)
 {
-    for (int i = 0; i < framesPosition.size(); i++)
-    {
-        if (framesPosition.at(i) == position)
-        {
-            return true;
-        }
-    }
-    return false;
+    m_keyframes.contains( position );
 }
 
 int LayerImage::getPreviousKeyframePosition(int position)
 {
-    int prevIndex = -1;
-    for (int i = 0; i < framesPosition.size(); i++)
+    auto it = m_keyframes.lowerBound( position );
+    if ( it == m_keyframes.end() )
     {
-        if (framesPosition.at(i) >= position)
-        {
-            break;
-        }
-        prevIndex = i;
+        return NO_KEYFRAME;
     }
 
-    return getFramePositionAt(prevIndex);
+    it--;
+
+    if ( it == m_keyframes.end() )
+    {
+        return NO_KEYFRAME;
+    }
+
+    return it.key;
 }
 
 int LayerImage::getNextKeyframePosition(int frameIndex)
@@ -249,9 +251,8 @@ void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
     if (ok == false) frameOffset = 0;
 }
 
-void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
+void LayerImage::mouseRelease(QMouseEvent*, int frameNumber)
 {
-    Q_UNUSED(event);
     Q_UNUSED(frameNumber);
 
     qDebug( "LayerImage: mouse release." );
@@ -268,7 +269,7 @@ void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
     frameOffset = 0;
 }
 
-bool LayerImage::addImageAtFrame(int frameNumber)
+bool LayerImage::addNewKeyFrameAt( int frameNumber )
 {
     int index = getIndexAtFrame(frameNumber);
     if (index == -1)
@@ -289,15 +290,17 @@ bool LayerImage::addImageAtFrame(int frameNumber)
 
 void LayerImage::removeImageAtFrame(int frameNumber)
 {
-    int index = getIndexAtFrame(frameNumber);
-    if (index != -1)
+    int index = getIndexAtFrame( frameNumber );
+    if ( index != -1 && framesPosition.size() > 1 )  // TODO: maybe size=0 is acceptable?
     {
-        framesPosition.removeAt(index);
-        framesSelected.removeAt(index);
-        framesFilename.removeAt(index);
-        framesModified.removeAt(index);
+        delete m_keyframes[ index ];
+        m_keyframes.removeAt( index );
+        framesPosition.removeAt( index );
+        framesSelected.removeAt( index );
+        framesFilename.removeAt( index );
+        framesModified.removeAt( index );
+        bubbleSort();
     }
-    bubbleSort();
 }
 
 void LayerImage::bubbleSort()
@@ -387,4 +390,24 @@ QString LayerImage::fileName(int index, int layerNumber)
     // XXX make abstract?
     // implemented in subclasses
     return "";
+}
+
+bool LayerImage::addKeyFrame( int position, Keyframe* pKeyframe )
+{
+    int index = getIndexAtFrame( position );
+    if ( index == -1 )
+    {
+        m_keyframes.append( pKeyframe );
+        framesPosition.append( position );
+        framesSelected.append( false );
+        framesFilename.append( "" );
+        framesModified.append( false );
+        bubbleSort();
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
