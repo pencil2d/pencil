@@ -181,8 +181,6 @@ void LayerImage::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
                     painter.setBrush(QColor(125,125,125,125));
                 if (framesModified.at(i)) painter.setBrush(QColor(255,125,125,125));
                 painter.drawRect( cells->getFrameX(framesPosition.at(i))-frameSize+2, y+1, frameSize-2, height-4 );
-                //painter.drawRect(x+(framesPosition.at(i)-1)*frameSize+2, y+1, frameSize-2, height-4);
-                //painter.drawText(QPoint( (framesPosition.at(i)-1)*frameSize+5, y+(2*height)/3), QString::number(i) );
             }
         }
     }
@@ -213,9 +211,8 @@ void LayerImage::mousePress(QMouseEvent* event, int frameNumber)
     }
 }
 
-void LayerImage::mouseDoubleClick(QMouseEvent* event, int frameNumber)
+void LayerImage::mouseDoubleClick(QMouseEvent*, int frameNumber)
 {
-    Q_UNUSED(event);
     int index = getIndexAtFrame(frameNumber);
     if (index != -1)
     {

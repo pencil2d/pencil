@@ -34,7 +34,7 @@ void TestLayer::testLayerType()
 
 void TestLayer::testAddImageAtFrame()
 {
-    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+    LayerImage* pLayer = new LayerBitmap( m_pObject );
 
     bool bOK = false;
 
@@ -53,7 +53,7 @@ void TestLayer::testAddImageAtFrame()
 
 void TestLayer::testGetMaxFramePosition()
 {
-    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+    LayerImage* pLayer = new LayerBitmap( m_pObject );
 
     // 1 at beginning.
     QCOMPARE( pLayer->getMaxFramePosition(), 1 );
@@ -75,7 +75,7 @@ void TestLayer::testGetMaxFramePosition()
 
 void TestLayer::testHasKeyframeAtPosition()
 {
-    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+    LayerImage* pLayer = new LayerBitmap( m_pObject );
 
     QCOMPARE( pLayer->hasKeyframeAtPosition( 1 ), true ); // there is a frame at 1 in default.
 
@@ -96,9 +96,8 @@ void TestLayer::testHasKeyframeAtPosition()
 
 void TestLayer::testGetFramePositionAt()
 {
-    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+    LayerImage* pLayer = new LayerBitmap( m_pObject );
 
-    //
     QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
 
     QVERIFY( pLayer->addImageAtFrame( 2 ) ); // (1, 2)
@@ -118,7 +117,7 @@ void TestLayer::testGetFramePositionAt()
 
 void TestLayer::testRemoveImageAtFrame()
 {
-    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
+    LayerImage* pLayer = new LayerBitmap( m_pObject );
 
     pLayer->removeImageAtFrame( 1 );
     QCOMPARE( pLayer->getMaxFramePosition(), 1 ); // you can't delete the only 1 keyframe

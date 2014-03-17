@@ -6,23 +6,14 @@
 class Keyframe
 {
 public:
-    Keyframe()
-    {
-    }
-
-    Keyframe(const Keyframe &frame)
-    {
-        m_position = frame.m_position;
-        m_originalPosition = frame.m_originalPosition;
-        m_strFilename = frame.m_strFilename;
-        m_isModified = frame.m_isModified;
-    }
+    Keyframe();
+    ~Keyframe();
 
 private:
-    int m_position = -1;
-    int m_originalPosition = -1;
+    int m_position;
+    int m_originalPosition;
     QString m_strFilename;
-    bool m_isModified = false;
+    bool m_isModified;
 };
 
 #endif // KEYFRAME_H
