@@ -12,18 +12,17 @@ public:
 
     Keyframe(const Keyframe &frame)
     {
-        position = frame.position;
-        originalPosition = frame.originalPosition;
-        filename = frame.filename;
-        modified = frame.modified;
+        m_position = frame.m_position;
+        m_originalPosition = frame.m_originalPosition;
+        m_strFilename = frame.m_strFilename;
+        m_isModified = frame.m_isModified;
     }
 
-public:
-    // keep public for now
-    int position;
-    int originalPosition;
-    QString filename;
-    bool modified;
+private:
+    int m_position = -1;
+    int m_originalPosition = -1;
+    QString m_strFilename;
+    bool m_isModified = false;
 };
 
 #endif // KEYFRAME_H

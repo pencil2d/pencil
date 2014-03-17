@@ -25,8 +25,6 @@ GNU General Public License for more details.
 
 LayerImage::LayerImage(Object* object, LAYER_TYPE eType ) : Layer( object, eType )
 {
-    //imageSize = desiredSize;
-    //addImageAtFrame(1);
     frameClicked = -1;
     frameOffset = 0;
 }

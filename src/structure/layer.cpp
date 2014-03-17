@@ -24,7 +24,7 @@ GNU General Public License for more details.
 
 Layer::Layer(Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 {
-    this->m_pObject = pObject;
+    m_pObject = pObject;
     m_eType = eType;
     id = 0;
     name = QString(tr("Undefined Layer"));

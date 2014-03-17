@@ -49,7 +49,7 @@ public:
     LAYER_TYPE type() { return m_eType; }
     Object* object() { return m_pObject; }
 
-    void switchVisibility() { visible = !visible;}
+    void switchVisibility() { visible = !visible; }
 
     // keyframe interface
     static const int NO_KEYFRAME = -1;
@@ -69,10 +69,11 @@ public:
     virtual void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int frameSize);
     virtual void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
-    virtual void mousePress(QMouseEvent* event, int frameNumber) = 0;
-    virtual void mouseMove(QMouseEvent* event, int frameNumber) = 0;
-    virtual void mouseRelease(QMouseEvent* event, int frameNumber) = 0;
-    virtual void mouseDoubleClick(QMouseEvent* event, int frameNumber) = 0;
+
+    virtual void mousePress(QMouseEvent*, int frameNumber) = 0;
+    virtual void mouseMove(QMouseEvent*, int frameNumber) = 0;
+    virtual void mouseRelease(QMouseEvent*, int frameNumber) = 0;
+    virtual void mouseDoubleClick(QMouseEvent*, int frameNumber) = 0;
 
     virtual void editProperties();
 

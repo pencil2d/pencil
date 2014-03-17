@@ -69,7 +69,7 @@ public:
     void mouseDoubleClick(QMouseEvent* event, int frameNumber) override;
 
 private:
-    QList<Keyframe*> keyframes;
+    QList<Keyframe*> m_keyframes;
 
 protected:
     // list of frame positions, sorted from lowest to largest

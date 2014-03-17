@@ -174,11 +174,6 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath)
                 int y = imageElement.attribute("topLeftY").toInt();
                 loadImageAtFrame( path, QPoint(x,y), position );
             }
-            /*if (imageElement.tagName() == "image") {
-            	int frame = imageElement.attribute("frame").toInt();
-            	addImageAtFrame( frame );
-            	getBitmapImageAtFrame( frame )->loadDomElement(imageElement, filePath);
-            }*/
         }
         imageTag = imageTag.nextSibling();
     }
