@@ -89,8 +89,8 @@ MainWindow2::MainWindow2( QWidget *parent )
     makeColorPaletteConnections();
     makeColorWheelConnections();
 
-    connect(editor, SIGNAL(needSave()), this, SLOT(saveDocument()));
-    connect(m_pToolBox, SIGNAL(clearButtonClicked()), editor, SLOT(clearCurrentFrame()));
+    connect(editor, &Editor::needSave, this, &MainWindow2::saveDocument);
+    connect(m_pToolBox, &ToolBoxWidget::clearButtonClicked, editor, &Editor::clearCurrentFrame);
     connect(editor, SIGNAL(changeTool(ToolType)), m_pToolBox, SLOT(setCurrentTool(ToolType)));
 
     editor->setCurrentLayer( this->editor->object()->getLayerCount() - 1 );
@@ -190,8 +190,8 @@ void MainWindow2::makeColorWheelConnections()
     ColorBox* pColorBox = static_cast<ColorBox*>(m_pColorWheelWidget->widget());
     Q_ASSERT( pColorBox );
 
-    connect( pColorBox, SIGNAL(colorChanged(QColor)), editor->colorManager(), SLOT(pickColor(QColor)));
-	connect( editor->colorManager(), SIGNAL(colorChanged(QColor)), pColorBox, SLOT(setColor(QColor)));
+    connect( pColorBox, &ColorBox::colorChanged, editor->colorManager(), &ColorManager::pickColor );
+    connect( editor->colorManager(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
 }
 
 void MainWindow2::createMenus()
@@ -268,8 +268,8 @@ void MainWindow2::createMenus()
     connect( ui->actionOnionNext, &QAction::triggered, editor, &Editor::toggleOnionNext );
     connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, editor, &Editor::toggleMultiLayerOnionSkin );
 
-    connect( editor, SIGNAL( onionPrevChanged( bool ) ), ui->actionOnionPrevious, SLOT( setChecked( bool ) ) );
-    connect( editor, SIGNAL( onionNextChanged( bool ) ), ui->actionOnionNext, SLOT( setChecked( bool ) ) );
+    connect( editor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
+    connect( editor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
     connect( editor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
@@ -279,10 +279,9 @@ void MainWindow2::createMenus()
     connect( editor, &Editor::loopToggled, ui->actionLoop, &QAction::setChecked );
 
     // Loop Control
-    connect(ui->actionLoopControl, SIGNAL(triggered(bool)), editor, SLOT(setLoopControl(bool)));
-    connect(ui->actionLoopControl, SIGNAL(toggled(bool)), editor, SIGNAL(toggleLoopControl(bool)));
-    connect(editor, SIGNAL(loopControlToggled(bool)), ui->actionLoopControl, SLOT(setChecked(bool)));
-    // Loop Control
+    connect(ui->actionLoopControl, &QAction::triggered, editor, &Editor::setLoopControl );
+    connect( ui->actionLoopControl, &QAction::toggled, editor, &Editor::toggleLoopControl );
+    //connect(editor, &Editor::loopControlToggled, ui->actionLoopControl, &QAction::setChecked );
 
     connect(ui->actionAdd_Frame, &QAction::triggered, editor, &Editor::addNewKey );
     connect(ui->actionRemove_Frame, &QAction::triggered, editor, &Editor::removeKey );
