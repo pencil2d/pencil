@@ -1,6 +1,5 @@
 These are some notes/memo about compiling Pencil on Mac OS X
 Last edited: 2013-07-31 by Franois TŽchenŽ
-Pascal Naidon
 
 To compile Pencil for OS X Power PC "out of the box"
 0) Install XCode and Apple Developer Kit if you haven't done it
@@ -26,32 +25,3 @@ I've used Qt 4.7.4 on the current version
 
 You could also install Qt through a package manager such as Homebrew
 
-
-====================================================================
-Ming (Flash/SWF library) on Mac (This feature is not implemented in v0.5)
--> The Ming library enables Pencil to export animation to the Flash/SWF format
-www.libming.org
-I've used Ming 0.3
-Because of some obscure library name conflict on the Mac, I couldn't use Ming as a dynamic library.
-(I think this is because Ming links against libpng which is also present in the System/Library/ApplicationServices as libPng.
-If anyone manages to use Ming (with PNG support) a dynamic library, please let me know.)
-
-Instead I had to use it a static library
-I put the compiled library (libming.a) and the header files (*.h) in
-the "libmacosx" directory, as a convenience, so that you don't need to compile it yourself
-(maybe you need on an Intel Mac, though).
-If needed, you can get the latest files from www.libming.org and compile them yourself.
-
-
-====================================================================
-Deploying Pencil/Mac OS X
-I chose to ship the Qt libraries within the app.
-In order to link the pencil.app against these local Qt libraries, I made the script "macdeploy.sh"
-
-Make sure your Pencil application is built and follow these steps :
-
-0) Open macdeploy.sh in a text editor
-1) Set the app path and QT lib path based on your environment
-2) Open a terminal, and go to the project's root folder
-3) type "sudo sh util/macdeploy.sh"
-4) You should have a stand alone version of your application and a ready to share .dmg file in your build folder
