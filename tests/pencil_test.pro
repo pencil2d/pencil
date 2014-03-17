@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets xml xmlpatterns phonon svg testlib
+QT       += core widgets gui xml xmlpatterns multimedia svg testlib
 
 TARGET = pencil_test
 CONFIG   += console

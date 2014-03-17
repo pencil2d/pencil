@@ -16,15 +16,10 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include <QtDebug>
 
-LayerBitmap::LayerBitmap(Object* object) : LayerImage(object)
+LayerBitmap::LayerBitmap( Object* object ) : LayerImage( object, Layer::BITMAP )
 {
-    m_eType = Layer::BITMAP;
     name = QString(tr("Bitmap Layer"));
     addImageAtFrame(1);
-
-    //imageSize = desiredSize;
-    //frameClicked = -1;
-    //frameOffset = 0;
 }
 
 LayerBitmap::~LayerBitmap()
@@ -69,7 +64,7 @@ bool LayerBitmap::addImageAtFrame( int frameNumber )
     int index = getIndexAtFrame(frameNumber);
     if (index == -1)
     {
-        m_framesBitmap.append(new BitmapImage(m_pObject));
+        m_framesBitmap.append(new BitmapImage);
         framesPosition.append(frameNumber);
         framesSelected.append(false);
         framesFilename.append("");
@@ -104,7 +99,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     //qDebug() << path;
     if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
     int index = getIndexAtFrame(frameNumber);
-    m_framesBitmap[index] = new BitmapImage(m_pObject, path, topLeft);
+    m_framesBitmap[index] = new BitmapImage(path, topLeft);
     QFileInfo fi(path);
     framesFilename[index] = fi.fileName();
 }
@@ -161,7 +156,6 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

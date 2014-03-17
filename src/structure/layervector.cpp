@@ -16,9 +16,8 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include <QtDebug>
 
-LayerVector::LayerVector(Object* object) : LayerImage(object)
+LayerVector::LayerVector(Object* object) : LayerImage( object, Layer::VECTOR )
 {
-    m_eType = Layer::VECTOR;
     name = QString(tr("Vector Layer"));
     addImageAtFrame(1);
 }
@@ -158,7 +157,7 @@ bool LayerVector::addImageAtFrame(int frameNumber)
     if (index == -1)
     {
         //framesVector.append(new VectorImage(imageSize, QImage::Format_ARGB32_Premultiplied, object));
-        framesVector.append(new VectorImage(m_pObject));
+        framesVector.append(new VectorImage(object()));
         framesImage.append(new QImage( QSize(2,2), QImage::Format_ARGB32_Premultiplied)); // very small image to begin with
 
         framesPosition.append(frameNumber);
@@ -262,7 +261,6 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    m_eType = static_cast<LAYER_TYPE>( element.attribute( "type" ).toInt( ) );
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())

@@ -21,54 +21,36 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    // nothing
-    m_pImage = NULL;
-    extendable = true;
-}
-
-BitmapImage::BitmapImage(Object* parent)
-{
-    myParent = parent;
     m_pImage = new QImage(0, 0, QImage::Format_ARGB32_Premultiplied);
     boundaries = QRect(0,0,0,0);
     extendable = true;
 }
 
-BitmapImage::BitmapImage(Object* parent, QRect rectangle, QColor colour)
+BitmapImage::BitmapImage(QRect rectangle, QColor colour)
 {
-    myParent = parent;
     boundaries = rectangle;
     m_pImage = new QImage( boundaries.size(), QImage::Format_ARGB32_Premultiplied);
     m_pImage->fill(colour.rgba());
     extendable = true;
 }
 
-BitmapImage::BitmapImage(Object* parent, QRect rectangle, QImage image)
+BitmapImage::BitmapImage(QRect rectangle, QImage image)
 {
-    myParent = parent;
     boundaries = rectangle.normalized();
     extendable = true;
     this->m_pImage = new QImage(image);
     if (this->m_pImage->width() != rectangle.width() || this->m_pImage->height() != rectangle.height()) qDebug() << "Error instancing bitmapImage.";
 }
 
-/*BitmapImage::BitmapImage(Object *parent, QImage image, QPoint topLeft) {
-    myParent = parent;
-    this->image = new QImage(image);
-    boundaries =  QRect( topLeft, image.size() );
-}*/
-
 BitmapImage::BitmapImage(const BitmapImage& a)
 {
-    myParent=a.myParent;
-    boundaries=a.boundaries;
-    m_pImage=new QImage(*a.m_pImage);
+    boundaries = a.boundaries;
+    m_pImage = new QImage(*a.m_pImage);
     extendable = true;
 }
 
-BitmapImage::BitmapImage(Object* parent, QString path, QPoint topLeft)
+BitmapImage::BitmapImage(QString path, QPoint topLeft)
 {
-    myParent = parent;
     m_pImage = new QImage(path);
     if (m_pImage->isNull()) qDebug() << "ERROR: Image " << path << " not loaded";
     boundaries = QRect( topLeft, m_pImage->size() );
@@ -82,7 +64,6 @@ BitmapImage::~BitmapImage()
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
-    myParent=a.myParent;
     boundaries=a.boundaries;
     m_pImage=new QImage(*a.m_pImage);
     return *this;
@@ -138,14 +119,14 @@ void outputImage(QImage* image, QSize size, QMatrix myView)
 
 BitmapImage BitmapImage::copy()
 {
-    return BitmapImage(myParent, boundaries, QImage(*m_pImage));
+    return BitmapImage(boundaries, QImage(*m_pImage));
 }
 
 BitmapImage BitmapImage::copy(QRect rectangle)
 {
     //QRect intersection = boundaries.intersected( rectangle );
     QRect intersection2  = rectangle.translated( -topLeft() );
-    BitmapImage result = BitmapImage(myParent, rectangle, m_pImage->copy(intersection2));
+    BitmapImage result = BitmapImage(rectangle, m_pImage->copy(intersection2));
     return result;
 }
 
@@ -321,7 +302,7 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 
 BitmapImage BitmapImage::transformed(QRect newBoundaries, bool smoothTransform)
 {
-    BitmapImage transformedImage(NULL, newBoundaries, QColor(0,0,0,0));
+    BitmapImage transformedImage(newBoundaries, QColor(0,0,0,0));
     QPainter painter(transformedImage.m_pImage);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, smoothTransform);
     newBoundaries.moveTopLeft( QPoint(0,0) );
@@ -565,12 +546,12 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     BitmapImage* replaceImage;
     if (extendFillImage)
     {
-        replaceImage = new BitmapImage(NULL, targetImage->boundaries.united(fillImage->boundaries), QColor(0,0,0,0));
+        replaceImage = new BitmapImage(targetImage->boundaries.united(fillImage->boundaries), QColor(0,0,0,0));
     }
     else
     {
         targetImage->extend(fillImage->boundaries); // not necessary - here just to prevent some bug when we draw outside the targetImage - to be fixed
-        replaceImage = new BitmapImage(NULL, fillImage->boundaries, QColor(0,0,0,0));
+        replaceImage = new BitmapImage(fillImage->boundaries, QColor(0,0,0,0));
         replaceImage->extendable = false;
     }
     //QPainter painter1(replaceImage->image);

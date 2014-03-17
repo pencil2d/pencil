@@ -22,13 +22,15 @@ GNU General Public License for more details.
 #include "object.h"
 #include "timeline.h"
 
-Layer::Layer(Object* pObject) : QObject( pObject )
+Layer::Layer(Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 {
     this->m_pObject = pObject;
-    m_eType = Layer::UNDEFINED;
+    m_eType = eType;
     id = 0;
     name = QString(tr("Undefined Layer"));
     visible = true;
+
+    Q_ASSERT( eType != UNDEFINED );
 }
 
 Layer::~Layer() {}

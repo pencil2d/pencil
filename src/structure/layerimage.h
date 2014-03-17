@@ -34,7 +34,7 @@ class LayerImage : public Layer
     Q_OBJECT
 
 public:
-    LayerImage(Object* object);
+    LayerImage(Object* object, LAYER_TYPE );
     ~LayerImage();
 
     // keyframe interface

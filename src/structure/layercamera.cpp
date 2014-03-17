@@ -98,9 +98,8 @@ void CameraPropertiesDialog::setHeight(int height)
 
 // ------
 
-LayerCamera::LayerCamera(Object* object) : LayerImage(object)
+LayerCamera::LayerCamera( Object* object ) : LayerImage( object, Layer::CAMERA )
 {
-    m_eType = Layer::CAMERA;
     name = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
@@ -309,9 +308,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
 {
     Q_UNUSED(dataDirPath);
     name = element.attribute("name");
-    //visible = (element.attribute("visibility") == "1");
     visible = true;
-    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     int width = element.attribute("width").toInt();
     int height = element.attribute("height").toInt();

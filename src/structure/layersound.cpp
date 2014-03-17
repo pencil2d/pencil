@@ -19,9 +19,8 @@ GNU General Public License for more details.
 #include "layersound.h"
 
 
-LayerSound::LayerSound(Object* object) : LayerImage(object)
+LayerSound::LayerSound(Object* object) : LayerImage(object, Layer::SOUND)
 {
-    m_eType = Layer::SOUND;
     name = QString(tr("Sound Layer"));
 }
 
@@ -217,7 +216,6 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
-    m_eType = static_cast<LAYER_TYPE>( element.attribute("type").toInt() );
 
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())

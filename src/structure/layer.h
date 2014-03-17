@@ -39,7 +39,7 @@ public:
         CAMERA = 5
     };
 
-    Layer(Object*);
+    Layer(Object*, LAYER_TYPE);
     virtual ~Layer();
 
     QString name;
@@ -47,8 +47,10 @@ public:
     int id;
 
     LAYER_TYPE type() { return m_eType; }
+    Object* object() { return m_pObject; }
 
     void switchVisibility() { visible = !visible;}
+
     // keyframe interface
     static const int NO_KEYFRAME = -1;
     virtual int getMaxFramePosition() { return NO_KEYFRAME; }
@@ -74,7 +76,7 @@ public:
 
     virtual void editProperties();
 
-protected:
+private:
     LAYER_TYPE m_eType;
     Object* m_pObject;
 };

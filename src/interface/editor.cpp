@@ -1242,7 +1242,7 @@ void Editor::importImage( QString filePath )
                     QRect boundaries = importedImage->rect();
                     //boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
                     boundaries.moveTopLeft( m_pScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
-                    BitmapImage* importedBitmapImage = new BitmapImage( NULL, boundaries, *importedImage );
+                    BitmapImage* importedBitmapImage = new BitmapImage( boundaries, *importedImage );
                     if ( m_pScribbleArea->somethingSelected )
                     {
                         QRectF selection = m_pScribbleArea->getSelection();

@@ -88,7 +88,7 @@ ScribbleArea::ScribbleArea( QWidget *parent, Editor *editor )
 
     background = "white";
     setBackgroundBrush( background );
-    bufferImg = new BitmapImage( NULL );
+    bufferImg = new BitmapImage;
 
     QRect newSelection( QPoint( 0, 0 ), QSize( 0, 0 ) );
     mySelection = newSelection;
@@ -1441,10 +1441,10 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
 
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    BitmapImage *tempBitmapImage = new BitmapImage( NULL );
+    BitmapImage *tempBitmapImage = new BitmapImage;
     if ( followContour )
     {
-        tempBitmapImage = new BitmapImage( NULL, rectangle.toRect(), QColor( 0, 0, 0, 0 ) );
+        tempBitmapImage = new BitmapImage( rectangle.toRect(), QColor( 0, 0, 0, 0 ) );
         //tempBitmapImage->drawRect( rectangle, Qt::NoPen, QColor(0,0,0,0), QPainter::CompositionMode_Source, antialiasing);
         Layer *layer = m_pEditor->getCurrentLayer();
         if ( layer == NULL ) { return; }
@@ -1457,7 +1457,7 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
     }
     else
     {
-        tempBitmapImage = new BitmapImage( NULL );
+        tempBitmapImage = new BitmapImage;
         tempBitmapImage->drawRect( rectangle, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
     }
 
@@ -1477,7 +1477,7 @@ void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_
     QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
 
     BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
-    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    BitmapImage *bmiTmpClip = new BitmapImage;
     bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
     bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
     bmiTmpClip->paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
@@ -1511,7 +1511,7 @@ void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPo
     setGaussianGradient( radialGrad, QColor( 255, 255, 255, 255 ), opacity_, offset_ );
 
     // Create gradient brush
-    BitmapImage *bmiTmpClip = new BitmapImage( NULL );
+    BitmapImage* bmiTmpClip = new BitmapImage;
     bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, m_antialiasing );
 
     // Slide texture/pixels of the source image

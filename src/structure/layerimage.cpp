@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 #include "layerimage.h"
 
-LayerImage::LayerImage(Object* object) : Layer(object)
+LayerImage::LayerImage(Object* object, LAYER_TYPE eType ) : Layer( object, eType )
 {
     //imageSize = desiredSize;
     //addImageAtFrame(1);
@@ -266,8 +266,7 @@ void LayerImage::mouseRelease(QMouseEvent* event, int frameNumber)
         {
             int originalFrame = framesPosition[i];
             framesPosition[i] = originalFrame + frameOffset;
-            //framesModified[i] = true;
-            m_pObject->modification();
+            object()->modification();
         }
     }
     bubbleSort();
@@ -348,7 +347,7 @@ void LayerImage::setModified(int frameNumber, bool trueOrFalse)
     if (index != -1)
     {
         framesModified[index] = trueOrFalse;
-        m_pObject->modification();
+        object()->modification();
     }
 }
 
