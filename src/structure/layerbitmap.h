@@ -35,7 +35,7 @@ public:
     // method from layerImage
     virtual bool addNewKeyFrameAt( int frameNumber );
     void loadImageAtFrame( QString, QPoint, int );
-    
+
     QDomElement createDomElement( QDomDocument& doc );
     void loadDomElement( QDomElement element, QString dataDirPath );
 

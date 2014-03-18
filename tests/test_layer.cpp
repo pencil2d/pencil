@@ -1,5 +1,6 @@
 #include "layer.h"
 #include "layerbitmap.h"
+#include "layervector.h"
 #include "object.h"
 #include "test_layer.h"
 
@@ -20,19 +21,23 @@ void TestLayer::cleanupTestCase()
 
 void TestLayer::testCase1()
 {
-    QVERIFY2(true, "Failure");
+    QVERIFY2( true, "Failure" );
 }
 
 void TestLayer::testLayerType()
 {
-    LayerBitmap* pLayer = new LayerBitmap( m_pObject );
-    QVERIFY( pLayer->type() == Layer::BITMAP );
+    LayerBitmap* pBitmapLayer = new LayerBitmap( m_pObject );
+    QVERIFY( pBitmapLayer->type() == Layer::BITMAP );
 
-    delete pLayer;
+    LayerVector* pVecLayer = new LayerVector( m_pObject );
+    QVERIFY( pVecLayer->type() == Layer::VECTOR );
+
+    delete pBitmapLayer;
+    delete pVecLayer;
 }
 
 
-void TestLayer::testAddImageAtFrame()
+void TestLayer::testAddNewKeyFrameAt()
 {
     LayerImage* pLayer = new LayerBitmap( m_pObject );
 
@@ -94,43 +99,22 @@ void TestLayer::testHasKeyFrameAtPosition()
     delete pLayer;
 }
 
-void TestLayer::testGetFramePositionAt()
-{
-    LayerImage* pLayer = new LayerBitmap( m_pObject );
-
-    QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
-
-    QVERIFY( pLayer->addNewKeyFrameAt( 2 ) ); // (1, 2)
-    QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
-
-    QVERIFY( pLayer->addNewKeyFrameAt( 4 ) ); // (1, 2, 4)
-    QCOMPARE( pLayer->getFramePositionAt( 2 ), 4 );
-
-    QVERIFY( pLayer->addNewKeyFrameAt( 3 ) ); // (1, 2, 3, 4)
-    QCOMPARE( pLayer->getFramePositionAt( 0 ), 1 );
-    QCOMPARE( pLayer->getFramePositionAt( 1 ), 2 );
-    QCOMPARE( pLayer->getFramePositionAt( 2 ), 3 );
-    QCOMPARE( pLayer->getFramePositionAt( 3 ), 4 );
-
-    delete pLayer;
-}
-
-void TestLayer::testRemoveImageAtFrame()
+void TestLayer::testRemoveKeyFrame()
 {
     LayerImage* pLayer = new LayerBitmap( m_pObject );
 
     pLayer->removeKeyFrame( 1 );
     QCOMPARE( pLayer->getMaxFramePosition(), 1 ); // you can't delete the only 1 KeyFrame
-    
+
     for ( int i = 2; i <= 20; ++i )
     {
         QVERIFY( pLayer->addNewKeyFrameAt( i ) );
     }
-    
+
     QCOMPARE( pLayer->hasKeyFrameAtPosition( 20 ), true );
     pLayer->removeKeyFrame( 20 );
     QCOMPARE( pLayer->hasKeyFrameAtPosition( 20 ), false );
-    
+
     QCOMPARE( pLayer->hasKeyFrameAtPosition( 8 ), true );
     pLayer->removeKeyFrame( 8 );
     QCOMPARE( pLayer->hasKeyFrameAtPosition( 8 ), false );

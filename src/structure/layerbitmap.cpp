@@ -26,12 +26,12 @@ LayerBitmap::~LayerBitmap()
 {
 }
 
-BitmapImage* LayerBitmap::getBitmapImageAtFrame(int frameNumber)
+BitmapImage* LayerBitmap::getBitmapImageAtFrame( int frameNumber )
 {
-    return static_cast<BitmapImage*>( getKeyFrameAtPosition( frameNumber ) );
+    return static_cast< BitmapImage* >( getKeyFrameAtPosition( frameNumber ) );
 }
 
-BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increment)
+BitmapImage* LayerBitmap::getLastBitmapImageAtFrame( int frameNumber, int increment )
 {
     return static_cast< BitmapImage* >( getKeyFrameAtPosition( frameNumber + increment ) );
 }
@@ -47,7 +47,7 @@ bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
     return addKeyFrame( frameNumber, pImg );
 }
 
-void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
+void LayerBitmap::loadImageAtFrame( QString path, QPoint topLeft, int frameNumber )
 {
     if ( hasKeyFrameAtPosition( frameNumber ) )
     {
@@ -58,9 +58,9 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
     addKeyFrame( frameNumber, pImg );
 }
 
-bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame , QString path )
+bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
-    BitmapImage* pBitmapImage = static_cast<BitmapImage*>( pKeyFrame );
+    BitmapImage* pBitmapImage = static_cast< BitmapImage* >( pKeyFrame );
 
     QString theFileName = fileName( pKeyFrame->pos() );
     QString strFilePath = QDir( path ).filePath( theFileName );
@@ -72,22 +72,22 @@ bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame , QString path )
 QString LayerBitmap::fileName( int frame )
 {
     int layerID = id;
-    QString layerNumberString = QString::number(layerID);
-    QString frameNumberString = QString::number(frame);
-    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
-    return layerNumberString+"."+frameNumberString+".png";
+    QString layerNumberString = QString::number( layerID );
+    QString frameNumberString = QString::number( frame );
+    while ( layerNumberString.length() < 3 ) layerNumberString.prepend( "0" );
+    while ( frameNumberString.length() < 3 ) frameNumberString.prepend( "0" );
+    return layerNumberString + "." + frameNumberString + ".png";
 }
 
-QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
+QDomElement LayerBitmap::createDomElement( QDomDocument& doc )
 {
-    QDomElement layerTag = doc.createElement("layer");
-    layerTag.setAttribute("id", id);
-    layerTag.setAttribute("name", name);
-    layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type());
+    QDomElement layerTag = doc.createElement( "layer" );
+    layerTag.setAttribute( "id", id );
+    layerTag.setAttribute( "name", name );
+    layerTag.setAttribute( "visibility", visible );
+    layerTag.setAttribute( "type", type() );
 
-    foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
+    foreachKeyFrame( [ &]( KeyFrame* pKeyFrame )
     {
         BitmapImage* pImg = static_cast< BitmapImage* >( pKeyFrame );
 
@@ -102,28 +102,28 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     return layerTag;
 }
 
-void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath)
+void LayerBitmap::loadDomElement( QDomElement element, QString dataDirPath )
 {
-    if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
-    name = element.attribute("name");
-    visible = (element.attribute("visibility") == "1");
+    if ( !element.attribute( "id" ).isNull() ) id = element.attribute( "id" ).toInt();
+    name = element.attribute( "name" );
+    visible = ( element.attribute( "visibility" ) == "1" );
 
     QDomNode imageTag = element.firstChild();
-    while (!imageTag.isNull())
+    while ( !imageTag.isNull() )
     {
         QDomElement imageElement = imageTag.toElement();
-        if (!imageElement.isNull())
+        if ( !imageElement.isNull() )
         {
-            if (imageElement.tagName() == "image")
+            if ( imageElement.tagName() == "image" )
             {
-                QString path =  dataDirPath +"/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-     //qDebug() << "LAY_BITMAP  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
-                QFileInfo fi(path);
-                if (!fi.exists()) path = imageElement.attribute("src");
-                int position = imageElement.attribute("frame").toInt();
-                int x = imageElement.attribute("topLeftX").toInt();
-                int y = imageElement.attribute("topLeftY").toInt();
-                loadImageAtFrame( path, QPoint(x,y), position );
+                QString path = dataDirPath + "/" + imageElement.attribute( "src" ); // the file is supposed to be in the data directory
+                //qDebug() << "LAY_BITMAP  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
+                QFileInfo fi( path );
+                if ( !fi.exists() ) path = imageElement.attribute( "src" );
+                int position = imageElement.attribute( "frame" ).toInt();
+                int x = imageElement.attribute( "topLeftX" ).toInt();
+                int y = imageElement.attribute( "topLeftY" ).toInt();
+                loadImageAtFrame( path, QPoint( x, y ), position );
             }
         }
         imageTag = imageTag.nextSibling();

@@ -34,40 +34,42 @@ class LayerImage : public Layer
     Q_OBJECT
 
 public:
-    LayerImage(Object* object, LAYER_TYPE );
+    LayerImage( Object* object, LAYER_TYPE );
     ~LayerImage();
 
     // KeyFrame interface
     bool hasKeyFrameAtPosition( int position );
     int getPreviousKeyFramePosition( int position );
     int getNextKeyFramePosition( int position );
+
     int getMaxFramePosition();
+    int getFirstFramePosition();
+
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
     KeyFrame* getKeyFrameAtPosition( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
 
     // frame <-> image API
-    int getFramePositionAt(int index);
-    int getIndexAtFrame(int frameNumber);
-    int getLastIndexAtFrame(int frameNumber);
+    int getIndexAtFrame( int frameNumber );
+    int getLastIndexAtFrame( int frameNumber );
 
     // FIXME: this API only used in vector layer
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 
-    virtual bool addNewKeyFrameAt(int frameNumber);
-    virtual void setModified(int frameNumber, bool trueOrFalse);
+    virtual bool addNewKeyFrameAt( int frameNumber );
+    virtual void setModified( int frameNumber, bool trueOrFalse );
     void deselectAllFrames();
 
-    bool saveImages(QString path, int layerNumber);
-    
+    bool saveImages( QString path, int layerNumber );
+
     // graphic representation -- could be put in another class
-    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize) override;
-    virtual void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-    void mousePress(QMouseEvent* event, int frameNumber) override;
-    void mouseMove(QMouseEvent* event, int frameNumber) override;
-    void mouseRelease(QMouseEvent* event, int frameNumber) override;
-    void mouseDoubleClick(QMouseEvent* event, int frameNumber) override;
+    void paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize ) override;
+    virtual void paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
+    void mousePress( QMouseEvent* event, int frameNumber ) override;
+    void mouseMove( QMouseEvent* event, int frameNumber ) override;
+    void mouseRelease( QMouseEvent* event, int frameNumber ) override;
+    void mouseDoubleClick( QMouseEvent* event, int frameNumber ) override;
 
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
 
@@ -76,7 +78,7 @@ protected:
 
 private:
     std::map<int, KeyFrame*, std::greater<int>> m_KeyFrames;
-    
+
     // graphic representation -- could be put in another class
     QList<bool> framesSelected;
     int frameClicked;
