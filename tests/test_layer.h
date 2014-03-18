@@ -26,7 +26,10 @@ public:
     void testAddNewKeyFrameAt();
     void testRemoveKeyFrame();
     void testGetMaxFramePosition();
+    void testGetFirstFramePosition();
     void testHasKeyFrameAtPosition();
+
+    void testPreviousKeyFramePosition();
 
 private:
     Object* m_pObject;

@@ -16,11 +16,14 @@ GNU General Public License for more details.
 #ifndef LAYER_H
 #define LAYER_H
 
+#include <map>
+#include <functional>
 #include <QString>
 #include <QPainter>
 #include <QtXml>
 
 class QMouseEvent;
+class KeyFrame;
 class Object;
 class TimeLineCells;
 
@@ -46,19 +49,30 @@ public:
     bool visible;
     int id;
 
+    static const int NO_KeyFrame = -1;
+
     LAYER_TYPE type() { return m_eType; }
     Object* object() { return m_pObject; }
 
     void switchVisibility() { visible = !visible; }
 
     // KeyFrame interface
-    static const int NO_KeyFrame = -1;
-    virtual int getMaxFramePosition() { return NO_KeyFrame; }
-    virtual bool hasKeyFrameAtPosition(int position) = 0;
-    virtual int getPreviousKeyFramePosition(int position) = 0;
-    virtual int getNextKeyFramePosition(int position) = 0;
-    virtual int getFirstKeyFramePosition();
-    virtual int getLastKeyFramePosition();
+    bool hasKeyFrameAtPosition(int position);
+    int getPreviousKeyFramePosition(int position);
+    int getNextKeyFramePosition(int position);
+    
+    int getMaxKeyFramePosition();
+    int getFirstKeyFramePosition();
+
+    virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
+    bool addKeyFrame( int position, KeyFrame* );
+    bool removeKeyFrame( int position );
+    KeyFrame* getKeyFrameAtPosition( int position );
+    KeyFrame* getLastKeyFrameAtPosition( int position );
+
+    void foreachKeyFrame( std::function<void( KeyFrame* )> );
+
+    void setModified( int position, bool isModified );
 
     // export element
     virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc
@@ -80,6 +94,8 @@ public:
 private:
     LAYER_TYPE m_eType;
     Object* m_pObject;
+
+    std::map<int, KeyFrame*, std::greater<int>> m_KeyFrames;
 };
 
 #endif

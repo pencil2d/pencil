@@ -33,7 +33,7 @@ public:
     ~LayerBitmap();
 
     // method from layerImage
-    virtual bool addNewKeyFrameAt( int frameNumber );
+    bool addNewKeyFrameAt( int frameNumber ) override;
     void loadImageAtFrame( QString, QPoint, int );
 
     QDomElement createDomElement( QDomDocument& doc );

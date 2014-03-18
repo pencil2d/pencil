@@ -42,9 +42,7 @@ bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
     {
         return false;
     }
-    auto pImg = new BitmapImage;
-    pImg->setPos( frameNumber );
-    return addKeyFrame( frameNumber, pImg );
+    return addKeyFrame( frameNumber, new BitmapImage );
 }
 
 void LayerBitmap::loadImageAtFrame( QString path, QPoint topLeft, int frameNumber )

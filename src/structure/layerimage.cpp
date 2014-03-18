@@ -31,75 +31,8 @@ LayerImage::LayerImage( Object* object, LAYER_TYPE eType ) : Layer( object, eTyp
 
 LayerImage::~LayerImage()
 {
-    for ( auto pair : m_KeyFrames )
-    {
-        KeyFrame* pKeyFrame = pair.second;
-        delete pKeyFrame;
-    }
-    m_KeyFrames.clear();
 }
 
-bool LayerImage::hasKeyFrameAtPosition( int position )
-{
-    return ( m_KeyFrames.find( position ) != m_KeyFrames.end() );
-}
-
-KeyFrame* LayerImage::getKeyFrameAtPosition( int position )
-{
-    auto it = m_KeyFrames.find( position );
-    if ( it == m_KeyFrames.end() )
-    {
-        return NullKeyFrame::get();
-    }
-    return it->second;
-}
-
-KeyFrame* LayerImage::getLastKeyFrameAtPosition( int position )
-{
-    auto it = m_KeyFrames.lower_bound( position );
-    if ( it == m_KeyFrames.end() )
-    {
-        return NullKeyFrame::get();
-    }
-    return it->second;
-}
-
-int LayerImage::getPreviousKeyFramePosition( int position )
-{
-    auto it = m_KeyFrames.upper_bound( position );
-    if ( it == m_KeyFrames.end() )
-    {
-        return getFirstKeyFramePosition();
-    }
-    return it->first;
-}
-
-int LayerImage::getNextKeyFramePosition( int position )
-{
-    auto it = m_KeyFrames.lower_bound( position );
-    if ( it == m_KeyFrames.end() )
-    {
-        return getMaxFramePosition();
-    }
-
-    if ( it != m_KeyFrames.begin() )
-    {
-        --it;
-    }
-    return it->first;
-}
-
-int LayerImage::getFirstFramePosition()
-{
-    Q_ASSERT( m_KeyFrames.rbegin()->first == 1 );
-
-    return m_KeyFrames.rbegin()->first; // rbegin is the lowest key frame position
-}
-
-int LayerImage::getMaxFramePosition()
-{
-    return m_KeyFrames.begin()->first; // begin is the highest key frame position
-}
 
 int LayerImage::getIndexAtFrame( int frameNumber )
 {
@@ -284,40 +217,6 @@ void LayerImage::mouseRelease( QMouseEvent*, int frameNumber )
     */
 }
 
-bool LayerImage::addNewKeyFrameAt( int frameNumber )
-{
-    /*
-    int index = getIndexAtFrame(frameNumber);
-    if (index == -1)
-    {
-    framesPosition.append(frameNumber);
-    framesSelected.append(false);
-    framesFilename.append("");
-    framesModified.append(false);
-    bubbleSort();
-
-    return true;
-    }
-    else
-    {
-    return false;
-    }
-    */
-    return true;
-}
-
-void LayerImage::setModified( int frameNumber, bool trueOrFalse )
-{
-    /*
-    int index = getLastIndexAtFrame(frameNumber);
-    if (index != -1)
-    {
-    framesModified[index] = trueOrFalse;
-    object()->modification();
-    }
-    */
-}
-
 void LayerImage::deselectAllFrames()
 {
     /*
@@ -345,38 +244,3 @@ bool LayerImage::saveImages( QString path, int layerNumber )
     return true;
 }
 
-bool LayerImage::addKeyFrame( int position, KeyFrame* pKeyFrame )
-{
-    removeKeyFrame( position );
-
-    pKeyFrame->setPos( position );
-    m_KeyFrames.insert( std::make_pair( position, pKeyFrame ) );
-
-    return true;
-}
-
-bool LayerImage::removeKeyFrame( int position )
-{
-    if ( position == 1 )
-    {
-        // you can't delete 1st frame.
-        return true;
-    }
-
-    auto it = m_KeyFrames.find( position );
-    if ( it != m_KeyFrames.end() )
-    {
-        delete it->second;
-        m_KeyFrames.erase( it );
-    }
-
-    return true;
-}
-
-void LayerImage::foreachKeyFrame( std::function<void( KeyFrame* )> func )
-{
-    for ( auto pair : m_KeyFrames )
-    {
-        func( pair.second );
-    }
-}

@@ -121,13 +121,6 @@ void LayerVector::setModified(bool trueOrFalse)
     }
 }
 
-void LayerVector::setModified(int frameNumber, bool trueOrFalse)
-{
-    LayerImage::setModified(frameNumber, trueOrFalse);
-    getLastVectorImageAtFrame(frameNumber, 0)->setModified(trueOrFalse);
-}
-
-// -----
 
 bool LayerVector::usesColour(int index)
 {

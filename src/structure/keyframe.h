@@ -20,6 +20,7 @@ public:
 
     int pos() { return m_position; }
     void setPos( int position ) { m_position = position; }
+    void setModified( bool b ) { m_isModified = b; }
 
 private:
     int m_position;

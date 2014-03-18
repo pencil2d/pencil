@@ -301,7 +301,7 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
     Layer *layer = m_pEditor->object()->getLayer( layerNumber );
     if ( layer->type() == Layer::VECTOR )
     {
-        ( ( LayerVector * )layer )->setModified( frameNumber, true );
+        layer->setModified( frameNumber, true );
     }
     if ( layer->type() == Layer::BITMAP )
     {

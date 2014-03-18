@@ -58,14 +58,14 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
     */
 }
 
-bool LayerSound::addImageAtFrame(int frameNumber)
+bool LayerSound::addNewKeyFrameAt(int frameNumber)
 {
     return addKeyFrame( frameNumber, new SoundClip );
 }
 
 void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
 {
-    int index = getIndexAtFrame(frameNumber);
+    /*
     if (index == -1)
         addImageAtFrame(frameNumber);
     index = getIndexAtFrame(frameNumber);
@@ -82,6 +82,7 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
     else
     {
     }
+    */
 }
 
 bool LayerSound::saveImage(int index, QString path, int layerNumber)

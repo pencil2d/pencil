@@ -48,7 +48,7 @@ public:
     QDomElement createDomElement(QDomDocument& doc);
     void loadDomElement(QDomElement element, QString dataDirPath);
 
-    bool addImageAtFrame(int frameNumber);
+    bool addNewKeyFrameAt( int frameNumber ) override;
 
     void loadSoundAtFrame( QString filePathString, int frame );
 

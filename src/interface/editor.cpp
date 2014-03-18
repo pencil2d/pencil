@@ -97,7 +97,6 @@ Editor::Editor( MainWindow2* parent )
         settings.setValue( "fps", 12 );
     }
 
-    maxFrame = 1;
     timer = new QTimer( this );
     timer->setInterval( 1000 / fps );
     connect( timer, SIGNAL( timeout() ), this, SLOT( playNextFrame() ) );
@@ -779,7 +778,6 @@ void Editor::saveLength( QString x )
 void Editor::resetUI()
 {
     updateObject();
-    maxFrame = 0;
     layerManager()->setCurrentFrameIndex( 0 );
     scrubTo( 0 );
 }
@@ -1625,7 +1623,7 @@ void Editor::scrubPreviousKeyFrame()
         if ( looping )
         {
             // scrubto first key frame
-            position = layer->getLastKeyFramePosition();
+            position = layer->getMaxKeyFramePosition();
             if ( position != Layer::NO_KeyFrame )
             {
                 scrubTo( position );
@@ -1747,7 +1745,7 @@ void Editor::updateMaxFrame()
     maxFrame = -1;
     for ( int i = 0; i < m_pObject->getLayerCount(); i++ )
     {
-        int frameNumber = m_pObject->getLayer( i )->getMaxFramePosition();
+        int frameNumber = m_pObject->getLayer( i )->getMaxKeyFramePosition();
         if ( frameNumber > maxFrame )
         {
             maxFrame = frameNumber;

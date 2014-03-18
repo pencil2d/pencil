@@ -18,9 +18,11 @@ GNU General Public License for more details.
 #include <QtDebug>
 #include <QInputDialog>
 #include <QLineEdit>
+#include "keyframe.h"
 #include "layer.h"
 #include "object.h"
 #include "timeline.h"
+
 
 Layer::Layer(Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 {
@@ -33,16 +35,118 @@ Layer::Layer(Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
     Q_ASSERT( eType != UNDEFINED );
 }
 
-Layer::~Layer() {}
+Layer::~Layer() 
+{
+    for ( auto pair : m_KeyFrames )
+    {
+        KeyFrame* pKeyFrame = pair.second;
+        delete pKeyFrame;
+    }
+    m_KeyFrames.clear();
+}
+
+void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> func )
+{
+    for ( auto pair : m_KeyFrames )
+    {
+        func( pair.second );
+    }
+}
+
+
+bool Layer::hasKeyFrameAtPosition( int position )
+{
+    return ( m_KeyFrames.find( position ) != m_KeyFrames.end() );
+}
+
+KeyFrame* Layer::getKeyFrameAtPosition( int position )
+{
+    auto it = m_KeyFrames.find( position );
+    if ( it == m_KeyFrames.end() )
+    {
+        return NullKeyFrame::get();
+    }
+    return it->second;
+}
+
+KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
+{
+    auto it = m_KeyFrames.lower_bound( position );
+    if ( it == m_KeyFrames.end() )
+    {
+        return NullKeyFrame::get();
+    }
+    return it->second;
+}
+
+int Layer::getPreviousKeyFramePosition( int position )
+{
+    auto it = m_KeyFrames.upper_bound( position );
+    if ( it == m_KeyFrames.end() )
+    {
+        return getFirstKeyFramePosition();
+    }
+    return it->first;
+}
+
+int Layer::getNextKeyFramePosition( int position )
+{
+    auto it = m_KeyFrames.lower_bound( position );
+    if ( it == m_KeyFrames.end() )
+    {
+        return getMaxKeyFramePosition();
+    }
+
+    if ( it != m_KeyFrames.begin() )
+    {
+        --it;
+    }
+    return it->first;
+}
 
 int Layer::getFirstKeyFramePosition()
 {
-    return getNextKeyFramePosition(NO_KeyFrame);
+    Q_ASSERT( m_KeyFrames.rbegin()->first == 1 );
+
+    return m_KeyFrames.rbegin()->first; // rbegin is the lowest key frame position
 }
 
-int Layer::getLastKeyFramePosition()
+int Layer::getMaxKeyFramePosition()
 {
-    return getPreviousKeyFramePosition(INT_MAX);
+    return m_KeyFrames.begin()->first; // begin is the highest key frame position
+}
+
+bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
+{
+    auto it = m_KeyFrames.find( position );
+    if ( it != m_KeyFrames.end() )
+    {
+        // key already exist.
+        return false;
+    }
+
+    pKeyFrame->setPos( position );
+    m_KeyFrames.insert( std::make_pair( position, pKeyFrame ) );
+
+    return true;
+}
+
+bool Layer::removeKeyFrame( int position )
+{
+    if ( position == 1 )
+    {
+        // you can't delete 1st frame.
+        return true;
+    }
+
+    auto it = m_KeyFrames.find( position );
+    if ( it != m_KeyFrames.end() )
+    {
+        delete it->second;
+        m_KeyFrames.erase( it );
+    }
+
+    return true;
 }
 
 QDomElement Layer::createDomElement(QDomDocument& doc)
@@ -181,5 +285,15 @@ void Layer::editProperties()
     if (ok && !text.isEmpty())
     {
         name = text;
+    }
+}
+
+void Layer::setModified( int position, bool isModified )
+{
+    auto it = m_KeyFrames.find( position );
+    if ( it != m_KeyFrames.end() )
+    {
+        KeyFrame* pKeyFrame = it->second;
+        //pKeyFrame->
     }
 }

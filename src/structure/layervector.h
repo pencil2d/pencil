@@ -45,7 +45,6 @@ public:
     void setView(QMatrix view);
     
     void setModified(bool trueOrFalse);
-    void setModified(int frameNumber, bool trueOrFalse) override;
 
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element,  QString dataDirPath) override;
