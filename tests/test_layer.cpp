@@ -73,23 +73,23 @@ void TestLayer::testGetMaxFramePosition()
     delete pLayer;
 }
 
-void TestLayer::testHasKeyframeAtPosition()
+void TestLayer::testHasKeyFrameAtPosition()
 {
     LayerImage* pLayer = new LayerBitmap( m_pObject );
 
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 1 ), true ); // there is a frame at 1 in default.
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 1 ), true ); // there is a frame at 1 in default.
 
     QVERIFY( pLayer->addNewKeyFrameAt( 15 ) );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 15 ), true );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 10 ), false );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 15 ), true );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 10 ), false );
 
     QVERIFY( pLayer->addNewKeyFrameAt( 10 ) );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 10 ), true );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 10 ), true );
 
     // test false case
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 0 ), false );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 1000 ), false );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( -333 ), false );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 0 ), false );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 1000 ), false );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( -333 ), false );
 
     delete pLayer;
 }
@@ -120,22 +120,22 @@ void TestLayer::testRemoveImageAtFrame()
     LayerImage* pLayer = new LayerBitmap( m_pObject );
 
     pLayer->removeImageAtFrame( 1 );
-    QCOMPARE( pLayer->getMaxFramePosition(), 1 ); // you can't delete the only 1 keyframe
+    QCOMPARE( pLayer->getMaxFramePosition(), 1 ); // you can't delete the only 1 KeyFrame
     
     for ( int i = 2; i <= 20; ++i )
     {
         QVERIFY( pLayer->addNewKeyFrameAt( i ) );
     }
     
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 20 ), true );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 20 ), true );
     pLayer->removeImageAtFrame( 20 );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 20 ), false );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 20 ), false );
     
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 8 ), true );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 8 ), true );
     pLayer->removeImageAtFrame( 8 );
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 8 ), false );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 8 ), false );
 
-    QCOMPARE( pLayer->hasKeyframeAtPosition( 19 ), true );
+    QCOMPARE( pLayer->hasKeyFrameAtPosition( 19 ), true );
 
     pLayer->removeImageAtFrame( 19 );
     QCOMPARE( pLayer->getMaxFramePosition(), 18 );

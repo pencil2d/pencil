@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #ifndef LAYERIMAGE_H
 #define LAYERIMAGE_H
 
-
+#include <functional>
 #include <QSize>
 #include <QList>
 #include <QString>
@@ -26,7 +26,7 @@ GNU General Public License for more details.
 class QImage;
 class QPainter;
 class TimeLineCells;
-class Keyframe;
+class KeyFrame;
 
 
 class LayerImage : public Layer
@@ -37,12 +37,15 @@ public:
     LayerImage(Object* object, LAYER_TYPE );
     ~LayerImage();
 
-    // keyframe interface
-    virtual bool hasKeyframeAtPosition(int position);
-    virtual int getPreviousKeyframePosition(int position);
-    virtual int getNextKeyframePosition(int position);
-    virtual int getMaxFramePosition();
-    bool addKeyFrame( int position, Keyframe* );
+    // KeyFrame interface
+    bool hasKeyFrameAtPosition( int position );
+    int getPreviousKeyFramePosition( int position );
+    int getNextKeyFramePosition( int position );
+    int getMaxFramePosition();
+    bool addKeyFrame( int position, KeyFrame* );
+    bool removeKeyFrame( int position );
+    KeyFrame* getKeyFrameAtPosition( int position );
+    KeyFrame* getLastKeyFrameAtPosition( int position );
 
     // frame <-> image API
     int getFramePositionAt(int index);
@@ -58,9 +61,7 @@ public:
     void deselectAllFrames();
 
     bool saveImages(QString path, int layerNumber);
-    virtual bool saveImage(int index, QString path, int layerNumber);
-    virtual QString fileName(int index, int layerNumber);
-
+    
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize) override;
     virtual void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
@@ -69,22 +70,18 @@ public:
     void mouseRelease(QMouseEvent* event, int frameNumber) override;
     void mouseDoubleClick(QMouseEvent* event, int frameNumber) override;
 
+    void foreachKeyFrame( std::function<void( KeyFrame* )> );
+
+protected:
+    virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
+
 private:
-    QMap<int, Keyframe*> m_keyframes;
-
-    // list of frame positions, sorted from lowest to largest
-    QList<int> framesPosition;
-    QList<QString> framesFilename;
-    QList<bool> framesModified;
-
+    std::map<int, KeyFrame*, std::greater<int>> m_KeyFrames;
+    
     // graphic representation -- could be put in another class
     QList<bool> framesSelected;
     int frameClicked;
     int frameOffset;
-
-    // sorts all QList according to frame position
-    void bubbleSort();
-    virtual void swap(int i, int j);
 };
 
 #endif

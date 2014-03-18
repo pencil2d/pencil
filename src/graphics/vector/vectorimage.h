@@ -22,13 +22,13 @@ GNU General Public License for more details.
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
-#include "keyframe.h"
+#include "KeyFrame.h"
 
 class Object;  // forward declaration
 class QPainter;
 
 
-class VectorImage : public Keyframe
+class VectorImage : public KeyFrame
 {
 public:
     VectorImage(Object* parent);

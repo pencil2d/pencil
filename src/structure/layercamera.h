@@ -17,8 +17,6 @@ GNU General Public License for more details.
 #define LAYERCAMERA_H
 
 #include <QDialog>
-#include <QImage>
-#include <QSize>
 #include <QList>
 #include <QString>
 #include <QPainter>
@@ -29,6 +27,7 @@ GNU General Public License for more details.
 
 class QLineEdit;
 class QSpinBox;
+class KeyFrame;
 
 class CameraPropertiesDialog : public QDialog
 {
@@ -61,14 +60,11 @@ public:
     bool addNewKeyFrameAt( int frameNumber ) override;
 
     void loadImageAtFrame(int, QMatrix);
-    bool saveImage(int, QString, int);
-
+    
     void editProperties();
-
     QDomElement createDomElement(QDomDocument& doc);
     void loadDomElement(QDomElement element, QString dataDirPath);
 
-    Camera* getCameraAtIndex(int index);
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QMatrix getViewAtFrame(int frameNumber);
@@ -76,11 +72,10 @@ public:
     QRect getViewRect();
 
 protected:
+    bool saveKeyFrame( KeyFrame*, QString path ) override;
+
     QRect viewRect;
     CameraPropertiesDialog* dialog;
-
-    QList<Camera*> framesCamera;
-    void swap(int i, int j);
 };
 
 #endif

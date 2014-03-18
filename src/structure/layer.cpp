@@ -35,14 +35,14 @@ Layer::Layer(Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 
 Layer::~Layer() {}
 
-int Layer::getFirstKeyframePosition()
+int Layer::getFirstKeyFramePosition()
 {
-    return getNextKeyframePosition(NO_KEYFRAME);
+    return getNextKeyFramePosition(NO_KeyFrame);
 }
 
-int Layer::getLastKeyframePosition()
+int Layer::getLastKeyFramePosition()
 {
-    return getPreviousKeyframePosition(INT_MAX);
+    return getPreviousKeyFramePosition(INT_MAX);
 }
 
 QDomElement Layer::createDomElement(QDomDocument& doc)

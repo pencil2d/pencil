@@ -18,9 +18,9 @@ GNU General Public License for more details.
 #include <QImage>
 #include <QPainter>
 #include "object.h"
+#include "KeyFrame.h"
 #include "timeline.h"
 #include "timelinecells.h"
-
 #include "layerimage.h"
 
 LayerImage::LayerImage(Object* object, LAYER_TYPE eType ) : Layer( object, eType )
@@ -31,39 +31,66 @@ LayerImage::LayerImage(Object* object, LAYER_TYPE eType ) : Layer( object, eType
 
 LayerImage::~LayerImage()
 {
-    for ( auto it : m_keyframes )
+    for ( auto pair : m_KeyFrames )
     {
-        Keyframe* pKeyframe = it.value();
-        delete pKeyframe;
+        KeyFrame* pKeyFrame = pair.second;
+        delete pKeyFrame;
     }
-    m_keyframes.clear();
+    m_KeyFrames.clear();
 }
 
-bool LayerImage::hasKeyframeAtPosition(int position)
+bool LayerImage::hasKeyFrameAtPosition(int position)
 {
-    m_keyframes.contains( position );
+    return ( m_KeyFrames.find( position ) != m_KeyFrames.end() );
 }
 
-int LayerImage::getPreviousKeyframePosition(int position)
+KeyFrame* LayerImage::getKeyFrameAtPosition( int position )
 {
-    auto it = m_keyframes.lowerBound( position );
-    if ( it == m_keyframes.end() )
+    auto it = m_KeyFrames.find( position );
+    
+    if ( it == m_KeyFrames.end() )
     {
-        return NO_KEYFRAME;
+        return NullKeyFrame::get();
+    }
+
+    return it->second;
+}
+
+KeyFrame* LayerImage::getLastKeyFrameAtPosition( int position )
+{
+    auto it = m_KeyFrames.lower_bound( position );
+    if ( it == m_KeyFrames.end() )
+    {
+        return NullKeyFrame::get();
+    }
+
+
+}
+
+int LayerImage::getPreviousKeyFramePosition(int position)
+{
+    /*
+    auto it = m_KeyFrames.lower_bound( position );
+    if ( it == m_KeyFrames.end() )
+    {
+        return NO_KeyFrame;
     }
 
     it--;
 
-    if ( it == m_keyframes.end() )
+    if ( it == m_KeyFrames.end() )
     {
-        return NO_KEYFRAME;
+        return NO_KeyFrame;
     }
 
-    return it.key;
+    return it.key();
+    */
+    return 0;
 }
 
-int LayerImage::getNextKeyframePosition(int frameIndex)
+int LayerImage::getNextKeyFramePosition(int frameIndex)
 {
+    /*
     int prevIndex = -1;
     for (int i = framesPosition.size() - 1; i >= 0; i--)
     {
@@ -75,34 +102,39 @@ int LayerImage::getNextKeyframePosition(int frameIndex)
     }
 
     return getFramePositionAt(prevIndex);
+    */
+    return 0;
 }
 
 int LayerImage::getMaxFramePosition()
 {
-    return framesPosition.last();
+    //return framesPosition.last();
+    return 0;
 }
 
 int LayerImage::getFramePositionAt(int index)
 {
     //qDebug() << "index" << index << "size" << framesPosition.size();
+    /*
     if ( index < 0 )
     {
-        return NO_KEYFRAME;
+        return NO_KeyFrame;
     }
 
     if ( index >= framesPosition.size() )
     {
-        return NO_KEYFRAME;
+        return NO_KeyFrame;
     }
 
     return framesPosition.at(index);
+    */
+    return 0;
 }
-
-// keyframe interface
 
 int LayerImage::getIndexAtFrame(int frameNumber)
 {
     int index = -1;
+    /*
     for (int i = 0; i < framesPosition.size(); i++)
     {
         if (framesPosition.at(i) == frameNumber)
@@ -110,6 +142,7 @@ int LayerImage::getIndexAtFrame(int frameNumber)
             index = i;
         }
     }
+    */
     return index;
 }
 
@@ -117,6 +150,7 @@ int LayerImage::getLastIndexAtFrame(int frameNumber)
 {
     int position  = -1;
     int index = -1;
+    /*
     for(int i=0; i < framesPosition.size(); i++)
     {
         if (framesPosition.at(i) > position && framesPosition.at(i) <= frameNumber)
@@ -125,6 +159,7 @@ int LayerImage::getLastIndexAtFrame(int frameNumber)
             index = i;
         }
     }
+    */
     return index;
 }
 
@@ -167,6 +202,7 @@ void LayerImage::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
     painter.setPen(QPen(QBrush(QColor(40,40,40)), 1, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
     if (visible)
     {
+        /*
         for(int i=0; i < framesPosition.size(); i++)
         {
             if (framesSelected.at(i))
@@ -185,11 +221,13 @@ void LayerImage::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
                 painter.drawRect( cells->getFrameX(framesPosition.at(i))-frameSize+2, y+1, frameSize-2, height-4 );
             }
         }
+        */
     }
 }
 
 void LayerImage::mousePress(QMouseEvent* event, int frameNumber)
 {
+    /*
     frameClicked = frameNumber;
     int index = getIndexAtFrame(frameNumber);
     if (index == -1)
@@ -211,10 +249,12 @@ void LayerImage::mousePress(QMouseEvent* event, int frameNumber)
             framesSelected[i] = true;
         }
     }
+    */
 }
 
 void LayerImage::mouseDoubleClick(QMouseEvent*, int frameNumber)
 {
+    /*
     int index = getIndexAtFrame(frameNumber);
     if (index != -1)
     {
@@ -223,12 +263,14 @@ void LayerImage::mouseDoubleClick(QMouseEvent*, int frameNumber)
             framesSelected[i] = true;
         }
     }
+    */
 }
 
 
 void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
 {
     Q_UNUSED(event);
+    /*
     frameOffset = frameNumber - frameClicked;
     bool ok = true;
     for ( int i = 0; i < framesPosition.size(); i++ )
@@ -249,10 +291,12 @@ void LayerImage::mouseMove(QMouseEvent* event, int frameNumber)
         }
     }
     if (ok == false) frameOffset = 0;
+    */
 }
 
 void LayerImage::mouseRelease(QMouseEvent*, int frameNumber)
 {
+    /*
     Q_UNUSED(frameNumber);
 
     qDebug( "LayerImage: mouse release." );
@@ -267,10 +311,12 @@ void LayerImage::mouseRelease(QMouseEvent*, int frameNumber)
     }
     bubbleSort();
     frameOffset = 0;
+    */
 }
 
 bool LayerImage::addNewKeyFrameAt( int frameNumber )
 {
+    /*
     int index = getIndexAtFrame(frameNumber);
     if (index == -1)
     {
@@ -286,128 +332,92 @@ bool LayerImage::addNewKeyFrameAt( int frameNumber )
     {
         return false;
     }
+    */
+    return true;
 }
 
 void LayerImage::removeImageAtFrame(int frameNumber)
 {
+    /*
     int index = getIndexAtFrame( frameNumber );
     if ( index != -1 && framesPosition.size() > 1 )  // TODO: maybe size=0 is acceptable?
     {
-        delete m_keyframes[ index ];
-        m_keyframes.removeAt( index );
+        delete m_KeyFrames[ index ];
+        m_KeyFrames.removeAt( index );
         framesPosition.removeAt( index );
         framesSelected.removeAt( index );
         framesFilename.removeAt( index );
         framesModified.removeAt( index );
         bubbleSort();
     }
-}
-
-void LayerImage::bubbleSort()
-{
-    // from http://fr.wikipedia.org/wiki/Tri_a_bulles
-    int i   = 0; /* Indice de repetition du tri */
-    int j   = 0; /* Variable de boucle */
-    int MAX = framesPosition.size(); /* taille du tableau */
-    /* Booleen marquant l'arret du tri si le tableau est ordonne */
-    bool en_desordre = true;
-    /* Boucle de repetition du tri et le test qui arrete le tri des que le tableau est ordonne */
-    for(i = 0 ; (i < MAX ) && en_desordre; i++)
-    {
-        /* Supposons le tableau ordonne */
-        en_desordre = false;
-        /* Verification des elements des places j et j-1 */
-        for(j = 1 ; j < MAX - i ; j++)
-        {
-            /* Si les 2 elements sont mal tries */
-            if (framesPosition[j] < framesPosition[j-1])
-            {
-                /* Inversion des 2 elements */
-                swap(j-1,j);
-                /* Le tableau n'est toujours pas trie */
-                en_desordre = true;
-            }
-        }
-    }
-}
-
-void LayerImage::swap(int i, int j)
-{
-    framesPosition.swap(i,j);
-    framesSelected.swap(i,j);
-    framesFilename.swap(i,j);
-    framesModified.swap(i,j);
+    */
 }
 
 void LayerImage::setModified(int frameNumber, bool trueOrFalse)
 {
+    /*
     int index = getLastIndexAtFrame(frameNumber);
     if (index != -1)
     {
         framesModified[index] = trueOrFalse;
         object()->modification();
     }
+    */
 }
 
 void LayerImage::deselectAllFrames()
 {
+    /*
     for(int i=0; i < framesPosition.size(); i++)
     {
         framesSelected[i] = false;
     }
+    */
 }
 
 bool LayerImage::saveImages(QString path, int layerNumber)
 {
+    /*
     qDebug() << "Saving images of layer n. " << layerNumber;
     QDir dir(path);
 
     // always saves all frames, no optimization
     for(int i=0; i < framesPosition.size(); i++)
     {
-        qDebug() << "Trying to save " << framesFilename.at(i) << " of layer n. " << layerNumber;
-        saveImage(i, path, layerNumber);
+        //qDebug() << "Trying to save " << framesFilename.at(i) << " of layer n. " << layerNumber;
+        saveImage( i, path );
     }
     qDebug() << "Layer " << layerNumber << "done";
+    */
     return true;
 }
 
-bool LayerImage::saveImage(int index, QString path, int layerNumber)
+bool LayerImage::addKeyFrame( int position, KeyFrame* pKeyFrame )
 {
-    Q_UNUSED(index);
-    Q_UNUSED(path);
-    Q_UNUSED(layerNumber);
-    // XXX make abstract?
+    removeKeyFrame( position );
 
-    // implemented in subclasses
+    pKeyFrame->setPos( position );
+    m_KeyFrames.insert( std::make_pair( position, pKeyFrame ) );
+
     return true;
 }
 
-QString LayerImage::fileName(int index, int layerNumber)
+bool LayerImage::removeKeyFrame( int position )
 {
-    Q_UNUSED(index);
-    Q_UNUSED(layerNumber);
-    // XXX make abstract?
-    // implemented in subclasses
-    return "";
-}
-
-bool LayerImage::addKeyFrame( int position, Keyframe* pKeyframe )
-{
-    int index = getIndexAtFrame( position );
-    if ( index == -1 )
+    auto it = m_KeyFrames.find( position );
+    if ( it != m_KeyFrames.end() )
     {
-        m_keyframes.append( pKeyframe );
-        framesPosition.append( position );
-        framesSelected.append( false );
-        framesFilename.append( "" );
-        framesModified.append( false );
-        bubbleSort();
-
-        return true;
+        delete it->second;
+        m_KeyFrames.erase( it );
     }
-    else
+
+    return true;
+}
+
+void LayerImage::foreachKeyFrame( std::function<void( KeyFrame* )> func )
+{
+    for ( auto pair : m_KeyFrames )
     {
-        return false;
+        func( pair.second );
     }
 }

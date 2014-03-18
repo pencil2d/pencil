@@ -24,6 +24,9 @@ GNU General Public License for more details.
 #include "layerimage.h"
 #include "vectorimage.h"
 
+class KeyFrame;
+
+
 class LayerVector : public LayerImage
 {
     Q_OBJECT
@@ -39,9 +42,8 @@ public:
     QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool );
     QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool );
 
-    bool saveImage(int, QString, int) override;
     void setView(QMatrix view);
-    QString fileName(int index, int layerNumber) override;
+    
     void setModified(bool trueOrFalse);
     void setModified(int frameNumber, bool trueOrFalse) override;
 
@@ -57,9 +59,11 @@ public:
     void removeColour(int index);
 
 protected:
+    bool saveKeyFrame( KeyFrame*, QString path );
+    QString fileName( int index );
+
     QList<VectorImage*> framesVector;
     QList<QImage*> framesImage; // bitmap output of the vector pictures
-    void swap(int i, int j);
     QMatrix myView;
 };
 

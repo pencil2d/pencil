@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QtDebug>
+#include "KeyFrame.h"
 #include "layercamera.h"
 
 
@@ -103,51 +104,44 @@ LayerCamera::LayerCamera( Object* object ) : LayerImage( object, Layer::CAMERA )
     name = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
-    addImageAtFrame(1);
+    addNewKeyFrameAt( 1 );
 }
 
 LayerCamera::~LayerCamera()
 {
-    while (!framesCamera.empty())
-        delete framesCamera.takeFirst();
 }
 
-// ------
 
-Camera* LayerCamera::getCameraAtIndex(int index)
+bool LayerCamera::addNewKeyFrameAt( int frameNumber )
 {
-    if ( index < 0 || index >= framesCamera.size() )
-    {
-        return NULL;
-    }
-    else
-    {
-        return framesCamera.at(index);
-    }
+    QMatrix viewMatrix = getViewAtFrame( frameNumber );
+    Camera* pCamera = new Camera( viewMatrix );
+    pCamera->setPos( frameNumber );
+    return addKeyFrame( frameNumber, pCamera );
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 {
-    int index = getIndexAtFrame(frameNumber);
-    return getCameraAtIndex(index);
+    //
+    //return getCameraAtIndex(index);
+    return nullptr;
 }
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
 {
-    int index = getLastIndexAtFrame(frameNumber);
-    return getCameraAtIndex(index + increment);
+    //int index = getLastIndexAtFrame(frameNumber);
+    //return getCameraAtIndex(index + increment);
+    return nullptr;
 }
 
 QMatrix LayerCamera::getViewAtFrame(int frameNumber)
 {
-    //qDebug() << ">> " << frameNumber;
+    /*
     int index = getLastIndexAtFrame(frameNumber);
-    int frame1 = -1;
-    int frame2 = -1;
-    Camera* camera1 = getCameraAtIndex(index);
-    if (camera1) frame1 = framesPosition.at(index);
-    Camera* camera2 = getCameraAtIndex(index+1);
-    if (camera2) frame2 = framesPosition.at(index+1);
+
+    Camera* camera1 = getCameraAtIndex( index );
+    Camera* camera2 = getCameraAtIndex( index + 1 );
+
     if (camera1 == NULL && camera2 == NULL)
     {
         return QMatrix();
@@ -160,6 +154,13 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
     {
         return camera1->view;
     }
+
+    int frame1 = -1;
+    int frame2 = -1;
+
+    if ( camera1 ) frame1 = framesPosition.at( index );
+    if ( camera2 ) frame2 = framesPosition.at( index + 1 );
+
     if (camera1 != NULL && camera2 != NULL)
     {
         // linear interpolation
@@ -171,8 +172,9 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
                         c1*camera1->view.m21() + c2*camera2->view.m21(),
                         c1*camera1->view.m22() + c2*camera2->view.m22(),
                         c1*camera1->view.dx() + c2*camera2->view.dx(),
-                        c1*camera1->view.dy() + c2*camera2->view.dy()	);
+                        c1*camera1->view.dy() + c2*camera2->view.dy());
     }
+    */
     return QMatrix();
 }
 
@@ -194,37 +196,28 @@ QImage* LayerCamera::getImageAtIndex(int index)
     return NULL;
 }
 
-bool LayerCamera::addNewKeyFrameAt( int frameNumber )
-{
-    QMatrix viewMatrix = getViewAtFrame( frameNumber );
-
-    return addKeyFrame( frameNumber, new Camera( viewMatrix ) );
-}
-
 void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
 {
-    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
-    int index = getIndexAtFrame(frameNumber);
-    framesCamera[index] = new Camera();
-    framesCamera[index]->view = view;
+    //if ( getIndexAtFrame( frameNumber ) == -1 )
+    //{
+    //    addNewKeyFrameAt( frameNumber );
+    //}
+    //int index = getIndexAtFrame(frameNumber);
+    //framesCamera[index] = new Camera();
+    //framesCamera[index]->view = view;
 }
 
-void LayerCamera::swap(int i, int j)
-{
-    LayerImage::swap(i, j);
-    framesCamera.swap(i,j);
-}
 
-bool LayerCamera::saveImage(int index, QString path, int layerNumber)
+bool LayerCamera::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
-    Q_UNUSED(path);
-    QString layerNumberString = QString::number(layerNumber);
-    QString frameNumberString = QString::number(framesPosition.at(index));
-    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
-    framesFilename[ index ] = layerNumberString + "." + frameNumberString + ".png";
+    //Q_UNUSED(path);
+    //QString layerNumberString = QString::number(layerNumber);
+    //QString frameNumberString = QString::number(framesPosition.at(index));
+    //while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
+    //while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
+    //framesFilename[ index ] = layerNumberString + "." + frameNumberString + ".png";
 
-    framesModified[index] = false;
+    //framesModified[index] = false;
 
     return true;
 }
@@ -246,7 +239,9 @@ void LayerCamera::editProperties()
 
 QDomElement LayerCamera::createDomElement(QDomDocument& doc)
 {
+    
     QDomElement layerTag = doc.createElement("layer");
+    /*
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
@@ -265,6 +260,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc)
         keyTag.setAttribute("dy", framesCamera[index]->view.dy());
         layerTag.appendChild(keyTag);
     }
+    */
     return layerTag;
 }
 

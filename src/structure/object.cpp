@@ -189,7 +189,7 @@ LayerVector *Object::addNewVectorLayer()
 
 LayerSound *Object::addNewSoundLayer()
 {
-    LayerSound* layerSound = new LayerSound(this);
+    LayerSound* layerSound = new LayerSound( this );
     layerSound->id = 1+getMaxID();
     layer.append( layerSound );
     return layerSound;

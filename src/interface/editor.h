@@ -144,8 +144,8 @@ public slots:
     void updateFrameAndVector( int frameNumber );
 
     void scrubTo( int frameNumber );
-    void scrubNextKeyframe();
-    void scrubPreviousKeyframe();
+    void scrubNextKeyFrame();
+    void scrubPreviousKeyFrame();
     void scrubForward();
     void scrubBackward();
 
@@ -198,8 +198,6 @@ public slots:
     void undo();
     void redo();
     void copy();
-    //void copyFrames();
-    //void pasteFrames();
 
     void paste();
     void clipboardChanged();

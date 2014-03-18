@@ -1,13 +1,25 @@
-#ifndef KEYFRAME_H
-#define KEYFRAME_H
+#ifndef KeyFrame_H
+#define KeyFrame_H
 
 #include <QString>
 
-class Keyframe
+enum class KeyFrameType
+{
+    NULLTYPE,
+    BITMAP_TYPE,
+    VECTOR_TYPE,
+    CAMERA_TYPE,
+    SOUND_TYPE,
+};
+
+class KeyFrame
 {
 public:
-    Keyframe();
-    virtual ~Keyframe();
+    KeyFrame();
+    virtual ~KeyFrame();
+
+    int pos() { return m_position; }
+    void setPos( int position ) { m_position = position; }
 
 private:
     int m_position;
@@ -16,4 +28,14 @@ private:
     bool m_isModified;
 };
 
-#endif // KEYFRAME_H
+class NullKeyFrame : public KeyFrame
+{
+public:
+    static NullKeyFrame* get();
+private:
+    NullKeyFrame() {}
+    NullKeyFrame( const NullKeyFrame& ) {}
+    void operator=( const NullKeyFrame& ) {}
+};
+
+#endif // KeyFrame_H

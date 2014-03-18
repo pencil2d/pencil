@@ -287,8 +287,8 @@ void MainWindow2::createMenus()
     connect(ui->actionRemove_Frame, &QAction::triggered, editor, &Editor::removeKey );
     connect(ui->actionNext_Frame, &QAction::triggered, editor, &Editor::playNextFrame );
     connect(ui->actionPrevious_Frame, &QAction::triggered, editor, &Editor::playPrevFrame );
-    connect(ui->actionNext_Keyframe, &QAction::triggered, editor, &Editor::scrubNextKeyframe );
-    connect(ui->actionPrev_Keyframe, &QAction::triggered, editor, &Editor::scrubPreviousKeyframe );
+    connect(ui->actionNext_KeyFrame, &QAction::triggered, editor, &Editor::scrubNextKeyFrame );
+    connect(ui->actionPrev_KeyFrame, &QAction::triggered, editor, &Editor::scrubPreviousKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, editor, &Editor::duplicateKey );
 
     /// --- Tool Menu ---
@@ -787,9 +787,17 @@ bool MainWindow2::saveObject( QString strSavedFilename )
 
         progressValue = (i * 100) / nLayers;
         progress.setValue( progressValue );
-        if ( layer->type() == Layer::BITMAP ) ((LayerBitmap*)layer)->saveImages( dataLayersDir, i );
-        if ( layer->type() == Layer::VECTOR ) ((LayerVector*)layer)->saveImages( dataLayersDir, i );
-        if ( layer->type() == Layer::SOUND ) ((LayerSound*)layer)->saveImages( dataLayersDir, i );
+        switch ( layer->type() )
+        {
+        case Layer::BITMAP:
+        case Layer::VECTOR:
+        case Layer::SOUND:
+            auto pLayerImg = static_cast<LayerImage*>( layer );
+            pLayerImg->saveImages( dataLayersDir, i );
+            pLayerImg->saveImages( dataLayersDir, i );
+            pLayerImg->saveImages( dataLayersDir, i );
+            break;
+        }
     }
 
     // save palette
@@ -1086,8 +1094,8 @@ void MainWindow2::loadAllShortcuts()
     ui->actionLoop->setShortcut( cmdKeySeq( CMD_LOOP ) );
     ui->actionPrevious_Frame->setShortcut( cmdKeySeq( CMD_GOTO_PREV_FRAME ) );
     ui->actionNext_Frame->setShortcut( cmdKeySeq( CMD_GOTO_NEXT_FRAME ) );
-    ui->actionPrev_Keyframe->setShortcut( cmdKeySeq( CMD_GOTO_PREV_KEY_FRAME ) );
-    ui->actionNext_Keyframe->setShortcut( cmdKeySeq( CMD_GOTO_NEXT_KEY_FRAME ) );
+    ui->actionPrev_KeyFrame->setShortcut( cmdKeySeq( CMD_GOTO_PREV_KEY_FRAME ) );
+    ui->actionNext_KeyFrame->setShortcut( cmdKeySeq( CMD_GOTO_NEXT_KEY_FRAME ) );
     ui->actionAdd_Frame->setShortcut( cmdKeySeq( CMD_ADD_FRAME ) );
     ui->actionDuplicate_Frame->setShortcut( cmdKeySeq( CMD_DUPLICATE_FRAME ) );
     ui->actionRemove_Frame->setShortcut( cmdKeySeq( CMD_REMOVE_FRAME ) );

@@ -18,10 +18,11 @@ GNU General Public License for more details.
 
 #include <QtXml>
 #include <QPainter>
+#include "KeyFrame.h"
 
 class Object;  // forward declaration
 
-class BitmapImage
+class BitmapImage : public KeyFrame
 {
     //Q_OBJECT
 

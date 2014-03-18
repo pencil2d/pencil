@@ -37,9 +37,10 @@ class BackupVectorElement : public BackupElement
 {
     Q_OBJECT
 public:
+    BackupVectorElement() : vectorImage( nullptr ) {}
     int layer, frame;
     VectorImage vectorImage;
-    //BackupVectorElement() { type = BackupElement::VECTOR_MODIF; }
+    
     int type() { return BackupElement::VECTOR_MODIF; }
     void restore(Editor*);
 };

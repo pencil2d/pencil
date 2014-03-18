@@ -77,7 +77,7 @@ int LayerManager::LastFrameAtFrame( int frameIndex )
         for ( int layerIndex = 0; layerIndex < pObj->getLayerCount(); ++layerIndex )
         {
             auto pLayer = static_cast<LayerImage*>( pObj->getLayer( layerIndex ) );
-            if ( pLayer->hasKeyframeAtPosition( i ) )
+            if ( pLayer->hasKeyFrameAtPosition( i ) )
             {
                 return i;
             }
@@ -95,7 +95,7 @@ int LayerManager::firstKeyFrameIndex()
     {
         Layer* pLayer = pObj->getLayer( i );
 
-        int position = pLayer->getFirstKeyframePosition();
+        int position = pLayer->getFirstKeyFramePosition();
         if ( position < minPosition )
         {
             minPosition = position;
@@ -112,7 +112,7 @@ int LayerManager::lastKeyFrameIndex()
     {
         Layer* pLayer = editor()->object()->getLayer( i );
 
-        int position = pLayer->getFirstKeyframePosition();
+        int position = pLayer->getFirstKeyFramePosition();
         if ( position > maxPosition )
         {
             maxPosition = position;

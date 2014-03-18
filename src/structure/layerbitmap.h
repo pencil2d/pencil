@@ -17,12 +17,12 @@ GNU General Public License for more details.
 #define LAYERBITMAP_H
 
 #include <QImage>
-#include <QSize>
 #include <QList>
 #include <QString>
 #include <QPainter>
 #include "layerimage.h"
 #include "bitmapimage.h"
+#include "KeyFrame.h"
 
 class LayerBitmap : public LayerImage
 {
@@ -34,22 +34,17 @@ public:
 
     // method from layerImage
     virtual bool addNewKeyFrameAt( int frameNumber );
-
     void loadImageAtFrame( QString, QPoint, int );
-    bool saveImage( int, QString, int );
-    QString fileName( int index, int layerNumber );
-
+    
     QDomElement createDomElement( QDomDocument& doc );
     void loadDomElement( QDomElement element, QString dataDirPath );
 
-    // graphic representation -- could be put in another class
-    BitmapImage* getBitmapImageAtIndex( int index );
     BitmapImage* getBitmapImageAtFrame( int frameNumber );
     BitmapImage* getLastBitmapImageAtFrame( int frameNumber, int increment );
 
 private:
-    QList<BitmapImage*> m_framesBitmap;
-    void swap( int i, int j );
+    QString fileName( int index );
+    bool saveKeyFrame( KeyFrame*, QString strPath ) override;
 };
 
 #endif

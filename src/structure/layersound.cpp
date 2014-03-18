@@ -60,7 +60,7 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
 
 bool LayerSound::addImageAtFrame(int frameNumber)
 {
-    return addImageAtFrame( frameNumber, new SoundClip );
+    return addKeyFrame( frameNumber, new SoundClip );
 }
 
 void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
@@ -84,27 +84,21 @@ void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
     }
 }
 
-void LayerSound::swap(int i, int j)
-{
-    LayerImage::swap(i, j);
-    sound.swap(i, j);
-    soundFilepath.swap(i,j);
-}
-
-
 bool LayerSound::saveImage(int index, QString path, int layerNumber)
 {
+    /*
     Q_UNUSED(layerNumber);
     
     QFile originalFile( soundFilepath.at(index) );
     originalFile.copy( path + "/" + framesFilename.at(index) );
     framesModified[index] = false;
-
+    */
     return true;
 }
 
 void LayerSound::playSound(int frame, int fps)
 {
+    /*
     for (int i = 0; i < sound.size(); ++i)
     {
         QMediaPlayer* media = sound.at(i);
@@ -138,23 +132,27 @@ void LayerSound::playSound(int frame, int fps)
             }
         }
     }
+    */
 }
 
 
 
 void LayerSound::stopSound()
 {
+    /*
     for(int i=0; i < sound.size(); i++)
     {
         Q_ASSERT( sound[i] );
         sound[i]->stop();
     }
+    */
 }
 
 
 QDomElement LayerSound::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
+    /*
     layerTag.setAttribute("id",id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
@@ -166,11 +164,13 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
         soundTag.setAttribute("src", framesFilename.at(index));
         layerTag.appendChild(soundTag);
     }
+    */
     return layerTag;
 }
 
 void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
 {
+    /*
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
     name = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
@@ -193,4 +193,10 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
         }
         soundTag = soundTag.nextSibling();
     }
+    */
+}
+
+bool LayerSound::saveKeyFrame( KeyFrame*, QString path )
+{
+    return true;
 }

@@ -23,13 +23,13 @@ GNU General Public License for more details.
 #include <QString>
 #include <QPainter>
 #include "layerimage.h"
-#include "keyframe.h"
+#include "KeyFrame.h"
 
 
 class QMediaPlayer;
 
 
-class SoundClip : public Keyframe
+class SoundClip : public KeyFrame
 {
 public:
     QString m_strFilePath;
@@ -65,14 +65,12 @@ public:
     int getSoundSize() { return sound.size(); }
     bool soundIsNotNull(int index) { return (sound[index] != NULL); }
 
-private:
+protected:
+    bool saveKeyFrame( KeyFrame*, QString path ) override;
 
+private:
     QList<QString> soundFilepath;
     QList<qint64> soundSize;
-    
-    // graphic representation -- could be put in another class
-    void swap(int i, int j);
-
     QList<QMediaPlayer*> sound;
 };
 

@@ -1,14 +1,21 @@
-#include "keyframe.h"
+#include "KeyFrame.h"
 
 
-Keyframe::Keyframe()
+KeyFrame::KeyFrame()
 {
     m_position = -1;
     m_originalPosition = -1;
     m_isModified = false;
 }
 
-Keyframe::~Keyframe()
+KeyFrame::~KeyFrame()
 {
 
+}
+
+NullKeyFrame* NullKeyFrame::get()
+{
+    static NullKeyFrame* pTheOnlyOne = new NullKeyFrame;
+
+    return pTheOnlyOne;
 }

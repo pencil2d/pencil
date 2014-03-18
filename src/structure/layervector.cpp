@@ -19,7 +19,7 @@ GNU General Public License for more details.
 LayerVector::LayerVector(Object* object) : LayerImage( object, Layer::VECTOR )
 {
     name = QString(tr("Vector Layer"));
-    addImageAtFrame(1);
+    addNewKeyFrameAt( 1 );
 }
 
 LayerVector::~LayerVector()
@@ -154,11 +154,11 @@ bool LayerVector::addNewKeyFrameAt( int frameNumber )
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
-    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
-    int index = getIndexAtFrame(frameNumber);
-    framesVector[index]->read(path);
-    QFileInfo fi(path);
-    framesFilename[index] = fi.fileName();
+    if (getIndexAtFrame(frameNumber) == -1) addNewKeyFrameAt( frameNumber );
+    //int index = getIndexAtFrame(frameNumber);
+    //framesVector[index]->read(path);
+    //QFileInfo fi(path);
+    //framesFilename[index] = fi.fileName();
 }
 
 /*void LayerVector::loadImageAtFrame(VectorImage* picture, int frameNumber) {
@@ -168,29 +168,28 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
     framesVector[index] = picture;
 }*/
 
-void LayerVector::swap(int i, int j)
-{
-    LayerImage::swap(i, j);
-    framesVector.swap(i,j);
-    framesImage.swap(i,j);
-}
 
-
-bool LayerVector::saveImage(int index, QString path, int layerNumber)
+bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
-    Q_UNUSED(layerNumber);
-    int theFrame = framesPosition.at(index);
-    QString theFileName = fileName(theFrame, id);
-    framesFilename[index] = theFileName;
+    VectorImage* pVecImage = static_cast< VectorImage* >( pKeyFrame );
+
+    QString theFileName = fileName( pKeyFrame->pos() );
+    QString strFilePath = QDir( path ).filePath( theFileName );
+    pVecImage->write( strFilePath, "VEC" );
+
+    //int theFrame = framesPosition.at(index);
+    //QString theFileName = fileName(theFrame, id);
+    //framesFilename[index] = theFileName;
     //qDebug() << "Write " << theFileName;
-    framesVector[index]->write(path +"/"+ theFileName,"VEC");
-    framesModified[index] = false;
+    //framesVector[index]->write(path +"/"+ theFileName,"VEC");
+    //framesModified[index] = false;
 
     return true;
 }
 
-QString LayerVector::fileName(int frame, int layerID)
+QString LayerVector::fileName( int frame )
 {
+    int layerID = id;
     QString layerNumberString = QString::number(layerID);
     QString frameNumberString = QString::number(frame);
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
@@ -201,6 +200,7 @@ QString LayerVector::fileName(int frame, int layerID)
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
+    /*
     layerTag.setAttribute("id", id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
@@ -213,6 +213,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
         imageTag.setAttribute("src", framesFilename.at(index)); // if we want to link the data to an external file
         layerTag.appendChild(imageTag);
     }
+    */
     return layerTag;
 }
 
@@ -242,7 +243,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
                 else
                 {
                     int frame = imageElement.attribute("frame").toInt();
-                    addImageAtFrame( frame );
+                    addNewKeyFrameAt( frame );
                     getVectorImageAtFrame( frame )->loadDomElement(imageElement);
                 }
             }

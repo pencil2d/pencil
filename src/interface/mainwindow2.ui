@@ -132,8 +132,8 @@
     <addaction name="separator"/>
     <addaction name="actionNext_Frame"/>
     <addaction name="actionPrevious_Frame"/>
-    <addaction name="actionNext_Keyframe"/>
-    <addaction name="actionPrev_Keyframe"/>
+    <addaction name="actionNext_KeyFrame"/>
+    <addaction name="actionPrev_KeyFrame"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
@@ -716,30 +716,30 @@
     <string>Reset to default</string>
    </property>
   </action>
-  <action name="actionNext_Keyframe">
+  <action name="actionNext_KeyFrame">
    <property name="icon">
     <iconset>
      <normalon>:/icons/next.png</normalon>
     </iconset>
    </property>
    <property name="text">
-    <string>Next_Keyframe</string>
+    <string>Next_KeyFrame</string>
    </property>
    <property name="toolTip">
-    <string>Next Keyframe</string>
+    <string>Next KeyFrame</string>
    </property>
   </action>
-  <action name="actionPrev_Keyframe">
+  <action name="actionPrev_KeyFrame">
    <property name="icon">
     <iconset>
      <normalon>:/icons/prev.png</normalon>
     </iconset>
    </property>
    <property name="text">
-    <string>Prev_Keyframe</string>
+    <string>Prev_KeyFrame</string>
    </property>
    <property name="toolTip">
-    <string>Previous keyframe</string>
+    <string>Previous KeyFrame</string>
    </property>
   </action>
   <action name="actionMultiLayerOnionSkin">

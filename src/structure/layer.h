@@ -51,14 +51,14 @@ public:
 
     void switchVisibility() { visible = !visible; }
 
-    // keyframe interface
-    static const int NO_KEYFRAME = -1;
-    virtual int getMaxFramePosition() { return NO_KEYFRAME; }
-    virtual bool hasKeyframeAtPosition(int position) = 0;
-    virtual int getPreviousKeyframePosition(int position) = 0;
-    virtual int getNextKeyframePosition(int position) = 0;
-    virtual int getFirstKeyframePosition();
-    virtual int getLastKeyframePosition();
+    // KeyFrame interface
+    static const int NO_KeyFrame = -1;
+    virtual int getMaxFramePosition() { return NO_KeyFrame; }
+    virtual bool hasKeyFrameAtPosition(int position) = 0;
+    virtual int getPreviousKeyFramePosition(int position) = 0;
+    virtual int getNextKeyFramePosition(int position) = 0;
+    virtual int getFirstKeyFramePosition();
+    virtual int getLastKeyFramePosition();
 
     // export element
     virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc

@@ -18,40 +18,22 @@ GNU General Public License for more details.
 
 LayerBitmap::LayerBitmap( Object* object ) : LayerImage( object, Layer::BITMAP )
 {
-    name = QString(tr("Bitmap Layer"));
-    addNewKeyFrameAt(1);
+    name = QString( tr( "Bitmap Layer" ) );
+    addNewKeyFrameAt( 1 );
 }
 
 LayerBitmap::~LayerBitmap()
 {
-    while (!m_framesBitmap.empty())
-        delete m_framesBitmap.takeFirst();
-}
-
-// ------
-
-BitmapImage* LayerBitmap::getBitmapImageAtIndex(int index)
-{
-    if ( index < 0 || index >= m_framesBitmap.size() )
-    {
-        return NULL;
-    }
-    else
-    {
-        return m_framesBitmap.at(index);
-    }
 }
 
 BitmapImage* LayerBitmap::getBitmapImageAtFrame(int frameNumber)
 {
-    int index = getIndexAtFrame(frameNumber);
-    return getBitmapImageAtIndex(index);
+    return static_cast<BitmapImage*>( getKeyFrameAtPosition( frameNumber ) );
 }
 
 BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increment)
 {
-    int index = getLastIndexAtFrame(frameNumber);
-    return getBitmapImageAtIndex(index + increment);
+    return static_cast< BitmapImage* >( getKeyFrameAtPosition( frameNumber + increment ) );
 }
 
 bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
@@ -60,38 +42,36 @@ bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
     {
         return false;
     }
-    return addKeyFrame( frameNumber, new BitmapImage );
+    auto pImg = new BitmapImage;
+    pImg->setPos( frameNumber );
+    return addKeyFrame( frameNumber, pImg );
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
 {
-    if ( hasKeyframeAtPosition( frameNumber ) )
+    if ( hasKeyFrameAtPosition( frameNumber ) )
     {
         removeImageAtFrame( frameNumber );
     }
-    addKeyFrame( frameNumber, new BitmapImage( path, topLeft ) );
+    auto pImg = new BitmapImage( path, topLeft );
+    pImg->setPos( frameNumber );
+    addKeyFrame( frameNumber, pImg );
 }
 
-void LayerBitmap::swap(int i, int j)
+bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame , QString path )
 {
-    LayerImage::swap(i, j);
-    m_framesBitmap.swap(i,j);
-}
+    BitmapImage* pBitmapImage = static_cast<BitmapImage*>( pKeyFrame );
 
-bool LayerBitmap::saveImage(int index, QString path, int layerNumber)
-{
-    Q_UNUSED(layerNumber);
-    int theFrame = framesPosition.at(index);
-    QString theFileName = fileName(theFrame, id);
-    framesFilename[index] = theFileName;
-    m_framesBitmap[index]->m_pImage->save(path +"/"+ theFileName,"PNG");
-    framesModified[index] = false;
+    QString theFileName = fileName( pKeyFrame->pos() );
+    QString strFilePath = QDir( path ).filePath( theFileName );
+    pBitmapImage->m_pImage->save( strFilePath );
 
     return true;
 }
 
-QString LayerBitmap::fileName(int frame, int layerID)
+QString LayerBitmap::fileName( int frame )
 {
+    int layerID = id;
     QString layerNumberString = QString::number(layerID);
     QString frameNumberString = QString::number(frame);
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
@@ -106,15 +86,19 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
-    for(int index=0; index < framesPosition.size() ; index++)
+
+    foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
     {
-        QDomElement imageTag = doc.createElement("image");
-        imageTag.setAttribute("frame", framesPosition.at(index));
-        imageTag.setAttribute("src", framesFilename.at(index));
-        imageTag.setAttribute("topLeftX", m_framesBitmap[index]->topLeft().x());
-        imageTag.setAttribute("topLeftY", m_framesBitmap[index]->topLeft().y());
-        layerTag.appendChild(imageTag);
-    }
+        BitmapImage* pImg = static_cast< BitmapImage* >( pKeyFrame );
+
+        QDomElement imageTag = doc.createElement( "image" );
+        imageTag.setAttribute( "frame", pKeyFrame->pos() );
+        imageTag.setAttribute( "src", fileName( pKeyFrame->pos() ) );
+        imageTag.setAttribute( "topLeftX", pImg->topLeft().x() );
+        imageTag.setAttribute( "topLeftY", pImg->topLeft().y() );
+        layerTag.appendChild( imageTag );
+    } );
+
     return layerTag;
 }
 

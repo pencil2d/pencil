@@ -25,7 +25,7 @@ private slots:
     void testLayerType();
     void testAddImageAtFrame();
     void testGetMaxFramePosition();
-    void testHasKeyframeAtPosition();
+    void testHasKeyFrameAtPosition();
     void testGetFramePositionAt();
     void testRemoveImageAtFrame();
 

@@ -64,6 +64,7 @@ Editor::Editor( MainWindow2* parent )
     , exportMovieDialog_format( nullptr )
     , exportMovieDialog_fpsBox( nullptr )
     , exportFlashDialog_compression( nullptr )
+    , m_clipboardVectorImage( nullptr )
 {
     m_pMainWindow = parent;
 
@@ -1575,7 +1576,7 @@ void Editor::startOrStop()
     }
 }
 
-void Editor::scrubNextKeyframe()
+void Editor::scrubNextKeyFrame()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer == NULL )
@@ -1583,23 +1584,23 @@ void Editor::scrubNextKeyframe()
         return;
     }
 
-    int position = layer->getNextKeyframePosition( layerManager()->currentFrameIndex() );
-    if ( position != Layer::NO_KEYFRAME )
+    int position = layer->getNextKeyFramePosition( layerManager()->currentFrameIndex() );
+    if ( position != Layer::NO_KeyFrame )
     {
         scrubTo( position );
     }
     else {
         if ( looping ) {
             // scrubto first key frame
-            position = layer->getFirstKeyframePosition();
-            if ( position != Layer::NO_KEYFRAME ) {
+            position = layer->getFirstKeyFramePosition();
+            if ( position != Layer::NO_KeyFrame ) {
                 scrubTo( position );
             }
         }
     }
 }
 
-void Editor::scrubPreviousKeyframe()
+void Editor::scrubPreviousKeyFrame()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer == NULL )
@@ -1607,8 +1608,8 @@ void Editor::scrubPreviousKeyframe()
         return;
     }
 
-    int position = layer->getPreviousKeyframePosition( layerManager()->currentFrameIndex() );
-    if ( position != Layer::NO_KEYFRAME )
+    int position = layer->getPreviousKeyFramePosition( layerManager()->currentFrameIndex() );
+    if ( position != Layer::NO_KeyFrame )
     {
         scrubTo( position );
     }
@@ -1617,8 +1618,8 @@ void Editor::scrubPreviousKeyframe()
         if ( looping )
         {
             // scrubto first key frame
-            position = layer->getLastKeyframePosition();
-            if ( position != Layer::NO_KEYFRAME )
+            position = layer->getLastKeyFramePosition();
+            if ( position != Layer::NO_KeyFrame )
             {
                 scrubTo( position );
             }
