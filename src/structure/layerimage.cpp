@@ -336,23 +336,6 @@ bool LayerImage::addNewKeyFrameAt( int frameNumber )
     return true;
 }
 
-void LayerImage::removeImageAtFrame(int frameNumber)
-{
-    /*
-    int index = getIndexAtFrame( frameNumber );
-    if ( index != -1 && framesPosition.size() > 1 )  // TODO: maybe size=0 is acceptable?
-    {
-        delete m_KeyFrames[ index ];
-        m_KeyFrames.removeAt( index );
-        framesPosition.removeAt( index );
-        framesSelected.removeAt( index );
-        framesFilename.removeAt( index );
-        framesModified.removeAt( index );
-        bubbleSort();
-    }
-    */
-}
-
 void LayerImage::setModified(int frameNumber, bool trueOrFalse)
 {
     /*

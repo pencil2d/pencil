@@ -51,7 +51,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
 {
     if ( hasKeyFrameAtPosition( frameNumber ) )
     {
-        removeImageAtFrame( frameNumber );
+        removeKeyFrame( frameNumber );
     }
     auto pImg = new BitmapImage( path, topLeft );
     pImg->setPos( frameNumber );

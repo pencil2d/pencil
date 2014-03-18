@@ -56,7 +56,6 @@ public:
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 
     virtual bool addNewKeyFrameAt(int frameNumber);
-    virtual void removeImageAtFrame(int frameNumber);
     virtual void setModified(int frameNumber, bool trueOrFalse);
     void deselectAllFrames();
 

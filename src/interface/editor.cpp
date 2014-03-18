@@ -1492,10 +1492,17 @@ void Editor::removeKey()
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP ) ( ( LayerBitmap* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
-        if ( layer->type() == Layer::VECTOR ) ( ( LayerVector* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
-        if ( layer->type() == Layer::CAMERA ) ( ( LayerCamera* )layer )->removeImageAtFrame( layerManager()->currentFrameIndex() );
-        //if (layer->type() == Layer::SOUND)  ((LayerSound*)layer)->removeImageAtFrame(currentFrame);
+        LayerImage* pLayerImg = static_cast< LayerImage* >( layer );
+        switch ( pLayerImg->type() )
+        {
+        case Layer::BITMAP:
+        case Layer::VECTOR:
+        case Layer::CAMERA:
+            pLayerImg->removeKeyFrame( layerManager()->currentFrameIndex() );
+            break;
+        default:
+            break;
+        }
         scrubBackward();
         getTimeLine()->updateContent();
         m_pScribbleArea->updateFrame();

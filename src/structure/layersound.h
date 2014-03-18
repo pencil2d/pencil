@@ -49,7 +49,6 @@ public:
     void loadDomElement(QDomElement element, QString dataDirPath);
 
     bool addImageAtFrame(int frameNumber);
-    void removeImageAtFrame(int frameNumber);
 
     void loadSoundAtFrame( QString filePathString, int frame );
 
