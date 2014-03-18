@@ -30,6 +30,7 @@ public:
     void testHasKeyFrameAtPosition();
 
     void testPreviousKeyFramePosition();
+    void testNextKeyFramePosition();
 
 private:
     Object* m_pObject;

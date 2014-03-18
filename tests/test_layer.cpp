@@ -159,4 +159,21 @@ void TestLayer::testPreviousKeyFramePosition()
     pLayer->addNewKeyFrameAt( 15 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 16 ), 15 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 17 ), 15 );
+
+    pLayer->removeKeyFrame( 15 );
+    QCOMPARE( pLayer->getPreviousKeyFramePosition( 16 ), 8 );
+}
+
+void TestLayer::testNextKeyFramePosition()
+{
+    Layer* pLayer = new LayerBitmap( m_pObject );
+    QScopedPointer<Layer> ptr( pLayer );
+
+    QCOMPARE( pLayer->getNextKeyFramePosition( 1 ), 1 );
+    QCOMPARE( pLayer->getNextKeyFramePosition( 10 ), 1 );
+    QCOMPARE( pLayer->getNextKeyFramePosition( 100 ), 1 );
+
+    pLayer->addNewKeyFrameAt( 5 );
+    QCOMPARE( pLayer->getNextKeyFramePosition( 1 ), 5 );
+    QCOMPARE( pLayer->getNextKeyFramePosition( 2 ), 5 );
 }
