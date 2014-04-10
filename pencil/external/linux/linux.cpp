@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QString>
 #include <QImageWriter>
 #include <QImageReader>
+#include <QProgressDialog>
 #include "object.h"
 #include "editor.h"
 #include "mainwindow2.h"

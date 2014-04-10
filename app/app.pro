@@ -2,6 +2,7 @@
 QT += core widgets gui xml multimedia svg
 
 TEMPLATE = app
+TARGET = Pencil2D
 
 INCLUDEPATH += \
     ../pencil/graphics \
