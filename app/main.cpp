@@ -14,7 +14,10 @@ GNU General Public License for more details.
 
 */
 #include <QApplication>
+#include <QTranslator>
+#include <QLibraryInfo>
 #include <QDir>
+#include <QIcon>
 #include "pencildef.h"
 #include "editor.h"
 #include "mainwindow2.h"
