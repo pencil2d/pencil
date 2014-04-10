@@ -3,20 +3,17 @@
 ######################################################################
 
 CONFIG += qt debug console
+CONFIG += depend_includepath
 TEMPLATE = app
 TARGET = Pencil
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
-DEPENDPATH += . src
 
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 include(src/pencil.pri)
 
 SOURCES += src/main.cpp
-
-# Track dependencies for all includes
-DEPENDPATH *= $${INCLUDEPATH}
 
 RESOURCES += pencil.qrc
 
