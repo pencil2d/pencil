@@ -4,8 +4,8 @@
 #include "layermanager.h"
 
 
-LayerManager::LayerManager( QObject* pParant = 0 ) 
-    : BaseManager( pParant )
+LayerManager::LayerManager( QObject* pParent )
+    : BaseManager( pParent )
 {
 }
 

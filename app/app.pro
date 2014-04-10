@@ -1,6 +1,7 @@
 
 QT += core widgets gui xml multimedia svg
 
+CONFIG += c++11
 TEMPLATE = app
 TARGET = Pencil2D
 
@@ -18,6 +19,11 @@ INCLUDEPATH += \
 RESOURCES += ../pencil.qrc
 
 SOURCES += main.cpp
+
+macx {
+    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
+    LIBS += -lobjc -lz -framework AppKit -framework Carbon
+}
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../pencil/release/ -lpencil
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../pencil/debug/ -lpencil

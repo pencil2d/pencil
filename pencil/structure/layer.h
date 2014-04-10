@@ -60,7 +60,7 @@ public:
     bool hasKeyFrameAtPosition(int position);
     int getPreviousKeyFramePosition(int position);
     int getNextKeyFramePosition(int position);
-    
+
     int getMaxKeyFramePosition();
     int getFirstKeyFramePosition();
 

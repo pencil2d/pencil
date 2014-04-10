@@ -13,6 +13,11 @@ TARGET = tests
 CONFIG   += console
 CONFIG   -= app_bundle
 
+macx {
+    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
+    LIBS += -lz
+}
+
 INCLUDEPATH += \
     ../pencil/graphics \
     ../pencil/graphics/bitmap \

@@ -26,6 +26,9 @@ class BackupBitmapElement : public BackupElement
 {
     Q_OBJECT
 public:
+    BackupBitmapElement();
+    ~BackupBitmapElement();
+
     int layer, frame;
     BitmapImage bitmapImage;
     //BackupBitmapElement() { type = BackupElement::BITMAP_MODIF; }
@@ -40,7 +43,7 @@ public:
     BackupVectorElement() : vectorImage( nullptr ) {}
     int layer, frame;
     VectorImage vectorImage;
-    
+
     int type() { return BackupElement::VECTOR_MODIF; }
     void restore(Editor*);
 };

@@ -5,6 +5,7 @@ QT += core widgets gui xml xmlpatterns multimedia svg
 TEMPLATE = lib
 TARGET = pencil
 CONFIG += qt debug console depend_includepath staticlib
+CONFIG += c++11
 
 RESOURCES += ../pencil.qrc
 
@@ -161,7 +162,6 @@ SOURCES +=  graphics/bitmap/blur.cpp \
     structure/keyframe.cpp \
     structure/camera.cpp \
     interface/recentfilemenu.cpp \
-    util/util.cpp \
     managers/colormanager.cpp \
     managers/toolmanager.cpp \
     managers/layermanager.cpp \
@@ -191,17 +191,15 @@ macx {
     INCLUDEPATH +=  external/macosx
     LIBS += -lobjc -lz -framework AppKit -framework Carbon
     INCLUDEPATH += . libmacosx
-    HEADERS += external/macosx/style.h
-    SOURCES += external/macosx/macosx.cpp \
-           external/macosx/style.cpp
+    SOURCES += external/macosx/macosx.cpp
     RC_FILE = ../pencil.icns
-    QMAKE_CXXFLAGS += -std=c++11
+    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
 }
 linux-* {
     INCLUDEPATH += . liblinux
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
-    LIBS += -Lliblinux -lming -lpng -lz
+    LIBS += -Lliblinux -lpng -lz
     LIBS += -L/usr/local/zlib/lib
     INCLUDEPATH+=/usr/local/zlib/include
     QMAKE_CXXFLAGS += -std=c++11

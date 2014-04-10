@@ -17,11 +17,10 @@ GNU General Public License for more details.
 #include <QStringList>
 #include <QDir>
 #include <QProcess>
-
+#include <QProgressDialog>
 #include "object.h"
 #include "editor.h"
 #include "mainwindow2.h"
-#include "style.h"
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <Carbon/Carbon.h>
@@ -47,7 +46,6 @@ void enableCoalescing() {
 
 void initialise()
 {
-    qApp->setStyle(new AquaStyle());
 }
 
 bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
