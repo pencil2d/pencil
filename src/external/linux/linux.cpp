@@ -18,7 +18,8 @@ GNU General Public License for more details.
 #include <QProcess>
 #include <QDir>
 #include <QString>
-#include <phonon/BackendCapabilities>
+#include <QImageWriter>
+#include <QImageReader>
 #include "object.h"
 #include "editor.h"
 #include "mainwindow2.h"
@@ -42,10 +43,11 @@ void initialise()
 {
     qDebug() << "Initialize linux: <nothing, for now>";
     // Phonon capabilities
+    /*
     QStringList mimeTypes = Phonon::BackendCapabilities::availableMimeTypes();
     foreach (QString mimeType, mimeTypes)
     {if (mimeType.contains("audio")) qDebug() << "Phonon capability: " << mimeType;}
-
+    */
     // QImageReader capabilities
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
     foreach (QString format, formats)
