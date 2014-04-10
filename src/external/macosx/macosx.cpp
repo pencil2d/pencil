@@ -16,7 +16,6 @@ GNU General Public License for more details.
 #include <QString>
 #include <QStringList>
 #include <QDir>
-#include <QProgressDialog>
 #include <QProcess>
 
 #include "object.h"
