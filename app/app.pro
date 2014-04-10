@@ -14,6 +14,8 @@ INCLUDEPATH += \
     ../pencil/ui \
     ../pencil/managers
 
+RESOURCES += ../pencil.qrc
+
 SOURCES += main.cpp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../pencil/release/ -lpencil
