@@ -13,8 +13,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef TOOLSET_H
-#define TOOLSET_H
+#ifndef TOOLBOXWIDGET_H
+#define TOOLBOXWIDGET_H
 
 #include <QtGui>
 #include <QDockWidget>

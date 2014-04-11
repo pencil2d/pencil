@@ -25,16 +25,16 @@ QMAKE_EXTRA_COMPILERS += updateqm
 PRE_TARGETDEPS += compiler_updateqm_make_all
 
 
-INCLUDEPATH += external/flash \
-            graphics \
-            graphics/bitmap \
-            graphics/vector \
-            interface \
-            structure \
-            tool \
-            util \
-            ui \
-            managers
+INCLUDEPATH += \
+    graphics \
+    graphics/bitmap \
+    graphics/vector \
+    interface \
+    structure \
+    tool \
+    util \
+    ui \
+    managers
 
 # Input
 HEADERS +=  interfaces.h \
@@ -43,7 +43,37 @@ HEADERS +=  interfaces.h \
     graphics/vector/beziercurve.h \
     graphics/vector/colourref.h \
     graphics/vector/vectorimage.h \
+    graphics/vector/vectorselection.h \
     graphics/vector/vertexref.h \
+    interface/backupelement.h \
+    interface/colorbox.h \
+    interface/colorgrid.h \
+    interface/colorgriditem.h \
+    interface/colorinspector.h \
+    interface/colorpalettewidget.h \
+    interface/colorwheel.h \
+    interface/displayoptiondockwidget.h \
+    interface/editor.h \
+    interface/flowlayout.h \
+    interface/keycapturelineedit.h \
+    interface/mainwindow2.h \
+    interface/popupcolorpalettewidget.h \
+    interface/preferences.h \
+    interface/recentfilemenu.h \
+    interface/scribblearea.h \
+    interface/shortcutspage.h \
+    interface/spinslider.h \
+    interface/timecontrols.h \
+    interface/timeline.h \
+    interface/timelinecells.h \
+    interface/toolbox.h \
+    interface/tooloptiondockwidget.h \
+    managers/basemanager.h \
+    managers/colormanager.h \
+    managers/layermanager.h \
+    managers/toolmanager.h \
+    structure/camera.h \
+    structure/keyframe.h \
     structure/layer.h \
     structure/layerbitmap.h \
     structure/layercamera.h \
@@ -51,66 +81,65 @@ HEADERS +=  interfaces.h \
     structure/layersound.h \
     structure/layervector.h \
     structure/object.h \
-    interface/editor.h \
-    interface/colorpalettewidget.h \
-    interface/popupcolorpalettewidget.h \
-    interface/preferences.h \
-    interface/scribblearea.h \
-    interface/timeline.h \
-    interface/timecontrols.h \
-    interface/toolbox.h \
-    interface/backupelement.h \
-    interface/spinslider.h \
-    interface/displayoptiondockwidget.h \
-    interface/tooloptiondockwidget.h \
-    tool/basetool.h \
-    tool/pentool.h \
-    tool/penciltool.h \
-    tool/brushtool.h \
-    tool/erasertool.h \
-    tool/selecttool.h \
-    tool/movetool.h \
-    tool/handtool.h \
-    tool/smudgetool.h \
-    tool/polylinetool.h \
-    tool/buckettool.h \
-    tool/eyedroppertool.h \
-    util/pencilsettings.h \
-    util/fileformat.h \
-    interface/shortcutspage.h \
-    interface/mainwindow2.h \
-    interface/timelinecells.h \
-    graphics/vector/vectorselection.h \
-    util/pencildef.h \
-    interface/keycapturelineedit.h \
     structure/objectsaveloader.h \
+    tool/basetool.h \
+    tool/brushtool.h \
+    tool/buckettool.h \
+    tool/erasertool.h \
+    tool/eyedroppertool.h \
+    tool/handtool.h \
+    tool/movetool.h \
+    tool/penciltool.h \
+    tool/pentool.h \
+    tool/polylinetool.h \
+    tool/selecttool.h \
+    tool/smudgetool.h \
     tool/strokemanager.h \
     tool/stroketool.h \
     util/blitrect.h \
-    interface/colorwheel.h \
-    interface/colorinspector.h \
-    interface/colorgriditem.h \
-    interface/colorgrid.h \
-    interface/colorbox.h \
-    interface/flowlayout.h \
-    structure/keyframe.h \
-    structure/camera.h \
-    interface/recentfilemenu.h \
-    util/util.h \
-    managers/colormanager.h \
-    managers/toolmanager.h \
-    managers/layermanager.h \
+    util/fileformat.h \
+    util/pencildef.h \
     util/pencilerror.h \
-    managers/basemanager.h
+    util/pencilsettings.h \
+    util/util.h
 
 
-SOURCES +=  graphics/bitmap/blur.cpp \
-    graphics/bitmap/bitmapimage.cpp \
+SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
     graphics/vector/beziercurve.cpp \
     graphics/vector/colourref.cpp \
     graphics/vector/vectorimage.cpp \
+    graphics/vector/vectorselection.cpp \
     graphics/vector/vertexref.cpp \
+    interface/backupelement.cpp \
+    interface/colorbox.cpp \
+    interface/colorgrid.cpp \
+    interface/colorgriditem.cpp \
+    interface/colorinspector.cpp \
+    interface/colorpalettewidget.cpp \
+    interface/colorwheel.cpp \
+    interface/displayoptiondockwidget.cpp \
+    interface/editor.cpp \
+    interface/flowlayout.cpp \
+    interface/keycapturelineedit.cpp \
+    interface/mainwindow2.cpp \
+    interface/popupcolorpalettewidget.cpp \
+    interface/preferences.cpp \
+    interface/recentfilemenu.cpp \
+    interface/scribblearea.cpp \
+    interface/shortcutspage.cpp \
+    interface/spinslider.cpp \
+    interface/timecontrols.cpp \
+    interface/timeline.cpp \
+    interface/timelinecells.cpp \
+    interface/toolbox.cpp \
+    interface/tooloptiondockwidget.cpp \
+    managers/basemanager.cpp \
+    managers/colormanager.cpp \
+    managers/layermanager.cpp \
+    managers/toolmanager.cpp \
+    structure/camera.cpp \
+    structure/keyframe.cpp \
     structure/layer.cpp \
     structure/layerbitmap.cpp \
     structure/layercamera.cpp \
@@ -118,56 +147,25 @@ SOURCES +=  graphics/bitmap/blur.cpp \
     structure/layersound.cpp \
     structure/layervector.cpp \
     structure/object.cpp \
-    interface/editor.cpp \
-    interface/colorpalettewidget.cpp \
-    interface/popupcolorpalettewidget.cpp \
-    interface/preferences.cpp \
-    interface/scribblearea.cpp \
-    interface/timeline.cpp \
-    interface/timecontrols.cpp \
-    interface/toolbox.cpp \
-    interface/backupelement.cpp \
-    interface/spinslider.cpp \
-    interface/displayoptiondockwidget.cpp \
-    interface/tooloptiondockwidget.cpp \
-    tool/basetool.cpp \
-    tool/pentool.cpp \
-    tool/penciltool.cpp \
-    tool/brushtool.cpp \
-    tool/erasertool.cpp \
-    tool/selecttool.cpp \
-    tool/movetool.cpp \
-    tool/handtool.cpp \
-    tool/smudgetool.cpp \
-    tool/polylinetool.cpp \
-    tool/buckettool.cpp \
-    tool/eyedroppertool.cpp \
-    util/pencilsettings.cpp \
-    util/fileformat.cpp \
-    interface/shortcutspage.cpp \
-    interface/mainwindow2.cpp \
-    interface/timelinecells.cpp \
-    graphics/vector/vectorselection.cpp \
-    interface/keycapturelineedit.cpp \
     structure/objectsaveloader.cpp \
+    tool/basetool.cpp \
+    tool/brushtool.cpp \
+    tool/buckettool.cpp \
+    tool/erasertool.cpp \
+    tool/eyedroppertool.cpp \
+    tool/handtool.cpp \
+    tool/movetool.cpp \
+    tool/penciltool.cpp \
+    tool/pentool.cpp \
+    tool/polylinetool.cpp \
+    tool/selecttool.cpp \
+    tool/smudgetool.cpp \
     tool/strokemanager.cpp \
     tool/stroketool.cpp \
     util/blitrect.cpp \
-    interface/colorwheel.cpp \
-    interface/colorinspector.cpp \
-    interface/colorgriditem.cpp \
-    interface/colorgrid.cpp \
-    interface/colorbox.cpp \
-    interface/flowlayout.cpp \
-    structure/keyframe.cpp \
-    structure/camera.cpp \
-    interface/recentfilemenu.cpp \
-    managers/colormanager.cpp \
-    managers/toolmanager.cpp \
-    managers/layermanager.cpp \
+    util/fileformat.cpp \
     util/pencilerror.cpp \
-    managers/basemanager.cpp
-
+    util/pencilsettings.cpp
 
 FORMS += \
     interface/mainwindow2.ui \
