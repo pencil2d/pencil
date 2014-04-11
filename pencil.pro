@@ -4,9 +4,9 @@
 
 TEMPLATE = subdirs
 SUBDIRS = \
-        pencil \
+        core_lib \
         app \
         tests
 
-app.depends = pencil
-tests.depends = pencil
+app.depends = core_lib
+tests.depends = core_lib

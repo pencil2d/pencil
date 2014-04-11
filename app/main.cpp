@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include <QLibraryInfo>
 #include <QDir>
 #include <QIcon>
-#include "pencildef.h"
 #include "editor.h"
 #include "mainwindow2.h"
 
@@ -46,7 +45,7 @@ int main(int argc, char* argv[])
     initialise();
 
     MainWindow2 mainWindow;
-    mainWindow.setWindowTitle( PENCIL_WINDOW_TITLE );
+    mainWindow.setWindowTitle( "Pencil2D" );
 
     if (argc == 1)
     {

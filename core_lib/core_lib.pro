@@ -1,14 +1,21 @@
+#-------------------------------------------------
+#
+# Pencil2D core library
+#
+#-------------------------------------------------
 
+! include( ../common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 TEMPLATE = lib
-TARGET = pencil
+
 CONFIG += qt debug console depend_includepath staticlib
 CONFIG += c++11
 
 RESOURCES += ../pencil.qrc
 
+# i18n
 TRANSLATIONS += ../pencil.ts \
                 ../pencil2d_it.ts
 
@@ -37,7 +44,7 @@ INCLUDEPATH += \
     managers
 
 # Input
-HEADERS +=  interfaces.h \
+HEADERS +=  \
     graphics/bitmap/bitmapimage.h \
     graphics/vector/bezierarea.h \
     graphics/vector/beziercurve.h \
@@ -102,7 +109,6 @@ HEADERS +=  interfaces.h \
     util/pencilerror.h \
     util/pencilsettings.h \
     util/util.h
-
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
@@ -174,35 +180,25 @@ FORMS += \
 
 
 win32 {
-    INCLUDEPATH += . libwin32
     SOURCES += external/win32/win32.cpp
     INCLUDEPATH += external/win32
-    INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
-    LIBS += -Llibwin32
     RC_FILE = ../pencil.rc
-}
-win32-g++ {
-    QMAKE_CXXFLAGS += -std=c++11
 }
 
 macx {
     INCLUDEPATH +=  external/macosx
-    LIBS += -lobjc -lz -framework AppKit -framework Carbon
     INCLUDEPATH += . libmacosx
     SOURCES += external/macosx/macosx.cpp
     RC_FILE = ../pencil.icns
-    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
 }
+
 linux-* {
-    INCLUDEPATH += . liblinux
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
     LIBS += -Lliblinux -lpng -lz
     LIBS += -L/usr/local/zlib/lib
     INCLUDEPATH+=/usr/local/zlib/include
-    QMAKE_CXXFLAGS += -std=c++11
 }
-
 
 # QuaZip
 DEFINES += QUAZIP_STATIC
