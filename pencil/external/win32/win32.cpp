@@ -40,12 +40,9 @@ qint16 safeSum( qint16 a, qint16 b )
     return a + b;
 }
 
-
-
-
 void initialise()
 {
-    qDebug() << "Initialize win32: <nothing, for now>";
+    //qDebug() << "Initialize win32: <nothing, for now>";
 
     // QImageReader capabilities
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
@@ -61,8 +58,6 @@ void initialise()
         //qDebug() << "QImageWriter capability: " << format;
     }
 }
-
-
 
 // crashes when there is an empty sound layer (windows 95)
 // does not save audio

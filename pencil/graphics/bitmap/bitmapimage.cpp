@@ -15,7 +15,6 @@ GNU General Public License for more details.
 */
 #include <cmath>
 #include "bitmapimage.h"
-#include "blur.h"
 #include "object.h"
 
 
@@ -492,22 +491,6 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
         }
         painter.end();
     }
-}
-
-void BitmapImage::blur(qreal radius)
-{
-    if (m_pImage == NULL) return;
-    int rad = qRound(0.5*radius);
-    extend( boundaries.adjusted(-rad, -rad, rad, rad) );
-    Blur::fastbluralpha(*m_pImage, rad);
-}
-
-void BitmapImage::blur2(qreal radius)
-{
-    if (m_pImage == NULL) return;
-    int rad = qRound(0.5*radius);
-    extend( boundaries.adjusted(-rad, -rad, rad, rad) );
-    Blur::expblur(*m_pImage, rad, 16, 7);
 }
 
 void BitmapImage::clear()

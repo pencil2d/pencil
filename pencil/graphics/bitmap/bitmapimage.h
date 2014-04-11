@@ -79,8 +79,6 @@ public:
     void drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     void drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
-    void blur(qreal radius);
-    void blur2(qreal radius);
 
     QPoint topLeft() { return boundaries.topLeft(); }
     QPoint topRight() { return boundaries.topRight(); }
