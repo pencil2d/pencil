@@ -5,11 +5,11 @@
     <name>CameraPropertiesDialog</name>
     <message>
         <source>Camera name:</source>
-        <translation>Nome camera:</translation>
+        <translation>Nome videocamera:</translation>
     </message>
     <message>
         <source>Camera size:</source>
-        <translation>Dimens. camera:</translation>
+        <translation>Dimensioni videocamera:</translation>
     </message>
     <message>
         <source>Ok</source>
@@ -24,7 +24,7 @@
     <name>ColorGridItem</name>
     <message>
         <source>Pick</source>
-        <translation>Scegli</translation>
+        <translation>Preleva</translation>
     </message>
     <message>
         <source>Tint</source>
@@ -32,7 +32,7 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation>Cancella</translation>
+        <translation>Pulisci</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -67,7 +67,7 @@
     </message>
     <message>
         <source>Hue</source>
-        <translation>Tinta</translation>
+        <translation>Tonalità</translation>
     </message>
     <message>
         <source>Saturation</source>
@@ -109,43 +109,43 @@
     <name>DisplayOptionDockWidget</name>
     <message>
         <source>Display Options</source>
-        <translation>Opzioni schermo</translation>
+        <translation>Opzioni di visualizzazione</translation>
     </message>
     <message>
         <source>Show invisible lines</source>
-        <translation>Mostra linee invisibili</translation>
+        <translation>Mostra le linee invisibili</translation>
     </message>
     <message>
         <source>Show outlines only</source>
-        <translation>Mostra solo contorni</translation>
+        <translation>Mostra solo i contorni</translation>
     </message>
     <message>
         <source>Horizontal flip</source>
-        <translation>Specchia orizzontale</translation>
+        <translation>Specchia orizzontalmente</translation>
     </message>
     <message>
         <source>Vertical flip</source>
-        <translation>Specchia verticale</translation>
+        <translation>Specchia verticalmente</translation>
     </message>
     <message>
         <source>Onion skin previous frame</source>
-        <translation>Pellicola fotogramma prec</translation>
+        <translation>Velina fotogramma precedente</translation>
     </message>
     <message>
         <source>Onion skin next frame</source>
-        <translation>Pellicola fotogramma succ</translation>
+        <translation>Velina fotogramma successivo</translation>
     </message>
     <message>
         <source>Onion skin color: blue</source>
-        <translation>Colore pellicola: blu</translation>
+        <translation>Colore velina: blu</translation>
     </message>
     <message>
         <source>Onion skin color: red</source>
-        <translation>Colore pellicola: rosso</translation>
+        <translation>Colore velina: rosso</translation>
     </message>
     <message>
         <source>enable onionskin on multiple layers</source>
-        <translation>abilita pellicola su più livelli</translation>
+        <translation>abilita velina su più livelli</translation>
     </message>
     <message>
         <source>Grid A - composition</source>
@@ -160,15 +160,15 @@
     <name>Editor</name>
     <message>
         <source>Tools</source>
-        <translation>Attrezzi</translation>
+        <translation>Strumenti</translation>
     </message>
     <message>
         <source>Import movie</source>
-        <translation>Importa video</translation>
+        <translation>Importa animazione</translation>
     </message>
     <message>
         <source>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</source>
-        <translation></translation>
+        <translation>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</translation>
     </message>
     <message>
         <source>Paste</source>
@@ -212,15 +212,15 @@
     </message>
     <message>
         <source>PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)</source>
-        <translation></translation>
+        <translation>PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)</translation>
     </message>
     <message>
         <source>Save As</source>
-        <translation>Salva con nome</translation>
+        <translation>Salva come</translation>
     </message>
     <message>
         <source>Unable to export image.</source>
-        <translation>Impossibile esportare immagine.</translation>
+        <translation>Impossibile esportare l&apos;immagine.</translation>
     </message>
     <message>
         <source>Save Image</source>
@@ -228,19 +228,19 @@
     </message>
     <message>
         <source>Export Movie As...</source>
-        <translation>Esporta animazione con nome...</translation>
+        <translation>Esporta animazione come...</translation>
     </message>
     <message>
         <source>AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)</source>
-        <translation></translation>
+        <translation>AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)</translation>
     </message>
     <message>
         <source>SWF (*.swf)</source>
-        <translation></translation>
+        <translation>SWF (*.swf)</translation>
     </message>
     <message>
         <source>Please select a Bitmap or Vector layer to import images.</source>
-        <translation>Scegli un livello bitmap o vettoriale per importare immagini.</translation>
+        <translation>Scegliere un livello bitmap o vettoriale per importare immagini.</translation>
     </message>
     <message>
         <source>Import image...</source>
@@ -248,23 +248,23 @@
     </message>
     <message>
         <source>ImportImg</source>
-        <translation></translation>
+        <translation>Importaimmagine</translation>
     </message>
     <message>
         <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>Impossibile caricare immagini bitmap.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; Usare un livello bitmap per importare.</translation>
+        <translation>Impossibile caricare un&apos;immagine bitmap.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; usare un livello bitmap per importarle.</translation>
     </message>
     <message>
         <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
-        <translation>Impossibile caricare un&apos;immagine vettoriale.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; Usare un livello vettoriale per importare.</translation>
+        <translation>Impossibile caricare un&apos;immagine vettoriale.&lt;br&gt;&lt;b&gt;Suggerimento:&lt;/b&gt; usare un livello vettoriale per importarle.</translation>
     </message>
     <message>
         <source>Import sound...</source>
-        <translation>Importa suono...</translation>
+        <translation>Importa audio...</translation>
     </message>
     <message>
         <source>WAV(*.wav);;MP3(*.mp3)</source>
-        <translation></translation>
+        <translation>WAV(*.wav);;MP3(*.mp3)</translation>
     </message>
     <message>
         <source>Save SVG</source>
@@ -276,11 +276,11 @@
     </message>
     <message>
         <source>SVG Generator Example Drawing</source>
-        <translation>Disegno campione del generatore SVG</translation>
+        <translation>Disegno campione del generatore di SVG</translation>
     </message>
     <message>
         <source>An SVG drawing created by the SVG Generator Example provided with Qt.</source>
-        <translation>Un disegno SVG creato dal generatore SVG fornito con Qt.</translation>
+        <translation>Un disegno SVG creato dal generatore di SVG fornito con Qt.</translation>
     </message>
     <message>
         <source>Bitmap Layer</source>
@@ -288,7 +288,7 @@
     </message>
     <message>
         <source>Are you sure you want to delete layer: </source>
-        <translation>Sei sicuro di cancellare il livello: </translation>
+        <translation>Conferma eliminazione del livello: </translation>
     </message>
 </context>
 <context>
@@ -322,7 +322,7 @@
     </message>
     <message>
         <source>Rendering</source>
-        <translation></translation>
+        <translation>Rendering</translation>
     </message>
     <message>
         <source>Editing</source>
@@ -338,15 +338,15 @@
     </message>
     <message>
         <source>Tool Cursors</source>
-        <translation>Cursori dell&apos;attrezzo</translation>
+        <translation>Cursori dello strumento</translation>
     </message>
     <message>
         <source>Aqua Style</source>
-        <translation></translation>
+        <translation>Stile Aqua</translation>
     </message>
     <message>
         <source>Antialiasing</source>
-        <translation></translation>
+        <translation>Antialiasing</translation>
     </message>
     <message>
         <source>None</source>
@@ -374,11 +374,11 @@
     </message>
     <message>
         <source>Vector curve smoothing</source>
-        <translation>Arrotondamento curva vettoriale</translation>
+        <translation>Arrotondamento della curva vettoriale</translation>
     </message>
     <message>
         <source>Tablet high-resolution position</source>
-        <translation>Posizione HR della tavoletta</translation>
+        <translation>Posizione ad alta risoluzione della tavoletta</translation>
     </message>
 </context>
 <context>
@@ -390,10 +390,6 @@
     <message>
         <source>Layer name:</source>
         <translation>Nome livello:</translation>
-    </message>
-    <message>
-        <source>Undefined Layer</source>
-        <translation>Livello indefinito</translation>
     </message>
 </context>
 <context>
@@ -407,18 +403,7 @@
     <name>LayerCamera</name>
     <message>
         <source>Camera Layer</source>
-        <translation>Livello camera</translation>
-    </message>
-</context>
-<context>
-    <name>LayerSound</name>
-    <message>
-        <source>Sound Layer</source>
-        <translation>Livello suono</translation>
-    </message>
-    <message>
-        <source>Wrong file</source>
-        <translation>File errato</translation>
+        <translation>Livello videocamera</translation>
     </message>
 </context>
 <context>
@@ -456,7 +441,7 @@
     </message>
     <message>
         <source>Onion Skin</source>
-        <translation>Pellicola</translation>
+        <translation>Velina</translation>
     </message>
     <message>
         <source>Animation</source>
@@ -464,7 +449,7 @@
     </message>
     <message>
         <source>Tools</source>
-        <translation>Attrezzi</translation>
+        <translation>Strumenti</translation>
     </message>
     <message>
         <source>Layer</source>
@@ -492,7 +477,7 @@
     </message>
     <message>
         <source>Save As ..</source>
-        <translation>Salva con nome...</translation>
+        <translation type="obsolete">Salva come...</translation>
     </message>
     <message>
         <source>Print</source>
@@ -528,7 +513,7 @@
     </message>
     <message>
         <source>Sound...</source>
-        <translation>Suono...</translation>
+        <translation>Audio...</translation>
     </message>
     <message>
         <source>Undo</source>
@@ -536,7 +521,7 @@
     </message>
     <message>
         <source>Redo</source>
-        <translation>Rifai</translation>
+        <translation>Ripeti</translation>
     </message>
     <message>
         <source>Cut</source>
@@ -556,19 +541,19 @@
     </message>
     <message>
         <source>Crop To Selection</source>
-        <translation>Ritaglia a selezione</translation>
+        <translation>Ritaglia alla selezione</translation>
     </message>
     <message>
         <source>Select All</source>
-        <translation>Selez tutto</translation>
+        <translation>Seleziona tutto</translation>
     </message>
     <message>
         <source>Deselect All</source>
-        <translation>Deselez tutto</translation>
+        <translation>Deseleziona tutto</translation>
     </message>
     <message>
         <source>Clear Frame</source>
-        <translation>Cancella fotogramma</translation>
+        <translation>Pulisci fotogramma</translation>
     </message>
     <message>
         <source>Preferences</source>
@@ -580,31 +565,31 @@
     </message>
     <message>
         <source>Zoom In</source>
-        <translation></translation>
+        <translation>Ingrandisci</translation>
     </message>
     <message>
         <source>Zoom Out</source>
-        <translation></translation>
+        <translation>Rimpicciolisci</translation>
     </message>
     <message>
         <source>Rotate Clockwise</source>
-        <translation>Ruota senso orario</translation>
+        <translation>Ruota in senso orario</translation>
     </message>
     <message>
         <source>Rotate AntiClosewise</source>
-        <translation>Ruota antiorario</translation>
+        <translation>Ruota in senso antiorario</translation>
     </message>
     <message>
         <source>Reset Zoom/Rotate</source>
-        <translation>Ripristina zoom/rotazione</translation>
+        <translation>Ripristina ingrandimento/rotazione</translation>
     </message>
     <message>
         <source>Horizontal Flip</source>
-        <translation>Rifletti orizzontale</translation>
+        <translation>Rifletti orizzontalmente</translation>
     </message>
     <message>
         <source>Vertical Flip</source>
-        <translation>Rifletti verticale</translation>
+        <translation>Rifletti verticalmente</translation>
     </message>
     <message>
         <source>Preview</source>
@@ -624,19 +609,19 @@
     </message>
     <message>
         <source>Play</source>
-        <translation>Esegui</translation>
+        <translation>Riproduci</translation>
     </message>
     <message>
         <source>Loop</source>
-        <translation></translation>
+        <translation>Ciclo</translation>
     </message>
     <message>
         <source>Next Frame</source>
-        <translation>Fotogramma succ</translation>
+        <translation>Fotogramma successivo</translation>
     </message>
     <message>
         <source>Previous Frame</source>
-        <translation>Fotogramma prec</translation>
+        <translation>Fotogramma precedente</translation>
     </message>
     <message>
         <source>Extend Frame</source>
@@ -644,7 +629,7 @@
     </message>
     <message>
         <source>Add Frame</source>
-        <translation>Agg fotogramma</translation>
+        <translation>Aggiungi fotogramma</translation>
     </message>
     <message>
         <source>Duplicate Frame</source>
@@ -652,7 +637,7 @@
     </message>
     <message>
         <source>Remove Frame</source>
-        <translation>Togli fotogramma</translation>
+        <translation>Cancella fotogramma</translation>
     </message>
     <message>
         <source>Move</source>
@@ -692,7 +677,7 @@
     </message>
     <message>
         <source>Eyedropper</source>
-        <translation>Contagocce</translation>
+        <translation>Preleva colore</translation>
     </message>
     <message>
         <source>Eraser</source>
@@ -708,51 +693,51 @@
     </message>
     <message>
         <source>New Sound Layer</source>
-        <translation>Nuovo livello suono</translation>
+        <translation>Nuovo livello audio</translation>
     </message>
     <message>
         <source>New Camera Layer</source>
-        <translation>Nuovo livello camera</translation>
+        <translation>Nuovo livello videocamera</translation>
     </message>
     <message>
         <source>Delete Current Layer</source>
-        <translation>Cancella livello</translation>
+        <translation>Elimina livello</translation>
     </message>
     <message>
         <source>About</source>
-        <translation>A proposito</translation>
+        <translation>Informazioni</translation>
     </message>
     <message>
         <source>Toggle palette</source>
-        <translation>Alterna tavolozza</translation>
+        <translation>Apri/chiudi tavolozza</translation>
     </message>
     <message>
         <source>Reset to default</source>
-        <translation>Ripristina</translation>
+        <translation>Ripristina predefiniti</translation>
     </message>
     <message>
         <source>Next_Keyframe</source>
-        <translation></translation>
+        <translation>Fotogramma chiave successivo</translation>
     </message>
     <message>
         <source>Next Keyframe</source>
-        <translation>Keyframe succ</translation>
+        <translation>Fotogramma chiave successivo</translation>
     </message>
     <message>
         <source>Prev_Keyframe</source>
-        <translation></translation>
+        <translation>Fotogramma chiave precedente</translation>
     </message>
     <message>
         <source>Previous keyframe</source>
-        <translation>Keyframe prec</translation>
+        <translation>Fotogramma chiave precedente</translation>
     </message>
     <message>
         <source>MultiLayerOnionSkin</source>
-        <translation>Pellicola multi-livello</translation>
+        <translation>Velina multi-livello</translation>
     </message>
     <message>
         <source>loopcontrol</source>
-        <translation></translation>
+        <translation>Controllo Ciclo</translation>
     </message>
     <message>
         <source>Timeline</source>
@@ -768,11 +753,11 @@
     </message>
     <message>
         <source>Color Palette</source>
-        <translation>Tavolozza colori</translation>
+        <translation>Tavolozza dei colori</translation>
     </message>
     <message>
         <source>Display Options</source>
-        <translation>Opzioni schermo</translation>
+        <translation>Opzioni di visualizzazione</translation>
     </message>
     <message>
         <source>Open File...</source>
@@ -780,7 +765,7 @@
     </message>
     <message>
         <source>Save As...</source>
-        <translation>Salva con nome...</translation>
+        <translation>Salva come...</translation>
     </message>
     <message>
         <source>Warning</source>
@@ -790,7 +775,7 @@
         <source>This animation has been modified.
 Do you want to save your changes?</source>
         <translation>Questa animazione è stata modificata.
-Vuoi salvare le modifiche?</translation>
+Salvare le modifiche?</translation>
     </message>
     <message>
         <source>Export As</source>
@@ -802,11 +787,11 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
-        <translation>Pencil non può leggere questo file. Se vuoi importare immagini usa il comando Importa.</translation>
+        <translation>Pencil non può leggere questo file. Per importare immagini usare il comando importa.</translation>
     </message>
     <message>
         <source>Opening document...</source>
-        <translation>Apertura documento...</translation>
+        <translation>Apertura del documento...</translation>
     </message>
     <message>
         <source>Abort</source>
@@ -814,23 +799,23 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Saving document...</source>
-        <translation>Salvataggio documento...</translation>
+        <translation>Salvataggio del documento...</translation>
     </message>
     <message>
         <source>close/toggle (</source>
-        <translation>apre/chiude (</translation>
+        <translation>apri/chiudi (</translation>
+    </message>
+    <message>
+        <source>Undo  </source>
+        <translation>Annulla  </translation>
     </message>
     <message>
         <source>Redo   </source>
-        <translation>Rifai   </translation>
+        <translation>Ripeti   </translation>
     </message>
     <message>
         <source>Open Recent</source>
         <translation>Apri recenti</translation>
-    </message>
-    <message>
-        <source>Undo   </source>
-        <translation>Ripeti</translation>
     </message>
 </context>
 <context>
@@ -900,7 +885,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Very Light Grey</source>
-        <translation>Grigio chiarissimo</translation>
+        <translation>Grigio molto chiaro</translation>
     </message>
     <message>
         <source>Light Grey</source>
@@ -970,7 +955,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation>Attrezzi</translation>
+        <translation>Strumenti</translation>
     </message>
     <message>
         <source>Shortcuts</source>
@@ -999,7 +984,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>Stai disegnando su un livello nascosto! Scegli un altro livello (o rendi visibile questo livello).</translation>
+        <translation>Si sta disegnando su un livello nascosto! Scegliere un altro livello (o rendere visibile questo livello).</translation>
     </message>
     <message>
         <source>Flood fill error</source>
@@ -1007,18 +992,18 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>DeleteSel</source>
-        <translation></translation>
+        <translation>Cancella selezione</translation>
     </message>
     <message>
         <source>ClearImg</source>
-        <translation></translation>
+        <translation>Pulisci immagine</translation>
     </message>
 </context>
 <context>
     <name>ShortcutsPage</name>
     <message>
         <source>Form</source>
-        <translation></translation>
+        <translation>Form</translation>
     </message>
     <message>
         <source>Action:</source>
@@ -1034,7 +1019,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>clear</source>
-        <translation>cancella</translation>
+        <translation>pulisci</translation>
     </message>
     <message>
         <source>Restore Default Shortcuts</source>
@@ -1045,7 +1030,7 @@ Vuoi salvare le modifiche?</translation>
     <name>TimeControls</name>
     <message>
         <source>Loop control</source>
-        <translation>Controllo loop</translation>
+        <translation>Controllo ciclo</translation>
     </message>
     <message>
         <source>Fps: </source>
@@ -1053,15 +1038,15 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation></translation>
+        <translation>Esegui</translation>
     </message>
     <message>
         <source>Loop</source>
-        <translation></translation>
+        <translation>Ciclo</translation>
     </message>
     <message>
         <source>Sound on/off</source>
-        <translation>Suono on/off</translation>
+        <translation>Audio on/off</translation>
     </message>
     <message>
         <source>End</source>
@@ -1073,15 +1058,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Loop Control</source>
-        <translation>Controllo loop</translation>
-    </message>
-    <message>
-        <source>Start of loop</source>
-        <translation>Inizio del loop</translation>
-    </message>
-    <message>
-        <source>End of loop</source>
-        <translation>Fine del loop</translation>
+        <translation>Controllo ciclo</translation>
     </message>
 </context>
 <context>
@@ -1100,11 +1077,11 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>New Sound Layer</source>
-        <translation>Nuovo livello suono</translation>
+        <translation>Nuovo livello audio</translation>
     </message>
     <message>
         <source>New Camera Layer</source>
-        <translation>Nuovo livello camera</translation>
+        <translation>Nuovo livello videocamera</translation>
     </message>
     <message>
         <source>&amp;Layer</source>
@@ -1112,7 +1089,31 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Keys:</source>
-        <translation>Chiave:</translation>
+        <translation>Chiavi:</translation>
+    </message>
+    <message>
+        <source>Add Layer</source>
+        <translation>Aggiungi livello</translation>
+    </message>
+    <message>
+        <source>Remove Layer</source>
+        <translation>Togli livello</translation>
+    </message>
+    <message>
+        <source>Add Frame</source>
+        <translation>Aggiungi fotogramma</translation>
+    </message>
+    <message>
+        <source>Remove Frame</source>
+        <translation>Togli fotogramma</translation>
+    </message>
+    <message>
+        <source>Duplicate Frame</source>
+        <translation>Duplica fotogramma</translation>
+    </message>
+    <message>
+        <source>Timeline</source>
+        <translation>Linea del tempo</translation>
     </message>
 </context>
 <context>
@@ -1123,7 +1124,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Draw timeline labels</source>
-        <translation>Inserisci etichette sulla linea</translation>
+        <translation>Inserisci etichette sulla linea del tempo</translation>
     </message>
     <message>
         <source>Frame size in Pixels</source>
@@ -1158,15 +1159,15 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation>Imposta dimensione penna &lt;br&gt;&lt;b&gt;[MAIUSC]+trascina&lt;/b&gt;&lt;br&gt;per modificare rapidamente</translation>
+        <translation>Imposta lo spessore della penna &lt;br&gt;&lt;b&gt;[MAIUSC]+trascina&lt;/b&gt;&lt;br&gt;per modificare rapidamente</translation>
     </message>
     <message>
         <source>Feather</source>
-        <translation>Precisione</translation>
+        <translation>Sfumatura</translation>
     </message>
     <message>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation>Imposta distanza pennello &lt;br&gt;&lt;b&gt;[CTRL]+trascina&lt;/b&gt;&lt;br&gt;per modificare rapidamente</translation>
+        <translation>Imposta la sfumatura del pennello &lt;br&gt;&lt;b&gt;[CTRL]+trascina&lt;/b&gt;&lt;br&gt;per modificare rapidamente</translation>
     </message>
     <message>
         <source>Pressure</source>
@@ -1174,7 +1175,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Size with pressure</source>
-        <translation>Aumenta dimens con la pressione</translation>
+        <translation>Dimensiona con la pressione</translation>
     </message>
     <message>
         <source>Invisible</source>
@@ -1190,7 +1191,7 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Preserve Alpha</source>
-        <translation>Conserva canale alfa</translation>
+        <translation>Preserva canale alfa</translation>
     </message>
     <message>
         <source>Contours</source>
@@ -1198,58 +1199,58 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Stop at contours</source>
-        <translation>Fermati ai contorni</translation>
+        <translation>Ferma ai contorni</translation>
     </message>
 </context>
 <context>
     <name>ToolSetWidget</name>
     <message>
         <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
-        <translation>Matita &lt;b&gt;(N)&lt;/b&gt;: disegna a matita</translation>
+        <translation>Strumento matita &lt;b&gt;(N)&lt;/b&gt;: disegna a matita</translation>
     </message>
     <message>
         <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
-        <translation>Selezione &lt;b&gt;(V)&lt;/b&gt;: seleziona un oggetto</translation>
+        <translation>Strumento selezione &lt;b&gt;(V)&lt;/b&gt;: seleziona un oggetto</translation>
     </message>
     <message>
         <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
-        <translation>Sposta &lt;b&gt;(Q)&lt;/b&gt;: sposta un oggetto</translation>
+        <translation>Strumento sposta &lt;b&gt;(Q)&lt;/b&gt;: sposta un oggetto</translation>
     </message>
     <message>
         <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
-        <translation>Mano &lt;b&gt;(H)&lt;/b&gt;: sposta la pagina</translation>
+        <translation>Strumento mano &lt;b&gt;(H)&lt;/b&gt;: sposta la superficie</translation>
     </message>
     <message>
         <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
-        <translation>Penna &lt;b&gt;(P)&lt;/b&gt;: disegna a penna</translation>
+        <translation>Strumento penna &lt;b&gt;(P)&lt;/b&gt;: disegna a penna</translation>
     </message>
     <message>
         <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
-        <translation>Gomma &lt;b&gt;(E)&lt;/b&gt;: cancella</translation>
+        <translation>Strumento gomma &lt;b&gt;(E)&lt;/b&gt;: cancella</translation>
     </message>
     <message>
         <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
-        <translation>Polilinea &lt;b&gt;(Y)&lt;/b&gt;: crea curve/linee</translation>
+        <translation>Strumento polilinea &lt;b&gt;(Y)&lt;/b&gt;: crea linee/curve</translation>
     </message>
     <message>
         <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
-        <translation>Secchiello &lt;b&gt;(K)&lt;/b&gt;: riempi aree selezionate con un colore</translation>
+        <translation>Strumento secchiello &lt;b&gt;(K)&lt;/b&gt;: riempie l&apos;area selezionata con un colore</translation>
     </message>
     <message>
         <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
-        <translation>Pennello &lt;b&gt;(B)&lt;/b&gt;: disegna tratti con un pennello</translation>
+        <translation>Strumento pennello &lt;b&gt;(B)&lt;/b&gt;: disegna tratti con un pennello</translation>
     </message>
     <message>
         <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
-        <translation>Contagocce &lt;b&gt;(I)&lt;/b&gt;: imposta il colore prelevando dall&apos;immagine&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt;per accesso al cursore</translation>
+        <translation>Strumento preleva colore &lt;b&gt;(I)&lt;/b&gt;: imposta il colore prelevando da un punto&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt;per l&apos;accesso rapido</translation>
     </message>
     <message>
         <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
-        <translation>Cancella fotogramma &lt;b&gt;(CTRL+D)&lt;/b&gt;: cancella il contenuto del fotogramma selezionato</translation>
+        <translation>Pulisci fotogramma &lt;b&gt;(CTRL+D)&lt;/b&gt;: cancella il contenuto del fotogramma selezionato</translation>
     </message>
     <message>
         <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
-        <translation>Sfuma &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Modifica curve/polilinee&lt;br&gt;Fonde pixel bitmap&lt;br&gt;+[ALT]&lt;/b&gt;: arrotonda</translation>
+        <translation>Strumento sfuma &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Modifica curve/polilinee&lt;br&gt;Fonde pixel bitmap&lt;br&gt;+[ALT]&lt;/b&gt;: arrotonda</translation>
     </message>
     <message>
         <source>Pencil Tool (N)</source>
@@ -1289,11 +1290,11 @@ Vuoi salvare le modifiche?</translation>
     </message>
     <message>
         <source>Eyedropper Tool (I)</source>
-        <translation>Contagocce (I)</translation>
+        <translation>Preleva colore (I)</translation>
     </message>
     <message>
         <source>Clear Tool</source>
-        <translation>Cancella</translation>
+        <translation>Pulisci</translation>
     </message>
     <message>
         <source>Smudge Tool (A)</source>
@@ -1304,19 +1305,19 @@ Vuoi salvare le modifiche?</translation>
     <name>ToolsPage</name>
     <message>
         <source>Onion skin</source>
-        <translation>Pellicola</translation>
+        <translation>Velina</translation>
     </message>
     <message>
         <source>Onion layer 1 opacity - % (50 is recommended):</source>
-        <translation>Opacità strato 1 pellicola % (raccomandato 50):</translation>
+        <translation>Opacità strato 1 velina % (raccomandato 50):</translation>
     </message>
     <message>
         <source>Onion layer 2 opacity - % (30 is recommended):</source>
-        <translation>Opacità strato 2 pellicola % (raccomandato 30):</translation>
+        <translation>Opacità strato 2 velina % (raccomandato 30):</translation>
     </message>
     <message>
         <source>Onion layer 3 opacity - % (20 is recommended):</source>
-        <translation>Opacità strato 3 pellicola % (raccomandato 20):</translation>
+        <translation>Opacità strato 3 velina % (raccomandato 20):</translation>
     </message>
 </context>
 </TS>
