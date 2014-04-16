@@ -1,3 +1,8 @@
+#-------------------------------------------------
+#
+# GUI of Pencil2D (in the futre)
+#
+#-------------------------------------------------
 
 ! include( ../common.pri ) { error( Could not find the common.pri file! ) }
 
@@ -5,6 +10,8 @@ QT += core widgets gui xml multimedia svg
 
 TEMPLATE = app
 TARGET = Pencil2D
+
+CONFIG += qt
 
 INCLUDEPATH += \
     ../core_lib/graphics \

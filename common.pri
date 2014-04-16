@@ -1,4 +1,5 @@
 
+CONFIG += c++11
 
 win32 {
     INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib

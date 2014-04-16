@@ -9,9 +9,7 @@
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 TEMPLATE = lib
-
-CONFIG += qt debug console depend_includepath staticlib
-CONFIG += c++11
+CONFIG += qt staticlib console
 
 RESOURCES += ../pencil.qrc
 
