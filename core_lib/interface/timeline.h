@@ -27,6 +27,17 @@ class TimeLineCells;
 class TimeLine : public QDockWidget
 {
 	Q_OBJECT
+public:
+    TimeLine( QWidget* parent = 0, Editor* editor = 0 );
+
+    void updateFrame( int frameNumber );
+    void updateLayerNumber( int number );
+    void updateLayerView();
+    void updateLength( int frameLength );
+    void updateContent();
+    void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
+    void setFps( int );
+    int getFrameLength();
 
 signals :
 	void modification();
@@ -60,20 +71,8 @@ signals :
 	void onionPrevClick();
 	void onionNextClick();
 
-public slots:
-	void updateFrame( int frameNumber );
-	void updateLayerNumber( int number );
-	void updateLayerView();
-	void updateLength( int frameLength );
-	void updateContent();
-
 public:
-	TimeLine( QWidget* parent = 0, Editor* editor = 0 );
-	
-	bool scrubbing;
-	void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
-	void setFps( int );
-	int getFrameLength();
+    bool scrubbing;
 
 protected:
 	void resizeEvent( QResizeEvent* event );
