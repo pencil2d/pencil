@@ -231,8 +231,6 @@ void MainWindow2::createMenus()
     connect( ui->actionCopy, &QAction::triggered, editor, &Editor::copy );
     connect( ui->actionPaste, &QAction::triggered, editor, &Editor::paste );
     connect( ui->actionClearFrame, &QAction::triggered, editor, &Editor::clearCurrentFrame );
-    connect( ui->actionCrop, &QAction::triggered, editor, &Editor::crop );
-    connect( ui->actionCrop_To_Selection, &QAction::triggered, editor, &Editor::croptoselect );
     connect( ui->actionFlip_X, &QAction::triggered, editor, &Editor::flipX );
     connect( ui->actionFlip_Y, &QAction::triggered, editor, &Editor::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, editor, &Editor::selectAll );

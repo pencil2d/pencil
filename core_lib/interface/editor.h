@@ -33,7 +33,6 @@ GNU General Public License for more details.
 //class QPrinter;
 class QComboBox;
 class QSlider;
-
 class MainWindow2;
 class ColorManager;
 class ToolManager;
@@ -123,8 +122,6 @@ public slots:
     void clearCurrentFrame();
 
     void cut();
-    void crop();
-    void croptoselect();
     void flipX();
     void flipY();
     void deselectAll();
@@ -227,7 +224,7 @@ private slots:
     void getCameraLayer();
 
 private:
-    Object* m_pObject;  // the object to be edited by the editor
+    Object* m_pObject = nullptr;  // the object to be edited by the editor
 
     ScribbleArea* m_pScribbleArea;
     MainWindow2* m_pMainWindow;

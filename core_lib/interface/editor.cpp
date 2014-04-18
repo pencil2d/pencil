@@ -52,7 +52,6 @@ GNU General Public License for more details.
 
 Editor::Editor( MainWindow2* parent )
     : QWidget( parent )
-    , m_pObject( nullptr )
     , exportFramesDialog( nullptr ) // will be created when needed
     , exportMovieDialog( nullptr )
     , exportFlashDialog( nullptr )
@@ -63,7 +62,6 @@ Editor::Editor( MainWindow2* parent )
     , exportMovieDialog_vBox( nullptr )
     , exportMovieDialog_format( nullptr )
     , exportMovieDialog_fpsBox( nullptr )
-    , exportFlashDialog_compression( nullptr )
     , m_clipboardVectorImage( nullptr )
 {
     m_pMainWindow = parent;
@@ -540,22 +538,6 @@ void Editor::cut()
     m_pScribbleArea->deselectAll();
 }
 
-void Editor::crop()
-{
-    // FIXME:
-    //select_clicked();
-    //move_clicked();
-}
-
-void Editor::croptoselect()
-{
-    // FIXME:
-    //select_clicked();
-    //copy();
-    //clearCurrentFrame();
-    //paste();
-}
-
 void Editor::flipX()
 {
     toolManager()->setCurrentTool( MOVE );
@@ -942,6 +924,7 @@ void Editor::createExportFlashDialog()
     exportFlashDialog_compression->setMinimum( 0 );
     exportFlashDialog_compression->setMaximum( 10 );
     exportFlashDialog_compression->setValue( 10 - settings.value( "flashCompressionLevel" ).toInt() );
+
     QLabel* label1 = new QLabel( "Large file" );
     QLabel* label2 = new QLabel( "Small file" );
 
@@ -1162,11 +1145,18 @@ bool Editor::exportFlash()
     else
     {
         settings.setValue( "lastExportPath", QVariant( filePath ) );
-        if ( !exportFlashDialog ) createExportFlashDialog();
+        if ( !exportFlashDialog )
+        {
+            createExportFlashDialog();
+        }
         exportFlashDialog->exec();
-        if ( exportFlashDialog->result() == QDialog::Rejected ) return false;
 
-        settings.setValue( "flashCompressionLevel", 10 - exportFlashDialog_compression->value() );
+        if ( exportFlashDialog->result() == QDialog::Rejected )
+        {
+            return false;
+        }
+
+        //settings.setValue( "flashCompressionLevel", 10 - exportFlashDialog_compression->value() );
 
         QSize exportSize = m_pScribbleArea->getViewRect().toRect().size();
         QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
@@ -1833,6 +1823,7 @@ void Editor::setzoom1()
 {
     m_pScribbleArea->zoom1();
 }
+
 void Editor::rotatecw()
 {
     m_pScribbleArea->rotatecw();
@@ -1852,101 +1843,6 @@ void Editor::gridview()
     msgBox.setText( "Would you like to add a camera layer?" );
     msgBox.exec();
 }
-/*
-void Editor::print()
-{
-    QPrinter printer( QPrinter::HighResolution );
-    //printer.setOrientation(QPrinter::Landscape);
-    //printer.setFullPage(false);
-    //printer->setPaperSize(QPrinter::A4);
-
-QPrintPreviewDialog printPreviewDialog( &printer, this );
-connect( &printPreviewDialog, SIGNAL( paintRequested( QPrinter* ) ), this, SLOT( printAndPreview( QPrinter* ) ) );
-if ( printPreviewDialog.exec() == QDialog::Accepted )
-{
-if ( !printer.isValid() )
-{
-QMessageBox msg;
-msg.setText( "An invalid printer was selected. The print job will now abort." );
-msg.setIcon( QMessageBox::Warning );
-msg.exec();
-return;
-}
-
-//printAndPreview( &printer );
-}
-}
-*/
-/*
-void Editor::printAndPreview( QPrinter* printer )
-{
-    QRect exportRect = m_pScribbleArea->rect();
-    QSize exportSize = exportRect.size();
-    if ( printer->outputFileName() != "" )
-    {
-        QPrinter pdfPrinter( QPrinter::ScreenResolution );
-        pdfPrinter.setOutputFileName( printer->outputFileName() );
-        pdfPrinter.setOutputFormat( QPrinter::PdfFormat );
-        pdfPrinter.setOrientation( printer->orientation() );
-        QPainter painter( &pdfPrinter );
-        painter.setRenderHint( QPainter::HighQualityAntialiasing );
-        QRect pageRect = pdfPrinter.pageRect();
-        pageRect.moveTo( 0, 0 );
-        qDebug() << "page:" << pageRect.width() << "x" << pageRect.height();
-        qDebug() << "image:" << exportRect.width() << "x" << exportRect.height();
-        if ( exportSize.width() >= exportSize.height() )
-        {
-            // landscape
-        }
-        else
-        {
-            // portrait
-        }
-        //exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
-        //exportRect.setSize(exportSize);
-        painter.setViewport( pageRect );
-        painter.setWindow( exportRect );
-        m_pScribbleArea->render( &painter );
-        painter.end();
-    }
-    else
-    {
-        QRect pageRect = printer->pageRect();
-        pageRect.moveTo( 0, 0 );
-        exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
-        exportRect.setSize( exportSize );
-        QPainter painter( printer );
-        painter.setViewport( pageRect );
-        painter.setWindow( exportRect );
-        m_pScribbleArea->render( &painter );
-        painter.end();
-    }
-}
-else
-{
-// portrait
-}
-//exportSize.scale(pageRect.size(), Qt::KeepAspectRatio);
-//exportRect.setSize(exportSize);
-painter.setViewport( pageRect );
-painter.setWindow( exportRect );
-m_pScribbleArea->render( &painter );
-painter.end();
-}
-else
-{
-QRect pageRect = printer->pageRect();
-pageRect.moveTo( 0, 0 );
-exportSize.scale( pageRect.size(), Qt::KeepAspectRatio );
-exportRect.setSize( exportSize );
-QPainter painter( printer );
-painter.setViewport( pageRect );
-painter.setWindow( exportRect );
-m_pScribbleArea->render( &painter );
-painter.end();
-}
-}
-*/
 
 void Editor::getCameraLayer()
 {
@@ -1982,14 +1878,7 @@ void Editor::resetView()
 {
     getScribbleArea()->resetView();
 }
-/*
-void Editor::setTool( ToolType toolType )
-{
-getScribbleArea()->setCurrentTool( toolType );
 
-emit changeTool( toolType );
-}
-*/
 Layer* Editor::getCurrentLayer( int incr )
 {
     return layerManager()->currentLayer( incr );

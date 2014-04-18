@@ -83,8 +83,6 @@
     <addaction name="actionPaste"/>
     <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
-    <addaction name="actionCrop"/>
-    <addaction name="actionCrop_To_Selection"/>
     <addaction name="menuSelection"/>
     <addaction name="separator"/>
     <addaction name="actionSelect_All"/>
@@ -824,6 +822,7 @@
   </action>
  </widget>
  <resources>
+  <include location="../../pencil.qrc"/>
   <include location="../../pencil.qrc"/>
  </resources>
  <connections/>
