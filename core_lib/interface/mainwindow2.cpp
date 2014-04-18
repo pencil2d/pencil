@@ -76,7 +76,7 @@ MainWindow2::MainWindow2( QWidget *parent )
     m_pTimeLine = new TimeLine( this, editor );
     makeTimeLineConnections();
 
-    arrangePalettes();
+    createSubWidgets();
     createMenus();
     loadAllShortcuts();
 
@@ -138,7 +138,7 @@ void MainWindow2::makeTimeLineConnections()
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
 
-void MainWindow2::arrangePalettes()
+void MainWindow2::createSubWidgets()
 {
     setCentralWidget(editor);
 

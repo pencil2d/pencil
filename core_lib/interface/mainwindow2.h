@@ -92,7 +92,7 @@ private slots:
     bool loadDomElement(QDomElement docElem, QString filePath);
 
 private:
-    void arrangePalettes();
+    void createSubWidgets();
     void makeColorWheelConnections();
     void makeColorPaletteConnections();
     void makeTimeLineConnections();

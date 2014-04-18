@@ -111,14 +111,10 @@ signals:
     void changeThinLinesButton( bool );
     void changeOutlinesButton( bool );
 
-    // Tool Option
-    void changeTool( ToolType );
-
     // save
     void needSave();
 
 public slots:
-
     void clearCurrentFrame();
 
     void cut();
@@ -210,7 +206,6 @@ public slots:
     void toggleShowAllLayers();
     void resetMirror();
 
-    //void print();
     void restorePalettesSettings( bool, bool, bool );
 
     bool exportX();
