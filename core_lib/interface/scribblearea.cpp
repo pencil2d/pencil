@@ -34,11 +34,10 @@ GNU General Public License for more details.
 
 #define round(f) ((int)(f + 0.5))
 
-ScribbleArea::ScribbleArea( QWidget* parent, Editor* pEditor )
+ScribbleArea::ScribbleArea( QWidget* parent )
     : QWidget( parent )
     , instantTool( false )
 {
-    m_pEditor = pEditor;
     m_strokeManager = new StrokeManager();
 
     QSettings settings( "Pencil", "Pencil" );

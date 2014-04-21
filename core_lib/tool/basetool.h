@@ -40,13 +40,15 @@ public:
     static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
     explicit BaseTool(QObject *parent = 0);
+    void initialize( Editor* editor );
+
+    QString typeName() { return TypeName( type() ); }
+
     virtual ToolType type() = 0;
-    QString typeName() { return TypeName(type()); }
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    virtual void initialize(Editor* editor, ScribbleArea *scribbleArea);
-
+    
     virtual void mousePressEvent(QMouseEvent*);
     virtual void mouseMoveEvent(QMouseEvent*);
     virtual void mouseReleaseEvent(QMouseEvent*);

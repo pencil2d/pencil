@@ -70,7 +70,6 @@ MainWindow2::MainWindow2( QWidget *parent )
     m_pCore = new Editor( this );
     m_pCore->initialize();
     m_pCore->setObject( m_pObject );
-
     
     createSubWidgets();
     createMenus();
@@ -133,9 +132,13 @@ void MainWindow2::makeTimeLineConnections()
 
 void MainWindow2::createSubWidgets()
 {
-    m_pScribbleArea = new ScribbleArea( this, m_pCore );
+    m_pScribbleArea = new ScribbleArea( this );
     m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
     setCentralWidget( m_pScribbleArea );
+    m_pScribbleArea->setCore( m_pCore );
+
+    m_pCore->setScribbleArea( m_pScribbleArea );
+    makeConnections( m_pCore, m_pScribbleArea );
 
     m_pTimeLine = new TimeLine( this, m_pCore );
     makeTimeLineConnections();
@@ -1211,4 +1214,25 @@ void MainWindow2::helpBox()
 
     QUrl url = QUrl::fromLocalFile( QDir::currentPath() + "/Help/User Manual.pdf" );
     QDesktopServices::openUrl( url );
+}
+
+void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
+{
+    connect( pCore->toolManager(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
+    connect( pCore->toolManager(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
+
+    connect( pCore, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
+    connect( pCore, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );
+    connect( pCore, &Editor::toggleMultiLayerOnionSkin, pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
+
+    connect( pScribbleArea, &ScribbleArea::thinLinesChanged, pCore, &Editor::changeThinLinesButton );
+    connect( pScribbleArea, &ScribbleArea::outlinesChanged, pCore, &Editor::changeOutlinesButton );
+    connect( pScribbleArea, &ScribbleArea::onionPrevChanged, pCore, &Editor::onionPrevChanged );
+    connect( pScribbleArea, &ScribbleArea::onionNextChanged, pCore, &Editor::onionNextChanged );
+    //connect( pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
+
+    connect( pCore, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
+
+    connect( pScribbleArea, SIGNAL( currentKeyFrameModification() ), pCore, SLOT( currentKeyFrameModification() ) );
+    connect( pScribbleArea, SIGNAL( currentKeyFrameModification( int ) ), pCore, SLOT( currentKeyFrameModification( int ) ) );
 }

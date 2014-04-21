@@ -45,7 +45,8 @@ class ScribbleArea : public QWidget
     friend class SmudgeTool;
 
 public:
-    ScribbleArea( QWidget *parent, Editor *pEditor );
+    ScribbleArea( QWidget *parent );
+    void setCore( Editor* pCore ) { m_pEditor = pCore; }
 
     void resetTools();
 

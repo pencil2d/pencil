@@ -98,7 +98,7 @@ private:
 
     void readSettings();
     void writeSettings();
-
+    void makeConnections( Editor* m_pCore, ScribbleArea* m_pScribbleArea );
     Ui::MainWindow2* ui;
 };
 

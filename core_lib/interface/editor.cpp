@@ -165,24 +165,6 @@ TimeLine* Editor::getTimeLine()
 
 void Editor::makeConnections()
 {
-    connect( toolManager(), &ToolManager::toolChanged, m_pScribbleArea, &ScribbleArea::setCurrentTool );
-    connect( toolManager(), &ToolManager::toolPropertyChanged, m_pScribbleArea, &ScribbleArea::updateToolCursor );
-
-    connect( this, &Editor::toggleOnionPrev, m_pScribbleArea, &ScribbleArea::toggleOnionPrev );
-    connect( this, &Editor::toggleOnionNext, m_pScribbleArea, &ScribbleArea::toggleOnionNext );
-    connect( this, &Editor::toggleMultiLayerOnionSkin, m_pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
-
-    connect( m_pScribbleArea, &ScribbleArea::thinLinesChanged, this, &Editor::changeThinLinesButton );
-    connect( m_pScribbleArea, &ScribbleArea::outlinesChanged, this, &Editor::changeOutlinesButton );
-    connect( m_pScribbleArea, &ScribbleArea::onionPrevChanged, this, &Editor::onionPrevChanged );
-    connect( m_pScribbleArea, &ScribbleArea::onionNextChanged, this, &Editor::onionNextChanged );
-    //connect( m_pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
-
-    connect( this, SIGNAL( selectAll() ), m_pScribbleArea, SLOT( selectAll() ) );
-
-    connect( m_pScribbleArea, SIGNAL( currentKeyFrameModification() ), this, SLOT( currentKeyFrameModification() ) );
-    connect( m_pScribbleArea, SIGNAL( currentKeyFrameModification( int ) ), this, SLOT( currentKeyFrameModification( int ) ) );
-
     connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
 }
 

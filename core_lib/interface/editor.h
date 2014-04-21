@@ -60,6 +60,8 @@ public:
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
+    void setScribbleArea( ScribbleArea* pScirbbleArea ) { m_pScribbleArea = pScirbbleArea; }
+
     int maxFrame; // the number of the last frame for the current object
 
     int fps; // the number of frames per second used by the editor

@@ -45,16 +45,14 @@ QCursor BaseTool::cursor()
     return Qt::ArrowCursor;
 }
 
-void BaseTool::initialize(Editor* editor, ScribbleArea *scribbleArea)
+void BaseTool::initialize( Editor* editor )
 {
     if (editor == NULL)
     {
         qCritical("ERROR: editor is null!");
     }
     m_pEditor = editor;
-    m_pScribbleArea = scribbleArea;
-    m_pStrokeManager = scribbleArea->getStrokeManager();
-
+    
     loadSettings();
 }
 
