@@ -51,7 +51,7 @@ GNU General Public License for more details.
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
 Editor::Editor( MainWindow2* parent )
-    : QWidget( parent )
+    : QObject( parent )
     , exportFramesDialog( nullptr ) // will be created when needed
     , exportMovieDialog( nullptr )
     , exportFlashDialog( nullptr )
@@ -105,9 +105,6 @@ Editor::Editor( MainWindow2* parent )
     loopEnd = 2;
     sound = true;
 
-    // Layouts
-    QHBoxLayout* mainLayout = new QHBoxLayout();
-
     //qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
     //qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
     //qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
@@ -148,7 +145,7 @@ bool Editor::initialize()
 
     toolManager()->setCurrentTool( PENCIL );
 
-    setAcceptDrops( true );
+    //setAcceptDrops( true ); // TODO: drop event
 
     // CONNECTIONS
     makeConnections();
@@ -203,7 +200,7 @@ void Editor::importImageSequence()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-    QStringList files = w.getOpenFileNames( this,
+    QStringList files = w.getOpenFileNames( m_pMainWindow,
                                             "Select one or more files to open",
                                             initialPath,
                                             "Images (*.png *.xpm *.jpg *.jpeg)" );
@@ -237,7 +234,7 @@ bool Editor::importMov()
         initialPath = QDir::homePath() + "/untitled.avi";
     }
     QString filePath = QFileDialog::getOpenFileName(
-        this,
+        m_pMainWindow,
         tr( "Import movie" ),
         initialPath,
         tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
@@ -682,7 +679,7 @@ void Editor::newCameraLayer()
 
 void Editor::deleteCurrentLayer()
 {
-    int ret = QMessageBox::warning( this,
+    int ret = QMessageBox::warning( m_pMainWindow,
                                     tr( "Warning" ),
                                     tr( "Are you sure you want to delete layer: " ) + m_pObject->getLayer( layerManager()->currentLayerIndex() )->name + " ?",
                                     QMessageBox::Ok | QMessageBox::Cancel,
@@ -769,12 +766,12 @@ void Editor::createExportFramesSizeBox()
 {
     int defaultWidth = 720;
     int defaultHeight = 540;
-    exportFramesDialog_hBox = new QSpinBox( this );
+    exportFramesDialog_hBox = new QSpinBox( m_pMainWindow );
     exportFramesDialog_hBox->setMinimum( 1 );
     exportFramesDialog_hBox->setMaximum( 10000 );
     exportFramesDialog_hBox->setValue( defaultWidth );
     exportFramesDialog_hBox->setFixedWidth( 80 );
-    exportFramesDialog_vBox = new QSpinBox( this );
+    exportFramesDialog_vBox = new QSpinBox( m_pMainWindow );
     exportFramesDialog_vBox->setMinimum( 1 );
     exportFramesDialog_vBox->setMaximum( 10000 );
     exportFramesDialog_vBox->setValue( defaultHeight );
@@ -786,12 +783,12 @@ void Editor::createExportMovieSizeBox()
     int defaultWidth = 720;
     int defaultHeight = 540;
     int defaultFps = 25;
-    exportMovieDialog_hBox = new QSpinBox( this );
+    exportMovieDialog_hBox = new QSpinBox( m_pMainWindow );
     exportMovieDialog_hBox->setMinimum( 1 );
     exportMovieDialog_hBox->setMaximum( 10000 );
     exportMovieDialog_hBox->setValue( defaultWidth );
     exportMovieDialog_hBox->setFixedWidth( 80 );
-    exportMovieDialog_vBox = new QSpinBox( this );
+    exportMovieDialog_vBox = new QSpinBox( m_pMainWindow );
     exportMovieDialog_vBox->setMinimum( 1 );
     exportMovieDialog_vBox->setMaximum( 10000 );
     exportMovieDialog_vBox->setValue( defaultHeight );
@@ -803,7 +800,7 @@ void Editor::createExportMovieSizeBox()
     exportMovieDialog_format->addItem( "MPEG2/AVI" );
     exportMovieDialog_format->addItem( "MPEG4/AVI" );
     exportMovieDialog_format->addItem( "MPEG4/MP4" );
-    exportMovieDialog_fpsBox = new QSpinBox( this );
+    exportMovieDialog_fpsBox = new QSpinBox( m_pMainWindow );
     exportMovieDialog_fpsBox->setMinimum( 1 );
     exportMovieDialog_fpsBox->setMaximum( 60 );
     exportMovieDialog_fpsBox->setValue( defaultFps );
@@ -812,7 +809,7 @@ void Editor::createExportMovieSizeBox()
 
 void Editor::createExportFramesDialog()
 {
-    exportFramesDialog = new QDialog( this, Qt::Dialog );
+    exportFramesDialog = new QDialog( m_pMainWindow, Qt::Dialog );
     QGridLayout* mainLayout = new QGridLayout;
 
     QGroupBox* resolutionBox = new QGroupBox( tr( "Resolution" ) );
@@ -849,7 +846,7 @@ void Editor::createExportFramesDialog()
 
 void Editor::createExportMovieDialog()
 {
-    exportMovieDialog = new QDialog( this, Qt::Dialog );
+    exportMovieDialog = new QDialog( m_pMainWindow, Qt::Dialog );
     QGridLayout* mainLayout = new QGridLayout;
 
     QGroupBox* resolutionBox = new QGroupBox( tr( "Resolution" ) );
@@ -886,7 +883,7 @@ void Editor::createExportMovieDialog()
 
 void Editor::createExportFlashDialog()
 {
-    exportFlashDialog = new QDialog( this, Qt::Dialog );
+    exportFlashDialog = new QDialog( m_pMainWindow, Qt::Dialog );
     QGridLayout* mainLayout = new QGridLayout;
 
     QSettings settings( "Pencil", "Pencil" );
@@ -972,7 +969,8 @@ bool Editor::exportSeq()
     {
         QString initialPath = QDir::homePath() + "/untitled";
     }
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Save Image Sequence" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
+    QString filePath = QFileDialog::getSaveFileName( m_pMainWindow, tr( "Save Image Sequence" ), 
+                                                     initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     if ( filePath.isEmpty() )
     {
         return false;
@@ -1004,7 +1002,7 @@ bool Editor::exportX()
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled";
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Save As" ), initialPath );
+    QString filePath = QFileDialog::getSaveFileName( m_pMainWindow, tr( "Save As" ), initialPath );
     if ( filePath.isEmpty() )
     {
         qDebug() << "empty file";
@@ -1020,7 +1018,7 @@ bool Editor::exportX()
 
         updateMaxFrame();
         if ( !m_pObject->exportX( 1, maxFrame, view, exportSize, filePath, true ) ) {
-            QMessageBox::warning( this, tr( "Warning" ),
+            QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
                                   QMessageBox::Ok );
@@ -1039,7 +1037,7 @@ bool Editor::exportImage()
         initialPath = QDir::homePath() + "/untitled.png";
     }
 
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Save Image" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
+    QString filePath = QFileDialog::getSaveFileName( m_pMainWindow, tr( "Save Image" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     QFileInfo fi( filePath );
 
     if ( fi.suffix().isEmpty() ) {
@@ -1062,7 +1060,7 @@ bool Editor::exportImage()
 
         updateMaxFrame();
         if ( !m_pObject->exportIm( layerManager()->currentFrameIndex(), maxFrame, view, exportSize, filePath, true ) ) {
-            QMessageBox::warning( this, tr( "Warning" ),
+            QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
                                   QMessageBox::Ok );
@@ -1079,7 +1077,7 @@ bool Editor::exportMov()
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
     //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
+    QString filePath = QFileDialog::getSaveFileName( m_pMainWindow, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
     if ( filePath.isEmpty() )
     {
         return false;
@@ -1109,7 +1107,7 @@ bool Editor::exportFlash()
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.swf";
     //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Export Movie As..." ), initialPath, tr( "SWF (*.swf)" ) );
+    QString filePath = QFileDialog::getSaveFileName( m_pMainWindow, tr( "Export Movie As..." ), initialPath, tr( "SWF (*.swf)" ) );
     if ( filePath.isEmpty() )
     {
         return false;
@@ -1156,7 +1154,7 @@ void Editor::importImage( QString filePath )
     if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
     {
         // create a new Bitmap layer ?
-        QMessageBox::warning( this, tr( "Warning" ),
+        QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                               tr( "Please select a Bitmap or Vector layer to import images." ),
                               QMessageBox::Ok,
                               QMessageBox::Ok );
@@ -1168,7 +1166,7 @@ void Editor::importImage( QString filePath )
         QSettings settings( "Pencil", "Pencil" );
         QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
         if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName( this, tr( "Import image..." ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
+        filePath = QFileDialog::getOpenFileName( m_pMainWindow, tr( "Import image..." ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
         if ( !filePath.isEmpty() ) settings.setValue( "lastImportPath", QVariant( filePath ) );
     }
 
@@ -1233,7 +1231,7 @@ void Editor::importImage( QString filePath )
             }
             else
             {
-                QMessageBox::warning( this, tr( "Warning" ),
+                QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                                       tr( "Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
                                       QMessageBox::Ok,
                                       QMessageBox::Ok );
@@ -1256,7 +1254,8 @@ void Editor::importImage( QString filePath )
             }
             else
             {
-                QMessageBox::warning( this, tr( "Warning" ),
+                QMessageBox::warning( m_pMainWindow, 
+                                      tr( "Warning" ),
                                       tr( "Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors." ),
                                       QMessageBox::Ok,
                                       QMessageBox::Ok );
@@ -1311,7 +1310,7 @@ void Editor::importSound( QString filePath )
         QSettings settings( "Pencil", "Pencil" );
         QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
         if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName( this, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
+        filePath = QFileDialog::getOpenFileName( m_pMainWindow, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
         if ( !filePath.isEmpty() )
         {
             settings.setValue( "lastImportPath", QVariant( filePath ) );
@@ -1401,7 +1400,7 @@ void Editor::duplicateKey()
             VectorImage* vectorImage = ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 );
             vectorImage->paste( m_clipboardVectorImage ); // paste the clipboard
             m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
-            update();
+            m_pScribbleArea->update();
         }
         if ( layer->type() == Layer::BITMAP )
         {

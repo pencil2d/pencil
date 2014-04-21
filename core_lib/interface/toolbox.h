@@ -33,7 +33,7 @@ class ToolBoxWidget : public QDockWidget
     Q_OBJECT
 
 public:
-    ToolBoxWidget(const QString title, Editor* editor);
+    ToolBoxWidget(const QString title, QWidget* pParent );
 
     void setCurrentTool( ToolType );
 

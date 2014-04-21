@@ -13,9 +13,10 @@ public:
     explicit BaseDockWidget(QWidget* pParent);
     ~BaseDockWidget();
 
-    void setCore();
+    void setCore( Editor* pCore ) { m_pCore = pCore; }
 
 private:
+    Editor* m_pCore;
 };
 
 #endif // BASEDOCKWIDGET_H

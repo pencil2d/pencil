@@ -33,7 +33,7 @@ class ColorPaletteWidget : public QDockWidget
     Q_OBJECT
 
 public:
-    ColorPaletteWidget(Editor*);
+    ColorPaletteWidget( QWidget* );
     int currentColourNumber();
 
 public slots:

@@ -17,7 +17,6 @@ GNU General Public License for more details.
 #define EDITOR_H
 
 #include <QList>
-#include <QMainWindow>
 #include <QLabel>
 #include <QToolButton>
 #include "timeline.h"
@@ -27,7 +26,6 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "backupelement.h"
-#include "colorbox.h"
 
 
 class QComboBox;
@@ -39,7 +37,7 @@ class LayerManager;
 class ScribbleArea;
 
 
-class Editor : public QWidget
+class Editor : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( ColorManager* colorManager READ colorManager )

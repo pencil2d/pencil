@@ -27,11 +27,9 @@ GNU General Public License for more details.
 
 // ----------------------------------------------------------------------------------
 
-ToolBoxWidget::ToolBoxWidget(const QString title, Editor* editor) :
-    QDockWidget(title, editor)
+ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
+    QDockWidget(title, pParent)
 {
-    m_editor = editor;
-
     QFrame* toolGroup = new QFrame();
     setWidget(toolGroup);
 

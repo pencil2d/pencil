@@ -153,7 +153,7 @@ void MainWindow2::createSubWidgets()
     m_pColorWheelWidget->setWidget( pColorBox );
     m_pColorWheelWidget->setObjectName( "ColorWheel" );
 
-    m_pColorPalette = new ColorPaletteWidget(m_pCore);
+    m_pColorPalette = new ColorPaletteWidget( this );
     m_pColorPalette->setObjectName( "ColorPalette" );
     m_pColorPalette->setFocusPolicy( Qt::NoFocus );
 
@@ -165,7 +165,7 @@ void MainWindow2::createSubWidgets()
     m_pToolOptionWidget->setObjectName( "ToolOption" );
     m_pToolOptionWidget->makeConnectionToEditor(m_pCore);
 
-    m_pToolBox = new ToolBoxWidget( tr( "Tools" ), m_pCore );
+    m_pToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     m_pToolBox->setObjectName( "ToolBox" );
 
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);

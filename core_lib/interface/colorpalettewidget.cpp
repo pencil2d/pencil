@@ -29,10 +29,8 @@ GNU General Public License for more details.
 #include "colorpalettewidget.h"
 
 
-ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt::Tool)
+ColorPaletteWidget::ColorPaletteWidget( QWidget* pParent ) : QDockWidget( pParent, Qt::Tool )
 {
-    m_pEditor = editor;
-
     setWindowTitle(tr("Colors"));
 
     m_addButton = new QToolButton(this);
