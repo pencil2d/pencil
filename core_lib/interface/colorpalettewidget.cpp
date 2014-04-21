@@ -31,7 +31,7 @@ GNU General Public License for more details.
 
 ColorPaletteWidget::ColorPaletteWidget(Editor* editor) : QDockWidget(editor, Qt::Tool)
 {
-    this->m_pEditor = editor;
+    m_pEditor = editor;
 
     setWindowTitle(tr("Colors"));
 
