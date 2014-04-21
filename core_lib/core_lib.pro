@@ -106,7 +106,8 @@ HEADERS +=  \
     util/pencildef.h \
     util/pencilerror.h \
     util/pencilsettings.h \
-    util/util.h
+    util/util.h \
+    interface/basedockwidget.h
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
@@ -169,7 +170,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/blitrect.cpp \
     util/fileformat.cpp \
     util/pencilerror.cpp \
-    util/pencilsettings.cpp
+    util/pencilsettings.cpp \
+    interface/basedockwidget.cpp
 
 FORMS += \
     interface/mainwindow2.ui \
