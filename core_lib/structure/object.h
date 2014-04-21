@@ -33,17 +33,6 @@ class Object : public QObject
 {
     Q_OBJECT
 
-public slots:
-    void modification() { modified = true; }
-    void toggleMirror() { mirror = !mirror; }//TODO toggles mirror button
-    void resetMirror() { mirror = false; }
-    void imageCheck(int);
-
-signals:
-    void imageAdded(int);
-    void imageAdded(int,int);
-    void imageRemoved(int);
-
 public:
     Object();
     virtual ~Object();
@@ -57,7 +46,6 @@ public:
     bool read(QString filePath);
     bool write(QString filePath);
 
-    QString name;
     bool modified;
     bool mirror; // if true, the returned image is flipped horizontally
     QList<Layer*> layer;
@@ -82,13 +70,12 @@ public:
     bool loadPalette(QString filePath);
     void loadDefaultPalette();
 
-
     LayerBitmap *addNewBitmapLayer();
     LayerVector *addNewVectorLayer();
     LayerSound *addNewSoundLayer();
     LayerCamera * addNewCameraLayer();
     Layer* getLayer(int i);
-    int getLayerCount() { return layer.size(); }
+    int getLayerCount();
     int getMaxID();
     void moveLayer(int i, int j);
     void deleteLayer(int i);
@@ -96,7 +83,7 @@ public:
     void playSoundIfAny(int frame,int fps);
     void stopSoundIfAny();
 
-    void defaultInitialisation();
+    void init();
 
     bool exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax);
     bool exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax, int fps, int exportFps);
@@ -104,6 +91,16 @@ public:
     bool exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing );
     bool exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing );
     bool exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
+
+    void modification() { modified = true; }
+    void toggleMirror() { mirror = !mirror; }//TODO toggles mirror button
+    void resetMirror() { mirror = false; }
+    void imageCheck( int );
+
+signals:
+    void imageAdded( int );
+    void imageAdded( int, int );
+    void imageRemoved( int );
 
 private:
     QString m_strFilePath;

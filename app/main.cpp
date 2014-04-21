@@ -123,7 +123,7 @@ int main(int argc, char* argv[])
                     qDebug() << "         Using PNG.";
                     format = "PNG";
                 }
-                mainWindow.editor->exportSeqCLI(jobExportSequenceOutput, format);
+                mainWindow.m_pCore->exportSeqCLI(jobExportSequenceOutput, format);
                 qDebug() << "Done.";
             }
         }

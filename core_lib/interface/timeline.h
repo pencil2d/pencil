@@ -28,7 +28,7 @@ class TimeLine : public QDockWidget
 {
 	Q_OBJECT
 public:
-    TimeLine( QWidget* parent = 0, Editor* editor = 0 );
+    TimeLine( QWidget* parent, Editor* editor );
 
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );

@@ -34,10 +34,10 @@ public:
     ~MainWindow2();
 
     // Data Model
-    Object* m_object;
+    Object* m_pObject;
 
     // Core controller
-    Editor* editor;
+    Editor* m_pCore;
 
     // UI: central Drawing Area
     ScribbleArea* m_pScribbleArea;
@@ -57,10 +57,6 @@ protected:
     void tabletEvent(QTabletEvent* event);
     RecentFileMenu* m_recentFileMenu;
 
-private:
-    Ui::MainWindow2* ui;
-
-    // Old code migration
 public slots:
     void setOpacity(int opacity);
     void undoActSetText(void);
@@ -102,6 +98,8 @@ private:
 
     void readSettings();
     void writeSettings();
+
+    Ui::MainWindow2* ui;
 };
 
 #endif // MAINWINDOW2_H

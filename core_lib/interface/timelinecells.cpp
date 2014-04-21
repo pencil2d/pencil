@@ -99,7 +99,9 @@ void TimeLineCells::drawContent()
     QPainter painter( cache );
 
     Object* object = editor->object();
-    if ( object == NULL ) return;
+    
+    Q_ASSERT_X( object != nullptr, "", "" );
+
     Layer* layer = object->getLayer( editor->layerManager()->currentLayerIndex() );
     if ( layer == NULL ) return;
 

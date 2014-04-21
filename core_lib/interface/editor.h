@@ -219,7 +219,7 @@ private slots:
     void getCameraLayer();
 
 private:
-    Object* m_pObject = nullptr;  // the object to be edited by the editor
+    Object* m_pObject;  // the object to be edited by the editor
 
     ScribbleArea* m_pScribbleArea;
     MainWindow2* m_pMainWindow;

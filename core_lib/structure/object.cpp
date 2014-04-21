@@ -36,8 +36,6 @@ GNU General Public License for more details.
 
 Object::Object() : QObject(0)
 {
-    // default name
-    name = "Object";
     modified = false;
     mirror = false;
 }
@@ -48,6 +46,17 @@ Object::~Object()
     {
         delete layer.takeLast();
     }
+}
+
+void Object::init()
+{
+    // default layers
+    addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
+    addNewVectorLayer();
+    addNewBitmapLayer();
+
+    // default palette
+    loadDefaultPalette();
 }
 
 QDomElement Object::createDomElement(QDomDocument& doc)
@@ -396,17 +405,6 @@ bool Object::importPalette(QString filePath)
     return true;
 }
 
-
-void Object::defaultInitialisation()
-{
-    // default layers
-    addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
-    addNewVectorLayer();
-    addNewBitmapLayer();
-
-    // default palette
-    loadDefaultPalette();
-}
 
 void Object::loadDefaultPalette()
 {
@@ -779,4 +777,10 @@ void Object::imageCheck(int frameNumber)
     {
         emit imageRemoved(frameNumber);
     }
+}
+
+int Object::getLayerCount()
+{
+    Q_ASSERT_X( this != nullptr, "", "" );
+    return layer.size();
 }

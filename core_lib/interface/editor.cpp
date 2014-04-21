@@ -108,20 +108,9 @@ Editor::Editor( MainWindow2* parent )
     // Layouts
     QHBoxLayout* mainLayout = new QHBoxLayout();
 
-    m_pScribbleArea = new ScribbleArea( this, this );
-
-    mainLayout->addWidget( m_pScribbleArea );
-    mainLayout->setMargin( 0 );
-    mainLayout->setSpacing( 0 );
-
-    setLayout( mainLayout );
-
-    // FOCUS POLICY
-    m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
-
-    qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
-    qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
-    qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
+    //qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
+    //qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
+    //qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
 }
 
 Editor::~Editor()
@@ -164,6 +153,7 @@ bool Editor::initialize()
     // CONNECTIONS
     makeConnections();
 
+    //createExportFlashDialog();
     return true;
 }
 
