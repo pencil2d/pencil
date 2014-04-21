@@ -30,7 +30,6 @@ GNU General Public License for more details.
 #include "colorbox.h"
 
 
-//class QPrinter;
 class QComboBox;
 class QSlider;
 class MainWindow2;
@@ -207,8 +206,6 @@ public slots:
     void toggleMirrorV();
     void toggleShowAllLayers();
     void resetMirror();
-
-    void restorePalettesSettings( bool, bool, bool );
 
     bool exportX();
     bool exportImage();

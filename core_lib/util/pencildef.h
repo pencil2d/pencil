@@ -99,9 +99,12 @@ enum ToolPropertyType
 #define CMD_HELP "CmdHelp"
 
 // Settings Group/Key Name
+#define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP "shortcuts"
 #define SETTING_TOOL_CURSOR "toolCursors"
 #define SETTING_HIGH_RESOLUTION "highResPosition"
+#define SETTING_WINDOW_GEOMETRY "WindowGeometry"
+#define SETTING_WINDOW_STATE "WindowState"
 
 
 #endif // PENCILDEF_H

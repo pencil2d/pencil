@@ -133,6 +133,7 @@ void MainWindow2::makeTimeLineConnections()
 void MainWindow2::createSubWidgets()
 {
     m_pScribbleArea = new ScribbleArea( this );
+    m_pScribbleArea->setObjectName( "ScribbleArea" );
     m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
     setCentralWidget( m_pScribbleArea );
     m_pScribbleArea->setCore( m_pCore );
@@ -141,6 +142,7 @@ void MainWindow2::createSubWidgets()
     makeConnections( m_pCore, m_pScribbleArea );
 
     m_pTimeLine = new TimeLine( this, m_pCore );
+    m_pTimeLine->setObjectName( "TimeLine" );
     makeTimeLineConnections();
 
     m_pColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
@@ -149,17 +151,22 @@ void MainWindow2::createSubWidgets()
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     m_pColorWheelWidget->setWidget( pColorBox );
+    m_pColorWheelWidget->setObjectName( "ColorWheel" );
 
     m_pColorPalette = new ColorPaletteWidget(m_pCore);
+    m_pColorPalette->setObjectName( "ColorPalette" );
     m_pColorPalette->setFocusPolicy( Qt::NoFocus );
 
     m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
+    m_pDisplayOptionWidget->setObjectName( "DisplayOption" );
     m_pDisplayOptionWidget->makeConnectionToEditor(m_pCore);
 
     m_pToolOptionWidget = new ToolOptionWidget(this);
+    m_pToolOptionWidget->setObjectName( "ToolOption" );
     m_pToolOptionWidget->makeConnectionToEditor(m_pCore);
 
     m_pToolBox = new ToolBoxWidget( tr( "Tools" ), m_pCore );
+    m_pToolBox->setObjectName( "ToolBox" );
 
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorPalette);
@@ -969,27 +976,28 @@ void MainWindow2::dockAllPalettes()
 
 void MainWindow2::readSettings()
 {
-    QSettings* settings = pencilSettings();
-    QRect desktopRect = QApplication::desktop()->screenGeometry();
-    desktopRect.adjust( 80, 80, -80, -80 );
+    qDebug( "Restore last windows layout." );
+    
+    QSettings settings( PENCIL2D, PENCIL2D );
+    restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
+    restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
 
-    QPoint pos = settings->value( "editorPosition", desktopRect.topLeft() ).toPoint();
-    QSize size = settings->value( "editorSize", desktopRect.size() ).toSize();
-
-    move( pos );
-    resize( size );
-
-    m_pCore->restorePalettesSettings( true, true, true );
-
-    QString myPath = settings->value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
+    QString myPath = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
     m_recentFileMenu->addRecentFile( myPath );
 
-    setOpacity( 100 - settings->value( "windowOpacity" ).toInt() );
+    setOpacity( 100 - settings.value( "windowOpacity" ).toInt() );
 }
 
 void MainWindow2::writeSettings()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    qDebug( "Save current windows layout." );
+
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue( SETTING_WINDOW_GEOMETRY, saveGeometry() );
+    settings.setValue( SETTING_WINDOW_STATE, saveState() );
+
+    return;
+
     settings.setValue( "editorPosition", pos() );
     settings.setValue( "editorSize", size() );
 
@@ -1001,7 +1009,7 @@ void MainWindow2::writeSettings()
         settings.setValue( "colourPaletteFloating", colourPalette->isFloating() );
     }
 
-    TimeLine* timelinePalette = m_pCore->getTimeLine();
+    TimeLine* timelinePalette = m_pTimeLine;
     if ( timelinePalette != NULL )
     {
         settings.setValue( "timelinePalettePosition", timelinePalette->pos() );
