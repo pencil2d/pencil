@@ -58,7 +58,7 @@ ScribbleArea::ScribbleArea( QWidget* parent )
 
     for ( int i = 0; i < list.size(); ++i )
     {
-        m_effect[ i ] = static_cast< EFFECT >( list[ i ].toUInt() );
+        m_effect[ i ] = static_cast< DisplayEffect >( list[ i ].toUInt() );
     }
 
     m_antialiasing = true; // default value is true (because it's prettier)
@@ -137,7 +137,7 @@ ScribbleArea::~ScribbleArea()
     QSettings settings( PENCIL2D, PENCIL2D );
     
     QList< QVariant > savedList;
-    for ( EFFECT e : m_effect )
+    for ( DisplayEffect e : m_effect )
     {
         savedList.append( static_cast< uint >( e ) );
     }

@@ -36,7 +36,7 @@ class BaseTool;
 class ColorManager;
 class PopupColorPaletteWidget;
 
-enum EFFECT
+enum DisplayEffect
 {
     EFFECT_ANTIALIAS = 0,
     EFFECT_COUNT,
@@ -184,16 +184,17 @@ public slots:
     void updateToolCursor();
 
 protected:
-    void tabletEvent( QTabletEvent *event );
-    void wheelEvent( QWheelEvent *event );
-    void mousePressEvent( QMouseEvent *event );
-    void mouseMoveEvent( QMouseEvent *event );
-    void mouseReleaseEvent( QMouseEvent *event );
-    void mouseDoubleClickEvent( QMouseEvent *event );
-    void keyPressEvent( QKeyEvent *event );
-    void keyReleaseEvent( QKeyEvent *event );
-    void paintEvent( QPaintEvent *event );
-    void resizeEvent( QResizeEvent *event );
+    void tabletEvent( QTabletEvent *event ) override;
+    void wheelEvent( QWheelEvent *event ) override;
+    void mousePressEvent( QMouseEvent *event ) override;
+    void mouseMoveEvent( QMouseEvent *event ) override;
+    void mouseReleaseEvent( QMouseEvent *event ) override;
+    void mouseDoubleClickEvent( QMouseEvent *event ) override;
+    void keyPressEvent( QKeyEvent *event ) override;
+    void keyReleaseEvent( QKeyEvent *event ) override;
+    void paintEvent( QPaintEvent *event ) override;
+    void resizeEvent( QResizeEvent *event ) override;
+
     void toggledOnionColor();
     void recentre();
     void setView();
@@ -258,7 +259,7 @@ public:
     BitmapImage* bufferImg; // used to pre-draw vector modifications
 private:
 
-    std::vector< EFFECT > m_effect;
+    std::vector< DisplayEffect > m_effect;
 
     bool keyboardInUse;
     bool mouseInUse;
