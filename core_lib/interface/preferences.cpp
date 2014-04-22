@@ -48,12 +48,11 @@ Preferences::Preferences( QWidget* parent ) : QDialog(parent)
     pagesWidget->addWidget(new ShortcutsPage(this));
 
     QPushButton* closeButton = new QPushButton(tr("Close"));
+    connect( closeButton, &QPushButton::clicked, this, &Preferences::close );
 
     createIcons();
     contentsWidget->setCurrentRow(0);
-
-    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
-
+    
     QHBoxLayout* horizontalLayout = new QHBoxLayout;
     horizontalLayout->addWidget(contentsWidget);
     horizontalLayout->addWidget(pagesWidget, 1);
