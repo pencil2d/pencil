@@ -36,6 +36,12 @@ class BaseTool;
 class ColorManager;
 class PopupColorPaletteWidget;
 
+enum EFFECT
+{
+    EFFECT_ANTIALIAS = 0,
+    EFFECT_COUNT,
+};
+
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
@@ -46,6 +52,8 @@ class ScribbleArea : public QWidget
 
 public:
     ScribbleArea( QWidget *parent );
+    ~ScribbleArea();
+
     void setCore( Editor* pCore ) { m_pEditor = pCore; }
 
     void resetTools();
@@ -242,8 +250,6 @@ protected:
 
     bool updateAll;
 
-    bool followContour;
-
     bool useGridA;
     bool useGridB;
 
@@ -251,6 +257,9 @@ protected:
 public:
     BitmapImage* bufferImg; // used to pre-draw vector modifications
 private:
+
+    std::vector< EFFECT > m_effect;
+
     bool keyboardInUse;
     bool mouseInUse;
     QPointF lastPixel, currentPixel;

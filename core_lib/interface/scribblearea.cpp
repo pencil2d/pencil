@@ -40,9 +40,7 @@ ScribbleArea::ScribbleArea( QWidget* parent )
 {
     m_strokeManager = new StrokeManager();
 
-    QSettings settings( "Pencil", "Pencil" );
-
-    followContour = 0;
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     int curveSmoothingLevel = settings.value( "curveSmoothing" ).toInt();
     if ( curveSmoothingLevel == 0 ) { curveSmoothingLevel = 20; settings.setValue( "curveSmoothing", curveSmoothingLevel ); } // default
@@ -50,7 +48,17 @@ ScribbleArea::ScribbleArea( QWidget* parent )
 
     if ( settings.value( SETTING_HIGH_RESOLUTION ).toString() == "true" )
     {
-        m_strokeManager->useHighResPosition( true );
+        m_strokeManager->useHighResPosition( true ); // TODO:
+    }
+
+    // TODO:
+    m_effect.resize( EFFECT_COUNT );
+    QList< QVariant > list = settings.value( SETTING_RENDER_EFFECT ).toList();
+    Q_ASSERT( m_effect.size() == list.size() );
+
+    for ( int i = 0; i < list.size(); ++i )
+    {
+        m_effect[ i ] = static_cast< EFFECT >( list[ i ].toUInt() );
     }
 
     m_antialiasing = true; // default value is true (because it's prettier)
@@ -122,6 +130,18 @@ ScribbleArea::ScribbleArea( QWidget* parent )
 
     useGridA = false;
     useGridB = false;
+}
+
+ScribbleArea::~ScribbleArea()
+{
+    QSettings settings( PENCIL2D, PENCIL2D );
+    
+    QList< QVariant > savedList;
+    for ( EFFECT e : m_effect )
+    {
+        savedList.append( static_cast< uint >( e ) );
+    }
+    settings.setValue( SETTING_RENDER_EFFECT, savedList );
 }
 
 void ScribbleArea::updateToolCursor()
@@ -729,25 +749,12 @@ void ScribbleArea::paintBitmapBuffer()
             cm = QPainter::CompositionMode_DestinationOut;
             break;
         case BRUSH:
-            if ( getTool( BRUSH )->properties.preserveAlpha ) { cm = QPainter::CompositionMode_SourceAtop; }
-            if ( followContour )
-            {
-                // writes on the layer below
-                if ( m_pEditor->layerManager()->currentLayerIndex() > 0 )
-                {
-                    Layer *layer2 = m_pEditor->getCurrentLayer( -1 );
-                    if ( layer2->type() == Layer::BITMAP )
-                    {
-                        targetImage = ( ( LayerBitmap * )layer2 )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
-                    }
-                }
-            }
-            break;
         case PEN:
-            if ( getTool( PEN )->properties.preserveAlpha ) { cm = QPainter::CompositionMode_SourceAtop; }
-            break;
         case PENCIL:
-            if ( getTool( PENCIL )->properties.preserveAlpha ) { cm = QPainter::CompositionMode_SourceAtop; }
+            if ( getTool( currentTool()->type() )->properties.preserveAlpha )
+            { 
+                cm = QPainter::CompositionMode_SourceAtop;
+            }
             break;
         default: //nothing
             break;

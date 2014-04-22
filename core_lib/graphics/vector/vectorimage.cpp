@@ -916,7 +916,6 @@ void VectorImage::paintImage(QPainter& painter,
     {
         curve[i].drawPath(painter, myParent, selectionTransformation, simplified, showThinCurves );
     }
-    //painter.resetMatrix(); ?????
     painter.setClipping(false);
 }
 

@@ -105,6 +105,7 @@ enum ToolPropertyType
 #define SETTING_HIGH_RESOLUTION "highResPosition"
 #define SETTING_WINDOW_GEOMETRY "WindowGeometry"
 #define SETTING_WINDOW_STATE "WindowState"
+#define SETTING_RENDER_EFFECT "RenderEffect"
 
 
 #endif // PENCILDEF_H
