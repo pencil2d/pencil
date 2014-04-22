@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #ifndef TIMELINE_H
 #define TIMELINE_H
 
-#include <QDockWidget>
+#include "basedockwidget.h"
 #include "timecontrols.h"
 
 class QScrollBar;
@@ -24,11 +24,13 @@ class Editor;
 class TimeLineCells;
 
 
-class TimeLine : public QDockWidget
+class TimeLine : public BaseDockWidget
 {
 	Q_OBJECT
 public:
-    TimeLine( QWidget* parent, Editor* editor );
+    TimeLine( QWidget* parent );
+    
+    void initUI() override;
 
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
@@ -78,7 +80,6 @@ protected:
 	void resizeEvent( QResizeEvent* event );
 
 private:
-	Editor* editor; // the editor for which this timeLine operates
     QScrollBar* hScrollBar;
     QScrollBar* vScrollBar;
 	TimeLineCells* cells;

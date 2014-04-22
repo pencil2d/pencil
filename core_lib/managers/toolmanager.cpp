@@ -39,7 +39,7 @@ bool ToolManager::initialize()
 
     foreach( BaseTool* pTool, m_toolSetHash.values() )
     {
-        pTool->initialize( editor() );
+        pTool->initialize( editor(), editor()->getScribbleArea() );
     }
 
     m_pCurrentTool = getTool( PENCIL );

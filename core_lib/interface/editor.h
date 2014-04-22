@@ -48,7 +48,7 @@ public:
     Editor( MainWindow2* parent );
     virtual ~Editor();
 
-    bool initialize();
+    bool initialize( ScribbleArea* pScribbleArea );
 
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
@@ -112,6 +112,7 @@ signals:
 
     // save
     void needSave();
+    void fileLoaded();
 
 public slots:
     void clearCurrentFrame();
@@ -163,7 +164,6 @@ public slots:
     void duplicateKey();
     void removeKey();
 
-    //void printAndPreview( QPrinter* printer );
     void resetUI();
 
     void updateObject();
@@ -216,14 +216,14 @@ private slots:
     void getCameraLayer();
 
 private:
-    Object* m_pObject;  // the object to be edited by the editor
+    Object* m_pObject = nullptr;  // the object to be edited by the editor
 
-    ScribbleArea* m_pScribbleArea;
-    MainWindow2* m_pMainWindow;
+    ScribbleArea* m_pScribbleArea = nullptr;
+    MainWindow2* m_pMainWindow = nullptr;
 
-    ColorManager* m_colorManager;
-    ToolManager* m_pToolManager;
-    LayerManager* m_pLayerManager;
+    ColorManager* m_colorManager = nullptr;
+    ToolManager* m_pToolManager = nullptr;
+    LayerManager* m_pLayerManager = nullptr;
 
     bool m_isAltPressed;
     int numberOfModifications;
@@ -239,7 +239,7 @@ private:
     void addKeyFame( int layerNumber, int frameNumber );
 
     // backup
-    void clearBackup();
+    void clearUndoStack();
     int lastModifiedFrame;
     int lastModifiedLayer;
 

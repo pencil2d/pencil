@@ -34,8 +34,7 @@ QString BaseTool::TypeName(ToolType type)
 }
 
 BaseTool::BaseTool(QObject *parent) :
-    QObject(parent),
-    adjustmentStep(0)
+    QObject(parent)
 {
 }
 
@@ -45,30 +44,32 @@ QCursor BaseTool::cursor()
     return Qt::ArrowCursor;
 }
 
-void BaseTool::initialize( Editor* editor )
+void BaseTool::initialize( Editor* editor, ScribbleArea* pScribbleArea )
 {
+    Q_ASSERT( pScribbleArea );
+    Q_ASSERT( editor );
+
     if (editor == NULL)
     {
         qCritical("ERROR: editor is null!");
     }
     m_pEditor = editor;
-    
+    m_pScribbleArea = pScribbleArea;
+    m_pStrokeManager = m_pScribbleArea->getStrokeManager();
+
     loadSettings();
 }
 
 void BaseTool::mousePressEvent( QMouseEvent* )
 {
-
 }
 
 void BaseTool::mouseMoveEvent( QMouseEvent* )
 {
-
 }
 
 void BaseTool::mouseReleaseEvent( QMouseEvent* )
 {
-
 }
 
 void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
@@ -78,6 +79,8 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
 
 QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn static?
 {
+    Q_ASSERT( m_pScribbleArea );
+
     qreal zoomFactor= m_pScribbleArea->getCentralViewScale(); //scale factor
     //qDebug() << "--->" << zoomFactor;
     qreal propWidth = properties.width * zoomFactor;

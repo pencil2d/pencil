@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QSvgGenerator>
 #include <QMessageBox>
 #include <QImageReader>
-// #include <QPrinter>
 #include <QComboBox>
 #include <QSlider>
 #include <QFileDialog>
@@ -117,11 +116,13 @@ Editor::~Editor()
     {
         delete m_pObject;
     }
-    clearBackup();
+    clearUndoStack();
 }
 
-bool Editor::initialize()
+bool Editor::initialize( ScribbleArea* pScribbleArea )
 {
+    m_pScribbleArea = pScribbleArea;
+
     // Initialize managers
     m_colorManager = new ColorManager( this );
     m_pLayerManager = new LayerManager( this );
@@ -490,7 +491,7 @@ void Editor::redo()
     }
 }
 
-void Editor::clearBackup()
+void Editor::clearUndoStack()
 {
     backupIndex = -1;
     while ( !backupList.isEmpty() )
@@ -752,13 +753,19 @@ void Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    m_pMainWindow->m_pColorPalette->selectColorNumber( 0 );
+    colorManager()->pickColorNumber( 0 );
 
-    getTimeLine()->updateLayerNumber( object()->getLayerCount() );
-    m_pMainWindow->m_pColorPalette->refreshColorList();
-    clearBackup();
+    if ( getTimeLine() )
+    {
+        getTimeLine()->updateLayerNumber( object()->getLayerCount() );
+    }
+    clearUndoStack();
 
-    m_pScribbleArea->updateAllFrames();
+    if ( m_pScribbleArea )
+    {
+        m_pScribbleArea->updateAllFrames();
+    }
+
     updateMaxFrame();
 }
 

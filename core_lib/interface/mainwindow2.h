@@ -8,6 +8,7 @@ class QActionGroup;
 class Editor;
 class ScribbleArea;
 class Object;
+class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionDockWidget;
 class ToolOptionWidget;
@@ -37,7 +38,7 @@ public:
     Object* m_pObject;
 
     // Core controller
-    Editor* m_pCore;
+    Editor* m_pEditor;
 
     // UI: central Drawing Area
     ScribbleArea* m_pScribbleArea;
@@ -88,18 +89,21 @@ private slots:
     bool loadDomElement(QDomElement docElem, QString filePath);
 
 private:
-    void createSubWidgets();
-    void makeColorWheelConnections();
-    void makeColorPaletteConnections();
-    void makeTimeLineConnections();
+    void createDockWidgets();
     void createMenus();
+
+    void makeColorWheelConnections();
+    void makeTimeLineConnections();
 
     void closeEvent(QCloseEvent*);
 
     void readSettings();
     void writeSettings();
-    void makeConnections( Editor* m_pCore, ScribbleArea* m_pScribbleArea );
+    void makeConnections( Editor*, ScribbleArea* );
+    void makeConnections( Editor*, ColorPaletteWidget* );
+
     Ui::MainWindow2* ui;
+    QList< BaseDockWidget* > m_subWidgets;
 };
 
 #endif // MAINWINDOW2_H

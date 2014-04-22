@@ -40,7 +40,7 @@ public:
     static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
     explicit BaseTool(QObject *parent = 0);
-    void initialize( Editor* editor );
+    void initialize( Editor* editor, ScribbleArea* );
 
     QString typeName() { return TypeName( type() ); }
 
@@ -65,7 +65,7 @@ public:
 
     virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
 
-    virtual void clear() { }
+    virtual void clear() {}
 
     static bool isAdjusting;
     QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
@@ -86,15 +86,11 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
-signals:
-
-public slots:
-
 protected:
-    Editor* m_pEditor;
-    ScribbleArea* m_pScribbleArea;
-    StrokeManager* m_pStrokeManager;
-    qreal adjustmentStep;
+    Editor* m_pEditor = nullptr;
+    ScribbleArea* m_pScribbleArea = nullptr;
+    StrokeManager* m_pStrokeManager = nullptr;
+    qreal adjustmentStep = 0.0f;
 };
 
 #endif // BASETOOL_H
