@@ -197,7 +197,7 @@ void MainWindow2::makeColorWheelConnections()
     ColorBox* pColorBox = static_cast<ColorBox*>(m_pColorWheelWidget->widget());
     Q_ASSERT( pColorBox );
 
-    connect( pColorBox, &ColorBox::colorChanged, m_pEditor->colorManager(), &ColorManager::pickColor );
+    connect( pColorBox, &ColorBox::colorChanged, m_pEditor->colorManager(), &ColorManager::setColor );
     connect( m_pEditor->colorManager(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
 }
 
@@ -1249,8 +1249,8 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
     connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
 
     ColorManager* pColorManager = pEditor->colorManager();
-    connect( pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::pickColor );
-    connect( pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::pickColorNumber );
+    connect( pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::setColor );
+    connect( pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::setColorNumber );
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );

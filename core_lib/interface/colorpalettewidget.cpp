@@ -108,28 +108,6 @@ void ColorPaletteWidget::refreshColorList()
     update();
 }
 
-void ColorPaletteWidget::colourSwatchClicked()
-{
-    if (currentColourNumber() > -1)
-    {
-        bool ok;
-        ColourRef colorRef = core()->object()->getColour(currentColourNumber());
-        QRgb qrgba = QColorDialog::getRgba( colorRef.colour.rgba(), &ok, this );
-
-        if ( ok )
-        {
-            QColor newColor = QColor::fromRgba(qrgba);
-            int colorIndex = currentColourNumber();
-            core()->object()->setColour(colorIndex, newColor);
-            core()->setFrontColour(colorIndex, newColor );
-
-            refreshColorList();
-            selectColorNumber(colorIndex);
-            setColor(newColor);
-        }
-    }
-}
-
 void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
 {
     if (!current)
@@ -195,7 +173,7 @@ void ColorPaletteWidget::clickAddColorButton()
             ref.name = text;
             core()->object()->addColour(ref);
             refreshColorList();
-            core()->colorManager()->pickColor( core()->object()->getColourCount() - 1 );
+            core()->colorManager()->setColor( core()->object()->getColourCount() - 1 );
         }
     }
 }

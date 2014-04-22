@@ -1893,13 +1893,13 @@ void ScribbleArea::displaySelectionProperties()
                 m_pEditor->toolManager()->setFeather( vectorImage->curve[ selectedCurve ].getFeather() );
                 m_pEditor->toolManager()->setInvisibility( vectorImage->curve[ selectedCurve ].isInvisible() );
                 m_pEditor->toolManager()->setPressure( vectorImage->curve[ selectedCurve ].getVariableWidth() );
-                m_pEditor->colorManager()->pickColorNumber( vectorImage->curve[ selectedCurve ].getColourNumber() );
+                m_pEditor->colorManager()->setColorNumber( vectorImage->curve[ selectedCurve ].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if ( selectedArea != -1 )
             {
-                m_pEditor->colorManager()->pickColorNumber( vectorImage->area[ selectedArea ].colourNumber );
+                m_pEditor->colorManager()->setColorNumber( vectorImage->area[ selectedArea ].colourNumber );
             }
         }
     }

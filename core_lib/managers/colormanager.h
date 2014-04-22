@@ -10,7 +10,7 @@ class ColorManager : public BaseManager
 {
     Q_OBJECT
 public:
-    ColorManager( QObject* parent = 0 );
+    ColorManager( QObject* parent );
     ~ColorManager();
     bool initialize() override;
 
@@ -18,16 +18,16 @@ public:
     int frontColorNumber();
 
 public slots:
-    void pickColorNumber(int n);
-    void pickColor(const QColor& color);
+    void setColor(const QColor& color);
+    void setColorNumber( int n );
 
 signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
 private:
-    int m_frontColorIndex;
-
+    QColor m_currentFrontColor;
+    int m_currentColorIndex;
 };
 
 #endif // COLORMANAGER_H

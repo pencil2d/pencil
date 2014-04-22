@@ -252,36 +252,6 @@ bool Editor::importMov()
     }
 }
 
-void Editor::selectAndApplyColour( int i )
-{
-    Layer* layer = getCurrentLayer();
-    if ( layer == NULL )
-    {
-        return;
-    }
-    if ( layer->type() == Layer::VECTOR )
-    {
-        ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layerManager()->currentFrameIndex(), 0 )->applyColourToSelection( i );
-    }
-}
-
-
-void Editor::setFrontColour( int i, QColor newColour )
-{
-    if ( newColour.isValid() && i > -1 )
-    {
-        Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-        if ( layer != NULL )
-        {
-            if ( layer->type() == Layer::VECTOR )
-            {
-                m_pScribbleArea->setModified( layerManager()->currentLayerIndex(), layerManager()->currentFrameIndex() );
-            }
-        }
-        colorManager()->pickColorNumber( i );
-    }
-}
-
 void Editor::changeAutosave( int x )
 {
     QSettings settings( "Pencil", "Pencil" );
@@ -755,7 +725,7 @@ void Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    colorManager()->pickColorNumber( 0 );
+    colorManager()->setColorNumber( 0 );
 
     if ( getTimeLine() )
     {
@@ -970,7 +940,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     return true;
 }
 
-bool Editor::exportSeq()
+bool Editor::exportImageSequence()
 {
     QSettings settings( "Pencil", "Pencil" );
     QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();

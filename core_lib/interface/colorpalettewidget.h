@@ -60,9 +60,6 @@ private slots:
     void clickAddColorButton();
     void clickRemoveColorButton();
 
-    // no used now.
-    void colourSwatchClicked();
-
 private:
     Ui::ColorPalette* ui;
 };

@@ -88,7 +88,6 @@ public:
     // backup
     int backupIndex;
     QList<BackupElement*> backupList;
-
     ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
 
 protected:
@@ -96,6 +95,7 @@ protected:
     void dragEnterEvent( QDragEnterEvent* event );
     void dropEvent( QDropEvent* event );
     QRect viewRect;
+
 signals:
     void selectAll();
     void toggleLoop( bool );
@@ -172,9 +172,6 @@ public slots:
     void switchVisibilityOfLayer( int layerNumber );
     void moveLayer( int i, int j );
     void updateMaxFrame();
-
-    void selectAndApplyColour( int );
-    void setFrontColour( int, QColor );
 
     void changeAutosave( int );
     void changeAutosaveNumber( int );

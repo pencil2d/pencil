@@ -92,5 +92,5 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 
 void PopupColorPaletteWidget::onColorChanged(const QColor& color)
 {
-    m_pContainer->getEditor()->colorManager()->pickColor( color );
+    m_pContainer->getEditor()->colorManager()->setColor( color );
 }

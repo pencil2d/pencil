@@ -82,7 +82,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
             pickedColour.setBlue( pickedColour.blue() + transp );
             if (pickedColour.alpha() != 0)
             {
-                m_pEditor->colorManager()->pickColor(pickedColour);
+                m_pEditor->colorManager()->setColor(pickedColour);
             }
         }
         else if (layer->type() == Layer::VECTOR)
@@ -91,7 +91,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
             int colourNumber = vectorImage->getColourNumber(getLastPoint());
             if (colourNumber != -1)
             {
-                m_pEditor->colorManager()->pickColorNumber(colourNumber);
+                m_pEditor->colorManager()->setColorNumber(colourNumber);
             }
         }
     }
