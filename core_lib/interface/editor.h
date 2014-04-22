@@ -204,7 +204,7 @@ public slots:
 
     bool exportX();
     bool exportImage();
-    bool exportSeq();
+    bool exportImageSequence();
     bool exportMov();
     bool exportFlash();
 

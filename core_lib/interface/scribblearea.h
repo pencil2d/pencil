@@ -155,7 +155,6 @@ public slots:
     void rotatecw();
     void rotateacw();
 
-    void setCurveOpacity( int );
     void setCurveSmoothing( int );
     void setHighResPosition( int );
     void setAntialiasing( int );
@@ -236,7 +235,6 @@ protected:
     bool m_antialiasing;
     bool shadows;
     bool toolCursors;
-    qreal curveOpacity;
     qreal curveSmoothing;
     bool onionPrev, onionNext;
     bool onionBlue, onionRed;

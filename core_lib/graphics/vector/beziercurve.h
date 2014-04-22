@@ -86,7 +86,7 @@ public:
     QPainterPath getStrokedPath(qreal width, bool pressure);
     QRectF getBoundingRect();
 
-    void drawPath(QPainter& painter, Object* object, QMatrix transformation, bool simplified, bool showThinLines, qreal opacity);
+    void drawPath(QPainter& painter, Object* object, QMatrix transformation, bool simplified, bool showThinLines );
     void createCurve(QList<QPointF>& pointList, QList<qreal>& pressureList );
     void smoothCurve();
 

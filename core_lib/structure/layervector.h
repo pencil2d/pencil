@@ -39,8 +39,8 @@ public:
     bool addNewKeyFrameAt( int frameNumber ) override;
 
     void loadImageAtFrame(QString, int);
-    QImage* getImageAtIndex(int, QSize, bool, bool, qreal, bool );
-    QImage* getLastImageAtFrame(int, int, QSize, bool, bool, qreal, bool );
+    QImage* getImageAtIndex(int, QSize, bool, bool, bool );
+    QImage* getLastImageAtFrame(int, int, QSize, bool, bool, bool );
 
     void setView(QMatrix view);
     

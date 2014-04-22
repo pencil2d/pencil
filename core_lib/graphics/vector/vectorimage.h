@@ -78,8 +78,8 @@ public:
     bool usesColour(int index);
     void removeColour(int index);
 
-    void paintImage(QPainter& painter, bool simplified, bool showThinCurves, qreal curveOpacity, bool antialiasing);
-    void outputImage(QImage* image, QSize size, QMatrix myView, bool simplified, bool showThinCurves, qreal curveOpacity, bool antialiasing); // uses paintImage
+    void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
+    void outputImage(QImage* image, QSize size, QMatrix myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage
 
     void clear();
     void clean();

@@ -44,7 +44,6 @@ ScribbleArea::ScribbleArea( QWidget* parent )
 
     followContour = 0;
 
-    curveOpacity = ( 100 - settings.value( "curveOpacity" ).toInt() ) / 100.0; // default value is 1.0
     int curveSmoothingLevel = settings.value( "curveSmoothing" ).toInt();
     if ( curveSmoothingLevel == 0 ) { curveSmoothingLevel = 20; settings.setValue( "curveSmoothing", curveSmoothingLevel ); } // default
     curveSmoothing = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -130,14 +129,6 @@ void ScribbleArea::updateToolCursor()
     setCursor( currentTool()->cursor() );
 }
 
-void ScribbleArea::setCurveOpacity( int newOpacity )
-{
-    curveOpacity = newOpacity / 100.0;
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "curveOpacity", 100 - newOpacity );
-    updateAllVectorLayers();
-}
-
 void ScribbleArea::setCurveSmoothing( int newSmoothingLevel )
 {
     curveSmoothing = newSmoothingLevel / 20.0;
@@ -153,7 +144,8 @@ void ScribbleArea::setHighResPosition( int x )
         m_strokeManager->useHighResPosition( false );
         settings.setValue( SETTING_HIGH_RESOLUTION, "false" );
     }
-    else {
+    else
+    {
         m_strokeManager->useHighResPosition( true );
         settings.setValue( SETTING_HIGH_RESOLUTION, "true" );
     }
@@ -1172,7 +1164,6 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                 QImage *pImage = layerVector->getLastImageAtFrame( frame, 0,
                                                                    sz,
                                                                    m_isSimplified, m_showThinLines,
-                                                                   curveOpacity,
                                                                    m_antialiasing );
 
                 if ( pImage != NULL )
@@ -1184,7 +1175,6 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         QImage *previousImage = layerVector->getLastImageAtFrame( frame, -1, sz,
                                                                                   m_isSimplified,
                                                                                   m_showThinLines,
-                                                                                  curveOpacity,
                                                                                   m_antialiasing );
                         if ( previousImage != NULL )
                         {
@@ -1194,7 +1184,6 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         QImage* previousImage2 = layerVector->getLastImageAtFrame( frame, -2, sz,
                                                                                    m_isSimplified,
                                                                                    m_showThinLines,
-                                                                                   curveOpacity,
                                                                                    m_antialiasing );
                         if ( previousImage2 != NULL )
                         {
@@ -1204,7 +1193,6 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         QImage *previousImage3 = layerVector->getLastImageAtFrame( frame, -3, sz,
                                                                                    m_isSimplified,
                                                                                    m_showThinLines,
-                                                                                   curveOpacity,
                                                                                    m_antialiasing );
                         if ( previousImage3 != NULL )
                         {
@@ -1226,20 +1214,28 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
 
                     // next frame (onion skin)
                     if ( onionNext ) {
-                        QImage* nextImage = layerVector->getLastImageAtFrame( frame, 1, sz, m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
+                        QImage* nextImage = layerVector->getLastImageAtFrame( frame, 1, sz, 
+                                                                              m_isSimplified, 
+                                                                              m_showThinLines, 
+                                                                              m_antialiasing );
                         if ( nextImage != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *nextImage );
                         }
                         QImage* nextImage2 = layerVector->getLastImageAtFrame( frame, 2, sz,
-                                                                               m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
+                                                                               m_isSimplified, 
+                                                                               m_showThinLines, 
+                                                                               m_antialiasing );
                         if ( nextImage2 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
                             painter.drawImage( QPoint( 0, 0 ), *nextImage2 );
                         }
-                        QImage* nextImage3 = layerVector->getLastImageAtFrame( frame, 3, sz, m_isSimplified, m_showThinLines, curveOpacity, m_antialiasing );
+                        QImage* nextImage3 = layerVector->getLastImageAtFrame( frame, 3, sz, 
+                                                                               m_isSimplified, 
+                                                                               m_showThinLines, 
+                                                                               m_antialiasing );
                         if ( nextImage3 != NULL )
                         {
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
@@ -1333,8 +1329,9 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
                 QImage* image = layerVector->getLastImageAtFrame( frame, 0, sz,
-                                                                  m_isSimplified, m_showThinLines,
-                                                                  curveOpacity, m_antialiasing );
+                                                                  m_isSimplified, 
+                                                                  m_showThinLines,
+                                                                  m_antialiasing );
                 if ( image != NULL )
                 {
                     painter.setWorldMatrixEnabled( false );
@@ -2027,7 +2024,7 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
     bool condition;
     //vectorImage->update(true, showThinLines); // update the vector image with simplified curves (all width=1)
     QImage *targetImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
-    vectorImage->outputImage( targetImage, size(), myTempView, true, m_showThinLines, 1.0, true ); // the target image is the vector image with simplified curves (all width=1)
+    vectorImage->outputImage( targetImage, size(), myTempView, true, m_showThinLines, true ); // the target image is the vector image with simplified curves (all width=1)
     //QImage* replaceImage = &bufferImg;
     QImage *replaceImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
     QList<VertexRef> points = vectorImage->getAllVertices(); // refs of all the points

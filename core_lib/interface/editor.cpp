@@ -910,7 +910,9 @@ QMatrix Editor::map( QRectF source, QRectF target )   // this method should be p
     {
         if ( !mirror )
         {
-            matrix = QMatrix( ( x2P - x1P ) / ( x2 - x1 ), 0, 0, ( y2P - y1P ) / ( y2 - y1 ), ( x1P*x2 - x2P*x1 ) / ( x2 - x1 ), ( y1P*y2 - y2P*y1 ) / ( y2 - y1 ) );
+            matrix = QMatrix( ( x2P - x1P ) / ( x2 - x1 ), 0, 
+                              0,  ( y2P - y1P ) / ( y2 - y1 ), 
+                              ( x1P*x2 - x2P*x1 ) / ( x2 - x1 ), ( y1P*y2 - y2P*y1 ) / ( y2 - y1 ) );
         }
         else
         {
@@ -936,44 +938,45 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     view = m_pScribbleArea->getView() * view;
 
     updateMaxFrame();
-    m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
+    m_pObject->exportFrames( 1, maxFrame, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
 bool Editor::exportImageSequence()
 {
-    QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
+    QSettings settings( PENCIL2D, PENCIL2D );
+
+    QString strDefaultPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
+    if ( strDefaultPath.isEmpty() )
     {
-        QString initialPath = QDir::homePath() + "/untitled";
+        strDefaultPath= QDir::homePath() + "/untitled.png";
     }
-    QString filePath = QFileDialog::getSaveFileName( m_pMainWindow, tr( "Save Image Sequence" ), 
-                                                     initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
-    if ( filePath.isEmpty() )
+
+    QString strFilePath = QFileDialog::getSaveFileName( m_pMainWindow, 
+                                                     tr( "Save Image Sequence" ), 
+                                                     strDefaultPath, 
+                                                     tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
+    if ( strFilePath.isEmpty() )
     {
         return false;
     }
-    else
-    {
-        settings.setValue( "lastExportPath", QVariant( filePath ) );
+    settings.setValue( "lastExportPath", QVariant( strFilePath ) );
 
-        if ( !exportFramesDialog ) createExportFramesDialog();
-        exportFramesDialog_hBox->setValue( m_pScribbleArea->getViewRect().toRect().width() );
-        exportFramesDialog_vBox->setValue( m_pScribbleArea->getViewRect().toRect().height() );
-        exportFramesDialog->exec();
-        if ( exportFramesDialog->result() == QDialog::Rejected ) return false;
+    if ( !exportFramesDialog ) createExportFramesDialog();
+    exportFramesDialog_hBox->setValue( m_pScribbleArea->getViewRect().toRect().width() );
+    exportFramesDialog_vBox->setValue( m_pScribbleArea->getViewRect().toRect().height() );
+    exportFramesDialog->exec();
+    if ( exportFramesDialog->result() == QDialog::Rejected ) return false;
 
-        QSize exportSize = QSize( exportFramesDialog_hBox->value(), exportFramesDialog_vBox->value() );
-        //QMatrix view = map( QRectF(QPointF(0,0), scribbleArea->size() ), QRectF(QPointF(0,0), exportSize) );
-        QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-        view = m_pScribbleArea->getView() * view;
+    QSize exportSize = QSize( exportFramesDialog_hBox->value(), exportFramesDialog_vBox->value() );
+    //QMatrix view = map( QRectF(QPointF(0,0), scribbleArea->size() ), QRectF(QPointF(0,0), exportSize) );
+    QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    view = m_pScribbleArea->getView() * view;
 
-        QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
-        updateMaxFrame();
-        m_pObject->exportFrames( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
-        return true;
-    }
+    QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
+    updateMaxFrame();
+    m_pObject->exportFrames( 1, maxFrame, getCurrentLayer(), exportSize, strFilePath, exportFormat, -1, false, true, NULL, 0 );
+    return true;
 }
 
 bool Editor::exportX()

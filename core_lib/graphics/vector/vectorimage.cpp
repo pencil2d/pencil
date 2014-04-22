@@ -866,10 +866,12 @@ void VectorImage::removeColour(int index)
 }
 
 void VectorImage::paintImage(QPainter& painter,
-							 bool simplified, bool showThinCurves,
-							 qreal curveOpacity, bool antialiasing)
+							 bool simplified, 
+                             bool showThinCurves,
+							 bool antialiasing )
 {
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+
     painter.setClipping(false);
     painter.setOpacity(1.0);
     QMatrix painterMatrix = painter.worldMatrix();
@@ -912,7 +914,7 @@ void VectorImage::paintImage(QPainter& painter,
     painter.setClipping(true);
     for(int i=0; i< curve.size(); i++)
     {
-        curve[i].drawPath(painter, myParent, selectionTransformation, simplified, showThinCurves, curveOpacity);
+        curve[i].drawPath(painter, myParent, selectionTransformation, simplified, showThinCurves );
     }
     //painter.resetMatrix(); ?????
     painter.setClipping(false);
@@ -922,7 +924,6 @@ void VectorImage::outputImage(QImage* image,
 							  QSize size,
 							  QMatrix myView,
 							  bool simplified, bool showThinCurves,
-							  qreal curveOpacity,
 							  bool antialiasing)
 {
     Q_UNUSED(size);
@@ -930,8 +931,7 @@ void VectorImage::outputImage(QImage* image,
 	image->fill(qRgba(0,0,0,0));
     QPainter painter(image);
     painter.setWorldMatrix(myView);
-    //painter.setClipRegion( QRegion( myView.inverted().mapToPolygon(  QRect(40, 40, size.width()-80, size.height()-80) ) ) );
-    paintImage(painter, simplified, showThinCurves, curveOpacity, antialiasing );
+    paintImage(painter, simplified, showThinCurves, antialiasing );
 }
 
 void VectorImage::clear()

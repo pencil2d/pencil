@@ -244,17 +244,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     if ( settings.value("gradients").toString() == "3" ) gradient3Button->setChecked(true);
     if ( settings.value("gradients").toString() == "4" ) gradient4Button->setChecked(true);
 
-
-    /*QCheckBox *gradientsBox = new QCheckBox(tr("Gradients"));
-    gradientsBox->setChecked(true); // default
-    if (settings.value("gradients").toString()=="0") gradientsBox->setChecked(false);*/
-
-    QLabel* curveOpacityLabel = new QLabel(tr("Vector curve opacity"));
-    QSlider* curveOpacityLevel = new QSlider(Qt::Horizontal);
-    curveOpacityLevel->setMinimum(0);
-    curveOpacityLevel->setMaximum(100);
-    curveOpacityLevel->setValue( 100 - settings.value("curveOpacity").toInt() );
-
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
     windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
@@ -272,8 +261,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(antialiasingBox, 0, 0);
     displayLayout->addWidget(gradientsBox, 1, 0);
-    displayLayout->addWidget(curveOpacityLabel, 2, 0);
-    displayLayout->addWidget(curveOpacityLevel, 3, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -311,7 +298,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect(toolCursorsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(toolCursorsChange(int)));
     connect(aquaBox, SIGNAL(stateChanged(int)), parent, SIGNAL(styleChanged(int)));
     connect(antialiasingBox, SIGNAL(stateChanged(int)), parent, SIGNAL(antialiasingChange(int)));
-    connect(curveOpacityLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveOpacityChange(int)));
     connect(curveSmoothingLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveSmoothingChange(int)));
     connect(highResBox, SIGNAL(stateChanged(int)), parent, SIGNAL(highResPositionChange(int)));
 

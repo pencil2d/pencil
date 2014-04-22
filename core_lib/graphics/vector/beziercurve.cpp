@@ -372,19 +372,14 @@ void BezierCurve::removeVertex(int i)
     }
 }
 
-void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transformation, bool simplified, bool showThinLines, qreal opacity)
+void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transformation, bool simplified, bool showThinLines )
 {
-    if (!simplified) painter.setOpacity(opacity);
     QColor colour = object->getColour(colourNumber).colour;
 
-    //simplified = true;
-    //if (selected) { painter.setMatrix(transformation); } else { painter.setMatrix(QMatrix()); }
-    //QColor colour = object->getColour(colourNumber).colour;
-    if (!simplified) painter.setOpacity(opacity);
     BezierCurve myCurve;
     if (isPartlySelected()) { myCurve = (transformed(transformation)); }
     else { myCurve = *this; }
-    //if (variableWidth && !simplified && width != 0) {
+
     if ( variableWidth && !simplified && !invisible)
     {
         painter.setPen(QPen(QBrush(colour), 1, Qt::NoPen, Qt::RoundCap,Qt::RoundJoin));

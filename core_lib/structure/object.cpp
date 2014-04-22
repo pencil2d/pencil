@@ -437,7 +437,6 @@ void Object::loadDefaultPalette()
 
 void Object::paintImage(QPainter& painter, int frameNumber,
 						bool background,
-						qreal curveOpacity,
 						bool antialiasing )
 {
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -476,22 +475,24 @@ void Object::paintImage(QPainter& painter, int frameNumber,
                 layerVector->getLastVectorImageAtFrame(frameNumber, 0)->paintImage(painter,
 																				   false,
 																				   false,
-																				   curveOpacity,
 																				   antialiasing);
             }
         }
     }
 }
 
-bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer,
+bool Object::exportFrames(int frameStart, int frameEnd, 
+                          Layer* currentLayer,
 						  QSize exportSize, QString filePath,
-						  const char* format, int quality,
-						  bool background, bool antialiasing,
-						  QProgressDialog* progress=NULL,
-						  int progressMax=50)
+						  const char* format, 
+                          int quality,
+						  bool background, 
+                          bool antialiasing,
+						  QProgressDialog* progress = NULL,
+						  int progressMax = 50)
 {
     QSettings settings("Pencil","Pencil");
-    qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
+    qreal curveOpacity = (100 - settings.value("curveOpacity").toInt()) / 100.0; // default value is 1.0
 
     QString extension = "";
     QString formatStr = format;
@@ -522,25 +523,21 @@ bool Object::exportFrames(int frameStart, int frameEnd, QMatrix view, Layer* cur
         // Make sure that old frame is erased before exporting a new one
         tempImage.fill(0x00000000);
 
-        if (currentLayer->type() == Layer::CAMERA)
-        {
-            QRect viewRect = ((LayerCamera*)currentLayer)->getViewRect();
-            QMatrix mapView = Editor::map( viewRect, QRectF(QPointF(0,0), exportSize) );
-            mapView = ((LayerCamera*)currentLayer)->getViewAtFrame(currentFrame) * mapView;
-            painter.setWorldMatrix(mapView);
-        }
-        else
-        {
-            painter.setWorldMatrix(view);
-        }
-        paintImage(painter, currentFrame, background, curveOpacity, antialiasing);
+        QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
+        QMatrix mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+        mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
+        painter.setWorldMatrix( mapView );
+        
+        paintImage(painter, currentFrame, background, antialiasing);
 
         QString frameNumberString = QString::number(currentFrame);
-        while ( frameNumberString.length() < 4) frameNumberString.prepend("0");
+        while ( frameNumberString.length() < 4 )
+        {
+            frameNumberString.prepend( "0" );
+        }
         tempImage.save(filePath+frameNumberString+extension, format, quality);
     }
 
-    // XXX no error handling done yet
     return true;
 }
 
@@ -584,7 +581,6 @@ bool Object::exportFrames1(int frameStart, int frameEnd,
     int framePerSecond;
 
     QSettings settings("Pencil","Pencil");
-    qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
 
     QString extension = "";
     QString formatStr = format;
@@ -633,7 +629,7 @@ bool Object::exportFrames1(int frameStart, int frameEnd,
         {
             painter.setWorldMatrix(view);
         }
-        paintImage(painter, currentFrame, background, curveOpacity, antialiasing);
+        paintImage(painter, currentFrame, background, antialiasing);
 
         frameNumber++;
         framePerSecond++;
@@ -690,7 +686,6 @@ bool Object::exportFrames1(int frameStart, int frameEnd,
 bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing)
 {
     QSettings settings("Pencil","Pencil");
-    qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
 
     int page;
     page=0;
@@ -707,7 +702,7 @@ bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
             QMatrix thumbView = view * Editor::map(source, target);
             xPainter.setWorldMatrix( thumbView );
             xPainter.setClipRegion( thumbView.inverted().map( QRegion(target) ) );
-            paintImage(xPainter, i, false, curveOpacity, antialiasing);
+            paintImage(xPainter, i, false, antialiasing);
             xPainter.resetMatrix();
             xPainter.setClipping(false);
             xPainter.setPen( Qt::black );
@@ -733,13 +728,12 @@ bool Object::exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSiz
 bool Object::exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing)
 {
     Q_UNUSED(frameEnd);
-    QSettings settings("Pencil","Pencil");
-    qreal curveOpacity = (100-settings.value("curveOpacity").toInt())/100.0; // default value is 1.0
+
     QImage exported(exportSize, QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&exported);
     painter.fillRect(exported.rect(), Qt::white);
     painter.setWorldMatrix(view);
-    paintImage(painter, frameStart, false, curveOpacity, antialiasing);
+    paintImage(painter, frameStart, false, antialiasing);
     return exported.save(filePath);
 }
 

@@ -212,7 +212,7 @@ void MainWindow2::createMenus()
 
     /// --- Export Menu ---
     connect( ui->actionExport_X_sheet, &QAction::triggered, m_pEditor, &Editor::exportX );
-    connect( ui->actionExport_Image_Sequence, &QAction::triggered, m_pEditor, &Editor::exportSeq );
+    connect( ui->actionExport_Image_Sequence, &QAction::triggered, m_pEditor, &Editor::exportImageSequence );
     connect( ui->actionExport_Image, &QAction::triggered, m_pEditor, &Editor::exportImage );
     connect( ui->actionExport_Movie, &QAction::triggered, m_pEditor, &Editor::exportMov );
 
