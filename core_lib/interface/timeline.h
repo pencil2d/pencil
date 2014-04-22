@@ -31,6 +31,7 @@ public:
     TimeLine( QWidget* parent );
     
     void initUI() override;
+    void updateUI() override;
 
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );

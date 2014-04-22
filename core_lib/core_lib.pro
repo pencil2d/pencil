@@ -176,7 +176,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
 FORMS += \
     interface/mainwindow2.ui \
     interface/shortcutspage.ui \
-    interface/colorinspector.ui
+    interface/colorinspector.ui \
+    interface/colorpalette.ui
 
 
 win32 {

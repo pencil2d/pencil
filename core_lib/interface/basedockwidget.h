@@ -15,6 +15,7 @@ public:
     ~BaseDockWidget();
 
     virtual void initUI() = 0;
+    virtual void updateUI() = 0;
 
     Editor* core() { return m_pCore; }
     void setCore( Editor* pCore ) { m_pCore = pCore; }

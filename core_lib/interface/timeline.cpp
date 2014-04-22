@@ -208,6 +208,11 @@ void TimeLine::initUI()
     scrubbing = false;
 }
 
+void TimeLine::updateUI()
+{
+
+}
+
 int TimeLine::getFrameLength()
 {
     return cells->getFrameLength();

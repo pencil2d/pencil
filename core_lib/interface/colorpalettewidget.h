@@ -17,23 +17,30 @@ GNU General Public License for more details.
 #ifndef COLOR_PALETTE_WIDGET_H
 #define COLOR_PALETTE_WIDGET_H
 
-#include <QDockWidget>
-#include <QToolButton>
+#include "basedockwidget.h"
 
-
+class QToolButton;
 class QListWidget;
 class QListWidgetItem;
 class Object;
 class Editor;
 class ColorBox;
 
+namespace Ui
+{
+class ColorPalette;
+}
 
-class ColorPaletteWidget : public QDockWidget
+
+class ColorPaletteWidget : public BaseDockWidget
 {
     Q_OBJECT
 
 public:
-    ColorPaletteWidget( QWidget* );
+    ColorPaletteWidget( QWidget* pParent );
+    void initUI() override;
+    void updateUI() override;
+
     int currentColourNumber();
 
 public slots:
@@ -47,18 +54,17 @@ signals:
 
 private slots:
     void updateItemColor(int, QColor);
-    void colourSwatchClicked();
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
 
+    // no used now.
+    void colourSwatchClicked();
+
 private:
-    Editor* m_pEditor;
-    QListWidget* m_colorListView;
-    QToolButton* m_addButton;
-    QToolButton* m_removeButton;
+    Ui::ColorPalette* ui;
 };
 
 #endif

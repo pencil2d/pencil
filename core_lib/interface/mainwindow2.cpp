@@ -157,6 +157,7 @@ void MainWindow2::createDockWidgets()
     m_pColorPalette->setObjectName( "ColorPalette" );
     m_pColorPalette->setFocusPolicy( Qt::NoFocus );
     makeConnections( m_pEditor, m_pColorPalette );
+    m_subWidgets.append( m_pColorPalette );
 
     m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
     m_pDisplayOptionWidget->setObjectName( "DisplayOption" );
@@ -1245,7 +1246,7 @@ void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {
-    connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::refreshColorList );
+    connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
 
     ColorManager* pColorManager = pEditor->colorManager();
     connect( pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::pickColor );

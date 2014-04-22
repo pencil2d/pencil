@@ -746,6 +746,8 @@ void Editor::setObject( Object* newObject )
     }
     m_pObject = newObject;
 
+    qDebug( "New object loaded." );
+
     // the default selected layer is the last one
     layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
     layerManager()->setCurrentFrameIndex( 1 );
