@@ -492,7 +492,6 @@ bool Object::exportFrames(int frameStart, int frameEnd,
 						  int progressMax = 50)
 {
     QSettings settings("Pencil","Pencil");
-    qreal curveOpacity = (100 - settings.value("curveOpacity").toInt()) / 100.0; // default value is 1.0
 
     QString extension = "";
     QString formatStr = format;

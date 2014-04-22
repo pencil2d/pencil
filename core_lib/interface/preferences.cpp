@@ -107,12 +107,6 @@ void Preferences::createIcons()
     shortcutsButton->setTextAlignment(Qt::AlignHCenter);
     shortcutsButton->setFlags((Qt::ItemIsSelectable | Qt::ItemIsEnabled));
 
-    /*QListWidgetItem *queryButton = new QListWidgetItem(contentsWidget);
-    queryButton->setIcon(QIcon(":/images/query.png"));
-    queryButton->setText(tr("Query"));
-    queryButton->setTextAlignment(Qt::AlignHCenter);
-    queryButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);*/
-
     connect(contentsWidget,
             SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
             this,

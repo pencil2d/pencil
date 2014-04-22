@@ -122,7 +122,6 @@ signals:
     void modification( int );
     void thinLinesChanged( bool );
     void outlinesChanged( bool );
-    //void showAllLayersChanged(bool);
 
     void onionPrevChanged( bool );
     void onionNextChanged( bool );

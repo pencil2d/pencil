@@ -9,7 +9,6 @@
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
-
 #include "brushtool.h"
 
 BrushTool::BrushTool(QObject *parent) :
@@ -122,7 +121,7 @@ void BrushTool::mouseMoveEvent(QMouseEvent *event)
 }
 
 // draw a single paint dab at the given location
-void BrushTool::paintAt(QPointF point)
+void BrushTool::paintAt(QPointF)
 {
 }
 
@@ -144,9 +143,6 @@ void BrushTool::drawStroke()
         qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
         opacity = currentPressure;
         brushWidth = brushWidth * currentPressure;
-
-        //        if (tabletInUse) { opacity = tabletPressure; }
-        //        if (usePressure) { brushWidth = brushWidth * tabletPressure; }
 
         qreal brushStep = 0.5 * currentWidth + 0.5 * properties.feather;
         brushStep = brushStep * currentPressure;
@@ -205,12 +201,13 @@ void BrushTool::drawStroke()
         //            m_pScribbleArea->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver);
         //            m_pScribbleArea->refreshVector(QRect(a.toPoint(), b.toPoint()), rad);
         //        }
-        if (p.size() == 4) {
+        if (p.size() == 4)
+        {
             QSizeF size(2,2);
-            QPainterPath path(p[0]);
-            path.cubicTo(p[1],
-                p[2],
-                p[3]);
+            QPainterPath path( p[0] );
+            path.cubicTo( p[1],
+                          p[2],
+                          p[3]);
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
