@@ -85,7 +85,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                 }
                 else if ( layer->type() == Layer::VECTOR )
                 {
-                    VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
+                    VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
                     if ( m_pScribbleArea->closestCurves.size() > 0 )     // the user clicks near a curve
                     {
                         //  editor->backup();
@@ -147,7 +147,7 @@ void MoveTool::mouseReleaseEvent( QMouseEvent *event )
             m_pScribbleArea->calculateSelectionTransformation();
 
             m_pScribbleArea->myTransformedSelection = m_pScribbleArea->myTempTransformedSelection;
-            m_pScribbleArea->setModified( m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex() );
+            m_pScribbleArea->setModified( m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFramePosition() );
             m_pScribbleArea->setAllDirty();
         }
     }
@@ -227,7 +227,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         if ( layer->type() == Layer::VECTOR )
         {
             m_pScribbleArea->closestCurves =
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 )
+                    ((LayerVector *)layer)->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 )
                     ->getCurvesCloseTo( getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX() );
         }
         m_pScribbleArea->update();

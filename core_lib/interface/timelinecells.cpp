@@ -250,29 +250,29 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
     if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
     {
         // --- draw the position of the current frame
-        if ( editor->layerManager()->currentFrameIndex() > frameOffset )
+        if ( editor->layerManager()->currentFramePosition() > frameOffset )
         {
             painter.setBrush( QColor( 255, 0, 0, 128 ) );
             painter.setPen( Qt::NoPen );
             painter.setFont( QFont( "helvetica", 10 ) );
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
             QRect scrubRect;
-            scrubRect.setTopLeft( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() - 1 ), 0 ) );
-            scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() ), height() ) );
+            scrubRect.setTopLeft( QPoint( getFrameX( editor->layerManager()->currentFramePosition() - 1 ), 0 ) );
+            scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFramePosition() ), height() ) );
             if ( shortScrub )
             {
-                scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() ), 19 ) );
+                scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFramePosition() ), 19 ) );
             }
             painter.drawRect( scrubRect );
             painter.setPen( QColor( 70, 70, 70, 255 ) );
             int incr = 0;
-            if ( editor->layerManager()->currentFrameIndex() < 10 )
+            if ( editor->layerManager()->currentFramePosition() < 10 )
             {
                 incr = 4;
             }
             else { incr = 0; }
-            painter.drawText( QPoint( getFrameX( editor->layerManager()->currentFrameIndex() - 1 ) + incr, 15 ),
-                              QString::number( editor->layerManager()->currentFrameIndex() ) );
+            painter.drawText( QPoint( getFrameX( editor->layerManager()->currentFramePosition() - 1 ) + incr, 15 ),
+                              QString::number( editor->layerManager()->currentFramePosition() ) );
         }
     }
 }
@@ -320,7 +320,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
         }
         break;
     case TIMELINE_CELL_TYPE::Tracks:
-        if ( frameNumber == editor->layerManager()->currentFrameIndex() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
+        if ( frameNumber == editor->layerManager()->currentFramePosition() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
         {
             timeLine->scrubbing = true;
         }
@@ -338,6 +338,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
                 {
                     editor->scrubTo( frameNumber );
                     timeLine->scrubbing = true;
+                    qDebug( "Scrub to %d frame", frameNumber );
                 }
             }
         }

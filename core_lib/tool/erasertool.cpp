@@ -102,14 +102,14 @@ void EraserTool::mouseReleaseEvent(QMouseEvent *event)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
             // Clear the area containing the last point
             //vectorImage->removeArea(lastPoint);
             // Clear the temporary pixel path
             m_pScribbleArea->clearBitmapBuffer();
             vectorImage->deleteSelectedPoints();
             //update();
-            m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFrameIndex());
+            m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFramePosition());
             m_pScribbleArea->setAllDirty();
         }
     }
@@ -130,11 +130,11 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
         if (layer->type() == Layer::VECTOR)
         {
             qreal radius = (properties.width / 2) / m_pScribbleArea->getTempViewScaleX();
-            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)
+            QList<VertexRef> nearbyVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0)
                 ->getVerticesCloseTo(getCurrentPoint(), radius);
             for (int i = 0; i < nearbyVertices.size(); i++)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)->setSelected(nearbyVertices.at(i), true);
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0)->setSelected(nearbyVertices.at(i), true);
             }
             //update();
             m_pScribbleArea->setAllDirty();

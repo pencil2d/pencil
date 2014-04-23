@@ -66,8 +66,8 @@ public:
     bool playing;
     bool looping;
     bool loopControl;
-    int loopStart;
-    int loopEnd;
+    int m_loopStart;
+    int m_loopEnd;
     bool sound;
 
     TimeLine* getTimeLine();

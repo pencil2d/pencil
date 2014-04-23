@@ -21,7 +21,6 @@ GNU General Public License for more details.
 
 TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
 {
-
     QSettings settings("Pencil","Pencil");
 
     //QFrame* frame = new QFrame();
@@ -36,33 +35,32 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     fpsBox->setToolTip("Frames per second");
     fpsBox->setFocusPolicy(Qt::NoFocus);
 
-    loopStart = new QSpinBox();
-    loopStart->setFont( QFont("Helvetica", 10) );
-    loopStart->setFixedHeight(22);
-    loopStart->setValue(settings.value("loopStart").toInt());
-    loopStart->setMinimum(1);
-    loopStart->setToolTip(tr("Start of loop"));
-    loopStart->setFocusPolicy(Qt::NoFocus);
+    m_pLoopStartSpinBox = new QSpinBox();
+    m_pLoopStartSpinBox->setFont( QFont("Helvetica", 10) );
+    m_pLoopStartSpinBox->setFixedHeight(22);
+    m_pLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
+    m_pLoopStartSpinBox->setMinimum(1);
+    m_pLoopStartSpinBox->setToolTip(tr("Start of loop"));
+    m_pLoopStartSpinBox->setFocusPolicy(Qt::NoFocus);
 
-    loopEnd= new QSpinBox();
-    loopEnd->setFont( QFont("Helvetica", 10) );
-    loopEnd->setFixedHeight(22);
-    loopEnd->setValue(settings.value("loopEnd").toInt());
-    loopEnd->setMinimum(2);
-    loopEnd->setToolTip(tr("End of loop"));
-    loopEnd->setFocusPolicy(Qt::NoFocus);
+    m_pLoopEndSpinBox= new QSpinBox();
+    m_pLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
+    m_pLoopEndSpinBox->setFixedHeight(22);
+    m_pLoopEndSpinBox->setMinimum(2);
+    m_pLoopEndSpinBox->setToolTip(tr("End of loop"));
+    m_pLoopEndSpinBox->setFocusPolicy(Qt::NoFocus);
+    m_pLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
 
-    loopControl = new QPushButton(tr("Loop Control"));
-    loopControl->setFont( QFont("Helvetica", 10) );
-    loopControl->setFixedHeight(26);
-    loopControl->setToolTip(tr("Loop control"));
-    loopControl->setCheckable(true);
+    m_pPlaybackRangeCheckBox = new QCheckBox( tr("Playback Range") );
+    m_pPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
+    m_pPlaybackRangeCheckBox->setFixedHeight(26);
+    m_pPlaybackRangeCheckBox->setToolTip(tr("Loop control"));
 
-    QPushButton* playButton = new QPushButton();
+    QPushButton* playButton = new QPushButton( this );
     loopButton = new QPushButton();
     soundButton = new QPushButton();
-    endplayButton= new QPushButton();
-    startplayButton= new QPushButton();
+    m_pGotoEndButton= new QPushButton();
+    m_pGotoStartButton= new QPushButton();
     QLabel* separator = new QLabel();
     separator->setPixmap(QPixmap(":icons/controls/separator.png"));
     separator->setFixedSize(QSize(37,31));
@@ -89,68 +87,52 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     playButton->setIcon(playIcon);
     loopButton->setIcon(loopIcon);
     soundButton->setIcon(soundIcon);
-    endplayButton->setIcon(endplayIcon);
-    startplayButton->setIcon(startplayIcon);
+    m_pGotoEndButton->setIcon(endplayIcon);
+    m_pGotoStartButton->setIcon(startplayIcon);
 
     playButton->setToolTip(tr("Play"));
     loopButton->setToolTip(tr("Loop"));
     soundButton->setToolTip(tr("Sound on/off"));
-    endplayButton->setToolTip(tr("End"));
-    startplayButton->setToolTip(tr("Start"));
+    m_pGotoEndButton->setToolTip(tr("End"));
+    m_pGotoStartButton->setToolTip(tr("Start"));
 
     loopButton->setCheckable(true);
     soundButton->setCheckable(true);
     soundButton->setChecked(true);
 
     addWidget(separator);
-    addWidget(startplayButton);
+    addWidget(m_pGotoStartButton);
     addWidget(playButton);
-    addWidget(endplayButton);
+    addWidget(m_pGotoEndButton);
     addWidget(loopButton);
-    addWidget(loopControl);
-    addWidget(loopStart);
-    addWidget(loopEnd);
+    addWidget(m_pPlaybackRangeCheckBox);
+    addWidget(m_pLoopStartSpinBox);
+    addWidget(m_pLoopEndSpinBox);
     addWidget(soundButton);
     addWidget(fpsLabel);
     addWidget(fpsBox);
 
 
-    /*QHBoxLayout* frameLayout = new QHBoxLayout();
-    frameLayout->setMargin(0);
-    frameLayout->setSpacing(0);
-    frameLayout->addWidget(separator);
-    frameLayout->addWidget(playButton);
-    frameLayout->addWidget(loopButton);
-    frameLayout->addWidget(soundButton);
-    frameLayout->addWidget(fpsLabel);
-    frameLayout->addWidget(fpsBox);
-    frameLayout->addWidget(spacingLabel);
-
-    setLayout(frameLayout);
-    setFixedSize(300,32);*/
-
-    //QHBoxLayout* layout = new QHBoxLayout();
-    //layout->setAlignment(Qt::AlignRight);
-    //layout->addWidget(frame);
-    //layout->setMargin(0);
-    //layout->setSizeConstraint(QLayout::SetNoConstraint);
-
-    //setLayout(frameLayout);
-
     connect(playButton, SIGNAL(clicked()), this, SIGNAL(playClick()));
-    connect(endplayButton, SIGNAL(clicked()), this, SIGNAL(endClick()));
-    connect(startplayButton, SIGNAL(clicked()), this, SIGNAL(startClick()));
+    connect(m_pGotoEndButton, SIGNAL(clicked()), this, SIGNAL(clickGotoEndButton()));
+    connect(m_pGotoStartButton, SIGNAL(clicked()), this, SIGNAL(clickGotoStartButton()));
     connect(loopButton, SIGNAL(clicked(bool)), this, SIGNAL(loopClick(bool)));
 
-    connect(loopControl, SIGNAL(clicked(bool)), this, SIGNAL(loopControlClick(bool)));//adding loopcontrol
-    connect(loopStart, SIGNAL(valueChanged(int)), this, SIGNAL(loopStartClick(int)));
-    connect(loopEnd, SIGNAL(valueChanged(int)), this, SIGNAL(loopEndClick(int)));
+    connect(m_pPlaybackRangeCheckBox, &QCheckBox::toggled, this, &TimeControls::loopControlClick );//adding loopcontrol
 
-    //connect(loopButton, SIGNAL(clicked(bool)), this, SIGNAL(loopToggled(bool)));
+    auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
+    connect(m_pLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartClick );
+    connect(m_pLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
+
+    connect( m_pPlaybackRangeCheckBox, &QCheckBox::toggled, m_pLoopStartSpinBox, &QSpinBox::setEnabled );
+    connect( m_pPlaybackRangeCheckBox, &QCheckBox::toggled, m_pLoopEndSpinBox, &QSpinBox::setEnabled );
+
     connect(soundButton, SIGNAL(clicked()), this, SIGNAL(soundClick()));
     connect(fpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
 
-    //updateButtons(false);
+    m_pPlaybackRangeCheckBox->setChecked( false );
+    m_pLoopStartSpinBox->setEnabled( false );
+    m_pLoopEndSpinBox->setEnabled( false );
 }
 
 void TimeControls::updateButtons(bool floating)
@@ -177,10 +159,10 @@ void TimeControls::toggleLoop(bool checked)
 
 void TimeControls::toggleLoopControl(bool checked)
 {
-    loopControl->setChecked(checked);
+    m_pPlaybackRangeCheckBox->setChecked(checked);
 }
 
 void TimeControls::setLoopStart ( int value )
 {
-    loopStart->setValue(value);
-                                  }
+    m_pLoopStartSpinBox->setValue(value);
+}

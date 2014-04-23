@@ -63,7 +63,6 @@ public:
     void displaySelectionProperties();
     QRectF getSelection() const { return mySelection; }
     bool somethingSelected;
-    bool readCanvasFromCache;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
     qreal myFlipX, myFlipY; // scale -1.0 or +1.0
@@ -193,7 +192,6 @@ protected:
 
     void toggledOnionColor();
     void recentre();
-    void setView();
     void setView( QMatrix );
 
 public:

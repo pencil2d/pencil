@@ -30,8 +30,8 @@ GNU General Public License for more details.
 #include "ui_colorpalette.h"
 
 
-ColorPaletteWidget::ColorPaletteWidget( QWidget* pParent ) 
-    : BaseDockWidget( pParent, Qt::Tool )
+ColorPaletteWidget::ColorPaletteWidget( QString strTitle, QWidget* pParent ) 
+    : BaseDockWidget( strTitle, pParent, Qt::Tool )
     , ui( new Ui::ColorPalette )
 {
     QWidget* pWidget = new QWidget( this );

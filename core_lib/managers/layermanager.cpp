@@ -59,14 +59,18 @@ void LayerManager::gotoPreviouslayer()
 
 
 // Key frame management
-int LayerManager::currentFrameIndex()
+int LayerManager::currentFramePosition()
 {
     return m_currentFrameIndex;
 }
 
 void LayerManager::setCurrentKeyFrame( int frameIndex )
 {
-    m_currentFrameIndex = frameIndex;
+    if ( frameIndex != m_currentFrameIndex )
+    {
+        m_currentFrameIndex = frameIndex;
+        emit currentKeyFrameChanged( frameIndex );
+    }
 }
 
 int LayerManager::LastFrameAtFrame( int frameIndex )
@@ -112,7 +116,7 @@ int LayerManager::lastKeyFrameIndex()
     {
         Layer* pLayer = editor()->object()->getLayer( i );
 
-        int position = pLayer->getFirstKeyFramePosition();
+        int position = pLayer->getMaxKeyFramePosition();
         if ( position > maxPosition )
         {
             maxPosition = position;

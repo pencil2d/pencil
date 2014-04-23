@@ -25,11 +25,15 @@ public:
     void gotoPreviouslayer();
 
     // KeyFrame Management
-    int LastFrameAtFrame( int frameIndex );
-    int  currentFrameIndex();
+    int  LastFrameAtFrame( int frameIndex );
+    int  currentFramePosition();
     void setCurrentKeyFrame( int );
-    int firstKeyFrameIndex();
-    int lastKeyFrameIndex();
+    int  firstKeyFrameIndex();
+    int  lastKeyFrameIndex();
+
+signals:
+    void currentKeyFrameChanged( int n );
+    void currentLayerChanged( int n );
 
 private:
     int m_currentLayerIndex; // the current layer to be edited/displayed

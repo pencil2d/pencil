@@ -12,6 +12,7 @@ class BaseDockWidget : public QDockWidget
 public:
     explicit BaseDockWidget(QWidget* pParent);
     explicit BaseDockWidget(QWidget* pParent, Qt::WindowFlags );
+    explicit BaseDockWidget( QString strTitle, QWidget* pParent, Qt::WindowFlags );
     ~BaseDockWidget();
 
     virtual void initUI() = 0;
@@ -22,7 +23,7 @@ public:
 
     
 private:
-    Editor* m_pCore;
+    Editor* m_pCore = nullptr;
 };
 
 #endif // BASEDOCKWIDGET_H

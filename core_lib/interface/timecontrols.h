@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include <QPushButton>
 #include <QToolButton>
 #include <QSpinBox>
+#include <QCheckBox>
+
 
 class TimeControls : public QToolBar
 {
@@ -33,8 +35,8 @@ public:
 
 signals:
     void playClick();
-    void endClick();
-    void startClick();
+    void clickGotoEndButton();
+    void clickGotoStartButton();
     void loopClick(bool);
     void loopControlClick(bool);//adding loopControl
 
@@ -47,9 +49,7 @@ signals:
     void loopStartClick(int);
     void loopEndClick(int);
 
-
 public slots:
-    //void updateLoopButton(bool);
     void updateButtons(bool);
     void toggleLoop(bool);
     void toggleLoopControl(bool);
@@ -59,14 +59,14 @@ protected:
 
 private:
     QPushButton* playButton;
-    QPushButton* endplayButton;
-    QPushButton* startplayButton;
+    QPushButton* m_pGotoEndButton;
+    QPushButton* m_pGotoStartButton;
     QPushButton* loopButton;
     QPushButton* soundButton;
     QSpinBox* fpsBox;
-    QPushButton* loopControl;
-    QSpinBox* loopStart;
-    QSpinBox* loopEnd;
+    QCheckBox* m_pPlaybackRangeCheckBox;
+    QSpinBox* m_pLoopStartSpinBox;
+    QSpinBox* m_pLoopEndSpinBox;
 };
 
 #endif

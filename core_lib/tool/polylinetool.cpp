@@ -66,7 +66,7 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
 
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFrameIndex(), 0)->deselectAll();
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0)->deselectAll();
                 if (m_pScribbleArea->makeInvisible() && !m_pScribbleArea->showThinLines())
                 {
                     m_pScribbleArea->toggleThinLines();

@@ -37,7 +37,7 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    ColorPaletteWidget( QWidget* pParent );
+    ColorPaletteWidget( QString strTitle, QWidget* pParent );
     void initUI() override;
     void updateUI() override;
 

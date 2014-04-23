@@ -196,8 +196,8 @@ void TimeLine::initUI()
     connect( timeControls, SIGNAL( soundClick() ), this, SIGNAL( soundClick() ) );
     connect( timeControls, SIGNAL( fpsClick( int ) ), this, SIGNAL( fpsClick( int ) ) );
 
-    connect( this, SIGNAL( toggleLoop( bool ) ), timeControls, SLOT( toggleLoop( bool ) ) );
-    connect( this, SIGNAL( toggleLoopControl( bool ) ), timeControls, SLOT( toggleLoopControl( bool ) ) );
+    connect( this, &TimeLine::loopToggled, timeControls, &TimeControls::loopToggled );
+    connect( this, &TimeLine::loopControlClick, timeControls, &TimeControls::toggleLoopControl );
 
     connect( newBitmapLayerAct, SIGNAL( triggered() ), this, SIGNAL( newBitmapLayer() ) );
     connect( newVectorLayerAct, SIGNAL( triggered() ), this, SIGNAL( newVectorLayer() ) );

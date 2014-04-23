@@ -130,11 +130,13 @@ void MainWindow2::makeTimeLineConnections()
     connect( m_pTimeLine, &TimeLine::soundClick, m_pEditor, &Editor::setSound );
     connect( m_pTimeLine, &TimeLine::fpsClick, m_pEditor, &Editor::changeFps );
 
-    connect( m_pEditor, &Editor::toggleLoop, m_pTimeLine, &TimeLine::toggleLoop );
+    connect( m_pEditor, &Editor::toggleLoop, m_pTimeLine, &TimeLine::loopToggled );
     connect( m_pTimeLine, &TimeLine::loopClick, m_pEditor, &Editor::loopToggled );
 
-    connect(m_pEditor, SIGNAL(toggleLoopControl(bool)), m_pTimeLine, SIGNAL(toggleLoopControl(bool)));
-    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), m_pEditor, SIGNAL(loopControlToggled(bool)));//adding loopControlClick needs loopControlToggled(bool)
+    connect( m_pEditor, SIGNAL( toggleLoopControl( bool ) ), m_pTimeLine, SIGNAL( toggleLoopControl( bool ) ) );
+    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), m_pEditor, SIGNAL(loopControlToggled(bool)));
+    
+    //adding loopControlClick needs loopControlToggled(bool)
 
     m_pTimeLine->setFocusPolicy(Qt::NoFocus);
 }
@@ -153,7 +155,7 @@ void MainWindow2::createDockWidgets()
     m_pColorWheelWidget->setWidget( pColorBox );
     m_pColorWheelWidget->setObjectName( "ColorWheel" );
 
-    m_pColorPalette = new ColorPaletteWidget( this );
+    m_pColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     m_pColorPalette->setObjectName( "ColorPalette" );
     m_pColorPalette->setFocusPolicy( Qt::NoFocus );
     makeConnections( m_pEditor, m_pColorPalette );
@@ -913,7 +915,7 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     tag1.setAttribute( "value", m_pEditor->layerManager()->currentLayerIndex() );
     tag.appendChild( tag1 );
     QDomElement tag2 = doc.createElement( "currentFrame" );
-    tag2.setAttribute( "value", m_pEditor->layerManager()->currentFrameIndex() );
+    tag2.setAttribute( "value", m_pEditor->layerManager()->currentFramePosition() );
     tag.appendChild( tag2 );
     QDomElement tag2a = doc.createElement( "currentFps" );
     tag2a.setAttribute( "value", m_pEditor->fps );
@@ -1243,9 +1245,6 @@ void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
     //connect( pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
 
     connect( pCore, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
-
-    connect( pScribbleArea, SIGNAL( currentKeyFrameModification() ), pCore, SLOT( currentKeyFrameModification() ) );
-    connect( pScribbleArea, SIGNAL( currentKeyFrameModification( int ) ), pCore, SLOT( currentKeyFrameModification( int ) ) );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
