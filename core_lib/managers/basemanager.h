@@ -15,7 +15,7 @@ public:
     Editor* editor();
     void    setEditor( Editor* pEditor );
     
-    virtual bool initialize() = 0;
+    virtual bool init() = 0;
 
 private:
     Editor* m_pEditor;

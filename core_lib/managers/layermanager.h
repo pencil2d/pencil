@@ -12,20 +12,22 @@ class LayerManager : public BaseManager
 public:
     LayerManager( QObject* pParant );
     ~LayerManager();
-    bool initialize() override;
+    bool init() override;
 
+    // Layer Management
     Layer* currentLayer();
     Layer* currentLayer( int incr );
     int currentLayerIndex();
-    void setCurrentLayerIndex( int );
+    void setCurrentLayer( int );
+    int count();
 
     void gotoNextLayer();
     void gotoPreviouslayer();
 
+    // KeyFrame Management
     int LastFrameAtFrame( int frameIndex );
-
     int  currentFrameIndex();
-    void setCurrentFrameIndex( int );
+    void setCurrentKeyFrame( int );
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 

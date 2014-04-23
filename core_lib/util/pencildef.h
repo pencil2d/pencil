@@ -100,12 +100,11 @@ enum ToolPropertyType
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
-#define SHORTCUTS_GROUP "shortcuts"
-#define SETTING_TOOL_CURSOR "toolCursors"
+#define SHORTCUTS_GROUP         "shortcuts"
+#define SETTING_TOOL_CURSOR     "toolCursors"
 #define SETTING_HIGH_RESOLUTION "highResPosition"
 #define SETTING_WINDOW_GEOMETRY "WindowGeometry"
-#define SETTING_WINDOW_STATE "WindowState"
-#define SETTING_RENDER_EFFECT "RenderEffect"
-
+#define SETTING_WINDOW_STATE    "WindowState"
+#define SETTING_DISPLAY_EFFECT  "RenderEffect"
 
 #endif // PENCILDEF_H

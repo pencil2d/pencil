@@ -54,7 +54,7 @@ void PopupColorPaletteWidget::popup()
         return;
     }
     // opening palette
-    m_pColorBox->setColor( m_pContainer->getEditor()->colorManager()->frontColor() );
+    m_pColorBox->setColor( m_pContainer->editor()->colorManager()->frontColor() );
     m_pColorBox->setFocus();
 
     QPoint cPos = QCursor::pos();
@@ -92,5 +92,5 @@ void PopupColorPaletteWidget::keyPressEvent(QKeyEvent *event)
 
 void PopupColorPaletteWidget::onColorChanged(const QColor& color)
 {
-    m_pContainer->getEditor()->colorManager()->setColor( color );
+    m_pContainer->editor()->colorManager()->setColor( color );
 }

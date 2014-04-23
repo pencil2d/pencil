@@ -91,10 +91,9 @@ public:
     ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
 
 protected:
-    void keyPressEvent( QKeyEvent *event );
+    // Need to move to somewhere...
     void dragEnterEvent( QDragEnterEvent* event );
     void dropEvent( QDropEvent* event );
-    QRect viewRect;
 
 signals:
     void selectAll();

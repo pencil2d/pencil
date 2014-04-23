@@ -23,7 +23,7 @@ ToolManager::ToolManager(QObject* parent )
 }
 
 
-bool ToolManager::initialize()
+bool ToolManager::init()
 {
     m_toolSetHash.insert( PEN, new PenTool );
     m_toolSetHash.insert( PENCIL, new PencilTool );

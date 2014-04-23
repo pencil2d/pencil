@@ -475,7 +475,7 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.show();
 
     m_pEditor->setCurrentLayer( 0 );
-    m_pEditor->layerManager()->setCurrentFrameIndex( 1 );
+    m_pEditor->layerManager()->setCurrentKeyFrame( 1 );
     m_pEditor->fps = 12;
     m_pTimeLine->setFps( m_pEditor->fps );
     m_pScribbleArea->setMyView( QMatrix() );
@@ -686,7 +686,10 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
 {
     Q_UNUSED( filePath );
 
-    if ( docElem.isNull() ) return false;
+    if ( docElem.isNull() )
+    {
+        return false;
+    }
     QDomNode tag = docElem.firstChild();
     while ( !tag.isNull() )
     {
@@ -700,7 +703,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
             }
             if ( element.tagName() == "currentFrame" )
             {
-                m_pEditor->layerManager()->setCurrentFrameIndex( element.attribute( "value" ).toInt() );
+                m_pEditor->layerManager()->setCurrentKeyFrame( element.attribute( "value" ).toInt() );
             }
             if ( element.tagName() == "currentFps" )
             {
@@ -721,6 +724,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
         }
         tag = tag.nextSibling();
     }
+    return true;
 }
 
 // Added here (mainWindow2) to be easily located

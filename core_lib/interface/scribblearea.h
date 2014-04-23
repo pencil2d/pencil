@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #ifndef SCRIBBLEAREA_H
 #define SCRIBBLEAREA_H
 
+#include <cstdint>
 #include <QColor>
 #include <QImage>
 #include <QPoint>
@@ -39,6 +40,7 @@ class PopupColorPaletteWidget;
 enum DisplayEffect
 {
     EFFECT_ANTIALIAS = 0,
+    EFFECT_SHADOW,
     EFFECT_COUNT,
 };
 
@@ -56,8 +58,6 @@ public:
 
     void setCore( Editor* pCore ) { m_pEditor = pCore; }
 
-    void resetTools();
-
     void deleteSelection();
     void setSelection( QRectF rect, bool );
     void displaySelectionProperties();
@@ -74,10 +74,11 @@ public:
 
     static QBrush getBackgroundBrush( QString );
 
+    bool isEffectOn( DisplayEffect e ) { return m_effects[ e ]; }
+
     bool showThinLines() const { return m_showThinLines; }
     int showAllLayers() const { return m_showAllLayers; }
     qreal getCurveSmoothing() const { return curveSmoothing; }
-    bool useAntialiasing() const { return m_antialiasing; }
     bool usePressure() const { return m_usePressure; }
     bool makeInvisible() const { return m_makeInvisible; }
 
@@ -123,7 +124,7 @@ public:
 
     void keyPressed( QKeyEvent *event );
 
-    Editor* getEditor() { return m_pEditor; }
+    Editor* editor() { return m_pEditor; }
 
 signals:
     void modification();
@@ -164,12 +165,8 @@ public slots:
 
     void setCurveSmoothing( int );
     void setHighResPosition( int );
-    void setAntialiasing( int );
     void setBackground( int );
     void setBackgroundBrush( QString );
-    void setShadows( int );
-    void setToolCursors( int );
-    void setStyle( int );
     void toggleThinLines();
     void toggleOutlines();
     void toggleMirror();
@@ -180,7 +177,6 @@ public slots:
     void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
-public slots:
     void updateToolCursor();
 
 protected:
@@ -218,10 +214,11 @@ public:
     void refreshVector( QRect rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
-protected:
+private:
     void updateCanvas( int frame, QRect rect );
-
     void floodFillError( int errorType );
+
+    void renderShadow( QPainter& );
 
     MoveMode m_moveMode;
     ToolType prevMode;
@@ -240,8 +237,6 @@ protected:
     int  m_showAllLayers;
     bool m_usePressure;
     bool m_makeInvisible;
-    bool m_antialiasing;
-    bool shadows;
     bool toolCursors;
     qreal curveSmoothing;
     bool onionPrev, onionNext;
@@ -257,9 +252,10 @@ protected:
     QBrush backgroundBrush;
 public:
     BitmapImage* bufferImg; // used to pre-draw vector modifications
-private:
 
-    std::vector< DisplayEffect > m_effect;
+private:
+    void initDisplayEffect( std::vector< uint32_t >& );
+    std::vector< uint32_t > m_effects;
 
     bool keyboardInUse;
     bool mouseInUse;

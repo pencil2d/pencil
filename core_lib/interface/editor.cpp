@@ -138,11 +138,11 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     for ( BaseManager* pManager : allManagers )
     {
         pManager->setEditor( this );
-        pManager->initialize();
+        pManager->init();
     }
 
-    layerManager()->setCurrentFrameIndex( 1 );
-    layerManager()->setCurrentLayerIndex( 0 );
+    layerManager()->setCurrentKeyFrame( 1 );
+    layerManager()->setCurrentLayer( 0 );
 
     toolManager()->setCurrentTool( PENCIL );
 
@@ -151,7 +151,6 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     // CONNECTIONS
     makeConnections();
 
-    //createExportFlashDialog();
     return true;
 }
 
@@ -164,11 +163,6 @@ TimeLine* Editor::getTimeLine()
 void Editor::makeConnections()
 {
     connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
-}
-
-void Editor::keyPressEvent( QKeyEvent *event )
-{
-    m_pScribbleArea->keyPressed( event );
 }
 
 void Editor::dragEnterEvent( QDragEnterEvent* event )
@@ -700,7 +694,7 @@ void Editor::saveLength( QString x )
 void Editor::resetUI()
 {
     updateObject();
-    layerManager()->setCurrentFrameIndex( 0 );
+    layerManager()->setCurrentKeyFrame( 0 );
     scrubTo( 0 );
 }
 
@@ -719,8 +713,8 @@ void Editor::setObject( Object* newObject )
     qDebug( "New object loaded." );
 
     // the default selected layer is the last one
-    layerManager()->setCurrentLayerIndex( m_pObject->getLayerCount() - 1 );
-    layerManager()->setCurrentFrameIndex( 1 );
+    layerManager()->setCurrentLayer( m_pObject->getLayerCount() - 1 );
+    layerManager()->setCurrentKeyFrame( 1 );
 }
 
 void Editor::updateObject()
@@ -1325,7 +1319,7 @@ void Editor::scrubTo( int frameNumber )
     }
     int oldFrame = layerManager()->currentFrameIndex();
     if ( frameNumber < 1 ) frameNumber = 1;
-    layerManager()->setCurrentFrameIndex( frameNumber );
+    layerManager()->setCurrentKeyFrame( frameNumber );
 
     getTimeLine()->updateFrame( oldFrame );
     getTimeLine()->updateFrame( layerManager()->currentFrameIndex() );
@@ -1419,7 +1413,7 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     {
         getTimeLine()->updateContent();
         getScribbleArea()->updateFrame();
-        layerManager()->setCurrentFrameIndex( frameIndex );
+        layerManager()->setCurrentKeyFrame( frameIndex );
     }
     else
     {
@@ -1655,7 +1649,7 @@ void Editor::setSound()
 
 void Editor::setCurrentLayer( int layerNumber )
 {
-    layerManager()->setCurrentLayerIndex( layerNumber );
+    layerManager()->setCurrentLayer( layerNumber );
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();
 }
@@ -1673,11 +1667,11 @@ void Editor::moveLayer( int i, int j )
     m_pObject->moveLayer( i, j );
     if ( j < i )
     {
-        layerManager()->setCurrentLayerIndex( j );
+        layerManager()->setCurrentLayer( j );
     }
     else
     {
-        layerManager()->setCurrentLayerIndex( j - 1 );
+        layerManager()->setCurrentLayer( j - 1 );
     }
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();

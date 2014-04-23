@@ -15,7 +15,7 @@ ColorManager::~ColorManager()
 {
 }
 
-bool ColorManager::initialize()
+bool ColorManager::init()
 {
     return true;
 }

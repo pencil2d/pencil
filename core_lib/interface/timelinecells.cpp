@@ -31,13 +31,25 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
     layerOffset = 0;
 
     frameSize = ( settings.value( "frameSize" ).toInt() );
-    if ( frameSize == 0 ) { frameSize = 12; settings.setValue( "frameSize", frameSize ); }
+    if ( frameSize == 0 ) 
+    { 
+        frameSize = 12; 
+        settings.setValue( "frameSize", frameSize );
+    }
 
     fontSize = ( settings.value( "labelFontSize" ).toInt() );
-    if ( fontSize == 0 ) { fontSize = 12; settings.setValue( "labelFontSize", fontSize ); }
+    if ( fontSize == 0 ) 
+    { 
+        fontSize = 12; 
+        settings.setValue( "labelFontSize", fontSize );
+    }
 
     layerHeight = ( settings.value( "layerHeight" ).toInt() );
-    if ( layerHeight == 0 ) { layerHeight = 20; settings.setValue( "layerHeight", layerHeight ); }
+    if ( layerHeight == 0 )
+    { 
+        layerHeight = 20; 
+        settings.setValue( "layerHeight", layerHeight );
+    }
 
     setMinimumSize( 500, 4 * layerHeight );
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
@@ -47,7 +59,6 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
 int TimeLineCells::getFrameNumber( int x )
 {
     int frameNumber = frameOffset + 1 + ( x - m_offsetX ) / frameSize;
-    //	qDebug()<< frameNumber;
     return frameNumber;
 }
 

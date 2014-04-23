@@ -13,7 +13,7 @@ LayerManager::~LayerManager()
 {
 }
 
-bool LayerManager::initialize()
+bool LayerManager::init()
 {
     return true;
 }
@@ -36,21 +36,9 @@ int LayerManager::currentLayerIndex()
     return m_currentLayerIndex;
 }
 
-void LayerManager::setCurrentLayerIndex( int layerIndex )
+void LayerManager::setCurrentLayer( int layerIndex )
 {
     m_currentLayerIndex = layerIndex;
-}
-
-
-// Key frame management
-int LayerManager::currentFrameIndex()
-{
-    return m_currentFrameIndex;
-}
-
-void LayerManager::setCurrentFrameIndex( int frameIndex )
-{
-    m_currentFrameIndex = frameIndex;
 }
 
 void LayerManager::gotoNextLayer()
@@ -67,6 +55,18 @@ void LayerManager::gotoPreviouslayer()
     {
         m_currentLayerIndex -= 1;
     }
+}
+
+
+// Key frame management
+int LayerManager::currentFrameIndex()
+{
+    return m_currentFrameIndex;
+}
+
+void LayerManager::setCurrentKeyFrame( int frameIndex )
+{
+    m_currentFrameIndex = frameIndex;
 }
 
 int LayerManager::LastFrameAtFrame( int frameIndex )
@@ -119,4 +119,9 @@ int LayerManager::lastKeyFrameIndex()
         }
     }
     return maxPosition;
+}
+
+int LayerManager::count()
+{
+    return editor()->object()->getLayerCount();
 }
