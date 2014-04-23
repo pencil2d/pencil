@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 #include "strokemanager.h"
 #include "layermanager.h"
+#include "playbackmanager.h"
 #include "popupcolorpalettewidget.h"
 
 #include "scribblearea.h"
@@ -213,13 +214,14 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
 /************************************************************************************/
 // update methods
 
-void ScribbleArea::updateFrame()
+void ScribbleArea::updateCurrentFrame()
 {
     updateFrame( m_pEditor->layerManager()->currentFramePosition() );
 }
 
 void ScribbleArea::updateFrame( int frame )
 {
+    // TODO: implement the cache
     setView( getView() );
     int frameNumber = m_pEditor->layerManager()->LastFrameAtFrame( frame );
     QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
@@ -799,7 +801,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     Layer *layer = m_pEditor->getCurrentLayer();
     if ( !layer ) { return; }
 
-    if ( !m_pEditor->playing )    // we don't need to display the following when the animation is playing
+    if ( !editor()->playbackManager()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
         painter.setWorldMatrix( myTempView );
 
@@ -961,7 +963,8 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     painter.drawRect( QRect( 0, 0, width(), height() ) );
 
     // shadow
-    if ( isEffectOn( EFFECT_SHADOW ) && !m_pEditor->playing && ( !mouseInUse || currentTool()->type() == HAND ) )
+    bool isPlaying = editor()->playbackManager()->isPlaying();
+    if ( isEffectOn( EFFECT_SHADOW ) && !isPlaying && ( !mouseInUse || currentTool()->type() == HAND ) )
     {
         renderShadow( painter );
     }
@@ -1861,7 +1864,7 @@ void ScribbleArea::selectAll()
         vectorImage->selectAll();
         setSelection( vectorImage->getSelectionRect(), true );
     }
-    updateFrame();
+    updateCurrentFrame();
 }
 
 void ScribbleArea::deselectAll()
@@ -1886,7 +1889,7 @@ void ScribbleArea::deselectAll()
     // clear all the data tools may have accumulated
     editor()->toolManager()->cleanupAllToolsData();
 
-    updateFrame();
+    updateCurrentFrame();
 }
 
 void ScribbleArea::toggleOnionNext( bool checked )

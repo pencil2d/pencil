@@ -37,6 +37,8 @@ public:
     Object();
     virtual ~Object();
 
+    void init();
+
     QString filePath() { return m_strFilePath; }
     void    setFilePath( QString strFileName ) { m_strFilePath = strFileName; }
 
@@ -82,8 +84,6 @@ public:
 
     void playSoundIfAny(int frame,int fps);
     void stopSoundIfAny();
-
-    void init();
 
     bool exportFrames(int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax);
     bool exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax, int fps, int exportFps);

@@ -99,7 +99,7 @@ public:
     void setTransformationMatrix( QMatrix matrix );
     void applyTransformationMatrix();
 
-    void updateFrame();
+    void updateCurrentFrame();
     void updateFrame( int frame );
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();

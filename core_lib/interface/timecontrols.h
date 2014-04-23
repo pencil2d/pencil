@@ -40,7 +40,7 @@ signals:
     void loopClick(bool);
     void loopControlClick(bool);//adding loopControl
 
-    void soundClick();
+    void soundClick( bool );
     void fpsClick(int);
 
     void loopToggled(bool);

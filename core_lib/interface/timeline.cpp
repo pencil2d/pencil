@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QSplitter>
 
 #include "editor.h"
+#include "layermanager.h"
 #include "toolbox.h"
 #include "timecontrols.h"
 #include "timelinecells.h"
@@ -35,7 +36,12 @@ TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent, Qt::Tool )
 
 void TimeLine::initUI()
 {
+    setFocusPolicy( Qt::NoFocus );
+
     QWidget* timeLineContent = new QWidget( this );
+
+    LayerManager* pLayerManager = core()->layerManager();
+    connect( pLayerManager, &LayerManager::currentKeyFrameChanged, this, &TimeLine::updateFrame );
 
     list = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Layers );
     cells = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Tracks );
@@ -193,7 +199,7 @@ void TimeLine::initUI()
     connect( timeControls, SIGNAL( loopStartClick( int ) ), this, SIGNAL( loopStartClick( int ) ) );
     connect( timeControls, SIGNAL( loopEndClick( int ) ), this, SIGNAL( loopEndClick( int ) ) );
 
-    connect( timeControls, SIGNAL( soundClick() ), this, SIGNAL( soundClick() ) );
+    connect( timeControls, SIGNAL( soundClick( bool ) ), this, SIGNAL( soundClick( bool ) ) );
     connect( timeControls, SIGNAL( fpsClick( int ) ), this, SIGNAL( fpsClick( int ) ) );
 
     connect( this, &TimeLine::loopToggled, timeControls, &TimeControls::loopToggled );
@@ -225,7 +231,12 @@ void TimeLine::resizeEvent(QResizeEvent*)
 
 void TimeLine::updateFrame(int frameNumber)
 {
-    if (cells) cells->updateFrame(frameNumber);
+    if ( cells )
+    {
+        cells->updateFrame( m_lastUpdatedFrame );
+        cells->updateFrame( frameNumber );
+    }
+    m_lastUpdatedFrame = frameNumber;
 }
 
 void TimeLine::updateLayerView()

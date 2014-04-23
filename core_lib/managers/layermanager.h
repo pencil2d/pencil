@@ -31,6 +31,11 @@ public:
     int  firstKeyFrameIndex();
     int  lastKeyFrameIndex();
 
+    void gotoLastKeyFrame();
+    void gotoFirstKeyFrame();
+
+    int  projectLength();
+
 signals:
     void currentKeyFrameChanged( int n );
     void currentLayerChanged( int n );

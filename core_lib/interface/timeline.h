@@ -66,7 +66,7 @@ signals :
     void loopStartClick(int);
     void loopEndClick(int);
 
-	void soundClick();
+	void soundClick( bool );
 	void endplayClick();
 	void startplayClick();
 	void fpsClick( int );
@@ -86,6 +86,8 @@ private:
 	TimeLineCells* list;
 	int numberOfLayers;
 	TimeControls* timeControls;
+
+    int m_lastUpdatedFrame = 0;
 };
 
 #endif

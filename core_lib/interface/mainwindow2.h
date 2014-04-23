@@ -93,7 +93,7 @@ private:
     void createMenus();
 
     void makeColorWheelConnections();
-    void makeTimeLineConnections();
+    
 
     void closeEvent(QCloseEvent*);
 
@@ -101,6 +101,7 @@ private:
     void writeSettings();
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
+    void makeConnections( Editor*, TimeLine* );
 
     Ui::MainWindow2* ui;
     QList< BaseDockWidget* > m_subWidgets;

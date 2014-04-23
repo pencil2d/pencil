@@ -37,6 +37,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "layermanager.h"
 #include "toolmanager.h"
+#include "playbackmanager.h"
 
 #include "scribblearea.h"
 #include "colorpalettewidget.h"
@@ -63,7 +64,7 @@ MainWindow2::MainWindow2( QWidget *parent )
     , ui( new Ui::MainWindow2 )
 {
     ui->setupUi( this );
-    
+
     // Central widget
     m_pScribbleArea = new ScribbleArea( this );
     m_pScribbleArea->setObjectName( "ScribbleArea" );
@@ -76,7 +77,7 @@ MainWindow2::MainWindow2( QWidget *parent )
     m_pEditor = new Editor( this );
     m_pEditor->initialize( m_pScribbleArea );
     m_pEditor->setObject( m_pObject );
-    
+
     m_pScribbleArea->setCore( m_pEditor );
     m_pEditor->setScribbleArea( m_pScribbleArea );
     makeConnections( m_pEditor, m_pScribbleArea );
@@ -88,8 +89,6 @@ MainWindow2::MainWindow2( QWidget *parent )
     m_pEditor->resetUI();
 
     readSettings();
-
-    makeColorWheelConnections();
 
     connect(m_pEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
     connect(m_pToolBox, &ToolBoxWidget::clearButtonClicked, m_pEditor, &Editor::clearCurrentFrame);
@@ -103,48 +102,11 @@ MainWindow2::~MainWindow2()
     delete ui;
 }
 
-void MainWindow2::makeTimeLineConnections()
-{
-    connect( m_pTimeLine, &TimeLine::endplayClick, m_pEditor, &Editor::endPlay );
-    connect( m_pTimeLine, &TimeLine::startplayClick, m_pEditor, &Editor::startPlay );
-    connect( m_pTimeLine, &TimeLine::duplicateKeyClick, m_pEditor, &Editor::duplicateKey );
-
-    connect( m_pTimeLine, &TimeLine::modification, m_pEditor, &Editor::currentKeyFrameModification );
-    connect( m_pTimeLine, &TimeLine::addKeyClick, m_pEditor, &Editor::addNewKey );
-    connect( m_pTimeLine, &TimeLine::removeKeyClick, m_pEditor, &Editor::removeKey );
-
-    connect( m_pTimeLine, &TimeLine::newBitmapLayer, m_pEditor, &Editor::newBitmapLayer );
-    connect( m_pTimeLine, &TimeLine::newVectorLayer, m_pEditor, &Editor::newVectorLayer );
-    connect( m_pTimeLine, &TimeLine::newSoundLayer, m_pEditor, &Editor::newSoundLayer );
-    connect( m_pTimeLine, &TimeLine::newCameraLayer, m_pEditor, &Editor::newCameraLayer );
-    connect( m_pTimeLine, &TimeLine::deleteCurrentLayer, m_pEditor, &Editor::deleteCurrentLayer );
-
-    connect( m_pTimeLine, &TimeLine::playClick, m_pEditor, &Editor::play );
-    connect( m_pTimeLine, &TimeLine::loopClick, m_pEditor, &Editor::setLoop );
-
-    connect( m_pTimeLine, &TimeLine::loopControlClick, m_pEditor, &Editor::setLoopControl ); // adding LoopControlClick needs setLoopControl(bool)
-    connect( m_pTimeLine, &TimeLine::loopStartClick, m_pEditor, &Editor::changeLoopStart );
-    connect( m_pTimeLine, &TimeLine::loopEndClick, m_pEditor, &Editor::changeLoopEnd );
-
-
-    connect( m_pTimeLine, &TimeLine::soundClick, m_pEditor, &Editor::setSound );
-    connect( m_pTimeLine, &TimeLine::fpsClick, m_pEditor, &Editor::changeFps );
-
-    connect( m_pEditor, &Editor::toggleLoop, m_pTimeLine, &TimeLine::loopToggled );
-    connect( m_pTimeLine, &TimeLine::loopClick, m_pEditor, &Editor::loopToggled );
-
-    connect( m_pEditor, SIGNAL( toggleLoopControl( bool ) ), m_pTimeLine, SIGNAL( toggleLoopControl( bool ) ) );
-    connect(m_pTimeLine, SIGNAL(loopControlClick(bool)), m_pEditor, SIGNAL(loopControlToggled(bool)));
-    
-    //adding loopControlClick needs loopControlToggled(bool)
-
-    m_pTimeLine->setFocusPolicy(Qt::NoFocus);
-}
-
 void MainWindow2::createDockWidgets()
 {
     m_pTimeLine = new TimeLine( this );
     m_pTimeLine->setObjectName( "TimeLine" );
+    makeConnections( m_pEditor, m_pTimeLine );
     m_subWidgets.append( m_pTimeLine );
 
     m_pColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
@@ -154,6 +116,7 @@ void MainWindow2::createDockWidgets()
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     m_pColorWheelWidget->setWidget( pColorBox );
     m_pColorWheelWidget->setObjectName( "ColorWheel" );
+    makeColorWheelConnections();
 
     m_pColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     m_pColorPalette->setObjectName( "ColorPalette" );
@@ -179,7 +142,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::LeftDockWidgetArea,   m_pToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
-    makeTimeLineConnections();
     for ( BaseDockWidget* pWidget : m_subWidgets )
     {
         pWidget->setCore( m_pEditor );
@@ -223,7 +185,7 @@ void MainWindow2::createMenus()
     //connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
 
     connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
-    
+
     /// --- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect( ui->actionImport_Image, &QAction::triggered, m_pEditor, &Editor::importImageFromDialog );
@@ -232,7 +194,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionImport_Sound, &QAction::triggered, editor, &Editor::importSound );
     ui->actionImport_Sound->setEnabled( false );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
-    
+
     /// --- Edit Menu ---
     connect( ui->actionUndo, &QAction::triggered, m_pEditor, &Editor::undo );
     connect( ui->actionRedo, &QAction::triggered, m_pEditor, &Editor::redo );
@@ -247,7 +209,7 @@ void MainWindow2::createMenus()
     connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::showPreferences );
 
     ui->actionRedo->setEnabled( false );
-    
+
     /// --- Layer Menu ---
     connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, m_pEditor, &Editor::newBitmapLayer );
     connect( ui->actionNew_Vector_Layer, &QAction::triggered, m_pEditor, &Editor::newVectorLayer );
@@ -280,20 +242,18 @@ void MainWindow2::createMenus()
     connect( m_pEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    connect( ui->actionPlay, &QAction::triggered, m_pEditor, &Editor::play );
-    connect( ui->actionLoop, &QAction::triggered, m_pEditor, &Editor::setLoop );
-    connect( ui->actionLoop, &QAction::toggled, m_pEditor, &Editor::toggleLoop ); //TODO: WTF?
-    connect( m_pEditor, &Editor::loopToggled, ui->actionLoop, &QAction::setChecked );
+    PlaybackManager* pPlaybackManager = m_pEditor->playbackManager();
+    connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
 
-    // Loop Control
-    connect(ui->actionLoopControl, &QAction::triggered, m_pEditor, &Editor::setLoopControl );
-    connect( ui->actionLoopControl, &QAction::toggled, m_pEditor, &Editor::toggleLoopControl );
-    //connect(editor, &Editor::loopControlToggled, ui->actionLoopControl, &QAction::setChecked );
+    connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLoop );
+    connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
+    connect( pPlaybackManager, &PlaybackManager::loopStateChanged, ui->actionLoop, &QAction::setChecked );
+    connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
 
     connect(ui->actionAdd_Frame, &QAction::triggered, m_pEditor, &Editor::addNewKey );
     connect(ui->actionRemove_Frame, &QAction::triggered, m_pEditor, &Editor::removeKey );
-    connect(ui->actionNext_Frame, &QAction::triggered, m_pEditor, &Editor::playNextFrame );
-    connect(ui->actionPrevious_Frame, &QAction::triggered, m_pEditor, &Editor::playPrevFrame );
+    //connect(ui->actionNext_Frame, &QAction::triggered, m_pEditor, &Editor::playNextFrame );
+    //connect(ui->actionPrevious_Frame, &QAction::triggered, m_pEditor, &Editor::playPrevFrame );
     connect(ui->actionNext_KeyFrame, &QAction::triggered, m_pEditor, &Editor::scrubNextKeyFrame );
     connect(ui->actionPrev_KeyFrame, &QAction::triggered, m_pEditor, &Editor::scrubPreviousKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, m_pEditor, &Editor::duplicateKey );
@@ -414,10 +374,6 @@ void MainWindow2::openDocument()
             QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
             newDocument();
         }
-        else
-        {
-            m_pEditor->updateMaxFrame();
-        }
     }
 }
 
@@ -464,10 +420,6 @@ void MainWindow2::openFile( QString filename )
         m_pEditor->setObject( pObject );
         m_pEditor->resetUI();
     }
-    else
-    {
-        m_pEditor->updateMaxFrame();
-    }
 }
 
 bool MainWindow2::openObject( QString strFilePath )
@@ -478,8 +430,6 @@ bool MainWindow2::openObject( QString strFilePath )
 
     m_pEditor->setCurrentLayer( 0 );
     m_pEditor->layerManager()->setCurrentKeyFrame( 1 );
-    m_pEditor->fps = 12;
-    m_pTimeLine->setFps( m_pEditor->fps );
     m_pScribbleArea->setMyView( QMatrix() );
 
     ObjectSaveLoader objectLoader( this );
@@ -709,9 +659,9 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
             }
             if ( element.tagName() == "currentFps" )
             {
-                m_pEditor->fps = element.attribute( "value" ).toInt();
+                // TODO: save fps
                 //timer->setInterval(1000/fps);
-                m_pTimeLine->setFps( m_pEditor->fps );
+                //m_pTimeLine->setFps( m_pEditor->fps );
             }
             if ( element.tagName() == "currentView" )
             {
@@ -917,9 +867,6 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     QDomElement tag2 = doc.createElement( "currentFrame" );
     tag2.setAttribute( "value", m_pEditor->layerManager()->currentFramePosition() );
     tag.appendChild( tag2 );
-    QDomElement tag2a = doc.createElement( "currentFps" );
-    tag2a.setAttribute( "value", m_pEditor->fps );
-    tag.appendChild( tag2a );
     QDomElement tag3 = doc.createElement( "currentView" );
 
     QMatrix myView = m_pScribbleArea->getMyView();
@@ -982,7 +929,7 @@ void MainWindow2::dockAllPalettes()
 void MainWindow2::readSettings()
 {
     qDebug( "Restore last windows layout." );
-    
+
     QSettings settings( PENCIL2D, PENCIL2D );
     restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
     restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
@@ -1234,6 +1181,8 @@ void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
     connect( pCore->toolManager(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
     connect( pCore->toolManager(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
 
+    connect( pCore->layerManager(), &LayerManager::currentKeyFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
+
     connect( pCore, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( pCore, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );
     connect( pCore, &Editor::toggleMultiLayerOnionSkin, pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
@@ -1246,6 +1195,41 @@ void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
 
     connect( pCore, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
 }
+
+
+void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
+{
+    PlaybackManager* pPlaybackManager = pEditor->playbackManager();
+    LayerManager* pLayerManager = pEditor->layerManager();
+
+    connect( pTimeline, &TimeLine::endplayClick, [ = ]{ pLayerManager->gotoLastKeyFrame(); } );
+    connect( pTimeline, &TimeLine::startplayClick, [ = ]{ pLayerManager->gotoFirstKeyFrame(); } );
+    connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
+
+    connect( pTimeline, &TimeLine::playClick, [ = ]{ pPlaybackManager->play(); } );
+    connect( pTimeline, &TimeLine::loopClick, pPlaybackManager, &PlaybackManager::setLoop );
+
+    connect( pTimeline, &TimeLine::loopControlClick, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
+    connect( pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame );
+    connect( pTimeline, &TimeLine::loopEndClick, pPlaybackManager, &PlaybackManager::setRangedEndFrame );
+
+    connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
+    connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
+
+
+    connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
+    connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
+
+    connect( pTimeline, &TimeLine::newBitmapLayer, pEditor, &Editor::newBitmapLayer );
+    connect( pTimeline, &TimeLine::newVectorLayer, pEditor, &Editor::newVectorLayer );
+    connect( pTimeline, &TimeLine::newSoundLayer, pEditor, &Editor::newSoundLayer );
+    connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
+    connect( pTimeline, &TimeLine::deleteCurrentLayer, pEditor, &Editor::deleteCurrentLayer );
+
+    connect( pEditor, SIGNAL( toggleLoopControl( bool ) ), pTimeline, SIGNAL( toggleLoopControl( bool ) ) );
+    connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
+}
+
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {

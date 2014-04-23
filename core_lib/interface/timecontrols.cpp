@@ -112,7 +112,6 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     addWidget(fpsLabel);
     addWidget(fpsBox);
 
-
     connect(playButton, SIGNAL(clicked()), this, SIGNAL(playClick()));
     connect(m_pGotoEndButton, SIGNAL(clicked()), this, SIGNAL(clickGotoEndButton()));
     connect(m_pGotoStartButton, SIGNAL(clicked()), this, SIGNAL(clickGotoStartButton()));
@@ -127,7 +126,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     connect( m_pPlaybackRangeCheckBox, &QCheckBox::toggled, m_pLoopStartSpinBox, &QSpinBox::setEnabled );
     connect( m_pPlaybackRangeCheckBox, &QCheckBox::toggled, m_pLoopEndSpinBox, &QSpinBox::setEnabled );
 
-    connect(soundButton, SIGNAL(clicked()), this, SIGNAL(soundClick()));
+    connect( soundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
     connect(fpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
 
     m_pPlaybackRangeCheckBox->setChecked( false );

@@ -4,6 +4,8 @@
 #include "editor.h"
 #include "timeline.h"
 #include "layermanager.h"
+#include "playbackmanager.h"
+
 
 TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type )
 : QWidget( parent )
@@ -200,7 +202,7 @@ void TimeLineCells::drawContent()
         painter.setBrush( Qt::darkGray );
         painter.setFont( QFont( "helvetica", 10 ) );
         int incr = 0;
-        int fps = editor->fps;
+        int fps = editor->playbackManager()->fps();
         for ( int i = frameOffset; i < frameOffset + ( width() - m_offsetX ) / frameSize; i++ )
         {
             incr = ( i < 9 ) ? 4 : 0;
@@ -238,7 +240,8 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
     if ( layer == NULL ) return;
 
     QPainter painter( this );
-    if ( ( !editor->playing && !timeLine->scrubbing ) || cache == NULL )
+    bool isPlaying = editor->playbackManager()->isPlaying();
+    if ( ( !isPlaying && !timeLine->scrubbing ) || cache == NULL )
     {
         drawContent();
     }

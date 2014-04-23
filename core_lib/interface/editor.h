@@ -34,6 +34,7 @@ class MainWindow2;
 class ColorManager;
 class ToolManager;
 class LayerManager;
+class PlaybackManager;
 class ScribbleArea;
 
 
@@ -43,6 +44,7 @@ class Editor : public QObject
     Q_PROPERTY( ColorManager* colorManager READ colorManager )
     Q_PROPERTY( ToolManager*  toolManager  READ toolManager )
     Q_PROPERTY( LayerManager* layerManager READ layerManager )
+    Q_PROPERTY( PlaybackManager* playbackManager READ¡@playbackManager )
 
 public:
     Editor( MainWindow2* parent );
@@ -53,22 +55,12 @@ public:
     ColorManager* colorManager() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
+    PlaybackManager* playbackManager() const { return m_pPlaybackManager; }
 
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { m_pScribbleArea = pScirbbleArea; }
-
-    int maxFrame; // the number of the last frame for the current object
-
-    int fps; // the number of frames per second used by the editor
-    QTimer* timer; // the timer used for animation in the editor
-    bool playing;
-    bool looping;
-    bool loopControl;
-    int m_loopStart;
-    int m_loopEnd;
-    bool sound;
 
     TimeLine* getTimeLine();
 
@@ -97,9 +89,6 @@ protected:
 
 signals:
     void selectAll();
-    void toggleLoop( bool );
-    void toggleLoopControl( bool ) ;
-    void loopToggled( bool );
     void toggleMultiLayerOnionSkin( bool );
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
@@ -141,23 +130,8 @@ public slots:
     void scrubForward();
     void scrubBackward();
 
-    void play();
-    void startOrStop();
-    void playNextFrame();
-    void playPrevFrame();
-
-    void changeFps( int );
-    int getFps();
-    void setLoop( bool checked );
-    void setLoopControl( bool checked );
-    void changeLoopStart (int);
-    void changeLoopEnd (int);
-    void setSound();
-
     void previousLayer();
     void nextLayer();
-    void endPlay();
-    void startPlay();
 
     void addNewKey();
     void duplicateKey();
@@ -170,7 +144,6 @@ public slots:
     void setCurrentLayer( int layerNumber );
     void switchVisibilityOfLayer( int layerNumber );
     void moveLayer( int i, int j );
-    void updateMaxFrame();
 
     void changeAutosave( int );
     void changeAutosaveNumber( int );
@@ -220,6 +193,7 @@ private:
     ColorManager* m_colorManager = nullptr;
     ToolManager* m_pToolManager = nullptr;
     LayerManager* m_pLayerManager = nullptr;
+    PlaybackManager* m_pPlaybackManager = nullptr;
 
     bool m_isAltPressed;
     int numberOfModifications;

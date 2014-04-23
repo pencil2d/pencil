@@ -107,7 +107,8 @@ HEADERS +=  \
     util/pencilerror.h \
     util/pencilsettings.h \
     util/util.h \
-    interface/basedockwidget.h
+    interface/basedockwidget.h \
+    managers/playbackmanager.h
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
@@ -171,7 +172,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/fileformat.cpp \
     util/pencilerror.cpp \
     util/pencilsettings.cpp \
-    interface/basedockwidget.cpp
+    interface/basedockwidget.cpp \
+    managers/playbackmanager.cpp
 
 FORMS += \
     interface/mainwindow2.ui \

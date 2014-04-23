@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "colorpalettewidget.h"
 #include "toolmanager.h"
 #include "layermanager.h"
+#include "playbackmanager.h"
 #include "editor.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
@@ -87,23 +88,6 @@ Editor::Editor( MainWindow2* parent )
     onionLayer2Opacity = settings.value( "onionLayer2Opacity" ).toInt();
     onionLayer3Opacity = settings.value( "onionLayer3Opacity" ).toInt();
 
-    fps = settings.value( "fps" ).toInt();
-    if ( fps == 0 )
-    {
-        fps = 12;
-        settings.setValue( "fps", 12 );
-    }
-
-    timer = new QTimer( this );
-    timer->setInterval( 1000 / fps );
-    connect( timer, &QTimer::timeout, this, &Editor::playNextFrame );
-    playing = false;
-    looping = false;
-    loopControl = false;
-    m_loopStart = 1;
-    m_loopEnd = 2;
-    sound = true;
-
     //qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
     //qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
     //qDebug() << QLibraryInfo::location( QLibraryInfo::LibrariesPath );
@@ -127,12 +111,14 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     m_colorManager = new ColorManager( this );
     m_pLayerManager = new LayerManager( this );
     m_pToolManager = new ToolManager( this );
+    m_pPlaybackManager = new PlaybackManager( this );
 
     BaseManager* allManagers[] =
     {
         m_colorManager,
         m_pToolManager,
-        m_pLayerManager
+        m_pLayerManager,
+        m_pPlaybackManager
     };
 
     for ( BaseManager* pManager : allManagers )
@@ -241,6 +227,7 @@ bool Editor::importMov()
     else
     {
         settings.setValue( "lastExportPath", QVariant( filePath ) );
+        int fps = playbackManager()->fps();
         importMovie( filePath, fps );
         return true;
     }
@@ -547,7 +534,7 @@ void Editor::paste()
             //((LayerVector*)layer)->getLastVectorImageAtFrame(backupFrame, 0)->modification(); ????
         }
     }
-    m_pScribbleArea->updateFrame();
+    m_pScribbleArea->updateCurrentFrame();
 }
 
 void Editor::deselectAll()
@@ -731,8 +718,6 @@ void Editor::updateObject()
     {
         m_pScribbleArea->updateAllFrames();
     }
-
-    updateMaxFrame();
 }
 
 void Editor::createExportFramesSizeBox()
@@ -931,8 +916,12 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     view = m_pScribbleArea->getView() * view;
 
-    updateMaxFrame();
-    m_pObject->exportFrames( 1, maxFrame, getCurrentLayer(), exportSize, filePath, exportFormat, -1, false, true, NULL, 0 );
+    int projectLength = layerManager()->projectLength();
+
+    m_pObject->exportFrames( 1, projectLength, getCurrentLayer(), 
+                             exportSize, 
+                             filePath, 
+                             exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
@@ -968,8 +957,12 @@ bool Editor::exportImageSequence()
     view = m_pScribbleArea->getView() * view;
 
     QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
-    updateMaxFrame();
-    m_pObject->exportFrames( 1, maxFrame, getCurrentLayer(), exportSize, strFilePath, exportFormat, -1, false, true, NULL, 0 );
+    
+    int projectLength = layerManager()->projectLength();
+    m_pObject->exportFrames( 1, projectLength, 
+                             getCurrentLayer(), 
+                             exportSize, strFilePath, 
+                             exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
@@ -992,8 +985,9 @@ bool Editor::exportX()
         QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = m_pScribbleArea->getView() * view;
 
-        updateMaxFrame();
-        if ( !m_pObject->exportX( 1, maxFrame, view, exportSize, filePath, true ) ) {
+        int projectLength = layerManager()->projectLength();
+        if ( !m_pObject->exportX( 1, projectLength, view, exportSize, filePath, true ) ) 
+        {
             QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
@@ -1034,8 +1028,9 @@ bool Editor::exportImage()
         QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = m_pScribbleArea->getView() * view;
 
-        updateMaxFrame();
-        if ( !m_pObject->exportIm( layerManager()->currentFramePosition(), maxFrame, view, exportSize, filePath, true ) ) {
+
+        int projectLength = layerManager()->projectLength();
+        if ( !m_pObject->exportIm( layerManager()->currentFramePosition(), projectLength, view, exportSize, filePath, true ) ) {
             QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                                   tr( "Unable to export image." ),
                                   QMessageBox::Ok,
@@ -1071,8 +1066,9 @@ bool Editor::exportMov()
         QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = m_pScribbleArea->getView() * view;
 
-        updateMaxFrame();
-        m_pObject->exportMovie( 1, maxFrame, view, getCurrentLayer(), exportSize, filePath, fps, exportMovieDialog_fpsBox->value(), exportMovieDialog_format->currentText() );
+        int projectLength = layerManager()->projectLength();
+        int fps = playbackManager()->fps();
+        m_pObject->exportMovie( 1, projectLength, view, getCurrentLayer(), exportSize, filePath, fps, exportMovieDialog_fpsBox->value(), exportMovieDialog_format->currentText() );
         return true;
     }
 }
@@ -1108,8 +1104,9 @@ bool Editor::exportFlash()
         QMatrix view = map( m_pScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = m_pScribbleArea->getView() * view;
 
-        updateMaxFrame();
-        m_pObject->exportFlash( 1, maxFrame, view, exportSize, filePath, fps, exportFlashDialog_compression->value() );
+        int projectLength = layerManager()->projectLength();
+        int fps = playbackManager()->fps();
+        m_pObject->exportFlash( 1, projectLength, view, exportSize, filePath, fps, exportFlashDialog_compression->value() );
         return true;
     }
 }
@@ -1192,6 +1189,7 @@ void Editor::importImage( QString filePath )
                     }
 
                     bitmapImage->paste( importedBitmapImage );
+                    int fps = playbackManager()->fps();
                     timeLeft -= ( timeLeft / ( 1000 / fps ) + 1 )*( 1000 / fps );
 
                     while ( timeLeft<0 && numImages > 0 )
@@ -1201,6 +1199,7 @@ void Editor::importImage( QString filePath )
                         if ( importedImage->isNull() || importedImageReader->nextImageDelay() <= 0 ) break;
                         timeLeft += importedImageReader->nextImageDelay();
 
+                        int fps = playbackManager()->fps();
                         scrubTo( layerManager()->currentFramePosition() + ( timeLeft / ( 1000 / fps ) ) );
                     }
                 } while ( numImages > 0 && !importedImage->isNull() );
@@ -1237,7 +1236,7 @@ void Editor::importImage( QString filePath )
                                       QMessageBox::Ok );
             }
         }
-        m_pScribbleArea->updateFrame();
+        m_pScribbleArea->updateCurrentFrame();
         getTimeLine()->updateContent();
     }
 }
@@ -1416,13 +1415,12 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     if ( isOK )
     {
         getTimeLine()->updateContent();
-        getScribbleArea()->updateFrame();
+        getScribbleArea()->updateCurrentFrame();
         layerManager()->setCurrentKeyFrame( frameIndex );
     }
     else
     {
         addKeyFame( layerNumber, frameIndex + 1 );
-        updateMaxFrame();
     }
 }
 
@@ -1444,216 +1442,26 @@ void Editor::removeKey()
         }
         scrubBackward();
         getTimeLine()->updateContent();
-        m_pScribbleArea->updateFrame();
-    }
-}
-
-void Editor::play()
-{
-    int loopStarts = m_loopStart;
-    int loopEnds = m_loopEnd;
-    
-    updateMaxFrame();
-
-    if ( layerManager()->currentLayerIndex() == loopEnds )
-    {
-        if ( loopControl )
-        {
-            scrubTo( loopStarts );
-        }
-    }
-    else if ( layerManager()->currentLayerIndex() > maxFrame )
-    {
-        if ( loopControl )
-        {
-            scrubTo( loopStarts );
-        }
-        else
-        {
-            scrubTo( maxFrame );
-        }
-    }
-    else if ( layerManager()->currentLayerIndex() == maxFrame )
-    {
-        if ( !playing )
-        {
-            if ( loopControl )
-            {
-                scrubTo( loopStarts );
-            }
-            else{
-                scrubTo( 0 );
-            }
-        }
-        else
-        {
-            if ( looping )
-            {
-                if ( loopControl )
-                {
-                    scrubTo( loopStarts );
-                }
-                else{
-                    scrubTo( 0 );
-                }
-            }
-            else
-            {
-                startOrStop();
-            }
-        }
-    }
-    else
-    {
-        startOrStop();
-    }
-}
-
-void Editor::startOrStop()
-{
-    if ( !playing )
-    {
-        playing = true;
-        timer->start();
-    }
-    else
-    {
-        playing = false;
-        timer->stop();
-        m_pObject->stopSoundIfAny();
+        m_pScribbleArea->updateCurrentFrame();
     }
 }
 
 void Editor::scrubNextKeyFrame()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-    if ( layer == NULL )
-    {
-        return;
-    }
+    Q_ASSERT( layer );
 
-    int position = layer->getNextKeyFramePosition( layerManager()->currentFramePosition() );
-    if ( position != Layer::NO_KeyFrame )
-    {
-        scrubTo( position );
-    }
-    else {
-        if ( looping ) {
-            // scrubto first key frame
-            position = layer->getFirstKeyFramePosition();
-            if ( position != Layer::NO_KeyFrame ) {
-                scrubTo( position );
-            }
-        }
-    }
+    int nextPosition = layer->getNextKeyFramePosition( layerManager()->currentFramePosition() );
+    layerManager()->setCurrentKeyFrame( nextPosition );
 }
 
 void Editor::scrubPreviousKeyFrame()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
-    if ( layer == NULL )
-    {
-        return;
-    }
+    Q_ASSERT( layer );
 
-    int position = layer->getPreviousKeyFramePosition( layerManager()->currentFramePosition() );
-    if ( position != Layer::NO_KeyFrame )
-    {
-        scrubTo( position );
-    }
-    else
-    {
-        if ( looping )
-        {
-            // scrubto first key frame
-            position = layer->getMaxKeyFramePosition();
-            if ( position != Layer::NO_KeyFrame )
-            {
-                scrubTo( position );
-            }
-        }
-    }
-}
-
-void Editor::playNextFrame()
-{
-    updateMaxFrame();
-    int loopStarts = m_loopStart;
-    int loopEnds = m_loopEnd;
-    if ( layerManager()->currentLayerIndex() == loopEnds )
-    {
-        if ( loopControl )
-        {
-            scrubTo( loopStarts );
-        }
-    }
-    if ( layerManager()->currentFramePosition() < maxFrame )
-    {
-        if ( sound )
-        {
-            m_pObject->playSoundIfAny( layerManager()->currentFramePosition(), fps );
-        }
-        scrubForward();
-    }
-    else
-    {
-        if ( !playing )
-        {
-            scrubTo( maxFrame );
-        }
-        else
-        {
-            if ( looping ) { scrubTo( 0 ); }
-            else { startOrStop(); }
-        }
-    }
-}
-
-void Editor::playPrevFrame()
-{
-    if ( layerManager()->currentFramePosition() > 0 )
-    {
-        if ( sound ) m_pObject->playSoundIfAny( layerManager()->currentFramePosition(), fps );
-        scrubBackward();
-    }
-}
-
-void Editor::changeFps( int x )
-{
-    fps = x;
-    timer->setInterval( 1000 / fps );
-    getTimeLine()->updateContent();
-}
-
-int Editor::getFps()
-{
-    return fps;
-}
-
-void Editor::setLoop( bool checked )
-{
-    looping = checked;
-}
-
-void Editor::setLoopControl( bool checked )
-{
-    loopControl = checked;
-}
-
-void Editor::changeLoopStart( int x )
-{
-    m_loopStart = x;
-}
-
-void Editor::changeLoopEnd( int x )
-{
-    m_loopEnd = x;
-}
-
-void Editor::setSound()
-{
-    if ( sound ) sound = false;
-    else sound = true;
+    int prevPosition = layer->getPreviousKeyFramePosition( layerManager()->currentFramePosition() );
+    layerManager()->setCurrentKeyFrame( prevPosition );
 }
 
 void Editor::setCurrentLayer( int layerNumber )
@@ -1684,20 +1492,6 @@ void Editor::moveLayer( int i, int j )
     }
     getTimeLine()->updateContent();
     m_pScribbleArea->updateAllFrames();
-}
-
-void Editor::updateMaxFrame()
-{
-    maxFrame = -1;
-    for ( int i = 0; i < m_pObject->getLayerCount(); i++ )
-    {
-        int frameNumber = m_pObject->getLayer( i )->getMaxKeyFramePosition();
-        if ( frameNumber > maxFrame )
-        {
-            maxFrame = frameNumber;
-        }
-    }
-    getTimeLine()->forceUpdateLength( QString::number( maxFrame ) );
 }
 
 void Editor::clearCurrentFrame()
@@ -1753,16 +1547,6 @@ void Editor::getCameraLayer()
         {
         }
     }
-}
-
-void Editor::endPlay()
-{
-    scrubTo( layerManager()->lastKeyFrameIndex() );
-}
-
-void Editor::startPlay()
-{
-    scrubTo( layerManager()->firstKeyFrameIndex() );
 }
 
 void Editor::resetView()

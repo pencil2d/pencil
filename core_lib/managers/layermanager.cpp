@@ -64,12 +64,12 @@ int LayerManager::currentFramePosition()
     return m_currentFrameIndex;
 }
 
-void LayerManager::setCurrentKeyFrame( int frameIndex )
+void LayerManager::setCurrentKeyFrame( int frame )
 {
-    if ( frameIndex != m_currentFrameIndex )
+    if ( frame != m_currentFrameIndex )
     {
-        m_currentFrameIndex = frameIndex;
-        emit currentKeyFrameChanged( frameIndex );
+        m_currentFrameIndex = frame;
+        emit currentKeyFrameChanged( frame );
     }
 }
 
@@ -128,4 +128,32 @@ int LayerManager::lastKeyFrameIndex()
 int LayerManager::count()
 {
     return editor()->object()->getLayerCount();
+}
+
+int LayerManager::projectLength()
+{
+    int maxFrame = -1;
+
+    Object* pObject = editor()->object();
+    for ( int i = 0; i < pObject->getLayerCount(); i++ )
+    {
+        int frame = pObject->getLayer( i )->getMaxKeyFramePosition();
+        if ( frame > maxFrame )
+        {
+            maxFrame = frame;
+        }
+    }
+    return maxFrame;
+}
+
+void LayerManager::gotoLastKeyFrame()
+{
+    int nFrame = lastKeyFrameIndex();
+    setCurrentKeyFrame( nFrame );
+}
+
+void LayerManager::gotoFirstKeyFrame()
+{
+    int nFrame = firstKeyFrameIndex();
+    setCurrentKeyFrame( nFrame );
 }
