@@ -14,7 +14,7 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
     this->editor = editor;
     m_eType = type;
 
-    cache = NULL;
+    m_pCache = NULL;
     QSettings settings( "Pencil", "Pencil" );
 
     frameLength = settings.value( "length" ).toInt();
@@ -106,10 +106,10 @@ void TimeLineCells::updateContent()
 
 void TimeLineCells::drawContent()
 {
-    if ( cache == NULL ) { cache = new QPixmap( size() ); }
-    if ( cache->isNull() ) return;
+    if ( m_pCache == NULL ) { m_pCache = new QPixmap( size() ); }
+    if ( m_pCache->isNull() ) return;
 
-    QPainter painter( cache );
+    QPainter painter( m_pCache );
 
     Object* object = editor->object();
     
@@ -235,19 +235,20 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
     Object* object = editor->object();
-    if ( object == NULL ) return;
     Layer* layer = editor->layerManager()->currentLayer();
-    if ( layer == NULL ) return;
+    
+    Q_ASSUME( object != nullptr && layer != nullptr );
 
     QPainter painter( this );
+
     bool isPlaying = editor->playbackManager()->isPlaying();
-    if ( ( !isPlaying && !timeLine->scrubbing ) || cache == NULL )
+    if ( ( !isPlaying && !timeLine->scrubbing ) || m_pCache == NULL )
     {
         drawContent();
     }
-    if ( cache )
+    if ( m_pCache )
     {
-        painter.drawPixmap( QPoint( 0, 0 ), *cache );
+        painter.drawPixmap( QPoint( 0, 0 ), *m_pCache );
     }
 
     if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
@@ -282,8 +283,8 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
 
 void TimeLineCells::resizeEvent( QResizeEvent* event )
 {
-    if ( cache ) delete cache;
-    cache = new QPixmap( size() );
+    if ( m_pCache ) delete m_pCache;
+    m_pCache = new QPixmap( size() );
     updateContent();
     event->accept();
 }
