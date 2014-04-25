@@ -19,7 +19,6 @@ public:
     void drawStroke();
 
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
-
 };
 
 #endif // PENTOOL_H

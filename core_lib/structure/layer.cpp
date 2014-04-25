@@ -208,7 +208,7 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
 {
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
 
-    qDebug() << "LayerType:" << static_cast<int>( m_eType );
+    //qDebug() << "LayerType:" << static_cast<int>( m_eType );
 
     for ( auto pair : m_KeyFrames )
     {

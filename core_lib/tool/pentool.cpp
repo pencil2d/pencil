@@ -54,8 +54,6 @@ QCursor PenTool::cursor()
 
 void PenTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    //editor->currentColor = getTool( PEN )->properties.colour;
-    //editor->currentColor.setAlphaF(pen.colour.alphaF());
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
         currentWidth = 2.0 * properties.width * pressure;

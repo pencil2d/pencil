@@ -44,6 +44,7 @@ enum DisplayEffect
     EFFECT_COUNT,
 };
 
+
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
