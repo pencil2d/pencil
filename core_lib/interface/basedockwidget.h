@@ -10,8 +10,8 @@ class BaseDockWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    explicit BaseDockWidget(QWidget* pParent);
-    explicit BaseDockWidget(QWidget* pParent, Qt::WindowFlags );
+    explicit BaseDockWidget( QWidget* pParent );
+    explicit BaseDockWidget( QWidget* pParent, Qt::WindowFlags );
     explicit BaseDockWidget( QString strTitle, QWidget* pParent, Qt::WindowFlags );
     ~BaseDockWidget();
 

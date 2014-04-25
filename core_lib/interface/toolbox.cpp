@@ -28,7 +28,7 @@ GNU General Public License for more details.
 // ----------------------------------------------------------------------------------
 
 ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
-    QDockWidget(title, pParent)
+    BaseDockWidget( title, pParent, Qt::Tool )
 {
     QFrame* toolGroup = new QFrame();
     setWidget(toolGroup);
@@ -128,6 +128,17 @@ ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
     connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearButtonClicked()));
 }
 
+
+void ToolBoxWidget::initUI()
+{
+
+}
+
+void ToolBoxWidget::updateUI()
+{
+
+}
+
 QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
 {
     QToolButton* toolButton = new QToolButton(this);
@@ -142,7 +153,7 @@ QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
 
 void ToolBoxWidget::pencilOn()
 {
-    m_editor->toolManager()->setCurrentTool( PENCIL );
+    core()->toolManager()->setCurrentTool( PENCIL );
 
     deselectAllTools();
     pencilButton->setChecked(true);
@@ -150,7 +161,7 @@ void ToolBoxWidget::pencilOn()
 
 void ToolBoxWidget::eraserOn()
 {
-    m_editor->toolManager()->setCurrentTool( ERASER );
+    core()->toolManager()->setCurrentTool( ERASER );
 
     deselectAllTools();
     eraserButton->setChecked(true);
@@ -158,7 +169,7 @@ void ToolBoxWidget::eraserOn()
 
 void ToolBoxWidget::selectOn()
 {
-    m_editor->toolManager()->setCurrentTool( SELECT );
+    core()->toolManager()->setCurrentTool( SELECT );
 
     deselectAllTools();
     selectButton->setChecked(true);
@@ -166,7 +177,7 @@ void ToolBoxWidget::selectOn()
 
 void ToolBoxWidget::moveOn()
 {
-    m_editor->toolManager()->setCurrentTool( MOVE );
+    core()->toolManager()->setCurrentTool( MOVE );
 
     deselectAllTools();
     moveButton->setChecked(true);
@@ -174,7 +185,7 @@ void ToolBoxWidget::moveOn()
 
 void ToolBoxWidget::penOn()
 {
-    m_editor->toolManager()->setCurrentTool( PEN );
+    core()->toolManager()->setCurrentTool( PEN );
 
     deselectAllTools();
     penButton->setChecked(true);
@@ -182,7 +193,7 @@ void ToolBoxWidget::penOn()
 
 void ToolBoxWidget::handOn()
 {
-    m_editor->toolManager()->setCurrentTool( HAND );
+    core()->toolManager()->setCurrentTool( HAND );
     
     deselectAllTools();
     handButton->setChecked(true);
@@ -190,7 +201,7 @@ void ToolBoxWidget::handOn()
 
 void ToolBoxWidget::polylineOn()
 {
-    m_editor->toolManager()->setCurrentTool( POLYLINE );
+    core()->toolManager()->setCurrentTool( POLYLINE );
 
     deselectAllTools();
     polylineButton->setChecked(true);
@@ -198,7 +209,7 @@ void ToolBoxWidget::polylineOn()
 
 void ToolBoxWidget::bucketOn()
 {
-    m_editor->toolManager()->setCurrentTool( BUCKET );
+    core()->toolManager()->setCurrentTool( BUCKET );
 
     deselectAllTools();
     bucketButton->setChecked(true);
@@ -206,7 +217,7 @@ void ToolBoxWidget::bucketOn()
 
 void ToolBoxWidget::eyedropperOn()
 {
-    m_editor->toolManager()->setCurrentTool( EYEDROPPER );
+    core()->toolManager()->setCurrentTool( EYEDROPPER );
 
     deselectAllTools();
     eyedropperButton->setChecked(true);
@@ -214,7 +225,7 @@ void ToolBoxWidget::eyedropperOn()
 
 void ToolBoxWidget::brushOn()
 {
-    m_editor->toolManager()->setCurrentTool( BRUSH );
+    core()->toolManager()->setCurrentTool( BRUSH );
   
     deselectAllTools();
     colouringButton->setChecked(true);
@@ -222,7 +233,7 @@ void ToolBoxWidget::brushOn()
 
 void ToolBoxWidget::smudgeOn()
 {
-    m_editor->toolManager()->setCurrentTool( SMUDGE );
+    core()->toolManager()->setCurrentTool( SMUDGE );
 
     deselectAllTools();
     smudgeButton->setChecked(true);

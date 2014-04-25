@@ -686,7 +686,6 @@ void MainWindow2::resetToolsSettings()
     m_pEditor->toolManager()->resetAllTools();
 }
 
-
 bool MainWindow2::saveObject( QString strSavedFilename )
 {
     QString filePath = strSavedFilename;
@@ -1196,7 +1195,6 @@ void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
     connect( pCore, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
 }
 
-
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 {
     PlaybackManager* pPlaybackManager = pEditor->playbackManager();
@@ -1229,7 +1227,6 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pEditor, SIGNAL( toggleLoopControl( bool ) ), pTimeline, SIGNAL( toggleLoopControl( bool ) ) );
     connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
 }
-
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {

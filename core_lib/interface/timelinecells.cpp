@@ -33,23 +33,23 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
     layerOffset = 0;
 
     frameSize = ( settings.value( "frameSize" ).toInt() );
-    if ( frameSize == 0 ) 
-    { 
-        frameSize = 12; 
+    if ( frameSize == 0 )
+    {
+        frameSize = 12;
         settings.setValue( "frameSize", frameSize );
     }
 
     fontSize = ( settings.value( "labelFontSize" ).toInt() );
-    if ( fontSize == 0 ) 
-    { 
-        fontSize = 12; 
+    if ( fontSize == 0 )
+    {
+        fontSize = 12;
         settings.setValue( "labelFontSize", fontSize );
     }
 
     layerHeight = ( settings.value( "layerHeight" ).toInt() );
     if ( layerHeight == 0 )
-    { 
-        layerHeight = 20; 
+    {
+        layerHeight = 20;
         settings.setValue( "layerHeight", layerHeight );
     }
 
@@ -66,7 +66,7 @@ int TimeLineCells::getFrameNumber( int x )
 
 int TimeLineCells::getFrameX( int frameNumber )
 {
-    int x = m_offsetX + ( frameNumber - frameOffset )*frameSize;
+    int x = m_offsetX + ( frameNumber - frameOffset ) * frameSize;
     return x;
 }
 
@@ -106,9 +106,9 @@ void TimeLineCells::updateContent()
 
 void TimeLineCells::drawContent()
 {
-    if ( m_pCache == NULL ) 
-    { 
-        m_pCache = new QPixmap( size() ); 
+    if ( m_pCache == NULL )
+    {
+        m_pCache = new QPixmap( size() );
         if ( m_pCache->isNull() )
         {
             // fail to create cache
@@ -119,7 +119,7 @@ void TimeLineCells::drawContent()
     QPainter painter( m_pCache );
 
     Object* object = editor->object();
-    
+
     Q_ASSERT_X( object != nullptr, "", "" );
 
     Layer* layer = object->getLayer( editor->layerManager()->currentLayerIndex() );
@@ -172,7 +172,14 @@ void TimeLineCells::drawContent()
     {
         if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
         {
-            layer->paintTrack( painter, this, m_offsetX, getLayerY( editor->layerManager()->currentLayerIndex() ), width() - m_offsetX, getLayerHeight(), true, frameSize );
+            layer->paintTrack( painter,
+                               this,
+                               m_offsetX,
+                               getLayerY( editor->layerManager()->currentLayerIndex() ),
+                               width() - m_offsetX,
+                               getLayerHeight(),
+                               true,
+                               frameSize );
         }
         if ( m_eType == TIMELINE_CELL_TYPE::Layers )
         {
@@ -244,7 +251,7 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
 
     Object* object = editor->object();
     Layer* layer = editor->layerManager()->currentLayer();
-    
+
     Q_ASSUME( object != nullptr && layer != nullptr );
 
     QPainter painter( this );

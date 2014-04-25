@@ -17,8 +17,8 @@ GNU General Public License for more details.
 #define TOOLBOXWIDGET_H
 
 #include <QtGui>
-#include <QDockWidget>
 #include "pencildef.h"
+#include "basedockwidget.h"
 
 class QToolButton;
 class QIcon;
@@ -28,12 +28,15 @@ class ToolOptionWidget;
 class Editor;
 
 
-class ToolBoxWidget : public QDockWidget
+class ToolBoxWidget : public BaseDockWidget
 {
     Q_OBJECT
 
 public:
     ToolBoxWidget(const QString title, QWidget* pParent );
+
+    void initUI() override;
+    void updateUI() override;
 
     void setCurrentTool( ToolType );
 
@@ -56,8 +59,6 @@ signals:
 private:
     QToolButton* newToolButton(const QIcon&, QString);
     void deselectAllTools();
-
-    Editor* m_editor;
 
     QToolButton* pencilButton;
     QToolButton* selectButton;

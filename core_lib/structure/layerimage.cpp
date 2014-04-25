@@ -66,41 +66,6 @@ int LayerImage::getLastIndexAtFrame( int frameNumber )
     return index;
 }
 
-void LayerImage::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
-{
-    Layer::paintTrack( painter, cells, x, y, width, height, selected, frameSize );
-    return;
-
-    painter.setFont( QFont( "helvetica", height / 2 ) );
-    if ( visible )
-    {
-        QColor col;
-        if ( type() == BITMAP ) col = QColor( 130, 130, 245 );
-        if ( type() == VECTOR ) col = QColor( 100, 205, 150 );
-        if ( type() == SOUND ) col = QColor( 245, 130, 130 );
-        if ( type() == CAMERA ) col = QColor( 100, 128, 140 );
-        if ( !selected ) col = QColor( ( 1 * col.red() + 2 * 200 ) / 3, ( 1 * col.green() + 2 * 200 ) / 3, ( 1 * col.blue() + 2 * 200 ) / 3 );
-
-        painter.setBrush( col );
-        painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
-        painter.drawRect( x, y - 1, width, height );
-
-        paintImages( painter, cells, x, y, width, height, selected, frameSize );
-
-        // changes the apparence if selected
-        if ( selected )
-        {
-            paintSelection( painter, x, y, width, height );
-        }
-    }
-    else
-    {
-        painter.setBrush( Qt::gray );
-        painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
-        painter.drawRect( x, y - 1, width, height ); // empty rectangle  by default
-    }
-}
-
 void LayerImage::paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
 {
     Q_UNUSED( x );

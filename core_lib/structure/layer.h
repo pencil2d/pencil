@@ -80,7 +80,8 @@ public:
     virtual void loadDomElement(QDomElement element, QString dataDirPath) = 0;
 
     // graphic representation -- could be put in another class
-    virtual void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int frameSize);
+    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
+    void paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
 
