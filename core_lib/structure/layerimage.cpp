@@ -68,6 +68,9 @@ int LayerImage::getLastIndexAtFrame( int frameNumber )
 
 void LayerImage::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
 {
+    Layer::paintTrack( painter, cells, x, y, width, height, selected, frameSize );
+    return;
+
     painter.setFont( QFont( "helvetica", height / 2 ) );
     if ( visible )
     {
@@ -103,26 +106,27 @@ void LayerImage::paintImages( QPainter& painter, TimeLineCells* cells, int x, in
     Q_UNUSED( x );
     Q_UNUSED( width );
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+    
     if ( visible )
     {
         /*
-        for(int i=0; i < framesPosition.size(); i++)
+        for ( int i = 0; i < framesPosition.size(); i++ )
         {
-        if (framesSelected.at(i))
-        {
-        painter.setBrush(QColor(60,60,60));
-        //painter.drawRect(x+(framesPosition.at(i)+frameOffset-1)*frameSize+2, y+1, frameSize-2, height-4);
-        painter.drawRect( cells->getFrameX(framesPosition.at(i)+frameOffset)-frameSize+2, y+1, frameSize-2, height-4);
-        }
-        else
-        {
-        if (selected)
-        painter.setBrush(QColor(125,125,125));
-        else
-        painter.setBrush(QColor(125,125,125,125));
-        if (framesModified.at(i)) painter.setBrush(QColor(255,125,125,125));
-        painter.drawRect( cells->getFrameX(framesPosition.at(i))-frameSize+2, y+1, frameSize-2, height-4 );
-        }
+            if ( framesSelected.at( i ) )
+            {
+                painter.setBrush( QColor( 60, 60, 60 ) );
+                //painter.drawRect(x+(framesPosition.at(i)+frameOffset-1)*frameSize+2, y+1, frameSize-2, height-4);
+                painter.drawRect( cells->getFrameX( framesPosition.at( i ) + frameOffset ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
+            }
+            else
+            {
+                if ( selected )
+                    painter.setBrush( QColor( 125, 125, 125 ) );
+                else
+                    painter.setBrush( QColor( 125, 125, 125, 125 ) );
+                if ( framesModified.at( i ) ) painter.setBrush( QColor( 255, 125, 125, 125 ) );
+                painter.drawRect( cells->getFrameX( framesPosition.at( i ) ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
+            }
         }
         */
     }

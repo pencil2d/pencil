@@ -62,7 +62,7 @@ private:
 
     TIMELINE_CELL_TYPE m_eType;
 
-    QPixmap* cache;
+    QPixmap* m_pCache;
     bool drawFrameNumber;
     bool shortScrub;
     int frameLength;

@@ -106,8 +106,15 @@ void TimeLineCells::updateContent()
 
 void TimeLineCells::drawContent()
 {
-    if ( m_pCache == NULL ) { m_pCache = new QPixmap( size() ); }
-    if ( m_pCache->isNull() ) return;
+    if ( m_pCache == NULL ) 
+    { 
+        m_pCache = new QPixmap( size() ); 
+        if ( m_pCache->isNull() )
+        {
+            // fail to create cache
+            return;
+        }
+    }
 
     QPainter painter( m_pCache );
 
@@ -234,6 +241,7 @@ void TimeLineCells::drawContent()
 void TimeLineCells::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
+
     Object* object = editor->object();
     Layer* layer = editor->layerManager()->currentLayer();
     
