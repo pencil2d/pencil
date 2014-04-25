@@ -183,7 +183,14 @@ void TimeLineCells::drawContent()
         }
         if ( m_eType == TIMELINE_CELL_TYPE::Layers )
         {
-            layer->paintLabel( painter, this, 0, getLayerY( editor->layerManager()->currentLayerIndex() ), width() - 1, getLayerHeight(), true, editor->allLayers() );
+            layer->paintLabel( painter,
+                               this, 
+                               0, 
+                               getLayerY( editor->layerManager()->currentLayerIndex() ),
+                               width() - 1,
+                               getLayerHeight(),
+                               true,
+                               editor->allLayers() );
         }
     }
 
