@@ -13,8 +13,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include "layerbitmap.h"
 #include <QtDebug>
+#include "bitmapimage.h"
+#include "layerbitmap.h"
+
 
 LayerBitmap::LayerBitmap( Object* object ) : LayerImage( object, Layer::BITMAP )
 {
@@ -85,7 +87,7 @@ QDomElement LayerBitmap::createDomElement( QDomDocument& doc )
     layerTag.setAttribute( "visibility", visible );
     layerTag.setAttribute( "type", type() );
 
-    foreachKeyFrame( [ &]( KeyFrame* pKeyFrame )
+    foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
     {
         BitmapImage* pImg = static_cast< BitmapImage* >( pKeyFrame );
 

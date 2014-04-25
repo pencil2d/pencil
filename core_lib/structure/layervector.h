@@ -39,18 +39,14 @@ public:
     bool addNewKeyFrameAt( int frameNumber ) override;
 
     void loadImageAtFrame(QString, int);
-    QImage* getImageAtIndex(int, QSize, bool, bool, bool );
-    QImage* getLastImageAtFrame(int, int, QSize, bool, bool, bool );
+    //QImage* getImageAtIndex(int, QSize, bool, bool, bool );
 
-    void setView(QMatrix view);
-    
+    //void setView(QMatrix view);
     void setModified(bool trueOrFalse);
 
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element,  QString dataDirPath) override;
 
-    // graphic representation -- could be put in another class
-    VectorImage* getVectorImageAtIndex(int index);
     VectorImage* getVectorImageAtFrame(int frameNumber);
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment);
 
@@ -60,10 +56,6 @@ public:
 protected:
     bool saveKeyFrame( KeyFrame*, QString path );
     QString fileName( int index );
-
-    QList<VectorImage*> framesVector;
-    QList<QImage*> framesImage; // bitmap output of the vector pictures
-    QMatrix myView;
 };
 
 #endif

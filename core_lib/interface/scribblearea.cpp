@@ -1039,7 +1039,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     painter.setWorldMatrixEnabled( true );
 
                     // previous frame (onion skin)
-                    if ( onionPrev ) {
+                    if ( onionPrev )
+                    {
                         BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -1 );
                         if ( previousImage != NULL )
                         {
@@ -1112,17 +1113,22 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             if ( layer->type() == Layer::VECTOR )
             {
                 LayerVector *layerVector = ( LayerVector * )layer;
-                QImage *pImage = layerVector->getLastImageAtFrame( frame, 0,
-                                                                   sz,
-                                                                   m_isSimplified, m_showThinLines,
-                                                                   isEffectOn( EFFECT_ANTIALIAS ) );
+                QImage *pImage = NULL;
 
+                /*
+                pImage = layerVector->getLastImageAtFrame( frame, 0,
+                                                           sz,
+                                                           m_isSimplified, m_showThinLines,
+                                                           isEffectOn( EFFECT_ANTIALIAS ) );
+                                                           */
                 if ( pImage != NULL )
                 {
                     painter.setWorldMatrixEnabled( false );
 
                     // previous frame (onion skin)
-                    if ( onionPrev ) {
+                    if ( onionPrev )
+                    {
+                        /*
                         QImage *previousImage = layerVector->getLastImageAtFrame( frame, -1, sz,
                                                                                   m_isSimplified,
                                                                                   m_showThinLines,
@@ -1161,10 +1167,13 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                             }
                             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                         }
+                        */
                     }
 
                     // next frame (onion skin)
-                    if ( onionNext ) {
+                    if ( onionNext )
+                    {
+                        /*
                         QImage* nextImage = layerVector->getLastImageAtFrame( frame, 1, sz,
                                                                               m_isSimplified,
                                                                               m_showThinLines,
@@ -1203,6 +1212,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                             }
                             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                         }
+                        */
                     }
                 }
             }
@@ -1279,10 +1289,9 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     vectorImage->setSelectionTransformation( selectionTransformation );
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
-                QImage* image = layerVector->getLastImageAtFrame( frame, 0, sz,
-                                                                  m_isSimplified,
-                                                                  m_showThinLines,
-                                                                  isEffectOn( EFFECT_ANTIALIAS ) );
+                QImage* image = nullptr;
+                // TODO:
+                // image = layerVector->getLastImageAtFrame( frame, 0, sz, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                 if ( image != NULL )
                 {
                     painter.setWorldMatrixEnabled( false );
@@ -1639,14 +1648,6 @@ QMatrix ScribbleArea::getMyView()
 
 void ScribbleArea::setView( QMatrix view )
 {
-    for ( int i = 0; i < m_pEditor->object()->getLayerCount(); i++ )
-    {
-        Layer *layer = m_pEditor->object()->getLayer( i );
-        if ( layer->type() == Layer::VECTOR )
-        {
-            ( ( LayerVector * )layer )->setView( view * centralView );
-        }
-    }
     myTempView = view * centralView;
 }
 

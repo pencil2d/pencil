@@ -24,14 +24,10 @@ LayerVector::LayerVector(Object* object) : LayerImage( object, Layer::VECTOR )
 
 LayerVector::~LayerVector()
 {
-    while (!framesVector.empty())
-    {
-        delete framesVector.takeFirst();
-    }
 }
 
 // ------
-
+/*
 QImage* LayerVector::getImageAtIndex( int index,
                                       QSize size,
                                       bool simplified,
@@ -61,83 +57,29 @@ QImage* LayerVector::getImageAtIndex( int index,
         return image;
     }
 }
+*/
 
-QImage* LayerVector::getLastImageAtFrame(int frameNumber,
-                                         int increment,
-                                         QSize size,
-                                         bool simplified, 
-                                         bool showThinLines,
-                                         bool antialiasing )
+bool LayerVector::usesColour(int colorIndex)
 {
-    int index = getLastIndexAtFrame(frameNumber);
-    if (index == -1)
+    bool bUseColor = false;
+    foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
-        return NULL;
-    }
-    else
+        auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
+        
+        bUseColor = bUseColor || pVecImage->usesColour( colorIndex );
+    } );
+
+    return bUseColor;
+}
+
+void LayerVector::removeColour( int colorIndex )
+{
+    foreachKeyFrame( [=]( KeyFrame* pKeyFrame )
     {
-        return getImageAtIndex(index + increment, size, simplified, showThinLines, antialiasing );
-    }
+        auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
+        pVecImage->removeColour( colorIndex );
+    } );
 }
-
-// ------
-
-VectorImage* LayerVector::getVectorImageAtIndex(int index)
-{
-    if ( index < 0 || index >= framesVector.size() )
-    {
-        return NULL;
-    }
-    else
-    {
-        return framesVector.at(index);
-    }
-}
-
-VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber)
-{
-    int index = getIndexAtFrame(frameNumber);
-    return getVectorImageAtIndex(index);
-}
-
-VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment)
-{
-    int index = getLastIndexAtFrame(frameNumber);
-    return getVectorImageAtIndex(index + increment);
-}
-
-void LayerVector::setView(QMatrix view)
-{
-    myView = view;
-    setModified(true);
-}
-
-void LayerVector::setModified(bool trueOrFalse)
-{
-    for(int i=0; i < framesVector.size(); i++)
-    {
-        framesVector[i]->setModified(trueOrFalse);
-    }
-}
-
-
-bool LayerVector::usesColour(int index)
-{
-    for(int i=0; i < framesVector.size(); i++)
-    {
-        if ( framesVector[i]->usesColour(index) ) return true;
-    }
-    return false;
-}
-
-void LayerVector::removeColour(int index)
-{
-    for(int i=0; i < framesVector.size(); i++)
-    {
-        framesVector[i]->removeColour(index);
-    }
-}
-
 
 bool LayerVector::addNewKeyFrameAt( int frameNumber )
 {
@@ -146,20 +88,11 @@ bool LayerVector::addNewKeyFrameAt( int frameNumber )
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
-    if (getIndexAtFrame(frameNumber) == -1) addNewKeyFrameAt( frameNumber );
-    //int index = getIndexAtFrame(frameNumber);
-    //framesVector[index]->read(path);
-    //QFileInfo fi(path);
-    //framesFilename[index] = fi.fileName();
+    if ( getIndexAtFrame( frameNumber ) == -1 )
+    {
+        addNewKeyFrameAt( frameNumber );
+    }
 }
-
-/*void LayerVector::loadImageAtFrame(VectorImage* picture, int frameNumber) {
-    if (getIndexAtFrame(frameNumber) == -1) addImageAtFrame(frameNumber);
-    int index = getIndexAtFrame(frameNumber);
-    //image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-    framesVector[index] = picture;
-}*/
-
 
 bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
@@ -168,13 +101,6 @@ bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
     QString theFileName = fileName( pKeyFrame->pos() );
     QString strFilePath = QDir( path ).filePath( theFileName );
     pVecImage->write( strFilePath, "VEC" );
-
-    //int theFrame = framesPosition.at(index);
-    //QString theFileName = fileName(theFrame, id);
-    //framesFilename[index] = theFileName;
-    //qDebug() << "Write " << theFileName;
-    //framesVector[index]->write(path +"/"+ theFileName,"VEC");
-    //framesModified[index] = false;
 
     return true;
 }
@@ -192,20 +118,22 @@ QString LayerVector::fileName( int frame )
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
-    /*
+    
     layerTag.setAttribute("id", id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
-    for(int index=0; index < framesPosition.size() ; index++)
+    
+    foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
+        VectorImage* pImg = static_cast< VectorImage* >( pKeyFrame );
         //QDomElement imageTag = framesVector[index]->createDomElement(doc); // if we want to embed the data
         QDomElement imageTag = doc.createElement("image");
-        imageTag.setAttribute("frame", framesPosition.at(index));
-        imageTag.setAttribute("src", framesFilename.at(index)); // if we want to link the data to an external file
+        //imageTag.setAttribute("frame", framesPosition.at(index));
+        //imageTag.setAttribute("src", framesFilename.at(index)); // if we want to link the data to an external file
         layerTag.appendChild(imageTag);
-    }
-    */
+    } );
+    
     return layerTag;
 }
 
@@ -225,7 +153,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
             {
                 if (!imageElement.attribute("src").isNull())
                 {
-                    QString path =  dataDirPath +"/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
+                    QString path =  dataDirPath +"/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
       //qDebug() << "LAY_VECTOR  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
                     QFileInfo fi(path);
                     if (!fi.exists()) path = imageElement.attribute("src");
@@ -242,4 +170,19 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
         }
         imageTag = imageTag.nextSibling();
     }
+}
+
+VectorImage* LayerVector::getVectorImageAtFrame( int frameNumber )
+{
+    return static_cast< VectorImage* >( getKeyFrameAtPosition( frameNumber ) );
+}
+
+VectorImage* LayerVector::getLastVectorImageAtFrame( int frameNumber, int increment )
+{
+    return static_cast< VectorImage* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
+}
+
+void LayerVector::setModified( bool trueOrFalse )
+{
+    // TODO:
 }

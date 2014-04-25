@@ -36,11 +36,10 @@ public:
 
     bool read(QString filePath);
     bool write(QString filePath, QString format);
+
     QDomElement createDomElement(QDomDocument& doc);
     void loadDomElement(QDomElement element);
 
-    //void setView(QMatrix newView);
-    void addPoint(int curveNumber, int vertexNumber, qreal t);
     void addCurve(BezierCurve& newCurve, qreal factor);
     void removeCurveAt(int i);
     void select(QRectF rectangle);
@@ -100,7 +99,6 @@ public:
     void removeArea(QPointF point);
     void updateArea(BezierArea& bezierArea);
 
-
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
     VertexRef getClosestVertexTo(QPointF thisPoint, qreal maxDistance);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance);
@@ -124,6 +122,7 @@ public:
     qreal getDistance(VertexRef r1, VertexRef r2);
 
 private:
+    void addPoint( int curveNumber, int vertexNumber, qreal t );
     void modification();
     bool modified;
 

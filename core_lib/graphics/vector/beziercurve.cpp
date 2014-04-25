@@ -385,22 +385,6 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
         painter.setPen(QPen(QBrush(colour), 1, Qt::NoPen, Qt::RoundCap,Qt::RoundJoin));
         painter.setBrush(colour);
         painter.drawPath(myCurve.getStrokedPath());
-        /*QPen pen;
-        pen.setColor(colour);
-        QPointF P1 = origin;
-        QPointF P2 = origin;
-        for(int i=0; i<vertex.size(); i++) {
-        	P2 = getVertex(i);
-        	QPainterPath path;
-        	path.moveTo(P1);
-        	path.cubicTo(c1.at(i), c2.at(i), P2);
-        	pen.setWidthF( 2.0 * width * getPressure(i) );
-        	pen.setCapStyle( Qt::RoundCap );
-        	painter.setPen( pen );
-        	painter.drawPath( path );
-        	//painter.drawLine( P1, P2 );
-        	P1 = P2;
-        }*/
     }
     else
     {
@@ -410,8 +394,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
             renderedWidth = 1.0/painter.matrix().m11();
         }
         painter.setBrush(Qt::NoBrush);
-        //if (width == 0 && !simplified) {
-        if ( invisible )    // invisible && !simplified
+        if ( invisible )
         {
             if (showThinLines)
             {
@@ -444,8 +427,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
         qreal lineWidth = 1.5/painter.matrix().m11();
         painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         if (isSelected()) painter.drawPath(myCurve.getSimplePath());
-        //qreal squareWidth = max(6.0, 1.2*myCurve.getWidth());
-        //squareWidth = squareWidth/painter.matrix().m11();
+
         qreal squareWidth = 5.0/painter.matrix().m11();
         Q_UNUSED(squareWidth);
 
@@ -637,54 +619,6 @@ void BezierCurve::smoothCurve()
         this->c2[n-1] = 0.5*(c2old+vertex.at(n-1));
     }
 }
-
-/* --- old code ---
-void BezierCurve::createCurve(QList<QPointF> *pointList, QList<qreal> *pressureList ) {
-	int p = 0; int n = pointList->size(); QPointF c1, c2, c2old, tangentVec, normalVec;
-	// generate the Bezier (cubic) curve from the simplified path and mouse pressure
-	setOrigin( pointList->at(0) );
-	while (selected.size()>0) selected.removeAt(0);
-	selected.append(false);
-	c2old = QPointF(-100,-100); // bogus point
-	for(p=1; p<n-1; p++) {
-		QPointF D = pointList->at(p);
-		QPointF Dprev = pointList->at(p-1);
-		QPointF Dnext = pointList->at(p+1);
-		qreal L1 = mLength(D-Dprev);
-		qreal L2 = mLength(D-Dnext);
-		//if (L1 == 0) L1 = 1;
-		//if (L2 == 0) L2 = 1;
-		//painter.setPen(QPen(QBrush(Qt::black), 2, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-		//painter.drawRect(D.x()-1, D.y()-1, 1, 1);
-		tangentVec = 0.4*(Dnext - Dprev);
-		normalVec = QPointF(-tangentVec.y(), tangentVec.x())/eLength(tangentVec);
-		if (  ((D-Dprev).x()*(D-Dnext).x()+(D-Dprev).y()*(D-Dnext).y())/(1.0*L1*L2) < 0  ) {
-			// smooth point
-			c1 =  D - tangentVec*(L1+0.0)/(L1+L2);
-			c2 =  D + tangentVec*(L2+0.0)/(L1+L2);
-		} else {
-			// sharp point
-			c1 = 0.6*D + 0.4*Dprev;
-			c2 = 0.6*D + 0.4*Dnext;
-		}
-		//painter.setPen(QPen(QBrush(Qt::green), 2, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
-		//painter.drawRect(c1.x()-1, c1.y()-1 ,2,2 );
-		//painter.drawRect(c2.x()-1, c2.y()-1, 2,2 );
-		//painter.drawLine(c1, c2);
-		if (p==1) c2old  = 0.5*(pointList->at(0)+c1);
-		//path.cubicTo( c2old, c1, D);
-		appendCubic(c2old, c1, D, pressureList->at(p));
-		c2old = c2;
-	}
-	if (n > 2) {
-		//path.cubicTo( c2old, 0.5*(c2old+mousePath.at(n-1)), mousePath.at(n-1));
-		appendCubic( c2old, 0.5*(c2old+pointList->at(n-1)), pointList->at(n-1), pressureList->at(n-1));
-	} else {
-		//path.cubicTo( 0.5*(mousePath.at(0)+mousePath.at(n-1)), 0.5*(mousePath.at(0)+mousePath.at(n-1)), mousePath.at(n-1));
-		appendCubic( 0.75*pointList->at(0)+0.25*pointList->at(n-1), 0.25*pointList->at(0)+0.75*pointList->at(n-1), pointList->at(n-1), pressureList->at(n-1));
-	}
-}
-*/
 
 void BezierCurve::simplify(double tol, QList<QPointF>& inputList, int j, int k, QList<bool>& markList)
 {

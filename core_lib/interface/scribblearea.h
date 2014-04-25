@@ -41,6 +41,8 @@ enum DisplayEffect
 {
     EFFECT_ANTIALIAS = 0,
     EFFECT_SHADOW,
+    EFFECT_PREV_ONION,
+    EFFECT_NEXT_ONION,
     EFFECT_COUNT,
 };
 

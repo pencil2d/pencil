@@ -499,7 +499,6 @@ void Editor::copy()
     }
 }
 
-
 void Editor::paste()
 {
     Layer* layer = m_pObject->getLayer( layerManager()->currentLayerIndex() );
@@ -1145,9 +1144,7 @@ void Editor::importImage( QString filePath )
     if ( !filePath.isEmpty() )
     {
         backup( tr( "ImportImg" ) );
-        // --- option 1
-        //((LayerBitmap*)layer)->loadImageAtFrame(filePath, currentFrame);
-        // --- option 2
+
         // TO BE IMPROVED
         if ( layer->type() == Layer::BITMAP )
         {

@@ -67,8 +67,6 @@ bool VectorImage::read(QString filePath)
 bool VectorImage::write(QString filePath, QString format)
 {
     QFile* file = new QFile(filePath);
-    //if (!file->open(QIODevice::WriteOnly | QIODevice::Text)) {
-    //bool result = file->open(QIODevice::WriteOnly | QIODevice::Text);
     bool result = file->open(QIODevice::WriteOnly);
     if (!result)
     {
@@ -145,13 +143,6 @@ void VectorImage::loadDomElement(QDomElement element)
     clean();
     modification();
 }
-
-
-
-/*void VectorImage::setView(QMatrix newView) {
-    myView = newView;
-    modification();
-}*/
 
 void VectorImage::addPoint(int curveNumber, int vertexNumber, qreal t)
 {
@@ -866,7 +857,7 @@ void VectorImage::removeColour(int index)
 }
 
 void VectorImage::paintImage(QPainter& painter,
-							 bool simplified, 
+							 bool simplified,
                              bool showThinCurves,
 							 bool antialiasing )
 {
@@ -888,8 +879,6 @@ void VectorImage::paintImage(QPainter& painter,
             updateArea( area[i] ); // to do: if selected
 
             // --- fill areas ---- //
-
-
             QColor colour = getColour(area[i].colourNumber);
 
             if (area[i].isSelected())
@@ -1071,7 +1060,6 @@ QList<VertexRef> VectorImage::getVerticesCloseTo(QPointF P1, qreal maxDistance)
     {
         for(int k=-1; k<curve.at(j).getVertexSize(); k++)
         {
-            //QPointF P2 = selectionTransformation.map( getVertex(j, k) );
             QPointF P2 = getVertex(j, k);
             qreal distance = (P1.x()-P2.x())*(P1.x()-P2.x()) + (P1.y()-P2.y())*(P1.y()-P2.y());
             if ( distance < maxDistance*maxDistance )

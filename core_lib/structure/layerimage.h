@@ -35,7 +35,6 @@ class LayerImage : public Layer
 
 public:
     LayerImage( Object* object, LAYER_TYPE );
-    ~LayerImage();
 
     // frame <-> image API
     int getIndexAtFrame( int frameNumber );
@@ -57,12 +56,6 @@ public:
 
 protected:
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
-
-private:
-    // graphic representation -- could be put in another class
-    QList<bool> framesSelected;
-    int frameClicked;
-    int frameOffset;
 };
 
 #endif
