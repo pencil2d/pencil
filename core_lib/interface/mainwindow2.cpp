@@ -134,6 +134,8 @@ void MainWindow2::createDockWidgets()
 
     m_pToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     m_pToolBox->setObjectName( "ToolBox" );
+    m_pToolBox->setFocusPolicy( Qt::NoFocus );
+    m_subWidgets.append( m_pToolBox );
 
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorPalette);
@@ -146,6 +148,7 @@ void MainWindow2::createDockWidgets()
     {
         pWidget->setCore( m_pEditor );
         pWidget->initUI();
+        qDebug() << "Init UI: " << pWidget->objectName();
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
     }
 
@@ -1175,24 +1178,24 @@ void MainWindow2::helpBox()
     QDesktopServices::openUrl( url );
 }
 
-void MainWindow2::makeConnections( Editor* pCore, ScribbleArea* pScribbleArea )
+void MainWindow2::makeConnections( Editor* pEditor, ScribbleArea* pScribbleArea )
 {
-    connect( pCore->toolManager(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
-    connect( pCore->toolManager(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
+    connect( pEditor->toolManager(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
+    connect( pEditor->toolManager(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
 
-    connect( pCore->layerManager(), &LayerManager::currentKeyFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
+    connect( pEditor->layerManager(), &LayerManager::currentKeyFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
 
-    connect( pCore, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
-    connect( pCore, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );
-    connect( pCore, &Editor::toggleMultiLayerOnionSkin, pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
+    connect( pEditor, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
+    connect( pEditor, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );
+    connect( pEditor, &Editor::toggleMultiLayerOnionSkin, pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
 
-    connect( pScribbleArea, &ScribbleArea::thinLinesChanged, pCore, &Editor::changeThinLinesButton );
-    connect( pScribbleArea, &ScribbleArea::outlinesChanged, pCore, &Editor::changeOutlinesButton );
-    connect( pScribbleArea, &ScribbleArea::onionPrevChanged, pCore, &Editor::onionPrevChanged );
-    connect( pScribbleArea, &ScribbleArea::onionNextChanged, pCore, &Editor::onionNextChanged );
+    connect( pScribbleArea, &ScribbleArea::thinLinesChanged, pEditor, &Editor::changeThinLinesButton );
+    connect( pScribbleArea, &ScribbleArea::outlinesChanged, pEditor, &Editor::changeOutlinesButton );
+    connect( pScribbleArea, &ScribbleArea::onionPrevChanged, pEditor, &Editor::onionPrevChanged );
+    connect( pScribbleArea, &ScribbleArea::onionNextChanged, pEditor, &Editor::onionNextChanged );
     //connect( pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
 
-    connect( pCore, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
+    connect( pEditor, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )

@@ -53,8 +53,6 @@ ColorPaletteWidget::ColorPaletteWidget( QString strTitle, QWidget* pParent )
 
 void ColorPaletteWidget::initUI()
 {
-    qDebug( "Init UI: Color Palette." );
-
     updateUI();
 }
 

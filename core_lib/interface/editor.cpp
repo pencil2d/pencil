@@ -140,7 +140,6 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     return true;
 }
 
-
 TimeLine* Editor::getTimeLine()
 {
     return m_pMainWindow->m_pTimeLine;

@@ -40,22 +40,8 @@ public:
     // Core controller
     Editor* m_pEditor;
 
-    // UI: central Drawing Area
-    ScribbleArea* m_pScribbleArea;
-
-    // UI: Dock widgets
-    QDockWidget*             m_pColorWheelWidget;
-    ColorPaletteWidget*      m_pColorPalette;
-    DisplayOptionDockWidget* m_pDisplayOptionWidget;
-    ToolOptionWidget*        m_pToolOptionWidget;
-    TimeLine*                m_pTimeLine;
-    ToolBoxWidget*           m_pToolBox;
-
-    // Other windows
-    Preferences* m_pPreferences;
-
 protected:
-    void tabletEvent(QTabletEvent* event);
+    void tabletEvent(QTabletEvent* event) override;
     RecentFileMenu* m_recentFileMenu;
 
 public slots:
@@ -102,6 +88,23 @@ private:
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
+
+    // UI: central Drawing Area
+    ScribbleArea* m_pScribbleArea;
+
+    // UI: Dock widgets
+    QDockWidget*             m_pColorWheelWidget;
+    ColorPaletteWidget*      m_pColorPalette;
+    DisplayOptionDockWidget* m_pDisplayOptionWidget;
+    ToolOptionWidget*        m_pToolOptionWidget;
+    ToolBoxWidget*           m_pToolBox;
+
+public:
+    TimeLine*                m_pTimeLine; // be public temporary
+
+private:
+    // Dialogs
+    Preferences* m_pPreferences;
 
     Ui::MainWindow2* ui;
     QList< BaseDockWidget* > m_subWidgets;
