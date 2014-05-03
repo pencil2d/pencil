@@ -102,7 +102,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setFeather(0);
             curve.setInvisibility(false);
             curve.setVariableWidth(m_pScribbleArea->usePressure());
-			curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+            curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
 
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
 
@@ -148,9 +148,8 @@ void PenTool::drawStroke()
             p[i] = m_pScribbleArea->pixelToPoint(p[i]);
         }
 
-        if (p.size() == 4) 
+        if (p.size() == 4)
         {
-            QSizeF size(2,2);
             QPainterPath path( p[0] );
             path.cubicTo( p[1],
                           p[2],
@@ -171,7 +170,6 @@ void PenTool::drawStroke()
 
         if (p.size() == 4)
         {
-            QSizeF size(2,2);
             QPainterPath path( p[0] );
             path.cubicTo( p[1],
                           p[2],

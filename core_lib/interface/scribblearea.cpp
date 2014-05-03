@@ -257,7 +257,10 @@ void ScribbleArea::updateAllVectorLayers()
     for ( int i = 0; i < m_pEditor->object()->getLayerCount(); i++ )
     {
         Layer *layer = m_pEditor->object()->getLayer( i );
-        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR )
+        {
+            //( ( LayerVector * )layer )->setModified( true );
+        }
     }
     updateAllFrames();
 }
@@ -475,6 +478,36 @@ QPointF ScribbleArea::pixelToPoint( QPointF pixel )
     return myTempView.inverted( &invertible ).map( QPointF( pixel ) );
 }
 
+
+bool ScribbleArea::isLayerPaintable() const
+{
+    if ( !areLayersSane() )
+        return false;
+
+    Layer *layer = m_pEditor->getCurrentLayer();
+    return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
+}
+
+bool ScribbleArea::areLayersSane() const
+{
+    Layer *layer = m_pEditor->getCurrentLayer();
+    // ---- checks ------
+    if ( layer == NULL ) { return false; }
+    if ( layer->type() == Layer::VECTOR )
+    {
+        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
+        if ( vectorImage == NULL ) { return false; }
+    }
+    if ( layer->type() == Layer::BITMAP )
+    {
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
+        if ( bitmapImage == NULL ) { return false; }
+    }
+    // ---- end checks ------
+
+    return true;
+}
+
 void ScribbleArea::mousePressEvent( QMouseEvent *event )
 {
     mouseInUse = true;
@@ -573,35 +606,6 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     }
 
     currentTool()->mousePressEvent( event );
-}
-
-bool ScribbleArea::areLayersSane() const
-{
-    Layer *layer = m_pEditor->getCurrentLayer();
-    // ---- checks ------
-    if ( layer == NULL ) { return false; }
-    if ( layer->type() == Layer::VECTOR )
-    {
-        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-        if ( vectorImage == NULL ) { return false; }
-    }
-    if ( layer->type() == Layer::BITMAP )
-    {
-        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-        if ( bitmapImage == NULL ) { return false; }
-    }
-    // ---- end checks ------
-
-    return true;
-}
-
-bool ScribbleArea::isLayerPaintable() const
-{
-    if ( !areLayersSane() )
-        return false;
-
-    Layer *layer = m_pEditor->getCurrentLayer();
-    return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
 }
 
 void ScribbleArea::mouseMoveEvent( QMouseEvent *event )

@@ -46,11 +46,11 @@ Layer::~Layer()
     m_KeyFrames.clear();
 }
 
-void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> func )
+void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> action )
 {
     for ( auto pair : m_KeyFrames )
     {
-        func( pair.second );
+        action( pair.second );
     }
 }
 

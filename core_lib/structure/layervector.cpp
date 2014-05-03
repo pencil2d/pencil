@@ -50,7 +50,7 @@ QImage* LayerVector::getImageAtIndex( int index,
                 framesImage[index] = image = new QImage(size, QImage::Format_ARGB32_Premultiplied);
             }
             vectorImage->outputImage(image, size, myView,
-                                     simplified, showThinLines, 
+                                     simplified, showThinLines,
                                      antialiasing );
             vectorImage->setModified(false);
         }
@@ -65,7 +65,7 @@ bool LayerVector::usesColour(int colorIndex)
     foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
         auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
-        
+
         bUseColor = bUseColor || pVecImage->usesColour( colorIndex );
     } );
 
@@ -118,22 +118,22 @@ QString LayerVector::fileName( int frame )
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
-    
+
     layerTag.setAttribute("id", id);
     layerTag.setAttribute("name", name);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
-    
+
     foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
         VectorImage* pImg = static_cast< VectorImage* >( pKeyFrame );
         //QDomElement imageTag = framesVector[index]->createDomElement(doc); // if we want to embed the data
-        QDomElement imageTag = doc.createElement("image");
-        //imageTag.setAttribute("frame", framesPosition.at(index));
-        //imageTag.setAttribute("src", framesFilename.at(index)); // if we want to link the data to an external file
-        layerTag.appendChild(imageTag);
+        QDomElement imageTag = doc.createElement( "image" );
+        imageTag.setAttribute( "frame", pKeyFrame->pos() );
+        imageTag.setAttribute( "src", fileName( pKeyFrame->pos() ) );
+        layerTag.appendChild( imageTag );
     } );
-    
+
     return layerTag;
 }
 
@@ -182,7 +182,3 @@ VectorImage* LayerVector::getLastVectorImageAtFrame( int frameNumber, int increm
     return static_cast< VectorImage* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
 }
 
-void LayerVector::setModified( bool trueOrFalse )
-{
-    // TODO:
-}

@@ -21,17 +21,10 @@
 
 #include <cmath>
 #include <limits>
-
 #include <QDebug>
 #include <QLineF>
 #include <QPainterPath>
-
 #include "strokemanager.h"
-
-#ifndef NAN
-    // VS2010 did not implement NAN yet.
-    #define NAN (std::numeric_limits<float>::quiet_NaN())
-#endif
 
 
 
@@ -49,32 +42,17 @@ StrokeManager::StrokeManager()
 void StrokeManager::reset()
 {
     m_strokeStarted = false;
-    meter = 0;
     strokeQueue.clear();
-    nQueued_p = 0;
     pressure = 0.0f;
-    velocity = QPointF(0,0);
     hasTangent = false;
 }
 
 void StrokeManager::setPressure(float pressure)
 {
-    while (nQueued_p >= STROKE_PRESSURE_QUEUE_LENGTH)
-    {
-        for (int i = 0; i < nQueued_p - 1; i++)
-        {
-            pressQueue[i] = pressQueue[i+1];
-        }
-        nQueued_p--;
-    }
-
-    pressQueue[nQueued_p] = pressure;
-    nQueued_p++;
-
     m_tabletPressure = pressure;
 }
 
-QPointF StrokeManager::getEventPosition(QMouseEvent *event)
+QPointF StrokeManager::getEventPosition(QMouseEvent* event)
 {
     QPointF pos;
 
@@ -97,7 +75,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent *event)
     return pos;
 }
 
-void StrokeManager::mousePressEvent(QMouseEvent *event)
+void StrokeManager::mousePressEvent(QMouseEvent* event)
 {
     reset();
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
@@ -112,7 +90,7 @@ void StrokeManager::mousePressEvent(QMouseEvent *event)
 
 }
 
-void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
+void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
 {
     // flush out stroke
     if (m_strokeStarted)
@@ -125,7 +103,7 @@ void StrokeManager::mouseReleaseEvent(QMouseEvent *event)
     m_strokeStarted = false;
 }
 
-void StrokeManager::tabletEvent(QTabletEvent *event)
+void StrokeManager::tabletEvent(QTabletEvent* event)
 {
     if (event->type() == QEvent::TabletPress) { m_tabletInUse = true; }
     if (event->type() == QEvent::TabletRelease) { m_tabletInUse = false; }
@@ -134,7 +112,7 @@ void StrokeManager::tabletEvent(QTabletEvent *event)
     setPressure(event->pressure());
 }
 
-void StrokeManager::mouseMoveEvent(QMouseEvent *event)
+void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
     QPointF pos = getEventPosition(event);
     QPointF smoothPos = QPointF( ( pos.x()+m_lastPixel.x() )/2.0, ( pos.y()+m_lastPixel.y() )/2.0 );
@@ -183,17 +161,23 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
         if (_line.length() < 2) {
             m_previousTangent = QPointF(0,0);
         }
-    } else {
+    }
+    else
+    {
         QPointF c1 = m_lastPixel + m_previousTangent * scaleFactor;
         QPointF newTangent = (m_currentPixel - c1) * smoothness / (3.0 * scaleFactor);
 //        qDebug() << "scalefactor1" << scaleFactor << m_previousTangent << newTangent;
-        if (scaleFactor == 0) {
-            newTangent = QPointF(0,0);
-        } else {
-        QLineF _line(QPointF(0,0), newTangent);
-        if (_line.length() < 2) {
+        if (scaleFactor == 0)
+        {
             newTangent = QPointF(0,0);
         }
+        else
+        {
+            QLineF _line(QPointF(0,0), newTangent);
+            if (_line.length() < 2)
+            {
+                newTangent = QPointF(0,0);
+            }
         }
         QPointF c2 = m_currentPixel - newTangent * scaleFactor;
 //        qDebug() << "scalefactor2" << scaleFactor << m_previousTangent << newTangent;

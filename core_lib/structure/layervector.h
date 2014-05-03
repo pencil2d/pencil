@@ -37,12 +37,7 @@ public:
 
     // method from layerImage
     bool addNewKeyFrameAt( int frameNumber ) override;
-
-    void loadImageAtFrame(QString, int);
-    //QImage* getImageAtIndex(int, QSize, bool, bool, bool );
-
-    //void setView(QMatrix view);
-    void setModified(bool trueOrFalse);
+    void loadImageAtFrame(QString strFileName, int);
 
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element,  QString dataDirPath) override;
