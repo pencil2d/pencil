@@ -44,7 +44,7 @@ class Editor : public QObject
     Q_PROPERTY( ColorManager* colorManager READ colorManager )
     Q_PROPERTY( ToolManager*  toolManager  READ toolManager )
     Q_PROPERTY( LayerManager* layerManager READ layerManager )
-    Q_PROPERTY( PlaybackManager* playbackManager READ¡@playbackManager )
+    Q_PROPERTY( PlaybackManager* playbackManager READ playbackManager )
 
 public:
     Editor( MainWindow2* parent );
