@@ -143,21 +143,22 @@ void EraserTool::mouseMoveEvent(QMouseEvent *event)
 }
 
 // draw a single paint dab at the given location
-void EraserTool::paintAt(QPointF point)
+void EraserTool::paintAt(QPointF)
 {
 }
 
 void EraserTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke(currentWidth);
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer *layer = m_pEditor->getCurrentLayer();
 
     if (layer->type() == Layer::BITMAP)
     {
-        for (int i = 0; i < p.size(); i++) {
-            p[i] = m_pScribbleArea->pixelToPoint(p[i]);
+        for (int i = 0; i < p.size(); i++) 
+		{
+            p[i] = m_pScribbleArea->pixelToPoint( p[i] );
         }
 
         qreal opacity = 1.0;
@@ -184,11 +185,6 @@ void EraserTool::drawStroke()
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
 
-        //        foreach (QSegment segment, calculateStroke(brushWidth))
-        //        {
-        //            QPointF a = lastBrushPoint;
-        //            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
-
         qreal distance = 4 * QLineF(b, a).length();
         int steps = qRound(distance) / brushStep;
 
@@ -203,7 +199,6 @@ void EraserTool::drawStroke()
                 lastBrushPoint = point;
             }
         }
-        //        }
 
         int rad = qRound(brushWidth) / 2 + 2;
         m_pScribbleArea->refreshBitmap(rect, rad);

@@ -128,7 +128,7 @@ void BrushTool::paintAt(QPointF)
 void BrushTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke(currentWidth);
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer *layer = m_pEditor->getCurrentLayer();
 

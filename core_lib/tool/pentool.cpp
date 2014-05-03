@@ -78,7 +78,7 @@ void PenTool::mousePressEvent(QMouseEvent *event)
 
 void PenTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer* layer = m_pEditor->getCurrentLayer();
 
     if (event->button() == Qt::LeftButton)
     {
@@ -104,9 +104,10 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setVariableWidth(m_pScribbleArea->usePressure());
             curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
 
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
-
+			auto pLayerVector = static_cast< LayerVector* >( layer );
+            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
+
             m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFramePosition());
             m_pScribbleArea->setAllDirty();
         }
@@ -117,7 +118,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PenTool::mouseMoveEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+	Layer* layer = m_pEditor->layerManager()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)
@@ -130,7 +131,7 @@ void PenTool::mouseMoveEvent(QMouseEvent *event)
 void PenTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke(currentWidth);
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer *layer = m_pEditor->getCurrentLayer();
 
@@ -144,16 +145,19 @@ void PenTool::drawStroke()
 
         int rad = qRound(currentWidth / 2) + 3;
 
-        for (int i = 0; i < p.size(); i++) {
+        for (int i = 0; i < p.size(); i++) 
+		{
             p[i] = m_pScribbleArea->pixelToPoint(p[i]);
         }
 
-        if (p.size() == 4)
+        if ( p.size() == 4 )
         {
             QPainterPath path( p[0] );
-            path.cubicTo( p[1],
-                          p[2],
-                          p[3] );
+			//path.lineTo( p[ 1 ] );
+			//path.lineTo( p[ 2 ] );
+			path.lineTo( p[ 3 ] );
+			//qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
+			//path.cubicTo( p[1], p[2], p[3] );
             m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
             m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
         }

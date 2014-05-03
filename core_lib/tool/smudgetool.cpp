@@ -209,7 +209,7 @@ void SmudgeTool::drawStroke()
 
     BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke(currentWidth);
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     for (int i = 0; i < p.size(); i++) {
         p[i] = m_pScribbleArea->pixelToPoint(p[i]);

@@ -30,14 +30,20 @@ VectorImage::VectorImage(Object* parent)
 
 VectorImage::~VectorImage()
 {
-    delete m_pCacheImage;
+	if ( m_pCacheImage )
+	{
+		delete m_pCacheImage;
+	}
 }
 
 
 bool VectorImage::read(QString filePath)
 {
     QFileInfo fileInfo(filePath);
-    if ( fileInfo.isDir() ) return false;
+	if ( fileInfo.isDir() )
+	{
+		return false;
+	}
 
     QFile* file = new QFile(filePath);
     if (!file->open(QFile::ReadOnly))

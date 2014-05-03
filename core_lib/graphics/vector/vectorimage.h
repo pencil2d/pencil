@@ -131,7 +131,7 @@ private:
     QRectF selectionRect;
     QMatrix selectionTransformation;
 
-    QImage* m_pCacheImage;
+    QImage* m_pCacheImage = nullptr;
 };
 
 #endif

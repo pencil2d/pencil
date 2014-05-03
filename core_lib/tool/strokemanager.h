@@ -23,10 +23,7 @@ public:
     float getPressure() { return m_tabletPressure; }
     bool isTabletInUse() { return m_tabletInUse; }
 
-    QList<QPointF> interpolateStroke(int radius);
-
-    bool isUsingHighResPosition() { return m_useHighResPosition; }
-    void useHighResPosition(bool val) { m_useHighResPosition = val; }
+    QList<QPointF> interpolateStroke();
 
     QPointF getLastPressPixel() const { return m_lastPressPixel; }
     QPointF getCurrentPixel() const { return m_currentPixel; }
@@ -45,7 +42,6 @@ private:
     QTime singleshotTime;
 
     QPointF m_lastPressPixel;
-    QPointF m_lastReleasePosition;
     QPointF m_currentPixel;
     QPointF m_lastPixel;
 
@@ -58,7 +54,6 @@ private:
     bool m_tabletInUse;
     float m_tabletPressure;
     QPointF m_tabletPosition;
-    bool m_useHighResPosition;
 
     clock_t m_timeshot;
 };

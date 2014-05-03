@@ -34,7 +34,6 @@ StrokeManager::StrokeManager()
 
     m_tabletInUse = false;
     m_tabletPressure = 0;
-    m_useHighResPosition = true;
 
     reset();
 }
@@ -56,7 +55,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent* event)
 {
     QPointF pos;
 
-    if (m_tabletInUse && m_useHighResPosition)
+    if ( m_tabletInUse )
     {
         // QT BUG (Wacom Tablets): updates are not synchronised in Windows giving different coordinates.
         // Clue: Not a Microsoft nor Wacom problem because other windows apps are working fine in the same tablet mode.
@@ -93,12 +92,10 @@ void StrokeManager::mousePressEvent(QMouseEvent* event)
 void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
 {
     // flush out stroke
-    if (m_strokeStarted)
+    if ( m_strokeStarted )
     {
         mouseMoveEvent(event);
-        mouseMoveEvent(event);
     }
-    m_lastReleasePosition = getEventPosition(event);
 
     m_strokeStarted = false;
 }
@@ -115,14 +112,15 @@ void StrokeManager::tabletEvent(QTabletEvent* event)
 void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
     QPointF pos = getEventPosition(event);
-    QPointF smoothPos = QPointF( ( pos.x()+m_lastPixel.x() )/2.0, ( pos.y()+m_lastPixel.y() )/2.0 );
+    QPointF smoothPos = QPointF( ( pos.x() + m_lastPixel.x() ) / 2.0, ( pos.y() + m_lastPixel.y() ) / 2.0 );
 
     m_lastPixel = m_currentPixel;
     m_currentPixel = smoothPos;
 
-    if (!m_strokeStarted)
-        return;
-
+	if ( !m_strokeStarted )
+	{
+		return;
+	}
 
     if (!m_tabletInUse)   // a mouse is used instead of a tablet
     {
@@ -139,7 +137,7 @@ void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 
 }
 
-QList<QPointF> StrokeManager::interpolateStroke(int radius)
+QList<QPointF> StrokeManager::interpolateStroke()
 {
     QList<QPointF> result;
 
@@ -150,7 +148,7 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
 
     qreal scaleFactor = line.length();
 
-    if (!hasTangent && scaleFactor > 0.01f)
+    if ( !hasTangent && scaleFactor > 0.01f)
     {
         hasTangent = true;
 //        qDebug() << "scaleFactor" << scaleFactor << "current pixel " << m_currentPixel << "last pixel" << m_lastPixel;
@@ -158,7 +156,8 @@ QList<QPointF> StrokeManager::interpolateStroke(int radius)
 //        qDebug() << "previous tangent" << m_previousTangent;
         QLineF _line(QPointF(0,0), m_previousTangent);
         // don't bother for small tangents, as they can induce single pixel wobbliness
-        if (_line.length() < 2) {
+        if (_line.length() < 2) 
+		{
             m_previousTangent = QPointF(0,0);
         }
     }

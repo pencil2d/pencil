@@ -152,10 +152,8 @@ void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
 
 void PencilTool::drawStroke()
 {
-    float width = 1;
-
     StrokeTool::drawStroke();
-    QList<QPointF> p = m_pStrokeManager->interpolateStroke(width);
+    QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer *layer = m_pEditor->getCurrentLayer();
     int rad;
@@ -164,7 +162,7 @@ void PencilTool::drawStroke()
     {
         QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QBrush brush(currentPressuredColor, Qt::SolidPattern);
-        width = properties.width;
+        float width = properties.width;
         rad = qRound(properties.width / 2) + 3;
 
         for (int i = 0; i < p.size(); i++) {

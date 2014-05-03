@@ -167,7 +167,6 @@ public slots:
     void rotateacw();
 
     void setCurveSmoothing( int );
-    void setHighResPosition( int );
     void setBackground( int );
     void setBackgroundBrush( QString );
     void toggleThinLines();

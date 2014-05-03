@@ -47,11 +47,6 @@ ScribbleArea::ScribbleArea( QWidget* parent )
     if ( curveSmoothingLevel == 0 ) { curveSmoothingLevel = 20; settings.setValue( "curveSmoothing", curveSmoothingLevel ); } // default
     curveSmoothing = curveSmoothingLevel / 20.0; // default value is 1.0
 
-    if ( settings.value( SETTING_HIGH_RESOLUTION ).toString() == "true" )
-    {
-        m_strokeManager->useHighResPosition( true ); // TODO:
-    }
-
     initDisplayEffect( m_effects );
 
     // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
@@ -139,21 +134,6 @@ void ScribbleArea::setCurveSmoothing( int newSmoothingLevel )
     curveSmoothing = newSmoothingLevel / 20.0;
     QSettings settings( "Pencil", "Pencil" );
     settings.setValue( "curveSmoothing", newSmoothingLevel );
-}
-
-void ScribbleArea::setHighResPosition( int x )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( x == 0 )
-    {
-        m_strokeManager->useHighResPosition( false );
-        settings.setValue( SETTING_HIGH_RESOLUTION, "false" );
-    }
-    else
-    {
-        m_strokeManager->useHighResPosition( true );
-        settings.setValue( SETTING_HIGH_RESOLUTION, "true" );
-    }
 }
 
 void ScribbleArea::setBackground( int number )
@@ -457,7 +437,6 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     m_strokeManager->tabletEvent( event );
 
-    //qDebug() << event->hiResGlobalPos();
     currentTool()->adjustPressureSensitiveProperties( pow( ( float )m_strokeManager->getPressure(), 2.0f ),
                                                       event->pointerType() == QTabletEvent::Cursor );
 
@@ -651,11 +630,6 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     {
         currentTool()->stopAdjusting();
         return; // [SHIFT]+drag OR [CTRL]+drag
-    }
-
-    if ( !areLayersSane() )
-    {
-        return;
     }
 
     m_strokeManager->mouseReleaseEvent( event );
