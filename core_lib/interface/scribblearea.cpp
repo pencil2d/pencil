@@ -564,19 +564,20 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     }
 
     // ---- checks layer availability ------
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if ( layer == NULL ) { return; }
+    Layer* layer = m_pEditor->getCurrentLayer();
+	Q_ASSUME( layer != nullptr );
 
     if ( layer->type() == Layer::VECTOR )
     {
-        VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-        if ( vectorImage == NULL ) { return; }
+		auto pLayerVector = static_cast< LayerVector* >( layer );
+        VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
+		Q_CHECK_PTR( vectorImage );
     }
-
-    if ( layer->type() == Layer::BITMAP )
+    else if ( layer->type() == Layer::BITMAP )
     {
-        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-        if ( bitmapImage == NULL ) { return; }
+		auto pLayerBitmap = static_cast< LayerBitmap* >( layer );
+        BitmapImage* bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
+		Q_CHECK_PTR( bitmapImage );
     }
 
     if ( !layer->visible && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
