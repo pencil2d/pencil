@@ -15,27 +15,20 @@ GNU General Public License for more details.
 */
 #include <cmath>
 #include <QImage>
-#include "vectorimage.h"
 #include "object.h"
 #include "util.h"
+#include "vectorimage.h"
 
 
 VectorImage::VectorImage(Object* parent)
 {
     myParent = parent;
-    m_pCacheImage = new QImage( QSize( 2, 2 ), QImage::Format_ARGB32_Premultiplied );
     deselectAll();
 }
 
-
 VectorImage::~VectorImage()
 {
-	if ( m_pCacheImage )
-	{
-		delete m_pCacheImage;
-	}
 }
-
 
 bool VectorImage::read(QString filePath)
 {
@@ -68,7 +61,6 @@ bool VectorImage::read(QString filePath)
     }
     return true;
 }
-
 
 bool VectorImage::write(QString filePath, QString format)
 {
@@ -768,7 +760,6 @@ void VectorImage::deleteSelectedPoints()
     modification();
 }
 
-
 void VectorImage::paste(VectorImage vectorImage)
 {
     selectionRect = QRect(0,0,0,0);
@@ -872,8 +863,7 @@ void VectorImage::paintImage(QPainter& painter,
     painter.setClipping(false);
     painter.setOpacity(1.0);
     QMatrix painterMatrix = painter.worldMatrix();
-    qreal scale = qAbs(painterMatrix.m11()) + qAbs(painterMatrix.m12()); // quick overestimation of sqrt( m11*m22 - m12*m21
-    Q_UNUSED(scale);
+
     QRect mappedViewRect = QRect(0,0, painter.device()->width(), painter.device()->height() );
     QRectF viewRect = painterMatrix.inverted().mapRect( mappedViewRect );
 
@@ -915,13 +905,11 @@ void VectorImage::paintImage(QPainter& painter,
 }
 
 void VectorImage::outputImage(QImage* image,
-							  QSize size,
 							  QMatrix myView,
-							  bool simplified, bool showThinCurves,
+							  bool simplified,
+                              bool showThinCurves,
 							  bool antialiasing)
 {
-    Q_UNUSED(size);
-
 	image->fill(qRgba(0,0,0,0));
     QPainter painter(image);
     painter.setWorldMatrix(myView);

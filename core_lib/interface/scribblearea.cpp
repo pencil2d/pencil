@@ -14,8 +14,8 @@ GNU General Public License for more details.
 
 */
 #include <cmath>
+#include <QScopedPointer>
 #include <QtGui>
-#include <QHashIterator>
 #include <QMessageBox>
 
 #include "beziercurve.h"
@@ -53,15 +53,10 @@ ScribbleArea::ScribbleArea( QWidget* parent )
     // and don't change when the widget is resized.
     setAttribute( Qt::WA_StaticContents );
 
-    modified = false;
-    m_isSimplified = false;
-    m_usePressure = true;
     m_makeInvisible = false;
     somethingSelected = false;
 
-    onionPrev = true;
     m_isMultiLayerOnionSkin = true;
-    onionNext = false;
     m_showThinLines = false;
     m_showAllLayers = 1;
     myView = QMatrix(); // identity matrix
@@ -70,10 +65,9 @@ ScribbleArea::ScribbleArea( QWidget* parent )
     centralView = QMatrix();
 
     QString background = settings.value( "background" ).toString();
-
-    background = "white";
     setBackgroundBrush( background );
-    bufferImg = new BitmapImage;
+
+    m_bufferImg = new BitmapImage;
 
     QRect newSelection( QPoint( 0, 0 ), QSize( 0, 0 ) );
     mySelection = newSelection;
@@ -105,7 +99,6 @@ ScribbleArea::ScribbleArea( QWidget* parent )
 
     onionBlue = true;
     onionRed = true;
-    //onionColor = Qt::blue;
     toggledOnionColor();
 
     useGridA = false;
@@ -688,11 +681,11 @@ void ScribbleArea::paintBitmapBuffer()
         default: //nothing
             break;
         }
-        targetImage->paste( bufferImg, cm );
+        targetImage->paste( m_bufferImg, cm );
     }
-    QRect rect = myTempView.mapRect( bufferImg->boundaries );
+    QRect rect = myTempView.mapRect( m_bufferImg->boundaries );
     // Clear the buffer
-    bufferImg->clear();
+    m_bufferImg->clear();
 
     //setModified(layer, editor->currentFrame);
     ( ( LayerImage * )layer )->setModified( m_pEditor->layerManager()->currentFramePosition(), true );
@@ -704,17 +697,17 @@ void ScribbleArea::paintBitmapBuffer()
 
 void ScribbleArea::clearBitmapBuffer()
 {
-    bufferImg->clear();
+    m_bufferImg->clear();
 }
 
 void ScribbleArea::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm )
 {
-    bufferImg->drawLine( P1, P2, pen, cm, isEffectOn(EFFECT_ANTIALIAS) );
+    m_bufferImg->drawLine( P1, P2, pen, cm, isEffectOn(EFFECT_ANTIALIAS) );
 }
 
 void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm )
 {
-    bufferImg->drawPath( path, pen, brush, cm, isEffectOn( EFFECT_ANTIALIAS ) );
+    m_bufferImg->drawPath( path, pen, brush, cm, isEffectOn( EFFECT_ANTIALIAS ) );
 }
 
 void ScribbleArea::refreshBitmap( QRect rect, int rad )
@@ -848,7 +841,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
             if ( currentTool()->type() == MOVE )
             {
                 // ----- paints the closest curves
-                bufferImg->clear();
+                m_bufferImg->clear();
                 QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
                 QColor colour = QColor( 100, 100, 255 );
 
@@ -868,7 +861,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                         myCurve.transform( selectionTransformation );
                     }
                     QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
-                    bufferImg->drawPath( ( myView * transMatrix * centralView ).map( path ), pen2, colour,
+                    m_bufferImg->drawPath( ( myView * transMatrix * centralView ).map( path ), pen2, colour,
                                          QPainter::CompositionMode_SourceOver,
                                          isEffectOn( EFFECT_ANTIALIAS ) );
                 }
@@ -881,7 +874,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
             painter.setOpacity( 1.0 );
             if ( m_pEditor->getCurrentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
             if ( m_pEditor->getCurrentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
-            bufferImg->paintImage( painter );
+            m_bufferImg->paintImage( painter );
         }
 
         // paints the selection outline
@@ -1038,13 +1031,16 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                             painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
                             previousImage3->paintImage( painter );
                         }
-                        if ( onionBlue || onionRed ) {
+                        if ( onionBlue || onionRed )
+                        {
                             painter.setOpacity( 1.0 );
                             painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                            if ( onionBlue && onionRed && onionNext ) {
+                            if ( onionBlue && onionRed && onionNext )
+                            {
                                 painter.fillRect( viewRect, Qt::red );
                             }
-                            else {
+                            else
+                            {
                                 painter.fillRect( viewRect, onionColor );
                             }
                             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
@@ -1091,16 +1087,13 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             // paints the vector images onion skins
             if ( layer->type() == Layer::VECTOR )
             {
-                LayerVector *layerVector = ( LayerVector * )layer;
-                QImage *pImage = NULL;
+                auto layerVector = static_cast<LayerVector*>( layer );
+                VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 0 );
 
-                /*
-                pImage = layerVector->getLastImageAtFrame( frame, 0,
-                                                           sz,
-                                                           m_isSimplified, m_showThinLines,
-                                                           isEffectOn( EFFECT_ANTIALIAS ) );
-                                                           */
-                if ( pImage != NULL )
+                QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
+                pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+
+                if ( !pImage.isNull() )
                 {
                     painter.setWorldMatrixEnabled( false );
 
@@ -1268,14 +1261,18 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     vectorImage->setSelectionTransformation( selectionTransformation );
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
-                QImage* image = nullptr;
-                // TODO:
-                // image = layerVector->getLastImageAtFrame( frame, 0, sz, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                if ( image != NULL )
+                QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
+                vectorImage->outputImage( pImage.data(), myView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                /*
+                static int internal_counter = 0;
+                pImage->save( QString( "D:\\vec%1.png" ).arg( internal_counter, 3 ) );
+                ++internal_counter;
+                */
+                if ( pImage->isNull() )
                 {
                     painter.setWorldMatrixEnabled( false );
                     painter.setOpacity( opacity );
-                    painter.drawImage( QPoint( 0, 0 ), *image );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
                 }
             }
         }
@@ -1400,27 +1397,8 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
                                    QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
     }
 
-    bufferImg->paste( tempBitmapImage );
+    m_bufferImg->paste( tempBitmapImage );
     delete tempBitmapImage;
-}
-
-void ScribbleArea::drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
-{
-    // drawTexturedBrush() is not used anymore although code can be used for textured brushes.
-    // TODO: Add argument "pixelStep_", send texture through "bmiSource_"; texture brush should work.
-    QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
-    setGaussianGradient( radialGrad, QColor( 255, 255, 255, 255 ), opacity_, offset_ );
-
-    QRectF srcRect( srcPoint_.x() - 0.5 * brushWidth_, srcPoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
-    QRectF trgRect( thePoint_.x() - 0.5 * brushWidth_, thePoint_.y() - 0.5 * brushWidth_, brushWidth_, brushWidth_ );
-
-    BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
-    BitmapImage *bmiTmpClip = new BitmapImage;
-    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
-    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
-    bmiTmpClip->paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
-    bufferImg->paste( bmiTmpClip );
-    delete bmiTmpClip;
 }
 
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
@@ -1437,7 +1415,7 @@ void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPoint
     bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
     bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
     bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
-    bufferImg->paste( &bmiTmpClip );
+    m_bufferImg->paste( &bmiTmpClip );
 }
 
 void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ )
@@ -1489,7 +1467,7 @@ void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPo
             }
         }
     }
-    bufferImg->paste( bmiTmpClip );
+    m_bufferImg->paste( bmiTmpClip );
     delete bmiTmpClip;
 }
 
@@ -1523,8 +1501,8 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
                 pen2.setWidth( getTool( PEN )->properties.width * myTempView.m11() );
             }
         }
-        bufferImg->clear();
-        bufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, isEffectOn( EFFECT_ANTIALIAS ) );
+        m_bufferImg->clear();
+        m_bufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, isEffectOn( EFFECT_ANTIALIAS ) );
 
         update( updateRect );
     }
@@ -1560,9 +1538,9 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
     {
         drawPolyline( points, points.last() );
         BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-        bitmapImage->paste( bufferImg );
+        bitmapImage->paste( m_bufferImg );
     }
-    bufferImg->clear();
+    m_bufferImg->clear();
     setModified( m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFramePosition() );
 }
 
@@ -1863,7 +1841,7 @@ void ScribbleArea::deselectAll()
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 )->deselectAll();
     }
     somethingSelected = false;
-    bufferImg->clear();
+    m_bufferImg->clear();
     vectorSelection.clear();
 
     // clear all the data tools may have accumulated
@@ -1896,15 +1874,19 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
 
 void ScribbleArea::toggledOnionColor()
 {
-    if ( onionBlue ) {
-        if ( onionRed ) {
+    if ( onionBlue )
+    {
+        if ( onionRed )
+        {
             onionColor = QColor( 232, 48, 255, 255 ); // subtle violet ( blue + red )
         }
-        else {
+        else
+        {
             onionColor = Qt::blue;
         }
     }
-    else if ( onionRed ) {
+    else if ( onionRed )
+    {
         onionColor = Qt::red;
     }
 }
@@ -1950,7 +1932,7 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
     bool condition;
     //vectorImage->update(true, showThinLines); // update the vector image with simplified curves (all width=1)
     QImage *targetImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
-    vectorImage->outputImage( targetImage, size(), myTempView, true, m_showThinLines, true ); // the target image is the vector image with simplified curves (all width=1)
+    vectorImage->outputImage( targetImage, myTempView, true, m_showThinLines, true ); // the target image is the vector image with simplified curves (all width=1)
     //QImage* replaceImage = &bufferImg;
     QImage *replaceImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
     QList<VertexRef> points = vectorImage->getAllVertices(); // refs of all the points
@@ -2263,7 +2245,7 @@ void ScribbleArea::floodFillError( int errorType )
     if ( errorType == 2 ) { error = "Could not find a closed path."; }
     if ( errorType == 3 ) { error = "Could not find the root index."; }
     QMessageBox::warning( this, tr( "Flood fill error" ), message + "<br><br>Error: " + error, QMessageBox::Ok, QMessageBox::Ok );
-    bufferImg->clear();
+    m_bufferImg->clear();
     deselectAll();
 }
 
@@ -2293,7 +2275,6 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
             return;
         }
 
-        // XXX tool->setActive()
         if ( currentTool()->type() == MOVE )
         {
             paintTransformedSelection();

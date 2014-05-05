@@ -71,7 +71,6 @@ public:
     qreal myRotatedAngle;
     qreal myFlipX, myFlipY; // scale -1.0 or +1.0
 
-    bool isModified() const { return modified; }
     bool areLayersSane() const;
     bool isLayerPaintable() const;
 
@@ -204,7 +203,6 @@ public:
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm );
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm );
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
-    void drawTexturedBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance );
@@ -225,22 +223,21 @@ private:
     ToolType prevMode;
     ToolType prevToolType; // previous tool (except temporal)
 
-    StrokeManager *m_strokeManager;
+    StrokeManager* m_strokeManager;
 
-    Editor *m_pEditor;
+    Editor* m_pEditor;
 
     PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
-    bool modified;
-    bool m_isSimplified;
-
+    bool m_isSimplified = false;
     bool m_showThinLines;
     int  m_showAllLayers;
-    bool m_usePressure;
+    bool m_usePressure = true;
     bool m_makeInvisible;
     bool toolCursors;
     qreal curveSmoothing;
-    bool onionPrev, onionNext;
+    bool onionPrev = true;
+    bool onionNext = false;
     bool onionBlue, onionRed;
     bool m_isMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
@@ -252,7 +249,7 @@ private:
 
     QBrush backgroundBrush;
 public:
-    BitmapImage* bufferImg; // used to pre-draw vector modifications
+    BitmapImage* m_bufferImg; // used to pre-draw vector modifications
 
 private:
     void initDisplayEffect( std::vector< uint32_t >& );

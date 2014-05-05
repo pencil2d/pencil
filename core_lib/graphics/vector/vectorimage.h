@@ -78,7 +78,7 @@ public:
     void removeColour(int index);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
-    void outputImage(QImage* image, QSize size, QMatrix myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage
+    void outputImage(QImage* image, QMatrix myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage
 
     void clear();
     void clean();
@@ -130,8 +130,6 @@ private:
 
     QRectF selectionRect;
     QMatrix selectionTransformation;
-
-    QImage* m_pCacheImage = nullptr;
 };
 
 #endif
