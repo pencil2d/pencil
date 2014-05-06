@@ -21,7 +21,6 @@ GNU General Public License for more details.
 
 BezierCurve::BezierCurve()
 {
-    // nothing;
 }
 
 BezierCurve::BezierCurve(QList<QPointF> pointList)
@@ -63,14 +62,8 @@ BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, do
         }
     }
 
-    //pointList = simplifiedPointList;
-    //pressureList = simplifiedPressureList;
-    //n = pointList.size();
-
     // Create curve from the simplified path
     createCurve(simplifiedPointList, simplifiedPressureList);
-
-    //createCurve(pointList, pressureList);
 }
 
 
@@ -466,7 +459,7 @@ QPainterPath BezierCurve::getSimplePath()
 
 QPainterPath BezierCurve::getStrokedPath()
 {
-    return getStrokedPath(2.0*width);
+    return getStrokedPath( 2.0 * width );
 }
 
 QPainterPath BezierCurve::getStrokedPath(qreal width)

@@ -27,11 +27,8 @@ struct Intersection
     qreal t1, t2;
 };
 
-//class BezierCurve : public QObject
 class BezierCurve
 {
-    //Q_OBJECT
-
 public:
     BezierCurve();
     BezierCurve(QList<QPointF> pointList);
@@ -109,7 +106,6 @@ private:
     qreal width;
     qreal feather;
     bool variableWidth;
-    //bool selected;
     bool invisible;
     QList<bool> selected; // this list has one more element than the other list (the first element is for the origin)
 };

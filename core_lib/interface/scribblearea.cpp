@@ -565,6 +565,8 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
 
     bool invertible = true;
     currentPoint = myTempView.inverted( &invertible ).map( QPointF( currentPixel ) );
+    qDebug() << "CurPoint: " << currentPoint;
+
 
     // the user is also pressing the mouse
     if ( event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton )
