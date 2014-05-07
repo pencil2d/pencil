@@ -1090,6 +1090,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             {
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 auto layerVector = static_cast< LayerVector* >( layer );
+				
+				painter.setWorldMatrixEnabled( false );
 
                 // previous frame (onion skin)
                 if ( onionPrev )
@@ -1158,9 +1160,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         }
                         painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
-
-
                 }
+				painter.setWorldMatrixEnabled( true );
             }
         }
     } // --- end onion skins
