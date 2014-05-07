@@ -407,9 +407,11 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
         }
         else
         {
-            painter.setPen(QPen(QBrush(colour), renderedWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+            painter.setPen( QPen( QBrush( colour ), renderedWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
+            //painter.setPen( QPen( Qt::darkYellow , 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
         }
-        painter.drawPath(myCurve.getSimplePath());
+        QPainterPath& path = myCurve.getSimplePath();
+        painter.drawPath( path );
     }
 
     if (!simplified)
@@ -421,8 +423,6 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
         painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
         if (isSelected()) painter.drawPath(myCurve.getSimplePath());
 
-        qreal squareWidth = 5.0/painter.matrix().m11();
-        Q_UNUSED(squareWidth);
 
         for(int i=-1; i< vertex.size(); i++)
         {

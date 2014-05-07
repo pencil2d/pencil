@@ -897,20 +897,11 @@ void VectorImage::paintImage(QPainter& painter,
     //simplified = true;
     //painter.setClipRect( viewRect );
     //painter.setClipping(true);
-    QImage* pImage = new QImage( painter.device()->width(), painter.device()->height(), QImage::Format_ARGB32_Premultiplied );
-    
-    QPainter painter2;
-    painter2.begin( pImage );
     for ( BezierCurve curve : m_curves )
     {
         curve.drawPath( painter, myParent, selectionTransformation, simplified, showThinCurves );
-        curve.drawPath( painter2, myParent, selectionTransformation, simplified, showThinCurves );
     }
-    painter2.end();
-
-    static int kk = 0;
-    pImage->save( QString("test%1.png").arg( kk ) );
-    kk++;
+    
     painter.setClipping(false);
 }
 
@@ -922,14 +913,12 @@ void VectorImage::outputImage(QImage* image,
 {
 	image->fill(qRgba(0,0,0,0));
     QPainter painter( image );
-    //painter.setWorldMatrix( myView );
-    qDebug() << myView;
-    paintImage(painter, simplified, showThinCurves, antialiasing );
+    painter.setWorldMatrix( myView );
+    paintImage( painter, simplified, showThinCurves, antialiasing );
 }
 
 void VectorImage::clear()
 {
-    //image.fill(qRgba(0,0,0,0));
     while (m_curves.size() > 0) { m_curves.removeAt(0); }
     while (area.size() > 0) { area.removeAt(0); }
     modification();

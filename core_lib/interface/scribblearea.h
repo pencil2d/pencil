@@ -44,6 +44,7 @@ enum DisplayEffect
     EFFECT_SHADOW,
     EFFECT_PREV_ONION,
     EFFECT_NEXT_ONION,
+    EFFECT_AXIS,
     EFFECT_COUNT,
 };
 

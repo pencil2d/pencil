@@ -36,8 +36,8 @@ GNU General Public License for more details.
 #define round(f) ((int)(f + 0.5))
 
 ScribbleArea::ScribbleArea( QWidget* parent )
-    : QWidget( parent )
-    , instantTool( false )
+: QWidget( parent )
+, instantTool( false )
 {
     m_strokeManager = new StrokeManager();
 
@@ -537,19 +537,19 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
 
     // ---- checks layer availability ------
     Layer* layer = m_pEditor->getCurrentLayer();
-	Q_ASSUME( layer != nullptr );
+    Q_ASSUME( layer != nullptr );
 
     if ( layer->type() == Layer::VECTOR )
     {
-		auto pLayerVector = static_cast< LayerVector* >( layer );
+        auto pLayerVector = static_cast< LayerVector* >( layer );
         VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-		Q_CHECK_PTR( vectorImage );
+        Q_CHECK_PTR( vectorImage );
     }
     else if ( layer->type() == Layer::BITMAP )
     {
-		auto pLayerBitmap = static_cast< LayerBitmap* >( layer );
+        auto pLayerBitmap = static_cast< LayerBitmap* >( layer );
         BitmapImage* bitmapImage = pLayerBitmap->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
-		Q_CHECK_PTR( bitmapImage );
+        Q_CHECK_PTR( bitmapImage );
     }
 
     if ( !layer->visible && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
@@ -704,7 +704,7 @@ void ScribbleArea::clearBitmapBuffer()
 
 void ScribbleArea::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm )
 {
-    m_bufferImg->drawLine( P1, P2, pen, cm, isEffectOn(EFFECT_ANTIALIAS) );
+    m_bufferImg->drawLine( P1, P2, pen, cm, isEffectOn( EFFECT_ANTIALIAS ) );
 }
 
 void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm )
@@ -773,7 +773,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     painter.drawPixmap( QPoint( 0, 0 ), canvas );
     //  painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO Success a grid is drawn
     Layer *layer = m_pEditor->layerManager()->currentLayer();
-    
+
 
     if ( !editor()->playbackManager()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
@@ -863,8 +863,8 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                     }
                     QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
                     m_bufferImg->drawPath( ( myView * transMatrix * centralView ).map( path ), pen2, colour,
-                                         QPainter::CompositionMode_SourceOver,
-                                         isEffectOn( EFFECT_ANTIALIAS ) );
+                                           QPainter::CompositionMode_SourceOver,
+                                           isEffectOn( EFFECT_ANTIALIAS ) );
                 }
             }
         }
@@ -1088,105 +1088,78 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             // paints the vector images onion skins
             if ( layer->type() == Layer::VECTOR )
             {
-                auto layerVector = static_cast<LayerVector*>( layer );
-                VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 0 );
-
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                auto layerVector = static_cast< LayerVector* >( layer );
 
-                if ( !pImage.isNull() )
+                // previous frame (onion skin)
+                if ( onionPrev )
                 {
-                    painter.setWorldMatrixEnabled( false );
+                    VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -3 );
+                    pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
 
-                    // previous frame (onion skin)
-                    if ( onionPrev )
+                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -2 );
+                    pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
+
+                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -1 );
+                    pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
+
+                    if ( onionBlue || onionRed )
                     {
-                        /*
-                        QImage *previousImage = layerVector->getLastImageAtFrame( frame, -1, sz,
-                                                                                  m_isSimplified,
-                                                                                  m_showThinLines,
-                                                                                  isEffectOn( EFFECT_ANTIALIAS ) );
-                        if ( previousImage != NULL )
+                        painter.setOpacity( 1.0 );
+                        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
+                        if ( onionBlue && onionRed && onionNext )
                         {
-                            painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
-                            painter.drawImage( QPoint( 0, 0 ), *previousImage );
+                            painter.fillRect( vectorViewRect, Qt::red );
                         }
-                        QImage* previousImage2 = layerVector->getLastImageAtFrame( frame, -2, sz,
-                                                                                   m_isSimplified,
-                                                                                   m_showThinLines,
-                                                                                   isEffectOn( EFFECT_ANTIALIAS ) );
-                        if ( previousImage2 != NULL )
+                        else
                         {
-                            painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
-                            painter.drawImage( QPoint( 0, 0 ), *previousImage2 );
+                            painter.fillRect( vectorViewRect, onionColor );
                         }
-                        QImage *previousImage3 = layerVector->getLastImageAtFrame( frame, -3, sz,
-                                                                                   m_isSimplified,
-                                                                                   m_showThinLines,
-                                                                                   isEffectOn( EFFECT_ANTIALIAS ) );
-                        if ( previousImage3 != NULL )
-                        {
-                            painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
-                            painter.drawImage( QPoint( 0, 0 ), *previousImage3 );
-                        }
-                        if ( onionBlue || onionRed ) {
-                            painter.setOpacity( 1.0 );
-                            painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                            if ( onionBlue && onionRed && onionNext ) {
-                                painter.fillRect( vectorViewRect, Qt::red );
-                            }
-                            else {
-                                painter.fillRect( vectorViewRect, onionColor );
-                            }
-                            painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-                        }
-                        */
+                        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
 
-                    // next frame (onion skin)
-                    if ( onionNext )
+                }
+
+                // next frame (onion skin)
+                if ( onionNext )
+                {
+                    VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 3 );
+                    pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
+
+                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 2 );
+                    pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
+
+                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 1 );
+                    pVectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
+                    painter.drawImage( QPoint( 0, 0 ), *pImage );
+
+                    if ( onionBlue || onionRed ) 
                     {
-                        /*
-                        QImage* nextImage = layerVector->getLastImageAtFrame( frame, 1, sz,
-                                                                              m_isSimplified,
-                                                                              m_showThinLines,
-                                                                              isEffectOn( EFFECT_ANTIALIAS ) );
-                        if ( nextImage != NULL )
+                        painter.setOpacity( 1.0 );
+                        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
+                        if ( onionBlue && onionRed && onionPrev )
                         {
-                            painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
-                            painter.drawImage( QPoint( 0, 0 ), *nextImage );
+                            painter.fillRect( vectorViewRect, Qt::blue );
                         }
-                        QImage* nextImage2 = layerVector->getLastImageAtFrame( frame, 2, sz,
-                                                                               m_isSimplified,
-                                                                               m_showThinLines,
-                                                                               isEffectOn( EFFECT_ANTIALIAS ) );
-                        if ( nextImage2 != NULL )
+                        else
                         {
-                            painter.setOpacity( opacity * m_pEditor->getOnionLayer2Opacity() / 100.0 );
-                            painter.drawImage( QPoint( 0, 0 ), *nextImage2 );
+                            painter.fillRect( vectorViewRect, onionColor );
                         }
-                        QImage* nextImage3 = layerVector->getLastImageAtFrame( frame, 3, sz,
-                                                                               m_isSimplified,
-                                                                               m_showThinLines,
-                                                                               isEffectOn( EFFECT_ANTIALIAS ) );
-                        if ( nextImage3 != NULL )
-                        {
-                            painter.setOpacity( opacity * m_pEditor->getOnionLayer3Opacity() / 100.0 );
-                            painter.drawImage( QPoint( 0, 0 ), *nextImage3 );
-                        }
-                        if ( onionBlue || onionRed ) {
-                            painter.setOpacity( 1.0 );
-                            painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                            if ( onionBlue && onionRed && onionPrev ) {
-                                painter.fillRect( vectorViewRect, Qt::blue );
-                            }
-                            else {
-                                painter.fillRect( vectorViewRect, onionColor );
-                            }
-                            painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-                        }
-                        */
+                        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
+
+
                 }
             }
         }
@@ -1264,13 +1237,10 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                 }
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 vectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                
-                if ( pImage->isNull() )
-                {
-                    painter.setWorldMatrixEnabled( false );
-                    painter.setOpacity( opacity );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
-                }
+
+                painter.setWorldMatrixEnabled( false );
+                painter.setOpacity( opacity );
+                painter.drawImage( QPoint( 0, 0 ), *pImage );
             }
         }
     }
@@ -1336,6 +1306,15 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
         }
     }
     // --- eo grids
+
+    if ( isEffectOn( EFFECT_AXIS ) )
+    {
+        painter.setPen( Qt::green );
+        painter.drawLine( QLineF( 0, 0, 0, 100 ) );
+
+        painter.setPen( Qt::red );
+        painter.drawLine( QLineF( 0, 0, 100, 0 ) );
+    }
     painter.end();
 }
 
@@ -2407,6 +2386,9 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
         effects[ EFFECT_ANTIALIAS ] = 1;
         effects[ EFFECT_SHADOW ] = 0;
     }
+
+    // for developers
+    //effects[ EFFECT_AXIS ] = 1;
 }
 
 /* Render Canvas */
