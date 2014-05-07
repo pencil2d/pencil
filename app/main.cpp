@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
     initialise();
 
     MainWindow2 mainWindow;
-    mainWindow.setWindowTitle( "Pencil2D" );
+    mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
 
     if (argc == 1)
     {
