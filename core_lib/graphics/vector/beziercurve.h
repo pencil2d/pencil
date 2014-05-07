@@ -101,10 +101,10 @@ private:
     QList<QPointF> c1;
     QList<QPointF> c2;
     QList<QPointF> vertex;
-    QList<qreal> pressure; // this list has one more element than the other list (the first element is for the origin)
+    QList<float> pressure; // this list has one more element than the other list (the first element is for the origin)
     int colourNumber;
-    qreal width;
-    qreal feather;
+    float width;
+    float feather;
     bool variableWidth;
     bool invisible;
     QList<bool> selected; // this list has one more element than the other list (the first element is for the origin)

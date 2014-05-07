@@ -772,8 +772,8 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     painter.setWorldMatrix( centralView.inverted() * transMatrix * centralView );
     painter.drawPixmap( QPoint( 0, 0 ), canvas );
     //  painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO Success a grid is drawn
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if ( !layer ) { return; }
+    Layer *layer = m_pEditor->layerManager()->currentLayer();
+    
 
     if ( !editor()->playbackManager()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
@@ -785,7 +785,6 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
 
             if ( currentTool()->type() == SMUDGE || currentTool()->type() == HAND )
             {
-                //bufferImg->clear();
                 painter.save();
                 painter.setWorldMatrixEnabled( false );
                 painter.setRenderHint( QPainter::Antialiasing, false );
@@ -852,12 +851,12 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                     qreal scale = myTempView.determinant(); //todo: check whether it's correct (det = area?)
                     //qreal scale = sqrt(myTempView.det()); or qreal scale = sqrt(myTempView.m11()*myTempView.m22());
                     int idx = closestCurves[ k ];
-                    if ( vectorImage->curve.size() <= idx )
+                    if ( vectorImage->m_curves.size() <= idx )
                     {
                         // safety check
                         continue;
                     }
-                    BezierCurve myCurve = vectorImage->curve[ closestCurves[ k ] ];
+                    BezierCurve myCurve = vectorImage->m_curves[ closestCurves[ k ] ];
                     if ( myCurve.isPartlySelected() )
                     {
                         myCurve.transform( selectionTransformation );
@@ -1264,12 +1263,8 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                vectorImage->outputImage( pImage.data(), myView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                /*
-                static int internal_counter = 0;
-                pImage->save( QString( "D:\\vec%1.png" ).arg( internal_counter, 3 ) );
-                ++internal_counter;
-                */
+                vectorImage->outputImage( pImage.data(), myTempView, m_isSimplified, m_showThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                
                 if ( pImage->isNull() )
                 {
                     painter.setWorldMatrixEnabled( false );
@@ -1792,11 +1787,11 @@ void ScribbleArea::displaySelectionProperties()
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if ( selectedCurve != -1 )
             {
-                m_pEditor->toolManager()->setWidth( vectorImage->curve[ selectedCurve ].getWidth() );
-                m_pEditor->toolManager()->setFeather( vectorImage->curve[ selectedCurve ].getFeather() );
-                m_pEditor->toolManager()->setInvisibility( vectorImage->curve[ selectedCurve ].isInvisible() );
-                m_pEditor->toolManager()->setPressure( vectorImage->curve[ selectedCurve ].getVariableWidth() );
-                m_pEditor->colorManager()->setColorNumber( vectorImage->curve[ selectedCurve ].getColourNumber() );
+                m_pEditor->toolManager()->setWidth( vectorImage->m_curves[ selectedCurve ].getWidth() );
+                m_pEditor->toolManager()->setFeather( vectorImage->m_curves[ selectedCurve ].getFeather() );
+                m_pEditor->toolManager()->setInvisibility( vectorImage->m_curves[ selectedCurve ].isInvisible() );
+                m_pEditor->toolManager()->setPressure( vectorImage->m_curves[ selectedCurve ].getVariableWidth() );
+                m_pEditor->colorManager()->setColorNumber( vectorImage->m_curves[ selectedCurve ].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();

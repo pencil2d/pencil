@@ -116,7 +116,7 @@ public:
     QList<VertexRef> getAllVertices();
     int getCurveSize(int curveNumber);
 
-    QList<BezierCurve> curve;
+    QList<BezierCurve> m_curves;
     QList<BezierArea> area;
 
     qreal getDistance(VertexRef r1, VertexRef r2);
