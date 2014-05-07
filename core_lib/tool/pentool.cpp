@@ -98,8 +98,8 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             m_pScribbleArea->clearBitmapBuffer();
             qreal tol = m_pScribbleArea->getCurveSmoothing() / qAbs(m_pScribbleArea->getViewScaleX());
             BezierCurve curve(strokePoints, strokePressures, tol);
-            curve.setWidth(properties.width);
-            curve.setFeather(0);
+            curve.setWidth( properties.width );
+            curve.setFeather( properties.feather );
             curve.setInvisibility(false);
             curve.setVariableWidth(m_pScribbleArea->usePressure());
             curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
