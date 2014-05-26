@@ -92,7 +92,6 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     connect(m_pEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
     connect(m_pToolBox, &ToolBoxWidget::clearButtonClicked, m_pEditor, &Editor::clearCurrentFrame);
-    connect(m_pEditor, SIGNAL(changeTool(ToolType)), m_pToolBox, SLOT(setCurrentTool(ToolType)));
 
     m_pEditor->setCurrentLayer( m_pEditor->object()->getLayerCount() - 1 );
 }
