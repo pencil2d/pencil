@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 #include <QtXml>
 #include <QPainter>
-#include "KeyFrame.h"
+#include "keyframe.h"
 
 class Object;
 

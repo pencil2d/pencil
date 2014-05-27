@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
-#include "KeyFrame.h"
+#include "keyframe.h"
 
 class Object;  // forward declaration
 class QPainter;
