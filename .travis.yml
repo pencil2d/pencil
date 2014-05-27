@@ -9,6 +9,6 @@ before_install:
   # - sudo apt-get install -qq qtdeclarative5-dev
   - sudo apt-get install qtmultimedia5-dev qtbase5-dev libqt5core5 qtbase5-dev-tools libqt5test5 libqt5xml5
 script:
-  - qmke --version
+  - qmake --version
   - qmake
   - make
