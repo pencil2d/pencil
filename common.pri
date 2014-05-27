@@ -9,6 +9,10 @@ win32-g++ {
     QMAKE_CXXFLAGS += -std=c++11
 }
 
+win32-msvc* {
+    QMAKE_CXXFLAGS += /MP
+}
+
 macx {
    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
    LIBS += -lobjc -lz -framework AppKit -framework Carbon
