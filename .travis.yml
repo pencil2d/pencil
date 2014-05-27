@@ -14,5 +14,5 @@ before_install:
   - sudo apt-get install libqt5core5 libqt5test5 libqt5xml5 libqt5svg5-dev libqt5xmlpatterns5-dev
 script:
   - qmake --version
-  - qmake
+  - qmake "CXX=g++-4.8"
   - make
