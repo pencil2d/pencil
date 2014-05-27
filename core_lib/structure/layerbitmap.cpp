@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 #include <QtDebug>
+#include "keyframe.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
 

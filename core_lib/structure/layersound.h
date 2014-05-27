@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include <QString>
 #include <QPainter>
 #include "layerimage.h"
-#include "KeyFrame.h"
+#include "keyframe.h"
 
 
 class QMediaPlayer;

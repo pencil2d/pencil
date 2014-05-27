@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QtDebug>
-#include "KeyFrame.h"
+#include "keyframe.h"
 #include "layercamera.h"
 
 

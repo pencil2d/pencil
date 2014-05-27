@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include <QImage>
 #include <QPainter>
 #include "object.h"
-#include "KeyFrame.h"
 #include "timeline.h"
 #include "timelinecells.h"
 #include "layerimage.h"

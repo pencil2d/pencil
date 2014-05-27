@@ -530,8 +530,10 @@ void Editor::paste()
                     tobePasted.transform( selection, true );
                 }
             }
+            auto pLayerBitmap = static_cast< LayerBitmap* >( layer );
+            pLayerBitmap->getLastBitmapImageAtFrame( layerManager()->currentFramePosition(), 0)->paste( &tobePasted ); // paste the clipboard
         }
-        if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
+        else if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
         {
             backup( tr( "Paste" ) );
             m_pScribbleArea->deselectAll();

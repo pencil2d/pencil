@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include <QImage>
 #include <QString>
 #include "layerimage.h"
-#include "KeyFrame.h"
+
 
 class BitmapImage;
 
