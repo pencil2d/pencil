@@ -20,9 +20,8 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-VectorImage::VectorImage(Object* parent)
+VectorImage::VectorImage()
 {
-    myParent = parent;
     deselectAll();
 }
 

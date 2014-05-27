@@ -31,8 +31,10 @@ class QPainter;
 class VectorImage : public KeyFrame
 {
 public:
-    VectorImage(Object* parent);
+    VectorImage();
     virtual ~VectorImage();
+
+    void setObject( Object* pObj ) { myParent = pObj; }
 
     bool read(QString filePath);
     bool write(QString filePath, QString format);

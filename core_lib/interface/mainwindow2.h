@@ -4,10 +4,11 @@
 #include <QDomElement>
 #include <QMainWindow>
 
+template<typename T> class QList;
 class QActionGroup;
+class Object;
 class Editor;
 class ScribbleArea;
-class Object;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class DisplayOptionDockWidget;
@@ -16,7 +17,6 @@ class TimeLine;
 class ToolBoxWidget;
 class Preferences;
 class RecentFileMenu;
-template<typename T> class QList;
 
 
 namespace Ui
@@ -88,6 +88,7 @@ private:
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
+    void makeConnections( Editor*, DisplayOptionDockWidget* );
 
     // UI: central Drawing Area
     ScribbleArea* m_pScribbleArea;

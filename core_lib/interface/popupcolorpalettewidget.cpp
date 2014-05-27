@@ -1,21 +1,23 @@
 
+#include "popupcolorpalettewidget.h"
 
-#include <QtGui>
 #include <QBoxLayout>
 #include <QGraphicsDropShadowEffect>
+#include <QPushButton>
 #include "colorbox.h"
-#include "popupcolorpalettewidget.h"
+#include "editor.h"
+#include "scribblearea.h"
 
 
 PopupColorPaletteWidget::PopupColorPaletteWidget( ScribbleArea *parent ) :
     QWidget ( parent, Qt::Window ),
     m_pContainer ( parent )
 {
-    QVBoxLayout *mainLayout = new QVBoxLayout( this );
+    QVBoxLayout* mainLayout = new QVBoxLayout( this );
 
     setVisible( false );
+    setFixedWidth(200);
 
-    this->setFixedWidth(200);
     m_pColorBox = new ColorBox();
     mainLayout->addWidget(m_pColorBox);
     m_pColorBox->adjustSize();

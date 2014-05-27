@@ -83,7 +83,9 @@ void LayerVector::removeColour( int colorIndex )
 
 bool LayerVector::addNewKeyFrameAt( int frameNumber )
 {
-    return addKeyFrame( frameNumber, new VectorImage( object() ) );
+    auto pVecImg = new VectorImage;
+    pVecImg->setObject( object() );
+    return addKeyFrame( frameNumber, pVecImg );
 }
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
@@ -154,7 +156,6 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
                 if (!imageElement.attribute("src").isNull())
                 {
                     QString path =  dataDirPath +"/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-      //qDebug() << "LAY_VECTOR  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
                     QFileInfo fi(path);
                     if (!fi.exists()) path = imageElement.attribute("src");
                     int position = imageElement.attribute("frame").toInt();

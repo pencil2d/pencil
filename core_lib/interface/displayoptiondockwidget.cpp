@@ -1,10 +1,11 @@
 
+#include "displayoptiondockwidget.h"
+
 #include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
 #include "editor.h"
-
-#include "displayoptiondockwidget.h"
+#include "scribblearea.h"
 
 
 DisplayOptionDockWidget::DisplayOptionDockWidget(QWidget *parent) :
@@ -60,16 +61,6 @@ void DisplayOptionDockWidget::createUI()
     onionRedButton->setToolTip(tr("Onion skin color: red"));
     onionRedButton->setIconSize( QSize(21,21) );
 
-    //onionBlueNextButton = new QToolButton(displayGroup);
-    //onionBlueNextButton->setIcon(QIcon(":icons/onion-blue.png"));
-    //onionBlueNextButton->setToolTip("Onion skin color: blue");
-    //onionBlueNextButton->setIconSize( QSize(21,21) );
-
-    //onionRedNextButton = new QToolButton(displayGroup);
-    //onionRedNextButton->setIcon(QIcon(":icons/onion-red.png"));
-    //onionRedNextButton->setToolTip("Onion skin color: red");
-    //onionRedNextButton->setIconSize( QSize(21,21) );
-
     multiLayerOnionSkinButton = new QToolButton(displayGroup);
     multiLayerOnionSkinButton->setText(QString("M"));
     multiLayerOnionSkinButton->setToolTip(tr("enable onionskin on multiple layers"));
@@ -101,10 +92,6 @@ void DisplayOptionDockWidget::createUI()
     onionBlueButton->setChecked(true);
     onionRedButton->setCheckable(true);
     onionRedButton->setChecked(false);
-    //onionBlueNextButton->setCheckable(true);
-    //onionBlueNextButton->setChecked(false);
-    //onionRedNextButton->setCheckable(true);
-    //onionRedNextButton->setChecked(true);
     gridAButton->setCheckable(true);
     gridAButton->setChecked(false);
     gridBButton->setCheckable(true);
@@ -138,9 +125,9 @@ void DisplayOptionDockWidget::createUI()
 
 void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
 {
-    connect(thinLinesButton, SIGNAL(clicked()), editor->getScribbleArea(), SLOT(toggleThinLines()));
-    connect(outlinesButton, SIGNAL(clicked()), editor->getScribbleArea(), SLOT(toggleOutlines()));
-    connect(onionPrevButton, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionPrev(bool)));
+    connect(thinLinesButton, &QToolButton::clicked, editor->getScribbleArea(), &ScribbleArea::toggleThinLines );
+    connect(outlinesButton, &QToolButton::clicked, editor->getScribbleArea(), &ScribbleArea::toggleOutlines);
+    connect(onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
     connect(onionNextButton, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionNext(bool)));
     connect(onionBlueButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleOnionBlue(bool)));
     connect(onionRedButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleOnionRed(bool)));
@@ -148,7 +135,6 @@ void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
     connect(mirrorButtonV, SIGNAL(clicked()), editor, SLOT(toggleMirrorV()));
     connect(gridAButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridA(bool)));
     connect(gridBButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridB(bool)));
-
     connect(multiLayerOnionSkinButton,SIGNAL(clicked(bool)), editor->getScribbleArea(),SLOT(toggleMultiLayerOnionSkin(bool)));
 
     connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));

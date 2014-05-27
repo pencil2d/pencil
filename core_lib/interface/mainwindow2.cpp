@@ -1230,6 +1230,10 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
 }
 
+void MainWindow2::makeConnections(Editor* pEditor, DisplayOptionDockWidget* pDisplay)
+{
+}
+
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {
     connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );

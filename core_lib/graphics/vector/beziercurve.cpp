@@ -410,7 +410,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transforma
             painter.setPen( QPen( QBrush( colour ), renderedWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
             //painter.setPen( QPen( Qt::darkYellow , 5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
         }
-        QPainterPath& path = myCurve.getSimplePath();
+        QPainterPath path = myCurve.getSimplePath();
         painter.drawPath( path );
     }
 

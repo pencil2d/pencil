@@ -20,7 +20,8 @@ GNU General Public License for more details.
 #include <QPainter>
 #include "KeyFrame.h"
 
-class Object;  // forward declaration
+class Object;
+
 
 class BitmapImage : public KeyFrame
 {

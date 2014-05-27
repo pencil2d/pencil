@@ -1,6 +1,8 @@
 #include "timelinecells.h"
 
 #include <QSettings>
+#include <QResizeEvent>
+#include <QMouseEvent>
 #include "editor.h"
 #include "timeline.h"
 #include "layermanager.h"

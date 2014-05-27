@@ -2,9 +2,11 @@
 #define POPUPCOLORPALETTEWIDGET_H
 
 #include <QWidget>
-#include "editor.h"
+
 
 class ColorBox;
+class ScribbleArea;
+class QPushButton;
 
 class PopupColorPaletteWidget : public QWidget
 {

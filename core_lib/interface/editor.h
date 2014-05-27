@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,14 +20,9 @@ GNU General Public License for more details.
 #include <QList>
 #include <QLabel>
 #include <QToolButton>
-#include "timeline.h"
-#include "scribblearea.h"
-#include "timecontrols.h"
+#include <QSpinBox>
 #include "object.h"
-#include "vectorimage.h"
-#include "bitmapimage.h"
 #include "backupelement.h"
-
 
 class QComboBox;
 class QSlider;
@@ -36,6 +32,7 @@ class ToolManager;
 class LayerManager;
 class PlaybackManager;
 class ScribbleArea;
+class TimeLine;
 
 
 class Editor : public QObject
@@ -62,12 +59,10 @@ public:
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { m_pScribbleArea = pScirbbleArea; }
 
-    TimeLine* getTimeLine();
-
     Layer* getCurrentLayer( int incr );
     Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
     Layer* getLayer( int i );
-    int allLayers() { return m_pScribbleArea->showAllLayers(); }
+    int allLayers();
     static QMatrix map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
 
@@ -185,6 +180,8 @@ private slots:
     void getCameraLayer();
 
 private:
+    TimeLine* getTimeLine();
+
     Object* m_pObject = nullptr;  // the object to be edited by the editor
 
     ScribbleArea* m_pScribbleArea = nullptr;
@@ -215,8 +212,6 @@ private:
 
     // clipboard
     bool clipboardBitmapOk, clipboardVectorOk;
-    BitmapImage m_clipboardBitmapImage;
-    VectorImage m_clipboardVectorImage;
 
     // dialogs
     void createExportFramesSizeBox();

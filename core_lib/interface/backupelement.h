@@ -40,7 +40,7 @@ class BackupVectorElement : public BackupElement
 {
     Q_OBJECT
 public:
-    BackupVectorElement() : vectorImage( nullptr ) {}
+    BackupVectorElement() : vectorImage() {}
     int layer, frame;
     VectorImage vectorImage;
 
