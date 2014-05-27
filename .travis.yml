@@ -3,11 +3,12 @@ compiler:
   - gcc
   - clang
 before_install:
-  - sudo apt-add-repository ppa:ubuntu-sdk-team/ppa
+  - sudo apt-add-repository ppa:ubuntu-sdk-team/ppa -qq -y
   - sudo apt-get update -qq
   - sudo apt-get install qt5-default qttools5-dev-tools
-  # - sudo apt-get install -qq qtdeclarative5-dev qt5-default
+  # - sudo apt-get install -qq qtdeclarative5-dev
   - sudo apt-get install qtmultimedia5-dev qtbase5-dev libqt5core5 qtbase5-dev-tools
 script:
+  - qmke --version
   - qmake
   - make
