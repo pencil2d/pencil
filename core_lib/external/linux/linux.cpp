@@ -141,7 +141,7 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
                     {
                         qDebug() << "ERROR: Could not execute FFmpeg.";
                     }
-                    int frame = ((LayerSound*)layer)->getFramePositionAt(l)-1;
+                    int frame = ((LayerSound*)layer)->getKeyFrameAtPosition( l ) - 1;
                     float fframe = (float)frame/(float)fps;
                     QFile file(tempPath+"tmpaudio0.wav");
                     qDebug() << "audio file " + tempPath+"tmpaudio0.wav";
