@@ -39,9 +39,9 @@ class Editor : public QObject
 {
     Q_OBJECT
     Q_PROPERTY( ColorManager* color READ color )
-    Q_PROPERTY( ToolManager*  toolManager  READ toolManager )
-    Q_PROPERTY( LayerManager* layerManager READ layerManager )
-    Q_PROPERTY( PlaybackManager* playbackManager READ playbackManager )
+    Q_PROPERTY( ToolManager*  tools  READ tools )
+    Q_PROPERTY( LayerManager* layers READ layers )
+    Q_PROPERTY( PlaybackManager* playback READ playback )
 
 public:
     Editor( MainWindow2* parent );
@@ -50,14 +50,16 @@ public:
     bool initialize( ScribbleArea* pScribbleArea );
 
     ColorManager* color() const { return m_colorManager; }
-    ToolManager* toolManager() const { return m_pToolManager; }
-    LayerManager* layerManager() const { return m_pLayerManager; }
-    PlaybackManager* playbackManager() const { return m_pPlaybackManager; }
+    ToolManager* tools() const { return m_pToolManager; }
+    LayerManager* layers() const { return m_pLayerManager; }
+    PlaybackManager* playback() const { return m_pPlaybackManager; }
 
     Object* object() const { return m_pObject; }
     void setObject( Object* object );
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { m_pScribbleArea = pScirbbleArea; }
+    
+
 
     Layer* getCurrentLayer( int incr );
     Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }

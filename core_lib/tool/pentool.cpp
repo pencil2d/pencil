@@ -105,10 +105,10 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setColourNumber( m_pEditor->color()->frontColorNumber() );
 
 			auto pLayerVector = static_cast< LayerVector* >( layer );
-            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
+            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( m_pEditor->layers()->currentFramePosition(), 0 );
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
 
-            m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFramePosition());
+            m_pScribbleArea->setModified(m_pEditor->layers()->currentLayerIndex(), m_pEditor->layers()->currentFramePosition());
             m_pScribbleArea->setAllDirty();
         }
     }
@@ -118,7 +118,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PenTool::mouseMoveEvent(QMouseEvent *event)
 {
-	Layer* layer = m_pEditor->layerManager()->currentLayer();
+	Layer* layer = m_pEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)

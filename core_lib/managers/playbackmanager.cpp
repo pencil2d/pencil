@@ -20,15 +20,15 @@ void PlaybackManager::play()
 {
     //updateMaxFrame();
 
-    int projectLength = editor()->layerManager()->projectLength();
+    int projectLength = editor()->layers()->projectLength();
 
     m_startFrame = ( m_isRangedPlayback ) ? m_markInFrame : 1;
     m_endFrame = ( m_isRangedPlayback ) ? m_markOutFrame : projectLength;
 
-    int currentFrame = editor()->layerManager()->currentFramePosition();
+    int currentFrame = editor()->layers()->currentFramePosition();
     if ( currentFrame >= m_endFrame )
     {
-        editor()->layerManager()->setCurrentKeyFrame( m_startFrame );
+        editor()->layers()->setCurrentKeyFrame( m_startFrame );
     }
 
     m_pTimer->setInterval( 1000.0f / m_fps );
@@ -51,12 +51,12 @@ void PlaybackManager::setFps( int fps )
 
 void PlaybackManager::timerTick()
 {
-    int currentFrame = editor()->layerManager()->currentFramePosition();
+    int currentFrame = editor()->layers()->currentFramePosition();
     if ( currentFrame > m_endFrame )
     {
         if ( m_isLooping )
         {
-            editor()->layerManager()->setCurrentKeyFrame( m_startFrame );
+            editor()->layers()->setCurrentKeyFrame( m_startFrame );
         }
         else
         {
@@ -65,7 +65,7 @@ void PlaybackManager::timerTick()
         return;
     }
 
-    editor()->layerManager()->setCurrentKeyFrame( currentFrame + 1 );
+    editor()->layers()->setCurrentKeyFrame( currentFrame + 1 );
 
     // TODO: play sound if any
 }

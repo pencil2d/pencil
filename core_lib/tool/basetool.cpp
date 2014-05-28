@@ -184,11 +184,11 @@ void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-las
         newValueY = 200;
     }
 
-    m_pEditor->toolManager()->setWidth( newValueX );
+    m_pEditor->tools()->setWidth( newValueX );
 
     if ( (this->type() == BRUSH) || (this->type() == ERASER) || (this->type() == SMUDGE) )
     {
-        m_pEditor->toolManager()->setFeather( newValueY );
+        m_pEditor->tools()->setFeather( newValueY );
     }
 
 }

@@ -40,7 +40,7 @@ void TimeLine::initUI()
 
     QWidget* timeLineContent = new QWidget( this );
 
-    LayerManager* pLayerManager = core()->layerManager();
+    LayerManager* pLayerManager = core()->layers();
     connect( pLayerManager, &LayerManager::currentKeyFrameChanged, this, &TimeLine::updateFrame );
 
     list = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Layers );

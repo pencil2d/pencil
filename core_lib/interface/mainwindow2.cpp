@@ -244,7 +244,7 @@ void MainWindow2::createMenus()
     connect( m_pEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    PlaybackManager* pPlaybackManager = m_pEditor->playbackManager();
+    PlaybackManager* pPlaybackManager = m_pEditor->playback();
     connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
 
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLoop );
@@ -431,7 +431,7 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.show();
 
     m_pEditor->setCurrentLayer( 0 );
-    m_pEditor->layerManager()->setCurrentKeyFrame( 1 );
+    m_pEditor->layers()->setCurrentKeyFrame( 1 );
     m_pScribbleArea->setMyView( QMatrix() );
 
     ObjectSaveLoader objectLoader( this );
@@ -657,7 +657,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
             }
             if ( element.tagName() == "currentFrame" )
             {
-                m_pEditor->layerManager()->setCurrentKeyFrame( element.attribute( "value" ).toInt() );
+                m_pEditor->layers()->setCurrentKeyFrame( element.attribute( "value" ).toInt() );
             }
             if ( element.tagName() == "currentFps" )
             {
@@ -685,7 +685,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
 // TODO: Find a better place for this function
 void MainWindow2::resetToolsSettings()
 {
-    m_pEditor->toolManager()->resetAllTools();
+    m_pEditor->tools()->resetAllTools();
 }
 
 bool MainWindow2::saveObject( QString strSavedFilename )
@@ -863,10 +863,10 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     QDomElement tag = doc.createElement( "editor" );
 
     QDomElement tag1 = doc.createElement( "currentLayer" );
-    tag1.setAttribute( "value", m_pEditor->layerManager()->currentLayerIndex() );
+    tag1.setAttribute( "value", m_pEditor->layers()->currentLayerIndex() );
     tag.appendChild( tag1 );
     QDomElement tag2 = doc.createElement( "currentFrame" );
-    tag2.setAttribute( "value", m_pEditor->layerManager()->currentFramePosition() );
+    tag2.setAttribute( "value", m_pEditor->layers()->currentFramePosition() );
     tag.appendChild( tag2 );
     QDomElement tag3 = doc.createElement( "currentView" );
 
@@ -1179,10 +1179,10 @@ void MainWindow2::helpBox()
 
 void MainWindow2::makeConnections( Editor* pEditor, ScribbleArea* pScribbleArea )
 {
-    connect( pEditor->toolManager(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
-    connect( pEditor->toolManager(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
+    connect( pEditor->tools(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
+    connect( pEditor->tools(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
 
-    connect( pEditor->layerManager(), &LayerManager::currentKeyFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
+    connect( pEditor->layers(), &LayerManager::currentKeyFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
 
     connect( pEditor, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( pEditor, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );
@@ -1199,8 +1199,8 @@ void MainWindow2::makeConnections( Editor* pEditor, ScribbleArea* pScribbleArea 
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 {
-    PlaybackManager* pPlaybackManager = pEditor->playbackManager();
-    LayerManager* pLayerManager = pEditor->layerManager();
+    PlaybackManager* pPlaybackManager = pEditor->playback();
+    LayerManager* pLayerManager = pEditor->layers();
 
     connect( pTimeline, &TimeLine::endplayClick, [ = ]{ pLayerManager->gotoLastKeyFrame(); } );
     connect( pTimeline, &TimeLine::startplayClick, [ = ]{ pLayerManager->gotoFirstKeyFrame(); } );

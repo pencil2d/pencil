@@ -65,7 +65,7 @@ void ToolOptionWidget::createUI()
 
 void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 {
-    auto pToolManager = editor->toolManager();
+    auto pToolManager = editor->tools();
 
     connect( usePressureBox, &QCheckBox::clicked, pToolManager, &ToolManager::setPressure );
     connect( makeInvisibleBox, &QCheckBox::clicked, pToolManager, &ToolManager::setInvisibility );

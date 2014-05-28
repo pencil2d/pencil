@@ -67,10 +67,10 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage *sourceImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
+            BitmapImage *sourceImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
             Layer *targetLayer = layer; // by default
-            int layerNumber = m_pEditor->layerManager()->currentLayerIndex(); // by default
-            if (m_pEditor->layerManager()->currentLayerIndex() > 0)
+            int layerNumber = m_pEditor->layers()->currentLayerIndex(); // by default
+            if (m_pEditor->layers()->currentLayerIndex() > 0)
             {
                 Layer *layer2 = m_pEditor->getCurrentLayer(-1);
                 if (layer2->type() == Layer::BITMAP)
@@ -79,7 +79,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                     layerNumber = layerNumber - 1;
                 }
             }
-            BitmapImage *targetImage = ((LayerBitmap *)targetLayer)->getLastBitmapImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
+            BitmapImage *targetImage = ((LayerBitmap *)targetLayer)->getLastBitmapImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
 
             BitmapImage::floodFill(sourceImage,
                                    targetImage,
@@ -89,12 +89,12 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                                    10 * 10,
                                    true);
 
-            m_pScribbleArea->setModified(layerNumber, m_pEditor->layerManager()->currentFramePosition());
+            m_pScribbleArea->setModified(layerNumber, m_pEditor->layers()->currentFramePosition());
             m_pScribbleArea->setAllDirty();
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
 
             if (event->modifiers() == Qt::AltModifier)
             {
@@ -104,7 +104,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
             {
                 m_pScribbleArea->floodFill(vectorImage, getLastPixel().toPoint(), qRgba(0, 0, 0, 0), qRgb(200, 200, 200), 100 * 100);
             }
-            m_pScribbleArea->setModified(m_pEditor->layerManager()->currentLayerIndex(), m_pEditor->layerManager()->currentFramePosition());
+            m_pScribbleArea->setModified(m_pEditor->layers()->currentLayerIndex(), m_pEditor->layers()->currentFramePosition());
             m_pScribbleArea->setAllDirty();
         }
     }

@@ -124,7 +124,7 @@ void TimeLineCells::drawContent()
 
     Q_ASSERT_X( object != nullptr, "", "" );
 
-    Layer* layer = object->getLayer( editor->layerManager()->currentLayerIndex() );
+    Layer* layer = object->getLayer( editor->layers()->currentLayerIndex() );
     if ( layer == NULL ) return;
 
     // grey background of the view
@@ -135,7 +135,7 @@ void TimeLineCells::drawContent()
     // --- draw layers of the current object
     for ( int i = 0; i < object->getLayerCount(); i++ )
     {
-        if ( i != editor->layerManager()->currentLayerIndex() )
+        if ( i != editor->layers()->currentLayerIndex() )
         {
             Layer* layeri = object->getLayer( i );
             if ( layeri != NULL )
@@ -161,11 +161,11 @@ void TimeLineCells::drawContent()
     {
         if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
         {
-            layer->paintTrack( painter, this, m_offsetX, getLayerY( editor->layerManager()->currentLayerIndex() ) + getMouseMoveY(), width() - m_offsetX, getLayerHeight(), true, frameSize );
+            layer->paintTrack( painter, this, m_offsetX, getLayerY( editor->layers()->currentLayerIndex() ) + getMouseMoveY(), width() - m_offsetX, getLayerHeight(), true, frameSize );
         }
         if ( m_eType == TIMELINE_CELL_TYPE::Layers )
         {
-            layer->paintLabel( painter, this, 0, getLayerY( editor->layerManager()->currentLayerIndex() ) + getMouseMoveY(), width() - 1, getLayerHeight(), true, editor->allLayers() );
+            layer->paintLabel( painter, this, 0, getLayerY( editor->layers()->currentLayerIndex() ) + getMouseMoveY(), width() - 1, getLayerHeight(), true, editor->allLayers() );
         }
         painter.setPen( Qt::black );
         painter.drawRect( 0, getLayerY( getLayerNumber( endY ) ) - 1, width(), 2 );
@@ -177,7 +177,7 @@ void TimeLineCells::drawContent()
             layer->paintTrack( painter,
                                this,
                                m_offsetX,
-                               getLayerY( editor->layerManager()->currentLayerIndex() ),
+                               getLayerY( editor->layers()->currentLayerIndex() ),
                                width() - m_offsetX,
                                getLayerHeight(),
                                true,
@@ -188,7 +188,7 @@ void TimeLineCells::drawContent()
             layer->paintLabel( painter,
                                this, 
                                0, 
-                               getLayerY( editor->layerManager()->currentLayerIndex() ),
+                               getLayerY( editor->layers()->currentLayerIndex() ),
                                width() - 1,
                                getLayerHeight(),
                                true,
@@ -225,7 +225,7 @@ void TimeLineCells::drawContent()
         painter.setBrush( Qt::darkGray );
         painter.setFont( QFont( "helvetica", 10 ) );
         int incr = 0;
-        int fps = editor->playbackManager()->fps();
+        int fps = editor->playback()->fps();
         for ( int i = frameOffset; i < frameOffset + ( width() - m_offsetX ) / frameSize; i++ )
         {
             incr = ( i < 9 ) ? 4 : 0;
@@ -259,13 +259,13 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
     Q_UNUSED( event );
 
     Object* object = editor->object();
-    Layer* layer = editor->layerManager()->currentLayer();
+    Layer* layer = editor->layers()->currentLayer();
 
     Q_ASSUME( object != nullptr && layer != nullptr );
 
     QPainter painter( this );
 
-    bool isPlaying = editor->playbackManager()->isPlaying();
+    bool isPlaying = editor->playback()->isPlaying();
     if ( ( !isPlaying && !timeLine->scrubbing ) || m_pCache == NULL )
     {
         drawContent();
@@ -278,29 +278,29 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
     if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
     {
         // --- draw the position of the current frame
-        if ( editor->layerManager()->currentFramePosition() > frameOffset )
+        if ( editor->layers()->currentFramePosition() > frameOffset )
         {
             painter.setBrush( QColor( 255, 0, 0, 128 ) );
             painter.setPen( Qt::NoPen );
             painter.setFont( QFont( "helvetica", 10 ) );
             //painter.setCompositionMode(QPainter::CompositionMode_Source); // this causes the message: QPainter::setCompositionMode: PorterDuff modes not supported on device
             QRect scrubRect;
-            scrubRect.setTopLeft( QPoint( getFrameX( editor->layerManager()->currentFramePosition() - 1 ), 0 ) );
-            scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFramePosition() ), height() ) );
+            scrubRect.setTopLeft( QPoint( getFrameX( editor->layers()->currentFramePosition() - 1 ), 0 ) );
+            scrubRect.setBottomRight( QPoint( getFrameX( editor->layers()->currentFramePosition() ), height() ) );
             if ( shortScrub )
             {
-                scrubRect.setBottomRight( QPoint( getFrameX( editor->layerManager()->currentFramePosition() ), 19 ) );
+                scrubRect.setBottomRight( QPoint( getFrameX( editor->layers()->currentFramePosition() ), 19 ) );
             }
             painter.drawRect( scrubRect );
             painter.setPen( QColor( 70, 70, 70, 255 ) );
             int incr = 0;
-            if ( editor->layerManager()->currentFramePosition() < 10 )
+            if ( editor->layers()->currentFramePosition() < 10 )
             {
                 incr = 4;
             }
             else { incr = 0; }
-            painter.drawText( QPoint( getFrameX( editor->layerManager()->currentFramePosition() - 1 ) + incr, 15 ),
-                              QString::number( editor->layerManager()->currentFramePosition() ) );
+            painter.drawText( QPoint( getFrameX( editor->layers()->currentFramePosition() - 1 ) + incr, 15 ),
+                              QString::number( editor->layers()->currentFramePosition() ) );
         }
     }
 }
@@ -348,7 +348,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
         }
         break;
     case TIMELINE_CELL_TYPE::Tracks:
-        if ( frameNumber == editor->layerManager()->currentFramePosition() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
+        if ( frameNumber == editor->layers()->currentFramePosition() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
         {
             timeLine->scrubbing = true;
         }
