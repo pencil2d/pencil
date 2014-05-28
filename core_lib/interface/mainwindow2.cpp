@@ -123,7 +123,7 @@ void MainWindow2::createDockWidgets()
     makeConnections( m_pEditor, m_pColorPalette );
     m_subWidgets.append( m_pColorPalette );
 
-    m_pDisplayOptionWidget = new DisplayOptionDockWidget(this);
+    m_pDisplayOptionWidget = new DisplayOptionWidget(this);
     m_pDisplayOptionWidget->setObjectName( "DisplayOption" );
     m_pDisplayOptionWidget->makeConnectionToEditor(m_pEditor);
 
@@ -1230,7 +1230,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
 }
 
-void MainWindow2::makeConnections(Editor* pEditor, DisplayOptionDockWidget* pDisplay)
+void MainWindow2::makeConnections(Editor* pEditor, DisplayOptionWidget* pDisplay)
 {
 }
 

@@ -6,11 +6,11 @@
 class Editor;
 class QToolButton;
 
-class DisplayOptionDockWidget : public QDockWidget
+class DisplayOptionWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    DisplayOptionDockWidget(QWidget *parent = 0);
+    DisplayOptionWidget(QWidget *parent = 0);
     void makeConnectionToEditor(Editor* editor);
 
     QToolButton* thinLinesButton;

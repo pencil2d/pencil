@@ -8,7 +8,7 @@
 #include "scribblearea.h"
 
 
-DisplayOptionDockWidget::DisplayOptionDockWidget(QWidget *parent) :
+DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
     QDockWidget(parent)
 {
     createUI();
@@ -16,7 +16,7 @@ DisplayOptionDockWidget::DisplayOptionDockWidget(QWidget *parent) :
     setMaximumHeight(100);
 }
 
-void DisplayOptionDockWidget::createUI()
+void DisplayOptionWidget::createUI()
 {
     // Create Display Option Tool Buttons
     QFrame* displayGroup = new QFrame();
@@ -123,7 +123,7 @@ void DisplayOptionDockWidget::createUI()
     setWidget(displayGroup);
 }
 
-void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
+void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 {
     connect(thinLinesButton, &QToolButton::clicked, editor->getScribbleArea(), &ScribbleArea::toggleThinLines );
     connect(outlinesButton, &QToolButton::clicked, editor->getScribbleArea(), &ScribbleArea::toggleOutlines);
@@ -146,32 +146,32 @@ void DisplayOptionDockWidget::makeConnectionToEditor(Editor* editor)
 
 // ### public slots ###
 
-void DisplayOptionDockWidget::changeOutlinesButton(bool bIsChecked)
+void DisplayOptionWidget::changeOutlinesButton(bool bIsChecked)
 {
     outlinesButton->setChecked(bIsChecked);
 }
 
-void DisplayOptionDockWidget::changeThinLinesButton(bool bIsChecked)
+void DisplayOptionWidget::changeThinLinesButton(bool bIsChecked)
 {
     thinLinesButton->setChecked(bIsChecked);
 }
 
-void DisplayOptionDockWidget::onionPrevChanged(bool checked)
+void DisplayOptionWidget::onionPrevChanged(bool checked)
 {
     onionPrevButton->setChecked(checked);
 }
 
-void DisplayOptionDockWidget::changeMultiLayerOnionSkin(bool bIsChecked)
+void DisplayOptionWidget::changeMultiLayerOnionSkin(bool bIsChecked)
 {
     multiLayerOnionSkinButton->setChecked(bIsChecked);
 }
 
-void DisplayOptionDockWidget::multiLayerOnionSkinButtonChanged(bool checked)
+void DisplayOptionWidget::multiLayerOnionSkinButtonChanged(bool checked)
 {
     multiLayerOnionSkinButton->setChecked(checked);
 }
 
-void DisplayOptionDockWidget::onionNextChanged(bool checked)
+void DisplayOptionWidget::onionNextChanged(bool checked)
 {
     onionNextButton->setChecked(checked);
 }

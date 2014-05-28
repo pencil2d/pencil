@@ -38,7 +38,7 @@ class BaseTool;
 class ColorManager;
 class PopupColorPaletteWidget;
 
-enum DisplayEffect
+enum DisplayEffect : uint32_t
 {
     EFFECT_ANTIALIAS = 0,
     EFFECT_SHADOW,

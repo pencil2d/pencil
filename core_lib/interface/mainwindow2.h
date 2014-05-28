@@ -11,7 +11,7 @@ class Editor;
 class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
-class DisplayOptionDockWidget;
+class DisplayOptionWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
@@ -88,7 +88,7 @@ private:
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
-    void makeConnections( Editor*, DisplayOptionDockWidget* );
+    void makeConnections( Editor*, DisplayOptionWidget* );
 
     // UI: central Drawing Area
     ScribbleArea* m_pScribbleArea;
@@ -96,7 +96,7 @@ private:
     // UI: Dock widgets
     QDockWidget*             m_pColorWheelWidget;
     ColorPaletteWidget*      m_pColorPalette;
-    DisplayOptionDockWidget* m_pDisplayOptionWidget;
+    DisplayOptionWidget* m_pDisplayOptionWidget;
     ToolOptionWidget*        m_pToolOptionWidget;
     ToolBoxWidget*           m_pToolBox;
 

@@ -23,7 +23,7 @@ GNU General Public License for more details.
 class QToolButton;
 class QIcon;
 class SpinSlider;
-class DisplayOptionDockWidget;
+class DisplayOptionWidget;
 class ToolOptionWidget;
 class Editor;
 
