@@ -122,7 +122,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setFeather(0);
             curve.setInvisibility(true);
             curve.setVariableWidth(false);
-            curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+            curve.setColourNumber( m_pEditor->color()->frontColorNumber() );
             VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layerManager()->currentFramePosition(), 0);
 
             vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
@@ -136,7 +136,7 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    QColor currentColor = m_pEditor->colorManager()->frontColor();
+    QColor currentColor = m_pEditor->color()->frontColor();
     currentPressuredColor = currentColor;
     if (m_pScribbleArea->usePressure() && !mouseDevice)
     {
@@ -200,7 +200,7 @@ void PencilTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        QPen pen(m_pEditor->colorManager()->frontColor(),
+        QPen pen(m_pEditor->color()->frontColor(),
             1,
             Qt::DotLine,
             Qt::RoundCap,

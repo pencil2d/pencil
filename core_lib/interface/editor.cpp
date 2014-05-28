@@ -722,7 +722,7 @@ void Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    colorManager()->setColorNumber( 0 );
+    color()->setColorNumber( 0 );
 
     if ( getTimeLine() )
     {

@@ -171,7 +171,7 @@ void ColorPaletteWidget::clickAddColorButton()
             ref.name = text;
             core()->object()->addColour(ref);
             refreshColorList();
-            core()->colorManager()->setColor( core()->object()->getColourCount() - 1 );
+            core()->color()->setColor( core()->object()->getColourCount() - 1 );
         }
     }
 }

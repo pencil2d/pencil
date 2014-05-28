@@ -38,7 +38,7 @@ class TimeLine;
 class Editor : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY( ColorManager* colorManager READ colorManager )
+    Q_PROPERTY( ColorManager* color READ color )
     Q_PROPERTY( ToolManager*  toolManager  READ toolManager )
     Q_PROPERTY( LayerManager* layerManager READ layerManager )
     Q_PROPERTY( PlaybackManager* playbackManager READ playbackManager )
@@ -49,7 +49,7 @@ public:
 
     bool initialize( ScribbleArea* pScribbleArea );
 
-    ColorManager* colorManager() const { return m_colorManager; }
+    ColorManager* color() const { return m_colorManager; }
     ToolManager* toolManager() const { return m_pToolManager; }
     LayerManager* layerManager() const { return m_pLayerManager; }
     PlaybackManager* playbackManager() const { return m_pPlaybackManager; }

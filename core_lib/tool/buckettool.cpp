@@ -85,7 +85,7 @@ void BucketTool::mouseReleaseEvent(QMouseEvent *event)
                                    targetImage,
                                    getLastPoint().toPoint(),
                                    qRgba(0, 0, 0, 0),
-                                   m_pEditor->colorManager()->frontColor().rgba(),
+                                   m_pEditor->color()->frontColor().rgba(),
                                    10 * 10,
                                    true);
 

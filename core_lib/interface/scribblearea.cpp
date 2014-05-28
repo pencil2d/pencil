@@ -1457,7 +1457,7 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
 
     if ( points.size() > 0 )
     {
-        QPen pen2( m_pEditor->colorManager()->frontColor(),
+        QPen pen2( m_pEditor->color()->frontColor(),
                    getTool( PEN )->properties.width,
                    Qt::SolidLine,
                    Qt::RoundCap,
@@ -1505,7 +1505,7 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
         {
             curve.setWidth( getTool( PEN )->properties.width );
         }
-        curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+        curve.setColourNumber( m_pEditor->color()->frontColorNumber() );
         curve.setVariableWidth( false );
         curve.setInvisibility( m_makeInvisible );
         //curve.setSelected(true);
@@ -1771,13 +1771,13 @@ void ScribbleArea::displaySelectionProperties()
                 m_pEditor->toolManager()->setFeather( vectorImage->m_curves[ selectedCurve ].getFeather() );
                 m_pEditor->toolManager()->setInvisibility( vectorImage->m_curves[ selectedCurve ].isInvisible() );
                 m_pEditor->toolManager()->setPressure( vectorImage->m_curves[ selectedCurve ].getVariableWidth() );
-                m_pEditor->colorManager()->setColorNumber( vectorImage->m_curves[ selectedCurve ].getColourNumber() );
+                m_pEditor->color()->setColorNumber( vectorImage->m_curves[ selectedCurve ].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if ( selectedArea != -1 )
             {
-                m_pEditor->colorManager()->setColorNumber( vectorImage->area[ selectedArea ].colourNumber );
+                m_pEditor->color()->setColorNumber( vectorImage->area[ selectedArea ].colourNumber );
             }
         }
     }
@@ -2165,7 +2165,7 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
                         {
                             closedPath.prepend( tree.at( pathIndex ) );
                         }
-                        BezierArea newArea = BezierArea( closedPath, m_pEditor->colorManager()->frontColorNumber() );
+                        BezierArea newArea = BezierArea( closedPath, m_pEditor->color()->frontColorNumber() );
                         vectorImage->updateArea( newArea );
                         if ( newArea.path.contains( initialPoint ) )
                         {

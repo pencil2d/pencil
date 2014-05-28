@@ -155,7 +155,7 @@ void BrushTool::drawStroke()
 
         QRadialGradient radialGrad(QPointF(0,0), 0.5 * brushWidth);
         m_pScribbleArea->setGaussianGradient(radialGrad,
-            m_pEditor->colorManager()->frontColor(),
+            m_pEditor->color()->frontColor(),
             opacity,
             offset);
 
@@ -177,7 +177,7 @@ void BrushTool::drawStroke()
             m_pScribbleArea->drawBrush( point,
                 brushWidth,
                 offset,
-                m_pEditor->colorManager()->frontColor(),
+                m_pEditor->color()->frontColor(),
                 opacity);
 
             if (i == (steps - 1))

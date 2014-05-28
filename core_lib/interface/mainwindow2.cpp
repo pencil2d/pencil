@@ -163,8 +163,8 @@ void MainWindow2::makeColorWheelConnections()
     ColorBox* pColorBox = static_cast<ColorBox*>(m_pColorWheelWidget->widget());
     Q_ASSERT( pColorBox );
 
-    connect( pColorBox, &ColorBox::colorChanged, m_pEditor->colorManager(), &ColorManager::setColor );
-    connect( m_pEditor->colorManager(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
+    connect( pColorBox, &ColorBox::colorChanged, m_pEditor->color(), &ColorManager::setColor );
+    connect( m_pEditor->color(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
 }
 
 void MainWindow2::createMenus()
@@ -1238,7 +1238,7 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
 {
     connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
 
-    ColorManager* pColorManager = pEditor->colorManager();
+    ColorManager* pColorManager = pEditor->color();
     connect( pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::setColor );
     connect( pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::setColorNumber );
 

@@ -102,7 +102,7 @@ void PenTool::mouseReleaseEvent(QMouseEvent *event)
             curve.setFeather( properties.feather );
             curve.setInvisibility(false);
             curve.setVariableWidth(m_pScribbleArea->usePressure());
-            curve.setColourNumber( m_pEditor->colorManager()->frontColorNumber() );
+            curve.setColourNumber( m_pEditor->color()->frontColorNumber() );
 
 			auto pLayerVector = static_cast< LayerVector* >( layer );
             VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( m_pEditor->layerManager()->currentFramePosition(), 0 );
@@ -137,7 +137,7 @@ void PenTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        QPen pen = QPen(m_pEditor->colorManager()->frontColor(),
+        QPen pen = QPen(m_pEditor->color()->frontColor(),
                         currentWidth,
                         Qt::SolidLine,
                         Qt::RoundCap,
@@ -166,7 +166,7 @@ void PenTool::drawStroke()
     {
         int rad = qRound((currentWidth / 2 + 2) * (qAbs(m_pScribbleArea->getTempViewScaleX()) + qAbs(m_pScribbleArea->getTempViewScaleY())));
 
-        QPen pen(m_pEditor->colorManager()->frontColor(),
+        QPen pen(m_pEditor->color()->frontColor(),
                  currentWidth * m_pScribbleArea->getTempViewScaleX(),
                  Qt::SolidLine,
                  Qt::RoundCap,
