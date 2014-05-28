@@ -1084,7 +1084,19 @@ bool Editor::exportMov()
 
         int projectLength = layers()->projectLength();
         int fps = playback()->fps();
-        m_pObject->exportMovie( 1, projectLength, view, getCurrentLayer(), exportSize, filePath, fps, exportMovieDialog_fpsBox->value(), exportMovieDialog_format->currentText() );
+
+        ExportMovieParameters par;
+        par.startFrame = 1;
+        par.endFrame = projectLength;
+        par.view = view;
+        par.currentLayer = getCurrentLayer();
+        par.exportSize = exportSize;
+        par.filePath = filePath;
+        par.fps = fps;
+        par.exportFps = exportMovieDialog_fpsBox->value();
+        par.exportFormat = exportMovieDialog_format->currentText();
+        m_pObject->exportMovie( par );
+
         return true;
     }
 }

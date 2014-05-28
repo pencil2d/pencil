@@ -29,6 +29,37 @@ class LayerCamera;
 class LayerSound;
 
 
+struct ExportMovieParameters
+{
+    int startFrame;
+    int endFrame;
+    QMatrix view;
+    Layer* currentLayer;
+    QSize exportSize;
+    QString filePath;
+    int fps;
+    int exportFps;
+    QString exportFormat;
+};
+
+struct ExportFrames1Parameters
+{
+    int frameStart;
+    int frameEnd; 
+    QMatrix view;
+    Layer* currentLayer;
+    QSize exportSize;
+    QString filePath;
+    const char* format;
+    int quality;
+    bool background;
+    bool antialiasing;
+    QProgressDialog* progress;
+    int progressMax;
+    int fps;
+    int exportFps;
+};
+
 class Object : public QObject
 {
     Q_OBJECT
@@ -86,8 +117,8 @@ public:
     void stopSoundIfAny();
 
     bool exportFrames(int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax);
-    bool exportFrames1(int frameStart, int frameEnd, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax, int fps, int exportFps);
-    bool exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat);
+    bool exportFrames1( ExportFrames1Parameters parameters );
+    bool exportMovie( ExportMovieParameters parameters );
     bool exportX(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing );
     bool exportIm(int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath,  bool antialiasing );
     bool exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);

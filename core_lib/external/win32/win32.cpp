@@ -63,16 +63,18 @@ void initialise()
 // does not save audio
 // added parameter exportFps -> frame rate of exported video
 // added parameter exportFormat -> to set ffmpeg parameters
-bool Object::exportMovie( int startFrame,
-                          int endFrame,
-                          QMatrix view,
-                          Layer* currentLayer,
-                          QSize exportSize,
-                          QString filePath,
-                          int fps,
-                          int exportFps,
-                          QString exportFormat )
+bool Object::exportMovie( ExportMovieParameters par )
 {
+    int startFrame = par.startFrame;
+    int endFrame = par.endFrame;
+    QMatrix view = par.view;
+    Layer* currentLayer = par.currentLayer;
+    QSize exportSize = par.exportSize;
+    QString filePath = par.filePath;
+    int fps = par.fps;
+    int exportFps = par.exportFps;
+    QString exportFormat = par.exportFormat;
+
     //  additional parameters for ffmpeg
     QString ffmpegParameter = "";
     if ( filePath.endsWith( ".avi", Qt::CaseInsensitive ) )
@@ -101,16 +103,24 @@ bool Object::exportMovie( int startFrame,
     {
         if ( QFile::exists( filePath ) == true ) { dir2.remove( filePath ); }
 
-        exportFrames1( startFrame, endFrame,
-                       view, currentLayer,
-                       exportSize,
-                       tempPath + "tmp",
-                       "png",
-                       100,
-                       true, true,
-                       &progress,
-                       50, fps,
-                       exportFps );
+        const char* format = "png";
+        ExportFrames1Parameters par;
+        par.frameStart = startFrame;
+        par.frameEnd = endFrame;
+        par.view = view;
+        par.currentLayer = currentLayer;
+        par.exportSize = exportSize;
+        par.filePath = tempPath + "tmp";
+        par.format = format;
+        par.quality = 100;
+        par.background = true;
+        par.antialiasing = true;
+        par.progress = &progress;
+        par.progressMax = 50;
+        par.fps = fps;
+        par.exportFps = exportFps;
+        exportFrames1( par );
+
         // --------- Quicktime assemble call ----------
         QDir sampledir;
         qDebug() << "testmic:" << sampledir.filePath( filePath );
@@ -268,8 +278,6 @@ bool Object::exportMovie( int startFrame,
 
     return true;
 }
-
-
 
 
 void Editor::importMovie( QString filePath, int fps )

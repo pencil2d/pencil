@@ -559,19 +559,23 @@ void convertNFrames(int fps,int exportFps,int* frameRepeat,int* frameReminder,in
 
 
 
-bool Object::exportFrames1(int frameStart, int frameEnd,
-						   QMatrix view,
-						   Layer* currentLayer,
-						   QSize exportSize,
-						   QString filePath,
-						   const char* format,
-						   int quality,
-						   bool background,
-						   bool antialiasing,
-						   QProgressDialog* progress,
-						   int progressMax,
-						   int fps, int exportFps)
+bool Object::exportFrames1( ExportFrames1Parameters par )
 {
+    int frameStart = par.frameStart;
+    int frameEnd = par.frameEnd;
+    QMatrix view = par.view;
+    Layer* currentLayer = par.currentLayer;
+    QSize exportSize = par.exportSize;
+    QString filePath = par.filePath;
+    const char* format = par.format;
+    int quality = par.quality;
+    bool background = par.background;
+    bool antialiasing = par.antialiasing;
+    QProgressDialog* progress = par.progress;
+    int progressMax = par.progressMax;
+    int fps = par.fps;
+    int exportFps = par.exportFps;
+
     int frameRepeat;
     int frameReminder, frameReminder1;
     int framePutEvery, framePutEvery1;

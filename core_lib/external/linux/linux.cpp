@@ -3,6 +3,7 @@
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2009 Mj Mendoza IV
+Copyright (C) 2014 Matt Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,8 +30,6 @@ GNU General Public License for more details.
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
 
-
-
 qint16 safeSum ( qint16 a, qint16 b)
 {
     if (((int)a + (int)b) > 32767)
@@ -44,11 +43,7 @@ void initialise()
 {
     qDebug() << "Initialize linux: <nothing, for now>";
     // Phonon capabilities
-    /*
-    QStringList mimeTypes = Phonon::BackendCapabilities::availableMimeTypes();
-    foreach (QString mimeType, mimeTypes)
-    {if (mimeType.contains("audio")) qDebug() << "Phonon capability: " << mimeType;}
-    */
+
     // QImageReader capabilities
     QList<QByteArray> formats = QImageReader::supportedImageFormats();
     foreach (QString format, formats)
@@ -64,8 +59,18 @@ void initialise()
 
 // added parameter exportFps -> frame rate of exported video
 // added parameter exportFormat -> to set ffmpeg parameters
-bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* currentLayer, QSize exportSize, QString filePath, int fps, int exportFps, QString exportFormat)
+bool Object::exportMovie( ExportMovieParameters parameters )
 {
+    int startFrame = parameters.startFrame;
+    int endFrame = parameters.endFrame;
+    QMatrix view = parameters.view;
+    Layer* currentLayer = parameters.currentLayer;
+    QSize exportSize = parameters.exportSize;
+    QString filePath = parameters.filePath;
+    int fps = parameters.fps;
+    int exportFps = parameters.exportFps;
+    QString exportFormat = parameters.exportFormat;
+
     if(!filePath.endsWith(".avi", Qt::CaseInsensitive))
     {
         filePath = filePath + ".avi";
@@ -90,7 +95,28 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
 
     QDir dir2(filePath);
     if (QFile::exists(filePath) == true) { dir2.remove(filePath); }
-    exportFrames1(startFrame, endFrame, view, currentLayer, exportSize, tempPath+"tmp", "png", 100, true, true, 2,&progress,50,fps,exportFps);
+
+    const char* format = "png";
+
+    ExportFrames1Parameters par;
+    
+    par.frameStart = startFrame;
+    par.frameEnd = endFrame;
+    par.view = view;
+    par.currentLayer = currentLayer;
+    par.exportSize = exportSize;
+    par.filePath = tempPath + "tmp";
+    par.format = format;
+    par.quality = 100;
+    par.background = true;
+    par.antialiasing = true;
+    par.progress = &progress;
+    par.progressMax = 50;
+    par.fps = fps;
+    par.exportFps = exportFps;
+
+    exportFrames1( par );
+
     // --------- Quicktime assemble call ----------
     QDir sampledir;
     qDebug() << "testmic:" << sampledir.filePath(filePath);
@@ -108,64 +134,63 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
         Layer* layer = this->getLayer(i);
         if(layer->type() == Layer::SOUND)
         {
-            for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++)
+            auto pSoundLayer = static_cast< LayerSound* >( layer );
+            pSoundLayer->foreachKeyFrame( [&] ( KeyFrame* key )
             {
-                if (((LayerSound*)layer)->soundIsNotNull(l))
+                int l = 0; // FIXME: export sound
+                // convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
+                // supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
+                qDebug() << "ffmpeg -i \"" + ((LayerSound*)layer)->getSoundFilepathAt(l) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"";
+                ffmpeg.start("ffmpeg -i \"" + ((LayerSound*)layer)->getSoundFilepathAt(l) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"");
+                if (ffmpeg.waitForStarted() == true)
                 {
-                    // convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
-                    // supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-                    qDebug() << "ffmpeg -i \"" + ((LayerSound*)layer)->getSoundFilepathAt(l) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"";
-                    ffmpeg.start("ffmpeg -i \"" + ((LayerSound*)layer)->getSoundFilepathAt(l) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"");
-                    if (ffmpeg.waitForStarted() == true)
+                    if (ffmpeg.waitForFinished() == true)
                     {
-                        if (ffmpeg.waitForFinished() == true)
+                        QByteArray sErr = ffmpeg.readAllStandardError();
+                        if (sErr == "")
                         {
-                            QByteArray sErr = ffmpeg.readAllStandardError();
-                            if (sErr == "")
-                            {
-                                qDebug() << "ERROR: Could not execute FFmpeg.";
-                            }
-                            else
-                            {
-                                qDebug() << "stdout: " << ffmpeg.readAllStandardOutput();
-                                qDebug() << "stderr: " << sErr;
-                                qDebug() << "AUDIO conversion done. ( file: " << ((LayerSound*)layer)->getSoundFilepathAt(l) << ")";
-                            }
+                            qDebug() << "ERROR: Could not execute FFmpeg.";
                         }
                         else
                         {
-                            qDebug() << "ERROR: FFmpeg did not finish executing.";
+                            qDebug() << "stdout: " << ffmpeg.readAllStandardOutput();
+                            qDebug() << "stderr: " << sErr;
+                            qDebug() << "AUDIO conversion done. ( file: " << ((LayerSound*)layer)->getSoundFilepathAt(l) << ")";
                         }
                     }
                     else
                     {
-                        qDebug() << "ERROR: Could not execute FFmpeg.";
+                        qDebug() << "ERROR: FFmpeg did not finish executing.";
                     }
-                    int frame = ((LayerSound*)layer)->getKeyFrameAtPosition( l ) - 1;
-                    float fframe = (float)frame/(float)fps;
-                    QFile file(tempPath+"tmpaudio0.wav");
-                    qDebug() << "audio file " + tempPath+"tmpaudio0.wav";
-                    file.open(QIODevice::ReadOnly);
-                    file.read((char*)header1,sizeof(header1));
-                    quint32 audioSize = header1[21];
-                    audioSize = audioSize * 65536 + header1[20];
-                    qDebug() << "audio len " << audioSize;
-                    // before calling malloc should check: audioSize < max credible value
-                    qint16* data = (qint16*) malloc(audioSize);
-                    file.read((char*)data,audioSize);
-                    audioDataValid = true;
-                    int delta = fframe*44100*2;
-                    qDebug() << "audio delta " << delta;
-                    int indexMax = MIN(audioSize/2,audioDataSize/2-delta);
-                    // audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
-                    for (int index = 0; index < indexMax; index++)
-                    {
-                        audioData[index+delta] = safeSum(audioData[index+delta],data[index]);
-                    }
-                    free(data);
-                    file.close();
                 }
-            }
+                else
+                {
+                    qDebug() << "ERROR: Could not execute FFmpeg.";
+                }
+                int frame = key->pos() - 1;
+                float fframe = (float)frame/(float)fps;
+                QFile file(tempPath+"tmpaudio0.wav");
+                qDebug() << "audio file " + tempPath+"tmpaudio0.wav";
+                file.open(QIODevice::ReadOnly);
+                file.read((char*)header1,sizeof(header1));
+                quint32 audioSize = header1[21];
+                audioSize = audioSize * 65536 + header1[20];
+                qDebug() << "audio len " << audioSize;
+                // before calling malloc should check: audioSize < max credible value
+                qint16* data = (qint16*) malloc(audioSize);
+                file.read((char*)data,audioSize);
+                audioDataValid = true;
+                int delta = fframe*44100*2;
+                qDebug() << "audio delta " << delta;
+                int indexMax = MIN(audioSize/2,audioDataSize/2-delta);
+                // audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
+                for (int index = 0; index < indexMax; index++)
+                {
+                    audioData[index+delta] = safeSum(audioData[index+delta],data[index]);
+                }
+                free(data);
+                file.close();
+            } );
         }
     }
     if ( audioDataValid )
@@ -180,20 +205,6 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
         file.close();
     }
 
-    /*QString soundDelay = "";
-    for(int i = 0; i < this->getLayerCount() ; i++) {
-        Layer* layer = this->getLayer(i);
-        if(layer->type == Layer::SOUND) {
-            int lmax = ((LayerSound*)layer)->getSoundSize() ;
-            for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++) {
-                if (((LayerSound*)layer)->soundIsNotNull(l)) {
-                    int frame = ((LayerSound*)layer)->getFramePositionAt(l)-1;
-                    float fframe = (float)frame/(float)fps;
-                    soundDelay.append("-itsoffset "+QString::number(fframe)+" -i \""+((LayerSound*)layer)->getSoundFilepathAt(l)+"\" ");
-                }
-            }
-        }
-    }*/
 
     // video input:  frame sequence ( -i tmp%03d.png )
     //               frame rate     ( -r fps )
@@ -254,10 +265,6 @@ bool Object::exportMovie(int startFrame, int endFrame, QMatrix view, Layer* curr
 
     return true;
 }
-
-
-
-
 
 void Editor::importMovie (QString filePath, int fps)
 {
