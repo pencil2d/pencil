@@ -6,7 +6,8 @@ TEMPLATE = subdirs
 SUBDIRS = \
         core_lib \
         app \
-        tests
+        tests \
+        3rdlib/quazip
 
 app.depends = core_lib
 tests.depends = core_lib

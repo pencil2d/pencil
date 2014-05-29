@@ -183,8 +183,8 @@ FORMS += \
 
 
 win32 {
-    SOURCES += external/win32/win32.cpp
     INCLUDEPATH += external/win32
+    SOURCES += external/win32/win32.cpp
     RC_FILE = ../pencil.rc
 }
 
@@ -198,11 +198,18 @@ macx {
 linux-* {
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
-    LIBS += -Lliblinux -lpng -lz
-    LIBS += -L/usr/local/zlib/lib
-    INCLUDEPATH+=/usr/local/zlib/include
 }
 
-# QuaZip
-DEFINES += QUAZIP_STATIC
-include(external/quazip.pri)
+# depend on Quazip
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../3rdlib/quazip/quazip/release/ -lquazip
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../3rdlib/quazip/quazip/debug/ -lquazip
+else:unix: LIBS += -L$$OUT_PWD/../3rdlib/quazip/quazip/ -lquazip
+
+INCLUDEPATH += $$PWD/../3rdlib/quazip/quazip
+DEPENDPATH += $$PWD/../3rdlib/quazip/quazip
+
+win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/quazip/release/libquazip.a
+else:win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/quazip/debug/libquazip.a
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/quazip/release/quazip.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/quazip/debug/quazip.lib
+else:unix: PRE_TARGETDEPS += $$OUT_PWD/../3rdlib/quazip/quazip/libquazip.a

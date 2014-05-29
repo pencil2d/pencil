@@ -22,6 +22,5 @@ linux-* {
     INCLUDEPATH += /usr/local/zlib/include
     LIBS += -lpng -lz
     LIBS += -L/usr/local/zlib/lib
-    LIBS += -L/usr/lib/x86_64-linux-gnu/
     QMAKE_CXXFLAGS += -std=c++11
 }
