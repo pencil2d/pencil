@@ -24,3 +24,6 @@ linux-* {
     LIBS += -L/usr/local/zlib/lib
     QMAKE_CXXFLAGS += -std=c++11
 }
+
+DEFINES += QUAZIP_BUILD
+DEFINES += QUAZIP_STATIC
