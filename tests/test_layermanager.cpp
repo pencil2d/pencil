@@ -5,7 +5,7 @@
 void TestLayerManager::initTestCase()
 {
     m_pObject = new Object();
-    m_pObject->defaultInitialisation();
+    m_pObject->init();
 }
 
 void TestLayerManager::cleanupTestCase()

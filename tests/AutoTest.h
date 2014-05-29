@@ -1,7 +1,7 @@
 #ifndef AUTOTEST_H
 #define AUTOTEST_H
 
-#include <QTest>
+#include <QtTest/QtTest>
 #include <QList>
 #include <QString>
 #include <QSharedPointer>

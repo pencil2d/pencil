@@ -17,22 +17,25 @@ class TestLayer : public QObject
 public:
     TestLayer();
 
-private slots:
+    private slots:
     void initTestCase();
     void cleanupTestCase();
 
     void testCase1();
     void testLayerType();
-    void testAddImageAtFrame();
+    void testAddNewKeyFrameAt();
+    void testRemoveKeyFrame();
     void testGetMaxFramePosition();
-    void testHasKeyframeAtPosition();
-    void testGetFramePositionAt();
-    void testRemoveImageAtFrame();
+    void testGetFirstFramePosition();
+    void testHasKeyFrameAtPosition();
+
+    void testPreviousKeyFramePosition();
+    void testNextKeyFramePosition();
 
 private:
     Object* m_pObject;
 };
 
-DECLARE_TEST(TestLayer)
+DECLARE_TEST( TestLayer )
 
 #endif // TEST_LAYER_H

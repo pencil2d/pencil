@@ -6,6 +6,6 @@ int main(int argc, char *argv[])
 {
     int ret = AutoTest::run(argc, argv);
 
-    system("PAUSE");
+    //system("PAUSE");
     return ret;
 }

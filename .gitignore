@@ -6,7 +6,6 @@ Info.plist
 .moc
 .obj
 *.o
-Pencil
 Makefile
 Makefile.Debug
 Makefile.Release

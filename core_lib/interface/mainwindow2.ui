@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow2</class>
+ <widget class="QMainWindow" name="MainWindow2">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuImport">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionImport_Image"/>
+     <addaction name="actionImport_Image_Sequence"/>
+     <addaction name="actionImport_Movie"/>
+     <addaction name="actionImport_Sound"/>
+     <addaction name="separator"/>
+     <addaction name="actionImport_Palette"/>
+    </widget>
+    <widget class="QMenu" name="menuExport">
+     <property name="title">
+      <string>Export</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionExport_X_sheet"/>
+     <addaction name="actionExport_Image_Sequence"/>
+     <addaction name="actionExport_Image"/>
+     <addaction name="actionExport_Movie"/>
+     <addaction name="actionExport_Svg_Image"/>
+     <addaction name="separator"/>
+     <addaction name="actionExport_Palette"/>
+    </widget>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_as"/>
+    <addaction name="separator"/>
+    <addaction name="menuImport"/>
+    <addaction name="menuExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <widget class="QMenu" name="menuSelection">
+     <property name="title">
+      <string>Selection</string>
+     </property>
+     <addaction name="actionFlip_X"/>
+     <addaction name="actionFlip_Y"/>
+    </widget>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionCut"/>
+    <addaction name="actionCopy"/>
+    <addaction name="actionPaste"/>
+    <addaction name="actionClearFrame"/>
+    <addaction name="separator"/>
+    <addaction name="menuSelection"/>
+    <addaction name="separator"/>
+    <addaction name="actionSelect_All"/>
+    <addaction name="actionDeselect_All"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreference"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menuOnion_Skin">
+     <property name="title">
+      <string>Onion Skin</string>
+     </property>
+     <addaction name="actionOnionPrevious"/>
+     <addaction name="actionOnionNext"/>
+     <addaction name="actionMultiLayerOnionSkin"/>
+    </widget>
+    <addaction name="actionReset_Windows"/>
+    <addaction name="actionReset_View"/>
+    <addaction name="separator"/>
+    <addaction name="actionZoom_In"/>
+    <addaction name="actionZoom_Out"/>
+    <addaction name="separator"/>
+    <addaction name="actionRotate_Clockwise"/>
+    <addaction name="actionRotate_Anticlosewise"/>
+    <addaction name="separator"/>
+    <addaction name="actionHorizontal_Flip"/>
+    <addaction name="actionVertical_Flip"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreview"/>
+    <addaction name="separator"/>
+    <addaction name="actionGrid"/>
+    <addaction name="separator"/>
+    <addaction name="menuOnion_Skin"/>
+   </widget>
+   <widget class="QMenu" name="menuAnimation">
+    <property name="title">
+     <string>Animation</string>
+    </property>
+    <addaction name="actionPlay"/>
+    <addaction name="actionLoop"/>
+    <addaction name="actionLoopControl"/>
+    <addaction name="separator"/>
+    <addaction name="actionNext_Frame"/>
+    <addaction name="actionPrevious_Frame"/>
+    <addaction name="actionNext_KeyFrame"/>
+    <addaction name="actionPrev_KeyFrame"/>
+    <addaction name="separator"/>
+    <addaction name="actionAdd_Frame"/>
+    <addaction name="actionDuplicate_Frame"/>
+    <addaction name="actionRemove_Frame"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionMove"/>
+    <addaction name="actionSelect"/>
+    <addaction name="actionBrush"/>
+    <addaction name="actionPolyline"/>
+    <addaction name="actionSmudge"/>
+    <addaction name="actionPen"/>
+    <addaction name="actionHand"/>
+    <addaction name="actionPencil"/>
+    <addaction name="actionBucket"/>
+    <addaction name="actionEyedropper"/>
+    <addaction name="actionEraser"/>
+    <addaction name="separator"/>
+    <addaction name="actionTogglePalette"/>
+    <addaction name="separator"/>
+    <addaction name="actionResetToolsDefault"/>
+   </widget>
+   <widget class="QMenu" name="menuLayer">
+    <property name="title">
+     <string>Layer</string>
+    </property>
+    <addaction name="actionNew_Bitmap_Layer"/>
+    <addaction name="actionNew_Vector_Layer"/>
+    <addaction name="actionNew_Sound_Layer"/>
+    <addaction name="actionNew_Camera_Layer"/>
+    <addaction name="separator"/>
+    <addaction name="actionDelete_Current_Layer"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <widget class="QMenu" name="menuWindows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuAnimation"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuLayer"/>
+   <addaction name="menuWindows"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/new.png</normaloff>:/icons/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/open.png</normaloff>:/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/save.png</normaloff>:/icons/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/saveas.png</normaloff>:/icons/saveas.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save As ..</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/printer3.png</normaloff>:/icons/printer3.png</iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionExport_X_sheet">
+   <property name="text">
+    <string>X-sheet ...</string>
+   </property>
+  </action>
+  <action name="actionExport_Image_Sequence">
+   <property name="text">
+    <string>Image Sequence...</string>
+   </property>
+  </action>
+  <action name="actionExport_Image">
+   <property name="text">
+    <string>Image...</string>
+   </property>
+  </action>
+  <action name="actionExport_Movie">
+   <property name="text">
+    <string>Movie...</string>
+   </property>
+  </action>
+  <action name="actionExport_Palette">
+   <property name="text">
+    <string>Palette...</string>
+   </property>
+  </action>
+  <action name="actionExport_Svg_Image">
+   <property name="text">
+    <string>Svg Image...</string>
+   </property>
+  </action>
+  <action name="actionImport_Image">
+   <property name="text">
+    <string>Image...</string>
+   </property>
+  </action>
+  <action name="actionImport_Image_Sequence">
+   <property name="text">
+    <string>Image Sequence...</string>
+   </property>
+  </action>
+  <action name="actionImport_Movie">
+   <property name="text">
+    <string>Movie...</string>
+   </property>
+  </action>
+  <action name="actionImport_Sound">
+   <property name="text">
+    <string>Sound...</string>
+   </property>
+  </action>
+  <action name="actionImport_Palette">
+   <property name="text">
+    <string>Palette...</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="actionCut">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Cut</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Copy</string>
+   </property>
+  </action>
+  <action name="actionPaste">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
+   </property>
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionCrop">
+   <property name="text">
+    <string>Crop</string>
+   </property>
+  </action>
+  <action name="actionCrop_To_Selection">
+   <property name="text">
+    <string>Crop To Selection</string>
+   </property>
+  </action>
+  <action name="actionSelect_All">
+   <property name="text">
+    <string>Select All</string>
+   </property>
+  </action>
+  <action name="actionDeselect_All">
+   <property name="text">
+    <string>Deselect All</string>
+   </property>
+  </action>
+  <action name="actionClearFrame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear Frame</string>
+   </property>
+  </action>
+  <action name="actionPreference">
+   <property name="text">
+    <string>Preferences</string>
+   </property>
+  </action>
+  <action name="actionReset_Windows">
+   <property name="text">
+    <string>Reset Windows</string>
+   </property>
+  </action>
+  <action name="actionZoom_In">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+  </action>
+  <action name="actionZoom_Out">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+   </property>
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="actionRotate_Clockwise">
+   <property name="text">
+    <string>Rotate Clockwise</string>
+   </property>
+  </action>
+  <action name="actionRotate_Anticlosewise">
+   <property name="text">
+    <string>Rotate AntiClosewise</string>
+   </property>
+  </action>
+  <action name="actionReset_View">
+   <property name="text">
+    <string>Reset Zoom/Rotate</string>
+   </property>
+  </action>
+  <action name="actionHorizontal_Flip">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/mirror.png</normaloff>:/icons/mirror.png</iconset>
+   </property>
+   <property name="text">
+    <string>Horizontal Flip</string>
+   </property>
+  </action>
+  <action name="actionVertical_Flip">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/mirrorV.png</normaloff>:/icons/mirrorV.png</iconset>
+   </property>
+   <property name="text">
+    <string>Vertical Flip</string>
+   </property>
+  </action>
+  <action name="actionPreview">
+   <property name="text">
+    <string>Preview</string>
+   </property>
+  </action>
+  <action name="actionGrid">
+   <property name="text">
+    <string>Grid</string>
+   </property>
+  </action>
+  <action name="actionOnionPrevious">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/onionPrev.png</normaloff>:/icons/onionPrev.png</iconset>
+   </property>
+   <property name="text">
+    <string>Previous</string>
+   </property>
+  </action>
+  <action name="actionOnionNext">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/onionNext.png</normaloff>:/icons/onionNext.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next</string>
+   </property>
+  </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/controls/play.png</normaloff>:/icons/controls/play.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+  </action>
+  <action name="actionLoop">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/controls/loop.png</normaloff>:/icons/controls/loop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Loop</string>
+   </property>
+  </action>
+  <action name="actionNext_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/next.png</normaloff>:/icons/next.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next Frame</string>
+   </property>
+  </action>
+  <action name="actionPrevious_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/prev.png</normaloff>:/icons/prev.png</iconset>
+   </property>
+   <property name="text">
+    <string>Previous Frame</string>
+   </property>
+  </action>
+  <action name="actionExtend_Frame">
+   <property name="text">
+    <string>Extend Frame</string>
+   </property>
+  </action>
+  <action name="actionAdd_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add Frame</string>
+   </property>
+  </action>
+  <action name="actionDuplicate_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/controls/duplicate.png</normaloff>:/icons/controls/duplicate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Duplicate Frame</string>
+   </property>
+  </action>
+  <action name="actionRemove_Frame">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove Frame</string>
+   </property>
+  </action>
+  <action name="actionMove">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/move.png</normaloff>:/icons/move.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clear Frame</string>
+   </property>
+  </action>
+  <action name="actionSelect">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
+   </property>
+   <property name="text">
+    <string>Select</string>
+   </property>
+  </action>
+  <action name="actionBrush">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/brush.png</normaloff>:/icons/brush.png</iconset>
+   </property>
+   <property name="text">
+    <string>Brush</string>
+   </property>
+  </action>
+  <action name="actionPolyline">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/polyline.png</normaloff>:/icons/polyline.png</iconset>
+   </property>
+   <property name="text">
+    <string>Polyline</string>
+   </property>
+  </action>
+  <action name="actionSmudge">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/smudge.png</normaloff>:/icons/smudge.png</iconset>
+   </property>
+   <property name="text">
+    <string>Smudge</string>
+   </property>
+  </action>
+  <action name="actionPen">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/pen.png</normaloff>:/icons/pen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pen</string>
+   </property>
+  </action>
+  <action name="actionHand">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
+   </property>
+   <property name="text">
+    <string>Hand</string>
+   </property>
+  </action>
+  <action name="actionPencil">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/pencil2.png</normaloff>:/icons/pencil2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Pencil</string>
+   </property>
+  </action>
+  <action name="actionBucket">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/bucket.png</normaloff>:/icons/bucket.png</iconset>
+   </property>
+   <property name="text">
+    <string>Bucket</string>
+   </property>
+  </action>
+  <action name="actionEyedropper">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/eyedropper.png</normaloff>:/icons/eyedropper.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eyedropper</string>
+   </property>
+  </action>
+  <action name="actionEraser">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/eraser.png</normaloff>:/icons/eraser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Eraser</string>
+   </property>
+  </action>
+  <action name="actionNew_Bitmap_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-bitmap.png</normaloff>:/icons/layer-bitmap.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Bitmap Layer</string>
+   </property>
+  </action>
+  <action name="actionNew_Vector_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-vector.png</normaloff>:/icons/layer-vector.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Vector Layer</string>
+   </property>
+  </action>
+  <action name="actionNew_Sound_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-sound.png</normaloff>:/icons/layer-sound.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Sound Layer</string>
+   </property>
+  </action>
+  <action name="actionNew_Camera_Layer">
+   <property name="icon">
+    <iconset resource="../../pencil.qrc">
+     <normaloff>:/icons/layer-camera.png</normaloff>:/icons/layer-camera.png</iconset>
+   </property>
+   <property name="text">
+    <string>New Camera Layer</string>
+   </property>
+  </action>
+  <action name="actionDelete_Current_Layer">
+   <property name="text">
+    <string>Delete Current Layer</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About</string>
+   </property>
+  </action>
+  <action name="actionTogglePalette">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Toggle palette</string>
+   </property>
+  </action>
+  <action name="actionResetToolsDefault">
+   <property name="text">
+    <string>Reset to default</string>
+   </property>
+   <property name="toolTip">
+    <string>Reset to default</string>
+   </property>
+  </action>
+  <action name="actionNext_KeyFrame">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/next.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Next_KeyFrame</string>
+   </property>
+   <property name="toolTip">
+    <string>Next KeyFrame</string>
+   </property>
+  </action>
+  <action name="actionPrev_KeyFrame">
+   <property name="icon">
+    <iconset>
+     <normalon>:/icons/prev.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>Prev_KeyFrame</string>
+   </property>
+   <property name="toolTip">
+    <string>Previous KeyFrame</string>
+   </property>
+  </action>
+  <action name="actionMultiLayerOnionSkin">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>MultiLayerOnionSkin</string>
+   </property>
+  </action>
+  <action name="actionLoopControl">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>loopcontrol</string>
+   </property>
+  </action>
+  <action name="actionToolsWidget">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tools</string>
+   </property>
+  </action>
+  <action name="actionTimeline">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Timeline</string>
+   </property>
+  </action>
+  <action name="actionOptionsWidget">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Options</string>
+   </property>
+  </action>
+  <action name="actionColorWheel">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color Wheel</string>
+   </property>
+  </action>
+  <action name="actionColorPalette">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color Palette</string>
+   </property>
+  </action>
+  <action name="actionDisplayOptions">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Display Options</string>
+   </property>
+  </action>
+  <action name="actionFlip_X">
+   <property name="text">
+    <string>Flip X</string>
+   </property>
+  </action>
+  <action name="actionFlip_Y">
+   <property name="text">
+    <string>Flip Y</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../../pencil.qrc"/>
+  <include location="../../pencil.qrc"/>
+ </resources>
+ <connections/>
+</ui>
