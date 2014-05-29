@@ -39,7 +39,7 @@ SOURCES += \
     test_layermanager.cpp
 
 linux-* {
-    LIBS += -lpng -lz
+    LIBS += -lz
 }
 
 # CoreLib

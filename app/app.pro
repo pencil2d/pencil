@@ -34,7 +34,7 @@ macx {
 }
 
 linux-* {
-    LIBS += -lpng -lz
+    LIBS += -lz
 }
 
 # core_lib
