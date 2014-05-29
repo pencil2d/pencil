@@ -33,6 +33,9 @@ macx {
     LIBS += -lobjc -lz -framework AppKit -framework Carbon
 }
 
+linux-* {
+    LIBS += -lpng -lz
+}
 
 # core_lib
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib

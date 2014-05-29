@@ -20,10 +20,8 @@ macx {
 
 linux-* {
     INCLUDEPATH += /usr/local/zlib/include
-    LIBS += -lpng -lz
     LIBS += -L/usr/local/zlib/lib
     LIBS += -L/usr/local/lib
-    LIBS += -L/lib
     LIBS += -L/usr/lib/x86_64-linux-gnu
     LIBS += -L/lib/i386-linux-gnu
     QMAKE_CXXFLAGS += -std=c++11
