@@ -8,6 +8,8 @@ DEFINES += QUAZIP_BUILD
 DEFINES += QUAZIP_STATIC
 CONFIG += staticlib
 
+INCLUDEPATH += ../zlib
+
 # Input
 include(quazip.pri)
 
@@ -30,6 +32,4 @@ win32 {
     DEFINES += NOMINMAX
 }
 
-win32 {
-    INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
-}
+

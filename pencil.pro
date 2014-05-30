@@ -7,9 +7,11 @@ SUBDIRS = \
         core_lib \
         app \
         tests \
-        3rdlib/quazip
+        3rdlib/quazip \
+        3rdlib/zlib
 
-core_lib.depends = 3rdlib/quazip
 app.depends = core_lib
 tests.depends = core_lib
+core_lib.depends = 3rdlib/quazip
+3rdlib/quazip.depends = 3rdlib/zlib
 

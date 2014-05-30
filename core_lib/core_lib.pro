@@ -185,14 +185,11 @@ FORMS += \
 win32 {
     INCLUDEPATH += external/win32
     SOURCES += external/win32/win32.cpp
-    RC_FILE = ../pencil.rc
 }
 
 macx {
-    INCLUDEPATH +=  external/macosx
-    INCLUDEPATH += . libmacosx
+    INCLUDEPATH += external/macosx
     SOURCES += external/macosx/macosx.cpp
-    RC_FILE = ../pencil.icns
 }
 
 linux-* {
