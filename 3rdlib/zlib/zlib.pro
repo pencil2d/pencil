@@ -1,11 +1,11 @@
 
 QT       -= core gui
 
-TARGET = zlib
+TARGET   = zlib
 TEMPLATE = lib
-CONFIG += staticlib
+CONFIG   += staticlib
 
-#include(zlib.pri)
+# include(zlib.pri)
 
 HEADERS += \
     $$PWD/crc32.h \
