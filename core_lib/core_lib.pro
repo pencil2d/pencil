@@ -183,26 +183,22 @@ FORMS += \
 
 
 win32 {
-    SOURCES += external/win32/win32.cpp
     INCLUDEPATH += external/win32
-    RC_FILE = ../pencil.rc
+    SOURCES += external/win32/win32.cpp
 }
 
 macx {
-    INCLUDEPATH +=  external/macosx
-    INCLUDEPATH += . libmacosx
+    INCLUDEPATH += external/macosx
     SOURCES += external/macosx/macosx.cpp
-    RC_FILE = ../pencil.icns
 }
 
 linux-* {
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
-    LIBS += -Lliblinux -lpng -lz
-    LIBS += -L/usr/local/zlib/lib
-    INCLUDEPATH+=/usr/local/zlib/include
 }
 
-# QuaZip
-DEFINES += QUAZIP_STATIC
-include(external/quazip.pri)
+
+INCLUDEPATH += $$PWD/../3rdlib/quazip
+DEPENDPATH += $$PWD/../3rdlib/quazip
+
+INCLUDEPATH += $$PWD/../3rdlib/zlib

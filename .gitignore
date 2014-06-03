@@ -1,25 +1,55 @@
-# -- Mac stuff --
-.DS_Store
-Info.plist
-*.pbproj
 
-.moc
-.obj
+# C++ objects and libs
+
+*.slo
+*.lo
 *.o
+*.a
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
+.obj
+
+# Qt-es
+
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+Makefile*
+*-build-*
+*.qm
+.moc
+
 Makefile
 Makefile.Debug
 Makefile.Release
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
-
 Pencil.app
-*.pro.user
-*.pro.user.*
-ui_*.h
-*.qm
 
-# -- Visual Studio --
+
+# QtCreator
+
+*.autosave
+
+
+# Mac stuff
+
+.DS_Store
+Info.plist
+*.pbproj
+
+
+# Visual Studio
+
 *.sln
 *.vcxproj
 *.vcxproj.user
