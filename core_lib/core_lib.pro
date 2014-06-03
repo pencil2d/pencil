@@ -200,3 +200,5 @@ linux-* {
 
 INCLUDEPATH += $$PWD/../3rdlib/quazip
 DEPENDPATH += $$PWD/../3rdlib/quazip
+
+INCLUDEPATH += $$PWD/../3rdlib/zlib

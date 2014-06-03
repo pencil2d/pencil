@@ -3,15 +3,19 @@
 ######################################################################
 
 TEMPLATE = subdirs
-SUBDIRS = \
-        core_lib \
-        app \
-        tests \
-        3rdlib/quazip \
-        3rdlib/zlib
 
+zlib.subdir = 3rdlib/zlib
+
+quazip.subdir = 3rdlib/quazip
+quazip.depends = zlib
+
+core_lib.subdir = core_lib
+core_lib.depends = quazip
+
+app.subdir = app
 app.depends = core_lib
-tests.depends = core_lib
-core_lib.depends = 3rdlib/quazip
-3rdlib/quazip.depends = 3rdlib/zlib
 
+tests.subdir = tests
+tests.depends = core_lib
+
+SUBDIRS = core_lib app tests quazip zlib
