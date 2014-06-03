@@ -6,6 +6,7 @@ Info.plist
 .moc
 .obj
 *.o
+*.a
 Makefile
 Makefile.Debug
 Makefile.Release
@@ -18,6 +19,8 @@ Pencil.app
 *.pro.user.*
 ui_*.h
 *.qm
+moc_*.cpp
+
 
 # -- Visual Studio --
 *.sln
