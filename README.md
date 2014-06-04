@@ -8,13 +8,15 @@
 * [Pencil2D 0.5.4 beta for Mac OS X][1]
 * [Pencil2D 0.5.4 beta for Linux][2]
 
-Wanna try the bleeding edge version of Pencil2D? 
+Wanna try the bleeding edge version of Pencil2D?
 Download the [nightly builds][3]!
 
 [0]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip
 [1]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip
 [2]: http://goo.gl/BP40t
 [3]: http://www.pencil2d.org/forums/topic/nightly-builds/ "Pencil2D nightly builds"
+
+[![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=dev)](https://travis-ci.org/chchwy/pencil2d)
 
 ### Links ###
 
@@ -35,7 +37,7 @@ Download the [nightly builds][3]!
 
 * ScribbleArea code refactoring.
 * Custom keyboard shortcuts (Preferences->Shoftcuts)
-* Interactive brush resizing. SHIFT + Mouse Drag to change brush size, CTRL + Mouse Drag for FEATHER,  CTRL+SHIFT applies brush size to the eraser and temporarily selects it. 
+* Interactive brush resizing. SHIFT + Mouse Drag to change brush size, CTRL + Mouse Drag for FEATHER,  CTRL+SHIFT applies brush size to the eraser and temporarily selects it.
 * Smoother brush stroke on Mac OS X.
 * Saving/loading project is more stable now.
 * Misc bug fixes.
