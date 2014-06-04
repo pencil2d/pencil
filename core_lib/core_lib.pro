@@ -13,6 +13,9 @@ CONFIG += qt staticlib console
 
 RESOURCES += ../pencil.qrc
 
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
+
 # i18n
 TRANSLATIONS += ../pencil.ts \
                 ../pencil2d_it.ts
