@@ -45,6 +45,8 @@ enum DisplayEffect : uint32_t
     EFFECT_PREV_ONION,
     EFFECT_NEXT_ONION,
     EFFECT_AXIS,
+	EFFECT_GRID_A,
+	EFFECT_GRID_B,
     EFFECT_COUNT,
 };
 
@@ -78,6 +80,7 @@ public:
     static QBrush getBackgroundBrush( QString );
 
     bool isEffectOn( DisplayEffect e ) { return m_effects[ e ]; }
+	void setEffect( DisplayEffect e, bool isOn ) { m_effects[ e ] = isOn; }
 
     bool showThinLines() const { return m_showThinLines; }
     int showAllLayers() const { return m_showAllLayers; }
@@ -244,9 +247,6 @@ private:
     QColor onionColor;
 
     bool updateAll;
-
-    bool useGridA;
-    bool useGridB;
 
     QBrush backgroundBrush;
 public:

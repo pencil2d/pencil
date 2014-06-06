@@ -100,9 +100,6 @@ ScribbleArea::ScribbleArea( QWidget* parent )
     onionBlue = true;
     onionRed = true;
     toggledOnionColor();
-
-    useGridA = false;
-    useGridB = false;
 }
 
 ScribbleArea::~ScribbleArea()
@@ -1090,7 +1087,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             {
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 auto layerVector = static_cast< LayerVector* >( layer );
-				
+
 				painter.setWorldMatrixEnabled( false );
 
                 // previous frame (onion skin)
@@ -1125,7 +1122,6 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                         }
                         painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
-
                 }
 
                 // next frame (onion skin)
@@ -1146,7 +1142,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     painter.setOpacity( opacity * m_pEditor->getOnionLayer1Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
-                    if ( onionBlue || onionRed ) 
+                    if ( onionBlue || onionRed )
                     {
                         painter.setOpacity( 1.0 );
                         painter.setCompositionMode( QPainter::CompositionMode_Lighten );
@@ -1260,7 +1256,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
             QPen pen( Qt::gray );
             qreal factorY = viewRect.height() / 24.0f;
             qreal factorX = viewRect.width() / 24.0f;
-            if ( useGridA )
+            if ( isEffectOn( EFFECT_GRID_A ) )
             {
                 painter.setOpacity( 0.5 );
                 painter.setPen( Qt::magenta );
@@ -1292,7 +1288,7 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     painter.drawLine( x*factorX, viewRect.top(), x*factorX, viewRect.bottom() );
                     painter.drawLine( -x*factorX, viewRect.top(), -x*factorX, viewRect.bottom() );
                 }
-                if ( useGridB )
+                if ( isEffectOn( EFFECT_GRID_B ) )
                 {
                     //painter.setOpacity(0.5);
                     painter.setPen( Qt::gray );
@@ -1884,13 +1880,13 @@ void ScribbleArea::toggleOnionRed( bool checked )
 
 void ScribbleArea::toggleGridA( bool checked )
 {
-    useGridA = checked;
+    setEffect( EFFECT_GRID_A, checked );
     updateAllFrames();
 }
 
 void ScribbleArea::toggleGridB( bool checked )
 {
-    useGridB = checked;
+    setEffect( EFFECT_GRID_B, checked );
     updateAllFrames();
 }
 
