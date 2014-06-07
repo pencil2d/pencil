@@ -216,7 +216,7 @@ public:
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
 private:
-    void updateCanvas( int frame, QRect rect );
+    void drawCanvas( int frame, QRect rect );
     void floodFillError( int errorType );
 
     void renderShadow( QPainter& );

@@ -690,7 +690,7 @@ void ScribbleArea::paintBitmapBuffer()
     ( ( LayerImage * )layer )->setModified( m_pEditor->layers()->currentFramePosition(), true );
     emit modification();
     QPixmapCache::remove( "frame" + QString::number( m_pEditor->layers()->currentFramePosition() ) );
-    updateCanvas( m_pEditor->layers()->currentFramePosition(), rect.adjusted( -1, -1, 1, 1 ) );
+    drawCanvas( m_pEditor->layers()->currentFramePosition(), rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
 
@@ -753,7 +753,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         QString strCachedFrameKey = "frame" + QString::number( frameNumber );
         if ( !QPixmapCache::find( strCachedFrameKey, canvas ) )
         {
-            updateCanvas( m_pEditor->layers()->currentFramePosition(), event->rect() );
+            drawCanvas( m_pEditor->layers()->currentFramePosition(), event->rect() );
             QPixmapCache::insert( strCachedFrameKey, canvas );
         }
     }
@@ -762,7 +762,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         Layer *layer = m_pEditor->getCurrentLayer();
         if ( !layer ) { return; }
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( m_pEditor->layers()->currentFramePosition(), 0 )->setModified( true ); }
-        updateCanvas( m_pEditor->layers()->currentFramePosition(), event->rect() );
+        drawCanvas( m_pEditor->layers()->currentFramePosition(), event->rect() );
     }
     // paints the canvas
     painter.setWorldMatrixEnabled( true );
@@ -943,7 +943,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     event->accept();
 }
 
-void ScribbleArea::updateCanvas( int frame, QRect rect )
+void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
     //qDebug() << "paint canvas!" << QDateTime::currentDateTime();
     // merge the different layers into the ScribbleArea
@@ -2355,7 +2355,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
     if ( settings.contains( SETTING_DISPLAY_EFFECT ) )
     {
         QList< QVariant > list = settings.value( SETTING_DISPLAY_EFFECT ).toList();
-        for ( int i = 0; i < list.size(); ++i )
+		for ( int i = 0; i < EFFECT_COUNT; ++i )
         {
             m_effects[ i ] = static_cast< DisplayEffect >( list[ i ].toUInt() );
         }
