@@ -1288,17 +1288,6 @@ void ScribbleArea::updateCanvas( int frame, QRect rect )
                     painter.drawLine( x*factorX, viewRect.top(), x*factorX, viewRect.bottom() );
                     painter.drawLine( -x*factorX, viewRect.top(), -x*factorX, viewRect.bottom() );
                 }
-                if ( isEffectOn( EFFECT_GRID_B ) )
-                {
-                    //painter.setOpacity(0.5);
-                    painter.setPen( Qt::gray );
-                    for ( int n = 1; n < 12; n++ ){
-                        painter.drawText( n*factorX, n*factorY, QString( "%2" ).arg( n ) );
-                        painter.drawText( -n*factorX, n*factorY, QString( "%2" ).arg( n ) );
-                        painter.drawText( n*factorX, -n*factorY, QString( "%2" ).arg( n ) );
-                        painter.drawText( -n*factorX, -n*factorY, QString( "%2" ).arg( n ) );
-                    }
-                }
             }
         }
     }
@@ -1884,12 +1873,6 @@ void ScribbleArea::toggleGridA( bool checked )
     updateAllFrames();
 }
 
-void ScribbleArea::toggleGridB( bool checked )
-{
-    setEffect( EFFECT_GRID_B, checked );
-    updateAllFrames();
-}
-
 void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance )
 {
     bool invertible;
@@ -2382,6 +2365,8 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
         // use default value
         effects[ EFFECT_ANTIALIAS ] = 1;
         effects[ EFFECT_SHADOW ] = 0;
+		effects[ EFFECT_PREV_ONION ] = 1;
+		effects[ EFFECT_NEXT_ONION ] = 0;
     }
 
     // for developers

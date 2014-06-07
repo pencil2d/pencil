@@ -22,13 +22,12 @@ public:
     QToolButton* onionBlueButton;
     QToolButton* onionRedButton;
     QToolButton* gridAButton;
-    QToolButton* gridBButton;
     QToolButton* multiLayerOnionSkinButton;
     QToolButton* onionBlueNextButton;
     QToolButton* onionRedNextButton;
 
 signals:
-    
+
 public slots:
     void changeThinLinesButton(bool bIsChecked);
     void changeOutlinesButton(bool bIsChecked);

@@ -46,7 +46,6 @@ enum DisplayEffect : uint32_t
     EFFECT_NEXT_ONION,
     EFFECT_AXIS,
 	EFFECT_GRID_A,
-	EFFECT_GRID_B,
     EFFECT_COUNT,
 };
 
@@ -157,7 +156,6 @@ public slots:
     void toggleOnionBlue( bool );
     void toggleOnionRed( bool );
     void toggleGridA( bool );
-    void toggleGridB( bool );
     void grid();
 
     void resetView();

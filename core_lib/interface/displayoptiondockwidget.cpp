@@ -71,11 +71,6 @@ void DisplayOptionWidget::createUI()
     gridAButton->setToolTip(tr("Grid A - composition"));
     gridAButton->setIconSize( QSize(21,21) );
 
-    gridBButton = new QToolButton(displayGroup);
-    gridBButton->setIcon(QIcon(":icons/grid-b.png"));
-    gridBButton->setToolTip(tr("Grid B - perspective"));
-    gridBButton->setIconSize( QSize(21,21) );
-
     thinLinesButton->setCheckable(true);
     thinLinesButton->setChecked(false);
     outlinesButton->setCheckable(true);
@@ -94,8 +89,7 @@ void DisplayOptionWidget::createUI()
     onionRedButton->setChecked(false);
     gridAButton->setCheckable(true);
     gridAButton->setChecked(false);
-    gridBButton->setCheckable(true);
-    gridBButton->setChecked(false);
+
     multiLayerOnionSkinButton->setCheckable(true);
     multiLayerOnionSkinButton->setChecked(true);
 
@@ -111,10 +105,7 @@ void DisplayOptionWidget::createUI()
     layout->addWidget(outlinesButton,1,1);
     layout->addWidget(thinLinesButton,0,1);
     layout->addWidget(onionRedButton,1,3);
-    //layout->addWidget(onionBlueNextButton,0,4);hide until separate onionskin colors works
-    //layout->addWidget(onionRedNextButton,1,4);
     layout->addWidget(gridAButton,2,0);
-    layout->addWidget(gridBButton,2,1);
     layout->addWidget(multiLayerOnionSkinButton,2,2);
 
 
@@ -125,17 +116,17 @@ void DisplayOptionWidget::createUI()
 
 void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 {
-    connect(thinLinesButton, &QToolButton::clicked, editor->getScribbleArea(), &ScribbleArea::toggleThinLines );
-    connect(outlinesButton, &QToolButton::clicked, editor->getScribbleArea(), &ScribbleArea::toggleOutlines);
+	ScribbleArea* pScriArea = editor->getScribbleArea();
+	connect(thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
+	connect(outlinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
     connect(onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
-    connect(onionNextButton, SIGNAL(clicked(bool)), editor, SIGNAL(toggleOnionNext(bool)));
-    connect(onionBlueButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleOnionBlue(bool)));
-    connect(onionRedButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleOnionRed(bool)));
-    connect(mirrorButton, SIGNAL(clicked()), editor, SLOT(toggleMirror()));
-    connect(mirrorButtonV, SIGNAL(clicked()), editor, SLOT(toggleMirrorV()));
-    connect(gridAButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridA(bool)));
-    connect(gridBButton, SIGNAL(clicked(bool)), editor->getScribbleArea(), SLOT(toggleGridB(bool)));
-    connect(multiLayerOnionSkinButton,SIGNAL(clicked(bool)), editor->getScribbleArea(),SLOT(toggleMultiLayerOnionSkin(bool)));
+	connect(onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
+	connect(onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
+	connect(onionRedButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOnionRed );
+	connect(mirrorButton, &QToolButton::clicked, editor, &Editor::toggleMirror);
+	connect(mirrorButtonV, &QToolButton::clicked, editor, &Editor::toggleMirrorV);
+	connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
+	connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 
     connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));
     connect(editor, SIGNAL(changeThinLinesButton(bool)), this, SLOT(changeThinLinesButton(bool)));
