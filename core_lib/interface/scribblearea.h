@@ -45,6 +45,7 @@ enum DisplayEffect : uint32_t
     EFFECT_PREV_ONION,
     EFFECT_NEXT_ONION,
     EFFECT_AXIS,
+	EFFECT_GRID_A,
     EFFECT_COUNT,
 };
 
@@ -78,6 +79,7 @@ public:
     static QBrush getBackgroundBrush( QString );
 
     bool isEffectOn( DisplayEffect e ) { return m_effects[ e ]; }
+	void setEffect( DisplayEffect e, bool isOn ) { m_effects[ e ] = isOn; }
 
     bool showThinLines() const { return m_showThinLines; }
     int showAllLayers() const { return m_showAllLayers; }
@@ -154,7 +156,6 @@ public slots:
     void toggleOnionBlue( bool );
     void toggleOnionRed( bool );
     void toggleGridA( bool );
-    void toggleGridB( bool );
     void grid();
 
     void resetView();
@@ -215,10 +216,12 @@ public:
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
 private:
-    void updateCanvas( int frame, QRect rect );
-    void floodFillError( int errorType );
+    void drawCanvas( int frame, QRect rect );
+    void drawShadow( QPainter& );
+	void drawAxis( QPainter& );
+	void drawGrid( QPainter& );
 
-    void renderShadow( QPainter& );
+	void floodFillError( int errorType );
 
     MoveMode m_moveMode;
     ToolType prevMode;
@@ -244,9 +247,6 @@ private:
     QColor onionColor;
 
     bool updateAll;
-
-    bool useGridA;
-    bool useGridB;
 
     QBrush backgroundBrush;
 public:

@@ -15,6 +15,9 @@ TARGET = tests
 CONFIG   += console
 CONFIG   -= app_bundle
 
+MOC_DIR = .moc
+OBJECTS_DIR = .obj
+
 INCLUDEPATH += \
     ../core_lib/graphics \
     ../core_lib/graphics/bitmap \
