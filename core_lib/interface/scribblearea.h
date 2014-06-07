@@ -217,9 +217,11 @@ public:
 
 private:
     void drawCanvas( int frame, QRect rect );
-    void floodFillError( int errorType );
+    void drawShadow( QPainter& );
+	void drawAxis( QPainter& );
+	void drawGrid( QPainter& );
 
-    void renderShadow( QPainter& );
+	void floodFillError( int errorType );
 
     MoveMode m_moveMode;
     ToolType prevMode;

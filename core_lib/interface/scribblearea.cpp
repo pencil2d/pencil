@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -34,6 +35,9 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 #define round(f) ((int)(f + 0.5))
+
+
+// #define I_AM_DEVELOPER
 
 ScribbleArea::ScribbleArea( QWidget* parent )
 : QWidget( parent )
@@ -936,7 +940,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     bool isPlaying = editor()->playback()->isPlaying();
     if ( isEffectOn( EFFECT_SHADOW ) && !isPlaying && ( !mouseInUse || currentTool()->type() == HAND ) )
     {
-        renderShadow( painter );
+        drawShadow( painter );
     }
 
 
@@ -948,14 +952,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     //qDebug() << "paint canvas!" << QDateTime::currentDateTime();
     // merge the different layers into the ScribbleArea
     QPainter painter( &canvas );
-    if ( myTempView.determinant() == 1.0 )
-    {
-        painter.setRenderHint( QPainter::SmoothPixmapTransform, false );
-    }
-    else
-    {
-        painter.setRenderHint( QPainter::SmoothPixmapTransform, isEffectOn( EFFECT_ANTIALIAS ) );
-    }
+    painter.setRenderHint( QPainter::SmoothPixmapTransform, isEffectOn( EFFECT_ANTIALIAS ) );
+
     painter.setClipRect( rect );
     painter.setClipping( true );
     setView( getView() );
@@ -1243,64 +1241,16 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     }
 
     // --- grids ---
-    if ( m_pEditor->getCurrentLayer() != NULL )
-    {
-        if ( m_pEditor->getCurrentLayer()->type() == Layer::BITMAP ||
-             m_pEditor->getCurrentLayer()->type() == Layer::VECTOR )
-        {
-            painter.setWorldMatrixEnabled( true );
-            painter.setPen( Qt::magenta );
-            painter.setBrush( Qt::NoBrush );
-            painter.drawRect( viewRect.left(), viewRect.top(), viewRect.width(), viewRect.height() );
-            // What kind of grid do we want?
-            QPen pen( Qt::gray );
-            qreal factorY = viewRect.height() / 24.0f;
-            qreal factorX = viewRect.width() / 24.0f;
-            if ( isEffectOn( EFFECT_GRID_A ) )
-            {
-                painter.setOpacity( 0.5 );
-                painter.setPen( Qt::magenta );
-                painter.drawLine( viewRect.left(), 0, viewRect.right(), 0 );
-                for ( int y = 1; y < 12; y++ ){
-                    if ( y % 3 == 0 )
-                    {
-                        painter.setPen( Qt::gray );
-                    }
-                    else
-                    {
-                        painter.setPen( Qt::lightGray );
-                    }
-                    painter.drawLine( viewRect.left(), y*factorY, viewRect.right(), y*factorY );
-                    painter.drawLine( viewRect.left(), -y*factorY, viewRect.right(), -y*factorY );
-                }
-                // vertical lines
-                painter.setPen( Qt::magenta );
-                painter.drawLine( 0, viewRect.top(), 0, viewRect.bottom() );
-                for ( int x = 1; x < 12; x++ ){
-                    if ( x % 3 == 0 )
-                    {
-                        painter.setPen( Qt::gray );
-                    }
-                    else
-                    {
-                        painter.setPen( Qt::lightGray );
-                    }
-                    painter.drawLine( x*factorX, viewRect.top(), x*factorX, viewRect.bottom() );
-                    painter.drawLine( -x*factorX, viewRect.top(), -x*factorX, viewRect.bottom() );
-                }
-            }
-        }
+	if ( isEffectOn( EFFECT_GRID_A ) )
+	{
+		drawGrid( painter );
+	}
+	// --- eo grids
+	if ( isEffectOn( EFFECT_AXIS ) )
+	{
+		drawAxis( painter );
     }
-    // --- eo grids
 
-    if ( isEffectOn( EFFECT_AXIS ) )
-    {
-        painter.setPen( Qt::green );
-        painter.drawLine( QLineF( 0, 0, 0, 100 ) );
-
-        painter.setPen( Qt::red );
-        painter.drawLine( QLineF( 0, 0, 100, 0 ) );
-    }
     painter.end();
 }
 
@@ -2355,7 +2305,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
     if ( settings.contains( SETTING_DISPLAY_EFFECT ) )
     {
         QList< QVariant > list = settings.value( SETTING_DISPLAY_EFFECT ).toList();
-		for ( int i = 0; i < EFFECT_COUNT; ++i )
+		for ( int i = 0; i < list.size(); ++i )
         {
             m_effects[ i ] = static_cast< DisplayEffect >( list[ i ].toUInt() );
         }
@@ -2367,14 +2317,17 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
         effects[ EFFECT_SHADOW ] = 0;
 		effects[ EFFECT_PREV_ONION ] = 1;
 		effects[ EFFECT_NEXT_ONION ] = 0;
+		effects[ EFFECT_GRID_A ] = 0;
     }
 
     // for developers
-    //effects[ EFFECT_AXIS ] = 1;
+#ifdef I_AM_DEVELOPER
+    effects[ EFFECT_AXIS ] = 1;
+#endif
 }
 
 /* Render Canvas */
-void ScribbleArea::renderShadow( QPainter& painter )
+void ScribbleArea::drawShadow( QPainter& painter )
 {
     int radius1 = 12;
     int radius2 = 8;
@@ -2399,4 +2352,50 @@ void ScribbleArea::renderShadow( QPainter& painter )
     shadow.setFinalStop( width() - radius2, 0 );
     painter.setBrush( shadow );
     painter.drawRect( QRect( width() - radius2, 0, width(), height() ) );
+}
+
+void ScribbleArea::drawAxis( QPainter& painter )
+{
+	painter.setPen( Qt::green );
+	painter.drawLine( QLineF( 0, 0, 0, 500 ) );
+
+	painter.setPen( Qt::red );
+	painter.drawLine( QLineF( 0, 0, 500, 0 ) );
+}
+
+void ScribbleArea::drawGrid( QPainter& painter )
+{
+	if ( m_pEditor->getCurrentLayer() == nullptr )
+	{
+		return;
+	}
+	
+	int gridSize = 30;
+
+	auto round100 = [ = ]( double f ) -> int
+	{
+		return static_cast< int >( f ) / gridSize * gridSize;
+	};
+
+	QRectF boundingRect = painter.clipBoundingRect( );
+	int left = round100( boundingRect.left( ) ) - gridSize;
+	int right = round100( boundingRect.right( ) ) + gridSize;
+	int top = round100( boundingRect.top( ) ) - gridSize;
+	int bottom = round100( boundingRect.bottom( ) ) + gridSize;
+
+	QPen pen( Qt::lightGray );
+	pen.setCosmetic( true );
+	painter.setPen( pen );
+	painter.setWorldMatrixEnabled( true );
+	painter.setBrush( Qt::NoBrush );
+
+	for ( int x = left; x < right; x += gridSize )
+	{
+		painter.drawLine( x, top, x, bottom );
+	}
+
+	for ( int y = top; y < bottom; y += gridSize )
+	{
+		painter.drawLine( left, y, right, y );
+	}
 }
