@@ -415,14 +415,35 @@ void ScribbleArea::wheelEvent( QWheelEvent *event )
 {
     if ( event->modifiers() & Qt::ControlModifier )
     {
-        if ( event->delta() > 0 ) //+ve for wheel up
-        {
-            zoom();
-        }
-        else
-        {
-            zoom1();
-        }
+		auto zoom = [=](int delta)
+		{
+			if ( delta > 0 )
+			{
+				zoomIn();
+			}
+			else
+			{
+				zoomOut();
+			}
+		};
+
+		QPoint numPixels = event->pixelDelta();
+		QPoint numDegrees = event->angleDelta() / 8;
+		if ( !numPixels.isNull() )
+		{
+			zoom(numPixels.y());
+		}
+		else if ( !numDegrees.isNull() )
+		{
+			QPoint numSteps = numDegrees / 15;
+			zoom(numSteps.y());
+		}
+
+		event->accept();
+
+		/*
+
+		*/
     }
 }
 
@@ -1464,14 +1485,14 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
     updateAllFrames();
 }
 
-void ScribbleArea::zoom()
+void ScribbleArea::zoomIn()
 {
     centralView.scale( 1.2, 1.2 );
     setView( getView() );
     updateAllFrames();
 }
 
-void ScribbleArea::zoom1()
+void ScribbleArea::zoomOut()
 {
     centralView.scale( 0.8, 0.8 );
     setView( getView() );
@@ -2369,7 +2390,7 @@ void ScribbleArea::drawGrid( QPainter& painter )
 	{
 		return;
 	}
-	
+
 	int gridSize = 30;
 
 	auto round100 = [ = ]( double f ) -> int

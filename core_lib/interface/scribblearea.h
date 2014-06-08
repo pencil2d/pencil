@@ -162,8 +162,8 @@ public slots:
     void setMyView( QMatrix view );
     QMatrix getMyView();
 
-    void zoom();
-    void zoom1();
+    void zoomIn();
+    void zoomOut();
     void rotatecw();
     void rotateacw();
 
