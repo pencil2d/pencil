@@ -905,8 +905,8 @@ QMatrix Editor::map( QRectF source, QRectF target )   // this method should be p
     {
         if ( !mirror )
         {
-            matrix = QMatrix( ( x2P - x1P ) / ( x2 - x1 ), 0, 
-                              0,  ( y2P - y1P ) / ( y2 - y1 ), 
+            matrix = QMatrix( ( x2P - x1P ) / ( x2 - x1 ), 0,
+                              0,  ( y2P - y1P ) / ( y2 - y1 ),
                               ( x1P*x2 - x2P*x1 ) / ( x2 - x1 ), ( y1P*y2 - y2P*y1 ) / ( y2 - y1 ) );
         }
         else
@@ -934,9 +934,9 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
 
     int projectLength = layers()->projectLength();
 
-    m_pObject->exportFrames( 1, projectLength, getCurrentLayer(), 
-                             exportSize, 
-                             filePath, 
+    m_pObject->exportFrames( 1, projectLength, getCurrentLayer(),
+                             exportSize,
+                             filePath,
                              exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
@@ -951,9 +951,9 @@ bool Editor::exportImageSequence()
         strDefaultPath= QDir::homePath() + "/untitled.png";
     }
 
-    QString strFilePath = QFileDialog::getSaveFileName( m_pMainWindow, 
-                                                     tr( "Save Image Sequence" ), 
-                                                     strDefaultPath, 
+    QString strFilePath = QFileDialog::getSaveFileName( m_pMainWindow,
+                                                     tr( "Save Image Sequence" ),
+                                                     strDefaultPath,
                                                      tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     if ( strFilePath.isEmpty() )
     {
@@ -973,11 +973,11 @@ bool Editor::exportImageSequence()
     view = m_pScribbleArea->getView() * view;
 
     QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
-    
+
     int projectLength = layers()->projectLength();
-    m_pObject->exportFrames( 1, projectLength, 
-                             getCurrentLayer(), 
-                             exportSize, strFilePath, 
+    m_pObject->exportFrames( 1, projectLength,
+                             getCurrentLayer(),
+                             exportSize, strFilePath,
                              exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
@@ -1002,7 +1002,7 @@ bool Editor::exportX()
         view = m_pScribbleArea->getView() * view;
 
         int projectLength = layers()->projectLength();
-        if ( !m_pObject->exportX( 1, projectLength, view, exportSize, filePath, true ) ) 
+        if ( !m_pObject->exportX( 1, projectLength, view, exportSize, filePath, true ) )
         {
             QMessageBox::warning( m_pMainWindow, tr( "Warning" ),
                                   tr( "Unable to export image." ),
@@ -1255,7 +1255,7 @@ void Editor::importImage( QString filePath )
             }
             else
             {
-                QMessageBox::warning( m_pMainWindow, 
+                QMessageBox::warning( m_pMainWindow,
                                       tr( "Warning" ),
                                       tr( "Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors." ),
                                       QMessageBox::Ok,
@@ -1347,13 +1347,13 @@ void Editor::scrubTo( int frameNumber )
     {
         frameNumber = 1;
     }
-    
+
     layers()->setCurrentKeyFrame( frameNumber );
 
     getTimeLine()->updateFrame( oldFrame );
     getTimeLine()->updateFrame( layers()->currentFramePosition() );
     getTimeLine()->updateContent();
-    
+
     m_pScribbleArea->update();
 }
 
@@ -1525,14 +1525,14 @@ void Editor::clearCurrentFrame()
     m_pScribbleArea->clearImage();
 }
 
-void Editor::setzoom()
+void Editor::zoomIn()
 {
-    m_pScribbleArea->zoom();
+    m_pScribbleArea->zoomIn();
 }
 
-void Editor::setzoom1()
+void Editor::zoomOut()
 {
-    m_pScribbleArea->zoom1();
+    m_pScribbleArea->zoomOut();
 }
 
 void Editor::rotatecw()

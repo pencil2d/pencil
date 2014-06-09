@@ -220,8 +220,8 @@ void MainWindow2::createMenus()
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, m_pEditor, &Editor::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In, &QAction::triggered, m_pEditor, &Editor::setzoom );
-    connect( ui->actionZoom_Out, &QAction::triggered, m_pEditor, &Editor::setzoom1 );
+    connect( ui->actionZoom_In, &QAction::triggered, m_pEditor, &Editor::zoomIn );
+    connect( ui->actionZoom_Out, &QAction::triggered, m_pEditor, &Editor::zoomOut );
     connect( ui->actionRotate_Clockwise, &QAction::triggered, m_pEditor, &Editor::rotatecw );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, m_pEditor, &Editor::rotateacw );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
