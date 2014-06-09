@@ -36,14 +36,16 @@ public:
     void loadImageAtFrame( QString strFilePath, QPoint topLeft, int frameNumber );
 
     QDomElement createDomElement( QDomDocument& doc );
-    void loadDomElement( QDomElement element, QString dataDirPath );
+    void loadDomElement( QDomElement element, QString dataDirPath ) override;
 
     BitmapImage* getBitmapImageAtFrame( int frameNumber );
     BitmapImage* getLastBitmapImageAtFrame( int frameNumber, int increment );
 
+protected:
+    bool saveKeyFrame( KeyFrame*, QString strPath ) override;
+
 private:
     QString fileName( int index );
-    bool saveKeyFrame( KeyFrame*, QString strPath ) override;
 };
 
 #endif

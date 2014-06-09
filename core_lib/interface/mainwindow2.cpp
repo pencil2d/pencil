@@ -396,17 +396,15 @@ bool MainWindow2::saveAsNewDocument()
     {
         return false;
     }
-    else
-    {
-        if ( !fileName.endsWith( PFF_OLD_EXTENSION ) && !fileName.endsWith( PFF_EXTENSION ) )
-        {
-            fileName = fileName + PFF_EXTENSION;
-        }
-        QSettings settings( "Pencil", "Pencil" );
-        settings.setValue( "lastFilePath", QVariant( fileName ) );
 
-        return saveObject( fileName );
+    if ( !fileName.endsWith( PFF_OLD_EXTENSION ) && !fileName.endsWith( PFF_EXTENSION ) )
+    {
+        fileName = fileName + PFF_EXTENSION;
     }
+    settings.setValue( "lastFilePath", QVariant( fileName ) );
+
+    return saveObject( fileName );
+
 }
 
 void MainWindow2::openFile( QString filename )
@@ -754,10 +752,9 @@ bool MainWindow2::saveObject( QString strSavedFilename )
         case Layer::BITMAP:
         case Layer::VECTOR:
         case Layer::SOUND:
-            auto pLayerImg = static_cast<LayerImage*>( layer );
-            pLayerImg->saveImages( dataLayersDir, i );
-            pLayerImg->saveImages( dataLayersDir, i );
-            pLayerImg->saveImages( dataLayersDir, i );
+            auto pLayer = static_cast<Layer*>( layer );
+            pLayer->save( dataLayersDir, i );
+            //pLayerImg->saveImages( dataLayersDir, i );
             break;
         }
     }

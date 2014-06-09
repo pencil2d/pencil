@@ -180,8 +180,8 @@ bool Object::write(QString filePath)
 
 LayerBitmap *Object::addNewBitmapLayer()
 {
-    LayerBitmap* layerBitmap = new LayerBitmap(this);
-    layerBitmap->id = 1+getMaxID();
+    LayerBitmap* layerBitmap = new LayerBitmap( this );
+    layerBitmap->id = 1 + getMaxID();
     layer.append( layerBitmap );
 
     return layerBitmap;

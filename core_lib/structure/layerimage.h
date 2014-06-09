@@ -43,8 +43,6 @@ public:
     // FIXME: this API only used in vector layer
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 
-    void deselectAllFrames();
-
     bool saveImages( QString path, int layerNumber );
 
     // graphic representation -- could be put in another class
@@ -54,8 +52,6 @@ public:
     void mouseRelease( QMouseEvent* event, int frameNumber ) override;
     void mouseDoubleClick( QMouseEvent* event, int frameNumber ) override;
 
-protected:
-    virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
 };
 
 #endif

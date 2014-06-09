@@ -63,7 +63,7 @@ void LayerImage::paintImages( QPainter& painter, TimeLineCells* cells, int x, in
     Q_UNUSED( x );
     Q_UNUSED( width );
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
-    
+
     if ( visible )
     {
         /*
@@ -175,16 +175,6 @@ void LayerImage::mouseRelease( QMouseEvent*, int frameNumber )
     }
     bubbleSort();
     frameOffset = 0;
-    */
-}
-
-void LayerImage::deselectAllFrames()
-{
-    /*
-    for(int i=0; i < framesPosition.size(); i++)
-    {
-    framesSelected[i] = false;
-    }
     */
 }
 

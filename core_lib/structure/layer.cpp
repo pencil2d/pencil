@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 
 #include <climits>
+#include <cassert>
 #include <QtDebug>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -154,22 +155,9 @@ bool Layer::removeKeyFrame( int position )
     return true;
 }
 
-QDomElement Layer::createDomElement( QDomDocument& doc )
+bool Layer::save( QString dataFolder, int layerNumber )
 {
-    QDomElement layerTag = doc.createElement( "layer" );
-    layerTag.setAttribute( "name", name );
-    layerTag.setAttribute( "visibility", visible );
-    layerTag.setAttribute( "type", m_eType );
-
-    qDebug() << "    Layer name=" << name << " visi=" << visible << " type=" << m_eType;
-    return layerTag;
-}
-
-void Layer::loadDomElement( QDomElement element )
-{
-    name = element.attribute( "name" );
-    visible = ( element.attribute( "visibility" ) == "1" );
-    m_eType = static_cast< LAYER_TYPE >( element.attribute( "type" ).toInt() );
+    return false;
 }
 
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )

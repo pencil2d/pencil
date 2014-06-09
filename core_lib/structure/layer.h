@@ -65,6 +65,10 @@ public:
     int getFirstKeyFramePosition();
 
     virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
+    virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
+    virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
+    virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
+
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
     KeyFrame* getKeyFrameAtPosition( int position );
@@ -73,11 +77,8 @@ public:
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
 
     void setModified( int position, bool isModified );
-
-    // export element
-    virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc
-    virtual void loadDomElement(QDomElement element); // construct a layer from a dom/xml representation
-    virtual void loadDomElement(QDomElement element, QString dataDirPath) = 0;
+    
+    bool save( QString dataFolder, int layerNumber );
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
