@@ -155,8 +155,13 @@ bool Layer::removeKeyFrame( int position )
     return true;
 }
 
-bool Layer::save( QString dataFolder, int layerNumber )
+bool Layer::save( QString strDataFolder )
 {
+	for ( auto pair : m_KeyFrames )
+	{
+		KeyFrame* pKeyFrame = pair.second;
+		saveKeyFrame( pKeyFrame, strDataFolder );
+	}
     return false;
 }
 

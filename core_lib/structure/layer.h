@@ -78,7 +78,7 @@ public:
 
     void setModified( int position, bool isModified );
     
-    bool save( QString dataFolder, int layerNumber );
+    bool save( QString dataFolder );
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);

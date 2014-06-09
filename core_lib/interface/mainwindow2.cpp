@@ -697,7 +697,8 @@ bool MainWindow2::saveObject( QString strSavedFilename )
 
     QString tmpFilePath;
     if ( !savingTheOLDWAY )
-    {// create temporary directory for compressing files
+    {
+		// create temporary directory for compressing files
         tmpFilePath = QDir::tempPath() + "/" + fileInfo.completeBaseName() + PFF_TMP_COMPRESS_EXT;
         QFileInfo tmpDataInfo( tmpFilePath );
         if ( !tmpDataInfo.exists() )
@@ -752,10 +753,10 @@ bool MainWindow2::saveObject( QString strSavedFilename )
         case Layer::BITMAP:
         case Layer::VECTOR:
         case Layer::SOUND:
-            auto pLayer = static_cast<Layer*>( layer );
-            pLayer->save( dataLayersDir, i );
-            //pLayerImg->saveImages( dataLayersDir, i );
+            layer->save( dataLayersDir );
             break;
+		case Layer::CAMERA:
+			break;
         }
     }
 
