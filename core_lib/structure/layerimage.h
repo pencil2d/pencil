@@ -36,10 +36,6 @@ class LayerImage : public Layer
 public:
     LayerImage( Object* object, LAYER_TYPE );
 
-    // frame <-> image API
-    int getIndexAtFrame( int frameNumber );
-    int getLastIndexAtFrame( int frameNumber );
-
     // FIXME: this API only used in vector layer
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
 

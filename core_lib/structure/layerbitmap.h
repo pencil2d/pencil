@@ -35,7 +35,7 @@ public:
     bool addNewKeyFrameAt( int frameNumber ) override;
     void loadImageAtFrame( QString strFilePath, QPoint topLeft, int frameNumber );
 
-    QDomElement createDomElement( QDomDocument& doc );
+    QDomElement createDomElement( QDomDocument& doc ) override;
     void loadDomElement( QDomElement element, QString dataDirPath ) override;
 
     BitmapImage* getBitmapImageAtFrame( int frameNumber );

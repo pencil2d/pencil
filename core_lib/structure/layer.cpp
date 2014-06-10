@@ -55,7 +55,6 @@ void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> action )
     }
 }
 
-
 bool Layer::hasKeyFrameAtPosition( int position )
 {
     return ( m_KeyFrames.find( position ) != m_KeyFrames.end() );
@@ -127,7 +126,6 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
     auto it = m_KeyFrames.find( position );
     if ( it != m_KeyFrames.end() )
     {
-        // key already exist.
         return false;
     }
 

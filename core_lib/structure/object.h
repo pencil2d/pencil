@@ -124,14 +124,8 @@ public:
     bool exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
 
     void modification() { modified = true; }
-    void toggleMirror() { mirror = !mirror; }//TODO toggles mirror button
+    void toggleMirror() { mirror = !mirror; }
     void resetMirror() { mirror = false; }
-    void imageCheck( int );
-
-signals:
-    void imageAdded( int );
-    void imageAdded( int, int );
-    void imageRemoved( int );
 
 private:
     QString m_strFilePath;

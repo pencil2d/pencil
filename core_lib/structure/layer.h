@@ -64,6 +64,8 @@ public:
     int getMaxKeyFramePosition();
     int getFirstKeyFramePosition();
 
+    int keyFrameCount() { return m_KeyFrames.size(); }
+
     virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;

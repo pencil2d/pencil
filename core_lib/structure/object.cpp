@@ -160,7 +160,6 @@ bool Object::write(QString filePath)
     QFile* file = new QFile(filePath);
     if (!file->open(QFile::WriteOnly | QFile::Text))
     {
-        //QMessageBox::warning(this, "Warning", "Cannot write file");
         qDebug() << "Object - Cannot write file" << filePath;
         return false;
     }
@@ -758,22 +757,6 @@ bool Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize expor
     // **********************************************
 
     return false;
-}
-
-void Object::imageCheck(int frameNumber)
-{
-    bool noImage = true;
-    for (int i=0; i< layer.size() && noImage; i++)
-    {
-        if (layer[i]->type() == Layer::BITMAP || layer[i]->type() == Layer::VECTOR)
-        {
-            if ( ((LayerImage*)layer[i])->getIndexAtFrame( frameNumber ) != -1) noImage = false;
-        }
-    }
-    if (noImage)
-    {
-        emit imageRemoved(frameNumber);
-    }
 }
 
 int Object::getLayerCount()
