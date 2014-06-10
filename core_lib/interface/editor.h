@@ -58,7 +58,7 @@ public:
     void setObject( Object* object );
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { m_pScribbleArea = pScirbbleArea; }
-    
+
 
 
     Layer* getCurrentLayer( int incr );
@@ -106,8 +106,8 @@ public slots:
     void flipX();
     void flipY();
     void deselectAll();
-    void setzoom();
-    void setzoom1();
+    void zoomIn();
+    void zoomOut();
     void rotatecw();
     void rotateacw();
     void gridview();

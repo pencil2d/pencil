@@ -105,7 +105,10 @@ QDomElement LayerBitmap::createDomElement( QDomDocument& doc )
 
 void LayerBitmap::loadDomElement( QDomElement element, QString dataDirPath )
 {
-    if ( !element.attribute( "id" ).isNull() ) id = element.attribute( "id" ).toInt();
+    if ( !element.attribute( "id" ).isNull() )
+    {
+        id = element.attribute( "id" ).toInt();
+    }
     name = element.attribute( "name" );
     visible = ( element.attribute( "visibility" ) == "1" );
 

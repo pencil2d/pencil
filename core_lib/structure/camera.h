@@ -12,7 +12,6 @@ public:
     Camera( QMatrix );
     ~Camera();
 
-
     QMatrix view;
 };
 

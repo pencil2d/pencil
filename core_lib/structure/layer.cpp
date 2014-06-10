@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 
 #include <climits>
+#include <cassert>
 #include <QtDebug>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -53,7 +54,6 @@ void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> action )
         action( pair.second );
     }
 }
-
 
 bool Layer::hasKeyFrameAtPosition( int position )
 {
@@ -126,7 +126,6 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
     auto it = m_KeyFrames.find( position );
     if ( it != m_KeyFrames.end() )
     {
-        // key already exist.
         return false;
     }
 
@@ -154,22 +153,14 @@ bool Layer::removeKeyFrame( int position )
     return true;
 }
 
-QDomElement Layer::createDomElement( QDomDocument& doc )
+bool Layer::save( QString strDataFolder )
 {
-    QDomElement layerTag = doc.createElement( "layer" );
-    layerTag.setAttribute( "name", name );
-    layerTag.setAttribute( "visibility", visible );
-    layerTag.setAttribute( "type", m_eType );
-
-    qDebug() << "    Layer name=" << name << " visi=" << visible << " type=" << m_eType;
-    return layerTag;
-}
-
-void Layer::loadDomElement( QDomElement element )
-{
-    name = element.attribute( "name" );
-    visible = ( element.attribute( "visibility" ) == "1" );
-    m_eType = static_cast< LAYER_TYPE >( element.attribute( "type" ).toInt() );
+	for ( auto pair : m_KeyFrames )
+	{
+		KeyFrame* pKeyFrame = pair.second;
+		saveKeyFrame( pKeyFrame, strDataFolder );
+	}
+    return false;
 }
 
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )

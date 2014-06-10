@@ -90,10 +90,15 @@ bool LayerVector::addNewKeyFrameAt( int frameNumber )
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
-    if ( getIndexAtFrame( frameNumber ) == -1 )
+    if ( hasKeyFrameAtPosition( frameNumber ) )
     {
-        addNewKeyFrameAt( frameNumber );
+        removeKeyFrame( frameNumber );
     }
+    VectorImage* vecImg = new VectorImage;
+    vecImg->setPos( frameNumber );
+    vecImg->setObject( object() );
+    vecImg->read( path );
+    addKeyFrame( frameNumber, vecImg );
 }
 
 bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
