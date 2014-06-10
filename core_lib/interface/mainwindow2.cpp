@@ -1092,8 +1092,7 @@ void MainWindow2::undoActSetEnabled( void )
 void MainWindow2::exportPalette()
 {
     QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastPalettePath",
-        QVariant( QDir::homePath() ) ).toString();
+    QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
         initialPath = QDir::homePath() + "/untitled.xml";
