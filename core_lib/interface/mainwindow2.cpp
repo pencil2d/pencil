@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QDesktopWidget>
-#include <QShortCut>
+//#include <QShortCut>
 
 #include "pencildef.h"
 #include "pencilsettings.h"
