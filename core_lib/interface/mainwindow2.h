@@ -64,8 +64,8 @@ private slots:
     void helpBox();
     void aboutPencil();
 
-    void loadAllShortcuts();
-    void unloadAllShortcuts();
+    void setupKeyboardShortcuts();
+    void clearKeyboardShortcuts();
 
     void importPalette();
     void exportPalette();
@@ -96,7 +96,7 @@ private:
     // UI: Dock widgets
     QDockWidget*             m_pColorWheelWidget;
     ColorPaletteWidget*      m_pColorPalette;
-    DisplayOptionWidget* m_pDisplayOptionWidget;
+    DisplayOptionWidget*     m_pDisplayOptionWidget;
     ToolOptionWidget*        m_pToolOptionWidget;
     ToolBoxWidget*           m_pToolBox;
 

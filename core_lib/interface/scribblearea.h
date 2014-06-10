@@ -127,8 +127,6 @@ public:
 
     PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
-    void keyPressed( QKeyEvent *event );
-
     Editor* editor() { return m_pEditor; }
 
 signals:
