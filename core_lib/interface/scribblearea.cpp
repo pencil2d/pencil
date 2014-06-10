@@ -2336,10 +2336,12 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
 		effects[ EFFECT_GRID_A ] = 0;
     }
 
-    // for developers
+    effects[ EFFECT_AXIS ] = 0;
+
 #ifdef I_AM_DEVELOPER
     effects[ EFFECT_AXIS ] = 1;
 #endif
+
 }
 
 /* Render Canvas */
