@@ -272,11 +272,6 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
-    keyPressed( event );
-}
-
-void ScribbleArea::keyPressed( QKeyEvent *event )
-{
     keyboardInUse = true;
     if ( mouseInUse ) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
     if ( currentTool()->keyPressEvent( event ) )
@@ -587,7 +582,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
 
     bool invertible = true;
     currentPoint = myTempView.inverted( &invertible ).map( QPointF( currentPixel ) );
-    qDebug() << "CurPoint: " << currentPoint;
+    //qDebug() << "CurPoint: " << currentPoint;
 
 
     // the user is also pressing the mouse

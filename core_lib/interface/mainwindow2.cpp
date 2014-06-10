@@ -22,15 +22,12 @@ GNU General Public License for more details.
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QDesktopWidget>
+#include <QShortCut>
 
 #include "pencildef.h"
 #include "pencilsettings.h"
 
 #include "object.h"
-#include "layer.h"
-#include "layersound.h"
-#include "layerbitmap.h"
-#include "layervector.h"
 #include "objectsaveloader.h"
 
 #include "editor.h"
@@ -84,7 +81,7 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     createDockWidgets();
     createMenus();
-    loadAllShortcuts();
+    setupKeyboardShortcuts();
 
     m_pEditor->resetUI();
 
@@ -109,7 +106,6 @@ void MainWindow2::createDockWidgets()
     m_subWidgets.append( m_pTimeLine );
 
     m_pColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
-    m_pColorWheelWidget->setFocusPolicy( Qt::NoFocus );
 
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
@@ -119,7 +115,6 @@ void MainWindow2::createDockWidgets()
 
     m_pColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     m_pColorPalette->setObjectName( "ColorPalette" );
-    m_pColorPalette->setFocusPolicy( Qt::NoFocus );
     makeConnections( m_pEditor, m_pColorPalette );
     m_subWidgets.append( m_pColorPalette );
 
@@ -133,7 +128,6 @@ void MainWindow2::createDockWidgets()
 
     m_pToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     m_pToolBox->setObjectName( "ToolBox" );
-    m_pToolBox->setFocusPolicy( Qt::NoFocus );
     m_subWidgets.append( m_pToolBox );
 
     addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);
@@ -149,13 +143,8 @@ void MainWindow2::createDockWidgets()
         pWidget->initUI();
         qDebug() << "Init UI: " << pWidget->objectName();
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
+        pWidget->setFocusPolicy( Qt::NoFocus );
     }
-
-    m_pToolBox->setFeatures( QDockWidget::AllDockWidgetFeatures );
-    m_pToolOptionWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
-    m_pDisplayOptionWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
-    m_pColorPalette->setFeatures( QDockWidget::AllDockWidgetFeatures );
-    m_pColorWheelWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
 }
 
 void MainWindow2::makeColorWheelConnections()
@@ -908,10 +897,10 @@ void MainWindow2::showPreferences()
     connect( m_pPreferences, SIGNAL( onionLayer2OpacityChange( int ) ), m_pEditor, SLOT( onionLayer2OpacityChangeSlot( int ) ) );
     connect( m_pPreferences, SIGNAL( onionLayer3OpacityChange( int ) ), m_pEditor, SLOT( onionLayer3OpacityChangeSlot( int ) ) );
 
-    unloadAllShortcuts();
+    clearKeyboardShortcuts();
 
     connect( m_pPreferences, SIGNAL( destroyed() ),
-        this, SLOT( loadAllShortcuts() ) );
+        this, SLOT( setupKeyboardShortcuts() ) );
 
     m_pPreferences->show();
 }
@@ -923,6 +912,7 @@ void MainWindow2::dockAllPalettes()
     m_pDisplayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
     m_pColorPalette->setFloating(false);
+    m_pColorWheelWidget->setFloating( false );
 }
 
 void MainWindow2::readSettings()
@@ -946,64 +936,18 @@ void MainWindow2::writeSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( SETTING_WINDOW_GEOMETRY, saveGeometry() );
     settings.setValue( SETTING_WINDOW_STATE, saveState() );
-
-    return;
-
-    settings.setValue( "editorPosition", pos() );
-    settings.setValue( "editorSize", size() );
-
-    ColorPaletteWidget* colourPalette = m_pColorPalette;
-    if ( colourPalette != NULL )
-    {
-        settings.setValue( "colourPalettePosition", colourPalette->pos() );
-        settings.setValue( "colourPaletteSize", colourPalette->size() );
-        settings.setValue( "colourPaletteFloating", colourPalette->isFloating() );
-    }
-
-    TimeLine* timelinePalette = m_pTimeLine;
-    if ( timelinePalette != NULL )
-    {
-        settings.setValue( "timelinePalettePosition", timelinePalette->pos() );
-        settings.setValue( "timelinePaletteSize", timelinePalette->size() );
-        settings.setValue( "timelinePaletteFloating", timelinePalette->isFloating() );
-    }
-
-    QDockWidget* toolWidget = m_pToolBox;
-    if ( toolWidget != NULL )
-    {
-        settings.setValue( "drawPalettePosition", toolWidget->pos() );
-        settings.setValue( "drawPaletteSize", toolWidget->size() );
-        settings.setValue( "drawPaletteFloating", toolWidget->isFloating() );
-    }
-
-    QDockWidget* optionPalette = m_pToolOptionWidget;
-    if ( optionPalette != NULL )
-    {
-        settings.setValue( "optionPalettePosition", optionPalette->pos() );
-        settings.setValue( "optionPaletteSize", optionPalette->size() );
-        settings.setValue( "optionPaletteFloating", optionPalette->isFloating() );
-    }
-
-    QDockWidget* displayPalette = m_pDisplayOptionWidget;
-    if ( displayPalette != NULL )
-    {
-        settings.setValue( "displayPalettePosition", displayPalette->pos() );
-        settings.setValue( "displayPaletteSize", displayPalette->size() );
-        settings.setValue( "displayPaletteFloating", displayPalette->isFloating() );
-    }
 }
 
-QKeySequence cmdKeySeq( QString strCommandName )
-{
-    strCommandName = QString( "shortcuts/" ) + strCommandName;
-    QKeySequence keySequence( pencilSettings()->value( strCommandName ).toString() );
-
-    return keySequence;
-}
-
-void MainWindow2::loadAllShortcuts()
+void MainWindow2::setupKeyboardShortcuts()
 {
     checkExistingShortcuts();
+
+    auto cmdKeySeq = []( QString strCommandName ) -> QKeySequence
+    {
+        strCommandName = QString( "shortcuts/" ) + strCommandName;
+        QKeySequence keySequence( pencilSettings()->value( strCommandName ).toString() );
+        return keySequence;
+    };
 
     ui->actionNew->setShortcut( cmdKeySeq( CMD_NEW_FILE ) );
     ui->actionOpen->setShortcut( cmdKeySeq( CMD_OPEN_FILE ) );
@@ -1069,6 +1013,23 @@ void MainWindow2::loadAllShortcuts()
     ui->actionBucket->setShortcut( cmdKeySeq( CMD_TOOL_BUCKET ) );
     ui->actionEyedropper->setShortcut( cmdKeySeq( CMD_TOOL_EYEDROPPER ) );
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
+
+    /*
+    auto bindShortcut = [ & ]( QKeySequence key, QAction* action )
+    {
+        QObject::connect( new QShortcut( key, this ), &QShortcut::activated, [ & ]
+        {
+            if ( action->isEnabled() )
+            {
+                emit action->triggered();
+                qDebug( "kerker" );
+            }
+        } );
+    };
+
+    bindShortcut( cmdKeySeq( CMD_TOOL_MOVE ), ui->actionMove );
+    bindShortcut( cmdKeySeq( CMD_TOOL_PEN ), ui->actionPen );
+    */
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
     m_pScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
     m_pScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
@@ -1078,10 +1039,17 @@ void MainWindow2::loadAllShortcuts()
     ui->actionNew_Camera_Layer->setShortcut( cmdKeySeq( CMD_NEW_CAMERA_LAYER ) );
     ui->actionNew_Sound_Layer->setShortcut( cmdKeySeq( CMD_NEW_SOUND_LAYER ) );
 
+    m_pToolBox->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOLBOX ) );
+    m_pToolOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
+    m_pColorWheelWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_WHEEL ) );
+    m_pColorPalette->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_LIBRARY ) );
+    m_pTimeLine->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TIMELINE ) );
+    m_pDisplayOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_DISPLAY_OPTIONS ) );
+
     ui->actionHelp->setShortcut( cmdKeySeq( CMD_HELP ) );
 }
 
-void MainWindow2::unloadAllShortcuts()
+void MainWindow2::clearKeyboardShortcuts()
 {
     QList<QAction*> actionList = this->findChildren<QAction*>();
     foreach( QAction* action, actionList )
