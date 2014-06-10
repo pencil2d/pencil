@@ -234,4 +234,7 @@ QList<ColourRef> ObjectSaveLoader::loadPaletteFile( QString strFilename )
     {
         return QList<ColourRef>();
     }
+
+    // TODO: Load Palette.
+    return QList<ColourRef>();
 }

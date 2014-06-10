@@ -36,14 +36,8 @@ class LayerImage : public Layer
 public:
     LayerImage( Object* object, LAYER_TYPE );
 
-    // frame <-> image API
-    int getIndexAtFrame( int frameNumber );
-    int getLastIndexAtFrame( int frameNumber );
-
     // FIXME: this API only used in vector layer
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
-
-    void deselectAllFrames();
 
     bool saveImages( QString path, int layerNumber );
 
@@ -54,8 +48,6 @@ public:
     void mouseRelease( QMouseEvent* event, int frameNumber ) override;
     void mouseDoubleClick( QMouseEvent* event, int frameNumber ) override;
 
-protected:
-    virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
 };
 
 #endif

@@ -26,44 +26,12 @@ LayerImage::LayerImage( Object* object, LAYER_TYPE eType ) : Layer( object, eTyp
 {
 }
 
-int LayerImage::getIndexAtFrame( int frameNumber )
-{
-    int index = -1;
-    /*
-    for (int i = 0; i < framesPosition.size(); i++)
-    {
-    if (framesPosition.at(i) == frameNumber)
-    {
-    index = i;
-    }
-    }
-    */
-    return index;
-}
-
-int LayerImage::getLastIndexAtFrame( int frameNumber )
-{
-    int position = -1;
-    int index = -1;
-    /*
-    for(int i=0; i < framesPosition.size(); i++)
-    {
-    if (framesPosition.at(i) > position && framesPosition.at(i) <= frameNumber)
-    {
-    position = framesPosition.at(i);
-    index = i;
-    }
-    }
-    */
-    return index;
-}
-
 void LayerImage::paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
 {
     Q_UNUSED( x );
     Q_UNUSED( width );
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
-    
+
     if ( visible )
     {
         /*
@@ -175,16 +143,6 @@ void LayerImage::mouseRelease( QMouseEvent*, int frameNumber )
     }
     bubbleSort();
     frameOffset = 0;
-    */
-}
-
-void LayerImage::deselectAllFrames()
-{
-    /*
-    for(int i=0; i < framesPosition.size(); i++)
-    {
-    framesSelected[i] = false;
-    }
     */
 }
 
