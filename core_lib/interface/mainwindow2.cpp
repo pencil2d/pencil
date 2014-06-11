@@ -733,7 +733,7 @@ bool MainWindow2::saveObject( QString strSavedFilename )
     for ( int i = 0; i < nLayers; i++ )
     {
         Layer* layer = m_pObject->getLayer( i );
-        qDebug() << "Saving Layer " << i << "(" << layer->name << ")";
+        qDebug() << "Saving Layer " << i << "(" << layer->mName << ")";
 
         progressValue = (i * 100) / nLayers;
         progress.setValue( progressValue );
@@ -1060,20 +1060,20 @@ void MainWindow2::clearKeyboardShortcuts()
 
 void MainWindow2::undoActSetText( void )
 {
-    if ( this->m_pEditor->backupIndex < 0 )
+    if ( this->m_pEditor->mBackupIndex < 0 )
     {
         ui->actionUndo->setText( tr("Undo") );
         ui->actionUndo->setEnabled( false );
     }
     else
     {
-        ui->actionUndo->setText( tr("Undo   ") + QString::number( this->m_pEditor->backupIndex + 1 ) + " " + this->m_pEditor->backupList.at( this->m_pEditor->backupIndex )->undoText );
+        ui->actionUndo->setText( tr("Undo   ") + QString::number( this->m_pEditor->mBackupIndex + 1 ) + " " + this->m_pEditor->mBackupList.at( this->m_pEditor->mBackupIndex )->undoText );
         ui->actionUndo->setEnabled( true );
     }
 
-    if ( this->m_pEditor->backupIndex + 2 < this->m_pEditor->backupList.size() )
+    if ( this->m_pEditor->mBackupIndex + 2 < this->m_pEditor->mBackupList.size() )
     {
-        ui->actionRedo->setText( tr("Redo   ") + QString::number( this->m_pEditor->backupIndex + 2 ) + " " + this->m_pEditor->backupList.at( this->m_pEditor->backupIndex + 1 )->undoText );
+        ui->actionRedo->setText( tr("Redo   ") + QString::number( this->m_pEditor->mBackupIndex + 2 ) + " " + this->m_pEditor->mBackupList.at( this->m_pEditor->mBackupIndex + 1 )->undoText );
         ui->actionRedo->setEnabled( true );
     }
     else

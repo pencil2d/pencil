@@ -49,15 +49,15 @@ public:
 
     bool initialize( ScribbleArea* pScribbleArea );
 
-    ColorManager* color() const { return m_colorManager; }
-    ToolManager* tools() const { return m_pToolManager; }
-    LayerManager* layers() const { return m_pLayerManager; }
-    PlaybackManager* playback() const { return m_pPlaybackManager; }
+    ColorManager* color() const { return mColorManager; }
+    ToolManager* tools() const { return mToolManager; }
+    LayerManager* layers() const { return mLayerManager; }
+    PlaybackManager* playback() const { return mPlaybackManager; }
 
-    Object* object() const { return m_pObject; }
+    Object* object() const { return mObject; }
     void setObject( Object* object );
 
-    void setScribbleArea( ScribbleArea* pScirbbleArea ) { m_pScribbleArea = pScirbbleArea; }
+    void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
 
 
@@ -75,9 +75,9 @@ public:
     void importMovie( QString filePath, int fps );
 
     // backup
-    int backupIndex;
-    QList<BackupElement*> backupList;
-    ScribbleArea* getScribbleArea() { return m_pScribbleArea; }
+    int mBackupIndex;
+    QList<BackupElement*> mBackupList;
+    ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
 protected:
     // Need to move to somewhere...
@@ -184,20 +184,20 @@ private slots:
 private:
     TimeLine* getTimeLine();
 
-    Object* m_pObject = nullptr;  // the object to be edited by the editor
+    Object* mObject = nullptr;  // the object to be edited by the editor
 
-    ScribbleArea* m_pScribbleArea = nullptr;
-    MainWindow2* m_pMainWindow = nullptr;
+    ScribbleArea* mScribbleArea = nullptr;
+    MainWindow2*  mMainWindow = nullptr;
 
-    ColorManager* m_colorManager = nullptr;
-    ToolManager* m_pToolManager = nullptr;
-    LayerManager* m_pLayerManager = nullptr;
-    PlaybackManager* m_pPlaybackManager = nullptr;
+    ColorManager*    mColorManager = nullptr;
+    ToolManager*     mToolManager = nullptr;
+    LayerManager*    mLayerManager = nullptr;
+    PlaybackManager* mPlaybackManager = nullptr;
 
     bool m_isAltPressed;
     int numberOfModifications;
 
-    bool m_isAutosave;
+    bool mIsAutosave;
     int autosaveNumber;
 
     int onionLayer1Opacity;

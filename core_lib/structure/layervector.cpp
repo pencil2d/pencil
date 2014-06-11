@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 LayerVector::LayerVector(Object* object) : LayerImage( object, Layer::VECTOR )
 {
-    name = QString(tr("Vector Layer"));
+    mName = QString(tr("Vector Layer"));
     addNewKeyFrameAt( 1 );
 }
 
@@ -127,7 +127,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
     QDomElement layerTag = doc.createElement("layer");
 
     layerTag.setAttribute("id", id);
-    layerTag.setAttribute("name", name);
+    layerTag.setAttribute("name", mName);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
 
@@ -147,7 +147,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
-    name = element.attribute("name");
+    mName = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
 
     QDomNode imageTag = element.firstChild();

@@ -70,8 +70,8 @@ public:
 
     void init();
 
-    QString filePath() { return m_strFilePath; }
-    void    setFilePath( QString strFileName ) { m_strFilePath = strFileName; }
+    QString filePath() { return mStrFilePath; }
+    void    setFilePath( QString strFileName ) { mStrFilePath = strFileName; }
 
     QDomElement createDomElement(QDomDocument& doc);
     bool loadDomElement(QDomElement element,  QString dataDirPath);
@@ -81,8 +81,8 @@ public:
 
     bool modified;
     bool mirror; // if true, the returned image is flipped horizontally
-    QList<Layer*> layer;
-    QList<ColourRef> myPalette;
+    QList<Layer*> mLayers;
+    QList<ColourRef> mPalette;
 
     void paintImage(QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
@@ -90,13 +90,13 @@ public:
     void setColour(int index, QColor newColour)
     {
         Q_ASSERT( index >= 0 );
-        myPalette[index].colour = newColour;
+        mPalette[index].colour = newColour;
     }
     void addColour(QColor);
-    void addColour(ColourRef newColour) { myPalette.append(newColour); }
+    void addColour(ColourRef newColour) { mPalette.append(newColour); }
     bool removeColour(int index);
     void renameColour(int i, QString text);
-    int getColourCount() { return myPalette.size();}
+    int getColourCount() { return mPalette.size();}
     bool importPalette(QString filePath);
     bool exportPalette(QString filePath);
     bool savePalette(QString filePath);
@@ -128,7 +128,7 @@ public:
     void resetMirror() { mirror = false; }
 
 private:
-    QString m_strFilePath;
+    QString mStrFilePath;
 };
 
 #endif

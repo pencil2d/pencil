@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 LayerSound::LayerSound(Object* object) : LayerImage(object, Layer::SOUND)
 {
-    name = QString(tr("Sound Layer"));
+    mName = QString(tr("Sound Layer"));
 }
 
 LayerSound::~LayerSound()

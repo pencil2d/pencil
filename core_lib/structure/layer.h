@@ -45,14 +45,14 @@ public:
     Layer(Object*, LAYER_TYPE);
     virtual ~Layer();
 
-    QString name;
+    QString mName;
     bool visible;
     int id;
 
     static const int NO_KeyFrame = -1;
 
-    LAYER_TYPE type() { return m_eType; }
-    Object* object() { return m_pObject; }
+    LAYER_TYPE type() { return meType; }
+    Object* object() { return mObject; }
 
     void switchVisibility() { visible = !visible; }
 
@@ -64,7 +64,7 @@ public:
     int getMaxKeyFramePosition();
     int getFirstKeyFramePosition();
 
-    int keyFrameCount() { return m_KeyFrames.size(); }
+    int keyFrameCount() { return mKeyFrames.size(); }
 
     virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
@@ -96,10 +96,10 @@ public:
     virtual void editProperties();
 
 private:
-    LAYER_TYPE m_eType;
-    Object* m_pObject;
+    LAYER_TYPE meType;
+    Object* mObject;
 
-    std::map<int, KeyFrame*, std::greater<int>> m_KeyFrames;
+    std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 };
 
 #endif

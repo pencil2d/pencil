@@ -42,9 +42,9 @@ Object::Object() : QObject(0)
 
 Object::~Object()
 {
-    while (!layer.empty())
+    while (!mLayers.empty())
     {
-        delete layer.takeLast();
+        delete mLayers.takeLast();
     }
 }
 
@@ -181,7 +181,7 @@ LayerBitmap *Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap( this );
     layerBitmap->id = 1 + getMaxID();
-    layer.append( layerBitmap );
+    mLayers.append( layerBitmap );
 
     return layerBitmap;
 }
@@ -190,7 +190,7 @@ LayerVector *Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector(this);
     layerVector->id = 1+getMaxID();
-    layer.append( layerVector );
+    mLayers.append( layerVector );
 
     return layerVector;
 }
@@ -199,7 +199,7 @@ LayerSound *Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound( this );
     layerSound->id = 1+getMaxID();
-    layer.append( layerSound );
+    mLayers.append( layerSound );
     return layerSound;
 }
 
@@ -207,7 +207,7 @@ LayerCamera *Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera(this);
     layerCamera->id = 1+getMaxID();
-    layer.append( layerCamera );
+    mLayers.append( layerCamera );
 
     return layerCamera;
 }
@@ -227,7 +227,7 @@ Layer* Object::getLayer(int i)
 {
     if (i > -1 && i < getLayerCount())
     {
-        return layer.at(i);
+        return mLayers.at(i);
     }
     else
     {
@@ -239,25 +239,25 @@ void Object::moveLayer(int i, int j)
 {
     if (i != j)
     {
-        layer.insert(j, layer.at(i));
+        mLayers.insert(j, mLayers.at(i));
         if (i>j)
         {
-            layer.removeAt(i+1);
+            mLayers.removeAt(i+1);
         }
         else
         {
-            layer.removeAt(i);
+            mLayers.removeAt(i);
         }
     }
 }
 
 void Object::deleteLayer(int i)
 {
-    if (i > -1 && i < layer.size())
+    if (i > -1 && i < mLayers.size())
     {
         //layer.removeAt(i);
-        disconnect( layer[i], 0, this, 0); // disconnect the layer from this object
-        delete layer.takeAt(i);
+        disconnect( mLayers[i], 0, this, 0); // disconnect the layer from this object
+        delete mLayers.takeAt(i);
     }
 }
 
@@ -288,16 +288,16 @@ void Object::stopSoundIfAny()
 ColourRef Object::getColour(int i)
 {
     ColourRef result(Qt::white, "error");
-    if ( i > -1 && i < myPalette.size() )
+    if ( i > -1 && i < mPalette.size() )
     {
-        result = myPalette.at(i);
+        result = mPalette.at(i);
     }
     return result;
 }
 
 void Object::addColour(QColor colour)
 {
-    addColour( ColourRef(colour, "Colour "+QString::number(myPalette.size()) ) );
+    addColour( ColourRef(colour, "Colour "+QString::number(mPalette.size()) ) );
 }
 
 bool Object::removeColour(int index)
@@ -320,14 +320,14 @@ bool Object::removeColour(int index)
             layerVector->removeColour(index);
         }
     }
-    myPalette.removeAt(index);
+    mPalette.removeAt(index);
     return true;
     // update the vector pictures using that colour !
 }
 
 void Object::renameColour(int i, QString text)
 {
-    myPalette[i].name = text;
+    mPalette[i].name = text;
 }
 
 bool Object::savePalette(QString filePath)
@@ -349,13 +349,13 @@ bool Object::exportPalette(QString filePath)
     QDomDocument doc("PencilPalette");
     QDomElement root = doc.createElement("palette");
     doc.appendChild(root);
-    for (int i=0; i < myPalette.size(); i++)
+    for (int i=0; i < mPalette.size(); i++)
     {
         QDomElement tag = doc.createElement("Colour");
-        tag.setAttribute("name", myPalette.at(i).name);
-        tag.setAttribute("red", myPalette.at(i).colour.red());
-        tag.setAttribute("green", myPalette.at(i).colour.green());
-        tag.setAttribute("blue", myPalette.at(i).colour.blue());
+        tag.setAttribute("name", mPalette.at(i).name);
+        tag.setAttribute("red", mPalette.at(i).colour.red());
+        tag.setAttribute("green", mPalette.at(i).colour.green());
+        tag.setAttribute("blue", mPalette.at(i).colour.blue());
         root.appendChild(tag);
         //QDomText t = doc.createTextNode( myPalette.at(i).name );
         //tag.appendChild(t);
@@ -384,7 +384,7 @@ bool Object::importPalette(QString filePath)
     QDomDocument doc;
     doc.setContent(file);
 
-    myPalette.clear();
+    mPalette.clear();
     QDomElement docElem = doc.documentElement();
     QDomNode tag = docElem.firstChild();
     while (!tag.isNull())
@@ -396,7 +396,7 @@ bool Object::importPalette(QString filePath)
             int r = e.attribute("red").toInt();
             int g = e.attribute("green").toInt();
             int b = e.attribute("blue").toInt();
-            myPalette.append( ColourRef( QColor(r, g, b), name) );
+            mPalette.append( ColourRef( QColor(r, g, b), name) );
             //qDebug() << name << r << g << b << endl; // the node really is an element.
         }
         tag = tag.nextSibling();
@@ -407,7 +407,7 @@ bool Object::importPalette(QString filePath)
 
 void Object::loadDefaultPalette()
 {
-    myPalette.clear();
+    mPalette.clear();
     addColour(  ColourRef(QColor(Qt::black), QString(tr("Black")))  );
     addColour(  ColourRef(QColor(Qt::red), QString(tr("Red")))  );
     addColour(  ColourRef(QColor(Qt::darkRed), QString(tr("Dark Red")))  );
@@ -762,5 +762,5 @@ bool Object::exportFlash(int startFrame, int endFrame, QMatrix view, QSize expor
 int Object::getLayerCount()
 {
     Q_ASSERT_X( this != nullptr, "", "" );
-    return layer.size();
+    return mLayers.size();
 }
