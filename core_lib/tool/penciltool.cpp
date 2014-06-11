@@ -185,12 +185,12 @@ void PencilTool::drawStroke()
 
                 QPen penBlue(Qt::blue);
 
-                m_pScribbleArea->m_bufferImg->drawRect(rect, Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->m_bufferImg->drawRect(QRectF(p[3], size), Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->m_bufferImg->drawRect(QRectF(p[1], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->m_bufferImg->drawRect(QRectF(p[2], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->m_bufferImg->drawLine(p[0], p[1], penBlue, QPainter::CompositionMode_Source, true);
-                m_pScribbleArea->m_bufferImg->drawLine(p[2], p[3], penBlue, QPainter::CompositionMode_Source, true);
+                m_pScribbleArea->mBufferImg->drawRect(rect, Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
+                m_pScribbleArea->mBufferImg->drawRect(QRectF(p[3], size), Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
+                m_pScribbleArea->mBufferImg->drawRect(QRectF(p[1], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
+                m_pScribbleArea->mBufferImg->drawRect(QRectF(p[2], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
+                m_pScribbleArea->mBufferImg->drawLine(p[0], p[1], penBlue, QPainter::CompositionMode_Source, true);
+                m_pScribbleArea->mBufferImg->drawLine(p[2], p[3], penBlue, QPainter::CompositionMode_Source, true);
                 m_pScribbleArea->refreshBitmap(QRectF(p[0], p[3]).toRect(), 20);
                 m_pScribbleArea->refreshBitmap(rect.toRect(), rad);
             }

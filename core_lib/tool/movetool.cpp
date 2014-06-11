@@ -168,7 +168,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         {
             if ( event->modifiers() != Qt::ShiftModifier )    // (and the user doesn't press shift)
             {
-                switch ( m_pScribbleArea->m_moveMode )
+                switch ( m_pScribbleArea->mMoveMode )
                 {
                 case ScribbleArea::MIDDLE:
                     if ( QLineF( getLastPressPixel(), getCurrentPixel() ).length() > 4 )
@@ -216,7 +216,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         {
             // we switch to the select tool
             m_pEditor->tools()->setCurrentTool( SELECT );
-            m_pScribbleArea->m_moveMode = ScribbleArea::MIDDLE;
+            m_pScribbleArea->mMoveMode = ScribbleArea::MIDDLE;
             m_pScribbleArea->mySelection.setTopLeft( getLastPoint() );
             m_pScribbleArea->mySelection.setBottomRight( getLastPoint() );
             m_pScribbleArea->setSelection( m_pScribbleArea->mySelection, true );
