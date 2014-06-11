@@ -64,18 +64,18 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        m_pEditor->backup(typeName());
+        mEditor->backup(typeName());
 
-        if (!m_pScribbleArea->showThinLines())
+        if (!mScribbleArea->showThinLines())
         {
-            m_pScribbleArea->toggleThinLines();
+            mScribbleArea->toggleThinLines();
         }
-        m_pScribbleArea->setAllDirty();
+        mScribbleArea->setAllDirty();
         startStroke(); //start and appends first stroke
 
         //Layer *layer = m_pEditor->getCurrentLayer();
 
-        if ( m_pEditor->getCurrentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
+        if ( mEditor->getCurrentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
             drawStroke();
         }
@@ -84,7 +84,7 @@ void PencilTool::mousePressEvent(QMouseEvent *event)
 
 void PencilTool::mouseMoveEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         if (event->buttons() & Qt::LeftButton)
@@ -96,7 +96,7 @@ void PencilTool::mouseMoveEvent(QMouseEvent *event)
 
 void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
 
     if (event->button() == Qt::LeftButton)
     {
@@ -107,27 +107,27 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
         if (layer->type() == Layer::BITMAP)
         {
-            m_pScribbleArea->paintBitmapBuffer();
-            m_pScribbleArea->setAllDirty();
+            mScribbleArea->paintBitmapBuffer();
+            mScribbleArea->setAllDirty();
         }
-        else if (layer->type() == Layer::VECTOR &&  strokePoints.size() > -1)
+        else if (layer->type() == Layer::VECTOR &&  mStrokePoints.size() > -1)
         {
             // Clear the temporary pixel path
-            m_pScribbleArea->clearBitmapBuffer();
-            qreal tol = m_pScribbleArea->getCurveSmoothing() / qAbs(m_pScribbleArea->getViewScaleX());
-            qDebug() << "pressures " << strokePressures;
-            BezierCurve curve(strokePoints, strokePressures, tol);
+            mScribbleArea->clearBitmapBuffer();
+            qreal tol = mScribbleArea->getCurveSmoothing() / qAbs(mScribbleArea->getViewScaleX());
+            qDebug() << "pressures " << mStrokePressures;
+            BezierCurve curve(mStrokePoints, mStrokePressures, tol);
 
             curve.setWidth(0);
             curve.setFeather(0);
             curve.setInvisibility(true);
             curve.setVariableWidth(false);
-            curve.setColourNumber( m_pEditor->color()->frontColorNumber() );
-            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
+            curve.setColourNumber( mEditor->color()->frontColorNumber() );
+            VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
 
-            vectorImage->addCurve(curve, qAbs(m_pScribbleArea->getViewScaleX()));
-            m_pScribbleArea->setModified(m_pEditor->layers()->currentLayerIndex(), m_pEditor->layers()->currentFramePosition());
-            m_pScribbleArea->setAllDirty();
+            vectorImage->addCurve(curve, qAbs(mScribbleArea->getViewScaleX()));
+            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition());
+            mScribbleArea->setAllDirty();
         }
     }
 
@@ -136,9 +136,9 @@ void PencilTool::mouseReleaseEvent(QMouseEvent *event)
 
 void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    QColor currentColor = m_pEditor->color()->frontColor();
+    QColor currentColor = mEditor->color()->frontColor();
     currentPressuredColor = currentColor;
-    if (m_pScribbleArea->usePressure() && !mouseDevice)
+    if (mScribbleArea->usePressure() && !mouseDevice)
     {
         currentPressuredColor.setAlphaF(currentColor.alphaF() * pressure);
     }
@@ -147,7 +147,7 @@ void PencilTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDev
         currentPressuredColor.setAlphaF(currentColor.alphaF());
     }
 
-    currentWidth = properties.width;
+    mCurrentWidth = properties.width;
 }
 
 void PencilTool::drawStroke()
@@ -155,7 +155,7 @@ void PencilTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
     int rad;
 
     if (layer->type() == Layer::BITMAP)
@@ -166,7 +166,7 @@ void PencilTool::drawStroke()
         rad = qRound(properties.width / 2) + 3;
 
         for (int i = 0; i < p.size(); i++) {
-            p[i] = m_pScribbleArea->pixelToPoint(p[i]);
+            p[i] = mScribbleArea->pixelToPoint(p[i]);
         }
 
         if (p.size() == 4) {
@@ -176,7 +176,7 @@ void PencilTool::drawStroke()
                 p[2],
                 p[3]);
             //m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
-            m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SourceOver );
+            mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SourceOver );
 
             if (false) // debug
             {
@@ -185,28 +185,28 @@ void PencilTool::drawStroke()
 
                 QPen penBlue(Qt::blue);
 
-                m_pScribbleArea->mBufferImg->drawRect(rect, Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->mBufferImg->drawRect(QRectF(p[3], size), Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->mBufferImg->drawRect(QRectF(p[1], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->mBufferImg->drawRect(QRectF(p[2], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
-                m_pScribbleArea->mBufferImg->drawLine(p[0], p[1], penBlue, QPainter::CompositionMode_Source, true);
-                m_pScribbleArea->mBufferImg->drawLine(p[2], p[3], penBlue, QPainter::CompositionMode_Source, true);
-                m_pScribbleArea->refreshBitmap(QRectF(p[0], p[3]).toRect(), 20);
-                m_pScribbleArea->refreshBitmap(rect.toRect(), rad);
+                mScribbleArea->mBufferImg->drawRect(rect, Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
+                mScribbleArea->mBufferImg->drawRect(QRectF(p[3], size), Qt::NoPen, QBrush(Qt::red), QPainter::CompositionMode_Source, false);
+                mScribbleArea->mBufferImg->drawRect(QRectF(p[1], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
+                mScribbleArea->mBufferImg->drawRect(QRectF(p[2], size), Qt::NoPen, QBrush(Qt::green), QPainter::CompositionMode_Source, false);
+                mScribbleArea->mBufferImg->drawLine(p[0], p[1], penBlue, QPainter::CompositionMode_Source, true);
+                mScribbleArea->mBufferImg->drawLine(p[2], p[3], penBlue, QPainter::CompositionMode_Source, true);
+                mScribbleArea->refreshBitmap(QRectF(p[0], p[3]).toRect(), 20);
+                mScribbleArea->refreshBitmap(rect.toRect(), rad);
             }
 
-            m_pScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
+            mScribbleArea->refreshBitmap(path.boundingRect().toRect(), rad);
         }
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        QPen pen(m_pEditor->color()->frontColor(),
+        QPen pen(mEditor->color()->frontColor(),
             1,
             Qt::DotLine,
             Qt::RoundCap,
             Qt::RoundJoin);
 
-        rad = qRound((properties.width / 2 + 2) * qAbs(m_pScribbleArea->getTempViewScaleX()));
+        rad = qRound((properties.width / 2 + 2) * qAbs(mScribbleArea->getTempViewScaleX()));
 
         if (p.size() == 4) {
             QSizeF size(2,2);
@@ -214,8 +214,8 @@ void PencilTool::drawStroke()
             path.cubicTo(p[1],
                 p[2],
                 p[3]);
-            m_pScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            m_pScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
+            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
+            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }

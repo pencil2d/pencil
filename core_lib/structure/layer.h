@@ -47,12 +47,14 @@ public:
 
     QString mName;
     bool visible;
-    int id;
+    int mId;
 
     static const int NO_KeyFrame = -1;
 
     LAYER_TYPE type() { return meType; }
     Object* object() { return mObject; }
+
+    void setName( QString name ) { mName = name; }
 
     void switchVisibility() { visible = !visible; }
 

@@ -25,7 +25,7 @@ signals:
 public slots:
 
     
-protected:
+private:
     QColor currentPressuredColor;
 };
 

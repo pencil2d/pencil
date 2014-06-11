@@ -93,9 +93,9 @@ public:
     int height() { return boundaries.height(); }
 
 public:
-    QImage* m_pImage;
+    QImage* mImage;
     QRect boundaries;
-    bool extendable;
+    bool mExtendable;
 };
 
 #endif

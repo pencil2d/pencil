@@ -6,51 +6,50 @@
 
 #ifdef Q_OS_MAC
 extern "C" {
-void disableCoalescing();
-void enableCoalescing();
+    void disableCoalescing();
+    void enableCoalescing();
 }
 #else
 extern "C" {
-void disableCoalescing() {}
-void enableCoalescing() {}
+    void disableCoalescing() {}
+    void enableCoalescing() {}
 }
 #endif
 
-StrokeTool::StrokeTool(QObject *parent) :
-    BaseTool(parent)
+StrokeTool::StrokeTool( QObject *parent ) :
+BaseTool( parent )
 {
 }
 
 void StrokeTool::startStroke()
 {
-    m_firstDraw = true;
+    mFirstDraw = true;
     lastPixel = getCurrentPixel();
-    strokePoints.clear();
-    strokePoints << m_pScribbleArea->pixelToPoint(lastPixel);
-    strokePressures.clear();
-    strokePressures << m_pStrokeManager->getPressure();
+    mStrokePoints.clear();
+    mStrokePoints << mScribbleArea->pixelToPoint( lastPixel );
+    mStrokePressures.clear();
+    mStrokePressures << m_pStrokeManager->getPressure();
     disableCoalescing();
 }
 
 void StrokeTool::endStroke()
 {
-    strokePoints.clear();
-    strokePressures.clear();
+    mStrokePoints.clear();
+    mStrokePressures.clear();
     enableCoalescing();
 }
 
 void StrokeTool::drawStroke()
 {
-
     QPointF pixel = getCurrentPixel();
-    if (pixel != lastPixel || !m_firstDraw)
+    if ( pixel != lastPixel || !mFirstDraw )
     {
         lastPixel = pixel;
-        strokePoints << m_pScribbleArea->pixelToPoint(pixel);
-        strokePressures << m_pStrokeManager->getPressure();
+        mStrokePoints << mScribbleArea->pixelToPoint( pixel );
+        mStrokePressures << m_pStrokeManager->getPressure();
     }
     else
     {
-        m_firstDraw = false;
+        mFirstDraw = false;
     }
 }

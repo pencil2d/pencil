@@ -53,7 +53,7 @@ void PolylineTool::clear()
 
 void PolylineTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
 
     if (event->button() == Qt::LeftButton)
     {
@@ -61,19 +61,19 @@ void PolylineTool::mousePressEvent(QMouseEvent *event)
         {
             if (points.size() == 0)
             {
-                m_pEditor->backup(tr("Line"));
+                mEditor->backup(tr("Line"));
             }
 
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)->deselectAll();
-                if (m_pScribbleArea->makeInvisible() && !m_pScribbleArea->showThinLines())
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0)->deselectAll();
+                if (mScribbleArea->makeInvisible() && !mScribbleArea->showThinLines())
                 {
-                    m_pScribbleArea->toggleThinLines();
+                    mScribbleArea->toggleThinLines();
                 }
             }
             points << getCurrentPoint();
-            m_pScribbleArea->setAllDirty();
+            mScribbleArea->setAllDirty();
         }
     }
 }
@@ -86,11 +86,11 @@ void PolylineTool::mouseReleaseEvent(QMouseEvent *event)
 void PolylineTool::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
 
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
-        m_pScribbleArea->drawPolyline(points, getCurrentPoint());
+        mScribbleArea->drawPolyline(points, getCurrentPoint());
     }
 }
 
@@ -99,7 +99,7 @@ void PolylineTool::mouseDoubleClickEvent(QMouseEvent *event)
     // XXX highres position ??
     if (BezierCurve::eLength(m_pStrokeManager->getLastPressPixel() - event->pos()) < 2.0)
     {
-        m_pScribbleArea->endPolyline(points);
+        mScribbleArea->endPolyline(points);
         clear();
     }
 }
@@ -110,7 +110,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent *event)
     case Qt::Key_Return:
         if (points.size() > 0 )
         {
-            m_pScribbleArea->endPolyline(points);
+            mScribbleArea->endPolyline(points);
             clear();
             return true;
         }

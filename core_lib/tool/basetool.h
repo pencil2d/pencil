@@ -87,8 +87,8 @@ public:
     QPointF getLastPressPoint();
 
 protected:
-    Editor* m_pEditor = nullptr;
-    ScribbleArea* m_pScribbleArea = nullptr;
+    Editor* mEditor = nullptr;
+    ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;
     qreal adjustmentStep = 0.0f;
 };

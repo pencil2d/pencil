@@ -35,13 +35,13 @@ void HandTool::mousePressEvent(QMouseEvent *event)
 
 void HandTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    m_pScribbleArea->applyTransformationMatrix();
+    mScribbleArea->applyTransformationMatrix();
 
     //---- stop the hand tool if this was mid button
     if (event->button() == Qt::MidButton)
     {
         //qDebug("Stop Hand Tool");
-        m_pScribbleArea->setPrevTool();
+        mScribbleArea->setPrevTool();
     }
 }
 
@@ -51,7 +51,7 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
     {
         if (event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton)
         {
-            QPoint centralPixel(m_pScribbleArea->width() / 2, m_pScribbleArea->height() / 2);
+            QPoint centralPixel(mScribbleArea->width() / 2, mScribbleArea->height() / 2);
             if (getLastPressPixel().x() != centralPixel.x())
             {
                 qreal scale = 1.0;
@@ -69,7 +69,7 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
                 {
                     scale = exp(0.01 * (getCurrentPixel().y() - getLastPressPixel().y()));
                 }
-                m_pScribbleArea->setTransformationMatrix(QMatrix(
+                mScribbleArea->setTransformationMatrix(QMatrix(
                                                              scale * cosine, -scale * sine,
                                                              scale * sine,  scale * cosine,
                                                              0.0,
@@ -79,7 +79,7 @@ void HandTool::mouseMoveEvent(QMouseEvent *event)
         }
         else     // translation
         {
-            m_pScribbleArea->setTransformationMatrix(QMatrix(
+            mScribbleArea->setTransformationMatrix(QMatrix(
                                                          1.0, 0.0, 0.0,
                                                          1.0,
                                                          getCurrentPixel().x() - getLastPressPixel().x(),
@@ -92,7 +92,7 @@ void HandTool::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton)
     {
-        m_pScribbleArea->resetView();
+        mScribbleArea->resetView();
     }
 
 }

@@ -149,6 +149,11 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     return true;
 }
 
+int Editor::frame()
+{
+    return layers()->currentFramePosition();
+}
+
 TimeLine* Editor::getTimeLine()
 {
     return mMainWindow->m_pTimeLine;
@@ -295,7 +300,7 @@ void Editor::modification( int layerNumber )
     {
         mObject->modification();
     }
-    lastModifiedFrame = layers()->currentFramePosition();
+    lastModifiedFrame = frame();
     lastModifiedLayer = layerNumber;
 
     mScribbleArea->update();
@@ -315,9 +320,9 @@ void Editor::backup( QString undoText )
     {
         backup( lastModifiedLayer, lastModifiedFrame, undoText );
     }
-    if ( lastModifiedLayer != layers()->currentLayerIndex() || lastModifiedFrame != layers()->currentFramePosition() )
+    if ( lastModifiedLayer != layers()->currentLayerIndex() || lastModifiedFrame != frame() )
     {
-        backup( layers()->currentLayerIndex(), layers()->currentFramePosition(), undoText );
+        backup( layers()->currentLayerIndex(), frame(), undoText );
     }
 }
 
@@ -488,21 +493,21 @@ void Editor::copy()
         {
             if ( mScribbleArea->somethingSelected )
             {
-                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layers()->currentFramePosition(), 0 )->copy( mScribbleArea->getSelection().toRect() );  // copy part of the image
+                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( frame(), 0 )->copy( mScribbleArea->getSelection().toRect() );  // copy part of the image
                 mScribbleArea->deselectAll();
             }
             else
             {
-                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( layers()->currentFramePosition(), 0 )->copy();  // copy the whole image
+                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( frame(), 0 )->copy();  // copy the whole image
                 mScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
-            if ( g_clipboardBitmapImage.m_pImage != NULL ) QApplication::clipboard()->setImage( *( g_clipboardBitmapImage.m_pImage ) );
+            if ( g_clipboardBitmapImage.mImage != NULL ) QApplication::clipboard()->setImage( *( g_clipboardBitmapImage.mImage ) );
         }
         if ( layer->type() == Layer::VECTOR )
         {
             clipboardVectorOk = true;
-            g_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( layers()->currentFramePosition(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
+            g_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( frame(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
             mScribbleArea->deselectAll();
         }
     }
@@ -513,11 +518,11 @@ void Editor::paste()
     Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.m_pImage != NULL )
+        if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.mImage != NULL )
         {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
-            qDebug() << "to be pasted --->" << tobePasted.m_pImage->size();
+            qDebug() << "to be pasted --->" << tobePasted.mImage->size();
             if ( mScribbleArea->somethingSelected )
             {
                 QRectF selection = mScribbleArea->getSelection();
@@ -555,9 +560,9 @@ void Editor::clipboardChanged()
 {
     if ( clipboardBitmapOk == false )
     {
-        g_clipboardBitmapImage.m_pImage = new QImage( QApplication::clipboard()->image() );
-        g_clipboardBitmapImage.boundaries = QRect( g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.m_pImage->size() );
-        qDebug() << "New clipboard image" << g_clipboardBitmapImage.m_pImage->size();
+        g_clipboardBitmapImage.mImage = new QImage( QApplication::clipboard()->image() );
+        g_clipboardBitmapImage.boundaries = QRect( g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.mImage->size() );
+        qDebug() << "New clipboard image" << g_clipboardBitmapImage.mImage->size();
     }
     else
     {

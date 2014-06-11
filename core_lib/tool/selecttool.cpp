@@ -27,12 +27,12 @@ QCursor SelectTool::cursor()
 
 void SelectTool::mousePressEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    m_pScribbleArea->myFlipX = 1.0;
-    m_pScribbleArea->myFlipY = 1.0;
-    m_pScribbleArea->myRotatedAngle = 0;
+    mScribbleArea->myFlipX = 1.0;
+    mScribbleArea->myFlipY = 1.0;
+    mScribbleArea->myRotatedAngle = 0;
 
     if (event->button() == Qt::LeftButton)
     {
@@ -40,114 +40,114 @@ void SelectTool::mousePressEvent(QMouseEvent *event)
         {
             if (layer->type() == Layer::VECTOR)
             {
-                ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)->deselectAll();
+                ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0)->deselectAll();
             }
-            m_pScribbleArea->setMoveMode(ScribbleArea::MIDDLE);
-            m_pEditor->backup(typeName());
+            mScribbleArea->setMoveMode(ScribbleArea::MIDDLE);
+            mEditor->backup(typeName());
 
-            if (m_pScribbleArea->somethingSelected)      // there is something selected
+            if (mScribbleArea->somethingSelected)      // there is something selected
             {
-                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.topLeft()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.topLeft()) < 6)
                 {
-                    m_pScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
+                    mScribbleArea->setMoveMode(ScribbleArea::TOPLEFT);
                 }
-                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.topRight()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.topRight()) < 6)
                 {
-                    m_pScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
+                    mScribbleArea->setMoveMode(ScribbleArea::TOPRIGHT);
                 }
-                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.bottomLeft()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.bottomLeft()) < 6)
                 {
-                    m_pScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
+                    mScribbleArea->setMoveMode(ScribbleArea::BOTTOMLEFT);
                 }
-                if (BezierCurve::mLength(getLastPoint() - m_pScribbleArea->myTransformedSelection.bottomRight()) < 6)
+                if (BezierCurve::mLength(getLastPoint() - mScribbleArea->myTransformedSelection.bottomRight()) < 6)
                 {
-                    m_pScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
+                    mScribbleArea->setMoveMode(ScribbleArea::BOTTOMRIGHT);
                 }
-                if (m_pScribbleArea->getMoveMode() == ScribbleArea::MIDDLE)
+                if (mScribbleArea->getMoveMode() == ScribbleArea::MIDDLE)
                 {
-                    m_pScribbleArea->paintTransformedSelection();
-                    m_pScribbleArea->deselectAll();
+                    mScribbleArea->paintTransformedSelection();
+                    mScribbleArea->deselectAll();
                 } // the user did not click on one of the corners
             }
             else     // there is nothing selected
             {
-                m_pScribbleArea->mySelection.setTopLeft(getLastPoint());
-                m_pScribbleArea->mySelection.setBottomRight(getLastPoint());
-                m_pScribbleArea->setSelection(m_pScribbleArea->mySelection, true);
+                mScribbleArea->mySelection.setTopLeft(getLastPoint());
+                mScribbleArea->mySelection.setBottomRight(getLastPoint());
+                mScribbleArea->setSelection(mScribbleArea->mySelection, true);
             }
-            m_pScribbleArea->update();
+            mScribbleArea->update();
         }
     }
 }
 
 void SelectTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
         if (layer->type() == Layer::VECTOR)
         {
-            if (m_pScribbleArea->somethingSelected)
+            if (mScribbleArea->somethingSelected)
             {
-                m_pEditor->tools()->setCurrentTool( MOVE );
+                mEditor->tools()->setCurrentTool( MOVE );
 
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
-                m_pScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
-                if (m_pScribbleArea->mySelection.size() == QSizeF(0, 0))
+                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+                mScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
+                if (mScribbleArea->mySelection.size() == QSizeF(0, 0))
                 {
-                    m_pScribbleArea->somethingSelected = false;
+                    mScribbleArea->somethingSelected = false;
                 }
             }
-            m_pScribbleArea->updateCurrentFrame();
-            m_pScribbleArea->setAllDirty();
+            mScribbleArea->updateCurrentFrame();
+            mScribbleArea->setAllDirty();
         }
         else if (layer->type() == Layer::BITMAP)
         {
-            m_pScribbleArea->updateCurrentFrame();
-            m_pScribbleArea->setAllDirty();
+            mScribbleArea->updateCurrentFrame();
+            mScribbleArea->setAllDirty();
         }
     }
 }
 
 void SelectTool::mouseMoveEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer *layer = mEditor->getCurrentLayer();
     if (layer == NULL) { return; }
 
-    if ((event->buttons() & Qt::LeftButton) && m_pScribbleArea->somethingSelected && (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR))
+    if ((event->buttons() & Qt::LeftButton) && mScribbleArea->somethingSelected && (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR))
     {
-        switch (m_pScribbleArea->getMoveMode())
+        switch (mScribbleArea->getMoveMode())
         {
         case ScribbleArea::MIDDLE:
-            m_pScribbleArea->mySelection.setBottomRight(getCurrentPoint());
+            mScribbleArea->mySelection.setBottomRight(getCurrentPoint());
             break;
 
         case ScribbleArea::TOPLEFT:
-            m_pScribbleArea->mySelection.setTopLeft(getCurrentPoint());
+            mScribbleArea->mySelection.setTopLeft(getCurrentPoint());
             break;
 
         case ScribbleArea::TOPRIGHT:
-            m_pScribbleArea->mySelection.setTopRight(getCurrentPoint());
+            mScribbleArea->mySelection.setTopRight(getCurrentPoint());
             break;
 
         case ScribbleArea::BOTTOMLEFT:
-            m_pScribbleArea->mySelection.setBottomLeft(getCurrentPoint());
+            mScribbleArea->mySelection.setBottomLeft(getCurrentPoint());
             break;
 
         case ScribbleArea::BOTTOMRIGHT:
-            m_pScribbleArea->mySelection.setBottomRight(getCurrentPoint());
+            mScribbleArea->mySelection.setBottomRight(getCurrentPoint());
             break;
         }
 
-        m_pScribbleArea->myTransformedSelection = m_pScribbleArea->mySelection.adjusted(0, 0, 0, 0);
-        m_pScribbleArea->myTempTransformedSelection = m_pScribbleArea->mySelection.adjusted(0, 0, 0, 0);
+        mScribbleArea->myTransformedSelection = mScribbleArea->mySelection.adjusted(0, 0, 0, 0);
+        mScribbleArea->myTempTransformedSelection = mScribbleArea->mySelection.adjusted(0, 0, 0, 0);
 
         if (layer->type() == Layer::VECTOR)
         {
-            ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)->select(m_pScribbleArea->mySelection);
+            ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0)->select(mScribbleArea->mySelection);
         }
-        m_pScribbleArea->update();
+        mScribbleArea->update();
     }
 }

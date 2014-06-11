@@ -9,19 +9,14 @@ class EyedropperTool : public BaseTool
     Q_OBJECT
 public:
     explicit EyedropperTool(QObject *parent = 0);
-    ToolType type();
+    ToolType type() { return EYEDROPPER; }
     void loadSettings();
     QCursor cursor();
     QCursor cursor(const QColor colour);
 
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-
-signals:
-    
-public slots:
-    
+    void mouseMoveEvent(QMouseEvent *);    
 };
 
 #endif // EYEDROPPERTOOL_H

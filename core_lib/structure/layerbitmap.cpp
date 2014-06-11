@@ -65,14 +65,14 @@ bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 
     QString theFileName = fileName( pKeyFrame->pos() );
     QString strFilePath = QDir( path ).filePath( theFileName );
-    pBitmapImage->m_pImage->save( strFilePath );
+    pBitmapImage->mImage->save( strFilePath );
 
     return true;
 }
 
 QString LayerBitmap::fileName( int frame )
 {
-    int layerID = id;
+    int layerID = mId;
     QString layerNumberString = QString::number( layerID );
     QString frameNumberString = QString::number( frame );
     while ( layerNumberString.length() < 3 ) layerNumberString.prepend( "0" );
@@ -83,7 +83,7 @@ QString LayerBitmap::fileName( int frame )
 QDomElement LayerBitmap::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement( "layer" );
-    layerTag.setAttribute( "id", id );
+    layerTag.setAttribute( "id", mId );
     layerTag.setAttribute( "name", mName );
     layerTag.setAttribute( "visibility", visible );
     layerTag.setAttribute( "type", type() );
@@ -107,7 +107,7 @@ void LayerBitmap::loadDomElement( QDomElement element, QString dataDirPath )
 {
     if ( !element.attribute( "id" ).isNull() )
     {
-        id = element.attribute( "id" ).toInt();
+        mId = element.attribute( "id" ).toInt();
     }
     mName = element.attribute( "name" );
     visible = ( element.attribute( "visibility" ) == "1" );

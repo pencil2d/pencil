@@ -53,9 +53,9 @@ void BaseTool::initialize( Editor* editor, ScribbleArea* pScribbleArea )
     {
         qCritical("ERROR: editor is null!");
     }
-    m_pEditor = editor;
-    m_pScribbleArea = pScribbleArea;
-    m_pStrokeManager = m_pScribbleArea->getStrokeManager();
+    mEditor = editor;
+    mScribbleArea = pScribbleArea;
+    m_pStrokeManager = mScribbleArea->getStrokeManager();
 
     loadSettings();
 }
@@ -79,9 +79,9 @@ void BaseTool::mouseDoubleClickEvent(QMouseEvent *event)
 
 QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn static?
 {
-    Q_ASSERT( m_pScribbleArea );
+    Q_ASSERT( mScribbleArea );
 
-    qreal zoomFactor= m_pScribbleArea->getCentralViewScale(); //scale factor
+    qreal zoomFactor= mScribbleArea->getCentralViewScale(); //scale factor
     //qDebug() << "--->" << zoomFactor;
     qreal propWidth = properties.width * zoomFactor;
     qreal propFeather = properties.feather * zoomFactor;
@@ -127,7 +127,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
     {
         OriginalSettingValue = properties.feather;
     }
-    m_pScribbleArea->setCursor(cursor()); // cursor() changes in brushtool, erasertool, ...
+    mScribbleArea->setCursor(cursor()); // cursor() changes in brushtool, erasertool, ...
 
 }
 
@@ -136,7 +136,7 @@ void BaseTool::stopAdjusting()
     isAdjusting = false;
     adjustmentStep = 0;
     OriginalSettingValue = 0;
-    m_pScribbleArea->setCursor(cursor());
+    mScribbleArea->setCursor(cursor());
 }
 
 void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-lastx ...
@@ -184,11 +184,11 @@ void BaseTool::adjustCursor(qreal argOffsetX, qreal argOffsetY ) //offsetx x-las
         newValueY = 200;
     }
 
-    m_pEditor->tools()->setWidth( newValueX );
+    mEditor->tools()->setWidth( newValueX );
 
     if ( (this->type() == BRUSH) || (this->type() == ERASER) || (this->type() == SMUDGE) )
     {
-        m_pEditor->tools()->setFeather( newValueY );
+        mEditor->tools()->setFeather( newValueY );
     }
 
 }
@@ -206,7 +206,7 @@ QPointF BaseTool::getCurrentPixel()
 
 QPointF BaseTool::getCurrentPoint()
 {
-    return m_pScribbleArea->pixelToPoint(getCurrentPixel());
+    return mScribbleArea->pixelToPoint(getCurrentPixel());
 }
 
 QPointF BaseTool::getLastPixel()
@@ -216,7 +216,7 @@ QPointF BaseTool::getLastPixel()
 
 QPointF BaseTool::getLastPoint()
 {
-    return m_pScribbleArea->pixelToPoint(getLastPixel());
+    return mScribbleArea->pixelToPoint(getLastPixel());
 }
 
 QPointF BaseTool::getLastPressPixel()
@@ -226,5 +226,5 @@ QPointF BaseTool::getLastPressPixel()
 
 QPointF BaseTool::getLastPressPoint()
 {
-    return m_pScribbleArea->pixelToPoint(getLastPressPixel());
+    return mScribbleArea->pixelToPoint(getLastPressPixel());
 }
