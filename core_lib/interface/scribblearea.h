@@ -240,7 +240,7 @@ private:
     qreal mCurveSmoothingLevel;
     bool onionBlue;
     bool onionRed;
-    bool m_isMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
 
     bool mNeedUpdateAll;

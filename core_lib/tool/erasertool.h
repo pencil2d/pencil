@@ -22,10 +22,6 @@ public:
 
     void paintAt(QPointF point);
 
-signals:
-
-public slots:
-
 protected:
     QPointF lastBrushPoint;
 

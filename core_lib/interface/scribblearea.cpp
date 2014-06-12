@@ -60,7 +60,7 @@ ScribbleArea::ScribbleArea( QWidget* parent )
     mMakeInvisible = false;
     somethingSelected = false;
 
-    m_isMultiLayerOnionSkin = true;
+    mMultiLayerOnionSkin = true;
     mShowThinLines = false;
     mShowAllLayers = 1;
     myView = QMatrix(); // identity matrix
@@ -991,7 +991,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     // --- onionskins ---
     int iStart = 0;
     int iEnd = object->getLayerCount() - 1;
-    if ( !m_isMultiLayerOnionSkin )
+    if ( !mMultiLayerOnionSkin )
     { // not used ( if required, just make a connection from UI ) // is used now for Single/multiple onionskin Layers
         iStart = iEnd = mEditor->layers()->currentLayerIndex();
     }
@@ -1794,9 +1794,9 @@ void ScribbleArea::toggleOnionPrev( bool checked )
 
 void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
 {
-    m_isMultiLayerOnionSkin = checked;
+    mMultiLayerOnionSkin = checked;
     updateAllFrames();
-    emit multiLayerOnionSkinChanged( m_isMultiLayerOnionSkin );
+    emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
 }
 
 
