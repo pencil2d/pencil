@@ -1138,8 +1138,8 @@ void MainWindow2::helpBox()
 {
     qDebug() << "Open help manual.";
 
-    QUrl url = QUrl::fromLocalFile( QDir::currentPath() + "/Help/User Manual.pdf" );
-    QDesktopServices::openUrl( url );
+    QString url = "http://www.pencil2d.org/documentation/";
+    QDesktopServices::openUrl( QUrl(url) );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, ScribbleArea* pScribbleArea )
