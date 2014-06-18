@@ -19,11 +19,6 @@ PencilTool::PencilTool(QObject *parent) :
 {
 }
 
-ToolType PencilTool::type()
-{
-    return PENCIL;
-}
-
 void PencilTool::loadSettings()
 {
     QSettings settings("Pencil", "Pencil");
@@ -162,7 +157,6 @@ void PencilTool::drawStroke()
     {
         QPen pen(QBrush(currentPressuredColor), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
         QBrush brush(currentPressuredColor, Qt::SolidPattern);
-        float width = properties.width;
         rad = qRound(properties.width / 2) + 3;
 
         for (int i = 0; i < p.size(); i++) {
