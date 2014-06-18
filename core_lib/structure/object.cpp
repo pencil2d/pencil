@@ -34,7 +34,7 @@ GNU General Public License for more details.
 //#include <CoreFoundation/CoreFoundation.h>
 // ******************************
 
-Object::Object() : QObject(0)
+Object::Object( QObject* parent ) : QObject( parent )
 {
     modified = false;
     mirror = false;

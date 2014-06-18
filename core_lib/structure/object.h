@@ -65,7 +65,7 @@ class Object : public QObject
     Q_OBJECT
 
 public:
-    Object();
+    Object( QObject* parent = nullptr );
     virtual ~Object();
 
     void init();
@@ -79,10 +79,7 @@ public:
     bool read(QString filePath);
     bool write(QString filePath);
 
-    bool modified;
     bool mirror; // if true, the returned image is flipped horizontally
-    QList<Layer*> mLayers;
-    QList<ColourRef> mPalette;
 
     void paintImage(QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
@@ -127,8 +124,15 @@ public:
     void toggleMirror() { mirror = !mirror; }
     void resetMirror() { mirror = false; }
 
+    bool isModified() { return modified; }
+    void setModified( bool b ) { modified = b; }
+
 private:
     QString mStrFilePath;
+    QList<Layer*> mLayers;
+    bool modified = false;
+
+    QList<ColourRef> mPalette;
 };
 
 #endif

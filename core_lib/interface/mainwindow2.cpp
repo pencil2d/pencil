@@ -799,7 +799,7 @@ bool MainWindow2::saveObject( QString strSavedFilename )
 
     progress.setValue( 100 );
 
-    m_pObject->modified = false;
+    m_pObject->setModified( false );
     m_pTimeLine->updateContent();
 
     m_pObject->setFilePath( strSavedFilename );
@@ -824,14 +824,14 @@ void MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if ( m_pObject->modified )
+    if ( m_pObject->isModified() )
     {
         int ret = QMessageBox::warning( this, tr( "Warning" ),
-            tr( "This animation has been modified.\n"
-            "Do you want to save your changes?" ),
-            QMessageBox::Yes | QMessageBox::Default,
-            QMessageBox::No,
-            QMessageBox::Cancel | QMessageBox::Escape );
+                                        tr( "This animation has been modified.\n"
+                                        "Do you want to save your changes?" ),
+                                        QMessageBox::Yes | QMessageBox::Default,
+                                        QMessageBox::No,
+                                        QMessageBox::Cancel | QMessageBox::Escape );
         if ( ret == QMessageBox::Yes )
         {
             saveDocument();
