@@ -31,7 +31,9 @@ QCursor EyedropperTool::cursor()
     if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
     {
         return QCursor(QPixmap(":icons/eyedropper.png"), 0, 15);
-    } else {
+    } 
+    else
+    {
         return Qt::CrossCursor;
     }
 }

@@ -12,14 +12,14 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *) override;
-    void mouseMoveEvent(QMouseEvent *) override;
-    void mouseReleaseEvent(QMouseEvent *) override;
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
 
     void drawStroke();
 
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
-    
+    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
+
 private:
     QColor currentPressuredColor;
 };

@@ -12,9 +12,9 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
-    void mouseMoveEvent( QMouseEvent * ) override;
-    void mousePressEvent( QMouseEvent * ) override;
-    void mouseReleaseEvent( QMouseEvent * ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
 
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
 

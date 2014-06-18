@@ -14,8 +14,8 @@
 
 #include "buckettool.h"
 
-BucketTool::BucketTool(QObject *parent) :
-    BaseTool(parent)
+BucketTool::BucketTool( QObject *parent ) :
+BaseTool( parent )
 {
 }
 
@@ -35,13 +35,13 @@ QCursor BucketTool::cursor()
 {
     if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
     {
-        QPixmap pixmap(":icons/bucketTool.png");
-        QPainter painter(&pixmap);
+        QPixmap pixmap( ":icons/bucketTool.png" );
+        QPainter painter( &pixmap );
         painter.setPen( Qt::blue );   // FIXME: need to get current color
-        painter.drawLine( QPoint(5, 16), QPoint(5, 18) );
+        painter.drawLine( QPoint( 5, 16 ), QPoint( 5, 18 ) );
         painter.end();
 
-        return QCursor(pixmap, 4, 20);
+        return QCursor( pixmap, 4, 20 );
     }
     else
     {
@@ -49,68 +49,68 @@ QCursor BucketTool::cursor()
     }
 }
 
-void BucketTool::mousePressEvent(QMouseEvent *event)
+void BucketTool::mousePressEvent( QMouseEvent *event )
 {
-    if (event->button() == Qt::LeftButton)
+    if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup(typeName());
+        mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
     }
 }
 
-void BucketTool::mouseReleaseEvent(QMouseEvent *event)
+void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 {
     Layer *layer = mEditor->getCurrentLayer();
-    if (layer == NULL) { return; }
+    if ( layer == NULL ) { return; }
 
-    if (event->button() == Qt::LeftButton)
+    if ( event->button() == Qt::LeftButton )
     {
-        if (layer->type() == Layer::BITMAP)
+        if ( layer->type() == Layer::BITMAP )
         {
-            BitmapImage *sourceImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+            BitmapImage *sourceImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
             Layer *targetLayer = layer; // by default
             int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
-            if (mEditor->layers()->currentLayerIndex() > 0)
+            if ( mEditor->layers()->currentLayerIndex() > 0 )
             {
-                Layer *layer2 = mEditor->getCurrentLayer(-1);
-                if (layer2->type() == Layer::BITMAP)
+                Layer *layer2 = mEditor->getCurrentLayer( -1 );
+                if ( layer2->type() == Layer::BITMAP )
                 {
                     targetLayer = layer2;
                     layerNumber = layerNumber - 1;
                 }
             }
-            BitmapImage *targetImage = ((LayerBitmap *)targetLayer)->getLastBitmapImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+            BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
 
-            BitmapImage::floodFill(sourceImage,
-                                   targetImage,
-                                   getLastPoint().toPoint(),
-                                   qRgba(0, 0, 0, 0),
-                                   mEditor->color()->frontColor().rgba(),
-                                   10 * 10,
-                                   true);
+            BitmapImage::floodFill( sourceImage,
+                                    targetImage,
+                                    getLastPoint().toPoint(),
+                                    qRgba( 0, 0, 0, 0 ),
+                                    mEditor->color()->frontColor().rgba(),
+                                    10 * 10,
+                                    true );
 
-            mScribbleArea->setModified(layerNumber, mEditor->layers()->currentFramePosition());
+            mScribbleArea->setModified( layerNumber, mEditor->layers()->currentFramePosition() );
             mScribbleArea->setAllDirty();
         }
-        else if (layer->type() == Layer::VECTOR)
+        else if ( layer->type() == Layer::VECTOR )
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+            VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
 
-            if (event->modifiers() == Qt::AltModifier)
+            if ( event->modifiers() == Qt::AltModifier )
             {
-                vectorImage->removeArea(getLastPoint());
+                vectorImage->removeArea( getLastPoint() );
             }
             else
             {
-                mScribbleArea->floodFill(vectorImage, getLastPixel().toPoint(), qRgba(0, 0, 0, 0), qRgb(200, 200, 200), 100 * 100);
+                mScribbleArea->floodFill( vectorImage, getLastPixel().toPoint(), qRgba( 0, 0, 0, 0 ), qRgb( 200, 200, 200 ), 100 * 100 );
             }
-            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition());
+            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition() );
             mScribbleArea->setAllDirty();
         }
     }
 }
 
-void BucketTool::mouseMoveEvent(QMouseEvent *event)
+void BucketTool::mouseMoveEvent( QMouseEvent *event )
 {
-    Q_UNUSED(event);
+    Q_UNUSED( event );
 }
