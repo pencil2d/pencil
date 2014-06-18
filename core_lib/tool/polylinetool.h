@@ -10,9 +10,9 @@ class PolylineTool : public BaseTool
     Q_OBJECT
 public:
     explicit PolylineTool( QObject *parent = 0 );
-    ToolType type();
-    void loadSettings();
-    QCursor cursor();
+    ToolType type() override;
+    void loadSettings() override;
+    QCursor cursor() override;
 
     void mousePressEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
