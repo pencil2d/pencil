@@ -102,14 +102,14 @@ void EraserTool::mouseReleaseEvent( QMouseEvent *event )
         }
         else if ( layer->type() == Layer::VECTOR )
         {
-            VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
+            VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
             // Clear the area containing the last point
             //vectorImage->removeArea(lastPoint);
             // Clear the temporary pixel path
             mScribbleArea->clearBitmapBuffer();
             vectorImage->deleteSelectedPoints();
             //update();
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition() );
+            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
     }
@@ -130,11 +130,11 @@ void EraserTool::mouseMoveEvent( QMouseEvent *event )
         if ( layer->type() == Layer::VECTOR )
         {
             qreal radius = ( properties.width / 2 ) / mScribbleArea->getTempViewScaleX();
-            QList<VertexRef> nearbyVertices = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 )
+            QList<VertexRef> nearbyVertices = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )
                 ->getVerticesCloseTo( getCurrentPoint(), radius );
             for ( int i = 0; i < nearbyVertices.size(); i++ )
             {
-                ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 )->setSelected( nearbyVertices.at( i ), true );
+                ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setSelected( nearbyVertices.at( i ), true );
             }
             //update();
             mScribbleArea->setAllDirty();

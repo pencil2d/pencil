@@ -118,10 +118,10 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
             curve.setInvisibility( true );
             curve.setVariableWidth( false );
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
-            VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
+            VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
             vectorImage->addCurve( curve, qAbs( mScribbleArea->getViewScaleX() ) );
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition() );
+            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
     }

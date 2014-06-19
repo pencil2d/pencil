@@ -418,7 +418,6 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.show();
 
     m_pEditor->setCurrentLayer( 0 );
-    m_pEditor->layers()->setCurrentKeyFrame( 1 );
     m_pScribbleArea->setMyView( QMatrix() );
 
     ObjectSaveLoader objectLoader( this );
@@ -644,7 +643,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
             }
             if ( element.tagName() == "currentFrame" )
             {
-                m_pEditor->layers()->setCurrentKeyFrame( element.attribute( "value" ).toInt() );
+                m_pEditor->scrubTo( element.attribute( "value" ).toInt() );
             }
             if ( element.tagName() == "currentFps" )
             {
@@ -852,7 +851,7 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     tag1.setAttribute( "value", m_pEditor->layers()->currentLayerIndex() );
     tag.appendChild( tag1 );
     QDomElement tag2 = doc.createElement( "currentFrame" );
-    tag2.setAttribute( "value", m_pEditor->layers()->currentFramePosition() );
+    tag2.setAttribute( "value", m_pEditor->currentFrame() );
     tag.appendChild( tag2 );
     QDomElement tag3 = doc.createElement( "currentView" );
 
@@ -1146,7 +1145,7 @@ void MainWindow2::makeConnections( Editor* pEditor, ScribbleArea* pScribbleArea 
     connect( pEditor->tools(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
     connect( pEditor->tools(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
 
-    connect( pEditor->layers(), &LayerManager::currentKeyFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
+    connect( pEditor, &Editor::currentFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
 
     connect( pEditor, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( pEditor, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );

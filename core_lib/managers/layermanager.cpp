@@ -57,22 +57,6 @@ void LayerManager::gotoPreviouslayer()
     }
 }
 
-
-// Key frame management
-int LayerManager::currentFramePosition()
-{
-    return m_currentFrameIndex;
-}
-
-void LayerManager::setCurrentKeyFrame( int frame )
-{
-    if ( frame != m_currentFrameIndex )
-    {
-        m_currentFrameIndex = frame;
-        emit currentKeyFrameChanged( frame );
-    }
-}
-
 int LayerManager::LastFrameAtFrame( int frameIndex )
 {
     Object* pObj = editor()->object();
@@ -149,11 +133,11 @@ int LayerManager::projectLength()
 void LayerManager::gotoLastKeyFrame()
 {
     int nFrame = lastKeyFrameIndex();
-    setCurrentKeyFrame( nFrame );
+    editor()->scrubTo( nFrame );
 }
 
 void LayerManager::gotoFirstKeyFrame()
 {
     int nFrame = firstKeyFrameIndex();
-    setCurrentKeyFrame( nFrame );
+    editor()->scrubTo( nFrame );
 }

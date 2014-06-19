@@ -69,7 +69,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+            BitmapImage* targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0);
             //QColor pickedColour = targetImage->pixel(getLastPoint().x(), getLastPoint().y());
             QColor pickedColour;
             pickedColour.setRgba( targetImage->pixel( getLastPoint().x(), getLastPoint().y() ) );
@@ -84,7 +84,7 @@ void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             int colourNumber = vectorImage->getColourNumber(getLastPoint());
             if (colourNumber != -1)
             {
@@ -103,7 +103,7 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
 
     if (layer->type() == Layer::BITMAP)
     {
-        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+        BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
         if (targetImage->contains(getCurrentPoint()))
         {
             QColor pickedColour;
@@ -129,7 +129,7 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
     }
     if (layer->type() == Layer::VECTOR)
     {
-        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+        VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         int colourNumber = vectorImage->getColourNumber(getCurrentPoint());
         if (colourNumber != -1)
         {

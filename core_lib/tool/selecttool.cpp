@@ -40,7 +40,7 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
         {
             if ( layer->type() == Layer::VECTOR )
             {
-                ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 )->deselectAll();
+                ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
             }
             mScribbleArea->setMoveMode( ScribbleArea::MIDDLE );
             mEditor->backup( typeName() );
@@ -93,7 +93,7 @@ void SelectTool::mouseReleaseEvent( QMouseEvent *event )
             {
                 mEditor->tools()->setCurrentTool( MOVE );
 
-                VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
+                VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
                 mScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
                 if ( mScribbleArea->mySelection.size() == QSizeF( 0, 0 ) )
                 {
@@ -146,7 +146,7 @@ void SelectTool::mouseMoveEvent( QMouseEvent *event )
 
         if ( layer->type() == Layer::VECTOR )
         {
-            ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 )->select( mScribbleArea->mySelection );
+            ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->select( mScribbleArea->mySelection );
         }
         mScribbleArea->update();
     }

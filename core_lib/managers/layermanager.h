@@ -26,8 +26,6 @@ public:
 
     // KeyFrame Management
     int  LastFrameAtFrame( int frameIndex );
-    int  currentFramePosition();
-    void setCurrentKeyFrame( int );
     int  firstKeyFrameIndex();
     int  lastKeyFrameIndex();
 
@@ -37,12 +35,10 @@ public:
     int  projectLength();
 
 signals:
-    void currentKeyFrameChanged( int n );
     void currentLayerChanged( int n );
 
 private:
     int m_currentLayerIndex; // the current layer to be edited/displayed
-    int m_currentFrameIndex; // the current key frame to be edited/displayed
 };
 
 #endif

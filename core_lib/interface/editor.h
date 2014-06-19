@@ -61,9 +61,6 @@ public:
 
     int currentFrame();
 
-    //Layer* getCurrentLayer( int incr );
-    //Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
-    Layer* getLayer( int i );
     int allLayers();
     static QMatrix map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
@@ -94,6 +91,8 @@ signals:
     void onionNextChanged( bool );
     void changeThinLinesButton( bool );
     void changeOutlinesButton( bool );
+
+    void currentFrameChanged( int n );
 
     // save
     void needSave();
@@ -179,12 +178,13 @@ public slots:
 
 private slots:
     void saveLength( QString );
-    void getCameraLayer();
 
 private:
     TimeLine* getTimeLine();
 
     Object* mObject = nullptr;  // the object to be edited by the editor
+
+    int mFrame;
 
     ScribbleArea* mScribbleArea = nullptr;
     MainWindow2*  mMainWindow = nullptr;

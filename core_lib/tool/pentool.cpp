@@ -105,10 +105,10 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
 
             auto pLayerVector = static_cast< LayerVector* >( layer );
-            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 );
+            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
             vectorImage->addCurve( curve, qAbs( mScribbleArea->getViewScaleX() ) );
 
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition() );
+            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
     }

@@ -104,16 +104,16 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            mScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0)
+            mScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                 ->getCurvesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
-            mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0)
+            mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                 ->getVerticesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
 
             if (mScribbleArea->closestVertices.size() > 0 || mScribbleArea->closestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
                 mEditor->backup(typeName());
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
                 if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(mScribbleArea->closestVertices))
                 {
@@ -151,7 +151,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             vectorImage->applySelectionTransformation();
             mScribbleArea->selectionTransformation.reset();
             for (int k = 0; k < mScribbleArea->vectorSelection.curve.size(); k++)
@@ -159,7 +159,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
                 int curveNumber = mScribbleArea->vectorSelection.curve.at(k);
                 vectorImage->m_curves[curveNumber].smoothCurve();
             }
-            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->layers()->currentFramePosition());
+            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }
     }
 }
@@ -183,7 +183,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
                 {
                     // transforms the selection
                     mScribbleArea->selectionTransformation = QMatrix().translate(mScribbleArea->offset.x(), mScribbleArea->offset.y());
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0)->setSelectionTransformation(mScribbleArea->selectionTransformation);
+                    ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0)->setSelectionTransformation(mScribbleArea->selectionTransformation);
                 }
             }
         }
@@ -191,7 +191,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
         {
             if (layer->type() == Layer::VECTOR)
             {
-                mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->layers()->currentFramePosition(), 0)
+                mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                     ->getVerticesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
             }
         }
@@ -207,7 +207,7 @@ void SmudgeTool::drawStroke()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
-    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->layers()->currentFramePosition(), 0);
+    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
