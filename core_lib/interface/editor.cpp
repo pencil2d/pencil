@@ -1424,7 +1424,7 @@ void Editor::duplicateKey()
 
 void Editor::addKeyFame( int layerNumber, int frameIndex )
 {
-    LayerImage* layer = static_cast<LayerImage*>( mObject->getLayer( layerNumber ) );
+    Layer* layer = mObject->getLayer( layerNumber );
     if ( layer == NULL )
     {
         return;
@@ -1457,16 +1457,15 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
 
 void Editor::removeKey()
 {
-    Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
+    Layer* layer = layers()->currentLayer();
     if ( layer != NULL )
     {
-        LayerImage* pLayerImg = static_cast< LayerImage* >( layer );
-        switch ( pLayerImg->type() )
+        switch ( layer->type() )
         {
         case Layer::BITMAP:
         case Layer::VECTOR:
         case Layer::CAMERA:
-            pLayerImg->removeKeyFrame( layers()->currentFramePosition() );
+            layer->removeKeyFrame( layers()->currentFramePosition() );
             break;
         default:
             break;
@@ -1479,7 +1478,7 @@ void Editor::removeKey()
 
 void Editor::scrubNextKeyFrame()
 {
-    Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
+    Layer* layer = layers()->currentLayer();
     Q_ASSERT( layer );
 
     int nextPosition = layer->getNextKeyFramePosition( layers()->currentFramePosition() );

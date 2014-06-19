@@ -16,7 +16,7 @@ public:
 
     // Layer Management
     Layer* currentLayer();
-    Layer* currentLayer( int incr );
+    Layer* currentLayer( int offset );
     int currentLayerIndex();
     void setCurrentLayer( int );
     int count();

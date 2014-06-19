@@ -718,8 +718,7 @@ bool MainWindow2::saveObject( QString strSavedFilename )
         dir.mkpath( dataLayersDir ); // creates a directory with the same name +".data"
     }
 
-    //savedName = filePath;
-    this->setWindowTitle( filePath );
+    setWindowTitle( filePath );
 
     QProgressDialog progress( tr("Saving document..."), tr("Abort"), 0, 100, this );
     progress.setWindowModality( Qt::WindowModal );

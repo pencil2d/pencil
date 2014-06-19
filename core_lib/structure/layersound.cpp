@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 
 
-LayerSound::LayerSound(Object* object) : LayerImage(object, Layer::SOUND)
+LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
 {
     mName = QString(tr("Sound Layer"));
 }

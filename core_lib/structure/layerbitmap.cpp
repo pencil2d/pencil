@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 
 
-LayerBitmap::LayerBitmap( Object* object ) : LayerImage( object, Layer::BITMAP )
+LayerBitmap::LayerBitmap( Object* object ) : Layer( object, Layer::BITMAP )
 {
     mName = QString( tr( "Bitmap Layer" ) );
     addNewKeyFrameAt( 1 );

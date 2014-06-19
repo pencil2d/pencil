@@ -16,7 +16,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include <QtDebug>
 
-LayerVector::LayerVector(Object* object) : LayerImage( object, Layer::VECTOR )
+LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
 {
     mName = QString(tr("Vector Layer"));
     addNewKeyFrameAt( 1 );

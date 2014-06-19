@@ -90,10 +90,10 @@ public:
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
 
-    virtual void mousePress(QMouseEvent*, int frameNumber) = 0;
-    virtual void mouseMove(QMouseEvent*, int frameNumber) = 0;
-    virtual void mouseRelease(QMouseEvent*, int frameNumber) = 0;
-    virtual void mouseDoubleClick(QMouseEvent*, int frameNumber) = 0;
+    void mousePress(QMouseEvent*, int frameNumber);
+    void mouseMove(QMouseEvent*, int frameNumber);
+    void mouseRelease(QMouseEvent*, int frameNumber);
+    void mouseDoubleClick(QMouseEvent*, int frameNumber);
 
     virtual void editProperties();
 

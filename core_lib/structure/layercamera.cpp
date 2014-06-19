@@ -99,7 +99,7 @@ void CameraPropertiesDialog::setHeight(int height)
 
 // ------
 
-LayerCamera::LayerCamera( Object* object ) : LayerImage( object, Layer::CAMERA )
+LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     mName = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );

@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 class BitmapImage;
 
-class LayerBitmap : public LayerImage
+class LayerBitmap : public Layer
 {
     Q_OBJECT
 

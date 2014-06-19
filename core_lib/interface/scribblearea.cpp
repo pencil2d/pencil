@@ -246,9 +246,9 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
     {
         layer->setModified( frameNumber, true );
     }
-    if ( layer->type() == Layer::BITMAP )
+    else if ( layer->type() == Layer::BITMAP )
     {
-        ( ( LayerImage * )layer )->setModified( frameNumber, true );
+        layer->setModified( frameNumber, true );
     }
 
     emit modification( layerNumber );
@@ -707,7 +707,7 @@ void ScribbleArea::paintBitmapBuffer()
     mBufferImg->clear();
 
     //setModified(layer, editor->currentFrame);
-    ( ( LayerImage * )layer )->setModified( mEditor->layers()->currentFramePosition(), true );
+    layer->setModified( mEditor->layers()->currentFramePosition(), true );
     emit modification();
     QPixmapCache::remove( "frame" + QString::number( mEditor->layers()->currentFramePosition() ) );
     drawCanvas( mEditor->layers()->currentFramePosition(), rect.adjusted( -1, -1, 1, 1 ) );

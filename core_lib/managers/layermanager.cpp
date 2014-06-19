@@ -80,7 +80,7 @@ int LayerManager::LastFrameAtFrame( int frameIndex )
     {
         for ( int layerIndex = 0; layerIndex < pObj->getLayerCount(); ++layerIndex )
         {
-            auto pLayer = static_cast<LayerImage*>( pObj->getLayer( layerIndex ) );
+            auto pLayer = pObj->getLayer( layerIndex );
             if ( pLayer->hasKeyFrameAtPosition( i ) )
             {
                 return i;
