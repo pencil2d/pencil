@@ -79,8 +79,6 @@ public:
     bool read(QString filePath);
     bool write(QString filePath);
 
-    bool mirror; // if true, the returned image is flipped horizontally
-
     void paintImage(QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
     ColourRef getColour(int i);
@@ -121,8 +119,8 @@ public:
     bool exportFlash(int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression);
 
     void modification() { modified = true; }
-    void toggleMirror() { mirror = !mirror; }
-    void resetMirror() { mirror = false; }
+    void toggleMirror() { mMirror = !mMirror; }
+    void resetMirror() { mMirror = false; }
 
     bool isModified() { return modified; }
     void setModified( bool b ) { modified = b; }
@@ -133,6 +131,8 @@ private:
     bool modified = false;
 
     QList<ColourRef> mPalette;
+
+    bool mMirror; // if true, the returned image is flipped horizontally
 };
 
 #endif
