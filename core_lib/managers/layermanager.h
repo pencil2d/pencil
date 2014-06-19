@@ -38,7 +38,7 @@ signals:
     void currentLayerChanged( int n );
 
 private:
-    int m_currentLayerIndex; // the current layer to be edited/displayed
+    int m_currentLayerIndex = 0; // the current layer to be edited/displayed
 };
 
 #endif
