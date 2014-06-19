@@ -50,13 +50,9 @@ bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
 
 void LayerBitmap::loadImageAtFrame( QString path, QPoint topLeft, int frameNumber )
 {
-    if ( hasKeyFrameAtPosition( frameNumber ) )
-    {
-        removeKeyFrame( frameNumber );
-    }
-    auto pImg = new BitmapImage( path, topLeft );
-    pImg->setPos( frameNumber );
-    addKeyFrame( frameNumber, pImg );
+    BitmapImage* pKeyFrame = new BitmapImage( path, topLeft );
+    pKeyFrame->setPos( frameNumber );
+    loadKey( pKeyFrame );
 }
 
 bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame, QString path )

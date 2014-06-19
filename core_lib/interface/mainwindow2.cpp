@@ -430,7 +430,7 @@ bool MainWindow2::openObject( QString strFilePath )
 
         pObject->setFilePath( strFilePath );
         QSettings settings( "Pencil", "Pencil" );
-        settings.setValue( "lastFilePath", QVariant( pObject->filePath() ) );
+        settings.setValue( "LastFilePath", QVariant( pObject->filePath() ) );
 
         m_pEditor->setObject( pObject );
         m_pEditor->updateObject();
@@ -481,8 +481,6 @@ bool MainWindow2::openObject( QString strFilePath )
     }
 
     QScopedPointer<QFile> file( new QFile( realXMLFilePath ) );
-
-    //QFile* file = new QFile(filePath);
     if ( !file->open( QFile::ReadOnly ) )
     {
         if ( !openingTheOLDWAY )

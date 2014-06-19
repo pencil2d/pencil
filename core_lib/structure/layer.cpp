@@ -153,6 +153,18 @@ bool Layer::removeKeyFrame( int position )
     return true;
 }
 
+bool Layer::loadKey( KeyFrame* pKey )
+{
+    auto it = mKeyFrames.find( pKey->pos() );
+    if ( it != mKeyFrames.end() )
+    {
+        delete it->second;
+        mKeyFrames.erase( it );
+    }
+    mKeyFrames.insert( std::make_pair( pKey->pos(), pKey ) );
+    return true;
+}
+
 bool Layer::save( QString strDataFolder )
 {
 	for ( auto pair : mKeyFrames )

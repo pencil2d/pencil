@@ -75,6 +75,7 @@ public:
 
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
+    bool loadKey( KeyFrame* );
     KeyFrame* getKeyFrameAtPosition( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
 
