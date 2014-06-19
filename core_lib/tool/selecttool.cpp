@@ -27,7 +27,7 @@ QCursor SelectTool::cursor()
 
 void SelectTool::mousePressEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer *layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     mScribbleArea->myFlipX = 1.0;
@@ -82,7 +82,7 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
 
 void SelectTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer *layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     if ( event->button() == Qt::LeftButton )
@@ -113,7 +113,7 @@ void SelectTool::mouseReleaseEvent( QMouseEvent *event )
 
 void SelectTool::mouseMoveEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     if ( ( event->buttons() & Qt::LeftButton ) && mScribbleArea->somethingSelected && ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR ) )

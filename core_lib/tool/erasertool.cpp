@@ -86,7 +86,7 @@ void EraserTool::mousePressEvent( QMouseEvent *event )
 
 void EraserTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( event->button() == Qt::LeftButton )
     {
@@ -119,7 +119,7 @@ void EraserTool::mouseReleaseEvent( QMouseEvent *event )
 
 void EraserTool::mouseMoveEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( event->buttons() & Qt::LeftButton )
     {
@@ -152,7 +152,7 @@ void EraserTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP )
     {

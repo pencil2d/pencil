@@ -3,8 +3,6 @@
 #include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
-
-#include "layer.h"
 #include "layervector.h"
 #include "layermanager.h"
 
@@ -32,7 +30,7 @@ QCursor MoveTool::cursor()
 
 void MoveTool::mousePressEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer *layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     if ( event->button() == Qt::LeftButton )
@@ -135,7 +133,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
 
 void MoveTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     if ( event->button() == Qt::LeftButton )
@@ -155,7 +153,7 @@ void MoveTool::mouseReleaseEvent( QMouseEvent *event )
 
 void MoveTool::mouseMoveEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )

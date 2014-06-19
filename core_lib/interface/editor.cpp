@@ -149,7 +149,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     return true;
 }
 
-int Editor::frame()
+int Editor::currentFrame()
 {
     return layers()->currentFramePosition();
 }
@@ -300,7 +300,7 @@ void Editor::modification( int layerNumber )
     {
         mObject->modification();
     }
-    lastModifiedFrame = frame();
+    lastModifiedFrame = currentFrame();
     lastModifiedLayer = layerNumber;
 
     mScribbleArea->update();
@@ -320,9 +320,9 @@ void Editor::backup( QString undoText )
     {
         backup( lastModifiedLayer, lastModifiedFrame, undoText );
     }
-    if ( lastModifiedLayer != layers()->currentLayerIndex() || lastModifiedFrame != frame() )
+    if ( lastModifiedLayer != layers()->currentLayerIndex() || lastModifiedFrame != currentFrame() )
     {
-        backup( layers()->currentLayerIndex(), frame(), undoText );
+        backup( layers()->currentLayerIndex(), currentFrame(), undoText );
     }
 }
 
@@ -493,12 +493,12 @@ void Editor::copy()
         {
             if ( mScribbleArea->somethingSelected )
             {
-                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( frame(), 0 )->copy( mScribbleArea->getSelection().toRect() );  // copy part of the image
+                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( currentFrame(), 0 )->copy( mScribbleArea->getSelection().toRect() );  // copy part of the image
                 mScribbleArea->deselectAll();
             }
             else
             {
-                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( frame(), 0 )->copy();  // copy the whole image
+                g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( currentFrame(), 0 )->copy();  // copy the whole image
                 mScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
@@ -507,7 +507,7 @@ void Editor::copy()
         if ( layer->type() == Layer::VECTOR )
         {
             clipboardVectorOk = true;
-            g_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( frame(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
+            g_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( currentFrame(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
             mScribbleArea->deselectAll();
         }
     }
@@ -939,7 +939,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
 
     int projectLength = layers()->projectLength();
 
-    mObject->exportFrames( 1, projectLength, getCurrentLayer(),
+    mObject->exportFrames( 1, projectLength, layers()->currentLayer(),
                              exportSize,
                              filePath,
                              exportFormat, -1, false, true, NULL, 0 );
@@ -981,7 +981,7 @@ bool Editor::exportImageSequence()
 
     int projectLength = layers()->projectLength();
     mObject->exportFrames( 1, projectLength,
-                             getCurrentLayer(),
+                             layers()->currentLayer(),
                              exportSize, strFilePath,
                              exportFormat, -1, false, true, NULL, 0 );
     return true;
@@ -1094,7 +1094,7 @@ bool Editor::exportMov()
         par.startFrame = 1;
         par.endFrame = projectLength;
         par.view = view;
-        par.currentLayer = getCurrentLayer();
+        par.currentLayer = layers()->currentLayer();
         par.exportSize = exportSize;
         par.filePath = filePath;
         par.fps = fps;
@@ -1582,9 +1582,4 @@ void Editor::getCameraLayer()
 void Editor::resetView()
 {
     getScribbleArea()->resetView();
-}
-
-Layer* Editor::getCurrentLayer( int incr )
-{
-    return layers()->currentLayer( incr );
 }

@@ -53,7 +53,7 @@ void PolylineTool::clear()
 
 void PolylineTool::mousePressEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( event->button() == Qt::LeftButton )
     {
@@ -86,7 +86,7 @@ void PolylineTool::mouseReleaseEvent( QMouseEvent *event )
 void PolylineTool::mouseMoveEvent( QMouseEvent *event )
 {
     Q_UNUSED( event );
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {

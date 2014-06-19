@@ -60,7 +60,7 @@ void BucketTool::mousePressEvent( QMouseEvent *event )
 
 void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     if ( event->button() == Qt::LeftButton )
@@ -72,7 +72,7 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
             int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
             if ( mEditor->layers()->currentLayerIndex() > 0 )
             {
-                Layer *layer2 = mEditor->getCurrentLayer( -1 );
+                Layer *layer2 = mEditor->layers()->currentLayer( -1 );
                 if ( layer2->type() == Layer::BITMAP )
                 {
                     targetLayer = layer2;

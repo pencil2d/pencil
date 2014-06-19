@@ -90,7 +90,7 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
@@ -137,7 +137,7 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 
 void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
@@ -166,7 +166,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
 
 void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
@@ -204,7 +204,7 @@ void SmudgeTool::drawStroke()
 {
     if ( !mScribbleArea->isLayerPaintable() ) return;
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->layers()->currentFramePosition(), 0);

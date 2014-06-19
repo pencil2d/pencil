@@ -49,9 +49,9 @@ public:
 
     bool initialize( ScribbleArea* pScribbleArea );
 
-    ColorManager* color() const { return mColorManager; }
-    ToolManager* tools() const { return mToolManager; }
-    LayerManager* layers() const { return mLayerManager; }
+    ColorManager*    color() const { return mColorManager; }
+    ToolManager*     tools() const { return mToolManager; }
+    LayerManager*    layers() const { return mLayerManager; }
     PlaybackManager* playback() const { return mPlaybackManager; }
 
     Object* object() const { return mObject; }
@@ -59,10 +59,10 @@ public:
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
-    int frame();
+    int currentFrame();
 
-    Layer* getCurrentLayer( int incr );
-    Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
+    //Layer* getCurrentLayer( int incr );
+    //Layer* getCurrentLayer() { return getCurrentLayer( 0 ); }
     Layer* getLayer( int i );
     int allLayers();
     static QMatrix map( QRectF, QRectF );

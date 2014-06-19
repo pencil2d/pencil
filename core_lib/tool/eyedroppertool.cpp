@@ -62,7 +62,7 @@ void EyedropperTool::mousePressEvent(QMouseEvent *event)
 
 void EyedropperTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
@@ -98,7 +98,7 @@ void EyedropperTool::mouseMoveEvent(QMouseEvent *event)
 {
     Q_UNUSED(event);
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (layer->type() == Layer::BITMAP)

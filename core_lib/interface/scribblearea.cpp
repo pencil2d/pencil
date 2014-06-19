@@ -473,13 +473,13 @@ bool ScribbleArea::isLayerPaintable() const
     if ( !areLayersSane() )
         return false;
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
 }
 
 bool ScribbleArea::areLayersSane() const
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     // ---- checks ------
     if ( layer == NULL ) { return false; }
     if ( layer->type() == Layer::VECTOR )
@@ -553,7 +553,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     }
 
     // ---- checks layer availability ------
-    Layer* layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSUME( layer != nullptr );
 
     if ( layer->type() == Layer::VECTOR )
@@ -676,7 +676,7 @@ void ScribbleArea::mouseDoubleClickEvent( QMouseEvent *event )
 
 void ScribbleArea::paintBitmapBuffer()
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     // ---- checks ------
     if ( layer == NULL ) { return; }
     // Clear the temporary pixel path
@@ -779,7 +779,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     }
     if ( currentTool()->type() == MOVE )
     {
-        Layer *layer = mEditor->getCurrentLayer();
+        Layer* layer = mEditor->layers()->currentLayer();
         if ( !layer ) { return; }
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->layers()->currentFramePosition(), 0 )->setModified( true ); }
         drawCanvas( mEditor->layers()->currentFramePosition(), event->rect() );
@@ -887,11 +887,11 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         }
 
         // paints the  buffer image
-        if ( mEditor->getCurrentLayer() != NULL )
+        if ( mEditor->layers()->currentLayer() != NULL )
         {
             painter.setOpacity( 1.0 );
-            if ( mEditor->getCurrentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
-            if ( mEditor->getCurrentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
             mBufferImg->paintImage( painter );
         }
 
@@ -903,7 +903,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
             painter.setOpacity( 1.0 );
             QPolygon tempRect = ( myView * transMatrix * centralView ).mapToPolygon( myTempTransformedSelection.normalized().toRect() );
 
-            Layer *layer = mEditor->getCurrentLayer();
+            Layer* layer = mEditor->layers()->currentLayer();
             if ( layer != NULL )
             {
                 if ( layer->type() == Layer::BITMAP )
@@ -1005,11 +1005,11 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
         }
 
         Q_ASSERT_X( mEditor != NULL, "ScribbleArea.cpp", "Editor should not be null." );
-        Q_ASSERT_X( mEditor->getCurrentLayer(), "", "Layer should not be null." );
+        Q_ASSERT_X( mEditor->layers()->currentLayer(), "", "Layer should not be null." );
 
         //qDebug( "Layer Count = %d, current=%d", object->getLayerCount(), i );
 
-        if ( mEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
+        if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = ( object->getLayer( i ) );
         if ( layer->visible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) ) // change && to || for all layers
         {
@@ -1182,7 +1182,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
         opacity = 1.0;
         if ( i != mEditor->layers()->currentLayerIndex() && ( mShowAllLayers == 1 ) ) { opacity = 0.4; }
 
-        if ( mEditor->getCurrentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
+        if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = ( object->getLayer( i ) );
         if ( layer->visible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) )
         {
@@ -1416,7 +1416,7 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
         QPainterPath tempPath = BezierCurve( points ).getSimplePath();
         tempPath.lineTo( endPoint );
         QRect updateRect = myTempView.mapRect( tempPath.boundingRect().toRect() ).adjusted( -10, -10, 10, 10 );
-        if ( mEditor->getCurrentLayer()->type() == Layer::VECTOR )
+        if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
         {
             tempPath = myTempView.map( tempPath );
             if ( mMakeInvisible )
@@ -1443,7 +1443,7 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
         return;
     }
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::VECTOR )
     {
@@ -1546,7 +1546,7 @@ void ScribbleArea::resetView()
 
 QMatrix ScribbleArea::getView()
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL )
     {
         return QMatrix(); // TODO: error
@@ -1565,7 +1565,7 @@ QMatrix ScribbleArea::getView()
 QRectF ScribbleArea::getViewRect()
 {
     QRectF rect = QRectF( -width() / 2, -height() / 2, width(), height() );
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return rect; }
     if ( layer->type() == Layer::CAMERA )
     {
@@ -1591,7 +1591,7 @@ void ScribbleArea::setTransformationMatrix( QMatrix matrix )
 
 void ScribbleArea::applyTransformationMatrix()
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
     clearBitmapBuffer();
@@ -1618,7 +1618,7 @@ void ScribbleArea::applyTransformationMatrix()
 void ScribbleArea::calculateSelectionRect()
 {
     selectionTransformation.reset();
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
@@ -1648,7 +1648,7 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 
 void ScribbleArea::paintTransformedSelection()
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL )
     {
         return;
@@ -1706,7 +1706,7 @@ void ScribbleArea::setSelection( QRectF rect, bool trueOrFalse )
 
 void ScribbleArea::displaySelectionProperties()
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
@@ -1738,7 +1738,7 @@ void ScribbleArea::selectAll()
 {
     offset.setX( 0 );
     offset.setY( 0 );
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::BITMAP )
     {
@@ -1762,7 +1762,7 @@ void ScribbleArea::deselectAll()
     myTransformedSelection.setRect( 10, 10, 20, 20 );
     myTempTransformedSelection.setRect( 10, 10, 20, 20 );
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
@@ -2226,7 +2226,7 @@ void ScribbleArea::deleteSelection()
 {
     if ( somethingSelected )      // there is something selected
     {
-        Layer *layer = mEditor->getCurrentLayer();
+        Layer* layer = mEditor->layers()->currentLayer();
         if ( layer == NULL ) { return; }
         mEditor->backup( tr( "DeleteSel" ) );
         closestCurves.clear();
@@ -2238,7 +2238,7 @@ void ScribbleArea::deleteSelection()
 
 void ScribbleArea::clearImage()
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
@@ -2383,7 +2383,7 @@ void ScribbleArea::drawAxis( QPainter& painter )
 
 void ScribbleArea::drawGrid( QPainter& painter )
 {
-	if ( mEditor->getCurrentLayer() == nullptr )
+	if ( mEditor->layers()->currentLayer() == nullptr )
 	{
 		return;
 	}

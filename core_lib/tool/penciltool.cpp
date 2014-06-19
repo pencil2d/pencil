@@ -70,7 +70,7 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
 
         //Layer *layer = m_pEditor->getCurrentLayer();
 
-        if ( mEditor->getCurrentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
+        if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
             drawStroke();
         }
@@ -79,7 +79,7 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
 
 void PencilTool::mouseMoveEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {
         if ( event->buttons() & Qt::LeftButton )
@@ -91,7 +91,7 @@ void PencilTool::mouseMoveEvent( QMouseEvent *event )
 
 void PencilTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( event->button() == Qt::LeftButton )
     {
@@ -150,7 +150,7 @@ void PencilTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     int rad;
 
     if ( layer->type() == Layer::BITMAP )

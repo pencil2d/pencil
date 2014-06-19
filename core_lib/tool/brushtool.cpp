@@ -1,15 +1,17 @@
+
+#include "brushtool.h"
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
-
-#include "pencilsettings.h"
 #include "layer.h"
+#include "editor.h"
+#include "pencilsettings.h"
 #include "colormanager.h"
 #include "strokemanager.h"
-#include "editor.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 #include "blitrect.h"
-#include "brushtool.h"
+
 
 BrushTool::BrushTool( QObject *parent ) :
 StrokeTool( parent )
@@ -84,7 +86,7 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
 
 void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( event->button() == Qt::LeftButton )
     {
@@ -108,7 +110,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 
 void BrushTool::mouseMoveEvent( QMouseEvent *event )
 {
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {
@@ -129,7 +131,7 @@ void BrushTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP )
     {

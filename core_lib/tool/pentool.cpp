@@ -78,7 +78,7 @@ void PenTool::mousePressEvent( QMouseEvent *event )
 
 void PenTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer* layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( event->button() == Qt::LeftButton )
     {
@@ -133,7 +133,7 @@ void PenTool::drawStroke()
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
-    Layer *layer = mEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP )
     {
