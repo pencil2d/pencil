@@ -34,7 +34,7 @@ public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
-    Editor* m_pEditor;
+    Editor* mEditor;
 
 public slots:
     void setOpacity(int opacity);
@@ -83,16 +83,16 @@ private:
     void makeConnections( Editor*, DisplayOptionWidget* );
 
     // UI: central Drawing Area
-    ScribbleArea* m_pScribbleArea;
+    ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*             m_pColorWheelWidget;
-    ColorPaletteWidget*      m_pColorPalette;
-    DisplayOptionWidget*     m_pDisplayOptionWidget;
-    ToolOptionWidget*        m_pToolOptionWidget;
-    ToolBoxWidget*           m_pToolBox;
+    QDockWidget*             mColorWheelWidget;
+    ColorPaletteWidget*      mColorPalette;
+    DisplayOptionWidget*     mDisplayOptionWidget;
+    ToolOptionWidget*        mToolOptionWidget;
+    ToolBoxWidget*           mToolBox;
 
-    RecentFileMenu* m_recentFileMenu;
+    RecentFileMenu* mRecentFileMenu;
 
 public:
     TimeLine*                m_pTimeLine; // be public temporary

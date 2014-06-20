@@ -63,34 +63,34 @@ MainWindow2::MainWindow2( QWidget *parent )
     ui->setupUi( this );
 
     // Central widget
-    m_pScribbleArea = new ScribbleArea( this );
-    m_pScribbleArea->setObjectName( "ScribbleArea" );
-    m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
-    setCentralWidget( m_pScribbleArea );
+    mScribbleArea = new ScribbleArea( this );
+    mScribbleArea->setObjectName( "ScribbleArea" );
+    mScribbleArea->setFocusPolicy( Qt::StrongFocus );
+    setCentralWidget( mScribbleArea );
 
     Object* object = new Object();
     object->init();
 
-    m_pEditor = new Editor( this );
-    m_pEditor->initialize( m_pScribbleArea );
-    m_pEditor->setObject( object );
+    mEditor = new Editor( this );
+    mEditor->initialize( mScribbleArea );
+    mEditor->setObject( object );
 
-    m_pScribbleArea->setCore( m_pEditor );
-    m_pEditor->setScribbleArea( m_pScribbleArea );
-    makeConnections( m_pEditor, m_pScribbleArea );
+    mScribbleArea->setCore( mEditor );
+    mEditor->setScribbleArea( mScribbleArea );
+    makeConnections( mEditor, mScribbleArea );
 
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();
 
-    m_pEditor->resetUI();
+    mEditor->resetUI();
 
     readSettings();
 
-    connect(m_pEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
-    connect(m_pToolBox, &ToolBoxWidget::clearButtonClicked, m_pEditor, &Editor::clearCurrentFrame);
+    connect(mEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
+    connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
-    m_pEditor->setCurrentLayer( m_pEditor->object()->getLayerCount() - 1 );
+    mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
 }
 
 MainWindow2::~MainWindow2()
@@ -102,44 +102,44 @@ void MainWindow2::createDockWidgets()
 {
     m_pTimeLine = new TimeLine( this );
     m_pTimeLine->setObjectName( "TimeLine" );
-    makeConnections( m_pEditor, m_pTimeLine );
+    makeConnections( mEditor, m_pTimeLine );
     m_subWidgets.append( m_pTimeLine );
 
-    m_pColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
+    mColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
 
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
-    m_pColorWheelWidget->setWidget( pColorBox );
-    m_pColorWheelWidget->setObjectName( "ColorWheel" );
+    mColorWheelWidget->setWidget( pColorBox );
+    mColorWheelWidget->setObjectName( "ColorWheel" );
     makeColorWheelConnections();
 
-    m_pColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
-    m_pColorPalette->setObjectName( "ColorPalette" );
-    makeConnections( m_pEditor, m_pColorPalette );
-    m_subWidgets.append( m_pColorPalette );
+    mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
+    mColorPalette->setObjectName( "ColorPalette" );
+    makeConnections( mEditor, mColorPalette );
+    m_subWidgets.append( mColorPalette );
 
-    m_pDisplayOptionWidget = new DisplayOptionWidget(this);
-    m_pDisplayOptionWidget->setObjectName( "DisplayOption" );
-    m_pDisplayOptionWidget->makeConnectionToEditor(m_pEditor);
+    mDisplayOptionWidget = new DisplayOptionWidget(this);
+    mDisplayOptionWidget->setObjectName( "DisplayOption" );
+    mDisplayOptionWidget->makeConnectionToEditor(mEditor);
 
-    m_pToolOptionWidget = new ToolOptionWidget(this);
-    m_pToolOptionWidget->setObjectName( "ToolOption" );
-    m_pToolOptionWidget->makeConnectionToEditor(m_pEditor);
+    mToolOptionWidget = new ToolOptionWidget(this);
+    mToolOptionWidget->setObjectName( "ToolOption" );
+    mToolOptionWidget->makeConnectionToEditor(mEditor);
 
-    m_pToolBox = new ToolBoxWidget( tr( "Tools" ), this );
-    m_pToolBox->setObjectName( "ToolBox" );
-    m_subWidgets.append( m_pToolBox );
+    mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
+    mToolBox->setObjectName( "ToolBox" );
+    m_subWidgets.append( mToolBox );
 
-    addDockWidget(Qt::RightDockWidgetArea,  m_pColorWheelWidget);
-    addDockWidget(Qt::RightDockWidgetArea,  m_pColorPalette);
-    addDockWidget(Qt::RightDockWidgetArea,  m_pDisplayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea,   m_pToolBox);
-    addDockWidget(Qt::LeftDockWidgetArea,   m_pToolOptionWidget);
+    addDockWidget(Qt::RightDockWidgetArea,  mColorWheelWidget);
+    addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
+    addDockWidget(Qt::LeftDockWidgetArea,   mToolOptionWidget);
     addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
 
     for ( BaseDockWidget* pWidget : m_subWidgets )
     {
-        pWidget->setCore( m_pEditor );
+        pWidget->setCore( mEditor );
         pWidget->initUI();
         qDebug() << "Init UI: " << pWidget->objectName();
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
@@ -149,11 +149,11 @@ void MainWindow2::createDockWidgets()
 
 void MainWindow2::makeColorWheelConnections()
 {
-    ColorBox* pColorBox = static_cast<ColorBox*>(m_pColorWheelWidget->widget());
+    ColorBox* pColorBox = static_cast<ColorBox*>(mColorWheelWidget->widget());
     Q_ASSERT( pColorBox );
 
-    connect( pColorBox, &ColorBox::colorChanged, m_pEditor->color(), &ColorManager::setColor );
-    connect( m_pEditor->color(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
+    connect( pColorBox, &ColorBox::colorChanged, mEditor->color(), &ColorManager::setColor );
+    connect( mEditor->color(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
 }
 
 void MainWindow2::createMenus()
@@ -166,10 +166,10 @@ void MainWindow2::createMenus()
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
 
     /// --- Export Menu ---
-    connect( ui->actionExport_X_sheet, &QAction::triggered, m_pEditor, &Editor::exportX );
-    connect( ui->actionExport_Image_Sequence, &QAction::triggered, m_pEditor, &Editor::exportImageSequence );
-    connect( ui->actionExport_Image, &QAction::triggered, m_pEditor, &Editor::exportImage );
-    connect( ui->actionExport_Movie, &QAction::triggered, m_pEditor, &Editor::exportMov );
+    connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
+    connect( ui->actionExport_Image_Sequence, &QAction::triggered, mEditor, &Editor::exportImageSequence );
+    connect( ui->actionExport_Image, &QAction::triggered, mEditor, &Editor::exportImage );
+    connect( ui->actionExport_Movie, &QAction::triggered, mEditor, &Editor::exportMov );
 
     //exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
     //exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
@@ -179,61 +179,61 @@ void MainWindow2::createMenus()
 
     /// --- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
-    connect( ui->actionImport_Image, &QAction::triggered, m_pEditor, &Editor::importImageFromDialog );
-    connect( ui->actionImport_Image_Sequence, &QAction::triggered, m_pEditor, &Editor::importImageSequence );
-    connect( ui->actionImport_Movie, &QAction::triggered, m_pEditor, &Editor::importMov );
+    connect( ui->actionImport_Image, &QAction::triggered, mEditor, &Editor::importImageFromDialog );
+    connect( ui->actionImport_Image_Sequence, &QAction::triggered, mEditor, &Editor::importImageSequence );
+    connect( ui->actionImport_Movie, &QAction::triggered, mEditor, &Editor::importMov );
     //connect( ui->actionImport_Sound, &QAction::triggered, editor, &Editor::importSound );
     ui->actionImport_Sound->setEnabled( false );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
-    connect( ui->actionUndo, &QAction::triggered, m_pEditor, &Editor::undo );
-    connect( ui->actionRedo, &QAction::triggered, m_pEditor, &Editor::redo );
-    connect( ui->actionCut, &QAction::triggered, m_pEditor, &Editor::cut );
-    connect( ui->actionCopy, &QAction::triggered, m_pEditor, &Editor::copy );
-    connect( ui->actionPaste, &QAction::triggered, m_pEditor, &Editor::paste );
-    connect( ui->actionClearFrame, &QAction::triggered, m_pEditor, &Editor::clearCurrentFrame );
-    connect( ui->actionFlip_X, &QAction::triggered, m_pEditor, &Editor::flipX );
-    connect( ui->actionFlip_Y, &QAction::triggered, m_pEditor, &Editor::flipY );
-    connect( ui->actionSelect_All, &QAction::triggered, m_pEditor, &Editor::selectAll );
-    connect( ui->actionDeselect_All, &QAction::triggered, m_pEditor, &Editor::deselectAll );
+    connect( ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo );
+    connect( ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo );
+    connect( ui->actionCut, &QAction::triggered, mEditor, &Editor::cut );
+    connect( ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy );
+    connect( ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste );
+    connect( ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame );
+    connect( ui->actionFlip_X, &QAction::triggered, mEditor, &Editor::flipX );
+    connect( ui->actionFlip_Y, &QAction::triggered, mEditor, &Editor::flipY );
+    connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
+    connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::preferences );
 
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
-    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, m_pEditor, &Editor::newBitmapLayer );
-    connect( ui->actionNew_Vector_Layer, &QAction::triggered, m_pEditor, &Editor::newVectorLayer );
-    connect( ui->actionNew_Sound_Layer, &QAction::triggered, m_pEditor, &Editor::newSoundLayer );
-    connect( ui->actionNew_Camera_Layer, &QAction::triggered, m_pEditor, &Editor::newCameraLayer );
-    connect( ui->actionDelete_Current_Layer, &QAction::triggered, m_pEditor, &Editor::deleteCurrentLayer );
+    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mEditor, &Editor::newBitmapLayer );
+    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mEditor, &Editor::newVectorLayer );
+    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mEditor, &Editor::newSoundLayer );
+    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mEditor, &Editor::newCameraLayer );
+    connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor, &Editor::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In, &QAction::triggered, m_pEditor, &Editor::zoomIn );
-    connect( ui->actionZoom_Out, &QAction::triggered, m_pEditor, &Editor::zoomOut );
-    connect( ui->actionRotate_Clockwise, &QAction::triggered, m_pEditor, &Editor::rotatecw );
-    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, m_pEditor, &Editor::rotateacw );
+    connect( ui->actionZoom_In, &QAction::triggered, mEditor, &Editor::zoomIn );
+    connect( ui->actionZoom_Out, &QAction::triggered, mEditor, &Editor::zoomOut );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
-    connect( ui->actionReset_View, &QAction::triggered, m_pEditor, &Editor::resetView );
-    connect( ui->actionHorizontal_Flip, &QAction::triggered, m_pEditor, &Editor::toggleMirror );
-    connect( ui->actionVertical_Flip, &QAction::triggered, m_pEditor, &Editor::toggleMirrorV );
+    connect( ui->actionReset_View, &QAction::triggered, mEditor, &Editor::resetView );
+    connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
+    connect( ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV );
 
     ui->actionPreview->setEnabled( false );
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     ui->actionGrid->setEnabled( false );
-    connect( ui->actionGrid, &QAction::triggered, m_pEditor, &Editor::gridview ); //TODO: Grid view
+    connect( ui->actionGrid, &QAction::triggered, mEditor, &Editor::gridview ); //TODO: Grid view
 
-    connect( ui->actionOnionPrevious, &QAction::triggered, m_pEditor, &Editor::toggleOnionPrev );
-    connect( ui->actionOnionNext, &QAction::triggered, m_pEditor, &Editor::toggleOnionNext );
-    connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, m_pEditor, &Editor::toggleMultiLayerOnionSkin );
+    connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
+    connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );
+    connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
 
-    connect( m_pEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
-    connect( m_pEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
-    connect( m_pEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
+    connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
+    connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
+    connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
-    PlaybackManager* pPlaybackManager = m_pEditor->playback();
+    PlaybackManager* pPlaybackManager = mEditor->playback();
     connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
 
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLoop );
@@ -241,48 +241,48 @@ void MainWindow2::createMenus()
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, ui->actionLoop, &QAction::setChecked );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
 
-    connect(ui->actionAdd_Frame, &QAction::triggered, m_pEditor, &Editor::addNewKey );
-    connect(ui->actionRemove_Frame, &QAction::triggered, m_pEditor, &Editor::removeKey );
+    connect(ui->actionAdd_Frame, &QAction::triggered, mEditor, &Editor::addNewKey );
+    connect(ui->actionRemove_Frame, &QAction::triggered, mEditor, &Editor::removeKey );
     //connect(ui->actionNext_Frame, &QAction::triggered, m_pEditor, &Editor::playNextFrame );
     //connect(ui->actionPrevious_Frame, &QAction::triggered, m_pEditor, &Editor::playPrevFrame );
-    connect(ui->actionNext_KeyFrame, &QAction::triggered, m_pEditor, &Editor::scrubNextKeyFrame );
-    connect(ui->actionPrev_KeyFrame, &QAction::triggered, m_pEditor, &Editor::scrubPreviousKeyFrame );
-    connect(ui->actionDuplicate_Frame, &QAction::triggered, m_pEditor, &Editor::duplicateKey );
+    connect(ui->actionNext_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubNextKeyFrame );
+    connect(ui->actionPrev_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubPreviousKeyFrame );
+    connect(ui->actionDuplicate_Frame, &QAction::triggered, mEditor, &Editor::duplicateKey );
 
     /// --- Tool Menu ---
-    connect(ui->actionMove, &QAction::triggered, m_pToolBox, &ToolBoxWidget::moveOn );
-    connect(ui->actionSelect, &QAction::triggered, m_pToolBox, &ToolBoxWidget::selectOn );
-    connect(ui->actionBrush, &QAction::triggered, m_pToolBox, &ToolBoxWidget::brushOn );
-    connect(ui->actionPolyline, &QAction::triggered, m_pToolBox, &ToolBoxWidget::polylineOn );
-    connect(ui->actionSmudge, &QAction::triggered, m_pToolBox, &ToolBoxWidget::smudgeOn );
-    connect(ui->actionPen, &QAction::triggered, m_pToolBox, &ToolBoxWidget::penOn );
-    connect(ui->actionHand, &QAction::triggered, m_pToolBox, &ToolBoxWidget::handOn );
-    connect(ui->actionPencil, &QAction::triggered, m_pToolBox, &ToolBoxWidget::pencilOn );
-    connect(ui->actionBucket, &QAction::triggered, m_pToolBox, &ToolBoxWidget::bucketOn );
-    connect(ui->actionEyedropper, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eyedropperOn );
-    connect(ui->actionEraser, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eraserOn );
-    connect(ui->actionTogglePalette, &QAction::triggered, m_pScribbleArea,&ScribbleArea::togglePopupPalette );
-    connect(ui->actionResetToolsDefault, &QAction::triggered, m_pEditor->tools(), &ToolManager::resetAllTools );
+    connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn );
+    connect(ui->actionSelect, &QAction::triggered, mToolBox, &ToolBoxWidget::selectOn );
+    connect(ui->actionBrush, &QAction::triggered, mToolBox, &ToolBoxWidget::brushOn );
+    connect(ui->actionPolyline, &QAction::triggered, mToolBox, &ToolBoxWidget::polylineOn );
+    connect(ui->actionSmudge, &QAction::triggered, mToolBox, &ToolBoxWidget::smudgeOn );
+    connect(ui->actionPen, &QAction::triggered, mToolBox, &ToolBoxWidget::penOn );
+    connect(ui->actionHand, &QAction::triggered, mToolBox, &ToolBoxWidget::handOn );
+    connect(ui->actionPencil, &QAction::triggered, mToolBox, &ToolBoxWidget::pencilOn );
+    connect(ui->actionBucket, &QAction::triggered, mToolBox, &ToolBoxWidget::bucketOn );
+    connect(ui->actionEyedropper, &QAction::triggered, mToolBox, &ToolBoxWidget::eyedropperOn );
+    connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn );
+    connect(ui->actionTogglePalette, &QAction::triggered, mScribbleArea,&ScribbleArea::togglePopupPalette );
+    connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools );
 
     /// --- Window Menu ---
     QMenu* pWinMenu = ui->menuWindows;
-    pWinMenu->addAction( m_pToolBox->toggleViewAction() );
-    pWinMenu->addAction( m_pToolOptionWidget->toggleViewAction() );
-    pWinMenu->addAction( m_pColorWheelWidget->toggleViewAction() );
-    pWinMenu->addAction( m_pColorPalette->toggleViewAction() );
+    pWinMenu->addAction( mToolBox->toggleViewAction() );
+    pWinMenu->addAction( mToolOptionWidget->toggleViewAction() );
+    pWinMenu->addAction( mColorWheelWidget->toggleViewAction() );
+    pWinMenu->addAction( mColorPalette->toggleViewAction() );
     pWinMenu->addAction( m_pTimeLine->toggleViewAction() );
-    pWinMenu->addAction( m_pDisplayOptionWidget->toggleViewAction() );
+    pWinMenu->addAction( mDisplayOptionWidget->toggleViewAction() );
 
     /// --- Help Menu ---
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
 
     // --------------- Menus ------------------
-    m_recentFileMenu = new RecentFileMenu( tr("Open Recent"), this );
-    m_recentFileMenu->loadFromDisk();
-    ui->menuFile->insertMenu( ui->actionSave, m_recentFileMenu );
+    mRecentFileMenu = new RecentFileMenu( tr("Open Recent"), this );
+    mRecentFileMenu->loadFromDisk();
+    ui->menuFile->insertMenu( ui->actionSave, mRecentFileMenu );
 
-    QObject::connect( m_recentFileMenu, SIGNAL( loadRecentFile( QString ) ),
+    QObject::connect( mRecentFileMenu, SIGNAL( loadRecentFile( QString ) ),
         this, SLOT( openFile( QString ) ) );
 
     connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
@@ -320,8 +320,8 @@ void MainWindow2::newDocument()
     {
         Object* object = new Object();
         object->init();
-        m_pEditor->setObject( object );
-        m_pEditor->resetUI();
+        mEditor->setObject( object );
+        mEditor->resetUI();
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
@@ -407,8 +407,8 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
-    m_pEditor->setCurrentLayer( 0 );
-    m_pScribbleArea->setMyView( QMatrix() );
+    mEditor->setCurrentLayer( 0 );
+    mScribbleArea->setMyView( QMatrix() );
 
     ObjectSaveLoader objectLoader( this );
     Object* object = objectLoader.load( strFilePath );
@@ -418,13 +418,13 @@ bool MainWindow2::openObject( QString strFilePath )
         return false;
     }
 
-    m_pEditor->setObject( object );
+    mEditor->setObject( object );
 
     QSettings settings( "Pencil", "Pencil" );
     settings.setValue( "LastFilePath", object->filePath() );
 
-    m_recentFileMenu->addRecentFile( object->filePath() );
-    m_recentFileMenu->saveToDisk();
+    mRecentFileMenu->addRecentFile( object->filePath() );
+    mRecentFileMenu->saveToDisk();
 
     //qDebug() << "Current File Path=" << object->filePath();
     setWindowTitle( object->filePath() );
@@ -486,15 +486,15 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.show();
 
     ObjectSaveLoader* saveLoader = new ObjectSaveLoader( this );
-    bool ok = saveLoader->save( m_pEditor->object(), strSavedFileName );
+    bool ok = saveLoader->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
 
     QSettings settings( "Pencil", "Pencil" );
     settings.setValue( "LastFilePath", strSavedFileName );
 
-    m_recentFileMenu->addRecentFile( strSavedFileName );
-    m_recentFileMenu->saveToDisk();
+    mRecentFileMenu->addRecentFile( strSavedFileName );
+    mRecentFileMenu->saveToDisk();
     
     m_pTimeLine->updateContent();
 
@@ -505,9 +505,9 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
 void MainWindow2::saveDocument()
 {
-    if ( !m_pEditor->object()->filePath().isEmpty() )
+    if ( !mEditor->object()->filePath().isEmpty() )
     {
-        saveObject( m_pEditor->object()->filePath() );
+        saveObject( mEditor->object()->filePath() );
     }
     else
     {
@@ -517,7 +517,7 @@ void MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if ( m_pEditor->object()->isModified() )
+    if ( mEditor->object()->isModified() )
     {
         int ret = QMessageBox::warning( this, tr( "Warning" ),
                                         tr( "This animation has been modified.\n Do you want to save your changes?" ),
@@ -574,22 +574,22 @@ void MainWindow2::preferences()
     connect( m_pPreferences, SIGNAL( scrubChange( int ) ), m_pTimeLine, SIGNAL( scrubChange( int ) ) );
 
     connect( m_pPreferences, SIGNAL( windowOpacityChange( int ) ), this, SLOT( setOpacity( int ) ) );
-    connect( m_pPreferences, SIGNAL( curveOpacityChange( int ) ), m_pScribbleArea, SLOT( setCurveOpacity( int ) ) );
-    connect( m_pPreferences, SIGNAL( curveSmoothingChange( int ) ), m_pScribbleArea, SLOT( setCurveSmoothing( int ) ) );
-    connect( m_pPreferences, SIGNAL( highResPositionChange( int ) ), m_pScribbleArea, SLOT( setHighResPosition( int ) ) );
-    connect( m_pPreferences, SIGNAL( antialiasingChange( int ) ), m_pScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( m_pPreferences, SIGNAL( gradientsChange( int ) ), m_pScribbleArea, SLOT( setGradients( int ) ) );
-    connect( m_pPreferences, SIGNAL( backgroundChange( int ) ), m_pScribbleArea, SLOT( setBackground( int ) ) );
-    connect( m_pPreferences, SIGNAL( shadowsChange( int ) ), m_pScribbleArea, SLOT( setShadows( int ) ) );
-    connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), m_pScribbleArea, SLOT( setToolCursors( int ) ) );
-    connect( m_pPreferences, SIGNAL( styleChanged( int ) ), m_pScribbleArea, SLOT( setStyle( int ) ) );
+    connect( m_pPreferences, SIGNAL( curveOpacityChange( int ) ), mScribbleArea, SLOT( setCurveOpacity( int ) ) );
+    connect( m_pPreferences, SIGNAL( curveSmoothingChange( int ) ), mScribbleArea, SLOT( setCurveSmoothing( int ) ) );
+    connect( m_pPreferences, SIGNAL( highResPositionChange( int ) ), mScribbleArea, SLOT( setHighResPosition( int ) ) );
+    connect( m_pPreferences, SIGNAL( antialiasingChange( int ) ), mScribbleArea, SLOT( setAntialiasing( int ) ) );
+    connect( m_pPreferences, SIGNAL( gradientsChange( int ) ), mScribbleArea, SLOT( setGradients( int ) ) );
+    connect( m_pPreferences, SIGNAL( backgroundChange( int ) ), mScribbleArea, SLOT( setBackground( int ) ) );
+    connect( m_pPreferences, SIGNAL( shadowsChange( int ) ), mScribbleArea, SLOT( setShadows( int ) ) );
+    connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
+    connect( m_pPreferences, SIGNAL( styleChanged( int ) ), mScribbleArea, SLOT( setStyle( int ) ) );
 
-    connect( m_pPreferences, SIGNAL( autosaveChange( int ) ), m_pEditor, SLOT( changeAutosave( int ) ) );
-    connect( m_pPreferences, SIGNAL( autosaveNumberChange( int ) ), m_pEditor, SLOT( changeAutosaveNumber( int ) ) );
+    connect( m_pPreferences, SIGNAL( autosaveChange( int ) ), mEditor, SLOT( changeAutosave( int ) ) );
+    connect( m_pPreferences, SIGNAL( autosaveNumberChange( int ) ), mEditor, SLOT( changeAutosaveNumber( int ) ) );
 
-    connect( m_pPreferences, SIGNAL( onionLayer1OpacityChange( int ) ), m_pEditor, SLOT( onionLayer1OpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionLayer2OpacityChange( int ) ), m_pEditor, SLOT( onionLayer2OpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionLayer3OpacityChange( int ) ), m_pEditor, SLOT( onionLayer3OpacityChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionLayer1OpacityChange( int ) ), mEditor, SLOT( onionLayer1OpacityChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionLayer2OpacityChange( int ) ), mEditor, SLOT( onionLayer2OpacityChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionLayer3OpacityChange( int ) ), mEditor, SLOT( onionLayer3OpacityChangeSlot( int ) ) );
 
     clearKeyboardShortcuts();
 
@@ -601,12 +601,12 @@ void MainWindow2::preferences()
 
 void MainWindow2::dockAllPalettes()
 {
-    m_pToolBox->setFloating(false);
-    m_pToolOptionWidget->setFloating(false);
-    m_pDisplayOptionWidget->setFloating(false);
+    mToolBox->setFloating(false);
+    mToolOptionWidget->setFloating(false);
+    mDisplayOptionWidget->setFloating(false);
     m_pTimeLine->setFloating(false);
-    m_pColorPalette->setFloating(false);
-    m_pColorWheelWidget->setFloating( false );
+    mColorPalette->setFloating(false);
+    mColorWheelWidget->setFloating( false );
 }
 
 void MainWindow2::readSettings()
@@ -618,7 +618,7 @@ void MainWindow2::readSettings()
     restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
 
     QString myPath = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
-    m_recentFileMenu->addRecentFile( myPath );
+    mRecentFileMenu->addRecentFile( myPath );
 
     setOpacity( 100 - settings.value( "windowOpacity" ).toInt() );
 }
@@ -709,20 +709,20 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
 
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
-    m_pScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
-    m_pScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
+    mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
+    mScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
 
     ui->actionNew_Bitmap_Layer->setShortcut( cmdKeySeq( CMD_NEW_BITMAP_LAYER ) );
     ui->actionNew_Vector_Layer->setShortcut( cmdKeySeq( CMD_NEW_VECTOR_LAYER ) );
     ui->actionNew_Camera_Layer->setShortcut( cmdKeySeq( CMD_NEW_CAMERA_LAYER ) );
     ui->actionNew_Sound_Layer->setShortcut( cmdKeySeq( CMD_NEW_SOUND_LAYER ) );
 
-    m_pToolBox->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOLBOX ) );
-    m_pToolOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
-    m_pColorWheelWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_WHEEL ) );
-    m_pColorPalette->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_LIBRARY ) );
+    mToolBox->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOLBOX ) );
+    mToolOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
+    mColorWheelWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_WHEEL ) );
+    mColorPalette->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_LIBRARY ) );
     m_pTimeLine->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TIMELINE ) );
-    m_pDisplayOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_DISPLAY_OPTIONS ) );
+    mDisplayOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_DISPLAY_OPTIONS ) );
 
     ui->actionHelp->setShortcut( cmdKeySeq( CMD_HELP ) );
 }
@@ -738,20 +738,20 @@ void MainWindow2::clearKeyboardShortcuts()
 
 void MainWindow2::undoActSetText( void )
 {
-    if ( this->m_pEditor->mBackupIndex < 0 )
+    if ( this->mEditor->mBackupIndex < 0 )
     {
         ui->actionUndo->setText( tr("Undo") );
         ui->actionUndo->setEnabled( false );
     }
     else
     {
-        ui->actionUndo->setText( tr("Undo   ") + QString::number( this->m_pEditor->mBackupIndex + 1 ) + " " + this->m_pEditor->mBackupList.at( this->m_pEditor->mBackupIndex )->undoText );
+        ui->actionUndo->setText( tr("Undo   ") + QString::number( this->mEditor->mBackupIndex + 1 ) + " " + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText );
         ui->actionUndo->setEnabled( true );
     }
 
-    if ( this->m_pEditor->mBackupIndex + 2 < this->m_pEditor->mBackupList.size() )
+    if ( this->mEditor->mBackupIndex + 2 < this->mEditor->mBackupList.size() )
     {
-        ui->actionRedo->setText( tr("Redo   ") + QString::number( this->m_pEditor->mBackupIndex + 2 ) + " " + this->m_pEditor->mBackupList.at( this->m_pEditor->mBackupIndex + 1 )->undoText );
+        ui->actionRedo->setText( tr("Redo   ") + QString::number( this->mEditor->mBackupIndex + 2 ) + " " + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText );
         ui->actionRedo->setEnabled( true );
     }
     else
@@ -778,7 +778,7 @@ void MainWindow2::exportPalette()
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export As" ), initialPath );
     if ( !filePath.isEmpty() )
     {
-        m_pEditor->object()->exportPalette( filePath );
+        mEditor->object()->exportPalette( filePath );
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
@@ -794,8 +794,8 @@ void MainWindow2::importPalette()
     QString filePath = QFileDialog::getOpenFileName( this, tr( "Import" ), initialPath );
     if ( !filePath.isEmpty() )
     {
-        m_pEditor->object()->importPalette( filePath );
-        m_pColorPalette->refreshColorList();
+        mEditor->object()->importPalette( filePath );
+        mColorPalette->refreshColorList();
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
