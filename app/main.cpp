@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 
             if ( !error )
             {
-                mainWindow.openObject(inputFile);
+                mainWindow.openFile( inputFile );
                 // Detecting format
                 QString format = "";
                 if (jobExportSequenceOutput.endsWith(".png"))
@@ -123,14 +123,14 @@ int main(int argc, char* argv[])
                     qDebug() << "         Using PNG.";
                     format = "PNG";
                 }
-                mainWindow.m_pEditor->exportSeqCLI(jobExportSequenceOutput, format);
+                mainWindow.mEditor->exportSeqCLI(jobExportSequenceOutput, format);
                 qDebug() << "Done.";
             }
         }
         else if ( inputFile != "" )
         {
             mainWindow.show();
-            mainWindow.openObject(inputFile);
+            mainWindow.openFile(inputFile);
             return app.exec();
         }
         else

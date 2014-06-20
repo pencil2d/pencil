@@ -99,9 +99,9 @@ void CameraPropertiesDialog::setHeight(int height)
 
 // ------
 
-LayerCamera::LayerCamera( Object* object ) : LayerImage( object, Layer::CAMERA )
+LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
-    name = QString(tr("Camera Layer"));
+    mName = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
     addNewKeyFrameAt( 1 );
@@ -201,15 +201,15 @@ void LayerCamera::editProperties()
 {
     if ( dialog == NULL )
     {
-        dialog = new CameraPropertiesDialog( name, viewRect.width(), viewRect.height() );
+        dialog = new CameraPropertiesDialog( mName, viewRect.width(), viewRect.height() );
     }
-    dialog->setName(name);
+    dialog->setName(mName);
     dialog->setWidth(viewRect.width());
     dialog->setHeight(viewRect.height());
     int result = dialog->exec();
     if (result == QDialog::Accepted)
     {
-        name = dialog->getName();
+        mName = dialog->getName();
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
     }
 }
@@ -218,7 +218,7 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement("layer");
     
-    layerTag.setAttribute("name", name);
+    layerTag.setAttribute("name", mName);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
     layerTag.setAttribute("width", viewRect.width());
@@ -246,7 +246,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
 {
     Q_UNUSED(dataDirPath);
 
-    name = element.attribute("name");
+    mName = element.attribute("name");
     visible = true;
 
     int width = element.attribute( "width" ).toInt();

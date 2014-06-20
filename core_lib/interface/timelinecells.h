@@ -58,7 +58,7 @@ protected:
 
 private:
     TimeLine* timeLine;
-    Editor* editor; // the editor for which this timeLine operates
+    Editor* mEditor; // the editor for which this timeLine operates
 
     TIMELINE_CELL_TYPE m_eType;
 

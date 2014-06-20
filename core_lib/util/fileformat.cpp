@@ -23,7 +23,7 @@ GNU General Public License for more details.
 bool removePFFTmpDirectory (const QString& dirName)
 {
 	bool result;
-	QDir dir(dirName + "/" + PFF_LAYERS_DIR);
+    QDir dir( dirName + "/" + PFF_OLD_DATA_DIR );
 	
     if ( !dir.exists() )
     {
@@ -39,7 +39,7 @@ bool removePFFTmpDirectory (const QString& dirName)
 	}
 	
 	QDir dir2(dirName);
-	result = dir2.rmdir(dirName + "/" + PFF_LAYERS_DIR);
+    result = dir2.rmdir( dirName + "/" + PFF_OLD_DATA_DIR );
 	if (!result)
 		return result;
 	

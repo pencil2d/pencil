@@ -27,7 +27,7 @@ GNU General Public License for more details.
 class KeyFrame;
 
 
-class LayerVector : public LayerImage
+class LayerVector : public Layer
 {
     Q_OBJECT
 

@@ -9,13 +9,13 @@ class SelectTool : public BaseTool
     Q_OBJECT
 public:
     SelectTool();
-    ToolType type();
-    void loadSettings();
-    QCursor cursor();
+    ToolType type() override;
+    void loadSettings() override;
+    QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
 };
 
 #endif

@@ -62,7 +62,7 @@ public:
     ScribbleArea( QWidget *parent );
     ~ScribbleArea();
 
-    void setCore( Editor* pCore ) { m_pEditor = pCore; }
+    void setCore( Editor* pCore ) { mEditor = pCore; }
 
     void deleteSelection();
     void setSelection( QRectF rect, bool );
@@ -78,18 +78,18 @@ public:
 
     static QBrush getBackgroundBrush( QString );
 
-    bool isEffectOn( DisplayEffect e ) { return m_effects[ e ]; }
-	void setEffect( DisplayEffect e, bool isOn ) { m_effects[ e ] = isOn; }
+    bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
+	void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; }
 
-    bool showThinLines() const { return m_showThinLines; }
-    int showAllLayers() const { return m_showAllLayers; }
-    qreal getCurveSmoothing() const { return curveSmoothing; }
-    bool usePressure() const { return m_usePressure; }
-    bool makeInvisible() const { return m_makeInvisible; }
+    bool showThinLines() const { return mShowThinLines; }
+    int showAllLayers() const { return mShowAllLayers; }
+    qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
+    bool usePressure() const { return mUsePressure; }
+    bool makeInvisible() const { return mMakeInvisible; }
 
     enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY };
-    MoveMode getMoveMode() const { return m_moveMode; }
-    void setMoveMode( MoveMode moveMode ) { m_moveMode = moveMode; }
+    MoveMode getMoveMode() const { return mMoveMode; }
+    void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
 
     QMatrix getView();
     QRectF getViewRect();
@@ -112,8 +112,8 @@ public:
     void updateAllVectorLayersAt( int frame );
     void updateAllVectorLayers();
 
-    bool shouldUpdateAll() const { return updateAll; }
-    void setAllDirty() { updateAll = true; }
+    bool shouldUpdateAll() const { return mNeedUpdateAll; }
+    void setAllDirty() { mNeedUpdateAll = true; }
 
     BaseTool* currentTool();
     BaseTool* getTool( ToolType eToolMode );
@@ -123,11 +123,11 @@ public:
 
     QPointF pixelToPoint( QPointF pixel );
 
-    StrokeManager *getStrokeManager() const { return m_strokeManager; }
+    StrokeManager *getStrokeManager() const { return mStrokeManager; }
 
     PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
-    Editor* editor() { return m_pEditor; }
+    Editor* editor() { return mEditor; }
 
 signals:
     void modification();
@@ -221,41 +221,40 @@ private:
 
 	void floodFillError( int errorType );
 
-    MoveMode m_moveMode;
-    ToolType prevMode;
-    ToolType prevToolType; // previous tool (except temporal)
+    MoveMode mMoveMode;
+    ToolType mPrevTemporalToolType;
+    ToolType mPrevToolType; // previous tool (except temporal)
 
-    StrokeManager* m_strokeManager;
+    StrokeManager* mStrokeManager;
 
-    Editor* m_pEditor;
+    Editor* mEditor;
 
     PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
-    bool m_isSimplified = false;
-    bool m_showThinLines;
-    int  m_showAllLayers;
-    bool m_usePressure = true;
-    bool m_makeInvisible;
-    bool toolCursors;
-    qreal curveSmoothing;
-    bool onionPrev = true;
-    bool onionNext = false;
-    bool onionBlue, onionRed;
-    bool m_isMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool mIsSimplified = false;
+    bool mShowThinLines;
+    int  mShowAllLayers;
+    bool mUsePressure = true;
+    bool mMakeInvisible;
+    bool mToolCursors;
+    qreal mCurveSmoothingLevel;
+    bool onionBlue;
+    bool onionRed;
+    bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
 
-    bool updateAll;
+    bool mNeedUpdateAll;
 
     QBrush backgroundBrush;
 public:
-    BitmapImage* m_bufferImg; // used to pre-draw vector modifications
+    BitmapImage* mBufferImg; // used to pre-draw vector modifications
 
 private:
     void initDisplayEffect( std::vector< uint32_t >& );
-    std::vector< uint32_t > m_effects;
+    std::vector< uint32_t > mEffects;
 
-    bool keyboardInUse;
-    bool mouseInUse;
+    bool mKeyboardInUse;
+    bool mMouseInUse;
     QPointF lastPixel, currentPixel;
     QPointF lastPoint, currentPoint;
 
@@ -270,8 +269,11 @@ private:
     VectorSelection vectorSelection;
     QMatrix selectionTransformation;
 
-    QMatrix myView, myTempView, centralView, transMatrix;
-    QPixmap canvas;
+    QMatrix myView;
+    QMatrix myTempView;
+    QMatrix centralView;
+    QMatrix transMatrix;
+    QPixmap mCanvas;
 
     // debug
     QRectF debugRect;

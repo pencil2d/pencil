@@ -39,7 +39,7 @@ public:
     static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
     static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
-    explicit BaseTool(QObject *parent = 0);
+    explicit BaseTool( QObject *parent = 0 );
     void initialize( Editor* editor, ScribbleArea* );
 
     QString typeName() { return TypeName( type() ); }
@@ -48,34 +48,33 @@ public:
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
 
-    
-    virtual void mousePressEvent(QMouseEvent*);
-    virtual void mouseMoveEvent(QMouseEvent*);
-    virtual void mouseReleaseEvent(QMouseEvent*);
-    virtual void mouseDoubleClickEvent(QMouseEvent*);
+    virtual void mousePressEvent( QMouseEvent* ) = 0;
+    virtual void mouseMoveEvent( QMouseEvent* ) = 0;
+    virtual void mouseReleaseEvent( QMouseEvent* ) = 0;
+    virtual void mouseDoubleClickEvent( QMouseEvent* );
 
     // return true if handled
-    virtual bool keyPressEvent(QKeyEvent *) { return false; }
-    virtual bool keyReleaseEvent(QKeyEvent *) { return false; }
+    virtual bool keyPressEvent( QKeyEvent * ) { return false; }
+    virtual bool keyReleaseEvent( QKeyEvent * ) { return false; }
 
     // dynamic cursor adjustment
     virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
     virtual void stopAdjusting();
-    virtual void adjustCursor(qreal argOffsetX, qreal argOffsetY);
+    virtual void adjustCursor( qreal argOffsetX, qreal argOffsetY );
 
-    virtual void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+    virtual void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
 
     virtual void clear() {}
 
     static bool isAdjusting;
     QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
-    
-    void setWidth(const qreal width);
-    void setFeather(const qreal feather);
-    void setOpacity(const qreal opacity);
-    void setInvisibility(const qreal invisibility);
-    void setPressure(const bool pressure);
-    void setPreserveAlpha(const bool preserveAlpha);
+
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
+    void setOpacity( const qreal opacity );
+    void setInvisibility( const qreal invisibility );
+    void setPressure( const bool pressure );
+    void setPreserveAlpha( const bool preserveAlpha );
 
     Properties properties;
 
@@ -87,8 +86,8 @@ public:
     QPointF getLastPressPoint();
 
 protected:
-    Editor* m_pEditor = nullptr;
-    ScribbleArea* m_pScribbleArea = nullptr;
+    Editor* mEditor = nullptr;
+    ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;
     qreal adjustmentStep = 0.0f;
 };

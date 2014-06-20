@@ -24,14 +24,14 @@ signals:
 public slots:
 
 protected:
-    bool m_firstDraw;
+    bool mFirstDraw;
 
     QPointF lastPixel;
-    QList<QPointF> strokePoints;
-    QList<qreal> strokePressures;
+    QList<QPointF> mStrokePoints;
+    QList<qreal> mStrokePressures;
 
-    qreal currentWidth;
-    qreal currentPressure;
+    qreal mCurrentWidth;
+    qreal mCurrentPressure;
 };
 
 #endif // STROKETOOL_H

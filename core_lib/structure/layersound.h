@@ -38,7 +38,7 @@ public:
 };
 
 
-class LayerSound : public LayerImage
+class LayerSound : public Layer
 {
     Q_OBJECT
 

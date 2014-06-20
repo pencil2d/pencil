@@ -3,7 +3,7 @@
 
 BaseManager::BaseManager(QObject* parent) :
     QObject(parent),
-    m_pEditor( nullptr )
+    mEditor( nullptr )
 {
 
 }
@@ -11,11 +11,11 @@ BaseManager::BaseManager(QObject* parent) :
 void BaseManager::setEditor(Editor* pEditor)
 {
     Q_ASSERT_X( pEditor, "BaseManager::setEditor", "Editor is null." );
-    m_pEditor = pEditor;
+    mEditor = pEditor;
 }
 
 Editor* BaseManager::editor()
 {
-    Q_ASSERT_X( m_pEditor, "BaseManager::editor()", "Editor is null" );
-    return m_pEditor;
+    Q_ASSERT_X( mEditor, "BaseManager::editor()", "Editor is null" );
+    return mEditor;
 }

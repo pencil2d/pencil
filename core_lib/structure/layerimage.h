@@ -29,12 +29,10 @@ class TimeLineCells;
 class KeyFrame;
 
 
-class LayerImage : public Layer
+class LayerImage
 {
-    Q_OBJECT
-
 public:
-    LayerImage( Object* object, LAYER_TYPE );
+    LayerImage();
 
     // FIXME: this API only used in vector layer
     virtual QImage* getImageAtIndex( int, QSize, bool, bool, qreal, bool, int ) { return NULL; }
@@ -43,10 +41,10 @@ public:
 
     // graphic representation -- could be put in another class
     virtual void paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
-    void mousePress( QMouseEvent* event, int frameNumber ) override;
-    void mouseMove( QMouseEvent* event, int frameNumber ) override;
-    void mouseRelease( QMouseEvent* event, int frameNumber ) override;
-    void mouseDoubleClick( QMouseEvent* event, int frameNumber ) override;
+    void mousePress( QMouseEvent* event, int frameNumber );
+    void mouseMove( QMouseEvent* event, int frameNumber );
+    void mouseRelease( QMouseEvent* event, int frameNumber );
+    void mouseDoubleClick( QMouseEvent* event, int frameNumber );
 
 };
 

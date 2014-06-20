@@ -6,8 +6,8 @@
 
 ColorManager::ColorManager( QObject* parent )
     : BaseManager( parent )
-    , m_currentColorIndex( 0 )
-    , m_currentFrontColor( 0, 0, 0 )
+    , mCurrentColorIndex( 0 )
+    , mCurrentFrontColor( 0, 0, 0 )
 {
 }
 
@@ -22,29 +22,29 @@ bool ColorManager::init()
 
 QColor ColorManager::frontColor()
 {
-    return editor()->object()->getColour( m_currentColorIndex ).colour;
+    return editor()->object()->getColour( mCurrentColorIndex ).colour;
 }
 
 void ColorManager::setColorNumber( int n )
 {
     Q_ASSERT( n >= 0 );
 
-    if ( m_currentColorIndex != n )
+    if ( mCurrentColorIndex != n )
     {
-        m_currentColorIndex = n;
+        mCurrentColorIndex = n;
 
-        QColor currentColor = editor()->object()->getColour( m_currentColorIndex ).colour;
-        emit colorNumberChanged(m_currentColorIndex);
+        QColor currentColor = editor()->object()->getColour( mCurrentColorIndex ).colour;
+        emit colorNumberChanged(mCurrentColorIndex);
 		emit colorChanged(currentColor);
     }
 }
 
 void ColorManager::setColor(const QColor& newColor)
 {
-    QColor currentColor = editor()->object()->getColour( m_currentColorIndex ).colour;
+    QColor currentColor = editor()->object()->getColour( mCurrentColorIndex ).colour;
     if (currentColor != newColor)
     {
-        editor()->object()->setColour( m_currentColorIndex, newColor );
+        editor()->object()->setColour( mCurrentColorIndex, newColor );
         emit colorChanged(newColor);
 
 		qDebug("Pick Color(R=%d, G=%d, B=%d)", newColor.red(), newColor.green(), newColor.blue());
@@ -53,5 +53,5 @@ void ColorManager::setColor(const QColor& newColor)
 
 int ColorManager::frontColorNumber()
 {
-    return m_currentColorIndex;
+    return mCurrentColorIndex;
 }

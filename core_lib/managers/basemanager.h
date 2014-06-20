@@ -18,7 +18,7 @@ public:
     virtual bool init() = 0;
 
 private:
-    Editor* m_pEditor;
+    Editor* mEditor;
 };
 
 #endif // BASEMANAGER_H
