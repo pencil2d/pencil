@@ -719,7 +719,6 @@ void Editor::setObject( Object* newObject )
 
     // the default selected layer is the last one
     layers()->setCurrentLayer( mObject->getLayerCount() - 1 );
-    //scrubTo( 1 );
 
     g_clipboardVectorImage.setObject( newObject );
 }

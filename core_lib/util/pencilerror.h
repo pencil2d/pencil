@@ -6,7 +6,8 @@
 enum PencilErrorCode
 {
     PCL_OK = 0,
-
+    PCL_FAIL,
+    
     // for Object loading
     PCL_ERROR_FILE_NOT_EXIST,
     PCL_ERROR_FILE_CANNOT_OPEN,
