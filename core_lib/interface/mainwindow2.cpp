@@ -364,15 +364,16 @@ bool MainWindow2::saveAsNewDocument()
 {
     QSettings settings( "Pencil", "Pencil" );
 
-    QString strDefaultFileName = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
-
-    if ( strDefaultFileName.isEmpty() )
+    QString strLastFolder = settings.value( "lastFilePath", QDir::homePath() ).toString();
+    if ( strLastFolder.isEmpty() )
     {
-        strDefaultFileName = QDir::homePath() + "/" + PFF_DEFAULT_FILENAME;
+        strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
     }
 
-    QString fileName = QFileDialog::getSaveFileName( this, tr( "Save As..." ), strDefaultFileName, tr( PFF_CLOSE_ALL_FILE_FILTER ) );
-
+    QString fileName = QFileDialog::getSaveFileName( this, 
+                                                     tr( "Save As..." ), 
+                                                     strLastFolder, 
+                                                     tr( PFF_SAVE_ALL_FILE_FILTER ) );
     if ( fileName.isEmpty() )
     {
         return false;
@@ -432,7 +433,7 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.setValue( 100 );
     return true;
 }
-
+/*
 bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
 {
     Q_UNUSED( filePath );
@@ -477,6 +478,8 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
     }
     return true;
 }
+*/
+
 
 // Added here (mainWindow2) to be easily located
 // TODO: Find a better place for this function
@@ -485,137 +488,26 @@ void MainWindow2::resetToolsSettings()
     m_pEditor->tools()->resetAllTools();
 }
 
-bool MainWindow2::saveObject( QString strSavedFilename )
+bool MainWindow2::saveObject( QString strSavedFileName )
 {
-    QString filePath = strSavedFilename;
-
-    bool savingTheOLDWAY = filePath.endsWith( PFF_OLD_EXTENSION );
-
-    QFileInfo fileInfo( filePath );
-    if ( fileInfo.isDir() ) return false;
-
-    QString tmpFilePath;
-    if ( !savingTheOLDWAY )
-    {
-		// create temporary directory for compressing files
-        tmpFilePath = QDir::tempPath() + "/" + fileInfo.completeBaseName() + PFF_TMP_COMPRESS_EXT;
-        QFileInfo tmpDataInfo( tmpFilePath );
-        if ( !tmpDataInfo.exists() )
-        {
-            QDir dir( QDir::tempPath() ); // --the directory where filePath is or will be saved
-            dir.mkpath( tmpFilePath ); // --creates a directory with the same name +".data"
-        }
-    }
-    else
-    {
-        tmpFilePath = fileInfo.absolutePath();
-    }
-
-
-    QString dataLayersDir;
-    if ( savingTheOLDWAY )
-    {
-        dataLayersDir = filePath + "." + PFF_OLD_DATA_DIR;
-    }
-    else
-    {
-        dataLayersDir = tmpFilePath + "/" + PFF_OLD_DATA_DIR;
-    }
-    QFileInfo dataInfo( dataLayersDir );
-    if ( !dataInfo.exists() )
-    {
-        QDir dir( tmpFilePath ); // the directory where filePath is or will be saved
-        dir.mkpath( dataLayersDir ); // creates a directory with the same name +".data"
-    }
-
-    setWindowTitle( filePath );
-
-    QProgressDialog progress( tr("Saving document..."), tr("Abort"), 0, 100, this );
+    QProgressDialog progress( tr( "Saving document..." ), tr( "Abort" ), 0, 100, this );
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
-    int progressValue = 0;
 
-    Object* m_pObject = m_pEditor->object();
-    // save data
-    int nLayers = m_pObject->getLayerCount();
-    qDebug( "Layer Count=%d", nLayers );
-
-    for ( int i = 0; i < nLayers; i++ )
-    {
-        Layer* layer = m_pObject->getLayer( i );
-        qDebug() << "Saving Layer " << i << "(" << layer->mName << ")";
-
-        progressValue = (i * 100) / nLayers;
-        progress.setValue( progressValue );
-        switch ( layer->type() )
-        {
-        case Layer::BITMAP:
-        case Layer::VECTOR:
-        case Layer::SOUND:
-            layer->save( dataLayersDir );
-            break;
-		case Layer::CAMERA:
-			break;
-        }
-    }
-
-    // save palette
-    m_pObject->savePalette( dataLayersDir );
-
-    // -------- save main XML file -----------
-    QString mainXMLfile;
-    if ( !savingTheOLDWAY )
-    {
-        mainXMLfile = tmpFilePath + "/" + PFF_XML_FILE_NAME;
-    }
-    else
-    {
-        mainXMLfile = filePath;
-    }
-    QFile* file = new QFile( mainXMLfile );
-    if ( !file->open( QFile::WriteOnly | QFile::Text ) )
-    {
-        //QMessageBox::warning(this, "Warning", "Cannot write file");
-        return false;
-    }
-    QTextStream out( file );
-    QDomDocument doc( "PencilDocument" );
-    QDomElement root = doc.createElement( "document" );
-    doc.appendChild( root );
-
-    // save editor information
-    QDomElement editorElement = createDomElement( doc );
-    root.appendChild( editorElement );
-    qDebug( "Save Editor Node." );
-
-    // save object
-    QDomElement objectElement = m_pObject->createDomElement( doc );
-    root.appendChild( objectElement );
-    qDebug( "Save Object Node." );
-
-    int IndentSize = 2;
-    doc.save( out, IndentSize );
-    // -----------------------------------
-
-    if ( !savingTheOLDWAY )
-    {
-        qDebug() << "Now compressing data to PFF - PCLX ...";
-
-        JlCompress::compressDir( filePath, tmpFilePath );
-        removePFFTmpDirectory( tmpFilePath ); // --removing temporary files
-
-        qDebug() << "Compressed. File saved.";
-    }
+    ObjectSaveLoader* saveLoader = new ObjectSaveLoader( this );
+    bool ok = saveLoader->save( m_pEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
 
-    m_pObject->setModified( false );
+    //m_pObject->setModified( false );
     m_pTimeLine->updateContent();
 
-    m_pObject->setFilePath( strSavedFilename );
+    //m_pObject->setFilePath( strSavedFileName );
 
-    m_recentFileMenu->addRecentFile( strSavedFilename );
+    m_recentFileMenu->addRecentFile( strSavedFileName );
     m_recentFileMenu->saveToDisk();
+
+    setWindowTitle( strSavedFileName );
 
     return true;
 }
@@ -654,6 +546,7 @@ bool MainWindow2::maybeSave()
     return true;
 }
 
+/*
 QDomElement MainWindow2::createDomElement( QDomDocument& doc )
 {
     QDomElement tag = doc.createElement( "editor" );
@@ -677,6 +570,7 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
 
     return tag;
 }
+*/
 
 void MainWindow2::showPreferences()
 {

@@ -34,6 +34,7 @@ private:
     bool loadObjectOladWay( Object*, const QDomElement& root, const QString& strDataFolder );
 
     QString extractZipToTempFolder( QString strZipFile );
+    QString createTempWorkingFolder( QString strFileName );
     void    cleanUpTempFolder();
     bool    isFileExists( QString strFilename );
     bool    loadDomElement( QDomElement element );
