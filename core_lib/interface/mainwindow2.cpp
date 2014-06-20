@@ -197,7 +197,7 @@ void MainWindow2::createMenus()
     connect( ui->actionFlip_Y, &QAction::triggered, m_pEditor, &Editor::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, m_pEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, m_pEditor, &Editor::deselectAll );
-    connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::showPreferences );
+    connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::preferences );
 
     ui->actionRedo->setEnabled( false );
 
@@ -262,7 +262,7 @@ void MainWindow2::createMenus()
     connect(ui->actionEyedropper, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eyedropperOn );
     connect(ui->actionEraser, &QAction::triggered, m_pToolBox, &ToolBoxWidget::eraserOn );
     connect(ui->actionTogglePalette, &QAction::triggered, m_pScribbleArea,&ScribbleArea::togglePopupPalette );
-    connect(ui->actionResetToolsDefault, &QAction::triggered, this, &MainWindow2::resetToolsSettings );
+    connect(ui->actionResetToolsDefault, &QAction::triggered, m_pEditor->tools(), &ToolManager::resetAllTools );
 
     /// --- Window Menu ---
     QMenu* pWinMenu = ui->menuWindows;
@@ -420,9 +420,8 @@ bool MainWindow2::openObject( QString strFilePath )
 
     m_pEditor->setObject( object );
 
-    object->setFilePath( strFilePath );
     QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "LastFilePath", QVariant( object->filePath() ) );
+    settings.setValue( "LastFilePath", object->filePath() );
 
     m_recentFileMenu->addRecentFile( object->filePath() );
     m_recentFileMenu->saveToDisk();
@@ -480,14 +479,6 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
 }
 */
 
-
-// Added here (mainWindow2) to be easily located
-// TODO: Find a better place for this function
-void MainWindow2::resetToolsSettings()
-{
-    m_pEditor->tools()->resetAllTools();
-}
-
 bool MainWindow2::saveObject( QString strSavedFileName )
 {
     QProgressDialog progress( tr( "Saving document..." ), tr( "Abort" ), 0, 100, this );
@@ -499,13 +490,13 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     progress.setValue( 100 );
 
-    //m_pObject->setModified( false );
-    m_pTimeLine->updateContent();
-
-    //m_pObject->setFilePath( strSavedFileName );
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue( "LastFilePath", strSavedFileName );
 
     m_recentFileMenu->addRecentFile( strSavedFileName );
     m_recentFileMenu->saveToDisk();
+    
+    m_pTimeLine->updateContent();
 
     setWindowTitle( strSavedFileName );
 
@@ -572,7 +563,7 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
 }
 */
 
-void MainWindow2::showPreferences()
+void MainWindow2::preferences()
 {
     m_pPreferences = new Preferences( this );
 

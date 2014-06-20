@@ -101,6 +101,8 @@ Object* ObjectSaveLoader::load( QString strFileName )
         ok = loadObjectOladWay( object, root, strDataFolder );
     }
 
+    object->setFilePath( strFileName );
+
     return object;
 }
 
@@ -235,6 +237,10 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
 
         qCDebug( mLog ) << "Compressed. File saved.";
     }
+
+    object->setFilePath( strFileName );
+    object->setModified( false );
+
     return true;
 }
 

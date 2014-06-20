@@ -42,15 +42,14 @@ public slots:
     void undoActSetEnabled(void);
     void newDocument();
     void openDocument();
-    bool saveAsNewDocument();
     void saveDocument();
+    bool saveAsNewDocument();
     bool maybeSave();
-    void showPreferences();
-    
+
+    void preferences();
     void helpBox();
     void aboutPencil();
 
-    void resetToolsSettings();
     void openFile(QString filename);
 
 protected:
