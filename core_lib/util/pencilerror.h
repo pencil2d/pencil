@@ -1,9 +1,10 @@
 #ifndef PENCILERROR_H
 #define PENCILERROR_H
 
-#include <QObject>
+#include <QString>
 
-enum PencilErrorCode
+
+enum Result
 {
     PCL_OK = 0,
     PCL_FAIL,
@@ -20,12 +21,12 @@ class PencilError
 {
 public:
     PencilError() { m_eCode = PCL_OK; }
-    PencilError( PencilErrorCode eCode ) { m_eCode = eCode; }
-    PencilErrorCode code() { return m_eCode; }
+    PencilError( Result eCode ) { m_eCode = eCode; }
+    Result code() { return m_eCode; }
     QString msg();
 
 private:
-    PencilErrorCode m_eCode;
+    Result m_eCode;
 };
 
 #endif // PENCILERROR_H

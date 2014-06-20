@@ -1,11 +1,12 @@
 
 #include <unordered_map>
+#include <QObject>
 #include "pencilerror.h"
 
 
 QString PencilError::msg()
 {
-    static std::unordered_map<PencilErrorCode, QString> errorMsgMap = 
+    static std::unordered_map<Result, QString> msgMap = 
     {
         // error messages.
         { PCL_OK, QObject::tr(  "Everything ok." ) },
@@ -16,10 +17,10 @@ QString PencilError::msg()
         { PCL_ERROR_INVALID_PENCIL_FILE, QObject::tr( "The file is not valid pencil document." ) },
     };
 
-    auto it = errorMsgMap.find( m_eCode );
-    if ( it == errorMsgMap.end() )
+    auto it = msgMap.find( m_eCode );
+    if ( it == msgMap.end() )
     {
-        return errorMsgMap[ PCL_FAIL ];
+        return msgMap[ PCL_FAIL ];
     }
-    return errorMsgMap[ m_eCode ];
+    return msgMap[ m_eCode ];
 }
