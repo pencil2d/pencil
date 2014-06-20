@@ -15,7 +15,7 @@ GNU General Public License for more details.
 */
 
 #include "editor.h"
-
+#include <memory>
 #include <iostream>
 #include <QApplication>
 #include <QClipboard>
@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include <QDragEnterEvent>
 #include <QDropEvent>
 
+#include "object.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
@@ -60,8 +61,8 @@ static BitmapImage g_clipboardBitmapImage;
 static VectorImage g_clipboardVectorImage;
 
 
-Editor::Editor( MainWindow2* parent )
-    : QObject( parent )
+Editor::Editor( MainWindow2* parent ) : QObject( parent )
+    , mLog( "Editor" )
     , exportFramesDialog( nullptr ) // will be created when needed
     , exportMovieDialog( nullptr )
     , exportFlashDialog( nullptr )
@@ -75,10 +76,10 @@ Editor::Editor( MainWindow2* parent )
 {
     mMainWindow = parent;
 
-    QSettings settings( "Pencil", "Pencil" );
-
     m_isAltPressed = false;
     numberOfModifications = 0;
+
+    QSettings settings( "Pencil", "Pencil" );
     mIsAutosave = settings.value( "autosave" ).toBool();
     autosaveNumber = settings.value( "autosaveNumber" ).toInt();
     if ( autosaveNumber == 0 )
@@ -105,10 +106,6 @@ Editor::Editor( MainWindow2* parent )
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
-    if ( mObject != NULL )
-    {
-        delete mObject;
-    }
     clearUndoStack();
 }
 
@@ -536,7 +533,7 @@ void Editor::paste()
                 }
             }
             auto pLayerBitmap = static_cast< LayerBitmap* >( layer );
-            pLayerBitmap->getLastBitmapImageAtFrame( currentFrame(), 0)->paste( &tobePasted ); // paste the clipboard
+            pLayerBitmap->getLastBitmapImageAtFrame( currentFrame(), 0 )->paste( &tobePasted ); // paste the clipboard
         }
         else if ( layer->type() == Layer::VECTOR && clipboardVectorOk )
         {
@@ -705,17 +702,12 @@ void Editor::resetUI()
 
 void Editor::setObject( Object* newObject )
 {
-    if ( newObject == NULL )
-    {
-        return;
-    }
-    if ( newObject == this->mObject )
-    {
-        return;
-    }
-    mObject = newObject;
+    if ( newObject == NULL ) { return; }
+    if ( newObject == mObject.get() ) { return; }
 
-    qDebug( "New object loaded." );
+    mObject.reset( newObject );
+
+    //qDebug( "New object loaded." );
 
     // the default selected layer is the last one
     layers()->setCurrentLayer( mObject->getLayerCount() - 1 );
@@ -909,7 +901,7 @@ QMatrix Editor::map( QRectF source, QRectF target )   // this method should be p
         if ( !mirror )
         {
             matrix = QMatrix( ( x2P - x1P ) / ( x2 - x1 ), 0,
-                              0,  ( y2P - y1P ) / ( y2 - y1 ),
+                              0, ( y2P - y1P ) / ( y2 - y1 ),
                               ( x1P*x2 - x2P*x1 ) / ( x2 - x1 ), ( y1P*y2 - y2P*y1 ) / ( y2 - y1 ) );
         }
         else
@@ -938,9 +930,9 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     int projectLength = layers()->projectLength();
 
     mObject->exportFrames( 1, projectLength, layers()->currentLayer(),
-                             exportSize,
-                             filePath,
-                             exportFormat, -1, false, true, NULL, 0 );
+                           exportSize,
+                           filePath,
+                           exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
@@ -951,13 +943,13 @@ bool Editor::exportImageSequence()
     QString strDefaultPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
     if ( strDefaultPath.isEmpty() )
     {
-        strDefaultPath= QDir::homePath() + "/untitled.png";
+        strDefaultPath = QDir::homePath() + "/untitled.png";
     }
 
     QString strFilePath = QFileDialog::getSaveFileName( mMainWindow,
-                                                     tr( "Save Image Sequence" ),
-                                                     strDefaultPath,
-                                                     tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
+                                                        tr( "Save Image Sequence" ),
+                                                        strDefaultPath,
+                                                        tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
     if ( strFilePath.isEmpty() )
     {
         return false;
@@ -979,9 +971,9 @@ bool Editor::exportImageSequence()
 
     int projectLength = layers()->projectLength();
     mObject->exportFrames( 1, projectLength,
-                             layers()->currentLayer(),
-                             exportSize, strFilePath,
-                             exportFormat, -1, false, true, NULL, 0 );
+                           layers()->currentLayer(),
+                           exportSize, strFilePath,
+                           exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
 
@@ -1221,7 +1213,7 @@ void Editor::importImage( QString filePath )
                     int fps = playback()->fps();
                     timeLeft -= ( timeLeft / ( 1000 / fps ) + 1 )*( 1000 / fps );
 
-                    while ( timeLeft<0 && numImages > 0 )
+                    while ( timeLeft < 0 && numImages > 0 )
                     {
                         importedImageReader->read( importedImage );
                         numImages--;
@@ -1353,7 +1345,7 @@ void Editor::scrubTo( int frame )
         mScribbleArea->updateAllFrames();
     }
 
-    
+
     getTimeLine()->updateFrame( oldFrame );
     getTimeLine()->updateFrame( mFrame );
     getTimeLine()->updateContent();

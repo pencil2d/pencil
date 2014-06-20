@@ -33,7 +33,7 @@ GNU General Public License for more details.
 
 #define PFF_DEFAULT_FILENAME	"untitled.pclx"
 
-#define PFF_LAYERS_DIR 			"data"
+#define PFF_OLD_DATA_DIR 			"data"
 #define PFF_XML_FILE_NAME 		"main.xml"
 #define PFF_TMP_COMPRESS_EXT 	".Y2xC"
 #define PFF_TMP_DECOMPRESS_EXT 	".Y2xD"

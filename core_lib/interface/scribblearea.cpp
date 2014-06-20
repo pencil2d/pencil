@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QMessageBox>
 
 #include "beziercurve.h"
+#include "object.h"
 #include "editor.h"
 #include "layerbitmap.h"
 #include "layervector.h"

@@ -3,6 +3,7 @@
 #include <QSettings>
 #include <QResizeEvent>
 #include <QMouseEvent>
+#include "object.h"
 #include "editor.h"
 #include "timeline.h"
 #include "layermanager.h"

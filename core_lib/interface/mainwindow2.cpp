@@ -68,12 +68,12 @@ MainWindow2::MainWindow2( QWidget *parent )
     m_pScribbleArea->setFocusPolicy( Qt::StrongFocus );
     setCentralWidget( m_pScribbleArea );
 
-    m_pObject = new Object();
-    m_pObject->init();
+    Object* object = new Object();
+    object->init();
 
     m_pEditor = new Editor( this );
     m_pEditor->initialize( m_pScribbleArea );
-    m_pEditor->setObject( m_pObject );
+    m_pEditor->setObject( object );
 
     m_pScribbleArea->setCore( m_pEditor );
     m_pEditor->setScribbleArea( m_pScribbleArea );
@@ -309,25 +309,18 @@ void MainWindow2::closeEvent( QCloseEvent* event )
     }
 }
 
-void MainWindow2::tabletEvent( QTabletEvent *event )
+void MainWindow2::tabletEvent( QTabletEvent* event )
 {
     event->ignore();
 }
-
-// ==== SLOT ====
 
 void MainWindow2::newDocument()
 {
     if ( maybeSave() )
     {
-        //
-        m_pObject->deleteLater();
-        // default size
-
-        m_pObject = new Object();
-        m_pObject->init();
-
-        m_pEditor->setObject( m_pObject );
+        Object* object = new Object();
+        object->init();
+        m_pEditor->setObject( object );
         m_pEditor->resetUI();
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
@@ -340,12 +333,11 @@ void MainWindow2::openDocument()
     {
         QSettings settings( "Pencil", "Pencil" );
 
-        QString myPath = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
-        QString fileName = QFileDialog::getOpenFileName(
-            this,
-            tr( "Open File..." ),
-            myPath,
-            tr( PFF_OPEN_ALL_FILE_FILTER ) );
+        QString strLastOpenPath = settings.value( "lastFilePath", QDir::homePath() ).toString();
+        QString fileName = QFileDialog::getOpenFileName( this,
+                                                         tr( "Open File..." ),
+                                                         strLastOpenPath,
+                                                         tr( PFF_OPEN_ALL_FILE_FILTER ) );
 
         if ( fileName.isEmpty() )
         {
@@ -403,17 +395,14 @@ void MainWindow2::openFile( QString filename )
     if ( !ok )
     {
         QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
-        Object* pObject = new Object();
-        pObject->init();
-
-        m_pEditor->setObject( pObject );
-        m_pEditor->resetUI();
+        newDocument();
     }
 }
 
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
+
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
@@ -421,200 +410,24 @@ bool MainWindow2::openObject( QString strFilePath )
     m_pScribbleArea->setMyView( QMatrix() );
 
     ObjectSaveLoader objectLoader( this );
-    Object* pObject = objectLoader.loadFromFile( strFilePath );
+    Object* object = objectLoader.load( strFilePath );
 
-    if ( pObject != NULL && objectLoader.error().code() == PCL_OK )
-    {
-        SafeDelete( m_pObject );
-        m_pObject = pObject;
-
-        pObject->setFilePath( strFilePath );
-        QSettings settings( "Pencil", "Pencil" );
-        settings.setValue( "LastFilePath", QVariant( pObject->filePath() ) );
-
-        m_pEditor->setObject( pObject );
-        m_pEditor->updateObject();
-
-        m_recentFileMenu->addRecentFile( pObject->filePath() );
-        m_recentFileMenu->saveToDisk();
-
-        qDebug() << "Current File Path=" << pObject->filePath();
-        setWindowTitle( pObject->filePath() );
-    }
-    else
-    {
-        return false;
-    }
-    return true;
-
-    //-------------------
-    QString filePath = strFilePath;
-
-    bool openingTheOLDWAY = true;
-    QString realXMLFilePath = filePath;
-    QString tmpFilePath;
-
-    // ---- test before opening ----
-    QStringList zippedFileList = JlCompress::getFileList( filePath );
-    if ( !zippedFileList.empty() )
-    {
-        qDebug() << "Recognized New zipped Pencil File Format !";
-        openingTheOLDWAY = false;
-
-        // ---- now decompress PFF -----
-        QFileInfo fileInfo( filePath );
-        QDir dir( QDir::tempPath() );
-        tmpFilePath = QDir::tempPath() + "/" + fileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT;
-        if ( fileInfo.exists() ) {
-            dir.rmpath( tmpFilePath ); // --removes an old decompression directory
-            removePFFTmpDirectory( tmpFilePath ); // --removes an old decompression directory - better approach
-        }
-        dir.mkpath( tmpFilePath ); // --creates a new decompression directory
-
-        JlCompress::extractDir( filePath, tmpFilePath );
-
-        realXMLFilePath = tmpFilePath + "/" + PFF_XML_FILE_NAME;
-    }
-    else
-    {
-        qDebug() << "Recognized Old Pencil File Format !";
-    }
-
-    QScopedPointer<QFile> file( new QFile( realXMLFilePath ) );
-    if ( !file->open( QFile::ReadOnly ) )
-    {
-        if ( !openingTheOLDWAY )
-        {
-            removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
-        }
-        return false;
-    }
-
-    QDomDocument doc;
-    if ( !doc.setContent( file.data() ) )
-    {
-        if ( !openingTheOLDWAY )
-        {
-            removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
-        }
-        return false; // this is not a XML file
-    }
-    QDomDocumentType type = doc.doctype();
-    if ( type.name() != "PencilDocument" && type.name() != "MyObject" )
-    {
-        if ( !openingTheOLDWAY )
-        {
-            removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
-        }
-        return false; // this is not a Pencil document
-    }
-
-    // delete old object @sent foreward -> if (ok)
-    /*if (m_object != NULL)
-    {
-    m_object->deleteLater();
-    }*/
-
-    // -----------------------------
-
-
-    //QSettings settings("Pencil","Pencil");
-    //settings.setValue("lastFilePath", QVariant(object->strCurrentFilePath) );
-
-    QString dataLayersDir;
-    if ( openingTheOLDWAY )
-    {
-        dataLayersDir = filePath + "." + PFF_LAYERS_DIR;
-    }
-    else
-    {
-        dataLayersDir = tmpFilePath + "/" + PFF_LAYERS_DIR;
-    }
-
-    Object* newObject = new Object();
-    if ( !newObject->loadPalette( dataLayersDir ) )
-    {
-        newObject->loadDefaultPalette();
-    }
-    m_pEditor->setObject( newObject );
-
-    newObject->setFilePath( filePath );
-
-    // ------- reads the XML file -------
-    bool ok = true;
-    int progVal = 0;
-    QDomElement docElem = doc.documentElement();
-    if ( docElem.isNull() )
+    if ( object == nullptr || objectLoader.error().code() != PCL_OK )
     {
         return false;
     }
 
-    if ( docElem.tagName() == "document" )
-    {
-        qDebug( "Object Loader: start." );
+    m_pEditor->setObject( object );
 
-        qreal rProgressValue = 0;
-        qreal rProgressDelta = 100 / docElem.childNodes().count();
+    object->setFilePath( strFilePath );
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue( "LastFilePath", QVariant( object->filePath() ) );
 
-        QDomNode tag = docElem.firstChild();
+    m_recentFileMenu->addRecentFile( object->filePath() );
+    m_recentFileMenu->saveToDisk();
 
-        while ( !tag.isNull() )
-        {
-            QDomElement element = tag.toElement(); // try to convert the node to an element.
-            if ( !element.isNull() )
-            {
-                progVal = qMin( (int)rProgressValue, 100 );
-                progress.setValue( progVal );
-                rProgressValue += rProgressDelta;
-
-                if ( element.tagName() == "editor" )
-                {
-                    qDebug( "  Load editor" );
-                    loadDomElement( element, filePath );
-                }
-                else if ( element.tagName() == "object" )
-                {
-                    qDebug( "  Load object" );
-                    ok = newObject->loadDomElement( element, dataLayersDir );
-                    qDebug() << "    dataDir:" << dataLayersDir;
-                }
-            }
-            tag = tag.nextSibling();
-        }
-    }
-    else
-    {
-        if ( docElem.tagName() == "object" || docElem.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
-        {
-            ok = newObject->loadDomElement( docElem, filePath );
-        }
-    }
-
-    // ------------------------------
-    if ( ok )
-    {
-        m_pEditor->updateObject();
-
-        if ( !openingTheOLDWAY )
-        {
-            removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
-        }
-
-        m_recentFileMenu->addRecentFile( filePath );
-        m_recentFileMenu->saveToDisk();
-
-        //qDebug() << "Current File Path=" << newObject->strCurrentFilePath;
-        setWindowTitle( newObject->filePath() );
-
-        // FIXME: need to free the old object. but delete object will crash app, don't know why.
-        // fixed by shoshon... don't know if it's right
-        Object* objectToDelete = m_pObject;
-        m_pObject = newObject;
-        if ( objectToDelete != NULL )
-        {
-            delete objectToDelete;
-        }
-    }
+    //qDebug() << "Current File Path=" << object->filePath();
+    setWindowTitle( object->filePath() );
 
     progress.setValue( 100 );
     return true;
@@ -702,11 +515,11 @@ bool MainWindow2::saveObject( QString strSavedFilename )
     QString dataLayersDir;
     if ( savingTheOLDWAY )
     {
-        dataLayersDir = filePath + "." + PFF_LAYERS_DIR;
+        dataLayersDir = filePath + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dataLayersDir = tmpFilePath + "/" + PFF_LAYERS_DIR;
+        dataLayersDir = tmpFilePath + "/" + PFF_OLD_DATA_DIR;
     }
     QFileInfo dataInfo( dataLayersDir );
     if ( !dataInfo.exists() )
@@ -722,6 +535,7 @@ bool MainWindow2::saveObject( QString strSavedFilename )
     progress.show();
     int progressValue = 0;
 
+    Object* m_pObject = m_pEditor->object();
     // save data
     int nLayers = m_pObject->getLayerCount();
     qDebug( "Layer Count=%d", nLayers );
@@ -808,9 +622,9 @@ bool MainWindow2::saveObject( QString strSavedFilename )
 
 void MainWindow2::saveDocument()
 {
-    if ( !m_pObject->filePath().isEmpty() )
+    if ( !m_pEditor->object()->filePath().isEmpty() )
     {
-        saveObject( m_pObject->filePath() );
+        saveObject( m_pEditor->object()->filePath() );
     }
     else
     {
@@ -820,11 +634,10 @@ void MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if ( m_pObject->isModified() )
+    if ( m_pEditor->object()->isModified() )
     {
         int ret = QMessageBox::warning( this, tr( "Warning" ),
-                                        tr( "This animation has been modified.\n"
-                                        "Do you want to save your changes?" ),
+                                        tr( "This animation has been modified.\n Do you want to save your changes?" ),
                                         QMessageBox::Yes | QMessageBox::Default,
                                         QMessageBox::No,
                                         QMessageBox::Cancel | QMessageBox::Escape );
@@ -1010,22 +823,6 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEyedropper->setShortcut( cmdKeySeq( CMD_TOOL_EYEDROPPER ) );
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
 
-    /*
-    auto bindShortcut = [ & ]( QKeySequence key, QAction* action )
-    {
-        QObject::connect( new QShortcut( key, this ), &QShortcut::activated, [ & ]
-        {
-            if ( action->isEnabled() )
-            {
-                emit action->triggered();
-                qDebug( "kerker" );
-            }
-        } );
-    };
-
-    bindShortcut( cmdKeySeq( CMD_TOOL_MOVE ), ui->actionMove );
-    bindShortcut( cmdKeySeq( CMD_TOOL_PEN ), ui->actionPen );
-    */
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
     m_pScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
     m_pScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
@@ -1096,7 +893,7 @@ void MainWindow2::exportPalette()
     QString filePath = QFileDialog::getSaveFileName( this, tr( "Export As" ), initialPath );
     if ( !filePath.isEmpty() )
     {
-        m_pObject->exportPalette( filePath );
+        m_pEditor->object()->exportPalette( filePath );
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
@@ -1112,7 +909,7 @@ void MainWindow2::importPalette()
     QString filePath = QFileDialog::getOpenFileName( this, tr( "Import" ), initialPath );
     if ( !filePath.isEmpty() )
     {
-        m_pObject->importPalette( filePath );
+        m_pEditor->object()->importPalette( filePath );
         m_pColorPalette->refreshColorList();
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }

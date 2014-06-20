@@ -55,6 +55,7 @@ public:
     Object* object() { return mObject; }
 
     void setName( QString name ) { mName = name; }
+    QString name() { return mName; }
 
     void switchVisibility() { visible = !visible; }
 
@@ -66,7 +67,7 @@ public:
     int getMaxKeyFramePosition();
     int getFirstKeyFramePosition();
 
-    int keyFrameCount() { return mKeyFrames.size(); }
+    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
 
     virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;

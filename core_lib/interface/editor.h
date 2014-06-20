@@ -17,11 +17,12 @@ GNU General Public License for more details.
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <memory>
 #include <QList>
+#include <QLoggingCategory>
 #include <QLabel>
 #include <QToolButton>
 #include <QSpinBox>
-#include "object.h"
 #include "backupelement.h"
 
 class QComboBox;
@@ -33,6 +34,7 @@ class LayerManager;
 class PlaybackManager;
 class ScribbleArea;
 class TimeLine;
+class Object;
 
 
 class Editor : public QObject
@@ -54,7 +56,7 @@ public:
     LayerManager*    layers() const { return mLayerManager; }
     PlaybackManager* playback() const { return mPlaybackManager; }
 
-    Object* object() const { return mObject; }
+    Object* object() const { return mObject.get(); }
     void setObject( Object* object );
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
@@ -182,7 +184,8 @@ private slots:
 private:
     TimeLine* getTimeLine();
 
-    Object* mObject = nullptr;  // the object to be edited by the editor
+    // the object to be edited by the editor
+    std::shared_ptr<Object> mObject = nullptr;  
 
     int mFrame;
 
@@ -193,6 +196,8 @@ private:
     ToolManager*     mToolManager = nullptr;
     LayerManager*    mLayerManager = nullptr;
     PlaybackManager* mPlaybackManager = nullptr;
+    
+    QLoggingCategory mLog;
 
     bool m_isAltPressed;
     int numberOfModifications;

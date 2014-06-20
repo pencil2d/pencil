@@ -83,101 +83,44 @@ bool Object::loadDomElement( QDomElement docElem, QString dataDirPath )
         return false;
     }
     int layerNumber = -1;
-    QDomNode tag = docElem.firstChild();
-
+    
     bool someRelevantData = false;
-    while ( !tag.isNull() )
+    for ( QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
-        QDomElement element = tag.toElement(); // try to convert the node to an element.
-        if ( !element.isNull() )
+        QDomElement element = node.toElement(); // try to convert the node to an element.
+        if ( element.tagName() == "layer" )
         {
-            if ( element.tagName() == "layer" )
+            someRelevantData = true;
+            if ( element.attribute( "type" ).toInt() == Layer::BITMAP )
             {
-                someRelevantData = true;
-                // --- bitmap layer ---
-                if ( element.attribute( "type" ).toInt() == Layer::BITMAP )
-                {
-                    addNewBitmapLayer();
-                    layerNumber++;
-                    ( ( LayerBitmap* )( getLayer( layerNumber ) ) )->loadDomElement( element, dataDirPath );
-                }
-                // --- vector layer ---
-                if ( element.attribute( "type" ).toInt() == Layer::VECTOR )
-                {
-                    addNewVectorLayer();
-                    layerNumber++;
-                    ( ( LayerVector* )( getLayer( layerNumber ) ) )->loadDomElement( element, dataDirPath );
-                }
-                // --- sound layer ---
-                if ( element.attribute( "type" ).toInt() == Layer::SOUND )
-                {
-                    addNewSoundLayer();
-                    layerNumber++;
-                    ( ( LayerSound* )( getLayer( layerNumber ) ) )->loadDomElement( element, dataDirPath );
-                }
-                // --- camera layer ---
-                if ( element.attribute( "type" ).toInt() == Layer::CAMERA )
-                {
-                    addNewCameraLayer();
-                    layerNumber++;
-                    ( ( LayerCamera* )( getLayer( layerNumber ) ) )->loadDomElement( element, dataDirPath );
-                }
+                addNewBitmapLayer();
+                layerNumber++;
+                getLayer( layerNumber )->loadDomElement( element, dataDirPath );
+            }
+            else if ( element.attribute( "type" ).toInt() == Layer::VECTOR )
+            {
+                addNewVectorLayer();
+                layerNumber++;
+                getLayer( layerNumber )->loadDomElement( element, dataDirPath );
+            }
+            else if ( element.attribute( "type" ).toInt() == Layer::SOUND )
+            {
+                addNewSoundLayer();
+                layerNumber++;
+                getLayer( layerNumber )->loadDomElement( element, dataDirPath );
+            }
+            else if ( element.attribute( "type" ).toInt() == Layer::CAMERA )
+            {
+                addNewCameraLayer();
+                layerNumber++;
+                getLayer( layerNumber )->loadDomElement( element, dataDirPath );
             }
         }
-        tag = tag.nextSibling();
     }
-    qDebug() << "  Load object finish.  Layer Count=" << getLayerCount();
     return someRelevantData;
 }
 
-
-bool Object::read( QString filePath )
-{
-    QFileInfo fileInfo( filePath );
-    if ( fileInfo.isDir() ) return false;
-
-    QFile* file = new QFile( filePath );
-    if ( !file->open( QFile::ReadOnly ) ) return false;
-
-    QDomDocument doc;
-    doc.setContent( file );
-
-    QDomElement docElem = doc.documentElement();
-    loadDomElement( docElem, filePath );
-
-    /*
-    // old code: list all the files beginning with the same name
-    QStringList list = name.split(".");
-    QStringList filtername(list.at(0)+"*.*");
-    QDir dir(fileInfo.absolutePath());
-    QStringList entries = dir.entryList(filtername,QDir::Files,QDir::Type);
-    */
-    return true;
-}
-
-bool Object::write( QString filePath )
-{
-    QFile* file = new QFile( filePath );
-    if ( !file->open( QFile::WriteOnly | QFile::Text ) )
-    {
-        qDebug() << "Object - Cannot write file" << filePath;
-        return false;
-    }
-    QTextStream out( file );
-
-    QDomDocument doc( "PencilDocument" );
-    QDomElement root = createDomElement( doc );
-    doc.appendChild( root );
-
-    int IndentSize = 2;
-    qDebug() << "--- Starting to write XML file...";
-    doc.save( out, IndentSize );
-    file->close();
-    qDebug() << "--- Writing XML file done.";
-    return true;
-}
-
-LayerBitmap *Object::addNewBitmapLayer()
+LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap( this );
     layerBitmap->mId = 1 + getMaxID();
@@ -186,7 +129,7 @@ LayerBitmap *Object::addNewBitmapLayer()
     return layerBitmap;
 }
 
-LayerVector *Object::addNewVectorLayer()
+LayerVector* Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector( this );
     layerVector->mId = 1 + getMaxID();
@@ -195,7 +138,7 @@ LayerVector *Object::addNewVectorLayer()
     return layerVector;
 }
 
-LayerSound *Object::addNewSoundLayer()
+LayerSound* Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound( this );
     layerSound->mId = 1 + getMaxID();
@@ -203,7 +146,7 @@ LayerSound *Object::addNewSoundLayer()
     return layerSound;
 }
 
-LayerCamera *Object::addNewCameraLayer()
+LayerCamera* Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera( this );
     layerCamera->mId = 1 + getMaxID();

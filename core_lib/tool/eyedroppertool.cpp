@@ -1,19 +1,19 @@
+
+#include "eyedroppertool.h"
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>
 
 #include "pencilsettings.h"
-
-#include "layermanager.h"
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
 #include "colormanager.h"
-
+#include "object.h"
 #include "editor.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 
-#include "eyedroppertool.h"
 
 EyedropperTool::EyedropperTool(QObject *parent) :
     BaseTool(parent)

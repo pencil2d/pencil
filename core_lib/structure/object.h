@@ -76,9 +76,6 @@ public:
     QDomElement createDomElement( QDomDocument& doc );
     bool loadDomElement( QDomElement element, QString dataDirPath );
 
-    bool read( QString filePath );
-    bool write( QString filePath );
-
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
     ColourRef getColour( int i );
@@ -111,12 +108,14 @@ public:
     void playSoundIfAny( int frame, int fps );
     void stopSoundIfAny();
 
+    // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax );
     bool exportFrames1( ExportFrames1Parameters parameters );
     bool exportMovie( ExportMovieParameters parameters );
     bool exportX( int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing );
     bool exportIm( int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing );
     bool exportFlash( int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression );
+
 
     void modification() { modified = true; }
     void toggleMirror() { mMirror = !mMirror; }

@@ -34,15 +34,7 @@ public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
-    // Data Model
-    Object* m_pObject;
-
-    // Core controller
     Editor* m_pEditor;
-
-protected:
-    void tabletEvent(QTabletEvent* event) override;
-    RecentFileMenu* m_recentFileMenu;
 
 public slots:
     void setOpacity(int opacity);
@@ -57,6 +49,9 @@ public slots:
     bool openObject(QString strFilename);
     void resetToolsSettings();
     void openFile(QString filename);
+
+protected:
+    void tabletEvent( QTabletEvent* event ) override;
 
 private slots:
     bool saveObject(QString strSavedFilename);
@@ -99,6 +94,8 @@ private:
     DisplayOptionWidget*     m_pDisplayOptionWidget;
     ToolOptionWidget*        m_pToolOptionWidget;
     ToolBoxWidget*           m_pToolBox;
+
+    RecentFileMenu* m_recentFileMenu;
 
 public:
     TimeLine*                m_pTimeLine; // be public temporary

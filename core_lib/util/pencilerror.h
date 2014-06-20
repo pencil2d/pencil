@@ -4,7 +4,7 @@
 #include <QString>
 
 
-enum Result
+enum ResultCode
 {
     PCL_OK = 0,
     PCL_FAIL,
@@ -21,12 +21,12 @@ class PencilError
 {
 public:
     PencilError() { m_eCode = PCL_OK; }
-    PencilError( Result eCode ) { m_eCode = eCode; }
-    Result code() { return m_eCode; }
+    PencilError( ResultCode eCode ) { m_eCode = eCode; }
+    ResultCode code() { return m_eCode; }
     QString msg();
 
 private:
-    Result m_eCode;
+    ResultCode m_eCode;
 };
 
 #endif // PENCILERROR_H
