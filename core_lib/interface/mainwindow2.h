@@ -95,7 +95,7 @@ private:
     RecentFileMenu* mRecentFileMenu;
 
 public:
-    TimeLine*                m_pTimeLine; // be public temporary
+    TimeLine*                mTimeLine; // be public temporary
 
 private:
     Preferences* m_pPreferences;

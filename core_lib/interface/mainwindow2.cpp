@@ -100,10 +100,10 @@ MainWindow2::~MainWindow2()
 
 void MainWindow2::createDockWidgets()
 {
-    m_pTimeLine = new TimeLine( this );
-    m_pTimeLine->setObjectName( "TimeLine" );
-    makeConnections( mEditor, m_pTimeLine );
-    m_subWidgets.append( m_pTimeLine );
+    mTimeLine = new TimeLine( this );
+    mTimeLine->setObjectName( "TimeLine" );
+    makeConnections( mEditor, mTimeLine );
+    m_subWidgets.append( mTimeLine );
 
     mColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
 
@@ -135,7 +135,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolOptionWidget);
-    addDockWidget(Qt::BottomDockWidgetArea, m_pTimeLine);
+    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 
     for ( BaseDockWidget* pWidget : m_subWidgets )
     {
@@ -270,7 +270,7 @@ void MainWindow2::createMenus()
     pWinMenu->addAction( mToolOptionWidget->toggleViewAction() );
     pWinMenu->addAction( mColorWheelWidget->toggleViewAction() );
     pWinMenu->addAction( mColorPalette->toggleViewAction() );
-    pWinMenu->addAction( m_pTimeLine->toggleViewAction() );
+    pWinMenu->addAction( mTimeLine->toggleViewAction() );
     pWinMenu->addAction( mDisplayOptionWidget->toggleViewAction() );
 
     /// --- Help Menu ---
@@ -496,7 +496,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     mRecentFileMenu->addRecentFile( strSavedFileName );
     mRecentFileMenu->saveToDisk();
     
-    m_pTimeLine->updateContent();
+    mTimeLine->updateContent();
 
     setWindowTitle( strSavedFileName );
 
@@ -567,11 +567,11 @@ void MainWindow2::preferences()
 {
     m_pPreferences = new Preferences( this );
 
-    connect( m_pPreferences, SIGNAL( lengthSizeChange( QString ) ), m_pTimeLine, SIGNAL( lengthChange( QString ) ) );
-    connect( m_pPreferences, SIGNAL( fontSizeChange( int ) ), m_pTimeLine, SIGNAL( fontSizeChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( frameSizeChange( int ) ), m_pTimeLine, SIGNAL( frameSizeChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( labelChange( int ) ), m_pTimeLine, SIGNAL( labelChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( scrubChange( int ) ), m_pTimeLine, SIGNAL( scrubChange( int ) ) );
+    connect( m_pPreferences, SIGNAL( lengthSizeChange( QString ) ), mTimeLine, SIGNAL( lengthChange( QString ) ) );
+    connect( m_pPreferences, SIGNAL( fontSizeChange( int ) ), mTimeLine, SIGNAL( fontSizeChange( int ) ) );
+    connect( m_pPreferences, SIGNAL( frameSizeChange( int ) ), mTimeLine, SIGNAL( frameSizeChange( int ) ) );
+    connect( m_pPreferences, SIGNAL( labelChange( int ) ), mTimeLine, SIGNAL( labelChange( int ) ) );
+    connect( m_pPreferences, SIGNAL( scrubChange( int ) ), mTimeLine, SIGNAL( scrubChange( int ) ) );
 
     connect( m_pPreferences, SIGNAL( windowOpacityChange( int ) ), this, SLOT( setOpacity( int ) ) );
     connect( m_pPreferences, SIGNAL( curveOpacityChange( int ) ), mScribbleArea, SLOT( setCurveOpacity( int ) ) );
@@ -604,7 +604,7 @@ void MainWindow2::dockAllPalettes()
     mToolBox->setFloating(false);
     mToolOptionWidget->setFloating(false);
     mDisplayOptionWidget->setFloating(false);
-    m_pTimeLine->setFloating(false);
+    mTimeLine->setFloating(false);
     mColorPalette->setFloating(false);
     mColorWheelWidget->setFloating( false );
 }
@@ -721,7 +721,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mToolOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
     mColorWheelWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_WHEEL ) );
     mColorPalette->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_LIBRARY ) );
-    m_pTimeLine->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TIMELINE ) );
+    mTimeLine->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TIMELINE ) );
     mDisplayOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_DISPLAY_OPTIONS ) );
 
     ui->actionHelp->setShortcut( cmdKeySeq( CMD_HELP ) );

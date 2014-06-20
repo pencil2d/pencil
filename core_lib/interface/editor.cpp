@@ -153,7 +153,7 @@ int Editor::currentFrame()
 
 TimeLine* Editor::getTimeLine()
 {
-    return mMainWindow->m_pTimeLine;
+    return mMainWindow->mTimeLine;
 }
 
 void Editor::makeConnections()
