@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QList>
-#include <QLoggingCategory>
 #include <QLabel>
 #include <QToolButton>
 #include <QSpinBox>
@@ -197,8 +196,6 @@ private:
     LayerManager*    mLayerManager = nullptr;
     PlaybackManager* mPlaybackManager = nullptr;
     
-    QLoggingCategory mLog;
-
     bool m_isAltPressed;
     int numberOfModifications;
 

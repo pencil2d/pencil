@@ -5,12 +5,13 @@
 #include <QObject>
 #include <QString>
 #include <QDomElement>
-#include <QLoggingCategory>
+#include "log.h"
 #include "pencildef.h"
 #include "pencilerror.h"
 #include "colourref.h"
 
 class Object;
+
 
 class ObjectSaveLoader : public QObject
 {

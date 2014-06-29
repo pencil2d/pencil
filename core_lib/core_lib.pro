@@ -112,7 +112,8 @@ HEADERS +=  \
     util/pencilsettings.h \
     util/util.h \
     interface/basedockwidget.h \
-    managers/playbackmanager.h
+    managers/playbackmanager.h \
+    util/log.h
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
