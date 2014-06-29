@@ -56,14 +56,14 @@ QCursor SmudgeTool::cursor()
 
 void SmudgeTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
-    currentWidth = properties.width;
-    if (m_pScribbleArea->usePressure() && !mouseDevice)
+    mCurrentWidth = properties.width;
+    if (mScribbleArea->usePressure() && !mouseDevice)
     {
-        currentPressure = pressure;
+        mCurrentPressure = pressure;
     }
     else
     {
-        currentPressure = 1.0;
+        mCurrentPressure = 1.0;
     }
 }
 
@@ -72,7 +72,7 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
     if (event->key() == Qt::Key_Alt)
     {
         toolMode = 1; // alternative mode
-        m_pScribbleArea->setCursor( cursor() ); // update cursor
+        mScribbleArea->setCursor( cursor() ); // update cursor
         return true;
     }
     return false;
@@ -81,7 +81,7 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
 bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
 {
     toolMode = 0; // default mode
-    m_pScribbleArea->setCursor( cursor() ); // update cursor
+    mScribbleArea->setCursor( cursor() ); // update cursor
 
     return true;
 }
@@ -90,46 +90,46 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 {
     //qDebug() << "smudgetool: mousePressEvent";
 
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            m_pEditor->backup(typeName());
-            m_pScribbleArea->setAllDirty();
+            mEditor->backup(typeName());
+            mScribbleArea->setAllDirty();
             startStroke();
             lastBrushPoint = getCurrentPoint();
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            m_pScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)
-                ->getCurvesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
-            m_pScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)
-                ->getVerticesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
+            mScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
+                ->getCurvesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
+            mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
+                ->getVerticesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
 
-            if (m_pScribbleArea->closestVertices.size() > 0 || m_pScribbleArea->closestCurves.size() > 0)      // the user clicks near a vertex or a curve
+            if (mScribbleArea->closestVertices.size() > 0 || mScribbleArea->closestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
-                m_pEditor->backup(typeName());
-                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
+                mEditor->backup(typeName());
+                VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
-                if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(m_pScribbleArea->closestVertices))
+                if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(mScribbleArea->closestVertices))
                 {
-                    m_pScribbleArea->paintTransformedSelection();
-                    m_pScribbleArea->deselectAll();
+                    mScribbleArea->paintTransformedSelection();
+                    mScribbleArea->deselectAll();
                 }
 
-                vectorImage->setSelected(m_pScribbleArea->closestVertices, true);
-                m_pScribbleArea->vectorSelection.add(m_pScribbleArea->closestCurves);
-                m_pScribbleArea->vectorSelection.add(m_pScribbleArea->closestVertices);
+                vectorImage->setSelected(mScribbleArea->closestVertices, true);
+                mScribbleArea->vectorSelection.add(mScribbleArea->closestCurves);
+                mScribbleArea->vectorSelection.add(mScribbleArea->closestVertices);
 
-                m_pScribbleArea->update();
+                mScribbleArea->update();
             }
             else
             {
-                m_pScribbleArea->deselectAll();
+                mScribbleArea->deselectAll();
             }
         }
     }
@@ -137,7 +137,7 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
 
 void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (event->button() == Qt::LeftButton)
@@ -145,28 +145,28 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type() == Layer::BITMAP)
         {
             drawStroke();
-            m_pScribbleArea->paintBitmapBuffer();
-            m_pScribbleArea->setAllDirty();
+            mScribbleArea->paintBitmapBuffer();
+            mScribbleArea->setAllDirty();
             endStroke();
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             vectorImage->applySelectionTransformation();
-            m_pScribbleArea->selectionTransformation.reset();
-            for (int k = 0; k < m_pScribbleArea->vectorSelection.curve.size(); k++)
+            mScribbleArea->selectionTransformation.reset();
+            for (int k = 0; k < mScribbleArea->vectorSelection.curve.size(); k++)
             {
-                int curveNumber = m_pScribbleArea->vectorSelection.curve.at(k);
+                int curveNumber = mScribbleArea->vectorSelection.curve.at(k);
                 vectorImage->m_curves[curveNumber].smoothCurve();
             }
-            m_pScribbleArea->setModified(m_pEditor->layers()->currentLayerIndex(), m_pEditor->layers()->currentFramePosition());
+            mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }
     }
 }
 
 void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
 {
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
@@ -182,8 +182,8 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
                     // transforms the selection
-                    m_pScribbleArea->selectionTransformation = QMatrix().translate(m_pScribbleArea->offset.x(), m_pScribbleArea->offset.y());
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)->setSelectionTransformation(m_pScribbleArea->selectionTransformation);
+                    mScribbleArea->selectionTransformation = QMatrix().translate(mScribbleArea->offset.x(), mScribbleArea->offset.y());
+                    ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0)->setSelectionTransformation(mScribbleArea->selectionTransformation);
                 }
             }
         }
@@ -191,33 +191,33 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
         {
             if (layer->type() == Layer::VECTOR)
             {
-                m_pScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0)
-                    ->getVerticesCloseTo(getCurrentPoint(), m_pScribbleArea->tol / m_pScribbleArea->getTempViewScaleX());
+                mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
+                    ->getVerticesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
             }
         }
-        m_pScribbleArea->update();
-        m_pScribbleArea->setAllDirty();
+        mScribbleArea->update();
+        mScribbleArea->setAllDirty();
     }
 }
 
 void SmudgeTool::drawStroke()
 {
-    if ( !m_pScribbleArea->isLayerPaintable() ) return;
+    if ( !mScribbleArea->isLayerPaintable() ) return;
 
-    Layer *layer = m_pEditor->getCurrentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL) { return; }
 
-    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(m_pEditor->layers()->currentFramePosition(), 0);
+    BitmapImage *targetImage = ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
     StrokeTool::drawStroke();
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     for (int i = 0; i < p.size(); i++) {
-        p[i] = m_pScribbleArea->pixelToPoint(p[i]);
+        p[i] = mScribbleArea->pixelToPoint(p[i]);
     }
 
     qreal opacity = 1.0;
-    qreal brushWidth = currentWidth +  0.0 * properties.feather;
-    qreal offset = qMax(0.0, currentWidth - 0.5 * properties.feather) / brushWidth;
+    qreal brushWidth = mCurrentWidth +  0.0 * properties.feather;
+    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * properties.feather) / brushWidth;
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 
@@ -238,7 +238,7 @@ void SmudgeTool::drawStroke()
         {
             QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            m_pScribbleArea->liquifyBrush( targetImage,
+            mScribbleArea->liquifyBrush( targetImage,
                                                 sourcePoint,
                                                 targetPoint,
                                                 brushWidth,
@@ -250,8 +250,8 @@ void SmudgeTool::drawStroke()
                 lastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
-            m_pScribbleArea->refreshBitmap(rect, rad);
-            m_pScribbleArea->paintBitmapBuffer();
+            mScribbleArea->refreshBitmap(rect, rad);
+            mScribbleArea->paintBitmapBuffer();
         }
     }
     else // liquify smooth
@@ -266,7 +266,7 @@ void SmudgeTool::drawStroke()
         {
             QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
-            m_pScribbleArea->blurBrush( targetImage,
+            mScribbleArea->blurBrush( targetImage,
                                                 sourcePoint,
                                                 targetPoint,
                                                 brushWidth,
@@ -278,8 +278,8 @@ void SmudgeTool::drawStroke()
                 lastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
-            m_pScribbleArea->refreshBitmap(rect, rad);
-            m_pScribbleArea->paintBitmapBuffer();
+            mScribbleArea->refreshBitmap(rect, rad);
+            mScribbleArea->paintBitmapBuffer();
         }
     }
 }

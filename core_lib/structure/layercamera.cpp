@@ -99,9 +99,9 @@ void CameraPropertiesDialog::setHeight(int height)
 
 // ------
 
-LayerCamera::LayerCamera( Object* object ) : LayerImage( object, Layer::CAMERA )
+LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
-    name = QString(tr("Camera Layer"));
+    mName = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
     addNewKeyFrameAt( 1 );
@@ -122,25 +122,25 @@ bool LayerCamera::addNewKeyFrameAt( int frameNumber )
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 {
-    //
-    //return getCameraAtIndex(index);
-    return nullptr;
+    return static_cast< Camera* >( getKeyFrameAtPosition( frameNumber ) );
 }
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
 {
-    //int index = getLastIndexAtFrame(frameNumber);
-    //return getCameraAtIndex(index + increment);
-    return nullptr;
+    return static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
 }
 
 QMatrix LayerCamera::getViewAtFrame(int frameNumber)
 {
-    /*
-    int index = getLastIndexAtFrame(frameNumber);
+    if ( keyFrameCount() == 0 )
+    {
+        return QMatrix();
+    }
 
-    Camera* camera1 = getCameraAtIndex( index );
-    Camera* camera2 = getCameraAtIndex( index + 1 );
+    Camera* camera1 = static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber ) );
+
+    int nextFrame = getNextKeyFramePosition( frameNumber );
+    Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
 
     if (camera1 == NULL && camera2 == NULL)
     {
@@ -155,27 +155,20 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
         return camera1->view;
     }
 
-    int frame1 = -1;
-    int frame2 = -1;
-
-    if ( camera1 ) frame1 = framesPosition.at( index );
-    if ( camera2 ) frame2 = framesPosition.at( index + 1 );
-
-    if (camera1 != NULL && camera2 != NULL)
-    {
-        // linear interpolation
-        qreal c2 = (frameNumber-frame1+0.0)/(frame2-frame1);
-        qreal c1 = 1.0 - c2;
-        //qDebug() << ">> -- " << c1 << c2;
-        return QMatrix( c1*camera1->view.m11() + c2*camera2->view.m11(),
-                        c1*camera1->view.m12() + c2*camera2->view.m12(),
-                        c1*camera1->view.m21() + c2*camera2->view.m21(),
-                        c1*camera1->view.m22() + c2*camera2->view.m22(),
-                        c1*camera1->view.dx() + c2*camera2->view.dx(),
-                        c1*camera1->view.dy() + c2*camera2->view.dy());
-    }
-    */
-    return QMatrix();
+    int frame1 = camera1->pos();
+    int frame2 = camera2->pos();
+    
+    // linear interpolation
+    qreal c2 = ( frameNumber - frame1 + 0.0 ) / ( frame2 - frame1 );
+    qreal c1 = 1.0 - c2;
+    //qDebug() << ">> -- " << c1 << c2;
+    return QMatrix( c1*camera1->view.m11() + c2*camera2->view.m11(),
+                    c1*camera1->view.m12() + c2*camera2->view.m12(),
+                    c1*camera1->view.m21() + c2*camera2->view.m21(),
+                    c1*camera1->view.m22() + c2*camera2->view.m22(),
+                    c1*camera1->view.dx() + c2*camera2->view.dx(),
+                    c1*camera1->view.dy() + c2*camera2->view.dy() );
+   
 }
 
 QRect LayerCamera::getViewRect()
@@ -183,96 +176,82 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
-// -----
-
-QImage* LayerCamera::getImageAtIndex(int index)
-{
-    Q_UNUSED(index);
-    /*if ( index < 0 || index >= framesImage.size() ) {
-        return NULL;
-    } else {
-        return framesImage.at(index);
-    }*/
-    return NULL;
-}
 
 void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
 {
-    //if ( getIndexAtFrame( frameNumber ) == -1 )
-    //{
-    //    addNewKeyFrameAt( frameNumber );
-    //}
-    //int index = getIndexAtFrame(frameNumber);
-    //framesCamera[index] = new Camera();
-    //framesCamera[index]->view = view;
+    if ( hasKeyFrameAtPosition( frameNumber ) )
+    {
+        removeKeyFrame( frameNumber );
+    }
+    Camera* camera = new Camera( view );
+    camera->setPos( frameNumber );
+    addKeyFrame( frameNumber, camera );
 }
 
 
 bool LayerCamera::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
-    //Q_UNUSED(path);
-    //QString layerNumberString = QString::number(layerNumber);
-    //QString frameNumberString = QString::number(framesPosition.at(index));
-    //while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    //while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
-    //framesFilename[ index ] = layerNumberString + "." + frameNumberString + ".png";
-
-    //framesModified[index] = false;
-
+    Q_UNUSED( path );
+    Q_UNUSED( pKeyFrame );
     return true;
 }
 
 
 void LayerCamera::editProperties()
 {
-    if (dialog == NULL) dialog = new CameraPropertiesDialog(name, viewRect.width(), viewRect.height());
-    dialog->setName(name);
+    if ( dialog == NULL )
+    {
+        dialog = new CameraPropertiesDialog( mName, viewRect.width(), viewRect.height() );
+    }
+    dialog->setName(mName);
     dialog->setWidth(viewRect.width());
     dialog->setHeight(viewRect.height());
     int result = dialog->exec();
     if (result == QDialog::Accepted)
     {
-        name = dialog->getName();
+        mName = dialog->getName();
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
     }
 }
 
-QDomElement LayerCamera::createDomElement(QDomDocument& doc)
+QDomElement LayerCamera::createDomElement( QDomDocument& doc )
 {
-    
     QDomElement layerTag = doc.createElement("layer");
-    /*
-    layerTag.setAttribute("name", name);
+    
+    layerTag.setAttribute("name", mName);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
     layerTag.setAttribute("width", viewRect.width());
     layerTag.setAttribute("height", viewRect.height());
-    for(int index=0; index < framesPosition.size() ; index++)
-    {
-        QDomElement keyTag = doc.createElement("camera");
-        keyTag.setAttribute("frame", framesPosition.at(index));
 
-        keyTag.setAttribute("m11", framesCamera[index]->view.m11());
-        keyTag.setAttribute("m12", framesCamera[index]->view.m12());
-        keyTag.setAttribute("m21", framesCamera[index]->view.m21());
-        keyTag.setAttribute("m22", framesCamera[index]->view.m22());
-        keyTag.setAttribute("dx", framesCamera[index]->view.dx());
-        keyTag.setAttribute("dy", framesCamera[index]->view.dy());
-        layerTag.appendChild(keyTag);
-    }
-    */
+    foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
+    {
+        Camera* camera = static_cast< Camera* >( pKeyFrame );
+        QDomElement keyTag = doc.createElement("camera");
+        keyTag.setAttribute( "frame", camera->pos() );
+
+        keyTag.setAttribute( "m11", camera->view.m11() );
+        keyTag.setAttribute( "m12", camera->view.m12() );
+        keyTag.setAttribute( "m21", camera->view.m21() );
+        keyTag.setAttribute( "m22", camera->view.m22() );
+        keyTag.setAttribute( "dx",  camera->view.dx() );
+        keyTag.setAttribute( "dy",  camera->view.dy() );
+        layerTag.appendChild( keyTag );
+    } );
+    
     return layerTag;
 }
 
 void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
 {
     Q_UNUSED(dataDirPath);
-    name = element.attribute("name");
+
+    mName = element.attribute("name");
     visible = true;
 
-    int width = element.attribute("width").toInt();
-    int height = element.attribute("height").toInt();
-    viewRect = QRect(-width/2,-height/2,width,height);
+    int width = element.attribute( "width" ).toInt();
+    int height = element.attribute( "height" ).toInt();
+    viewRect = QRect( -width / 2, -height / 2, width, height );
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -293,11 +272,6 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
 
                 loadImageAtFrame(frame, QMatrix(m11,m12,m21,m22,dx,dy) );
             }
-            /*if (imageElement.tagName() == "image") {
-                int frame = imageElement.attribute("frame").toInt();
-                addImageAtFrame( frame );
-                getBitmapImageAtFrame( frame )->loadDomElement(imageElement, filePath);
-            }*/
         }
         imageTag = imageTag.nextSibling();
     }

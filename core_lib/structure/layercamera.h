@@ -46,7 +46,7 @@ protected:
     QSpinBox* widthBox, *heightBox;
 };
 
-class LayerCamera : public LayerImage
+class LayerCamera : public Layer
 {
     Q_OBJECT
 

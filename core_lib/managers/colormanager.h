@@ -26,8 +26,8 @@ signals:
     void colorNumberChanged(int);
 
 private:
-    QColor m_currentFrontColor = QColor( 0, 0, 0 );
-    int m_currentColorIndex = 0;
+    QColor mCurrentFrontColor = QColor( 0, 0, 0 );
+    int mCurrentColorIndex = 0;
 };
 
 #endif // COLORMANAGER_H

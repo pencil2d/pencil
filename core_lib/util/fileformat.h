@@ -27,13 +27,12 @@ GNU General Public License for more details.
 #define PFF_BIG_LETTER_EXTENSION	"PCLX"
 #define PFF_SINGLE_FILTER			"New Pencil Animation File PCLX (*.pclx)"
 
-#define PFF_OPEN_ALL_FILE_FILTER	"Pencil Animation File PCL (*.pcl);;New Pencil Animation File PCLX(*.pclx);;All Pencil Files PCL & PCLX(*.pcl *.pclx);;Any files (*)"
+#define PFF_OPEN_ALL_FILE_FILTER	"All Pencil Files PCL & PCLX(*.pcl *.pclx);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)"
+#define PFF_SAVE_ALL_FILE_FILTER	"Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)"
 
-#define PFF_CLOSE_ALL_FILE_FILTER	"Pencil Animation File PCL (*.pcl);;New Pencil Animation File PCLX(*.pclx)"
+#define PFF_DEFAULT_FILENAME	"myanimation.pclx"
 
-#define PFF_DEFAULT_FILENAME	"untitled.pclx"
-
-#define PFF_LAYERS_DIR 			"data"
+#define PFF_OLD_DATA_DIR 			"data"
 #define PFF_XML_FILE_NAME 		"main.xml"
 #define PFF_TMP_COMPRESS_EXT 	".Y2xC"
 #define PFF_TMP_DECOMPRESS_EXT 	".Y2xD"

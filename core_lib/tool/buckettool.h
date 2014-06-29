@@ -8,19 +8,18 @@ class BucketTool : public BaseTool
 {
     Q_OBJECT
 public:
-    explicit BucketTool(QObject *parent = 0);
-    ToolType type();
-    void loadSettings();
-    QCursor cursor();
+    explicit BucketTool( QObject *parent = 0 );
+    ToolType type() override;
+    void loadSettings() override;
+    QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
+    void mousePressEvent( QMouseEvent * ) override;
+    void mouseMoveEvent( QMouseEvent * ) override;
+    void mouseReleaseEvent( QMouseEvent * ) override;
 
 signals:
-    
-public slots:
-    
+
+    public slots :
 };
 
 #endif // BUCKETTOOL_H

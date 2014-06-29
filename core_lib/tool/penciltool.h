@@ -7,25 +7,20 @@ class PencilTool : public StrokeTool
 {
     Q_OBJECT
 public:
-    explicit PencilTool(QObject *parent = 0);
-    ToolType type();
-    void loadSettings();
-    QCursor cursor();
+    explicit PencilTool( QObject *parent = 0 );
+    ToolType type() override { return PENCIL; }
+    void loadSettings() override;
+    QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
 
     void drawStroke();
 
-    void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
+    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
 
-signals:
-    
-public slots:
-
-    
-protected:
+private:
     QColor currentPressuredColor;
 };
 

@@ -16,9 +16,9 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include <QtDebug>
 
-LayerVector::LayerVector(Object* object) : LayerImage( object, Layer::VECTOR )
+LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
 {
-    name = QString(tr("Vector Layer"));
+    mName = QString(tr("Vector Layer"));
     addNewKeyFrameAt( 1 );
 }
 
@@ -90,10 +90,15 @@ bool LayerVector::addNewKeyFrameAt( int frameNumber )
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
-    if ( getIndexAtFrame( frameNumber ) == -1 )
+    if ( hasKeyFrameAtPosition( frameNumber ) )
     {
-        addNewKeyFrameAt( frameNumber );
+        removeKeyFrame( frameNumber );
     }
+    VectorImage* vecImg = new VectorImage;
+    vecImg->setPos( frameNumber );
+    vecImg->setObject( object() );
+    vecImg->read( path );
+    addKeyFrame( frameNumber, vecImg );
 }
 
 bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
@@ -109,7 +114,7 @@ bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 
 QString LayerVector::fileName( int frame )
 {
-    int layerID = id;
+    int layerID = mId;
     QString layerNumberString = QString::number(layerID);
     QString frameNumberString = QString::number(frame);
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
@@ -121,8 +126,8 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
 
-    layerTag.setAttribute("id", id);
-    layerTag.setAttribute("name", name);
+    layerTag.setAttribute("id", mId);
+    layerTag.setAttribute("name", mName);
     layerTag.setAttribute("visibility", visible);
     layerTag.setAttribute("type", type());
 
@@ -141,8 +146,8 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 
 void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
-    if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
-    name = element.attribute("name");
+    if (!element.attribute("id").isNull()) mId = element.attribute("id").toInt();
+    mName = element.attribute("name");
     visible = (element.attribute("visibility") == "1");
 
     QDomNode imageTag = element.firstChild();

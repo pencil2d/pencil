@@ -17,7 +17,7 @@ void TestObjectSaveLoader::testNotExistFile()
     ObjectSaveLoader pSaveLoader;
 
     QString strDummyPath = "hahaha_blala.pcl";
-    Object* pObject = pSaveLoader.loadFromFile( strDummyPath );
+    Object* pObject = pSaveLoader.load( strDummyPath );
 
     QVERIFY2( pObject == NULL, "File doesn't exist.");
     QVERIFY2( pSaveLoader.error().code() == PCL_ERROR_FILE_NOT_EXIST, "" );
@@ -35,7 +35,7 @@ void TestObjectSaveLoader::testInvalidXML()
     badXMLFile.close();
     
     ObjectSaveLoader pSaveLoader;
-    Object* pObj = pSaveLoader.loadFromFile( strBadXMLPath );
+    Object* pObj = pSaveLoader.load( strBadXMLPath );
 
     QVERIFY( pObj == NULL );
     QVERIFY( pSaveLoader.error().code() == PCL_ERROR_INVALID_XML_FILE );
@@ -53,7 +53,7 @@ void TestObjectSaveLoader::testInvalidPencilDocument()
     badXMLFile.close();
 
     ObjectSaveLoader pSaveLoader;
-    Object* pObj = pSaveLoader.loadFromFile( strBadXMLPath );
+    Object* pObj = pSaveLoader.load( strBadXMLPath );
 
     QVERIFY( pObj == NULL );
     QVERIFY( pSaveLoader.error().code() == PCL_ERROR_INVALID_PENCIL_FILE );
@@ -71,7 +71,7 @@ void TestObjectSaveLoader::testMinimalPencilDocument()
     badXMLFile.close();
 
     ObjectSaveLoader pSaveLoader;
-    Object* pObj = pSaveLoader.loadFromFile( strBadXMLPath );
+    Object* pObj = pSaveLoader.load( strBadXMLPath );
 
     QVERIFY( pObj != NULL );
     QVERIFY( pSaveLoader.error().code() == PCL_OK );

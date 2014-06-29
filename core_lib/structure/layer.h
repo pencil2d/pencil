@@ -45,14 +45,17 @@ public:
     Layer(Object*, LAYER_TYPE);
     virtual ~Layer();
 
-    QString name;
+    QString mName;
     bool visible;
-    int id;
+    int mId;
 
     static const int NO_KeyFrame = -1;
 
-    LAYER_TYPE type() { return m_eType; }
-    Object* object() { return m_pObject; }
+    LAYER_TYPE type() { return meType; }
+    Object* object() { return mObject; }
+
+    void setName( QString name ) { mName = name; }
+    QString name() { return mName; }
 
     void switchVisibility() { visible = !visible; }
 
@@ -64,20 +67,24 @@ public:
     int getMaxKeyFramePosition();
     int getFirstKeyFramePosition();
 
+    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
+
     virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
+    virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
+    virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
+    virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
+
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
+    bool loadKey( KeyFrame* );
     KeyFrame* getKeyFrameAtPosition( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
 
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
 
     void setModified( int position, bool isModified );
-
-    // export element
-    virtual QDomElement createDomElement(QDomDocument& doc); // constructs an dom/xml representation of the layer for the document doc
-    virtual void loadDomElement(QDomElement element); // construct a layer from a dom/xml representation
-    virtual void loadDomElement(QDomElement element, QString dataDirPath) = 0;
+    
+    bool save( QString dataFolder );
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
@@ -85,18 +92,18 @@ public:
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
 
-    virtual void mousePress(QMouseEvent*, int frameNumber) = 0;
-    virtual void mouseMove(QMouseEvent*, int frameNumber) = 0;
-    virtual void mouseRelease(QMouseEvent*, int frameNumber) = 0;
-    virtual void mouseDoubleClick(QMouseEvent*, int frameNumber) = 0;
+    void mousePress(QMouseEvent*, int frameNumber);
+    void mouseMove(QMouseEvent*, int frameNumber);
+    void mouseRelease(QMouseEvent*, int frameNumber);
+    void mouseDoubleClick(QMouseEvent*, int frameNumber);
 
     virtual void editProperties();
 
 private:
-    LAYER_TYPE m_eType;
-    Object* m_pObject;
+    LAYER_TYPE meType;
+    Object* mObject;
 
-    std::map<int, KeyFrame*, std::greater<int>> m_KeyFrames;
+    std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 };
 
 #endif

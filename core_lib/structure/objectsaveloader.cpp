@@ -1,157 +1,246 @@
+#include "objectsaveloader.h"
 #include "pencildef.h"
 #include "JlCompress.h"
 #include "fileformat.h"
 #include "object.h"
-#include "objectsaveloader.h"
 
-ObjectSaveLoader::ObjectSaveLoader( QObject *parent ) :
-    QObject( parent ),
-    m_strLastTempWorkingFolder( "" )
+
+
+ObjectSaveLoader::ObjectSaveLoader( QObject *parent ) : QObject( parent ),
+mstrLastTempFolder( "" ),
+mLog( "SaveLoader" )
 {
 }
 
-Object* ObjectSaveLoader::loadFromFile( QString strFilename )
+Object* ObjectSaveLoader::load( QString strFileName )
 {
-    // ---- test before opening ----
-
-    if ( !isFileExists( strFilename ) )
+    if ( !isFileExists( strFileName ) )
     {
-        m_error = PencilError( PCL_ERROR_FILE_NOT_EXIST );
-        return NULL;
+        qCDebug( mLog, "ERROR - File doesn't exist." );
+        mError = PencilError( PCL_ERROR_FILE_NOT_EXIST );
+        return nullptr;
     }
 
-    QString strMainXMLFilePath = strFilename;
-    QStringList zippedFileList = JlCompress::getFileList( strFilename );
+    QString strMainXMLFile;
+    QString strDataFolder;
 
-    // -- Test file format: new zipped pclx or old pcl ?
-    bool bIsOldPencilFile = zippedFileList.empty();
-    if ( !bIsOldPencilFile )
+    // Test file format: new zipped .pclx or old .pcl?
+    QStringList zippedFileList = JlCompress::getFileList( strFileName );
+    bool isOldFile = zippedFileList.empty();
+
+    if ( isOldFile )
     {
-        strMainXMLFilePath = extractZipToTempFolder( strFilename );
-        qDebug() << "Recognized New zipped Pencil File Format !";
+        qCDebug( mLog ) << "Recognized Old Pencil File Format (*.pcl) !";
+        strMainXMLFile = strFileName;
+        strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        qDebug() << "Recognized Old Pencil File Format !";
+        qCDebug( mLog ) << "Recognized New zipped Pencil File Format (*.pclx) !";
+        QString strTempWorkingFolder = extractZipToTempFolder( strFileName );
+        qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
+        strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
+        strDataFolder = QDir( strTempWorkingFolder ).filePath( PFF_OLD_DATA_DIR );
     }
+    qCDebug( mLog ) << "XML=" << strMainXMLFile;
+    qCDebug( mLog ) << "Data Folder=" << strDataFolder;
 
-    // -- test before opening
-    QScopedPointer<QFile> file( new QFile( strMainXMLFilePath ) );
-
+    QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
     if ( !file->open( QFile::ReadOnly ) )
     {
-        //m_strLastErrorMessage = tr("Cannot open file.");
-        m_error = PencilError( PCL_ERROR_FILE_CANNOT_OPEN );
         cleanUpTempFolder();
-        return NULL;
+        mError = PencilError( PCL_ERROR_FILE_CANNOT_OPEN );
+        return nullptr;
     }
 
+    qCDebug( mLog ) << "Checking main XML file...";
     QDomDocument xmlDoc;
     if ( !xmlDoc.setContent( file.data() ) )
     {
-        //m_strLastErrorMessage = tr("This file is not a valid XML document.");
-        m_error = PencilError( PCL_ERROR_INVALID_XML_FILE );
         cleanUpTempFolder();
-        return NULL;
+        mError = PencilError( PCL_ERROR_INVALID_XML_FILE );
+        return nullptr;
     }
 
     QDomDocumentType type = xmlDoc.doctype();
     if ( type.name() != "PencilDocument" && type.name() != "MyObject" )
     {
-        //m_strLastErrorMessage = tr("This file is not a Pencil2D document.");
-        m_error = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
         cleanUpTempFolder();
-        return NULL; // this is not a Pencil document
+        mError = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
+        return nullptr;
     }
 
-    Object* pObject = new Object();
-
-    QString strDataLayersDirPath;
-    if ( bIsOldPencilFile )
+    QDomElement root = xmlDoc.documentElement();
+    if ( root.isNull() )
     {
-        // ex. aaa.pcl  => aaa.pcl.data
-        strDataLayersDirPath = strMainXMLFilePath + "." + PFF_LAYERS_DIR;
-    }
-    else
-    {
-        QDir workingDir = QFileInfo( strMainXMLFilePath ).dir(); // get the parent folder
-        workingDir.cd( PFF_LAYERS_DIR );
-        strDataLayersDirPath = workingDir.absolutePath();
+        cleanUpTempFolder();
+        mError = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
+        return nullptr;
     }
 
-    Object* newObject = pObject;
-    if ( !newObject->loadPalette( strDataLayersDirPath ) )
+    // Create object.
+    Object* object = new Object();
+    if ( !object->loadPalette( strDataFolder ) )
     {
-        newObject->loadDefaultPalette();
+        object->loadDefaultPalette();
     }
 
-    // ------- reads the XML file -------
+    // ------- Reads the XML file -------
+
+    qCDebug( mLog ) << "Start to load object.";
+    
     bool ok = true;
-    int prog = 0;
-    QDomElement docElem = xmlDoc.documentElement();
-    if ( docElem.isNull() )
+    int progress = 0;
+    
+    if ( root.tagName() == "document" )
     {
-        return NULL;
+        ok = loadObject( object, root, strDataFolder );
+    }
+    else if ( root.tagName() == "object" || root.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
+    {
+        ok = loadObjectOladWay( object, root, strDataFolder );
     }
 
-    if ( docElem.tagName() == "document" )
-    {
-        qDebug( "Object Loader: start." );
+    object->setFilePath( strFileName );
 
-        QDomNode tag = docElem.firstChild();
-        while ( !tag.isNull() )
-        {
-            QDomElement element = tag.toElement(); // try to convert the node to an element.
-            if ( !element.isNull() )
-            {
-                prog += std::min( prog + 10, 100 );
-                //progress.setValue(prog);
-                emit progressValueChanged( prog );
-
-                if ( element.tagName() == "editor" )
-                {
-                    qDebug( "  Load editor" );
-                    //loadDomElement( element );
-                }
-                else if ( element.tagName() == "object" )
-                {
-                    qDebug( "  Load object" );
-                    ok = newObject->loadDomElement( element, strDataLayersDirPath );
-                    qDebug() << "    dataDir:" << strDataLayersDirPath;
-                }
-            }
-            tag = tag.nextSibling();
-        }
-    }
-    else
-    {
-        if ( docElem.tagName() == "object" || docElem.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
-        {
-            ok = newObject->loadDomElement( docElem, strFilename );
-        }
-    }
-
-    if ( ok )
-    {
-        /*
-        if (!openingTheOLDWAY)
-        {
-        removePFFTmpDirectory( tmpFilePath ); // --removes temporary decompression directory
-        }
-        */
-    }
-    else
-    {
-        return NULL;
-    }
-
-    return pObject;
+    return object;
 }
 
-bool ObjectSaveLoader::saveToFile( Object* object, QString strFileName )
+bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, const QString& strDataFolder )
 {
-    Q_UNUSED( object );
-    Q_UNUSED( strFileName );
+    bool isOK = true;
+    for ( QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling() )
+    {
+        QDomElement element = node.toElement(); // try to convert the node to an element.
+        if ( element.isNull() ) { continue; }
+
+        if ( element.tagName() == "object" )
+        {
+            qCDebug( mLog ) << "Load object";
+            isOK = object->loadDomElement( element, strDataFolder );
+        }
+        else if ( element.tagName() == "editor" )
+        {
+        }
+        else
+        {
+            Q_ASSERT( false );
+        }
+        //progress = std::min( progress + 10, 100 );
+        //emit progressValueChanged( progress );
+    }
+    return isOK;
+}
+
+bool ObjectSaveLoader::loadObjectOladWay( Object* object, const QDomElement& root, const QString& strDataFolder )
+{
+    return object->loadDomElement( root, strDataFolder );
+}
+
+bool ObjectSaveLoader::save( Object* object, QString strFileName )
+{
+    if ( object == nullptr ) { return false; }
+
+    QFileInfo fileInfo( strFileName );
+    if ( fileInfo.isDir() ) { return false; }
+
+    bool isOldFile = strFileName.endsWith( PFF_OLD_EXTENSION );
+
+    QString strTempWorkingFolder;
+    QString strMainXMLFile;
+    QString strDataFolder;
+    if ( isOldFile )
+    {
+        qCDebug( mLog ) << "Save in Old Pencil File Format (*.pcl) !";
+        strMainXMLFile = strFileName;
+        strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
+    }
+    else
+    {
+        qCDebug( mLog ) << "Save in New zipped Pencil File Format (*.pclx) !";
+        strTempWorkingFolder = createTempWorkingFolder( strFileName );
+        qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
+        strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
+        strDataFolder = QDir( strTempWorkingFolder ).filePath( PFF_OLD_DATA_DIR );
+    }
+
+    QFileInfo dataInfo( strDataFolder );
+    if ( !dataInfo.exists() )
+    {
+        QDir dir( strDataFolder ); // the directory where filePath is or will be saved
+        dir.mkpath( strDataFolder ); // creates a directory with the same name +".data"
+    }
+
+    // save data
+    int layerCount = object->getLayerCount();
+    qCDebug( mLog ) << QString( "Total layers = %1" ).arg( layerCount );
+
+    for ( int i = 0; i < layerCount; ++i )
+    {
+        Layer* layer = object->getLayer( i );
+        qCDebug( mLog ) << QString( "Saving Layer %1" ).arg( i ).arg( layer->mName );
+
+        //progressValue = (i * 100) / nLayers;
+        //progress.setValue( progressValue );
+        switch ( layer->type() )
+        {
+        case Layer::BITMAP:
+        case Layer::VECTOR:
+        case Layer::SOUND:
+            layer->save( strDataFolder );
+            break;
+        case Layer::CAMERA:
+            break;
+        }
+    }
+
+    // save palette
+    object->savePalette( strDataFolder );
+
+    // -------- save main XML file -----------
+    QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
+    if ( !file->open( QFile::WriteOnly | QFile::Text ) )
+    {
+        //QMessageBox::warning(this, "Warning", "Cannot write file");
+        return false;
+    }
+
+    QDomDocument xmlDoc( "PencilDocument" );
+    QDomElement root = xmlDoc.createElement( "document" );
+    xmlDoc.appendChild( root );
+
+    // save editor information
+    //QDomElement editorElement = createDomElement( xmlDoc );
+    //root.appendChild( editorElement );
+    qCDebug( mLog, "Save Editor Node." );
+
+    // save object
+    QDomElement objectElement = object->createDomElement( xmlDoc );
+    root.appendChild( objectElement );
+    qCDebug( mLog, "Save Object Node." );
+
+    const int IndentSize = 2;
+
+    QTextStream out( file.data() );
+    xmlDoc.save( out, IndentSize );
+
+    if ( !isOldFile )
+    {
+        qCDebug( mLog ) << "Now compressing data to PFF - PCLX ...";
+
+        bool ok = JlCompress::compressDir( strFileName, strTempWorkingFolder );
+        if ( !ok )
+        {
+            return false;
+        }
+        //removePFFTmpDirectory( strTempWorkingFolder ); // --removing temporary files
+
+        qCDebug( mLog ) << "Compressed. File saved.";
+    }
+
+    object->setFilePath( strFileName );
+    object->setModified( false );
+
     return true;
 }
 
@@ -198,7 +287,7 @@ bool ObjectSaveLoader::loadDomElement( QDomElement docElem )
 
 void ObjectSaveLoader::cleanUpTempFolder()
 {
-    removePFFTmpDirectory( m_strLastTempWorkingFolder );
+    removePFFTmpDirectory( mstrLastTempFolder );
 }
 
 bool ObjectSaveLoader::isFileExists( QString strFilename )
@@ -206,25 +295,30 @@ bool ObjectSaveLoader::isFileExists( QString strFilename )
     return QFileInfo( strFilename ).exists();
 }
 
+QString ObjectSaveLoader::createTempWorkingFolder( QString strFileName )
+{
+    QFileInfo fileInfo( strFileName );
+    QString strTempWorkingFolder = QDir( QDir::tempPath() ).filePath( fileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT );
+
+    QDir dir( QDir::tempPath() );
+    dir.mkpath( strTempWorkingFolder );
+
+    return strTempWorkingFolder;
+}
+
 QString ObjectSaveLoader::extractZipToTempFolder( QString strZipFile )
 {
-    // ---- now decompress PFF -----
-    QFileInfo zipFileInfo( strZipFile );
-
-    QString strTempWorkingPath = QDir::tempPath() + "/" + zipFileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT;
-    //qDebug() << "tmpFilePath" << tmpFilePath ;
+    QString strTempWorkingPath = createTempWorkingFolder( strZipFile );
 
     // --removes an old decompression directory first  - better approach
     removePFFTmpDirectory( strTempWorkingPath );
 
     // --creates a new decompression directory
-    QDir dir( QDir::tempPath() );
-    dir.mkpath( strTempWorkingPath );
-
+  
     JlCompress::extractDir( strZipFile, strTempWorkingPath );
 
-    m_strLastTempWorkingFolder = strTempWorkingPath;
-    return strTempWorkingPath + "/" + PFF_XML_FILE_NAME;
+    mstrLastTempFolder = strTempWorkingPath;
+    return strTempWorkingPath;
 }
 
 QList<ColourRef> ObjectSaveLoader::loadPaletteFile( QString strFilename )
@@ -234,4 +328,7 @@ QList<ColourRef> ObjectSaveLoader::loadPaletteFile( QString strFilename )
     {
         return QList<ColourRef>();
     }
+
+    // TODO: Load Palette.
+    return QList<ColourRef>();
 }

@@ -18,12 +18,12 @@ public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
 
-    Editor* core() { return m_pCore; }
-    void setCore( Editor* pCore ) { m_pCore = pCore; }
+    Editor* core() { return mEditor; }
+    void setCore( Editor* pCore ) { mEditor = pCore; }
 
     
 private:
-    Editor* m_pCore = nullptr;
+    Editor* mEditor = nullptr;
 };
 
 #endif // BASEDOCKWIDGET_H

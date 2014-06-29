@@ -34,15 +34,7 @@ public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
-    // Data Model
-    Object* m_pObject;
-
-    // Core controller
-    Editor* m_pEditor;
-
-protected:
-    void tabletEvent(QTabletEvent* event) override;
-    RecentFileMenu* m_recentFileMenu;
+    Editor* mEditor;
 
 public slots:
     void setOpacity(int opacity);
@@ -50,61 +42,62 @@ public slots:
     void undoActSetEnabled(void);
     void newDocument();
     void openDocument();
-    bool saveAsNewDocument();
     void saveDocument();
+    bool saveAsNewDocument();
     bool maybeSave();
-    void showPreferences();
-    bool openObject(QString strFilename);
-    void resetToolsSettings();
-    void openFile(QString filename);
 
-private slots:
-    bool saveObject(QString strSavedFilename);
-    void dockAllPalettes();
+    void preferences();
     void helpBox();
     void aboutPencil();
 
-    void loadAllShortcuts();
-    void unloadAllShortcuts();
+    void openFile(QString filename);
+
+protected:
+    void tabletEvent( QTabletEvent* ) override;
+    void closeEvent( QCloseEvent* ) override;
+
+private:
+    bool openObject( QString strFilename );
+    bool saveObject( QString strFileName );
+    
+    void dockAllPalettes();
+
+    void createDockWidgets();
+    void createMenus();
+    void setupKeyboardShortcuts();
+    void clearKeyboardShortcuts();
 
     void importPalette();
     void exportPalette();
 
     // XML save/load
-    QDomElement createDomElement(QDomDocument& doc);
-    bool loadDomElement(QDomElement docElem, QString filePath);
-
-private:
-    void createDockWidgets();
-    void createMenus();
-
-    void makeColorWheelConnections();
-    
-
-    void closeEvent(QCloseEvent*);
-
+    //QDomElement createDomElement(QDomDocument& doc);
+    //bool loadDomElement(QDomElement docElem, QString filePath);
     void readSettings();
     void writeSettings();
+
+    void makeColorWheelConnections();
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
 
     // UI: central Drawing Area
-    ScribbleArea* m_pScribbleArea;
+    ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*             m_pColorWheelWidget;
-    ColorPaletteWidget*      m_pColorPalette;
-    DisplayOptionWidget* m_pDisplayOptionWidget;
-    ToolOptionWidget*        m_pToolOptionWidget;
-    ToolBoxWidget*           m_pToolBox;
+    QDockWidget*             mColorWheelWidget;
+    ColorPaletteWidget*      mColorPalette;
+    DisplayOptionWidget*     mDisplayOptionWidget;
+    ToolOptionWidget*        mToolOptionWidget;
+    ToolBoxWidget*           mToolBox;
+
+    RecentFileMenu* mRecentFileMenu;
 
 public:
-    TimeLine*                m_pTimeLine; // be public temporary
+    TimeLine*                mTimeLine; // be public temporary
 
 private:
-    // Dialogs
     Preferences* m_pPreferences;
 
     Ui::MainWindow2* ui;

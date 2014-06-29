@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 
 #include <climits>
+#include <cassert>
 #include <QtDebug>
 #include <QInputDialog>
 #include <QLineEdit>
@@ -27,10 +28,10 @@ GNU General Public License for more details.
 
 Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 {
-    m_pObject = pObject;
-    m_eType = eType;
-    id = 0;
-    name = QString( tr( "Undefined Layer" ) );
+    mObject = pObject;
+    meType = eType;
+    mId = 0;
+    mName = QString( tr( "Undefined Layer" ) );
     visible = true;
 
     Q_ASSERT( eType != UNDEFINED );
@@ -38,32 +39,31 @@ Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 
 Layer::~Layer()
 {
-    for ( auto pair : m_KeyFrames )
+    for ( auto pair : mKeyFrames )
     {
         KeyFrame* pKeyFrame = pair.second;
         delete pKeyFrame;
     }
-    m_KeyFrames.clear();
+    mKeyFrames.clear();
 }
 
 void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> action )
 {
-    for ( auto pair : m_KeyFrames )
+    for ( auto pair : mKeyFrames )
     {
         action( pair.second );
     }
 }
 
-
 bool Layer::hasKeyFrameAtPosition( int position )
 {
-    return ( m_KeyFrames.find( position ) != m_KeyFrames.end() );
+    return ( mKeyFrames.find( position ) != mKeyFrames.end() );
 }
 
 KeyFrame* Layer::getKeyFrameAtPosition( int position )
 {
-    auto it = m_KeyFrames.find( position );
-    if ( it == m_KeyFrames.end() )
+    auto it = mKeyFrames.find( position );
+    if ( it == mKeyFrames.end() )
     {
         return NullKeyFrame::get();
     }
@@ -76,8 +76,8 @@ KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
     {
         position = 1;
     }
-    auto it = m_KeyFrames.lower_bound( position );
-    if ( it == m_KeyFrames.end() )
+    auto it = mKeyFrames.lower_bound( position );
+    if ( it == mKeyFrames.end() )
     {
         return NullKeyFrame::get();
     }
@@ -86,8 +86,8 @@ KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
 
 int Layer::getPreviousKeyFramePosition( int position )
 {
-    auto it = m_KeyFrames.upper_bound( position );
-    if ( it == m_KeyFrames.end() )
+    auto it = mKeyFrames.upper_bound( position );
+    if ( it == mKeyFrames.end() )
     {
         return getFirstKeyFramePosition();
     }
@@ -96,13 +96,13 @@ int Layer::getPreviousKeyFramePosition( int position )
 
 int Layer::getNextKeyFramePosition( int position )
 {
-    auto it = m_KeyFrames.lower_bound( position );
-    if ( it == m_KeyFrames.end() )
+    auto it = mKeyFrames.lower_bound( position );
+    if ( it == mKeyFrames.end() )
     {
         return getMaxKeyFramePosition();
     }
 
-    if ( it != m_KeyFrames.begin() )
+    if ( it != mKeyFrames.begin() )
     {
         --it;
     }
@@ -111,27 +111,26 @@ int Layer::getNextKeyFramePosition( int position )
 
 int Layer::getFirstKeyFramePosition()
 {
-    Q_ASSERT( m_KeyFrames.rbegin()->first == 1 );
+    Q_ASSERT( mKeyFrames.rbegin()->first == 1 );
 
-    return m_KeyFrames.rbegin()->first; // rbegin is the lowest key frame position
+    return mKeyFrames.rbegin()->first; // rbegin is the lowest key frame position
 }
 
 int Layer::getMaxKeyFramePosition()
 {
-    return m_KeyFrames.begin()->first; // begin is the highest key frame position
+    return mKeyFrames.begin()->first; // begin is the highest key frame position
 }
 
 bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 {
-    auto it = m_KeyFrames.find( position );
-    if ( it != m_KeyFrames.end() )
+    auto it = mKeyFrames.find( position );
+    if ( it != mKeyFrames.end() )
     {
-        // key already exist.
         return false;
     }
 
     pKeyFrame->setPos( position );
-    m_KeyFrames.insert( std::make_pair( position, pKeyFrame ) );
+    mKeyFrames.insert( std::make_pair( position, pKeyFrame ) );
 
     return true;
 }
@@ -144,32 +143,36 @@ bool Layer::removeKeyFrame( int position )
         return true;
     }
 
-    auto it = m_KeyFrames.find( position );
-    if ( it != m_KeyFrames.end() )
+    auto it = mKeyFrames.find( position );
+    if ( it != mKeyFrames.end() )
     {
         delete it->second;
-        m_KeyFrames.erase( it );
+        mKeyFrames.erase( it );
     }
 
     return true;
 }
 
-QDomElement Layer::createDomElement( QDomDocument& doc )
+bool Layer::loadKey( KeyFrame* pKey )
 {
-    QDomElement layerTag = doc.createElement( "layer" );
-    layerTag.setAttribute( "name", name );
-    layerTag.setAttribute( "visibility", visible );
-    layerTag.setAttribute( "type", m_eType );
-
-    qDebug() << "    Layer name=" << name << " visi=" << visible << " type=" << m_eType;
-    return layerTag;
+    auto it = mKeyFrames.find( pKey->pos() );
+    if ( it != mKeyFrames.end() )
+    {
+        delete it->second;
+        mKeyFrames.erase( it );
+    }
+    mKeyFrames.insert( std::make_pair( pKey->pos(), pKey ) );
+    return true;
 }
 
-void Layer::loadDomElement( QDomElement element )
+bool Layer::save( QString strDataFolder )
 {
-    name = element.attribute( "name" );
-    visible = ( element.attribute( "visibility" ) == "1" );
-    m_eType = static_cast< LAYER_TYPE >( element.attribute( "type" ).toInt() );
+	for ( auto pair : mKeyFrames )
+	{
+		KeyFrame* pKeyFrame = pair.second;
+		saveKeyFrame( pKeyFrame, strDataFolder );
+	}
+    return false;
 }
 
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
@@ -210,7 +213,7 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
 
     //qDebug() << "LayerType:" << static_cast<int>( m_eType );
 
-    for ( auto pair : m_KeyFrames )
+    for ( auto pair : mKeyFrames )
     {
         int framePos = pair.first;
         KeyFrame* pKeyFrame = pair.second;
@@ -275,7 +278,7 @@ void Layer::paintLabel( QPainter& painter, TimeLineCells* cells, int x, int y, i
 
     painter.setFont( QFont( "helvetica", height / 2 ) );
     painter.setPen( Qt::black );
-    painter.drawText( QPoint( 45, y + ( 2 * height ) / 3 ), name );
+    painter.drawText( QPoint( 45, y + ( 2 * height ) / 3 ), mName );
 }
 
 void Layer::paintSelection( QPainter& painter, int x, int y, int width, int height )
@@ -334,17 +337,17 @@ void Layer::editProperties()
     bool ok;
     QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                           tr( "Layer name:" ), QLineEdit::Normal,
-                                          name, &ok );
+                                          mName, &ok );
     if ( ok && !text.isEmpty() )
     {
-        name = text;
+        mName = text;
     }
 }
 
 void Layer::setModified( int position, bool isModified )
 {
-    auto it = m_KeyFrames.find( position );
-    if ( it != m_KeyFrames.end() )
+    auto it = mKeyFrames.find( position );
+    if ( it != mKeyFrames.end() )
     {
         KeyFrame* pKeyFrame = it->second;
         //pKeyFrame->

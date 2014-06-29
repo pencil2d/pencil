@@ -1,26 +1,26 @@
 
-#include <QMap>
 #include "pencilerror.h"
+#include <map>
+#include <QObject>
 
 
 QString PencilError::msg()
 {
-    static QMap<PencilErrorCode, QString> errorMsgMap;
-
-    if ( errorMsgMap.count() <= 0 )
+    static std::map<ResultCode, QString> msgMap =
     {
         // error messages.
-        errorMsgMap.insert( PCL_OK, "Everything ok." );
-        errorMsgMap.insert( PCL_ERROR_FILE_NOT_EXIST, "File doesn't exist." );
-        errorMsgMap.insert( PCL_ERROR_FILE_CANNOT_OPEN, "Cannot open file." );
-        errorMsgMap.insert( PCL_ERROR_INVALID_XML_FILE, "The file is not a valid xml document.");
-        errorMsgMap.insert( PCL_ERROR_INVALID_PENCIL_FILE, "The file is not valid pencil document.");
-    }
+        { PCL_OK,                        QObject::tr(  "Everything ok." ) },
+        { PCL_FAIL,                      QObject::tr( "Ooops, Something went wrong." ) },
+        { PCL_ERROR_FILE_NOT_EXIST,      QObject::tr( "File doesn't exist." ) },
+        { PCL_ERROR_FILE_CANNOT_OPEN,    QObject::tr( "Cannot open file." ) },
+        { PCL_ERROR_INVALID_XML_FILE,    QObject::tr( "The file is not a valid xml document." ) },
+        { PCL_ERROR_INVALID_PENCIL_FILE, QObject::tr( "The file is not valid pencil document." ) },
+    };
 
-    if ( !errorMsgMap.contains( m_eCode ) )
+    auto it = msgMap.find( m_eCode );
+    if ( it == msgMap.end() )
     {
-        return "Oops, Something went wrong.";
+        return msgMap[ PCL_FAIL ];
     }
-
-    return errorMsgMap[ m_eCode ];
+    return msgMap[ m_eCode ];
 }

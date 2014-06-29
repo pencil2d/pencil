@@ -20,7 +20,7 @@ public:
 
     static const int MAX_RECENT_FILES = 10;
 
-    QStringList getRecentFiles() { return m_recentFiles; }
+    QStringList getRecentFiles() { return mRecentFiles; }
     void setRecentFiles(QStringList filenames);
     void clear();
     ListItemModel *getRecentFilesModel();
@@ -39,8 +39,8 @@ protected slots:
 
 protected:
 
-    QStringList m_recentFiles;
-    QMap<QString, QAction*> m_recentActions;
+    QStringList mRecentFiles;
+    QMap<QString, QAction*> mRecentActions;
 };
 
 #endif // RECENTFILEMENU_H

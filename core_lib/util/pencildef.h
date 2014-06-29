@@ -97,6 +97,13 @@ enum ToolPropertyType
 #define CMD_NEW_CAMERA_LAYER "CmdNewCameraLayer"
 #define CMD_DELETE_CUR_LAYER "CmdDeleteCurrentLayer"
 #define CMD_HELP "CmdHelp"
+#define CMD_TOGGLE_TOOLBOX "CmdToggleToolBox"
+#define CMD_TOGGLE_TOOL_OPTIONS "CmdToggleToolOptions"
+#define CMD_TOGGLE_COLOR_WHEEL "CmdToggleColorWheel"
+#define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
+#define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
+#define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
+
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"

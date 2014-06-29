@@ -9,14 +9,14 @@ class HandTool : public BaseTool
     Q_OBJECT
 public:
     HandTool();
-    ToolType type();
-    void loadSettings();
-    QCursor cursor();
+    ToolType type() override;
+    void loadSettings() override;
+    QCursor cursor() override;
 
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void mouseMoveEvent(QMouseEvent *);
-    void mouseDoubleClickEvent(QMouseEvent *);
+    void mousePressEvent(QMouseEvent *) override;
+    void mouseReleaseEvent(QMouseEvent *) override;
+    void mouseMoveEvent(QMouseEvent *) override;
+    void mouseDoubleClickEvent(QMouseEvent *) override;
 };
 
 #endif
