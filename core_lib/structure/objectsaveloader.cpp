@@ -16,7 +16,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
 {
     if ( !isFileExists( strFileName ) )
     {
-        qCDebug( mLog, "ERROR - File doesn't exist." );
+        qCDebug( mLog ) << "ERROR - File doesn't exist.";
         mError = PencilError( PCL_ERROR_FILE_NOT_EXIST );
         return nullptr;
     }
@@ -212,12 +212,12 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
     // save editor information
     //QDomElement editorElement = createDomElement( xmlDoc );
     //root.appendChild( editorElement );
-    qCDebug( mLog, "Save Editor Node." );
-
+    qCDebug( mLog ) << "Save Editor Node.";
+	qDebug();
     // save object
     QDomElement objectElement = object->createDomElement( xmlDoc );
     root.appendChild( objectElement );
-    qCDebug( mLog, "Save Object Node." );
+    qCDebug( mLog ) << "Save Object Node.";
 
     const int IndentSize = 2;
 

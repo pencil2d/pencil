@@ -22,8 +22,6 @@ GNU General Public License for more details.
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QDesktopWidget>
-//#include <QShortcut>
-
 #include "pencildef.h"
 #include "pencilsettings.h"
 

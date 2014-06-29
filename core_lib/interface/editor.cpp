@@ -62,7 +62,6 @@ static VectorImage g_clipboardVectorImage;
 
 
 Editor::Editor( MainWindow2* parent ) : QObject( parent )
-    , mLog( "Editor" )
     , exportFramesDialog( nullptr ) // will be created when needed
     , exportMovieDialog( nullptr )
     , exportFlashDialog( nullptr )
