@@ -32,7 +32,7 @@ public:
     ~LayerBitmap();
 
     // method from layerImage
-    bool addNewKeyFrameAt( int frameNumber ) override;
+    bool addNewKeyAt( int frameNumber ) override;
     void loadImageAtFrame( QString strFilePath, QPoint topLeft, int frameNumber );
 
     QDomElement createDomElement( QDomDocument& doc ) override;

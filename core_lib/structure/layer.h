@@ -60,16 +60,16 @@ public:
     void switchVisibility() { visible = !visible; }
 
     // KeyFrame interface
-    bool hasKeyFrameAtPosition(int position);
-    int getPreviousKeyFramePosition(int position);
-    int getNextKeyFramePosition(int position);
+    bool keyExists(int position);
+    int  getPreviousKeyFramePosition(int position);
+    int  getNextKeyFramePosition(int position);
 
     int getMaxKeyFramePosition();
     int getFirstKeyFramePosition();
 
     int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
 
-    virtual bool addNewKeyFrameAt( int frameNumber ) = 0;
+    virtual bool addNewKeyAt( int frameNumber ) = 0;
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;

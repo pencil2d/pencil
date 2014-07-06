@@ -65,7 +65,7 @@ int LayerManager::LastFrameAtFrame( int frameIndex )
         for ( int layerIndex = 0; layerIndex < pObj->getLayerCount(); ++layerIndex )
         {
             auto pLayer = pObj->getLayer( layerIndex );
-            if ( pLayer->hasKeyFrameAtPosition( i ) )
+            if ( pLayer->keyExists( i ) )
             {
                 return i;
             }

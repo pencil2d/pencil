@@ -57,7 +57,7 @@ public:
 
     // method from layerImage
     QImage* getImageAtIndex(int index);
-    bool addNewKeyFrameAt( int frameNumber ) override;
+    bool addNewKeyAt( int frameNumber ) override;
 
     void loadImageAtFrame(int, QMatrix);
     

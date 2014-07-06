@@ -58,7 +58,7 @@ void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int
     */
 }
 
-bool LayerSound::addNewKeyFrameAt(int frameNumber)
+bool LayerSound::addNewKeyAt(int frameNumber)
 {
     return addKeyFrame( frameNumber, new SoundClip );
 }

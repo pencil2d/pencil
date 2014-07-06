@@ -23,7 +23,7 @@ public:
 
     void testCase1();
     void testLayerType();
-    void testAddNewKeyFrameAt();
+    void testAddNewKeyAt();
     void testRemoveKeyFrame();
     void testGetMaxFramePosition();
     void testGetFirstFramePosition();

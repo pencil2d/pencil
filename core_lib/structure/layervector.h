@@ -36,7 +36,7 @@ public:
     ~LayerVector();
 
     // method from layerImage
-    bool addNewKeyFrameAt( int frameNumber ) override;
+    bool addNewKeyAt( int frameNumber ) override;
     void loadImageAtFrame(QString strFileName, int);
 
     QDomElement createDomElement(QDomDocument& doc) override;

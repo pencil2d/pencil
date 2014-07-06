@@ -104,7 +104,7 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
     mName = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
-    addNewKeyFrameAt( 1 );
+    addNewKeyAt( 1 );
 }
 
 LayerCamera::~LayerCamera()
@@ -112,7 +112,7 @@ LayerCamera::~LayerCamera()
 }
 
 
-bool LayerCamera::addNewKeyFrameAt( int frameNumber )
+bool LayerCamera::addNewKeyAt( int frameNumber )
 {
     QMatrix viewMatrix = getViewAtFrame( frameNumber );
     Camera* pCamera = new Camera( viewMatrix );
@@ -179,7 +179,7 @@ QRect LayerCamera::getViewRect()
 
 void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
 {
-    if ( hasKeyFrameAtPosition( frameNumber ) )
+    if ( keyExists( frameNumber ) )
     {
         removeKeyFrame( frameNumber );
     }

@@ -22,7 +22,7 @@ GNU General Public License for more details.
 LayerBitmap::LayerBitmap( Object* object ) : Layer( object, Layer::BITMAP )
 {
     mName = QString( tr( "Bitmap Layer" ) );
-    addNewKeyFrameAt( 1 );
+    addNewKeyAt( 1 );
 }
 
 LayerBitmap::~LayerBitmap()
@@ -39,7 +39,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame( int frameNumber, int increm
     return static_cast< BitmapImage* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
 }
 
-bool LayerBitmap::addNewKeyFrameAt( int frameNumber )
+bool LayerBitmap::addNewKeyAt( int frameNumber )
 {
     if ( frameNumber <= 0 )
     {

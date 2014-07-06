@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1427,7 +1428,7 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     case Layer::BITMAP:
     case Layer::VECTOR:
     case Layer::CAMERA:
-        isOK = layer->addNewKeyFrameAt( frameIndex );
+        isOK = layer->addNewKeyAt( frameIndex );
         break;
     default:
         break;
