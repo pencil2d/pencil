@@ -51,7 +51,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     m_pLoopEndSpinBox->setFocusPolicy(Qt::NoFocus);
     m_pLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
 
-    m_pPlaybackRangeCheckBox = new QCheckBox( tr("Playback Range") );
+    m_pPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
     m_pPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
     m_pPlaybackRangeCheckBox->setFixedHeight(26);
     m_pPlaybackRangeCheckBox->setToolTip(tr("Loop control"));
