@@ -65,7 +65,7 @@ public:
     int  getNextKeyFramePosition(int position);
 
     int getMaxKeyFramePosition();
-    int getFirstKeyFramePosition();
+    int firstKeyFramePosition();
 
     int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
 

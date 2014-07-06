@@ -83,7 +83,7 @@ int LayerManager::firstKeyFrameIndex()
     {
         Layer* pLayer = pObj->getLayer( i );
 
-        int position = pLayer->getFirstKeyFramePosition();
+        int position = pLayer->firstKeyFramePosition();
         if ( position < minPosition )
         {
             minPosition = position;

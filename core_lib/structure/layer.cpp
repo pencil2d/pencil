@@ -89,7 +89,7 @@ int Layer::getPreviousKeyFramePosition( int position )
     auto it = mKeyFrames.upper_bound( position );
     if ( it == mKeyFrames.end() )
     {
-        return getFirstKeyFramePosition();
+        return firstKeyFramePosition();
     }
     return it->first;
 }
@@ -109,7 +109,7 @@ int Layer::getNextKeyFramePosition( int position )
     return it->first;
 }
 
-int Layer::getFirstKeyFramePosition()
+int Layer::firstKeyFramePosition()
 {
     Q_ASSERT( mKeyFrames.rbegin()->first == 1 );
 

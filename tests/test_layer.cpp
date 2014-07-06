@@ -79,10 +79,10 @@ void TestLayer::testGetFirstFramePosition()
     Layer* pLayer = new LayerBitmap( m_pObject );
     QScopedPointer<Layer> ptr( pLayer );
 
-    QCOMPARE( pLayer->getFirstKeyFramePosition(), 1 );
+    QCOMPARE( pLayer->firstKeyFramePosition(), 1 );
     pLayer->addNewKeyAt( 99 );
 
-    QCOMPARE( pLayer->getFirstKeyFramePosition(), 1 );
+    QCOMPARE( pLayer->firstKeyFramePosition(), 1 );
 }
 
 
