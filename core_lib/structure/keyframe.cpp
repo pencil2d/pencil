@@ -3,9 +3,6 @@
 
 KeyFrame::KeyFrame()
 {
-    m_position = -1;
-    m_originalPosition = -1;
-    m_isModified = false;
 }
 
 KeyFrame::~KeyFrame()
