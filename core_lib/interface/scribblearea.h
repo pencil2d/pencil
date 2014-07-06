@@ -79,7 +79,7 @@ public:
     static QBrush getBackgroundBrush( QString );
 
     bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
-	void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; }
+	void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
 
     bool showThinLines() const { return mShowThinLines; }
     int showAllLayers() const { return mShowAllLayers; }
@@ -154,7 +154,6 @@ public slots:
     void toggleOnionBlue( bool );
     void toggleOnionRed( bool );
     void toggleGridA( bool );
-    void grid();
 
     void resetView();
     void setMyView( QMatrix view );

@@ -219,8 +219,12 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled( false );
     //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    ui->actionGrid->setEnabled( false );
-    connect( ui->actionGrid, &QAction::triggered, mEditor, &Editor::gridview ); //TODO: Grid view
+	connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked ) 
+	{ 
+		mScribbleArea->setEffect( EFFECT_GRID_A, bChecked ); 
+	} );
+
+
 
     connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
     connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );

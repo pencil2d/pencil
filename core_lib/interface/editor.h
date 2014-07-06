@@ -110,7 +110,6 @@ public slots:
     void zoomOut();
     void rotatecw();
     void rotateacw();
-    void gridview();
     void resetView();
 
     void importImageFromDialog();

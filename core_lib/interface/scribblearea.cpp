@@ -740,15 +740,6 @@ void ScribbleArea::refreshVector( QRect rect, int rad )
     update( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
 }
 
-void ScribbleArea::grid()
-{
-    QPainter painter( this );
-    painter.setWorldMatrixEnabled( true );
-    painter.setWorldMatrix( centralView.inverted() * transMatrix * centralView );
-    painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
-    painter.drawImage( QPoint( 100, 100 ), QImage( ":background/grid" ) ); //TODO The grid is being drawn but the white background over rides it!
-}
-
 void ScribbleArea::paintEvent( QPaintEvent *event )
 {
     //qDebug() << "paint event!" << QDateTime::currentDateTime() << event->rect();

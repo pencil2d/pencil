@@ -1540,16 +1540,6 @@ void Editor::rotateacw()
     mScribbleArea->rotateacw();
 }
 
-void Editor::gridview()
-{
-    resetView();
-
-    mScribbleArea->grid();
-    QMessageBox msgBox;
-    msgBox.setText( "Would you like to add a camera layer?" );
-    msgBox.exec();
-}
-
 void Editor::resetView()
 {
     getScribbleArea()->resetView();
