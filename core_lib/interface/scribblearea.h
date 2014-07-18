@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QFrame>
 #include <QHash>
+#include "log.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
@@ -279,6 +280,8 @@ private:
 
     // debug
     QRectF debugRect;
+
+    QLoggingCategory mLog;
 };
 
 #endif

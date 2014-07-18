@@ -40,7 +40,8 @@ GNU General Public License for more details.
 
 // #define DRAW_AXIS
 
-ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent )
+ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent ),
+mLog( "ScribbleArea" )
 {
     mStrokeManager = new StrokeManager();
 
@@ -734,9 +735,9 @@ void ScribbleArea::refreshVector( QRect rect, int rad )
     update( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
 }
 
-void ScribbleArea::paintEvent( QPaintEvent *event )
+void ScribbleArea::paintEvent( QPaintEvent* event )
 {
-    //qDebug() << "paint event!" << QDateTime::currentDateTime() << event->rect();
+    qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
     QPainter painter( this );
 
     // draws the background (if necessary)
@@ -776,9 +777,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     painter.setTransform( transMatrix );
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
 
-    //  painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO Success a grid is drawn
     Layer *layer = mEditor->layers()->currentLayer();
-
 
     if ( !editor()->playback()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
@@ -875,7 +874,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                                           isEffectOn( EFFECT_ANTIALIAS ) );
                 }
             }
-            }
+            } // end siwtch
         }
 
         // paints the  buffer image
