@@ -30,13 +30,12 @@ int main(int argc, char* argv[])
     app.setApplicationName("Pencil");
 
     QTranslator qtTranslator;
-    qtTranslator.load("qt_" + QLocale::system().name(),
-            QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qtTranslator.load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     app.installTranslator(&qtTranslator);
 
-    QTranslator myappTranslator;
-    myappTranslator.load("pencil2d_" + QLocale::system().name());
-    app.installTranslator(&myappTranslator);
+    QTranslator pencil2DTranslator;
+    pencil2DTranslator.load("pencil2d_" + QLocale::system().name());
+    app.installTranslator(&pencil2DTranslator);
 
 #ifndef Q_WS_MAC
     app.setWindowIcon(QIcon(":/icons/icon.png"));

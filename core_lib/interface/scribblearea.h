@@ -263,7 +263,7 @@ private:
     QPointF offset;
 
     //instant tool (temporal eg. eraser)
-    bool instantTool; //whether or not using temporal tool
+    bool instantTool = false; //whether or not using temporal tool
 
     VectorSelection vectorSelection;
     QMatrix selectionTransformation;

@@ -40,9 +40,7 @@ GNU General Public License for more details.
 
 // #define DRAW_AXIS
 
-ScribbleArea::ScribbleArea( QWidget* parent )
-: QWidget( parent )
-, instantTool( false )
+ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent )
 {
     mStrokeManager = new StrokeManager();
 
@@ -957,8 +955,9 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
 
 void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
+    // Merge the different layers into the ScribbleArea.
     //qDebug() << "paint canvas!" << QDateTime::currentDateTime();
-    // merge the different layers into the ScribbleArea
+    
     QPainter painter( &mCanvas );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, isEffectOn( EFFECT_ANTIALIAS ) );
 
