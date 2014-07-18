@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 
 #include <QtXml>
-#include <QMatrix>
+#include <QTransform>
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
@@ -80,13 +80,13 @@ public:
     void removeColour(int index);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
-    void outputImage(QImage* image, QMatrix myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage
+    void outputImage(QImage* image, QTransform myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage
 
     void clear();
     void clean();
-    void setSelectionTransformation(QMatrix transform);
+    void setSelectionTransformation(QTransform transform);
     void applySelectionTransformation();
-    void applySelectionTransformation(QMatrix transform);
+    void applySelectionTransformation(QTransform transform);
     void applyColourToSelection(int colourNumber);
     void applyWidthToSelection(qreal width);
     void applyFeatherToSelection(qreal feather);
@@ -131,7 +131,7 @@ private:
     Object* myParent;
 
     QRectF selectionRect;
-    QMatrix selectionTransformation;
+    QTransform selectionTransformation;
 };
 
 #endif

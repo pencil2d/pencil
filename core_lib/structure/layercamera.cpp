@@ -114,8 +114,8 @@ LayerCamera::~LayerCamera()
 
 bool LayerCamera::addNewKeyAt( int frameNumber )
 {
-    QMatrix viewMatrix = getViewAtFrame( frameNumber );
-    Camera* pCamera = new Camera( viewMatrix );
+    QTransform view = getViewAtFrame( frameNumber );
+    Camera* pCamera = new Camera( view );
     pCamera->setPos( frameNumber );
     return addKeyFrame( frameNumber, pCamera );
 }
@@ -130,11 +130,11 @@ Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
     return static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
 }
 
-QMatrix LayerCamera::getViewAtFrame(int frameNumber)
+QTransform LayerCamera::getViewAtFrame(int frameNumber)
 {
     if ( keyFrameCount() == 0 )
     {
-        return QMatrix();
+        return QTransform();
     }
 
     Camera* camera1 = static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber ) );
@@ -144,13 +144,13 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
 
     if (camera1 == NULL && camera2 == NULL)
     {
-        return QMatrix();
+        return QTransform();
     }
-    if (camera1 == NULL && camera2 != NULL)
+    else if (camera1 == NULL && camera2 != NULL)
     {
         return camera2->view;
     }
-    if (camera2 == NULL && camera1 != NULL)
+    else if (camera2 == NULL && camera1 != NULL)
     {
         return camera1->view;
     }
@@ -162,12 +162,18 @@ QMatrix LayerCamera::getViewAtFrame(int frameNumber)
     qreal c2 = ( frameNumber - frame1 + 0.0 ) / ( frame2 - frame1 );
     qreal c1 = 1.0 - c2;
     //qDebug() << ">> -- " << c1 << c2;
-    return QMatrix( c1*camera1->view.m11() + c2*camera2->view.m11(),
-                    c1*camera1->view.m12() + c2*camera2->view.m12(),
-                    c1*camera1->view.m21() + c2*camera2->view.m21(),
-                    c1*camera1->view.m22() + c2*camera2->view.m22(),
-                    c1*camera1->view.dx() + c2*camera2->view.dx(),
-                    c1*camera1->view.dy() + c2*camera2->view.dy() );
+
+    auto interpolation = [=]( double f1, double f2 ) -> double
+    {
+        return f1 * c1 + f2 * c2;
+    };
+
+    return QTransform( interpolation( camera1->view.m11(), camera2->view.m11() ),
+                       interpolation( camera1->view.m12(), camera2->view.m12() ),
+                       interpolation( camera1->view.m21(), camera2->view.m21() ),
+                       interpolation( camera1->view.m22(), camera2->view.m22() ),
+                       interpolation( camera1->view.dx(),  camera2->view.dx() ),
+                       interpolation( camera1->view.dy(),  camera2->view.dy() ) );
    
 }
 
@@ -177,7 +183,7 @@ QRect LayerCamera::getViewRect()
 }
 
 
-void LayerCamera::loadImageAtFrame(int frameNumber, QMatrix view)
+void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
 {
     if ( keyExists( frameNumber ) )
     {
@@ -270,7 +276,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
                 qreal dx = imageElement.attribute("dx").toDouble();
                 qreal dy = imageElement.attribute("dy").toDouble();
 
-                loadImageAtFrame(frame, QMatrix(m11,m12,m21,m22,dx,dy) );
+                loadImageAtFrame( frame, QTransform( m11, m12, m21, m22, dx, dy ) );
             }
         }
         imageTag = imageTag.nextSibling();

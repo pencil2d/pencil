@@ -66,7 +66,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
                 {
                     scale = exp( 0.01 * ( getCurrentPixel().y() - getLastPressPixel().y() ) );
                 }
-                mScribbleArea->setTransformationMatrix( QMatrix(
+                mScribbleArea->setTransformationMatrix( QTransform(
                     scale * cosine, -scale * sine,
                     scale * sine, scale * cosine,
                     0.0,
@@ -76,7 +76,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
         }
         else     // translation
         {
-            mScribbleArea->setTransformationMatrix( QMatrix(
+            mScribbleArea->setTransformationMatrix( QTransform(
                 1.0, 0.0, 0.0,
                 1.0,
                 getCurrentPixel().x() - getLastPressPixel().x(),

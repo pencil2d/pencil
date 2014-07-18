@@ -69,8 +69,8 @@ public:
     void setSelected(bool YesOrNo) { for(int i=0; i<selected.size(); i++) { selected[i] = YesOrNo; } }
     void setSelected(int i, bool YesOrNo);
 
-    BezierCurve transformed(QMatrix transformation);
-    void transform(QMatrix transformation);
+    BezierCurve transformed(QTransform transformation);
+    void transform(QTransform transformation);
 
     void appendCubic(const QPointF& c1Point, const QPointF& c2Point, const QPointF& vertexPoint, qreal pressureValue);
     void addPoint(int position, const QPointF point);
@@ -83,7 +83,7 @@ public:
     QPainterPath getStrokedPath(qreal width, bool pressure);
     QRectF getBoundingRect();
 
-    void drawPath(QPainter& painter, Object* object, QMatrix transformation, bool simplified, bool showThinLines );
+    void drawPath(QPainter& painter, Object* object, QTransform transformation, bool simplified, bool showThinLines );
     void createCurve(QList<QPointF>& pointList, QList<qreal>& pressureList );
     void smoothCurve();
 

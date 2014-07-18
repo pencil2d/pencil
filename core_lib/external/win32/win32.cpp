@@ -67,7 +67,7 @@ bool Object::exportMovie( ExportMovieParameters par )
 {
     int startFrame = par.startFrame;
     int endFrame = par.endFrame;
-    QMatrix view = par.view;
+    QTransform view = par.view;
     Layer* currentLayer = par.currentLayer;
     QSize exportSize = par.exportSize;
     QString filePath = par.filePath;

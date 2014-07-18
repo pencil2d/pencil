@@ -410,7 +410,7 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.show();
 
     mEditor->setCurrentLayer( 0 );
-    mScribbleArea->setMyView( QMatrix() );
+    mScribbleArea->setMyView( QTransform() );
 
     ObjectSaveLoader objectLoader( this );
     Object* object = objectLoader.load( strFilePath );
@@ -472,7 +472,7 @@ bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
                 qreal m22 = element.attribute( "m22" ).toDouble();
                 qreal dx = element.attribute( "dx" ).toDouble();
                 qreal dy = element.attribute( "dy" ).toDouble();
-                m_pScribbleArea->setMyView( QMatrix( m11, m12, m21, m22, dx, dy ) );
+                m_pScribbleArea->setMyView( QTransform( m11, m12, m21, m22, dx, dy ) );
             }
         }
         tag = tag.nextSibling();
@@ -552,7 +552,7 @@ QDomElement MainWindow2::createDomElement( QDomDocument& doc )
     tag.appendChild( tag2 );
     QDomElement tag3 = doc.createElement( "currentView" );
 
-    QMatrix myView = m_pScribbleArea->getMyView();
+    QTransform myView = m_pScribbleArea->getMyView();
     tag3.setAttribute( "m11", myView.m11() );
     tag3.setAttribute( "m12", myView.m12() );
     tag3.setAttribute( "m21", myView.m21() );

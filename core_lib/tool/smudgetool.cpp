@@ -182,7 +182,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
                     // transforms the selection
-                    mScribbleArea->selectionTransformation = QMatrix().translate(mScribbleArea->offset.x(), mScribbleArea->offset.y());
+                    mScribbleArea->selectionTransformation = QTransform().translate(mScribbleArea->offset.x(), mScribbleArea->offset.y());
                     ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0)->setSelectionTransformation(mScribbleArea->selectionTransformation);
                 }
             }

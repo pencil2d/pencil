@@ -383,7 +383,7 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     painter.setRenderHint( QPainter::Antialiasing, true );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, true );
 
-    //painter.setWorldMatrix(matrix);
+    //painter.setTransform(matrix);
     painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
 
     // paints the background
@@ -391,9 +391,9 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     {
         painter.setPen( Qt::NoPen );
         painter.setBrush( Qt::white );
-        painter.setWorldMatrixEnabled( false );
+        painter.setViewTransformEnabled( false );
         painter.drawRect( QRect( 0, 0, painter.device()->width(), painter.device()->height() ) );
-        painter.setWorldMatrixEnabled( true );
+        painter.setViewTransformEnabled( true );
     }
 
     for ( int i = 0; i < getLayerCount(); i++ )
@@ -464,9 +464,9 @@ bool Object::exportFrames( int frameStart, int frameEnd,
         tempImage.fill( 0x00000000 );
 
         QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-        QMatrix mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
         mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
-        painter.setWorldMatrix( mapView );
+        painter.setWorldTransform( mapView );
 
         paintImage( painter, currentFrame, background, antialiasing );
 
@@ -510,7 +510,7 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
 {
     int frameStart = par.frameStart;
     int frameEnd = par.frameEnd;
-    QMatrix view = par.view;
+    QTransform view = par.view;
     Layer* currentLayer = par.currentLayer;
     QSize exportSize = par.exportSize;
     QString filePath = par.filePath;
@@ -571,13 +571,13 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
         if ( currentLayer->type() == Layer::CAMERA )
         {
             QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-            QMatrix mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+            QTransform mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
             mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
-            painter.setWorldMatrix( mapView );
+            painter.setWorldTransform( mapView );
         }
         else
         {
-            painter.setWorldMatrix( view );
+            painter.setTransform( view );
         }
         paintImage( painter, currentFrame, background, antialiasing );
 
@@ -645,7 +645,7 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
 
 
 
-bool Object::exportX( int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing )
+bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing )
 {
     QSettings settings( "Pencil", "Pencil" );
 
@@ -661,8 +661,8 @@ bool Object::exportX( int frameStart, int frameEnd, QMatrix view, QSize exportSi
         {
             QRect source = QRect( QPoint( 0, 0 ), exportSize );
             QRect target = QRect( QPoint( ( y % 3 ) * 800 + 30, ( y / 3 ) * 680 + 50 - page * 3400 ), QSize( 640, 480 ) );
-            QMatrix thumbView = view * Editor::map( source, target );
-            xPainter.setWorldMatrix( thumbView );
+            QTransform thumbView = view * Editor::map( source, target );
+            xPainter.setWorldTransform( thumbView );
             xPainter.setClipRegion( thumbView.inverted().map( QRegion( target ) ) );
             paintImage( xPainter, i, false, antialiasing );
             xPainter.resetMatrix();
@@ -687,19 +687,19 @@ bool Object::exportX( int frameStart, int frameEnd, QMatrix view, QSize exportSi
     return true;
 }
 
-bool Object::exportIm( int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing )
+bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing )
 {
     Q_UNUSED( frameEnd );
 
     QImage exported( exportSize, QImage::Format_ARGB32_Premultiplied );
     QPainter painter( &exported );
     painter.fillRect( exported.rect(), Qt::white );
-    painter.setWorldMatrix( view );
+    painter.setWorldTransform( view );
     paintImage( painter, frameStart, false, antialiasing );
     return exported.save( filePath );
 }
 
-bool Object::exportFlash( int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression )
+bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression )
 {
     Q_UNUSED( exportSize );
     Q_UNUSED( startFrame );
@@ -707,6 +707,7 @@ bool Object::exportFlash( int startFrame, int endFrame, QMatrix view, QSize expo
     Q_UNUSED( view );
     Q_UNUSED( fps );
     Q_UNUSED( compression );
+
     if ( !filePath.endsWith( ".swf", Qt::CaseInsensitive ) )
     {
         filePath = filePath + ".swf";

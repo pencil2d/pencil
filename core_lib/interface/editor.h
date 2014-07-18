@@ -63,7 +63,7 @@ public:
     int currentFrame();
 
     int allLayers();
-    static QMatrix map( QRectF, QRectF );
+    static QTransform map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
 
     int getOnionLayer1Opacity() { return onionLayer1Opacity; }

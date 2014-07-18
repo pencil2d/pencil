@@ -611,7 +611,7 @@ void VectorImage::calculateSelectionRect()
     }
 }
 
-void VectorImage::setSelectionTransformation(QMatrix transform)
+void VectorImage::setSelectionTransformation(QTransform transform)
 {
     selectionTransformation = transform;
     modification();
@@ -861,7 +861,7 @@ void VectorImage::paintImage(QPainter& painter,
 
     painter.setClipping(false);
     painter.setOpacity(1.0);
-    QMatrix painterMatrix = painter.worldMatrix();
+    QTransform painterMatrix = painter.transform();
 
     QRect mappedViewRect = QRect(0,0, painter.device()->width(), painter.device()->height() );
     QRectF viewRect = painterMatrix.inverted().mapRect( mappedViewRect );
@@ -879,12 +879,12 @@ void VectorImage::paintImage(QPainter& painter,
             if (area[i].isSelected())
             {
                 painter.save();
-                painter.setWorldMatrixEnabled(false);
+                painter.setViewTransformEnabled(false);
 
                 painter.setBrush( QBrush( QColor(255-colour.red(),255-colour.green(),255-colour.blue()), Qt::Dense6Pattern) );
-                painter.drawPath( painter.worldMatrix().map( area[i].path ) );
+                painter.drawPath( painter.transform().map( area[ i ].path ) );
                 painter.restore();
-                painter.setWorldMatrixEnabled(true);
+                painter.setViewTransformEnabled(true);
             }
             // --
             painter.setRenderHint(QPainter::Antialiasing, antialiasing);
@@ -905,14 +905,14 @@ void VectorImage::paintImage(QPainter& painter,
 }
 
 void VectorImage::outputImage(QImage* image,
-							  QMatrix myView,
+							  QTransform myView,
 							  bool simplified,
                               bool showThinCurves,
 							  bool antialiasing)
 {
 	image->fill(qRgba(0,0,0,0));
     QPainter painter( image );
-    painter.setWorldMatrix( myView );
+    painter.setTransform( myView );
     paintImage( painter, simplified, showThinCurves, antialiasing );
 }
 
@@ -936,7 +936,7 @@ void VectorImage::applySelectionTransformation()
     applySelectionTransformation(selectionTransformation);
 }
 
-void VectorImage::applySelectionTransformation(QMatrix transf)
+void VectorImage::applySelectionTransformation(QTransform transf)
 {
     for(int i=0; i< m_curves.size(); i++)
     {

@@ -276,7 +276,7 @@ bool ObjectSaveLoader::loadDomElement( QDomElement docElem )
                 qreal m22 = element.attribute( "m22" ).toDouble();
                 qreal dx = element.attribute( "dx" ).toDouble();
                 qreal dy = element.attribute( "dy" ).toDouble();
-                //m_pScribbleArea->setMyView( QMatrix(m11,m12,m21,m22,dx,dy) );
+                //m_pScribbleArea->setMyView( QTransform(m11,m12,m21,m22,dx,dy) );
             }
         }
         tag = tag.nextSibling();

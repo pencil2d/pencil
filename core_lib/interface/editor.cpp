@@ -884,7 +884,7 @@ void Editor::createExportFlashDialog()
     exportFlashDialog->setModal( true );
 }
 
-QMatrix Editor::map( QRectF source, QRectF target )   // this method should be put somewhere else...
+QTransform Editor::map( QRectF source, QRectF target )   // this method should be put somewhere else...
 {
     qreal x1 = source.left();
     qreal y1 = source.top();
@@ -894,20 +894,16 @@ QMatrix Editor::map( QRectF source, QRectF target )   // this method should be p
     qreal y1P = target.top();
     qreal x2P = target.right();
     qreal y2P = target.bottom();
-    QMatrix matrix;
-    bool mirror = false;
+
+    QTransform matrix;
     if ( ( x1 != x2 ) && ( y1 != y2 ) )
     {
-        if ( !mirror )
-        {
-            matrix = QMatrix( ( x2P - x1P ) / ( x2 - x1 ), 0,
-                              0, ( y2P - y1P ) / ( y2 - y1 ),
-                              ( x1P*x2 - x2P*x1 ) / ( x2 - x1 ), ( y1P*y2 - y2P*y1 ) / ( y2 - y1 ) );
-        }
-        else
-        {
-            matrix = QMatrix( ( x2P - x1P ) / ( x1 - x2 ), 0, 0, ( y2P - y1P ) / ( y2 - y1 ), ( x1P*x1 - x2P*x2 ) / ( x1 - x2 ), ( y1P*y2 - y2P*y1 ) / ( y2 - y1 ) );
-        }
+        matrix = QTransform( ( x2P - x1P ) / ( x2 - x1 ), // scale x
+                             0,
+                             0,
+                             ( y2P - y1P ) / ( y2 - y1 ), // scale y
+                             ( x1P * x2 - x2P * x1 ) / ( x2 - x1 ),    // dx
+                             ( y1P * y2 - y2P * y1 ) / ( y2 - y1 ) );  // dy
     }
     else
     {
@@ -924,7 +920,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     QSize exportSize = QSize( width, height );
     QByteArray exportFormat( format.toLatin1() );
 
-    QMatrix view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     view = mScribbleArea->getView() * view;
 
     int projectLength = layers()->projectLength();
@@ -963,8 +959,8 @@ bool Editor::exportImageSequence()
     if ( exportFramesDialog->result() == QDialog::Rejected ) return false;
 
     QSize exportSize = QSize( exportFramesDialog_hBox->value(), exportFramesDialog_vBox->value() );
-    //QMatrix view = map( QRectF(QPointF(0,0), scribbleArea->size() ), QRectF(QPointF(0,0), exportSize) );
-    QMatrix view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    
+    QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     view = mScribbleArea->getView() * view;
 
     QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
@@ -993,7 +989,7 @@ bool Editor::exportX()
         settings.setValue( "lastExportPath", QVariant( filePath ) );
 
         QSize exportSize = mScribbleArea->getViewRect().toRect().size();
-        QMatrix view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = mScribbleArea->getView() * view;
 
         int projectLength = layers()->projectLength();
@@ -1036,7 +1032,7 @@ bool Editor::exportImage()
         settings.setValue( "lastExportPath", QVariant( filePath ) );
 
         QSize exportSize = mScribbleArea->getViewRect().toRect().size();
-        QMatrix view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = mScribbleArea->getView() * view;
 
 
@@ -1074,7 +1070,7 @@ bool Editor::exportMov()
         if ( exportMovieDialog->result() == QDialog::Rejected ) return false;
 
         QSize exportSize = QSize( exportMovieDialog_hBox->value(), exportMovieDialog_vBox->value() );
-        QMatrix view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = mScribbleArea->getView() * view;
 
         int projectLength = layers()->projectLength();
@@ -1124,7 +1120,7 @@ bool Editor::exportFlash()
         //settings.setValue( "flashCompressionLevel", 10 - exportFlashDialog_compression->value() );
 
         QSize exportSize = mScribbleArea->getViewRect().toRect().size();
-        QMatrix view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
         view = mScribbleArea->getView() * view;
 
         int projectLength = layers()->projectLength();

@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <cstdint>
 #include <QColor>
+#include <QTransform>
 #include <QImage>
 #include <QPoint>
 #include <QWidget>
@@ -91,7 +92,7 @@ public:
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
 
-    QMatrix getView();
+    QTransform getView();
     QRectF getViewRect();
     QPointF getCentralPoint();
 
@@ -101,8 +102,8 @@ public:
     qreal getTempViewScaleY() const { return myTempView.m22(); }
     qreal getCentralViewScale() const { return ( sqrt( centralView.determinant() ) ); }
 
-    QMatrix getTransformationMatrix() const { return transMatrix; }
-    void setTransformationMatrix( QMatrix matrix );
+    QTransform getTransformationMatrix() const { return transMatrix; }
+    void setTransformationMatrix( QTransform matrix );
     void applyTransformationMatrix();
 
     void updateCurrentFrame();
@@ -156,8 +157,8 @@ public slots:
     void toggleGridA( bool );
 
     void resetView();
-    void setMyView( QMatrix view );
-    QMatrix getMyView();
+    void setMyView( QTransform view );
+    QTransform getMyView();
 
     void zoomIn();
     void zoomOut();
@@ -191,10 +192,6 @@ protected:
     void paintEvent( QPaintEvent *event ) override;
     void resizeEvent( QResizeEvent *event ) override;
 
-    void toggledOnionColor();
-    void recentre();
-    void setView( QMatrix );
-
 public:
     void drawPolyline( QList<QPointF> points, QPointF lastPoint );
     void endPolyline( QList<QPointF> points );
@@ -217,6 +214,10 @@ private:
     void drawShadow( QPainter& );
 	void drawAxis( QPainter& );
 	void drawGrid( QPainter& );
+
+    void toggledOnionColor();
+    void recentre();
+    void setView( const QTransform& );
 
 	void floodFillError( int errorType );
 
@@ -266,12 +267,14 @@ private:
     bool instantTool = false; //whether or not using temporal tool
 
     VectorSelection vectorSelection;
-    QMatrix selectionTransformation;
+    QTransform selectionTransformation;
 
-    QMatrix myView;
-    QMatrix myTempView;
-    QMatrix centralView;
-    QMatrix transMatrix;
+    // View Matrix
+    QTransform myView;
+    QTransform myTempView;
+    QTransform centralView;
+    QTransform transMatrix;
+
     QPixmap mCanvas;
 
     // debug

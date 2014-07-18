@@ -62,11 +62,7 @@ ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent )
     mMultiLayerOnionSkin = true;
     mShowThinLines = false;
     mShowAllLayers = 1;
-    myView = QMatrix(); // identity matrix
-    myTempView = QMatrix();
-    transMatrix = QMatrix();
-    centralView = QMatrix();
-
+    
     QString background = settings.value( "background" ).toString();
     setBackgroundBrush( background );
 
@@ -746,8 +742,8 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     // draws the background (if necessary)
     if ( mMouseInUse && currentTool()->type() == HAND )
     {
-        painter.setWorldMatrix( myTempView );
-        painter.setWorldMatrixEnabled( true );
+        painter.setTransform( myTempView );
+        painter.setViewTransformEnabled( true );
         painter.setPen( Qt::NoPen );
         painter.setBrush( backgroundBrush );
         painter.drawRect( ( myTempView ).inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
@@ -774,26 +770,31 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true ); }
         drawCanvas( mEditor->currentFrame(), event->rect() );
     }
+    
     // paints the canvas
-    painter.setWorldMatrixEnabled( true );
-    painter.setWorldMatrix( centralView.inverted() * transMatrix * centralView );
+    painter.setViewTransformEnabled( true );
+    painter.setTransform( transMatrix );
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
+
     //  painter.drawImage(QPoint(100,100),QImage(":background/grid"));//TODO Success a grid is drawn
     Layer *layer = mEditor->layers()->currentLayer();
 
 
     if ( !editor()->playback()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
-        painter.setWorldMatrix( myTempView );
+        painter.setTransform( myTempView );
 
         if ( layer->type() == Layer::VECTOR )
         {
             VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-            if ( currentTool()->type() == SMUDGE || currentTool()->type() == HAND )
+            switch ( currentTool()->type() )
+            {
+            case SMUDGE:
+            case HAND:
             {
                 painter.save();
-                painter.setWorldMatrixEnabled( false );
+                painter.setViewTransformEnabled( false );
                 painter.setRenderHint( QPainter::Antialiasing, false );
                 // ----- paints the edited elements
                 QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
@@ -846,7 +847,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                 painter.restore();
             }
 
-            if ( currentTool()->type() == MOVE )
+            case MOVE:
             {
                 // ----- paints the closest curves
                 mBufferImg->clear();
@@ -870,9 +871,10 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
                     }
                     QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
                     mBufferImg->drawPath( ( myView * transMatrix * centralView ).map( path ), pen2, colour,
-                                           QPainter::CompositionMode_SourceOver,
-                                           isEffectOn( EFFECT_ANTIALIAS ) );
+                                          QPainter::CompositionMode_SourceOver,
+                                          isEffectOn( EFFECT_ANTIALIAS ) );
                 }
+            }
             }
         }
 
@@ -880,8 +882,8 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         if ( mEditor->layers()->currentLayer() != NULL )
         {
             painter.setOpacity( 1.0 );
-            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
-            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setViewTransformEnabled( true ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setViewTransformEnabled( false ); }
             mBufferImg->paintImage( painter );
         }
 
@@ -889,7 +891,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         if ( somethingSelected && ( myTempTransformedSelection.isValid() || mMoveMode == ROTATION ) ) // @revise
         {
             // outline of the transformed selection
-            painter.setWorldMatrixEnabled( false );
+            painter.setViewTransformEnabled( false );
             painter.setOpacity( 1.0 );
             QPolygon tempRect = ( myView * transMatrix * centralView ).mapToPolygon( myTempTransformedSelection.normalized().toRect() );
 
@@ -925,7 +927,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
     {
         QRect rect = ( ( LayerCamera * )layer )->getViewRect();
         rect.translate( width() / 2, height() / 2 );
-        painter.setWorldMatrixEnabled( false );
+        painter.setViewTransformEnabled( false );
         painter.setPen( Qt::NoPen );
         painter.setBrush( QColor( 0, 0, 0, 160 ) );
         painter.drawRect( QRect( 0, 0, width(), ( height() - rect.height() ) / 2 ) );
@@ -937,7 +939,7 @@ void ScribbleArea::paintEvent( QPaintEvent *event )
         painter.drawRect( rect );
     }
     // outlines the frame of the viewport
-    painter.setWorldMatrixEnabled( false );
+    painter.setViewTransformEnabled( false );
     painter.setPen( QPen( Qt::gray, 2 ) );
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( QRect( 0, 0, width(), height() ) );
@@ -964,8 +966,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     painter.setClipRect( rect );
     painter.setClipping( true );
     setView( getView() );
-    painter.setWorldMatrix( myTempView );
-    painter.setWorldMatrixEnabled( true );
+    painter.setTransform( myTempView );
+    painter.setViewTransformEnabled( true );
 
     // background
     painter.setPen( Qt::NoPen );
@@ -1011,7 +1013,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
-                    painter.setWorldMatrixEnabled( true );
+                    painter.setViewTransformEnabled( true );
 
                     // previous frame (onion skin)
                     if ( isEffectOn( EFFECT_PREV_ONION ) )
@@ -1093,7 +1095,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 auto layerVector = static_cast< LayerVector* >( layer );
 
-				painter.setWorldMatrixEnabled( false );
+				painter.setViewTransformEnabled( false );
 
                 // previous frame (onion skin)
                 if ( isEffectOn( EFFECT_PREV_ONION ) )
@@ -1162,7 +1164,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
                 }
-				painter.setWorldMatrixEnabled( true );
+				painter.setViewTransformEnabled( true );
             }
         }
     } // --- end onion skins
@@ -1184,7 +1186,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
-                    painter.setWorldMatrixEnabled( true );
+                    painter.setViewTransformEnabled( true );
                     painter.setOpacity( opacity );
                     if ( i == mEditor->layers()->currentLayerIndex() && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
@@ -1203,7 +1205,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         if ( myTempTransformedSelection.width() != mySelection.width() || myTempTransformedSelection.height() != mySelection.height() || myRotatedAngle != 0 ) { smoothTransform = true; }
                         BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
                         selectionClip.transform( myTransformedSelection, smoothTransform );
-                        QMatrix rm;
+                        QTransform rm;
                         //TODO: complete matrix calls ( sounds funny :)
                         rm.scale( myFlipX, myFlipY );
                         rm.rotate( myRotatedAngle );
@@ -1240,7 +1242,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 vectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
 
-                painter.setWorldMatrixEnabled( false );
+                painter.setViewTransformEnabled( false );
                 painter.setOpacity( opacity );
                 painter.drawImage( QPoint( 0, 0 ), *pImage );
             }
@@ -1501,7 +1503,7 @@ void ScribbleArea::rotateacw()
 
 void ScribbleArea::recentre()
 {
-    centralView = QMatrix( 1, 0,
+    centralView = QTransform( 1, 0,
                            0, 1,
                            0.5 * width(), 0.5 * height() );
     setView( getView() );
@@ -1512,17 +1514,17 @@ void ScribbleArea::recentre()
 /************************************************************************************/
 // view handling
 
-void ScribbleArea::setMyView( QMatrix view )
+void ScribbleArea::setMyView( QTransform view )
 {
     myView = view;
 }
 
-QMatrix ScribbleArea::getMyView()
+QTransform ScribbleArea::getMyView()
 {
     return myView;
 }
 
-void ScribbleArea::setView( QMatrix view )
+void ScribbleArea::setView( const QTransform& view )
 {
     myTempView = view * centralView;
 }
@@ -1535,13 +1537,15 @@ void ScribbleArea::resetView()
     recentre();
 }
 
-QMatrix ScribbleArea::getView()
+QTransform ScribbleArea::getView()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL )
     {
-        return QMatrix(); // TODO: error
+        Q_ASSERT( false );
+        return QTransform(); // TODO: error
     }
+
     if ( layer->type() == Layer::CAMERA )
     {
         return ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
@@ -1573,7 +1577,7 @@ QPointF ScribbleArea::getCentralPoint()
     return myTempView.inverted().map( QPoint( width() / 2, height() / 2 ) );
 }
 
-void ScribbleArea::setTransformationMatrix( QMatrix matrix )
+void ScribbleArea::setTransformationMatrix( QTransform matrix )
 {
     transMatrix = matrix;
     update();
@@ -1589,7 +1593,7 @@ void ScribbleArea::applyTransformationMatrix()
     if ( layer->type() == Layer::CAMERA )
     {
         LayerCamera *layerCamera = ( LayerCamera * )layer;
-        QMatrix view = layerCamera->getViewAtFrame( mEditor->currentFrame() );
+        QTransform view = layerCamera->getViewAtFrame( mEditor->currentFrame() );
         layerCamera->loadImageAtFrame( mEditor->currentFrame(), view * transMatrix );
         //Camera* camera = ((LayerCamera*)layer)->getLastCameraAtFrame(editor->currentFrame, 0);
         //camera->view = camera->view * transMatrix;
@@ -1661,7 +1665,7 @@ void ScribbleArea::paintTransformedSelection()
 
             bool smoothTransform = false;
             if ( myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() || mMoveMode == ROTATION ) { smoothTransform = true; }
-            QMatrix rm;
+            QTransform rm;
             rm.scale( myFlipX, myFlipY );
             rm.rotate( myRotatedAngle );
             BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
@@ -2271,16 +2275,14 @@ void ScribbleArea::toggleOutlines()
 
 void ScribbleArea::toggleMirror()
 {
-    myView = myView * QMatrix( -1, 0, 0, 1, 0, 0 );
-    myTempView = myView * centralView;
+    myView = myView * QTransform( -1, 0, 0, 1, 0, 0 );
     setView( myView );
     updateAllFrames();
 }
 
 void ScribbleArea::toggleMirrorV()
 {
-    myView = myView * QMatrix( 1, 0, 0, -1, 0, 0 );
-    myTempView = myView * centralView;
+    myView = myView * QTransform( 1, 0, 0, -1, 0, 0 );
     setView( myView );
     updateAllFrames();
 }
@@ -2395,7 +2397,7 @@ void ScribbleArea::drawGrid( QPainter& painter )
 	QPen pen( Qt::lightGray );
 	pen.setCosmetic( true );
 	painter.setPen( pen );
-	painter.setWorldMatrixEnabled( true );
+	painter.setViewTransformEnabled( true );
 	painter.setBrush( Qt::NoBrush );
 
 	for ( int x = left; x < right; x += gridSize )

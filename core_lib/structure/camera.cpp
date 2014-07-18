@@ -2,10 +2,9 @@
 
 Camera::Camera()
 {
-    view = QMatrix();
 }
 
-Camera::Camera( QMatrix viewMatrix )
+Camera::Camera( const QTransform& viewMatrix )
 {
     view = viewMatrix;
 }

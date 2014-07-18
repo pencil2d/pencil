@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <QMatrix>
+#include <QTransform>
 #include "keyframe.h"
 
 
@@ -9,10 +9,10 @@ class Camera : public KeyFrame
 {
 public:
     Camera();
-    Camera( QMatrix );
+    Camera( const QTransform& );
     ~Camera();
 
-    QMatrix view;
+    QTransform view;
 };
 
 #endif // CAMERA_H

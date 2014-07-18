@@ -215,7 +215,7 @@ void BezierCurve::setSelected(int i, bool YesOrNo)
     selected[i+1] = YesOrNo;
 }
 
-BezierCurve BezierCurve::transformed(QMatrix transformation)
+BezierCurve BezierCurve::transformed(QTransform transformation)
 {
     BezierCurve transformedCurve = *this; // copy the curve
     if (isSelected(-1)) { transformedCurve.setOrigin(transformation.map(origin)); }
@@ -248,7 +248,7 @@ BezierCurve BezierCurve::transformed(QMatrix transformation)
     return transformedCurve;
 }
 
-void BezierCurve::transform(QMatrix transformation)
+void BezierCurve::transform(QTransform transformation)
 {
     if (isSelected(-1)) setOrigin( transformation.map(origin) );
     for(int i=0; i< vertex.size(); i++)
@@ -365,7 +365,7 @@ void BezierCurve::removeVertex(int i)
     }
 }
 
-void BezierCurve::drawPath(QPainter& painter, Object* object, QMatrix transformation, bool simplified, bool showThinLines )
+void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transformation, bool simplified, bool showThinLines )
 {
     QColor colour = object->getColour(colourNumber).colour;
 

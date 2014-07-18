@@ -109,7 +109,7 @@ void BitmapImage::paintImage(QPainter& painter)
     painter.drawImage(topLeft(), *mImage);
 }
 
-void outputImage(QImage* image, QSize size, QMatrix myView)
+void outputImage(QImage* image, QSize size, QTransform myView)
 {
     Q_UNUSED(image);
     Q_UNUSED(size);
@@ -441,7 +441,7 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
-        painter.setWorldMatrix(QMatrix().translate(-topLeft().x(), -topLeft().y()));
+        painter.setTransform(QTransform().translate(-topLeft().x(), -topLeft().y()));
         painter.setMatrixEnabled(true);
         if (path.length() > 0) {
             painter.drawPath( path );
@@ -466,7 +466,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
-        painter.setWorldMatrix(QMatrix().translate(-topLeft().x(), -topLeft().y()));
+        painter.setTransform(QTransform().translate(-topLeft().x(), -topLeft().y()));
         painter.setMatrixEnabled(true);
         if (path.length() > 0)
         {

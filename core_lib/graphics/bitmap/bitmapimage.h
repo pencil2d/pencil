@@ -45,7 +45,7 @@ public:
     void setModified(bool);
 
     void paintImage(QPainter& painter);
-    void outputImage(QImage* m_pImage, QSize size, QMatrix myView);
+    void outputImage(QImage* m_pImage, QSize size, QTransform myView);
 
     BitmapImage copy();
     BitmapImage copy(QRect rectangle);

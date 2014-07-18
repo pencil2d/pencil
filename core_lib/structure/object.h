@@ -33,7 +33,7 @@ struct ExportMovieParameters
 {
     int startFrame;
     int endFrame;
-    QMatrix view;
+    QTransform view;
     Layer* currentLayer;
     QSize exportSize;
     QString filePath;
@@ -46,7 +46,7 @@ struct ExportFrames1Parameters
 {
     int frameStart;
     int frameEnd;
-    QMatrix view;
+    QTransform view;
     Layer* currentLayer;
     QSize exportSize;
     QString filePath;
@@ -112,9 +112,9 @@ public:
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax );
     bool exportFrames1( ExportFrames1Parameters parameters );
     bool exportMovie( ExportMovieParameters parameters );
-    bool exportX( int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing );
-    bool exportIm( int frameStart, int frameEnd, QMatrix view, QSize exportSize, QString filePath, bool antialiasing );
-    bool exportFlash( int startFrame, int endFrame, QMatrix view, QSize exportSize, QString filePath, int fps, int compression );
+    bool exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
+    bool exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
+    bool exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression );
 
 
     void modification() { modified = true; }
