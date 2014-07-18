@@ -150,11 +150,11 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
     {
         brush = QBrush( Qt::white );
     }
-    if ( brushName == "grey" )
+    else if ( brushName == "grey" )
     {
         brush = QBrush( Qt::lightGray );
     }
-    if ( brushName == "checkerboard" )
+    else if ( brushName == "checkerboard" )
     {
         QPixmap pattern( 16, 16 );
         pattern.fill( QColor( 255, 255, 255 ) );
@@ -164,17 +164,17 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
         painter.end();
         brush.setTexture( pattern );
     }
-    if ( brushName == "dots" )
+    else if ( brushName == "dots" )
     {
         QPixmap pattern( ":background/dots.png" );
         brush.setTexture( pattern );
     }
-    if ( brushName == "weave" )
+    else if ( brushName == "weave" )
     {
         QPixmap pattern( ":background/weave.jpg" );
         brush.setTexture( pattern );
     }
-    if ( brushName == "grid" )
+    else if ( brushName == "grid" )
     {
         brush.setTextureImage( QImage( ":background/grid.jpg" ) );
     }

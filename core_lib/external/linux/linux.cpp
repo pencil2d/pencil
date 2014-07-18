@@ -63,7 +63,7 @@ bool Object::exportMovie( ExportMovieParameters parameters )
 {
     int startFrame = parameters.startFrame;
     int endFrame = parameters.endFrame;
-    QMatrix view = parameters.view;
+    QTransform view = parameters.view;
     Layer* currentLayer = parameters.currentLayer;
     QSize exportSize = parameters.exportSize;
     QString filePath = parameters.filePath;
@@ -99,7 +99,7 @@ bool Object::exportMovie( ExportMovieParameters parameters )
     const char* format = "png";
 
     ExportFrames1Parameters par;
-    
+
     par.frameStart = startFrame;
     par.frameEnd = endFrame;
     par.view = view;
