@@ -31,7 +31,9 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "vectorselection.h"
 #include "basetool.h"
+#include "editor.h"
 #include "colormanager.h"
+#include "viewmanager.h"
 
 class Editor;
 class Layer;
@@ -97,15 +99,10 @@ public:
     QRectF getViewRect();
     QPointF getCentralPoint();
 
-    qreal getViewScaleX() const { return myView.m11(); }
-    qreal getTempViewScaleX() const { return myTempView.m11(); }
-    qreal getViewScaleY() const { return myView.m22(); }
-    qreal getTempViewScaleY() const { return myTempView.m22(); }
-    qreal getCentralViewScale() const { return ( sqrt( centralView.determinant() ) ); }
-
-    QTransform getTransformationMatrix() const { return transMatrix; }
-    void setTransformationMatrix( QTransform matrix );
-    void applyTransformationMatrix();
+    qreal getViewScaleX() const { return mEditor->view()->scaling(); }
+    qreal getTempViewScaleX() const { return mEditor->view()->scaling(); }
+    qreal getViewScaleY() const { return mEditor->view()->scaling(); }
+    qreal getTempViewScaleY() const { return mEditor->view()->scaling(); }
 
     void updateCurrentFrame();
     void updateFrame( int frame );
@@ -269,10 +266,7 @@ private:
     QTransform selectionTransformation;
 
     // View Matrix
-    QTransform myView;
-    QTransform myTempView;
-    QTransform centralView;
-    QTransform transMatrix;
+    QTransform mView;
 
     QPixmap mCanvas;
 

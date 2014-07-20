@@ -83,7 +83,8 @@ QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn s
 {
     Q_ASSERT( mScribbleArea );
 
-    qreal zoomFactor = mScribbleArea->getCentralViewScale(); //scale factor
+    qreal zoomFactor = editor()->view()->scaling(); //scale factor
+
     //qDebug() << "--->" << zoomFactor;
     qreal propWidth = properties.width * zoomFactor;
     qreal propFeather = properties.feather * zoomFactor;

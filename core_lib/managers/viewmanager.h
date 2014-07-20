@@ -12,6 +12,10 @@ public:
     explicit ViewManager(QObject *parent = 0);
     bool init() override;
 
+
+    QPointF mapScreenToCanvas( QPointF p );
+    QPointF mapCanvasToScreen( QPointF p );
+
     QTransform getView();
 
     QPointF translation() { return mTranslate; }

@@ -10,6 +10,16 @@ bool ViewManager::init()
     return true;
 }
 
+QPointF ViewManager::mapScreenToCanvas(QPointF p)
+{
+    return mView.map( p );
+}
+
+QPointF ViewManager::mapCanvasToScreen(QPointF p)
+{
+    mView.inverted().map( p );
+}
+
 QTransform ViewManager::getView()
 {
     return mView;

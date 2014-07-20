@@ -38,8 +38,6 @@ GNU General Public License for more details.
 #define round(f) ((int)(f + 0.5))
 
 
-// #define DRAW_AXIS
-
 ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent ),
 mLog( "ScribbleArea" )
 {
@@ -191,7 +189,6 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame( int frame )
 {
-    // TODO: implement the cache
     setView( getView() );
     int frameNumber = mEditor->layers()->LastFrameAtFrame( frame );
     QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
@@ -457,13 +454,6 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
     event->ignore(); // indicates that the tablet event is not accepted yet, so that it is propagated as a mouse event)
 }
 
-QPointF ScribbleArea::pixelToPoint( QPointF pixel )
-{
-    bool invertible = true;
-    return myTempView.inverted( &invertible ).map( QPointF( pixel ) );
-}
-
-
 bool ScribbleArea::isLayerPaintable() const
 {
     if ( !areLayersSane() )
@@ -516,8 +506,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     if ( !( event->button() == Qt::NoButton ) )    // if the user is pressing the left or right button
     {
         lastPixel = mStrokeManager->getLastPressPixel();
-        bool invertible = true;
-        lastPoint = myTempView.inverted( &invertible ).map( QPointF( lastPixel ) );
+        lastPoint = mEditor->view()->mapScreenToCanvas( lastPixel );
     }
 
     // ----- assisted tool adjusment -- todo: simplify this
@@ -576,8 +565,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     }
     // ---
 
-    bool invertible = true;
-    currentPoint = myTempView.inverted( &invertible ).map( QPointF( currentPixel ) );
+    currentPoint = mEditor->view()->mapScreenToCanvas( currentPixel );
     //qDebug() << "CurPoint: " << currentPoint;
 
 
@@ -605,8 +593,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
 
     mStrokeManager->mouseMoveEvent( event );
     currentPixel = mStrokeManager->getCurrentPixel();
-    bool invertible = true;
-    currentPoint = myTempView.inverted( &invertible ).map( QPointF( currentPixel ) );
+    currentPoint = mEditor->view()->mapScreenToCanvas( currentPixel );
 
     // the user is also pressing the mouse (= dragging)
     if ( event->buttons() & Qt::LeftButton || event->buttons() & Qt::RightButton )
@@ -667,6 +654,14 @@ void ScribbleArea::mouseDoubleClickEvent( QMouseEvent *event )
     currentTool()->mouseDoubleClickEvent( event );
 }
 
+void ScribbleArea::resizeEvent( QResizeEvent *event )
+{
+    QWidget::resizeEvent( event );
+    mCanvas = QPixmap( size() );
+    recentre();
+    updateAllFrames();
+}
+
 /************************************************************************************/
 // paint methods
 
@@ -698,13 +693,15 @@ void ScribbleArea::paintBitmapBuffer()
         }
         targetImage->paste( mBufferImg, cm );
     }
-    QRect rect = myTempView.mapRect( mBufferImg->boundaries );
+
+    QRect rect = mEditor->view()->getView().mapRect( mBufferImg->boundaries );
+
     // Clear the buffer
     mBufferImg->clear();
 
-    //setModified(layer, editor->currentFrame);
     layer->setModified( mEditor->currentFrame(), true );
     emit modification();
+
     QPixmapCache::remove( "frame" + QString::number( mEditor->currentFrame() ) );
     drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
@@ -738,6 +735,7 @@ void ScribbleArea::refreshVector( QRect rect, int rad )
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
     qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
+
     QPainter painter( this );
 
     // process the canvas (or not)
@@ -759,19 +757,19 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     if ( currentTool()->type() == MOVE )
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        if ( !layer ) { return; }
+        Q_ASSERT( layer );
         if ( layer->type() == Layer::VECTOR )
         {
             auto vecLayer = static_cast<LayerVector*>( layer );
             vecLayer->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true );
         }
-        drawCanvas( mEditor->currentFrame(), event->rect() );
     }
     
     // paints the canvas
     painter.setViewTransformEnabled( true );
     painter.setTransform( transMatrix );
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
+
 
     Layer *layer = mEditor->layers()->currentLayer();
 
@@ -810,7 +808,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                         if ( rect().contains( ( myView * transMatrix * centralView ).map( vertexPoint ).toPoint() ) )
                         {
                             painter.drawRect( rectangle.toRect() );
-                            //bufferImg->drawRect( rectangle.toRect(), pen2, colour, QPainter::CompositionMode_SourceOver, false);
                         }
                     }
                 }
@@ -1461,14 +1458,6 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
     }
     mBufferImg->clear();
     setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-}
-
-void ScribbleArea::resizeEvent( QResizeEvent *event )
-{
-    QWidget::resizeEvent( event );
-    mCanvas = QPixmap( size() );
-    recentre();
-    updateAllFrames();
 }
 
 void ScribbleArea::zoomIn()
@@ -2238,7 +2227,7 @@ void ScribbleArea::clearImage()
     {
         return; // skip updates when nothing changes
     }
-    //todo: confirm 1 and 2 are not necessary and remove comments
+    //TODO: confirm 1 and 2 are not necessary and remove comments
     //emit modification(); //1
     //update(); //2
     setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
