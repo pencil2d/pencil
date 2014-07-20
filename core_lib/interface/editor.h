@@ -31,6 +31,7 @@ class ColorManager;
 class ToolManager;
 class LayerManager;
 class PlaybackManager;
+class ViewManager;
 class ScribbleArea;
 class TimeLine;
 class Object;
@@ -39,21 +40,22 @@ class Object;
 class Editor : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY( ColorManager* color READ color )
-    Q_PROPERTY( ToolManager*  tools  READ tools )
-    Q_PROPERTY( LayerManager* layers READ layers )
+    Q_PROPERTY( ColorManager*    color    READ color )
+    Q_PROPERTY( ToolManager*     tools    READ tools )
+    Q_PROPERTY( LayerManager*    layers   READ layers )
     Q_PROPERTY( PlaybackManager* playback READ playback )
+    Q_PROPERTY( ViewManager*     view     READ view )
 
 public:
     Editor( MainWindow2* parent );
     virtual ~Editor();
-
     bool initialize( ScribbleArea* pScribbleArea );
 
     ColorManager*    color() const { return mColorManager; }
     ToolManager*     tools() const { return mToolManager; }
     LayerManager*    layers() const { return mLayerManager; }
     PlaybackManager* playback() const { return mPlaybackManager; }
+    ViewManager*     view() const { return mViewManager; }
 
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
@@ -193,7 +195,8 @@ private:
     ToolManager*     mToolManager = nullptr;
     LayerManager*    mLayerManager = nullptr;
     PlaybackManager* mPlaybackManager = nullptr;
-    
+    ViewManager*     mViewManager = nullptr;
+
     bool m_isAltPressed;
     int numberOfModifications;
 

@@ -418,7 +418,6 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.show();
 
     mEditor->setCurrentLayer( 0 );
-    mScribbleArea->setMyView( QTransform() );
 
     ObjectSaveLoader objectLoader( this );
     Object* object = objectLoader.load( strFilePath );
@@ -442,52 +441,6 @@ bool MainWindow2::openObject( QString strFilePath )
     progress.setValue( 100 );
     return true;
 }
-/*
-bool MainWindow2::loadDomElement( QDomElement docElem, QString filePath )
-{
-    Q_UNUSED( filePath );
-
-    if ( docElem.isNull() )
-    {
-        return false;
-    }
-    QDomNode tag = docElem.firstChild();
-    while ( !tag.isNull() )
-    {
-        QDomElement element = tag.toElement(); // try to convert the node to an element.
-        if ( !element.isNull() )
-        {
-            if ( element.tagName() == "currentLayer" )
-            {
-                int nCurrentLayerIndex = element.attribute( "value" ).toInt();
-                m_pEditor->setCurrentLayer( nCurrentLayerIndex );
-            }
-            if ( element.tagName() == "currentFrame" )
-            {
-                m_pEditor->scrubTo( element.attribute( "value" ).toInt() );
-            }
-            if ( element.tagName() == "currentFps" )
-            {
-                // TODO: save fps
-                //timer->setInterval(1000/fps);
-                //m_pTimeLine->setFps( m_pEditor->fps );
-            }
-            if ( element.tagName() == "currentView" )
-            {
-                qreal m11 = element.attribute( "m11" ).toDouble();
-                qreal m12 = element.attribute( "m12" ).toDouble();
-                qreal m21 = element.attribute( "m21" ).toDouble();
-                qreal m22 = element.attribute( "m22" ).toDouble();
-                qreal dx = element.attribute( "dx" ).toDouble();
-                qreal dy = element.attribute( "dy" ).toDouble();
-                m_pScribbleArea->setMyView( QTransform( m11, m12, m21, m22, dx, dy ) );
-            }
-        }
-        tag = tag.nextSibling();
-    }
-    return true;
-}
-*/
 
 bool MainWindow2::saveObject( QString strSavedFileName )
 {

@@ -2,7 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chang
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -740,16 +740,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
     QPainter painter( this );
 
-    // draws the background (if necessary)
-    if ( mMouseInUse && currentTool()->type() == HAND )
-    {
-        painter.setTransform( myTempView );
-        painter.setViewTransformEnabled( true );
-        painter.setPen( Qt::NoPen );
-        painter.setBrush( backgroundBrush );
-        painter.drawRect( ( myTempView ).inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
-    }
-
     // process the canvas (or not)
     if ( !mMouseInUse )
     {
@@ -761,14 +751,20 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( !QPixmapCache::find( strCachedFrameKey, mCanvas ) )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
+
             QPixmapCache::insert( strCachedFrameKey, mCanvas );
         }
     }
+
     if ( currentTool()->type() == MOVE )
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if ( !layer ) { return; }
-        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR )
+        {
+            auto vecLayer = static_cast<LayerVector*>( layer );
+            vecLayer->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true );
+        }
         drawCanvas( mEditor->currentFrame(), event->rect() );
     }
     
@@ -921,6 +917,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             }
         }
     }
+
     // clips to the frame of the camera
     if ( layer->type() == Layer::CAMERA )
     {
@@ -937,11 +934,14 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         painter.setBrush( Qt::NoBrush );
         painter.drawRect( rect );
     }
+
     // outlines the frame of the viewport
+#ifdef _DEBUG
     painter.setViewTransformEnabled( false );
     painter.setPen( QPen( Qt::gray, 2 ) );
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( QRect( 0, 0, width(), height() ) );
+#endif
 
     // shadow
     bool isPlaying = editor()->playback()->isPlaying();
@@ -949,7 +949,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     {
         drawShadow( painter );
     }
-
 
     event->accept();
 }
@@ -1512,17 +1511,6 @@ void ScribbleArea::recentre()
 
 /************************************************************************************/
 // view handling
-
-void ScribbleArea::setMyView( QTransform view )
-{
-    myView = view;
-}
-
-QTransform ScribbleArea::getMyView()
-{
-    return myView;
-}
-
 void ScribbleArea::setView( const QTransform& view )
 {
     myTempView = view * centralView;

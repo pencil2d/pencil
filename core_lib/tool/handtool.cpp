@@ -1,18 +1,15 @@
-#include <QPixmap>
-#include "handtool.h"
 
+#include "handtool.h"
+#include <QPixmap>
 #include "layer.h"
-#include "editor.h"
-#include "scribblearea.h"
 #include "layercamera.h"
+#include "editor.h"
+#include "viewmanager.h"
+#include "scribblearea.h"
+
 
 HandTool::HandTool()
 {
-}
-
-ToolType HandTool::type()
-{
-    return HAND;
 }
 
 void HandTool::loadSettings()
@@ -45,42 +42,50 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
 
 void HandTool::mouseMoveEvent( QMouseEvent* event )
 {
-    if ( event->buttons() != Qt::NoButton )
+    if ( event->buttons() == Qt::NoButton )
     {
-        if ( event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton )
+        return;
+    }
+
+    bool isTranslate = event->modifiers() == Qt::NoModifier;
+    bool isRotate = event->modifiers() & Qt::AltModifier;
+    bool isScale = event->modifiers() & Qt::ControlModifier;
+
+    if ( isTranslate )
+    {
+        QPointF d = getCurrentPixel() - getLastPressPixel();
+        editor()->view()->translate( d );
+    }
+    else if ( isRotate )
+    {
+
+    }
+
+    if ( event->modifiers() & Qt::ControlModifier || event->modifiers() & Qt::AltModifier || event->buttons() & Qt::RightButton )
+    {
+        QPoint centralPixel( mScribbleArea->width() / 2, mScribbleArea->height() / 2 );
+        if ( getLastPressPixel().x() != centralPixel.x() )
         {
-            QPoint centralPixel( mScribbleArea->width() / 2, mScribbleArea->height() / 2 );
-            if ( getLastPressPixel().x() != centralPixel.x() )
+            qreal scale = 1.0;
+            qreal cosine = 1.0;
+            qreal sine = 0.0;
+            if ( event->modifiers() & Qt::AltModifier )    // rotation
             {
-                qreal scale = 1.0;
-                qreal cosine = 1.0;
-                qreal sine = 0.0;
-                if ( event->modifiers() & Qt::AltModifier )    // rotation
-                {
-                    QPointF V1 = getLastPressPixel() - centralPixel;
-                    QPointF V2 = getCurrentPixel() - centralPixel;
-                    cosine = ( V1.x() * V2.x() + V1.y() * V2.y() ) / ( BezierCurve::eLength( V1 ) * BezierCurve::eLength( V2 ) );
-                    sine = ( -V1.x() * V2.y() + V1.y() * V2.x() ) / ( BezierCurve::eLength( V1 ) * BezierCurve::eLength( V2 ) );
-                }
-                if ( event->modifiers() & Qt::ControlModifier || event->buttons() & Qt::RightButton )    // scale
-                {
-                    scale = exp( 0.01 * ( getCurrentPixel().y() - getLastPressPixel().y() ) );
-                }
-                mScribbleArea->setTransformationMatrix( QTransform(
-                    scale * cosine, -scale * sine,
-                    scale * sine, scale * cosine,
-                    0.0,
-                    0.0
-                    ) );
+                QPointF V1 = getLastPressPixel() - centralPixel;
+                QPointF V2 = getCurrentPixel() - centralPixel;
+                cosine = ( V1.x() * V2.x() + V1.y() * V2.y() ) / ( BezierCurve::eLength( V1 ) * BezierCurve::eLength( V2 ) );
+                sine = ( -V1.x() * V2.y() + V1.y() * V2.x() ) / ( BezierCurve::eLength( V1 ) * BezierCurve::eLength( V2 ) );
             }
-        }
-        else     // translation
-        {
+            if ( event->modifiers() & Qt::ControlModifier || event->buttons() & Qt::RightButton )    // scale
+            {
+                scale = exp( 0.01 * ( getCurrentPixel().y() - getLastPressPixel().y() ) );
+            }
             mScribbleArea->setTransformationMatrix( QTransform(
-                1.0, 0.0, 0.0,
-                1.0,
-                getCurrentPixel().x() - getLastPressPixel().x(),
-                getCurrentPixel().y() - getLastPressPixel().y() ) );
+                                                        scale * cosine, -scale * sine,
+                                                        scale * sine, scale * cosine,
+                                                        0.0,
+                                                        0.0
+                                                        ) );
         }
     }
 }

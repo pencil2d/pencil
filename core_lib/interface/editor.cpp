@@ -43,15 +43,16 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layercamera.h"
 #include "layerimage.h"
-#include "mainwindow2.h"
-#include "displayoptiondockwidget.h"
-#include "tooloptiondockwidget.h"
-#include "toolbox.h"
+
+
 #include "colormanager.h"
 #include "colorpalettewidget.h"
 #include "toolmanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
+#include "viewmanager.h"
+
+#include "mainwindow2.h"
 #include "scribblearea.h"
 #include "timeline.h"
 

@@ -9,7 +9,7 @@ class HandTool : public BaseTool
     Q_OBJECT
 public:
     HandTool();
-    ToolType type() override;
+    ToolType type() override { return HAND; }
     void loadSettings() override;
     QCursor cursor() override;
 

@@ -30,6 +30,7 @@ const int ON = 1;
 const int OFF = 0;
 const int DISABLED = -1;
 
+
 class BaseTool : public QObject
 {
     Q_OBJECT
@@ -86,6 +87,8 @@ public:
     QPointF getLastPressPoint();
 
 protected:
+    Editor* editor() { return mEditor; }
+
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;
