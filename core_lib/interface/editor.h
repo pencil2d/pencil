@@ -174,7 +174,6 @@ public slots:
     bool exportImage();
     bool exportImageSequence();
     bool exportMov();
-    bool exportFlash();
 
 private slots:
     void saveLength( QString );
@@ -221,18 +220,17 @@ private:
     void createExportMovieSizeBox();
     void createExportFramesDialog();
     void createExportMovieDialog();
-    void createExportFlashDialog();
-    QDialog* exportFramesDialog;
-    QDialog* exportMovieDialog;
-    QDialog* exportFlashDialog;
-    QSpinBox* exportFramesDialog_hBox;
-    QSpinBox* exportFramesDialog_vBox;
-    QSpinBox* exportMovieDialog_hBox;
-    QSpinBox* exportMovieDialog_vBox;
-    QComboBox* exportFramesDialog_format;
-    QSpinBox* exportMovieDialog_fpsBox;
-    QComboBox* exportMovieDialog_format;
-    QSlider* exportFlashDialog_compression;
+
+    QDialog* exportFramesDialog = nullptr;
+    QDialog* exportMovieDialog = nullptr;
+    QSpinBox* exportFramesDialog_hBox = nullptr;
+    QSpinBox* exportFramesDialog_vBox = nullptr;
+    QSpinBox* exportMovieDialog_hBox = nullptr;
+    QSpinBox* exportMovieDialog_vBox = nullptr;
+    QComboBox* exportFramesDialog_format = nullptr;
+    QSpinBox* exportMovieDialog_fpsBox = nullptr;
+    QComboBox* exportMovieDialog_format = nullptr;
+
 };
 
 #endif

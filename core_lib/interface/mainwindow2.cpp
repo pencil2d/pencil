@@ -169,10 +169,6 @@ void MainWindow2::createMenus()
     connect( ui->actionExport_Image, &QAction::triggered, mEditor, &Editor::exportImage );
     connect( ui->actionExport_Movie, &QAction::triggered, mEditor, &Editor::exportMov );
 
-    //exportFlashAct = new QAction(tr("&Flash/SWF..."), this);
-    //exportFlashAct->setShortcut(tr("Ctrl+Alt+F"));
-    //connect(exportFlashAct, SIGNAL(triggered()), editor, SLOT(exportFlash()));
-
     connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
 
     /// --- Import Menu ---

@@ -63,16 +63,6 @@ static VectorImage g_clipboardVectorImage;
 
 
 Editor::Editor( MainWindow2* parent ) : QObject( parent )
-    , exportFramesDialog( nullptr ) // will be created when needed
-    , exportMovieDialog( nullptr )
-    , exportFlashDialog( nullptr )
-    , exportFramesDialog_hBox( nullptr )
-    , exportFramesDialog_vBox( nullptr )
-    , exportFramesDialog_format( nullptr )
-    , exportMovieDialog_hBox( nullptr )
-    , exportMovieDialog_vBox( nullptr )
-    , exportMovieDialog_format( nullptr )
-    , exportMovieDialog_fpsBox( nullptr )
 {
     mMainWindow = parent;
 
@@ -850,40 +840,6 @@ void Editor::createExportMovieDialog()
     exportMovieDialog->setModal( true );
 }
 
-void Editor::createExportFlashDialog()
-{
-    exportFlashDialog = new QDialog( mMainWindow, Qt::Dialog );
-    QGridLayout* mainLayout = new QGridLayout;
-
-    QSettings settings( "Pencil", "Pencil" );
-
-    exportFlashDialog_compression = new QSlider( Qt::Horizontal );
-    exportFlashDialog_compression->setTickPosition( QSlider::TicksBelow );
-    exportFlashDialog_compression->setMinimum( 0 );
-    exportFlashDialog_compression->setMaximum( 10 );
-    exportFlashDialog_compression->setValue( 10 - settings.value( "flashCompressionLevel" ).toInt() );
-
-    QLabel* label1 = new QLabel( "Large file" );
-    QLabel* label2 = new QLabel( "Small file" );
-
-    QGroupBox* compressionBox = new QGroupBox( tr( "Compression" ) );
-    QGridLayout* compressionLayout = new QGridLayout;
-    compressionLayout->addWidget( label1, 0, 0 );
-    compressionLayout->addWidget( exportFlashDialog_compression, 0, 1 );
-    compressionLayout->addWidget( label2, 0, 2 );
-    compressionBox->setLayout( compressionLayout );
-
-    QDialogButtonBox* buttonBox = new QDialogButtonBox( QDialogButtonBox::Cancel | QDialogButtonBox::Ok );
-    connect( buttonBox, SIGNAL( accepted() ), exportFlashDialog, SLOT( accept() ) );
-    connect( buttonBox, SIGNAL( rejected() ), exportFlashDialog, SLOT( reject() ) );
-
-    mainLayout->addWidget( compressionBox, 0, 0 );
-    mainLayout->addWidget( buttonBox, 1, 0 );
-    exportFlashDialog->setLayout( mainLayout );
-    exportFlashDialog->setWindowTitle( tr( "Export SWF Options" ) );
-    exportFlashDialog->setModal( true );
-}
-
 QTransform Editor::map( QRectF source, QRectF target )   // this method should be put somewhere else...
 {
     qreal x1 = source.left();
@@ -1092,43 +1048,6 @@ bool Editor::exportMov()
     }
 }
 
-bool Editor::exportFlash()
-{
-    QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.swf";
-    //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export SWF As"),initialPath);
-    QString filePath = QFileDialog::getSaveFileName( mMainWindow, tr( "Export Movie As..." ), initialPath, tr( "SWF (*.swf)" ) );
-    if ( filePath.isEmpty() )
-    {
-        return false;
-    }
-    else
-    {
-        settings.setValue( "lastExportPath", QVariant( filePath ) );
-        if ( !exportFlashDialog )
-        {
-            createExportFlashDialog();
-        }
-        exportFlashDialog->exec();
-
-        if ( exportFlashDialog->result() == QDialog::Rejected )
-        {
-            return false;
-        }
-
-        //settings.setValue( "flashCompressionLevel", 10 - exportFlashDialog_compression->value() );
-
-        QSize exportSize = mScribbleArea->getViewRect().toRect().size();
-        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-        view = mScribbleArea->getView() * view;
-
-        int projectLength = layers()->projectLength();
-        int fps = playback()->fps();
-        mObject->exportFlash( 1, projectLength, view, exportSize, filePath, fps, exportFlashDialog_compression->value() );
-        return true;
-    }
-}
 
 void Editor::importImageFromDialog()
 {

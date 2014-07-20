@@ -216,8 +216,6 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
     for ( auto pair : mKeyFrames )
     {
         int framePos = pair.first;
-        KeyFrame* pKeyFrame = pair.second;
-
         if ( selected )
         {
             painter.setBrush( QColor( 60, 60, 60 ) );
@@ -225,19 +223,6 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
         }
         else
         {
-            //QColor color = ( selected )?
-            /*
-            if ( selected )
-                painter.setBrush( QColor( 125, 125, 125 ) );
-            else
-                painter.setBrush( QColor( 125, 125, 125, 125 ) );
-            */
-            /*
-            if ( framesModified.at( i ) )
-            {
-                painter.setBrush( QColor( 255, 125, 125, 125 ) );
-            }
-            */
             painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
 
         }
