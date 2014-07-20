@@ -584,13 +584,9 @@ void MainWindow2::preferences()
     connect( m_pPreferences, SIGNAL( scrubChange( int ) ), mTimeLine, SIGNAL( scrubChange( int ) ) );
 
     connect( m_pPreferences, SIGNAL( windowOpacityChange( int ) ), this, SLOT( setOpacity( int ) ) );
-    connect( m_pPreferences, SIGNAL( curveOpacityChange( int ) ), mScribbleArea, SLOT( setCurveOpacity( int ) ) );
     connect( m_pPreferences, SIGNAL( curveSmoothingChange( int ) ), mScribbleArea, SLOT( setCurveSmoothing( int ) ) );
-    connect( m_pPreferences, SIGNAL( highResPositionChange( int ) ), mScribbleArea, SLOT( setHighResPosition( int ) ) );
     connect( m_pPreferences, SIGNAL( antialiasingChange( int ) ), mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( m_pPreferences, SIGNAL( gradientsChange( int ) ), mScribbleArea, SLOT( setGradients( int ) ) );
     connect( m_pPreferences, SIGNAL( backgroundChange( int ) ), mScribbleArea, SLOT( setBackground( int ) ) );
-    connect( m_pPreferences, SIGNAL( shadowsChange( int ) ), mScribbleArea, SLOT( setShadows( int ) ) );
     connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
     connect( m_pPreferences, SIGNAL( styleChanged( int ) ), mScribbleArea, SLOT( setStyle( int ) ) );
 
@@ -602,9 +598,7 @@ void MainWindow2::preferences()
     connect( m_pPreferences, SIGNAL( onionLayer3OpacityChange( int ) ), mEditor, SLOT( onionLayer3OpacityChangeSlot( int ) ) );
 
     clearKeyboardShortcuts();
-
-    connect( m_pPreferences, SIGNAL( destroyed() ),
-        this, SLOT( setupKeyboardShortcuts() ) );
+    connect( m_pPreferences, &Preferences::destroyed, [=] { setupKeyboardShortcuts(); } );
 
     m_pPreferences->show();
 }
