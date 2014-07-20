@@ -547,32 +547,6 @@ bool MainWindow2::maybeSave()
     return true;
 }
 
-/*
-QDomElement MainWindow2::createDomElement( QDomDocument& doc )
-{
-    QDomElement tag = doc.createElement( "editor" );
-
-    QDomElement tag1 = doc.createElement( "currentLayer" );
-    tag1.setAttribute( "value", m_pEditor->layers()->currentLayerIndex() );
-    tag.appendChild( tag1 );
-    QDomElement tag2 = doc.createElement( "currentFrame" );
-    tag2.setAttribute( "value", m_pEditor->currentFrame() );
-    tag.appendChild( tag2 );
-    QDomElement tag3 = doc.createElement( "currentView" );
-
-    QTransform myView = m_pScribbleArea->getMyView();
-    tag3.setAttribute( "m11", myView.m11() );
-    tag3.setAttribute( "m12", myView.m12() );
-    tag3.setAttribute( "m21", myView.m21() );
-    tag3.setAttribute( "m22", myView.m22() );
-    tag3.setAttribute( "dx", myView.dx() );
-    tag3.setAttribute( "dy", myView.dy() );
-    tag.appendChild( tag3 );
-
-    return tag;
-}
-*/
-
 void MainWindow2::preferences()
 {
     m_pPreferences = new Preferences( this );
@@ -749,13 +723,19 @@ void MainWindow2::undoActSetText( void )
     }
     else
     {
-        ui->actionUndo->setText( tr("Undo   ") + QString::number( this->mEditor->mBackupIndex + 1 ) + " " + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText );
+        ui->actionUndo->setText( tr("Undo   ")
+                                + QString::number( this->mEditor->mBackupIndex + 1 )
+                                + " "
+                                + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText );
         ui->actionUndo->setEnabled( true );
     }
 
     if ( this->mEditor->mBackupIndex + 2 < this->mEditor->mBackupList.size() )
     {
-        ui->actionRedo->setText( tr("Redo   ") + QString::number( this->mEditor->mBackupIndex + 2 ) + " " + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText );
+        ui->actionRedo->setText( tr("Redo   ")
+                                + QString::number( this->mEditor->mBackupIndex + 2 )
+                                + " "
+                                + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText );
         ui->actionRedo->setEnabled( true );
     }
     else

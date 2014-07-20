@@ -70,9 +70,6 @@ private:
     void importPalette();
     void exportPalette();
 
-    // XML save/load
-    //QDomElement createDomElement(QDomDocument& doc);
-    //bool loadDomElement(QDomElement docElem, QString filePath);
     void readSettings();
     void writeSettings();
 
