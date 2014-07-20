@@ -265,7 +265,7 @@ void MainWindow2::createMenus()
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools );
 
     /// --- Window Menu ---
-    QMenu* pWinMenu = ui->menuWindows;
+    QMenu* winMenu = ui->menuWindows;
     
     QAction* actions[] =
     {
@@ -276,11 +276,11 @@ void MainWindow2::createMenus()
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction()
     };
-    pWinMenu->clear();
+    winMenu->clear();
     for ( QAction* action : actions )
     {
         action->setMenuRole( QAction::NoRole );
-        pWinMenu->addAction( action );
+        winMenu->addAction( action );
     }
     
     /// --- Help Menu ---
