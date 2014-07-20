@@ -103,12 +103,12 @@ void MainWindow2::createDockWidgets()
     makeConnections( mEditor, mTimeLine );
     m_subWidgets.append( mTimeLine );
 
-    mColorWheelWidget = new QDockWidget( tr("Color Wheel"), this );
+    mColorWheel = new QDockWidget( tr("Color Wheel"), this );
 
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
-    mColorWheelWidget->setWidget( pColorBox );
-    mColorWheelWidget->setObjectName( "ColorWheel" );
+    mColorWheel->setWidget( pColorBox );
+    mColorWheel->setObjectName( "ColorWheel" );
     makeColorWheelConnections();
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
@@ -120,19 +120,19 @@ void MainWindow2::createDockWidgets()
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
     mDisplayOptionWidget->makeConnectionToEditor(mEditor);
 
-    mToolOptionWidget = new ToolOptionWidget(this);
-    mToolOptionWidget->setObjectName( "ToolOption" );
-    mToolOptionWidget->makeConnectionToEditor(mEditor);
+    mToolOptions = new ToolOptionWidget(this);
+    mToolOptions->setObjectName( "ToolOption" );
+    mToolOptions->makeConnectionToEditor(mEditor);
 
     mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     mToolBox->setObjectName( "ToolBox" );
     m_subWidgets.append( mToolBox );
 
-    addDockWidget(Qt::RightDockWidgetArea,  mColorWheelWidget);
+    addDockWidget(Qt::RightDockWidgetArea,  mColorWheel);
     addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
-    addDockWidget(Qt::LeftDockWidgetArea,   mToolOptionWidget);
+    addDockWidget(Qt::LeftDockWidgetArea,   mToolOptions);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 
     for ( BaseDockWidget* pWidget : m_subWidgets )
@@ -147,7 +147,7 @@ void MainWindow2::createDockWidgets()
 
 void MainWindow2::makeColorWheelConnections()
 {
-    ColorBox* pColorBox = static_cast<ColorBox*>(mColorWheelWidget->widget());
+    ColorBox* pColorBox = static_cast<ColorBox*>(mColorWheel->widget());
     Q_ASSERT( pColorBox );
 
     connect( pColorBox, &ColorBox::colorChanged, mEditor->color(), &ColorManager::setColor );
@@ -185,6 +185,8 @@ void MainWindow2::createMenus()
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
+    ui->actionPreference->setMenuRole( QAction::PreferencesRole );
+    
     connect( ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo );
     connect( ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo );
     connect( ui->actionCut, &QAction::triggered, mEditor, &Editor::cut );
@@ -195,8 +197,8 @@ void MainWindow2::createMenus()
     connect( ui->actionFlip_Y, &QAction::triggered, mEditor, &Editor::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
-    connect( ui->actionPreference, &QAction::triggered, this, &MainWindow2::preferences );
-
+    connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
+    
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
@@ -264,13 +266,23 @@ void MainWindow2::createMenus()
 
     /// --- Window Menu ---
     QMenu* pWinMenu = ui->menuWindows;
-    pWinMenu->addAction( mToolBox->toggleViewAction() );
-    pWinMenu->addAction( mToolOptionWidget->toggleViewAction() );
-    pWinMenu->addAction( mColorWheelWidget->toggleViewAction() );
-    pWinMenu->addAction( mColorPalette->toggleViewAction() );
-    pWinMenu->addAction( mTimeLine->toggleViewAction() );
-    pWinMenu->addAction( mDisplayOptionWidget->toggleViewAction() );
-
+    
+    QAction* actions[] =
+    {
+        mToolBox->toggleViewAction(),
+        mToolOptions->toggleViewAction(),
+        mColorWheel->toggleViewAction(),
+        mColorPalette->toggleViewAction(),
+        mTimeLine->toggleViewAction(),
+        mDisplayOptionWidget->toggleViewAction()
+    };
+    pWinMenu->clear();
+    for ( QAction* action : actions )
+    {
+        action->setMenuRole( QAction::NoRole );
+        pWinMenu->addAction( action );
+    }
+    
     /// --- Help Menu ---
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
@@ -600,11 +612,11 @@ void MainWindow2::preferences()
 void MainWindow2::dockAllPalettes()
 {
     mToolBox->setFloating(false);
-    mToolOptionWidget->setFloating(false);
+    mToolOptions->setFloating(false);
     mDisplayOptionWidget->setFloating(false);
     mTimeLine->setFloating(false);
     mColorPalette->setFloating(false);
-    mColorWheelWidget->setFloating( false );
+    mColorWheel->setFloating( false );
 }
 
 void MainWindow2::readSettings()
@@ -716,8 +728,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionNew_Sound_Layer->setShortcut( cmdKeySeq( CMD_NEW_SOUND_LAYER ) );
 
     mToolBox->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOLBOX ) );
-    mToolOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
-    mColorWheelWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_WHEEL ) );
+    mToolOptions->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
+    mColorWheel->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_WHEEL ) );
     mColorPalette->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_COLOR_LIBRARY ) );
     mTimeLine->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TIMELINE ) );
     mDisplayOptionWidget->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_DISPLAY_OPTIONS ) );

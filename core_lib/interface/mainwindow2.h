@@ -86,10 +86,10 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*             mColorWheelWidget;
+    QDockWidget*             mColorWheel;
     ColorPaletteWidget*      mColorPalette;
     DisplayOptionWidget*     mDisplayOptionWidget;
-    ToolOptionWidget*        mToolOptionWidget;
+    ToolOptionWidget*        mToolOptions;
     ToolBoxWidget*           mToolBox;
 
     RecentFileMenu* mRecentFileMenu;
