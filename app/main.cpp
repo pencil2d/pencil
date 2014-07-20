@@ -2,7 +2,8 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-
+Copyright (C) 2013-2014 Matt Chiawen Chang
+ 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation;
@@ -21,8 +22,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "mainwindow2.h"
 
-void initialise();
-
 
 int main(int argc, char* argv[])
 {   
@@ -40,8 +39,6 @@ int main(int argc, char* argv[])
 #ifndef Q_WS_MAC
     app.setWindowIcon(QIcon(":/icons/icon.png"));
 #endif
-
-    initialise();
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );

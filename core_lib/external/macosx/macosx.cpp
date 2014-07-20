@@ -34,18 +34,16 @@ SetMouseCoalescingEnabled(
 }
 
 extern "C" {
-void disableCoalescing() {
+void disableCoalescing()
+{
     SetMouseCoalescingEnabled(false, NULL);
 }
 
 
-void enableCoalescing() {
+void enableCoalescing()
+{
     SetMouseCoalescingEnabled(true, NULL);
 }
-}
-
-void initialise()
-{
 }
 
 bool Object::exportMovie( ExportMovieParameters parameters )
