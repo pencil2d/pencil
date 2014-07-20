@@ -46,7 +46,7 @@ Pencil.app
 .DS_Store
 Info.plist
 *.pbproj
-
+*.xcodeproj
 
 # Visual Studio
 
