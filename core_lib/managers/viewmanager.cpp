@@ -1,5 +1,7 @@
 #include "viewmanager.h"
 #include <utility>
+#include "object.h"
+
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 {
@@ -58,8 +60,7 @@ QTransform ViewManager::createViewTransform()
 
 void ViewManager::translate(float dx, float dy)
 {
-    mTranslate.setX( dx );
-    mTranslate.setY( dy );
+    mTranslate += QPointF( dx, dy );
     mView = createViewTransform();
 }
 
@@ -70,12 +71,17 @@ void ViewManager::translate(QPointF offset)
 
 void ViewManager::rotate(float degree)
 {
-    mRotate = degree;
+    mRotate += degree;
     mView = createViewTransform();
 }
 
 void ViewManager::scale(float scaleValue)
 {
-    mScale = scaleValue;
+    mScale *= scaleValue;
     mView = createViewTransform();
+}
+
+void ViewManager::resetView()
+{
+    mView = QTransform();
 }

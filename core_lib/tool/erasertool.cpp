@@ -158,7 +158,7 @@ void EraserTool::drawStroke()
     {
         for ( int i = 0; i < p.size(); i++ )
         {
-            p[ i ] = mScribbleArea->pixelToPoint( p[ i ] );
+            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
         qreal opacity = 1.0;

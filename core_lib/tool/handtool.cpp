@@ -77,6 +77,6 @@ void HandTool::mouseDoubleClickEvent( QMouseEvent *event )
 {
     if ( event->button() == Qt::RightButton )
     {
-        mScribbleArea->resetView();
+        mEditor->view()->resetView();
     }
 }

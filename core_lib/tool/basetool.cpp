@@ -206,7 +206,7 @@ QPointF BaseTool::getCurrentPixel()
 
 QPointF BaseTool::getCurrentPoint()
 {
-    return mScribbleArea->pixelToPoint( getCurrentPixel() );
+    return mEditor->view()->mapScreenToCanvas( getCurrentPixel() );
 }
 
 QPointF BaseTool::getLastPixel()
@@ -216,7 +216,7 @@ QPointF BaseTool::getLastPixel()
 
 QPointF BaseTool::getLastPoint()
 {
-    return mScribbleArea->pixelToPoint( getLastPixel() );
+    return mEditor->view()->mapScreenToCanvas( getLastPixel() );
 }
 
 QPointF BaseTool::getLastPressPixel()
@@ -226,5 +226,5 @@ QPointF BaseTool::getLastPressPixel()
 
 QPointF BaseTool::getLastPressPoint()
 {
-    return mScribbleArea->pixelToPoint( getLastPressPixel() );
+    return mEditor->view()->mapScreenToCanvas( getLastPressPixel() );
 }

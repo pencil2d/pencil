@@ -135,8 +135,9 @@ void BrushTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        for ( int i = 0; i < p.size(); i++ ) {
-            p[ i ] = mScribbleArea->pixelToPoint( p[ i ] );
+        for ( int i = 0; i < p.size(); i++ )
+        {
+            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
         qreal opacity = 1.0;

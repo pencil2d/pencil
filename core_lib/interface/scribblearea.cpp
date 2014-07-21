@@ -189,7 +189,6 @@ void ScribbleArea::updateCurrentFrame()
 
 void ScribbleArea::updateFrame( int frame )
 {
-    setView( getView() );
     int frameNumber = mEditor->layers()->LastFrameAtFrame( frame );
     QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
 
@@ -198,7 +197,6 @@ void ScribbleArea::updateFrame( int frame )
 
 void ScribbleArea::updateAllFrames()
 {
-    setView( getView() );
     QPixmapCache::clear();
     update();
     mNeedUpdateAll = false;
@@ -407,11 +405,11 @@ void ScribbleArea::wheelEvent( QWheelEvent *event )
 		{
 			if ( delta > 0 )
 			{
-				zoomIn();
+				mEditor->zoomIn();
 			}
 			else
 			{
-				zoomOut();
+				mEditor->zoomOut();
 			}
 		};
 
@@ -658,7 +656,7 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 {
     QWidget::resizeEvent( event );
     mCanvas = QPixmap( size() );
-    recentre();
+    
     updateAllFrames();
 }
 
@@ -775,8 +773,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     if ( !editor()->playback()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
-        painter.setTransform( myTempView );
-
         if ( layer->type() == Layer::VECTOR )
         {
             VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
@@ -830,7 +826,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                         VertexRef vertexRef = closestVertices.at( k );
                         QPointF vertexPoint = vectorImage->getVertex( vertexRef );
                         
-                        QRectF rectangle = QRectF( mEditor->view->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                        QRectF rectangle = QRectF( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
                         painter.drawRect( rectangle );
                    
                     }
@@ -847,8 +843,8 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
                 for ( int k = 0; k < closestCurves.size(); k++ )
                 {
-                    qreal scale = myTempView.determinant(); //todo: check whether it's correct (det = area?)
-                    //qreal scale = sqrt(myTempView.det()); or qreal scale = sqrt(myTempView.m11()*myTempView.m22());
+                    float scale = mEditor->view()->scaling(); // FIXME: check whether it's correct (det = area?)
+                    
                     int idx = closestCurves[ k ];
                     if ( vectorImage->m_curves.size() <= idx )
                     {
@@ -960,14 +956,14 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     painter.setClipRect( rect );
     painter.setClipping( true );
-    setView( getView() );
-    painter.setTransform( myTempView );
+    
+    painter.setTransform( mEditor->view()->getView() );
     painter.setViewTransformEnabled( true );
 
     // background
     painter.setPen( Qt::NoPen );
     painter.setBrush( backgroundBrush );
-    painter.drawRect( myTempView.inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
+    painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
 
     QRectF viewRect = getViewRect();
     QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
@@ -1095,18 +1091,19 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 // previous frame (onion skin)
                 if ( isEffectOn( EFFECT_PREV_ONION ) )
                 {
+                    QTransform viewTransform = mEditor->view()->getView();
                     VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -3 );
-                    pVectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                     painter.setOpacity( opacity * mEditor->getOnionLayer3Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
                     pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -2 );
-                    pVectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                     painter.setOpacity( opacity * mEditor->getOnionLayer2Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
                     pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -1 );
-                    pVectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                     painter.setOpacity( opacity * mEditor->getOnionLayer1Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
@@ -1129,18 +1126,19 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 // next frame (onion skin)
                 if ( isEffectOn( EFFECT_NEXT_ONION ) )
                 {
+                    QTransform viewTransform = mEditor->view()->getView();
                     VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 3 );
-                    pVectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                     painter.setOpacity( opacity * mEditor->getOnionLayer3Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
                     pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 2 );
-                    pVectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                     painter.setOpacity( opacity * mEditor->getOnionLayer2Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
                     pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 1 );
-                    pVectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
                     painter.setOpacity( opacity * mEditor->getOnionLayer1Opacity() / 100.0 );
                     painter.drawImage( QPoint( 0, 0 ), *pImage );
 
@@ -1186,9 +1184,11 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     if ( i == mEditor->layers()->currentLayerIndex() && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
+                        
                         painter.setClipping( true );
+
                         QRegion clip = QRegion( mySelection.toRect() );
-                        QRegion totalImage = QRegion( myTempView.inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ) );
+                        QRegion totalImage = QRegion( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ).toRect() );
                         QRegion ImageWithHole = totalImage -= clip;
                         painter.setClipRegion( ImageWithHole, Qt::ReplaceClip );
                         //painter.drawImage(bitmapImage->topLeft(), *(bitmapImage->image) );
@@ -1197,7 +1197,12 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         // transforms the bitmap selection
                         bool smoothTransform = false;
 
-                        if ( myTempTransformedSelection.width() != mySelection.width() || myTempTransformedSelection.height() != mySelection.height() || myRotatedAngle != 0 ) { smoothTransform = true; }
+                        if ( myTempTransformedSelection.width() != mySelection.width() 
+                             || myTempTransformedSelection.height() != mySelection.height() 
+                             || myRotatedAngle != 0 )
+                        { 
+                            smoothTransform = true;
+                        }
                         BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
                         selectionClip.transform( myTransformedSelection, smoothTransform );
                         QTransform rm;
@@ -1210,16 +1215,11 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         *selectionClip.mImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
                         selectionClip.boundaries.translate( dxy );
                         selectionClip.paintImage( painter );
-                        //painter.drawImage(selectionClip.topLeft(), *(selectionClip.image));
                     }
                     else
                     {
-                        //painter.drawImage(bitmapImage->topLeft(), *(bitmapImage->image) );
                         bitmapImage->paintImage( painter );
                     }
-                    //painter.setPen(Qt::red);
-                    //painter.setBrush(Qt::NoBrush);
-                    //painter.drawRect(bitmapImage->boundaries);
                 }
             }
             // paints the vector images
@@ -1234,8 +1234,9 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     vectorImage->setSelectionTransformation( selectionTransformation );
                     //vectorImage->setTransformedSelection(myTempTransformedSelection);
                 }
+                QTransform view = mEditor->view()->getView();
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                vectorImage->outputImage( pImage.data(), myTempView, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                vectorImage->outputImage( pImage.data(), view, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
 
                 painter.setViewTransformEnabled( false );
                 painter.setOpacity( opacity );
@@ -1383,10 +1384,11 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
                    Qt::RoundJoin );
         QPainterPath tempPath = BezierCurve( points ).getSimplePath();
         tempPath.lineTo( endPoint );
-        QRect updateRect = myTempView.mapRect( tempPath.boundingRect().toRect() ).adjusted( -10, -10, 10, 10 );
+
+        QRectF updateRect = mEditor->view()->mapCanvasToScreen( tempPath.boundingRect().toRect() ).adjusted( -10, -10, 10, 10 );
         if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
         {
-            tempPath = myTempView.map( tempPath );
+            tempPath = mEditor->view()->mapCanvasToScreen( tempPath );
             if ( mMakeInvisible )
             {
                 pen2.setWidth( 0 );
@@ -1394,13 +1396,13 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
             }
             else
             {
-                pen2.setWidth( getTool( PEN )->properties.width * myTempView.m11() );
+                pen2.setWidth( getTool( PEN )->properties.width * mEditor->view()->scaling() );
             }
         }
         mBufferImg->clear();
         mBufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, isEffectOn( EFFECT_ANTIALIAS ) );
 
-        update( updateRect );
+        update( updateRect.toRect() );
     }
 }
 
@@ -1428,7 +1430,7 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
         curve.setVariableWidth( false );
         curve.setInvisibility( mMakeInvisible );
         //curve.setSelected(true);
-        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, qAbs( myTempView.m11() ) );
+        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
     }
     if ( layer->type() == Layer::BITMAP )
     {
@@ -1440,58 +1442,8 @@ void ScribbleArea::endPolyline( QList<QPointF> points )
     setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
 }
 
-void ScribbleArea::zoomIn()
-{
-    centralView.scale( 1.2, 1.2 );
-    setView( getView() );
-    updateAllFrames();
-}
-
-void ScribbleArea::zoomOut()
-{
-    centralView.scale( 0.8, 0.8 );
-    setView( getView() );
-    updateAllFrames();
-}
-
-void ScribbleArea::rotatecw()
-{
-    centralView.rotate( 20 );
-    setView( getView() );
-    updateAllFrames();
-}
-
-void ScribbleArea::rotateacw()
-{
-    centralView.rotate( -20 );
-    setView( getView() );
-    updateAllFrames();
-}
-
-void ScribbleArea::recentre()
-{
-    centralView = QTransform( 1, 0,
-                           0, 1,
-                           0.5 * width(), 0.5 * height() );
-    setView( getView() );
-    QPixmapCache::clear();
-    updateAllFrames();
-}
-
 /************************************************************************************/
 // view handling
-void ScribbleArea::setView( const QTransform& view )
-{
-    myTempView = view * centralView;
-}
-
-void ScribbleArea::resetView()
-{
-    mEditor->resetMirror();
-    myView.reset();
-    myTempView = myView * centralView;
-    recentre();
-}
 
 QTransform ScribbleArea::getView()
 {
@@ -1509,7 +1461,7 @@ QTransform ScribbleArea::getView()
     }
     else
     {
-        return myView;
+        return mEditor->view()->getView();
     }
 }
 
@@ -1530,7 +1482,7 @@ QRectF ScribbleArea::getViewRect()
 
 QPointF ScribbleArea::getCentralPoint()
 {
-    return myTempView.inverted().map( QPoint( width() / 2, height() / 2 ) );
+    return mEditor->view()->mapScreenToCanvas( QPointF( width() / 2, height() / 2 ) );
 }
 
 /************************************************************************************/
@@ -1660,12 +1612,15 @@ void ScribbleArea::selectAll()
     offset.setX( 0 );
     offset.setY( 0 );
     Layer* layer = mEditor->layers()->currentLayer();
+
+    Q_ASSERT( layer );
     if ( layer == NULL ) { return; }
+
     if ( layer->type() == Layer::BITMAP )
     {
-        setSelection( myTempView.inverted().mapRect( QRect( -2, -2, width() + 3, height() + 3 ) ), true ); // TO BE IMPROVED
+        setSelection( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ), true ); // TO BE IMPROVED
     }
-    if ( layer->type() == Layer::VECTOR )
+    else if ( layer->type() == Layer::VECTOR )
     {
         VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
         vectorImage->selectAll();
@@ -1762,20 +1717,21 @@ void ScribbleArea::toggleGridA( bool checked )
 
 void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance )
 {
-    bool invertible;
-
-    QPointF initialPoint = myTempView.inverted( &invertible ).map( QPointF( point ) );
+    QPointF initialPoint = mEditor->view()->mapScreenToCanvas( QPointF( point ) );
+    float scaleValue = mEditor->view()->scaling();
 
     // Step 1: peforms a standard (pixel-based) flood fill, and finds the vertices on the contour of the filled area
-    qreal tol = 8.0 / qAbs( myTempView.m11() ); // tolerance for finding vertices along the contour of the flood-filled area
-    qreal tol2 = 1.5 / qAbs( myTempView.m11() ); // tolerance for connecting contour vertices from different curves // should be small as close points of different curves are supposed to coincide
+    qreal tol = 8.0 / qAbs( scaleValue ); // tolerance for finding vertices along the contour of the flood-filled area
+    qreal tol2 = 1.5 / qAbs( scaleValue ); // tolerance for connecting contour vertices from different curves // should be small as close points of different curves are supposed to coincide
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
     QList<QPoint> contourPixels; // list of the pixels near the contour of the filled area
     int j, k;
     bool condition;
+    
     //vectorImage->update(true, showThinLines); // update the vector image with simplified curves (all width=1)
     QImage *targetImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
-    vectorImage->outputImage( targetImage, myTempView, true, mShowThinLines, true ); // the target image is the vector image with simplified curves (all width=1)
+    vectorImage->outputImage( targetImage, mEditor->view()->getView(), true, mShowThinLines, true ); // the target image is the vector image with simplified curves (all width=1)
+    
     //QImage* replaceImage = &bufferImg;
     QImage *replaceImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
     QList<VertexRef> points = vectorImage->getAllVertices(); // refs of all the points
@@ -1865,8 +1821,8 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
         }
     }
     // --- finds the bounding box of the filled area, and all the points contained inside (+ 1*tol)  -> boxPoints
-    QPointF mBoxTopRight = myTempView.inverted( &invertible ).map( QPointF( qMax( boxLeft, boxRight ) + 1 * tol, qMax( boxTop, boxBottom ) + 1 * tol ) );
-    QPointF mBoxBottomLeft = myTempView.inverted( &invertible ).map( QPointF( qMin( boxLeft, boxRight ) - 1 * tol, qMin( boxTop, boxBottom ) - 1 * tol ) );
+    QPointF mBoxTopRight = mEditor->view()->mapScreenToCanvas( QPointF( qMax( boxLeft, boxRight ) + 1 * tol, qMax( boxTop, boxBottom ) + 1 * tol ) );
+    QPointF mBoxBottomLeft = mEditor->view()->mapScreenToCanvas( QPointF( qMin( boxLeft, boxRight ) - 1 * tol, qMin( boxTop, boxBottom ) - 1 * tol ) );
     QRectF boundingBox = QRectF( mBoxBottomLeft.x() - 1, mBoxBottomLeft.y() - 1, qAbs( mBoxBottomLeft.x() - mBoxTopRight.x() ) + 2, qAbs( mBoxBottomLeft.y() - mBoxTopRight.y() ) + 2 );
     debugRect = QRectF( 0, 0, 0, 0 );
     debugRect = boundingBox;
@@ -1883,7 +1839,7 @@ void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targe
     // ---- finds the points near the contourPixels -> contourPoints
     for ( int i = 0; i < contourPixels.size(); i++ )
     {
-        QPointF mPoint = myTempView.inverted( &invertible ).map( QPointF( contourPixels.at( i ) ) );
+        QPointF mPoint = mEditor->view()->mapScreenToCanvas( QPointF( contourPixels.at( i ) ) );
         vertices = vectorImage->getAndRemoveVerticesCloseTo( mPoint, tol, &boxPoints );
         //contourPoints << vertices;
         for ( int m = 0; m < vertices.size(); m++ ) // for each ?
@@ -2187,7 +2143,7 @@ void ScribbleArea::toggleThinLines()
 {
     mShowThinLines = !mShowThinLines;
     emit thinLinesChanged( mShowThinLines );
-    setView( myView );
+    
     updateAllFrames();
 }
 
@@ -2195,21 +2151,7 @@ void ScribbleArea::toggleOutlines()
 {
     mIsSimplified = !mIsSimplified;
     emit outlinesChanged( mIsSimplified );
-    setView( myView );
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleMirror()
-{
-    myView = myView * QTransform( -1, 0, 0, 1, 0, 0 );
-    setView( myView );
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleMirrorV()
-{
-    myView = myView * QTransform( 1, 0, 0, -1, 0, 0 );
-    setView( myView );
+    
     updateAllFrames();
 }
 
@@ -2220,7 +2162,6 @@ void ScribbleArea::toggleShowAllLayers()
     {
         mShowAllLayers = 0;
     }
-    setView( myView );
     updateAllFrames();
 }
 

@@ -159,8 +159,9 @@ void PencilTool::drawStroke()
         QBrush brush( currentPressuredColor, Qt::SolidPattern );
         rad = qRound( properties.width / 2 ) + 3;
 
-        for ( int i = 0; i < p.size(); i++ ) {
-            p[ i ] = mScribbleArea->pixelToPoint( p[ i ] );
+        for ( int i = 0; i < p.size(); i++ )
+        {
+            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
         if ( p.size() == 4 ) {

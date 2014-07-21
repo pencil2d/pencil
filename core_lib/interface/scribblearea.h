@@ -110,8 +110,6 @@ public:
     void setTemporaryTool( ToolType eToolMode );
     void setPrevTool();
 
-    QPointF pixelToPoint( QPointF pixel );
-
     StrokeManager *getStrokeManager() const { return mStrokeManager; }
 
     PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
@@ -144,20 +142,11 @@ public slots:
     void toggleOnionRed( bool );
     void toggleGridA( bool );
 
-    void resetView();
-
-    void zoomIn();
-    void zoomOut();
-    void rotatecw();
-    void rotateacw();
-
     void setCurveSmoothing( int );
     void setBackground( int );
     void setBackgroundBrush( QString );
     void toggleThinLines();
     void toggleOutlines();
-    void toggleMirror();
-    void toggleMirrorV();
     void toggleShowAllLayers();
     void escape();
 
@@ -202,8 +191,6 @@ private:
 	void drawGrid( QPainter& );
 
     void toggledOnionColor();
-    void recentre();
-    void setView( const QTransform& );
 
 	void floodFillError( int errorType );
 

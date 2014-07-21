@@ -116,11 +116,7 @@ public:
     bool exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
     bool exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression );
 
-
     void modification() { modified = true; }
-    void toggleMirror() { mMirror = !mMirror; }
-    void resetMirror() { mMirror = false; }
-
     bool isModified() { return modified; }
     void setModified( bool b ) { modified = b; }
 
@@ -131,7 +127,6 @@ private:
 
     QList<ColourRef> mPalette;
 
-    bool mMirror; // if true, the returned image is flipped horizontally
 };
 
 #endif

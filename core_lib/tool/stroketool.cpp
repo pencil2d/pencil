@@ -26,7 +26,7 @@ void StrokeTool::startStroke()
     mFirstDraw = true;
     lastPixel = getCurrentPixel();
     mStrokePoints.clear();
-    mStrokePoints << mScribbleArea->pixelToPoint( lastPixel );
+    mStrokePoints << mEditor->view()->mapScreenToCanvas( lastPixel );
     mStrokePressures.clear();
     mStrokePressures << m_pStrokeManager->getPressure();
     disableCoalescing();
@@ -45,7 +45,7 @@ void StrokeTool::drawStroke()
     if ( pixel != lastPixel || !mFirstDraw )
     {
         lastPixel = pixel;
-        mStrokePoints << mScribbleArea->pixelToPoint( pixel );
+        mStrokePoints << mEditor->view()->mapScreenToCanvas( pixel );
         mStrokePressures << m_pStrokeManager->getPressure();
     }
     else

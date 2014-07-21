@@ -37,7 +37,6 @@ GNU General Public License for more details.
 Object::Object( QObject* parent ) : QObject( parent )
 {
     modified = false;
-    mMirror = false;
 }
 
 Object::~Object()

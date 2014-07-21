@@ -11,6 +11,9 @@ class ViewManager : public BaseManager
 public:
     explicit ViewManager(QObject *parent = 0);
     bool init() override;
+    
+    QTransform getView();
+    void resetView();
 
     QPointF mapCanvasToScreen( QPointF p );
     QPointF mapScreenToCanvas( QPointF p );
@@ -21,8 +24,6 @@ public:
     QPainterPath mapCanvasToScreen( const QPainterPath& path );
     QPainterPath mapScreenToCanvas( const QPainterPath& path );
 
-    QTransform getView();
-
     QPointF translation() { return mTranslate; }
     void translate( float dx, float dy );
     void translate( QPointF offset );
@@ -30,17 +31,28 @@ public:
     float rotation() { return mRotate; }
     void rotate( float degree );
 
-    float scaling();
+    float scaling() { return mScale; }
     void scale( float scaleValue );
+
+    void flipHorizontal( bool b ) { mIsFlipHorizontal = b; }
+    void flipVertical( bool b ){ mIsFlipVertical = b; }
+    bool isFlipHorizontal() { return mIsFlipHorizontal; }
+    bool isFlipVertical() { return mIsFlipVertical; }
+
+    void setCanvasSize( QSize size );
 
 private:
     QTransform createViewTransform();
 
     QTransform mView;
+    QTransform mCentre;
 
     QPointF mTranslate;
-    float mRotate;
-    float mScale;
+    float mRotate = 0.f;
+    float mScale = 1.f;
+
+    bool mIsFlipHorizontal = false;
+    bool mIsFlipVertical = false;
 };
 
 #endif // VIEWMANAGER_H

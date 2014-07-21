@@ -147,7 +147,7 @@ void PenTool::drawStroke()
 
         for ( int i = 0; i < p.size(); i++ )
         {
-            p[ i ] = mScribbleArea->pixelToPoint( p[ i ] );
+            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
         if ( p.size() == 4 )

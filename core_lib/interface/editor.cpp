@@ -655,14 +655,14 @@ void Editor::deleteCurrentLayer()
 
 void Editor::toggleMirror()
 {
-    mObject->toggleMirror();
-    mScribbleArea->toggleMirror();
+    bool flipX = view()->isFlipHorizontal();
+    view()->flipHorizontal( !flipX );
 }
 
 void Editor::toggleMirrorV()
 {
-    mObject->toggleMirror();
-    mScribbleArea->toggleMirrorV();
+    bool flipY = view()->isFlipVertical();
+    view()->flipVertical( !flipY );
 }
 
 void Editor::toggleShowAllLayers()
@@ -673,8 +673,8 @@ void Editor::toggleShowAllLayers()
 
 void Editor::resetMirror()
 {
-    mObject->resetMirror();
-    //toolSet->resetMirror();
+    view()->flipHorizontal( false );
+    view()->flipVertical( false );
 }
 
 void Editor::saveLength( QString x )
@@ -1438,25 +1438,25 @@ void Editor::clearCurrentFrame()
 
 void Editor::zoomIn()
 {
-    mScribbleArea->zoomIn();
+    view()->scale( 1.2f );
 }
 
 void Editor::zoomOut()
 {
-    mScribbleArea->zoomOut();
+    view()->scale( 0.8f );
 }
 
 void Editor::rotatecw()
 {
-    mScribbleArea->rotatecw();
+    view()->rotate( 15.f );
 }
 
 void Editor::rotateacw()
 {
-    mScribbleArea->rotateacw();
+    view()->rotate( -15.f );
 }
 
 void Editor::resetView()
 {
-    getScribbleArea()->resetView();
+    view()->resetView();
 }
