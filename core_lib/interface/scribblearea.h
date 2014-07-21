@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QFrame>
 #include <QHash>
 #include "log.h"
+#include "pencildef.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "colourref.h"
@@ -41,17 +42,6 @@ class StrokeManager;
 class BaseTool;
 class ColorManager;
 class PopupColorPaletteWidget;
-
-enum DisplayEffect : uint32_t
-{
-    EFFECT_ANTIALIAS = 0,
-    EFFECT_SHADOW,
-    EFFECT_PREV_ONION,
-    EFFECT_NEXT_ONION,
-    EFFECT_AXIS,
-	EFFECT_GRID_A,
-    EFFECT_COUNT,
-};
 
 
 class ScribbleArea : public QWidget

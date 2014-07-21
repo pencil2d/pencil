@@ -30,6 +30,22 @@ enum ToolPropertyType
     PRESERVEALPHA
 };
 
+enum DisplayEffect
+{
+    EFFECT_ANTIALIAS = 0,
+    EFFECT_SHADOW,
+    EFFECT_PREV_ONION,
+    EFFECT_NEXT_ONION,
+    EFFECT_AXIS,
+    EFFECT_GRID_A,
+    EFFECT_COUNT,
+};
+
+enum BackgroundStyle
+{
+
+};
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"
