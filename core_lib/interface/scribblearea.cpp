@@ -722,14 +722,16 @@ void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter
     mBufferImg->drawPath( path, pen, brush, cm, isEffectOn( EFFECT_ANTIALIAS ) );
 }
 
-void ScribbleArea::refreshBitmap( QRect rect, int rad )
+void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
 {
-    update( myTempView.mapRect( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) ) );
+    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    update( updatedRect.toRect() );
 }
 
-void ScribbleArea::refreshVector( QRect rect, int rad )
+void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 {
-    update( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    update( updatedRect.toRect() );
 }
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
@@ -738,7 +740,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     QPainter painter( this );
 
-    // process the canvas (or not)
     if ( !mMouseInUse )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
@@ -766,10 +767,9 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     }
     
     // paints the canvas
-    painter.setViewTransformEnabled( true );
-    painter.setTransform( transMatrix );
+    painter.setViewTransformEnabled( false );
+    //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
-
 
     Layer *layer = mEditor->layers()->currentLayer();
 
@@ -799,15 +799,14 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                 for ( int k = 0; k < vectorSelection.curve.size(); k++ )
                 {
                     int curveNumber = vectorSelection.curve.at( k );
-                    //QPainterPath path = vectorImage->curve[curveNumber].getStrokedPath();
-                    //bufferImg->drawPath( myTempView.map(path), pen2, colour, QPainter::CompositionMode_SourceOver, false);
+                    
                     for ( int vertexNumber = -1; vertexNumber < vectorImage->getCurveSize( curveNumber ); vertexNumber++ )
                     {
                         QPointF vertexPoint = vectorImage->getVertex( curveNumber, vertexNumber );
-                        QRectF rectangle = QRectF( ( myView * transMatrix * centralView ).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                        if ( rect().contains( ( myView * transMatrix * centralView ).map( vertexPoint ).toPoint() ) )
+                        QRectF rectangle( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                        if ( rect().contains( mEditor->view()->mapCanvasToScreen( vertexPoint ).toPoint() ) )
                         {
-                            painter.drawRect( rectangle.toRect() );
+                            painter.drawRect( rectangle );
                         }
                     }
                 }
@@ -818,8 +817,8 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                 {
                     VertexRef vertexRef = vectorSelection.vertex.at( k );
                     QPointF vertexPoint = vectorImage->getVertex( vertexRef );
-                    QRectF rectangle0 = QRectF( ( myView * transMatrix * centralView ).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                    painter.drawRect( rectangle0.toRect() );
+                    QRectF rectangle0 = QRectF( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                    painter.drawRect( rectangle0 );
                 }
                 // ----- paints the closest vertices
                 colour = QColor( 255, 0, 0 );
@@ -830,10 +829,10 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                     {
                         VertexRef vertexRef = closestVertices.at( k );
                         QPointF vertexPoint = vectorImage->getVertex( vertexRef );
-                        //if ( vectorImage->isSelected(vertexRef) ) vertexPoint = selectionTransformation.map( vertexPoint );
-                        QRectF rectangle = QRectF( ( myView * transMatrix * centralView ).map( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                        painter.drawRect( rectangle.toRect() );
-                        //bufferImg->drawRect( rectangle.toRect(), pen2, colour, QPainter::CompositionMode_SourceOver, false);
+                        
+                        QRectF rectangle = QRectF( mEditor->view->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                        painter.drawRect( rectangle );
+                   
                     }
                 }
                 painter.restore();
@@ -862,7 +861,9 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                         myCurve.transform( selectionTransformation );
                     }
                     QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
-                    mBufferImg->drawPath( ( myView * transMatrix * centralView ).map( path ), pen2, colour,
+                    mBufferImg->drawPath( mEditor->view()->mapCanvasToScreen( path ), 
+                                          pen2, 
+                                          colour,
                                           QPainter::CompositionMode_SourceOver,
                                           isEffectOn( EFFECT_ANTIALIAS ) );
                 }
@@ -885,7 +886,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             // outline of the transformed selection
             painter.setViewTransformEnabled( false );
             painter.setOpacity( 1.0 );
-            QPolygon tempRect = ( myView * transMatrix * centralView ).mapToPolygon( myTempTransformedSelection.normalized().toRect() );
+            QPolygon tempRect = mEditor->view()->getView().mapToPolygon( myTempTransformedSelection.normalized().toRect() );
 
             Layer* layer = mEditor->layers()->currentLayer();
             if ( layer != NULL )
@@ -953,7 +954,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
     // Merge the different layers into the ScribbleArea.
-    //qDebug() << "paint canvas!" << QDateTime::currentDateTime();
     
     QPainter painter( &mCanvas );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, isEffectOn( EFFECT_ANTIALIAS ) );
@@ -1288,30 +1288,10 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
 
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    BitmapImage *tempBitmapImage = new BitmapImage;
-
-    // FIXME: check this.
-    /*
-    if ( followContour )
-    {
-    tempBitmapImage = new BitmapImage( rectangle.toRect(), QColor( 0, 0, 0, 0 ) );
-    //tempBitmapImage->drawRect( rectangle, Qt::NoPen, QColor(0,0,0,0), QPainter::CompositionMode_Source, antialiasing);
-    Layer *layer = m_pEditor->getCurrentLayer();
-    if ( layer == NULL ) { return; }
-    int index = ( ( LayerImage * )layer )->getLastIndexAtFrame( m_pEditor->layerManager()->currentFrameIndex() );
-    if ( index == -1 ) { return; }
-    BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( m_pEditor->layerManager()->currentFrameIndex(), 0 );
-    if ( bitmapImage == NULL ) { qDebug() << "NULL image pointer!" << m_pEditor->layerManager()->currentLayerIndex() << m_pEditor->layerManager()->currentFrameIndex();  return; }
-    BitmapImage::floodFill( bitmapImage, tempBitmapImage, thePoint.toPoint(), qRgba( 255, 255, 255, 0 ), fillColour.rgb(), 20 * 20, false );
-    tempBitmapImage->drawRect( rectangle.toRect(), Qt::NoPen, radialGrad, QPainter::CompositionMode_SourceIn, m_antialiasing );
-    }
-    else
-    */
-    {
-        tempBitmapImage = new BitmapImage;
-        tempBitmapImage->drawRect( rectangle, Qt::NoPen, radialGrad,
-                                   QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
-    }
+    BitmapImage* tempBitmapImage = new BitmapImage;
+    tempBitmapImage = new BitmapImage;
+    tempBitmapImage->drawRect( rectangle, Qt::NoPen, radialGrad,
+                               QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
 
     mBufferImg->paste( tempBitmapImage );
     delete tempBitmapImage;
@@ -1551,36 +1531,6 @@ QRectF ScribbleArea::getViewRect()
 QPointF ScribbleArea::getCentralPoint()
 {
     return myTempView.inverted().map( QPoint( width() / 2, height() / 2 ) );
-}
-
-void ScribbleArea::setTransformationMatrix( QTransform matrix )
-{
-    transMatrix = matrix;
-    update();
-    setAllDirty();
-}
-
-void ScribbleArea::applyTransformationMatrix()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL ) { return; }
-
-    clearBitmapBuffer();
-    if ( layer->type() == Layer::CAMERA )
-    {
-        LayerCamera *layerCamera = ( LayerCamera * )layer;
-        QTransform view = layerCamera->getViewAtFrame( mEditor->currentFrame() );
-        layerCamera->loadImageAtFrame( mEditor->currentFrame(), view * transMatrix );
-        //Camera* camera = ((LayerCamera*)layer)->getLastCameraAtFrame(editor->currentFrame, 0);
-        //camera->view = camera->view * transMatrix;
-    }
-    else
-    {
-        myView = myView * transMatrix;
-    }
-    transMatrix.reset();
-    updateAllVectorLayers();
-    setAllDirty();
 }
 
 /************************************************************************************/

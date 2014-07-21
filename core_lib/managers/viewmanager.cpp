@@ -10,15 +10,36 @@ bool ViewManager::init()
     return true;
 }
 
-QPointF ViewManager::mapScreenToCanvas(QPointF p)
+QPointF ViewManager::mapCanvasToScreen( QPointF p )
 {
     return mView.map( p );
 }
 
-QPointF ViewManager::mapCanvasToScreen(QPointF p)
+QPointF ViewManager::mapScreenToCanvas(QPointF p)
 {
-    mView.inverted().map( p );
+    return mView.inverted().map( p );
 }
+
+QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
+{
+    return mView.map( path );
+}
+
+QRectF ViewManager::mapCanvasToScreen( const QRectF& rect )
+{
+    return std::move( mView.mapRect( rect ) );
+}
+
+QRectF ViewManager::mapScreenToCanvas( const QRectF& rect )
+{
+    return std::move( mView.inverted().mapRect( rect ) );
+}
+
+QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )
+{
+    return mView.inverted().map( path );
+}
+
 
 QTransform ViewManager::getView()
 {

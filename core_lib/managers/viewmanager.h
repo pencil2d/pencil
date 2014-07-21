@@ -12,9 +12,14 @@ public:
     explicit ViewManager(QObject *parent = 0);
     bool init() override;
 
-
-    QPointF mapScreenToCanvas( QPointF p );
     QPointF mapCanvasToScreen( QPointF p );
+    QPointF mapScreenToCanvas( QPointF p );
+
+    QRectF mapCanvasToScreen( const QRectF& rect );
+    QRectF mapScreenToCanvas( const QRectF& rect );
+
+    QPainterPath mapCanvasToScreen( const QPainterPath& path );
+    QPainterPath mapScreenToCanvas( const QPainterPath& path );
 
     QTransform getView();
 

@@ -191,8 +191,8 @@ public:
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
-    void refreshBitmap( QRect rect, int rad );
-    void refreshVector( QRect rect, int rad );
+    void refreshBitmap( const QRectF& rect, int rad );
+    void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
 private:
