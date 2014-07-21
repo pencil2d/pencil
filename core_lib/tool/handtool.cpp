@@ -2,7 +2,7 @@
 #include "handtool.h"
 #include <cmath>
 #include <QPixmap>
-#include <Qvector2D>
+#include <QVector2D>
 #include "layer.h"
 #include "layercamera.h"
 #include "editor.h"
