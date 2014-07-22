@@ -109,13 +109,14 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     mLayerManager = new LayerManager( this );
     mToolManager = new ToolManager( this );
     mPlaybackManager = new PlaybackManager( this );
-
+    mViewManager = new ViewManager( this );
     BaseManager* allManagers[] =
     {
         mColorManager,
         mToolManager,
         mLayerManager,
-        mPlaybackManager
+        mPlaybackManager,
+        mViewManager
     };
 
     for ( BaseManager* pManager : allManagers )
@@ -149,7 +150,7 @@ TimeLine* Editor::getTimeLine()
 
 void Editor::makeConnections()
 {
-    connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
+    connect( QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged );
 }
 
 void Editor::dragEnterEvent( QDragEnterEvent* event )

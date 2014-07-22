@@ -1536,8 +1536,8 @@ void ScribbleArea::paintTransformedSelection()
             if ( bitmapImage == NULL )
             {
                 qDebug() << "NULL image pointer!"
-                    << mEditor->layers()->currentLayerIndex()
-                    << mEditor->currentFrame();
+                         << mEditor->layers()->currentLayerIndex()
+                         << mEditor->currentFrame();
                 return;
             }
 
@@ -1556,7 +1556,7 @@ void ScribbleArea::paintTransformedSelection()
             bitmapImage->clear( mySelection.toRect() );
             bitmapImage->paste( &selectionClip );
         }
-        if ( layer->type() == Layer::VECTOR )
+        else if ( layer->type() == Layer::VECTOR )
         {
             // vector transformation
             LayerVector *layerVector = ( LayerVector * )layer;
