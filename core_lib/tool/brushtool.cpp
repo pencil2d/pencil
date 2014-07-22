@@ -194,7 +194,7 @@ void BrushTool::drawStroke()
     else if ( layer->type() == Layer::VECTOR )
     {
         QPen pen( Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * qAbs( mScribbleArea->getTempViewScaleX() ) );
+        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * qAbs( mEditor->view()->scaling() ) );
 
         //        foreach (QSegment segment, calculateStroke(currentWidth))
         //        {

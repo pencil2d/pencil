@@ -96,7 +96,7 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
         {
             // Clear the temporary pixel path
             mScribbleArea->clearBitmapBuffer();
-            qreal tol = mScribbleArea->getCurveSmoothing() / qAbs( mScribbleArea->getViewScaleX() );
+            qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
             BezierCurve curve( mStrokePoints, mStrokePressures, tol );
             curve.setWidth( properties.width );
             curve.setFeather( properties.feather );
@@ -106,7 +106,7 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
 
             auto pLayerVector = static_cast< LayerVector* >( layer );
             VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-            vectorImage->addCurve( curve, qAbs( mScribbleArea->getViewScaleX() ) );
+            vectorImage->addCurve( curve, mEditor->view()->scaling() );
 
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
@@ -164,10 +164,10 @@ void PenTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * ( qAbs( mScribbleArea->getTempViewScaleX() ) + qAbs( mScribbleArea->getTempViewScaleY() ) ) );
+        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         QPen pen( mEditor->color()->frontColor(),
-                  mCurrentWidth * mScribbleArea->getTempViewScaleX(),
+                  mCurrentWidth * mEditor->view()->scaling(),
                   Qt::SolidLine,
                   Qt::RoundCap,
                   Qt::RoundJoin );

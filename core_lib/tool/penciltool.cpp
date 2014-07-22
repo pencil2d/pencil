@@ -109,7 +109,7 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
         {
             // Clear the temporary pixel path
             mScribbleArea->clearBitmapBuffer();
-            qreal tol = mScribbleArea->getCurveSmoothing() / qAbs( mScribbleArea->getViewScaleX() );
+            qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
             qDebug() << "pressures " << mStrokePressures;
             BezierCurve curve( mStrokePoints, mStrokePressures, tol );
 
@@ -120,7 +120,7 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
             VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-            vectorImage->addCurve( curve, qAbs( mScribbleArea->getViewScaleX() ) );
+            vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ) );
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
@@ -201,7 +201,7 @@ void PencilTool::drawStroke()
                   Qt::RoundCap,
                   Qt::RoundJoin );
 
-        rad = qRound( ( properties.width / 2 + 2 ) * qAbs( mScribbleArea->getTempViewScaleX() ) );
+        rad = qRound( ( properties.width / 2 + 2 ) * mEditor->view()->scaling() );
 
         if ( p.size() == 4 ) {
             QSizeF size( 2, 2 );

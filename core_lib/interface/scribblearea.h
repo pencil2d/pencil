@@ -89,11 +89,6 @@ public:
     QRectF getViewRect();
     QPointF getCentralPoint();
 
-    qreal getViewScaleX() const { return mEditor->view()->scaling(); }
-    qreal getTempViewScaleX() const { return mEditor->view()->scaling(); }
-    qreal getViewScaleY() const { return mEditor->view()->scaling(); }
-    qreal getTempViewScaleY() const { return mEditor->view()->scaling(); }
-
     void updateCurrentFrame();
     void updateFrame( int frame );
     void updateAllFrames();

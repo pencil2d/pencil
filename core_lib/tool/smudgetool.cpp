@@ -106,9 +106,9 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
         else if (layer->type() == Layer::VECTOR)
         {
             mScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
-                ->getCurvesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
+                ->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
             mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
-                ->getVerticesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
+                ->getVerticesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
 
             if (mScribbleArea->closestVertices.size() > 0 || mScribbleArea->closestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
@@ -193,7 +193,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
             if (layer->type() == Layer::VECTOR)
             {
                 mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
-                    ->getVerticesCloseTo(getCurrentPoint(), mScribbleArea->tol / mScribbleArea->getTempViewScaleX());
+                    ->getVerticesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
             }
         }
         mScribbleArea->update();

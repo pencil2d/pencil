@@ -129,7 +129,7 @@ void EraserTool::mouseMoveEvent( QMouseEvent *event )
         }
         if ( layer->type() == Layer::VECTOR )
         {
-            qreal radius = ( properties.width / 2 ) / mScribbleArea->getTempViewScaleX();
+            qreal radius = ( properties.width / 2 ) / mEditor->view()->scaling();
             QList<VertexRef> nearbyVertices = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )
                 ->getVerticesCloseTo( getCurrentPoint(), radius );
             for ( int i = 0; i < nearbyVertices.size(); i++ )
@@ -206,7 +206,7 @@ void EraserTool::drawStroke()
     else if ( layer->type() == Layer::VECTOR )
     {
         QPen pen( Qt::white, mCurrentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * ( qAbs( mScribbleArea->getTempViewScaleX() ) + qAbs( mScribbleArea->getTempViewScaleY() ) ) );
+        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         if ( p.size() == 4 ) {
             QSizeF size( 2, 2 );
