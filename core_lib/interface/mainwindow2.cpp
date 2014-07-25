@@ -745,7 +745,7 @@ void MainWindow2::aboutPencil()
     if ( isOpenOK )
     {
         QString strAboutText = QTextStream( &aboutFile ).readAll();
-        QMessageBox::about( this, tr( PENCIL_WINDOW_TITLE ), strAboutText );
+        QMessageBox::about( this, PENCIL_WINDOW_TITLE, strAboutText );
     }
 }
 
