@@ -806,11 +806,11 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
     connect( pTimeline, &TimeLine::deleteCurrentLayer, pEditor, &Editor::deleteCurrentLayer );
 
-    connect( pEditor, SIGNAL( toggleLoopControl( bool ) ), pTimeline, SIGNAL( toggleLoopControl( bool ) ) );
+    //connect( pEditor, &Editor::toggleLoopControl, pTimeline, &Timeline::toggleLoopControl );
     connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
 }
 
-void MainWindow2::makeConnections(Editor* pEditor, DisplayOptionWidget* pDisplay)
+void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
 {
 }
 

@@ -50,23 +50,19 @@ signals:
     void loopEndClick(int);
 
 public slots:
-    void updateButtons(bool);
     void toggleLoop(bool);
     void toggleLoopControl(bool);
 
-
-protected:
-
 private:
-    QPushButton* playButton;
-    QPushButton* m_pGotoEndButton;
-    QPushButton* m_pGotoStartButton;
-    QPushButton* loopButton;
+    QPushButton* mPlayButton;
+    QPushButton* mGotoEndButton;
+    QPushButton* mGotoStartButton;
+    QPushButton* mLoopButton;
     QPushButton* soundButton;
-    QSpinBox* fpsBox;
-    QCheckBox* m_pPlaybackRangeCheckBox;
-    QSpinBox* m_pLoopStartSpinBox;
-    QSpinBox* m_pLoopEndSpinBox;
+    QSpinBox* mFpsBox;
+    QCheckBox* mPlaybackRangeCheckBox;
+    QSpinBox* mLoopStartSpinBox;
+    QSpinBox* mLoopEndSpinBox;
 };
 
 #endif
