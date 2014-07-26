@@ -44,7 +44,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layerimage.h"
 
-
 #include "colormanager.h"
 #include "colorpalettewidget.h"
 #include "toolmanager.h"
@@ -52,7 +51,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "viewmanager.h"
 
-#include "mainwindow2.h"
 #include "scribblearea.h"
 #include "timeline.h"
 
@@ -63,10 +61,8 @@ static BitmapImage g_clipboardBitmapImage;
 static VectorImage g_clipboardVectorImage;
 
 
-Editor::Editor( MainWindow2* parent ) : QObject( parent )
+Editor::Editor( QObject* parent ) : QObject( parent )
 {
-    mMainWindow = parent;
-
     m_isAltPressed = false;
     numberOfModifications = 0;
 
@@ -141,11 +137,6 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 int Editor::currentFrame()
 {
     return mFrame;
-}
-
-TimeLine* Editor::getTimeLine()
-{
-    return mMainWindow->mTimeLine;
 }
 
 void Editor::makeConnections()

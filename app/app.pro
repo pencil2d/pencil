@@ -26,7 +26,15 @@ INCLUDEPATH += \
     ../core_lib/ui \
     ../core_lib/managers
 
-SOURCES += main.cpp
+HEADERS += \
+    mainwindow2.h
+
+SOURCES += \
+    mainwindow2.cpp
+    main.cpp
+
+FORMS += \
+    mainwindow2.ui
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++

@@ -47,7 +47,7 @@ class Editor : public QObject
     Q_PROPERTY( ViewManager*     view     READ view )
 
 public:
-    Editor( MainWindow2* parent );
+    Editor( QObject* parent );
     virtual ~Editor();
     bool initialize( ScribbleArea* pScribbleArea );
 

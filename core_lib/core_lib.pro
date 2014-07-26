@@ -65,7 +65,6 @@ HEADERS +=  \
     interface/editor.h \
     interface/flowlayout.h \
     interface/keycapturelineedit.h \
-    interface/mainwindow2.h \
     interface/popupcolorpalettewidget.h \
     interface/preferences.h \
     interface/recentfilemenu.h \
@@ -134,7 +133,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/editor.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \
-    interface/mainwindow2.cpp \
     interface/popupcolorpalettewidget.cpp \
     interface/preferences.cpp \
     interface/recentfilemenu.cpp \
@@ -183,7 +181,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     managers/viewmanager.cpp
 
 FORMS += \
-    interface/mainwindow2.ui \
     interface/shortcutspage.ui \
     interface/colorinspector.ui \
     interface/colorpalette.ui
