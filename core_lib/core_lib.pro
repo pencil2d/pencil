@@ -80,6 +80,8 @@ HEADERS +=  \
     managers/colormanager.h \
     managers/layermanager.h \
     managers/toolmanager.h \
+    managers/playbackmanager.h \
+    managers/viewmanager.h \
     structure/camera.h \
     structure/keyframe.h \
     structure/layer.h \
@@ -111,9 +113,8 @@ HEADERS +=  \
     util/pencilsettings.h \
     util/util.h \
     interface/basedockwidget.h \
-    managers/playbackmanager.h \
-    util/log.h \
-    managers/viewmanager.h
+    util/log.h
+
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
