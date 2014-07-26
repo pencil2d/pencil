@@ -17,3 +17,19 @@ ExportImageSeqDialog::~ExportImageSeqDialog()
 {
     delete ui;
 }
+
+void ExportImageSeqDialog::setExportSize(QSize size)
+{
+    ui->imgWidthSpinBox->setValue( size.width() );
+    ui->imgHeightSpinBox->setValue( size.height() );
+}
+
+QSize ExportImageSeqDialog::getExportSize()
+{
+    return QSize( ui->imgWidthSpinBox->value(), ui->imgHeightSpinBox->value() );
+}
+
+QString ExportImageSeqDialog::getExportFormat()
+{
+    return ui->formatComboBox->currentText();
+}

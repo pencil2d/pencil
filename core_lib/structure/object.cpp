@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 //#include "flash.h"
+#include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
 
@@ -463,7 +464,7 @@ bool Object::exportFrames( int frameStart, int frameEnd,
         tempImage.fill( 0x00000000 );
 
         QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-        QTransform mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
         mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
         painter.setWorldTransform( mapView );
 
@@ -570,7 +571,7 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
         if ( currentLayer->type() == Layer::CAMERA )
         {
             QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-            QTransform mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+            QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
             mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
             painter.setWorldTransform( mapView );
         }
@@ -660,7 +661,7 @@ bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize expor
         {
             QRect source = QRect( QPoint( 0, 0 ), exportSize );
             QRect target = QRect( QPoint( ( y % 3 ) * 800 + 30, ( y / 3 ) * 680 + 50 - page * 3400 ), QSize( 640, 480 ) );
-            QTransform thumbView = view * Editor::map( source, target );
+            QTransform thumbView = view * RectMapTransform( source, target );
             xPainter.setWorldTransform( thumbView );
             xPainter.setClipRegion( thumbView.inverted().map( QRegion( target ) ) );
             paintImage( xPainter, i, false, antialiasing );

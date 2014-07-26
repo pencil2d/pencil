@@ -53,6 +53,7 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 #include "timeline.h"
+#include "util.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -703,7 +704,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     QSize exportSize = QSize( width, height );
     QByteArray exportFormat( format.toLatin1() );
 
-    QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     view = mScribbleArea->getView() * view;
 
     int projectLength = layers()->projectLength();
@@ -759,14 +760,94 @@ bool Editor::exportMov()
 }
 */
 
-void Editor::importImageFromDialog()
+bool Editor::importBitmapImage( QString filePath )
 {
-    importImage( "fromDialog" );
+    backup( tr( "ImportImg" ) );
+
+    QImageReader reader( filePath );
+
+    Q_ASSERT( layers()->currentLayer()->type() == Layer::BITMAP );
+    auto layer = static_cast<LayerBitmap*>( layers()->currentLayer() );
+
+    QImage img( reader.size(), QImage::Format_ARGB32_Premultiplied );
+
+    while ( reader.read( &img ) )
+    {
+        if ( img.isNull() || reader.nextImageDelay() <= 0 )
+        {
+            break;
+        }
+
+        if ( !layer->keyExists( currentFrame() ) )
+        {
+            addNewKey();
+        }
+        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame( currentFrame() );
+
+        QRect boundaries = img.rect();
+        boundaries.moveTopLeft( mScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
+
+        BitmapImage* importedBitmapImage = new BitmapImage( boundaries, img );
+        bitmapImage->paste( importedBitmapImage );
+
+        scrubTo( currentFrame() + 1 );
+    }
+
+    return true;
 }
 
-void Editor::importImage( QString filePath )
+bool Editor::importVectorImage( QString filePath )
 {
+    Q_ASSERT( layers()->currentLayer()->type() == Layer::VECTOR );
 
+    backup( tr( "ImportImg" ) );
+
+    auto layer = static_cast<LayerVector*>( layers()->currentLayer() );
+
+    VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( currentFrame() );
+    if ( vectorImage == NULL )
+    {
+        addNewKey();
+        vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( currentFrame() );
+    }
+    VectorImage* importedVectorImage = new VectorImage;
+    bool ok = importedVectorImage->read( filePath );
+    if ( ok )
+    {
+        importedVectorImage->selectAll();
+        vectorImage->paste( *importedVectorImage );
+    }
+    /*
+    else
+    {
+        QMessageBox::warning( mMainWindow,
+                              tr( "Warning" ),
+                              tr( "Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors." ),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok );
+    }
+    */
+    return ok;
+}
+
+bool Editor::importImage( QString filePath )
+{
+    Layer* layer = layers()->currentLayer();
+
+    switch ( layer->type() )
+    {
+    case Layer::BITMAP:
+        return importBitmapImage( filePath );
+
+    case Layer::VECTOR:
+        return importVectorImage( filePath );
+
+    default:
+    {
+        mLastError = Error( ERROR_INVALID_LAYER_TYPE );
+        return false;
+    }
+    }
 }
 
 void Editor::updateFrame( int frameNumber )

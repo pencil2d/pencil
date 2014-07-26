@@ -31,7 +31,7 @@ public:
     BitmapImage();
     BitmapImage(const BitmapImage&);
     BitmapImage(QRect boundaries, QColor colour);
-    BitmapImage(QRect boundaries, QImage m_pImage);
+    BitmapImage(QRect boundaries, QImage image);
     BitmapImage(QString path, QPoint topLeft);
 
     ~BitmapImage();

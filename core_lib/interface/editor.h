@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include <QSpinBox>
 #include "backupelement.h"
+#include "pencilerror.h"
 
 class QComboBox;
 class QSlider;
@@ -60,12 +61,13 @@ public:
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
 
+    Error getError() { return mLastError; }
+
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
     int currentFrame();
 
     int allLayers();
-    static QTransform map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
 
     int getOnionLayer1Opacity() { return onionLayer1Opacity; }
@@ -116,11 +118,8 @@ public slots:
     void rotateacw();
     void resetView();
 
-    void importImageFromDialog();
-    void importImage( QString filePath );
-    void importImageSequence();
+    bool importImage( QString filePath );
     void importSound( QString filePath = "" );
-    bool importMov();
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
@@ -167,7 +166,6 @@ public slots:
     void newVectorLayer();
     void newSoundLayer();
     void newCameraLayer();
-    void deleteCurrentLayer();
 
     void toggleMirror();
     void toggleMirrorV();
@@ -175,6 +173,8 @@ public slots:
     void resetMirror();
 
 private:
+    bool importBitmapImage( QString );
+    bool importVectorImage( QString );
     void saveLength( QString );
 
     TimeLine* getTimeLine();
@@ -217,6 +217,8 @@ private:
     // dialogs
     void createExportMovieSizeBox();
     void createExportMovieDialog();
+
+    Error mLastError;
 
     QDialog* exportMovieDialog = nullptr;
     QSpinBox* exportMovieDialog_hBox = nullptr;

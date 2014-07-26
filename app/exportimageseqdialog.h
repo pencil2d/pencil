@@ -12,11 +12,16 @@ class ExportImageSeqDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ExportImageSeqDialog(QWidget *parent = 0);
+    explicit ExportImageSeqDialog(QWidget* parent = 0);
     ~ExportImageSeqDialog();
 
+    void  setExportSize( QSize size );
+    QSize getExportSize();
+
+    QString getExportFormat();
+
 private:
-    Ui::ExportImageSeqDialog *ui;
+    Ui::ExportImageSeqDialog* ui;
 };
 
 #endif // EXPORTIMAGESEQDIALOG_H
