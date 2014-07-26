@@ -32,7 +32,7 @@ HEADERS += \
 
 SOURCES += \
     mainwindow2.cpp \
-    exportimageseqdialog.cpp
+    exportimageseqdialog.cpp \
     main.cpp
 
 FORMS += \

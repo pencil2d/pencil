@@ -179,7 +179,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/pencilsettings.cpp \
     interface/basedockwidget.cpp \
     managers/playbackmanager.cpp \
-    managers/viewmanager.cpp
+    managers/viewmanager.cpp \
+    util/util.cpp
 
 FORMS += \
     interface/shortcutspage.ui \

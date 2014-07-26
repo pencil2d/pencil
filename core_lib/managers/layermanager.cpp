@@ -38,7 +38,11 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-    mCurrentLayerIndex = layerIndex;
+	if ( mCurrentLayerIndex != layerIndex )
+	{
+		mCurrentLayerIndex = layerIndex;
+		emit currentLayerChanged( mCurrentLayerIndex );
+	}
 }
 
 void LayerManager::gotoNextLayer()
@@ -46,6 +50,7 @@ void LayerManager::gotoNextLayer()
     if ( mCurrentLayerIndex < editor()->object()->getLayerCount() - 1 )
     {
         mCurrentLayerIndex += 1;
+		emit currentLayerChanged( mCurrentLayerIndex );
     }
 }
 
@@ -54,6 +59,7 @@ void LayerManager::gotoPreviouslayer()
     if ( mCurrentLayerIndex > 0 )
     {
         mCurrentLayerIndex -= 1;
+		emit currentLayerChanged( mCurrentLayerIndex );
     }
 }
 

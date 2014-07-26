@@ -225,7 +225,8 @@ void Editor::modification( int layerNumber )
     lastModifiedLayer = layerNumber;
 
     mScribbleArea->update();
-    getTimeLine()->updateContent();
+    
+	emit updateTimeLine();
 
     numberOfModifications++;
     if ( mIsAutosave && numberOfModifications > autosaveNumber )
@@ -509,7 +510,9 @@ void Editor::newBitmapLayer()
         {
             Layer *layer = mObject->addNewBitmapLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+            
+			emit updateLayerCount();
+
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -527,7 +530,7 @@ void Editor::newVectorLayer()
         {
             Layer *layer = mObject->addNewVectorLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+            emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -545,7 +548,7 @@ void Editor::newSoundLayer()
         {
             Layer *layer = mObject->addNewSoundLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+			emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -563,7 +566,7 @@ void Editor::newCameraLayer()
         {
             Layer *layer = mObject->addNewCameraLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+			emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -584,7 +587,7 @@ void Editor::toggleMirrorV()
 void Editor::toggleShowAllLayers()
 {
     mScribbleArea->toggleShowAllLayers();
-    getTimeLine()->updateContent();
+	emit updateTimeLine();
 }
 
 void Editor::resetMirror()
@@ -626,10 +629,8 @@ void Editor::updateObject()
 {
     color()->setColorNumber( 0 );
 
-    if ( getTimeLine() )
-    {
-        getTimeLine()->updateLayerNumber( object()->getLayerCount() );
-    }
+    emit updateLayerCount();
+    
     clearUndoStack();
 
     if ( mScribbleArea )
@@ -873,11 +874,8 @@ void Editor::scrubTo( int frame )
     {
         mScribbleArea->updateAllFrames();
     }
-
-
-    getTimeLine()->updateFrame( oldFrame );
-    getTimeLine()->updateFrame( mFrame );
-    getTimeLine()->updateContent();
+    emit updateFrame( oldFrame );
+    emit updateFrame( mFrame );
 
     mScribbleArea->update();
 }
@@ -898,16 +896,12 @@ void Editor::scrubBackward()
 void Editor::previousLayer()
 {
     layers()->gotoPreviouslayer();
-
-    getTimeLine()->updateContent();
     mScribbleArea->updateAllFrames();
 }
 
 void Editor::nextLayer()
 {
     layers()->gotoNextLayer();
-
-    getTimeLine()->updateContent();
     mScribbleArea->updateAllFrames();
 }
 
@@ -966,7 +960,6 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     if ( isOK )
     {
         scrubTo( frameIndex );
-        getTimeLine()->updateContent();
         getScribbleArea()->updateCurrentFrame();
     }
     else
@@ -991,7 +984,6 @@ void Editor::removeKey()
             break;
         }
         scrubBackward();
-        getTimeLine()->updateContent();
         mScribbleArea->updateCurrentFrame();
     }
 }
@@ -1017,7 +1009,6 @@ void Editor::scrubPreviousKeyFrame()
 void Editor::setCurrentLayer( int layerNumber )
 {
     layers()->setCurrentLayer( layerNumber );
-    getTimeLine()->updateContent();
     mScribbleArea->updateAllFrames();
 }
 
@@ -1026,7 +1017,8 @@ void Editor::switchVisibilityOfLayer( int layerNumber )
     Layer* layer = mObject->getLayer( layerNumber );
     if ( layer != NULL ) layer->switchVisibility();
     mScribbleArea->updateAllFrames();
-    getTimeLine()->updateContent();
+    
+	emit updateTimeLine();
 }
 
 void Editor::moveLayer( int i, int j )
@@ -1040,7 +1032,7 @@ void Editor::moveLayer( int i, int j )
     {
         layers()->setCurrentLayer( j - 1 );
     }
-    getTimeLine()->updateContent();
+	emit updateTimeLine();
     mScribbleArea->updateAllFrames();
 }
 
@@ -1072,4 +1064,9 @@ void Editor::rotateacw()
 void Editor::resetView()
 {
     view()->resetView();
+}
+
+void Editor::importSound( QString filePath )
+{
+
 }

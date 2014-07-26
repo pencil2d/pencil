@@ -88,6 +88,9 @@ protected:
 
 signals:
     void updateAllFrames();
+	void updateTimeLine();
+	void updateLayerCount();
+	void updateFrmae( int frame );
 
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
@@ -119,7 +122,7 @@ public slots:
     void resetView();
 
     bool importImage( QString filePath );
-    void importSound( QString filePath = "" );
+    void importSound( QString filePath );
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
@@ -177,15 +180,12 @@ private:
     bool importVectorImage( QString );
     void saveLength( QString );
 
-    TimeLine* getTimeLine();
-
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
 
     int mFrame; // current frame number.
 
     ScribbleArea* mScribbleArea = nullptr;
-    MainWindow2*  mMainWindow = nullptr;
 
     ColorManager*    mColorManager = nullptr;
     ToolManager*     mToolManager = nullptr;
