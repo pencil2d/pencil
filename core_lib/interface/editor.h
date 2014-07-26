@@ -85,6 +85,8 @@ protected:
     void dropEvent( QDropEvent* event );
 
 signals:
+    void updateAllFrames();
+
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
     void toggleOnionNext( bool );
@@ -172,21 +174,15 @@ public slots:
     void toggleShowAllLayers();
     void resetMirror();
 
-    bool exportX();
-    bool exportImage();
-    bool exportImageSequence();
-    bool exportMov();
-
-private slots:
+private:
     void saveLength( QString );
 
-private:
     TimeLine* getTimeLine();
 
     // the object to be edited by the editor
-    std::shared_ptr<Object> mObject = nullptr;  
+    std::shared_ptr<Object> mObject = nullptr;
 
-    int mFrame;
+    int mFrame; // current frame number.
 
     ScribbleArea* mScribbleArea = nullptr;
     MainWindow2*  mMainWindow = nullptr;
@@ -219,18 +215,12 @@ private:
     bool clipboardBitmapOk, clipboardVectorOk;
 
     // dialogs
-    void createExportFramesSizeBox();
     void createExportMovieSizeBox();
-    void createExportFramesDialog();
     void createExportMovieDialog();
 
-    QDialog* exportFramesDialog = nullptr;
     QDialog* exportMovieDialog = nullptr;
-    QSpinBox* exportFramesDialog_hBox = nullptr;
-    QSpinBox* exportFramesDialog_vBox = nullptr;
     QSpinBox* exportMovieDialog_hBox = nullptr;
     QSpinBox* exportMovieDialog_vBox = nullptr;
-    QComboBox* exportFramesDialog_format = nullptr;
     QSpinBox* exportMovieDialog_fpsBox = nullptr;
     QComboBox* exportMovieDialog_format = nullptr;
 

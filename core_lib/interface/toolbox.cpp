@@ -153,7 +153,7 @@ QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
 
 void ToolBoxWidget::pencilOn()
 {
-    core()->tools()->setCurrentTool( PENCIL );
+    editor()->tools()->setCurrentTool( PENCIL );
 
     deselectAllTools();
     pencilButton->setChecked(true);
@@ -161,7 +161,7 @@ void ToolBoxWidget::pencilOn()
 
 void ToolBoxWidget::eraserOn()
 {
-    core()->tools()->setCurrentTool( ERASER );
+    editor()->tools()->setCurrentTool( ERASER );
 
     deselectAllTools();
     eraserButton->setChecked(true);
@@ -169,7 +169,7 @@ void ToolBoxWidget::eraserOn()
 
 void ToolBoxWidget::selectOn()
 {
-    core()->tools()->setCurrentTool( SELECT );
+    editor()->tools()->setCurrentTool( SELECT );
 
     deselectAllTools();
     selectButton->setChecked(true);
@@ -177,7 +177,7 @@ void ToolBoxWidget::selectOn()
 
 void ToolBoxWidget::moveOn()
 {
-    core()->tools()->setCurrentTool( MOVE );
+    editor()->tools()->setCurrentTool( MOVE );
 
     deselectAllTools();
     moveButton->setChecked(true);
@@ -185,7 +185,7 @@ void ToolBoxWidget::moveOn()
 
 void ToolBoxWidget::penOn()
 {
-    core()->tools()->setCurrentTool( PEN );
+    editor()->tools()->setCurrentTool( PEN );
 
     deselectAllTools();
     penButton->setChecked(true);
@@ -193,7 +193,7 @@ void ToolBoxWidget::penOn()
 
 void ToolBoxWidget::handOn()
 {
-    core()->tools()->setCurrentTool( HAND );
+    editor()->tools()->setCurrentTool( HAND );
     
     deselectAllTools();
     handButton->setChecked(true);
@@ -201,7 +201,7 @@ void ToolBoxWidget::handOn()
 
 void ToolBoxWidget::polylineOn()
 {
-    core()->tools()->setCurrentTool( POLYLINE );
+    editor()->tools()->setCurrentTool( POLYLINE );
 
     deselectAllTools();
     polylineButton->setChecked(true);
@@ -209,7 +209,7 @@ void ToolBoxWidget::polylineOn()
 
 void ToolBoxWidget::bucketOn()
 {
-    core()->tools()->setCurrentTool( BUCKET );
+    editor()->tools()->setCurrentTool( BUCKET );
 
     deselectAllTools();
     bucketButton->setChecked(true);
@@ -217,7 +217,7 @@ void ToolBoxWidget::bucketOn()
 
 void ToolBoxWidget::eyedropperOn()
 {
-    core()->tools()->setCurrentTool( EYEDROPPER );
+    editor()->tools()->setCurrentTool( EYEDROPPER );
 
     deselectAllTools();
     eyedropperButton->setChecked(true);
@@ -225,7 +225,7 @@ void ToolBoxWidget::eyedropperOn()
 
 void ToolBoxWidget::brushOn()
 {
-    core()->tools()->setCurrentTool( BRUSH );
+    editor()->tools()->setCurrentTool( BRUSH );
   
     deselectAllTools();
     colouringButton->setChecked(true);
@@ -233,7 +233,7 @@ void ToolBoxWidget::brushOn()
 
 void ToolBoxWidget::smudgeOn()
 {
-    core()->tools()->setCurrentTool( SMUDGE );
+    editor()->tools()->setCurrentTool( SMUDGE );
 
     deselectAllTools();
     smudgeButton->setChecked(true);

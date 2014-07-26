@@ -14,6 +14,8 @@ GNU General Public License for more details.
 
 */
 
+#include "timeline.h"
+
 #include <QImage>
 #include <QPoint>
 #include <QWidget>
@@ -22,13 +24,15 @@ GNU General Public License for more details.
 #include <QMenu>
 #include <QAction>
 #include <QSplitter>
+#include <QMessageBox>
 
+#include "layer.h"
 #include "editor.h"
 #include "layermanager.h"
 #include "toolbox.h"
 #include "timecontrols.h"
 #include "timelinecells.h"
-#include "timeline.h"
+
 
 TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent, Qt::Tool )
 {
@@ -40,11 +44,11 @@ void TimeLine::initUI()
 
     QWidget* timeLineContent = new QWidget( this );
 
-    LayerManager* pLayerManager = core()->layers();
-    connect( core(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame );
+    LayerManager* pLayerManager = editor()->layers();
+    connect( editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame );
 
-    list = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Layers );
-    cells = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Tracks );
+    list = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Layers );
+    cells = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Tracks );
 
     connect( list, SIGNAL( mouseMovedY( int ) ), list, SLOT( setMouseMoveY( int ) ) );
     connect( list, SIGNAL( mouseMovedY( int ) ), cells, SLOT( setMouseMoveY( int ) ) );
@@ -209,7 +213,7 @@ void TimeLine::initUI()
     connect( newVectorLayerAct, SIGNAL( triggered() ), this, SIGNAL( newVectorLayer() ) );
     connect( newSoundLayerAct, SIGNAL( triggered() ), this, SIGNAL( newSoundLayer() ) );
     connect( newCameraLayerAct, SIGNAL( triggered() ), this, SIGNAL( newCameraLayer() ) );
-    connect( removeLayerButton, SIGNAL( clicked() ), this, SIGNAL( deleteCurrentLayer() ) );
+    connect( removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer );
 
     scrubbing = false;
 }
@@ -227,6 +231,21 @@ int TimeLine::getFrameLength()
 void TimeLine::resizeEvent(QResizeEvent*)
 {
     updateLayerView();
+}
+
+void TimeLine::deleteCurrentLayer()
+{
+    QString strLayerName = editor()->layers()->currentLayer()->name();
+
+    int ret = QMessageBox::warning( this,
+                                    tr( "Warning" ),
+                                    tr( "Are you sure you want to delete layer: " ) + strLayerName + " ?",
+                                    QMessageBox::Ok | QMessageBox::Cancel,
+                                    QMessageBox::Ok );
+    if ( ret == QMessageBox::Ok )
+    {
+        editor()->layers()->deleteCurrentLayer();
+    }
 }
 
 void TimeLine::updateFrame(int frameNumber)

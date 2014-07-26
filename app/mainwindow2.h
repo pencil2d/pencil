@@ -46,6 +46,18 @@ public slots:
     bool saveAsNewDocument();
     bool maybeSave();
 
+    // import/export
+    void importImage();
+    void exportImage();
+
+    void importImageSequence();
+    void exportImageSequence();
+
+    void importMovie();
+    void exportMovie();
+
+    void importSound();
+
     void preferences();
     void helpBox();
     void aboutPencil();

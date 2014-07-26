@@ -55,8 +55,7 @@ signals :
 	void newBitmapLayer();
 	void newVectorLayer();
 	void newSoundLayer();
-	void newCameraLayer();
-	void deleteCurrentLayer();
+    void newCameraLayer();
 
 	void playClick();
 	void loopClick( bool );
@@ -80,6 +79,8 @@ protected:
 	void resizeEvent( QResizeEvent* event );
 
 private:
+    void deleteCurrentLayer();
+
     QScrollBar* hScrollBar;
     QScrollBar* vScrollBar;
 	TimeLineCells* cells;
