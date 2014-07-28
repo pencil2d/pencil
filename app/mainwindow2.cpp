@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <memory>
 #include <QList>
 #include <QMenu>
+#include <QFile>
 #include <QScopedPointer>
 #include <QMessageBox>
 #include <QFileDialog>
@@ -518,7 +519,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    if ( QFileInfo::exists( strFilePath ) )
+    if ( QFile::exists( strFilePath ) )
     {
         return;
     }
