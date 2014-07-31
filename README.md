@@ -14,7 +14,7 @@ Download the [nightly builds][3]!
 [0]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip
 [1]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip
 [2]: http://goo.gl/BP40t
-[3]: http://www.pencil2d.org/forums/topic/nightly-builds/ "Pencil2D nightly builds"
+[3]: http://www.pencil2d.org/forums/topic/pencil2d-nightly-builds-2014/ "Pencil2D nightly builds"
 
 [![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=dev)](https://travis-ci.org/chchwy/pencil2d)
 
