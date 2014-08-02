@@ -31,15 +31,13 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "colourref.h"
 #include "vectorselection.h"
-#include "basetool.h"
-#include "editor.h"
 #include "colormanager.h"
 #include "viewmanager.h"
 
-class Editor;
 class Layer;
-class StrokeManager;
+class Editor;
 class BaseTool;
+class StrokeManager;
 class ColorManager;
 class PopupColorPaletteWidget;
 

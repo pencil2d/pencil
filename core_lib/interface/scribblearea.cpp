@@ -264,7 +264,9 @@ void ScribbleArea::escape()
 void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
     mKeyboardInUse = true;
-    if ( mMouseInUse ) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
+
+    if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
+
     if ( currentTool()->keyPressEvent( event ) )
     {
         // has been handled by tool
@@ -481,7 +483,7 @@ bool ScribbleArea::areLayersSane() const
     return true;
 }
 
-void ScribbleArea::mousePressEvent( QMouseEvent *event )
+void ScribbleArea::mousePressEvent( QMouseEvent* event )
 {
     mMouseInUse = true;
 
@@ -491,24 +493,24 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     {
         mStrokeManager->setPressure( 1.0 );
         currentTool()->adjustPressureSensitiveProperties( 1.0, true );
-
-        //----------------code for starting hand tool when middle mouse is pressed
-        if ( event->buttons() & Qt::MidButton )
-        {
-            //qDebug() << "Hand Start " << event->pos();
-            mPrevTemporalToolType = currentTool()->type();
-            editor()->tools()->setCurrentTool( HAND );
-        }
     }
 
-    if ( !( event->button() == Qt::NoButton ) )    // if the user is pressing the left or right button
+	//----------------code for starting hand tool when middle mouse is pressed
+	if ( event->buttons() & Qt::MidButton )
+	{
+		//qDebug() << "Hand Start " << event->pos();
+		mPrevTemporalToolType = currentTool()->type();
+		editor()->tools()->setCurrentTool( HAND );
+	}
+	else if ( event->button() == Qt::LeftButton )    // if the user is pressing the left or right button
     {
         lastPixel = mStrokeManager->getLastPressPixel();
         lastPoint = mEditor->view()->mapScreenToCanvas( lastPixel );
     }
 
     // ----- assisted tool adjusment -- todo: simplify this
-    if ( event->button() == Qt::LeftButton ) {
+    if ( event->button() == Qt::LeftButton )
+	{
         if ( ( event->modifiers() == Qt::ShiftModifier ) && ( currentTool()->properties.width > -1 ) )
         {
             //adjust width if not locked
