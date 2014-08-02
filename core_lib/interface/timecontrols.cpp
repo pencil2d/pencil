@@ -55,7 +55,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
 
     mPlayButton = new QPushButton( this );
     mLoopButton = new QPushButton();
-    soundButton = new QPushButton();
+    mSoundButton = new QPushButton();
     mGotoEndButton= new QPushButton();
     mGotoStartButton= new QPushButton();
     QLabel* separator = new QLabel();
@@ -73,19 +73,19 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     QIcon startplayIcon(":icons/controls/startplay.png");
     mPlayButton->setIcon(playIcon);
     mLoopButton->setIcon(loopIcon);
-    soundButton->setIcon(soundIcon);
+    mSoundButton->setIcon(soundIcon);
     mGotoEndButton->setIcon(endplayIcon);
     mGotoStartButton->setIcon(startplayIcon);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
-    soundButton->setToolTip(tr("Sound on/off"));
+    mSoundButton->setToolTip(tr("Sound on/off"));
     mGotoEndButton->setToolTip(tr("End"));
     mGotoStartButton->setToolTip(tr("Start"));
 
     mLoopButton->setCheckable(true);
-    soundButton->setCheckable(true);
-    soundButton->setChecked(true);
+    mSoundButton->setCheckable(true);
+    mSoundButton->setChecked(true);
 
     addWidget(separator);
     addWidget(mGotoStartButton);
@@ -95,7 +95,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     addWidget(mPlaybackRangeCheckBox);
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);
-    addWidget(soundButton);
+    addWidget(mSoundButton);
     addWidget(fpsLabel);
     addWidget(mFpsBox);
 
@@ -113,7 +113,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled );
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled );
 
-    connect( soundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
+    connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
     connect(mFpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
 
     mPlaybackRangeCheckBox->setChecked( false );

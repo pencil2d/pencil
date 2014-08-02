@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chaiwen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -58,7 +59,7 @@ private:
     QPushButton* mGotoEndButton;
     QPushButton* mGotoStartButton;
     QPushButton* mLoopButton;
-    QPushButton* soundButton;
+    QPushButton* mSoundButton;
     QSpinBox* mFpsBox;
     QCheckBox* mPlaybackRangeCheckBox;
     QSpinBox* mLoopStartSpinBox;

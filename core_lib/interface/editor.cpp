@@ -1068,5 +1068,4 @@ void Editor::resetView()
 
 void Editor::importSound( QString filePath )
 {
-
 }

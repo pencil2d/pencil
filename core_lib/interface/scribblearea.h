@@ -171,7 +171,6 @@ public:
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
-    void floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance );
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
@@ -186,8 +185,6 @@ private:
 	void drawGrid( QPainter& );
 
     void toggledOnionColor();
-
-	void floodFillError( int errorType );
 
     MoveMode mMoveMode;
     ToolType mPrevTemporalToolType;
