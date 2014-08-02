@@ -19,14 +19,12 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QList>
-#include <QLabel>
-#include <QToolButton>
-#include <QSpinBox>
 #include "backupelement.h"
 #include "pencilerror.h"
 
-class QComboBox;
-class QSlider;
+class QDragEnterEvent;
+class QDropEvent;
+class Object;
 class MainWindow2;
 class ColorManager;
 class ToolManager;
@@ -35,7 +33,6 @@ class PlaybackManager;
 class ViewManager;
 class ScribbleArea;
 class TimeLine;
-class Object;
 
 
 class Editor : public QObject
@@ -219,13 +216,6 @@ private:
     void createExportMovieDialog();
 
     Error mLastError;
-
-    QDialog* exportMovieDialog = nullptr;
-    QSpinBox* exportMovieDialog_hBox = nullptr;
-    QSpinBox* exportMovieDialog_vBox = nullptr;
-    QSpinBox* exportMovieDialog_fpsBox = nullptr;
-    QComboBox* exportMovieDialog_format = nullptr;
-
 };
 
 #endif

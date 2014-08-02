@@ -16,7 +16,8 @@ GNU General Public License for more details.
 
 #include <cmath>
 
-#include <QtGui>
+#include <QFrame>
+#include <QToolButton>
 #include <QGridLayout>
 
 #include "spinslider.h"

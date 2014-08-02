@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QAction>
 #include <QSplitter>
 #include <QMessageBox>
+#include <QLabel>
 
 #include "layer.h"
 #include "editor.h"
