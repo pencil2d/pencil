@@ -90,8 +90,9 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     readSettings();
 
-    connect(mEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
-    connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
+    connect( mEditor, &Editor::needSave, this, &MainWindow2::saveDocument );
+    connect( mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame );
+    connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &Preview::updateImage );
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
 }
@@ -105,29 +106,23 @@ void MainWindow2::createDockWidgets()
 {
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
-    makeConnections( mEditor, mTimeLine );
     m_subWidgets.append( mTimeLine );
 
     mColorWheel = new QDockWidget( tr("Color Wheel"), this );
-
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     mColorWheel->setWidget( pColorBox );
     mColorWheel->setObjectName( "ColorWheel" );
-	makeConnections( mEditor, pColorBox );
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     mColorPalette->setObjectName( "ColorPalette" );
-    makeConnections( mEditor, mColorPalette );
     m_subWidgets.append( mColorPalette );
 
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
-    mDisplayOptionWidget->makeConnectionToEditor(mEditor);
 
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName( "ToolOption" );
-    mToolOptions->makeConnectionToEditor(mEditor);
 
     mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     mToolBox->setObjectName( "ToolBox" );
@@ -151,7 +146,16 @@ void MainWindow2::createDockWidgets()
 
 	mPreview = new Preview( this );
 	mPreview->setImage( mScribbleArea->mBufferImg );
-	mPreview->show();
+	mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
+	mPreview->setFocusPolicy( Qt::NoFocus );
+	addDockWidget( Qt::RightDockWidgetArea, mPreview );
+	
+
+    makeConnections( mEditor, mTimeLine );
+    makeConnections( mEditor, pColorBox );
+    makeConnections( mEditor, mColorPalette );
+    makeConnections( mEditor, mDisplayOptionWidget );
+    mToolOptions->makeConnectionToEditor(mEditor);
 }
 
 
@@ -1016,8 +1020,6 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
 
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
-
-	connect( scribbleArea, &ScribbleArea::refreshPreview, mPreview, &Preview::updateImage );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
@@ -1054,6 +1056,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
 {
+    display->makeConnectionToEditor( editor );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )

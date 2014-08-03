@@ -1,18 +1,29 @@
 
 #include "preview.h"
-
 #include <QPainter>
 
-Preview::Preview( QWidget* parent ) : QWidget( parent )
+PreviewCanvas::PreviewCanvas( QWidget* parent ) : QWidget( parent )
 {
-	setFixedSize( 400, 400 );
+	setFixedSize( 200, 200 );
 }
 
-void Preview::paintEvent( QPaintEvent* event )
+void PreviewCanvas::paintEvent( QPaintEvent* )
 {
 	QPainter painter( this );
 	if ( mImage )
 	{
-		painter.drawImage( rect(), *(mImage->mImage) );
+		painter.drawImage( rect( ), *( mImage->mImage ) );
 	}
+	painter.end( );
+}
+
+Preview::Preview( QWidget* parent ) : QDockWidget( parent )
+{
+	mCanvas = new PreviewCanvas( this );
+	setWidget( mCanvas );
+}
+
+void Preview::updateImage()
+{
+	mCanvas->update();
 }
