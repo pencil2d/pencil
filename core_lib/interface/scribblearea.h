@@ -119,6 +119,8 @@ signals:
     void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
 
+	void refreshPreview();
+
 public slots:
     void clearImage();
     void calculateSelectionRect();
@@ -149,16 +151,16 @@ public slots:
     void updateToolCursor();
 
 protected:
-    void tabletEvent( QTabletEvent *event ) override;
-    void wheelEvent( QWheelEvent *event ) override;
-    void mousePressEvent( QMouseEvent *event ) override;
-    void mouseMoveEvent( QMouseEvent *event ) override;
-    void mouseReleaseEvent( QMouseEvent *event ) override;
-    void mouseDoubleClickEvent( QMouseEvent *event ) override;
-    void keyPressEvent( QKeyEvent *event ) override;
-    void keyReleaseEvent( QKeyEvent *event ) override;
-    void paintEvent( QPaintEvent *event ) override;
-    void resizeEvent( QResizeEvent *event ) override;
+    void tabletEvent( QTabletEvent* ) override;
+    void wheelEvent( QWheelEvent* ) override;
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
+    void mouseDoubleClickEvent( QMouseEvent* ) override;
+    void keyPressEvent( QKeyEvent* ) override;
+    void keyReleaseEvent( QKeyEvent* ) override;
+    void paintEvent( QPaintEvent* ) override;
+    void resizeEvent( QResizeEvent* ) override;
 
 public:
     void drawPolyline( QList<QPointF> points, QPointF lastPoint );

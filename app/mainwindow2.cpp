@@ -47,6 +47,7 @@ GNU General Public License for more details.
 #include "preferences.h"
 #include "timeline.h"
 #include "toolbox.h"
+#include "preview.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -113,7 +114,7 @@ void MainWindow2::createDockWidgets()
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     mColorWheel->setWidget( pColorBox );
     mColorWheel->setObjectName( "ColorWheel" );
-    makeColorWheelConnections();
+	makeConnections( mEditor, pColorBox );
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     mColorPalette->setObjectName( "ColorPalette" );
@@ -147,16 +148,12 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
     }
+
+	mPreview = new Preview( this );
+	mPreview->setImage( mScribbleArea->mBufferImg );
+	mPreview->show();
 }
 
-void MainWindow2::makeColorWheelConnections()
-{
-    ColorBox* pColorBox = static_cast<ColorBox*>(mColorWheel->widget());
-    Q_ASSERT( pColorBox );
-
-    connect( pColorBox, &ColorBox::colorChanged, mEditor->color(), &ColorManager::setColor );
-    connect( mEditor->color(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
-}
 
 void MainWindow2::createMenus()
 {
@@ -995,6 +992,12 @@ void MainWindow2::helpBox()
     QDesktopServices::openUrl( QUrl(url) );
 }
 
+void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
+{
+	connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
+	connect( editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor );
+}
+
 void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
 {
     connect( editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool );
@@ -1013,6 +1016,8 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
 
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
+
+	connect( scribbleArea, &ScribbleArea::refreshPreview, mPreview, &Preview::updateImage );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )

@@ -16,6 +16,8 @@ class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
 class Preferences;
+class Preview;
+class ColorBox;
 class RecentFileMenu;
 
 
@@ -85,7 +87,7 @@ private:
     void readSettings();
     void writeSettings();
 
-    void makeColorWheelConnections();
+    void makeConnections( Editor*, ColorBox* );
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
@@ -95,12 +97,12 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*             mColorWheel;
-    ColorPaletteWidget*      mColorPalette;
-    DisplayOptionWidget*     mDisplayOptionWidget;
-    ToolOptionWidget*        mToolOptions;
-    ToolBoxWidget*           mToolBox;
-
+    QDockWidget*             mColorWheel = nullptr;
+    ColorPaletteWidget*      mColorPalette = nullptr;
+    DisplayOptionWidget*     mDisplayOptionWidget = nullptr;
+    ToolOptionWidget*        mToolOptions = nullptr;
+    ToolBoxWidget*           mToolBox = nullptr;
+	Preview*                 mPreview = nullptr;
     RecentFileMenu* mRecentFileMenu;
 
 public:

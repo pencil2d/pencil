@@ -113,7 +113,8 @@ HEADERS +=  \
     util/pencilsettings.h \
     util/util.h \
     interface/basedockwidget.h \
-    util/log.h
+    util/log.h \
+    interface/preview.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -180,7 +181,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/basedockwidget.cpp \
     managers/playbackmanager.cpp \
     managers/viewmanager.cpp \
-    util/util.cpp
+    util/util.cpp \
+    interface/preview.cpp
 
 FORMS += \
     interface/shortcutspage.ui \

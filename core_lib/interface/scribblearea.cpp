@@ -14,6 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "scribblearea.h"
+
 #include <cmath>
 #include <QScopedPointer>
 #include <QtGui>
@@ -32,8 +34,8 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "popupcolorpalettewidget.h"
+#include "preview.h"
 
-#include "scribblearea.h"
 
 #define round(f) ((int)(f + 0.5))
 
@@ -591,6 +593,8 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
         return;
     }
 
+	Q_EMIT refreshPreview();
+	
     mStrokeManager->mouseMoveEvent( event );
     currentPixel = mStrokeManager->getCurrentPixel();
     currentPoint = mEditor->view()->mapScreenToCanvas( currentPixel );
