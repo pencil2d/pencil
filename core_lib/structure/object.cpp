@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -391,9 +392,9 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     {
         painter.setPen( Qt::NoPen );
         painter.setBrush( Qt::white );
-        painter.setViewTransformEnabled( false );
+        painter.setWorldMatrixEnabled( false );
         painter.drawRect( QRect( 0, 0, painter.device()->width(), painter.device()->height() ) );
-        painter.setViewTransformEnabled( true );
+        painter.setWorldMatrixEnabled( true );
     }
 
     for ( int i = 0; i < getLayerCount(); i++ )
