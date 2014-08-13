@@ -18,8 +18,8 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QScopedPointer>
-#include <QtGui>
 #include <QMessageBox>
+#include <QPixmapCache>
 
 #include "beziercurve.h"
 #include "object.h"
