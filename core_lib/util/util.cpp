@@ -1,6 +1,15 @@
 
 #include "util.h"
 
+void safeDelete( QObject*& p )
+{
+    if ( p )
+    {
+        p->deleteLater();
+    }
+    p = nullptr;
+}
+
 
 QTransform RectMapTransform( QRectF source, QRectF target )
 {

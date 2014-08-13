@@ -10,9 +10,9 @@ PreviewCanvas::PreviewCanvas( QWidget* parent ) : QWidget( parent )
 void PreviewCanvas::paintEvent( QPaintEvent* )
 {
 	QPainter painter( this );
-	if ( mImage )
+	if ( mBitmapImage )
 	{
-		painter.drawImage( rect( ), *( mImage->mImage ) );
+		painter.drawImage( rect( ), *( mBitmapImage->image() ) );
 	}
 	painter.end( );
 }

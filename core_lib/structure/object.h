@@ -45,20 +45,20 @@ struct ExportMovieParameters
 
 struct ExportFrames1Parameters
 {
-    int frameStart;
-    int frameEnd;
-    QTransform view;
-    Layer* currentLayer;
-    QSize exportSize;
-    QString filePath;
+    int         frameStart;
+    int         frameEnd;
+    QTransform  view;
+    Layer*      currentLayer;
+    QSize       exportSize;
+    QString     filePath;
     const char* format;
-    int quality;
-    bool background;
-    bool antialiasing;
+    int         quality;
+    bool        background;
+    bool        antialiasing;
     QProgressDialog* progress;
-    int progressMax;
-    int fps;
-    int exportFps;
+    int         progressMax;
+    int         fps;
+    int         exportFps;
 };
 
 class Object : public QObject
@@ -71,8 +71,8 @@ public:
 
     void init();
 
-    QString filePath() { return mStrFilePath; }
-    void    setFilePath( QString strFileName ) { mStrFilePath = strFileName; }
+    QString filePath() { return mstrFilePath; }
+    void    setFilePath( QString strFileName ) { mstrFilePath = strFileName; }
 
     QDomElement createDomElement( QDomDocument& doc );
     bool loadDomElement( QDomElement element, QString dataDirPath );
@@ -122,7 +122,7 @@ public:
     void setModified( bool b ) { modified = b; }
 
 private:
-    QString mStrFilePath;
+    QString mstrFilePath;
     QList<Layer*> mLayers;
     bool modified = false;
 

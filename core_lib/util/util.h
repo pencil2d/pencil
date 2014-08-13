@@ -6,11 +6,16 @@
 #include <QTransform>
 
 // for QObject
-template<typename T>
-void SafeDelete( T*& p )
+void safeDelete( QObject*& p );
+
+template< typename T >
+void safeDelete( T*& p )
 {
-    p->deleteLater();
-    p = NULL;
+    if ( p )
+    {
+        delete p;
+    }
+    p = nullptr;
 }
 
 

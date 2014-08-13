@@ -698,7 +698,7 @@ void ScribbleArea::paintBitmapBuffer()
         targetImage->paste( mBufferImg, cm );
     }
 
-    QRect rect = mEditor->view()->getView().mapRect( mBufferImg->boundaries );
+    QRect rect = mEditor->view()->getView().mapRect( mBufferImg->bounds() );
 
     // Clear the buffer
     mBufferImg->clear();
@@ -1187,7 +1187,9 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 {
                     painter.setWorldMatrixEnabled( true );
                     painter.setOpacity( opacity );
-                    if ( i == mEditor->layers()->currentLayerIndex() && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
+                    if ( i == mEditor->layers()->currentLayerIndex() 
+                         && somethingSelected 
+                         && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         
@@ -1212,14 +1214,15 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
                         selectionClip.transform( myTransformedSelection, smoothTransform );
                         QTransform rm;
+
                         //TODO: complete matrix calls ( sounds funny :)
                         rm.scale( myFlipX, myFlipY );
                         rm.rotate( myRotatedAngle );
-                        QImage rotImg = selectionClip.mImage->transformed( rm );
-                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
-                                             ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
-                        *selectionClip.mImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
-                        selectionClip.boundaries.translate( dxy );
+                        QImage* rotImg = new QImage( selectionClip.image()->transformed( rm ) );
+                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
+                                             ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
+                        selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
+                        selectionClip.bounds().translate( dxy );
                         selectionClip.paintImage( painter );
                     }
                     else
@@ -1316,7 +1319,7 @@ void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPoint
     BitmapImage bmiTmpClip = bmiSrcClip; // todo: find a shorter way
 
     bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
-    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiSrcClip.bounds().moveTo( trgRect.topLeft().toPoint() );
     bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
     mBufferImg->paste( &bmiTmpClip );
 }
@@ -1337,9 +1340,9 @@ void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPo
     qreal factor, factorGrad;
     int xb, yb, xa, ya;
 
-    for ( yb = bmiTmpClip->boundaries.top(); yb < bmiTmpClip->boundaries.bottom(); yb++ )
+    for ( yb = bmiTmpClip->bounds().top(); yb < bmiTmpClip->bounds().bottom(); yb++ )
     {
-        for ( xb = bmiTmpClip->boundaries.left(); xb < bmiTmpClip->boundaries.right(); xb++ )
+        for ( xb = bmiTmpClip->bounds().left(); xb < bmiTmpClip->bounds().right(); xb++ )
         {
             QColor color;
             color.setRgba( bmiTmpClip->pixel( xb, yb ) );
@@ -1554,11 +1557,11 @@ void ScribbleArea::paintTransformedSelection()
             rm.rotate( myRotatedAngle );
             BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
             selectionClip.transform( myTransformedSelection, smoothTransform );
-            QImage rotImg = selectionClip.mImage->transformed( rm, Qt::SmoothTransformation );
-            QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
-                                 ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
-            *selectionClip.mImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
-            selectionClip.boundaries.translate( dxy );
+            QImage* rotImg = new QImage( selectionClip.image()->transformed( rm, Qt::SmoothTransformation ) );
+            QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
+                                 ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
+            selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
+            selectionClip.bounds().translate( dxy );
             bitmapImage->clear( mySelection.toRect() );
             bitmapImage->paste( &selectionClip );
         }

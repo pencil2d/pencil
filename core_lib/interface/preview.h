@@ -9,12 +9,12 @@ class PreviewCanvas : public QWidget
 	Q_OBJECT
 public:
 	PreviewCanvas( QWidget* );
-	void setImage( BitmapImage* img ) { mImage = img; }
+	void setImage( BitmapImage* img ) { mBitmapImage = img; }
 
 protected:
 	void paintEvent( QPaintEvent* );
 private:
-	BitmapImage* mImage = nullptr;
+	BitmapImage* mBitmapImage = nullptr;
 };
 
 

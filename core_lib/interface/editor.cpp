@@ -424,7 +424,7 @@ void Editor::copy()
                 mScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
-            if ( g_clipboardBitmapImage.mImage != NULL ) QApplication::clipboard()->setImage( *( g_clipboardBitmapImage.mImage ) );
+            if ( g_clipboardBitmapImage.image() != NULL ) QApplication::clipboard()->setImage( *g_clipboardBitmapImage.image() );
         }
         if ( layer->type() == Layer::VECTOR )
         {
@@ -440,11 +440,11 @@ void Editor::paste()
     Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.mImage != NULL )
+        if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL )
         {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
-            qDebug() << "to be pasted --->" << tobePasted.mImage->size();
+            qDebug() << "to be pasted --->" << tobePasted.image()->size();
             if ( mScribbleArea->somethingSelected )
             {
                 QRectF selection = mScribbleArea->getSelection();
@@ -482,9 +482,9 @@ void Editor::clipboardChanged()
 {
     if ( clipboardBitmapOk == false )
     {
-        g_clipboardBitmapImage.mImage = new QImage( QApplication::clipboard()->image() );
-        g_clipboardBitmapImage.boundaries = QRect( g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.mImage->size() );
-        qDebug() << "New clipboard image" << g_clipboardBitmapImage.mImage->size();
+        g_clipboardBitmapImage.setImage( new QImage( QApplication::clipboard()->image() ) );
+        g_clipboardBitmapImage.bounds() = QRect( g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.image()->size() );
+        qDebug() << "New clipboard image" << g_clipboardBitmapImage.image()->size();
     }
     else
     {

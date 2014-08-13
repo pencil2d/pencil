@@ -25,8 +25,6 @@ class Object;
 
 class BitmapImage : public KeyFrame
 {
-    //Q_OBJECT
-
 public:
     BitmapImage();
     BitmapImage(const BitmapImage&);
@@ -45,7 +43,10 @@ public:
     void setModified(bool);
 
     void paintImage(QPainter& painter);
-    void outputImage(QImage* m_pImage, QSize size, QTransform myView);
+    void outputImage(QImage* image, QSize size, QTransform myView);
+
+    QImage* image() { return mImage; }
+    void    setImage( QImage* pImg );
 
     BitmapImage copy();
     BitmapImage copy(QRect rectangle);
@@ -59,7 +60,7 @@ public:
     BitmapImage transformed(QRect rectangle, bool smoothTransform);
     BitmapImage transformed(QRectF rectangle, bool smoothTransform) { return transformed(rectangle.toRect(), smoothTransform); }
 
-    bool contains(QPoint P) { return boundaries.contains(P); }
+    bool contains(QPoint P) { return mBounds.contains(P); }
     bool contains(QPointF P) { return contains(P.toPoint()); }
     void extend(QPoint P);
     void extend(QRect rectangle);
@@ -81,21 +82,23 @@ public:
     void drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
 
-    QPoint topLeft() { return boundaries.topLeft(); }
-    QPoint topRight() { return boundaries.topRight(); }
-    QPoint bottomLeft() { return boundaries.bottomLeft(); }
-    QPoint bottomRight() { return boundaries.bottomRight(); }
-    int left() { return boundaries.left(); }
-    int right() { return boundaries.right(); }
-    int top() { return boundaries.top(); }
-    int bottom() { return boundaries.bottom(); }
-    int width() { return boundaries.width(); }
-    int height() { return boundaries.height(); }
+    QPoint topLeft() { return mBounds.topLeft(); }
+    QPoint topRight() { return mBounds.topRight(); }
+    QPoint bottomLeft() { return mBounds.bottomLeft(); }
+    QPoint bottomRight() { return mBounds.bottomRight(); }
+    int left() { return mBounds.left(); }
+    int right() { return mBounds.right(); }
+    int top() { return mBounds.top(); }
+    int bottom() { return mBounds.bottom(); }
+    int width() { return mBounds.width(); }
+    int height() { return mBounds.height(); }
 
-public:
-    QImage* mImage;
-    QRect boundaries;
-    bool mExtendable;
+    QRect& bounds() { return mBounds; }
+
+private:
+    QImage* mImage = nullptr;
+    QRect   mBounds;
+    bool    mExtendable = true;
 };
 
 #endif
