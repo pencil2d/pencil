@@ -879,12 +879,12 @@ void VectorImage::paintImage(QPainter& painter,
             if (area[i].isSelected())
             {
                 painter.save();
-                painter.setViewTransformEnabled(false);
+                painter.setWorldMatrixEnabled( false );
 
                 painter.setBrush( QBrush( QColor(255-colour.red(),255-colour.green(),255-colour.blue()), Qt::Dense6Pattern) );
                 painter.drawPath( painter.transform().map( area[ i ].path ) );
                 painter.restore();
-                painter.setViewTransformEnabled(true);
+                painter.setWorldMatrixEnabled( true );
             }
             // --
             painter.setRenderHint(QPainter::Antialiasing, antialiasing);

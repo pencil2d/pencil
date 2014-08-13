@@ -771,7 +771,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     }
     
     // paints the canvas
-    painter.setViewTransformEnabled( false );
+    painter.setWorldMatrixEnabled( false );
     //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
 
@@ -789,7 +789,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             case HAND:
             {
                 painter.save();
-                painter.setViewTransformEnabled( false );
+                painter.setWorldMatrixEnabled( false );
                 painter.setRenderHint( QPainter::Antialiasing, false );
                 // ----- paints the edited elements
                 QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
@@ -877,8 +877,8 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( mEditor->layers()->currentLayer() != NULL )
         {
             painter.setOpacity( 1.0 );
-            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setViewTransformEnabled( true ); }
-            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setViewTransformEnabled( false ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
             mBufferImg->paintImage( painter );
         }
 
@@ -886,7 +886,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( somethingSelected && ( myTempTransformedSelection.isValid() || mMoveMode == ROTATION ) ) // @revise
         {
             // outline of the transformed selection
-            painter.setViewTransformEnabled( false );
+            painter.setWorldMatrixEnabled( false );
             painter.setOpacity( 1.0 );
             QPolygon tempRect = mEditor->view()->getView().mapToPolygon( myTempTransformedSelection.normalized().toRect() );
 
@@ -923,7 +923,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     {
         QRect rect = ( ( LayerCamera * )layer )->getViewRect();
         rect.translate( width() / 2, height() / 2 );
-        painter.setViewTransformEnabled( false );
+        painter.setWorldMatrixEnabled( false );
         painter.setPen( Qt::NoPen );
         painter.setBrush( QColor( 0, 0, 0, 160 ) );
         painter.drawRect( QRect( 0, 0, width(), ( height() - rect.height() ) / 2 ) );
@@ -937,7 +937,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     // outlines the frame of the viewport
 #ifdef _DEBUG
-    painter.setViewTransformEnabled( false );
+    painter.setWorldMatrixEnabled( false );
     painter.setPen( QPen( Qt::gray, 2 ) );
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( QRect( 0, 0, width(), height() ) );
@@ -964,7 +964,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     painter.setClipping( true );
     
     painter.setTransform( mEditor->view()->getView() );
-    painter.setViewTransformEnabled( true );
+    painter.setWorldMatrixEnabled( true );
 
     // background
     painter.setPen( Qt::NoPen );
@@ -1010,7 +1010,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
-                    painter.setViewTransformEnabled( true );
+                    painter.setWorldMatrixEnabled( true );
 
                     // previous frame (onion skin)
                     if ( isEffectOn( EFFECT_PREV_ONION ) )
@@ -1092,7 +1092,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 auto layerVector = static_cast< LayerVector* >( layer );
 
-				painter.setViewTransformEnabled( false );
+                painter.setWorldMatrixEnabled( false );
 
                 // previous frame (onion skin)
                 if ( isEffectOn( EFFECT_PREV_ONION ) )
@@ -1163,7 +1163,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
                 }
-				painter.setViewTransformEnabled( true );
+                painter.setWorldMatrixEnabled( true );
             }
         }
     } // --- end onion skins
@@ -1185,7 +1185,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
-                    painter.setViewTransformEnabled( true );
+                    painter.setWorldMatrixEnabled( true );
                     painter.setOpacity( opacity );
                     if ( i == mEditor->layers()->currentLayerIndex() && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
@@ -1244,7 +1244,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 vectorImage->outputImage( pImage.data(), view, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
 
-                painter.setViewTransformEnabled( false );
+                painter.setWorldMatrixEnabled( false );
                 painter.setOpacity( opacity );
                 painter.drawImage( QPoint( 0, 0 ), *pImage );
             }
@@ -1937,7 +1937,7 @@ void ScribbleArea::drawGrid( QPainter& painter )
 	QPen pen( Qt::lightGray );
 	pen.setCosmetic( true );
 	painter.setPen( pen );
-	painter.setViewTransformEnabled( true );
+    painter.setWorldMatrixEnabled( true );
 	painter.setBrush( Qt::NoBrush );
 
 	for ( int x = left; x < right; x += gridSize )
