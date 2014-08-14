@@ -67,7 +67,7 @@ void BitmapImage::setImage( QImage* img )
     Q_CHECK_PTR( img );
     if ( mImage != nullptr )
     {
-        safeDelete( mImage );
+        SAFE_RELEASE( mImage );
         mImage = img;
     }
 }

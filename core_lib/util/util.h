@@ -5,36 +5,17 @@
 #include <functional>
 #include <QTransform>
 
-// for QObject
-void safeDelete( QObject*& p );
 
-template< typename T >
-void safeDelete( T*& p )
-{
-    if ( p )
-    {
-        delete p;
-    }
-    p = nullptr;
-}
-
+#define SAFE_RELEASE( p ) if ( p ) { delete p; p = nullptr; }
+#define SAFE_QT_RELEASE( p ) if ( p ) { p->deleteLater(); p = nullptr; }
 
 QTransform RectMapTransform( QRectF source, QRectF target );
-
 
 class ScopeGuard
 {
 public:
-    ScopeGuard( std::function< void() > onScopeExit )
-    {
-        m_onScopeExit = onScopeExit;
-    }
-
-    ~ScopeGuard()
-    {
-        m_onScopeExit();
-    }
-
+    ScopeGuard( std::function< void() > onScopeExit ) { m_onScopeExit = onScopeExit; }
+    ~ScopeGuard() { m_onScopeExit(); }
 private:
     std::function< void() > m_onScopeExit;
 };
