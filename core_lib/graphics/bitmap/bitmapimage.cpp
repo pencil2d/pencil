@@ -439,28 +439,6 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
     }
 }
 
-/*void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
-{
-    int width = pen.width();
-    extend( path.controlPointRect().adjusted(-width,-width,width,width).toRect() );
-    if (image != NULL && !image->isNull() )
-    {
-        QPainter painter(image);
-        painter.setCompositionMode(cm);
-        painter.setRenderHint(QPainter::Antialiasing, antialiasing);
-        painter.setPen(pen);
-        painter.setBrush(brush);
-        painter.setTransform(QTransform().translate(-topLeft().x(), -topLeft().y()));
-        painter.setMatrixEnabled(true);
-        if (path.length() > 0) {
-            painter.drawPath( path );
-        } else { // forces drawing when points are the same (mousedown)
-            painter.drawPoint( path.elementAt(0).x, path.elementAt(0).y );
-        }
-        painter.end();
-    }
-}*/
-
 void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = pen.width();
