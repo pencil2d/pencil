@@ -442,11 +442,11 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
 void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = pen.width();
-    qreal inc = 1.0+width/20.0; // qreal?
+    qreal inc = 1.0 + width / 20.0; // qreal?
     //if (inc<1) { inc=1.0; }
     extend( path.controlPointRect().adjusted(-width,-width,width,width).toRect() );
 
-    if (mImage != NULL && !mImage->isNull() )
+    if ( mImage != NULL && !mImage->isNull() )
     {
         QPainter painter(mImage);
         painter.setCompositionMode(cm);
@@ -462,8 +462,8 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
                 qreal dx = path.elementAt(pt+1).x - path.elementAt(pt).x;
                 qreal dy = path.elementAt(pt+1).y - path.elementAt(pt).y;
                 qreal m = sqrt(dx*dx+dy*dy);
-                qreal factorx = dx/m;
-                qreal factory = dy/m;
+                qreal factorx = dx / m;
+                qreal factory = dy / m;
                 for ( int h=0; h<m; h+=inc )
                 {
                     int x = path.elementAt(pt).x + factorx*h;
@@ -473,7 +473,8 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
             }
         }
         else
-        { // forces drawing when points are coincident (mousedown)
+        {
+            // forces drawing when points are coincident (mousedown)
             painter.drawPoint( path.elementAt(0).x, path.elementAt(0).y );
         }
         painter.end();

@@ -214,7 +214,10 @@ void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
     for ( int i = 0; i < mEditor->object()->getLayerCount(); i++ )
     {
         Layer *layer = mEditor->object()->getLayer( i );
-        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR )
+        {
+            ( ( LayerVector * )layer )->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true );
+        }
     }
     updateFrame( mEditor->currentFrame() );
 }
@@ -662,7 +665,7 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 {
     QWidget::resizeEvent( event );
     mCanvas = QPixmap( size() );
-    
+    mEditor->view()->setCanvasSize( size() );
     updateAllFrames();
 }
 

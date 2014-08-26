@@ -51,6 +51,7 @@ QTransform ViewManager::getView()
 QTransform ViewManager::createViewTransform()
 {
     QTransform t;
+    t.translate( mCanvasSize.width(), mCanvasSize.height() );
     t.translate( mTranslate.x(), mTranslate.y() );
     t.scale( mScale, mScale );
     t.rotate( mRotate );
@@ -78,6 +79,12 @@ void ViewManager::rotate(float degree)
 void ViewManager::scale(float scaleValue)
 {
     mScale *= scaleValue;
+    mView = createViewTransform();
+}
+
+void ViewManager::setCanvasSize(QSize size)
+{
+    mCanvasSize = size;
     mView = createViewTransform();
 }
 
