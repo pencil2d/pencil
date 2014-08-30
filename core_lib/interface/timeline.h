@@ -89,7 +89,7 @@ private:
 	int numberOfLayers;
 	TimeControls* timeControls;
 
-    int m_lastUpdatedFrame = 0;
+    int mLastUpdatedFrame = 0;
 };
 
 #endif

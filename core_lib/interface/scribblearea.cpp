@@ -743,7 +743,7 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
-    qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
+    //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
 
     QPainter painter( this );
 
@@ -841,6 +841,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                     }
                 }
                 painter.restore();
+				break;
             }
 
             case MOVE:
@@ -872,6 +873,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                                           QPainter::CompositionMode_SourceOver,
                                           isEffectOn( EFFECT_ANTIALIAS ) );
                 }
+				break;
             }
             } // end siwtch
         }

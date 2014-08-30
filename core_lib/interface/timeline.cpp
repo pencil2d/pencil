@@ -252,10 +252,10 @@ void TimeLine::updateFrame(int frameNumber)
 {
     if ( mTracks )
     {
-        mTracks->updateFrame( m_lastUpdatedFrame );
+        mTracks->updateFrame( mLastUpdatedFrame );
         mTracks->updateFrame( frameNumber );
     }
-    m_lastUpdatedFrame = frameNumber;
+    mLastUpdatedFrame = frameNumber;
 }
 
 void TimeLine::updateLayerView()
