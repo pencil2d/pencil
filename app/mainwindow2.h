@@ -16,7 +16,7 @@ class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
 class Preferences;
-class Preview;
+class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
 
@@ -102,7 +102,8 @@ private:
     DisplayOptionWidget*     mDisplayOptionWidget = nullptr;
     ToolOptionWidget*        mToolOptions = nullptr;
     ToolBoxWidget*           mToolBox = nullptr;
-	Preview*                 mPreview = nullptr;
+	//PreviewWidget*           mPreview = nullptr;
+
     RecentFileMenu* mRecentFileMenu;
 
 public:

@@ -7,23 +7,25 @@
 class PreviewCanvas : public QWidget
 {
 	Q_OBJECT
+
 public:
 	PreviewCanvas( QWidget* );
 	void setImage( BitmapImage* img ) { mBitmapImage = img; }
 
 protected:
-	void paintEvent( QPaintEvent* );
+	void paintEvent( QPaintEvent* ) override;
+
 private:
 	BitmapImage* mBitmapImage = nullptr;
 };
 
 
 
-class Preview : public QDockWidget
+class PreviewWidget : public QDockWidget
 {
     Q_OBJECT
 public:
-    Preview(QWidget *parent = 0);
+    PreviewWidget(QWidget *parent = 0);
 	void setImage( BitmapImage* img ) { mCanvas->setImage( img ); }
 	void updateImage();
 

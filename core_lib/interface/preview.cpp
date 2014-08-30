@@ -2,6 +2,7 @@
 #include "preview.h"
 #include <QPainter>
 
+
 PreviewCanvas::PreviewCanvas( QWidget* parent ) : QWidget( parent )
 {
 	setFixedSize( 200, 200 );
@@ -17,13 +18,13 @@ void PreviewCanvas::paintEvent( QPaintEvent* )
 	painter.end( );
 }
 
-Preview::Preview( QWidget* parent ) : QDockWidget( parent )
+PreviewWidget::PreviewWidget( QWidget* parent ) : QDockWidget( parent )
 {
 	mCanvas = new PreviewCanvas( this );
 	setWidget( mCanvas );
 }
 
-void Preview::updateImage()
+void PreviewWidget::updateImage()
 {
 	mCanvas->update();
 }

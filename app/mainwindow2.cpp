@@ -93,7 +93,8 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     connect( mEditor, &Editor::needSave, this, &MainWindow2::saveDocument );
     connect( mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame );
-    connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &Preview::updateImage );
+    
+	//connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
 }
@@ -145,12 +146,13 @@ void MainWindow2::createDockWidgets()
         pWidget->setFocusPolicy( Qt::NoFocus );
     }
 
-	mPreview = new Preview( this );
+	/*
+	mPreview = new PreviewWidget( this );
 	mPreview->setImage( mScribbleArea->mBufferImg );
 	mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
 	mPreview->setFocusPolicy( Qt::NoFocus );
 	addDockWidget( Qt::RightDockWidgetArea, mPreview );
-	
+	*/
 
     makeConnections( mEditor, mTimeLine );
     makeConnections( mEditor, pColorBox );
