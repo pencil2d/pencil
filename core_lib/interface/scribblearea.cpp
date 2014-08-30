@@ -773,18 +773,20 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     if ( currentTool()->type() == MOVE )
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        Q_ASSERT( layer );
+		Q_CHECK_PTR( layer );
         if ( layer->type() == Layer::VECTOR )
         {
             auto vecLayer = static_cast<LayerVector*>( layer );
             vecLayer->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true );
         }
     }
-    
+
+
     // paints the canvas
     painter.setWorldMatrixEnabled( false );
     //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
+
 
     Layer *layer = mEditor->layers()->currentLayer();
 
@@ -890,9 +892,18 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( mEditor->layers()->currentLayer() != NULL )
         {
             painter.setOpacity( 1.0 );
-            //if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
-            //if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
-			qCDebug( mLog ) << " paintbit" << mBufferImg->bounds();
+            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) 
+			{ 
+				painter.setWorldMatrixEnabled( true );
+				painter.setTransform( mEditor->view()->getView() );
+			}
+            else if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
+			{ 
+				painter.setWorldMatrixEnabled( false );
+			}
+			
+			qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
+
             mBufferImg->paintImage( painter );
         }
 

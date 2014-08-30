@@ -152,7 +152,7 @@ void PenTool::drawStroke()
             //path.lineTo( p[ 1 ] );
             //path.lineTo( p[ 2 ] );
             path.lineTo( p[ 3 ] );
-            qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
+            //qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
             //path.cubicTo( p[1], p[2], p[3] );
             mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
             mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );
