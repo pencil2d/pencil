@@ -675,8 +675,12 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 void ScribbleArea::paintBitmapBuffer()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    // ---- checks ------
-    if ( layer == NULL ) { return; }
+    
+	// ---- checks ------
+	Q_ASSERT( layer );
+    if ( layer == NULL ) { return; } // TODO: remove in future.
+	
+
     // Clear the temporary pixel path
     BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
     if ( targetImage != NULL )
@@ -700,6 +704,8 @@ void ScribbleArea::paintBitmapBuffer()
         }
         targetImage->paste( mBufferImg, cm );
     }
+
+	qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
 
     QRect rect = mEditor->view()->getView().mapRect( mBufferImg->bounds() );
 
@@ -731,8 +737,11 @@ void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter
 
 void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
 {
-    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
-    update( updatedRect.toRect() );
+	// TODO: temp disable
+    //QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    //update( updatedRect.toRect() );
+	
+	update();
 }
 
 void ScribbleArea::refreshVector( const QRectF& rect, int rad )
@@ -757,7 +766,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( !QPixmapCache::find( strCachedFrameKey, mCanvas ) )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
-
             QPixmapCache::insert( strCachedFrameKey, mCanvas );
         }
     }
@@ -882,8 +890,9 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( mEditor->layers()->currentLayer() != NULL )
         {
             painter.setOpacity( 1.0 );
-            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
-            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
+            //if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setWorldMatrixEnabled( true ); }
+            //if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setWorldMatrixEnabled( false ); }
+			qCDebug( mLog ) << " paintbit" << mBufferImg->bounds();
             mBufferImg->paintImage( painter );
         }
 
@@ -1879,6 +1888,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
 
     effects[ EFFECT_AXIS ] = 0;
 
+#define DRAW_AXIS
 #ifdef DRAW_AXIS
     effects[ EFFECT_AXIS ] = 1;
 #endif
@@ -1916,10 +1926,10 @@ void ScribbleArea::drawShadow( QPainter& painter )
 void ScribbleArea::drawAxis( QPainter& painter )
 {
 	painter.setPen( Qt::green );
-	painter.drawLine( QLineF( 0, 0, 0, 500 ) );
+	painter.drawLine( QLineF( 0, -500, 0, 500 ) );
 
 	painter.setPen( Qt::red );
-	painter.drawLine( QLineF( 0, 0, 500, 0 ) );
+	painter.drawLine( QLineF( -500, 0, 500, 0 ) );
 }
 
 void ScribbleArea::drawGrid( QPainter& painter )

@@ -124,6 +124,7 @@ void PenTool::mouseMoveEvent( QMouseEvent *event )
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
+			qDebug() << "DrawStroke" << event->pos() ;
         }
     }
 }
@@ -137,12 +138,7 @@ void PenTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        QPen pen = QPen( mEditor->color()->frontColor(),
-                         mCurrentWidth,
-                         Qt::SolidLine,
-                         Qt::RoundCap,
-                         Qt::RoundJoin );
-
+        QPen pen = QPen( mEditor->color()->frontColor(), mCurrentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         int rad = qRound( mCurrentWidth / 2 ) + 3;
 
         for ( int i = 0; i < p.size(); i++ )
@@ -156,7 +152,7 @@ void PenTool::drawStroke()
             //path.lineTo( p[ 1 ] );
             //path.lineTo( p[ 2 ] );
             path.lineTo( p[ 3 ] );
-            //qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
+            qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
             //path.cubicTo( p[1], p[2], p[3] );
             mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
             mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );
