@@ -84,8 +84,8 @@ private:
 
     QScrollBar* hScrollBar;
     QScrollBar* vScrollBar;
-	TimeLineCells* cells;
-	TimeLineCells* list;
+	TimeLineCells* mTracks;
+	TimeLineCells* mLayerList;
 	int numberOfLayers;
 	TimeControls* timeControls;
 
