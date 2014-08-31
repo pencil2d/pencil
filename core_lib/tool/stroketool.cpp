@@ -24,11 +24,14 @@ BaseTool( parent )
 void StrokeTool::startStroke()
 {
     mFirstDraw = true;
-    lastPixel = getCurrentPixel();
-    mStrokePoints.clear();
-    mStrokePoints << mScribbleArea->pixelToPoint( lastPixel );
+    mLastPixel = getCurrentPixel();
+    
+	mStrokePoints.clear();
+    mStrokePoints << mEditor->view()->mapScreenToCanvas( mLastPixel );
+
     mStrokePressures.clear();
     mStrokePressures << m_pStrokeManager->getPressure();
+
     disableCoalescing();
 }
 
@@ -36,16 +39,17 @@ void StrokeTool::endStroke()
 {
     mStrokePoints.clear();
     mStrokePressures.clear();
+
     enableCoalescing();
 }
 
 void StrokeTool::drawStroke()
 {
     QPointF pixel = getCurrentPixel();
-    if ( pixel != lastPixel || !mFirstDraw )
+    if ( pixel != mLastPixel || !mFirstDraw )
     {
-        lastPixel = pixel;
-        mStrokePoints << mScribbleArea->pixelToPoint( pixel );
+        mLastPixel = pixel;
+        mStrokePoints << mEditor->view()->mapScreenToCanvas( pixel );
         mStrokePressures << m_pStrokeManager->getPressure();
     }
     else

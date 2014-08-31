@@ -17,7 +17,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !isFileExists( strFileName ) )
     {
         qCDebug( mLog ) << "ERROR - File doesn't exist.";
-        mError = PencilError( PCL_ERROR_FILE_NOT_EXIST );
+        mError = Error( ERROR_FILE_NOT_EXIST );
         return nullptr;
     }
 
@@ -49,7 +49,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !file->open( QFile::ReadOnly ) )
     {
         cleanUpTempFolder();
-        mError = PencilError( PCL_ERROR_FILE_CANNOT_OPEN );
+        mError = Error( ERROR_FILE_CANNOT_OPEN );
         return nullptr;
     }
 
@@ -58,7 +58,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !xmlDoc.setContent( file.data() ) )
     {
         cleanUpTempFolder();
-        mError = PencilError( PCL_ERROR_INVALID_XML_FILE );
+        mError = Error( ERROR_INVALID_XML_FILE );
         return nullptr;
     }
 
@@ -66,7 +66,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( type.name() != "PencilDocument" && type.name() != "MyObject" )
     {
         cleanUpTempFolder();
-        mError = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
+        mError = Error( ERROR_INVALID_PENCIL_FILE );
         return nullptr;
     }
 
@@ -74,7 +74,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( root.isNull() )
     {
         cleanUpTempFolder();
-        mError = PencilError( PCL_ERROR_INVALID_PENCIL_FILE );
+        mError = Error( ERROR_INVALID_PENCIL_FILE );
         return nullptr;
     }
 

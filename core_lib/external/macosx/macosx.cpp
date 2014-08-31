@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include "object.h"
 #include "editor.h"
-#include "mainwindow2.h"
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <Carbon/Carbon.h>

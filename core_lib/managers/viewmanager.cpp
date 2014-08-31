@@ -1,5 +1,7 @@
 #include "viewmanager.h"
 #include <utility>
+#include "object.h"
+
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 {
@@ -10,6 +12,36 @@ bool ViewManager::init()
     return true;
 }
 
+QPointF ViewManager::mapCanvasToScreen( QPointF p )
+{
+    return mView.map( p );
+}
+
+QPointF ViewManager::mapScreenToCanvas(QPointF p)
+{
+    return mView.inverted().map( p );
+}
+
+QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
+{
+    return mView.map( path );
+}
+
+QRectF ViewManager::mapCanvasToScreen( const QRectF& rect )
+{
+    return std::move( mView.mapRect( rect ) );
+}
+
+QRectF ViewManager::mapScreenToCanvas( const QRectF& rect )
+{
+    return std::move( mView.inverted().mapRect( rect ) );
+}
+
+QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )
+{
+    return mView.inverted().map( path );
+}
+
 QTransform ViewManager::getView()
 {
     return mView;
@@ -18,6 +50,7 @@ QTransform ViewManager::getView()
 QTransform ViewManager::createViewTransform()
 {
     QTransform t;
+    t.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
     t.translate( mTranslate.x(), mTranslate.y() );
     t.scale( mScale, mScale );
     t.rotate( mRotate );
@@ -27,8 +60,7 @@ QTransform ViewManager::createViewTransform()
 
 void ViewManager::translate(float dx, float dy)
 {
-    mTranslate.setX( dx );
-    mTranslate.setY( dy );
+    mTranslate += QPointF( dx, dy );
     mView = createViewTransform();
 }
 
@@ -39,12 +71,23 @@ void ViewManager::translate(QPointF offset)
 
 void ViewManager::rotate(float degree)
 {
-    mRotate = degree;
+    mRotate += degree;
     mView = createViewTransform();
 }
 
 void ViewManager::scale(float scaleValue)
 {
-    mScale = scaleValue;
+    mScale *= scaleValue;
     mView = createViewTransform();
+}
+
+void ViewManager::setCanvasSize(QSize size)
+{
+    mCanvasSize = size;
+    mView = createViewTransform();
+}
+
+void ViewManager::resetView()
+{
+    mView = QTransform();
 }

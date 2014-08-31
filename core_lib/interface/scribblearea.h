@@ -31,13 +31,13 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "colourref.h"
 #include "vectorselection.h"
-#include "basetool.h"
 #include "colormanager.h"
+#include "viewmanager.h"
 
-class Editor;
 class Layer;
-class StrokeManager;
+class Editor;
 class BaseTool;
+class StrokeManager;
 class ColorManager;
 class PopupColorPaletteWidget;
 
@@ -87,16 +87,6 @@ public:
     QRectF getViewRect();
     QPointF getCentralPoint();
 
-    qreal getViewScaleX() const { return myView.m11(); }
-    qreal getTempViewScaleX() const { return myTempView.m11(); }
-    qreal getViewScaleY() const { return myView.m22(); }
-    qreal getTempViewScaleY() const { return myTempView.m22(); }
-    qreal getCentralViewScale() const { return ( sqrt( centralView.determinant() ) ); }
-
-    QTransform getTransformationMatrix() const { return transMatrix; }
-    void setTransformationMatrix( QTransform matrix );
-    void applyTransformationMatrix();
-
     void updateCurrentFrame();
     void updateFrame( int frame );
     void updateAllFrames();
@@ -112,8 +102,6 @@ public:
     void setCurrentTool( ToolType eToolMode );
     void setTemporaryTool( ToolType eToolMode );
     void setPrevTool();
-
-    QPointF pixelToPoint( QPointF pixel );
 
     StrokeManager *getStrokeManager() const { return mStrokeManager; }
 
@@ -131,6 +119,8 @@ signals:
     void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
 
+	void refreshPreview();
+
 public slots:
     void clearImage();
     void calculateSelectionRect();
@@ -147,20 +137,11 @@ public slots:
     void toggleOnionRed( bool );
     void toggleGridA( bool );
 
-    void resetView();
-
-    void zoomIn();
-    void zoomOut();
-    void rotatecw();
-    void rotateacw();
-
     void setCurveSmoothing( int );
     void setBackground( int );
     void setBackgroundBrush( QString );
     void toggleThinLines();
     void toggleOutlines();
-    void toggleMirror();
-    void toggleMirrorV();
     void toggleShowAllLayers();
     void escape();
 
@@ -170,16 +151,16 @@ public slots:
     void updateToolCursor();
 
 protected:
-    void tabletEvent( QTabletEvent *event ) override;
-    void wheelEvent( QWheelEvent *event ) override;
-    void mousePressEvent( QMouseEvent *event ) override;
-    void mouseMoveEvent( QMouseEvent *event ) override;
-    void mouseReleaseEvent( QMouseEvent *event ) override;
-    void mouseDoubleClickEvent( QMouseEvent *event ) override;
-    void keyPressEvent( QKeyEvent *event ) override;
-    void keyReleaseEvent( QKeyEvent *event ) override;
-    void paintEvent( QPaintEvent *event ) override;
-    void resizeEvent( QResizeEvent *event ) override;
+    void tabletEvent( QTabletEvent* ) override;
+    void wheelEvent( QWheelEvent* ) override;
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
+    void mouseDoubleClickEvent( QMouseEvent* ) override;
+    void keyPressEvent( QKeyEvent* ) override;
+    void keyReleaseEvent( QKeyEvent* ) override;
+    void paintEvent( QPaintEvent* ) override;
+    void resizeEvent( QResizeEvent* ) override;
 
 public:
     void drawPolyline( QList<QPointF> points, QPointF lastPoint );
@@ -190,12 +171,11 @@ public:
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
-    void floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance );
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
-    void refreshBitmap( QRect rect, int rad );
-    void refreshVector( QRect rect, int rad );
+    void refreshBitmap( const QRectF& rect, int rad );
+    void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
 private:
@@ -205,10 +185,6 @@ private:
 	void drawGrid( QPainter& );
 
     void toggledOnionColor();
-    void recentre();
-    void setView( const QTransform& );
-
-	void floodFillError( int errorType );
 
     MoveMode mMoveMode;
     ToolType mPrevTemporalToolType;
@@ -259,10 +235,7 @@ private:
     QTransform selectionTransformation;
 
     // View Matrix
-    QTransform myView;
-    QTransform myTempView;
-    QTransform centralView;
-    QTransform transMatrix;
+    QTransform mView;
 
     QPixmap mCanvas;
 

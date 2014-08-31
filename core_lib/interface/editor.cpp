@@ -44,7 +44,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layerimage.h"
 
-
 #include "colormanager.h"
 #include "colorpalettewidget.h"
 #include "toolmanager.h"
@@ -52,9 +51,9 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "viewmanager.h"
 
-#include "mainwindow2.h"
 #include "scribblearea.h"
 #include "timeline.h"
+#include "util.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -63,10 +62,8 @@ static BitmapImage g_clipboardBitmapImage;
 static VectorImage g_clipboardVectorImage;
 
 
-Editor::Editor( MainWindow2* parent ) : QObject( parent )
+Editor::Editor( QObject* parent ) : QObject( parent )
 {
-    mMainWindow = parent;
-
     m_isAltPressed = false;
     numberOfModifications = 0;
 
@@ -109,13 +106,14 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     mLayerManager = new LayerManager( this );
     mToolManager = new ToolManager( this );
     mPlaybackManager = new PlaybackManager( this );
-
+    mViewManager = new ViewManager( this );
     BaseManager* allManagers[] =
     {
         mColorManager,
         mToolManager,
         mLayerManager,
-        mPlaybackManager
+        mPlaybackManager,
+        mViewManager
     };
 
     for ( BaseManager* pManager : allManagers )
@@ -142,14 +140,9 @@ int Editor::currentFrame()
     return mFrame;
 }
 
-TimeLine* Editor::getTimeLine()
-{
-    return mMainWindow->mTimeLine;
-}
-
 void Editor::makeConnections()
 {
-    connect( QApplication::clipboard(), SIGNAL( dataChanged() ), this, SLOT( clipboardChanged() ) );
+    connect( QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged );
 }
 
 void Editor::dragEnterEvent( QDragEnterEvent* event )
@@ -171,66 +164,6 @@ void Editor::dropEvent( QDropEvent* event )
             if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
                 importSound( filePath );
         }
-    }
-}
-
-void Editor::importImageSequence()
-{
-    QFileDialog w;
-    w.setFileMode( QFileDialog::AnyFile );
-
-    QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-    QStringList files = w.getOpenFileNames( mMainWindow,
-                                            "Select one or more files to open",
-                                            initialPath,
-                                            "Images (*.png *.xpm *.jpg *.jpeg)" );
-    qDebug() << files;
-
-    QStringListIterator i( files );
-    for ( int i = 0; i < files.size(); ++i )
-    {
-        QString filePath;
-        filePath = files.at( i ).toLocal8Bit().constData();
-        if ( i > 0 ) scrubForward();
-        {
-            if ( filePath.endsWith( ".png" ) ||
-                 filePath.endsWith( ".jpg" ) ||
-                 filePath.endsWith( ".jpeg" ) )
-            {
-                importImage( filePath );
-            }
-        }
-    }
-}
-
-bool Editor::importMov()
-{
-    QSettings settings( "Pencil", "Pencil" );
-
-    QString initialPath = settings.value( "lastExportPath", QDir::homePath() ).toString();
-
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath() + "/untitled.avi";
-    }
-    QString filePath = QFileDialog::getOpenFileName(
-        mMainWindow,
-        tr( "Import movie" ),
-        initialPath,
-        tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
-        );
-    if ( filePath.isEmpty() )
-    {
-        return false;
-    }
-    else
-    {
-        settings.setValue( "lastExportPath", QVariant( filePath ) );
-        int fps = playback()->fps();
-        importMovie( filePath, fps );
-        return true;
     }
 }
 
@@ -292,7 +225,8 @@ void Editor::modification( int layerNumber )
     lastModifiedLayer = layerNumber;
 
     mScribbleArea->update();
-    getTimeLine()->updateContent();
+    
+	emit updateTimeLine();
 
     numberOfModifications++;
     if ( mIsAutosave && numberOfModifications > autosaveNumber )
@@ -490,7 +424,7 @@ void Editor::copy()
                 mScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
-            if ( g_clipboardBitmapImage.mImage != NULL ) QApplication::clipboard()->setImage( *( g_clipboardBitmapImage.mImage ) );
+            if ( g_clipboardBitmapImage.image() != NULL ) QApplication::clipboard()->setImage( *g_clipboardBitmapImage.image() );
         }
         if ( layer->type() == Layer::VECTOR )
         {
@@ -506,11 +440,11 @@ void Editor::paste()
     Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
     if ( layer != NULL )
     {
-        if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.mImage != NULL )
+        if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL )
         {
             backup( tr( "Paste" ) );
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
-            qDebug() << "to be pasted --->" << tobePasted.mImage->size();
+            qDebug() << "to be pasted --->" << tobePasted.image()->size();
             if ( mScribbleArea->somethingSelected )
             {
                 QRectF selection = mScribbleArea->getSelection();
@@ -548,9 +482,9 @@ void Editor::clipboardChanged()
 {
     if ( clipboardBitmapOk == false )
     {
-        g_clipboardBitmapImage.mImage = new QImage( QApplication::clipboard()->image() );
-        g_clipboardBitmapImage.boundaries = QRect( g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.mImage->size() );
-        qDebug() << "New clipboard image" << g_clipboardBitmapImage.mImage->size();
+        g_clipboardBitmapImage.setImage( new QImage( QApplication::clipboard()->image() ) );
+        g_clipboardBitmapImage.bounds() = QRect( g_clipboardBitmapImage.topLeft(), g_clipboardBitmapImage.image()->size() );
+        qDebug() << "New clipboard image" << g_clipboardBitmapImage.image()->size();
     }
     else
     {
@@ -576,7 +510,9 @@ void Editor::newBitmapLayer()
         {
             Layer *layer = mObject->addNewBitmapLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+            
+			emit updateLayerCount();
+
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -594,7 +530,7 @@ void Editor::newVectorLayer()
         {
             Layer *layer = mObject->addNewVectorLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+            emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -612,7 +548,7 @@ void Editor::newSoundLayer()
         {
             Layer *layer = mObject->addNewSoundLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+			emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -630,51 +566,34 @@ void Editor::newCameraLayer()
         {
             Layer *layer = mObject->addNewCameraLayer();
             layer->mName = text;
-            getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
+			emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
 }
 
-void Editor::deleteCurrentLayer()
-{
-    int ret = QMessageBox::warning( mMainWindow,
-                                    tr( "Warning" ),
-                                    tr( "Are you sure you want to delete layer: " ) + mObject->getLayer( layers()->currentLayerIndex() )->mName + " ?",
-                                    QMessageBox::Ok | QMessageBox::Cancel,
-                                    QMessageBox::Ok );
-    if ( ret == QMessageBox::Ok )
-    {
-        mObject->deleteLayer( layers()->currentLayerIndex() );
-        if ( layers()->currentLayerIndex() == mObject->getLayerCount() ) setCurrentLayer( layers()->currentLayerIndex() - 1 );
-        getTimeLine()->updateLayerNumber( mObject->getLayerCount() );
-        //timeLine->update();
-        mScribbleArea->updateAllFrames();
-    }
-}
-
 void Editor::toggleMirror()
 {
-    mObject->toggleMirror();
-    mScribbleArea->toggleMirror();
+    bool flipX = view()->isFlipHorizontal();
+    view()->flipHorizontal( !flipX );
 }
 
 void Editor::toggleMirrorV()
 {
-    mObject->toggleMirror();
-    mScribbleArea->toggleMirrorV();
+    bool flipY = view()->isFlipVertical();
+    view()->flipVertical( !flipY );
 }
 
 void Editor::toggleShowAllLayers()
 {
     mScribbleArea->toggleShowAllLayers();
-    getTimeLine()->updateContent();
+	emit updateTimeLine();
 }
 
 void Editor::resetMirror()
 {
-    mObject->resetMirror();
-    //toolSet->resetMirror();
+    view()->flipHorizontal( false );
+    view()->flipVertical( false );
 }
 
 void Editor::saveLength( QString x )
@@ -710,10 +629,8 @@ void Editor::updateObject()
 {
     color()->setColorNumber( 0 );
 
-    if ( getTimeLine() )
-    {
-        getTimeLine()->updateLayerNumber( object()->getLayerCount() );
-    }
+    emit updateLayerCount();
+    
     clearUndoStack();
 
     if ( mScribbleArea )
@@ -722,38 +639,9 @@ void Editor::updateObject()
     }
 }
 
-void Editor::createExportFramesSizeBox()
-{
-    int defaultWidth = 720;
-    int defaultHeight = 540;
-    exportFramesDialog_hBox = new QSpinBox( mMainWindow );
-    exportFramesDialog_hBox->setMinimum( 1 );
-    exportFramesDialog_hBox->setMaximum( 10000 );
-    exportFramesDialog_hBox->setValue( defaultWidth );
-    exportFramesDialog_hBox->setFixedWidth( 80 );
-    exportFramesDialog_vBox = new QSpinBox( mMainWindow );
-    exportFramesDialog_vBox->setMinimum( 1 );
-    exportFramesDialog_vBox->setMaximum( 10000 );
-    exportFramesDialog_vBox->setValue( defaultHeight );
-    exportFramesDialog_vBox->setFixedWidth( 80 );
-}
-
 void Editor::createExportMovieSizeBox()
 {
-    int defaultWidth = 720;
-    int defaultHeight = 540;
-    int defaultFps = 25;
-    exportMovieDialog_hBox = new QSpinBox( mMainWindow );
-    exportMovieDialog_hBox->setMinimum( 1 );
-    exportMovieDialog_hBox->setMaximum( 10000 );
-    exportMovieDialog_hBox->setValue( defaultWidth );
-    exportMovieDialog_hBox->setFixedWidth( 80 );
-    exportMovieDialog_vBox = new QSpinBox( mMainWindow );
-    exportMovieDialog_vBox->setMinimum( 1 );
-    exportMovieDialog_vBox->setMaximum( 10000 );
-    exportMovieDialog_vBox->setValue( defaultHeight );
-    exportMovieDialog_vBox->setFixedWidth( 80 );
-
+    /*
     exportMovieDialog_format = new QComboBox();
     exportMovieDialog_format->addItem( "AUTO" );
     exportMovieDialog_format->addItem( "MOV" );
@@ -765,47 +653,12 @@ void Editor::createExportMovieSizeBox()
     exportMovieDialog_fpsBox->setMaximum( 60 );
     exportMovieDialog_fpsBox->setValue( defaultFps );
     exportMovieDialog_fpsBox->setFixedWidth( 40 );
-}
-
-void Editor::createExportFramesDialog()
-{
-    exportFramesDialog = new QDialog( mMainWindow, Qt::Dialog );
-    QGridLayout* mainLayout = new QGridLayout;
-
-    QGroupBox* resolutionBox = new QGroupBox( tr( "Resolution" ) );
-    if ( exportFramesDialog_hBox == NULL || exportFramesDialog_vBox == NULL )
-    {
-        createExportFramesSizeBox();
-    }
-    QGridLayout* resolutionLayout = new QGridLayout;
-    resolutionLayout->addWidget( exportFramesDialog_hBox, 0, 0 );
-    resolutionLayout->addWidget( exportFramesDialog_vBox, 0, 1 );
-    resolutionBox->setLayout( resolutionLayout );
-
-    QGroupBox* formatBox = new QGroupBox( tr( "Format" ) );
-    exportFramesDialog_format = new QComboBox();
-    exportFramesDialog_format->addItem( "PNG" );
-    exportFramesDialog_format->addItem( "JPG" );
-    exportFramesDialog_format->addItem( "TIF" );
-    exportFramesDialog_format->addItem( "BMP" );
-    QGridLayout* formatLayout = new QGridLayout;
-    formatLayout->addWidget( exportFramesDialog_format, 0, 0 );
-    formatBox->setLayout( formatLayout );
-
-    QDialogButtonBox* buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
-    connect( buttonBox, SIGNAL( accepted() ), exportFramesDialog, SLOT( accept() ) );
-    connect( buttonBox, SIGNAL( rejected() ), exportFramesDialog, SLOT( reject() ) );
-
-    mainLayout->addWidget( resolutionBox, 0, 0 );
-    mainLayout->addWidget( formatBox, 1, 0 );
-    mainLayout->addWidget( buttonBox, 2, 0 );
-    exportFramesDialog->setLayout( mainLayout );
-    exportFramesDialog->setWindowTitle( tr( "Options" ) );
-    exportFramesDialog->setModal( true );
+    */
 }
 
 void Editor::createExportMovieDialog()
 {
+    /*
     exportMovieDialog = new QDialog( mMainWindow, Qt::Dialog );
     QGridLayout* mainLayout = new QGridLayout;
 
@@ -839,35 +692,10 @@ void Editor::createExportMovieDialog()
     exportMovieDialog->setLayout( mainLayout );
     exportMovieDialog->setWindowTitle( tr( "Options" ) );
     exportMovieDialog->setModal( true );
+    */
 }
 
-QTransform Editor::map( QRectF source, QRectF target )   // this method should be put somewhere else...
-{
-    qreal x1 = source.left();
-    qreal y1 = source.top();
-    qreal x2 = source.right();
-    qreal y2 = source.bottom();
-    qreal x1P = target.left();
-    qreal y1P = target.top();
-    qreal x2P = target.right();
-    qreal y2P = target.bottom();
 
-    QTransform matrix;
-    if ( ( x1 != x2 ) && ( y1 != y2 ) )
-    {
-        matrix = QTransform( ( x2P - x1P ) / ( x2 - x1 ), // scale x
-                             0,
-                             0,
-                             ( y2P - y1P ) / ( y2 - y1 ), // scale y
-                             ( x1P * x2 - x2P * x1 ) / ( x2 - x1 ),    // dx
-                             ( y1P * y2 - y2P * y1 ) / ( y2 - y1 ) );  // dy
-    }
-    else
-    {
-        matrix.reset();
-    }
-    return matrix;
-}
 
 bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
 {
@@ -877,7 +705,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
     QSize exportSize = QSize( width, height );
     QByteArray exportFormat( format.toLatin1() );
 
-    QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     view = mScribbleArea->getView() * view;
 
     int projectLength = layers()->projectLength();
@@ -888,124 +716,7 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
                            exportFormat, -1, false, true, NULL, 0 );
     return true;
 }
-
-bool Editor::exportImageSequence()
-{
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QString strDefaultPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( strDefaultPath.isEmpty() )
-    {
-        strDefaultPath = QDir::homePath() + "/untitled.png";
-    }
-
-    QString strFilePath = QFileDialog::getSaveFileName( mMainWindow,
-                                                        tr( "Save Image Sequence" ),
-                                                        strDefaultPath,
-                                                        tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
-    if ( strFilePath.isEmpty() )
-    {
-        return false;
-    }
-    settings.setValue( "lastExportPath", QVariant( strFilePath ) );
-
-    if ( !exportFramesDialog ) createExportFramesDialog();
-    exportFramesDialog_hBox->setValue( mScribbleArea->getViewRect().toRect().width() );
-    exportFramesDialog_vBox->setValue( mScribbleArea->getViewRect().toRect().height() );
-    exportFramesDialog->exec();
-    if ( exportFramesDialog->result() == QDialog::Rejected ) return false;
-
-    QSize exportSize = QSize( exportFramesDialog_hBox->value(), exportFramesDialog_vBox->value() );
-    
-    QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-    view = mScribbleArea->getView() * view;
-
-    QByteArray exportFormat( exportFramesDialog_format->currentText().toLatin1() );
-
-    int projectLength = layers()->projectLength();
-    mObject->exportFrames( 1, projectLength,
-                           layers()->currentLayer(),
-                           exportSize, strFilePath,
-                           exportFormat, -1, false, true, NULL, 0 );
-    return true;
-}
-
-bool Editor::exportX()
-{
-    QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled";
-    QString filePath = QFileDialog::getSaveFileName( mMainWindow, tr( "Save As" ), initialPath );
-    if ( filePath.isEmpty() )
-    {
-        qDebug() << "empty file";
-        return false;
-    }
-    else
-    {
-        settings.setValue( "lastExportPath", QVariant( filePath ) );
-
-        QSize exportSize = mScribbleArea->getViewRect().toRect().size();
-        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-        view = mScribbleArea->getView() * view;
-
-        int projectLength = layers()->projectLength();
-        if ( !mObject->exportX( 1, projectLength, view, exportSize, filePath, true ) )
-        {
-            QMessageBox::warning( mMainWindow, tr( "Warning" ),
-                                  tr( "Unable to export image." ),
-                                  QMessageBox::Ok,
-                                  QMessageBox::Ok );
-            return false;
-        }
-        return true;
-    }
-}
-
-bool Editor::exportImage()
-{
-    QSettings settings( "Pencil", "Pencil" );
-    QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath() + "/untitled.png";
-    }
-
-    QString filePath = QFileDialog::getSaveFileName( mMainWindow, tr( "Save Image" ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
-    QFileInfo fi( filePath );
-
-    if ( fi.suffix().isEmpty() ) {
-        // add PNG per default if the name has no suffix
-        filePath += ".png";
-    }
-
-    if ( filePath.isEmpty() )
-    {
-        qDebug() << "empty file";
-        return false;
-    }
-    else
-    {
-        settings.setValue( "lastExportPath", QVariant( filePath ) );
-
-        QSize exportSize = mScribbleArea->getViewRect().toRect().size();
-        QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-        view = mScribbleArea->getView() * view;
-
-
-        int projectLength = layers()->projectLength();
-        if ( !mObject->exportIm( currentFrame(), projectLength, view, exportSize, filePath, true ) ) {
-            QMessageBox::warning( mMainWindow, tr( "Warning" ),
-                                  tr( "Unable to export image." ),
-                                  QMessageBox::Ok,
-                                  QMessageBox::Ok );
-            return false;
-        }
-
-        return true;
-    }
-}
-
+/*
 bool Editor::exportMov()
 {
     QSettings settings( "Pencil", "Pencil" );
@@ -1048,193 +759,96 @@ bool Editor::exportMov()
         return true;
     }
 }
+*/
 
-
-void Editor::importImageFromDialog()
+bool Editor::importBitmapImage( QString filePath )
 {
-    importImage( "fromDialog" );
-}
+    backup( tr( "ImportImg" ) );
 
-void Editor::importImage( QString filePath )
-{
-    Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
-    if ( layer == NULL )
+    QImageReader reader( filePath );
+
+    Q_ASSERT( layers()->currentLayer()->type() == Layer::BITMAP );
+    auto layer = static_cast<LayerBitmap*>( layers()->currentLayer() );
+
+    QImage img( reader.size(), QImage::Format_ARGB32_Premultiplied );
+
+    while ( reader.read( &img ) )
     {
-        return;
+        if ( img.isNull() || reader.nextImageDelay() <= 0 )
+        {
+            break;
+        }
+
+        if ( !layer->keyExists( currentFrame() ) )
+        {
+            addNewKey();
+        }
+        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame( currentFrame() );
+
+        QRect boundaries = img.rect();
+        boundaries.moveTopLeft( mScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
+
+        BitmapImage* importedBitmapImage = new BitmapImage( boundaries, img );
+        bitmapImage->paste( importedBitmapImage );
+
+        scrubTo( currentFrame() + 1 );
     }
 
-    if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
+    return true;
+}
+
+bool Editor::importVectorImage( QString filePath )
+{
+    Q_ASSERT( layers()->currentLayer()->type() == Layer::VECTOR );
+
+    backup( tr( "ImportImg" ) );
+
+    auto layer = static_cast<LayerVector*>( layers()->currentLayer() );
+
+    VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( currentFrame() );
+    if ( vectorImage == NULL )
     {
-        // create a new Bitmap layer ?
-        QMessageBox::warning( mMainWindow, tr( "Warning" ),
-                              tr( "Please select a Bitmap or Vector layer to import images." ),
+        addNewKey();
+        vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( currentFrame() );
+    }
+    VectorImage* importedVectorImage = new VectorImage;
+    bool ok = importedVectorImage->read( filePath );
+    if ( ok )
+    {
+        importedVectorImage->selectAll();
+        vectorImage->paste( *importedVectorImage );
+    }
+    /*
+    else
+    {
+        QMessageBox::warning( mMainWindow,
+                              tr( "Warning" ),
+                              tr( "Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors." ),
                               QMessageBox::Ok,
                               QMessageBox::Ok );
-        return;
     }
-
-    if ( filePath == "fromDialog" )
-    {
-        QSettings settings( "Pencil", "Pencil" );
-        QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-        if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName( mMainWindow, tr( "Import image..." ), initialPath, tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" ) );
-        if ( !filePath.isEmpty() ) settings.setValue( "lastImportPath", QVariant( filePath ) );
-    }
-
-    if ( !filePath.isEmpty() )
-    {
-        backup( tr( "ImportImg" ) );
-
-        // TO BE IMPROVED
-        if ( layer->type() == Layer::BITMAP )
-        {
-            QImageReader* importedImageReader = new QImageReader( filePath );
-            QImage importedIm = importedImageReader->read();
-
-            QImage* importedImage = &importedIm;
-
-            int numImages = importedImageReader->imageCount();
-            int timeLeft = importedImageReader->nextImageDelay();
-
-            if ( !importedImage->isNull() )
-            {
-                do
-                {
-                    BitmapImage* bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( currentFrame() );
-                    if ( bitmapImage == NULL )
-                    {
-                        addNewKey();
-                        bitmapImage = ( ( LayerBitmap* )layer )->getBitmapImageAtFrame( currentFrame() );
-                    }
-
-                    QRect boundaries = importedImage->rect();
-                    //boundaries.moveTopLeft( scribbleArea->getView().inverted().map(QPoint(0,0)) );
-                    boundaries.moveTopLeft( mScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
-                    BitmapImage* importedBitmapImage = new BitmapImage( boundaries, *importedImage );
-                    if ( mScribbleArea->somethingSelected )
-                    {
-                        QRectF selection = mScribbleArea->getSelection();
-                        if ( importedImage->width() <= selection.width() && importedImage->height() <= selection.height() )
-                        {
-                            importedBitmapImage->boundaries.moveTopLeft( selection.topLeft().toPoint() );
-                        }
-                        else
-                        {
-                            importedBitmapImage->transform( selection.toRect(), true );
-                        }
-                    }
-
-                    bitmapImage->paste( importedBitmapImage );
-                    int fps = playback()->fps();
-                    timeLeft -= ( timeLeft / ( 1000 / fps ) + 1 )*( 1000 / fps );
-
-                    while ( timeLeft < 0 && numImages > 0 )
-                    {
-                        importedImageReader->read( importedImage );
-                        numImages--;
-                        if ( importedImage->isNull() || importedImageReader->nextImageDelay() <= 0 ) break;
-                        timeLeft += importedImageReader->nextImageDelay();
-
-                        int fps = playback()->fps();
-                        scrubTo( currentFrame() + ( timeLeft / ( 1000 / fps ) ) );
-                    }
-                } while ( numImages > 0 && !importedImage->isNull() );
-            }
-            else
-            {
-                QMessageBox::warning( mMainWindow, tr( "Warning" ),
-                                      tr( "Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
-                                      QMessageBox::Ok,
-                                      QMessageBox::Ok );
-            }
-        }
-        if ( layer->type() == Layer::VECTOR )
-        {
-            VectorImage* vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( currentFrame() );
-            if ( vectorImage == NULL )
-            {
-                addNewKey();
-                vectorImage = ( ( LayerVector* )layer )->getVectorImageAtFrame( currentFrame() );
-            }
-            VectorImage* importedVectorImage = new VectorImage;
-            bool ok = importedVectorImage->read( filePath );
-            if ( ok )
-            {
-                importedVectorImage->selectAll();
-                vectorImage->paste( *importedVectorImage );
-            }
-            else
-            {
-                QMessageBox::warning( mMainWindow,
-                                      tr( "Warning" ),
-                                      tr( "Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors." ),
-                                      QMessageBox::Ok,
-                                      QMessageBox::Ok );
-            }
-        }
-        mScribbleArea->updateCurrentFrame();
-        getTimeLine()->updateContent();
-    }
+    */
+    return ok;
 }
 
-void Editor::importSound( QString filePath )
+bool Editor::importImage( QString filePath )
 {
-    Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
-    if ( layer == NULL )
-    {
-        QMessageBox msg;
-        msg.setText( "You must select an empty sound layer as the destination for your sound before importing. Please create a new sound layer." );
-        msg.setIcon( QMessageBox::Warning );
-        msg.exec();
-        return;
-    }
+    Layer* layer = layers()->currentLayer();
 
-    if ( layer->type() != Layer::SOUND )
+    switch ( layer->type() )
     {
-        QMessageBox msg;
-        msg.setText( "No sound layer exists as a destination for your import. Create a new sound layer?" );
-        QAbstractButton* acceptButton = msg.addButton( "Create sound layer", QMessageBox::AcceptRole );
-        msg.addButton( "Don't create layer", QMessageBox::RejectRole );
+    case Layer::BITMAP:
+        return importBitmapImage( filePath );
 
-        msg.exec();
-        if ( msg.clickedButton() == acceptButton )
-        {
-            newSoundLayer();
-            layer = mObject->getLayer( layers()->currentLayerIndex() );
-        }
-        else
-        {
-            return;
-        }
-    }
+    case Layer::VECTOR:
+        return importVectorImage( filePath );
 
-    if ( !( ( LayerSound* )layer )->isEmpty() )
+    default:
     {
-        QMessageBox msg;
-        msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
-        msg.exec();
-        return;
+        mLastError = Error( ERROR_INVALID_LAYER_TYPE );
+        return false;
     }
-
-    if ( filePath.isEmpty() || filePath == "fromDialog" )
-    {
-        QSettings settings( "Pencil", "Pencil" );
-        QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-        if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName( mMainWindow, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
-        if ( !filePath.isEmpty() )
-        {
-            settings.setValue( "lastImportPath", QVariant( filePath ) );
-        }
-        else
-        {
-            return;
-        }
     }
-    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, currentFrame() );
-    getTimeLine()->updateContent();
-    modification( layers()->currentLayerIndex() );
 }
 
 void Editor::updateFrame( int frameNumber )
@@ -1260,11 +874,8 @@ void Editor::scrubTo( int frame )
     {
         mScribbleArea->updateAllFrames();
     }
-
-
-    getTimeLine()->updateFrame( oldFrame );
-    getTimeLine()->updateFrame( mFrame );
-    getTimeLine()->updateContent();
+    emit updateFrame( oldFrame );
+    emit updateFrame( mFrame );
 
     mScribbleArea->update();
 }
@@ -1285,16 +896,12 @@ void Editor::scrubBackward()
 void Editor::previousLayer()
 {
     layers()->gotoPreviouslayer();
-
-    getTimeLine()->updateContent();
     mScribbleArea->updateAllFrames();
 }
 
 void Editor::nextLayer()
 {
     layers()->gotoNextLayer();
-
-    getTimeLine()->updateContent();
     mScribbleArea->updateAllFrames();
 }
 
@@ -1353,7 +960,6 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     if ( isOK )
     {
         scrubTo( frameIndex );
-        getTimeLine()->updateContent();
         getScribbleArea()->updateCurrentFrame();
     }
     else
@@ -1378,7 +984,6 @@ void Editor::removeKey()
             break;
         }
         scrubBackward();
-        getTimeLine()->updateContent();
         mScribbleArea->updateCurrentFrame();
     }
 }
@@ -1404,7 +1009,6 @@ void Editor::scrubPreviousKeyFrame()
 void Editor::setCurrentLayer( int layerNumber )
 {
     layers()->setCurrentLayer( layerNumber );
-    getTimeLine()->updateContent();
     mScribbleArea->updateAllFrames();
 }
 
@@ -1413,7 +1017,8 @@ void Editor::switchVisibilityOfLayer( int layerNumber )
     Layer* layer = mObject->getLayer( layerNumber );
     if ( layer != NULL ) layer->switchVisibility();
     mScribbleArea->updateAllFrames();
-    getTimeLine()->updateContent();
+    
+	emit updateTimeLine();
 }
 
 void Editor::moveLayer( int i, int j )
@@ -1427,7 +1032,7 @@ void Editor::moveLayer( int i, int j )
     {
         layers()->setCurrentLayer( j - 1 );
     }
-    getTimeLine()->updateContent();
+	emit updateTimeLine();
     mScribbleArea->updateAllFrames();
 }
 
@@ -1438,25 +1043,29 @@ void Editor::clearCurrentFrame()
 
 void Editor::zoomIn()
 {
-    mScribbleArea->zoomIn();
+    view()->scale( 1.2f );
 }
 
 void Editor::zoomOut()
 {
-    mScribbleArea->zoomOut();
+    view()->scale( 0.8f );
 }
 
 void Editor::rotatecw()
 {
-    mScribbleArea->rotatecw();
+    view()->rotate( 15.f );
 }
 
 void Editor::rotateacw()
 {
-    mScribbleArea->rotateacw();
+    view()->rotate( -15.f );
 }
 
 void Editor::resetView()
 {
-    getScribbleArea()->resetView();
+    view()->resetView();
+}
+
+void Editor::importSound( QString filePath )
+{
 }

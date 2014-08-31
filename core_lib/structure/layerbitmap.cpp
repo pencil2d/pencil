@@ -61,7 +61,7 @@ bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 
     QString theFileName = fileName( pKeyFrame->pos() );
     QString strFilePath = QDir( path ).filePath( theFileName );
-    pBitmapImage->mImage->save( strFilePath );
+    pBitmapImage->image()->save( strFilePath );
 
     return true;
 }

@@ -26,7 +26,7 @@ GNU General Public License for more details.
 int main(int argc, char* argv[])
 {   
     QApplication app(argc, argv);
-    app.setApplicationName("Pencil");
+    app.setApplicationName( "Pencil2D" );
 
     QTranslator qtTranslator;
     qtTranslator.load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
@@ -42,28 +42,30 @@ int main(int argc, char* argv[])
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
-
-    if (argc == 1)
+#ifdef _DEBUG
+    argc = 1;
+#endif
+    if ( argc == 1 )
     {
         mainWindow.show();
         return app.exec();
     }
     
-    QString inputFile = "";
+    QString inputFile;
     
     bool jobExportSequence = false;
     QString jobExportSequenceOutput = "";
     
     // Extracting options
     int i;
-    for (i = 1; i < argc; i++)
+    for ( i = 1; i < argc; ++i )
     {
         if (jobExportSequence && jobExportSequenceOutput == "")
         {
             jobExportSequenceOutput = argv[i];
-                continue;
-            }
-        if (QString(argv[i]) == QString("--export-sequence"))
+            continue;
+        }
+        if ( QString(argv[i]) == "--export-sequence" )
         {
             jobExportSequence = true;
             continue;
@@ -122,7 +124,7 @@ int main(int argc, char* argv[])
             qDebug() << "Done.";
         }
     }
-    else if ( inputFile != "" )
+    else if ( !inputFile.isEmpty() )
     {
         mainWindow.show();
         mainWindow.openFile(inputFile);

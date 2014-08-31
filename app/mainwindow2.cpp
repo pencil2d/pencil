@@ -15,13 +15,19 @@ GNU General Public License for more details.
 
 */
 
+#include "mainwindow2.h"
+#include "ui_mainwindow2.h"
+
+#include <memory>
 #include <QList>
 #include <QMenu>
+#include <QFile>
 #include <QScopedPointer>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QProgressDialog>
 #include <QDesktopWidget>
+#include <QDesktopServices>
 #include "pencildef.h"
 #include "pencilsettings.h"
 
@@ -42,16 +48,16 @@ GNU General Public License for more details.
 #include "preferences.h"
 #include "timeline.h"
 #include "toolbox.h"
+#include "preview.h"
 
 #include "colorbox.h"
 #include "util.h"
 
-#include "fileformat.h"		//contains constants used by Pencil File Format
-#include "JlCompress.h"		//compress and decompress New Pencil File Format
+#include "fileformat.h"     //contains constants used by Pencil File Format
+#include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
 
-#include "mainwindow2.h"
-#include "ui_mainwindow2.h"
+#include "exportimageseqdialog.h"
 
 
 MainWindow2::MainWindow2( QWidget *parent )
@@ -85,8 +91,10 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     readSettings();
 
-    connect(mEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
-    connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
+    connect( mEditor, &Editor::needSave, this, &MainWindow2::saveDocument );
+    connect( mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame );
+    
+	//connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
 }
@@ -100,29 +108,23 @@ void MainWindow2::createDockWidgets()
 {
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
-    makeConnections( mEditor, mTimeLine );
     m_subWidgets.append( mTimeLine );
 
     mColorWheel = new QDockWidget( tr("Color Wheel"), this );
-
     ColorBox* pColorBox = new ColorBox(this);
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     mColorWheel->setWidget( pColorBox );
     mColorWheel->setObjectName( "ColorWheel" );
-    makeColorWheelConnections();
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     mColorPalette->setObjectName( "ColorPalette" );
-    makeConnections( mEditor, mColorPalette );
     m_subWidgets.append( mColorPalette );
 
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
-    mDisplayOptionWidget->makeConnectionToEditor(mEditor);
 
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName( "ToolOption" );
-    mToolOptions->makeConnectionToEditor(mEditor);
 
     mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     mToolBox->setObjectName( "ToolBox" );
@@ -143,16 +145,22 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
     }
+
+	/*
+	mPreview = new PreviewWidget( this );
+	mPreview->setImage( mScribbleArea->mBufferImg );
+	mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
+	mPreview->setFocusPolicy( Qt::NoFocus );
+	addDockWidget( Qt::RightDockWidgetArea, mPreview );
+	*/
+
+    makeConnections( mEditor, mTimeLine );
+    makeConnections( mEditor, pColorBox );
+    makeConnections( mEditor, mColorPalette );
+    makeConnections( mEditor, mDisplayOptionWidget );
+    mToolOptions->makeConnectionToEditor(mEditor);
 }
 
-void MainWindow2::makeColorWheelConnections()
-{
-    ColorBox* pColorBox = static_cast<ColorBox*>(mColorWheel->widget());
-    Q_ASSERT( pColorBox );
-
-    connect( pColorBox, &ColorBox::colorChanged, mEditor->color(), &ColorManager::setColor );
-    connect( mEditor->color(), &ColorManager::colorChanged, pColorBox, &ColorBox::setColor );
-}
 
 void MainWindow2::createMenus()
 {
@@ -164,18 +172,19 @@ void MainWindow2::createMenus()
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
 
     /// --- Export Menu ---
-    connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
-    connect( ui->actionExport_Image_Sequence, &QAction::triggered, mEditor, &Editor::exportImageSequence );
-    connect( ui->actionExport_Image, &QAction::triggered, mEditor, &Editor::exportImage );
-    connect( ui->actionExport_Movie, &QAction::triggered, mEditor, &Editor::exportMov );
+    //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
+    connect( ui->actionExport_Image, &QAction::triggered, this, &MainWindow2::exportImage );
+    connect( ui->actionExport_Image_Sequence, &QAction::triggered, this, &MainWindow2::exportImageSequence );
+    connect( ui->actionExport_Movie, &QAction::triggered, this, &MainWindow2::exportMovie );
 
     connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
 
     /// --- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
-    connect( ui->actionImport_Image, &QAction::triggered, mEditor, &Editor::importImageFromDialog );
-    connect( ui->actionImport_Image_Sequence, &QAction::triggered, mEditor, &Editor::importImageSequence );
-    connect( ui->actionImport_Movie, &QAction::triggered, mEditor, &Editor::importMov );
+    connect( ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage );
+    connect( ui->actionImport_Image_Sequence, &QAction::triggered, this, &MainWindow2::importImageSequence );
+    connect( ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie );
+
     //connect( ui->actionImport_Sound, &QAction::triggered, editor, &Editor::importSound );
     ui->actionImport_Sound->setEnabled( false );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
@@ -202,7 +211,7 @@ void MainWindow2::createMenus()
     connect( ui->actionNew_Vector_Layer, &QAction::triggered, mEditor, &Editor::newVectorLayer );
     connect( ui->actionNew_Sound_Layer, &QAction::triggered, mEditor, &Editor::newSoundLayer );
     connect( ui->actionNew_Camera_Layer, &QAction::triggered, mEditor, &Editor::newCameraLayer );
-    connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor, &Editor::deleteCurrentLayer );
+    connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
     connect( ui->actionZoom_In, &QAction::triggered, mEditor, &Editor::zoomIn );
@@ -215,12 +224,12 @@ void MainWindow2::createMenus()
     connect( ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV );
 
     ui->actionPreview->setEnabled( false );
-    //#	connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
+    //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-	connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked ) 
-	{ 
-		mScribbleArea->setEffect( EFFECT_GRID_A, bChecked ); 
-	} );
+    connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked ) 
+    { 
+        mScribbleArea->setEffect( EFFECT_GRID_A, bChecked ); 
+    } );
 
 
 
@@ -500,6 +509,239 @@ bool MainWindow2::maybeSave()
     return true;
 }
 
+void MainWindow2::importImage()
+{
+    QSettings settings( "Pencil", "Pencil" );
+    QString initPath = settings.value( "lastImportPath", QDir::homePath() ).toString();
+
+    QString strFilePath = QFileDialog::getOpenFileName( this,
+                                                        tr( "Import image..." ),
+                                                        initPath,
+                                                        PENCIL_IMAGE_FILTER );
+    if ( strFilePath.isEmpty() )
+    {
+        return;
+    }
+
+    if ( QFile::exists( strFilePath ) )
+    {
+        return;
+    }
+
+    bool ok = mEditor->importImage( strFilePath );
+    if ( !ok )
+    {
+        QMessageBox::warning( this,
+                              tr( "Warning" ),
+                              tr( "Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok );
+        return;
+    }
+
+    settings.setValue( "lastImportPath", strFilePath );
+
+    mScribbleArea->updateCurrentFrame();
+    mTimeLine->updateContent();
+}
+
+void MainWindow2::importImageSequence()
+{
+    QFileDialog w;
+    w.setFileMode( QFileDialog::AnyFile );
+
+    QSettings settings( "Pencil", "Pencil" );
+    QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
+    if ( initialPath.isEmpty() )
+    {
+        initialPath = QDir::homePath();
+    }
+    QStringList files = w.getOpenFileNames( this,
+                                            "Select one or more files to open",
+                                            initialPath,
+                                            "Images (*.png *.jpg *.jpeg *.bmp)" );
+
+    for ( QString strImgFile : files )
+    {
+        if ( strImgFile.endsWith( ".png" ) ||
+             strImgFile.endsWith( ".jpg" ) ||
+             strImgFile.endsWith( ".jpeg" ) ||
+             strImgFile.endsWith( ".bmp" ) )
+        {
+            mEditor->importImage( strImgFile );
+            mEditor->scrubForward();
+        }
+    }
+}
+
+void MainWindow2::importMovie()
+{
+    QSettings settings( "Pencil", "Pencil" );
+
+    QString initialPath = settings.value( "lastExportPath", QDir::homePath() ).toString();
+    QString filePath = QFileDialog::getOpenFileName( this,
+                                                     tr( "Import movie" ),
+                                                     initialPath,
+                                                     PENCIL_MOVIE_EXT );
+    if ( filePath.isEmpty() )
+    {
+        return;
+    }
+    mEditor->importMovie( filePath, mEditor->playback()->fps() );
+
+    settings.setValue( "lastExportPath", filePath );
+}
+
+void MainWindow2::exportMovie()
+{
+
+}
+
+void MainWindow2::exportImageSequence()
+{
+    QSettings settings( PENCIL2D, PENCIL2D );
+
+    QString strInitPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+    QString strFilePath = QFileDialog::getSaveFileName( this,
+                                                        tr( "Save Image Sequence" ),
+                                                        strInitPath,
+                                                        PENCIL_IMAGE_FILTER );
+    if ( strFilePath.isEmpty() )
+    {
+        // TODO:
+        return; // false;
+    }
+    settings.setValue( "lastExportPath", strFilePath );
+
+    auto dialog =  new ExportImageSeqDialog( this );
+    OnScopeExit( dialog->deleteLater() );
+
+    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->exec();
+
+    if ( dialog->result() == QDialog::Rejected )
+    {
+        return; // false;
+    }
+
+    QSize exportSize = dialog->getExportSize();
+
+    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    view = mScribbleArea->getView() * view;
+
+    QString exportFormat = dialog->getExportFormat();
+    int projectLength = mEditor->layers()->projectLength();
+    mEditor->object()->exportFrames( 1,
+                                     projectLength,
+                                     mEditor->layers()->currentLayer(),
+                                     exportSize,
+                                     strFilePath,
+                                     exportFormat.toStdString().c_str(),
+                                     -1,
+                                     false,
+                                     true,
+                                     NULL,
+                                     0 );
+    //return true;
+}
+
+void MainWindow2::exportImage()
+{
+    QSettings settings( "Pencil", "Pencil" );
+    QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+
+    QString filePath = QFileDialog::getSaveFileName( this,
+                                                     tr( "Save Image" ),
+                                                     initPath,
+                                                     PENCIL_IMAGE_FILTER );
+    if ( filePath.isEmpty() )
+    {
+        qDebug() << "empty file";
+        return;// false;
+    }
+    QFileInfo info( filePath );
+    if ( info.suffix().isEmpty() )
+    {
+        filePath += ".png"; // add PNG as default if the name has no suffix
+    }
+    settings.setValue( "lastExportPath", QVariant( filePath ) );
+
+    QSize exportSize = mScribbleArea->getViewRect().toRect().size();
+    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    view = mScribbleArea->getView() * view;
+
+    int projectLength = mEditor->layers()->projectLength();
+    if ( !mEditor->object()->exportIm( mEditor->currentFrame(), projectLength, view, exportSize, filePath, true ) )
+    {
+        QMessageBox::warning( this,
+                              tr( "Warning" ),
+                              tr( "Unable to export image." ),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok );
+        return;// false;
+    }
+    return; // true;
+}
+
+void MainWindow2::importSound()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer == NULL )
+    {
+        QMessageBox msg;
+        msg.setText( "You must select an empty sound layer as the destination for your sound before importing. Please create a new sound layer." );
+        msg.setIcon( QMessageBox::Warning );
+        msg.exec();
+        return;
+    }
+
+    if ( layer->type() != Layer::SOUND )
+    {
+        QMessageBox msg;
+        msg.setText( "No sound layer exists as a destination for your import. Create a new sound layer?" );
+        QAbstractButton* acceptButton = msg.addButton( "Create sound layer", QMessageBox::AcceptRole );
+        msg.addButton( "Don't create layer", QMessageBox::RejectRole );
+
+        msg.exec();
+        if ( msg.clickedButton() == acceptButton )
+        {
+            //SoundLayer();
+            layer = mEditor->layers()->currentLayer();
+        }
+        else
+        {
+            return;
+        }
+    }
+    /*
+    if ( !( ( LayerSound* )layer )->isEmpty() )
+    {
+        QMessageBox msg;
+        msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
+        msg.exec();
+        return;
+    }
+
+    if ( filePath.isEmpty() || filePath == "fromDialog" )
+    {
+        QSettings settings( "Pencil", "Pencil" );
+        QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
+        if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
+        filePath = QFileDialog::getOpenFileName( mMainWindow, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
+        if ( !filePath.isEmpty() )
+        {
+            settings.setValue( "lastImportPath", QVariant( filePath ) );
+        }
+        else
+        {
+            return;
+        }
+    }
+    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, currentFrame() );
+    */
+    mTimeLine->updateContent();
+}
+
 void MainWindow2::preferences()
 {
     m_pPreferences = new Preferences( this );
@@ -745,7 +987,7 @@ void MainWindow2::aboutPencil()
     if ( isOpenOK )
     {
         QString strAboutText = QTextStream( &aboutFile ).readAll();
-        QMessageBox::about( this, tr( PENCIL_WINDOW_TITLE ), strAboutText );
+        QMessageBox::about( this, PENCIL_WINDOW_TITLE, strAboutText );
     }
 }
 
@@ -757,24 +999,30 @@ void MainWindow2::helpBox()
     QDesktopServices::openUrl( QUrl(url) );
 }
 
-void MainWindow2::makeConnections( Editor* pEditor, ScribbleArea* pScribbleArea )
+void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
 {
-    connect( pEditor->tools(), &ToolManager::toolChanged, pScribbleArea, &ScribbleArea::setCurrentTool );
-    connect( pEditor->tools(), &ToolManager::toolPropertyChanged, pScribbleArea, &ScribbleArea::updateToolCursor );
+	connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
+	connect( editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor );
+}
 
-    connect( pEditor, &Editor::currentFrameChanged, pScribbleArea, &ScribbleArea::updateFrame );
+void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
+{
+    connect( editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool );
+    connect( editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor );
 
-    connect( pEditor, &Editor::toggleOnionPrev, pScribbleArea, &ScribbleArea::toggleOnionPrev );
-    connect( pEditor, &Editor::toggleOnionNext, pScribbleArea, &ScribbleArea::toggleOnionNext );
-    connect( pEditor, &Editor::toggleMultiLayerOnionSkin, pScribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
+    connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
+    connect( editor, &Editor::updateAllFrames, scribbleArea, &ScribbleArea::updateAllFrames );
 
-    connect( pScribbleArea, &ScribbleArea::thinLinesChanged, pEditor, &Editor::changeThinLinesButton );
-    connect( pScribbleArea, &ScribbleArea::outlinesChanged, pEditor, &Editor::changeOutlinesButton );
-    connect( pScribbleArea, &ScribbleArea::onionPrevChanged, pEditor, &Editor::onionPrevChanged );
-    connect( pScribbleArea, &ScribbleArea::onionNextChanged, pEditor, &Editor::onionNextChanged );
-    //connect( pScribbleArea, &ScribbleArea::multiLayerOnionSkin, this, &Editor::multiLayerOnionSkin );
+    connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
+    connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
+    connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
 
-    connect( pEditor, &Editor::selectAll, pScribbleArea, &ScribbleArea::selectAll );
+    connect( scribbleArea, &ScribbleArea::thinLinesChanged, editor, &Editor::changeThinLinesButton );
+    connect( scribbleArea, &ScribbleArea::outlinesChanged, editor, &Editor::changeOutlinesButton );
+    connect( scribbleArea, &ScribbleArea::onionPrevChanged, editor, &Editor::onionPrevChanged );
+    connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
+
+    connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
@@ -804,14 +1052,14 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::newVectorLayer, pEditor, &Editor::newVectorLayer );
     connect( pTimeline, &TimeLine::newSoundLayer, pEditor, &Editor::newSoundLayer );
     connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
-    connect( pTimeline, &TimeLine::deleteCurrentLayer, pEditor, &Editor::deleteCurrentLayer );
 
-    connect( pEditor, SIGNAL( toggleLoopControl( bool ) ), pTimeline, SIGNAL( toggleLoopControl( bool ) ) );
+    //connect( pEditor, &Editor::toggleLoopControl, pTimeline, &Timeline::toggleLoopControl );
     connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
 }
 
-void MainWindow2::makeConnections(Editor* pEditor, DisplayOptionWidget* pDisplay)
+void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
 {
+    display->makeConnectionToEditor( editor );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )

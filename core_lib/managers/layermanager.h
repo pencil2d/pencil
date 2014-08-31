@@ -17,9 +17,11 @@ public:
     // Layer Management
     Layer* currentLayer();
     Layer* currentLayer( int offset );
-    int currentLayerIndex();
-    void setCurrentLayer( int );
-    int count();
+    int    currentLayerIndex();
+    void   setCurrentLayer( int );
+    int    count();
+
+    bool   deleteCurrentLayer();
 
     void gotoNextLayer();
     void gotoPreviouslayer();
@@ -36,9 +38,10 @@ public:
 
 signals:
     void currentLayerChanged( int n );
+    void layerCountChanged( int count );
 
 private:
-    int m_currentLayerIndex = 0; // the current layer to be edited/displayed
+    int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
 };
 
 #endif

@@ -4,6 +4,7 @@
 #include <QBoxLayout>
 #include <QGraphicsDropShadowEffect>
 #include <QPushButton>
+#include <QKeyEvent>
 #include "colorbox.h"
 #include "editor.h"
 #include "scribblearea.h"

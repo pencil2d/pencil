@@ -28,32 +28,38 @@ Layer* LayerManager::currentLayer( int incr )
 {
     Q_ASSERT( editor()->object() != NULL );
 
-    return editor()->object()->getLayer( m_currentLayerIndex + incr );
+    return editor()->object()->getLayer( mCurrentLayerIndex + incr );
 }
 
 int LayerManager::currentLayerIndex()
 {
-    return m_currentLayerIndex;
+    return mCurrentLayerIndex;
 }
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-    m_currentLayerIndex = layerIndex;
+	if ( mCurrentLayerIndex != layerIndex )
+	{
+		mCurrentLayerIndex = layerIndex;
+		emit currentLayerChanged( mCurrentLayerIndex );
+	}
 }
 
 void LayerManager::gotoNextLayer()
 {
-    if ( m_currentLayerIndex < editor()->object()->getLayerCount() - 1 )
+    if ( mCurrentLayerIndex < editor()->object()->getLayerCount() - 1 )
     {
-        m_currentLayerIndex += 1;
+        mCurrentLayerIndex += 1;
+		emit currentLayerChanged( mCurrentLayerIndex );
     }
 }
 
 void LayerManager::gotoPreviouslayer()
 {
-    if ( m_currentLayerIndex > 0 )
+    if ( mCurrentLayerIndex > 0 )
     {
-        m_currentLayerIndex -= 1;
+        mCurrentLayerIndex -= 1;
+		emit currentLayerChanged( mCurrentLayerIndex );
     }
 }
 
@@ -112,6 +118,25 @@ int LayerManager::lastKeyFrameIndex()
 int LayerManager::count()
 {
     return editor()->object()->getLayerCount();
+}
+
+bool LayerManager::deleteCurrentLayer()
+{
+    if ( currentLayer()->type() == Layer::CAMERA )
+    {
+        return false;
+    }
+
+    editor()->object()->deleteLayer( currentLayerIndex() );
+
+    if ( currentLayerIndex() == editor()->object()->getLayerCount() )
+    {
+        setCurrentLayer( currentLayerIndex() - 1 );
+    }
+    emit editor()->updateAllFrames();
+    emit layerCountChanged( count() );
+
+    return true;
 }
 
 int LayerManager::projectLength()

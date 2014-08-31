@@ -65,7 +65,6 @@ HEADERS +=  \
     interface/editor.h \
     interface/flowlayout.h \
     interface/keycapturelineedit.h \
-    interface/mainwindow2.h \
     interface/popupcolorpalettewidget.h \
     interface/preferences.h \
     interface/recentfilemenu.h \
@@ -81,6 +80,8 @@ HEADERS +=  \
     managers/colormanager.h \
     managers/layermanager.h \
     managers/toolmanager.h \
+    managers/playbackmanager.h \
+    managers/viewmanager.h \
     structure/camera.h \
     structure/keyframe.h \
     structure/layer.h \
@@ -112,9 +113,9 @@ HEADERS +=  \
     util/pencilsettings.h \
     util/util.h \
     interface/basedockwidget.h \
-    managers/playbackmanager.h \
     util/log.h \
-    managers/viewmanager.h
+    interface/preview.h
+
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/bezierarea.cpp \
@@ -134,7 +135,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/editor.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \
-    interface/mainwindow2.cpp \
     interface/popupcolorpalettewidget.cpp \
     interface/preferences.cpp \
     interface/recentfilemenu.cpp \
@@ -180,10 +180,11 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/pencilsettings.cpp \
     interface/basedockwidget.cpp \
     managers/playbackmanager.cpp \
-    managers/viewmanager.cpp
+    managers/viewmanager.cpp \
+    util/util.cpp \
+    interface/preview.cpp
 
 FORMS += \
-    interface/mainwindow2.ui \
     interface/shortcutspage.ui \
     interface/colorinspector.ui \
     interface/colorpalette.ui

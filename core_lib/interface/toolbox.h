@@ -16,7 +16,6 @@ GNU General Public License for more details.
 #ifndef TOOLBOXWIDGET_H
 #define TOOLBOXWIDGET_H
 
-#include <QtGui>
 #include "pencildef.h"
 #include "basedockwidget.h"
 

@@ -90,9 +90,9 @@ void ColorPaletteWidget::refreshColorList()
         ui->colorListWidget->clear();
     }
     
-    for (int i = 0; i < core()->object()->getColourCount(); i++)
+    for (int i = 0; i < editor()->object()->getColourCount(); i++)
     {
-        ColourRef colourRef = core()->object()->getColour(i);
+        ColourRef colourRef = editor()->object()->getColour(i);
 
         QListWidgetItem* colourItem = new QListWidgetItem( ui->colorListWidget );
         colourItem->setText( colourRef.name );
@@ -135,11 +135,11 @@ void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
             tr("Colour name"),
             tr("Colour name:"),
             QLineEdit::Normal,
-            core()->object()->getColour(colorNumber).name,
+            editor()->object()->getColour(colorNumber).name,
             &ok );
         if (ok && !text.isEmpty())
         {
-            core()->object()->renameColour(colorNumber, text);
+            editor()->object()->renameColour(colorNumber, text);
             refreshColorList();
         }
     }
@@ -151,7 +151,7 @@ void ColorPaletteWidget::clickAddColorButton()
 
     if ( currentColourNumber() > -1 )
     {
-        prevColor = core()->object()->getColour(currentColourNumber()).colour;
+        prevColor = editor()->object()->getColour(currentColourNumber()).colour;
     }
 
     bool ok;
@@ -169,9 +169,9 @@ void ColorPaletteWidget::clickAddColorButton()
         if (ok)
         {
             ref.name = text;
-            core()->object()->addColour(ref);
+            editor()->object()->addColour(ref);
             refreshColorList();
-            core()->color()->setColor( core()->object()->getColourCount() - 1 );
+            editor()->color()->setColor( editor()->object()->getColourCount() - 1 );
         }
     }
 }
@@ -179,7 +179,7 @@ void ColorPaletteWidget::clickAddColorButton()
 void ColorPaletteWidget::clickRemoveColorButton()
 {
     int colorNumber = ui->colorListWidget->currentRow();
-    core()->object()->removeColour(colorNumber);
+    editor()->object()->removeColour(colorNumber);
 
     refreshColorList();
 }

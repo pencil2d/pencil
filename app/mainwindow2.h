@@ -16,6 +16,8 @@ class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
 class Preferences;
+class PreviewWidget;
+class ColorBox;
 class RecentFileMenu;
 
 
@@ -46,6 +48,18 @@ public slots:
     bool saveAsNewDocument();
     bool maybeSave();
 
+    // import/export
+    void importImage();
+    void exportImage();
+
+    void importImageSequence();
+    void exportImageSequence();
+
+    void importMovie();
+    void exportMovie();
+
+    void importSound();
+
     void preferences();
     void helpBox();
     void aboutPencil();
@@ -73,7 +87,7 @@ private:
     void readSettings();
     void writeSettings();
 
-    void makeColorWheelConnections();
+    void makeConnections( Editor*, ColorBox* );
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
@@ -83,11 +97,12 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*             mColorWheel;
-    ColorPaletteWidget*      mColorPalette;
-    DisplayOptionWidget*     mDisplayOptionWidget;
-    ToolOptionWidget*        mToolOptions;
-    ToolBoxWidget*           mToolBox;
+    QDockWidget*             mColorWheel = nullptr;
+    ColorPaletteWidget*      mColorPalette = nullptr;
+    DisplayOptionWidget*     mDisplayOptionWidget = nullptr;
+    ToolOptionWidget*        mToolOptions = nullptr;
+    ToolBoxWidget*           mToolBox = nullptr;
+	//PreviewWidget*           mPreview = nullptr;
 
     RecentFileMenu* mRecentFileMenu;
 

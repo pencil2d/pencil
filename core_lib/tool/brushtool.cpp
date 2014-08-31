@@ -135,8 +135,9 @@ void BrushTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        for ( int i = 0; i < p.size(); i++ ) {
-            p[ i ] = mScribbleArea->pixelToPoint( p[ i ] );
+        for ( int i = 0; i < p.size(); i++ )
+        {
+            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
         qreal opacity = 1.0;
@@ -193,7 +194,7 @@ void BrushTool::drawStroke()
     else if ( layer->type() == Layer::VECTOR )
     {
         QPen pen( Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * qAbs( mScribbleArea->getTempViewScaleX() ) );
+        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * qAbs( mEditor->view()->scaling() ) );
 
         //        foreach (QSegment segment, calculateStroke(currentWidth))
         //        {
