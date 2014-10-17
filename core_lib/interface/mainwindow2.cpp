@@ -248,6 +248,8 @@ void MainWindow2::createMenus()
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubNextKeyFrame );
     connect(ui->actionPrev_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubPreviousKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mEditor, &Editor::duplicateKey );
+    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward ); //HERE
+    connect(ui->actionMove_Frame_Backward, &QAction::triggered, mEditor, &Editor::moveFrameBackward );
 
     /// --- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn );
