@@ -20,7 +20,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -136,6 +136,9 @@
     <addaction name="actionAdd_Frame"/>
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
+    <addaction name="separator"/>
+    <addaction name="actionMove_Frame_Forward"/>
+    <addaction name="actionMove_Frame_Backward"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -818,6 +821,22 @@
   <action name="actionFlip_Y">
    <property name="text">
     <string>Flip Y</string>
+   </property>
+  </action>
+  <action name="actionMove_Frame_Forward">
+   <property name="text">
+    <string>Move Frame Forward</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+.</string>
+   </property>
+  </action>
+  <action name="actionMove_Frame_Backward">
+   <property name="text">
+    <string>Move Frame Backward</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+,</string>
    </property>
   </action>
  </widget>
