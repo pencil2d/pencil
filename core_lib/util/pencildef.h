@@ -79,6 +79,8 @@ enum ToolPropertyType
 #define CMD_ADD_FRAME "CmdAddFrame"
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
+#define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
+#define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
 #define CMD_TOOL_MOVE "CmdToolMove"
 #define CMD_TOOL_SELECT "CmdToolSelect"
 #define CMD_TOOL_BRUSH "CmdToolBrush"
