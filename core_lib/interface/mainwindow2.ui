@@ -827,16 +827,10 @@
    <property name="text">
     <string>Move Frame Forward</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+.</string>
-   </property>
   </action>
   <action name="actionMove_Frame_Backward">
    <property name="text">
     <string>Move Frame Backward</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+,</string>
    </property>
   </action>
  </widget>
