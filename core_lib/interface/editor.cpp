@@ -1283,6 +1283,33 @@ void Editor::scrubBackward()
     }
 }
 
+void Editor::moveFrameForward()
+{
+    Layer* layer = layers()->currentLayer();
+    if ( layer != NULL )
+    {
+        if ( layer->moveKeyFrameForward( currentFrame() ) )
+        {
+            mScribbleArea->updateAllFrames();
+            scrubForward();
+        }
+    }
+}
+
+void Editor::moveFrameBackward()
+{
+    Layer* layer = layers()->currentLayer();
+    if ( layer != NULL )
+    {
+        if ( layer->moveKeyFrameBackward( currentFrame() ) )
+        {
+            mScribbleArea->updateAllFrames();
+            scrubBackward();
+        }
+    }
+}
+
+
 void Editor::previousLayer()
 {
     layers()->gotoPreviouslayer();

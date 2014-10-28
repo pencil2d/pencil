@@ -137,11 +137,11 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 
 bool Layer::removeKeyFrame( int position )
 {
-    if ( position == 1 )
-    {
-        // you can't delete 1st frame.
-        return true;
-    }
+//    if ( position == 1 )
+//    {
+//        // you can't delete 1st frame.
+//        //return true;
+//    }
 
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
@@ -150,7 +150,84 @@ bool Layer::removeKeyFrame( int position )
         mKeyFrames.erase( it );
     }
 
+    if ( position == 1 )
+    {
+        // you can't delete 1st frame.
+        //return true;
+        addNewKeyFrameAt( 1 ); // replacing
+    }
+
     return true;
+}
+
+bool Layer::moveKeyFrameForward( int position )
+{
+    return swapKeyFrames( position, position + 1 );
+}
+
+bool Layer::moveKeyFrameBackward( int position )
+{
+    if ( position != 1 ) {
+        return swapKeyFrames( position, position - 1 );
+    } else {
+        return true;
+    }
+}
+
+bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, need to refresh the swapped cels
+{
+
+    bool keyPosition1 = false, keyPosition2 = false;
+    KeyFrame* pFirstFrame;
+    KeyFrame* pSecondFrame;
+
+
+    if ( hasKeyFrameAtPosition( position1 ) )
+    {
+        auto firstFrame = mKeyFrames.find( position1 );
+        pFirstFrame = firstFrame->second;
+
+        mKeyFrames.erase( position1 );
+
+        //pFirstFrame = getKeyFrameAtPosition( position1 );
+        //removeKeyFrame( position1 );
+
+        keyPosition1 = true;
+    }
+
+    if ( hasKeyFrameAtPosition( position2 ))
+    {
+        auto secondFrame = mKeyFrames.find( position2 );
+        pSecondFrame = secondFrame->second;
+
+        mKeyFrames.erase( position2 );
+
+        //pSecondFrame = getKeyFrameAtPosition( position2 );
+        //removeKeyFrame( position2 );
+
+        keyPosition2 = true;
+    }
+
+    if ( keyPosition2 )
+    {
+        //addKeyFrame( position1, pSecondFrame );
+        pSecondFrame->setPos( position1 );
+        mKeyFrames.insert( std::make_pair( position1, pSecondFrame ) );
+    } else if ( position1 == 1 ) {
+        addNewKeyFrameAt( position1 );
+    }
+
+    if ( keyPosition1 )
+    {
+        //addKeyFrame( position2, pFirstFrame );
+        pFirstFrame->setPos( position2 );
+        mKeyFrames.insert( std::make_pair( position2, pFirstFrame ) );
+    } else if ( position2 == 1 ) {
+        addNewKeyFrameAt( position2 );
+    }
+
+    return true;
+
 }
 
 bool Layer::loadKey( KeyFrame* pKey )
