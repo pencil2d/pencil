@@ -18,7 +18,7 @@ public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
 
-    Editor* core() { return mEditor; }
+    Editor* editor() { return mEditor; }
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
     

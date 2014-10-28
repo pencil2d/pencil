@@ -14,6 +14,8 @@ GNU General Public License for more details.
 
 */
 
+#include "timeline.h"
+
 #include <QImage>
 #include <QPoint>
 #include <QWidget>
@@ -22,13 +24,16 @@ GNU General Public License for more details.
 #include <QMenu>
 #include <QAction>
 #include <QSplitter>
+#include <QMessageBox>
+#include <QLabel>
 
+#include "layer.h"
 #include "editor.h"
 #include "layermanager.h"
 #include "toolbox.h"
 #include "timecontrols.h"
 #include "timelinecells.h"
-#include "timeline.h"
+
 
 TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent, Qt::Tool )
 {
@@ -40,14 +45,13 @@ void TimeLine::initUI()
 
     QWidget* timeLineContent = new QWidget( this );
 
-    LayerManager* pLayerManager = core()->layers();
-    connect( core(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame );
+    connect( editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame );
 
-    list = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Layers );
-    cells = new TimeLineCells( this, core(), TIMELINE_CELL_TYPE::Tracks );
+    mLayerList = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Layers );
+    mTracks = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Tracks );
 
-    connect( list, SIGNAL( mouseMovedY( int ) ), list, SLOT( setMouseMoveY( int ) ) );
-    connect( list, SIGNAL( mouseMovedY( int ) ), cells, SLOT( setMouseMoveY( int ) ) );
+    connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mLayerList, SLOT( setMouseMoveY( int ) ) );
+    connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mTracks, SLOT( setMouseMoveY( int ) ) );
 
     numberOfLayers = 0;
     hScrollBar = new QScrollBar( Qt::Horizontal );
@@ -108,7 +112,7 @@ void TimeLine::initUI()
 
     QGridLayout* leftLayout = new QGridLayout();
     leftLayout->addWidget( leftToolBar, 0, 0 );
-    leftLayout->addWidget( list, 1, 0 );
+    leftLayout->addWidget( mLayerList, 1, 0 );
     leftLayout->setMargin( 0 );
     leftLayout->setSpacing( 0 );
     leftWidget->setLayout( leftLayout );
@@ -152,7 +156,7 @@ void TimeLine::initUI()
 
     QGridLayout* rightLayout = new QGridLayout();
     rightLayout->addWidget( rightToolBar, 0, 0 );
-    rightLayout->addWidget( cells, 1, 0 );
+    rightLayout->addWidget( mTracks, 1, 0 );
     rightLayout->setMargin( 0 );
     rightLayout->setSpacing( 0 );
     rightWidget->setLayout( rightLayout );
@@ -176,15 +180,15 @@ void TimeLine::initUI()
     setWindowFlags( Qt::WindowStaysOnTopHint );
     setWindowTitle( "Timeline" );
 
-    connect( this, SIGNAL( lengthChange( QString ) ), cells, SLOT( lengthChange( QString ) ) );
-    connect( this, SIGNAL( fontSizeChange( int ) ), cells, SLOT( fontSizeChange( int ) ) );
-    connect( this, SIGNAL( frameSizeChange( int ) ), cells, SLOT( frameSizeChange( int ) ) );
-    connect( this, SIGNAL( labelChange( int ) ), cells, SLOT( labelChange( int ) ) );
-    connect( this, SIGNAL( scrubChange( int ) ), cells, SLOT( scrubChange( int ) ) );
+    connect( this, SIGNAL( lengthChange( QString ) ), mTracks, SLOT( lengthChange( QString ) ) );
+    connect( this, SIGNAL( fontSizeChange( int ) ), mTracks, SLOT( fontSizeChange( int ) ) );
+    connect( this, SIGNAL( frameSizeChange( int ) ), mTracks, SLOT( frameSizeChange( int ) ) );
+    connect( this, SIGNAL( labelChange( int ) ), mTracks, SLOT( labelChange( int ) ) );
+    connect( this, SIGNAL( scrubChange( int ) ), mTracks, SLOT( scrubChange( int ) ) );
 
-    connect( hScrollBar, SIGNAL( valueChanged( int ) ), cells, SLOT( hScrollChange( int ) ) );
-    connect( vScrollBar, SIGNAL( valueChanged( int ) ), cells, SLOT( vScrollChange( int ) ) );
-    connect( vScrollBar, SIGNAL( valueChanged( int ) ), list, SLOT( vScrollChange( int ) ) );
+    connect( hScrollBar, SIGNAL( valueChanged( int ) ), mTracks, SLOT( hScrollChange( int ) ) );
+    connect( vScrollBar, SIGNAL( valueChanged( int ) ), mTracks, SLOT( vScrollChange( int ) ) );
+    connect( vScrollBar, SIGNAL( valueChanged( int ) ), mLayerList, SLOT( vScrollChange( int ) ) );
 
     connect( addKeyButton, SIGNAL( clicked() ), this, SIGNAL( addKeyClick() ) );
     connect( removeKeyButton, SIGNAL( clicked() ), this, SIGNAL( removeKeyClick() ) );
@@ -209,7 +213,7 @@ void TimeLine::initUI()
     connect( newVectorLayerAct, SIGNAL( triggered() ), this, SIGNAL( newVectorLayer() ) );
     connect( newSoundLayerAct, SIGNAL( triggered() ), this, SIGNAL( newSoundLayer() ) );
     connect( newCameraLayerAct, SIGNAL( triggered() ), this, SIGNAL( newCameraLayer() ) );
-    connect( removeLayerButton, SIGNAL( clicked() ), this, SIGNAL( deleteCurrentLayer() ) );
+    connect( removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer );
 
     scrubbing = false;
 }
@@ -221,7 +225,7 @@ void TimeLine::updateUI()
 
 int TimeLine::getFrameLength()
 {
-    return cells->getFrameLength();
+    return mTracks->getFrameLength();
 }
 
 void TimeLine::resizeEvent(QResizeEvent*)
@@ -229,19 +233,34 @@ void TimeLine::resizeEvent(QResizeEvent*)
     updateLayerView();
 }
 
+void TimeLine::deleteCurrentLayer()
+{
+    QString strLayerName = editor()->layers()->currentLayer()->name();
+
+    int ret = QMessageBox::warning( this,
+                                    tr( "Warning" ),
+                                    tr( "Are you sure you want to delete layer: " ) + strLayerName + " ?",
+                                    QMessageBox::Ok | QMessageBox::Cancel,
+                                    QMessageBox::Ok );
+    if ( ret == QMessageBox::Ok )
+    {
+        editor()->layers()->deleteCurrentLayer();
+    }
+}
+
 void TimeLine::updateFrame(int frameNumber)
 {
-    if ( cells )
+    if ( mTracks )
     {
-        cells->updateFrame( m_lastUpdatedFrame );
-        cells->updateFrame( frameNumber );
+        mTracks->updateFrame( mLastUpdatedFrame );
+        mTracks->updateFrame( frameNumber );
     }
-    m_lastUpdatedFrame = frameNumber;
+    mLastUpdatedFrame = frameNumber;
 }
 
 void TimeLine::updateLayerView()
 {
-    vScrollBar->setPageStep( (height()-cells->getOffsetY()-hScrollBar->height())/cells->getLayerHeight() -2 );
+    vScrollBar->setPageStep( (height()-mTracks->getOffsetY()-hScrollBar->height())/mTracks->getLayerHeight() -2 );
     vScrollBar->setMinimum( 0 );
     vScrollBar->setMaximum( qMax(0, numberOfLayers - vScrollBar->pageStep()) );
     update();
@@ -261,8 +280,8 @@ void TimeLine::updateLength(int frameLength)
 
 void TimeLine::updateContent()
 {
-    list->updateContent();
-    cells->updateContent();
+    mLayerList->updateContent();
+    mTracks->updateContent();
     update();
 }
 

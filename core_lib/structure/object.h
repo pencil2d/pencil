@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang 
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -44,20 +45,20 @@ struct ExportMovieParameters
 
 struct ExportFrames1Parameters
 {
-    int frameStart;
-    int frameEnd;
-    QTransform view;
-    Layer* currentLayer;
-    QSize exportSize;
-    QString filePath;
+    int         frameStart;
+    int         frameEnd;
+    QTransform  view;
+    Layer*      currentLayer;
+    QSize       exportSize;
+    QString     filePath;
     const char* format;
-    int quality;
-    bool background;
-    bool antialiasing;
+    int         quality;
+    bool        background;
+    bool        antialiasing;
     QProgressDialog* progress;
-    int progressMax;
-    int fps;
-    int exportFps;
+    int         progressMax;
+    int         fps;
+    int         exportFps;
 };
 
 class Object : public QObject
@@ -70,8 +71,8 @@ public:
 
     void init();
 
-    QString filePath() { return mStrFilePath; }
-    void    setFilePath( QString strFileName ) { mStrFilePath = strFileName; }
+    QString filePath() { return mstrFilePath; }
+    void    setFilePath( QString strFileName ) { mstrFilePath = strFileName; }
 
     QDomElement createDomElement( QDomDocument& doc );
     bool loadDomElement( QDomElement element, QString dataDirPath );
@@ -121,12 +122,13 @@ public:
     void setModified( bool b ) { modified = b; }
 
 private:
-    QString mStrFilePath;
+    QString mstrFilePath;
     QList<Layer*> mLayers;
     bool modified = false;
 
     QList<ColourRef> mPalette;
 
 };
+
 
 #endif

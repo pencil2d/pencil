@@ -179,8 +179,6 @@ QList<QPointF> StrokeManager::interpolateStroke()
             }
         }
         QPointF c2 = m_currentPixel - newTangent * scaleFactor;
-//        qDebug() << "scalefactor2" << scaleFactor << m_previousTangent << newTangent;
-
         result << m_lastPixel << c1 << c2 << m_currentPixel;
 
         m_previousTangent = newTangent;

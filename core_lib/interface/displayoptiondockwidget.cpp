@@ -8,8 +8,7 @@
 #include "scribblearea.h"
 
 
-DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
-    QDockWidget(parent)
+DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent )
 {
     createUI();
     setWindowTitle(tr("Display Options"));

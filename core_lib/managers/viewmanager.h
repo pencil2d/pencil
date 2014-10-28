@@ -51,6 +51,8 @@ private:
     float mRotate = 0.f;
     float mScale = 1.f;
 
+    QSize mCanvasSize = { 1, 1 };
+
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
 };

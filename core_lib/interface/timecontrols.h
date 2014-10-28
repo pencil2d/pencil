@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chaiwen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -50,23 +51,19 @@ signals:
     void loopEndClick(int);
 
 public slots:
-    void updateButtons(bool);
     void toggleLoop(bool);
     void toggleLoopControl(bool);
 
-
-protected:
-
 private:
-    QPushButton* playButton;
-    QPushButton* m_pGotoEndButton;
-    QPushButton* m_pGotoStartButton;
-    QPushButton* loopButton;
-    QPushButton* soundButton;
-    QSpinBox* fpsBox;
-    QCheckBox* m_pPlaybackRangeCheckBox;
-    QSpinBox* m_pLoopStartSpinBox;
-    QSpinBox* m_pLoopEndSpinBox;
+    QPushButton* mPlayButton;
+    QPushButton* mGotoEndButton;
+    QPushButton* mGotoStartButton;
+    QPushButton* mLoopButton;
+    QPushButton* mSoundButton;
+    QSpinBox* mFpsBox;
+    QCheckBox* mPlaybackRangeCheckBox;
+    QSpinBox* mLoopStartSpinBox;
+    QSpinBox* mLoopEndSpinBox;
 };
 
 #endif

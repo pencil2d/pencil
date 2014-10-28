@@ -19,13 +19,12 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QList>
-#include <QLabel>
-#include <QToolButton>
-#include <QSpinBox>
 #include "backupelement.h"
+#include "pencilerror.h"
 
-class QComboBox;
-class QSlider;
+class QDragEnterEvent;
+class QDropEvent;
+class Object;
 class MainWindow2;
 class ColorManager;
 class ToolManager;
@@ -34,7 +33,6 @@ class PlaybackManager;
 class ViewManager;
 class ScribbleArea;
 class TimeLine;
-class Object;
 
 
 class Editor : public QObject
@@ -47,7 +45,7 @@ class Editor : public QObject
     Q_PROPERTY( ViewManager*     view     READ view )
 
 public:
-    Editor( MainWindow2* parent );
+    Editor( QObject* parent );
     virtual ~Editor();
     bool initialize( ScribbleArea* pScribbleArea );
 
@@ -60,12 +58,13 @@ public:
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
 
+    Error getError() { return mLastError; }
+
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
     int currentFrame();
 
     int allLayers();
-    static QTransform map( QRectF, QRectF );
     bool exportSeqCLI( QString, QString );
 
     int getOnionLayer1Opacity() { return onionLayer1Opacity; }
@@ -85,6 +84,11 @@ protected:
     void dropEvent( QDropEvent* event );
 
 signals:
+    void updateAllFrames();
+	void updateTimeLine();
+	void updateLayerCount();
+	void updateFrmae( int frame );
+
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
     void toggleOnionNext( bool );
@@ -114,11 +118,8 @@ public slots:
     void rotateacw();
     void resetView();
 
-    void importImageFromDialog();
-    void importImage( QString filePath );
-    void importImageSequence();
-    void importSound( QString filePath = "" );
-    bool importMov();
+    bool importImage( QString filePath );
+    void importSound( QString filePath );
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
@@ -168,31 +169,23 @@ public slots:
     void newVectorLayer();
     void newSoundLayer();
     void newCameraLayer();
-    void deleteCurrentLayer();
 
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
     void resetMirror();
 
-    bool exportX();
-    bool exportImage();
-    bool exportImageSequence();
-    bool exportMov();
-
-private slots:
+private:
+    bool importBitmapImage( QString );
+    bool importVectorImage( QString );
     void saveLength( QString );
 
-private:
-    TimeLine* getTimeLine();
-
     // the object to be edited by the editor
-    std::shared_ptr<Object> mObject = nullptr;  
+    std::shared_ptr<Object> mObject = nullptr;
 
-    int mFrame;
+    int mFrame; // current frame number.
 
     ScribbleArea* mScribbleArea = nullptr;
-    MainWindow2*  mMainWindow = nullptr;
 
     ColorManager*    mColorManager = nullptr;
     ToolManager*     mToolManager = nullptr;
@@ -222,21 +215,10 @@ private:
     bool clipboardBitmapOk, clipboardVectorOk;
 
     // dialogs
-    void createExportFramesSizeBox();
     void createExportMovieSizeBox();
-    void createExportFramesDialog();
     void createExportMovieDialog();
 
-    QDialog* exportFramesDialog = nullptr;
-    QDialog* exportMovieDialog = nullptr;
-    QSpinBox* exportFramesDialog_hBox = nullptr;
-    QSpinBox* exportFramesDialog_vBox = nullptr;
-    QSpinBox* exportMovieDialog_hBox = nullptr;
-    QSpinBox* exportMovieDialog_vBox = nullptr;
-    QComboBox* exportFramesDialog_format = nullptr;
-    QSpinBox* exportMovieDialog_fpsBox = nullptr;
-    QComboBox* exportMovieDialog_format = nullptr;
-
+    Error mLastError;
 };
 
 #endif

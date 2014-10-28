@@ -42,7 +42,6 @@ QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )
     return mView.inverted().map( path );
 }
 
-
 QTransform ViewManager::getView()
 {
     return mView;
@@ -51,6 +50,7 @@ QTransform ViewManager::getView()
 QTransform ViewManager::createViewTransform()
 {
     QTransform t;
+    t.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
     t.translate( mTranslate.x(), mTranslate.y() );
     t.scale( mScale, mScale );
     t.rotate( mRotate );
@@ -78,6 +78,12 @@ void ViewManager::rotate(float degree)
 void ViewManager::scale(float scaleValue)
 {
     mScale *= scaleValue;
+    mView = createViewTransform();
+}
+
+void ViewManager::setCanvasSize(QSize size)
+{
+    mCanvasSize = size;
     mView = createViewTransform();
 }
 

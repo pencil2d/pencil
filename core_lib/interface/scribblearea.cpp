@@ -14,10 +14,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "scribblearea.h"
+
 #include <cmath>
 #include <QScopedPointer>
-#include <QtGui>
 #include <QMessageBox>
+#include <QPixmapCache>
 
 #include "beziercurve.h"
 #include "object.h"
@@ -32,8 +34,8 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "popupcolorpalettewidget.h"
+#include "preview.h"
 
-#include "scribblearea.h"
 
 #define round(f) ((int)(f + 0.5))
 
@@ -212,7 +214,10 @@ void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
     for ( int i = 0; i < mEditor->object()->getLayerCount(); i++ )
     {
         Layer *layer = mEditor->object()->getLayer( i );
-        if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true ); }
+        if ( layer->type() == Layer::VECTOR )
+        {
+            ( ( LayerVector * )layer )->getLastVectorImageAtFrame( frameNumber, 0 )->setModified( true );
+        }
     }
     updateFrame( mEditor->currentFrame() );
 }
@@ -264,7 +269,9 @@ void ScribbleArea::escape()
 void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
     mKeyboardInUse = true;
-    if ( mMouseInUse ) { return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
+
+    if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
+
     if ( currentTool()->keyPressEvent( event ) )
     {
         // has been handled by tool
@@ -477,7 +484,7 @@ bool ScribbleArea::areLayersSane() const
     return true;
 }
 
-void ScribbleArea::mousePressEvent( QMouseEvent *event )
+void ScribbleArea::mousePressEvent( QMouseEvent* event )
 {
     mMouseInUse = true;
 
@@ -487,24 +494,24 @@ void ScribbleArea::mousePressEvent( QMouseEvent *event )
     {
         mStrokeManager->setPressure( 1.0 );
         currentTool()->adjustPressureSensitiveProperties( 1.0, true );
-
-        //----------------code for starting hand tool when middle mouse is pressed
-        if ( event->buttons() & Qt::MidButton )
-        {
-            //qDebug() << "Hand Start " << event->pos();
-            mPrevTemporalToolType = currentTool()->type();
-            editor()->tools()->setCurrentTool( HAND );
-        }
     }
 
-    if ( !( event->button() == Qt::NoButton ) )    // if the user is pressing the left or right button
+	//----------------code for starting hand tool when middle mouse is pressed
+	if ( event->buttons() & Qt::MidButton )
+	{
+		//qDebug() << "Hand Start " << event->pos();
+		mPrevTemporalToolType = currentTool()->type();
+		editor()->tools()->setCurrentTool( HAND );
+	}
+	else if ( event->button() == Qt::LeftButton )    // if the user is pressing the left or right button
     {
         lastPixel = mStrokeManager->getLastPressPixel();
         lastPoint = mEditor->view()->mapScreenToCanvas( lastPixel );
     }
 
     // ----- assisted tool adjusment -- todo: simplify this
-    if ( event->button() == Qt::LeftButton ) {
+    if ( event->button() == Qt::LeftButton )
+	{
         if ( ( event->modifiers() == Qt::ShiftModifier ) && ( currentTool()->properties.width > -1 ) )
         {
             //adjust width if not locked
@@ -585,6 +592,8 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
         return;
     }
 
+	Q_EMIT refreshPreview();
+	
     mStrokeManager->mouseMoveEvent( event );
     currentPixel = mStrokeManager->getCurrentPixel();
     currentPoint = mEditor->view()->mapScreenToCanvas( currentPixel );
@@ -652,7 +661,7 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 {
     QWidget::resizeEvent( event );
     mCanvas = QPixmap( size() );
-    
+    mEditor->view()->setCanvasSize( size() );
     updateAllFrames();
 }
 
@@ -662,8 +671,12 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 void ScribbleArea::paintBitmapBuffer()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    // ---- checks ------
-    if ( layer == NULL ) { return; }
+    
+	// ---- checks ------
+	Q_ASSERT( layer );
+    if ( layer == NULL ) { return; } // TODO: remove in future.
+	
+
     // Clear the temporary pixel path
     BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
     if ( targetImage != NULL )
@@ -688,7 +701,9 @@ void ScribbleArea::paintBitmapBuffer()
         targetImage->paste( mBufferImg, cm );
     }
 
-    QRect rect = mEditor->view()->getView().mapRect( mBufferImg->boundaries );
+	qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
+
+    QRect rect = mEditor->view()->getView().mapRect( mBufferImg->bounds() );
 
     // Clear the buffer
     mBufferImg->clear();
@@ -718,8 +733,11 @@ void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter
 
 void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
 {
-    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
-    update( updatedRect.toRect() );
+	// TODO: temp disable
+    //QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    //update( updatedRect.toRect() );
+	
+	update();
 }
 
 void ScribbleArea::refreshVector( const QRectF& rect, int rad )
@@ -730,7 +748,7 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
-    qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
+    //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
 
     QPainter painter( this );
 
@@ -744,7 +762,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( !QPixmapCache::find( strCachedFrameKey, mCanvas ) )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
-
             QPixmapCache::insert( strCachedFrameKey, mCanvas );
         }
     }
@@ -752,18 +769,20 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     if ( currentTool()->type() == MOVE )
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        Q_ASSERT( layer );
+		Q_CHECK_PTR( layer );
         if ( layer->type() == Layer::VECTOR )
         {
             auto vecLayer = static_cast<LayerVector*>( layer );
             vecLayer->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true );
         }
     }
-    
+
+
     // paints the canvas
-    painter.setViewTransformEnabled( false );
+    painter.setWorldMatrixEnabled( false );
     //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
+
 
     Layer *layer = mEditor->layers()->currentLayer();
 
@@ -779,7 +798,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             case HAND:
             {
                 painter.save();
-                painter.setViewTransformEnabled( false );
+                painter.setWorldMatrixEnabled( false );
                 painter.setRenderHint( QPainter::Antialiasing, false );
                 // ----- paints the edited elements
                 QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
@@ -828,6 +847,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                     }
                 }
                 painter.restore();
+				break;
             }
 
             case MOVE:
@@ -859,6 +879,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                                           QPainter::CompositionMode_SourceOver,
                                           isEffectOn( EFFECT_ANTIALIAS ) );
                 }
+				break;
             }
             } // end siwtch
         }
@@ -867,8 +888,18 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( mEditor->layers()->currentLayer() != NULL )
         {
             painter.setOpacity( 1.0 );
-            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) { painter.setViewTransformEnabled( true ); }
-            if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR ) { painter.setViewTransformEnabled( false ); }
+            if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) 
+			{ 
+				painter.setWorldMatrixEnabled( true );
+				painter.setTransform( mEditor->view()->getView() );
+			}
+            else if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
+			{ 
+				painter.setWorldMatrixEnabled( false );
+			}
+			
+			qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
+
             mBufferImg->paintImage( painter );
         }
 
@@ -876,7 +907,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( somethingSelected && ( myTempTransformedSelection.isValid() || mMoveMode == ROTATION ) ) // @revise
         {
             // outline of the transformed selection
-            painter.setViewTransformEnabled( false );
+            painter.setWorldMatrixEnabled( false );
             painter.setOpacity( 1.0 );
             QPolygon tempRect = mEditor->view()->getView().mapToPolygon( myTempTransformedSelection.normalized().toRect() );
 
@@ -913,7 +944,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     {
         QRect rect = ( ( LayerCamera * )layer )->getViewRect();
         rect.translate( width() / 2, height() / 2 );
-        painter.setViewTransformEnabled( false );
+        painter.setWorldMatrixEnabled( false );
         painter.setPen( Qt::NoPen );
         painter.setBrush( QColor( 0, 0, 0, 160 ) );
         painter.drawRect( QRect( 0, 0, width(), ( height() - rect.height() ) / 2 ) );
@@ -927,7 +958,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     // outlines the frame of the viewport
 #ifdef _DEBUG
-    painter.setViewTransformEnabled( false );
+    painter.setWorldMatrixEnabled( false );
     painter.setPen( QPen( Qt::gray, 2 ) );
     painter.setBrush( Qt::NoBrush );
     painter.drawRect( QRect( 0, 0, width(), height() ) );
@@ -954,7 +985,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     painter.setClipping( true );
     
     painter.setTransform( mEditor->view()->getView() );
-    painter.setViewTransformEnabled( true );
+    painter.setWorldMatrixEnabled( true );
 
     // background
     painter.setPen( Qt::NoPen );
@@ -1000,7 +1031,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
-                    painter.setViewTransformEnabled( true );
+                    painter.setWorldMatrixEnabled( true );
 
                     // previous frame (onion skin)
                     if ( isEffectOn( EFFECT_PREV_ONION ) )
@@ -1082,7 +1113,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 auto layerVector = static_cast< LayerVector* >( layer );
 
-				painter.setViewTransformEnabled( false );
+                painter.setWorldMatrixEnabled( false );
 
                 // previous frame (onion skin)
                 if ( isEffectOn( EFFECT_PREV_ONION ) )
@@ -1153,7 +1184,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                     }
                 }
-				painter.setViewTransformEnabled( true );
+                painter.setWorldMatrixEnabled( true );
             }
         }
     } // --- end onion skins
@@ -1175,9 +1206,11 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
                 if ( bitmapImage != NULL )
                 {
-                    painter.setViewTransformEnabled( true );
+                    painter.setWorldMatrixEnabled( true );
                     painter.setOpacity( opacity );
-                    if ( i == mEditor->layers()->currentLayerIndex() && somethingSelected && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
+                    if ( i == mEditor->layers()->currentLayerIndex() 
+                         && somethingSelected 
+                         && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
                     {
                         // hole in the original selection -- might support arbitrary shapes in the future
                         
@@ -1202,14 +1235,15 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                         BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
                         selectionClip.transform( myTransformedSelection, smoothTransform );
                         QTransform rm;
+
                         //TODO: complete matrix calls ( sounds funny :)
                         rm.scale( myFlipX, myFlipY );
                         rm.rotate( myRotatedAngle );
-                        QImage rotImg = selectionClip.mImage->transformed( rm );
-                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
-                                             ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
-                        *selectionClip.mImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
-                        selectionClip.boundaries.translate( dxy );
+                        QImage* rotImg = new QImage( selectionClip.image()->transformed( rm ) );
+                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
+                                             ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
+                        selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
+                        selectionClip.bounds().translate( dxy );
                         selectionClip.paintImage( painter );
                     }
                     else
@@ -1234,7 +1268,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
                 vectorImage->outputImage( pImage.data(), view, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
 
-                painter.setViewTransformEnabled( false );
+                painter.setWorldMatrixEnabled( false );
                 painter.setOpacity( opacity );
                 painter.drawImage( QPoint( 0, 0 ), *pImage );
             }
@@ -1306,7 +1340,7 @@ void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPoint
     BitmapImage bmiTmpClip = bmiSrcClip; // todo: find a shorter way
 
     bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
-    bmiSrcClip.boundaries.moveTo( trgRect.topLeft().toPoint() );
+    bmiSrcClip.bounds().moveTo( trgRect.topLeft().toPoint() );
     bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
     mBufferImg->paste( &bmiTmpClip );
 }
@@ -1327,9 +1361,9 @@ void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPo
     qreal factor, factorGrad;
     int xb, yb, xa, ya;
 
-    for ( yb = bmiTmpClip->boundaries.top(); yb < bmiTmpClip->boundaries.bottom(); yb++ )
+    for ( yb = bmiTmpClip->bounds().top(); yb < bmiTmpClip->bounds().bottom(); yb++ )
     {
-        for ( xb = bmiTmpClip->boundaries.left(); xb < bmiTmpClip->boundaries.right(); xb++ )
+        for ( xb = bmiTmpClip->bounds().left(); xb < bmiTmpClip->bounds().right(); xb++ )
         {
             QColor color;
             color.setRgba( bmiTmpClip->pixel( xb, yb ) );
@@ -1544,11 +1578,11 @@ void ScribbleArea::paintTransformedSelection()
             rm.rotate( myRotatedAngle );
             BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
             selectionClip.transform( myTransformedSelection, smoothTransform );
-            QImage rotImg = selectionClip.mImage->transformed( rm, Qt::SmoothTransformation );
-            QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg.rect().width() ) / 2,
-                                 ( myTempTransformedSelection.height() - rotImg.rect().height() ) / 2 );
-            *selectionClip.mImage = rotImg; // TODO: find/create a func. (*object = data is not very orthodox)
-            selectionClip.boundaries.translate( dxy );
+            QImage* rotImg = new QImage( selectionClip.image()->transformed( rm, Qt::SmoothTransformation ) );
+            QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
+                                 ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
+            selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
+            selectionClip.bounds().translate( dxy );
             bitmapImage->clear( mySelection.toRect() );
             bitmapImage->paste( &selectionClip );
         }
@@ -1711,343 +1745,10 @@ void ScribbleArea::toggleGridA( bool checked )
     updateAllFrames();
 }
 
-void ScribbleArea::floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance )
-{
-    QPointF initialPoint = mEditor->view()->mapScreenToCanvas( QPointF( point ) );
-    float scaleValue = mEditor->view()->scaling();
-
-    // Step 1: peforms a standard (pixel-based) flood fill, and finds the vertices on the contour of the filled area
-    qreal tol = 8.0 / qAbs( scaleValue ); // tolerance for finding vertices along the contour of the flood-filled area
-    qreal tol2 = 1.5 / qAbs( scaleValue ); // tolerance for connecting contour vertices from different curves // should be small as close points of different curves are supposed to coincide
-    QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
-    QList<QPoint> contourPixels; // list of the pixels near the contour of the filled area
-    int j, k;
-    bool condition;
-    
-    //vectorImage->update(true, showThinLines); // update the vector image with simplified curves (all width=1)
-    QImage *targetImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
-    vectorImage->outputImage( targetImage, mEditor->view()->getView(), true, mShowThinLines, true ); // the target image is the vector image with simplified curves (all width=1)
-    
-    //QImage* replaceImage = &bufferImg;
-    QImage *replaceImage = new QImage( size(), QImage::Format_ARGB32_Premultiplied );
-    QList<VertexRef> points = vectorImage->getAllVertices(); // refs of all the points
-    QList<VertexRef> boxPoints; // refs of points inside the bounding box
-    QList<VertexRef> contourPoints; // refs of points near the contour pixels
-    QList<VertexRef> vertices;
-    if ( BitmapImage::rgbDistance( targetImage->pixel( point.x(), point.y() ), targetColour ) > tolerance ) { return; }
-    queue.append( point );
-    int boxLeft = point.x();
-    int boxRight = point.x();
-    int boxTop = point.y();
-    int boxBottom = point.y();
-    // ----- flood fill and remember the contour pixels -> contourPixels
-    // ----- from the standard flood fill algorithm
-    // ----- http://en.wikipedia.org/wiki/Flood_fill
-    j = -1;
-    k = 1;
-    for ( int i = 0; i < queue.size(); i++ )
-    {
-        point = queue.at( i );
-        if ( replaceImage->pixel( point.x(), point.y() ) != replacementColour  && BitmapImage::rgbDistance( targetImage->pixel( point.x(), point.y() ), targetColour ) < tolerance )
-        {
-            //image.setPixel( point.x(), point.y(), replacementColour);
-            j = -1;
-            condition = ( point.x() + j > 0 );
-            while ( replaceImage->pixel( point.x() + j, point.y() ) != replacementColour  && BitmapImage::rgbDistance( targetImage->pixel( point.x() + j, point.y() ), targetColour ) < tolerance && condition )
-            {
-                j = j - 1;
-                condition = ( point.x() + j > 0 );
-            }
-            if ( !condition ) { floodFillError( 1 ); return; }
-            if ( BitmapImage::rgbDistance( targetImage->pixel( point.x() + j, point.y() ), targetColour ) >= tolerance )      // bumps into the contour
-            {
-                contourPixels.append( point + QPoint( j, 0 ) );
-            }
-
-            k = 1;
-            condition = ( point.x() + k < targetImage->width() - 1 );
-            while ( replaceImage->pixel( point.x() + k, point.y() ) != replacementColour  && BitmapImage::rgbDistance( targetImage->pixel( point.x() + k, point.y() ), targetColour ) < tolerance && condition )
-            {
-                k = k + 1;
-                condition = ( point.x() + k < targetImage->width() - 1 );
-            }
-            if ( !condition ) { floodFillError( 1 ); return; }
-            if ( BitmapImage::rgbDistance( targetImage->pixel( point.x() + k, point.y() ), targetColour ) >= tolerance )      // bumps into the contour
-            {
-                contourPixels.append( point + QPoint( k, 0 ) );
-            }
-            if ( point.x() + k > boxRight ) { boxRight = point.x() + k; }
-            if ( point.x() + j < boxLeft ) { boxLeft = point.x() + j; }
-            for ( int x = j + 1; x < k; x++ )
-            {
-                replaceImage->setPixel( point.x() + x, point.y(), replacementColour );
-                if ( point.y() - 1 > 0 && queue.size() < targetImage->height() * targetImage->width() )
-                {
-                    if ( replaceImage->pixel( point.x() + x, point.y() - 1 ) != replacementColour )
-                    {
-                        if ( BitmapImage::rgbDistance( targetImage->pixel( point.x() + x, point.y() - 1 ), targetColour ) < tolerance )
-                        {
-                            queue.append( point + QPoint( x, -1 ) );
-                            if ( point.y() - 1 < boxBottom ) { boxBottom = point.y() - 1; }
-                        }
-                        else   // bumps into the contour
-                        {
-                            contourPixels.append( point + QPoint( x, -1 ) );
-                        }
-                    }
-                }
-                else { floodFillError( 1 ); return; }
-                if ( point.y() + 1 < targetImage->height() && queue.size() < targetImage->height() * targetImage->width() )
-                {
-                    if ( replaceImage->pixel( point.x() + x, point.y() + 1 ) != replacementColour )
-                    {
-                        if ( BitmapImage::rgbDistance( targetImage->pixel( point.x() + x, point.y() + 1 ), targetColour ) < tolerance )
-                        {
-                            queue.append( point + QPoint( x, 1 ) );
-                            if ( point.y() + 1 > boxTop ) { boxTop = point.y() + 1; }
-                        }
-                        else   // bumps into the contour
-                        {
-                            contourPixels.append( point + QPoint( x, 1 ) );
-                        }
-                    }
-                }
-                else { floodFillError( 1 ); return; }
-            }
-        }
-    }
-    // --- finds the bounding box of the filled area, and all the points contained inside (+ 1*tol)  -> boxPoints
-    QPointF mBoxTopRight = mEditor->view()->mapScreenToCanvas( QPointF( qMax( boxLeft, boxRight ) + 1 * tol, qMax( boxTop, boxBottom ) + 1 * tol ) );
-    QPointF mBoxBottomLeft = mEditor->view()->mapScreenToCanvas( QPointF( qMin( boxLeft, boxRight ) - 1 * tol, qMin( boxTop, boxBottom ) - 1 * tol ) );
-    QRectF boundingBox = QRectF( mBoxBottomLeft.x() - 1, mBoxBottomLeft.y() - 1, qAbs( mBoxBottomLeft.x() - mBoxTopRight.x() ) + 2, qAbs( mBoxBottomLeft.y() - mBoxTopRight.y() ) + 2 );
-    debugRect = QRectF( 0, 0, 0, 0 );
-    debugRect = boundingBox;
-    for ( int l = 0; l < points.size(); l++ )
-    {
-        QPointF mPoint = vectorImage->getVertex( points.at( l ) );
-        if ( boundingBox.contains( mPoint ) )
-        {
-            // -----
-            //vectorImage->setSelected(points.at(l), true);
-            boxPoints.append( points.at( l ) );
-        }
-    }
-    // ---- finds the points near the contourPixels -> contourPoints
-    for ( int i = 0; i < contourPixels.size(); i++ )
-    {
-        QPointF mPoint = mEditor->view()->mapScreenToCanvas( QPointF( contourPixels.at( i ) ) );
-        vertices = vectorImage->getAndRemoveVerticesCloseTo( mPoint, tol, &boxPoints );
-        //contourPoints << vertices;
-        for ( int m = 0; m < vertices.size(); m++ ) // for each ?
-        {
-            contourPoints.append( vertices.at( m ) );
-        }
-    }
-    // ---- points of sharp peaks may be missing in contourPoints ---> we correct for that
-    for ( int i = 0; i < contourPoints.size(); i++ )
-    {
-        VertexRef theNextVertex = contourPoints[ i ].nextVertex();
-        if ( !contourPoints.contains( theNextVertex ) )     // if the next vertex is not in the list of contour points
-        {
-            if ( contourPoints.contains( theNextVertex.nextVertex() ) )       // but the next-next vertex is...
-            {
-                contourPoints.append( theNextVertex );
-                //qDebug() << "----- found SHARP point (type 1a) ------";
-            }
-            QList<VertexRef> closePoints = vectorImage->getVerticesCloseTo( theNextVertex, tol2 );
-            for ( int j = 0; j < closePoints.size(); j++ )
-            {
-                if ( closePoints[ j ] != theNextVertex )     // ...or a point connected to the next vertex is
-                {
-                    if ( contourPoints.contains( closePoints[ j ].nextVertex() ) || contourPoints.contains( closePoints[ j ].prevVertex() ) )
-                    {
-                        contourPoints.append( theNextVertex );
-                        contourPoints.append( closePoints[ j ] );
-                        //qDebug() << "----- found SHARP point (type 2a) ------";
-                    }
-                }
-            }
-        }
-        VertexRef thePreviousVertex = contourPoints[ i ].prevVertex();
-        if ( !contourPoints.contains( thePreviousVertex ) )     // if the previous vertex is not in the list of contour points
-        {
-            if ( contourPoints.contains( thePreviousVertex.prevVertex() ) )       // but the prev-prev vertex is...
-            {
-                contourPoints.append( thePreviousVertex );
-                //qDebug() << "----- found SHARP point (type 1b) ------";
-            }
-            QList<VertexRef> closePoints = vectorImage->getVerticesCloseTo( thePreviousVertex, tol2 );
-            for ( int j = 0; j < closePoints.size(); j++ )
-            {
-                if ( closePoints[ j ] != thePreviousVertex )     // ...or a point connected to the previous vertex is
-                {
-                    if ( contourPoints.contains( closePoints[ j ].nextVertex() ) || contourPoints.contains( closePoints[ j ].prevVertex() ) )
-                    {
-                        contourPoints.append( thePreviousVertex );
-                        contourPoints.append( closePoints[ j ] );
-                        //qDebug() << "----- found SHARP point (type 2b) ------";
-                    }
-                }
-            }
-        }
-    }
-
-    // 1 --- stop here (for debugging purpose)
-    /*qDebug() << "CONTOUR POINTS:";
-    for(int i=0; i < contourPoints.size(); i++) {
-    qDebug() << "(" << contourPoints.at(i).curveNumber << "," << contourPoints.at(i).vertexNumber << ")";
-    }*/
-    // -----
-    vectorImage->setSelected( contourPoints, true );
-    update();
-
-    // 2 --- or continue
-
-    // Step 2: finds closed paths among the selected vertices: we start from a vertex and build a tree of connected vertices
-    //while (contourPoints.size() > 0) {
-    QList<VertexRef> tree;
-    QList<int> fatherNode; // given the index in tree (of a vertex), return the index (in tree) of its father vertex; this will define the tree structure
-    QList<int> leaves; // list of indices in tree which correspond to end of branches (leaves)
-
-    // Step 2.1: build tree
-    int rootIndex = -1;
-    bool rootIndexFound = false;
-    while ( !rootIndexFound && rootIndex < contourPoints.size() - 1 )
-    {
-        rootIndex++;
-        if ( vectorImage->getVerticesCloseTo( vectorImage->getVertex( contourPoints.at( rootIndex ) ), tol2, &contourPoints ).size() > 1 )
-        {
-            // this point is connected!
-            rootIndexFound = true;
-        }
-    }
-    if ( !rootIndexFound ) { floodFillError( 3 ); return; }
-    tree << contourPoints.at( rootIndex );
-    fatherNode.append( -1 );
-    //leaves << 0;
-    contourPoints.removeAt( rootIndex );
-    VertexRef vertex0 = tree.at( 0 );
-    //qDebug() << "ROOT = " <<  vertex0.curveNumber << "," << vertex0.vertexNumber;
-    j = 0;
-    bool success = false;
-    int counter = 0;
-    while ( !success && j > -1 && counter < 1000 )
-    {
-        counter++;
-        //qDebug() << "------";
-        VertexRef vertex = tree.at( j );
-        //qDebug() << j << "/" << tree.size() << "   " << vertex.curveNumber << "," << vertex.vertexNumber << "->" << fatherNode.at(j);
-        int index1 = contourPoints.indexOf( vertex.nextVertex() );
-        if ( index1 != -1 )
-        {
-            //qDebug() << "next vertex";
-            tree.append( vertex.nextVertex() );
-            fatherNode.append( j );
-            contourPoints.removeAt( index1 );
-            j = tree.size() - 1;
-        }
-        else
-        {
-            int index2 = contourPoints.indexOf( vertex.prevVertex() );
-            if ( index2 != -1 )
-            {
-                // qDebug() << "previous vertex";
-                tree.append( vertex.prevVertex() );
-                fatherNode.append( j );
-                contourPoints.removeAt( index2 );
-                j = tree.size() - 1;
-            }
-            else
-            {
-                QList<VertexRef> pointsNearby = vectorImage->getVerticesCloseTo( vectorImage->getVertex( vertex ), tol2, &contourPoints );
-                if ( pointsNearby.size() > 0 )
-                {
-                    //qDebug() << "close vertex";
-                    tree << pointsNearby.at( 0 );
-                    fatherNode.append( j );
-                    contourPoints.removeAt( contourPoints.indexOf( pointsNearby.at( 0 ) ) );
-                    j = tree.size() - 1;
-                }
-                else
-                {
-                    qreal dist = vectorImage->getDistance( vertex, vertex0 );
-                    //qDebug() << "is it a leave ? " << j << "dist = " << dist << "-" << tol2;
-                    if ( ( ( vertex.curveNumber == vertex0.curveNumber ) && ( qAbs( vertex.vertexNumber - vertex0.vertexNumber ) == 1 ) ) || ( dist < tol2 ) )
-                    {
-                        // we found a leaf close to the root of the tree - does the closed path contain the initial point?
-                        QList<VertexRef> closedPath;
-                        int pathIndex = j;
-                        if ( dist > 0 ) { closedPath.prepend( vertex0 ); }
-                        closedPath.prepend( tree.at( pathIndex ) );
-                        while ( ( pathIndex = fatherNode.at( pathIndex ) ) != -1 )
-                        {
-                            closedPath.prepend( tree.at( pathIndex ) );
-                        }
-                        BezierArea newArea = BezierArea( closedPath, mEditor->color()->frontColorNumber() );
-                        vectorImage->updateArea( newArea );
-                        if ( newArea.path.contains( initialPoint ) )
-                        {
-                            vectorImage->addArea( newArea );
-                            //qDebug() << "Yes!";
-                            success = true;
-                        }
-                        else
-                        {
-                            //qDebug() << "No! almost";
-                            j = fatherNode.at( j );
-                        }
-                    }
-                    else
-                    {
-                        //qDebug() << "No!";
-                        leaves << j;
-                        j = fatherNode.at( j );
-                    }
-                }
-            }
-        }
-
-        //
-    }
-
-    if ( !success ) { floodFillError( 2 ); return; }
-    //qDebug() << "failure!" << contourPoints.size();
-    replaceImage->fill( qRgba( 0, 0, 0, 0 ) );
-    deselectAll();
-
-    // -- debug --- (display tree)
-    /*for(int indexm=0; indexm < tree.size(); indexm++) {
-    qDebug() << indexm  << ") " << tree.at(indexm).curveNumber << "," << tree.at(indexm).vertexNumber << " -> " << fatherNode.at(indexm);
-    //if (leaves.contains(indexm)) vectorImage->setSelected( tree.at(indexm), true);
-    vectorImage->setSelected( tree.at(indexm), true);
-    update();
-    //sleep( 1 );
-    QMessageBox::warning(this, tr("My Application"), tr("all the tree points"), QMessageBox::Ok, QMessageBox::Ok);
-    }*/
-    delete targetImage;
-    update();
-}
-
-void ScribbleArea::floodFillError( int errorType )
-{
-    QString message, error;
-    if ( errorType == 1 ) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
-    if ( errorType == 2 || errorType == 3 ) message = "Sorry! This doesn't always work."
-        "Please try again (zoom a bit, click at another location... )<br>"
-        "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
-
-    if ( errorType == 1 ) { error = "Out of bound."; }
-    if ( errorType == 2 ) { error = "Could not find a closed path."; }
-    if ( errorType == 3 ) { error = "Could not find the root index."; }
-    QMessageBox::warning( this, tr( "Flood fill error" ), message + "<br><br>Error: " + error, QMessageBox::Ok, QMessageBox::Ok );
-    mBufferImg->clear();
-    deselectAll();
-}
-
 /************************************************************************************/
 // tool handling
 
-BaseTool *ScribbleArea::currentTool()
+BaseTool* ScribbleArea::currentTool()
 {
     return editor()->tools()->currentTool();
 }
@@ -2194,6 +1895,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
 
     effects[ EFFECT_AXIS ] = 0;
 
+#define DRAW_AXIS
 #ifdef DRAW_AXIS
     effects[ EFFECT_AXIS ] = 1;
 #endif
@@ -2231,10 +1933,10 @@ void ScribbleArea::drawShadow( QPainter& painter )
 void ScribbleArea::drawAxis( QPainter& painter )
 {
 	painter.setPen( Qt::green );
-	painter.drawLine( QLineF( 0, 0, 0, 500 ) );
+	painter.drawLine( QLineF( 0, -500, 0, 500 ) );
 
 	painter.setPen( Qt::red );
-	painter.drawLine( QLineF( 0, 0, 500, 0 ) );
+	painter.drawLine( QLineF( -500, 0, 500, 0 ) );
 }
 
 void ScribbleArea::drawGrid( QPainter& painter )
@@ -2260,7 +1962,7 @@ void ScribbleArea::drawGrid( QPainter& painter )
 	QPen pen( Qt::lightGray );
 	pen.setCosmetic( true );
 	painter.setPen( pen );
-	painter.setViewTransformEnabled( true );
+    painter.setWorldMatrixEnabled( true );
 	painter.setBrush( Qt::NoBrush );
 
 	for ( int x = left; x < right; x += gridSize )

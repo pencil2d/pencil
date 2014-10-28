@@ -25,7 +25,7 @@ void PenTool::loadSettings()
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-    properties.feather = -1;
+	properties.feather = settings.value( "penFeather" ).toDouble();;
     properties.pressure = ON;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
@@ -124,6 +124,7 @@ void PenTool::mouseMoveEvent( QMouseEvent *event )
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
+			qDebug() << "DrawStroke" << event->pos() ;
         }
     }
 }
@@ -137,12 +138,7 @@ void PenTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        QPen pen = QPen( mEditor->color()->frontColor(),
-                         mCurrentWidth,
-                         Qt::SolidLine,
-                         Qt::RoundCap,
-                         Qt::RoundJoin );
-
+        QPen pen = QPen( mEditor->color()->frontColor(), mCurrentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         int rad = qRound( mCurrentWidth / 2 ) + 3;
 
         for ( int i = 0; i < p.size(); i++ )

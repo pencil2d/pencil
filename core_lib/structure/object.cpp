@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,6 +28,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 //#include "flash.h"
+#include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
 
@@ -390,9 +392,9 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     {
         painter.setPen( Qt::NoPen );
         painter.setBrush( Qt::white );
-        painter.setViewTransformEnabled( false );
+        painter.setWorldMatrixEnabled( false );
         painter.drawRect( QRect( 0, 0, painter.device()->width(), painter.device()->height() ) );
-        painter.setViewTransformEnabled( true );
+        painter.setWorldMatrixEnabled( true );
     }
 
     for ( int i = 0; i < getLayerCount(); i++ )
@@ -463,7 +465,7 @@ bool Object::exportFrames( int frameStart, int frameEnd,
         tempImage.fill( 0x00000000 );
 
         QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-        QTransform mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+        QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
         mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
         painter.setWorldTransform( mapView );
 
@@ -570,7 +572,7 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
         if ( currentLayer->type() == Layer::CAMERA )
         {
             QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-            QTransform mapView = Editor::map( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+            QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
             mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
             painter.setWorldTransform( mapView );
         }
@@ -660,7 +662,7 @@ bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize expor
         {
             QRect source = QRect( QPoint( 0, 0 ), exportSize );
             QRect target = QRect( QPoint( ( y % 3 ) * 800 + 30, ( y / 3 ) * 680 + 50 - page * 3400 ), QSize( 640, 480 ) );
-            QTransform thumbView = view * Editor::map( source, target );
+            QTransform thumbView = view * RectMapTransform( source, target );
             xPainter.setWorldTransform( thumbView );
             xPainter.setClipRegion( thumbView.inverted().map( QRegion( target ) ) );
             paintImage( xPainter, i, false, antialiasing );

@@ -31,15 +31,13 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "colourref.h"
 #include "vectorselection.h"
-#include "basetool.h"
-#include "editor.h"
 #include "colormanager.h"
 #include "viewmanager.h"
 
-class Editor;
 class Layer;
-class StrokeManager;
+class Editor;
 class BaseTool;
+class StrokeManager;
 class ColorManager;
 class PopupColorPaletteWidget;
 
@@ -121,6 +119,8 @@ signals:
     void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
 
+	void refreshPreview();
+
 public slots:
     void clearImage();
     void calculateSelectionRect();
@@ -151,16 +151,16 @@ public slots:
     void updateToolCursor();
 
 protected:
-    void tabletEvent( QTabletEvent *event ) override;
-    void wheelEvent( QWheelEvent *event ) override;
-    void mousePressEvent( QMouseEvent *event ) override;
-    void mouseMoveEvent( QMouseEvent *event ) override;
-    void mouseReleaseEvent( QMouseEvent *event ) override;
-    void mouseDoubleClickEvent( QMouseEvent *event ) override;
-    void keyPressEvent( QKeyEvent *event ) override;
-    void keyReleaseEvent( QKeyEvent *event ) override;
-    void paintEvent( QPaintEvent *event ) override;
-    void resizeEvent( QResizeEvent *event ) override;
+    void tabletEvent( QTabletEvent* ) override;
+    void wheelEvent( QWheelEvent* ) override;
+    void mousePressEvent( QMouseEvent* ) override;
+    void mouseMoveEvent( QMouseEvent* ) override;
+    void mouseReleaseEvent( QMouseEvent* ) override;
+    void mouseDoubleClickEvent( QMouseEvent* ) override;
+    void keyPressEvent( QKeyEvent* ) override;
+    void keyReleaseEvent( QKeyEvent* ) override;
+    void paintEvent( QPaintEvent* ) override;
+    void resizeEvent( QResizeEvent* ) override;
 
 public:
     void drawPolyline( QList<QPointF> points, QPointF lastPoint );
@@ -171,7 +171,6 @@ public:
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
-    void floodFill( VectorImage *vectorImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance );
 
     void paintBitmapBuffer();
     void clearBitmapBuffer();
@@ -186,8 +185,6 @@ private:
 	void drawGrid( QPainter& );
 
     void toggledOnionColor();
-
-	void floodFillError( int errorType );
 
     MoveMode mMoveMode;
     ToolType mPrevTemporalToolType;

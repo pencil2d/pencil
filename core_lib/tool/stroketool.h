@@ -12,26 +12,25 @@ typedef QPair<QPointF, QPointF> QSegment;
 class StrokeTool : public BaseTool
 {
     Q_OBJECT
+
 public:
     explicit StrokeTool(QObject *parent = 0);
     
-    virtual void startStroke();
-    virtual void drawStroke();
-    virtual void endStroke();
-
-signals:
-    
-public slots:
+    void startStroke();
+    void drawStroke();
+    void endStroke();
 
 protected:
-    bool mFirstDraw;
+    bool mFirstDraw = false;
 
-    QPointF lastPixel;
     QList<QPointF> mStrokePoints;
     QList<qreal> mStrokePressures;
 
     qreal mCurrentWidth;
     qreal mCurrentPressure;
+
+private:
+	QPointF mLastPixel = { 0, 0 };
 };
 
 #endif // STROKETOOL_H

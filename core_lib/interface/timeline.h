@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -55,8 +56,7 @@ signals :
 	void newBitmapLayer();
 	void newVectorLayer();
 	void newSoundLayer();
-	void newCameraLayer();
-	void deleteCurrentLayer();
+    void newCameraLayer();
 
 	void playClick();
 	void loopClick( bool );
@@ -80,14 +80,16 @@ protected:
 	void resizeEvent( QResizeEvent* event );
 
 private:
+    void deleteCurrentLayer();
+
     QScrollBar* hScrollBar;
     QScrollBar* vScrollBar;
-	TimeLineCells* cells;
-	TimeLineCells* list;
+	TimeLineCells* mTracks;
+	TimeLineCells* mLayerList;
 	int numberOfLayers;
 	TimeControls* timeControls;
 
-    int m_lastUpdatedFrame = 0;
+    int mLastUpdatedFrame = 0;
 };
 
 #endif

@@ -164,7 +164,8 @@ void PencilTool::drawStroke()
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        if ( p.size() == 4 ) {
+        if ( p.size() == 4 )
+        {
             // qDebug() << p;
             QPainterPath path( p[ 0 ] );
             path.cubicTo( p[ 1 ],
