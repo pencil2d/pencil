@@ -154,7 +154,7 @@ bool Layer::removeKeyFrame( int position )
     {
         // you can't delete 1st frame.
         //return true;
-        addNewKeyFrameAt( 1 ); // replacing
+        addNewKeyAt( 1 ); // replacing
     }
 
     return true;
@@ -182,7 +182,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
     KeyFrame* pSecondFrame;
 
 
-    if ( hasKeyFrameAtPosition( position1 ) )
+    if ( keyExists( position1 ) )
     {
         auto firstFrame = mKeyFrames.find( position1 );
         pFirstFrame = firstFrame->second;
@@ -195,7 +195,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
         keyPosition1 = true;
     }
 
-    if ( hasKeyFrameAtPosition( position2 ))
+	if ( keyExists( position2 ) )
     {
         auto secondFrame = mKeyFrames.find( position2 );
         pSecondFrame = secondFrame->second;
@@ -213,8 +213,10 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
         //addKeyFrame( position1, pSecondFrame );
         pSecondFrame->setPos( position1 );
         mKeyFrames.insert( std::make_pair( position1, pSecondFrame ) );
-    } else if ( position1 == 1 ) {
-        addNewKeyFrameAt( position1 );
+    } 
+	else if ( position1 == 1 ) 
+	{
+        addNewKeyAt( position1 );
     }
 
     if ( keyPosition1 )
@@ -222,8 +224,10 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
         //addKeyFrame( position2, pFirstFrame );
         pFirstFrame->setPos( position2 );
         mKeyFrames.insert( std::make_pair( position2, pFirstFrame ) );
-    } else if ( position2 == 1 ) {
-        addNewKeyFrameAt( position2 );
+    } 
+	else if ( position2 == 1 )
+	{
+		addNewKeyAt( position2 );
     }
 
     return true;
