@@ -457,6 +457,7 @@ void Editor::clearUndoStack()
 
 void Editor::cut()
 {
+    copy();
     mScribbleArea->deleteSelection();
     mScribbleArea->deselectAll();
 }
@@ -483,12 +484,10 @@ void Editor::copy()
             if ( mScribbleArea->somethingSelected )
             {
                 g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( currentFrame(), 0 )->copy( mScribbleArea->getSelection().toRect() );  // copy part of the image
-                mScribbleArea->deselectAll();
             }
             else
             {
                 g_clipboardBitmapImage = ( ( LayerBitmap* )layer )->getLastBitmapImageAtFrame( currentFrame(), 0 )->copy();  // copy the whole image
-                mScribbleArea->deselectAll();
             }
             clipboardBitmapOk = true;
             if ( g_clipboardBitmapImage.mImage != NULL ) QApplication::clipboard()->setImage( *( g_clipboardBitmapImage.mImage ) );
@@ -496,8 +495,7 @@ void Editor::copy()
         if ( layer->type() == Layer::VECTOR )
         {
             clipboardVectorOk = true;
-            g_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( currentFrame(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
-            mScribbleArea->deselectAll();
+            g_clipboardVectorImage = *( ( ( LayerVector* )layer )->getLastVectorImageAtFrame( currentFrame(), 0 ) );  // copy the image
         }
     }
 }
