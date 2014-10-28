@@ -76,6 +76,9 @@ public:
 
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
+    bool swapKeyFrames( int position1, int position2 );
+    bool moveKeyFrameForward( int position );
+    bool moveKeyFrameBackward( int position );
     bool loadKey( KeyFrame* );
     KeyFrame* getKeyFrameAtPosition( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );

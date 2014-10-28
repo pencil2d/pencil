@@ -257,6 +257,8 @@ void MainWindow2::createMenus()
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubNextKeyFrame );
     connect(ui->actionPrev_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubPreviousKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mEditor, &Editor::duplicateKey );
+    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward ); //HERE
+    connect(ui->actionMove_Frame_Backward, &QAction::triggered, mEditor, &Editor::moveFrameBackward );
 
     /// --- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn );
@@ -835,7 +837,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionExport_Svg_Image->setShortcut( cmdKeySeq( CMD_EXPORT_SVG ) );
     ui->actionExport_X_sheet->setShortcut( cmdKeySeq( CMD_EXPORT_XSHEET ) );
 
-    // edit manu
+    // edit menu
     ui->actionUndo->setShortcut( cmdKeySeq( CMD_UNDO ) );
     ui->actionRedo->setShortcut( cmdKeySeq( CMD_REDO ) );
     ui->actionCut->setShortcut( cmdKeySeq( CMD_CUT ) );
@@ -868,6 +870,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionAdd_Frame->setShortcut( cmdKeySeq( CMD_ADD_FRAME ) );
     ui->actionDuplicate_Frame->setShortcut( cmdKeySeq( CMD_DUPLICATE_FRAME ) );
     ui->actionRemove_Frame->setShortcut( cmdKeySeq( CMD_REMOVE_FRAME ) );
+    ui->actionMove_Frame_Backward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_BACKWARD ) );
+    ui->actionMove_Frame_Forward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_FORWARD ) );
 
     ui->actionMove->setShortcut( cmdKeySeq( CMD_TOOL_MOVE ) );
     ui->actionSelect->setShortcut( cmdKeySeq( CMD_TOOL_SELECT ) );

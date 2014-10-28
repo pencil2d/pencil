@@ -136,6 +136,9 @@ public slots:
     void duplicateKey();
     void removeKey();
 
+    void moveFrameForward();
+    void moveFrameBackward();
+
     void resetUI();
 
     void updateObject();
