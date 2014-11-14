@@ -994,7 +994,6 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     QRectF viewRect = getViewRect();
     QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
-    QSize sz = viewRect.size().toSize();
 
     Object *object = mEditor->object();
     qreal opacity;

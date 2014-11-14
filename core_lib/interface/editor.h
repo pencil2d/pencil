@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "backupelement.h"
 #include "pencilerror.h"
 
+
 class QDragEnterEvent;
 class QDropEvent;
 class Object;
@@ -45,7 +46,7 @@ class Editor : public QObject
     Q_PROPERTY( ViewManager*     view     READ view )
 
 public:
-    Editor( QObject* parent );
+    explicit Editor( QObject* parent );
     virtual ~Editor();
     bool initialize( ScribbleArea* pScribbleArea );
 
@@ -83,7 +84,7 @@ protected:
     void dragEnterEvent( QDragEnterEvent* event );
     void dropEvent( QDropEvent* event );
 
-signals:
+Q_SIGNALS:
     void updateAllFrames();
 	void updateTimeLine();
 	void updateLayerCount();
@@ -105,7 +106,7 @@ signals:
     void needSave();
     void fileLoaded();
 
-public slots:
+public: //slots
     void clearCurrentFrame();
 
     void cut();
