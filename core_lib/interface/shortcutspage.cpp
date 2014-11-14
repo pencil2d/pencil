@@ -19,8 +19,7 @@
 static const int ACT_NAME_COLUMN = 0;
 static const int KEY_SEQ_COLUMN  = 1;
 
-ShortcutsPage::ShortcutsPage(QWidget *parent) :
-    QWidget(parent),
+ShortcutsPage::ShortcutsPage( QWidget* parent ) : QWidget(parent),
     m_treeModel( NULL ),
     ui( new Ui::ShortcutsPage )
 {
