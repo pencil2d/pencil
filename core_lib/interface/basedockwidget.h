@@ -21,7 +21,7 @@ public:
     Editor* editor() { return mEditor; }
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
-    
+
 private:
     Editor* mEditor = nullptr;
 };

@@ -49,6 +49,7 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "toolbox.h"
 #include "preview.h"
+#include "timeline2.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -60,10 +61,9 @@ GNU General Public License for more details.
 #include "exportimageseqdialog.h"
 
 
-MainWindow2::MainWindow2( QWidget *parent )
-    : QMainWindow( parent )
-    , ui( new Ui::MainWindow2 )
+MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
+    ui = new Ui::MainWindow2;
     ui->setupUi( this );
 
     // Central widget
@@ -108,7 +108,7 @@ void MainWindow2::createDockWidgets()
 {
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
-    m_subWidgets.append( mTimeLine );
+    mDockWidgets.append( mTimeLine );
 
     mColorWheel = new QDockWidget( tr("Color Wheel"), this );
     ColorBox* pColorBox = new ColorBox(this);
@@ -118,7 +118,7 @@ void MainWindow2::createDockWidgets()
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     mColorPalette->setObjectName( "ColorPalette" );
-    m_subWidgets.append( mColorPalette );
+    mDockWidgets.append( mColorPalette );
 
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
@@ -128,16 +128,21 @@ void MainWindow2::createDockWidgets()
 
     mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     mToolBox->setObjectName( "ToolBox" );
-    m_subWidgets.append( mToolBox );
+    mDockWidgets.append( mToolBox );
+
+    mTimeline2 = new Timeline2;
+    mTimeline2->setObjectName( "Timeline2" );
+    mDockWidgets.append( mTimeline2 );
 
     addDockWidget(Qt::RightDockWidgetArea,  mColorWheel);
     addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolOptions);
-    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+    //addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+    addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
-    for ( BaseDockWidget* pWidget : m_subWidgets )
+    for ( BaseDockWidget* pWidget : mDockWidgets )
     {
         pWidget->setCore( mEditor );
         pWidget->initUI();

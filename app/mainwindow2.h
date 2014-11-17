@@ -19,6 +19,7 @@ class Preferences;
 class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
+class Timeline2;
 
 
 namespace Ui
@@ -73,7 +74,7 @@ protected:
 private:
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
-    
+
     void dockAllPalettes();
 
     void createDockWidgets();
@@ -97,23 +98,23 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*             mColorWheel = nullptr;
-    ColorPaletteWidget*      mColorPalette = nullptr;
-    DisplayOptionWidget*     mDisplayOptionWidget = nullptr;
-    ToolOptionWidget*        mToolOptions = nullptr;
-    ToolBoxWidget*           mToolBox = nullptr;
-	//PreviewWidget*           mPreview = nullptr;
-
+    QDockWidget*          mColorWheel = nullptr;
+    ColorPaletteWidget*   mColorPalette = nullptr;
+    DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
+    ToolOptionWidget*     mToolOptions = nullptr;
+    ToolBoxWidget*        mToolBox = nullptr;
+    //PreviewWidget*           mPreview = nullptr;
+    Timeline2*            mTimeline2 = nullptr;
     RecentFileMenu* mRecentFileMenu;
 
 public:
-    TimeLine*                mTimeLine; // be public temporary
+    TimeLine*             mTimeLine; // be public temporary
 
 private:
     Preferences* m_pPreferences;
 
     Ui::MainWindow2* ui;
-    QList< BaseDockWidget* > m_subWidgets;
+    QList< BaseDockWidget* > mDockWidgets;
 };
 
 #endif // MAINWINDOW2_H

@@ -28,16 +28,19 @@ INCLUDEPATH += \
 
 HEADERS += \
     mainwindow2.h \
-    exportimageseqdialog.h
+    exportimageseqdialog.h \
+    timeline2.h
 
 SOURCES += \
     mainwindow2.cpp \
     exportimageseqdialog.cpp \
-    main.cpp
+    main.cpp \
+    timeline2.cpp
 
 FORMS += \
     mainwindow2.ui \
-    exportimageseqdialog.ui
+    exportimageseqdialog.ui \
+    timeline2.ui
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
