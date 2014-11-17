@@ -93,8 +93,8 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     connect( mEditor, &Editor::needSave, this, &MainWindow2::saveDocument );
     connect( mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame );
-    
-	//connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
+
+    //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
 }
@@ -146,13 +146,13 @@ void MainWindow2::createDockWidgets()
         pWidget->setFocusPolicy( Qt::NoFocus );
     }
 
-	/*
-	mPreview = new PreviewWidget( this );
-	mPreview->setImage( mScribbleArea->mBufferImg );
-	mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
-	mPreview->setFocusPolicy( Qt::NoFocus );
-	addDockWidget( Qt::RightDockWidgetArea, mPreview );
-	*/
+    /*
+    mPreview = new PreviewWidget( this );
+    mPreview->setImage( mScribbleArea->mBufferImg );
+    mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
+    mPreview->setFocusPolicy( Qt::NoFocus );
+    addDockWidget( Qt::RightDockWidgetArea, mPreview );
+    */
 
     makeConnections( mEditor, mTimeLine );
     makeConnections( mEditor, pColorBox );
@@ -191,7 +191,7 @@ void MainWindow2::createMenus()
 
     /// --- Edit Menu ---
     ui->actionPreference->setMenuRole( QAction::PreferencesRole );
-    
+
     connect( ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo );
     connect( ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo );
     connect( ui->actionCut, &QAction::triggered, mEditor, &Editor::cut );
@@ -203,7 +203,7 @@ void MainWindow2::createMenus()
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
-    
+
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
@@ -226,9 +226,9 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled( false );
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked ) 
-    { 
-        mScribbleArea->setEffect( EFFECT_GRID_A, bChecked ); 
+    connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked )
+    {
+        mScribbleArea->setEffect( EFFECT_GRID_A, bChecked );
     } );
 
 
@@ -277,7 +277,7 @@ void MainWindow2::createMenus()
 
     /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
-    
+
     QAction* actions[] =
     {
         mToolBox->toggleViewAction(),
@@ -293,7 +293,7 @@ void MainWindow2::createMenus()
         action->setMenuRole( QAction::NoRole );
         winMenu->addAction( action );
     }
-    
+
     /// --- Help Menu ---
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
@@ -391,9 +391,9 @@ bool MainWindow2::saveAsNewDocument()
         strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
     }
 
-    QString fileName = QFileDialog::getSaveFileName( this, 
-                                                     tr( "Save As..." ), 
-                                                     strLastFolder, 
+    QString fileName = QFileDialog::getSaveFileName( this,
+                                                     tr( "Save As..." ),
+                                                     strLastFolder,
                                                      tr( PFF_SAVE_ALL_FILE_FILTER ) );
     if ( fileName.isEmpty() )
     {
@@ -469,7 +469,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
     mRecentFileMenu->saveToDisk();
-    
+
     mTimeLine->updateContent();
 
     setWindowTitle( strSavedFileName );
@@ -1005,8 +1005,8 @@ void MainWindow2::helpBox()
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
 {
-	connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
-	connect( editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor );
+    connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
+    connect( editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor );
 }
 
 void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
