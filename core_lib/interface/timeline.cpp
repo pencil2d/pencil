@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -50,8 +51,8 @@ void TimeLine::initUI()
     mLayerList = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Layers );
     mTracks = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Tracks );
 
-    connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mLayerList, SLOT( setMouseMoveY( int ) ) );
-    connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mTracks, SLOT( setMouseMoveY( int ) ) );
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY );
 
     numberOfLayers = 0;
     hScrollBar = new QScrollBar( Qt::Horizontal );
