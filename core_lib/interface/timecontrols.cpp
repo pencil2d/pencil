@@ -17,6 +17,8 @@ GNU General Public License for more details.
 #include <QtGui>
 #include <QLabel>
 #include "timecontrols.h"
+#include "editor.h"
+#include "playbackmanager.h"
 
 
 TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
@@ -58,6 +60,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     mSoundButton = new QPushButton();
     mGotoEndButton= new QPushButton();
     mGotoStartButton= new QPushButton();
+
     QLabel* separator = new QLabel();
     separator->setPixmap(QPixmap(":icons/controls/separator.png"));
     separator->setFixedSize(QSize(37,31));
@@ -99,7 +102,8 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     addWidget(fpsLabel);
     addWidget(mFpsBox);
 
-    connect(mPlayButton, &QPushButton::clicked, this, &TimeControls::playClick);
+    makeConnections();
+
     connect(mGotoEndButton, &QPushButton::clicked, this, &TimeControls::clickGotoEndButton);
     connect(mGotoStartButton, &QPushButton::clicked, this, &TimeControls::clickGotoStartButton);
     connect(mLoopButton, &QPushButton::clicked, this, &TimeControls::loopClick);
@@ -139,4 +143,20 @@ void TimeControls::toggleLoopControl(bool checked)
 void TimeControls::setLoopStart ( int value )
 {
     mLoopStartSpinBox->setValue(value);
+}
+
+void TimeControls::setCore( Editor* editor )
+{
+    Q_ASSERT( editor != nullptr );
+    mEditor = editor;
+}
+
+void TimeControls::playButtonClicked()
+{
+    mEditor->playback()->play();
+}
+
+void TimeControls::makeConnections()
+{
+    connect( mPlayButton, &QPushButton::clicked, this, &TimeControls::playButtonClicked );
 }
