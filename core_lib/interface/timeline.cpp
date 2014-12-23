@@ -201,7 +201,6 @@ void TimeLine::initUI()
     connect( mTimeControls, SIGNAL( soundClick( bool ) ), this, SIGNAL( soundClick( bool ) ) );
     connect( mTimeControls, SIGNAL( fpsClick( int ) ), this, SIGNAL( fpsClick( int ) ) );
 
-    connect( this, &TimeLine::loopToggled, mTimeControls, &TimeControls::loopToggled );
     connect( this, &TimeLine::loopControlClick, mTimeControls, &TimeControls::toggleLoopControl );
 
     connect( newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer );

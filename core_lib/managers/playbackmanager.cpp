@@ -68,7 +68,7 @@ void PlaybackManager::timerTick()
     // TODO: play sound if any
 }
 
-void PlaybackManager::setLoop( bool isLoop )
+void PlaybackManager::setLooping( bool isLoop )
 {
     if ( m_isLooping != isLoop )
     {

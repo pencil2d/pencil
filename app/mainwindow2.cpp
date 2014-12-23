@@ -251,7 +251,7 @@ void MainWindow2::createMenus()
     PlaybackManager* pPlaybackManager = mEditor->playback();
     connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
 
-    connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLoop );
+    connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, ui->actionLoop, &QAction::setChecked );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
@@ -1041,9 +1041,6 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     LayerManager* pLayerManager = pEditor->layers();
 
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
-
-    //connect( pTimeline, &TimeLine::playClick, [ = ]{ pPlaybackManager->play(); } );
-    connect( pTimeline, &TimeLine::loopClick, pPlaybackManager, &PlaybackManager::setLoop );
 
     connect( pTimeline, &TimeLine::loopControlClick, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
     connect( pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame );

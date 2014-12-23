@@ -60,8 +60,8 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     mPlayButton = new QPushButton( this );
     mLoopButton = new QPushButton();
     mSoundButton = new QPushButton();
-    mGotoEndButton= new QPushButton();
-    mGotoStartButton= new QPushButton();
+    mJumpToEndButton= new QPushButton();
+    mJumpToStartButton= new QPushButton();
 
     QLabel* separator = new QLabel();
     separator->setPixmap(QPixmap(":icons/controls/separator.png"));
@@ -79,23 +79,23 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     mPlayButton->setIcon(playIcon);
     mLoopButton->setIcon(loopIcon);
     mSoundButton->setIcon(soundIcon);
-    mGotoEndButton->setIcon(endplayIcon);
-    mGotoStartButton->setIcon(startplayIcon);
+    mJumpToEndButton->setIcon(endplayIcon);
+    mJumpToStartButton->setIcon(startplayIcon);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
     mSoundButton->setToolTip(tr("Sound on/off"));
-    mGotoEndButton->setToolTip(tr("End"));
-    mGotoStartButton->setToolTip(tr("Start"));
+    mJumpToEndButton->setToolTip(tr("End"));
+    mJumpToStartButton->setToolTip(tr("Start"));
 
     mLoopButton->setCheckable(true);
     mSoundButton->setCheckable(true);
     mSoundButton->setChecked(true);
 
     addWidget(separator);
-    addWidget(mGotoStartButton);
+    addWidget(mJumpToStartButton);
     addWidget(mPlayButton);
-    addWidget(mGotoEndButton);
+    addWidget(mJumpToEndButton);
     addWidget(mLoopButton);
     addWidget(mPlaybackRangeCheckBox);
     addWidget(mLoopStartSpinBox);
@@ -105,8 +105,6 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     addWidget(mFpsBox);
 
     makeConnections();
-
-    connect(mLoopButton, &QPushButton::clicked, this, &TimeControls::loopClick);
 
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, this, &TimeControls::loopControlClick );//adding loopcontrol
 
@@ -153,10 +151,10 @@ void TimeControls::setCore( Editor* editor )
 
 void TimeControls::makeConnections()
 {
-    connect( mPlayButton,      &QPushButton::clicked, this, &TimeControls::playButtonClicked );
-    connect( mGotoEndButton,   &QPushButton::clicked, this, &TimeControls::GotoStartButtonClicked );
-    connect( mGotoStartButton, &QPushButton::clicked, this, &TimeControls::GotoEndButtonClicked );
-
+    connect( mPlayButton,        &QPushButton::clicked, this, &TimeControls::playButtonClicked );
+    connect( mJumpToEndButton,   &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked );
+    connect( mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToEndButtonClicked );
+    connect( mLoopButton,        &QPushButton::clicked, this, &TimeControls::loopButtonClicked );
 }
 
 void TimeControls::playButtonClicked()
@@ -164,12 +162,17 @@ void TimeControls::playButtonClicked()
     mEditor->playback()->play();
 }
 
-void TimeControls::GotoStartButtonClicked()
+void TimeControls::jumpToStartButtonClicked()
 {
     mEditor->layers()->gotoFirstKeyFrame();
 }
 
-void TimeControls::GotoEndButtonClicked()
+void TimeControls::jumpToEndButtonClicked()
 {
     mEditor->layers()->gotoLastKeyFrame();
+}
+
+void TimeControls::loopButtonClicked( bool bChecked )
+{
+    mEditor->playback()->setLooping( bChecked );
 }
