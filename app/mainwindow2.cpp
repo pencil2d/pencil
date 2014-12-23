@@ -146,9 +146,10 @@ void MainWindow2::createDockWidgets()
     {
         pWidget->setCore( mEditor );
         pWidget->initUI();
-        qDebug() << "Init UI: " << pWidget->objectName();
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
+
+        qDebug() << "Init UI: " << pWidget->objectName();
     }
 
     /*
@@ -1043,7 +1044,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::startplayClick, [ = ]{ pLayerManager->gotoFirstKeyFrame(); } );
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
 
-    connect( pTimeline, &TimeLine::playClick, [ = ]{ pPlaybackManager->play(); } );
+    //connect( pTimeline, &TimeLine::playClick, [ = ]{ pPlaybackManager->play(); } );
     connect( pTimeline, &TimeLine::loopClick, pPlaybackManager, &PlaybackManager::setLoop );
 
     connect( pTimeline, &TimeLine::loopControlClick, pPlaybackManager, &PlaybackManager::enableRangedPlayback );

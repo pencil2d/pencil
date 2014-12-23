@@ -41,7 +41,7 @@ TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent, Qt::Tool )
 
 void TimeLine::initUI()
 {
-    setFocusPolicy( Qt::NoFocus );
+    setWindowTitle( "Timeline" );
 
     QWidget* timeLineContent = new QWidget( this );
 
@@ -50,8 +50,8 @@ void TimeLine::initUI()
     mLayerList = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Layers );
     mTracks = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Tracks );
 
-    connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mLayerList, SLOT( setMouseMoveY( int ) ) );
-    connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mTracks, SLOT( setMouseMoveY( int ) ) );
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
 
     hScrollBar = new QScrollBar( Qt::Horizontal );
     vScrollBar = new QScrollBar( Qt::Vertical );
@@ -177,7 +177,6 @@ void TimeLine::initUI()
     setWidget( timeLineContent );
 
     setWindowFlags( Qt::WindowStaysOnTopHint );
-    setWindowTitle( "Timeline" );
 
     connect( this, &TimeLine::lengthChange, mTracks, &TimeLineCells::lengthChange );
     connect( this, &TimeLine::fontSizeChange, mTracks, &TimeLineCells::fontSizeChange );
@@ -185,16 +184,15 @@ void TimeLine::initUI()
     connect( this, &TimeLine::labelChange, mTracks, &TimeLineCells::labelChange );
     connect( this, &TimeLine::scrubChange, mTracks, &TimeLineCells::scrubChange );
 
-    connect( hScrollBar, SIGNAL( valueChanged( int ) ), mTracks, SLOT( hScrollChange( int ) ) );
-    connect( vScrollBar, SIGNAL( valueChanged( int ) ), mTracks, SLOT( vScrollChange( int ) ) );
-    connect( vScrollBar, SIGNAL( valueChanged( int ) ), mLayerList, SLOT( vScrollChange( int ) ) );
+    connect( hScrollBar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange );
+    connect( vScrollBar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
+    connect( vScrollBar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );
 
-    connect( addKeyButton, SIGNAL( clicked() ), this, SIGNAL( addKeyClick() ) );
-    connect( removeKeyButton, SIGNAL( clicked() ), this, SIGNAL( removeKeyClick() ) );
-    connect( duplicateKeyButton, SIGNAL( clicked() ), this, SIGNAL( duplicateKeyClick() ) );
+    connect( addKeyButton,    &QToolButton::clicked, this, &TimeLine::addKeyClick );
+    connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
+    connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
 
-    connect( mTimeControls, SIGNAL( playClick() ), this, SIGNAL( playClick() ) );
-    connect( mTimeControls, SIGNAL( endClick() ), this, SIGNAL( endplayClick() ) );
+    connect( mTimeControls, &TimeControls::clickGotoEndButton, this, &TimeLine::endplayClick );
     connect( mTimeControls, SIGNAL( startClick() ), this, SIGNAL( startplayClick() ) );
     connect( mTimeControls, SIGNAL( loopClick( bool ) ), this, SIGNAL( loopClick( bool ) ) );
 
@@ -213,6 +211,8 @@ void TimeLine::initUI()
     connect( newSoundLayerAct, &QAction::triggered, this, &TimeLine::newSoundLayer );
     connect( newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer );
     connect( removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer );
+    
+    mTimeControls->setCore( editor() );
 
     scrubbing = false;
 }
@@ -302,5 +302,3 @@ void TimeLine::forceUpdateLength(QString newLength)
         settings.setValue("length", dec);
     }
 }
-
-
