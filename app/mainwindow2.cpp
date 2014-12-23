@@ -1040,8 +1040,6 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     PlaybackManager* pPlaybackManager = pEditor->playback();
     LayerManager* pLayerManager = pEditor->layers();
 
-    connect( pTimeline, &TimeLine::endplayClick, [ = ]{ pLayerManager->gotoLastKeyFrame(); } );
-    connect( pTimeline, &TimeLine::startplayClick, [ = ]{ pLayerManager->gotoFirstKeyFrame(); } );
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
 
     //connect( pTimeline, &TimeLine::playClick, [ = ]{ pPlaybackManager->play(); } );

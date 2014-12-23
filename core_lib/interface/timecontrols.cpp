@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +20,7 @@ GNU General Public License for more details.
 #include "timecontrols.h"
 #include "editor.h"
 #include "playbackmanager.h"
+#include "layermanager.h"
 
 
 TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
@@ -104,8 +106,6 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
 
     makeConnections();
 
-    connect(mGotoEndButton, &QPushButton::clicked, this, &TimeControls::clickGotoEndButton);
-    connect(mGotoStartButton, &QPushButton::clicked, this, &TimeControls::clickGotoStartButton);
     connect(mLoopButton, &QPushButton::clicked, this, &TimeControls::loopClick);
 
     connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, this, &TimeControls::loopControlClick );//adding loopcontrol
@@ -151,12 +151,25 @@ void TimeControls::setCore( Editor* editor )
     mEditor = editor;
 }
 
+void TimeControls::makeConnections()
+{
+    connect( mPlayButton,      &QPushButton::clicked, this, &TimeControls::playButtonClicked );
+    connect( mGotoEndButton,   &QPushButton::clicked, this, &TimeControls::GotoStartButtonClicked );
+    connect( mGotoStartButton, &QPushButton::clicked, this, &TimeControls::GotoEndButtonClicked );
+
+}
+
 void TimeControls::playButtonClicked()
 {
     mEditor->playback()->play();
 }
 
-void TimeControls::makeConnections()
+void TimeControls::GotoStartButtonClicked()
 {
-    connect( mPlayButton, &QPushButton::clicked, this, &TimeControls::playButtonClicked );
+    mEditor->layers()->gotoFirstKeyFrame();
+}
+
+void TimeControls::GotoEndButtonClicked()
+{
+    mEditor->layers()->gotoLastKeyFrame();
 }

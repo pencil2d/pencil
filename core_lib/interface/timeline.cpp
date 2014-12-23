@@ -192,8 +192,6 @@ void TimeLine::initUI()
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
 
-    connect( mTimeControls, &TimeControls::clickGotoEndButton, this, &TimeLine::endplayClick );
-    connect( mTimeControls, SIGNAL( startClick() ), this, SIGNAL( startplayClick() ) );
     connect( mTimeControls, SIGNAL( loopClick( bool ) ), this, SIGNAL( loopClick( bool ) ) );
 
     connect( mTimeControls, SIGNAL( loopControlClick( bool ) ), this, SIGNAL( loopControlClick( bool ) ) );//adding loopControl

@@ -40,8 +40,6 @@ public:
     void setCore( Editor* editor );
 
 Q_SIGNALS:
-    void clickGotoEndButton();
-    void clickGotoStartButton();
     void loopClick(bool);
     void loopControlClick(bool);//adding loopControl
 
@@ -61,11 +59,13 @@ public slots:
 private:
     void makeConnections();
     void playButtonClicked();
+    void jumpToStartButtonClicked();
+    void jumpToEndButtonClicked();
 
 private:
     QPushButton* mPlayButton;
-    QPushButton* mGotoEndButton;
-    QPushButton* mGotoStartButton;
+    QPushButton* mJumpToEndButton;
+    QPushButton* mJumpToStartButton;
     QPushButton* mLoopButton;
     QPushButton* mSoundButton;
     QSpinBox* mFpsBox;

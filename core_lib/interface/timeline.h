@@ -68,8 +68,6 @@ Q_SIGNALS:
     void loopEndClick(int);
 
     void soundClick( bool );
-    void endplayClick();
-    void startplayClick();
     void fpsClick( int );
     void onionPrevClick();
     void onionNextClick();
