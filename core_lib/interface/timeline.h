@@ -84,13 +84,13 @@ protected:
 private:
     void deleteCurrentLayer();
 
-    QScrollBar* hScrollBar;
+    QScrollBar* hScrollBar = nullptr;
     QScrollBar* vScrollBar = nullptr;
     TimeLineCells* mTracks = nullptr;
     TimeLineCells* mLayerList = nullptr;
-    int numberOfLayers;
     TimeControls* mTimeControls = nullptr;
 
+    int mNumLayers = 0;
     int mLastUpdatedFrame = 0;
 };
 

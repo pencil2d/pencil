@@ -53,7 +53,6 @@ void TimeLine::initUI()
     connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mLayerList, SLOT( setMouseMoveY( int ) ) );
     connect( mLayerList, SIGNAL( mouseMovedY( int ) ), mTracks, SLOT( setMouseMoveY( int ) ) );
 
-    numberOfLayers = 0;
     hScrollBar = new QScrollBar( Qt::Horizontal );
     vScrollBar = new QScrollBar( Qt::Vertical );
     vScrollBar->setMinimum( 0 );
@@ -262,14 +261,14 @@ void TimeLine::updateLayerView()
 {
     vScrollBar->setPageStep( (height()-mTracks->getOffsetY()-hScrollBar->height())/mTracks->getLayerHeight() -2 );
     vScrollBar->setMinimum( 0 );
-    vScrollBar->setMaximum( qMax(0, numberOfLayers - vScrollBar->pageStep()) );
+    vScrollBar->setMaximum( qMax(0, mNumLayers - vScrollBar->pageStep()) );
     update();
     updateContent();
 }
 
 void TimeLine::updateLayerNumber(int numberOfLayers)
 {
-    this->numberOfLayers = numberOfLayers;
+    this->mNumLayers = numberOfLayers;
     updateLayerView();
 }
 
