@@ -1038,7 +1038,7 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
-    LayerManager* pLayerManager = pEditor->layers();
+    //LayerManager* pLayerManager = pEditor->layers();
 
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
 
@@ -1057,8 +1057,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::newSoundLayer, pEditor, &Editor::newSoundLayer );
     connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
 
-    //connect( pEditor, &Editor::toggleLoopControl, pTimeline, &Timeline::toggleLoopControl );
-    connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
+    connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

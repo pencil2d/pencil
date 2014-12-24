@@ -214,6 +214,9 @@ void TimeLine::initUI()
 
 void TimeLine::updateUI()
 {
+    mTracks->update();
+    mLayerList->update();
+
 
 }
 

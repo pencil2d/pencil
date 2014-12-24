@@ -10,11 +10,10 @@
 #include "playbackmanager.h"
 
 
-TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type )
-: QWidget( parent )
+TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type ) : QWidget( parent )
 {
-    this->timeLine = parent;
-    this->mEditor = editor;
+    timeLine = parent;
+    mEditor = editor;
     m_eType = type;
 
     m_pCache = NULL;
@@ -323,8 +322,6 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
     startLayerNumber = layerNumber;
     endY = event->pos().y();
 
-    //qDebug() << "Timeline Type = " << m_eType;
-
     switch ( m_eType )
     {
     case TIMELINE_CELL_TYPE::Layers:
@@ -336,8 +333,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
             }
             else
             {
-                mEditor->setCurrentLayer( layerNumber );
-                update();
+                mEditor->layers()->setCurrentLayer( layerNumber );
             }
         }
         if ( layerNumber == -1 )
