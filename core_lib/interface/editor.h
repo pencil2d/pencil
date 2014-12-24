@@ -53,7 +53,7 @@ public:
     bool initialize( ScribbleArea* pScribbleArea );
 
     /************************************************************************/
-    /* Managers 
+    /* Managers                                                             */
     /************************************************************************/ 
     ColorManager*    color() const { return mColorManager; }
     ToolManager*     tools() const { return mToolManager; }
