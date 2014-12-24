@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -41,6 +42,8 @@ TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent, Qt::Tool )
 
 void TimeLine::initUI()
 {
+    Q_ASSERT( editor() != nullptr );
+
     setWindowTitle( "Timeline" );
 
     QWidget* timeLineContent = new QWidget( this );
@@ -192,14 +195,11 @@ void TimeLine::initUI()
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
 
-    connect( mTimeControls, SIGNAL( loopControlClick( bool ) ), this, SIGNAL( loopControlClick( bool ) ) );//adding loopControl
     connect( mTimeControls, SIGNAL( loopStartClick( int ) ), this, SIGNAL( loopStartClick( int ) ) );
     connect( mTimeControls, SIGNAL( loopEndClick( int ) ), this, SIGNAL( loopEndClick( int ) ) );
 
     connect( mTimeControls, SIGNAL( soundClick( bool ) ), this, SIGNAL( soundClick( bool ) ) );
     connect( mTimeControls, SIGNAL( fpsClick( int ) ), this, SIGNAL( fpsClick( int ) ) );
-
-    connect( this, &TimeLine::loopControlClick, mTimeControls, &TimeControls::toggleLoopControl );
 
     connect( newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer );
     connect( newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer );
@@ -242,7 +242,7 @@ void TimeLine::deleteCurrentLayer()
     }
 }
 
-void TimeLine::updateFrame(int frameNumber)
+void TimeLine::updateFrame( int frameNumber )
 {
     Q_ASSERT ( mTracks );
 

@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 
 
-TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
+TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
 {
     QSettings settings("Pencil","Pencil");
 
@@ -106,8 +106,6 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
 
     makeConnections();
 
-    connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, this, &TimeControls::loopControlClick );//adding loopcontrol
-
     auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
     connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartClick );
     connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
@@ -116,7 +114,7 @@ TimeControls::TimeControls(QWidget* parent) : QToolBar(parent)
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled );
 
     connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
-    connect(mFpsBox,SIGNAL(valueChanged(int)), this, SIGNAL(fpsClick(int)));
+    connect( mFpsBox, SIGNAL( valueChanged( int ) ), this, SIGNAL( fpsClick( int ) ) );
 
     mPlaybackRangeCheckBox->setChecked( false );
     mLoopStartSpinBox->setEnabled( false );
@@ -155,6 +153,7 @@ void TimeControls::makeConnections()
     connect( mJumpToEndButton,   &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked );
     connect( mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToEndButtonClicked );
     connect( mLoopButton,        &QPushButton::clicked, this, &TimeControls::loopButtonClicked );
+    connect( mPlaybackRangeCheckBox, &QCheckBox::clicked, this, &TimeControls::playbackRangeClicked );
 }
 
 void TimeControls::playButtonClicked()
@@ -175,4 +174,9 @@ void TimeControls::jumpToEndButtonClicked()
 void TimeControls::loopButtonClicked( bool bChecked )
 {
     mEditor->playback()->setLooping( bChecked );
+}
+
+void TimeControls::playbackRangeClicked( bool bChecked )
+{
+    mEditor->playback()->enableRangedPlayback( bChecked );
 }

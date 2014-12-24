@@ -49,8 +49,12 @@ class Editor : public QObject
 public:
     explicit Editor( QObject* parent );
     virtual ~Editor();
+
     bool initialize( ScribbleArea* pScribbleArea );
 
+    /************************************************************************/
+    /* Managers 
+    /************************************************************************/ 
     ColorManager*    color() const { return mColorManager; }
     ToolManager*     tools() const { return mToolManager; }
     LayerManager*    layers() const { return mLayerManager; }
@@ -64,9 +68,10 @@ public:
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
-    int currentFrame();
+    int  currentFrame();
+    void scrubTo( int frameNumber );
 
-    int allLayers();
+    int  allLayers();
     bool exportSeqCLI( QString, QString );
 
     int getOnionLayer1Opacity() { return onionLayer1Opacity; }
@@ -85,7 +90,6 @@ Q_SIGNALS:
     void updateAllFrames();
     void updateTimeLine();
     void updateLayerCount();
-    void updateFrmae( int frame );
 
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
@@ -121,7 +125,6 @@ public: //slots
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
-    void scrubTo( int frameNumber );
     void scrubNextKeyFrame();
     void scrubPreviousKeyFrame();
     void scrubForward();

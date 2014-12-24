@@ -60,7 +60,6 @@ Q_SIGNALS:
     void newSoundLayer();
     void newCameraLayer();
 
-    void loopControlClick( bool );
     void loopStartClick(int);
     void loopEndClick(int);
 

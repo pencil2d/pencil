@@ -872,9 +872,9 @@ void Editor::scrubTo( int frame )
     {
         mScribbleArea->updateAllFrames();
     }
-    emit updateFrame( oldFrame );
-    emit updateFrame( mFrame );
 
+    Q_EMIT currentFrameChanged( frame );
+    
     mScribbleArea->update();
 }
 

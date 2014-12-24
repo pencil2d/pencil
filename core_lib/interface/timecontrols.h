@@ -40,12 +40,9 @@ public:
     void setCore( Editor* editor );
 
 Q_SIGNALS:
-    void loopControlClick(bool);//adding loopControl
-
     void soundClick( bool );
     void fpsClick(int);
 
-    void loopControlToggled(bool);
     void loopStartClick(int);
     void loopEndClick(int);
 
@@ -59,6 +56,7 @@ private:
     void jumpToStartButtonClicked();
     void jumpToEndButtonClicked();
     void loopButtonClicked( bool bChecked );
+    void playbackRangeClicked( bool bChecked );
 
 private:
     QPushButton* mPlayButton;
@@ -66,10 +64,10 @@ private:
     QPushButton* mJumpToStartButton;
     QPushButton* mLoopButton;
     QPushButton* mSoundButton;
-    QSpinBox* mFpsBox;
-    QCheckBox* mPlaybackRangeCheckBox;
-    QSpinBox* mLoopStartSpinBox;
-    QSpinBox* mLoopEndSpinBox;
+    QSpinBox*    mFpsBox;
+    QCheckBox*   mPlaybackRangeCheckBox;
+    QSpinBox*    mLoopStartSpinBox;
+    QSpinBox*    mLoopEndSpinBox;
 
     Editor* mEditor = nullptr;
 };
