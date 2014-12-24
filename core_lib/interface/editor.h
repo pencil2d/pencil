@@ -39,6 +39,7 @@ class TimeLine;
 class Editor : public QObject
 {
     Q_OBJECT
+
     Q_PROPERTY( ColorManager*    color    READ color )
     Q_PROPERTY( ToolManager*     tools    READ tools )
     Q_PROPERTY( LayerManager*    layers   READ layers )
@@ -79,16 +80,12 @@ public:
     QList<BackupElement*> mBackupList;
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
-protected:
-    // Need to move to somewhere...
-    void dragEnterEvent( QDragEnterEvent* event );
-    void dropEvent( QDropEvent* event );
 
 Q_SIGNALS:
     void updateAllFrames();
-	void updateTimeLine();
-	void updateLayerCount();
-	void updateFrmae( int frame );
+    void updateTimeLine();
+    void updateLayerCount();
+    void updateFrmae( int frame );
 
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
@@ -175,6 +172,11 @@ public: //slots
     void toggleMirrorV();
     void toggleShowAllLayers();
     void resetMirror();
+
+protected:
+    // Need to move to somewhere...
+    void dragEnterEvent( QDragEnterEvent* event );
+    void dropEvent( QDropEvent* event );
 
 private:
     bool importBitmapImage( QString );
