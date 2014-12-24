@@ -3,7 +3,7 @@
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2013-2014 Matt Chiawen Chang
- 
+
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation;
@@ -24,7 +24,7 @@ GNU General Public License for more details.
 
 
 int main(int argc, char* argv[])
-{   
+{
     QApplication app(argc, argv);
     app.setApplicationName( "Pencil2D" );
 
@@ -42,20 +42,18 @@ int main(int argc, char* argv[])
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
-#ifdef _DEBUG
-    argc = 1;
-#endif
+
     if ( argc == 1 )
     {
         mainWindow.show();
         return app.exec();
     }
-    
+
     QString inputFile;
-    
+
     bool jobExportSequence = false;
     QString jobExportSequenceOutput = "";
-    
+
     // Extracting options
     int i;
     for ( i = 1; i < argc; ++i )
@@ -75,7 +73,7 @@ int main(int argc, char* argv[])
             inputFile = QString(argv[i]);
         }
     }
-    
+
     bool error = false;
     if ( jobExportSequence )
     {
@@ -92,7 +90,7 @@ int main(int argc, char* argv[])
             error = true;
         }
         // TODO: Check if output path exists
-        
+
         if ( !error )
         {
             mainWindow.openFile( inputFile );
@@ -135,7 +133,7 @@ int main(int argc, char* argv[])
         qDebug() << "Error: Invalid commandline options.";
         error = true;
     }
-    
+
     if (error)
     {
         qDebug() << "Syntax:";

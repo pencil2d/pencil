@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "backupelement.h"
 #include "pencilerror.h"
 
+
 class QDragEnterEvent;
 class QDropEvent;
 class Object;
@@ -38,6 +39,7 @@ class TimeLine;
 class Editor : public QObject
 {
     Q_OBJECT
+
     Q_PROPERTY( ColorManager*    color    READ color )
     Q_PROPERTY( ToolManager*     tools    READ tools )
     Q_PROPERTY( LayerManager*    layers   READ layers )
@@ -45,10 +47,14 @@ class Editor : public QObject
     Q_PROPERTY( ViewManager*     view     READ view )
 
 public:
-    Editor( QObject* parent );
+    explicit Editor( QObject* parent );
     virtual ~Editor();
+
     bool initialize( ScribbleArea* pScribbleArea );
 
+    /************************************************************************/
+    /* Managers 
+    /************************************************************************/ 
     ColorManager*    color() const { return mColorManager; }
     ToolManager*     tools() const { return mToolManager; }
     LayerManager*    layers() const { return mLayerManager; }
@@ -62,9 +68,10 @@ public:
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
-    int currentFrame();
+    int  currentFrame();
+    void scrubTo( int frameNumber );
 
-    int allLayers();
+    int  allLayers();
     bool exportSeqCLI( QString, QString );
 
     int getOnionLayer1Opacity() { return onionLayer1Opacity; }
@@ -78,16 +85,11 @@ public:
     QList<BackupElement*> mBackupList;
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
-protected:
-    // Need to move to somewhere...
-    void dragEnterEvent( QDragEnterEvent* event );
-    void dropEvent( QDropEvent* event );
 
-signals:
+Q_SIGNALS:
     void updateAllFrames();
-	void updateTimeLine();
-	void updateLayerCount();
-	void updateFrmae( int frame );
+    void updateTimeLine();
+    void updateLayerCount();
 
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
@@ -105,7 +107,7 @@ signals:
     void needSave();
     void fileLoaded();
 
-public slots:
+public: //slots
     void clearCurrentFrame();
 
     void cut();
@@ -123,7 +125,6 @@ public slots:
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
-    void scrubTo( int frameNumber );
     void scrubNextKeyFrame();
     void scrubPreviousKeyFrame();
     void scrubForward();
@@ -174,6 +175,11 @@ public slots:
     void toggleMirrorV();
     void toggleShowAllLayers();
     void resetMirror();
+
+protected:
+    // Need to move to somewhere...
+    void dragEnterEvent( QDragEnterEvent* event );
+    void dropEvent( QDropEvent* event );
 
 private:
     bool importBitmapImage( QString );

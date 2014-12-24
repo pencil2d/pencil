@@ -21,15 +21,17 @@ public:
     void stop();
 
     int  fps() { return m_fps; }
-    
+    int startFrame() { return mStartFrame; }
+    int endFrame() { return mEndFrame; }
+
     void setFps( int fps );
-    void setLoop( bool isLoop );
+    void setLooping( bool isLoop );
     void enableRangedPlayback( bool b );
     void setRangedStartFrame( int frame ) { m_markInFrame = frame; }
     void setRangedEndFrame( int frame ) { m_markOutFrame = frame; }
     void enbaleSound( bool b ) { m_isPlaySound = b; }
 
-signals:
+Q_SIGNALS:
     void fpsChanged( int fps );
     void loopStateChanged( bool b );
     void rangedPlaybackStateChanged( bool b );
@@ -40,8 +42,8 @@ private:
     bool m_isLooping = false;
     bool m_isPlaying = false;
     bool m_isPlaySound = false;
-    int m_startFrame = 1;
-    int m_endFrame = 60;
+    int mStartFrame = 1;
+    int mEndFrame = 60;
 
     bool m_isRangedPlayback = false;
     int m_markInFrame = 1;

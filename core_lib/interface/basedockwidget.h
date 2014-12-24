@@ -3,8 +3,8 @@
 
 #include <QDockWidget>
 
-
 class Editor;
+
 
 class BaseDockWidget : public QDockWidget
 {
@@ -13,7 +13,7 @@ public:
     explicit BaseDockWidget( QWidget* pParent );
     explicit BaseDockWidget( QWidget* pParent, Qt::WindowFlags );
     explicit BaseDockWidget( QString strTitle, QWidget* pParent, Qt::WindowFlags );
-    ~BaseDockWidget();
+    virtual  ~BaseDockWidget();
 
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
@@ -21,7 +21,6 @@ public:
     Editor* editor() { return mEditor; }
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
-    
 private:
     Editor* mEditor = nullptr;
 };

@@ -27,10 +27,11 @@ class TimeLineCells;
 
 class TimeLine : public BaseDockWidget
 {
-	Q_OBJECT
+    Q_OBJECT
+
 public:
     TimeLine( QWidget* parent );
-    
+
     void initUI() override;
     void updateUI() override;
 
@@ -43,52 +44,46 @@ public:
     void setFps( int );
     int getFrameLength();
 
-signals :
-	void modification();
-	void lengthChange( QString );
-	void frameSizeChange( int );
-	void fontSizeChange( int );
-	void labelChange( int );
-	void scrubChange( int );
-	void addKeyClick();
-	void removeKeyClick();
-	void duplicateKeyClick();
-	void newBitmapLayer();
-	void newVectorLayer();
-	void newSoundLayer();
+Q_SIGNALS:
+    void modification();
+    void lengthChange( QString );
+    void frameSizeChange( int );
+    void fontSizeChange( int );
+    void labelChange( int );
+    void scrubChange( int );
+
+    void addKeyClick();
+    void removeKeyClick();
+    void duplicateKeyClick();
+    void newBitmapLayer();
+    void newVectorLayer();
+    void newSoundLayer();
     void newCameraLayer();
 
-	void playClick();
-	void loopClick( bool );
-    void loopToggled( bool );
-
-    void loopControlClick( bool );
     void loopStartClick(int);
     void loopEndClick(int);
 
-	void soundClick( bool );
-	void endplayClick();
-	void startplayClick();
-	void fpsClick( int );
-	void onionPrevClick();
-	void onionNextClick();
+    void soundClick( bool );
+    void fpsClick( int );
+    void onionPrevClick();
+    void onionNextClick();
 
 public:
     bool scrubbing;
 
 protected:
-	void resizeEvent( QResizeEvent* event );
+    void resizeEvent( QResizeEvent* event ) override;
 
 private:
     void deleteCurrentLayer();
 
-    QScrollBar* hScrollBar;
-    QScrollBar* vScrollBar;
-	TimeLineCells* mTracks;
-	TimeLineCells* mLayerList;
-	int numberOfLayers;
-	TimeControls* timeControls;
+    QScrollBar* hScrollBar = nullptr;
+    QScrollBar* vScrollBar = nullptr;
+    TimeLineCells* mTracks = nullptr;
+    TimeLineCells* mLayerList = nullptr;
+    TimeControls* mTimeControls = nullptr;
 
+    int mNumLayers = 0;
     int mLastUpdatedFrame = 0;
 };
 

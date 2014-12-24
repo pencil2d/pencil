@@ -4,10 +4,7 @@
 #include "colormanager.h"
 
 
-ColorManager::ColorManager( QObject* parent )
-    : BaseManager( parent )
-    , mCurrentColorIndex( 0 )
-    , mCurrentFrontColor( 0, 0, 0 )
+ColorManager::ColorManager( QObject* parent ) : BaseManager( parent )
 {
 }
 

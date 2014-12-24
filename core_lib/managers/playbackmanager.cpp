@@ -4,30 +4,27 @@
 #include "layermanager.h"
 #include "playbackmanager.h"
 
-PlaybackManager::PlaybackManager(QObject* parent) :
-    BaseManager(parent)
+PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 {
 }
 
 bool PlaybackManager::init()
 {
     m_pTimer = new QTimer( this );
-    connect( m_pTimer, &QTimer::timeout, [ = ] { timerTick(); } );
+    connect( m_pTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
     return true;
 }
 
 void PlaybackManager::play()
 {
-    //updateMaxFrame();
-
     int projectLength = editor()->layers()->projectLength();
 
-    m_startFrame = ( m_isRangedPlayback ) ? m_markInFrame : 1;
-    m_endFrame = ( m_isRangedPlayback ) ? m_markOutFrame : projectLength;
+    mStartFrame = ( m_isRangedPlayback ) ? m_markInFrame : 1;
+    mEndFrame = ( m_isRangedPlayback ) ? m_markOutFrame : projectLength;
 
-    if ( editor()->currentFrame() >= m_endFrame )
+    if ( editor()->currentFrame() >= mEndFrame )
     {
-        editor()->scrubTo( m_startFrame );
+        editor()->scrubTo( mStartFrame );
     }
 
     m_pTimer->setInterval( 1000.0f / m_fps );
@@ -50,11 +47,11 @@ void PlaybackManager::setFps( int fps )
 
 void PlaybackManager::timerTick()
 {
-    if ( editor()->currentFrame() > m_endFrame )
+    if ( editor()->currentFrame() > mEndFrame )
     {
         if ( m_isLooping )
         {
-            editor()->scrubTo( m_startFrame );
+            editor()->scrubTo( mStartFrame );
         }
         else
         {
@@ -68,7 +65,7 @@ void PlaybackManager::timerTick()
     // TODO: play sound if any
 }
 
-void PlaybackManager::setLoop( bool isLoop )
+void PlaybackManager::setLooping( bool isLoop )
 {
     if ( m_isLooping != isLoop )
     {

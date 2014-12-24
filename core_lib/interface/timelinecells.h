@@ -32,7 +32,7 @@ public:
     int getLayerHeight() { return layerHeight; }
     int getFrameLength() {return frameLength;}
 
-signals:
+Q_SIGNALS:
     void mouseMovedY(int);
 
 public slots:

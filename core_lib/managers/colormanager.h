@@ -16,17 +16,15 @@ public:
 
     QColor frontColor();
     int frontColorNumber();
-
-public slots:
     void setColor(const QColor& color);
     void setColorNumber( int n );
 
-signals:
+Q_SIGNALS:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
 private:
-    QColor mCurrentFrontColor = QColor( 0, 0, 0 );
+    QColor mCurrentFrontColor = { 0, 0, 0 };
     int mCurrentColorIndex = 0;
 };
 

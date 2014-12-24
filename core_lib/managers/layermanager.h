@@ -36,7 +36,7 @@ public:
 
     int  projectLength();
 
-signals:
+Q_SIGNALS:
     void currentLayerChanged( int n );
     void layerCountChanged( int count );
 

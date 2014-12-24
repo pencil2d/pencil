@@ -41,7 +41,7 @@ void LayerManager::setCurrentLayer( int layerIndex )
 	if ( mCurrentLayerIndex != layerIndex )
 	{
 		mCurrentLayerIndex = layerIndex;
-		emit currentLayerChanged( mCurrentLayerIndex );
+		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
 	}
 }
 

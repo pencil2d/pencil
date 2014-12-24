@@ -49,6 +49,7 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "toolbox.h"
 #include "preview.h"
+#include "timeline2.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -60,10 +61,9 @@ GNU General Public License for more details.
 #include "exportimageseqdialog.h"
 
 
-MainWindow2::MainWindow2( QWidget *parent )
-    : QMainWindow( parent )
-    , ui( new Ui::MainWindow2 )
+MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
+    ui = new Ui::MainWindow2;
     ui->setupUi( this );
 
     // Central widget
@@ -93,8 +93,8 @@ MainWindow2::MainWindow2( QWidget *parent )
 
     connect( mEditor, &Editor::needSave, this, &MainWindow2::saveDocument );
     connect( mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame );
-    
-	//connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
+
+    //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
 }
@@ -108,7 +108,7 @@ void MainWindow2::createDockWidgets()
 {
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
-    m_subWidgets.append( mTimeLine );
+    mDockWidgets.append( mTimeLine );
 
     mColorWheel = new QDockWidget( tr("Color Wheel"), this );
     ColorBox* pColorBox = new ColorBox(this);
@@ -118,7 +118,7 @@ void MainWindow2::createDockWidgets()
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     mColorPalette->setObjectName( "ColorPalette" );
-    m_subWidgets.append( mColorPalette );
+    mDockWidgets.append( mColorPalette );
 
     mDisplayOptionWidget = new DisplayOptionWidget(this);
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
@@ -128,31 +128,37 @@ void MainWindow2::createDockWidgets()
 
     mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     mToolBox->setObjectName( "ToolBox" );
-    m_subWidgets.append( mToolBox );
+    mDockWidgets.append( mToolBox );
+
+    mTimeline2 = new Timeline2;
+    mTimeline2->setObjectName( "Timeline2" );
+    mDockWidgets.append( mTimeline2 );
 
     addDockWidget(Qt::RightDockWidgetArea,  mColorWheel);
     addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolOptions);
-    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+    //addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+    addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
-    for ( BaseDockWidget* pWidget : m_subWidgets )
+    for ( BaseDockWidget* pWidget : mDockWidgets )
     {
         pWidget->setCore( mEditor );
         pWidget->initUI();
-        qDebug() << "Init UI: " << pWidget->objectName();
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
+
+        qDebug() << "Init UI: " << pWidget->objectName();
     }
 
-	/*
-	mPreview = new PreviewWidget( this );
-	mPreview->setImage( mScribbleArea->mBufferImg );
-	mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
-	mPreview->setFocusPolicy( Qt::NoFocus );
-	addDockWidget( Qt::RightDockWidgetArea, mPreview );
-	*/
+    /*
+    mPreview = new PreviewWidget( this );
+    mPreview->setImage( mScribbleArea->mBufferImg );
+    mPreview->setFeatures( QDockWidget::DockWidgetFloatable );
+    mPreview->setFocusPolicy( Qt::NoFocus );
+    addDockWidget( Qt::RightDockWidgetArea, mPreview );
+    */
 
     makeConnections( mEditor, mTimeLine );
     makeConnections( mEditor, pColorBox );
@@ -191,7 +197,7 @@ void MainWindow2::createMenus()
 
     /// --- Edit Menu ---
     ui->actionPreference->setMenuRole( QAction::PreferencesRole );
-    
+
     connect( ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo );
     connect( ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo );
     connect( ui->actionCut, &QAction::triggered, mEditor, &Editor::cut );
@@ -203,7 +209,7 @@ void MainWindow2::createMenus()
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
-    
+
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
@@ -226,9 +232,9 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled( false );
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked ) 
-    { 
-        mScribbleArea->setEffect( EFFECT_GRID_A, bChecked ); 
+    connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked )
+    {
+        mScribbleArea->setEffect( EFFECT_GRID_A, bChecked );
     } );
 
 
@@ -245,7 +251,7 @@ void MainWindow2::createMenus()
     PlaybackManager* pPlaybackManager = mEditor->playback();
     connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
 
-    connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLoop );
+    connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, ui->actionLoop, &QAction::setChecked );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
@@ -277,7 +283,7 @@ void MainWindow2::createMenus()
 
     /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
-    
+
     QAction* actions[] =
     {
         mToolBox->toggleViewAction(),
@@ -293,7 +299,7 @@ void MainWindow2::createMenus()
         action->setMenuRole( QAction::NoRole );
         winMenu->addAction( action );
     }
-    
+
     /// --- Help Menu ---
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
@@ -391,9 +397,9 @@ bool MainWindow2::saveAsNewDocument()
         strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
     }
 
-    QString fileName = QFileDialog::getSaveFileName( this, 
-                                                     tr( "Save As..." ), 
-                                                     strLastFolder, 
+    QString fileName = QFileDialog::getSaveFileName( this,
+                                                     tr( "Save As..." ),
+                                                     strLastFolder,
                                                      tr( PFF_SAVE_ALL_FILE_FILTER ) );
     if ( fileName.isEmpty() )
     {
@@ -469,7 +475,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
     mRecentFileMenu->saveToDisk();
-    
+
     mTimeLine->updateContent();
 
     setWindowTitle( strSavedFileName );
@@ -1005,8 +1011,8 @@ void MainWindow2::helpBox()
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
 {
-	connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
-	connect( editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor );
+    connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
+    connect( editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor );
 }
 
 void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
@@ -1032,16 +1038,10 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
-    LayerManager* pLayerManager = pEditor->layers();
+    //LayerManager* pLayerManager = pEditor->layers();
 
-    connect( pTimeline, &TimeLine::endplayClick, [ = ]{ pLayerManager->gotoLastKeyFrame(); } );
-    connect( pTimeline, &TimeLine::startplayClick, [ = ]{ pLayerManager->gotoFirstKeyFrame(); } );
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
 
-    connect( pTimeline, &TimeLine::playClick, [ = ]{ pPlaybackManager->play(); } );
-    connect( pTimeline, &TimeLine::loopClick, pPlaybackManager, &PlaybackManager::setLoop );
-
-    connect( pTimeline, &TimeLine::loopControlClick, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
     connect( pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame );
     connect( pTimeline, &TimeLine::loopEndClick, pPlaybackManager, &PlaybackManager::setRangedEndFrame );
 
@@ -1057,8 +1057,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::newSoundLayer, pEditor, &Editor::newSoundLayer );
     connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
 
-    //connect( pEditor, &Editor::toggleLoopControl, pTimeline, &Timeline::toggleLoopControl );
-    connect( pTimeline, SIGNAL( loopControlClick( bool ) ), pEditor, SIGNAL( loopControlToggled( bool ) ) );
+    connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
