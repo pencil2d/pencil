@@ -90,7 +90,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     qCDebug( mLog ) << "Start to load object.";
     
     bool ok = true;
-    int progress = 0;
+    //int progress = 0;
     
     if ( root.tagName() == "document" )
     {

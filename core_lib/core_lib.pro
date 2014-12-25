@@ -16,23 +16,6 @@ RESOURCES += ../pencil.qrc
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
-# i18n
-TRANSLATIONS += ../pencil.ts \
-                ../pencil2d_it.ts \
-                ../pencil2d_cs.ts
-
-isEmpty(QMAKE_LRELEASE) {
-    win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
-    else:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]/lrelease
-}
-updateqm.input = TRANSLATIONS
-updateqm.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
-isEmpty(vcproj):updateqm.variable_out = PRE_TARGETDEPS
-updateqm.commands = $$QMAKE_LRELEASE ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
-updateqm.CONFIG += no_link
-QMAKE_EXTRA_COMPILERS += updateqm
-PRE_TARGETDEPS += compiler_updateqm_make_all
-
 
 INCLUDEPATH += \
     graphics \
@@ -114,7 +97,8 @@ HEADERS +=  \
     util/util.h \
     interface/basedockwidget.h \
     util/log.h \
-    interface/preview.h
+    interface/preview.h \
+    canvasrenderer.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -182,7 +166,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     managers/playbackmanager.cpp \
     managers/viewmanager.cpp \
     util/util.cpp \
-    interface/preview.cpp
+    interface/preview.cpp \
+    canvasrenderer.cpp
 
 FORMS += \
     interface/shortcutspage.ui \
