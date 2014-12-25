@@ -1038,8 +1038,6 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
-    //LayerManager* pLayerManager = pEditor->layers();
-
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
 
     connect( pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame );
@@ -1047,7 +1045,6 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
-
 
     connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
