@@ -36,9 +36,7 @@ int main(int argc, char* argv[])
     pencil2DTranslator.load("pencil2d_" + QLocale::system().name());
     app.installTranslator(&pencil2DTranslator);
 
-#ifndef Q_WS_MAC
     app.setWindowIcon(QIcon(":/icons/icon.png"));
-#endif
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
