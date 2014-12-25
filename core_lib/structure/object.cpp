@@ -400,7 +400,7 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
-        if ( layer->visible )
+        if ( layer->mVisible )
         {
             painter.setOpacity( 1.0 );
 

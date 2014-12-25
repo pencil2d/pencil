@@ -1,16 +1,61 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation;
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #ifndef CANVASRENDERER_H
 #define CANVASRENDERER_H
 
+
 #include <QWidget>
+#include <QTransform>
+#include <memory>
+
+
+class Object;
+class LayerBitmap;
+
 
 class CanvasRenderer : public QWidget
 {
     Q_OBJECT
+
 public:
-    explicit CanvasRenderer(QWidget *parent = 0);
+    explicit CanvasRenderer( QWidget* parent = 0 );
     virtual ~CanvasRenderer();
+    
+    void setCanvas( QPixmap* canvas );
+    void setViewTransform( QTransform viewTransform );
 
+    void render( Object* object, int layer, int frame );
 
+private:
+    void renderBackground();
+    void renderOnionSkin();
+    void renderCurrentFrame();
+
+    void renderOnionSkinBitmap( LayerBitmap* layer );
+
+private:
+    QPixmap* mCanvas = nullptr;
+    Object* mObject = nullptr;
+    QTransform mViewTransform;
+
+    int mLayerIndex = 0;
+    int mFrameNumber = 0;
+
+    bool bMultiLayerOnionSkin = false;
 };
 
 #endif // CANVASRENDERER_H

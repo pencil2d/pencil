@@ -128,7 +128,7 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 
     layerTag.setAttribute("id", mId);
     layerTag.setAttribute("name", mName);
-    layerTag.setAttribute("visibility", visible);
+    layerTag.setAttribute("visibility", mVisible);
     layerTag.setAttribute("type", type());
 
     foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
@@ -148,7 +148,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
     if (!element.attribute("id").isNull()) mId = element.attribute("id").toInt();
     mName = element.attribute("name");
-    visible = (element.attribute("visibility") == "1");
+    mVisible = (element.attribute("visibility") == "1");
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
