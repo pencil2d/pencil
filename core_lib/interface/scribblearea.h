@@ -33,6 +33,8 @@ GNU General Public License for more details.
 #include "vectorselection.h"
 #include "colormanager.h"
 #include "viewmanager.h"
+#include "canvasrenderer.h"
+
 
 class Layer;
 class Editor;
@@ -54,6 +56,7 @@ public:
     ScribbleArea( QWidget *parent );
     ~ScribbleArea();
 
+    bool init();
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
     void deleteSelection();
@@ -210,7 +213,7 @@ private:
 
     bool mNeedUpdateAll;
 
-    QBrush backgroundBrush;
+    QBrush mBackgroundBrush;
 public:
     BitmapImage* mBufferImg; // used to pre-draw vector modifications
 
@@ -239,9 +242,10 @@ private:
 
     QPixmap mCanvas;
 
+    CanvasRenderer mCanvasRenderer;
+
     // debug
     QRectF debugRect;
-
     QLoggingCategory mLog;
 };
 

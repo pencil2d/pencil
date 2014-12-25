@@ -32,7 +32,7 @@ Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
     meType = eType;
     mId = 0;
     mName = QString( tr( "Undefined Layer" ) );
-    visible = true;
+    mVisible = true;
 
     Q_ASSERT( eType != UNDEFINED );
 }
@@ -259,7 +259,7 @@ bool Layer::save( QString strDataFolder )
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
 {
     painter.setFont( QFont( "helvetica", height / 2 ) );
-    if ( visible )
+    if ( mVisible )
     {
         QColor col;
         if ( type() == BITMAP ) col = QColor( 130, 130, 245 );
@@ -317,7 +317,7 @@ void Layer::paintLabel( QPainter& painter, TimeLineCells* cells, int x, int y, i
     painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
     painter.drawRect( x, y - 1, width, height ); // empty rectangle  by default
 
-    if ( visible )
+    if ( mVisible )
     {
         if ( allLayers == 0 )  painter.setBrush( Qt::NoBrush );
         if ( allLayers == 1 )   painter.setBrush( Qt::darkGray );
