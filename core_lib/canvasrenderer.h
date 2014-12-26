@@ -41,9 +41,9 @@ public:
     void render( Object* object, int layer, int frame );
 
 private:
-    void renderBackground();
-    void renderOnionSkin();
-    void renderCurrentFrame();
+    void renderBackground( QPainter& painter );
+    void renderOnionSkin( QPainter& painter );
+    void renderCurrentFrame( QPainter& painter );
 
     void renderOnionSkinBitmap( LayerBitmap* layer );
 
