@@ -53,17 +53,20 @@ void CanvasRenderer::render( Object* object, int layer, int frame )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, false );
     painter.setWorldMatrixEnabled( true );
 
-    renderBackground();
-    renderOnionSkin();
-    renderCurrentFrame();
+    renderBackground( painter );
+    renderOnionSkin( painter );
+    renderCurrentFrame( painter );
 }
 
-void CanvasRenderer::renderBackground()
+void CanvasRenderer::renderBackground( QPainter& painter )
 {
+    painter.setPen( Qt::NoPen );
+    painter.setBrush( QBrush( Qt::white ) );
 
+    mCanvas->fill( Qt::white );
 }
 
-void CanvasRenderer::renderOnionSkin()
+void CanvasRenderer::renderOnionSkin( QPainter& painter )
 {
     /*
     for ( int i = 0; i < mObject->getLayerCount(); ++i )
@@ -100,7 +103,7 @@ void CanvasRenderer::renderOnionSkinBitmap( LayerBitmap* layer )
 }
 
 
-void CanvasRenderer::renderCurrentFrame()
+void CanvasRenderer::renderCurrentFrame( QPainter& painter )
 {
 
 }
