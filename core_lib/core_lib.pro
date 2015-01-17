@@ -51,7 +51,6 @@ HEADERS +=  \
     interface/popupcolorpalettewidget.h \
     interface/recentfilemenu.h \
     interface/scribblearea.h \
-    interface/shortcutspage.h \
     interface/spinslider.h \
     interface/timecontrols.h \
     interface/timeline.h \
@@ -121,7 +120,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/popupcolorpalettewidget.cpp \
     interface/recentfilemenu.cpp \
     interface/scribblearea.cpp \
-    interface/shortcutspage.cpp \
     interface/spinslider.cpp \
     interface/timecontrols.cpp \
     interface/timeline.cpp \
@@ -168,7 +166,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     canvasrenderer.cpp
 
 FORMS += \
-    interface/shortcutspage.ui \
     interface/colorinspector.ui \
     interface/colorpalette.ui
 

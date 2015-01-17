@@ -31,7 +31,8 @@ HEADERS += \
     exportimageseqdialog.h \
     timeline2.h \
     commandcenter.h \
-    preferences.h
+    preferences.h \
+    shortcutspage.h \
 
 SOURCES += \
     main.cpp \
@@ -39,12 +40,14 @@ SOURCES += \
     exportimageseqdialog.cpp \
     timeline2.cpp \
     commandcenter.cpp \
-    preferences.cpp
+    preferences.cpp \
+    shortcutspage.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
     ui/exportimageseqdialog.ui \
-    ui/timeline2.ui
+    ui/timeline2.ui \
+    ui/shortcutspage.ui
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
