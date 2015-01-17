@@ -42,9 +42,9 @@ SOURCES += \
     preferences.cpp
 
 FORMS += \
-    mainwindow2.ui \
-    exportimageseqdialog.ui \
-    timeline2.ui
+    ui/mainwindow2.ui \
+    ui/exportimageseqdialog.ui \
+    ui/timeline2.ui
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
