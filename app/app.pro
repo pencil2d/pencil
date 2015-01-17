@@ -29,13 +29,17 @@ INCLUDEPATH += \
 HEADERS += \
     mainwindow2.h \
     exportimageseqdialog.h \
-    timeline2.h
+    timeline2.h \
+    commandcenter.h \
+    preferences.h
 
 SOURCES += \
+    main.cpp \
     mainwindow2.cpp \
     exportimageseqdialog.cpp \
-    main.cpp \
-    timeline2.cpp
+    timeline2.cpp \
+    commandcenter.cpp \
+    preferences.cpp
 
 FORMS += \
     mainwindow2.ui \

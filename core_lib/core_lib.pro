@@ -49,7 +49,6 @@ HEADERS +=  \
     interface/flowlayout.h \
     interface/keycapturelineedit.h \
     interface/popupcolorpalettewidget.h \
-    interface/preferences.h \
     interface/recentfilemenu.h \
     interface/scribblearea.h \
     interface/shortcutspage.h \
@@ -120,7 +119,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \
     interface/popupcolorpalettewidget.cpp \
-    interface/preferences.cpp \
     interface/recentfilemenu.cpp \
     interface/scribblearea.cpp \
     interface/shortcutspage.cpp \
