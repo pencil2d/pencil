@@ -45,7 +45,6 @@ GNU General Public License for more details.
 #include "layerimage.h"
 
 #include "colormanager.h"
-#include "colorpalettewidget.h"
 #include "toolmanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"

@@ -34,7 +34,6 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "popupcolorpalettewidget.h"
-#include "preview.h"
 
 
 #define round(f) ((int)(f + 0.5))
