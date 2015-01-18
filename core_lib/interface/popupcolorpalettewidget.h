@@ -3,10 +3,10 @@
 
 #include <QWidget>
 
-
 class ColorBox;
 class ScribbleArea;
 class QPushButton;
+
 
 class PopupColorPaletteWidget : public QWidget
 {
