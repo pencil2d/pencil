@@ -40,6 +40,7 @@ HEADERS += \
     colorinspector.h \
     colorpalettewidget.h \
     colorwheel.h
+    # popupcolorpalettewidget.h
 
 SOURCES += \
     main.cpp \
@@ -55,7 +56,8 @@ SOURCES += \
     colorgriditem.cpp \
     colorinspector.cpp \
     colorpalettewidget.cpp \
-    colorwheel.cpp \
+    colorwheel.cpp
+    # spopupcolorpalettewidget.cpp
 
 FORMS += \
     ui/mainwindow2.ui \

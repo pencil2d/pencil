@@ -42,7 +42,6 @@ HEADERS +=  \
     interface/editor.h \
     interface/flowlayout.h \
     interface/keycapturelineedit.h \
-    interface/popupcolorpalettewidget.h \
     interface/recentfilemenu.h \
     interface/scribblearea.h \
     interface/spinslider.h \
@@ -104,7 +103,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/editor.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \
-    interface/popupcolorpalettewidget.cpp \
     interface/recentfilemenu.cpp \
     interface/scribblearea.cpp \
     interface/spinslider.cpp \

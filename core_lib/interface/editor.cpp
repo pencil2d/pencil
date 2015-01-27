@@ -49,7 +49,6 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "viewmanager.h"
-
 #include "scribblearea.h"
 #include "timeline.h"
 #include "util.h"
@@ -224,8 +223,8 @@ void Editor::modification( int layerNumber )
     lastModifiedLayer = layerNumber;
 
     mScribbleArea->update();
-    
-	emit updateTimeLine();
+
+    emit updateTimeLine();
 
     numberOfModifications++;
     if ( mIsAutosave && numberOfModifications > autosaveNumber )
@@ -507,8 +506,8 @@ void Editor::newBitmapLayer()
         {
             Layer *layer = mObject->addNewBitmapLayer();
             layer->mName = text;
-            
-			emit updateLayerCount();
+
+            emit updateLayerCount();
 
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
@@ -545,7 +544,7 @@ void Editor::newSoundLayer()
         {
             Layer *layer = mObject->addNewSoundLayer();
             layer->mName = text;
-			emit updateLayerCount();
+            emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -563,7 +562,7 @@ void Editor::newCameraLayer()
         {
             Layer *layer = mObject->addNewCameraLayer();
             layer->mName = text;
-			emit updateLayerCount();
+            emit updateLayerCount();
             setCurrentLayer( mObject->getLayerCount() - 1 );
         }
     }
@@ -584,7 +583,7 @@ void Editor::toggleMirrorV()
 void Editor::toggleShowAllLayers()
 {
     mScribbleArea->toggleShowAllLayers();
-	emit updateTimeLine();
+    emit updateTimeLine();
 }
 
 void Editor::resetMirror()
@@ -627,7 +626,7 @@ void Editor::updateObject()
     color()->setColorNumber( 0 );
 
     emit updateLayerCount();
-    
+
     clearUndoStack();
 
     if ( mScribbleArea )
@@ -873,7 +872,7 @@ void Editor::scrubTo( int frame )
     }
 
     Q_EMIT currentFrameChanged( frame );
-    
+
     mScribbleArea->update();
 }
 
@@ -1041,8 +1040,8 @@ void Editor::switchVisibilityOfLayer( int layerNumber )
     Layer* layer = mObject->getLayer( layerNumber );
     if ( layer != NULL ) layer->switchVisibility();
     mScribbleArea->updateAllFrames();
-    
-	emit updateTimeLine();
+
+    emit updateTimeLine();
 }
 
 void Editor::moveLayer( int i, int j )
@@ -1056,7 +1055,7 @@ void Editor::moveLayer( int i, int j )
     {
         layers()->setCurrentLayer( j - 1 );
     }
-	emit updateTimeLine();
+    emit updateTimeLine();
     mScribbleArea->updateAllFrames();
 }
 
