@@ -41,7 +41,7 @@ class Editor;
 class BaseTool;
 class StrokeManager;
 class ColorManager;
-class PopupColorPaletteWidget;
+//class PopupColorPaletteWidget;
 
 
 class ScribbleArea : public QWidget
@@ -74,7 +74,7 @@ public:
     static QBrush getBackgroundBrush( QString );
 
     bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
-	void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
+    void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
 
     bool showThinLines() const { return mShowThinLines; }
     int showAllLayers() const { return mShowAllLayers; }
@@ -108,7 +108,7 @@ public:
 
     StrokeManager *getStrokeManager() const { return mStrokeManager; }
 
-    PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
+    //PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
     Editor* editor() { return mEditor; }
 
@@ -122,7 +122,7 @@ signals:
     void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
 
-	void refreshPreview();
+    void refreshPreview();
 
 public slots:
     void clearImage();
@@ -184,8 +184,8 @@ public:
 private:
     void drawCanvas( int frame, QRect rect );
     void drawShadow( QPainter& );
-	void drawAxis( QPainter& );
-	void drawGrid( QPainter& );
+    void drawAxis( QPainter& );
+    void drawGrid( QPainter& );
 
     void toggledOnionColor();
 
@@ -197,7 +197,7 @@ private:
 
     Editor* mEditor;
 
-    PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
+    //PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
     bool mIsSimplified = false;
     bool mShowThinLines;

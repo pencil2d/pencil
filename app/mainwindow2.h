@@ -20,7 +20,7 @@ class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
 class Timeline2;
-
+class CommandCenter;
 
 namespace Ui
 {
@@ -112,6 +112,7 @@ public:
 
 private:
     Preferences* m_pPreferences;
+    CommandCenter* mCommands;
 
     Ui::MainWindow2* ui;
     QList< BaseDockWidget* > mDockWidgets;

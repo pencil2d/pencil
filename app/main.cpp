@@ -21,6 +21,10 @@ GNU General Public License for more details.
 #include <QIcon>
 #include "editor.h"
 #include "mainwindow2.h"
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 
 int main(int argc, char* argv[])
@@ -75,7 +79,7 @@ int main(int argc, char* argv[])
     bool error = false;
     if ( jobExportSequence )
     {
-        qDebug() << "Exporting image sequence...";
+        std::cout << "Exporting image sequence..." << std::endl;
         if (inputFile.isEmpty())
         {
             qDebug() << "Error: No input file specified.";

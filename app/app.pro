@@ -29,18 +29,44 @@ INCLUDEPATH += \
 HEADERS += \
     mainwindow2.h \
     exportimageseqdialog.h \
-    timeline2.h
+    timeline2.h \
+    commandcenter.h \
+    preferences.h \
+    shortcutspage.h \
+    preview.h \
+    colorbox.h \
+    colorgrid.h \
+    colorgriditem.h \
+    colorinspector.h \
+    colorpalettewidget.h \
+    colorwheel.h
+    # popupcolorpalettewidget.h
 
 SOURCES += \
+    main.cpp \
     mainwindow2.cpp \
     exportimageseqdialog.cpp \
-    main.cpp \
-    timeline2.cpp
+    timeline2.cpp \
+    commandcenter.cpp \
+    preferences.cpp \
+    shortcutspage.cpp \
+    preview.cpp \
+    colorbox.cpp \
+    colorgrid.cpp \
+    colorgriditem.cpp \
+    colorinspector.cpp \
+    colorpalettewidget.cpp \
+    colorwheel.cpp
+    # spopupcolorpalettewidget.cpp
 
 FORMS += \
-    mainwindow2.ui \
-    exportimageseqdialog.ui \
-    timeline2.ui
+    ui/mainwindow2.ui \
+    ui/exportimageseqdialog.ui \
+    ui/timeline2.ui \
+    ui/shortcutspage.ui \
+    ui/colorinspector.ui \
+    ui/colorpalette.ui
+
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
