@@ -150,8 +150,8 @@ void TimeControls::setCore( Editor* editor )
 void TimeControls::makeConnections()
 {
     connect( mPlayButton,        &QPushButton::clicked, this, &TimeControls::playButtonClicked );
-    connect( mJumpToEndButton,   &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked );
-    connect( mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToEndButtonClicked );
+    connect( mJumpToEndButton,   &QPushButton::clicked, this, &TimeControls::jumpToEndButtonClicked );
+    connect( mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked );
     connect( mLoopButton,        &QPushButton::clicked, this, &TimeControls::loopButtonClicked );
     connect( mPlaybackRangeCheckBox, &QCheckBox::clicked, this, &TimeControls::playbackRangeClicked );
 }
