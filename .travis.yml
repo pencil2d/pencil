@@ -1,12 +1,13 @@
 language: cpp
-compiler:
-  - gcc-4.8
+compiler: g++
+
 before_install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-add-repository ppa:ubuntu-sdk-team/ppa -y
   - sudo apt-get update -qq
+install:
   - sudo apt-get install g++-4.8 -qq
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+  - export CXX="g++-4.8"
   - sudo apt-get install libpulse-dev -qq
   - sudo apt-get install qt5-default qttools5-dev-tools qtmultimedia5-dev -qq
   - sudo apt-get install libqt5svg5-dev libqt5xmlpatterns5-dev -qq
