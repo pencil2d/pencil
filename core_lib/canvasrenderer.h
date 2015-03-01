@@ -34,14 +34,14 @@ class CanvasRenderer : public QWidget
 public:
     explicit CanvasRenderer( QWidget* parent = 0 );
     virtual ~CanvasRenderer();
-    
+
     void setCanvas( QPixmap* canvas );
     void setViewTransform( QTransform viewTransform );
 
-    void render( Object* object, int layer, int frame );
+    void paint( Object* object, int layer, int frame );
 
 private:
-    void renderBackground( QPainter& painter );
+    void paintBackground( QPainter& painter );
     void renderOnionSkin( QPainter& painter );
     void renderCurrentFrame( QPainter& painter );
 

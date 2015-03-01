@@ -982,10 +982,10 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
     Object* object = mEditor->object();
-    
+
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
-    mCanvasRenderer.render( object, mEditor->layers()->currentLayerIndex(), frame );
+    mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame );
 
     return;
 
@@ -1015,7 +1015,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     int iEnd = object->getLayerCount() - 1;
 
     if ( !mMultiLayerOnionSkin )
-    { 
+    {
         // not used ( if required, just make a connection from UI )
         // is used now for Single/multiple onionskin Layers
         iStart = iEnd = mEditor->layers()->currentLayerIndex();
