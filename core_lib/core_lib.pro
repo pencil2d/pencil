@@ -200,7 +200,7 @@ macx {
     SOURCES += external/macosx/macosx.cpp
 }
 
-linux-* {
+unix:!macx {
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
 }

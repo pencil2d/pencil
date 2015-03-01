@@ -14,7 +14,7 @@ macx {
    LIBS += -lobjc -framework AppKit -framework Carbon
 }
 
-linux-* {
+unix:!macx {
     QMAKE_CXXFLAGS += -std=c++11
     QMAKE_LINK = $$QMAKE_CXX
     QMAKE_LINK_SHLIB = $$QMAKE_CXX
