@@ -40,7 +40,7 @@ void CanvasRenderer::setViewTransform( QTransform viewTransform )
     mViewTransform = viewTransform;
 }
 
-void CanvasRenderer::render( Object* object, int layer, int frame )
+void CanvasRenderer::paint( Object* object, int layer, int frame )
 {
     Q_ASSERT( object );
     mObject = object;
@@ -53,12 +53,12 @@ void CanvasRenderer::render( Object* object, int layer, int frame )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, false );
     painter.setWorldMatrixEnabled( true );
 
-    renderBackground( painter );
+    paintBackground( painter );
     renderOnionSkin( painter );
     renderCurrentFrame( painter );
 }
 
-void CanvasRenderer::renderBackground( QPainter& painter )
+void CanvasRenderer::paintBackground( QPainter& painter )
 {
     painter.setPen( Qt::NoPen );
     painter.setBrush( QBrush( Qt::white ) );
@@ -94,7 +94,7 @@ void CanvasRenderer::renderOnionSkin( QPainter& painter )
             break;
         }
     }
-    
+
 }
 
 void CanvasRenderer::renderOnionSkinBitmap( LayerBitmap* layer )
