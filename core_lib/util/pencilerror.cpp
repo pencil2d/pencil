@@ -4,7 +4,7 @@
 #include <QObject>
 
 
-QString Error::msg()
+QString Status::msg()
 {
     static std::map<ErrorCode, QString> msgMap =
     {

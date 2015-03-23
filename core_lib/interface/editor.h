@@ -64,7 +64,7 @@ public:
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
 
-    Error getError() { return mLastError; }
+    Status getError() { return mLastError; }
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
@@ -228,7 +228,7 @@ private:
     void createExportMovieSizeBox();
     void createExportMovieDialog();
 
-    Error mLastError;
+    Status mLastError;
 };
 
 #endif
