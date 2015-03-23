@@ -42,7 +42,7 @@ public:
 
     QList<ColourRef> loadPaletteFile( QString strFilename );
 
-    Error error() { return mError; }
+    Status error() { return mError; }
 
 signals:
     void progressValueChanged( float );
@@ -57,7 +57,7 @@ private:
     bool    isFileExists( QString strFilename );
     bool    loadDomElement( QDomElement element );
 
-    Error mError;
+    Status mError;
     QString mstrLastTempFolder;
 
     QLoggingCategory mLog;
