@@ -42,10 +42,10 @@ public:
 
 private:
     void paintBackground( QPainter& painter );
-    void renderOnionSkin( QPainter& painter );
-    void renderCurrentFrame( QPainter& painter );
+    void paintOnionSkin( QPainter& painter );
+    void paintCurrentFrame( QPainter& painter );
 
-    void renderOnionSkinBitmap( LayerBitmap* layer );
+    void paintOnionSkinBitmap( LayerBitmap* layer );
 
 private:
     QPixmap* mCanvas = nullptr;
