@@ -54,8 +54,8 @@ void CanvasRenderer::paint( Object* object, int layer, int frame )
     painter.setWorldMatrixEnabled( true );
 
     paintBackground( painter );
-    renderOnionSkin( painter );
-    renderCurrentFrame( painter );
+    paintOnionSkin( painter );
+    paintCurrentFrame( painter );
 }
 
 void CanvasRenderer::paintBackground( QPainter& painter )
@@ -66,7 +66,7 @@ void CanvasRenderer::paintBackground( QPainter& painter )
     mCanvas->fill( Qt::white );
 }
 
-void CanvasRenderer::renderOnionSkin( QPainter& painter )
+void CanvasRenderer::paintOnionSkin( QPainter& painter )
 {
     /*
     for ( int i = 0; i < mObject->getLayerCount(); ++i )
@@ -82,7 +82,7 @@ void CanvasRenderer::renderOnionSkin( QPainter& painter )
         case Layer::BITMAP:
         {
             LayerBitmap* bitmapLayer = static_cast< LayerBitmap* >( layer );
-            renderOnionSkinBitmap( bitmapLayer );
+            paintOnionSkinBitmap( bitmapLayer );
             break;
         }
         case Layer::VECTOR:
@@ -97,13 +97,13 @@ void CanvasRenderer::renderOnionSkin( QPainter& painter )
 
 }
 
-void CanvasRenderer::renderOnionSkinBitmap( LayerBitmap* layer )
+void CanvasRenderer::paintOnionSkinBitmap( LayerBitmap* layer )
 {
 
 }
 
 
-void CanvasRenderer::renderCurrentFrame( QPainter& painter )
+void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
 
 }
