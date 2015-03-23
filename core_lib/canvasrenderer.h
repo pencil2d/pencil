@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #define CANVASRENDERER_H
 
 
-#include <QWidget>
+#include <QObject>
 #include <QTransform>
 #include <memory>
 
@@ -27,12 +27,12 @@ class Object;
 class LayerBitmap;
 
 
-class CanvasRenderer : public QWidget
+class CanvasRenderer : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit CanvasRenderer( QWidget* parent = 0 );
+    explicit CanvasRenderer( QObject* parent = 0 );
     virtual ~CanvasRenderer();
 
     void setCanvas( QPixmap* canvas );
