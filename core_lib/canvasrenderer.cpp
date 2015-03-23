@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QPainter>
 
 
-CanvasRenderer::CanvasRenderer( QWidget* parent ) : QWidget( parent )
+CanvasRenderer::CanvasRenderer( QObject* parent ) : QObject( parent )
 {
 }
 
