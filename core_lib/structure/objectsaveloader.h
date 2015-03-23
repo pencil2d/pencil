@@ -32,7 +32,7 @@ signals:
 
 private:
     bool loadObject( Object*, const QDomElement& root, const QString& strDataFolder );
-    bool loadObjectOladWay( Object*, const QDomElement& root, const QString& strDataFolder );
+    bool loadObjectOldWay( Object*, const QDomElement& root, const QString& strDataFolder );
 
     QString extractZipToTempFolder( QString strZipFile );
     QString createTempWorkingFolder( QString strFileName );
