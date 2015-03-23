@@ -98,7 +98,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     }
     else if ( root.tagName() == "object" || root.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
     {
-        ok = loadObjectOladWay( object, root, strDataFolder );
+        ok = loadObjectOldWay( object, root, strDataFolder );
     }
 
     object->setFilePath( strFileName );
@@ -132,7 +132,7 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
     return isOK;
 }
 
-bool ObjectSaveLoader::loadObjectOladWay( Object* object, const QDomElement& root, const QString& strDataFolder )
+bool ObjectSaveLoader::loadObjectOldWay( Object* object, const QDomElement& root, const QString& strDataFolder )
 {
     return object->loadDomElement( root, strDataFolder );
 }
