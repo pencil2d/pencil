@@ -770,9 +770,10 @@ void MainWindow2::preferences()
     connect( m_pPreferences, SIGNAL( autosaveChange( int ) ), mEditor, SLOT( changeAutosave( int ) ) );
     connect( m_pPreferences, SIGNAL( autosaveNumberChange( int ) ), mEditor, SLOT( changeAutosaveNumber( int ) ) );
 
-    connect( m_pPreferences, SIGNAL( onionLayer1OpacityChange( int ) ), mEditor, SLOT( onionLayer1OpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionLayer2OpacityChange( int ) ), mEditor, SLOT( onionLayer2OpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionLayer3OpacityChange( int ) ), mEditor, SLOT( onionLayer3OpacityChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionMaxOpacityChange( int ) ), mEditor, SLOT( onionMaxOpacityChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionMinOpacityChange( int ) ), mEditor, SLOT( onionMinOpacityChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionPrevFramesNumChange( int ) ), mEditor, SLOT( onionPrevFramesNumChangeSlot( int ) ) );
+    connect( m_pPreferences, SIGNAL( onionNextFramesNumChange( int ) ), mEditor, SLOT( onionNextFramesNumChangeSlot( int ) ) );
 
     clearKeyboardShortcuts();
     connect( m_pPreferences, &Preferences::destroyed, [=] { setupKeyboardShortcuts(); } );

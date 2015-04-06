@@ -79,12 +79,15 @@ Editor::Editor( QObject* parent ) : QObject( parent )
     clipboardBitmapOk = false;
     clipboardVectorOk = false;
 
-    if ( settings.value( "onionLayer1Opacity" ).isNull() ) settings.setValue( "onionLayer1Opacity", 50 );
-    if ( settings.value( "onionLayer2Opacity" ).isNull() ) settings.setValue( "onionLayer2Opacity", 0 );
-    if ( settings.value( "onionLayer3Opacity" ).isNull() ) settings.setValue( "onionLayer3Opacity", 0 );
-    onionLayer1Opacity = settings.value( "onionLayer1Opacity" ).toInt();
-    onionLayer2Opacity = settings.value( "onionLayer2Opacity" ).toInt();
-    onionLayer3Opacity = settings.value( "onionLayer3Opacity" ).toInt();
+    if ( settings.value( SETTING_ONION_MAX_OPACITY ).isNull() ) settings.setValue( SETTING_ONION_MAX_OPACITY, 50 );
+    if ( settings.value( SETTING_ONION_MIN_OPACITY ).isNull() ) settings.setValue( SETTING_ONION_MIN_OPACITY, 20 );
+    if ( settings.value( SETTING_ONION_PREV_FRAMES_NUM ).isNull() ) settings.setValue( SETTING_ONION_PREV_FRAMES_NUM, 1 );
+    if ( settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).isNull() ) settings.setValue( SETTING_ONION_NEXT_FRAMES_NUM, 1 );
+    
+    onionMaxOpacity = settings.value( SETTING_ONION_MAX_OPACITY ).toInt();
+    onionMinOpacity = settings.value( SETTING_ONION_MIN_OPACITY ).toInt();
+    onionPrevFramesNum = settings.value( SETTING_ONION_PREV_FRAMES_NUM ).toInt();
+    onionNextFramesNum = settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).toInt();
 
     //qDebug() << QLibraryInfo::location( QLibraryInfo::PluginsPath );
     //qDebug() << QLibraryInfo::location( QLibraryInfo::BinariesPath );
@@ -189,25 +192,34 @@ void Editor::changeAutosaveNumber( int number )
     settings.setValue( "autosaveNumber", number );
 }
 
-void Editor::onionLayer1OpacityChangeSlot( int number )
+void Editor::onionMaxOpacityChangeSlot( int number )
 {
-    onionLayer1Opacity = number;
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "onionLayer1Opacity", number );
+    onionMaxOpacity = number;
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue( SETTING_ONION_MAX_OPACITY, number );
 }
 
-void Editor::onionLayer2OpacityChangeSlot( int number )
+void Editor::onionMinOpacityChangeSlot( int number )
 {
-    onionLayer2Opacity = number;
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "onionLayer2Opacity", number );
+    onionMinOpacity = number;
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue( SETTING_ONION_MIN_OPACITY, number );
 }
 
-void Editor::onionLayer3OpacityChangeSlot( int number )
+void Editor::onionPrevFramesNumChangeSlot( int number )
 {
-    onionLayer3Opacity = number;
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "onionLayer3Opacity", number );
+    onionPrevFramesNum = number;
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue( SETTING_ONION_PREV_FRAMES_NUM, number );
+    mScribbleArea->updateAllFrames();
+}
+
+void Editor::onionNextFramesNumChangeSlot( int number )
+{
+    onionNextFramesNum = number;
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue( SETTING_ONION_NEXT_FRAMES_NUM, number );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::currentKeyFrameModification()
