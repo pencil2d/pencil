@@ -1,3 +1,21 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2014 Matt Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation;
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+
 #include "objectsaveloader.h"
 #include "pencildef.h"
 #include "JlCompress.h"
@@ -17,7 +35,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !isFileExists( strFileName ) )
     {
         qCDebug( mLog ) << "ERROR - File doesn't exist.";
-        mError = Error( ERROR_FILE_NOT_EXIST );
+        mError = Status( ERROR_FILE_NOT_EXIST );
         return nullptr;
     }
 
@@ -49,7 +67,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !file->open( QFile::ReadOnly ) )
     {
         cleanUpTempFolder();
-        mError = Error( ERROR_FILE_CANNOT_OPEN );
+        mError = Status( ERROR_FILE_CANNOT_OPEN );
         return nullptr;
     }
 
@@ -58,7 +76,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !xmlDoc.setContent( file.data() ) )
     {
         cleanUpTempFolder();
-        mError = Error( ERROR_INVALID_XML_FILE );
+        mError = Status( ERROR_INVALID_XML_FILE );
         return nullptr;
     }
 
@@ -66,7 +84,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( type.name() != "PencilDocument" && type.name() != "MyObject" )
     {
         cleanUpTempFolder();
-        mError = Error( ERROR_INVALID_PENCIL_FILE );
+        mError = Status( ERROR_INVALID_PENCIL_FILE );
         return nullptr;
     }
 
@@ -74,7 +92,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( root.isNull() )
     {
         cleanUpTempFolder();
-        mError = Error( ERROR_INVALID_PENCIL_FILE );
+        mError = Status( ERROR_INVALID_PENCIL_FILE );
         return nullptr;
     }
 
@@ -98,7 +116,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     }
     else if ( root.tagName() == "object" || root.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
     {
-        ok = loadObjectOladWay( object, root, strDataFolder );
+        ok = loadObjectOldWay( object, root, strDataFolder );
     }
 
     object->setFilePath( strFileName );
@@ -132,7 +150,7 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
     return isOK;
 }
 
-bool ObjectSaveLoader::loadObjectOladWay( Object* object, const QDomElement& root, const QString& strDataFolder )
+bool ObjectSaveLoader::loadObjectOldWay( Object* object, const QDomElement& root, const QString& strDataFolder )
 {
     return object->loadDomElement( root, strDataFolder );
 }

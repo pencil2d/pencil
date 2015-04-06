@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #ifndef EDITOR_H
 #define EDITOR_H
 
@@ -64,7 +65,7 @@ public:
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
 
-    Error getError() { return mLastError; }
+    Status getError() { return mLastError; }
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
 
@@ -228,7 +229,7 @@ private:
     void createExportMovieSizeBox();
     void createExportMovieDialog();
 
-    Error mLastError;
+    Status mLastError;
 };
 
 #endif

@@ -113,6 +113,12 @@ ScribbleArea::~ScribbleArea()
     settings.setValue( SETTING_DISPLAY_EFFECT, savedList );
 }
 
+bool ScribbleArea::init()
+{
+    return true;
+}
+
+
 void ScribbleArea::updateToolCursor()
 {
     setCursor( currentTool()->cursor() );
@@ -139,7 +145,7 @@ void ScribbleArea::setBackgroundBrush( QString brushName )
 {
     QSettings settings( "Pencil", "Pencil" );
     settings.setValue( "background", brushName );
-    backgroundBrush = getBackgroundBrush( brushName );
+    mBackgroundBrush = getBackgroundBrush( brushName );
 }
 
 QBrush ScribbleArea::getBackgroundBrush( QString brushName )
@@ -554,7 +560,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
         Q_CHECK_PTR( bitmapImage );
     }
 
-    if ( !layer->visible && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
+    if ( !layer->mVisible && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
     {
         QMessageBox::warning( this, tr( "Warning" ),
                               tr( "You are drawing on a hidden layer! Please select another layer (or make the current layer visible)." ),
@@ -783,7 +789,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
 
 
-    Layer *layer = mEditor->layers()->currentLayer();
+    Layer* layer = mEditor->layers()->currentLayer();
 
     if ( !editor()->playback()->isPlaying() )    // we don't need to display the following when the animation is playing
     {
@@ -975,6 +981,14 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
 void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
+    Object* object = mEditor->object();
+
+    mCanvasRenderer.setCanvas( &mCanvas );
+    mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
+    mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame );
+
+    return;
+
     // Merge the different layers into the ScribbleArea.
 
     QPainter painter( &mCanvas );
@@ -988,20 +1002,22 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     // background
     painter.setPen( Qt::NoPen );
-    painter.setBrush( backgroundBrush );
+    painter.setBrush( mBackgroundBrush );
     painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
 
     QRectF viewRect = getViewRect();
     QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
 
-    Object *object = mEditor->object();
     qreal opacity;
 
     // --- onionskins ---
     int iStart = 0;
     int iEnd = object->getLayerCount() - 1;
+
     if ( !mMultiLayerOnionSkin )
-    { // not used ( if required, just make a connection from UI ) // is used now for Single/multiple onionskin Layers
+    {
+        // not used ( if required, just make a connection from UI )
+        // is used now for Single/multiple onionskin Layers
         iStart = iEnd = mEditor->layers()->currentLayerIndex();
     }
 
@@ -1020,7 +1036,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
         if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = ( object->getLayer( i ) );
-        if ( layer->visible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) ) // change && to || for all layers
+        if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) ) // change && to || for all layers
         {
             // paints the bitmap images
             if ( layer->type() == Layer::BITMAP )
@@ -1179,7 +1195,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
         if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = ( object->getLayer( i ) );
-        if ( layer->visible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) )
+        if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) )
         {
             // paints the bitmap images
             if ( layer->type() == Layer::BITMAP )

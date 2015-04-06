@@ -17,7 +17,7 @@ MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
 
-INCLUDEPATH += \
+INCLUDEPATH += . \
     graphics \
     graphics/bitmap \
     graphics/vector \

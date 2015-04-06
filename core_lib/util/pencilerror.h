@@ -21,11 +21,11 @@ enum ErrorCode
 };
 
 
-class Error
+class Status
 {
 public:
-    Error() { mCode = PCL_OK; }
-    Error( ErrorCode eCode ) { mCode = eCode; }
+    Status() { mCode = PCL_OK; }
+    Status( ErrorCode eCode ) { mCode = eCode; }
     ErrorCode code() { return mCode; }
 
     QString msg();

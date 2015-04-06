@@ -71,6 +71,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mScribbleArea = new ScribbleArea( this );
     mScribbleArea->setObjectName( "ScribbleArea" );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
+    mScribbleArea->init();
     setCentralWidget( mScribbleArea );
 
     Object* object = new Object();

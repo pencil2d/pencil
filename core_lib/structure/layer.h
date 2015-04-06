@@ -46,7 +46,7 @@ public:
     virtual ~Layer();
 
     QString mName;
-    bool visible;
+    bool mVisible;
     int mId;
 
     static const int NO_KeyFrame = -1;
@@ -57,7 +57,9 @@ public:
     void setName( QString name ) { mName = name; }
     QString name() { return mName; }
 
-    void switchVisibility() { visible = !visible; }
+    void switchVisibility() { mVisible = !mVisible; }
+
+    bool visiable() { return mVisible; }
 
     // KeyFrame interface
     bool keyExists(int position);
