@@ -129,6 +129,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     layers()->setCurrentLayer( 0 );
 
     tools()->setCurrentTool( PENCIL );
+    mScribbleArea->setCursor( tools()->currentTool()->cursor() );
 
     //setAcceptDrops( true ); // TODO: drop event
 
