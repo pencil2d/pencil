@@ -138,4 +138,9 @@ enum BackgroundStyle
 #define SETTING_WINDOW_STATE    "WindowState"
 #define SETTING_DISPLAY_EFFECT  "RenderEffect"
 
+#define SETTING_ONION_MAX_OPACITY     "onionMaxOpacity"
+#define SETTING_ONION_MIN_OPACITY     "onionMinOpacity"
+#define SETTING_ONION_PREV_FRAMES_NUM "onionPrevFramesNum"
+#define SETTING_ONION_NEXT_FRAMES_NUM "onionNextFramesNum"
+
 #endif // PENCILDEF_H

@@ -54,9 +54,10 @@ signals:
     void labelChange(int);
     void scrubChange(int);
 
-    void onionLayer1OpacityChange(int);
-    void onionLayer2OpacityChange(int);
-    void onionLayer3OpacityChange(int);
+    void onionMaxOpacityChange(int);
+    void onionMinOpacityChange(int);
+    void onionPrevFramesNumChange(int);
+    void onionNextFramesNumChange(int);
 
 private:
     void createIcons();

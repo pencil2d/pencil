@@ -1034,23 +1034,18 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     // previous frame (onion skin)
                     if ( isEffectOn( EFFECT_PREV_ONION ) )
                     {
-                        BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -1 );
-                        if ( previousImage != NULL )
+                        int prevFramesNum = mEditor->getOnionPrevFramesNum();
+                        float onionOpacity = mEditor->getOnionMaxOpacity();
+                        
+                        for ( int j = 0; j < prevFramesNum; j++ )
                         {
-                            painter.setOpacity( opacity * mEditor->getOnionLayer1Opacity() / 100.0 );
-                            previousImage->paintImage( painter );
-                        }
-                        BitmapImage *previousImage2 = layerBitmap->getLastBitmapImageAtFrame( frame, -2 );
-                        if ( previousImage2 != NULL )
-                        {
-                            painter.setOpacity( opacity * mEditor->getOnionLayer2Opacity() / 100.0 );
-                            previousImage2->paintImage( painter );
-                        }
-                        BitmapImage *previousImage3 = layerBitmap->getLastBitmapImageAtFrame( frame, -3 );
-                        if ( previousImage3 != NULL )
-                        {
-                            painter.setOpacity( opacity * mEditor->getOnionLayer3Opacity() / 100.0 );
-                            previousImage3->paintImage( painter );
+                            BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -(j + 1) );
+                            if ( previousImage != NULL)
+                            {
+                                painter.setOpacity( opacity * onionOpacity / 100.0 );
+                                previousImage->paintImage( painter );
+                                if ( prevFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                            }
                         }
                         if ( onionBlue || onionRed )
                         {
@@ -1071,23 +1066,18 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     // next frame (onion skin)
                     if ( isEffectOn( EFFECT_NEXT_ONION ) )
                     {
-                        BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, 1 );
-                        if ( nextImage != NULL )
+                        int nextFramesNum = mEditor->getOnionNextFramesNum();
+                        float onionOpacity = mEditor->getOnionMaxOpacity();
+                        
+                        for ( int j = 0; j < nextFramesNum; j++ )
                         {
-                            painter.setOpacity( opacity * mEditor->getOnionLayer1Opacity() / 100.0 );
-                            nextImage->paintImage( painter );
-                        }
-                        BitmapImage *nextImage2 = layerBitmap->getLastBitmapImageAtFrame( frame, 2 );
-                        if ( nextImage2 != NULL )
-                        {
-                            painter.setOpacity( opacity * mEditor->getOnionLayer2Opacity() / 100.0 );
-                            nextImage2->paintImage( painter );
-                        }
-                        BitmapImage *nextImage3 = layerBitmap->getLastBitmapImageAtFrame( frame, 3 );
-                        if ( nextImage3 != NULL )
-                        {
-                            painter.setOpacity( opacity * mEditor->getOnionLayer3Opacity() / 100.0 );
-                            nextImage3->paintImage( painter );
+                            BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, j + 1 );
+                            if ( nextImage != NULL )
+                            {
+                                painter.setOpacity( opacity * onionOpacity / 100.0 );
+                                nextImage->paintImage( painter );
+                                if ( nextFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (nextFramesNum - 1);
+                            }
                         }
                         if ( onionBlue || onionRed )
                         {
@@ -1117,21 +1107,18 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 if ( isEffectOn( EFFECT_PREV_ONION ) )
                 {
                     QTransform viewTransform = mEditor->view()->getView();
-                    VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -3 );
-                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                    painter.setOpacity( opacity * mEditor->getOnionLayer3Opacity() / 100.0 );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
-
-                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -2 );
-                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                    painter.setOpacity( opacity * mEditor->getOnionLayer2Opacity() / 100.0 );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
-
-                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -1 );
-                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                    painter.setOpacity( opacity * mEditor->getOnionLayer1Opacity() / 100.0 );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
-
+                    int prevFramesNum = mEditor->getOnionPrevFramesNum();
+                    float onionOpacity = mEditor->getOnionMinOpacity();
+                    
+                    for ( int j = 0; j < prevFramesNum; j++ )
+                    {
+                        VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -(prevFramesNum - j));
+                        pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                        painter.setOpacity( opacity * onionOpacity / 100.0 );
+                        painter.drawImage( QPoint( 0, 0 ), *pImage );
+                        if (prevFramesNum != 1) onionOpacity += (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                    }
+                    
                     if ( onionBlue || onionRed )
                     {
                         painter.setOpacity( 1.0 );
@@ -1152,20 +1139,17 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 if ( isEffectOn( EFFECT_NEXT_ONION ) )
                 {
                     QTransform viewTransform = mEditor->view()->getView();
-                    VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 3 );
-                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                    painter.setOpacity( opacity * mEditor->getOnionLayer3Opacity() / 100.0 );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
-
-                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 2 );
-                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                    painter.setOpacity( opacity * mEditor->getOnionLayer2Opacity() / 100.0 );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
-
-                    pVectorImage = layerVector->getLastVectorImageAtFrame( frame, 1 );
-                    pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                    painter.setOpacity( opacity * mEditor->getOnionLayer1Opacity() / 100.0 );
-                    painter.drawImage( QPoint( 0, 0 ), *pImage );
+                    int nextFramesNum = mEditor->getOnionNextFramesNum();
+                    float onionOpacity = mEditor->getOnionMinOpacity();
+                    
+                    for ( int j = 0; j < nextFramesNum; j++ )
+                    {
+                        VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, nextFramesNum - j);
+                        pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                        painter.setOpacity( opacity * onionOpacity / 100.0 );
+                        painter.drawImage( QPoint( 0, 0 ), *pImage );
+                        if (nextFramesNum != 1) onionOpacity += (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (nextFramesNum - 1);
+                    }
 
                     if ( onionBlue || onionRed )
                     {

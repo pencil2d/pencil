@@ -74,9 +74,10 @@ public:
     int  allLayers();
     bool exportSeqCLI( QString, QString );
 
-    int getOnionLayer1Opacity() { return onionLayer1Opacity; }
-    int getOnionLayer2Opacity() { return onionLayer2Opacity; }
-    int getOnionLayer3Opacity() { return onionLayer3Opacity; }
+    int getOnionMaxOpacity() { return onionMaxOpacity; }
+    int getOnionMinOpacity() { return onionMinOpacity; }
+    int getOnionPrevFramesNum() { return onionPrevFramesNum; }
+    int getOnionNextFramesNum() { return onionNextFramesNum; }
 
     void importMovie( QString filePath, int fps );
 
@@ -106,6 +107,12 @@ Q_SIGNALS:
     // save
     void needSave();
     void fileLoaded();
+    
+public slots:
+    void onionMaxOpacityChangeSlot( int );
+    void onionMinOpacityChangeSlot( int );
+    void onionPrevFramesNumChangeSlot( int );
+    void onionNextFramesNumChangeSlot( int );
 
 public: //slots
     void clearCurrentFrame();
@@ -150,10 +157,6 @@ public: //slots
 
     void changeAutosave( int );
     void changeAutosaveNumber( int );
-
-    void onionLayer1OpacityChangeSlot( int );
-    void onionLayer2OpacityChangeSlot( int );
-    void onionLayer3OpacityChangeSlot( int );
 
     void currentKeyFrameModification();
     void modification( int );
@@ -205,9 +208,10 @@ private:
     bool mIsAutosave;
     int autosaveNumber;
 
-    int onionLayer1Opacity;
-    int onionLayer2Opacity;
-    int onionLayer3Opacity;
+    int onionMaxOpacity;
+    int onionMinOpacity;
+    int onionNextFramesNum;
+    int onionPrevFramesNum;
 
     void makeConnections();
     void addKeyFame( int layerNumber, int frameNumber );

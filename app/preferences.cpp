@@ -396,37 +396,47 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* onionSkinBox = new QGroupBox(tr("Onion skin"));
-    QLabel* onionLayer1OpacityLabel = new QLabel(tr("Onion layer 1 opacity - % (50 is recommended):"));
-    QSpinBox* onionLayer1OpacityBox = new QSpinBox();
-    QLabel* onionLayer2OpacityLabel = new QLabel(tr("Onion layer 2 opacity - % (30 is recommended):"));
-    QSpinBox* onionLayer2OpacityBox = new QSpinBox();
-    QLabel* onionLayer3OpacityLabel = new QLabel(tr("Onion layer 3 opacity - % (20 is recommended):"));
-    QSpinBox* onionLayer3OpacityBox = new QSpinBox();
+    
+    QLabel* onionMaxOpacityLabel = new QLabel(tr("Maximum onion opacity %"));
+    QSpinBox* onionMaxOpacityBox = new QSpinBox();
+    QLabel* onionMinOpacityLabel = new QLabel(tr("Minimum onion opacity %"));
+    QSpinBox* onionMinOpacityBox = new QSpinBox();
+    QLabel* onionPrevFramesNumLabel = new QLabel(tr("Number of previous onion frames shown"));
+    QSpinBox* onionPrevFramesNumBox = new QSpinBox();
+    QLabel* onionNextFramesNumLabel = new QLabel(tr("Number of next onion frames shown"));
+    QSpinBox* onionNextFramesNumBox = new QSpinBox();
 
-    onionLayer1OpacityBox->setMinimum(0);
-    onionLayer1OpacityBox->setMaximum(100);
-    onionLayer1OpacityBox->setFixedWidth(50);
-    onionLayer2OpacityBox->setMinimum(0);
-    onionLayer2OpacityBox->setMaximum(100);
-    onionLayer2OpacityBox->setFixedWidth(50);
-    onionLayer3OpacityBox->setMinimum(0);
-    onionLayer3OpacityBox->setMaximum(100);
-    onionLayer3OpacityBox->setFixedWidth(50);
+    onionMaxOpacityBox->setMinimum(0);
+    onionMaxOpacityBox->setMaximum(100);
+    onionMaxOpacityBox->setFixedWidth(50);
+    onionMinOpacityBox->setMinimum(0);
+    onionMinOpacityBox->setMaximum(100);
+    onionMinOpacityBox->setFixedWidth(50);
+    onionPrevFramesNumBox->setMinimum(1);
+    onionPrevFramesNumBox->setMaximum(60);
+    onionPrevFramesNumBox->setFixedWidth(50);
+    onionNextFramesNumBox->setMinimum(1);
+    onionNextFramesNumBox->setMaximum(60);
+    onionNextFramesNumBox->setFixedWidth(50);
 
-    onionLayer1OpacityBox->setValue(settings.value("onionLayer1Opacity").toInt());
-    onionLayer2OpacityBox->setValue(settings.value("onionLayer2Opacity").toInt());
-    onionLayer3OpacityBox->setValue(settings.value("onionLayer3Opacity").toInt());
+    onionMaxOpacityBox->setValue(settings.value( SETTING_ONION_MAX_OPACITY ).toInt());
+    onionMinOpacityBox->setValue(settings.value( SETTING_ONION_MIN_OPACITY ).toInt());
+    onionPrevFramesNumBox->setValue(settings.value( SETTING_ONION_PREV_FRAMES_NUM).toInt());
+    onionNextFramesNumBox->setValue(settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).toInt());
 
-    connect(onionLayer1OpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionLayer1OpacityChange(int)));
-    connect(onionLayer2OpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionLayer2OpacityChange(int)));
-    connect(onionLayer3OpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionLayer3OpacityChange(int)));
+    connect(onionMaxOpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionMaxOpacityChange(int)));
+    connect(onionMinOpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionMinOpacityChange(int)));
+    connect(onionPrevFramesNumBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionPrevFramesNumChange(int)));
+    connect(onionNextFramesNumBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionNextFramesNumChange(int)));
 
-    lay->addWidget(onionLayer1OpacityLabel);
-    lay->addWidget(onionLayer1OpacityBox);
-    lay->addWidget(onionLayer2OpacityLabel);
-    lay->addWidget(onionLayer2OpacityBox);
-    lay->addWidget(onionLayer3OpacityLabel);
-    lay->addWidget(onionLayer3OpacityBox);
+    lay->addWidget(onionMaxOpacityLabel);
+    lay->addWidget(onionMaxOpacityBox);
+    lay->addWidget(onionMinOpacityLabel);
+    lay->addWidget(onionMinOpacityBox);
+    lay->addWidget(onionPrevFramesNumLabel);
+    lay->addWidget(onionPrevFramesNumBox);
+    lay->addWidget(onionNextFramesNumLabel);
+    lay->addWidget(onionNextFramesNumBox);
     onionSkinBox->setLayout(lay);
 
     QVBoxLayout* lay2 = new QVBoxLayout();
