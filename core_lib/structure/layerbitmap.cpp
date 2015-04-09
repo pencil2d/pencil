@@ -31,11 +31,13 @@ LayerBitmap::~LayerBitmap()
 
 BitmapImage* LayerBitmap::getBitmapImageAtFrame( int frameNumber )
 {
+    Q_ASSERT( frameNumber >= 1 );
     return static_cast< BitmapImage* >( getKeyFrameAtPosition( frameNumber ) );
 }
 
 BitmapImage* LayerBitmap::getLastBitmapImageAtFrame( int frameNumber, int increment )
 {
+    Q_ASSERT( frameNumber >= 1 );
     return static_cast< BitmapImage* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
 }
 
