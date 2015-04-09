@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QTransform>
 #include <memory>
+#include "log.h"
 
 
 class Object;
@@ -45,7 +46,7 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-    void paintOnionSkinBitmap( LayerBitmap* layer );
+    void paintOnionSkinBitmap( QPainter&, LayerBitmap* layer );
 
 private:
     QPixmap* mCanvas = nullptr;
@@ -56,6 +57,8 @@ private:
     int mFrameNumber = 0;
 
     bool bMultiLayerOnionSkin = false;
+
+    QLoggingCategory mLog;
 };
 
 #endif // CANVASRENDERER_H

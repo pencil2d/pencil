@@ -18,10 +18,14 @@ GNU General Public License for more details.
 #include "canvasrenderer.h"
 #include "object.h"
 #include "layerbitmap.h"
+#include "bitmapimage.h"
 #include <QPainter>
+#include <QLoggingCategory>
 
 
-CanvasRenderer::CanvasRenderer( QObject* parent ) : QObject( parent )
+CanvasRenderer::CanvasRenderer( QObject* parent )
+    : QObject( parent )
+    , mLog( "CanvasRenderer" )
 {
 }
 
@@ -68,21 +72,20 @@ void CanvasRenderer::paintBackground( QPainter& painter )
 
 void CanvasRenderer::paintOnionSkin( QPainter& painter )
 {
-    /*
-    for ( int i = 0; i < mObject->getLayerCount(); ++i )
-    {
-
-    }
-    */
-
     Layer* layer = mObject->getLayer( mLayerIndex );
+
+    if ( layer->keyFrameCount() == 0 )
+    {
+        return;
+    }
 
     switch ( layer->type() )
     {
         case Layer::BITMAP:
         {
             LayerBitmap* bitmapLayer = static_cast< LayerBitmap* >( layer );
-            paintOnionSkinBitmap( bitmapLayer );
+            Q_ASSERT( bitmapLayer );
+            paintOnionSkinBitmap( painter, bitmapLayer );
             break;
         }
         case Layer::VECTOR:
@@ -97,8 +100,25 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
 
 }
 
-void CanvasRenderer::paintOnionSkinBitmap( LayerBitmap* layer )
+void CanvasRenderer::paintOnionSkinBitmap( QPainter& painter, LayerBitmap* layer )
 {
+    int iStartFrame = std::max( mFrameNumber - 3, 1 );
+    int iEndFrame = mFrameNumber + 3;
+
+    // Paint the previous onion skin
+    for ( int i = iStartFrame; i < mFrameNumber; ++i )
+    {
+        qCDebug( mLog ) << "Paint Onion skin bitmap, Frame = " << i;
+        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame( iStartFrame );
+        if ( bitmapImage == nullptr )
+        {
+            Q_ASSERT( false );
+            return;
+        }
+
+        bitmapImage->paintImage( painter );
+    }
+    
 
 }
 
