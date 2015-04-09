@@ -1060,7 +1060,10 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                             {
                                 painter.setOpacity( opacity * onionOpacity / 100.0 );
                                 previousImage->paintImage( painter );
-                                if ( prevFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                                if ( prevFramesNum != 1 )
+                                {
+                                    onionOpacity -= ( mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity() ) / ( prevFramesNum - 1 );
+                                }
                             }
                         }
                         if ( onionBlue || onionRed )
