@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = new QImage(0, 0, QImage::Format_ARGB32_Premultiplied);
+    mImage = new QImage(1, 1, QImage::Format_ARGB32_Premultiplied);
     mBounds = QRect(0,0,0,0);
     mExtendable = true;
 }
