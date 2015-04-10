@@ -903,7 +903,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                 painter.setWorldMatrixEnabled( false );
             }
 
-            qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
+            //qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
 
             mBufferImg->paintImage( painter );
         }

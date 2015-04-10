@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 
 class Object;
-class LayerBitmap;
+class Layer;
 
 
 class CanvasRenderer : public QObject
@@ -46,7 +46,8 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-    void paintOnionSkinBitmap( QPainter&, LayerBitmap* layer );
+    void paintOnionSkinBitmap( QPainter&, Layer* layer, int nFrame );
+    void paintOnionSkinVector( QPainter&, Layer* layer, int nFrame );
 
 private:
     QPixmap* mCanvas = nullptr;
