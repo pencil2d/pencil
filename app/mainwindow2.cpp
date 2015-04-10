@@ -1038,6 +1038,8 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
 
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
+
+    connect( editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
