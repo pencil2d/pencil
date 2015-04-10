@@ -229,7 +229,7 @@ void MainWindow2::createMenus()
     connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
-    connect( ui->actionReset_View, &QAction::triggered, mEditor, &Editor::resetView );
+    connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
     connect( ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV );
 
