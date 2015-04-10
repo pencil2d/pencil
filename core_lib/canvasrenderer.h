@@ -28,6 +28,17 @@ class Object;
 class Layer;
 
 
+struct RenderParameters
+{
+    bool  bPrevOnionSkin = false;
+    bool  bNextOnionSkin = false;
+    int   nPrevOnionSkinCount = 3;
+    int   nNextOnionSkinCount = 3;
+    float fOnionSkinMaxOpacity = 0.5f;
+    float fOnionSkinMinOpacity = 0.1f;
+};
+
+
 class CanvasRenderer : public QObject
 {
     Q_OBJECT
@@ -38,6 +49,7 @@ public:
 
     void setCanvas( QPixmap* canvas );
     void setViewTransform( QTransform viewTransform );
+    void setParam( RenderParameters p ) { mParam = p; }
 
     void paint( Object* object, int layer, int frame );
 
@@ -59,6 +71,8 @@ private:
     int mFrameNumber = 0;
 
     bool bMultiLayerOnionSkin = false;
+    
+    RenderParameters mParam;
 
     QLoggingCategory mLog;
 };
