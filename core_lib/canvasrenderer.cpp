@@ -82,32 +82,38 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
         return;
     }
 
-    int iStartFrame = std::max( mFrameNumber - 3, 1 );
-    int iEndFrame = mFrameNumber + 3;
+    int iStartFrame = std::max( mFrameNumber - mOptions.nPrevOnionSkinCount, 1 );
+    int iEndFrame = mFrameNumber + mOptions.nNextOnionSkinCount;
 
-    // Paint onion skin before current frame.
-    for ( int i = iStartFrame; i < mFrameNumber; ++i )
+    if ( mOptions.bPrevOnionSkin )
     {
-        switch ( layer->type() )
+        // Paint onion skin before current frame.
+        for ( int i = iStartFrame; i < mFrameNumber; ++i )
         {
-            case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
-            case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT( false ); break;
+            switch ( layer->type() )
+            {
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
+                case Layer::CAMERA: break;
+                case Layer::SOUND: break;
+                default: Q_ASSERT( false ); break;
+            }
         }
     }
 
-    // Paint onion skin after current frame.
-    for ( int i = mFrameNumber; i <= iEndFrame; ++i )
+    if ( mOptions.bNextOnionSkin )
     {
-        switch ( layer->type() )
+        // Paint onion skin after current frame.
+        for ( int i = mFrameNumber; i <= iEndFrame; ++i )
         {
-            case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
-            case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT( false ); break;
+            switch ( layer->type() )
+            {
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
+                case Layer::CAMERA: break;
+                case Layer::SOUND: break;
+                default: Q_ASSERT( false ); break;
+            }
         }
     }
 }
