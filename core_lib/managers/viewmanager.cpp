@@ -62,6 +62,7 @@ void ViewManager::translate(float dx, float dy)
 {
     mTranslate += QPointF( dx, dy );
     mView = createViewTransform();
+    Q_EMIT viewChanged();
 }
 
 void ViewManager::translate(QPointF offset)
@@ -73,21 +74,25 @@ void ViewManager::rotate(float degree)
 {
     mRotate += degree;
     mView = createViewTransform();
+    Q_EMIT viewChanged();
 }
 
 void ViewManager::scale(float scaleValue)
 {
     mScale *= scaleValue;
     mView = createViewTransform();
+    Q_EMIT viewChanged();
 }
 
 void ViewManager::setCanvasSize(QSize size)
 {
     mCanvasSize = size;
     mView = createViewTransform();
+    Q_EMIT viewChanged();
 }
 
 void ViewManager::resetView()
 {
     mView = QTransform();
+    Q_EMIT viewChanged();
 }
