@@ -997,13 +997,13 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     painter.setClipRect( rect );
     painter.setClipping( true );
 
-    painter.setTransform( mEditor->view()->getView() );
-    painter.setWorldMatrixEnabled( true );
+    //painter.setTransform( mEditor->view()->getView() );
+    //painter.setWorldMatrixEnabled( true );
 
     // background
-    painter.setPen( Qt::NoPen );
-    painter.setBrush( mBackgroundBrush );
-    painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
+    //painter.setPen( Qt::NoPen );
+    //painter.setBrush( mBackgroundBrush );
+    //painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
 
     QRectF viewRect = getViewRect();
     QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
@@ -1029,12 +1029,6 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
             opacity = 0.4;
         }
 
-        Q_ASSERT_X( mEditor != NULL, "ScribbleArea.cpp", "Editor should not be null." );
-        Q_ASSERT_X( mEditor->layers()->currentLayer(), "", "Layer should not be null." );
-
-        //qDebug( "Layer Count = %d, current=%d", object->getLayerCount(), i );
-
-        if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
         Layer *layer = ( object->getLayer( i ) );
         if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) ) // change && to || for all layers
         {
