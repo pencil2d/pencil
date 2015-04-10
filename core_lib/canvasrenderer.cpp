@@ -74,6 +74,8 @@ void CanvasRenderer::paintBackground( QPainter& painter )
 
 void CanvasRenderer::paintOnionSkin( QPainter& painter )
 {
+    painter.setOpacity( 0.3 );
+
     Layer* layer = mObject->getLayer( mLayerIndex );
 
     if ( layer->keyFrameCount() == 0 )
@@ -89,8 +91,21 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     {
         switch ( layer->type() )
         {
-            case Layer::BITMAP: { paintOnionSkinBitmap( painter, layer, i ); break; }
-            case Layer::VECTOR: { paintOnionSkinVector( painter, layer, i ); break; }
+            case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
+            case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
+            case Layer::CAMERA: break;
+            case Layer::SOUND: break;
+            default: Q_ASSERT( false ); break;
+        }
+    }
+
+    // Paint onion skin after current frame.
+    for ( int i = mFrameNumber; i <= iEndFrame; ++i )
+    {
+        switch ( layer->type() )
+        {
+            case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
+            case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
             case Layer::CAMERA: break;
             case Layer::SOUND: break;
             default: Q_ASSERT( false ); break;
@@ -98,7 +113,7 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     }
 }
 
-void CanvasRenderer::paintOnionSkinBitmap( QPainter& painter, Layer* layer, int nFrame )
+void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame )
 {
     LayerBitmap* bitmapLayer = dynamic_cast< LayerBitmap* >( layer );
     if ( bitmapLayer == nullptr )
@@ -118,7 +133,7 @@ void CanvasRenderer::paintOnionSkinBitmap( QPainter& painter, Layer* layer, int 
 }
 
 
-void CanvasRenderer::paintOnionSkinVector( QPainter& painter, Layer* layer, int nFrame )
+void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame )
 {
     LayerVector* vectorLayer = dynamic_cast< LayerVector* >( layer );
     if ( vectorLayer == nullptr )
@@ -139,5 +154,35 @@ void CanvasRenderer::paintOnionSkinVector( QPainter& painter, Layer* layer, int 
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
+    painter.setOpacity( 0.8 );
 
+    for ( int i = 0; i < mObject->getLayerCount(); ++i )
+    {
+        Layer* layer = mObject->getLayer( i );
+        if ( i == mLayerIndex )
+        {
+            continue; // current layer should be paint at last.
+        }
+
+        switch ( layer->type() )
+        {
+            case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
+            case Layer::VECTOR: { paintVectorFrame( painter, layer, mFrameNumber ); break; }
+            case Layer::CAMERA: break;
+            case Layer::SOUND: break;
+            default: Q_ASSERT( false ); break;
+        }
+    }
+
+    painter.setOpacity( 1.0 );
+
+    Layer* currentLayer = mObject->getLayer( mLayerIndex );
+    switch ( currentLayer->type() )
+    {
+        case Layer::BITMAP: { paintBitmapFrame( painter, currentLayer, mFrameNumber ); break; }
+        case Layer::VECTOR: { paintVectorFrame( painter, currentLayer, mFrameNumber ); break; }
+        case Layer::CAMERA: break;
+        case Layer::SOUND: break;
+        default: Q_ASSERT( false ); break;
+    }
 }
