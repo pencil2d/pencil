@@ -46,8 +46,9 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-    void paintOnionSkinBitmap( QPainter&, Layer* layer, int nFrame );
-    void paintOnionSkinVector( QPainter&, Layer* layer, int nFrame );
+
+    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame );
+    void paintVectorFrame( QPainter&, Layer* layer, int nFrame );
 
 private:
     QPixmap* mCanvas = nullptr;
