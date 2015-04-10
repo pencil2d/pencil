@@ -115,6 +115,11 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
 
 void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame )
 {
+    if ( !layer->visible() )
+    {
+        return;
+    }
+
     LayerBitmap* bitmapLayer = dynamic_cast< LayerBitmap* >( layer );
     if ( bitmapLayer == nullptr )
     {
@@ -135,6 +140,11 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
 
 void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame )
 {
+    if ( !layer->visible() )
+    {
+        return;
+    }
+
     LayerVector* vectorLayer = dynamic_cast< LayerVector* >( layer );
     if ( vectorLayer == nullptr )
     {
