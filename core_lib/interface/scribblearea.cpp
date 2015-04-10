@@ -982,6 +982,15 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
     Object* object = mEditor->object();
+    
+    RenderOptions options;
+    options.bPrevOnionSkin = isEffectOn( EFFECT_PREV_ONION );
+    options.bNextOnionSkin = isEffectOn( EFFECT_NEXT_ONION );
+    options.nPrevOnionSkinCount = mEditor->getOnionPrevFramesNum();
+    options.nNextOnionSkinCount = mEditor->getOnionNextFramesNum();
+    options.fOnionSkinMaxOpacity = mEditor->getOnionMaxOpacity();
+    options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
+    mCanvasRenderer.setOptions( options );
 
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
