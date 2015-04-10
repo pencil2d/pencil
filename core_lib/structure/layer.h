@@ -59,7 +59,7 @@ public:
 
     void switchVisibility() { mVisible = !mVisible; }
 
-    bool visiable() { return mVisible; }
+    bool visible() { return mVisible; }
 
     // KeyFrame interface
     bool keyExists(int position);
