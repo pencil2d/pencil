@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include <QPainter>
-#include <QLoggingCategory>
 
 
 CanvasRenderer::CanvasRenderer( QObject* parent )
