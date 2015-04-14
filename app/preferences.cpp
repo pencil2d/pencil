@@ -203,10 +203,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     toolCursorsBox->setChecked(true); // default
     if (settings.value("toolCursors").toString()=="false") toolCursorsBox->setChecked(false);
 
-    QCheckBox* aquaBox = new QCheckBox(tr("Aqua Style"));
-    aquaBox->setChecked(false); // default
-    if (settings.value("style").toString()=="aqua") aquaBox->setChecked(true);
-
     QCheckBox* antialiasingBox = new QCheckBox(tr("Antialiasing"));
     antialiasingBox->setChecked(true); // default
     if (settings.value("antialiasing").toString()=="false") antialiasingBox->setChecked(false);
@@ -220,9 +216,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     appearanceBox->setLayout(appearanceLayout);
     appearanceLayout->addWidget(shadowsBox);
     appearanceLayout->addWidget(toolCursorsBox);
-#ifdef Q_WS_MAC
-    appearanceLayout->addWidget(aquaBox);
-#endif
 
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
@@ -264,7 +257,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect( backgroundButtons,  kButtonClicked,         preference, &Preferences::backgroundChange );
     connect( shadowsBox,         &QCheckBox::stateChanged, preference, &Preferences::shadowsChange );
     connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &Preferences::toolCursorsChange );
-    connect( aquaBox,            &QCheckBox::stateChanged, preference, &Preferences::styleChanged );
     connect( antialiasingBox,    &QCheckBox::stateChanged, preference, &Preferences::antialiasingChange );
     connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &Preferences::curveSmoothingChange );
     connect( highResBox,         &QCheckBox::stateChanged, preference, &Preferences::highResPositionChange );

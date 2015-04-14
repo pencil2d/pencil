@@ -769,7 +769,6 @@ void MainWindow2::preferences()
     connect( m_pPreferences, SIGNAL( antialiasingChange( int ) ), mScribbleArea, SLOT( setAntialiasing( int ) ) );
     connect( m_pPreferences, SIGNAL( backgroundChange( int ) ), mScribbleArea, SLOT( setBackground( int ) ) );
     connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
-    connect( m_pPreferences, SIGNAL( styleChanged( int ) ), mScribbleArea, SLOT( setStyle( int ) ) );
 
     connect( m_pPreferences, SIGNAL( autosaveChange( int ) ), mEditor, SLOT( changeAutosave( int ) ) );
     connect( m_pPreferences, SIGNAL( autosaveNumberChange( int ) ), mEditor, SLOT( changeAutosaveNumber( int ) ) );
