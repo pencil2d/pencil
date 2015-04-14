@@ -28,7 +28,7 @@ CanvasRenderer::CanvasRenderer( QObject* parent )
     : QObject( parent )
     , mLog( "CanvasRenderer" )
 {
-    mLog.setEnabled( QtDebugMsg, false );
+    ENABLE_DEBUG_LOG( mLog, false );
 }
 
 CanvasRenderer::~CanvasRenderer()
