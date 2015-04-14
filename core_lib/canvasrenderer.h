@@ -36,6 +36,7 @@ struct RenderOptions
     int   nNextOnionSkinCount = 3;
     float fOnionSkinMaxOpacity = 0.5f;
     float fOnionSkinMinOpacity = 0.1f;
+    bool  bAntiAlias = false;
 };
 
 

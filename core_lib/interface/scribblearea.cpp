@@ -990,6 +990,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.nNextOnionSkinCount = mEditor->getOnionNextFramesNum();
     options.fOnionSkinMaxOpacity = mEditor->getOnionMaxOpacity();
     options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
+    options.bAntiAlias = isEffectOn( EFFECT_ANTIALIAS );
     mCanvasRenderer.setOptions( options );
 
     mCanvasRenderer.setCanvas( &mCanvas );
@@ -999,10 +1000,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     return;
 
     // Merge the different layers into the ScribbleArea.
-
     QPainter painter( &mCanvas );
-    painter.setRenderHint( QPainter::SmoothPixmapTransform, isEffectOn( EFFECT_ANTIALIAS ) );
-
     painter.setClipRect( rect );
     painter.setClipping( true );
 
