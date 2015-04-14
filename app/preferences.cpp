@@ -284,15 +284,18 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     lay->addWidget(displayBox);
     lay->addWidget(editingBox);
 
-    connect(windowOpacityLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(windowOpacityChange(int)));
-    connect(backgroundButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(backgroundChange(int)));
-    connect(gradientsButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(gradientsChange(int)));
-    connect(shadowsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(shadowsChange(int)));
-    connect(toolCursorsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(toolCursorsChange(int)));
-    connect(aquaBox, SIGNAL(stateChanged(int)), parent, SIGNAL(styleChanged(int)));
-    connect(antialiasingBox, SIGNAL(stateChanged(int)), parent, SIGNAL(antialiasingChange(int)));
-    connect(curveSmoothingLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveSmoothingChange(int)));
-    connect(highResBox, SIGNAL(stateChanged(int)), parent, SIGNAL(highResPositionChange(int)));
+    Preferences* preference = qobject_cast< Preferences* >( parent );
+
+    auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
+    connect( windowOpacityLevel, &QSlider::valueChanged, preference, &Preferences::windowOpacityChange );
+    connect( backgroundButtons,  kButtonClicked,         preference, &Preferences::backgroundChange );
+    connect( gradientsButtons,   kButtonClicked,         preference, &Preferences::gradientsChange );
+    connect( shadowsBox,         &QCheckBox::stateChanged, preference, &Preferences::shadowsChange );
+    connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &Preferences::toolCursorsChange );
+    connect( aquaBox,            &QCheckBox::stateChanged, preference, &Preferences::styleChanged );
+    connect( antialiasingBox,    &QCheckBox::stateChanged, preference, &Preferences::antialiasingChange );
+    connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &Preferences::curveSmoothingChange );
+    connect( highResBox,         &QCheckBox::stateChanged, preference, &Preferences::highResPositionChange );
 
     setLayout(lay);
 }
