@@ -42,7 +42,6 @@ signals:
     void backgroundChange(int);
     void shadowsChange(int);
     void toolCursorsChange(int);
-    void styleChanged(int);
 
     void autosaveChange(int);
     void autosaveNumberChange(int);
