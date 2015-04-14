@@ -211,32 +211,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     antialiasingBox->setChecked(true); // default
     if (settings.value("antialiasing").toString()=="false") antialiasingBox->setChecked(false);
 
-    QButtonGroup* gradientsButtons = new QButtonGroup();
-    QRadioButton* gradient1Button = new QRadioButton(tr("None"));
-    QRadioButton* gradient2Button = new QRadioButton(tr("Quick"));
-    QRadioButton* gradient3Button = new QRadioButton(tr("Gradient1"));
-    QRadioButton* gradient4Button = new QRadioButton(tr("Gradient2"));
-    gradientsButtons->addButton(gradient1Button);
-    gradientsButtons->addButton(gradient2Button);
-    gradientsButtons->addButton(gradient3Button);
-    gradientsButtons->addButton(gradient4Button);
-    gradientsButtons->setId(gradient1Button, 1);
-    gradientsButtons->setId(gradient2Button, 2);
-    gradientsButtons->setId(gradient3Button, 3);
-    gradientsButtons->setId(gradient4Button, 4);
-    QGroupBox* gradientsBox = new QGroupBox(tr("Gradients"));
-    QHBoxLayout* gradientsLayout = new QHBoxLayout();
-    gradientsBox->setLayout(gradientsLayout);
-    gradientsLayout->addWidget(gradient1Button);
-    gradientsLayout->addWidget(gradient2Button);
-    gradientsLayout->addWidget(gradient3Button);
-    gradientsLayout->addWidget(gradient4Button);
-    if ( settings.value("gradients").toString() == "1" ) gradient1Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "2" ) gradient2Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "" )  gradient2Button->setChecked(true); // default
-    if ( settings.value("gradients").toString() == "3" ) gradient3Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "4" ) gradient4Button->setChecked(true);
-
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
     windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
@@ -253,7 +227,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(antialiasingBox, 0, 0);
-    displayLayout->addWidget(gradientsBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -289,7 +262,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
     connect( windowOpacityLevel, &QSlider::valueChanged, preference, &Preferences::windowOpacityChange );
     connect( backgroundButtons,  kButtonClicked,         preference, &Preferences::backgroundChange );
-    connect( gradientsButtons,   kButtonClicked,         preference, &Preferences::gradientsChange );
     connect( shadowsBox,         &QCheckBox::stateChanged, preference, &Preferences::shadowsChange );
     connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &Preferences::toolCursorsChange );
     connect( aquaBox,            &QCheckBox::stateChanged, preference, &Preferences::styleChanged );
