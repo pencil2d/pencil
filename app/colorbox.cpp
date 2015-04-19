@@ -16,11 +16,8 @@ ColorBox::ColorBox(QWidget *parent) :
 
     setLayout(layout);
 
-    connect(m_colorWheel, SIGNAL(colorChanged(QColor)),
-        this, SLOT(onWheelChange(QColor)));
-
-    connect(m_colorInspector, SIGNAL(colorChanged(QColor)),
-        this, SLOT(onSpinboxChange(QColor)));
+    connect(m_colorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelChange);
+    connect(m_colorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange);
 
     m_colorWheel->setColor(Qt::black);
     m_colorInspector->setColor(Qt::black);

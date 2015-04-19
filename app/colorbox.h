@@ -24,8 +24,8 @@ private:
     void onSpinboxChange(const QColor &);
     void onWheelChange(const QColor &);
 
-    ColorWheel* m_colorWheel;
-    ColorInspector* m_colorInspector;
+    ColorWheel* m_colorWheel = nullptr;
+    ColorInspector* m_colorInspector = nullptr;
 };
 
 #endif // COLORBOX_H
