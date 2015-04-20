@@ -31,11 +31,13 @@ LayerBitmap::~LayerBitmap()
 
 BitmapImage* LayerBitmap::getBitmapImageAtFrame( int frameNumber )
 {
+    Q_ASSERT( frameNumber >= 1 );
     return static_cast< BitmapImage* >( getKeyFrameAtPosition( frameNumber ) );
 }
 
 BitmapImage* LayerBitmap::getLastBitmapImageAtFrame( int frameNumber, int increment )
 {
+    Q_ASSERT( frameNumber >= 1 );
     return static_cast< BitmapImage* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
 }
 
@@ -81,7 +83,7 @@ QDomElement LayerBitmap::createDomElement( QDomDocument& doc )
     QDomElement layerTag = doc.createElement( "layer" );
     layerTag.setAttribute( "id", mId );
     layerTag.setAttribute( "name", mName );
-    layerTag.setAttribute( "visibility", visible );
+    layerTag.setAttribute( "visibility", mVisible );
     layerTag.setAttribute( "type", type() );
 
     foreachKeyFrame( [&]( KeyFrame* pKeyFrame )
@@ -106,7 +108,7 @@ void LayerBitmap::loadDomElement( QDomElement element, QString dataDirPath )
         mId = element.attribute( "id" ).toInt();
     }
     mName = element.attribute( "name" );
-    visible = ( element.attribute( "visibility" ) == "1" );
+    mVisible = ( element.attribute( "visibility" ) == "1" );
 
     QDomNode imageTag = element.firstChild();
     while ( !imageTag.isNull() )

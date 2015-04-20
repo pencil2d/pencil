@@ -39,11 +39,9 @@ signals:
     void curveSmoothingChange(int);
     void highResPositionChange(int);
     void antialiasingChange(int);
-    void gradientsChange(int);
     void backgroundChange(int);
     void shadowsChange(int);
     void toolCursorsChange(int);
-    void styleChanged(int);
 
     void autosaveChange(int);
     void autosaveNumberChange(int);

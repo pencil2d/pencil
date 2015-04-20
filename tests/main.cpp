@@ -6,6 +6,9 @@ int main(int argc, char *argv[])
 {
     int ret = AutoTest::run(argc, argv);
 
-    //system("PAUSE");
+#ifdef WIN32
+    system("PAUSE");
+#endif
+
     return ret;
 }

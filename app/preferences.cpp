@@ -203,39 +203,9 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     toolCursorsBox->setChecked(true); // default
     if (settings.value("toolCursors").toString()=="false") toolCursorsBox->setChecked(false);
 
-    QCheckBox* aquaBox = new QCheckBox(tr("Aqua Style"));
-    aquaBox->setChecked(false); // default
-    if (settings.value("style").toString()=="aqua") aquaBox->setChecked(true);
-
     QCheckBox* antialiasingBox = new QCheckBox(tr("Antialiasing"));
     antialiasingBox->setChecked(true); // default
     if (settings.value("antialiasing").toString()=="false") antialiasingBox->setChecked(false);
-
-    QButtonGroup* gradientsButtons = new QButtonGroup();
-    QRadioButton* gradient1Button = new QRadioButton(tr("None"));
-    QRadioButton* gradient2Button = new QRadioButton(tr("Quick"));
-    QRadioButton* gradient3Button = new QRadioButton(tr("Gradient1"));
-    QRadioButton* gradient4Button = new QRadioButton(tr("Gradient2"));
-    gradientsButtons->addButton(gradient1Button);
-    gradientsButtons->addButton(gradient2Button);
-    gradientsButtons->addButton(gradient3Button);
-    gradientsButtons->addButton(gradient4Button);
-    gradientsButtons->setId(gradient1Button, 1);
-    gradientsButtons->setId(gradient2Button, 2);
-    gradientsButtons->setId(gradient3Button, 3);
-    gradientsButtons->setId(gradient4Button, 4);
-    QGroupBox* gradientsBox = new QGroupBox(tr("Gradients"));
-    QHBoxLayout* gradientsLayout = new QHBoxLayout();
-    gradientsBox->setLayout(gradientsLayout);
-    gradientsLayout->addWidget(gradient1Button);
-    gradientsLayout->addWidget(gradient2Button);
-    gradientsLayout->addWidget(gradient3Button);
-    gradientsLayout->addWidget(gradient4Button);
-    if ( settings.value("gradients").toString() == "1" ) gradient1Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "2" ) gradient2Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "" )  gradient2Button->setChecked(true); // default
-    if ( settings.value("gradients").toString() == "3" ) gradient3Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "4" ) gradient4Button->setChecked(true);
 
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
@@ -246,14 +216,10 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     appearanceBox->setLayout(appearanceLayout);
     appearanceLayout->addWidget(shadowsBox);
     appearanceLayout->addWidget(toolCursorsBox);
-#ifdef Q_WS_MAC
-    appearanceLayout->addWidget(aquaBox);
-#endif
 
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(antialiasingBox, 0, 0);
-    displayLayout->addWidget(gradientsBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -284,15 +250,16 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     lay->addWidget(displayBox);
     lay->addWidget(editingBox);
 
-    connect(windowOpacityLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(windowOpacityChange(int)));
-    connect(backgroundButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(backgroundChange(int)));
-    connect(gradientsButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(gradientsChange(int)));
-    connect(shadowsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(shadowsChange(int)));
-    connect(toolCursorsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(toolCursorsChange(int)));
-    connect(aquaBox, SIGNAL(stateChanged(int)), parent, SIGNAL(styleChanged(int)));
-    connect(antialiasingBox, SIGNAL(stateChanged(int)), parent, SIGNAL(antialiasingChange(int)));
-    connect(curveSmoothingLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveSmoothingChange(int)));
-    connect(highResBox, SIGNAL(stateChanged(int)), parent, SIGNAL(highResPositionChange(int)));
+    Preferences* preference = qobject_cast< Preferences* >( parent );
+
+    auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
+    connect( windowOpacityLevel, &QSlider::valueChanged, preference, &Preferences::windowOpacityChange );
+    connect( backgroundButtons,  kButtonClicked,         preference, &Preferences::backgroundChange );
+    connect( shadowsBox,         &QCheckBox::stateChanged, preference, &Preferences::shadowsChange );
+    connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &Preferences::toolCursorsChange );
+    connect( antialiasingBox,    &QCheckBox::stateChanged, preference, &Preferences::antialiasingChange );
+    connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &Preferences::curveSmoothingChange );
+    connect( highResBox,         &QCheckBox::stateChanged, preference, &Preferences::highResPositionChange );
 
     setLayout(lay);
 }

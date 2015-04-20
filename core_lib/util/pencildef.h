@@ -1,6 +1,7 @@
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
+
 #define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
 
 #define PENCIL_MOVIE_EXT \
@@ -8,6 +9,7 @@
 
 #define PENCIL_IMAGE_FILTER \
    tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" )
+
 
 enum ToolType
 {
