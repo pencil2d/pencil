@@ -88,7 +88,8 @@ HEADERS +=  \
     util/util.h \
     interface/basedockwidget.h \
     util/log.h \
-    canvasrenderer.h
+    canvasrenderer.h \
+    managers/preferencemanager.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -147,7 +148,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     managers/playbackmanager.cpp \
     managers/viewmanager.cpp \
     util/util.cpp \
-    canvasrenderer.cpp
+    canvasrenderer.cpp \
+    managers/preferencemanager.cpp
 
 win32 {
     INCLUDEPATH += external/win32

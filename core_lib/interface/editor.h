@@ -33,6 +33,7 @@ class ToolManager;
 class LayerManager;
 class PlaybackManager;
 class ViewManager;
+class PreferenceManager;
 class ScribbleArea;
 class TimeLine;
 
@@ -46,6 +47,7 @@ class Editor : public QObject
     Q_PROPERTY( LayerManager*    layers   READ layers )
     Q_PROPERTY( PlaybackManager* playback READ playback )
     Q_PROPERTY( ViewManager*     view     READ view )
+    Q_PROPERTY( PreferenceManager* preference READ preference )
 
 public:
     explicit Editor( QObject* parent );
@@ -56,11 +58,12 @@ public:
     /************************************************************************/
     /* Managers                                                             */
     /************************************************************************/ 
-    ColorManager*    color() const { return mColorManager; }
-    ToolManager*     tools() const { return mToolManager; }
-    LayerManager*    layers() const { return mLayerManager; }
-    PlaybackManager* playback() const { return mPlaybackManager; }
-    ViewManager*     view() const { return mViewManager; }
+    ColorManager*      color() const { return mColorManager; }
+    ToolManager*       tools() const { return mToolManager; }
+    LayerManager*      layers() const { return mLayerManager; }
+    PlaybackManager*   playback() const { return mPlaybackManager; }
+    ViewManager*       view() const { return mViewManager; }
+    PreferenceManager* preference() const { return mPreferenceManager; }
 
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
@@ -197,11 +200,12 @@ private:
 
     ScribbleArea* mScribbleArea = nullptr;
 
-    ColorManager*    mColorManager = nullptr;
-    ToolManager*     mToolManager = nullptr;
-    LayerManager*    mLayerManager = nullptr;
-    PlaybackManager* mPlaybackManager = nullptr;
-    ViewManager*     mViewManager = nullptr;
+    ColorManager*      mColorManager      = nullptr;
+    ToolManager*       mToolManager       = nullptr;
+    LayerManager*      mLayerManager      = nullptr;
+    PlaybackManager*   mPlaybackManager   = nullptr;
+    ViewManager*       mViewManager       = nullptr;
+    PreferenceManager* mPreferenceManager = nullptr;
 
     bool m_isAltPressed;
     int numberOfModifications;
