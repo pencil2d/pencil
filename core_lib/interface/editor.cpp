@@ -49,6 +49,8 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "viewmanager.h"
+#include "preferencemanager.h"
+
 #include "scribblearea.h"
 #include "timeline.h"
 #include "util.h"
@@ -108,13 +110,16 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
     mToolManager = new ToolManager( this );
     mPlaybackManager = new PlaybackManager( this );
     mViewManager = new ViewManager( this );
+    mPreferenceManager = new PreferenceManager( this );
+
     BaseManager* allManagers[] =
     {
         mColorManager,
         mToolManager,
         mLayerManager,
         mPlaybackManager,
-        mViewManager
+        mViewManager,
+        mPreferenceManager
     };
 
     for ( BaseManager* pManager : allManagers )
@@ -885,6 +890,7 @@ void Editor::scrubTo( int frame )
     }
 
     Q_EMIT currentFrameChanged( frame );
+    Q_EMIT currentFrameChanged( oldFrame );
 
     mScribbleArea->update();
 }
