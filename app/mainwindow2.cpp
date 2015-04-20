@@ -758,25 +758,25 @@ void MainWindow2::preferences()
 {
     m_pPreferences = new Preferences( this );
 
-    connect( m_pPreferences, SIGNAL( lengthSizeChange( QString ) ), mTimeLine, SIGNAL( lengthChange( QString ) ) );
-    connect( m_pPreferences, SIGNAL( fontSizeChange( int ) ), mTimeLine, SIGNAL( fontSizeChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( frameSizeChange( int ) ), mTimeLine, SIGNAL( frameSizeChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( labelChange( int ) ), mTimeLine, SIGNAL( labelChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( scrubChange( int ) ), mTimeLine, SIGNAL( scrubChange( int ) ) );
+    connect( m_pPreferences, &Preferences::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
+    connect( m_pPreferences, &Preferences::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
+    connect( m_pPreferences, &Preferences::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
+    connect( m_pPreferences, &Preferences::labelChange,      mTimeLine, &TimeLine::labelChange );
+    connect( m_pPreferences, &Preferences::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
-    connect( m_pPreferences, SIGNAL( windowOpacityChange( int ) ), this, SLOT( setOpacity( int ) ) );
-    connect( m_pPreferences, SIGNAL( curveSmoothingChange( int ) ), mScribbleArea, SLOT( setCurveSmoothing( int ) ) );
-    connect( m_pPreferences, SIGNAL( antialiasingChange( int ) ), mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( m_pPreferences, SIGNAL( backgroundChange( int ) ), mScribbleArea, SLOT( setBackground( int ) ) );
-    connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
+    connect( m_pPreferences, &Preferences::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( m_pPreferences, &Preferences::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
+    //connect( m_pPreferences, &Preferences::antialiasingChange,   mScribbleArea, SLOT( setAntialiasing( int ) ) );
+    connect( m_pPreferences, &Preferences::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
+    //connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
 
-    connect( m_pPreferences, SIGNAL( autosaveChange( int ) ), mEditor, SLOT( changeAutosave( int ) ) );
-    connect( m_pPreferences, SIGNAL( autosaveNumberChange( int ) ), mEditor, SLOT( changeAutosaveNumber( int ) ) );
+    connect( m_pPreferences, &Preferences::autosaveChange, mEditor, &Editor::changeAutosave );
+    connect( m_pPreferences, &Preferences::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
 
-    connect( m_pPreferences, SIGNAL( onionMaxOpacityChange( int ) ), mEditor, SLOT( onionMaxOpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionMinOpacityChange( int ) ), mEditor, SLOT( onionMinOpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionPrevFramesNumChange( int ) ), mEditor, SLOT( onionPrevFramesNumChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionNextFramesNumChange( int ) ), mEditor, SLOT( onionNextFramesNumChangeSlot( int ) ) );
+    connect( m_pPreferences, &Preferences::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
+    connect( m_pPreferences, &Preferences::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
+    connect( m_pPreferences, &Preferences::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
+    connect( m_pPreferences, &Preferences::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
 
     clearKeyboardShortcuts();
     connect( m_pPreferences, &Preferences::destroyed, [=] { setupKeyboardShortcuts(); } );
