@@ -903,7 +903,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                 painter.setWorldMatrixEnabled( false );
             }
 
-            qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
+            //qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
 
             mBufferImg->paintImage( painter );
         }
@@ -1092,7 +1092,10 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                             {
                                 painter.setOpacity( opacity * onionOpacity / 100.0 );
                                 nextImage->paintImage( painter );
-                                if ( nextFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (nextFramesNum - 1);
+								if ( nextFramesNum != 1 )
+								{
+									onionOpacity -= ( mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity() ) / ( nextFramesNum - 1 );
+								}
                             }
                         }
                         if ( onionBlue || onionRed )
@@ -1102,7 +1105,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                             if ( onionBlue && onionRed && isEffectOn( EFFECT_PREV_ONION ) ) {
                                 painter.fillRect( viewRect, Qt::blue );
                             }
-                            else {
+                            else 
+							{
                                 painter.fillRect( viewRect, onionColor );
                             }
                             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
