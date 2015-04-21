@@ -756,33 +756,33 @@ void MainWindow2::importSound()
 
 void MainWindow2::preferences()
 {
-    m_pPreferences = new PreferencesDialog( this );
-    m_pPreferences->init( mEditor->preference() );
+    mPreferencesDialog = new PreferencesDialog( this );
+    mPreferencesDialog->init( mEditor->preference() );
 
-    connect( m_pPreferences, &PreferencesDialog::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
-    connect( m_pPreferences, &PreferencesDialog::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
-    connect( m_pPreferences, &PreferencesDialog::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
-    connect( m_pPreferences, &PreferencesDialog::labelChange,      mTimeLine, &TimeLine::labelChange );
-    connect( m_pPreferences, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
+    connect( mPreferencesDialog, &PreferencesDialog::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
+    connect( mPreferencesDialog, &PreferencesDialog::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
+    connect( mPreferencesDialog, &PreferencesDialog::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
+    connect( mPreferencesDialog, &PreferencesDialog::labelChange,      mTimeLine, &TimeLine::labelChange );
+    connect( mPreferencesDialog, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
-    connect( m_pPreferences, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( m_pPreferences, &PreferencesDialog::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
+    connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( mPreferencesDialog, &PreferencesDialog::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
     //connect( m_pPreferences, &Preferences::antialiasingChange,   mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( m_pPreferences, &PreferencesDialog::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
+    connect( mPreferencesDialog, &PreferencesDialog::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
     //connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
 
-    connect( m_pPreferences, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
-    connect( m_pPreferences, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
+    connect( mPreferencesDialog, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
+    connect( mPreferencesDialog, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
 
-    connect( m_pPreferences, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
-    connect( m_pPreferences, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
-    connect( m_pPreferences, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
-    connect( m_pPreferences, &PreferencesDialog::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
 
     clearKeyboardShortcuts();
-    connect( m_pPreferences, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
+    connect( mPreferencesDialog, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
 
-    m_pPreferences->show();
+    mPreferencesDialog->show();
 }
 
 void MainWindow2::dockAllPalettes()
