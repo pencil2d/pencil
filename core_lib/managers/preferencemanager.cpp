@@ -14,19 +14,19 @@ bool PreferenceManager::init()
     return true;
 }
 
-void PreferenceManager::set( PREFERENCEITEM item, bool bOnOff )
+void PreferenceManager::set( EFFECT effect, bool bOnOff )
 {
-    int index = static_cast< size_t >( item );
+    int index = static_cast< size_t >( effect );
 
     if ( bOnOff != mPreferenceSet[ index ] )
     {
         mPreferenceSet[ index ] = bOnOff;
-        emit preferenceChanged( item );
+        emit preferenceChanged( effect );
     }
 }
 
-bool PreferenceManager::get( PREFERENCEITEM item )
+bool PreferenceManager::get( EFFECT effect )
 {
-    int index = static_cast< size_t >( item );
+    int index = static_cast< size_t >( effect );
     return mPreferenceSet[ index ];
 }
