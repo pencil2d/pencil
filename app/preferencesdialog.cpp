@@ -81,6 +81,13 @@ void PreferencesDialog::init( PreferenceManager* m )
 {
     Q_ASSERT( m != nullptr );
     mPrefManager = m;
+
+    makeConnections();
+}
+
+void PreferencesDialog::makeConnections()
+{
+
 }
 
 void PreferencesDialog::createIcons()
@@ -115,10 +122,11 @@ void PreferencesDialog::createIcons()
     shortcutsButton->setTextAlignment(Qt::AlignHCenter);
     shortcutsButton->setFlags((Qt::ItemIsSelectable | Qt::ItemIsEnabled));
 
+    auto onCurrentItemChanged = static_cast< void ( QListWidget::* )( QListWidgetItem*, QListWidgetItem* ) >( &QListWidget::currentItemChanged );
     connect(contentsWidget,
-            SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+            onCurrentItemChanged,
             this,
-            SLOT(changePage(QListWidgetItem*, QListWidgetItem*)));
+            &PreferencesDialog::changePage);
 }
 
 void PreferencesDialog::closeEvent(QCloseEvent *)

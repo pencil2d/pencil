@@ -111,7 +111,7 @@ public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    PreferencesDialog* m_pPreferences;
+    PreferencesDialog* mPreferencesDialog;
     CommandCenter* mCommands;
 
     Ui::MainWindow2* ui;
