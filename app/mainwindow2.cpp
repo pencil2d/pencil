@@ -46,7 +46,7 @@ GNU General Public License for more details.
 #include "displayoptiondockwidget.h"
 #include "tooloptiondockwidget.h"
 //#include "popupcolorpalettewidget.h"
-#include "preferences.h"
+#include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
 #include "preview.h"
@@ -756,30 +756,31 @@ void MainWindow2::importSound()
 
 void MainWindow2::preferences()
 {
-    m_pPreferences = new Preferences( this );
+    m_pPreferences = new PreferencesDialog( this );
+    m_pPreferences->init( mEditor->preference() );
 
-    connect( m_pPreferences, &Preferences::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
-    connect( m_pPreferences, &Preferences::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
-    connect( m_pPreferences, &Preferences::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
-    connect( m_pPreferences, &Preferences::labelChange,      mTimeLine, &TimeLine::labelChange );
-    connect( m_pPreferences, &Preferences::scrubChange,      mTimeLine, &TimeLine::scrubChange );
+    connect( m_pPreferences, &PreferencesDialog::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
+    connect( m_pPreferences, &PreferencesDialog::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
+    connect( m_pPreferences, &PreferencesDialog::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
+    connect( m_pPreferences, &PreferencesDialog::labelChange,      mTimeLine, &TimeLine::labelChange );
+    connect( m_pPreferences, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
-    connect( m_pPreferences, &Preferences::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( m_pPreferences, &Preferences::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
+    connect( m_pPreferences, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( m_pPreferences, &PreferencesDialog::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
     //connect( m_pPreferences, &Preferences::antialiasingChange,   mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( m_pPreferences, &Preferences::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
+    connect( m_pPreferences, &PreferencesDialog::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
     //connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
 
-    connect( m_pPreferences, &Preferences::autosaveChange, mEditor, &Editor::changeAutosave );
-    connect( m_pPreferences, &Preferences::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
+    connect( m_pPreferences, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
+    connect( m_pPreferences, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
 
-    connect( m_pPreferences, &Preferences::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
-    connect( m_pPreferences, &Preferences::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
-    connect( m_pPreferences, &Preferences::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
-    connect( m_pPreferences, &Preferences::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
+    connect( m_pPreferences, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
+    connect( m_pPreferences, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
+    connect( m_pPreferences, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
+    connect( m_pPreferences, &PreferencesDialog::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
 
     clearKeyboardShortcuts();
-    connect( m_pPreferences, &Preferences::destroyed, [=] { setupKeyboardShortcuts(); } );
+    connect( m_pPreferences, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
 
     m_pPreferences->show();
 }

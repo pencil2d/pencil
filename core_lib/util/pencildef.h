@@ -139,6 +139,7 @@ enum BackgroundStyle
 #define SETTING_WINDOW_GEOMETRY "WindowGeometry"
 #define SETTING_WINDOW_STATE    "WindowState"
 #define SETTING_DISPLAY_EFFECT  "RenderEffect"
+#define SETTING_ANTIALIAS       "antialiasing"
 
 #define SETTING_ONION_MAX_OPACITY     "onionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY     "onionMinOpacity"

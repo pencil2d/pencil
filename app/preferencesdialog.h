@@ -22,19 +22,22 @@ GNU General Public License for more details.
 class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
+class PreferenceManager;
 
-class Preferences : public QDialog
+
+class PreferencesDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    Preferences(QWidget* parent);
-    ~Preferences();
+    PreferencesDialog(QWidget* parent);
+    ~PreferencesDialog();
 
-public slots:
+    void init( PreferenceManager* m );
+    
     void changePage(QListWidgetItem* current, QListWidgetItem* previous);
 
-signals:
+Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
     void curveSmoothingChange(int);
@@ -58,12 +61,17 @@ signals:
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
 
+protected:
+    void closeEvent( QCloseEvent* ) override;
+
 private:
     void createIcons();
-    void closeEvent(QCloseEvent*);
+    void makeConnections();
 
-    QListWidget* contentsWidget;
-    QStackedWidget* pagesWidget;
+    QListWidget* contentsWidget = nullptr;
+    QStackedWidget* pagesWidget = nullptr;
+
+    PreferenceManager* mPrefManager = nullptr;
 };
 
 

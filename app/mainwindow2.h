@@ -15,7 +15,7 @@ class DisplayOptionWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
-class Preferences;
+class PreferencesDialog;
 class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
@@ -111,7 +111,7 @@ public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    Preferences* m_pPreferences;
+    PreferencesDialog* m_pPreferences;
     CommandCenter* mCommands;
 
     Ui::MainWindow2* ui;

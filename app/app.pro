@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# GUI of Pencil2D (in the futre)
+# Pencil2D GUI 
 #
 #-------------------------------------------------
 
@@ -31,7 +31,7 @@ HEADERS += \
     exportimageseqdialog.h \
     timeline2.h \
     commandcenter.h \
-    preferences.h \
+    preferencesdialog.h \
     shortcutspage.h \
     preview.h \
     colorbox.h \
@@ -48,7 +48,7 @@ SOURCES += \
     exportimageseqdialog.cpp \
     timeline2.cpp \
     commandcenter.cpp \
-    preferences.cpp \
+    preferencesdialog.cpp \
     shortcutspage.cpp \
     preview.cpp \
     colorbox.cpp \

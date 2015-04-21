@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "preferencesdialog.h"
 
 #include <QListWidget>
 #include <QStackedWidget>
@@ -27,12 +28,12 @@ GNU General Public License for more details.
 #include <QSpinBox>
 #include <QLabel>
 #include <QPushButton>
-#include "preferences.h"
+
 #include "scribblearea.h"
 #include "shortcutspage.h"
 
 
-Preferences::Preferences( QWidget* parent ) : QDialog(parent)
+PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
 {
     contentsWidget = new QListWidget;
     contentsWidget->setViewMode(QListView::IconMode);
@@ -49,7 +50,7 @@ Preferences::Preferences( QWidget* parent ) : QDialog(parent)
     pagesWidget->addWidget(new ShortcutsPage(this));
 
     QPushButton* closeButton = new QPushButton(tr("Close"));
-    connect( closeButton, &QPushButton::clicked, this, &Preferences::close );
+    connect( closeButton, &QPushButton::clicked, this, &PreferencesDialog::close );
 
     createIcons();
     contentsWidget->setCurrentRow(0);
@@ -72,11 +73,17 @@ Preferences::Preferences( QWidget* parent ) : QDialog(parent)
     setWindowTitle(tr("Preferences"));
 }
 
-Preferences::~Preferences()
+PreferencesDialog::~PreferencesDialog()
 {
 }
 
-void Preferences::createIcons()
+void PreferencesDialog::init( PreferenceManager* m )
+{
+    Q_ASSERT( m != nullptr );
+    mPrefManager = m;
+}
+
+void PreferencesDialog::createIcons()
 {
     QListWidgetItem* generalButton = new QListWidgetItem(contentsWidget);
     generalButton->setIcon(QIcon(":icons/prefspencil.png"));
@@ -114,13 +121,13 @@ void Preferences::createIcons()
             SLOT(changePage(QListWidgetItem*, QListWidgetItem*)));
 }
 
-void Preferences::closeEvent(QCloseEvent *)
+void PreferencesDialog::closeEvent(QCloseEvent *)
 {
 
     this->deleteLater();
 }
 
-void Preferences::changePage(QListWidgetItem* current, QListWidgetItem* previous)
+void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* previous)
 {
     if (!current)
         current = previous;
@@ -251,16 +258,16 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     lay->addWidget(displayBox);
     lay->addWidget(editingBox);
 
-    Preferences* preference = qobject_cast< Preferences* >( parent );
+    PreferencesDialog* preference = qobject_cast< PreferencesDialog* >( parent );
 
     auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
-    connect( windowOpacityLevel, &QSlider::valueChanged, preference, &Preferences::windowOpacityChange );
-    connect( backgroundButtons,  kButtonClicked,         preference, &Preferences::backgroundChange );
-    connect( shadowsBox,         &QCheckBox::stateChanged, preference, &Preferences::shadowsChange );
-    connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &Preferences::toolCursorsChange );
-    connect( antialiasingBox,    &QCheckBox::stateChanged, preference, &Preferences::antialiasingChange );
-    connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &Preferences::curveSmoothingChange );
-    connect( highResBox,         &QCheckBox::stateChanged, preference, &Preferences::highResPositionChange );
+    connect( windowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
+    connect( backgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
+    connect( shadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
+    connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &PreferencesDialog::toolCursorsChange );
+    connect( antialiasingBox,    &QCheckBox::stateChanged, preference, &PreferencesDialog::antialiasingChange );
+    connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &PreferencesDialog::curveSmoothingChange );
+    connect( highResBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::highResPositionChange );
 
     setLayout(lay);
 }

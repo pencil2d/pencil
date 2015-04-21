@@ -1,5 +1,9 @@
 #include "preferencemanager.h"
 
+#include <QSettings>
+#include "pencildef.h"
+
+
 PreferenceManager::PreferenceManager( QObject* parent )
     : BaseManager( parent )
 {
@@ -11,6 +15,10 @@ PreferenceManager::~PreferenceManager()
 
 bool PreferenceManager::init()
 {
+    QSettings settings( PENCIL2D, PENCIL2D );
+    
+    set( EFFECT::ANTIALIAS, settings.value( SETTING_ANTIALIAS, false ).toBool() );
+
     return true;
 }
 
@@ -18,9 +26,9 @@ void PreferenceManager::set( EFFECT effect, bool bOnOff )
 {
     int index = static_cast< size_t >( effect );
 
-    if ( bOnOff != mPreferenceSet[ index ] )
+    if ( bOnOff != mEffectSet[ index ] )
     {
-        mPreferenceSet[ index ] = bOnOff;
+        mEffectSet[ index ] = bOnOff;
         emit preferenceChanged( effect );
     }
 }
@@ -28,5 +36,5 @@ void PreferenceManager::set( EFFECT effect, bool bOnOff )
 bool PreferenceManager::get( EFFECT effect )
 {
     int index = static_cast< size_t >( effect );
-    return mPreferenceSet[ index ];
+    return mEffectSet[ index ];
 }
