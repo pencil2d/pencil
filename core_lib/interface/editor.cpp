@@ -539,7 +539,7 @@ void Editor::newVectorLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              tr( "Bitmap Layer" ), &ok );
+                                              tr( "Vector Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = mObject->addNewVectorLayer();
@@ -557,7 +557,7 @@ void Editor::newSoundLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              tr( "Bitmap Layer" ), &ok );
+                                              tr( "Sound Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = mObject->addNewSoundLayer();
@@ -575,7 +575,7 @@ void Editor::newCameraLayer()
         bool ok;
         QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                               tr( "Layer name:" ), QLineEdit::Normal,
-                                              tr( "Bitmap Layer" ), &ok );
+                                              tr( "Camera Layer" ), &ok );
         if ( ok && !text.isEmpty() )
         {
             Layer *layer = mObject->addNewCameraLayer();
