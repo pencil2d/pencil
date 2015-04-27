@@ -31,45 +31,11 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 #include "shortcutspage.h"
+#include "preferencemanager.h"
 
 
 PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
 {
-    contentsWidget = new QListWidget;
-    contentsWidget->setViewMode(QListView::IconMode);
-    contentsWidget->setIconSize(QSize(96, 84));
-    contentsWidget->setMovement(QListView::Static);
-    contentsWidget->setMaximumWidth(128);
-    contentsWidget->setSpacing(12);
-
-    pagesWidget = new QStackedWidget;
-    pagesWidget->addWidget(new GeneralPage(this));
-    pagesWidget->addWidget(new FilesPage(this));
-    pagesWidget->addWidget(new TimelinePage(this));
-    pagesWidget->addWidget(new ToolsPage(this));
-    pagesWidget->addWidget(new ShortcutsPage(this));
-
-    QPushButton* closeButton = new QPushButton(tr("Close"));
-    connect( closeButton, &QPushButton::clicked, this, &PreferencesDialog::close );
-
-    createIcons();
-    contentsWidget->setCurrentRow(0);
-    
-    QHBoxLayout* horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget(contentsWidget);
-    horizontalLayout->addWidget(pagesWidget, 1);
-
-    QHBoxLayout* buttonsLayout = new QHBoxLayout;
-    buttonsLayout->addStretch(1);
-    buttonsLayout->addWidget(closeButton);
-
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(horizontalLayout);
-    mainLayout->addStretch(1);
-    mainLayout->addSpacing(12);
-    mainLayout->addLayout(buttonsLayout);
-    setLayout(mainLayout);
-
     setWindowTitle(tr("Preferences"));
 }
 
@@ -81,6 +47,56 @@ void PreferencesDialog::init( PreferenceManager* m )
 {
     Q_ASSERT( m != nullptr );
     mPrefManager = m;
+
+    contentsWidget = new QListWidget;
+    contentsWidget->setViewMode( QListView::IconMode );
+    contentsWidget->setIconSize( QSize( 96, 84 ) );
+    contentsWidget->setMovement( QListView::Static );
+    contentsWidget->setMaximumWidth( 128 );
+    contentsWidget->setSpacing( 12 );
+
+    GeneralPage* general = new GeneralPage( this );
+    general->setManager( mPrefManager );
+    
+    FilesPage* file = new FilesPage( this );
+    file->setManager( mPrefManager );
+    
+    TimelinePage* timeline = new TimelinePage( this );
+    timeline->setManager( mPrefManager );
+
+    ToolsPage* tools = new ToolsPage( this );
+    tools->setManager( mPrefManager );
+    
+    ShortcutsPage* shortcuts = new ShortcutsPage( this );
+    shortcuts->setManager( mPrefManager );
+
+    pagesWidget = new QStackedWidget;
+    pagesWidget->addWidget( general );
+    pagesWidget->addWidget( file );
+    pagesWidget->addWidget( timeline );
+    pagesWidget->addWidget( tools );
+    pagesWidget->addWidget( shortcuts );
+
+    QPushButton* closeButton = new QPushButton( tr( "Close" ) );
+    connect( closeButton, &QPushButton::clicked, this, &PreferencesDialog::close );
+
+    createIcons();
+    contentsWidget->setCurrentRow( 0 );
+
+    QHBoxLayout* horizontalLayout = new QHBoxLayout;
+    horizontalLayout->addWidget( contentsWidget );
+    horizontalLayout->addWidget( pagesWidget, 1 );
+
+    QHBoxLayout* buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addStretch( 1 );
+    buttonsLayout->addWidget( closeButton );
+
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->addLayout( horizontalLayout );
+    mainLayout->addStretch( 1 );
+    mainLayout->addSpacing( 12 );
+    mainLayout->addLayout( buttonsLayout );
+    setLayout( mainLayout );
 
     makeConnections();
 }
@@ -145,7 +161,7 @@ void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* pr
 
 GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 {
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* windowOpacityBox = new QGroupBox(tr("Window opacity"));
@@ -198,6 +214,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     backgroundButtons->setId(greyBackgroundButton, 3);
     backgroundButtons->setId(dotsBackgroundButton, 4);
     backgroundButtons->setId(weaveBackgroundButton, 5);
+
     QHBoxLayout* backgroundLayout = new QHBoxLayout();
     backgroundBox->setLayout(backgroundLayout);
     backgroundLayout->addWidget(checkerBackgroundButton);
@@ -273,13 +290,24 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect( backgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
     connect( shadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
     connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &PreferencesDialog::toolCursorsChange );
-    connect( antialiasingBox,    &QCheckBox::stateChanged, preference, &PreferencesDialog::antialiasingChange );
+    connect( antialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
     connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &PreferencesDialog::curveSmoothingChange );
     connect( highResBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::highResPositionChange );
 
     setLayout(lay);
 }
 
+void GeneralPage::antiAliasCheckboxStateChanged( bool b )
+{
+    if ( b )
+    {
+        mManager->turnOn( EFFECT::ANTIALIAS );
+    }
+    else
+    {
+        mManager->turnOff( EFFECT::ANTIALIAS );
+    }
+}
 
 TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
 {

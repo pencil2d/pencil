@@ -186,6 +186,16 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
     return brush;
 }
 
+void ScribbleArea::onPreferencedChanged( EFFECT e )
+{
+    switch ( e )
+    {
+        case EFFECT::ANTIALIAS:
+            updateAllFrames();
+            break;
+    }
+}
+
 /************************************************************************************/
 // update methods
 
@@ -995,7 +1005,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.nNextOnionSkinCount = mEditor->getOnionNextFramesNum();
     options.fOnionSkinMaxOpacity = mEditor->getOnionMaxOpacity();
     options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
-    options.bAntiAlias = isEffectOn( EFFECT_ANTIALIAS );
+    options.bAntiAlias = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
     mCanvasRenderer.setOptions( options );
 
     mCanvasRenderer.setCanvas( &mCanvas );

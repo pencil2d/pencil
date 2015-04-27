@@ -22,19 +22,37 @@ bool PreferenceManager::init()
     return true;
 }
 
-void PreferenceManager::set( EFFECT effect, bool bOnOff )
+void PreferenceManager::turnOn( EFFECT effect )
 {
-    int index = static_cast< size_t >( effect );
-
-    if ( bOnOff != mEffectSet[ index ] )
-    {
-        mEffectSet[ index ] = bOnOff;
-        emit preferenceChanged( effect );
-    }
+    set( effect, true );
 }
 
-bool PreferenceManager::get( EFFECT effect )
+void PreferenceManager::turnOff( EFFECT effect )
+{
+    set( effect, false );
+}
+
+bool PreferenceManager::isOn( EFFECT effect )
 {
     int index = static_cast< size_t >( effect );
     return mEffectSet[ index ];
+}
+
+void PreferenceManager::set( EFFECT effect, bool b )
+{
+    int index = static_cast< size_t >( effect );
+
+    if ( mEffectSet[ index ] != b )
+    {
+        mEffectSet[ index ] = b;
+        emit preferenceChanged( effect );
+    }
+
+    QSettings settings( PENCIL2D, PENCIL2D );
+    switch ( effect )
+    {
+        case EFFECT::ANTIALIAS:
+            settings.setValue( SETTING_ANTIALIAS, b );
+            break;
+    }
 }

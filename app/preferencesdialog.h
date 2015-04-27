@@ -78,10 +78,14 @@ private:
 class GeneralPage : public QWidget
 {
     Q_OBJECT
-
 public:
     GeneralPage(QWidget* parent = 0);
+    void setManager( PreferenceManager* p ) { mManager = p; }
 
+private:
+    void antiAliasCheckboxStateChanged( bool b );
+
+    PreferenceManager* mManager = nullptr;
 };
 
 class TimelinePage : public QWidget
@@ -89,7 +93,9 @@ class TimelinePage : public QWidget
     Q_OBJECT
 public:
     TimelinePage(QWidget* parent = 0);
-
+    void setManager( PreferenceManager* p ) { mManager = p; }
+private:
+    PreferenceManager* mManager = nullptr;
 };
 
 class FilesPage : public QWidget
@@ -98,16 +104,20 @@ class FilesPage : public QWidget
 
 public:
     FilesPage(QWidget* parent = 0);
-
+    void setManager( PreferenceManager* p ) { mManager = p; }
+private:
+    PreferenceManager* mManager = nullptr;
 };
 
 
 class ToolsPage : public QWidget
 {
     Q_OBJECT
-
 public:
     ToolsPage(QWidget* parent = 0);
+    void setManager( PreferenceManager* p ) { mManager = p; }
+private:
+    PreferenceManager* mManager = nullptr;
 };
 
 #endif

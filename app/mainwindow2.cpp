@@ -71,7 +71,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mScribbleArea = new ScribbleArea( this );
     mScribbleArea->setObjectName( "ScribbleArea" );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
-    mScribbleArea->init();
     setCentralWidget( mScribbleArea );
 
     Object* object = new Object();
@@ -82,6 +81,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->setObject( object );
 
     mScribbleArea->setCore( mEditor );
+    mScribbleArea->init();
+
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
@@ -1040,6 +1041,7 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
 
     connect( editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames );
+    connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )

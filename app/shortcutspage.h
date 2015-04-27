@@ -11,7 +11,7 @@ class QStandardItem;
 class QStandardItemModel;
 class QLabel;
 class QLineEdit;
-
+class PreferenceManager;
 
 namespace Ui
 {
@@ -24,7 +24,7 @@ class ShortcutsPage : public QWidget
 public:
     explicit ShortcutsPage(QWidget* parent = 0);
 
-signals:
+    void setManager( PreferenceManager* p ) { mManager = p; }
 
 private slots:
     void tableItemClicked(const QModelIndex&);
@@ -37,10 +37,12 @@ private:
     void removeDuplicateKeySequence(QSettings*, QKeySequence);
     void treeModelLoadShortcutsSetting();
 
-    QStandardItemModel* m_treeModel;
+    QStandardItemModel* m_treeModel = nullptr;
     QModelIndex m_currentItemIndex;
+    
+    Ui::ShortcutsPage* ui = nullptr;
 
-    Ui::ShortcutsPage* ui;
+    PreferenceManager* mManager = nullptr;
 };
 
 #endif // SHORTCUTSPAGE_H

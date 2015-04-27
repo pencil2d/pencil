@@ -20,9 +20,10 @@ public:
     ~PreferenceManager();
 
     virtual bool init() override;
-
-    void set( EFFECT e, bool bOnOff );
-    bool get( EFFECT e );
+    
+    void turnOn( EFFECT e );
+    void turnOff( EFFECT e );
+    bool isOn( EFFECT e );
     
     void setOnionPrevFramesCount( int n );
     int  getOnionPrevFramesCount();
@@ -33,6 +34,7 @@ Q_SIGNALS:
     void preferenceChanged( EFFECT e );
 
 private:
+    void set( EFFECT e, bool b );
     std::bitset< static_cast< size_t >( EFFECT::COUNT ) > mEffectSet;
 };
 

@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "viewmanager.h"
 #include "canvasrenderer.h"
+#include "preferencemanager.h"
 
 
 class Layer;
@@ -75,6 +76,8 @@ public:
 
     bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
     void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
+
+    void onPreferencedChanged( EFFECT e );
 
     bool showThinLines() const { return mShowThinLines; }
     int showAllLayers() const { return mShowAllLayers; }
