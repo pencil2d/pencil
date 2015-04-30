@@ -307,95 +307,95 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
     // ---- fixed normal keys ----
     switch ( event->key() )
     {
-    case Qt::Key_Right:
-        if ( somethingSelected )
-        {
-            myTempTransformedSelection.translate( 1, 0 );
-            myTransformedSelection = myTempTransformedSelection;
-            calculateSelectionTransformation();
-            update();
-        }
-        else
-        {
-            mEditor->scrubForward();
+        case Qt::Key_Right:
+            if ( somethingSelected )
+            {
+                myTempTransformedSelection.translate( 1, 0 );
+                myTransformedSelection = myTempTransformedSelection;
+                calculateSelectionTransformation();
+                update();
+            }
+            else
+            {
+                mEditor->scrubForward();
+                event->ignore();
+            }
+            break;
+        case Qt::Key_Left:
+            if ( somethingSelected )
+            {
+                myTempTransformedSelection.translate( -1, 0 );
+                myTransformedSelection = myTempTransformedSelection;
+                calculateSelectionTransformation();
+                update();
+            }
+            else
+            {
+                mEditor->scrubBackward();
+                event->ignore();
+            }
+            break;
+        case Qt::Key_Up:
+            if ( somethingSelected )
+            {
+                myTempTransformedSelection.translate( 0, -1 );
+                myTransformedSelection = myTempTransformedSelection;
+                calculateSelectionTransformation();
+                update();
+            }
+            else
+            {
+                mEditor->previousLayer();
+                event->ignore();
+            }
+            break;
+        case Qt::Key_Down:
+            if ( somethingSelected )
+            {
+                myTempTransformedSelection.translate( 0, 1 );
+                myTransformedSelection = myTempTransformedSelection;
+                calculateSelectionTransformation();
+                update();
+            }
+            else
+            {
+                mEditor->nextLayer();
+                event->ignore();
+            }
+            break;
+        case Qt::Key_Return:
+            if ( somethingSelected )
+            {
+                paintTransformedSelection();
+                deselectAll();
+            }
+            else
+            {
+                event->ignore();
+            }
+            break;
+        case Qt::Key_Escape:
+            if ( somethingSelected )
+            {
+                escape();
+            }
+            break;
+        case Qt::Key_Backspace:
+            if ( somethingSelected )
+            {
+                deleteSelection();
+            }
+            break;
+        case Qt::Key_F1:
+            mIsSimplified = true;
+            emit outlinesChanged( mIsSimplified );
+            updateAllVectorLayersAtCurrentFrame();
+            break;
+        case Qt::Key_Space:
+            setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
+            break;
+        default:
             event->ignore();
-        }
-        break;
-    case Qt::Key_Left:
-        if ( somethingSelected )
-        {
-            myTempTransformedSelection.translate( -1, 0 );
-            myTransformedSelection = myTempTransformedSelection;
-            calculateSelectionTransformation();
-            update();
-        }
-        else
-        {
-            mEditor->scrubBackward();
-            event->ignore();
-        }
-        break;
-    case Qt::Key_Up:
-        if ( somethingSelected )
-        {
-            myTempTransformedSelection.translate( 0, -1 );
-            myTransformedSelection = myTempTransformedSelection;
-            calculateSelectionTransformation();
-            update();
-        }
-        else
-        {
-            mEditor->previousLayer();
-            event->ignore();
-        }
-        break;
-    case Qt::Key_Down:
-        if ( somethingSelected )
-        {
-            myTempTransformedSelection.translate( 0, 1 );
-            myTransformedSelection = myTempTransformedSelection;
-            calculateSelectionTransformation();
-            update();
-        }
-        else
-        {
-            mEditor->nextLayer();
-            event->ignore();
-        }
-        break;
-    case Qt::Key_Return:
-        if ( somethingSelected )
-        {
-            paintTransformedSelection();
-            deselectAll();
-        }
-        else
-        {
-            event->ignore();
-        }
-        break;
-    case Qt::Key_Escape:
-        if ( somethingSelected )
-        {
-            escape();
-        }
-        break;
-    case Qt::Key_Backspace:
-        if ( somethingSelected )
-        {
-            deleteSelection();
-        }
-        break;
-    case Qt::Key_F1:
-        mIsSimplified = true;
-        emit outlinesChanged( mIsSimplified );
-        updateAllVectorLayersAtCurrentFrame();
-        break;
-    case Qt::Key_Space:
-        setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
-        break;
-    default:
-        event->ignore();
     }
 }
 
@@ -423,7 +423,7 @@ void ScribbleArea::wheelEvent( QWheelEvent *event )
 {
     if ( event->modifiers() & Qt::ControlModifier )
     {
-        auto zoom = [=](int delta)
+        auto zoom = [ = ]( int delta )
         {
             if ( delta > 0 )
             {
@@ -439,12 +439,12 @@ void ScribbleArea::wheelEvent( QWheelEvent *event )
         QPoint numDegrees = event->angleDelta() / 8;
         if ( !numPixels.isNull() )
         {
-            zoom(numPixels.y());
+            zoom( numPixels.y() );
         }
         else if ( !numDegrees.isNull() )
         {
             QPoint numSteps = numDegrees / 15;
-            zoom(numSteps.y());
+            zoom( numSteps.y() );
         }
 
         event->accept();
@@ -704,19 +704,19 @@ void ScribbleArea::paintBitmapBuffer()
         QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
         switch ( currentTool()->type() )
         {
-        case ERASER:
-            cm = QPainter::CompositionMode_DestinationOut;
-            break;
-        case BRUSH:
-        case PEN:
-        case PENCIL:
-            if ( getTool( currentTool()->type() )->properties.preserveAlpha )
-            {
-                cm = QPainter::CompositionMode_SourceAtop;
-            }
-            break;
-        default: //nothing
-            break;
+            case ERASER:
+                cm = QPainter::CompositionMode_DestinationOut;
+                break;
+            case BRUSH:
+            case PEN:
+            case PENCIL:
+                if ( getTool( currentTool()->type() )->properties.preserveAlpha )
+                {
+                    cm = QPainter::CompositionMode_SourceAtop;
+                }
+                break;
+            default: //nothing
+                break;
         }
         targetImage->paste( mBufferImg, cm );
     }
@@ -792,7 +792,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         Q_CHECK_PTR( layer );
         if ( layer->type() == Layer::VECTOR )
         {
-            auto vecLayer = static_cast<LayerVector*>( layer );
+            auto vecLayer = static_cast< LayerVector* >( layer );
             vecLayer->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->setModified( true );
         }
     }
@@ -814,93 +814,92 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
             switch ( currentTool()->type() )
             {
-            case SMUDGE:
-            case HAND:
-            {
-                painter.save();
-                painter.setWorldMatrixEnabled( false );
-                painter.setRenderHint( QPainter::Antialiasing, false );
-                // ----- paints the edited elements
-                QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-                painter.setPen( pen2 );
-                QColor colour;
-                // ------------ vertices of the edited curves
-                colour = QColor( 200, 200, 200 );
-                painter.setBrush( colour );
-                for ( int k = 0; k < vectorSelection.curve.size(); k++ )
+                case SMUDGE:
+                case HAND:
                 {
-                    int curveNumber = vectorSelection.curve.at( k );
-
-                    for ( int vertexNumber = -1; vertexNumber < vectorImage->getCurveSize( curveNumber ); vertexNumber++ )
+                    painter.save();
+                    painter.setWorldMatrixEnabled( false );
+                    painter.setRenderHint( QPainter::Antialiasing, false );
+                    // ----- paints the edited elements
+                    QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+                    painter.setPen( pen2 );
+                    QColor colour;
+                    // ------------ vertices of the edited curves
+                    colour = QColor( 200, 200, 200 );
+                    painter.setBrush( colour );
+                    for ( int k = 0; k < vectorSelection.curve.size(); k++ )
                     {
-                        QPointF vertexPoint = vectorImage->getVertex( curveNumber, vertexNumber );
-                        QRectF rectangle( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                        if ( rect().contains( mEditor->view()->mapCanvasToScreen( vertexPoint ).toPoint() ) )
+                        int curveNumber = vectorSelection.curve.at( k );
+
+                        for ( int vertexNumber = -1; vertexNumber < vectorImage->getCurveSize( curveNumber ); vertexNumber++ )
                         {
+                            QPointF vertexPoint = vectorImage->getVertex( curveNumber, vertexNumber );
+                            QRectF rectangle( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                            if ( rect().contains( mEditor->view()->mapCanvasToScreen( vertexPoint ).toPoint() ) )
+                            {
+                                painter.drawRect( rectangle );
+                            }
+                        }
+                    }
+                    // ------------ selected vertices of the edited curves
+                    colour = QColor( 100, 100, 255 );
+                    painter.setBrush( colour );
+                    for ( int k = 0; k < vectorSelection.vertex.size(); k++ )
+                    {
+                        VertexRef vertexRef = vectorSelection.vertex.at( k );
+                        QPointF vertexPoint = vectorImage->getVertex( vertexRef );
+                        QRectF rectangle0 = QRectF( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
+                        painter.drawRect( rectangle0 );
+                    }
+                    // ----- paints the closest vertices
+                    colour = QColor( 255, 0, 0 );
+                    painter.setBrush( colour );
+                    if ( vectorSelection.curve.size() > 0 )
+                    {
+                        for ( int k = 0; k < closestVertices.size(); k++ )
+                        {
+                            VertexRef vertexRef = closestVertices.at( k );
+                            QPointF vertexPoint = vectorImage->getVertex( vertexRef );
+
+                            QRectF rectangle = QRectF( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
                             painter.drawRect( rectangle );
                         }
                     }
+                    painter.restore();
+                    break;
                 }
-                // ------------ selected vertices of the edited curves
-                colour = QColor( 100, 100, 255 );
-                painter.setBrush( colour );
-                for ( int k = 0; k < vectorSelection.vertex.size(); k++ )
+
+                case MOVE:
                 {
-                    VertexRef vertexRef = vectorSelection.vertex.at( k );
-                    QPointF vertexPoint = vectorImage->getVertex( vertexRef );
-                    QRectF rectangle0 = QRectF( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                    painter.drawRect( rectangle0 );
-                }
-                // ----- paints the closest vertices
-                colour = QColor( 255, 0, 0 );
-                painter.setBrush( colour );
-                if ( vectorSelection.curve.size() > 0 )
-                {
-                    for ( int k = 0; k < closestVertices.size(); k++ )
+                    // ----- paints the closest curves
+                    mBufferImg->clear();
+                    QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+                    QColor colour = QColor( 100, 100, 255 );
+
+                    for ( int k = 0; k < closestCurves.size(); k++ )
                     {
-                        VertexRef vertexRef = closestVertices.at( k );
-                        QPointF vertexPoint = vectorImage->getVertex( vertexRef );
+                        float scale = mEditor->view()->scaling(); // FIXME: check whether it's correct (det = area?)
 
-                        QRectF rectangle = QRectF( mEditor->view()->mapCanvasToScreen( vertexPoint ) - QPointF( 3.0, 3.0 ), QSizeF( 7, 7 ) );
-                        painter.drawRect( rectangle );
-
+                        int idx = closestCurves[ k ];
+                        if ( vectorImage->m_curves.size() <= idx )
+                        {
+                            // safety check
+                            continue;
+                        }
+                        BezierCurve myCurve = vectorImage->m_curves[ closestCurves[ k ] ];
+                        if ( myCurve.isPartlySelected() )
+                        {
+                            myCurve.transform( selectionTransformation );
+                        }
+                        QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
+                        mBufferImg->drawPath( mEditor->view()->mapCanvasToScreen( path ),
+                                              pen2,
+                                              colour,
+                                              QPainter::CompositionMode_SourceOver,
+                                              isEffectOn( EFFECT_ANTIALIAS ) );
                     }
+                    break;
                 }
-                painter.restore();
-                break;
-            }
-
-            case MOVE:
-            {
-                // ----- paints the closest curves
-                mBufferImg->clear();
-                QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-                QColor colour = QColor( 100, 100, 255 );
-
-                for ( int k = 0; k < closestCurves.size(); k++ )
-                {
-                    float scale = mEditor->view()->scaling(); // FIXME: check whether it's correct (det = area?)
-
-                    int idx = closestCurves[ k ];
-                    if ( vectorImage->m_curves.size() <= idx )
-                    {
-                        // safety check
-                        continue;
-                    }
-                    BezierCurve myCurve = vectorImage->m_curves[ closestCurves[ k ] ];
-                    if ( myCurve.isPartlySelected() )
-                    {
-                        myCurve.transform( selectionTransformation );
-                    }
-                    QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
-                    mBufferImg->drawPath( mEditor->view()->mapCanvasToScreen( path ),
-                                          pen2,
-                                          colour,
-                                          QPainter::CompositionMode_SourceOver,
-                                          isEffectOn( EFFECT_ANTIALIAS ) );
-                }
-                break;
-            }
             } // end siwtch
         }
 
@@ -997,7 +996,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 void ScribbleArea::drawCanvas( int frame, QRect rect )
 {
     Object* object = mEditor->object();
-    
+
     RenderOptions options;
     options.bPrevOnionSkin = isEffectOn( EFFECT_PREV_ONION );
     options.bNextOnionSkin = isEffectOn( EFFECT_NEXT_ONION );
@@ -1032,183 +1031,22 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     qreal opacity;
 
-    // --- onionskins ---
-    int iStart = 0;
-    int iEnd = object->getLayerCount() - 1;
-
-    if ( !mMultiLayerOnionSkin )
+    /*
+    if ( onionBlue || onionRed )
     {
-        // not used ( if required, just make a connection from UI )
-        // is used now for Single/multiple onionskin Layers
-        iStart = iEnd = mEditor->layers()->currentLayerIndex();
+        painter.setOpacity( 1.0 );
+        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
+        if ( onionBlue && onionRed && isEffectOn( EFFECT_NEXT_ONION ) )
+        {
+            painter.fillRect( viewRect, Qt::red );
+        }
+        else
+        {
+            painter.fillRect( viewRect, onionColor );
+        }
+        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
     }
-
-    for ( int i = iStart; i <= iEnd; i++ )
-    {
-        opacity = 1.0;
-        if ( i != mEditor->layers()->currentLayerIndex() && ( mShowAllLayers == 1 ) )
-        {
-            opacity = 0.4;
-        }
-
-        Layer *layer = ( object->getLayer( i ) );
-        if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) ) // change && to || for all layers
-        {
-            // paints the bitmap images
-            if ( layer->type() == Layer::BITMAP )
-            {
-                LayerBitmap *layerBitmap = ( LayerBitmap * )layer;
-                BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
-                if ( bitmapImage != NULL )
-                {
-                    painter.setWorldMatrixEnabled( true );
-
-                    // previous frame (onion skin)
-                    if ( isEffectOn( EFFECT_PREV_ONION ) )
-                    {
-                        int prevFramesNum = mEditor->getOnionPrevFramesNum();
-                        float onionOpacity = mEditor->getOnionMaxOpacity();
-                        
-                        for ( int j = 0; j < prevFramesNum; j++ )
-                        {
-                            BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -(j + 1) );
-                            if ( previousImage != NULL)
-                            {
-                                painter.setOpacity( opacity * onionOpacity / 100.0 );
-                                previousImage->paintImage( painter );
-                                if ( prevFramesNum != 1 )
-                                {
-                                    onionOpacity -= ( mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity() ) / ( prevFramesNum - 1 );
-                                }
-                            }
-                        }
-                        if ( onionBlue || onionRed )
-                        {
-                            painter.setOpacity( 1.0 );
-                            painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                            if ( onionBlue && onionRed && isEffectOn( EFFECT_NEXT_ONION ) )
-                            {
-                                painter.fillRect( viewRect, Qt::red );
-                            }
-                            else
-                            {
-                                painter.fillRect( viewRect, onionColor );
-                            }
-                            painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-                        }
-                    }
-
-                    // next frame (onion skin)
-                    if ( isEffectOn( EFFECT_NEXT_ONION ) )
-                    {
-                        int nextFramesNum = mEditor->getOnionNextFramesNum();
-                        float onionOpacity = mEditor->getOnionMaxOpacity();
-                        
-                        for ( int j = 0; j < nextFramesNum; j++ )
-                        {
-                            BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, j + 1 );
-                            if ( nextImage != NULL )
-                            {
-                                painter.setOpacity( opacity * onionOpacity / 100.0 );
-                                nextImage->paintImage( painter );
-								if ( nextFramesNum != 1 )
-								{
-									onionOpacity -= ( mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity() ) / ( nextFramesNum - 1 );
-								}
-                            }
-                        }
-                        if ( onionBlue || onionRed )
-                        {
-                            painter.setOpacity( 1.0 );
-                            painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                            if ( onionBlue && onionRed && isEffectOn( EFFECT_PREV_ONION ) ) {
-                                painter.fillRect( viewRect, Qt::blue );
-                            }
-                            else 
-							{
-                                painter.fillRect( viewRect, onionColor );
-                            }
-                            painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-                        }
-                    }
-                }
-            }
-
-            // paints the vector images onion skins
-            if ( layer->type() == Layer::VECTOR )
-            {
-                QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                auto layerVector = static_cast< LayerVector* >( layer );
-
-                painter.setWorldMatrixEnabled( false );
-
-                // previous frame (onion skin)
-                if ( isEffectOn( EFFECT_PREV_ONION ) )
-                {
-                    QTransform viewTransform = mEditor->view()->getView();
-                    int prevFramesNum = mEditor->getOnionPrevFramesNum();
-                    float onionOpacity = mEditor->getOnionMinOpacity();
-                    
-                    for ( int j = 0; j < prevFramesNum; j++ )
-                    {
-                        VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -(prevFramesNum - j));
-                        pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                        painter.setOpacity( opacity * onionOpacity / 100.0 );
-                        painter.drawImage( QPoint( 0, 0 ), *pImage );
-                        if (prevFramesNum != 1) onionOpacity += (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
-                    }
-                    
-                    if ( onionBlue || onionRed )
-                    {
-                        painter.setOpacity( 1.0 );
-                        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                        if ( onionBlue && onionRed && isEffectOn( EFFECT_NEXT_ONION ) )
-                        {
-                            painter.fillRect( vectorViewRect, Qt::red );
-                        }
-                        else
-                        {
-                            painter.fillRect( vectorViewRect, onionColor );
-                        }
-                        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-                    }
-                }
-
-                // next frame (onion skin)
-                if ( isEffectOn( EFFECT_NEXT_ONION ) )
-                {
-                    QTransform viewTransform = mEditor->view()->getView();
-                    int nextFramesNum = mEditor->getOnionNextFramesNum();
-                    float onionOpacity = mEditor->getOnionMinOpacity();
-                    
-                    for ( int j = 0; j < nextFramesNum; j++ )
-                    {
-                        VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, nextFramesNum - j);
-                        pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                        painter.setOpacity( opacity * onionOpacity / 100.0 );
-                        painter.drawImage( QPoint( 0, 0 ), *pImage );
-                        if (nextFramesNum != 1) onionOpacity += (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (nextFramesNum - 1);
-                    }
-
-                    if ( onionBlue || onionRed )
-                    {
-                        painter.setOpacity( 1.0 );
-                        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-                        if ( onionBlue && onionRed && isEffectOn( EFFECT_PREV_ONION ) )
-                        {
-                            painter.fillRect( vectorViewRect, Qt::blue );
-                        }
-                        else
-                        {
-                            painter.fillRect( vectorViewRect, onionColor );
-                        }
-                        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-                    }
-                }
-                painter.setWorldMatrixEnabled( true );
-            }
-        }
-    } // --- end onion skins
+    */
 
     // --- current frame ---
     for ( int i = 0; i < object->getLayerCount(); i++ )
@@ -1587,8 +1425,8 @@ void ScribbleArea::paintTransformedSelection()
             if ( bitmapImage == NULL )
             {
                 qDebug() << "NULL image pointer!"
-                         << mEditor->layers()->currentLayerIndex()
-                         << mEditor->currentFrame();
+                    << mEditor->layers()->currentLayerIndex()
+                    << mEditor->currentFrame();
                 return;
             }
 
@@ -1920,7 +1758,6 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
 #ifdef DRAW_AXIS
     effects[ EFFECT_AXIS ] = 1;
 #endif
-
 }
 
 /* Render Canvas */
@@ -1974,11 +1811,11 @@ void ScribbleArea::drawGrid( QPainter& painter )
         return static_cast< int >( f ) / gridSize * gridSize;
     };
 
-    QRectF boundingRect = painter.clipBoundingRect( );
-    int left = round100( boundingRect.left( ) ) - gridSize;
-    int right = round100( boundingRect.right( ) ) + gridSize;
-    int top = round100( boundingRect.top( ) ) - gridSize;
-    int bottom = round100( boundingRect.bottom( ) ) + gridSize;
+    QRectF boundingRect = painter.clipBoundingRect();
+    int left = round100( boundingRect.left() ) - gridSize;
+    int right = round100( boundingRect.right() ) + gridSize;
+    int top = round100( boundingRect.top() ) - gridSize;
+    int bottom = round100( boundingRect.bottom() ) + gridSize;
 
     QPen pen( Qt::lightGray );
     pen.setCosmetic( true );
