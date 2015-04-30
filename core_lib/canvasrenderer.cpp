@@ -93,8 +93,8 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
         {
             switch ( layer->type() )
             {
-                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
-                case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizePrevOnion ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, i, mOptions.bColorizePrevOnion ); break; }
                 case Layer::CAMERA: break;
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
@@ -109,8 +109,8 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
         {
             switch ( layer->type() )
             {
-                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i ); break; }
-                case Layer::VECTOR: { paintVectorFrame( painter, layer, i ); break; }
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizeNextOnion ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, i, mOptions.bColorizeNextOnion ); break; }
                 case Layer::CAMERA: break;
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
@@ -119,7 +119,7 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     }
 }
 
-void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame )
+void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize )
 {
     if ( !layer->visible() )
     {
@@ -141,10 +141,22 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
     }
 
     bitmapImage->paintImage( painter );
+
+    if ( colorize )
+    {
+        painter.setWorldMatrixEnabled( false );
+        painter.setOpacity( 1.0 );
+        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
+        painter.fillRect( painter.viewport(), Qt::red );
+
+        painter.setOpacity( 0.3 );
+        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
+
+        painter.setWorldMatrixEnabled( true );
+    }
 }
 
-
-void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame )
+void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize )
 {
     if ( !layer->visible() )
     {

@@ -36,6 +36,8 @@ struct RenderOptions
     int   nNextOnionSkinCount = 3;
     float fOnionSkinMaxOpacity = 0.5f;
     float fOnionSkinMinOpacity = 0.1f;
+    bool  bColorizePrevOnion = false;
+    bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
 };
 
@@ -60,8 +62,8 @@ private:
     void paintCurrentFrame( QPainter& painter );
 
 
-    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame );
-    void paintVectorFrame( QPainter&, Layer* layer, int nFrame );
+    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
+    void paintVectorFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
 
 private:
     QPixmap* mCanvas = nullptr;
