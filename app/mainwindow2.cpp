@@ -314,8 +314,7 @@ void MainWindow2::createMenus()
     mRecentFileMenu->loadFromDisk();
     ui->menuFile->insertMenu( ui->actionSave, mRecentFileMenu );
 
-    QObject::connect( mRecentFileMenu, SIGNAL( loadRecentFile( QString ) ),
-        this, SLOT( openFile( QString ) ) );
+    connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
     connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
     connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
@@ -323,7 +322,7 @@ void MainWindow2::createMenus()
 
 void MainWindow2::setOpacity( int opacity )
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( "windowOpacity", 100 - opacity );
     setWindowOpacity( opacity / 100.0 );
 }
