@@ -362,14 +362,13 @@ void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
-        QSettings settings( "Pencil", "Pencil" );
+        QSettings settings( PENCIL2D, PENCIL2D );
 
         QString strLastOpenPath = settings.value( "lastFilePath", QDir::homePath() ).toString();
         QString fileName = QFileDialog::getOpenFileName( this,
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
-
         if ( fileName.isEmpty() )
         {
             return;
@@ -393,7 +392,7 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QString strLastFolder = settings.value( "lastFilePath", QDir::homePath() ).toString();
     if ( strLastFolder.isEmpty() )
@@ -659,7 +658,7 @@ void MainWindow2::exportImageSequence()
 
 void MainWindow2::exportImage()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
 
     QString filePath = QFileDialog::getSaveFileName( this,
