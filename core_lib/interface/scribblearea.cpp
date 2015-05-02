@@ -118,7 +118,6 @@ bool ScribbleArea::init()
     return true;
 }
 
-
 void ScribbleArea::updateToolCursor()
 {
     setCursor( currentTool()->cursor() );
@@ -127,7 +126,7 @@ void ScribbleArea::updateToolCursor()
 void ScribbleArea::setCurveSmoothing( int newSmoothingLevel )
 {
     mCurveSmoothingLevel = newSmoothingLevel / 20.0;
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( "curveSmoothing", newSmoothingLevel );
 }
 
@@ -273,8 +272,9 @@ void ScribbleArea::togglePopupPalette()
 }
 
 
-/************************************************************************************/
-// key event handlers
+/************************************************************************/
+/* key event handlers                                                   */
+/************************************************************************/
 
 void ScribbleArea::escape()
 {
@@ -448,10 +448,6 @@ void ScribbleArea::wheelEvent( QWheelEvent *event )
         }
 
         event->accept();
-
-        /*
-
-        */
     }
 }
 

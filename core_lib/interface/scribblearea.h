@@ -240,9 +240,6 @@ private:
     VectorSelection vectorSelection;
     QTransform selectionTransformation;
 
-    // View Matrix
-    QTransform mView;
-
     QPixmap mCanvas;
 
     CanvasRenderer mCanvasRenderer;
