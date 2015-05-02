@@ -241,7 +241,6 @@ private:
     QTransform selectionTransformation;
 
     QPixmap mCanvas;
-
     CanvasRenderer mCanvasRenderer;
 
     // debug
