@@ -449,7 +449,7 @@ bool MainWindow2::openObject( QString strFilePath )
 
     mEditor->setObject( object );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( "LastFilePath", object->filePath() );
 
     mRecentFileMenu->addRecentFile( object->filePath() );

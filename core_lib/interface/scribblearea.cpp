@@ -1002,6 +1002,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
     options.bAntiAlias = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
     mCanvasRenderer.setOptions( options );
+    
+    qDebug() << "Antialias=" << options.bAntiAlias;
 
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
