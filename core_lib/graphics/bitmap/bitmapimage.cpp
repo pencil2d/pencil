@@ -450,27 +450,30 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
     {
         QPainter painter(mImage);
         painter.setCompositionMode(cm);
-        painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+        painter.setRenderHint( QPainter::Antialiasing, antialiasing );
         painter.setPen(pen);
         painter.setBrush(brush);
         painter.setTransform(QTransform().translate(-topLeft().x(), -topLeft().y()));
         painter.setMatrixEnabled(true);
         if (path.length() > 0)
         {
-            for (int pt = 0; pt<path.elementCount()-1; pt++ )
+            /*
+            for ( int pt = 0; pt < path.elementCount() - 1; pt++ )
             {
                 qreal dx = path.elementAt(pt+1).x - path.elementAt(pt).x;
                 qreal dy = path.elementAt(pt+1).y - path.elementAt(pt).y;
                 qreal m = sqrt(dx*dx+dy*dy);
                 qreal factorx = dx / m;
                 qreal factory = dy / m;
-                for ( int h=0; h<m; h+=inc )
+                for ( float h = 0.f; h < m; h += inc )
                 {
-                    int x = path.elementAt(pt).x + factorx*h;
-                    int y = path.elementAt(pt).y + factory*h;
-                    painter.drawPoint( x, y );
+                    qreal x = path.elementAt(pt).x + factorx * h;
+                    qreal y = path.elementAt(pt).y + factory * h;
+                    painter.drawPoint( QPointF( x, y ) );
                 }
             }
+            */
+            painter.drawPath( path );
         }
         else
         {

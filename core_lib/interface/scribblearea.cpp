@@ -190,6 +190,7 @@ void ScribbleArea::onPreferencedChanged( EFFECT e )
     switch ( e )
     {
         case EFFECT::ANTIALIAS:
+            mEffects[ EFFECT_ANTIALIAS ] = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
             updateAllFrames();
             break;
     }
@@ -744,7 +745,7 @@ void ScribbleArea::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::Composi
 
 void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm )
 {
-    mBufferImg->drawPath( path, pen, brush, cm, isEffectOn( EFFECT_ANTIALIAS ) );
+    mBufferImg->drawPath( path, pen, brush, cm, mEditor->preference()->isOn( EFFECT::ANTIALIAS ) );
 }
 
 void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
