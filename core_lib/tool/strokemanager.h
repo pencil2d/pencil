@@ -21,7 +21,7 @@ public:
     void setPressure(float pressure);
 
     float getPressure() { return m_tabletPressure; }
-    bool isTabletInUse() { return m_tabletInUse; }
+    bool isTabletInUse() { return mTabletInUse; }
 
     QList<QPointF> interpolateStroke();
 
@@ -51,7 +51,7 @@ private:
 
     bool m_strokeStarted;
 
-    bool m_tabletInUse;
+    bool mTabletInUse;
     float m_tabletPressure;
     QPointF m_tabletPosition;
 
