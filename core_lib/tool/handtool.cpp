@@ -37,6 +37,7 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
         //qDebug("Stop Hand Tool");
         mScribbleArea->setPrevTool();
     }
+    qDebug() << "";
 }
 
 void HandTool::mouseMoveEvent( QMouseEvent* event )
@@ -52,7 +53,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
 
     if ( isTranslate )
     {
-        QPointF d = getCurrentPixel() - getLastPressPixel();
+        QPointF d = getCurrentPoint() - getLastPressPoint();
         editor()->view()->translate( d );
     }
     else if ( isRotate )
