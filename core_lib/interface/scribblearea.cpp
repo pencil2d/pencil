@@ -767,9 +767,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 {
     //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
 
-    QPainter painter( this );
-
-    if ( !mMouseInUse )
+    //if ( !mMouseInUse )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -794,7 +792,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         }
     }
 
-
+    QPainter painter( this );
     // paints the canvas
     painter.setWorldMatrixEnabled( false );
     //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
@@ -1004,7 +1002,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.bAntiAlias = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
     mCanvasRenderer.setOptions( options );
     
-    qDebug() << "Antialias=" << options.bAntiAlias;
+    //qDebug() << "Antialias=" << options.bAntiAlias;
 
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );

@@ -60,13 +60,14 @@ QTransform ViewManager::createViewTransform()
 
 void ViewManager::translate(float dx, float dy)
 {
-    mTranslate += QPointF( dx, dy );
+    mTranslate = QPointF( dx, dy );
     mView = createViewTransform();
     Q_EMIT viewChanged();
 }
 
 void ViewManager::translate(QPointF offset)
 {
+    qDebug() << offset;
     translate( offset.x(), offset.y() );
 }
 
