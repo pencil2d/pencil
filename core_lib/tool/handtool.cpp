@@ -1,4 +1,3 @@
-
 #include "handtool.h"
 #include <cmath>
 #include <QPixmap>
@@ -34,10 +33,9 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
     //---- stop the hand tool if this was mid button
     if ( event->button() == Qt::MidButton )
     {
-        //qDebug("Stop Hand Tool");
+        qDebug( "[HandTool] Stop Hand Tool" );
         mScribbleArea->setPrevTool();
     }
-    qDebug() << "";
 }
 
 void HandTool::mouseMoveEvent( QMouseEvent* event )
@@ -53,8 +51,9 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
 
     if ( isTranslate )
     {
-        QPointF d = getCurrentPoint() - getLastPressPoint();
-        editor()->view()->translate( d );
+        QPointF d = getCurrentPoint() - getLastPoint();
+        QPointF offset = editor()->view()->translation() + d;
+        editor()->view()->translate( offset );
     }
     else if ( isRotate )
     {
@@ -64,7 +63,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
 
         float angle = acos( QVector2D::dotProduct( v1, v2 ) / v1.length() * v2.length() );
         angle = angle * 180.0 / M_PI;
-        
+
         mEditor->view()->rotate( angle );
     }
     else if ( isScale )

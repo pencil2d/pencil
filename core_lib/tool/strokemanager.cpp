@@ -68,7 +68,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent* event)
     }
     else
     {
-        pos = event->pos();
+        pos = event->localPos();
     }
 
     return pos;
@@ -80,6 +80,7 @@ void StrokeManager::mousePressEvent(QMouseEvent* event)
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
         m_lastPressPixel = getEventPosition(event);
+        qDebug() << m_lastPressPixel;
     }
     m_lastPixel = getEventPosition(event);
 
@@ -128,12 +129,12 @@ void StrokeManager::mouseMoveEvent(QMouseEvent* event)
     }
 
     // shift queue
-    while (strokeQueue.size()  >= STROKE_QUEUE_LENGTH)
+    while ( strokeQueue.size()  >= STROKE_QUEUE_LENGTH )
     {
-        strokeQueue.removeFirst();
+        strokeQueue.pop_front();
     }
 
-    strokeQueue << smoothPos;
+    strokeQueue.push_back( smoothPos );
 
 }
 

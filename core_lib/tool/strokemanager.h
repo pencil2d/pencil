@@ -1,6 +1,7 @@
 #ifndef STROKEMANAGER_H
 #define STROKEMANAGER_H
 
+#include <deque>
 #include <QPointF>
 #include <QList>
 #include <QPoint>
@@ -36,14 +37,14 @@ private:
 
     QPointF getEventPosition(QMouseEvent *);
 
-    float pressure; // last pressure
-    QList<QPointF> strokeQueue;
+    float pressure = 1.0f; // last pressure
+    std::deque<QPointF> strokeQueue;
 
     QTime singleshotTime;
 
-    QPointF m_lastPressPixel;
-    QPointF m_currentPixel;
-    QPointF m_lastPixel;
+    QPointF m_lastPressPixel = { 0, 0 };
+    QPointF m_currentPixel   = { 0, 0 };
+    QPointF m_lastPixel      = { 0, 0 };
 
     QPointF m_previousTangent;
     bool hasTangent;

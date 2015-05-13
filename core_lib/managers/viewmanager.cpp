@@ -67,7 +67,6 @@ void ViewManager::translate(float dx, float dy)
 
 void ViewManager::translate(QPointF offset)
 {
-    qDebug() << offset;
     translate( offset.x(), offset.y() );
 }
 
