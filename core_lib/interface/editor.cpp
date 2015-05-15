@@ -1083,16 +1083,6 @@ void Editor::clearCurrentFrame()
     mScribbleArea->clearImage();
 }
 
-void Editor::zoomIn()
-{
-    view()->scale( 1.2f );
-}
-
-void Editor::zoomOut()
-{
-    view()->scale( 0.8f );
-}
-
 void Editor::rotatecw()
 {
     view()->rotate( 15.f );

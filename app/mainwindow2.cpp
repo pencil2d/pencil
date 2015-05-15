@@ -69,7 +69,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     // Central widget
     mScribbleArea = new ScribbleArea( this );
-    mScribbleArea->setObjectName( "ScribbleArea" );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
     setCentralWidget( mScribbleArea );
 
@@ -225,8 +224,8 @@ void MainWindow2::createMenus()
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In, &QAction::triggered, mEditor, &Editor::zoomIn );
-    connect( ui->actionZoom_Out, &QAction::triggered, mEditor, &Editor::zoomOut );
+    connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
+    connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
     connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );

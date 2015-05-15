@@ -15,6 +15,9 @@ public:
     virtual ~CommandCenter();
 
     void setCore( Editor* );
+    // view
+    void ZoomIn();
+    void ZoomOut();
 
     // Animation
     void GotoNextFrame();

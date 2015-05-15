@@ -125,8 +125,6 @@ public: //slots
     void flipX();
     void flipY();
     void deselectAll();
-    void zoomIn();
-    void zoomOut();
     void rotatecw();
     void rotateacw();
     void resetView();

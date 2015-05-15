@@ -42,6 +42,8 @@ GNU General Public License for more details.
 ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent ),
 mLog( "ScribbleArea" )
 {
+    setObjectName( "ScribbleArea" );
+
     mStrokeManager = new StrokeManager();
 
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -419,37 +421,24 @@ void ScribbleArea::keyReleaseEvent( QKeyEvent *event )
 
 /************************************************************************************/
 // mouse and tablet event handlers
-
-void ScribbleArea::wheelEvent( QWheelEvent *event )
+void ScribbleArea::wheelEvent( QWheelEvent* event )
 {
-    if ( event->modifiers() & Qt::ControlModifier )
+    QPoint pixels = event->pixelDelta();
+    QPoint angle = event->angleDelta();
+    if ( !pixels.isNull() )
     {
-        auto zoom = [ = ]( int delta )
-        {
-            if ( delta > 0 )
-            {
-                mEditor->zoomIn();
-            }
-            else
-            {
-                mEditor->zoomOut();
-            }
-        };
-
-        QPoint numPixels = event->pixelDelta();
-        QPoint numDegrees = event->angleDelta() / 8;
-        if ( !numPixels.isNull() )
-        {
-            zoom( numPixels.y() );
-        }
-        else if ( !numDegrees.isNull() )
-        {
-            QPoint numSteps = numDegrees / 15;
-            zoom( numSteps.y() );
-        }
-
-        event->accept();
+        //zoom( numPixels.y() );
     }
+    else if ( !angle.isNull() )
+    {
+        float delta = angle.y() / 1200.f;
+        //qDebug() << degrees;
+        float newScaleValue = mEditor->view()->scaling() * ( 1.f + delta );
+        qDebug() << newScaleValue;
+        mEditor->view()->scale( newScaleValue );
+    }
+
+    event->accept();
 }
 
 void ScribbleArea::tabletEvent( QTabletEvent *event )

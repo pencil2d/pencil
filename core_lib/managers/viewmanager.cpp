@@ -79,7 +79,7 @@ void ViewManager::rotate(float degree)
 
 void ViewManager::scale(float scaleValue)
 {
-    mScale *= scaleValue;
+    mScale = scaleValue;
     mView = createViewTransform();
     Q_EMIT viewChanged();
 }
