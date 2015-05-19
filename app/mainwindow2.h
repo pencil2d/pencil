@@ -98,14 +98,14 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*          mColorWheel = nullptr;
-    ColorPaletteWidget*   mColorPalette = nullptr;
+    QDockWidget*          mColorWheel          = nullptr;
+    ColorPaletteWidget*   mColorPalette        = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
-    ToolOptionWidget*     mToolOptions = nullptr;
-    ToolBoxWidget*        mToolBox = nullptr;
-    //PreviewWidget*           mPreview = nullptr;
-    Timeline2*            mTimeline2 = nullptr;
-    RecentFileMenu* mRecentFileMenu;
+    ToolOptionWidget*     mToolOptions         = nullptr;
+    ToolBoxWidget*        mToolBox             = nullptr;
+    Timeline2*            mTimeline2           = nullptr;
+    RecentFileMenu*       mRecentFileMenu      = nullptr;
+    //PreviewWidget*      mPreview = nullptr;
 
 public:
     TimeLine*             mTimeLine; // be public temporary
