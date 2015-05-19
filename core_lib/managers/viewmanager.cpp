@@ -50,12 +50,15 @@ QTransform ViewManager::getView()
 QTransform ViewManager::createViewTransform()
 {
     QTransform t;
-    t.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
+    //t.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
     t.translate( mTranslate.x(), mTranslate.y() );
-    t.scale( mScale, mScale );
+
     t.rotate( mRotate );
 
-    return std::move( t );
+    QTransform s;
+    s.scale( mScale, mScale );
+
+    return std::move( s * t );
 }
 
 void ViewManager::translate(float dx, float dy)
