@@ -195,6 +195,8 @@ void ScribbleArea::onPreferencedChanged( EFFECT e )
             mEffects[ EFFECT_ANTIALIAS ] = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
             updateAllFrames();
             break;
+        default:
+            break;
     }
 }
 
@@ -427,7 +429,10 @@ void ScribbleArea::wheelEvent( QWheelEvent* event )
     QPoint angle = event->angleDelta();
     if ( !pixels.isNull() )
     {
-        //zoom( numPixels.y() );
+        qDebug() << pixels.y();
+        float delta = pixels.y() / 400.f;
+        float newScaleValue = mEditor->view()->scaling() * ( 1.f + delta );
+        mEditor->view()->scale( newScaleValue );
     }
     else if ( !angle.isNull() )
     {
