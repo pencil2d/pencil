@@ -86,7 +86,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     makeConnections( mEditor, mScribbleArea );
 
     mCommands = new CommandCenter( this );
-
+    mCommands->setCore( mEditor );
+    
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();

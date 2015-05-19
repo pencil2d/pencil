@@ -14,7 +14,7 @@ public:
     explicit CommandCenter(QObject* parent = 0);
     virtual ~CommandCenter();
 
-    void setCore( Editor* );
+    void setCore( Editor* e ) { mEditor = e; }
     // view
     void ZoomIn();
     void ZoomOut();
