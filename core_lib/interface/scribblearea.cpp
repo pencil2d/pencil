@@ -429,7 +429,7 @@ void ScribbleArea::wheelEvent( QWheelEvent* event )
     QPoint angle = event->angleDelta();
     if ( !pixels.isNull() )
     {
-        qDebug() << pixels.y();
+        //qDebug() << pixels.y();
         float delta = pixels.y() / 400.f;
         float newScaleValue = mEditor->view()->scaling() * ( 1.f + delta );
         mEditor->view()->scale( newScaleValue );
