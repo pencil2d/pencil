@@ -49,16 +49,19 @@ QTransform ViewManager::getView()
 
 QTransform ViewManager::createViewTransform()
 {
+    QTransform c;
+    c.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
+    
     QTransform t;
-    //t.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
     t.translate( mTranslate.x(), mTranslate.y() );
 
-    t.rotate( mRotate );
+    QTransform r;
+    r.rotate( mRotate );
 
     QTransform s;
     s.scale( mScale, mScale );
 
-    return std::move( s * t );
+    return std::move( t * s * r * c );
 }
 
 void ViewManager::translate(float dx, float dy)
