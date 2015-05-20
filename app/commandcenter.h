@@ -15,6 +15,7 @@ public:
     virtual ~CommandCenter();
 
     void setCore( Editor* e ) { mEditor = e; }
+
     // view
     void ZoomIn();
     void ZoomOut();

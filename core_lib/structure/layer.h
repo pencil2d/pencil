@@ -35,11 +35,13 @@ public:
     enum LAYER_TYPE
     {
         UNDEFINED = 0,
-        BITMAP = 1,
-        VECTOR = 2,
-        MOVIE = 3,
-        SOUND = 4,
-        CAMERA = 5
+        BITMAP    = 1,
+        VECTOR    = 2,
+        MOVIE     = 3,
+        SOUND     = 4,
+        CAMERA    = 5,
+
+        //PAINTABLE = 
     };
 
     Layer(Object*, LAYER_TYPE);

@@ -1680,9 +1680,7 @@ void ScribbleArea::clearImage()
     {
         return; // skip updates when nothing changes
     }
-    //TODO: confirm 1 and 2 are not necessary and remove comments
-    //emit modification(); //1
-    //update(); //2
+
     setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
 }
 
