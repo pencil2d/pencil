@@ -40,7 +40,7 @@ public:
     static ToolPropertyType assistedSettingType; // dynamic cursor adjustment
     static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
-    explicit BaseTool( QObject *parent = 0 );
+    explicit BaseTool( QObject* parent = 0 );
     void initialize( Editor* editor, ScribbleArea* );
 
     QString typeName() { return TypeName( type() ); }
@@ -55,8 +55,8 @@ public:
     virtual void mouseDoubleClickEvent( QMouseEvent* );
 
     // return true if handled
-    virtual bool keyPressEvent( QKeyEvent * ) { return false; }
-    virtual bool keyReleaseEvent( QKeyEvent * ) { return false; }
+    virtual bool keyPressEvent( QKeyEvent* ) { return false; }
+    virtual bool keyReleaseEvent( QKeyEvent* ) { return false; }
 
     // dynamic cursor adjustment
     virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
