@@ -56,7 +56,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame )
 
     QPainter painter( mCanvas );
     painter.setTransform( mViewTransform );
-    painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bAntiAlias );
+    painter.setRenderHint( QPainter::SmoothPixmapTransform, true );
     painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
 
     painter.setWorldMatrixEnabled( true );
