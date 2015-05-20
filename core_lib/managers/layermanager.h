@@ -18,7 +18,7 @@ public:
     Layer* currentLayer();
     Layer* currentLayer( int offset );
     int    currentLayerIndex();
-    void   setCurrentLayer( int );
+    void   setCurrentLayer( int nIndex );
     int    count();
 
     bool   deleteCurrentLayer();

@@ -4,8 +4,7 @@
 #include "layermanager.h"
 
 
-LayerManager::LayerManager( QObject* pParent )
-    : BaseManager( pParent )
+LayerManager::LayerManager( QObject* pParent ) : BaseManager( pParent )
 {
 }
 
@@ -133,8 +132,8 @@ bool LayerManager::deleteCurrentLayer()
     {
         setCurrentLayer( currentLayerIndex() - 1 );
     }
-    emit editor()->updateAllFrames();
-    emit layerCountChanged( count() );
+
+    Q_EMIT layerCountChanged( count() );
 
     return true;
 }

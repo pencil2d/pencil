@@ -92,7 +92,6 @@ public:
 
 
 Q_SIGNALS:
-    void updateAllFrames();
     void updateTimeLine();
     void updateLayerCount();
 
