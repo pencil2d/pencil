@@ -934,19 +934,6 @@ void Editor::moveFrameBackward()
     }
 }
 
-
-void Editor::previousLayer()
-{
-    layers()->gotoPreviouslayer();
-    mScribbleArea->updateAllFrames();
-}
-
-void Editor::nextLayer()
-{
-    layers()->gotoNextLayer();
-    mScribbleArea->updateAllFrames();
-}
-
 void Editor::addNewKey()
 {
     addKeyFame( layers()->currentLayerIndex(), currentFrame() );

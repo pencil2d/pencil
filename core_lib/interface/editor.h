@@ -138,9 +138,6 @@ public: //slots
     void scrubForward();
     void scrubBackward();
 
-    void previousLayer();
-    void nextLayer();
-
     void addNewKey();
     void duplicateKey();
     void removeKey();

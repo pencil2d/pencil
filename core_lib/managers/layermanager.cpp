@@ -49,7 +49,7 @@ void LayerManager::gotoNextLayer()
     if ( mCurrentLayerIndex < editor()->object()->getLayerCount() - 1 )
     {
         mCurrentLayerIndex += 1;
-		emit currentLayerChanged( mCurrentLayerIndex );
+		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
     }
 }
 
