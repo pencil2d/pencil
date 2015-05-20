@@ -1007,7 +1007,7 @@ void MainWindow2::aboutPencil()
 
 void MainWindow2::helpBox()
 {
-    qDebug() << "Open help manual.";
+    //qDebug() << "Open help manual.";
 
     QString url = "http://www.pencil2d.org/documentation/";
     QDesktopServices::openUrl( QUrl(url) );
