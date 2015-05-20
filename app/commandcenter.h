@@ -15,10 +15,15 @@ public:
     virtual ~CommandCenter();
 
     void setCore( Editor* e ) { mEditor = e; }
+    
+    // edit
+
 
     // view
     void ZoomIn();
     void ZoomOut();
+    void flipX();
+    void flipY();
 
     // Animation
     void GotoNextFrame();

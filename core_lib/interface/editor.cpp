@@ -411,18 +411,6 @@ void Editor::cut()
     mScribbleArea->deselectAll();
 }
 
-void Editor::flipX()
-{
-    tools()->setCurrentTool( MOVE );
-    mScribbleArea->myFlipX = -mScribbleArea->myFlipX;
-}
-
-void Editor::flipY()
-{
-    tools()->setCurrentTool( MOVE );
-    mScribbleArea->myFlipY = -mScribbleArea->myFlipY;
-}
-
 void Editor::copy()
 {
     Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );

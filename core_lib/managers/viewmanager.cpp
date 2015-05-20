@@ -57,9 +57,12 @@ QTransform ViewManager::createViewTransform()
 
     QTransform r;
     r.rotate( mRotate );
+    
+    float flipX = mIsFlipHorizontal ? 1.f : -1.f;
+    float flipY = mIsFlipVertical ? 1.f : -1.f;
 
     QTransform s;
-    s.scale( mScale, mScale );
+    s.scale( mScale * flipX, mScale * flipY );
 
     return std::move( t * s * r * c );
 }
@@ -90,7 +93,27 @@ void ViewManager::scale(float scaleValue)
     Q_EMIT viewChanged();
 }
 
-void ViewManager::setCanvasSize(QSize size)
+void ViewManager::flipHorizontal( bool b )
+{
+    if ( b != mIsFlipHorizontal )
+    {
+        mIsFlipHorizontal = b;
+        mView = createViewTransform();
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::flipVertical( bool b )
+{
+    if ( b != mIsFlipVertical )
+    {
+        mIsFlipVertical = b;
+        mView = createViewTransform();
+        Q_EMIT viewChanged();
+    }
+}
+
+void ViewManager::setCanvasSize( QSize size )
 {
     mCanvasSize = size;
     mView = createViewTransform();

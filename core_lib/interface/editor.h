@@ -121,8 +121,7 @@ public: //slots
     void clearCurrentFrame();
 
     void cut();
-    void flipX();
-    void flipY();
+    
     void deselectAll();
     void rotatecw();
     void rotateacw();

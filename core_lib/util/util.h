@@ -25,4 +25,8 @@ private:
 
 #define OnScopeExit( callback ) ScopeGuard SCOPEGUARD_LINENAME( myScopeGuard, __LINE__ ) ( [&] { callback; } );
 
+
+#define NULLReturnVoid( p ) if ( p == nullptr ) { return; }
+#define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
+
 #endif // UTIL_H
