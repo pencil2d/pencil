@@ -58,8 +58,8 @@ QTransform ViewManager::createViewTransform()
     QTransform r;
     r.rotate( mRotate );
     
-    float flipX = mIsFlipHorizontal ? 1.f : -1.f;
-    float flipY = mIsFlipVertical ? 1.f : -1.f;
+    float flipX = mIsFlipHorizontal ? -1.f : 1.f;
+    float flipY = mIsFlipVertical ? -1.f : 1.f;
 
     QTransform s;
     s.scale( mScale * flipX, mScale * flipY );
