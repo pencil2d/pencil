@@ -971,6 +971,9 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     case Layer::CAMERA:
         isOK = layer->addNewKeyAt( frameIndex );
         break;
+	case Layer::SOUND:
+		// TODO:
+		break;
     default:
         break;
     }
