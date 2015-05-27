@@ -33,6 +33,9 @@ public:
     void GotoPrevFrame();
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
+    
+    // Layer
+    void addNewSoundLayer();
 
 private:
     Editor* mEditor = nullptr;

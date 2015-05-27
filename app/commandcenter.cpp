@@ -24,25 +24,24 @@ CommandCenter::~CommandCenter() {}
 void CommandCenter::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    Q_ASSERT ( layer )
+    Q_ASSERT( layer );
 
     if ( layer->type() != Layer::SOUND )
     {
         QMessageBox msg;
         msg.setText( tr( "No sound layer exists as a destination for your import. Create a new sound layer?" ) );
-        QAbstractButton* acceptButton = msg.addButton( tr( "Create sound layer" ), QMessageBox::AcceptRole );
+        msg.addButton( tr( "Create sound layer" ), QMessageBox::AcceptRole );
         msg.addButton( tr( "Don't create layer" ), QMessageBox::RejectRole );
+        int ret = msg.exec();
 
-        msg.exec();
-        if ( msg.clickedButton() == acceptButton )
+        if ( ret != QMessageBox::Ok )
         {
-            //SoundLayer();
-            layer = mEditor->layers()->currentLayer();
+            return;    
         }
-        else
-        {
-            return;
-        }
+        
+        // Create new sound layer.
+        //SoundLayer();
+        //layer = mEditor->layers()->currentLayer();
     }
     /*
     if ( !( ( LayerSound* )layer )->isEmpty() )
