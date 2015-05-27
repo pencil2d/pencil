@@ -1072,8 +1072,3 @@ void Editor::resetView()
 {
     view()->resetView();
 }
-
-void Editor::importSound( QString filePath )
-{
-    Q_UNUSED( filePath );
-}

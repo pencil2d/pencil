@@ -128,7 +128,6 @@ public: //slots
     void resetView();
 
     bool importImage( QString filePath );
-    void importSound( QString filePath );
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
