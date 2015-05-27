@@ -16,6 +16,9 @@ public:
 
     void setCore( Editor* e ) { mEditor = e; }
     
+    // file 
+    void importSound();
+
     // edit
 
 

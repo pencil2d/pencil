@@ -169,7 +169,8 @@ void Editor::dropEvent( QDropEvent* event )
             if ( filePath.endsWith( ".png" ) || filePath.endsWith( ".jpg" ) || filePath.endsWith( ".jpeg" ) )
                 importImage( filePath );
             if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
-                importSound( filePath );
+                //importSound( filePath );
+                ;
         }
     }
 }

@@ -196,8 +196,7 @@ void MainWindow2::createMenus()
     connect( ui->actionImport_Image_Sequence, &QAction::triggered, this, &MainWindow2::importImageSequence );
     connect( ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie );
 
-    //connect( ui->actionImport_Sound, &QAction::triggered, editor, &Editor::importSound );
-    ui->actionImport_Sound->setEnabled( false );
+    connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &CommandCenter::importSound );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
@@ -692,65 +691,6 @@ void MainWindow2::exportImage()
         return;// false;
     }
     return; // true;
-}
-
-void MainWindow2::importSound()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL )
-    {
-        QMessageBox msg;
-        msg.setText( "You must select an empty sound layer as the destination for your sound before importing. Please create a new sound layer." );
-        msg.setIcon( QMessageBox::Warning );
-        msg.exec();
-        return;
-    }
-
-    if ( layer->type() != Layer::SOUND )
-    {
-        QMessageBox msg;
-        msg.setText( "No sound layer exists as a destination for your import. Create a new sound layer?" );
-        QAbstractButton* acceptButton = msg.addButton( "Create sound layer", QMessageBox::AcceptRole );
-        msg.addButton( "Don't create layer", QMessageBox::RejectRole );
-
-        msg.exec();
-        if ( msg.clickedButton() == acceptButton )
-        {
-            //SoundLayer();
-            layer = mEditor->layers()->currentLayer();
-        }
-        else
-        {
-            return;
-        }
-    }
-    /*
-    if ( !( ( LayerSound* )layer )->isEmpty() )
-    {
-        QMessageBox msg;
-        msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
-        msg.exec();
-        return;
-    }
-
-    if ( filePath.isEmpty() || filePath == "fromDialog" )
-    {
-        QSettings settings( "Pencil", "Pencil" );
-        QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-        if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName( mMainWindow, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
-        if ( !filePath.isEmpty() )
-        {
-            settings.setValue( "lastImportPath", QVariant( filePath ) );
-        }
-        else
-        {
-            return;
-        }
-    }
-    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, currentFrame() );
-    */
-    mTimeLine->updateContent();
 }
 
 void MainWindow2::preferences()

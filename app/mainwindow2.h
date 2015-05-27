@@ -59,8 +59,6 @@ public slots:
     void importMovie();
     void exportMovie();
 
-    void importSound();
-
     void preferences();
     void helpBox();
     void aboutPencil();
