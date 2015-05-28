@@ -1,16 +1,19 @@
-#include "filemanager.h"
-#include "pencildef.h"
+#include "filedialogex.h"
 
 #include <QSettings>
-#include <QDir>
 #include <QFileDialog>
 
+#include "pencildef.h"
 
-FileManager::FileManager(QObject* parent) : QObject(parent) {}
-FileManager::~FileManager() {}
+FileDialogEx::FileDialogEx( QObject* parent ) : QObject( parent )
+{
+}
 
+FileDialogEx::~FileDialogEx()
+{
+}
 
-QString FileManager::openFileDialog( EFile fileType )
+QString FileDialogEx::openFile(EFile fileType)
 {
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup( "FilePath" );
@@ -20,18 +23,20 @@ QString FileManager::openFileDialog( EFile fileType )
     QString strFilter = fileFilters( fileType );
 
     QString filePath = QFileDialog::getOpenFileName( mRoot,
-                                                     strTitle, 
+                                                     strTitle,
                                                      strInitialFilePath,
                                                      strFilter );
     if ( !filePath.isEmpty() )
     {
         setting.setValue( toSettingKey( fileType ), filePath );
     }
-    
+
     return filePath;
 }
 
-QString FileManager::dialogTitle( EFile fileType )
+
+
+QString FileDialogEx::dialogTitle( EFile fileType )
 {
     switch ( fileType )
     {
@@ -41,7 +46,7 @@ QString FileManager::dialogTitle( EFile fileType )
     return "";
 }
 
-QString FileManager::fileFilters( EFile fileType )
+QString FileDialogEx::fileFilters( EFile fileType )
 {
     switch ( fileType )
     {
@@ -51,7 +56,7 @@ QString FileManager::fileFilters( EFile fileType )
     return "";
 }
 
-QString FileManager::toSettingKey( EFile fileType )
+QString FileDialogEx::toSettingKey( EFile fileType )
 {
     switch ( fileType )
     {

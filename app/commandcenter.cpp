@@ -9,7 +9,6 @@
 #include "editor.h"
 #include "viewmanager.h"
 #include "layermanager.h"
-#include "filemanager.h"
 #include "util.h"
 
 #include "layerbitmap.h"
@@ -17,6 +16,8 @@
 #include "layersound.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
+
+#include "filedialogex.h"
 
 
 CommandCenter::CommandCenter(QObject* parent) : QObject(parent) {}
@@ -54,8 +55,10 @@ void CommandCenter::importSound()
         msg.exec();
         return;
     }
-    
-    QString strSoundFile = mEditor->file()->openFileDialog( EFile::SOUND );
+
+    FileDialogEx fileDialog( this );
+    QString strSoundFile = fileDialog.openFile( EFile::SOUND );
+
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     
     //mTimeLine->updateContent();
