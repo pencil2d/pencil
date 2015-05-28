@@ -34,6 +34,7 @@ class LayerManager;
 class PlaybackManager;
 class ViewManager;
 class PreferenceManager;
+class FileManager;
 class ScribbleArea;
 class TimeLine;
 
@@ -64,6 +65,7 @@ public:
     PlaybackManager*   playback() const { return mPlaybackManager; }
     ViewManager*       view() const { return mViewManager; }
     PreferenceManager* preference() const { return mPreferenceManager; }
+    FileManager*       file() const { return mFileManager; }
 
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
@@ -198,6 +200,7 @@ private:
     PlaybackManager*   mPlaybackManager   = nullptr;
     ViewManager*       mViewManager       = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
+    FileManager*       mFileManager       = nullptr;
 
     bool m_isAltPressed;
     int numberOfModifications;

@@ -9,6 +9,7 @@
 #include "editor.h"
 #include "viewmanager.h"
 #include "layermanager.h"
+#include "filemanager.h"
 #include "util.h"
 
 #include "layerbitmap.h"
@@ -54,20 +55,7 @@ void CommandCenter::importSound()
         return;
     }
     
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-    
-    QString filePath = QFileDialog::getOpenFileName( nullptr, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
-    if ( !filePath.isEmpty() )
-    {
-        settings.setValue( "lastImportPath", QVariant( filePath ) );
-    }
-    else
-    {
-        return;
-    }
-    
+    QString strSoundFile = mEditor->file()->openFileDialog( EFile::SOUND );
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     
     //mTimeLine->updateContent();
@@ -75,14 +63,12 @@ void CommandCenter::importSound()
 
 void CommandCenter::ZoomIn()
 {
-    Q_ASSERT( mEditor );
     float newScaleValue = mEditor->view()->scaling() * 1.2;
     mEditor->view()->scale( newScaleValue );
 }
 
 void CommandCenter::ZoomOut()
 {
-    Q_ASSERT( mEditor );
     float newScaleValue = mEditor->view()->scaling() * 0.8;
     mEditor->view()->scale( newScaleValue );
 }
