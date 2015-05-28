@@ -4,6 +4,9 @@
 #include "basemanager.h"
 
 class Layer;
+class LayerSound;
+
+
 
 class LayerManager : public BaseManager
 {
@@ -19,12 +22,15 @@ public:
     Layer* currentLayer( int offset );
     int    currentLayerIndex();
     void   setCurrentLayer( int nIndex );
+    void   setCurrentLayer( Layer* layer );
     int    count();
 
     bool   deleteCurrentLayer();
 
     void gotoNextLayer();
     void gotoPreviouslayer();
+
+    LayerSound* newSoundLayer( QString strLayerName );
 
     // KeyFrame Management
     int  LastFrameAtFrame( int frameIndex );

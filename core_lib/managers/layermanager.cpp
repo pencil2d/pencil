@@ -2,7 +2,7 @@
 #include "editor.h"
 #include "layerimage.h"
 #include "layermanager.h"
-
+#include "layersound.h"
 
 LayerManager::LayerManager( QObject* pParent ) : BaseManager( pParent )
 {
@@ -44,6 +44,20 @@ void LayerManager::setCurrentLayer( int layerIndex )
 	}
 }
 
+void LayerManager::setCurrentLayer( Layer* layer )
+{
+    Object* o = editor()->object();
+
+    for ( int i = 0; i < o->getLayerCount(); ++i )
+    {
+        if ( layer == o->getLayer( i ) )
+        {
+            setCurrentLayer( i );
+            return;
+        }
+    }
+}
+
 void LayerManager::gotoNextLayer()
 {
     if ( mCurrentLayerIndex < editor()->object()->getLayerCount() - 1 )
@@ -58,8 +72,18 @@ void LayerManager::gotoPreviouslayer()
     if ( mCurrentLayerIndex > 0 )
     {
         mCurrentLayerIndex -= 1;
-		emit currentLayerChanged( mCurrentLayerIndex );
+		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
     }
+}
+
+LayerSound* LayerManager::newSoundLayer( QString strLayerName )
+{
+    LayerSound* layer = editor()->object()->addNewSoundLayer();
+    layer->setName( strLayerName );
+    
+    Q_EMIT layerCountChanged( count() );
+
+    return layer;
 }
 
 int LayerManager::LastFrameAtFrame( int frameIndex )

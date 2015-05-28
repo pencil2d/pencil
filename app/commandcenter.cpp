@@ -1,8 +1,11 @@
 #include "commandcenter.h"
 
-#include <QMessageBox>
 #include <QPushButton>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QFileDialog>
 
+#include "pencildef.h"
 #include "editor.h"
 #include "viewmanager.h"
 #include "layermanager.h"
@@ -10,15 +13,12 @@
 
 #include "layerbitmap.h"
 #include "layervector.h"
+#include "layersound.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 
 
-
-
-
 CommandCenter::CommandCenter(QObject* parent) : QObject(parent) {}
-
 CommandCenter::~CommandCenter() {}
 
 void CommandCenter::importSound()
@@ -40,35 +40,36 @@ void CommandCenter::importSound()
         }
         
         // Create new sound layer.
-        //SoundLayer();
-        //layer = mEditor->layers()->currentLayer();
+        addNewSoundLayer();
+        layer = mEditor->layers()->currentLayer();
     }
-    /*
-    if ( !( ( LayerSound* )layer )->isEmpty() )
-    {
-    QMessageBox msg;
-    msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
-    msg.exec();
-    return;
-    }
+    
+    LayerSound* layerSound = static_cast< LayerSound* >( layer );
 
-    if ( filePath.isEmpty() || filePath == "fromDialog" )
+    if ( !layerSound->isEmpty() )
     {
-    QSettings settings( "Pencil", "Pencil" );
+        QMessageBox msg;
+        msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
+        msg.exec();
+        return;
+    }
+    
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-    filePath = QFileDialog::getOpenFileName( mMainWindow, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
+    
+    QString filePath = QFileDialog::getOpenFileName( nullptr, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
     if ( !filePath.isEmpty() )
     {
-    settings.setValue( "lastImportPath", QVariant( filePath ) );
+        settings.setValue( "lastImportPath", QVariant( filePath ) );
     }
     else
     {
-    return;
+        return;
     }
-    }
-    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, currentFrame() );
-    */
+    
+    //layerSound->loadSoundAtFrame( filePath, currentFrame() );
+    
     //mTimeLine->updateContent();
 }
 
@@ -122,4 +123,16 @@ void CommandCenter::GotoPrevKeyFrame()
 
 }
 
+void CommandCenter::addNewSoundLayer()
+{
+    bool ok = false;
+    QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
+                                          tr( "Layer name:" ), QLineEdit::Normal,
+                                          tr( "Sound Layer" ), &ok );
+    if ( ok && !text.isEmpty() )
+    {
+        Layer* layer = mEditor->layers()->newSoundLayer( text );
+        mEditor->layers()->setCurrentLayer( layer );
+    }
+}
 
