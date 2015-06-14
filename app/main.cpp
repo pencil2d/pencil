@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
     
-    if ( argc == 1 || (argc == 2 && strcmp( argv[1], "-NSDocumentRevisionsDebugMode" ) == 0)  )
+    if ( argc == 1 || (argc > 1 && strcmp( argv[1], "-NSDocumentRevisionsDebugMode" ) == 0)  )
     {
         mainWindow.show();
         return app.exec();
