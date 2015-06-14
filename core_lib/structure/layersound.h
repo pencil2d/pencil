@@ -56,21 +56,12 @@ public:
     void playSound(int frame);
     void stopSound();
 
-    bool isEmpty() const { return sound.count() == 0; }
     // graphic representation -- could be put in another class
     void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-
-    QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
-    //int getSoundSize() { return sound.size(); }
-    bool soundIsNotNull(int index) { return (sound[index] != NULL); }
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
 
-private:
-    QList<QString> soundFilepath;
-    QList<qint64> soundSize;
-    QList<QMediaPlayer*> sound;
 };
 
 #endif

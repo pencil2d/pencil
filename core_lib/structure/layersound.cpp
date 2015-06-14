@@ -21,13 +21,11 @@ GNU General Public License for more details.
 
 LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
 {
-    mName = QString(tr("Sound Layer"));
+    mName = QString( tr("Sound Layer") );
 }
 
 LayerSound::~LayerSound()
 {
-    while (!sound.empty())
-        delete sound.takeFirst();
 }
 
 
@@ -103,42 +101,6 @@ void LayerSound::playSound( int frame )
     {
         
     }
-
-    /*
-    for (int i = 0; i < sound.size(); ++i)
-    {
-        QMediaPlayer* media = sound.at(i);
-        if (media != NULL && visible)
-        {
-            int position = framesPosition.at(i);
-            if (frame < position)
-            {
-                media->stop();
-            }
-            else
-            {
-                int offsetInMs = floor((frame - position) * float(1000) / fps);
-                if (media->state() == QMediaPlayer::PlayingState)
-                {
-                    if (fabs((float)media->position() - offsetInMs) > 500.0f)
-                        media->setPosition(offsetInMs);
-                }
-                else
-                {
-                    if (frame > position)
-                    {
-                        media->pause();
-                        media->setPosition(offsetInMs);
-                    }
-                    if (offsetInMs < soundSize[i])
-                    {                        
-                        media->play();
-                    }
-                }
-            }
-        }
-    }
-    */
 }
 
 
