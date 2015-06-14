@@ -97,8 +97,13 @@ bool LayerSound::saveImage(int index, QString path, int layerNumber)
     return true;
 }
 
-void LayerSound::playSound(int frame, int fps)
+void LayerSound::playSound( int frame )
 {
+    if ( keyExists( frame ) )
+    {
+        
+    }
+
     /*
     for (int i = 0; i < sound.size(); ++i)
     {

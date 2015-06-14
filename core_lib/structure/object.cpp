@@ -205,30 +205,6 @@ void Object::deleteLayer( int i )
     }
 }
 
-void Object::playSoundIfAny( int frame, int fps )
-{
-    for ( int i = 0; i < getLayerCount(); i++ )
-    {
-        Layer* layer = getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            ( ( LayerSound* )layer )->playSound( frame, fps );
-        }
-    }
-}
-
-void Object::stopSoundIfAny()
-{
-    for ( int i = 0; i < getLayerCount(); i++ )
-    {
-        Layer* layer = getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            ( ( LayerSound* )layer )->stopSound();
-        }
-    }
-}
-
 ColourRef Object::getColour( int i )
 {
     ColourRef result( Qt::white, "error" );

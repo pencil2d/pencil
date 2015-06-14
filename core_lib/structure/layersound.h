@@ -53,7 +53,7 @@ public:
     void loadSoundAtFrame( QString filePathString, int frame );
 
     bool saveImage(int index, QString path, int layerNumber);
-    void playSound(int frame,int fps);
+    void playSound(int frame);
     void stopSound();
 
     bool isEmpty() const { return sound.count() == 0; }
@@ -61,7 +61,7 @@ public:
     void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
 
     QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
-    int getSoundSize() { return sound.size(); }
+    //int getSoundSize() { return sound.size(); }
     bool soundIsNotNull(int index) { return (sound[index] != NULL); }
 
 protected:

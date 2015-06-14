@@ -3,6 +3,10 @@
 #include "editor.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
+#include "object.h"
+#include "layer.h"
+#include "layersound.h"
+
 
 PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 {
@@ -62,7 +66,7 @@ void PlaybackManager::timerTick()
 
     editor()->scrubTo( editor()->currentFrame() + 1 );
 
-    // TODO: play sound if any
+    playSoundIfAny( editor()->currentFrame() );
 }
 
 void PlaybackManager::setLooping( bool isLoop )
@@ -80,6 +84,19 @@ void PlaybackManager::enableRangedPlayback( bool b )
     {
         m_isRangedPlayback = b;
         emit rangedPlaybackStateChanged( m_isRangedPlayback );
+    }
+}
+
+void PlaybackManager::playSoundIfAny(int frame)
+{
+    for ( int i = 0; i < editor()->object()->getLayerCount(); ++i)
+    {
+        auto layer = editor()->object()->getLayer( i );
+        if ( layer->type() == Layer::SOUND )
+        {
+            auto soundLayer = static_cast< LayerSound* >( layer );
+            soundLayer->playSound( frame );
+        }
     }
 }
 
