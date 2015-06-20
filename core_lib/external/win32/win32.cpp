@@ -137,21 +137,23 @@ bool Object::exportMovie( ExportMovieParameters par )
             Layer* layer = this->getLayer( i );
             if ( layer->type() == Layer::SOUND )
             {
-                for ( int l = 0; l < ( ( LayerSound* )layer )->getSoundSize(); l++ )
+				auto layerSound = static_cast< LayerSound* >( layer );
+
+				for ( int l = 0; l < layerSound->getSoundSize(); l++ )
                 {
-                    if ( ( ( LayerSound* )layer )->soundIsNotNull( l ) )
+					if ( layerSound->soundIsNotNull( l ) )
                     {
                         // convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
                         // supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-                        qDebug() << "./plugins/ffmpeg.exe -i \"" + ( ( LayerSound* )layer )->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"";
-                        ffmpeg.start( "./plugins/ffmpeg.exe -i \"" + ( ( LayerSound* )layer )->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"" );
+						qDebug() << "./plugins/ffmpeg.exe -i \"" + layerSound->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"";
+						ffmpeg.start( "./plugins/ffmpeg.exe -i \"" + layerSound->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"" );
                         if ( ffmpeg.waitForStarted() == true )
                         {
                             if ( ffmpeg.waitForFinished() == true )
                             {
                                 qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
                                 qDebug() << "stderr: " + ffmpeg.readAllStandardError();
-                                qDebug() << "AUDIO conversion done. ( file: " << ( ( LayerSound* )layer )->getSoundFilepathAt( l ) << ")";
+								qDebug() << "AUDIO conversion done. ( file: " << layerSound->getSoundFilepathAt( l ) << ")";
                             }
                             else
                             {
@@ -166,26 +168,33 @@ bool Object::exportMovie( ExportMovieParameters par )
                         int frame = 0;
 
                         float fframe = ( float )frame / ( float )fps;
-                        QFile file( tempPath + "tmpaudio0.wav" );
+                        
+						QFile file( tempPath + "tmpaudio0.wav" );
                         qDebug() << "audio file " + tempPath + "tmpaudio0.wav";
+
                         file.open( QIODevice::ReadOnly );
                         file.read( ( char* )header1, sizeof( header1 ) );
                         quint32 audioSize = header1[ 21 ];
                         audioSize = audioSize * 65536 + header1[ 20 ];
                         qDebug() << "audio len " << audioSize;
                         // before calling malloc should check: audioSize < max credible value
-                        qint16* data = ( qint16* )malloc( audioSize );
+                        
+						qint16* data = ( qint16* )malloc( audioSize );
                         file.read( ( char* )data, audioSize );
                         audioDataValid = true;
                         int delta = fframe * 44100 * 2;
-                        qDebug() << "audio delta " << delta;
+                        
+						qDebug() << "audio delta " << delta;
+
                         int indexMax = MIN( audioSize / 2, audioDataSize / 2 - delta );
-                        // audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
+                        
+						// audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
                         for ( int index = 0; index < indexMax; index++ )
                         {
                             audioData[ index + delta ] = safeSum( audioData[ index + delta ], data[ index ] );
                         }
-                        free( data );
+                        
+						free( data );
                         file.close();
                     }
                 }
