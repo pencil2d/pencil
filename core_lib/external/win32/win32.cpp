@@ -92,6 +92,7 @@ bool Object::exportMovie( ExportMovieParameters exportParams )
 
     qDebug() << "-------EXPORT VIDEO------";
 
+
     // --------- Export all the temporary frames ----------
     QDir::temp().mkdir( "pencil" );
     QString tempPath = QDir::temp().absolutePath() + "/pencil/";
