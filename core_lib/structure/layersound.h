@@ -43,17 +43,17 @@ class LayerSound : public Layer
     Q_OBJECT
 
 public:
-    LayerSound(Object* object);
+    LayerSound( Object* object );
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath);
 
     bool addNewKeyAt( int frameNumber ) override;
 
-    void loadSoundAtFrame( QString filePathString, int frame );
+    ErrorCode loadSoundAtFrame( QString filePathString, int frame );
 
-    bool saveImage(int index, QString path, int layerNumber);
-    void playSound(int frame);
+    bool saveImage( int index, QString path, int layerNumber );
+    void playSound( int frame );
     void stopSound();
 
     // functions will be removed. don't use them.
@@ -64,13 +64,11 @@ public:
     // functions will be removed.
 
     // graphic representation -- could be put in another class
-    void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool     selected, int frameSize);
+    void paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
-
 private:
 };
 
 #endif
-

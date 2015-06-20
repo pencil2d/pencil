@@ -19,9 +19,9 @@ GNU General Public License for more details.
 #include "layersound.h"
 
 
-LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
+LayerSound::LayerSound( Object* object ) : Layer( object, Layer::SOUND )
 {
-    mName = QString( tr("Sound Layer") );
+    mName = QString( tr( "Sound Layer" ) );
 }
 
 LayerSound::~LayerSound()
@@ -34,63 +34,61 @@ void LayerSound::paintImages(QPainter& painter,
                              int width, int height,
                              bool selected, int frameSize)
 {
-    Q_UNUSED(cells);
-    Q_UNUSED(width);
-    Q_UNUSED(selected);
-    
+    Q_UNUSED( cells );
+    Q_UNUSED( width );
+    Q_UNUSED( selected );
+
     // TODO: re-write here.
     /*
     for (int i = 0; i < sound.size(); i++)
     {
-        qreal h = x + (framesPosition.at(i)-1)*frameSize+2;
-        if (framesSelected.at(i))
-        {
-            painter.setBrush(QColor(60,60,60));
-            h = h + frameOffset*frameSize;
-        }
-        else
-        {
-            painter.setBrush(QColor(125,125,125));
-        }
-        QPointF points[3] = { QPointF(h, y+4), QPointF(h, y+height-4), QPointF(h+15, y+0.5*height) };
-        painter.drawPolygon( points, 3 );
-        painter.drawText(QPoint( h + 20, y+(2*height)/3), framesFilename.at(i) );
+    qreal h = x + (framesPosition.at(i)-1)*frameSize+2;
+    if (framesSelected.at(i))
+    {
+    painter.setBrush(QColor(60,60,60));
+    h = h + frameOffset*frameSize;
+    }
+    else
+    {
+    painter.setBrush(QColor(125,125,125));
+    }
+    QPointF points[3] = { QPointF(h, y+4), QPointF(h, y+height-4), QPointF(h+15, y+0.5*height) };
+    painter.drawPolygon( points, 3 );
+    painter.drawText(QPoint( h + 20, y+(2*height)/3), framesFilename.at(i) );
     }
     */
 }
 
-bool LayerSound::addNewKeyAt(int frameNumber)
+bool LayerSound::addNewKeyAt( int frameNumber )
 {
     return addKeyFrame( frameNumber, new SoundClip );
 }
 
-void LayerSound::loadSoundAtFrame(QString filePathString, int frameNumber)
+ErrorCode LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
 {
-    /*
-    if (index == -1)
-        addImageAtFrame(frameNumber);
-    index = getIndexAtFrame(frameNumber);
-
-    QFileInfo fi(filePathString);
-    if (fi.exists())
-    {
-        QMediaPlayer* pPlayer = new QMediaPlayer( this );
-        pPlayer->setMedia( QUrl::fromLocalFile(filePathString) );
-
-        sound[index] = pPlayer;
-        soundFilepath[index] = filePathString;
-    }
-    else
+    QFileInfo info( strFilePath );
+    if ( !info.exists() )
     {
     }
-    */
+    QMediaPlayer* pPlayer = new QMediaPlayer( this );
+    pPlayer->setMedia( QUrl::fromLocalFile( strFilePath ) );
+
+    if ( pPlayer->error() != QMediaPlayer::NoError )
+    {
+        ErrorCode code( ERROR_LOAD_SOUND_FILE );
+        return code;
+    }
+
+    
+
+    return ErrorCode( PCL_OK );
 }
 
-bool LayerSound::saveImage(int index, QString path, int layerNumber)
+bool LayerSound::saveImage( int index, QString path, int layerNumber )
 {
     /*
     Q_UNUSED(layerNumber);
-    
+
     QFile originalFile( soundFilepath.at(index) );
     originalFile.copy( path + "/" + framesFilename.at(index) );
     framesModified[index] = false;
@@ -102,7 +100,6 @@ void LayerSound::playSound( int frame )
 {
     if ( keyExists( frame ) )
     {
-        
     }
 }
 
@@ -113,16 +110,16 @@ void LayerSound::stopSound()
     /*
     for(int i=0; i < sound.size(); i++)
     {
-        Q_ASSERT( sound[i] );
-        sound[i]->stop();
+    Q_ASSERT( sound[i] );
+    sound[i]->stop();
     }
     */
 }
 
 
-QDomElement LayerSound::createDomElement(QDomDocument& doc)
+QDomElement LayerSound::createDomElement( QDomDocument& doc )
 {
-    QDomElement layerTag = doc.createElement("layer");
+    QDomElement layerTag = doc.createElement( "layer" );
     /*
     layerTag.setAttribute("id",id);
     layerTag.setAttribute("name", name);
@@ -130,16 +127,16 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
     layerTag.setAttribute("type", type());
     for (int index=0; index < framesPosition.size() ; index++)
     {
-        QDomElement soundTag = doc.createElement("sound");
-        soundTag.setAttribute("position", framesPosition.at(index));
-        soundTag.setAttribute("src", framesFilename.at(index));
-        layerTag.appendChild(soundTag);
+    QDomElement soundTag = doc.createElement("sound");
+    soundTag.setAttribute("position", framesPosition.at(index));
+    soundTag.setAttribute("src", framesFilename.at(index));
+    layerTag.appendChild(soundTag);
     }
     */
     return layerTag;
 }
 
-void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
+void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
 {
     /*
     if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
@@ -149,20 +146,20 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
     QDomNode soundTag = element.firstChild();
     while (!soundTag.isNull())
     {
-        QDomElement soundElement = soundTag.toElement();
-        if (!soundElement.isNull())
-        {
-            if (soundElement.tagName() == "sound")
-            {
-                QString path = dataDirPath + "/" + soundElement.attribute("src"); // the file is supposed to be in the data directory
-     //qDebug() << "LAY_SOUND  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
-                QFileInfo fi(path);
-                if (!fi.exists()) path = soundElement.attribute("src");
-                int position = soundElement.attribute("position").toInt();
-                loadSoundAtFrame( path, position );
-            }
-        }
-        soundTag = soundTag.nextSibling();
+    QDomElement soundElement = soundTag.toElement();
+    if (!soundElement.isNull())
+    {
+    if (soundElement.tagName() == "sound")
+    {
+    QString path = dataDirPath + "/" + soundElement.attribute("src"); // the file is supposed to be in the data directory
+    //qDebug() << "LAY_SOUND  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
+    QFileInfo fi(path);
+    if (!fi.exists()) path = soundElement.attribute("src");
+    int position = soundElement.attribute("position").toInt();
+    loadSoundAtFrame( path, position );
+    }
+    }
+    soundTag = soundTag.nextSibling();
     }
     */
 }

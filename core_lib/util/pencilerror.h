@@ -8,7 +8,7 @@ enum ErrorCode
 {
     PCL_OK = 0,
     PCL_FAIL,
-    
+
     // for Object loading
     ERROR_FILE_NOT_EXIST,
     ERROR_FILE_CANNOT_OPEN,
@@ -18,6 +18,9 @@ enum ErrorCode
     //
     ERROR_INVALID_LAYER_TYPE,
     ERROR_LOAD_IMAGE_FAIL,
+
+    // Sound
+    ERROR_LOAD_SOUND_FILE,
 };
 
 

@@ -2,6 +2,8 @@
 #define KeyFrame_H
 
 #include <QString>
+#include "pencilerror.h"
+
 
 enum class KeyFrameType
 {
@@ -24,7 +26,7 @@ public:
 
 private:
     int mFrame = -1;
-	int mLength = 1;
+    int mLength = 1;
     QString mstrFilename;
     bool mIsModified = false;
 };
