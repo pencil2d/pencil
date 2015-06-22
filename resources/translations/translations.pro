@@ -1,5 +1,8 @@
 # l10n stuff
 
+TEMPLATE = lib
+CONFIG += qt staticlib console
+
 TRANSLATIONS += pencil.ts \
                 pencil2d_cs.ts \
                 pencil2d_it.ts \
