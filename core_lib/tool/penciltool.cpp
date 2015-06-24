@@ -31,7 +31,7 @@ void PencilTool::loadSettings()
 
     if ( properties.width <= 0 )
     {
-        properties.width = 2;
+        properties.width = 3;
         settings.setValue( "pencilWidth", properties.width );
     }
     if ( properties.feather > -1 ) // replace with: <=0 to allow feather
