@@ -6,6 +6,7 @@ CONFIG += qt staticlib console
 TRANSLATIONS += pencil.ts \
                 pencil2d_cs.ts \
                 pencil2d_it.ts \
+                pencil2d_ja.ts \
 
 
 isEmpty(QMAKE_LRELEASE) {
