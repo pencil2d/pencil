@@ -452,6 +452,9 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
     {
         editor()->tools()->tabletSwitchToEraser();
     }
+    else {
+        editor()->tools()->tabletRestorePrevTool();
+    }
     event->ignore(); // indicates that the tablet event is not accepted yet, so that it is propagated as a mouse event)
 }
 

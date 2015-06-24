@@ -47,6 +47,7 @@ public slots:
 private:
     BaseTool* m_pCurrentTool;
     ToolType  m_eTabletBackupTool;
+    bool isSwitchedToEraser;
     QHash<ToolType, BaseTool*> m_toolSetHash;
 
 };

@@ -151,8 +151,9 @@ void ToolManager::setPressure( int isPressureOn )
 
 void ToolManager::tabletSwitchToEraser()
 {
-    if ( currentTool()->type() != ERASER )
+    if ( !isSwitchedToEraser && currentTool()->type() != ERASER )
     {
+        isSwitchedToEraser = true;
         m_eTabletBackupTool = currentTool()->type();
         setCurrentTool( ERASER );
     }
@@ -160,8 +161,9 @@ void ToolManager::tabletSwitchToEraser()
 
 void ToolManager::tabletRestorePrevTool()
 {
-    if ( currentTool()->type() != ERASER )
+    if ( isSwitchedToEraser )
     {
+        isSwitchedToEraser = false;
         if ( m_eTabletBackupTool == INVALID_TOOL )
         {
             m_eTabletBackupTool = PEN;
