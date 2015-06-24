@@ -18,4 +18,6 @@ app.depends = core_lib
 tests.subdir = tests
 tests.depends = core_lib
 
-SUBDIRS = core_lib app tests quazip zlib
+l10n.subdir = resources/translations
+
+SUBDIRS = core_lib app tests quazip zlib l10n
