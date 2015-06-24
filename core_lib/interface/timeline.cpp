@@ -216,8 +216,6 @@ void TimeLine::updateUI()
 {
     mTracks->update();
     mLayerList->update();
-
-
 }
 
 int TimeLine::getFrameLength()
