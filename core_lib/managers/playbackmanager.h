@@ -38,7 +38,8 @@ Q_SIGNALS:
 
 private:
     void timerTick();
-
+    void playSoundIfAny( int frame );
+    
     bool m_isLooping = false;
     bool m_isPlaying = false;
     bool m_isPlaySound = false;

@@ -16,7 +16,7 @@ FileDialogEx::~FileDialogEx()
 QString FileDialogEx::openFile(EFile fileType)
 {
     QSettings setting( PENCIL2D, PENCIL2D );
-    setting.beginGroup( "FilePath" );
+    setting.beginGroup( "LastFilePath" );
 
     QString strTitle = dialogTitle( fileType );
     QString strInitialFilePath = setting.value( toSettingKey( fileType ), QDir::homePath() ).toString();

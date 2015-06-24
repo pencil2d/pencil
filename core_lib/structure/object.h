@@ -106,8 +106,8 @@ public:
     void moveLayer( int i, int j );
     void deleteLayer( int i );
 
-    void playSoundIfAny( int frame, int fps );
-    void stopSoundIfAny();
+    //void playSoundIfAny( int frame, int fps );
+    //void stopSoundIfAny();
 
     // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax );

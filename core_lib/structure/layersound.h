@@ -53,7 +53,7 @@ public:
     void loadSoundAtFrame( QString filePathString, int frame );
 
     bool saveImage(int index, QString path, int layerNumber);
-    void playSound(int frame,int fps);
+    void playSound(int frame);
     void stopSound();
 
     // functions will be removed. don't use them.

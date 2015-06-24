@@ -15,7 +15,7 @@ class TestObjectSaveLoader : public QObject
 public:
     TestObjectSaveLoader();
 
-private Q_SLOTS:
+private:
     void testCase1();
     void testNotExistFile();
     void testInvalidXML();

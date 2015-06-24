@@ -972,7 +972,8 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
         isOK = layer->addNewKeyAt( frameIndex );
         break;
 	case Layer::SOUND:
-		// TODO:
+            Q_ASSERT( false );
+            return; // nothing to do.
 		break;
     default:
         break;
