@@ -102,62 +102,68 @@ void ToolManager::resetAllTools()
 
 void ToolManager::setWidth( float newWidth )
 {
-    if ( currentTool()->properties.width != newWidth )
-    {
+    // Always returns false when selecting a new tool
+//    if ( currentTool()->properties.width != newWidth )
+//    {
         currentTool()->properties.width = newWidth;
         emit penWidthValueChange( newWidth );
         emit toolPropertyChanged();
-    }
+//    }
 }
 
 void ToolManager::setFeather( float newFeather )
 {
-    if ( currentTool()->properties.feather != newFeather )
-    {
+    // Always returns false when selecting a new tool
+//    if ( currentTool()->properties.feather != newFeather )
+//    {
         currentTool()->properties.feather = newFeather;
         emit penFeatherValueChange( newFeather );
         emit toolPropertyChanged();
-    }
+//    }
 }
 
 void ToolManager::setInvisibility( int isInvisible  )
 {
-    if ( currentTool()->properties.invisibility != isInvisible )
-    {
+    // Always returns false when selecting a new tool
+//    if ( currentTool()->properties.invisibility != isInvisible )
+//    {
         currentTool()->properties.invisibility = isInvisible;
         emit penInvisiblityValueChange( isInvisible );
         emit toolPropertyChanged();
-    }
+//    }
 }
 
 void ToolManager::setPreserveAlpha( int isPreserveAlpha )
 {
-    if ( currentTool()->properties.preserveAlpha != isPreserveAlpha )
-    {
+    // Always returns false when selecting a new tool
+//    if ( currentTool()->properties.preserveAlpha != isPreserveAlpha )
+//    {
         currentTool()->properties.preserveAlpha = isPreserveAlpha;
         emit penPreserveAlphaValueChange( isPreserveAlpha );
         emit toolPropertyChanged();
-    }
+//    }
 }
 
 void ToolManager::setPressure( int isPressureOn )
 {
-    if ( currentTool()->properties.pressure != isPressureOn )
-    {
+    // Always returns false when selecting a new tool
+//    if ( currentTool()->properties.pressure != isPressureOn )
+//    {
         currentTool()->properties.pressure = isPressureOn;
         emit penPressureValueChange( isPressureOn );
         emit toolPropertyChanged();
-    }
+//    }
 }
 
 void ToolManager::tabletSwitchToEraser()
 {
-    if ( !isSwitchedToEraser && currentTool()->type() != ERASER )
-    {
+    // Always returns false when selecting a new tool
+//    if ( !isSwitchedToEraser && currentTool()->type() != ERASER )
+//    {
         isSwitchedToEraser = true;
         m_eTabletBackupTool = currentTool()->type();
         setCurrentTool( ERASER );
-    }
+//    }
 }
 
 void ToolManager::tabletRestorePrevTool()
