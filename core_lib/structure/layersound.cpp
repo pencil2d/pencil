@@ -28,7 +28,11 @@ LayerSound::~LayerSound()
 {
 }
 
-void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
+void LayerSound::paintImages(QPainter& painter,
+                             TimeLineCells* cells,
+                             int x, int y,
+                             int width, int height,
+                             bool selected, int frameSize)
 {
     Q_UNUSED(cells);
     Q_UNUSED(width);

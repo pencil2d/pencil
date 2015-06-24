@@ -45,7 +45,7 @@ class LayerSound : public Layer
 public:
     LayerSound(Object* object);
     ~LayerSound();
-    QDomElement createDomElement(QDomDocument& doc);
+    QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath);
 
     bool addNewKeyAt( int frameNumber ) override;
@@ -64,7 +64,7 @@ public:
     // functions will be removed.
 
     // graphic representation -- could be put in another class
-    void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
+    void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool     selected, int frameSize);
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
