@@ -43,6 +43,7 @@ bool ToolManager::init()
     }
 
     m_pCurrentTool = getTool( PENCIL );
+    m_eTabletBackupTool = m_pCurrentTool->type();
 
     return true;
 }
