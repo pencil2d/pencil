@@ -65,14 +65,14 @@ void initialise()
 // added parameter exportFormat -> to set ffmpeg parameters
 bool Object::exportMovie( ExportMovieParameters exportParams )
 {
-    int startFrame = exportParams.startFrame;
-    int endFrame = exportParams.endFrame;
-    QTransform view = exportParams.view;
-    Layer* currentLayer = exportParams.currentLayer;
-    QSize exportSize = exportParams.exportSize;
-    QString filePath = exportParams.filePath;
-    int fps = exportParams.fps;
-    int exportFps = exportParams.exportFps;
+    int startFrame       = exportParams.startFrame;
+    int endFrame         = exportParams.endFrame;
+    QTransform view      = exportParams.view;
+    Layer* currentLayer  = exportParams.currentLayer;
+    QSize exportSize     = exportParams.exportSize;
+    QString filePath     = exportParams.filePath;
+    int fps              = exportParams.fps;
+    int exportFps        = exportParams.exportFps;
     QString exportFormat = exportParams.exportFormat;
 
     //  additional parameters for ffmpeg
@@ -113,6 +113,7 @@ bool Object::exportMovie( ExportMovieParameters exportParams )
     }
 
     const char* format = "png";
+
     ExportFrames1Parameters par;
     par.frameStart = startFrame;
     par.frameEnd = endFrame;
@@ -128,16 +129,18 @@ bool Object::exportMovie( ExportMovieParameters exportParams )
     par.progressMax = 50;
     par.fps = fps;
     par.exportFps = exportFps;
+
     exportFrames1( par );
+    
+    qDebug() << "Trying to export VIDEO";
 
     // --------- Quicktime assemble call ----------
     QDir sampledir;
     qDebug() << "testmic:" << sampledir.filePath( filePath );
     QProcess ffmpeg;
 
-    qDebug() << "Trying to export VIDEO";
-    qint32 audioDataSize = 44100 * 2 * 2 * ( endFrame - 1 ) / fps;
-    qint16* audioData = ( qint16* )malloc( audioDataSize );
+    int32_t audioDataSize = 44100 * 2 * 2 * ( endFrame - 1 ) / fps;
+    int16_t* audioData = ( int16_t* )malloc( audioDataSize );
         
     for ( int i = 0; i < audioDataSize / 2; i++ )
     {
