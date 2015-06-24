@@ -129,7 +129,12 @@ bool Object::exportMovie( ExportMovieParameters par )
         qDebug() << "Trying to export VIDEO";
         qint32 audioDataSize = 44100 * 2 * 2 * ( endFrame - 1 ) / fps;
         qint16* audioData = ( qint16* )malloc( audioDataSize );
-        for ( int i = 0; i < audioDataSize / 2; i++ ) audioData[ i ] = 0;
+        
+        for ( int i = 0; i < audioDataSize / 2; i++ )
+        {
+            audioData[ i ] = 0;
+        }
+
         quint16 header1[ 22 ];
         bool audioDataValid = false;
         for ( int i = 0; i < this->getLayerCount(); i++ )
@@ -137,21 +142,22 @@ bool Object::exportMovie( ExportMovieParameters par )
             Layer* layer = this->getLayer( i );
             if ( layer->type() == Layer::SOUND )
             {
-                for ( int l = 0; l < ( ( LayerSound* )layer )->getSoundSize(); l++ )
+                auto soundLayer = static_cast< LayerSound* >( layer );
+                for ( int l = 0; l < soundLayer->getSoundSize(); l++ )
                 {
-                    if ( ( ( LayerSound* )layer )->soundIsNotNull( l ) )
+                    if ( soundLayer->soundIsNotNull( l ) )
                     {
                         // convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
                         // supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-                        qDebug() << "./plugins/ffmpeg.exe -i \"" + ( ( LayerSound* )layer )->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"";
-                        ffmpeg.start( "./plugins/ffmpeg.exe -i \"" + ( ( LayerSound* )layer )->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"" );
+                        qDebug() << "./plugins/ffmpeg.exe -i \"" + soundLayer->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"";
+                        ffmpeg.start( "./plugins/ffmpeg.exe -i \"" + soundLayer->getSoundFilepathAt( l ) + "\" -ar 44100 -acodec pcm_s16le -ac 2 -y \"" + tempPath + "tmpaudio0.wav\"" );
                         if ( ffmpeg.waitForStarted() == true )
                         {
                             if ( ffmpeg.waitForFinished() == true )
                             {
                                 qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
                                 qDebug() << "stderr: " + ffmpeg.readAllStandardError();
-                                qDebug() << "AUDIO conversion done. ( file: " << ( ( LayerSound* )layer )->getSoundFilepathAt( l ) << ")";
+                                qDebug() << "AUDIO conversion done. ( file: " << soundLayer->getSoundFilepathAt( l ) << ")";
                             }
                             else
                             {
@@ -166,12 +172,15 @@ bool Object::exportMovie( ExportMovieParameters par )
                         int frame = 0;
 
                         float fframe = ( float )frame / ( float )fps;
-                        QFile file( tempPath + "tmpaudio0.wav" );
+                        
                         qDebug() << "audio file " + tempPath + "tmpaudio0.wav";
+                        QFile file( tempPath + "tmpaudio0.wav" );
                         file.open( QIODevice::ReadOnly );
                         file.read( ( char* )header1, sizeof( header1 ) );
+
                         quint32 audioSize = header1[ 21 ];
                         audioSize = audioSize * 65536 + header1[ 20 ];
+                        
                         qDebug() << "audio len " << audioSize;
                         // before calling malloc should check: audioSize < max credible value
                         qint16* data = ( qint16* )malloc( audioSize );

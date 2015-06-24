@@ -282,11 +282,6 @@ void TimeLine::updateContent()
     update();
 }
 
-void TimeLine::setFps ( int value )
-{
-    mTimeControls->setFps(value);
-}
-
 void TimeLine::forceUpdateLength(QString newLength)
 {
     bool ok;

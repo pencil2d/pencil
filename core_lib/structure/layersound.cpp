@@ -26,10 +26,7 @@ LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
 
 LayerSound::~LayerSound()
 {
-    while (!sound.empty())
-        delete sound.takeFirst();
 }
-
 
 void LayerSound::paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize)
 {

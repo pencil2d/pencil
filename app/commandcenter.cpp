@@ -58,7 +58,8 @@ void CommandCenter::importSound()
 
     FileDialogEx fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
-
+    
+    //layerSound->addNewKeyAt( )
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     
     //mTimeLine->updateContent();
