@@ -31,12 +31,12 @@ void PencilTool::loadSettings()
 
     if ( properties.width <= 0 )
     {
-        properties.width = 1;
+        properties.width = 2;
         settings.setValue( "pencilWidth", properties.width );
     }
-    if ( properties.feather > -1 ) // replace with: <=0 to allow feather
+    if ( properties.feather <=0 ) // replace with: <=0 to allow feather
     {
-        properties.feather = -1;
+        properties.feather = 15;
         settings.setValue( "pencilFeather", properties.feather );
     }
 }
@@ -133,16 +133,28 @@ void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
 {
     QColor currentColor = mEditor->color()->frontColor();
     currentPressuredColor = currentColor;
+
+    // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
+    int softness = 8;
+
     if ( mScribbleArea->usePressure() && !mouseDevice )
     {
-        currentPressuredColor.setAlphaF( currentColor.alphaF() * pressure );
+        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure) / softness );
     }
     else
     {
-        currentPressuredColor.setAlphaF( currentColor.alphaF() );
+        currentPressuredColor.setAlphaF( currentColor.alphaF() / softness );
     }
 
     mCurrentWidth = properties.width;
+    if ( mScribbleArea->usePressure() && !mouseDevice )
+    {
+        mCurrentPressure = pressure;
+    }
+    else
+    {
+        mCurrentPressure = 1.0;
+    }
 }
 
 void PencilTool::drawStroke()
@@ -155,7 +167,9 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        QPen pen( QBrush( currentPressuredColor ), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+        qreal brushWidth = properties.width * mCurrentPressure;
+
+        QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         QBrush brush( currentPressuredColor, Qt::SolidPattern );
         rad = qRound( properties.width / 2 ) + 3;
 
