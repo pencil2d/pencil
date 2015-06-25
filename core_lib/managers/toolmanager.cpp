@@ -105,7 +105,7 @@ void ToolManager::setWidth( float newWidth )
     // Always returns false when selecting a new tool
 //    if ( currentTool()->properties.width != newWidth )
 //    {
-        currentTool()->properties.width = newWidth;
+        currentTool()->setWidth(newWidth);
         emit penWidthValueChange( newWidth );
         emit toolPropertyChanged();
 //    }

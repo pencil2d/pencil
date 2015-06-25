@@ -19,6 +19,9 @@ public:
     void drawStroke();
 
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
+
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
 };
 
 #endif // PENTOOL_H

@@ -24,7 +24,7 @@ void PencilTool::loadSettings()
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "pencilWidth" ).toDouble();
-    properties.feather = settings.value( "pencilFeather" ).toDouble();
+    properties.feather = -1; //Feather isn't implemented in the Pencil tool;
     properties.pressure = 1;
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
@@ -34,12 +34,43 @@ void PencilTool::loadSettings()
         properties.width = 3;
         settings.setValue( "pencilWidth", properties.width );
     }
-    if ( properties.feather > -1 ) // replace with: <=0 to allow feather
-    {
-        properties.feather = -1;
-        settings.setValue( "pencilFeather", properties.feather );
-    }
 }
+
+void PencilTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("pencilWidth", width);
+    settings.sync();
+}
+
+void PencilTool::setFeather( const qreal feather )
+{
+    // force value
+    properties.feather = -1;
+}
+
+void PencilTool::setInvisibility( const qreal invisibility )
+{
+    // force value
+    properties.invisibility = 1;
+}
+
+void PencilTool::setPressure( const bool pressure )
+{
+    // force value
+    properties.pressure = 1;
+}
+
+void PencilTool::setPreserveAlpha( const bool preserveAlpha )
+{
+    // force value
+    properties.preserveAlpha = 0;
+}
+
 
 QCursor PencilTool::cursor()
 {

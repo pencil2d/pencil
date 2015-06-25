@@ -39,6 +39,28 @@ void PenTool::loadSettings()
     mCurrentWidth = properties.width;
 }
 
+void PenTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("penWidth", width);
+    settings.sync();
+}
+
+void PenTool::setFeather( const qreal feather )
+{
+    // Set current property
+    properties.feather = feather;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("penFeather", feather);
+    settings.sync();
+}
+
 QCursor PenTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized

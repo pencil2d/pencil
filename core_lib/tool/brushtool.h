@@ -21,6 +21,9 @@ public:
     void drawStroke();
     void paintAt( QPointF point );
 
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
+
 protected:
     QPointF lastBrushPoint;
 };

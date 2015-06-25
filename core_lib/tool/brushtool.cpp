@@ -46,6 +46,29 @@ void BrushTool::loadSettings()
     }
 }
 
+void BrushTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("brushWidth", width);
+    settings.sync();
+}
+
+void BrushTool::setFeather( const qreal feather )
+{
+    // Set current property
+    properties.feather = feather;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("brushFeather", feather);
+    settings.sync();
+}
+
+
 QCursor BrushTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized

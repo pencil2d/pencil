@@ -22,6 +22,9 @@ public:
 
     void clear();
 
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
+
 private:
     QList<QPointF> points;
 };

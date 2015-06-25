@@ -228,3 +228,28 @@ QPointF BaseTool::getLastPressPoint()
 {
     return mEditor->view()->mapScreenToCanvas( getLastPressPixel() );
 }
+
+void BaseTool::setWidth( const qreal width )
+{
+    properties.width = width;
+}
+
+void BaseTool::setFeather( const qreal feather )
+{
+    properties.feather = feather;
+}
+
+void BaseTool::setInvisibility( const qreal invisibility )
+{
+    properties.invisibility = invisibility;
+}
+
+void BaseTool::setPressure( const bool pressure )
+{
+    properties.pressure = pressure;
+}
+
+void BaseTool::setPreserveAlpha( const bool preserveAlpha )
+{
+    properties.preserveAlpha = preserveAlpha;
+}

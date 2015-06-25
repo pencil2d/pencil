@@ -37,6 +37,22 @@ void PolylineTool::loadSettings()
     }
 }
 
+void PolylineTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("polyLineWidth", width);
+    settings.sync();
+}
+
+void PolylineTool::setFeather( const qreal feather )
+{
+    properties.feather = -1;
+}
+
 QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
 {
     if ( isAdjusting ) { // being dynamically resized

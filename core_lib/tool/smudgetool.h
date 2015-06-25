@@ -22,6 +22,9 @@ public:
     void adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice);
     void drawStroke();
 
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
+
 signals:
     
 public slots:

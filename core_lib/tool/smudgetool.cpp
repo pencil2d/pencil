@@ -40,6 +40,28 @@ void SmudgeTool::loadSettings()
     }
 }
 
+void SmudgeTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("smudgeWidth", width);
+    settings.sync();
+}
+
+void SmudgeTool::setFeather( const qreal feather )
+{
+    // Set current property
+    properties.feather = feather;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("smudgeFeather", feather);
+    settings.sync();
+}
+
 QCursor SmudgeTool::cursor()
 {
     qDebug() << "smudge tool";

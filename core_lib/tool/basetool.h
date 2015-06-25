@@ -24,6 +24,7 @@ public:
     int pressure;
     int invisibility;
     int preserveAlpha;
+
 };
 
 const int ON = 1;
@@ -70,12 +71,11 @@ public:
     static bool isAdjusting;
     QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
 
-    void setWidth( const qreal width );
-    void setFeather( const qreal feather );
-    void setOpacity( const qreal opacity );
-    void setInvisibility( const qreal invisibility );
-    void setPressure( const bool pressure );
-    void setPreserveAlpha( const bool preserveAlpha );
+    virtual void setWidth( const qreal width );
+    virtual void setFeather( const qreal feather );
+    virtual void setInvisibility( const qreal invisibility );
+    virtual void setPressure( const bool pressure );
+    virtual void setPreserveAlpha( const bool preserveAlpha );
 
     Properties properties;
 

@@ -46,6 +46,28 @@ void EraserTool::loadSettings()
     }
 }
 
+void EraserTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("eraserWidth", width);
+    settings.sync();
+}
+
+void EraserTool::setFeather( const qreal feather )
+{
+    // Set current property
+    properties.feather = feather;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("eraserFeather", feather);
+    settings.sync();
+}
+
 QCursor EraserTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized
