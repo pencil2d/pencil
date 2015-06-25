@@ -78,5 +78,6 @@ void SpinSlider::sliderReleased()
 void SpinSlider::sliderMoved(int value)
 {
     changeValue(value);
-    emit valueChanged(this->value);
+    // Don't update value while the slider is still moving.
+    //emit valueChanged(this->value);
 }
