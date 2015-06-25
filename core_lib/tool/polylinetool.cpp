@@ -30,14 +30,14 @@ void PolylineTool::loadSettings()
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();
     properties.feather = -1;
-    properties.pressure = ON;
+    properties.pressure = 0;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
 
+    // First run
     if ( properties.width <= 0 )
     {
-        properties.width = 1.5;
-        settings.setValue( "polyLineWidth", properties.width );
+        setWidth(1.5);
     }
 }
 

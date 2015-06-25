@@ -23,22 +23,23 @@ ToolType PenTool::type()
 void PenTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
-    m_enabledProperties[FEATHER] = true;
+    m_enabledProperties[PRESSURE] = true;
 
 
 
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-	properties.feather = settings.value( "penFeather" ).toDouble();;
-    properties.pressure = ON;
+    properties.feather = 0;
+    properties.pressure = settings.value( "penPressure" ).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
 
+    // First run
     if ( properties.width <= 0 )
     {
-        properties.width = 1.5;
-        settings.setValue( "penWidth", properties.width );
+        setWidth(1.5);
+        setPressure(1);
     }
 
     mCurrentWidth = properties.width;
@@ -66,6 +67,17 @@ void PenTool::setFeather( const qreal feather )
     settings.sync();
 }
 
+void PenTool::setPressure( const bool pressure )
+{
+    // Set current property
+    properties.pressure = pressure;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("penPressure", pressure);
+    settings.sync();
+}
+
 QCursor PenTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized
@@ -81,7 +93,7 @@ QCursor PenTool::cursor()
 
 void PenTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
-    if ( mScribbleArea->usePressure() && !mouseDevice )
+    if ( properties.pressure && !mouseDevice )
     {
         mCurrentWidth = 2.0 * properties.width * pressure;
     }
