@@ -24,6 +24,10 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+
+
+
     QSettings settings("Pencil", "Pencil");
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();

@@ -42,9 +42,6 @@ bool ToolManager::init()
         pTool->initialize( editor(), editor()->getScribbleArea() );
     }
 
-    m_pCurrentTool = getTool( PENCIL );
-    m_eTabletBackupTool = m_pCurrentTool->type();
-
     return true;
 }
 
@@ -54,20 +51,28 @@ BaseTool* ToolManager::getTool(ToolType eToolType)
     return m_toolSetHash[ eToolType ];
 }
 
+void ToolManager::setDefaultTool()
+{
+    // Set default tool
+    // (called by the main window init)
+    ToolType defaultToolType = PENCIL;
+
+    setCurrentTool(defaultToolType);
+    m_eTabletBackupTool = defaultToolType;
+}
+
 void ToolManager::setCurrentTool( ToolType eToolType )
 {
-    if ( m_pCurrentTool->type() != eToolType )
-    {
-        m_pCurrentTool = getTool( eToolType );
+    m_pCurrentTool = getTool( eToolType );
 
-        setWidth( m_pCurrentTool->properties.width );
-        setFeather( m_pCurrentTool->properties.feather );
-        setPressure( m_pCurrentTool->properties.pressure );
-        setPreserveAlpha( m_pCurrentTool->properties.preserveAlpha );
-        setInvisibility( m_pCurrentTool->properties.invisibility ); // by definition the pencil is invisible in vector mode
+    setWidth( m_pCurrentTool->properties.width );
+    setFeather( m_pCurrentTool->properties.feather );
+    setPressure( m_pCurrentTool->properties.pressure );
+    setPreserveAlpha( m_pCurrentTool->properties.preserveAlpha );
+    setInvisibility( m_pCurrentTool->properties.invisibility ); // by definition the pencil is invisible in vector mode
 
-        emit toolChanged( eToolType );
-    }
+    emit toolChanged( eToolType );
+    emit displayToolOptions(m_pCurrentTool->m_enabledProperties);
 }
 
 void ToolManager::cleanupAllToolsData()

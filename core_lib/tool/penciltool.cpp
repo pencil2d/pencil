@@ -19,8 +19,13 @@ StrokeTool( parent )
 {
 }
 
+
 void PencilTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+
+
+
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "pencilWidth" ).toDouble();
@@ -31,7 +36,10 @@ void PencilTool::loadSettings()
 
     if ( properties.width <= 0 )
     {
-        properties.width = 3;
+        // setting the default value to 4
+        // seems to give great results with pressure on
+        //
+        properties.width = 4;
         settings.setValue( "pencilWidth", properties.width );
     }
 }

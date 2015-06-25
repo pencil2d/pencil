@@ -22,6 +22,10 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+
+
+
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();

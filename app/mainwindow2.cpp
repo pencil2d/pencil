@@ -97,6 +97,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
+    mEditor->tools()->setDefaultTool();
 }
 
 MainWindow2::~MainWindow2()
@@ -164,6 +165,7 @@ void MainWindow2::createDockWidgets()
     makeConnections( mEditor, pColorBox );
     makeConnections( mEditor, mColorPalette );
     makeConnections( mEditor, mDisplayOptionWidget );
+    makeConnections( mEditor, mToolOptions );
     mToolOptions->makeConnectionToEditor(mEditor);
 }
 
@@ -1065,6 +1067,12 @@ void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
 {
     display->makeConnectionToEditor( editor );
 }
+
+void MainWindow2::makeConnections(Editor* editor, ToolOptionWidget* toolOptions)
+{
+    connect( editor->tools(), &ToolManager::displayToolOptions, toolOptions, &ToolOptionWidget::displayToolOptions );
+}
+
 
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {

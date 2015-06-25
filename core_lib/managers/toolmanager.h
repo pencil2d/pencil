@@ -19,6 +19,7 @@ public:
 
     BaseTool* currentTool() { return m_pCurrentTool; }
     BaseTool* getTool( ToolType eToolType );
+    void      setDefaultTool();
     void      setCurrentTool( ToolType eToolType );
     void      cleanupAllToolsData();
 
@@ -33,6 +34,7 @@ signals:
     void penPressureValueChange( int );
 
     void toolChanged( ToolType );
+    void displayToolOptions(QHash<ToolPropertyType, bool> options);
     void toolPropertyChanged();
 
 public slots:

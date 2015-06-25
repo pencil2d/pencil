@@ -25,6 +25,10 @@ ToolType EraserTool::type()
 
 void EraserTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+    m_enabledProperties[FEATHER] = true;
+
+
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "eraserWidth" ).toDouble();

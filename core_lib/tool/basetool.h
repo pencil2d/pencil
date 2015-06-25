@@ -86,6 +86,8 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
+    QHash<ToolPropertyType, bool> m_enabledProperties;
+
 protected:
     Editor* editor() { return mEditor; }
 
