@@ -27,6 +27,7 @@ void EraserTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[FEATHER] = true;
+    m_enabledProperties[PRESSURE] = true;
 
 
     QSettings settings( "Pencil", "Pencil" );
@@ -34,19 +35,16 @@ void EraserTool::loadSettings()
     properties.width = settings.value( "eraserWidth" ).toDouble();
     properties.feather = settings.value( "eraserFeather" ).toDouble();
 
-    properties.pressure = ON;
+    properties.pressure = settings.value( "eraserPressure" ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
 
+    // First run
     if ( properties.width <= 0 )
     {
-        properties.width = 25;
-        settings.setValue( "eraserWidth", properties.width );
-    }
-    if ( properties.feather <= 0 )
-    {
-        properties.feather = 50;
-        settings.setValue( "eraserFeather", properties.feather );
+        setWidth(25);
+        setFeather(50);
+        setPressure(1);
     }
 }
 
@@ -72,6 +70,17 @@ void EraserTool::setFeather( const qreal feather )
     settings.sync();
 }
 
+void EraserTool::setPressure( const bool pressure )
+{
+    // Set current property
+    properties.pressure = pressure;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("eraserPressure", pressure);
+    settings.sync();
+}
+
 QCursor EraserTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized
@@ -88,7 +97,7 @@ QCursor EraserTool::cursor()
 void EraserTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
     mCurrentWidth = properties.width;
-    if ( mScribbleArea->usePressure() && !mouseDevice )
+    if ( properties.pressure && !mouseDevice )
     {
         mCurrentPressure = pressure;
     }

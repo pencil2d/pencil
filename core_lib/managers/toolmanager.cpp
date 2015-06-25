@@ -25,6 +25,8 @@ ToolManager::ToolManager(QObject* parent )
 
 bool ToolManager::init()
 {
+    isSwitchedToEraser = false;
+
     m_toolSetHash.insert( PEN, new PenTool );
     m_toolSetHash.insert( PENCIL, new PencilTool );
     m_toolSetHash.insert( BRUSH, new BrushTool );
@@ -107,68 +109,44 @@ void ToolManager::resetAllTools()
 
 void ToolManager::setWidth( float newWidth )
 {
-    // Always returns false when selecting a new tool
-//    if ( currentTool()->properties.width != newWidth )
-//    {
-        currentTool()->setWidth(newWidth);
-        emit penWidthValueChange( newWidth );
-        emit toolPropertyChanged();
-//    }
+    currentTool()->setWidth(newWidth);
+    emit penWidthValueChange( newWidth );
+    emit toolPropertyChanged();
 }
 
 void ToolManager::setFeather( float newFeather )
 {
-    // Always returns false when selecting a new tool
-//    if ( currentTool()->properties.feather != newFeather )
-//    {
-        currentTool()->properties.feather = newFeather;
-        emit penFeatherValueChange( newFeather );
-        emit toolPropertyChanged();
-//    }
+    currentTool()->setFeather(newFeather);
+    emit penFeatherValueChange( newFeather );
+    emit toolPropertyChanged();
 }
 
 void ToolManager::setInvisibility( int isInvisible  )
 {
-    // Always returns false when selecting a new tool
-//    if ( currentTool()->properties.invisibility != isInvisible )
-//    {
-        currentTool()->properties.invisibility = isInvisible;
-        emit penInvisiblityValueChange( isInvisible );
-        emit toolPropertyChanged();
-//    }
+    currentTool()->setInvisibility(isInvisible);
+    emit penInvisiblityValueChange( isInvisible );
+    emit toolPropertyChanged();
 }
 
 void ToolManager::setPreserveAlpha( int isPreserveAlpha )
 {
-    // Always returns false when selecting a new tool
-//    if ( currentTool()->properties.preserveAlpha != isPreserveAlpha )
-//    {
-        currentTool()->properties.preserveAlpha = isPreserveAlpha;
-        emit penPreserveAlphaValueChange( isPreserveAlpha );
-        emit toolPropertyChanged();
-//    }
+    currentTool()->setPreserveAlpha(isPreserveAlpha);
+    emit penPreserveAlphaValueChange( isPreserveAlpha );
+    emit toolPropertyChanged();
 }
 
 void ToolManager::setPressure( int isPressureOn )
 {
-    // Always returns false when selecting a new tool
-//    if ( currentTool()->properties.pressure != isPressureOn )
-//    {
-        currentTool()->properties.pressure = isPressureOn;
-        emit penPressureValueChange( isPressureOn );
-        emit toolPropertyChanged();
-//    }
+    currentTool()->setPressure(isPressureOn);
+    emit penPressureValueChange( isPressureOn );
+    emit toolPropertyChanged();
 }
 
 void ToolManager::tabletSwitchToEraser()
 {
-    // Always returns false when selecting a new tool
-//    if ( !isSwitchedToEraser && currentTool()->type() != ERASER )
-//    {
-        isSwitchedToEraser = true;
-        m_eTabletBackupTool = currentTool()->type();
-        setCurrentTool( ERASER );
-//    }
+    isSwitchedToEraser = true;
+    m_eTabletBackupTool = currentTool()->type();
+    setCurrentTool( ERASER );
 }
 
 void ToolManager::tabletRestorePrevTool()

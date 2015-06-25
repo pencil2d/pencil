@@ -23,25 +23,28 @@ StrokeTool( parent )
 void PencilTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
+    m_enabledProperties[PRESSURE] = true;
 
 
 
     QSettings settings( "Pencil", "Pencil" );
-
     properties.width = settings.value( "pencilWidth" ).toDouble();
     properties.feather = -1; //Feather isn't implemented in the Pencil tool;
-    properties.pressure = 1;
+    properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
 
+    // First run
+    //
     if ( properties.width <= 0 )
     {
         // setting the default value to 4
         // seems to give great results with pressure on
         //
-        properties.width = 4;
-        settings.setValue( "pencilWidth", properties.width );
+        setWidth(4);
+        setPressure(1);
     }
+
 }
 
 void PencilTool::setWidth(const qreal width)
@@ -68,9 +71,14 @@ void PencilTool::setInvisibility( const qreal invisibility )
 }
 
 void PencilTool::setPressure( const bool pressure )
-{
-    // force value
-    properties.pressure = 1;
+{   
+    // Set current property
+    properties.pressure = pressure;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("pencilPressure", pressure);
+    settings.sync();
 }
 
 void PencilTool::setPreserveAlpha( const bool preserveAlpha )
@@ -185,8 +193,10 @@ void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
         currentPressuredColor.setAlphaF( currentColor.alphaF() / softness );
     }
 
+
     mCurrentWidth = properties.width;
-    if ( mScribbleArea->usePressure() && !mouseDevice )
+
+    if ( properties.pressure && !mouseDevice )
     {
         mCurrentPressure = pressure;
     }
