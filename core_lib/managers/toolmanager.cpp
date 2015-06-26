@@ -73,6 +73,7 @@ void ToolManager::setCurrentTool( ToolType eToolType )
     setPreserveAlpha( m_pCurrentTool->properties.preserveAlpha );
     setInvisibility( m_pCurrentTool->properties.invisibility ); // by definition the pencil is invisible in vector mode
 
+
     emit toolChanged( eToolType );
     emit displayToolOptions(m_pCurrentTool->m_enabledProperties);
 }
@@ -144,9 +145,13 @@ void ToolManager::setPressure( int isPressureOn )
 
 void ToolManager::tabletSwitchToEraser()
 {
-    isSwitchedToEraser = true;
-    m_eTabletBackupTool = currentTool()->type();
-    setCurrentTool( ERASER );
+    if (!isSwitchedToEraser)
+    {
+        isSwitchedToEraser = true;
+
+        m_eTabletBackupTool = m_pCurrentTool->type();
+        setCurrentTool( ERASER );
+    }
 }
 
 void ToolManager::tabletRestorePrevTool()
@@ -156,7 +161,7 @@ void ToolManager::tabletRestorePrevTool()
         isSwitchedToEraser = false;
         if ( m_eTabletBackupTool == INVALID_TOOL )
         {
-            m_eTabletBackupTool = PEN;
+            m_eTabletBackupTool = PENCIL;
         }
         setCurrentTool( m_eTabletBackupTool );
     }
