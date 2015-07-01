@@ -21,6 +21,10 @@ public:
     void drawStroke();
     void paintAt( QPointF point );
 
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
+    void setPressure( const bool pressure );
+
 protected:
     QPointF lastBrushPoint;
 };

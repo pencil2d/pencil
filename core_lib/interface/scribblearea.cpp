@@ -452,6 +452,9 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
     {
         editor()->tools()->tabletSwitchToEraser();
     }
+    else {
+        editor()->tools()->tabletRestorePrevTool();
+    }
     event->ignore(); // indicates that the tablet event is not accepted yet, so that it is propagated as a mouse event)
 }
 
@@ -747,8 +750,11 @@ void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
 
 void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 {
-    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
-    update( updatedRect.toRect() );
+    // Does not work
+//    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+//    update( updatedRect.toRect() );
+
+    update();
 }
 
 void ScribbleArea::paintEvent( QPaintEvent* event )

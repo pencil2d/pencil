@@ -20,6 +20,12 @@ public:
 
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
 
+    void setWidth( const qreal width );
+    void setFeather( const qreal feather );
+    void setInvisibility( const qreal invisibility );
+    void setPressure( const bool pressure );
+    void setPreserveAlpha( const bool preserveAlpha );
+
 private:
     QColor currentPressuredColor;
 };
