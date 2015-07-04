@@ -25,25 +25,60 @@ ToolType EraserTool::type()
 
 void EraserTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+    m_enabledProperties[FEATHER] = true;
+    m_enabledProperties[PRESSURE] = true;
+
+
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "eraserWidth" ).toDouble();
     properties.feather = settings.value( "eraserFeather" ).toDouble();
 
-    properties.pressure = ON;
+    properties.pressure = settings.value( "eraserPressure" ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
 
+    // First run
     if ( properties.width <= 0 )
     {
-        properties.width = 25;
-        settings.setValue( "eraserWidth", properties.width );
+        setWidth(25);
+        setFeather(50);
+        setPressure(1);
     }
-    if ( properties.feather <= 0 )
-    {
-        properties.feather = 50;
-        settings.setValue( "eraserFeather", properties.feather );
-    }
+}
+
+void EraserTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("eraserWidth", width);
+    settings.sync();
+}
+
+void EraserTool::setFeather( const qreal feather )
+{
+    // Set current property
+    properties.feather = feather;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("eraserFeather", feather);
+    settings.sync();
+}
+
+void EraserTool::setPressure( const bool pressure )
+{
+    // Set current property
+    properties.pressure = pressure;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("eraserPressure", pressure);
+    settings.sync();
 }
 
 QCursor EraserTool::cursor()
@@ -62,7 +97,7 @@ QCursor EraserTool::cursor()
 void EraserTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
     mCurrentWidth = properties.width;
-    if ( mScribbleArea->usePressure() && !mouseDevice )
+    if ( properties.pressure && !mouseDevice )
     {
         mCurrentPressure = pressure;
     }

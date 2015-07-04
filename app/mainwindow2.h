@@ -91,6 +91,7 @@ private:
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
+    void makeConnections( Editor*, ToolOptionWidget*);
 
     // UI: central Drawing Area
     ScribbleArea* mScribbleArea;

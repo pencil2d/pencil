@@ -36,6 +36,13 @@ QString BaseTool::TypeName( ToolType type )
 BaseTool::BaseTool( QObject *parent ) :
 QObject( parent )
 {
+    m_enabledProperties.insert( WIDTH,          false  );
+    m_enabledProperties.insert( FEATHER,        false  );
+    m_enabledProperties.insert( OPACITY,        false  );
+    m_enabledProperties.insert( COLOURNUMBER,   false  );
+    m_enabledProperties.insert( PRESSURE,       false  );
+    m_enabledProperties.insert( INVISIBILITY,   false  );
+    m_enabledProperties.insert( PRESERVEALPHA,  false  );
 }
 
 
@@ -227,4 +234,29 @@ QPointF BaseTool::getLastPressPixel()
 QPointF BaseTool::getLastPressPoint()
 {
     return mEditor->view()->mapScreenToCanvas( getLastPressPixel() );
+}
+
+void BaseTool::setWidth( const qreal width )
+{
+    properties.width = width;
+}
+
+void BaseTool::setFeather( const qreal feather )
+{
+    properties.feather = feather;
+}
+
+void BaseTool::setInvisibility( const qreal invisibility )
+{
+    properties.invisibility = invisibility;
+}
+
+void BaseTool::setPressure( const bool pressure )
+{
+    properties.pressure = pressure;
+}
+
+void BaseTool::setPreserveAlpha( const bool preserveAlpha )
+{
+    properties.preserveAlpha = preserveAlpha;
 }

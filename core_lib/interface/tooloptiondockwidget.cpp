@@ -116,3 +116,43 @@ void ToolOptionWidget::setPreserveAlpha( int x )   // x = -1, 0, 1
     preserveAlphaBox->setEnabled( true );
     preserveAlphaBox->setChecked( x > 0 );
 }
+
+void ToolOptionWidget::disableAllOptions()
+{
+    sizeSlider->hide();
+    featherSlider->hide();
+    usePressureBox->hide();
+    makeInvisibleBox->hide();
+    preserveAlphaBox->hide();
+}
+
+void ToolOptionWidget::displayToolOptions(QHash<ToolPropertyType, bool> options)
+{
+    disableAllOptions();
+    QHash<ToolPropertyType, bool>::iterator i;
+    for (i = options.begin(); i != options.end(); ++i) {
+        if (i.value()) {
+
+            switch ( i.key() ) {
+            case WIDTH:
+              sizeSlider->show();
+              break;
+            case FEATHER:
+              featherSlider->show();
+              break;
+            case PRESSURE:
+              usePressureBox->show();
+              break;
+            case INVISIBILITY:
+              makeInvisibleBox->show();
+              break;
+            case PRESERVEALPHA:
+              preserveAlphaBox->show();
+              break;
+            default:
+              break;
+            }
+        }
+    }
+
+}

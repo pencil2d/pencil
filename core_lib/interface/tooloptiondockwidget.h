@@ -2,6 +2,7 @@
 #define TOOLOPTIONDOCKWIDGET_H
 
 #include <QDockWidget>
+#include "pencildef.h"
 
 
 class QToolButton;
@@ -31,7 +32,10 @@ public slots:
     void setPressure(int);
     void setPreserveAlpha(int);
 
+    void displayToolOptions(QHash<ToolPropertyType, bool> options);
+
 private:
+    void disableAllOptions();
     void createUI();
 };
 
