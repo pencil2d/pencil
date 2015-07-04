@@ -24,7 +24,7 @@ CommandCenter::~CommandCenter() {}
 void CommandCenter::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    Q_ASSERT ( layer )
+    Q_ASSERT ( layer );
 
     if ( layer->type() != Layer::SOUND )
     {
