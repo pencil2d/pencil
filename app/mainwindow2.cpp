@@ -249,8 +249,9 @@ void MainWindow2::createMenus()
     connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );
     connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
 
-    connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
-    connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
+    //connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
+    //connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
+    
     connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
@@ -972,9 +973,6 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
     connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
-
-    connect( scribbleArea, &ScribbleArea::onionPrevChanged, editor, &Editor::onionPrevChanged );
-    connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
 
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
 

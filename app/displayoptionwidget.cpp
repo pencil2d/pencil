@@ -82,9 +82,6 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect( ui->mirrorVButton, &QToolButton::clicked, editor, &Editor::toggleMirrorV);
 	connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
 	connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
-
-    connect(editor, &Editor::onionPrevChanged, this, &DisplayOptionWidget::onionPrevChanged );
-    connect(editor, &Editor::onionNextChanged, this, &DisplayOptionWidget::onionNextChanged );
 }
 
 

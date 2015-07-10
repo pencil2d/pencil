@@ -19,9 +19,6 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 public slots:
-    void onionPrevChanged(bool checked);
-    void onionNextChanged(bool checked);
-
     void changeMultiLayerOnionSkin(bool);
     void multiLayerOnionSkinButtonChanged(bool checked);
 
@@ -32,8 +29,6 @@ private:
     QToolButton* onionRedButton;
     QToolButton* gridAButton;
     QToolButton* multiLayerOnionSkinButton;
-    QToolButton* onionBlueNextButton;
-    QToolButton* onionRedNextButton;
 
     Ui::DisplayOption* ui = nullptr;
 };
