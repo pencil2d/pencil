@@ -43,7 +43,7 @@ GNU General Public License for more details.
 
 #include "scribblearea.h"
 #include "colorpalettewidget.h"
-#include "displayoptiondockwidget.h"
+#include "displayoptionwidget.h"
 #include "tooloptiondockwidget.h"
 //#include "popupcolorpalettewidget.h"
 #include "preferencesdialog.h"

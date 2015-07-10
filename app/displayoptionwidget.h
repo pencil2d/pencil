@@ -3,8 +3,13 @@
 
 #include <QDockWidget>
 
+namespace Ui
+{
+    class DisplayOption;
+}
 class Editor;
 class QToolButton;
+
 
 class DisplayOptionWidget : public QDockWidget
 {
@@ -37,6 +42,8 @@ private:
     QToolButton* multiLayerOnionSkinButton;
     QToolButton* onionBlueNextButton;
     QToolButton* onionRedNextButton;
+
+    Ui::DisplayOption* ui = nullptr;
 };
 
 #endif // DISPLAYOPTIONDOCKWIDGET_H

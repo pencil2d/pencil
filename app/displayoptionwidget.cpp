@@ -1,5 +1,6 @@
 
-#include "displayoptiondockwidget.h"
+#include "displayoptionwidget.h"
+#include "ui_displayoption.h"
 
 #include <QFrame>
 #include <QToolButton>
@@ -10,20 +11,17 @@
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent )
 {
-    createUI();
-    setWindowTitle(tr("Display Options"));
-    setMaximumHeight(100);
+    ui = new Ui::DisplayOption;
+    ui->setupUi( this );
+    //createUI();
+    //setWindowTitle(tr("Display Options"));
+    //setMaximumHeight(100);
 }
 
 void DisplayOptionWidget::createUI()
 {
     // Create Display Option Tool Buttons
     QFrame* displayGroup = new QFrame();
-
-    thinLinesButton = new QToolButton(displayGroup);
-    thinLinesButton->setIcon(QIcon(":icons/thinlines5.png"));
-    thinLinesButton->setToolTip(tr("Show invisible lines"));
-    thinLinesButton->setIconSize( QSize(21,21) );
 
     outlinesButton = new QToolButton(displayGroup);
     outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
@@ -117,8 +115,8 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 {
 	ScribbleArea* pScriArea = editor->getScribbleArea();
 
-	connect(thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
-	connect(outlinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
+	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
+	connect( outlinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
     connect(onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
 	connect(onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
 	connect(onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="app/">
+        <file>icons/thinlines5.png</file>
+    </qresource>
+</RCC>

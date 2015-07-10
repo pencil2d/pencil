@@ -38,7 +38,6 @@ HEADERS +=  \
     graphics/vector/vectorselection.h \
     graphics/vector/vertexref.h \
     interface/backupelement.h \
-    interface/displayoptiondockwidget.h \
     interface/editor.h \
     interface/flowlayout.h \
     interface/keycapturelineedit.h \
@@ -100,7 +99,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/vectorselection.cpp \
     graphics/vector/vertexref.cpp \
     interface/backupelement.cpp \
-    interface/displayoptiondockwidget.cpp \
     interface/editor.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \

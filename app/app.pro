@@ -13,7 +13,9 @@ TARGET = Pencil2D
 
 CONFIG += qt
 
-RESOURCES += ../pencil.qrc
+RESOURCES += \
+    ../pencil.qrc \
+    resource/app.qrc
 
 INCLUDEPATH += \
     ../core_lib/graphics \
@@ -40,7 +42,8 @@ HEADERS += \
     colorinspector.h \
     colorpalettewidget.h \
     colorwheel.h \
-    filedialogex.h
+    filedialogex.h \
+    displayoptionwidget.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -58,7 +61,8 @@ SOURCES += \
     colorinspector.cpp \
     colorpalettewidget.cpp \
     colorwheel.cpp \
-    filedialogex.cpp
+    filedialogex.cpp \
+    displayoptionwidget.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -67,7 +71,8 @@ FORMS += \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
-    ui/colorpalette.ui
+    ui/colorpalette.ui \
+    ui/displayoption.ui
 
 
 macx {
