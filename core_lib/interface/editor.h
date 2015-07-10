@@ -103,7 +103,6 @@ Q_SIGNALS:
     void onionPrevChanged( bool );
     void onionNextChanged( bool );
     void changeThinLinesButton( bool );
-    void changeOutlinesButton( bool );
 
     void currentFrameChanged( int n );
 

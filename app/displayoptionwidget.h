@@ -19,8 +19,6 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 public slots:
-    void changeThinLinesButton(bool bIsChecked);
-    void changeOutlinesButton(bool bIsChecked);
     void onionPrevChanged(bool checked);
     void onionNextChanged(bool checked);
 
@@ -30,10 +28,6 @@ public slots:
 private:
     void createUI();
 
-    QToolButton* thinLinesButton;
-    QToolButton* outlinesButton;
-    QToolButton* mirrorButton;
-    QToolButton* mirrorButtonV;
     QToolButton* onionPrevButton;
     QToolButton* onionNextButton;
     QToolButton* onionBlueButton;

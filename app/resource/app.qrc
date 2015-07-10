@@ -1,5 +1,10 @@
 <RCC>
-    <qresource prefix="app/">
-        <file>icons/thinlines5.png</file>
-    </qresource>
+  <qresource prefix="app/">
+    <file>icons/onionNext.png</file>
+    <file>icons/onionPrev.png</file>
+    <file>icons/thinlines5.png</file>
+    <file>icons/outlines5.png</file>
+    <file>icons/mirror.png</file>
+    <file>icons/mirrorV.png</file>
+  </qresource>
 </RCC>

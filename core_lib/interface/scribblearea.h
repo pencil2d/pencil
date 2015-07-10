@@ -118,8 +118,6 @@ public:
 signals:
     void modification();
     void modification( int );
-    void thinLinesChanged( bool );
-    void outlinesChanged( bool );
 
     void onionPrevChanged( bool );
     void onionNextChanged( bool );

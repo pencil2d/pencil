@@ -23,21 +23,6 @@ void DisplayOptionWidget::createUI()
     // Create Display Option Tool Buttons
     QFrame* displayGroup = new QFrame();
 
-    outlinesButton = new QToolButton(displayGroup);
-    outlinesButton->setIcon(QIcon(":icons/outlines5.png"));
-    outlinesButton->setToolTip(tr("Show outlines only"));
-    outlinesButton->setIconSize( QSize(21,21) );
-
-    mirrorButton = new QToolButton(displayGroup);
-    mirrorButton->setIcon(QIcon(":icons/mirror.png"));
-    mirrorButton->setToolTip(tr("Horizontal flip"));
-    mirrorButton->setIconSize( QSize(21,21) );
-
-    mirrorButtonV = new QToolButton(displayGroup);
-    mirrorButtonV->setIcon(QIcon(":icons/mirrorV.png"));
-    mirrorButtonV->setToolTip(tr("Vertical flip"));
-    mirrorButtonV->setIconSize( QSize(21,21) );
-
     onionPrevButton = new QToolButton(displayGroup);
     onionPrevButton->setIcon(QIcon(":icons/onionPrev.png"));
     onionPrevButton->setToolTip(tr("Onion skin previous frame"));
@@ -68,14 +53,6 @@ void DisplayOptionWidget::createUI()
     gridAButton->setToolTip(tr("Grid A - composition"));
     gridAButton->setIconSize( QSize(21,21) );
 
-    thinLinesButton->setCheckable(true);
-    thinLinesButton->setChecked(false);
-    outlinesButton->setCheckable(true);
-    outlinesButton->setChecked(false);
-    mirrorButton->setCheckable(true);
-    mirrorButton->setChecked(false);
-    mirrorButtonV->setCheckable(true);
-    mirrorButtonV->setChecked(false);
     onionPrevButton->setCheckable(true);
     onionPrevButton->setChecked(true);
     onionNextButton->setCheckable(true);
@@ -94,13 +71,9 @@ void DisplayOptionWidget::createUI()
     QGridLayout* layout = new QGridLayout();
     layout->setMargin(4);
     layout->setSpacing(0);
-    layout->addWidget(mirrorButton,0,0);
     layout->addWidget(onionPrevButton,1,2);
     layout->addWidget(onionNextButton,0,2);
     layout->addWidget(onionBlueButton,0,3);
-    layout->addWidget(mirrorButtonV,1,0);
-    layout->addWidget(outlinesButton,1,1);
-    layout->addWidget(thinLinesButton,0,1);
     layout->addWidget(onionRedButton,1,3);
     layout->addWidget(gridAButton,2,0);
     layout->addWidget(multiLayerOnionSkinButton,2,2);
@@ -116,34 +89,22 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	ScribbleArea* pScriArea = editor->getScribbleArea();
 
 	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
-	connect( outlinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
+	connect( ui->outLinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
     connect(onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
 	connect(onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
 	connect(onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
 	connect(onionRedButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOnionRed );
-	connect(mirrorButton, &QToolButton::clicked, editor, &Editor::toggleMirror);
-	connect(mirrorButtonV, &QToolButton::clicked, editor, &Editor::toggleMirrorV);
+	connect( ui->mirrorButton, &QToolButton::clicked, editor, &Editor::toggleMirror);
+	connect( ui->mirrorVButton, &QToolButton::clicked, editor, &Editor::toggleMirrorV);
 	connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
 	connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 
-    connect(editor, &Editor::changeOutlinesButton, this, &DisplayOptionWidget::changeOutlinesButton );
-    connect(editor, &Editor::changeThinLinesButton, this, &DisplayOptionWidget::changeThinLinesButton );
     connect(editor, &Editor::onionPrevChanged, this, &DisplayOptionWidget::onionPrevChanged );
     connect(editor, &Editor::onionNextChanged, this, &DisplayOptionWidget::onionNextChanged );
 }
 
 
 // ### public slots ###
-
-void DisplayOptionWidget::changeOutlinesButton(bool bIsChecked)
-{
-    outlinesButton->setChecked(bIsChecked);
-}
-
-void DisplayOptionWidget::changeThinLinesButton(bool bIsChecked)
-{
-    thinLinesButton->setChecked(bIsChecked);
-}
 
 void DisplayOptionWidget::onionPrevChanged(bool checked)
 {

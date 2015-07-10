@@ -973,8 +973,6 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
     connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
 
-    connect( scribbleArea, &ScribbleArea::thinLinesChanged, editor, &Editor::changeThinLinesButton );
-    connect( scribbleArea, &ScribbleArea::outlinesChanged, editor, &Editor::changeOutlinesButton );
     connect( scribbleArea, &ScribbleArea::onionPrevChanged, editor, &Editor::onionPrevChanged );
     connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
 
