@@ -60,10 +60,9 @@ void CommandCenter::importSound()
     FileDialogEx fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
-    mEditor->addNewKey();
-        //layerSound->loadSoundAtFrame( filePath, currentFrame() );
-
-        //mTimeLine->updateContent();
+    //mEditor->addNewKey();
+    //layerSound->loadSoundAtFrame( filePath, currentFrame() );
+    //mTimeLine->updateContent();
 }
 
 void CommandCenter::ZoomIn()
