@@ -589,12 +589,6 @@ void Editor::toggleShowAllLayers()
 	emit updateTimeLine();
 }
 
-void Editor::resetMirror()
-{
-	view()->flipHorizontal( false );
-	view()->flipVertical( false );
-}
-
 void Editor::saveLength( QString x )
 {
 	bool ok;

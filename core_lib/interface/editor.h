@@ -173,7 +173,6 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
-    void resetMirror();
 
 protected:
     // Need to move to somewhere...
