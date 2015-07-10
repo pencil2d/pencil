@@ -1539,14 +1539,12 @@ void ScribbleArea::toggleOnionNext( bool checked )
 {
     setEffect( EFFECT_NEXT_ONION, checked );
     updateAllFrames();
-    emit onionNextChanged( checked );
 }
 
 void ScribbleArea::toggleOnionPrev( bool checked )
 {
     setEffect( EFFECT_PREV_ONION, checked );
     updateAllFrames();
-    emit onionPrevChanged( checked );
 }
 
 void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )

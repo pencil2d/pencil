@@ -118,11 +118,7 @@ public:
 signals:
     void modification();
     void modification( int );
-
-    void onionPrevChanged( bool );
-    void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
-
     void refreshPreview();
 
 public slots:

@@ -23,16 +23,6 @@ void DisplayOptionWidget::createUI()
     // Create Display Option Tool Buttons
     QFrame* displayGroup = new QFrame();
 
-    onionPrevButton = new QToolButton(displayGroup);
-    onionPrevButton->setIcon(QIcon(":icons/onionPrev.png"));
-    onionPrevButton->setToolTip(tr("Onion skin previous frame"));
-    onionPrevButton->setIconSize( QSize(21,21) );
-
-    onionNextButton = new QToolButton(displayGroup);
-    onionNextButton->setIcon(QIcon(":icons/onionNext.png"));
-    onionNextButton->setToolTip(tr("Onion skin next frame"));
-    onionNextButton->setIconSize( QSize(21,21) );
-
     onionBlueButton = new QToolButton(displayGroup);
     onionBlueButton->setIcon(QIcon(":icons/onion-blue.png"));
     onionBlueButton->setToolTip(tr("Onion skin color: blue"));
@@ -53,10 +43,6 @@ void DisplayOptionWidget::createUI()
     gridAButton->setToolTip(tr("Grid A - composition"));
     gridAButton->setIconSize( QSize(21,21) );
 
-    onionPrevButton->setCheckable(true);
-    onionPrevButton->setChecked(true);
-    onionNextButton->setCheckable(true);
-    onionNextButton->setChecked(false);
     onionBlueButton->setCheckable(true);
     onionBlueButton->setChecked(true);
     onionRedButton->setCheckable(true);
@@ -71,8 +57,6 @@ void DisplayOptionWidget::createUI()
     QGridLayout* layout = new QGridLayout();
     layout->setMargin(4);
     layout->setSpacing(0);
-    layout->addWidget(onionPrevButton,1,2);
-    layout->addWidget(onionNextButton,0,2);
     layout->addWidget(onionBlueButton,0,3);
     layout->addWidget(onionRedButton,1,3);
     layout->addWidget(gridAButton,2,0);
@@ -90,8 +74,8 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 
 	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
 	connect( ui->outLinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
-    connect(onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
-	connect(onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
+    connect( ui->onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
+	connect( ui->onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
 	connect(onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
 	connect(onionRedButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOnionRed );
 	connect( ui->mirrorButton, &QToolButton::clicked, editor, &Editor::toggleMirror);
@@ -106,11 +90,6 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 
 // ### public slots ###
 
-void DisplayOptionWidget::onionPrevChanged(bool checked)
-{
-    onionPrevButton->setChecked(checked);
-}
-
 void DisplayOptionWidget::changeMultiLayerOnionSkin(bool bIsChecked)
 {
     multiLayerOnionSkinButton->setChecked(bIsChecked);
@@ -119,9 +98,4 @@ void DisplayOptionWidget::changeMultiLayerOnionSkin(bool bIsChecked)
 void DisplayOptionWidget::multiLayerOnionSkinButtonChanged(bool checked)
 {
     multiLayerOnionSkinButton->setChecked(checked);
-}
-
-void DisplayOptionWidget::onionNextChanged(bool checked)
-{
-    onionNextButton->setChecked(checked);
 }

@@ -100,8 +100,6 @@ Q_SIGNALS:
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
     void multiLayerOnionSkinChanged( bool );
-    void onionPrevChanged( bool );
-    void onionNextChanged( bool );
     void changeThinLinesButton( bool );
 
     void currentFrameChanged( int n );
