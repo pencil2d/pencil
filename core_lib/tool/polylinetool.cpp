@@ -22,19 +22,39 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+
+
+
     QSettings settings( "Pencil", "Pencil" );
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();
     properties.feather = -1;
-    properties.pressure = ON;
+    properties.pressure = 0;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
 
+    // First run
     if ( properties.width <= 0 )
     {
-        properties.width = 1.5;
-        settings.setValue( "polyLineWidth", properties.width );
+        setWidth(1.5);
     }
+}
+
+void PolylineTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("polyLineWidth", width);
+    settings.sync();
+}
+
+void PolylineTool::setFeather( const qreal feather )
+{
+    properties.feather = -1;
 }
 
 QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?

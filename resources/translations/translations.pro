@@ -6,7 +6,9 @@ CONFIG += qt staticlib console
 TRANSLATIONS += pencil.ts \
                 pencil2d_cs.ts \
                 pencil2d_it.ts \
+                pencil2d_ja.ts \
 
+SOURCES += dummy.cpp
 
 isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe

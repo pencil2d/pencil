@@ -24,20 +24,55 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
+    m_enabledProperties[WIDTH] = true;
+    m_enabledProperties[FEATHER] = true;
+
+
     QSettings settings("Pencil", "Pencil");
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();
+    properties.pressure = 0;
 
+    // First run
     if (properties.width <= 0)
     {
-        properties.width = 25;
-        settings.setValue("smudgeWidth", properties.width);
+        setWidth(25);
+        setFeather(200);
+        setPressure(0);
     }
-    if (properties.feather <= 0)
-    {
-        properties.feather = 200;
-        settings.setValue("smudgeFeather", properties.feather);
-    }
+}
+
+void SmudgeTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("smudgeWidth", width);
+    settings.sync();
+}
+
+void SmudgeTool::setFeather( const qreal feather )
+{
+    // Set current property
+    properties.feather = feather;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("smudgeFeather", feather);
+    settings.sync();
+}
+
+void SmudgeTool::setPressure( const bool pressure )
+{
+    // Set current property
+    properties.pressure = pressure;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("smudgePressure", pressure);
+    settings.sync();
 }
 
 QCursor SmudgeTool::cursor()
@@ -57,7 +92,7 @@ QCursor SmudgeTool::cursor()
 void SmudgeTool::adjustPressureSensitiveProperties(qreal pressure, bool mouseDevice)
 {
     mCurrentWidth = properties.width;
-    if (mScribbleArea->usePressure() && !mouseDevice)
+    if (properties.pressure && !mouseDevice)
     {
         mCurrentPressure = pressure;
     }

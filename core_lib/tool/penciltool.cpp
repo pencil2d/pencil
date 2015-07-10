@@ -19,27 +19,74 @@ StrokeTool( parent )
 {
 }
 
+
 void PencilTool::loadSettings()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    m_enabledProperties[WIDTH] = true;
+    m_enabledProperties[PRESSURE] = true;
 
+
+
+    QSettings settings( "Pencil", "Pencil" );
     properties.width = settings.value( "pencilWidth" ).toDouble();
-    properties.feather = settings.value( "pencilFeather" ).toDouble();
-    properties.pressure = 1;
+    properties.feather = -1; //Feather isn't implemented in the Pencil tool;
+    properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
 
+    // First run
+    //
     if ( properties.width <= 0 )
     {
-        properties.width = 1;
-        settings.setValue( "pencilWidth", properties.width );
+        // setting the default value to 4
+        // seems to give great results with pressure on
+        //
+        setWidth(4);
+        setPressure(1);
     }
-    if ( properties.feather > -1 ) // replace with: <=0 to allow feather
-    {
-        properties.feather = -1;
-        settings.setValue( "pencilFeather", properties.feather );
-    }
+
 }
+
+void PencilTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("pencilWidth", width);
+    settings.sync();
+}
+
+void PencilTool::setFeather( const qreal feather )
+{
+    // force value
+    properties.feather = -1;
+}
+
+void PencilTool::setInvisibility( const qreal invisibility )
+{
+    // force value
+    properties.invisibility = 1;
+}
+
+void PencilTool::setPressure( const bool pressure )
+{   
+    // Set current property
+    properties.pressure = pressure;
+
+    // Update settings
+    QSettings settings( "Pencil", "Pencil" );
+    settings.setValue("pencilPressure", pressure);
+    settings.sync();
+}
+
+void PencilTool::setPreserveAlpha( const bool preserveAlpha )
+{
+    // force value
+    properties.preserveAlpha = 0;
+}
+
 
 QCursor PencilTool::cursor()
 {
@@ -133,16 +180,30 @@ void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
 {
     QColor currentColor = mEditor->color()->frontColor();
     currentPressuredColor = currentColor;
+
+    // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
+    int softness = 8;
+
     if ( mScribbleArea->usePressure() && !mouseDevice )
     {
-        currentPressuredColor.setAlphaF( currentColor.alphaF() * pressure );
+        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure) / softness );
     }
     else
     {
-        currentPressuredColor.setAlphaF( currentColor.alphaF() );
+        currentPressuredColor.setAlphaF( currentColor.alphaF() / softness );
     }
 
+
     mCurrentWidth = properties.width;
+
+    if ( properties.pressure && !mouseDevice )
+    {
+        mCurrentPressure = pressure;
+    }
+    else
+    {
+        mCurrentPressure = 1.0;
+    }
 }
 
 void PencilTool::drawStroke()
@@ -155,7 +216,9 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        QPen pen( QBrush( currentPressuredColor ), properties.width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+        qreal brushWidth = properties.width * mCurrentPressure;
+
+        QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         QBrush brush( currentPressuredColor, Qt::SolidPattern );
         rad = qRound( properties.width / 2 ) + 3;
 
