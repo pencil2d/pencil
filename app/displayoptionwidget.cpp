@@ -11,8 +11,10 @@
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent )
 {
+    QWidget* pCentralWidget = new QWidget( this );
     ui = new Ui::DisplayOption;
-    ui->setupUi( this );
+    ui->setupUi( pCentralWidget );
+    setWidget( pCentralWidget );
     //createUI();
     //setWindowTitle(tr("Display Options"));
     //setMaximumHeight(100);
@@ -21,17 +23,8 @@ DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent 
 void DisplayOptionWidget::createUI()
 {
     // Create Display Option Tool Buttons
+    return;
     QFrame* displayGroup = new QFrame();
-
-    onionBlueButton = new QToolButton(displayGroup);
-    onionBlueButton->setIcon(QIcon(":icons/onion-blue.png"));
-    onionBlueButton->setToolTip(tr("Onion skin color: blue"));
-    onionBlueButton->setIconSize( QSize(21,21) );
-
-    onionRedButton = new QToolButton(displayGroup);
-    onionRedButton->setIcon(QIcon(":icons/onion-red.png"));
-    onionRedButton->setToolTip(tr("Onion skin color: red"));
-    onionRedButton->setIconSize( QSize(21,21) );
 
     multiLayerOnionSkinButton = new QToolButton(displayGroup);
     multiLayerOnionSkinButton->setText(QString("M"));
@@ -76,12 +69,13 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect( ui->outLinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
     connect( ui->onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
 	connect( ui->onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
-	connect(onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
-	connect(onionRedButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOnionRed );
+	connect( ui->onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
+	connect( ui->onionRedButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOnionRed );
 	connect( ui->mirrorButton, &QToolButton::clicked, editor, &Editor::toggleMirror);
 	connect( ui->mirrorVButton, &QToolButton::clicked, editor, &Editor::toggleMirrorV);
-	connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
-	connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
+    // FIXME
+	//connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
+	//connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 }
 
 

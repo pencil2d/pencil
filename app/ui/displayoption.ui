@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>246</width>
+    <width>186</width>
     <height>78</height>
    </rect>
   </property>
@@ -152,6 +152,58 @@
      <property name="icon">
       <iconset resource="../resource/app.qrc">
        <normaloff>:/app/icons/onionNext.png</normaloff>:/app/icons/onionNext.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="onionBlueButton">
+     <property name="toolTip">
+      <string>Onion skin color: blue</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin color: blue</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/onion-blue.png</normaloff>:/app/icons/onion-blue.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QToolButton" name="onionRedButton">
+     <property name="toolTip">
+      <string>Onion skin color: red</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin color: red</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/onion-red.png</normaloff>:/app/icons/onion-red.png</iconset>
      </property>
      <property name="iconSize">
       <size>
