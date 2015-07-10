@@ -116,6 +116,7 @@ void DisplayOptionWidget::createUI()
 void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 {
 	ScribbleArea* pScriArea = editor->getScribbleArea();
+
 	connect(thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
 	connect(outlinesButton, &QToolButton::clicked,  pScriArea, &ScribbleArea::toggleOutlines);
     connect(onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
@@ -127,10 +128,10 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
 	connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 
-    connect(editor, SIGNAL(changeOutlinesButton(bool)), this, SLOT(changeOutlinesButton(bool)));
-    connect(editor, SIGNAL(changeThinLinesButton(bool)), this, SLOT(changeThinLinesButton(bool)));
-    connect(editor, SIGNAL(onionPrevChanged(bool)), this, SLOT(onionPrevChanged(bool)));
-    connect(editor, SIGNAL(onionNextChanged(bool)), this, SLOT(onionNextChanged(bool)));
+    connect(editor, &Editor::changeOutlinesButton, this, &DisplayOptionWidget::changeOutlinesButton );
+    connect(editor, &Editor::changeThinLinesButton, this, &DisplayOptionWidget::changeThinLinesButton );
+    connect(editor, &Editor::onionPrevChanged, this, &DisplayOptionWidget::onionPrevChanged );
+    connect(editor, &Editor::onionNextChanged, this, &DisplayOptionWidget::onionNextChanged );
 }
 
 
