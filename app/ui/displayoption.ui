@@ -6,14 +6,29 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>186</width>
-    <height>78</height>
+    <width>156</width>
+    <height>75</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>4</number>
+   </property>
+   <property name="topMargin">
+    <number>4</number>
+   </property>
+   <property name="rightMargin">
+    <number>4</number>
+   </property>
+   <property name="bottomMargin">
+    <number>4</number>
+   </property>
+   <property name="spacing">
+    <number>2</number>
+   </property>
    <item row="0" column="2">
     <widget class="QToolButton" name="thinLinesButton">
      <property name="mouseTracking">
@@ -166,6 +181,12 @@
    </item>
    <item row="0" column="3">
     <widget class="QToolButton" name="onionBlueButton">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>30</height>
+      </size>
+     </property>
      <property name="toolTip">
       <string>Onion skin color: blue</string>
      </property>
