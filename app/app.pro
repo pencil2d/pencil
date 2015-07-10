@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Pencil2D GUI 
+# Pencil2D GUI
 #
 #-------------------------------------------------
 
@@ -80,12 +80,6 @@ win32 {
     RC_FILE = $$PWD/../pencil.rc
 }
 
-
-
-# i18n
-TRANSLATIONS += ../pencil.ts \
-                ../pencil2d_it.ts \
-                ../pencil2d_cs.ts
 
 isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
