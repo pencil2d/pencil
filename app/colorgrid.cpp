@@ -9,7 +9,7 @@
 
 ColorGrid::ColorGrid(QWidget *parent) :
     QScrollArea(parent),
-    layout_(0)
+    mLayout(0)
 {
     initItems();
 }
@@ -18,7 +18,7 @@ void ColorGrid::initItems()
 {
     QWidget *widget = new QWidget(this);
     widget->setBackgroundRole(QPalette::Light);
-    layout_ = new FlowLayout(widget, 3, 1, 1);
+    mLayout = new FlowLayout(widget, 3, 1, 1);
     for(int i=0;i<gridCount;++i){
         ColorGridItem * item = new ColorGridItem(i,this);
         connect(item, SIGNAL(colorDroped(int)),
@@ -26,9 +26,9 @@ void ColorGrid::initItems()
         connect(item, SIGNAL(colorPicked(int,QColor)),
                 this, SIGNAL(colorPicked(int,QColor)));
         items.append(item);
-        layout_->addWidget(item);
+        mLayout->addWidget(item);
     }
-    widget->setLayout(layout_);
+    widget->setLayout(mLayout);
     this->setWidget(widget);
     setWidgetResizable(true);
 }
@@ -45,9 +45,11 @@ QByteArray ColorGrid::dataExport()
 {
     QByteArray array;
     QDataStream stream(&array, QIODevice::WriteOnly);
-    for(int i=0;i<layout_->count();++i){
+    for(int i=0;i<mLayout->count();++i)
+    {
         ColorGridItem * item = items[i];
-        if(item){
+        if(item)
+        {
             stream << item->color();
         }
     }
@@ -57,7 +59,7 @@ QByteArray ColorGrid::dataExport()
 bool ColorGrid::dataImport(const QByteArray &array)
 {
     QDataStream stream(array);
-    for(int i=0;i<layout_->count();++i){
+    for(int i=0;i<mLayout->count();++i){
         ColorGridItem * item = items[i];
         if(item){
             QColor color;
