@@ -219,32 +219,6 @@ void Editor::onionNextFramesNumChangeSlot( int number )
 	mScribbleArea->updateAllFrames();
 }
 
-void Editor::currentKeyFrameModification()
-{
-	modification( layers()->currentLayerIndex() );
-}
-
-void Editor::modification( int layerNumber )
-{
-	if ( mObject != NULL )
-	{
-		mObject->modification();
-	}
-	lastModifiedFrame = currentFrame();
-	lastModifiedLayer = layerNumber;
-
-	mScribbleArea->update();
-
-	emit updateTimeLine();
-
-	numberOfModifications++;
-	if ( mIsAutosave && numberOfModifications > autosaveNumber )
-	{
-		numberOfModifications = 0;
-		emit needSave();
-	}
-}
-
 void Editor::backup( QString undoText )
 {
 	if ( lastModifiedLayer > -1 && lastModifiedFrame > 0 )

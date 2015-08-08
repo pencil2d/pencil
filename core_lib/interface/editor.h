@@ -151,8 +151,6 @@ public: //slots
     void changeAutosave( int );
     void changeAutosaveNumber( int );
 
-    void currentKeyFrameModification();
-    void modification( int );
     void backup( QString undoText );
     void backup( int layerNumber, int frameNumber, QString undoText );
     void undo();
