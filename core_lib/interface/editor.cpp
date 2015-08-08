@@ -64,17 +64,14 @@ static VectorImage g_clipboardVectorImage;
 
 Editor::Editor( QObject* parent ) : QObject( parent )
 {
-	m_isAltPressed = false;
-	numberOfModifications = 0;
-
-	QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 	mIsAutosave = settings.value( "autosave" ).toBool();
 	autosaveNumber = settings.value( "autosaveNumber" ).toInt();
 	if ( autosaveNumber == 0 )
 	{
 		autosaveNumber = 20;
 		settings.setValue( "autosaveNumber", 20 );
-	}
+    }
 	mBackupIndex = -1;
 	clipboardBitmapOk = false;
 	clipboardVectorOk = false;
@@ -130,9 +127,8 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 	tools()->setCurrentTool( PENCIL );
 	mScribbleArea->setCursor( tools()->currentTool()->cursor() );
 
-	//setAcceptDrops( true ); // TODO: drop event
+    //setAcceptDrops( true ); // TODO: drop event
 
-	// CONNECTIONS
 	makeConnections();
 
 	return true;

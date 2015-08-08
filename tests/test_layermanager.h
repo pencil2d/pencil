@@ -5,7 +5,7 @@
 
 class Object;
 
-class TestLayerManager : QObject
+class TestLayerManager : public QObject
 {
     Q_OBJECT
 
@@ -19,5 +19,7 @@ private slots:
 private:
     Object* m_pObject;
 };
+
+DECLARE_TEST( TestLayerManager )
 
 #endif

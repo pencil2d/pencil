@@ -195,8 +195,8 @@ private:
     ViewManager*       mViewManager       = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
 
-    bool m_isAltPressed;
-    int numberOfModifications;
+    bool m_isAltPressed = false;
+    int numberOfModifications = 0;
 
     bool mIsAutosave;
     int autosaveNumber;
