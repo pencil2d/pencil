@@ -108,7 +108,7 @@ Q_SIGNALS:
     void needSave();
     void fileLoaded();
     
-public slots:
+public:
     void onionMaxOpacityChangeSlot( int );
     void onionMinOpacityChangeSlot( int );
     void onionPrevFramesNumChangeSlot( int );
