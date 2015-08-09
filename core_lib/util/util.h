@@ -28,5 +28,7 @@ private:
 
 #define NULLReturnVoid( p ) if ( p == nullptr ) { return; }
 #define NULLReturn( p, ret ) if ( p == nullptr ) { return ret; }
+#define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
+
 
 #endif // UTIL_H

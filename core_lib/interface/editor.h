@@ -50,7 +50,7 @@ class Editor : public QObject
     Q_PROPERTY( PreferenceManager* preference READ preference )
 
 public:
-    explicit Editor( QObject* parent );
+    explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
     bool initialize( ScribbleArea* pScribbleArea );
