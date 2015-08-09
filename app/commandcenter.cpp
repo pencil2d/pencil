@@ -26,7 +26,8 @@ CommandCenter::~CommandCenter() {}
 void CommandCenter::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    Q_ASSERT ( layer );
+    Q_ASSERT( layer );
+    NULLReturnVoid( layer );
 
     if ( layer->type() != Layer::SOUND )
     {
@@ -35,8 +36,8 @@ void CommandCenter::importSound()
         msg.addButton( tr( "Create sound layer" ), QMessageBox::AcceptRole );
         msg.addButton( tr( "Don't create layer" ), QMessageBox::RejectRole );
         int ret = msg.exec();
-
-        if ( ret != QMessageBox::Ok )
+        //qDebug() << "Button clicked: 0" << ret;
+        if ( ret != QMessageBox::AcceptRole )
         {
             return;
         }
@@ -112,12 +113,12 @@ void CommandCenter::GotoPrevKeyFrame()
 void CommandCenter::addNewSoundLayer()
 {
     bool ok = false;
-    QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
+    QString strLayerName = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
                                           tr( "Layer name:" ), QLineEdit::Normal,
                                           tr( "Sound Layer" ), &ok );
-    if ( ok && !text.isEmpty() )
+    if ( ok && !strLayerName.isEmpty() )
     {
-        Layer* layer = mEditor->layers()->newSoundLayer( text );
+        Layer* layer = mEditor->layers()->newSoundLayer( strLayerName );
         mEditor->layers()->setCurrentLayer( layer );
     }
 }
