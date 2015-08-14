@@ -924,6 +924,11 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
 
 	bool isOK = false;
 
+    while ( layer->keyExists( frameIndex ) )
+    {
+        frameIndex += 1;
+    }
+
 	switch ( layer->type() )
 	{
 	case Layer::BITMAP:
@@ -932,8 +937,8 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
 		isOK = layer->addNewKeyAt( frameIndex );
 		break;
 	case Layer::SOUND:
-		Q_ASSERT( false );
-		return; // nothing to do.
+        Q_ASSERT( false ); // TODO: import sound.
+        return;
 		break;
 	default:
 		break;
@@ -941,12 +946,8 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
 
 	if ( isOK )
 	{
-		scrubTo( frameIndex );
-		getScribbleArea()->updateCurrentFrame();
-	}
-	else
-	{
-		addKeyFame( layerNumber, frameIndex + 1 );
+        scrubTo( frameIndex ); // currentFrameChanged() emit inside.
+        //getScribbleArea()->updateCurrentFrame();
 	}
 }
 

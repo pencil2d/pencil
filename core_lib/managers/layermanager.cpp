@@ -18,6 +18,11 @@ bool LayerManager::init()
 }
 
 // Layer management
+int LayerManager::getLastCameraLayer()
+{
+    return lastCameraLayer;
+}
+
 Layer* LayerManager::currentLayer()
 {
     return currentLayer( 0 );
@@ -37,11 +42,18 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-	if ( mCurrentLayerIndex != layerIndex )
-	{
-		mCurrentLayerIndex = layerIndex;
-		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
-	}
+    if ( mCurrentLayerIndex != layerIndex )
+    {
+        mCurrentLayerIndex = layerIndex;
+        Q_EMIT currentLayerChanged( mCurrentLayerIndex );
+    }
+    if ( editor()->object()!=nullptr )
+    {
+        if ( editor()->object()->getLayer( layerIndex )->type() == Layer::CAMERA )
+        {
+            lastCameraLayer = layerIndex;
+        }
+    }
 }
 
 void LayerManager::setCurrentLayer( Layer* layer )

@@ -56,19 +56,21 @@ public:
     void playSound( int frame );
     void stopSound();
 
-    // functions will be removed. don't use them.
+    // These functions will be removed later.
+    // Don't use them!!
     int getSoundSize() { return 0; }
     bool soundIsNotNull( int ) { return true; }
     QString getSoundFilepathAt( int ) { return ""; }
     bool isEmpty() { return true; }
-    // functions will be removed.
+    // These functions will be removed.
 
     // graphic representation -- could be put in another class
     void paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
-private:
+
+
 };
 
 #endif

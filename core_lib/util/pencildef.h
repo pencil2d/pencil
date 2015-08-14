@@ -46,6 +46,7 @@ enum DisplayEffect
     EFFECT_NEXT_ONION,
     EFFECT_AXIS,
     EFFECT_GRID_A,
+    EFFECT_CAMERABORDER,
     EFFECT_COUNT,
 };
 

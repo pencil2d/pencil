@@ -20,6 +20,7 @@ public:
     // Layer Management
     Layer* currentLayer();
     Layer* currentLayer( int offset );
+    int    getLastCameraLayer();
     int    currentLayerIndex();
     void   setCurrentLayer( int nIndex );
     void   setCurrentLayer( Layer* layer );
@@ -48,6 +49,7 @@ Q_SIGNALS:
 
 private:
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
+    int lastCameraLayer = 0;
 };
 
 #endif
