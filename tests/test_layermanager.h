@@ -5,19 +5,21 @@
 
 class Object;
 
-class TestLayerManager : QObject
+class TestLayerManager : public QObject
 {
     Q_OBJECT
 
 public:
 
 
-private slots:
+private:
     void initTestCase();
     void cleanupTestCase();
 
 private:
-    Object* m_pObject;
+    Object* m_pObject = nullptr;
 };
+
+DECLARE_TEST( TestLayerManager )
 
 #endif

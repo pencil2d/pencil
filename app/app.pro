@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Pencil2D GUI 
+# Pencil2D GUI
 #
 #-------------------------------------------------
 
@@ -13,7 +13,9 @@ TARGET = Pencil2D
 
 CONFIG += qt
 
-RESOURCES += ../pencil.qrc
+RESOURCES += \
+    ../pencil.qrc \
+    resource/app.qrc
 
 INCLUDEPATH += \
     ../core_lib/graphics \
@@ -39,7 +41,9 @@ HEADERS += \
     colorgriditem.h \
     colorinspector.h \
     colorpalettewidget.h \
-    colorwheel.h
+    colorwheel.h \
+    filedialogex.h \
+    displayoptionwidget.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -56,7 +60,9 @@ SOURCES += \
     colorgriditem.cpp \
     colorinspector.cpp \
     colorpalettewidget.cpp \
-    colorwheel.cpp
+    colorwheel.cpp \
+    filedialogex.cpp \
+    displayoptionwidget.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -65,7 +71,8 @@ FORMS += \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
-    ui/colorpalette.ui
+    ui/colorpalette.ui \
+    ui/displayoption.ui
 
 
 macx {
@@ -77,6 +84,7 @@ macx {
 win32 {
     RC_FILE = $$PWD/../pencil.rc
 }
+
 
 
 # --- core_lib ---

@@ -38,8 +38,11 @@ BitmapImage::BitmapImage(QRect rectangle, QImage image)
 {
     mBounds = rectangle.normalized();
     mExtendable = true;
-    this->mImage = new QImage(image);
-    if (this->mImage->width() != rectangle.width() || this->mImage->height() != rectangle.height()) qDebug() << "Error instancing bitmapImage.";
+    mImage = new QImage(image);
+    if ( mImage->width() != rectangle.width() || mImage->height() != rectangle.height())
+    {
+        qDebug() << "Error instancing bitmapImage.";
+    }
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a)
@@ -52,14 +55,17 @@ BitmapImage::BitmapImage(const BitmapImage& a)
 BitmapImage::BitmapImage(QString path, QPoint topLeft)
 {
     mImage = new QImage(path);
-    if (mImage->isNull()) qDebug() << "ERROR: Image " << path << " not loaded";
+    if ( mImage->isNull() )
+    {
+        qDebug() << "ERROR: Image " << path << " not loaded";
+    }
     mBounds = QRect( topLeft, mImage->size() );
     mExtendable = true;
 }
 
 BitmapImage::~BitmapImage()
 {
-    if (mImage) delete mImage;
+    if ( mImage ) delete mImage;
 }
 
 void BitmapImage::setImage( QImage* img )
@@ -92,7 +98,7 @@ void BitmapImage::loadDomElement(QDomElement imageElement, QString filePath)
     if (!fi.exists()) path = imageElement.attribute("src");
     int x = imageElement.attribute("topLeftX").toInt();
     int y = imageElement.attribute("topLeftY").toInt();
-    //loadImageAtFrame( path, position );
+
     mImage = new QImage(path);
     if ( !mImage->isNull() )
     {

@@ -17,7 +17,7 @@ class TestLayer : public QObject
 public:
     TestLayer();
 
-    private slots:
+private:
     void initTestCase();
     void cleanupTestCase();
 
@@ -33,7 +33,7 @@ public:
     void testNextKeyFramePosition();
 
 private:
-    Object* m_pObject;
+    Object* m_pObject = nullptr;
 };
 
 DECLARE_TEST( TestLayer )

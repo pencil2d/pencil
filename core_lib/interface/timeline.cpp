@@ -216,8 +216,6 @@ void TimeLine::updateUI()
 {
     mTracks->update();
     mLayerList->update();
-
-
 }
 
 int TimeLine::getFrameLength()
@@ -280,11 +278,6 @@ void TimeLine::updateContent()
     mLayerList->updateContent();
     mTracks->updateContent();
     update();
-}
-
-void TimeLine::setFps ( int value )
-{
-    mTimeControls->setFps(value);
 }
 
 void TimeLine::forceUpdateLength(QString newLength)

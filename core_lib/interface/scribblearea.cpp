@@ -391,11 +391,6 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
                 deleteSelection();
             }
             break;
-        case Qt::Key_F1:
-            mIsSimplified = true;
-            emit outlinesChanged( mIsSimplified );
-            updateAllVectorLayersAtCurrentFrame();
-            break;
         case Qt::Key_Space:
             setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
             break;
@@ -1544,14 +1539,12 @@ void ScribbleArea::toggleOnionNext( bool checked )
 {
     setEffect( EFFECT_NEXT_ONION, checked );
     updateAllFrames();
-    emit onionNextChanged( checked );
 }
 
 void ScribbleArea::toggleOnionPrev( bool checked )
 {
     setEffect( EFFECT_PREV_ONION, checked );
     updateAllFrames();
-    emit onionPrevChanged( checked );
 }
 
 void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
@@ -1693,16 +1686,12 @@ void ScribbleArea::clearImage()
 void ScribbleArea::toggleThinLines()
 {
     mShowThinLines = !mShowThinLines;
-    emit thinLinesChanged( mShowThinLines );
-
     updateAllFrames();
 }
 
 void ScribbleArea::toggleOutlines()
 {
     mIsSimplified = !mIsSimplified;
-    emit outlinesChanged( mIsSimplified );
-
     updateAllFrames();
 }
 

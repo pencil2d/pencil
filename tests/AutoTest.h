@@ -46,7 +46,7 @@ namespace AutoTest
     {
 	    int ret = 0;
 
-	    foreach (QObject* test, testList())
+        for (QObject* test : testList() )
 	    {
 	        ret += QTest::qExec(test, argc, argv);
 	    }

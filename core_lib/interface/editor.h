@@ -50,7 +50,7 @@ class Editor : public QObject
     Q_PROPERTY( PreferenceManager* preference READ preference )
 
 public:
-    explicit Editor( QObject* parent );
+    explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
     bool initialize( ScribbleArea* pScribbleArea );
@@ -100,10 +100,7 @@ Q_SIGNALS:
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
     void multiLayerOnionSkinChanged( bool );
-    void onionPrevChanged( bool );
-    void onionNextChanged( bool );
     void changeThinLinesButton( bool );
-    void changeOutlinesButton( bool );
 
     void currentFrameChanged( int n );
 
@@ -111,7 +108,7 @@ Q_SIGNALS:
     void needSave();
     void fileLoaded();
     
-public slots:
+public:
     void onionMaxOpacityChangeSlot( int );
     void onionMinOpacityChangeSlot( int );
     void onionPrevFramesNumChangeSlot( int );
@@ -154,8 +151,6 @@ public: //slots
     void changeAutosave( int );
     void changeAutosaveNumber( int );
 
-    void currentKeyFrameModification();
-    void modification( int );
     void backup( QString undoText );
     void backup( int layerNumber, int frameNumber, QString undoText );
     void undo();
@@ -173,7 +168,6 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
-    void resetMirror();
 
 protected:
     // Need to move to somewhere...
@@ -199,8 +193,8 @@ private:
     ViewManager*       mViewManager       = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
 
-    bool m_isAltPressed;
-    int numberOfModifications;
+    bool m_isAltPressed = false;
+    int numberOfModifications = 0;
 
     bool mIsAutosave;
     int autosaveNumber;

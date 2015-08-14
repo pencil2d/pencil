@@ -17,13 +17,8 @@
         <file>icons/bucket.png</file>
         <file>icons/bucketTool.png</file>
         <file>icons/eyedropper.png</file>
-        <file>icons/thinlines5.png</file>
-        <file>icons/outlines5.png</file>
-        <file>icons/mirror.png</file>
         <file>icons/magnify.png</file>
         <file>icons/smudge.png</file>
-        <file>icons/onionPrev.png</file>
-        <file>icons/onionNext.png</file>
         <file>icons/layer-vector.png</file>
         <file>icons/layer-bitmap.png</file>
         <file>icons/layer-sound.png</file>
@@ -54,7 +49,6 @@
         <file>icons/controls/endplay.png</file>
         <file>icons/controls/startplay.png</file>
         <file>icons/controls/duplicate.png</file>
-        <file>icons/mirrorV.png</file>
         <file>icons/exit.png</file>
         <file>icons/printer3.png</file>
         <file>icons/cut.png</file>
@@ -64,7 +58,5 @@
         <file>icons/liquify.png</file>
         <file>icons/grid-a.png</file>
         <file>icons/grid-b.png</file>
-        <file>icons/onion-blue.png</file>
-        <file>icons/onion-red.png</file>
     </qresource>
 </RCC>

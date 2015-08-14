@@ -39,7 +39,7 @@ public:
 
     Editor* mEditor;
 
-public slots:
+public:
     void setOpacity(int opacity);
     void undoActSetText(void);
     void undoActSetEnabled(void);
