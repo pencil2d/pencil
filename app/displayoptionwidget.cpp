@@ -17,6 +17,8 @@ DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent 
     ui = new Ui::DisplayOption;
     ui->setupUi( innerWidget );
 
+
+
     setWindowTitle(tr("Display Options"));
 }
 
@@ -32,6 +34,9 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect( ui->onionRedButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionRed );
 	connect( ui->mirrorButton,    &QToolButton::clicked, editor, &Editor::toggleMirror);
 	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
+    connect( ui->cameraBorderButton,   &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
+
+    ui->cameraBorderButton->setChecked(pScriArea->isEffectOn(EFFECT_CAMERABORDER));
 
     // FIXME
 	//connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);

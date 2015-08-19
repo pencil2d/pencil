@@ -949,9 +949,9 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     }
 
     // clips to the frame of the camera
-    if ( layer->type() == Layer::CAMERA )
+    if ( isEffectOn( EFFECT_CAMERABORDER ) )
     {
-        QRect rect = ( ( LayerCamera * )layer )->getViewRect();
+        QRect rect = ( ( LayerCamera * )mEditor->object()->getLayer(mEditor->layers()->getLastCameraLayer()) )->getViewRect();
         rect.translate( width() / 2, height() / 2 );
         painter.setWorldMatrixEnabled( false );
         painter.setPen( Qt::NoPen );
@@ -1554,6 +1554,11 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
     emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
 }
 
+void ScribbleArea::toggleCameraBorder( bool checked )
+{
+    setEffect( EFFECT_CAMERABORDER, checked );
+    updateAllFrames();
+}
 
 void ScribbleArea::toggledOnionColor()
 {
@@ -1734,6 +1739,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
         effects[ EFFECT_PREV_ONION ] = 1;
         effects[ EFFECT_NEXT_ONION ] = 0;
         effects[ EFFECT_GRID_A ] = 0;
+        effects[ EFFECT_CAMERABORDER ] = 0;
     }
 
     effects[ EFFECT_AXIS ] = 0;

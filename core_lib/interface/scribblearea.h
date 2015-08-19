@@ -143,6 +143,7 @@ public slots:
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
+    void toggleCameraBorder( bool );
     void escape();
 
     void toggleMultiLayerOnionSkin( bool );
