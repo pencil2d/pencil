@@ -432,6 +432,12 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
 {
     int width = pen.width();
     extend( rectangle.adjusted(-width,-width,width,width).toRect() );
+    if (brush.style() == Qt::RadialGradientPattern)
+    {
+        QRadialGradient* gradient = (QRadialGradient*)brush.gradient();
+        gradient->setCenter( gradient->center() - topLeft() );
+        gradient->setFocalPoint( gradient->focalPoint() - topLeft() );
+    }
     if (mImage != NULL && !mImage->isNull() )
     {
         QPainter painter(mImage);

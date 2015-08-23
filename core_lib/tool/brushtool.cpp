@@ -179,15 +179,8 @@ void BrushTool::drawStroke()
         }
 
         qreal opacity = 1.0;
-        qreal brushWidth = mCurrentWidth + 0.5 * properties.feather;
-        qreal offset = qMax( 0.0, mCurrentWidth - 0.5 * properties.feather ) / brushWidth;
-        opacity = mCurrentPressure;
-        brushWidth = brushWidth * mCurrentPressure;
-
-        qreal brushStep = 0.5 * mCurrentWidth + 0.5 * properties.feather;
-        brushStep = brushStep * mCurrentPressure;
-
-        //        if (usePressure) { brushStep = brushStep * tabletPressure; }
+        qreal brushWidth = mCurrentWidth;
+        qreal brushStep = (0.5 * mCurrentWidth);
         brushStep = qMax( 1.0, brushStep );
 
         mCurrentWidth = properties.width;
@@ -195,11 +188,6 @@ void BrushTool::drawStroke()
 
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
-
-        //        foreach (QSegment segment, calculateStroke(brushWidth))
-        //        {
-        //            QPointF a = lastBrushPoint;
-        //            QPointF b = m_pScribbleArea->pixelToPoint(segment.second);
 
         qreal distance = 4 * QLineF( b, a ).length();
         int steps = qRound( distance ) / brushStep;
@@ -210,7 +198,7 @@ void BrushTool::drawStroke()
             rect.extend( point.toPoint() );
             mScribbleArea->drawBrush( point,
                                       brushWidth,
-                                      offset,
+                                      properties.feather,
                                       mEditor->color()->frontColor(),
                                       opacity );
 

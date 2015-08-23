@@ -1152,17 +1152,18 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     int b = colour.blue();
     qreal a = colour.alphaF();
     gradient.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( offset + 0.0 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( offset + 0.1 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 245 * opacity ) ) );
-    gradient.setColorAt( offset + 0.2 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 217 * opacity ) ) );
-    gradient.setColorAt( offset + 0.3 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 178 * opacity ) ) );
-    gradient.setColorAt( offset + 0.4 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 134 * opacity ) ) );
-    gradient.setColorAt( offset + 0.5 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 94 * opacity ) ) );
-    gradient.setColorAt( offset + 0.6 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 60 * opacity ) ) );
-    gradient.setColorAt( offset + 0.7 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 36 * opacity ) ) );
-    gradient.setColorAt( offset + 0.8 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 20 * opacity ) ) );
-    gradient.setColorAt( offset + 0.9 * ( 1.0 - offset ), QColor( r, g, b, qRound( a * 10 * opacity ) ) );
-    gradient.setColorAt( offset + 1.0 * ( 1.0 - offset ), QColor( r, g, b, 0 ) );
+    gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
+    gradient.setColorAt( 1.0 - (offset/100.0), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
+}
+
+void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
+{
+    QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
+    BitmapImage* tempBitmapImage = new BitmapImage;
+    tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour),
+                               QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
+    mBufferImg->paste( tempBitmapImage );
+    delete tempBitmapImage;
 }
 
 void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity )
@@ -1170,14 +1171,10 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
     QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
     setGaussianGradient( radialGrad, fillColour, opacity, offset );
 
-    //radialGrad.setCenter( thePoint );
-    //radialGrad.setFocalPoint( thePoint );
-
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
     BitmapImage* tempBitmapImage = new BitmapImage;
-    tempBitmapImage = new BitmapImage;
-    tempBitmapImage->drawRect( rectangle, Qt::NoPen, radialGrad,
+    tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, radialGrad,
                                QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
 
     mBufferImg->paste( tempBitmapImage );
