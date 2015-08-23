@@ -195,6 +195,10 @@ void ScribbleArea::onPreferencedChanged( EFFECT e )
             mEffects[ EFFECT_ANTIALIAS ] = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
             updateAllFrames();
             break;
+        case EFFECT::BLURRYZOOM:
+            mEffects[ EFFECT_BLURRYZOOM ] = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
+            updateAllFrames();
+            break;
         default:
             break;
     }
@@ -959,10 +963,10 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         painter.drawRect( QRect( 0, 0, width(), ( height() - rect.height() ) / 2 ) );
         painter.drawRect( QRect( 0, rect.bottom(), width(), ( height() - rect.height() ) / 2 ) );
         painter.drawRect( QRect( 0, rect.top(), ( width() - rect.width() ) / 2, rect.height() - 1 ) );
-        painter.drawRect( QRect( ( width() + rect.width() ) / 2, rect.top(), ( width() - rect.width() ) / 2, rect.height() - 1 ) );
+        painter.drawRect( QRect( ( width() + rect.width() ) / 2, rect.top(), (( width() - rect.width() ) / 2) + 1, rect.height() - 1 ) );
         painter.setPen( Qt::black );
         painter.setBrush( Qt::NoBrush );
-        painter.drawRect( rect );
+        painter.drawRect( QRect(rect.x(), rect.y(), rect.width() - 1, rect.height() - 1) );
     }
 
     // outlines the frame of the viewport
@@ -995,6 +999,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.fOnionSkinMaxOpacity = mEditor->getOnionMaxOpacity();
     options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
     options.bAntiAlias = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
+    options.bBlurryZoom = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
     mCanvasRenderer.setOptions( options );
     
     //qDebug() << "Antialias=" << options.bAntiAlias;

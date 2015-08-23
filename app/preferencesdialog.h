@@ -43,6 +43,7 @@ Q_SIGNALS:
     void curveSmoothingChange(int);
     void highResPositionChange(int);
     void antialiasingChange(int);
+    void blurryZoomChange(int);
     void backgroundChange(int);
     void shadowsChange(int);
     void toolCursorsChange(int);
@@ -84,6 +85,7 @@ public:
 
 private:
     void antiAliasCheckboxStateChanged( bool b );
+    void blurryZoomCheckboxStateChanged( bool b );
 
     PreferenceManager* mManager = nullptr;
 };

@@ -193,12 +193,6 @@ void BrushTool::drawStroke()
         mCurrentWidth = properties.width;
         BlitRect rect;
 
-        QRadialGradient radialGrad( QPointF( 0, 0 ), 0.5 * brushWidth );
-        mScribbleArea->setGaussianGradient( radialGrad,
-                                            mEditor->color()->frontColor(),
-                                            opacity,
-                                            offset );
-
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
 

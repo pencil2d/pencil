@@ -39,6 +39,7 @@ struct RenderOptions
     bool  bColorizePrevOnion = false;
     bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
+    bool  bBlurryZoom = false;
 };
 
 

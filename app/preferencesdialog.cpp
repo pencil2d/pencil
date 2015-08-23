@@ -240,6 +240,10 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     antialiasingBox->setChecked(true); // default
     if (settings.value("antialiasing").toString()=="false") antialiasingBox->setChecked(false);
 
+    QCheckBox* blurryZoomBox = new QCheckBox(tr("Blurry Zoom"));
+    antialiasingBox->setChecked(false); // default
+    if (settings.value("blurryzoom").toString()=="true") antialiasingBox->setChecked(true);
+
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
     windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
@@ -253,6 +257,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(antialiasingBox, 0, 0);
+    displayLayout->addWidget(blurryZoomBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -291,6 +296,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect( shadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
     connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &PreferencesDialog::toolCursorsChange );
     connect( antialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
+    connect( blurryZoomBox,    &QCheckBox::stateChanged, this, &GeneralPage::blurryZoomCheckboxStateChanged );
     connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &PreferencesDialog::curveSmoothingChange );
     connect( highResBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::highResPositionChange );
 
@@ -308,6 +314,19 @@ void GeneralPage::antiAliasCheckboxStateChanged( bool b )
         mManager->turnOff( EFFECT::ANTIALIAS );
     }
 }
+
+void GeneralPage::blurryZoomCheckboxStateChanged( bool b )
+{
+    if ( b )
+    {
+        mManager->turnOn( EFFECT::BLURRYZOOM );
+    }
+    else
+    {
+        mManager->turnOff( EFFECT::BLURRYZOOM );
+    }
+}
+
 
 TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
 {

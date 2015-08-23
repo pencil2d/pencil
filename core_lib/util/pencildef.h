@@ -47,6 +47,7 @@ enum DisplayEffect
     EFFECT_AXIS,
     EFFECT_GRID_A,
     EFFECT_CAMERABORDER,
+    EFFECT_BLURRYZOOM,
     EFFECT_COUNT,
 };
 
@@ -141,6 +142,7 @@ enum BackgroundStyle
 #define SETTING_WINDOW_STATE    "WindowState"
 #define SETTING_DISPLAY_EFFECT  "RenderEffect"
 #define SETTING_ANTIALIAS       "antialiasing"
+#define SETTING_BLURRYZOOM      "blurryzoom"
 
 #define SETTING_ONION_MAX_OPACITY     "onionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY     "onionMinOpacity"
