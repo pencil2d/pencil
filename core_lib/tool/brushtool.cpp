@@ -137,6 +137,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
         {
             mScribbleArea->paintBitmapBuffer();
             mScribbleArea->setAllDirty();
+            mScribbleArea->clearBitmapBuffer();
         }
         else if ( layer->type() == Layer::VECTOR )
         {
@@ -179,11 +180,11 @@ void BrushTool::drawStroke()
         }
 
         qreal opacity = 1.0;
-        qreal brushWidth = mCurrentWidth;
-        qreal brushStep = (0.5 * mCurrentWidth);
+        mCurrentWidth = properties.width;
+        qreal brushWidth = (mCurrentWidth + (mCurrentPressure * mCurrentWidth)) * 0.5;
+        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
-        mCurrentWidth = properties.width;
         BlitRect rect;
 
         QPointF a = lastBrushPoint;

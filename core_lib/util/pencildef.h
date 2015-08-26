@@ -131,7 +131,8 @@ enum BackgroundStyle
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
-
+#define CMD_INCREASE_SIZE "CmdIncreaseSize"
+#define CMD_DECREASE_SIZE "CmdDecreaseSize"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"

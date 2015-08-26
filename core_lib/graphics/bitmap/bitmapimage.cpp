@@ -289,6 +289,40 @@ void BitmapImage::add(BitmapImage* bitmapImage)
     }
 }
 
+void BitmapImage::darkenAlpha(BitmapImage* bitmapImage)
+{
+    QImage* image2 = bitmapImage->mImage;
+    QRect newBoundaries;
+    if ( mImage->width() == 0 || mImage->height() == 0 )
+    {
+        newBoundaries = bitmapImage->mBounds;
+    }
+    else
+    {
+        newBoundaries = mBounds.united( bitmapImage->mBounds );
+    }
+    extend( newBoundaries );
+    QPoint offset = bitmapImage->mBounds.topLeft() - mBounds.topLeft();
+    for(int y=0; y<image2->height(); y++)
+    {
+        for(int x=0; x<image2->width(); x++)
+        {
+            QRgb p1  = mImage->pixel(offset.x()+x,offset.y()+y);
+            QRgb p2 = image2->pixel(x,y);
+
+            int a1 = qAlpha(p1);
+            int a2 = qAlpha(p2);
+
+            if (a1 < a2)
+            {
+            QRgb mix = qRgba(qRed(p2), qGreen(p2), qBlue(p2), a2);
+            mImage->setPixel(offset.x()+x,offset.y()+y, mix);
+            }
+        }
+    }
+}
+
+
 void BitmapImage::moveTopLeft(QPoint point)
 {
     mBounds.moveTopLeft(point);

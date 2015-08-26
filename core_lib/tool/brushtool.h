@@ -2,6 +2,7 @@
 #define BRUSHTOOL_H
 
 #include "stroketool.h"
+#include "bitmapimage.h"
 
 class BrushTool : public StrokeTool
 {
@@ -27,6 +28,7 @@ public:
 
 protected:
     QPointF lastBrushPoint;
+    BitmapImage img;
 };
 
 #endif // BRUSHTOOL_H

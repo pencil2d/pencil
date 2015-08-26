@@ -1177,7 +1177,7 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, 
     tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, radialGrad,
                                QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
 
-    mBufferImg->paste( tempBitmapImage );
+    mBufferImg->darkenAlpha( tempBitmapImage );
     delete tempBitmapImage;
 }
 
