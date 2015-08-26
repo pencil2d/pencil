@@ -54,6 +54,7 @@ public:
     void paste( BitmapImage* );
     void paste( BitmapImage*, QPainter::CompositionMode cm );
     void add( BitmapImage* );
+    void darkenAlpha( BitmapImage* );
     void moveTopLeft( QPoint point );
     void moveTopLeft( QPointF point ) { moveTopLeft( point.toPoint() ); }
     void transform( QRect rectangle, bool smoothTransform );

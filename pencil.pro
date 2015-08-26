@@ -21,3 +21,6 @@ tests.depends = core_lib
 l10n.subdir = resources/translations
 
 SUBDIRS = core_lib app tests quazip zlib l10n
+
+RESOURCES += \
+    app/pencil.qrc

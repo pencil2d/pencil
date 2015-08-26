@@ -8,6 +8,7 @@
 enum class EFFECT
 {
     ANTIALIAS,
+    BLURRYZOOM,
     COUNT
 };
 

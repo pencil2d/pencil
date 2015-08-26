@@ -26,11 +26,11 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    sizeSlider = new SpinSlider( tr( "Size" ), "log", "real", 0.2, 200.0, this );
+    sizeSlider = new SpinSlider( tr( "Size" ), "linear", "real", 0.1, 200.0, this );
     sizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
     sizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    featherSlider = new SpinSlider( tr( "Feather" ), "log", "real", 0.2, 200.0, this );
+    featherSlider = new SpinSlider( tr( "Feather" ), "linear", "real", 0.0, 100.0, this );
     featherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
     featherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 

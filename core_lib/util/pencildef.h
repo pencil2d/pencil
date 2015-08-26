@@ -47,6 +47,7 @@ enum DisplayEffect
     EFFECT_AXIS,
     EFFECT_GRID_A,
     EFFECT_CAMERABORDER,
+    EFFECT_BLURRYZOOM,
     EFFECT_COUNT,
 };
 
@@ -130,7 +131,8 @@ enum BackgroundStyle
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
-
+#define CMD_INCREASE_SIZE "CmdIncreaseSize"
+#define CMD_DECREASE_SIZE "CmdDecreaseSize"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
@@ -141,6 +143,7 @@ enum BackgroundStyle
 #define SETTING_WINDOW_STATE    "WindowState"
 #define SETTING_DISPLAY_EFFECT  "RenderEffect"
 #define SETTING_ANTIALIAS       "antialiasing"
+#define SETTING_BLURRYZOOM      "blurryzoom"
 
 #define SETTING_ONION_MAX_OPACITY     "onionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY     "onionMinOpacity"

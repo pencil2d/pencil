@@ -263,11 +263,10 @@ void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, i
     if ( mVisible )
     {
         QColor col;
-        if ( type() == BITMAP ) col = QColor( 130, 130, 245 );
-        if ( type() == VECTOR ) col = QColor( 100, 205, 150 );
-        if ( type() == SOUND ) col = QColor( 245, 130, 130 );
-        if ( type() == CAMERA ) col = QColor( 100, 128, 140 );
-        if ( !selected ) col = QColor( ( 1 * col.red() + 2 * 200 ) / 3, ( 1 * col.green() + 2 * 200 ) / 3, ( 1 * col.blue() + 2 * 200 ) / 3 );
+        if ( type() == BITMAP ) col = QColor( 151, 176, 244 );
+        if ( type() == VECTOR ) col = QColor( 150, 242, 150 );
+        if ( type() == SOUND ) col = QColor( 237, 147, 147 );
+        if ( type() == CAMERA ) col = QColor( 239, 232, 148 );
 
         painter.setBrush( col );
         painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
@@ -353,23 +352,10 @@ void Layer::paintSelection( QPainter& painter, int x, int y, int width, int heig
     QLinearGradient linearGrad( QPointF( 0, y ), QPointF( 0, y + height ) );
     QSettings settings( "Pencil", "Pencil" );
     QString style = settings.value( "style" ).toString();
-    if ( style == "aqua" )
-    {
-        linearGrad.setColorAt( 0, QColor( 225, 225, 255, 100 ) );
-        linearGrad.setColorAt( 0.10, QColor( 225, 225, 255, 80 ) );
-        linearGrad.setColorAt( 0.20, QColor( 225, 225, 255, 64 ) );
-        linearGrad.setColorAt( 0.35, QColor( 225, 225, 255, 20 ) );
-        linearGrad.setColorAt( 0.351, QColor( 0, 0, 0, 32 ) );
-        linearGrad.setColorAt( 0.66, QColor( 245, 255, 235, 32 ) );
-        linearGrad.setColorAt( 1, QColor( 245, 255, 235, 128 ) );
-    }
-    else
-    {
-        linearGrad.setColorAt( 0, QColor( 255, 255, 255, 128 ) );
-        linearGrad.setColorAt( 0.49, QColor( 255, 255, 255, 0 ) );
-        linearGrad.setColorAt( 0.50, QColor( 0, 0, 0, 0 ) );
-        linearGrad.setColorAt( 1, QColor( 0, 0, 0, 48 ) );
-    }
+    linearGrad.setColorAt( 0, QColor( 255, 255, 255, 128 ) );
+    linearGrad.setColorAt( 0.45, QColor( 255, 255, 255, 0 ) );
+    linearGrad.setColorAt( 0.55, QColor( 0, 0, 0, 0 ) );
+    linearGrad.setColorAt( 1, QColor( 0, 0, 0, 90 ) );
     painter.setBrush( linearGrad );
     painter.setPen( Qt::NoPen );
     painter.drawRect( x, y, width, height - 1 );
