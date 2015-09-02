@@ -64,24 +64,24 @@ bool LayerSound::addNewKeyAt( int frameNumber )
     return addKeyFrame( frameNumber, new SoundClip );
 }
 
-ErrorCode LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
+Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
 {
-    QFileInfo info( strFilePath );
-    if ( !info.exists() )
+    if ( !QFile::exists( strFilePath ) )
     {
+        return Status::NOT_FOUND;
     }
+    
     QMediaPlayer* pPlayer = new QMediaPlayer( this );
     pPlayer->setMedia( QUrl::fromLocalFile( strFilePath ) );
 
     if ( pPlayer->error() != QMediaPlayer::NoError )
     {
-        ErrorCode code( ERROR_LOAD_SOUND_FILE );
-        return code;
+        return Status::ERROR_LOAD_SOUND_FILE;
     }
 
     
 
-    return ErrorCode( PCL_OK );
+    return Status::OK;
 }
 
 bool LayerSound::saveImage( int index, QString path, int layerNumber )

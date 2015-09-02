@@ -2,6 +2,7 @@
 #define COMMANDCENTER_H
 
 #include <QObject>
+#include "pencilerror.h"
 
 class Editor;
 
@@ -17,7 +18,7 @@ public:
     void setCore( Editor* e ) { mEditor = e; }
     
     // file 
-    void importSound();
+    Status importSound();
 
     // edit
 
@@ -35,7 +36,7 @@ public:
     void GotoPrevKeyFrame();
     
     // Layer
-    void addNewSoundLayer();
+    bool addNewSoundLayer();
 
 private:
     Editor* mEditor = nullptr;

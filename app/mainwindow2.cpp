@@ -30,10 +30,8 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include "pencildef.h"
 #include "pencilsettings.h"
-
 #include "object.h"
 #include "objectsaveloader.h"
-
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"
@@ -444,7 +442,7 @@ bool MainWindow2::openObject( QString strFilePath )
     ObjectSaveLoader objectLoader( this );
     Object* object = objectLoader.load( strFilePath );
 
-    if ( object == nullptr || objectLoader.error().code() != PCL_OK )
+    if ( object == nullptr || !objectLoader.error().ok() )
     {
         return false;
     }

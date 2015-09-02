@@ -50,7 +50,7 @@ public:
 
     bool addNewKeyAt( int frameNumber ) override;
 
-    ErrorCode loadSoundAtFrame( QString filePathString, int frame );
+    Status loadSoundAtFrame( QString filePathString, int frame );
 
     bool saveImage( int index, QString path, int layerNumber );
     void playSound( int frame );

@@ -23,11 +23,11 @@
 CommandCenter::CommandCenter( QObject* parent ) : QObject( parent ) {}
 CommandCenter::~CommandCenter() {}
 
-void CommandCenter::importSound()
+Status CommandCenter::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSERT( layer );
-    NULLReturnVoid( layer );
+    NULLReturn( layer, Status::FAIL );
 
     if ( layer->type() != Layer::SOUND )
     {
@@ -39,7 +39,7 @@ void CommandCenter::importSound()
         //qDebug() << "Button clicked: 0" << ret;
         if ( ret != QMessageBox::AcceptRole )
         {
-            return;
+            return Status::SAFE;
         }
 
         // Create new sound layer.
@@ -55,7 +55,7 @@ void CommandCenter::importSound()
         QMessageBox msg;
         msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
         msg.exec();
-        return;
+        return Status::SAFE;
     }
 
     FileDialogEx fileDialog( this );
@@ -64,6 +64,8 @@ void CommandCenter::importSound()
     //mEditor->addNewKey();
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     //mTimeLine->updateContent();
+
+    return Status::OK;
 }
 
 void CommandCenter::ZoomIn()
@@ -110,7 +112,7 @@ void CommandCenter::GotoPrevKeyFrame()
 {
 }
 
-void CommandCenter::addNewSoundLayer()
+bool CommandCenter::addNewSoundLayer()
 {
     bool ok = false;
     QString strLayerName = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
@@ -120,5 +122,8 @@ void CommandCenter::addNewSoundLayer()
     {
         Layer* layer = mEditor->layers()->newSoundLayer( strLayerName );
         mEditor->layers()->setCurrentLayer( layer );
+
+        return true;
     }
+    return false;
 }
