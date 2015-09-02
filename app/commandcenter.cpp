@@ -44,13 +44,16 @@ Status CommandCenter::importSound()
         }
 
         // Create new sound layer.
-        addNewSoundLayer();
+        if ( addNewSoundLayer() == false )
+        {
+            return Status::FAIL;
+        }
+
         layer = mEditor->layers()->currentLayer();
     }
 
     LayerSound* layerSound = static_cast< LayerSound* >( layer );
     
-    //layerSound->addNewKeyAt( )
     if ( layerSound->keyFrameCount() > 0 )
     {
         QMessageBox msg;
@@ -62,6 +65,12 @@ Status CommandCenter::importSound()
     FileDialogEx fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
+    if ( !QFile::exists( strSoundFile ) )
+    {
+        return Status::NOT_FOUND;
+    }
+
+    layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
     //mEditor->addNewKey();
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     //mTimeLine->updateContent();
