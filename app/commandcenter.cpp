@@ -35,9 +35,10 @@ Status CommandCenter::importSound()
         msg.setText( tr( "No sound layer exists as a destination for your import. Create a new sound layer?" ) );
         msg.addButton( tr( "Create sound layer" ), QMessageBox::AcceptRole );
         msg.addButton( tr( "Don't create layer" ), QMessageBox::RejectRole );
-        int ret = msg.exec();
+        int buttonClicked = msg.exec();
         //qDebug() << "Button clicked: 0" << ret;
-        if ( ret != QMessageBox::AcceptRole )
+
+        if ( buttonClicked != QMessageBox::AcceptRole )
         {
             return Status::SAFE;
         }
