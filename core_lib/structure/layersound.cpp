@@ -78,9 +78,6 @@ Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
     {
         return Status::ERROR_LOAD_SOUND_FILE;
     }
-
-    
-
     return Status::OK;
 }
 
@@ -103,8 +100,6 @@ void LayerSound::playSound( int frame )
     }
 }
 
-
-
 void LayerSound::stopSound()
 {
     /*
@@ -115,7 +110,6 @@ void LayerSound::stopSound()
     }
     */
 }
-
 
 QDomElement LayerSound::createDomElement( QDomDocument& doc )
 {
