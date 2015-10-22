@@ -43,6 +43,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layercamera.h"
 #include "layerimage.h"
+#include "keyframefactory.h"
 
 #include "colormanager.h"
 #include "toolmanager.h"
@@ -162,7 +163,7 @@ void Editor::dropEvent( QDropEvent* event )
 				importImage( filePath );
 			if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
 				//importSound( filePath );
-				;
+				nullptr;
 		}
 	}
 }
@@ -928,21 +929,16 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     {
         frameIndex += 1;
     }
-
-	switch ( layer->type() )
-	{
-	case Layer::BITMAP:
-	case Layer::VECTOR:
-	case Layer::CAMERA:
-		isOK = layer->addNewKeyAt( frameIndex );
-		break;
-	case Layer::SOUND:
+    
+    KeyFrame* keyFrame = KeyFrameFactory::create( layer->type() );
+    if ( keyFrame != nullptr )
+    {
+        isOK = layer->addKeyFrame( frameIndex, keyFrame );
+    }
+    else
+    {
         Q_ASSERT( false ); // TODO: import sound.
-        return;
-		break;
-	default:
-		break;
-	}
+    }
 
 	if ( isOK )
 	{

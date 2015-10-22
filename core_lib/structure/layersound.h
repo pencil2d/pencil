@@ -26,18 +26,6 @@ GNU General Public License for more details.
 #include "keyframe.h"
 
 
-class QMediaPlayer;
-
-
-class SoundClip : public KeyFrame
-{
-public:
-    QString m_strFilePath;
-    QMediaPlayer* m_pPlayer;
-    uint64_t m_soundSize;
-};
-
-
 class LayerSound : public Layer
 {
     Q_OBJECT

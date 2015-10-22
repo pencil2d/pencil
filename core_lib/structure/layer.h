@@ -73,7 +73,6 @@ public:
 
     int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
 
-    virtual bool addNewKeyAt( int frameNumber ) = 0;
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
@@ -105,6 +104,9 @@ public:
     void mouseDoubleClick(QMouseEvent*, int frameNumber);
 
     virtual void editProperties();
+
+protected:
+    virtual bool addNewKeyAt( int frameNumber ) = 0;
 
 private:
     LAYER_TYPE meType = UNDEFINED;

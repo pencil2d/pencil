@@ -89,7 +89,9 @@ HEADERS +=  \
     util/log.h \
     canvasrenderer.h \
     managers/preferencemanager.h \
-    soundplayer.h
+    soundplayer.h \
+    structure/keyframefactory.h \
+    structure/soundclip.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -149,7 +151,9 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/util.cpp \
     canvasrenderer.cpp \
     managers/preferencemanager.cpp \
-    soundplayer.cpp
+    soundplayer.cpp \
+    structure/keyframefactory.cpp \
+    structure/soundclip.cpp
 
 win32 {
     INCLUDEPATH += external/win32

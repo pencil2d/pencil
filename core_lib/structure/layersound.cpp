@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include <QMediaPlayer>
 #include "object.h"
 #include "layersound.h"
+#include "soundclip.h"
 
 
 LayerSound::LayerSound( Object* object ) : Layer( object, Layer::SOUND )
