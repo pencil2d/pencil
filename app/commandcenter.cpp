@@ -46,6 +46,7 @@ Status CommandCenter::importSound()
         // Create new sound layer.
         if ( addNewSoundLayer() == false )
         {
+            Q_ASSERT( false );
             return Status::FAIL;
         }
 
@@ -57,7 +58,7 @@ Status CommandCenter::importSound()
     if ( layerSound->keyFrameCount() > 0 )
     {
         QMessageBox msg;
-        msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
+        msg.setText( tr( "The selected sound layer already contains a sound item. Please select another." ) );
         msg.exec();
         return Status::SAFE;
     }
@@ -71,7 +72,7 @@ Status CommandCenter::importSound()
     }
 
     layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
-    //mEditor->addNewKey();
+    
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     //mTimeLine->updateContent();
 
@@ -86,7 +87,7 @@ void CommandCenter::ZoomIn()
 
 void CommandCenter::ZoomOut()
 {
-    float newScaleValue = mEditor->view()->scaling() * 0.8;
+    float newScaleValue = mEditor->view()->scaling() * 0.8333;
     mEditor->view()->scale( newScaleValue );
 }
 
