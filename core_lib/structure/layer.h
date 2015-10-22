@@ -44,12 +44,12 @@ public:
         //PAINTABLE = 
     };
 
-    Layer(Object*, LAYER_TYPE);
+    explicit Layer(Object*, LAYER_TYPE);
     virtual ~Layer();
 
     QString mName;
-    bool mVisible;
-    int mId;
+    bool mVisible = true;
+    int mId       = 0;
 
     static const int NO_KeyFrame = -1;
 
@@ -107,8 +107,8 @@ public:
     virtual void editProperties();
 
 private:
-    LAYER_TYPE meType;
-    Object* mObject;
+    LAYER_TYPE meType = UNDEFINED;
+    Object* mObject   = nullptr;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 };
