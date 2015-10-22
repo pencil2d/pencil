@@ -20,15 +20,16 @@ public:
     KeyFrame();
     virtual ~KeyFrame();
 
-    int pos() { return mFrame; }
+    int  pos() { return mFrame; }
     void setPos( int position ) { mFrame = position; }
+    int  length() { return mLength; }
     void setModified( bool b ) { mIsModified = b; }
 
 private:
-    int mFrame = -1;
-    int mLength = 1;
-    QString mstrFilename;
+    int mFrame       = -1;
+    int mLength      =  1;
     bool mIsModified = false;
+    QString mstrFilename;
 };
 
 class NullKeyFrame : public KeyFrame
