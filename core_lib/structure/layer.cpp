@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QLineEdit>
 #include "keyframe.h"
+#include "keyframefactory.h"
 #include "layer.h"
 #include "object.h"
 #include "timeline.h"
@@ -120,6 +121,20 @@ int Layer::getMaxKeyFramePosition()
     return mKeyFrames.begin()->first; // begin is the highest key frame position
 }
 
+bool Layer::addNewEmptyKeyAt( int position )
+{
+    if ( position <= 0 )
+    {
+        return false;
+    }
+    KeyFrame* key = KeyFrameFactory::create( meType );
+    if ( key == nullptr )
+    {
+        return false;
+    }
+    return addKeyFrame( position, key );
+}
+
 bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 {
     auto it = mKeyFrames.find( position );
@@ -147,7 +162,7 @@ bool Layer::removeKeyFrame( int position )
     {
         // you can't delete 1st frame.
         //return true;
-        addNewKeyAt( 1 ); // replacing
+        addNewEmptyKeyAt( 1 ); // replacing
     }
 
     return true;
@@ -160,20 +175,21 @@ bool Layer::moveKeyFrameForward( int position )
 
 bool Layer::moveKeyFrameBackward( int position )
 {
-    if ( position != 1 ) {
+    if ( position != 1 )
+    {
         return swapKeyFrames( position, position - 1 );
-    } else {
+    }
+    else
+    {
         return true;
     }
 }
 
 bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, need to refresh the swapped cels
 {
-
     bool keyPosition1 = false, keyPosition2 = false;
-    KeyFrame* pFirstFrame;
-    KeyFrame* pSecondFrame;
-
+    KeyFrame* pFirstFrame  = nullptr;
+    KeyFrame* pSecondFrame = nullptr;
 
     if ( keyExists( position1 ) )
     {
@@ -209,7 +225,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
     } 
 	else if ( position1 == 1 ) 
 	{
-        addNewKeyAt( position1 );
+        addNewEmptyKeyAt( position1 );
     }
 
     if ( keyPosition1 )
@@ -220,11 +236,10 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
     } 
 	else if ( position2 == 1 )
 	{
-		addNewKeyAt( position2 );
+		addNewEmptyKeyAt( position2 );
     }
 
     return true;
-
 }
 
 bool Layer::loadKey( KeyFrame* pKey )

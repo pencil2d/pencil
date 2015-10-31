@@ -104,20 +104,10 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
     mName = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
-    addNewKeyAt( 1 );
 }
 
 LayerCamera::~LayerCamera()
 {
-}
-
-
-bool LayerCamera::addNewKeyAt( int frameNumber )
-{
-    QTransform view = getViewAtFrame( frameNumber );
-    Camera* pCamera = new Camera( view );
-    pCamera->setPos( frameNumber );
-    return addKeyFrame( frameNumber, pCamera );
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)

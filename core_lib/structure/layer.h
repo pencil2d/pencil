@@ -64,19 +64,20 @@ public:
     bool visible() { return mVisible; }
 
     // KeyFrame interface
-    bool keyExists(int position);
-    int  getPreviousKeyFramePosition(int position);
-    int  getNextKeyFramePosition(int position);
-
     int getMaxKeyFramePosition();
     int firstKeyFramePosition();
-
-    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
 
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
+    
+    bool keyExists( int position );
+    int  getPreviousKeyFramePosition( int position );
+    int  getNextKeyFramePosition( int position );
 
+    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
+
+    bool addNewEmptyKeyAt( int position );
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
     bool swapKeyFrames( int position1, int position2 );
@@ -106,7 +107,6 @@ public:
     virtual void editProperties();
 
 protected:
-    virtual bool addNewKeyAt( int frameNumber ) = 0;
 
 private:
     LAYER_TYPE meType = UNDEFINED;

@@ -3,6 +3,7 @@
 #include "layervector.h"
 #include "object.h"
 #include "test_layer.h"
+#include <memory>
 
 TestLayer::TestLayer()
 {
@@ -27,16 +28,17 @@ void TestLayer::testCase1()
 void TestLayer::testLayerType()
 {
     Layer* pBitmapLayer = new LayerBitmap( m_pObject );
-    QScopedPointer<Layer> ptr( pBitmapLayer );
+    std::unique_ptr< Layer > ptr( pBitmapLayer );
 
     QVERIFY( pBitmapLayer->type() == Layer::BITMAP );
 
     Layer* pVecLayer = new LayerVector( m_pObject );
-    QScopedPointer<Layer> ptr2( pVecLayer );
+    std::unique_ptr< Layer > ptr2( pVecLayer );
 
     QVERIFY( pVecLayer->type() == Layer::VECTOR );
-}
 
+
+}
 
 void TestLayer::testAddNewKeyAt( )
 {
@@ -44,13 +46,13 @@ void TestLayer::testAddNewKeyAt( )
     QScopedPointer<Layer> ptr( pLayer );
     bool bOK = false;
 
-    bOK = pLayer->addNewKeyAt( 0 );
+    bOK = pLayer->addNewEmptyKeyAt( 0 );
     QVERIFY2( bOK == false, "Frame Number must > 0." );
 
-    bOK = pLayer->addNewKeyAt( 1 );
+    bOK = pLayer->addNewEmptyKeyAt( 1 );
     QVERIFY2( bOK == false, "Already has a key frame at position 1." );
 
-    QCOMPARE( pLayer->addNewKeyAt( 2 ), true );
+    QCOMPARE( pLayer->addNewEmptyKeyAt( 2 ), true );
     QCOMPARE( pLayer->getMaxKeyFramePosition(), 2 );
 }
 
@@ -61,11 +63,11 @@ void TestLayer::testHasKeyFrameAtPosition()
 
     QCOMPARE( pLayer->keyExists( 1 ), true ); // there is a frame at 1 in default.
 
-    QVERIFY( pLayer->addNewKeyAt( 15 ) );
+    QVERIFY( pLayer->addNewEmptyKeyAt( 15 ) );
 	QCOMPARE( pLayer->keyExists( 15 ), true );
 	QCOMPARE( pLayer->keyExists( 10 ), false );
 
-    QVERIFY( pLayer->addNewKeyAt( 10 ) );
+    QVERIFY( pLayer->addNewEmptyKeyAt( 10 ) );
 	QCOMPARE( pLayer->keyExists( 10 ), true );
 
     // test false case
@@ -80,11 +82,10 @@ void TestLayer::testGetFirstFramePosition()
     QScopedPointer<Layer> ptr( pLayer );
 
     QCOMPARE( pLayer->firstKeyFramePosition(), 1 );
-    pLayer->addNewKeyAt( 99 );
+    pLayer->addNewEmptyKeyAt( 99 );
 
     QCOMPARE( pLayer->firstKeyFramePosition(), 1 );
 }
-
 
 void TestLayer::testGetMaxFramePosition()
 {
@@ -93,16 +94,16 @@ void TestLayer::testGetMaxFramePosition()
     // 1 at beginning.
     QCOMPARE( pLayer->getMaxKeyFramePosition(), 1 );
 
-    QVERIFY( pLayer->addNewKeyAt( 3 ) );
+    QVERIFY( pLayer->addNewEmptyKeyAt( 3 ) );
     QCOMPARE( pLayer->getMaxKeyFramePosition(), 3 );
 
-    QVERIFY( pLayer->addNewKeyAt( 8 ) );
+    QVERIFY( pLayer->addNewEmptyKeyAt( 8 ) );
     QCOMPARE( pLayer->getMaxKeyFramePosition(), 8 );
 
-    QVERIFY( pLayer->addNewKeyAt( 100 ) );
+    QVERIFY( pLayer->addNewEmptyKeyAt( 100 ) );
     QCOMPARE( pLayer->getMaxKeyFramePosition(), 100 );
 
-    QVERIFY( pLayer->addNewKeyAt( 80 ) );
+    QVERIFY( pLayer->addNewEmptyKeyAt( 80 ) );
     QCOMPARE( pLayer->getMaxKeyFramePosition(), 100 );
 
     delete pLayer;
@@ -117,7 +118,7 @@ void TestLayer::testRemoveKeyFrame()
 
     for ( int i = 2; i <= 20; ++i )
     {
-        QVERIFY( pLayer->addNewKeyAt( i ) );
+        QVERIFY( pLayer->addNewEmptyKeyAt( i ) );
     }
 
 	QCOMPARE( pLayer->keyExists( 20 ), true );
@@ -149,14 +150,14 @@ void TestLayer::testPreviousKeyFramePosition()
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 100 ), 1 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 1000 ), 1 );
 
-    pLayer->addNewKeyAt( 2 );
-    pLayer->addNewKeyAt( 8 );
+    pLayer->addNewEmptyKeyAt( 2 );
+    pLayer->addNewEmptyKeyAt( 8 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 2 ), 1 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 8 ), 2 );
 
     QCOMPARE( pLayer->getPreviousKeyFramePosition( -5 ), 1 );
 
-    pLayer->addNewKeyAt( 15 );
+    pLayer->addNewEmptyKeyAt( 15 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 16 ), 15 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 17 ), 15 );
 
@@ -173,7 +174,7 @@ void TestLayer::testNextKeyFramePosition()
     QCOMPARE( pLayer->getNextKeyFramePosition( 10 ), 1 );
     QCOMPARE( pLayer->getNextKeyFramePosition( 100 ), 1 );
 
-    pLayer->addNewKeyAt( 5 );
+    pLayer->addNewEmptyKeyAt( 5 );
     QCOMPARE( pLayer->getNextKeyFramePosition( 1 ), 5 );
     QCOMPARE( pLayer->getNextKeyFramePosition( 2 ), 5 );
 }

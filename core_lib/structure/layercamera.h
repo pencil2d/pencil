@@ -57,7 +57,6 @@ public:
 
     // method from layerImage
     QImage* getImageAtIndex(int index);
-    bool addNewKeyAt( int frameNumber ) override;
 
     void loadImageAtFrame(int, QTransform);
     

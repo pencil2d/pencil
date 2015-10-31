@@ -19,7 +19,6 @@ GNU General Public License for more details.
 LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
 {
     mName = QString(tr("Vector Layer"));
-    addNewKeyAt( 1 );
 }
 
 LayerVector::~LayerVector()
@@ -79,13 +78,6 @@ void LayerVector::removeColour( int colorIndex )
         auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
         pVecImage->removeColour( colorIndex );
     } );
-}
-
-bool LayerVector::addNewKeyAt( int frameNumber )
-{
-    auto pVecImg = new VectorImage;
-    pVecImg->setObject( object() );
-    return addKeyFrame( frameNumber, pVecImg );
 }
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
@@ -169,7 +161,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
                 else
                 {
                     int frame = imageElement.attribute("frame").toInt();
-                    addNewKeyAt( frame );
+                    addNewEmptyKeyAt( frame );
                     getVectorImageAtFrame( frame )->loadDomElement(imageElement);
                 }
             }

@@ -36,8 +36,6 @@ public:
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath);
 
-    bool addNewKeyAt( int frameNumber ) override;
-
     Status loadSoundAtFrame( QString filePathString, int frame );
 
     bool saveImage( int index, QString path, int layerNumber );

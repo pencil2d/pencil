@@ -60,11 +60,6 @@ void LayerSound::paintImages(QPainter& painter,
     */
 }
 
-bool LayerSound::addNewKeyAt( int frameNumber )
-{
-    return addKeyFrame( frameNumber, new SoundClip );
-}
-
 Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
 {
     if ( !QFile::exists( strFilePath ) )
