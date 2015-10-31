@@ -2,10 +2,13 @@
 #include "basemanager.h"
 #include "editor.h"
 
-BaseManager::BaseManager(QObject* parent) :
-    QObject(parent),
-    mEditor( nullptr )
+BaseManager::BaseManager(QObject* parent) : QObject(parent)
 {
+}
+
+BaseManager::~BaseManager()
+{
+    mEditor = nullptr;
 }
 
 void BaseManager::setEditor(Editor* pEditor)

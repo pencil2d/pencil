@@ -51,6 +51,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "viewmanager.h"
 #include "preferencemanager.h"
+#include "soundmanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -105,6 +106,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 	mPlaybackManager = new PlaybackManager( this );
 	mViewManager = new ViewManager( this );
 	mPreferenceManager = new PreferenceManager( this );
+    mSoundManager = new SoundManager( this );
 
 	BaseManager* allManagers[] =
 	{
@@ -113,7 +115,8 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 		mLayerManager,
 		mPlaybackManager,
 		mViewManager,
-		mPreferenceManager
+		mPreferenceManager,
+        mSoundManager
 	};
 
 	for ( BaseManager* pManager : allManagers )

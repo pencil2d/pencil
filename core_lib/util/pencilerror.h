@@ -27,6 +27,7 @@ public:
 
         //
         ERROR_INVALID_LAYER_TYPE,
+        ERROR_INVALID_FRAME_NUMBER,
         ERROR_LOAD_IMAGE_FAIL,
 
         // Sound

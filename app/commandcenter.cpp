@@ -53,14 +53,14 @@ Status CommandCenter::importSound()
         layer = mEditor->layers()->currentLayer();
     }
 
-    LayerSound* layerSound = static_cast< LayerSound* >( layer );
-    
-    if ( layerSound->keyFrameCount() > 0 )
+    //LayerSound* layerSound = static_cast< LayerSound* >( layer );
+    if ( layer->keyExists( mEditor->currentFrame() ) )
     {
-        QMessageBox msg;
-        msg.setText( tr( "The selected sound layer already contains a sound item. Please select another." ) );
-        msg.exec();
-        return Status::SAFE;
+        //layer->getKeyFrameAtPosition()
+        //QMessageBox msg;
+        //msg.setText( tr( "The selected sound layer already contains a sound item. Please select another." ) );
+        //msg.exec();
+        //return Status::SAFE;
     }
 
     FileDialogEx fileDialog( this );
@@ -71,7 +71,7 @@ Status CommandCenter::importSound()
         return Status::NOT_FOUND;
     }
 
-    layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
+    //layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
     
     //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     //mTimeLine->updateContent();

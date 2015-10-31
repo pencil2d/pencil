@@ -34,6 +34,7 @@ class LayerManager;
 class PlaybackManager;
 class ViewManager;
 class PreferenceManager;
+class SoundManager;
 class ScribbleArea;
 class TimeLine;
 
@@ -48,6 +49,7 @@ class Editor : public QObject
     Q_PROPERTY( PlaybackManager* playback READ playback )
     Q_PROPERTY( ViewManager*     view     READ view )
     Q_PROPERTY( PreferenceManager* preference READ preference )
+    Q_PROPERTY( SoundManager*    sound    READ sound )
 
 public:
     explicit Editor( QObject* parent = nullptr );
@@ -64,6 +66,7 @@ public:
     PlaybackManager*   playback() const { return mPlaybackManager; }
     ViewManager*       view() const { return mViewManager; }
     PreferenceManager* preference() const { return mPreferenceManager; }
+    SoundManager*      sound() const { return mSoundManager; }
 
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
@@ -192,6 +195,7 @@ private:
     PlaybackManager*   mPlaybackManager   = nullptr;
     ViewManager*       mViewManager       = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
+    SoundManager*      mSoundManager      = nullptr;
 
     bool m_isAltPressed = false;
     int numberOfModifications = 0;
