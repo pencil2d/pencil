@@ -13,17 +13,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QtDebug>
-#include "keyframe.h"
+#include "camera.h"
 #include "layercamera.h"
 
-
-// ------
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()
 {
