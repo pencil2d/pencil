@@ -63,16 +63,16 @@ void Object::init()
 QDomElement Object::createDomElement( QDomDocument& doc )
 {
     QDomElement tag = doc.createElement( "object" );
-    qDebug( "  Create Object Node!" );
+    //qDebug( "  Create Object Node!" );
 
     int layerCount = getLayerCount();
-    qDebug( "  Total LayerCount = %d", layerCount );
+    //qDebug( "  Total LayerCount = %d", layerCount );
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
         QDomElement layerTag = layer->createDomElement( doc );
         tag.appendChild( layerTag );
-        qDebug( "  Append Layer %d", i );
+        //qDebug( "  Append Layer %d", i );
     }
     return tag;
 }
