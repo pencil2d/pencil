@@ -28,6 +28,7 @@ ObjectSaveLoader::ObjectSaveLoader( QObject *parent ) : QObject( parent ),
 mstrLastTempFolder( "" ),
 mLog( "SaveLoader" )
 {
+    ENABLE_DEBUG_LOG( mLog, false );
 }
 
 Object* ObjectSaveLoader::load( QString strFileName )
@@ -231,7 +232,7 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
     //QDomElement editorElement = createDomElement( xmlDoc );
     //root.appendChild( editorElement );
     qCDebug( mLog ) << "Save Editor Node.";
-	qDebug();
+
     // save object
     QDomElement objectElement = object->createDomElement( xmlDoc );
     root.appendChild( objectElement );
