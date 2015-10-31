@@ -1,6 +1,8 @@
 #include "layer.h"
 #include "layerbitmap.h"
 #include "layervector.h"
+#include "layercamera.h"
+#include "layersound.h"
 #include "object.h"
 #include "test_layer.h"
 #include <memory>
@@ -27,33 +29,49 @@ void TestLayer::testCase1()
 
 void TestLayer::testLayerType()
 {
-    Layer* pBitmapLayer = new LayerBitmap( m_pObject );
-    std::unique_ptr< Layer > ptr( pBitmapLayer );
+    std::unique_ptr< Layer > bitmapLayer( new LayerBitmap( m_pObject ) );
+    QVERIFY( bitmapLayer->type() == Layer::BITMAP );
 
-    QVERIFY( pBitmapLayer->type() == Layer::BITMAP );
+    std::unique_ptr< Layer > vecLayer( new LayerVector( m_pObject ) );
+    QVERIFY( vecLayer->type() == Layer::VECTOR );
 
-    Layer* pVecLayer = new LayerVector( m_pObject );
-    std::unique_ptr< Layer > ptr2( pVecLayer );
+    std::unique_ptr< Layer > cameraLayer( new LayerCamera( m_pObject ) );
+    QVERIFY( cameraLayer->type() == Layer::CAMERA );
 
-    QVERIFY( pVecLayer->type() == Layer::VECTOR );
-
-
+    std::unique_ptr< Layer > soundLayer( new LayerSound( m_pObject ) );
+    QVERIFY( soundLayer->type() == Layer::SOUND );
 }
 
-void TestLayer::testAddNewKeyAt( )
+void TestLayer::testAddNewKeyAtBitmap()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
-    QScopedPointer<Layer> ptr( pLayer );
+    std::unique_ptr< Layer > spLayer( new LayerBitmap( m_pObject ) );
+    
     bool bOK = false;
 
-    bOK = pLayer->addNewEmptyKeyAt( 0 );
+    bOK = spLayer->addNewEmptyKeyAt( 0 );
     QVERIFY2( bOK == false, "Frame Number must > 0." );
 
-    bOK = pLayer->addNewEmptyKeyAt( 1 );
+    bOK = spLayer->addNewEmptyKeyAt( 1 );
     QVERIFY2( bOK == false, "Already has a key frame at position 1." );
 
-    QCOMPARE( pLayer->addNewEmptyKeyAt( 2 ), true );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 2 );
+    QCOMPARE( spLayer->addNewEmptyKeyAt( 2 ), true );
+    QCOMPARE( spLayer->getMaxKeyFramePosition(), 2 );
+}
+
+void TestLayer::testAddNewKeyAtVector()
+{
+    std::unique_ptr< Layer > spLayer( new LayerVector( m_pObject ) );
+
+    bool bOK = false;
+
+    bOK = spLayer->addNewEmptyKeyAt( 0 );
+    QVERIFY2( bOK == false, "Frame Number must > 0." );
+
+    bOK = spLayer->addNewEmptyKeyAt( 1 );
+    QVERIFY2( bOK == false, "Already has a key frame at position 1." );
+
+    QCOMPARE( spLayer->addNewEmptyKeyAt( 2 ), true );
+    QCOMPARE( spLayer->getMaxKeyFramePosition(), 2 );
 }
 
 void TestLayer::testHasKeyFrameAtPosition()

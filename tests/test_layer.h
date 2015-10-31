@@ -17,13 +17,16 @@ class TestLayer : public QObject
 public:
     TestLayer();
 
-private:
+private slots:
     void initTestCase();
     void cleanupTestCase();
 
     void testCase1();
     void testLayerType();
-    void testAddNewKeyAt();
+    
+    void testAddNewKeyAtBitmap();
+    void testAddNewKeyAtVector();
+
     void testRemoveKeyFrame();
     void testGetMaxFramePosition();
     void testGetFirstFramePosition();
@@ -31,6 +34,7 @@ private:
 
     void testPreviousKeyFramePosition();
     void testNextKeyFramePosition();
+
 
 private:
     Object* m_pObject = nullptr;

@@ -12,7 +12,7 @@ class TestLayerManager : public QObject
 public:
 
 
-private:
+private slots:
     void initTestCase();
     void cleanupTestCase();
 

@@ -2,9 +2,6 @@
 #include "objectsaveloader.h"
 #include "test_objectsaveloader.h"
 
-TestObjectSaveLoader::TestObjectSaveLoader()
-{
-}
 
 void TestObjectSaveLoader::testCase1()
 {
