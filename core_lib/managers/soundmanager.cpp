@@ -2,6 +2,9 @@
 #include "soundplayer.h"
 #include "layersound.h"
 
+#include <QMediaPlayer>
+
+
 SoundManager::SoundManager( QObject* parnet ) : BaseManager( parnet )
 {
 }
@@ -29,5 +32,25 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         return Status::ERROR_INVALID_FRAME_NUMBER;
     }
 
+    if ( !QFile::exists( strSoundFile ) )
+    {
+        return Status::ERROR_FILE_NOT_EXIST;
+    }
+
+
+    QMediaPlayer* mediaPlayer = new QMediaPlayer;
+    mediaPlayer->setMedia( QUrl::fromLocalFile( strSoundFile ) );
+    mediaPlayer->play();
+
+    //QMediaPlayer::Error eErrorCode = mediaPlayer->error();
+
+    connect( mediaPlayer, SIGNAL( error( QMediaPlayer::Error ) ), this, SLOT( errorHandler( QMediaPlayer::Error ) ) );
+
     return Status::OK;
+}
+
+void SoundManager::errorHandler( QMediaPlayer::Error errorCode )
+{
+    qDebug() << "kerker";
+    qDebug() << errorCode;
 }

@@ -3,7 +3,7 @@
 
 
 #include "basemanager.h"
-
+#include <QMediaPlayer>
 class SoundPlayer;
 class Layer;
 
@@ -16,6 +16,8 @@ public:
     bool init() override;
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
+
+    void errorHandler( QMediaPlayer::Error );
 
 private:
     SoundPlayer* mSoundPlayer = nullptr;

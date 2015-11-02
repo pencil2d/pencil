@@ -9,6 +9,7 @@
 #include "editor.h"
 #include "viewmanager.h"
 #include "layermanager.h"
+#include "soundmanager.h"
 #include "util.h"
 
 #include "layerbitmap.h"
@@ -66,10 +67,7 @@ Status CommandCenter::importSound()
     FileDialogEx fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
-    if ( !QFile::exists( strSoundFile ) )
-    {
-        return Status::NOT_FOUND;
-    }
+    mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
 
     //layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
     
