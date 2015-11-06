@@ -1044,19 +1044,21 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     painter.setWorldMatrixEnabled( true );
 
                     // previous frame (onion skin)
-                    if ( isEffectOn( EFFECT_PREV_ONION ) )
+                    if ( isEffectOn( EFFECT_PREV_ONION ) &&  frame > 1)
                     {
                         int prevFramesNum = mEditor->getOnionPrevFramesNum();
                         float onionOpacity = mEditor->getOnionMaxOpacity();
                         
                         for ( int j = 0; j < prevFramesNum; j++ )
                         {
-                            BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -(j + 1) );
-                            if ( previousImage != NULL)
-                            {
-                                painter.setOpacity( opacity * onionOpacity / 100.0 );
-                                previousImage->paintImage( painter );
-                                if ( prevFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                            if ((frame - j) > 1) {
+                                BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -(j + 1) );
+                                if ( previousImage != NULL)
+                                {
+                                    painter.setOpacity( opacity * onionOpacity / 100.0 );
+                                    previousImage->paintImage( painter );
+                                    if ( prevFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                                }
                             }
                         }
                         if ( onionBlue || onionRed )
@@ -1074,9 +1076,9 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                         }
                     }
-
+                    int max = layerBitmap->getMaxKeyFramePosition();
                     // next frame (onion skin)
-                    if ( isEffectOn( EFFECT_NEXT_ONION ) )
+                    if ( isEffectOn( EFFECT_NEXT_ONION ) && frame < layerBitmap->getMaxKeyFramePosition())
                     {
                         int nextFramesNum = mEditor->getOnionNextFramesNum();
                         float onionOpacity = mEditor->getOnionMaxOpacity();
