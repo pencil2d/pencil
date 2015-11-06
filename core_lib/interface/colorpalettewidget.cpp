@@ -53,6 +53,11 @@ ColorPaletteWidget::ColorPaletteWidget( QString strTitle, QWidget* pParent )
 
 void ColorPaletteWidget::initUI()
 {
+    // "Remove color" feature is disabled because
+    // vector strokes that are linked to palette
+    // colors don't handle color removal from palette
+    //
+    ui->removeColorButton->hide();
     updateUI();
 }
 
@@ -72,6 +77,43 @@ void ColorPaletteWidget::setColor(QColor newColor)
 void ColorPaletteWidget::selectColorNumber(int colorNumber)
 {
     ui->colorListWidget->setCurrentRow(colorNumber);
+}
+
+void ColorPaletteWidget::selectColor(QColor color)
+{
+    int colorIndex = -1;
+
+    // Check if the color is present in the palette
+    //
+    for (int i = 0; i < editor()->object()->getColourCount(); i++)
+    {
+        ColourRef colourRef = editor()->object()->getColour(i);
+
+        if (color == colourRef.colour) {
+            colorIndex = i;
+        }
+    }
+
+    // If the color is present, select it
+    //
+    if (colorIndex > -1 && colorIndex < editor()->object()->getColourCount()) {
+        emit colorNumberChanged( colorIndex );
+    }
+    // Otherwise add it
+    //
+    else {
+        colorIndex = ui->colorListWidget->count();
+
+        QString name = QString(tr("Colour %1")).arg( colorIndex);
+        ColourRef ref = ColourRef(color, name);
+
+        editor()->object()->addColour(ref);
+        refreshColorList();
+
+        editor()->color()->setColor( editor()->object()->getColourCount() - 1 );
+
+        emit colorNumberChanged( colorIndex );
+    }
 }
 
 int ColorPaletteWidget::currentColourNumber()
@@ -171,7 +213,10 @@ void ColorPaletteWidget::clickAddColorButton()
             ref.name = text;
             editor()->object()->addColour(ref);
             refreshColorList();
-            editor()->color()->setColor( editor()->object()->getColourCount() - 1 );
+            int colorIndex = editor()->object()->getColourCount() - 1;
+            editor()->color()->setColor( colorIndex );
+
+            emit colorNumberChanged( colorIndex );
         }
     }
 }

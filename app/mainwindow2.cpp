@@ -1079,8 +1079,12 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
     connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
 
     ColorManager* pColorManager = pEditor->color();
+    ScribbleArea* pScribbleArea = pEditor->getScribbleArea();
+
     connect( pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::setColor );
     connect( pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::setColorNumber );
+
+    connect( pColorPalette, &ColorPaletteWidget::colorChanged, pScribbleArea, &ScribbleArea::paletteColorChanged );
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );

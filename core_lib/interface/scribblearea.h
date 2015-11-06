@@ -149,6 +149,7 @@ public slots:
     void togglePopupPalette();
 
     void updateToolCursor();
+    void paletteColorChanged(QColor);
 
 protected:
     void tabletEvent( QTabletEvent* ) override;
