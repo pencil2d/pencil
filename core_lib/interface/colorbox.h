@@ -22,7 +22,8 @@ public slots:
 
 private slots:
     void onSpinboxChange(const QColor &);
-    void onWheelChange(const QColor &);
+    void onWheelMove(const QColor &);
+    void onWheelRelease(const QColor &);
 
 private:
     ColorWheel* m_colorWheel;

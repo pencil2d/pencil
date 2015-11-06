@@ -23,6 +23,26 @@ QColor ColorWheel::color()
     return m_currentColor;
 }
 
+void ColorWheel::changeColor(const QColor &color)
+{
+    if (color == m_currentColor)
+    {
+        return;
+    }
+    if (color.hue() != m_currentColor.hue())
+    {
+        hueChanged(color.hue());
+    }
+
+    if (color.saturation() != m_currentColor.saturation() ||
+        color.value() != m_currentColor.value() )
+    {
+        svChanged(color);
+    }
+    emit colorChanged(color);
+    update();
+}
+
 void ColorWheel::setColor(const QColor &color)
 {
     if (color == m_currentColor)
@@ -41,7 +61,7 @@ void ColorWheel::setColor(const QColor &color)
     }
 
     update();
-    emit colorChanged(color);
+    emit colorSelected(color);
 }
 
 QColor ColorWheel::pickColor(const QPoint& point)
@@ -163,6 +183,7 @@ void ColorWheel::mouseReleaseEvent(QMouseEvent *)
 {
     m_isInWheel = false;
     m_isInSquare = false;
+    emit colorSelected(m_currentColor);
 }
 
 void ColorWheel::resizeEvent(QResizeEvent *event)
