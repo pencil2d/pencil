@@ -89,7 +89,21 @@ void ColorPaletteWidget::selectColor(QColor color)
     {
         ColourRef colourRef = editor()->object()->getColour(i);
 
-        if (color == colourRef.colour) {
+        int r, g, b;
+        r = color.red();
+        g = color.green();
+        b = color.black();
+
+
+        int r1, g1, b1;
+        r1 = colourRef.colour.red();
+        g1 = colourRef.colour.green();
+        b1 = colourRef.colour.black();
+
+        if (    color.red() == colourRef.colour.red() &&
+                color.green() == colourRef.colour.green() &&
+                color.blue() == colourRef.colour.blue() ) {
+
             colorIndex = i;
         }
     }
@@ -112,6 +126,8 @@ void ColorPaletteWidget::selectColor(QColor color)
 
         editor()->color()->setColorNumber(colorIndex);
         editor()->color()->setColor( ref.colour );
+
+        emit colorNumberChanged( colorIndex );
     }
 }
 

@@ -39,7 +39,7 @@ void ColorWheel::changeColor(const QColor &color)
     {
         svChanged(color);
     }
-    emit colorChanged(color);
+    //emit colorChanged(color);
     update();
 }
 
