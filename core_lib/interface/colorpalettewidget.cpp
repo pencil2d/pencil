@@ -110,8 +110,6 @@ void ColorPaletteWidget::selectColor(QColor color)
         editor()->object()->addColour(ref);
         refreshColorList();
 
-        int colorIndex = editor()->object()->getColourCount() - 1;
-
         editor()->color()->setColorNumber(colorIndex);
         editor()->color()->setColor( ref.colour );
     }
