@@ -25,15 +25,14 @@ GNU General Public License for more details.
 
 
 ObjectSaveLoader::ObjectSaveLoader( QObject *parent ) : QObject( parent ),
-mstrLastTempFolder( "" ),
-mLog( "SaveLoader" )
+    mLog( "SaveLoader" )
 {
     ENABLE_DEBUG_LOG( mLog, false );
 }
 
 Object* ObjectSaveLoader::load( QString strFileName )
 {
-    if ( !isFileExists( strFileName ) )
+    if ( !QFile::exists( strFileName ) )
     {
         qCDebug( mLog ) << "ERROR - File doesn't exist.";
         mError = Status::ERROR_FILE_NOT_EXIST;
@@ -42,6 +41,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
 
     QString strMainXMLFile;
     QString strDataFolder;
+    QString strWorkingDir;
 
     // Test file format: new zipped .pclx or old .pcl?
     QStringList zippedFileList = JlCompress::getFileList( strFileName );
@@ -50,16 +50,20 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( isOldFile )
     {
         qCDebug( mLog ) << "Recognized Old Pencil File Format (*.pcl) !";
+
         strMainXMLFile = strFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
         qCDebug( mLog ) << "Recognized New zipped Pencil File Format (*.pclx) !";
-        QString strTempWorkingFolder = extractZipToTempFolder( strFileName );
-        qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
-        strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
-        strDataFolder = QDir( strTempWorkingFolder ).filePath( PFF_OLD_DATA_DIR );
+
+        strWorkingDir = extractZipToTempFolder( strFileName );
+        
+        qCDebug( mLog ) << "Working Folder=" << strWorkingDir;
+        
+        strMainXMLFile = QDir( strWorkingDir ).filePath( PFF_XML_FILE_NAME );
+        strDataFolder = QDir( strWorkingDir ).filePath( PFF_OLD_DATA_DIR );
     }
     qCDebug( mLog ) << "XML=" << strMainXMLFile;
     qCDebug( mLog ) << "Data Folder=" << strDataFolder;
@@ -309,15 +313,13 @@ void ObjectSaveLoader::cleanUpTempFolder()
     removePFFTmpDirectory( mstrLastTempFolder );
 }
 
-bool ObjectSaveLoader::isFileExists( QString strFilename )
-{
-    return QFileInfo( strFilename ).exists();
-}
-
 QString ObjectSaveLoader::createTempWorkingFolder( QString strFileName )
 {
     QFileInfo fileInfo( strFileName );
-    QString strTempWorkingFolder = QDir( QDir::tempPath() ).filePath( fileInfo.completeBaseName() + PFF_TMP_DECOMPRESS_EXT );
+    QString strTempWorkingFolder = QDir::tempPath() +
+                                   "/Pencil2D/" +
+                                   fileInfo.completeBaseName() + 
+                                   PFF_TMP_DECOMPRESS_EXT;
 
     QDir dir( QDir::tempPath() );
     dir.mkpath( strTempWorkingFolder );

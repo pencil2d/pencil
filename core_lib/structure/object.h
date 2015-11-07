@@ -71,8 +71,11 @@ public:
 
     void init();
 
-    QString filePath() { return mstrFilePath; }
+    QString filePath() const { return mstrFilePath; }
     void    setFilePath( QString strFileName ) { mstrFilePath = strFileName; }
+    
+    QString workingDir() const { return mstrWorkingDir; }
+    void    setWorkingDir( QString strWorkingDir ) { mstrWorkingDir = strWorkingDir; }
 
     QDomElement createDomElement( QDomDocument& doc );
     bool loadDomElement( QDomElement element, QString dataDirPath );
@@ -123,11 +126,12 @@ public:
 
 private:
     QString mstrFilePath;
+    QString mstrWorkingDir;
+
     QList<Layer*> mLayers;
     bool modified = false;
 
     QList<ColourRef> mPalette;
-
 };
 
 

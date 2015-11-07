@@ -4,15 +4,15 @@
 #include "keyframe.h"
 #include <cstdint>
 
-class QMediaPlayer;
 
 class SoundClip : public KeyFrame
 {
 public:
     SoundClip();
+    Status init( QString strSoundFile );
 
+private:
     QString       m_strFilePath;
-    QMediaPlayer* m_pPlayer = nullptr;
     uint64_t      m_soundSize = 0;
 };
 

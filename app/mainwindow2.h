@@ -37,7 +37,7 @@ public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
-    Editor* mEditor;
+    Editor* mEditor = nullptr;
 
 public:
     void setOpacity(int opacity);
@@ -110,10 +110,10 @@ public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    PreferencesDialog* mPreferencesDialog;
-    CommandCenter* mCommands;
+    PreferencesDialog* mPreferencesDialog = nullptr;
+    CommandCenter* mCommands              = nullptr;
 
-    Ui::MainWindow2* ui;
+    Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
 };
 

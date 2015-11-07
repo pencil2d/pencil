@@ -3,9 +3,10 @@
 
 
 #include "basemanager.h"
-#include <QMediaPlayer>
+#include <memory>
 class SoundPlayer;
 class Layer;
+
 
 class SoundManager : public BaseManager
 {
@@ -17,10 +18,10 @@ public:
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
 
-    void errorHandler( QMediaPlayer::Error );
+    //void errorHandler( QMediaPlayer::Error );
 
 private:
-    SoundPlayer* mSoundPlayer = nullptr;
+    std::unique_ptr< SoundPlayer > mSoundPlayer = nullptr;
 };
 
 #endif // SOUNDMANAGER_H

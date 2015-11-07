@@ -44,7 +44,7 @@ public:
 
     Status error() { return mError; }
 
-signals:
+Q_SIGNALS:
     void progressValueChanged( float );
 
 private:

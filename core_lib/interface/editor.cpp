@@ -683,6 +683,12 @@ bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
 						   exportFormat, -1, false, true, NULL, 0 );
 	return true;
 }
+
+QString Editor::workingDir() const
+{
+    return mObject->workingDir();
+}
+
 /*
 bool Editor::exportMov()
 {

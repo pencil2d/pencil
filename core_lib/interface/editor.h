@@ -74,12 +74,15 @@ public:
     Status getError() { return mLastError; }
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
+    ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
     int  currentFrame();
     void scrubTo( int frameNumber );
 
     int  allLayers();
     bool exportSeqCLI( QString, QString );
+    
+    QString workingDir() const;
 
     int getOnionMaxOpacity() { return onionMaxOpacity; }
     int getOnionMinOpacity() { return onionMinOpacity; }
@@ -91,8 +94,6 @@ public:
     // backup
     int mBackupIndex;
     QList<BackupElement*> mBackupList;
-    ScribbleArea* getScribbleArea() { return mScribbleArea; }
-
 
 Q_SIGNALS:
     void updateTimeLine();
