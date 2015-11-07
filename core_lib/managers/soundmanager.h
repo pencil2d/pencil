@@ -21,7 +21,7 @@ public:
     //void errorHandler( QMediaPlayer::Error );
 
 private:
-    std::unique_ptr< SoundPlayer > mSoundPlayer = nullptr;
+    std::unique_ptr< SoundPlayer > mSoundPlayer;
 };
 
 #endif // SOUNDMANAGER_H
