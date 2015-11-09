@@ -45,7 +45,6 @@ public:
 
 public slots:
     void selectColorNumber(int);
-    void selectColor(QColor);
     void setColor(QColor);
     void refreshColorList();
 

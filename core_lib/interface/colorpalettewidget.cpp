@@ -79,58 +79,6 @@ void ColorPaletteWidget::selectColorNumber(int colorNumber)
     ui->colorListWidget->setCurrentRow(colorNumber);
 }
 
-void ColorPaletteWidget::selectColor(QColor color)
-{
-    int colorIndex = -1;
-
-    // Check if the color is present in the palette
-    //
-    for (int i = 0; i < editor()->object()->getColourCount(); i++)
-    {
-        ColourRef colourRef = editor()->object()->getColour(i);
-
-        int r, g, b;
-        r = color.red();
-        g = color.green();
-        b = color.black();
-
-
-        int r1, g1, b1;
-        r1 = colourRef.colour.red();
-        g1 = colourRef.colour.green();
-        b1 = colourRef.colour.black();
-
-        if (    color.red() == colourRef.colour.red() &&
-                color.green() == colourRef.colour.green() &&
-                color.blue() == colourRef.colour.blue() ) {
-
-            colorIndex = i;
-        }
-    }
-
-    // If the color is present, select it
-    //
-    if (colorIndex > -1 && colorIndex < editor()->object()->getColourCount()) {
-        emit colorNumberChanged( colorIndex );
-    }
-    // Otherwise add it
-    //
-    else {
-        colorIndex = ui->colorListWidget->count();
-
-        QString name = QString(tr("Colour %1")).arg( colorIndex);
-        ColourRef ref = ColourRef(color, name);
-
-        editor()->object()->addColour(ref);
-        refreshColorList();
-
-        editor()->color()->setColorNumber(colorIndex);
-        editor()->color()->setColor( ref.colour );
-
-        emit colorNumberChanged( colorIndex );
-    }
-}
-
 int ColorPaletteWidget::currentColourNumber()
 {
     if ( ui->colorListWidget->currentRow() < 0 )
