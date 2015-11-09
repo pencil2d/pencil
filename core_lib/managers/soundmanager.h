@@ -18,10 +18,8 @@ public:
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
 
-    //void errorHandler( QMediaPlayer::Error );
-
 private:
-    std::unique_ptr< SoundPlayer > mSoundPlayer;
+    SoundPlayer* mSoundPlayer;
 };
 
 #endif // SOUNDMANAGER_H

@@ -51,8 +51,6 @@ public:
     bool mVisible = true;
     int mId       = 0;
 
-    static const int NO_KeyFrame = -1;
-
     LAYER_TYPE type() { return meType; }
     Object* object() { return mObject; }
 

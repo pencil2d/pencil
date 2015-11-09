@@ -1,6 +1,7 @@
 #ifndef KeyFrame_H
 #define KeyFrame_H
 
+#include <cstdint>
 #include <QString>
 #include "pencilerror.h"
 
@@ -25,11 +26,14 @@ public:
     int  length() { return mLength; }
     void setModified( bool b ) { mIsModified = b; }
 
+    QString fileName() { return mAttachedFileName; }
+    void    setFileName( QString strFileName ) { mAttachedFileName = strFileName; }
+
 private:
     int mFrame       = -1;
     int mLength      =  1;
     bool mIsModified = false;
-    QString mstrFilename;
+    QString mAttachedFileName;
 };
 
 class NullKeyFrame : public KeyFrame

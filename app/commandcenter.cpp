@@ -67,7 +67,7 @@ Status CommandCenter::importSound()
     FileDialogEx fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
-    mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
+    Status st = mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
 
     //layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
     
