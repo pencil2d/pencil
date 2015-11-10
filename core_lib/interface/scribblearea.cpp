@@ -492,8 +492,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
     mMouseInUse = true;
 
     mStrokeManager->mousePressEvent( event );
-
-    if ( !mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == 0 )
+    if ( mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == false )
     {
         mUsePressure = false;
         mStrokeManager->setPressure( 1.0 );
