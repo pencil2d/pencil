@@ -102,7 +102,17 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
             }
             else
             {
-                //mScribbleArea->floodFill( vectorImage, getLastPixel().toPoint(), qRgba( 0, 0, 0, 0 ), qRgb( 200, 200, 200 ), 100 * 100 );
+//                QList<VertexRef> curve = vectorImage->getVerticesCloseTo(getLastPixel().toPoint(), 1000);
+//                QList<QPointF> path;
+
+//                for(int i=0; i < curve.size(); i++)
+//                {
+//                    path.append(vectorImage->getVertex(curve.at(i)));
+//                }
+
+//                vectorImage->colour(path, mEditor->color()->frontColorNumber());
+
+                mScribbleArea->floodFill( vectorImage, getLastPoint(), mEditor->color()->frontColorNumber(), 100 * 100 );
             }
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();

@@ -1978,3 +1978,45 @@ void ScribbleArea::paletteColorChanged(QColor color)
 {
     updateAllVectorLayersAtCurrentFrame();
 }
+
+void ScribbleArea::floodFill( VectorImage *vectorImage, QPointF point, int fillColourNum, int tolerance )
+{
+
+    // Check if we clicked on a curve. In that case, we change its color.
+    //
+    QList<int> closestCurves = vectorImage->getCurvesCloseTo( point, tol / mEditor->view()->scaling() );
+
+    if (closestCurves.size() > 0) // the user click on one or more curves
+    {
+        // For each clicked curves, we change the color if requiered
+        //
+        for (int i = 0; i < closestCurves.size(); i++) {
+            int curveNumber = closestCurves[i];
+            int clickedColorNum = vectorImage->m_curves[curveNumber].getColourNumber();
+
+            if (clickedColorNum != fillColourNum) {
+                vectorImage->m_curves[curveNumber].setColourNumber(fillColourNum);
+            }
+        }
+
+        // If we updated curves, we don't need to fill anything more
+        return;
+
+    }
+
+}
+
+void ScribbleArea::floodFillError( int errorType )
+{
+    QString message, error;
+    if ( errorType == 1 ) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
+    if ( errorType == 2 || errorType == 3 ) message = "Sorry! This doesn't always work."
+            "Please try again (zoom a bit, click at another location... )<br>"
+            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+
+    if ( errorType == 1 ) { error = "Out of bound."; }
+    if ( errorType == 2 ) { error = "Could not find a closed path."; }
+    if ( errorType == 3 ) { error = "Could not find the root index."; }
+    QMessageBox::warning( this, tr( "Flood fill error" ), message + "<br><br>Error: " + error, QMessageBox::Ok, QMessageBox::Ok );
+    deselectAll();
+}
