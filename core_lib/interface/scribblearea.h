@@ -109,7 +109,6 @@ public:
 
     Editor* editor() { return mEditor; }
 
-    void floodFill( VectorImage *vectorImage, QPointF point, int fillColourNum, int tolerance );
     void floodFillError( int errorType );
 
 signals:

@@ -100,9 +100,11 @@ public:
     int  getLastAreaNumber(QPointF point, int maxAreaNumber);
     void removeArea(QPointF point);
     void updateArea(BezierArea& bezierArea);
+    void floodFill( QPointF point, int fillColourNum, int tolerance, float scaling );
 
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
     VertexRef getClosestVertexTo(QPointF thisPoint, qreal maxDistance);
+    QList<VertexRef> getCurveVertices(int curveNumber);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance, QList<VertexRef>* listOfPoints);
     QList<VertexRef> getVerticesCloseTo(VertexRef thisPointRef, qreal maxDistance);
@@ -127,11 +129,14 @@ private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
     void modification();
     bool modified;
+    bool foundEdgeAtPoint( QPoint point, qreal tolerance );
 
     Object* myParent;
 
     QRectF selectionRect;
     QTransform selectionTransformation;
+
+    QString pointToString(QPoint point);
 };
 
 #endif

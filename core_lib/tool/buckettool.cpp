@@ -112,7 +112,10 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 
 //                vectorImage->colour(path, mEditor->color()->frontColorNumber());
 
-                mScribbleArea->floodFill( vectorImage, getLastPoint(), mEditor->color()->frontColorNumber(), 100 * 100 );
+                vectorImage->floodFill( getLastPoint(),
+                                        mEditor->color()->frontColorNumber(),
+                                        7,
+                                        mEditor->view()->scaling() );
             }
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
