@@ -93,14 +93,15 @@ public:
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void colour(QList<QPointF> mousePath, int colour);
+    void fill(QList<QPointF> mousePath, int colour);
+    void fill(QPointF point, int colour, float tolerance);
+    void fill(int curveNumber, int colour);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point, int maxAreaNumber);
     void removeArea(QPointF point);
     void updateArea(BezierArea& bezierArea);
-    void floodFill( QPointF point, int fillColourNum, int tolerance, float scaling );
 
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
     VertexRef getClosestVertexTo(QPointF thisPoint, qreal maxDistance);

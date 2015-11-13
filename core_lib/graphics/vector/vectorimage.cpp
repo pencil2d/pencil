@@ -1222,7 +1222,7 @@ int VectorImage::getCurveSize(int curveNumber)
     }
 }
 
-void VectorImage::colour(QList<QPointF> mousePath, int colour)
+void VectorImage::fill(QList<QPointF> mousePath, int colour)
 {
     QList<VertexRef> path;
     VertexRef vertex, lastVertex;
@@ -1327,6 +1327,38 @@ void VectorImage::colour(QList<QPointF> mousePath, int colour)
     modification();
     //qDebug() << path;
     //return path;
+}
+
+void VectorImage::fill(QPointF point, int colour, float tolerance)
+{
+    // Check if we clicked on a curve. In that case, we change its color.
+    //
+    QList<int> closestCurves = getCurvesCloseTo( point, tolerance );
+
+    if (closestCurves.size() > 0) // the user click on one or more curves
+    {
+        // For each clicked curves, we change the color if requiered
+        //
+        for (int i = 0; i < closestCurves.size(); i++) {
+            int curveNumber = closestCurves[i];
+            m_curves[curveNumber].setColourNumber(colour);
+        }
+
+        return;
+    }
+
+    // Check if we clicked on an area.
+    //
+    int areaNum = getLastAreaNumber(point);
+    if (areaNum > -1) {
+        area[areaNum].setColourNumber(colour);
+    }
+}
+
+void VectorImage::fill(int curveNumber, int colour)
+{
+    BezierArea bezierArea(getCurveVertices(curveNumber), colour);
+    addArea(bezierArea);
 }
 
 
@@ -1438,186 +1470,6 @@ qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)
 }
 
 
-void VectorImage::floodFill( QPointF point, int fillColourNum, int tolerance, float scaling )
-{
-
-    // Check if we clicked on a curve. In that case, we change its color.
-    //
-    QList<int> closestCurves = getCurvesCloseTo( point, tolerance / scaling );
-
-    if (closestCurves.size() > 0) // the user click on one or more curves
-    {
-        // For each clicked curves, we change the color if requiered
-        //
-        for (int i = 0; i < closestCurves.size(); i++) {
-            int curveNumber = closestCurves[i];
-            int clickedColorNum = m_curves[curveNumber].getColourNumber();
-
-            if (clickedColorNum != fillColourNum) {
-                m_curves[curveNumber].setColourNumber(fillColourNum);
-            }
-        }
-
-        // If we updated curves, we don't need to fill anything else
-        //
-        return;
-    }
-
-    // Check if we clicked on an area. If it is the same colour, we do nothing.
-    //
-    int areaNum = getLastAreaNumber(point);
-    if (areaNum > -1) {
-
-        int clickedColorNum = area[areaNum].getColourNumber();
-
-        if (clickedColorNum == fillColourNum) {
-            return;
-        }
-    }
-
-    // We are ready to fill the selected space by creating a new area.
-    //
-    QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
-    QHash<QString, bool> checkedPointRefs; // a ref to all the pixels of the filled area. They are at true if they have been chaecked.
-    QList<QPointF> contourPoints; // refs of points near the contour pixels
-
-    qreal maxWidth = 1920.0;
-    qreal maxHeight = 1080.0;
-    qreal tol = tolerance / scaling;
-
-    int error = -1;
-
-    queue.append( point.toPoint() );
-
-    // ----- flood fill and remember the contour pixels -> contourPixels
-    // ----- from the standard flood fill algorithm
-    // ----- http://en.wikipedia.org/wiki/Flood_fill
-    //
-    while ( queue.size() > 0 )
-    {
-        // Get the first point in the queue
-        QPoint currentPoint = queue.at(0);
-        //qWarning() << "Current point : " << currentPoint.x() << " - " << currentPoint.y();
-
-        // Remove this point from the queue
-        queue.removeAt(0);
-
-        if (!checkedPointRefs[pointToString(currentPoint)]) {
-
-            int leftX = currentPoint.x();
-            int rightX = currentPoint.x();
-
-            bool foundLeftBound = false;
-            bool foundRightBound = false;
-
-
-            while (!foundLeftBound) {
-                leftX--;
-
-                // Are we getting to the end of the document ?
-                //
-                if ( leftX < - (maxWidth / 2)) {
-                    error = 1;
-                    qWarning() << " Out of bound left ";
-                    return;
-                }
-
-                QPoint leftPoint = QPoint(leftX, currentPoint.y());
-
-                if (!checkedPointRefs[pointToString(leftPoint)]) {
-
-                    // Are we getting to a curve ?
-                    //
-                    if (foundEdgeAtPoint(leftPoint, tolerance / scaling)) {
-                        //qWarning() << "Found contour at the left : " << leftPoint.x() << " - " << leftPoint.y();
-                        contourPoints.append(QPointF(leftPoint));
-                        foundLeftBound = true;
-                    }
-                }
-            }
-
-            while (!foundRightBound) {
-                rightX++;
-
-                // Are we getting to the end of the document ?
-                //
-                if ( rightX > (maxWidth / 2)) {
-                    error = 1;
-                    qWarning() << " Out of bound right ";
-                    return;
-                }
-
-                QPoint rightPoint = QPoint(rightX, currentPoint.y());
-
-                if (!checkedPointRefs[pointToString(rightPoint)]) {
-
-                    // Are we getting to a curve ?
-                    //
-                    if (foundEdgeAtPoint(rightPoint, tolerance / scaling)) {
-                        //qWarning() << "Found contour at the left : " << leftPoint.x() << " - " << leftPoint.y();
-                        contourPoints.append(QPointF(rightPoint));
-                        foundRightBound = true;
-                    }
-                }
-            }
-
-            int lineY = currentPoint.y();
-            int topY = lineY - 1;
-            int bottomY = lineY + 1;
-
-            if ( topY < - (maxHeight / 2) || bottomY > (maxHeight / 2) ) {
-                error = 1;
-                qWarning() << " Out of bound top / bottom ";
-                return;
-            }
-
-            // Check if top point relative to left point is to be filled
-            //
-            for (int x = leftX + 1; x < rightX; x++) {
-
-                // The current line point is checked (Coloured)
-                //
-                QPoint linePoint = QPoint(x, lineY);
-                checkedPointRefs[pointToString(linePoint)] = true;
-
-                // Top point
-                //
-                QPoint topPoint = QPoint(x, topY);
-
-                if (!checkedPointRefs[pointToString(topPoint)]) {
-
-                    if (foundEdgeAtPoint(topPoint, tolerance / scaling)) {
-                        //qWarning() << "Top contour : " << x << " - " << topY;
-                        contourPoints.append(QPointF(topPoint));
-                    }
-                    else {
-                        //qWarning() << "Add to queue : " << x << " - " << topY;
-                        queue.append(topPoint);
-                    }
-                }
-
-                // Bottom point
-                //
-                QPoint bottomPoint = QPoint(x, bottomY);
-
-                if (!checkedPointRefs[pointToString(bottomPoint)]) {
-
-                    if (foundEdgeAtPoint(bottomPoint, tolerance / scaling)) {
-                        //qWarning() << "Top contour : " << x << " - " << bottomY;
-                        contourPoints.append(QPointF(bottomPoint));
-                    }
-                    else {
-                        //qWarning() << "Add to queue : " << x << " - " << bottomY;
-                        queue.append(bottomPoint);
-                    }
-                }
-            }
-        }
-
-    }
-    colour(contourPoints, fillColourNum);
-    return;
-}
 
 bool VectorImage::foundEdgeAtPoint( QPoint point, qreal tolerance ) {
 

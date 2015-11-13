@@ -140,6 +140,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
         }
         else if ( layer->type() == Layer::VECTOR )
         {
+            mScribbleArea->clearBitmapBuffer();
         }
     }
 
@@ -150,12 +151,15 @@ void BrushTool::mouseMoveEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
+    if ( layer->type() == Layer::BITMAP )
     {
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
         }
+    }
+    if ( layer->type() == Layer::VECTOR) {
+        Q_UNUSED( event );
     }
 }
 
