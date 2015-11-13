@@ -1454,9 +1454,7 @@ void VectorImage::floodFill( QPointF point, int fillColourNum, int tolerance, fl
             int clickedColorNum = m_curves[curveNumber].getColourNumber();
 
             if (clickedColorNum != fillColourNum) {
-                BezierArea new_area(getCurveVertices(curveNumber), colour);
-                addArea(new_area);
-                //m_curves[curveNumber].setColourNumber(fillColourNum);
+                m_curves[curveNumber].setColourNumber(fillColourNum);
             }
         }
 
@@ -1479,145 +1477,144 @@ void VectorImage::floodFill( QPointF point, int fillColourNum, int tolerance, fl
 
     // We are ready to fill the selected space by creating a new area.
     //
-//    QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
-//    QHash<QString, bool> checkedPointRefs; // a ref to all the pixels of the filled area. They are at true if they have been chaecked.
-//    QList<QPointF> contourPoints; // refs of points near the contour pixels
+    QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
+    QHash<QString, bool> checkedPointRefs; // a ref to all the pixels of the filled area. They are at true if they have been chaecked.
+    QList<QPointF> contourPoints; // refs of points near the contour pixels
 
-//    qreal maxWidth = 1920.0;
-//    qreal maxHeight = 1080.0;
-//    qreal tol = tolerance / scaling;
+    qreal maxWidth = 1920.0;
+    qreal maxHeight = 1080.0;
+    qreal tol = tolerance / scaling;
 
-//    int error = -1;
+    int error = -1;
 
-//    queue.append( point.toPoint() );
-//    //checkedPointRefs[pointToString(point.toPoint())] = true;
+    queue.append( point.toPoint() );
 
-//    // ----- flood fill and remember the contour pixels -> contourPixels
-//    // ----- from the standard flood fill algorithm
-//    // ----- http://en.wikipedia.org/wiki/Flood_fill
-//    //
-//    while ( queue.size() > 0 )
-//    {
-//        // Get the first point in the queue
-//        QPoint currentPoint = queue.at(0);
-//        //qWarning() << "Current point : " << currentPoint.x() << " - " << currentPoint.y();
+    // ----- flood fill and remember the contour pixels -> contourPixels
+    // ----- from the standard flood fill algorithm
+    // ----- http://en.wikipedia.org/wiki/Flood_fill
+    //
+    while ( queue.size() > 0 )
+    {
+        // Get the first point in the queue
+        QPoint currentPoint = queue.at(0);
+        //qWarning() << "Current point : " << currentPoint.x() << " - " << currentPoint.y();
 
-//        // Remove this point from the queue
-//        queue.removeAt(0);
+        // Remove this point from the queue
+        queue.removeAt(0);
 
-//        if (!checkedPointRefs[pointToString(currentPoint)]) {
+        if (!checkedPointRefs[pointToString(currentPoint)]) {
 
-//            int leftX = currentPoint.x();
-//            int rightX = currentPoint.x();
+            int leftX = currentPoint.x();
+            int rightX = currentPoint.x();
 
-//            bool foundLeftBound = false;
-//            bool foundRightBound = false;
+            bool foundLeftBound = false;
+            bool foundRightBound = false;
 
 
-//            while (!foundLeftBound) {
-//                leftX--;
+            while (!foundLeftBound) {
+                leftX--;
 
-//                // Are we getting to the end of the document ?
-//                //
-//                if ( leftX < - (maxWidth / 2)) {
-//                    error = 1;
-//                    qWarning() << " Out of bound left ";
-//                    return;
-//                }
+                // Are we getting to the end of the document ?
+                //
+                if ( leftX < - (maxWidth / 2)) {
+                    error = 1;
+                    qWarning() << " Out of bound left ";
+                    return;
+                }
 
-//                QPoint leftPoint = QPoint(leftX, currentPoint.y());
+                QPoint leftPoint = QPoint(leftX, currentPoint.y());
 
-//                if (!checkedPointRefs[pointToString(leftPoint)]) {
+                if (!checkedPointRefs[pointToString(leftPoint)]) {
 
-//                    // Are we getting to a curve ?
-//                    //
-//                    if (foundEdgeAtPoint(leftPoint, tolerance / scaling)) {
-//                        //qWarning() << "Found contour at the left : " << leftPoint.x() << " - " << leftPoint.y();
-//                        contourPoints.append(QPointF(leftPoint));
-//                        foundLeftBound = true;
-//                    }
-//                }
-//            }
+                    // Are we getting to a curve ?
+                    //
+                    if (foundEdgeAtPoint(leftPoint, tolerance / scaling)) {
+                        //qWarning() << "Found contour at the left : " << leftPoint.x() << " - " << leftPoint.y();
+                        contourPoints.append(QPointF(leftPoint));
+                        foundLeftBound = true;
+                    }
+                }
+            }
 
-//            while (!foundRightBound) {
-//                rightX++;
+            while (!foundRightBound) {
+                rightX++;
 
-//                // Are we getting to the end of the document ?
-//                //
-//                if ( rightX > (maxWidth / 2)) {
-//                    error = 1;
-//                    qWarning() << " Out of bound right ";
-//                    return;
-//                }
+                // Are we getting to the end of the document ?
+                //
+                if ( rightX > (maxWidth / 2)) {
+                    error = 1;
+                    qWarning() << " Out of bound right ";
+                    return;
+                }
 
-//                QPoint rightPoint = QPoint(rightX, currentPoint.y());
+                QPoint rightPoint = QPoint(rightX, currentPoint.y());
 
-//                if (!checkedPointRefs[pointToString(rightPoint)]) {
+                if (!checkedPointRefs[pointToString(rightPoint)]) {
 
-//                    // Are we getting to a curve ?
-//                    //
-//                    if (foundEdgeAtPoint(rightPoint, tolerance / scaling)) {
-//                        //qWarning() << "Found contour at the left : " << leftPoint.x() << " - " << leftPoint.y();
-//                        contourPoints.append(QPointF(rightPoint));
-//                        foundRightBound = true;
-//                    }
-//                }
-//            }
+                    // Are we getting to a curve ?
+                    //
+                    if (foundEdgeAtPoint(rightPoint, tolerance / scaling)) {
+                        //qWarning() << "Found contour at the left : " << leftPoint.x() << " - " << leftPoint.y();
+                        contourPoints.append(QPointF(rightPoint));
+                        foundRightBound = true;
+                    }
+                }
+            }
 
-//            int lineY = currentPoint.y();
-//            int topY = lineY - 1;
-//            int bottomY = lineY + 1;
+            int lineY = currentPoint.y();
+            int topY = lineY - 1;
+            int bottomY = lineY + 1;
 
-//            if ( topY < - (maxHeight / 2) || bottomY > (maxHeight / 2) ) {
-//                error = 1;
-//                qWarning() << " Out of bound top / bottom ";
-//                return;
-//            }
+            if ( topY < - (maxHeight / 2) || bottomY > (maxHeight / 2) ) {
+                error = 1;
+                qWarning() << " Out of bound top / bottom ";
+                return;
+            }
 
-//            // Check if top point relative to left point is to be filled
-//            //
-//            for (int x = leftX + 1; x < rightX; x++) {
+            // Check if top point relative to left point is to be filled
+            //
+            for (int x = leftX + 1; x < rightX; x++) {
 
-//                // The current line point is checked (Coloured)
-//                //
-//                QPoint linePoint = QPoint(x, lineY);
-//                checkedPointRefs[pointToString(linePoint)] = true;
+                // The current line point is checked (Coloured)
+                //
+                QPoint linePoint = QPoint(x, lineY);
+                checkedPointRefs[pointToString(linePoint)] = true;
 
-//                // Top point
-//                //
-//                QPoint topPoint = QPoint(x, topY);
+                // Top point
+                //
+                QPoint topPoint = QPoint(x, topY);
 
-//                if (!checkedPointRefs[pointToString(topPoint)]) {
+                if (!checkedPointRefs[pointToString(topPoint)]) {
 
-//                    if (foundEdgeAtPoint(topPoint, tolerance / scaling)) {
-//                        //qWarning() << "Top contour : " << x << " - " << topY;
-//                        contourPoints.append(QPointF(topPoint));
-//                    }
-//                    else {
-//                        //qWarning() << "Add to queue : " << x << " - " << topY;
-//                        queue.append(topPoint);
-//                    }
-//                }
+                    if (foundEdgeAtPoint(topPoint, tolerance / scaling)) {
+                        //qWarning() << "Top contour : " << x << " - " << topY;
+                        contourPoints.append(QPointF(topPoint));
+                    }
+                    else {
+                        //qWarning() << "Add to queue : " << x << " - " << topY;
+                        queue.append(topPoint);
+                    }
+                }
 
-//                // Bottom point
-//                //
-//                QPoint bottomPoint = QPoint(x, bottomY);
+                // Bottom point
+                //
+                QPoint bottomPoint = QPoint(x, bottomY);
 
-//                if (!checkedPointRefs[pointToString(bottomPoint)]) {
+                if (!checkedPointRefs[pointToString(bottomPoint)]) {
 
-//                    if (foundEdgeAtPoint(bottomPoint, tolerance / scaling)) {
-//                        //qWarning() << "Top contour : " << x << " - " << bottomY;
-//                        contourPoints.append(QPointF(bottomPoint));
-//                    }
-//                    else {
-//                        //qWarning() << "Add to queue : " << x << " - " << bottomY;
-//                        queue.append(bottomPoint);
-//                    }
-//                }
-//            }
-//        }
+                    if (foundEdgeAtPoint(bottomPoint, tolerance / scaling)) {
+                        //qWarning() << "Top contour : " << x << " - " << bottomY;
+                        contourPoints.append(QPointF(bottomPoint));
+                    }
+                    else {
+                        //qWarning() << "Add to queue : " << x << " - " << bottomY;
+                        queue.append(bottomPoint);
+                    }
+                }
+            }
+        }
 
-//    }
+    }
     colour(contourPoints, fillColourNum);
     return;
 }
