@@ -885,6 +885,7 @@ void VectorImage::paintImage(QPainter& painter,
                 painter.setBrush( QBrush( QColor(255-colour.red(),255-colour.green(),255-colour.blue()), Qt::Dense6Pattern) );
             }
             else {
+                painter.setPen(QPen(QBrush(colour), 1, Qt::NoPen, Qt::RoundCap,Qt::RoundJoin));
                 painter.setBrush( QBrush( colour, Qt::SolidPattern ));
             }
 
