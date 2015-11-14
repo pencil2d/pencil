@@ -195,7 +195,7 @@ void VectorImage::removeCurveAt(int i)
     m_curves.removeAt(i);
 }
 
-void VectorImage::addCurve(BezierCurve& newCurve, qreal factor)
+void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor)
 {
     if (newCurve.getVertexSize() < 1) return; // security - a new curve should have a least 2 vertices
     qreal tol = qMax(newCurve.getWidth() / factor, 3.0 / factor); // tolerance for taking the intersection as an existing vertex on a curve
@@ -434,11 +434,22 @@ void VectorImage::addCurve(BezierCurve& newCurve, qreal factor)
             }
         }
     }
-    m_curves.append(newCurve);
+    if (position < 0 || position > m_curves.size() - 1) {
+        m_curves.append(newCurve);
+    }
+    else {
+        m_curves.insert(position, newCurve);
+    }
+
     modification();
     //QPainter painter(&image);
     //painter.setRenderHint(QPainter::Antialiasing, true);
     //newCurve.drawPath(&painter);
+}
+
+void VectorImage::addCurve(BezierCurve& newCurve, qreal factor)
+{
+    insertCurve(-1, newCurve, factor);
 }
 
 void VectorImage::select(QRectF rectangle)

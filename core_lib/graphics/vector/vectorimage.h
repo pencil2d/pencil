@@ -42,6 +42,7 @@ public:
     QDomElement createDomElement(QDomDocument& doc);
     void loadDomElement(QDomElement element);
 
+    void insertCurve(int position, BezierCurve& newCurve, qreal factor);
     void addCurve(BezierCurve& newCurve, qreal factor);
     void removeCurveAt(int i);
     void select(QRectF rectangle);
