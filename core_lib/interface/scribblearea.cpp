@@ -43,7 +43,11 @@ ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent ),
 mLog( "ScribbleArea" )
 {
     setObjectName( "ScribbleArea" );
-
+    
+    // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
+    // and don't change when the widget is resized.
+    setAttribute( Qt::WA_StaticContents );
+    
     mStrokeManager = new StrokeManager();
 
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -53,10 +57,6 @@ mLog( "ScribbleArea" )
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
 
     initDisplayEffect( mEffects );
-
-    // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
-    // and don't change when the widget is resized.
-    setAttribute( Qt::WA_StaticContents );
 
     mMakeInvisible = false;
     somethingSelected = false;
