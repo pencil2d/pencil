@@ -111,7 +111,7 @@ LayerCamera::~LayerCamera()
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 {
-    return static_cast< Camera* >( getKeyFrameAtPosition( frameNumber ) );
+    return static_cast< Camera* >( getKeyFrameAt( frameNumber ) );
 }
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)

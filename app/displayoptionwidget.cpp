@@ -34,7 +34,7 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect( ui->onionRedButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionRed );
 	connect( ui->mirrorButton,    &QToolButton::clicked, editor, &Editor::toggleMirror);
 	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
-    connect( ui->cameraBorderButton,   &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
+    connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
     ui->cameraBorderButton->setChecked(pScriArea->isEffectOn(EFFECT_CAMERABORDER));
 

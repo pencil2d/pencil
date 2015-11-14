@@ -172,7 +172,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 
 VectorImage* LayerVector::getVectorImageAtFrame( int frameNumber )
 {
-    return static_cast< VectorImage* >( getKeyFrameAtPosition( frameNumber ) );
+    return static_cast< VectorImage* >( getKeyFrameAt( frameNumber ) );
 }
 
 VectorImage* LayerVector::getLastVectorImageAtFrame( int frameNumber, int increment )

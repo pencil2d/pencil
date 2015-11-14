@@ -36,7 +36,9 @@ Status CommandCenter::importSound()
         msg.setText( tr( "No sound layer exists as a destination for your import. Create a new sound layer?" ) );
         msg.addButton( tr( "Create sound layer" ), QMessageBox::AcceptRole );
         msg.addButton( tr( "Don't create layer" ), QMessageBox::RejectRole );
+        
         int buttonClicked = msg.exec();
+        
         //qDebug() << "Button clicked: 0" << ret;
 
         if ( buttonClicked != QMessageBox::AcceptRole )
@@ -54,10 +56,9 @@ Status CommandCenter::importSound()
         layer = mEditor->layers()->currentLayer();
     }
 
-    //LayerSound* layerSound = static_cast< LayerSound* >( layer );
     if ( layer->keyExists( mEditor->currentFrame() ) )
     {
-        //layer->getKeyFrameAtPosition()
+        //layer->getKeyFrameAt()
         //QMessageBox msg;
         //msg.setText( tr( "The selected sound layer already contains a sound item. Please select another." ) );
         //msg.exec();
@@ -68,13 +69,10 @@ Status CommandCenter::importSound()
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
     Status st = mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
-
-    //layerSound->loadSoundAtFrame( strSoundFile, mEditor->currentFrame() );
     
-    //layerSound->loadSoundAtFrame( filePath, currentFrame() );
     //mTimeLine->updateContent();
 
-    return Status::OK;
+    return st;
 }
 
 void CommandCenter::ZoomIn()

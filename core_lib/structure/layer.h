@@ -82,7 +82,7 @@ public:
     bool moveKeyFrameForward( int position );
     bool moveKeyFrameBackward( int position );
     bool loadKey( KeyFrame* );
-    KeyFrame* getKeyFrameAtPosition( int position );
+    KeyFrame* getKeyFrameAt( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
 
     void foreachKeyFrame( std::function<void( KeyFrame* )> );

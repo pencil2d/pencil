@@ -61,7 +61,7 @@ bool Layer::keyExists( int position )
     return ( mKeyFrames.find( position ) != mKeyFrames.end() );
 }
 
-KeyFrame* Layer::getKeyFrameAtPosition( int position )
+KeyFrame* Layer::getKeyFrameAt( int position )
 {
     auto it = mKeyFrames.find( position );
     if ( it == mKeyFrames.end() )
@@ -200,7 +200,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
 
         mKeyFrames.erase( position1 );
 
-        //pFirstFrame = getKeyFrameAtPosition( position1 );
+        //pFirstFrame = getKeyFrameAt( position1 );
         //removeKeyFrame( position1 );
 
         keyPosition1 = true;
@@ -213,7 +213,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
 
         mKeyFrames.erase( position2 );
 
-        //pSecondFrame = getKeyFrameAtPosition( position2 );
+        //pSecondFrame = getKeyFrameAt( position2 );
         //removeKeyFrame( position2 );
 
         keyPosition2 = true;

@@ -32,6 +32,9 @@ Status SoundPlayer::addSound( SoundClip* clip )
 
     clip->addEventListener( this );
     mSoundClips.push_back( clip );
+    
+    
+    // TODO: calc the sound length.
 
     return Status::OK;
 }

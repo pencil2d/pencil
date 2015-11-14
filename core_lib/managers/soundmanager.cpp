@@ -36,12 +36,20 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         return Status::ERROR_FILE_NOT_EXIST;
     }
     
-    SoundClip* soundClip = soundLayer->getKeyFrameAtPosition( frameNumber );
-    if ( soundClip == nullptr )
+    KeyFrame* key = soundLayer->getKeyFrameAt( frameNumber );
+    if ( key == nullptr )
     {
-        soundClip = new SoundClip;
+        key = new SoundClip;
     }
+    
+    if ( !key->fileName().isEmpty() )
+    {
+        return Status::FAIL;
+    }
+    
+    SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
     soundClip->init( strSoundFile );
+    
     Status st = mSoundPlayer->addSound( soundClip );
 
     if ( !st.ok() )
