@@ -31,8 +31,8 @@ public:
     void gotoNextLayer();
     void gotoPreviouslayer();
 
-    LayerSound* newSoundLayer( QString strLayerName );
-
+    LayerSound* createSoundLayer( QString strLayerName );
+    
     // KeyFrame Management
     int  LastFrameAtFrame( int frameIndex );
     int  firstKeyFrameIndex();

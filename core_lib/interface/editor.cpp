@@ -124,13 +124,6 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 		pManager->setEditor( this );
 		pManager->init();
 	}
-
-	mFrame = 1;
-	layers()->setCurrentLayer( 0 );
-
-	tools()->setCurrentTool( PENCIL );
-	mScribbleArea->setCursor( tools()->currentTool()->cursor() );
-
     //setAcceptDrops( true ); // TODO: drop event
 
 	makeConnections();
@@ -585,10 +578,6 @@ void Editor::setObject( Object* newObject )
 	mObject.reset( newObject );
 
 	//qDebug( "New object loaded." );
-
-	// the default selected layer is the last one
-	layers()->setCurrentLayer( mObject->getLayerCount() - 1 );
-
 	g_clipboardVectorImage.setObject( newObject );
 }
 

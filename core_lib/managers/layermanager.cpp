@@ -88,7 +88,7 @@ void LayerManager::gotoPreviouslayer()
     }
 }
 
-LayerSound* LayerManager::newSoundLayer( QString strLayerName )
+LayerSound* LayerManager::createSoundLayer( QString strLayerName )
 {
     LayerSound* layer = editor()->object()->addNewSoundLayer();
     layer->setName( strLayerName );

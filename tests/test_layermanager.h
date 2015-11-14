@@ -4,20 +4,23 @@
 #include "AutoTest.h"
 
 class Object;
+class Editor;
+class LayerManager;
+
 
 class TestLayerManager : public QObject
 {
     Q_OBJECT
 
-public:
-
-
 private slots:
     void initTestCase();
     void cleanupTestCase();
-
+    
+    void testEmptyLayer();
+    
 private:
-    Object* m_pObject = nullptr;
+    Editor* mEditor = nullptr;
+    LayerManager* mLayerManager = nullptr;
 };
 
 DECLARE_TEST( TestLayerManager )

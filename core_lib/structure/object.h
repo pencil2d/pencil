@@ -103,6 +103,7 @@ public:
     LayerVector* addNewVectorLayer();
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
+
     Layer* getLayer( int i );
     int getLayerCount();
     int getMaxID();

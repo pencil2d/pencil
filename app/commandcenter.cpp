@@ -127,7 +127,7 @@ bool CommandCenter::addNewSoundLayer()
                                           tr( "Sound Layer" ), &ok );
     if ( ok && !strLayerName.isEmpty() )
     {
-        Layer* layer = mEditor->layers()->newSoundLayer( strLayerName );
+        Layer* layer = mEditor->layers()->createSoundLayer( strLayerName );
         mEditor->layers()->setCurrentLayer( layer );
 
         return true;

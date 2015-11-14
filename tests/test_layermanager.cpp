@@ -1,16 +1,28 @@
+#include "test_layermanager.h"
 #include "object.h"
 #include "editor.h"
-#include "test_layermanager.h"
+#include "layermanager.h"
 
 
 void TestLayerManager::initTestCase()
 {
-    m_pObject = new Object();
-    m_pObject->init();
+    Object* object = new Object();
+    object->init();
 
-    Editor* eidtor = new Editor();
+    mEditor = new Editor();
+    mEditor->setObject( object );
+    
+    mLayerManager = new LayerManager( mEditor );
+    mLayerManager->setEditor( mEditor );
+    mLayerManager->init();
 }
 
 void TestLayerManager::cleanupTestCase()
 {
+    delete mEditor;
+}
+
+void TestLayerManager::testEmptyLayer()
+{
+    QCOMPARE( mLayerManager->count(), 0 );
 }

@@ -186,7 +186,7 @@ private:
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
 
-    int mFrame; // current frame number.
+    int mFrame = 1; // current frame number.
 
     ScribbleArea* mScribbleArea = nullptr;
 
