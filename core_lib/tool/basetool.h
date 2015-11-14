@@ -42,7 +42,7 @@ public:
     static qreal OriginalSettingValue;  // start from previous value (width, or feather ...)
 
     explicit BaseTool( QObject* parent = 0 );
-    void initialize( Editor* editor, ScribbleArea* );
+    void initialize( Editor* editor );
 
     QString typeName() { return TypeName( type() ); }
 
@@ -90,7 +90,6 @@ public:
 
 protected:
     Editor* editor() { return mEditor; }
-
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;

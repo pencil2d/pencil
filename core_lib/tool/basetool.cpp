@@ -33,8 +33,7 @@ QString BaseTool::TypeName( ToolType type )
     return map->value( type );
 }
 
-BaseTool::BaseTool( QObject *parent ) :
-QObject( parent )
+BaseTool::BaseTool( QObject *parent ) : QObject( parent )
 {
     m_enabledProperties.insert( WIDTH,          false  );
     m_enabledProperties.insert( FEATHER,        false  );
@@ -45,15 +44,13 @@ QObject( parent )
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
 }
 
-
 QCursor BaseTool::cursor()
 {
     return Qt::ArrowCursor;
 }
 
-void BaseTool::initialize( Editor* editor, ScribbleArea* pScribbleArea )
+void BaseTool::initialize( Editor* editor )
 {
-    Q_ASSERT( pScribbleArea );
     Q_ASSERT( editor );
 
     if ( editor == NULL )
@@ -61,8 +58,8 @@ void BaseTool::initialize( Editor* editor, ScribbleArea* pScribbleArea )
         qCritical( "ERROR: editor is null!" );
     }
     mEditor = editor;
-    mScribbleArea = pScribbleArea;
-    m_pStrokeManager = mScribbleArea->getStrokeManager();
+    mScribbleArea = editor->getScribbleArea();
+    m_pStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
 
     loadSettings();
 }
@@ -88,7 +85,7 @@ void BaseTool::mouseDoubleClickEvent( QMouseEvent *event )
 
 QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn static?
 {
-    Q_ASSERT( mScribbleArea );
+    Q_ASSERT( mEditor->getScribbleArea() );
 
     qreal zoomFactor = editor()->view()->scaling(); //scale factor
 
@@ -136,7 +133,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
     {
         OriginalSettingValue = properties.feather;
     }
-    mScribbleArea->setCursor( cursor() ); // cursor() changes in brushtool, erasertool, ...
+    mEditor->getScribbleArea()->setCursor( cursor() ); // cursor() changes in brushtool, erasertool, ...
 }
 
 void BaseTool::stopAdjusting()
@@ -144,7 +141,7 @@ void BaseTool::stopAdjusting()
     isAdjusting = false;
     adjustmentStep = 0;
     OriginalSettingValue = 0;
-    mScribbleArea->setCursor( cursor() );
+    mEditor->getScribbleArea()->setCursor( cursor() );
 }
 
 void BaseTool::adjustCursor( qreal argOffsetX, qreal argOffsetY ) //offsetx x-lastx ...

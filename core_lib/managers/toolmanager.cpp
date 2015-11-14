@@ -41,7 +41,7 @@ bool ToolManager::init()
 
     foreach( BaseTool* pTool, m_toolSetHash.values() )
     {
-        pTool->initialize( editor(), editor()->getScribbleArea() );
+        pTool->initialize( editor() );
     }
 
     return true;
