@@ -16,6 +16,10 @@ KeyFrame *KeyFrameFactory::create( Layer::LAYER_TYPE eType )
         return new SoundClip;
     case Layer::CAMERA:
         return new Camera;
+    case Layer::MOVIE:
+    case Layer::UNDEFINED:
+        Q_ASSERT( false && "Not supported layer type." );
+        return nullptr;
     }
     Q_ASSERT( false );
     return nullptr;
