@@ -42,7 +42,7 @@ public:
     QDomElement createDomElement(QDomDocument& doc);
     void loadDomElement(QDomElement element);
 
-    void insertCurve(int position, BezierCurve& newCurve, qreal factor);
+    void insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts);
     void addCurve(BezierCurve& newCurve, qreal factor);
     void removeCurveAt(int i);
     void select(QRectF rectangle);
@@ -124,6 +124,7 @@ public:
 
     QList<BezierCurve> m_curves;
     QList<BezierArea> area;
+    QList<int> m_curveDisplayOrders;
 
     qreal getDistance(VertexRef r1, VertexRef r2);
 
@@ -139,6 +140,9 @@ private:
     QTransform selectionTransformation;
 
     QString pointToString(QPoint point);
+
+    void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
+    void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 };
 
 #endif

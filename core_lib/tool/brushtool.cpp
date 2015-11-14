@@ -155,7 +155,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 
             auto pLayerVector = static_cast< LayerVector* >( layer );
             VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-            vectorImage->insertCurve( 0, curve, mEditor->view()->scaling() );
+            vectorImage->insertCurve( 0, curve, mEditor->view()->scaling(), false );
 
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
@@ -250,10 +250,12 @@ void BrushTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
+        qreal brushWidth = properties.width * mCurrentPressure;
+
+        int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         QPen pen( mEditor->color()->frontColor(),
-                  mCurrentWidth * mEditor->view()->scaling(),
+                  brushWidth * mEditor->view()->scaling(),
                   Qt::SolidLine,
                   Qt::RoundCap,
                   Qt::RoundJoin );
