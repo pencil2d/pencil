@@ -16,7 +16,7 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
     
-    void testEmptyLayer();
+    void testNewLayerManager();
     
 private:
     Editor* mEditor = nullptr;

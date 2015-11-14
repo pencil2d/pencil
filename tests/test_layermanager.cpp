@@ -22,7 +22,8 @@ void TestLayerManager::cleanupTestCase()
     delete mEditor;
 }
 
-void TestLayerManager::testEmptyLayer()
+void TestLayerManager::testNewLayerManager()
 {
-    QCOMPARE( mLayerManager->count(), 0 );
+    QCOMPARE( mLayerManager->count(), 3 );
+    QCOMPARE( mLayerManager->currentLayerIndex(), 0 );
 }

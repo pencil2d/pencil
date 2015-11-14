@@ -129,7 +129,7 @@ private:
     QString mstrFilePath;
     QString mstrWorkingDir;
 
-    QList<Layer*> mLayers;
+    QList< Layer* > mLayers;
     bool modified = false;
 
     QList<ColourRef> mPalette;

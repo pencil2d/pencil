@@ -38,7 +38,6 @@ GNU General Public License for more details.
 
 Object::Object( QObject* parent ) : QObject( parent )
 {
-    modified = false;
 }
 
 Object::~Object()
@@ -52,7 +51,7 @@ Object::~Object()
 void Object::init()
 {
     // default layers
-    addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
+    addNewCameraLayer();
     addNewVectorLayer();
     addNewBitmapLayer();
 
@@ -175,7 +174,7 @@ Layer* Object::getLayer( int i )
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
