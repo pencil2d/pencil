@@ -5,10 +5,11 @@
 #include <QObject>
 #include <QMediaPlayer>
 #include "pencilerror.h"
+#include "keyframe.h"
 class SoundClip;
 
 
-class SoundPlayer : public QObject
+class SoundPlayer : public QObject, public KeyFrameEventListener
 {
     Q_OBJECT
 public:
@@ -16,6 +17,8 @@ public:
     ~SoundPlayer();
 
     Status addSound( SoundClip* );
+    
+    void onKeyFrameDestroy( KeyFrame* ) override;
 
 Q_SIGNALS:
     void corruptedSoundFile( SoundClip* );

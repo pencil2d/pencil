@@ -30,5 +30,18 @@ Status SoundPlayer::addSound( SoundClip* clip )
         }
     } );
 
+    clip->addEventListener( this );
+    mSoundClips.push_back( clip );
+
     return Status::OK;
+}
+
+void SoundPlayer::onKeyFrameDestroy( KeyFrame* keyFrame )
+{
+    auto it = std::find( mSoundClips.begin(), mSoundClips.end(), keyFrame );
+
+    if ( it != mSoundClips.end() )
+    {
+        mSoundClips.erase( it );
+    }
 }

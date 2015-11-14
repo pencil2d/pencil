@@ -17,6 +17,12 @@ Status SoundClip::init( QString strSoundFile )
     {
         return Status::ERROR_FILE_NOT_EXIST;
     }
+
+    if ( !fileName().isEmpty() )
+    {
+        return Status::FAIL;
+    }
+
     setFileName( strSoundFile );
     return Status::OK;
 }

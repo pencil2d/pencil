@@ -35,10 +35,13 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     {
         return Status::ERROR_FILE_NOT_EXIST;
     }
-
-    SoundClip* soundClip = new SoundClip;
+    
+    SoundClip* soundClip = soundLayer->getKeyFrameAtPosition( frameNumber );
+    if ( soundClip == nullptr )
+    {
+        soundClip = new SoundClip;
+    }
     soundClip->init( strSoundFile );
-
     Status st = mSoundPlayer->addSound( soundClip );
 
     if ( !st.ok() )
@@ -47,7 +50,12 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         return st;
     }
     
-    soundLayer->addKeyFrame( frameNumber, soundClip );
+    bool bAddOK = soundLayer->addKeyFrame( frameNumber, soundClip );
+    if ( !bAddOK )
+    {
+        delete soundClip;
+        return Status::FAIL;
+    }
 
     return Status::OK;
 }
