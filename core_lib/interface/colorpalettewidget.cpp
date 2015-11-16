@@ -13,7 +13,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtDebug>
+#include <QDebug>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QVBoxLayout>
@@ -53,6 +53,11 @@ ColorPaletteWidget::ColorPaletteWidget( QString strTitle, QWidget* pParent )
 
 void ColorPaletteWidget::initUI()
 {
+    // "Remove color" feature is disabled because
+    // vector strokes that are linked to palette
+    // colors don't handle color removal from palette
+    //
+    ui->removeColorButton->hide();
     updateUI();
 }
 
@@ -85,6 +90,8 @@ int ColorPaletteWidget::currentColourNumber()
 
 void ColorPaletteWidget::refreshColorList()
 {
+    int r, g, b;
+
     if ( ui->colorListWidget->count() > 0)
     {
         ui->colorListWidget->clear();
@@ -93,6 +100,7 @@ void ColorPaletteWidget::refreshColorList()
     for (int i = 0; i < editor()->object()->getColourCount(); i++)
     {
         ColourRef colourRef = editor()->object()->getColour(i);
+
 
         QListWidgetItem* colourItem = new QListWidgetItem( ui->colorListWidget );
         colourItem->setText( colourRef.name );
@@ -171,7 +179,15 @@ void ColorPaletteWidget::clickAddColorButton()
             ref.name = text;
             editor()->object()->addColour(ref);
             refreshColorList();
-            editor()->color()->setColor( editor()->object()->getColourCount() - 1 );
+
+            int colorIndex = editor()->object()->getColourCount() - 1;
+
+            editor()->color()->setColorNumber(colorIndex);
+            editor()->color()->setColor( ref.colour );
+
+            // This is done through editor()->color()->setColorNumber()
+            //
+            //emit colorNumberChanged( colorIndex );
         }
     }
 }

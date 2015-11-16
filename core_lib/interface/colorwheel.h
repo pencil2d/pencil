@@ -13,8 +13,10 @@ public:
     virtual QSize sizeHint () const;
     virtual QSize minimumSizeHint () const;
     QColor color();
+
     
 signals:
+    void colorSelected(const QColor &color);
     void colorChanged(const QColor &color);
     
 public slots:
@@ -28,6 +30,7 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
+    void changeColor(const QColor &color);
     void hueChanged(const int &hue);
     void svChanged(const QColor &newcolor);
 

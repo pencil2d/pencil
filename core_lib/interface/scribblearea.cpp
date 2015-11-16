@@ -1044,19 +1044,21 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     painter.setWorldMatrixEnabled( true );
 
                     // previous frame (onion skin)
-                    if ( isEffectOn( EFFECT_PREV_ONION ) )
+                    if ( isEffectOn( EFFECT_PREV_ONION ) &&  frame > 1 && frame < layerBitmap->getMaxKeyFramePosition()+1)
                     {
                         int prevFramesNum = mEditor->getOnionPrevFramesNum();
                         float onionOpacity = mEditor->getOnionMaxOpacity();
                         
                         for ( int j = 0; j < prevFramesNum; j++ )
                         {
-                            BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -(j + 1) );
-                            if ( previousImage != NULL)
-                            {
-                                painter.setOpacity( opacity * onionOpacity / 100.0 );
-                                previousImage->paintImage( painter );
-                                if ( prevFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                            if ((frame - j) > 1) {
+                                BitmapImage *previousImage = layerBitmap->getLastBitmapImageAtFrame( frame, -(j + 1) );
+                                if ( previousImage != NULL)
+                                {
+                                    painter.setOpacity( opacity * onionOpacity / 100.0 );
+                                    previousImage->paintImage( painter );
+                                    if ( prevFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                                }
                             }
                         }
                         if ( onionBlue || onionRed )
@@ -1074,21 +1076,22 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                             painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
                         }
                     }
-
                     // next frame (onion skin)
-                    if ( isEffectOn( EFFECT_NEXT_ONION ) )
+                    if ( isEffectOn( EFFECT_NEXT_ONION ) && frame < layerBitmap->getMaxKeyFramePosition())
                     {
                         int nextFramesNum = mEditor->getOnionNextFramesNum();
                         float onionOpacity = mEditor->getOnionMaxOpacity();
                         
                         for ( int j = 0; j < nextFramesNum; j++ )
                         {
-                            BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, j + 1 );
-                            if ( nextImage != NULL )
-                            {
-                                painter.setOpacity( opacity * onionOpacity / 100.0 );
-                                nextImage->paintImage( painter );
-                                if ( nextFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (nextFramesNum - 1);
+                            if ((frame + j) < layerBitmap->getMaxKeyFramePosition()) {
+                                BitmapImage *nextImage = layerBitmap->getLastBitmapImageAtFrame( frame, j + 1 );
+                                if ( nextImage != NULL )
+                                {
+                                    painter.setOpacity( opacity * onionOpacity / 100.0 );
+                                    nextImage->paintImage( painter );
+                                    if ( nextFramesNum != 1 ) onionOpacity -= (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (nextFramesNum - 1);
+                                }
                             }
                         }
                         if ( onionBlue || onionRed )
@@ -1116,7 +1119,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 painter.setWorldMatrixEnabled( false );
 
                 // previous frame (onion skin)
-                if ( isEffectOn( EFFECT_PREV_ONION ) )
+                if ( isEffectOn( EFFECT_PREV_ONION ) &&  frame > 1  && frame < layerVector->getMaxKeyFramePosition()+1)
                 {
                     QTransform viewTransform = mEditor->view()->getView();
                     int prevFramesNum = mEditor->getOnionPrevFramesNum();
@@ -1124,11 +1127,13 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                     
                     for ( int j = 0; j < prevFramesNum; j++ )
                     {
-                        VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -(prevFramesNum - j));
-                        pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
-                        painter.setOpacity( opacity * onionOpacity / 100.0 );
-                        painter.drawImage( QPoint( 0, 0 ), *pImage );
-                        if (prevFramesNum != 1) onionOpacity += (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                        if ((frame - (prevFramesNum - j)) > 0) {
+                            VectorImage* pVectorImage = layerVector->getLastVectorImageAtFrame( frame, -(prevFramesNum - j));
+                            pVectorImage->outputImage( pImage.data(), viewTransform, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                            painter.setOpacity( opacity * onionOpacity / 100.0 );
+                            painter.drawImage( QPoint( 0, 0 ), *pImage );
+                            if (prevFramesNum != 1) onionOpacity += (mEditor->getOnionMaxOpacity() - mEditor->getOnionMinOpacity()) / (prevFramesNum - 1);
+                        }
                     }
                     
                     if ( onionBlue || onionRed )
@@ -1148,7 +1153,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 }
 
                 // next frame (onion skin)
-                if ( isEffectOn( EFFECT_NEXT_ONION ) )
+                if ( isEffectOn( EFFECT_NEXT_ONION ) && frame < layerVector->getMaxKeyFramePosition() )
                 {
                     QTransform viewTransform = mEditor->view()->getView();
                     int nextFramesNum = mEditor->getOnionNextFramesNum();
@@ -1968,4 +1973,9 @@ void ScribbleArea::drawGrid( QPainter& painter )
 	{
 		painter.drawLine( left, y, right, y );
 	}
+}
+
+void ScribbleArea::paletteColorChanged(QColor color)
+{
+    updateAllVectorLayersAtCurrentFrame();
 }
