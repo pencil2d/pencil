@@ -33,6 +33,8 @@ Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
     meType = eType;
     mName = QString( tr( "Undefined Layer" ) );
     
+    mId = pObject->getUniqueLayerID();
+
     addNewEmptyKeyAt( 1 );
 
     Q_ASSERT( eType != UNDEFINED );

@@ -77,8 +77,8 @@ public:
     QString workingDir() const { return mstrWorkingDir; }
     void    setWorkingDir( QString strWorkingDir ) { mstrWorkingDir = strWorkingDir; }
 
-    QDomElement createDomElement( QDomDocument& doc );
-    bool loadDomElement( QDomElement element, QString dataDirPath );
+    QDomElement saveXML( QDomDocument& doc );
+    bool loadXML( QDomElement element, QString dataDirPath );
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
@@ -106,7 +106,6 @@ public:
 
     Layer* getLayer( int i );
     int getLayerCount();
-    int getMaxID();
     void moveLayer( int i, int j );
     void deleteLayer( int i );
 
@@ -125,7 +124,11 @@ public:
     bool isModified() { return modified; }
     void setModified( bool b ) { modified = b; }
 
+    int getUniqueLayerID();
+
 private:
+    int getMaxLayerID();
+
     QString mstrFilePath;
     QString mstrWorkingDir;
 

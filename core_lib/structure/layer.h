@@ -49,7 +49,8 @@ public:
 
     QString mName;
     bool mVisible = true;
-    int mId       = 0;
+
+    int id() { return mId; }
 
     LAYER_TYPE type() { return meType; }
     Object* object() { return mObject; }
@@ -105,10 +106,12 @@ public:
     virtual void editProperties();
 
 protected:
+    void setId( int LayerId ) { mId = LayerId; }
 
 private:
     LAYER_TYPE meType = UNDEFINED;
     Object* mObject   = nullptr;
+    int mId           = 0;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 };

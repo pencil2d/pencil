@@ -106,8 +106,7 @@ bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 
 QString LayerVector::fileName( int frame )
 {
-    int layerID = mId;
-    QString layerNumberString = QString::number(layerID);
+    QString layerNumberString = QString::number( id() );
     QString frameNumberString = QString::number(frame);
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
     while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
@@ -118,10 +117,10 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
 
-    layerTag.setAttribute("id", mId);
-    layerTag.setAttribute("name", mName);
-    layerTag.setAttribute("visibility", mVisible);
-    layerTag.setAttribute("type", type());
+    layerTag.setAttribute( "id", id() );
+    layerTag.setAttribute( "name", mName );
+    layerTag.setAttribute( "visibility", mVisible );
+    layerTag.setAttribute( "type", type() );
 
     foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
@@ -138,7 +137,11 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 
 void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
-    if (!element.attribute("id").isNull()) mId = element.attribute("id").toInt();
+    if ( !element.attribute( "id" ).isNull() )
+    {
+        int id = element.attribute( "id" ).toInt();
+        setId( id );
+    }
     mName = element.attribute("name");
     mVisible = (element.attribute("visibility") == "1");
 

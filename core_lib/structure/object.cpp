@@ -59,7 +59,7 @@ void Object::init()
     loadDefaultPalette();
 }
 
-QDomElement Object::createDomElement( QDomDocument& doc )
+QDomElement Object::saveXML( QDomDocument& doc )
 {
     QDomElement tag = doc.createElement( "object" );
     //qDebug( "  Create Object Node!" );
@@ -76,7 +76,7 @@ QDomElement Object::createDomElement( QDomDocument& doc )
     return tag;
 }
 
-bool Object::loadDomElement( QDomElement docElem, QString dataDirPath )
+bool Object::loadXML( QDomElement docElem, QString dataDirPath )
 {
     if ( docElem.isNull() )
     {
@@ -123,7 +123,6 @@ bool Object::loadDomElement( QDomElement docElem, QString dataDirPath )
 LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap( this );
-    layerBitmap->mId = 1 + getMaxID();
     mLayers.append( layerBitmap );
 
     return layerBitmap;
@@ -132,7 +131,6 @@ LayerBitmap* Object::addNewBitmapLayer()
 LayerVector* Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector( this );
-    layerVector->mId = 1 + getMaxID();
     mLayers.append( layerVector );
 
     return layerVector;
@@ -141,7 +139,6 @@ LayerVector* Object::addNewVectorLayer()
 LayerSound* Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound( this );
-    layerSound->mId = 1 + getMaxID();
     mLayers.append( layerSound );
     return layerSound;
 }
@@ -149,21 +146,28 @@ LayerSound* Object::addNewSoundLayer()
 LayerCamera* Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera( this );
-    layerCamera->mId = 1 + getMaxID();
     mLayers.append( layerCamera );
 
     return layerCamera;
 }
 
-int Object::getMaxID()
+int Object::getMaxLayerID()
 {
-    int result = 0;
+    int maxId = 0;
     for ( int i = 0; i< getLayerCount(); i++ )
     {
         Layer* layeri = getLayer( i );
-        if ( layeri->mId > result ) result = layeri->mId;
+        if ( layeri->id() > maxId )
+        {
+            maxId = layeri->id();
+        }
     }
-    return result;
+    return maxId;
+}
+
+int Object::getUniqueLayerID()
+{
+    return 1 + getMaxLayerID();
 }
 
 Layer* Object::getLayer( int i )

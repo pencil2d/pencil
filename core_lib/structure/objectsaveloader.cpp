@@ -140,7 +140,7 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
         if ( element.tagName() == "object" )
         {
             qCDebug( mLog ) << "Load object";
-            isOK = object->loadDomElement( element, strDataFolder );
+            isOK = object->loadXML( element, strDataFolder );
         }
         else if ( element.tagName() == "editor" )
         {
@@ -157,7 +157,7 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
 
 bool ObjectSaveLoader::loadObjectOldWay( Object* object, const QDomElement& root, const QString& strDataFolder )
 {
-    return object->loadDomElement( root, strDataFolder );
+    return object->loadXML( root, strDataFolder );
 }
 
 bool ObjectSaveLoader::save( Object* object, QString strFileName )
@@ -238,7 +238,7 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
     qCDebug( mLog ) << "Save Editor Node.";
 
     // save object
-    QDomElement objectElement = object->createDomElement( xmlDoc );
+    QDomElement objectElement = object->saveXML( xmlDoc );
     root.appendChild( objectElement );
     qCDebug( mLog ) << "Save Object Node.";
 
