@@ -3,8 +3,7 @@
 #include "colorinspector.h"
 #include "colorbox.h"
 
-ColorBox::ColorBox(QWidget *parent) :
-    QWidget(parent)
+ColorBox::ColorBox(QWidget *parent) : QWidget(parent)
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
@@ -16,10 +15,9 @@ ColorBox::ColorBox(QWidget *parent) :
 
     setLayout(layout);
 
-    connect(m_colorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelChange);
-    connect(m_colorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange);
-
-    connect(m_colorWheel, SIGNAL(colorSelected(QColor)), this, SLOT(onWheelRelease(QColor)));
+    connect( m_colorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove );
+    connect( m_colorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange );
+    connect( m_colorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease );
 
 
     m_colorWheel->setColor(Qt::black);
