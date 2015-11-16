@@ -1825,3 +1825,8 @@ void ScribbleArea::drawGrid( QPainter& painter )
         painter.drawLine( left, y, right, y );
     }
 }
+
+void ScribbleArea::paletteColorChanged(QColor color)
+{
+    updateAllVectorLayersAtCurrentFrame();
+}

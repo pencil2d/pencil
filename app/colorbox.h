@@ -22,7 +22,8 @@ Q_SIGNALS:
 
 private:
     void onSpinboxChange(const QColor &);
-    void onWheelChange(const QColor &);
+    void onWheelMove(const QColor &);
+    void onWheelRelease(const QColor &);
 
     ColorWheel* m_colorWheel = nullptr;
     ColorInspector* m_colorInspector = nullptr;
