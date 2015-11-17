@@ -109,16 +109,16 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
             else
             {
                 QList<QPointF> path = mStrokePoints;
-                //if (path.size() < 10) {
+                if (path.size() < 10) {
                     vectorImage->fill( getLastPoint(),
                                        mEditor->color()->frontColorNumber(),
                                        mEditor->view()->getView(),
                                        mScribbleArea->size(),
                                        3 / mEditor->view()->scaling());
-//                }
-//                else {
-//                    vectorImage->fill(path, mEditor->color()->frontColorNumber());
-//                }
+                }
+                else {
+                    vectorImage->fill(path, mEditor->color()->frontColorNumber(), 10.0);
+                }
             }
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();

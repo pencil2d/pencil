@@ -94,7 +94,7 @@ public:
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fill(QList<QPointF> mousePath, int colour, QTransform view, QSize size);
+    void fill(QList<QPointF> contourPath, int colour, float tolerance);
     void fill(QPointF point, int colour, QTransform view, QSize size, float tolerance);
     void fill(int curveNumber, int colour);
     void addArea(BezierArea bezierArea);
@@ -132,14 +132,11 @@ private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
     void modification();
     bool modified;
-    bool foundEdgeAtPoint( QPoint point, qreal tolerance );
 
     Object* myParent;
 
     QRectF selectionRect;
     QTransform selectionTransformation;
-
-    QString pointToString(QPoint point);
 
     void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
     void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);

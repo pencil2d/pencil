@@ -1266,112 +1266,22 @@ int VectorImage::getCurveSize(int curveNumber)
     }
 }
 
-void VectorImage::fill(QList<QPointF> mousePath, int colour, QTransform view, QSize size)
+void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
 {
-    QList<VertexRef> path;
-    VertexRef vertex, lastVertex;
-    int incr = 0;
-    int n = 0;
-    for(int i=0; i < mousePath.size(); i++)
-    {
-        vertex = getClosestVertexTo(mousePath.at(i), 10.0);
-        if ( vertex.curveNumber != -1 && !path.contains(vertex) )   // we found a point on a curve
-        {
-            if ( path.size() == 0) { path.append(vertex); }
-            else
-            {
-                if ( vertex != lastVertex )   // unnecessary precaution
-                {
-                    if (vertex.curveNumber == lastVertex.curveNumber)   // the two vertices are on the same curve
-                    {
-                        int j1 = lastVertex.vertexNumber;
-                        int j2 = vertex.vertexNumber;
-                        if (incr == 0)   // this is the beginning of a new curve
-                        {
-                            n = m_curves.at(vertex.curveNumber).getVertexSize();
-                            incr = 1;
-                            if ( j2 < j1 ) { incr = -1; }
-                        }
-                        if (incr == 1)
-                        {
-                            if (j1 < j2)
-                            {
-                                // normal case
-                                for(int j=j1; j<j2; j++)
-                                {
-                                    //qDebug() << "[+1] " << (j+1) << " : " << j1 << " -> " << j2;
-                                    VertexRef newVertex = VertexRef(vertex.curveNumber, j+1);
-                                    path.append(newVertex);
-                                }
-                            }
-                            else
-                            {
-                                // special case: we join the tips of the curves
-                                //qDebug() << "Special case +1 " << " : " << j1 << " -> " << j2;
-                                for(int j=j1; j<n-1; j++)
-                                {
-                                    //QList<int> newVertex; newVertex << vertex[0] << (j+1); path.append(newVertex);
-                                    VertexRef newVertex = VertexRef(vertex.curveNumber, j+1);
-                                    path.append(newVertex);
-                                }
-                                for(int j=-2; j<j2; j++)
-                                {
-                                    //QList<int> newVertex; newVertex << vertex[0] << (j+1); path.append(newVertex);
-                                    VertexRef newVertex = VertexRef(vertex.curveNumber, j+1);
-                                    path.append(newVertex);
-                                }
-                            }
-                        }
-                        if (incr == -1)
-                        {
-                            if (j2 < j1)
-                            {
-                                // normal case
-                                for(int j=j1; j>j2; j--)
-                                {
-                                    //qDebug() << "[-1] " << (j-1) << " : " << j1 << " -> " << j2;
-                                    //QList<int> newVertex; newVertex << vertex[0] << (j-1); path.append(newVertex);
-                                    VertexRef newVertex = VertexRef(vertex.curveNumber, j-1);
-                                    path.append(newVertex);
-                                }
-                            }
-                            else
-                            {
-                                // special case: we join the tips of the curves
-                                //qDebug() << "Special case -1 " << " : " << j1 << " -> " << j2;
-                                for(int j=j1; j>-1; j--)
-                                {
-                                    //qDebug() << "[-1] " << (j-1) << " : " << j1 << " -> " << j2;
-                                    //QList<int> newVertex; newVertex << vertex[0] << (j-1); path.append(newVertex);
-                                    VertexRef newVertex = VertexRef(vertex.curveNumber, j+1);
-                                    path.append(newVertex);
-                                }
-                                for(int j=n; j>j2; j--)
-                                {
-                                    //qDebug() << "[-1] " << (j-1) << " : " << j1 << " -> " << j2;
-                                    //QList<int> newVertex; newVertex << vertex[0] << (j-1); path.append(newVertex);
-                                    VertexRef newVertex = VertexRef(vertex.curveNumber, j+1);
-                                    path.append(newVertex);
-                                }
-                            }
-                        }
-                    }
-                    else     // the two vertices are not on the same curve
-                    {
-                        incr = 0;
-                        path.append(vertex);
-                    }
-                }
-            }
-            lastVertex = vertex;
+    QList<VertexRef> vertexPath;
+
+    for (QPointF point : contourPath) {
+        VertexRef vertex = getClosestVertexTo(point, tolerance);
+        if (vertex.curveNumber != -1 && !vertexPath.contains(vertex)) {
+            vertexPath.append(vertex);
         }
     }
-    BezierArea bezierArea(path, colour);
+
+    BezierArea bezierArea(vertexPath, colour);
     addArea( bezierArea );
     modification();
-    //qDebug() << path;
-    //return path;
 }
+
 
 QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTransform view, QSize size, float tolerance)
 {
@@ -1566,26 +1476,17 @@ void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, f
         return;
     }
 
-    // Check if we clicked on an area.
+    // Check if we clicked on an area of the same color.
+    // We don't want to create another area.
     //
-//    int areaNum = getLastAreaNumber(point);
-//    if (areaNum > -1) {
-//        area[areaNum].setColourNumber(colour);
-//    }
+    int areaNum = getLastAreaNumber(point);
+    if (areaNum > -1 && area[areaNum].colourNumber == colour) {
+        return;
+    }
 
     // Get the contour points
     //
     QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour, view, size, tolerance);
-
-/* ////////////////////////////////////////
-    // Used to debug
-
-    BezierCurve curve( contourPoints );
-    curve.setWidth( 2.0 );
-    curve.setInvisibility( false );
-    curve.setColourNumber( colour );
-    addCurve(curve, 1.0);
-/////////////////////////////////////////*/
 
     // Make a path from the external contour points.
     // Put the points in the right order.
@@ -1656,26 +1557,12 @@ void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, f
     }
 
 
-
-
     // Add exclude paths
+
 
     // Fill the path
     if (completedPath) {
-        QList<VertexRef> vertexPath;
-
-        for (QPointF point : mainContourPath) {
-            VertexRef vertex = getClosestVertexTo(point, 10.0);
-            if (vertex.curveNumber != -1 && !vertexPath.contains(vertex)) {
-                vertexPath.append(vertex);
-            }
-        }
-
-        BezierArea bezierArea(vertexPath, colour);
-        addArea( bezierArea );
-        modification();
-
-        //fill(mainContourPath, colour);
+        fill(mainContourPath, colour, tolerance);
     }
 
 
@@ -1798,17 +1685,3 @@ qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)
 }
 
 
-
-bool VectorImage::foundEdgeAtPoint( QPoint point, qreal tolerance ) {
-
-    QList<int> curves = getCurvesCloseTo( point, tolerance );
-    if (curves.size() > 0) {
-        return true;
-    }
-    return false;
-}
-
-QString VectorImage::pointToString(QPoint point) {
-    QString pointString = QString::number(point.x()) % "_" % QString::number(point.y());
-    return pointString;
-}
