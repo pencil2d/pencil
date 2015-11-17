@@ -16,7 +16,10 @@ private slots:
 
     void testCase1();
     void testAddBitmapLayer();
-
+    void testAddVectorLayer();
+    void testAddCameraLayer();
+    void testAddSoundLayer();
+    
 private:
 };
 
