@@ -1266,12 +1266,13 @@ int VectorImage::getCurveSize(int curveNumber)
     }
 }
 
-void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
+void VectorImage::fill(QList<QPointF> contourPath, int colour, float scaling, float tolerance)
 {
     QList<VertexRef> vertexPath;
 
     for (QPointF point : contourPath) {
-        VertexRef vertex = getClosestVertexTo(point, tolerance);
+        QPointF unscaledPoint(point.x() / scaling, point.y() / scaling);
+        VertexRef vertex = getClosestVertexTo(unscaledPoint, tolerance / scaling);
         if (vertex.curveNumber != -1 && !vertexPath.contains(vertex)) {
             vertexPath.append(vertex);
         }
@@ -1283,7 +1284,7 @@ void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
 }
 
 
-QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTransform view, QSize size, float tolerance)
+QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTransform view, QSize size, float scaling, float tolerance)
 {
     int error = -1;
 
@@ -1306,9 +1307,12 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
     // To keep track of the highest y contour point to make sure it is on the main contour and not inside.
     int highestY = point.y();
 
-    // Convert point to image coordinates
-    QPoint startPoint((maxWidth / 2) + point.x(), (maxHeight / 2) + point.y());
-    queue.append( startPoint );
+    // Convert point to image coordinates as the image doesn't have the same coordinates origin as the
+    // QWidget view
+    //
+    QPointF unscaledPoint((point.x() / scaling), (point.y() / scaling));
+    QPointF startPoint((maxWidth / 2) + point.x(), (maxHeight / 2) + point.y());
+    queue.append( startPoint.toPoint() );
 
 
     // Check the colour of the clicked point
@@ -1344,7 +1348,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
 
                 // Are we getting to the end of the document ?
                 //
-                if ( leftX < 1) {
+                if ( leftX < 0) {
                     error = 1;
                     qWarning() << " Out of bound left ";
                     QList<QPointF> emptylist;
@@ -1371,7 +1375,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
 
                 // Are we getting to the end of the document ?
                 //
-                if ( rightX > maxWidth - 1) {
+                if ( rightX > maxWidth) {
                     error = 1;
                     qWarning() << " Out of bound right ";
                     QList<QPointF> emptylist;
@@ -1395,7 +1399,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
             int topY = lineY - 1;
             int bottomY = lineY + 1;
 
-            if ( topY < 1 || bottomY > maxHeight - 1 ) {
+            if ( topY < 0 || bottomY > maxHeight ) {
                 error = 1;
                 qWarning() << " Out of bound top / bottom ";
                 QList<QPointF> emptylist;
@@ -1458,11 +1462,12 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
     return contourPoints;
 }
 
-void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, float tolerance)
+void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, float scaling, float tolerance)
 {
+
     // Check if we clicked on a curve. In that case, we change its color.
     //
-    QList<int> closestCurves = getCurvesCloseTo( point, tolerance );
+    QList<int> closestCurves = getCurvesCloseTo( point, tolerance / scaling );
 
     if (closestCurves.size() > 0) // the user click on one or more curves
     {
@@ -1486,7 +1491,7 @@ void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, f
 
     // Get the contour points
     //
-    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour, view, size, tolerance);
+    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour, view, size, scaling, tolerance);
 
     // Make a path from the external contour points.
     // Put the points in the right order.
@@ -1558,11 +1563,15 @@ void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, f
 
 
     // Add exclude paths
-
+//    BezierCurve curve( mainContourPath );
+//    curve.setWidth( 2.0 );
+//    curve.setInvisibility( false );
+//    curve.setColourNumber( colour );
+//    addCurve(curve, 1.0);
 
     // Fill the path
     if (completedPath) {
-        fill(mainContourPath, colour, tolerance);
+        fill(mainContourPath, colour, scaling, tolerance);
     }
 
 
