@@ -949,9 +949,8 @@ void VectorImage::paintImage(QPainter& painter,
     for ( BezierCurve curve : m_curves )
     {
         curve.drawPath( painter, myParent, selectionTransformation, simplified, showThinCurves );
+        painter.setClipping(false);
     }
-    
-    painter.setClipping(false);
 }
 
 void VectorImage::outputImage(QImage* image,
@@ -1267,7 +1266,7 @@ int VectorImage::getCurveSize(int curveNumber)
     }
 }
 
-void VectorImage::fill(QList<QPointF> mousePath, int colour)
+void VectorImage::fill(QList<QPointF> mousePath, int colour, QTransform view, QSize size)
 {
     QList<VertexRef> path;
     VertexRef vertex, lastVertex;
@@ -1374,7 +1373,182 @@ void VectorImage::fill(QList<QPointF> mousePath, int colour)
     //return path;
 }
 
-void VectorImage::fill(QPointF point, int colour, float tolerance)
+QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTransform view, QSize size, float tolerance)
+{
+    int error = -1;
+
+    // We get the contour points from a bitmap version of the vector layer as it is much faster to process
+    //
+    QImage* image = new QImage( size, QImage::Format_ARGB32_Premultiplied );
+    image->fill(qRgba(0,0,0,0));
+    QPainter painter( image );
+    painter.setTransform( view );
+    paintImage( painter, true, true, true );
+
+
+    QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
+    //QHash<QString, bool> checkedPointRefs; // a ref to all the pixels of the filled area. They are at true if they have been chaecked.
+    QList<QPointF> contourPoints; // refs of points near the contour pixels
+
+    qreal maxWidth = size.width();
+    qreal maxHeight = size.height();
+
+    // To keep track of the highest y contour point to make sure it is on the main contour and not inside.
+    int highestY = point.y();
+
+    // Convert point to image coordinates
+    QPoint startPoint((maxWidth / 2) + point.x(), (maxHeight / 2) + point.y());
+    queue.append( startPoint );
+
+
+    // Check the colour of the clicked point
+    QRgb clickedColor = image->pixel(startPoint.x(), startPoint.y());
+    QRgb targetColor = getColour(colour).rgb();
+
+
+    // ----- flood fill and remember the contour pixels -> contourPixels
+    // ----- from the standard flood fill algorithm
+    // ----- http://en.wikipedia.org/wiki/Flood_fill
+    //
+    while ( queue.size() > 0 )
+    {
+        // Get the first point in the queue
+        QPoint currentPoint = queue.at(0);
+
+        // Remove this point from the queue as we process it.
+        queue.removeAt(0);
+
+        // Inspect a line from edge to edge
+
+        if (image->pixel(currentPoint.x(), currentPoint.y()) == clickedColor) {
+
+            int leftX = currentPoint.x();
+            int rightX = currentPoint.x();
+
+            bool foundLeftBound = false;
+            bool foundRightBound = false;
+
+
+            while (!foundLeftBound) {
+                leftX--;
+
+                // Are we getting to the end of the document ?
+                //
+                if ( leftX < 1) {
+                    error = 1;
+                    qWarning() << " Out of bound left ";
+                    QList<QPointF> emptylist;
+                    return emptylist;
+                }
+
+                QPoint leftPoint = QPoint(leftX, currentPoint.y());
+
+                // Are we getting to a curve ?
+                //
+                if ( image->pixel(leftPoint.x(), leftPoint.y()) != clickedColor &&
+                     image->pixel(leftPoint.x(), leftPoint.y()) != targetColor ) {
+
+                    // Convert point to view coordinates
+                    QPointF contourPoint( leftPoint.x() - (maxWidth / 2), leftPoint.y() - (maxHeight / 2));
+
+                    contourPoints.append(contourPoint);
+                    foundLeftBound = true;
+                }
+            }
+
+            while (!foundRightBound) {
+                rightX++;
+
+                // Are we getting to the end of the document ?
+                //
+                if ( rightX > maxWidth - 1) {
+                    error = 1;
+                    qWarning() << " Out of bound right ";
+                    QList<QPointF> emptylist;
+                    return emptylist;
+                }
+
+                QPoint rightPoint = QPoint(rightX, currentPoint.y());
+
+                // Are we getting to a curve ?
+                //
+                if ( image->pixel(rightPoint.x(), rightPoint.y()) != clickedColor &&
+                     image->pixel(rightPoint.x(), rightPoint.y()) != targetColor) {
+
+                    QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
+                    contourPoints.append(contourPoint);
+                    foundRightBound = true;
+                }
+            }
+
+            int lineY = currentPoint.y();
+            int topY = lineY - 1;
+            int bottomY = lineY + 1;
+
+            if ( topY < 1 || bottomY > maxHeight - 1 ) {
+                error = 1;
+                qWarning() << " Out of bound top / bottom ";
+                QList<QPointF> emptylist;
+                return emptylist;
+            }
+
+            // Check if top point relative to left point is to be filled
+            //
+            for (int x = leftX + 1; x < rightX; x++) {
+
+                // The current line point is checked (Coloured)
+                //
+                QPoint linePoint = QPoint(x, lineY);
+                image->setPixel(linePoint.x(), linePoint.y(), targetColor);
+
+                // Top point
+                //
+                QPoint topPoint = QPoint(x, topY);
+
+                if ( image->pixel(topPoint.x(), topPoint.y()) != clickedColor &&
+                     image->pixel(topPoint.x(), topPoint.y()) != targetColor) {
+
+                    QPointF contourPoint( topPoint.x() - (maxWidth / 2), topPoint.y() - (maxHeight / 2));
+                    contourPoints.append(contourPoint);
+                }
+                else {
+                    queue.append(topPoint);
+                }
+
+                // Bottom point
+                //
+                QPoint bottomPoint = QPoint(x, bottomY);
+
+                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != clickedColor &&
+                     image->pixel(bottomPoint.x(), bottomPoint.y()) != targetColor ) {
+
+
+                    QPointF contourPoint( bottomPoint.x() - (maxWidth / 2), bottomPoint.y() - (maxHeight / 2));
+
+                    // Keep track of the highest Y position (lowest point) at the beginning of the list
+                    // so that we can parse the list from a point that is a real extremity.
+                    // of the area.
+                    //
+                    if (highestY < bottomY) {
+
+                        highestY = bottomY;
+                        contourPoints.insert(0, contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
+                }
+                else {
+                    queue.append(bottomPoint);
+                }
+            }
+        }
+    }
+
+    return contourPoints;
+}
+
+void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, float tolerance)
 {
     // Check if we clicked on a curve. In that case, we change its color.
     //
@@ -1394,12 +1568,121 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
 
     // Check if we clicked on an area.
     //
-    int areaNum = getLastAreaNumber(point);
-    if (areaNum > -1) {
-        area[areaNum].setColourNumber(colour);
+//    int areaNum = getLastAreaNumber(point);
+//    if (areaNum > -1) {
+//        area[areaNum].setColourNumber(colour);
+//    }
+
+    // Get the contour points
+    //
+    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour, view, size, tolerance);
+
+/* ////////////////////////////////////////
+    // Used to debug
+
+    BezierCurve curve( contourPoints );
+    curve.setWidth( 2.0 );
+    curve.setInvisibility( false );
+    curve.setColourNumber( colour );
+    addCurve(curve, 1.0);
+/////////////////////////////////////////*/
+
+    // Make a path from the external contour points.
+    // Put the points in the right order.
+    //
+    QList<QPointF> mainContourPath;
+    QPointF currentPoint;
+
+    if (contourPoints.size() > 0) {
+        currentPoint = QPointF(contourPoints[0].x(), contourPoints[0].y());
+        mainContourPath.append(currentPoint);
+        contourPoints.removeAt(0);
     }
+
+    bool completedPath = false;
+    bool foundError = (contourPoints.size() < 1 && !completedPath);
+
+    while (!completedPath && !foundError) {
+
+        bool foundNextPoint = false;
+
+        int i = 0;
+        while (i < contourPoints.size() && !foundNextPoint) {
+            QPointF point = contourPoints.at(i);
+
+            if (mainContourPath.contains(point)) {
+                contourPoints.removeAt(i);
+            }
+            else {
+                qreal deltaX = currentPoint.x() - point.x();
+                qreal deltaY = currentPoint.y() - point.y();
+
+                if ( (deltaX < 2 && deltaX > -2) &&
+                     (deltaY < 2 && deltaY > -2)) {
+
+                    currentPoint = QPointF(point.x(), point.y());
+                    mainContourPath.append(currentPoint);
+                    contourPoints.removeAt(i);
+
+                    foundNextPoint = true;
+                }
+                i++;
+            }
+        }
+
+        // Check if we have looped
+        //
+        if (!foundNextPoint) {
+
+            qreal deltaX = currentPoint.x() - mainContourPath[0].x();
+            qreal deltaY = currentPoint.y() - mainContourPath[0].y();
+
+            if ( (deltaX < 2 && deltaX > -2) &&
+                 (deltaY < 2 && deltaY > -2)) {
+                completedPath = true;
+                foundNextPoint = true;
+            }
+            else {
+                qWarning() << " couldn't find next point after " << currentPoint.x() << ", " << currentPoint.y();
+            }
+        }
+        else if (contourPoints.size() < 1) {
+            // If we found the next point and we have no more points, it means, we have the end of the path
+            completedPath = true;
+            foundNextPoint = true;
+        }
+
+        foundError = ( (contourPoints.size() < 1 && !completedPath) || !foundNextPoint );
+    }
+
+
+
+
+    // Add exclude paths
+
+    // Fill the path
+    if (completedPath) {
+        QList<VertexRef> vertexPath;
+
+        for (QPointF point : mainContourPath) {
+            VertexRef vertex = getClosestVertexTo(point, 10.0);
+            if (vertex.curveNumber != -1 && !vertexPath.contains(vertex)) {
+                vertexPath.append(vertex);
+            }
+        }
+
+        BezierArea bezierArea(vertexPath, colour);
+        addArea( bezierArea );
+        modification();
+
+        //fill(mainContourPath, colour);
+    }
+
+
 }
 
+// Creates an area based on the contour of a curve
+//
 void VectorImage::fill(int curveNumber, int colour)
 {
     BezierArea bezierArea(getCurveVertices(curveNumber), colour);
@@ -1517,11 +1800,6 @@ qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)
 
 
 bool VectorImage::foundEdgeAtPoint( QPoint point, qreal tolerance ) {
-
-//    if ( point.x() == 500 || point.x() == -500 || point.y() == 500 || point.y() == -500 ) {
-//        return true;
-//    }
-//    return false;
 
     QList<int> curves = getCurvesCloseTo( point, tolerance );
     if (curves.size() > 0) {
