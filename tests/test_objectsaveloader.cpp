@@ -1,7 +1,7 @@
 
 #include "objectsaveloader.h"
 #include "test_objectsaveloader.h"
-
+#include "util.h"
 
 void TestObjectSaveLoader::testCase1()
 {
@@ -17,7 +17,7 @@ void TestObjectSaveLoader::testNotExistFile()
     Object* pObject = pSaveLoader.load( strDummyPath );
 
     QVERIFY2( pObject == NULL, "File doesn't exist.");
-    QVERIFY2( pSaveLoader.error().code() == Status::ERROR_FILE_NOT_EXIST, "" );
+    QVERIFY2( pSaveLoader.error().code() == Status::FILE_NOT_FOUND, "" );
 }
 
 void TestObjectSaveLoader::testInvalidXML()
@@ -59,6 +59,7 @@ void TestObjectSaveLoader::testInvalidPencilDocument()
 void TestObjectSaveLoader::testMinimalPencilDocument()
 {
     QString strBadXMLPath = QDir::tempPath() + "/minimal.pcl";
+    OnScopeExit( QFile::remove( strBadXMLPath ) );
 
     QFile badXMLFile( strBadXMLPath );
     badXMLFile.open( QIODevice::WriteOnly );

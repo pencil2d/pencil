@@ -33,7 +33,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
 
     if ( !QFile::exists( strSoundFile ) )
     {
-        return Status::ERROR_FILE_NOT_EXIST;
+        return Status::FILE_NOT_FOUND;
     }
     
     KeyFrame* key = soundLayer->getKeyFrameAt( frameNumber );

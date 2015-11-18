@@ -14,13 +14,12 @@ public:
         OK = 0,
         SAFE,
         FAIL,
-        NOT_FOUND,
+        FILE_NOT_FOUND,
         CORRUPTION,
         NOT_SUPPORTED,
         INVALID_ARGUMENT,
 
         // for Object loading
-        ERROR_FILE_NOT_EXIST,
         ERROR_FILE_CANNOT_OPEN,
         ERROR_INVALID_XML_FILE,
         ERROR_INVALID_PENCIL_FILE,

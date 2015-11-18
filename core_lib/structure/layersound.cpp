@@ -64,7 +64,7 @@ Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
 {
     if ( !QFile::exists( strFilePath ) )
     {
-        return Status::NOT_FOUND;
+        return Status::FILE_NOT_FOUND;
     }
     
     QMediaPlayer* pPlayer = new QMediaPlayer( this );

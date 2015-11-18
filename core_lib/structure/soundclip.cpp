@@ -15,7 +15,7 @@ Status SoundClip::init( QString strSoundFile )
 {
     if ( !QFile::exists( strSoundFile ) )
     {
-        return Status::ERROR_FILE_NOT_EXIST;
+        return Status::FILE_NOT_FOUND;
     }
 
     if ( !fileName().isEmpty() )

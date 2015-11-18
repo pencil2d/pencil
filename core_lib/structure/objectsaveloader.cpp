@@ -35,7 +35,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     if ( !QFile::exists( strFileName ) )
     {
         qCDebug( mLog ) << "ERROR - File doesn't exist.";
-        mError = Status::ERROR_FILE_NOT_EXIST;
+        mError = Status::FILE_NOT_FOUND;
         return nullptr;
     }
 

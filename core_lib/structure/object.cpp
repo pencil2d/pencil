@@ -62,16 +62,13 @@ void Object::init()
 QDomElement Object::saveXML( QDomDocument& doc )
 {
     QDomElement tag = doc.createElement( "object" );
-    //qDebug( "  Create Object Node!" );
 
     int layerCount = getLayerCount();
-    //qDebug( "  Total LayerCount = %d", layerCount );
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
         QDomElement layerTag = layer->createDomElement( doc );
         tag.appendChild( layerTag );
-        //qDebug( "  Append Layer %d", i );
     }
     return tag;
 }
@@ -154,12 +151,11 @@ LayerCamera* Object::addNewCameraLayer()
 int Object::getMaxLayerID()
 {
     int maxId = 0;
-    for ( int i = 0; i< getLayerCount(); i++ )
+    for ( Layer* iLayer : mLayers )
     {
-        Layer* layeri = getLayer( i );
-        if ( layeri->id() > maxId )
+        if ( iLayer->id() > maxId )
         {
-            maxId = layeri->id();
+            maxId = iLayer->id();
         }
     }
     return maxId;
@@ -172,14 +168,12 @@ int Object::getUniqueLayerID()
 
 Layer* Object::getLayer( int i )
 {
-    if ( i > -1 && i < getLayerCount() )
-    {
-        return mLayers.at( i );
-    }
-    else
+    if ( i < 0 || i >= getLayerCount() )
     {
         return nullptr;
     }
+
+    return mLayers.at( i );
 }
 
 bool Object::moveLayer( int i, int j )
