@@ -112,13 +112,12 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
                 if (path.size() < 10) {
                     vectorImage->fill( getLastPoint(),
                                        mEditor->color()->frontColorNumber(),
-                                       mEditor->view()->getView(),
-                                       mScribbleArea->size(),
-                                       mEditor->view()->scaling(),
-                                       3);
+                                       3 / mEditor->view()->scaling() );
                 }
                 else {
-                    vectorImage->fill(path, mEditor->color()->frontColorNumber(), mEditor->view()->scaling(), 10.0);
+                    vectorImage->fill( path,
+                                       mEditor->color()->frontColorNumber(),
+                                       10.0 / mEditor->view()->scaling() );
                 }
             }
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );

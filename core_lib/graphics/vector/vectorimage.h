@@ -94,8 +94,8 @@ public:
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fill(QList<QPointF> contourPath, int colour, float scaling, float tolerance);
-    void fill(QPointF point, int colour, QTransform view, QSize size, float scaling, float tolerance);
+    void fill(QList<QPointF> contourPath, int colour, float tolerance);
+    void fill(QPointF point, int colour, float tolerance);
     void fill(int curveNumber, int colour);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
@@ -128,6 +128,8 @@ public:
 
     qreal getDistance(VertexRef r1, VertexRef r2);
 
+    QSize getSize() {return mSize;}
+
 private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
     void modification();
@@ -141,7 +143,9 @@ private:
     void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
     void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 
-    QList<QPointF> getfillContourPoints(QPoint point, int colour, QTransform view, QSize size, float scaling, float tolerance);
+    QList<QPointF> getfillContourPoints(QPoint point, int colour);
+    void updateImageSize(BezierCurve& updatedCurve);
+    QSize mSize;
 };
 
 #endif

@@ -251,7 +251,7 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
     }
 
 
-
+    updateImageSize(newCurve);
     modification();
     //QPainter painter(&image);
     //painter.setRenderHint(QPainter::Antialiasing, true);
@@ -989,7 +989,10 @@ void VectorImage::applySelectionTransformation(QTransform transf)
 {
     for(int i=0; i< m_curves.size(); i++)
     {
-        if ( m_curves.at(i).isPartlySelected()) m_curves[i].transform(transf);
+        if ( m_curves.at(i).isPartlySelected()) {
+            m_curves[i].transform(transf);
+
+        }
     }
     calculateSelectionRect();
     selectionTransformation.reset();
@@ -1266,13 +1269,12 @@ int VectorImage::getCurveSize(int curveNumber)
     }
 }
 
-void VectorImage::fill(QList<QPointF> contourPath, int colour, float scaling, float tolerance)
+void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
 {
     QList<VertexRef> vertexPath;
 
     for (QPointF point : contourPath) {
-        QPointF unscaledPoint(point.x() / scaling, point.y() / scaling);
-        VertexRef vertex = getClosestVertexTo(unscaledPoint, tolerance / scaling);
+        VertexRef vertex = getClosestVertexTo(point, tolerance);
         if (vertex.curveNumber != -1 && !vertexPath.contains(vertex)) {
             vertexPath.append(vertex);
         }
@@ -1284,16 +1286,21 @@ void VectorImage::fill(QList<QPointF> contourPath, int colour, float scaling, fl
 }
 
 
-QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTransform view, QSize size, float scaling, float tolerance)
+QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
 {
     int error = -1;
 
     // We get the contour points from a bitmap version of the vector layer as it is much faster to process
     //
-    QImage* image = new QImage( size, QImage::Format_ARGB32_Premultiplied );
+    QImage* image = new QImage( mSize, QImage::Format_ARGB32_Premultiplied );
     image->fill(qRgba(0,0,0,0));
     QPainter painter( image );
-    painter.setTransform( view );
+
+    // Adapt the QWidget view coordinates to the QImage coordinates
+    QTransform translate;
+    translate.translate( mSize.width() / 2.f , mSize.height() / 2.f );
+    painter.setTransform( translate );
+
     paintImage( painter, true, true, true );
 
 
@@ -1301,8 +1308,8 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
     //QHash<QString, bool> checkedPointRefs; // a ref to all the pixels of the filled area. They are at true if they have been chaecked.
     QList<QPointF> contourPoints; // refs of points near the contour pixels
 
-    qreal maxWidth = size.width();
-    qreal maxHeight = size.height();
+    qreal maxWidth = mSize.width();
+    qreal maxHeight = mSize.height();
 
     // To keep track of the highest y contour point to make sure it is on the main contour and not inside.
     int highestY = point.y();
@@ -1310,7 +1317,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
     // Convert point to image coordinates as the image doesn't have the same coordinates origin as the
     // QWidget view
     //
-    QPointF unscaledPoint((point.x() / scaling), (point.y() / scaling));
     QPointF startPoint((maxWidth / 2) + point.x(), (maxHeight / 2) + point.y());
     queue.append( startPoint.toPoint() );
 
@@ -1348,7 +1354,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
 
                 // Are we getting to the end of the document ?
                 //
-                if ( leftX < 0) {
+                if ( leftX < 1) {
                     error = 1;
                     qWarning() << " Out of bound left ";
                     QList<QPointF> emptylist;
@@ -1375,7 +1381,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
 
                 // Are we getting to the end of the document ?
                 //
-                if ( rightX > maxWidth) {
+                if ( rightX > maxWidth - 1 ) {
                     error = 1;
                     qWarning() << " Out of bound right ";
                     QList<QPointF> emptylist;
@@ -1399,7 +1405,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
             int topY = lineY - 1;
             int bottomY = lineY + 1;
 
-            if ( topY < 0 || bottomY > maxHeight ) {
+            if ( topY < 1 || bottomY > maxHeight - 1 ) {
                 error = 1;
                 qWarning() << " Out of bound top / bottom ";
                 QList<QPointF> emptylist;
@@ -1462,12 +1468,14 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour, QTran
     return contourPoints;
 }
 
-void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, float scaling, float tolerance)
+void VectorImage::fill(QPointF point, int colour, float tolerance)
 {
+
+
 
     // Check if we clicked on a curve. In that case, we change its color.
     //
-    QList<int> closestCurves = getCurvesCloseTo( point, tolerance / scaling );
+    QList<int> closestCurves = getCurvesCloseTo( point, tolerance );
 
     if (closestCurves.size() > 0) // the user click on one or more curves
     {
@@ -1491,7 +1499,8 @@ void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, f
 
     // Get the contour points
     //
-    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour, view, size, scaling, tolerance);
+
+    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour);
 
     // Make a path from the external contour points.
     // Put the points in the right order.
@@ -1563,15 +1572,11 @@ void VectorImage::fill(QPointF point, int colour, QTransform view, QSize size, f
 
 
     // Add exclude paths
-//    BezierCurve curve( mainContourPath );
-//    curve.setWidth( 2.0 );
-//    curve.setInvisibility( false );
-//    curve.setColourNumber( colour );
-//    addCurve(curve, 1.0);
+
 
     // Fill the path
     if (completedPath) {
-        fill(mainContourPath, colour, scaling, tolerance);
+        fill(mainContourPath, colour, tolerance);
     }
 
 
@@ -1693,4 +1698,43 @@ qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)
     return dist;
 }
 
+void VectorImage::updateImageSize(BezierCurve& updatedCurve) {
 
+    // Set the current width of the document based on the extremity of the drawing.
+    //
+    // It calculates the size of the document in a way that the center point from
+    // the view (0, 0) is always the center point of the document.
+    //
+    // It adds a point to the 4 sides of the document size in order
+    // make sure that any curve, any vertex stays within the document.
+    //
+
+    QRectF rect = updatedCurve.getBoundingRect();
+
+    QPoint topLeft      = rect.topLeft().toPoint();
+    QPoint bottomRight  = rect.bottomRight().toPoint();
+
+    int widthFromLeft = ((topLeft.x() * -1) * 2) + 2;
+
+    if (widthFromLeft > mSize.width()) {
+        mSize.setWidth(widthFromLeft);
+    }
+
+    int widthFromRight = (bottomRight.x() * 2) + 2;
+
+    if (widthFromRight > mSize.width()) {
+        mSize.setWidth(widthFromRight);
+    }
+
+    int heightFromTop = ((topLeft.y() * -1) * 2) + 2;
+
+    if (heightFromTop > mSize.height()) {
+        mSize.setHeight(heightFromTop);
+    }
+
+    int heightFromBottom = (bottomRight.y() * 2) + 2;
+
+    if (heightFromBottom > mSize.height()) {
+        mSize.setHeight(heightFromBottom);
+    }
+}
