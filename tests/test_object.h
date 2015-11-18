@@ -20,6 +20,8 @@ private slots:
     void testAddCameraLayer();
     void testAddSoundLayer();
     
+    void testAddMoreLayers();
+
 private:
 };
 

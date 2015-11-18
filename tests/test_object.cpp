@@ -72,3 +72,21 @@ void TestObject::testAddSoundLayer()
     QCOMPARE( layer->type(), Layer::SOUND );
 }
 
+
+void TestObject::testAddMoreLayers()
+{
+    std::unique_ptr< Object > obj( new Object );
+    QCOMPARE( obj->getLayerCount(), 0 );
+
+    obj->addNewSoundLayer();
+    QCOMPARE( obj->getLayerCount(), 1 );
+    QCOMPARE( obj->getLayer( 0 )->type(), Layer::SOUND );
+
+    obj->addNewCameraLayer();
+    QCOMPARE( obj->getLayerCount(), 2 );
+    QCOMPARE( obj->getLayer( 1 )->type(), Layer::CAMERA );
+
+    obj->addNewBitmapLayer();
+    QCOMPARE( obj->getLayerCount(), 3 );
+    QCOMPARE( obj->getLayer( 2 )->type(), Layer::BITMAP );
+}
