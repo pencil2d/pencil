@@ -105,8 +105,8 @@ public:
     LayerCamera* addNewCameraLayer();
 
     Layer* getLayer( int i );
-    int getLayerCount();
-    void moveLayer( int i, int j );
+    int  getLayerCount();
+    bool moveLayer( int i, int j );
     void deleteLayer( int i );
 
     //void playSoundIfAny( int frame, int fps );

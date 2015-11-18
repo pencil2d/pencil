@@ -106,3 +106,18 @@ void TestObject::testLayerID()
     QCOMPARE( vectorLayer->id(), 2 );
     QCOMPARE( obj->getUniqueLayerID(), 3 );
 }
+
+void TestObject::testMoveLayer()
+{
+    std::unique_ptr< Object > obj( new Object );
+
+    obj->addNewBitmapLayer();
+    obj->addNewVectorLayer();
+    QCOMPARE( obj->getLayer( 0 )->id(), 1 );
+    QCOMPARE( obj->getLayer( 1 )->id(), 2 );
+
+    obj->moveLayer( 0, 1 );
+    QCOMPARE( obj->getLayer( 0 )->id(), 2 );
+    QCOMPARE( obj->getLayer( 1 )->id(), 1 );
+
+}

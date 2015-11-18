@@ -182,20 +182,25 @@ Layer* Object::getLayer( int i )
     }
 }
 
-void Object::moveLayer( int i, int j )
+bool Object::moveLayer( int i, int j )
 {
+    if ( i< 0 || i >= mLayers.size() )
+    {
+        return false;
+    }
+
+    if ( j < 0 || j >= mLayers.size() )
+    {
+        return false;
+    }
+
     if ( i != j )
     {
-        mLayers.insert( j, mLayers.at( i ) );
-        if ( i > j )
-        {
-            mLayers.removeAt( i + 1 );
-        }
-        else
-        {
-            mLayers.removeAt( i );
-        }
+        Layer* tmp = mLayers.at( i );
+        mLayers[ i ] = mLayers.at( j );
+        mLayers[ j ] = tmp;
     }
+    return true;
 }
 
 void Object::deleteLayer( int i )

@@ -23,6 +23,7 @@ private slots:
     void testAddMoreLayers();
 
     void testLayerID();
+    void testMoveLayer();
 
 private:
 };
