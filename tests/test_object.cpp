@@ -1,6 +1,9 @@
 #include "test_object.h"
 #include <memory>
 #include "object.h"
+#include "layerbitmap.h"
+#include "layervector.h"
+#include "layersound.h"
 
 
 TestObject::TestObject()
@@ -89,4 +92,17 @@ void TestObject::testAddMoreLayers()
     obj->addNewBitmapLayer();
     QCOMPARE( obj->getLayerCount(), 3 );
     QCOMPARE( obj->getLayer( 2 )->type(), Layer::BITMAP );
+}
+
+void TestObject::testLayerID()
+{
+    std::unique_ptr< Object > obj( new Object );
+
+    Layer* bitmapLayer = obj->addNewBitmapLayer();
+    QCOMPARE( bitmapLayer->id(), 1 );
+    QCOMPARE( obj->getUniqueLayerID(), 2 );
+
+    Layer* vectorLayer = obj->addNewVectorLayer();
+    QCOMPARE( vectorLayer->id(), 2 );
+    QCOMPARE( obj->getUniqueLayerID(), 3 );
 }

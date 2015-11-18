@@ -22,6 +22,8 @@ private slots:
     
     void testAddMoreLayers();
 
+    void testLayerID();
+
 private:
 };
 
