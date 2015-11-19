@@ -1584,7 +1584,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
 
     // Fill the path
     if (completedPath) {
-        fill(mainContourPath, colour, 5.0);
+        fill(mainContourPath, colour, 3.0);
     }
 
 
