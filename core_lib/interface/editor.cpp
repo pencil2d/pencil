@@ -1082,26 +1082,31 @@ void Editor::clearCurrentFrame()
 void Editor::zoomIn()
 {
     view()->scale( 1.2f );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::zoomOut()
 {
     view()->scale( 0.8f );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::rotatecw()
 {
     view()->rotate( 15.f );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::rotateacw()
 {
     view()->rotate( -15.f );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::resetView()
 {
     view()->resetView();
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::importSound( QString filePath )

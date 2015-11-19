@@ -1301,11 +1301,10 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
     translate.translate( mSize.width() / 2.f , mSize.height() / 2.f );
     painter.setTransform( translate );
 
-    paintImage( painter, true, true, true );
+    paintImage( painter, true, true, false );
 
 
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
-    //QHash<QString, bool> checkedPointRefs; // a ref to all the pixels of the filled area. They are at true if they have been chaecked.
     QList<QPointF> contourPoints; // refs of points near the contour pixels
 
     qreal maxWidth = mSize.width();
@@ -1470,9 +1469,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
 
 void VectorImage::fill(QPointF point, int colour, float tolerance)
 {
-
-
-
     // Check if we clicked on a curve. In that case, we change its color.
     //
     QList<int> closestCurves = getCurvesCloseTo( point, tolerance );
@@ -1499,7 +1495,6 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
 
     // Get the contour points
     //
-
     QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour);
 
     // Make a path from the external contour points.
@@ -1517,6 +1512,9 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
     bool completedPath = false;
     bool foundError = (contourPoints.size() < 1 && !completedPath);
 
+    int maxDelta = 2;
+    int minDelta = -2;
+
     while (!completedPath && !foundError) {
 
         bool foundNextPoint = false;
@@ -1532,14 +1530,17 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
                 qreal deltaX = currentPoint.x() - point.x();
                 qreal deltaY = currentPoint.y() - point.y();
 
-                if ( (deltaX < 2 && deltaX > -2) &&
-                     (deltaY < 2 && deltaY > -2)) {
+                if ( (deltaX < maxDelta && deltaX > minDelta) &&
+                     (deltaY < maxDelta && deltaY > minDelta)) {
 
                     currentPoint = QPointF(point.x(), point.y());
                     mainContourPath.append(currentPoint);
                     contourPoints.removeAt(i);
 
                     foundNextPoint = true;
+
+                    maxDelta = 2;
+                    minDelta = -2;
                 }
                 i++;
             }
@@ -1552,9 +1553,16 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
             qreal deltaX = currentPoint.x() - mainContourPath[0].x();
             qreal deltaY = currentPoint.y() - mainContourPath[0].y();
 
-            if ( (deltaX < 2 && deltaX > -2) &&
-                 (deltaY < 2 && deltaY > -2)) {
+            if ( (deltaX < maxDelta && deltaX > minDelta) &&
+                 (deltaY < maxDelta && deltaY > minDelta)) {
                 completedPath = true;
+                foundNextPoint = true;
+            }
+            else if (maxDelta == 2){
+                // Check if we can find the point after
+                //
+                maxDelta = 3;
+                minDelta = -5;
                 foundNextPoint = true;
             }
             else {
@@ -1576,7 +1584,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
 
     // Fill the path
     if (completedPath) {
-        fill(mainContourPath, colour, tolerance);
+        fill(mainContourPath, colour, 5.0);
     }
 
 

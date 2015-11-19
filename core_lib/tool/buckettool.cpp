@@ -112,7 +112,7 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
                 if (path.size() < 10) {
                     vectorImage->fill( getLastPoint(),
                                        mEditor->color()->frontColorNumber(),
-                                       3 / mEditor->view()->scaling() );
+                                       3.0 / mEditor->view()->scaling() );
                 }
                 else {
                     vectorImage->fill( path,
