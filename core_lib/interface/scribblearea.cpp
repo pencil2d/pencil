@@ -1893,7 +1893,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
 
     effects[ EFFECT_AXIS ] = 0;
 
-#define DRAW_AXIS
+//#define DRAW_AXIS
 #ifdef DRAW_AXIS
     effects[ EFFECT_AXIS ] = 1;
 #endif
