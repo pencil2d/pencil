@@ -899,7 +899,7 @@ void VectorImage::removeColour(int index)
 void VectorImage::paintImage(QPainter& painter,
 							 bool simplified,
                              bool showThinCurves,
-							 bool antialiasing )
+                             bool antialiasing )
 {
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
 
@@ -1286,7 +1286,7 @@ void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
 }
 
 
-QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
+QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
 {
     int error = -1;
 
@@ -1321,8 +1321,8 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
 
 
     // Check the colour of the clicked point
-    QRgb clickedColor = image->pixel(startPoint.x(), startPoint.y());
-    QRgb targetColor = getColour(colour).rgb();
+    QRgb colouFrom = image->pixel(startPoint.x(), startPoint.y());
+    QRgb colourTo = Qt::green;
 
 
     // ----- flood fill and remember the contour pixels -> contourPixels
@@ -1339,7 +1339,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
 
         // Inspect a line from edge to edge
 
-        if (image->pixel(currentPoint.x(), currentPoint.y()) == clickedColor) {
+        if (image->pixel(currentPoint.x(), currentPoint.y()) == colouFrom) {
 
             int leftX = currentPoint.x();
             int rightX = currentPoint.x();
@@ -1364,8 +1364,8 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
 
                 // Are we getting to a curve ?
                 //
-                if ( image->pixel(leftPoint.x(), leftPoint.y()) != clickedColor &&
-                     image->pixel(leftPoint.x(), leftPoint.y()) != targetColor ) {
+                if ( image->pixel(leftPoint.x(), leftPoint.y()) != colouFrom &&
+                     image->pixel(leftPoint.x(), leftPoint.y()) != colourTo ) {
 
                     // Convert point to view coordinates
                     QPointF contourPoint( leftPoint.x() - (maxWidth / 2), leftPoint.y() - (maxHeight / 2));
@@ -1391,8 +1391,8 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
 
                 // Are we getting to a curve ?
                 //
-                if ( image->pixel(rightPoint.x(), rightPoint.y()) != clickedColor &&
-                     image->pixel(rightPoint.x(), rightPoint.y()) != targetColor) {
+                if ( image->pixel(rightPoint.x(), rightPoint.y()) != colouFrom &&
+                     image->pixel(rightPoint.x(), rightPoint.y()) != colourTo) {
 
                     QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
                     contourPoints.append(contourPoint);
@@ -1418,14 +1418,14 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
                 // The current line point is checked (Coloured)
                 //
                 QPoint linePoint = QPoint(x, lineY);
-                image->setPixel(linePoint.x(), linePoint.y(), targetColor);
+                image->setPixel(linePoint.x(), linePoint.y(), colourTo);
 
                 // Top point
                 //
                 QPoint topPoint = QPoint(x, topY);
 
-                if ( image->pixel(topPoint.x(), topPoint.y()) != clickedColor &&
-                     image->pixel(topPoint.x(), topPoint.y()) != targetColor) {
+                if ( image->pixel(topPoint.x(), topPoint.y()) != colouFrom &&
+                     image->pixel(topPoint.x(), topPoint.y()) != colourTo) {
 
                     QPointF contourPoint( topPoint.x() - (maxWidth / 2), topPoint.y() - (maxHeight / 2));
                     contourPoints.append(contourPoint);
@@ -1438,8 +1438,8 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point, int colour)
                 //
                 QPoint bottomPoint = QPoint(x, bottomY);
 
-                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != clickedColor &&
-                     image->pixel(bottomPoint.x(), bottomPoint.y()) != targetColor ) {
+                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colouFrom &&
+                     image->pixel(bottomPoint.x(), bottomPoint.y()) != colourTo ) {
 
 
                     QPointF contourPoint( bottomPoint.x() - (maxWidth / 2), bottomPoint.y() - (maxHeight / 2));
@@ -1495,7 +1495,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
 
     // Get the contour points
     //
-    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint(), colour);
+    QList<QPointF> contourPoints = getfillContourPoints(point.toPoint());
 
     // Make a path from the external contour points.
     // Put the points in the right order.
@@ -1582,9 +1582,24 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
     // Add exclude paths
 
 
-    // Fill the path
+    // Fill the path if we have one.
+    //
     if (completedPath) {
         fill(mainContourPath, colour, 3.0);
+    }
+    else {
+        // Check if we clicked on an area in this position and as we couldn't create one,
+        // we update this one. It may be an area drawn from a stroke path.
+        //
+        int areaNum = getLastAreaNumber(point);
+        if (areaNum > -1) {
+
+            int clickedColorNum = area[areaNum].getColourNumber();
+
+            if (clickedColorNum != colour) {
+                area[areaNum].setColourNumber(colour);
+            }
+        }
     }
 
 

@@ -399,7 +399,8 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
             {
                 if (simplified)
                 {
-                    painter.setPen(QPen(QBrush(colour), renderedWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+                    // Set simplified lines to black for the fill function to define contours.
+                    painter.setPen(QPen(QBrush(Qt::black), renderedWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
                 }
                 else
                 {

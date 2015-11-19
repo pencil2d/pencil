@@ -143,7 +143,7 @@ private:
     void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
     void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 
-    QList<QPointF> getfillContourPoints(QPoint point, int colour);
+    QList<QPointF> getfillContourPoints(QPoint point);
     void updateImageSize(BezierCurve& updatedCurve);
     QSize mSize;
 };
