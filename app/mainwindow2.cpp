@@ -457,6 +457,9 @@ bool MainWindow2::openObject( QString strFilePath )
     //qDebug() << "Current File Path=" << object->filePath();
     setWindowTitle( object->filePath() );
 
+    // Refresh the Palette
+    mColorPalette->refreshColorList();
+
     progress.setValue( 100 );
     return true;
 }

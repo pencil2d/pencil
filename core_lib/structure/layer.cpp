@@ -137,12 +137,11 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 
 bool Layer::removeKeyFrame( int position )
 {
-//    if ( position == 1 )
-//    {
-//        // you can't delete 1st frame.
-//        //return true;
-//    }
+    return removeKeyFrame(position, true);
+}
 
+bool Layer::removeKeyFrame( int position, bool reloadFirstFrame )
+{
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
     {
@@ -150,10 +149,10 @@ bool Layer::removeKeyFrame( int position )
         mKeyFrames.erase( it );
     }
 
-    if ( position == 1 )
+    if ( reloadFirstFrame && position == 1 )
     {
-        // you can't delete 1st frame.
-        //return true;
+        // Avoiding having no frame by deleting the first frame.
+        //
         addNewKeyAt( 1 ); // replacing
     }
 

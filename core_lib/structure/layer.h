@@ -75,7 +75,8 @@ public:
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
 
     bool addKeyFrame( int position, KeyFrame* );
-    bool removeKeyFrame( int position );
+    bool removeKeyFrame(int position);
+    bool removeKeyFrame(int position, bool reloadFirstFrame);
     bool swapKeyFrames( int position1, int position2 );
     bool moveKeyFrameForward( int position );
     bool moveKeyFrameBackward( int position );
