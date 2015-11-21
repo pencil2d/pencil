@@ -1281,7 +1281,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 	// --- eo grids
 	if ( isEffectOn( EFFECT_AXIS ) )
 	{
-		drawAxis( painter );
+        //drawAxis( painter );
     }
 
     painter.end();
