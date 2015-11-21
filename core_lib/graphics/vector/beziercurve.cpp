@@ -53,7 +53,13 @@ BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, do
             simplifiedPointList.append(pointList.at(i));
             if (pressureList.size() > i)
             {
-                simplifiedPressureList.append(pressureList.at(i));
+                // Make sure that the stroke point always has a pressure (and a width)
+                //
+                qreal currentPressure = pressureList.at(i);
+                if (currentPressure < 0.1) {
+                    currentPressure = 0.1;
+                }
+                simplifiedPressureList.append(currentPressure);
             }
             else
             {
@@ -393,7 +399,8 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
             {
                 if (simplified)
                 {
-                    painter.setPen(QPen(QBrush(colour), renderedWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
+                    // Set simplified lines to black for the fill function to define contours.
+                    painter.setPen(QPen(QBrush(Qt::black), renderedWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
                 }
                 else
                 {

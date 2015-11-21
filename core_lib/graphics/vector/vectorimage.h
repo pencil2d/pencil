@@ -42,6 +42,7 @@ public:
     QDomElement createDomElement(QDomDocument& doc);
     void loadDomElement(QDomElement element);
 
+    void insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts);
     void addCurve(BezierCurve& newCurve, qreal factor);
     void removeCurveAt(int i);
     void select(QRectF rectangle);
@@ -93,7 +94,9 @@ public:
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void colour(QList<QPointF> mousePath, int colour);
+    void fill(QList<QPointF> contourPath, int colour, float tolerance);
+    void fill(QPointF point, int colour, float tolerance);
+    void fill(int curveNumber, int colour);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);
@@ -103,6 +106,7 @@ public:
 
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
     VertexRef getClosestVertexTo(QPointF thisPoint, qreal maxDistance);
+    QList<VertexRef> getCurveVertices(int curveNumber);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance, QList<VertexRef>* listOfPoints);
     QList<VertexRef> getVerticesCloseTo(VertexRef thisPointRef, qreal maxDistance);
@@ -120,8 +124,11 @@ public:
 
     QList<BezierCurve> m_curves;
     QList<BezierArea> area;
+    QList<int> m_curveDisplayOrders;
 
     qreal getDistance(VertexRef r1, VertexRef r2);
+
+    QSize getSize() {return mSize;}
 
 private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
@@ -132,6 +139,13 @@ private:
 
     QRectF selectionRect;
     QTransform selectionTransformation;
+
+    void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
+    void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
+
+    QList<QPointF> getfillContourPoints(QPoint point);
+    void updateImageSize(BezierCurve& updatedCurve);
+    QSize mSize;
 };
 
 #endif

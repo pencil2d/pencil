@@ -109,6 +109,8 @@ public:
 
     Editor* editor() { return mEditor; }
 
+    void floodFillError( int errorType );
+
 signals:
     void modification();
     void modification( int );

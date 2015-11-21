@@ -1,10 +1,10 @@
 #ifndef BUCKETTOOL_H
 #define BUCKETTOOL_H
 
-#include "basetool.h"
+#include "stroketool.h"
 
 
-class BucketTool : public BaseTool
+class BucketTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -16,6 +16,8 @@ public:
     void mousePressEvent( QMouseEvent * ) override;
     void mouseMoveEvent( QMouseEvent * ) override;
     void mouseReleaseEvent( QMouseEvent * ) override;
+
+    void drawStroke();
 
 signals:
 
