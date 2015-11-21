@@ -45,8 +45,8 @@ class LayerSound : public Layer
 public:
     LayerSound(Object* object);
     ~LayerSound();
-    QDomElement createDomElement(QDomDocument& doc);
-    void loadDomElement(QDomElement element, QString dataDirPath);
+    QDomElement createDomElement(QDomDocument& doc) override;
+    void loadDomElement(QDomElement element, QString dataDirPath) override;
 
     bool addNewKeyAt( int frameNumber ) override;
 
