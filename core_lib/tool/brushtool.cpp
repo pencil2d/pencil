@@ -1,8 +1,9 @@
 
-#include "brushtool.h"
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+
+#include "layervector.h"
 #include "layer.h"
 #include "editor.h"
 #include "pencilsettings.h"
@@ -11,6 +12,8 @@
 #include "layermanager.h"
 #include "scribblearea.h"
 #include "blitrect.h"
+
+#include "brushtool.h"
 
 
 BrushTool::BrushTool( QObject *parent ) :
@@ -139,8 +142,24 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
             mScribbleArea->setAllDirty();
             mScribbleArea->clearBitmapBuffer();
         }
-        else if ( layer->type() == Layer::VECTOR )
+        else if ( layer->type() == Layer::VECTOR && mStrokePoints.size() > -1 )
         {
+            // Clear the temporary pixel path
+            mScribbleArea->clearBitmapBuffer();
+            qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
+            BezierCurve curve( mStrokePoints, mStrokePressures, tol );
+            curve.setWidth( properties.width );
+            curve.setFeather( properties.feather );
+            curve.setInvisibility( false );
+            curve.setVariableWidth( properties.pressure );
+            curve.setColourNumber( mEditor->color()->frontColorNumber() );
+
+            auto pLayerVector = static_cast< LayerVector* >( layer );
+            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+            vectorImage->insertCurve( 0, curve, mEditor->view()->scaling(), false );
+
+            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+            mScribbleArea->setAllDirty();
         }
     }
 
@@ -214,19 +233,18 @@ void BrushTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        QPen pen( Qt::gray, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * qAbs( mEditor->view()->scaling() ) );
+        qreal brushWidth = properties.width * mCurrentPressure;
 
-        //        foreach (QSegment segment, calculateStroke(currentWidth))
-        //        {
-        //            QPointF a = segment.first;
-        //            QPointF b = segment.second;
-        //            m_pScribbleArea->drawLine(a, b, pen, QPainter::CompositionMode_SourceOver);
-        //            m_pScribbleArea->refreshVector(QRect(a.toPoint(), b.toPoint()), rad);
-        //        }
+        int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
+
+        QPen pen( mEditor->color()->frontColor(),
+                  brushWidth * mEditor->view()->scaling(),
+                  Qt::SolidLine,
+                  Qt::RoundCap,
+                  Qt::RoundJoin );
+
         if ( p.size() == 4 )
         {
-            QSizeF size( 2, 2 );
             QPainterPath path( p[ 0 ] );
             path.cubicTo( p[ 1 ],
                           p[ 2 ],

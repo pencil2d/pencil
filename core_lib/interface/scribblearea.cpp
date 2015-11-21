@@ -497,8 +497,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
     mMouseInUse = true;
 
     mStrokeManager->mousePressEvent( event );
-
-    if ( !mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == 0 )
+    if ( mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == false )
     {
         mUsePressure = false;
         mStrokeManager->setPressure( 1.0 );
@@ -1746,7 +1745,7 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
 
     effects[ EFFECT_AXIS ] = 0;
 
-#define DRAW_AXIS
+//#define DRAW_AXIS
 #ifdef DRAW_AXIS
     effects[ EFFECT_AXIS ] = 1;
 #endif
@@ -1829,4 +1828,20 @@ void ScribbleArea::drawGrid( QPainter& painter )
 void ScribbleArea::paletteColorChanged(QColor color)
 {
     updateAllVectorLayersAtCurrentFrame();
+}
+
+
+void ScribbleArea::floodFillError( int errorType )
+{
+    QString message, error;
+    if ( errorType == 1 ) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
+    if ( errorType == 2 || errorType == 3 ) message = "Sorry! This doesn't always work."
+            "Please try again (zoom a bit, click at another location... )<br>"
+            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+
+    if ( errorType == 1 ) { error = "Out of bound."; }
+    if ( errorType == 2 ) { error = "Could not find a closed path."; }
+    if ( errorType == 3 ) { error = "Could not find the root index."; }
+    QMessageBox::warning( this, tr( "Flood fill error" ), message + "<br><br>Error: " + error, QMessageBox::Ok, QMessageBox::Ok );
+    deselectAll();
 }

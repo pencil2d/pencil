@@ -34,7 +34,7 @@ public:
     LayerSound( Object* object );
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath);
+    void loadDomElement(QDomElement element, QString dataDirPath) override;
 
     Status loadSoundAtFrame( QString filePathString, int frame );
 

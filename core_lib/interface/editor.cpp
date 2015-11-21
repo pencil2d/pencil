@@ -1021,14 +1021,17 @@ void Editor::clearCurrentFrame()
 void Editor::rotatecw()
 {
 	view()->rotate( 15.f );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::rotateacw()
 {
 	view()->rotate( -15.f );
+    mScribbleArea->updateAllFrames();
 }
 
 void Editor::resetView()
 {
 	view()->resetView();
+    mScribbleArea->updateAllFrames();
 }

@@ -140,7 +140,7 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
             curve.setWidth( properties.width );
             curve.setFeather( properties.feather );
             curve.setInvisibility( false );
-            curve.setVariableWidth( mScribbleArea->usePressure() );
+            curve.setVariableWidth( properties.pressure );
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
 
             auto pLayerVector = static_cast< LayerVector* >( layer );

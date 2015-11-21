@@ -23,3 +23,6 @@ updateqm.CONFIG += no_link
 QMAKE_EXTRA_COMPILERS += updateqm
 PRE_TARGETDEPS += compiler_updateqm_make_all
 
+SOURCES += \
+    dummy.cpp
+
