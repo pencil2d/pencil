@@ -102,8 +102,22 @@ QCursor BrushTool::cursor()
 
 void BrushTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
+    Layer* layer = mEditor->layers()->currentLayer();
+
+    // In Bitmap mode, the brush tool pressure only handles opacity while the Pen tool
+    // only handles size. Pencil tool handles both.
+
+    QColor currentColor = mEditor->color()->frontColor();
+    currentPressuredColor = currentColor;
+
+    if ( layer->type() == Layer::BITMAP && mScribbleArea->usePressure() && !mouseDevice )
+    {
+        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure * pressure) );
+    }
+
     mCurrentWidth = properties.width;
-    if ( properties.pressure && !mouseDevice )
+
+    if ( layer->type() == Layer::VECTOR && properties.pressure && !mouseDevice )
     {
         mCurrentPressure = pressure;
     }
@@ -214,7 +228,7 @@ void BrushTool::drawStroke()
 
         QRadialGradient radialGrad( QPointF( 0, 0 ), 0.5 * brushWidth );
         mScribbleArea->setGaussianGradient( radialGrad,
-                                            mEditor->color()->frontColor(),
+                                            currentPressuredColor,
                                             opacity,
                                             offset );
 
@@ -236,7 +250,7 @@ void BrushTool::drawStroke()
             mScribbleArea->drawBrush( point,
                                       brushWidth,
                                       offset,
-                                      mEditor->color()->frontColor(),
+                                      currentPressuredColor,
                                       opacity );
 
             if ( i == ( steps - 1 ) )
