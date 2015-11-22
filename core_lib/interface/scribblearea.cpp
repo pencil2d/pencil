@@ -576,7 +576,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
         return;
     }
     // ---
-
+    mCurrentPixel = mStrokeManager->getCurrentPixel();
     mCurrentPoint = mEditor->view()->mapScreenToCanvas( mCurrentPixel );
     //qDebug() << "CurPoint: " << mCurrentPoint;
 
