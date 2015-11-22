@@ -41,7 +41,7 @@ private:
     std::deque<QPointF> strokeQueue;
 
     QTime singleshotTime;
-
+    QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };
     QPointF mCurrentPixel   = { 0, 0 };
     QPointF mLastPixel      = { 0, 0 };

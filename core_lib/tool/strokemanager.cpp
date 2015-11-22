@@ -144,18 +144,22 @@ QList<QPointF> StrokeManager::interpolateStroke()
     QList<QPointF> result;
 
     int time = singleshotTime.elapsed();
-    static const qreal smoothness = 0.5f;
+    static const qreal smoothness = 1.f;
     QLineF line( mLastPixel, mCurrentPixel);
 
 
-    qreal scaleFactor = line.length();
+    qreal scaleFactor = line.length() * 3.f;
 
     if ( !hasTangent && scaleFactor > 0.01f)
     {
         hasTangent = true;
-//        qDebug() << "scaleFactor" << scaleFactor << "current pixel " << m_currentPixel << "last pixel" << m_lastPixel;
+        /*
+        qDebug() << "scaleFactor" << scaleFactor
+                 << "current pixel " << mCurrentPixel
+                 << "last pixel" << mLastPixel;
+         */
         m_previousTangent = (mCurrentPixel - mLastPixel) * smoothness / (3.0 * scaleFactor);
-//        qDebug() << "previous tangent" << m_previousTangent;
+        //qDebug() << "previous tangent" << m_previousTangent;
         QLineF _line(QPointF(0,0), m_previousTangent);
         // don't bother for small tangents, as they can induce single pixel wobbliness
         if (_line.length() < 2) 
@@ -167,22 +171,29 @@ QList<QPointF> StrokeManager::interpolateStroke()
     {
         QPointF c1 = mLastPixel + m_previousTangent * scaleFactor;
         QPointF newTangent = (mCurrentPixel - c1) * smoothness / (3.0 * scaleFactor);
-//        qDebug() << "scalefactor1" << scaleFactor << m_previousTangent << newTangent;
+        //qDebug() << "scalefactor1=" << scaleFactor << m_previousTangent << newTangent;
         if (scaleFactor == 0)
         {
             newTangent = QPointF(0,0);
         }
         else
         {
-            QLineF _line(QPointF(0,0), newTangent);
-            if (_line.length() < 2)
-            {
-                newTangent = QPointF(0,0);
-            }
+            //QLineF _line(QPointF(0,0), newTangent);
+            //if (_line.length() < 2)
+            //{
+            //    newTangent = QPointF(0,0);
+            //}
         }
         QPointF c2 = mCurrentPixel - newTangent * scaleFactor;
+        //c1 = mLastPixel;
+        //c2 = mCurrentPixel;
         result << mLastPixel << c1 << c2 << mCurrentPixel;
-
+        /*
+        qDebug() << mLastPixel
+                 << c1
+                 << c2
+                 << mCurrentPixel;
+         */
         m_previousTangent = newTangent;
     }
 

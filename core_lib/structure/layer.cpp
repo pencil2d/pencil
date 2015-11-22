@@ -408,12 +408,27 @@ void Layer::editProperties()
     }
 }
 
-void Layer::setModified( int position, bool isModified )
+void Layer::setModified( int position, bool )
 {
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
     {
-        KeyFrame* pKeyFrame = it->second;
+        //KeyFrame* pKeyFrame = it->second;
         //pKeyFrame->
     }
+}
+
+bool isLayerPaintable( Layer* layer )
+{
+    Q_ASSERT( layer != nullptr );
+
+    switch ( layer->type() )
+    {
+        case Layer::BITMAP:
+        case Layer::VECTOR:
+            return true;
+        default:
+            break;
+    }
+    return false;
 }

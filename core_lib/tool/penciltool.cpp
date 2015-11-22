@@ -25,8 +25,6 @@ void PencilTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
 
-
-
     QSettings settings( "Pencil", "Pencil" );
     properties.width = settings.value( "pencilWidth" ).toDouble();
     properties.feather = -1; //Feather isn't implemented in the Pencil tool;
@@ -76,7 +74,7 @@ void PencilTool::setPressure( const bool pressure )
     properties.pressure = pressure;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("pencilPressure", pressure);
     settings.sync();
 }
@@ -216,8 +214,10 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
+        mCurrentPressure = 0.5f;
         qreal brushWidth = properties.width * mCurrentPressure;
 
+        currentPressuredColor = Qt::red;
         QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         QBrush brush( currentPressuredColor, Qt::SolidPattern );
         rad = qRound( properties.width / 2 ) + 3;
@@ -234,22 +234,22 @@ void PencilTool::drawStroke()
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
                           p[ 3 ] );
-            //m_pScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
-            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
+            //mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            //mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
 
-            if ( false ) // debug
+            if ( true ) // debug
             {
                 QSizeF size( 2, 2 );
                 QRectF rect( p[ 0 ], size );
 
                 QPen penBlue( Qt::blue );
-
+                QPen penCyan( Qt::cyan );
                 mScribbleArea->mBufferImg->drawRect( rect, Qt::NoPen, QBrush( Qt::red ), QPainter::CompositionMode_Source, false );
                 mScribbleArea->mBufferImg->drawRect( QRectF( p[ 3 ], size ), Qt::NoPen, QBrush( Qt::red ), QPainter::CompositionMode_Source, false );
                 mScribbleArea->mBufferImg->drawRect( QRectF( p[ 1 ], size ), Qt::NoPen, QBrush( Qt::green ), QPainter::CompositionMode_Source, false );
                 mScribbleArea->mBufferImg->drawRect( QRectF( p[ 2 ], size ), Qt::NoPen, QBrush( Qt::green ), QPainter::CompositionMode_Source, false );
                 mScribbleArea->mBufferImg->drawLine( p[ 0 ], p[ 1 ], penBlue, QPainter::CompositionMode_Source, true );
-                mScribbleArea->mBufferImg->drawLine( p[ 2 ], p[ 3 ], penBlue, QPainter::CompositionMode_Source, true );
+                mScribbleArea->mBufferImg->drawLine( p[ 2 ], p[ 3 ], penCyan, QPainter::CompositionMode_Source, true );
                 mScribbleArea->refreshBitmap( QRectF( p[ 0 ], p[ 3 ] ).toRect(), 20 );
                 mScribbleArea->refreshBitmap( rect.toRect(), rad );
             }
