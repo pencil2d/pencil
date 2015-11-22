@@ -35,13 +35,13 @@ void PreferenceManager::turnOff( EFFECT effect )
 
 bool PreferenceManager::isOn( EFFECT effect )
 {
-    int index = static_cast< size_t >( effect );
+    size_t index = static_cast< size_t >( effect );
     return mEffectSet[ index ];
 }
 
 void PreferenceManager::set( EFFECT effect, bool b )
 {
-    int index = static_cast< size_t >( effect );
+    size_t index = static_cast< size_t >( effect );
 
     if ( mEffectSet[ index ] != b )
     {
@@ -57,6 +57,8 @@ void PreferenceManager::set( EFFECT effect, bool b )
             break;
         case EFFECT::BLURRYZOOM:
             settings.setValue ( SETTING_BLURRYZOOM, b );
+            break;
+        default:
             break;
     }
 }

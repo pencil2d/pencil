@@ -60,9 +60,9 @@ public:
 
     void loadImageAtFrame(int, QTransform);
     
-    void editProperties();
-    QDomElement createDomElement(QDomDocument& doc);
-    void loadDomElement(QDomElement element, QString dataDirPath);
+    void editProperties() override;
+    QDomElement createDomElement(QDomDocument& doc) override;
+    void loadDomElement(QDomElement element, QString dataDirPath) override;
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);

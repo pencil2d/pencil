@@ -73,7 +73,7 @@ public:
     void paste(VectorImage);
 
     bool isModified();
-    void setModified(bool);
+    void setModified( bool b = true );
 
     QColor getColour(int i);
     int  getColourNumber(QPointF point);

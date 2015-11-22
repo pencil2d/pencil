@@ -225,15 +225,17 @@ private:
     void initDisplayEffect( std::vector< uint32_t >& );
     std::vector< uint32_t > mEffects;
 
-    bool mKeyboardInUse;
-    bool mMouseInUse;
-    QPointF lastPixel, currentPixel;
-    QPointF lastPoint, currentPoint;
+    bool mKeyboardInUse = false;
+    bool mMouseInUse    = false;
+    QPointF mLastPixel;
+    QPointF mCurrentPixel;
+    QPointF mLastPoint;
+    QPointF mCurrentPoint;
 
     qreal tol;
-    QList<int> closestCurves;
-    QList<VertexRef> closestVertices;
-    QPointF offset;
+    QList<int> mClosestCurves;
+    QList<VertexRef> mClosestVertices;
+    QPointF mOffset;
 
     //instant tool (temporal eg. eraser)
     bool instantTool = false; //whether or not using temporal tool
