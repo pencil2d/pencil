@@ -38,7 +38,6 @@ GNU General Public License for more details.
 
 Object::Object( QObject* parent ) : QObject( parent )
 {
-    modified = false;
 }
 
 Object::~Object()
@@ -52,7 +51,7 @@ Object::~Object()
 void Object::init()
 {
     // default layers
-    addNewCameraLayer();//TODO Add Camera Layer at beginning for Quick Preview
+    addNewCameraLayer();
     addNewVectorLayer();
     addNewBitmapLayer();
 
@@ -60,24 +59,21 @@ void Object::init()
     loadDefaultPalette();
 }
 
-QDomElement Object::createDomElement( QDomDocument& doc )
+QDomElement Object::saveXML( QDomDocument& doc )
 {
     QDomElement tag = doc.createElement( "object" );
-    qDebug( "  Create Object Node!" );
 
     int layerCount = getLayerCount();
-    qDebug( "  Total LayerCount = %d", layerCount );
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
         QDomElement layerTag = layer->createDomElement( doc );
         tag.appendChild( layerTag );
-        qDebug( "  Append Layer %d", i );
     }
     return tag;
 }
 
-bool Object::loadDomElement( QDomElement docElem, QString dataDirPath )
+bool Object::loadXML( QDomElement docElem, QString dataDirPath )
 {
     if ( docElem.isNull() )
     {
@@ -124,7 +120,6 @@ bool Object::loadDomElement( QDomElement docElem, QString dataDirPath )
 LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap( this );
-    layerBitmap->mId = 1 + getMaxID();
     mLayers.append( layerBitmap );
 
     return layerBitmap;
@@ -133,7 +128,6 @@ LayerBitmap* Object::addNewBitmapLayer()
 LayerVector* Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector( this );
-    layerVector->mId = 1 + getMaxID();
     mLayers.append( layerVector );
 
     return layerVector;
@@ -142,7 +136,6 @@ LayerVector* Object::addNewVectorLayer()
 LayerSound* Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound( this );
-    layerSound->mId = 1 + getMaxID();
     mLayers.append( layerSound );
     return layerSound;
 }
@@ -150,49 +143,58 @@ LayerSound* Object::addNewSoundLayer()
 LayerCamera* Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera( this );
-    layerCamera->mId = 1 + getMaxID();
     mLayers.append( layerCamera );
 
     return layerCamera;
 }
 
-int Object::getMaxID()
+int Object::getMaxLayerID()
 {
-    int result = 0;
-    for ( int i = 0; i< getLayerCount(); i++ )
+    int maxId = 0;
+    for ( Layer* iLayer : mLayers )
     {
-        Layer* layeri = getLayer( i );
-        if ( layeri->mId > result ) result = layeri->mId;
+        if ( iLayer->id() > maxId )
+        {
+            maxId = iLayer->id();
+        }
     }
-    return result;
+    return maxId;
+}
+
+int Object::getUniqueLayerID()
+{
+    return 1 + getMaxLayerID();
 }
 
 Layer* Object::getLayer( int i )
 {
-    if ( i > -1 && i < getLayerCount() )
+    if ( i < 0 || i >= getLayerCount() )
     {
-        return mLayers.at( i );
+        return nullptr;
     }
-    else
-    {
-        return NULL;
-    }
+
+    return mLayers.at( i );
 }
 
-void Object::moveLayer( int i, int j )
+bool Object::moveLayer( int i, int j )
 {
+    if ( i< 0 || i >= mLayers.size() )
+    {
+        return false;
+    }
+
+    if ( j < 0 || j >= mLayers.size() )
+    {
+        return false;
+    }
+
     if ( i != j )
     {
-        mLayers.insert( j, mLayers.at( i ) );
-        if ( i > j )
-        {
-            mLayers.removeAt( i + 1 );
-        }
-        else
-        {
-            mLayers.removeAt( i );
-        }
+        Layer* tmp = mLayers.at( i );
+        mLayers[ i ] = mLayers.at( j );
+        mLayers[ j ] = tmp;
     }
+    return true;
 }
 
 void Object::deleteLayer( int i )
@@ -202,30 +204,6 @@ void Object::deleteLayer( int i )
         //layer.removeAt(i);
         disconnect( mLayers[ i ], 0, this, 0 ); // disconnect the layer from this object
         delete mLayers.takeAt( i );
-    }
-}
-
-void Object::playSoundIfAny( int frame, int fps )
-{
-    for ( int i = 0; i < getLayerCount(); i++ )
-    {
-        Layer* layer = getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            ( ( LayerSound* )layer )->playSound( frame, fps );
-        }
-    }
-}
-
-void Object::stopSoundIfAny()
-{
-    for ( int i = 0; i < getLayerCount(); i++ )
-    {
-        Layer* layer = getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            ( ( LayerSound* )layer )->stopSound();
-        }
     }
 }
 
@@ -400,7 +378,7 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
-        if ( layer->visible )
+        if ( layer->mVisible )
         {
             painter.setOpacity( 1.0 );
 

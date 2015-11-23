@@ -26,52 +26,37 @@ GNU General Public License for more details.
 #include "keyframe.h"
 
 
-class QMediaPlayer;
-
-
-class SoundClip : public KeyFrame
-{
-public:
-    QString m_strFilePath;
-    QMediaPlayer* m_pPlayer;
-    uint64_t m_soundSize;
-};
-
-
 class LayerSound : public Layer
 {
     Q_OBJECT
 
 public:
-    LayerSound(Object* object);
+    LayerSound( Object* object );
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath) override;
 
-    bool addNewKeyAt( int frameNumber ) override;
+    Status loadSoundAtFrame( QString filePathString, int frame );
 
-    void loadSoundAtFrame( QString filePathString, int frame );
-
-    bool saveImage(int index, QString path, int layerNumber);
-    void playSound(int frame,int fps);
+    bool saveImage( int index, QString path, int layerNumber );
+    void playSound( int frame );
     void stopSound();
 
-    bool isEmpty() const { return sound.count() == 0; }
-    // graphic representation -- could be put in another class
-    void paintImages(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
+    // These functions will be removed later.
+    // Don't use them!!
+    int getSoundSize() { return 0; }
+    bool soundIsNotNull( int ) { return true; }
+    QString getSoundFilepathAt( int ) { return ""; }
+    bool isEmpty() { return true; }
+    // These functions will be removed.
 
-    QString getSoundFilepathAt(int index) { return soundFilepath.at(index); }
-    int getSoundSize() { return sound.size(); }
-    bool soundIsNotNull(int index) { return (sound[index] != NULL); }
+    // graphic representation -- could be put in another class
+    void paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
 
-private:
-    QList<QString> soundFilepath;
-    QList<qint64> soundSize;
-    QList<QMediaPlayer*> sound;
+
 };
 
 #endif
-

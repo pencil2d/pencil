@@ -19,7 +19,6 @@ GNU General Public License for more details.
 LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
 {
     mName = QString(tr("Vector Layer"));
-    addNewKeyAt( 1 );
 }
 
 LayerVector::~LayerVector()
@@ -81,13 +80,6 @@ void LayerVector::removeColour( int colorIndex )
     } );
 }
 
-bool LayerVector::addNewKeyAt( int frameNumber )
-{
-    auto pVecImg = new VectorImage;
-    pVecImg->setObject( object() );
-    return addKeyFrame( frameNumber, pVecImg );
-}
-
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
     if ( keyExists( frameNumber ) )
@@ -114,8 +106,7 @@ bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 
 QString LayerVector::fileName( int frame )
 {
-    int layerID = mId;
-    QString layerNumberString = QString::number(layerID);
+    QString layerNumberString = QString::number( id() );
     QString frameNumberString = QString::number(frame);
     while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
     while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
@@ -126,10 +117,10 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
 
-    layerTag.setAttribute("id", mId);
-    layerTag.setAttribute("name", mName);
-    layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type());
+    layerTag.setAttribute( "id", id() );
+    layerTag.setAttribute( "name", mName );
+    layerTag.setAttribute( "visibility", mVisible );
+    layerTag.setAttribute( "type", type() );
 
     foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
@@ -146,9 +137,13 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 
 void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
-    if (!element.attribute("id").isNull()) mId = element.attribute("id").toInt();
+    if ( !element.attribute( "id" ).isNull() )
+    {
+        int id = element.attribute( "id" ).toInt();
+        setId( id );
+    }
     mName = element.attribute("name");
-    visible = (element.attribute("visibility") == "1");
+    mVisible = (element.attribute("visibility") == "1");
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -169,7 +164,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
                 else
                 {
                     int frame = imageElement.attribute("frame").toInt();
-                    addNewKeyAt( frame );
+                    addNewEmptyKeyAt( frame );
                     getVectorImageAtFrame( frame )->loadDomElement(imageElement);
                 }
             }
@@ -180,7 +175,7 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 
 VectorImage* LayerVector::getVectorImageAtFrame( int frameNumber )
 {
-    return static_cast< VectorImage* >( getKeyFrameAtPosition( frameNumber ) );
+    return static_cast< VectorImage* >( getKeyFrameAt( frameNumber ) );
 }
 
 VectorImage* LayerVector::getLastVectorImageAtFrame( int frameNumber, int increment )

@@ -8,6 +8,7 @@
 class ViewManager : public BaseManager
 {
     Q_OBJECT
+
 public:
     explicit ViewManager(QObject *parent = 0);
     bool init() override;
@@ -34,12 +35,15 @@ public:
     float scaling() { return mScale; }
     void scale( float scaleValue );
 
-    void flipHorizontal( bool b ) { mIsFlipHorizontal = b; }
-    void flipVertical( bool b ){ mIsFlipVertical = b; }
+    void flipHorizontal( bool b );
+    void flipVertical( bool b );
+
     bool isFlipHorizontal() { return mIsFlipHorizontal; }
     bool isFlipVertical() { return mIsFlipVertical; }
 
     void setCanvasSize( QSize size );
+
+    Q_SIGNAL void viewChanged();
 
 private:
     QTransform createViewTransform();

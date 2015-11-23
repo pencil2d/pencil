@@ -1,3 +1,20 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2008-2009 Mj Mendoza IV
+Copyright (C) 2011-2015 Matt Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation;
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #ifndef MAINWINDOW2_H
 #define MAINWINDOW2_H
 
@@ -15,12 +32,12 @@ class DisplayOptionWidget;
 class ToolOptionWidget;
 class TimeLine;
 class ToolBoxWidget;
-class Preferences;
+class PreferencesDialog;
 class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
 class Timeline2;
-
+class CommandCenter;
 
 namespace Ui
 {
@@ -37,9 +54,9 @@ public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
-    Editor* mEditor;
+    Editor* mEditor = nullptr;
 
-public slots:
+public:
     void setOpacity(int opacity);
     void undoActSetText(void);
     void undoActSetEnabled(void);
@@ -58,8 +75,6 @@ public slots:
 
     void importMovie();
     void exportMovie();
-
-    void importSound();
 
     void preferences();
     void helpBox();
@@ -99,22 +114,23 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*          mColorWheel = nullptr;
-    ColorPaletteWidget*   mColorPalette = nullptr;
+    QDockWidget*          mColorWheel          = nullptr;
+    ColorPaletteWidget*   mColorPalette        = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
-    ToolOptionWidget*     mToolOptions = nullptr;
-    ToolBoxWidget*        mToolBox = nullptr;
-    //PreviewWidget*           mPreview = nullptr;
-    Timeline2*            mTimeline2 = nullptr;
-    RecentFileMenu* mRecentFileMenu;
+    ToolOptionWidget*     mToolOptions         = nullptr;
+    ToolBoxWidget*        mToolBox             = nullptr;
+    Timeline2*            mTimeline2           = nullptr;
+    RecentFileMenu*       mRecentFileMenu      = nullptr;
+    //PreviewWidget*      mPreview = nullptr;
 
 public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    Preferences* m_pPreferences;
+    PreferencesDialog* mPreferencesDialog = nullptr;
+    CommandCenter* mCommands              = nullptr;
 
-    Ui::MainWindow2* ui;
+    Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
 };
 

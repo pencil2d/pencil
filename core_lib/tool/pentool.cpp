@@ -163,7 +163,7 @@ void PenTool::mouseMoveEvent( QMouseEvent *event )
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
-			qDebug() << "DrawStroke" << event->pos() ;
+			//qDebug() << "DrawStroke" << event->pos() ;
         }
     }
 }

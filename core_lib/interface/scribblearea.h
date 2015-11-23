@@ -33,13 +33,16 @@ GNU General Public License for more details.
 #include "vectorselection.h"
 #include "colormanager.h"
 #include "viewmanager.h"
+#include "canvasrenderer.h"
+#include "preferencemanager.h"
+
 
 class Layer;
 class Editor;
 class BaseTool;
 class StrokeManager;
 class ColorManager;
-class PopupColorPaletteWidget;
+//class PopupColorPaletteWidget;
 
 
 class ScribbleArea : public QWidget
@@ -54,6 +57,7 @@ public:
     ScribbleArea( QWidget *parent );
     ~ScribbleArea();
 
+    bool init();
     void setCore( Editor* pCore ) { mEditor = pCore; }
 
     void deleteSelection();
@@ -71,7 +75,9 @@ public:
     static QBrush getBackgroundBrush( QString );
 
     bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
-	void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
+    void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
+
+    void onPreferencedChanged( EFFECT e );
 
     bool showThinLines() const { return mShowThinLines; }
     int showAllLayers() const { return mShowAllLayers; }
@@ -105,7 +111,7 @@ public:
 
     StrokeManager *getStrokeManager() const { return mStrokeManager; }
 
-    PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
+    //PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
     Editor* editor() { return mEditor; }
 
@@ -114,14 +120,8 @@ public:
 signals:
     void modification();
     void modification( int );
-    void thinLinesChanged( bool );
-    void outlinesChanged( bool );
-
-    void onionPrevChanged( bool );
-    void onionNextChanged( bool );
     void multiLayerOnionSkinChanged( bool );
-
-	void refreshPreview();
+    void refreshPreview();
 
 public slots:
     void clearImage();
@@ -145,6 +145,7 @@ public slots:
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
+    void toggleCameraBorder( bool );
     void escape();
 
     void toggleMultiLayerOnionSkin( bool );
@@ -171,7 +172,9 @@ public:
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm );
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm );
+    void drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
+    void drawEraser( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
 
@@ -184,8 +187,8 @@ public:
 private:
     void drawCanvas( int frame, QRect rect );
     void drawShadow( QPainter& );
-	void drawAxis( QPainter& );
-	void drawGrid( QPainter& );
+    void drawAxis( QPainter& );
+    void drawGrid( QPainter& );
 
     void toggledOnionColor();
 
@@ -197,7 +200,7 @@ private:
 
     Editor* mEditor;
 
-    PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
+    //PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
     bool mIsSimplified = false;
     bool mShowThinLines;
@@ -213,9 +216,10 @@ private:
 
     bool mNeedUpdateAll;
 
-    QBrush backgroundBrush;
+    QBrush mBackgroundBrush;
 public:
     BitmapImage* mBufferImg; // used to pre-draw vector modifications
+    BitmapImage* mStrokeImg; // used for brush strokes before they are finalized
 
 private:
     void initDisplayEffect( std::vector< uint32_t >& );
@@ -237,14 +241,11 @@ private:
     VectorSelection vectorSelection;
     QTransform selectionTransformation;
 
-    // View Matrix
-    QTransform mView;
-
     QPixmap mCanvas;
+    CanvasRenderer mCanvasRenderer;
 
     // debug
     QRectF debugRect;
-
     QLoggingCategory mLog;
 };
 

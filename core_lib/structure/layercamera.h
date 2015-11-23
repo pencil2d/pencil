@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QList>
 #include <QString>
 #include <QPainter>
-#include "camera.h"
 #include "layerimage.h"
 #include "bitmapimage.h"
 
@@ -28,6 +27,7 @@ GNU General Public License for more details.
 class QLineEdit;
 class QSpinBox;
 class KeyFrame;
+class Camera;
 
 class CameraPropertiesDialog : public QDialog
 {
@@ -57,7 +57,6 @@ public:
 
     // method from layerImage
     QImage* getImageAtIndex(int index);
-    bool addNewKeyAt( int frameNumber ) override;
 
     void loadImageAtFrame(int, QTransform);
     

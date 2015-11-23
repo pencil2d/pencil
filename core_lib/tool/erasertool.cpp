@@ -134,6 +134,7 @@ void EraserTool::mouseReleaseEvent( QMouseEvent *event )
         {
             mScribbleArea->paintBitmapBuffer();
             mScribbleArea->setAllDirty();
+            mScribbleArea->clearBitmapBuffer();
         }
         else if ( layer->type() == Layer::VECTOR )
         {
@@ -197,25 +198,12 @@ void EraserTool::drawStroke()
         }
 
         qreal opacity = 1.0;
-        qreal brushWidth = mCurrentWidth + 0.5 * properties.feather;
-        qreal offset = qMax( 0.0, mCurrentWidth - 0.5 * properties.feather ) / brushWidth;
-        opacity = mCurrentPressure;
-        brushWidth = brushWidth * mCurrentPressure;
-
-        //        if (tabletInUse) { opacity = tabletPressure; }
-        //        if (usePressure) { brushWidth = brushWidth * tabletPressure; }
-
-        qreal brushStep = 0.5 * mCurrentWidth + 0.5 * properties.feather;
-        brushStep = brushStep * mCurrentPressure;
-
-        //        if (usePressure) { brushStep = brushStep * tabletPressure; }
+        mCurrentWidth = properties.width;
+        qreal brushWidth = (mCurrentWidth + (mCurrentPressure * mCurrentWidth)) * 0.5;
+        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
-        mCurrentWidth = properties.width;
         BlitRect rect;
-
-        QRadialGradient radialGrad( QPointF( 0, 0 ), 0.5 * brushWidth );
-        mScribbleArea->setGaussianGradient( radialGrad, QColor( 255, 255, 255 ), opacity, offset );
 
         QPointF a = lastBrushPoint;
         QPointF b = getCurrentPoint();
@@ -227,7 +215,11 @@ void EraserTool::drawStroke()
         {
             QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
-            mScribbleArea->drawBrush( point, brushWidth, offset, QColor( 255, 255, 255 ), opacity );
+            mScribbleArea->drawBrush( point,
+                                      brushWidth,
+                                      properties.feather,
+                                      QColor(255, 255, 255, 255),
+                                      opacity );
 
             if ( i == ( steps - 1 ) )
             {

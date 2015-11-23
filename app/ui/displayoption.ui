@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DisplayOption</class>
+ <widget class="QWidget" name="DisplayOption">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>156</width>
+    <height>128</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>4</number>
+   </property>
+   <property name="topMargin">
+    <number>4</number>
+   </property>
+   <property name="rightMargin">
+    <number>4</number>
+   </property>
+   <property name="bottomMargin">
+    <number>4</number>
+   </property>
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <item row="0" column="2">
+    <widget class="QToolButton" name="thinLinesButton">
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="acceptDrops">
+      <bool>true</bool>
+     </property>
+     <property name="toolTip">
+      <string>Show invisible lines</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/thinlines5.png</normaloff>:/app/icons/thinlines5.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QToolButton" name="mirrorButton">
+     <property name="toolTip">
+      <string>Horizontal flip</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QToolButton" name="onionPrevButton">
+     <property name="toolTip">
+      <string>Onion skin previous frame</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin previous frame</string>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QToolButton" name="onionBlueButton">
+     <property name="maximumSize">
+      <size>
+       <width>100</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Onion skin color: blue</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin color: blue</string>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/onion-blue.png</normaloff>:/app/icons/onion-blue.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QToolButton" name="mirrorVButton">
+     <property name="toolTip">
+      <string>Vertical flip</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QToolButton" name="onionNextButton">
+     <property name="toolTip">
+      <string>Onion skin next frame</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin next frame</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/onionNext.png</normaloff>:/app/icons/onionNext.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QToolButton" name="outLinesButton">
+     <property name="toolTip">
+      <string>Show outlines only</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QToolButton" name="onionRedButton">
+     <property name="toolTip">
+      <string>Onion skin color: red</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin color: red</string>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>...</string>
+     </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/onion-red.png</normaloff>:/app/icons/onion-red.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>21</width>
+       <height>21</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QToolButton" name="cameraBorderButton">
+     <property name="minimumSize">
+      <size>
+       <width>28</width>
+       <height>27</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>28</width>
+       <height>27</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Camera border</string>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QToolButton { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
+
+border:1px solid #555555;
+
+border-radius:5px;
+}
+
+QToolButton:pressed, QToolButton:checked { 
+background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
+border:1px solid blue;
+}</string>
+     </property>
+     <property name="text">
+      <string>C</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>28</width>
+       <height>27</height>
+      </size>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../resource/app.qrc"/>
+ </resources>
+ <connections/>
+</ui>

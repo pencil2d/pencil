@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = new QImage(0, 0, QImage::Format_ARGB32_Premultiplied);
+    mImage = new QImage(1, 1, QImage::Format_ARGB32_Premultiplied);
     mBounds = QRect(0,0,0,0);
     mExtendable = true;
 }
@@ -38,8 +38,11 @@ BitmapImage::BitmapImage(QRect rectangle, QImage image)
 {
     mBounds = rectangle.normalized();
     mExtendable = true;
-    this->mImage = new QImage(image);
-    if (this->mImage->width() != rectangle.width() || this->mImage->height() != rectangle.height()) qDebug() << "Error instancing bitmapImage.";
+    mImage = new QImage(image);
+    if ( mImage->width() != rectangle.width() || mImage->height() != rectangle.height())
+    {
+        qDebug() << "Error instancing bitmapImage.";
+    }
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a)
@@ -52,14 +55,17 @@ BitmapImage::BitmapImage(const BitmapImage& a)
 BitmapImage::BitmapImage(QString path, QPoint topLeft)
 {
     mImage = new QImage(path);
-    if (mImage->isNull()) qDebug() << "ERROR: Image " << path << " not loaded";
+    if ( mImage->isNull() )
+    {
+        qDebug() << "ERROR: Image " << path << " not loaded";
+    }
     mBounds = QRect( topLeft, mImage->size() );
     mExtendable = true;
 }
 
 BitmapImage::~BitmapImage()
 {
-    if (mImage) delete mImage;
+    if ( mImage ) delete mImage;
 }
 
 void BitmapImage::setImage( QImage* img )
@@ -92,7 +98,7 @@ void BitmapImage::loadDomElement(QDomElement imageElement, QString filePath)
     if (!fi.exists()) path = imageElement.attribute("src");
     int x = imageElement.attribute("topLeftX").toInt();
     int y = imageElement.attribute("topLeftY").toInt();
-    //loadImageAtFrame( path, position );
+
     mImage = new QImage(path);
     if ( !mImage->isNull() )
     {
@@ -283,6 +289,40 @@ void BitmapImage::add(BitmapImage* bitmapImage)
     }
 }
 
+void BitmapImage::darkenAlpha(BitmapImage* bitmapImage)
+{
+    QImage* image2 = bitmapImage->mImage;
+    QRect newBoundaries;
+    if ( mImage->width() == 0 || mImage->height() == 0 )
+    {
+        newBoundaries = bitmapImage->mBounds;
+    }
+    else
+    {
+        newBoundaries = mBounds.united( bitmapImage->mBounds );
+    }
+    extend( newBoundaries );
+    QPoint offset = bitmapImage->mBounds.topLeft() - mBounds.topLeft();
+    for(int y=0; y<image2->height(); y++)
+    {
+        for(int x=0; x<image2->width(); x++)
+        {
+            QRgb p1  = mImage->pixel(offset.x()+x,offset.y()+y);
+            QRgb p2 = image2->pixel(x,y);
+
+            int a1 = qAlpha(p1);
+            int a2 = qAlpha(p2);
+
+            if (a1 < a2)
+            {
+            QRgb mix = qRgba(qRed(p2), qGreen(p2), qBlue(p2), a2);
+            mImage->setPixel(offset.x()+x,offset.y()+y, mix);
+            }
+        }
+    }
+}
+
+
 void BitmapImage::moveTopLeft(QPoint point)
 {
     mBounds.moveTopLeft(point);
@@ -426,6 +466,12 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
 {
     int width = pen.width();
     extend( rectangle.adjusted(-width,-width,width,width).toRect() );
+    if (brush.style() == Qt::RadialGradientPattern)
+    {
+        QRadialGradient* gradient = (QRadialGradient*)brush.gradient();
+        gradient->setCenter( gradient->center() - topLeft() );
+        gradient->setFocalPoint( gradient->focalPoint() - topLeft() );
+    }
     if (mImage != NULL && !mImage->isNull() )
     {
         QPainter painter(mImage);
@@ -450,27 +496,30 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
     {
         QPainter painter(mImage);
         painter.setCompositionMode(cm);
-        painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+        painter.setRenderHint( QPainter::Antialiasing, antialiasing );
         painter.setPen(pen);
         painter.setBrush(brush);
         painter.setTransform(QTransform().translate(-topLeft().x(), -topLeft().y()));
         painter.setMatrixEnabled(true);
         if (path.length() > 0)
         {
-            for (int pt = 0; pt<path.elementCount()-1; pt++ )
+            /*
+            for ( int pt = 0; pt < path.elementCount() - 1; pt++ )
             {
                 qreal dx = path.elementAt(pt+1).x - path.elementAt(pt).x;
                 qreal dy = path.elementAt(pt+1).y - path.elementAt(pt).y;
                 qreal m = sqrt(dx*dx+dy*dy);
                 qreal factorx = dx / m;
                 qreal factory = dy / m;
-                for ( int h=0; h<m; h+=inc )
+                for ( float h = 0.f; h < m; h += inc )
                 {
-                    int x = path.elementAt(pt).x + factorx*h;
-                    int y = path.elementAt(pt).y + factory*h;
-                    painter.drawPoint( x, y );
+                    qreal x = path.elementAt(pt).x + factorx * h;
+                    qreal y = path.elementAt(pt).y + factory * h;
+                    painter.drawPoint( QPointF( x, y ) );
                 }
             }
+            */
+            painter.drawPath( path );
         }
         else
         {

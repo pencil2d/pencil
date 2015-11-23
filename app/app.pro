@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# GUI of Pencil2D (in the futre)
+# Pencil2D GUI
 #
 #-------------------------------------------------
 
@@ -13,7 +13,9 @@ TARGET = Pencil2D
 
 CONFIG += qt
 
-RESOURCES += ../pencil.qrc
+RESOURCES += \
+    ../pencil.qrc \
+    resource/app.qrc
 
 INCLUDEPATH += \
     ../core_lib/graphics \
@@ -29,18 +31,49 @@ INCLUDEPATH += \
 HEADERS += \
     mainwindow2.h \
     exportimageseqdialog.h \
-    timeline2.h
+    timeline2.h \
+    commandcenter.h \
+    preferencesdialog.h \
+    shortcutspage.h \
+    preview.h \
+    colorbox.h \
+    colorgrid.h \
+    colorgriditem.h \
+    colorinspector.h \
+    colorpalettewidget.h \
+    colorwheel.h \
+    filedialogex.h \
+    displayoptionwidget.h
+    # popupcolorpalettewidget.h
 
 SOURCES += \
+    main.cpp \
     mainwindow2.cpp \
     exportimageseqdialog.cpp \
-    main.cpp \
-    timeline2.cpp
+    timeline2.cpp \
+    commandcenter.cpp \
+    preferencesdialog.cpp \
+    shortcutspage.cpp \
+    preview.cpp \
+    colorbox.cpp \
+    colorgrid.cpp \
+    colorgriditem.cpp \
+    colorinspector.cpp \
+    colorpalettewidget.cpp \
+    colorwheel.cpp \
+    filedialogex.cpp \
+    displayoptionwidget.cpp
+    # spopupcolorpalettewidget.cpp
 
 FORMS += \
-    mainwindow2.ui \
-    exportimageseqdialog.ui \
-    timeline2.ui
+    ui/mainwindow2.ui \
+    ui/exportimageseqdialog.ui \
+    ui/timeline2.ui \
+    ui/shortcutspage.ui \
+    ui/colorinspector.ui \
+    ui/colorpalette.ui \
+    ui/displayoption.ui
+
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
@@ -51,6 +84,8 @@ macx {
 win32 {
     RC_FILE = $$PWD/../pencil.rc
 }
+
+
 
 # --- core_lib ---
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib

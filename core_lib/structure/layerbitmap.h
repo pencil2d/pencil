@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2011-2015 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -32,7 +33,6 @@ public:
     ~LayerBitmap();
 
     // method from layerImage
-    bool addNewKeyAt( int frameNumber ) override;
     void loadImageAtFrame( QString strFilePath, QPoint topLeft, int frameNumber );
 
     QDomElement createDomElement( QDomDocument& doc ) override;

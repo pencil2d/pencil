@@ -13,17 +13,16 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QtDebug>
-#include "keyframe.h"
+#include "camera.h"
 #include "layercamera.h"
 
-
-// ------
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()
 {
@@ -104,25 +103,15 @@ LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
     mName = QString(tr("Camera Layer"));
     viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
     dialog = NULL;
-    addNewKeyAt( 1 );
 }
 
 LayerCamera::~LayerCamera()
 {
 }
 
-
-bool LayerCamera::addNewKeyAt( int frameNumber )
-{
-    QTransform view = getViewAtFrame( frameNumber );
-    Camera* pCamera = new Camera( view );
-    pCamera->setPos( frameNumber );
-    return addKeyFrame( frameNumber, pCamera );
-}
-
 Camera* LayerCamera::getCameraAtFrame(int frameNumber)
 {
-    return static_cast< Camera* >( getKeyFrameAtPosition( frameNumber ) );
+    return static_cast< Camera* >( getKeyFrameAt( frameNumber ) );
 }
 
 Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
@@ -225,7 +214,7 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
     QDomElement layerTag = doc.createElement("layer");
     
     layerTag.setAttribute("name", mName);
-    layerTag.setAttribute("visibility", visible);
+    layerTag.setAttribute("visibility", mVisible);
     layerTag.setAttribute("type", type());
     layerTag.setAttribute("width", viewRect.width());
     layerTag.setAttribute("height", viewRect.height());
@@ -253,7 +242,7 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
     Q_UNUSED(dataDirPath);
 
     mName = element.attribute("name");
-    visible = true;
+    mVisible = true;
 
     int width = element.attribute( "width" ).toInt();
     int height = element.attribute( "height" ).toInt();

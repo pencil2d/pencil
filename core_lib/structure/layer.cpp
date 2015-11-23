@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QLineEdit>
 #include "keyframe.h"
+#include "keyframefactory.h"
 #include "layer.h"
 #include "object.h"
 #include "timeline.h"
@@ -30,9 +31,11 @@ Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
 {
     mObject = pObject;
     meType = eType;
-    mId = 0;
     mName = QString( tr( "Undefined Layer" ) );
-    visible = true;
+    
+    mId = pObject->getUniqueLayerID();
+
+    addNewEmptyKeyAt( 1 );
 
     Q_ASSERT( eType != UNDEFINED );
 }
@@ -60,12 +63,13 @@ bool Layer::keyExists( int position )
     return ( mKeyFrames.find( position ) != mKeyFrames.end() );
 }
 
-KeyFrame* Layer::getKeyFrameAtPosition( int position )
+KeyFrame* Layer::getKeyFrameAt( int position )
 {
     auto it = mKeyFrames.find( position );
     if ( it == mKeyFrames.end() )
     {
-        return NullKeyFrame::get();
+        //return NullKeyFrame::get();
+        return nullptr;
     }
     return it->second;
 }
@@ -121,6 +125,20 @@ int Layer::getMaxKeyFramePosition()
     return mKeyFrames.begin()->first; // begin is the highest key frame position
 }
 
+bool Layer::addNewEmptyKeyAt( int position )
+{
+    if ( position <= 0 )
+    {
+        return false;
+    }
+    KeyFrame* key = KeyFrameFactory::create( meType );
+    if ( key == nullptr )
+    {
+        return false;
+    }
+    return addKeyFrame( position, key );
+}
+
 bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 {
     auto it = mKeyFrames.find( position );
@@ -137,12 +155,6 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 
 bool Layer::removeKeyFrame( int position )
 {
-//    if ( position == 1 )
-//    {
-//        // you can't delete 1st frame.
-//        //return true;
-//    }
-
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
     {
@@ -154,7 +166,7 @@ bool Layer::removeKeyFrame( int position )
     {
         // you can't delete 1st frame.
         //return true;
-        addNewKeyAt( 1 ); // replacing
+        addNewEmptyKeyAt( 1 ); // replacing
     }
 
     return true;
@@ -167,20 +179,21 @@ bool Layer::moveKeyFrameForward( int position )
 
 bool Layer::moveKeyFrameBackward( int position )
 {
-    if ( position != 1 ) {
+    if ( position != 1 )
+    {
         return swapKeyFrames( position, position - 1 );
-    } else {
+    }
+    else
+    {
         return true;
     }
 }
 
 bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, need to refresh the swapped cels
 {
-
     bool keyPosition1 = false, keyPosition2 = false;
-    KeyFrame* pFirstFrame;
-    KeyFrame* pSecondFrame;
-
+    KeyFrame* pFirstFrame  = nullptr;
+    KeyFrame* pSecondFrame = nullptr;
 
     if ( keyExists( position1 ) )
     {
@@ -189,7 +202,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
 
         mKeyFrames.erase( position1 );
 
-        //pFirstFrame = getKeyFrameAtPosition( position1 );
+        //pFirstFrame = getKeyFrameAt( position1 );
         //removeKeyFrame( position1 );
 
         keyPosition1 = true;
@@ -202,7 +215,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
 
         mKeyFrames.erase( position2 );
 
-        //pSecondFrame = getKeyFrameAtPosition( position2 );
+        //pSecondFrame = getKeyFrameAt( position2 );
         //removeKeyFrame( position2 );
 
         keyPosition2 = true;
@@ -216,7 +229,7 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
     } 
 	else if ( position1 == 1 ) 
 	{
-        addNewKeyAt( position1 );
+        addNewEmptyKeyAt( position1 );
     }
 
     if ( keyPosition1 )
@@ -227,11 +240,10 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
     } 
 	else if ( position2 == 1 )
 	{
-		addNewKeyAt( position2 );
+		addNewEmptyKeyAt( position2 );
     }
 
     return true;
-
 }
 
 bool Layer::loadKey( KeyFrame* pKey )
@@ -259,14 +271,13 @@ bool Layer::save( QString strDataFolder )
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
 {
     painter.setFont( QFont( "helvetica", height / 2 ) );
-    if ( visible )
+    if ( mVisible )
     {
         QColor col;
-        if ( type() == BITMAP ) col = QColor( 130, 130, 245 );
-        if ( type() == VECTOR ) col = QColor( 100, 205, 150 );
-        if ( type() == SOUND ) col = QColor( 245, 130, 130 );
-        if ( type() == CAMERA ) col = QColor( 100, 128, 140 );
-        if ( !selected ) col = QColor( ( 1 * col.red() + 2 * 200 ) / 3, ( 1 * col.green() + 2 * 200 ) / 3, ( 1 * col.blue() + 2 * 200 ) / 3 );
+        if ( type() == BITMAP ) col = QColor( 151, 176, 244 );
+        if ( type() == VECTOR ) col = QColor( 150, 242, 150 );
+        if ( type() == SOUND ) col = QColor( 237, 147, 147 );
+        if ( type() == CAMERA ) col = QColor( 239, 232, 148 );
 
         painter.setBrush( col );
         painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
@@ -317,7 +328,7 @@ void Layer::paintLabel( QPainter& painter, TimeLineCells* cells, int x, int y, i
     painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
     painter.drawRect( x, y - 1, width, height ); // empty rectangle  by default
 
-    if ( visible )
+    if ( mVisible )
     {
         if ( allLayers == 0 )  painter.setBrush( Qt::NoBrush );
         if ( allLayers == 1 )   painter.setBrush( Qt::darkGray );
@@ -352,23 +363,10 @@ void Layer::paintSelection( QPainter& painter, int x, int y, int width, int heig
     QLinearGradient linearGrad( QPointF( 0, y ), QPointF( 0, y + height ) );
     QSettings settings( "Pencil", "Pencil" );
     QString style = settings.value( "style" ).toString();
-    if ( style == "aqua" )
-    {
-        linearGrad.setColorAt( 0, QColor( 225, 225, 255, 100 ) );
-        linearGrad.setColorAt( 0.10, QColor( 225, 225, 255, 80 ) );
-        linearGrad.setColorAt( 0.20, QColor( 225, 225, 255, 64 ) );
-        linearGrad.setColorAt( 0.35, QColor( 225, 225, 255, 20 ) );
-        linearGrad.setColorAt( 0.351, QColor( 0, 0, 0, 32 ) );
-        linearGrad.setColorAt( 0.66, QColor( 245, 255, 235, 32 ) );
-        linearGrad.setColorAt( 1, QColor( 245, 255, 235, 128 ) );
-    }
-    else
-    {
-        linearGrad.setColorAt( 0, QColor( 255, 255, 255, 128 ) );
-        linearGrad.setColorAt( 0.49, QColor( 255, 255, 255, 0 ) );
-        linearGrad.setColorAt( 0.50, QColor( 0, 0, 0, 0 ) );
-        linearGrad.setColorAt( 1, QColor( 0, 0, 0, 48 ) );
-    }
+    linearGrad.setColorAt( 0, QColor( 255, 255, 255, 128 ) );
+    linearGrad.setColorAt( 0.45, QColor( 255, 255, 255, 0 ) );
+    linearGrad.setColorAt( 0.55, QColor( 0, 0, 0, 0 ) );
+    linearGrad.setColorAt( 1, QColor( 0, 0, 0, 90 ) );
     painter.setBrush( linearGrad );
     painter.setPen( Qt::NoPen );
     painter.drawRect( x, y, width, height - 1 );

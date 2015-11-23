@@ -224,9 +224,9 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::VECTOR )
         {
-            mScribbleArea->closestCurves =
-                    ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )
-                    ->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
+            auto layerVector = static_cast< LayerVector* >( layer );
+            VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+            mScribbleArea->closestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
         }
         mScribbleArea->update();
     }

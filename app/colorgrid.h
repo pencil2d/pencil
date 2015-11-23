@@ -24,8 +24,8 @@ public slots:
     void setColor(const int &, const QColor &);
 protected:
     void initItems();
-    FlowLayout *layout_;
-    QList<ColorGridItem *> items;
+    FlowLayout* mLayout;
+    QList<ColorGridItem*> items;
     static const int gridCount = 100;
 };
 

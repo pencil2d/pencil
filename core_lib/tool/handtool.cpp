@@ -1,4 +1,3 @@
-
 #include "handtool.h"
 #include <cmath>
 #include <QPixmap>
@@ -34,26 +33,28 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
     //---- stop the hand tool if this was mid button
     if ( event->button() == Qt::MidButton )
     {
-        //qDebug("Stop Hand Tool");
+        qDebug( "[HandTool] Stop Hand Tool" );
         mScribbleArea->setPrevTool();
     }
 }
 
-void HandTool::mouseMoveEvent( QMouseEvent* event )
+void HandTool::mouseMoveEvent( QMouseEvent* evt )
 {
-    if ( event->buttons() == Qt::NoButton )
+    if ( evt->buttons() == Qt::NoButton )
     {
         return;
     }
 
-    bool isTranslate = event->modifiers() == Qt::NoModifier;
-    bool isRotate = event->modifiers() & Qt::AltModifier;
-    bool isScale = event->modifiers() & Qt::ControlModifier || event->buttons() & Qt::RightButton;
+    bool isTranslate = evt->modifiers() == Qt::NoModifier;
+    bool isRotate = evt->modifiers() & Qt::AltModifier;
+    bool isScale = ( evt->modifiers() & Qt::ControlModifier ) || ( evt->buttons() & Qt::RightButton );
 
     if ( isTranslate )
     {
-        QPointF d = getCurrentPixel() - getLastPressPixel();
-        editor()->view()->translate( d );
+        QPointF d = getCurrentPoint() - getLastPoint();
+        QPointF offset = editor()->view()->translation() + d;
+        //qDebug() << "d=" << d << ", offset=" << offset;
+        editor()->view()->translate( offset );
     }
     else if ( isRotate )
     {
@@ -61,9 +62,9 @@ void HandTool::mouseMoveEvent( QMouseEvent* event )
         QVector2D v1( getLastPressPixel() - centralPixel );
         QVector2D v2( getCurrentPixel() - centralPixel );
 
-        float angle = acos( QVector2D::dotProduct( v1, v2 ) / v1.length() * v2.length() );
-        angle = angle * 180.0 / M_PI;
-        
+        float angle = acos( QVector2D::dotProduct( v1, v2 ) / ( v1.length() * v2.length() ) );
+        //angle = angle * 180.0 / M_PI;
+
         mEditor->view()->rotate( angle );
     }
     else if ( isScale )

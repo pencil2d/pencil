@@ -21,6 +21,11 @@ GNU General Public License for more details.
 #include <QIcon>
 #include "editor.h"
 #include "mainwindow2.h"
+#include <iostream>
+#include <cstring>
+
+using std::cout;
+using std::endl;
 
 
 int main(int argc, char* argv[])
@@ -36,14 +41,12 @@ int main(int argc, char* argv[])
     pencil2DTranslator.load("pencil2d_" + QLocale::system().name());
     app.installTranslator(&pencil2DTranslator);
 
-#ifndef Q_WS_MAC
     app.setWindowIcon(QIcon(":/icons/icon.png"));
-#endif
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
-
-    if ( argc == 1 )
+    
+    if ( argc == 1 || (argc > 1 && strcmp( argv[1], "-NSDocumentRevisionsDebugMode" ) == 0)  )
     {
         mainWindow.show();
         return app.exec();
@@ -77,7 +80,7 @@ int main(int argc, char* argv[])
     bool error = false;
     if ( jobExportSequence )
     {
-        qDebug() << "Exporting image sequence...";
+        std::cout << "Exporting image sequence..." << std::endl;
         if (inputFile.isEmpty())
         {
             qDebug() << "Error: No input file specified.";

@@ -71,11 +71,14 @@ public:
 
     void init();
 
-    QString filePath() { return mstrFilePath; }
+    QString filePath() const { return mstrFilePath; }
     void    setFilePath( QString strFileName ) { mstrFilePath = strFileName; }
+    
+    QString workingDir() const { return mstrWorkingDir; }
+    void    setWorkingDir( QString strWorkingDir ) { mstrWorkingDir = strWorkingDir; }
 
-    QDomElement createDomElement( QDomDocument& doc );
-    bool loadDomElement( QDomElement element, QString dataDirPath );
+    QDomElement saveXML( QDomDocument& doc );
+    bool loadXML( QDomElement element, QString dataDirPath );
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
@@ -100,14 +103,14 @@ public:
     LayerVector* addNewVectorLayer();
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
+
     Layer* getLayer( int i );
-    int getLayerCount();
-    int getMaxID();
-    void moveLayer( int i, int j );
+    int  getLayerCount();
+    bool moveLayer( int i, int j );
     void deleteLayer( int i );
 
-    void playSoundIfAny( int frame, int fps );
-    void stopSoundIfAny();
+    //void playSoundIfAny( int frame, int fps );
+    //void stopSoundIfAny();
 
     // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax );
@@ -121,13 +124,18 @@ public:
     bool isModified() { return modified; }
     void setModified( bool b ) { modified = b; }
 
+    int getUniqueLayerID();
+
 private:
+    int getMaxLayerID();
+
     QString mstrFilePath;
-    QList<Layer*> mLayers;
+    QString mstrWorkingDir;
+
+    QList< Layer* > mLayers;
     bool modified = false;
 
     QList<ColourRef> mPalette;
-
 };
 
 

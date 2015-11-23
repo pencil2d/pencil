@@ -41,7 +41,6 @@ public:
     void updateLength( int frameLength );
     void updateContent();
     void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
-    void setFps( int );
     int getFrameLength();
 
 Q_SIGNALS:

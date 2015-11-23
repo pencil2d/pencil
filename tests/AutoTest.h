@@ -1,7 +1,7 @@
 #ifndef AUTOTEST_H
 #define AUTOTEST_H
 
-#include <QtTest/QtTest>
+#include <QtTest>
 #include <QList>
 #include <QString>
 #include <QSharedPointer>
@@ -46,7 +46,7 @@ namespace AutoTest
     {
 	    int ret = 0;
 
-	    foreach (QObject* test, testList())
+        for (QObject* test : testList() )
 	    {
 	        ret += QTest::qExec(test, argc, argv);
 	    }

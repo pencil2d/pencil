@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #ifndef EDITOR_H
 #define EDITOR_H
 
@@ -32,6 +33,8 @@ class ToolManager;
 class LayerManager;
 class PlaybackManager;
 class ViewManager;
+class PreferenceManager;
+class SoundManager;
 class ScribbleArea;
 class TimeLine;
 
@@ -45,34 +48,41 @@ class Editor : public QObject
     Q_PROPERTY( LayerManager*    layers   READ layers )
     Q_PROPERTY( PlaybackManager* playback READ playback )
     Q_PROPERTY( ViewManager*     view     READ view )
+    Q_PROPERTY( PreferenceManager* preference READ preference )
+    Q_PROPERTY( SoundManager*    sound    READ sound )
 
 public:
-    explicit Editor( QObject* parent );
+    explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
     bool initialize( ScribbleArea* pScribbleArea );
 
     /************************************************************************/
-    /* Managers 
+    /* Managers                                                             */
     /************************************************************************/ 
-    ColorManager*    color() const { return mColorManager; }
-    ToolManager*     tools() const { return mToolManager; }
-    LayerManager*    layers() const { return mLayerManager; }
-    PlaybackManager* playback() const { return mPlaybackManager; }
-    ViewManager*     view() const { return mViewManager; }
+    ColorManager*      color() const { return mColorManager; }
+    ToolManager*       tools() const { return mToolManager; }
+    LayerManager*      layers() const { return mLayerManager; }
+    PlaybackManager*   playback() const { return mPlaybackManager; }
+    ViewManager*       view() const { return mViewManager; }
+    PreferenceManager* preference() const { return mPreferenceManager; }
+    SoundManager*      sound() const { return mSoundManager; }
 
     Object* object() const { return mObject.get(); }
     void setObject( Object* object );
 
-    Error getError() { return mLastError; }
+    Status getError() { return mLastError; }
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
+    ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
     int  currentFrame();
     void scrubTo( int frameNumber );
 
     int  allLayers();
     bool exportSeqCLI( QString, QString );
+    
+    QString workingDir() const;
 
     int getOnionMaxOpacity() { return onionMaxOpacity; }
     int getOnionMinOpacity() { return onionMinOpacity; }
@@ -84,11 +94,8 @@ public:
     // backup
     int mBackupIndex;
     QList<BackupElement*> mBackupList;
-    ScribbleArea* getScribbleArea() { return mScribbleArea; }
-
 
 Q_SIGNALS:
-    void updateAllFrames();
     void updateTimeLine();
     void updateLayerCount();
 
@@ -97,10 +104,7 @@ Q_SIGNALS:
     void toggleOnionNext( bool );
     void toggleOnionPrev( bool );
     void multiLayerOnionSkinChanged( bool );
-    void onionPrevChanged( bool );
-    void onionNextChanged( bool );
     void changeThinLinesButton( bool );
-    void changeOutlinesButton( bool );
 
     void currentFrameChanged( int n );
 
@@ -108,7 +112,7 @@ Q_SIGNALS:
     void needSave();
     void fileLoaded();
     
-public slots:
+public:
     void onionMaxOpacityChangeSlot( int );
     void onionMinOpacityChangeSlot( int );
     void onionPrevFramesNumChangeSlot( int );
@@ -118,17 +122,13 @@ public: //slots
     void clearCurrentFrame();
 
     void cut();
-    void flipX();
-    void flipY();
+    
     void deselectAll();
-    void zoomIn();
-    void zoomOut();
     void rotatecw();
     void rotateacw();
     void resetView();
 
     bool importImage( QString filePath );
-    void importSound( QString filePath );
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
 
@@ -136,9 +136,6 @@ public: //slots
     void scrubPreviousKeyFrame();
     void scrubForward();
     void scrubBackward();
-
-    void previousLayer();
-    void nextLayer();
 
     void addNewKey();
     void duplicateKey();
@@ -158,8 +155,6 @@ public: //slots
     void changeAutosave( int );
     void changeAutosaveNumber( int );
 
-    void currentKeyFrameModification();
-    void modification( int );
     void backup( QString undoText );
     void backup( int layerNumber, int frameNumber, QString undoText );
     void undo();
@@ -177,7 +172,6 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
-    void resetMirror();
 
 protected:
     // Need to move to somewhere...
@@ -192,18 +186,20 @@ private:
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
 
-    int mFrame; // current frame number.
+    int mFrame = 1; // current frame number.
 
     ScribbleArea* mScribbleArea = nullptr;
 
-    ColorManager*    mColorManager = nullptr;
-    ToolManager*     mToolManager = nullptr;
-    LayerManager*    mLayerManager = nullptr;
-    PlaybackManager* mPlaybackManager = nullptr;
-    ViewManager*     mViewManager = nullptr;
+    ColorManager*      mColorManager      = nullptr;
+    ToolManager*       mToolManager       = nullptr;
+    LayerManager*      mLayerManager      = nullptr;
+    PlaybackManager*   mPlaybackManager   = nullptr;
+    ViewManager*       mViewManager       = nullptr;
+    PreferenceManager* mPreferenceManager = nullptr;
+    SoundManager*      mSoundManager      = nullptr;
 
-    bool m_isAltPressed;
-    int numberOfModifications;
+    bool m_isAltPressed = false;
+    int numberOfModifications = 0;
 
     bool mIsAutosave;
     int autosaveNumber;
@@ -228,7 +224,7 @@ private:
     void createExportMovieSizeBox();
     void createExportMovieDialog();
 
-    Error mLastError;
+    Status mLastError;
 };
 
 #endif

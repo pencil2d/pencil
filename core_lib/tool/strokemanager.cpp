@@ -32,7 +32,7 @@ StrokeManager::StrokeManager()
 {
     m_timeshot = 0;
 
-    m_tabletInUse = false;
+    mTabletInUse = false;
     m_tabletPressure = 0;
 
     reset();
@@ -55,7 +55,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent* event)
 {
     QPointF pos;
 
-    if ( m_tabletInUse )
+    if ( mTabletInUse )
     {
         // QT BUG (Wacom Tablets): updates are not synchronised in Windows giving different coordinates.
         // Clue: Not a Microsoft nor Wacom problem because other windows apps are working fine in the same tablet mode.
@@ -68,7 +68,7 @@ QPointF StrokeManager::getEventPosition(QMouseEvent* event)
     }
     else
     {
-        pos = event->pos();
+        pos = event->localPos();
     }
 
     return pos;
@@ -80,6 +80,7 @@ void StrokeManager::mousePressEvent(QMouseEvent* event)
     if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
     {
         m_lastPressPixel = getEventPosition(event);
+        qDebug() << m_lastPressPixel;
     }
     m_lastPixel = getEventPosition(event);
 
@@ -102,8 +103,8 @@ void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
 
 void StrokeManager::tabletEvent(QTabletEvent* event)
 {
-    if (event->type() == QEvent::TabletPress) { m_tabletInUse = true; }
-    if (event->type() == QEvent::TabletRelease) { m_tabletInUse = false; }
+    if (event->type() == QEvent::TabletPress) { mTabletInUse = true; }
+    if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; }
 
     m_tabletPosition = event->posF();
     setPressure(event->pressure());
@@ -122,18 +123,18 @@ void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 		return;
 	}
 
-    if (!m_tabletInUse)   // a mouse is used instead of a tablet
+    if (!mTabletInUse)   // a mouse is used instead of a tablet
     {
         setPressure(1.0);
     }
 
     // shift queue
-    while (strokeQueue.size()  >= STROKE_QUEUE_LENGTH)
+    while ( strokeQueue.size()  >= STROKE_QUEUE_LENGTH )
     {
-        strokeQueue.removeFirst();
+        strokeQueue.pop_front();
     }
 
-    strokeQueue << smoothPos;
+    strokeQueue.push_back( smoothPos );
 
 }
 

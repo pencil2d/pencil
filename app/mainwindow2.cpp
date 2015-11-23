@@ -3,6 +3,7 @@
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
+Copyright (C) 2011-2015 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,22 +31,21 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include "pencildef.h"
 #include "pencilsettings.h"
-
 #include "object.h"
 #include "objectsaveloader.h"
-
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
+#include "commandcenter.h"
 
 #include "scribblearea.h"
 #include "colorpalettewidget.h"
-#include "displayoptiondockwidget.h"
+#include "displayoptionwidget.h"
 #include "tooloptiondockwidget.h"
-#include "popupcolorpalettewidget.h"
-#include "preferences.h"
+//#include "popupcolorpalettewidget.h"
+#include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
 #include "preview.h"
@@ -68,7 +68,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     // Central widget
     mScribbleArea = new ScribbleArea( this );
-    mScribbleArea->setObjectName( "ScribbleArea" );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
     setCentralWidget( mScribbleArea );
 
@@ -80,9 +79,14 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->setObject( object );
 
     mScribbleArea->setCore( mEditor );
+    mScribbleArea->init();
+
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
+    mCommands = new CommandCenter( this );
+    mCommands->setCore( mEditor );
+    
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();
@@ -130,18 +134,18 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
     mToolBox->setObjectName( "ToolBox" );
     mDockWidgets.append( mToolBox );
-
+    /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
     mDockWidgets.append( mTimeline2 );
-
+    */
     addDockWidget(Qt::RightDockWidgetArea,  mColorWheel);
     addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea,   mToolOptions);
-    //addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
-    addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
+    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
+    //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
     for ( BaseDockWidget* pWidget : mDockWidgets )
     {
@@ -150,7 +154,7 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init UI: " << pWidget->objectName();
+        qDebug() << "Init Dock wieget: " << pWidget->objectName();
     }
 
     /*
@@ -193,8 +197,7 @@ void MainWindow2::createMenus()
     connect( ui->actionImport_Image_Sequence, &QAction::triggered, this, &MainWindow2::importImageSequence );
     connect( ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie );
 
-    //connect( ui->actionImport_Sound, &QAction::triggered, editor, &Editor::importSound );
-    ui->actionImport_Sound->setEnabled( false );
+    connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &CommandCenter::importSound );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
@@ -206,8 +209,8 @@ void MainWindow2::createMenus()
     connect( ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy );
     connect( ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste );
     connect( ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame );
-    connect( ui->actionFlip_X, &QAction::triggered, mEditor, &Editor::flipX );
-    connect( ui->actionFlip_Y, &QAction::triggered, mEditor, &Editor::flipY );
+    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &CommandCenter::flipX );
+    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &CommandCenter::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
@@ -222,12 +225,12 @@ void MainWindow2::createMenus()
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In, &QAction::triggered, mEditor, &Editor::zoomIn );
-    connect( ui->actionZoom_Out, &QAction::triggered, mEditor, &Editor::zoomOut );
+    connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
+    connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
     connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
-    connect( ui->actionReset_View, &QAction::triggered, mEditor, &Editor::resetView );
+    connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
     connect( ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV );
 
@@ -245,8 +248,9 @@ void MainWindow2::createMenus()
     connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );
     connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
 
-    connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
-    connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
+    //connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
+    //connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
+    
     connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
@@ -311,8 +315,7 @@ void MainWindow2::createMenus()
     mRecentFileMenu->loadFromDisk();
     ui->menuFile->insertMenu( ui->actionSave, mRecentFileMenu );
 
-    QObject::connect( mRecentFileMenu, SIGNAL( loadRecentFile( QString ) ),
-        this, SLOT( openFile( QString ) ) );
+    connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
     connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
     connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
@@ -320,7 +323,7 @@ void MainWindow2::createMenus()
 
 void MainWindow2::setOpacity( int opacity )
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( "windowOpacity", 100 - opacity );
     setWindowOpacity( opacity / 100.0 );
 }
@@ -360,14 +363,13 @@ void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
-        QSettings settings( "Pencil", "Pencil" );
+        QSettings settings( PENCIL2D, PENCIL2D );
 
         QString strLastOpenPath = settings.value( "lastFilePath", QDir::homePath() ).toString();
         QString fileName = QFileDialog::getOpenFileName( this,
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
-
         if ( fileName.isEmpty() )
         {
             return;
@@ -391,7 +393,7 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QString strLastFolder = settings.value( "lastFilePath", QDir::homePath() ).toString();
     if ( strLastFolder.isEmpty() )
@@ -441,14 +443,14 @@ bool MainWindow2::openObject( QString strFilePath )
     ObjectSaveLoader objectLoader( this );
     Object* object = objectLoader.load( strFilePath );
 
-    if ( object == nullptr || objectLoader.error().code() != PCL_OK )
+    if ( object == nullptr || !objectLoader.error().ok() )
     {
         return false;
     }
 
     mEditor->setObject( object );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( "LastFilePath", object->filePath() );
 
     mRecentFileMenu->addRecentFile( object->filePath() );
@@ -657,7 +659,7 @@ void MainWindow2::exportImageSequence()
 
 void MainWindow2::exportImage()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
 
     QString filePath = QFileDialog::getSaveFileName( this,
@@ -693,94 +695,35 @@ void MainWindow2::exportImage()
     return; // true;
 }
 
-void MainWindow2::importSound()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL )
-    {
-        QMessageBox msg;
-        msg.setText( "You must select an empty sound layer as the destination for your sound before importing. Please create a new sound layer." );
-        msg.setIcon( QMessageBox::Warning );
-        msg.exec();
-        return;
-    }
-
-    if ( layer->type() != Layer::SOUND )
-    {
-        QMessageBox msg;
-        msg.setText( "No sound layer exists as a destination for your import. Create a new sound layer?" );
-        QAbstractButton* acceptButton = msg.addButton( "Create sound layer", QMessageBox::AcceptRole );
-        msg.addButton( "Don't create layer", QMessageBox::RejectRole );
-
-        msg.exec();
-        if ( msg.clickedButton() == acceptButton )
-        {
-            //SoundLayer();
-            layer = mEditor->layers()->currentLayer();
-        }
-        else
-        {
-            return;
-        }
-    }
-    /*
-    if ( !( ( LayerSound* )layer )->isEmpty() )
-    {
-        QMessageBox msg;
-        msg.setText( "The sound layer you have selected already contains a sound item. Please select another." );
-        msg.exec();
-        return;
-    }
-
-    if ( filePath.isEmpty() || filePath == "fromDialog" )
-    {
-        QSettings settings( "Pencil", "Pencil" );
-        QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-        if ( initialPath.isEmpty() ) initialPath = QDir::homePath();
-        filePath = QFileDialog::getOpenFileName( mMainWindow, tr( "Import sound..." ), initialPath, tr( "WAV(*.wav);;MP3(*.mp3)" ) );
-        if ( !filePath.isEmpty() )
-        {
-            settings.setValue( "lastImportPath", QVariant( filePath ) );
-        }
-        else
-        {
-            return;
-        }
-    }
-    ( ( LayerSound* )layer )->loadSoundAtFrame( filePath, currentFrame() );
-    */
-    mTimeLine->updateContent();
-}
-
 void MainWindow2::preferences()
 {
-    m_pPreferences = new Preferences( this );
+    mPreferencesDialog = new PreferencesDialog( this );
+    mPreferencesDialog->init( mEditor->preference() );
 
-    connect( m_pPreferences, SIGNAL( lengthSizeChange( QString ) ), mTimeLine, SIGNAL( lengthChange( QString ) ) );
-    connect( m_pPreferences, SIGNAL( fontSizeChange( int ) ), mTimeLine, SIGNAL( fontSizeChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( frameSizeChange( int ) ), mTimeLine, SIGNAL( frameSizeChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( labelChange( int ) ), mTimeLine, SIGNAL( labelChange( int ) ) );
-    connect( m_pPreferences, SIGNAL( scrubChange( int ) ), mTimeLine, SIGNAL( scrubChange( int ) ) );
+    connect( mPreferencesDialog, &PreferencesDialog::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
+    connect( mPreferencesDialog, &PreferencesDialog::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
+    connect( mPreferencesDialog, &PreferencesDialog::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
+    connect( mPreferencesDialog, &PreferencesDialog::labelChange,      mTimeLine, &TimeLine::labelChange );
+    connect( mPreferencesDialog, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
-    connect( m_pPreferences, SIGNAL( windowOpacityChange( int ) ), this, SLOT( setOpacity( int ) ) );
-    connect( m_pPreferences, SIGNAL( curveSmoothingChange( int ) ), mScribbleArea, SLOT( setCurveSmoothing( int ) ) );
-    connect( m_pPreferences, SIGNAL( antialiasingChange( int ) ), mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( m_pPreferences, SIGNAL( backgroundChange( int ) ), mScribbleArea, SLOT( setBackground( int ) ) );
-    connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
-    connect( m_pPreferences, SIGNAL( styleChanged( int ) ), mScribbleArea, SLOT( setStyle( int ) ) );
+    connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( mPreferencesDialog, &PreferencesDialog::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
+    //connect( m_pPreferences, &Preferences::antialiasingChange,   mScribbleArea, SLOT( setAntialiasing( int ) ) );
+    connect( mPreferencesDialog, &PreferencesDialog::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
+    //connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
 
-    connect( m_pPreferences, SIGNAL( autosaveChange( int ) ), mEditor, SLOT( changeAutosave( int ) ) );
-    connect( m_pPreferences, SIGNAL( autosaveNumberChange( int ) ), mEditor, SLOT( changeAutosaveNumber( int ) ) );
+    connect( mPreferencesDialog, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
+    connect( mPreferencesDialog, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
 
-    connect( m_pPreferences, SIGNAL( onionMaxOpacityChange( int ) ), mEditor, SLOT( onionMaxOpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionMinOpacityChange( int ) ), mEditor, SLOT( onionMinOpacityChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionPrevFramesNumChange( int ) ), mEditor, SLOT( onionPrevFramesNumChangeSlot( int ) ) );
-    connect( m_pPreferences, SIGNAL( onionNextFramesNumChange( int ) ), mEditor, SLOT( onionNextFramesNumChangeSlot( int ) ) );
+    connect( mPreferencesDialog, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
+    connect( mPreferencesDialog, &PreferencesDialog::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
 
     clearKeyboardShortcuts();
-    connect( m_pPreferences, &Preferences::destroyed, [=] { setupKeyboardShortcuts(); } );
+    connect( mPreferencesDialog, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
 
-    m_pPreferences->show();
+    mPreferencesDialog->show();
 }
 
 void MainWindow2::dockAllPalettes()
@@ -895,8 +838,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
 
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
-    mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
-    mScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
+    //mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
+    //mScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
 
     ui->actionNew_Bitmap_Layer->setShortcut( cmdKeySeq( CMD_NEW_BITMAP_LAYER ) );
     ui->actionNew_Vector_Layer->setShortcut( cmdKeySeq( CMD_NEW_VECTOR_LAYER ) );
@@ -1006,7 +949,7 @@ void MainWindow2::aboutPencil()
 
 void MainWindow2::helpBox()
 {
-    qDebug() << "Open help manual.";
+    //qDebug() << "Open help manual.";
 
     QString url = "http://www.pencil2d.org/documentation/";
     QDesktopServices::openUrl( QUrl(url) );
@@ -1024,25 +967,21 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor );
 
     connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
-    connect( editor, &Editor::updateAllFrames, scribbleArea, &ScribbleArea::updateAllFrames );
+    connect( editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames );
 
     connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
     connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
     connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
 
-    connect( scribbleArea, &ScribbleArea::thinLinesChanged, editor, &Editor::changeThinLinesButton );
-    connect( scribbleArea, &ScribbleArea::outlinesChanged, editor, &Editor::changeOutlinesButton );
-    connect( scribbleArea, &ScribbleArea::onionPrevChanged, editor, &Editor::onionPrevChanged );
-    connect( scribbleArea, &ScribbleArea::onionNextChanged, editor, &Editor::onionNextChanged );
-
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
+
+    connect( editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames );
+    connect( editor->preference(), &PreferenceManager::preferenceChanged, scribbleArea, &ScribbleArea::onPreferencedChanged );
 }
 
 void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
-    //LayerManager* pLayerManager = pEditor->layers();
-
     connect( pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey );
 
     connect( pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame );
@@ -1050,7 +989,6 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
-
 
     connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
@@ -1061,6 +999,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
+    connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

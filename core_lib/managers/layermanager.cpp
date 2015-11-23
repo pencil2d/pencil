@@ -2,10 +2,9 @@
 #include "editor.h"
 #include "layerimage.h"
 #include "layermanager.h"
+#include "layersound.h"
 
-
-LayerManager::LayerManager( QObject* pParent )
-    : BaseManager( pParent )
+LayerManager::LayerManager( QObject* pParent ) : BaseManager( pParent )
 {
 }
 
@@ -19,6 +18,11 @@ bool LayerManager::init()
 }
 
 // Layer management
+int LayerManager::getLastCameraLayer()
+{
+    return lastCameraLayer;
+}
+
 Layer* LayerManager::currentLayer()
 {
     return currentLayer( 0 );
@@ -38,11 +42,32 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-	if ( mCurrentLayerIndex != layerIndex )
-	{
-		mCurrentLayerIndex = layerIndex;
-		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
-	}
+    if ( mCurrentLayerIndex != layerIndex )
+    {
+        mCurrentLayerIndex = layerIndex;
+        Q_EMIT currentLayerChanged( mCurrentLayerIndex );
+    }
+    if ( editor()->object()!=nullptr )
+    {
+        if ( editor()->object()->getLayer( layerIndex )->type() == Layer::CAMERA )
+        {
+            lastCameraLayer = layerIndex;
+        }
+    }
+}
+
+void LayerManager::setCurrentLayer( Layer* layer )
+{
+    Object* o = editor()->object();
+
+    for ( int i = 0; i < o->getLayerCount(); ++i )
+    {
+        if ( layer == o->getLayer( i ) )
+        {
+            setCurrentLayer( i );
+            return;
+        }
+    }
 }
 
 void LayerManager::gotoNextLayer()
@@ -50,7 +75,7 @@ void LayerManager::gotoNextLayer()
     if ( mCurrentLayerIndex < editor()->object()->getLayerCount() - 1 )
     {
         mCurrentLayerIndex += 1;
-		emit currentLayerChanged( mCurrentLayerIndex );
+		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
     }
 }
 
@@ -59,8 +84,18 @@ void LayerManager::gotoPreviouslayer()
     if ( mCurrentLayerIndex > 0 )
     {
         mCurrentLayerIndex -= 1;
-		emit currentLayerChanged( mCurrentLayerIndex );
+		Q_EMIT currentLayerChanged( mCurrentLayerIndex );
     }
+}
+
+LayerSound* LayerManager::createSoundLayer( QString strLayerName )
+{
+    LayerSound* layer = editor()->object()->addNewSoundLayer();
+    layer->setName( strLayerName );
+    
+    Q_EMIT layerCountChanged( count() );
+
+    return layer;
 }
 
 int LayerManager::LastFrameAtFrame( int frameIndex )
@@ -133,8 +168,8 @@ bool LayerManager::deleteCurrentLayer()
     {
         setCurrentLayer( currentLayerIndex() - 1 );
     }
-    emit editor()->updateAllFrames();
-    emit layerCountChanged( count() );
+
+    Q_EMIT layerCountChanged( count() );
 
     return true;
 }

@@ -1,10 +1,7 @@
 
 #include "objectsaveloader.h"
 #include "test_objectsaveloader.h"
-
-TestObjectSaveLoader::TestObjectSaveLoader()
-{
-}
+#include "util.h"
 
 void TestObjectSaveLoader::testCase1()
 {
@@ -20,7 +17,7 @@ void TestObjectSaveLoader::testNotExistFile()
     Object* pObject = pSaveLoader.load( strDummyPath );
 
     QVERIFY2( pObject == NULL, "File doesn't exist.");
-    QVERIFY2( pSaveLoader.error().code() == ERROR_FILE_NOT_EXIST, "" );
+    QVERIFY2( pSaveLoader.error().code() == Status::FILE_NOT_FOUND, "" );
 }
 
 void TestObjectSaveLoader::testInvalidXML()
@@ -38,7 +35,7 @@ void TestObjectSaveLoader::testInvalidXML()
     Object* pObj = pSaveLoader.load( strBadXMLPath );
 
     QVERIFY( pObj == NULL );
-    QVERIFY( pSaveLoader.error().code() == ERROR_INVALID_XML_FILE );
+    QVERIFY( pSaveLoader.error().code() == Status::ERROR_INVALID_XML_FILE );
 }
 
 void TestObjectSaveLoader::testInvalidPencilDocument()
@@ -56,12 +53,13 @@ void TestObjectSaveLoader::testInvalidPencilDocument()
     Object* pObj = pSaveLoader.load( strBadXMLPath );
 
     QVERIFY( pObj == NULL );
-    QVERIFY( pSaveLoader.error().code() == ERROR_INVALID_PENCIL_FILE );
+    QVERIFY( pSaveLoader.error().code() == Status::ERROR_INVALID_PENCIL_FILE );
 }
 
 void TestObjectSaveLoader::testMinimalPencilDocument()
 {
     QString strBadXMLPath = QDir::tempPath() + "/minimal.pcl";
+    OnScopeExit( QFile::remove( strBadXMLPath ) );
 
     QFile badXMLFile( strBadXMLPath );
     badXMLFile.open( QIODevice::WriteOnly );
@@ -74,7 +72,7 @@ void TestObjectSaveLoader::testMinimalPencilDocument()
     Object* pObj = pSaveLoader.load( strBadXMLPath );
 
     QVERIFY( pObj != NULL );
-    QVERIFY( pSaveLoader.error().code() == PCL_OK );
+    QVERIFY( pSaveLoader.error().ok() );
 }
 
 

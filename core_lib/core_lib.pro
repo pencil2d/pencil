@@ -16,7 +16,8 @@ RESOURCES += ../pencil.qrc
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 
-INCLUDEPATH += \
+
+INCLUDEPATH += . \
     graphics \
     graphics/bitmap \
     graphics/vector \
@@ -37,21 +38,11 @@ HEADERS +=  \
     graphics/vector/vectorselection.h \
     graphics/vector/vertexref.h \
     interface/backupelement.h \
-    interface/colorbox.h \
-    interface/colorgrid.h \
-    interface/colorgriditem.h \
-    interface/colorinspector.h \
-    interface/colorpalettewidget.h \
-    interface/colorwheel.h \
-    interface/displayoptiondockwidget.h \
     interface/editor.h \
     interface/flowlayout.h \
     interface/keycapturelineedit.h \
-    interface/popupcolorpalettewidget.h \
-    interface/preferences.h \
     interface/recentfilemenu.h \
     interface/scribblearea.h \
-    interface/shortcutspage.h \
     interface/spinslider.h \
     interface/timecontrols.h \
     interface/timeline.h \
@@ -96,7 +87,12 @@ HEADERS +=  \
     util/util.h \
     interface/basedockwidget.h \
     util/log.h \
-    interface/preview.h
+    canvasrenderer.h \
+    managers/preferencemanager.h \
+    soundplayer.h \
+    structure/keyframefactory.h \
+    structure/soundclip.h \
+    managers/soundmanager.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -107,21 +103,11 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/vectorselection.cpp \
     graphics/vector/vertexref.cpp \
     interface/backupelement.cpp \
-    interface/colorbox.cpp \
-    interface/colorgrid.cpp \
-    interface/colorgriditem.cpp \
-    interface/colorinspector.cpp \
-    interface/colorpalettewidget.cpp \
-    interface/colorwheel.cpp \
-    interface/displayoptiondockwidget.cpp \
     interface/editor.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \
-    interface/popupcolorpalettewidget.cpp \
-    interface/preferences.cpp \
     interface/recentfilemenu.cpp \
     interface/scribblearea.cpp \
-    interface/shortcutspage.cpp \
     interface/spinslider.cpp \
     interface/timecontrols.cpp \
     interface/timeline.cpp \
@@ -164,13 +150,12 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     managers/playbackmanager.cpp \
     managers/viewmanager.cpp \
     util/util.cpp \
-    interface/preview.cpp
-
-FORMS += \
-    interface/shortcutspage.ui \
-    interface/colorinspector.ui \
-    interface/colorpalette.ui
-
+    canvasrenderer.cpp \
+    managers/preferencemanager.cpp \
+    soundplayer.cpp \
+    structure/keyframefactory.cpp \
+    structure/soundclip.cpp \
+    managers/soundmanager.cpp
 
 win32 {
     INCLUDEPATH += external/win32

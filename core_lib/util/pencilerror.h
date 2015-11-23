@@ -4,34 +4,45 @@
 #include <QString>
 
 
-enum ErrorCode
-{
-    PCL_OK = 0,
-    PCL_FAIL,
-    
-    // for Object loading
-    ERROR_FILE_NOT_EXIST,
-    ERROR_FILE_CANNOT_OPEN,
-    ERROR_INVALID_XML_FILE,
-    ERROR_INVALID_PENCIL_FILE,
 
-    //
-    ERROR_INVALID_LAYER_TYPE,
-    ERROR_LOAD_IMAGE_FAIL,
-};
-
-
-class Error
+class Status
 {
 public:
-    Error() { mCode = PCL_OK; }
-    Error( ErrorCode eCode ) { mCode = eCode; }
-    ErrorCode code() { return mCode; }
 
-    QString msg();
+    enum ErrorCode
+    {
+        OK = 0,
+        SAFE,
+        FAIL,
+        FILE_NOT_FOUND,
+        CORRUPTION,
+        NOT_SUPPORTED,
+        INVALID_ARGUMENT,
+
+        // for Object loading
+        ERROR_FILE_CANNOT_OPEN,
+        ERROR_INVALID_XML_FILE,
+        ERROR_INVALID_PENCIL_FILE,
+
+        //
+        ERROR_INVALID_LAYER_TYPE,
+        ERROR_INVALID_FRAME_NUMBER,
+        ERROR_LOAD_IMAGE_FAIL,
+
+        // Sound
+        ERROR_LOAD_SOUND_FILE,
+    };
+
+
+    Status() {}
+    Status( ErrorCode eCode ) { mCode = eCode; }
+
+    ErrorCode code() { return mCode; }
+    bool      ok() const { return mCode == OK; }
+    QString   msg();
 
 private:
-    ErrorCode mCode;
+    ErrorCode mCode = OK;
 };
 
 #endif // PENCILERROR_H

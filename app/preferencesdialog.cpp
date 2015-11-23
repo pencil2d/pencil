@@ -2,6 +2,7 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2015 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -13,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "preferencesdialog.h"
 
 #include <QListWidget>
 #include <QStackedWidget>
@@ -26,56 +28,85 @@ GNU General Public License for more details.
 #include <QSpinBox>
 #include <QLabel>
 #include <QPushButton>
-#include "preferences.h"
+
 #include "scribblearea.h"
 #include "shortcutspage.h"
+#include "preferencemanager.h"
 
 
-Preferences::Preferences( QWidget* parent ) : QDialog(parent)
+PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
 {
-    contentsWidget = new QListWidget;
-    contentsWidget->setViewMode(QListView::IconMode);
-    contentsWidget->setIconSize(QSize(96, 84));
-    contentsWidget->setMovement(QListView::Static);
-    contentsWidget->setMaximumWidth(128);
-    contentsWidget->setSpacing(12);
-
-    pagesWidget = new QStackedWidget;
-    pagesWidget->addWidget(new GeneralPage(this));
-    pagesWidget->addWidget(new FilesPage(this));
-    pagesWidget->addWidget(new TimelinePage(this));
-    pagesWidget->addWidget(new ToolsPage(this));
-    pagesWidget->addWidget(new ShortcutsPage(this));
-
-    QPushButton* closeButton = new QPushButton(tr("Close"));
-    connect( closeButton, &QPushButton::clicked, this, &Preferences::close );
-
-    createIcons();
-    contentsWidget->setCurrentRow(0);
-    
-    QHBoxLayout* horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget(contentsWidget);
-    horizontalLayout->addWidget(pagesWidget, 1);
-
-    QHBoxLayout* buttonsLayout = new QHBoxLayout;
-    buttonsLayout->addStretch(1);
-    buttonsLayout->addWidget(closeButton);
-
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->addLayout(horizontalLayout);
-    mainLayout->addStretch(1);
-    mainLayout->addSpacing(12);
-    mainLayout->addLayout(buttonsLayout);
-    setLayout(mainLayout);
-
     setWindowTitle(tr("Preferences"));
 }
 
-Preferences::~Preferences()
+PreferencesDialog::~PreferencesDialog()
 {
 }
 
-void Preferences::createIcons()
+void PreferencesDialog::init( PreferenceManager* m )
+{
+    Q_ASSERT( m != nullptr );
+    mPrefManager = m;
+
+    contentsWidget = new QListWidget;
+    contentsWidget->setViewMode( QListView::IconMode );
+    contentsWidget->setIconSize( QSize( 96, 84 ) );
+    contentsWidget->setMovement( QListView::Static );
+    contentsWidget->setMaximumWidth( 128 );
+    contentsWidget->setSpacing( 12 );
+
+    GeneralPage* general = new GeneralPage( this );
+    general->setManager( mPrefManager );
+    
+    FilesPage* file = new FilesPage( this );
+    file->setManager( mPrefManager );
+    
+    TimelinePage* timeline = new TimelinePage( this );
+    timeline->setManager( mPrefManager );
+
+    ToolsPage* tools = new ToolsPage( this );
+    tools->setManager( mPrefManager );
+    
+    ShortcutsPage* shortcuts = new ShortcutsPage( this );
+    shortcuts->setManager( mPrefManager );
+
+    pagesWidget = new QStackedWidget;
+    pagesWidget->addWidget( general );
+    pagesWidget->addWidget( file );
+    pagesWidget->addWidget( timeline );
+    pagesWidget->addWidget( tools );
+    pagesWidget->addWidget( shortcuts );
+
+    QPushButton* closeButton = new QPushButton( tr( "Close" ) );
+    connect( closeButton, &QPushButton::clicked, this, &PreferencesDialog::close );
+
+    createIcons();
+    contentsWidget->setCurrentRow( 0 );
+
+    QHBoxLayout* horizontalLayout = new QHBoxLayout;
+    horizontalLayout->addWidget( contentsWidget );
+    horizontalLayout->addWidget( pagesWidget, 1 );
+
+    QHBoxLayout* buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addStretch( 1 );
+    buttonsLayout->addWidget( closeButton );
+
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->addLayout( horizontalLayout );
+    mainLayout->addStretch( 1 );
+    mainLayout->addSpacing( 12 );
+    mainLayout->addLayout( buttonsLayout );
+    setLayout( mainLayout );
+
+    makeConnections();
+}
+
+void PreferencesDialog::makeConnections()
+{
+
+}
+
+void PreferencesDialog::createIcons()
 {
     QListWidgetItem* generalButton = new QListWidgetItem(contentsWidget);
     generalButton->setIcon(QIcon(":icons/prefspencil.png"));
@@ -107,19 +138,20 @@ void Preferences::createIcons()
     shortcutsButton->setTextAlignment(Qt::AlignHCenter);
     shortcutsButton->setFlags((Qt::ItemIsSelectable | Qt::ItemIsEnabled));
 
+    auto onCurrentItemChanged = static_cast< void ( QListWidget::* )( QListWidgetItem*, QListWidgetItem* ) >( &QListWidget::currentItemChanged );
     connect(contentsWidget,
-            SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)),
+            onCurrentItemChanged,
             this,
-            SLOT(changePage(QListWidgetItem*, QListWidgetItem*)));
+            &PreferencesDialog::changePage);
 }
 
-void Preferences::closeEvent(QCloseEvent *)
+void PreferencesDialog::closeEvent(QCloseEvent *)
 {
 
     this->deleteLater();
 }
 
-void Preferences::changePage(QListWidgetItem* current, QListWidgetItem* previous)
+void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* previous)
 {
     if (!current)
         current = previous;
@@ -129,7 +161,7 @@ void Preferences::changePage(QListWidgetItem* current, QListWidgetItem* previous
 
 GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 {
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* windowOpacityBox = new QGroupBox(tr("Window opacity"));
@@ -182,6 +214,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     backgroundButtons->setId(greyBackgroundButton, 3);
     backgroundButtons->setId(dotsBackgroundButton, 4);
     backgroundButtons->setId(weaveBackgroundButton, 5);
+
     QHBoxLayout* backgroundLayout = new QHBoxLayout();
     backgroundBox->setLayout(backgroundLayout);
     backgroundLayout->addWidget(checkerBackgroundButton);
@@ -203,39 +236,13 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     toolCursorsBox->setChecked(true); // default
     if (settings.value("toolCursors").toString()=="false") toolCursorsBox->setChecked(false);
 
-    QCheckBox* aquaBox = new QCheckBox(tr("Aqua Style"));
-    aquaBox->setChecked(false); // default
-    if (settings.value("style").toString()=="aqua") aquaBox->setChecked(true);
-
     QCheckBox* antialiasingBox = new QCheckBox(tr("Antialiasing"));
     antialiasingBox->setChecked(true); // default
     if (settings.value("antialiasing").toString()=="false") antialiasingBox->setChecked(false);
 
-    QButtonGroup* gradientsButtons = new QButtonGroup();
-    QRadioButton* gradient1Button = new QRadioButton(tr("None"));
-    QRadioButton* gradient2Button = new QRadioButton(tr("Quick"));
-    QRadioButton* gradient3Button = new QRadioButton(tr("Gradient1"));
-    QRadioButton* gradient4Button = new QRadioButton(tr("Gradient2"));
-    gradientsButtons->addButton(gradient1Button);
-    gradientsButtons->addButton(gradient2Button);
-    gradientsButtons->addButton(gradient3Button);
-    gradientsButtons->addButton(gradient4Button);
-    gradientsButtons->setId(gradient1Button, 1);
-    gradientsButtons->setId(gradient2Button, 2);
-    gradientsButtons->setId(gradient3Button, 3);
-    gradientsButtons->setId(gradient4Button, 4);
-    QGroupBox* gradientsBox = new QGroupBox(tr("Gradients"));
-    QHBoxLayout* gradientsLayout = new QHBoxLayout();
-    gradientsBox->setLayout(gradientsLayout);
-    gradientsLayout->addWidget(gradient1Button);
-    gradientsLayout->addWidget(gradient2Button);
-    gradientsLayout->addWidget(gradient3Button);
-    gradientsLayout->addWidget(gradient4Button);
-    if ( settings.value("gradients").toString() == "1" ) gradient1Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "2" ) gradient2Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "" )  gradient2Button->setChecked(true); // default
-    if ( settings.value("gradients").toString() == "3" ) gradient3Button->setChecked(true);
-    if ( settings.value("gradients").toString() == "4" ) gradient4Button->setChecked(true);
+    QCheckBox* blurryZoomBox = new QCheckBox(tr("Blurry Zoom"));
+    antialiasingBox->setChecked(false); // default
+    if (settings.value("blurryzoom").toString()=="true") antialiasingBox->setChecked(true);
 
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
@@ -246,14 +253,11 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     appearanceBox->setLayout(appearanceLayout);
     appearanceLayout->addWidget(shadowsBox);
     appearanceLayout->addWidget(toolCursorsBox);
-#ifdef Q_WS_MAC
-    appearanceLayout->addWidget(aquaBox);
-#endif
 
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(antialiasingBox, 0, 0);
-    displayLayout->addWidget(gradientsBox, 1, 0);
+    displayLayout->addWidget(blurryZoomBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -284,17 +288,43 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     lay->addWidget(displayBox);
     lay->addWidget(editingBox);
 
-    connect(windowOpacityLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(windowOpacityChange(int)));
-    connect(backgroundButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(backgroundChange(int)));
-    connect(gradientsButtons, SIGNAL(buttonClicked(int)), parent, SIGNAL(gradientsChange(int)));
-    connect(shadowsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(shadowsChange(int)));
-    connect(toolCursorsBox, SIGNAL(stateChanged(int)), parent, SIGNAL(toolCursorsChange(int)));
-    connect(aquaBox, SIGNAL(stateChanged(int)), parent, SIGNAL(styleChanged(int)));
-    connect(antialiasingBox, SIGNAL(stateChanged(int)), parent, SIGNAL(antialiasingChange(int)));
-    connect(curveSmoothingLevel, SIGNAL(valueChanged(int)), parent, SIGNAL(curveSmoothingChange(int)));
-    connect(highResBox, SIGNAL(stateChanged(int)), parent, SIGNAL(highResPositionChange(int)));
+    PreferencesDialog* preference = qobject_cast< PreferencesDialog* >( parent );
+
+    auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
+    connect( windowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
+    connect( backgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
+    connect( shadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
+    connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &PreferencesDialog::toolCursorsChange );
+    connect( antialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
+    connect( blurryZoomBox,    &QCheckBox::stateChanged, this, &GeneralPage::blurryZoomCheckboxStateChanged );
+    connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &PreferencesDialog::curveSmoothingChange );
+    connect( highResBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::highResPositionChange );
 
     setLayout(lay);
+}
+
+void GeneralPage::antiAliasCheckboxStateChanged( bool b )
+{
+    if ( b )
+    {
+        mManager->turnOn( EFFECT::ANTIALIAS );
+    }
+    else
+    {
+        mManager->turnOff( EFFECT::ANTIALIAS );
+    }
+}
+
+void GeneralPage::blurryZoomCheckboxStateChanged( bool b )
+{
+    if ( b )
+    {
+        mManager->turnOn( EFFECT::BLURRYZOOM );
+    }
+    else
+    {
+        mManager->turnOff( EFFECT::BLURRYZOOM );
+    }
 }
 
 

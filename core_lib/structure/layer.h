@@ -35,21 +35,22 @@ public:
     enum LAYER_TYPE
     {
         UNDEFINED = 0,
-        BITMAP = 1,
-        VECTOR = 2,
-        MOVIE = 3,
-        SOUND = 4,
-        CAMERA = 5
+        BITMAP    = 1,
+        VECTOR    = 2,
+        MOVIE     = 3,
+        SOUND     = 4,
+        CAMERA    = 5,
+
+        //PAINTABLE = 
     };
 
-    Layer(Object*, LAYER_TYPE);
+    explicit Layer(Object*, LAYER_TYPE);
     virtual ~Layer();
 
     QString mName;
-    bool visible;
-    int mId;
+    bool mVisible = true;
 
-    static const int NO_KeyFrame = -1;
+    int id() { return mId; }
 
     LAYER_TYPE type() { return meType; }
     Object* object() { return mObject; }
@@ -57,30 +58,32 @@ public:
     void setName( QString name ) { mName = name; }
     QString name() { return mName; }
 
-    void switchVisibility() { visible = !visible; }
+    void switchVisibility() { mVisible = !mVisible; }
+
+    bool visible() { return mVisible; }
 
     // KeyFrame interface
-    bool keyExists(int position);
-    int  getPreviousKeyFramePosition(int position);
-    int  getNextKeyFramePosition(int position);
-
     int getMaxKeyFramePosition();
     int firstKeyFramePosition();
 
-    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
-
-    virtual bool addNewKeyAt( int frameNumber ) = 0;
     virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
+    
+    bool keyExists( int position );
+    int  getPreviousKeyFramePosition( int position );
+    int  getNextKeyFramePosition( int position );
 
+    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
+
+    bool addNewEmptyKeyAt( int position );
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame( int position );
     bool swapKeyFrames( int position1, int position2 );
     bool moveKeyFrameForward( int position );
     bool moveKeyFrameBackward( int position );
     bool loadKey( KeyFrame* );
-    KeyFrame* getKeyFrameAtPosition( int position );
+    KeyFrame* getKeyFrameAt( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
 
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
@@ -102,9 +105,13 @@ public:
 
     virtual void editProperties();
 
+protected:
+    void setId( int LayerId ) { mId = LayerId; }
+
 private:
-    LAYER_TYPE meType;
-    Object* mObject;
+    LAYER_TYPE meType = UNDEFINED;
+    Object* mObject   = nullptr;
+    int mId           = 0;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 };

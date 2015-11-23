@@ -9,25 +9,24 @@ class ColorInspector;
 class ColorBox : public QWidget
 {
     Q_OBJECT
-    
+
 public:
     explicit ColorBox(QWidget *parent = 0);
     ~ColorBox();
-    QColor color();
-signals:
-    void colorChanged(const QColor &);
 
-public slots:
+    QColor color();
     void setColor(const QColor &);
 
-private slots:
+Q_SIGNALS:
+    void colorChanged(const QColor &);
+
+private:
     void onSpinboxChange(const QColor &);
     void onWheelMove(const QColor &);
     void onWheelRelease(const QColor &);
 
-private:
-    ColorWheel* m_colorWheel;
-    ColorInspector* m_colorInspector;
+    ColorWheel* m_colorWheel = nullptr;
+    ColorInspector* m_colorInspector = nullptr;
 };
 
 #endif // COLORBOX_H
