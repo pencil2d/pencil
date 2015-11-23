@@ -614,53 +614,18 @@ void MainWindow2::exportImageSequence()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
 
-    QString strInitPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
-    QString strFilePath = QFileDialog::getSaveFileName( this,
-                                                        tr( "Save Image Sequence" ),
-                                                        strInitPath,
-                                                        PENCIL_IMAGE_FILTER );
-    if ( strFilePath.isEmpty() )
-    {
-        // TODO:
-        return; // false;
-    }
-    settings.setValue( "lastExportPath", strFilePath );
-
-    auto dialog =  new ExportImageSeqDialog( this );
-    OnScopeExit( dialog->deleteLater() );
-
-    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
-    dialog->exec();
-
-    if ( dialog->result() == QDialog::Rejected )
-    {
-        return; // false;
+    // Get the camera layer
+    Layer *cameraLayer = mEditor->layers()->currentLayer();
+    if (cameraLayer->type() != Layer::CAMERA) {
+        QMessageBox::warning( this,
+                              tr( "Error" ),
+                              tr( "You must select a Camera Layer to export an image sequence." ),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok );
+        return;// false;
     }
 
-    QSize exportSize = dialog->getExportSize();
 
-    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-    view = mScribbleArea->getView() * view;
-
-    QString exportFormat = dialog->getExportFormat();
-    int projectLength = mEditor->layers()->projectLength();
-    mEditor->object()->exportFrames( 1,
-                                     projectLength,
-                                     mEditor->layers()->currentLayer(),
-                                     exportSize,
-                                     strFilePath,
-                                     exportFormat.toStdString().c_str(),
-                                     -1,
-                                     false,
-                                     true,
-                                     NULL,
-                                     0 );
-    //return true;
-}
-
-void MainWindow2::exportImage()
-{
-    QSettings settings( "Pencil", "Pencil" );
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );
@@ -672,6 +637,79 @@ void MainWindow2::exportImage()
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
+
+    if ( dialog->result() == QDialog::Rejected )
+    {
+        return; // false;
+    }
+
+    // Path
+    QString strInitPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+
+    QFileInfo info( strInitPath );
+    strInitPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
+
+    QString strFilePath = QFileDialog::getSaveFileName( this,
+                                                        tr( "Save Image Sequence" ),
+                                                        strInitPath);
+    if ( strFilePath.isEmpty() )
+    {
+        // TODO:
+        return; // false;
+    }
+    settings.setValue( "lastExportPath", strFilePath );
+
+
+    // Export
+    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+//    view = mScribbleArea->getView() * view;
+
+
+    int projectLength = mEditor->layers()->projectLength();
+    mEditor->object()->exportFrames( 1,
+                                     projectLength,
+                                     mEditor->layers()->currentLayer(),
+                                     exportSize,
+                                     strFilePath,
+                                     exportFormat.toStdString().c_str(),
+                                     -1,
+                                     useTranparency,
+                                     true,
+                                     NULL,
+                                     0 );
+    //return true;
+}
+
+void MainWindow2::exportImage()
+{
+    QSettings settings( "Pencil", "Pencil" );
+
+    // Get the camera layer
+    Layer *cameraLayer = mEditor->layers()->currentLayer();
+    if (cameraLayer->type() != Layer::CAMERA) {
+        QMessageBox::warning( this,
+                              tr( "Error" ),
+                              tr( "You must select a Camera Layer to export an image." ),
+                              QMessageBox::Ok,
+                              QMessageBox::Ok );
+        return;// false;
+    }
+
+    // Options
+    auto dialog =  new ExportImageSeqDialog( this );
+    OnScopeExit( dialog->deleteLater() );
+
+    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->exec();
+
+    QSize exportSize = dialog->getExportSize();
+    QString exportFormat = dialog->getExportFormat();
+    bool useTranparency = dialog->getTransparency();
+
+    if ( dialog->result() == QDialog::Rejected )
+    {
+        return; // false;
+    }
 
 
     // Path
@@ -692,7 +730,7 @@ void MainWindow2::exportImage()
     settings.setValue( "lastExportPath", QVariant( filePath ) );
 
 
-
+    // Export
     QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
 //    view = mScribbleArea->getView() * view;
 

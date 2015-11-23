@@ -428,7 +428,7 @@ bool Object::exportFrames( int frameStart, int frameEnd,
                            QSize exportSize, QString filePath,
                            const char* format,
                            int quality,
-                           bool background,
+                           bool transparency,
                            bool antialiasing,
                            QProgressDialog* progress = NULL,
                            int progressMax = 50 )
@@ -446,7 +446,7 @@ bool Object::exportFrames( int frameStart, int frameEnd,
     {
         format = "JPG";
         extension = ".jpg";
-        background = true; // JPG doesn't support transparency so we have to include the background
+        transparency = false; // JPG doesn't support transparency so we have to include the background
     }
     if ( filePath.endsWith( extension, Qt::CaseInsensitive ) )
     {
@@ -455,28 +455,32 @@ bool Object::exportFrames( int frameStart, int frameEnd,
     //qDebug() << "format =" << format << "extension = " << extension;
 
     qDebug() << "Exporting frames from " << frameStart << "to" << frameEnd << "at size " << exportSize;
+
     for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
     {
         if ( progress != NULL ) progress->setValue( ( currentFrame - frameStart )*progressMax / ( frameEnd - frameStart ) );
-        QImage tempImage( exportSize, QImage::Format_ARGB32_Premultiplied );
-        QPainter painter( &tempImage );
+        QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
+        QColor bgColor = Qt::white;
+        if (transparency) {
+            bgColor.setAlpha(0);
+        }
+        imageToExport.fill(bgColor);
 
-        // Make sure that old frame is erased before exporting a new one
-        tempImage.fill( 0x00000000 );
+        QPainter painter( &imageToExport );
 
         QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
         QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
-        mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
+//        mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
         painter.setWorldTransform( mapView );
 
-        paintImage( painter, currentFrame, background, antialiasing );
+        paintImage( painter, currentFrame, false, antialiasing );
 
         QString frameNumberString = QString::number( currentFrame );
         while ( frameNumberString.length() < 4 )
         {
             frameNumberString.prepend( "0" );
         }
-        tempImage.save( filePath + frameNumberString + extension, format, quality );
+        imageToExport.save( filePath + frameNumberString + extension, format, quality );
     }
 
     return true;
