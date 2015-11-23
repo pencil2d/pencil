@@ -56,7 +56,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 
     QPainter painter( mCanvas );
 
-    painter.setTransform( mViewTransform );
+    painter.setWorldTransform( mViewTransform );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bBlurryZoom );
     painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
 
