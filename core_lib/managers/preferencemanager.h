@@ -21,7 +21,8 @@ public:
     ~PreferenceManager();
 
     virtual bool init() override;
-    
+    Status onObjectLoaded( Object* ) override;
+
     void turnOn( EFFECT e );
     void turnOff( EFFECT e );
     bool isOn( EFFECT e );

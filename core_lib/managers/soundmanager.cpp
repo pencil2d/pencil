@@ -18,6 +18,11 @@ bool SoundManager::init()
     return true;
 }
 
+Status SoundManager::onObjectLoaded( Object* )
+{
+    return Status::OK;
+}
+
 Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile )
 {
     Q_ASSERT( soundLayer );

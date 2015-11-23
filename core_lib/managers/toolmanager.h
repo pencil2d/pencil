@@ -16,6 +16,7 @@ public:
     explicit ToolManager( QObject* parent );
     
     bool init() override;
+    Status onObjectLoaded( Object* ) override;
 
     BaseTool* currentTool() { return m_pCurrentTool; }
     BaseTool* getTool( ToolType eToolType );

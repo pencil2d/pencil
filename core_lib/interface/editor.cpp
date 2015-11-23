@@ -108,7 +108,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 	mPreferenceManager = new PreferenceManager( this );
     mSoundManager = new SoundManager( this );
 
-	BaseManager* allManagers[] =
+	mAllManagers =
 	{
 		mColorManager,
 		mToolManager,
@@ -119,7 +119,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
         mSoundManager
 	};
 
-	for ( BaseManager* pManager : allManagers )
+    for ( BaseManager* pManager : mAllManagers )
 	{
 		pManager->setEditor( this );
 		pManager->init();
@@ -572,12 +572,16 @@ void Editor::resetUI()
 
 void Editor::setObject( Object* newObject )
 {
-	if ( newObject == NULL ) { return; }
-	if ( newObject == mObject.get() ) { return; }
+    if ( newObject == NULL ) { return; }
+    if ( newObject == mObject.get() ) { return; }
 
-	mObject.reset( newObject );
+    mObject.reset( newObject );
 
-	//qDebug( "New object loaded." );
+    for ( BaseManager* m : mAllManagers )
+    {
+        m->onObjectLoaded( mObject.get() );
+    }
+
 	g_clipboardVectorImage.setObject( newObject );
 }
 

@@ -19,6 +19,11 @@ bool PlaybackManager::init()
     return true;
 }
 
+Status PlaybackManager::onObjectLoaded( Object* )
+{
+    return Status::OK;
+}
+
 void PlaybackManager::play()
 {
     int projectLength = editor()->layers()->projectLength();

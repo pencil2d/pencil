@@ -10,9 +10,10 @@ class PlaybackManager : public BaseManager
 {
     Q_OBJECT
 public:
-    explicit PlaybackManager(QObject* parent);
+    explicit PlaybackManager( QObject* parent );
 
     bool init() override;
+    Status onObjectLoaded( Object* ) override;
 
     bool isPlaying() { return mIsPlaying; }
     bool isLooping() { return mIsLooping; }
@@ -52,7 +53,7 @@ private:
 
     int mFps = 12;
 
-    QTimer* mTimer;
+    QTimer* mTimer = nullptr;
 };
 
 #endif // PLAYBACKMANAGER_H

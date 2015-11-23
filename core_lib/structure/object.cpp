@@ -50,6 +50,8 @@ Object::~Object()
 
 void Object::init()
 {
+    mEditorData.reset( new EditorData );
+
     // default layers
     addNewCameraLayer();
     addNewVectorLayer();
@@ -701,6 +703,18 @@ bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize e
 
 int Object::getLayerCount()
 {
-    Q_ASSERT_X( this != nullptr, "", "" );
+    Q_ASSERT( this != nullptr );
     return mLayers.size();
+}
+
+EditorData* Object::editorData()
+{
+    Q_ASSERT( mEditorData != nullptr );
+    return mEditorData.get();
+}
+
+void Object::setEditorData( EditorData* d )
+{
+    Q_ASSERT( d != nullptr );
+    mEditorData.reset( d );
 }

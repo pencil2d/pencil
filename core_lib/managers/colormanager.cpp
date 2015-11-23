@@ -17,6 +17,12 @@ bool ColorManager::init()
     return true;
 }
 
+Status ColorManager::onObjectLoaded( Object* o )
+{
+    mCurrentFrontColor = o->editorData()->currentColor();
+    return Status::OK;
+}
+
 QColor ColorManager::frontColor()
 {
     return editor()->object()->getColour( mCurrentColorIndex ).colour;

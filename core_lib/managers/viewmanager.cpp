@@ -12,6 +12,12 @@ bool ViewManager::init()
     return true;
 }
 
+Status ViewManager::onObjectLoaded( Object* o )
+{
+    mView = o->editorData()->currentView();
+    return Status::OK;
+}
+
 QPointF ViewManager::mapCanvasToScreen( QPointF p )
 {
     return mView.map( p );

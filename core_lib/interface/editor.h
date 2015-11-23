@@ -28,6 +28,7 @@ class QDragEnterEvent;
 class QDropEvent;
 class Object;
 class MainWindow2;
+class BaseManager;
 class ColorManager;
 class ToolManager;
 class LayerManager;
@@ -197,6 +198,8 @@ private:
     ViewManager*       mViewManager       = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager      = nullptr;
+
+    std::vector< BaseManager* > mAllManagers;
 
     bool m_isAltPressed = false;
     int numberOfModifications = 0;

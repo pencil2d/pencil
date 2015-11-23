@@ -23,6 +23,11 @@ bool PreferenceManager::init()
     return true;
 }
 
+Status PreferenceManager::onObjectLoaded( Object* )
+{
+    return Status::OK;
+}
+
 void PreferenceManager::turnOn( EFFECT effect )
 {
     set( effect, true );
