@@ -184,6 +184,9 @@ public:
     void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
+    BitmapImage* mBufferImg; // used to pre-draw vector modifications
+    BitmapImage* mStrokeImg; // used for brush strokes before they are finalized
+
 private:
     void drawCanvas( int frame, QRect rect );
     void drawShadow( QPainter& );
@@ -192,34 +195,32 @@ private:
 
     void toggledOnionColor();
 
-    MoveMode mMoveMode;
+    MoveMode mMoveMode = MIDDLE;
     ToolType mPrevTemporalToolType;
-    ToolType mPrevToolType; // previous tool (except temporal)
+    ToolType mPrevToolType = PEN; // previous tool (except temporal)
 
-    StrokeManager* mStrokeManager;
+    StrokeManager* mStrokeManager = nullptr;
 
-    Editor* mEditor;
+    Editor* mEditor = nullptr;
 
     //PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
-    bool mIsSimplified = false;
-    bool mShowThinLines;
+    bool mIsSimplified  = false;
+    bool mShowThinLines = false;
     int  mShowAllLayers;
-    bool mUsePressure = true;
-    bool mMakeInvisible;
-    bool mToolCursors;
+    bool mUsePressure   = true;
+    bool mMakeInvisible = false;
+    bool mToolCursors   = true;
     qreal mCurveSmoothingLevel;
-    bool onionBlue;
-    bool onionRed;
+    bool onionBlue = false;
+    bool onionRed  = false;
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
     QColor onionColor;
 
-    bool mNeedUpdateAll;
+    bool mNeedUpdateAll = false;
 
     QBrush mBackgroundBrush;
-public:
-    BitmapImage* mBufferImg; // used to pre-draw vector modifications
-    BitmapImage* mStrokeImg; // used for brush strokes before they are finalized
+  
 
 private:
     void initDisplayEffect( std::vector< uint32_t >& );

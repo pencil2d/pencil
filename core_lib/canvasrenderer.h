@@ -40,6 +40,8 @@ struct RenderOptions
     bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
     bool  bBlurryZoom = false;
+    bool  bGrid = false;
+    bool  bAxis = false;
 };
 
 
@@ -62,9 +64,11 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-
     void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
     void paintVectorFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
+
+    void paintAxis( QPainter& painter );
+    void paintGrid( QPainter& painter );
 
 private:
     QPixmap* mCanvas = nullptr;

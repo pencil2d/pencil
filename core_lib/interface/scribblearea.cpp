@@ -998,6 +998,9 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
     options.bAntiAlias = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
     options.bBlurryZoom = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
+    options.bGrid = isEffectOn( EFFECT_GRID_A );
+    options.bAxis = isEffectOn( EFFECT_AXIS );
+
     mCanvasRenderer.setOptions( options );
     
     //qDebug() << "Antialias=" << options.bAntiAlias;
@@ -1128,18 +1131,6 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
             }
         }
     }
-
-    // --- grids ---
-    if ( isEffectOn( EFFECT_GRID_A ) )
-    {
-        drawGrid( painter );
-    }
-    // --- eo grids
-    if ( isEffectOn( EFFECT_AXIS ) )
-    {
-        drawAxis( painter );
-    }
-
     painter.end();
 }
 
@@ -1776,52 +1767,6 @@ void ScribbleArea::drawShadow( QPainter& painter )
     shadow.setFinalStop( width() - radius2, 0 );
     painter.setBrush( shadow );
     painter.drawRect( QRect( width() - radius2, 0, width(), height() ) );
-}
-
-void ScribbleArea::drawAxis( QPainter& painter )
-{
-    painter.setPen( Qt::green );
-    painter.drawLine( QLineF( 0, -500, 0, 500 ) );
-
-    painter.setPen( Qt::red );
-    painter.drawLine( QLineF( -500, 0, 500, 0 ) );
-}
-
-void ScribbleArea::drawGrid( QPainter& painter )
-{
-    if ( mEditor->layers()->currentLayer() == nullptr )
-    {
-        return;
-    }
-
-    int gridSize = 30;
-
-    auto round100 = [ = ]( double f ) -> int
-    {
-        return static_cast< int >( f ) / gridSize * gridSize;
-    };
-
-    QRectF boundingRect = painter.clipBoundingRect();
-    int left = round100( boundingRect.left() ) - gridSize;
-    int right = round100( boundingRect.right() ) + gridSize;
-    int top = round100( boundingRect.top() ) - gridSize;
-    int bottom = round100( boundingRect.bottom() ) + gridSize;
-
-    QPen pen( Qt::lightGray );
-    pen.setCosmetic( true );
-    painter.setPen( pen );
-    painter.setWorldMatrixEnabled( true );
-    painter.setBrush( Qt::NoBrush );
-
-    for ( int x = left; x < right; x += gridSize )
-    {
-        painter.drawLine( x, top, x, bottom );
-    }
-
-    for ( int y = top; y < bottom; y += gridSize )
-    {
-        painter.drawLine( left, y, right, y );
-    }
 }
 
 void ScribbleArea::paletteColorChanged(QColor color)
