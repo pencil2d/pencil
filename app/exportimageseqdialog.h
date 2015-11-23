@@ -18,6 +18,8 @@ public:
     void  setExportSize( QSize size );
     QSize getExportSize();
 
+    bool getTransparency();
+
     QString getExportFormat();
 
 private:

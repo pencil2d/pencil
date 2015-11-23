@@ -661,30 +661,50 @@ void MainWindow2::exportImageSequence()
 void MainWindow2::exportImage()
 {
     QSettings settings( "Pencil", "Pencil" );
+
+    // Options
+    auto dialog =  new ExportImageSeqDialog( this );
+    OnScopeExit( dialog->deleteLater() );
+
+    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->exec();
+
+    QSize exportSize = dialog->getExportSize();
+    QString exportFormat = dialog->getExportFormat();
+    bool useTranparency = dialog->getTransparency();
+
+
+    // Path
     QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+
+    QFileInfo info( initPath );
+    initPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
+
 
     QString filePath = QFileDialog::getSaveFileName( this,
                                                      tr( "Save Image" ),
-                                                     initPath,
-                                                     PENCIL_IMAGE_FILTER );
+                                                     initPath);
     if ( filePath.isEmpty() )
     {
         qDebug() << "empty file";
         return;// false;
     }
-    QFileInfo info( filePath );
-    if ( info.suffix().isEmpty() )
-    {
-        filePath += ".png"; // add PNG as default if the name has no suffix
-    }
     settings.setValue( "lastExportPath", QVariant( filePath ) );
 
-    QSize exportSize = mScribbleArea->getViewRect().toRect().size();
+
+
     QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-    //view = mScribbleArea->getView() * view;
+//    view = mScribbleArea->getView() * view;
 
     int projectLength = mEditor->layers()->projectLength();
-    if ( !mEditor->object()->exportIm( mEditor->currentFrame(), projectLength, view, exportSize, filePath, true ) )
+    if ( !mEditor->object()->exportIm( mEditor->currentFrame(),
+                                       projectLength,
+                                       view,
+                                       exportSize,
+                                       filePath,
+                                       exportFormat,
+                                       true,
+                                       useTranparency ) )
     {
         QMessageBox::warning( this,
                               tr( "Warning" ),

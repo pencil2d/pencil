@@ -688,16 +688,25 @@ bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize expor
     return true;
 }
 
-bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing )
+bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency )
 {
     Q_UNUSED( frameEnd );
 
-    QImage exported( exportSize, QImage::Format_ARGB32_Premultiplied );
-    QPainter painter( &exported );
-    painter.fillRect( exported.rect(), Qt::white );
+
+
+    QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
+
+    QColor bgColor = Qt::white;
+    if (transparency) {
+        bgColor.setAlpha(0);
+    }
+    imageToExport.fill(bgColor);
+
+    QPainter painter( &imageToExport );
     painter.setWorldTransform( view );
     paintImage( painter, frameStart, false, antialiasing );
-    return exported.save( filePath );
+
+    return imageToExport.save( filePath, format.toStdString().c_str() );
 }
 
 bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression )

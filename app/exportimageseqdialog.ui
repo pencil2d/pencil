@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>215</width>
-    <height>181</height>
+    <height>213</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -72,6 +72,13 @@
           <string>BMP</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbTransparency">
+        <property name="text">
+         <string>Transparency</string>
+        </property>
        </widget>
       </item>
      </layout>
