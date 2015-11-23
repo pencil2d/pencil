@@ -217,7 +217,7 @@ void PencilTool::drawStroke()
         mCurrentPressure = 0.5f;
         qreal brushWidth = properties.width * mCurrentPressure;
 
-        currentPressuredColor = Qt::red;
+        //currentPressuredColor = Qt::red;
         QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
         QBrush brush( currentPressuredColor, Qt::SolidPattern );
         rad = qRound( properties.width / 2 ) + 3;
@@ -234,10 +234,10 @@ void PencilTool::drawStroke()
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
                           p[ 3 ] );
-            //mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
             //mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
 
-            if ( true ) // debug
+            if ( false ) // debug
             {
                 QSizeF size( 2, 2 );
                 QRectF rect( p[ 0 ], size );
