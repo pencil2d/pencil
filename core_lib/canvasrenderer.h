@@ -57,7 +57,7 @@ public:
     void setViewTransform( QTransform viewTransform );
     void setOptions( RenderOptions p ) { mOptions = p; }
 
-    void paint( Object* object, int layer, int frame );
+    void paint( Object* object, int layer, int frame, QRect rect );
 
 private:
     void paintBackground( QPainter& painter );

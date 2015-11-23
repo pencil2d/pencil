@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
+#include "util.h"
 #include <QPainter>
 
 
@@ -45,7 +46,7 @@ void CanvasRenderer::setViewTransform( QTransform viewTransform )
     mViewTransform = viewTransform;
 }
 
-void CanvasRenderer::paint( Object* object, int layer, int frame )
+void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 {
     Q_ASSERT( object );
     mObject = object;
@@ -54,9 +55,13 @@ void CanvasRenderer::paint( Object* object, int layer, int frame )
     mFrameNumber = frame;
 
     QPainter painter( mCanvas );
+
     painter.setTransform( mViewTransform );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bBlurryZoom );
     painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
+
+    painter.setClipRect( rect );
+    painter.setClipping( true );
 
     painter.setWorldMatrixEnabled( true );
 
@@ -64,6 +69,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame )
     paintOnionSkin( painter );
     paintCurrentFrame( painter );
 
+    // post effects
     if ( mOptions.bAxis )
     {
         paintAxis( painter );
@@ -235,19 +241,26 @@ void CanvasRenderer::paintAxis( QPainter& painter )
     painter.drawLine( QLineF( -500, 0, 500, 0 ) );
 }
 
+int round100( double f, int gridSize )
+{
+    return static_cast< int >( f ) / gridSize * gridSize;
+}
+
 void CanvasRenderer::paintGrid( QPainter& painter )
 {
-    int gridSize = 30;
-    auto round100 = [ = ]( double f ) -> int
-    {
-        return static_cast< int >( f ) / gridSize * gridSize;
-    };
+    const int gridSize = 30;
 
-    QRectF boundingRect = painter.clipBoundingRect();
-    int left = round100( boundingRect.left() ) - gridSize;
-    int right = round100( boundingRect.right() ) + gridSize;
-    int top = round100( boundingRect.top() ) - gridSize;
-    int bottom = round100( boundingRect.bottom() ) + gridSize;
+    QRectF boundingRect = painter.window();
+
+    int w = boundingRect.width();
+    int h = boundingRect.height();
+
+    boundingRect.adjust( ( -w / 2 ), ( -h / 2 ), 0, 0 );
+
+    int left = round100( boundingRect.left(), gridSize ) - gridSize;
+    int right = round100( boundingRect.right(), gridSize ) + gridSize;
+    int top = round100( boundingRect.top(), gridSize ) - gridSize;
+    int bottom = round100( boundingRect.bottom(), gridSize ) + gridSize;
 
     QPen pen( Qt::lightGray );
     pen.setCosmetic( true );

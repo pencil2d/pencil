@@ -17,8 +17,9 @@ bool PreferenceManager::init()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
     
-    set( EFFECT::ANTIALIAS, settings.value( SETTING_ANTIALIAS, false ).toBool() );
-    set( EFFECT::BLURRYZOOM, settings.value( SETTING_BLURRYZOOM, false ).toBool() );
+    set( EFFECT::ANTIALIAS,   settings.value( SETTING_ANTIALIAS, false ).toBool() );
+    set( EFFECT::BLURRYZOOM,  settings.value( SETTING_BLURRYZOOM, false ).toBool() );
+    set( EFFECT::GRID,        settings.value( SETTING_SHOW_GRID, false ).toBool() );
 
     return true;
 }
@@ -63,6 +64,8 @@ void PreferenceManager::set( EFFECT effect, bool b )
         case EFFECT::BLURRYZOOM:
             settings.setValue ( SETTING_BLURRYZOOM, b );
             break;
+        case EFFECT::GRID:
+            settings.setValue( SETTING_SHOW_GRID, b );
         default:
             break;
     }

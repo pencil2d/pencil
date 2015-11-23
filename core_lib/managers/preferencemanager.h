@@ -9,6 +9,7 @@ enum class EFFECT
 {
     ANTIALIAS,
     BLURRYZOOM,
+    GRID,
     COUNT
 };
 

@@ -190,13 +190,23 @@ void ScribbleArea::onPreferencedChanged( EFFECT e )
     switch ( e )
     {
         case EFFECT::ANTIALIAS:
+        {
             mEffects[ EFFECT_ANTIALIAS ] = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
             updateAllFrames();
             break;
+        }
         case EFFECT::BLURRYZOOM:
+        {
             mEffects[ EFFECT_BLURRYZOOM ] = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
             updateAllFrames();
             break;
+        }
+        case EFFECT::GRID:
+        {
+            mEffects[ EFFECT_GRID_A ] = mEditor->preference()->isOn( EFFECT::GRID );
+            updateAllFrames();
+            break;
+        }
         default:
             break;
     }
@@ -1007,7 +1017,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
-    mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame );
+    mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame, rect );
 
     return;
 
