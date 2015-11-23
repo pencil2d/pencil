@@ -503,7 +503,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
         painter.setMatrixEnabled(true);
         if (path.length() > 0)
         {
-            /*
+            
             for ( int pt = 0; pt < path.elementCount() - 1; pt++ )
             {
                 qreal dx = path.elementAt(pt+1).x - path.elementAt(pt).x;
@@ -518,8 +518,8 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
                     painter.drawPoint( QPointF( x, y ) );
                 }
             }
-            */
-            painter.drawPath( path );
+            
+            //painter.drawPath( path );
         }
         else
         {
