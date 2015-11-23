@@ -681,7 +681,7 @@ void MainWindow2::exportImage()
 
     QSize exportSize = mScribbleArea->getViewRect().toRect().size();
     QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-    view = mScribbleArea->getView() * view;
+    //view = mScribbleArea->getView() * view;
 
     int projectLength = mEditor->layers()->projectLength();
     if ( !mEditor->object()->exportIm( mEditor->currentFrame(), projectLength, view, exportSize, filePath, true ) )
