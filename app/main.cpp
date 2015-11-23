@@ -38,7 +38,8 @@ int main(int argc, char* argv[])
     app.installTranslator(&qtTranslator);
 
     QTranslator pencil2DTranslator;
-    pencil2DTranslator.load("pencil2d_" + QLocale::system().name());
+    pencil2DTranslator.load( "translations/pencil2d_" + QLocale::system().name() );
+    //bool b = pencil2DTranslator.load( "../resources/translations/pencil2d_it" );
     app.installTranslator(&pencil2DTranslator);
 
     app.setWindowIcon(QIcon(":/icons/icon.png"));
