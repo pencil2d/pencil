@@ -14,8 +14,8 @@ PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 
 bool PlaybackManager::init()
 {
-    m_pTimer = new QTimer( this );
-    connect( m_pTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
+    mTimer = new QTimer( this );
+    connect( mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
     return true;
 }
 
@@ -23,29 +23,29 @@ void PlaybackManager::play()
 {
     int projectLength = editor()->layers()->projectLength();
 
-    mStartFrame = ( m_isRangedPlayback ) ? m_markInFrame : 1;
-    mEndFrame = ( m_isRangedPlayback ) ? m_markOutFrame : projectLength;
+    mStartFrame = ( mIsRangedPlayback ) ? mMarkInFrame : 1;
+    mEndFrame = ( mIsRangedPlayback ) ? mMarkOutFrame : projectLength;
 
     if ( editor()->currentFrame() >= mEndFrame )
     {
         editor()->scrubTo( mStartFrame );
     }
 
-    m_pTimer->setInterval( 1000.0f / m_fps );
-    m_pTimer->start();
+    mTimer->setInterval( 1000.0f / mFps );
+    mTimer->start();
 }
 
 void PlaybackManager::stop()
 {
-    m_pTimer->stop();
+    mTimer->stop();
 }
 
 void PlaybackManager::setFps( int fps )
 {
-    if ( m_fps != fps )
+    if ( mFps != fps )
     {
-        m_fps = fps;
-        emit fpsChanged( m_fps );
+        mFps = fps;
+        emit fpsChanged( mFps );
     }
 }
 
@@ -53,7 +53,7 @@ void PlaybackManager::timerTick()
 {
     if ( editor()->currentFrame() > mEndFrame )
     {
-        if ( m_isLooping )
+        if ( mIsLooping )
         {
             editor()->scrubTo( mStartFrame );
         }
@@ -71,19 +71,19 @@ void PlaybackManager::timerTick()
 
 void PlaybackManager::setLooping( bool isLoop )
 {
-    if ( m_isLooping != isLoop )
+    if ( mIsLooping != isLoop )
     {
-        m_isLooping = isLoop;
-        emit loopStateChanged( m_isLooping );
+        mIsLooping = isLoop;
+        emit loopStateChanged( mIsLooping );
     }
 }
 
 void PlaybackManager::enableRangedPlayback( bool b )
 {
-    if ( m_isRangedPlayback != b )
+    if ( mIsRangedPlayback != b )
     {
-        m_isRangedPlayback = b;
-        emit rangedPlaybackStateChanged( m_isRangedPlayback );
+        mIsRangedPlayback = b;
+        emit rangedPlaybackStateChanged( mIsRangedPlayback );
     }
 }
 
