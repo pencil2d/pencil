@@ -264,7 +264,7 @@ void BrushTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        qreal brushWidth = properties.width * mCurrentPressure;
+        qreal brushWidth = 2.0 * properties.width * mCurrentPressure;
 
         int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
