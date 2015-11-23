@@ -166,7 +166,7 @@ void Editor::dropEvent( QDropEvent* event )
 
 void Editor::changeAutosave( int x )
 {
-	QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 	if ( x == 0 )
 	{
 		mIsAutosave = false;
@@ -182,7 +182,7 @@ void Editor::changeAutosave( int x )
 void Editor::changeAutosaveNumber( int number )
 {
 	autosaveNumber = number;
-	QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 	settings.setValue( "autosaveNumber", number );
 }
 
