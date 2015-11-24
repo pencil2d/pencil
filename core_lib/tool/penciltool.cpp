@@ -214,9 +214,6 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        if (mCurrentPressure < 0.2) {
-            mCurrentPressure = 0.2f;
-        }
         qreal brushWidth = properties.width * mCurrentPressure;
 
         //currentPressuredColor = Qt::red;
