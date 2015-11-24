@@ -43,11 +43,11 @@ ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent ),
 mLog( "ScribbleArea" )
 {
     setObjectName( "ScribbleArea" );
-    
+
     // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
     // and don't change when the widget is resized.
     setAttribute( Qt::WA_StaticContents );
-    
+
     mStrokeManager = new StrokeManager();
 
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -1012,7 +1012,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.bAxis = isEffectOn( EFFECT_AXIS );
 
     mCanvasRenderer.setOptions( options );
-    
+
     //qDebug() << "Antialias=" << options.bAntiAlias;
 
     mCanvasRenderer.setCanvas( &mCanvas );

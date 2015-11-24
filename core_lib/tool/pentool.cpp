@@ -7,6 +7,7 @@
 #include "pencilsettings.h"
 #include "editor.h"
 #include "scribblearea.h"
+#include "blitrect.h"
 
 #include "pentool.h"
 
@@ -23,7 +24,7 @@ void PenTool::loadSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-    properties.feather = 0;
+    properties.feather = 30;
     properties.pressure = settings.value( "penPressure" ).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
@@ -106,6 +107,7 @@ void PenTool::mousePressEvent( QMouseEvent *event )
     }
 
     startStroke();
+    lastBrushPoint = getCurrentPoint();
 }
 
 void PenTool::mouseReleaseEvent( QMouseEvent *event )
@@ -170,25 +172,42 @@ void PenTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        QPen pen = QPen( mEditor->color()->frontColor(), mCurrentWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-        int rad = qRound( mCurrentWidth / 2 ) + 3;
-
         for ( int i = 0; i < p.size(); i++ )
         {
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        if ( p.size() == 4 )
+        qreal opacity = 1.0;
+        qreal brushWidth = (mCurrentWidth + (mCurrentPressure * mCurrentWidth)) * 0.5;
+        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
+        brushStep = qMax( 1.0, brushStep );
+
+        BlitRect rect;
+
+        QPointF a = lastBrushPoint;
+        QPointF b = getCurrentPoint();
+
+        qreal distance = 4 * QLineF( b, a ).length();
+        int steps = qRound( distance ) / brushStep;
+
+        for ( int i = 0; i < steps; i++ )
         {
-            QPainterPath path( p[ 0 ] );
-            //path.lineTo( p[ 1 ] );
-            //path.lineTo( p[ 2 ] );
-            path.lineTo( p[ 3 ] );
-            qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
-            //path.cubicTo( p[1], p[2], p[3] );
-            mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
-            mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );
+            QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
+            rect.extend( point.toPoint() );
+            mScribbleArea->drawBrush( point,
+                                      brushWidth,
+                                      (properties.feather * 10) / brushWidth,
+                                      mEditor->color()->frontColor(),
+                                      opacity );
+
+            if ( i == ( steps - 1 ) )
+            {
+                lastBrushPoint = point;
+            }
         }
+
+        int rad = qRound( brushWidth ) / 2 + 2;
+        mScribbleArea->refreshBitmap( rect, rad );
     }
     else if ( layer->type() == Layer::VECTOR )
     {

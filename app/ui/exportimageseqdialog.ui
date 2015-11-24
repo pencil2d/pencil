@@ -23,7 +23,7 @@
       <item>
        <widget class="QSpinBox" name="imgWidthSpinBox">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -39,7 +39,7 @@
       <item>
        <widget class="QSpinBox" name="imgHeightSpinBox">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="minimum">
          <number>1</number>
