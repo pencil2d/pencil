@@ -116,6 +116,7 @@ void MainWindow2::createDockWidgets()
     pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
     mColorWheel->setWidget( pColorBox );
     mColorWheel->setObjectName( "ColorWheel" );
+    mColorWheel->setMaximumHeight(390);
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
     mColorPalette->setObjectName( "ColorPalette" );

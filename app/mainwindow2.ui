@@ -248,8 +248,14 @@
    </property>
   </action>
   <action name="actionExport_X_sheet">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>X-sheet ...</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionExport_Image_Sequence">
@@ -266,6 +272,9 @@
    <property name="text">
     <string>Movie...</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionExport_Palette">
    <property name="text">
@@ -273,8 +282,14 @@
    </property>
   </action>
   <action name="actionExport_Svg_Image">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Svg Image...</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionImport_Image">
@@ -290,6 +305,9 @@
   <action name="actionImport_Movie">
    <property name="text">
     <string>Movie...</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionImport_Sound">

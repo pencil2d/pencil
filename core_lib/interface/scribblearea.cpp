@@ -98,7 +98,7 @@ mLog( "ScribbleArea" )
     m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
     onionBlue = true;
-    onionRed = true;
+    onionRed = false;
     toggledOnionColor();
 }
 
