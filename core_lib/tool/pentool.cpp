@@ -196,7 +196,7 @@ void PenTool::drawStroke()
             rect.extend( point.toPoint() );
             mScribbleArea->drawBrush( point,
                                       brushWidth,
-                                      (properties.feather * 10) / brushWidth,
+                                      properties.feather,
                                       mEditor->color()->frontColor(),
                                       opacity );
 

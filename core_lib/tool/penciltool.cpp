@@ -180,7 +180,7 @@ void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
     currentPressuredColor = currentColor;
 
     // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
-    int softness = 8;
+    int softness = 16;
 
     if ( mScribbleArea->usePressure() && !mouseDevice )
     {
@@ -214,7 +214,9 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        mCurrentPressure = 0.5f;
+        if (mCurrentPressure < 0.2) {
+            mCurrentPressure = 0.2f;
+        }
         qreal brushWidth = properties.width * mCurrentPressure;
 
         //currentPressuredColor = Qt::red;
@@ -234,8 +236,8 @@ void PencilTool::drawStroke()
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
                           p[ 3 ] );
-            mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
-            //mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
+            //mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
 
             if ( false ) // debug
             {
