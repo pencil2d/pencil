@@ -105,13 +105,16 @@ void DisplayOptionWidget::createUI()
     layout->setMargin(4);
     layout->setSpacing(0);
     layout->addWidget(mirrorButton,0,0);
-    layout->addWidget(onionPrevButton,1,2);
-    layout->addWidget(onionNextButton,1,3);
-    layout->addWidget(onionBlueButton,0,3);
-    layout->addWidget(mirrorButtonV,1,0);
-    layout->addWidget(outlinesButton,1,1);
     layout->addWidget(thinLinesButton,0,1);
     layout->addWidget(onionRedButton,0,2);
+    layout->addWidget(onionBlueButton,0,3);
+
+    layout->addWidget(mirrorButtonV,1,0);
+    layout->addWidget(outlinesButton,1,1);
+    layout->addWidget(onionPrevButton,1,2);
+    layout->addWidget(onionNextButton,1,3);
+
+
     layout->addWidget(gridAButton,2,0);
     layout->addWidget(multiLayerOnionSkinButton,2,2);
 
