@@ -180,7 +180,7 @@ void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
     currentPressuredColor = currentColor;
 
     // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
-    int softness = 16;
+    int softness = 8;
 
     if ( mScribbleArea->usePressure() && !mouseDevice )
     {

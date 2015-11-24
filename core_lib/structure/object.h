@@ -141,11 +141,11 @@ public:
     //void stopSoundIfAny();
 
     // these functions need to be moved to somewhere...
-    bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool background, bool antialiasing, QProgressDialog* progress, int progressMax );
+    bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool transparency, bool antialiasing, QProgressDialog* progress, int progressMax );
     bool exportFrames1( ExportFrames1Parameters parameters );
     bool exportMovie( ExportMovieParameters parameters );
     bool exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
-    bool exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
+    bool exportIm(int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, QString format, bool antialiasing , bool transparency);
     bool exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression );
 
     void modification() { modified = true; }

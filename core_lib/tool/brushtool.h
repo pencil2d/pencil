@@ -28,7 +28,9 @@ public:
 
 protected:
     QPointF lastBrushPoint;
+
     BitmapImage img;
+    QColor currentPressuredColor;
 };
 
 #endif // BRUSHTOOL_H
