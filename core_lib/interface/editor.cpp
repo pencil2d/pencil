@@ -932,7 +932,7 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
         frameIndex += 1;
     }
     
-    KeyFrame* keyFrame = KeyFrameFactory::create( layer->type() );
+    KeyFrame* keyFrame = KeyFrameFactory::create( layer->type(), mObject.get() );
     if ( keyFrame != nullptr )
     {
         isOK = layer->addKeyFrame( frameIndex, keyFrame );

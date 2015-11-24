@@ -135,7 +135,7 @@ private:
     void modification();
     bool modified;
 
-    Object* myParent;
+    Object* myParent = nullptr;
 
     QRectF selectionRect;
     QTransform selectionTransformation;

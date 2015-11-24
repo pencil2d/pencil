@@ -131,7 +131,7 @@ bool Layer::addNewEmptyKeyAt( int position )
     {
         return false;
     }
-    KeyFrame* key = KeyFrameFactory::create( meType );
+    KeyFrame* key = KeyFrameFactory::create( meType, mObject );
     if ( key == nullptr )
     {
         return false;
