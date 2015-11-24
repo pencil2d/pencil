@@ -10,8 +10,10 @@ class ViewManager : public BaseManager
     Q_OBJECT
 
 public:
-    explicit ViewManager(QObject *parent = 0);
+    explicit ViewManager( QObject* parent = 0 );
+
     bool init() override;
+    Status onObjectLoaded( Object* ) override;
     
     QTransform getView();
     void resetView();

@@ -12,7 +12,9 @@ class ColorManager : public BaseManager
 public:
     ColorManager( QObject* parent );
     ~ColorManager();
+    
     bool init() override;
+    Status onObjectLoaded( Object* ) override;
 
     QColor frontColor();
     int frontColorNumber();
@@ -24,7 +26,7 @@ Q_SIGNALS:
     void colorNumberChanged(int);
 
 private:
-    QColor mCurrentFrontColor = { 0, 0, 0 };
+    QColor mCurrentFrontColor { 33, 33, 33 };
     int mCurrentColorIndex = 0;
 };
 

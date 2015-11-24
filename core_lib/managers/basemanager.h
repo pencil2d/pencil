@@ -19,6 +19,7 @@ public:
     Object* object() { return mEditor->object(); }
 
     virtual bool init() = 0;
+    virtual Status onObjectLoaded( Object* o ) = 0;
 
 private:
     Editor* mEditor = nullptr;

@@ -144,6 +144,7 @@ enum BackgroundStyle
 #define SETTING_DISPLAY_EFFECT  "RenderEffect"
 #define SETTING_ANTIALIAS       "antialiasing"
 #define SETTING_BLURRYZOOM      "blurryzoom"
+#define SETTING_SHOW_GRID       "ShowGrid"
 
 #define SETTING_ONION_MAX_OPACITY     "onionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY     "onionMinOpacity"

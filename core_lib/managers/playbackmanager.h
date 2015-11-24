@@ -10,26 +10,27 @@ class PlaybackManager : public BaseManager
 {
     Q_OBJECT
 public:
-    explicit PlaybackManager(QObject* parent);
+    explicit PlaybackManager( QObject* parent );
 
     bool init() override;
+    Status onObjectLoaded( Object* ) override;
 
-    bool isPlaying() { return m_isPlaying; }
-    bool isLooping() { return m_isLooping; }
+    bool isPlaying() { return mIsPlaying; }
+    bool isLooping() { return mIsLooping; }
 
     void play();
     void stop();
 
-    int  fps() { return m_fps; }
+    int  fps() { return mFps; }
     int startFrame() { return mStartFrame; }
     int endFrame() { return mEndFrame; }
 
     void setFps( int fps );
     void setLooping( bool isLoop );
     void enableRangedPlayback( bool b );
-    void setRangedStartFrame( int frame ) { m_markInFrame = frame; }
-    void setRangedEndFrame( int frame ) { m_markOutFrame = frame; }
-    void enbaleSound( bool b ) { m_isPlaySound = b; }
+    void setRangedStartFrame( int frame ) { mMarkInFrame = frame; }
+    void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
+    void enbaleSound( bool b ) { mIsPlaySound = b; }
 
 Q_SIGNALS:
     void fpsChanged( int fps );
@@ -40,19 +41,19 @@ private:
     void timerTick();
     void playSoundIfAny( int frame );
     
-    bool m_isLooping = false;
-    bool m_isPlaying = false;
-    bool m_isPlaySound = false;
+    bool mIsLooping = false;
+    bool mIsPlaying = false;
+    bool mIsPlaySound = false;
     int mStartFrame = 1;
     int mEndFrame = 60;
 
-    bool m_isRangedPlayback = false;
-    int m_markInFrame = 1;
-    int m_markOutFrame = 10;
+    bool mIsRangedPlayback = false;
+    int mMarkInFrame = 1;
+    int mMarkOutFrame = 10;
 
-    int m_fps = 12;
+    int mFps = 12;
 
-    QTimer* m_pTimer;
+    QTimer* mTimer = nullptr;
 };
 
 #endif // PLAYBACKMANAGER_H

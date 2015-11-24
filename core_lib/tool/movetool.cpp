@@ -84,17 +84,17 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                 else if ( layer->type() == Layer::VECTOR )
                 {
                     VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-                    if ( mScribbleArea->closestCurves.size() > 0 )     // the user clicks near a curve
+                    if ( mScribbleArea->mClosestCurves.size() > 0 )     // the user clicks near a curve
                     {
                         //  editor->backup();
-                        if ( !vectorImage->isSelected( mScribbleArea->closestCurves ) )
+                        if ( !vectorImage->isSelected( mScribbleArea->mClosestCurves ) )
                         {
                             mScribbleArea->paintTransformedSelection();
                             if ( event->modifiers() != Qt::ShiftModifier )
                             {
                                 mScribbleArea->deselectAll();
                             }
-                            vectorImage->setSelected( mScribbleArea->closestCurves, true );
+                            vectorImage->setSelected( mScribbleArea->mClosestCurves, true );
                             mScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
                             mScribbleArea->update();
                         }
@@ -140,8 +140,8 @@ void MoveTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
-            mScribbleArea->offset.setX( 0 );
-            mScribbleArea->offset.setY( 0 );
+            mScribbleArea->mOffset.setX( 0 );
+            mScribbleArea->mOffset.setY( 0 );
             mScribbleArea->calculateSelectionTransformation();
 
             mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
@@ -171,31 +171,31 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
                 case ScribbleArea::MIDDLE:
                     if ( QLineF( getLastPressPixel(), getCurrentPixel() ).length() > 4 )
                     {
-                        mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( mScribbleArea->offset );
+                        mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( mScribbleArea->mOffset );
                     }
                     break;
 
                 case ScribbleArea::TOPRIGHT:
                     mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( 0, mScribbleArea->offset.y(), mScribbleArea->offset.x(), 0 );
+                            mScribbleArea->myTransformedSelection.adjusted( 0, mScribbleArea->mOffset.y(), mScribbleArea->mOffset.x(), 0 );
                     break;
 
 
                 case ScribbleArea::TOPLEFT:
                     mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( mScribbleArea->offset.x(), mScribbleArea->offset.y(), 0, 0 );
+                            mScribbleArea->myTransformedSelection.adjusted( mScribbleArea->mOffset.x(), mScribbleArea->mOffset.y(), 0, 0 );
                     break;
 
                     // TOPRIGHT XXX
 
                 case ScribbleArea::BOTTOMLEFT:
                     mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( mScribbleArea->offset.x(), 0, 0, mScribbleArea->offset.y() );
+                            mScribbleArea->myTransformedSelection.adjusted( mScribbleArea->mOffset.x(), 0, 0, mScribbleArea->mOffset.y() );
                     break;
 
                 case ScribbleArea::BOTTOMRIGHT:
                     mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( 0, 0, mScribbleArea->offset.x(), mScribbleArea->offset.y() );
+                            mScribbleArea->myTransformedSelection.adjusted( 0, 0, mScribbleArea->mOffset.x(), mScribbleArea->mOffset.y() );
                     break;
                 case ScribbleArea::ROTATION:
                     mScribbleArea->myTempTransformedSelection =
@@ -226,7 +226,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         {
             auto layerVector = static_cast< LayerVector* >( layer );
             VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-            mScribbleArea->closestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
+            mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
         }
         mScribbleArea->update();
     }

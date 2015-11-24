@@ -135,7 +135,10 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
     for ( QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.
-        if ( element.isNull() ) { continue; }
+        if ( element.isNull() )
+        { 
+            continue;
+        }
 
         if ( element.tagName() == "object" )
         {
@@ -144,6 +147,8 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
         }
         else if ( element.tagName() == "editor" )
         {
+            EditorData* editorData = loadEditorData( element );
+            object->setEditorData( editorData );
         }
         else
         {
@@ -152,6 +157,7 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
         //progress = std::min( progress + 10, 100 );
         //emit progressValueChanged( progress );
     }
+
     return isOK;
 }
 
@@ -267,44 +273,54 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
     return true;
 }
 
-bool ObjectSaveLoader::loadDomElement( QDomElement docElem )
+EditorData* ObjectSaveLoader::loadEditorData( QDomElement docElem )
 {
-    if ( docElem.isNull() ) return false;
+    EditorData* data = new EditorData;
+    if ( docElem.isNull() )
+    {
+        return data;
+    }
+
     QDomNode tag = docElem.firstChild();
+
     while ( !tag.isNull() )
     {
         QDomElement element = tag.toElement(); // try to convert the node to an element.
-        if ( !element.isNull() )
+        if ( element.isNull() )
         {
-            if ( element.tagName() == "currentLayer" )
-            {
-                int nCurrentLayerIndex = element.attribute( "value" ).toInt();
-                //editor->setCurrentLayer(nCurrentLayerIndex);
-            }
-            if ( element.tagName() == "currentFrame" )
-            {
-                //editor->layerManager()->currentFrameIndex() = element.attribute("value").toInt();
-            }
-            if ( element.tagName() == "currentFps" )
-            {
-                //editor->fps = element.attribute("value").toInt();
-                //timer->setInterval(1000/fps);
-                //m_pTimeLine->setFps(editor->fps);
-            }
-            if ( element.tagName() == "currentView" )
-            {
-                qreal m11 = element.attribute( "m11" ).toDouble();
-                qreal m12 = element.attribute( "m12" ).toDouble();
-                qreal m21 = element.attribute( "m21" ).toDouble();
-                qreal m22 = element.attribute( "m22" ).toDouble();
-                qreal dx = element.attribute( "dx" ).toDouble();
-                qreal dy = element.attribute( "dy" ).toDouble();
-                //m_pScribbleArea->setMyView( QTransform(m11,m12,m21,m22,dx,dy) );
-            }
+            continue;
         }
+
+        if ( element.tagName() == "currentLayer" )
+        {
+            int nCurrentLayer = element.attribute( "value" ).toInt();
+            data->setCurrentLayer( nCurrentLayer );
+        }
+        if ( element.tagName() == "currentFrame" )
+        {
+            int nCurrentFrame = element.attribute( "value" ).toInt();
+            data->setCurrentFrame( nCurrentFrame );
+        }
+        if ( element.tagName() == "currentFps" )
+        {
+            int fps = element.attribute( "value" ).toInt();
+            data->setFps( fps );
+        }
+        if ( element.tagName() == "currentView" )
+        {
+            qreal m11 = element.attribute( "m11" ).toDouble();
+            qreal m12 = element.attribute( "m12" ).toDouble();
+            qreal m21 = element.attribute( "m21" ).toDouble();
+            qreal m22 = element.attribute( "m22" ).toDouble();
+            qreal dx = element.attribute( "dx" ).toDouble();
+            qreal dy = element.attribute( "dy" ).toDouble();
+            QTransform t( m11, m12, m21, m22, dx, dy );
+            data->setCurrentView( t );
+        }
+        
         tag = tag.nextSibling();
     }
-    return true;
+    return data;
 }
 
 

@@ -10,6 +10,7 @@
 #include "viewmanager.h"
 #include "layermanager.h"
 #include "soundmanager.h"
+#include "preferencemanager.h"
 #include "util.h"
 
 #include "layerbitmap.h"
@@ -101,6 +102,14 @@ void CommandCenter::flipY()
 
     bool b = view->isFlipVertical();
     view->flipVertical( !b );
+}
+
+void CommandCenter::showGrid( bool bShow )
+{
+    if ( bShow )
+        mEditor->preference()->turnOn( EFFECT::GRID );
+    else
+        mEditor->preference()->turnOff( EFFECT::GRID );
 }
 
 void CommandCenter::GotoNextFrame()

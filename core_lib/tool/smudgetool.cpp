@@ -140,26 +140,26 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            mScribbleArea->closestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
+            mScribbleArea->mClosestCurves = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                 ->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
-            mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
+            mScribbleArea->mClosestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                 ->getVerticesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
 
-            if (mScribbleArea->closestVertices.size() > 0 || mScribbleArea->closestCurves.size() > 0)      // the user clicks near a vertex or a curve
+            if (mScribbleArea->mClosestVertices.size() > 0 || mScribbleArea->mClosestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
                 mEditor->backup(typeName());
                 VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
-                if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(mScribbleArea->closestVertices))
+                if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(mScribbleArea->mClosestVertices))
                 {
                     mScribbleArea->paintTransformedSelection();
                     mScribbleArea->deselectAll();
                 }
 
-                vectorImage->setSelected(mScribbleArea->closestVertices, true);
-                mScribbleArea->vectorSelection.add(mScribbleArea->closestCurves);
-                mScribbleArea->vectorSelection.add(mScribbleArea->closestVertices);
+                vectorImage->setSelected(mScribbleArea->mClosestVertices, true);
+                mScribbleArea->vectorSelection.add(mScribbleArea->mClosestCurves);
+                mScribbleArea->vectorSelection.add(mScribbleArea->mClosestVertices);
 
                 mScribbleArea->update();
             }
@@ -218,7 +218,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
                     // transforms the selection
-                    mScribbleArea->selectionTransformation = QTransform().translate(mScribbleArea->offset.x(), mScribbleArea->offset.y());
+                    mScribbleArea->selectionTransformation = QTransform().translate(mScribbleArea->mOffset.x(), mScribbleArea->mOffset.y());
                     ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0)->setSelectionTransformation(mScribbleArea->selectionTransformation);
                 }
             }
@@ -227,7 +227,7 @@ void SmudgeTool::mouseMoveEvent(QMouseEvent *event)
         {
             if (layer->type() == Layer::VECTOR)
             {
-                mScribbleArea->closestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
+                mScribbleArea->mClosestVertices = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)
                     ->getVerticesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
             }
         }

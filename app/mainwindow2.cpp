@@ -237,12 +237,8 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled( false );
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    connect( ui->actionGrid, &QAction::triggered, [ = ]( bool bChecked )
-    {
-        mScribbleArea->setEffect( EFFECT_GRID_A, bChecked );
-    } );
-
-
+    setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( EFFECT::GRID ) );
+    connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
 
     connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
     connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );
@@ -319,6 +315,12 @@ void MainWindow2::createMenus()
 
     connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
     connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
+}
+
+void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
+{
+    QSignalBlocker b( action );
+    action->setChecked( bChecked );
 }
 
 void MainWindow2::setOpacity( int opacity )

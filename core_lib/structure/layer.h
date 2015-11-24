@@ -116,4 +116,6 @@ private:
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 };
 
+bool isLayerPaintable( Layer* );
+
 #endif

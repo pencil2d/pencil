@@ -12,9 +12,12 @@ class SoundManager : public BaseManager
 {
     Q_OBJECT
 public:
+
     SoundManager( QObject* parent );
     ~SoundManager();
+    
     bool init() override;
+    Status onObjectLoaded( Object* ) override;
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
 

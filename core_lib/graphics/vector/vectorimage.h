@@ -73,7 +73,7 @@ public:
     void paste(VectorImage);
 
     bool isModified();
-    void setModified(bool);
+    void setModified( bool b = true );
 
     QColor getColour(int i);
     int  getColourNumber(QPointF point);
@@ -135,7 +135,7 @@ private:
     void modification();
     bool modified;
 
-    Object* myParent;
+    Object* myParent = nullptr;
 
     QRectF selectionRect;
     QTransform selectionTransformation;

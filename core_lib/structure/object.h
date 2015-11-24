@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <memory>
 #include <QObject>
 #include <QList>
 #include <QColor>
@@ -61,9 +62,36 @@ struct ExportFrames1Parameters
     int         exportFps;
 };
 
+
+class EditorData
+{
+public:
+    void setFps( int f ) { mFps = f; }
+    int  fps() { return mFps; }
+
+    void setCurrentLayer( int n ) { mCurrentColor = n; }
+    int currentLayer() { return mCurrentLayer; }
+
+    void setCurrentFrame( int n ) { mCurrentFrame = n; }
+    int currentFrame() { return mCurrentFrame; }
+
+    void setCurrentColor( QColor c ) { mCurrentColor = c; }
+    QColor currentColor() { return mCurrentColor; }
+
+    void setCurrentView( QTransform t ) { mCurrentView = t; }
+    QTransform currentView() { return mCurrentView; }
+
+private:
+    int    mFps          = 0;
+    int    mCurrentLayer = 0;
+    int    mCurrentFrame = 0;
+    QColor mCurrentColor{ 255, 255, 255, 255 };
+    QTransform mCurrentView;
+};
+
 class Object : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT    
 
 public:
     Object( QObject* parent = nullptr );
@@ -126,6 +154,9 @@ public:
 
     int getUniqueLayerID();
 
+    EditorData* editorData();
+    void setEditorData( EditorData* );
+
 private:
     int getMaxLayerID();
 
@@ -136,6 +167,8 @@ private:
     bool modified = false;
 
     QList<ColourRef> mPalette;
+
+    std::unique_ptr< EditorData > mEditorData;
 };
 
 

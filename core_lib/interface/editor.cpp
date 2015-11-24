@@ -108,7 +108,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 	mPreferenceManager = new PreferenceManager( this );
     mSoundManager = new SoundManager( this );
 
-	BaseManager* allManagers[] =
+	mAllManagers =
 	{
 		mColorManager,
 		mToolManager,
@@ -119,7 +119,7 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
         mSoundManager
 	};
 
-	for ( BaseManager* pManager : allManagers )
+    for ( BaseManager* pManager : mAllManagers )
 	{
 		pManager->setEditor( this );
 		pManager->init();
@@ -166,7 +166,7 @@ void Editor::dropEvent( QDropEvent* event )
 
 void Editor::changeAutosave( int x )
 {
-	QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 	if ( x == 0 )
 	{
 		mIsAutosave = false;
@@ -182,7 +182,7 @@ void Editor::changeAutosave( int x )
 void Editor::changeAutosaveNumber( int number )
 {
 	autosaveNumber = number;
-	QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 	settings.setValue( "autosaveNumber", number );
 }
 
@@ -572,12 +572,16 @@ void Editor::resetUI()
 
 void Editor::setObject( Object* newObject )
 {
-	if ( newObject == NULL ) { return; }
-	if ( newObject == mObject.get() ) { return; }
+    if ( newObject == NULL ) { return; }
+    if ( newObject == mObject.get() ) { return; }
 
-	mObject.reset( newObject );
+    mObject.reset( newObject );
 
-	//qDebug( "New object loaded." );
+    for ( BaseManager* m : mAllManagers )
+    {
+        m->onObjectLoaded( mObject.get() );
+    }
+
 	g_clipboardVectorImage.setObject( newObject );
 }
 
@@ -928,7 +932,7 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
         frameIndex += 1;
     }
     
-    KeyFrame* keyFrame = KeyFrameFactory::create( layer->type() );
+    KeyFrame* keyFrame = KeyFrameFactory::create( layer->type(), mObject.get() );
     if ( keyFrame != nullptr )
     {
         isOK = layer->addKeyFrame( frameIndex, keyFrame );

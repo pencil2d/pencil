@@ -17,6 +17,12 @@ bool LayerManager::init()
     return true;
 }
 
+Status LayerManager::onObjectLoaded( Object* o )
+{
+    mCurrentLayerIndex = o->editorData()->currentLayer();
+    return Status::OK;
+}
+
 // Layer management
 int LayerManager::getLastCameraLayer()
 {

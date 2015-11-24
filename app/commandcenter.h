@@ -29,6 +29,8 @@ public:
     void flipX();
     void flipY();
 
+    void showGrid( bool bShow );
+
     // Animation
     void GotoNextFrame();
     void GotoPrevFrame();

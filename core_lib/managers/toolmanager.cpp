@@ -22,7 +22,6 @@ ToolManager::ToolManager(QObject* parent )
 {
 }
 
-
 bool ToolManager::init()
 {
     isSwitchedToEraser = false;
@@ -47,6 +46,10 @@ bool ToolManager::init()
     return true;
 }
 
+Status ToolManager::onObjectLoaded( Object* )
+{
+    return Status::OK;
+}
 
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {

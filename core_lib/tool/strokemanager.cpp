@@ -33,14 +33,14 @@ StrokeManager::StrokeManager()
     m_timeshot = 0;
 
     mTabletInUse = false;
-    m_tabletPressure = 0;
+    mTabletPressure = 0;
 
     reset();
 }
 
 void StrokeManager::reset()
 {
-    m_strokeStarted = false;
+    mStrokeStarted = false;
     strokeQueue.clear();
     pressure = 0.0f;
     hasTangent = false;
@@ -48,7 +48,7 @@ void StrokeManager::reset()
 
 void StrokeManager::setPressure(float pressure)
 {
-    m_tabletPressure = pressure;
+    mTabletPressure = pressure;
 }
 
 QPointF StrokeManager::getEventPosition(QMouseEvent* event)
@@ -60,9 +60,9 @@ QPointF StrokeManager::getEventPosition(QMouseEvent* event)
         // QT BUG (Wacom Tablets): updates are not synchronised in Windows giving different coordinates.
         // Clue: Not a Microsoft nor Wacom problem because other windows apps are working fine in the same tablet mode.
         // Solved: Qt bug in Wacom coding -> a lot of patches but no real solutions.
-        QPointF pos2 = event->pos() + m_tabletPosition - event->globalPos();
+        QPointF pos2 = event->pos() + mTabletPosition - event->globalPos();
         // Patch: next line skips the coordinate problem and it seems safe .
-        pos = event->pos() + m_tabletPosition - m_tabletPosition.toPoint();
+        pos = event->pos() + mTabletPosition - mTabletPosition.toPoint();
         //pos = event->pos();
         //qDebug() << "New pos" << pos << ", Old pos" << pos2;
     }
@@ -77,14 +77,15 @@ QPointF StrokeManager::getEventPosition(QMouseEvent* event)
 void StrokeManager::mousePressEvent(QMouseEvent* event)
 {
     reset();
-    if (!(event->button() == Qt::NoButton))    // if the user is pressing the left or right button
+    if ( !(event->button() == Qt::NoButton) ) // if the user is pressing the left/right button
     {
-        m_lastPressPixel = getEventPosition(event);
-        qDebug() << m_lastPressPixel;
+        mLastPressPixel = getEventPosition(event);
+        qDebug() << mLastPressPixel;
     }
-    m_lastPixel = getEventPosition(event);
+    mLastPixel = getEventPosition( event );
+    mCurrentPixel = getEventPosition( event );
 
-    m_strokeStarted = true;
+    mStrokeStarted = true;
     singleshotTime.start();
     previousTime = singleshotTime.elapsed();
 
@@ -93,12 +94,12 @@ void StrokeManager::mousePressEvent(QMouseEvent* event)
 void StrokeManager::mouseReleaseEvent(QMouseEvent* event)
 {
     // flush out stroke
-    if ( m_strokeStarted )
+    if ( mStrokeStarted )
     {
         mouseMoveEvent(event);
     }
 
-    m_strokeStarted = false;
+    mStrokeStarted = false;
 }
 
 void StrokeManager::tabletEvent(QTabletEvent* event)
@@ -106,19 +107,19 @@ void StrokeManager::tabletEvent(QTabletEvent* event)
     if (event->type() == QEvent::TabletPress) { mTabletInUse = true; }
     if (event->type() == QEvent::TabletRelease) { mTabletInUse = false; }
 
-    m_tabletPosition = event->posF();
+    mTabletPosition = event->posF();
     setPressure(event->pressure());
 }
 
 void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
     QPointF pos = getEventPosition(event);
-    QPointF smoothPos = QPointF( ( pos.x() + m_lastPixel.x() ) / 2.0, ( pos.y() + m_lastPixel.y() ) / 2.0 );
+    QPointF smoothPos = QPointF( ( pos.x() + mLastPixel.x() ) / 2.0, ( pos.y() + mLastPixel.y() ) / 2.0 );
 
-    m_lastPixel = m_currentPixel;
-    m_currentPixel = smoothPos;
+    mLastPixel = mCurrentPixel;
+    mCurrentPixel = smoothPos;
 
-	if ( !m_strokeStarted )
+	if ( !mStrokeStarted )
 	{
 		return;
 	}
@@ -143,18 +144,22 @@ QList<QPointF> StrokeManager::interpolateStroke()
     QList<QPointF> result;
 
     int time = singleshotTime.elapsed();
-    static const qreal smoothness = 0.5f;
-    QLineF line(m_lastPixel, m_currentPixel);
+    static const qreal smoothness = 1.f;
+    QLineF line( mLastPixel, mCurrentPixel);
 
 
-    qreal scaleFactor = line.length();
+    qreal scaleFactor = line.length() * 3.f;
 
     if ( !hasTangent && scaleFactor > 0.01f)
     {
         hasTangent = true;
-//        qDebug() << "scaleFactor" << scaleFactor << "current pixel " << m_currentPixel << "last pixel" << m_lastPixel;
-        m_previousTangent = (m_currentPixel - m_lastPixel) * smoothness / (3.0 * scaleFactor);
-//        qDebug() << "previous tangent" << m_previousTangent;
+        /*
+        qDebug() << "scaleFactor" << scaleFactor
+                 << "current pixel " << mCurrentPixel
+                 << "last pixel" << mLastPixel;
+         */
+        m_previousTangent = (mCurrentPixel - mLastPixel) * smoothness / (3.0 * scaleFactor);
+        //qDebug() << "previous tangent" << m_previousTangent;
         QLineF _line(QPointF(0,0), m_previousTangent);
         // don't bother for small tangents, as they can induce single pixel wobbliness
         if (_line.length() < 2) 
@@ -164,24 +169,31 @@ QList<QPointF> StrokeManager::interpolateStroke()
     }
     else
     {
-        QPointF c1 = m_lastPixel + m_previousTangent * scaleFactor;
-        QPointF newTangent = (m_currentPixel - c1) * smoothness / (3.0 * scaleFactor);
-//        qDebug() << "scalefactor1" << scaleFactor << m_previousTangent << newTangent;
+        QPointF c1 = mLastPixel + m_previousTangent * scaleFactor;
+        QPointF newTangent = (mCurrentPixel - c1) * smoothness / (3.0 * scaleFactor);
+        //qDebug() << "scalefactor1=" << scaleFactor << m_previousTangent << newTangent;
         if (scaleFactor == 0)
         {
             newTangent = QPointF(0,0);
         }
         else
         {
-            QLineF _line(QPointF(0,0), newTangent);
-            if (_line.length() < 2)
-            {
-                newTangent = QPointF(0,0);
-            }
+            //QLineF _line(QPointF(0,0), newTangent);
+            //if (_line.length() < 2)
+            //{
+            //    newTangent = QPointF(0,0);
+            //}
         }
-        QPointF c2 = m_currentPixel - newTangent * scaleFactor;
-        result << m_lastPixel << c1 << c2 << m_currentPixel;
-
+        QPointF c2 = mCurrentPixel - newTangent * scaleFactor;
+        //c1 = mLastPixel;
+        //c2 = mCurrentPixel;
+        result << mLastPixel << c1 << c2 << mCurrentPixel;
+        /*
+        qDebug() << mLastPixel
+                 << c1
+                 << c2
+                 << mCurrentPixel;
+         */
         m_previousTangent = newTangent;
     }
 

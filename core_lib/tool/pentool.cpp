@@ -15,19 +15,12 @@ PenTool::PenTool( QObject *parent ) : StrokeTool( parent )
 {
 }
 
-ToolType PenTool::type()
-{
-    return PEN;
-}
-
 void PenTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
 
-
-
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "penWidth" ).toDouble();
     properties.feather = 0;
@@ -121,7 +114,7 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
 
     if ( event->button() == Qt::LeftButton )
     {
-        if ( mScribbleArea->isLayerPaintable() )
+        if ( isLayerPaintable( layer ) )
         {
             drawStroke();
         }
@@ -191,7 +184,7 @@ void PenTool::drawStroke()
             //path.lineTo( p[ 1 ] );
             //path.lineTo( p[ 2 ] );
             path.lineTo( p[ 3 ] );
-            //qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
+            qDebug() << p[ 0 ] << p[ 1 ] << p[ 2 ] << p[ 3 ];
             //path.cubicTo( p[1], p[2], p[3] );
             mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
             mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );

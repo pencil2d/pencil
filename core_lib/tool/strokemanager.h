@@ -15,20 +15,20 @@ class StrokeManager
 public:
     StrokeManager();
 
-    void tabletEvent(QTabletEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void tabletEvent(QTabletEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void mouseReleaseEvent(QMouseEvent* event);
     void setPressure(float pressure);
 
-    float getPressure() { return m_tabletPressure; }
+    float getPressure() { return mTabletPressure; }
     bool isTabletInUse() { return mTabletInUse; }
 
     QList<QPointF> interpolateStroke();
 
-    QPointF getLastPressPixel() const { return m_lastPressPixel; }
-    QPointF getCurrentPixel() const { return m_currentPixel; }
-    QPointF getLastPixel() const { return m_lastPixel; }
+    QPointF getLastPressPixel() const { return mLastPressPixel; }
+    QPointF getCurrentPixel() const { return mCurrentPixel; }
+    QPointF getLastPixel() const { return mLastPixel; }
 
 private:
     static const int STROKE_QUEUE_LENGTH = 3; // 4 points for cubic bezier
@@ -41,20 +41,20 @@ private:
     std::deque<QPointF> strokeQueue;
 
     QTime singleshotTime;
-
-    QPointF m_lastPressPixel = { 0, 0 };
-    QPointF m_currentPixel   = { 0, 0 };
-    QPointF m_lastPixel      = { 0, 0 };
+    QPointF mLastPressPixel2 = { 0, 0 };
+    QPointF mLastPressPixel = { 0, 0 };
+    QPointF mCurrentPixel   = { 0, 0 };
+    QPointF mLastPixel      = { 0, 0 };
 
     QPointF m_previousTangent;
-    bool hasTangent;
-    int previousTime;
+    bool    hasTangent   = false;
+    int     previousTime = 0;
 
-    bool m_strokeStarted;
+    bool    mStrokeStarted = false;
 
-    bool mTabletInUse;
-    float m_tabletPressure;
-    QPointF m_tabletPosition;
+    bool    mTabletInUse = false;
+    float   mTabletPressure = 1.f;
+    QPointF mTabletPosition;
 
     clock_t m_timeshot;
 };
