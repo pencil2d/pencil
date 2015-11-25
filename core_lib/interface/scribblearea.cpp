@@ -49,7 +49,22 @@ mLog( "ScribbleArea" )
     setAttribute( Qt::WA_StaticContents );
 
     mStrokeManager = new StrokeManager();
+}
 
+ScribbleArea::~ScribbleArea()
+{
+    QSettings settings( PENCIL2D, PENCIL2D );
+
+    QList< QVariant > savedList;
+    for ( uint32_t e : mEffects )
+    {
+        savedList.append( QVariant( e ) );
+    }
+    settings.setValue( SETTING_DISPLAY_EFFECT, savedList );
+}
+
+bool ScribbleArea::init()
+{
     QSettings settings( PENCIL2D, PENCIL2D );
 
     int curveSmoothingLevel = settings.value( "curveSmoothing" ).toInt();
@@ -99,22 +114,7 @@ mLog( "ScribbleArea" )
     onionBlue = true;
     onionRed = false;
     toggledOnionColor();
-}
 
-ScribbleArea::~ScribbleArea()
-{
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QList< QVariant > savedList;
-    for ( uint32_t e : mEffects )
-    {
-        savedList.append( QVariant( e ) );
-    }
-    settings.setValue( SETTING_DISPLAY_EFFECT, savedList );
-}
-
-bool ScribbleArea::init()
-{
     return true;
 }
 
