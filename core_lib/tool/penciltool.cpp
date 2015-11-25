@@ -106,10 +106,6 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
     {
         mEditor->backup( typeName() );
 
-        if ( !mScribbleArea->showThinLines() )
-        {
-            mScribbleArea->toggleThinLines();
-        }
         mScribbleArea->setAllDirty();
         startStroke(); //start and appends first stroke
 
@@ -118,6 +114,12 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
         if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
             drawStroke();
+        }
+        else {
+            if ( !mScribbleArea->showThinLines() )
+            {
+                mScribbleArea->toggleThinLines();
+            }
         }
     }
 }

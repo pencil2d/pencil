@@ -77,7 +77,10 @@ bool ScribbleArea::init()
     somethingSelected = false;
 
     mMultiLayerOnionSkin = true;
+
     mShowThinLines = false;
+    mIsSimplified = false;
+
     mShowAllLayers = 1;
 
     QString background = settings.value( "background" ).toString();
@@ -185,11 +188,17 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
     return brush;
 }
 
+void ScribbleArea::setEffect(DisplayEffect e, bool isOn) {
+    mEffects[ e ] = isOn;
+    updateAllFrames();
+    Q_EMIT updateDisplayOption(e, isOn);
+}
+
 void ScribbleArea::onPreferencedChanged( EFFECT e )
 {
     switch ( e )
     {
-        case EFFECT::ANTIALIAS:
+    case EFFECT::ANTIALIAS:
         {
             mEffects[ EFFECT_ANTIALIAS ] = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
             updateAllFrames();
@@ -1010,6 +1019,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.bBlurryZoom = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
     options.bGrid = isEffectOn( EFFECT_GRID_A );
     options.bAxis = isEffectOn( EFFECT_AXIS );
+    options.bThinLines = mShowThinLines;
+    options.bOutlines = mIsSimplified;
 
     mCanvasRenderer.setOptions( options );
 
@@ -1539,13 +1550,11 @@ void ScribbleArea::deselectAll()
 void ScribbleArea::toggleOnionNext( bool checked )
 {
     setEffect( EFFECT_NEXT_ONION, checked );
-    updateAllFrames();
 }
 
 void ScribbleArea::toggleOnionPrev( bool checked )
 {
     setEffect( EFFECT_PREV_ONION, checked );
-    updateAllFrames();
 }
 
 void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
@@ -1558,7 +1567,6 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
 void ScribbleArea::toggleCameraBorder( bool checked )
 {
     setEffect( EFFECT_CAMERABORDER, checked );
-    updateAllFrames();
 }
 
 void ScribbleArea::toggledOnionColor()
@@ -1597,7 +1605,6 @@ void ScribbleArea::toggleOnionRed( bool checked )
 void ScribbleArea::toggleGridA( bool checked )
 {
     setEffect( EFFECT_GRID_A, checked );
-    updateAllFrames();
 }
 
 /************************************************************************************/
@@ -1693,12 +1700,14 @@ void ScribbleArea::toggleThinLines()
 {
     mShowThinLines = !mShowThinLines;
     updateAllFrames();
+    Q_EMIT updateDisplayOption(DisplayEffect::EFFECT_THIN_LINES, mShowThinLines);
 }
 
 void ScribbleArea::toggleOutlines()
 {
     mIsSimplified = !mIsSimplified;
     updateAllFrames();
+    Q_EMIT updateDisplayOption(DisplayEffect::EFFECT_OUTLINES, mIsSimplified);
 }
 
 void ScribbleArea::toggleShowAllLayers()
@@ -1741,6 +1750,8 @@ void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
         effects[ EFFECT_NEXT_ONION ] = 0;
         effects[ EFFECT_GRID_A ] = 0;
         effects[ EFFECT_CAMERABORDER ] = 0;
+        effects[ EFFECT_THIN_LINES] = 0;
+        effects[ EFFECT_OUTLINES] = 0;
     }
 
     effects[ EFFECT_AXIS ] = 0;

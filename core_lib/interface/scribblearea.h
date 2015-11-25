@@ -75,7 +75,7 @@ public:
     static QBrush getBackgroundBrush( QString );
 
     bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
-    void setEffect( DisplayEffect e, bool isOn ) { mEffects[ e ] = isOn; updateAllFrames(); }
+    void setEffect( DisplayEffect e, bool isOn );
 
     void onPreferencedChanged( EFFECT e );
 
@@ -122,6 +122,7 @@ signals:
     void modification( int );
     void multiLayerOnionSkinChanged( bool );
     void refreshPreview();
+    void updateDisplayOption(DisplayEffect, bool);
 
 public slots:
     void clearImage();

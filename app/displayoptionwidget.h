@@ -2,6 +2,7 @@
 #define DISPLAYOPTIONDOCKWIDGET_H
 
 #include <QDockWidget>
+#include "pencildef.h"
 
 namespace Ui
 {
@@ -17,6 +18,10 @@ class DisplayOptionWidget : public QDockWidget
 public:
     DisplayOptionWidget(QWidget *parent = 0);
     void makeConnectionToEditor(Editor* editor);
+
+
+public slots:
+    void updateDisplayOption(DisplayEffect, bool);
 
 private:
     Ui::DisplayOption* ui = nullptr;
