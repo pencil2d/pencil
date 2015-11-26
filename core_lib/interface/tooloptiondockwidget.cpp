@@ -92,8 +92,6 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( pToolManager, &ToolManager::penInvisiblityValueChange, this, &ToolOptionWidget::setPenInvisibility );
     connect( pToolManager, &ToolManager::penPreserveAlphaValueChange, this, &ToolOptionWidget::setPreserveAlpha );
     connect( pToolManager, &ToolManager::penPressureValueChange, this, &ToolOptionWidget::setPressure );
-
-    qDebug() << "Tool Option Widget connect to Editor";
 }
 
 // SLOTS

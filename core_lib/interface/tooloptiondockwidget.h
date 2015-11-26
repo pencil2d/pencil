@@ -22,12 +22,6 @@ public:
 
     void makeConnectionToEditor(Editor* editor);
 
-    QCheckBox* usePressureBox;
-    QCheckBox* makeInvisibleBox;
-    QCheckBox* preserveAlphaBox;
-    SpinSlider* sizeSlider;
-    SpinSlider* featherSlider;
-
 public slots:
     void setPenWidth(qreal);
     void setPenFeather(qreal);
@@ -40,6 +34,13 @@ public slots:
 private:
     void disableAllOptions();
     void createUI();
+
+    QCheckBox* usePressureBox   = nullptr;
+    QCheckBox* makeInvisibleBox = nullptr;
+    QCheckBox* preserveAlphaBox = nullptr;
+    SpinSlider* sizeSlider      = nullptr;
+    SpinSlider* featherSlider   = nullptr;
+
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H
