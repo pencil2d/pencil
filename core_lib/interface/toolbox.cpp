@@ -113,20 +113,20 @@ ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
 
     this->setMaximumHeight( 200 );
 
-    connect( pencilButton, SIGNAL( clicked() ), this, SLOT( pencilOn() ) );
-    connect( eraserButton, SIGNAL( clicked() ), this, SLOT( eraserOn() ) );
-    connect( selectButton, SIGNAL( clicked() ), this, SLOT( selectOn() ) );
-    connect( moveButton, SIGNAL( clicked() ), this, SLOT( moveOn() ) );
-    connect( penButton, SIGNAL( clicked() ), this, SLOT( penOn() ) );
-    connect( handButton, SIGNAL( clicked() ), this, SLOT( handOn() ) );
-    connect( polylineButton, SIGNAL( clicked() ), this, SLOT( polylineOn() ) );
-    connect( bucketButton, SIGNAL( clicked() ), this, SLOT( bucketOn() ) );
-    connect( eyedropperButton, SIGNAL( clicked() ), this, SLOT( eyedropperOn() ) );
-    connect( colouringButton, SIGNAL( clicked() ), this, SLOT( brushOn() ) );
-    connect( smudgeButton, SIGNAL( clicked() ), this, SLOT( smudgeOn() ) );
+    connect( pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn );
+    connect( eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn );
+    connect( selectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn );
+    connect( moveButton, &QToolButton::clicked, this, &ToolBoxWidget::moveOn );
+    connect( penButton, &QToolButton::clicked, this, &ToolBoxWidget::penOn );
+    connect( handButton, &QToolButton::clicked, this, &ToolBoxWidget::handOn );
+    connect( polylineButton, &QToolButton::clicked, this, &ToolBoxWidget::polylineOn );
+    connect( bucketButton, &QToolButton::clicked, this, &ToolBoxWidget::bucketOn );
+    connect( eyedropperButton, &QToolButton::clicked, this, &ToolBoxWidget::eyedropperOn );
+    connect( colouringButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn );
+    connect( smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn );
 
     // pass to editor
-    connect( clearButton, SIGNAL( clicked() ), this, SIGNAL( clearButtonClicked() ) );
+    connect( clearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked );
 }
 
 

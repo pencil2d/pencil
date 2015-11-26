@@ -27,16 +27,12 @@ public:
     void      tabletSwitchToEraser();
     void      tabletRestorePrevTool();
 
-signals:
-    void penWidthValueChange( float );
-    void penFeatherValueChange( float );
-    void penInvisiblityValueChange( int );
-    void penPreserveAlphaValueChange( int );
-    void penPressureValueChange( int );
+Q_SIGNALS:
+    void penWidthValueChanged( float );
+    void penFeatherValueChanged( float );
 
     void toolChanged( ToolType );
-    void displayToolOptions(QHash<ToolPropertyType, bool> options);
-    void toolPropertyChanged();
+    void toolPropertyChanged( ToolType, ToolPropertyType );
 
 public slots:
     void resetAllTools();

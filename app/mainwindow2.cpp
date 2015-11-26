@@ -175,7 +175,11 @@ void MainWindow2::createDockWidgets()
     makeConnections( mEditor, mColorPalette );
     makeConnections( mEditor, mDisplayOptionWidget );
     makeConnections( mEditor, mToolOptions );
-    mToolOptions->makeConnectionToEditor(mEditor);
+
+    for ( BaseDockWidget* w : mDockWidgets )
+    {
+        w->updateUI();
+    }
 }
 
 
@@ -1014,9 +1018,9 @@ void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
     display->makeConnectionToEditor( editor );
 }
 
-void MainWindow2::makeConnections(Editor* editor, ToolOptionWidget* toolOptions)
+void MainWindow2::makeConnections( Editor* editor, ToolOptionWidget* toolOptions )
 {
-    connect( editor->tools(), &ToolManager::displayToolOptions, toolOptions, &ToolOptionWidget::displayToolOptions );
+    toolOptions->makeConnectionToEditor( editor );
 }
 
 

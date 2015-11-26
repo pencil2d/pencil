@@ -1,4 +1,3 @@
-#include <QFrame>
 #include <QLabel>
 #include <QToolButton>
 #include <QCheckBox>
@@ -26,7 +25,24 @@ void ToolOptionWidget::initUI()
 
 void ToolOptionWidget::updateUI()
 {
+    BaseTool* currentTool = editor()->tools()->currentTool();
+    Q_ASSERT( currentTool );
 
+    disableAllOptions();
+
+    sizeSlider->setVisible( currentTool->isPropertyEnabled( WIDTH ) );
+    featherSlider->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
+    usePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
+    makeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
+    preserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
+
+    const Properties& p = currentTool->properties;
+
+    setPenWidth( p.width );
+    setPenFeather( p.feather );
+    setPressure( p.pressure );
+    setPenInvisibility( p.invisibility );
+    setPreserveAlpha( p.preserveAlpha );
 }
 
 void ToolOptionWidget::createUI()
@@ -40,11 +56,11 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    sizeSlider = new SpinSlider( tr( "Size" ), "linear", "real", 0.1, 200.0, this );
+    sizeSlider = new SpinSlider( tr( "Size" ), "log", "real", 0.1, 200.0, this );
     sizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
     sizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    featherSlider = new SpinSlider( tr( "Feather" ), "linear", "real", 0.0, 100.0, this );
+    featherSlider = new SpinSlider( tr( "Feather" ), "log", "real", 0.0, 100.0, this );
     featherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
     featherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 
@@ -78,52 +94,83 @@ void ToolOptionWidget::createUI()
 
 void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 {
-    auto pToolManager = editor->tools();
+    auto toolManager = editor->tools();
 
-    connect( usePressureBox, &QCheckBox::clicked, pToolManager, &ToolManager::setPressure );
-    connect( makeInvisibleBox, &QCheckBox::clicked, pToolManager, &ToolManager::setInvisibility );
-    connect( preserveAlphaBox, &QCheckBox::clicked, pToolManager, &ToolManager::setPreserveAlpha );
+    connect( usePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure );
+    connect( makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility );
+    connect( preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha );
 
-    connect( sizeSlider, &SpinSlider::valueChanged, pToolManager, &ToolManager::setWidth );
-    connect( featherSlider, &SpinSlider::valueChanged, pToolManager, &ToolManager::setFeather );
+    connect( sizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth );
+    connect( featherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather );
 
-    connect( pToolManager, &ToolManager::penWidthValueChange, this, &ToolOptionWidget::setPenWidth );
-    connect( pToolManager, &ToolManager::penFeatherValueChange, this, &ToolOptionWidget::setPenFeather );
-    connect( pToolManager, &ToolManager::penInvisiblityValueChange, this, &ToolOptionWidget::setPenInvisibility );
-    connect( pToolManager, &ToolManager::penPreserveAlphaValueChange, this, &ToolOptionWidget::setPreserveAlpha );
-    connect( pToolManager, &ToolManager::penPressureValueChange, this, &ToolOptionWidget::setPressure );
+    connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
+    connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
+}
+
+void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType ePropertyType )
+{
+    const Properties& p = editor()->tools()->currentTool()->properties;
+
+    switch ( ePropertyType )
+    {
+        case WIDTH: 
+            setPenWidth( p.width );
+            break;
+        case FEATHER:
+            setPenFeather( p.feather );
+            break;
+        case PRESSURE:
+            setPressure( p.pressure );
+            break;
+        case INVISIBILITY:
+            setPenInvisibility( p.invisibility );
+            break;
+        case PRESERVEALPHA:
+            setPreserveAlpha( p.preserveAlpha );
+            break;
+    }
+}
+
+void ToolOptionWidget::onToolChanged( ToolType )
+{
+    updateUI();
 }
 
 // SLOTS
 // ================
 void ToolOptionWidget::setPenWidth( qreal width )
 {
+    QSignalBlocker b( sizeSlider );
     sizeSlider->setEnabled( true );
     sizeSlider->setValue( width );
 }
 
 void ToolOptionWidget::setPenFeather( qreal featherValue )
 {
+    QSignalBlocker b( featherSlider );
     featherSlider->setEnabled( true );
     featherSlider->setValue( featherValue );
 }
 
 void ToolOptionWidget::setPenInvisibility( int x )   // x = -1, 0, 1
 {
+    QSignalBlocker b( makeInvisibleBox );
     makeInvisibleBox->setEnabled( true );
     makeInvisibleBox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setPressure( int x )   // x = -1, 0, 1
 {
+    QSignalBlocker b( usePressureBox );
     usePressureBox->setEnabled( true );
-    usePressureBox->setChecked( x>0 );
+    usePressureBox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setPreserveAlpha( int x )   // x = -1, 0, 1
 {
     qDebug() << "Setting - Preserve Alpha=" << x;
 
+    QSignalBlocker b( preserveAlphaBox );
     preserveAlphaBox->setEnabled( true );
     preserveAlphaBox->setChecked( x > 0 );
 }
@@ -135,35 +182,4 @@ void ToolOptionWidget::disableAllOptions()
     usePressureBox->hide();
     makeInvisibleBox->hide();
     preserveAlphaBox->hide();
-}
-
-void ToolOptionWidget::displayToolOptions(QHash<ToolPropertyType, bool> options)
-{
-    disableAllOptions();
-    QHash<ToolPropertyType, bool>::iterator i;
-    for (i = options.begin(); i != options.end(); ++i) {
-        if (i.value()) {
-
-            switch ( i.key() ) {
-            case WIDTH:
-              sizeSlider->show();
-              break;
-            case FEATHER:
-              featherSlider->show();
-              break;
-            case PRESSURE:
-              usePressureBox->show();
-              break;
-            case INVISIBILITY:
-              makeInvisibleBox->show();
-              break;
-            case PRESERVEALPHA:
-              preserveAlphaBox->show();
-              break;
-            default:
-              break;
-            }
-        }
-    }
-
 }

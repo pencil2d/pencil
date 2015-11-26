@@ -43,6 +43,8 @@ bool ToolManager::init()
         pTool->initialize( editor() );
     }
 
+    setDefaultTool();
+
     return true;
 }
 
@@ -69,16 +71,7 @@ void ToolManager::setDefaultTool()
 void ToolManager::setCurrentTool( ToolType eToolType )
 {
     m_pCurrentTool = getTool( eToolType );
-
-    setWidth( m_pCurrentTool->properties.width );
-    setFeather( m_pCurrentTool->properties.feather );
-    setPressure( m_pCurrentTool->properties.pressure );
-    setPreserveAlpha( m_pCurrentTool->properties.preserveAlpha );
-    setInvisibility( m_pCurrentTool->properties.invisibility ); // by definition the pencil is invisible in vector mode
-
-
     emit toolChanged( eToolType );
-    emit displayToolOptions(m_pCurrentTool->m_enabledProperties);
 }
 
 void ToolManager::cleanupAllToolsData()
@@ -114,36 +107,33 @@ void ToolManager::resetAllTools()
 void ToolManager::setWidth( float newWidth )
 {
     currentTool()->setWidth(newWidth);
-    emit penWidthValueChange( newWidth );
-    emit toolPropertyChanged();
+    emit penWidthValueChanged( newWidth );
+    emit toolPropertyChanged( currentTool()->type(), WIDTH );
 }
 
 void ToolManager::setFeather( float newFeather )
 {
     currentTool()->setFeather(newFeather);
-    emit penFeatherValueChange( newFeather );
-    emit toolPropertyChanged();
+    emit penFeatherValueChanged( newFeather );
+    emit toolPropertyChanged( currentTool()->type(), FEATHER );
 }
 
-void ToolManager::setInvisibility( int isInvisible  )
+void ToolManager::setInvisibility( int isInvisible )
 {
     currentTool()->setInvisibility(isInvisible);
-    emit penInvisiblityValueChange( isInvisible );
-    emit toolPropertyChanged();
+    emit toolPropertyChanged( currentTool()->type(), INVISIBILITY );
 }
 
 void ToolManager::setPreserveAlpha( int isPreserveAlpha )
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
-    emit penPreserveAlphaValueChange( isPreserveAlpha );
-    emit toolPropertyChanged();
+    emit toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
 }
 
 void ToolManager::setPressure( int isPressureOn )
 {
     currentTool()->setPressure(isPressureOn);
-    emit penPressureValueChange( isPressureOn );
-    emit toolPropertyChanged();
+    emit toolPropertyChanged( currentTool()->type(), PRESSURE );
 }
 
 void ToolManager::tabletSwitchToEraser()
