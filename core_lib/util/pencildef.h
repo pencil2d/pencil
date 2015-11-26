@@ -31,8 +31,6 @@ enum ToolPropertyType
 {
     WIDTH,
     FEATHER,
-    OPACITY,
-    COLOURNUMBER,
     PRESSURE,
     INVISIBILITY,
     PRESERVEALPHA

@@ -39,14 +39,14 @@ public slots:
 
     void setWidth( float );
     void setFeather( float );
-    void setInvisibility( int );
-    void setPreserveAlpha( int );
-    void setPressure( int );
+    void setInvisibility( bool );
+    void setPreserveAlpha( bool );
+    void setPressure( bool );
 
 private:
-    BaseTool* m_pCurrentTool;
-    ToolType  m_eTabletBackupTool;
-    bool isSwitchedToEraser;
+    BaseTool* m_pCurrentTool      = nullptr;
+    ToolType  m_eTabletBackupTool = INVALID_TOOL;
+    bool isSwitchedToEraser       = false;
     QHash<ToolType, BaseTool*> m_toolSetHash;
 
 };

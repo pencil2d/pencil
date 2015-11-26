@@ -37,8 +37,6 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
 {
     m_enabledProperties.insert( WIDTH,          false  );
     m_enabledProperties.insert( FEATHER,        false  );
-    m_enabledProperties.insert( OPACITY,        false  );
-    m_enabledProperties.insert( COLOURNUMBER,   false  );
     m_enabledProperties.insert( PRESSURE,       false  );
     m_enabledProperties.insert( INVISIBILITY,   false  );
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
@@ -243,7 +241,7 @@ void BaseTool::setFeather( const qreal feather )
     properties.feather = feather;
 }
 
-void BaseTool::setInvisibility( const qreal invisibility )
+void BaseTool::setInvisibility( const bool invisibility )
 {
     properties.invisibility = invisibility;
 }

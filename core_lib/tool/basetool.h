@@ -21,7 +21,7 @@ class Properties
 public:
     qreal width       = 1.f;
     qreal feather     = 1.f;
-    int pressure      = 0.5f;
+    int pressure      = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
 };
@@ -72,7 +72,7 @@ public:
 
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
-    virtual void setInvisibility( const qreal invisibility );
+    virtual void setInvisibility( const bool invisibility );
     virtual void setPressure( const bool pressure );
     virtual void setPreserveAlpha( const bool preserveAlpha );
 

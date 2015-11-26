@@ -71,7 +71,7 @@ void ToolManager::setDefaultTool()
 void ToolManager::setCurrentTool( ToolType eToolType )
 {
     m_pCurrentTool = getTool( eToolType );
-    emit toolChanged( eToolType );
+    Q_EMIT toolChanged( eToolType );
 }
 
 void ToolManager::cleanupAllToolsData()
@@ -107,33 +107,33 @@ void ToolManager::resetAllTools()
 void ToolManager::setWidth( float newWidth )
 {
     currentTool()->setWidth(newWidth);
-    emit penWidthValueChanged( newWidth );
-    emit toolPropertyChanged( currentTool()->type(), WIDTH );
+    Q_EMIT penWidthValueChanged( newWidth );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), WIDTH );
 }
 
 void ToolManager::setFeather( float newFeather )
 {
     currentTool()->setFeather(newFeather);
-    emit penFeatherValueChanged( newFeather );
-    emit toolPropertyChanged( currentTool()->type(), FEATHER );
+    Q_EMIT penFeatherValueChanged( newFeather );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), FEATHER );
 }
 
-void ToolManager::setInvisibility( int isInvisible )
+void ToolManager::setInvisibility( bool isInvisible )
 {
     currentTool()->setInvisibility(isInvisible);
-    emit toolPropertyChanged( currentTool()->type(), INVISIBILITY );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), INVISIBILITY );
 }
 
-void ToolManager::setPreserveAlpha( int isPreserveAlpha )
+void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
-    emit toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
 }
 
-void ToolManager::setPressure( int isPressureOn )
+void ToolManager::setPressure( bool isPressureOn )
 {
-    currentTool()->setPressure(isPressureOn);
-    emit toolPropertyChanged( currentTool()->type(), PRESSURE );
+    currentTool()->setPressure( isPressureOn );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), PRESSURE );
 }
 
 void ToolManager::tabletSwitchToEraser()
