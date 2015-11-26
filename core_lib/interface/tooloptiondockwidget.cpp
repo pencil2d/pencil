@@ -136,8 +136,6 @@ void ToolOptionWidget::onToolChanged( ToolType )
     updateUI();
 }
 
-// SLOTS
-// ================
 void ToolOptionWidget::setPenWidth( qreal width )
 {
     QSignalBlocker b( sizeSlider );
@@ -152,21 +150,21 @@ void ToolOptionWidget::setPenFeather( qreal featherValue )
     featherSlider->setValue( featherValue );
 }
 
-void ToolOptionWidget::setPenInvisibility( int x )   // x = -1, 0, 1
+void ToolOptionWidget::setPenInvisibility( int x )
 {
     QSignalBlocker b( makeInvisibleBox );
     makeInvisibleBox->setEnabled( true );
     makeInvisibleBox->setChecked( x > 0 );
 }
 
-void ToolOptionWidget::setPressure( int x )   // x = -1, 0, 1
+void ToolOptionWidget::setPressure( int x )
 {
     QSignalBlocker b( usePressureBox );
     usePressureBox->setEnabled( true );
     usePressureBox->setChecked( x > 0 );
 }
 
-void ToolOptionWidget::setPreserveAlpha( int x )   // x = -1, 0, 1
+void ToolOptionWidget::setPreserveAlpha( int x )
 {
     qDebug() << "Setting - Preserve Alpha=" << x;
 
