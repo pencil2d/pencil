@@ -506,15 +506,12 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
     mMouseInUse = true;
 
     mStrokeManager->mousePressEvent( event );
-    if ( mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == false )
+    mUsePressure = currentTool()->properties.pressure;
+
+    if ( !( mStrokeManager->isTabletInUse() && currentTool()->properties.pressure ) )
     {
-        mUsePressure = false;
         mStrokeManager->setPressure( 1.0 );
         currentTool()->adjustPressureSensitiveProperties( 1.0, true );
-    }
-    else
-    {
-        mUsePressure = true;
     }
 
     //----------------code for starting hand tool when middle mouse is pressed
