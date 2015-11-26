@@ -18,7 +18,7 @@ public:
     bool init() override;
     Status onObjectLoaded( Object* ) override;
 
-    BaseTool* currentTool() { return m_pCurrentTool; }
+    BaseTool* currentTool() { return mCurrentTool; }
     BaseTool* getTool( ToolType eToolType );
     void      setDefaultTool();
     void      setCurrentTool( ToolType eToolType );
@@ -44,10 +44,10 @@ public slots:
     void setPressure( bool );
 
 private:
-    BaseTool* m_pCurrentTool      = nullptr;
-    ToolType  m_eTabletBackupTool = INVALID_TOOL;
-    bool isSwitchedToEraser       = false;
-    QHash<ToolType, BaseTool*> m_toolSetHash;
+    BaseTool* mCurrentTool       = nullptr;
+    ToolType  meTabletBackupTool = PENCIL;
+    bool mIsSwitchedToEraser     = false;
+    QHash<ToolType, BaseTool*> mToolSetHash;
 
 };
 
