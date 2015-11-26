@@ -115,10 +115,8 @@ void MainWindow2::createDockWidgets()
     mTimeLine->setObjectName( "TimeLine" );
     mDockWidgets.append( mTimeLine );
 
-    mColorWheel = new QDockWidget( tr("Color Wheel"), this );
-    ColorBox* pColorBox = new ColorBox(this);
-    pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
-    mColorWheel->setWidget( pColorBox );
+    mColorWheel = new ColorBox( tr("Color Wheel"), this );
+    mColorWheel->setToolTip( tr( "color palette:<br>use <b>(C)</b><br>toggle at cursor" ) );
     mColorWheel->setObjectName( "ColorWheel" );
 
     mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
@@ -166,7 +164,7 @@ void MainWindow2::createDockWidgets()
     */
 
     makeConnections( mEditor, mTimeLine );
-    makeConnections( mEditor, pColorBox );
+    makeConnections( mEditor, mColorWheel );
     makeConnections( mEditor, mColorPalette );
     makeConnections( mEditor, mDisplayOptionWidget );
     makeConnections( mEditor, mToolOptions );

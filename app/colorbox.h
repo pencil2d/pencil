@@ -1,17 +1,18 @@
 #ifndef COLORBOX_H
 #define COLORBOX_H
 
-#include <QWidget>
+#include <QDockWidget>
 
 class ColorWheel;
 class ColorInspector;
 
-class ColorBox : public QWidget
+
+class ColorBox : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    explicit ColorBox(QWidget *parent = 0);
+    explicit ColorBox( const QString& strTitle, QWidget* parent );
     ~ColorBox();
 
     QColor color();
