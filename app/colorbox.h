@@ -1,19 +1,22 @@
 #ifndef COLORBOX_H
 #define COLORBOX_H
 
-#include <QDockWidget>
+#include "basedockwidget.h"
 
 class ColorWheel;
 class ColorInspector;
 
 
-class ColorBox : public QDockWidget
+class ColorBox : public BaseDockWidget
 {
     Q_OBJECT
 
 public:
     explicit ColorBox( const QString& strTitle, QWidget* parent );
-    ~ColorBox();
+    virtual ~ColorBox();
+
+    void initUI() override;
+    void updateUI() override;
 
     QColor color();
     void setColor(const QColor &);

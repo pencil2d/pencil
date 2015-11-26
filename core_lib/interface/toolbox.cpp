@@ -32,101 +32,101 @@ ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
     BaseDockWidget( title, pParent, Qt::Tool )
 {
     QFrame* toolGroup = new QFrame();
-    setWidget(toolGroup);
+    setWidget( toolGroup );
 
     QGridLayout* layout = new QGridLayout();
 
-    pencilButton = newToolButton(QIcon("://icons/pencil2.png"), tr("Pencil Tool <b>(N)</b>: Sketch with pencil"));
-    selectButton = newToolButton(QIcon(":icons/select.png"), tr("Select Tool <b>(V)</b>: Select an object"));
-    moveButton = newToolButton(QIcon(":icons/arrow.png"), tr("Move Tool <b>(Q)</b>: Move an object"));
-    handButton = newToolButton(QIcon(":icons/hand.png"), tr("Hand Tool <b>(H)</b>: Move the canvas"));
-    penButton = newToolButton(QIcon(":icons/pen.png"), tr("Pen Tool <b>(P)</b>: Sketch with pen"));
-    eraserButton = newToolButton(QIcon(":icons/eraser.png"), tr("Eraser Tool <b>(E)</b>: Erase"));
-    polylineButton = newToolButton(QIcon(":icons/polyline.png"), tr("Polyline Tool <b>(Y)</b>: Create line/curves"));
-    bucketButton = newToolButton(QIcon(":icons/bucket.png"), tr("Paint Bucket Tool <b>(K)</b>: Fill selected area with a color"));
-    colouringButton = newToolButton(QIcon(":icons/brush.png"), tr("Brush Tool <b>(B)</b>: Paint smooth stroke with a brush"));
-    eyedropperButton = newToolButton(QIcon(":icons/eyedropper.png"), tr("Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access"));
-    clearButton = newToolButton(QIcon(":icons/clear.png"), tr("Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame"));
-    smudgeButton = newToolButton(QIcon(":icons/smudge.png"), tr("Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth"));
+    pencilButton = newToolButton( QIcon( "://icons/pencil2.png" ), tr( "Pencil Tool <b>(N)</b>: Sketch with pencil" ) );
+    selectButton = newToolButton( QIcon( ":icons/select.png" ), tr( "Select Tool <b>(V)</b>: Select an object" ) );
+    moveButton = newToolButton( QIcon( ":icons/arrow.png" ), tr( "Move Tool <b>(Q)</b>: Move an object" ) );
+    handButton = newToolButton( QIcon( ":icons/hand.png" ), tr( "Hand Tool <b>(H)</b>: Move the canvas" ) );
+    penButton = newToolButton( QIcon( ":icons/pen.png" ), tr( "Pen Tool <b>(P)</b>: Sketch with pen" ) );
+    eraserButton = newToolButton( QIcon( ":icons/eraser.png" ), tr( "Eraser Tool <b>(E)</b>: Erase" ) );
+    polylineButton = newToolButton( QIcon( ":icons/polyline.png" ), tr( "Polyline Tool <b>(Y)</b>: Create line/curves" ) );
+    bucketButton = newToolButton( QIcon( ":icons/bucket.png" ), tr( "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color" ) );
+    colouringButton = newToolButton( QIcon( ":icons/brush.png" ), tr( "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush" ) );
+    eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ), tr( "Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access" ) );
+    clearButton = newToolButton( QIcon( ":icons/clear.png" ), tr( "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame" ) );
+    smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ), tr( "Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth" ) );
 
-    pencilButton->setWhatsThis(tr("Pencil Tool (N)"));
-    selectButton->setWhatsThis(tr("Select Tool (V)"));
-    moveButton->setWhatsThis(tr("Move Tool (Q)"));
-    handButton->setWhatsThis(tr("Hand Tool (H)"));
-    penButton->setWhatsThis(tr("Pen Tool (P)"));
-    eraserButton->setWhatsThis(tr("Eraser Tool (E)"));
-    polylineButton->setWhatsThis(tr("Polyline Tool (Y)"));
-    bucketButton->setWhatsThis(tr("Paint Bucket Tool(K)"));
-    colouringButton->setWhatsThis(tr("Brush Tool(B)"));
-    eyedropperButton->setWhatsThis(tr("Eyedropper Tool (I)"));
-    clearButton->setWhatsThis(tr("Clear Tool"));
-    smudgeButton->setWhatsThis(tr("Smudge Tool (A)"));
+    pencilButton->setWhatsThis( tr( "Pencil Tool (N)" ) );
+    selectButton->setWhatsThis( tr( "Select Tool (V)" ) );
+    moveButton->setWhatsThis( tr( "Move Tool (Q)" ) );
+    handButton->setWhatsThis( tr( "Hand Tool (H)" ) );
+    penButton->setWhatsThis( tr( "Pen Tool (P)" ) );
+    eraserButton->setWhatsThis( tr( "Eraser Tool (E)" ) );
+    polylineButton->setWhatsThis( tr( "Polyline Tool (Y)" ) );
+    bucketButton->setWhatsThis( tr( "Paint Bucket Tool(K)" ) );
+    colouringButton->setWhatsThis( tr( "Brush Tool(B)" ) );
+    eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (I)" ) );
+    clearButton->setWhatsThis( tr( "Clear Tool" ) );
+    smudgeButton->setWhatsThis( tr( "Smudge Tool (A)" ) );
 
-    pencilButton->setCheckable(true);
-    penButton->setCheckable(true);
-    polylineButton->setCheckable(true);
-    bucketButton->setCheckable(true);
-    colouringButton->setCheckable(true);
-    smudgeButton->setCheckable(true);
-    eyedropperButton->setCheckable(true);
-    selectButton->setCheckable(true);
-    moveButton->setCheckable(true);
-    handButton->setCheckable(true);
-    eraserButton->setCheckable(true);
-    pencilButton->setChecked(true);
+    pencilButton->setCheckable( true );
+    penButton->setCheckable( true );
+    polylineButton->setCheckable( true );
+    bucketButton->setCheckable( true );
+    colouringButton->setCheckable( true );
+    smudgeButton->setCheckable( true );
+    eyedropperButton->setCheckable( true );
+    selectButton->setCheckable( true );
+    moveButton->setCheckable( true );
+    handButton->setCheckable( true );
+    eraserButton->setCheckable( true );
+    pencilButton->setChecked( true );
 
-    layout->setMargin(2);
-    layout->setSpacing(0);
+    layout->setMargin( 2 );
+    layout->setSpacing( 0 );
 
-    layout->addWidget(moveButton,0,0);
-    layout->setAlignment(moveButton, Qt::AlignRight);
-    layout->addWidget(clearButton,0,1);
-    layout->setAlignment(clearButton, Qt::AlignLeft);
+    layout->addWidget( moveButton, 0, 0 );
+    layout->setAlignment( moveButton, Qt::AlignRight );
+    layout->addWidget( clearButton, 0, 1 );
+    layout->setAlignment( clearButton, Qt::AlignLeft );
 
-    layout->addWidget(selectButton,1,0);
-    layout->setAlignment(selectButton, Qt::AlignRight);
-    layout->addWidget(colouringButton,1,1);
-    layout->setAlignment(colouringButton, Qt::AlignLeft);
+    layout->addWidget( selectButton, 1, 0 );
+    layout->setAlignment( selectButton, Qt::AlignRight );
+    layout->addWidget( colouringButton, 1, 1 );
+    layout->setAlignment( colouringButton, Qt::AlignLeft );
 
-    layout->addWidget(polylineButton,2,0);
-    layout->setAlignment(polylineButton, Qt::AlignRight);
-    layout->addWidget(smudgeButton,2,1);
-    layout->setAlignment(smudgeButton, Qt::AlignLeft);
+    layout->addWidget( polylineButton, 2, 0 );
+    layout->setAlignment( polylineButton, Qt::AlignRight );
+    layout->addWidget( smudgeButton, 2, 1 );
+    layout->setAlignment( smudgeButton, Qt::AlignLeft );
 
-    layout->addWidget(penButton,3,0);
-    layout->setAlignment(penButton, Qt::AlignRight);
-    layout->addWidget(handButton,3,1);
-    layout->setAlignment(handButton, Qt::AlignLeft);
+    layout->addWidget( penButton, 3, 0 );
+    layout->setAlignment( penButton, Qt::AlignRight );
+    layout->addWidget( handButton, 3, 1 );
+    layout->setAlignment( handButton, Qt::AlignLeft );
 
-    layout->addWidget(pencilButton,4,0);
-    layout->setAlignment(pencilButton, Qt::AlignRight);
-    layout->addWidget(bucketButton,4,1);
-    layout->setAlignment(bucketButton, Qt::AlignLeft);
+    layout->addWidget( pencilButton, 4, 0 );
+    layout->setAlignment( pencilButton, Qt::AlignRight );
+    layout->addWidget( bucketButton, 4, 1 );
+    layout->setAlignment( bucketButton, Qt::AlignLeft );
 
-    layout->addWidget(eyedropperButton,5,0);
-    layout->setAlignment(eyedropperButton, Qt::AlignRight);
-    layout->addWidget(eraserButton,5,1);
-    layout->setAlignment(eraserButton, Qt::AlignLeft);
+    layout->addWidget( eyedropperButton, 5, 0 );
+    layout->setAlignment( eyedropperButton, Qt::AlignRight );
+    layout->addWidget( eraserButton, 5, 1 );
+    layout->setAlignment( eraserButton, Qt::AlignLeft );
 
-    toolGroup->setLayout(layout);
-    toolGroup->setMaximumHeight(6*32+1);
+    toolGroup->setLayout( layout );
+    toolGroup->setMaximumHeight( 6 * 32 + 1 );
 
-    this->setMaximumHeight(200);
+    this->setMaximumHeight( 200 );
 
-    connect(pencilButton, SIGNAL(clicked()), this, SLOT(pencilOn()));
-    connect(eraserButton, SIGNAL(clicked()), this, SLOT(eraserOn()));
-    connect(selectButton, SIGNAL(clicked()), this, SLOT(selectOn()));
-    connect(moveButton, SIGNAL(clicked()), this, SLOT(moveOn()));
-    connect(penButton, SIGNAL(clicked()), this, SLOT(penOn()));
-    connect(handButton, SIGNAL(clicked()), this, SLOT(handOn()));
-    connect(polylineButton, SIGNAL(clicked()), this, SLOT(polylineOn()));
-    connect(bucketButton, SIGNAL(clicked()), this, SLOT(bucketOn()));
-    connect(eyedropperButton, SIGNAL(clicked()), this, SLOT(eyedropperOn()));
-    connect(colouringButton, SIGNAL(clicked()), this, SLOT(brushOn()));
-    connect(smudgeButton, SIGNAL(clicked()), this, SLOT(smudgeOn()));
+    connect( pencilButton, SIGNAL( clicked() ), this, SLOT( pencilOn() ) );
+    connect( eraserButton, SIGNAL( clicked() ), this, SLOT( eraserOn() ) );
+    connect( selectButton, SIGNAL( clicked() ), this, SLOT( selectOn() ) );
+    connect( moveButton, SIGNAL( clicked() ), this, SLOT( moveOn() ) );
+    connect( penButton, SIGNAL( clicked() ), this, SLOT( penOn() ) );
+    connect( handButton, SIGNAL( clicked() ), this, SLOT( handOn() ) );
+    connect( polylineButton, SIGNAL( clicked() ), this, SLOT( polylineOn() ) );
+    connect( bucketButton, SIGNAL( clicked() ), this, SLOT( bucketOn() ) );
+    connect( eyedropperButton, SIGNAL( clicked() ), this, SLOT( eyedropperOn() ) );
+    connect( colouringButton, SIGNAL( clicked() ), this, SLOT( brushOn() ) );
+    connect( smudgeButton, SIGNAL( clicked() ), this, SLOT( smudgeOn() ) );
 
     // pass to editor
-    connect(clearButton, SIGNAL(clicked()), this, SIGNAL(clearButtonClicked()));
+    connect( clearButton, SIGNAL( clicked() ), this, SIGNAL( clearButtonClicked() ) );
 }
 
 

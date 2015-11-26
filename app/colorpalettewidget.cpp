@@ -30,22 +30,23 @@ GNU General Public License for more details.
 #include "ui_colorpalette.h"
 
 
-ColorPaletteWidget::ColorPaletteWidget( QString strTitle, QWidget* pParent ) 
-    : BaseDockWidget( strTitle, pParent, Qt::Tool )
-    , ui( new Ui::ColorPalette )
+ColorPaletteWidget::ColorPaletteWidget( QWidget* pParent ) : BaseDockWidget( pParent, Qt::Tool )
 {
+    setWindowTitle( tr( "Color Palette", "Window title of color palette." ) );
+
     QWidget* pWidget = new QWidget( this );
+    ui = new Ui::ColorPalette;
     ui->setupUi( pWidget );
     setWidget( pWidget );
 
     connect( ui->colorListWidget, &QListWidget::currentItemChanged, 
              this, &ColorPaletteWidget::colorListCurrentItemChanged );
 
-    connect( ui->colorListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(clickColorListItem( QListWidgetItem*)));
+    connect( ui->colorListWidget, SIGNAL( itemClicked( QListWidgetItem* ) ),
+             this, SLOT( clickColorListItem( QListWidgetItem* ) ) );
 
-    connect( ui->colorListWidget, SIGNAL(itemDoubleClicked ( QListWidgetItem*)), this,
-        SLOT(changeColourName( QListWidgetItem*)));
+    connect( ui->colorListWidget, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), this,
+             SLOT( changeColourName( QListWidgetItem* ) ) );
 
     connect( ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton );
     connect( ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton );

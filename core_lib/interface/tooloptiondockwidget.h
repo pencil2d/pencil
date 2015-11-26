@@ -1,7 +1,7 @@
 #ifndef TOOLOPTIONDOCKWIDGET_H
 #define TOOLOPTIONDOCKWIDGET_H
 
-#include <QDockWidget>
+#include "basedockwidget.h"
 #include "pencildef.h"
 
 
@@ -10,11 +10,16 @@ class SpinSlider;
 class QCheckBox;
 class Editor;
 
-class ToolOptionWidget : public QDockWidget
+class ToolOptionWidget : public BaseDockWidget
 {
     Q_OBJECT
 public:
-    ToolOptionWidget(QWidget *parent = 0);
+    explicit ToolOptionWidget( QWidget* parent );
+    ~ToolOptionWidget();
+
+    void initUI() override;
+    void updateUI() override;
+
     void makeConnectionToEditor(Editor* editor);
 
     QCheckBox* usePressureBox;
@@ -22,8 +27,6 @@ public:
     QCheckBox* preserveAlphaBox;
     SpinSlider* sizeSlider;
     SpinSlider* featherSlider;
-
-signals:
 
 public slots:
     void setPenWidth(qreal);

@@ -9,20 +9,30 @@
 #include "scribblearea.h"
 
 
-DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent )
+DisplayOptionWidget::DisplayOptionWidget( QWidget *parent ) : BaseDockWidget( parent )
 {
+    setWindowTitle( tr( "Display", "Window title of display options like ." ) );
+
     QWidget* innerWidget = new QWidget;
     setWidget( innerWidget );
 
     ui = new Ui::DisplayOption;
     ui->setupUi( innerWidget );
-
-
-
-    setWindowTitle(tr("Display Options"));
 }
 
-void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
+DisplayOptionWidget::~DisplayOptionWidget()
+{
+}
+
+void DisplayOptionWidget::initUI()
+{    
+}
+
+void DisplayOptionWidget::updateUI()
+{
+}
+
+void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 {
 	ScribbleArea* pScriArea = editor->getScribbleArea();
 

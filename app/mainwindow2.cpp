@@ -41,6 +41,7 @@ GNU General Public License for more details.
 #include "commandcenter.h"
 
 #include "scribblearea.h"
+#include "colorbox.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
 #include "tooloptiondockwidget.h"
@@ -113,25 +114,31 @@ void MainWindow2::createDockWidgets()
 {
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
-    mDockWidgets.append( mTimeLine );
 
     mColorWheel = new ColorBox( tr("Color Wheel"), this );
     mColorWheel->setToolTip( tr( "color palette:<br>use <b>(C)</b><br>toggle at cursor" ) );
     mColorWheel->setObjectName( "ColorWheel" );
 
-    mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
+    mColorPalette = new ColorPaletteWidget( this );
     mColorPalette->setObjectName( "ColorPalette" );
-    mDockWidgets.append( mColorPalette );
 
-    mDisplayOptionWidget = new DisplayOptionWidget(this);
+    mDisplayOptionWidget = new DisplayOptionWidget( this );
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
 
-    mToolOptions = new ToolOptionWidget(this);
+    mToolOptions = new ToolOptionWidget( this );
     mToolOptions->setObjectName( "ToolOption" );
 
-    mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
+    mToolBox = new ToolBoxWidget( tr( "Tools", "Window title of tool box." ), this );
     mToolBox->setObjectName( "ToolBox" );
-    mDockWidgets.append( mToolBox );
+
+    mDockWidgets 
+        << mTimeLine
+        << mColorWheel
+        << mColorPalette
+        << mDisplayOptionWidget
+        << mToolOptions
+        << mToolBox;
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -227,7 +234,7 @@ void MainWindow2::createMenus()
     connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
     connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
-    connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
+    connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
     connect( ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV );
@@ -726,7 +733,7 @@ void MainWindow2::preferences()
     mPreferencesDialog->show();
 }
 
-void MainWindow2::dockAllPalettes()
+void MainWindow2::dockAllSubWidgets()
 {
     mToolBox->setFloating(false);
     mToolOptions->setFloating(false);

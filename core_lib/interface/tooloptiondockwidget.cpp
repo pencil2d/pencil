@@ -10,9 +10,23 @@
 #include "tooloptiondockwidget.h"
 #include "editor.h"
 
-ToolOptionWidget::ToolOptionWidget( QWidget *parent ) : QDockWidget( parent )
+ToolOptionWidget::ToolOptionWidget( QWidget* parent ) : BaseDockWidget( parent )
+{
+    setWindowTitle( tr( "Options", "Window title of tool options like pen width, feather etc.." ) );
+}
+
+ToolOptionWidget::~ToolOptionWidget()
+{
+}
+
+void ToolOptionWidget::initUI()
 {
     createUI();
+}
+
+void ToolOptionWidget::updateUI()
+{
+
 }
 
 void ToolOptionWidget::createUI()
@@ -59,7 +73,6 @@ void ToolOptionWidget::createUI()
 
     optionGroup->setLayout( pLayout );
 
-    setWindowTitle( tr( "Options" ) );
     setWidget( optionGroup );
 }
 
