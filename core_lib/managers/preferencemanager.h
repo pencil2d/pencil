@@ -3,6 +3,7 @@
 
 #include <bitset>
 #include "basemanager.h"
+#include "pencildef.h"
 
 
 enum class EFFECT
@@ -10,7 +11,18 @@ enum class EFFECT
     ANTIALIAS,
     BLURRYZOOM,
     GRID,
-    COUNT
+    COUNT,
+    SHADOW,
+    PREV_ONION,
+    NEXT_ONION,
+    AXIS,
+    CAMERABORDER,
+    INVISIBLE_LINES,
+    OUTLINES,
+    ONION_BLUE,
+    ONION_RED,
+    MIRROR_H,
+    MIRROR_V
 };
 
 class PreferenceManager : public BaseManager
@@ -24,6 +36,9 @@ public:
     virtual bool init() override;
     Status onObjectLoaded( Object* ) override;
 
+    void loadPrefs();
+    void set(EFFECT e, bool value );
+
     void turnOn( EFFECT e );
     void turnOff( EFFECT e );
     bool isOn( EFFECT e );
@@ -34,11 +49,11 @@ public:
     int  getOnionNextFramesCount();
 
 Q_SIGNALS:
-    void preferenceChanged( EFFECT e );
+    void prefsLoaded();
+    void effectChanged( EFFECT e, bool value );
 
 private:
-    void set( EFFECT e, bool b );
-    std::bitset< static_cast< size_t >( EFFECT::COUNT ) > mEffectSet;
+    QHash< int, bool > mEffectSet;
 };
 
 #endif // PREFERENCEMANAGER_H

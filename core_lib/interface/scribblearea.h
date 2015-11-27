@@ -74,12 +74,8 @@ public:
 
     static QBrush getBackgroundBrush( QString );
 
-    bool isEffectOn( DisplayEffect e ) { return mEffects[ e ]; }
-    void setEffect( DisplayEffect e, bool isOn );
+    void setEffect(EFFECT e, bool isOn );
 
-    void onPreferencedChanged( EFFECT e );
-
-    bool showThinLines() const { return mShowThinLines; }
     int showAllLayers() const { return mShowAllLayers; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
@@ -122,7 +118,6 @@ signals:
     void modification( int );
     void multiLayerOnionSkinChanged( bool );
     void refreshPreview();
-    void updateDisplayOption(DisplayEffect, bool);
 
 public slots:
     void clearImage();
@@ -138,7 +133,7 @@ public slots:
     void toggleOnionNext( bool );
     void toggleOnionBlue( bool );
     void toggleOnionRed( bool );
-    void toggleGridA( bool );
+    void toggleGrid( bool );
 
     void setCurveSmoothing( int );
     void setBackground( int );
@@ -223,9 +218,7 @@ private:
     QBrush mBackgroundBrush;
   
 
-private:
-    void initDisplayEffect( std::vector< uint32_t >& );
-    std::vector< uint32_t > mEffects;
+private: 
 
     bool mKeyboardInUse = false;
     bool mMouseInUse    = false;
@@ -244,6 +237,8 @@ private:
 
     VectorSelection vectorSelection;
     QTransform selectionTransformation;
+
+    PreferenceManager *mPrefs = nullptr;
 
     QPixmap mCanvas;
     CanvasRenderer mCanvasRenderer;

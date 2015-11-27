@@ -116,7 +116,7 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
             drawStroke();
         }
         else {
-            if ( !mScribbleArea->showThinLines() )
+            if ( !mEditor->preference()->isOn(EFFECT::INVISIBLE_LINES) )
             {
                 mScribbleArea->toggleThinLines();
             }

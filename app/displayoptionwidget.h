@@ -3,6 +3,9 @@
 
 #include <QDockWidget>
 #include "pencildef.h"
+#include "editor.h"
+#include "scribblearea.h"
+#include "preferencemanager.h"
 
 namespace Ui
 {
@@ -21,10 +24,14 @@ public:
 
 
 public slots:
-    void updateDisplayOption(DisplayEffect, bool);
+    void loadUI();
+    void updateUI();
+
 
 private:
     Ui::DisplayOption* ui = nullptr;
+
+    Editor* mEditor;
 };
 
 #endif // DISPLAYOPTIONDOCKWIDGET_H

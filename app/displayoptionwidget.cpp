@@ -5,8 +5,6 @@
 #include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
-#include "editor.h"
-#include "scribblearea.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent )
@@ -24,6 +22,9 @@ DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent 
 
 void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 {
+    mEditor = editor;
+    PreferenceManager* prefs = mEditor->preference();
+
 	ScribbleArea* pScriArea = editor->getScribbleArea();
 
 	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
@@ -35,46 +36,35 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect( ui->mirrorButton,    &QToolButton::clicked, editor, &Editor::toggleMirror);
 	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
     connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
-    connect(pScriArea,            &ScribbleArea::updateDisplayOption, this, &DisplayOptionWidget::updateDisplayOption);
 
-    ui->cameraBorderButton->setChecked(pScriArea->isEffectOn(EFFECT_CAMERABORDER));
+    connect(prefs,            &PreferenceManager::prefsLoaded, this, &DisplayOptionWidget::loadUI);
+    connect(prefs,            &PreferenceManager::effectChanged, this, &DisplayOptionWidget::updateUI);
+
+    updateUI();
+
 
     // FIXME
 	//connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
     //connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 }
 
-void DisplayOptionWidget::updateDisplayOption(DisplayEffect effect, bool optionState)
+void DisplayOptionWidget::loadUI()
 {
-    switch (effect) {
-    case DisplayEffect::EFFECT_THIN_LINES:
-        ui->thinLinesButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_OUTLINES:
-        ui->outLinesButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_PREV_ONION:
-        ui->onionPrevButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_NEXT_ONION:
-        ui->onionNextButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_ONION_BLUE:
-        ui->onionBlueButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_ONION_RED:
-        ui->onionRedButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_MIRROR_H:
-        ui->mirrorButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_MIRROR_V:
-        ui->mirrorVButton->setChecked(optionState);
-        break;
-    case DisplayEffect::EFFECT_CAMERABORDER:
-        ui->cameraBorderButton->setChecked(optionState);
-        break;
-    default:
-        break;
-    }
+    updateUI();
+}
+
+void DisplayOptionWidget::updateUI()
+{
+    PreferenceManager* prefs = mEditor->preference();
+
+    ui->thinLinesButton->setChecked(prefs->isOn(EFFECT::INVISIBLE_LINES));
+    ui->outLinesButton->setChecked(prefs->isOn(EFFECT::OUTLINES));
+    ui->onionPrevButton->setChecked(prefs->isOn(EFFECT::PREV_ONION));
+    ui->onionNextButton->setChecked(prefs->isOn(EFFECT::NEXT_ONION));
+    ui->onionBlueButton->setChecked(prefs->isOn(EFFECT::ONION_BLUE));
+    ui->onionRedButton->setChecked(prefs->isOn(EFFECT::ONION_RED));
+    ui->mirrorButton->setChecked(prefs->isOn(EFFECT::MIRROR_H));
+    ui->mirrorVButton->setChecked(prefs->isOn(EFFECT::MIRROR_V));
+    ui->cameraBorderButton->setChecked(prefs->isOn(EFFECT::CAMERABORDER));
+
 }
