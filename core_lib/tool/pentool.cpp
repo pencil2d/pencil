@@ -78,7 +78,7 @@ QCursor PenTool::cursor()
     {
         return QCursor( circleCursors() ); // two circles cursor
     }
-    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
+    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pen.png" ), 7, 0 );
     }

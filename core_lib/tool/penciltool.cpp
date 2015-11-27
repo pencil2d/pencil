@@ -93,7 +93,7 @@ QCursor PencilTool::cursor()
         return circleCursors(); // two circles cursor
     }
 
-    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
+    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pencil2.png" ), 0, 16 );
     }

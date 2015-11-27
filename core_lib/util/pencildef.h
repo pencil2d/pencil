@@ -142,12 +142,13 @@ enum BackgroundStyle
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
-#define SHORTCUTS_GROUP         "Shortcuts"
-#define SETTING_TOOL_CURSOR     "ToolCursors"
-#define SETTING_HIGH_RESOLUTION "HighResPosition"
-#define SETTING_WINDOW_GEOMETRY "WindowGeometry"
-#define SETTING_WINDOW_STATE    "WindowState"
-#define SETTING_DISPLAY_EFFECT  "RenderEffect"
+#define SHORTCUTS_GROUP             "Shortcuts"
+#define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
+#define SETTING_TOOL_CURSOR         "ToolCursors"
+#define SETTING_HIGH_RESOLUTION     "HighResPosition"
+#define SETTING_WINDOW_GEOMETRY     "WindowGeometry"
+#define SETTING_WINDOW_STATE        "WindowState"
+#define SETTING_DISPLAY_EFFECT      "RenderEffect"
 
 #define SETTING_ANTIALIAS       "Antialiasing"
 #define SETTING_BLURRYZOOM      "BlurryZoom"

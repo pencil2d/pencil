@@ -40,6 +40,8 @@ void PreferenceManager::loadPrefs()
     set( EFFECT::ONION_RED,         settings.value( SETTING_ONION_RED,        false ).toBool() );
     set( EFFECT::MIRROR_H,          false ); // Always off by default
     set( EFFECT::MIRROR_V,          false ); // Always off by default
+    set( EFFECT::TOOL_CURSOR,         settings.value( SETTING_TOOL_CURSOR,    true ).toBool() );
+
 
     set( EFFECT::AXIS, false );
 //#define DRAW_AXIS
@@ -119,6 +121,9 @@ void PreferenceManager::set( EFFECT effect, bool value )
         break;
     case EFFECT::MIRROR_V:
         settings.setValue ( SETTING_MIRROR_V, value );
+        break;
+    case EFFECT::TOOL_CURSOR:
+        settings.setValue ( SETTING_TOOL_CURSOR, value );
         break;
     default:
         break;

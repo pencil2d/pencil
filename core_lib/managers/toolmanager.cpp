@@ -105,7 +105,6 @@ void ToolManager::resetAllTools()
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
 
-    pencilSettings()->setValue( SETTING_TOOL_CURSOR, true );
     // todo: add all the default settings
 
     qDebug( "tools restored to default settings" );

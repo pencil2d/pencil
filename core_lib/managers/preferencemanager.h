@@ -22,7 +22,8 @@ enum class EFFECT
     ONION_BLUE,
     ONION_RED,
     MIRROR_H,
-    MIRROR_V
+    MIRROR_V,
+    TOOL_CURSOR
 };
 
 class PreferenceManager : public BaseManager

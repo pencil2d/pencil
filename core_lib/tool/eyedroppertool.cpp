@@ -28,7 +28,7 @@ void EyedropperTool::loadSettings()
 
 QCursor EyedropperTool::cursor()
 {
-    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
+    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
     {
         return QCursor(QPixmap(":icons/eyedropper.png"), 0, 15);
     } 
