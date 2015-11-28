@@ -194,7 +194,7 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
         return;
     }
 
-    vectorImage->paintImage( painter, true, true, true );
+    vectorImage->paintImage( painter, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias );
 }
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )

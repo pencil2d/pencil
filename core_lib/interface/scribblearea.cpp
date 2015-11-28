@@ -43,12 +43,22 @@ ScribbleArea::ScribbleArea( QWidget* parent ) : QWidget( parent ),
 mLog( "ScribbleArea" )
 {
     setObjectName( "ScribbleArea" );
-    
+
     // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
     // and don't change when the widget is resized.
     setAttribute( Qt::WA_StaticContents );
-    
+
     mStrokeManager = new StrokeManager();
+}
+
+ScribbleArea::~ScribbleArea()
+{
+
+}
+
+bool ScribbleArea::init()
+{
+    mPrefs = mEditor->preference();
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -56,13 +66,11 @@ mLog( "ScribbleArea" )
     if ( curveSmoothingLevel == 0 ) { curveSmoothingLevel = 20; settings.setValue( "curveSmoothing", curveSmoothingLevel ); } // default
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
 
-    initDisplayEffect( mEffects );
-
     mMakeInvisible = false;
     somethingSelected = false;
 
     mMultiLayerOnionSkin = true;
-    mShowThinLines = false;
+
     mShowAllLayers = 1;
 
     QString background = settings.value( "background" ).toString();
@@ -97,24 +105,9 @@ mLog( "ScribbleArea" )
     //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
     onionBlue = true;
-    onionRed = true;
+    onionRed = false;
     toggledOnionColor();
-}
 
-ScribbleArea::~ScribbleArea()
-{
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QList< QVariant > savedList;
-    for ( uint32_t e : mEffects )
-    {
-        savedList.append( QVariant( e ) );
-    }
-    settings.setValue( SETTING_DISPLAY_EFFECT, savedList );
-}
-
-bool ScribbleArea::init()
-{
     return true;
 }
 
@@ -185,31 +178,9 @@ QBrush ScribbleArea::getBackgroundBrush( QString brushName )
     return brush;
 }
 
-void ScribbleArea::onPreferencedChanged( EFFECT e )
-{
-    switch ( e )
-    {
-        case EFFECT::ANTIALIAS:
-        {
-            mEffects[ EFFECT_ANTIALIAS ] = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
-            updateAllFrames();
-            break;
-        }
-        case EFFECT::BLURRYZOOM:
-        {
-            mEffects[ EFFECT_BLURRYZOOM ] = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
-            updateAllFrames();
-            break;
-        }
-        case EFFECT::GRID:
-        {
-            mEffects[ EFFECT_GRID_A ] = mEditor->preference()->isOn( EFFECT::GRID );
-            updateAllFrames();
-            break;
-        }
-        default:
-            break;
-    }
+void ScribbleArea::setEffect(EFFECT e, bool isOn) {
+    mPrefs->set(e, isOn);
+    updateAllFrames();
 }
 
 /************************************************************************************/
@@ -741,12 +712,12 @@ void ScribbleArea::clearBitmapBuffer()
 
 void ScribbleArea::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm )
 {
-    mBufferImg->drawLine( P1, P2, pen, cm, isEffectOn( EFFECT_ANTIALIAS ) );
+    mBufferImg->drawLine( P1, P2, pen, cm, mPrefs->isOn( EFFECT::ANTIALIAS ) );
 }
 
 void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm )
 {
-    mBufferImg->drawPath( path, pen, brush, cm, mEditor->preference()->isOn( EFFECT::ANTIALIAS ) );
+    mBufferImg->drawPath( path, pen, brush, cm, mPrefs->isOn( EFFECT::ANTIALIAS ) );
 }
 
 void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
@@ -895,7 +866,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                                               pen2,
                                               colour,
                                               QPainter::CompositionMode_SourceOver,
-                                              isEffectOn( EFFECT_ANTIALIAS ) );
+                                              mPrefs->isOn( EFFECT::ANTIALIAS ) );
                     }
                     break;
                 }
@@ -958,7 +929,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     }
 
     // clips to the frame of the camera
-    if ( isEffectOn( EFFECT_CAMERABORDER ) )
+    if ( mPrefs->isOn( EFFECT::CAMERABORDER ) )
     {
         QRect rect = ( ( LayerCamera * )mEditor->object()->getLayer(mEditor->layers()->getLastCameraLayer()) )->getViewRect();
         rect.translate( width() / 2, height() / 2 );
@@ -984,7 +955,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     // shadow
     bool isPlaying = editor()->playback()->isPlaying();
-    if ( isEffectOn( EFFECT_SHADOW ) && !isPlaying && ( !mMouseInUse || currentTool()->type() == HAND ) )
+    if ( mPrefs->isOn( EFFECT::SHADOW ) && !isPlaying && ( !mMouseInUse || currentTool()->type() == HAND ) )
     {
         drawShadow( painter );
     }
@@ -997,19 +968,21 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     Object* object = mEditor->object();
 
     RenderOptions options;
-    options.bPrevOnionSkin = isEffectOn( EFFECT_PREV_ONION );
-    options.bNextOnionSkin = isEffectOn( EFFECT_NEXT_ONION );
+    options.bPrevOnionSkin = mPrefs->isOn( EFFECT::PREV_ONION );
+    options.bNextOnionSkin = mPrefs->isOn( EFFECT::NEXT_ONION );
     options.nPrevOnionSkinCount = mEditor->getOnionPrevFramesNum();
     options.nNextOnionSkinCount = mEditor->getOnionNextFramesNum();
     options.fOnionSkinMaxOpacity = mEditor->getOnionMaxOpacity();
     options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
-    options.bAntiAlias = mEditor->preference()->isOn( EFFECT::ANTIALIAS );
-    options.bBlurryZoom = mEditor->preference()->isOn( EFFECT::BLURRYZOOM );
-    options.bGrid = isEffectOn( EFFECT_GRID_A );
-    options.bAxis = isEffectOn( EFFECT_AXIS );
+    options.bAntiAlias = mPrefs->isOn( EFFECT::ANTIALIAS );
+    options.bBlurryZoom = mPrefs->isOn( EFFECT::BLURRYZOOM );
+    options.bGrid = mPrefs->isOn( EFFECT::GRID );
+    options.bAxis = mPrefs->isOn( EFFECT::AXIS );
+    options.bThinLines = mPrefs->isOn( EFFECT::INVISIBLE_LINES );
+    options.bOutlines = mPrefs->isOn( EFFECT::OUTLINES );
 
     mCanvasRenderer.setOptions( options );
-    
+
     //qDebug() << "Antialias=" << options.bAntiAlias;
 
     mCanvasRenderer.setCanvas( &mCanvas );
@@ -1041,7 +1014,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     {
         painter.setOpacity( 1.0 );
         painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-        if ( onionBlue && onionRed && isEffectOn( EFFECT_NEXT_ONION ) )
+        if ( onionBlue && onionRed && mPrefs->isOn( EFFECT_NEXT_ONION ) )
         {
             painter.fillRect( viewRect, Qt::red );
         }
@@ -1130,7 +1103,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
                 }
                 QTransform view = mEditor->view()->getView();
                 QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                vectorImage->outputImage( pImage.data(), view, mIsSimplified, mShowThinLines, isEffectOn( EFFECT_ANTIALIAS ) );
+                vectorImage->outputImage( pImage.data(), view, mPrefs->isOn( EFFECT::OUTLINES ), mPrefs->isOn( EFFECT::INVISIBLE_LINES ), mPrefs->isOn( EFFECT::ANTIALIAS ) );
 
                 painter.setWorldMatrixEnabled( false );
                 painter.setOpacity( opacity );
@@ -1157,7 +1130,7 @@ void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillCo
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
     BitmapImage* tempBitmapImage = new BitmapImage;
     tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour),
-                               QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
+                               QPainter::CompositionMode_Source, mPrefs->isOn( EFFECT::ANTIALIAS ) );
     mBufferImg->paste( tempBitmapImage );
     delete tempBitmapImage;
 }
@@ -1171,9 +1144,9 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
 
     BitmapImage* tempBitmapImage = new BitmapImage;
     tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                               QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
+                               QPainter::CompositionMode_Source, mPrefs->isOn( EFFECT::ANTIALIAS ) );
 
-    mBufferImg->darkenAlpha( tempBitmapImage );
+    mBufferImg->paste( tempBitmapImage );
     delete tempBitmapImage;
 }
 
@@ -1188,7 +1161,7 @@ void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPoint
     BitmapImage bmiSrcClip = bmiSource_->copy( srcRect.toRect() );
     BitmapImage bmiTmpClip = bmiSrcClip; // todo: find a shorter way
 
-    bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
+    bmiTmpClip.drawRect( srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn( EFFECT::ANTIALIAS ) );
     bmiSrcClip.bounds().moveTo( trgRect.topLeft().toPoint() );
     bmiTmpClip.paste( &bmiSrcClip, QPainter::CompositionMode_SourceAtop );
     mBufferImg->paste( &bmiTmpClip );
@@ -1204,7 +1177,7 @@ void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPo
 
     // Create gradient brush
     BitmapImage* bmiTmpClip = new BitmapImage;
-    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, isEffectOn( EFFECT_ANTIALIAS ) );
+    bmiTmpClip->drawRect( trgRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn( EFFECT::ANTIALIAS ) );
 
     // Slide texture/pixels of the source image
     qreal factor, factorGrad;
@@ -1279,7 +1252,7 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
             }
         }
         mBufferImg->clear();
-        mBufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, isEffectOn( EFFECT_ANTIALIAS ) );
+        mBufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, mPrefs->isOn( EFFECT::ANTIALIAS ) );
 
         update( updateRect.toRect() );
     }
@@ -1535,14 +1508,12 @@ void ScribbleArea::deselectAll()
 
 void ScribbleArea::toggleOnionNext( bool checked )
 {
-    setEffect( EFFECT_NEXT_ONION, checked );
-    updateAllFrames();
+    setEffect( EFFECT::NEXT_ONION, checked );
 }
 
 void ScribbleArea::toggleOnionPrev( bool checked )
 {
-    setEffect( EFFECT_PREV_ONION, checked );
-    updateAllFrames();
+    setEffect( EFFECT::PREV_ONION, checked );
 }
 
 void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
@@ -1554,8 +1525,7 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
 
 void ScribbleArea::toggleCameraBorder( bool checked )
 {
-    setEffect( EFFECT_CAMERABORDER, checked );
-    updateAllFrames();
+    setEffect( EFFECT::CAMERABORDER, checked );
 }
 
 void ScribbleArea::toggledOnionColor()
@@ -1580,6 +1550,7 @@ void ScribbleArea::toggledOnionColor()
 void ScribbleArea::toggleOnionBlue( bool checked )
 {
     onionBlue = checked;
+    setEffect( EFFECT::ONION_BLUE, checked );
     toggledOnionColor();
     updateAllFrames();
 }
@@ -1587,13 +1558,35 @@ void ScribbleArea::toggleOnionBlue( bool checked )
 void ScribbleArea::toggleOnionRed( bool checked )
 {
     onionRed = checked;
+    setEffect( EFFECT::ONION_RED, checked );
     toggledOnionColor();
     updateAllFrames();
 }
 
-void ScribbleArea::toggleGridA( bool checked )
+void ScribbleArea::toggleGrid( bool checked )
 {
-    setEffect( EFFECT_GRID_A, checked );
+    setEffect( EFFECT::GRID, checked );
+}
+
+void ScribbleArea::toggleThinLines()
+{
+    bool previousValue = mPrefs->isOn(EFFECT::INVISIBLE_LINES);
+    setEffect( EFFECT::INVISIBLE_LINES, !previousValue );
+}
+
+void ScribbleArea::toggleOutlines()
+{
+    mIsSimplified = !mIsSimplified;
+    setEffect( EFFECT::OUTLINES, mIsSimplified );
+}
+
+void ScribbleArea::toggleShowAllLayers()
+{
+    mShowAllLayers++;
+    if ( mShowAllLayers == 3 )
+    {
+        mShowAllLayers = 0;
+    }
     updateAllFrames();
 }
 
@@ -1686,66 +1679,10 @@ void ScribbleArea::clearImage()
     setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
 }
 
-void ScribbleArea::toggleThinLines()
-{
-    mShowThinLines = !mShowThinLines;
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleOutlines()
-{
-    mIsSimplified = !mIsSimplified;
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleShowAllLayers()
-{
-    mShowAllLayers++;
-    if ( mShowAllLayers == 3 )
-    {
-        mShowAllLayers = 0;
-    }
-    updateAllFrames();
-}
-
 void ScribbleArea::setPrevTool()
 {
     editor()->tools()->setCurrentTool( mPrevTemporalToolType );
     instantTool = false;
-}
-
-void ScribbleArea::initDisplayEffect( std::vector< uint32_t >& effects )
-{
-    effects.resize( EFFECT_COUNT );
-    std::fill( effects.begin(), effects.end(), 0 );
-
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    if ( settings.contains( SETTING_DISPLAY_EFFECT ) )
-    {
-        QList< QVariant > list = settings.value( SETTING_DISPLAY_EFFECT ).toList();
-        for ( int i = 0; i < list.size(); ++i )
-        {
-            mEffects[ i ] = static_cast< DisplayEffect >( list[ i ].toUInt() );
-        }
-    }
-    else
-    {
-        // use default value
-        effects[ EFFECT_ANTIALIAS ] = 1;
-        effects[ EFFECT_SHADOW ] = 0;
-        effects[ EFFECT_PREV_ONION ] = 1;
-        effects[ EFFECT_NEXT_ONION ] = 0;
-        effects[ EFFECT_GRID_A ] = 0;
-        effects[ EFFECT_CAMERABORDER ] = 0;
-    }
-
-    effects[ EFFECT_AXIS ] = 0;
-
-//#define DRAW_AXIS
-#ifdef DRAW_AXIS
-    effects[ EFFECT_AXIS ] = 1;
-#endif
 }
 
 /* Render Canvas */

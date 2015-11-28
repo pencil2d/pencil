@@ -89,7 +89,7 @@ QCursor PencilTool::cursor()
         return circleCursors(); // two circles cursor
     }
 
-    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
+    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pencil2.png" ), 0, 16 );
     }
@@ -102,10 +102,6 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
     {
         mEditor->backup( typeName() );
 
-        if ( !mScribbleArea->showThinLines() )
-        {
-            mScribbleArea->toggleThinLines();
-        }
         mScribbleArea->setAllDirty();
         startStroke(); //start and appends first stroke
 
@@ -114,6 +110,12 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
         if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
             drawStroke();
+        }
+        else {
+            if ( !mEditor->preference()->isOn(EFFECT::INVISIBLE_LINES) )
+            {
+                mScribbleArea->toggleThinLines();
+            }
         }
     }
 }
@@ -210,7 +212,6 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        mCurrentPressure = 0.5f;
         qreal brushWidth = properties.width * mCurrentPressure;
 
         //currentPressuredColor = Qt::red;
@@ -230,8 +231,8 @@ void PencilTool::drawStroke()
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
                           p[ 3 ] );
-            mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
-            //mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
+            //mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
 
             if ( false ) // debug
             {

@@ -23,8 +23,16 @@ public:
 
     void makeConnectionToEditor(Editor* editor);
 
+
+public slots:
+    void loadUI();
+    void updateUI();
+
+
 private:
     Ui::DisplayOption* ui = nullptr;
+
+    Editor* mEditor;
 };
 
 #endif // DISPLAYOPTIONDOCKWIDGET_H

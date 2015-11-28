@@ -18,6 +18,23 @@ GNU General Public License for more details.
 #define _PREFERENCES_H_
 
 #include <QDialog>
+#include <QListWidget>
+#include <QStackedWidget>
+#include <QButtonGroup>
+#include <QGroupBox>
+#include <QCheckBox>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QRadioButton>
+#include <QLineEdit>
+#include <QSpinBox>
+#include <QLabel>
+#include <QPushButton>
+
+#include "pencildef.h"
+#include "scribblearea.h"
+#include "shortcutspage.h"
+#include "preferencemanager.h"
 
 class QListWidget;
 class QListWidgetItem;
@@ -83,11 +100,20 @@ public:
     GeneralPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
 
+public slots:
+    void updateValues();
+
 private:
     void antiAliasCheckboxStateChanged( bool b );
     void blurryZoomCheckboxStateChanged( bool b );
+    void toolCursorsCheckboxStateChanged( bool b );
 
     PreferenceManager* mManager = nullptr;
+
+    QCheckBox* mShadowsBox;
+    QCheckBox* mToolCursorsBox;
+    QCheckBox* mAntialiasingBox;
+    QCheckBox* mBlurryZoomBox;
 };
 
 class TimelinePage : public QWidget

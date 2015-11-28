@@ -16,23 +16,6 @@ GNU General Public License for more details.
 */
 #include "preferencesdialog.h"
 
-#include <QListWidget>
-#include <QStackedWidget>
-#include <QButtonGroup>
-#include <QGroupBox>
-#include <QCheckBox>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QRadioButton>
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QLabel>
-#include <QPushButton>
-
-#include "scribblearea.h"
-#include "shortcutspage.h"
-#include "preferencemanager.h"
-
 
 PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
 {
@@ -57,6 +40,8 @@ void PreferencesDialog::init( PreferenceManager* m )
 
     GeneralPage* general = new GeneralPage( this );
     general->setManager( mPrefManager );
+    general->updateValues();
+    //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
     
     FilesPage* file = new FilesPage( this );
     file->setManager( mPrefManager );
@@ -228,21 +213,11 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     if ( settings.value("background").toString() == "dots" ) dotsBackgroundButton->setChecked(true);
     if ( settings.value("background").toString() == "weave" ) weaveBackgroundButton->setChecked(true);
 
-    QCheckBox* shadowsBox = new QCheckBox(tr("Shadows"));
-    shadowsBox->setChecked(false); // default
-    if (settings.value("shadows").toString()=="true") shadowsBox->setChecked(true);
+    mShadowsBox = new QCheckBox(tr("Shadows"));
+    mToolCursorsBox = new QCheckBox(tr("Tool Cursors"));
+    mAntialiasingBox = new QCheckBox(tr("Antialiasing"));
+    mBlurryZoomBox = new QCheckBox(tr("Blurry Zoom"));
 
-    QCheckBox* toolCursorsBox = new QCheckBox(tr("Tool Cursors"));
-    toolCursorsBox->setChecked(true); // default
-    if (settings.value("toolCursors").toString()=="false") toolCursorsBox->setChecked(false);
-
-    QCheckBox* antialiasingBox = new QCheckBox(tr("Antialiasing"));
-    antialiasingBox->setChecked(true); // default
-    if (settings.value("antialiasing").toString()=="false") antialiasingBox->setChecked(false);
-
-    QCheckBox* blurryZoomBox = new QCheckBox(tr("Blurry Zoom"));
-    antialiasingBox->setChecked(false); // default
-    if (settings.value("blurryzoom").toString()=="true") antialiasingBox->setChecked(true);
 
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
@@ -251,13 +226,13 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 
     QVBoxLayout* appearanceLayout = new QVBoxLayout();
     appearanceBox->setLayout(appearanceLayout);
-    appearanceLayout->addWidget(shadowsBox);
-    appearanceLayout->addWidget(toolCursorsBox);
+    appearanceLayout->addWidget(mShadowsBox);
+    appearanceLayout->addWidget(mToolCursorsBox);
 
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
-    displayLayout->addWidget(antialiasingBox, 0, 0);
-    displayLayout->addWidget(blurryZoomBox, 1, 0);
+    displayLayout->addWidget(mAntialiasingBox, 0, 0);
+    displayLayout->addWidget(mBlurryZoomBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -293,14 +268,22 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
     connect( windowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
     connect( backgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
-    connect( shadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
-    connect( toolCursorsBox,     &QCheckBox::stateChanged, preference, &PreferencesDialog::toolCursorsChange );
-    connect( antialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
-    connect( blurryZoomBox,    &QCheckBox::stateChanged, this, &GeneralPage::blurryZoomCheckboxStateChanged );
+    connect( mShadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
+    connect( mToolCursorsBox,     &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged );
+    connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
+    connect( mBlurryZoomBox,    &QCheckBox::stateChanged, this, &GeneralPage::blurryZoomCheckboxStateChanged );
     connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &PreferencesDialog::curveSmoothingChange );
     connect( highResBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::highResPositionChange );
 
     setLayout(lay);
+}
+
+void GeneralPage::updateValues()
+{
+    mShadowsBox->setChecked(mManager->isOn(EFFECT::SHADOW));
+    mToolCursorsBox->setChecked(mManager->isOn(EFFECT::TOOL_CURSOR));
+    mAntialiasingBox->setChecked(mManager->isOn(EFFECT::ANTIALIAS));
+    mBlurryZoomBox->setChecked(mManager->isOn(EFFECT::BLURRYZOOM));
 }
 
 void GeneralPage::antiAliasCheckboxStateChanged( bool b )
@@ -324,6 +307,18 @@ void GeneralPage::blurryZoomCheckboxStateChanged( bool b )
     else
     {
         mManager->turnOff( EFFECT::BLURRYZOOM );
+    }
+}
+
+void GeneralPage::toolCursorsCheckboxStateChanged(bool b)
+{
+    if ( b )
+    {
+        mManager->turnOn( EFFECT::TOOL_CURSOR );
+    }
+    else
+    {
+        mManager->turnOff( EFFECT::TOOL_CURSOR );
     }
 }
 
