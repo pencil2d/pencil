@@ -26,7 +26,6 @@ public:
 
 public slots:
     void loadUI();
-    void updateUI();
 
 
 private:

@@ -5,6 +5,8 @@
 #include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
+#include "preferencemanager.h"
+#include "scribblearea.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget( QWidget *parent ) : BaseDockWidget( parent )
@@ -24,10 +26,6 @@ DisplayOptionWidget::~DisplayOptionWidget()
 
 void DisplayOptionWidget::initUI()
 {    
-}
-
-void DisplayOptionWidget::updateUI()
-{
 }
 
 void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
