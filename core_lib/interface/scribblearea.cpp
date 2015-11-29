@@ -742,7 +742,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 {
     //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
 
-    //if ( !mMouseInUse )
+    if ( !mMouseInUse )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -753,6 +753,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
             QPixmapCache::insert( strCachedFrameKey, mCanvas );
+            //qDebug() << "Repaint canvas!";
         }
     }
 
