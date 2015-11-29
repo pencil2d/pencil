@@ -107,14 +107,14 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     makeConnections();
 
     auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
-    connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartClick );
-    connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
+    connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartClick );
+    connect( mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
 
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled );
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled );
 
     connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
-    connect( mFpsBox, SIGNAL( valueChanged( int ) ), this, SIGNAL( fpsClick( int ) ) );
+    connect( mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick );
 
     mPlaybackRangeCheckBox->setChecked( false );
     mLoopStartSpinBox->setEnabled( false );

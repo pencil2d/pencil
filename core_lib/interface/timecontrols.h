@@ -59,15 +59,15 @@ private:
     void playbackRangeClicked( bool bChecked );
 
 private:
-    QPushButton* mPlayButton;
-    QPushButton* mJumpToEndButton;
-    QPushButton* mJumpToStartButton;
-    QPushButton* mLoopButton;
-    QPushButton* mSoundButton;
-    QSpinBox*    mFpsBox;
-    QCheckBox*   mPlaybackRangeCheckBox;
-    QSpinBox*    mLoopStartSpinBox;
-    QSpinBox*    mLoopEndSpinBox;
+    QPushButton* mPlayButton = nullptr;
+    QPushButton* mJumpToEndButton = nullptr;
+    QPushButton* mJumpToStartButton = nullptr;
+    QPushButton* mLoopButton = nullptr;
+    QPushButton* mSoundButton = nullptr;
+    QSpinBox*    mFpsBox = nullptr;
+    QCheckBox*   mPlaybackRangeCheckBox = nullptr;
+    QSpinBox*    mLoopStartSpinBox = nullptr;
+    QSpinBox*    mLoopEndSpinBox = nullptr;
 
     Editor* mEditor = nullptr;
 };
