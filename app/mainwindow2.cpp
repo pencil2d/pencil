@@ -261,7 +261,7 @@ void MainWindow2::createMenus()
 
     /// --- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
-    connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
+    connect( ui->actionPlay, &QAction::triggered, mCommands, &CommandCenter::PlayStop );
 
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
