@@ -60,8 +60,9 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bBlurryZoom );
     painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
 
-    painter.setClipRect( rect );
-    painter.setClipping( true );
+    // Don't set clip rect, paint whole canvas.
+    //painter.setClipRect( rect );
+    //painter.setClipping( true );
 
     painter.setWorldMatrixEnabled( true );
 
@@ -194,7 +195,7 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
         return;
     }
 
-    vectorImage->paintImage( painter, true, true, true );
+    vectorImage->paintImage( painter, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias );
 }
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )

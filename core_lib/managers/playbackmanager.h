@@ -15,7 +15,7 @@ public:
     bool init() override;
     Status onObjectLoaded( Object* ) override;
 
-    bool isPlaying() { return mIsPlaying; }
+    bool isPlaying();
     bool isLooping() { return mIsLooping; }
 
     void play();
@@ -42,7 +42,6 @@ private:
     void playSoundIfAny( int frame );
     
     bool mIsLooping = false;
-    bool mIsPlaying = false;
     bool mIsPlaySound = false;
     int mStartFrame = 1;
     int mEndFrame = 60;

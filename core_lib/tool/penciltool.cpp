@@ -14,8 +14,7 @@
 
 #include "penciltool.h"
 
-PencilTool::PencilTool( QObject *parent ) :
-StrokeTool( parent )
+PencilTool::PencilTool( QObject* parent ) : StrokeTool( parent )
 {
 }
 
@@ -25,22 +24,19 @@ void PencilTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
     properties.feather = -1; //Feather isn't implemented in the Pencil tool;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
 
-    // First run
-    //
     if ( properties.width <= 0 )
     {
         // setting the default value to 4
         // seems to give great results with pressure on
-        //
-        setWidth(4);
-        setPressure(1);
+        setWidth( 4 );
+        setPressure( 1 );
     }
 
 }
@@ -51,7 +47,7 @@ void PencilTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("pencilWidth", width);
     settings.sync();
 }
@@ -93,7 +89,7 @@ QCursor PencilTool::cursor()
         return circleCursors(); // two circles cursor
     }
 
-    if ( pencilSettings()->value( SETTING_TOOL_CURSOR ).toBool() )
+    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pencil2.png" ), 0, 16 );
     }
@@ -106,10 +102,6 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
     {
         mEditor->backup( typeName() );
 
-        if ( !mScribbleArea->showThinLines() )
-        {
-            mScribbleArea->toggleThinLines();
-        }
         mScribbleArea->setAllDirty();
         startStroke(); //start and appends first stroke
 
@@ -118,6 +110,12 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
         if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
             drawStroke();
+        }
+        else {
+            if ( !mEditor->preference()->isOn(EFFECT::INVISIBLE_LINES) )
+            {
+                mScribbleArea->toggleThinLines();
+            }
         }
     }
 }
@@ -214,7 +212,6 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        mCurrentPressure = 0.5f;
         qreal brushWidth = properties.width * mCurrentPressure;
 
         //currentPressuredColor = Qt::red;
@@ -234,8 +231,8 @@ void PencilTool::drawStroke()
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
                           p[ 3 ] );
-            mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
-            //mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
+            //mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
+            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
 
             if ( false ) // debug
             {

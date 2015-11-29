@@ -15,33 +15,32 @@
 #include "pencilsettings.h"
 
 
-ToolManager::ToolManager(QObject* parent ) 
-    : BaseManager( parent )
-    , m_pCurrentTool( nullptr )
-    , m_eTabletBackupTool( INVALID_TOOL )
+ToolManager::ToolManager(QObject* parent ) : BaseManager( parent )
 {
 }
 
 bool ToolManager::init()
 {
-    isSwitchedToEraser = false;
+    mIsSwitchedToEraser = false;
 
-    m_toolSetHash.insert( PEN, new PenTool );
-    m_toolSetHash.insert( PENCIL, new PencilTool );
-    m_toolSetHash.insert( BRUSH, new BrushTool );
-    m_toolSetHash.insert( ERASER, new EraserTool );
-    m_toolSetHash.insert( BUCKET, new BucketTool );
-    m_toolSetHash.insert( EYEDROPPER, new EyedropperTool );
-    m_toolSetHash.insert( HAND, new HandTool );
-    m_toolSetHash.insert( MOVE, new MoveTool );
-    m_toolSetHash.insert( POLYLINE, new PolylineTool );
-    m_toolSetHash.insert( SELECT, new SelectTool );
-    m_toolSetHash.insert( SMUDGE, new SmudgeTool );
+    mToolSetHash.insert( PEN, new PenTool );
+    mToolSetHash.insert( PENCIL, new PencilTool );
+    mToolSetHash.insert( BRUSH, new BrushTool );
+    mToolSetHash.insert( ERASER, new EraserTool );
+    mToolSetHash.insert( BUCKET, new BucketTool );
+    mToolSetHash.insert( EYEDROPPER, new EyedropperTool );
+    mToolSetHash.insert( HAND, new HandTool );
+    mToolSetHash.insert( MOVE, new MoveTool );
+    mToolSetHash.insert( POLYLINE, new PolylineTool );
+    mToolSetHash.insert( SELECT, new SelectTool );
+    mToolSetHash.insert( SMUDGE, new SmudgeTool );
 
-    foreach( BaseTool* pTool, m_toolSetHash.values() )
+    foreach( BaseTool* pTool, mToolSetHash.values() )
     {
         pTool->initialize( editor() );
     }
+
+    setDefaultTool();
 
     return true;
 }
@@ -53,7 +52,7 @@ Status ToolManager::onObjectLoaded( Object* )
 
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
-    return m_toolSetHash[ eToolType ];
+    return mToolSetHash[ eToolType ];
 }
 
 void ToolManager::setDefaultTool()
@@ -63,27 +62,18 @@ void ToolManager::setDefaultTool()
     ToolType defaultToolType = PENCIL;
 
     setCurrentTool(defaultToolType);
-    m_eTabletBackupTool = defaultToolType;
+    meTabletBackupTool = defaultToolType;
 }
 
 void ToolManager::setCurrentTool( ToolType eToolType )
 {
-    m_pCurrentTool = getTool( eToolType );
-
-    setWidth( m_pCurrentTool->properties.width );
-    setFeather( m_pCurrentTool->properties.feather );
-    setPressure( m_pCurrentTool->properties.pressure );
-    setPreserveAlpha( m_pCurrentTool->properties.preserveAlpha );
-    setInvisibility( m_pCurrentTool->properties.invisibility ); // by definition the pencil is invisible in vector mode
-
-
-    emit toolChanged( eToolType );
-    emit displayToolOptions(m_pCurrentTool->m_enabledProperties);
+    mCurrentTool = getTool( eToolType );
+    Q_EMIT toolChanged( eToolType );
 }
 
 void ToolManager::cleanupAllToolsData()
 {
-    foreach ( BaseTool* pTool, m_toolSetHash.values() )
+    foreach ( BaseTool* pTool, mToolSetHash.values() )
     {
         pTool->clear();
     }
@@ -105,7 +95,6 @@ void ToolManager::resetAllTools()
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
 
-    pencilSettings()->setValue( SETTING_TOOL_CURSOR, true );
     // todo: add all the default settings
 
     qDebug( "tools restored to default settings" );
@@ -114,58 +103,55 @@ void ToolManager::resetAllTools()
 void ToolManager::setWidth( float newWidth )
 {
     currentTool()->setWidth(newWidth);
-    emit penWidthValueChange( newWidth );
-    emit toolPropertyChanged();
+    Q_EMIT penWidthValueChanged( newWidth );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), WIDTH );
 }
 
 void ToolManager::setFeather( float newFeather )
 {
     currentTool()->setFeather(newFeather);
-    emit penFeatherValueChange( newFeather );
-    emit toolPropertyChanged();
+    Q_EMIT penFeatherValueChanged( newFeather );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), FEATHER );
 }
 
-void ToolManager::setInvisibility( int isInvisible  )
+void ToolManager::setInvisibility( bool isInvisible )
 {
     currentTool()->setInvisibility(isInvisible);
-    emit penInvisiblityValueChange( isInvisible );
-    emit toolPropertyChanged();
+    Q_EMIT toolPropertyChanged( currentTool()->type(), INVISIBILITY );
 }
 
-void ToolManager::setPreserveAlpha( int isPreserveAlpha )
+void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
-    emit penPreserveAlphaValueChange( isPreserveAlpha );
-    emit toolPropertyChanged();
+    Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
 }
 
-void ToolManager::setPressure( int isPressureOn )
+void ToolManager::setPressure( bool isPressureOn )
 {
-    currentTool()->setPressure(isPressureOn);
-    emit penPressureValueChange( isPressureOn );
-    emit toolPropertyChanged();
+    currentTool()->setPressure( isPressureOn );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), PRESSURE );
 }
 
 void ToolManager::tabletSwitchToEraser()
 {
-    if (!isSwitchedToEraser)
+    if (!mIsSwitchedToEraser)
     {
-        isSwitchedToEraser = true;
+        mIsSwitchedToEraser = true;
 
-        m_eTabletBackupTool = m_pCurrentTool->type();
+        meTabletBackupTool = mCurrentTool->type();
         setCurrentTool( ERASER );
     }
 }
 
 void ToolManager::tabletRestorePrevTool()
 {
-    if ( isSwitchedToEraser )
+    if ( mIsSwitchedToEraser )
     {
-        isSwitchedToEraser = false;
-        if ( m_eTabletBackupTool == INVALID_TOOL )
+        mIsSwitchedToEraser = false;
+        if ( meTabletBackupTool == INVALID_TOOL )
         {
-            m_eTabletBackupTool = PENCIL;
+            meTabletBackupTool = PENCIL;
         }
-        setCurrentTool( m_eTabletBackupTool );
+        setCurrentTool( meTabletBackupTool );
     }
 }

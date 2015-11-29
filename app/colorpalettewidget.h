@@ -37,7 +37,8 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    ColorPaletteWidget( QString strTitle, QWidget* pParent );
+    explicit ColorPaletteWidget( QWidget* pParent );
+
     void initUI() override;
     void updateUI() override;
 
@@ -61,7 +62,7 @@ private slots:
     void clickRemoveColorButton();
 
 private:
-    Ui::ColorPalette* ui;
+    Ui::ColorPalette* ui = nullptr;
 };
 
 #endif

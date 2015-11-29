@@ -29,6 +29,11 @@ QSize ExportImageSeqDialog::getExportSize()
     return QSize( ui->imgWidthSpinBox->value(), ui->imgHeightSpinBox->value() );
 }
 
+bool ExportImageSeqDialog::getTransparency()
+{
+    return ui->cbTransparency->checkState() == Qt::Checked;
+}
+
 QString ExportImageSeqDialog::getExportFormat()
 {
     return ui->formatComboBox->currentText();

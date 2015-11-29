@@ -19,12 +19,11 @@ class StrokeManager;
 class Properties
 {
 public:
-    qreal width;
-    qreal feather;
-    int pressure;
-    int invisibility;
-    int preserveAlpha;
-
+    qreal width       = 1.f;
+    qreal feather     = 1.f;
+    int pressure      = 1;
+    int invisibility  = 0;
+    int preserveAlpha = 0;
 };
 
 const int ON = 1;
@@ -73,7 +72,7 @@ public:
 
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
-    virtual void setInvisibility( const qreal invisibility );
+    virtual void setInvisibility( const bool invisibility );
     virtual void setPressure( const bool pressure );
     virtual void setPreserveAlpha( const bool preserveAlpha );
 
@@ -86,9 +85,11 @@ public:
     QPointF getLastPressPixel();
     QPointF getLastPressPoint();
 
-    QHash<ToolPropertyType, bool> m_enabledProperties;
+    bool isPropertyEnabled( ToolPropertyType t ) { return m_enabledProperties[ t ]; }
 
 protected:
+    QHash<ToolPropertyType, bool> m_enabledProperties;
+
     Editor* editor() { return mEditor; }
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;

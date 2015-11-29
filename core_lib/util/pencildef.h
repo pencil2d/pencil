@@ -31,8 +31,6 @@ enum ToolPropertyType
 {
     WIDTH,
     FEATHER,
-    OPACITY,
-    COLOURNUMBER,
     PRESSURE,
     INVISIBILITY,
     PRESERVEALPHA
@@ -49,6 +47,12 @@ enum DisplayEffect
     EFFECT_CAMERABORDER,
     EFFECT_BLURRYZOOM,
     EFFECT_COUNT,
+    EFFECT_THIN_LINES,
+    EFFECT_OUTLINES,
+    EFFECT_ONION_BLUE,
+    EFFECT_ONION_RED,
+    EFFECT_MIRROR_H,
+    EFFECT_MIRROR_V
 };
 
 enum BackgroundStyle
@@ -136,19 +140,33 @@ enum BackgroundStyle
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
-#define SHORTCUTS_GROUP         "shortcuts"
-#define SETTING_TOOL_CURSOR     "toolCursors"
-#define SETTING_HIGH_RESOLUTION "highResPosition"
-#define SETTING_WINDOW_GEOMETRY "WindowGeometry"
-#define SETTING_WINDOW_STATE    "WindowState"
-#define SETTING_DISPLAY_EFFECT  "RenderEffect"
-#define SETTING_ANTIALIAS       "antialiasing"
-#define SETTING_BLURRYZOOM      "blurryzoom"
-#define SETTING_SHOW_GRID       "ShowGrid"
+#define SHORTCUTS_GROUP             "Shortcuts"
+#define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
+#define SETTING_TOOL_CURSOR         "ToolCursors"
+#define SETTING_HIGH_RESOLUTION     "HighResPosition"
+#define SETTING_WINDOW_GEOMETRY     "WindowGeometry"
+#define SETTING_WINDOW_STATE        "WindowState"
+#define SETTING_DISPLAY_EFFECT      "RenderEffect"
 
-#define SETTING_ONION_MAX_OPACITY     "onionMaxOpacity"
-#define SETTING_ONION_MIN_OPACITY     "onionMinOpacity"
-#define SETTING_ONION_PREV_FRAMES_NUM "onionPrevFramesNum"
-#define SETTING_ONION_NEXT_FRAMES_NUM "onionNextFramesNum"
+#define SETTING_ANTIALIAS       "Antialiasing"
+#define SETTING_BLURRYZOOM      "BlurryZoom"
+#define SETTING_SHOW_GRID       "ShowGrid"
+#define SETTING_COUNT           "Count"
+#define SETTING_SHADOW          "Shadow"
+#define SETTING_PREV_ONION      "PrevOnion"
+#define SETTING_NEXT_ONION      "NextOnion"
+#define SETTING_AXIS            "Axis"
+#define SETTING_CAMERABORDER    "CameraBorder"
+#define SETTING_INVISIBLE_LINES "InvisibleLines"
+#define SETTING_OUTLINES        "Outlines"
+#define SETTING_ONION_BLUE       "OnionBlue"
+#define SETTING_ONION_RED       "OnionRed"
+#define SETTING_MIRROR_H        "MirrorH"
+#define SETTING_MIRROR_V        "MirrorV"
+
+#define SETTING_ONION_MAX_OPACITY     "OnionMaxOpacity"
+#define SETTING_ONION_MIN_OPACITY     "OnionMinOpacity"
+#define SETTING_ONION_PREV_FRAMES_NUM "OnionPrevFramesNum"
+#define SETTING_ONION_NEXT_FRAMES_NUM "OnionNextFramesNum"
 
 #endif // PENCILDEF_H
