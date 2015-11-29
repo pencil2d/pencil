@@ -14,7 +14,7 @@ Download the [nightly builds][3]!
 [0]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip
 [1]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip
 [2]: http://goo.gl/BP40t
-[3]: http://www.pencil2d.org/forums/topic/pencil2d-nightly-builds-2014/ "Pencil2D nightly builds"
+[3]: http://www.pencil2d.org/forums/topic/pencil2d-nightly-builds-2015/ "Pencil2D nightly builds"
 
 [![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=dev)](https://travis-ci.org/chchwy/pencil2d)
 
@@ -23,6 +23,7 @@ Download the [nightly builds][3]!
 * [Report Bugs, Request Features](https://github.com/pencil2d/pencil/issues)
 * Pencil2D Open Source Community: [http://www.pencil2d.org/](http://www.pencil2d.org/)
 * [User Forum](http://www.pencil2d.org/?post_type=forum)
+* You can help translate Pencil2D on [OneSky](http://osjoq5e.oneskyapp.com/collaboration)!
 
 ### Source code ###
 
