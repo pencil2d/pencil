@@ -24,6 +24,11 @@ Status PlaybackManager::onObjectLoaded( Object* )
     return Status::OK;
 }
 
+bool PlaybackManager::isPlaying()
+{
+    return mTimer->isActive();
+}
+
 void PlaybackManager::play()
 {
     int projectLength = editor()->layers()->projectLength();

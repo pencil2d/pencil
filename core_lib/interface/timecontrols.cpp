@@ -158,7 +158,14 @@ void TimeControls::makeConnections()
 
 void TimeControls::playButtonClicked()
 {
-    mEditor->playback()->play();
+    if ( mEditor->playback()->isPlaying() )
+    {
+        mEditor->playback()->stop();
+    }
+    else
+    {
+        mEditor->playback()->play();
+    }
 }
 
 void TimeControls::jumpToStartButtonClicked()
