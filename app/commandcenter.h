@@ -32,6 +32,7 @@ public:
     void showGrid( bool bShow );
 
     // Animation
+    void PlayStop();
     void GotoNextFrame();
     void GotoPrevFrame();
     void GotoNextKeyFrame();

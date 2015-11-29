@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>215</width>
-    <height>181</height>
+    <height>213</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,14 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Resolution</string>
+      <string>Resolution (Set by the Camera)</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QSpinBox" name="imgWidthSpinBox">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -35,6 +38,9 @@
       </item>
       <item>
        <widget class="QSpinBox" name="imgHeightSpinBox">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -72,6 +78,13 @@
           <string>BMP</string>
          </property>
         </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="cbTransparency">
+        <property name="text">
+         <string>Transparency</string>
+        </property>
        </widget>
       </item>
      </layout>

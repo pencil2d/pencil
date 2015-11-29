@@ -5,25 +5,34 @@
 #include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
-#include "editor.h"
+#include "preferencemanager.h"
 #include "scribblearea.h"
 
 
-DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : QDockWidget( parent )
+DisplayOptionWidget::DisplayOptionWidget( QWidget *parent ) : BaseDockWidget( parent )
 {
+    setWindowTitle( tr( "Display", "Window title of display options like ." ) );
+
     QWidget* innerWidget = new QWidget;
     setWidget( innerWidget );
 
     ui = new Ui::DisplayOption;
     ui->setupUi( innerWidget );
-
-
-
-    setWindowTitle(tr("Display Options"));
 }
 
-void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
+DisplayOptionWidget::~DisplayOptionWidget()
 {
+}
+
+void DisplayOptionWidget::initUI()
+{    
+}
+
+void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
+{
+    mEditor = editor;
+    PreferenceManager* prefs = mEditor->preference();
+
 	ScribbleArea* pScriArea = editor->getScribbleArea();
 
 	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
@@ -36,9 +45,34 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
     connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
-    ui->cameraBorderButton->setChecked(pScriArea->isEffectOn(EFFECT_CAMERABORDER));
+    connect(prefs,            &PreferenceManager::prefsLoaded, this, &DisplayOptionWidget::loadUI);
+    connect(prefs,            &PreferenceManager::effectChanged, this, &DisplayOptionWidget::updateUI);
+
+    updateUI();
+
 
     // FIXME
 	//connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
-	//connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
+    //connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
+}
+
+void DisplayOptionWidget::loadUI()
+{
+    updateUI();
+}
+
+void DisplayOptionWidget::updateUI()
+{
+    PreferenceManager* prefs = mEditor->preference();
+
+    ui->thinLinesButton->setChecked(prefs->isOn(EFFECT::INVISIBLE_LINES));
+    ui->outLinesButton->setChecked(prefs->isOn(EFFECT::OUTLINES));
+    ui->onionPrevButton->setChecked(prefs->isOn(EFFECT::PREV_ONION));
+    ui->onionNextButton->setChecked(prefs->isOn(EFFECT::NEXT_ONION));
+    ui->onionBlueButton->setChecked(prefs->isOn(EFFECT::ONION_BLUE));
+    ui->onionRedButton->setChecked(prefs->isOn(EFFECT::ONION_RED));
+    ui->mirrorButton->setChecked(prefs->isOn(EFFECT::MIRROR_H));
+    ui->mirrorVButton->setChecked(prefs->isOn(EFFECT::MIRROR_V));
+    ui->cameraBorderButton->setChecked(prefs->isOn(EFFECT::CAMERABORDER));
+
 }

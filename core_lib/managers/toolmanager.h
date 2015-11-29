@@ -18,7 +18,7 @@ public:
     bool init() override;
     Status onObjectLoaded( Object* ) override;
 
-    BaseTool* currentTool() { return m_pCurrentTool; }
+    BaseTool* currentTool() { return mCurrentTool; }
     BaseTool* getTool( ToolType eToolType );
     void      setDefaultTool();
     void      setCurrentTool( ToolType eToolType );
@@ -27,31 +27,27 @@ public:
     void      tabletSwitchToEraser();
     void      tabletRestorePrevTool();
 
-signals:
-    void penWidthValueChange( float );
-    void penFeatherValueChange( float );
-    void penInvisiblityValueChange( int );
-    void penPreserveAlphaValueChange( int );
-    void penPressureValueChange( int );
+Q_SIGNALS:
+    void penWidthValueChanged( float );
+    void penFeatherValueChanged( float );
 
     void toolChanged( ToolType );
-    void displayToolOptions(QHash<ToolPropertyType, bool> options);
-    void toolPropertyChanged();
+    void toolPropertyChanged( ToolType, ToolPropertyType );
 
 public slots:
     void resetAllTools();
 
     void setWidth( float );
     void setFeather( float );
-    void setInvisibility( int );
-    void setPreserveAlpha( int );
-    void setPressure( int );
+    void setInvisibility( bool );
+    void setPreserveAlpha( bool );
+    void setPressure( bool );
 
 private:
-    BaseTool* m_pCurrentTool;
-    ToolType  m_eTabletBackupTool;
-    bool isSwitchedToEraser;
-    QHash<ToolType, BaseTool*> m_toolSetHash;
+    BaseTool* mCurrentTool       = nullptr;
+    ToolType  meTabletBackupTool = PENCIL;
+    bool mIsSwitchedToEraser     = false;
+    QHash<ToolType, BaseTool*> mToolSetHash;
 
 };
 

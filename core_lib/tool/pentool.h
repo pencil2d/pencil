@@ -23,6 +23,9 @@ public:
     void setWidth( const qreal width );
     void setFeather( const qreal feather );
     void setPressure( const bool pressure );
+
+private:
+    QPointF lastBrushPoint;
 };
 
 #endif // PENTOOL_H
