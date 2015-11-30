@@ -38,25 +38,6 @@ enum ToolPropertyType
     PRESERVEALPHA
 };
 
-enum DisplayEffect
-{
-    EFFECT_ANTIALIAS = 0,
-    EFFECT_SHADOW,
-    EFFECT_PREV_ONION,
-    EFFECT_NEXT_ONION,
-    EFFECT_AXIS,
-    EFFECT_GRID_A,
-    EFFECT_CAMERABORDER,
-    EFFECT_BLURRYZOOM,
-    EFFECT_COUNT,
-    EFFECT_THIN_LINES,
-    EFFECT_OUTLINES,
-    EFFECT_ONION_BLUE,
-    EFFECT_ONION_RED,
-    EFFECT_MIRROR_H,
-    EFFECT_MIRROR_V
-};
-
 enum BackgroundStyle
 {
 
@@ -146,8 +127,11 @@ enum BackgroundStyle
 #define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
 #define SETTING_TOOL_CURSOR         "ToolCursors"
 #define SETTING_HIGH_RESOLUTION     "HighResPosition"
+#define SETTING_BACKGROUND_STYLE    "Background"
+#define SETTING_WINDOW_OPACITY      "WindowOpacity"
 #define SETTING_WINDOW_GEOMETRY     "WindowGeometry"
 #define SETTING_WINDOW_STATE        "WindowState"
+#define SETTING_CURVE_SMOOTHING     "CurveSmoothing"
 #define SETTING_DISPLAY_EFFECT      "RenderEffect"
 
 #define SETTING_ANTIALIAS       "Antialiasing"
@@ -161,7 +145,7 @@ enum BackgroundStyle
 #define SETTING_CAMERABORDER    "CameraBorder"
 #define SETTING_INVISIBLE_LINES "InvisibleLines"
 #define SETTING_OUTLINES        "Outlines"
-#define SETTING_ONION_BLUE       "OnionBlue"
+#define SETTING_ONION_BLUE      "OnionBlue"
 #define SETTING_ONION_RED       "OnionRed"
 #define SETTING_MIRROR_H        "MirrorH"
 #define SETTING_MIRROR_V        "MirrorV"

@@ -156,49 +156,44 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGroupBox* editingBox = new QGroupBox(tr("Editing"));
 
     QLabel* windowOpacityLabel = new QLabel(tr("Opacity"));
-    QSlider* windowOpacityLevel = new QSlider(Qt::Horizontal);
-    windowOpacityLevel->setMinimum(30);
-    windowOpacityLevel->setMaximum(100);
+    mWindowOpacityLevel = new QSlider(Qt::Horizontal);
+    mWindowOpacityLevel->setMinimum(30);
+    mWindowOpacityLevel->setMaximum(100);
     int value = settings.value("windowOpacity").toInt();
-    windowOpacityLevel->setValue( 100 - value );
+    mWindowOpacityLevel->setValue( 100 - value );
 
-    QButtonGroup* backgroundButtons = new QButtonGroup();
+    mBackgroundButtons = new QButtonGroup();
     QRadioButton* checkerBackgroundButton = new QRadioButton();
     QRadioButton* whiteBackgroundButton = new QRadioButton();
     QRadioButton* greyBackgroundButton = new QRadioButton();
     QRadioButton* dotsBackgroundButton = new QRadioButton();
     QRadioButton* weaveBackgroundButton = new QRadioButton();
-    QPixmap previewCheckerboard(32,32);
+
+    QPixmap previewCheckerboard( ":background/checkerboard.png" );
     QPixmap previewWhite(32,32);
     QPixmap previewGrey(32,32);
-    QPixmap previewDots(32,32);
-    QPixmap previewWeave(32,32);
-    QPainter painter(&previewCheckerboard);
-    painter.fillRect( QRect(0,0,32,32), ScribbleArea::getBackgroundBrush("checkerboard") );
-    painter.end();
-    painter.begin(&previewDots);
-    painter.fillRect( QRect(0,0,32,32), ScribbleArea::getBackgroundBrush("dots") );
-    painter.end();
-    painter.begin(&previewWeave);
-    painter.fillRect( QRect(0,0,32,32), ScribbleArea::getBackgroundBrush("weave") );
-    painter.end();
+    QPixmap previewDots( ":background/dots.png" );
+    QPixmap previewWeave( ":background/weave.jpg" );
+
     previewWhite.fill( Qt::white );
+
     previewGrey.fill( Qt:: lightGray );
-    checkerBackgroundButton->setIcon( previewCheckerboard );
+
+    checkerBackgroundButton->setIcon( previewCheckerboard.scaled(32, 32) );
     whiteBackgroundButton->setIcon( previewWhite );
     greyBackgroundButton->setIcon( previewGrey );
-    dotsBackgroundButton->setIcon( previewDots );
-    dotsBackgroundButton->setIcon( previewWeave );
-    backgroundButtons->addButton(checkerBackgroundButton);
-    backgroundButtons->addButton(whiteBackgroundButton);
-    backgroundButtons->addButton(greyBackgroundButton);
-    backgroundButtons->addButton(dotsBackgroundButton);
-    backgroundButtons->addButton(weaveBackgroundButton);
-    backgroundButtons->setId(checkerBackgroundButton, 1);
-    backgroundButtons->setId(whiteBackgroundButton, 2);
-    backgroundButtons->setId(greyBackgroundButton, 3);
-    backgroundButtons->setId(dotsBackgroundButton, 4);
-    backgroundButtons->setId(weaveBackgroundButton, 5);
+    dotsBackgroundButton->setIcon( previewDots.scaled(32, 32) );
+    weaveBackgroundButton->setIcon( previewWeave.scaled(32, 32) );
+    mBackgroundButtons->addButton(checkerBackgroundButton);
+    mBackgroundButtons->addButton(whiteBackgroundButton);
+    mBackgroundButtons->addButton(greyBackgroundButton);
+    mBackgroundButtons->addButton(dotsBackgroundButton);
+    mBackgroundButtons->addButton(weaveBackgroundButton);
+    mBackgroundButtons->setId(checkerBackgroundButton, 1);
+    mBackgroundButtons->setId(whiteBackgroundButton, 2);
+    mBackgroundButtons->setId(greyBackgroundButton, 3);
+    mBackgroundButtons->setId(dotsBackgroundButton, 4);
+    mBackgroundButtons->setId(weaveBackgroundButton, 5);
 
     QHBoxLayout* backgroundLayout = new QHBoxLayout();
     backgroundBox->setLayout(backgroundLayout);
@@ -207,11 +202,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     backgroundLayout->addWidget(greyBackgroundButton);
     backgroundLayout->addWidget(dotsBackgroundButton);
     backgroundLayout->addWidget(weaveBackgroundButton);
-    if ( settings.value("background").toString() == "checkerboard" ) checkerBackgroundButton->setChecked(true);
-    if ( settings.value("background").toString() == "white" ) whiteBackgroundButton->setChecked(true);
-    if ( settings.value("background").toString() == "grey" ) greyBackgroundButton->setChecked(true);
-    if ( settings.value("background").toString() == "dots" ) dotsBackgroundButton->setChecked(true);
-    if ( settings.value("background").toString() == "weave" ) weaveBackgroundButton->setChecked(true);
 
     mShadowsBox = new QCheckBox(tr("Shadows"));
     mToolCursorsBox = new QCheckBox(tr("Tool Cursors"));
@@ -222,7 +212,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
     windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
-    windowOpacityLayout->addWidget(windowOpacityLevel, 0, 1);
+    windowOpacityLayout->addWidget(mWindowOpacityLevel, 0, 1);
 
     QVBoxLayout* appearanceLayout = new QVBoxLayout();
     appearanceBox->setLayout(appearanceLayout);
@@ -235,27 +225,20 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     displayLayout->addWidget(mBlurryZoomBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
-    QSlider* curveSmoothingLevel = new QSlider(Qt::Horizontal);
-    curveSmoothingLevel->setMinimum(1);
-    curveSmoothingLevel->setMaximum(100);
+    mCurveSmoothingLevel = new QSlider(Qt::Horizontal);
+    mCurveSmoothingLevel->setMinimum(1);
+    mCurveSmoothingLevel->setMaximum(100);
     value = settings.value("curveSmoothing").toInt();
-    curveSmoothingLevel->setValue( value );
+    mCurveSmoothingLevel->setValue( value );
 
-    QCheckBox* highResBox = new QCheckBox(tr("Tablet high-resolution position"));
-    if (settings.value(SETTING_HIGH_RESOLUTION) == "true")
-    {
-        highResBox->setChecked(true);
-    }
-    else
-    {
-        highResBox->setChecked(false);
-    }
+    mHighResBox = new QCheckBox(tr("Tablet high-resolution position"));
+
 
     QGridLayout* editingLayout = new QGridLayout();
     editingBox->setLayout(editingLayout);
     editingLayout->addWidget(curveSmoothingLabel, 0, 0);
-    editingLayout->addWidget(curveSmoothingLevel, 1, 0);
-    editingLayout->addWidget(highResBox, 2, 0);
+    editingLayout->addWidget(mCurveSmoothingLevel, 1, 0);
+    editingLayout->addWidget(mHighResBox, 2, 0);
 
     lay->addWidget(windowOpacityBox);
     lay->addWidget(appearanceBox);
@@ -266,35 +249,86 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     PreferencesDialog* preference = qobject_cast< PreferencesDialog* >( parent );
 
     auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
-    connect( windowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
-    connect( backgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
-    connect( mShadowsBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::shadowsChange );
+    connect( mWindowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
+    connect( mBackgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
+    connect( mShadowsBox,         &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged );
     connect( mToolCursorsBox,     &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged );
     connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
     connect( mBlurryZoomBox,    &QCheckBox::stateChanged, this, &GeneralPage::blurryZoomCheckboxStateChanged );
-    connect( curveSmoothingLevel, &QSlider::valueChanged, preference, &PreferencesDialog::curveSmoothingChange );
-    connect( highResBox,         &QCheckBox::stateChanged, preference, &PreferencesDialog::highResPositionChange );
+    connect( mCurveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange );
+    connect( mHighResBox,         &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged );
 
     setLayout(lay);
 }
 
 void GeneralPage::updateValues()
 {
-    mShadowsBox->setChecked(mManager->isOn(EFFECT::SHADOW));
-    mToolCursorsBox->setChecked(mManager->isOn(EFFECT::TOOL_CURSOR));
-    mAntialiasingBox->setChecked(mManager->isOn(EFFECT::ANTIALIAS));
-    mBlurryZoomBox->setChecked(mManager->isOn(EFFECT::BLURRYZOOM));
+    mCurveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
+    mWindowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
+    mShadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
+    mToolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
+    mAntialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
+    mBlurryZoomBox->setChecked(mManager->isOn(SETTING::BLURRYZOOM));
+    mHighResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
+
+    QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
+    if (bgName == "checkerboard") {
+        mBackgroundButtons->button(1)->setChecked(true);
+    }
+    if (bgName == "white") {
+        mBackgroundButtons->button(2)->setChecked(true);
+    }
+    if (bgName == "grey") {
+        mBackgroundButtons->button(3)->setChecked(true);
+    }
+    if (bgName == "dots") {
+        mBackgroundButtons->button(4)->setChecked(true);
+    }
+    if (bgName == "weave") {
+        mBackgroundButtons->button(5)->setChecked(true);
+    }
+}
+
+
+
+void GeneralPage::curveSmoothingChange(int value)
+{
+    mManager->set(SETTING::CURVE_SMOOTHING, value);
+}
+
+void GeneralPage::highResCheckboxStateChanged( bool b )
+{
+    if ( b )
+    {
+        mManager->turnOn( SETTING::HIGH_RESOLUTION );
+    }
+    else
+    {
+        mManager->turnOff( SETTING::HIGH_RESOLUTION );
+    }
+}
+
+void GeneralPage::shadowsCheckboxStateChanged( bool b )
+{
+    if ( b )
+    {
+        mManager->turnOn( SETTING::SHADOW );
+    }
+    else
+    {
+        mManager->turnOff( SETTING::SHADOW );
+    }
 }
 
 void GeneralPage::antiAliasCheckboxStateChanged( bool b )
 {
     if ( b )
     {
-        mManager->turnOn( EFFECT::ANTIALIAS );
+        mManager->turnOn( SETTING::ANTIALIAS );
     }
     else
     {
-        mManager->turnOff( EFFECT::ANTIALIAS );
+        mManager->turnOff( SETTING::ANTIALIAS );
     }
 }
 
@@ -302,11 +336,11 @@ void GeneralPage::blurryZoomCheckboxStateChanged( bool b )
 {
     if ( b )
     {
-        mManager->turnOn( EFFECT::BLURRYZOOM );
+        mManager->turnOn( SETTING::BLURRYZOOM );
     }
     else
     {
-        mManager->turnOff( EFFECT::BLURRYZOOM );
+        mManager->turnOff( SETTING::BLURRYZOOM );
     }
 }
 
@@ -314,11 +348,11 @@ void GeneralPage::toolCursorsCheckboxStateChanged(bool b)
 {
     if ( b )
     {
-        mManager->turnOn( EFFECT::TOOL_CURSOR );
+        mManager->turnOn( SETTING::TOOL_CURSOR );
     }
     else
     {
-        mManager->turnOff( EFFECT::TOOL_CURSOR );
+        mManager->turnOff( SETTING::TOOL_CURSOR );
     }
 }
 

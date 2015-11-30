@@ -69,7 +69,18 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     // Central widget
     mScribbleArea = new ScribbleArea( this );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
-    setCentralWidget( mScribbleArea );
+    //setCentralWidget( mScribbleArea );
+
+    mBackground = new QWidget();
+    mBackground->setStyleSheet("background-color:white;");
+
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->addWidget(mScribbleArea);
+
+    mBackground->setLayout(layout);
+
+    setCentralWidget(mBackground);
+
 
     Object* object = new Object();
     object->init();
@@ -80,6 +91,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
+
+    loadBackground();
 
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
@@ -238,7 +251,7 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled( false );
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( EFFECT::GRID ) );
+    setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
     connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
 
     connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
@@ -326,10 +339,69 @@ void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
 
 void MainWindow2::setOpacity( int opacity )
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue( "windowOpacity", 100 - opacity );
+    mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
     setWindowOpacity( opacity / 100.0 );
 }
+
+void MainWindow2::setBackground(int bgId)
+{
+    QString brushName = "white";
+    switch (bgId) {
+    case 1:
+        brushName = "checkerboard";
+        break;
+    case 2:
+        brushName = "white";
+        break;
+    case 3:
+        brushName = "grey";
+        break;
+    case 4:
+        brushName = "dots";
+        break;
+    case 5:
+        brushName = "weave";
+        break;
+    default:
+        break;
+    }
+    mEditor->preference()->set(SETTING::BACKGROUND_STYLE, brushName);
+
+    loadBackground();
+
+}
+
+void MainWindow2::loadBackground()
+{
+    QString brushName = mEditor->preference()->getString(SETTING::BACKGROUND_STYLE);
+
+    QBrush brush = QBrush( Qt::white );
+    if ( brushName == "white" )
+    {
+        mBackground->setStyleSheet("background-color:white;");
+    }
+    else if ( brushName == "grey" )
+    {
+        mBackground->setStyleSheet("background-color:lightGray;");
+    }
+    else if ( brushName == "checkerboard" )
+    {
+        mBackground->setStyleSheet("background-image: url(:background/checkerboard.png); background-repeat: repeat-xy;");
+    }
+    else if ( brushName == "dots" )
+    {
+        mBackground->setStyleSheet("background-image: url(:background/dots.png); background-repeat: repeat-xy;");
+    }
+    else if ( brushName == "weave" )
+    {
+        mBackground->setStyleSheet("background-image: url(:background/weave.jpg); background-repeat: repeat-xy;");
+    }
+    else if ( brushName == "grid" )
+    {
+        mBackground->setStyleSheet("background-image: url(:background/grid.jpg); background-repeat: repeat-xy;");
+    }
+}
+
 
 void MainWindow2::closeEvent( QCloseEvent* event )
 {
@@ -771,10 +843,7 @@ void MainWindow2::preferences()
     connect( mPreferencesDialog, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
     connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( mPreferencesDialog, &PreferencesDialog::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
-    //connect( m_pPreferences, &Preferences::antialiasingChange,   mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( mPreferencesDialog, &PreferencesDialog::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
-    //connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
+    connect( mPreferencesDialog, &PreferencesDialog::backgroundChange, this, &MainWindow2::setBackground );
 
     connect( mPreferencesDialog, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
     connect( mPreferencesDialog, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
@@ -811,7 +880,9 @@ void MainWindow2::readSettings()
     QString myPath = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
     mRecentFileMenu->addRecentFile( myPath );
 
-    setOpacity( 100 - settings.value( "windowOpacity" ).toInt() );
+    int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
+
+    setOpacity( 100 - opacity );
 }
 
 void MainWindow2::writeSettings()

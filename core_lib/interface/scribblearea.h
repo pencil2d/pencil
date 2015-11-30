@@ -72,9 +72,8 @@ public:
     bool areLayersSane() const;
     bool isLayerPaintable() const;
 
-    static QBrush getBackgroundBrush( QString );
 
-    void setEffect(EFFECT e, bool isOn );
+    void setEffect(SETTING e, bool isOn );
 
     int showAllLayers() const { return mShowAllLayers; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
@@ -136,8 +135,6 @@ public slots:
     void toggleGrid( bool );
 
     void setCurveSmoothing( int );
-    void setBackground( int );
-    void setBackgroundBrush( QString );
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
@@ -191,6 +188,8 @@ private:
 
     void toggledOnionColor();
 
+    void settingUpdated(SETTING setting);
+
     MoveMode mMoveMode = MIDDLE;
     ToolType mPrevTemporalToolType;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
@@ -214,8 +213,6 @@ private:
     QColor onionColor;
 
     bool mNeedUpdateAll = false;
-
-    QBrush mBackgroundBrush;
   
 
 private: 

@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "util.h"
-#include <QPainter>
+
 
 
 CanvasRenderer::CanvasRenderer( QObject* parent ) : QObject( parent )
@@ -83,10 +83,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 
 void CanvasRenderer::paintBackground( QPainter& painter )
 {
-    painter.setPen( Qt::NoPen );
-    painter.setBrush( QBrush( Qt::white ) );
-
-    mCanvas->fill( Qt::white );
+    mCanvas->fill( Qt::transparent );
 }
 
 void CanvasRenderer::paintOnionSkin( QPainter& painter )

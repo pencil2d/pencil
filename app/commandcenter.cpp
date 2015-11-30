@@ -107,9 +107,9 @@ void CommandCenter::flipY()
 void CommandCenter::showGrid( bool bShow )
 {
     if ( bShow )
-        mEditor->preference()->turnOn( EFFECT::GRID );
+        mEditor->preference()->turnOn( SETTING::GRID );
     else
-        mEditor->preference()->turnOff( EFFECT::GRID );
+        mEditor->preference()->turnOff( SETTING::GRID );
 }
 
 void CommandCenter::GotoNextFrame()

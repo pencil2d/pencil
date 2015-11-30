@@ -58,6 +58,7 @@ public:
 
 public:
     void setOpacity(int opacity);
+    void setBackground(int bgId);
     void undoActSetText(void);
     void undoActSetEnabled(void);
     void newDocument();
@@ -87,6 +88,8 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
+    void loadBackground();
+
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
 
@@ -133,6 +136,7 @@ private:
 
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
+    QWidget* mBackground;
 };
 
 #endif // MAINWINDOW2_H

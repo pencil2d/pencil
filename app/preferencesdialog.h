@@ -56,14 +56,8 @@ public:
 
 Q_SIGNALS:
     void windowOpacityChange(int);
-    void curveOpacityChange(int);
-    void curveSmoothingChange(int);
-    void highResPositionChange(int);
-    void antialiasingChange(int);
-    void blurryZoomChange(int);
     void backgroundChange(int);
-    void shadowsChange(int);
-    void toolCursorsChange(int);
+    void curveOpacityChange(int);
 
     void autosaveChange(int);
     void autosaveNumberChange(int);
@@ -100,20 +94,31 @@ public:
     GeneralPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
 
+
 public slots:
     void updateValues();
 
 private:
+    void shadowsCheckboxStateChanged(bool b);
     void antiAliasCheckboxStateChanged( bool b );
     void blurryZoomCheckboxStateChanged( bool b );
     void toolCursorsCheckboxStateChanged( bool b );
+    void highResCheckboxStateChanged(bool b);
+    void curveSmoothingChange(int value);
+    void backgroundChange(int value);
 
     PreferenceManager* mManager = nullptr;
 
+    QSlider* mWindowOpacityLevel;
+    QSlider* mCurveSmoothingLevel;
     QCheckBox* mShadowsBox;
     QCheckBox* mToolCursorsBox;
     QCheckBox* mAntialiasingBox;
     QCheckBox* mBlurryZoomBox;
+    QCheckBox* mHighResBox;
+    QButtonGroup *mBackgroundButtons;
+
+
 };
 
 class TimelinePage : public QWidget

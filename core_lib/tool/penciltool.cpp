@@ -93,7 +93,7 @@ QCursor PencilTool::cursor()
         return circleCursors(); // two circles cursor
     }
 
-    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pencil2.png" ), 0, 16 );
     }
@@ -116,7 +116,7 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
             drawStroke();
         }
         else {
-            if ( !mEditor->preference()->isOn(EFFECT::INVISIBLE_LINES) )
+            if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
             {
                 mScribbleArea->toggleThinLines();
             }

@@ -38,7 +38,7 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
     connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
     connect(prefs,            &PreferenceManager::prefsLoaded, this, &DisplayOptionWidget::loadUI);
-    connect(prefs,            &PreferenceManager::effectChanged, this, &DisplayOptionWidget::updateUI);
+    connect(prefs,            &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
 
     updateUI();
 
@@ -57,14 +57,14 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = mEditor->preference();
 
-    ui->thinLinesButton->setChecked(prefs->isOn(EFFECT::INVISIBLE_LINES));
-    ui->outLinesButton->setChecked(prefs->isOn(EFFECT::OUTLINES));
-    ui->onionPrevButton->setChecked(prefs->isOn(EFFECT::PREV_ONION));
-    ui->onionNextButton->setChecked(prefs->isOn(EFFECT::NEXT_ONION));
-    ui->onionBlueButton->setChecked(prefs->isOn(EFFECT::ONION_BLUE));
-    ui->onionRedButton->setChecked(prefs->isOn(EFFECT::ONION_RED));
-    ui->mirrorButton->setChecked(prefs->isOn(EFFECT::MIRROR_H));
-    ui->mirrorVButton->setChecked(prefs->isOn(EFFECT::MIRROR_V));
-    ui->cameraBorderButton->setChecked(prefs->isOn(EFFECT::CAMERABORDER));
+    ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
+    ui->outLinesButton->setChecked(prefs->isOn(SETTING::OUTLINES));
+    ui->onionPrevButton->setChecked(prefs->isOn(SETTING::PREV_ONION));
+    ui->onionNextButton->setChecked(prefs->isOn(SETTING::NEXT_ONION));
+    ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
+    ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
+    ui->mirrorButton->setChecked(prefs->isOn(SETTING::MIRROR_H));
+    ui->mirrorVButton->setChecked(prefs->isOn(SETTING::MIRROR_V));
+    ui->cameraBorderButton->setChecked(prefs->isOn(SETTING::CAMERABORDER));
 
 }
