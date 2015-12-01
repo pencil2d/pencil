@@ -334,8 +334,8 @@ void MainWindow2::createMenus()
 
     connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
-    connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
-    connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
+    //connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
+    //connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
 }
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
@@ -783,12 +783,6 @@ void MainWindow2::preferences()
 {
     mPreferencesDialog = new PreferencesDialog( this );
     mPreferencesDialog->init( mEditor->preference() );
-
-    connect( mPreferencesDialog, &PreferencesDialog::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
-    connect( mPreferencesDialog, &PreferencesDialog::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
-    connect( mPreferencesDialog, &PreferencesDialog::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
-    connect( mPreferencesDialog, &PreferencesDialog::labelChange,      mTimeLine, &TimeLine::labelChange );
-    connect( mPreferencesDialog, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
     connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
 

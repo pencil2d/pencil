@@ -58,12 +58,6 @@ Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
 
-    void lengthSizeChange(QString);
-    void fontSizeChange(int);
-    void frameSizeChange(int);
-    void labelChange(int);
-    void scrubChange(int);
-
     void onionMaxOpacityChange(int);
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
@@ -122,8 +116,23 @@ class TimelinePage : public QWidget
 public:
     TimelinePage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+
+public slots:
+    void updateValues();
+
+    void lengthSizeChange(QString);
+    void fontSizeChange(int);
+    void frameSizeChange(int);
+    void labelChange(bool);
+    void scrubChange(bool);
+
 private:
     PreferenceManager* mManager = nullptr;
+    QCheckBox* mDrawLabel;
+    QSpinBox* mFontSize;
+    QSpinBox* mFrameSize;
+    QLineEdit* mLengthSize;
+    QCheckBox* mScrubBox;
 };
 
 class FilesPage : public QWidget
@@ -153,6 +162,8 @@ class ToolsPage : public QWidget
 public:
     ToolsPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+public slots:
+    void updateValues();
 private:
     PreferenceManager* mManager = nullptr;
 };

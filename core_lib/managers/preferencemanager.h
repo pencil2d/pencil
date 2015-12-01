@@ -29,7 +29,12 @@ enum class SETTING
     CURVE_SMOOTHING,
     BACKGROUND_STYLE,
     AUTO_SAVE,
-    AUTO_SAVE_NUMBER
+    AUTO_SAVE_NUMBER,
+    SHORT_SCRUB,
+    FRAME_SIZE,
+    TIMELINE_SIZE,
+    LABEL_FONT_SIZE,
+    DRAW_LABEL
 };
 
 class PreferenceManager : public BaseManager

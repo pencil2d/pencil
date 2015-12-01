@@ -49,9 +49,11 @@ void PreferencesDialog::init( PreferenceManager* m )
     
     TimelinePage* timeline = new TimelinePage( this );
     timeline->setManager( mPrefManager );
+    timeline->updateValues();
 
     ToolsPage* tools = new ToolsPage( this );
     tools->setManager( mPrefManager );
+    tools->updateValues();
     
     ShortcutsPage* shortcuts = new ShortcutsPage( this );
     shortcuts->setManager( mPrefManager );
@@ -355,53 +357,84 @@ TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* timeLineBox = new QGroupBox(tr("Timeline"));
-    QCheckBox* drawLabel = new QCheckBox(tr("Draw timeline labels"));
-    QSpinBox* fontSize = new QSpinBox();
+    mDrawLabel = new QCheckBox(tr("Draw timeline labels"));
+    mFontSize = new QSpinBox();
     QLabel* frameSizeLabel = new QLabel(tr("Frame size in Pixels"));
-    QSpinBox* frameSize = new QSpinBox(this);
+    mFrameSize = new QSpinBox(this);
     QLabel* lengthSizeLabel = new QLabel(tr("Timeline size in Frames"));
-    QLineEdit* lengthSize = new QLineEdit(this);
-    lengthSize->setInputMask("0009");
+    mLengthSize = new QLineEdit(this);
+    mLengthSize->setInputMask("0009");
 
-    QCheckBox* scrubBox = new QCheckBox(tr("Short scrub"));
-    scrubBox->setChecked(false); // default
-    if (settings.value("shortScrub").toBool()) scrubBox->setChecked(true);
+    mScrubBox = new QCheckBox(tr("Short scrub"));
 
-    fontSize->setMinimum(4);
-    fontSize->setMaximum(20);
-    frameSize->setMinimum(4);
-    frameSize->setMaximum(20);
+    mFontSize->setMinimum(4);
+    mFontSize->setMaximum(20);
+    mFrameSize->setMinimum(4);
+    mFrameSize->setMaximum(20);
 
-    fontSize->setFixedWidth(50);
-    frameSize->setFixedWidth(50);
-    lengthSize->setFixedWidth(50);
+    mFontSize->setFixedWidth(50);
+    mFrameSize->setFixedWidth(50);
+    mLengthSize->setFixedWidth(50);
 
-    if (settings.value("drawLabel")=="false") drawLabel->setChecked(false);
-    else drawLabel->setChecked(true);
-    fontSize->setValue(settings.value("labelFontSize").toInt());
-    frameSize->setValue(settings.value("frameSize").toInt());
-    if (settings.value("labelFontSize").toInt()==0) fontSize->setValue(12);
-    if (settings.value("frameSize").toInt()==0) frameSize->setValue(6);
-    lengthSize->setText(settings.value("length").toString());
-    if (settings.value("length").toInt()==0) lengthSize->setText("240");
 
-    connect(fontSize, SIGNAL(valueChanged(int)), parent, SIGNAL(fontSizeChange(int)));
-    connect(frameSize, SIGNAL(valueChanged(int)), parent, SIGNAL(frameSizeChange(int)));
-    connect(lengthSize, SIGNAL(textChanged(QString)), parent, SIGNAL(lengthSizeChange(QString)));
-    connect(drawLabel, SIGNAL(stateChanged(int)), parent, SIGNAL(labelChange(int)));
-    connect(scrubBox, SIGNAL(stateChanged(int)), parent, SIGNAL(scrubChange(int)));
+    mFrameSize->setValue(settings.value("frameSize").toInt());
+    if (settings.value("labelFontSize").toInt()==0) mFontSize->setValue(12);
+    if (settings.value("frameSize").toInt()==0) mFrameSize->setValue(6);
+    mLengthSize->setText(settings.value("length").toString());
+    if (settings.value("length").toInt()==0) mLengthSize->setText("240");
+
+    connect(mFontSize, SIGNAL(valueChanged(int)), this, SLOT(fontSizeChange(int)));
+    connect(mFrameSize, SIGNAL(valueChanged(int)), this, SLOT(frameSizeChange(int)));
+    connect(mLengthSize, SIGNAL(textChanged(QString)), this, SLOT(lengthSizeChange(QString)));
+    connect( mDrawLabel, &QCheckBox::stateChanged, this, &TimelinePage::labelChange );
+    connect( mScrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChange );
 
     lay->addWidget(frameSizeLabel);
-    lay->addWidget(frameSize);
+    lay->addWidget(mFrameSize);
     lay->addWidget(lengthSizeLabel);
-    lay->addWidget(lengthSize);
-    lay->addWidget(scrubBox);
+    lay->addWidget(mLengthSize);
+    lay->addWidget(mScrubBox);
     timeLineBox->setLayout(lay);
 
     QVBoxLayout* lay2 = new QVBoxLayout();
     lay2->addWidget(timeLineBox);
     lay2->addStretch(1);
     setLayout(lay2);
+}
+
+void TimelinePage::updateValues()
+{
+    mScrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
+    mDrawLabel->setChecked(mManager->isOn(SETTING::DRAW_LABEL));
+    mFontSize->setValue(mManager->getInt(SETTING::LABEL_FONT_SIZE));
+    mFrameSize->setValue(mManager->getInt(SETTING::FRAME_SIZE));
+    mLengthSize->setText(mManager->getString(SETTING::TIMELINE_SIZE));
+}
+
+void TimelinePage::lengthSizeChange(QString value)
+{
+    int length = value.toInt();
+    mManager->set(SETTING::TIMELINE_SIZE, length);
+}
+
+void TimelinePage::fontSizeChange(int value)
+{
+    mManager->set(SETTING::LABEL_FONT_SIZE, value);
+}
+
+void TimelinePage::frameSizeChange(int value)
+{
+    mManager->set(SETTING::FRAME_SIZE, value);
+}
+
+void TimelinePage::labelChange(bool value)
+{
+    mManager->set(SETTING::DRAW_LABEL, value);
+}
+
+void TimelinePage::scrubChange(bool value)
+{
+    mManager->set(SETTING::SHORT_SCRUB, value);
 }
 
 FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
@@ -501,4 +534,9 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
     lay2->addWidget(onionSkinBox);
     lay2->addStretch(1);
     setLayout(lay2);
+}
+
+void ToolsPage::updateValues()
+{
+
 }

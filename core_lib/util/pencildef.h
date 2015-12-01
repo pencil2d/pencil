@@ -134,6 +134,11 @@ enum BackgroundStyle
 #define SETTING_WINDOW_STATE        "WindowState"
 #define SETTING_CURVE_SMOOTHING     "CurveSmoothing"
 #define SETTING_DISPLAY_EFFECT      "RenderEffect"
+#define SETTING_SHORT_SCRUB         "ShortScrub"
+#define SETTING_FRAME_SIZE          "FrameSize"
+#define SETTING_TIMELINE_SIZE       "TimelineSize"
+#define SETTING_LABEL_FONT_SIZE     "LabelFontSize"
+#define SETTING_DRAW_LABEL          "DrawLabel"
 
 #define SETTING_ANTIALIAS       "Antialiasing"
 #define SETTING_BLURRYZOOM      "BlurryZoom"
