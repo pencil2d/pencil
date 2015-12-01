@@ -138,6 +138,7 @@ int Editor::currentFrame()
 
 void Editor::makeConnections()
 {
+    connect( mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated );
 	connect( QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged );
 }
 
@@ -164,26 +165,18 @@ void Editor::dropEvent( QDropEvent* event )
 	}
 }
 
-void Editor::changeAutosave( int x )
+void Editor::settingUpdated(SETTING setting)
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-	if ( x == 0 )
-	{
-		mIsAutosave = false;
-		settings.setValue( "autosave", "false" );
-	}
-	else
-	{
-		mIsAutosave = true;
-		settings.setValue( "autosave", "true" );
-	}
-}
-
-void Editor::changeAutosaveNumber( int number )
-{
-	autosaveNumber = number;
-    QSettings settings( PENCIL2D, PENCIL2D );
-	settings.setValue( "autosaveNumber", number );
+    switch (setting) {
+        case SETTING::AUTO_SAVE:
+            mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
+            break;
+        case SETTING::AUTO_SAVE_NUMBER:
+            autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+            break;
+        default:
+            break;
+        }
 }
 
 void Editor::onionMaxOpacityChangeSlot( int number )
@@ -553,7 +546,7 @@ void Editor::toggleMirrorV()
 void Editor::toggleShowAllLayers()
 {
 	mScribbleArea->toggleShowAllLayers();
-	emit updateTimeLine();
+    emit updateTimeLine();
 }
 
 void Editor::saveLength( QString x )

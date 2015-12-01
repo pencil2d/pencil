@@ -792,9 +792,6 @@ void MainWindow2::preferences()
 
     connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
 
-    connect( mPreferencesDialog, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
-    connect( mPreferencesDialog, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
-
     connect( mPreferencesDialog, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
     connect( mPreferencesDialog, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
     connect( mPreferencesDialog, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );

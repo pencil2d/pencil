@@ -27,7 +27,9 @@ enum class SETTING
     HIGH_RESOLUTION,
     WINDOW_OPACITY,
     CURVE_SMOOTHING,
-    BACKGROUND_STYLE
+    BACKGROUND_STYLE,
+    AUTO_SAVE,
+    AUTO_SAVE_NUMBER
 };
 
 class PreferenceManager : public BaseManager

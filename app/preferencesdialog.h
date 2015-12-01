@@ -58,9 +58,6 @@ Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
 
-    void autosaveChange(int);
-    void autosaveNumberChange(int);
-
     void lengthSizeChange(QString);
     void fontSizeChange(int);
     void frameSizeChange(int);
@@ -136,8 +133,17 @@ class FilesPage : public QWidget
 public:
     FilesPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+
+public slots:
+    void updateValues();
+    void autosaveChange(bool b);
+    void autosaveNumberChange(int number);
+
 private:
     PreferenceManager* mManager = nullptr;
+    QCheckBox* mAutosaveCheckBox;
+    QSpinBox* mAutosaveNumberBox;
+
 };
 
 

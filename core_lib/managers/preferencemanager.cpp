@@ -48,6 +48,9 @@ void PreferenceManager::loadPrefs()
 
     set( SETTING::BACKGROUND_STYLE, settings.value( SETTING_BACKGROUND_STYLE,   "white" ).toString() );
 
+    set( SETTING::AUTO_SAVE,        settings.value( SETTING_AUTO_SAVE,          true ).toBool() );
+    set( SETTING::AUTO_SAVE_NUMBER, settings.value( SETTING_AUTO_SAVE_NUMBER,   20 ).toInt() );
+
 
     set( SETTING::AXIS, false );
 //#define DRAW_AXIS
@@ -129,6 +132,9 @@ void PreferenceManager::set( SETTING option, int value )
     case SETTING::CURVE_SMOOTHING:
         settings.setValue( SETTING_CURVE_SMOOTHING, value );
         break;
+    case SETTING::AUTO_SAVE_NUMBER:
+        settings.setValue ( SETTING_AUTO_SAVE_NUMBER, value );
+        break;
     default:
         break;
     }
@@ -195,6 +201,9 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::HIGH_RESOLUTION:
         settings.setValue ( SETTING_HIGH_RESOLUTION, value );
+        break;
+    case SETTING::AUTO_SAVE:
+        settings.setValue ( SETTING_AUTO_SAVE, value );
         break;
     default:
         break;

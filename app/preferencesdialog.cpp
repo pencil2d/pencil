@@ -45,6 +45,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     
     FilesPage* file = new FilesPage( this );
     file->setManager( mPrefManager );
+    file->updateValues();
     
     TimelinePage* timeline = new TimelinePage( this );
     timeline->setManager( mPrefManager );
@@ -323,62 +324,27 @@ void GeneralPage::curveSmoothingChange(int value)
 
 void GeneralPage::highResCheckboxStateChanged( bool b )
 {
-    if ( b )
-    {
-        mManager->turnOn( SETTING::HIGH_RESOLUTION );
-    }
-    else
-    {
-        mManager->turnOff( SETTING::HIGH_RESOLUTION );
-    }
+    mManager->set( SETTING::HIGH_RESOLUTION, b );
 }
 
 void GeneralPage::shadowsCheckboxStateChanged( bool b )
 {
-    if ( b )
-    {
-        mManager->turnOn( SETTING::SHADOW );
-    }
-    else
-    {
-        mManager->turnOff( SETTING::SHADOW );
-    }
+    mManager->set( SETTING::SHADOW, b );
 }
 
 void GeneralPage::antiAliasCheckboxStateChanged( bool b )
 {
-    if ( b )
-    {
-        mManager->turnOn( SETTING::ANTIALIAS );
-    }
-    else
-    {
-        mManager->turnOff( SETTING::ANTIALIAS );
-    }
+    mManager->set( SETTING::ANTIALIAS, b );
 }
 
 void GeneralPage::blurryZoomCheckboxStateChanged( bool b )
 {
-    if ( b )
-    {
-        mManager->turnOn( SETTING::BLURRYZOOM );
-    }
-    else
-    {
-        mManager->turnOff( SETTING::BLURRYZOOM );
-    }
+    mManager->set( SETTING::BLURRYZOOM, b );
 }
 
 void GeneralPage::toolCursorsCheckboxStateChanged(bool b)
 {
-    if ( b )
-    {
-        mManager->turnOn( SETTING::TOOL_CURSOR );
-    }
-    else
-    {
-        mManager->turnOff( SETTING::TOOL_CURSOR );
-    }
+    mManager->set( SETTING::TOOL_CURSOR, b );
 }
 
 
@@ -440,37 +406,45 @@ TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
 
 FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
 {
-    QSettings settings("Pencil","Pencil");
-
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* autosaveBox = new QGroupBox(tr("Autosave documents"));
-    QCheckBox* autosaveCheckBox = new QCheckBox(tr("Enable autosave"));
+    mAutosaveCheckBox = new QCheckBox(tr("Enable autosave"));
     QLabel* autosaveNumberLabel = new QLabel(tr("Number of modifications before autosaving:"));
-    QSpinBox* autosaveNumberBox = new QSpinBox();
+    mAutosaveNumberBox = new QSpinBox();
 
-    autosaveNumberBox->setMinimum(5);
-    autosaveNumberBox->setMaximum(200);
-    autosaveNumberBox->setFixedWidth(50);
+    mAutosaveNumberBox->setMinimum(5);
+    mAutosaveNumberBox->setMaximum(200);
+    mAutosaveNumberBox->setFixedWidth(50);
 
-    autosaveCheckBox->setChecked(false);
-    if (settings.value("autosave")=="true") autosaveCheckBox->setChecked(true);
+    connect( mAutosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange );
+    connect(mAutosaveNumberBox, SIGNAL(valueChanged(int)), this, SLOT(autosaveNumberChange(int)));
 
-    autosaveNumberBox->setValue(settings.value("autosaveNumber").toInt());
-    if (settings.value("autosaveNumber").toInt()==0) autosaveNumberBox->setValue(20);
-
-    connect(autosaveNumberBox, SIGNAL(valueChanged(int)), parent, SIGNAL(autosaveNumberChange(int)));
-    connect(autosaveCheckBox, SIGNAL(stateChanged(int)), parent, SIGNAL(autosaveChange(int)));
-
-    lay->addWidget(autosaveCheckBox);
+    lay->addWidget(mAutosaveCheckBox);
     lay->addWidget(autosaveNumberLabel);
-    lay->addWidget(autosaveNumberBox);
+    lay->addWidget(mAutosaveNumberBox);
     autosaveBox->setLayout(lay);
 
     QVBoxLayout* lay2 = new QVBoxLayout();
     lay2->addWidget(autosaveBox);
     lay2->addStretch(1);
     setLayout(lay2);
+}
+
+void FilesPage::updateValues()
+{
+    mAutosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
+    mAutosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+}
+
+void FilesPage::autosaveChange(bool b)
+{
+    mManager->set(SETTING::AUTO_SAVE, b);
+}
+
+void FilesPage::autosaveNumberChange(int number)
+{
+    mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
 }
 
 ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)

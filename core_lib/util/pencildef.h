@@ -124,6 +124,7 @@ enum BackgroundStyle
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP             "Shortcuts"
+#define SETTING_AUTO_SAVE           "AutoSave"
 #define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
 #define SETTING_TOOL_CURSOR         "ToolCursors"
 #define SETTING_HIGH_RESOLUTION     "HighResPosition"
