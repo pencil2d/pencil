@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QDesktopWidget>
 #include <QDesktopServices>
+#include <QGraphicsDropShadowEffect>
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
@@ -71,17 +72,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
     //setCentralWidget( mScribbleArea );
 
-    mBackground = new QWidget();
-    mBackground->setStyleSheet("background-color:white;");
-
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->addWidget(mScribbleArea);
-
-    mBackground->setLayout(layout);
-
-    setCentralWidget(mBackground);
-
-
     Object* object = new Object();
     object->init();
 
@@ -92,7 +82,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
 
-    loadBackground();
+    //loadBackground();
 
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
@@ -115,12 +105,29 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
     mEditor->tools()->setDefaultTool();
+
+
+    // Show the UI over the background
+    //
+    mBackground = new BackgroundWidget();
+    mBackground->init(mEditor->preference());
+
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
+    layout->addWidget(mScribbleArea);
+
+    mBackground->setLayout(layout);
+
+    setCentralWidget(mBackground);
 }
 
 MainWindow2::~MainWindow2()
 {
     delete ui;
 }
+
 
 void MainWindow2::createDockWidgets()
 {
@@ -341,65 +348,6 @@ void MainWindow2::setOpacity( int opacity )
 {
     mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
     setWindowOpacity( opacity / 100.0 );
-}
-
-void MainWindow2::setBackground(int bgId)
-{
-    QString brushName = "white";
-    switch (bgId) {
-    case 1:
-        brushName = "checkerboard";
-        break;
-    case 2:
-        brushName = "white";
-        break;
-    case 3:
-        brushName = "grey";
-        break;
-    case 4:
-        brushName = "dots";
-        break;
-    case 5:
-        brushName = "weave";
-        break;
-    default:
-        break;
-    }
-    mEditor->preference()->set(SETTING::BACKGROUND_STYLE, brushName);
-
-    loadBackground();
-
-}
-
-void MainWindow2::loadBackground()
-{
-    QString brushName = mEditor->preference()->getString(SETTING::BACKGROUND_STYLE);
-
-    QBrush brush = QBrush( Qt::white );
-    if ( brushName == "white" )
-    {
-        mBackground->setStyleSheet("background-color:white;");
-    }
-    else if ( brushName == "grey" )
-    {
-        mBackground->setStyleSheet("background-color:lightGray;");
-    }
-    else if ( brushName == "checkerboard" )
-    {
-        mBackground->setStyleSheet("background-image: url(:background/checkerboard.png); background-repeat: repeat-xy;");
-    }
-    else if ( brushName == "dots" )
-    {
-        mBackground->setStyleSheet("background-image: url(:background/dots.png); background-repeat: repeat-xy;");
-    }
-    else if ( brushName == "weave" )
-    {
-        mBackground->setStyleSheet("background-image: url(:background/weave.jpg); background-repeat: repeat-xy;");
-    }
-    else if ( brushName == "grid" )
-    {
-        mBackground->setStyleSheet("background-image: url(:background/grid.jpg); background-repeat: repeat-xy;");
-    }
 }
 
 
@@ -843,7 +791,6 @@ void MainWindow2::preferences()
     connect( mPreferencesDialog, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
 
     connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( mPreferencesDialog, &PreferencesDialog::backgroundChange, this, &MainWindow2::setBackground );
 
     connect( mPreferencesDialog, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
     connect( mPreferencesDialog, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );

@@ -250,7 +250,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 
     auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
     connect( mWindowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
-    connect( mBackgroundButtons,  kButtonClicked,         preference, &PreferencesDialog::backgroundChange );
+    connect( mBackgroundButtons,  kButtonClicked,         this, &GeneralPage::backgroundChange );
     connect( mShadowsBox,         &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged );
     connect( mToolCursorsBox,     &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged );
     connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
@@ -260,6 +260,8 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 
     setLayout(lay);
 }
+
+
 
 void GeneralPage::updateValues()
 {
@@ -289,7 +291,30 @@ void GeneralPage::updateValues()
     }
 }
 
-
+void GeneralPage::backgroundChange(int value)
+{
+    QString brushName = "white";
+    switch (value) {
+    case 1:
+        brushName = "checkerboard";
+        break;
+    case 2:
+        brushName = "white";
+        break;
+    case 3:
+        brushName = "grey";
+        break;
+    case 4:
+        brushName = "dots";
+        break;
+    case 5:
+        brushName = "weave";
+        break;
+    default:
+        break;
+    }
+    mManager->set(SETTING::BACKGROUND_STYLE, brushName);
+}
 
 void GeneralPage::curveSmoothingChange(int value)
 {

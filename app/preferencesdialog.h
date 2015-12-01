@@ -56,7 +56,6 @@ public:
 
 Q_SIGNALS:
     void windowOpacityChange(int);
-    void backgroundChange(int);
     void curveOpacityChange(int);
 
     void autosaveChange(int);
@@ -117,7 +116,6 @@ private:
     QCheckBox* mBlurryZoomBox;
     QCheckBox* mHighResBox;
     QButtonGroup *mBackgroundButtons;
-
 
 };
 

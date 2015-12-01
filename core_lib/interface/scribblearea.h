@@ -182,7 +182,6 @@ public:
 
 private:
     void drawCanvas( int frame, QRect rect );
-    void drawShadow( QPainter& );
     void drawAxis( QPainter& );
     void drawGrid( QPainter& );
 

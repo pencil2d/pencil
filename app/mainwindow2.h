@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QDomElement>
 #include <QMainWindow>
+#include "backgroundwidget.h"
 
 template<typename T> class QList;
 class QActionGroup;
@@ -58,7 +59,6 @@ public:
 
 public:
     void setOpacity(int opacity);
-    void setBackground(int bgId);
     void undoActSetText(void);
     void undoActSetEnabled(void);
     void newDocument();
@@ -88,7 +88,6 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
-    void loadBackground();
 
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
@@ -136,7 +135,7 @@ private:
 
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
-    QWidget* mBackground;
+    BackgroundWidget* mBackground;
 };
 
 #endif // MAINWINDOW2_H

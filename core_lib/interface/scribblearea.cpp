@@ -921,13 +921,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     painter.drawRect( QRect( 0, 0, width(), height() ) );
 #endif
 
-    // shadow
-    bool isPlaying = editor()->playback()->isPlaying();
-    if ( mPrefs->isOn( SETTING::SHADOW ) && !isPlaying && ( !mMouseInUse || currentTool()->type() == HAND ) )
-    {
-        drawShadow( painter );
-    }
-
     event->accept();
 }
 
@@ -1089,8 +1082,8 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     int b = colour.blue();
     qreal a = colour.alphaF();
     gradient.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
     gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
+    gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
 }
 
 void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
@@ -1656,32 +1649,6 @@ void ScribbleArea::setPrevTool()
 }
 
 /* Render Canvas */
-void ScribbleArea::drawShadow( QPainter& painter )
-{
-    int radius1 = 12;
-    int radius2 = 8;
-
-    QLinearGradient shadow = QLinearGradient( 0, 0, 0, radius1 );
-    setGaussianGradient( shadow, Qt::black, 0.15, 0.0 );
-
-    painter.setPen( Qt::NoPen );
-    painter.setBrush( shadow );
-    painter.drawRect( QRect( 0, 0, width(), radius1 ) );
-
-    shadow.setFinalStop( radius1, 0 );
-    painter.setBrush( shadow );
-    painter.drawRect( QRect( 0, 0, radius1, height() ) );
-
-    shadow.setStart( 0, height() );
-    shadow.setFinalStop( 0, height() - radius2 );
-    painter.setBrush( shadow );
-    painter.drawRect( QRect( 0, height() - radius2, width(), height() ) );
-
-    shadow.setStart( width(), 0 );
-    shadow.setFinalStop( width() - radius2, 0 );
-    painter.setBrush( shadow );
-    painter.drawRect( QRect( width() - radius2, 0, width(), height() ) );
-}
 
 void ScribbleArea::paletteColorChanged(QColor color)
 {
