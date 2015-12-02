@@ -436,7 +436,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
     mMouseInUse = true;
 
     mStrokeManager->mousePressEvent( event );
-    if ( mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == false )
+    if ( !mStrokeManager->isTabletInUse() || currentTool()->properties.pressure == false )
     {
         mUsePressure = false;
         mStrokeManager->setPressure( 1.0 );
@@ -1081,9 +1081,14 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     int g = colour.green();
     int b = colour.blue();
     qreal a = colour.alphaF();
-    gradient.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
+
+    int mainColorAlpha = qRound( a * 255 * opacity );
+
+    int alphaAdded = qRound((mainColorAlpha * mOffset / 100) / 2);
+
+    gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );
     gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
+    gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, mainColorAlpha - alphaAdded ) );
 }
 
 void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )

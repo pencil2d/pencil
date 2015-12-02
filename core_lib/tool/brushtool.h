@@ -31,6 +31,7 @@ protected:
 
     BitmapImage img;
     QColor currentPressuredColor;
+    qreal mOpacity;
 };
 
 #endif // BRUSHTOOL_H

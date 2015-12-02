@@ -24,7 +24,7 @@ void PenTool::loadSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-    properties.feather = 30;
+    properties.feather = 80;
     properties.pressure = settings.value( "penPressure" ).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
