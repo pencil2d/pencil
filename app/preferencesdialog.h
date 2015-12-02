@@ -58,11 +58,6 @@ Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
 
-    void onionMaxOpacityChange(int);
-    void onionMinOpacityChange(int);
-    void onionPrevFramesNumChange(int);
-    void onionNextFramesNumChange(int);
-
 protected:
     void closeEvent( QCloseEvent* ) override;
 
@@ -162,10 +157,20 @@ class ToolsPage : public QWidget
 public:
     ToolsPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+
 public slots:
     void updateValues();
+    void onionMaxOpacityChange(int);
+    void onionMinOpacityChange(int);
+    void onionPrevFramesNumChange(int);
+    void onionNextFramesNumChange(int);
+
 private:
     PreferenceManager* mManager = nullptr;
+    QSpinBox* mOnionMaxOpacityBox;
+    QSpinBox* mOnionMinOpacityBox;
+    QSpinBox* mOnionPrevFramesNumBox;
+    QSpinBox* mOnionNextFramesNumBox;
 };
 
 #endif

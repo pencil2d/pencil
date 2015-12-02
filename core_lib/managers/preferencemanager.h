@@ -34,7 +34,11 @@ enum class SETTING
     FRAME_SIZE,
     TIMELINE_SIZE,
     LABEL_FONT_SIZE,
-    DRAW_LABEL
+    DRAW_LABEL,
+    ONION_MAX_OPACITY,
+    ONION_MIN_OPACITY,
+    ONION_PREV_FRAMES_NUM,
+    ONION_NEXT_FRAMES_NUM
 };
 
 class PreferenceManager : public BaseManager

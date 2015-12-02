@@ -489,45 +489,45 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
     QGroupBox* onionSkinBox = new QGroupBox(tr("Onion skin"));
     
     QLabel* onionMaxOpacityLabel = new QLabel(tr("Maximum onion opacity %"));
-    QSpinBox* onionMaxOpacityBox = new QSpinBox();
+    mOnionMaxOpacityBox = new QSpinBox();
     QLabel* onionMinOpacityLabel = new QLabel(tr("Minimum onion opacity %"));
-    QSpinBox* onionMinOpacityBox = new QSpinBox();
+    mOnionMinOpacityBox = new QSpinBox();
     QLabel* onionPrevFramesNumLabel = new QLabel(tr("Number of previous onion frames shown"));
-    QSpinBox* onionPrevFramesNumBox = new QSpinBox();
+    mOnionPrevFramesNumBox = new QSpinBox();
     QLabel* onionNextFramesNumLabel = new QLabel(tr("Number of next onion frames shown"));
-    QSpinBox* onionNextFramesNumBox = new QSpinBox();
+    mOnionNextFramesNumBox = new QSpinBox();
 
-    onionMaxOpacityBox->setMinimum(0);
-    onionMaxOpacityBox->setMaximum(100);
-    onionMaxOpacityBox->setFixedWidth(50);
-    onionMinOpacityBox->setMinimum(0);
-    onionMinOpacityBox->setMaximum(100);
-    onionMinOpacityBox->setFixedWidth(50);
-    onionPrevFramesNumBox->setMinimum(1);
-    onionPrevFramesNumBox->setMaximum(60);
-    onionPrevFramesNumBox->setFixedWidth(50);
-    onionNextFramesNumBox->setMinimum(1);
-    onionNextFramesNumBox->setMaximum(60);
-    onionNextFramesNumBox->setFixedWidth(50);
+    mOnionMaxOpacityBox->setMinimum(0);
+    mOnionMaxOpacityBox->setMaximum(100);
+    mOnionMaxOpacityBox->setFixedWidth(50);
+    mOnionMinOpacityBox->setMinimum(0);
+    mOnionMinOpacityBox->setMaximum(100);
+    mOnionMinOpacityBox->setFixedWidth(50);
+    mOnionPrevFramesNumBox->setMinimum(1);
+    mOnionPrevFramesNumBox->setMaximum(60);
+    mOnionPrevFramesNumBox->setFixedWidth(50);
+    mOnionNextFramesNumBox->setMinimum(1);
+    mOnionNextFramesNumBox->setMaximum(60);
+    mOnionNextFramesNumBox->setFixedWidth(50);
 
-    onionMaxOpacityBox->setValue(settings.value( SETTING_ONION_MAX_OPACITY ).toInt());
-    onionMinOpacityBox->setValue(settings.value( SETTING_ONION_MIN_OPACITY ).toInt());
-    onionPrevFramesNumBox->setValue(settings.value( SETTING_ONION_PREV_FRAMES_NUM).toInt());
-    onionNextFramesNumBox->setValue(settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).toInt());
+    mOnionMaxOpacityBox->setValue(settings.value( SETTING_ONION_MAX_OPACITY ).toInt());
+    mOnionMinOpacityBox->setValue(settings.value( SETTING_ONION_MIN_OPACITY ).toInt());
+    mOnionPrevFramesNumBox->setValue(settings.value( SETTING_ONION_PREV_FRAMES_NUM).toInt());
+    mOnionNextFramesNumBox->setValue(settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).toInt());
 
-    connect(onionMaxOpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionMaxOpacityChange(int)));
-    connect(onionMinOpacityBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionMinOpacityChange(int)));
-    connect(onionPrevFramesNumBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionPrevFramesNumChange(int)));
-    connect(onionNextFramesNumBox, SIGNAL(valueChanged(int)), parent, SIGNAL(onionNextFramesNumChange(int)));
+    connect(mOnionMaxOpacityBox, SIGNAL(valueChanged(int)), this, SLOT(onionMaxOpacityChange(int)));
+    connect(mOnionMinOpacityBox, SIGNAL(valueChanged(int)), this, SLOT(onionMinOpacityChange(int)));
+    connect(mOnionPrevFramesNumBox, SIGNAL(valueChanged(int)), this, SLOT(onionPrevFramesNumChange(int)));
+    connect(mOnionNextFramesNumBox, SIGNAL(valueChanged(int)), this, SLOT(onionNextFramesNumChange(int)));
 
     lay->addWidget(onionMaxOpacityLabel);
-    lay->addWidget(onionMaxOpacityBox);
+    lay->addWidget(mOnionMaxOpacityBox);
     lay->addWidget(onionMinOpacityLabel);
-    lay->addWidget(onionMinOpacityBox);
+    lay->addWidget(mOnionMinOpacityBox);
     lay->addWidget(onionPrevFramesNumLabel);
-    lay->addWidget(onionPrevFramesNumBox);
+    lay->addWidget(mOnionPrevFramesNumBox);
     lay->addWidget(onionNextFramesNumLabel);
-    lay->addWidget(onionNextFramesNumBox);
+    lay->addWidget(mOnionNextFramesNumBox);
     onionSkinBox->setLayout(lay);
 
     QVBoxLayout* lay2 = new QVBoxLayout();
@@ -538,5 +538,28 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
 
 void ToolsPage::updateValues()
 {
+    mOnionMaxOpacityBox->setValue(mManager->getInt(SETTING::ONION_MAX_OPACITY));
+    mOnionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
+    mOnionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
+    mOnionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
+}
 
+void ToolsPage::onionMaxOpacityChange(int value)
+{
+    mManager->set(SETTING::ONION_MAX_OPACITY, value);
+}
+
+void ToolsPage::onionMinOpacityChange(int value)
+{
+    mManager->set(SETTING::ONION_MIN_OPACITY, value);
+}
+
+void ToolsPage::onionPrevFramesNumChange(int value)
+{
+    mManager->set(SETTING::ONION_PREV_FRAMES_NUM, value);
+}
+
+void ToolsPage::onionNextFramesNumChange(int value)
+{
+    mManager->set(SETTING::ONION_NEXT_FRAMES_NUM, value);
 }

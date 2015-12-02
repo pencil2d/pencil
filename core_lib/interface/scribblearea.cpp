@@ -931,10 +931,10 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     RenderOptions options;
     options.bPrevOnionSkin = mPrefs->isOn( SETTING::PREV_ONION );
     options.bNextOnionSkin = mPrefs->isOn( SETTING::NEXT_ONION );
-    options.nPrevOnionSkinCount = mEditor->getOnionPrevFramesNum();
-    options.nNextOnionSkinCount = mEditor->getOnionNextFramesNum();
-    options.fOnionSkinMaxOpacity = mEditor->getOnionMaxOpacity();
-    options.fOnionSkinMinOpacity = mEditor->getOnionMinOpacity();
+    options.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    options.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    options.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    options.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     options.bAntiAlias = mPrefs->isOn( SETTING::ANTIALIAS );
     options.bBlurryZoom = mPrefs->isOn( SETTING::BLURRYZOOM );
     options.bGrid = mPrefs->isOn( SETTING::GRID );

@@ -29,41 +29,50 @@ void PreferenceManager::loadPrefs()
 
     // Display
     //
-    set( SETTING::GRID,             settings.value( SETTING_SHOW_GRID,          false ).toBool() );
-    set( SETTING::PREV_ONION,       settings.value( SETTING_PREV_ONION,         false ).toBool() );
-    set( SETTING::NEXT_ONION,       settings.value( SETTING_NEXT_ONION,         false ).toBool() );
-    set( SETTING::CAMERABORDER,     settings.value( SETTING_CAMERABORDER,       false ).toBool() );
-    set( SETTING::INVISIBLE_LINES,  settings.value( SETTING_INVISIBLE_LINES,    false ).toBool() );
-    set( SETTING::OUTLINES,         settings.value( SETTING_OUTLINES,           false ).toBool() );
-    set( SETTING::ONION_BLUE,       settings.value( SETTING_ONION_BLUE,         false ).toBool() );
-    set( SETTING::ONION_RED,        settings.value( SETTING_ONION_RED,          false ).toBool() );
-    set( SETTING::MIRROR_H,         false ); // Always off by default
-    set( SETTING::MIRROR_V,         false ); // Always off by default
+    set( SETTING::GRID,                     settings.value( SETTING_SHOW_GRID,              false ).toBool() );
+    set( SETTING::CAMERABORDER,             settings.value( SETTING_CAMERABORDER,           false ).toBool() );
+    set( SETTING::INVISIBLE_LINES,          settings.value( SETTING_INVISIBLE_LINES,        false ).toBool() );
+    set( SETTING::OUTLINES,                 settings.value( SETTING_OUTLINES,               false ).toBool() );
+    set( SETTING::MIRROR_H,                 false ); // Always off by default
+    set( SETTING::MIRROR_V,                 false ); // Always off by default
 
     // General
     //
-    set( SETTING::ANTIALIAS,        settings.value( SETTING_ANTIALIAS,          true ).toBool() );
-    set( SETTING::BLURRYZOOM,       settings.value( SETTING_BLURRYZOOM,         false ).toBool() );
-    set( SETTING::TOOL_CURSOR,      settings.value( SETTING_TOOL_CURSOR,        true ).toBool() );
-    set( SETTING::HIGH_RESOLUTION,  settings.value( SETTING_HIGH_RESOLUTION,    true ).toBool() );
-    set( SETTING::SHADOW,           settings.value( SETTING_SHADOW,             false ).toBool() );
+    set( SETTING::ANTIALIAS,                settings.value( SETTING_ANTIALIAS,              true ).toBool() );
+    set( SETTING::BLURRYZOOM,               settings.value( SETTING_BLURRYZOOM,             false ).toBool() );
+    set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
+    set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
+    set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
 
-    set( SETTING::WINDOW_OPACITY,   settings.value( SETTING_WINDOW_OPACITY,     0 ).toInt() );
-    set( SETTING::CURVE_SMOOTHING,  settings.value( SETTING_CURVE_SMOOTHING,    20 ).toInt() );
+    set( SETTING::WINDOW_OPACITY,           settings.value( SETTING_WINDOW_OPACITY,         0 ).toInt() );
+    set( SETTING::CURVE_SMOOTHING,          settings.value( SETTING_CURVE_SMOOTHING,        20 ).toInt() );
 
-    set( SETTING::BACKGROUND_STYLE, settings.value( SETTING_BACKGROUND_STYLE,   "white" ).toString() );
+    set( SETTING::BACKGROUND_STYLE,         settings.value( SETTING_BACKGROUND_STYLE,       "white" ).toString() );
 
     // Files
-    set( SETTING::AUTO_SAVE,        settings.value( SETTING_AUTO_SAVE,          true ).toBool() );
-    set( SETTING::AUTO_SAVE_NUMBER, settings.value( SETTING_AUTO_SAVE_NUMBER,   20 ).toInt() );
+    set( SETTING::AUTO_SAVE,                settings.value( SETTING_AUTO_SAVE,              true ).toBool() );
+    set( SETTING::AUTO_SAVE_NUMBER,         settings.value( SETTING_AUTO_SAVE_NUMBER,       20 ).toInt() );
 
     // Timeline
     //
-    set( SETTING::SHORT_SCRUB,      settings.value( SETTING_SHORT_SCRUB,        false ).toBool() );
-    set( SETTING::FRAME_SIZE,       settings.value( SETTING_FRAME_SIZE,         12 ).toInt() );
-    set( SETTING::TIMELINE_SIZE,    settings.value( SETTING_TIMELINE_SIZE,      240 ).toInt() );
-    set( SETTING::DRAW_LABEL,       settings.value( SETTING_DRAW_LABEL,         false ).toBool() );
-    set( SETTING::LABEL_FONT_SIZE,  settings.value( SETTING_LABEL_FONT_SIZE,    12 ).toInt() );
+    set( SETTING::SHORT_SCRUB,              settings.value( SETTING_SHORT_SCRUB,            false ).toBool() );
+    set( SETTING::FRAME_SIZE,               settings.value( SETTING_FRAME_SIZE,             12 ).toInt() );
+    set( SETTING::TIMELINE_SIZE,            settings.value( SETTING_TIMELINE_SIZE,          240 ).toInt() );
+    set( SETTING::DRAW_LABEL,               settings.value( SETTING_DRAW_LABEL,             false ).toBool() );
+    set( SETTING::LABEL_FONT_SIZE,          settings.value( SETTING_LABEL_FONT_SIZE,        12 ).toInt() );
+
+    // Onion Skin
+    //
+    set( SETTING::PREV_ONION,               settings.value( SETTING_PREV_ONION,             false ).toBool() );
+    set( SETTING::NEXT_ONION,               settings.value( SETTING_NEXT_ONION,             false ).toBool() );
+    set( SETTING::ONION_BLUE,               settings.value( SETTING_ONION_BLUE,             false ).toBool() );
+    set( SETTING::ONION_RED,                settings.value( SETTING_ONION_RED,              false ).toBool() );
+
+    set( SETTING::ONION_MAX_OPACITY,        settings.value( SETTING_ONION_MAX_OPACITY,      50 ).toInt() );
+    set( SETTING::ONION_MIN_OPACITY,        settings.value( SETTING_ONION_MIN_OPACITY,      20 ).toInt() );
+    set( SETTING::ONION_PREV_FRAMES_NUM,    settings.value( SETTING_ONION_PREV_FRAMES_NUM,  5 ).toInt() );
+    set( SETTING::ONION_NEXT_FRAMES_NUM,    settings.value( SETTING_ONION_NEXT_FRAMES_NUM,  5 ).toInt() );
+
 
     set( SETTING::AXIS, false );
 //#define DRAW_AXIS
@@ -172,6 +181,18 @@ void PreferenceManager::set( SETTING option, int value )
             value = 12;
         }
         settings.setValue ( SETTING_LABEL_FONT_SIZE, value );
+        break;
+    case SETTING::ONION_MAX_OPACITY:
+        settings.setValue ( SETTING_ONION_MAX_OPACITY, value );
+        break;
+    case SETTING::ONION_MIN_OPACITY:
+        settings.setValue ( SETTING_ONION_MIN_OPACITY, value );
+        break;
+    case SETTING::ONION_PREV_FRAMES_NUM:
+        settings.setValue ( SETTING_ONION_PREV_FRAMES_NUM, value );
+        break;
+    case SETTING::ONION_NEXT_FRAMES_NUM:
+        settings.setValue ( SETTING_ONION_NEXT_FRAMES_NUM, value );
         break;
     default:
         break;

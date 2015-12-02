@@ -786,11 +786,6 @@ void MainWindow2::preferences()
 
     connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
 
-    connect( mPreferencesDialog, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
-    connect( mPreferencesDialog, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
-    connect( mPreferencesDialog, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
-    connect( mPreferencesDialog, &PreferencesDialog::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
-
     clearKeyboardShortcuts();
     connect( mPreferencesDialog, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
 
