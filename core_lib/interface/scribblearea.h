@@ -73,7 +73,7 @@ public:
     bool isLayerPaintable() const;
 
 
-    void setEffect(SETTING e, bool isOn );
+    void setEffect( SETTING e, bool isOn );
 
     int showAllLayers() const { return mShowAllLayers; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
@@ -185,8 +185,6 @@ private:
     void drawAxis( QPainter& );
     void drawGrid( QPainter& );
 
-    void toggledOnionColor();
-
     void settingUpdated(SETTING setting);
 
     MoveMode mMoveMode = MIDDLE;
@@ -206,10 +204,8 @@ private:
     bool mMakeInvisible = false;
     bool mToolCursors   = true;
     qreal mCurveSmoothingLevel;
-    bool onionBlue = false;
-    bool onionRed  = false;
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
-    QColor onionColor;
+    QColor mOnionColor;
 
     bool mNeedUpdateAll = false;
   
@@ -240,7 +236,7 @@ private:
     CanvasRenderer mCanvasRenderer;
 
     // debug
-    QRectF debugRect;
+    QRectF mDebugRect;
     QLoggingCategory mLog;
 };
 
