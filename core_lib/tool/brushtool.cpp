@@ -93,7 +93,7 @@ QCursor BrushTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
-    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) ) // doesn't need else
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) // doesn't need else
     {
         return QCursor( QPixmap( ":icons/brush.png" ), 0, 13 );
     }

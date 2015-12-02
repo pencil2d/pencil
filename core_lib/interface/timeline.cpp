@@ -181,12 +181,6 @@ void TimeLine::initUI()
 
     setWindowFlags( Qt::WindowStaysOnTopHint );
 
-    connect( this, &TimeLine::lengthChange, mTracks, &TimeLineCells::lengthChange );
-    connect( this, &TimeLine::fontSizeChange, mTracks, &TimeLineCells::fontSizeChange );
-    connect( this, &TimeLine::frameSizeChange, mTracks, &TimeLineCells::frameSizeChange );
-    connect( this, &TimeLine::labelChange, mTracks, &TimeLineCells::labelChange );
-    connect( this, &TimeLine::scrubChange, mTracks, &TimeLineCells::scrubChange );
-
     connect( hScrollBar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange );
     connect( vScrollBar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
     connect( vScrollBar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );

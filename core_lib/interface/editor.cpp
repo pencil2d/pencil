@@ -66,27 +66,9 @@ static VectorImage g_clipboardVectorImage;
 
 Editor::Editor( QObject* parent ) : QObject( parent )
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-	mIsAutosave = settings.value( "autosave" ).toBool();
-	autosaveNumber = settings.value( "autosaveNumber" ).toInt();
-	if ( autosaveNumber == 0 )
-	{
-		autosaveNumber = 20;
-		settings.setValue( "autosaveNumber", 20 );
-    }
 	mBackupIndex = -1;
 	clipboardBitmapOk = false;
-	clipboardVectorOk = false;
-
-	if ( settings.value( SETTING_ONION_MAX_OPACITY ).isNull() ) settings.setValue( SETTING_ONION_MAX_OPACITY, 50 );
-	if ( settings.value( SETTING_ONION_MIN_OPACITY ).isNull() ) settings.setValue( SETTING_ONION_MIN_OPACITY, 20 );
-	if ( settings.value( SETTING_ONION_PREV_FRAMES_NUM ).isNull() ) settings.setValue( SETTING_ONION_PREV_FRAMES_NUM, 1 );
-	if ( settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).isNull() ) settings.setValue( SETTING_ONION_NEXT_FRAMES_NUM, 1 );
-
-	onionMaxOpacity = settings.value( SETTING_ONION_MAX_OPACITY ).toInt();
-	onionMinOpacity = settings.value( SETTING_ONION_MIN_OPACITY ).toInt();
-	onionPrevFramesNum = settings.value( SETTING_ONION_PREV_FRAMES_NUM ).toInt();
-	onionNextFramesNum = settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).toInt();
+	clipboardVectorOk = false;	
 }
 
 Editor::~Editor()
@@ -126,7 +108,15 @@ bool Editor::initialize( ScribbleArea* pScribbleArea )
 	}
     //setAcceptDrops( true ); // TODO: drop event
 
-	makeConnections();
+    makeConnections();
+
+    mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
+    autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+
+    onionMaxOpacity = mPreferenceManager->getInt(SETTING::ONION_MAX_OPACITY);
+    onionMinOpacity = mPreferenceManager->getInt(SETTING::ONION_MIN_OPACITY);
+    onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
 
 	return true;
 }
@@ -138,6 +128,7 @@ int Editor::currentFrame()
 
 void Editor::makeConnections()
 {
+    connect( mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated );
 	connect( QApplication::clipboard(), &QClipboard::dataChanged, this, &Editor::clipboardChanged );
 }
 
@@ -164,56 +155,30 @@ void Editor::dropEvent( QDropEvent* event )
 	}
 }
 
-void Editor::changeAutosave( int x )
+void Editor::settingUpdated(SETTING setting)
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-	if ( x == 0 )
-	{
-		mIsAutosave = false;
-		settings.setValue( "autosave", "false" );
-	}
-	else
-	{
-		mIsAutosave = true;
-		settings.setValue( "autosave", "true" );
-	}
-}
-
-void Editor::changeAutosaveNumber( int number )
-{
-	autosaveNumber = number;
-    QSettings settings( PENCIL2D, PENCIL2D );
-	settings.setValue( "autosaveNumber", number );
-}
-
-void Editor::onionMaxOpacityChangeSlot( int number )
-{
-	onionMaxOpacity = number;
-	QSettings settings( PENCIL2D, PENCIL2D );
-	settings.setValue( SETTING_ONION_MAX_OPACITY, number );
-}
-
-void Editor::onionMinOpacityChangeSlot( int number )
-{
-	onionMinOpacity = number;
-	QSettings settings( PENCIL2D, PENCIL2D );
-	settings.setValue( SETTING_ONION_MIN_OPACITY, number );
-}
-
-void Editor::onionPrevFramesNumChangeSlot( int number )
-{
-	onionPrevFramesNum = number;
-	QSettings settings( PENCIL2D, PENCIL2D );
-	settings.setValue( SETTING_ONION_PREV_FRAMES_NUM, number );
-	mScribbleArea->updateAllFrames();
-}
-
-void Editor::onionNextFramesNumChangeSlot( int number )
-{
-	onionNextFramesNum = number;
-	QSettings settings( PENCIL2D, PENCIL2D );
-	settings.setValue( SETTING_ONION_NEXT_FRAMES_NUM, number );
-	mScribbleArea->updateAllFrames();
+    switch (setting) {
+    case SETTING::AUTO_SAVE:
+        mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
+        break;
+    case SETTING::AUTO_SAVE_NUMBER:
+        autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+        break;
+    case SETTING::ONION_MAX_OPACITY:
+        onionMaxOpacity = mPreferenceManager->getInt(SETTING::ONION_MAX_OPACITY);
+        break;
+    case SETTING::ONION_MIN_OPACITY:
+        onionMinOpacity = mPreferenceManager->getInt(SETTING::ONION_MIN_OPACITY);
+        break;
+    case SETTING::ONION_PREV_FRAMES_NUM:
+        onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+        break;
+    case SETTING::ONION_NEXT_FRAMES_NUM:
+        onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+        break;
+    default:
+        break;
+    }
 }
 
 void Editor::backup( QString undoText )
@@ -553,7 +518,7 @@ void Editor::toggleMirrorV()
 void Editor::toggleShowAllLayers()
 {
 	mScribbleArea->toggleShowAllLayers();
-	emit updateTimeLine();
+    emit updateTimeLine();
 }
 
 void Editor::saveLength( QString x )

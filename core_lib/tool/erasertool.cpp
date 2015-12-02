@@ -87,7 +87,7 @@ QCursor EraserTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
-    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return circleCursors();
     }

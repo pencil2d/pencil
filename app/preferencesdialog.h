@@ -57,27 +57,6 @@ public:
 Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
-    void curveSmoothingChange(int);
-    void highResPositionChange(int);
-    void antialiasingChange(int);
-    void blurryZoomChange(int);
-    void backgroundChange(int);
-    void shadowsChange(int);
-    void toolCursorsChange(int);
-
-    void autosaveChange(int);
-    void autosaveNumberChange(int);
-
-    void lengthSizeChange(QString);
-    void fontSizeChange(int);
-    void frameSizeChange(int);
-    void labelChange(int);
-    void scrubChange(int);
-
-    void onionMaxOpacityChange(int);
-    void onionMinOpacityChange(int);
-    void onionPrevFramesNumChange(int);
-    void onionNextFramesNumChange(int);
 
 protected:
     void closeEvent( QCloseEvent* ) override;
@@ -100,20 +79,30 @@ public:
     GeneralPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
 
+
 public slots:
     void updateValues();
 
 private:
+    void shadowsCheckboxStateChanged(bool b);
     void antiAliasCheckboxStateChanged( bool b );
     void blurryZoomCheckboxStateChanged( bool b );
     void toolCursorsCheckboxStateChanged( bool b );
+    void highResCheckboxStateChanged(bool b);
+    void curveSmoothingChange(int value);
+    void backgroundChange(int value);
 
     PreferenceManager* mManager = nullptr;
 
+    QSlider* mWindowOpacityLevel;
+    QSlider* mCurveSmoothingLevel;
     QCheckBox* mShadowsBox;
     QCheckBox* mToolCursorsBox;
     QCheckBox* mAntialiasingBox;
     QCheckBox* mBlurryZoomBox;
+    QCheckBox* mHighResBox;
+    QButtonGroup *mBackgroundButtons;
+
 };
 
 class TimelinePage : public QWidget
@@ -122,8 +111,23 @@ class TimelinePage : public QWidget
 public:
     TimelinePage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+
+public slots:
+    void updateValues();
+
+    void lengthSizeChange(QString);
+    void fontSizeChange(int);
+    void frameSizeChange(int);
+    void labelChange(bool);
+    void scrubChange(bool);
+
 private:
     PreferenceManager* mManager = nullptr;
+    QCheckBox* mDrawLabel;
+    QSpinBox* mFontSize;
+    QSpinBox* mFrameSize;
+    QLineEdit* mLengthSize;
+    QCheckBox* mScrubBox;
 };
 
 class FilesPage : public QWidget
@@ -133,8 +137,17 @@ class FilesPage : public QWidget
 public:
     FilesPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+
+public slots:
+    void updateValues();
+    void autosaveChange(bool b);
+    void autosaveNumberChange(int number);
+
 private:
     PreferenceManager* mManager = nullptr;
+    QCheckBox* mAutosaveCheckBox;
+    QSpinBox* mAutosaveNumberBox;
+
 };
 
 
@@ -144,8 +157,20 @@ class ToolsPage : public QWidget
 public:
     ToolsPage(QWidget* parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
+
+public slots:
+    void updateValues();
+    void onionMaxOpacityChange(int);
+    void onionMinOpacityChange(int);
+    void onionPrevFramesNumChange(int);
+    void onionNextFramesNumChange(int);
+
 private:
     PreferenceManager* mManager = nullptr;
+    QSpinBox* mOnionMaxOpacityBox;
+    QSpinBox* mOnionMinOpacityBox;
+    QSpinBox* mOnionPrevFramesNumBox;
+    QSpinBox* mOnionNextFramesNumBox;
 };
 
 #endif
