@@ -60,8 +60,10 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bBlurryZoom );
     painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
 
-    painter.setClipRect( rect );
-    painter.setClipping( true );
+    // What is the goal of this? It breaks the bitmap frames by showing only the bottom right part.
+    //
+    //painter.setClipRect( rect );
+    //painter.setClipping( true );
 
     painter.setWorldMatrixEnabled( true );
 
