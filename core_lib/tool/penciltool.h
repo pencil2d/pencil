@@ -28,6 +28,8 @@ public:
 
 private:
     QColor currentPressuredColor;
+    QPointF lastBrushPoint;
+    qreal mOpacity;
 };
 
 #endif // PENCILTOOL_H

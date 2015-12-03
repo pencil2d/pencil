@@ -135,8 +135,9 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
         mScribbleArea->setAllDirty();
     }
 
-    startStroke();
     lastBrushPoint = getCurrentPoint();
+    startStroke();
+
 }
 
 void BrushTool::mouseReleaseEvent( QMouseEvent *event )
@@ -216,7 +217,7 @@ void BrushTool::drawStroke()
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
-        qreal brushStep = (0.5 * brushWidth); // + ((properties.feather/100.0) * brushWidth * 0.5);
+        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
         BlitRect rect;

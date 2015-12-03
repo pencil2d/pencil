@@ -1077,6 +1077,12 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
 void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal mOffset )
 {
+    if (mOffset < 0) {
+        mOffset = 0;
+    }
+    if (mOffset > 100) {
+        mOffset = 100;
+    }
     int r = colour.red();
     int g = colour.green();
     int b = colour.blue();
@@ -1091,14 +1097,27 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, mainColorAlpha - alphaAdded ) );
 }
 
+void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
+{
+    // TODO :
+    // if size is too small, make it a bit bigger and increase offset
+    //
+    qreal offset = 50;
+
+    brushWidth = brushWidth;
+
+    QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
+    setGaussianGradient( radialGrad, fillColour, opacity, offset );
+
+    QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
+
+    mBufferImg->drawEllipse( rectangle, Qt::NoPen, radialGrad,
+                             QPainter::CompositionMode_SourceOver, mPrefs->isOn( SETTING::ANTIALIAS ) );
+}
+
 void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
-    BitmapImage* tempBitmapImage = new BitmapImage;
-    tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour),
-                               QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
-    mBufferImg->paste( tempBitmapImage );
-    delete tempBitmapImage;
+    drawBrush(thePoint, brushWidth, 50, fillColour, opacity / 5);
 }
 
 void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity )

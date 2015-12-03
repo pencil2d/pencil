@@ -194,11 +194,10 @@ void PenTool::drawStroke()
         {
             QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
-            mScribbleArea->drawBrush( point,
-                                      brushWidth,
-                                      properties.feather,
-                                      mEditor->color()->frontColor(),
-                                      opacity );
+            mScribbleArea->drawPen( point,
+                                    brushWidth,
+                                    mEditor->color()->frontColor(),
+                                    opacity );
 
             if ( i == ( steps - 1 ) )
             {
