@@ -10,6 +10,12 @@
 
 SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max, QWidget* parent ) : QWidget( parent )
 {
+    if ( type == LOG )
+    {
+        // important! dividing by zero is not acceptable.
+        Q_ASSERT_X( min > 0.f , "SpinSlider" , "Real type value must larger than 0!!" );
+    }
+
     mValue = 1.0;
     mGrowthType = type;
     mValueType = dataType;
