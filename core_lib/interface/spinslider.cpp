@@ -84,7 +84,7 @@ void SpinSlider::setValue( qreal v )
     }
     if ( mGrowthType == LOG )
     {
-        value2 = std::round( 100.0 * std::log( value / 0.2 ) / log( 1000.0 ) );
+        value2 = std::round( std::log( v / mMin ) * 100.0 / std::log( mMax / mMin ) );
     }
     //qDebug() << "Position! " << value2;
     
