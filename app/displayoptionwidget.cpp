@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include "preferencemanager.h"
 #include "scribblearea.h"
+#include "editor.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget( QWidget *parent ) : BaseDockWidget( parent )
@@ -31,10 +32,8 @@ void DisplayOptionWidget::initUI()
 
 void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 {
-    mEditor = editor;
-    PreferenceManager* prefs = mEditor->preference();
-
-	ScribbleArea* pScriArea = editor->getScribbleArea();
+    PreferenceManager* prefs = editor->preference();
+    ScribbleArea* pScriArea = editor->getScribbleArea();
 
 	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
 	connect( ui->outLinesButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOutlines);
@@ -56,7 +55,7 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 
 void DisplayOptionWidget::updateUI()
 {
-    PreferenceManager* prefs = mEditor->preference();
+    PreferenceManager* prefs = editor()->preference();
 
     QSignalBlocker b( ui->thinLinesButton );
     ui->thinLinesButton->setChecked( prefs->isOn( SETTING::INVISIBLE_LINES ) );

@@ -23,11 +23,8 @@ public:
 
     void makeConnectionToEditor(Editor* editor);
 
-
 private:
     Ui::DisplayOption* ui = nullptr;
-
-    Editor* mEditor;
 };
 
 #endif // DISPLAYOPTIONDOCKWIDGET_H
