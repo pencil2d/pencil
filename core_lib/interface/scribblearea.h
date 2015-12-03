@@ -72,7 +72,6 @@ public:
     bool areLayersSane() const;
     bool isLayerPaintable() const;
 
-
     void setEffect( SETTING e, bool isOn );
 
     int showAllLayers() const { return mShowAllLayers; }

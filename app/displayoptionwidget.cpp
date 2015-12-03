@@ -25,7 +25,8 @@ DisplayOptionWidget::~DisplayOptionWidget()
 }
 
 void DisplayOptionWidget::initUI()
-{    
+{
+    updateUI();
 }
 
 void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
@@ -45,34 +46,42 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
     connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
-    connect(prefs,            &PreferenceManager::prefsLoaded, this, &DisplayOptionWidget::loadUI);
     connect(prefs,            &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
 
     updateUI();
 
-
-    // FIXME
 	//connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
     //connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
-}
-
-void DisplayOptionWidget::loadUI()
-{
-    updateUI();
 }
 
 void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = mEditor->preference();
 
-    ui->thinLinesButton->setChecked(prefs->isOn(SETTING::INVISIBLE_LINES));
-    ui->outLinesButton->setChecked(prefs->isOn(SETTING::OUTLINES));
-    ui->onionPrevButton->setChecked(prefs->isOn(SETTING::PREV_ONION));
-    ui->onionNextButton->setChecked(prefs->isOn(SETTING::NEXT_ONION));
-    ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
-    ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
-    ui->mirrorButton->setChecked(prefs->isOn(SETTING::MIRROR_H));
-    ui->mirrorVButton->setChecked(prefs->isOn(SETTING::MIRROR_V));
-    ui->cameraBorderButton->setChecked(prefs->isOn(SETTING::CAMERABORDER));
-
+    QSignalBlocker b( ui->thinLinesButton );
+    ui->thinLinesButton->setChecked( prefs->isOn( SETTING::INVISIBLE_LINES ) );
+    
+    QSignalBlocker b2( ui->outLinesButton );
+    ui->outLinesButton->setChecked( prefs->isOn( SETTING::OUTLINES ) );
+    
+    QSignalBlocker b3( ui->onionPrevButton );
+    ui->onionPrevButton->setChecked( prefs->isOn( SETTING::PREV_ONION ) );
+    
+    QSignalBlocker b4( ui->onionNextButton );
+    ui->onionNextButton->setChecked( prefs->isOn( SETTING::NEXT_ONION ) );
+    
+    QSignalBlocker b5( ui->onionBlueButton );
+    ui->onionBlueButton->setChecked( prefs->isOn( SETTING::ONION_BLUE ) );
+    
+    QSignalBlocker b6( ui->onionRedButton );
+    ui->onionRedButton->setChecked( prefs->isOn( SETTING::ONION_RED ) );
+    
+    QSignalBlocker b7( ui->mirrorButton );
+    ui->mirrorButton->setChecked( prefs->isOn( SETTING::MIRROR_H ) );
+    
+    QSignalBlocker b8( ui->mirrorVButton );
+    ui->mirrorVButton->setChecked( prefs->isOn( SETTING::MIRROR_V ) );
+    
+    QSignalBlocker b9( ui->cameraBorderButton );
+    ui->cameraBorderButton->setChecked( prefs->isOn( SETTING::CAMERABORDER ) );
 }

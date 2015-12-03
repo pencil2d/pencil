@@ -24,10 +24,6 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 
-public slots:
-    void loadUI();
-
-
 private:
     Ui::DisplayOption* ui = nullptr;
 
