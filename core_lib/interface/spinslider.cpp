@@ -55,8 +55,14 @@ void SpinSlider::changeValue(qreal value)
 void SpinSlider::changeValue(int value)
 {
     qreal value2 = 0.0;
-    if (type=="linear") value2 = min + value*(max-min)/100;
-    if (type=="log") value2 = min * std::exp( value*std::log(max/min) / 100 );
+    if ( type == "linear" )
+    {
+        value2 = min + value*( max - min ) / 100;
+    }
+    else if ( type == "log" )
+    {
+        value2 = min * std::exp( value*std::log( max / min ) / 100 );
+    }
     changeValue(value2);
 }
 

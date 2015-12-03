@@ -32,14 +32,12 @@ void BrushTool::loadSettings()
     m_enabledProperties[FEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
 
-
-
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "brushWidth" ).toDouble();
-    properties.feather = settings.value( "brushFeather" ).toDouble();
+    properties.feather = settings.value( "brushFeather", 15.0 ).toDouble();
 
-    properties.pressure = settings.value( "brushPressure" ).toBool();
+    properties.pressure = settings.value( "brushPressure", true ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
 
@@ -48,8 +46,11 @@ void BrushTool::loadSettings()
     if ( properties.width <= 0 )
     {
         setWidth(15);
-        setFeather(15);
-        setPressure(1);
+    }
+
+    if ( isnan( properties.feather ) )
+    {
+        setFeather( 15 );
     }
 }
 
@@ -59,7 +60,7 @@ void BrushTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("brushWidth", width);
     settings.sync();
 }
@@ -70,7 +71,7 @@ void BrushTool::setFeather( const qreal feather )
     properties.feather = feather;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("brushFeather", feather);
     settings.sync();
 }
@@ -81,7 +82,7 @@ void BrushTool::setPressure( const bool pressure )
     properties.pressure = pressure;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("brushPressure", pressure);
     settings.sync();
 }

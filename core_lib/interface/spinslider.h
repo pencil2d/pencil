@@ -24,7 +24,8 @@ private:
     QLabel* valueLabel;
     QSlider* slider;
     qreal value, min, max;
-    QString type, dataType;
+    QString type;
+    QString dataType;
 };
 
 #endif // SPINSLIDER_H

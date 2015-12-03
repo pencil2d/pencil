@@ -30,11 +30,11 @@ void ToolOptionWidget::updateUI()
 
     disableAllOptions();
 
-    sizeSlider->setVisible( currentTool->isPropertyEnabled( WIDTH ) );
-    featherSlider->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
-    usePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
-    makeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
-    preserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
+    mSizeSlider->setVisible( currentTool->isPropertyEnabled( WIDTH ) );
+    mFeatherSlider->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
+    mUsePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
+    mMakeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
+    mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
 
     const Properties& p = currentTool->properties;
 
@@ -56,34 +56,34 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    sizeSlider = new SpinSlider( tr( "Size" ), "log", "real", 0.1, 200.0, this );
-    sizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
-    sizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
+    mSizeSlider = new SpinSlider( tr( "Size" ), "log", "real", 0.1, 200.0, this );
+    mSizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
+    mSizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    featherSlider = new SpinSlider( tr( "Feather" ), "log", "real", 0.0, 100.0, this );
-    featherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
-    featherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
+    mFeatherSlider = new SpinSlider( tr( "Feather" ), "log", "real", 0.0, 100.0, this );
+    mFeatherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
+    mFeatherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 
-    usePressureBox = new QCheckBox( tr( "Pressure" ) );
-    usePressureBox->setToolTip( tr( "Size with pressure" ) );
-    usePressureBox->setFont( QFont( "Helvetica", 10 ) );
-    usePressureBox->setChecked( true );
+    mUsePressureBox = new QCheckBox( tr( "Pressure" ) );
+    mUsePressureBox->setToolTip( tr( "Size with pressure" ) );
+    mUsePressureBox->setFont( QFont( "Helvetica", 10 ) );
+    mUsePressureBox->setChecked( true );
 
-    makeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
-    makeInvisibleBox->setToolTip( tr( "Make invisible" ) );
-    makeInvisibleBox->setFont( QFont( "Helvetica", 10 ) );
-    makeInvisibleBox->setChecked( false );
+    mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
+    mMakeInvisibleBox->setToolTip( tr( "Make invisible" ) );
+    mMakeInvisibleBox->setFont( QFont( "Helvetica", 10 ) );
+    mMakeInvisibleBox->setChecked( false );
 
-    preserveAlphaBox = new QCheckBox( tr( "Alpha" ) );
-    preserveAlphaBox->setToolTip( tr( "Preserve Alpha" ) );
-    preserveAlphaBox->setFont( QFont( "Helvetica", 10 ) );
-    preserveAlphaBox->setChecked( false );
+    mPreserveAlphaBox = new QCheckBox( tr( "Alpha" ) );
+    mPreserveAlphaBox->setToolTip( tr( "Preserve Alpha" ) );
+    mPreserveAlphaBox->setFont( QFont( "Helvetica", 10 ) );
+    mPreserveAlphaBox->setChecked( false );
 
-    pLayout->addWidget( sizeSlider, 8, 0, 1, 2 );
-    pLayout->addWidget( featherSlider, 9, 0, 1, 2 );
-    pLayout->addWidget( usePressureBox, 11, 0, 1, 2 );
-    pLayout->addWidget( preserveAlphaBox, 12, 0, 1, 2 );
-    pLayout->addWidget( makeInvisibleBox, 14, 0, 1, 2 );
+    pLayout->addWidget( mSizeSlider, 8, 0, 1, 2 );
+    pLayout->addWidget( mFeatherSlider, 9, 0, 1, 2 );
+    pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
+    pLayout->addWidget( mPreserveAlphaBox, 12, 0, 1, 2 );
+    pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
 
     pLayout->setRowStretch( 15, 1 );
 
@@ -96,12 +96,12 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 {
     auto toolManager = editor->tools();
 
-    connect( usePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure );
-    connect( makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility );
-    connect( preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha );
+    connect( mUsePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure );
+    connect( mMakeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility );
+    connect( mPreserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha );
 
-    connect( sizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth );
-    connect( featherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather );
+    connect( mSizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth );
+    connect( mFeatherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather );
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -110,7 +110,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType ePropertyType )
 {
     const Properties& p = editor()->tools()->currentTool()->properties;
-
+    qDebug() << p.feather;
     switch ( ePropertyType )
     {
         case WIDTH: 
@@ -138,46 +138,46 @@ void ToolOptionWidget::onToolChanged( ToolType )
 
 void ToolOptionWidget::setPenWidth( qreal width )
 {
-    QSignalBlocker b( sizeSlider );
-    sizeSlider->setEnabled( true );
-    sizeSlider->setValue( width );
+    QSignalBlocker b( mSizeSlider );
+    mSizeSlider->setEnabled( true );
+    mSizeSlider->setValue( width );
 }
 
 void ToolOptionWidget::setPenFeather( qreal featherValue )
 {
-    QSignalBlocker b( featherSlider );
-    featherSlider->setEnabled( true );
-    featherSlider->setValue( featherValue );
+    QSignalBlocker b( mFeatherSlider );
+    mFeatherSlider->setEnabled( true );
+    mFeatherSlider->setValue( featherValue );
 }
 
 void ToolOptionWidget::setPenInvisibility( int x )
 {
-    QSignalBlocker b( makeInvisibleBox );
-    makeInvisibleBox->setEnabled( true );
-    makeInvisibleBox->setChecked( x > 0 );
+    QSignalBlocker b( mMakeInvisibleBox );
+    mMakeInvisibleBox->setEnabled( true );
+    mMakeInvisibleBox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setPressure( int x )
 {
-    QSignalBlocker b( usePressureBox );
-    usePressureBox->setEnabled( true );
-    usePressureBox->setChecked( x > 0 );
+    QSignalBlocker b( mUsePressureBox );
+    mUsePressureBox->setEnabled( true );
+    mUsePressureBox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setPreserveAlpha( int x )
 {
     qDebug() << "Setting - Preserve Alpha=" << x;
 
-    QSignalBlocker b( preserveAlphaBox );
-    preserveAlphaBox->setEnabled( true );
-    preserveAlphaBox->setChecked( x > 0 );
+    QSignalBlocker b( mPreserveAlphaBox );
+    mPreserveAlphaBox->setEnabled( true );
+    mPreserveAlphaBox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::disableAllOptions()
 {
-    sizeSlider->hide();
-    featherSlider->hide();
-    usePressureBox->hide();
-    makeInvisibleBox->hide();
-    preserveAlphaBox->hide();
+    mSizeSlider->hide();
+    mFeatherSlider->hide();
+    mUsePressureBox->hide();
+    mMakeInvisibleBox->hide();
+    mPreserveAlphaBox->hide();
 }
