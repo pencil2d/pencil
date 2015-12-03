@@ -35,15 +35,15 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     mSlider->setMaximum( 100 );
     mSlider->setMaximumWidth( 70 );
 
-    QGridLayout* lay = new QGridLayout();
-    lay->setMargin( 2 );
-    lay->setSpacing( 2 );
+    QGridLayout* layout = new QGridLayout();
+    layout->setMargin( 2 );
+    layout->setSpacing( 2 );
 
-    lay->addWidget( label, 0, 0, 1, 1 );
-    lay->addWidget( mValueLabel, 0, 1, 1, 1 );
-    lay->addWidget( mSlider, 1, 0, 1, 2 );
+    layout->addWidget( label, 0, 0, 1, 1 );
+    layout->addWidget( mValueLabel, 0, 1, 1, 1 );
+    layout->addWidget( mSlider, 1, 0, 1, 2 );
 
-    setLayout(lay);
+    setLayout( layout );
     setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
 
     connect( mSlider, &QSlider::valueChanged,   this, &SpinSlider::onSliderValueChanged );
