@@ -45,7 +45,7 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
     connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
-    connect(prefs,            &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
+    connect( prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI );
 
     updateUI();
 
