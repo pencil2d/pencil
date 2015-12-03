@@ -11,21 +11,39 @@ class SpinSlider : public QWidget
 {
     Q_OBJECT
 public:
-    SpinSlider(QString text, QString type, QString dataType, qreal min, qreal max, QWidget* parent = 0);
-public slots:
-    void changeValue(qreal);
-    void changeValue(int);
-    void setValue(qreal);
-    void sliderReleased();
-    void sliderMoved(int);
+    enum GROWTH_TYPE
+    {
+        LINEAR,
+        LOG,
+    };
+
+    enum VALUE_TYPE
+    {
+        INTEGER,
+        FLOAT,
+    };
+
+    SpinSlider( QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max, QWidget* parent = 0 );
+    void setValue( qreal );
+    
 signals:
     void valueChanged(qreal);
+
 private:
-    QLabel* valueLabel;
-    QSlider* slider;
-    qreal value, min, max;
-    QString type;
-    QString dataType;
+    void onSliderValueChanged( int );
+    void sliderReleased();
+    void sliderMoved( int );
+    void changeValue( qreal );
+
+private:
+    QLabel*  mValueLabel = nullptr;
+    QSlider* mSlider     = nullptr;
+    qreal mValue = 50.0;
+    qreal mMin   = 0.1;
+    qreal mMax   = 100.0;
+
+    GROWTH_TYPE mGrowthType = LINEAR;
+    VALUE_TYPE  mValueType  = INTEGER;
 };
 
 #endif // SPINSLIDER_H

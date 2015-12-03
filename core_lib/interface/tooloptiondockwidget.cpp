@@ -56,11 +56,11 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    mSizeSlider = new SpinSlider( tr( "Size" ), "log", "real", 0.1, 200.0, this );
+    mSizeSlider = new SpinSlider( tr( "Size" ), SpinSlider::LOG, SpinSlider::FLOAT, 0.1, 200.0, this );
     mSizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
     mSizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    mFeatherSlider = new SpinSlider( tr( "Feather" ), "log", "real", 0.0, 100.0, this );
+    mFeatherSlider = new SpinSlider( tr( "Feather" ), SpinSlider::LOG, SpinSlider::FLOAT, 2.0, 64.0, this );
     mFeatherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
     mFeatherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 
@@ -110,7 +110,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType ePropertyType )
 {
     const Properties& p = editor()->tools()->currentTool()->properties;
-    qDebug() << p.feather;
+    
     switch ( ePropertyType )
     {
         case WIDTH: 
