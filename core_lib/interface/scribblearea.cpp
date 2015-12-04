@@ -115,6 +115,18 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::TOOL_CURSOR:
         updateToolCursor();
         break;
+    case SETTING::ONION_PREV_FRAMES_NUM:
+        updateAllFrames();
+        break;
+    case SETTING::ONION_NEXT_FRAMES_NUM:
+        updateAllFrames();
+        break;
+    case SETTING::ONION_MIN_OPACITY:
+        updateAllFrames();
+        break;
+    case SETTING::ONION_MAX_OPACITY:
+        updateAllFrames();
+        break;
     default:
         break;
     }
@@ -433,6 +445,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
     mMouseInUse = true;
 
     mStrokeManager->mousePressEvent( event );
+
     mUsePressure = currentTool()->properties.pressure;
 
     if ( !( mStrokeManager->isTabletInUse() && currentTool()->properties.pressure ) )
@@ -926,6 +939,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     RenderOptions options;
     options.bPrevOnionSkin = mPrefs->isOn( SETTING::PREV_ONION );
     options.bNextOnionSkin = mPrefs->isOn( SETTING::NEXT_ONION );
+    options.bColorizePrevOnion = mPrefs->isOn(SETTING::ONION_RED);
+    options.bColorizeNextOnion = mPrefs->isOn(SETTING::ONION_BLUE);
     options.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
     options.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
     options.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
@@ -946,149 +961,51 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame, rect );
 
     return;
-
-    // Merge the different layers into the ScribbleArea.
-    QPainter painter( &mCanvas );
-    painter.setClipRect( rect );
-    painter.setClipping( true );
-
-    //painter.setTransform( mEditor->view()->getView() );
-    //painter.setWorldMatrixEnabled( true );
-
-    // background
-    //painter.setPen( Qt::NoPen );
-    //painter.setBrush( mBackgroundBrush );
-    //painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
-
-    QRectF viewRect = getViewRect();
-    QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
-
-    qreal opacity;
-
-    /*
-    if ( onionBlue || onionRed )
-    {
-        painter.setOpacity( 1.0 );
-        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-        if ( onionBlue && onionRed && mPrefs->isOn( EFFECT_NEXT_ONION ) )
-        {
-            painter.fillRect( viewRect, Qt::red );
-        }
-        else
-        {
-            painter.fillRect( viewRect, onionColor );
-        }
-        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-    }
-    */
-
-    // --- current frame ---
-    for ( int i = 0; i < object->getLayerCount(); i++ )
-    {
-        opacity = 1.0;
-        if ( i != mEditor->layers()->currentLayerIndex() && ( mShowAllLayers == 1 ) ) { opacity = 0.4; }
-
-        if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
-        Layer *layer = ( object->getLayer( i ) );
-        if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) )
-        {
-            // paints the bitmap images
-            if ( layer->type() == Layer::BITMAP )
-            {
-                LayerBitmap *layerBitmap = ( LayerBitmap * )layer;
-                BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
-                if ( bitmapImage != NULL )
-                {
-                    painter.setWorldMatrixEnabled( true );
-                    painter.setOpacity( opacity );
-                    if ( i == mEditor->layers()->currentLayerIndex()
-                         && somethingSelected
-                         && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
-                    {
-                        // hole in the original selection -- might support arbitrary shapes in the future
-
-                        painter.setClipping( true );
-
-                        QRegion clip = QRegion( mySelection.toRect() );
-                        QRegion totalImage = QRegion( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ).toRect() );
-                        QRegion ImageWithHole = totalImage -= clip;
-                        painter.setClipRegion( ImageWithHole, Qt::ReplaceClip );
-                        //painter.drawImage(bitmapImage->topLeft(), *(bitmapImage->image) );
-                        bitmapImage->paintImage( painter );
-                        painter.setClipping( false );
-                        // transforms the bitmap selection
-                        bool smoothTransform = false;
-
-                        if ( myTempTransformedSelection.width() != mySelection.width()
-                             || myTempTransformedSelection.height() != mySelection.height()
-                             || myRotatedAngle != 0 )
-                        {
-                            smoothTransform = true;
-                        }
-                        BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
-                        selectionClip.transform( myTransformedSelection, smoothTransform );
-                        QTransform rm;
-
-                        //TODO: complete matrix calls ( sounds funny :)
-                        rm.scale( myFlipX, myFlipY );
-                        rm.rotate( myRotatedAngle );
-                        QImage* rotImg = new QImage( selectionClip.image()->transformed( rm ) );
-                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
-                                             ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
-                        selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
-                        selectionClip.bounds().translate( dxy );
-                        selectionClip.paintImage( painter );
-                    }
-                    else
-                    {
-                        bitmapImage->paintImage( painter );
-                    }
-                }
-            }
-            // paints the vector images
-            if ( layer->type() == Layer::VECTOR )
-            {
-                LayerVector *layerVector = ( LayerVector * )layer;
-                VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( frame, 0 );
-                if ( somethingSelected )
-                {
-                    // transforms the vector selection
-                    //calculateSelectionTransformation();
-                    vectorImage->setSelectionTransformation( selectionTransformation );
-                    //vectorImage->setTransformedSelection(myTempTransformedSelection);
-                }
-                QTransform view = mEditor->view()->getView();
-                QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                vectorImage->outputImage( pImage.data(), view, mPrefs->isOn( SETTING::OUTLINES ), mPrefs->isOn( SETTING::INVISIBLE_LINES ), mPrefs->isOn( SETTING::ANTIALIAS ) );
-
-                painter.setWorldMatrixEnabled( false );
-                painter.setOpacity( opacity );
-                painter.drawImage( QPoint( 0, 0 ), *pImage );
-            }
-        }
-    }
-    painter.end();
 }
 
 void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal mOffset )
 {
+    if (mOffset < 0) {
+        mOffset = 0;
+    }
+    if (mOffset > 100) {
+        mOffset = 100;
+    }
     int r = colour.red();
     int g = colour.green();
     int b = colour.blue();
     qreal a = colour.alphaF();
-    gradient.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
-    gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, qRound( a * 255 * opacity ) ) );
+
+    int mainColorAlpha = qRound( a * 255 * opacity );
+
+    int alphaAdded = qRound((mainColorAlpha * mOffset / 100) / 2);
+
+    gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );
     gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
+    gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, mainColorAlpha - alphaAdded ) );
+}
+
+void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
+{
+    // TODO :
+    // if size is too small, make it a bit bigger and increase offset
+    //
+    qreal offset = 50;
+
+    brushWidth = brushWidth;
+
+    QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
+    setGaussianGradient( radialGrad, fillColour, opacity, offset );
+
+    QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
+
+    mBufferImg->drawEllipse( rectangle, Qt::NoPen, radialGrad,
+                             QPainter::CompositionMode_SourceOver, mPrefs->isOn( SETTING::ANTIALIAS ) );
 }
 
 void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
-    BitmapImage* tempBitmapImage = new BitmapImage;
-    tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour),
-                               QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
-    mBufferImg->paste( tempBitmapImage );
-    delete tempBitmapImage;
+    drawBrush(thePoint, brushWidth, 50, fillColour, opacity / 5);
 }
 
 void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity )

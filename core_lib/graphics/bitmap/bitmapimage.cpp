@@ -475,12 +475,15 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
     if (mImage != NULL && !mImage->isNull() )
     {
         QPainter painter(mImage);
-        painter.setCompositionMode(cm);
+
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
         //if (brush == Qt::NoBrush)
+
+        painter.setCompositionMode(cm);
         painter.drawEllipse( rectangle.translated(-topLeft()) );
+
         painter.end();
     }
 }

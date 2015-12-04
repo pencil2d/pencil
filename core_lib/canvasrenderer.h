@@ -68,8 +68,8 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
-    void paintVectorFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
+    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
+    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
 
     void paintAxis( QPainter& painter );
     void paintGrid( QPainter& painter );

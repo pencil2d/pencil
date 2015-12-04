@@ -24,7 +24,7 @@ void PenTool::loadSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-    properties.feather = 30;
+    properties.feather = 80;
     properties.pressure = settings.value( "penPressure" ).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
@@ -194,11 +194,10 @@ void PenTool::drawStroke()
         {
             QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
-            mScribbleArea->drawBrush( point,
-                                      brushWidth,
-                                      properties.feather,
-                                      mEditor->color()->frontColor(),
-                                      opacity );
+            mScribbleArea->drawPen( point,
+                                    brushWidth,
+                                    mEditor->color()->frontColor(),
+                                    opacity );
 
             if ( i == ( steps - 1 ) )
             {

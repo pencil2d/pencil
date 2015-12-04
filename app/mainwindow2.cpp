@@ -397,7 +397,7 @@ void MainWindow2::openDocument()
     {
         QSettings settings( PENCIL2D, PENCIL2D );
 
-        QString strLastOpenPath = settings.value( "lastFilePath", QDir::homePath() ).toString();
+        QString strLastOpenPath = settings.value( LAST_FILE_PATH, QDir::homePath() ).toString();
         QString fileName = QFileDialog::getOpenFileName( this,
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
@@ -427,8 +427,8 @@ bool MainWindow2::saveAsNewDocument()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
 
-    QString strLastFolder = settings.value( "lastFilePath", QDir::homePath() ).toString();
-    if ( strLastFolder.isEmpty() )
+    QString strLastFolder = settings.value( LAST_FILE_PATH, QDir::homePath() ).toString();
+    if ( strLastFolder.isEmpty() || !QDir(strLastFolder).exists() )
     {
         strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
     }
@@ -446,7 +446,7 @@ bool MainWindow2::saveAsNewDocument()
     {
         fileName = fileName + PFF_EXTENSION;
     }
-    settings.setValue( "lastFilePath", QVariant( fileName ) );
+    settings.setValue( LAST_FILE_PATH, QVariant( fileName ) );
 
     return saveObject( fileName );
 
@@ -483,7 +483,7 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setObject( object );
 
     QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue( "LastFilePath", object->filePath() );
+    settings.setValue( LAST_FILE_PATH, object->filePath() );
 
     mRecentFileMenu->addRecentFile( object->filePath() );
     mRecentFileMenu->saveToDisk();
@@ -510,7 +510,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.setValue( 100 );
 
     QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "LastFilePath", strSavedFileName );
+    settings.setValue( LAST_FILE_PATH, strSavedFileName );
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
     mRecentFileMenu->saveToDisk();
@@ -819,7 +819,7 @@ void MainWindow2::readSettings()
     restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
     restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
 
-    QString myPath = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
+    QString myPath = settings.value( LAST_FILE_PATH, QVariant( QDir::homePath() ) ).toString();
     mRecentFileMenu->addRecentFile( myPath );
 
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);

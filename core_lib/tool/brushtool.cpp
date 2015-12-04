@@ -103,22 +103,22 @@ QCursor BrushTool::cursor()
 
 void BrushTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
-    Layer* layer = mEditor->layers()->currentLayer();
+//    Layer* layer = mEditor->layers()->currentLayer();
 
-    // In Bitmap mode, the brush tool pressure only handles opacity while the Pen tool
-    // only handles size. Pencil tool handles both.
+//    // In Bitmap mode, the brush tool pressure only handles opacity while the Pen tool
+//    // only handles size. Pencil tool handles both.
 
-    QColor currentColor = mEditor->color()->frontColor();
-    currentPressuredColor = currentColor;
+//    QColor currentColor = mEditor->color()->frontColor();
+//    currentPressuredColor = currentColor;
 
-    if ( layer->type() == Layer::BITMAP && mScribbleArea->usePressure() && !mouseDevice )
-    {
-        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure * pressure) );
-    }
+//    if ( layer->type() == Layer::BITMAP && properties.pressure && !mouseDevice )
+//    {
+//        currentPressuredColor.setAlphaF( currentColor.alphaF() * pressure * pressure );
+//    }
 
-    mCurrentWidth = properties.width;
+//    mCurrentWidth = properties.width;
 
-    if ( layer->type() == Layer::VECTOR && properties.pressure && !mouseDevice )
+    if ( properties.pressure && !mouseDevice )
     {
         mCurrentPressure = pressure;
     }
@@ -136,8 +136,9 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
         mScribbleArea->setAllDirty();
     }
 
-    startStroke();
     lastBrushPoint = getCurrentPoint();
+    startStroke();
+
 }
 
 void BrushTool::mouseReleaseEvent( QMouseEvent *event )
@@ -213,9 +214,10 @@ void BrushTool::drawStroke()
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        qreal opacity = 1.0;
+        qreal opacity = mCurrentPressure;
         mCurrentWidth = properties.width;
-        qreal brushWidth = (mCurrentWidth + (mCurrentPressure * mCurrentWidth)) * 0.5;
+        qreal brushWidth = mCurrentWidth;
+
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
@@ -234,7 +236,7 @@ void BrushTool::drawStroke()
             mScribbleArea->drawBrush( point,
                                       brushWidth,
                                       properties.feather,
-                                      currentPressuredColor,
+                                      mEditor->color()->frontColor(),
                                       opacity );
 
             if ( i == ( steps - 1 ) )
