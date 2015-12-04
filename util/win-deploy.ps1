@@ -36,3 +36,5 @@ $ZipName = $FolderName + ".zip"
 [Array]$arguments = "a", "-tzip", $ZipName, $FolderName;
 
 & $ZipExe $arguments
+
+Remove-Item -Recurse $FolderName
