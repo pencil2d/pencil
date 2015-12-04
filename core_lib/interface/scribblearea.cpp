@@ -119,6 +119,12 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::TOOL_CURSOR:
         updateToolCursor();
         break;
+    case SETTING::ONION_PREV_FRAMES_NUM:
+        updateAllFrames();
+        break;
+    case SETTING::ONION_NEXT_FRAMES_NUM:
+        updateAllFrames();
+        break;
     default:
         break;
     }
@@ -931,6 +937,8 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     RenderOptions options;
     options.bPrevOnionSkin = mPrefs->isOn( SETTING::PREV_ONION );
     options.bNextOnionSkin = mPrefs->isOn( SETTING::NEXT_ONION );
+    options.bColorizePrevOnion = mPrefs->isOn(SETTING::ONION_RED);
+    options.bColorizeNextOnion = mPrefs->isOn(SETTING::ONION_BLUE);
     options.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
     options.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
     options.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);

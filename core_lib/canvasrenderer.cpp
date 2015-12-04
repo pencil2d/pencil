@@ -60,10 +60,9 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bBlurryZoom );
     painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
 
-    // What is the goal of this? It breaks the bitmap frames by showing only the bottom right part.
-    //
-    //painter.setClipRect( rect );
-    //painter.setClipping( true );
+    painter.setWorldMatrixEnabled( false );
+    painter.setClipRect( rect );
+    painter.setClipping( true );
 
     painter.setWorldMatrixEnabled( true );
 
@@ -156,20 +155,27 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
         return;
     }
 
-    bitmapImage->paintImage( painter );
+    BitmapImage* tempBitmapImage = new BitmapImage;
+    tempBitmapImage->paste(bitmapImage);
 
-    if ( colorize )
-    {
-        painter.setWorldMatrixEnabled( false );
-        painter.setOpacity( 1.0 );
-        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-        painter.fillRect( painter.viewport(), Qt::red );
+    if ( colorize ) {
+        QBrush colorBrush = QBrush(Qt::transparent); //default color if we ever need to color the current frame
 
-        painter.setOpacity( 0.3 );
-        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
+        if (nFrame < mFrameNumber) {
+            colorBrush = QBrush(Qt::red);
+        }
+        else if (nFrame > mFrameNumber) {
+            colorBrush = QBrush(Qt::blue);
+        }
 
-        painter.setWorldMatrixEnabled( true );
+        tempBitmapImage->drawRect(  bitmapImage->bounds(),
+                                    Qt::NoPen,
+                                    colorBrush,
+                                    QPainter::CompositionMode_SourceIn,
+                                    false);
     }
+
+    tempBitmapImage->paintImage( painter );
 }
 
 void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize )
