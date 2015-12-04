@@ -966,127 +966,127 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     return;
 
-    // Merge the different layers into the ScribbleArea.
-    QPainter painter( &mCanvas );
-    painter.setClipRect( rect );
-    painter.setClipping( true );
+//    // Merge the different layers into the ScribbleArea.
+//    QPainter painter( &mCanvas );
+//    painter.setClipRect( rect );
+//    painter.setClipping( true );
 
-    //painter.setTransform( mEditor->view()->getView() );
-    //painter.setWorldMatrixEnabled( true );
+//    //painter.setTransform( mEditor->view()->getView() );
+//    //painter.setWorldMatrixEnabled( true );
 
-    // background
-    //painter.setPen( Qt::NoPen );
-    //painter.setBrush( mBackgroundBrush );
-    //painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
+//    // background
+//    //painter.setPen( Qt::NoPen );
+//    //painter.setBrush( mBackgroundBrush );
+//    //painter.drawRect( mEditor->view()->mapScreenToCanvas( QRect( -2, -2, width() + 3, height() + 3 ) ) );  // this is necessary to have the background move with the view
 
-    QRectF viewRect = getViewRect();
-    QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
+//    QRectF viewRect = getViewRect();
+//    QRectF vectorViewRect = viewRect.translated( -viewRect.left(), -viewRect.top() );
 
-    qreal opacity;
+//    qreal opacity;
 
-    /*
-    if ( onionBlue || onionRed )
-    {
-        painter.setOpacity( 1.0 );
-        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
-        if ( onionBlue && onionRed && mPrefs->isOn( EFFECT_NEXT_ONION ) )
-        {
-            painter.fillRect( viewRect, Qt::red );
-        }
-        else
-        {
-            painter.fillRect( viewRect, onionColor );
-        }
-        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
-    }
-    */
+//    /*
+//    if ( onionBlue || onionRed )
+//    {
+//        painter.setOpacity( 1.0 );
+//        painter.setCompositionMode( QPainter::CompositionMode_Lighten );
+//        if ( onionBlue && onionRed && mPrefs->isOn( EFFECT_NEXT_ONION ) )
+//        {
+//            painter.fillRect( viewRect, Qt::red );
+//        }
+//        else
+//        {
+//            painter.fillRect( viewRect, onionColor );
+//        }
+//        painter.setCompositionMode( QPainter::CompositionMode_SourceOver );
+//    }
+//    */
 
-    // --- current frame ---
-    for ( int i = 0; i < object->getLayerCount(); i++ )
-    {
-        opacity = 1.0;
-        if ( i != mEditor->layers()->currentLayerIndex() && ( mShowAllLayers == 1 ) ) { opacity = 0.4; }
+//    // --- current frame ---
+//    for ( int i = 0; i < object->getLayerCount(); i++ )
+//    {
+//        opacity = 1.0;
+//        if ( i != mEditor->layers()->currentLayerIndex() && ( mShowAllLayers == 1 ) ) { opacity = 0.4; }
 
-        if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
-        Layer *layer = ( object->getLayer( i ) );
-        if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) )
-        {
-            // paints the bitmap images
-            if ( layer->type() == Layer::BITMAP )
-            {
-                LayerBitmap *layerBitmap = ( LayerBitmap * )layer;
-                BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
-                if ( bitmapImage != NULL )
-                {
-                    painter.setWorldMatrixEnabled( true );
-                    painter.setOpacity( opacity );
-                    if ( i == mEditor->layers()->currentLayerIndex()
-                         && somethingSelected
-                         && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
-                    {
-                        // hole in the original selection -- might support arbitrary shapes in the future
+//        if ( mEditor->layers()->currentLayer()->type() == Layer::CAMERA ) { opacity = 1.0; }
+//        Layer *layer = ( object->getLayer( i ) );
+//        if ( layer->mVisible && ( mShowAllLayers > 0 || i == mEditor->layers()->currentLayerIndex() ) )
+//        {
+//            // paints the bitmap images
+//            if ( layer->type() == Layer::BITMAP )
+//            {
+//                LayerBitmap *layerBitmap = ( LayerBitmap * )layer;
+//                BitmapImage *bitmapImage = layerBitmap->getLastBitmapImageAtFrame( frame, 0 );
+//                if ( bitmapImage != NULL )
+//                {
+//                    painter.setWorldMatrixEnabled( true );
+//                    painter.setOpacity( opacity );
+//                    if ( i == mEditor->layers()->currentLayerIndex()
+//                         && somethingSelected
+//                         && ( myRotatedAngle != 0 || myTempTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
+//                    {
+//                        // hole in the original selection -- might support arbitrary shapes in the future
 
-                        painter.setClipping( true );
+//                        painter.setClipping( true );
 
-                        QRegion clip = QRegion( mySelection.toRect() );
-                        QRegion totalImage = QRegion( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ).toRect() );
-                        QRegion ImageWithHole = totalImage -= clip;
-                        painter.setClipRegion( ImageWithHole, Qt::ReplaceClip );
-                        //painter.drawImage(bitmapImage->topLeft(), *(bitmapImage->image) );
-                        bitmapImage->paintImage( painter );
-                        painter.setClipping( false );
-                        // transforms the bitmap selection
-                        bool smoothTransform = false;
+//                        QRegion clip = QRegion( mySelection.toRect() );
+//                        QRegion totalImage = QRegion( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ).toRect() );
+//                        QRegion ImageWithHole = totalImage -= clip;
+//                        painter.setClipRegion( ImageWithHole, Qt::ReplaceClip );
+//                        //painter.drawImage(bitmapImage->topLeft(), *(bitmapImage->image) );
+//                        bitmapImage->paintImage( painter );
+//                        painter.setClipping( false );
+//                        // transforms the bitmap selection
+//                        bool smoothTransform = false;
 
-                        if ( myTempTransformedSelection.width() != mySelection.width()
-                             || myTempTransformedSelection.height() != mySelection.height()
-                             || myRotatedAngle != 0 )
-                        {
-                            smoothTransform = true;
-                        }
-                        BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
-                        selectionClip.transform( myTransformedSelection, smoothTransform );
-                        QTransform rm;
+//                        if ( myTempTransformedSelection.width() != mySelection.width()
+//                             || myTempTransformedSelection.height() != mySelection.height()
+//                             || myRotatedAngle != 0 )
+//                        {
+//                            smoothTransform = true;
+//                        }
+//                        BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
+//                        selectionClip.transform( myTransformedSelection, smoothTransform );
+//                        QTransform rm;
 
-                        //TODO: complete matrix calls ( sounds funny :)
-                        rm.scale( myFlipX, myFlipY );
-                        rm.rotate( myRotatedAngle );
-                        QImage* rotImg = new QImage( selectionClip.image()->transformed( rm ) );
-                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
-                                             ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
-                        selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
-                        selectionClip.bounds().translate( dxy );
-                        selectionClip.paintImage( painter );
-                    }
-                    else
-                    {
-                        bitmapImage->paintImage( painter );
-                    }
-                }
-            }
-            // paints the vector images
-            if ( layer->type() == Layer::VECTOR )
-            {
-                LayerVector *layerVector = ( LayerVector * )layer;
-                VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( frame, 0 );
-                if ( somethingSelected )
-                {
-                    // transforms the vector selection
-                    //calculateSelectionTransformation();
-                    vectorImage->setSelectionTransformation( selectionTransformation );
-                    //vectorImage->setTransformedSelection(myTempTransformedSelection);
-                }
-                QTransform view = mEditor->view()->getView();
-                QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
-                vectorImage->outputImage( pImage.data(), view, mPrefs->isOn( SETTING::OUTLINES ), mPrefs->isOn( SETTING::INVISIBLE_LINES ), mPrefs->isOn( SETTING::ANTIALIAS ) );
+//                        //TODO: complete matrix calls ( sounds funny :)
+//                        rm.scale( myFlipX, myFlipY );
+//                        rm.rotate( myRotatedAngle );
+//                        QImage* rotImg = new QImage( selectionClip.image()->transformed( rm ) );
+//                        QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
+//                                             ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
+//                        selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
+//                        selectionClip.bounds().translate( dxy );
+//                        selectionClip.paintImage( painter );
+//                    }
+//                    else
+//                    {
+//                        bitmapImage->paintImage( painter );
+//                    }
+//                }
+//            }
+//            // paints the vector images
+//            if ( layer->type() == Layer::VECTOR )
+//            {
+//                LayerVector *layerVector = ( LayerVector * )layer;
+//                VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( frame, 0 );
+//                if ( somethingSelected )
+//                {
+//                    // transforms the vector selection
+//                    //calculateSelectionTransformation();
+//                    vectorImage->setSelectionTransformation( selectionTransformation );
+//                    //vectorImage->setTransformedSelection(myTempTransformedSelection);
+//                }
+//                QTransform view = mEditor->view()->getView();
+//                QScopedPointer< QImage > pImage( new QImage( size(), QImage::Format_ARGB32_Premultiplied ) );
+//                vectorImage->outputImage( pImage.data(), view, mPrefs->isOn( SETTING::OUTLINES ), mPrefs->isOn( SETTING::INVISIBLE_LINES ), mPrefs->isOn( SETTING::ANTIALIAS ) );
 
-                painter.setWorldMatrixEnabled( false );
-                painter.setOpacity( opacity );
-                painter.drawImage( QPoint( 0, 0 ), *pImage );
-            }
-        }
-    }
-    painter.end();
+//                painter.setWorldMatrixEnabled( false );
+//                painter.setOpacity( opacity );
+//                painter.drawImage( QPoint( 0, 0 ), *pImage );
+//            }
+//        }
+//    }
+//    painter.end();
 }
 
 void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal mOffset )

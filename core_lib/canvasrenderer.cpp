@@ -118,8 +118,8 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
 
             switch ( layer->type() )
             {
-                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizePrevOnion ); break; }
-                case Layer::VECTOR: { paintVectorFrame( painter, layer, i, mOptions.bColorizePrevOnion ); break; }
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizePrevOnion, false ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, i, mOptions.bColorizePrevOnion, false ); break; }
                 case Layer::CAMERA: break;
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
@@ -140,8 +140,8 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
 
             switch ( layer->type() )
             {
-                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizeNextOnion ); break; }
-                case Layer::VECTOR: { paintVectorFrame( painter, layer, i, mOptions.bColorizeNextOnion ); break; }
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizeNextOnion, false ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, i, mOptions.bColorizeNextOnion, false ); break; }
                 case Layer::CAMERA: break;
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
@@ -152,7 +152,7 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     }
 }
 
-void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize )
+void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame )
 {
     if ( !layer->visible() )
     {
@@ -167,7 +167,14 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
     }
 
     qCDebug( mLog ) << "Paint Onion skin bitmap, Frame = " << nFrame;
-    BitmapImage* bitmapImage = bitmapLayer->getBitmapImageAtFrame( nFrame );
+    BitmapImage* bitmapImage;
+    if (useLastKeyFrame) {
+        bitmapImage = bitmapLayer->getLastBitmapImageAtFrame( nFrame, 0 );
+    }
+    else {
+        bitmapImage = bitmapLayer->getBitmapImageAtFrame( nFrame );
+    }
+
     if ( bitmapImage == nullptr )
     {
         return;
@@ -193,10 +200,13 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
                                     false);
     }
 
+    painter.setWorldMatrixEnabled( true );
     tempBitmapImage->paintImage( painter );
+
+    delete tempBitmapImage;
 }
 
-void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize )
+void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame )
 {
     if ( !layer->visible() )
     {
@@ -211,13 +221,50 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
     }
 
     qCDebug( mLog ) << "Paint Onion skin vector, Frame = " << nFrame;
-    VectorImage* vectorImage = vectorLayer->getVectorImageAtFrame( nFrame );
+    VectorImage* vectorImage;
+    if (useLastKeyFrame) {
+        vectorImage = vectorLayer->getLastVectorImageAtFrame( nFrame, 0 );
+    }
+    else {
+        vectorImage = vectorLayer->getVectorImageAtFrame( nFrame );
+    }
     if ( vectorImage == nullptr )
     {
         return;
     }
 
-    vectorImage->paintImage( painter, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias );
+    QImage* pImage = new QImage( mCanvas->size(), QImage::Format_ARGB32_Premultiplied );
+    vectorImage->outputImage( pImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias );
+
+
+    //painter.drawImage( QPoint( 0, 0 ), *pImage );
+
+    // Go through a Bitmap image to paint the onion skin colour
+    //
+    BitmapImage* tempBitmapImage = new BitmapImage();
+    tempBitmapImage->setImage(pImage);
+
+    if ( colorize ) {
+        QBrush colorBrush = QBrush(Qt::transparent); //no color for the current frame
+
+        if (nFrame < mFrameNumber) {
+            colorBrush = QBrush(Qt::red);
+        }
+        else if (nFrame > mFrameNumber) {
+            colorBrush = QBrush(Qt::blue);
+        }
+
+        tempBitmapImage->drawRect(  pImage->rect(),
+                                    Qt::NoPen,
+                                    colorBrush,
+                                    QPainter::CompositionMode_SourceIn,
+                                    false);
+    }
+
+    painter.setWorldMatrixEnabled( false );
+    tempBitmapImage->paintImage( painter );
+
+    delete tempBitmapImage;
 }
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
