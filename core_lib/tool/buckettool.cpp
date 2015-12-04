@@ -34,7 +34,7 @@ void BucketTool::loadSettings()
 
 QCursor BucketTool::cursor()
 {
-    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         QPixmap pixmap( ":icons/bucketTool.png" );
         QPainter painter( &pixmap );

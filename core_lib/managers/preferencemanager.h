@@ -6,7 +6,7 @@
 #include "pencildef.h"
 
 
-enum class EFFECT
+enum class SETTING
 {
     ANTIALIAS,
     BLURRYZOOM,
@@ -23,7 +23,22 @@ enum class EFFECT
     ONION_RED,
     MIRROR_H,
     MIRROR_V,
-    TOOL_CURSOR
+    TOOL_CURSOR,
+    HIGH_RESOLUTION,
+    WINDOW_OPACITY,
+    CURVE_SMOOTHING,
+    BACKGROUND_STYLE,
+    AUTO_SAVE,
+    AUTO_SAVE_NUMBER,
+    SHORT_SCRUB,
+    FRAME_SIZE,
+    TIMELINE_SIZE,
+    LABEL_FONT_SIZE,
+    DRAW_LABEL,
+    ONION_MAX_OPACITY,
+    ONION_MIN_OPACITY,
+    ONION_PREV_FRAMES_NUM,
+    ONION_NEXT_FRAMES_NUM
 };
 
 class PreferenceManager : public BaseManager
@@ -38,23 +53,30 @@ public:
     Status onObjectLoaded( Object* ) override;
 
     void loadPrefs();
-    void set(EFFECT e, bool value );
+    void set(SETTING option, QString value );
+    void set(SETTING option, int value );
+    void set(SETTING option, bool value );
 
-    void turnOn( EFFECT e );
-    void turnOff( EFFECT e );
-    bool isOn( EFFECT e );
+    void turnOn(SETTING option );
+    void turnOff(SETTING option );
+    bool isOn(SETTING option );
     
     void setOnionPrevFramesCount( int n );
     int  getOnionPrevFramesCount();
     void setOnionNextFramesCount( int n );
     int  getOnionNextFramesCount();
 
+    QString getString(SETTING option);
+    int     getInt(SETTING option);
+
 Q_SIGNALS:
-    void prefsLoaded();
-    void effectChanged( EFFECT e, bool value );
+    void optionChanged( SETTING e );
+
 
 private:
-    QHash< int, bool > mEffectSet;
+    QHash< int, QString > mStringSet;
+    QHash< int, int > mIntegerSet;
+    QHash< int, bool > mBooleanSet;
 };
 
 #endif // PREFERENCEMANAGER_H

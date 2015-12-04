@@ -39,6 +39,8 @@ class SoundManager;
 class ScribbleArea;
 class TimeLine;
 
+enum class SETTING;
+
 
 class Editor : public QObject
 {
@@ -112,12 +114,6 @@ Q_SIGNALS:
     // save
     void needSave();
     void fileLoaded();
-    
-public:
-    void onionMaxOpacityChangeSlot( int );
-    void onionMinOpacityChangeSlot( int );
-    void onionPrevFramesNumChangeSlot( int );
-    void onionNextFramesNumChangeSlot( int );
 
 public: //slots
     void clearCurrentFrame();
@@ -153,9 +149,6 @@ public: //slots
     void switchVisibilityOfLayer( int layerNumber );
     void moveLayer( int i, int j );
 
-    void changeAutosave( int );
-    void changeAutosaveNumber( int );
-
     void backup( QString undoText );
     void backup( int layerNumber, int frameNumber, QString undoText );
     void undo();
@@ -173,6 +166,8 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
+
+    void settingUpdated(SETTING);
 
 protected:
     // Need to move to somewhere...

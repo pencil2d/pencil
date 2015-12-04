@@ -92,7 +92,8 @@ HEADERS +=  \
     soundplayer.h \
     structure/keyframefactory.h \
     structure/soundclip.h \
-    managers/soundmanager.h
+    managers/soundmanager.h \
+    interface/backgroundwidget.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -155,7 +156,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     soundplayer.cpp \
     structure/keyframefactory.cpp \
     structure/soundclip.cpp \
-    managers/soundmanager.cpp
+    managers/soundmanager.cpp \
+    interface/backgroundwidget.cpp
 
 win32 {
     INCLUDEPATH += external/win32

@@ -10,6 +10,8 @@ class QPaintEvent;
 class QMouseEvent;
 class QResizeEvent;
 class Editor;
+class PreferenceManager;
+enum class SETTING;
 
 enum class TIMELINE_CELL_TYPE
 {
@@ -38,11 +40,6 @@ Q_SIGNALS:
 public slots:
     void updateContent();
     void updateFrame(int frameNumber);
-    void lengthChange(QString); //try to remove content and call TimeLine::forceUpdateLength instead
-    void frameSizeChange(int);
-    void fontSizeChange(int);
-    void scrubChange(int);
-    void labelChange(int);
     void hScrollChange(int);
     void vScrollChange(int);
     void setMouseMoveY(int x) { mouseMoveY = x;}
@@ -56,9 +53,13 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseDoubleClickEvent(QMouseEvent* event);
 
+private slots:
+    void loadSetting(SETTING setting);
+
 private:
     TimeLine* timeLine;
     Editor* mEditor; // the editor for which this timeLine operates
+    PreferenceManager* mPrefs;
 
     TIMELINE_CELL_TYPE m_eType;
 
