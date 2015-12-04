@@ -121,6 +121,9 @@ enum BackgroundStyle
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
 
+// Save / Export
+#define LAST_FILE_PATH          "LastFilePath"
+
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP             "Shortcuts"
