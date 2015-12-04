@@ -88,7 +88,7 @@ bool ScribbleArea::init()
 
     setMouseTracking( true ); // reacts to mouse move events, even if the button is not pressed
 
-    debugRect = QRectF( 0, 0, 0, 0 );
+    mDebugRect = QRectF( 0, 0, 0, 0 );
 
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
 
@@ -101,10 +101,6 @@ bool ScribbleArea::init()
 
     // color wheel popup
     //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
-
-    onionBlue = true;
-    onionRed = false;
-    toggledOnionColor();
 
     return true;
 }
@@ -149,7 +145,8 @@ void ScribbleArea::setCurveSmoothing( int newSmoothingLevel )
     updateAllFrames();
 }
 
-void ScribbleArea::setEffect(SETTING e, bool isOn) {
+void ScribbleArea::setEffect( SETTING e, bool isOn )
+{
     mPrefs->set(e, isOn);
     updateAllFrames();
 }
@@ -1404,40 +1401,15 @@ void ScribbleArea::toggleCameraBorder( bool checked )
     setEffect( SETTING::CAMERABORDER, checked );
 }
 
-void ScribbleArea::toggledOnionColor()
-{
-    if ( onionBlue )
-    {
-        if ( onionRed )
-        {
-            onionColor = QColor( 232, 48, 255, 255 ); // subtle violet ( blue + red )
-        }
-        else
-        {
-            onionColor = Qt::blue;
-        }
-    }
-    else if ( onionRed )
-    {
-        onionColor = Qt::red;
-    }
-}
-
-
-
 void ScribbleArea::toggleOnionBlue( bool checked )
 {
-    onionBlue = checked;
     setEffect( SETTING::ONION_BLUE, checked );
-    toggledOnionColor();
     updateAllFrames();
 }
 
 void ScribbleArea::toggleOnionRed( bool checked )
 {
-    onionRed = checked;
     setEffect( SETTING::ONION_RED, checked );
-    toggledOnionColor();
     updateAllFrames();
 }
 

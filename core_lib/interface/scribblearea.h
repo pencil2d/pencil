@@ -72,8 +72,7 @@ public:
     bool areLayersSane() const;
     bool isLayerPaintable() const;
 
-
-    void setEffect(SETTING e, bool isOn );
+    void setEffect( SETTING e, bool isOn );
 
     int showAllLayers() const { return mShowAllLayers; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
@@ -178,15 +177,13 @@ public:
     void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
-    BitmapImage* mBufferImg; // used to pre-draw vector modifications
-    BitmapImage* mStrokeImg; // used for brush strokes before they are finalized
+    BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
+    BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
 
 private:
     void drawCanvas( int frame, QRect rect );
     void drawAxis( QPainter& );
     void drawGrid( QPainter& );
-
-    void toggledOnionColor();
 
     void settingUpdated(SETTING setting);
 
@@ -206,11 +203,9 @@ private:
     bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors   = true;
-    qreal mCurveSmoothingLevel;
-    bool onionBlue = false;
-    bool onionRed  = false;
+    qreal mCurveSmoothingLevel = 0.0;
     bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
-    QColor onionColor;
+    QColor mOnionColor;
 
     bool mNeedUpdateAll = false;
   
@@ -241,7 +236,7 @@ private:
     CanvasRenderer mCanvasRenderer;
 
     // debug
-    QRectF debugRect;
+    QRectF mDebugRect;
     QLoggingCategory mLog;
 };
 

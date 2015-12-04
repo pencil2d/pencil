@@ -1,78 +1,105 @@
 
+#include <cmath>
 #include <QLabel>
 #include <QSlider>
 #include <QGridLayout>
 #include <QLocale>
-#include <cmath>
+#include <QDebug>
 #include "spinslider.h"
 
-SpinSlider::SpinSlider(QString text, QString type, QString dataType, qreal min, qreal max, QWidget* parent) : QWidget(parent)
-{
-    value = 1.0;
-    this->type = type;
-    this->dataType = dataType;
-    this->min = min;
-    this->max = max;
-    QLabel* label = new QLabel(text+": ");
-    label->setFont( QFont("Helvetica", 10) );
-    valueLabel = new QLabel("--");
-    valueLabel->setFont( QFont("Helvetica", 10) );
-    //valueLabel->setFixedWidth(30);
-    valueLabel->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-    slider = new QSlider(Qt::Horizontal, this);
-    slider->setMinimum(0);
-    slider->setMaximum(100);
-    slider->setMaximumWidth(70);
-    //slider->setFixedHeight(16);
-    QGridLayout* lay = new QGridLayout();
-    lay->setMargin(2);
-    lay->setSpacing(2);
-    //lay->setColumnStretch(0,1);
-    lay->addWidget(label,0,0,1,1);
-    lay->addWidget(valueLabel,0,1,1,1);
-    lay->addWidget(slider,1,0,1,2);
-    setLayout(lay);
-    setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
 
-    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changeValue(int)));
-    connect(slider, SIGNAL(sliderReleased()), this, SLOT(sliderReleased()));
-    connect(slider, SIGNAL(sliderMoved(int)), this, SLOT(sliderMoved(int)));
+SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max, QWidget* parent ) : QWidget( parent )
+{
+    if ( type == LOG )
+    {
+        // important! dividing by zero is not acceptable.
+        Q_ASSERT_X( min > 0.f , "SpinSlider" , "Real type value must larger than 0!!" );
+    }
+
+    mValue = 1.0;
+    mGrowthType = type;
+    mValueType = dataType;
+    mMin = min;
+    mMax = max;
+
+    QLabel* label = new QLabel(text+": ");
+    label->setFont( QFont( "Helvetica", 10 ) );
+
+    mValueLabel = new QLabel( "--" );
+    mValueLabel->setFont( QFont( "Helvetica", 10 ) );
+
+    mValueLabel->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
+
+    mSlider = new QSlider(Qt::Horizontal, this);
+    mSlider->setMinimum( 0 );
+    mSlider->setMaximum( 100 );
+    mSlider->setMaximumWidth( 70 );
+
+    QGridLayout* layout = new QGridLayout();
+    layout->setMargin( 2 );
+    layout->setSpacing( 2 );
+
+    layout->addWidget( label, 0, 0, 1, 1 );
+    layout->addWidget( mValueLabel, 0, 1, 1, 1 );
+    layout->addWidget( mSlider, 1, 0, 1, 2 );
+
+    setLayout( layout );
+    setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
+
+    connect( mSlider, &QSlider::valueChanged,   this, &SpinSlider::onSliderValueChanged );
+    connect( mSlider, &QSlider::sliderReleased, this, &SpinSlider::sliderReleased );
+    connect( mSlider, &QSlider::sliderMoved,    this, &SpinSlider::sliderMoved );
 }
 
 void SpinSlider::changeValue(qreal value)
 {
-    this->value = value;
-    if (dataType == "integer")
+    mValue = value;
+    if ( mValueType == INTEGER )
     {
-        valueLabel->setText( QString::number(qRound(value)) );
+        mValueLabel->setText( QString::number(qRound(value)) );
     }
-    else
+    else // FLOAT
     {
-        valueLabel->setText( QLocale::system().toString(value,'f',1) );
+        mValueLabel->setText( QLocale::system().toString(value,'f',1) );
     }
 }
 
-void SpinSlider::changeValue(int value)
+void SpinSlider::onSliderValueChanged( int v )
 {
+    //qDebug() << "Value changed!! " << v;
     qreal value2 = 0.0;
-    if (type=="linear") value2 = min + value*(max-min)/100;
-    if (type=="log") value2 = min * std::exp( value*std::log(max/min) / 100 );
-    changeValue(value2);
+    if ( mGrowthType == LINEAR )
+    {
+        value2 = mMin + v * ( mMax - mMin ) / 100;
+    }
+    else if ( mGrowthType == LOG )
+    {
+        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / 100.0 );
+        //value2 = v * std::log( mMax / mMin ) / 100.0;
+    }
+    changeValue( value2 );
 }
 
-void SpinSlider::setValue(qreal value)
+void SpinSlider::setValue( qreal v )
 {
+    //qDebug() << "setValue!!" << v;
     qreal value2 = 0.0;
-    if (type=="linear") value2 = qRound( 100*(value-min)/(max-min) );
-    if (type=="log") value2 = qRound( 100.0*std::log(value/0.2)/log(1000.0) );
-    slider->setSliderPosition(value2);
-    changeValue(value);
+    if ( mGrowthType == LINEAR )
+    {
+        value2 = std::round( 100 * ( v - mMin ) / ( mMax - mMin ) );
+    }
+    if ( mGrowthType == LOG )
+    {
+        value2 = std::round( std::log( v / mMin ) * 100.0 / std::log( mMax / mMin ) );
+    }
+    //qDebug() << "Position! " << value2;
+    
+    changeValue( v );
 }
 
 void SpinSlider::sliderReleased()
 {
-    //qDebug() << "sliderReleased";
-    emit valueChanged(this->value);
+    emit valueChanged( mValue );
 }
 
 void SpinSlider::sliderMoved(int value)

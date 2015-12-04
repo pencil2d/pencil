@@ -79,8 +79,6 @@ void PreferenceManager::loadPrefs()
 #ifdef DRAW_AXIS
     set( EFFECT::AXIS, true );
 #endif
-
-    emit prefsLoaded();
 }
 
 

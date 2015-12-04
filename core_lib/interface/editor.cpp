@@ -157,24 +157,25 @@ void Editor::dropEvent( QDropEvent* event )
 
 void Editor::settingUpdated(SETTING setting)
 {
-    switch (setting) {
+    switch (setting)
+    {
     case SETTING::AUTO_SAVE:
-        mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
+        mIsAutosave = mPreferenceManager->isOn( SETTING::AUTO_SAVE );
         break;
     case SETTING::AUTO_SAVE_NUMBER:
-        autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+        autosaveNumber = mPreferenceManager->getInt( SETTING::AUTO_SAVE_NUMBER );
         break;
     case SETTING::ONION_MAX_OPACITY:
-        onionMaxOpacity = mPreferenceManager->getInt(SETTING::ONION_MAX_OPACITY);
+        onionMaxOpacity = mPreferenceManager->getInt( SETTING::ONION_MAX_OPACITY );
         break;
     case SETTING::ONION_MIN_OPACITY:
-        onionMinOpacity = mPreferenceManager->getInt(SETTING::ONION_MIN_OPACITY);
+        onionMinOpacity = mPreferenceManager->getInt( SETTING::ONION_MIN_OPACITY );
         break;
     case SETTING::ONION_PREV_FRAMES_NUM:
-        onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+        onionPrevFramesNum = mPreferenceManager->getInt( SETTING::ONION_PREV_FRAMES_NUM );
         break;
     case SETTING::ONION_NEXT_FRAMES_NUM:
-        onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+        onionNextFramesNum = mPreferenceManager->getInt( SETTING::ONION_NEXT_FRAMES_NUM );
         break;
     default:
         break;
