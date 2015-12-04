@@ -89,8 +89,6 @@ void CanvasRenderer::paintBackground( QPainter& painter )
 
 void CanvasRenderer::paintOnionSkin( QPainter& painter )
 {
-    painter.setOpacity( 0.3 );
-
     Layer* layer = mObject->getLayer( mLayerIndex );
 
     if ( layer->keyFrameCount() == 0 )
@@ -98,14 +96,26 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
         return;
     }
 
+    qreal minOpacity = mOptions.fOnionSkinMinOpacity / 100;
+    qreal maxOpacity = mOptions.fOnionSkinMaxOpacity / 100;
+
+
     int iStartFrame = std::max( mFrameNumber - mOptions.nPrevOnionSkinCount, 1 );
     int iEndFrame = mFrameNumber + mOptions.nNextOnionSkinCount;
 
     if ( mOptions.bPrevOnionSkin )
     {
+        qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
+
+        int onionPosition = mOptions.nPrevOnionSkinCount - mFrameNumber + iStartFrame - 1;
+
+        qreal opacity = minOpacity + (prevOpacityIncrement * onionPosition);
+
         // Paint onion skin before current frame.
         for ( int i = iStartFrame; i < mFrameNumber; ++i )
         {
+            painter.setOpacity( opacity );
+
             switch ( layer->type() )
             {
                 case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizePrevOnion ); break; }
@@ -114,14 +124,20 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
             }
+            opacity = opacity + prevOpacityIncrement;
         }
     }
 
     if ( mOptions.bNextOnionSkin )
     {
+        qreal nextOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nNextOnionSkinCount;
+        qreal opacity = maxOpacity;
+
         // Paint onion skin after current frame.
-        for ( int i = mFrameNumber; i <= iEndFrame; ++i )
+        for ( int i = mFrameNumber + 1; i <= iEndFrame; ++i )
         {
+            painter.setOpacity( opacity );
+
             switch ( layer->type() )
             {
                 case Layer::BITMAP: { paintBitmapFrame( painter, layer, i, mOptions.bColorizeNextOnion ); break; }
@@ -130,6 +146,8 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
             }
+
+            opacity = opacity - nextOpacityIncrement;
         }
     }
 }
@@ -159,7 +177,7 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
     tempBitmapImage->paste(bitmapImage);
 
     if ( colorize ) {
-        QBrush colorBrush = QBrush(Qt::transparent); //default color if we ever need to color the current frame
+        QBrush colorBrush = QBrush(Qt::transparent); //no color for the current frame
 
         if (nFrame < mFrameNumber) {
             colorBrush = QBrush(Qt::red);

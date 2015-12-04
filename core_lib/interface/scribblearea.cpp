@@ -125,6 +125,12 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_NEXT_FRAMES_NUM:
         updateAllFrames();
         break;
+    case SETTING::ONION_MIN_OPACITY:
+        updateAllFrames();
+        break;
+    case SETTING::ONION_MAX_OPACITY:
+        updateAllFrames();
+        break;
     default:
         break;
     }
