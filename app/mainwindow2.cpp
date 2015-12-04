@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QDesktopWidget>
 #include <QDesktopServices>
+#include <QGraphicsDropShadowEffect>
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
@@ -70,7 +71,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     // Central widget
     mScribbleArea = new ScribbleArea( this );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
-    setCentralWidget( mScribbleArea );
+    //setCentralWidget( mScribbleArea );
 
     Object* object = new Object();
     object->init();
@@ -81,6 +82,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
+
+    //loadBackground();
 
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
@@ -103,12 +106,29 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
     mEditor->tools()->setDefaultTool();
+
+
+    // Show the UI over the background
+    //
+    mBackground = new BackgroundWidget();
+    mBackground->init(mEditor->preference());
+
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
+    layout->addWidget(mScribbleArea);
+
+    mBackground->setLayout(layout);
+
+    setCentralWidget(mBackground);
 }
 
 MainWindow2::~MainWindow2()
 {
     delete ui;
 }
+
 
 void MainWindow2::createDockWidgets()
 {
@@ -247,7 +267,7 @@ void MainWindow2::createMenus()
     ui->actionPreview->setEnabled( false );
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
-    setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( EFFECT::GRID ) );
+    setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
     connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
 
     connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
@@ -323,8 +343,8 @@ void MainWindow2::createMenus()
 
     connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
-    connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
-    connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
+    //connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
+    //connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
 }
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
@@ -335,10 +355,10 @@ void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
 
 void MainWindow2::setOpacity( int opacity )
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue( "windowOpacity", 100 - opacity );
+    mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
     setWindowOpacity( opacity / 100.0 );
 }
+
 
 void MainWindow2::closeEvent( QCloseEvent* event )
 {
@@ -377,7 +397,7 @@ void MainWindow2::openDocument()
     {
         QSettings settings( PENCIL2D, PENCIL2D );
 
-        QString strLastOpenPath = settings.value( "lastFilePath", QDir::homePath() ).toString();
+        QString strLastOpenPath = settings.value( LAST_FILE_PATH, QDir::homePath() ).toString();
         QString fileName = QFileDialog::getOpenFileName( this,
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
@@ -407,8 +427,8 @@ bool MainWindow2::saveAsNewDocument()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
 
-    QString strLastFolder = settings.value( "lastFilePath", QDir::homePath() ).toString();
-    if ( strLastFolder.isEmpty() )
+    QString strLastFolder = settings.value( LAST_FILE_PATH, QDir::homePath() ).toString();
+    if ( strLastFolder.isEmpty() || !QDir(strLastFolder).exists() )
     {
         strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
     }
@@ -426,7 +446,7 @@ bool MainWindow2::saveAsNewDocument()
     {
         fileName = fileName + PFF_EXTENSION;
     }
-    settings.setValue( "lastFilePath", QVariant( fileName ) );
+    settings.setValue( LAST_FILE_PATH, QVariant( fileName ) );
 
     return saveObject( fileName );
 
@@ -463,7 +483,7 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setObject( object );
 
     QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue( "LastFilePath", object->filePath() );
+    settings.setValue( LAST_FILE_PATH, object->filePath() );
 
     mRecentFileMenu->addRecentFile( object->filePath() );
     mRecentFileMenu->saveToDisk();
@@ -490,7 +510,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.setValue( 100 );
 
     QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "LastFilePath", strSavedFileName );
+    settings.setValue( LAST_FILE_PATH, strSavedFileName );
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
     mRecentFileMenu->saveToDisk();
@@ -773,25 +793,7 @@ void MainWindow2::preferences()
     mPreferencesDialog = new PreferencesDialog( this );
     mPreferencesDialog->init( mEditor->preference() );
 
-    connect( mPreferencesDialog, &PreferencesDialog::lengthSizeChange, mTimeLine, &TimeLine::lengthChange );
-    connect( mPreferencesDialog, &PreferencesDialog::fontSizeChange,   mTimeLine, &TimeLine::fontSizeChange );
-    connect( mPreferencesDialog, &PreferencesDialog::frameSizeChange,  mTimeLine, &TimeLine::frameSizeChange );
-    connect( mPreferencesDialog, &PreferencesDialog::labelChange,      mTimeLine, &TimeLine::labelChange );
-    connect( mPreferencesDialog, &PreferencesDialog::scrubChange,      mTimeLine, &TimeLine::scrubChange );
-
     connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( mPreferencesDialog, &PreferencesDialog::curveSmoothingChange, mScribbleArea, &ScribbleArea::setCurveSmoothing );
-    //connect( m_pPreferences, &Preferences::antialiasingChange,   mScribbleArea, SLOT( setAntialiasing( int ) ) );
-    connect( mPreferencesDialog, &PreferencesDialog::backgroundChange,     mScribbleArea, &ScribbleArea::setBackground );
-    //connect( m_pPreferences, SIGNAL( toolCursorsChange( int ) ), mScribbleArea, SLOT( setToolCursors( int ) ) );
-
-    connect( mPreferencesDialog, &PreferencesDialog::autosaveChange, mEditor, &Editor::changeAutosave );
-    connect( mPreferencesDialog, &PreferencesDialog::autosaveNumberChange, mEditor, &Editor::changeAutosaveNumber );
-
-    connect( mPreferencesDialog, &PreferencesDialog::onionMaxOpacityChange, mEditor, &Editor::onionMaxOpacityChangeSlot );
-    connect( mPreferencesDialog, &PreferencesDialog::onionMinOpacityChange, mEditor, &Editor::onionMinOpacityChangeSlot );
-    connect( mPreferencesDialog, &PreferencesDialog::onionPrevFramesNumChange, mEditor, &Editor::onionPrevFramesNumChangeSlot );
-    connect( mPreferencesDialog, &PreferencesDialog::onionNextFramesNumChange, mEditor, &Editor::onionNextFramesNumChangeSlot );
 
     clearKeyboardShortcuts();
     connect( mPreferencesDialog, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
@@ -817,10 +819,12 @@ void MainWindow2::readSettings()
     restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
     restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
 
-    QString myPath = settings.value( "lastFilePath", QVariant( QDir::homePath() ) ).toString();
+    QString myPath = settings.value( LAST_FILE_PATH, QVariant( QDir::homePath() ) ).toString();
     mRecentFileMenu->addRecentFile( myPath );
 
-    setOpacity( 100 - settings.value( "windowOpacity" ).toInt() );
+    int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
+
+    setOpacity( 100 - opacity );
 }
 
 void MainWindow2::writeSettings()

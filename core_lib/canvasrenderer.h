@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include <QTransform>
+#include <QPainter>
 #include <memory>
 #include "log.h"
 
@@ -58,6 +59,7 @@ public:
     void setCanvas( QPixmap* canvas );
     void setViewTransform( QTransform viewTransform );
     void setOptions( RenderOptions p ) { mOptions = p; }
+    void setBackgroundBrush(QBrush brush);
 
     void paint( Object* object, int layer, int frame, QRect rect );
 
@@ -66,8 +68,8 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
-    void paintVectorFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false );
+    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
+    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
 
     void paintAxis( QPainter& painter );
     void paintGrid( QPainter& painter );

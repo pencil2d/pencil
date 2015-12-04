@@ -11,6 +11,7 @@
 #include "editor.h"
 #include "scribblearea.h"
 #include "pencilsettings.h"
+#include "blitrect.h"
 
 #include "penciltool.h"
 
@@ -26,7 +27,7 @@ void PencilTool::loadSettings()
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
-    properties.feather = -1; //Feather isn't implemented in the Pencil tool;
+    properties.feather = 50;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
@@ -54,8 +55,7 @@ void PencilTool::setWidth(const qreal width)
 
 void PencilTool::setFeather( const qreal feather )
 {
-    // force value
-    properties.feather = -1;
+    properties.feather = feather;
 }
 
 void PencilTool::setInvisibility( const qreal invisibility )
@@ -89,7 +89,7 @@ QCursor PencilTool::cursor()
         return circleCursors(); // two circles cursor
     }
 
-    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pencil2.png" ), 0, 16 );
     }
@@ -98,6 +98,8 @@ QCursor PencilTool::cursor()
 
 void PencilTool::mousePressEvent( QMouseEvent *event )
 {
+    lastBrushPoint = getCurrentPoint();
+
     if ( event->button() == Qt::LeftButton )
     {
         mEditor->backup( typeName() );
@@ -112,7 +114,7 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
             drawStroke();
         }
         else {
-            if ( !mEditor->preference()->isOn(EFFECT::INVISIBLE_LINES) )
+            if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
             {
                 mScribbleArea->toggleThinLines();
             }
@@ -174,20 +176,20 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
 
 void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
-    QColor currentColor = mEditor->color()->frontColor();
-    currentPressuredColor = currentColor;
+//    QColor currentColor = mEditor->color()->frontColor();
+//    currentPressuredColor = currentColor;
 
-    // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
-    int softness = 16;
+//    // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
+//    int softness = 8;
 
-    if ( mScribbleArea->usePressure() && !mouseDevice )
-    {
-        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure) / softness );
-    }
-    else
-    {
-        currentPressuredColor.setAlphaF( currentColor.alphaF() / softness );
-    }
+//    if ( mScribbleArea->usePressure() && !mouseDevice )
+//    {
+//        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure * pressure) / softness );
+//    }
+//    else
+//    {
+//        currentPressuredColor.setAlphaF( currentColor.alphaF() / softness );
+//    }
 
 
     mCurrentWidth = properties.width;
@@ -208,51 +210,65 @@ void PencilTool::drawStroke()
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
-    int rad;
 
     if ( layer->type() == Layer::BITMAP )
     {
-        qreal brushWidth = properties.width * mCurrentPressure;
+        qreal opacity = mCurrentPressure * mCurrentPressure;
 
-        //currentPressuredColor = Qt::red;
-        QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-        QBrush brush( currentPressuredColor, Qt::SolidPattern );
-        rad = qRound( properties.width / 2 ) + 3;
+        mCurrentWidth = properties.width * mCurrentPressure;
+        qreal brushWidth = mCurrentWidth;
 
-        for ( int i = 0; i < p.size(); i++ )
+        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
+        brushStep = qMax( 1.0, brushStep );
+
+        BlitRect rect;
+
+        QPointF a = lastBrushPoint;
+        QPointF b = getCurrentPoint();
+
+        qreal distance = 4 * QLineF( b, a ).length();
+        int steps = qRound( distance ) / brushStep;
+
+        for ( int i = 0; i < steps; i++ )
         {
-            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
-        }
+            QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
+            rect.extend( point.toPoint() );
+            mScribbleArea->drawPencil(point,
+                                      brushWidth,
+                                      mEditor->color()->frontColor(),
+                                      opacity );
 
-        if ( p.size() == 4 )
-        {
-            // qDebug() << p;
-            QPainterPath path( p[ 0 ] );
-            path.cubicTo( p[ 1 ],
-                          p[ 2 ],
-                          p[ 3 ] );
-            //mScribbleArea->drawPath(path, pen, brush, QPainter::CompositionMode_SoftLight );
-            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
-
-            if ( false ) // debug
+            if ( i == ( steps - 1 ) )
             {
-                QSizeF size( 2, 2 );
-                QRectF rect( p[ 0 ], size );
-
-                QPen penBlue( Qt::blue );
-                QPen penCyan( Qt::cyan );
-                mScribbleArea->mBufferImg->drawRect( rect, Qt::NoPen, QBrush( Qt::red ), QPainter::CompositionMode_Source, false );
-                mScribbleArea->mBufferImg->drawRect( QRectF( p[ 3 ], size ), Qt::NoPen, QBrush( Qt::red ), QPainter::CompositionMode_Source, false );
-                mScribbleArea->mBufferImg->drawRect( QRectF( p[ 1 ], size ), Qt::NoPen, QBrush( Qt::green ), QPainter::CompositionMode_Source, false );
-                mScribbleArea->mBufferImg->drawRect( QRectF( p[ 2 ], size ), Qt::NoPen, QBrush( Qt::green ), QPainter::CompositionMode_Source, false );
-                mScribbleArea->mBufferImg->drawLine( p[ 0 ], p[ 1 ], penBlue, QPainter::CompositionMode_Source, true );
-                mScribbleArea->mBufferImg->drawLine( p[ 2 ], p[ 3 ], penCyan, QPainter::CompositionMode_Source, true );
-                mScribbleArea->refreshBitmap( QRectF( p[ 0 ], p[ 3 ] ).toRect(), 20 );
-                mScribbleArea->refreshBitmap( rect.toRect(), rad );
+                lastBrushPoint = point;
             }
-
-            mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );
         }
+
+        //int rad = qRound( brushWidth ) / 2 + 2;
+        //mScribbleArea->refreshBitmap( rect, rad );
+
+//        qreal brushWidth = properties.width * mCurrentPressure;
+
+//        QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+//        QBrush brush( currentPressuredColor, Qt::SolidPattern );
+//        rad = qRound( properties.width / 2 ) + 3;
+
+//        for ( int i = 0; i < p.size(); i++ )
+//        {
+//            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
+//        }
+
+//        if ( p.size() == 4 )
+//        {
+//            // qDebug() << p;
+//            QPainterPath path( p[ 0 ] );
+//            path.cubicTo( p[ 1 ],
+//                          p[ 2 ],
+//                          p[ 3 ] );
+
+//            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
+//            mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );
+//        }
     }
     else if ( layer->type() == Layer::VECTOR )
     {
@@ -262,7 +278,7 @@ void PencilTool::drawStroke()
                   Qt::RoundCap,
                   Qt::RoundJoin );
 
-        rad = qRound( ( properties.width / 2 + 2 ) * mEditor->view()->scaling() );
+        int rad = qRound( ( properties.width / 2 + 2 ) * mEditor->view()->scaling() );
 
         if ( p.size() == 4 ) {
             QSizeF size( 2, 2 );

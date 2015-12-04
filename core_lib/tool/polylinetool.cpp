@@ -87,7 +87,7 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
             if ( layer->type() == Layer::VECTOR )
             {
                 ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
-                if ( mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(EFFECT::INVISIBLE_LINES) )
+                if ( mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
                 {
                     mScribbleArea->toggleThinLines();
                 }

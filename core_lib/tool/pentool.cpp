@@ -24,7 +24,7 @@ void PenTool::loadSettings()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-    properties.feather = 30;
+    properties.feather = 80;
     properties.pressure = settings.value( "penPressure" ).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
@@ -78,7 +78,7 @@ QCursor PenTool::cursor()
     {
         return QCursor( circleCursors() ); // two circles cursor
     }
-    if ( mEditor->preference()->isOn( EFFECT::TOOL_CURSOR ) )
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pen.png" ), 7, 0 );
     }
@@ -194,11 +194,10 @@ void PenTool::drawStroke()
         {
             QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
-            mScribbleArea->drawBrush( point,
-                                      brushWidth,
-                                      properties.feather,
-                                      mEditor->color()->frontColor(),
-                                      opacity );
+            mScribbleArea->drawPen( point,
+                                    brushWidth,
+                                    mEditor->color()->frontColor(),
+                                    opacity );
 
             if ( i == ( steps - 1 ) )
             {

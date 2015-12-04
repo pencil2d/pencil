@@ -72,9 +72,8 @@ public:
     bool areLayersSane() const;
     bool isLayerPaintable() const;
 
-    static QBrush getBackgroundBrush( QString );
 
-    void setEffect(EFFECT e, bool isOn );
+    void setEffect(SETTING e, bool isOn );
 
     int showAllLayers() const { return mShowAllLayers; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
@@ -136,8 +135,6 @@ public slots:
     void toggleGrid( bool );
 
     void setCurveSmoothing( int );
-    void setBackground( int );
-    void setBackgroundBrush( QString );
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
@@ -168,6 +165,7 @@ public:
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm );
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm );
+    void drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void drawEraser( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
@@ -185,11 +183,12 @@ public:
 
 private:
     void drawCanvas( int frame, QRect rect );
-    void drawShadow( QPainter& );
     void drawAxis( QPainter& );
     void drawGrid( QPainter& );
 
     void toggledOnionColor();
+
+    void settingUpdated(SETTING setting);
 
     MoveMode mMoveMode = MIDDLE;
     ToolType mPrevTemporalToolType;
@@ -214,8 +213,6 @@ private:
     QColor onionColor;
 
     bool mNeedUpdateAll = false;
-
-    QBrush mBackgroundBrush;
   
 
 private: 

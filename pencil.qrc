@@ -58,5 +58,6 @@
         <file>icons/liquify.png</file>
         <file>icons/grid-a.png</file>
         <file>icons/grid-b.png</file>
+        <file>background/checkerboard.png</file>
     </qresource>
 </RCC>

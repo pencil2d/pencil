@@ -8,24 +8,23 @@
 #include "timeline.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
+#include "preferencemanager.h"
 
 
 TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type ) : QWidget( parent )
 {
     timeLine = parent;
     mEditor = editor;
+    mPrefs = editor->preference();
     m_eType = type;
 
     m_pCache = NULL;
-    QSettings settings( "Pencil", "Pencil" );
 
-    frameLength = settings.value( "length" ).toInt();
-    if ( frameLength == 0 )
-    {
-        frameLength = 240; settings.setValue( "length", frameLength );
-    }
-
-    shortScrub = settings.value( "shortScrub" ).toBool();
+    frameLength = mPrefs->getInt(SETTING::TIMELINE_SIZE);
+    fontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
+    frameSize = mPrefs->getInt(SETTING::FRAME_SIZE);
+    shortScrub = mPrefs->isOn(SETTING::SHORT_SCRUB);
+    drawFrameNumber = mPrefs->isOn(SETTING::DRAW_LABEL);
 
     startY = 0;
     endY = 0;
@@ -33,31 +32,39 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
     startLayerNumber = -1;
     frameOffset = 0;
     layerOffset = 0;
+    layerHeight = 20;
 
-    frameSize = ( settings.value( "frameSize" ).toInt() );
-    if ( frameSize == 0 )
-    {
-        frameSize = 12;
-        settings.setValue( "frameSize", frameSize );
-    }
-
-    fontSize = ( settings.value( "labelFontSize" ).toInt() );
-    if ( fontSize == 0 )
-    {
-        fontSize = 12;
-        settings.setValue( "labelFontSize", fontSize );
-    }
-
-    layerHeight = ( settings.value( "layerHeight" ).toInt() );
-    if ( layerHeight == 0 )
-    {
-        layerHeight = 20;
-        settings.setValue( "layerHeight", layerHeight );
-    }
 
     setMinimumSize( 500, 4 * layerHeight );
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
     setAttribute( Qt::WA_OpaquePaintEvent, false );
+
+    connect( mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting );
+}
+
+void TimeLineCells::loadSetting(SETTING setting)
+{
+    switch (setting) {
+    case SETTING::TIMELINE_SIZE:
+        frameLength = mPrefs->getInt(SETTING::TIMELINE_SIZE);
+        timeLine->updateLength( frameLength );
+        break;
+    case SETTING::LABEL_FONT_SIZE:
+        fontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
+        break;
+    case SETTING::FRAME_SIZE:
+        frameSize = mPrefs->getInt(SETTING::FRAME_SIZE);
+        break;
+    case SETTING::SHORT_SCRUB:
+        shortScrub = mPrefs->isOn(SETTING::SHORT_SCRUB);
+        break;
+    case SETTING::DRAW_LABEL:
+        drawFrameNumber = mPrefs->isOn(SETTING::DRAW_LABEL);
+        break;
+    default:
+        break;
+    }
+    updateContent();
 }
 
 int TimeLineCells::getFrameNumber( int x )
@@ -426,8 +433,7 @@ void TimeLineCells::mouseDoubleClickEvent( QMouseEvent* event )
     // -- short scrub --
     if ( event->pos().y() < 20 )
     {
-        if ( shortScrub ) scrubChange( 0 );
-        else scrubChange( 1 );
+        mPrefs->set(SETTING::SHORT_SCRUB, !shortScrub);
     }
 
     // -- layer --
@@ -444,57 +450,6 @@ void TimeLineCells::mouseDoubleClickEvent( QMouseEvent* event )
             update();
         }
     }
-}
-
-void TimeLineCells::fontSizeChange( int x )
-{
-    fontSize = x;
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "labelFontSize", x );
-    updateContent();
-}
-
-void TimeLineCells::frameSizeChange( int x )
-{
-    frameSize = x;
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "frameSize", x );
-    updateContent();
-}
-
-void TimeLineCells::scrubChange( int x )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( x == 0 ) { shortScrub = false; settings.setValue( "shortScrub", "false" ); }
-    else { shortScrub = true; settings.setValue( "shortScrub", "true" ); }
-    update();
-}
-
-void TimeLineCells::labelChange( int x )
-{
-    QSettings settings( "Pencil", "Pencil" );
-    if ( x == 0 )
-    {
-        drawFrameNumber = false;
-        settings.setValue( "drawLabel", "false" );
-    }
-    else
-    {
-        drawFrameNumber = true;
-        settings.setValue( "drawLabel", "true" );
-    }
-    updateContent();
-}
-
-void TimeLineCells::lengthChange( QString x )
-{
-    bool ok;
-    int dec = x.toInt( &ok, 10 );
-    frameLength = dec;
-    timeLine->updateLength( frameLength );
-    updateContent();
-    QSettings settings( "Pencil", "Pencil" );
-    settings.setValue( "length", dec );
 }
 
 void TimeLineCells::hScrollChange( int x )
