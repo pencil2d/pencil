@@ -10,6 +10,7 @@
 #include "viewmanager.h"
 #include "layermanager.h"
 #include "soundmanager.h"
+#include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "util.h"
 
@@ -110,6 +111,18 @@ void CommandCenter::showGrid( bool bShow )
         mEditor->preference()->turnOn( SETTING::GRID );
     else
         mEditor->preference()->turnOff( SETTING::GRID );
+}
+
+void CommandCenter::PlayStop()
+{
+    if ( mEditor->playback()->isPlaying() )
+    {
+        mEditor->playback()->stop();
+    }
+    else
+    {
+        mEditor->playback()->play();
+    }
 }
 
 void CommandCenter::GotoNextFrame()

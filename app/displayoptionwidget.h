@@ -1,11 +1,7 @@
 #ifndef DISPLAYOPTIONDOCKWIDGET_H
 #define DISPLAYOPTIONDOCKWIDGET_H
 
-#include <QDockWidget>
-#include "pencildef.h"
-#include "editor.h"
-#include "scribblearea.h"
-#include "preferencemanager.h"
+#include "basedockwidget.h"
 
 namespace Ui
 {
@@ -15,17 +11,21 @@ class Editor;
 class QToolButton;
 
 
-class DisplayOptionWidget : public QDockWidget
+class DisplayOptionWidget : public BaseDockWidget
 {
     Q_OBJECT
 public:
-    DisplayOptionWidget(QWidget *parent = 0);
+    explicit DisplayOptionWidget( QWidget* parent );
+    virtual ~DisplayOptionWidget();
+
+    void initUI() override;
+    void updateUI() override;
+
     void makeConnectionToEditor(Editor* editor);
 
 
 public slots:
     void loadUI();
-    void updateUI();
 
 
 private:

@@ -12,7 +12,7 @@ class BaseDockWidget : public QDockWidget
 public:
     explicit BaseDockWidget( QWidget* pParent );
     explicit BaseDockWidget( QWidget* pParent, Qt::WindowFlags );
-    explicit BaseDockWidget( QString strTitle, QWidget* pParent, Qt::WindowFlags );
+    explicit BaseDockWidget( QString strTitle, QWidget* pParent, Qt::WindowFlags = Qt::Widget );
     virtual  ~BaseDockWidget();
 
     virtual void initUI() = 0;

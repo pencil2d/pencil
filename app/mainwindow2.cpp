@@ -42,6 +42,7 @@ GNU General Public License for more details.
 #include "commandcenter.h"
 
 #include "scribblearea.h"
+#include "colorbox.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
 #include "tooloptiondockwidget.h"
@@ -133,28 +134,32 @@ void MainWindow2::createDockWidgets()
 {
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
-    mDockWidgets.append( mTimeLine );
 
-    mColorWheel = new QDockWidget( tr("Color Wheel"), this );
-    ColorBox* pColorBox = new ColorBox(this);
-    pColorBox->setToolTip(tr("color palette:<br>use <b>(C)</b><br>toggle at cursor"));
-    mColorWheel->setWidget( pColorBox );
+    mColorWheel = new ColorBox( tr("Color Wheel"), this );
+    mColorWheel->setToolTip( tr( "color palette:<br>use <b>(C)</b><br>toggle at cursor" ) );
     mColorWheel->setObjectName( "ColorWheel" );
     mColorWheel->setMaximumHeight(390);
 
-    mColorPalette = new ColorPaletteWidget( tr( "Color Palette" ), this );
+    mColorPalette = new ColorPaletteWidget( this );
     mColorPalette->setObjectName( "ColorPalette" );
-    mDockWidgets.append( mColorPalette );
 
-    mDisplayOptionWidget = new DisplayOptionWidget(this);
+    mDisplayOptionWidget = new DisplayOptionWidget( this );
     mDisplayOptionWidget->setObjectName( "DisplayOption" );
 
-    mToolOptions = new ToolOptionWidget(this);
+    mToolOptions = new ToolOptionWidget( this );
     mToolOptions->setObjectName( "ToolOption" );
 
-    mToolBox = new ToolBoxWidget( tr( "Tools" ), this );
+    mToolBox = new ToolBoxWidget( tr( "Tools", "Window title of tool box." ), this );
     mToolBox->setObjectName( "ToolBox" );
-    mDockWidgets.append( mToolBox );
+
+    mDockWidgets 
+        << mTimeLine
+        << mColorWheel
+        << mColorPalette
+        << mDisplayOptionWidget
+        << mToolOptions
+        << mToolBox;
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -187,11 +192,15 @@ void MainWindow2::createDockWidgets()
     */
 
     makeConnections( mEditor, mTimeLine );
-    makeConnections( mEditor, pColorBox );
+    makeConnections( mEditor, mColorWheel );
     makeConnections( mEditor, mColorPalette );
     makeConnections( mEditor, mDisplayOptionWidget );
     makeConnections( mEditor, mToolOptions );
-    mToolOptions->makeConnectionToEditor(mEditor);
+
+    for ( BaseDockWidget* w : mDockWidgets )
+    {
+        w->updateUI();
+    }
 }
 
 
@@ -250,7 +259,7 @@ void MainWindow2::createMenus()
     connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
     connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
-    connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllPalettes );
+    connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
     connect( ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV );
@@ -272,7 +281,7 @@ void MainWindow2::createMenus()
 
     /// --- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
-    connect( ui->actionPlay, &QAction::triggered, pPlaybackManager, &PlaybackManager::play );
+    connect( ui->actionPlay, &QAction::triggered, mCommands, &CommandCenter::PlayStop );
 
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
@@ -792,7 +801,7 @@ void MainWindow2::preferences()
     mPreferencesDialog->show();
 }
 
-void MainWindow2::dockAllPalettes()
+void MainWindow2::dockAllSubWidgets()
 {
     mToolBox->setFloating(false);
     mToolOptions->setFloating(false);
@@ -1075,9 +1084,9 @@ void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
     display->makeConnectionToEditor( editor );
 }
 
-void MainWindow2::makeConnections(Editor* editor, ToolOptionWidget* toolOptions)
+void MainWindow2::makeConnections( Editor* editor, ToolOptionWidget* toolOptions )
 {
-    connect( editor->tools(), &ToolManager::displayToolOptions, toolOptions, &ToolOptionWidget::displayToolOptions );
+    toolOptions->makeConnectionToEditor( editor );
 }
 
 

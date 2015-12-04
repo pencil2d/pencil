@@ -189,11 +189,11 @@ void TimeLine::initUI()
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
 
-    connect( mTimeControls, SIGNAL( loopStartClick( int ) ), this, SIGNAL( loopStartClick( int ) ) );
-    connect( mTimeControls, SIGNAL( loopEndClick( int ) ), this, SIGNAL( loopEndClick( int ) ) );
+    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::loopStartClick );
+    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::loopEndClick );
 
-    connect( mTimeControls, SIGNAL( soundClick( bool ) ), this, SIGNAL( soundClick( bool ) ) );
-    connect( mTimeControls, SIGNAL( fpsClick( int ) ), this, SIGNAL( fpsClick( int ) ) );
+    connect( mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick );
+    connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick );
 
     connect( newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer );
     connect( newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer );

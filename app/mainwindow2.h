@@ -92,7 +92,7 @@ private:
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
 
-    void dockAllPalettes();
+    void dockAllSubWidgets();
 
     void createDockWidgets();
     void createMenus();
@@ -117,7 +117,7 @@ private:
     ScribbleArea* mScribbleArea;
 
     // UI: Dock widgets
-    QDockWidget*          mColorWheel          = nullptr;
+    ColorBox*             mColorWheel          = nullptr;
     ColorPaletteWidget*   mColorPalette        = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions         = nullptr;

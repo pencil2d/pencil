@@ -904,7 +904,7 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
     }
     else
     {
-        Q_ASSERT( false ); // TODO: import sound.
+        Q_ASSERT( false );
     }
 
 	if ( isOK )

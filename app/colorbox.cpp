@@ -3,7 +3,7 @@
 #include "colorinspector.h"
 #include "colorbox.h"
 
-ColorBox::ColorBox(QWidget *parent) : QWidget(parent)
+ColorBox::ColorBox( const QString& strTitle, QWidget* parent ) : BaseDockWidget( strTitle, parent )
 {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
@@ -13,12 +13,14 @@ ColorBox::ColorBox(QWidget *parent) : QWidget(parent)
     layout->addWidget(m_colorWheel);
     layout->addWidget(m_colorInspector);
 
-    setLayout(layout);
+    QWidget* mainWidget = new QWidget;
+    mainWidget->setLayout(layout);
+
+    setWidget( mainWidget );
 
     connect( m_colorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove );
     connect( m_colorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange );
     connect( m_colorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease );
-
 
     m_colorWheel->setColor(Qt::black);
     m_colorInspector->setColor(Qt::black);
@@ -26,6 +28,16 @@ ColorBox::ColorBox(QWidget *parent) : QWidget(parent)
 
 ColorBox::~ColorBox()
 {
+}
+
+void ColorBox::initUI()
+{
+
+}
+
+void ColorBox::updateUI()
+{
+
 }
 
 QColor ColorBox::color()

@@ -1,42 +1,47 @@
 #ifndef TOOLOPTIONDOCKWIDGET_H
 #define TOOLOPTIONDOCKWIDGET_H
 
-#include <QDockWidget>
+#include "basedockwidget.h"
 #include "pencildef.h"
-
-
 class QToolButton;
 class SpinSlider;
 class QCheckBox;
 class Editor;
+class BaseTool;
 
-class ToolOptionWidget : public QDockWidget
+
+
+class ToolOptionWidget : public BaseDockWidget
 {
     Q_OBJECT
 public:
-    ToolOptionWidget(QWidget *parent = 0);
+    explicit ToolOptionWidget( QWidget* parent );
+    virtual ~ToolOptionWidget();
+
+    void initUI() override;
+    void updateUI() override;
+
     void makeConnectionToEditor(Editor* editor);
 
-    QCheckBox* usePressureBox;
-    QCheckBox* makeInvisibleBox;
-    QCheckBox* preserveAlphaBox;
-    SpinSlider* sizeSlider;
-    SpinSlider* featherSlider;
-
-signals:
-
 public slots:
-    void setPenWidth(qreal);
-    void setPenFeather(qreal);
-    void setPenInvisibility(int);
-    void setPressure(int);
-    void setPreserveAlpha(int);
-
-    void displayToolOptions(QHash<ToolPropertyType, bool> options);
+    void onToolPropertyChanged( ToolType, ToolPropertyType );
+    void onToolChanged( ToolType );
 
 private:
+    void setPenWidth( qreal );
+    void setPenFeather( qreal );
+    void setPenInvisibility( int );
+    void setPressure( int );
+    void setPreserveAlpha( int );
+
     void disableAllOptions();
     void createUI();
+
+    QCheckBox* usePressureBox   = nullptr;
+    QCheckBox* makeInvisibleBox = nullptr;
+    QCheckBox* preserveAlphaBox = nullptr;
+    SpinSlider* sizeSlider      = nullptr;
+    SpinSlider* featherSlider   = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

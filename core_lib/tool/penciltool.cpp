@@ -15,8 +15,7 @@
 
 #include "penciltool.h"
 
-PencilTool::PencilTool( QObject *parent ) :
-StrokeTool( parent )
+PencilTool::PencilTool( QObject* parent ) : StrokeTool( parent )
 {
 }
 
@@ -26,22 +25,19 @@ void PencilTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
     properties.feather = 50;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
 
-    // First run
-    //
     if ( properties.width <= 0 )
     {
         // setting the default value to 4
         // seems to give great results with pressure on
-        //
-        setWidth(4);
-        setPressure(1);
+        setWidth( 4 );
+        setPressure( 1 );
     }
 
 }
@@ -52,7 +48,7 @@ void PencilTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("pencilWidth", width);
     settings.sync();
 }
