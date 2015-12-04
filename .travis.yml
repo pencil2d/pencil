@@ -5,21 +5,18 @@
 
 language: cpp
 compiler: g++
+	  
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-add-repository ppa:ubuntu-sdk-team/ppa -y
+  - sudo apt-get update -qq
 
-sudo: false
-
-addons:
-  apt:
-    sources:
-	  - ubuntu-toolchain-r-test
-	  - ubuntu-sdk-team
-	packages:
-      - build-essential
-	  - libgl1-mesa-dev
-      - g++-4.8
+install:
+  - sudo apt-get install g++-4.9 -qq
+  - export CXX="g++-4.9"
+  - sudo apt-get install build-essential libgl1-mesa-dev
 
 script:
-  - export CXX="g++-4.8"
   - qmake --version
   - qmake "QMAKE_CXX=$CXX"
   - make
