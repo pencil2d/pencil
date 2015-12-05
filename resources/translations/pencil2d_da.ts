@@ -256,8 +256,8 @@
         <translation>Indstil Pen bredde &lt;br&gt;&lt;b&gt;[SHIFT]+træk&lt;/b&gt;&lt;br&gt;for hurtige justeringer</translation>
     </message>
     <message>
-    <source>Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment</source>
-        <translation>Indstil Pen bredde <br><b>[SHIFT]+træk</b><br>for hurtige justeringer</translation>
+    <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Indstil Pen bredde &lt;br&gt;&lt;b&gt;[SHIFT]+træk&lt;/b&gt;&lt;br&gt;for hurtige justeringer</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="43"/>
@@ -270,8 +270,8 @@
         <translation>Indstil Pen udtynding &lt;br&gt;&lt;b&gt;[CTRL]+træk&lt;/b&gt;&lt;br&gt;for hurtige justeringer</translation>
     </message>
     <message>
-    <source>Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment</source>
-        <translation>Indstil Pen udtynding <br><b>[CTRL]+træk</b><br>for hurtige justeringer</translation>
+    <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+træk&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Indstil Pen udtynding &lt;br&gt;&lt;b&gt;[CTRL]+træk&lt;/b&gt;&lt;br&gt;for hurtige justeringer</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="50"/>
@@ -864,8 +864,8 @@
         <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Slå til/fra ved markøren</translation>
     </message>
     <message>
-    <source>color palette:<br>use <b>(C)</b><br>toggle at cursor</source>
-        <translation>farve palet:<br>tryk på <b>(C)</b><br>Slå til/fra ved markøren</translation>
+    <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
+        <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Slå til/fra ved markøren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="323"/>
@@ -1051,12 +1051,12 @@ Do you want to save your changes?</source>
         <translation>Kan ikke indlæse vector billede.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Brug vector lag til at importere vector grafik.</translation>
     </message>
     <message>
-    <source>Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps.</source>
-        <translation>Kan ikke indlæse bitmap billede.<br><b>TIP:</b> Brug bitmap lag til at importere bitmaps.</translation>
+    <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
+        <translation>Kan ikke indlæse bitmap billede.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Brug bitmap lag til at importere bitmaps.</translation>
     </message>
     <message>
-    <source>Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors.</source>
-        <translation>Kan ikke indlæse vector billede.<br><b>TIP:</b> Brug vector lag til at imporere vector grafik</translation>
+    <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
+        <translation>Kan ikke indlæse vector billede.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Brug vector lag til at imporere vector grafik</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1279"/>
@@ -1517,7 +1517,7 @@ Do you want to save your changes?</source>
         <translation>&amp;Lag</translation>
     </message>
     <message>
-    <source>&Layer</source>
+    <source>&amp;Layer</source>
         <translation>&amp;Lag</translation>
     </message>
     <message>
@@ -1613,52 +1613,52 @@ Do you want to save your changes?</source>
         <translation>Udtværings værktøj &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Rediger polylinje/kurver&lt;br&gt;Blødgør bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Udglat</translation>
     </message>
     <message>
-    <source>Pencil Tool <b>(N)</b>: Sketch with pencil</source>
-        <translation>Blyant Værktøj <b>(N)</b>: Skitser med blyant</translation>
+    <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
+        <translation>Blyant Værktøj &lt;b&gt;(N)&lt;/b&gt;: Skitser med blyant</translation>
     </message>
     <message>
-    <source>Select Tool <b>(V)</b>: Select an object</source>
-        <translation>Markerings Værktøj <b>(V)</b>: Marker et objekt</translation>
+    <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
+        <translation>Markerings Værktøj &lt;b&gt;(V)&lt;/b&gt;: Marker et objekt</translation> 
     </message>
     <message>
-    <source>Move Tool <b>(Q)</b>: Move an object</source>
-        <translation>Flytte Værktøj <b>(Q)</b>: Flyt et objekt</translation>
+    <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
+        <translation>Flytte Værktøj &lt;b&gt;(Q)&lt;/b&gt;: Flyt et objekt</translation>
     </message>
     <message>
-    <source>Hand Tool <b>(H)</b>: Move the canvas</source>
-        <translation>Hånd Værktøj <b>(H)</b>: Ryk lærrederet</translation>
+    <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
+        <translation>Hånd Værktøj &lt;b&gt;(H)&lt;/b&gt;: Ryk lærrederet</translation>
     </message>
     <message>
-    <source>Pen Tool <b>(P)</b>: Sketch with pen</source>
-        <translation>Pen Værktøj <b>(P)</b>: Skitser med pen</translation>
+    <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
+        <translation>Pen Værktøj &lt;b&gt;(P)&lt;/b&gt;: Skitser med pen</translation>
     </message>
     <message>
-    <source>Eraser Tool <b>(E)</b>: Erase</source>
-        <translation>Viskelæder Værktøj <b>(E)</b>: Slet</translation>
+    <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
+        <translation>Viskelæder Værktøj &lt;b&gt;(E)&lt;/b&gt;: Slet</translation>
     </message>
     <message>
-    <source>Polyline Tool <b>(Y)</b>: Create line/curves</source>
-        <translation>Polylinje Værktøj <b>(Y)</b>: Lav linje/kurver</translation>
+    <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
+        <translation>Polylinje Værktøj &lt;b&gt;(Y)&lt;/b&gt;: Lav linje/kurver</translation>
     </message>
     <message>
-    <source>Paint Bucket Tool <b>(K)</b>: Fill selected area with a color</source>
-        <translation>Malerspandsværktøj <b>(K)</b>: Udfyld det valgte område med en farve</translation>
+    <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
+        <translation>Malerspandsværktøj &lt;b&gt;(K)&lt;/b&gt;: Udfyld det valgte område med en farve</translation>
     </message>
     <message>
-    <source>Brush Tool <b>(B)</b>: Paint smooth stroke with a brush</source>
-        <translation>Pensel Værktøj <b>(B)</b>: Mal bløde strøj med en pensel</translation>
+    <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
+        <translation>Pensel Værktøj &lt;b&gt;(B)&lt;/b&gt;: Mal bløde strøj med en pensel</translation>
     </message>
     <message>
-    <source>Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access</source>
-        <translation>Pipette Værktøj <b>(I)</b>: Indstil en farve from scenen<br><b>[ALT]</b> for øjeblikkelig adgang</translation>
+    <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage &lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
+        <translation>Pipette Værktøj &lt;b&gt;(I)&lt;/b&gt;: Indstil en farve from scenen &lt;b&gt;[ALT]&lt;/b&gt; for øjeblikkelig adgang</translation>
     </message>
     <message>
-    <source>Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame</source>
-        <translation>Ryd Ramme <b>(Ctrl+D)</b>: Sletter al indhold indenfor den valgte ramme</translation>
+    <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
+        <translation>Ryd Ramme &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Sletter al indhold indenfor den valgte ramme</translation>
     </message>
     <message>
-    <source>Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth</source>
-        <translation>Udtværings Værktøj <b>(A)</b>:<br>Rediger polylinje/kurver<br>Blødgør bitmap pixels<br><b>+[Alt]</b>: Udglat</translation>
+    <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;: Edit polyline/curves Liquify bitmap pixels &lt;b&gt;+[ALT]&lt;/b&gt;: Smooth</source>
+        <translation>Udtværings Værktøj &lt;b&gt;(A)&lt;/b&gt;: Rediger polylinje/kurver Blødgør bitmap pixels &lt;b&gt;+[ALT]&lt;/b&gt;: Udglat</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="49"/>
