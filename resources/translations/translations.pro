@@ -7,6 +7,7 @@ TRANSLATIONS += pencil.ts \
                 pencil2d_cs.ts \
                 pencil2d_it.ts \
                 pencil2d_ja.ts \
+                pencil2d_da.ts \
 
 SOURCES += dummy.cpp
 
