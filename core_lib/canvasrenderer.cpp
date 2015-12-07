@@ -269,25 +269,34 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-    painter.setOpacity( 0.8 );
+    if (mOptions.nShowAllLayers > 0) {
 
-    for ( int i = 0; i < mObject->getLayerCount(); ++i )
-    {
-        Layer* layer = mObject->getLayer( i );
-        if ( i == mLayerIndex )
-        {
-            continue; // current layer should be paint at last.
+        if (mOptions.nShowAllLayers == 1) {
+            painter.setOpacity( 0.8 );
+        }
+        else {
+            painter.setOpacity( 1.0 );
         }
 
-        switch ( layer->type() )
+        for ( int i = 0; i < mObject->getLayerCount(); ++i )
         {
-            case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
-            case Layer::VECTOR: { paintVectorFrame( painter, layer, mFrameNumber ); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT( false ); break;
+            Layer* layer = mObject->getLayer( i );
+            if ( i == mLayerIndex )
+            {
+                continue; // current layer should be paint at last.
+            }
+
+            switch ( layer->type() )
+            {
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, mFrameNumber ); break; }
+                case Layer::CAMERA: break;
+                case Layer::SOUND: break;
+                default: Q_ASSERT( false ); break;
+            }
         }
     }
+
 
     painter.setOpacity( 1.0 );
 

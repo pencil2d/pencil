@@ -45,6 +45,7 @@ struct RenderOptions
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
+    int   nShowAllLayers = 3;
 };
 
 

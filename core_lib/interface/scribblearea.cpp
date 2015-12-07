@@ -954,6 +954,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.bAxis = mPrefs->isOn( SETTING::AXIS );
     options.bThinLines = mPrefs->isOn( SETTING::INVISIBLE_LINES );
     options.bOutlines = mPrefs->isOn( SETTING::OUTLINES );
+    options.nShowAllLayers = mShowAllLayers;
 
     mCanvasRenderer.setOptions( options );
 
