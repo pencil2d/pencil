@@ -107,7 +107,7 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     {
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
 
-        int onionPosition = mOptions.nPrevOnionSkinCount - mFrameNumber + iStartFrame - 1;
+        int onionPosition = mOptions.nPrevOnionSkinCount - mFrameNumber + iStartFrame;
 
         qreal opacity = minOpacity + (prevOpacityIncrement * onionPosition);
 
