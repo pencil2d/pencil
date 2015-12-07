@@ -261,7 +261,7 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
                                     false);
     }
 
-    painter.setWorldMatrixEnabled( false );
+    painter.setWorldMatrixEnabled( false ); //Don't tranform the image here as we used the viewTransform in the image output
     tempBitmapImage->paintImage( painter );
 
     delete tempBitmapImage;

@@ -121,6 +121,7 @@ signals:
 public slots:
     void clearImage();
     void calculateSelectionRect();
+    QTransform getSelectionTransformation() { return selectionTransformation; };
     void calculateSelectionTransformation();
     void paintTransformedSelection();
     void setModified( int layerNumber, int frameNumber );
