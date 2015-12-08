@@ -128,6 +128,8 @@ void ViewManager::setCanvasSize( QSize size )
 
 void ViewManager::resetView()
 {
-    mView = QTransform();
+    mRotate = 0.f;
+    mScale = 1.f;
+    translate(0, 0);
     Q_EMIT viewChanged();
 }
