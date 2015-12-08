@@ -131,6 +131,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_MAX_OPACITY:
         updateAllFrames();
         break;
+    case SETTING::GRID:
+        updateAllFrames();
+        break;
     default:
         break;
     }

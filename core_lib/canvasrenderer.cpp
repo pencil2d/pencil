@@ -329,7 +329,7 @@ void CanvasRenderer::paintGrid( QPainter& painter )
 {
     const int gridSize = 30;
 
-    QRectF boundingRect = painter.window();
+    QRectF boundingRect = mCanvas->rect();
 
     int w = boundingRect.width();
     int h = boundingRect.height();
@@ -342,9 +342,10 @@ void CanvasRenderer::paintGrid( QPainter& painter )
     int bottom = round100( boundingRect.bottom(), gridSize ) + gridSize;
 
     QPen pen( Qt::lightGray );
+    pen.setWidth(0); // 0 will draw a 1px line always independent from the transformation
     pen.setCosmetic( true );
     painter.setPen( pen );
-    painter.setWorldMatrixEnabled( true );
+    painter.setWorldMatrixEnabled( false );
     painter.setBrush( Qt::NoBrush );
 
     for ( int x = left; x < right; x += gridSize )
