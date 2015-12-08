@@ -721,7 +721,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 {
     //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
 
-    if ( !mMouseInUse )
+    if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -825,8 +825,9 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                 {
                     // ----- paints the closest curves
                     mBufferImg->clear();
-                    QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-                    QColor colour = QColor( 100, 100, 255 );
+                    QColor colour = QColor( 100, 100, 255, 50 );
+                    QPen pen2( colour, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+
 
                     for ( int k = 0; k < mClosestCurves.size(); k++ )
                     {

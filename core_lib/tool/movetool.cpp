@@ -146,13 +146,6 @@ void MoveTool::mouseReleaseEvent( QMouseEvent *event )
 
             mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
 
-            if ( layer->type() == Layer::VECTOR )
-            {
-                auto pLayerVector = static_cast< LayerVector* >( layer );
-                VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-                vectorImage->setSelectionTransformation( mScribbleArea->getSelectionTransformation() );
-            }
-
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
@@ -214,8 +207,17 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
                 }
 
                 mScribbleArea->calculateSelectionTransformation();
-                mScribbleArea->update();
+
+                if ( layer->type() == Layer::VECTOR )
+                {
+                    auto pLayerVector = static_cast< LayerVector* >( layer );
+                    VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+                    vectorImage->setSelectionTransformation( mScribbleArea->getSelectionTransformation() );
+                }
+
+                mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
                 mScribbleArea->setAllDirty();
+                mScribbleArea->updateCurrentFrame();
             }
         }
         else     // there is nothing selected
