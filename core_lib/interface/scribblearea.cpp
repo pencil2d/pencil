@@ -1350,7 +1350,16 @@ void ScribbleArea::selectAll()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        setSelection( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ), true ); // TO BE IMPROVED
+        // Only selects the entire screen erea
+        //setSelection( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ), true ); // TO BE IMPROVED
+
+        // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
+        // as the drawing area is not limited
+        //
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+        setSelection(bitmapImage->bounds(), true);
+
+
     }
     else if ( layer->type() == Layer::VECTOR )
     {

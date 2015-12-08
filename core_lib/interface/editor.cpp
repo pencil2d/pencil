@@ -861,23 +861,20 @@ void Editor::duplicateKey()
 	Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
 	if ( layer != NULL )
 	{
-		if ( layer->type() == Layer::VECTOR )
+        if ( layer->type() == Layer::VECTOR || layer->type() == Layer::BITMAP )
 		{
-			mScribbleArea->selectAll();
-			clipboardVectorOk = true;
-			g_clipboardVectorImage = *( ( (LayerVector*)layer )->getLastVectorImageAtFrame( currentFrame(), 0 ) );  // copy the image (that works but I should also provide a copy() method)
-			addNewKey();
-			VectorImage* vectorImage = ( (LayerVector*)layer )->getLastVectorImageAtFrame( currentFrame(), 0 );
-			vectorImage->paste( g_clipboardVectorImage ); // paste the clipboard
-			mScribbleArea->setModified( layers()->currentLayerIndex(), currentFrame() );
-			mScribbleArea->update();
-		}
-		if ( layer->type() == Layer::BITMAP )
-		{
-			mScribbleArea->selectAll();
-			copy();
-			addNewKey();
-			paste();
+            // Will copy the selection if any or the entire image if there is none
+            //
+            if(!mScribbleArea->somethingSelected) {
+                mScribbleArea->selectAll();
+            }
+
+            copy();
+            addNewKey();
+            paste();
+
+            mScribbleArea->setModified( layers()->currentLayerIndex(), currentFrame() );
+            mScribbleArea->update();
 		}
 	}
 }

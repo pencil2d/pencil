@@ -808,9 +808,14 @@ void VectorImage::paste(VectorImage vectorImage)
     selectionRect = QRect(0,0,0,0);
     int n = m_curves.size();
     QList<int> selectedCurves;
+
+    bool hasSelection = getFirstSelectedCurve() < -1;
+
     for(int i=0; i < vectorImage.m_curves.size() ; i++)
     {
-        if ( vectorImage.m_curves.at(i).isSelected() )
+        // If nothing is selected, paste everything
+        //
+        if ( !hasSelection || vectorImage.m_curves.at(i).isSelected() )
         {
             m_curves.append( vectorImage.m_curves.at(i) );
             selectedCurves << i;
@@ -825,7 +830,10 @@ void VectorImage::paste(VectorImage vectorImage)
         {
             int curveNumber = newArea.vertex.at(j).curveNumber;
             int vertexNumber = newArea.vertex.at(j).vertexNumber;
-            if ( vectorImage.m_curves.at(curveNumber).isSelected() )
+
+            // If nothing is selected, paste everything
+            //
+            if ( !hasSelection || vectorImage.m_curves.at(curveNumber).isSelected() )
             {
                 newArea.vertex[j] = VertexRef( selectedCurves.indexOf(curveNumber) + n, vertexNumber );
             }
