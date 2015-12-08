@@ -349,9 +349,6 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Space:
             setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
             break;
-        case Qt::Key_Alt:
-            setTemporaryTool( EYEDROPPER ); // just call "setTemporaryTool()" to activate temporarily any tool
-            break;
         default:
             event->ignore();
     }
