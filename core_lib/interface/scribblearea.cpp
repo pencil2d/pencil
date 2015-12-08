@@ -585,6 +585,7 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     if ( currentTool()->isAdjusting )
     {
         currentTool()->stopAdjusting();
+        mEditor->tools()->setWidth( currentTool()->properties.width );
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
