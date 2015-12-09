@@ -40,7 +40,6 @@ struct RenderOptions
     bool  bColorizePrevOnion = false;
     bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
-    bool  bBlurryZoom = false;
     bool  bGrid = false;
     bool  bAxis = false;
     bool  bThinLines = false;

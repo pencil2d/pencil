@@ -209,8 +209,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     mShadowsBox = new QCheckBox(tr("Shadows"));
     mToolCursorsBox = new QCheckBox(tr("Tool Cursors"));
     mAntialiasingBox = new QCheckBox(tr("Antialiasing"));
-    mBlurryZoomBox = new QCheckBox(tr("Blurry Zoom"));
-
 
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
@@ -225,7 +223,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(mAntialiasingBox, 0, 0);
-    displayLayout->addWidget(mBlurryZoomBox, 1, 0);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     mCurveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -257,7 +254,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect( mShadowsBox,         &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged );
     connect( mToolCursorsBox,     &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged );
     connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
-    connect( mBlurryZoomBox,    &QCheckBox::stateChanged, this, &GeneralPage::blurryZoomCheckboxStateChanged );
     connect( mCurveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange );
     connect( mHighResBox,         &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged );
 
@@ -273,7 +269,7 @@ void GeneralPage::updateValues()
     mShadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
     mToolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
     mAntialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
-    mBlurryZoomBox->setChecked(mManager->isOn(SETTING::BLURRYZOOM));
+    
     mHighResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
@@ -337,11 +333,6 @@ void GeneralPage::shadowsCheckboxStateChanged( bool b )
 void GeneralPage::antiAliasCheckboxStateChanged( bool b )
 {
     mManager->set( SETTING::ANTIALIAS, b );
-}
-
-void GeneralPage::blurryZoomCheckboxStateChanged( bool b )
-{
-    mManager->set( SETTING::BLURRYZOOM, b );
 }
 
 void GeneralPage::toolCursorsCheckboxStateChanged(bool b)
