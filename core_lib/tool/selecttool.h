@@ -16,6 +16,9 @@ public:
     void mousePressEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
     void mouseMoveEvent( QMouseEvent* ) override;
+
+    bool keyPressEvent(QKeyEvent *event) override;
+    bool keyReleaseEvent(QKeyEvent *event) override;
 };
 
 #endif

@@ -345,7 +345,24 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
         painter.end();
         //if (image != NULL) delete image;
         mImage = newImage;
-    //}
+        //}
+}
+
+BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool smoothTransform)
+{
+    BitmapImage selectedPart = copy(selection);
+
+    // Get the transformed image
+    //
+    QImage transformedImage;
+    if (smoothTransform) {
+        transformedImage = selectedPart.image()->transformed(transform, Qt::SmoothTransformation);
+    }
+    else {
+        transformedImage = selectedPart.image()->transformed(transform);
+    }
+
+    return BitmapImage(transform.mapRect(selection), transformedImage);
 }
 
 BitmapImage BitmapImage::transformed(QRect newBoundaries, bool smoothTransform)

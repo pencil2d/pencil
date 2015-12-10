@@ -67,8 +67,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                 {
                     if ( !(mScribbleArea->myTransformedSelection.contains( getLastPoint() )) )    // click is outside the transformed selection with the MOVE tool
                     {
-                        mScribbleArea->paintTransformedSelection();
-                        mScribbleArea->deselectAll();
+                        applyChanges();
                     }
                     else if ( event->modifiers() == Qt::ControlModifier ) // --- rotation
                     {
@@ -89,10 +88,9 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                         //  editor->backup();
                         if ( !vectorImage->isSelected( mScribbleArea->mClosestCurves ) )
                         {
-                            mScribbleArea->paintTransformedSelection();
                             if ( event->modifiers() != Qt::ShiftModifier )
                             {
-                                mScribbleArea->deselectAll();
+                                applyChanges();
                             }
                             vectorImage->setSelected( mScribbleArea->mClosestCurves, true );
                             mScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
@@ -108,7 +106,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                             {
                                 if ( event->modifiers() != Qt::ShiftModifier )
                                 {
-                                    mScribbleArea->deselectAll();
+                                    applyChanges();
                                 }
                                 vectorImage->setAreaSelected( areaNumber, true );
                                 //setSelection( vectorImage->getSelectionRect() );
@@ -120,8 +118,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
                         {
                             if ( !(mScribbleArea->myTransformedSelection.contains( getLastPoint() )) )    // click is outside the transformed selection with the MOVE tool
                             {
-                                mScribbleArea->paintTransformedSelection();
-                                mScribbleArea->deselectAll();
+                                applyChanges();
                             }
                         }
                     }
@@ -132,30 +129,19 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
 }
 
 void MoveTool::mouseReleaseEvent( QMouseEvent *event )
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL ) { return; }
+{   
+    mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
 
-    if ( event->button() == Qt::LeftButton )
-    {
-        if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
-        {
-            mScribbleArea->mOffset.setX( 0 );
-            mScribbleArea->mOffset.setY( 0 );
-            mScribbleArea->calculateSelectionTransformation();
-
-            mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
-
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-            mScribbleArea->setAllDirty();
-        }
-    }
+    // Don't do anything more on mouse release.
+    // The modifications are only applied on deslect or press enter.
 }
 
 void MoveTool::mouseMoveEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL ) { return; }
+    if ( layer == NULL ) {
+        return;
+    }
 
     if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
     {
@@ -208,16 +194,8 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
 
                 mScribbleArea->calculateSelectionTransformation();
 
-                if ( layer->type() == Layer::VECTOR )
-                {
-                    auto pLayerVector = static_cast< LayerVector* >( layer );
-                    VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-                    vectorImage->setSelectionTransformation( mScribbleArea->getSelectionTransformation() );
-                }
+                mScribbleArea->paintTransformedSelection();
 
-                mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-                mScribbleArea->setAllDirty();
-                mScribbleArea->updateCurrentFrame();
             }
         }
         else     // there is nothing selected
@@ -240,4 +218,31 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         }
         mScribbleArea->update();
     }
+}
+
+bool MoveTool::keyPressEvent(QKeyEvent *event)
+{
+    switch ( event->key() ) {
+    case Qt::Key_Escape:
+        cancelChanges();
+        break;
+    default:
+        break;
+    }
+    return true;
+}
+
+bool MoveTool::keyReleaseEvent(QKeyEvent *event)
+{
+    return true;
+}
+
+void MoveTool::cancelChanges()
+{
+    mScribbleArea->cancelTransformedSelection();
+}
+
+void MoveTool::applyChanges()
+{
+    mScribbleArea->applyTransformedSelection();
 }

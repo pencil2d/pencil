@@ -121,9 +121,11 @@ signals:
 public slots:
     void clearImage();
     void calculateSelectionRect();
-    QTransform getSelectionTransformation() { return selectionTransformation; };
+    QTransform getSelectionTransformation() { return selectionTransformation; }
     void calculateSelectionTransformation();
     void paintTransformedSelection();
+    void applyTransformedSelection();
+    void cancelTransformedSelection();
     void setModified( int layerNumber, int frameNumber );
 
     void selectAll();
@@ -194,6 +196,9 @@ private:
     MoveMode mMoveMode = MIDDLE;
     ToolType mPrevTemporalToolType;
     ToolType mPrevToolType = PEN; // previous tool (except temporal)
+
+    BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
+    bool isTransforming = false;
 
     StrokeManager* mStrokeManager = nullptr;
 
