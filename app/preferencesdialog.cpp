@@ -65,7 +65,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     pagesWidget->addWidget( tools );
     pagesWidget->addWidget( shortcuts );
 
-    QPushButton* closeButton = new QPushButton( tr( "Close" ) );
+    QPushButton* closeButton = new QPushButton( tr( "Close", "Close button of preference dialog." ) );
     connect( closeButton, &QPushButton::clicked, this, &PreferencesDialog::close );
 
     createIcons();
@@ -135,8 +135,7 @@ void PreferencesDialog::createIcons()
 
 void PreferencesDialog::closeEvent(QCloseEvent *)
 {
-
-    this->deleteLater();
+    done( QDialog::Accepted );
 }
 
 void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* previous)
