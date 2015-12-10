@@ -158,10 +158,26 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
             {
                 qreal factor = mScribbleArea->mySelection.width() / mScribbleArea->mySelection.height();
 
-                yOffset = xOffset / factor;
-
                 if (mScribbleArea->mMoveMode == ScribbleArea::TOPRIGHT || mScribbleArea->mMoveMode == ScribbleArea::BOTTOMLEFT) {
+                    yOffset = xOffset / factor;
+                }
+                else if (mScribbleArea->mMoveMode == ScribbleArea::TOPRIGHT || mScribbleArea->mMoveMode == ScribbleArea::BOTTOMLEFT) {
                     yOffset = -yOffset;
+                }
+                else if (mScribbleArea->mMoveMode == ScribbleArea::MIDDLE) {
+
+                    qreal absX = xOffset;
+                    if (absX < 0) {absX = -absX;}
+
+                    qreal absY = yOffset;
+                    if (absY < 0) {absY = -absY;}
+
+                    if (absX > absY) {
+                        yOffset = 0;
+                    }
+                    if (absY > absX) {
+                        xOffset = 0;
+                    }
                 }
             }
 
@@ -170,7 +186,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
             case ScribbleArea::MIDDLE:
                 if ( QLineF( getLastPressPixel(), getCurrentPixel() ).length() > 4 )
                 {
-                    mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( mScribbleArea->mOffset );
+                    mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( QPointF(xOffset, yOffset) );
                 }
                 break;
 
