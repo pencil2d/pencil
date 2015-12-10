@@ -151,52 +151,62 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->somethingSelected )     // there is something selected
         {
-            if ( event->modifiers() != Qt::ShiftModifier )    // (and the user doesn't press shift)
+            qreal xOffset = mScribbleArea->mOffset.x();
+            qreal yOffset = mScribbleArea->mOffset.y();
+
+            if ( event->modifiers() == Qt::ShiftModifier )    // (makes resize proportional, move linear)
             {
-                switch ( mScribbleArea->mMoveMode )
-                {
-                case ScribbleArea::MIDDLE:
-                    if ( QLineF( getLastPressPixel(), getCurrentPixel() ).length() > 4 )
-                    {
-                        mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( mScribbleArea->mOffset );
-                    }
-                    break;
+                qreal factor = mScribbleArea->mySelection.width() / mScribbleArea->mySelection.height();
 
-                case ScribbleArea::TOPRIGHT:
-                    mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( 0, mScribbleArea->mOffset.y(), mScribbleArea->mOffset.x(), 0 );
-                    break;
+                yOffset = xOffset / factor;
 
-
-                case ScribbleArea::TOPLEFT:
-                    mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( mScribbleArea->mOffset.x(), mScribbleArea->mOffset.y(), 0, 0 );
-                    break;
-
-                    // TOPRIGHT XXX
-
-                case ScribbleArea::BOTTOMLEFT:
-                    mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( mScribbleArea->mOffset.x(), 0, 0, mScribbleArea->mOffset.y() );
-                    break;
-
-                case ScribbleArea::BOTTOMRIGHT:
-                    mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection.adjusted( 0, 0, mScribbleArea->mOffset.x(), mScribbleArea->mOffset.y() );
-                    break;
-                case ScribbleArea::ROTATION:
-                    mScribbleArea->myTempTransformedSelection =
-                            mScribbleArea->myTransformedSelection; // @ necessary?
-                    mScribbleArea->myRotatedAngle = getCurrentPixel().x() - getLastPressPixel().x();
-                    //qDebug() << "rotation" << m_pScribbleArea->myRotatedAngle;
-                    break;
+                if (mScribbleArea->mMoveMode == ScribbleArea::TOPRIGHT || mScribbleArea->mMoveMode == ScribbleArea::BOTTOMLEFT) {
+                    yOffset = -yOffset;
                 }
-
-                mScribbleArea->calculateSelectionTransformation();
-
-                mScribbleArea->paintTransformedSelection();
-
             }
+
+            switch ( mScribbleArea->mMoveMode )
+            {
+            case ScribbleArea::MIDDLE:
+                if ( QLineF( getLastPressPixel(), getCurrentPixel() ).length() > 4 )
+                {
+                    mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( mScribbleArea->mOffset );
+                }
+                break;
+
+            case ScribbleArea::TOPRIGHT:
+                mScribbleArea->myTempTransformedSelection =
+                        mScribbleArea->myTransformedSelection.adjusted( 0, yOffset, xOffset, 0 );
+                break;
+
+
+            case ScribbleArea::TOPLEFT:
+                mScribbleArea->myTempTransformedSelection =
+                        mScribbleArea->myTransformedSelection.adjusted( xOffset, yOffset, 0, 0 );
+                break;
+
+                // TOPRIGHT XXX
+
+            case ScribbleArea::BOTTOMLEFT:
+                mScribbleArea->myTempTransformedSelection =
+                        mScribbleArea->myTransformedSelection.adjusted( xOffset, 0, 0, yOffset );
+                break;
+
+            case ScribbleArea::BOTTOMRIGHT:
+                mScribbleArea->myTempTransformedSelection =
+                        mScribbleArea->myTransformedSelection.adjusted( 0, 0, xOffset, yOffset );
+                break;
+            case ScribbleArea::ROTATION:
+                mScribbleArea->myTempTransformedSelection =
+                        mScribbleArea->myTransformedSelection; // @ necessary?
+                mScribbleArea->myRotatedAngle = getCurrentPixel().x() - getLastPressPixel().x();
+                //qDebug() << "rotation" << m_pScribbleArea->myRotatedAngle;
+                break;
+            }
+
+            mScribbleArea->calculateSelectionTransformation();
+
+            mScribbleArea->paintTransformedSelection();
         }
         else     // there is nothing selected
         {
