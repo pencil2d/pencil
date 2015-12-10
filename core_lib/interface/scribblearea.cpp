@@ -130,6 +130,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ANTIALIAS:
         updateAllFrames();
         break;
+    case SETTING::GRID:
+        updateAllFrames();
+        break;
     default:
         break;
     }
@@ -719,7 +722,7 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 {
     //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
 
-    if ( !mMouseInUse )
+    if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -823,8 +826,9 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                 {
                     // ----- paints the closest curves
                     mBufferImg->clear();
-                    QPen pen2( Qt::black, 0.5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-                    QColor colour = QColor( 100, 100, 255 );
+                    QColor colour = QColor( 100, 100, 255, 50 );
+                    QPen pen2( colour, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
+
 
                     for ( int k = 0; k < mClosestCurves.size(); k++ )
                     {
@@ -954,6 +958,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.bAxis = mPrefs->isOn( SETTING::AXIS );
     options.bThinLines = mPrefs->isOn( SETTING::INVISIBLE_LINES );
     options.bOutlines = mPrefs->isOn( SETTING::OUTLINES );
+    options.nShowAllLayers = mShowAllLayers;
 
     mCanvasRenderer.setOptions( options );
 
@@ -1346,7 +1351,16 @@ void ScribbleArea::selectAll()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        setSelection( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ), true ); // TO BE IMPROVED
+        // Only selects the entire screen erea
+        //setSelection( mEditor->view()->mapScreenToCanvas( QRectF( -2, -2, width() + 3, height() + 3 ) ), true ); // TO BE IMPROVED
+
+        // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
+        // as the drawing area is not limited
+        //
+        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+        setSelection(bitmapImage->bounds(), true);
+
+
     }
     else if ( layer->type() == Layer::VECTOR )
     {

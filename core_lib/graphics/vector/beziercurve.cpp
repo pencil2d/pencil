@@ -466,7 +466,7 @@ QPainterPath BezierCurve::getSimplePath()
 
 QPainterPath BezierCurve::getStrokedPath()
 {
-    return getStrokedPath( 2.0 * width );
+    return getStrokedPath( width );
 }
 
 QPainterPath BezierCurve::getStrokedPath(qreal width)
@@ -483,7 +483,7 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
     int n = vertex.size();
     normalVec = QPointF(-(c1.at(0) - origin).y(), (c1.at(0) - origin).x());
     normalise(normalVec);
-    if (usePressure) width2 = width * 0.5 * pressure.at(0);
+    if (usePressure) width2 = width * pressure.at(0);
     if (n==1 && width2 == 0.0)  width2 = 0.15 * width;
     path.moveTo(origin + width2*normalVec);
     for(int i=0; i<n; i++)

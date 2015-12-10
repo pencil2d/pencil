@@ -35,6 +35,24 @@ void StrokeTool::startStroke()
     disableCoalescing();
 }
 
+bool StrokeTool::keyPressEvent(QKeyEvent *event)
+{
+    switch ( event->key() ) {
+    case Qt::Key_Alt:
+        mScribbleArea->setTemporaryTool( EYEDROPPER );
+        break;
+    default:
+        break;
+    }
+    return true;
+}
+
+bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
+{
+    return true;
+}
+
+
 void StrokeTool::endStroke()
 {
     mStrokePoints.clear();
