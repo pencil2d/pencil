@@ -158,11 +158,11 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
             {
                 qreal factor = mScribbleArea->mySelection.width() / mScribbleArea->mySelection.height();
 
-                if (mScribbleArea->mMoveMode == ScribbleArea::TOPRIGHT || mScribbleArea->mMoveMode == ScribbleArea::BOTTOMLEFT) {
+                if (mScribbleArea->mMoveMode == ScribbleArea::TOPLEFT || mScribbleArea->mMoveMode == ScribbleArea::BOTTOMRIGHT) {
                     yOffset = xOffset / factor;
                 }
                 else if (mScribbleArea->mMoveMode == ScribbleArea::TOPRIGHT || mScribbleArea->mMoveMode == ScribbleArea::BOTTOMLEFT) {
-                    yOffset = -yOffset;
+                    yOffset = -(xOffset / factor);
                 }
                 else if (mScribbleArea->mMoveMode == ScribbleArea::MIDDLE) {
 
