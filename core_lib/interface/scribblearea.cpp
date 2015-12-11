@@ -1259,6 +1259,7 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 
     selectionTransformation.reset();
     selectionTransformation.translate( c1x, c1y );
+    selectionTransformation.rotate(myRotatedAngle);
     selectionTransformation.scale( scaleX, scaleY );
     selectionTransformation.translate( -c2x, -c2y );
 

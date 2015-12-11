@@ -147,6 +147,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     {
         return;
     }
+
     if ( event->buttons() & Qt::LeftButton )   // the user is also pressing the mouse (dragging)
     {
         if ( mScribbleArea->somethingSelected )     // there is something selected
