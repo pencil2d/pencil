@@ -5,7 +5,7 @@
 
 ColorBox::ColorBox( const QString& strTitle, QWidget* parent ) : BaseDockWidget( strTitle, parent )
 {
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout();
 
     m_colorWheel = new ColorWheel(this);
     m_colorInspector = new ColorInspector(this);
