@@ -213,7 +213,7 @@ void BrushTool::drawStroke()
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        qreal opacity = mCurrentPressure;
+        qreal opacity = mCurrentPressure / 2;
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
