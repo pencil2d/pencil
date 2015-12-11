@@ -493,6 +493,9 @@ bool MainWindow2::openObject( QString strFilePath )
     // Refresh the Palette
     mColorPalette->refreshColorList();
 
+    // Reset view
+    mEditor->view()->resetView();
+
     progress.setValue( 100 );
     return true;
 }
