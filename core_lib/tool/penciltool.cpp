@@ -176,22 +176,6 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
 
 void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
-//    QColor currentColor = mEditor->color()->frontColor();
-//    currentPressuredColor = currentColor;
-
-//    // Increases the alfa in order to simulates a soft pencil stroke (even with the mouse)
-//    int softness = 8;
-
-//    if ( mScribbleArea->usePressure() && !mouseDevice )
-//    {
-//        currentPressuredColor.setAlphaF( (currentColor.alphaF() * pressure * pressure) / softness );
-//    }
-//    else
-//    {
-//        currentPressuredColor.setAlphaF( currentColor.alphaF() / softness );
-//    }
-
-
     mCurrentWidth = properties.width;
 
     if ( properties.pressure && !mouseDevice )
@@ -244,31 +228,9 @@ void PencilTool::drawStroke()
             }
         }
 
-        //int rad = qRound( brushWidth ) / 2 + 2;
-        //mScribbleArea->refreshBitmap( rect, rad );
+        int rad = qRound( brushWidth ) / 2 + 2;
+        mScribbleArea->refreshBitmap( rect, rad );
 
-//        qreal brushWidth = properties.width * mCurrentPressure;
-
-//        QPen pen( QBrush( currentPressuredColor ), brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-//        QBrush brush( currentPressuredColor, Qt::SolidPattern );
-//        rad = qRound( properties.width / 2 ) + 3;
-
-//        for ( int i = 0; i < p.size(); i++ )
-//        {
-//            p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
-//        }
-
-//        if ( p.size() == 4 )
-//        {
-//            // qDebug() << p;
-//            QPainterPath path( p[ 0 ] );
-//            path.cubicTo( p[ 1 ],
-//                          p[ 2 ],
-//                          p[ 3 ] );
-
-//            mScribbleArea->drawPath( path, pen, brush, QPainter::CompositionMode_SourceOver );
-//            mScribbleArea->refreshBitmap( path.boundingRect().toRect(), rad );
-//        }
     }
     else if ( layer->type() == Layer::VECTOR )
     {
