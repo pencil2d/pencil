@@ -151,3 +151,20 @@ void SelectTool::mouseMoveEvent( QMouseEvent *event )
         mScribbleArea->update();
     }
 }
+
+bool SelectTool::keyPressEvent(QKeyEvent *event)
+{
+    switch ( event->key() ) {
+    case Qt::Key_Alt:
+        mScribbleArea->setTemporaryTool( MOVE );
+        break;
+    default:
+        break;
+    }
+    return true;
+}
+
+bool SelectTool::keyReleaseEvent(QKeyEvent *event)
+{
+    return true;
+}

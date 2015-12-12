@@ -68,10 +68,24 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     ui = new Ui::MainWindow2;
     ui->setupUi( this );
 
-    // Central widget
-    mScribbleArea = new ScribbleArea( this );
+    mBackground = new BackgroundWidget( this );
+
+    mScribbleArea = new ScribbleArea( mBackground );
     mScribbleArea->setFocusPolicy( Qt::StrongFocus );
-    //setCentralWidget( mScribbleArea );
+
+    // Show the UI over the background
+    //
+    QVBoxLayout* layout = new QVBoxLayout();
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->setContentsMargins(0,0,0,0);
+    layout->addWidget(mScribbleArea);
+
+    mBackground->setLayout(layout);
+
+    // Central widget
+    setCentralWidget(mBackground);
+
 
     Object* object = new Object();
     object->init();
@@ -83,14 +97,13 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
 
-    //loadBackground();
 
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
     mCommands = new CommandCenter( this );
     mCommands->setCore( mEditor );
-    
+
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();
@@ -107,21 +120,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->setCurrentLayer( mEditor->object()->getLayerCount() - 1 );
     mEditor->tools()->setDefaultTool();
 
-
-    // Show the UI over the background
-    //
-    mBackground = new BackgroundWidget();
     mBackground->init(mEditor->preference());
-
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setSpacing(0);
-    layout->setMargin(0);
-    layout->setContentsMargins(0,0,0,0);
-    layout->addWidget(mScribbleArea);
-
-    mBackground->setLayout(layout);
-
-    setCentralWidget(mBackground);
 }
 
 MainWindow2::~MainWindow2()
@@ -152,7 +151,7 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget( tr( "Tools", "Window title of tool box." ), this );
     mToolBox->setObjectName( "ToolBox" );
 
-    mDockWidgets 
+    mDockWidgets
         << mTimeLine
         << mColorWheel
         << mColorPalette
@@ -493,6 +492,9 @@ bool MainWindow2::openObject( QString strFilePath )
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
+
+    // Reset view
+    mEditor->view()->resetView();
 
     progress.setValue( 100 );
     return true;

@@ -87,15 +87,16 @@ QCursor PenTool::cursor()
 
 void PenTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
+    mCurrentWidth = properties.width;
+
     if ( properties.pressure && !mouseDevice )
     {
-        mCurrentWidth = 2.0 * properties.width * pressure;
+        mCurrentPressure = pressure;
     }
     else
     {
-        mCurrentWidth = properties.width;
+        mCurrentPressure = 1.0;
     }
-    // we choose the "normal" width to correspond to a pressure 0.5
 }
 
 void PenTool::mousePressEvent( QMouseEvent *event )
@@ -178,7 +179,7 @@ void PenTool::drawStroke()
         }
 
         qreal opacity = 1.0;
-        qreal brushWidth = (mCurrentWidth + (mCurrentPressure * mCurrentWidth)) * 0.5;
+        qreal brushWidth = mCurrentPressure * mCurrentWidth;
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
@@ -210,10 +211,11 @@ void PenTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
+        qreal brushWidth = mCurrentPressure * mCurrentWidth;
+        int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         QPen pen( mEditor->color()->frontColor(),
-                  mCurrentWidth * mEditor->view()->scaling(),
+                  brushWidth * mEditor->view()->scaling(),
                   Qt::SolidLine,
                   Qt::RoundCap,
                   Qt::RoundJoin );

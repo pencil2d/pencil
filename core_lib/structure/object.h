@@ -108,6 +108,8 @@ public:
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element, QString dataDirPath );
 
+    void loadMissingData();
+
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
     ColourRef getColour( int i );

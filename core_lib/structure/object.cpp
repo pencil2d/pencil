@@ -119,6 +119,13 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
     return someRelevantData;
 }
 
+void Object::loadMissingData()
+{
+    if (mEditorData == nullptr) {
+        setEditorData(new EditorData());
+    }
+}
+
 LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap( this );

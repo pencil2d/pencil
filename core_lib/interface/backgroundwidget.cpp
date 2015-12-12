@@ -21,6 +21,15 @@ GNU General Public License for more details.
 
 BackgroundWidget::BackgroundWidget(QWidget *parent) : QWidget(parent)
 {
+    setObjectName( "BackgroundWidget" );
+
+    // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
+    // and don't change when the widget is resized.
+    setAttribute( Qt::WA_StaticContents );
+}
+
+BackgroundWidget::~BackgroundWidget()
+{
 
 }
 
@@ -28,6 +37,10 @@ void BackgroundWidget::init(PreferenceManager *prefs)
 {
     mPrefs = prefs;
     connect(mPrefs, &PreferenceManager::optionChanged, this, &BackgroundWidget::settingUpdated);
+
+    loadBackgroundStyle();
+    mHasShadow = mPrefs->isOn(SETTING::SHADOW);
+
     update();
 }
 
@@ -36,11 +49,17 @@ void BackgroundWidget::settingUpdated(SETTING setting)
     switch ( setting )
     {
     case SETTING::BACKGROUND_STYLE:
+
+        loadBackgroundStyle();
         update();
         break;
+
     case SETTING::SHADOW:
+
+        mHasShadow = mPrefs->isOn(SETTING::SHADOW);
         update();
         break;
+
     default:
         break;
     }
@@ -48,53 +67,47 @@ void BackgroundWidget::settingUpdated(SETTING setting)
 
 void BackgroundWidget::paintEvent(QPaintEvent *)
 {
-    bool hasShadow = mPrefs->isOn(SETTING::SHADOW);
-
-    QString sStyle = getBackgroundStyle();
-
-    setStyleSheet(sStyle);
-
     QStyleOption opt;
     opt.init(this);
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
-    if (hasShadow) {
+    if (mHasShadow) {
         drawShadow(painter);
     }
 }
 
-QString BackgroundWidget::getBackgroundStyle()
+void BackgroundWidget::loadBackgroundStyle()
 {
     QString bgName = mPrefs->getString(SETTING::BACKGROUND_STYLE);
-    QString style = "background-color:white; border: 1px solid lightGrey;";
+    mStyle = "background-color:white; border: 1px solid lightGrey;";
 
     if ( bgName == "white" )
     {
-        style = "background-color:white; border: 1px solid lightGrey;";
+        mStyle = "background-color:white; border: 1px solid lightGrey;";
     }
     else if ( bgName == "grey" )
     {
-        style = "background-color:lightGrey; border: 1px solid grey;";
+        mStyle = "background-color:lightGrey; border: 1px solid grey;";
     }
     else if ( bgName == "checkerboard" )
     {
-        style = "background-image: url(:background/checkerboard.png); background-repeat: repeat-xy; border: 1px solid lightGrey;";
+        mStyle = "background-image: url(:background/checkerboard.png); background-repeat: repeat-xy; border: 1px solid lightGrey;";
     }
     else if ( bgName == "dots" )
     {
-        style = "background-image: url(:background/dots.png); background-repeat: repeat-xy; border: 1px solid lightGrey;";
+        mStyle = "background-image: url(:background/dots.png); background-repeat: repeat-xy; border: 1px solid lightGrey;";
     }
     else if ( bgName == "weave" )
     {
-        style = "background-image: url(:background/weave.jpg); background-repeat: repeat-xy; border: 1px solid lightGrey;";
+        mStyle = "background-image: url(:background/weave.jpg); background-repeat: repeat-xy; border: 1px solid lightGrey;";
     }
     else if ( bgName == "grid" )
     {
-        style = "background-image: url(:background/grid.jpg); background-repeat: repeat-xy; border: 1px solid lightGrey;";
+        mStyle = "background-image: url(:background/grid.jpg); background-repeat: repeat-xy; border: 1px solid lightGrey;";
     }
 
-    return style;
+    setStyleSheet(mStyle);
 }
 
 void BackgroundWidget::drawShadow( QPainter& painter )

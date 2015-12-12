@@ -46,6 +46,18 @@ void CanvasRenderer::setViewTransform( QTransform viewTransform )
     mViewTransform = viewTransform;
 }
 
+void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transform)
+{
+    mSelection = selection;
+    mSelectionTransform = transform;
+    mRenderTransform = true;
+}
+
+void CanvasRenderer::ignoreTransformedSelection()
+{
+    mRenderTransform = false;
+}
+
 void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 {
     Q_ASSERT( object );
@@ -69,6 +81,10 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     paintBackground( painter );
     paintOnionSkin( painter );
     paintCurrentFrame( painter );
+
+    if (mRenderTransform) {
+        paintTransformedSelection( painter );
+    }
 
     // post effects
     if ( mOptions.bAxis )
@@ -107,7 +123,7 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     {
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
 
-        int onionPosition = mOptions.nPrevOnionSkinCount - mFrameNumber + iStartFrame - 1;
+        int onionPosition = mOptions.nPrevOnionSkinCount - mFrameNumber + iStartFrame;
 
         qreal opacity = minOpacity + (prevOpacityIncrement * onionPosition);
 
@@ -261,33 +277,67 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
                                     false);
     }
 
-    painter.setWorldMatrixEnabled( false );
+    painter.setWorldMatrixEnabled( false ); //Don't tranform the image here as we used the viewTransform in the image output
     tempBitmapImage->paintImage( painter );
 
     delete tempBitmapImage;
 }
 
+void CanvasRenderer::paintTransformedSelection( QPainter& painter )
+{
+    Layer* layer = mObject->getLayer( mLayerIndex );
+
+    if (layer->type() == Layer::BITMAP) {
+
+        // Get the transformed image
+        //
+        BitmapImage* bitmapImage = dynamic_cast< LayerBitmap* >( layer )->getLastBitmapImageAtFrame( mFrameNumber, 0 );
+
+        BitmapImage transformedImage = bitmapImage->transformed(mSelection, mSelectionTransform, mOptions.bAntiAlias);
+
+
+        // Paint the transformation output
+        //
+        painter.setWorldMatrixEnabled( true );
+
+        painter.setCompositionMode(QPainter::CompositionMode_Clear);
+        painter.fillRect( mSelection, QColor(0,0,0,0) );
+
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        transformedImage.paintImage(painter);
+    }
+}
+
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-    painter.setOpacity( 0.8 );
+    if (mOptions.nShowAllLayers > 0) {
 
-    for ( int i = 0; i < mObject->getLayerCount(); ++i )
-    {
-        Layer* layer = mObject->getLayer( i );
-        if ( i == mLayerIndex )
-        {
-            continue; // current layer should be paint at last.
+        if (mOptions.nShowAllLayers == 1) {
+            painter.setOpacity( 0.8 );
+        }
+        else {
+            painter.setOpacity( 1.0 );
         }
 
-        switch ( layer->type() )
+        for ( int i = 0; i < mObject->getLayerCount(); ++i )
         {
-            case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
-            case Layer::VECTOR: { paintVectorFrame( painter, layer, mFrameNumber ); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT( false ); break;
+            Layer* layer = mObject->getLayer( i );
+            if ( i == mLayerIndex )
+            {
+                continue; // current layer should be paint at last.
+            }
+
+            switch ( layer->type() )
+            {
+                case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, layer, mFrameNumber ); break; }
+                case Layer::CAMERA: break;
+                case Layer::SOUND: break;
+                default: Q_ASSERT( false ); break;
+            }
         }
     }
+
 
     painter.setOpacity( 1.0 );
 
@@ -320,7 +370,7 @@ void CanvasRenderer::paintGrid( QPainter& painter )
 {
     const int gridSize = 30;
 
-    QRectF boundingRect = painter.window();
+    QRectF boundingRect = mCanvas->rect();
 
     int w = boundingRect.width();
     int h = boundingRect.height();
@@ -333,9 +383,10 @@ void CanvasRenderer::paintGrid( QPainter& painter )
     int bottom = round100( boundingRect.bottom(), gridSize ) + gridSize;
 
     QPen pen( Qt::lightGray );
+    pen.setWidth(0); // 0 will draw a 1px line always independent from the transformation
     pen.setCosmetic( true );
     painter.setPen( pen );
-    painter.setWorldMatrixEnabled( true );
+    painter.setWorldMatrixEnabled( false );
     painter.setBrush( Qt::NoBrush );
 
     for ( int x = left; x < right; x += gridSize )
