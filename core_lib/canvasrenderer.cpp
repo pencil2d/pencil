@@ -46,6 +46,18 @@ void CanvasRenderer::setViewTransform( QTransform viewTransform )
     mViewTransform = viewTransform;
 }
 
+void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transform)
+{
+    mSelection = selection;
+    mSelectionTransform = transform;
+    mRenderTransform = true;
+}
+
+void CanvasRenderer::ignoreTransformedSelection()
+{
+    mRenderTransform = false;
+}
+
 void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 {
     Q_ASSERT( object );
@@ -69,6 +81,10 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     paintBackground( painter );
     paintOnionSkin( painter );
     paintCurrentFrame( painter );
+
+    if (mRenderTransform) {
+        paintTransformedSelection( painter );
+    }
 
     // post effects
     if ( mOptions.bAxis )
@@ -265,6 +281,31 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
     tempBitmapImage->paintImage( painter );
 
     delete tempBitmapImage;
+}
+
+void CanvasRenderer::paintTransformedSelection( QPainter& painter )
+{
+    Layer* layer = mObject->getLayer( mLayerIndex );
+
+    if (layer->type() == Layer::BITMAP) {
+
+        // Get the transformed image
+        //
+        BitmapImage* bitmapImage = dynamic_cast< LayerBitmap* >( layer )->getLastBitmapImageAtFrame( mFrameNumber, 0 );
+
+        BitmapImage transformedImage = bitmapImage->transformed(mSelection, mSelectionTransform, mOptions.bAntiAlias);
+
+
+        // Paint the transformation output
+        //
+        painter.setWorldMatrixEnabled( true );
+
+        painter.setCompositionMode(QPainter::CompositionMode_Clear);
+        painter.fillRect( mSelection, QColor(0,0,0,0) );
+
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        transformedImage.paintImage(painter);
+    }
 }
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )

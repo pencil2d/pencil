@@ -126,6 +126,9 @@ Object* ObjectSaveLoader::load( QString strFileName )
 
     object->setFilePath( strFileName );
 
+    // For backward compatibility, make sure that every required element is present in the object
+    object->loadMissingData();
+
     return object;
 }
 

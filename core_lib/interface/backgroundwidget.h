@@ -25,7 +25,8 @@ class BackgroundWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit BackgroundWidget(QWidget *parent = 0);
+    BackgroundWidget( QWidget *parent );
+    ~BackgroundWidget();
 
     void init(PreferenceManager* prefs);
 
@@ -45,9 +46,12 @@ private slots:
 private:
 
     void drawShadow(QPainter &painter);
-    QString getBackgroundStyle();
+    void loadBackgroundStyle();
 
-    PreferenceManager* mPrefs;
+    PreferenceManager* mPrefs = nullptr;
+
+    QString mStyle;
+    bool mHasShadow = false;
 
 };
 

@@ -75,6 +75,7 @@ bool ScribbleArea::init()
     mShowAllLayers = 1;
 
     mBufferImg = new BitmapImage;
+//    mBitmapSelection = new BitmapImage;
 
     QRect newSelection( QPoint( 0, 0 ), QSize( 0, 0 ) );
     mySelection = newSelection;
@@ -1241,16 +1242,30 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     c1y = 0.5 * ( myTempTransformedSelection.top() + myTempTransformedSelection.bottom() );
     c2x = 0.5 * ( mySelection.left() + mySelection.right() );
     c2y = 0.5 * ( mySelection.top() + mySelection.bottom() );
-    if ( mySelection.width() == 0 ) { scaleX = 1.0; }
-    else { scaleX = myTempTransformedSelection.width() / mySelection.width(); }
-    if ( mySelection.height() == 0 ) { scaleY = 1.0; }
-    else { scaleY = myTempTransformedSelection.height() / mySelection.height(); }
+
+    if ( mySelection.width() == 0 ) {
+        scaleX = 1.0;
+    }
+    else {
+        scaleX = myTempTransformedSelection.width() / mySelection.width();
+    }
+
+    if ( mySelection.height() == 0 ) {
+        scaleY = 1.0;
+    }
+    else {
+        scaleY = myTempTransformedSelection.height() / mySelection.height();
+    }
+
     selectionTransformation.reset();
     selectionTransformation.translate( c1x, c1y );
+    selectionTransformation.rotate(myRotatedAngle);
     selectionTransformation.scale( scaleX, scaleY );
     selectionTransformation.translate( -c2x, -c2y );
+
     //modification();
 }
+
 
 void ScribbleArea::paintTransformedSelection()
 {
@@ -1262,42 +1277,86 @@ void ScribbleArea::paintTransformedSelection()
 
     if ( somethingSelected )    // there is something selected
     {
-        if ( layer->type() == Layer::BITMAP && ( myRotatedAngle != 0.0 || myTransformedSelection != mySelection || myFlipX != 1 || myFlipY != 1 ) )
+        if ( layer->type() == Layer::BITMAP )
         {
-            //backup();
-            BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-            if ( bitmapImage == NULL )
-            {
-                qDebug() << "NULL image pointer!"
-                    << mEditor->layers()->currentLayerIndex()
-                    << mEditor->currentFrame();
-                return;
-            }
-
-            bool smoothTransform = false;
-            if ( myTransformedSelection.width() != mySelection.width() || myTransformedSelection.height() != mySelection.height() || mMoveMode == ROTATION ) { smoothTransform = true; }
-            QTransform rm;
-            rm.scale( myFlipX, myFlipY );
-            rm.rotate( myRotatedAngle );
-            BitmapImage selectionClip = bitmapImage->copy( mySelection.toRect() );
-            selectionClip.transform( myTransformedSelection, smoothTransform );
-            QImage* rotImg = new QImage( selectionClip.image()->transformed( rm, Qt::SmoothTransformation ) );
-            QPoint dxy = QPoint( ( myTempTransformedSelection.width() - rotImg->rect().width() ) / 2,
-                                 ( myTempTransformedSelection.height() - rotImg->rect().height() ) / 2 );
-            selectionClip.setImage( rotImg ); // TODO: find/create a func. (*object = data is not very orthodox)
-            selectionClip.bounds().translate( dxy );
-            bitmapImage->clear( mySelection.toRect() );
-            bitmapImage->paste( &selectionClip );
+            mCanvasRenderer.setTransformedSelection(mySelection.toRect(), selectionTransformation);
         }
         else if ( layer->type() == Layer::VECTOR )
         {
             // vector transformation
             LayerVector *layerVector = ( LayerVector * )layer;
             VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-            vectorImage->applySelectionTransformation();
-            selectionTransformation.reset();
+            vectorImage->setSelectionTransformation( selectionTransformation );
+
         }
         setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+    }
+}
+
+void ScribbleArea::applyTransformedSelection()
+{
+    mCanvasRenderer.ignoreTransformedSelection();
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer == NULL )
+    {
+        return;
+    }
+
+    if ( somethingSelected )    // there is something selected
+    {
+        if ( layer->type() == Layer::BITMAP )
+        {
+            BitmapImage* bitmapImage = dynamic_cast< LayerBitmap* >( layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+
+            BitmapImage* transformedImage = new BitmapImage(bitmapImage->transformed(mySelection.toRect(), selectionTransformation, mPrefs->isOn(SETTING::ANTIALIAS)));
+
+            bitmapImage->clear(mySelection);
+            bitmapImage->paste(transformedImage, QPainter::CompositionMode_SourceOver);
+
+            delete transformedImage;
+        }
+        else if ( layer->type() == Layer::VECTOR )
+        {
+
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            vectorImage->applySelectionTransformation();
+
+        }
+
+        setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+        deselectAll();
+    }
+
+    updateCurrentFrame();
+}
+
+void ScribbleArea::cancelTransformedSelection()
+{
+    mCanvasRenderer.ignoreTransformedSelection();
+
+    if (somethingSelected) {
+
+        Layer* layer = mEditor->layers()->currentLayer();
+        if ( layer == NULL )
+        {
+            return;
+        }
+
+        if ( layer->type() == Layer::VECTOR ) {
+
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            vectorImage->setSelectionTransformation( QTransform() );
+        }
+
+        setSelection( mySelection, true );
+
+        selectionTransformation.reset();
+
+        mOffset.setX( 0 );
+        mOffset.setY( 0 );
+
+        updateCurrentFrame();
     }
 }
 
@@ -1387,7 +1446,11 @@ void ScribbleArea::deselectAll()
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
     }
     somethingSelected = false;
+    isTransforming = false;
+
     mBufferImg->clear();
+
+    //mBitmapSelection.clear();
     vectorSelection.clear();
 
     // clear all the data tools may have accumulated

@@ -60,6 +60,8 @@ public:
     void setViewTransform( QTransform viewTransform );
     void setOptions( RenderOptions p ) { mOptions = p; }
     void setBackgroundBrush(QBrush brush);
+    void setTransformedSelection( QRect selection, QTransform transform );
+    void ignoreTransformedSelection();
 
     void paint( Object* object, int layer, int frame, QRect rect );
 
@@ -70,6 +72,8 @@ private:
 
     void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
+
+    void paintTransformedSelection( QPainter& painter );
 
     void paintAxis( QPainter& painter );
     void paintGrid( QPainter& painter );
@@ -85,6 +89,12 @@ private:
     bool bMultiLayerOnionSkin = false;
     
     RenderOptions mOptions;
+
+    // Handle selection transformation
+    //
+    bool mRenderTransform = false;
+    QRect mSelection;
+    QTransform mSelectionTransform;
 
     QLoggingCategory mLog;
 };
