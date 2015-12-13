@@ -792,15 +792,19 @@ void MainWindow2::exportImage()
 
 void MainWindow2::preferences()
 {
-    mPreferencesDialog = new PreferencesDialog( this );
-    mPreferencesDialog->init( mEditor->preference() );
+    PreferencesDialog* prefDialog = new PreferencesDialog( this );
+    prefDialog->setAttribute( Qt::WA_DeleteOnClose );
+    prefDialog->init( mEditor->preference() );
 
-    connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-
-    clearKeyboardShortcuts();
-    connect( mPreferencesDialog, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
-
-    mPreferencesDialog->show();
+    connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( prefDialog, &PreferencesDialog::finished, [ &]
+    { 
+        qDebug() << "Preference dialog closed!";
+        clearKeyboardShortcuts();
+        setupKeyboardShortcuts();
+    } );
+    
+    prefDialog->show();
 }
 
 void MainWindow2::dockAllSubWidgets()

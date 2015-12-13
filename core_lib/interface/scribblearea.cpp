@@ -60,7 +60,7 @@ bool ScribbleArea::init()
 {
     mPrefs = mEditor->preference();
 
-    connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
+    connect( mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated );
 
     int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -126,6 +126,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
         updateAllFrames();
         break;
     case SETTING::ONION_MAX_OPACITY:
+        updateAllFrames();
+        break;
+    case SETTING::ANTIALIAS:
         updateAllFrames();
         break;
     case SETTING::GRID:
@@ -589,6 +592,7 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     if ( currentTool()->isAdjusting )
     {
         currentTool()->stopAdjusting();
+        mEditor->tools()->setWidth( currentTool()->properties.width );
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
@@ -951,7 +955,6 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
     options.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     options.bAntiAlias = mPrefs->isOn( SETTING::ANTIALIAS );
-    options.bBlurryZoom = mPrefs->isOn( SETTING::BLURRYZOOM );
     options.bGrid = mPrefs->isOn( SETTING::GRID );
     options.bAxis = mPrefs->isOn( SETTING::AXIS );
     options.bThinLines = mPrefs->isOn( SETTING::INVISIBLE_LINES );

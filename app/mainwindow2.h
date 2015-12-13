@@ -130,7 +130,6 @@ public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    PreferencesDialog* mPreferencesDialog = nullptr;
     CommandCenter* mCommands              = nullptr;
 
     Ui::MainWindow2* ui                   = nullptr;

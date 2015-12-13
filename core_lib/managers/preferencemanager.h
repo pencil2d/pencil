@@ -9,7 +9,6 @@
 enum class SETTING
 {
     ANTIALIAS,
-    BLURRYZOOM,
     GRID,
     COUNT,
     SHADOW,

@@ -86,7 +86,6 @@ public slots:
 private:
     void shadowsCheckboxStateChanged(bool b);
     void antiAliasCheckboxStateChanged( bool b );
-    void blurryZoomCheckboxStateChanged( bool b );
     void toolCursorsCheckboxStateChanged( bool b );
     void highResCheckboxStateChanged(bool b);
     void curveSmoothingChange(int value);
@@ -99,7 +98,6 @@ private:
     QCheckBox* mShadowsBox;
     QCheckBox* mToolCursorsBox;
     QCheckBox* mAntialiasingBox;
-    QCheckBox* mBlurryZoomBox;
     QCheckBox* mHighResBox;
     QButtonGroup *mBackgroundButtons;
 
