@@ -6,6 +6,7 @@
 
 #ifdef Q_OS_MAC
 extern "C" {
+    void detectElCapitan();
     void disableCoalescing();
     void enableCoalescing();
 }
@@ -19,6 +20,7 @@ extern "C" {
 StrokeTool::StrokeTool( QObject *parent ) :
 BaseTool( parent )
 {
+    detectElCapitan();
 }
 
 void StrokeTool::startStroke()
