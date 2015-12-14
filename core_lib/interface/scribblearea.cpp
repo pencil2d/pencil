@@ -582,6 +582,24 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseMoveEvent( event );
+
+#ifdef DEBUG_FPS
+    // debug fps count.
+    clock_t curTime = clock();
+    mDebugTimeQue.push_back( curTime );
+
+    while ( mDebugTimeQue.size() > 100 )
+    {
+        mDebugTimeQue.pop_front();
+    }
+
+    if ( mDebugTimeQue.size() > 2 )
+    {
+        clock_t interval = mDebugTimeQue.back() - mDebugTimeQue.front();
+        double fps = mDebugTimeQue.size() / ( ( double )interval ) * CLOCKS_PER_SEC;
+        //qDebug() << fps;
+    }
+#endif
 }
 
 void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
