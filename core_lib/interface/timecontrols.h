@@ -34,9 +34,9 @@ class TimeControls : public QToolBar
 
 public:
     TimeControls( QWidget* parent = 0 );
+    void initUI();
+    
     void setFps ( int value );
-    void setLoopStart (int value);
-
     void setCore( Editor* editor );
 
 Q_SIGNALS:

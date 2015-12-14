@@ -21,10 +21,13 @@ public:
     void play();
     void stop();
 
-    int  fps() { return mFps; }
+    int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
     int endFrame() { return mEndFrame; }
-
+    
+    int markInFrame() { return mMarkInFrame; }
+    int markOutFrame() { return mMarkOutFrame; }
+    
     void setFps( int fps );
     void setLooping( bool isLoop );
     void enableRangedPlayback( bool b );

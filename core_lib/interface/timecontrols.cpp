@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "playbackmanager.h"
 #include "layermanager.h"
+#include "pencildef.h"
 
 
 TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
@@ -115,7 +116,18 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
 
     connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
     connect( mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick );
+}
 
+void TimeControls::initUI()
+{
+    auto playback = mEditor->playback();
+    
+    QSignalBlocker b( mLoopStartSpinBox );
+    mLoopStartSpinBox->setValue( playback->markInFrame() );
+    
+    QSignalBlocker b2( mLoopEndSpinBox );
+    mLoopEndSpinBox->setValue( playback->markOutFrame() );
+    
     mPlaybackRangeCheckBox->setChecked( false );
     mLoopStartSpinBox->setEnabled( false );
     mLoopEndSpinBox->setEnabled( false );
@@ -134,11 +146,6 @@ void TimeControls::toggleLoop(bool checked)
 void TimeControls::toggleLoopControl(bool checked)
 {
     mPlaybackRangeCheckBox->setChecked(checked);
-}
-
-void TimeControls::setLoopStart ( int value )
-{
-    mLoopStartSpinBox->setValue(value);
 }
 
 void TimeControls::setCore( Editor* editor )
