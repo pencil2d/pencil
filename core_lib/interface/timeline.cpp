@@ -147,7 +147,9 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
-
+    mTimeControls->setCore( editor() );
+    mTimeControls->initUI();
+    
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
     rightToolBarLayout->addWidget( keyButtons );
     rightToolBarLayout->addStretch( 1 );
