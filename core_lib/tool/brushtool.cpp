@@ -1,4 +1,7 @@
 
+#include "brushtool.h"
+
+#include <cmath>
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
@@ -13,7 +16,6 @@
 #include "scribblearea.h"
 #include "blitrect.h"
 
-#include "brushtool.h"
 
 
 BrushTool::BrushTool( QObject *parent ) :
@@ -48,7 +50,7 @@ void BrushTool::loadSettings()
         setWidth(15);
     }
 
-    if ( isnan( properties.feather ) )
+    if ( std::isnan( properties.feather ) )
     {
         setFeather( 15 );
     }

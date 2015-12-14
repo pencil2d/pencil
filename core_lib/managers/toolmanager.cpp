@@ -102,7 +102,7 @@ void ToolManager::resetAllTools()
 
 void ToolManager::setWidth( float newWidth )
 {
-    if ( isnan( newWidth ) || newWidth < 0 )
+    if ( std::isnan( newWidth ) || newWidth < 0 )
     {
         newWidth = 1.f;
     }
@@ -114,7 +114,7 @@ void ToolManager::setWidth( float newWidth )
 
 void ToolManager::setFeather( float newFeather )
 {
-    if ( isnan( newFeather ) || newFeather < 0 )
+    if ( std::isnan( newFeather ) || newFeather < 0 )
     {
         newFeather = 0.f;
     }
