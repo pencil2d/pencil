@@ -107,21 +107,23 @@ void CommandCenter::flipY()
 
 void CommandCenter::showGrid( bool bShow )
 {
+    auto prefs = mEditor->preference();
     if ( bShow )
-        mEditor->preference()->turnOn( SETTING::GRID );
+        prefs->turnOn( SETTING::GRID );
     else
-        mEditor->preference()->turnOff( SETTING::GRID );
+        prefs->turnOff( SETTING::GRID );
 }
 
 void CommandCenter::PlayStop()
 {
-    if ( mEditor->playback()->isPlaying() )
+    PlaybackManager* playback = mEditor->playback();
+    if ( playback->isPlaying() )
     {
-        mEditor->playback()->stop();
+        playback->stop();
     }
     else
     {
-        mEditor->playback()->play();
+        playback->play();
     }
 }
 
