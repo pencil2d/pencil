@@ -511,7 +511,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     progress.setValue( 100 );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( LAST_FILE_PATH, strSavedFileName );
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
@@ -599,7 +599,7 @@ void MainWindow2::importImageSequence()
     QFileDialog w;
     w.setFileMode( QFileDialog::AnyFile );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
