@@ -247,10 +247,10 @@ void MainWindow2::createMenus()
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
-    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mEditor, &Editor::newBitmapLayer );
-    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mEditor, &Editor::newVectorLayer );
-    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mEditor, &Editor::newSoundLayer );
-    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mEditor, &Editor::newCameraLayer );
+    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewBitmapLayer );
+    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewVectorLayer );
+    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewSoundLayer );
+    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewCameraLayer );
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
@@ -1075,11 +1075,11 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
-
-    connect( pTimeline, &TimeLine::newBitmapLayer, pEditor, &Editor::newBitmapLayer );
-    connect( pTimeline, &TimeLine::newVectorLayer, pEditor, &Editor::newVectorLayer );
-    connect( pTimeline, &TimeLine::newSoundLayer, pEditor, &Editor::newSoundLayer );
-    connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
+    
+    connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &CommandCenter::addNewBitmapLayer );
+    connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &CommandCenter::addNewVectorLayer );
+    connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &CommandCenter::addNewSoundLayer );
+    connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &CommandCenter::addNewCameraLayer );
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );

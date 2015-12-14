@@ -1,8 +1,12 @@
+#include "layermanager.h"
+
 #include "object.h"
 #include "editor.h"
-#include "layerimage.h"
-#include "layermanager.h"
+
 #include "layersound.h"
+#include "layerbitmap.h"
+#include "layervector.h"
+#include "layercamera.h"
 
 LayerManager::LayerManager( QObject* pParent ) : BaseManager( pParent )
 {
@@ -94,7 +98,37 @@ void LayerManager::gotoPreviouslayer()
     }
 }
 
-LayerSound* LayerManager::createSoundLayer( QString strLayerName )
+LayerBitmap* LayerManager::createBitmapLayer( const QString& strLayerName )
+{
+    LayerBitmap* layer = editor()->object()->addNewBitmapLayer();
+    layer->setName( strLayerName );
+    
+    Q_EMIT layerCountChanged( count() );
+    
+    return layer;
+}
+
+LayerVector* LayerManager::createVectorLayer( const QString& strLayerName )
+{
+    LayerVector* layer = editor()->object()->addNewVectorLayer();
+    layer->setName( strLayerName );
+    
+    Q_EMIT layerCountChanged( count() );
+    
+    return layer;
+}
+
+LayerCamera* LayerManager::createCameraLayer( const QString& strLayerName )
+{
+    LayerCamera* layer = editor()->object()->addNewCameraLayer();
+    layer->setName( strLayerName );
+    
+    Q_EMIT layerCountChanged( count() );
+    
+    return layer;
+}
+
+LayerSound* LayerManager::createSoundLayer( const QString& strLayerName )
 {
     LayerSound* layer = editor()->object()->addNewSoundLayer();
     layer->setName( strLayerName );
