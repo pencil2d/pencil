@@ -68,7 +68,7 @@ Q_SIGNALS:
     void onionNextClick();
 
 public:
-    bool scrubbing;
+    bool scrubbing = false;
 
 protected:
     void resizeEvent( QResizeEvent* event ) override;

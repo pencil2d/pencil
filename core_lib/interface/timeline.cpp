@@ -203,7 +203,8 @@ void TimeLine::initUI()
     connect( newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer );
     connect( removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer );
     
-    mTimeControls->setCore( editor() );
+    LayerManager* layer = editor()->layers();
+    connect( layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber );
 
     scrubbing = false;
 }
@@ -251,7 +252,10 @@ void TimeLine::updateFrame( int frameNumber )
 
 void TimeLine::updateLayerView()
 {
-    mVScrollbar->setPageStep( (height()-mTracks->getOffsetY()-mHScrollbar->height())/mTracks->getLayerHeight() -2 );
+    int pageStep = ( height() - mTracks->getOffsetY() - mHScrollbar->height() )
+                   / mTracks->getLayerHeight() - 2;
+    
+    mVScrollbar->setPageStep( pageStep );
     mVScrollbar->setMinimum( 0 );
     mVScrollbar->setMaximum( qMax(0, mNumLayers - mVScrollbar->pageStep()) );
     update();
@@ -260,7 +264,7 @@ void TimeLine::updateLayerView()
 
 void TimeLine::updateLayerNumber(int numberOfLayers)
 {
-    this->mNumLayers = numberOfLayers;
+    mNumLayers = numberOfLayers;
     updateLayerView();
 }
 
