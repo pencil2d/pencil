@@ -131,6 +131,9 @@ void TimeControls::initUI()
     mPlaybackRangeCheckBox->setChecked( false );
     mLoopStartSpinBox->setEnabled( false );
     mLoopEndSpinBox->setEnabled( false );
+    
+    QSignalBlocker b3( mFpsBox );
+    mFpsBox->setValue( playback->fps() );
 }
 
 void TimeControls::setFps ( int value )
