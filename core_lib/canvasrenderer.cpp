@@ -249,10 +249,12 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter,
 
     qCDebug( mLog ) << "Paint Onion skin vector, Frame = " << nFrame;
     VectorImage* vectorImage;
-    if (useLastKeyFrame) {
+    if (useLastKeyFrame)
+    {
         vectorImage = vectorLayer->getLastVectorImageAtFrame( nFrame, 0 );
     }
-    else {
+    else
+    {
         vectorImage = vectorLayer->getVectorImageAtFrame( nFrame );
     }
     if ( vectorImage == nullptr )
@@ -271,13 +273,16 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter,
     BitmapImage* tempBitmapImage = new BitmapImage();
     tempBitmapImage->setImage(pImage);
 
-    if ( colorize ) {
+    if ( colorize )
+    {
         QBrush colorBrush = QBrush(Qt::transparent); //no color for the current frame
 
-        if (nFrame < mFrameNumber) {
+        if (nFrame < mFrameNumber)
+        {
             colorBrush = QBrush(Qt::red);
         }
-        else if (nFrame > mFrameNumber) {
+        else if (nFrame > mFrameNumber)
+        {
             colorBrush = QBrush(Qt::blue);
         }
 

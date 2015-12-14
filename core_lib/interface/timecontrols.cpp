@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
 {
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     mFpsBox = new QSpinBox();
     mFpsBox->setFont( QFont("Helvetica", 10) );
