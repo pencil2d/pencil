@@ -61,7 +61,7 @@ void PlaybackManager::setFps( int fps )
 
 void PlaybackManager::timerTick()
 {
-    if ( editor()->currentFrame() > mEndFrame )
+    if ( editor()->currentFrame() >= mEndFrame )
     {
         if ( mIsLooping )
         {

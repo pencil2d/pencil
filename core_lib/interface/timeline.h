@@ -68,7 +68,7 @@ Q_SIGNALS:
     void onionNextClick();
 
 public:
-    bool scrubbing;
+    bool scrubbing = false;
 
 protected:
     void resizeEvent( QResizeEvent* event ) override;
@@ -76,8 +76,8 @@ protected:
 private:
     void deleteCurrentLayer();
 
-    QScrollBar* hScrollBar = nullptr;
-    QScrollBar* vScrollBar = nullptr;
+    QScrollBar* mHScrollbar = nullptr;
+    QScrollBar* mVScrollbar = nullptr;
     TimeLineCells* mTracks = nullptr;
     TimeLineCells* mLayerList = nullptr;
     TimeControls* mTimeControls = nullptr;

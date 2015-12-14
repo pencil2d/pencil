@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QProcess>
 #include <QProgressDialog>
+#include <QSysInfo>
 #include "object.h"
 #include "editor.h"
 
@@ -33,11 +34,25 @@ SetMouseCoalescingEnabled(
 }
 
 extern "C" {
-void disableCoalescing()
+
+bool gIsMouseCoalecing = false;
+
+void detectElCapitan()
 {
-    SetMouseCoalescingEnabled(false, NULL);
+    if ( QSysInfo::macVersion() == QSysInfo::MV_10_11 )
+    {
+        gIsMouseCoalecing = true;
+    }
+    else
+    {
+        gIsMouseCoalecing = false;
+    }
 }
 
+void disableCoalescing()
+{
+    SetMouseCoalescingEnabled(gIsMouseCoalecing, NULL);
+}
 
 void enableCoalescing()
 {
