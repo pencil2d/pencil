@@ -82,6 +82,8 @@ macx {
 }
 
 win32 {
+	CONFIG -= flat
+	CONFIG += grouped
     RC_FILE = $$PWD/../pencil.rc
 }
 
