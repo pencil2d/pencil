@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include "colourref.h"
 
 class Object;
-class EditorData;
+class EditorState;
 
 
 class ObjectSaveLoader : public QObject
@@ -56,7 +56,9 @@ private:
     QString createTempWorkingFolder( QString strFileName );
     void    cleanUpTempFolder();
     bool    isFileExists( QString strFilename );
-    EditorData* loadEditorData( QDomElement element );
+    EditorState* loadEditorState( QDomElement element );
+
+    void extractEditorStateData( const QDomElement& element, EditorState* data );
 
     Status mError;
     QString mstrLastTempFolder;

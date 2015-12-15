@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "JlCompress.h"
 #include "fileformat.h"
 #include "object.h"
+#include "editorstate.h"
 
 
 
@@ -126,9 +127,6 @@ Object* ObjectSaveLoader::load( QString strFileName )
 
     object->setFilePath( strFileName );
 
-    // For backward compatibility, make sure that every required element is present in the object
-    object->loadMissingData();
-
     return object;
 }
 
@@ -150,7 +148,7 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
         }
         else if ( element.tagName() == "editor" )
         {
-            EditorData* editorData = loadEditorData( element );
+            EditorState* editorData = loadEditorState( element );
             object->setEditorData( editorData );
         }
         else
@@ -276,9 +274,9 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
     return true;
 }
 
-EditorData* ObjectSaveLoader::loadEditorData( QDomElement docElem )
+EditorState* ObjectSaveLoader::loadEditorState( QDomElement docElem )
 {
-    EditorData* data = new EditorData;
+    EditorState* data = new EditorState;
     if ( docElem.isNull() )
     {
         return data;
@@ -294,38 +292,68 @@ EditorData* ObjectSaveLoader::loadEditorData( QDomElement docElem )
             continue;
         }
 
-        if ( element.tagName() == "currentLayer" )
-        {
-            int nCurrentLayer = element.attribute( "value" ).toInt();
-            data->setCurrentLayer( nCurrentLayer );
-        }
-        if ( element.tagName() == "currentFrame" )
-        {
-            int nCurrentFrame = element.attribute( "value" ).toInt();
-            data->setCurrentFrame( nCurrentFrame );
-        }
-        if ( element.tagName() == "currentFps" )
-        {
-            int fps = element.attribute( "value" ).toInt();
-            data->setFps( fps );
-        }
-        if ( element.tagName() == "currentView" )
-        {
-            qreal m11 = element.attribute( "m11" ).toDouble();
-            qreal m12 = element.attribute( "m12" ).toDouble();
-            qreal m21 = element.attribute( "m21" ).toDouble();
-            qreal m22 = element.attribute( "m22" ).toDouble();
-            qreal dx = element.attribute( "dx" ).toDouble();
-            qreal dy = element.attribute( "dy" ).toDouble();
-            QTransform t( m11, m12, m21, m22, dx, dy );
-            data->setCurrentView( t );
-        }
+     
         
         tag = tag.nextSibling();
     }
     return data;
 }
 
+
+void ObjectSaveLoader::extractEditorStateData( const QDomElement& element, EditorState* data )
+{
+    Q_ASSERT( data );
+
+    QString strName = element.tagName();
+    if ( strName == "currentFrame" )
+    {
+        data->mCurrentFrame = element.attribute( "value" ).toInt();
+    }
+    else  if ( strName == "currentColor" )
+    {
+        int r = element.attribute( "r", "255" ).toInt();
+        int g = element.attribute( "g", "255" ).toInt();
+        int b = element.attribute( "b", "255" ).toInt();
+        int a = element.attribute( "a", "255" ).toInt();
+
+        data->mCurrentColor = QColor( r, g, b, a );;
+    }
+    else if ( strName == "currentLayer" )
+    {
+        data->mCurrentLayer =  element.attribute( "value", "0" ).toInt();
+    }
+    else if ( strName == "currentView" )
+    {
+        double m11 = element.attribute( "m11", "1" ).toDouble();
+        double m12 = element.attribute( "m12", "0" ).toDouble();
+        double m21 = element.attribute( "m21", "0" ).toDouble();
+        double m22 = element.attribute( "m22", "1" ).toDouble();
+        double dx = element.attribute( "dx", "0" ).toDouble();
+        double dy = element.attribute( "dy", "0" ).toDouble();
+        
+        data->mCurrentView = QTransform( m11, m12, m21, m22, dx, dy );
+    }
+    else if ( strName == "fps" )
+    {
+        data->mFps = element.attribute( "value", "12" ).toInt();
+    }
+    else if ( strName == "isLoop" )
+    {
+        data->mIsLoop = ( element.attribute( "value", "false" ) == "true" );
+    }
+    else if ( strName == "isRangedPlayback" )
+    {
+        data->mIsRangedPlayback = ( element.attribute( "value", "false" ) == "true" );
+    }
+    else if ( strName == "markInFrame" )
+    {
+        data->mMarkInFrame = element.attribute( "value", "0" ).toInt();
+    }
+    else if ( strName == "markOutFrame" )
+    {
+        data->mMarkInFrame = element.attribute( "value", "15" ).toInt();
+    }
+}
 
 void ObjectSaveLoader::cleanUpTempFolder()
 {

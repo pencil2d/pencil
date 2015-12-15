@@ -36,6 +36,7 @@ GNU General Public License for more details.
 #include <QDropEvent>
 
 #include "object.h"
+#include "editorstate.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
@@ -456,18 +457,21 @@ void Editor::saveLength( QString x )
 	settings.setValue( "length", dec );
 }
 
-void Editor::resetUI()
+Status Editor::setObject( Object* newObject )
 {
-	updateObject();
-	scrubTo( 0 );
-}
+    if ( newObject == nullptr )
+    {
+        Q_ASSERT( false );
+        return Status::INVALID_ARGUMENT;
+    }
 
-void Editor::setObject( Object* newObject )
-{
-    if ( newObject == NULL ) { return; }
-    if ( newObject == mObject.get() ) { return; }
+    if ( newObject == mObject.get() )
+    {
+        return Status::SAFE;
+    }
 
     mObject.reset( newObject );
+
 
     for ( BaseManager* m : mAllManagers )
     {
@@ -475,13 +479,15 @@ void Editor::setObject( Object* newObject )
     }
 
 	g_clipboardVectorImage.setObject( newObject );
+    
+    updateObject();
+
+    return Status::OK;
 }
 
 void Editor::updateObject()
 {
-	color()->setColorNumber( 0 );
-
-	emit updateLayerCount();
+    scrubTo( mObject->editorState()->mCurrentFrame );
 
 	clearUndoStack();
 
@@ -489,6 +495,8 @@ void Editor::updateObject()
 	{
 		mScribbleArea->updateAllFrames();
 	}
+
+    emit updateLayerCount();
 }
 
 void Editor::createExportMovieSizeBox()

@@ -1,11 +1,13 @@
 
+#include "playbackmanager.h"
+
 #include <QTimer>
+#include "object.h"
+#include "layersound.h"
+#include "editorstate.h"
 #include "editor.h"
 #include "layermanager.h"
-#include "playbackmanager.h"
-#include "object.h"
-#include "layer.h"
-#include "layersound.h"
+
 
 
 PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
@@ -19,8 +21,16 @@ bool PlaybackManager::init()
     return true;
 }
 
-Status PlaybackManager::onObjectLoaded( Object* )
+Status PlaybackManager::onObjectLoaded( Object* o )
 {
+    const EditorState* e = o->editorState();
+    
+    mIsLooping        = e->mIsLoop;
+    mIsRangedPlayback = e->mIsRangedPlayback;
+    mMarkInFrame      = e->mMarkInFrame;
+    mMarkOutFrame     = e->mMarkOutFrame;
+    mFps              = e->mFps;
+
     return Status::OK;
 }
 

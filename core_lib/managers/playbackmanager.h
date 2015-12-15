@@ -44,11 +44,12 @@ private:
     void timerTick();
     void playSoundIfAny( int frame );
     
-    bool mIsLooping = false;
-    bool mIsPlaySound = false;
     int mStartFrame = 1;
     int mEndFrame = 60;
 
+    bool mIsLooping = false;
+    bool mIsPlaySound = false;
+    
     bool mIsRangedPlayback = false;
     int mMarkInFrame = 1;
     int mMarkOutFrame = 10;

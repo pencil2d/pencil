@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
+#include "editorstate.h"
 
 // ******* Mac-specific: ******** (please comment (or reimplement) the lines below to compile on Windows or Linux
 //#include <CoreFoundation/CoreFoundation.h>
@@ -38,6 +39,7 @@ GNU General Public License for more details.
 
 Object::Object( QObject* parent ) : QObject( parent )
 {
+    setEditorData( new EditorState() );
 }
 
 Object::~Object()
@@ -50,7 +52,7 @@ Object::~Object()
 
 void Object::init()
 {
-    mEditorData.reset( new EditorData );
+    mEditorState.reset( new EditorState );
 
     // default layers
     addNewCameraLayer();
@@ -117,13 +119,6 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
         }
     }
     return someRelevantData;
-}
-
-void Object::loadMissingData()
-{
-    if (mEditorData == nullptr) {
-        setEditorData(new EditorData());
-    }
 }
 
 LayerBitmap* Object::addNewBitmapLayer()
@@ -727,14 +722,14 @@ int Object::getLayerCount()
     return mLayers.size();
 }
 
-EditorData* Object::editorData()
+EditorState* Object::editorState()
 {
-    Q_ASSERT( mEditorData != nullptr );
-    return mEditorData.get();
+    Q_ASSERT( mEditorState != nullptr );
+    return mEditorState.get();
 }
 
-void Object::setEditorData( EditorData* d )
+void Object::setEditorData( EditorState* d )
 {
     Q_ASSERT( d != nullptr );
-    mEditorData.reset( d );
+    mEditorState.reset( d );
 }

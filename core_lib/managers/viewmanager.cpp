@@ -1,6 +1,8 @@
 #include "viewmanager.h"
+
 #include <utility>
 #include "object.h"
+#include "editorstate.h"
 
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
@@ -14,7 +16,7 @@ bool ViewManager::init()
 
 Status ViewManager::onObjectLoaded( Object* o )
 {
-    mView = o->editorData()->currentView();
+    mView = o->editorState()->mCurrentView;
     return Status::OK;
 }
 

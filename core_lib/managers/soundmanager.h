@@ -22,7 +22,7 @@ public:
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
 
 private:
-    SoundPlayer* mSoundPlayer;
+    SoundPlayer* mSoundPlayer = nullptr;
 };
 
 #endif // SOUNDMANAGER_H

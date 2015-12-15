@@ -29,6 +29,7 @@ class LayerBitmap;
 class LayerVector;
 class LayerCamera;
 class LayerSound;
+class EditorState;
 
 
 struct ExportMovieParameters
@@ -62,33 +63,6 @@ struct ExportFrames1Parameters
     int         exportFps;
 };
 
-
-class EditorData
-{
-public:
-    void setFps( int f ) { mFps = f; }
-    int  fps() { return mFps; }
-
-    void setCurrentLayer( int n ) { mCurrentColor = n; }
-    int currentLayer() { return mCurrentLayer; }
-
-    void setCurrentFrame( int n ) { mCurrentFrame = n; }
-    int currentFrame() { return mCurrentFrame; }
-
-    void setCurrentColor( QColor c ) { mCurrentColor = c; }
-    QColor currentColor() { return mCurrentColor; }
-
-    void setCurrentView( QTransform t ) { mCurrentView = t; }
-    QTransform currentView() { return mCurrentView; }
-
-private:
-    int    mFps          = 0;
-    int    mCurrentLayer = 0;
-    int    mCurrentFrame = 0;
-    QColor mCurrentColor{ 255, 255, 255, 255 };
-    QTransform mCurrentView;
-};
-
 class Object : public QObject
 {
     Q_OBJECT    
@@ -107,8 +81,6 @@ public:
 
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element, QString dataDirPath );
-
-    void loadMissingData();
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
@@ -156,8 +128,8 @@ public:
 
     int getUniqueLayerID();
 
-    EditorData* editorData();
-    void setEditorData( EditorData* );
+    EditorState* editorState();
+    void setEditorData( EditorState* );
 
 private:
     int getMaxLayerID();
@@ -170,7 +142,7 @@ private:
 
     QList<ColourRef> mPalette;
 
-    std::unique_ptr< EditorData > mEditorData;
+    std::unique_ptr< EditorState > mEditorState;
 };
 
 

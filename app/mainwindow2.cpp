@@ -97,7 +97,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
 
-
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
@@ -107,8 +106,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();
-
-    mEditor->resetUI();
 
     readSettings();
 
@@ -121,6 +118,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->tools()->setDefaultTool();
 
     mBackground->init(mEditor->preference());
+
+    mEditor->updateObject();
 }
 
 MainWindow2::~MainWindow2()
@@ -384,7 +383,6 @@ void MainWindow2::newDocument()
         Object* object = new Object();
         object->init();
         mEditor->setObject( object );
-        mEditor->resetUI();
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
