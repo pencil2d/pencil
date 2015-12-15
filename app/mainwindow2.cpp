@@ -247,10 +247,10 @@ void MainWindow2::createMenus()
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
-    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mEditor, &Editor::newBitmapLayer );
-    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mEditor, &Editor::newVectorLayer );
-    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mEditor, &Editor::newSoundLayer );
-    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mEditor, &Editor::newCameraLayer );
+    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewBitmapLayer );
+    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewVectorLayer );
+    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewSoundLayer );
+    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewCameraLayer );
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
@@ -511,7 +511,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     progress.setValue( 100 );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( LAST_FILE_PATH, strSavedFileName );
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
@@ -599,7 +599,7 @@ void MainWindow2::importImageSequence()
     QFileDialog w;
     w.setFileMode( QFileDialog::AnyFile );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
@@ -792,15 +792,19 @@ void MainWindow2::exportImage()
 
 void MainWindow2::preferences()
 {
-    mPreferencesDialog = new PreferencesDialog( this );
-    mPreferencesDialog->init( mEditor->preference() );
+    PreferencesDialog* prefDialog = new PreferencesDialog( this );
+    prefDialog->setAttribute( Qt::WA_DeleteOnClose );
+    prefDialog->init( mEditor->preference() );
 
-    connect( mPreferencesDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-
-    clearKeyboardShortcuts();
-    connect( mPreferencesDialog, &PreferencesDialog::destroyed, [=] { setupKeyboardShortcuts(); } );
-
-    mPreferencesDialog->show();
+    connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( prefDialog, &PreferencesDialog::finished, [ &]
+    { 
+        qDebug() << "Preference dialog closed!";
+        clearKeyboardShortcuts();
+        setupKeyboardShortcuts();
+    } );
+    
+    prefDialog->show();
 }
 
 void MainWindow2::dockAllSubWidgets()
@@ -1071,11 +1075,11 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
-
-    connect( pTimeline, &TimeLine::newBitmapLayer, pEditor, &Editor::newBitmapLayer );
-    connect( pTimeline, &TimeLine::newVectorLayer, pEditor, &Editor::newVectorLayer );
-    connect( pTimeline, &TimeLine::newSoundLayer, pEditor, &Editor::newSoundLayer );
-    connect( pTimeline, &TimeLine::newCameraLayer, pEditor, &Editor::newCameraLayer );
+    
+    connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &CommandCenter::addNewBitmapLayer );
+    connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &CommandCenter::addNewVectorLayer );
+    connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &CommandCenter::addNewSoundLayer );
+    connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &CommandCenter::addNewCameraLayer );
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );

@@ -60,7 +60,7 @@ bool ScribbleArea::init()
 {
     mPrefs = mEditor->preference();
 
-    connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
+    connect( mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated );
 
     int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -89,7 +89,7 @@ bool ScribbleArea::init()
 
     setMouseTracking( true ); // reacts to mouse move events, even if the button is not pressed
 
-    debugRect = QRectF( 0, 0, 0, 0 );
+    mDebugRect = QRectF( 0, 0, 0, 0 );
 
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
 
@@ -102,10 +102,6 @@ bool ScribbleArea::init()
 
     // color wheel popup
     //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
-
-    onionBlue = true;
-    onionRed = false;
-    toggledOnionColor();
 
     return true;
 }
@@ -132,6 +128,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_MAX_OPACITY:
         updateAllFrames();
         break;
+    case SETTING::ANTIALIAS:
+        updateAllFrames();
+        break;
     case SETTING::GRID:
         updateAllFrames();
         break;
@@ -153,7 +152,8 @@ void ScribbleArea::setCurveSmoothing( int newSmoothingLevel )
     updateAllFrames();
 }
 
-void ScribbleArea::setEffect(SETTING e, bool isOn) {
+void ScribbleArea::setEffect( SETTING e, bool isOn )
+{
     mPrefs->set(e, isOn);
     updateAllFrames();
 }
@@ -582,6 +582,24 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseMoveEvent( event );
+
+#ifdef DEBUG_FPS
+    // debug fps count.
+    clock_t curTime = clock();
+    mDebugTimeQue.push_back( curTime );
+
+    while ( mDebugTimeQue.size() > 100 )
+    {
+        mDebugTimeQue.pop_front();
+    }
+
+    if ( mDebugTimeQue.size() > 2 )
+    {
+        clock_t interval = mDebugTimeQue.back() - mDebugTimeQue.front();
+        double fps = mDebugTimeQue.size() / ( ( double )interval ) * CLOCKS_PER_SEC;
+        //qDebug() << fps;
+    }
+#endif
 }
 
 void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
@@ -592,6 +610,7 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     if ( currentTool()->isAdjusting )
     {
         currentTool()->stopAdjusting();
+        mEditor->tools()->setWidth( currentTool()->properties.width );
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
@@ -954,7 +973,6 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
     options.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     options.bAntiAlias = mPrefs->isOn( SETTING::ANTIALIAS );
-    options.bBlurryZoom = mPrefs->isOn( SETTING::BLURRYZOOM );
     options.bGrid = mPrefs->isOn( SETTING::GRID );
     options.bAxis = mPrefs->isOn( SETTING::AXIS );
     options.bThinLines = mPrefs->isOn( SETTING::INVISIBLE_LINES );
@@ -1485,40 +1503,15 @@ void ScribbleArea::toggleCameraBorder( bool checked )
     setEffect( SETTING::CAMERABORDER, checked );
 }
 
-void ScribbleArea::toggledOnionColor()
-{
-    if ( onionBlue )
-    {
-        if ( onionRed )
-        {
-            onionColor = QColor( 232, 48, 255, 255 ); // subtle violet ( blue + red )
-        }
-        else
-        {
-            onionColor = Qt::blue;
-        }
-    }
-    else if ( onionRed )
-    {
-        onionColor = Qt::red;
-    }
-}
-
-
-
 void ScribbleArea::toggleOnionBlue( bool checked )
 {
-    onionBlue = checked;
     setEffect( SETTING::ONION_BLUE, checked );
-    toggledOnionColor();
     updateAllFrames();
 }
 
 void ScribbleArea::toggleOnionRed( bool checked )
 {
-    onionRed = checked;
     setEffect( SETTING::ONION_RED, checked );
-    toggledOnionColor();
     updateAllFrames();
 }
 

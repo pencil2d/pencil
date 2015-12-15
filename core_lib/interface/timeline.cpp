@@ -56,11 +56,11 @@ void TimeLine::initUI()
     connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
     connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
 
-    hScrollBar = new QScrollBar( Qt::Horizontal );
-    vScrollBar = new QScrollBar( Qt::Vertical );
-    vScrollBar->setMinimum( 0 );
-    vScrollBar->setMaximum( 1 );
-    vScrollBar->setPageStep( 1 );
+    mHScrollbar = new QScrollBar( Qt::Horizontal );
+    mVScrollbar = new QScrollBar( Qt::Vertical );
+    mVScrollbar->setMinimum( 0 );
+    mVScrollbar->setMaximum( 1 );
+    mVScrollbar->setPageStep( 1 );
     updateLength( getFrameLength() );
 
     QWidget* leftWidget = new QWidget();
@@ -147,7 +147,9 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
-
+    mTimeControls->setCore( editor() );
+    mTimeControls->initUI();
+    
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
     rightToolBarLayout->addWidget( keyButtons );
     rightToolBarLayout->addStretch( 1 );
@@ -172,8 +174,8 @@ void TimeLine::initUI()
 
     QGridLayout* lay = new QGridLayout();
     lay->addWidget( splitter, 0, 0 );
-    lay->addWidget( vScrollBar, 0, 1 );
-    lay->addWidget( hScrollBar, 1, 0 );
+    lay->addWidget( mVScrollbar, 0, 1 );
+    lay->addWidget( mHScrollbar, 1, 0 );
     lay->setMargin( 0 );
     lay->setSpacing( 0 );
     timeLineContent->setLayout( lay );
@@ -181,9 +183,9 @@ void TimeLine::initUI()
 
     setWindowFlags( Qt::WindowStaysOnTopHint );
 
-    connect( hScrollBar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange );
-    connect( vScrollBar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
-    connect( vScrollBar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );
+    connect( mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange );
+    connect( mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
+    connect( mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );
 
     connect( addKeyButton,    &QToolButton::clicked, this, &TimeLine::addKeyClick );
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
@@ -201,7 +203,8 @@ void TimeLine::initUI()
     connect( newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer );
     connect( removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer );
     
-    mTimeControls->setCore( editor() );
+    LayerManager* layer = editor()->layers();
+    connect( layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber );
 
     scrubbing = false;
 }
@@ -249,22 +252,25 @@ void TimeLine::updateFrame( int frameNumber )
 
 void TimeLine::updateLayerView()
 {
-    vScrollBar->setPageStep( (height()-mTracks->getOffsetY()-hScrollBar->height())/mTracks->getLayerHeight() -2 );
-    vScrollBar->setMinimum( 0 );
-    vScrollBar->setMaximum( qMax(0, mNumLayers - vScrollBar->pageStep()) );
+    int pageStep = ( height() - mTracks->getOffsetY() - mHScrollbar->height() )
+                   / mTracks->getLayerHeight() - 2;
+    
+    mVScrollbar->setPageStep( pageStep );
+    mVScrollbar->setMinimum( 0 );
+    mVScrollbar->setMaximum( qMax(0, mNumLayers - mVScrollbar->pageStep()) );
     update();
     updateContent();
 }
 
 void TimeLine::updateLayerNumber(int numberOfLayers)
 {
-    this->mNumLayers = numberOfLayers;
+    mNumLayers = numberOfLayers;
     updateLayerView();
 }
 
 void TimeLine::updateLength(int frameLength)
 {
-    hScrollBar->setMaximum( frameLength );
+    mHScrollbar->setMaximum( frameLength );
 }
 
 void TimeLine::updateContent()

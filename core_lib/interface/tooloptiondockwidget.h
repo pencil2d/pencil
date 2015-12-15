@@ -37,11 +37,11 @@ private:
     void disableAllOptions();
     void createUI();
 
-    QCheckBox* usePressureBox   = nullptr;
-    QCheckBox* makeInvisibleBox = nullptr;
-    QCheckBox* preserveAlphaBox = nullptr;
-    SpinSlider* sizeSlider      = nullptr;
-    SpinSlider* featherSlider   = nullptr;
+    QCheckBox* mUsePressureBox   = nullptr;
+    QCheckBox* mMakeInvisibleBox = nullptr;
+    QCheckBox* mPreserveAlphaBox = nullptr;
+    SpinSlider* mSizeSlider      = nullptr;
+    SpinSlider* mFeatherSlider   = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

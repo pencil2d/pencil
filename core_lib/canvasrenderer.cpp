@@ -69,8 +69,8 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     QPainter painter( mCanvas );
 
     painter.setWorldTransform( mViewTransform );
-    painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bBlurryZoom );
-    painter.setRenderHint( QPainter::Antialiasing, mOptions.bAntiAlias );
+    painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bAntiAlias );
+    painter.setRenderHint( QPainter::Antialiasing, true );
 
     // Don't set clip rect, paint whole canvas.
     //painter.setClipRect( rect );
@@ -168,7 +168,11 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     }
 }
 
-void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame )
+void CanvasRenderer::paintBitmapFrame( QPainter& painter,
+                                      Layer* layer,
+                                      int nFrame,
+                                      bool colorize,
+                                      bool useLastKeyFrame )
 {
     if ( !layer->visible() )
     {
@@ -199,13 +203,16 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
     BitmapImage* tempBitmapImage = new BitmapImage;
     tempBitmapImage->paste(bitmapImage);
 
-    if ( colorize ) {
+    if ( colorize )
+    {
         QBrush colorBrush = QBrush(Qt::transparent); //no color for the current frame
 
-        if (nFrame < mFrameNumber) {
+        if (nFrame < mFrameNumber)
+        {
             colorBrush = QBrush(Qt::red);
         }
-        else if (nFrame > mFrameNumber) {
+        else if (nFrame > mFrameNumber)
+        {
             colorBrush = QBrush(Qt::blue);
         }
 
@@ -222,7 +229,11 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter, Layer* layer, int nFra
     delete tempBitmapImage;
 }
 
-void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame )
+void CanvasRenderer::paintVectorFrame( QPainter& painter,
+                                       Layer* layer,
+                                       int nFrame,
+                                       bool colorize,
+                                       bool useLastKeyFrame )
 {
     if ( !layer->visible() )
     {
@@ -238,10 +249,12 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
 
     qCDebug( mLog ) << "Paint Onion skin vector, Frame = " << nFrame;
     VectorImage* vectorImage;
-    if (useLastKeyFrame) {
+    if (useLastKeyFrame)
+    {
         vectorImage = vectorLayer->getLastVectorImageAtFrame( nFrame, 0 );
     }
-    else {
+    else
+    {
         vectorImage = vectorLayer->getVectorImageAtFrame( nFrame );
     }
     if ( vectorImage == nullptr )
@@ -260,13 +273,16 @@ void CanvasRenderer::paintVectorFrame( QPainter& painter, Layer* layer, int nFra
     BitmapImage* tempBitmapImage = new BitmapImage();
     tempBitmapImage->setImage(pImage);
 
-    if ( colorize ) {
+    if ( colorize )
+    {
         QBrush colorBrush = QBrush(Qt::transparent); //no color for the current frame
 
-        if (nFrame < mFrameNumber) {
+        if (nFrame < mFrameNumber)
+        {
             colorBrush = QBrush(Qt::red);
         }
-        else if (nFrame > mFrameNumber) {
+        else if (nFrame > mFrameNumber)
+        {
             colorBrush = QBrush(Qt::blue);
         }
 
@@ -368,25 +384,25 @@ int round100( double f, int gridSize )
 
 void CanvasRenderer::paintGrid( QPainter& painter )
 {
-    const int gridSize = 30;
+    const int gridSize = 50;
 
-    QRectF boundingRect = mCanvas->rect();
-
+    QRectF rect = painter.viewport();
+    QRectF boundingRect = mViewTransform.inverted().mapRect( rect );
     int w = boundingRect.width();
     int h = boundingRect.height();
 
-    boundingRect.adjust( ( -w / 2 ), ( -h / 2 ), 0, 0 );
+    //qDebug() << mViewTransform;
+    //qDebug() << mViewTransform.inverted();
 
     int left = round100( boundingRect.left(), gridSize ) - gridSize;
     int right = round100( boundingRect.right(), gridSize ) + gridSize;
     int top = round100( boundingRect.top(), gridSize ) - gridSize;
     int bottom = round100( boundingRect.bottom(), gridSize ) + gridSize;
-
+    
     QPen pen( Qt::lightGray );
-    pen.setWidth(0); // 0 will draw a 1px line always independent from the transformation
     pen.setCosmetic( true );
     painter.setPen( pen );
-    painter.setWorldMatrixEnabled( false );
+    painter.setWorldMatrixEnabled( true );
     painter.setBrush( Qt::NoBrush );
 
     for ( int x = left; x < right; x += gridSize )

@@ -102,6 +102,11 @@ void ToolManager::resetAllTools()
 
 void ToolManager::setWidth( float newWidth )
 {
+    if ( std::isnan( newWidth ) || newWidth < 0 )
+    {
+        newWidth = 1.f;
+    }
+
     currentTool()->setWidth(newWidth);
     Q_EMIT penWidthValueChanged( newWidth );
     Q_EMIT toolPropertyChanged( currentTool()->type(), WIDTH );
@@ -109,6 +114,11 @@ void ToolManager::setWidth( float newWidth )
 
 void ToolManager::setFeather( float newFeather )
 {
+    if ( std::isnan( newFeather ) || newFeather < 0 )
+    {
+        newFeather = 0.f;
+    }
+
     currentTool()->setFeather(newFeather);
     Q_EMIT penFeatherValueChanged( newFeather );
     Q_EMIT toolPropertyChanged( currentTool()->type(), FEATHER );

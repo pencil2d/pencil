@@ -39,6 +39,9 @@ public:
     void GotoPrevKeyFrame();
     
     // Layer
+    Status addNewBitmapLayer();
+    Status addNewVectorLayer();
+    Status addNewCameraLayer();
     bool addNewSoundLayer();
 
 private:

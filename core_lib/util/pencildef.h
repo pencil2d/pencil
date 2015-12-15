@@ -142,7 +142,6 @@ enum BackgroundStyle
 #define SETTING_DRAW_LABEL          "DrawLabel"
 
 #define SETTING_ANTIALIAS       "Antialiasing"
-#define SETTING_BLURRYZOOM      "BlurryZoom"
 #define SETTING_SHOW_GRID       "ShowGrid"
 #define SETTING_COUNT           "Count"
 #define SETTING_SHADOW          "Shadow"

@@ -4,8 +4,10 @@
 #include "basemanager.h"
 
 class Layer;
+class LayerBitmap;
+class LayerVector;
+class LayerCamera;
 class LayerSound;
-
 
 
 class LayerManager : public BaseManager
@@ -31,8 +33,11 @@ public:
 
     void gotoNextLayer();
     void gotoPreviouslayer();
-
-    LayerSound* createSoundLayer( QString strLayerName );
+    
+    LayerBitmap* createBitmapLayer( const QString& strLayerName );
+    LayerVector* createVectorLayer( const QString& strLayerName );
+    LayerCamera* createCameraLayer( const QString& strLayerName );
+    LayerSound*  createSoundLayer( const QString& strLayerName );
     
     // KeyFrame Management
     int  LastFrameAtFrame( int frameIndex );

@@ -39,7 +39,6 @@ void PreferenceManager::loadPrefs()
     // General
     //
     set( SETTING::ANTIALIAS,                settings.value( SETTING_ANTIALIAS,              true ).toBool() );
-    set( SETTING::BLURRYZOOM,               settings.value( SETTING_BLURRYZOOM,             false ).toBool() );
     set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
     set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
     set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
@@ -77,10 +76,8 @@ void PreferenceManager::loadPrefs()
     set( SETTING::AXIS, false );
 //#define DRAW_AXIS
 #ifdef DRAW_AXIS
-    set( EFFECT::AXIS, true );
+    set( SETTING::AXIS, true );
 #endif
-
-    emit prefsLoaded();
 }
 
 
@@ -215,9 +212,6 @@ void PreferenceManager::set( SETTING option, bool value )
     {
     case SETTING::ANTIALIAS:
         settings.setValue( SETTING_ANTIALIAS, value );
-        break;
-    case SETTING::BLURRYZOOM:
-        settings.setValue ( SETTING_BLURRYZOOM, value );
         break;
     case SETTING::GRID:
         settings.setValue( SETTING_SHOW_GRID, value );

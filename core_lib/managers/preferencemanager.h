@@ -9,7 +9,6 @@
 enum class SETTING
 {
     ANTIALIAS,
-    BLURRYZOOM,
     GRID,
     COUNT,
     SHADOW,
@@ -70,8 +69,7 @@ public:
     int     getInt(SETTING option);
 
 Q_SIGNALS:
-    void prefsLoaded();
-    void optionChanged( SETTING e);
+    void optionChanged( SETTING e );
 
 
 private:

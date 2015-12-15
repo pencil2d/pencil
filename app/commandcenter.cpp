@@ -14,8 +14,8 @@
 #include "preferencemanager.h"
 #include "util.h"
 
-#include "layerbitmap.h"
-#include "layervector.h"
+//#include "layerbitmap.h"
+//#include "layervector.h"
 #include "layersound.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
@@ -107,21 +107,23 @@ void CommandCenter::flipY()
 
 void CommandCenter::showGrid( bool bShow )
 {
+    auto prefs = mEditor->preference();
     if ( bShow )
-        mEditor->preference()->turnOn( SETTING::GRID );
+        prefs->turnOn( SETTING::GRID );
     else
-        mEditor->preference()->turnOff( SETTING::GRID );
+        prefs->turnOff( SETTING::GRID );
 }
 
 void CommandCenter::PlayStop()
 {
-    if ( mEditor->playback()->isPlaying() )
+    PlaybackManager* playback = mEditor->playback();
+    if ( playback->isPlaying() )
     {
-        mEditor->playback()->stop();
+        playback->stop();
     }
     else
     {
-        mEditor->playback()->play();
+        playback->play();
     }
 }
 
@@ -139,6 +141,48 @@ void CommandCenter::GotoNextKeyFrame()
 
 void CommandCenter::GotoPrevKeyFrame()
 {
+}
+
+Status CommandCenter::addNewBitmapLayer()
+{
+    bool ok;
+    QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
+                                          tr( "Layer name:" ), QLineEdit::Normal,
+                                          tr( "Bitmap Layer" ), &ok );
+    if ( ok && !text.isEmpty() )
+    {
+        mEditor->layers()->createBitmapLayer( text );
+    }
+    return Status::OK;
+}
+
+Status CommandCenter::addNewVectorLayer()
+{
+    bool ok;
+    QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
+                                         tr( "Layer name:" ), QLineEdit::Normal,
+                                         tr( "Vector Layer" ), &ok );
+    if ( ok && !text.isEmpty() )
+    {
+        mEditor->layers()->createVectorLayer( text );
+    }
+
+    return Status::OK;
+}
+
+Status CommandCenter::addNewCameraLayer()
+{
+    bool ok;
+    QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
+                                         tr( "Layer name:" ), QLineEdit::Normal,
+                                         tr( "Camera Layer" ), &ok );
+    if ( ok && !text.isEmpty() )
+    {
+        mEditor->layers()->createCameraLayer( text );
+    }
+    
+    return Status::OK;
+
 }
 
 bool CommandCenter::addNewSoundLayer()

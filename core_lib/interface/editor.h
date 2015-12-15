@@ -158,11 +158,6 @@ public: //slots
     void paste();
     void clipboardChanged();
 
-    void newBitmapLayer();
-    void newVectorLayer();
-    void newSoundLayer();
-    void newCameraLayer();
-
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();

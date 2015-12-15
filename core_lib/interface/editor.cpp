@@ -157,24 +157,25 @@ void Editor::dropEvent( QDropEvent* event )
 
 void Editor::settingUpdated(SETTING setting)
 {
-    switch (setting) {
+    switch (setting)
+    {
     case SETTING::AUTO_SAVE:
-        mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
+        mIsAutosave = mPreferenceManager->isOn( SETTING::AUTO_SAVE );
         break;
     case SETTING::AUTO_SAVE_NUMBER:
-        autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+        autosaveNumber = mPreferenceManager->getInt( SETTING::AUTO_SAVE_NUMBER );
         break;
     case SETTING::ONION_MAX_OPACITY:
-        onionMaxOpacity = mPreferenceManager->getInt(SETTING::ONION_MAX_OPACITY);
+        onionMaxOpacity = mPreferenceManager->getInt( SETTING::ONION_MAX_OPACITY );
         break;
     case SETTING::ONION_MIN_OPACITY:
-        onionMinOpacity = mPreferenceManager->getInt(SETTING::ONION_MIN_OPACITY);
+        onionMinOpacity = mPreferenceManager->getInt( SETTING::ONION_MIN_OPACITY );
         break;
     case SETTING::ONION_PREV_FRAMES_NUM:
-        onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+        onionPrevFramesNum = mPreferenceManager->getInt( SETTING::ONION_PREV_FRAMES_NUM );
         break;
     case SETTING::ONION_NEXT_FRAMES_NUM:
-        onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+        onionNextFramesNum = mPreferenceManager->getInt( SETTING::ONION_NEXT_FRAMES_NUM );
         break;
     default:
         break;
@@ -427,80 +428,6 @@ void Editor::clipboardChanged()
 int Editor::allLayers()
 {
 	return mScribbleArea->showAllLayers();
-}
-
-void Editor::newBitmapLayer()
-{
-	if ( mObject != NULL )
-	{
-		bool ok;
-		QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
-											  tr( "Layer name:" ), QLineEdit::Normal,
-											  tr( "Bitmap Layer" ), &ok );
-		if ( ok && !text.isEmpty() )
-		{
-			Layer *layer = mObject->addNewBitmapLayer();
-			layer->mName = text;
-
-			emit updateLayerCount();
-
-			setCurrentLayer( mObject->getLayerCount() - 1 );
-		}
-	}
-}
-
-void Editor::newVectorLayer()
-{
-	if ( mObject != NULL )
-	{
-		bool ok;
-		QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
-											  tr( "Layer name:" ), QLineEdit::Normal,
-											  tr( "Vector Layer" ), &ok );
-		if ( ok && !text.isEmpty() )
-		{
-			Layer *layer = mObject->addNewVectorLayer();
-			layer->mName = text;
-			emit updateLayerCount();
-			setCurrentLayer( mObject->getLayerCount() - 1 );
-		}
-	}
-}
-
-void Editor::newSoundLayer()
-{
-	if ( mObject != NULL )
-	{
-		bool ok;
-		QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
-											  tr( "Layer name:" ), QLineEdit::Normal,
-											  tr( "Sound Layer" ), &ok );
-		if ( ok && !text.isEmpty() )
-		{
-			Layer *layer = mObject->addNewSoundLayer();
-			layer->mName = text;
-			emit updateLayerCount();
-			setCurrentLayer( mObject->getLayerCount() - 1 );
-		}
-	}
-}
-
-void Editor::newCameraLayer()
-{
-	if ( mObject != NULL )
-	{
-		bool ok;
-		QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
-											  tr( "Layer name:" ), QLineEdit::Normal,
-											  tr( "Camera Layer" ), &ok );
-		if ( ok && !text.isEmpty() )
-		{
-			Layer *layer = mObject->addNewCameraLayer();
-			layer->mName = text;
-			emit updateLayerCount();
-			setCurrentLayer( mObject->getLayerCount() - 1 );
-		}
-	}
 }
 
 void Editor::toggleMirror()
