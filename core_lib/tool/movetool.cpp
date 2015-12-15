@@ -257,12 +257,10 @@ bool MoveTool::keyPressEvent(QKeyEvent *event)
     default:
         break;
     }
-    return true;
-}
 
-bool MoveTool::keyReleaseEvent(QKeyEvent *event)
-{
-    return true;
+    // Follow the generic behaviour anyway
+    //
+    return false;
 }
 
 void MoveTool::cancelChanges()
