@@ -12,6 +12,7 @@ extern "C" {
 }
 #else
 extern "C" {
+    void detectElCapitan() {}
     void disableCoalescing() {}
     void enableCoalescing() {}
 }

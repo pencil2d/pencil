@@ -18,6 +18,9 @@ GNU General Public License for more details.
 #define SCRIBBLEAREA_H
 
 #include <cstdint>
+#include <ctime>
+#include <deque>
+
 #include <QColor>
 #include <QTransform>
 #include <QImage>
@@ -25,6 +28,7 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QFrame>
 #include <QHash>
+
 #include "log.h"
 #include "pencildef.h"
 #include "vectorimage.h"
@@ -244,6 +248,7 @@ private:
     // debug
     QRectF mDebugRect;
     QLoggingCategory mLog;
+    std::deque< clock_t > mDebugTimeQue;
 };
 
 #endif
