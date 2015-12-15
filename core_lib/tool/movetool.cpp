@@ -63,21 +63,22 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
 
             if ( mScribbleArea->getMoveMode() == ScribbleArea::MIDDLE )
             {
+                if ( event->modifiers() == Qt::ControlModifier ) // --- rotation
+                {
+                    mScribbleArea->setMoveMode( ScribbleArea::ROTATION );
+                    //qDebug() << "ROTATION";
+                }
+                else if (event->modifiers() == Qt::AltModifier ) // --- symmetry
+                {
+                    mScribbleArea->setMoveMode(ScribbleArea::SYMMETRY );
+                    //qDebug() << "SYMMETRY";
+                }
+
                 if ( layer->type() == Layer::BITMAP )
                 {
                     if ( !(mScribbleArea->myTransformedSelection.contains( getLastPoint() )) )    // click is outside the transformed selection with the MOVE tool
                     {
                         applyChanges();
-                    }
-                    else if ( event->modifiers() == Qt::ControlModifier ) // --- rotation
-                    {
-                        mScribbleArea->setMoveMode( ScribbleArea::ROTATION );
-                        //qDebug() << "ROTATION";
-                    }
-                    else if (event->modifiers() == Qt::AltModifier ) // --- symmetry
-                    {
-                        mScribbleArea->setMoveMode(ScribbleArea::SYMMETRY );
-                        //qDebug() << "SYMMETRY";
                     }
                 }
                 else if ( layer->type() == Layer::VECTOR )
