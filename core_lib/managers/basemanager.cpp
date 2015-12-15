@@ -11,8 +11,8 @@ BaseManager::~BaseManager()
     mEditor = nullptr;
 }
 
-void BaseManager::setEditor(Editor* pEditor)
+void BaseManager::setEditor(Editor* editor)
 {
-    Q_ASSERT_X( pEditor, "BaseManager::setEditor", "Editor is null." );
-    mEditor = pEditor;
+    Q_ASSERT_X( editor != nullptr, "BaseManager", "Editor is null." );
+    mEditor = editor;
 }
