@@ -46,7 +46,7 @@ public:
     Status error() { return mError; }
 
 Q_SIGNALS:
-    void progressValueChanged( float );
+    void progressUpdated( float );
 
 private:
     bool loadObject( Object*, const QDomElement& root, const QString& strDataFolder );
