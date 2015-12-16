@@ -277,7 +277,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
                 myTempTransformedSelection.translate( 1, 0 );
                 myTransformedSelection = myTempTransformedSelection;
                 calculateSelectionTransformation();
-                update();
+                paintTransformedSelection();
             }
             else
             {
@@ -291,7 +291,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
                 myTempTransformedSelection.translate( -1, 0 );
                 myTransformedSelection = myTempTransformedSelection;
                 calculateSelectionTransformation();
-                update();
+                paintTransformedSelection();
             }
             else
             {
@@ -305,7 +305,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
                 myTempTransformedSelection.translate( 0, -1 );
                 myTransformedSelection = myTempTransformedSelection;
                 calculateSelectionTransformation();
-                update();
+                paintTransformedSelection();
             }
             else
             {
@@ -319,7 +319,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
                 myTempTransformedSelection.translate( 0, 1 );
                 myTransformedSelection = myTempTransformedSelection;
                 calculateSelectionTransformation();
-                update();
+                paintTransformedSelection();
             }
             else
             {
@@ -1309,6 +1309,7 @@ void ScribbleArea::paintTransformedSelection()
         }
         setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     }
+    update();
 }
 
 void ScribbleArea::applyTransformedSelection()
@@ -1384,7 +1385,10 @@ void ScribbleArea::setSelection( QRectF rect, bool trueOrFalse )
     myTransformedSelection = rect;
     myTempTransformedSelection = rect;
     somethingSelected = trueOrFalse;
-    displaySelectionProperties();
+
+    // Temporary disabled this as it breaks selection rotate key (ctrl) event.
+    //
+    // displaySelectionProperties();
 }
 
 void ScribbleArea::displaySelectionProperties()
@@ -1452,6 +1456,7 @@ void ScribbleArea::deselectAll()
 {
     mOffset.setX( 0 );
     mOffset.setY( 0 );
+    myRotatedAngle = 0;
     selectionTransformation.reset();
     mySelection.setRect( 10, 10, 20, 20 );
     myTransformedSelection.setRect( 10, 10, 20, 20 );

@@ -161,10 +161,8 @@ bool SelectTool::keyPressEvent(QKeyEvent *event)
     default:
         break;
     }
-    return true;
-}
 
-bool SelectTool::keyReleaseEvent(QKeyEvent *event)
-{
-    return true;
+    // Follow the generic behaviour anyway
+    //
+    return false;
 }
