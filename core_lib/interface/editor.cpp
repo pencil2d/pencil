@@ -736,15 +736,8 @@ void Editor::scrubTo( int frame )
 	int oldFrame = mFrame;
 	mFrame = frame;
 
-	if ( mScribbleArea->shouldUpdateAll() )
-	{
-		mScribbleArea->updateAllFrames();
-	}
-
 	Q_EMIT currentFrameChanged( frame );
 	Q_EMIT currentFrameChanged( oldFrame );
-
-	mScribbleArea->update();
 }
 
 void Editor::scrubForward()
