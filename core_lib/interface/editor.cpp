@@ -716,7 +716,12 @@ void Editor::updateFrame( int frameNumber )
 
 void Editor::updateFrameAndVector( int frameNumber )
 {
-	mScribbleArea->updateAllVectorLayersAt( frameNumber );
+    mScribbleArea->updateAllVectorLayersAt( frameNumber );
+}
+
+void Editor::updateCurrentFrame()
+{
+    mScribbleArea->updateCurrentFrame();
 }
 
 void Editor::scrubTo( int frame )

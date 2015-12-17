@@ -90,6 +90,16 @@ public:
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
 
     void setModified( int position, bool isModified );
+
+    // Handle selection
+    bool isFrameSelected( int position );
+    void setFrameSelected( int position, bool isSelected);
+    void toggleFrameSelected( int position, bool allowMultiple = false );
+    void extendSelectionTo( int position );
+    void selectAllFramesAfter( int position );
+    void deselectAll();
+
+    bool moveSelectedFrames( int offset );
     
     bool save( QString dataFolder );
 
@@ -115,6 +125,13 @@ private:
     int mId           = 0;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
+
+    // We need to keep trace of selected frames ordered by last selected
+    // and by position.
+    // Both should be pre-sorted on each selection for optimization purpose when moving frames.
+    //
+    QList<int> mSelectedFrames_byLast; // Used to hadle selection range (based on last selected
+    QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
 };
 
 bool isLayerPaintable( Layer* );

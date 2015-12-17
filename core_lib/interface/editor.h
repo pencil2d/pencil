@@ -128,6 +128,7 @@ public: //slots
     bool importImage( QString filePath );
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
+    void updateCurrentFrame();
 
     void scrubNextKeyFrame();
     void scrubPreviousKeyFrame();
