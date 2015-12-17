@@ -33,7 +33,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
-#include "objectsaveloader.h"
+#include "filemanager.h"
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"

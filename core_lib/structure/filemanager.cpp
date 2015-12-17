@@ -16,7 +16,7 @@ GNU General Public License for more details.
 */
 
 
-#include "objectsaveloader.h"
+#include "filemanager.h"
 #include "pencildef.h"
 #include "JlCompress.h"
 #include "fileformat.h"

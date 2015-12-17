@@ -1,6 +1,6 @@
 
-#include "objectsaveloader.h"
-#include "test_objectsaveloader.h"
+#include "filemanager.h"
+#include "test_filemanager.h"
 #include "util.h"
 
 void TestObjectSaveLoader::testCase1()

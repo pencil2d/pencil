@@ -64,7 +64,6 @@ HEADERS +=  \
     structure/layersound.h \
     structure/layervector.h \
     structure/object.h \
-    structure/objectsaveloader.h \
     tool/basetool.h \
     tool/brushtool.h \
     tool/buckettool.h \
@@ -94,7 +93,8 @@ HEADERS +=  \
     structure/soundclip.h \
     managers/soundmanager.h \
     interface/backgroundwidget.h \
-    structure/editorstate.h
+    structure/editorstate.h \
+    structure/filemanager.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -129,7 +129,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     structure/layersound.cpp \
     structure/layervector.cpp \
     structure/object.cpp \
-    structure/objectsaveloader.cpp \
     tool/basetool.cpp \
     tool/brushtool.cpp \
     tool/buckettool.cpp \
@@ -159,7 +158,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     structure/soundclip.cpp \
     managers/soundmanager.cpp \
     interface/backgroundwidget.cpp \
-    structure/editorstate.cpp
+    structure/editorstate.cpp \
+    structure/filemanager.cpp
 
 win32 {
     CONFIG -= flat

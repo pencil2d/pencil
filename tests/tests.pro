@@ -31,17 +31,17 @@ INCLUDEPATH += \
 
 HEADERS += \
     AutoTest.h \
-    test_objectsaveloader.h \
     test_layer.h \
     test_layermanager.h \
-    test_object.h
+    test_object.h \
+    test_filemanager.h
 
 SOURCES += \
     main.cpp \
-    test_objectsaveloader.cpp \
     test_layer.cpp \
     test_layermanager.cpp \
-    test_object.cpp
+    test_object.cpp \
+    test_filemanager.cpp
 
 linux-* {
     LIBS += -lz
