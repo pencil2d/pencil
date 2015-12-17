@@ -292,11 +292,6 @@ bool Object::exportPalette( QString filePath )
     return true;
 }
 
-bool Object::loadPalette( QString filePath )
-{
-    return importPalette( filePath + "/palette.xml" );
-}
-
 bool Object::importPalette( QString filePath )
 {
     QFile* file = new QFile( filePath );

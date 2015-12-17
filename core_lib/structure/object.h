@@ -73,11 +73,14 @@ public:
 
     void init();
 
-    QString filePath() const { return mstrFilePath; }
-    void    setFilePath( QString strFileName ) { mstrFilePath = strFileName; }
+    QString filePath() const { return mFilePath; }
+    void    setFilePath( QString strFileName ) { mFilePath = strFileName; }
     
-    QString workingDir() const { return mstrWorkingDir; }
-    void    setWorkingDir( QString strWorkingDir ) { mstrWorkingDir = strWorkingDir; }
+    QString workingDir() const { return mWorkingDirPath; }
+    void    setWorkingDir( QString dirPath ) { mWorkingDirPath = dirPath; }
+
+    QString dataDir() const { return mDataDirPath; }
+    void    setDataDir( QString dirPath ) { mDataDirPath = dirPath; }
 
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element, QString dataDirPath );
@@ -98,7 +101,7 @@ public:
     bool importPalette( QString filePath );
     bool exportPalette( QString filePath );
     bool savePalette( QString filePath );
-    bool loadPalette( QString filePath );
+
     void loadDefaultPalette();
 
     LayerBitmap* addNewBitmapLayer();
@@ -134,8 +137,9 @@ public:
 private:
     int getMaxLayerID();
 
-    QString mstrFilePath;
-    QString mstrWorkingDir;
+    QString mFilePath;
+    QString mWorkingDirPath;
+    QString mDataDirPath;
 
     QList< Layer* > mLayers;
     bool modified = false;

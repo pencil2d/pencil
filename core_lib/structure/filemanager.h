@@ -52,10 +52,13 @@ private:
     bool loadObject( Object*, const QDomElement& root, const QString& strDataFolder );
     bool loadObjectOldWay( Object*, const QDomElement& root, const QString& strDataFolder );
 
-    QString extractZipToTempFolder( QString strZipFile );
-    QString createTempWorkingFolder( QString strFileName );
-    void    cleanUpTempFolder();
-    bool    isFileExists( QString strFilename );
+    bool isOldForamt( QString fileName );
+
+    QString unzip( QString strZipFile );
+    QString createWorkingFolder( QString strFileName );
+    void    cleanUpWorkingFolder();
+    
+    bool loadPalette( Object* );
     EditorState* loadEditorState( QDomElement element );
 
     void extractEditorStateData( const QDomElement& element, EditorState* data );
