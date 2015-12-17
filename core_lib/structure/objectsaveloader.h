@@ -31,12 +31,12 @@ class Object;
 class EditorState;
 
 
-class ObjectSaveLoader : public QObject
+class FileManager : public QObject
 {
     Q_OBJECT
 
 public:
-    ObjectSaveLoader( QObject *parent = 0 );
+    FileManager( QObject *parent = 0 );
 
     Object* load( QString strFilenNme );
     bool    save( Object* pObject, QString strFileName );

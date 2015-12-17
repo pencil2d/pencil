@@ -25,13 +25,13 @@ GNU General Public License for more details.
 
 
 
-ObjectSaveLoader::ObjectSaveLoader( QObject *parent ) : QObject( parent ),
+FileManager::FileManager( QObject *parent ) : QObject( parent ),
     mLog( "SaveLoader" )
 {
     ENABLE_DEBUG_LOG( mLog, false );
 }
 
-Object* ObjectSaveLoader::load( QString strFileName )
+Object* FileManager::load( QString strFileName )
 {
     if ( !QFile::exists( strFileName ) )
     {
@@ -130,7 +130,7 @@ Object* ObjectSaveLoader::load( QString strFileName )
     return object;
 }
 
-bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, const QString& strDataFolder )
+bool FileManager::loadObject( Object* object, const QDomElement& root, const QString& strDataFolder )
 {
     bool isOK = true;
     for ( QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling() )
@@ -162,12 +162,12 @@ bool ObjectSaveLoader::loadObject( Object* object, const QDomElement& root, cons
     return isOK;
 }
 
-bool ObjectSaveLoader::loadObjectOldWay( Object* object, const QDomElement& root, const QString& strDataFolder )
+bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root, const QString& strDataFolder )
 {
     return object->loadXML( root, strDataFolder );
 }
 
-bool ObjectSaveLoader::save( Object* object, QString strFileName )
+bool FileManager::save( Object* object, QString strFileName )
 {
     if ( object == nullptr ) { return false; }
 
@@ -274,7 +274,7 @@ bool ObjectSaveLoader::save( Object* object, QString strFileName )
     return true;
 }
 
-EditorState* ObjectSaveLoader::loadEditorState( QDomElement docElem )
+EditorState* FileManager::loadEditorState( QDomElement docElem )
 {
     EditorState* data = new EditorState;
     if ( docElem.isNull() )
@@ -300,7 +300,7 @@ EditorState* ObjectSaveLoader::loadEditorState( QDomElement docElem )
 }
 
 
-void ObjectSaveLoader::extractEditorStateData( const QDomElement& element, EditorState* data )
+void FileManager::extractEditorStateData( const QDomElement& element, EditorState* data )
 {
     Q_ASSERT( data );
 
@@ -355,12 +355,12 @@ void ObjectSaveLoader::extractEditorStateData( const QDomElement& element, Edito
     }
 }
 
-void ObjectSaveLoader::cleanUpTempFolder()
+void FileManager::cleanUpTempFolder()
 {
     removePFFTmpDirectory( mstrLastTempFolder );
 }
 
-QString ObjectSaveLoader::createTempWorkingFolder( QString strFileName )
+QString FileManager::createTempWorkingFolder( QString strFileName )
 {
     QFileInfo fileInfo( strFileName );
     QString strTempWorkingFolder = QDir::tempPath() +
@@ -374,7 +374,7 @@ QString ObjectSaveLoader::createTempWorkingFolder( QString strFileName )
     return strTempWorkingFolder;
 }
 
-QString ObjectSaveLoader::extractZipToTempFolder( QString strZipFile )
+QString FileManager::extractZipToTempFolder( QString strZipFile )
 {
     QString strTempWorkingPath = createTempWorkingFolder( strZipFile );
 
@@ -389,7 +389,7 @@ QString ObjectSaveLoader::extractZipToTempFolder( QString strZipFile )
     return strTempWorkingPath;
 }
 
-QList<ColourRef> ObjectSaveLoader::loadPaletteFile( QString strFilename )
+QList<ColourRef> FileManager::loadPaletteFile( QString strFilename )
 {
     QFileInfo fileInfo( strFilename );
     if ( !fileInfo.exists() )

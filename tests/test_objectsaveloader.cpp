@@ -11,13 +11,13 @@ void TestObjectSaveLoader::testCase1()
 
 void TestObjectSaveLoader::testNotExistFile()
 {
-    ObjectSaveLoader pSaveLoader;
+    FileManager fm;
 
     QString strDummyPath = "hahaha_blala.pcl";
-    Object* pObject = pSaveLoader.load( strDummyPath );
+    Object* pObject = fm.load( strDummyPath );
 
     QVERIFY2( pObject == NULL, "File doesn't exist.");
-    QVERIFY2( pSaveLoader.error().code() == Status::FILE_NOT_FOUND, "" );
+    QVERIFY2( fm.error().code() == Status::FILE_NOT_FOUND, "" );
 }
 
 void TestObjectSaveLoader::testInvalidXML()
@@ -31,11 +31,11 @@ void TestObjectSaveLoader::testInvalidXML()
     fout << "*&%% haha, this is not a xml file.";
     badXMLFile.close();
     
-    ObjectSaveLoader pSaveLoader;
-    Object* pObj = pSaveLoader.load( strBadXMLPath );
+    FileManager fm;
+    Object* pObj = fm.load( strBadXMLPath );
 
     QVERIFY( pObj == NULL );
-    QVERIFY( pSaveLoader.error().code() == Status::ERROR_INVALID_XML_FILE );
+    QVERIFY( fm.error().code() == Status::ERROR_INVALID_XML_FILE );
 }
 
 void TestObjectSaveLoader::testInvalidPencilDocument()
@@ -49,11 +49,11 @@ void TestObjectSaveLoader::testInvalidPencilDocument()
     fout << "<!DOCTYPE NotPencilDocument><document></document>";
     badXMLFile.close();
 
-    ObjectSaveLoader pSaveLoader;
-    Object* pObj = pSaveLoader.load( strBadXMLPath );
+    FileManager fm;
+    Object* pObj = fm.load( strBadXMLPath );
 
     QVERIFY( pObj == NULL );
-    QVERIFY( pSaveLoader.error().code() == Status::ERROR_INVALID_PENCIL_FILE );
+    QVERIFY( fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE );
 }
 
 void TestObjectSaveLoader::testMinimalPencilDocument()
@@ -68,11 +68,11 @@ void TestObjectSaveLoader::testMinimalPencilDocument()
     fout << "<!DOCTYPE PencilDocument><document></document>";
     badXMLFile.close();
 
-    ObjectSaveLoader pSaveLoader;
-    Object* pObj = pSaveLoader.load( strBadXMLPath );
+    FileManager fm;
+    Object* pObj = fm.load( strBadXMLPath );
 
     QVERIFY( pObj != NULL );
-    QVERIFY( pSaveLoader.error().ok() );
+    QVERIFY( fm.error().ok() );
 }
 
 

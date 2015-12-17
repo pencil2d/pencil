@@ -469,10 +469,10 @@ bool MainWindow2::openObject( QString strFilePath )
 
     mEditor->setCurrentLayer( 0 );
 
-    ObjectSaveLoader objectLoader( this );
-    Object* object = objectLoader.load( strFilePath );
+    FileManager fm( this );
+    Object* object = fm.load( strFilePath );
 
-    if ( object == nullptr || !objectLoader.error().ok() )
+    if ( object == nullptr || !fm.error().ok() )
     {
         return false;
     }
@@ -504,8 +504,8 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
-    ObjectSaveLoader* saveLoader = new ObjectSaveLoader( this );
-    bool ok = saveLoader->save( mEditor->object(), strSavedFileName );
+    FileManager* fm = new FileManager( this );
+    bool ok = fm->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
 
