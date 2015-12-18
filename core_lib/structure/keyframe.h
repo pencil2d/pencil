@@ -19,6 +19,8 @@ public:
     void setPos( int position ) { mFrame = position; }
     int  length() { return mLength; }
     void setModified( bool b ) { mIsModified = b; }
+    void setSelected( bool b ) { mIsSelected = b; }
+    bool isSelected() { return mIsSelected; }
 
     QString fileName() { return mAttachedFileName; }
     void    setFileName( QString strFileName ) { mAttachedFileName = strFileName; }
@@ -30,6 +32,7 @@ private:
     int mFrame       = -1;
     int mLength      =  1;
     bool mIsModified = false;
+    bool mIsSelected = false;
     QString mAttachedFileName;
 
     std::vector< KeyFrameEventListener* > mEventListeners;
