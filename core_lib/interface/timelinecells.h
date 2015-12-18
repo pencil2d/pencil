@@ -46,6 +46,7 @@ public slots:
 
 protected:
     void drawContent();
+    void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event);
     void resizeEvent(QResizeEvent* event);
     void mousePressEvent(QMouseEvent* event);

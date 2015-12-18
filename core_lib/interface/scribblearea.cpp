@@ -978,6 +978,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.bThinLines = mPrefs->isOn( SETTING::INVISIBLE_LINES );
     options.bOutlines = mPrefs->isOn( SETTING::OUTLINES );
     options.nShowAllLayers = mShowAllLayers;
+    options.bIsOnionAbsolute = (mPrefs->getString( SETTING::ONION_TYPE ) == "absolute");
 
     mCanvasRenderer.setOptions( options );
 

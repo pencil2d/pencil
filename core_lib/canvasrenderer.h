@@ -45,6 +45,7 @@ struct RenderOptions
     bool  bThinLines = false;
     bool  bOutlines = false;
     int   nShowAllLayers = 3;
+    bool  bIsOnionAbsolute = false;
 };
 
 

@@ -119,6 +119,46 @@ int Layer::getNextKeyFramePosition( int position )
     return it->first;
 }
 
+int Layer::getPreviousFrameNumber( int position, bool isAbsolute )
+{
+    int prevNumber;
+
+    if (isAbsolute) {
+        prevNumber = getPreviousKeyFramePosition(position);
+    }
+    else {
+        prevNumber = position - 1;
+    }
+
+
+    if (prevNumber == position) {
+        return -1; // There is no previous keyframe
+    }
+    else {
+        return prevNumber;
+    }
+}
+
+int Layer::getNextFrameNumber( int position, bool isAbsolute )
+{
+    int nextNumber;
+
+    if (isAbsolute) {
+        nextNumber = getNextKeyFramePosition(position);
+    }
+    else {
+        nextNumber = position + 1;
+    }
+
+
+    if (nextNumber == position) {
+        return -1; // There is no next keyframe
+    }
+    else {
+        return nextNumber;
+    }
+}
+
 int Layer::firstKeyFramePosition()
 {
     Q_ASSERT( mKeyFrames.rbegin()->first == 1 );

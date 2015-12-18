@@ -163,6 +163,8 @@ public: //slots
     void toggleMirrorV();
     void toggleShowAllLayers();
 
+    void toogleOnionSkinType();
+
     void settingUpdated(SETTING);
 
 protected:
