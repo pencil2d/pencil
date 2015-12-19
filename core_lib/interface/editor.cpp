@@ -78,10 +78,8 @@ Editor::~Editor()
 	clearUndoStack();
 }
 
-bool Editor::initialize( ScribbleArea* pScribbleArea )
+bool Editor::init()
 {
-	mScribbleArea = pScribbleArea;
-
 	// Initialize managers
 	mColorManager = new ColorManager( this );
 	mLayerManager = new LayerManager( this );
@@ -761,8 +759,11 @@ void Editor::scrubTo( int frame )
 
 	Q_EMIT currentFrameChanged( frame );
 	Q_EMIT currentFrameChanged( oldFrame );
-
-    if( !mPlaybackManager->isPlaying() )
+    
+    // FIXME: should not emit Timeline update here.
+    // Editor must be an individual class.
+    // Will remove all Timeline related code in Editor class.
+    if ( mPlaybackManager && !mPlaybackManager->isPlaying() )
     {
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }

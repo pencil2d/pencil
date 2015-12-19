@@ -16,16 +16,15 @@ GNU General Public License for more details.
 */
 
 #include <QDir>
-
 #include "fileformat.h"
-
 
 bool removePFFTmpDirectory (const QString& dirName)
 {
-    QDir dir( dirName + "/" + PFF_OLD_DATA_DIR );
+    QDir dir( dirName );
 	
     if ( !dir.exists() )
     {
+        Q_ASSERT( false );
         return false;
     }
 

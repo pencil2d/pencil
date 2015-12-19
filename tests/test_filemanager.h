@@ -18,6 +18,7 @@ private slots:
     void testInvalidXML();
     void testInvalidPencilDocument();
     void testMinimalPencilDocument();
+    void testOneLayer();
 };
 
 DECLARE_TEST(TestObjectSaveLoader)

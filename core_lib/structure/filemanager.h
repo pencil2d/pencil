@@ -49,21 +49,21 @@ Q_SIGNALS:
     void progressUpdated( float );
 
 private:
-    bool loadObject( Object*, const QDomElement& root, const QString& strDataFolder );
+    bool loadObject( Object*, const QDomElement& root );
     bool loadObjectOldWay( Object*, const QDomElement& root, const QString& strDataFolder );
 
     bool isOldForamt( QString fileName );
 
     QString unzip( QString strZipFile );
     QString createWorkingFolder( QString strFileName );
-    void    cleanUpWorkingFolder();
+    Object* cleanUpWithErrorCode( Status );
     
     bool loadPalette( Object* );
     EditorState* loadEditorState( QDomElement element );
 
     void extractEditorStateData( const QDomElement& element, EditorState* data );
 
-    Status mError;
+    Status mError = Status::OK;
     QString mstrLastTempFolder;
 
     QLoggingCategory mLog;

@@ -58,7 +58,7 @@ public:
     explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
-    bool initialize( ScribbleArea* pScribbleArea );
+    bool init();
 
     /************************************************************************/
     /* Managers                                                             */

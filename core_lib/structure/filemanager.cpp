@@ -36,11 +36,13 @@ Object* FileManager::load( QString strFileName )
     if ( !QFile::exists( strFileName ) )
     {
         qCDebug( mLog ) << "ERROR - File doesn't exist.";
-        mError = Status::FILE_NOT_FOUND;
-        return nullptr;
+        return cleanUpWithErrorCode( Status::FILE_NOT_FOUND );
     }
 
     emit progressUpdated( 0.f );
+
+    Object* obj = new Object;
+    obj->setFilePath( strFileName );
 
     QString strMainXMLFile;  //< the location of main.xml
     QString strDataFolder;   //< the folder which contains all bitmap & vector image & sound files.
@@ -67,66 +69,70 @@ Object* FileManager::load( QString strFileName )
 
         qCDebug( mLog ) << "Working Folder=" << strWorkingDir;
     }
+
     qCDebug( mLog ) << "XML=" << strMainXMLFile;
     qCDebug( mLog ) << "Data Folder=" << strDataFolder;
 
     QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
     if ( !file->open( QFile::ReadOnly ) )
     {
-        cleanUpWorkingFolder();
-        mError = Status::ERROR_FILE_CANNOT_OPEN;
-        return nullptr;
+        return cleanUpWithErrorCode( Status::ERROR_FILE_CANNOT_OPEN );
     }
 
     qCDebug( mLog ) << "Checking main XML file...";
     QDomDocument xmlDoc;
     if ( !xmlDoc.setContent( file.data() ) )
     {
-        cleanUpWorkingFolder();
-        mError = Status::ERROR_INVALID_XML_FILE;
-        return nullptr;
+        return cleanUpWithErrorCode( Status::ERROR_INVALID_XML_FILE );
     }
 
     QDomDocumentType type = xmlDoc.doctype();
     if ( !( type.name() == "PencilDocument" || type.name() == "MyObject" ) )
     {
-        cleanUpWorkingFolder();
-        mError = Status::ERROR_INVALID_PENCIL_FILE;
-        return nullptr;
+        return cleanUpWithErrorCode( Status::ERROR_INVALID_PENCIL_FILE );
     }
 
     QDomElement root = xmlDoc.documentElement();
     if ( root.isNull() )
     {
-        cleanUpWorkingFolder();
-        mError = Status::ERROR_INVALID_PENCIL_FILE;
-        return nullptr;
+        return cleanUpWithErrorCode( Status::ERROR_INVALID_PENCIL_FILE );
     }
-
+    
     // Create object.
     qCDebug( mLog ) << "Start to load object..";
-    Object* object = new Object();
-    
-    loadPalette( object );
+
+    loadPalette( obj );
 
     bool ok = true;
     
     if ( root.tagName() == "document" )
     {
-        ok = loadObject( object, root, strDataFolder );
+        ok = loadObject( obj, root );
     }
-    else if ( root.tagName() == "object" || root.tagName() == "MyOject" )   // old Pencil format (<=0.4.3)
+    else if ( root.tagName() == "object" || root.tagName() == "MyOject" ) // old Pencil format (<=0.4.3)
     {
-        ok = loadObjectOldWay( object, root, strDataFolder );
+        ok = loadObjectOldWay( obj, root, strDataFolder );
     }
 
-    object->setFilePath( strFileName );
-
-    return object;
+    if ( !ok )
+    {
+        delete obj;
+        return cleanUpWithErrorCode( Status::ERROR_INVALID_PENCIL_FILE );
+    }
+    
+    return obj;
 }
 
-bool FileManager::loadObject( Object* object, const QDomElement& root, const QString& strDataFolder )
+bool FileManager::loadObject( Object* object, const QDomElement& root )
 {
+    QDomElement e = root.firstChildElement( "object" );
+    if ( e.isNull() )
+    {
+        return false;
+    }
+    
+    const QString& strDataFolder = object->dataDir();
+
     bool isOK = true;
     for ( QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
@@ -356,9 +362,11 @@ void FileManager::extractEditorStateData( const QDomElement& element, EditorStat
     }
 }
 
-void FileManager::cleanUpWorkingFolder()
+Object* FileManager::cleanUpWithErrorCode( Status error )
 {
+    mError = error;
     removePFFTmpDirectory( mstrLastTempFolder );
+    return nullptr;
 }
 
 bool FileManager::loadPalette( Object* obj )
