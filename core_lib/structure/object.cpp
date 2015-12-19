@@ -85,13 +85,11 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
     }
     int layerNumber = -1;
     
-    bool someRelevantData = false;
     for ( QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if ( element.tagName() == "layer" )
         {
-            someRelevantData = true;
             if ( element.attribute( "type" ).toInt() == Layer::BITMAP )
             {
                 addNewBitmapLayer();
@@ -118,7 +116,7 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
             }
         }
     }
-    return someRelevantData;
+    return true;
 }
 
 LayerBitmap* Object::addNewBitmapLayer()

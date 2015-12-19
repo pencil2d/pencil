@@ -82,6 +82,9 @@ public:
     QString dataDir() const { return mDataDirPath; }
     void    setDataDir( QString dirPath ) { mDataDirPath = dirPath; }
 
+    QString mainXMLFile() const { return mMainXMLFile; }
+    void    setMainXMLFile( QString file ){ mMainXMLFile = file; }
+
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element, QString dataDirPath );
 
@@ -140,6 +143,7 @@ private:
     QString mFilePath;
     QString mWorkingDirPath;
     QString mDataDirPath;
+    QString mMainXMLFile;
 
     QList< Layer* > mLayers;
     bool modified = false;
