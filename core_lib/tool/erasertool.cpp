@@ -96,7 +96,6 @@ QCursor EraserTool::cursor()
 
 void EraserTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
 {
-    mCurrentWidth = properties.width;
     if ( properties.pressure && !mouseDevice )
     {
         mCurrentPressure = pressure;
@@ -197,7 +196,7 @@ void EraserTool::drawStroke()
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        qreal opacity = 1.0;
+        qreal opacity = mCurrentPressure;
         mCurrentWidth = properties.width;
         qreal brushWidth = (mCurrentWidth + (mCurrentPressure * mCurrentWidth)) * 0.5;
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);

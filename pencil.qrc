@@ -59,5 +59,6 @@
         <file>icons/grid-a.png</file>
         <file>icons/grid-b.png</file>
         <file>background/checkerboard.png</file>
+        <file>icons/onion_type.png</file>
     </qresource>
 </RCC>

@@ -46,6 +46,7 @@ public slots:
 
 protected:
     void drawContent();
+    void paintOnionSkin(QPainter& painter);
     void paintEvent(QPaintEvent* event);
     void resizeEvent(QResizeEvent* event);
     void mousePressEvent(QMouseEvent* event);
@@ -74,8 +75,19 @@ private:
     const static int m_offsetX = 0;
     const static int m_offsetY = 20;
     int startY, endY, startLayerNumber;
+    int startFrameNumber;
+    int lastFrameNumber = -1;
     int mouseMoveY;
     int frameOffset, layerOffset;
+
+    bool canMoveFrame   = false;
+    bool movingFrames   = false;
+
+    bool canBoxSelect   = false;
+    bool boxSelecting   = false;
+
+    bool clickSelecting = false;
+
 };
 
 #endif // TIMELINECELLS_H

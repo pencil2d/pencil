@@ -18,7 +18,6 @@ public:
     void mouseMoveEvent(QMouseEvent *) override;
 
     bool keyPressEvent(QKeyEvent *event) override;
-    bool keyReleaseEvent(QKeyEvent *event) override;
 
 private:
     void cancelChanges();
