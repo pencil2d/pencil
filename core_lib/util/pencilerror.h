@@ -41,6 +41,8 @@ public:
     bool      ok() const { return mCode == OK; }
     QString   msg();
 
+    bool operator==( ErrorCode code );
+
 private:
     ErrorCode mCode = OK;
 };
