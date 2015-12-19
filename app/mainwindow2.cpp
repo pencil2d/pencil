@@ -1079,8 +1079,14 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &CommandCenter::addNewSoundLayer );
     connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &CommandCenter::addNewCameraLayer );
 
+    connect( pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType );
+
+
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );
+
+    connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
+
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

@@ -178,6 +178,10 @@ void Editor::settingUpdated(SETTING setting)
     case SETTING::ONION_NEXT_FRAMES_NUM:
         onionNextFramesNum = mPreferenceManager->getInt( SETTING::ONION_NEXT_FRAMES_NUM );
         break;
+    case SETTING::ONION_TYPE:
+        mScribbleArea->updateAllFrames();
+        emit updateTimeLine();
+        break;
     default:
         break;
     }
@@ -447,6 +451,20 @@ void Editor::toggleShowAllLayers()
 {
 	mScribbleArea->toggleShowAllLayers();
     emit updateTimeLine();
+}
+
+void Editor::toogleOnionSkinType()
+{
+    QString onionSkinState = mPreferenceManager->getString(SETTING::ONION_TYPE);
+    QString newState;
+    if (onionSkinState == "relative") {
+        newState = "absolute";
+    }
+    else {
+        newState = "relative";
+    }
+
+    mPreferenceManager->set(SETTING::ONION_TYPE, newState);
 }
 
 void Editor::saveLength( QString x )
@@ -724,7 +742,12 @@ void Editor::updateFrame( int frameNumber )
 
 void Editor::updateFrameAndVector( int frameNumber )
 {
-	mScribbleArea->updateAllVectorLayersAt( frameNumber );
+    mScribbleArea->updateAllVectorLayersAt( frameNumber );
+}
+
+void Editor::updateCurrentFrame()
+{
+    mScribbleArea->updateCurrentFrame();
 }
 
 void Editor::scrubTo( int frame )
@@ -738,6 +761,11 @@ void Editor::scrubTo( int frame )
 
 	Q_EMIT currentFrameChanged( frame );
 	Q_EMIT currentFrameChanged( oldFrame );
+
+    if( !mPlaybackManager->isPlaying() )
+    {
+        emit updateTimeLine(); // needs to update the timeline to update onion skin positions
+    }
 }
 
 void Editor::scrubForward()
@@ -855,7 +883,7 @@ void Editor::removeKey()
 			break;
 		}
 		scrubBackward();
-		mScribbleArea->updateCurrentFrame();
+        mScribbleArea->updateCurrentFrame();
 	}
 }
 

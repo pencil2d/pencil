@@ -128,6 +128,7 @@ public: //slots
     bool importImage( QString filePath );
     void updateFrame( int frameNumber );
     void updateFrameAndVector( int frameNumber );
+    void updateCurrentFrame();
 
     void scrubNextKeyFrame();
     void scrubPreviousKeyFrame();
@@ -159,6 +160,8 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
+
+    void toogleOnionSkinType();
 
     void settingUpdated(SETTING);
 

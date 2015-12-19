@@ -71,6 +71,7 @@ void PreferenceManager::loadPrefs()
     set( SETTING::ONION_MIN_OPACITY,        settings.value( SETTING_ONION_MIN_OPACITY,      20 ).toInt() );
     set( SETTING::ONION_PREV_FRAMES_NUM,    settings.value( SETTING_ONION_PREV_FRAMES_NUM,  5 ).toInt() );
     set( SETTING::ONION_NEXT_FRAMES_NUM,    settings.value( SETTING_ONION_NEXT_FRAMES_NUM,  5 ).toInt() );
+    set( SETTING::ONION_TYPE,               settings.value( SETTING_ONION_TYPE,             "relative" ).toString() );
 
 
     set( SETTING::AXIS, false );
@@ -131,6 +132,9 @@ void PreferenceManager::set(SETTING option, QString value)
     {
     case SETTING::BACKGROUND_STYLE:
         settings.setValue( SETTING_BACKGROUND_STYLE, value );
+        break;
+    case SETTING::ONION_TYPE:
+        settings.setValue( SETTING_ONION_TYPE, value );
         break;
     default:
         break;
