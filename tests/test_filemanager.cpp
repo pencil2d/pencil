@@ -10,7 +10,6 @@
 typedef std::shared_ptr< FileManager > FileManagerPtr;
 
 
-
 void TestObjectSaveLoader::testCase1()
 {
     FileManagerPtr fm = std::make_shared< FileManager >();
@@ -65,7 +64,7 @@ void TestObjectSaveLoader::testInvalidPencilDocument()
     QVERIFY( fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE );
 }
 
-void TestObjectSaveLoader::testMinimalPencilDocument()
+void TestObjectSaveLoader::testMinimalOldPencilDocument()
 {
     QTemporaryFile minimalDoc;
     if ( minimalDoc.open() )
@@ -93,7 +92,7 @@ void TestObjectSaveLoader::testMinimalPencilDocument()
     }
 }
 
-void TestObjectSaveLoader::testOneLayer()
+void TestObjectSaveLoader::testOneLayerInFile()
 {
     QTemporaryFile tmpFile;
     if ( !tmpFile.open() )
@@ -105,7 +104,9 @@ void TestObjectSaveLoader::testOneLayer()
     
     QTextStream fout( &theXML );
     fout << "<!DOCTYPE PencilDocument><document>";
-    fout << "  <object></object>";
+    fout << "  <object>";
+    fout <<	"    <layer name='MyLayer' id='5' visibility='1' type='1'></layer>";
+    fout << "  </object>";
     fout << "</document>";
     theXML.close();
         
@@ -113,10 +114,35 @@ void TestObjectSaveLoader::testOneLayer()
     Object* obj = fm.load( theXML.fileName() );
     OnScopeExit( delete obj );
         
-    QVERIFY( obj != NULL );
-    QVERIFY( fm.error().ok() );
-    QVERIFY( obj->getLayerCount() == 0 );
+    QVERIFY( obj->getLayerCount() == 1 );
 }
 
-
+void TestObjectSaveLoader::testBitmapLayer()
+{
+    QTemporaryFile tmpFile;
+    if ( !tmpFile.open() )
+    {
+        QFAIL( "temp file" );
+    }
+    QFile theXML( tmpFile.fileName() );
+    theXML.open( QIODevice::WriteOnly );
+    
+    QTextStream fout( &theXML );
+    fout << "<!DOCTYPE PencilDocument><document>";
+    fout << "  <object>";
+    fout <<	"    <layer name='MyLayer' id='5' visibility='1' type='1'></layer>";
+    fout << "  </object>";
+    fout << "</document>";
+    theXML.close();
+    
+    FileManager fm;
+    Object* obj = fm.load( theXML.fileName() );
+    OnScopeExit( delete obj );
+    
+    Layer* layer = obj->getLayer( 0 );
+    QVERIFY2( layer->name() == "MyLayer", "LayerName is different" );
+    QCOMPARE( layer->id(), 5 );
+    QCOMPARE( layer->visible(), true );
+    QCOMPARE( layer->type(), Layer::BITMAP );
+}
 

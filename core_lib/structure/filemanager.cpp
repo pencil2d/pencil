@@ -44,9 +44,9 @@ Object* FileManager::load( QString strFileName )
     Object* obj = new Object;
     obj->setFilePath( strFileName );
 
-    QString strMainXMLFile;  //< the location of main.xml
-    QString strDataFolder;   //< the folder which contains all bitmap & vector image & sound files.
-    QString strWorkingDir;   //< the folder that pcxl will uncompress to.
+    QString strMainXMLFile;	
+    QString strDataFolder;
+    QString strWorkingDir;
 
     // Test file format: new zipped .pclx or old .pcl?
     bool oldFormat = isOldForamt( strFileName );
@@ -227,6 +227,10 @@ bool FileManager::save( Object* object, QString strFileName )
             layer->save( strDataFolder );
             break;
         case Layer::CAMERA:
+            break;
+        case Layer::UNDEFINED:
+        case Layer::MOVIE:
+            Q_ASSERT( false );
             break;
         }
     }
