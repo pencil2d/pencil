@@ -1,5 +1,8 @@
 #include "test_object.h"
+
 #include <memory>
+#include <QDomDocument>
+#include <QDomElement>
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -120,4 +123,23 @@ void TestObject::testMoveLayer()
     QCOMPARE( obj->getLayer( 0 )->id(), 2 );
     QCOMPARE( obj->getLayer( 1 )->id(), 1 );
 
+}
+
+void TestObject::testLoadXML()
+{
+    std::unique_ptr< Object > obj( new Object );
+
+    QString strXMLContent;
+    QTextStream sout( &strXMLContent );
+    sout << "<!DOCTYPE PencilDocument><object>";
+    sout << "</object>";
+    sout.flush();
+
+    QDomDocument doc;
+    doc.setContent( strXMLContent );
+    QDomElement e = doc.firstChildElement( "object" );
+    QVERIFY( !e.isNull() );
+
+    QVERIFY( obj->loadXML( e, "" ) );
+    
 }
