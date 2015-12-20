@@ -49,10 +49,12 @@ Status CommandCenter::importSound()
         }
 
         // Create new sound layer.
-        if ( addNewSoundLayer() == false )
+        
+        Status s = addNewSoundLayer();
+        if ( !s.ok() )
         {
             Q_ASSERT( false );
-            return Status::FAIL;
+            return s;
         }
 
         layer = mEditor->layers()->currentLayer();
@@ -185,7 +187,7 @@ Status CommandCenter::addNewCameraLayer()
 
 }
 
-bool CommandCenter::addNewSoundLayer()
+Status CommandCenter::addNewSoundLayer()
 {
     bool ok = false;
     QString strLayerName = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
@@ -196,7 +198,7 @@ bool CommandCenter::addNewSoundLayer()
         Layer* layer = mEditor->layers()->createSoundLayer( strLayerName );
         mEditor->layers()->setCurrentLayer( layer );
 
-        return true;
+        return Status::OK;
     }
-    return false;
+    return Status::FAIL;
 }
