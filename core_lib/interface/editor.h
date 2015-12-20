@@ -58,7 +58,7 @@ public:
     explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
-    bool initialize( ScribbleArea* pScribbleArea );
+    bool init();
 
     /************************************************************************/
     /* Managers                                                             */
@@ -72,7 +72,7 @@ public:
     SoundManager*      sound() const { return mSoundManager; }
 
     Object* object() const { return mObject.get(); }
-    void setObject( Object* object );
+    Status setObject( Object* object );
 
     Status getError() { return mLastError; }
 
@@ -141,8 +141,6 @@ public: //slots
 
     void moveFrameForward();
     void moveFrameBackward();
-
-    void resetUI();
 
     void updateObject();
 

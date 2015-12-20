@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
+#include "editorstate.h"
 
 // ******* Mac-specific: ******** (please comment (or reimplement) the lines below to compile on Windows or Linux
 //#include <CoreFoundation/CoreFoundation.h>
@@ -38,6 +39,7 @@ GNU General Public License for more details.
 
 Object::Object( QObject* parent ) : QObject( parent )
 {
+    setEditorData( new EditorState() );
 }
 
 Object::~Object()
@@ -50,7 +52,7 @@ Object::~Object()
 
 void Object::init()
 {
-    mEditorData.reset( new EditorData );
+    mEditorState.reset( new EditorState );
 
     // default layers
     addNewCameraLayer();
@@ -83,13 +85,11 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
     }
     int layerNumber = -1;
     
-    bool someRelevantData = false;
     for ( QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if ( element.tagName() == "layer" )
         {
-            someRelevantData = true;
             if ( element.attribute( "type" ).toInt() == Layer::BITMAP )
             {
                 addNewBitmapLayer();
@@ -116,14 +116,7 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
             }
         }
     }
-    return someRelevantData;
-}
-
-void Object::loadMissingData()
-{
-    if (mEditorData == nullptr) {
-        setEditorData(new EditorData());
-    }
+    return true;
 }
 
 LayerBitmap* Object::addNewBitmapLayer()
@@ -295,11 +288,6 @@ bool Object::exportPalette( QString filePath )
     int IndentSize = 2;
     doc.save( out, IndentSize );
     return true;
-}
-
-bool Object::loadPalette( QString filePath )
-{
-    return importPalette( filePath + "/palette.xml" );
 }
 
 bool Object::importPalette( QString filePath )
@@ -727,14 +715,14 @@ int Object::getLayerCount()
     return mLayers.size();
 }
 
-EditorData* Object::editorData()
+EditorState* Object::editorState()
 {
-    Q_ASSERT( mEditorData != nullptr );
-    return mEditorData.get();
+    Q_ASSERT( mEditorState != nullptr );
+    return mEditorState.get();
 }
 
-void Object::setEditorData( EditorData* d )
+void Object::setEditorData( EditorState* d )
 {
     Q_ASSERT( d != nullptr );
-    mEditorData.reset( d );
+    mEditorState.reset( d );
 }

@@ -36,6 +36,7 @@ GNU General Public License for more details.
 #include <QDropEvent>
 
 #include "object.h"
+#include "editorstate.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
@@ -77,10 +78,8 @@ Editor::~Editor()
 	clearUndoStack();
 }
 
-bool Editor::initialize( ScribbleArea* pScribbleArea )
+bool Editor::init()
 {
-	mScribbleArea = pScribbleArea;
-
 	// Initialize managers
 	mColorManager = new ColorManager( this );
 	mLayerManager = new LayerManager( this );
@@ -474,18 +473,21 @@ void Editor::saveLength( QString x )
 	settings.setValue( "length", dec );
 }
 
-void Editor::resetUI()
+Status Editor::setObject( Object* newObject )
 {
-	updateObject();
-	scrubTo( 0 );
-}
+    if ( newObject == nullptr )
+    {
+        Q_ASSERT( false );
+        return Status::INVALID_ARGUMENT;
+    }
 
-void Editor::setObject( Object* newObject )
-{
-    if ( newObject == NULL ) { return; }
-    if ( newObject == mObject.get() ) { return; }
+    if ( newObject == mObject.get() )
+    {
+        return Status::SAFE;
+    }
 
     mObject.reset( newObject );
+
 
     for ( BaseManager* m : mAllManagers )
     {
@@ -493,13 +495,15 @@ void Editor::setObject( Object* newObject )
     }
 
 	g_clipboardVectorImage.setObject( newObject );
+    
+    updateObject();
+
+    return Status::OK;
 }
 
 void Editor::updateObject()
 {
-	color()->setColorNumber( 0 );
-
-	emit updateLayerCount();
+    scrubTo( mObject->editorState()->mCurrentFrame );
 
 	clearUndoStack();
 
@@ -507,6 +511,8 @@ void Editor::updateObject()
 	{
 		mScribbleArea->updateAllFrames();
 	}
+
+    emit updateLayerCount();
 }
 
 void Editor::createExportMovieSizeBox()
@@ -751,17 +757,14 @@ void Editor::scrubTo( int frame )
 	int oldFrame = mFrame;
 	mFrame = frame;
 
-	if ( mScribbleArea->shouldUpdateAll() )
-	{
-		mScribbleArea->updateAllFrames();
-	}
-
 	Q_EMIT currentFrameChanged( frame );
 	Q_EMIT currentFrameChanged( oldFrame );
-
-    mScribbleArea->update();
-
-    if(!mPlaybackManager->isPlaying()) {
+    
+    // FIXME: should not emit Timeline update here.
+    // Editor must be an individual class.
+    // Will remove all Timeline related code in Editor class.
+    if ( mPlaybackManager && !mPlaybackManager->isPlaying() )
+    {
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
 }

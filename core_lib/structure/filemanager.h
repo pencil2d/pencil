@@ -28,15 +28,15 @@ GNU General Public License for more details.
 #include "colourref.h"
 
 class Object;
-class EditorData;
+class EditorState;
 
 
-class ObjectSaveLoader : public QObject
+class FileManager : public QObject
 {
     Q_OBJECT
 
 public:
-    ObjectSaveLoader( QObject *parent = 0 );
+    FileManager( QObject* parent = 0 );
 
     Object* load( QString strFilenNme );
     bool    save( Object* pObject, QString strFileName );
@@ -46,19 +46,24 @@ public:
     Status error() { return mError; }
 
 Q_SIGNALS:
-    void progressValueChanged( float );
+    void progressUpdated( float );
 
 private:
-    bool loadObject( Object*, const QDomElement& root, const QString& strDataFolder );
+    bool loadObject( Object*, const QDomElement& root );
     bool loadObjectOldWay( Object*, const QDomElement& root, const QString& strDataFolder );
 
-    QString extractZipToTempFolder( QString strZipFile );
-    QString createTempWorkingFolder( QString strFileName );
-    void    cleanUpTempFolder();
-    bool    isFileExists( QString strFilename );
-    EditorData* loadEditorData( QDomElement element );
+    bool isOldForamt( QString fileName );
 
-    Status mError;
+    QString unzip( QString strZipFile );
+    QString createWorkingFolder( QString strFileName );
+    Object* cleanUpWithErrorCode( Status );
+    
+    bool loadPalette( Object* );
+    EditorState* loadEditorState( QDomElement element );
+
+    void extractEditorStateData( const QDomElement& element, EditorState* data );
+
+    Status mError = Status::OK;
     QString mstrLastTempFolder;
 
     QLoggingCategory mLog;

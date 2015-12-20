@@ -1,7 +1,10 @@
 
+#include "colormanager.h"
+
 #include "object.h"
 #include "editor.h"
-#include "colormanager.h"
+#include "editorstate.h"
+
 
 
 ColorManager::ColorManager( QObject* parent ) : BaseManager( parent )
@@ -19,7 +22,9 @@ bool ColorManager::init()
 
 Status ColorManager::onObjectLoaded( Object* o )
 {
-    mCurrentFrontColor = o->editorData()->currentColor();
+    setColor( o->editorState()->mCurrentColor );
+    setColorNumber( 0 );
+
     return Status::OK;
 }
 

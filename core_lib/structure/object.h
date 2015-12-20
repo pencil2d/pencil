@@ -29,6 +29,7 @@ class LayerBitmap;
 class LayerVector;
 class LayerCamera;
 class LayerSound;
+class EditorState;
 
 
 struct ExportMovieParameters
@@ -62,33 +63,6 @@ struct ExportFrames1Parameters
     int         exportFps;
 };
 
-
-class EditorData
-{
-public:
-    void setFps( int f ) { mFps = f; }
-    int  fps() { return mFps; }
-
-    void setCurrentLayer( int n ) { mCurrentColor = n; }
-    int currentLayer() { return mCurrentLayer; }
-
-    void setCurrentFrame( int n ) { mCurrentFrame = n; }
-    int currentFrame() { return mCurrentFrame; }
-
-    void setCurrentColor( QColor c ) { mCurrentColor = c; }
-    QColor currentColor() { return mCurrentColor; }
-
-    void setCurrentView( QTransform t ) { mCurrentView = t; }
-    QTransform currentView() { return mCurrentView; }
-
-private:
-    int    mFps          = 0;
-    int    mCurrentLayer = 0;
-    int    mCurrentFrame = 0;
-    QColor mCurrentColor{ 255, 255, 255, 255 };
-    QTransform mCurrentView;
-};
-
 class Object : public QObject
 {
     Q_OBJECT    
@@ -99,16 +73,20 @@ public:
 
     void init();
 
-    QString filePath() const { return mstrFilePath; }
-    void    setFilePath( QString strFileName ) { mstrFilePath = strFileName; }
+    QString filePath() const { return mFilePath; }
+    void    setFilePath( QString strFileName ) { mFilePath = strFileName; }
     
-    QString workingDir() const { return mstrWorkingDir; }
-    void    setWorkingDir( QString strWorkingDir ) { mstrWorkingDir = strWorkingDir; }
+    QString workingDir() const { return mWorkingDirPath; }
+    void    setWorkingDir( QString dirPath ) { mWorkingDirPath = dirPath; }
+
+    QString dataDir() const { return mDataDirPath; }
+    void    setDataDir( QString dirPath ) { mDataDirPath = dirPath; }
+
+    QString mainXMLFile() const { return mMainXMLFile; }
+    void    setMainXMLFile( QString file ){ mMainXMLFile = file; }
 
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element, QString dataDirPath );
-
-    void loadMissingData();
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
@@ -126,7 +104,7 @@ public:
     bool importPalette( QString filePath );
     bool exportPalette( QString filePath );
     bool savePalette( QString filePath );
-    bool loadPalette( QString filePath );
+
     void loadDefaultPalette();
 
     LayerBitmap* addNewBitmapLayer();
@@ -156,21 +134,23 @@ public:
 
     int getUniqueLayerID();
 
-    EditorData* editorData();
-    void setEditorData( EditorData* );
+    EditorState* editorState();
+    void setEditorData( EditorState* );
 
 private:
     int getMaxLayerID();
 
-    QString mstrFilePath;
-    QString mstrWorkingDir;
+    QString mFilePath;       //< where this object come from. (empty if new project)
+    QString mWorkingDirPath; //< the folder that pclx will uncompress to.
+    QString mDataDirPath;    //< the folder which contains all bitmap & vector image & sound files.
+    QString mMainXMLFile;    //< the location of main.xml
 
     QList< Layer* > mLayers;
     bool modified = false;
 
-    QList<ColourRef> mPalette;
+    QList< ColourRef > mPalette;
 
-    std::unique_ptr< EditorData > mEditorData;
+    std::unique_ptr< EditorState > mEditorState;
 };
 
 
