@@ -21,6 +21,10 @@ private slots:
     void testMinimalOldPencilDocument();
     void testOneLayerInFile();
     void testBitmapLayer();
+    void testBitmapLayer2();
+
+    void testGeneratePCLX();
+    void testLoadPCLX();
 };
 
 DECLARE_TEST(TestObjectSaveLoader)

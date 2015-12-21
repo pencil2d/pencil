@@ -719,7 +719,7 @@ bool Editor::importImage( QString filePath )
 
 	default:
 	{
-		mLastError = Status::ERROR_INVALID_LAYER_TYPE;
+		//mLastError = Status::ERROR_INVALID_LAYER_TYPE;
 		return false;
 	}
 	}

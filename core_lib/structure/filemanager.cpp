@@ -179,21 +179,24 @@ bool FileManager::save( Object* object, QString strFileName )
     QFileInfo fileInfo( strFileName );
     if ( fileInfo.isDir() ) { return false; }
 
-    bool isOldFile = strFileName.endsWith( PFF_OLD_EXTENSION );
-
     QString strTempWorkingFolder;
     QString strMainXMLFile;
     QString strDataFolder;
+
+    bool isOldFile = strFileName.endsWith( PFF_OLD_EXTENSION );
     if ( isOldFile )
     {
         qCDebug( mLog ) << "Save in Old Pencil File Format (*.pcl) !";
+
         strMainXMLFile = strFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
         qCDebug( mLog ) << "Save in New zipped Pencil File Format (*.pclx) !";
+
         strTempWorkingFolder = createWorkingFolder( strFileName );
+
         qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
         strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
         strDataFolder = QDir( strTempWorkingFolder ).filePath( PFF_OLD_DATA_DIR );

@@ -74,8 +74,6 @@ public:
     Object* object() const { return mObject.get(); }
     Status setObject( Object* object );
 
-    Status getError() { return mLastError; }
-
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
@@ -214,10 +212,9 @@ private:
     bool clipboardBitmapOk, clipboardVectorOk;
 
     // dialogs
+    // FIXME: doesn't make sense to create dialog here, must move to other place.
     void createExportMovieSizeBox();
     void createExportMovieDialog();
-
-    Status mLastError;
 };
 
 #endif
