@@ -64,14 +64,14 @@ Object* FileManager::load( QString strFileName )
         qCDebug( mLog ) << "Recognized New zipped Pencil File Format (*.pclx) !";
 
         strWorkingDir  = unzip( strFileName );
+
         strMainXMLFile = QDir( strWorkingDir ).filePath( PFF_XML_FILE_NAME );
         strDataFolder  = QDir( strWorkingDir ).filePath( PFF_DATA_DIR );
-
-        qCDebug( mLog ) << "Working Folder=" << strWorkingDir;
     }
 
     qCDebug( mLog ) << "XML=" << strMainXMLFile;
     qCDebug( mLog ) << "Data Folder=" << strDataFolder;
+    qCDebug( mLog ) << "Working Folder=" << strWorkingDir;
 
     QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
     if ( !file->open( QFile::ReadOnly ) )
@@ -111,7 +111,7 @@ Object* FileManager::load( QString strFileName )
     }
     else if ( root.tagName() == "object" || root.tagName() == "MyOject" ) // old Pencil format (<=0.4.3)
     {
-        ok = loadObjectOldWay( obj, root, strDataFolder );
+        ok = loadObjectOldWay( obj, root );
     }
 
     if ( !ok )
@@ -131,8 +131,6 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
         return false;
     }
     
-    const QString& strDataFolder = object->dataDir();
-
     bool isOK = true;
     for ( QDomNode node = root.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
@@ -145,7 +143,7 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
         if ( element.tagName() == "object" )
         {
             qCDebug( mLog ) << "Load object";
-            isOK = object->loadXML( element, strDataFolder );
+            isOK = object->loadXML( element );
         }
         else if ( element.tagName() == "editor" )
         {
@@ -163,9 +161,9 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
     return isOK;
 }
 
-bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root, const QString& strDataFolder )
+bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root )
 {
-    return object->loadXML( root, strDataFolder );
+    return object->loadXML( root );
 }
 
 bool FileManager::isOldForamt( QString fileName )

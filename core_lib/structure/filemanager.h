@@ -50,7 +50,7 @@ Q_SIGNALS:
 
 private:
     bool loadObject( Object*, const QDomElement& root );
-    bool loadObjectOldWay( Object*, const QDomElement& root, const QString& strDataFolder );
+    bool loadObjectOldWay( Object*, const QDomElement& root );
 
     bool isOldForamt( QString fileName );
 

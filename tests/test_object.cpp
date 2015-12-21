@@ -140,6 +140,6 @@ void TestObject::testLoadXML()
     QDomElement e = doc.firstChildElement( "object" );
     QVERIFY( !e.isNull() );
 
-    QVERIFY( obj->loadXML( e, "" ) );
+    QVERIFY( obj->loadXML( e ) );
     
 }
