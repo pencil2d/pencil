@@ -140,10 +140,28 @@ void TimeLine::initUI()
     duplicateKeyButton->setIcon( QIcon( ":icons/controls/duplicate.png" ) );
     duplicateKeyButton->setToolTip( "Duplicate Frame" );
     duplicateKeyButton->setFixedSize( 24, 24 );
+
     keyButtons->addWidget( keyLabel );
     keyButtons->addWidget( addKeyButton );
     keyButtons->addWidget( removeKeyButton );
     keyButtons->addWidget( duplicateKeyButton );
+
+
+
+    QToolBar* onionButtons = new QToolBar( this );
+
+    QLabel* onionLabel = new QLabel( tr( "Onion skin:" ) );
+    onionLabel->setFont( QFont( "Helvetica", 10 ) );
+    onionLabel->setIndent( 5 );
+
+
+    QToolButton* onionTypeButton = new QToolButton( this );
+    onionTypeButton->setIcon( QIcon( ":icons/onion_type.png" ) );
+    onionTypeButton->setToolTip( "Onion skin match keyframes" );
+    onionTypeButton->setFixedSize( 24, 24 );
+
+    onionButtons->addWidget( onionLabel );
+    onionButtons->addWidget( onionTypeButton );
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
@@ -152,6 +170,8 @@ void TimeLine::initUI()
     
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
     rightToolBarLayout->addWidget( keyButtons );
+    rightToolBarLayout->addStretch( 1 );
+    rightToolBarLayout->addWidget( onionButtons );
     rightToolBarLayout->addStretch( 1 );
     rightToolBarLayout->addWidget( mTimeControls );
     rightToolBarLayout->setMargin( 0 );
@@ -190,6 +210,7 @@ void TimeLine::initUI()
     connect( addKeyButton,    &QToolButton::clicked, this, &TimeLine::addKeyClick );
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
+    connect( onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick );
 
     connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::loopStartClick );
     connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::loopEndClick );

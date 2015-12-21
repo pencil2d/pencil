@@ -73,6 +73,8 @@ public:
     bool keyExists( int position );
     int  getPreviousKeyFramePosition( int position );
     int  getNextKeyFramePosition( int position );
+    int  getPreviousFrameNumber( int position, bool isAbsolute );
+    int  getNextFrameNumber( int position, bool isAbsolute );
 
     int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
 

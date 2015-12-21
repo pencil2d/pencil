@@ -58,7 +58,7 @@ public:
     explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
-    bool initialize( ScribbleArea* pScribbleArea );
+    bool init();
 
     /************************************************************************/
     /* Managers                                                             */
@@ -160,6 +160,8 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
+
+    void toogleOnionSkinType();
 
     void settingUpdated(SETTING);
 

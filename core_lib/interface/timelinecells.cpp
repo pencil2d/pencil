@@ -261,6 +261,62 @@ void TimeLineCells::drawContent()
     }
 }
 
+void TimeLineCells::paintOnionSkin( QPainter& painter )
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer == nullptr) {
+        return;
+    }
+
+    int frameNumber = mEditor->currentFrame();
+
+    int prevOnionSkinCount = mEditor->preference()->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    int nextOnionSkinCount = mEditor->preference()->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+
+    bool isAbsolute = (mEditor->preference()->getString(SETTING::ONION_TYPE) == "absolute");
+
+    if (mEditor->preference()->isOn(SETTING::PREV_ONION) && prevOnionSkinCount > 0) {
+
+
+        int onionFrameNumber = layer->getPreviousFrameNumber(frameNumber, isAbsolute);
+        int onionPosition = 0;
+
+        while (onionPosition < prevOnionSkinCount && onionFrameNumber > 0)
+        {
+            painter.setBrush( QColor( 128, 128, 128, 128 ) );
+            painter.setPen( Qt::NoPen );
+            QRect onionRect;
+            onionRect.setTopLeft( QPoint( getFrameX( onionFrameNumber - 1 ), 0 ) );
+            onionRect.setBottomRight( QPoint( getFrameX( onionFrameNumber ), height() ) );
+            onionRect.setBottomRight( QPoint( getFrameX( onionFrameNumber ), 19 ) );
+            painter.drawRect( onionRect );
+
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, isAbsolute);
+            onionPosition++;
+        }
+    }
+
+    if (mEditor->preference()->isOn(SETTING::NEXT_ONION) && nextOnionSkinCount > 0) {
+
+        int onionFrameNumber = layer->getNextFrameNumber(frameNumber, isAbsolute);
+        int onionPosition = 0;
+
+        while (onionPosition < nextOnionSkinCount && onionFrameNumber > 0)
+        {
+            painter.setBrush( QColor( 128, 128, 128, 128 ) );
+            painter.setPen( Qt::NoPen );
+            QRect onionRect;
+            onionRect.setTopLeft( QPoint( getFrameX( onionFrameNumber - 1 ), 0 ) );
+            onionRect.setBottomRight( QPoint( getFrameX( onionFrameNumber ), height() ) );
+            onionRect.setBottomRight( QPoint( getFrameX( onionFrameNumber ), 19 ) );
+            painter.drawRect( onionRect );
+
+            onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, isAbsolute);
+            onionPosition++;
+        }
+    }
+}
+
 void TimeLineCells::paintEvent( QPaintEvent* event )
 {
     Q_UNUSED( event );
@@ -284,6 +340,10 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
 
     if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
     {
+        if (!isPlaying) {
+            paintOnionSkin(painter);
+        }
+
         // --- draw the position of the current frame
         if ( mEditor->currentFrame() > frameOffset )
         {

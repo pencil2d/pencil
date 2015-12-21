@@ -12,12 +12,15 @@ class TestObjectSaveLoader : public QObject
 {
     Q_OBJECT
 
+
 private slots:
     void testCase1();
     void testNotExistFile();
     void testInvalidXML();
     void testInvalidPencilDocument();
-    void testMinimalPencilDocument();
+    void testMinimalOldPencilDocument();
+    void testOneLayerInFile();
+    void testBitmapLayer();
 };
 
 DECLARE_TEST(TestObjectSaveLoader)

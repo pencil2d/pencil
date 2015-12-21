@@ -82,6 +82,9 @@ public:
     QString dataDir() const { return mDataDirPath; }
     void    setDataDir( QString dirPath ) { mDataDirPath = dirPath; }
 
+    QString mainXMLFile() const { return mMainXMLFile; }
+    void    setMainXMLFile( QString file ){ mMainXMLFile = file; }
+
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element, QString dataDirPath );
 
@@ -137,14 +140,15 @@ public:
 private:
     int getMaxLayerID();
 
-    QString mFilePath;
-    QString mWorkingDirPath;
-    QString mDataDirPath;
+    QString mFilePath;       //< where this object come from. (empty if new project)
+    QString mWorkingDirPath; //< the folder that pclx will uncompress to.
+    QString mDataDirPath;    //< the folder which contains all bitmap & vector image & sound files.
+    QString mMainXMLFile;    //< the location of main.xml
 
     QList< Layer* > mLayers;
     bool modified = false;
 
-    QList<ColourRef> mPalette;
+    QList< ColourRef > mPalette;
 
     std::unique_ptr< EditorState > mEditorState;
 };
