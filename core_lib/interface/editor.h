@@ -173,7 +173,6 @@ protected:
 private:
     bool importBitmapImage( QString );
     bool importVectorImage( QString );
-    void saveLength( QString );
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
@@ -195,13 +194,13 @@ private:
     bool m_isAltPressed = false;
     int numberOfModifications = 0;
 
-    bool mIsAutosave;
-    int autosaveNumber;
+    bool mIsAutosave   = true;
+    int autosaveNumber = 12;
 
-    int onionMaxOpacity;
-    int onionMinOpacity;
-    int onionNextFramesNum;
-    int onionPrevFramesNum;
+    int onionMaxOpacity    = 50;
+    int onionMinOpacity    = 10;
+    int onionNextFramesNum = 3;
+    int onionPrevFramesNum = 3;
 
     void makeConnections();
     void addKeyFame( int layerNumber, int frameNumber );

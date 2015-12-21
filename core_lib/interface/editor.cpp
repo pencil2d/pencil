@@ -465,14 +465,6 @@ void Editor::toogleOnionSkinType()
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
 }
 
-void Editor::saveLength( QString x )
-{
-	bool ok;
-	int dec = x.toInt( &ok, 10 );
-	QSettings settings( "Pencil", "Pencil" );
-	settings.setValue( "length", dec );
-}
-
 Status Editor::setObject( Object* newObject )
 {
     if ( newObject == nullptr )
