@@ -505,9 +505,14 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.show();
 
     FileManager* fm = new FileManager( this );
-    bool ok = fm->save( mEditor->object(), strSavedFileName );
+    Status st = fm->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
+    
+    if ( !st.ok() )
+    {
+        return false;
+    }
 
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( LAST_FILE_PATH, strSavedFileName );

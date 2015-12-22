@@ -172,12 +172,12 @@ bool FileManager::isOldForamt( QString fileName )
     return ( zippedFileList.empty() );
 }
 
-bool FileManager::save( Object* object, QString strFileName )
+Status FileManager::save( Object* object, QString strFileName )
 {
-    if ( object == nullptr ) { return false; }
+    if ( object == nullptr ) { return Status::INVALID_ARGUMENT; }
 
     QFileInfo fileInfo( strFileName );
-    if ( fileInfo.isDir() ) { return false; }
+    if ( fileInfo.isDir() ) { return Status::INVALID_ARGUMENT; }
 
     QString strTempWorkingFolder;
     QString strMainXMLFile;
@@ -243,8 +243,7 @@ bool FileManager::save( Object* object, QString strFileName )
     QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
     if ( !file->open( QFile::WriteOnly | QFile::Text ) )
     {
-        //QMessageBox::warning(this, "Warning", "Cannot write file");
-        return false;
+        return Status::ERROR_FILE_CANNOT_OPEN;
     }
 
     QDomDocument xmlDoc( "PencilDocument" );
@@ -273,9 +272,8 @@ bool FileManager::save( Object* object, QString strFileName )
         bool ok = JlCompress::compressDir( strFileName, strTempWorkingFolder );
         if ( !ok )
         {
-            return false;
+            return Status::FAIL;
         }
-        //removePFFTmpDirectory( strTempWorkingFolder ); // --removing temporary files
 
         qCDebug( mLog ) << "Compressed. File saved.";
     }
@@ -283,7 +281,7 @@ bool FileManager::save( Object* object, QString strFileName )
     object->setFilePath( strFileName );
     object->setModified( false );
 
-    return true;
+    return Status::OK;
 }
 
 EditorState* FileManager::loadEditorState( QDomElement docElem )

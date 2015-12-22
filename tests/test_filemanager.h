@@ -12,7 +12,6 @@ class TestFileManager : public QObject
 {
     Q_OBJECT
 
-
 private slots:
     void testCase1();
     void testNotExistFile();
