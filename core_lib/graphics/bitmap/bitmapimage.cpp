@@ -21,20 +21,18 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = new QImage(1, 1, QImage::Format_ARGB32_Premultiplied);
-    mBounds = QRect(0,0,0,0);
-    mExtendable = true;
+    mImage = new QImage( 1, 1, QImage::Format_ARGB32_Premultiplied );
+    mBounds = QRect( 0, 0, 0, 0 );
 }
 
-BitmapImage::BitmapImage(QRect rectangle, QColor colour)
+BitmapImage::BitmapImage( const QRect& rectangle, const QColor& colour)
 {
     mBounds = rectangle;
     mImage = new QImage( mBounds.size(), QImage::Format_ARGB32_Premultiplied);
     mImage->fill(colour.rgba());
-    mExtendable = true;
 }
 
-BitmapImage::BitmapImage(QRect rectangle, QImage image)
+BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image)
 {
     mBounds = rectangle.normalized();
     mExtendable = true;
@@ -45,14 +43,13 @@ BitmapImage::BitmapImage(QRect rectangle, QImage image)
     }
 }
 
-BitmapImage::BitmapImage(const BitmapImage& a)
+BitmapImage::BitmapImage( const BitmapImage& a )
 {
     mBounds = a.mBounds;
     mImage = new QImage(*a.mImage);
-    mExtendable = true;
 }
 
-BitmapImage::BitmapImage(QString path, QPoint topLeft)
+BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft)
 {
     mImage = new QImage(path);
     if ( mImage->isNull() )
@@ -60,12 +57,14 @@ BitmapImage::BitmapImage(QString path, QPoint topLeft)
         qDebug() << "ERROR: Image " << path << " not loaded";
     }
     mBounds = QRect( topLeft, mImage->size() );
-    mExtendable = true;
 }
 
 BitmapImage::~BitmapImage()
 {
-    if ( mImage ) delete mImage;
+    if ( mImage )
+    {
+        delete mImage;
+    }
 }
 
 void BitmapImage::setImage( QImage* img )
