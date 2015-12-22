@@ -194,7 +194,7 @@ void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
         if ( layer->type() == Layer::VECTOR )
         {
             auto vecLayer = static_cast< LayerVector* >( layer );
-            vecLayer->getLastVectorImageAtFrame( frameNumber, 0 )->setModified();
+            vecLayer->getLastVectorImageAtFrame( frameNumber, 0 )->modification();
         }
     }
     updateFrame( mEditor->currentFrame() );

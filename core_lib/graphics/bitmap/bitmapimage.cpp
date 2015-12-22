@@ -105,19 +105,6 @@ void BitmapImage::loadDomElement(QDomElement imageElement, QString filePath)
     }
 }
 
-void BitmapImage::modification()
-{
-}
-
-bool BitmapImage::isModified()
-{
-    return false;
-}
-
-void BitmapImage::setModified(bool)
-{
-}
-
 void BitmapImage::paintImage(QPainter& painter)
 {
     painter.drawImage(topLeft(), *mImage);

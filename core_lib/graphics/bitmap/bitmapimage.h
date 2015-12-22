@@ -39,10 +39,6 @@ public:
     QDomElement createDomElement( QDomDocument& doc );
     void loadDomElement( QDomElement element, QString filePath );
 
-    void modification();
-    bool isModified();
-    void setModified( bool );
-
     void paintImage( QPainter& painter );
     void outputImage( QImage* image, QSize size, QTransform myView );
 

@@ -847,21 +847,6 @@ void VectorImage::paste(VectorImage vectorImage)
     modification();
 }
 
-void VectorImage::modification()
-{
-    setModified(true);
-}
-
-bool VectorImage::isModified()
-{
-    return modified;
-}
-
-void VectorImage::setModified(bool trueOrFalse)
-{
-    modified = trueOrFalse;
-}
-
 QColor VectorImage::getColour(int colourNumber)
 {
     return myParent->getColour(colourNumber).colour;
