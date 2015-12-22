@@ -8,7 +8,7 @@
 #include "AutoTest.h"
 
 
-class TestObjectSaveLoader : public QObject
+class TestFileManager : public QObject
 {
     Q_OBJECT
 
@@ -27,6 +27,6 @@ private slots:
     void testLoadPCLX();
 };
 
-DECLARE_TEST(TestObjectSaveLoader)
+DECLARE_TEST(TestFileManager)
 
 #endif // TEST_OBJECTSAVELOADER_H

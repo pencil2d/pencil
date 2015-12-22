@@ -14,13 +14,13 @@
 typedef std::shared_ptr< FileManager > FileManagerPtr;
 
 
-void TestObjectSaveLoader::testCase1()
+void TestFileManager::testCase1()
 {
     FileManagerPtr fm = std::make_shared< FileManager >();
     QVERIFY( fm->error() == Status::OK );
 }
 
-void TestObjectSaveLoader::testNotExistFile()
+void TestFileManager::testNotExistFile()
 {
     FileManager fm;
 
@@ -31,7 +31,7 @@ void TestObjectSaveLoader::testNotExistFile()
     QVERIFY2( fm.error().code() == Status::FILE_NOT_FOUND, "" );
 }
 
-void TestObjectSaveLoader::testInvalidXML()
+void TestFileManager::testInvalidXML()
 {
     QString strBadXMLPath = QDir::tempPath() + "/bad.pcl";
 
@@ -50,7 +50,7 @@ void TestObjectSaveLoader::testInvalidXML()
     QVERIFY( fm.error().code() == Status::ERROR_INVALID_XML_FILE );
 }
 
-void TestObjectSaveLoader::testInvalidPencilDocument()
+void TestFileManager::testInvalidPencilDocument()
 {
     QString strBadXMLPath = QDir::tempPath() + "/bad.pcl";
 
@@ -68,7 +68,7 @@ void TestObjectSaveLoader::testInvalidPencilDocument()
     QVERIFY( fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE );
 }
 
-void TestObjectSaveLoader::testMinimalOldPencilDocument()
+void TestFileManager::testMinimalOldPencilDocument()
 {
     QTemporaryFile minimalDoc;
     if ( minimalDoc.open() )
@@ -96,7 +96,7 @@ void TestObjectSaveLoader::testMinimalOldPencilDocument()
     }
 }
 
-void TestObjectSaveLoader::testOneLayerInFile()
+void TestFileManager::testOneLayerInFile()
 {
     QTemporaryFile tmpFile;
     if ( !tmpFile.open() )
@@ -121,7 +121,7 @@ void TestObjectSaveLoader::testOneLayerInFile()
     QVERIFY( obj->getLayerCount() == 1 );
 }
 
-void TestObjectSaveLoader::testBitmapLayer()
+void TestFileManager::testBitmapLayer()
 {
     QTemporaryFile tmpFile;
     if ( !tmpFile.open() )
@@ -155,7 +155,7 @@ void TestObjectSaveLoader::testBitmapLayer()
 
 }
 
-void TestObjectSaveLoader::testBitmapLayer2()
+void TestFileManager::testBitmapLayer2()
 {
     QTemporaryFile tmpFile;
     if ( !tmpFile.open() )
@@ -189,7 +189,7 @@ void TestObjectSaveLoader::testBitmapLayer2()
     QVERIFY( layer->getKeyFrameAt( 1 ) != nullptr );
 }
 
-void TestObjectSaveLoader::testGeneratePCLX()
+void TestFileManager::testGeneratePCLX()
 {
     QTemporaryDir testDir( "PENCIL_TEST_XXXXXXXX" );
     if ( !testDir.isValid() )
@@ -227,7 +227,7 @@ void TestObjectSaveLoader::testGeneratePCLX()
     QVERIFY( ok );
 }
 
-void TestObjectSaveLoader::testLoadPCLX()
+void TestFileManager::testLoadPCLX()
 {
     QTemporaryDir testDir( "PENCIL_TEST_XXXXXXXX" );
     if ( !testDir.isValid() )
