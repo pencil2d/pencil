@@ -1015,15 +1015,10 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
 void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    // TODO :
-    // if size is too small, make it a bit bigger and increase offset
-    //
-    qreal offset = 50;
-
-    brushWidth = brushWidth;
+    qreal offset = 100;
 
     QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
-    setGaussianGradient( radialGrad, fillColour, opacity, offset );
+    setGaussianGradient( radialGrad, fillColour, opacity/2, offset );
 
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
