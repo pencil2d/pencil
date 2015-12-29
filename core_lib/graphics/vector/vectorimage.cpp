@@ -1312,7 +1312,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
     // We get the contour points from a bitmap version of the vector layer as it is much faster to process
     //
     QImage* image = new QImage( mSize, QImage::Format_ARGB32_Premultiplied );
-    image->fill(qRgba(0,0,0,0));
+    image->fill(Qt::white);
     QPainter painter( image );
 
     // Adapt the QWidget view coordinates to the QImage coordinates
@@ -1386,11 +1386,36 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(leftPoint.x(), leftPoint.y()) != colouFrom &&
                      image->pixel(leftPoint.x(), leftPoint.y()) != colourTo ) {
 
+                    foundLeftBound = true;
+
                     // Convert point to view coordinates
                     QPointF contourPoint( leftPoint.x() - (maxWidth / 2), leftPoint.y() - (maxHeight / 2));
 
-                    contourPoints.append(contourPoint);
-                    foundLeftBound = true;
+                    // Check if the left bound is just a line crossing the main shape
+                    //
+                    bool foundFillAfter = false;
+                    int increment = 1;
+
+                    while (leftPoint.x() - increment > 0 && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(leftPoint.x() - increment, leftPoint.y());
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
                 }
             }
 
@@ -1413,9 +1438,37 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(rightPoint.x(), rightPoint.y()) != colouFrom &&
                      image->pixel(rightPoint.x(), rightPoint.y()) != colourTo) {
 
-                    QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
-                    contourPoints.append(contourPoint);
                     foundRightBound = true;
+
+                    // Convert point to view coordinates
+                    QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
+
+
+                    // Check if the left bound is just a line crossing the main shape
+                    //
+                    bool foundFillAfter = false;
+                    int increment = 1;
+
+                    while (rightPoint.x() + increment < maxWidth && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(rightPoint.x() + increment, rightPoint.y());
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
                 }
             }
 
@@ -1446,8 +1499,34 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(topPoint.x(), topPoint.y()) != colouFrom &&
                      image->pixel(topPoint.x(), topPoint.y()) != colourTo) {
 
+                    // Convert point to view coordinates
                     QPointF contourPoint( topPoint.x() - (maxWidth / 2), topPoint.y() - (maxHeight / 2));
-                    contourPoints.append(contourPoint);
+
+
+                    // Check if the left bound is just a line crossing the main shape
+                    //
+                    bool foundFillAfter = false;
+                    int increment = 1;
+
+                    while (topPoint.y() - increment > 0 && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(topPoint.x(), topPoint.y() - increment);
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
                 }
                 else {
                     queue.append(topPoint);
@@ -1460,21 +1539,47 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colouFrom &&
                      image->pixel(bottomPoint.x(), bottomPoint.y()) != colourTo ) {
 
-
+                    // Convert point to view coordinates
                     QPointF contourPoint( bottomPoint.x() - (maxWidth / 2), bottomPoint.y() - (maxHeight / 2));
 
-                    // Keep track of the highest Y position (lowest point) at the beginning of the list
-                    // so that we can parse the list from a point that is a real extremity.
-                    // of the area.
+                    // Check if the left bound is just a line crossing the main shape
                     //
-                    if (highestY < bottomY) {
+                    bool foundFillAfter = false;
+                    int increment = 1;
 
-                        highestY = bottomY;
-                        contourPoints.insert(0, contourPoint);
+                    while (bottomPoint.y() + increment < maxHeight && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(bottomPoint.x(), bottomPoint.y() + increment);
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
                     }
                     else {
-                        contourPoints.append(contourPoint);
+
+                        // Keep track of the highest Y position (lowest point) at the beginning of the list
+                        // so that we can parse the list from a point that is a real extremity.
+                        // of the area.
+                        //
+                        if (highestY < bottomY) {
+
+                            highestY = bottomY;
+                            contourPoints.insert(0, contourPoint);
+                        }
+                        else {
+                            contourPoints.append(contourPoint);
+                        }
                     }
+
                 }
                 else {
                     queue.append(bottomPoint);
@@ -1581,7 +1686,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
                 // Check if we can find the point after
                 //
                 maxDelta = 3;
-                minDelta = -5;
+                minDelta = -3;
                 foundNextPoint = true;
             }
             else {
