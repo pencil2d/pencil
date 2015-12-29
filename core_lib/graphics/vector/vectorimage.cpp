@@ -258,9 +258,9 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
     //newCurve.drawPath(&painter);
 }
 
-void VectorImage::addCurve(BezierCurve& newCurve, qreal factor)
+void VectorImage::addCurve(BezierCurve& newCurve, qreal factor, bool interacts)
 {
-    insertCurve(-1, newCurve, factor, true);
+    insertCurve(-1, newCurve, factor, interacts);
 }
 
 void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
