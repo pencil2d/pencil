@@ -43,7 +43,7 @@ public:
     void loadDomElement(QDomElement element);
 
     void insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts);
-    void addCurve(BezierCurve& newCurve, qreal factor, bool interacts = false);
+    void addCurve(BezierCurve& newCurve, qreal factor, bool interacts = true);
     void removeCurveAt(int i);
     void select(QRectF rectangle);
     void setSelected(int curveNumber, bool YesOrNo);

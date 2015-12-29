@@ -197,37 +197,24 @@ void VectorImage::removeCurveAt(int i)
 
 void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts)
 {
-    if (newCurve.getVertexSize() < 1) return; // security - a new curve should have a least 2 vertices
-    qreal tol = qMax(newCurve.getWidth() / factor, 3.0 / factor); // tolerance for taking the intersection as an existing vertex on a curve
-    //qDebug() << "tolerance" << tol;
-    // finds if the new curve interesects itself
-    for(int k=0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
-    {
-        for(int j=k+1; j < newCurve.getVertexSize(); j++)   // for each other cubic section of the new curve
-        {
-            QList<Intersection> intersections;
-            bool intersection = BezierCurve::findIntersection(newCurve, k, newCurve, j, intersections);
-            if (intersection)
-            {
-                //qDebug() << "INTERSECTION" << intersectionPoint << t1 << t2;
-                //newCurve.addPoint(k, intersectionPoint);
-                newCurve.addPoint(k, intersections[0].t1); //qDebug() << "--a " << newCurve.getVertex(k) << newCurve.getVertex(k+1);
-                k++;
-                j++;
-                //newCurve.addPoint(j, intersectionPoint);
-                newCurve.addPoint(j, intersections[0].t2); //qDebug() << "--a " << newCurve.getVertex(j) << newCurve.getVertex(j+1);
-                j++;
-            }
-        }
+    if (newCurve.getVertexSize() < 1) {
+
+        // security - a new curve should have a least 2 vertices
+        return;
     }
 
-    // Does the curve should interact with others?
+
+    // Does the curve should interact with others or with itself?
     //
     if (interacts) {
+        // tolerance for taking the intersection as an existing vertex on a curve
+        //
+        qreal tol = qMax( newCurve.getWidth() / factor, 3.0 / factor);
+        //qDebug() << "tolerance" << tol;
+
         checkCurveExtremity(newCurve, tol);
         checkCurveIntersections(newCurve, tol);
     }
-
 
 
     // Append or insert the curve in the list
@@ -347,6 +334,29 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
 
 void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance)
 {
+
+    // finds if the new curve interesects itself
+    //
+    for(int k=0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
+    {
+        for(int j=k+1; j < newCurve.getVertexSize(); j++)   // for each other cubic section of the new curve
+        {
+            QList<Intersection> intersections;
+            bool intersection = BezierCurve::findIntersection(newCurve, k, newCurve, j, intersections);
+            if (intersection)
+            {
+                //qDebug() << "INTERSECTION" << intersectionPoint << t1 << t2;
+                //newCurve.addPoint(k, intersectionPoint);
+                newCurve.addPoint(k, intersections[0].t1); //qDebug() << "--a " << newCurve.getVertex(k) << newCurve.getVertex(k+1);
+                k++;
+                j++;
+                //newCurve.addPoint(j, intersectionPoint);
+                newCurve.addPoint(j, intersections[0].t2); //qDebug() << "--a " << newCurve.getVertex(j) << newCurve.getVertex(j+1);
+                j++;
+            }
+        }
+    }
+
     // finds if the new curve interesects other curves
     for(int k=0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
     {
@@ -367,6 +377,7 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
             qreal tol3 = 2.0*sqrt(  0.25*((P1-P2).x()*(P1-P2).x() + (P1-P2).y()*(P1-P2).y())  + tolerance*tolerance );
             qreal dist1 = BezierCurve::eLength(P-P1);
             qreal dist2 = BezierCurve::eLength(P-P2);
+
             if (dist1 < 0.2*tolerance)
             {
                 m_curves[i].setVertex(-1, P1);  // memo: curve.at(i) is just a copy which can be read, curve[i] is a reference which can be modified
@@ -389,8 +400,8 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
                         if (distance < tolerance)
                         {
                             P = nearestPoint;
-                            m_curves[i].setOrigin(P);
-                            newCurve.addPoint(k, P); //qDebug() << "--i " << P;
+                            //m_curves[i].setOrigin(P);
+                            //newCurve.addPoint(k, P); //qDebug() << "--i " << P;
                         }
                     }
                 }
@@ -420,8 +431,8 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
                         if (distance < tolerance)
                         {
                             Q = nearestPoint;
-                            m_curves[i].setLastVertex(Q);
-                            newCurve.addPoint(k, Q); //qDebug() << "--j " << Q;
+                            //m_curves[i].setLastVertex(Q);
+                            //newCurve.addPoint(k, Q); //qDebug() << "--j " << Q;
                         }
                     }
                 }
