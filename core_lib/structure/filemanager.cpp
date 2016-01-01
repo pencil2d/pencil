@@ -73,6 +73,10 @@ Object* FileManager::load( QString strFileName )
     qCDebug( mLog ) << "Data Folder=" << strDataFolder;
     qCDebug( mLog ) << "Working Folder=" << strWorkingDir;
 
+    obj->setWorkingDir(strWorkingDir);
+    obj->setDataDir(strDataFolder);
+    obj->setMainXMLFile(strMainXMLFile);
+
     QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
     if ( !file->open( QFile::ReadOnly ) )
     {
