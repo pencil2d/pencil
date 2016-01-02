@@ -57,6 +57,16 @@ void BaseTool::initialize( Editor* editor )
     }
     mEditor = editor;
     mScribbleArea = editor->getScribbleArea();
+
+
+    Q_ASSERT( mScribbleArea );
+
+    if ( mScribbleArea == NULL )
+    {
+        qCritical( "ERROR: mScribbleArea is null in editor!" );
+    }
+
+
     m_pStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
 
     loadSettings();
