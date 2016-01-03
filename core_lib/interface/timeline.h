@@ -74,6 +74,7 @@ public:
 
 protected:
     void resizeEvent( QResizeEvent* event ) override;
+    void wheelEvent( QWheelEvent* ) override;
 
 private:
     void deleteCurrentLayer();
