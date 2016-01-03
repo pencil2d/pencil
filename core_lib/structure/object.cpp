@@ -213,12 +213,18 @@ void Object::deleteLayer( int i )
 
 ColourRef Object::getColour( int i )
 {
-    ColourRef result( Qt::white, "error" );
+
+    ColourRef returnVal;
     if ( i > -1 && i < mPalette.size() )
     {
-        result = mPalette.at( i );
+        returnVal =mPalette.at( i );
     }
-    return result;
+    else
+    {
+        qDebug()<< "error in get colour i="<<i<< " mPalette.size()= " << mPalette.size();
+        returnVal = ColourRef( Qt::white, "error" );
+    }
+    return returnVal;
 }
 
 void Object::addColour( QColor colour )
