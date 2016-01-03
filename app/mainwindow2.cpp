@@ -480,6 +480,9 @@ bool MainWindow2::openObject( QString strFilePath )
     }
 
     mEditor->setObject( object );
+    object->init();
+
+
 
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( LAST_FILE_PATH, object->filePath() );
