@@ -1,4 +1,4 @@
-/*
+ /*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -383,8 +383,8 @@ void MainWindow2::newDocument()
     if ( maybeSave() )
     {
         Object* object = new Object();
-        object->init();
         mEditor->setObject( object );
+        object->init();
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
