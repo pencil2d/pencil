@@ -19,6 +19,8 @@ public:
 
     bool keyPressEvent(QKeyEvent *event) override;
 
+    void leavingThisTool() override;
+
 private:
     void cancelChanges();
     void applyChanges();

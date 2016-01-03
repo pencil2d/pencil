@@ -265,3 +265,7 @@ void BaseTool::setPreserveAlpha( const bool preserveAlpha )
 {
     properties.preserveAlpha = preserveAlpha;
 }
+
+void BaseTool::leavingThisTool()
+{
+}

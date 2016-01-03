@@ -130,7 +130,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
 }
 
 void MoveTool::mouseReleaseEvent( QMouseEvent *event )
-{   
+{
     mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
 
     // Don't do anything more on mouse release.
@@ -271,4 +271,8 @@ void MoveTool::cancelChanges()
 void MoveTool::applyChanges()
 {
     mScribbleArea->applyTransformedSelection();
+}
+
+void MoveTool::leavingThisTool(){
+    applyChanges();
 }
