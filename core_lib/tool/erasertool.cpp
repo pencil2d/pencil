@@ -87,6 +87,10 @@ QCursor EraserTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
+    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        return dottedCursor(); // preview stroke size cursor
+    }
     if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return circleCursors();

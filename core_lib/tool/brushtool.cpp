@@ -96,6 +96,10 @@ QCursor BrushTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
+    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        return dottedCursor(); // preview stroke size cursor
+    }
     if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) // doesn't need else
     {
         return QCursor( QPixmap( ":icons/brush.png" ), 0, 13 );
