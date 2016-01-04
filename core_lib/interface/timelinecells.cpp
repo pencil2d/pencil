@@ -9,6 +9,7 @@
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "toolmanager.h"
 
 
 TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type ) : QWidget( parent )
@@ -400,6 +401,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
 
     clickSelecting  = false;
 
+    mEditor->tools()->currentTool()->switchingLayers();
     switch ( m_eType )
     {
     case TIMELINE_CELL_TYPE::Layers:
@@ -565,6 +567,7 @@ void TimeLineCells::mouseMoveEvent( QMouseEvent* event )
 void TimeLineCells::mouseReleaseEvent( QMouseEvent* event )
 {
     qDebug( "TimeLineCell: mouse release event." );
+
     endY = startY;
     emit mouseMovedY( 0 );
     timeLine->scrubbing = false;

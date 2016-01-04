@@ -75,8 +75,8 @@ public:
     virtual void setInvisibility( const bool invisibility );
     virtual void setPressure( const bool pressure );
     virtual void setPreserveAlpha( const bool preserveAlpha );
-    virtual void leavingThisTool();
-
+    virtual void leavingThisTool(){}
+    virtual void switchingLayers(){}
     Properties properties;
 
     QPointF getCurrentPixel();

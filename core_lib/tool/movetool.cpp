@@ -276,3 +276,7 @@ void MoveTool::applyChanges()
 void MoveTool::leavingThisTool(){
     applyChanges();
 }
+
+void MoveTool::switchingLayers(){
+    applyChanges();
+}
