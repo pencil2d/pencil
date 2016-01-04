@@ -43,14 +43,12 @@ bool StrokeTool::keyPressEvent(QKeyEvent *event)
     switch ( event->key() ) {
     case Qt::Key_Alt:
         mScribbleArea->setTemporaryTool( EYEDROPPER );
-        break;
+        return true;
     case Qt::Key_Space:
         mScribbleArea->setTemporaryTool( HAND ); // just call "setTemporaryTool()" to activate temporarily any tool
-        break;
-    default:
-        break;
+        return true;
     }
-    return true;
+    return false;
 }
 
 bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
