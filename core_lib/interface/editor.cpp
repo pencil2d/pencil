@@ -496,6 +496,10 @@ Status Editor::setObject( Object* newObject )
 void Editor::updateObject()
 {
     scrubTo( mObject->editorState()->mCurrentFrame );
+    if (layers() != NULL)
+    {
+      layers()->setCurrentLayer( mObject->editorState()->mCurrentLayer );
+    }
 
 	clearUndoStack();
 

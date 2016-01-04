@@ -17,7 +17,10 @@ public:
     QColor mCurrentColor{ 255, 255, 255, 255 };
 
     // layer manager
-    int mCurrentLayer = 0;
+    int mCurrentLayer = 2; // Layers are counted bottom up
+                           // 0 - Camera Layer
+                           // 1 - Vector Layer
+                           // 2 - Bitmap Layer
     
     // view manager
     QTransform mCurrentView;
