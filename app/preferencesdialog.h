@@ -87,6 +87,7 @@ private:
     void shadowsCheckboxStateChanged(bool b);
     void antiAliasCheckboxStateChanged( bool b );
     void toolCursorsCheckboxStateChanged( bool b );
+    void dottedCursorCheckboxStateChanged( bool b );
     void highResCheckboxStateChanged(bool b);
     void curveSmoothingChange(int value);
     void backgroundChange(int value);
@@ -100,6 +101,7 @@ private:
     QCheckBox* mAntialiasingBox;
     QCheckBox* mHighResBox;
     QButtonGroup *mBackgroundButtons;
+    QCheckBox* mDottedCursorBox;
 
 };
 
