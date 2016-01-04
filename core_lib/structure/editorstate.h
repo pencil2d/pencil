@@ -14,7 +14,7 @@ public:
     int mCurrentFrame = 0;
 
     // color manager
-    QColor mCurrentColor{ 255, 255, 255, 255 };
+    QColor mCurrentColor{ 0, 0, 0, 255 };
 
     // layer manager
     int mCurrentLayer = 0;
