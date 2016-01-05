@@ -1006,7 +1006,9 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
     int mainColorAlpha = qRound( a * 255 * opacity );
 
-    int alphaAdded = qRound((mainColorAlpha * mOffset / 100) / 2);
+    // the more feather (offset), the more softness (opacity)
+    //
+    int alphaAdded = qRound((mainColorAlpha * mOffset) / 100);
 
     gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );
     gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
@@ -1015,7 +1017,7 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
 void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    qreal offset = 100;
+    qreal offset = 64;
 
     QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
     setGaussianGradient( radialGrad, fillColour, opacity/2, offset );
