@@ -103,10 +103,14 @@ border:1px solid #555555;
      <property name="text">
       <string>C</string>
      </property>
+     <property name="icon">
+      <iconset resource="../resource/app.qrc">
+       <normaloff>:/app/icons/cameraBorder.png</normaloff>:/app/icons/cameraBorder.png</iconset>
+     </property>
      <property name="iconSize">
       <size>
-       <width>28</width>
-       <height>27</height>
+       <width>21</width>
+       <height>21</height>
       </size>
      </property>
      <property name="checkable">
