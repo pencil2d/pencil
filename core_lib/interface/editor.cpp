@@ -645,14 +645,13 @@ bool Editor::importBitmapImage( QString filePath )
 	auto layer = static_cast<LayerBitmap*>( layers()->currentLayer() );
 
 	QImage img( reader.size(), QImage::Format_ARGB32_Premultiplied );
+  if ( img.isNull() )
+  {
+    return false;
+  }
 
 	while ( reader.read( &img ) )
 	{
-		if ( img.isNull() )
-		{
-			break;
-		}
-
 		if ( !layer->keyExists( currentFrame() ) )
 		{
 			addNewKey();
