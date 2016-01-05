@@ -478,6 +478,7 @@ void Editor::resetUI()
 {
 	updateObject();
 	scrubTo( 0 );
+    resetView();
 }
 
 void Editor::setObject( Object* newObject )
