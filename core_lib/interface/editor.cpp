@@ -648,7 +648,7 @@ bool Editor::importBitmapImage( QString filePath )
 
 	while ( reader.read( &img ) )
 	{
-		if ( img.isNull() || reader.nextImageDelay() <= 0 )
+		if ( img.isNull() )
 		{
 			break;
 		}

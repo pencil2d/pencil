@@ -577,7 +577,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    if ( QFile::exists( strFilePath ) )
+    if ( !QFile::exists( strFilePath ) )
     {
         return;
     }
