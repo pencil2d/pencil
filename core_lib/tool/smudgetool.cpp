@@ -82,6 +82,10 @@ QCursor SmudgeTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
+    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        return dottedCursor(); // preview stroke size cursor
+    }
     if ( toolMode == 0 ) { //normal mode
         return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
     } else { // blured mode

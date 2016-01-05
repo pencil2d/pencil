@@ -13,11 +13,11 @@ int main(int argc, char *argv[])
 
     if ( allTestsPass )
     {
-        qDebug() << "\n==== ALL PASS ====\n";
+        qDebug() << "\n==== ALL TESTS PASSED ====\n";
     }
     else
     {
-        qDebug() << "\n==== TEST FAIL ====\n";
+        qDebug() << "\n==== SOME TESTS FAILED ====\n";
     }
 
 #ifdef WIN32

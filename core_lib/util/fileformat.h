@@ -22,21 +22,22 @@ GNU General Public License for more details.
 //PFF - acronym for "Pencil File Format"
 #define PFF_OLD_EXTENSION				".pcl"
 #define PFF_OLD_BIG_LETTER_EXTENSION	"PCL"
-#define PFF_OLD_SINGLE_FILTER			"Pencil Animation File PCL (*.pcl)"
-#define PFF_EXTENSION				".pclx"
-#define PFF_BIG_LETTER_EXTENSION	"PCLX"
-#define PFF_SINGLE_FILTER			"New Pencil Animation File PCLX (*.pclx)"
+#define PFF_OLD_SINGLE_FILTER			"Pencil Animation File (*.pcl)"
+#define PFF_EXTENSION				    ".pclx"
+#define PFF_BIG_LETTER_EXTENSION	    "PCLX"
+#define PFF_SINGLE_FILTER			    "New Pencil Animation File (*.pclx)"
 
-#define PFF_OPEN_ALL_FILE_FILTER	"All Pencil Files PCL & PCLX(*.pcl *.pclx);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)"
+#define PFF_OPEN_ALL_FILE_FILTER	"All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)"
 #define PFF_SAVE_ALL_FILE_FILTER	"Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)"
 
-#define PFF_DEFAULT_FILENAME	"myanimation.pclx"
+#define PFF_DEFAULT_FILENAME	    "my_animation.pclx"
 
-#define PFF_OLD_DATA_DIR 			"data"
+#define PFF_OLD_DATA_DIR 		"data"
+#define PFF_DATA_DIR            "data"
 #define PFF_XML_FILE_NAME 		"main.xml"
 #define PFF_TMP_COMPRESS_EXT 	".Y2xC"
 #define PFF_TMP_DECOMPRESS_EXT 	".Y2xD"
-
+#define PFF_PALETTE_FILE        "palette.xml"
 
 bool removePFFTmpDirectory (const QString & dirName);
 

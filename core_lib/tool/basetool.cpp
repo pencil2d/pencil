@@ -57,6 +57,16 @@ void BaseTool::initialize( Editor* editor )
     }
     mEditor = editor;
     mScribbleArea = editor->getScribbleArea();
+
+
+    Q_ASSERT( mScribbleArea );
+
+    if ( mScribbleArea == NULL )
+    {
+        qCritical( "ERROR: mScribbleArea is null in editor!" );
+    }
+
+
     m_pStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
 
     loadSettings();
@@ -113,6 +123,62 @@ QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn s
         painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) ); // outside circle
         painter.setBrush( QColor( 255, 64, 0, 255 ) );
         painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) ); // inside circle
+        painter.end();
+    }
+    return QCursor( pixmap );
+}
+
+QCursor BaseTool::dottedCursor() // Todo: only one instance required: make fn static?
+{
+    Q_ASSERT( mEditor->getScribbleArea() );
+
+    qreal zoomFactor = editor()->view()->scaling(); //scale factor
+
+    //qDebug() << "--->" << zoomFactor;
+    qreal propWidth = properties.width * zoomFactor;
+    qreal propFeather = properties.feather * zoomFactor;
+    qreal width = propWidth + 0.5 * propFeather;
+
+    if ( width < 1 ) { width = 1; }
+    qreal radius = width / 2;
+    qreal xyA = 1 + propFeather / 2;
+    qreal xyB = 1 + propFeather / 8;
+    qreal whA = qMax( 0.0, propWidth - xyA - 1 );
+    qreal whB = qMax( 0.0, width - propFeather / 4 - 2 );
+    QPixmap pixmap( width, width );
+    if ( !pixmap.isNull() )
+    {
+        pixmap.fill( QColor( 255, 255, 255, 0 ) );
+        QPainter painter( &pixmap );
+        QPen pen = painter.pen();
+
+        // Draw cross in center
+        pen.setStyle( Qt::SolidLine );
+        pen.setColor( QColor( 0, 0, 0, 127 ) );
+        painter.setPen(pen);
+        painter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
+        painter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
+
+        // Draw outer circle
+        pen.setStyle( Qt::DotLine );
+        pen.setColor( QColor( 0, 0, 0, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+        pen.setDashOffset( 4 );
+        pen.setColor( QColor( 255, 255, 255, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+
+        // Draw inner circle
+        pen.setStyle( Qt::DotLine );
+        pen.setColor( QColor( 0, 0, 0, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+        pen.setDashOffset( 4 );
+        pen.setColor( QColor( 255, 255, 255, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+
         painter.end();
     }
     return QCursor( pixmap );

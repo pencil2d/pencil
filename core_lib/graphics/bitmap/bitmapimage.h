@@ -29,19 +29,15 @@ class BitmapImage : public KeyFrame
 public:
     BitmapImage();
     BitmapImage( const BitmapImage& );
-    BitmapImage( QRect boundaries, QColor colour );
-    BitmapImage( QRect boundaries, QImage image );
-    BitmapImage( QString path, QPoint topLeft );
+    BitmapImage( const QRect& boundaries, const QColor& colour );
+    BitmapImage( const QRect& boundaries, const QImage& image );
+    BitmapImage( const QString& path, const QPoint& topLeft );
 
     ~BitmapImage();
     BitmapImage& operator=( const BitmapImage& a );
 
     QDomElement createDomElement( QDomDocument& doc );
     void loadDomElement( QDomElement element, QString filePath );
-
-    void modification();
-    bool isModified();
-    void setModified( bool );
 
     void paintImage( QPainter& painter );
     void outputImage( QImage* image, QSize size, QTransform myView );

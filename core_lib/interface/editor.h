@@ -58,7 +58,7 @@ public:
     explicit Editor( QObject* parent = nullptr );
     virtual ~Editor();
 
-    bool initialize( ScribbleArea* pScribbleArea );
+    bool init();
 
     /************************************************************************/
     /* Managers                                                             */
@@ -72,9 +72,7 @@ public:
     SoundManager*      sound() const { return mSoundManager; }
 
     Object* object() const { return mObject.get(); }
-    void setObject( Object* object );
-
-    Status getError() { return mLastError; }
+    Status setObject( Object* object );
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
@@ -142,8 +140,6 @@ public: //slots
     void moveFrameForward();
     void moveFrameBackward();
 
-    void resetUI();
-
     void updateObject();
 
     void setCurrentLayer( int layerNumber );
@@ -175,7 +171,6 @@ protected:
 private:
     bool importBitmapImage( QString );
     bool importVectorImage( QString );
-    void saveLength( QString );
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
@@ -197,13 +192,13 @@ private:
     bool m_isAltPressed = false;
     int numberOfModifications = 0;
 
-    bool mIsAutosave;
-    int autosaveNumber;
+    bool mIsAutosave   = true;
+    int autosaveNumber = 12;
 
-    int onionMaxOpacity;
-    int onionMinOpacity;
-    int onionNextFramesNum;
-    int onionPrevFramesNum;
+    int onionMaxOpacity    = 50;
+    int onionMinOpacity    = 10;
+    int onionNextFramesNum = 3;
+    int onionPrevFramesNum = 3;
 
     void makeConnections();
     void addKeyFame( int layerNumber, int frameNumber );
@@ -217,10 +212,9 @@ private:
     bool clipboardBitmapOk, clipboardVectorOk;
 
     // dialogs
+    // FIXME: doesn't make sense to create dialog here, must move to other place.
     void createExportMovieSizeBox();
     void createExportMovieDialog();
-
-    Status mLastError;
 };
 
 #endif

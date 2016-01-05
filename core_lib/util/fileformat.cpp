@@ -16,42 +16,24 @@ GNU General Public License for more details.
 */
 
 #include <QDir>
-
 #include "fileformat.h"
-
 
 bool removePFFTmpDirectory (const QString& dirName)
 {
-	bool result;
-    QDir dir( dirName + "/" + PFF_OLD_DATA_DIR );
-	
-    if ( !dir.exists() )
+    if ( dirName.isEmpty() )
     {
         return false;
     }
 
-	Q_FOREACH(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files, QDir::DirsFirst))
-	{
-		result = QFile::remove(info.absoluteFilePath());
-
-		if (!result)
-			return result;
-	}
+    QDir dir( dirName );
 	
-	QDir dir2(dirName);
-    result = dir2.rmdir( dirName + "/" + PFF_OLD_DATA_DIR );
-	if (!result)
-		return result;
+    if ( !dir.exists() )
+    {
+        Q_ASSERT( false );
+        return false;
+    }
+
+    bool result = dir.removeRecursively();
 	
-	result = QFile::remove(dirName + "/" + PFF_XML_FILE_NAME);
-	if (!result)
-		return result;
-
-	result = dir2.cdUp();
-	if (!result)
-		return result;
-
-	result = dir2.rmdir(dirName);
-
 	return result;
 }

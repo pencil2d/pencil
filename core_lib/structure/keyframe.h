@@ -18,7 +18,12 @@ public:
     int  pos() { return mFrame; }
     void setPos( int position ) { mFrame = position; }
     int  length() { return mLength; }
+    
+    void modification() { mIsModified = true; }
     void setModified( bool b ) { mIsModified = b; }
+    bool isModified() { return mIsModified; };
+   
+    
     void setSelected( bool b ) { mIsSelected = b; }
     bool isSelected() { return mIsSelected; }
 

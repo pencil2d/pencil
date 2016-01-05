@@ -69,6 +69,7 @@ public:
 
     static bool isAdjusting;
     QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
+    QCursor dottedCursor(); //precision circular cursor: used for seeing stroke size before it happens (wysiwyg)
 
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );

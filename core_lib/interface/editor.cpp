@@ -36,6 +36,7 @@ GNU General Public License for more details.
 #include <QDropEvent>
 
 #include "object.h"
+#include "editorstate.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
@@ -77,10 +78,8 @@ Editor::~Editor()
 	clearUndoStack();
 }
 
-bool Editor::initialize( ScribbleArea* pScribbleArea )
+bool Editor::init()
 {
-	mScribbleArea = pScribbleArea;
-
 	// Initialize managers
 	mColorManager = new ColorManager( this );
 	mLayerManager = new LayerManager( this );
@@ -466,27 +465,21 @@ void Editor::toogleOnionSkinType()
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
 }
 
-void Editor::saveLength( QString x )
+Status Editor::setObject( Object* newObject )
 {
-	bool ok;
-	int dec = x.toInt( &ok, 10 );
-	QSettings settings( "Pencil", "Pencil" );
-	settings.setValue( "length", dec );
-}
+    if ( newObject == nullptr )
+    {
+        Q_ASSERT( false );
+        return Status::INVALID_ARGUMENT;
+    }
 
-void Editor::resetUI()
-{
-	updateObject();
-	scrubTo( 0 );
-    resetView();
-}
-
-void Editor::setObject( Object* newObject )
-{
-    if ( newObject == NULL ) { return; }
-    if ( newObject == mObject.get() ) { return; }
+    if ( newObject == mObject.get() )
+    {
+        return Status::SAFE;
+    }
 
     mObject.reset( newObject );
+
 
     for ( BaseManager* m : mAllManagers )
     {
@@ -494,13 +487,15 @@ void Editor::setObject( Object* newObject )
     }
 
 	g_clipboardVectorImage.setObject( newObject );
+    
+    updateObject();
+
+    return Status::OK;
 }
 
 void Editor::updateObject()
 {
-	color()->setColorNumber( 0 );
-
-	emit updateLayerCount();
+    scrubTo( mObject->editorState()->mCurrentFrame );
 
 	clearUndoStack();
 
@@ -508,6 +503,8 @@ void Editor::updateObject()
 	{
 		mScribbleArea->updateAllFrames();
 	}
+
+    emit updateLayerCount();
 }
 
 void Editor::createExportMovieSizeBox()
@@ -722,7 +719,7 @@ bool Editor::importImage( QString filePath )
 
 	default:
 	{
-		mLastError = Status::ERROR_INVALID_LAYER_TYPE;
+		//mLastError = Status::ERROR_INVALID_LAYER_TYPE;
 		return false;
 	}
 	}
@@ -752,17 +749,14 @@ void Editor::scrubTo( int frame )
 	int oldFrame = mFrame;
 	mFrame = frame;
 
-	if ( mScribbleArea->shouldUpdateAll() )
-	{
-		mScribbleArea->updateAllFrames();
-	}
-
 	Q_EMIT currentFrameChanged( frame );
 	Q_EMIT currentFrameChanged( oldFrame );
-
-    mScribbleArea->update();
-
-    if(!mPlaybackManager->isPlaying()) {
+    
+    // FIXME: should not emit Timeline update here.
+    // Editor must be an individual class.
+    // Will remove all Timeline related code in Editor class.
+    if ( mPlaybackManager && !mPlaybackManager->isPlaying() )
+    {
         emit updateTimeLine(); // needs to update the timeline to update onion skin positions
     }
 }

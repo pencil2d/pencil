@@ -72,9 +72,6 @@ public:
 
     void paste(VectorImage);
 
-    bool isModified();
-    void setModified( bool b = true );
-
     QColor getColour(int i);
     int  getColourNumber(QPointF point);
     bool usesColour(int index);
@@ -132,8 +129,6 @@ public:
 
 private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
-    void modification();
-    bool modified;
 
     Object* myParent = nullptr;
 

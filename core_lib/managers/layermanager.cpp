@@ -2,11 +2,13 @@
 
 #include "object.h"
 #include "editor.h"
+#include "editorstate.h"
 
 #include "layersound.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
+
 
 LayerManager::LayerManager( QObject* pParent ) : BaseManager( pParent )
 {
@@ -23,7 +25,7 @@ bool LayerManager::init()
 
 Status LayerManager::onObjectLoaded( Object* o )
 {
-    mCurrentLayerIndex = o->editorData()->currentLayer();
+    mCurrentLayerIndex = o->editorState()->mCurrentLayer;
     return Status::OK;
 }
 

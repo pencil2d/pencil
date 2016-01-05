@@ -10,10 +10,10 @@ class BaseManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit BaseManager(QObject *parent = 0);
+    explicit BaseManager(QObject* parent = 0);
     virtual ~BaseManager();
 
-    void     setEditor( Editor* pEditor );
+    void setEditor( Editor* );
 
     Editor* editor() { return mEditor; }
     Object* object() { return mEditor->object(); }

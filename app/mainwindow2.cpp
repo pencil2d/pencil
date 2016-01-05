@@ -33,7 +33,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
-#include "objectsaveloader.h"
+#include "filemanager.h"
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"
@@ -91,12 +91,13 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     object->init();
 
     mEditor = new Editor( this );
-    mEditor->initialize( mScribbleArea );
+    mEditor->setScribbleArea(mScribbleArea);
     mEditor->setObject( object );
+    mEditor->init();
+
 
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
-
 
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
@@ -107,8 +108,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     createDockWidgets();
     createMenus();
     setupKeyboardShortcuts();
-
-    mEditor->resetUI();
 
     readSettings();
 
@@ -121,6 +120,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->tools()->setDefaultTool();
 
     mBackground->init(mEditor->preference());
+
+    mEditor->updateObject();
 }
 
 MainWindow2::~MainWindow2()
@@ -384,7 +385,8 @@ void MainWindow2::newDocument()
         Object* object = new Object();
         object->init();
         mEditor->setObject( object );
-        mEditor->resetUI();
+        mEditor->scrubTo( 0 );
+        mEditor->resetView();
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
@@ -471,10 +473,10 @@ bool MainWindow2::openObject( QString strFilePath )
 
     mEditor->setCurrentLayer( 0 );
 
-    ObjectSaveLoader objectLoader( this );
-    Object* object = objectLoader.load( strFilePath );
+    FileManager fm( this );
+    Object* object = fm.load( strFilePath );
 
-    if ( object == nullptr || !objectLoader.error().ok() )
+    if ( object == nullptr || !fm.error().ok() )
     {
         return false;
     }
@@ -494,6 +496,7 @@ bool MainWindow2::openObject( QString strFilePath )
     mColorPalette->refreshColorList();
 
     // Reset view
+    mEditor->scrubTo( 0 );
     mEditor->view()->resetView();
 
     progress.setValue( 100 );
@@ -506,10 +509,15 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
-    ObjectSaveLoader* saveLoader = new ObjectSaveLoader( this );
-    bool ok = saveLoader->save( mEditor->object(), strSavedFileName );
+    FileManager* fm = new FileManager( this );
+    Status st = fm->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
+    
+    if ( !st.ok() )
+    {
+        return false;
+    }
 
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( LAST_FILE_PATH, strSavedFileName );
