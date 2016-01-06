@@ -19,6 +19,9 @@ public:
 
     bool keyPressEvent(QKeyEvent *event) override;
 
+    void leavingThisTool() override;
+    void switchingLayers() override;
+
 private:
     void cancelChanges();
     void applyChanges();
