@@ -158,7 +158,7 @@ void TimeLine::initUI()
 
     QToolButton* onionTypeButton = new QToolButton( this );
     onionTypeButton->setIcon( QIcon( ":icons/onion_type.png" ) );
-    onionTypeButton->setToolTip( "Onion skin match keyframes" );
+    onionTypeButton->setToolTip( "Toggle match keyframes" );
     onionTypeButton->setFixedSize( 24, 24 );
 
     onionButtons->addWidget( onionLabel );
