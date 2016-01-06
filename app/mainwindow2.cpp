@@ -580,7 +580,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    if ( QFile::exists( strFilePath ) )
+    if ( !QFile::exists( strFilePath ) )
     {
         return;
     }
@@ -590,7 +590,7 @@ void MainWindow2::importImage()
     {
         QMessageBox::warning( this,
                               tr( "Warning" ),
-                              tr( "Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
+                              tr( "Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
                               QMessageBox::Ok,
                               QMessageBox::Ok );
         return;

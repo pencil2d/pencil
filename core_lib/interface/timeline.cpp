@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include <QSplitter>
 #include <QMessageBox>
 #include <QLabel>
+#include <QWheelEvent>
 
 #include "layer.h"
 #include "editor.h"
@@ -244,6 +245,16 @@ int TimeLine::getFrameLength()
 void TimeLine::resizeEvent(QResizeEvent*)
 {
     updateLayerView();
+}
+
+void TimeLine::wheelEvent(QWheelEvent* event)
+{
+    QPoint pixels = event->pixelDelta();
+    mVScrollbar->triggerAction( pixels.y() > 0 ? \
+      QAbstractSlider::SliderSingleStepSub : \
+      QAbstractSlider::SliderSingleStepAdd \
+    );
+    event->accept();
 }
 
 void TimeLine::deleteCurrentLayer()
