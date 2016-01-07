@@ -94,7 +94,10 @@ void BrushTool::enteringThisTool(){
 }
 
 void BrushTool::leavingThisTool(){
-    mouseReleaseEvent( NULL );
+    if (has_started_drawing)
+    {
+        mouseReleaseEvent( NULL );
+    }
 }
 
 QCursor BrushTool::cursor()
@@ -147,11 +150,11 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
     {
         mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
+        has_started_drawing = true;
     }
 
     lastBrushPoint = getCurrentPoint();
     startStroke();
-    has_started_drawing = true;
 }
 
 
@@ -201,6 +204,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
+        has_started_drawing = false;
     }
 
     endStroke();
@@ -208,16 +212,17 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 
 void BrushTool::mouseMoveEvent( QMouseEvent *event )
 {
-    if (!has_started_drawing)
-    {
-      mousePressEvent( NULL );
-    }
     Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {
         if ( event->buttons() & Qt::LeftButton )
         {
+            if (!has_started_drawing)
+            {
+                mousePressEvent( NULL );
+                return;
+            }
             drawStroke();
         }
     }
