@@ -122,6 +122,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mBackground->init(mEditor->preference());
 
     mEditor->updateObject();
+    mEditor->color()->setColorNumber(0);
 }
 
 MainWindow2::~MainWindow2()
@@ -388,6 +389,10 @@ void MainWindow2::newDocument()
         mEditor->scrubTo( 0 );
         mEditor->resetView();
 
+        // Refresh the palette
+        mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
+
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
 }
@@ -494,6 +499,7 @@ bool MainWindow2::openObject( QString strFilePath )
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
+    mEditor->color()->setColorNumber(0);
 
     // Reset view
     mEditor->scrubTo( 0 );
@@ -1022,6 +1028,7 @@ void MainWindow2::importPalette()
     {
         mEditor->object()->importPalette( filePath );
         mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
