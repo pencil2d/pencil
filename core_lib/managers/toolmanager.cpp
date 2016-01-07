@@ -73,6 +73,7 @@ void ToolManager::setCurrentTool( ToolType eToolType )
     }
     mCurrentTool = getTool( eToolType );
     Q_EMIT toolChanged( eToolType );
+    mCurrentTool->enteringThisTool();
 }
 
 void ToolManager::cleanupAllToolsData()

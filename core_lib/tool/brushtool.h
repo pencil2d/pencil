@@ -26,12 +26,16 @@ public:
     void setFeather( const qreal feather );
     void setPressure( const bool pressure );
 
+    void enteringThisTool() override;
+    void leavingThisTool() override;
+
 protected:
     QPointF lastBrushPoint;
 
     BitmapImage img;
     QColor currentPressuredColor;
     qreal mOpacity;
+    bool has_started_drawing = false;
 };
 
 #endif // BRUSHTOOL_H

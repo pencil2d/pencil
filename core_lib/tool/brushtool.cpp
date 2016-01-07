@@ -89,6 +89,13 @@ void BrushTool::setPressure( const bool pressure )
     settings.sync();
 }
 
+void BrushTool::enteringThisTool(){
+    has_started_drawing = false;
+}
+
+void BrushTool::leavingThisTool(){
+    mouseReleaseEvent( NULL );
+}
 
 QCursor BrushTool::cursor()
 {
@@ -136,7 +143,7 @@ void BrushTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDev
 
 void BrushTool::mousePressEvent( QMouseEvent *event )
 {
-    if ( event->button() == Qt::LeftButton )
+    if (event == NULL || event->button() == Qt::LeftButton )
     {
         mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
@@ -144,14 +151,25 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
 
     lastBrushPoint = getCurrentPoint();
     startStroke();
-
+    has_started_drawing = true;
 }
+
+
 
 void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 {
+    /*
+     * Because we never use the event for anything
+     * besides checking what button was pressed, we
+     * can safely make a special case for when the
+     * event is NULL. If in the future other
+     * properties are used like position data, we
+     * should maybe use another parameter for this
+     * special case.
+     */
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( event->button() == Qt::LeftButton )
+    if ( event == NULL || event->button() == Qt::LeftButton )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
@@ -190,6 +208,10 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 
 void BrushTool::mouseMoveEvent( QMouseEvent *event )
 {
+    if (!has_started_drawing)
+    {
+      mousePressEvent( NULL );
+    }
     Layer* layer = mEditor->layers()->currentLayer();
 
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
