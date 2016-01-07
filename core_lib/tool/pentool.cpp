@@ -72,6 +72,14 @@ void PenTool::setPressure( const bool pressure )
     settings.sync();
 }
 
+void PenTool::enteringThisTool(){
+    has_started_drawing = false;
+}
+
+void PenTool::leavingThisTool(){
+    mouseReleaseEvent( NULL );
+}
+
 QCursor PenTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized
@@ -101,7 +109,7 @@ void PenTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevic
 
 void PenTool::mousePressEvent( QMouseEvent *event )
 {
-    if ( event->button() == Qt::LeftButton )
+    if (event == NULL || event->button() == Qt::LeftButton )
     {
         mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
@@ -109,13 +117,14 @@ void PenTool::mousePressEvent( QMouseEvent *event )
 
     startStroke();
     lastBrushPoint = getCurrentPoint();
+    has_started_drawing = true;
 }
 
 void PenTool::mouseReleaseEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( event->button() == Qt::LeftButton )
+    if ( event == NULL || event->button() == Qt::LeftButton )
     {
         if ( isLayerPaintable( layer ) )
         {
@@ -153,6 +162,10 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
 
 void PenTool::mouseMoveEvent( QMouseEvent *event )
 {
+    if (!has_started_drawing)
+    {
+      mousePressEvent( NULL );
+    }
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {

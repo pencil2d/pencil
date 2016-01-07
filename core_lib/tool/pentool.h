@@ -24,8 +24,12 @@ public:
     void setFeather( const qreal feather );
     void setPressure( const bool pressure );
 
+    void enteringThisTool() override;
+    void leavingThisTool() override;
+
 private:
     QPointF lastBrushPoint;
+    bool has_started_drawing = false;
 };
 
 #endif // PENTOOL_H
