@@ -92,9 +92,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor = new Editor( this );
     mEditor->setScribbleArea(mScribbleArea);
-    mEditor->setObject( object );
     mEditor->init();
-
+    mEditor->setObject( object );
 
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();

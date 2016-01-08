@@ -455,10 +455,12 @@ void Editor::toogleOnionSkinType()
 {
     QString onionSkinState = mPreferenceManager->getString(SETTING::ONION_TYPE);
     QString newState;
-    if (onionSkinState == "relative") {
+    if (onionSkinState == "relative")
+    {
         newState = "absolute";
     }
-    else {
+    else
+    {
         newState = "relative";
     }
 
