@@ -96,6 +96,10 @@ QCursor BrushTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
+    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        return dottedCursor(); // preview stroke size cursor
+    }
     if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) // doesn't need else
     {
         return QCursor( QPixmap( ":icons/brush.png" ), 0, 13 );
@@ -252,7 +256,7 @@ void BrushTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        qreal brushWidth = 2.0 * properties.width * mCurrentPressure;
+        qreal brushWidth = properties.width * mCurrentPressure;
 
         int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
 

@@ -67,6 +67,10 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool( ToolType eToolType )
 {
+    if (mCurrentTool != NULL)
+    {
+        mCurrentTool->leavingThisTool();
+    }
     mCurrentTool = getTool( eToolType );
     Q_EMIT toolChanged( eToolType );
 }

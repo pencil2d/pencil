@@ -8,10 +8,9 @@
 #include "AutoTest.h"
 
 
-class TestObjectSaveLoader : public QObject
+class TestFileManager : public QObject
 {
     Q_OBJECT
-
 
 private slots:
     void testCase1();
@@ -21,8 +20,12 @@ private slots:
     void testMinimalOldPencilDocument();
     void testOneLayerInFile();
     void testBitmapLayer();
+    void testBitmapLayer2();
+
+    void testGeneratePCLX();
+    void testLoadPCLX();
 };
 
-DECLARE_TEST(TestObjectSaveLoader)
+DECLARE_TEST(TestFileManager)
 
 #endif // TEST_OBJECTSAVELOADER_H

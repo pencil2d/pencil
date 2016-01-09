@@ -25,6 +25,8 @@ private slots:
     void testLayerID();
     void testMoveLayer();
 
+    void testLoadXML();
+
 private:
 };
 

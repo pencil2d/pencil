@@ -42,7 +42,7 @@ public:
     Status addNewBitmapLayer();
     Status addNewVectorLayer();
     Status addNewCameraLayer();
-    bool addNewSoundLayer();
+    Status addNewSoundLayer();
 
 private:
     Editor* mEditor = nullptr;

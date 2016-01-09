@@ -86,7 +86,7 @@ public:
     void    setMainXMLFile( QString file ){ mMainXMLFile = file; }
 
     QDomElement saveXML( QDomDocument& doc );
-    bool loadXML( QDomElement element, QString dataDirPath );
+    bool loadXML( QDomElement element );
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 

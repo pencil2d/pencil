@@ -74,8 +74,6 @@ public:
     Object* object() const { return mObject.get(); }
     Status setObject( Object* object );
 
-    Status getError() { return mLastError; }
-
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
@@ -86,11 +84,6 @@ public:
     bool exportSeqCLI( QString, QString );
     
     QString workingDir() const;
-
-    int getOnionMaxOpacity() { return onionMaxOpacity; }
-    int getOnionMinOpacity() { return onionMinOpacity; }
-    int getOnionPrevFramesNum() { return onionPrevFramesNum; }
-    int getOnionNextFramesNum() { return onionNextFramesNum; }
 
     void importMovie( QString filePath, int fps );
 
@@ -173,7 +166,6 @@ protected:
 private:
     bool importBitmapImage( QString );
     bool importVectorImage( QString );
-    void saveLength( QString );
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
@@ -195,13 +187,8 @@ private:
     bool m_isAltPressed = false;
     int numberOfModifications = 0;
 
-    bool mIsAutosave;
-    int autosaveNumber;
-
-    int onionMaxOpacity;
-    int onionMinOpacity;
-    int onionNextFramesNum;
-    int onionPrevFramesNum;
+    bool mIsAutosave   = true;
+    int autosaveNumber = 12;
 
     void makeConnections();
     void addKeyFame( int layerNumber, int frameNumber );
@@ -215,10 +202,9 @@ private:
     bool clipboardBitmapOk, clipboardVectorOk;
 
     // dialogs
+    // FIXME: doesn't make sense to create dialog here, must move to other place.
     void createExportMovieSizeBox();
     void createExportMovieDialog();
-
-    Status mLastError;
 };
 
 #endif

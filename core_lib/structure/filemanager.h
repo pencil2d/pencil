@@ -39,7 +39,7 @@ public:
     FileManager( QObject* parent = 0 );
 
     Object* load( QString strFilenNme );
-    bool    save( Object* pObject, QString strFileName );
+    Status  save( Object* pObject, QString strFileName );
 
     QList<ColourRef> loadPaletteFile( QString strFilename );
 
@@ -50,7 +50,7 @@ Q_SIGNALS:
 
 private:
     bool loadObject( Object*, const QDomElement& root );
-    bool loadObjectOldWay( Object*, const QDomElement& root, const QString& strDataFolder );
+    bool loadObjectOldWay( Object*, const QDomElement& root );
 
     bool isOldForamt( QString fileName );
 

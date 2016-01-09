@@ -231,6 +231,14 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
                                     false);
     }
 
+    if (mRenderTransform && nFrame == mFrameNumber) {
+        tempBitmapImage->drawRect(  mSelection,
+                                    Qt::NoPen,
+                                    QBrush(QColor(0, 0, 0, 0)),
+                                    QPainter::CompositionMode_Clear,
+                                    false);
+    }
+
     painter.setWorldMatrixEnabled( true );
     tempBitmapImage->paintImage( painter );
 
@@ -323,11 +331,6 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
         // Paint the transformation output
         //
         painter.setWorldMatrixEnabled( true );
-
-        painter.setCompositionMode(QPainter::CompositionMode_Clear);
-        painter.fillRect( mSelection, QColor(0,0,0,0) );
-
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         transformedImage.paintImage(painter);
     }
 }

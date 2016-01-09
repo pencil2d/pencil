@@ -91,7 +91,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     object->init();
 
     mEditor = new Editor( this );
-    mEditor->initialize( mScribbleArea );
+    mEditor->setScribbleArea(mScribbleArea);
+    mEditor->init();
     mEditor->setObject( object );
 
     mScribbleArea->setCore( mEditor );
@@ -120,6 +121,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mBackground->init(mEditor->preference());
 
     mEditor->updateObject();
+    mEditor->color()->setColorNumber(0);
 }
 
 MainWindow2::~MainWindow2()
@@ -383,6 +385,12 @@ void MainWindow2::newDocument()
         Object* object = new Object();
         object->init();
         mEditor->setObject( object );
+        mEditor->scrubTo( 0 );
+        mEditor->resetView();
+
+        // Refresh the palette
+        mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
@@ -490,8 +498,10 @@ bool MainWindow2::openObject( QString strFilePath )
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
+    mEditor->color()->setColorNumber(0);
 
     // Reset view
+    mEditor->scrubTo( 0 );
     mEditor->view()->resetView();
 
     progress.setValue( 100 );
@@ -505,9 +515,14 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.show();
 
     FileManager* fm = new FileManager( this );
-    bool ok = fm->save( mEditor->object(), strSavedFileName );
+    Status st = fm->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
+    
+    if ( !st.ok() )
+    {
+        return false;
+    }
 
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( LAST_FILE_PATH, strSavedFileName );
@@ -570,7 +585,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    if ( QFile::exists( strFilePath ) )
+    if ( !QFile::exists( strFilePath ) )
     {
         return;
     }
@@ -580,7 +595,7 @@ void MainWindow2::importImage()
     {
         QMessageBox::warning( this,
                               tr( "Warning" ),
-                              tr( "Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
+                              tr( "Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
                               QMessageBox::Ok,
                               QMessageBox::Ok );
         return;
@@ -1012,6 +1027,7 @@ void MainWindow2::importPalette()
     {
         mEditor->object()->importPalette( filePath );
         mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }

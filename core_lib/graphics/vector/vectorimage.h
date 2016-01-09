@@ -43,7 +43,7 @@ public:
     void loadDomElement(QDomElement element);
 
     void insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts);
-    void addCurve(BezierCurve& newCurve, qreal factor);
+    void addCurve(BezierCurve& newCurve, qreal factor, bool interacts = true);
     void removeCurveAt(int i);
     void select(QRectF rectangle);
     void setSelected(int curveNumber, bool YesOrNo);
@@ -71,9 +71,6 @@ public:
     void removeVertex(int i, int m);
 
     void paste(VectorImage);
-
-    bool isModified();
-    void setModified( bool b = true );
 
     QColor getColour(int i);
     int  getColourNumber(QPointF point);
@@ -132,8 +129,6 @@ public:
 
 private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
-    void modification();
-    bool modified;
 
     Object* myParent = nullptr;
 

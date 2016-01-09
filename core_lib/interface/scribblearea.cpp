@@ -194,7 +194,7 @@ void ScribbleArea::updateAllVectorLayersAt( int frameNumber )
         if ( layer->type() == Layer::VECTOR )
         {
             auto vecLayer = static_cast< LayerVector* >( layer );
-            vecLayer->getLastVectorImageAtFrame( frameNumber, 0 )->setModified();
+            vecLayer->getLastVectorImageAtFrame( frameNumber, 0 )->modification();
         }
     }
     updateFrame( mEditor->currentFrame() );
@@ -1006,7 +1006,9 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
     int mainColorAlpha = qRound( a * 255 * opacity );
 
-    int alphaAdded = qRound((mainColorAlpha * mOffset / 100) / 2);
+    // the more feather (offset), the more softness (opacity)
+    //
+    int alphaAdded = qRound((mainColorAlpha * mOffset) / 100);
 
     gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );
     gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
@@ -1015,15 +1017,10 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
 void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    // TODO :
-    // if size is too small, make it a bit bigger and increase offset
-    //
-    qreal offset = 50;
-
-    brushWidth = brushWidth;
+    qreal offset = 64;
 
     QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
-    setGaussianGradient( radialGrad, fillColour, opacity, offset );
+    setGaussianGradient( radialGrad, fillColour, opacity/2, offset );
 
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 

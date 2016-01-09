@@ -77,7 +77,7 @@ QDomElement Object::saveXML( QDomDocument& doc )
     return tag;
 }
 
-bool Object::loadXML( QDomElement docElem, QString dataDirPath )
+bool Object::loadXML( QDomElement docElem )
 {
     if ( docElem.isNull() )
     {
@@ -85,6 +85,8 @@ bool Object::loadXML( QDomElement docElem, QString dataDirPath )
     }
     int layerNumber = -1;
     
+    const QString dataDirPath = mDataDirPath;
+
     for ( QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.

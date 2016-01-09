@@ -112,10 +112,8 @@ bool Editor::init()
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
     autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
 
-    onionMaxOpacity = mPreferenceManager->getInt(SETTING::ONION_MAX_OPACITY);
-    onionMinOpacity = mPreferenceManager->getInt(SETTING::ONION_MIN_OPACITY);
-    onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
-    onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    //onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    //onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
 
 	return true;
 }
@@ -163,18 +161,6 @@ void Editor::settingUpdated(SETTING setting)
         break;
     case SETTING::AUTO_SAVE_NUMBER:
         autosaveNumber = mPreferenceManager->getInt( SETTING::AUTO_SAVE_NUMBER );
-        break;
-    case SETTING::ONION_MAX_OPACITY:
-        onionMaxOpacity = mPreferenceManager->getInt( SETTING::ONION_MAX_OPACITY );
-        break;
-    case SETTING::ONION_MIN_OPACITY:
-        onionMinOpacity = mPreferenceManager->getInt( SETTING::ONION_MIN_OPACITY );
-        break;
-    case SETTING::ONION_PREV_FRAMES_NUM:
-        onionPrevFramesNum = mPreferenceManager->getInt( SETTING::ONION_PREV_FRAMES_NUM );
-        break;
-    case SETTING::ONION_NEXT_FRAMES_NUM:
-        onionNextFramesNum = mPreferenceManager->getInt( SETTING::ONION_NEXT_FRAMES_NUM );
         break;
     case SETTING::ONION_TYPE:
         mScribbleArea->updateAllFrames();
@@ -455,22 +441,16 @@ void Editor::toogleOnionSkinType()
 {
     QString onionSkinState = mPreferenceManager->getString(SETTING::ONION_TYPE);
     QString newState;
-    if (onionSkinState == "relative") {
+    if (onionSkinState == "relative")
+    {
         newState = "absolute";
     }
-    else {
+    else
+    {
         newState = "relative";
     }
 
     mPreferenceManager->set(SETTING::ONION_TYPE, newState);
-}
-
-void Editor::saveLength( QString x )
-{
-	bool ok;
-	int dec = x.toInt( &ok, 10 );
-	QSettings settings( "Pencil", "Pencil" );
-	settings.setValue( "length", dec );
 }
 
 Status Editor::setObject( Object* newObject )
@@ -504,6 +484,10 @@ Status Editor::setObject( Object* newObject )
 void Editor::updateObject()
 {
     scrubTo( mObject->editorState()->mCurrentFrame );
+    if (layers() != NULL)
+    {
+      layers()->setCurrentLayer( mObject->editorState()->mCurrentLayer );
+    }
 
 	clearUndoStack();
 
@@ -653,14 +637,13 @@ bool Editor::importBitmapImage( QString filePath )
 	auto layer = static_cast<LayerBitmap*>( layers()->currentLayer() );
 
 	QImage img( reader.size(), QImage::Format_ARGB32_Premultiplied );
+  if ( img.isNull() )
+  {
+    return false;
+  }
 
 	while ( reader.read( &img ) )
 	{
-		if ( img.isNull() || reader.nextImageDelay() <= 0 )
-		{
-			break;
-		}
-
 		if ( !layer->keyExists( currentFrame() ) )
 		{
 			addNewKey();
@@ -727,7 +710,7 @@ bool Editor::importImage( QString filePath )
 
 	default:
 	{
-		mLastError = Status::ERROR_INVALID_LAYER_TYPE;
+		//mLastError = Status::ERROR_INVALID_LAYER_TYPE;
 		return false;
 	}
 	}

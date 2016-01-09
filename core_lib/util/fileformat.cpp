@@ -20,6 +20,11 @@ GNU General Public License for more details.
 
 bool removePFFTmpDirectory (const QString& dirName)
 {
+    if ( dirName.isEmpty() )
+    {
+        return false;
+    }
+
     QDir dir( dirName );
 	
     if ( !dir.exists() )

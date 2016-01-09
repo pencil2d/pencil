@@ -22,9 +22,6 @@ bool ColorManager::init()
 
 Status ColorManager::onObjectLoaded( Object* o )
 {
-    setColor( o->editorState()->mCurrentColor );
-    setColorNumber( 0 );
-
     return Status::OK;
 }
 
@@ -37,14 +34,11 @@ void ColorManager::setColorNumber( int n )
 {
     Q_ASSERT( n >= 0 );
 
-    if ( mCurrentColorIndex != n )
-    {
-        mCurrentColorIndex = n;
+    mCurrentColorIndex = n;
 
-        QColor currentColor = editor()->object()->getColour( mCurrentColorIndex ).colour;
-        emit colorNumberChanged(mCurrentColorIndex);
-		emit colorChanged(currentColor);
-    }
+    QColor currentColor = editor()->object()->getColour( mCurrentColorIndex ).colour;
+    emit colorNumberChanged(mCurrentColorIndex);
+    emit colorChanged(currentColor);
 }
 
 void ColorManager::setColor(const QColor& newColor)
