@@ -85,11 +85,6 @@ public:
     
     QString workingDir() const;
 
-    int getOnionMaxOpacity() { return onionMaxOpacity; }
-    int getOnionMinOpacity() { return onionMinOpacity; }
-    int getOnionPrevFramesNum() { return onionPrevFramesNum; }
-    int getOnionNextFramesNum() { return onionNextFramesNum; }
-
     void importMovie( QString filePath, int fps );
 
     // backup
@@ -194,11 +189,6 @@ private:
 
     bool mIsAutosave   = true;
     int autosaveNumber = 12;
-
-    int onionMaxOpacity    = 50;
-    int onionMinOpacity    = 10;
-    int onionNextFramesNum = 3;
-    int onionPrevFramesNum = 3;
 
     void makeConnections();
     void addKeyFame( int layerNumber, int frameNumber );
