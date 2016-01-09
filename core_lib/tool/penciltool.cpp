@@ -58,7 +58,7 @@ void PencilTool::setFeather( const qreal feather )
     properties.feather = feather;
 }
 
-void PencilTool::setInvisibility( const qreal invisibility )
+void PencilTool::setInvisibility( const bool )
 {
     // force value
     properties.invisibility = 1;

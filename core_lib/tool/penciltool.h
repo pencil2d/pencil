@@ -18,13 +18,13 @@ public:
 
     void drawStroke();
 
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
+    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
-    void setWidth( const qreal width );
-    void setFeather( const qreal feather );
-    void setInvisibility( const qreal invisibility );
-    void setPressure( const bool pressure );
-    void setPreserveAlpha( const bool preserveAlpha );
+    void setWidth( const qreal width ) override;
+    void setFeather( const qreal feather ) override;
+    void setInvisibility( const bool invisibility ) override;
+    void setPressure( const bool pressure ) override;
+    void setPreserveAlpha( const bool preserveAlpha ) override;
 
 private:
     QColor currentPressuredColor;
