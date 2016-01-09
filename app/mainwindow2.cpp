@@ -257,8 +257,8 @@ void MainWindow2::createMenus()
     /// --- View Menu ---
     connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
     connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
-    connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
-    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &CommandCenter::rotateClockwise );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &CommandCenter::rotateCounterClockwise );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );

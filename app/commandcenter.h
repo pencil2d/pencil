@@ -28,6 +28,8 @@ public:
     void ZoomOut();
     void flipX();
     void flipY();
+    void rotateClockwise();
+    void rotateCounterClockwise();
 
     void showGrid( bool bShow );
 

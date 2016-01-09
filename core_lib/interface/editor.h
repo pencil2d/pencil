@@ -114,8 +114,6 @@ public: //slots
     void cut();
     
     void deselectAll();
-    void rotatecw();
-    void rotateacw();
     void resetView();
 
     bool importImage( QString filePath );
