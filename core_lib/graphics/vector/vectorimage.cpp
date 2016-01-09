@@ -197,37 +197,24 @@ void VectorImage::removeCurveAt(int i)
 
 void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts)
 {
-    if (newCurve.getVertexSize() < 1) return; // security - a new curve should have a least 2 vertices
-    qreal tol = qMax(newCurve.getWidth() / factor, 3.0 / factor); // tolerance for taking the intersection as an existing vertex on a curve
-    //qDebug() << "tolerance" << tol;
-    // finds if the new curve interesects itself
-    for(int k=0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
-    {
-        for(int j=k+1; j < newCurve.getVertexSize(); j++)   // for each other cubic section of the new curve
-        {
-            QList<Intersection> intersections;
-            bool intersection = BezierCurve::findIntersection(newCurve, k, newCurve, j, intersections);
-            if (intersection)
-            {
-                //qDebug() << "INTERSECTION" << intersectionPoint << t1 << t2;
-                //newCurve.addPoint(k, intersectionPoint);
-                newCurve.addPoint(k, intersections[0].t1); //qDebug() << "--a " << newCurve.getVertex(k) << newCurve.getVertex(k+1);
-                k++;
-                j++;
-                //newCurve.addPoint(j, intersectionPoint);
-                newCurve.addPoint(j, intersections[0].t2); //qDebug() << "--a " << newCurve.getVertex(j) << newCurve.getVertex(j+1);
-                j++;
-            }
-        }
+    if (newCurve.getVertexSize() < 1) {
+
+        // security - a new curve should have a least 2 vertices
+        return;
     }
 
-    // Does the curve should interact with others?
+
+    // Does the curve should interact with others or with itself?
     //
     if (interacts) {
+        // tolerance for taking the intersection as an existing vertex on a curve
+        //
+        qreal tol = qMax( newCurve.getWidth() / factor, 3.0 / factor);
+        //qDebug() << "tolerance" << tol;
+
         checkCurveExtremity(newCurve, tol);
         checkCurveIntersections(newCurve, tol);
     }
-
 
 
     // Append or insert the curve in the list
@@ -258,9 +245,9 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
     //newCurve.drawPath(&painter);
 }
 
-void VectorImage::addCurve(BezierCurve& newCurve, qreal factor)
+void VectorImage::addCurve(BezierCurve& newCurve, qreal factor, bool interacts)
 {
-    insertCurve(-1, newCurve, factor, true);
+    insertCurve(-1, newCurve, factor, interacts);
 }
 
 void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
@@ -347,6 +334,29 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
 
 void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance)
 {
+
+    // finds if the new curve interesects itself
+    //
+    for(int k=0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
+    {
+        for(int j=k+1; j < newCurve.getVertexSize(); j++)   // for each other cubic section of the new curve
+        {
+            QList<Intersection> intersections;
+            bool intersection = BezierCurve::findIntersection(newCurve, k, newCurve, j, intersections);
+            if (intersection)
+            {
+                //qDebug() << "INTERSECTION" << intersectionPoint << t1 << t2;
+                //newCurve.addPoint(k, intersectionPoint);
+                newCurve.addPoint(k, intersections[0].t1); //qDebug() << "--a " << newCurve.getVertex(k) << newCurve.getVertex(k+1);
+                k++;
+                j++;
+                //newCurve.addPoint(j, intersectionPoint);
+                newCurve.addPoint(j, intersections[0].t2); //qDebug() << "--a " << newCurve.getVertex(j) << newCurve.getVertex(j+1);
+                j++;
+            }
+        }
+    }
+
     // finds if the new curve interesects other curves
     for(int k=0; k < newCurve.getVertexSize(); k++)   // for each cubic section of the new curve
     {
@@ -367,6 +377,7 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
             qreal tol3 = 2.0*sqrt(  0.25*((P1-P2).x()*(P1-P2).x() + (P1-P2).y()*(P1-P2).y())  + tolerance*tolerance );
             qreal dist1 = BezierCurve::eLength(P-P1);
             qreal dist2 = BezierCurve::eLength(P-P2);
+
             if (dist1 < 0.2*tolerance)
             {
                 m_curves[i].setVertex(-1, P1);  // memo: curve.at(i) is just a copy which can be read, curve[i] is a reference which can be modified
@@ -389,8 +400,8 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
                         if (distance < tolerance)
                         {
                             P = nearestPoint;
-                            m_curves[i].setOrigin(P);
-                            newCurve.addPoint(k, P); //qDebug() << "--i " << P;
+                            //m_curves[i].setOrigin(P);
+                            //newCurve.addPoint(k, P); //qDebug() << "--i " << P;
                         }
                     }
                 }
@@ -420,8 +431,8 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
                         if (distance < tolerance)
                         {
                             Q = nearestPoint;
-                            m_curves[i].setLastVertex(Q);
-                            newCurve.addPoint(k, Q); //qDebug() << "--j " << Q;
+                            //m_curves[i].setLastVertex(Q);
+                            //newCurve.addPoint(k, Q); //qDebug() << "--j " << Q;
                         }
                     }
                 }
@@ -1286,7 +1297,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
     // We get the contour points from a bitmap version of the vector layer as it is much faster to process
     //
     QImage* image = new QImage( mSize, QImage::Format_ARGB32_Premultiplied );
-    image->fill(qRgba(0,0,0,0));
+    image->fill(Qt::white);
     QPainter painter( image );
 
     // Adapt the QWidget view coordinates to the QImage coordinates
@@ -1360,11 +1371,36 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(leftPoint.x(), leftPoint.y()) != colouFrom &&
                      image->pixel(leftPoint.x(), leftPoint.y()) != colourTo ) {
 
+                    foundLeftBound = true;
+
                     // Convert point to view coordinates
                     QPointF contourPoint( leftPoint.x() - (maxWidth / 2), leftPoint.y() - (maxHeight / 2));
 
-                    contourPoints.append(contourPoint);
-                    foundLeftBound = true;
+                    // Check if the left bound is just a line crossing the main shape
+                    //
+                    bool foundFillAfter = false;
+                    int increment = 1;
+
+                    while (leftPoint.x() - increment > 0 && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(leftPoint.x() - increment, leftPoint.y());
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
                 }
             }
 
@@ -1387,9 +1423,37 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(rightPoint.x(), rightPoint.y()) != colouFrom &&
                      image->pixel(rightPoint.x(), rightPoint.y()) != colourTo) {
 
-                    QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
-                    contourPoints.append(contourPoint);
                     foundRightBound = true;
+
+                    // Convert point to view coordinates
+                    QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
+
+
+                    // Check if the left bound is just a line crossing the main shape
+                    //
+                    bool foundFillAfter = false;
+                    int increment = 1;
+
+                    while (rightPoint.x() + increment < maxWidth && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(rightPoint.x() + increment, rightPoint.y());
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
                 }
             }
 
@@ -1420,8 +1484,34 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(topPoint.x(), topPoint.y()) != colouFrom &&
                      image->pixel(topPoint.x(), topPoint.y()) != colourTo) {
 
+                    // Convert point to view coordinates
                     QPointF contourPoint( topPoint.x() - (maxWidth / 2), topPoint.y() - (maxHeight / 2));
-                    contourPoints.append(contourPoint);
+
+
+                    // Check if the left bound is just a line crossing the main shape
+                    //
+                    bool foundFillAfter = false;
+                    int increment = 1;
+
+                    while (topPoint.y() - increment > 0 && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(topPoint.x(), topPoint.y() - increment);
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
+                    }
+                    else {
+                        contourPoints.append(contourPoint);
+                    }
                 }
                 else {
                     queue.append(topPoint);
@@ -1434,21 +1524,47 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colouFrom &&
                      image->pixel(bottomPoint.x(), bottomPoint.y()) != colourTo ) {
 
-
+                    // Convert point to view coordinates
                     QPointF contourPoint( bottomPoint.x() - (maxWidth / 2), bottomPoint.y() - (maxHeight / 2));
 
-                    // Keep track of the highest Y position (lowest point) at the beginning of the list
-                    // so that we can parse the list from a point that is a real extremity.
-                    // of the area.
+                    // Check if the left bound is just a line crossing the main shape
                     //
-                    if (highestY < bottomY) {
+                    bool foundFillAfter = false;
+                    int increment = 1;
 
-                        highestY = bottomY;
-                        contourPoints.insert(0, contourPoint);
+                    while (bottomPoint.y() + increment < maxHeight && increment < 3 && !foundFillAfter) {
+                        QPoint pointAfter = QPoint(bottomPoint.x(), bottomPoint.y() + increment);
+
+                        if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
+                            foundFillAfter = true;
+                        }
+
+                        increment ++;
+                    }
+
+
+                    if (foundFillAfter) {
+
+                        // If the bound is not a contour, we must ignore it
+                        //
+                        contourPoints.removeOne(contourPoint);
                     }
                     else {
-                        contourPoints.append(contourPoint);
+
+                        // Keep track of the highest Y position (lowest point) at the beginning of the list
+                        // so that we can parse the list from a point that is a real extremity.
+                        // of the area.
+                        //
+                        if (highestY < bottomY) {
+
+                            highestY = bottomY;
+                            contourPoints.insert(0, contourPoint);
+                        }
+                        else {
+                            contourPoints.append(contourPoint);
+                        }
                     }
+
                 }
                 else {
                     queue.append(bottomPoint);
@@ -1555,7 +1671,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
                 // Check if we can find the point after
                 //
                 maxDelta = 3;
-                minDelta = -5;
+                minDelta = -3;
                 foundNextPoint = true;
             }
             else {
