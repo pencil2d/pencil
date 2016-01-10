@@ -33,7 +33,8 @@ enum ToolPropertyType
     FEATHER,
     PRESSURE,
     INVISIBILITY,
-    PRESERVEALPHA
+    PRESERVEALPHA,
+    BEZIER
 };
 
 enum BackgroundStyle

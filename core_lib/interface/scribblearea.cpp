@@ -1132,7 +1132,8 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
                    Qt::SolidLine,
                    Qt::RoundCap,
                    Qt::RoundJoin );
-        QPainterPath tempPath = BezierCurve( points ).getSimplePath();
+        //QPainterPath tempPath = BezierCurve( points ).getSimplePath();
+        QPainterPath tempPath = BezierCurve( points ).getStraightPath();
         tempPath.lineTo( endPoint );
 
         QRectF updateRect = mEditor->view()->mapCanvasToScreen( tempPath.boundingRect().toRect() ).adjusted( -10, -10, 10, 10 );

@@ -32,6 +32,7 @@ void ToolOptionWidget::updateUI()
 
     mSizeSlider->setVisible( currentTool->isPropertyEnabled( WIDTH ) );
     mFeatherSlider->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
+    mUseBezierBox->setVisible( currentTool->isPropertyEnabled( BEZIER ) );
     mUsePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
     mMakeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
     mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
@@ -64,6 +65,11 @@ void ToolOptionWidget::createUI()
     mFeatherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
     mFeatherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 
+    mUseBezierBox = new QCheckBox( tr( "Bezier" ) );
+    mUseBezierBox->setToolTip( tr( "Bezier curve fitting" ) );
+    mUseBezierBox->setFont( QFont( "Helvetica", 10 ) );
+    mUseBezierBox->setChecked( false );
+
     mUsePressureBox = new QCheckBox( tr( "Pressure" ) );
     mUsePressureBox->setToolTip( tr( "Size with pressure" ) );
     mUsePressureBox->setFont( QFont( "Helvetica", 10 ) );
@@ -81,6 +87,7 @@ void ToolOptionWidget::createUI()
 
     pLayout->addWidget( mSizeSlider, 8, 0, 1, 2 );
     pLayout->addWidget( mFeatherSlider, 9, 0, 1, 2 );
+    pLayout->addWidget( mUseBezierBox, 10, 0, 1, 2 );
     pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
     pLayout->addWidget( mPreserveAlphaBox, 12, 0, 1, 2 );
     pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
@@ -177,6 +184,7 @@ void ToolOptionWidget::disableAllOptions()
 {
     mSizeSlider->hide();
     mFeatherSlider->hide();
+    mUseBezierBox->hide();
     mUsePressureBox->hide();
     mMakeInvisibleBox->hide();
     mPreserveAlphaBox->hide();

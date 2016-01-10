@@ -40,6 +40,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
     m_enabledProperties.insert( PRESSURE,       false  );
     m_enabledProperties.insert( INVISIBILITY,   false  );
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
+    m_enabledProperties.insert( BEZIER,         false  );
 }
 
 QCursor BaseTool::cursor()
