@@ -45,16 +45,6 @@ namespace Ui
 class MainWindow2;
 }
 
-class ShortCutFilter : public QObject
-{
-    Q_OBJECT
-    public:
-        ShortCutFilter( ScribbleArea* _mScribbleArea );
-    protected:
-        bool eventFilter(QObject *obj, QEvent *event);
-        ScribbleArea* mScribbleArea;
-};
-
 class MainWindow2 : public QMainWindow
 {
     Q_OBJECT
