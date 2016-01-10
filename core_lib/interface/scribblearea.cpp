@@ -249,7 +249,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
     mKeyboardInUse = true;
 
-    if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
+    if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing
 
     if ( currentTool()->keyPressEvent( event ) )
     {

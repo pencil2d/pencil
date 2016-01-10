@@ -62,6 +62,18 @@ GNU General Public License for more details.
 
 #include "exportimageseqdialog.h"
 
+ShortCutFilter::ShortCutFilter( ScribbleArea* _mScribbleArea ){
+    mScribbleArea = _mScribbleArea;
+}
+
+bool ShortCutFilter::eventFilter(QObject *obj, QEvent *event){
+    if (mScribbleArea->isMouseInUse() )
+    {
+        return true;
+    }
+    return QObject::eventFilter(obj, event);
+}
+
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -921,6 +933,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Backward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_BACKWARD ) );
     ui->actionMove_Frame_Forward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_FORWARD ) );
 
+    ShortCutFilter* shortcutfilter = new ShortCutFilter( mScribbleArea );
     ui->actionMove->setShortcut( cmdKeySeq( CMD_TOOL_MOVE ) );
     ui->actionSelect->setShortcut( cmdKeySeq( CMD_TOOL_SELECT ) );
     ui->actionBrush->setShortcut( cmdKeySeq( CMD_TOOL_BRUSH ) );
@@ -932,6 +945,19 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionBucket->setShortcut( cmdKeySeq( CMD_TOOL_BUCKET ) );
     ui->actionEyedropper->setShortcut( cmdKeySeq( CMD_TOOL_EYEDROPPER ) );
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
+
+    ui->actionMove->installEventFilter( shortcutfilter );
+    ui->actionMove->installEventFilter( shortcutfilter );
+    ui->actionSelect->installEventFilter( shortcutfilter );
+    ui->actionBrush->installEventFilter( shortcutfilter );
+    ui->actionPolyline->installEventFilter( shortcutfilter );
+    ui->actionSmudge->installEventFilter( shortcutfilter );
+    ui->actionPen->installEventFilter( shortcutfilter );
+    ui->actionHand->installEventFilter( shortcutfilter );
+    ui->actionPencil->installEventFilter( shortcutfilter );
+    ui->actionBucket->installEventFilter( shortcutfilter );
+    ui->actionEyedropper->installEventFilter( shortcutfilter );
+    ui->actionEraser->installEventFilter( shortcutfilter );
 
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
     //mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
