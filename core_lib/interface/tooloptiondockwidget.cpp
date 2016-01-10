@@ -103,6 +103,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 {
     auto toolManager = editor->tools();
 
+    connect( mUseBezierBox, &QCheckBox::clicked, toolManager, &ToolManager::setBezier );
     connect( mUsePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure );
     connect( mMakeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility );
     connect( mPreserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha );

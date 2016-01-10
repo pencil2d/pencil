@@ -24,6 +24,7 @@ public:
     int pressure      = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
+    bool bezier_state = false;
 };
 
 const int ON = 1;
@@ -74,6 +75,7 @@ public:
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
     virtual void setInvisibility( const bool invisibility );
+    virtual void setBezier( const bool bezier_state );
     virtual void setPressure( const bool pressure );
     virtual void setPreserveAlpha( const bool preserveAlpha );
     virtual void leavingThisTool(){}

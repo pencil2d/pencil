@@ -313,6 +313,11 @@ void BaseTool::setInvisibility( const bool invisibility )
     properties.invisibility = invisibility;
 }
 
+void BaseTool::setBezier( const bool _bezier_state )
+{
+    properties.bezier_state = _bezier_state;
+}
+
 void BaseTool::setPressure( const bool pressure )
 {
     properties.pressure = pressure;
