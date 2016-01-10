@@ -452,7 +452,19 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
     }
 }
 
+// Without curve fitting
+QPainterPath BezierCurve::getStraightPath()
+{
+    QPainterPath path;
+    path.moveTo(origin);
+    for(int i=0; i<vertex.size(); i++)
+    {
+        path.lineTo(vertex[i]);
+    }
+    return path;
+}
 
+// With bezier curve fitting
 QPainterPath BezierCurve::getSimplePath()
 {
     QPainterPath path;

@@ -77,6 +77,7 @@ public:
     void addPoint(int position, const qreal t);
     QPointF getPointOnCubic(int i, qreal t);
     void removeVertex(int i);
+    QPainterPath getStraightPath();
     QPainterPath getSimplePath();
     QPainterPath getStrokedPath();
     QPainterPath getStrokedPath(qreal width);
