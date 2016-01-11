@@ -212,6 +212,8 @@ void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx
 {
     qreal inc = pow( OriginalSettingValue * 100, 0.5 );
     qreal newValue = inc + argOffsetX;
+    int max = type == FEATHER ? 64 : 200;
+    int min = type == FEATHER ? 2 : 1;
 
     if ( newValue < 0 )
     {
@@ -224,13 +226,13 @@ void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx
         int tempValue = ( int )( newValue / adjustmentStep ); // + 0.5 ?
         newValue = tempValue * adjustmentStep;
     }
-    if ( newValue < 1 ) // can be optimized for size: min(200,max(0.2,newValueX))
+    if ( newValue < min ) // can be optimized for size: min(200,max(0.2,newValueX))
     {
-        newValue = 1;
+        newValue = min;
     }
-    else if ( newValue > 200 )
+    else if ( newValue > max )
     {
-        newValue = 200;
+        newValue = max;
     }
 
     switch (type){

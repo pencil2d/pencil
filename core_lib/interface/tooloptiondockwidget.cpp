@@ -56,12 +56,12 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    mSizeSlider = new SpinSlider( tr( "Size" ), SpinSlider::LOG, SpinSlider::FLOAT, 0.1, 200.0, this );
-    mSizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
+    mSizeSlider = new SpinSlider( tr( "Size" ), SpinSlider::LOG, SpinSlider::INTEGER, 1, 200, this );
+    mSizeSlider->setValue( settings.value( "brushWidth" ).toDouble() );
     mSizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    mFeatherSlider = new SpinSlider( tr( "Feather" ), SpinSlider::LOG, SpinSlider::FLOAT, 2.0, 64.0, this );
-    mFeatherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
+    mFeatherSlider = new SpinSlider( tr( "Feather" ), SpinSlider::LOG, SpinSlider::INTEGER, 2, 64, this );
+    mFeatherSlider->setValue( settings.value( "brushFeather" ).toDouble() );
     mFeatherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 
     mUsePressureBox = new QCheckBox( tr( "Pressure" ) );
