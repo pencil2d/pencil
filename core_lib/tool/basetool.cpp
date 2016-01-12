@@ -209,57 +209,44 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->setCursor( cursor() );
 }
 
-void BaseTool::adjustCursor( qreal argOffsetX, qreal argOffsetY ) //offsetx x-lastx ...
+void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx x-lastx ...
 {
-    qreal incx = pow( OriginalSettingValue * 100, 0.5 );
-    qreal incy = incx;
-    qreal newValueX = incx + argOffsetX;
-    qreal newValueY = incy + argOffsetY;
+    qreal inc = pow( OriginalSettingValue * 100, 0.5 );
+    qreal newValue = inc + argOffsetX;
+    int max = type == FEATHER ? 64 : 200;
+    int min = type == FEATHER ? 2 : 1;
 
-    if ( newValueX < 0 )
+    if ( newValue < 0 )
     {
-        newValueX = 0;
-    }
-    if ( newValueY < 0 )
-    {
-        newValueY = 0;
+        newValue = 0;
     }
 
-    newValueX = pow( newValueX, 2 ) / 100;
-    newValueY = pow( newValueY, 2 ) / 100;
-
+    newValue = pow( newValue, 2 ) / 100;
     if ( adjustmentStep > 0 )
     {
-        int tempValueX = ( int )( newValueX / adjustmentStep ); // + 0.5 ?
-        int tempValueY = ( int )( newValueY / adjustmentStep ); // + 0.5 ?
-        newValueX = tempValueX * adjustmentStep;
-        newValueY = tempValueY * adjustmentStep;
+        int tempValue = ( int )( newValue / adjustmentStep ); // + 0.5 ?
+        newValue = tempValue * adjustmentStep;
+    }
+    if ( newValue < min ) // can be optimized for size: min(200,max(0.2,newValueX))
+    {
+        newValue = min;
+    }
+    else if ( newValue > max )
+    {
+        newValue = max;
     }
 
-    if ( newValueX < 1 ) // can be optimized for size: min(200,max(0.2,newValueX))
-    {
-        newValueX = 1;
-    }
-    else if ( newValueX > 200 )
-    {
-        newValueX = 200;
-    }
-
-    if ( newValueY < 1 ) // can be optimized for size: min(200,max(0.2,newValueX))
-    {
-        newValueY = 1;
-    }
-    else if ( newValueY > 200 )
-    {
-        newValueY = 200;
-    }
-
-    mEditor->tools()->setWidth( newValueX );
-
-    if ( ( this->type() == BRUSH ) || ( this->type() == ERASER ) || ( this->type() == SMUDGE ) )
-    {
-        mEditor->tools()->setFeather( newValueY );
-    }
+    switch (type){
+        case FEATHER:
+            if ( ( this->type() == BRUSH ) || ( this->type() == ERASER ) || ( this->type() == SMUDGE ) )
+            {
+                mEditor->tools()->setFeather( newValue );
+            }
+            break;
+        case WIDTH:
+            mEditor->tools()->setWidth( newValue );
+            break;
+    };
 }
 
 void BaseTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )

@@ -570,7 +570,9 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if ( currentTool()->isAdjusting )
         {
-            currentTool()->adjustCursor( mOffset.x(), mOffset.y() ); //updates cursors given org width or feather and x
+            ToolPropertyType tool_type;
+            tool_type = event->modifiers() & Qt::ControlModifier ? FEATHER : WIDTH;
+            currentTool()->adjustCursor( mOffset.x(), tool_type ); //updates cursors given org width or feather and x
             return;
         }
     }

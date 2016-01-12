@@ -62,7 +62,7 @@ public:
     // dynamic cursor adjustment
     virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
     virtual void stopAdjusting();
-    virtual void adjustCursor( qreal argOffsetX, qreal argOffsetY );
+    virtual void adjustCursor( qreal argOffsetX, ToolPropertyType type );
 
     virtual void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
 
