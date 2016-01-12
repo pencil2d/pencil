@@ -25,14 +25,9 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     QLabel* label = new QLabel(text+": ");
     label->setFont( QFont( "Helvetica", 10 ) );
 
-    mValueLabel = new QLabel( "--" );
-    mValueLabel->setFont( QFont( "Helvetica", 10 ) );
-
-    mValueLabel->setAlignment( Qt::AlignRight | Qt::AlignVCenter );
-
     mSlider = new QSlider(Qt::Horizontal, this);
-    mSlider->setMinimum( 0 );
-    mSlider->setMaximum( 100 );
+    mSlider->setMinimum( mMin );
+    mSlider->setMaximum( mMax );
     mSlider->setMaximumWidth( 70 );
 
     QGridLayout* layout = new QGridLayout();
@@ -40,7 +35,6 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     layout->setSpacing( 2 );
 
     layout->addWidget( label, 0, 0, 1, 1 );
-    layout->addWidget( mValueLabel, 0, 1, 1, 1 );
     layout->addWidget( mSlider, 1, 0, 1, 2 );
 
     setLayout( layout );
@@ -54,14 +48,8 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
 void SpinSlider::changeValue(qreal value)
 {
     mValue = value;
-    if ( mValueType == INTEGER )
-    {
-        mValueLabel->setText( QString::number(qRound(value)) );
-    }
-    else // FLOAT
-    {
-        mValueLabel->setText( QLocale::system().toString(value,'f',1) );
-    }
+    emit valueChanged( value );
+    mSlider->setSliderPosition( value );
 }
 
 void SpinSlider::onSliderValueChanged( int v )
@@ -70,13 +58,13 @@ void SpinSlider::onSliderValueChanged( int v )
     qreal value2 = 0.0;
     if ( mGrowthType == LINEAR )
     {
-        value2 = mMin + v * ( mMax - mMin ) / 100;
+        value2 = mMin + v * ( mMax - mMin ) / mMax;
     }
     else if ( mGrowthType == LOG )
     {
-        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / 100.0 );
+        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / mMax );
     }
-    changeValue( value2 );
+    //changeValue( value2 );
 }
 
 void SpinSlider::setValue( qreal v )
@@ -85,21 +73,20 @@ void SpinSlider::setValue( qreal v )
     int value2 = 0;
     if ( mGrowthType == LINEAR )
     {
-        value2 = std::round( 100 * ( v - mMin ) / ( mMax - mMin ) );
+        value2 = std::round( mMax * ( v - mMin ) / ( mMax - mMin ) );
     }
     if ( mGrowthType == LOG )
     {
-        value2 = std::round( std::log( v / mMin ) * 100.0 / std::log( mMax / mMin ) );
+        value2 = std::round( std::log( v / mMin ) * mMax / std::log( mMax / mMin ) );
     }
     //qDebug() << "Position! " << value2;
-    mSlider->setSliderPosition( value2 );
 
     changeValue( v );
 }
 
 void SpinSlider::sliderReleased()
 {
-    emit valueChanged( mValue );
+    //emit valueChanged( mValue );
 }
 
 void SpinSlider::sliderMoved(int value)
