@@ -6,6 +6,7 @@
 class QToolButton;
 class SpinSlider;
 class QCheckBox;
+class QSpinBox;
 class Editor;
 class BaseTool;
 
@@ -41,6 +42,8 @@ private:
     QCheckBox* mUsePressureBox   = nullptr;
     QCheckBox* mMakeInvisibleBox = nullptr;
     QCheckBox* mPreserveAlphaBox = nullptr;
+    QSpinBox* mBrushSpinBox          = nullptr;
+    QSpinBox* mFeatherSpinBox        = nullptr;
     SpinSlider* mSizeSlider      = nullptr;
     SpinSlider* mFeatherSlider   = nullptr;
 };
