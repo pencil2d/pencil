@@ -42,8 +42,8 @@ private:
     QCheckBox* mUsePressureBox   = nullptr;
     QCheckBox* mMakeInvisibleBox = nullptr;
     QCheckBox* mPreserveAlphaBox = nullptr;
-    QSpinBox* mBrushSpinBox          = nullptr;
-    QSpinBox* mFeatherSpinBox        = nullptr;
+    QSpinBox* mBrushSpinBox      = nullptr;
+    QSpinBox* mFeatherSpinBox    = nullptr;
     SpinSlider* mSizeSlider      = nullptr;
     SpinSlider* mFeatherSlider   = nullptr;
 };
