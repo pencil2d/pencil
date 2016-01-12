@@ -41,6 +41,7 @@ public slots:
     void setFeather( float );
     void setInvisibility( bool );
     void setPreserveAlpha( bool );
+    void setBezier( bool );
     void setPressure( bool );
 
 private:

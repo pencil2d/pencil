@@ -40,6 +40,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
     m_enabledProperties.insert( PRESSURE,       false  );
     m_enabledProperties.insert( INVISIBILITY,   false  );
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
+    m_enabledProperties.insert( BEZIER,         false  );
 }
 
 QCursor BaseTool::cursor()
@@ -310,6 +311,11 @@ void BaseTool::setFeather( const qreal feather )
 void BaseTool::setInvisibility( const bool invisibility )
 {
     properties.invisibility = invisibility;
+}
+
+void BaseTool::setBezier( const bool _bezier_state )
+{
+    properties.bezier_state = _bezier_state;
 }
 
 void BaseTool::setPressure( const bool pressure )

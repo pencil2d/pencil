@@ -140,6 +140,12 @@ void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
 }
 
+void ToolManager::setBezier( bool isBezierOn )
+{
+    currentTool()->setBezier( isBezierOn );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), BEZIER );
+}
+
 void ToolManager::setPressure( bool isPressureOn )
 {
     currentTool()->setPressure( isPressureOn );
