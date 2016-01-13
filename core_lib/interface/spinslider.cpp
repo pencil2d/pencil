@@ -58,13 +58,12 @@ void SpinSlider::onSliderValueChanged( int v )
     qreal value2 = 0.0;
     if ( mGrowthType == LINEAR )
     {
-        value2 = mMin + v * ( mMax - mMin ) / mMax;
+        value2 = mMin + v * ( mMax - mMin ) / 100;
     }
     else if ( mGrowthType == LOG )
     {
-        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / mMax );
+        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / 100.0 );
     }
-    //changeValue( value2 );
 }
 
 void SpinSlider::setValue( qreal v )
@@ -73,11 +72,11 @@ void SpinSlider::setValue( qreal v )
     int value2 = 0;
     if ( mGrowthType == LINEAR )
     {
-        value2 = std::round( mMax * ( v - mMin ) / ( mMax - mMin ) );
+        value2 = std::round( 100 * ( v - mMin ) / ( mMax - mMin ) );
     }
     if ( mGrowthType == LOG )
     {
-        value2 = std::round( std::log( v / mMin ) * mMax / std::log( mMax / mMin ) );
+        value2 = std::round( std::log( v / mMin ) * 100 / std::log( mMax / mMin ) );
     }
     //qDebug() << "Position! " << value2;
 
