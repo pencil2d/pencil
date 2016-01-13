@@ -165,6 +165,8 @@ void ToolOptionWidget::setPenWidth( qreal width )
     QSignalBlocker b( mSizeSlider );
     mSizeSlider->setEnabled( true );
     mSizeSlider->setValue( width );
+
+    QSignalBlocker b2( mBrushSpinBox );
     mBrushSpinBox->setEnabled( true );
     mBrushSpinBox->setValue( width );
 }
@@ -174,6 +176,8 @@ void ToolOptionWidget::setPenFeather( qreal featherValue )
     QSignalBlocker b( mFeatherSlider );
     mFeatherSlider->setEnabled( true );
     mFeatherSlider->setValue( featherValue );
+    
+    QSignalBlocker b2( mFeatherSpinBox );
     mFeatherSpinBox->setEnabled( true );
     mFeatherSpinBox->setValue( featherValue );
 }
