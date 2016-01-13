@@ -6,12 +6,12 @@
     <message>
         <location filename="src/structure/layercamera.cpp" line="29"/>
         <source>Camera name:</source>
-        <translation>Kamera navn:</translation>
+        <translation>Name der Kamera:</translation>
     </message>
     <message>
         <location filename="src/structure/layercamera.cpp" line="36"/>
         <source>Camera size:</source>
-        <translation>Kamera størrelse:</translation>
+        <translation>Größe der Kamera:</translation>
     </message>
     <message>
         <location filename="src/structure/layercamera.cpp" line="50"/>
@@ -21,7 +21,7 @@
     <message>
         <location filename="src/structure/layercamera.cpp" line="51"/>
         <source>Cancel</source>
-        <translation>Annuller</translation>
+        <translation>Abbrechen</translation>
     </message>
 </context>
 <context>
@@ -29,22 +29,22 @@
     <message>
         <location filename="src/interface/colorgriditem.cpp" line="29"/>
         <source>Cancel</source>
-        <translation>Annuller</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="src/interface/colorgriditem.cpp" line="26"/>
         <source>Pick</source>
-        <translation>Pluk</translation>
+        <translation>Auswählen</translation>
     </message>
     <message>
         <location filename="src/interface/colorgriditem.cpp" line="27"/>
         <source>Tint</source>
-        <translation>Tinte</translation>
+        <translation>Einfärben</translation>
     </message>
     <message>
         <location filename="src/interface/colorgriditem.cpp" line="28"/>
         <source>Clear</source>
-        <translation>Ryd</translation>
+        <translation>Löschen</translation>
     </message>
 </context>
 <context>
@@ -63,41 +63,41 @@
         <location filename="src/interface/colorinspector.ui" line="53"/>
         <location filename="src/interface/colorinspector.cpp" line="100"/>
         <source>Red</source>
-        <translation>Rød</translation>
+        <translation>Rot</translation>
     </message>
     <message>
         <location filename="src/interface/colorinspector.ui" line="67"/>
         <location filename="src/interface/colorinspector.cpp" line="101"/>
         <source>Green</source>
-        <translation>Grøn</translation>
+        <translation>Grün</translation>
     </message>
     <message>
         <location filename="src/interface/colorinspector.ui" line="81"/>
         <location filename="src/interface/colorinspector.cpp" line="102"/>
         <source>Blue</source>
-        <translation>Blå</translation>
+        <translation>Blau</translation>
     </message>
     <message>
         <location filename="src/interface/colorinspector.ui" line="95"/>
         <location filename="src/interface/colorinspector.cpp" line="82"/>
         <location filename="src/interface/colorinspector.cpp" line="103"/>
         <source>Alpha</source>
-        <translation>Alfa</translation>
+        <translation>Alpha</translation>
     </message>
     <message>
         <location filename="src/interface/colorinspector.cpp" line="79"/>
         <source>Hue</source>
-        <translation>Nuance</translation>
+        <translation>Farbton</translation>
     </message>
     <message>
         <location filename="src/interface/colorinspector.cpp" line="80"/>
         <source>Saturation</source>
-        <translation>Mætning</translation>
+        <translation>Sättigung</translation>
     </message>
     <message>
         <location filename="src/interface/colorinspector.cpp" line="81"/>
         <source>Value</source>
-        <translation>Værdi</translation>
+        <translation>Helligkeit</translation>
     </message>
 </context>
 <context>
@@ -105,27 +105,27 @@
     <message>
         <location filename="src/structure/object.cpp" line="416"/>
         <source>Red</source>
-        <translation>Rød</translation>
+        <translation>Rot</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="422"/>
         <source>Green</source>
-        <translation>Grøn</translation>
+        <translation>Grün</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="426"/>
         <source>Blue</source>
-        <translation>Blå</translation>
+        <translation>Blau</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="415"/>
         <source>Black</source>
-        <translation>Sort</translation>
+        <translation>Schwarz</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="417"/>
         <source>Dark Red</source>
-        <translation>Mørkerød</translation>
+        <translation>Dunkelrot</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="418"/>
@@ -135,92 +135,96 @@
     <message>
         <location filename="src/structure/object.cpp" line="419"/>
         <source>Dark Orange</source>
-        <translation>Mørke Orange</translation>
+        <translation>Dunkelorange
+</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="420"/>
         <source>Yellow</source>
-        <translation>Gul</translation>
+        <translation>Gelb</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="421"/>
         <source>Dark Yellow</source>
-        <translation>Mørkegul</translation>
+        <translation>Dunkelgelb
+</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="423"/>
         <source>Dark Green</source>
-        <translation>Mørkegrøn</translation>
+        <translation>Dunkelgrün</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="424"/>
         <source>Cyan</source>
-        <translation>Turkis</translation>
+        <translation>Zyan
+</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="425"/>
         <source>Dark Cyan</source>
-        <translation>Mørke turkis</translation>
+        <translation>Dunkelzyan</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="427"/>
         <source>Dark Blue</source>
-        <translation>Mørkeblå</translation>
+        <translation>Dunkelblau</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="428"/>
         <source>White</source>
-        <translation>Hvid</translation>
+        <translation>Weiss</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="429"/>
         <source>Very Light Grey</source>
-        <translation>Meget Lysegrå</translation>
+        <translation>Sehr hellgrau</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="430"/>
         <source>Light Grey</source>
-        <translation>Lysegrå</translation>
+        <translation>Hellgrau</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="431"/>
         <source>Grey</source>
-        <translation>Grå</translation>
+        <translation>Grau</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="432"/>
         <source>Dark Grey</source>
-        <translation>Mørkegrå</translation>
+        <translation>Dunkelgrau
+</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="433"/>
         <source>Light Skin</source>
-        <translation>Lys hud</translation>
+        <translation>Helle Hautfarbe</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="434"/>
         <source>Light Skin - shade</source>
-        <translation>Lys hyd - skygge</translation>
+        <translation>Helle Hautfarbe - Schatten</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="435"/>
         <source>Skin</source>
-        <translation>Hud</translation>
+        <translation>Hautfarbe</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="436"/>
         <source>Skin - shade</source>
-        <translation>Hud - skygge</translation>
+        <translation>Hautfarbe - Schatten</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="437"/>
         <source>Dark Skin</source>
-        <translation>Mørk Hud</translation>
+        <translation>Dunkler Hautton</translation>
     </message>
     <message>
         <location filename="src/structure/object.cpp" line="438"/>
         <source>Dark Skin - shade</source>
-        <translation>Mørk Hud - skygge</translation>
+        <translation>Dunkle Haut - Schatten</translation>
     </message>
 </context>
 <context>
@@ -228,77 +232,85 @@
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="60"/>
         <source>Alpha</source>
-        <translation>Alfa</translation>
+        <translation>Alpha</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="84"/>
         <source>Options</source>
-        <translation>Instillinger</translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="30"/>
         <source>Color:</source>
-        <translation>Farve:</translation>
+        <translation>Farbe:</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="37"/>
         <source>Display Colors</source>
-        <translation>Vis Farver</translation>
+        <translation>Anzeigefarben</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="39"/>
         <source>Size</source>
-        <translation>Størrelse</translation>
+        <translation>Größe</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="41"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation>Indstil Pen bredde &lt;br&gt;&lt;b&gt;[SHIFT]+træk&lt;/b&gt;&lt;br&gt;for hurtige justeringer</translation>
+        <translation>Stiftbreite festlegen&lt;br&gt;&lt;b&gt;[UMSCHALT]+Ziehen&lt;/b&gt;&lt;br&gt;für schnelle Anpassung</translation>
+    </message>
+    <message>
+    <source>Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment</source>
+        <translation>Stiftbreite festlegen<br><b>[UMSCHALT]+Ziehen</b><br>für schnelle Anpassung</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="43"/>
         <source>Feather</source>
-        <translation>Udtynding</translation>
+        <translation>Weichheit:</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="45"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation>Indstil Pen udtynding &lt;br&gt;&lt;b&gt;[CTRL]+træk&lt;/b&gt;&lt;br&gt;for hurtige justeringer</translation>
+        <translation>Weichheit festlegen&lt;br&gt;&lt;b&gt;[STRG]+Ziehen&lt;/b&gt;&lt;br&gt;für schnelle Anpassung</translation>
+    </message>
+    <message>
+    <source>Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment</source>
+        <translation>Weichheit festlegen <br><b>[STRG]+Ziehen</b><br> für schnelle Anpassung</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="50"/>
         <source>Pressure</source>
-        <translation>Trykniveau</translation>
+        <translation>Druck</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="51"/>
         <source>Size with pressure</source>
-        <translation>Størrelses ændring ud fra trykniveau</translation>
+        <translation>Größe durch Druck ändern</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="55"/>
         <source>Invisible</source>
-        <translation>Usynlighed</translation>
+        <translation>Unsichtbar</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="56"/>
         <source>Make invisible</source>
-        <translation>Gør usynlig</translation>
+        <translation>Unsichtbar machen</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="61"/>
         <source>Preserve Alpha</source>
-        <translation>Bevar Alfa</translation>
+        <translation>Transparenz erhalten</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="65"/>
         <source>Contours</source>
-        <translation>Kontur</translation>
+        <translation>Konturen</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="66"/>
         <source>Stop at contours</source>
-        <translation>Stop ved kontur</translation>
+        <translation>An Konturen stoppen</translation>
     </message>
 </context>
 <context>
@@ -306,34 +318,34 @@
     <message>
         <location filename="src/interface/colorpalettewidget.cpp" line="32"/>
         <source>Colors</source>
-        <translation>Farver</translation>
+        <translation>Farben</translation>
     </message>
     <message>
         <location filename="src/interface/colorpalettewidget.cpp" line="36"/>
         <source>Add Color</source>
-        <translation>Tilføj Farve</translation>
+        <translation>Farbe hinzufügen</translation>
     </message>
     <message>
         <location filename="src/interface/colorpalettewidget.cpp" line="41"/>
         <source>Remove Color</source>
-        <translation>Fjern Farve</translation>
+        <translation>Farbe entfernen</translation>
     </message>
     <message>
         <location filename="src/interface/colorpalettewidget.cpp" line="176"/>
         <location filename="src/interface/colorpalettewidget.cpp" line="205"/>
         <source>Colour name</source>
-        <translation>Farve navn</translation>
+        <translation>Name der Farbe</translation>
     </message>
     <message>
         <location filename="src/interface/colorpalettewidget.cpp" line="177"/>
         <location filename="src/interface/colorpalettewidget.cpp" line="206"/>
         <source>Colour name:</source>
-        <translation>Farve navn:</translation>
+        <translation>Name der Farbe:</translation>
     </message>
     <message>
         <location filename="src/interface/colorpalettewidget.cpp" line="208"/>
         <source>Colour %1</source>
-        <translation>Farve %1</translation>
+        <translation>Farbe %1</translation>
     </message>
 </context>
 <context>
@@ -341,62 +353,62 @@
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="14"/>
         <source>Display Options</source>
-        <translation>Vis Instillinger</translation>
+        <translation>Anzeige-Optionen</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="25"/>
         <source>Show invisible lines</source>
-        <translation>Vis Usynlige linjer</translation>
+        <translation>Unsichtbare Linien anzeigen</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="30"/>
         <source>Show outlines only</source>
-        <translation>Vis kun omrids</translation>
+        <translation>Nur Umrisse anzeigen</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="35"/>
         <source>Horizontal flip</source>
-        <translation>Vend horisontalt</translation>
+        <translation>Horizontal spiegeln</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="40"/>
         <source>Vertical flip</source>
-        <translation>Vend vertikalt</translation>
+        <translation>Vertikal Spiegeln</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="45"/>
         <source>Onion skin previous frame</source>
-        <translation>Løgskind den forrige ramme</translation>
+        <translation>Zwiebelhaut vorheriger Frame</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="50"/>
         <source>Onion skin next frame</source>
-        <translation>Løgskind den næste ramme</translation>
+        <translation>Zwiebelhaut nächster Frame</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="55"/>
         <source>Onion skin color: blue</source>
-        <translation>Løgskind farve: blå</translation>
+        <translation>Zwiebelhaut-Farbe: Blau</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="60"/>
         <source>Onion skin color: red</source>
-        <translation>løgskind farve: rød</translation>
+        <translation>Zwiebelhaut-Farbe: Rot</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="75"/>
         <source>enable onionskin on multiple layers</source>
-        <translation>Aktiver løgskind på flere lag</translation>
+        <translation>Zwiebelhaut auf mehreren Ebenen zulassen</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="80"/>
         <source>Grid A - composition</source>
-        <translation>Gitter A - Sammensætning</translation>
+        <translation>Gitter A - Anordnung</translation>
     </message>
     <message>
         <location filename="src/interface/displayoptiondockwidget.cpp" line="85"/>
         <source>Grid B - perspective</source>
-        <translation>Gitter B - Perspektiv</translation>
+        <translation>Gitter B - Perspektive</translation>
     </message>
 </context>
 <context>
@@ -404,66 +416,66 @@
     <message>
         <location filename="src/interface/mainwindow2.ui" line="810"/>
         <source>Display Options</source>
-        <translation>Vis instillinger</translation>
+        <translation>Anzeige-Optionen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="423"/>
         <location filename="src/interface/mainwindow2.cpp" line="469"/>
         <location filename="src/interface/mainwindow2.cpp" line="891"/>
         <source>Warning</source>
-        <translation>Advarsel</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="344"/>
         <source>Paste</source>
-        <translation>Indsæt</translation>
+        <translation>Einfügen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="786"/>
         <source>Options</source>
-        <translation>Instillinger</translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="136"/>
         <location filename="src/interface/mainwindow2.ui" line="770"/>
         <source>Tools</source>
-        <translation>Værktøjer</translation>
+        <translation>Werkzeuge</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="14"/>
         <source>MainWindow</source>
-        <translation>Hoved Vindue</translation>
+        <translation>Hauptfenster</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="28"/>
         <source>File</source>
-        <translation>Filer</translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="32"/>
         <location filename="src/interface/mainwindow2.cpp" line="1202"/>
         <source>Import</source>
-        <translation>Importer</translation>
+        <translation>Importieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="44"/>
         <source>Export</source>
-        <translation>Exporter</translation>
+        <translation>Exportieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="69"/>
         <source>Edit</source>
-        <translation>Rediger</translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="89"/>
         <source>View</source>
-        <translation>Se</translation>
+        <translation>Ansicht</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="93"/>
         <source>Onion Skin</source>
-        <translation>løgskind</translation>
+        <translation>Zwiebelhaut</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="119"/>
@@ -473,65 +485,65 @@
     <message>
         <location filename="src/interface/mainwindow2.ui" line="156"/>
         <source>Layer</source>
-        <translation>Lag</translation>
+        <translation>Ebene</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="167"/>
         <location filename="src/interface/mainwindow2.ui" line="693"/>
         <source>Help</source>
-        <translation>Hjælp</translation>
+        <translation>Hilfe</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="174"/>
         <source>Windows</source>
-        <translation>Vinduer</translation>
+        <translation>Fenster</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="199"/>
         <source>New</source>
-        <translation>Ny</translation>
+        <translation>Neu</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="208"/>
         <source>Open</source>
-        <translation>Åben</translation>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="217"/>
         <source>Save</source>
-        <translation>Gem</translation>
+        <translation>Speichern</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="226"/>
         <source>Save As ..</source>
-        <translation>Gem Som ..</translation>
+        <translation>Speichern unter...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="235"/>
         <source>Print</source>
-        <translation>Udprint</translation>
+        <translation>Drucken</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="244"/>
         <source>Exit</source>
-        <translation>Afslut</translation>
+        <translation>Beenden</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="249"/>
         <source>X-sheet ...</source>
-        <translation>X-lagen ...</translation>
+        <translation>X-Sheet...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="254"/>
         <location filename="src/interface/mainwindow2.ui" line="284"/>
         <source>Image Sequence...</source>
-        <translation>Billede Sekvens...</translation>
+        <translation>Bildsequenz...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="259"/>
         <location filename="src/interface/mainwindow2.ui" line="279"/>
         <source>Image...</source>
-        <translation>Billede...</translation>
+        <translation>Bild...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="264"/>
@@ -543,272 +555,258 @@
         <location filename="src/interface/mainwindow2.ui" line="269"/>
         <location filename="src/interface/mainwindow2.ui" line="299"/>
         <source>Palette...</source>
-        <translation>Palet...</translation>
+        <translation>Palette...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="274"/>
         <source>Svg Image...</source>
-        <translation>Svg Billede...</translation>
+        <translation>SVG-Bild...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="294"/>
         <source>Sound...</source>
-        <translation>Lyd...</translation>
+        <translation>Sound</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="308"/>
         <location filename="src/interface/mainwindow2.cpp" line="1150"/>
         <source>Undo</source>
-        <translation>Fortryd</translation>
+        <translation>Rückgängig</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="317"/>
         <location filename="src/interface/mainwindow2.cpp" line="1166"/>
         <source>Redo</source>
-        <translation>Gentag</translation>
+        <translation>Wiederholen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="326"/>
         <source>Cut</source>
-        <translation>Klip</translation>
+        <translation>Ausschneiden</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="335"/>
         <source>Copy</source>
-        <translation>Kopier</translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="349"/>
         <source>Crop</source>
-        <translation>Beskær</translation>
+        <translation>Zuschneiden</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="354"/>
         <source>Crop To Selection</source>
-        <translation>Beskær til Markering</translation>
+        <translation>Auf Auswahl zuscheiden</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="359"/>
         <source>Select All</source>
-        <translation>Vælg Alt</translation>
+        <translation>Alles auswählen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="364"/>
         <source>Deselect All</source>
-        <translation>Fravælg Alt</translation>
+        <translation>Nichts auswählen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="373"/>
         <location filename="src/interface/mainwindow2.ui" line="557"/>
         <source>Clear Frame</source>
-        <translation>Ryd Ramme</translation>
+        <translation>Frame zurücksetzen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="416"/>
         <source>Reset Zoom/Rotate</source>
-        <translation>Nulstil Zoom/Rotation</translation>
+        <translation>Zoom/Drehung zurücksetzen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="706"/>
         <source>Toggle palette</source>
-        <translation>Slå palet til/fra</translation>
+        <translation>Palette an/aus</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="711"/>
         <location filename="src/interface/mainwindow2.ui" line="714"/>
         <source>Reset to default</source>
-        <translation>Nulstil til standard indstillinger</translation>
-    </message>
-    <message>
-        <location filename="src/interface/mainwindow2.ui" line="724"/>
-        <source>Next_Keyframe</source>
-        <translation>Næste_nøgleramme</translation>
+        <translation>Auf Standard zurücksetzen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="727"/>
         <source>Next Keyframe</source>
-        <translation>Næste Nøgleramme</translation>
+        <translation>Nächster Keyframe</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="737"/>
         <source>Prev_Keyframe</source>
-        <translation>Forrige_Nøgleramme</translation>
+        <translation>Vorheriger Keyframe</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="740"/>
         <source>Previous keyframe</source>
-        <translation>Forrige nøgleramme</translation>
-    </message>
-    <message>
-        <location filename="src/interface/mainwindow2.ui" line="751"/>
-        <source>MultiLayerOnionSkin</source>
-        <translation>Flere lags løgskind</translation>
-    </message>
-    <message>
-        <location filename="src/interface/mainwindow2.ui" line="762"/>
-        <source>loopcontrol</source>
-        <translation>Lykkecontrol</translation>
+        <translation>Vorheriger Keyframe</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="778"/>
         <source>Timeline</source>
-        <translation>Tidslinje</translation>
+        <translation>Zeitleiste</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="794"/>
         <location filename="src/interface/mainwindow2.cpp" line="138"/>
         <source>Color Wheel</source>
-        <translation>Farvehjul</translation>
+        <translation>Farbrad</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="802"/>
         <source>Color Palette</source>
-        <translation>Farve Palet</translation>
+        <translation>Farbpalette</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="378"/>
         <source>Preferences</source>
-        <translation>Præferencer</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="383"/>
         <source>Reset Windows</source>
-        <translation>Nulstil Vinduer</translation>
+        <translation>Fenster Zurücksetzen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="392"/>
         <source>Zoom In</source>
-        <translation>Zoom Ind</translation>
+        <translation>Hineinzoomen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="401"/>
         <source>Zoom Out</source>
-        <translation>Zoom Ud</translation>
+        <translation>Herauszoomen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="406"/>
         <source>Rotate Clockwise</source>
-        <translation>Roter Med Uret</translation>
+        <translation>Im Uhrzeigersinn rotieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="411"/>
         <source>Rotate AntiClosewise</source>
-        <translation>Roter Mod Uret</translation>
+        <translation>Gegen den Uhrzeigersinn rotieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="425"/>
         <source>Horizontal Flip</source>
-        <translation>Vend Horisontalt</translation>
+        <translation>Horizontal spiegeln</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="434"/>
         <source>Vertical Flip</source>
-        <translation>Vend Vertikalt</translation>
+        <translation>Vertikal spiegeln</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="439"/>
         <source>Preview</source>
-        <translation>Vis Eksempel</translation>
+        <translation>Vorschau</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="444"/>
         <source>Grid</source>
-        <translation>Gitter</translation>
+        <translation>Raster</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="456"/>
         <source>Previous</source>
-        <translation>Tidligere</translation>
+        <translation>Zurück</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="468"/>
         <source>Next</source>
-        <translation>Næste</translation>
+        <translation>Vor</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="477"/>
         <source>Play</source>
-        <translation>Afspil</translation>
+        <translation>Abspielen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="489"/>
         <source>Loop</source>
-        <translation>Lykke</translation>
+        <translation>Wiederholen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="498"/>
         <source>Next Frame</source>
-        <translation>Næste Ramme</translation>
+        <translation>Nächster Frame</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="507"/>
         <source>Previous Frame</source>
-        <translation>Forrige Ramme</translation>
+        <translation>Vorheriger Frame</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="512"/>
         <source>Extend Frame</source>
-        <translation>Forlæng Ramme</translation>
+        <translation>Frame erweitern</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="521"/>
         <source>Add Frame</source>
-        <translation>Tilføj Ramme</translation>
+        <translation>Frame hinzufügen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="530"/>
         <source>Duplicate Frame</source>
-        <translation>dupliker Ramme</translation>
+        <translation>Frame duplizieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="539"/>
         <source>Remove Frame</source>
-        <translation>Fjern Ramme</translation>
+        <translation>Frame entfernen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="548"/>
         <source>Move</source>
-        <translation>Flyt</translation>
+        <translation>Verschieben</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="566"/>
         <source>Select</source>
-        <translation>Vælg</translation>
+        <translation>Auswählen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="575"/>
         <source>Brush</source>
-        <translation>Pencel</translation>
+        <translation>Pinsel
+</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="584"/>
         <source>Polyline</source>
-        <translation>Polylinje</translation>
+        <translation>Poly-Linie</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="593"/>
         <source>Smudge</source>
-        <translation>Udtværd</translation>
+        <translation>Verschmieren</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="602"/>
         <source>Pen</source>
-        <translation>Pen</translation>
+        <translation>Stift</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="611"/>
         <source>Hand</source>
-        <translation>Hånd</translation>
+        <translation>Hand</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="620"/>
         <source>Pencil</source>
-        <translation>Blyant</translation>
+        <translation>Bleistift</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="629"/>
         <source>Bucket</source>
-        <translation>Spand</translation>
+        <translation>Farbeimer</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="638"/>
@@ -818,105 +816,109 @@
     <message>
         <location filename="src/interface/mainwindow2.ui" line="647"/>
         <source>Eraser</source>
-        <translation>Viskelæder</translation>
+        <translation>Radierer</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="656"/>
         <source>New Bitmap Layer</source>
-        <translation>Nyt Bitmap Lag</translation>
+        <translation>Neue Rasterebene</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="665"/>
         <source>New Vector Layer</source>
-        <translation>Nyt Vector Lag</translation>
+        <translation>Neue Vektorebene</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="674"/>
         <source>New Sound Layer</source>
-        <translation>Nyt Lyd Lag</translation>
+        <translation>Neue Soundebene</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="683"/>
         <source>New Camera Layer</source>
-        <translation>Nyt Kamera Lag</translation>
+        <translation>Neue Kameraebene</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="688"/>
         <source>Delete Current Layer</source>
-        <translation>Fjern Nuværende Lag</translation>
+        <translation>Aktuelle Ebene löschen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.ui" line="698"/>
         <source>About</source>
-        <translation>Om</translation>
+        <translation>Über</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="142"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
-        <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Slå til/fra ved markøren</translation>
+        <translation>Farbpalette: &lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;An Zeigerposition umschalten</translation>
+    </message>
+    <message>
+    <source>color palette:<br>use <b>(C)</b><br>toggle at cursor</source>
+        <translation>Farbpalette: <br><b>(C)</b><br>An Zeigerposition umschalten</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="323"/>
         <source>Open Recent</source>
-        <translation>Åben Seneste</translation>
+        <translation>Zuletzt geöffnet</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="404"/>
         <source>Open File...</source>
-        <translation>Åben Fil...</translation>
+        <translation>Datei öffnen...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="423"/>
         <location filename="src/interface/mainwindow2.cpp" line="469"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
-        <translation>Pencil kan ikke læse denne fil. hvis du vil importere billeder, brug kommandoen importer.</translation>
+        <translation>Pencil kann die Datei nicht lesen. Wenn Sie Bilder importieren möchten, benutzen sie die Importfunktion.</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="444"/>
         <source>Save As...</source>
-        <translation>Gem Som...</translation>
+        <translation>Speichern unter</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="484"/>
         <source>Opening document...</source>
-        <translation>Åbner dokument...</translation>
+        <translation>Dokument wird geöffnet...</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="484"/>
         <location filename="src/interface/mainwindow2.cpp" line="793"/>
         <source>Abort</source>
-        <translation>Om</translation>
+        <translation>Abbruch</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="793"/>
         <source>Saving document...</source>
-        <translation>Gemmer dokument...</translation>
+        <translation>Dokument wird gespeichert</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="892"/>
         <source>This animation has been modified.
 Do you want to save your changes?</source>
-        <translation>Denne animation er blevet modificeret. Vil do gemme dine ændringer?</translation>
+        <translation>Die Animation wurde geändert. Möchten Sie die Änderungen speichern?</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="1126"/>
         <source>close/toggle (</source>
-        <translation>Luk/Slå til/fra (</translation>
+        <translation>schließen/umschalten</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="1155"/>
         <source>Undo   </source>
-        <translation>Fortryd   </translation>
+        <translation>Rückgängig</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="1161"/>
         <source>Redo   </source>
-        <translation>Gentag   </translation>
+        <translation>Wiederherstellen</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="1186"/>
         <source>Export As</source>
-        <translation>Exporter Som</translation>
+        <translation>Exportieren als</translation>
     </message>
 </context>
 <context>
@@ -924,7 +926,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/editor.cpp" line="253"/>
         <source>Import movie</source>
-        <translation>Importer film</translation>
+        <translation>Film importieren</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="255"/>
@@ -939,13 +941,13 @@ Do you want to save your changes?</source>
         <location filename="src/interface/editor.cpp" line="1356"/>
         <location filename="src/interface/editor.cpp" line="1375"/>
         <source>Warning</source>
-        <translation>Advarsel</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="684"/>
         <location filename="src/interface/editor.cpp" line="704"/>
         <source>Paste</source>
-        <translation>Indsæt</translation>
+        <translation>Einfügen</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="743"/>
@@ -953,18 +955,18 @@ Do you want to save your changes?</source>
         <location filename="src/interface/editor.cpp" line="779"/>
         <location filename="src/interface/editor.cpp" line="797"/>
         <source>Bitmap Layer</source>
-        <translation>Bitmap Lag</translation>
+        <translation>Rasterebene</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="812"/>
         <source>Are you sure you want to delete layer: </source>
-        <translation>Er du sikker på at du vil slette lag: </translation>
+        <translation>Sind sie sicher, dass Sie die Ebene löschen wollen:</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="946"/>
         <location filename="src/interface/editor.cpp" line="983"/>
         <source>Resolution</source>
-        <translation>Opløsning</translation>
+        <translation>Auflösung</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="956"/>
@@ -976,38 +978,38 @@ Do you want to save your changes?</source>
         <location filename="src/interface/editor.cpp" line="974"/>
         <location filename="src/interface/editor.cpp" line="1011"/>
         <source>Options</source>
-        <translation>Instillinger</translation>
+        <translation>Optionen</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1030"/>
         <source>Compression</source>
-        <translation>Komprimering</translation>
+        <translation>Kompression</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1044"/>
         <source>Export SWF Options</source>
-        <translation>Exporter SWF Instillinger</translation>
+        <translation>Export SWF Optionen</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1102"/>
         <source>Save Image Sequence</source>
-        <translation>Gem Billede Sekvens</translation>
+        <translation>Bildsequenz speichern</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1134"/>
         <source>Save As</source>
-        <translation>Gem Som</translation>
+        <translation>Speichern unter...</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1169"/>
         <source>Save Image</source>
-        <translation>Gem Billede</translation>
+        <translation>Bild speichern</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1209"/>
         <location filename="src/interface/editor.cpp" line="1239"/>
         <source>Export Movie As...</source>
-        <translation>Exporter Film Som...</translation>
+        <translation>Film exportieren...</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1209"/>
@@ -1022,32 +1024,35 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/editor.cpp" line="1290"/>
         <source>Import image...</source>
-        <translation>Importer image...</translation>
-    </message>
-    <message>
-        <location filename="src/interface/editor.cpp" line="1296"/>
-        <source>ImportImg</source>
-        <translation>ImporterImg</translation>
+        <translation>Bild importieren...</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1357"/>
         <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>kan ikke indlæse bitmap billede.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Brug Bitmap lag til at importere bitmaps.</translation>
+        <translation>Rasterbild kann nicht geladen werden.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt;Rasterebene benutzen, um Rasterbilder zu importieren.</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1376"/>
         <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
-        <translation>Kan ikke indlæse vector billede.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Brug vector lag til at importere vector grafik.</translation>
+        <translation>Vektorbild kann nicht geladen werden.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt;Vektorebene benutzen, um Verktorbilder zu importieren</translation>
+    </message>
+    <message>
+    <source>Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps.</source>
+        <translation>Rasterbild kann nicht geladen werden.<br><b>TIP:</b>Rasterebene benutzen, um Rasterbilder zu importieren.</translation>
+    </message>
+    <message>
+    <source>Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors.</source>
+        <translation>Vektorbild kann nicht geladen werden.<br><b>TIP:</b>Vektorebene benutzen, um Verktorbilder zu importieren</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1279"/>
         <source>Please select a Bitmap or Vector layer to import images.</source>
-        <translation>Vær venlig at vælge et bitmap eller vector lag til at importere billeder til.</translation>
+        <translation>Bitte Raster- oder Vektorebene auswählen, um Bilder zu importieren.</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="114"/>
         <source>Tools</source>
-        <translation>Værktøjer</translation>
+        <translation>Werkzeuge</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="741"/>
@@ -1055,7 +1060,7 @@ Do you want to save your changes?</source>
         <location filename="src/interface/editor.cpp" line="777"/>
         <location filename="src/interface/editor.cpp" line="795"/>
         <source>Layer Properties</source>
-        <translation>Lag Præferencer</translation>
+        <translation>Ebeneneigenschaften</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="742"/>
@@ -1063,7 +1068,7 @@ Do you want to save your changes?</source>
         <location filename="src/interface/editor.cpp" line="778"/>
         <location filename="src/interface/editor.cpp" line="796"/>
         <source>Layer name:</source>
-        <translation>Lag navn:</translation>
+        <translation>Name der Ebene:</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1102"/>
@@ -1076,12 +1081,12 @@ Do you want to save your changes?</source>
         <location filename="src/interface/editor.cpp" line="1151"/>
         <location filename="src/interface/editor.cpp" line="1193"/>
         <source>Unable to export image.</source>
-        <translation>Kan ikke exportere billede.</translation>
+        <translation>Bild kann nicht exportiert werden.</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1430"/>
         <source>Import sound...</source>
-        <translation>Importer lyd...</translation>
+        <translation>Sound importieren...</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1430"/>
@@ -1091,22 +1096,22 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/editor.cpp" line="2031"/>
         <source>Save SVG</source>
-        <translation>Gem SVG</translation>
+        <translation>SVG speichern</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="2032"/>
         <source>SVG files (*.svg)</source>
-        <translation>SVG filer (*.svg)</translation>
+        <translation>SVG-Dateien (*.svg)</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="2043"/>
         <source>SVG Generator Example Drawing</source>
-        <translation>SVG Genereret Eksempel Tegning</translation>
+        <translation>SVG Generator Beispielbild</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="2044"/>
         <source>An SVG drawing created by the SVG Generator Example provided with Qt.</source>
-        <translation>En SVG tegning lavet af et SVG genereret Eksempel, levereret af Qt.</translation>
+        <translation>Ein mit dem SVG Generator erstelltes SVG-Bild. Mit Qt bereitgestelltes Beispiel</translation>
     </message>
 </context>
 <context>
@@ -1114,28 +1119,12 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/scribblearea.cpp" line="839"/>
         <source>Warning</source>
-        <translation>Advarsel</translation>
+        <translation>Warnung</translation>
     </message>
     <message>
         <location filename="src/interface/scribblearea.cpp" line="840"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>Du tegner på et usynligt lag!, Vær venlig at vælge et andet lag (eller lav det nuværende lag synligt).</translation>
-    </message>
-    <message>
-        <location filename="src/interface/scribblearea.cpp" line="2579"/>
-        <source>Flood fill error</source>
-        <translation>Fejl ved Oversvømmelses fyldning</translation>
-    </message>
-    <message>
-        <location filename="src/interface/scribblearea.cpp" line="2681"/>
-        <source>DeleteSel</source>
-        <translation>SletMark</translation>
-    </message>
-    <message>
-        <location filename="src/interface/scribblearea.cpp" line="2695"/>
-        <location filename="src/interface/scribblearea.cpp" line="2702"/>
-        <source>ClearImg</source>
-        <translation>RydImg</translation>
+        <translation>Sie zeichnen auf einer ausgeblendeten Ebene. Bitte andere Ebene auswählen (oder aktuelle Ebene einblenden)</translation>
     </message>
 </context>
 <context>
@@ -1143,7 +1132,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/structure/layerbitmap.cpp" line="22"/>
         <source>Bitmap Layer</source>
-        <translation>Bitmap Lag</translation>
+        <translation>Rasterebene</translation>
     </message>
 </context>
 <context>
@@ -1151,37 +1140,37 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/preferences.cpp" line="101"/>
         <source>Tools</source>
-        <translation>Værktøjer</translation>
+        <translation>Werkzeuge</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="95"/>
         <source>Timeline</source>
-        <translation>Tidslinje</translation>
+        <translation>Zeitleiste</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="72"/>
         <source>Preferences</source>
-        <translation>Præferencer</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="50"/>
         <source>Close</source>
-        <translation>Luk</translation>
+        <translation>Schliessen</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="83"/>
         <source>General</source>
-        <translation>Generelt</translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="89"/>
         <source>Files</source>
-        <translation>Filer</translation>
+        <translation>Dateien</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="107"/>
         <source>Shortcuts</source>
-        <translation>Genveje</translation>
+        <translation>Tastenkürzel</translation>
     </message>
 </context>
 <context>
@@ -1189,17 +1178,17 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/structure/layer.cpp" line="176"/>
         <source>Layer Properties</source>
-        <translation>Lagegenskaber</translation>
+        <translation>Ebeneneigenschaften</translation>
     </message>
     <message>
         <location filename="src/structure/layer.cpp" line="177"/>
         <source>Layer name:</source>
-        <translation>Lag navn:</translation>
+        <translation>Name der Ebene</translation>
     </message>
     <message>
         <location filename="src/structure/layer.cpp" line="30"/>
         <source>Undefined Layer</source>
-        <translation>Udefineret Lag</translation>
+        <translation>Undefinierte Ebene</translation>
     </message>
 </context>
 <context>
@@ -1207,17 +1196,17 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/preferences.cpp" line="384"/>
         <source>Autosave documents</source>
-        <translation>Autogem dokumenter</translation>
+        <translation>Dokumente automatisch speichern</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="385"/>
         <source>Enable autosave</source>
-        <translation>Aktiver autogem</translation>
+        <translation>Automatisches Speichern erlauben</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="386"/>
         <source>Number of modifications before autosaving:</source>
-        <translation>Antal af modifikationer inden autogemning:</translation>
+        <translation>Anzahl der Änderungen, bevor automatisch gespeichert wird:</translation>
     </message>
 </context>
 <context>
@@ -1225,92 +1214,92 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/preferences.cpp" line="142"/>
         <source>Window opacity</source>
-        <translation>Vindue Gennemsigtighed</translation>
+        <translation>Fenstertransparenz</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="143"/>
         <source>Background</source>
-        <translation>Baggrund</translation>
+        <translation>Hintergrund</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="144"/>
         <source>Appearance</source>
-        <translation>Udseende</translation>
+        <translation>Darstellung</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="145"/>
         <source>Rendering</source>
-        <translation>Gengivelse</translation>
+        <translation>Rendering</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="146"/>
         <source>Editing</source>
-        <translation>Redigering</translation>
+        <translation>Bearbeitung</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="148"/>
         <source>Opacity</source>
-        <translation>Gennemsigtighed</translation>
+        <translation>Transparenz</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="205"/>
         <source>Shadows</source>
-        <translation>Skygger</translation>
+        <translation>Schatten</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="209"/>
         <source>Tool Cursors</source>
-        <translation>Værktøjs Markør</translation>
+        <translation>Werkzeug als Zeiger</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="213"/>
         <source>Aqua Style</source>
-        <translation>Vandbaseret Stil</translation>
+        <translation>Aqua Stil</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="217"/>
         <source>Antialiasing</source>
-        <translation>Antialiasing</translation>
+        <translation>Kantenglättung</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="222"/>
         <source>None</source>
-        <translation>Ingen</translation>
+        <translation>Keine</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="223"/>
         <source>Quick</source>
-        <translation>Hurtig</translation>
+        <translation>Schnell</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="224"/>
         <source>Gradient1</source>
-        <translation>Farveforløb1</translation>
+        <translation>Farbverlauf1</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="225"/>
         <source>Gradient2</source>
-        <translation>Farveforløb2</translation>
+        <translation>Farbverlauf2</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="234"/>
         <source>Gradients</source>
-        <translation>Farveforløb</translation>
+        <translation>Farbverläufe</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="252"/>
         <source>Vector curve opacity</source>
-        <translation>Vector kurve gennemsigtighed</translation>
+        <translation>Vektorkurventransparenz</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="278"/>
         <source>Vector curve smoothing</source>
-        <translation>Vector kurve udglatning</translation>
+        <translation>Vektorkurvenglättung</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="285"/>
         <source>Tablet high-resolution position</source>
-        <translation>Tegnebræts høj-opløsnings position</translation>
+        <translation>Hochauflösende Tablet-Position</translation>
     </message>
 </context>
 <context>
@@ -1318,7 +1307,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/shortcutspage.ui" line="54"/>
         <source>None</source>
-        <translation>Ingen</translation>
+        <translation>keine</translation>
     </message>
     <message>
         <location filename="src/interface/shortcutspage.ui" line="14"/>
@@ -1328,22 +1317,22 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/shortcutspage.ui" line="47"/>
         <source>Action:</source>
-        <translation>Handling:</translation>
+        <translation>Aktion:</translation>
     </message>
     <message>
         <location filename="src/interface/shortcutspage.ui" line="61"/>
         <source>Shortcuts:</source>
-        <translation>Genveje:</translation>
+        <translation>Tastenkürzel</translation>
     </message>
     <message>
         <location filename="src/interface/shortcutspage.ui" line="73"/>
         <source>clear</source>
-        <translation>ryd</translation>
+        <translation>löschen</translation>
     </message>
     <message>
         <location filename="src/interface/shortcutspage.ui" line="100"/>
         <source>Restore Default Shortcuts</source>
-        <translation>Gendan Standard Genveje</translation>
+        <translation>Standard-Tastenkürzel wiederherstellen</translation>
     </message>
 </context>
 <context>
@@ -1351,7 +1340,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/structure/layercamera.cpp" line="104"/>
         <source>Camera Layer</source>
-        <translation>Kamera Lag</translation>
+        <translation>Kameraebene</translation>
     </message>
 </context>
 <context>
@@ -1359,13 +1348,13 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/structure/layersound.cpp" line="25"/>
         <source>Sound Layer</source>
-        <translation>Lyd Lag</translation>
+        <translation>Soundebene</translation>
     </message>
     <message>
         <location filename="src/structure/layersound.cpp" line="135"/>
         <location filename="src/structure/layersound.cpp" line="136"/>
         <source>Wrong file</source>
-        <translation>Forkert fil</translation>
+        <translation>Falsche Datei</translation>
     </message>
 </context>
 <context>
@@ -1373,7 +1362,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/structure/layervector.cpp" line="22"/>
         <source>Vector Layer</source>
-        <translation>Vector Lag</translation>
+        <translation>Vektorebene</translation>
     </message>
 </context>
 <context>
@@ -1381,27 +1370,27 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/preferences.cpp" line="328"/>
         <source>Timeline</source>
-        <translation>Tidslinje</translation>
+        <translation>Zeitleiste</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="329"/>
         <source>Draw timeline labels</source>
-        <translation>Tegn tidslinje etiketter</translation>
+        <translation>Beschriftungen auf Zeitleiste anzeigen</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="331"/>
         <source>Frame size in Pixels</source>
-        <translation>Ramme størrelse i Pixels</translation>
+        <translation>Breite eines Frames in Pixeln</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="333"/>
         <source>Timeline size in Frames</source>
-        <translation>Tidslinje størrelse i Rammer</translation>
+        <translation>Länge der Zeitleiste in Frames</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="337"/>
         <source>Short scrub</source>
-        <translation>Kort vandskuring</translation>
+        <translation>Kurzer Positionszeiger</translation>
     </message>
 </context>
 <context>
@@ -1409,42 +1398,42 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="92"/>
         <source>Play</source>
-        <translation>Afspil</translation>
+        <translation>Abspielen</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="93"/>
         <source>Loop</source>
-        <translation>Lykke</translation>
+        <translation>Schleife</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="41"/>
         <source>Start of loop</source>
-        <translation>Start af løkke</translation>
+        <translation>Start der Schleife</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="49"/>
         <source>End of loop</source>
-        <translation>Slut på løkke</translation>
+        <translation>Ende  der Schleife</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="52"/>
         <source>Loop Control</source>
-        <translation>Løkke Kontrol</translation>
+        <translation>Schleifensteuerung</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="55"/>
         <source>Loop control</source>
-        <translation>Løkke control</translation>
+        <translation>Schleifensteuerung</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="68"/>
         <source>Fps: </source>
-        <translation>Fps: </translation>
+        <translation>FPS:</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="94"/>
         <source>Sound on/off</source>
-        <translation>Lyd til/fra</translation>
+        <translation>Sound an/aus</translation>
     </message>
     <message>
         <location filename="src/interface/timecontrols.cpp" line="95"/>
@@ -1462,7 +1451,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/tool/movetool.cpp" line="39"/>
         <source>Move</source>
-        <translation>Flyt</translation>
+        <translation>Verschieben</translation>
     </message>
 </context>
 <context>
@@ -1470,37 +1459,32 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/timeline.cpp" line="81"/>
         <source>New Bitmap Layer</source>
-        <translation>Nyt Bitmap Lag</translation>
+        <translation>Neue Rasterebene</translation>
     </message>
     <message>
         <location filename="src/interface/timeline.cpp" line="82"/>
         <source>New Vector Layer</source>
-        <translation>Nyt Vector Lag</translation>
+        <translation>Neue Vektorebene</translation>
     </message>
     <message>
         <location filename="src/interface/timeline.cpp" line="83"/>
         <source>New Sound Layer</source>
-        <translation>Nyt Lyd Lag</translation>
+        <translation>Neue Soundebene</translation>
     </message>
     <message>
         <location filename="src/interface/timeline.cpp" line="84"/>
         <source>New Camera Layer</source>
-        <translation>Nyt Kamera Lag</translation>
+        <translation>Neue Kameraebene</translation>
     </message>
     <message>
         <location filename="src/interface/timeline.cpp" line="57"/>
         <source>Layers:</source>
-        <translation>Lag:</translation>
-    </message>
-    <message>
-        <location filename="src/interface/timeline.cpp" line="86"/>
-        <source>&amp;Layer</source>
-        <translation>&amp;Lag</translation>
+        <translation>Ebenen:</translation>
     </message>
     <message>
         <location filename="src/interface/timeline.cpp" line="104"/>
         <source>Keys:</source>
-        <translation>Nøgler:</translation>
+        <translation>Keys:</translation>
     </message>
 </context>
 <context>
@@ -1508,7 +1492,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/recentfilemenu.h" line="19"/>
         <source>Open Recent</source>
-        <translation>Åben Seneste</translation>
+        <translation>Zuletzt geöffnet</translation>
     </message>
 </context>
 <context>
@@ -1516,7 +1500,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/tool/polylinetool.cpp" line="64"/>
         <source>Line</source>
-        <translation>Linje</translation>
+        <translation>Linie</translation>
     </message>
 </context>
 <context>
@@ -1524,7 +1508,7 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/external/quazip/quazipfile.cpp" line="217"/>
         <source>ZIP/UNZIP API error %1</source>
-        <translation>Pak/Udpak API fejl %1</translation>
+        <translation>ZIP/UNZIP API Fehler %1</translation>
     </message>
 </context>
 <context>
@@ -1532,122 +1516,126 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/toolset.cpp" line="36"/>
         <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
-        <translation>Blyant Værktøj &lt;b&gt;(N)&lt;/b&gt;: skitser med blyant</translation>
+        <translation>Bleistift &lt;b&gt;(N)&lt;/b&gt;: Mit Bleistift skizzieren</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="37"/>
         <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
-        <translation>Markerings Værktøj &lt;b&gt;(V)&lt;/b&gt;: Marker et objekt</translation>
+        <translation>Auswahl &lt;b&gt;(V)&lt;/b&gt;: Objekt auswählen</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="38"/>
         <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
-        <translation>Flytte værktøj &lt;b&gt;(Q)&lt;/b&gt;: Flyt et objekt</translation>
+        <translation>Verschieben &lt;b&gt;(Q)&lt;/b&gt;: Objekt verschieben</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="39"/>
         <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
-        <translation>Hånd Værktøj &lt;b&gt;(H)&lt;/b&gt;: Ryk lærrederet</translation>
+        <translation>Hand-Werkzeug &lt;b&gt;(H)&lt;/b&gt;: Leinwand verschieben</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="40"/>
         <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
-        <translation>Pen Værktøj &lt;b&gt;(P)&lt;/b&gt;: Skitser med pen</translation>
+        <translation>Stift &lt;b&gt;(P)&lt;/b&gt;: Mit Stift zeichnen</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="41"/>
         <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
-        <translation>Viskelæder Værktøj &lt;b&gt;(E)&lt;/b&gt;: Slet</translation>
+        <translation>Radierer &lt;b&gt;(E)&lt;/b&gt;: Radieren</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="42"/>
         <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
-        <translation>Polylinje Værktøj &lt;b&gt;(Y)&lt;/b&gt;: Lav linje/kurver</translation>
+        <translation>Polygonzug &lt;b&gt;(Y)&lt;/b&gt;: Linien/Kurven erstellen</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="43"/>
         <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
-        <translation>Malerspandsværktøj &lt;b&gt;(K)&lt;/b&gt;: Udfyld det valgte område med en farve</translation>
+        <translation>Farbeimer: &lt;b&gt;(K)&lt;/b&gt;: Ausgewählten Bereich mit Farbe füllen</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="44"/>
         <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
-        <translation>Pensel Værktøj &lt;b&gt;(B)&lt;/b&gt;: Mal bløde strøj med en pensel</translation>
+        <translation>Pinsel &lt;b&gt;(B)&lt;/b&gt;: Weichen Pinselstrich malen</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="45"/>
         <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
-        <translation>Pipette Værktøj &lt;b&gt;(I)&lt;/b&gt;: Indstil farve fra scenen&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for øjeblikkelig adgang</translation>
+        <translation>Pipette &lt;b&gt;(I)&lt;/b&gt;: Farbe von der Leinwand übernehmen&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; für Schnellzugriff</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="46"/>
         <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
-        <translation>Ryd Ramme &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Sletter al indhold inden for den valgte ramme</translation>
+        <translation>Frame löschen &lt;b&gt;(STRG + D)&lt;/b&gt;: Löscht den Inhalt des ausgewählten Frames</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="47"/>
         <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
-        <translation>Udtværings værktøj &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Rediger polylinje/kurver&lt;br&gt;Blødgør bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Udglat</translation>
+        <translation>Verwischen &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Polygonzug/Kurven bearbeiten&lt;br&gt;Rasterpixel verwischen&lt;br&gt;&lt;b&gt;+[ALT]&lt;/b&gt;: Gleichmäßig</translation>
+    </message>
+    <message>
+    <source>Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth</source>
+        <translation>Verwischen <b>(A)</b>:<br>Polygonzug/Kurven bearbeiten<br>Rasterpixel verwischen<br><b>+[ALT]</b>: Gleichmäßig</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="49"/>
         <source>Pencil Tool (N)</source>
-        <translation>Blyant Værktøj (N)</translation>
+        <translation>Bleistift (N)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="50"/>
         <source>Select Tool (V)</source>
-        <translation>Markerings Værktøj (V)</translation>
+        <translation>Auswahl (V)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="51"/>
         <source>Move Tool (Q)</source>
-        <translation>Flytte Værktøj (Q)</translation>
+        <translation>Verschieben (Q)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="52"/>
         <source>Hand Tool (H)</source>
-        <translation>Hånd Værktøj (H)</translation>
+        <translation>Hand-Werkzeug (H)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="53"/>
         <source>Pen Tool (P)</source>
-        <translation>Pen Værktøj (P)</translation>
+        <translation>Stift (P)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="54"/>
         <source>Eraser Tool (E)</source>
-        <translation>Viskelæder Værktøj (E)</translation>
+        <translation>Radierer (E)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="55"/>
         <source>Polyline Tool (Y)</source>
-        <translation>Polylinje Værktøj (Y)</translation>
+        <translation>Polygonzug (Y)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="56"/>
         <source>Paint Bucket Tool(K)</source>
-        <translation>Malerspandsværktøj (K)</translation>
+        <translation>Farbeimer (K)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="57"/>
         <source>Brush Tool(B)</source>
-        <translation>Pensel Værktøj (B)</translation>
+        <translation>Pinsel (B)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="58"/>
         <source>Eyedropper Tool (I)</source>
-        <translation>Pipette Værktøj (I)</translation>
+        <translation>Pipette (I)</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="59"/>
         <source>Clear Tool</source>
-        <translation>Rydnings Værktøj (L)</translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="60"/>
         <source>Smudge Tool (A)</source>
-        <translation>Udtværings Værktøj (A)</translation>
+        <translation>Verwischen (A)</translation>
     </message>
 </context>
 <context>
@@ -1655,22 +1643,22 @@ Do you want to save your changes?</source>
     <message>
         <location filename="src/interface/preferences.cpp" line="419"/>
         <source>Onion skin</source>
-        <translation>Løgskind</translation>
+        <translation>Zwiebelhaut</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="420"/>
         <source>Onion layer 1 opacity - % (50 is recommended):</source>
-        <translation>Løgskind lag 1 gennemsigtighed - % (50 er anbefalet):</translation>
+        <translation>Zwiebelhaut Ebene 1 Transparenz in % (Empfohlen: 50)</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="422"/>
         <source>Onion layer 2 opacity - % (30 is recommended):</source>
-        <translation>Løgskind lag 2 gennemsigtighed - % (30 er anbefalet):</translation>
+        <translation>Zwiebelhaut Ebene 2 Transparenz in % (Empfohlen: 30)</translation>
     </message>
     <message>
         <location filename="src/interface/preferences.cpp" line="424"/>
         <source>Onion layer 3 opacity - % (20 is recommended):</source>
-        <translation>Løgskind lag 3 gennemsigtighed - % (20 er anbefalet):</translation>
+        <translation>Zwiebelhaut Ebene 3 Transparenz in % (Empfohlen: 20)</translation>
     </message>
 </context>
 </TS>
