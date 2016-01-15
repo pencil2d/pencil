@@ -10,10 +10,11 @@
 
 ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent),
     m_initSize(200, 200),
-    m_wheelWidth(25),
+    m_wheelThickness(20),
     m_currentColor(Qt::red),
     m_isInWheel(false),
     m_isInSquare(false)
+
 {
     m_currentColor = m_currentColor.toHsv();
 }
@@ -113,7 +114,7 @@ QColor ColorWheel::pickColor(const QPoint& point)
 
 QSize ColorWheel::sizeHint () const
 {
-    return QSize(height(),height());
+    return m_initSize;
 }
 
 QSize ColorWheel::minimumSizeHint () const
@@ -201,6 +202,8 @@ void ColorWheel::paintEvent(QPaintEvent *)
     QStyleOption opt;
     opt.initFrom(this);
     composeWheel(m_wheelPixmap);
+    painter.translate(width() / 2, height() / 2);
+    painter.translate(-m_wheelPixmap.width() / 2,-m_wheelPixmap.height() / 2);
     painter.drawPixmap(0, 0, m_wheelPixmap);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
@@ -230,33 +233,48 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
         conicalGradient.setColorAt( hue / 360.0,  QColor::fromHsv(hue, 255, 255));
     }
 
+    qreal ir = r - m_wheelThickness;
+
     /* outer circle */
-    painter.translate(r / 2, r / 2);
+    painter.translate(width() / 2, height() / 2);
 
     QBrush brush(conicalGradient);
     painter.setPen(Qt::NoPen);
     painter.setBrush(brush);
     painter.rotate( -90 );
     painter.drawEllipse(QPoint(0, 0), r/2, r/2);
+
     /* inner circle */
-
     painter.setBrush(backgroundBrush);
-    painter.drawEllipse(QPoint(0, 0), r/2 - m_wheelWidth, r/2 - m_wheelWidth);
+    painter.drawEllipse(QPoint(0, 0), r/2 - m_wheelThickness, r/2 - m_wheelThickness);
 
-    //caculate wheel region
-    m_wheelRegion = QRegion(0, 0, r, r, QRegion::Ellipse);
+    // Center of wheel
+    qreal m1 = (m_wheelPixmap.width() / 2) - (ir / qSqrt(2));
+    qreal m2 = (m_wheelPixmap.height() / 2) - (ir / qSqrt(2));
+
+    // Calculate size of wheel width
+    qreal wheelWidth = 2 * ir / qSqrt(2);
+
+    // Caculate wheel region
+    m_wheelRegion = QRegion(m1, m2, wheelWidth, wheelWidth);
 }
 
 void ColorWheel::drawSquareImage(const int &hue)
 {
+
+    QPainter painter(&m_wheelPixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+
     // region of the widget
     int w = qMin(width(), height());
     // radius of outer circle
     qreal r = w / 2;
     // radius of inner circle
-    qreal ir = r - m_wheelWidth;
-    // left corner of square
-    qreal m = (w /2.0) - (ir / qSqrt(2));
+    qreal ir = r - m_wheelThickness;
+
+    // center of square
+    qreal m1 = (width() / 2) - (ir / qSqrt(2));
+    qreal m2 = (height() / 2) - (ir / qSqrt(2));
 
     QImage square(255, 255, QImage::Format_ARGB32_Premultiplied);
     QColor color;
@@ -270,9 +288,10 @@ void ColorWheel::drawSquareImage(const int &hue)
             square.setPixel(i, j, rgb);
         }
     }
-    qreal SquareWidth = 2 * ir / qSqrt(2);
+
+    qreal SquareWidth =  2 * ir / qSqrt(2.1);
     m_squareImage = square.scaled(SquareWidth, SquareWidth);
-    m_squareRegion = QRegion(m, m, SquareWidth, SquareWidth);
+    m_squareRegion = QRegion(m1, m2, SquareWidth, SquareWidth);
 }
 
 void ColorWheel::drawHueIndicator(const int &hue)
@@ -292,12 +311,12 @@ void ColorWheel::drawHueIndicator(const int &hue)
     QPen pen = painter.pen();
     pen.setWidth(3);
     painter.setPen(pen);
-    qreal r = qMin(height(), width()) / 2.0;
-    painter.translate(r, r);
+    qreal r = qMin(height(), width());
+    painter.translate(width() / 2, height() / 2);
     painter.rotate( -hue - 90 );
 
-    r = qMin(height(), width()) / 2.0 - m_wheelWidth/2;
-    painter.drawEllipse(QPointF(r, 0.0), 7, 7);
+    r = r / 2.0 - m_wheelThickness/2;
+    painter.drawEllipse(QPointF(r, 0), 7, 7);
 }
 
 void ColorWheel::drawPicker(const QColor &color)
@@ -322,14 +341,16 @@ void ColorWheel::drawPicker(const QColor &color)
     }
     painter.setPen(pen);
 
-    painter.drawEllipse(S - 5, V - 5, 10, 10);
+    painter.drawEllipse(S - 2, V - 2, 10, 10);
 }
 
 void ColorWheel::composeWheel( QPixmap& pixmap )
 {
     QPainter composePainter(&pixmap);
     composePainter.drawImage(0, 0, m_wheelImage);
-    composePainter.drawImage(m_squareRegion.boundingRect().topLeft(), m_squareImage);
+    composePainter.translate(width() / 2, height() / 2); //Move to center of widget
+    composePainter.translate(-m_squareImage.width() / 2, -m_squareImage.height() / 2); //move to center of image
+    composePainter.drawImage(0, 0, m_squareImage);
     composePainter.end();
     drawHueIndicator(m_currentColor.hue());
     drawPicker(m_currentColor);

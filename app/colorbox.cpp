@@ -10,6 +10,7 @@ ColorBox::ColorBox( const QString& strTitle, QWidget* parent ) : BaseDockWidget(
     m_colorWheel = new ColorWheel(this);
     m_colorInspector = new ColorInspector(this);
 
+    layout->setContentsMargins(5,5,5,5);
     layout->addWidget(m_colorWheel);
     layout->addWidget(m_colorInspector);
 
@@ -24,6 +25,9 @@ ColorBox::ColorBox( const QString& strTitle, QWidget* parent ) : BaseDockWidget(
 
     m_colorWheel->setColor(Qt::black);
     m_colorInspector->setColor(Qt::black);
+    m_colorWheel->setMinimumSize(100,100);
+
+
 }
 
 ColorBox::~ColorBox()
