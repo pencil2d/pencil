@@ -261,10 +261,6 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
 
 void ColorWheel::drawSquareImage(const int &hue)
 {
-
-    QPainter painter(&m_wheelPixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
-
     // region of the widget
     int w = qMin(width(), height());
     // radius of outer circle
