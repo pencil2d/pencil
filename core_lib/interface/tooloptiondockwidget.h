@@ -40,6 +40,7 @@ private:
 
     QCheckBox* mUseBezierBox     = nullptr;
     QCheckBox* mUsePressureBox   = nullptr;
+    QCheckBox* mUseFeatherBox    = nullptr;
     QCheckBox* mMakeInvisibleBox = nullptr;
     QCheckBox* mPreserveAlphaBox = nullptr;
     QSpinBox* mBrushSpinBox      = nullptr;

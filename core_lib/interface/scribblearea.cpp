@@ -1035,17 +1035,24 @@ void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillCo
     drawBrush(thePoint, brushWidth, 50, fillColour, opacity / 5);
 }
 
-void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity )
+void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather )
 {
-    QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
-    setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
-
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
     BitmapImage* tempBitmapImage = new BitmapImage;
-    tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                               QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
+    if (usingFeather==true)
+    {
+        QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
+        setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
+        tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, radialGrad,
+                                   QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
+    }
+    else
+    {
+        tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
+                                   QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
+    }
     mBufferImg->paste( tempBitmapImage );
     delete tempBitmapImage;
 }

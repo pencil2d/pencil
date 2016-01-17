@@ -34,7 +34,8 @@ enum ToolPropertyType
     PRESSURE,
     INVISIBILITY,
     PRESERVEALPHA,
-    BEZIER
+    BEZIER,
+    USEFEATHER
 };
 
 enum BackgroundStyle

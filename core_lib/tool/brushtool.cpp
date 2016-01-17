@@ -38,7 +38,7 @@ void BrushTool::loadSettings()
 
     properties.width = settings.value( "brushWidth" ).toDouble();
     properties.feather = settings.value( "brushFeather", 15.0 ).toDouble();
-
+    properties.useFeather = settings.value( "brushUseFeather", true ).toBool();
     properties.pressure = settings.value( "brushPressure", true ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
@@ -64,6 +64,17 @@ void BrushTool::setWidth(const qreal width)
     // Update settings
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("brushWidth", width);
+    settings.sync();
+}
+
+void BrushTool::setUseFeather( const bool usingFeather )
+{
+    // Set current property
+    properties.useFeather = usingFeather;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("brushUseFeather", usingFeather);
     settings.sync();
 }
 
@@ -243,7 +254,8 @@ void BrushTool::drawStroke()
                                       brushWidth,
                                       properties.feather,
                                       mEditor->color()->frontColor(),
-                                      opacity );
+                                      opacity,
+                                      properties.useFeather );
 
             if ( i == ( steps - 1 ) )
             {
