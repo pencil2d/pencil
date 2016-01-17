@@ -295,6 +295,11 @@ void BaseTool::setFeather( const qreal feather )
     properties.feather = feather;
 }
 
+void BaseTool::setUseFeather( const bool usingFeather )
+{
+    properties.useFeather = usingFeather;
+}
+
 void BaseTool::setInvisibility( const bool invisibility )
 {
     properties.invisibility = invisibility;

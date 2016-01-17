@@ -41,6 +41,7 @@ struct RenderOptions
     bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
     bool  bGrid = false;
+    int   nGridSize = 50; /* This is the grid size IN PIXELS. The grid will scale with the image, though! - Nick */
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
