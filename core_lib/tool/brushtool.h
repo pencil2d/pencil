@@ -30,6 +30,8 @@ public:
 protected:
     QPointF lastBrushPoint;
 
+    QPointF mouseDownPoint;
+
     BitmapImage img;
     QColor currentPressuredColor;
     qreal mOpacity;
