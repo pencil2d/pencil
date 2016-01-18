@@ -134,6 +134,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::GRID:
         updateAllFrames();
         break;
+    case SETTING::GRID_SIZE:
+        updateAllFrames();
+        break;
     default:
         break;
     }
@@ -976,6 +979,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
     options.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     options.bAntiAlias = mPrefs->isOn( SETTING::ANTIALIAS );
     options.bGrid = mPrefs->isOn( SETTING::GRID );
+    options.nGridSize = mPrefs->getInt( SETTING::GRID_SIZE );
     options.bAxis = mPrefs->isOn( SETTING::AXIS );
     options.bThinLines = mPrefs->isOn( SETTING::INVISIBLE_LINES );
     options.bOutlines = mPrefs->isOn( SETTING::OUTLINES );

@@ -158,6 +158,8 @@ enum BackgroundStyle
 #define SETTING_MIRROR_H        "MirrorH"
 #define SETTING_MIRROR_V        "MirrorV"
 
+#define SETTING_GRID_SIZE       "GridSize"
+
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
 #define SETTING_ONION_PREV_FRAMES_NUM   "OnionPrevFramesNum"
