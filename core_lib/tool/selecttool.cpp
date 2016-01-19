@@ -97,7 +97,7 @@ void SelectTool::mouseReleaseEvent( QMouseEvent *event )
                 mScribbleArea->setSelection( vectorImage->getSelectionRect(), true );
                 if ( mScribbleArea->mySelection.size() == QSizeF( 0, 0 ) )
                 {
-                    mScribbleArea->somethingSelected = false;
+                    mScribbleArea->deselectAll();
                 }
             }
             mScribbleArea->updateCurrentFrame();
@@ -105,6 +105,10 @@ void SelectTool::mouseReleaseEvent( QMouseEvent *event )
         }
         else if ( layer->type() == Layer::BITMAP )
         {
+            if ( mScribbleArea->mySelection.size() == QSizeF( 0, 0 ) )
+            {
+                mScribbleArea->deselectAll();
+            }
             mScribbleArea->updateCurrentFrame();
             mScribbleArea->setAllDirty();
         }

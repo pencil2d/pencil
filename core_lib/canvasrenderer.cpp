@@ -48,9 +48,20 @@ void CanvasRenderer::setViewTransform( QTransform viewTransform )
 
 void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transform)
 {
-    mSelection = selection;
-    mSelectionTransform = transform;
-    mRenderTransform = true;
+    // Make sure that the selection is not empty
+    //
+    if (selection.width() > 0 && selection.height() > 0) {
+
+        mSelection = selection;
+        mSelectionTransform = transform;
+        mRenderTransform = true;
+    }
+    else {
+
+        // Otherwise we shouldn't be in transformation mode
+        //
+        ignoreTransformedSelection();
+    }
 }
 
 void CanvasRenderer::ignoreTransformedSelection()
