@@ -17,6 +17,9 @@ public:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
     void mouseDoubleClickEvent(QMouseEvent *) override;
+
+private:
+    QPointF mLastPixel;
 };
 
 #endif
