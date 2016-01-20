@@ -180,7 +180,7 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init Dock wieget: " << pWidget->objectName();
+        qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
     /*

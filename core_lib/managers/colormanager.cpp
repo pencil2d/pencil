@@ -49,7 +49,7 @@ void ColorManager::setColor(const QColor& newColor)
         editor()->object()->setColour( mCurrentColorIndex, newColor );
         emit colorChanged(newColor);
 
-		qDebug("Pick Color(R=%d, G=%d, B=%d)", newColor.red(), newColor.green(), newColor.blue());
+		qDebug("Pick Color(R=%d, G=%d, B=%d, A=%d)", newColor.red(), newColor.green(), newColor.blue(), newColor.alpha());
     }
 }
 
