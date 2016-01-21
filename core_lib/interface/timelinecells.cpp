@@ -93,6 +93,15 @@ int TimeLineCells::getLayerNumber( int y )
     {
         layerNumber = mEditor->object()->getLayerCount();
     }
+
+    //If the mouse release event if fired with mouse off the frame of the application
+    // mEditor->object()->getLayerCount() doesn't return the correct value.
+    if (layerNumber <-1)
+    {
+        layerNumber=-1;
+    }
+
+
     return layerNumber;
 }
 
