@@ -67,7 +67,6 @@ QDomElement Object::saveXML( QDomDocument& doc )
 {
     QDomElement tag = doc.createElement( "object" );
 
-    int layerCount = getLayerCount();
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
@@ -719,7 +718,6 @@ bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize e
 
 int Object::getLayerCount()
 {
-    Q_ASSERT( this != nullptr );
     return mLayers.size();
 }
 

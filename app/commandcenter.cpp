@@ -107,6 +107,17 @@ void CommandCenter::flipY()
     view->flipVertical( !b );
 }
 
+void CommandCenter::rotateClockwise()
+{
+    mEditor->view()->rotate( 15 );
+}
+
+void CommandCenter::rotateCounterClockwise()
+{
+    mEditor->view()->rotate( -15 );
+}
+
+
 void CommandCenter::showGrid( bool bShow )
 {
     auto prefs = mEditor->preference();

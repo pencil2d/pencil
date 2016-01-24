@@ -58,7 +58,7 @@ void PencilTool::setFeather( const qreal feather )
     properties.feather = feather;
 }
 
-void PencilTool::setInvisibility( const qreal invisibility )
+void PencilTool::setInvisibility( const bool )
 {
     // force value
     properties.invisibility = 1;
@@ -88,7 +88,10 @@ QCursor PencilTool::cursor()
     {
         return circleCursors(); // two circles cursor
     }
-
+    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        return dottedCursor(); // preview stroke size cursor
+    }
     if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/pencil2.png" ), 0, 16 );

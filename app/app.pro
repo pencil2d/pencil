@@ -30,6 +30,7 @@ INCLUDEPATH += \
 
 HEADERS += \
     mainwindow2.h \
+    shortcutfilter.h \
     exportimageseqdialog.h \
     timeline2.h \
     commandcenter.h \
@@ -49,6 +50,7 @@ HEADERS += \
 SOURCES += \
     main.cpp \
     mainwindow2.cpp \
+    shortcutfilter.cpp \
     exportimageseqdialog.cpp \
     timeline2.cpp \
     commandcenter.cpp \

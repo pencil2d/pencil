@@ -208,6 +208,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     mShadowsBox = new QCheckBox(tr("Shadows"));
     mToolCursorsBox = new QCheckBox(tr("Tool Cursors"));
     mAntialiasingBox = new QCheckBox(tr("Antialiasing"));
+    mDottedCursorBox = new QCheckBox(tr("Dotted Cursor"));
 
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
@@ -218,6 +219,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     appearanceBox->setLayout(appearanceLayout);
     appearanceLayout->addWidget(mShadowsBox);
     appearanceLayout->addWidget(mToolCursorsBox);
+    appearanceLayout->addWidget(mDottedCursorBox);
 
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
@@ -255,6 +257,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
     connect( mCurveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange );
     connect( mHighResBox,         &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged );
+    connect( mDottedCursorBox,    &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged );
 
     setLayout(lay);
 }
@@ -268,6 +271,7 @@ void GeneralPage::updateValues()
     mShadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
     mToolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
     mAntialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
+    mDottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
     
     mHighResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
@@ -337,6 +341,11 @@ void GeneralPage::antiAliasCheckboxStateChanged( bool b )
 void GeneralPage::toolCursorsCheckboxStateChanged(bool b)
 {
     mManager->set( SETTING::TOOL_CURSOR, b );
+}
+
+void GeneralPage::dottedCursorCheckboxStateChanged(bool b)
+{
+    mManager->set( SETTING::DOTTED_CURSOR, b );
 }
 
 

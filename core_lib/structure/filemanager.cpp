@@ -380,7 +380,7 @@ bool FileManager::loadPalette( Object* obj )
 {
     qCDebug( mLog ) << "Load Palette..";
 
-    QString paletteFilePath = obj->dataDir() + PFF_PALETTE_FILE;
+    QString paletteFilePath = obj->dataDir() + "/" + PFF_PALETTE_FILE;
     if ( !obj->importPalette( paletteFilePath ) )
     {
         obj->loadDefaultPalette();

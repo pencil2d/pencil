@@ -45,8 +45,6 @@ namespace Ui
 class MainWindow2;
 }
 
-
-
 class MainWindow2 : public QMainWindow
 {
     Q_OBJECT

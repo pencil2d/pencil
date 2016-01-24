@@ -40,6 +40,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
     m_enabledProperties.insert( PRESSURE,       false  );
     m_enabledProperties.insert( INVISIBILITY,   false  );
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
+    m_enabledProperties.insert( BEZIER,         false  );
 }
 
 QCursor BaseTool::cursor()
@@ -128,6 +129,62 @@ QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn s
     return QCursor( pixmap );
 }
 
+QCursor BaseTool::dottedCursor() // Todo: only one instance required: make fn static?
+{
+    Q_ASSERT( mEditor->getScribbleArea() );
+
+    qreal zoomFactor = editor()->view()->scaling(); //scale factor
+
+    //qDebug() << "--->" << zoomFactor;
+    qreal propWidth = properties.width * zoomFactor;
+    qreal propFeather = properties.feather * zoomFactor;
+    qreal width = propWidth + 0.5 * propFeather;
+
+    if ( width < 1 ) { width = 1; }
+    qreal radius = width / 2;
+    qreal xyA = 1 + propFeather / 2;
+    qreal xyB = 1 + propFeather / 8;
+    qreal whA = qMax( 0.0, propWidth - xyA - 1 );
+    qreal whB = qMax( 0.0, width - propFeather / 4 - 2 );
+    QPixmap pixmap( width, width );
+    if ( !pixmap.isNull() )
+    {
+        pixmap.fill( QColor( 255, 255, 255, 0 ) );
+        QPainter painter( &pixmap );
+        QPen pen = painter.pen();
+
+        // Draw cross in center
+        pen.setStyle( Qt::SolidLine );
+        pen.setColor( QColor( 0, 0, 0, 127 ) );
+        painter.setPen(pen);
+        painter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
+        painter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
+
+        // Draw outer circle
+        pen.setStyle( Qt::DotLine );
+        pen.setColor( QColor( 0, 0, 0, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+        pen.setDashOffset( 4 );
+        pen.setColor( QColor( 255, 255, 255, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+
+        // Draw inner circle
+        pen.setStyle( Qt::DotLine );
+        pen.setColor( QColor( 0, 0, 0, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+        pen.setDashOffset( 4 );
+        pen.setColor( QColor( 255, 255, 255, 255 ) );
+        painter.setPen(pen);
+        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+
+        painter.end();
+    }
+    return QCursor( pixmap );
+}
+
 void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
 {
     isAdjusting = true;
@@ -152,57 +209,44 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->setCursor( cursor() );
 }
 
-void BaseTool::adjustCursor( qreal argOffsetX, qreal argOffsetY ) //offsetx x-lastx ...
+void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx x-lastx ...
 {
-    qreal incx = pow( OriginalSettingValue * 100, 0.5 );
-    qreal incy = incx;
-    qreal newValueX = incx + argOffsetX;
-    qreal newValueY = incy + argOffsetY;
+    qreal inc = pow( OriginalSettingValue * 100, 0.5 );
+    qreal newValue = inc + argOffsetX;
+    int max = type == FEATHER ? 64 : 200;
+    int min = type == FEATHER ? 2 : 1;
 
-    if ( newValueX < 0 )
+    if ( newValue < 0 )
     {
-        newValueX = 0;
-    }
-    if ( newValueY < 0 )
-    {
-        newValueY = 0;
+        newValue = 0;
     }
 
-    newValueX = pow( newValueX, 2 ) / 100;
-    newValueY = pow( newValueY, 2 ) / 100;
-
+    newValue = pow( newValue, 2 ) / 100;
     if ( adjustmentStep > 0 )
     {
-        int tempValueX = ( int )( newValueX / adjustmentStep ); // + 0.5 ?
-        int tempValueY = ( int )( newValueY / adjustmentStep ); // + 0.5 ?
-        newValueX = tempValueX * adjustmentStep;
-        newValueY = tempValueY * adjustmentStep;
+        int tempValue = ( int )( newValue / adjustmentStep ); // + 0.5 ?
+        newValue = tempValue * adjustmentStep;
+    }
+    if ( newValue < min ) // can be optimized for size: min(200,max(0.2,newValueX))
+    {
+        newValue = min;
+    }
+    else if ( newValue > max )
+    {
+        newValue = max;
     }
 
-    if ( newValueX < 1 ) // can be optimized for size: min(200,max(0.2,newValueX))
-    {
-        newValueX = 1;
-    }
-    else if ( newValueX > 200 )
-    {
-        newValueX = 200;
-    }
-
-    if ( newValueY < 1 ) // can be optimized for size: min(200,max(0.2,newValueX))
-    {
-        newValueY = 1;
-    }
-    else if ( newValueY > 200 )
-    {
-        newValueY = 200;
-    }
-
-    mEditor->tools()->setWidth( newValueX );
-
-    if ( ( this->type() == BRUSH ) || ( this->type() == ERASER ) || ( this->type() == SMUDGE ) )
-    {
-        mEditor->tools()->setFeather( newValueY );
-    }
+    switch (type){
+        case FEATHER:
+            if ( ( this->type() == BRUSH ) || ( this->type() == ERASER ) || ( this->type() == SMUDGE ) )
+            {
+                mEditor->tools()->setFeather( newValue );
+            }
+            break;
+        case WIDTH:
+            mEditor->tools()->setWidth( newValue );
+            break;
+    };
 }
 
 void BaseTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice )
@@ -256,6 +300,11 @@ void BaseTool::setInvisibility( const bool invisibility )
     properties.invisibility = invisibility;
 }
 
+void BaseTool::setBezier( const bool _bezier_state )
+{
+    properties.bezier_state = _bezier_state;
+}
+
 void BaseTool::setPressure( const bool pressure )
 {
     properties.pressure = pressure;
@@ -265,3 +314,4 @@ void BaseTool::setPreserveAlpha( const bool preserveAlpha )
 {
     properties.preserveAlpha = preserveAlpha;
 }
+

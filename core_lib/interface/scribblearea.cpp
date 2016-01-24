@@ -249,7 +249,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
     mKeyboardInUse = true;
 
-    if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing, todo: same check for remaining shortcuts (in connects).
+    if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing
 
     if ( currentTool()->keyPressEvent( event ) )
     {
@@ -570,7 +570,9 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
         // --- use SHIFT + drag to resize WIDTH / use CTRL + drag to resize FEATHER ---
         if ( currentTool()->isAdjusting )
         {
-            currentTool()->adjustCursor( mOffset.x(), mOffset.y() ); //updates cursors given org width or feather and x
+            ToolPropertyType tool_type;
+            tool_type = event->modifiers() & Qt::ControlModifier ? FEATHER : WIDTH;
+            currentTool()->adjustCursor( mOffset.x(), tool_type ); //updates cursors given org width or feather and x
             return;
         }
     }
@@ -1006,7 +1008,9 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
     int mainColorAlpha = qRound( a * 255 * opacity );
 
-    int alphaAdded = qRound((mainColorAlpha * mOffset / 100) / 2);
+    // the more feather (offset), the more softness (opacity)
+    //
+    int alphaAdded = qRound((mainColorAlpha * mOffset) / 100);
 
     gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );
     gradient.setColorAt( 1.0, QColor( r, g, b, 0 ) );
@@ -1015,15 +1019,10 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
 
 void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    // TODO :
-    // if size is too small, make it a bit bigger and increase offset
-    //
-    qreal offset = 50;
-
-    brushWidth = brushWidth;
+    qreal offset = 64;
 
     QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
-    setGaussianGradient( radialGrad, fillColour, opacity, offset );
+    setGaussianGradient( radialGrad, fillColour, opacity/2, offset );
 
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
@@ -1135,7 +1134,15 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
                    Qt::SolidLine,
                    Qt::RoundCap,
                    Qt::RoundJoin );
-        QPainterPath tempPath = BezierCurve( points ).getSimplePath();
+        QPainterPath tempPath;
+        if ( currentTool()->properties.bezier_state )
+        {
+            tempPath = BezierCurve( points ).getSimplePath();
+        }
+        else
+        {
+            tempPath = BezierCurve( points ).getStraightPath();
+        }
         tempPath.lineTo( endPoint );
 
         QRectF updateRect = mEditor->view()->mapCanvasToScreen( tempPath.boundingRect().toRect() ).adjusted( -10, -10, 10, 10 );
@@ -1210,7 +1217,7 @@ QTransform ScribbleArea::getView()
     if ( layer->type() == Layer::CAMERA )
     {
         return ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
-        qDebug() << "viewCamera" << ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
+        //qDebug() << "viewCamera" << ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
     }
     else
     {

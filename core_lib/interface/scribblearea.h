@@ -115,6 +115,8 @@ public:
 
     void floodFillError( int errorType );
 
+    bool isMouseInUse() { return mMouseInUse; }
+
 signals:
     void modification();
     void modification( int );

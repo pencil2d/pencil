@@ -18,11 +18,11 @@ public:
 
     void drawStroke();
 
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
+    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
-    void setWidth( const qreal width );
-    void setFeather( const qreal feather );
-    void setPressure( const bool pressure );
+    void setWidth( const qreal width ) override;
+    void setFeather( const qreal feather ) override;
+    void setPressure( const bool pressure ) override;
 
 private:
     QPointF lastBrushPoint;

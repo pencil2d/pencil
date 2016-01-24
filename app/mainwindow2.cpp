@@ -61,7 +61,7 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 
 #include "exportimageseqdialog.h"
-
+#include "shortcutfilter.h"
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -92,9 +92,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor = new Editor( this );
     mEditor->setScribbleArea(mScribbleArea);
-    mEditor->setObject( object );
     mEditor->init();
-
+    mEditor->setObject( object );
 
     mScribbleArea->setCore( mEditor );
     mScribbleArea->init();
@@ -122,6 +121,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mBackground->init(mEditor->preference());
 
     mEditor->updateObject();
+    mEditor->color()->setColorNumber(0);
 }
 
 MainWindow2::~MainWindow2()
@@ -257,8 +257,8 @@ void MainWindow2::createMenus()
     /// --- View Menu ---
     connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
     connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
-    connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
-    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &CommandCenter::rotateClockwise );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &CommandCenter::rotateCounterClockwise );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
@@ -384,7 +384,12 @@ void MainWindow2::newDocument()
     {
         Object* object = new Object();
         mEditor->setObject( object );
-        object->init();
+        mEditor->scrubTo( 0 );
+        mEditor->resetView();
+
+        // Refresh the palette
+        mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
     }
@@ -495,8 +500,10 @@ bool MainWindow2::openObject( QString strFilePath )
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
+    mEditor->color()->setColorNumber(0);
 
     // Reset view
+    mEditor->scrubTo( 0 );
     mEditor->view()->resetView();
 
     progress.setValue( 100 );
@@ -580,7 +587,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    if ( QFile::exists( strFilePath ) )
+    if ( !QFile::exists( strFilePath ) )
     {
         return;
     }
@@ -590,7 +597,7 @@ void MainWindow2::importImage()
     {
         QMessageBox::warning( this,
                               tr( "Warning" ),
-                              tr( "Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
+                              tr( "Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps." ),
                               QMessageBox::Ok,
                               QMessageBox::Ok );
         return;
@@ -916,6 +923,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Backward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_BACKWARD ) );
     ui->actionMove_Frame_Forward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_FORWARD ) );
 
+    ShortcutFilter* shortcutfilter = new ShortcutFilter( mScribbleArea );
     ui->actionMove->setShortcut( cmdKeySeq( CMD_TOOL_MOVE ) );
     ui->actionSelect->setShortcut( cmdKeySeq( CMD_TOOL_SELECT ) );
     ui->actionBrush->setShortcut( cmdKeySeq( CMD_TOOL_BRUSH ) );
@@ -927,6 +935,19 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionBucket->setShortcut( cmdKeySeq( CMD_TOOL_BUCKET ) );
     ui->actionEyedropper->setShortcut( cmdKeySeq( CMD_TOOL_EYEDROPPER ) );
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
+
+    ui->actionMove->installEventFilter( shortcutfilter );
+    ui->actionMove->installEventFilter( shortcutfilter );
+    ui->actionSelect->installEventFilter( shortcutfilter );
+    ui->actionBrush->installEventFilter( shortcutfilter );
+    ui->actionPolyline->installEventFilter( shortcutfilter );
+    ui->actionSmudge->installEventFilter( shortcutfilter );
+    ui->actionPen->installEventFilter( shortcutfilter );
+    ui->actionHand->installEventFilter( shortcutfilter );
+    ui->actionPencil->installEventFilter( shortcutfilter );
+    ui->actionBucket->installEventFilter( shortcutfilter );
+    ui->actionEyedropper->installEventFilter( shortcutfilter );
+    ui->actionEraser->installEventFilter( shortcutfilter );
 
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
     //mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
@@ -1022,6 +1043,7 @@ void MainWindow2::importPalette()
     {
         mEditor->object()->importPalette( filePath );
         mColorPalette->refreshColorList();
+        mEditor->color()->setColorNumber(0);
         settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }

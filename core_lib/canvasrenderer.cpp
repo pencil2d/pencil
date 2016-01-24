@@ -231,6 +231,14 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
                                     false);
     }
 
+    if (mRenderTransform && nFrame == mFrameNumber) {
+        tempBitmapImage->drawRect(  mSelection,
+                                    Qt::NoPen,
+                                    QBrush(QColor(0, 0, 0, 0)),
+                                    QPainter::CompositionMode_Clear,
+                                    false);
+    }
+
     painter.setWorldMatrixEnabled( true );
     tempBitmapImage->paintImage( painter );
 
@@ -323,34 +331,27 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
         // Paint the transformation output
         //
         painter.setWorldMatrixEnabled( true );
-
-        painter.setCompositionMode(QPainter::CompositionMode_Clear);
-        painter.fillRect( mSelection, QColor(0,0,0,0) );
-
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         transformedImage.paintImage(painter);
     }
 }
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-    if (mOptions.nShowAllLayers > 0) {
 
-        if (mOptions.nShowAllLayers == 1) {
-            painter.setOpacity( 0.8 );
-        }
-        else {
+    for ( int i = 0; i < mObject->getLayerCount(); ++i )
+    {
+        Layer* layer = mObject->getLayer( i );
+
+        if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
+        {
             painter.setOpacity( 1.0 );
         }
+        else {
+            painter.setOpacity( 0.8 );
+        }
 
-        for ( int i = 0; i < mObject->getLayerCount(); ++i )
-        {
-            Layer* layer = mObject->getLayer( i );
-            if ( i == mLayerIndex )
-            {
-                continue; // current layer should be paint at last.
-            }
 
+        if ( i == mLayerIndex || mOptions.nShowAllLayers > 0 ) {
             switch ( layer->type() )
             {
                 case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
@@ -360,19 +361,6 @@ void CanvasRenderer::paintCurrentFrame( QPainter& painter )
                 default: Q_ASSERT( false ); break;
             }
         }
-    }
-
-
-    painter.setOpacity( 1.0 );
-
-    Layer* currentLayer = mObject->getLayer( mLayerIndex );
-    switch ( currentLayer->type() )
-    {
-        case Layer::BITMAP: { paintBitmapFrame( painter, currentLayer, mFrameNumber ); break; }
-        case Layer::VECTOR: { paintVectorFrame( painter, currentLayer, mFrameNumber ); break; }
-        case Layer::CAMERA: break;
-        case Layer::SOUND: break;
-        default: Q_ASSERT( false ); break;
     }
 }
 

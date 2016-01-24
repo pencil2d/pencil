@@ -67,6 +67,10 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool( ToolType eToolType )
 {
+    if (mCurrentTool != NULL)
+    {
+        mCurrentTool->leavingThisTool();
+    }
     mCurrentTool = getTool( eToolType );
     Q_EMIT toolChanged( eToolType );
 }
@@ -134,6 +138,12 @@ void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
+}
+
+void ToolManager::setBezier( bool isBezierOn )
+{
+    currentTool()->setBezier( isBezierOn );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), BEZIER );
 }
 
 void ToolManager::setPressure( bool isPressureOn )
