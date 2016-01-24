@@ -249,11 +249,33 @@ void TimeLine::resizeEvent(QResizeEvent*)
 
 void TimeLine::wheelEvent(QWheelEvent* event)
 {
-    QPoint pixels = event->pixelDelta();
-    mVScrollbar->triggerAction( pixels.y() > 0 ? \
-      QAbstractSlider::SliderSingleStepSub : \
-      QAbstractSlider::SliderSingleStepAdd \
-    );
+
+    QPoint numPixels = event->pixelDelta();
+    QPoint numDegrees = event->angleDelta() / 8;
+    int isForward =0;
+    if (!numPixels.isNull()) {
+        if (numPixels.ry()>0)
+          isForward =1;
+        else if (numPixels.ry()<0)
+          isForward =-1;
+    }
+    else if (!numDegrees.isNull()) {
+        if (numDegrees.ry()>0)
+            isForward =1;
+        else if (numDegrees.ry()<0)
+            isForward =-1;
+    }
+
+    if (isForward >0)
+        mVScrollbar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+    else if (isForward <0)
+        mVScrollbar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+    else
+    {
+      //Do nothing we've had a wheel event where we are neither going forward or backward
+      //which should never happen?
+    }
+
     event->accept();
 }
 
