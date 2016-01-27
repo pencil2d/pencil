@@ -24,10 +24,13 @@ public:
 
     void setWidth( const qreal width ) override;
     void setFeather( const qreal feather ) override;
+    void setUseFeather( const bool usingFeather ) override;
     void setPressure( const bool pressure ) override;
 
 protected:
     QPointF lastBrushPoint;
+
+    QPointF mouseDownPoint;
 
     BitmapImage img;
     QColor currentPressuredColor;

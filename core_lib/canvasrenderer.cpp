@@ -380,7 +380,7 @@ int round100( double f, int gridSize )
 
 void CanvasRenderer::paintGrid( QPainter& painter )
 {
-    const int gridSize = 50;
+    int gridSize = mOptions.nGridSize;
 
     QRectF rect = painter.viewport();
     QRectF boundingRect = mViewTransform.inverted().mapRect( rect );
@@ -400,7 +400,8 @@ void CanvasRenderer::paintGrid( QPainter& painter )
     painter.setPen( pen );
     painter.setWorldMatrixEnabled( true );
     painter.setBrush( Qt::NoBrush );
-
+    QPainter::RenderHints previous_renderhints = painter.renderHints();
+    painter.setRenderHint(QPainter::QPainter::Antialiasing, false);
     for ( int x = left; x < right; x += gridSize )
     {
         painter.drawLine( x, top, x, bottom );
@@ -410,4 +411,5 @@ void CanvasRenderer::paintGrid( QPainter& painter )
     {
         painter.drawLine( left, y, right, y );
     }
+    painter.setRenderHints(previous_renderhints);
 }
