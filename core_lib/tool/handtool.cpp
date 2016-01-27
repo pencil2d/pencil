@@ -27,6 +27,7 @@ QCursor HandTool::cursor()
 
 void HandTool::mousePressEvent( QMouseEvent* )
 {
+    mLastPixel = getLastPressPixel();
 }
 
 void HandTool::mouseReleaseEvent( QMouseEvent* event )
@@ -70,9 +71,13 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
     }
     else if ( isScale )
     {
-        float scaleValue = exp( 0.01 * ( getCurrentPixel().y() - getLastPressPixel().y() ) );
+        float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f ;
+        float scaleValue = mEditor->view()->scaling() * ( 1.f + delta );
+
         mEditor->view()->scale( scaleValue );
     }
+
+    mLastPixel = getCurrentPixel();
 }
 
 void HandTool::mouseDoubleClickEvent( QMouseEvent *event )

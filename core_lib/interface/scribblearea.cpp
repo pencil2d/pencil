@@ -1400,10 +1400,12 @@ void ScribbleArea::cancelTransformedSelection()
 
 void ScribbleArea::setSelection( QRectF rect, bool trueOrFalse )
 {
+
     mySelection = rect;
     myTransformedSelection = rect;
     myTempTransformedSelection = rect;
     somethingSelected = trueOrFalse;
+
 
     // Temporary disabled this as it breaks selection rotate key (ctrl) event.
     //
