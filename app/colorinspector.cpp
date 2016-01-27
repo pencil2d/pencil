@@ -150,6 +150,6 @@ void ColorInspector::onColorChanged()
             );
     }
 
-    m_color = c;
+    setColor(c);
     emit colorChanged(c);
 }
