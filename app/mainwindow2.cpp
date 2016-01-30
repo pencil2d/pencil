@@ -61,7 +61,7 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 
 #include "exportimageseqdialog.h"
-
+#include "shortcutfilter.h"
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -180,7 +180,7 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init Dock wieget: " << pWidget->objectName();
+        qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
     /*
@@ -257,8 +257,8 @@ void MainWindow2::createMenus()
     /// --- View Menu ---
     connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
     connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
-    connect( ui->actionRotate_Clockwise, &QAction::triggered, mEditor, &Editor::rotatecw );
-    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mEditor, &Editor::rotateacw );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &CommandCenter::rotateClockwise );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &CommandCenter::rotateCounterClockwise );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
@@ -343,8 +343,8 @@ void MainWindow2::createMenus()
 
     connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
-    //connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
-    //connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
+    connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
+    connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
 }
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
@@ -921,6 +921,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Backward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_BACKWARD ) );
     ui->actionMove_Frame_Forward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_FORWARD ) );
 
+    ShortcutFilter* shortcutfilter = new ShortcutFilter( mScribbleArea );
     ui->actionMove->setShortcut( cmdKeySeq( CMD_TOOL_MOVE ) );
     ui->actionSelect->setShortcut( cmdKeySeq( CMD_TOOL_SELECT ) );
     ui->actionBrush->setShortcut( cmdKeySeq( CMD_TOOL_BRUSH ) );
@@ -932,6 +933,19 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionBucket->setShortcut( cmdKeySeq( CMD_TOOL_BUCKET ) );
     ui->actionEyedropper->setShortcut( cmdKeySeq( CMD_TOOL_EYEDROPPER ) );
     ui->actionEraser->setShortcut( cmdKeySeq( CMD_TOOL_ERASER ) );
+
+    ui->actionMove->installEventFilter( shortcutfilter );
+    ui->actionMove->installEventFilter( shortcutfilter );
+    ui->actionSelect->installEventFilter( shortcutfilter );
+    ui->actionBrush->installEventFilter( shortcutfilter );
+    ui->actionPolyline->installEventFilter( shortcutfilter );
+    ui->actionSmudge->installEventFilter( shortcutfilter );
+    ui->actionPen->installEventFilter( shortcutfilter );
+    ui->actionHand->installEventFilter( shortcutfilter );
+    ui->actionPencil->installEventFilter( shortcutfilter );
+    ui->actionBucket->installEventFilter( shortcutfilter );
+    ui->actionEyedropper->installEventFilter( shortcutfilter );
+    ui->actionEraser->installEventFilter( shortcutfilter );
 
     ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
     //mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );

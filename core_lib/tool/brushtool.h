@@ -17,17 +17,20 @@ public:
     void mousePressEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
 
-    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
+    void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
     void drawStroke();
     void paintAt( QPointF point );
 
-    void setWidth( const qreal width );
-    void setFeather( const qreal feather );
-    void setPressure( const bool pressure );
+    void setWidth( const qreal width ) override;
+    void setFeather( const qreal feather ) override;
+    void setUseFeather( const bool usingFeather ) override;
+    void setPressure( const bool pressure ) override;
 
 protected:
     QPointF lastBrushPoint;
+
+    QPointF mouseDownPoint;
 
     BitmapImage img;
     QColor currentPressuredColor;

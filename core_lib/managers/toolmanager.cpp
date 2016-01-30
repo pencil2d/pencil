@@ -128,6 +128,12 @@ void ToolManager::setFeather( float newFeather )
     Q_EMIT toolPropertyChanged( currentTool()->type(), FEATHER );
 }
 
+void ToolManager::setUseFeather( bool usingFeather )
+{
+    currentTool()->setUseFeather( usingFeather );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), USEFEATHER );
+}
+
 void ToolManager::setInvisibility( bool isInvisible )
 {
     currentTool()->setInvisibility(isInvisible);
@@ -138,6 +144,12 @@ void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
+}
+
+void ToolManager::setBezier( bool isBezierOn )
+{
+    currentTool()->setBezier( isBezierOn );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), BEZIER );
 }
 
 void ToolManager::setPressure( bool isPressureOn )

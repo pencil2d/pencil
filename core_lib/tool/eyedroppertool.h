@@ -11,7 +11,7 @@ public:
     explicit EyedropperTool( QObject* parent = 0 );
     ToolType type() override { return EYEDROPPER; }
     void loadSettings() override;
-    QCursor cursor();
+    QCursor cursor() override;
     QCursor cursor( const QColor colour );
 
     void mousePressEvent( QMouseEvent* ) override;

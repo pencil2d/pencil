@@ -83,7 +83,14 @@ int TimeLineCells::getFrameX( int frameNumber )
 int TimeLineCells::getLayerNumber( int y )
 {
     int layerNumber = layerOffset + ( y - m_offsetY ) / layerHeight;
-    layerNumber = mEditor->object()->getLayerCount() - 1 - layerNumber;
+
+    // Layers numbers are displayed in descending order
+    // The last row is layer 0
+    if (layerNumber <= mEditor->object()->getLayerCount())
+        layerNumber = mEditor->object()->getLayerCount() - 1 - layerNumber;
+    else
+        layerNumber = 0;
+
     if ( y < m_offsetY )
     {
         layerNumber = -1;
@@ -93,6 +100,15 @@ int TimeLineCells::getLayerNumber( int y )
     {
         layerNumber = mEditor->object()->getLayerCount();
     }
+
+    //If the mouse release event if fired with mouse off the frame of the application
+    // mEditor->object()->getLayerCount() doesn't return the correct value.
+    if (layerNumber <-1)
+    {
+        layerNumber=-1;
+    }
+
+
     return layerNumber;
 }
 

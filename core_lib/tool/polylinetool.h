@@ -18,12 +18,12 @@ public:
     void mouseReleaseEvent( QMouseEvent* ) override;
     void mouseMoveEvent( QMouseEvent* ) override;
     void mouseDoubleClickEvent( QMouseEvent* ) override;
-    bool keyPressEvent( QKeyEvent* event );
+    bool keyPressEvent( QKeyEvent* event ) override;
 
-    void clear();
+    void clear() override;
 
-    void setWidth( const qreal width );
-    void setFeather( const qreal feather );
+    void setWidth( const qreal width ) override;
+    void setFeather( const qreal feather ) override;
 
 private:
     QList<QPointF> points;

@@ -39,7 +39,8 @@ enum class SETTING
     ONION_MIN_OPACITY,
     ONION_PREV_FRAMES_NUM,
     ONION_NEXT_FRAMES_NUM,
-    ONION_TYPE
+    ONION_TYPE,
+    GRID_SIZE
 };
 
 class PreferenceManager : public BaseManager

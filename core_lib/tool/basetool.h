@@ -24,6 +24,8 @@ public:
     int pressure      = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
+    bool bezier_state = false;
+    bool useFeather   = true;
 };
 
 const int ON = 1;
@@ -61,7 +63,7 @@ public:
     // dynamic cursor adjustment
     virtual void startAdjusting( ToolPropertyType argSettingType, qreal argStep );
     virtual void stopAdjusting();
-    virtual void adjustCursor( qreal argOffsetX, qreal argOffsetY );
+    virtual void adjustCursor( qreal argOffsetX, ToolPropertyType type );
 
     virtual void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice );
 
@@ -74,7 +76,9 @@ public:
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
     virtual void setInvisibility( const bool invisibility );
+    virtual void setBezier( const bool bezier_state );
     virtual void setPressure( const bool pressure );
+    virtual void setUseFeather( const bool usingFeather );
     virtual void setPreserveAlpha( const bool preserveAlpha );
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}

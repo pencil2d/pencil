@@ -105,6 +105,27 @@ private:
 
 };
 
+class GridPage : public QWidget
+{
+    Q_OBJECT
+public:
+    GridPage(QWidget* parent = 0);
+    void setManager( PreferenceManager* p ) { mManager = p; }
+
+
+public slots:
+    void updateValues();
+    void gridSizeChange(int value);
+
+private:
+
+    PreferenceManager* mManager = nullptr;
+
+    QSpinBox* mGridSizeInput;
+
+};
+
+
 class TimelinePage : public QWidget
 {
     Q_OBJECT

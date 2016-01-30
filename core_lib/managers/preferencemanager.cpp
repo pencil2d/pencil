@@ -36,6 +36,9 @@ void PreferenceManager::loadPrefs()
     set( SETTING::MIRROR_H,                 false ); // Always off by default
     set( SETTING::MIRROR_V,                 false ); // Always off by default
 
+    // Grid
+    set( SETTING::GRID_SIZE,                settings.value( SETTING_GRID_SIZE,               50 ).toInt() );
+
     // General
     //
     set( SETTING::ANTIALIAS,                settings.value( SETTING_ANTIALIAS,              true ).toBool() );
@@ -194,6 +197,9 @@ void PreferenceManager::set( SETTING option, int value )
         break;
     case SETTING::ONION_NEXT_FRAMES_NUM:
         settings.setValue ( SETTING_ONION_NEXT_FRAMES_NUM, value );
+        break;
+    case SETTING::GRID_SIZE:
+        settings.setValue ( SETTING_GRID_SIZE, value );
         break;
     default:
         break;

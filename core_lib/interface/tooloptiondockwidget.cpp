@@ -1,6 +1,7 @@
 #include <QLabel>
 #include <QToolButton>
 #include <QCheckBox>
+#include <QSpinBox>
 #include <QGridLayout>
 #include <QSettings>
 #include <QDebug>
@@ -31,7 +32,11 @@ void ToolOptionWidget::updateUI()
     disableAllOptions();
 
     mSizeSlider->setVisible( currentTool->isPropertyEnabled( WIDTH ) );
+    mBrushSpinBox->setVisible( currentTool->isPropertyEnabled( WIDTH) );
     mFeatherSlider->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
+    mUseFeatherBox->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
+    mFeatherSpinBox->setVisible( currentTool->isPropertyEnabled( FEATHER) );
+    mUseBezierBox->setVisible( currentTool->isPropertyEnabled( BEZIER ) );
     mUsePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
     mMakeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
     mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
@@ -47,7 +52,7 @@ void ToolOptionWidget::updateUI()
 
 void ToolOptionWidget::createUI()
 {
-    setMinimumWidth( 110 );
+    setMinimumWidth( 115 );
 
     QFrame* optionGroup = new QFrame();
     QGridLayout* pLayout = new QGridLayout();
@@ -56,13 +61,31 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    mSizeSlider = new SpinSlider( tr( "Size" ), SpinSlider::LOG, SpinSlider::FLOAT, 0.1, 200.0, this );
-    mSizeSlider->setValue( settings.value( "pencilWidth" ).toDouble() );
+    mSizeSlider = new SpinSlider( tr( "Brush" ), SpinSlider::LOG, SpinSlider::INTEGER, 1, 200, this );
+    mSizeSlider->setValue( settings.value( "brushWidth" ).toDouble() );
     mSizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    mFeatherSlider = new SpinSlider( tr( "Feather" ), SpinSlider::LOG, SpinSlider::FLOAT, 2.0, 64.0, this );
-    mFeatherSlider->setValue( settings.value( "pencilFeather" ).toDouble() );
+    mBrushSpinBox = new QSpinBox(this);
+    mBrushSpinBox->setRange(1,200);
+    mBrushSpinBox->setValue(settings.value( "brushWidth" ).toDouble() );
+
+    mFeatherSlider = new SpinSlider( tr( "Feather" ), SpinSlider::LOG, SpinSlider::INTEGER, 2, 64, this );
+    mFeatherSlider->setValue( settings.value( "brushFeather" ).toDouble() );
     mFeatherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
+
+    mFeatherSpinBox = new QSpinBox(this);
+    mFeatherSpinBox->setRange(2,64);
+    mFeatherSpinBox->setValue(settings.value( "brushFeather" ).toDouble() );
+
+    mUseFeatherBox = new QCheckBox( tr( "Use Feather?" ) );
+    mUseFeatherBox->setToolTip( tr( "Enable or disable feathering" ) );
+    mUseFeatherBox->setFont( QFont( "Helvetica", 10 ) );
+    mUseFeatherBox->setChecked( settings.value( "brushUseFeather" ).toBool() );
+
+    mUseBezierBox = new QCheckBox( tr( "Bezier" ) );
+    mUseBezierBox->setToolTip( tr( "Bezier curve fitting" ) );
+    mUseBezierBox->setFont( QFont( "Helvetica", 10 ) );
+    mUseBezierBox->setChecked( false );
 
     mUsePressureBox = new QCheckBox( tr( "Pressure" ) );
     mUsePressureBox->setToolTip( tr( "Size with pressure" ) );
@@ -80,9 +103,13 @@ void ToolOptionWidget::createUI()
     mPreserveAlphaBox->setChecked( false );
 
     pLayout->addWidget( mSizeSlider, 8, 0, 1, 2 );
+    pLayout->addWidget( mBrushSpinBox, 8, 10, 1, 2);
     pLayout->addWidget( mFeatherSlider, 9, 0, 1, 2 );
+    pLayout->addWidget( mFeatherSpinBox, 9, 10, 1, 2 );
+    pLayout->addWidget( mUseBezierBox, 10, 0, 1, 2 );
     pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
     pLayout->addWidget( mPreserveAlphaBox, 12, 0, 1, 2 );
+    pLayout->addWidget( mUseFeatherBox, 13, 0, 1, 2 );
     pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
 
     pLayout->setRowStretch( 15, 1 );
@@ -96,12 +123,18 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 {
     auto toolManager = editor->tools();
 
+    connect( mUseBezierBox, &QCheckBox::clicked, toolManager, &ToolManager::setBezier );
     connect( mUsePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure );
     connect( mMakeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility );
     connect( mPreserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha );
 
     connect( mSizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth );
     connect( mFeatherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather );
+
+    connect( mBrushSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setWidth );
+    connect( mFeatherSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setFeather );
+
+    connect( mUseFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather );
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -110,10 +143,10 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType ePropertyType )
 {
     const Properties& p = editor()->tools()->currentTool()->properties;
-    
+
     switch ( ePropertyType )
     {
-        case WIDTH: 
+        case WIDTH:
             setPenWidth( p.width );
             break;
         case FEATHER:
@@ -141,6 +174,10 @@ void ToolOptionWidget::setPenWidth( qreal width )
     QSignalBlocker b( mSizeSlider );
     mSizeSlider->setEnabled( true );
     mSizeSlider->setValue( width );
+
+    QSignalBlocker b2( mBrushSpinBox );
+    mBrushSpinBox->setEnabled( true );
+    mBrushSpinBox->setValue( width );
 }
 
 void ToolOptionWidget::setPenFeather( qreal featherValue )
@@ -148,6 +185,10 @@ void ToolOptionWidget::setPenFeather( qreal featherValue )
     QSignalBlocker b( mFeatherSlider );
     mFeatherSlider->setEnabled( true );
     mFeatherSlider->setValue( featherValue );
+    
+    QSignalBlocker b2( mFeatherSpinBox );
+    mFeatherSpinBox->setEnabled( true );
+    mFeatherSpinBox->setValue( featherValue );
 }
 
 void ToolOptionWidget::setPenInvisibility( int x )
@@ -176,7 +217,11 @@ void ToolOptionWidget::setPreserveAlpha( int x )
 void ToolOptionWidget::disableAllOptions()
 {
     mSizeSlider->hide();
+    mBrushSpinBox->hide();
     mFeatherSlider->hide();
+    mFeatherSpinBox->hide();
+    mUseFeatherBox->hide();
+    mUseBezierBox->hide();
     mUsePressureBox->hide();
     mMakeInvisibleBox->hide();
     mPreserveAlphaBox->hide();
