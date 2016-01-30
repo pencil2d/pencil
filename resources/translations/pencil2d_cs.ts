@@ -135,12 +135,12 @@
         <translation>Zavést obrázek</translation>
     </message>
     <message>
-    <source>Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps.</source>
-        <translation>Nelze nahrát bitmapový obrázek.<br><b>Rada:</b> Na zavedení bitmap použijte bitmapovou vrstvu.</translation>
+    <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
+        <translation>Nelze nahrát bitmapový obrázek.&lt;br&gt;&lt;b&gt;Rada:&lt;/b&gt; Na zavedení bitmap použijte bitmapovou vrstvu.</translation>
     </message>
     <message>
-    <source>Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors.</source>
-        <translation>Nelze nahrát vektorový obrázek.<br><b>Rada:</b> Na zavedení vektorů použijte vektorovou vrstvu.</translation>
+    <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
+        <translation>Nelze nahrát vektorový obrázek.&lt;br&gt;&lt;b&gt;Rada:&lt;/b&gt; Na zavedení vektorů použijte vektorovou vrstvu.</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1279"/>
@@ -838,7 +838,7 @@
         <translation>Vrstvy:</translation>
     </message>
     <message>
-    <source>&Layer</source>
+    <source>&amp;Layer</source>
         <translation>&amp;Vrstva</translation>
     </message>
     <message>

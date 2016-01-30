@@ -971,8 +971,8 @@ Do you want to save your changes?</source>
         <translation>無法載入點陣圖。&lt;br&gt;&lt;b&gt;提示&lt;/b&gt;：請先選擇點陣圖圖層</translation>
     </message>
     <message>
-    <source>Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors.</source>
-        <translation>加載向量圖失敗。<br><b>建議：</b>利用向量圖層以匯入圖像.</translation>
+    <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
+        <translation>加載向量圖失敗。&lt;br&gt;&lt;b&gt;建議：&lt;/b&gt;利用向量圖層以匯入圖像.</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1279"/>
@@ -1393,7 +1393,7 @@ Do you want to save your changes?</source>
         <translation>圖層</translation>
     </message>
     <message>
-    <source>&Layer</source>
+    <source>&amp;Layer</source>
         <translation>&amp;圖層</translation>
     </message>
 </context>
@@ -1439,48 +1439,48 @@ Do you want to save your changes?</source>
         <translation>橡皮擦&lt;b&gt;(E)&lt;/b&gt;</translation>
     </message>
     <message>
-    <source>Pencil Tool <b>(N)</b>: Sketch with pencil</source>
-        <translation>鉛筆工具 <b>(N)</b>：用鉛筆繪製</translation>
+    <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
+        <translation>鉛筆工具 &lt;b&gt;(N)&lt;/b&gt;：用鉛筆繪製</translation>
     </message>
     <message>
-    <source>Select Tool <b>(V)</b>: Select an object</source>
-        <translation>選取工具 <b>(V)</b>：選取一物件</translation>
+    <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
+        <translation>選取工具 &lt;b&gt;(V)&lt;/b&gt;：選取一物件</translation>
     </message>
     <message>
-    <source>Move Tool <b>(Q)</b>: Move an object</source>
-        <translation>移動工具 <b>(Q)</b>：移動一物件</translation>
+    <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
+        <translation>移動工具 &lt;b&gt;(Q)&lt;/b&gt;：移動一物件</translation>
     </message>
     <message>
-    <source>Hand Tool <b>(H)</b>: Move the canvas</source>
-        <translation>手工具 <b>(H)</b>：移動畫布</translation>
+    <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
+        <translation>手工具 &lt;b&gt;(H)&lt;/b&gt;：移動畫布</translation>
     </message>
     <message>
-    <source>Pen Tool <b>(P)</b>: Sketch with pen</source>
-        <translation>鋼筆工具 <b>(P)</b>：用鋼筆繪製</translation>
+    <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
+        <translation>鋼筆工具 &lt;b&gt;(P)&lt;/b&gt;：用鋼筆繪製</translation>
     </message>
     <message>
-    <source>Eraser Tool <b>(E)</b>: Erase</source>
-        <translation>橡皮擦工具 <b>(E)</b>：擦除</translation>
+    <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
+        <translation>橡皮擦工具 &lt;b&gt;(E)&lt;/b&gt;：擦除</translation>
     </message>
     <message>
-    <source>Polyline Tool <b>(Y)</b>: Create line/curves</source>
-        <translation>折線工具 <b>(Y)</b>：建立線/曲線</translation>
+    <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
+        <translation>折線工具 &lt;b&gt;(Y)&lt;/b&gt;：建立線/曲線</translation>
     </message>
     <message>
-    <source>Paint Bucket Tool <b>(K)</b>: Fill selected area with a color</source>
-        <translation>顏料桶工具 <b>(K)</b>：用顏色填充選定的區域</translation>
+    <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
+        <translation>顏料桶工具 &lt;b&gt;(K)&lt;/b&gt;：用顏色填充選定的區域</translation>
     </message>
     <message>
-    <source>Brush Tool <b>(B)</b>: Paint smooth stroke with a brush</source>
-        <translation>筆刷工具 <b>(B)</b>：用筆刷畫出平滑筆劃</translation>
+    <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
+        <translation>筆刷工具 &lt;b&gt;(B)&lt;/b&gt;：用筆刷畫出平滑筆劃</translation>
     </message>
     <message>
-    <source>Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame</source>
-        <translation>清除畫格 <b>(Ctrl+D)</b>：擦除選定畫格內容</translation>
+    <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
+        <translation>清除畫格 &lt;b&gt;(Ctrl+D)&lt;/b&gt;：擦除選定畫格內容</translation>
     </message>
     <message>
-    <source>Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth</source>
-        <translation>塗抹工具 <b>(A)</b>：<br>編輯折線/曲線<br>液化點陣圖像素<br><b>+[Alt]</b>： 平滑</translation>
+    <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
+        <translation>塗抹工具 &lt;b&gt;(A)&lt;/b&gt;：&lt;br&gt;編輯折線/曲線&lt;br&gt;液化點陣圖像素&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;： 平滑</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="49"/>
