@@ -25,6 +25,7 @@ public:
     int invisibility  = 0;
     int preserveAlpha = 0;
     bool bezier_state = false;
+    bool useFeather   = true;
 };
 
 const int ON = 1;
@@ -77,6 +78,7 @@ public:
     virtual void setInvisibility( const bool invisibility );
     virtual void setBezier( const bool bezier_state );
     virtual void setPressure( const bool pressure );
+    virtual void setUseFeather( const bool usingFeather );
     virtual void setPreserveAlpha( const bool preserveAlpha );
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}

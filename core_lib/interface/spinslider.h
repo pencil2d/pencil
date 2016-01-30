@@ -36,7 +36,6 @@ private:
     void changeValue( qreal );
 
 private:
-    QLabel*  mValueLabel = nullptr;
     QSlider* mSlider     = nullptr;
     qreal mValue = 50.0;
     qreal mMin   = 0.1;

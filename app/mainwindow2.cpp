@@ -180,7 +180,7 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init Dock wieget: " << pWidget->objectName();
+        qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
     /*
@@ -343,8 +343,8 @@ void MainWindow2::createMenus()
 
     connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
-    //connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
-    //connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
+    connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
+    connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
 }
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )

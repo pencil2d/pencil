@@ -55,10 +55,12 @@ public:
 
     Editor* mEditor = nullptr;
 
-public:
-    void setOpacity(int opacity);
+public slots:
     void undoActSetText(void);
     void undoActSetEnabled(void);
+
+public:
+    void setOpacity(int opacity);
     void newDocument();
     void openDocument();
     void saveDocument();

@@ -11,6 +11,9 @@ ColorInspector::ColorInspector(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //We constrain the widget, as the layout should have a stretch limit.
+    parent->setMaximumSize(500,height());
+
     connect(ui->RedspinBox, SIGNAL(valueChanged(int)),
         this, SLOT(onColorChanged()));
     connect(ui->GreenspinBox, SIGNAL(valueChanged(int)),
@@ -52,9 +55,10 @@ void ColorInspector::setColor(const QColor &newColor)
     }
     m_color = newColor;
 
-    QPalette p = ui->label->palette();
+    QPalette p = ui->color->palette();
     p.setColor(QPalette::Background, m_color);
-    ui->label->setPalette(p);
+    ui->color->setPalette(p);
+    //ui->color->setFixedSize(30,30);
     noColorUpdate = false;
 }
 
@@ -146,6 +150,6 @@ void ColorInspector::onColorChanged()
             );
     }
 
-    m_color = c;
+    setColor(c);
     emit colorChanged(c);
 }
