@@ -52,7 +52,7 @@ class MainWindow2 : public QMainWindow
 public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
-
+    
     Editor* mEditor = nullptr;
 
 public slots:
@@ -88,7 +88,6 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
-
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
 
@@ -99,7 +98,8 @@ private:
     void setMenuActionChecked( QAction*, bool bChecked );
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-
+    void updateZoomLabel();
+    
     void importPalette();
     void exportPalette();
 
