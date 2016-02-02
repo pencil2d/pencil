@@ -76,6 +76,7 @@ FORMS += \
     ui/colorpalette.ui \
     ui/displayoption.ui
 
+DEPENDPATH += .
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
@@ -84,8 +85,8 @@ macx {
 }
 
 win32 {
-	CONFIG -= flat
-	CONFIG += grouped
+    CONFIG -= flat
+    CONFIG += grouped
     RC_FILE = $$PWD/../pencil.rc
 }
 

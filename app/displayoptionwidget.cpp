@@ -32,11 +32,6 @@ void DisplayOptionWidget::initUI()
 
 void DisplayOptionWidget::updateZoomLabel()
 {
-    ViewManager * viewmanager = editor()->view();
-
-    float zoom = (viewmanager->scaling())*100.0f;
-
-    ui->zoomLabel->setText(QString("Zoom: ")+QString("").setNum(zoom)+QString("%"));
 }
 
 void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
