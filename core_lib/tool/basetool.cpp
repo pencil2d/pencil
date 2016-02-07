@@ -3,7 +3,7 @@
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
-
+#include <QDebug>
 
 // ---- shared static variables ---- ( only one instance for all the tools )
 ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
@@ -211,8 +211,11 @@ void BaseTool::stopAdjusting()
 
 void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx x-lastx ...
 {
+
+
     qreal inc = pow( OriginalSettingValue * 100, 0.5 );
     qreal newValue = inc + argOffsetX;
+
     int max = type == FEATHER ? 64 : 200;
     int min = type == FEATHER ? 2 : 1;
 
@@ -225,7 +228,9 @@ void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx
     if ( adjustmentStep > 0 )
     {
         int tempValue = ( int )( newValue / adjustmentStep ); // + 0.5 ?
+
         newValue = tempValue * adjustmentStep;
+
     }
     if ( newValue < min ) // can be optimized for size: min(200,max(0.2,newValueX))
     {
