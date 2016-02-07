@@ -16,13 +16,13 @@ $FolderName = "Pencil2D-win-$today"
 Remove-Item -Recurse $FolderName -ErrorAction SilentlyContinue
 New-Item -ItemType Directory $FolderName
 
-Copy-Item $SrcExePath $FolderName\Pecil2D.exe
+Copy-Item $SrcExePath $FolderName\Pencil2D.exe
 
 # Run windeployqt
 $deployqt = $env:QTDIR + "\bin\windeployqt.exe"
 Write-Host $deployqt
 
-& $deployqt $FolderName\Pecil2D.exe
+& $deployqt $FolderName\Pencil2D.exe
 
 # attach VS2013 runtime
 Copy-Item $env:windir\system32\msvcp120.dll $FolderName

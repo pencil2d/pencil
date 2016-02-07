@@ -52,13 +52,15 @@ class MainWindow2 : public QMainWindow
 public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
-
+    
     Editor* mEditor = nullptr;
+
+public slots:
+    void undoActSetText(void);
+    void undoActSetEnabled(void);
 
 public:
     void setOpacity(int opacity);
-    void undoActSetText(void);
-    void undoActSetEnabled(void);
     void newDocument();
     void openDocument();
     void saveDocument();
@@ -86,7 +88,6 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
-
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
 
@@ -97,7 +98,8 @@ private:
     void setMenuActionChecked( QAction*, bool bChecked );
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-
+    void updateZoomLabel();
+    
     void importPalette();
     void exportPalette();
 

@@ -48,7 +48,7 @@ private:
     QImage m_squareImage;
     QPixmap m_wheelPixmap;
    
-    int m_wheelWidth;
+    int m_wheelThickness;
     QRegion m_wheelRegion;
     QRegion m_squareRegion;
     QColor m_currentColor;

@@ -48,9 +48,20 @@ void CanvasRenderer::setViewTransform( QTransform viewTransform )
 
 void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transform)
 {
-    mSelection = selection;
-    mSelectionTransform = transform;
-    mRenderTransform = true;
+    // Make sure that the selection is not empty
+    //
+    if (selection.width() > 0 && selection.height() > 0) {
+
+        mSelection = selection;
+        mSelectionTransform = transform;
+        mRenderTransform = true;
+    }
+    else {
+
+        // Otherwise we shouldn't be in transformation mode
+        //
+        ignoreTransformedSelection();
+    }
 }
 
 void CanvasRenderer::ignoreTransformedSelection()
@@ -337,23 +348,21 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-    if (mOptions.nShowAllLayers > 0) {
 
-        if (mOptions.nShowAllLayers == 1) {
-            painter.setOpacity( 0.8 );
-        }
-        else {
+    for ( int i = 0; i < mObject->getLayerCount(); ++i )
+    {
+        Layer* layer = mObject->getLayer( i );
+
+        if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
+        {
             painter.setOpacity( 1.0 );
         }
+        else {
+            painter.setOpacity( 0.8 );
+        }
 
-        for ( int i = 0; i < mObject->getLayerCount(); ++i )
-        {
-            Layer* layer = mObject->getLayer( i );
-            if ( i == mLayerIndex )
-            {
-                continue; // current layer should be paint at last.
-            }
 
+        if ( i == mLayerIndex || mOptions.nShowAllLayers > 0 ) {
             switch ( layer->type() )
             {
                 case Layer::BITMAP: { paintBitmapFrame( painter, layer, mFrameNumber ); break; }
@@ -363,19 +372,6 @@ void CanvasRenderer::paintCurrentFrame( QPainter& painter )
                 default: Q_ASSERT( false ); break;
             }
         }
-    }
-
-
-    painter.setOpacity( 1.0 );
-
-    Layer* currentLayer = mObject->getLayer( mLayerIndex );
-    switch ( currentLayer->type() )
-    {
-        case Layer::BITMAP: { paintBitmapFrame( painter, currentLayer, mFrameNumber ); break; }
-        case Layer::VECTOR: { paintVectorFrame( painter, currentLayer, mFrameNumber ); break; }
-        case Layer::CAMERA: break;
-        case Layer::SOUND: break;
-        default: Q_ASSERT( false ); break;
     }
 }
 
