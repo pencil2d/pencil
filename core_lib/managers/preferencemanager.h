@@ -40,7 +40,8 @@ enum class SETTING
     ONION_PREV_FRAMES_NUM,
     ONION_NEXT_FRAMES_NUM,
     ONION_TYPE,
-    GRID_SIZE
+    GRID_SIZE,
+    QUICK_SIZING
 };
 
 class PreferenceManager : public BaseManager
