@@ -260,6 +260,8 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
 
     if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing
 
+    if ( instantTool ){ return; } // prevents shortcuts calls while using instant tool
+
 
     if ( currentTool()->keyPressEvent( event ) )
     {
