@@ -145,6 +145,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
 
 void ScribbleArea::updateToolCursor()
 {
+    this->setFocus();
     setCursor( currentTool()->cursor() );
     updateAllFrames();
 }
