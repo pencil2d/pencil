@@ -635,6 +635,11 @@ bool Layer::moveSelectedFrames(int offset)
                     }
                 }
 
+                // If the first frame is moving, we need to create a new first frame
+                if (fromPos == 1) {
+                    addNewEmptyKeyAt(1);
+                }
+
                 // Update the position of the selected frame
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert( std::make_pair( toPos, selectedFrame ) );
