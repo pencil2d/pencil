@@ -250,6 +250,12 @@ void ScribbleArea::escape()
 
 void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
+    // Don't handle this event on auto repeat
+    //
+    if (event->isAutoRepeat()) {
+        return;
+    }
+
     mKeyboardInUse = true;
 
     if ( mMouseInUse ){ return; } // prevents shortcuts calls while drawing
@@ -264,11 +270,6 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
     // --- fixed control key shortcuts ---
     if ( event->modifiers() == ( Qt::ControlModifier | Qt::ShiftModifier ) )
     {
-        // Don't set temporary tool if it is already the current tool.
-        if (currentTool()->type() == ERASER) {
-            return;
-        }
-
         qreal width = currentTool()->properties.width;
         qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
@@ -369,8 +370,16 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
 
 void ScribbleArea::keyReleaseEvent( QKeyEvent *event )
 {
+    // Don't handle this event on auto repeat
+    //
+    if (event->isAutoRepeat()) {
+        return;
+    }
+
     mKeyboardInUse = false;
-    if ( mMouseInUse ) { return; }
+
+    if ( mMouseInUse  ) { return; }
+
     if ( instantTool ) // temporary tool
     {
         currentTool()->keyReleaseEvent( event );
@@ -1616,9 +1625,11 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
 
 void ScribbleArea::setTemporaryTool( ToolType eToolMode )
 {
-    // Only switch to remporary tool if not already in this state.
+    // Only switch to remporary tool if not already in this state
+    // and temporary tool is not already the current tool.
     //
-    if (!instantTool) {
+    if (!instantTool && currentTool()->type() != eToolMode) {
+
         instantTool = true; // used to return to previous tool when finished (keyRelease).
         mPrevTemporalToolType = currentTool()->type();
         editor()->tools()->setCurrentTool( eToolMode );
