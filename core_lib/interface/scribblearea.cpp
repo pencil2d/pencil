@@ -272,11 +272,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
     // --- fixed control key shortcuts ---
     if ( event->modifiers() == ( Qt::ControlModifier | Qt::ShiftModifier ) )
     {
-        qreal width = currentTool()->properties.width;
-        qreal feather = currentTool()->properties.feather;
         setTemporaryTool( ERASER );
-        mEditor->tools()->setWidth( width + ( 200 - width ) / 41 ); // minimum size: 0.2 + 4.8 = 5 units. maximum size 200 + 0.
-        mEditor->tools()->setFeather( feather ); //anticipates future implementation of feather (not used yet).
         return;
     }
 
