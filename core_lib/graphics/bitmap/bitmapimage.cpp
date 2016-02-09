@@ -308,19 +308,6 @@ void BitmapImage::darkenAlpha(BitmapImage* bitmapImage)
     }
 }
 
-void BitmapImage::setOpacity(int * opacity)
-{
-    for(int y=0; height(); y++)
-    {
-        for(int x=0; width(); x++)
-        {
-            QRgb p  = mImage->pixel(offset.x()+x,offset.y()+y);
-            int newAlpha = qAlpha(p) * opacity;
-            mImage->setPixel(offset.x()+x,offset.y()+y, qRgba(qRed(p), qGreen(p), qBlue(p), newAlpha));
-        }
-    }
-}
-
 void BitmapImage::moveTopLeft(QPoint point)
 {
     mBounds.moveTopLeft(point);

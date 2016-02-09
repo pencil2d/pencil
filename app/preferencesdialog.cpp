@@ -575,8 +575,19 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
     lay->addWidget(mOnionNextFramesNumBox);
     onionSkinBox->setLayout(lay);
 
+    QGroupBox* brushBox = new QGroupBox(tr("Brush Tools"));
+    mUseQuickSizingBox = new QCheckBox(tr("Use Quick Sizing"));
+    QVBoxLayout* brushBoxLayout = new QVBoxLayout();
+    brushBoxLayout->addWidget(mUseQuickSizingBox);
+
+    connect( mUseQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange );
+
+    brushBox->setLayout(brushBoxLayout);
+
+
     QVBoxLayout* lay2 = new QVBoxLayout();
     lay2->addWidget(onionSkinBox);
+    lay2->addWidget(brushBox);
     lay2->addStretch(1);
     setLayout(lay2);
 }
@@ -587,11 +598,17 @@ void ToolsPage::updateValues()
     mOnionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
     mOnionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
     mOnionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
+    mUseQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
 }
 
 void ToolsPage::onionMaxOpacityChange(int value)
 {
     mManager->set(SETTING::ONION_MAX_OPACITY, value);
+}
+
+void ToolsPage::quickSizingChange( bool b )
+{
+    mManager->set(SETTING::QUICK_SIZING, b);
 }
 
 void ToolsPage::onionMinOpacityChange(int value)

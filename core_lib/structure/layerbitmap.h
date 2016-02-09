@@ -41,9 +41,10 @@ public:
     BitmapImage* getBitmapImageAtFrame( int frameNumber );
     BitmapImage* getLastBitmapImageAtFrame( int frameNumber, int increment );
 
-    int opacity;
+    qreal getOpacity() { return mOpacity; }
 protected:
     bool saveKeyFrame( KeyFrame*, QString strPath ) override;
+    qreal mOpacity;
 private:
     QString fileName( int index );
 };

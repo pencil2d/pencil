@@ -251,7 +251,7 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
     }
 
     painter.setWorldMatrixEnabled( true );
-    tempBitmapImage->setOpacity( layer->opacity );
+    painter.setOpacity( bitmapLayer->getOpacity() );
     tempBitmapImage->paintImage( painter );
 
     delete tempBitmapImage;
