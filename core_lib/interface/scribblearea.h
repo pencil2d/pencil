@@ -211,6 +211,7 @@ private:
 
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
+    bool mQuickSizing = true;
     int  mShowAllLayers;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;

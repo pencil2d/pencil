@@ -142,6 +142,7 @@ enum BackgroundStyle
 #define SETTING_TIMELINE_SIZE       "TimelineSize"
 #define SETTING_LABEL_FONT_SIZE     "LabelFontSize"
 #define SETTING_DRAW_LABEL          "DrawLabel"
+#define SETTING_QUICK_SIZING        "QuickSizing"
 
 #define SETTING_ANTIALIAS       "Antialiasing"
 #define SETTING_SHOW_GRID       "ShowGrid"

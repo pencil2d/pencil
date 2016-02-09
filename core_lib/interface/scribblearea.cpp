@@ -65,6 +65,7 @@ bool ScribbleArea::init()
     int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
 
+    mQuickSizing = mPrefs->isOn( SETTING::QUICK_SIZING );
     mMakeInvisible = false;
     somethingSelected = false;
 
@@ -136,6 +137,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
         break;
     case SETTING::GRID_SIZE:
         updateAllFrames();
+    case SETTING::QUICK_SIZING:
+        mQuickSizing = mPrefs->isOn( SETTING::QUICK_SIZING );
         break;
     default:
         break;
@@ -478,7 +481,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
     }
 
     // ----- assisted tool adjusment -- todo: simplify this
-    if ( event->button() == Qt::LeftButton )
+    if ( event->button() == Qt::LeftButton && mQuickSizing)
     {
         if ( ( event->modifiers() == Qt::ShiftModifier ) && ( currentTool()->properties.width > -1 ) )
         {
