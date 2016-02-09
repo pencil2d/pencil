@@ -308,7 +308,6 @@ void BitmapImage::darkenAlpha(BitmapImage* bitmapImage)
     }
 }
 
-
 void BitmapImage::moveTopLeft(QPoint point)
 {
     mBounds.moveTopLeft(point);
