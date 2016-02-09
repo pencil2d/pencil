@@ -45,6 +45,7 @@ void PreferenceManager::loadPrefs()
     set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
     set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
     set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
+    set( SETTING::QUICK_SIZING,             settings.value( SETTING_QUICK_SIZING,           true ).toBool() );
 
     set( SETTING::WINDOW_OPACITY,           settings.value( SETTING_WINDOW_OPACITY,         0 ).toInt() );
     set( SETTING::CURVE_SMOOTHING,          settings.value( SETTING_CURVE_SMOOTHING,        20 ).toInt() );
@@ -273,6 +274,8 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::DRAW_LABEL:
         settings.setValue ( SETTING_DRAW_LABEL, value );
+    case SETTING::QUICK_SIZING:
+        settings.setValue ( SETTING_QUICK_SIZING, value );
         break;
     default:
         break;
