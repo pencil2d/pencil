@@ -41,9 +41,9 @@ public:
     BitmapImage* getBitmapImageAtFrame( int frameNumber );
     BitmapImage* getLastBitmapImageAtFrame( int frameNumber, int increment );
 
+    int opacity;
 protected:
     bool saveKeyFrame( KeyFrame*, QString strPath ) override;
-
 private:
     QString fileName( int index );
 };

@@ -128,7 +128,7 @@ private:
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 
-    // We need to keep trace of selected frames ordered by last selected
+    // We need to keep track of selected frames ordered by last selected
     // and by position.
     // Both should be pre-sorted on each selection for optimization purpose when moving frames.
     //
