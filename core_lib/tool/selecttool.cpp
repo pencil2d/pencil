@@ -42,7 +42,7 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
             {
                 ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
             }
-            mScribbleArea->setMoveMode( ScribbleArea::MIDDLE );
+            mScribbleArea->setMoveMode( ScribbleArea::NONE );
             mEditor->backup( typeName() );
 
             if ( mScribbleArea->somethingSelected )      // there is something selected
@@ -63,11 +63,19 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
                 {
                     mScribbleArea->setMoveMode( ScribbleArea::BOTTOMRIGHT );
                 }
-                if ( mScribbleArea->getMoveMode() == ScribbleArea::MIDDLE )
+
+                // the user did not click on one of the corners
+                //
+                if ( mScribbleArea->getMoveMode() == ScribbleArea::NONE )
                 {
-                    mScribbleArea->paintTransformedSelection();
+                    // Deselect all and get ready for a new selection
+                    //
                     mScribbleArea->deselectAll();
-                } // the user did not click on one of the corners
+
+                    mScribbleArea->mySelection.setTopLeft( getLastPoint() );
+                    mScribbleArea->mySelection.setBottomRight( getLastPoint() );
+                    mScribbleArea->setSelection( mScribbleArea->mySelection, true );
+                }
             }
             else     // there is nothing selected
             {
@@ -124,7 +132,7 @@ void SelectTool::mouseMoveEvent( QMouseEvent *event )
     {
         switch ( mScribbleArea->getMoveMode() )
         {
-        case ScribbleArea::MIDDLE:
+        case ScribbleArea::NONE:
             mScribbleArea->mySelection.setBottomRight( getCurrentPoint() );
             break;
 
