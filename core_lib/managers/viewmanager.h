@@ -48,6 +48,9 @@ public:
     Q_SIGNAL void viewChanged();
 
 private:
+    const float mMinScale = 0.01;
+    const float mMaxScale = 100;
+
     QTransform createViewTransform();
 
     QTransform mView;
