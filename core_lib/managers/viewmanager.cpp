@@ -96,13 +96,16 @@ void ViewManager::rotate(float degree)
 
 void ViewManager::scale(float scaleValue)
 {
-    if(scaleValue < mMinScale){
+    if( scaleValue < mMinScale )
+    {
         scaleValue = mMinScale;
     }
-    else if(scaleValue > mMaxScale){
+    else if( scaleValue > mMaxScale)
+    {
         scaleValue = mMaxScale;
     }
-    else if(scaleValue == mMinScale || scaleValue == mMaxScale){
+    else if( scaleValue == mMinScale || scaleValue == mMaxScale  )
+    {
         return;
     }
     mScale = scaleValue;
