@@ -181,6 +181,7 @@ public:
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
 
     void paintBitmapBuffer();
+    void paintBitmapBufferRect( QRect rect );
     void clearBitmapBuffer();
     void refreshBitmap( const QRectF& rect, int rad );
     void refreshVector( const QRectF& rect, int rad );
