@@ -9,7 +9,7 @@ namespace Ui
 }
 class Editor;
 class QToolButton;
-
+class ViewManager;
 
 class DisplayOptionWidget : public BaseDockWidget
 {
@@ -20,6 +20,8 @@ public:
 
     void initUI() override;
     void updateUI() override;
+
+    void updateZoomLabel();
 
     void makeConnectionToEditor(Editor* editor);
 

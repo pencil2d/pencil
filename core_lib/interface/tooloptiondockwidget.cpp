@@ -34,6 +34,7 @@ void ToolOptionWidget::updateUI()
     mSizeSlider->setVisible( currentTool->isPropertyEnabled( WIDTH ) );
     mBrushSpinBox->setVisible( currentTool->isPropertyEnabled( WIDTH) );
     mFeatherSlider->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
+    mUseFeatherBox->setVisible( currentTool->isPropertyEnabled( FEATHER ) );
     mFeatherSpinBox->setVisible( currentTool->isPropertyEnabled( FEATHER) );
     mUseBezierBox->setVisible( currentTool->isPropertyEnabled( BEZIER ) );
     mUsePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
@@ -76,6 +77,11 @@ void ToolOptionWidget::createUI()
     mFeatherSpinBox->setRange(2,64);
     mFeatherSpinBox->setValue(settings.value( "brushFeather" ).toDouble() );
 
+    mUseFeatherBox = new QCheckBox( tr( "Use Feather?" ) );
+    mUseFeatherBox->setToolTip( tr( "Enable or disable feathering" ) );
+    mUseFeatherBox->setFont( QFont( "Helvetica", 10 ) );
+    mUseFeatherBox->setChecked( settings.value( "brushUseFeather" ).toBool() );
+
     mUseBezierBox = new QCheckBox( tr( "Bezier" ) );
     mUseBezierBox->setToolTip( tr( "Bezier curve fitting" ) );
     mUseBezierBox->setFont( QFont( "Helvetica", 10 ) );
@@ -103,6 +109,7 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mUseBezierBox, 10, 0, 1, 2 );
     pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
     pLayout->addWidget( mPreserveAlphaBox, 12, 0, 1, 2 );
+    pLayout->addWidget( mUseFeatherBox, 13, 0, 1, 2 );
     pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
 
     pLayout->setRowStretch( 15, 1 );
@@ -126,6 +133,8 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 
     connect( mBrushSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setWidth );
     connect( mFeatherSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setFeather );
+
+    connect( mUseFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather );
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -211,6 +220,7 @@ void ToolOptionWidget::disableAllOptions()
     mBrushSpinBox->hide();
     mFeatherSlider->hide();
     mFeatherSpinBox->hide();
+    mUseFeatherBox->hide();
     mUseBezierBox->hide();
     mUsePressureBox->hide();
     mMakeInvisibleBox->hide();

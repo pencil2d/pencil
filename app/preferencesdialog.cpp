@@ -43,10 +43,14 @@ void PreferencesDialog::init( PreferenceManager* m )
     general->updateValues();
     //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
     
+    GridPage* grid = new GridPage( this );
+    grid->setManager( mPrefManager );
+    grid->updateValues();
+
     FilesPage* file = new FilesPage( this );
     file->setManager( mPrefManager );
     file->updateValues();
-    
+
     TimelinePage* timeline = new TimelinePage( this );
     timeline->setManager( mPrefManager );
     timeline->updateValues();
@@ -60,6 +64,7 @@ void PreferencesDialog::init( PreferenceManager* m )
 
     pagesWidget = new QStackedWidget;
     pagesWidget->addWidget( general );
+    pagesWidget->addWidget( grid );
     pagesWidget->addWidget( file );
     pagesWidget->addWidget( timeline );
     pagesWidget->addWidget( tools );
@@ -101,6 +106,12 @@ void PreferencesDialog::createIcons()
     generalButton->setText(tr("General"));
     generalButton->setTextAlignment(Qt::AlignHCenter);
     generalButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+
+    QListWidgetItem* gridButton = new QListWidgetItem(contentsWidget);
+    gridButton->setIcon(QIcon(":icons/prefspencil.png")); /* this needs its own icon sometime! */
+    gridButton->setText(tr("Grid"));
+    gridButton->setTextAlignment(Qt::AlignHCenter);
+    gridButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     QListWidgetItem* filesButton = new QListWidgetItem(contentsWidget);
     filesButton->setIcon(QIcon(":icons/prefs-files.png"));
@@ -263,7 +274,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 }
 
 
-
 void GeneralPage::updateValues()
 {
     mCurveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
@@ -348,6 +358,42 @@ void GeneralPage::dottedCursorCheckboxStateChanged(bool b)
     mManager->set( SETTING::DOTTED_CURSOR, b );
 }
 
+
+GridPage::GridPage(QWidget* parent) : QWidget(parent)
+{
+    QSettings settings( PENCIL2D, PENCIL2D );
+    QVBoxLayout* lay = new QVBoxLayout();
+
+    QGroupBox* gridSizeBox = new QGroupBox(tr("Grid Size"));
+
+    mGridSizeInput = new QSpinBox();
+    mGridSizeInput->setMinimum(1);
+    mGridSizeInput->setMaximum(512);
+    mGridSizeInput->setFixedWidth(80);
+    int gridSize = settings.value("gridSize").toInt();
+    mGridSizeInput->setValue( gridSize );
+
+    connect( mGridSizeInput, SIGNAL(valueChanged(int)), this, SLOT(gridSizeChange(int)));
+
+    QGridLayout* gridSizeLayout = new QGridLayout();
+    gridSizeBox->setLayout(gridSizeLayout);
+    gridSizeLayout->addWidget(mGridSizeInput, 0, 0);
+
+    lay->addWidget(gridSizeBox);
+
+
+    setLayout(lay);
+}
+
+void GridPage::updateValues()
+{
+    mGridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
+}
+
+void GridPage::gridSizeChange(int value)
+{
+    mManager->set(SETTING::GRID_SIZE, value);
+}
 
 TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
 {

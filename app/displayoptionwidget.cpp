@@ -30,6 +30,10 @@ void DisplayOptionWidget::initUI()
     updateUI();
 }
 
+void DisplayOptionWidget::updateZoomLabel()
+{
+}
+
 void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 {
     PreferenceManager* prefs = editor->preference();
@@ -46,6 +50,8 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
     connect( prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI );
+
+    connect( editor->view(), &ViewManager::viewChanged, this, &DisplayOptionWidget::updateZoomLabel );
 
     updateUI();
 

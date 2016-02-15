@@ -128,6 +128,12 @@ void ToolManager::setFeather( float newFeather )
     Q_EMIT toolPropertyChanged( currentTool()->type(), FEATHER );
 }
 
+void ToolManager::setUseFeather( bool usingFeather )
+{
+    currentTool()->setUseFeather( usingFeather );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), USEFEATHER );
+}
+
 void ToolManager::setInvisibility( bool isInvisible )
 {
     currentTool()->setInvisibility(isInvisible);

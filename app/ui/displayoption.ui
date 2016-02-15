@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>156</width>
-    <height>128</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,10 +29,10 @@
    <property name="spacing">
     <number>2</number>
    </property>
-   <item row="1" column="0">
-    <widget class="QToolButton" name="mirrorVButton">
+   <item row="0" column="0">
+    <widget class="QToolButton" name="mirrorButton">
      <property name="toolTip">
-      <string>Vertical flip</string>
+      <string>Horizontal flip</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolButton { 
@@ -53,7 +53,7 @@ border:1px solid #555555;
      </property>
      <property name="icon">
       <iconset resource="../resource/app.qrc">
-       <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
+       <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -66,22 +66,13 @@ border:1px solid #555555;
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QToolButton" name="cameraBorderButton">
-     <property name="minimumSize">
-      <size>
-       <width>28</width>
-       <height>27</height>
-      </size>
-     </property>
-     <property name="baseSize">
-      <size>
-       <width>28</width>
-       <height>27</height>
-      </size>
-     </property>
+   <item row="0" column="2">
+    <widget class="QToolButton" name="onionPrevButton">
      <property name="toolTip">
-      <string>Camera border</string>
+      <string>Onion skin previous frame</string>
+     </property>
+     <property name="statusTip">
+      <string>Onion skin previous frame</string>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -101,11 +92,11 @@ border:1px solid #555555;
 }</string>
      </property>
      <property name="text">
-      <string>C</string>
+      <string>...</string>
      </property>
      <property name="icon">
       <iconset resource="../resource/app.qrc">
-       <normaloff>:/app/icons/cameraBorder.png</normaloff>:/app/icons/cameraBorder.png</iconset>
+       <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -161,13 +152,22 @@ border:1px solid #555555;
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <widget class="QToolButton" name="onionPrevButton">
-     <property name="toolTip">
-      <string>Onion skin previous frame</string>
+   <item row="2" column="0">
+    <widget class="QToolButton" name="cameraBorderButton">
+     <property name="minimumSize">
+      <size>
+       <width>28</width>
+       <height>27</height>
+      </size>
      </property>
-     <property name="statusTip">
-      <string>Onion skin previous frame</string>
+     <property name="baseSize">
+      <size>
+       <width>28</width>
+       <height>27</height>
+      </size>
+     </property>
+     <property name="toolTip">
+      <string>Camera border</string>
      </property>
      <property name="autoFillBackground">
       <bool>false</bool>
@@ -187,11 +187,11 @@ border:1px solid #555555;
 }</string>
      </property>
      <property name="text">
-      <string>...</string>
+      <string>C</string>
      </property>
      <property name="icon">
       <iconset resource="../resource/app.qrc">
-       <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
+       <normaloff>:/app/icons/cameraBorder.png</normaloff>:/app/icons/cameraBorder.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -370,10 +370,10 @@ border:1px solid #555555;
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
-    <widget class="QToolButton" name="mirrorButton">
+   <item row="1" column="0">
+    <widget class="QToolButton" name="mirrorVButton">
      <property name="toolTip">
-      <string>Horizontal flip</string>
+      <string>Vertical flip</string>
      </property>
      <property name="styleSheet">
       <string notr="true">QToolButton { 
@@ -394,7 +394,7 @@ border:1px solid #555555;
      </property>
      <property name="icon">
       <iconset resource="../resource/app.qrc">
-       <normaloff>:/app/icons/mirror.png</normaloff>:/app/icons/mirror.png</iconset>
+       <normaloff>:/app/icons/mirrorV.png</normaloff>:/app/icons/mirrorV.png</iconset>
      </property>
      <property name="iconSize">
       <size>

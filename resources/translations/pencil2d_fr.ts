@@ -256,8 +256,8 @@
         <translation>Set Stylo largeur &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;pour réglage rapide</translation>
     </message>
     <message>
-    <source>Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment</source>
-        <translation>Set Stylo largeur <br><b>[SHIFT]+drag</b><br>pour réglage rapide</translation>
+    <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Set Stylo largeur &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;pour réglage rapide</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="43"/>
@@ -270,8 +270,8 @@
         <translation>Set Stylo plume &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;pour réglage rapide</translation>
     </message>
     <message>
-    <source>Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment</source>
-        <translation>Set Stylo plume <br><b>[CTRL]+drag</b><br>pour réglage rapide</translation>
+    <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Set Stylo plume &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;pour réglage rapide</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="50"/>
@@ -864,8 +864,8 @@
         <translation>palette de couleurs :&lt;br&gt;utiliser &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;bascule à curseur</translation>
     </message>
     <message>
-    <source>color palette:<br>use <b>(C)</b><br>toggle at cursor</source>
-        <translation>palette de couleurs :<br>utiliser <b>(C)</b><br>bascule à curseur</translation>
+    <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
+        <translation>palette de couleurs :&lt;br&gt;utiliser &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;bascule à curseur</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="323"/>
@@ -1053,12 +1053,12 @@ Voulez-vous enregistrer les modifications apportées ?</translation>
         <translation>Impossible de charger l'image vectorielle.&lt;br&gt;&lt;b&gt;Astuce :&lt;/b&gt; Utiliser la couche vectorielle pour importer des vecteurs.</translation>
     </message>
     <message>
-    <source>Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps.</source>
-        <translation>Impossible de charger l'image bitmap.<br><b>Astuce :</b> Utiliser la couche Bitmap pour importer des bitmaps.</translation>
+    <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
+        <translation>Impossible de charger l'image bitmap.&lt;br&gt;&lt;b&gt;Astuce :&lt;/b&gt; Utiliser la couche Bitmap pour importer des bitmaps.</translation>
     </message>
     <message>
-    <source>Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors.</source>
-        <translation>Impossible de charger l'image vectorielle.<br><b>Astuce :</b> Utiliser la couche vectorielle pour importer des vecteurs.</translation>
+    <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Vector layer to import vectors.</source>
+        <translation>Impossible de charger l'image vectorielle.&lt;br&gt;&lt;b&gt;Astuce :&lt;/b&gt; Utiliser la couche vectorielle pour importer des vecteurs.</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1279"/>
@@ -1519,7 +1519,7 @@ Voulez-vous enregistrer les modifications apportées ?</translation>
         <translation>&amp;Calque</translation>
     </message>
     <message>
-    <source>&Layer</source>
+    <source>&amp;Layer</source>
         <translation>&amp;Calque</translation>
     </message>
     <message>
@@ -1615,52 +1615,52 @@ Voulez-vous enregistrer les modifications apportées ?</translation>
         <translation>Outil Etaler&lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Editer polyligne/courbes&lt;br&gt;Liquéfier les pixels de l'image bitmap&lt;br&gt;&lt;b&gt;[Alt]&lt;/b&gt;: lissage</translation>
     </message>
     <message>
-    <source>Pencil Tool <b>(N)</b>: Sketch with pencil</source>
-        <translation>Outil Crayon <b>(N)</b>: croquis au crayon</translation>
+    <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
+        <translation>Outil Crayon &lt;b&gt;(N)&lt;/b&gt;: croquis au crayon</translation>
     </message>
     <message>
-    <source>Select Tool <b>(V)</b>: Select an object</source>
-        <translation>Outil Sélection <b>(V)</b>: sélectionnez un objet</translation>
+    <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
+        <translation>Outil Sélection &lt;b&gt;(V)&lt;/b&gt;: sélectionnez un objet</translation>
     </message>
     <message>
-    <source>Move Tool <b>(Q)</b>: Move an object</source>
-        <translation>Outil Déplacer <b>(Q)</b>: déplacer un objet</translation>
+    <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
+        <translation>Outil Déplacer &lt;b&gt;(Q)&lt;/b&gt;: déplacer un objet</translation>
     </message>
     <message>
-    <source>Hand Tool <b>(H)</b>: Move the canvas</source>
-        <translation>Outil Main <b>(H)</b>: déplacer la toile</translation>
+    <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
+        <translation>Outil Main &lt;b&gt;(H)&lt;/b&gt;: déplacer la toile</translation>
     </message>
     <message>
-    <source>Pen Tool <b>(P)</b>: Sketch with pen</source>
-        <translation>Outil Stylo<b>(P)</b>: Dessiner avec le stylo</translation>
+    <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
+        <translation>Outil Stylo&lt;b&gt;(P)&lt;/b&gt;: Dessiner avec le stylo</translation>
     </message>
     <message>
-    <source>Eraser Tool <b>(E)</b>: Erase</source>
-        <translation>Outil gomme<b>(E)</b>: Gomme</translation>
+    <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
+        <translation>Outil gomme&lt;b&gt;(E)&lt;/b&gt;: Gomme</translation>
     </message>
     <message>
-    <source>Polyline Tool <b>(Y)</b>: Create line/curves</source>
-        <translation>Outil polyligne<b>(Y)</b>: Créer Ligne/Courbe</translation>
+    <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
+        <translation>Outil polyligne&lt;b&gt;(Y)&lt;/b&gt;: Créer Ligne/Courbe</translation>
     </message>
     <message>
-    <source>Paint Bucket Tool <b>(K)</b>: Fill selected area with a color</source>
-        <translation>Outil Seau<b>(K)</b>: Remplir une forme avec une couleur</translation>
+    <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
+        <translation>Outil Seau&lt;b&gt;(K)&lt;/b&gt;: Remplir une forme avec une couleur</translation>
     </message>
     <message>
-    <source>Brush Tool <b>(B)</b>: Paint smooth stroke with a brush</source>
-        <translation>Outil Brosse<b>(B)</b>: Tracé lisse de peinture avec un pinceau</translation>
+    <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
+        <translation>Outil Brosse&lt;b&gt;(B)&lt;/b&gt;: Tracé lisse de peinture avec un pinceau</translation>
     </message>
     <message>
-    <source>Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access</source>
-        <translation>Outil Pipette  <b>(I)</b>: Couleur définie de la scène<br><b>[ALT]</b> pour un accès instantané</translation>
+    <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
+        <translation>Outil Pipette  &lt;b&gt;(I)&lt;/b&gt;: Couleur définie de la scène&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; pour un accès instantané</translation>
     </message>
     <message>
-    <source>Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame</source>
-        <translation>Effacer l'image <b>(Ctrl-D)</b>: efface le contenu de l'image sélectionnée</translation>
+    <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
+        <translation>Effacer l'image &lt;b&gt;(Ctrl-D)&lt;/b&gt;: efface le contenu de l'image sélectionnée</translation>
     </message>
     <message>
-    <source>Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth</source>
-        <translation>Outil Etaler<b>(A)</b>:<br>Editer polyligne/courbes<br>Liquéfier les pixels de l'image bitmap<br><b>[Alt]</b>: lissage</translation>
+    <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
+        <translation>Outil Etaler&lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Editer polyligne/courbes&lt;br&gt;Liquéfier les pixels de l'image bitmap&lt;br&gt;&lt;b&gt;[Alt]&lt;/b&gt;: lissage</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="49"/>

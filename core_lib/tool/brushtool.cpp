@@ -38,7 +38,7 @@ void BrushTool::loadSettings()
 
     properties.width = settings.value( "brushWidth" ).toDouble();
     properties.feather = settings.value( "brushFeather", 15.0 ).toDouble();
-
+    properties.useFeather = settings.value( "brushUseFeather", true ).toBool();
     properties.pressure = settings.value( "brushPressure", true ).toBool();
     properties.invisibility = DISABLED;
     properties.preserveAlpha = OFF;
@@ -64,6 +64,17 @@ void BrushTool::setWidth(const qreal width)
     // Update settings
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("brushWidth", width);
+    settings.sync();
+}
+
+void BrushTool::setUseFeather( const bool usingFeather )
+{
+    // Set current property
+    properties.useFeather = usingFeather;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("brushUseFeather", usingFeather);
     settings.sync();
 }
 
@@ -142,6 +153,8 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
         mScribbleArea->setAllDirty();
     }
 
+    mouseDownPoint = getCurrentPoint();
+
     lastBrushPoint = getCurrentPoint();
     startStroke();
 
@@ -155,7 +168,14 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
+            if (getCurrentPoint()==mouseDownPoint)
+            {
+                paintAt(mouseDownPoint);
+            }
+            else
+            {
             drawStroke();
+            }
         }
 
         if ( layer->type() == Layer::BITMAP )
@@ -202,8 +222,33 @@ void BrushTool::mouseMoveEvent( QMouseEvent *event )
 }
 
 // draw a single paint dab at the given location
-void BrushTool::paintAt( QPointF )
+void BrushTool::paintAt( QPointF point )
 {
+    qDebug() << "Made a single dab at " << point;
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer->type() == Layer::BITMAP )
+    {
+        qreal opacity = 1.0f;
+        if (properties.pressure == true)
+        {
+        opacity = mCurrentPressure / 2;
+        }
+        mCurrentWidth = properties.width;
+        qreal brushWidth = mCurrentWidth;
+
+        BlitRect rect;
+
+        rect.extend( point.toPoint() );
+        mScribbleArea->drawBrush( point,
+                                  brushWidth,
+                                  properties.feather,
+                                  mEditor->color()->frontColor(),
+                                  opacity,
+                                  properties.useFeather );
+
+        int rad = qRound( brushWidth ) / 2 + 2;
+        mScribbleArea->refreshBitmap( rect, rad );
+    }
 }
 
 void BrushTool::drawStroke()
@@ -219,8 +264,11 @@ void BrushTool::drawStroke()
         {
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
-
-        qreal opacity = mCurrentPressure / 2;
+        qreal opacity = 1.0f;
+        if (properties.pressure == true)
+        {
+        opacity = mCurrentPressure / 2;
+        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
@@ -243,7 +291,8 @@ void BrushTool::drawStroke()
                                       brushWidth,
                                       properties.feather,
                                       mEditor->color()->frontColor(),
-                                      opacity );
+                                      opacity,
+                                      properties.useFeather );
 
             if ( i == ( steps - 1 ) )
             {

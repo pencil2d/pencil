@@ -19,7 +19,10 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
+// standard headers
 #include <memory>
+
+// Qt headers
 #include <QList>
 #include <QMenu>
 #include <QFile>
@@ -30,6 +33,8 @@ GNU General Public License for more details.
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QGraphicsDropShadowEffect>
+#include <QStatusBar>
+
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
@@ -122,6 +127,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->updateObject();
     mEditor->color()->setColorNumber(0);
+    
+    connect( mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel );
 }
 
 MainWindow2::~MainWindow2()
@@ -180,7 +187,7 @@ void MainWindow2::createDockWidgets()
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init Dock wieget: " << pWidget->objectName();
+        qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
     /*
@@ -343,8 +350,8 @@ void MainWindow2::createMenus()
 
     connect( mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile );
 
-    //connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
-    //connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
+    connect( ui->menuEdit, SIGNAL( aboutToShow() ), this, SLOT( undoActSetText() ) );
+    connect( ui->menuEdit, SIGNAL( aboutToHide() ), this, SLOT( undoActSetEnabled() ) );
 }
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
@@ -1144,4 +1151,10 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );
+}
+
+void MainWindow2::updateZoomLabel()
+{
+    float zoom = mEditor->view()->scaling() * 100.f;
+    statusBar()->showMessage( QString( "Zoom: %0%1" ).arg( zoom, 0, 'f', 1 ).arg("%") );
 }

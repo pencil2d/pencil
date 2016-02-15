@@ -260,8 +260,8 @@
         <translation>Stiftbreite festlegen&lt;br&gt;&lt;b&gt;[UMSCHALT]+Ziehen&lt;/b&gt;&lt;br&gt;für schnelle Anpassung</translation>
     </message>
     <message>
-    <source>Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment</source>
-        <translation>Stiftbreite festlegen<br><b>[UMSCHALT]+Ziehen</b><br>für schnelle Anpassung</translation>
+    <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Stiftbreite festlegen&lt;br&gt;&lt;b&gt;[UMSCHALT]+Ziehen&lt;b&gt;&lt;br&gt;für schnelle Anpassung</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="43"/>
@@ -274,8 +274,8 @@
         <translation>Weichheit festlegen&lt;br&gt;&lt;b&gt;[STRG]+Ziehen&lt;/b&gt;&lt;br&gt;für schnelle Anpassung</translation>
     </message>
     <message>
-    <source>Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment</source>
-        <translation>Weichheit festlegen <br><b>[STRG]+Ziehen</b><br> für schnelle Anpassung</translation>
+    <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Weichheit festlegen &lt;br&gt;&lt;b&gt;[STRG]+Ziehen&lt;b&gt;&lt;br&gt; für schnelle Anpassung</translation>
     </message>
     <message>
         <location filename="src/interface/tooloptiondockwidget.cpp" line="50"/>
@@ -854,8 +854,8 @@
         <translation>Farbpalette: &lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;An Zeigerposition umschalten</translation>
     </message>
     <message>
-    <source>color palette:<br>use <b>(C)</b><br>toggle at cursor</source>
-        <translation>Farbpalette: <br><b>(C)</b><br>An Zeigerposition umschalten</translation>
+    <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;b&gt;&lt;br&gt;toggle at cursor</source>
+        <translation>Farbpalette: &lt;br&gt;&lt;b&gt;(C)&lt;b&gt;&lt;br&gt;An Zeigerposition umschalten</translation>
     </message>
     <message>
         <location filename="src/interface/mainwindow2.cpp" line="323"/>
@@ -1037,12 +1037,12 @@ Do you want to save your changes?</source>
         <translation>Vektorbild kann nicht geladen werden.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt;Vektorebene benutzen, um Verktorbilder zu importieren</translation>
     </message>
     <message>
-    <source>Unable to load bitmap image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps.</source>
-        <translation>Rasterbild kann nicht geladen werden.<br><b>TIP:</b>Rasterebene benutzen, um Rasterbilder zu importieren.</translation>
+    <source>Unable to load bitmap image.&lt;br&gt;&lt;b&gt;TIP:&lt;b&gt; Use Bitmap layer to import bitmaps.</source>
+        <translation>Rasterbild kann nicht geladen werden.&lt;br&gt;&lt;b&gt;TIP:&lt;b&gt;Rasterebene benutzen, um Rasterbilder zu importieren.</translation>
     </message>
     <message>
-    <source>Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors.</source>
-        <translation>Vektorbild kann nicht geladen werden.<br><b>TIP:</b>Vektorebene benutzen, um Verktorbilder zu importieren</translation>
+    <source>Unable to load vector image.&lt;br&gt;&lt;b&gt;TIP:&lt;b&gt; Use Vector layer to import vectors.</source>
+        <translation>Vektorbild kann nicht geladen werden.&lt;br&gt;&lt;b&gt;TIP:&lt;b&gt;Vektorebene benutzen, um Verktorbilder zu importieren</translation>
     </message>
     <message>
         <location filename="src/interface/editor.cpp" line="1279"/>
@@ -1574,8 +1574,8 @@ Do you want to save your changes?</source>
         <translation>Verwischen &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Polygonzug/Kurven bearbeiten&lt;br&gt;Rasterpixel verwischen&lt;br&gt;&lt;b&gt;+[ALT]&lt;/b&gt;: Gleichmäßig</translation>
     </message>
     <message>
-    <source>Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth</source>
-        <translation>Verwischen <b>(A)</b>:<br>Polygonzug/Kurven bearbeiten<br>Rasterpixel verwischen<br><b>+[ALT]</b>: Gleichmäßig</translation>
+    <source>Smudge Tool &lt;b&gt;(A)&lt;b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;b&gt;: Smooth</source>
+        <translation>Verwischen &lt;b&gt;(A)&lt;b&gt;:&lt;br&gt;Polygonzug/Kurven bearbeiten&lt;br&gt;Rasterpixel verwischen&lt;br&gt;&lt;b&gt;+[ALT]&lt;b&gt;: Gleichmäßig</translation>
     </message>
     <message>
         <location filename="src/interface/toolset.cpp" line="49"/>
