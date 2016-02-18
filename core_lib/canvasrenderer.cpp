@@ -413,7 +413,7 @@ void CanvasRenderer::paintGrid( QPainter& painter )
     painter.setWorldMatrixEnabled( true );
     painter.setBrush( Qt::NoBrush );
     QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::QPainter::Antialiasing, false);
+    painter.setRenderHint( QPainter::Antialiasing, false );
     for ( int x = left; x < right; x += gridSize )
     {
         painter.drawLine( x, top, x, bottom );
