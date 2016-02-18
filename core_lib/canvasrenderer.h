@@ -79,6 +79,7 @@ private:
 
     void paintAxis( QPainter& painter );
     void paintGrid( QPainter& painter );
+    void paintCameraBorder(QPainter &painter);
 
 private:
     QPixmap* mCanvas = nullptr;
@@ -99,6 +100,7 @@ private:
     QTransform mSelectionTransform;
 
     QLoggingCategory mLog;
+
 };
 
 #endif // CANVASRENDERER_H
