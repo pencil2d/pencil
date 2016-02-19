@@ -76,10 +76,8 @@ private:
     void paintVectorFrame(QPainter&, int layerId, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
 
     void paintTransformedSelection( QPainter& painter );
-
-    void paintAxis( QPainter& painter );
     void paintGrid( QPainter& painter );
-
+    void paintAxis( QPainter& painter );
 private:
     QPixmap* mCanvas = nullptr;
     Object* mObject = nullptr;

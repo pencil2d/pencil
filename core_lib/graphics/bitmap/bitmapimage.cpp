@@ -275,7 +275,7 @@ void BitmapImage::add(BitmapImage* bitmapImage)
     }
 }
 
-void BitmapImage::darkenAlpha(BitmapImage* bitmapImage)
+void BitmapImage::compareAlpha(BitmapImage* bitmapImage) // this function picks the greater alpha value
 {
     QImage* image2 = bitmapImage->mImage;
     QRect newBoundaries;
@@ -299,7 +299,7 @@ void BitmapImage::darkenAlpha(BitmapImage* bitmapImage)
             int a1 = qAlpha(p1);
             int a2 = qAlpha(p2);
 
-            if (a1 < a2)
+            if (a1 <= a2)
             {
             QRgb mix = qRgba(qRed(p2), qGreen(p2), qBlue(p2), a2);
             mImage->setPixel(offset.x()+x,offset.y()+y, mix);
