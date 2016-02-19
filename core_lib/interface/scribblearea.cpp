@@ -678,7 +678,7 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 /************************************************************************************/
 // paint methods
 
-void ScribbleArea::paintBitmapBuffer()
+void ScribbleArea::paintBitmapBuffer( )
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -714,6 +714,51 @@ void ScribbleArea::paintBitmapBuffer()
     qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
 
     QRect rect = mEditor->view()->getView().mapRect( mBufferImg->bounds() );
+
+    // Clear the buffer
+    mBufferImg->clear();
+
+    layer->setModified( mEditor->currentFrame(), true );
+    emit modification();
+
+    QPixmapCache::remove( "frame" + QString::number( mEditor->currentFrame() ) );
+    drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
+    update( rect );
+}
+
+void ScribbleArea::paintBitmapBufferRect( QRect rect )
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+
+    // ---- checks ------
+    Q_ASSERT( layer );
+    if ( layer == NULL ) { return; } // TODO: remove in future.
+
+    BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+    // Clear the temporary pixel path
+    if ( targetImage != NULL )
+    {
+        QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
+        switch ( currentTool()->type() )
+        {
+            case ERASER:
+                cm = QPainter::CompositionMode_DestinationOut;
+                break;
+            case BRUSH:
+            case PEN:
+            case PENCIL:
+                if ( getTool( currentTool()->type() )->properties.preserveAlpha )
+                {
+                    cm = QPainter::CompositionMode_SourceAtop;
+                }
+                break;
+            default: //nothing
+                break;
+        }
+        targetImage->paste( mBufferImg, cm );
+    }
+
+    qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
 
     // Clear the buffer
     mBufferImg->clear();
