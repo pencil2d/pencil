@@ -46,8 +46,8 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 	connect( ui->onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
 	connect( ui->onionRedButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionRed );
 	connect( ui->mirrorButton,    &QToolButton::clicked, editor, &Editor::toggleMirror);
-	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
-    connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
+    connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
+    //connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
     connect( prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI );
 
@@ -86,7 +86,4 @@ void DisplayOptionWidget::updateUI()
     
     QSignalBlocker b8( ui->mirrorVButton );
     ui->mirrorVButton->setChecked( prefs->isOn( SETTING::MIRROR_V ) );
-    
-    QSignalBlocker b9( ui->cameraBorderButton );
-    ui->cameraBorderButton->setChecked( prefs->isOn( SETTING::CAMERABORDER ) );
 }

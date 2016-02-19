@@ -30,7 +30,6 @@ void PreferenceManager::loadPrefs()
     // Display
     //
     set( SETTING::GRID,                     settings.value( SETTING_SHOW_GRID,              false ).toBool() );
-    set( SETTING::CAMERABORDER,             settings.value( SETTING_CAMERABORDER,           false ).toBool() );
     set( SETTING::INVISIBLE_LINES,          settings.value( SETTING_INVISIBLE_LINES,        false ).toBool() );
     set( SETTING::OUTLINES,                 settings.value( SETTING_OUTLINES,               false ).toBool() );
     set( SETTING::MIRROR_H,                 false ); // Always off by default
@@ -238,9 +237,6 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::AXIS:
         settings.setValue ( SETTING_AXIS, value );
-        break;
-    case SETTING::CAMERABORDER:
-        settings.setValue ( SETTING_CAMERABORDER, value );
         break;
     case SETTING::INVISIBLE_LINES:
         settings.setValue ( SETTING_INVISIBLE_LINES, value );

@@ -1520,11 +1520,6 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
     emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
 }
 
-void ScribbleArea::toggleCameraBorder( bool checked )
-{
-    setEffect( SETTING::CAMERABORDER, checked );
-}
-
 void ScribbleArea::toggleOnionBlue( bool checked )
 {
     setEffect( SETTING::ONION_BLUE, checked );
