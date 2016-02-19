@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "bitmapimage.h"
+#include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
 
@@ -92,6 +93,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     paintBackground( painter );
     paintOnionSkin( painter );
     paintCurrentFrame( painter );
+    paintCameraBorder( painter );
 
     // post effects
     if ( mOptions.bAxis )
@@ -433,4 +435,50 @@ void CanvasRenderer::paintGrid( QPainter& painter )
         painter.drawLine( left, y, right, y );
     }
     painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasRenderer::paintCameraBorder(QPainter &painter)
+{
+
+    for ( int i = 0; i < mObject->getLayerCount(); ++i )
+    {
+        Layer* layer = mObject->getLayer( i );
+
+        if ( layer->type() == Layer::CAMERA && (i == mLayerIndex || mOptions.nShowAllLayers > 0) && layer->visible() ) {
+
+            if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
+            {
+                painter.setOpacity( 1.0 );
+            }
+            else {
+                painter.setOpacity( 0.8 );
+            }
+
+            QRectF viewRect = painter.viewport();
+            QRect boundingRect = mViewTransform.inverted().mapRect( viewRect ).toRect();
+
+
+            LayerCamera* cameraLayer = dynamic_cast< LayerCamera* >( layer );
+
+            QRect cameraRect = cameraLayer->getViewRect();
+
+            painter.setWorldMatrixEnabled( true );
+            painter.setPen( Qt::NoPen );
+            painter.setBrush( QColor( 0, 0, 0, 160 ) );
+
+            QRegion rg1(boundingRect);
+            QRegion rg2(cameraRect);
+            QRegion rg3=rg1.subtracted(rg2);
+
+            painter.setClipRegion(rg3);
+
+            painter.drawRect( boundingRect );
+
+            painter.setClipping(false);
+
+            painter.setPen( Qt::black );
+            painter.setBrush( Qt::NoBrush );
+            painter.drawRect( cameraRect );
+        }
+    }
 }

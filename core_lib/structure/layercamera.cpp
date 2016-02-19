@@ -206,6 +206,8 @@ void LayerCamera::editProperties()
     {
         mName = dialog->getName();
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
+
+        setUpdated();
     }
 }
 

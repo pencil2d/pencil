@@ -118,6 +118,8 @@ public:
 
     virtual void editProperties();
 
+    void setUpdated();
+
 protected:
     void setId( int LayerId ) { mId = LayerId; }
 

@@ -998,23 +998,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         }
     }
 
-    // clips to the frame of the camera
-    if ( mPrefs->isOn( SETTING::CAMERABORDER ) )
-    {
-        QRect rect = ( ( LayerCamera * )mEditor->object()->getLayer(mEditor->layers()->getLastCameraLayer()) )->getViewRect();
-        rect.translate( width() / 2, height() / 2 );
-        painter.setWorldMatrixEnabled( false );
-        painter.setPen( Qt::NoPen );
-        painter.setBrush( QColor( 0, 0, 0, 160 ) );
-        painter.drawRect( QRect( 0, 0, width(), ( height() - rect.height() ) / 2 ) );
-        painter.drawRect( QRect( 0, rect.bottom(), width(), ( height() - rect.height() ) / 2 ) );
-        painter.drawRect( QRect( 0, rect.top(), ( width() - rect.width() ) / 2, rect.height() - 1 ) );
-        painter.drawRect( QRect( ( width() + rect.width() ) / 2, rect.top(), (( width() - rect.width() ) / 2) + 1, rect.height() - 1 ) );
-        painter.setPen( Qt::black );
-        painter.setBrush( Qt::NoBrush );
-        painter.drawRect( QRect(rect.x(), rect.y(), rect.width() - 1, rect.height() - 1) );
-    }
-
     // outlines the frame of the viewport
 #ifdef _DEBUG
     painter.setWorldMatrixEnabled( false );
@@ -1580,11 +1563,6 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
     mMultiLayerOnionSkin = checked;
     updateAllFrames();
     emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
-}
-
-void ScribbleArea::toggleCameraBorder( bool checked )
-{
-    setEffect( SETTING::CAMERABORDER, checked );
 }
 
 void ScribbleArea::toggleOnionBlue( bool checked )

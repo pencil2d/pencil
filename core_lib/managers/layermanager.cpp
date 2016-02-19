@@ -25,6 +25,8 @@ bool LayerManager::init()
 
 Status LayerManager::onObjectLoaded( Object* o )
 {
+    connect( o, &Object::layerChanged, this, &LayerManager::layerUpdated );
+
     mCurrentLayerIndex = o->editorState()->mCurrentLayer;
     return Status::OK;
 }
@@ -230,6 +232,11 @@ int LayerManager::projectLength()
         }
     }
     return maxFrame;
+}
+
+void LayerManager::layerUpdated(int layerId)
+{
+    emit currentLayerChanged(layerId);
 }
 
 void LayerManager::gotoLastKeyFrame()

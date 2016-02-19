@@ -461,7 +461,13 @@ void Layer::editProperties()
     if ( ok && !text.isEmpty() )
     {
         mName = text;
+        setUpdated();
     }
+}
+
+void Layer::setUpdated()
+{
+    mObject->setLayerUpdated(mId);
 }
 
 void Layer::setModified( int position, bool )
