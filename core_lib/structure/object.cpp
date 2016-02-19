@@ -726,3 +726,8 @@ void Object::setEditorData( EditorState* d )
     Q_ASSERT( d != nullptr );
     mEditorState.reset( d );
 }
+
+void Object::setLayerUpdated(int layerId)
+{
+    emit layerChanged(layerId);
+}

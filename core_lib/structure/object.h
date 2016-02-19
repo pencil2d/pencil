@@ -137,6 +137,11 @@ public:
     EditorState* editorState();
     void setEditorData( EditorState* );
 
+    void setLayerUpdated(int layerId);
+
+Q_SIGNALS:
+    void layerChanged( int layerId );
+
 private:
     int getMaxLayerID();
 
