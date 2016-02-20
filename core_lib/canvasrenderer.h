@@ -41,7 +41,7 @@ struct RenderOptions
     bool  bColorizeNextOnion = false;
     bool  bAntiAlias = false;
     bool  bGrid = false;
-    int   nGridSize = 50; /* This is the grid size IN PIXELS. The grid will scale with the image, though! - Nick */
+    int   nGridSize = 50; /* This is the grid size IN PIXELS. The grid will scale with the image, though */
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
@@ -72,13 +72,13 @@ private:
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 
-    void paintBitmapFrame( QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
-    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
+    void paintBitmapFrame( QPainter&, int layerId, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
+    void paintVectorFrame(QPainter&, int layerId, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
 
     void paintTransformedSelection( QPainter& painter );
-
-    void paintAxis( QPainter& painter );
     void paintGrid( QPainter& painter );
+    void paintCameraBorder(QPainter &painter);
+    void paintAxis( QPainter& painter );
 
 private:
     QPixmap* mCanvas = nullptr;
@@ -99,6 +99,7 @@ private:
     QTransform mSelectionTransform;
 
     QLoggingCategory mLog;
+
 };
 
 #endif // CANVASRENDERER_H

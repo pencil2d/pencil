@@ -42,6 +42,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"
+#include "layercamera.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
 #include "commandcenter.h"
@@ -671,23 +672,16 @@ void MainWindow2::exportImageSequence()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     // Get the camera layer
-    Layer *cameraLayer = mEditor->layers()->currentLayer();
-    if (cameraLayer->type() != Layer::CAMERA) {
-        QMessageBox::warning( this,
-                              tr( "Error" ),
-                              tr( "You must select a Camera Layer to export an image sequence." ),
-                              QMessageBox::Ok,
-                              QMessageBox::Ok );
-        return;// false;
-    }
+    int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
+    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
 
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
-    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->setExportSize( cameraLayer->getViewRect().size() );
     dialog->exec();
 
     QSize exportSize = dialog->getExportSize();
@@ -741,21 +735,16 @@ void MainWindow2::exportImage()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     // Get the camera layer
-    Layer *cameraLayer = mEditor->layers()->currentLayer();
-    if (cameraLayer->type() != Layer::CAMERA) {
-        QMessageBox::warning( this,
-                              tr( "Error" ),
-                              tr( "You must select a Camera Layer to export an image." ),
-                              QMessageBox::Ok,
-                              QMessageBox::Ok );
-        return;// false;
-    }
+    int cameraLayerId = mEditor->layers()->getLastCameraLayer();
+
+    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
+
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
-    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->setExportSize( cameraLayer->getViewRect().size() );
     dialog->exec();
 
     QSize exportSize = dialog->getExportSize();

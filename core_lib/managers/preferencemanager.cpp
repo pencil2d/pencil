@@ -30,7 +30,6 @@ void PreferenceManager::loadPrefs()
     // Display
     //
     set( SETTING::GRID,                     settings.value( SETTING_SHOW_GRID,              false ).toBool() );
-    set( SETTING::CAMERABORDER,             settings.value( SETTING_CAMERABORDER,           false ).toBool() );
     set( SETTING::INVISIBLE_LINES,          settings.value( SETTING_INVISIBLE_LINES,        false ).toBool() );
     set( SETTING::OUTLINES,                 settings.value( SETTING_OUTLINES,               false ).toBool() );
     set( SETTING::MIRROR_H,                 false ); // Always off by default
@@ -45,6 +44,7 @@ void PreferenceManager::loadPrefs()
     set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
     set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
     set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
+    set( SETTING::QUICK_SIZING,             settings.value( SETTING_QUICK_SIZING,           true ).toBool() );
 
     set( SETTING::WINDOW_OPACITY,           settings.value( SETTING_WINDOW_OPACITY,         0 ).toInt() );
     set( SETTING::CURVE_SMOOTHING,          settings.value( SETTING_CURVE_SMOOTHING,        20 ).toInt() );
@@ -238,9 +238,6 @@ void PreferenceManager::set( SETTING option, bool value )
     case SETTING::AXIS:
         settings.setValue ( SETTING_AXIS, value );
         break;
-    case SETTING::CAMERABORDER:
-        settings.setValue ( SETTING_CAMERABORDER, value );
-        break;
     case SETTING::INVISIBLE_LINES:
         settings.setValue ( SETTING_INVISIBLE_LINES, value );
         break;
@@ -273,6 +270,8 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::DRAW_LABEL:
         settings.setValue ( SETTING_DRAW_LABEL, value );
+    case SETTING::QUICK_SIZING:
+        settings.setValue ( SETTING_QUICK_SIZING, value );
         break;
     default:
         break;
