@@ -231,7 +231,7 @@ void BrushTool::paintAt( QPointF point )
         qreal opacity = 1.0f;
         if (properties.pressure == true)
         {
-        opacity = mCurrentPressure / 2;
+            opacity = mCurrentPressure / 2;
         }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
