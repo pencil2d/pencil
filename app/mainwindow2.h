@@ -52,7 +52,7 @@ class MainWindow2 : public QMainWindow
 public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
-    
+
     Editor* mEditor = nullptr;
 
 public slots:
@@ -116,7 +116,7 @@ private:
     void bindActionWithSetting( QAction*, SETTING );
 
     // UI: central Drawing Area
-    ScribbleArea* mScribbleArea;
+    ScribbleArea* mScribbleArea                = nullptr;
 
     // UI: Dock widgets
     ColorBox*             mColorWheel          = nullptr;
@@ -127,8 +127,6 @@ private:
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-
-public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:

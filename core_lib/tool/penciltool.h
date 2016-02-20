@@ -27,9 +27,9 @@ public:
     void setPreserveAlpha( const bool preserveAlpha ) override;
 
 private:
-    QColor currentPressuredColor;
-    QPointF lastBrushPoint;
-    qreal mOpacity;
+    QColor mCurrentPressuredColor { 0, 0, 0, 255 };
+    QPointF mLastBrushPoint { 0, 0 };
+    qreal mOpacity = 1.0f;
 };
 
 #endif // PENCILTOOL_H

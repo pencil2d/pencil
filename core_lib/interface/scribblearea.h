@@ -71,7 +71,6 @@ public:
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
-    qreal myFlipX, myFlipY; // scale -1.0 or +1.0
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;

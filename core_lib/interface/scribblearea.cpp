@@ -97,9 +97,6 @@ bool ScribbleArea::init()
 
     mNeedUpdateAll = false;
 
-    myFlipX = 1.0; // can be used as "scale"
-    myFlipY = 1.0; // idem
-
     // color wheel popup
     //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
@@ -1322,17 +1319,21 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     c2x = 0.5 * ( mySelection.left() + mySelection.right() );
     c2y = 0.5 * ( mySelection.top() + mySelection.bottom() );
 
-    if ( mySelection.width() == 0 ) {
+    if ( mySelection.width() == 0 )
+    {
         scaleX = 1.0;
     }
-    else {
+    else
+    {
         scaleX = myTempTransformedSelection.width() / mySelection.width();
     }
 
-    if ( mySelection.height() == 0 ) {
+    if ( mySelection.height() == 0 )
+    {
         scaleY = 1.0;
     }
-    else {
+    else
+    {
         scaleY = myTempTransformedSelection.height() / mySelection.height();
     }
 

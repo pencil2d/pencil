@@ -30,8 +30,6 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
     Layer *layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
-    mScribbleArea->myFlipX = 1.0;
-    mScribbleArea->myFlipY = 1.0;
     mScribbleArea->myRotatedAngle = 0;
 
     if ( event->button() == Qt::LeftButton )
