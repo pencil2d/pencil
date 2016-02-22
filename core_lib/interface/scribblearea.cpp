@@ -70,8 +70,7 @@ bool ScribbleArea::init()
     somethingSelected = false;
 
     mIsSimplified = mPrefs->isOn( SETTING::OUTLINES );
-
-    mMultiLayerOnionSkin = true;
+    mMultiLayerOnionSkin = mPrefs->isOn( SETTING::MULTILAYER_ONION );
 
     mShowAllLayers = 1;
 
@@ -135,6 +134,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::QUICK_SIZING:
         mQuickSizing = mPrefs->isOn( SETTING::QUICK_SIZING );
         break;
+    case SETTING::MULTILAYER_ONION:
+        mMultiLayerOnionSkin = mPrefs->isOn( SETTING::MULTILAYER_ONION );
+        updateAllFrames();
     default:
         break;
     }
@@ -1541,13 +1543,6 @@ void ScribbleArea::deselectAll()
     editor()->tools()->cleanupAllToolsData();
 
     updateCurrentFrame();
-}
-
-void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
-{
-    mMultiLayerOnionSkin = checked;
-    updateAllFrames();
-    emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
 }
 
 void ScribbleArea::toggleThinLines()

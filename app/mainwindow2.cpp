@@ -279,10 +279,7 @@ void MainWindow2::createMenus()
 
     bindActionWithSetting( ui->actionOnionPrev, SETTING::PREV_ONION );
     bindActionWithSetting( ui->actionOnionNext, SETTING::NEXT_ONION );
-
-    connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
-
-    connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
+    bindActionWithSetting( ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION );
 
     /// --- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -1069,14 +1066,9 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
 {
     connect( editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool );
     connect( editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor );
-
-    connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
     connect( editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames );
 
-    //connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
-    //connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
-    connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
-
+    connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
 
     connect( editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames );

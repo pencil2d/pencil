@@ -96,9 +96,6 @@ Q_SIGNALS:
     void updateLayerCount();
 
     void selectAll();
-    void toggleMultiLayerOnionSkin( bool );
-
-    void multiLayerOnionSkinChanged( bool );
     void changeThinLinesButton( bool );
 
     void currentFrameChanged( int n );

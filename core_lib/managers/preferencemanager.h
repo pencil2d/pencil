@@ -10,7 +10,6 @@ enum class SETTING
 {
     ANTIALIAS,
     GRID,
-    COUNT,
     SHADOW,
     PREV_ONION,
     NEXT_ONION,
@@ -40,7 +39,9 @@ enum class SETTING
     ONION_NEXT_FRAMES_NUM,
     ONION_TYPE,
     GRID_SIZE,
-    QUICK_SIZING
+    QUICK_SIZING,
+    MULTILAYER_ONION,
+    COUNT, // COUNT must always be the last one.
 };
 
 class PreferenceManager : public BaseManager

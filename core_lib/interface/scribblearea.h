@@ -142,7 +142,6 @@ public slots:
     void toggleShowAllLayers();
     void escape();
 
-    void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
     void updateToolCursor();
