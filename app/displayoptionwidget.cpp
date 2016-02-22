@@ -39,8 +39,8 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 	connect( ui->outLinesButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOutlines);
     connect( ui->onionPrevButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionPrevButtonClicked );
 	connect( ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked );
-	connect( ui->onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
-	connect( ui->onionRedButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionRed );
+    connect( ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked );
+    connect( ui->onionRedButton,  &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked );
 	connect( ui->mirrorButton,    &QToolButton::clicked, editor, &Editor::toggleMirror);
     connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
     //connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
@@ -93,4 +93,16 @@ void DisplayOptionWidget::onionNextButtonClicked( bool isOn )
 {
     PreferenceManager* prefs = editor()->preference();
     prefs->set( SETTING::NEXT_ONION, isOn );
+}
+
+void DisplayOptionWidget::onionBlueButtonClicked( bool isOn )
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set( SETTING::ONION_BLUE, isOn );
+}
+
+void DisplayOptionWidget::onionRedButtonClicked( bool isOn )
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set( SETTING::ONION_RED, isOn );
 }

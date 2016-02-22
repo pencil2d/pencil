@@ -25,6 +25,8 @@ public:
 private:
     void onionPrevButtonClicked( bool );
     void onionNextButtonClicked( bool );
+    void onionBlueButtonClicked( bool );
+    void onionRedButtonClicked( bool );
 
     Ui::DisplayOption* ui = nullptr;
 };

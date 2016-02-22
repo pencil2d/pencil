@@ -136,9 +136,6 @@ public slots:
     void selectAll();
     void deselectAll();
 
-    void toggleOnionBlue( bool );
-    void toggleOnionRed( bool );
-
     void setCurveSmoothing( int );
     void toggleThinLines();
     void toggleOutlines();

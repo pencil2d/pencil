@@ -116,7 +116,8 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
         {
             drawStroke();
         }
-        else {
+        else if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
+        {
             if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
             {
                 mScribbleArea->toggleThinLines();

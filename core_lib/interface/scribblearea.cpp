@@ -118,25 +118,20 @@ void ScribbleArea::settingUpdated(SETTING setting)
         updateToolCursor();
         break;
     case SETTING::ONION_PREV_FRAMES_NUM:
-        updateAllFrames();
-        break;
     case SETTING::ONION_NEXT_FRAMES_NUM:
-        updateAllFrames();
-        break;
     case SETTING::ONION_MIN_OPACITY:
-        updateAllFrames();
-        break;
     case SETTING::ONION_MAX_OPACITY:
-        updateAllFrames();
-        break;
     case SETTING::ANTIALIAS:
-        updateAllFrames();
-        break;
     case SETTING::GRID:
+    case SETTING::GRID_SIZE:
+    case SETTING::PREV_ONION:
+    case SETTING::NEXT_ONION:
+    case SETTING::ONION_BLUE:
+    case SETTING::ONION_RED:
+    case SETTING::INVISIBLE_LINES:
+    case SETTING::OUTLINES:
         updateAllFrames();
         break;
-    case SETTING::GRID_SIZE:
-        updateAllFrames();
     case SETTING::QUICK_SIZING:
         mQuickSizing = mPrefs->isOn( SETTING::QUICK_SIZING );
         break;
@@ -1553,18 +1548,6 @@ void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
     mMultiLayerOnionSkin = checked;
     updateAllFrames();
     emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
-}
-
-void ScribbleArea::toggleOnionBlue( bool checked )
-{
-    setEffect( SETTING::ONION_BLUE, checked );
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleOnionRed( bool checked )
-{
-    setEffect( SETTING::ONION_RED, checked );
-    updateAllFrames();
 }
 
 void ScribbleArea::toggleThinLines()
