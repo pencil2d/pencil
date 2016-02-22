@@ -277,7 +277,7 @@ void MainWindow2::createMenus()
     setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
     connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
 
-    connect( ui->actionOnionPrevious, &QAction::triggered, mCommands, &CommandCenter::toggleOnionPrev );
+    connect( ui->actionOnionPrev, &QAction::triggered, mCommands, &CommandCenter::toggleOnionPrev );
     connect( ui->actionOnionNext, &QAction::triggered, mCommands, &CommandCenter::toggleOnionNext );
     connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
 
@@ -898,7 +898,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionVertical_Flip->setShortcut( cmdKeySeq( CMD_FLIP_VERTICAL ) );
     ui->actionPreview->setShortcut( cmdKeySeq( CMD_PREVIEW ) );
     ui->actionGrid->setShortcut( cmdKeySeq( CMD_GRID ) );
-    ui->actionOnionPrevious->setShortcut( cmdKeySeq( CMD_ONIONSKIN_PREV ) );
+    ui->actionOnionPrev->setShortcut( cmdKeySeq( CMD_ONIONSKIN_PREV ) );
     ui->actionOnionNext->setShortcut( cmdKeySeq( CMD_ONIONSKIN_NEXT ) );
 
     ui->actionPlay->setShortcut( cmdKeySeq( CMD_PLAY ) );
