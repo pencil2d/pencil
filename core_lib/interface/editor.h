@@ -97,8 +97,7 @@ Q_SIGNALS:
 
     void selectAll();
     void toggleMultiLayerOnionSkin( bool );
-    void toggleOnionNext( bool );
-    void toggleOnionPrev( bool );
+
     void multiLayerOnionSkinChanged( bool );
     void changeThinLinesButton( bool );
 

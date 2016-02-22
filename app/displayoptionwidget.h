@@ -21,11 +21,11 @@ public:
     void initUI() override;
     void updateUI() override;
 
-    void updateZoomLabel();
-
     void makeConnectionToEditor(Editor* editor);
-
 private:
+    void onionPrevButtonClicked( bool );
+    void onionNextButtonClicked( bool );
+
     Ui::DisplayOption* ui = nullptr;
 };
 

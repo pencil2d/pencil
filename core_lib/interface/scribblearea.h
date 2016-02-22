@@ -136,11 +136,8 @@ public slots:
     void selectAll();
     void deselectAll();
 
-    void toggleOnionPrev( bool );
-    void toggleOnionNext( bool );
     void toggleOnionBlue( bool );
     void toggleOnionRed( bool );
-    void toggleGrid( bool );
 
     void setCurveSmoothing( int );
     void toggleThinLines();

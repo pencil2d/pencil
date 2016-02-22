@@ -46,6 +46,11 @@ public:
     Status addNewCameraLayer();
     Status addNewSoundLayer();
 
+    // Others
+    void toggleOnionPrev( bool );
+    void toggleOnionNext( bool );
+
+
 private:
     Editor* mEditor = nullptr;
 };

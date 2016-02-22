@@ -239,8 +239,6 @@ void MainWindow2::createMenus()
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
-    ui->actionPreference->setMenuRole( QAction::PreferencesRole );
-
     connect( ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo );
     connect( ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo );
     connect( ui->actionCut, &QAction::triggered, mEditor, &Editor::cut );
@@ -252,6 +250,7 @@ void MainWindow2::createMenus()
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
+    ui->actionPreference->setMenuRole( QAction::PreferencesRole );
 
     ui->actionRedo->setEnabled( false );
 
@@ -263,7 +262,7 @@ void MainWindow2::createMenus()
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
+    connect( ui->actionZoom_In, &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
     connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
     connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &CommandCenter::rotateClockwise );
     connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &CommandCenter::rotateCounterClockwise );
@@ -278,13 +277,10 @@ void MainWindow2::createMenus()
     setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
     connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
 
-    connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
-    connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );
+    connect( ui->actionOnionPrevious, &QAction::triggered, mCommands, &CommandCenter::toggleOnionPrev );
+    connect( ui->actionOnionNext, &QAction::triggered, mCommands, &CommandCenter::toggleOnionNext );
     connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
 
-    //connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
-    //connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
-    
     connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
 
     /// --- Animation Menu ---
@@ -1076,8 +1072,8 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
     connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
     connect( editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames );
 
-    connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
-    connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
+    //connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
+    //connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
     connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
 
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );

@@ -114,11 +114,14 @@ QString PreferenceManager::getString( SETTING option )
     if (mIntegerSet.contains(optionId)) {
         return QString::number(mIntegerSet.value(optionId, -1));
     }
-    else if (mBooleanSet.contains(optionId)) {
-        if (mBooleanSet.value(optionId, false)) {
+    else if (mBooleanSet.contains(optionId) )
+    {
+        if (mBooleanSet.value(optionId, false))
+        {
             return "true";
         }
-        else {
+        else
+        {
             return "false";
         }
     }

@@ -1548,16 +1548,6 @@ void ScribbleArea::deselectAll()
     updateCurrentFrame();
 }
 
-void ScribbleArea::toggleOnionNext( bool checked )
-{
-    setEffect( SETTING::NEXT_ONION, checked );
-}
-
-void ScribbleArea::toggleOnionPrev( bool checked )
-{
-    setEffect( SETTING::PREV_ONION, checked );
-}
-
 void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
 {
     mMultiLayerOnionSkin = checked;
@@ -1575,11 +1565,6 @@ void ScribbleArea::toggleOnionRed( bool checked )
 {
     setEffect( SETTING::ONION_RED, checked );
     updateAllFrames();
-}
-
-void ScribbleArea::toggleGrid( bool checked )
-{
-    setEffect( SETTING::GRID, checked );
 }
 
 void ScribbleArea::toggleThinLines()
