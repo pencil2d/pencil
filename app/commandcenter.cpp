@@ -213,13 +213,3 @@ Status CommandCenter::addNewSoundLayer()
     }
     return Status::FAIL;
 }
-
-void CommandCenter::toggleOnionPrev( bool b )
-{
-    mEditor->preference()->set( SETTING::PREV_ONION, b );
-}
-
-void CommandCenter::toggleOnionNext( bool b )
-{
-    mEditor->preference()->set( SETTING::NEXT_ONION, b );
-}

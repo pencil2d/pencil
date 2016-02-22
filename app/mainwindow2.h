@@ -113,6 +113,8 @@ private:
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
 
+    void bindActionWithSetting( QAction*, SETTING );
+
     // UI: central Drawing Area
     ScribbleArea* mScribbleArea;
 

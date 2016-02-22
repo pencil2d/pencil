@@ -277,8 +277,9 @@ void MainWindow2::createMenus()
     setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
     connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
 
-    connect( ui->actionOnionPrev, &QAction::triggered, mCommands, &CommandCenter::toggleOnionPrev );
-    connect( ui->actionOnionNext, &QAction::triggered, mCommands, &CommandCenter::toggleOnionNext );
+    bindActionWithSetting( ui->actionOnionPrev, SETTING::PREV_ONION );
+    bindActionWithSetting( ui->actionOnionNext, SETTING::NEXT_ONION );
+
     connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
 
     connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
@@ -1136,6 +1137,28 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );
+}
+
+void MainWindow2::bindActionWithSetting( QAction* action, SETTING setting )
+{
+    PreferenceManager* prefs = mEditor->preference();
+
+    // set initial state
+    action->setChecked( prefs->isOn( setting ) );
+
+    // 2-way binding
+    connect( action, &QAction::triggered, prefs, [ = ] ( bool b )
+    {
+        prefs->set( setting, b );
+    } );
+
+    connect( prefs, &PreferenceManager::optionChanged, action, [ = ]( SETTING s )
+    {
+        if ( s == setting )
+        {
+            action->setChecked( prefs->isOn( setting ) );
+        }
+    } );
 }
 
 void MainWindow2::updateZoomLabel()
