@@ -158,7 +158,6 @@ void PreferenceManager::set(SETTING option, QString value)
 //
 void PreferenceManager::set( SETTING option, int value )
 {
-
     QSettings settings( PENCIL2D, PENCIL2D );
     switch ( option )
     {
@@ -172,21 +171,15 @@ void PreferenceManager::set( SETTING option, int value )
         settings.setValue ( SETTING_AUTO_SAVE_NUMBER, value );
         break;
     case SETTING::FRAME_SIZE:
-        if (value < 12) {
-            value = 12;
-        }
+        if (value < 12) { value = 12; }
         settings.setValue ( SETTING_FRAME_SIZE, value );
         break;
     case SETTING::TIMELINE_SIZE:
-        if (value < 20) {
-            value = 20;
-        }
+        if (value < 20) { value = 20; }
         settings.setValue ( SETTING_TIMELINE_SIZE, value );
         break;
     case SETTING::LABEL_FONT_SIZE:
-        if (value < 12) {
-            value = 12;
-        }
+        if (value < 12) { value = 12; }
         settings.setValue ( SETTING_LABEL_FONT_SIZE, value );
         break;
     case SETTING::ONION_MAX_OPACITY:

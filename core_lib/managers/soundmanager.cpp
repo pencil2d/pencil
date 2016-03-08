@@ -1,5 +1,7 @@
 #include "soundmanager.h"
-#include "soundplayer.h"
+
+//#include "soundplayer.h"
+#include "object.h"
 #include "layersound.h"
 #include "soundclip.h"
 
@@ -14,7 +16,6 @@ SoundManager::~SoundManager()
 
 bool SoundManager::init()
 {
-    mSoundPlayer = new SoundPlayer( this );
     return true;
 }
 
@@ -51,12 +52,13 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     {
         return Status::FAIL;
     }
+
+    QString strCopyFile = soundLayer->object()->copyFileToDataFolder( strSoundFile );
     
     SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
     soundClip->init( strSoundFile );
-    
-    Status st = mSoundPlayer->addSound( soundClip );
 
+    Status st = createMeidaPlayer( soundClip );
     if ( !st.ok() )
     {
         delete soundClip;
@@ -69,6 +71,23 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         delete soundClip;
         return Status::FAIL;
     }
+
+    return Status::OK;
+}
+
+Status SoundManager::createMeidaPlayer( SoundClip* clip )
+{
+    QMediaPlayer* mediaPlayer = new QMediaPlayer;
+    mediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
+    mediaPlayer->play();
+    //mediaPlayer->stop();
+    
+    qDebug() << mediaPlayer->mediaStatus();
+    
+    connect( mediaPlayer, &QMediaPlayer::mediaStatusChanged, this, []( QMediaPlayer::MediaStatus s )
+    {
+        qDebug() << "MediaStatus: " << s;
+    } );
 
     return Status::OK;
 }

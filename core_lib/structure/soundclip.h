@@ -2,9 +2,8 @@
 #define SOUNDCLIP_H
 
 #include <memory>
+#include <QMediaPlayer>
 #include "keyframe.h"
-class QMediaPlayer;
-
 
 class SoundClip : public KeyFrame
 {
@@ -13,14 +12,17 @@ public:
     ~SoundClip();
 
     Status init( QString strSoundFile );
+    bool isValid();
 
-    void attachPlayer( std::shared_ptr< QMediaPlayer > spPlayer ) { mMediaPlayer = spPlayer; }
-    void detachPlayer() { mMediaPlayer.reset(); }
+    void attachPlayer( std::shared_ptr< QMediaPlayer > mediaPlayer );
+    void detachPlayer();
     QMediaPlayer* mediaPlayer() { return mMediaPlayer.get(); }
+
+    void mediaStatusChanged( QMediaPlayer::MediaStatus eStatus );
 
 private:
     std::shared_ptr< QMediaPlayer > mMediaPlayer;
-    uint64_t      m_soundSize = 0;
+    uint64_t m_soundSize = 0;
 };
 
 #endif // SOUNDCLIP_H
