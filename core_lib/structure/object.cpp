@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "bitmapimage.h"
 #include "editorstate.h"
+#include "fileformat.h"
 
 // ******* Mac-specific: ******** (please comment (or reimplement) the lines below to compile on Windows or Linux
 //#include <CoreFoundation/CoreFoundation.h>
@@ -54,6 +55,8 @@ void Object::init()
 {
     mEditorState.reset( new EditorState );
 
+    createWorkingDir();
+
     // default layers
     addNewCameraLayer();
     addNewVectorLayer();
@@ -65,6 +68,10 @@ void Object::init()
 
 QDomElement Object::saveXML( QDomDocument& doc )
 {
+    qDebug() << dataDir();
+    qDebug() << workingDir();
+    qDebug() << mainXMLFile();
+
     QDomElement tag = doc.createElement( "object" );
 
     for ( int i = 0; i < getLayerCount(); i++ )
@@ -149,6 +156,37 @@ LayerCamera* Object::addNewCameraLayer()
     mLayers.append( layerCamera );
 
     return layerCamera;
+}
+
+void Object::createWorkingDir()
+{
+    QString strFolderName;
+    if ( mFilePath.isEmpty() )
+    {
+        strFolderName = "Default";
+    }
+    else
+    {
+        QFileInfo fileInfo( mFilePath );
+        strFolderName = fileInfo.completeBaseName();
+    }
+    QString strWorkingDir = QDir::tempPath()
+                          + "/Pencil2D/"
+                          + strFolderName
+                          + PFF_TMP_DECOMPRESS_EXT
+                          + "/";
+
+    QDir dir( QDir::tempPath() );
+    dir.mkpath( strWorkingDir );
+    
+    mWorkingDirPath = strWorkingDir;
+
+    QDir dataDir( strWorkingDir + PFF_DATA_DIR );
+    dataDir.mkpath( "." );
+
+    mDataDirPath = dataDir.absolutePath();
+
+    int ii = 0;
 }
 
 int Object::getMaxLayerID()
@@ -397,6 +435,27 @@ void Object::paintImage( QPainter& painter, int frameNumber,
             }
         }
     }
+}
+
+QString Object::copyFileToDataFolder( QString strFilePath )
+{
+    if ( !QFile::exists( strFilePath ) )
+    {
+        return "";
+    }
+
+    QFileInfo kInfo( strFilePath );
+
+    QString srcFile = strFilePath;
+    QString destFile = QDir( mDataDirPath ).filePath( kInfo.fileName() );
+
+    bool bCopyOK = QFile::copy( srcFile, destFile );
+    if ( !bCopyOK )
+    {
+        return "";
+    }
+
+    return destFile;
 }
 
 bool Object::exportFrames( int frameStart, int frameEnd,
