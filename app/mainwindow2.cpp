@@ -45,7 +45,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
-#include "commandcenter.h"
+#include "actioncommands.h"
 
 #include "scribblearea.h"
 #include "colorbox.h"
@@ -107,7 +107,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
-    mCommands = new CommandCenter( this );
+    mCommands = new ActionCommands( this );
     mCommands->setCore( mEditor );
 
     createDockWidgets();
@@ -235,7 +235,7 @@ void MainWindow2::createMenus()
     connect( ui->actionImport_Image_Sequence, &QAction::triggered, this, &MainWindow2::importImageSequence );
     connect( ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie );
 
-    connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &CommandCenter::importSound );
+    connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
@@ -245,8 +245,8 @@ void MainWindow2::createMenus()
     connect( ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy );
     connect( ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste );
     connect( ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame );
-    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &CommandCenter::flipX );
-    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &CommandCenter::flipY );
+    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipX );
+    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
@@ -255,17 +255,17 @@ void MainWindow2::createMenus()
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
-    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewBitmapLayer );
-    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewVectorLayer );
-    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewSoundLayer );
-    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewCameraLayer );
+    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewBitmapLayer );
+    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewVectorLayer );
+    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer );
+    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer );
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In, &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
-    connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
-    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &CommandCenter::rotateClockwise );
-    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &CommandCenter::rotateCounterClockwise );
+    connect( ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn );
+    connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
@@ -275,7 +275,7 @@ void MainWindow2::createMenus()
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
-    connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
+    connect( ui->actionGrid, &QAction::triggered, mCommands, &ActionCommands::showGrid );
 
     bindActionWithSetting( ui->actionOnionPrev, SETTING::PREV_ONION );
     bindActionWithSetting( ui->actionOnionNext, SETTING::NEXT_ONION );
@@ -283,7 +283,7 @@ void MainWindow2::createMenus()
 
     /// --- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
-    connect( ui->actionPlay, &QAction::triggered, mCommands, &CommandCenter::PlayStop );
+    connect( ui->actionPlay, &QAction::triggered, mCommands, &ActionCommands::PlayStop );
 
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
@@ -1089,10 +1089,10 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
     
-    connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &CommandCenter::addNewBitmapLayer );
-    connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &CommandCenter::addNewVectorLayer );
-    connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &CommandCenter::addNewSoundLayer );
-    connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &CommandCenter::addNewCameraLayer );
+    connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer );
+    connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer );
+    connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer );
+    connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer );
 
     connect( pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType );
 

@@ -38,7 +38,7 @@ class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
 class Timeline2;
-class CommandCenter;
+class ActionCommands;
 
 namespace Ui
 {
@@ -132,7 +132,7 @@ public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    CommandCenter* mCommands              = nullptr;
+    ActionCommands* mCommands              = nullptr;
 
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;

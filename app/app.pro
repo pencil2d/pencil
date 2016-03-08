@@ -33,7 +33,7 @@ HEADERS += \
     shortcutfilter.h \
     exportimageseqdialog.h \
     timeline2.h \
-    commandcenter.h \
+    actioncommands.h \
     preferencesdialog.h \
     shortcutspage.h \
     preview.h \
@@ -53,7 +53,7 @@ SOURCES += \
     shortcutfilter.cpp \
     exportimageseqdialog.cpp \
     timeline2.cpp \
-    commandcenter.cpp \
+    actioncommands.cpp \
     preferencesdialog.cpp \
     shortcutspage.cpp \
     preview.cpp \
