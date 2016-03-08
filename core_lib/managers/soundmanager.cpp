@@ -46,6 +46,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     if ( key == nullptr )
     {
         key = new SoundClip;
+        soundLayer->addKeyFrame( frameNumber, key );
     }
     
     if ( !key->fileName().isEmpty() )
@@ -64,13 +65,6 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         delete soundClip;
         return st;
     }
-    
-    bool bAddOK = soundLayer->addKeyFrame( frameNumber, soundClip );
-    if ( !bAddOK )
-    {
-        delete soundClip;
-        return Status::FAIL;
-    }
 
     return Status::OK;
 }
@@ -88,6 +82,8 @@ Status SoundManager::createMeidaPlayer( SoundClip* clip )
     {
         qDebug() << "MediaStatus: " << s;
     } );
+
+    clip->attachPlayer( mediaPlayer );
 
     return Status::OK;
 }

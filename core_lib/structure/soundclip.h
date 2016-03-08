@@ -14,7 +14,7 @@ public:
     Status init( QString strSoundFile );
     bool isValid();
 
-    void attachPlayer( std::shared_ptr< QMediaPlayer > mediaPlayer );
+    void attachPlayer( QMediaPlayer* mediaPlayer );
     void detachPlayer();
     QMediaPlayer* mediaPlayer() { return mMediaPlayer.get(); }
 

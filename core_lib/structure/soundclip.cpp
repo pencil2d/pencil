@@ -46,10 +46,10 @@ bool SoundClip::isValid()
     return true;
 }
 
-void SoundClip::attachPlayer( std::shared_ptr< QMediaPlayer > mediaPlayer )
+void SoundClip::attachPlayer( QMediaPlayer* mediaPlayer )
 {
     Q_ASSERT( mediaPlayer != nullptr );
-    mMediaPlayer = mediaPlayer;
+    mMediaPlayer.reset( mediaPlayer );
 }
 
 void SoundClip::detachPlayer()

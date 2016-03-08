@@ -215,9 +215,7 @@ bool Layer::removeKeyFrame( int position, bool reloadFirstFrame )
 
     if ( reloadFirstFrame && position == 1 )
     {
-
         // Avoiding having no frame by deleting the first frame.
-        //
         addNewEmptyKeyAt( 1 ); // replacing
     }
 
