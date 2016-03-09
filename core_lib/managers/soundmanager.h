@@ -4,7 +4,7 @@
 
 #include "basemanager.h"
 #include <memory>
-class SoundPlayer;
+
 class Layer;
 class SoundClip;
 
@@ -24,8 +24,6 @@ public:
 
 private:
     Status createMeidaPlayer( SoundClip* );
-
-    //SoundPlayer* mSoundPlayer = nullptr;
 };
 
 #endif // SOUNDMANAGER_H

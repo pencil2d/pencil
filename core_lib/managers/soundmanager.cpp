@@ -1,10 +1,10 @@
 #include "soundmanager.h"
 
-//#include "soundplayer.h"
+
 #include "object.h"
 #include "layersound.h"
 #include "soundclip.h"
-
+#include "soundplayer.h"
 
 SoundManager::SoundManager( QObject* parnet ) : BaseManager( parnet )
 {
@@ -55,9 +55,10 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     }
 
     QString strCopyFile = soundLayer->object()->copyFileToDataFolder( strSoundFile );
-    
+    Q_ASSERT( !strCopyFile.isEmpty() );
+
     SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
-    soundClip->init( strSoundFile );
+    soundClip->init( strCopyFile );
 
     Status st = createMeidaPlayer( soundClip );
     if ( !st.ok() )
@@ -71,19 +72,8 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
 
 Status SoundManager::createMeidaPlayer( SoundClip* clip )
 {
-    QMediaPlayer* mediaPlayer = new QMediaPlayer;
-    mediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
-    mediaPlayer->play();
-    //mediaPlayer->stop();
-    
-    qDebug() << mediaPlayer->mediaStatus();
-    
-    connect( mediaPlayer, &QMediaPlayer::mediaStatusChanged, this, []( QMediaPlayer::MediaStatus s )
-    {
-        qDebug() << "MediaStatus: " << s;
-    } );
-
-    clip->attachPlayer( mediaPlayer );
+    SoundPlayer* newPlayer = new SoundPlayer();
+    newPlayer->init( clip );
 
     return Status::OK;
 }

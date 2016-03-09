@@ -2,49 +2,78 @@
 #include <QMediaPlayer>
 #include "soundclip.h"
 
-SoundPlayer::SoundPlayer( QObject* parent ) : QObject( parent )
+SoundPlayer::SoundPlayer( )
 {
+
 }
 
 SoundPlayer::~SoundPlayer()
 {
 }
 
-Status SoundPlayer::addSound( SoundClip* clip )
+void SoundPlayer::init( SoundClip* clip )
 {
     Q_ASSERT( clip != nullptr );
+    mSoundClip = clip;
 
-    qDebug() << "Add sound clip " << clip->fileName();
-
-    QMediaPlayer* mediaPlayer = new QMediaPlayer;
+    QMediaPlayer* mediaPlayer = new QMediaPlayer( this );
     mediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
-    mediaPlayer->play();
-    mediaPlayer->stop();
 
-    connect( mediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ = ]( QMediaPlayer::MediaStatus mediaStatus )
-    {
-        if ( mediaStatus == QMediaPlayer::InvalidMedia )
-        {
-            clip->detachPlayer();
-            Q_EMIT corruptedSoundFile( clip );
-        }
-    } );
+    qDebug() << mediaPlayer->mediaStatus();
 
-    clip->addEventListener( this );
-    mSoundClips.push_back( clip );
-    
-    
-    // TODO: calc the sound length.
+    clip->attachPlayer( this );
 
-    return Status::OK;
+    mMediaPlayer = mediaPlayer;
+    mMediaPlayer->play();
 }
 
 void SoundPlayer::onKeyFrameDestroy( KeyFrame* keyFrame )
 {
-    auto it = std::find( mSoundClips.begin(), mSoundClips.end(), keyFrame );
+}
 
-    if ( it != mSoundClips.end() )
+bool SoundPlayer::isValid()
+{
+    if ( mMediaPlayer )
     {
-        mSoundClips.erase( it );
+        return ( mMediaPlayer->error() == QMediaPlayer::NoError );
     }
+    return false;
+}
+
+void SoundPlayer::play()
+{
+    if ( mMediaPlayer )
+    {
+        mMediaPlayer->play();
+    }
+}
+
+void SoundPlayer::stop()
+{
+    if ( mMediaPlayer )
+    {
+        mMediaPlayer->stop();
+    }
+}
+
+void SoundPlayer::makeConnections()
+{   
+    QObject::connect( mMediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ this ]( QMediaPlayer::MediaStatus s )
+    {
+        QMediaPlayer* mediaPlayer = ( QMediaPlayer* )QObject::sender();
+        qDebug() << "MediaStatus: " << s;
+        qDebug() << "Duration:" << mediaPlayer->duration();
+
+        switch ( s )
+        {
+            case QMediaPlayer::BufferedMedia:
+                break;
+        }
+    } );
+
+    auto errorSignal = static_cast< void ( QMediaPlayer::* )( QMediaPlayer::Error ) >( &QMediaPlayer::error );
+    connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error error )
+    {
+        qDebug() << "MediaPlayer Error: " << error;
+    } );
 }
