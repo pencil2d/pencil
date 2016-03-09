@@ -22,6 +22,8 @@ public:
 
     void play();
     void stop();
+    
+    int64_t duration();
 
 Q_SIGNALS:
     void corruptedSoundFile( SoundClip* );

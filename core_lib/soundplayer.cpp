@@ -16,15 +16,14 @@ void SoundPlayer::init( SoundClip* clip )
     Q_ASSERT( clip != nullptr );
     mSoundClip = clip;
 
-    QMediaPlayer* mediaPlayer = new QMediaPlayer( this );
-    mediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
-
-    qDebug() << mediaPlayer->mediaStatus();
+    mMediaPlayer = new QMediaPlayer( this );
+    mMediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
+    makeConnections();
 
     clip->attachPlayer( this );
+    //mMediaPlayer->play();
 
-    mMediaPlayer = mediaPlayer;
-    mMediaPlayer->play();
+    qDebug() << "Seekable=" << mMediaPlayer->isSeekable();
 }
 
 void SoundPlayer::onKeyFrameDestroy( KeyFrame* keyFrame )
@@ -56,6 +55,15 @@ void SoundPlayer::stop()
     }
 }
 
+int64_t SoundPlayer::duration()
+{
+    if ( mMediaPlayer )
+    {
+        return mMediaPlayer->duration();
+    }
+    return 0;
+}
+
 void SoundPlayer::makeConnections()
 {   
     QObject::connect( mMediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ this ]( QMediaPlayer::MediaStatus s )
@@ -67,6 +75,10 @@ void SoundPlayer::makeConnections()
         switch ( s )
         {
             case QMediaPlayer::BufferedMedia:
+            case QMediaPlayer::LoadedMedia:
+                qDebug() << "Duration:" << mediaPlayer->duration();
+                mSoundClip->setLength( mediaPlayer->duration() );
+                qDebug() << "Seekable=" << mMediaPlayer->isSeekable();
                 break;
         }
     } );
