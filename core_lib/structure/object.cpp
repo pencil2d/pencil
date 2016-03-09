@@ -449,6 +449,11 @@ QString Object::copyFileToDataFolder( QString strFilePath )
     QString srcFile = strFilePath;
     QString destFile = QDir( mDataDirPath ).filePath( kInfo.fileName() );
 
+    if ( QFile::exists( destFile ) )
+    {
+        QFile::remove( destFile );
+    }
+
     bool bCopyOK = QFile::copy( srcFile, destFile );
     if ( !bCopyOK )
     {
