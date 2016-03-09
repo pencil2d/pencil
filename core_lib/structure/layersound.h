@@ -39,8 +39,6 @@ public:
     Status loadSoundAtFrame( QString filePathString, int frame );
 
     bool saveImage( int index, QString path, int layerNumber );
-    void playSound( int frame );
-    void stopSound();
 
     // These functions will be removed later.
     // Don't use them!!

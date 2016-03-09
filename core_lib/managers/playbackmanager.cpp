@@ -85,8 +85,6 @@ void PlaybackManager::timerTick()
     }
 
     editor()->scrubTo( editor()->currentFrame() + 1 );
-
-    playSoundIfAny( editor()->currentFrame() );
 }
 
 void PlaybackManager::setLooping( bool isLoop )
@@ -104,19 +102,6 @@ void PlaybackManager::enableRangedPlayback( bool b )
     {
         mIsRangedPlayback = b;
         emit rangedPlaybackStateChanged( mIsRangedPlayback );
-    }
-}
-
-void PlaybackManager::playSoundIfAny(int frame)
-{
-    for ( int i = 0; i < editor()->object()->getLayerCount(); ++i)
-    {
-        auto layer = editor()->object()->getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            auto soundLayer = static_cast< LayerSound* >( layer );
-            soundLayer->playSound( frame );
-        }
     }
 }
 

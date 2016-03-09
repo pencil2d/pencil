@@ -89,24 +89,6 @@ bool LayerSound::saveImage( int index, QString path, int layerNumber )
     return true;
 }
 
-void LayerSound::playSound( int frame )
-{
-    if ( keyExists( frame ) )
-    {
-    }
-}
-
-void LayerSound::stopSound()
-{
-    /*
-    for(int i=0; i < sound.size(); i++)
-    {
-    Q_ASSERT( sound[i] );
-    sound[i]->stop();
-    }
-    */
-}
-
 QDomElement LayerSound::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement( "layer" );

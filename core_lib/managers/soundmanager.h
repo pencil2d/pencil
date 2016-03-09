@@ -21,6 +21,8 @@ public:
     Status onObjectLoaded( Object* ) override;
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
+    Status playSounds( float fTime );
+    Status stopSounds();
 
 private:
     Status createMeidaPlayer( SoundClip* );

@@ -70,6 +70,24 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     return Status::OK;
 }
 
+Status SoundManager::playSounds( float fTime )
+{
+    std::vector< LayerSound* > kSoundLayers;
+    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    {
+        Layer* layer = object()->getLayer( i );
+        if ( layer->type() == Layer::SOUND )
+        {
+            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
+        }
+    }
+}
+
+Status SoundManager::stopSounds()
+{
+
+}
+
 Status SoundManager::createMeidaPlayer( SoundClip* clip )
 {
     SoundPlayer* newPlayer = new SoundPlayer();
