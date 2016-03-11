@@ -4,8 +4,9 @@
 
 #include "basemanager.h"
 #include <memory>
-class SoundPlayer;
+
 class Layer;
+class SoundClip;
 
 
 class SoundManager : public BaseManager
@@ -22,7 +23,7 @@ public:
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
 
 private:
-    SoundPlayer* mSoundPlayer = nullptr;
+    Status createMeidaPlayer( SoundClip* );
 };
 
 #endif // SOUNDMANAGER_H

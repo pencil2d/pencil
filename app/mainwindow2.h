@@ -38,7 +38,7 @@ class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
 class Timeline2;
-class CommandCenter;
+class ActionCommands;
 
 namespace Ui
 {
@@ -52,7 +52,7 @@ class MainWindow2 : public QMainWindow
 public:
     explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
-    
+
     Editor* mEditor = nullptr;
 
 public slots:
@@ -113,8 +113,10 @@ private:
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
 
+    void bindActionWithSetting( QAction*, SETTING );
+
     // UI: central Drawing Area
-    ScribbleArea* mScribbleArea;
+    ScribbleArea* mScribbleArea                = nullptr;
 
     // UI: Dock widgets
     ColorBox*             mColorWheel          = nullptr;
@@ -125,12 +127,10 @@ private:
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-
-public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    CommandCenter* mCommands              = nullptr;
+    ActionCommands* mCommands              = nullptr;
 
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;

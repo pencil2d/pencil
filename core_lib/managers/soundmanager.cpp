@@ -1,8 +1,10 @@
 #include "soundmanager.h"
-#include "soundplayer.h"
+
+
+#include "object.h"
 #include "layersound.h"
 #include "soundclip.h"
-
+#include "soundplayer.h"
 
 SoundManager::SoundManager( QObject* parnet ) : BaseManager( parnet )
 {
@@ -14,7 +16,6 @@ SoundManager::~SoundManager()
 
 bool SoundManager::init()
 {
-    mSoundPlayer = new SoundPlayer( this );
     return true;
 }
 
@@ -45,30 +46,34 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     if ( key == nullptr )
     {
         key = new SoundClip;
+        soundLayer->addKeyFrame( frameNumber, key );
     }
     
     if ( !key->fileName().isEmpty() )
     {
         return Status::FAIL;
     }
-    
-    SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
-    soundClip->init( strSoundFile );
-    
-    Status st = mSoundPlayer->addSound( soundClip );
 
+    QString strCopyFile = soundLayer->object()->copyFileToDataFolder( strSoundFile );
+    Q_ASSERT( !strCopyFile.isEmpty() );
+
+    SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
+    soundClip->init( strCopyFile );
+
+    Status st = createMeidaPlayer( soundClip );
     if ( !st.ok() )
     {
         delete soundClip;
         return st;
     }
-    
-    bool bAddOK = soundLayer->addKeyFrame( frameNumber, soundClip );
-    if ( !bAddOK )
-    {
-        delete soundClip;
-        return Status::FAIL;
-    }
+
+    return Status::OK;
+}
+
+Status SoundManager::createMeidaPlayer( SoundClip* clip )
+{
+    SoundPlayer* newPlayer = new SoundPlayer();
+    newPlayer->init( clip );
 
     return Status::OK;
 }

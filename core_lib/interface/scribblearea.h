@@ -71,7 +71,6 @@ public:
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
-    qreal myFlipX, myFlipY; // scale -1.0 or +1.0
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;
@@ -136,19 +135,12 @@ public slots:
     void selectAll();
     void deselectAll();
 
-    void toggleOnionPrev( bool );
-    void toggleOnionNext( bool );
-    void toggleOnionBlue( bool );
-    void toggleOnionRed( bool );
-    void toggleGrid( bool );
-
     void setCurveSmoothing( int );
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
     void escape();
 
-    void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
     void updateToolCursor();

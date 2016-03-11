@@ -3,7 +3,8 @@
 
 #include <memory>
 #include "keyframe.h"
-class QMediaPlayer;
+
+class SoundPlayer;
 
 
 class SoundClip : public KeyFrame
@@ -12,15 +13,16 @@ public:
     SoundClip();
     ~SoundClip();
 
-    Status init( QString strSoundFile );
+    Status init( const QString& strSoundFile );
+    bool isValid();
 
-    void attachPlayer( std::shared_ptr< QMediaPlayer > spPlayer ) { mMediaPlayer = spPlayer; }
-    void detachPlayer() { mMediaPlayer.reset(); }
-    QMediaPlayer* mediaPlayer() { return mMediaPlayer.get(); }
+    void attachPlayer( SoundPlayer* player );
+    void detachPlayer();
+    SoundPlayer* player() { return mPlayer.get(); }
 
 private:
-    std::shared_ptr< QMediaPlayer > mMediaPlayer;
-    uint64_t      m_soundSize = 0;
+    std::shared_ptr< SoundPlayer > mPlayer;
+    uint64_t m_soundSize = 0;
 };
 
 #endif // SOUNDCLIP_H

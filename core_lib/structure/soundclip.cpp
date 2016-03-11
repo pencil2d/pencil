@@ -1,6 +1,8 @@
 #include "soundclip.h"
-#include <QFile>
 
+#include <QFile>
+#include <QMediaPlayer>
+#include "soundplayer.h"
 
 SoundClip::SoundClip()
 {
@@ -8,16 +10,11 @@ SoundClip::SoundClip()
 
 SoundClip::~SoundClip()
 {
-    QFile::remove( fileName() );
+    //QFile::remove( fileName() );
 }
 
-Status SoundClip::init( QString strSoundFile )
+Status SoundClip::init( const QString& strSoundFile )
 {
-    if ( !QFile::exists( strSoundFile ) )
-    {
-        return Status::FILE_NOT_FOUND;
-    }
-
     if ( !fileName().isEmpty() )
     {
         return Status::FAIL;
@@ -25,5 +22,31 @@ Status SoundClip::init( QString strSoundFile )
 
     setFileName( strSoundFile );
     return Status::OK;
+}
+
+bool SoundClip::isValid()
+{
+    if ( fileName().isEmpty() )
+    {
+        return false;
+    }
+
+    if ( mPlayer == nullptr )
+    {
+        return false;
+    }
+    
+    return true;
+}
+
+void SoundClip::attachPlayer( SoundPlayer* player )
+{
+    Q_ASSERT( player != nullptr );
+    mPlayer.reset( player );
+}
+
+void SoundClip::detachPlayer()
+{
+    mPlayer.reset();
 }
 

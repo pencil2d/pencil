@@ -52,10 +52,10 @@ private:
     bool loadObject( Object*, const QDomElement& root );
     bool loadObjectOldWay( Object*, const QDomElement& root );
 
-    bool isOldForamt( QString fileName );
+    bool isOldForamt( const QString& fileName );
 
-    QString unzip( QString strZipFile );
-    QString createWorkingFolder( QString strFileName );
+    void unzip( const QString& strZipFile, const QString& strUnzipTarget );
+    
     Object* cleanUpWithErrorCode( Status );
     
     bool loadPalette( Object* );

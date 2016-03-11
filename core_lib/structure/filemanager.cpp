@@ -28,7 +28,7 @@ GNU General Public License for more details.
 FileManager::FileManager( QObject *parent ) : QObject( parent ),
     mLog( "SaveLoader" )
 {
-    ENABLE_DEBUG_LOG( mLog, false );
+    ENABLE_DEBUG_LOG( mLog, true );
 }
 
 Object* FileManager::load( QString strFileName )
@@ -43,10 +43,10 @@ Object* FileManager::load( QString strFileName )
 
     Object* obj = new Object;
     obj->setFilePath( strFileName );
+    obj->createWorkingDir();
 
     QString strMainXMLFile;	
     QString strDataFolder;
-    QString strWorkingDir;
 
     // Test file format: new zipped .pclx or old .pcl?
     bool oldFormat = isOldForamt( strFileName );
@@ -57,35 +57,33 @@ Object* FileManager::load( QString strFileName )
 
         strMainXMLFile = strFileName;
         strDataFolder  = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
-        strWorkingDir  = strDataFolder;
     }
     else
     {
         qCDebug( mLog ) << "Recognized New zipped Pencil File Format (*.pclx) !";
 
-        strWorkingDir  = unzip( strFileName );
+        unzip( strFileName, obj->workingDir() );
 
-        strMainXMLFile = QDir( strWorkingDir ).filePath( PFF_XML_FILE_NAME );
-        strDataFolder  = QDir( strWorkingDir ).filePath( PFF_DATA_DIR );
+        strMainXMLFile = QDir( obj->workingDir() ).filePath( PFF_XML_FILE_NAME );
+        strDataFolder  = QDir( obj->workingDir() ).filePath( PFF_DATA_DIR );
     }
 
-    qCDebug( mLog ) << "XML=" << strMainXMLFile;
-    qCDebug( mLog ) << "Data Folder=" << strDataFolder;
-    qCDebug( mLog ) << "Working Folder=" << strWorkingDir;
+    qDebug() << "XML=" << strMainXMLFile;
+    qDebug() << "Data Folder=" << strDataFolder;
+    qDebug() << "Working Folder=" << obj->workingDir();
 
-    obj->setWorkingDir(strWorkingDir);
-    obj->setDataDir(strDataFolder);
-    obj->setMainXMLFile(strMainXMLFile);
+    obj->setDataDir( strDataFolder );
+    obj->setMainXMLFile( strMainXMLFile );
 
-    QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
-    if ( !file->open( QFile::ReadOnly ) )
+    QFile file( strMainXMLFile );
+    if ( !file.open( QFile::ReadOnly ) )
     {
         return cleanUpWithErrorCode( Status::ERROR_FILE_CANNOT_OPEN );
     }
 
     qCDebug( mLog ) << "Checking main XML file...";
     QDomDocument xmlDoc;
-    if ( !xmlDoc.setContent( file.data() ) )
+    if ( !xmlDoc.setContent( &file ) )
     {
         return cleanUpWithErrorCode( Status::ERROR_INVALID_XML_FILE );
     }
@@ -170,7 +168,7 @@ bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root )
     return object->loadXML( root );
 }
 
-bool FileManager::isOldForamt( QString fileName )
+bool FileManager::isOldForamt( const QString& fileName )
 {
     QStringList zippedFileList = JlCompress::getFileList( fileName );
     return ( zippedFileList.empty() );
@@ -199,7 +197,8 @@ Status FileManager::save( Object* object, QString strFileName )
     {
         qCDebug( mLog ) << "Save in New zipped Pencil File Format (*.pclx) !";
 
-        strTempWorkingFolder = createWorkingFolder( strFileName );
+        strTempWorkingFolder = object->workingDir();
+        Q_ASSERT( QDir( strTempWorkingFolder ).exists() );
 
         qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
         strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
@@ -388,32 +387,15 @@ bool FileManager::loadPalette( Object* obj )
     return true;
 }
 
-QString FileManager::createWorkingFolder( QString strFileName )
+void FileManager::unzip( const QString& strZipFile, const QString& strUnzipTarget )
 {
-    QFileInfo fileInfo( strFileName );
-    QString strTempWorkingFolder = QDir::tempPath() +
-                                   "/Pencil2D/" +
-                                   fileInfo.completeBaseName() + 
-                                   PFF_TMP_DECOMPRESS_EXT;
-
-    QDir dir( QDir::tempPath() );
-    dir.mkpath( strTempWorkingFolder );
-
-    return strTempWorkingFolder;
-}
-
-QString FileManager::unzip( QString strZipFile )
-{
-    QString strTempWorkingPath = createWorkingFolder( strZipFile );
-
     // --removes an old decompression directory first  - better approach
-    removePFFTmpDirectory( strTempWorkingPath );
+    removePFFTmpDirectory( strUnzipTarget );
 
     // --creates a new decompression directory
-    JlCompress::extractDir( strZipFile, strTempWorkingPath );
+    JlCompress::extractDir( strZipFile, strUnzipTarget );
 
-    mstrLastTempFolder = strTempWorkingPath;
-    return strTempWorkingPath;
+    mstrLastTempFolder = strUnzipTarget;
 }
 
 QList<ColourRef> FileManager::loadPaletteFile( QString strFilename )

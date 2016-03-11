@@ -30,7 +30,7 @@ GNU General Public License for more details.
 #define PFF_OPEN_ALL_FILE_FILTER	"All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)"
 #define PFF_SAVE_ALL_FILE_FILTER	"Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)"
 
-#define PFF_DEFAULT_FILENAME	    "my_animation.pclx"
+#define PFF_DEFAULT_FILENAME	    "MyAnimation.pclx"
 
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
@@ -39,7 +39,8 @@ GNU General Public License for more details.
 #define PFF_TMP_DECOMPRESS_EXT 	".Y2xD"
 #define PFF_PALETTE_FILE        "palette.xml"
 
-bool removePFFTmpDirectory (const QString & dirName);
+
+bool removePFFTmpDirectory (const QString& dirName);
 
 
 #endif

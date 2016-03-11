@@ -70,8 +70,7 @@ bool ScribbleArea::init()
     somethingSelected = false;
 
     mIsSimplified = mPrefs->isOn( SETTING::OUTLINES );
-
-    mMultiLayerOnionSkin = true;
+    mMultiLayerOnionSkin = mPrefs->isOn( SETTING::MULTILAYER_ONION );
 
     mShowAllLayers = 1;
 
@@ -98,9 +97,6 @@ bool ScribbleArea::init()
 
     mNeedUpdateAll = false;
 
-    myFlipX = 1.0; // can be used as "scale"
-    myFlipY = 1.0; // idem
-
     // color wheel popup
     //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
@@ -118,28 +114,26 @@ void ScribbleArea::settingUpdated(SETTING setting)
         updateToolCursor();
         break;
     case SETTING::ONION_PREV_FRAMES_NUM:
-        updateAllFrames();
-        break;
     case SETTING::ONION_NEXT_FRAMES_NUM:
-        updateAllFrames();
-        break;
     case SETTING::ONION_MIN_OPACITY:
-        updateAllFrames();
-        break;
     case SETTING::ONION_MAX_OPACITY:
-        updateAllFrames();
-        break;
     case SETTING::ANTIALIAS:
-        updateAllFrames();
-        break;
     case SETTING::GRID:
+    case SETTING::GRID_SIZE:
+    case SETTING::PREV_ONION:
+    case SETTING::NEXT_ONION:
+    case SETTING::ONION_BLUE:
+    case SETTING::ONION_RED:
+    case SETTING::INVISIBLE_LINES:
+    case SETTING::OUTLINES:
         updateAllFrames();
         break;
-    case SETTING::GRID_SIZE:
-        updateAllFrames();
     case SETTING::QUICK_SIZING:
         mQuickSizing = mPrefs->isOn( SETTING::QUICK_SIZING );
         break;
+    case SETTING::MULTILAYER_ONION:
+        mMultiLayerOnionSkin = mPrefs->isOn( SETTING::MULTILAYER_ONION );
+        updateAllFrames();
     default:
         break;
     }
@@ -1325,17 +1319,21 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     c2x = 0.5 * ( mySelection.left() + mySelection.right() );
     c2y = 0.5 * ( mySelection.top() + mySelection.bottom() );
 
-    if ( mySelection.width() == 0 ) {
+    if ( mySelection.width() == 0 )
+    {
         scaleX = 1.0;
     }
-    else {
+    else
+    {
         scaleX = myTempTransformedSelection.width() / mySelection.width();
     }
 
-    if ( mySelection.height() == 0 ) {
+    if ( mySelection.height() == 0 )
+    {
         scaleY = 1.0;
     }
-    else {
+    else
+    {
         scaleY = myTempTransformedSelection.height() / mySelection.height();
     }
 
@@ -1546,40 +1544,6 @@ void ScribbleArea::deselectAll()
     editor()->tools()->cleanupAllToolsData();
 
     updateCurrentFrame();
-}
-
-void ScribbleArea::toggleOnionNext( bool checked )
-{
-    setEffect( SETTING::NEXT_ONION, checked );
-}
-
-void ScribbleArea::toggleOnionPrev( bool checked )
-{
-    setEffect( SETTING::PREV_ONION, checked );
-}
-
-void ScribbleArea::toggleMultiLayerOnionSkin( bool checked )
-{
-    mMultiLayerOnionSkin = checked;
-    updateAllFrames();
-    emit multiLayerOnionSkinChanged( mMultiLayerOnionSkin );
-}
-
-void ScribbleArea::toggleOnionBlue( bool checked )
-{
-    setEffect( SETTING::ONION_BLUE, checked );
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleOnionRed( bool checked )
-{
-    setEffect( SETTING::ONION_RED, checked );
-    updateAllFrames();
-}
-
-void ScribbleArea::toggleGrid( bool checked )
-{
-    setEffect( SETTING::GRID, checked );
 }
 
 void ScribbleArea::toggleThinLines()

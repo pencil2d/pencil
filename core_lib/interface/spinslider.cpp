@@ -85,12 +85,9 @@ void SpinSlider::setValue( qreal v )
 
 void SpinSlider::sliderReleased()
 {
-    //emit valueChanged( mValue );
 }
 
 void SpinSlider::sliderMoved(int value)
 {
     changeValue(value);
-    // Don't update value while the slider is still moving.
-    //emit valueChanged(this->value);
 }
