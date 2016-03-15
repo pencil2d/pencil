@@ -712,7 +712,7 @@ void MainWindow2::exportImageSequence()
     int projectLength = mEditor->layers()->projectLength();
     mEditor->object()->exportFrames( 1,
                                      projectLength,
-                                     mEditor->layers()->currentLayer(),
+                                     cameraLayer,
                                      exportSize,
                                      strFilePath,
                                      exportFormat.toStdString().c_str(),
