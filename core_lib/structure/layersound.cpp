@@ -92,19 +92,22 @@ bool LayerSound::saveImage( int index, QString path, int layerNumber )
 QDomElement LayerSound::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement( "layer" );
-    /*
-    layerTag.setAttribute("id",id);
-    layerTag.setAttribute("name", name);
-    layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type());
-    for (int index=0; index < framesPosition.size() ; index++)
+    
+    layerTag.setAttribute( "id", id() );
+    layerTag.setAttribute( "name", name() );
+    layerTag.setAttribute("visibility", visible() );
+    layerTag.setAttribute("type", type() );
+
+    foreachKeyFrame( [ &doc, &layerTag ]( KeyFrame* pKeyFrame )
     {
-    QDomElement soundTag = doc.createElement("sound");
-    soundTag.setAttribute("position", framesPosition.at(index));
-    soundTag.setAttribute("src", framesFilename.at(index));
-    layerTag.appendChild(soundTag);
-    }
-    */
+        SoundClip* pClip = static_cast< SoundClip* >( pClip );
+
+        QDomElement imageTag = doc.createElement( "image" );
+        imageTag.setAttribute( "frame", pKeyFrame->pos() );
+        imageTag.setAttribute( "src", fileName( pKeyFrame->pos() ) );
+        layerTag.appendChild( imageTag );
+    } );
+    
     return layerTag;
 }
 

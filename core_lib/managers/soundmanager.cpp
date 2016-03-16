@@ -81,11 +81,12 @@ Status SoundManager::playSounds( float fTime )
             kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
         }
     }
+    return Status::OK;
 }
 
 Status SoundManager::stopSounds()
 {
-
+    return Status::NOT_IMPLEMENTED_YET;
 }
 
 Status SoundManager::createMeidaPlayer( SoundClip* clip )
