@@ -18,6 +18,7 @@ public:
         CORRUPTION,
         NOT_SUPPORTED,
         INVALID_ARGUMENT,
+        NOT_IMPLEMENTED_YET,
 
         // for Object loading
         ERROR_FILE_CANNOT_OPEN,
