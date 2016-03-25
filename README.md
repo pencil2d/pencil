@@ -20,9 +20,8 @@ Download the [nightly builds][3]!
 
 ### Links ###
 
+* Pencil2D HomePage: [http://pencil2d.github.io/](http://pencil2d.github.io/)
 * [Report Bugs, Request Features](https://github.com/pencil2d/pencil/issues)
-* Pencil2D Open Source Community: [http://www.pencil2d.org/](http://www.pencil2d.org/)
-* [User Forum](http://www.pencil2d.org/?post_type=forum)
 * You can help translate Pencil2D on [OneSky](http://osjoq5e.oneskyapp.com/collaboration)!
 
 ### Source code ###
@@ -79,7 +78,3 @@ Changes by davidefa:
 * Added import movie ( frames are imported at the current fps, there is no check to limit the imported frames )
 * Compiles fine with min 0.4.x on linux
 * Other minor fixes ( moving selection on bitmap layers, moving layers... )
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/pencil2d/pencil/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
