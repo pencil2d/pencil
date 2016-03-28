@@ -49,6 +49,8 @@ Info.plist
 *.xcodeproj
 *.xcworkspace
 xcshareddata
+*.pbxproj
+*.mak
 
 # Visual Studio
 
@@ -65,4 +67,5 @@ debug
 ipch
 
 app/Pencil2D
+
 
