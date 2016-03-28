@@ -852,7 +852,7 @@ void MainWindow2::setupKeyboardShortcuts()
     auto cmdKeySeq = []( QString strCommandName ) -> QKeySequence
     {
         strCommandName = QString( "shortcuts/" ) + strCommandName;
-        QKeySequence keySequence( pencilSettings()->value( strCommandName ).toString() );
+        QKeySequence keySequence( pencilSettings().value( strCommandName ).toString() );
         return keySequence;
     };
 
