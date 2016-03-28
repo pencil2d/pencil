@@ -21,10 +21,10 @@ quazip.subdir   = 3rdlib/quazip
 core_lib.subdir = core_lib
 app.subdir      = app
 tests.subdir    = tests
-l10n.subdir     = resources/translations
+l10n.subdir     = translations
 
 # what subproject depends on others
 quazip.depends   = zlib
 core_lib.depends = quazip
-app.depends      = core_lib
+app.depends      = core_lib l10n
 tests.depends    = core_lib
