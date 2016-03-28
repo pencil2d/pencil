@@ -79,8 +79,6 @@ FORMS += \
 DEPENDPATH += .
 
 macx {
-    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-    LIBS += -lobjc -framework AppKit -framework Carbon
     RC_FILE = ../pencil.icns
 }
 
