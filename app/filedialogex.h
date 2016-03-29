@@ -10,6 +10,7 @@ enum class EFile
 
 class FileDialogEx : public QObject
 {
+    Q_OBJECT
 public:
     FileDialogEx( QObject* parent );
     ~FileDialogEx();
