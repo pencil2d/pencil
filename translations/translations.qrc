@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qm/pencil2d_cs.qm</file>
+        <file>qm/pencil2d_da.qm</file>
+        <file>qm/pencil2d_de.qm</file>
+        <file>qm/pencil2d_fr.qm</file>
+        <file>qm/pencil2d_it.qm</file>
+        <file>qm/pencil2d_ja.qm</file>
+        <file>qm/pencil2d_zh-TW.qm</file>
+    </qresource>
+</RCC>
