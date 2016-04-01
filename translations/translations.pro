@@ -14,7 +14,7 @@ TRANSLATIONS += pencil.ts \
 
 SOURCES += dummy.cpp
 
-RESOURCES = translations.qrc
+#RESOURCES = translations.qrc
 
 isEmpty(QMAKE_LRELEASE) {
     win32:QMAKE_LRELEASE = $$[QT_INSTALL_BINS]\lrelease.exe
