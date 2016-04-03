@@ -10,7 +10,7 @@ TRANSLATIONS += pencil.ts \
                 pencil2d_fr.ts \
                 pencil2d_it.ts \
                 pencil2d_ja.ts \
-                pencil2d_zh-TW.ts
+                pencil2d_zh_TW.ts
 
 SOURCES += dummy.cpp
 

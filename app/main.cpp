@@ -37,8 +37,10 @@ int main(int argc, char* argv[])
     qtTranslator.load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     app.installTranslator(&qtTranslator);
 
+    QString strLocale = "qm/pencil2d_" + QLocale::system().name();
+
     QTranslator pencil2DTranslator;
-    pencil2DTranslator.load( "translations/pencil2d_" + QLocale::system().name() );
+    bool b = pencil2DTranslator.load( ":/qm/pencil2d_" + QLocale::system().name() );
     //bool b = pencil2DTranslator.load( "../resources/translations/pencil2d_it" );
     app.installTranslator(&pencil2DTranslator);
 

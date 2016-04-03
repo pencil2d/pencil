@@ -14,8 +14,9 @@ TARGET = Pencil2D
 CONFIG += qt
 
 RESOURCES += \
-    ../pencil.qrc \
-    resource/app.qrc
+    resource/app.qrc \
+    ../translations/translations.qrc\
+    ../pencil.qrc
 
 INCLUDEPATH += \
     ../core_lib/graphics \
