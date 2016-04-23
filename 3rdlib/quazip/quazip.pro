@@ -14,10 +14,8 @@ INCLUDEPATH += ../zlib
 include(quazip.pri)
 
 unix:!symbian {
-    headers.path=$$PREFIX/include/quazip
-    headers.files=$$HEADERS
     target.path=$$PREFIX/lib
-    INSTALLS += headers target
+    INSTALLS += target
 
     OBJECTS_DIR=.obj
     MOC_DIR=.moc
