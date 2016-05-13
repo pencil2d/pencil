@@ -47,6 +47,10 @@ Pencil.app
 Info.plist
 *.pbproj
 *.xcodeproj
+*.xcworkspace
+xcshareddata
+*.pbxproj
+*.mak
 
 # Visual Studio
 
@@ -63,4 +67,5 @@ debug
 ipch
 
 app/Pencil2D
-tests/
+
+

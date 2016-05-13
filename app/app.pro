@@ -14,8 +14,9 @@ TARGET = Pencil2D
 CONFIG += qt
 
 RESOURCES += \
-    ../pencil.qrc \
-    resource/app.qrc
+    resource/app.qrc \
+    ../translations/translations.qrc\
+    ../pencil.qrc
 
 INCLUDEPATH += \
     ../core_lib/graphics \
@@ -79,8 +80,6 @@ FORMS += \
 DEPENDPATH += .
 
 macx {
-    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-    LIBS += -lobjc -framework AppKit -framework Carbon
     RC_FILE = ../pencil.icns
 }
 

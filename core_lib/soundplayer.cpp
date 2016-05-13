@@ -68,6 +68,9 @@ void SoundPlayer::makeConnections()
 {   
     QObject::connect( mMediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ this ]( QMediaPlayer::MediaStatus s )
     {
+        // WARNING :
+        // This call is not supported in QT 5.3. Is it necessary?
+        //
         QMediaPlayer* mediaPlayer = ( QMediaPlayer* )QObject::sender();
         qDebug() << "MediaStatus: " << s;
         qDebug() << "Duration:" << mediaPlayer->duration();
