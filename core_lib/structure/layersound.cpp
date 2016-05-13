@@ -104,7 +104,7 @@ QDomElement LayerSound::createDomElement( QDomDocument& doc )
 
         QDomElement imageTag = doc.createElement( "image" );
         imageTag.setAttribute( "frame", pKeyFrame->pos() );
-        imageTag.setAttribute( "src", fileName( pKeyFrame->pos() ) );
+        //imageTag.setAttribute( "src", fileName( pKeyFrame->pos() ) );
         layerTag.appendChild( imageTag );
     } );
     
