@@ -5,15 +5,15 @@
 
 #include "pencildef.h"
 
-FileDialogEx::FileDialogEx( QObject* parent ) : QObject( parent )
+FileDialog::FileDialog( QObject* parent ) : QObject( parent )
 {
 }
 
-FileDialogEx::~FileDialogEx()
+FileDialog::~FileDialog()
 {
 }
 
-QString FileDialogEx::openFile(EFile fileType)
+QString FileDialog::openFile(EFile fileType)
 {
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup( "LastFilePath" );
@@ -36,7 +36,7 @@ QString FileDialogEx::openFile(EFile fileType)
 
 
 
-QString FileDialogEx::dialogTitle( EFile fileType )
+QString FileDialog::dialogTitle( EFile fileType )
 {
     switch ( fileType )
     {
@@ -46,7 +46,7 @@ QString FileDialogEx::dialogTitle( EFile fileType )
     return "";
 }
 
-QString FileDialogEx::fileFilters( EFile fileType )
+QString FileDialog::fileFilters( EFile fileType )
 {
     switch ( fileType )
     {
@@ -56,7 +56,7 @@ QString FileDialogEx::fileFilters( EFile fileType )
     return "";
 }
 
-QString FileDialogEx::toSettingKey( EFile fileType )
+QString FileDialog::toSettingKey( EFile fileType )
 {
     switch ( fileType )
     {

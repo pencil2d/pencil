@@ -40,16 +40,12 @@ Status ActionCommands::importSound()
         msg.addButton( tr( "Don't create layer" ), QMessageBox::RejectRole );
         
         int buttonClicked = msg.exec();
-        
-        //qDebug() << "Button clicked: 0" << ret;
-
         if ( buttonClicked != QMessageBox::AcceptRole )
         {
             return Status::SAFE;
         }
 
         // Create new sound layer.
-        
         Status s = addNewSoundLayer();
         if ( !s.ok() )
         {
@@ -69,7 +65,7 @@ Status ActionCommands::importSound()
         //return Status::SAFE;
     }
 
-    FileDialogEx fileDialog( this );
+    FileDialog fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
     Status st = mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
