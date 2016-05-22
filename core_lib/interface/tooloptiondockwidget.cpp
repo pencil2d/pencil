@@ -61,7 +61,7 @@ void ToolOptionWidget::createUI()
 
     QSettings settings( "Pencil", "Pencil" );
 
-    mSizeSlider = new SpinSlider( tr( "Brush" ), SpinSlider::LOG, SpinSlider::INTEGER, 1, 200, this );
+    mSizeSlider = new SpinSlider( tr( "Brush" ), SpinSlider::EXPONENT, SpinSlider::INTEGER, 1, 200, this );
     mSizeSlider->setValue( settings.value( "brushWidth" ).toDouble() );
     mSizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
