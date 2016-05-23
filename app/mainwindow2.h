@@ -58,11 +58,12 @@ public:
 public slots:
     void undoActSetText(void);
     void undoActSetEnabled(void);
+    void openDocument(const QString &fileName);
 
 public:
     void setOpacity(int opacity);
     void newDocument();
-    void openDocument();
+    void openDocumentDialog();
     void saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
