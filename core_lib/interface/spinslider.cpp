@@ -26,8 +26,8 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     label->setFont( QFont( "Helvetica", 10 ) );
 
     mSlider = new QSlider(Qt::Horizontal, this);
-    mSlider->setMinimum( mMin );
-    mSlider->setMaximum( mMax );
+    mSlider->setMinimum( 0 );
+    mSlider->setMaximum( 100 );
     mSlider->setMaximumWidth( 70 );
 
     QGridLayout* layout = new QGridLayout();
@@ -49,7 +49,6 @@ void SpinSlider::changeValue(qreal value)
 {
     mValue = value;
     emit valueChanged( value );
-    mSlider->setSliderPosition( value );
 }
 
 void SpinSlider::onSliderValueChanged( int v )
@@ -58,12 +57,16 @@ void SpinSlider::onSliderValueChanged( int v )
     qreal value2 = 0.0;
     if ( mGrowthType == LINEAR )
     {
-        value2 = mMin + v * ( mMax - mMin ) / 100;
+        value2 = mMin + v * ( mMax - mMin ) / mSlider->maximum();
     }
     else if ( mGrowthType == LOG )
     {
-        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / 100.0 );
+        value2 = mMin * std::exp( v * std::log( mMax / mMin ) / mSlider->maximum() );
     }
+    else if ( mGrowthType == EXPONENT ) {
+        value2 = mMin + std::pow( v, mExp ) * ( mMax - mMin ) / std::pow( mSlider->maximum(), mExp );
+    }
+    changeValue( value2 );
 }
 
 void SpinSlider::setValue( qreal v )
@@ -72,15 +75,25 @@ void SpinSlider::setValue( qreal v )
     int value2 = 0;
     if ( mGrowthType == LINEAR )
     {
-        value2 = std::round( 100 * ( v - mMin ) / ( mMax - mMin ) );
+        value2 = std::round( mSlider->maximum() * ( v - mMin ) / ( mMax - mMin ) );
     }
-    if ( mGrowthType == LOG )
+    else if ( mGrowthType == LOG )
     {
-        value2 = std::round( std::log( v / mMin ) * 100 / std::log( mMax / mMin ) );
+        value2 = std::round( std::log( v / mMin ) * mSlider->maximum() / std::log( mMax / mMin ) );
+    }
+    else if ( mGrowthType == EXPONENT )
+    {
+        value2 = std::round( std::pow( ( v - mMin ) * std::pow( mSlider->maximum(), mExp ) / ( mMax - mMin ), 1 / mExp ));
     }
     //qDebug() << "Position! " << value2;
 
     changeValue( v );
+    mSlider->setSliderPosition( value2 );
+}
+
+void SpinSlider::setExponent( const qreal exp )
+{
+    mExp = exp;
 }
 
 void SpinSlider::sliderReleased()
@@ -89,5 +102,4 @@ void SpinSlider::sliderReleased()
 
 void SpinSlider::sliderMoved(int value)
 {
-    changeValue(value);
 }
