@@ -19,18 +19,18 @@ public:
     void updateUI() override;
 
     QColor color();
-    void setColor(const QColor &);
+    void setColor(const QColor&);
 
 Q_SIGNALS:
-    void colorChanged(const QColor &);
+    void colorChanged(const QColor&);
 
 private:
-    void onSpinboxChange(const QColor &);
-    void onWheelMove(const QColor &);
-    void onWheelRelease(const QColor &);
+    void onSpinboxChange(const QColor&);
+    void onWheelMove(const QColor&);
+    void onWheelRelease(const QColor&);
 
-    ColorWheel* m_colorWheel = nullptr;
-    ColorInspector* m_colorInspector = nullptr;
+    ColorWheel* mColorWheel = nullptr;
+    ColorInspector* mColorInspector = nullptr;
 };
 
 #endif // COLORBOX_H

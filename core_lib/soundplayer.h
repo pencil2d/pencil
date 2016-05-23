@@ -3,29 +3,34 @@
 
 #include <memory>
 #include <QObject>
-#include <QMediaPlayer>
 #include "pencilerror.h"
 #include "keyframe.h"
-class SoundClip;
 
+class SoundClip;
+class QMediaPlayer;
 
 class SoundPlayer : public QObject, public KeyFrameEventListener
 {
     Q_OBJECT
 public:
-    SoundPlayer( QObject* parent );
+    SoundPlayer();
     ~SoundPlayer();
 
-    Status addSound( SoundClip* );
-    
+    void init( SoundClip* );
     void onKeyFrameDestroy( KeyFrame* ) override;
+    bool isValid();
+
+    void play();
+    void stop();
 
 Q_SIGNALS:
     void corruptedSoundFile( SoundClip* );
 
 private:
-    std::vector< SoundClip* > mSoundClips;
-    
+    void makeConnections();
+
+    SoundClip* mSoundClip = nullptr;
+    QMediaPlayer* mMediaPlayer = nullptr;
 };
 
 #endif // SOUNDPLAYER_H

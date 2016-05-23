@@ -19,7 +19,10 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "ui_mainwindow2.h"
 
+// standard headers
 #include <memory>
+
+// Qt headers
 #include <QList>
 #include <QMenu>
 #include <QFile>
@@ -30,6 +33,8 @@ GNU General Public License for more details.
 #include <QDesktopWidget>
 #include <QDesktopServices>
 #include <QGraphicsDropShadowEffect>
+#include <QStatusBar>
+
 #include "pencildef.h"
 #include "pencilsettings.h"
 #include "object.h"
@@ -37,9 +42,10 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "colormanager.h"
 #include "layermanager.h"
+#include "layercamera.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
-#include "commandcenter.h"
+#include "actioncommands.h"
 
 #include "scribblearea.h"
 #include "colorbox.h"
@@ -101,7 +107,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
-    mCommands = new CommandCenter( this );
+    mCommands = new ActionCommands( this );
     mCommands->setCore( mEditor );
 
     createDockWidgets();
@@ -122,6 +128,8 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->updateObject();
     mEditor->color()->setColorNumber(0);
+    
+    connect( mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel );
 }
 
 MainWindow2::~MainWindow2()
@@ -208,7 +216,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
-    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocumentDialog );
     connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
     connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
@@ -227,38 +235,37 @@ void MainWindow2::createMenus()
     connect( ui->actionImport_Image_Sequence, &QAction::triggered, this, &MainWindow2::importImageSequence );
     connect( ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie );
 
-    connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &CommandCenter::importSound );
+    connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound );
     connect( ui->actionImport_Palette, &QAction::triggered, this, &MainWindow2::importPalette );
 
     /// --- Edit Menu ---
-    ui->actionPreference->setMenuRole( QAction::PreferencesRole );
-
     connect( ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo );
     connect( ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo );
     connect( ui->actionCut, &QAction::triggered, mEditor, &Editor::cut );
     connect( ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy );
     connect( ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste );
     connect( ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame );
-    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &CommandCenter::flipX );
-    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &CommandCenter::flipY );
+    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipX );
+    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipY );
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
+    ui->actionPreference->setMenuRole( QAction::PreferencesRole );
 
     ui->actionRedo->setEnabled( false );
 
     /// --- Layer Menu ---
-    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewBitmapLayer );
-    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewVectorLayer );
-    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewSoundLayer );
-    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &CommandCenter::addNewCameraLayer );
+    connect( ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewBitmapLayer );
+    connect( ui->actionNew_Vector_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewVectorLayer );
+    connect( ui->actionNew_Sound_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewSoundLayer );
+    connect( ui->actionNew_Camera_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewCameraLayer );
     connect( ui->actionDelete_Current_Layer, &QAction::triggered, mEditor->layers(), &LayerManager::deleteCurrentLayer );
 
     /// --- View Menu ---
-    connect( ui->actionZoom_In,  &QAction::triggered, mCommands, &CommandCenter::ZoomIn );
-    connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &CommandCenter::ZoomOut );
-    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &CommandCenter::rotateClockwise );
-    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &CommandCenter::rotateCounterClockwise );
+    connect( ui->actionZoom_In, &QAction::triggered, mCommands, &ActionCommands::ZoomIn );
+    connect( ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut );
+    connect( ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise );
+    connect( ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise );
     connect( ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets );
     connect( ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView );
     connect( ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror );
@@ -268,20 +275,15 @@ void MainWindow2::createMenus()
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     setMenuActionChecked( ui->actionGrid, mEditor->preference()->isOn( SETTING::GRID ) );
-    connect( ui->actionGrid, &QAction::triggered, mCommands, &CommandCenter::showGrid );
+    connect( ui->actionGrid, &QAction::triggered, mCommands, &ActionCommands::showGrid );
 
-    connect( ui->actionOnionPrevious, &QAction::triggered, mEditor, &Editor::toggleOnionPrev );
-    connect( ui->actionOnionNext, &QAction::triggered, mEditor, &Editor::toggleOnionNext );
-    connect( ui->actionMultiLayerOnionSkin, &QAction::triggered, mEditor, &Editor::toggleMultiLayerOnionSkin );
-
-    //connect( mEditor, &Editor::onionPrevChanged, ui->actionOnionPrevious, &QAction::setChecked );
-    //connect( mEditor, &Editor::onionNextChanged, ui->actionOnionNext, &QAction::setChecked );
-    
-    connect( mEditor, SIGNAL(multiLayerOnionSkinChanged(bool)), ui->actionMultiLayerOnionSkin, SLOT(setChecked(bool)));
+    bindActionWithSetting( ui->actionOnionPrev, SETTING::PREV_ONION );
+    bindActionWithSetting( ui->actionOnionNext, SETTING::NEXT_ONION );
+    bindActionWithSetting( ui->actionMultiLayerOnionSkin, SETTING::MULTILAYER_ONION );
 
     /// --- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
-    connect( ui->actionPlay, &QAction::triggered, mCommands, &CommandCenter::PlayStop );
+    connect( ui->actionPlay, &QAction::triggered, mCommands, &ActionCommands::PlayStop );
 
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
@@ -396,7 +398,7 @@ void MainWindow2::newDocument()
     }
 }
 
-void MainWindow2::openDocument()
+void MainWindow2::openDocumentDialog()
 {
     if ( maybeSave() )
     {
@@ -407,6 +409,14 @@ void MainWindow2::openDocument()
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
+        openDocument(fileName);
+    }
+}
+
+void MainWindow2::openDocument(const QString &fileName)
+{
+    if ( maybeSave() )
+    {
         if ( fileName.isEmpty() )
         {
             return;
@@ -664,23 +674,16 @@ void MainWindow2::exportImageSequence()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     // Get the camera layer
-    Layer *cameraLayer = mEditor->layers()->currentLayer();
-    if (cameraLayer->type() != Layer::CAMERA) {
-        QMessageBox::warning( this,
-                              tr( "Error" ),
-                              tr( "You must select a Camera Layer to export an image sequence." ),
-                              QMessageBox::Ok,
-                              QMessageBox::Ok );
-        return;// false;
-    }
+    int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
+    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
 
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
-    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->setExportSize( cameraLayer->getViewRect().size() );
     dialog->exec();
 
     QSize exportSize = dialog->getExportSize();
@@ -717,7 +720,7 @@ void MainWindow2::exportImageSequence()
     int projectLength = mEditor->layers()->projectLength();
     mEditor->object()->exportFrames( 1,
                                      projectLength,
-                                     mEditor->layers()->currentLayer(),
+                                     cameraLayer,
                                      exportSize,
                                      strFilePath,
                                      exportFormat.toStdString().c_str(),
@@ -734,21 +737,16 @@ void MainWindow2::exportImage()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     // Get the camera layer
-    Layer *cameraLayer = mEditor->layers()->currentLayer();
-    if (cameraLayer->type() != Layer::CAMERA) {
-        QMessageBox::warning( this,
-                              tr( "Error" ),
-                              tr( "You must select a Camera Layer to export an image." ),
-                              QMessageBox::Ok,
-                              QMessageBox::Ok );
-        return;// false;
-    }
+    int cameraLayerId = mEditor->layers()->getLastCameraLayer();
+
+    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
+
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
-    dialog->setExportSize( mScribbleArea->getViewRect().toRect().size() );
+    dialog->setExportSize( cameraLayer->getViewRect().size() );
     dialog->exec();
 
     QSize exportSize = dialog->getExportSize();
@@ -906,7 +904,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionVertical_Flip->setShortcut( cmdKeySeq( CMD_FLIP_VERTICAL ) );
     ui->actionPreview->setShortcut( cmdKeySeq( CMD_PREVIEW ) );
     ui->actionGrid->setShortcut( cmdKeySeq( CMD_GRID ) );
-    ui->actionOnionPrevious->setShortcut( cmdKeySeq( CMD_ONIONSKIN_PREV ) );
+    ui->actionOnionPrev->setShortcut( cmdKeySeq( CMD_ONIONSKIN_PREV ) );
     ui->actionOnionNext->setShortcut( cmdKeySeq( CMD_ONIONSKIN_NEXT ) );
 
     ui->actionPlay->setShortcut( cmdKeySeq( CMD_PLAY ) );
@@ -1076,14 +1074,9 @@ void MainWindow2::makeConnections( Editor* editor, ScribbleArea* scribbleArea )
 {
     connect( editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool );
     connect( editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor );
-
-    connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
     connect( editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames );
 
-    connect( editor, &Editor::toggleOnionPrev, scribbleArea, &ScribbleArea::toggleOnionPrev );
-    connect( editor, &Editor::toggleOnionNext, scribbleArea, &ScribbleArea::toggleOnionNext );
-    connect( editor, &Editor::toggleMultiLayerOnionSkin, scribbleArea, &ScribbleArea::toggleMultiLayerOnionSkin );
-
+    connect( editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame );
     connect( editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll );
 
     connect( editor->view(), &ViewManager::viewChanged, scribbleArea, &ScribbleArea::updateAllFrames );
@@ -1104,10 +1097,10 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
     
-    connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &CommandCenter::addNewBitmapLayer );
-    connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &CommandCenter::addNewVectorLayer );
-    connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &CommandCenter::addNewSoundLayer );
-    connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &CommandCenter::addNewCameraLayer );
+    connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer );
+    connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer );
+    connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer );
+    connect( pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer );
 
     connect( pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType );
 
@@ -1144,4 +1137,32 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );
+}
+
+void MainWindow2::bindActionWithSetting( QAction* action, SETTING setting )
+{
+    PreferenceManager* prefs = mEditor->preference();
+
+    // set initial state
+    action->setChecked( prefs->isOn( setting ) );
+
+    // 2-way binding
+    connect( action, &QAction::triggered, prefs, [ = ] ( bool b )
+    {
+        prefs->set( setting, b );
+    } );
+
+    connect( prefs, &PreferenceManager::optionChanged, action, [ = ]( SETTING s )
+    {
+        if ( s == setting )
+        {
+            action->setChecked( prefs->isOn( setting ) );
+        }
+    } );
+}
+
+void MainWindow2::updateZoomLabel()
+{
+    float zoom = mEditor->view()->scaling() * 100.f;
+    statusBar()->showMessage( QString( "Zoom: %0%1" ).arg( zoom, 0, 'f', 1 ).arg("%") );
 }

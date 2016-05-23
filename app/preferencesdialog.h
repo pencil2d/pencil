@@ -185,13 +185,14 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
-
+    void quickSizingChange(bool);
 private:
     PreferenceManager* mManager = nullptr;
     QSpinBox* mOnionMaxOpacityBox;
     QSpinBox* mOnionMinOpacityBox;
     QSpinBox* mOnionPrevFramesNumBox;
     QSpinBox* mOnionNextFramesNumBox;
+    QCheckBox * mUseQuickSizingBox;
 };
 
 #endif

@@ -7,25 +7,25 @@ ColorBox::ColorBox( const QString& strTitle, QWidget* parent ) : BaseDockWidget(
 {
     QVBoxLayout* layout = new QVBoxLayout();
 
-    m_colorWheel = new ColorWheel(this);
-    m_colorInspector = new ColorInspector(this);
+    mColorWheel = new ColorWheel(this);
+    mColorInspector = new ColorInspector(this);
 
     layout->setContentsMargins(5,5,5,5);
-    layout->addWidget(m_colorWheel);
-    layout->addWidget(m_colorInspector);
+    layout->addWidget(mColorWheel);
+    layout->addWidget(mColorInspector);
 
     QWidget* mainWidget = new QWidget;
     mainWidget->setLayout(layout);
 
     setWidget( mainWidget );
 
-    connect( m_colorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove );
-    connect( m_colorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange );
-    connect( m_colorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease );
+    connect( mColorWheel, &ColorWheel::colorChanged, this, &ColorBox::onWheelMove );
+    connect( mColorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange );
+    connect( mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease );
 
-    m_colorWheel->setColor(Qt::black);
-    m_colorInspector->setColor(Qt::black);
-    m_colorWheel->setMinimumSize(100,100);
+    mColorWheel->setColor(Qt::black);
+    mColorInspector->setColor(Qt::black);
+    mColorWheel->setMinimumSize(100,100);
 
 
 }
@@ -46,15 +46,15 @@ void ColorBox::updateUI()
 
 QColor ColorBox::color()
 {
-    return m_colorWheel->color();
+    return mColorWheel->color();
 }
 
 void ColorBox::setColor(const QColor& newColor)
 {
-    if ( newColor != m_colorWheel->color() )
+    if ( newColor != mColorWheel->color() )
     {
-        m_colorWheel->setColor(newColor);
-        m_colorInspector->setColor(newColor);
+        mColorWheel->setColor(newColor);
+        mColorInspector->setColor(newColor);
 
         emit colorChanged(newColor);
     }
@@ -62,23 +62,23 @@ void ColorBox::setColor(const QColor& newColor)
 
 void ColorBox::onSpinboxChange(const QColor& color)
 {
-    if ( m_colorWheel->color() != color )
+    if ( mColorWheel->color() != color )
     {
-        m_colorWheel->setColor(color);
+        mColorWheel->setColor(color);
         emit colorChanged(color);
     }
 }
 
 void ColorBox::onWheelMove(const QColor& color)
 {
-    if ( m_colorInspector->color() != color )
+    if ( mColorInspector->color() != color )
     {
-        m_colorInspector->setColor(color);
+        mColorInspector->setColor(color);
     }
 }
 
 void ColorBox::onWheelRelease(const QColor& color)
 {
-     m_colorInspector->setColor(color);
+     mColorInspector->setColor(color);
      emit colorChanged(color);
 }

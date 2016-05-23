@@ -174,7 +174,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
             }
             else
             {
-            drawStroke();
+                drawStroke();
             }
         }
 
@@ -231,7 +231,7 @@ void BrushTool::paintAt( QPointF point )
         qreal opacity = 1.0f;
         if (properties.pressure == true)
         {
-        opacity = mCurrentPressure / 2;
+            opacity = mCurrentPressure / 2;
         }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
@@ -301,6 +301,7 @@ void BrushTool::drawStroke()
         }
 
         int rad = qRound( brushWidth ) / 2 + 2;
+        mScribbleArea->paintBitmapBufferRect(rect);
         mScribbleArea->refreshBitmap( rect, rad );
     }
     else if ( layer->type() == Layer::VECTOR )

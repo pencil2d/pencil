@@ -10,12 +10,10 @@ enum class SETTING
 {
     ANTIALIAS,
     GRID,
-    COUNT,
     SHADOW,
     PREV_ONION,
     NEXT_ONION,
     AXIS,
-    CAMERABORDER,
     INVISIBLE_LINES,
     OUTLINES,
     ONION_BLUE,
@@ -40,7 +38,10 @@ enum class SETTING
     ONION_PREV_FRAMES_NUM,
     ONION_NEXT_FRAMES_NUM,
     ONION_TYPE,
-    GRID_SIZE
+    GRID_SIZE,
+    QUICK_SIZING,
+    MULTILAYER_ONION,
+    COUNT, // COUNT must always be the last one.
 };
 
 class PreferenceManager : public BaseManager

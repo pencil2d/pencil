@@ -33,7 +33,7 @@ HEADERS += \
     shortcutfilter.h \
     exportimageseqdialog.h \
     timeline2.h \
-    commandcenter.h \
+    actioncommands.h \
     preferencesdialog.h \
     shortcutspage.h \
     preview.h \
@@ -44,7 +44,8 @@ HEADERS += \
     colorpalettewidget.h \
     colorwheel.h \
     filedialogex.h \
-    displayoptionwidget.h
+    displayoptionwidget.h \
+    pencilapplication.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -53,7 +54,7 @@ SOURCES += \
     shortcutfilter.cpp \
     exportimageseqdialog.cpp \
     timeline2.cpp \
-    commandcenter.cpp \
+    actioncommands.cpp \
     preferencesdialog.cpp \
     shortcutspage.cpp \
     preview.cpp \
@@ -64,7 +65,8 @@ SOURCES += \
     colorpalettewidget.cpp \
     colorwheel.cpp \
     filedialogex.cpp \
-    displayoptionwidget.cpp
+    displayoptionwidget.cpp \
+    pencilapplication.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -76,16 +78,28 @@ FORMS += \
     ui/colorpalette.ui \
     ui/displayoption.ui
 
+DEPENDPATH += .
+
+VERSION = 0.5.4
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
     LIBS += -lobjc -framework AppKit -framework Carbon
     RC_FILE = ../pencil.icns
+
+    # Use custom Info.plist
+    QMAKE_INFO_PLIST = ../Info.plist
+
+    # Add file icons into the application bundle resources
+    FILE_ICONS.files = ../icons/mac_pcl_icon.icns ../icons/mac_pclx_icon.icns
+    FILE_ICONS.path = Contents/Resources
+    QMAKE_BUNDLE_DATA += FILE_ICONS
 }
 
 win32 {
-	CONFIG -= flat
-	CONFIG += grouped
+    CONFIG -= flat
+    CONFIG += grouped
     RC_FILE = $$PWD/../pencil.rc
 }
 

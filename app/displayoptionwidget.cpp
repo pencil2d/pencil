@@ -30,15 +30,6 @@ void DisplayOptionWidget::initUI()
     updateUI();
 }
 
-void DisplayOptionWidget::updateZoomLabel()
-{
-    ViewManager * viewmanager = editor()->view();
-
-    float zoom = (viewmanager->scaling())*100.0f;
-
-    ui->zoomLabel->setText(QString("Zoom: ")+QString("").setNum(zoom)+QString("%"));
-}
-
 void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 {
     PreferenceManager* prefs = editor->preference();
@@ -46,17 +37,15 @@ void DisplayOptionWidget::makeConnectionToEditor( Editor* editor )
 
 	connect( ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
 	connect( ui->outLinesButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOutlines);
-    connect( ui->onionPrevButton, &QToolButton::clicked, editor, &Editor::toggleOnionPrev);
-	connect( ui->onionNextButton, &QToolButton::clicked, editor, &Editor::toggleOnionNext);
-	connect( ui->onionBlueButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionBlue );
-	connect( ui->onionRedButton,  &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOnionRed );
+    connect( ui->onionPrevButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionPrevButtonClicked );
+	connect( ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked );
+    connect( ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked );
+    connect( ui->onionRedButton,  &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked );
 	connect( ui->mirrorButton,    &QToolButton::clicked, editor, &Editor::toggleMirror);
-	connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
-    connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
+    connect( ui->mirrorVButton,   &QToolButton::clicked, editor, &Editor::toggleMirrorV);
+    //connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
 
     connect( prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI );
-
-    connect( editor->view(), &ViewManager::viewChanged, this, &DisplayOptionWidget::updateZoomLabel );
 
     updateUI();
 
@@ -91,7 +80,29 @@ void DisplayOptionWidget::updateUI()
     
     QSignalBlocker b8( ui->mirrorVButton );
     ui->mirrorVButton->setChecked( prefs->isOn( SETTING::MIRROR_V ) );
-    
-    QSignalBlocker b9( ui->cameraBorderButton );
-    ui->cameraBorderButton->setChecked( prefs->isOn( SETTING::CAMERABORDER ) );
+}
+
+
+void DisplayOptionWidget::onionPrevButtonClicked( bool isOn )
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set( SETTING::PREV_ONION, isOn );
+}
+
+void DisplayOptionWidget::onionNextButtonClicked( bool isOn )
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set( SETTING::NEXT_ONION, isOn );
+}
+
+void DisplayOptionWidget::onionBlueButtonClicked( bool isOn )
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set( SETTING::ONION_BLUE, isOn );
+}
+
+void DisplayOptionWidget::onionRedButtonClicked( bool isOn )
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set( SETTING::ONION_RED, isOn );
 }

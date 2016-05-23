@@ -101,7 +101,7 @@ QCursor PencilTool::cursor()
 
 void PencilTool::mousePressEvent( QMouseEvent *event )
 {
-    lastBrushPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
 
     if ( event->button() == Qt::LeftButton )
     {
@@ -116,7 +116,8 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
         {
             drawStroke();
         }
-        else {
+        else if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
+        {
             if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
             {
                 mScribbleArea->toggleThinLines();
@@ -210,7 +211,7 @@ void PencilTool::drawStroke()
 
         BlitRect rect;
 
-        QPointF a = lastBrushPoint;
+        QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
         qreal distance = 4 * QLineF( b, a ).length();
@@ -218,7 +219,7 @@ void PencilTool::drawStroke()
 
         for ( int i = 0; i < steps; i++ )
         {
-            QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
+            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - mLastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
             mScribbleArea->drawPencil(point,
                                       brushWidth,
@@ -227,7 +228,7 @@ void PencilTool::drawStroke()
 
             if ( i == ( steps - 1 ) )
             {
-                lastBrushPoint = point;
+                mLastBrushPoint = point;
             }
         }
 

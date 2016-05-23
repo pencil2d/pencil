@@ -38,7 +38,7 @@ class PreviewWidget;
 class ColorBox;
 class RecentFileMenu;
 class Timeline2;
-class CommandCenter;
+class ActionCommands;
 
 namespace Ui
 {
@@ -58,11 +58,12 @@ public:
 public slots:
     void undoActSetText(void);
     void undoActSetEnabled(void);
+    void openDocument(const QString &fileName);
 
 public:
     void setOpacity(int opacity);
     void newDocument();
-    void openDocument();
+    void openDocumentDialog();
     void saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
@@ -88,7 +89,6 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
-
     bool openObject( QString strFilename );
     bool saveObject( QString strFileName );
 
@@ -99,7 +99,8 @@ private:
     void setMenuActionChecked( QAction*, bool bChecked );
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-
+    void updateZoomLabel();
+    
     void importPalette();
     void exportPalette();
 
@@ -113,8 +114,10 @@ private:
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
 
+    void bindActionWithSetting( QAction*, SETTING );
+
     // UI: central Drawing Area
-    ScribbleArea* mScribbleArea;
+    ScribbleArea* mScribbleArea                = nullptr;
 
     // UI: Dock widgets
     ColorBox*             mColorWheel          = nullptr;
@@ -125,12 +128,10 @@ private:
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-
-public:
     TimeLine*             mTimeLine; // be public temporary
 
 private:
-    CommandCenter* mCommands              = nullptr;
+    ActionCommands* mCommands              = nullptr;
 
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;

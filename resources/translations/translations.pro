@@ -5,9 +5,12 @@ CONFIG += qt staticlib console
 
 TRANSLATIONS += pencil.ts \
                 pencil2d_cs.ts \
+				pencil2d_da.ts \
+                pencil2d_de.ts \
+				pencil2d_fr.ts \
                 pencil2d_it.ts \
                 pencil2d_ja.ts \
-                pencil2d_da.ts \
+				pencil2d_zh-TW.ts
 
 SOURCES += dummy.cpp
 

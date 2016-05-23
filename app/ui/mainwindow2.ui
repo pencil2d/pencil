@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <property name="font">
@@ -133,7 +133,7 @@ background: #B6DBEA;
      <property name="title">
       <string>Onion Skin</string>
      </property>
-     <addaction name="actionOnionPrevious"/>
+     <addaction name="actionOnionPrev"/>
      <addaction name="actionOnionNext"/>
      <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
@@ -502,16 +502,19 @@ background: #B6DBEA;
     <string>Grid</string>
    </property>
   </action>
-  <action name="actionOnionPrevious">
+  <action name="actionOnionPrev">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/onionPrev.png</normaloff>:/icons/onionPrev.png</iconset>
+    <iconset resource="../resource/app.qrc">
+     <normaloff>:/app/icons/onionPrev.png</normaloff>:/app/icons/onionPrev.png</iconset>
    </property>
    <property name="text">
     <string>Previous</string>
+   </property>
+   <property name="statusTip">
+    <string>Show previous onion skin</string>
    </property>
   </action>
   <action name="actionOnionNext">
@@ -519,11 +522,14 @@ background: #B6DBEA;
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset>
-     <normaloff>:/icons/onionNext.png</normaloff>:/icons/onionNext.png</iconset>
+    <iconset resource="../resource/app.qrc">
+     <normaloff>:/app/icons/onionNext.png</normaloff>:/app/icons/onionNext.png</iconset>
    </property>
    <property name="text">
     <string>Next</string>
+   </property>
+   <property name="statusTip">
+    <string>Show next onion skin</string>
    </property>
   </action>
   <action name="actionPlay">
@@ -891,7 +897,7 @@ background: #B6DBEA;
  </widget>
  <resources>
   <include location="../../pencil.qrc"/>
-  <include location="../../pencil.qrc"/>
+  <include location="../resource/app.qrc"/>
  </resources>
  <connections/>
 </ui>

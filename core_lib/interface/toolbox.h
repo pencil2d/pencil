@@ -37,8 +37,6 @@ public:
     void initUI() override;
     void updateUI() override;
 
-    void setCurrentTool( ToolType );
-
 public slots:
     void pencilOn();
     void eraserOn();

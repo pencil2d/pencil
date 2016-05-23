@@ -71,7 +71,6 @@ public:
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
-    qreal myFlipX, myFlipY; // scale -1.0 or +1.0
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;
@@ -83,7 +82,7 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY };
+    enum MoveMode { MIDDLE, TOPLEFT, TOPRIGHT, BOTTOMLEFT, BOTTOMRIGHT, ROTATION, SYMMETRY, NONE };
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode( MoveMode moveMode ) { mMoveMode = moveMode; }
 
@@ -136,20 +135,12 @@ public slots:
     void selectAll();
     void deselectAll();
 
-    void toggleOnionPrev( bool );
-    void toggleOnionNext( bool );
-    void toggleOnionBlue( bool );
-    void toggleOnionRed( bool );
-    void toggleGrid( bool );
-
     void setCurveSmoothing( int );
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
-    void toggleCameraBorder( bool );
     void escape();
 
-    void toggleMultiLayerOnionSkin( bool );
     void togglePopupPalette();
 
     void updateToolCursor();
@@ -181,6 +172,7 @@ public:
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
 
     void paintBitmapBuffer();
+    void paintBitmapBufferRect( QRect rect );
     void clearBitmapBuffer();
     void refreshBitmap( const QRectF& rect, int rad );
     void refreshVector( const QRectF& rect, int rad );
@@ -211,6 +203,7 @@ private:
 
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
+    bool mQuickSizing = true;
     int  mShowAllLayers;
     bool mUsePressure   = true;
     bool mMakeInvisible = false;

@@ -299,7 +299,8 @@ void Editor::undo()
 		//
 		mBackupList[ mBackupIndex ]->restore( this );
 		mBackupIndex--;
-		mScribbleArea->calculateSelectionRect(); // really ugly -- to improve
+        mScribbleArea->cancelTransformedSelection();
+        mScribbleArea->calculateSelectionRect(); // really ugly -- to improve
 	}
 }
 

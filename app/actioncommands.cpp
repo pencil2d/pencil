@@ -1,4 +1,4 @@
-#include "commandcenter.h"
+#include "actioncommands.h"
 
 #include <QPushButton>
 #include <QInputDialog>
@@ -23,10 +23,10 @@
 #include "filedialogex.h"
 
 
-CommandCenter::CommandCenter( QObject* parent ) : QObject( parent ) {}
-CommandCenter::~CommandCenter() {}
+ActionCommands::ActionCommands( QObject* parent ) : QObject( parent ) {}
+ActionCommands::~ActionCommands() {}
 
-Status CommandCenter::importSound()
+Status ActionCommands::importSound()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     Q_ASSERT( layer );
@@ -79,19 +79,19 @@ Status CommandCenter::importSound()
     return st;
 }
 
-void CommandCenter::ZoomIn()
+void ActionCommands::ZoomIn()
 {
     float newScaleValue = mEditor->view()->scaling() * 1.2;
     mEditor->view()->scale( newScaleValue );
 }
 
-void CommandCenter::ZoomOut()
+void ActionCommands::ZoomOut()
 {
     float newScaleValue = mEditor->view()->scaling() * 0.8333;
     mEditor->view()->scale( newScaleValue );
 }
 
-void CommandCenter::flipX()
+void ActionCommands::flipX()
 {
     auto view = mEditor->view();
 
@@ -99,7 +99,7 @@ void CommandCenter::flipX()
     view->flipHorizontal( !b );
 }
 
-void CommandCenter::flipY()
+void ActionCommands::flipY()
 {
     auto view = mEditor->view();
 
@@ -107,18 +107,18 @@ void CommandCenter::flipY()
     view->flipVertical( !b );
 }
 
-void CommandCenter::rotateClockwise()
+void ActionCommands::rotateClockwise()
 {
     mEditor->view()->rotate( 15 );
 }
 
-void CommandCenter::rotateCounterClockwise()
+void ActionCommands::rotateCounterClockwise()
 {
     mEditor->view()->rotate( -15 );
 }
 
 
-void CommandCenter::showGrid( bool bShow )
+void ActionCommands::showGrid( bool bShow )
 {
     auto prefs = mEditor->preference();
     if ( bShow )
@@ -127,7 +127,7 @@ void CommandCenter::showGrid( bool bShow )
         prefs->turnOff( SETTING::GRID );
 }
 
-void CommandCenter::PlayStop()
+void ActionCommands::PlayStop()
 {
     PlaybackManager* playback = mEditor->playback();
     if ( playback->isPlaying() )
@@ -140,23 +140,23 @@ void CommandCenter::PlayStop()
     }
 }
 
-void CommandCenter::GotoNextFrame()
+void ActionCommands::GotoNextFrame()
 {
 }
 
-void CommandCenter::GotoPrevFrame()
+void ActionCommands::GotoPrevFrame()
 {
 }
 
-void CommandCenter::GotoNextKeyFrame()
+void ActionCommands::GotoNextKeyFrame()
 {
 }
 
-void CommandCenter::GotoPrevKeyFrame()
+void ActionCommands::GotoPrevKeyFrame()
 {
 }
 
-Status CommandCenter::addNewBitmapLayer()
+Status ActionCommands::addNewBitmapLayer()
 {
     bool ok;
     QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
@@ -169,7 +169,7 @@ Status CommandCenter::addNewBitmapLayer()
     return Status::OK;
 }
 
-Status CommandCenter::addNewVectorLayer()
+Status ActionCommands::addNewVectorLayer()
 {
     bool ok;
     QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
@@ -183,7 +183,7 @@ Status CommandCenter::addNewVectorLayer()
     return Status::OK;
 }
 
-Status CommandCenter::addNewCameraLayer()
+Status ActionCommands::addNewCameraLayer()
 {
     bool ok;
     QString text = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
@@ -198,7 +198,7 @@ Status CommandCenter::addNewCameraLayer()
 
 }
 
-Status CommandCenter::addNewSoundLayer()
+Status ActionCommands::addNewSoundLayer()
 {
     bool ok = false;
     QString strLayerName = QInputDialog::getText( nullptr, tr( "Layer Properties" ),

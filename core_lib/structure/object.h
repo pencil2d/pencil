@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QColor>
 #include "layer.h"
 #include "colourref.h"
+#include "pencilerror.h"
 
 class QProgressDialog;
 class LayerBitmap;
@@ -72,12 +73,13 @@ public:
     virtual ~Object();
 
     void init();
+    void createWorkingDir();
 
     QString filePath() const { return mFilePath; }
     void    setFilePath( QString strFileName ) { mFilePath = strFileName; }
     
     QString workingDir() const { return mWorkingDirPath; }
-    void    setWorkingDir( QString dirPath ) { mWorkingDirPath = dirPath; }
+    //void    setWorkingDir( QString dirPath ) { mWorkingDirPath = dirPath; }
 
     QString dataDir() const { return mDataDirPath; }
     void    setDataDir( QString dirPath ) { mDataDirPath = dirPath; }
@@ -90,6 +92,9 @@ public:
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
 
+    QString copyFileToDataFolder( QString strFilePath );
+
+    // Color palette
     ColourRef getColour( int i );
     void setColour( int index, QColor newColour )
     {
@@ -136,6 +141,11 @@ public:
 
     EditorState* editorState();
     void setEditorData( EditorState* );
+
+    void setLayerUpdated(int layerId);
+
+Q_SIGNALS:
+    void layerChanged( int layerId );
 
 private:
     int getMaxLayerID();

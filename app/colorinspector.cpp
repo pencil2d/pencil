@@ -55,9 +55,11 @@ void ColorInspector::setColor(const QColor &newColor)
     }
     m_color = newColor;
 
-    QPalette p = ui->color->palette();
-    p.setColor(QPalette::Background, m_color);
-    ui->color->setPalette(p);
+    QPalette p1 = ui->colorWrapper->palette(), p2 = ui->color->palette();
+    p1.setBrush(QPalette::Background, QBrush(QImage(":/background/checkerboard.png")));
+    p2.setColor(QPalette::Background, m_color);
+    ui->colorWrapper->setPalette(p1);
+    ui->color->setPalette(p2);
     //ui->color->setFixedSize(30,30);
     noColorUpdate = false;
 }

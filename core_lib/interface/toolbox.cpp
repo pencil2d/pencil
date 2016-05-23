@@ -31,12 +31,9 @@ GNU General Public License for more details.
 ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
     BaseDockWidget( title, pParent, Qt::Tool )
 {
-    QFrame* toolGroup = new QFrame();
-    setWidget( toolGroup );
-
     QGridLayout* layout = new QGridLayout();
 
-    pencilButton = newToolButton( QIcon( "://icons/pencil2.png" ), tr( "Pencil Tool <b>(N)</b>: Sketch with pencil" ) );
+    pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ), tr( "Pencil Tool <b>(N)</b>: Sketch with pencil" ) );
     selectButton = newToolButton( QIcon( ":icons/select.png" ), tr( "Select Tool <b>(V)</b>: Select an object" ) );
     moveButton = newToolButton( QIcon( ":icons/arrow.png" ), tr( "Move Tool <b>(Q)</b>: Move an object" ) );
     handButton = newToolButton( QIcon( ":icons/hand.png" ), tr( "Hand Tool <b>(H)</b>: Move the canvas" ) );
@@ -108,10 +105,12 @@ ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
     layout->addWidget( eraserButton, 5, 1 );
     layout->setAlignment( eraserButton, Qt::AlignLeft );
 
+    QFrame* toolGroup = new QFrame();
+    setWidget( toolGroup );
     toolGroup->setLayout( layout );
     toolGroup->setMaximumHeight( 6 * 32 + 1 );
 
-    this->setMaximumHeight( 200 );
+    setMaximumHeight( 200 );
 
     connect( pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn );
     connect( eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn );
@@ -253,46 +252,4 @@ void ToolBoxWidget::deselectAllTools()
     eyedropperButton->setChecked(false);
     colouringButton->setChecked(false);
     smudgeButton->setChecked(false);
-}
-
-void ToolBoxWidget::setCurrentTool( ToolType toolType )
-{
-    switch(toolType)
-    {
-    case PENCIL:
-        emit pencilOn();
-        break;
-    case ERASER:
-        emit eraserOn();
-        break;
-    case SELECT:
-        emit selectOn();
-        break;
-    case MOVE:
-        emit moveOn();
-        break;
-    case HAND:
-        emit handOn();
-        break;
-    case SMUDGE:
-        emit smudgeOn();
-        break;
-    case PEN:
-        emit penOn();
-        break;
-    case POLYLINE:
-        emit polylineOn();
-        break;
-    case BUCKET:
-        emit bucketOn();
-        break;
-    case EYEDROPPER:
-        emit eyedropperOn();
-        break;
-    case BRUSH:
-        emit brushOn();
-        break;
-    default:
-        break;
-    }
 }

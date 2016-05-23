@@ -7,13 +7,13 @@
 class Editor;
 
 
-class CommandCenter : public QObject
+class ActionCommands : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit CommandCenter(QObject* parent = 0);
-    virtual ~CommandCenter();
+    explicit ActionCommands(QObject* parent = 0);
+    virtual ~ActionCommands();
 
     void setCore( Editor* e ) { mEditor = e; }
     

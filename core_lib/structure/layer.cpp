@@ -215,9 +215,7 @@ bool Layer::removeKeyFrame( int position, bool reloadFirstFrame )
 
     if ( reloadFirstFrame && position == 1 )
     {
-
         // Avoiding having no frame by deleting the first frame.
-        //
         addNewEmptyKeyAt( 1 ); // replacing
     }
 
@@ -421,9 +419,8 @@ void Layer::paintSelection( QPainter& painter, int x, int y, int width, int heig
     QSettings settings( "Pencil", "Pencil" );
     QString style = settings.value( "style" ).toString();
     linearGrad.setColorAt( 0, QColor( 255, 255, 255, 128 ) );
-    linearGrad.setColorAt( 0.45, QColor( 255, 255, 255, 0 ) );
-    linearGrad.setColorAt( 0.55, QColor( 0, 0, 0, 0 ) );
-    linearGrad.setColorAt( 1, QColor( 0, 0, 0, 90 ) );
+    linearGrad.setColorAt( 0.50, QColor( 255, 255, 255, 64 ) );
+    linearGrad.setColorAt( 1, QColor( 255, 255, 255, 0 ) );
     painter.setBrush( linearGrad );
     painter.setPen( Qt::NoPen );
     painter.drawRect( x, y, width, height - 1 );
@@ -462,7 +459,13 @@ void Layer::editProperties()
     if ( ok && !text.isEmpty() )
     {
         mName = text;
+        setUpdated();
     }
+}
+
+void Layer::setUpdated()
+{
+    mObject->setLayerUpdated(mId);
 }
 
 void Layer::setModified( int position, bool )
@@ -633,6 +636,11 @@ bool Layer::moveSelectedFrames(int offset)
                     if (fromPos > toPos && (targetPosition > fromPos || targetPosition <= toPos)) {
                         isBetween = false;
                     }
+                }
+
+                // If the first frame is moving, we need to create a new first frame
+                if (fromPos == 1) {
+                    addNewEmptyKeyAt(1);
                 }
 
                 // Update the position of the selected frame

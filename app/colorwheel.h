@@ -33,6 +33,7 @@ private:
     void changeColor(const QColor &color);
     void hueChanged(const int &hue);
     void svChanged(const QColor &newcolor);
+    void alphaChanged(const int &alpha);
 
     QColor pickColor(const QPoint &point);
     
