@@ -15,6 +15,7 @@ public:
     {
         LINEAR,
         LOG,
+        EXPONENT,
     };
 
     enum VALUE_TYPE
@@ -25,6 +26,7 @@ public:
 
     SpinSlider( QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max, QWidget* parent = 0 );
     void setValue( qreal );
+    void setExponent( const qreal );
     
 signals:
     void valueChanged(qreal);
@@ -40,6 +42,7 @@ private:
     qreal mValue = 50.0;
     qreal mMin   = 0.1;
     qreal mMax   = 100.0;
+    qreal mExp   = 2.0;
 
     GROWTH_TYPE mGrowthType = LINEAR;
     VALUE_TYPE  mValueType  = INTEGER;

@@ -44,7 +44,6 @@ Pencil.app
 # Mac stuff
 
 .DS_Store
-Info.plist
 *.pbproj
 *.xcodeproj
 *.xcworkspace

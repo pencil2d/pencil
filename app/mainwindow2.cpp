@@ -216,7 +216,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
-    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocumentDialog );
     connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
     connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
@@ -398,7 +398,7 @@ void MainWindow2::newDocument()
     }
 }
 
-void MainWindow2::openDocument()
+void MainWindow2::openDocumentDialog()
 {
     if ( maybeSave() )
     {
@@ -409,6 +409,14 @@ void MainWindow2::openDocument()
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
+        openDocument(fileName);
+    }
+}
+
+void MainWindow2::openDocument(const QString &fileName)
+{
+    if ( maybeSave() )
+    {
         if ( fileName.isEmpty() )
         {
             return;

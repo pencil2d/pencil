@@ -14,13 +14,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDir>
-#include <QIcon>
 #include "editor.h"
 #include "mainwindow2.h"
+#include "pencilapplication.h"
 #include <iostream>
 #include <cstring>
 
@@ -30,8 +29,7 @@ using std::endl;
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
-    app.setApplicationName( "Pencil2D" );
+    PencilApplication app(argc, argv);
 
     QTranslator qtTranslator;
     qtTranslator.load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
@@ -44,10 +42,12 @@ int main(int argc, char* argv[])
     //bool b = pencil2DTranslator.load( "../resources/translations/pencil2d_it" );
     app.installTranslator(&pencil2DTranslator);
 
-    app.setWindowIcon(QIcon(":/icons/icon.png"));
-
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
+
+    QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openDocument);
+    //QObject::connect(&app, SIGNAL(openFileRequested(QString)), &mainWindow, SLOT(openDocument(QString)));
+    app.emitOpenFileRequest();
     
     if ( argc == 1 || (argc > 1 && strcmp( argv[1], "-NSDocumentRevisionsDebugMode" ) == 0)  )
     {
