@@ -16,10 +16,11 @@ addons:
     packages:
     - g++-4.9
     - build-essential
-    - qt5-default
-    - qttools5-dev-tools
     - qtbase5-dev
-
+    - qttools5-dev 
+    - qtmultimedia5-dev
+    - libqt5svg5-dev
+    - libqt5xmlpatterns5-dev
 before_script:
   - qmake --version
 
