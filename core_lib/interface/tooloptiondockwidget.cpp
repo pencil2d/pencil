@@ -210,7 +210,7 @@ void ToolOptionWidget::setPreserveAlpha( int x )
 {
     qDebug() << "Setting - Preserve Alpha=" << x;
 
-    QSignalBlocker b( mPreserveAlphaBox );
+    SignalBlocker b( mPreserveAlphaBox );
     mPreserveAlphaBox->setEnabled( true );
     mPreserveAlphaBox->setChecked( x > 0 );
 }
