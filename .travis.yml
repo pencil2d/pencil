@@ -4,7 +4,7 @@
 # http://docs.travis-ci.com/user/build-configuration/
 
 language: cpp
-compiler: g++
+compiler: g++4.9
 sudo: false
 
 addons:
@@ -17,6 +17,6 @@ addons:
     - build-essential
 
 script:
-  - bundle exec qmake --version
-  - bundle exec qmake
-  - bundle exec make
+  - qmake --version
+  - qmake
+  - make
