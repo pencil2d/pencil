@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "layermanager.h"
 #include "pencildef.h"
+#include "util.h"
 
 
 TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
@@ -122,17 +123,17 @@ void TimeControls::initUI()
 {
     auto playback = mEditor->playback();
     
-    QSignalBlocker b( mLoopStartSpinBox );
+    SignalBlocker b( mLoopStartSpinBox );
     mLoopStartSpinBox->setValue( playback->markInFrame() );
     
-    QSignalBlocker b2( mLoopEndSpinBox );
+    SignalBlocker b2( mLoopEndSpinBox );
     mLoopEndSpinBox->setValue( playback->markOutFrame() );
     
     mPlaybackRangeCheckBox->setChecked( false );
     mLoopStartSpinBox->setEnabled( false );
     mLoopEndSpinBox->setEnabled( false );
     
-    QSignalBlocker b3( mFpsBox );
+    SignalBlocker b3( mFpsBox );
     mFpsBox->setValue( playback->fps() );
 }
 
