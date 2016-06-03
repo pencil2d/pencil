@@ -19,7 +19,9 @@ addons:
     - qttools5-dev-tools
     - qtbase5-dev
 
-script:
+before_script:
   - qmake --version
+
+script:
   - qmake
   - make
