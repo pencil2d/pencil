@@ -15,6 +15,9 @@ addons:
     packages:
     - g++-4.9
     - build-essential
+    - qt5-default
+    - qttools5-dev-tools
+    - qtbase5-dev
 
 script:
   - qmake --version
