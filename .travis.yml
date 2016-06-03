@@ -12,20 +12,16 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    #- ubuntu-sdk-team
-    - sourceline: 'ppa:beineri/opt-qt56-trusty'
+    - ubuntu-sdk-team
     packages:
     - g++-4.9
     - build-essential
-    #- qt5-default
-    - qt56tools
-    - qt56svg
-    - qt56base 
-    #- qttools5-dev-tools
-    #- qtbase5-dev
-    #- qtmultimedia5-dev
-    #- libqt5svg5-dev 
-    #- libqt5xmlpatterns5-dev
+    - qt5-default
+    - qttools5-dev-tools
+    - qtbase5-dev
+    - qtmultimedia5-dev
+    - libqt5svg5-dev 
+    - libqt5xmlpatterns5-dev
 before_script:
   - qmake --version
 
