@@ -8,6 +8,7 @@
 #include "preferencemanager.h"
 #include "scribblearea.h"
 #include "editor.h"
+#include "util.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget( QWidget *parent ) : BaseDockWidget( parent )
