@@ -351,7 +351,7 @@ void MainWindow2::createMenus()
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
 {
-    QSignalBlocker b( action );
+    SignalBlocker b( action );
     action->setChecked( bChecked );
 }
 
