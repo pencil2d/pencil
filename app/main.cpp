@@ -28,16 +28,24 @@ using std::endl;
 
 void installTranslator( PencilApplication& app )
 {
+    QSettings setting( PENCIL2D, PENCIL2D );
+    QString strUserLocale = setting.value( SETTING_LANGUAGE ).toString();
+    if ( strUserLocale.isEmpty() )
+    {
+        strUserLocale = QLocale::system().name();
+    }
+
+    QString strQtLocale  = strUserLocale;
+    strQtLocale.replace( "-", "_" );
     QTranslator* qtTranslator = new QTranslator;
-    qtTranslator->load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
+    qtTranslator->load( "qt_" + strUserLocale, QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     app.installTranslator( qtTranslator );
 
-    QString strLocale = QLocale::system().name().replace( "_", "-" );
-
-    qDebug() << "Detect locale =" << strLocale;
+    strUserLocale.replace( "_", "-" );
+    qDebug() << "Detect locale =" << strUserLocale;
 
     QTranslator* pencil2DTranslator = new QTranslator;
-    bool b = pencil2DTranslator->load( ":/qm/Language." + strLocale );
+    bool b = pencil2DTranslator->load( ":/qm/Language." + strUserLocale );
     
     qDebug() << "Load translation = " << b;
     

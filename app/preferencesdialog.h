@@ -39,6 +39,7 @@ GNU General Public License for more details.
 class QListWidget;
 class QListWidgetItem;
 class QStackedWidget;
+class QComboBox;
 class PreferenceManager;
 
 
@@ -84,6 +85,7 @@ public slots:
     void updateValues();
 
 private:
+    void languageChanged( int i );
     void shadowsCheckboxStateChanged(bool b);
     void antiAliasCheckboxStateChanged( bool b );
     void toolCursorsCheckboxStateChanged( bool b );
@@ -94,6 +96,7 @@ private:
 
     PreferenceManager* mManager = nullptr;
 
+    QComboBox* mLanguageCombo = nullptr;
     QSlider* mWindowOpacityLevel;
     QSlider* mCurveSmoothingLevel;
     QCheckBox* mShadowsBox;
