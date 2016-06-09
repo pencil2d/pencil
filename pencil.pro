@@ -29,8 +29,7 @@ app.depends      = core_lib
 tests.depends    = core_lib
 
 
-TRANSLATIONS += translations/pencil.ts \
-                translations/Language.cs.ts \
+TRANSLATIONS += translations/Language.cs.ts \
                 translations/Language.da.ts \
                 translations/Language.de.ts \
                 translations/Language.es.ts \

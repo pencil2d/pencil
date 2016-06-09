@@ -26,21 +26,31 @@ GNU General Public License for more details.
 using std::cout;
 using std::endl;
 
+void installTranslator( PencilApplication& app )
+{
+    QTranslator* qtTranslator = new QTranslator;
+    qtTranslator->load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
+    app.installTranslator( qtTranslator );
+
+    QString strLocale = QLocale::system().name().replace( "_", "-" );
+
+    qDebug() << "Detect locale =" << strLocale;
+
+    QTranslator* pencil2DTranslator = new QTranslator;
+    bool b = pencil2DTranslator->load( ":/qm/Language." + strLocale );
+    
+    qDebug() << "Load translation = " << b;
+    
+    b = app.installTranslator( pencil2DTranslator );
+
+    qDebug() << "Install translation = " << b;
+}
 
 int main(int argc, char* argv[])
 {
-    PencilApplication app(argc, argv);
+    PencilApplication app( argc, argv );
 
-    QTranslator qtTranslator;
-    qtTranslator.load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
-    app.installTranslator(&qtTranslator);
-
-    QString strLocale = "qm/pencil2d_" + QLocale::system().name();
-
-    QTranslator pencil2DTranslator;
-    bool b = pencil2DTranslator.load( ":/qm/pencil2d_" + QLocale::system().name() );
-    //bool b = pencil2DTranslator.load( "../resources/translations/pencil2d_it" );
-    app.installTranslator(&pencil2DTranslator);
+    installTranslator( app );
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );

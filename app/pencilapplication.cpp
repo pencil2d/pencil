@@ -21,7 +21,7 @@ PencilApplication::PencilApplication(int& argc, char** argv) :
 
 bool PencilApplication::event(QEvent* event)
 {
-    if(event->type() == QEvent::FileOpen)
+    if (event->type() == QEvent::FileOpen)
     {
         startPath_ = static_cast<QFileOpenEvent*>(event)->file();
         emit openFileRequested(startPath_);
@@ -33,7 +33,7 @@ bool PencilApplication::event(QEvent* event)
 
 void PencilApplication::emitOpenFileRequest()
 {
-    if(startPath_.size() != 0)
+    if (startPath_.size() != 0)
     {
         emit openFileRequested(startPath_);
     }
