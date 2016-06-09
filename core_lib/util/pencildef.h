@@ -5,10 +5,10 @@
 #define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
 
 #define PENCIL_MOVIE_EXT \
-    tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
+    QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
-   tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" )
+   QObject::tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" )
 
 
 enum ToolType
@@ -166,5 +166,7 @@ enum BackgroundStyle
 #define SETTING_ONION_PREV_FRAMES_NUM   "OnionPrevFramesNum"
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
 #define SETTING_ONION_TYPE              "OnionType"
+
+#define SETTING_LANGUAGE        "Language"
 
 #endif // PENCILDEF_H

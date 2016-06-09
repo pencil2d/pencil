@@ -24,7 +24,6 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *-build-*
-*.qm
 .moc
 
 Makefile
@@ -46,6 +45,10 @@ Pencil.app
 .DS_Store
 *.pbproj
 *.xcodeproj
+*.xcworkspace
+xcshareddata
+*.pbxproj
+*.mak
 
 # Visual Studio
 
@@ -62,4 +65,5 @@ debug
 ipch
 
 app/Pencil2D
-tests/
+
+

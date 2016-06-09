@@ -4,23 +4,38 @@
 
 TEMPLATE = subdirs
 
-zlib.subdir = 3rdlib/zlib
+SUBDIRS = \ # sub-project names
+    zlib \
+    quazip \
+    core_lib \
+    app \
+    tests
 
-quazip.subdir = 3rdlib/quazip
-quazip.depends = zlib
+# build the project sequentially as listed in SUBDIRS !
+CONFIG += ordered
 
+# where to find the sub projects - give the folders
+zlib.subdir     = 3rdlib/zlib
+quazip.subdir   = 3rdlib/quazip
 core_lib.subdir = core_lib
+app.subdir      = app
+tests.subdir    = tests
+#l10n.subdir     = translations
+
+# what subproject depends on others
+quazip.depends   = zlib
 core_lib.depends = quazip
+app.depends      = core_lib
+tests.depends    = core_lib
 
-app.subdir = app
-app.depends = core_lib
 
-tests.subdir = tests
-tests.depends = core_lib
-
-l10n.subdir = resources/translations
-
-SUBDIRS = core_lib app tests quazip zlib l10n
-
-RESOURCES += \
-    app/pencil.qrc
+TRANSLATIONS += translations/Language.cs.ts \
+                translations/Language.da.ts \
+                translations/Language.de.ts \
+                translations/Language.es.ts \
+                translations/Language.fr.ts \
+                translations/Language.it.ts \
+                translations/Language.ja.ts \
+                translations/Language.pt-BR.ts \
+                translations/Language.ru.ts \
+                translations/Language.zh-TW.ts
