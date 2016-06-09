@@ -721,7 +721,7 @@
         <location filename="app/mainwindow2.cpp" line="468"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil не удалось открыть данный файл. 
-<br>Подсказка: для изображений воспользуйтесь командой Файл -> Импорт</translation>
+ Подсказка: для изображений воспользуйтесь командой Файл -> Импорт</translation>
     </message>
     <message>
         <location filename="app/mainwindow2.cpp" line="444"/>
