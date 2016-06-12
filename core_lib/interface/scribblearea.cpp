@@ -397,18 +397,27 @@ void ScribbleArea::wheelEvent( QWheelEvent* event )
     QPoint angle = event->angleDelta();
     if ( !pixels.isNull() )
     {
-        //qDebug() << pixels.y();
-        float delta = pixels.y() / 400.f;
-        float newScaleValue = mEditor->view()->scaling() * ( 1.f + delta );
-        mEditor->view()->scale( newScaleValue );
+        float delta = pixels.y();
+        if(delta < 0)
+        {
+            mEditor->view()->scaleDown();
+        }
+        else
+        {
+            mEditor->view()->scaleUp();
+        }
     }
     else if ( !angle.isNull() )
     {
-        float delta = angle.y() / 1200.f;
-        //qDebug() << degrees;
-        float newScaleValue = mEditor->view()->scaling() * ( 1.f + delta );
-        qDebug() << newScaleValue;
-        mEditor->view()->scale( newScaleValue );
+        float delta = angle.y();
+        if(delta < 0)
+        {
+            mEditor->view()->scaleDown();
+        }
+        else
+        {
+            mEditor->view()->scaleUp();
+        }
     }
 
     event->accept();
