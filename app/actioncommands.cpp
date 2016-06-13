@@ -142,18 +142,22 @@ void ActionCommands::PlayStop()
 
 void ActionCommands::GotoNextFrame()
 {
+    mEditor->scrubForward();
 }
 
 void ActionCommands::GotoPrevFrame()
 {
+    mEditor->scrubBackward();
 }
 
 void ActionCommands::GotoNextKeyFrame()
 {
+    mEditor->scrubNextKeyFrame();
 }
 
 void ActionCommands::GotoPrevKeyFrame()
 {
+    mEditor->scrubPreviousKeyFrame();
 }
 
 Status ActionCommands::addNewBitmapLayer()
