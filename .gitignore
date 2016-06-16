@@ -24,7 +24,6 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *-build-*
-*.qm
 .moc
 
 Makefile
@@ -44,7 +43,6 @@ Pencil.app
 # Mac stuff
 
 .DS_Store
-Info.plist
 *.pbproj
 *.xcodeproj
 *.xcworkspace

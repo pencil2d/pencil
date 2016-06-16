@@ -28,8 +28,6 @@ Write-Host $deployqt
 Copy-Item $env:windir\system32\msvcp120.dll $FolderName
 Copy-Item $env:windir\system32\msvcr120.dll $FolderName
 
-Copy-Item .\resources\translations\*.qm  $FolderName\translations
-
 $ZipName = $FolderName + ".zip"
 
 [string]$ZipExe = "C:\Program Files\7-zip\7z.exe";

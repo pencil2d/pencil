@@ -66,6 +66,7 @@ int64_t SoundPlayer::duration()
 
 void SoundPlayer::makeConnections()
 {   
+    /*
     QObject::connect( mMediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ this ]( QMediaPlayer::MediaStatus s )
     {
         // WARNING :
@@ -85,7 +86,7 @@ void SoundPlayer::makeConnections()
                 break;
         }
     } );
-
+    */
     auto errorSignal = static_cast< void ( QMediaPlayer::* )( QMediaPlayer::Error ) >( &QMediaPlayer::error );
     connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error error )
     {

@@ -31,4 +31,15 @@ private:
 #define NULLReturnAssert( p ) if ( p == nullptr ) { Q_ASSERT(false); return; }
 
 
+class SignalBlocker
+{
+public:
+    SignalBlocker( QObject* o );
+    ~SignalBlocker();
+private:
+    bool mBlocked = false;
+    QObject* mObject = nullptr;
+};
+
+
 #endif // UTIL_H

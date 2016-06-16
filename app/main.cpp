@@ -14,40 +14,58 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QApplication>
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDir>
-#include <QIcon>
 #include "editor.h"
 #include "mainwindow2.h"
+#include "pencilapplication.h"
 #include <iostream>
 #include <cstring>
 
 using std::cout;
 using std::endl;
 
+void installTranslator( PencilApplication& app )
+{
+    QSettings setting( PENCIL2D, PENCIL2D );
+    QString strUserLocale = setting.value( SETTING_LANGUAGE ).toString();
+    if ( strUserLocale.isEmpty() )
+    {
+        strUserLocale = QLocale::system().name();
+    }
+
+    QString strQtLocale  = strUserLocale;
+    strQtLocale.replace( "-", "_" );
+    QTranslator* qtTranslator = new QTranslator;
+    qtTranslator->load( "qt_" + strUserLocale, QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
+    app.installTranslator( qtTranslator );
+
+    strUserLocale.replace( "_", "-" );
+    qDebug() << "Detect locale =" << strUserLocale;
+
+    QTranslator* pencil2DTranslator = new QTranslator;
+    bool b = pencil2DTranslator->load( ":/qm/Language." + strUserLocale );
+    
+    qDebug() << "Load translation = " << b;
+    
+    b = app.installTranslator( pencil2DTranslator );
+
+    qDebug() << "Install translation = " << b;
+}
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
-    app.setApplicationName( "Pencil2D" );
+    PencilApplication app( argc, argv );
 
-    QTranslator qtTranslator;
-    qtTranslator.load( "qt_" + QLocale::system().name(), QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
-    app.installTranslator(&qtTranslator);
-
-    QString strLocale = "qm/pencil2d_" + QLocale::system().name();
-
-    QTranslator pencil2DTranslator;
-    bool b = pencil2DTranslator.load( ":/qm/pencil2d_" + QLocale::system().name() );
-    //bool b = pencil2DTranslator.load( "../resources/translations/pencil2d_it" );
-    app.installTranslator(&pencil2DTranslator);
-
-    app.setWindowIcon(QIcon(":/icons/icon.png"));
+    installTranslator( app );
 
     MainWindow2 mainWindow;
     mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
+
+    QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openDocument);
+    //QObject::connect(&app, SIGNAL(openFileRequested(QString)), &mainWindow, SLOT(openDocument(QString)));
+    app.emitOpenFileRequest();
     
     if ( argc == 1 || (argc > 1 && strcmp( argv[1], "-NSDocumentRevisionsDebugMode" ) == 0)  )
     {

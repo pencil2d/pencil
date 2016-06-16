@@ -785,7 +785,7 @@ background: #B6DBEA;
     </iconset>
    </property>
    <property name="text">
-    <string>Next_KeyFrame</string>
+    <string>Next KeyFrame</string>
    </property>
    <property name="toolTip">
     <string>Next KeyFrame</string>
@@ -798,7 +798,7 @@ background: #B6DBEA;
     </iconset>
    </property>
    <property name="text">
-    <string>Prev_KeyFrame</string>
+    <string>Previous KeyFrame</string>
    </property>
    <property name="toolTip">
     <string>Previous KeyFrame</string>
@@ -812,7 +812,7 @@ background: #B6DBEA;
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayerOnionSkin</string>
+    <string>MultiLayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">

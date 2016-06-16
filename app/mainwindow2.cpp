@@ -216,7 +216,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
-    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocumentDialog );
     connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
     connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
@@ -292,10 +292,10 @@ void MainWindow2::createMenus()
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mEditor, &Editor::addNewKey );
     connect(ui->actionRemove_Frame, &QAction::triggered, mEditor, &Editor::removeKey );
-    //connect(ui->actionNext_Frame, &QAction::triggered, m_pEditor, &Editor::playNextFrame );
-    //connect(ui->actionPrevious_Frame, &QAction::triggered, m_pEditor, &Editor::playPrevFrame );
-    connect(ui->actionNext_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubNextKeyFrame );
-    connect(ui->actionPrev_KeyFrame, &QAction::triggered, mEditor, &Editor::scrubPreviousKeyFrame );
+    connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoNextFrame );
+    connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevFrame );
+    connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame );
+    connect(ui->actionPrev_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mEditor, &Editor::duplicateKey );
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward ); //HERE
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mEditor, &Editor::moveFrameBackward );
@@ -351,7 +351,7 @@ void MainWindow2::createMenus()
 
 void MainWindow2::setMenuActionChecked( QAction* action, bool bChecked )
 {
-    QSignalBlocker b( action );
+    SignalBlocker b( action );
     action->setChecked( bChecked );
 }
 
@@ -398,7 +398,7 @@ void MainWindow2::newDocument()
     }
 }
 
-void MainWindow2::openDocument()
+void MainWindow2::openDocumentDialog()
 {
     if ( maybeSave() )
     {
@@ -409,6 +409,14 @@ void MainWindow2::openDocument()
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
+        openDocument(fileName);
+    }
+}
+
+void MainWindow2::openDocument(const QString &fileName)
+{
+    if ( maybeSave() )
+    {
         if ( fileName.isEmpty() )
         {
             return;

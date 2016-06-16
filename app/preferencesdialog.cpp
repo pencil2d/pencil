@@ -15,7 +15,8 @@ GNU General Public License for more details.
 
 */
 #include "preferencesdialog.h"
-
+#include <QComboBox>
+#include <QMessageBox>
 
 PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
 {
@@ -162,11 +163,26 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QSettings settings( PENCIL2D, PENCIL2D );
     QVBoxLayout* lay = new QVBoxLayout();
 
-    QGroupBox* windowOpacityBox = new QGroupBox(tr("Window opacity"));
-    QGroupBox* backgroundBox = new QGroupBox(tr("Background"));
-    QGroupBox* appearanceBox = new QGroupBox(tr("Appearance"));
-    QGroupBox* displayBox = new QGroupBox(tr("Rendering"));
-    QGroupBox* editingBox = new QGroupBox(tr("Editing"));
+    QGroupBox* languageBox = new QGroupBox( tr("Language", "GroupBox title in Preference") );
+    QGroupBox* windowOpacityBox = new QGroupBox( tr( "Window opacity", "GroupBox title in Preference" ) );
+    QGroupBox* backgroundBox = new QGroupBox( tr( "Background", "GroupBox title in Preference" ) );
+    QGroupBox* appearanceBox = new QGroupBox( tr( "Appearance", "GroupBox title in Preference" ) );
+    QGroupBox* displayBox = new QGroupBox( tr( "Rendering", "GroupBox title in Preference" ) );
+    QGroupBox* editingBox = new QGroupBox( tr( "Editing", "GroupBox title in Preference" ) );
+
+    mLanguageCombo = new QComboBox;
+    mLanguageCombo->addItem( tr( "<System-Language>" ), "" );
+    mLanguageCombo->addItem( tr( "Czech" ), "cs" );
+    mLanguageCombo->addItem( tr( "Danish" ), "da" );
+    mLanguageCombo->addItem( tr( "English" ), "en" );
+    mLanguageCombo->addItem( tr( "German" ), "de" );
+    mLanguageCombo->addItem( tr( "Spanish" ), "es" );
+    mLanguageCombo->addItem( tr( "French" ), "fr" );
+    mLanguageCombo->addItem( tr( "Italian" ), "it" );
+    mLanguageCombo->addItem( tr( "Japanese" ), "ja" );
+    mLanguageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );
+    mLanguageCombo->addItem( tr( "Russian" ), "ja" );
+    mLanguageCombo->addItem( tr( "Chinese - Taiwan" ), "zh-TW" );
 
     QLabel* windowOpacityLabel = new QLabel(tr("Opacity"));
     mWindowOpacityLevel = new QSlider(Qt::Horizontal);
@@ -221,6 +237,10 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     mAntialiasingBox = new QCheckBox(tr("Antialiasing"));
     mDottedCursorBox = new QCheckBox(tr("Dotted Cursor"));
 
+    QGridLayout* langLayout = new QGridLayout;
+    languageBox->setLayout( langLayout );
+    langLayout->addWidget( mLanguageCombo );
+
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
     windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
@@ -252,21 +272,24 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     editingLayout->addWidget(mCurveSmoothingLevel, 1, 0);
     editingLayout->addWidget(mHighResBox, 2, 0);
 
-    lay->addWidget(windowOpacityBox);
-    lay->addWidget(appearanceBox);
-    lay->addWidget(backgroundBox);
-    lay->addWidget(displayBox);
-    lay->addWidget(editingBox);
+    lay->addWidget( languageBox );
+    lay->addWidget( windowOpacityBox );
+    lay->addWidget( appearanceBox );
+    lay->addWidget( backgroundBox );
+    lay->addWidget( displayBox );
+    lay->addWidget( editingBox );
 
     PreferencesDialog* preference = qobject_cast< PreferencesDialog* >( parent );
 
     auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
-    connect( mWindowOpacityLevel, &QSlider::valueChanged, preference, &PreferencesDialog::windowOpacityChange );
-    connect( mBackgroundButtons,  kButtonClicked,         this, &GeneralPage::backgroundChange );
+    auto kCurIndexChagned = static_cast< void( QComboBox::* )( int ) >( &QComboBox::currentIndexChanged );
+    connect( mLanguageCombo,      kCurIndexChagned,         this, &GeneralPage::languageChanged );
+    connect( mWindowOpacityLevel, &QSlider::valueChanged,   preference, &PreferencesDialog::windowOpacityChange );
+    connect( mBackgroundButtons,  kButtonClicked,           this, &GeneralPage::backgroundChange );
     connect( mShadowsBox,         &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged );
     connect( mToolCursorsBox,     &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged );
     connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
-    connect( mCurveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChange );
+    connect( mCurveSmoothingLevel, &QSlider::valueChanged,  this, &GeneralPage::curveSmoothingChange );
     connect( mHighResBox,         &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged );
     connect( mDottedCursorBox,    &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged );
 
@@ -276,6 +299,15 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 
 void GeneralPage::updateValues()
 {
+    int index = mLanguageCombo->findData( mManager->getString( SETTING::LANGUAGE ) );
+
+    if ( index >= 0 )
+    {
+        mLanguageCombo->blockSignals( true );
+        mLanguageCombo->setCurrentIndex( index );
+        mLanguageCombo->blockSignals( false );
+    }
+
     mCurveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
     mWindowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
     mShadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
@@ -301,6 +333,16 @@ void GeneralPage::updateValues()
     if (bgName == "weave") {
         mBackgroundButtons->button(5)->setChecked(true);
     }
+}
+
+void GeneralPage::languageChanged( int i )
+{
+    QString strLocale = mLanguageCombo->itemData( i ).toString();
+    mManager->set( SETTING::LANGUAGE, strLocale );
+
+    QMessageBox::warning( this,
+                          tr( "Restart Required" ), 
+                          tr( "The language change will take effect after a restart of Pencil2D" ) );
 }
 
 void GeneralPage::backgroundChange(int value)

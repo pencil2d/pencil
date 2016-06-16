@@ -8,6 +8,7 @@
 #include "preferencemanager.h"
 #include "scribblearea.h"
 #include "editor.h"
+#include "util.h"
 
 
 DisplayOptionWidget::DisplayOptionWidget( QWidget *parent ) : BaseDockWidget( parent )
@@ -57,28 +58,28 @@ void DisplayOptionWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    QSignalBlocker b( ui->thinLinesButton );
+    SignalBlocker b( ui->thinLinesButton );
     ui->thinLinesButton->setChecked( prefs->isOn( SETTING::INVISIBLE_LINES ) );
     
-    QSignalBlocker b2( ui->outLinesButton );
+    SignalBlocker b2( ui->outLinesButton );
     ui->outLinesButton->setChecked( prefs->isOn( SETTING::OUTLINES ) );
     
-    QSignalBlocker b3( ui->onionPrevButton );
+    SignalBlocker b3( ui->onionPrevButton );
     ui->onionPrevButton->setChecked( prefs->isOn( SETTING::PREV_ONION ) );
     
-    QSignalBlocker b4( ui->onionNextButton );
+    SignalBlocker b4( ui->onionNextButton );
     ui->onionNextButton->setChecked( prefs->isOn( SETTING::NEXT_ONION ) );
     
-    QSignalBlocker b5( ui->onionBlueButton );
+    SignalBlocker b5( ui->onionBlueButton );
     ui->onionBlueButton->setChecked( prefs->isOn( SETTING::ONION_BLUE ) );
     
-    QSignalBlocker b6( ui->onionRedButton );
+    SignalBlocker b6( ui->onionRedButton );
     ui->onionRedButton->setChecked( prefs->isOn( SETTING::ONION_RED ) );
     
-    QSignalBlocker b7( ui->mirrorButton );
+    SignalBlocker b7( ui->mirrorButton );
     ui->mirrorButton->setChecked( prefs->isOn( SETTING::MIRROR_H ) );
     
-    QSignalBlocker b8( ui->mirrorVButton );
+    SignalBlocker b8( ui->mirrorVButton );
     ui->mirrorVButton->setChecked( prefs->isOn( SETTING::MIRROR_V ) );
 }
 

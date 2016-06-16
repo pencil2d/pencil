@@ -40,6 +40,11 @@ void ColorWheel::changeColor(const QColor &color)
     {
         svChanged(color);
     }
+
+    if(color.alpha() != m_currentColor.alpha())
+    {
+        alphaChanged(color.alpha());
+    }
     //emit colorChanged(color);
     update();
 }
@@ -59,6 +64,11 @@ void ColorWheel::setColor(const QColor &color)
         color.value() != m_currentColor.value() )
     {
         svChanged(color);
+    }
+
+    if ( color.alpha() != m_currentColor.alpha() )
+    {
+        alphaChanged(color.alpha());
     }
 
     update();
@@ -360,8 +370,9 @@ void ColorWheel::hueChanged(const int &hue)
     }
     int s = m_currentColor.saturation();
     int v = m_currentColor.value();
+    int a = m_currentColor.alpha();
 
-    m_currentColor.setHsv(hue, s, v);
+    m_currentColor.setHsv(hue, s, v, a);
 
     if(!isVisible())
     {
@@ -377,14 +388,28 @@ void ColorWheel::hueChanged(const int &hue)
 void ColorWheel::svChanged(const QColor &newcolor)
 {
     int hue = m_currentColor.hue();
+    int alpha = m_currentColor.alpha();
     m_currentColor.setHsv(hue,
         newcolor.saturation(),
-        newcolor.value());
+        newcolor.value(),
+        alpha);
     if( !isVisible() )
     {
         return;
     }
 
     repaint();
+    emit colorChanged(m_currentColor);
+}
+
+void ColorWheel::alphaChanged(const int &alpha)
+{
+    m_currentColor.setAlpha(alpha);
+
+    if(!isVisible())
+    {
+        return;
+    }
+
     emit colorChanged(m_currentColor);
 }
