@@ -1,11 +1,14 @@
 <RCC>
     <qresource prefix="/qm">
-        <file>pencil2d_cs.qm</file>
-        <file>pencil2d_da.qm</file>
-        <file>pencil2d_de.qm</file>
-        <file>pencil2d_fr.qm</file>
-        <file>pencil2d_it.qm</file>
-        <file>pencil2d_ja.qm</file>
-        <file>pencil2d_zh_TW.qm</file>
+        <file>Language.cs.qm</file>
+        <file>Language.da.qm</file>
+        <file>Language.de.qm</file>
+        <file>Language.es.qm</file>
+        <file>Language.fr.qm</file>
+        <file>Language.it.qm</file>
+        <file>Language.ja.qm</file>
+        <file>Language.pt-BR.qm</file>
+        <file>Language.ru.qm</file>
+        <file>Language.zh-TW.qm</file>
     </qresource>
 </RCC>

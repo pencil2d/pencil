@@ -41,6 +41,7 @@ enum class SETTING
     GRID_SIZE,
     QUICK_SIZING,
     MULTILAYER_ONION,
+    LANGUAGE,
     COUNT, // COUNT must always be the last one.
 };
 

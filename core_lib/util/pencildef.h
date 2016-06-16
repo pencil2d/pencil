@@ -167,4 +167,6 @@ enum BackgroundStyle
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
 #define SETTING_ONION_TYPE              "OnionType"
 
+#define SETTING_LANGUAGE        "Language"
+
 #endif // PENCILDEF_H

@@ -28,7 +28,6 @@ void PreferenceManager::loadPrefs()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     // Display
-    //
     set( SETTING::GRID,                     settings.value( SETTING_SHOW_GRID,              false ).toBool() );
     set( SETTING::INVISIBLE_LINES,          settings.value( SETTING_INVISIBLE_LINES,        false ).toBool() );
     set( SETTING::OUTLINES,                 settings.value( SETTING_OUTLINES,               false ).toBool() );
@@ -76,15 +75,14 @@ void PreferenceManager::loadPrefs()
     set( SETTING::ONION_NEXT_FRAMES_NUM,    settings.value( SETTING_ONION_NEXT_FRAMES_NUM,  5 ).toInt() );
     set( SETTING::ONION_TYPE,               settings.value( SETTING_ONION_TYPE,             "relative" ).toString() );
 
-
+    set( SETTING::LANGUAGE,                 settings.value( SETTING_LANGUAGE ).toString() );
+    
     set( SETTING::AXIS, false );
 //#define DRAW_AXIS
 #ifdef DRAW_AXIS
     set( SETTING::AXIS, true );
 #endif
 }
-
-
 
 void PreferenceManager::turnOn( SETTING option )
 {
@@ -111,12 +109,13 @@ int PreferenceManager::getInt( SETTING option )
 QString PreferenceManager::getString( SETTING option )
 {
     int optionId = static_cast< int >( option );
-    if (mIntegerSet.contains(optionId)) {
-        return QString::number(mIntegerSet.value(optionId, -1));
-    }
-    else if (mBooleanSet.contains(optionId) )
+    if ( mIntegerSet.contains( optionId ) )
     {
-        if (mBooleanSet.value(optionId, false))
+        return QString::number( mIntegerSet.value( optionId, -1 ) );
+    }
+    else if ( mBooleanSet.contains( optionId ) )
+    {
+        if ( mBooleanSet.value( optionId, false ) )
         {
             return "true";
         }
@@ -141,6 +140,9 @@ void PreferenceManager::set(SETTING option, QString value)
         break;
     case SETTING::ONION_TYPE:
         settings.setValue( SETTING_ONION_TYPE, value );
+        break;
+    case SETTING::LANGUAGE:
+        settings.setValue( SETTING_LANGUAGE, value );
         break;
     default:
         break;
@@ -198,6 +200,7 @@ void PreferenceManager::set( SETTING option, int value )
         settings.setValue ( SETTING_GRID_SIZE, value );
         break;
     default:
+        Q_ASSERT( false );
         break;
     }
 
@@ -270,6 +273,7 @@ void PreferenceManager::set( SETTING option, bool value )
         settings.setValue ( SETTING_QUICK_SIZING, value );
         break;
     default:
+        Q_ASSERT( false );
         break;
     }
 

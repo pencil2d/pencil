@@ -24,7 +24,6 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *-build-*
-*.qm
 .moc
 
 Makefile
