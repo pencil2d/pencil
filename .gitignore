@@ -32,8 +32,8 @@ Makefile.Release
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
-Pencil.app
-
+Pencil2D.app
+*.zip
 
 # QtCreator
 
@@ -49,6 +49,7 @@ Pencil.app
 xcshareddata
 *.pbxproj
 *.mak
+*.app
 
 # Visual Studio
 
@@ -64,6 +65,5 @@ release
 debug
 ipch
 
-app/Pencil2D
 
 
