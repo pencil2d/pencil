@@ -388,7 +388,7 @@ void MainWindow2::newDocument()
         object->init();
         mEditor->setObject( object );
         mEditor->scrubTo( 0 );
-        mEditor->resetView();
+        //mEditor->view()->resetView();
 
         // Refresh the palette
         mColorPalette->refreshColorList();
