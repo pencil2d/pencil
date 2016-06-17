@@ -110,7 +110,6 @@ public: //slots
     void cut();
     
     void deselectAll();
-    void resetView();
 
     bool importImage( QString filePath );
     void updateFrame( int frameNumber );

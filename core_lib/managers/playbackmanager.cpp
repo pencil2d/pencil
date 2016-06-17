@@ -9,7 +9,6 @@
 #include "layermanager.h"
 
 
-
 PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 {
 }
@@ -84,7 +83,7 @@ void PlaybackManager::timerTick()
         return;
     }
 
-    editor()->scrubTo( editor()->currentFrame() + 1 );
+    editor()->scrubForward();
 }
 
 void PlaybackManager::setLooping( bool isLoop )

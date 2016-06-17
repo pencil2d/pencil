@@ -23,7 +23,7 @@ void SoundPlayer::init( SoundClip* clip )
     clip->attachPlayer( this );
     //mMediaPlayer->play();
 
-    qDebug() << "Seekable=" << mMediaPlayer->isSeekable();
+    qDebug() << "Seekable = " << mMediaPlayer->isSeekable();
 }
 
 void SoundPlayer::onKeyFrameDestroy( KeyFrame* keyFrame )
@@ -66,30 +66,9 @@ int64_t SoundPlayer::duration()
 
 void SoundPlayer::makeConnections()
 {   
-    /*
-    QObject::connect( mMediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ this ]( QMediaPlayer::MediaStatus s )
-    {
-        // WARNING :
-        // This call is not supported in QT 5.3. Is it necessary?
-        //
-        QMediaPlayer* mediaPlayer = ( QMediaPlayer* )QObject::sender();
-        qDebug() << "MediaStatus: " << s;
-        qDebug() << "Duration:" << mediaPlayer->duration();
-
-        switch ( s )
-        {
-            case QMediaPlayer::BufferedMedia:
-            case QMediaPlayer::LoadedMedia:
-                qDebug() << "Duration:" << mediaPlayer->duration();
-                mSoundClip->setLength( mediaPlayer->duration() );
-                qDebug() << "Seekable=" << mMediaPlayer->isSeekable();
-                break;
-        }
-    } );
-    */
     auto errorSignal = static_cast< void ( QMediaPlayer::* )( QMediaPlayer::Error ) >( &QMediaPlayer::error );
-    connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error error )
+    connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error err )
     {
-        qDebug() << "MediaPlayer Error: " << error;
+        qDebug() << "MediaPlayer Error: " << err;
     } );
 }

@@ -924,9 +924,3 @@ void Editor::clearCurrentFrame()
 {
 	mScribbleArea->clearImage();
 }
-
-void Editor::resetView()
-{
-	view()->resetView();
-    mScribbleArea->updateAllFrames();
-}
