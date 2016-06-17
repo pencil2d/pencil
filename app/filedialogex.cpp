@@ -50,7 +50,7 @@ QString FileDialog::fileFilters( EFile fileType )
 {
     switch ( fileType )
     {
-        case EFile::SOUND: return tr( "WAV(*.wav);;MP3(*.mp3)" );
+        case EFile::SOUND: return tr( "Sounds(*.wav *.mp3);;WAV(*.wav);;MP3(*.mp3)" );
         default: Q_ASSERT( false );
     }
     return "";
