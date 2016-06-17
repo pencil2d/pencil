@@ -70,7 +70,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     return Status::OK;
 }
 
-Status SoundManager::playSounds( float fTime )
+Status SoundManager::playSounds( int frame )
 {
     std::vector< LayerSound* > kSoundLayers;
     for ( int i = 0; i < object()->getLayerCount(); ++i )
@@ -81,12 +81,43 @@ Status SoundManager::playSounds( float fTime )
             kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
         }
     }
+
+    for ( LayerSound* layer : kSoundLayers )
+    {
+        if ( layer->keyExists( frame ) )
+        {
+            KeyFrame* key = layer->getKeyFrameAt( frame );
+            SoundClip* clip = static_cast< SoundClip* >( key );
+
+            clip->player()->play();
+        }
+    }
+
     return Status::OK;
 }
 
 Status SoundManager::stopSounds()
 {
-    return Status::NOT_IMPLEMENTED_YET;
+    std::vector< LayerSound* > kSoundLayers;
+    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    {
+        Layer* layer = object()->getLayer( i );
+        if ( layer->type() == Layer::SOUND )
+        {
+            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
+        }
+    }
+
+    for ( LayerSound* layer : kSoundLayers )
+    {
+        layer->foreachKeyFrame( [] ( KeyFrame* key )
+        {
+            SoundClip* clip = static_cast< SoundClip* >( key );
+            clip->player()->stop();
+        } );
+    }
+
+    return Status::OK;
 }
 
 Status SoundManager::createMeidaPlayer( SoundClip* clip )

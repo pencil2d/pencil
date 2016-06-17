@@ -7,7 +7,7 @@
 #include "editorstate.h"
 #include "editor.h"
 #include "layermanager.h"
-
+#include "soundmanager.h"
 
 PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 {
@@ -57,6 +57,7 @@ void PlaybackManager::play()
 void PlaybackManager::stop()
 {
     mTimer->stop();
+    editor()->sound()->stopSounds();
 }
 
 void PlaybackManager::setFps( int fps )
@@ -70,6 +71,8 @@ void PlaybackManager::setFps( int fps )
 
 void PlaybackManager::timerTick()
 {
+    editor()->sound()->playSounds( editor()->currentFrame() );
+
     if ( editor()->currentFrame() >= mEndFrame )
     {
         if ( mIsLooping )
@@ -80,10 +83,11 @@ void PlaybackManager::timerTick()
         {
             stop();
         }
-        return;
     }
-
-    editor()->scrubForward();
+    else
+    {
+        editor()->scrubForward();
+    }
 }
 
 void PlaybackManager::setLooping( bool isLoop )

@@ -53,8 +53,6 @@ public:
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
-
-
 };
 
 #endif
