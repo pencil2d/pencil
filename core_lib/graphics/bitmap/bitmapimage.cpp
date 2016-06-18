@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = new QImage( 1, 1, QImage::Format_ARGB32_Premultiplied );
+    mImage = new QImage(); // null image
     mBounds = QRect( 0, 0, 0, 0 );
 }
 
@@ -538,7 +538,8 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
 void BitmapImage::clear()
 {
     if (mImage != NULL) delete mImage;
-    mImage = new QImage( 1, 1, QImage::Format_ARGB32_Premultiplied );
+
+    mImage = new QImage(); // null image
     mBounds = QRect(0,0,0,0);
 }
 
