@@ -36,7 +36,7 @@ BitmapImage::BitmapImage( const QRect& rectangle, const QColor& colour)
     mImage->fill(colour.rgba());
 }
 
-BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image)
+BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image )
 {
     mBounds = rectangle.normalized();
     mExtendable = true;
@@ -47,7 +47,7 @@ BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image)
     }
 }
 
-BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft)
+BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft )
 {
     mImage = new QImage(path);
     if ( mImage->isNull() )
@@ -59,24 +59,19 @@ BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft)
 
 BitmapImage::~BitmapImage()
 {
-    if ( mImage )
-    {
-        delete mImage;
-    }
+    SAFE_RELEASE( mImage );
 }
 
 void BitmapImage::setImage( QImage* img )
 {
     Q_CHECK_PTR( img );
-    if ( mImage != nullptr )
-    {
-        SAFE_RELEASE( mImage );
-        mImage = img;
-    }
+    SAFE_RELEASE( mImage );
+    mImage = img;
 }
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
+    SAFE_RELEASE( mImage );
     mBounds = a.mBounds;
     mImage = new QImage( *a.mImage );
     return *this;
@@ -109,7 +104,7 @@ BitmapImage BitmapImage::copy(QRect rectangle)
 
 void BitmapImage::paste(BitmapImage* bitmapImage)
 {
-    paste(bitmapImage, QPainter::CompositionMode_SourceOver);
+    paste( bitmapImage, QPainter::CompositionMode_SourceOver );
 }
 
 void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
