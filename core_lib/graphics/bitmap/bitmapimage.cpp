@@ -82,21 +82,6 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     return *this;
 }
 
-void BitmapImage::loadDomElement(QDomElement imageElement, QString filePath)
-{
-    QString path =  filePath +".data/" + imageElement.attribute("src"); // the file is supposed to be in the data irectory
-    QFileInfo fi(path);
-    if (!fi.exists()) path = imageElement.attribute("src");
-    int x = imageElement.attribute("topLeftX").toInt();
-    int y = imageElement.attribute("topLeftY").toInt();
-
-    mImage = new QImage(path);
-    if ( !mImage->isNull() )
-    {
-        mBounds = QRect( QPoint(x, y), mImage->size() );
-    }
-}
-
 void BitmapImage::paintImage(QPainter& painter)
 {
     painter.drawImage(topLeft(), *mImage);

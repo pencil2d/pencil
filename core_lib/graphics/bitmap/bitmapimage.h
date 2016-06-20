@@ -34,8 +34,6 @@ public:
     ~BitmapImage();
     BitmapImage& operator=( const BitmapImage& a );
 
-    void loadDomElement( QDomElement element, QString filePath );
-
     void paintImage( QPainter& painter );
     void outputImage( QImage* image, QSize size, QTransform myView );
 
