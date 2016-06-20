@@ -24,4 +24,7 @@ void TestBitmapImage::testInitSize()
     std::shared_ptr< BitmapImage > sp( b );
 
     QCOMPARE( b->width(), 0 );
+    QCOMPARE( b->height(), 0 );
+    QCOMPARE( b->top(), 0 );
+    QCOMPARE( b->left(), 0 );
 }
