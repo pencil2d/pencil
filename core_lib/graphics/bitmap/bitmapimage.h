@@ -36,7 +36,6 @@ public:
     ~BitmapImage();
     BitmapImage& operator=( const BitmapImage& a );
 
-    QDomElement createDomElement( QDomDocument& doc );
     void loadDomElement( QDomElement element, QString filePath );
 
     void paintImage( QPainter& painter );

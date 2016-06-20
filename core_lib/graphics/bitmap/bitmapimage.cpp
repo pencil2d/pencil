@@ -18,11 +18,16 @@ GNU General Public License for more details.
 #include "object.h"
 #include "util.h"
 
-
 BitmapImage::BitmapImage()
 {
     mImage = new QImage(); // null image
     mBounds = QRect( 0, 0, 0, 0 );
+}
+
+BitmapImage::BitmapImage( const BitmapImage& a )
+{
+    mBounds = a.mBounds;
+    mImage = new QImage( *a.mImage );
 }
 
 BitmapImage::BitmapImage( const QRect& rectangle, const QColor& colour)
@@ -41,12 +46,6 @@ BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image)
     {
         qDebug() << "Error instancing bitmapImage.";
     }
-}
-
-BitmapImage::BitmapImage( const BitmapImage& a )
-{
-    mBounds = a.mBounds;
-    mImage = new QImage(*a.mImage);
 }
 
 BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft)
@@ -82,12 +81,6 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     mBounds = a.mBounds;
     mImage = new QImage( *a.mImage );
     return *this;
-}
-
-QDomElement BitmapImage::createDomElement(QDomDocument& doc)
-{
-    Q_UNUSED(doc);
-    return QDomElement();  // empty
 }
 
 void BitmapImage::loadDomElement(QDomElement imageElement, QString filePath)
