@@ -10,8 +10,9 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
 
-    void initImage();
+    void testInitImage();
     void testInitSize();
+    void testInitWithColorAndBoundary();
 };
 
 DECLARE_TEST( TestBitmapImage );
