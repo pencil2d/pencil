@@ -21,8 +21,6 @@ GNU General Public License for more details.
 #include <QPainter>
 #include "keyframe.h"
 
-class Object;
-
 
 class BitmapImage : public KeyFrame
 {

@@ -15,7 +15,6 @@ GNU General Public License for more details.
 */
 #include <cmath>
 #include "bitmapimage.h"
-#include "object.h"
 #include "util.h"
 
 BitmapImage::BitmapImage()
