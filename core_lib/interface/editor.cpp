@@ -792,9 +792,9 @@ void Editor::moveFrameBackward()
 	}
 }
 
-void Editor::addNewKey()
+KeyFrame* Editor::addNewKey()
 {
-	addKeyFame( layers()->currentLayerIndex(), currentFrame() );
+	return addKeyFame( layers()->currentLayerIndex(), currentFrame() );
 }
 
 void Editor::duplicateKey()
@@ -820,12 +820,13 @@ void Editor::duplicateKey()
 	}
 }
 
-void Editor::addKeyFame( int layerNumber, int frameIndex )
+KeyFrame* Editor::addKeyFame( int layerNumber, int frameIndex )
 {
 	Layer* layer = mObject->getLayer( layerNumber );
 	if ( layer == NULL )
 	{
-		return;
+        Q_ASSERT( false );
+		return nullptr;
 	}
 
 	bool isOK = false;
@@ -850,23 +851,17 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
         scrubTo( frameIndex ); // currentFrameChanged() emit inside.
         //getScribbleArea()->updateCurrentFrame();
 	}
+
+    return keyFrame;
 }
 
 void Editor::removeKey()
 {
 	Layer* layer = layers()->currentLayer();
 	if ( layer != NULL )
-	{
-		switch ( layer->type() )
-		{
-		case Layer::BITMAP:
-		case Layer::VECTOR:
-		case Layer::CAMERA:
-			layer->removeKeyFrame( currentFrame() );
-			break;
-		default:
-			break;
-		}
+    {
+		layer->removeKeyFrame( currentFrame() );
+		
 		scrubBackward();
         mScribbleArea->updateCurrentFrame();
 	}

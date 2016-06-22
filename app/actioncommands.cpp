@@ -19,6 +19,7 @@
 #include "layersound.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
+#include "soundclip.h"
 
 #include "filedialogex.h"
 
@@ -46,31 +47,36 @@ Status ActionCommands::importSound()
         }
 
         // Create new sound layer.
-        Status s = addNewSoundLayer();
-        if ( !s.ok() )
+        bool ok = false;
+        QString strLayerName = QInputDialog::getText( nullptr, tr( "Layer Properties" ),
+                                                      tr( "Layer name:" ), QLineEdit::Normal,
+                                                      tr( "Sound Layer" ), &ok );
+        if ( ok && !strLayerName.isEmpty() )
+        {
+            Layer* newLayer = mEditor->layers()->createSoundLayer( strLayerName );
+            mEditor->layers()->setCurrentLayer( newLayer );
+        }
+        else
         {
             Q_ASSERT( false );
-            return s;
+            return Status::FAIL;
         }
-
-        layer = mEditor->layers()->currentLayer();
     }
+
+    layer = mEditor->layers()->currentLayer();
 
     if ( layer->keyExists( mEditor->currentFrame() ) )
     {
-        //layer->getKeyFrameAt()
-        //QMessageBox msg;
-        //msg.setText( tr( "The selected sound layer already contains a sound item. Please select another." ) );
-        //msg.exec();
-        //return Status::SAFE;
+        QMessageBox::warning( nullptr, 
+                              "",
+                              tr( "A sound clip already exists on this frame! Please select another frame or layer." ) );
+        return Status::SAFE;
     }
 
     FileDialog fileDialog( this );
     QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
     Status st = mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
-    
-    //mTimeLine->updateContent();
 
     return st;
 }
@@ -154,6 +160,19 @@ void ActionCommands::GotoNextKeyFrame()
 void ActionCommands::GotoPrevKeyFrame()
 {
     mEditor->scrubPreviousKeyFrame();
+}
+
+void ActionCommands::addNewKey()
+{
+    KeyFrame* key = mEditor->addNewKey();
+    
+    SoundClip* clip = dynamic_cast< SoundClip* >( key );
+    if ( clip )
+    {
+        FileDialog fileDialog( this );
+        QString strSoundFile = fileDialog.openFile( EFile::SOUND );
+        Status st = mEditor->sound()->loadSound( clip, strSoundFile );
+    }
 }
 
 Status ActionCommands::addNewBitmapLayer()

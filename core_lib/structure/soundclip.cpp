@@ -6,6 +6,7 @@
 
 SoundClip::SoundClip()
 {
+    int kk = 0;
 }
 
 SoundClip::~SoundClip()
@@ -50,3 +51,18 @@ void SoundClip::detachPlayer()
     mPlayer.reset();
 }
 
+void SoundClip::play()
+{
+    if ( mPlayer )
+    {
+        mPlayer->play();
+    }
+}
+
+void SoundClip::stop()
+{
+    if ( mPlayer )
+    {
+        mPlayer->stop();
+    }
+}

@@ -39,7 +39,8 @@ public:
     void GotoPrevFrame();
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
-    
+    void addNewKey();
+
     // Layer
     Status addNewBitmapLayer();
     Status addNewVectorLayer();

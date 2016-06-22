@@ -121,7 +121,7 @@ public: //slots
     void scrubForward();
     void scrubBackward();
 
-    void addNewKey();
+    KeyFrame* addNewKey();
     void duplicateKey();
     void removeKey();
 
@@ -184,7 +184,7 @@ private:
     int autosaveNumber = 12;
 
     void makeConnections();
-    void addKeyFame( int layerNumber, int frameNumber );
+    KeyFrame* addKeyFame( int layerNumber, int frameNumber );
 
     // backup
     void clearUndoStack();

@@ -1,6 +1,6 @@
 #include "soundmanager.h"
 
-
+#include <QString>
 #include "object.h"
 #include "layersound.h"
 #include "soundclip.h"
@@ -70,51 +70,30 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     return Status::OK;
 }
 
-Status SoundManager::playSounds( int frame )
+Status SoundManager::loadSound( SoundClip* soundClip, QString strSoundFile )
 {
-    std::vector< LayerSound* > kSoundLayers;
-    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    Q_ASSERT( soundClip );
+
+    if ( !QFile::exists( strSoundFile ) )
     {
-        Layer* layer = object()->getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
-        }
+        return Status::FILE_NOT_FOUND;
     }
 
-    for ( LayerSound* layer : kSoundLayers )
+    if ( !soundClip->fileName().isEmpty() )
     {
-        if ( layer->keyExists( frame ) )
-        {
-            KeyFrame* key = layer->getKeyFrameAt( frame );
-            SoundClip* clip = static_cast< SoundClip* >( key );
-
-            clip->player()->play();
-        }
+        return Status::FAIL;
     }
 
-    return Status::OK;
-}
+    QString strCopyFile = editor()->object()->copyFileToDataFolder( strSoundFile );
+    Q_ASSERT( !strCopyFile.isEmpty() );
 
-Status SoundManager::stopSounds()
-{
-    std::vector< LayerSound* > kSoundLayers;
-    for ( int i = 0; i < object()->getLayerCount(); ++i )
-    {
-        Layer* layer = object()->getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
-        }
-    }
+    soundClip->init( strCopyFile );
 
-    for ( LayerSound* layer : kSoundLayers )
+    Status st = createMeidaPlayer( soundClip );
+    if ( !st.ok() )
     {
-        layer->foreachKeyFrame( [] ( KeyFrame* key )
-        {
-            SoundClip* clip = static_cast< SoundClip* >( key );
-            clip->player()->stop();
-        } );
+        delete soundClip;
+        return st;
     }
 
     return Status::OK;
