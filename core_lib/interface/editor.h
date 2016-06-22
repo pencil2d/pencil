@@ -78,6 +78,8 @@ public:
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
     int  currentFrame();
+    int  fps();
+
     void scrubTo( int frameNumber );
 
     int  allLayers();

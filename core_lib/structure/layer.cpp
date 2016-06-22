@@ -353,26 +353,33 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
 {
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
 
-    //qDebug() << "LayerType:" << static_cast<int>( m_eType );
+    //qDebug() << "LayerType:" << ( int )( meType );
 
     for ( auto pair : mKeyFrames )
     {
         int framePos = pair.first;
+        
+        int recLeft = cells->getFrameX( framePos ) - frameSize + 2;
+        int recTop = y + 1;
+        int recWidth = frameSize - 2;
+        int recHeight = height - 4;
+
+        KeyFrame* key = pair.second;
+        if ( key->length() > 1 )
+        {
+            recWidth = frameSize * key->length() - 2;
+        }
+
         if ( pair.second->isSelected() )
         {
             painter.setBrush( QColor( 60, 60, 60 ) );
-            painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
         }
-        else if(selected)
+        else if ( selected )
         {
             painter.setBrush( QColor( 60, 60, 60, 120 ) );
-            painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
-        }
-        else
-        {
-            painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
         }
 
+        painter.drawRect( recLeft, recTop, recWidth, recHeight );
     }
 }
 

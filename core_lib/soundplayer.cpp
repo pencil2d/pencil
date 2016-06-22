@@ -71,4 +71,10 @@ void SoundPlayer::makeConnections()
     {
         qDebug() << "MediaPlayer Error: " << err;
     } );
+
+    connect( mMediaPlayer, &QMediaPlayer::durationChanged, [ this ]( qint64 duration ) 
+    {
+        qDebug() << "MediaPlayer durationChanged :" << duration;
+        emit durationChanged( this, duration );
+    } );
 }

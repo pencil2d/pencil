@@ -3,10 +3,10 @@
 
 
 #include "basemanager.h"
-#include <memory>
 
 class Layer;
 class SoundClip;
+class SoundPlayer;
 
 
 class SoundManager : public BaseManager
@@ -22,10 +22,13 @@ public:
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
     Status loadSound( SoundClip* soundClip, QString strSoundFile );
-    //Status playSounds( int frame );
-    //Status stopSounds();
+
+signals:
+    void soundClipDurationChanged();
 
 private:
+    void onDurationChanged( SoundPlayer* player, int64_t duration );
+
     Status createMeidaPlayer( SoundClip* );
 };
 

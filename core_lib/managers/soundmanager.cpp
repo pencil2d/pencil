@@ -95,14 +95,28 @@ Status SoundManager::loadSound( SoundClip* soundClip, QString strSoundFile )
         delete soundClip;
         return st;
     }
-
+    
     return Status::OK;
+}
+
+void SoundManager::onDurationChanged( SoundPlayer* player, int64_t duration )
+{
+    SoundClip* clip = player->clip();
+
+    double fps = static_cast< double >( editor()->fps() );
+
+    double frameLength = duration * fps / 1000.0;
+    clip->setLength( frameLength );
+
+    emit soundClipDurationChanged();
 }
 
 Status SoundManager::createMeidaPlayer( SoundClip* clip )
 {
     SoundPlayer* newPlayer = new SoundPlayer();
     newPlayer->init( clip );
+
+    connect( newPlayer, &SoundPlayer::durationChanged, this, &SoundManager::onDurationChanged );
 
     return Status::OK;
 }

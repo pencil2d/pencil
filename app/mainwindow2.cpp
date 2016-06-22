@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
+#include "soundmanager.h"
 #include "actioncommands.h"
 
 #include "scribblearea.h"
@@ -1107,7 +1108,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );
-
+    connect( pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
 
 }
