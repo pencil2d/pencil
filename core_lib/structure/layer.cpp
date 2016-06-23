@@ -365,8 +365,10 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
         int recHeight = height - 4;
 
         KeyFrame* key = pair.second;
-        if ( key->length() > 1 )
+        if ( key->length() > 1 )  
         {
+            // This is especially for sound clip.
+            // Sound clip is the only type of KeyFrame that has variant frame length.
             recWidth = frameSize * key->length() - 2;
         }
 
