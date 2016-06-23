@@ -175,6 +175,24 @@ void ActionCommands::addNewKey()
     }
 }
 
+void ActionCommands::removeKey()
+{
+    mEditor->removeKey();
+
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer->keyFrameCount() == 0 )
+    {
+        switch ( layer->type() )
+        {
+            case Layer::BITMAP:
+            case Layer::VECTOR:
+            case Layer::CAMERA:
+                layer->addNewEmptyKeyAt( 1 );
+                break;
+        }
+    }
+}
+
 Status ActionCommands::addNewBitmapLayer()
 {
     bool ok;

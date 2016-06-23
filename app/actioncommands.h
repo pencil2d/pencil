@@ -40,6 +40,7 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     void addNewKey();
+    void removeKey();
 
     // Layer
     Status addNewBitmapLayer();

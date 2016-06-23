@@ -1096,7 +1096,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
 
     connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
-    connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
+    connect( pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey );
     
     connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer );
     connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer );

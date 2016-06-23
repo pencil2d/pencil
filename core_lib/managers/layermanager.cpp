@@ -201,6 +201,7 @@ int LayerManager::count()
 
 bool LayerManager::deleteCurrentLayer()
 {
+    // FIXME: 
     if ( currentLayer()->type() == Layer::CAMERA )
     {
         return false;
