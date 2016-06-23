@@ -176,7 +176,7 @@ void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
 {
     if ( keyExists( frameNumber ) )
     {
-        removeKeyFrame( frameNumber, false );
+        removeKeyFrame( frameNumber );
     }
     Camera* camera = new Camera( view );
     camera->setPos( frameNumber );

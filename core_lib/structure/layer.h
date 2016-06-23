@@ -81,7 +81,6 @@ public:
     bool addNewEmptyKeyAt( int position );
     bool addKeyFrame( int position, KeyFrame* );
     bool removeKeyFrame(int position);
-    bool removeKeyFrame(int position, bool reloadFirstFrame);
     bool swapKeyFrames( int position1, int position2 );
     bool moveKeyFrameForward( int position );
     bool moveKeyFrameBackward( int position );

@@ -41,7 +41,7 @@ Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
     
     mId = pObject->getUniqueLayerID();
 
-    addNewEmptyKeyAt( 1 );
+    //addNewEmptyKeyAt( 1 );
 
     Q_ASSERT( eType != UNDEFINED );
 }
@@ -131,10 +131,12 @@ int Layer::getPreviousFrameNumber( int position, bool isAbsolute )
     }
 
 
-    if (prevNumber == position) {
+    if (prevNumber == position)
+    {
         return -1; // There is no previous keyframe
     }
-    else {
+    else
+    {
         return prevNumber;
     }
 }
@@ -161,14 +163,20 @@ int Layer::getNextFrameNumber( int position, bool isAbsolute )
 
 int Layer::firstKeyFramePosition()
 {
-    Q_ASSERT( mKeyFrames.rbegin()->first == 1 );
-
-    return mKeyFrames.rbegin()->first; // rbegin is the lowest key frame position
+    if ( !mKeyFrames.empty() )
+    {
+        return mKeyFrames.rbegin()->first; // rbegin is the lowest key frame position
+    }
+    return 0;
 }
 
 int Layer::getMaxKeyFramePosition()
 {
-    return mKeyFrames.begin()->first; // begin is the highest key frame position
+    if ( !mKeyFrames.empty() )
+    {
+        return mKeyFrames.begin()->first; // begin is the highest key frame position
+    }
+    return 0;
 }
 
 bool Layer::addNewEmptyKeyAt( int position )
@@ -201,22 +209,11 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 
 bool Layer::removeKeyFrame( int position )
 {
-    return removeKeyFrame(position, true);
-}
-
-bool Layer::removeKeyFrame( int position, bool reloadFirstFrame )
-{
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
     {
         delete it->second;
         mKeyFrames.erase( it );
-    }
-
-    if ( reloadFirstFrame && position == 1 )
-    {
-        // Avoiding having no frame by deleting the first frame.
-        addNewEmptyKeyAt( 1 ); // replacing
     }
 
     return true;
