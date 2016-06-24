@@ -171,7 +171,11 @@ void ActionCommands::addNewKey()
     {
         FileDialog fileDialog( this );
         QString strSoundFile = fileDialog.openFile( EFile::SOUND );
-        Status st = mEditor->sound()->loadSound( clip, strSoundFile );
+
+        if ( !strSoundFile.isEmpty() )
+        {
+            Status st = mEditor->sound()->loadSound( clip, strSoundFile );
+        }
     }
 }
 
