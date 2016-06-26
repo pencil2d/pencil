@@ -870,6 +870,7 @@ void Editor::removeKey()
 		scrubBackward();
         mScribbleArea->updateCurrentFrame();
 	}
+    Q_EMIT layers()->currentLayerChanged( layers()->currentLayerIndex() ); // trigger timeline repaint.
 }
 
 void Editor::scrubNextKeyFrame()
