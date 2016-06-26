@@ -165,17 +165,20 @@ void ActionCommands::GotoPrevKeyFrame()
 void ActionCommands::addNewKey()
 {
     KeyFrame* key = mEditor->addNewKey();
-    
+
     SoundClip* clip = dynamic_cast< SoundClip* >( key );
     if ( clip )
     {
         FileDialog fileDialog( this );
         QString strSoundFile = fileDialog.openFile( EFile::SOUND );
 
-        if ( !strSoundFile.isEmpty() )
+        if ( strSoundFile.isEmpty() )
         {
-            Status st = mEditor->sound()->loadSound( clip, strSoundFile );
+            mEditor->removeKey();
+            return;
         }
+        Status st = mEditor->sound()->loadSound( clip, strSoundFile );
+        Q_ASSERT( st.ok() );
     }
 }
 
