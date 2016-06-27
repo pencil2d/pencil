@@ -43,7 +43,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layersound.h"
 #include "layercamera.h"
-#include "layerimage.h"
 #include "keyframefactory.h"
 
 #include "colormanager.h"

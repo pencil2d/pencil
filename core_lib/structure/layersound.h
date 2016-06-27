@@ -16,15 +16,9 @@ GNU General Public License for more details.
 #ifndef LAYERSOUND_H
 #define LAYERSOUND_H
 
-#include <QSize>
-#include <QList>
-
 #include <cstdint>
-#include <QString>
-#include <QPainter>
-#include "layerimage.h"
 #include "keyframe.h"
-
+#include "layer.h"
 
 class LayerSound : public Layer
 {

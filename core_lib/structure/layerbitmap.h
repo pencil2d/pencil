@@ -17,10 +17,7 @@ GNU General Public License for more details.
 #ifndef LAYERBITMAP_H
 #define LAYERBITMAP_H
 
-#include <QImage>
-#include <QString>
-#include "layerimage.h"
-
+#include "layer.h"
 
 class BitmapImage;
 
