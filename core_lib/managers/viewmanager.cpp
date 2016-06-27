@@ -17,6 +17,12 @@ bool ViewManager::init()
 Status ViewManager::onObjectLoaded( Object* o )
 {
     mView = o->editorState()->mCurrentView;
+
+    if ( mView.isIdentity() )
+    {
+        translate( 0, 0 );
+    }
+
     return Status::OK;
 }
 

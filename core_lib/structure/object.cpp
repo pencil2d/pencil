@@ -132,6 +132,8 @@ LayerBitmap* Object::addNewBitmapLayer()
     LayerBitmap* layerBitmap = new LayerBitmap( this );
     mLayers.append( layerBitmap );
 
+    layerBitmap->addNewEmptyKeyAt( 1 );
+
     return layerBitmap;
 }
 
@@ -140,6 +142,8 @@ LayerVector* Object::addNewVectorLayer()
     LayerVector* layerVector = new LayerVector( this );
     mLayers.append( layerVector );
 
+    layerVector->addNewEmptyKeyAt( 1 );
+
     return layerVector;
 }
 
@@ -147,6 +151,9 @@ LayerSound* Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound( this );
     mLayers.append( layerSound );
+
+    // No default keyFrame at position 1 for Sound layer.
+
     return layerSound;
 }
 
@@ -154,6 +161,8 @@ LayerCamera* Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera( this );
     mLayers.append( layerCamera );
+
+    layerCamera->addNewEmptyKeyAt( 1 );
 
     return layerCamera;
 }
@@ -185,8 +194,6 @@ void Object::createWorkingDir()
     dataDir.mkpath( "." );
 
     mDataDirPath = dataDir.absolutePath();
-
-    int ii = 0;
 }
 
 int Object::getMaxLayerID()
@@ -242,9 +249,20 @@ void Object::deleteLayer( int i )
 {
     if ( i > -1 && i < mLayers.size() )
     {
-        //layer.removeAt(i);
-        disconnect( mLayers[ i ], 0, this, 0 ); // disconnect the layer from this object
+        disconnect( mLayers[ i ], 0, 0, 0 ); // disconnect the layer from this object
         delete mLayers.takeAt( i );
+    }
+}
+
+void Object::deleteLayer( Layer* layer )
+{
+    auto it = std::find( mLayers.begin(), mLayers.end(), layer );
+
+    if ( it != mLayers.end() )
+    {
+        disconnect( layer, 0, 0, 0 );
+        delete layer;
+        mLayers.erase( it );
     }
 }
 

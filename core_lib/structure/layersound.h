@@ -38,10 +38,6 @@ public:
 
     Status loadSoundAtFrame( QString filePathString, int frame );
 
-    bool saveImage( int index, QString path, int layerNumber );
-    void playSound( int frame );
-    void stopSound();
-
     // These functions will be removed later.
     // Don't use them!!
     int getSoundSize() { return 0; }
@@ -50,13 +46,8 @@ public:
     bool isEmpty() { return true; }
     // These functions will be removed.
 
-    // graphic representation -- could be put in another class
-    void paintImages( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize );
-
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;
-
-
 };
 
 #endif

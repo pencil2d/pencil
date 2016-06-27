@@ -78,6 +78,8 @@ public:
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
     int  currentFrame();
+    int  fps();
+
     void scrubTo( int frameNumber );
 
     int  allLayers();
@@ -110,7 +112,6 @@ public: //slots
     void cut();
     
     void deselectAll();
-    void resetView();
 
     bool importImage( QString filePath );
     void updateFrame( int frameNumber );
@@ -122,7 +123,7 @@ public: //slots
     void scrubForward();
     void scrubBackward();
 
-    void addNewKey();
+    KeyFrame* addNewKey();
     void duplicateKey();
     void removeKey();
 
@@ -185,7 +186,7 @@ private:
     int autosaveNumber = 12;
 
     void makeConnections();
-    void addKeyFame( int layerNumber, int frameNumber );
+    KeyFrame* addKeyFame( int layerNumber, int frameNumber );
 
     // backup
     void clearUndoStack();

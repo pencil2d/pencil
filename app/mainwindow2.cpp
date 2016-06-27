@@ -45,6 +45,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "toolmanager.h"
 #include "playbackmanager.h"
+#include "soundmanager.h"
 #include "actioncommands.h"
 
 #include "scribblearea.h"
@@ -388,7 +389,7 @@ void MainWindow2::newDocument()
         object->init();
         mEditor->setObject( object );
         mEditor->scrubTo( 0 );
-        mEditor->resetView();
+        //mEditor->view()->resetView();
 
         // Refresh the palette
         mColorPalette->refreshColorList();
@@ -1094,8 +1095,8 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
 
-    connect( pTimeline, &TimeLine::addKeyClick, pEditor, &Editor::addNewKey );
-    connect( pTimeline, &TimeLine::removeKeyClick, pEditor, &Editor::removeKey );
+    connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
+    connect( pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey );
     
     connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer );
     connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer );
@@ -1107,7 +1108,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );
-
+    connect( pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
 
 }

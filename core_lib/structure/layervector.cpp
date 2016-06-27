@@ -84,7 +84,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
     if ( keyExists( frameNumber ) )
     {
-        removeKeyFrame( frameNumber, false );
+        removeKeyFrame( frameNumber );
     }
     VectorImage* vecImg = new VectorImage;
     vecImg->setPos( frameNumber );

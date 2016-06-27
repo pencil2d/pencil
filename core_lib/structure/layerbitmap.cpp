@@ -99,7 +99,7 @@ void LayerBitmap::loadDomElement( QDomElement element, QString dataDirPath )
         setId( id );
     }
     mName = element.attribute( "name" );
-    mVisible = ( element.attribute( "visibility" ) == "1" );
+    mVisible = ( element.attribute( "visibility" ).toInt() == 1 );
 
     QDomNode imageTag = element.firstChild();
     while ( !imageTag.isNull() )

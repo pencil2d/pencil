@@ -123,6 +123,11 @@ int Editor::currentFrame()
 	return mFrame;
 }
 
+int Editor::fps()
+{
+    return mPlaybackManager->fps();
+}
+
 void Editor::makeConnections()
 {
     connect( mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated );
@@ -792,9 +797,9 @@ void Editor::moveFrameBackward()
 	}
 }
 
-void Editor::addNewKey()
+KeyFrame* Editor::addNewKey()
 {
-	addKeyFame( layers()->currentLayerIndex(), currentFrame() );
+	return addKeyFame( layers()->currentLayerIndex(), currentFrame() );
 }
 
 void Editor::duplicateKey()
@@ -820,12 +825,13 @@ void Editor::duplicateKey()
 	}
 }
 
-void Editor::addKeyFame( int layerNumber, int frameIndex )
+KeyFrame* Editor::addKeyFame( int layerNumber, int frameIndex )
 {
 	Layer* layer = mObject->getLayer( layerNumber );
 	if ( layer == NULL )
 	{
-		return;
+        Q_ASSERT( false );
+		return nullptr;
 	}
 
 	bool isOK = false;
@@ -850,26 +856,21 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
         scrubTo( frameIndex ); // currentFrameChanged() emit inside.
         //getScribbleArea()->updateCurrentFrame();
 	}
+
+    return keyFrame;
 }
 
 void Editor::removeKey()
 {
 	Layer* layer = layers()->currentLayer();
 	if ( layer != NULL )
-	{
-		switch ( layer->type() )
-		{
-		case Layer::BITMAP:
-		case Layer::VECTOR:
-		case Layer::CAMERA:
-			layer->removeKeyFrame( currentFrame() );
-			break;
-		default:
-			break;
-		}
+    {
+		layer->removeKeyFrame( currentFrame() );
+		
 		scrubBackward();
         mScribbleArea->updateCurrentFrame();
 	}
+    Q_EMIT layers()->currentLayerChanged( layers()->currentLayerIndex() ); // trigger timeline repaint.
 }
 
 void Editor::scrubNextKeyFrame()
@@ -923,10 +924,4 @@ void Editor::moveLayer( int i, int j )
 void Editor::clearCurrentFrame()
 {
 	mScribbleArea->clearImage();
-}
-
-void Editor::resetView()
-{
-	view()->resetView();
-    mScribbleArea->updateAllFrames();
 }

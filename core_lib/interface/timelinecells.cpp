@@ -45,7 +45,8 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
 
 void TimeLineCells::loadSetting(SETTING setting)
 {
-    switch (setting) {
+    switch (setting)
+    {
     case SETTING::TIMELINE_SIZE:
         frameLength = mPrefs->getInt(SETTING::TIMELINE_SIZE);
         timeLine->updateLength( frameLength );

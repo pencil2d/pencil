@@ -42,8 +42,10 @@ Q_SIGNALS:
 
 private:
     void timerTick();
-    void playSoundIfAny( int frame );
     
+    void playSounds( int frame );
+    void stopSounds();
+
     int mStartFrame = 1;
     int mEndFrame = 60;
 

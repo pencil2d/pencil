@@ -3,12 +3,13 @@
 
 #include <QTimer>
 #include "object.h"
+#include "editor.h"
 #include "layersound.h"
 #include "editorstate.h"
-#include "editor.h"
 #include "layermanager.h"
-
-
+#include "soundmanager.h"
+#include "soundclip.h"
+#include "soundplayer.h"
 
 PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 {
@@ -58,6 +59,7 @@ void PlaybackManager::play()
 void PlaybackManager::stop()
 {
     mTimer->stop();
+    stopSounds();
 }
 
 void PlaybackManager::setFps( int fps )
@@ -69,8 +71,56 @@ void PlaybackManager::setFps( int fps )
     }
 }
 
+void PlaybackManager::playSounds( int frame )
+{
+    std::vector< LayerSound* > kSoundLayers;
+    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    {
+        Layer* layer = object()->getLayer( i );
+        if ( layer->type() == Layer::SOUND )
+        {
+            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
+        }
+    }
+
+    for ( LayerSound* layer : kSoundLayers )
+    {
+        if ( layer->keyExists( frame ) )
+        {
+            KeyFrame* key = layer->getKeyFrameAt( frame );
+            SoundClip* clip = static_cast< SoundClip* >( key );
+
+            clip->play();
+        }
+    }
+}
+
+void PlaybackManager::stopSounds()
+{
+    std::vector< LayerSound* > kSoundLayers;
+    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    {
+        Layer* layer = object()->getLayer( i );
+        if ( layer->type() == Layer::SOUND )
+        {
+            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
+        }
+    }
+
+    for ( LayerSound* layer : kSoundLayers )
+    {
+        layer->foreachKeyFrame( []( KeyFrame* key )
+        {
+            SoundClip* clip = static_cast< SoundClip* >( key );
+            clip->stop();
+        } );
+    }
+}
+
 void PlaybackManager::timerTick()
 {
+    playSounds( editor()->currentFrame() );
+
     if ( editor()->currentFrame() >= mEndFrame )
     {
         if ( mIsLooping )
@@ -81,12 +131,11 @@ void PlaybackManager::timerTick()
         {
             stop();
         }
-        return;
     }
-
-    editor()->scrubTo( editor()->currentFrame() + 1 );
-
-    playSoundIfAny( editor()->currentFrame() );
+    else
+    {
+        editor()->scrubForward();
+    }
 }
 
 void PlaybackManager::setLooping( bool isLoop )
@@ -104,19 +153,6 @@ void PlaybackManager::enableRangedPlayback( bool b )
     {
         mIsRangedPlayback = b;
         emit rangedPlaybackStateChanged( mIsRangedPlayback );
-    }
-}
-
-void PlaybackManager::playSoundIfAny(int frame)
-{
-    for ( int i = 0; i < editor()->object()->getLayerCount(); ++i)
-    {
-        auto layer = editor()->object()->getLayer( i );
-        if ( layer->type() == Layer::SOUND )
-        {
-            auto soundLayer = static_cast< LayerSound* >( layer );
-            soundLayer->playSound( frame );
-        }
     }
 }
 

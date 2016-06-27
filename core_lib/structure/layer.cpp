@@ -41,7 +41,7 @@ Layer::Layer( Object* pObject, LAYER_TYPE eType ) : QObject( pObject )
     
     mId = pObject->getUniqueLayerID();
 
-    addNewEmptyKeyAt( 1 );
+    //addNewEmptyKeyAt( 1 );
 
     Q_ASSERT( eType != UNDEFINED );
 }
@@ -131,10 +131,12 @@ int Layer::getPreviousFrameNumber( int position, bool isAbsolute )
     }
 
 
-    if (prevNumber == position) {
+    if (prevNumber == position)
+    {
         return -1; // There is no previous keyframe
     }
-    else {
+    else
+    {
         return prevNumber;
     }
 }
@@ -161,14 +163,20 @@ int Layer::getNextFrameNumber( int position, bool isAbsolute )
 
 int Layer::firstKeyFramePosition()
 {
-    Q_ASSERT( mKeyFrames.rbegin()->first == 1 );
-
-    return mKeyFrames.rbegin()->first; // rbegin is the lowest key frame position
+    if ( !mKeyFrames.empty() )
+    {
+        return mKeyFrames.rbegin()->first; // rbegin is the lowest key frame position
+    }
+    return 0;
 }
 
 int Layer::getMaxKeyFramePosition()
 {
-    return mKeyFrames.begin()->first; // begin is the highest key frame position
+    if ( !mKeyFrames.empty() )
+    {
+        return mKeyFrames.begin()->first; // begin is the highest key frame position
+    }
+    return 0;
 }
 
 bool Layer::addNewEmptyKeyAt( int position )
@@ -201,22 +209,11 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 
 bool Layer::removeKeyFrame( int position )
 {
-    return removeKeyFrame(position, true);
-}
-
-bool Layer::removeKeyFrame( int position, bool reloadFirstFrame )
-{
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
     {
         delete it->second;
         mKeyFrames.erase( it );
-    }
-
-    if ( reloadFirstFrame && position == 1 )
-    {
-        // Avoiding having no frame by deleting the first frame.
-        addNewEmptyKeyAt( 1 ); // replacing
     }
 
     return true;
@@ -353,26 +350,35 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, 
 {
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
 
-    //qDebug() << "LayerType:" << static_cast<int>( m_eType );
+    //qDebug() << "LayerType:" << ( int )( meType );
 
     for ( auto pair : mKeyFrames )
     {
         int framePos = pair.first;
+        
+        int recLeft = cells->getFrameX( framePos ) - frameSize + 2;
+        int recTop = y + 1;
+        int recWidth = frameSize - 2;
+        int recHeight = height - 4;
+
+        KeyFrame* key = pair.second;
+        if ( key->length() > 1 )  
+        {
+            // This is especially for sound clip.
+            // Sound clip is the only type of KeyFrame that has variant frame length.
+            recWidth = frameSize * key->length() - 2;
+        }
+
         if ( pair.second->isSelected() )
         {
             painter.setBrush( QColor( 60, 60, 60 ) );
-            painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
         }
-        else if(selected)
+        else if ( selected )
         {
             painter.setBrush( QColor( 60, 60, 60, 120 ) );
-            painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
-        }
-        else
-        {
-            painter.drawRect( cells->getFrameX( framePos ) - frameSize + 2, y + 1, frameSize - 2, height - 4 );
         }
 
+        painter.drawRect( recLeft, recTop, recWidth, recHeight );
     }
 }
 
