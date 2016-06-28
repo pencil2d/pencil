@@ -229,7 +229,7 @@ void MainWindow2::createMenus()
     /// --- Export Menu ---
     //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
     connect( ui->actionExport_Image, &QAction::triggered, this, &MainWindow2::exportImage );
-    connect( ui->actionExport_Image_Sequence, &QAction::triggered, this, &MainWindow2::exportImageSequence );
+    connect( ui->actionExport_ImageSeq, &QAction::triggered, this, &MainWindow2::exportImageSequence );
     connect( ui->actionExport_Movie, &QAction::triggered, this, &MainWindow2::exportMovie );
 
     connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
@@ -237,7 +237,7 @@ void MainWindow2::createMenus()
     /// --- Import Menu ---
     //connect( ui->actionExport_Svg_Image, &QAction::triggered, editor, &Editor::saveSvg );
     connect( ui->actionImport_Image, &QAction::triggered, this, &MainWindow2::importImage );
-    connect( ui->actionImport_Image_Sequence, &QAction::triggered, this, &MainWindow2::importImageSequence );
+    connect( ui->actionImport_ImageSeq, &QAction::triggered, this, &MainWindow2::importImageSequence );
     connect( ui->actionImport_Movie, &QAction::triggered, this, &MainWindow2::importMovie );
 
     connect( ui->actionImport_Sound, &QAction::triggered, mCommands, &ActionCommands::importSound );
@@ -911,13 +911,13 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionPrint->setShortcut( cmdKeySeq( CMD_PRINT ) );
 
     ui->actionImport_Image->setShortcut( cmdKeySeq( CMD_IMPORT_IMAGE ) );
-    ui->actionImport_Image_Sequence->setShortcut( cmdKeySeq( CMD_IMPORT_IMAGE_SEQ ) );
+    ui->actionImport_ImageSeq->setShortcut( cmdKeySeq( CMD_IMPORT_IMAGE_SEQ ) );
     ui->actionImport_Movie->setShortcut( cmdKeySeq( CMD_IMPORT_MOVIE ) );
     ui->actionImport_Palette->setShortcut( cmdKeySeq( CMD_IMPORT_PALETTE ) );
     ui->actionImport_Sound->setShortcut( cmdKeySeq( CMD_IMPORT_SOUND ) );
 
     ui->actionExport_Image->setShortcut( cmdKeySeq( CMD_EXPORT_IMAGE ) );
-    ui->actionExport_Image_Sequence->setShortcut( cmdKeySeq( CMD_EXPORT_IMAGE_SEQ ) );
+    ui->actionExport_ImageSeq->setShortcut( cmdKeySeq( CMD_EXPORT_IMAGE_SEQ ) );
     ui->actionExport_Movie->setShortcut( cmdKeySeq( CMD_EXPORT_MOVIE ) );
     ui->actionExport_Palette->setShortcut( cmdKeySeq( CMD_EXPORT_PALETTE ) );
     ui->actionExport_Svg_Image->setShortcut( cmdKeySeq( CMD_EXPORT_SVG ) );
