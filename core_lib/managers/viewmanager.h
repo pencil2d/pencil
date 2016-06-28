@@ -36,6 +36,8 @@ public:
 
     float scaling() { return mScale; }
     void scale( float scaleValue );
+    void scaleUp();
+    void scaleDown();
 
     void flipHorizontal( bool b );
     void flipVertical( bool b );
