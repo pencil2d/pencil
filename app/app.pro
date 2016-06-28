@@ -46,7 +46,8 @@ HEADERS += \
     colorwheel.h \
     filedialogex.h \
     displayoptionwidget.h \
-    pencilapplication.h
+    pencilapplication.h \
+    exportmoviedialog.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -67,7 +68,8 @@ SOURCES += \
     colorwheel.cpp \
     filedialogex.cpp \
     displayoptionwidget.cpp \
-    pencilapplication.cpp
+    pencilapplication.cpp \
+    exportmoviedialog.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -77,7 +79,8 @@ FORMS += \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
-    ui/displayoption.ui
+    ui/displayoption.ui \
+    exportmoviedialog.ui
 
 DEPENDPATH += .
 
