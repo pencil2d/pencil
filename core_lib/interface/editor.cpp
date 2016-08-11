@@ -523,7 +523,7 @@ void Editor::createExportMovieSizeBox()
 
 void Editor::createExportMovieDialog()
 {
-	/*
+    /*
 	exportMovieDialog = new QDialog( mMainWindow, Qt::Dialog );
 	QGridLayout* mainLayout = new QGridLayout;
 
@@ -557,7 +557,7 @@ void Editor::createExportMovieDialog()
 	exportMovieDialog->setLayout( mainLayout );
 	exportMovieDialog->setWindowTitle( tr( "Options" ) );
 	exportMovieDialog->setModal( true );
-	*/
+    */
 }
 
 
@@ -586,51 +586,6 @@ QString Editor::workingDir() const
 {
     return mObject->workingDir();
 }
-
-/*
-bool Editor::exportMov()
-{
-QSettings settings( "Pencil", "Pencil" );
-QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
-//  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
-QString filePath = QFileDialog::getSaveFileName( mMainWindow, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
-if ( filePath.isEmpty() )
-{
-return false;
-}
-else
-{
-settings.setValue( "lastExportPath", QVariant( filePath ) );
-if ( !exportMovieDialog ) createExportMovieDialog();
-exportMovieDialog_hBox->setValue( mScribbleArea->getViewRect().toRect().width() );
-exportMovieDialog_vBox->setValue( mScribbleArea->getViewRect().toRect().height() );
-exportMovieDialog->exec();
-if ( exportMovieDialog->result() == QDialog::Rejected ) return false;
-
-QSize exportSize = QSize( exportMovieDialog_hBox->value(), exportMovieDialog_vBox->value() );
-QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-view = mScribbleArea->getView() * view;
-
-int projectLength = layers()->projectLength();
-int fps = playback()->fps();
-
-ExportMovieParameters par;
-par.startFrame = 1;
-par.endFrame = projectLength;
-par.view = view;
-par.currentLayer = layers()->currentLayer();
-par.exportSize = exportSize;
-par.filePath = filePath;
-par.fps = fps;
-par.exportFps = exportMovieDialog_fpsBox->value();
-par.exportFormat = exportMovieDialog_format->currentText();
-mObject->exportMovie( par );
-
-return true;
-}
-}
-*/
 
 bool Editor::importBitmapImage( QString filePath )
 {

@@ -307,7 +307,7 @@ background: #B6DBEA;
     <string>Movie...</string>
    </property>
    <property name="visible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionExport_Palette">

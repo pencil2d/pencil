@@ -68,7 +68,10 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 
 #include "exportimageseqdialog.h"
+#include "exportmoviedialog.h"
 #include "shortcutfilter.h"
+#include "filedialogex.h"
+
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -667,7 +670,45 @@ void MainWindow2::importMovie()
 
 void MainWindow2::exportMovie()
 {
+    FileDialog fileDialog( this );
+    QString strMoviePath = fileDialog.saveFile( EFile::MOVIE_EXPORT );
 
+    if ( strMoviePath.isEmpty() )
+    {
+        return;
+    }
+
+    ExportMovieDialog exportMovieDialog( this );
+    
+    //exportMovieDialog_hBox->setValue( mScribbleArea->getViewRect().toRect().width() );
+    //exportMovieDialog_vBox->setValue( mScribbleArea->getViewRect().toRect().height() );
+    exportMovieDialog.exec();
+    if ( exportMovieDialog.result() == QDialog::Rejected )
+    {
+        return;
+    }
+
+    QSize exportSize = QSize( 10, 10 );
+    QTransform view; // = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+    view = mScribbleArea->getView() * view;
+    /*
+    int projectLength = layers()->projectLength();
+    int fps = playback()->fps();
+
+    ExportMovieParameters par;
+    par.startFrame = 1;
+    par.endFrame = projectLength;
+    par.view = view;
+    par.currentLayer = layers()->currentLayer();
+    par.exportSize = exportSize;
+    par.filePath = filePath;
+    par.fps = fps;
+    par.exportFps = exportMovieDialog_fpsBox->value();
+    par.exportFormat = exportMovieDialog_format->currentText();
+    mObject->exportMovie( par );
+
+    return true;
+    */
 }
 
 void MainWindow2::exportImageSequence()
@@ -678,7 +719,6 @@ void MainWindow2::exportImageSequence()
     int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
-
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );

@@ -5,7 +5,8 @@
 
 enum class EFile
 {
-    SOUND
+    SOUND,
+    MOVIE_EXPORT
 };
 
 class FileDialog : public QObject
@@ -16,6 +17,7 @@ public:
     ~FileDialog();
 
     QString openFile( EFile fileType );
+    QString saveFile( EFile fileType );
 
 private:
     QString dialogTitle( EFile fileType );
