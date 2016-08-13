@@ -680,8 +680,20 @@ void MainWindow2::exportMovie()
 
     ExportMovieDialog exportMovieDialog( this );
     
-    //exportMovieDialog_hBox->setValue( mScribbleArea->getViewRect().toRect().width() );
-    //exportMovieDialog_vBox->setValue( mScribbleArea->getViewRect().toRect().height() );
+    std::vector< std::pair<QString, QSize > > camerasInfo;
+    auto layersMgr = mEditor->layers();
+    for ( int i = 0; i < layersMgr->count(); ++i )
+    {
+        Layer* layer = layersMgr->getLayer( i );
+        if ( layer->type() != Layer::CAMERA )
+        {
+            continue;
+        }
+        auto layerCam = static_cast< LayerCamera* >( layer );
+        camerasInfo.push_back( std::make_pair( layerCam->name(), layerCam->getViewSize() ) );
+    }
+    exportMovieDialog.setCamerasInfo( camerasInfo );
+
     exportMovieDialog.exec();
     if ( exportMovieDialog.result() == QDialog::Rejected )
     {

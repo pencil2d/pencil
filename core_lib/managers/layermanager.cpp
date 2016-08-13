@@ -49,6 +49,13 @@ Layer* LayerManager::currentLayer( int incr )
     return editor()->object()->getLayer( mCurrentLayerIndex + incr );
 }
 
+Layer* LayerManager::getLayer( int index )
+{
+    Q_ASSERT( editor()->object() != NULL );
+    
+    return editor()->object()->getLayer( index );
+}
+
 int LayerManager::currentLayerIndex()
 {
     return mCurrentLayerIndex;

@@ -172,6 +172,11 @@ QRect LayerCamera::getViewRect()
 }
 
 
+QSize LayerCamera::getViewSize()
+{
+    return viewRect.size();
+}
+
 void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
 {
     if ( keyExists( frameNumber ) )

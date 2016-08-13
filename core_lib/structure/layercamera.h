@@ -64,6 +64,7 @@ public:
     QTransform getViewAtFrame(int frameNumber);
 
     QRect getViewRect();
+    QSize getViewSize();
 
 protected:
     bool saveKeyFrame( KeyFrame*, QString path ) override;

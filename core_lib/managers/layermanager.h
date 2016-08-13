@@ -23,6 +23,7 @@ public:
     // Layer Management
     Layer* currentLayer();
     Layer* currentLayer( int offset );
+    Layer* getLayer( int index );
     int    getLastCameraLayer();
     int    currentLayerIndex();
     void   setCurrentLayer( int nIndex );
