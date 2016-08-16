@@ -368,12 +368,6 @@ bool MainWindow2::isTitleMarkedUnsaved()
     return QApplication::activeWindow()->windowTitle().startsWith(QString("* "));
 }
 
-void MainWindow2::markTitleSaved()
-{
-    if (isTitleMarkedUnsaved())
-        setWindowTitle( QApplication::activeWindow()->windowTitle().remove(0, 1) );
-}
-
 void MainWindow2::markTitleUnsaved()
 {
     if (!isTitleMarkedUnsaved())
@@ -567,7 +561,6 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
 void MainWindow2::saveDocument()
 {
-    markTitleSaved();
     if ( !mEditor->object()->filePath().isEmpty() )
     {
         saveObject( mEditor->object()->filePath() );
