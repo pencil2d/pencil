@@ -59,6 +59,7 @@ public slots:
     void undoActSetText(void);
     void undoActSetEnabled(void);
     void openDocument(const QString &fileName);
+    void markTitleUnsaved(void);
 
 public:
     void setOpacity(int opacity);
@@ -113,8 +114,12 @@ private:
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
+    void makeConnections( ScribbleArea* );
 
     void bindActionWithSetting( QAction*, SETTING );
+
+    bool isTitleMarkedUnsaved();
+    void markTitleSaved();
 
     // UI: central Drawing Area
     ScribbleArea* mScribbleArea                = nullptr;

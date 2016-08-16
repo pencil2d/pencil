@@ -38,7 +38,7 @@ Pencil2D.app
 # QtCreator
 
 *.autosave
-
+build-pencil-Desktop-Debug/*
 
 # Mac stuff
 
