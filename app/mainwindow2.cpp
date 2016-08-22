@@ -205,6 +205,7 @@ void MainWindow2::createDockWidgets()
     makeConnections( mEditor, mColorPalette );
     makeConnections( mEditor, mDisplayOptionWidget );
     makeConnections( mEditor, mToolOptions );
+    makeConnections( mScribbleArea );
 
     for ( BaseDockWidget* w : mDockWidgets )
     {
@@ -362,6 +363,16 @@ void MainWindow2::setOpacity( int opacity )
     setWindowOpacity( opacity / 100.0 );
 }
 
+bool MainWindow2::isTitleMarkedUnsaved()
+{
+    return QApplication::activeWindow()->windowTitle().startsWith(QString("* "));
+}
+
+void MainWindow2::markTitleUnsaved()
+{
+    if (!isTitleMarkedUnsaved())
+        setWindowTitle( QString("* ") + QApplication::activeWindow()->windowTitle() );
+}
 
 void MainWindow2::closeEvent( QCloseEvent* event )
 {
@@ -1138,6 +1149,11 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );
+}
+
+void MainWindow2::makeConnections( ScribbleArea* pScribbleArea )
+{
+    connect( pScribbleArea, static_cast<void (ScribbleArea::*)(void)>(&ScribbleArea::modification), this, &MainWindow2::markTitleUnsaved );
 }
 
 void MainWindow2::bindActionWithSetting( QAction* action, SETTING setting )
