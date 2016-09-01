@@ -200,12 +200,12 @@ void MainWindow2::createDockWidgets()
     addDockWidget( Qt::RightDockWidgetArea, mPreview );
     */
 
+    makeConnections( mEditor );
     makeConnections( mEditor, mTimeLine );
     makeConnections( mEditor, mColorWheel );
     makeConnections( mEditor, mColorPalette );
     makeConnections( mEditor, mDisplayOptionWidget );
     makeConnections( mEditor, mToolOptions );
-    makeConnections( mScribbleArea );
 
     for ( BaseDockWidget* w : mDockWidgets )
     {
@@ -372,6 +372,24 @@ void MainWindow2::markTitleUnsaved()
 {
     if (!isTitleMarkedUnsaved())
         setWindowTitle( QString("* ") + QApplication::activeWindow()->windowTitle() );
+}
+
+void MainWindow2::markTitleSaved()
+{
+    if (isTitleMarkedUnsaved())
+        setWindowTitle( QApplication::activeWindow()->windowTitle().remove(0, 2) );
+}
+
+void MainWindow2::updateTitleSaveState()
+{
+    qDebug() << "updateTitleSaveState";
+    if( mEditor->currentBackup() == mBackupAtSave )
+    {
+        markTitleSaved();
+    }
+    else {
+        markTitleUnsaved();
+    }
 }
 
 void MainWindow2::closeEvent( QCloseEvent* event )
@@ -555,6 +573,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     mTimeLine->updateContent();
 
     setWindowTitle( strSavedFileName );
+    mBackupAtSave = mEditor->currentBackup();
 
     return true;
 }
@@ -1076,6 +1095,11 @@ void MainWindow2::helpBox()
     QDesktopServices::openUrl( QUrl(url) );
 }
 
+void MainWindow2::makeConnections( Editor* editor )
+{
+    connect( editor, &Editor::updateBackup, this, &MainWindow2::updateTitleSaveState );
+}
+
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
 {
     connect( colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor );
@@ -1149,11 +1173,6 @@ void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPa
 
     connect( pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor );
     connect( pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber );
-}
-
-void MainWindow2::makeConnections( ScribbleArea* pScribbleArea )
-{
-    connect( pScribbleArea, static_cast<void (ScribbleArea::*)(void)>(&ScribbleArea::modification), this, &MainWindow2::markTitleUnsaved );
 }
 
 void MainWindow2::bindActionWithSetting( QAction* action, SETTING setting )

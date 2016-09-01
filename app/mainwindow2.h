@@ -59,7 +59,7 @@ public slots:
     void undoActSetText(void);
     void undoActSetEnabled(void);
     void openDocument(const QString &fileName);
-    void markTitleUnsaved(void);
+    void updateTitleSaveState(void);
 
 public:
     void setOpacity(int opacity);
@@ -108,18 +108,19 @@ private:
     void readSettings();
     void writeSettings();
 
+    void makeConnections( Editor* );
     void makeConnections( Editor*, ColorBox* );
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
-    void makeConnections( ScribbleArea* );
 
     void bindActionWithSetting( QAction*, SETTING );
 
     bool isTitleMarkedUnsaved();
     void markTitleSaved();
+    void markTitleUnsaved();
 
     // UI: central Drawing Area
     ScribbleArea* mScribbleArea                = nullptr;
@@ -134,6 +135,9 @@ private:
     RecentFileMenu*       mRecentFileMenu      = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
+
+    // backup
+    BackupElement* mBackupAtSave = nullptr;
 
 private:
     ActionCommands* mCommands              = nullptr;
