@@ -54,12 +54,20 @@ void installTranslator( PencilApplication& app )
     qDebug() << "Install translation = " << b;
 }
 
-bool parseArguments( QStringList args, QString & inputPath, QStringList & outputPaths )
+int handleArguments( PencilApplication & app, MainWindow2 & mainWindow )
 {
+    QStringList args = app.arguments();
+    QString inputPath;
+    QStringList outputPaths;
+    int width = -1, height = -1;
+    bool transparency = false;
+    qDebug() << "Hey";
+
 #if QT_VERSION >= QT_VERSION_CHECK( 5, 2, 0 )
 #import <QCommandLineParser>
 #import <QCommandLineOption>
     QCommandLineParser parser;
+    // TODO: Ignore -NSDocumentRevisionsDebugMode
 
     parser.setApplicationDescription( PencilApplication::tr("Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.") );
     parser.addHelpOption();
@@ -71,6 +79,20 @@ bool parseArguments( QStringList args, QString & inputPath, QStringList & output
                                         PencilApplication::tr( "output_path" ) );
     parser.addOption( exportSeqOption );
 
+    QCommandLineOption widthOption( QStringList() << "width",
+                                    PencilApplication::tr( "Width of the output frames" ),
+                                    PencilApplication::tr( "integer" ) );
+    parser.addOption( widthOption );
+
+    QCommandLineOption heightOption( QStringList() << "height",
+                                     PencilApplication::tr( "Height of the output frames" ),
+                                     PencilApplication::tr( "integer" ) );
+    parser.addOption( heightOption );
+
+    QCommandLineOption transparencyOption( QStringList() << "transparency",
+                                           PencilApplication::tr( "Render transparency when possible" ) );
+    parser.addOption( transparencyOption );
+
     parser.process( args );
 
     QStringList posArgs = parser.positionalArguments();
@@ -80,11 +102,32 @@ bool parseArguments( QStringList args, QString & inputPath, QStringList & output
     }
 
     outputPaths = parser.values( exportSeqOption );
-    return true;
-#else
+
+    if ( !parser.value( widthOption ).isEmpty() )
+    {
+        bool ok = false;
+        width = parser.value( widthOption ).toInt( &ok );
+        if ( !ok )
+        {
+            qDebug() << "Warning: width value" << parser.value( widthOption ) << "is not an integer, ignoring.";
+            width = -1;
+        }
+    }
+    if ( !parser.value( heightOption ).isEmpty() )
+    {
+        bool ok = false;
+        height = parser.value( heightOption ).toInt( &ok );
+        if ( !ok )
+        {
+            qDebug() << "Warning: height value" << parser.value( heightOption ) << "is not an integer, ignoring.";
+            height = -1;
+        }
+    }
+    transparency = parser.isSet( transparencyOption );
+#else // For backwards compatibility with QT4, remove when QT5 is required for this project
     // Extracting options
-    bool error = false, help = false;
-    for ( int i = 1; i < args.length(); i++ ) // TODO: use iterator instead
+    bool showUsage = false, help = false;
+    for ( int i = 1; i < args.length(); i++ )
     {
         if ( args[i] == "-NSDocumentRevisionsDebugMode")
         {
@@ -102,7 +145,7 @@ bool parseArguments( QStringList args, QString & inputPath, QStringList & output
             {
                 // Error, no output path specified
                 qDebug() << PencilApplication::tr( "Error: no output path specified" );
-                error = true;
+                showUsage = true;
             }
         }
         else if ( args[i] == "-h" || args[i] == "--help" )
@@ -111,12 +154,53 @@ bool parseArguments( QStringList args, QString & inputPath, QStringList & output
         }
         else if ( args[i] == "-v" || args[i] == "--version" )
         {
-            return false;
+            std::cout << app.applicationName() << " " << app.applicationVersion() << std::endl;
+            return 0;
+        }
+        else if ( args[i] == "--width" )
+        {
+            if( ++i < args.length() )
+            {
+                bool ok = false;
+                width = args[i].toInt( &ok );
+                if ( !ok )
+                {
+                    qDebug() << "Warning: width value" << args[i] << "is not an integer, ignoring.";
+                    width = -1;
+                }
+            }
+            else
+            {
+                qDebug() << PencilApplication::tr( "Error: no width value specified" );
+                showUsage = true;
+            }
+        }
+        else if ( args[i] == "--height" )
+        {
+            if( ++i < args.length() )
+            {
+                bool ok = false;
+                height = args[i].toInt( &ok );
+                if ( !ok )
+                {
+                    qDebug() << "Warning: height value" << args[i] << "is not an integer, ignoring.";
+                    height = -1;
+                }
+            }
+            else
+            {
+                qDebug() << PencilApplication::tr( "Error: no width value specified" );
+                showUsage = true;
+            }
+        }
+        else if ( args[i] == "--transparency" )
+        {
+            transparency = true;
         }
         else if ( args[i].startsWith( "-" ) )
         {
-            qDebug() << "Error: Unknown option '" << args[i] << "'";
-            error = true;
+            qDebug() << "Error: Unknown option" << args[i];
+            showUsage = true;
         }
         else if ( inputPath.isEmpty() )
         {
@@ -125,51 +209,23 @@ bool parseArguments( QStringList args, QString & inputPath, QStringList & output
         }
     }
 
-    if (error || help) {
-        qDebug() << "Usage: ./Pencil2D [options] input" << std::endl
+    if ( showUsage || help ) {
+        std::cout << "Usage: ./Pencil2D [options] input" << std::endl
                  << "Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics." << std::endl
                  << std::endl
                  << "Options:" << std::endl
-                 << "  -h, --help                            Displays this help." << std::endl
-                 << "  -v, --version                        Displays version information." << std::endl
-                 << "  -o, --export-sequence <output_path>  Render the file to <output_path>" << std::endl
+                 << "  -h, --help                                 " << PencilApplication::tr( "Displays this help." ) << std::endl
+                 << "  -v, --version                              " << PencilApplication::tr( "Displays version information." ) << std::endl
+                 << "  -o, --export-sequence <output_path>        " << PencilApplication::tr( "Render the file to <output_path>" ) << std::endl
+                 << "  --width <integer>                          " << PencilApplication::tr( "Width of the output frames" ) << std::endl
+                 << "  --height <integer>                         " << PencilApplication::tr( "Height of the output frames" ) << std::endl
+                 << "  --transparency                             " << PencilApplication::tr( "Render transparency when possible" ) << std::endl
                  << std::endl
                  << "Arguments:" << std::endl
-                 << "  input                                Path to the input pencil file.";
-        return help;
+                 << "  input                                Path to the input pencil file." << std::endl;
+        return showUsage;
     }
-
-    return true;
 #endif
-}
-
-
-int main(int argc, char* argv[])
-{
-    PencilApplication app( argc, argv );
-
-    installTranslator( app );
-
-    MainWindow2 mainWindow;
-    mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
-
-    QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openDocument);
-    //QObject::connect(&app, SIGNAL(openFileRequested(QString)), &mainWindow, SLOT(openDocument(QString)));
-    app.emitOpenFileRequest();
-
-    if ( argc == 1 || ( ( argc == 2 || argc == 3 ) && QString(argv[1]) == "-NSDocumentRevisionsDebugMode" ) )
-    {
-        mainWindow.show();
-        return app.exec();
-    }
-
-    QString inputPath;
-    QStringList outputPaths;
-
-    if ( !parseArguments( app.arguments(), inputPath, outputPaths ) )
-    {
-        return 1;
-    }
 
     // If there are no output paths, open up the GUI (to the input path if there is one)
     if ( outputPaths.isEmpty() )
@@ -189,10 +245,20 @@ int main(int argc, char* argv[])
     }
 
     std::cout << "Exporting image sequence..." << std::endl;
-    // TODO: Check if input file exists
+
+    QFileInfo inputFileInfo(inputPath);
+    if(!inputFileInfo.exists()) {
+        qDebug() << "Error: the input file at '" << inputPath << "' does not exist";
+        return 1;
+    }
+    if ( !inputFileInfo.isFile() )
+    {
+        qDebug() << "Error: the input path '" << inputPath << "' is not a file";
+        return 1;
+    }
+
     for ( int i = 0; i < outputPaths.length(); i++ )
     {
-        // TODO: Check if output path exists
         mainWindow.openFile( inputPath );
 
         // Detect format
@@ -215,9 +281,32 @@ int main(int argc, char* argv[])
             format = "PNG";
         }
 
-        mainWindow.mEditor->exportSeqCLI(outputPaths[i], format);
+        mainWindow.mEditor->exportSeqCLI( outputPaths[i], format, width, height, transparency );
     }
     qDebug() << "Done.";
 
     return 0;
+}
+
+
+int main(int argc, char* argv[])
+{
+    PencilApplication app( argc, argv );
+
+    installTranslator( app );
+
+    MainWindow2 mainWindow;
+    mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
+
+    QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openDocument);
+    //QObject::connect(&app, SIGNAL(openFileRequested(QString)), &mainWindow, SLOT(openDocument(QString)));
+    app.emitOpenFileRequest();
+
+    if ( argc == 1 || ( ( argc == 2 || argc == 3 ) && QString(argv[1]) == "-NSDocumentRevisionsDebugMode" ) )
+    {
+        mainWindow.show();
+        return app.exec();
+    }
+
+    return handleArguments( app, mainWindow );
 }
