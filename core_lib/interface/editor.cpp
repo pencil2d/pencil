@@ -175,6 +175,19 @@ void Editor::settingUpdated(SETTING setting)
     }
 }
 
+BackupElement* Editor::currentBackup()
+{
+    qDebug() << mBackupIndex << mBackupList.length();
+    if ( mBackupIndex >= 0 )
+    {
+        return mBackupList[ mBackupIndex ];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
 void Editor::backup( QString undoText )
 {
 	if ( lastModifiedLayer > -1 && lastModifiedFrame > 0 )
@@ -216,7 +229,7 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 			{
 				element->bitmapImage = bitmapImage->copy();  // copy the image
 				mBackupList.append( element );
-				mBackupIndex++;
+                mBackupIndex++;
 			}
 		}
 		if ( layer->type() == Layer::VECTOR )
@@ -234,10 +247,11 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 			{
 				element->vectorImage = *vectorImage;  // copy the image (that works but I should also provide a copy() method)
 				mBackupList.append( element );
-				mBackupIndex++;
+                mBackupIndex++;
 			}
 		}
 	}
+    emit updateBackup();
 }
 
 void BackupBitmapElement::restore( Editor* editor )
@@ -305,6 +319,7 @@ void Editor::undo()
 		mBackupIndex--;
         mScribbleArea->cancelTransformedSelection();
         mScribbleArea->calculateSelectionRect(); // really ugly -- to improve
+        emit updateBackup();
 	}
 }
 
@@ -314,6 +329,7 @@ void Editor::redo()
 	{
 		mBackupIndex++;
 		mBackupList[ mBackupIndex + 1 ]->restore( this );
+        emit updateBackup();
 	}
 }
 

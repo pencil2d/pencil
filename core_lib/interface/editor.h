@@ -91,11 +91,13 @@ public:
 
     // backup
     int mBackupIndex;
+    BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
 Q_SIGNALS:
     void updateTimeLine();
     void updateLayerCount();
+    void updateBackup();
 
     void selectAll();
     void changeThinLinesButton( bool );
