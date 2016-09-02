@@ -493,9 +493,12 @@ void MainWindow2::openFile( QString filename )
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
-
-    progress.setWindowModality( Qt::WindowModal );
-    progress.show();
+    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
+    if ( this->isVisible() )
+    {
+        progress.setWindowModality( Qt::WindowModal );
+        progress.show();
+    }
 
     mEditor->setCurrentLayer( 0 );
 

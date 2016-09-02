@@ -562,23 +562,39 @@ void Editor::createExportMovieDialog()
 
 
 
-bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
+bool Editor::exportSeqCLI( QString filePath, QString format, int width, int height, bool transparency, bool antialias )
 {
-	int width = mScribbleArea->getViewRect().toRect().width();
-	int height = mScribbleArea->getViewRect().toRect().height();
+    // Get the camera layer
+    int cameraLayerId = mLayerManager->getLastCameraLayer();
+    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mObject->getLayer(cameraLayerId));
+
+    if(width < 0) {
+        width = cameraLayer->getViewRect().width();
+    }
+    if(height < 0) {
+        height = cameraLayer->getViewRect().height();
+    }
 
 	QSize exportSize = QSize( width, height );
 	QByteArray exportFormat( format.toLatin1() );
 
 	QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-	view = mScribbleArea->getView() * view;
+    //view = mScribbleArea->getView() * view;
 
-	int projectLength = layers()->projectLength();
+    int projectLength = mLayerManager->projectLength();
 
-	mObject->exportFrames( 1, projectLength, layers()->currentLayer(),
+    mObject->exportFrames( 1,
+                           projectLength,
+                           cameraLayer,
 						   exportSize,
 						   filePath,
-						   exportFormat, -1, false, true, NULL, 0 );
+                           exportFormat,
+                           -1,
+                           transparency,
+                           antialias,
+                           NULL,
+                           0 );
+
 	return true;
 }
 
