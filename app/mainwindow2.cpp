@@ -617,7 +617,7 @@ bool MainWindow2::maybeSave()
 
 void MainWindow2::importImage()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initPath = settings.value( "lastImportPath", QDir::homePath() ).toString();
 
     QString strFilePath = QFileDialog::getOpenFileName( this,
@@ -682,7 +682,7 @@ void MainWindow2::importImageSequence()
 
 void MainWindow2::importMovie()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QString initialPath = settings.value( "lastExportPath", QDir::homePath() ).toString();
     QString filePath = QFileDialog::getOpenFileName( this,
@@ -1046,7 +1046,7 @@ void MainWindow2::undoActSetEnabled( void )
 
 void MainWindow2::exportPalette()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
@@ -1062,7 +1062,7 @@ void MainWindow2::exportPalette()
 
 void MainWindow2::importPalette()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {

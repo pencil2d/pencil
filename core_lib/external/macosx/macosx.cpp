@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QSysInfo>
 #include "object.h"
 #include "editor.h"
+#include "pencildef.h"
 
 #include <CoreFoundation/CoreFoundation.h>
 #include <Carbon/Carbon.h>
@@ -122,7 +123,7 @@ void Editor::importMovie (QString filePath, int fps)
 {
 
     int i;
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D , PENCIL2D );
 
     qDebug() << "-------IMPORT VIDEO------" << filePath;
 

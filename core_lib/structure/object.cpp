@@ -491,7 +491,7 @@ bool Object::exportFrames( int frameStart, int frameEnd,
                            QProgressDialog* progress = NULL,
                            int progressMax = 50 )
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QString extension = "";
     QString formatStr = format;
@@ -593,7 +593,7 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
     int frameNumber;
     int framePerSecond;
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QString extension = "";
     QString formatStr = format;
@@ -710,7 +710,7 @@ bool Object::exportFrames1( ExportFrames1Parameters par )
 
 bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing )
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     int page;
     page = 0;

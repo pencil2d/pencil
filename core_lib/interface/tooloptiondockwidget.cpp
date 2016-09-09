@@ -60,7 +60,7 @@ void ToolOptionWidget::createUI()
     pLayout->setMargin( 8 );
     pLayout->setSpacing( 8 );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     mSizeSlider = new SpinSlider( tr( "Brush" ), SpinSlider::EXPONENT, SpinSlider::INTEGER, 1, 200, this );
     mSizeSlider->setValue( settings.value( "brushWidth" ).toDouble() );

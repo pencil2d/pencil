@@ -439,7 +439,7 @@ void GridPage::gridSizeChange(int value)
 
 TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
 {
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QVBoxLayout* lay = new QVBoxLayout();
 
@@ -568,7 +568,7 @@ void FilesPage::autosaveNumberChange(int number)
 
 ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
 {
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     QVBoxLayout* lay = new QVBoxLayout();
 

@@ -28,7 +28,7 @@ void SmudgeTool::loadSettings()
     m_enabledProperties[FEATHER] = true;
 
 
-    QSettings settings("Pencil", "Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value("smudgeWidth").toDouble();
     properties.feather = settings.value("smudgeFeather").toDouble();
     properties.pressure = 0;
@@ -48,7 +48,7 @@ void SmudgeTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("smudgeWidth", width);
     settings.sync();
 }
@@ -59,7 +59,7 @@ void SmudgeTool::setFeather( const qreal feather )
     properties.feather = feather;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("smudgeFeather", feather);
     settings.sync();
 }
@@ -70,7 +70,7 @@ void SmudgeTool::setPressure( const bool pressure )
     properties.pressure = pressure;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("smudgePressure", pressure);
     settings.sync();
 }

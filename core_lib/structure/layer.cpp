@@ -422,7 +422,7 @@ void Layer::paintLabel( QPainter& painter, TimeLineCells* cells, int x, int y, i
 void Layer::paintSelection( QPainter& painter, int x, int y, int width, int height )
 {
     QLinearGradient linearGrad( QPointF( 0, y ), QPointF( 0, y + height ) );
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString style = settings.value( "style" ).toString();
     linearGrad.setColorAt( 0, QColor( 255, 255, 255, 128 ) );
     linearGrad.setColorAt( 0.50, QColor( 255, 255, 255, 64 ) );
