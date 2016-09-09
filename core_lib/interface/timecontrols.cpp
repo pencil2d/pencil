@@ -24,9 +24,10 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "util.h"
 #include "preferencemanager.h"
+#include "timeline.h"
 
 
-TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
+TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 {
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -45,18 +46,18 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     mLoopStartSpinBox->setFixedHeight(22);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
-    mLoopStartSpinBox->setMaximum(settings.value("length").toInt() - 1);
+    mLoopStartSpinBox->setMaximum(parent->getFrameLength() - 1);
     mLoopStartSpinBox->setToolTip(tr("Start of playback loop"));
     mLoopStartSpinBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopEndSpinBox= new QSpinBox();
     mLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
     mLoopEndSpinBox->setFixedHeight(22);
-    mLoopEndSpinBox->setMinimum(2);
-    mLoopEndSpinBox->setMaximum(settings.value("length").toInt());
+    mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
+    mLoopEndSpinBox->setMinimum(mLoopStartSpinBox->value() + 1);
+    mLoopEndSpinBox->setMaximum(parent->getFrameLength());
     mLoopEndSpinBox->setToolTip(tr("End of playback loop"));
     mLoopEndSpinBox->setFocusPolicy(Qt::WheelFocus);
-    mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
 
     mPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
     mPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
@@ -110,7 +111,7 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     makeConnections();
 
     auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
-    connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartClick );
+    connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::preLoopStartClick );
     connect( mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
 
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled );
@@ -198,4 +199,19 @@ void TimeControls::loopButtonClicked( bool bChecked )
 void TimeControls::playbackRangeClicked( bool bChecked )
 {
     mEditor->playback()->enableRangedPlayback( bChecked );
+}
+
+void TimeControls::preLoopStartClick(int i) {
+    if( i >= mLoopEndSpinBox->value() )
+    {
+        mLoopEndSpinBox->setValue( i + 1 );
+    }
+    mLoopEndSpinBox->setMinimum( i + 1 );
+
+    emit loopStartClick(i);
+}
+
+void TimeControls::updateLength(int frameLength) {
+    mLoopStartSpinBox->setMaximum(frameLength - 1);
+    mLoopEndSpinBox->setMaximum(frameLength);
 }

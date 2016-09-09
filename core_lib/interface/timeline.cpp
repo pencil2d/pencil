@@ -63,7 +63,6 @@ void TimeLine::initUI()
     mVScrollbar->setMinimum( 0 );
     mVScrollbar->setMaximum( 1 );
     mVScrollbar->setPageStep( 1 );
-    updateLength();
 
     QWidget* leftWidget = new QWidget();
     leftWidget->setMinimumWidth( 120 );
@@ -169,6 +168,7 @@ void TimeLine::initUI()
     mTimeControls = new TimeControls( this );
     mTimeControls->setCore( editor() );
     mTimeControls->initUI();
+    updateLength();
     
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
     rightToolBarLayout->addWidget( keyButtons );
@@ -333,9 +333,8 @@ void TimeLine::updateLayerNumber(int numberOfLayers)
 void TimeLine::updateLength()
 {
     int frameLength = getFrameLength();
-    qDebug() << "Update length" << frameLength << mTracks->width() << mTracks->getOffsetX() << mTracks->getFrameSize() << mTracks->width();
     mHScrollbar->setMaximum( qMax( 0, frameLength - mTracks->width() / mTracks->getFrameSize() ) );
-    //mTracks->clearCache();
+    mTimeControls->updateLength(frameLength);
     update();
     updateContent();
 }
