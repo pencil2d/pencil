@@ -183,12 +183,26 @@ void TimeControls::playButtonClicked()
 
 void TimeControls::jumpToStartButtonClicked()
 {
-    mEditor->layers()->gotoFirstKeyFrame();
+    if ( mPlaybackRangeCheckBox->isChecked() )
+    {
+        mEditor->scrubTo( mLoopStartSpinBox->value() );
+    }
+    else
+    {
+        mEditor->scrubTo( mEditor->layers()->firstKeyFrameIndex() );
+    }
 }
 
 void TimeControls::jumpToEndButtonClicked()
 {
-    mEditor->layers()->gotoLastKeyFrame();
+    if ( mPlaybackRangeCheckBox->isChecked() )
+    {
+        mEditor->scrubTo( mLoopEndSpinBox->value() );
+    }
+    else
+    {
+        mEditor->scrubTo( mEditor->layers()->lastKeyFrameIndex() );
+    }
 }
 
 void TimeControls::loopButtonClicked( bool bChecked )

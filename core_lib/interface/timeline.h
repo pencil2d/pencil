@@ -18,11 +18,11 @@ GNU General Public License for more details.
 #define TIMELINE_H
 
 #include "basedockwidget.h"
-#include "timecontrols.h"
 
 class QScrollBar;
 class Editor;
 class TimeLineCells;
+class TimeControls;
 
 
 class TimeLine : public BaseDockWidget
