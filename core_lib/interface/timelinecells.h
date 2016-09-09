@@ -40,6 +40,7 @@ public:
 Q_SIGNALS:
     void mouseMovedY(int);
     void lengthChanged(int);
+    void offsetChanged(int);
 
 public slots:
     void updateContent();
@@ -81,8 +82,9 @@ private:
     int startY, endY, startLayerNumber;
     int startFrameNumber;
     int lastFrameNumber = -1;
-    int mouseMoveY;
+    int mouseMoveY, mouseMoveX;
     int frameOffset, layerOffset;
+    Qt::MouseButton primaryButton = Qt::NoButton;
 
     bool canMoveFrame   = false;
     bool movingFrames   = false;

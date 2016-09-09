@@ -206,6 +206,7 @@ void TimeLine::initUI()
     setWindowFlags( Qt::WindowStaysOnTopHint );
 
     connect( mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange );
+    connect (mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect( mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
     connect( mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );
 

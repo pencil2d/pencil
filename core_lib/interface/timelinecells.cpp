@@ -401,6 +401,7 @@ void TimeLineCells::resizeEvent( QResizeEvent* event )
 
 void TimeLineCells::mousePressEvent( QMouseEvent* event )
 {
+    if ( primaryButton != Qt::NoButton ) return;
     int frameNumber = getFrameNumber( event->pos().x() );
     int layerNumber = getLayerNumber( event->pos().y() );
 
@@ -418,6 +419,8 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
     boxSelecting    = false;
 
     clickSelecting  = false;
+
+    primaryButton = event->button();
 
     mEditor->tools()->currentTool()->switchingLayers();
     switch ( m_eType )
@@ -443,77 +446,84 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
         }
         break;
     case TIMELINE_CELL_TYPE::Tracks:
-        if ( frameNumber == mEditor->currentFrame() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
+        if ( event->button() == Qt::MidButton )
         {
-            timeLine->scrubbing = true;
+            lastFrameNumber = getFrameNumber( event->pos().x() );
         }
         else
         {
-            if ( ( layerNumber != -1 ) && layerNumber < mEditor->object()->getLayerCount() )
+            if ( frameNumber == mEditor->currentFrame() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
             {
-                int previousLayerNumber = mEditor->layers()->currentLayerIndex();
-
-                if (previousLayerNumber != layerNumber) {
-                    Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
-                    previousLayer->deselectAll();
-
-                    mEditor->setCurrentLayer( layerNumber );
-                }
-
-                Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
-
-
-                // Check if we are using the alt key
-                //
-                if (event->modifiers() == Qt::AltModifier) {
-
-                    // If it is the case, we select everything that is after the selected frame
-                    //
-                    clickSelecting = true;
-                    canMoveFrame = true;
-
-                    currentLayer->selectAllFramesAfter(frameNumber);
-
-                }
-                // Check if we are clicking on a non selected frame
-                //
-                else if (!currentLayer->isFrameSelected(frameNumber)) {
-
-                    // If it is the case, we select it
-                    //
-                    canBoxSelect = true;
-                    clickSelecting = true;
-
-                    if ( event->modifiers() == Qt::ControlModifier ) {
-                        // Add/remove from already selected
-                        currentLayer->toggleFrameSelected(frameNumber, true);
-                    }
-                    else if ( event->modifiers() == Qt::ShiftModifier ) {
-                        // Select a range from the last selected
-                        currentLayer->extendSelectionTo(frameNumber);
-                    }
-                    else {
-                        currentLayer->toggleFrameSelected(frameNumber, false);
-                    }
-                }
-                else {
-
-                    // We clicked on a selected frame, we can move it
-                    //
-                    canMoveFrame = true;
-                }
-
-                currentLayer->mousePress( event, frameNumber );
-                update();
+                timeLine->scrubbing = true;
             }
             else
             {
-                if ( frameNumber > 0 )
+                if ( ( layerNumber != -1 ) && layerNumber < mEditor->object()->getLayerCount() )
                 {
-                    mEditor->scrubTo( frameNumber );
+                    int previousLayerNumber = mEditor->layers()->currentLayerIndex();
 
-                    timeLine->scrubbing = true;
-                    qDebug( "Scrub to %d frame", frameNumber );
+                    if (previousLayerNumber != layerNumber) {
+                        Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
+                        previousLayer->deselectAll();
+
+                        mEditor->setCurrentLayer( layerNumber );
+                    }
+
+                    Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
+
+
+                    // Check if we are using the alt key
+                    //
+                    if (event->modifiers() == Qt::AltModifier) {
+
+                        // If it is the case, we select everything that is after the selected frame
+                        //
+                        clickSelecting = true;
+                        canMoveFrame = true;
+
+                        currentLayer->selectAllFramesAfter(frameNumber);
+
+                    }
+                    // Check if we are clicking on a non selected frame
+                    //
+                    else if (!currentLayer->isFrameSelected(frameNumber)) {
+
+                        // If it is the case, we select it
+                        //
+                        canBoxSelect = true;
+                        clickSelecting = true;
+
+                        if ( event->modifiers() == Qt::ControlModifier ) {
+                            // Add/remove from already selected
+                            currentLayer->toggleFrameSelected(frameNumber, true);
+                        }
+                        else if ( event->modifiers() == Qt::ShiftModifier ) {
+                            // Select a range from the last selected
+                            currentLayer->extendSelectionTo(frameNumber);
+                        }
+                        else {
+                            currentLayer->toggleFrameSelected(frameNumber, false);
+                        }
+                    }
+                    else {
+
+                        // We clicked on a selected frame, we can move it
+                        //
+                        canMoveFrame = true;
+                    }
+
+                    currentLayer->mousePress( event, frameNumber );
+                    update();
+                }
+                else
+                {
+                    if ( frameNumber > 0 )
+                    {
+                        mEditor->scrubTo( frameNumber );
+
+                        timeLine->scrubbing = true;
+                        qDebug( "Scrub to %d frame", frameNumber );
+                    }
                 }
             }
         }
@@ -533,49 +543,59 @@ void TimeLineCells::mouseMoveEvent( QMouseEvent* event )
 
     if ( m_eType == TIMELINE_CELL_TYPE::Tracks )
     {
-        if ( timeLine->scrubbing )
+        if ( primaryButton == Qt::MidButton )
         {
-            mEditor->scrubTo( frameNumber );
+            // qMin( max_frame_offset, qMax ( min_frame_offset, draw_frame_offset ) )
+            frameOffset = qMin( qMax( 0, frameLength - width() / getFrameSize() ), qMax( 0, frameOffset + lastFrameNumber - frameNumber ) );
+            update();
+            emit offsetChanged( frameOffset );
         }
         else
         {
-            if ( startLayerNumber != -1 && startLayerNumber < mEditor->object()->getLayerCount() )
+            if ( timeLine->scrubbing )
             {
-                Layer *currentLayer = mEditor->object()->getLayer(startLayerNumber);
+                mEditor->scrubTo( frameNumber );
+            }
+            else
+            {
+                if ( startLayerNumber != -1 && startLayerNumber < mEditor->object()->getLayerCount() )
+                {
+                    Layer *currentLayer = mEditor->object()->getLayer(startLayerNumber);
 
-                // Did we move to another frame ?
-                //
-                if ( frameNumber != lastFrameNumber ) {
-
-                    // Check if the frame we clicked was selected
+                    // Did we move to another frame ?
                     //
-                    if ( canMoveFrame ) {
+                    if ( frameNumber != lastFrameNumber ) {
 
-                        // If it is the case, we move the selected frames in the layer
+                        // Check if the frame we clicked was selected
                         //
-                        movingFrames        = true;
+                        if ( canMoveFrame ) {
 
-                        int offset = frameNumber - lastFrameNumber;
-                        currentLayer->moveSelectedFrames(offset);
+                            // If it is the case, we move the selected frames in the layer
+                            //
+                            movingFrames        = true;
 
-                        mEditor->updateCurrentFrame();
+                            int offset = frameNumber - lastFrameNumber;
+                            currentLayer->moveSelectedFrames(offset);
 
+                            mEditor->updateCurrentFrame();
+
+                        }
+                        else if ( canBoxSelect ){
+
+                            // Otherwise, we do a box select
+                            //
+                            boxSelecting        = true;
+
+                            currentLayer->deselectAll();
+                            currentLayer->setFrameSelected(startFrameNumber, true);
+                            currentLayer->extendSelectionTo(frameNumber);
+                        }
+
+                        lastFrameNumber = frameNumber;
                     }
-                    else if ( canBoxSelect ){
 
-                        // Otherwise, we do a box select
-                        //
-                        boxSelecting        = true;
-
-                        currentLayer->deselectAll();
-                        currentLayer->setFrameSelected(startFrameNumber, true);
-                        currentLayer->extendSelectionTo(frameNumber);
-                    }
-
-                    lastFrameNumber = frameNumber;
+                    currentLayer->mouseMove( event, frameNumber );
                 }
-
-                currentLayer->mouseMove( event, frameNumber );
             }
         }
     }
@@ -585,14 +605,16 @@ void TimeLineCells::mouseMoveEvent( QMouseEvent* event )
 void TimeLineCells::mouseReleaseEvent( QMouseEvent* event )
 {
     qDebug( "TimeLineCell: mouse release event." );
+    if ( event->button() != primaryButton ) return;
 
+    primaryButton = Qt::NoButton;
     endY = startY;
     emit mouseMovedY( 0 );
     timeLine->scrubbing = false;
     int frameNumber = getFrameNumber( event->pos().x() );
     if ( frameNumber < 1 ) frameNumber = -1;
     int layerNumber = getLayerNumber( event->pos().y() );
-    if ( m_eType == TIMELINE_CELL_TYPE::Tracks && layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount() )
+    if ( m_eType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton && layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount() )
     {
         Layer *currentLayer = mEditor->object()->getLayer(layerNumber);
 
