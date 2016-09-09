@@ -252,39 +252,46 @@ void TimeLine::resizeEvent(QResizeEvent*)
 
 void TimeLine::wheelEvent(QWheelEvent* event)
 {
-    QPoint numPixels = event->pixelDelta();
-    QPoint numDegrees = event->angleDelta() / 8;
-    int isForward =0;
-    if ( !numPixels.isNull() )
+    if( event->modifiers() & Qt::ShiftModifier )
     {
-        if ( numPixels.ry() > 0 )
-          isForward =1;
-        else if ( numPixels.ry() < 0 )
-          isForward =-1;
-    }
-    else if (!numDegrees.isNull())
-    {
-        if ( numDegrees.ry() > 0 )
-            isForward =1;
-        else if ( numDegrees.ry() < 0 )
-            isForward =-1;
-    }
-
-    if ( isForward > 0 )
-    {
-        mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepAdd );
-    }
-    else if ( isForward < 0 )
-    {
-        mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepSub );
+        mHScrollbar->event(event);
     }
     else
     {
-      //Do nothing we've had a wheel event where we are neither going forward or backward
-      //which should never happen?
-    }
+        QPoint numPixels = event->pixelDelta();
+        QPoint numDegrees = event->angleDelta() / 8;
+        int isForward =0;
+        if ( !numPixels.isNull() )
+        {
+            if ( numPixels.ry() > 0 )
+                isForward =1;
+            else if ( numPixels.ry() < 0 )
+                isForward =-1;
+        }
+        else if (!numDegrees.isNull())
+        {
+            if ( numDegrees.ry() > 0 )
+                isForward =1;
+            else if ( numDegrees.ry() < 0 )
+                isForward =-1;
+        }
 
-    event->accept();
+        if ( isForward > 0 )
+        {
+            mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepAdd );
+        }
+        else if ( isForward < 0 )
+        {
+            mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepSub );
+        }
+        else
+        {
+            //Do nothing we've had a wheel event where we are neither going forward or backward
+            //which should never happen?
+        }
+
+        event->accept();
+    }
 }
 
 void TimeLine::deleteCurrentLayer()
