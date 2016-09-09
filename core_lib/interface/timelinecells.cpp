@@ -679,3 +679,12 @@ void TimeLineCells::vScrollChange( int x )
     layerOffset = x;
     update();
 }
+
+void TimeLineCells::setMouseMoveY( int x )
+{
+    mouseMoveY = x;
+    if ( x == 0 )
+    {
+        update();
+    }
+}

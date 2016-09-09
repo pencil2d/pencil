@@ -47,7 +47,7 @@ public slots:
     void updateFrame(int frameNumber);
     void hScrollChange(int);
     void vScrollChange(int);
-    void setMouseMoveY(int x) { mouseMoveY = x;}
+    void setMouseMoveY(int x);
 
 protected:
     void drawContent();
