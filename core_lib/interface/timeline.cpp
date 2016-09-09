@@ -219,6 +219,9 @@ void TimeLine::initUI()
 
     connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::loopStartClick );
     connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::loopEndClick );
+    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::updateLength );
+    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::updateLength );
+    connect( mTimeControls, &TimeControls::rangeStateChange, this, &TimeLine::updateLength );
 
     connect( mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick );
     connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick );
@@ -367,4 +370,14 @@ void TimeLine::setPlaying( bool isPlaying )
 void TimeLine::setRangeState( bool range )
 {
     mTimeControls->toggleLoopControl(range);
+}
+
+int TimeLine::getRangeLower()
+{
+    return mTimeControls->getRangeLower();
+}
+
+int TimeLine::getRangeUpper()
+{
+    return mTimeControls->getRangeUpper();
 }

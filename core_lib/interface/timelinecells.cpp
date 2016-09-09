@@ -256,6 +256,17 @@ void TimeLineCells::drawContent()
         {
             incr = ( i < 9 ) ? 4 : 0;
 
+            if(i + 1 >= timeLine->getRangeLower() && i < timeLine->getRangeUpper())
+            {
+                painter.setPen( Qt::NoPen );
+                painter.setBrush( Qt::yellow );
+
+                painter.drawRect( getFrameX( i ), 1, frameSize + 1, 2 );
+
+                painter.setPen( QColor( 70, 70, 70, 255 ) );
+                painter.setBrush( Qt::darkGray );
+            }
+
             if ( i%fps == 0 )
             {
                 painter.drawLine( getFrameX( i ), 1, getFrameX( i ), 5 );

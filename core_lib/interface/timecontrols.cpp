@@ -228,6 +228,7 @@ void TimeControls::loopButtonClicked( bool bChecked )
 void TimeControls::playbackRangeClicked( bool bChecked )
 {
     mEditor->playback()->enableRangedPlayback( bChecked );
+    emit rangeStateChange();
 }
 
 void TimeControls::preLoopStartClick(int i) {

@@ -40,6 +40,8 @@ public:
     void setCore( Editor* editor );
     void updateLength(int frameLength);
     void updatePlayState();
+    int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
+    int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
 Q_SIGNALS:
     void soundClick( bool );
@@ -47,6 +49,7 @@ Q_SIGNALS:
 
     void loopStartClick(int);
     void loopEndClick(int);
+    void rangeStateChange();
 
 public slots:
     void toggleLoop(bool);

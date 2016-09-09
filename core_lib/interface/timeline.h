@@ -44,6 +44,8 @@ public:
     void setRangeState( bool range );
     void setPlaying( bool isPlaying );
     int getFrameLength();
+    int getRangeLower();
+    int getRangeUpper();
 
 Q_SIGNALS:
     void modification();
