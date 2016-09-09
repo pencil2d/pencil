@@ -177,7 +177,6 @@ void Editor::settingUpdated(SETTING setting)
 
 BackupElement* Editor::currentBackup()
 {
-    qDebug() << mBackupIndex << mBackupList.length();
     if ( mBackupIndex >= 0 )
     {
         return mBackupList[ mBackupIndex ];

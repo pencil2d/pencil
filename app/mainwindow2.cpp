@@ -382,7 +382,6 @@ void MainWindow2::markTitleSaved()
 
 void MainWindow2::updateTitleSaveState()
 {
-    qDebug() << "updateTitleSaveState";
     if( mEditor->currentBackup() == mBackupAtSave )
     {
         markTitleSaved();
