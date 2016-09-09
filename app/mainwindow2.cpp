@@ -169,6 +169,9 @@ void MainWindow2::createDockWidgets()
         << mToolOptions
         << mToolBox;
 
+    mStartIcon = QIcon(":icons/controls/play.png");
+    mStopIcon = QIcon(":icons/controls/stop.png");
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -293,6 +296,8 @@ void MainWindow2::createMenus()
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, mTimeLine, &TimeLine::setLoop );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, mTimeLine, &TimeLine::setRangeState );
+    connect( pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying );
+    connect( pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState );
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mEditor, &Editor::addNewKey );
     connect(ui->actionRemove_Frame, &QAction::triggered, mEditor, &Editor::removeKey );
@@ -1205,4 +1210,16 @@ void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
     statusBar()->showMessage( QString( "Zoom: %0%1" ).arg( zoom, 0, 'f', 1 ).arg("%") );
+}
+
+void MainWindow2::changePlayState( bool isPlaying )
+{
+    if( isPlaying ) {
+        ui->actionPlay->setText(tr("Stop"));
+        ui->actionPlay->setIcon(mStopIcon);
+    }
+    else {
+        ui->actionPlay->setText(tr("Play"));
+        ui->actionPlay->setIcon(mStartIcon);
+    }
 }

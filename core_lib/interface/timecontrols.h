@@ -39,6 +39,7 @@ public:
     void setFps ( int value );
     void setCore( Editor* editor );
     void updateLength(int frameLength);
+    void updatePlayState();
 
 Q_SIGNALS:
     void soundClick( bool );
@@ -70,6 +71,9 @@ private:
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
+
+    QIcon mStartIcon;
+    QIcon mStopIcon;
 
     Editor* mEditor = nullptr;
 };

@@ -42,6 +42,7 @@ public:
     void updateContent();
     void setLoop( bool loop );
     void setRangeState( bool range );
+    void setPlaying( bool isPlaying );
     int getFrameLength();
 
 Q_SIGNALS:

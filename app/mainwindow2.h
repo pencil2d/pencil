@@ -108,6 +108,8 @@ private:
     void readSettings();
     void writeSettings();
 
+    void changePlayState( bool isPlaying );
+
     void makeConnections( Editor* );
     void makeConnections( Editor*, ColorBox* );
     void makeConnections( Editor*, ScribbleArea* );
@@ -145,6 +147,8 @@ private:
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
     BackgroundWidget* mBackground;
+
+    QIcon mStartIcon, mStopIcon;
 };
 
 #endif // MAINWINDOW2_H

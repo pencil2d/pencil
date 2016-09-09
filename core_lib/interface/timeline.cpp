@@ -359,6 +359,11 @@ void TimeLine::setLoop( bool loop )
     mTimeControls->toggleLoop(loop);
 }
 
+void TimeLine::setPlaying( bool isPlaying )
+{
+    mTimeControls->updatePlayState();
+}
+
 void TimeLine::setRangeState( bool range )
 {
     mTimeControls->toggleLoopControl(range);

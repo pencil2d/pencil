@@ -76,12 +76,13 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     QLabel* spacingLabel = new QLabel("");
     spacingLabel->setIndent(6);
 
-    QIcon playIcon(":icons/controls/play.png");
     QIcon loopIcon(":icons/controls/loop.png");
     QIcon soundIcon(":icons/controls/sound.png");
     QIcon endplayIcon(":icons/controls/endplay.png");
     QIcon startplayIcon(":icons/controls/startplay.png");
-    mPlayButton->setIcon(playIcon);
+    mStartIcon = QIcon(":icons/controls/play.png");
+    mStopIcon = QIcon(":icons/controls/stop.png");
+    mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(loopIcon);
     mSoundButton->setIcon(soundIcon);
     mJumpToEndButton->setIcon(endplayIcon);
@@ -178,6 +179,20 @@ void TimeControls::playButtonClicked()
     else
     {
         mEditor->playback()->play();
+    }
+    updatePlayState();
+}
+
+void TimeControls::updatePlayState()
+{
+    if( mEditor->playback()->isPlaying() )
+    {
+        mPlayButton->setIcon(mStopIcon);
+        mPlayButton->setToolTip(tr("Stop"));
+    }
+    else {
+        mPlayButton->setIcon(mStartIcon);
+        mPlayButton->setToolTip(tr("Start"));
     }
 }
 
