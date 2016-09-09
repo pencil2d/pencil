@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "pencildef.h"
 #include "util.h"
+#include "preferencemanager.h"
 
 
 TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
@@ -34,30 +35,33 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     mFpsBox->setFixedHeight(22);
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
-    mFpsBox->setMaximum(50);
+    mFpsBox->setMaximum(90);
+    mFpsBox->setSuffix(" fps");
     mFpsBox->setToolTip("Frames per second");
-    mFpsBox->setFocusPolicy(Qt::NoFocus);
+    mFpsBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopStartSpinBox = new QSpinBox();
     mLoopStartSpinBox->setFont( QFont("Helvetica", 10) );
     mLoopStartSpinBox->setFixedHeight(22);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
-    mLoopStartSpinBox->setToolTip(tr("Start of loop"));
-    mLoopStartSpinBox->setFocusPolicy(Qt::NoFocus);
+    mLoopStartSpinBox->setMaximum(settings.value("length").toInt() - 1);
+    mLoopStartSpinBox->setToolTip(tr("Start of playback loop"));
+    mLoopStartSpinBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopEndSpinBox= new QSpinBox();
     mLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
     mLoopEndSpinBox->setFixedHeight(22);
     mLoopEndSpinBox->setMinimum(2);
-    mLoopEndSpinBox->setToolTip(tr("End of loop"));
-    mLoopEndSpinBox->setFocusPolicy(Qt::NoFocus);
+    mLoopEndSpinBox->setMaximum(settings.value("length").toInt());
+    mLoopEndSpinBox->setToolTip(tr("End of playback loop"));
+    mLoopEndSpinBox->setFocusPolicy(Qt::WheelFocus);
     mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
 
     mPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
     mPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
     mPlaybackRangeCheckBox->setFixedHeight(26);
-    mPlaybackRangeCheckBox->setToolTip(tr("Loop control"));
+    mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
     mPlayButton = new QPushButton( this );
     mLoopButton = new QPushButton();
@@ -70,8 +74,6 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     separator->setFixedSize(QSize(37,31));
     QLabel* spacingLabel = new QLabel("");
     spacingLabel->setIndent(6);
-    QLabel* fpsLabel = new QLabel(tr("Fps: "));
-    fpsLabel->setIndent(6);
 
     QIcon playIcon(":icons/controls/play.png");
     QIcon loopIcon(":icons/controls/loop.png");
@@ -103,7 +105,6 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
-    addWidget(fpsLabel);
     addWidget(mFpsBox);
 
     makeConnections();

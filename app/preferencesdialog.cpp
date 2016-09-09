@@ -446,21 +446,20 @@ TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
     QGroupBox* timeLineBox = new QGroupBox(tr("Timeline"));
     mDrawLabel = new QCheckBox(tr("Draw timeline labels"));
     mFontSize = new QSpinBox();
-    QLabel* frameSizeLabel = new QLabel(tr("Frame size in Pixels"));
-    mFrameSize = new QSpinBox(this);
+    QLabel* frameSizeLabel = new QLabel(tr("Frame size"));
+    mFrameSize = new QSlider(Qt::Horizontal, this);
     QLabel* lengthSizeLabel = new QLabel(tr("Timeline size in Frames"));
     mLengthSize = new QLineEdit(this);
-    mLengthSize->setInputMask("0009");
+    QIntValidator* lengthSizeValidator = new QIntValidator(this);
+    lengthSizeValidator->setBottom(2);
+    mLengthSize->setValidator( lengthSizeValidator );
 
     mScrubBox = new QCheckBox(tr("Short scrub"));
 
-    mFontSize->setMinimum(4);
-    mFontSize->setMaximum(20);
-    mFrameSize->setMinimum(4);
-    mFrameSize->setMaximum(20);
+    mFontSize->setRange(4, 20);
+    mFrameSize->setRange(4, 20);
 
     mFontSize->setFixedWidth(50);
-    mFrameSize->setFixedWidth(50);
     mLengthSize->setFixedWidth(50);
 
 

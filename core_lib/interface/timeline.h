@@ -38,9 +38,8 @@ public:
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
     void updateLayerView();
-    void updateLength( int frameLength );
+    void updateLength();
     void updateContent();
-    void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
     int getFrameLength();
 
 Q_SIGNALS:

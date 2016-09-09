@@ -56,13 +56,14 @@ void TimeLine::initUI()
 
     connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
     connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
+    connect (mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength );
 
     mHScrollbar = new QScrollBar( Qt::Horizontal );
     mVScrollbar = new QScrollBar( Qt::Vertical );
     mVScrollbar->setMinimum( 0 );
     mVScrollbar->setMaximum( 1 );
     mVScrollbar->setPageStep( 1 );
-    updateLength( getFrameLength() );
+    updateLength();
 
     QWidget* leftWidget = new QWidget();
     leftWidget->setMinimumWidth( 120 );
@@ -208,6 +209,8 @@ void TimeLine::initUI()
     connect( mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
     connect( mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );
 
+    connect( splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength );
+
     connect( addKeyButton,    &QToolButton::clicked, this, &TimeLine::addKeyClick );
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
@@ -327,9 +330,14 @@ void TimeLine::updateLayerNumber(int numberOfLayers)
     updateLayerView();
 }
 
-void TimeLine::updateLength(int frameLength)
+void TimeLine::updateLength()
 {
-    mHScrollbar->setMaximum( frameLength );
+    int frameLength = getFrameLength();
+    qDebug() << "Update length" << frameLength << mTracks->width() << mTracks->getOffsetX() << mTracks->getFrameSize() << mTracks->width();
+    mHScrollbar->setMaximum( qMax( 0, frameLength - mTracks->width() / mTracks->getFrameSize() ) );
+    //mTracks->clearCache();
+    update();
+    updateContent();
 }
 
 void TimeLine::updateContent()
@@ -337,16 +345,4 @@ void TimeLine::updateContent()
     mLayerList->updateContent();
     mTracks->updateContent();
     update();
-}
-
-void TimeLine::forceUpdateLength(QString newLength)
-{
-    bool ok;
-    int dec = newLength.toInt(&ok, 10);
-
-    if ( dec > getFrameLength())
-    {
-        updateLength(dec);
-        updateContent();
-    }
 }

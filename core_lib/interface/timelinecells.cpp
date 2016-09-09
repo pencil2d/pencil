@@ -49,13 +49,14 @@ void TimeLineCells::loadSetting(SETTING setting)
     {
     case SETTING::TIMELINE_SIZE:
         frameLength = mPrefs->getInt(SETTING::TIMELINE_SIZE);
-        timeLine->updateLength( frameLength );
+        timeLine->updateLength();
         break;
     case SETTING::LABEL_FONT_SIZE:
         fontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
         break;
     case SETTING::FRAME_SIZE:
         frameSize = mPrefs->getInt(SETTING::FRAME_SIZE);
+        timeLine->updateLength();
         break;
     case SETTING::SHORT_SCRUB:
         shortScrub = mPrefs->isOn(SETTING::SHORT_SCRUB);
@@ -392,10 +393,10 @@ void TimeLineCells::paintEvent( QPaintEvent* event )
 
 void TimeLineCells::resizeEvent( QResizeEvent* event )
 {
-    if ( m_pCache ) delete m_pCache;
-    m_pCache = new QPixmap( size() );
+    clearCache();
     updateContent();
     event->accept();
+    emit lengthChanged( getFrameLength() );
 }
 
 void TimeLineCells::mousePressEvent( QMouseEvent* event )

@@ -30,12 +30,16 @@ public:
     int getFrameNumber(int x);
     int getFrameX(int frameNumber);
     int getMouseMoveY() { return mouseMoveY; }
+    int getOffsetX() { return m_offsetX; }
     int getOffsetY() { return m_offsetY; }
     int getLayerHeight() { return layerHeight; }
     int getFrameLength() {return frameLength;}
+    int getFrameSize() { return frameSize; }
+    void clearCache() { if ( m_pCache ) delete m_pCache; m_pCache = new QPixmap( size() ); }
 
 Q_SIGNALS:
     void mouseMovedY(int);
+    void lengthChanged(int);
 
 public slots:
     void updateContent();

@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 
 class Editor;
+class PreferenceManager;
 
 
 class TimeControls : public QToolBar
@@ -33,7 +34,7 @@ class TimeControls : public QToolBar
     Q_OBJECT
 
 public:
-    TimeControls( QWidget* parent = 0 );
+    TimeControls(QWidget* parent = 0 );
     void initUI();
     
     void setFps ( int value );
