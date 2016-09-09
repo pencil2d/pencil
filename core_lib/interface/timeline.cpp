@@ -260,7 +260,8 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     }
     else
     {
-        QPoint numPixels = event->pixelDelta();
+        mVScrollbar->event(event);
+        /*QPoint numPixels = event->pixelDelta();
         QPoint numDegrees = event->angleDelta() / 8;
         int isForward =0;
         if ( !numPixels.isNull() )
@@ -292,7 +293,7 @@ void TimeLine::wheelEvent(QWheelEvent* event)
             //which should never happen?
         }
 
-        event->accept();
+        event->accept();*/
     }
 }
 
@@ -323,12 +324,10 @@ void TimeLine::updateFrame( int frameNumber )
 
 void TimeLine::updateLayerView()
 {
-    int pageStep = ( height() - mTracks->getOffsetY() - mHScrollbar->height() )
-                   / mTracks->getLayerHeight() - 2;
-    
-    mVScrollbar->setPageStep( pageStep );
+    int pageDisplay = ( mTracks->height() - mTracks->getOffsetY() ) / mTracks->getLayerHeight();
+
     mVScrollbar->setMinimum( 0 );
-    mVScrollbar->setMaximum( qMax(0, mNumLayers - mVScrollbar->pageStep()) );
+    mVScrollbar->setMaximum( qMax(0, qMax( 0, mNumLayers - pageDisplay ) ) );
     update();
     updateContent();
 }
