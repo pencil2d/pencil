@@ -353,3 +353,8 @@ void TimeLine::updateContent()
     mTracks->updateContent();
     update();
 }
+
+void TimeLine::setLoop(bool loop)
+{
+    mTimeControls->toggleLoop(loop);
+}

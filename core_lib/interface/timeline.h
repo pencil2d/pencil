@@ -40,6 +40,7 @@ public:
     void updateLayerView();
     void updateLength();
     void updateContent();
+    void setLoop( bool loop );
     int getFrameLength();
 
 Q_SIGNALS:
