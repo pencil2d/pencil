@@ -454,6 +454,10 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
         {
             if ( frameNumber == mEditor->currentFrame() && ( !shortScrub || ( shortScrub && startY < 20 ) ) )
             {
+                if (mEditor->playback()->isPlaying())
+                {
+                    mEditor->playback()->stop();
+                }
                 timeLine->scrubbing = true;
             }
             else
@@ -513,12 +517,17 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
                     }
 
                     currentLayer->mousePress( event, frameNumber );
-                    update();
+                    timeLine->updateContent();
                 }
                 else
                 {
                     if ( frameNumber > 0 )
                     {
+                        if (mEditor->playback()->isPlaying())
+                        {
+                            mEditor->playback()->stop();
+                        }
+
                         mEditor->scrubTo( frameNumber );
 
                         timeLine->scrubbing = true;
@@ -632,13 +641,12 @@ void TimeLineCells::mouseReleaseEvent( QMouseEvent* event )
         }
 
         currentLayer->mouseRelease( event, frameNumber );
-        update();
     }
     if ( m_eType == TIMELINE_CELL_TYPE::Layers && layerNumber != startLayerNumber && startLayerNumber != -1 && layerNumber != -1 )
     {
         mEditor->moveLayer( startLayerNumber, layerNumber );
     }
-    update();
+    timeLine->updateContent();
 }
 
 void TimeLineCells::mouseDoubleClickEvent( QMouseEvent* event )
