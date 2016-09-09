@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="font">
@@ -820,10 +820,10 @@ background: #B6DBEA;
     <bool>true</bool>
    </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>loopcontrol</string>
+    <string>Range</string>
    </property>
   </action>
   <action name="actionToolsWidget">
@@ -898,6 +898,7 @@ background: #B6DBEA;
  <resources>
   <include location="../../pencil.qrc"/>
   <include location="../resource/app.qrc"/>
+  <include location="../../pencil.qrc"/>
  </resources>
  <connections/>
 </ui>

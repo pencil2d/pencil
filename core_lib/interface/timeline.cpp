@@ -354,7 +354,12 @@ void TimeLine::updateContent()
     update();
 }
 
-void TimeLine::setLoop(bool loop)
+void TimeLine::setLoop( bool loop )
 {
     mTimeControls->toggleLoop(loop);
+}
+
+void TimeLine::setRangeState( bool range )
+{
+    mTimeControls->toggleLoopControl(range);
 }

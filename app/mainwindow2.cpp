@@ -292,6 +292,7 @@ void MainWindow2::createMenus()
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, ui->actionLoop, &QAction::setChecked );
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, mTimeLine, &TimeLine::setLoop );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
+    connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, mTimeLine, &TimeLine::setRangeState );
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mEditor, &Editor::addNewKey );
     connect(ui->actionRemove_Frame, &QAction::triggered, mEditor, &Editor::removeKey );

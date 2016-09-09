@@ -41,6 +41,7 @@ public:
     void updateLength();
     void updateContent();
     void setLoop( bool loop );
+    void setRangeState( bool range );
     int getFrameLength();
 
 Q_SIGNALS:
