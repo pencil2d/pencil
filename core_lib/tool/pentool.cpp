@@ -45,7 +45,7 @@ void PenTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("penWidth", width);
     settings.sync();
 }
@@ -56,7 +56,7 @@ void PenTool::setFeather( const qreal feather )
     properties.feather = feather;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("penFeather", feather);
     settings.sync();
 }
@@ -67,7 +67,7 @@ void PenTool::setPressure( const bool pressure )
     properties.pressure = pressure;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("penPressure", pressure);
     settings.sync();
 }

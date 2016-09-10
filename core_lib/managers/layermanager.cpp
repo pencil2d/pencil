@@ -239,15 +239,3 @@ void LayerManager::layerUpdated(int layerId)
 {
     emit currentLayerChanged(layerId);
 }
-
-void LayerManager::gotoLastKeyFrame()
-{
-    int nFrame = lastKeyFrameIndex();
-    editor()->scrubTo( nFrame );
-}
-
-void LayerManager::gotoFirstKeyFrame()
-{
-    int nFrame = firstKeyFrameIndex();
-    editor()->scrubTo( nFrame );
-}

@@ -54,12 +54,14 @@ void PlaybackManager::play()
 
     mTimer->setInterval( 1000.0f / mFps );
     mTimer->start();
+    emit playStateChanged(true);
 }
 
 void PlaybackManager::stop()
 {
     mTimer->stop();
     stopSounds();
+    emit playStateChanged(false);
 }
 
 void PlaybackManager::setFps( int fps )

@@ -149,7 +149,7 @@ private:
     PreferenceManager* mManager = nullptr;
     QCheckBox* mDrawLabel;
     QSpinBox* mFontSize;
-    QSpinBox* mFrameSize;
+    QSlider* mFrameSize;
     QLineEdit* mLengthSize;
     QCheckBox* mScrubBox;
 };

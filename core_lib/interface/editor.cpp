@@ -177,7 +177,6 @@ void Editor::settingUpdated(SETTING setting)
 
 BackupElement* Editor::currentBackup()
 {
-    qDebug() << mBackupIndex << mBackupList.length();
     if ( mBackupIndex >= 0 )
     {
         return mBackupList[ mBackupIndex ];
@@ -622,7 +621,7 @@ QString Editor::workingDir() const
 /*
 bool Editor::exportMov()
 {
-QSettings settings( "Pencil", "Pencil" );
+QSettings settings( PENCIL2D, PENCIL2D );
 QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
 if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
 //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);

@@ -25,7 +25,7 @@ void PolylineTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[BEZIER] = true;
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();
     properties.feather = -1;
@@ -46,7 +46,7 @@ void PolylineTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("polyLineWidth", width);
     settings.sync();
 }
