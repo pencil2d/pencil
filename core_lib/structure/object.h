@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "colourref.h"
 #include "pencilerror.h"
+#include "pencildef.h"
 
 class QProgressDialog;
 class LayerBitmap;

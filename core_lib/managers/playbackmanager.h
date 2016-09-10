@@ -39,6 +39,7 @@ Q_SIGNALS:
     void fpsChanged( int fps );
     void loopStateChanged( bool b );
     void rangedPlaybackStateChanged( bool b );
+    void playStateChanged( bool isPlaying );
 
 private:
     void timerTick();

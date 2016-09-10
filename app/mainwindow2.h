@@ -59,6 +59,7 @@ public slots:
     void undoActSetText(void);
     void undoActSetEnabled(void);
     void openDocument(const QString &fileName);
+    void updateTitleSaveState(void);
 
 public:
     void setOpacity(int opacity);
@@ -107,6 +108,9 @@ private:
     void readSettings();
     void writeSettings();
 
+    void changePlayState( bool isPlaying );
+
+    void makeConnections( Editor* );
     void makeConnections( Editor*, ColorBox* );
     void makeConnections( Editor*, ScribbleArea* );
     void makeConnections( Editor*, ColorPaletteWidget* );
@@ -115,6 +119,10 @@ private:
     void makeConnections( Editor*, ToolOptionWidget*);
 
     void bindActionWithSetting( QAction*, SETTING );
+
+    bool isTitleMarkedUnsaved();
+    void markTitleSaved();
+    void markTitleUnsaved();
 
     // UI: central Drawing Area
     ScribbleArea* mScribbleArea                = nullptr;
@@ -130,12 +138,17 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 
+    // backup
+    BackupElement* mBackupAtSave = nullptr;
+
 private:
     ActionCommands* mCommands              = nullptr;
 
     Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
     BackgroundWidget* mBackground;
+
+    QIcon mStartIcon, mStopIcon;
 };
 
 #endif // MAINWINDOW2_H

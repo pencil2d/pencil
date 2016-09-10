@@ -56,13 +56,13 @@ void TimeLine::initUI()
 
     connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
     connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
+    connect (mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength );
 
     mHScrollbar = new QScrollBar( Qt::Horizontal );
     mVScrollbar = new QScrollBar( Qt::Vertical );
     mVScrollbar->setMinimum( 0 );
     mVScrollbar->setMaximum( 1 );
     mVScrollbar->setPageStep( 1 );
-    updateLength( getFrameLength() );
 
     QWidget* leftWidget = new QWidget();
     leftWidget->setMinimumWidth( 120 );
@@ -168,6 +168,7 @@ void TimeLine::initUI()
     mTimeControls = new TimeControls( this );
     mTimeControls->setCore( editor() );
     mTimeControls->initUI();
+    updateLength();
     
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
     rightToolBarLayout->addWidget( keyButtons );
@@ -205,8 +206,11 @@ void TimeLine::initUI()
     setWindowFlags( Qt::WindowStaysOnTopHint );
 
     connect( mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange );
+    connect (mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect( mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange );
     connect( mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange );
+
+    connect( splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength );
 
     connect( addKeyButton,    &QToolButton::clicked, this, &TimeLine::addKeyClick );
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
@@ -215,9 +219,13 @@ void TimeLine::initUI()
 
     connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::loopStartClick );
     connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::loopEndClick );
+    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::updateLength );
+    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::updateLength );
+    connect( mTimeControls, &TimeControls::rangeStateChange, this, &TimeLine::updateLength );
 
     connect( mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick );
     connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick );
+    connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength );
 
     connect( newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer );
     connect( newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer );
@@ -249,39 +257,47 @@ void TimeLine::resizeEvent(QResizeEvent*)
 
 void TimeLine::wheelEvent(QWheelEvent* event)
 {
-    QPoint numPixels = event->pixelDelta();
-    QPoint numDegrees = event->angleDelta() / 8;
-    int isForward =0;
-    if ( !numPixels.isNull() )
+    if( event->modifiers() & Qt::ShiftModifier )
     {
-        if ( numPixels.ry() > 0 )
-          isForward =1;
-        else if ( numPixels.ry() < 0 )
-          isForward =-1;
-    }
-    else if (!numDegrees.isNull())
-    {
-        if ( numDegrees.ry() > 0 )
-            isForward =1;
-        else if ( numDegrees.ry() < 0 )
-            isForward =-1;
-    }
-
-    if ( isForward > 0 )
-    {
-        mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepAdd );
-    }
-    else if ( isForward < 0 )
-    {
-        mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepSub );
+        mHScrollbar->event(event);
     }
     else
     {
-      //Do nothing we've had a wheel event where we are neither going forward or backward
-      //which should never happen?
-    }
+        mVScrollbar->event(event);
+        /*QPoint numPixels = event->pixelDelta();
+        QPoint numDegrees = event->angleDelta() / 8;
+        int isForward =0;
+        if ( !numPixels.isNull() )
+        {
+            if ( numPixels.ry() > 0 )
+                isForward =1;
+            else if ( numPixels.ry() < 0 )
+                isForward =-1;
+        }
+        else if (!numDegrees.isNull())
+        {
+            if ( numDegrees.ry() > 0 )
+                isForward =1;
+            else if ( numDegrees.ry() < 0 )
+                isForward =-1;
+        }
 
-    event->accept();
+        if ( isForward > 0 )
+        {
+            mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepAdd );
+        }
+        else if ( isForward < 0 )
+        {
+            mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepSub );
+        }
+        else
+        {
+            //Do nothing we've had a wheel event where we are neither going forward or backward
+            //which should never happen?
+        }
+
+        event->accept();*/
+    }
 }
 
 void TimeLine::deleteCurrentLayer()
@@ -311,12 +327,10 @@ void TimeLine::updateFrame( int frameNumber )
 
 void TimeLine::updateLayerView()
 {
-    int pageStep = ( height() - mTracks->getOffsetY() - mHScrollbar->height() )
-                   / mTracks->getLayerHeight() - 2;
-    
-    mVScrollbar->setPageStep( pageStep );
+    int pageDisplay = ( mTracks->height() - mTracks->getOffsetY() ) / mTracks->getLayerHeight();
+
     mVScrollbar->setMinimum( 0 );
-    mVScrollbar->setMaximum( qMax(0, mNumLayers - mVScrollbar->pageStep()) );
+    mVScrollbar->setMaximum( qMax(0, qMax( 0, mNumLayers - pageDisplay ) ) );
     update();
     updateContent();
 }
@@ -327,9 +341,13 @@ void TimeLine::updateLayerNumber(int numberOfLayers)
     updateLayerView();
 }
 
-void TimeLine::updateLength(int frameLength)
+void TimeLine::updateLength()
 {
-    mHScrollbar->setMaximum( frameLength );
+    int frameLength = getFrameLength();
+    mHScrollbar->setMaximum( qMax( 0, frameLength - mTracks->width() / mTracks->getFrameSize() ) );
+    mTimeControls->updateLength(frameLength);
+    update();
+    updateContent();
 }
 
 void TimeLine::updateContent()
@@ -339,14 +357,27 @@ void TimeLine::updateContent()
     update();
 }
 
-void TimeLine::forceUpdateLength(QString newLength)
+void TimeLine::setLoop( bool loop )
 {
-    bool ok;
-    int dec = newLength.toInt(&ok, 10);
+    mTimeControls->toggleLoop(loop);
+}
 
-    if ( dec > getFrameLength())
-    {
-        updateLength(dec);
-        updateContent();
-    }
+void TimeLine::setPlaying( bool isPlaying )
+{
+    mTimeControls->updatePlayState();
+}
+
+void TimeLine::setRangeState( bool range )
+{
+    mTimeControls->toggleLoopControl(range);
+}
+
+int TimeLine::getRangeLower()
+{
+    return mTimeControls->getRangeLower();
+}
+
+int TimeLine::getRangeUpper()
+{
+    return mTimeControls->getRangeUpper();
 }

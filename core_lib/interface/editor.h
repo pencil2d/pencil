@@ -83,7 +83,7 @@ public:
     void scrubTo( int frameNumber );
 
     int  allLayers();
-    bool exportSeqCLI( QString, QString );
+    bool exportSeqCLI( QString filePath, QString format = "PNG", int width = -1, int height = -1, bool transparency = false, bool antialias = true );
     
     QString workingDir() const;
 
@@ -91,11 +91,13 @@ public:
 
     // backup
     int mBackupIndex;
+    BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
 Q_SIGNALS:
     void updateTimeLine();
     void updateLayerCount();
+    void updateBackup();
 
     void selectAll();
     void changeThinLinesButton( bool );

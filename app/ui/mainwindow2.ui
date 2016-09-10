@@ -820,10 +820,10 @@ background: #B6DBEA;
     <bool>true</bool>
    </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>loopcontrol</string>
+    <string>Range</string>
    </property>
   </action>
   <action name="actionToolsWidget">

@@ -172,6 +172,9 @@ void MainWindow2::createDockWidgets()
         << mToolOptions
         << mToolBox;
 
+    mStartIcon = QIcon(":icons/controls/play.png");
+    mStopIcon = QIcon(":icons/controls/stop.png");
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -203,6 +206,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget( Qt::RightDockWidgetArea, mPreview );
     */
 
+    makeConnections( mEditor );
     makeConnections( mEditor, mTimeLine );
     makeConnections( mEditor, mColorWheel );
     makeConnections( mEditor, mColorPalette );
@@ -292,7 +296,11 @@ void MainWindow2::createMenus()
     connect( ui->actionLoop, &QAction::triggered, pPlaybackManager, &PlaybackManager::setLooping );
     connect( ui->actionLoopControl, &QAction::triggered, pPlaybackManager, &PlaybackManager::enableRangedPlayback );
     connect( pPlaybackManager, &PlaybackManager::loopStateChanged, ui->actionLoop, &QAction::setChecked );
+    connect( pPlaybackManager, &PlaybackManager::loopStateChanged, mTimeLine, &TimeLine::setLoop );
     connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, ui->actionLoopControl, &QAction::setChecked );
+    connect( pPlaybackManager, &PlaybackManager::rangedPlaybackStateChanged, mTimeLine, &TimeLine::setRangeState );
+    connect( pPlaybackManager, &PlaybackManager::playStateChanged, mTimeLine, &TimeLine::setPlaying );
+    connect( pPlaybackManager, &PlaybackManager::playStateChanged, this, &MainWindow2::changePlayState );
 
     connect(ui->actionAdd_Frame, &QAction::triggered, mEditor, &Editor::addNewKey );
     connect(ui->actionRemove_Frame, &QAction::triggered, mEditor, &Editor::removeKey );
@@ -365,6 +373,33 @@ void MainWindow2::setOpacity( int opacity )
     setWindowOpacity( opacity / 100.0 );
 }
 
+bool MainWindow2::isTitleMarkedUnsaved()
+{
+    return QApplication::activeWindow()->windowTitle().startsWith(QString("* "));
+}
+
+void MainWindow2::markTitleUnsaved()
+{
+    if (!isTitleMarkedUnsaved())
+        setWindowTitle( QString("* ") + QApplication::activeWindow()->windowTitle() );
+}
+
+void MainWindow2::markTitleSaved()
+{
+    if (isTitleMarkedUnsaved())
+        setWindowTitle( QApplication::activeWindow()->windowTitle().remove(0, 2) );
+}
+
+void MainWindow2::updateTitleSaveState()
+{
+    if( mEditor->currentBackup() == mBackupAtSave )
+    {
+        markTitleSaved();
+    }
+    else {
+        markTitleUnsaved();
+    }
+}
 
 void MainWindow2::closeEvent( QCloseEvent* event )
 {
@@ -485,9 +520,12 @@ void MainWindow2::openFile( QString filename )
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
-
-    progress.setWindowModality( Qt::WindowModal );
-    progress.show();
+    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
+    if ( this->isVisible() )
+    {
+        progress.setWindowModality( Qt::WindowModal );
+        progress.show();
+    }
 
     mEditor->setCurrentLayer( 0 );
 
@@ -547,6 +585,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     mTimeLine->updateContent();
 
     setWindowTitle( strSavedFileName );
+    mBackupAtSave = mEditor->currentBackup();
 
     return true;
 }
@@ -565,7 +604,7 @@ void MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if ( mEditor->object()->isModified() )
+    if ( isTitleMarkedUnsaved() )
     {
         int ret = QMessageBox::warning( this, tr( "Warning" ),
                                         tr( "This animation has been modified.\n Do you want to save your changes?" ),
@@ -587,7 +626,7 @@ bool MainWindow2::maybeSave()
 
 void MainWindow2::importImage()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initPath = settings.value( "lastImportPath", QDir::homePath() ).toString();
 
     QString strFilePath = QFileDialog::getOpenFileName( this,
@@ -1065,7 +1104,7 @@ void MainWindow2::undoActSetEnabled( void )
 
 void MainWindow2::exportPalette()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
@@ -1081,7 +1120,7 @@ void MainWindow2::exportPalette()
 
 void MainWindow2::importPalette()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
     if ( initialPath.isEmpty() )
     {
@@ -1115,6 +1154,11 @@ void MainWindow2::helpBox()
 
     QString url = "http://www.pencil2d.org/documentation/";
     QDesktopServices::openUrl( QUrl(url) );
+}
+
+void MainWindow2::makeConnections( Editor* editor )
+{
+    connect( editor, &Editor::updateBackup, this, &MainWindow2::updateTitleSaveState );
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
@@ -1218,4 +1262,16 @@ void MainWindow2::updateZoomLabel()
 {
     float zoom = mEditor->view()->scaling() * 100.f;
     statusBar()->showMessage( QString( "Zoom: %0%1" ).arg( zoom, 0, 'f', 1 ).arg("%") );
+}
+
+void MainWindow2::changePlayState( bool isPlaying )
+{
+    if( isPlaying ) {
+        ui->actionPlay->setText(tr("Stop"));
+        ui->actionPlay->setIcon(mStopIcon);
+    }
+    else {
+        ui->actionPlay->setText(tr("Play"));
+        ui->actionPlay->setIcon(mStartIcon);
+    }
 }

@@ -32,7 +32,7 @@ void RecentFileMenu::setRecentFiles( QStringList filenames )
 
 bool RecentFileMenu::loadFromDisk()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     QVariant _recent = settings.value( "RecentFiles" );
     if ( _recent.isNull() )
     {
@@ -45,7 +45,7 @@ bool RecentFileMenu::loadFromDisk()
 
 bool RecentFileMenu::saveToDisk()
 {
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue( "RecentFiles", QVariant( mRecentFiles ) );
     return true;
 }
