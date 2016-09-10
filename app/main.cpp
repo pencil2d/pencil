@@ -64,8 +64,8 @@ int handleArguments( PencilApplication & app, MainWindow2 & mainWindow )
     qDebug() << "Hey";
 
 #if QT_VERSION >= QT_VERSION_CHECK( 5, 2, 0 )
-#import <QCommandLineParser>
-#import <QCommandLineOption>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
     QCommandLineParser parser;
     // TODO: Ignore -NSDocumentRevisionsDebugMode
 
