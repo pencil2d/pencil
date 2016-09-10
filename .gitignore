@@ -64,6 +64,5 @@ xcshareddata
 release
 debug
 ipch
-
-
+*.VC.db
 
