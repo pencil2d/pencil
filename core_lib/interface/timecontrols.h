@@ -24,20 +24,24 @@ GNU General Public License for more details.
 #include <QSpinBox>
 #include <QCheckBox>
 
-
 class Editor;
-
+class PreferenceManager;
+class TimeLine;
 
 class TimeControls : public QToolBar
 {
     Q_OBJECT
 
 public:
-    TimeControls( QWidget* parent = 0 );
+    TimeControls(TimeLine* parent = 0 );
     void initUI();
     
     void setFps ( int value );
     void setCore( Editor* editor );
+    void updateLength(int frameLength);
+    void updatePlayState();
+    int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
+    int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
 Q_SIGNALS:
     void soundClick( bool );
@@ -45,6 +49,7 @@ Q_SIGNALS:
 
     void loopStartClick(int);
     void loopEndClick(int);
+    void rangeStateChange();
 
 public slots:
     void toggleLoop(bool);
@@ -57,6 +62,7 @@ private:
     void jumpToEndButtonClicked();
     void loopButtonClicked( bool bChecked );
     void playbackRangeClicked( bool bChecked );
+    void preLoopStartClick(int);
 
 private:
     QPushButton* mPlayButton = nullptr;
@@ -68,6 +74,9 @@ private:
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
+
+    QIcon mStartIcon;
+    QIcon mStopIcon;
 
     Editor* mEditor = nullptr;
 };

@@ -23,9 +23,11 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "pencildef.h"
 #include "util.h"
+#include "preferencemanager.h"
+#include "timeline.h"
 
 
-TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
+TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 {
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -34,30 +36,33 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     mFpsBox->setFixedHeight(22);
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
-    mFpsBox->setMaximum(50);
+    mFpsBox->setMaximum(90);
+    mFpsBox->setSuffix(" fps");
     mFpsBox->setToolTip("Frames per second");
-    mFpsBox->setFocusPolicy(Qt::NoFocus);
+    mFpsBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopStartSpinBox = new QSpinBox();
     mLoopStartSpinBox->setFont( QFont("Helvetica", 10) );
     mLoopStartSpinBox->setFixedHeight(22);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
-    mLoopStartSpinBox->setToolTip(tr("Start of loop"));
-    mLoopStartSpinBox->setFocusPolicy(Qt::NoFocus);
+    mLoopStartSpinBox->setMaximum(parent->getFrameLength() - 1);
+    mLoopStartSpinBox->setToolTip(tr("Start of playback loop"));
+    mLoopStartSpinBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopEndSpinBox= new QSpinBox();
     mLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
     mLoopEndSpinBox->setFixedHeight(22);
-    mLoopEndSpinBox->setMinimum(2);
-    mLoopEndSpinBox->setToolTip(tr("End of loop"));
-    mLoopEndSpinBox->setFocusPolicy(Qt::NoFocus);
     mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
+    mLoopEndSpinBox->setMinimum(mLoopStartSpinBox->value() + 1);
+    mLoopEndSpinBox->setMaximum(parent->getFrameLength());
+    mLoopEndSpinBox->setToolTip(tr("End of playback loop"));
+    mLoopEndSpinBox->setFocusPolicy(Qt::WheelFocus);
 
     mPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
     mPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
     mPlaybackRangeCheckBox->setFixedHeight(26);
-    mPlaybackRangeCheckBox->setToolTip(tr("Loop control"));
+    mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
     mPlayButton = new QPushButton( this );
     mLoopButton = new QPushButton();
@@ -70,15 +75,14 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     separator->setFixedSize(QSize(37,31));
     QLabel* spacingLabel = new QLabel("");
     spacingLabel->setIndent(6);
-    QLabel* fpsLabel = new QLabel(tr("Fps: "));
-    fpsLabel->setIndent(6);
 
-    QIcon playIcon(":icons/controls/play.png");
     QIcon loopIcon(":icons/controls/loop.png");
     QIcon soundIcon(":icons/controls/sound.png");
     QIcon endplayIcon(":icons/controls/endplay.png");
     QIcon startplayIcon(":icons/controls/startplay.png");
-    mPlayButton->setIcon(playIcon);
+    mStartIcon = QIcon(":icons/controls/play.png");
+    mStopIcon = QIcon(":icons/controls/stop.png");
+    mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(loopIcon);
     mSoundButton->setIcon(soundIcon);
     mJumpToEndButton->setIcon(endplayIcon);
@@ -103,13 +107,12 @@ TimeControls::TimeControls( QWidget* parent ) : QToolBar( parent )
     addWidget(mLoopStartSpinBox);
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
-    addWidget(fpsLabel);
     addWidget(mFpsBox);
 
     makeConnections();
 
     auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
-    connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartClick );
+    connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::preLoopStartClick );
     connect( mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
 
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled );
@@ -177,16 +180,44 @@ void TimeControls::playButtonClicked()
     {
         mEditor->playback()->play();
     }
+    updatePlayState();
+}
+
+void TimeControls::updatePlayState()
+{
+    if( mEditor->playback()->isPlaying() )
+    {
+        mPlayButton->setIcon(mStopIcon);
+        mPlayButton->setToolTip(tr("Stop"));
+    }
+    else {
+        mPlayButton->setIcon(mStartIcon);
+        mPlayButton->setToolTip(tr("Start"));
+    }
 }
 
 void TimeControls::jumpToStartButtonClicked()
 {
-    mEditor->layers()->gotoFirstKeyFrame();
+    if ( mPlaybackRangeCheckBox->isChecked() )
+    {
+        mEditor->scrubTo( mLoopStartSpinBox->value() );
+    }
+    else
+    {
+        mEditor->scrubTo( mEditor->layers()->firstKeyFrameIndex() );
+    }
 }
 
 void TimeControls::jumpToEndButtonClicked()
 {
-    mEditor->layers()->gotoLastKeyFrame();
+    if ( mPlaybackRangeCheckBox->isChecked() )
+    {
+        mEditor->scrubTo( mLoopEndSpinBox->value() );
+    }
+    else
+    {
+        mEditor->scrubTo( mEditor->layers()->lastKeyFrameIndex() );
+    }
 }
 
 void TimeControls::loopButtonClicked( bool bChecked )
@@ -197,4 +228,20 @@ void TimeControls::loopButtonClicked( bool bChecked )
 void TimeControls::playbackRangeClicked( bool bChecked )
 {
     mEditor->playback()->enableRangedPlayback( bChecked );
+    emit rangeStateChange();
+}
+
+void TimeControls::preLoopStartClick(int i) {
+    if( i >= mLoopEndSpinBox->value() )
+    {
+        mLoopEndSpinBox->setValue( i + 1 );
+    }
+    mLoopEndSpinBox->setMinimum( i + 1 );
+
+    emit loopStartClick(i);
+}
+
+void TimeControls::updateLength(int frameLength) {
+    mLoopStartSpinBox->setMaximum(frameLength - 1);
+    mLoopEndSpinBox->setMaximum(frameLength);
 }

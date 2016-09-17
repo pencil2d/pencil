@@ -300,7 +300,7 @@ bool Object::exportMovie( ExportMovieParameters exportParams )
 void Editor::importMovie( QString filePath, int fps )
 {
     int i;
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     qDebug() << "-------IMPORT VIDEO------" << filePath;
 

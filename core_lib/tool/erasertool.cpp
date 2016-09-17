@@ -30,7 +30,7 @@ void EraserTool::loadSettings()
     m_enabledProperties[PRESSURE] = true;
 
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "eraserWidth" ).toDouble();
     properties.feather = settings.value( "eraserFeather" ).toDouble();
@@ -54,7 +54,7 @@ void EraserTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("eraserWidth", width);
     settings.sync();
 }
@@ -65,7 +65,7 @@ void EraserTool::setFeather( const qreal feather )
     properties.feather = feather;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("eraserFeather", feather);
     settings.sync();
 }
@@ -76,7 +76,7 @@ void EraserTool::setPressure( const bool pressure )
     properties.pressure = pressure;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("eraserPressure", pressure);
     settings.sync();
 }

@@ -1,10 +1,12 @@
+#include "test_layer.h"
+
 #include "layer.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
 #include "layersound.h"
 #include "object.h"
-#include "test_layer.h"
+#include "util.h"
 #include <memory>
 
 TestLayer::TestLayer()
@@ -51,8 +53,7 @@ void TestLayer::testAddNewKeyAtBitmap()
     bOK = spLayer->addNewEmptyKeyAt( 0 );
     QVERIFY2( bOK == false, "Frame Number must > 0." );
 
-    bOK = spLayer->addNewEmptyKeyAt( 1 );
-    QVERIFY2( bOK == false, "Already has a key frame at position 1." );
+    QVERIFY( spLayer->addNewEmptyKeyAt( 1 ) );
 
     QCOMPARE( spLayer->addNewEmptyKeyAt( 2 ), true );
     QCOMPARE( spLayer->getMaxKeyFramePosition(), 2 );
@@ -60,108 +61,106 @@ void TestLayer::testAddNewKeyAtBitmap()
 
 void TestLayer::testAddNewKeyAtVector()
 {
-    std::unique_ptr< Layer > spLayer( new LayerVector( m_pObject ) );
+    Layer* layer = m_pObject->addNewVectorLayer();;
+    OnScopeExit( m_pObject->deleteLayer( layer ) );
 
     bool bOK = false;
 
-    bOK = spLayer->addNewEmptyKeyAt( 0 );
+    bOK = layer->addNewEmptyKeyAt( 0 );
     QVERIFY2( bOK == false, "Frame Number must > 0." );
 
-    bOK = spLayer->addNewEmptyKeyAt( 1 );
-    QVERIFY2( bOK == false, "Already has a key frame at position 1." );
-
-    QCOMPARE( spLayer->addNewEmptyKeyAt( 2 ), true );
-    QCOMPARE( spLayer->getMaxKeyFramePosition(), 2 );
+    QVERIFY( layer->addNewEmptyKeyAt( 1 ) == false );
+    
+    QCOMPARE( layer->addNewEmptyKeyAt( 2 ), true );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 2 );
 }
 
 void TestLayer::testHasKeyFrameAtPosition()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
-    QScopedPointer<Layer> ptr( pLayer );
+    Layer* layer = m_pObject->addNewBitmapLayer();;
+    OnScopeExit( m_pObject->deleteLayer( layer ) );
 
-    QCOMPARE( pLayer->keyExists( 1 ), true ); // there is a frame at 1 in default.
+    QCOMPARE( layer->keyExists( 1 ), true ); // there is a frame at 1 in default.
 
-    QVERIFY( pLayer->addNewEmptyKeyAt( 15 ) );
-	QCOMPARE( pLayer->keyExists( 15 ), true );
-	QCOMPARE( pLayer->keyExists( 10 ), false );
+    QVERIFY( layer->addNewEmptyKeyAt( 15 ) );
+    QCOMPARE( layer->keyExists( 15 ), true );
+    QCOMPARE( layer->keyExists( 10 ), false );
 
-    QVERIFY( pLayer->addNewEmptyKeyAt( 10 ) );
-	QCOMPARE( pLayer->keyExists( 10 ), true );
+    QVERIFY( layer->addNewEmptyKeyAt( 10 ) );
+    QCOMPARE( layer->keyExists( 10 ), true );
 
     // test false case
-	QCOMPARE( pLayer->keyExists( 0 ), false );
-	QCOMPARE( pLayer->keyExists( 1000 ), false );
-	QCOMPARE( pLayer->keyExists( -333 ), false );
+    QCOMPARE( layer->keyExists( 0 ), false );
+    QCOMPARE( layer->keyExists( 1000 ), false );
+    QCOMPARE( layer->keyExists( -333 ), false );
 }
 
 void TestLayer::testGetFirstFramePosition()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
-    QScopedPointer<Layer> ptr( pLayer );
+    Layer* layer = m_pObject->addNewBitmapLayer();;
+    OnScopeExit( m_pObject->deleteLayer( layer ) );
 
-    QCOMPARE( pLayer->firstKeyFramePosition(), 1 );
-    pLayer->addNewEmptyKeyAt( 99 );
+    QCOMPARE( layer->firstKeyFramePosition(), 1 );
+    layer->addNewEmptyKeyAt( 99 );
 
-    QCOMPARE( pLayer->firstKeyFramePosition(), 1 );
+    QCOMPARE( layer->firstKeyFramePosition(), 1 );
 }
 
 void TestLayer::testGetMaxFramePosition()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
+    Layer* layer = m_pObject->addNewBitmapLayer();;
+    OnScopeExit( m_pObject->deleteLayer( layer ) );
 
     // 1 at beginning.
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 1 );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 1 );
 
-    QVERIFY( pLayer->addNewEmptyKeyAt( 3 ) );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 3 );
+    QVERIFY( layer->addNewEmptyKeyAt( 3 ) );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 3 );
 
-    QVERIFY( pLayer->addNewEmptyKeyAt( 8 ) );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 8 );
+    QVERIFY( layer->addNewEmptyKeyAt( 8 ) );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 8 );
 
-    QVERIFY( pLayer->addNewEmptyKeyAt( 100 ) );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 100 );
+    QVERIFY( layer->addNewEmptyKeyAt( 100 ) );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 100 );
 
-    QVERIFY( pLayer->addNewEmptyKeyAt( 80 ) );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 100 );
-
-    delete pLayer;
+    QVERIFY( layer->addNewEmptyKeyAt( 80 ) );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 100 );
 }
 
 void TestLayer::testRemoveKeyFrame()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
+    Layer* layer = m_pObject->addNewBitmapLayer();;
+    OnScopeExit( m_pObject->deleteLayer( layer ) );
 
-    pLayer->removeKeyFrame( 1 );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 1 ); // you can't delete the only 1 KeyFrame
+    layer->removeKeyFrame( 1 );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 0 ); 
 
     for ( int i = 2; i <= 20; ++i )
     {
-        QVERIFY( pLayer->addNewEmptyKeyAt( i ) );
+        QVERIFY( layer->addNewEmptyKeyAt( i ) );
     }
 
-	QCOMPARE( pLayer->keyExists( 20 ), true );
-    pLayer->removeKeyFrame( 20 );
-	QCOMPARE( pLayer->keyExists( 20 ), false );
+    QCOMPARE( layer->keyExists( 20 ), true );
+    layer->removeKeyFrame( 20 );
+    QCOMPARE( layer->keyExists( 20 ), false );
 
-	QCOMPARE( pLayer->keyExists( 8 ), true );
-    pLayer->removeKeyFrame( 8 );
-	QCOMPARE( pLayer->keyExists( 8 ), false );
+    QCOMPARE( layer->keyExists( 8 ), true );
+    layer->removeKeyFrame( 8 );
+    QCOMPARE( layer->keyExists( 8 ), false );
 
-	QCOMPARE( pLayer->keyExists( 19 ), true );
+    QCOMPARE( layer->keyExists( 19 ), true );
 
-    pLayer->removeKeyFrame( 19 );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 18 );
+    layer->removeKeyFrame( 19 );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 18 );
 
-    pLayer->removeKeyFrame( 18 );
-    QCOMPARE( pLayer->getMaxKeyFramePosition(), 17 );
-
-    delete pLayer;
+    layer->removeKeyFrame( 18 );
+    QCOMPARE( layer->getMaxKeyFramePosition(), 17 );
 }
 
 void TestLayer::testPreviousKeyFramePosition()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
-    QScopedPointer<Layer> ptr( pLayer );
+    Layer* pLayer = m_pObject->addNewBitmapLayer();;
+    OnScopeExit( m_pObject->deleteLayer( pLayer ) );
 
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 1 ), 1 );
     QCOMPARE( pLayer->getPreviousKeyFramePosition( 10 ), 1 );
@@ -185,8 +184,8 @@ void TestLayer::testPreviousKeyFramePosition()
 
 void TestLayer::testNextKeyFramePosition()
 {
-    Layer* pLayer = new LayerBitmap( m_pObject );
-    QScopedPointer<Layer> ptr( pLayer );
+    Layer* pLayer = m_pObject->addNewBitmapLayer();;
+    OnScopeExit( m_pObject->deleteLayer( pLayer ) );
 
     QCOMPARE( pLayer->getNextKeyFramePosition( 1 ), 1 );
     QCOMPARE( pLayer->getNextKeyFramePosition( 10 ), 1 );

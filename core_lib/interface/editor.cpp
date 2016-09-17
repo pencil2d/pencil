@@ -43,7 +43,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layersound.h"
 #include "layercamera.h"
-#include "layerimage.h"
 #include "keyframefactory.h"
 
 #include "colormanager.h"
@@ -123,6 +122,11 @@ int Editor::currentFrame()
 	return mFrame;
 }
 
+int Editor::fps()
+{
+    return mPlaybackManager->fps();
+}
+
 void Editor::makeConnections()
 {
     connect( mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated );
@@ -171,6 +175,18 @@ void Editor::settingUpdated(SETTING setting)
     }
 }
 
+BackupElement* Editor::currentBackup()
+{
+    if ( mBackupIndex >= 0 )
+    {
+        return mBackupList[ mBackupIndex ];
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
 void Editor::backup( QString undoText )
 {
 	if ( lastModifiedLayer > -1 && lastModifiedFrame > 0 )
@@ -212,7 +228,7 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 			{
 				element->bitmapImage = bitmapImage->copy();  // copy the image
 				mBackupList.append( element );
-				mBackupIndex++;
+                mBackupIndex++;
 			}
 		}
 		if ( layer->type() == Layer::VECTOR )
@@ -230,10 +246,11 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 			{
 				element->vectorImage = *vectorImage;  // copy the image (that works but I should also provide a copy() method)
 				mBackupList.append( element );
-				mBackupIndex++;
+                mBackupIndex++;
 			}
 		}
 	}
+    emit updateBackup();
 }
 
 void BackupBitmapElement::restore( Editor* editor )
@@ -301,6 +318,7 @@ void Editor::undo()
 		mBackupIndex--;
         mScribbleArea->cancelTransformedSelection();
         mScribbleArea->calculateSelectionRect(); // really ugly -- to improve
+        emit updateBackup();
 	}
 }
 
@@ -310,6 +328,7 @@ void Editor::redo()
 	{
 		mBackupIndex++;
 		mBackupList[ mBackupIndex + 1 ]->restore( this );
+        emit updateBackup();
 	}
 }
 
@@ -558,23 +577,39 @@ void Editor::createExportMovieDialog()
 
 
 
-bool Editor::exportSeqCLI( QString filePath = "", QString format = "PNG" )
+bool Editor::exportSeqCLI( QString filePath, QString format, int width, int height, bool transparency, bool antialias )
 {
-	int width = mScribbleArea->getViewRect().toRect().width();
-	int height = mScribbleArea->getViewRect().toRect().height();
+    // Get the camera layer
+    int cameraLayerId = mLayerManager->getLastCameraLayer();
+    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mObject->getLayer(cameraLayerId));
+
+    if(width < 0) {
+        width = cameraLayer->getViewRect().width();
+    }
+    if(height < 0) {
+        height = cameraLayer->getViewRect().height();
+    }
 
 	QSize exportSize = QSize( width, height );
 	QByteArray exportFormat( format.toLatin1() );
 
 	QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-	view = mScribbleArea->getView() * view;
+    //view = mScribbleArea->getView() * view;
 
-	int projectLength = layers()->projectLength();
+    int projectLength = mLayerManager->projectLength();
 
-	mObject->exportFrames( 1, projectLength, layers()->currentLayer(),
+    mObject->exportFrames( 1,
+                           projectLength,
+                           cameraLayer,
 						   exportSize,
 						   filePath,
-						   exportFormat, -1, false, true, NULL, 0 );
+                           exportFormat,
+                           -1,
+                           transparency,
+                           antialias,
+                           NULL,
+                           0 );
+
 	return true;
 }
 
@@ -586,7 +621,7 @@ QString Editor::workingDir() const
 /*
 bool Editor::exportMov()
 {
-QSettings settings( "Pencil", "Pencil" );
+QSettings settings( PENCIL2D, PENCIL2D );
 QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
 if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
 //  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
@@ -792,9 +827,9 @@ void Editor::moveFrameBackward()
 	}
 }
 
-void Editor::addNewKey()
+KeyFrame* Editor::addNewKey()
 {
-	addKeyFame( layers()->currentLayerIndex(), currentFrame() );
+	return addKeyFame( layers()->currentLayerIndex(), currentFrame() );
 }
 
 void Editor::duplicateKey()
@@ -820,12 +855,13 @@ void Editor::duplicateKey()
 	}
 }
 
-void Editor::addKeyFame( int layerNumber, int frameIndex )
+KeyFrame* Editor::addKeyFame( int layerNumber, int frameIndex )
 {
 	Layer* layer = mObject->getLayer( layerNumber );
 	if ( layer == NULL )
 	{
-		return;
+        Q_ASSERT( false );
+		return nullptr;
 	}
 
 	bool isOK = false;
@@ -850,26 +886,21 @@ void Editor::addKeyFame( int layerNumber, int frameIndex )
         scrubTo( frameIndex ); // currentFrameChanged() emit inside.
         //getScribbleArea()->updateCurrentFrame();
 	}
+
+    return keyFrame;
 }
 
 void Editor::removeKey()
 {
 	Layer* layer = layers()->currentLayer();
 	if ( layer != NULL )
-	{
-		switch ( layer->type() )
-		{
-		case Layer::BITMAP:
-		case Layer::VECTOR:
-		case Layer::CAMERA:
-			layer->removeKeyFrame( currentFrame() );
-			break;
-		default:
-			break;
-		}
+    {
+		layer->removeKeyFrame( currentFrame() );
+		
 		scrubBackward();
         mScribbleArea->updateCurrentFrame();
 	}
+    Q_EMIT layers()->currentLayerChanged( layers()->currentLayerIndex() ); // trigger timeline repaint.
 }
 
 void Editor::scrubNextKeyFrame()
@@ -923,10 +954,4 @@ void Editor::moveLayer( int i, int j )
 void Editor::clearCurrentFrame()
 {
 	mScribbleArea->clearImage();
-}
-
-void Editor::resetView()
-{
-	view()->resetView();
-    mScribbleArea->updateAllFrames();
 }

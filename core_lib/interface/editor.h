@@ -78,10 +78,12 @@ public:
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
     int  currentFrame();
+    int  fps();
+
     void scrubTo( int frameNumber );
 
     int  allLayers();
-    bool exportSeqCLI( QString, QString );
+    bool exportSeqCLI( QString filePath, QString format = "PNG", int width = -1, int height = -1, bool transparency = false, bool antialias = true );
     
     QString workingDir() const;
 
@@ -89,11 +91,13 @@ public:
 
     // backup
     int mBackupIndex;
+    BackupElement* currentBackup();
     QList<BackupElement*> mBackupList;
 
 Q_SIGNALS:
     void updateTimeLine();
     void updateLayerCount();
+    void updateBackup();
 
     void selectAll();
     void changeThinLinesButton( bool );
@@ -110,7 +114,6 @@ public: //slots
     void cut();
     
     void deselectAll();
-    void resetView();
 
     bool importImage( QString filePath );
     void updateFrame( int frameNumber );
@@ -122,7 +125,7 @@ public: //slots
     void scrubForward();
     void scrubBackward();
 
-    void addNewKey();
+    KeyFrame* addNewKey();
     void duplicateKey();
     void removeKey();
 
@@ -185,7 +188,7 @@ private:
     int autosaveNumber = 12;
 
     void makeConnections();
-    void addKeyFame( int layerNumber, int frameNumber );
+    KeyFrame* addKeyFame( int layerNumber, int frameNumber );
 
     // backup
     void clearUndoStack();

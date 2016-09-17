@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "colourref.h"
 #include "pencilerror.h"
+#include "pencildef.h"
 
 class QProgressDialog;
 class LayerBitmap;
@@ -121,6 +122,7 @@ public:
     int  getLayerCount();
     bool moveLayer( int i, int j );
     void deleteLayer( int i );
+    void deleteLayer( Layer* );
 
     //void playSoundIfAny( int frame, int fps );
     //void stopSoundIfAny();

@@ -4,6 +4,7 @@
 #include <QMenu>
 #include <QMap>
 #include <QStringList>
+#include "pencildef.h"
 
 class QAction;
 class ListItemModel;

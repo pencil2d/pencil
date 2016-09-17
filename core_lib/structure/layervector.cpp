@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 #include "layervector.h"
+#include "vectorimage.h"
 #include <QtDebug>
 
 LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
@@ -84,7 +85,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
     if ( keyExists( frameNumber ) )
     {
-        removeKeyFrame( frameNumber, false );
+        removeKeyFrame( frameNumber );
     }
     VectorImage* vecImg = new VectorImage;
     vecImg->setPos( frameNumber );

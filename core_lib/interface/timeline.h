@@ -18,11 +18,11 @@ GNU General Public License for more details.
 #define TIMELINE_H
 
 #include "basedockwidget.h"
-#include "timecontrols.h"
 
 class QScrollBar;
 class Editor;
 class TimeLineCells;
+class TimeControls;
 
 
 class TimeLine : public BaseDockWidget
@@ -38,10 +38,14 @@ public:
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
     void updateLayerView();
-    void updateLength( int frameLength );
+    void updateLength();
     void updateContent();
-    void forceUpdateLength( QString newLength ); //when Animation -> Add Frame is clicked, this will auto update timeline
+    void setLoop( bool loop );
+    void setRangeState( bool range );
+    void setPlaying( bool isPlaying );
     int getFrameLength();
+    int getRangeLower();
+    int getRangeUpper();
 
 Q_SIGNALS:
     void modification();

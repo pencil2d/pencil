@@ -201,6 +201,7 @@ int LayerManager::count()
 
 bool LayerManager::deleteCurrentLayer()
 {
+    // FIXME: 
     if ( currentLayer()->type() == Layer::CAMERA )
     {
         return false;
@@ -237,16 +238,4 @@ int LayerManager::projectLength()
 void LayerManager::layerUpdated(int layerId)
 {
     emit currentLayerChanged(layerId);
-}
-
-void LayerManager::gotoLastKeyFrame()
-{
-    int nFrame = lastKeyFrameIndex();
-    editor()->scrubTo( nFrame );
-}
-
-void LayerManager::gotoFirstKeyFrame()
-{
-    int nFrame = firstKeyFrameIndex();
-    editor()->scrubTo( nFrame );
 }

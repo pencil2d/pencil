@@ -8,12 +8,12 @@ enum class EFile
     SOUND
 };
 
-class FileDialogEx : public QObject
+class FileDialog : public QObject
 {
     Q_OBJECT
 public:
-    FileDialogEx( QObject* parent );
-    ~FileDialogEx();
+    FileDialog( QObject* parent );
+    ~FileDialog();
 
     QString openFile( EFile fileType );
 

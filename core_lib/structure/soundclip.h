@@ -20,6 +20,9 @@ public:
     void detachPlayer();
     SoundPlayer* player() { return mPlayer.get(); }
 
+    void play();
+    void stop();
+
 private:
     std::shared_ptr< SoundPlayer > mPlayer;
     uint64_t m_soundSize = 0;
