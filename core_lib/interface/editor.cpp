@@ -583,10 +583,12 @@ bool Editor::exportSeqCLI( QString filePath, QString format, int width, int heig
     int cameraLayerId = mLayerManager->getLastCameraLayer();
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mObject->getLayer(cameraLayerId));
 
-    if(width < 0) {
+	if ( width < 0 )
+	{
         width = cameraLayer->getViewRect().width();
     }
-    if(height < 0) {
+	if ( height < 0 )
+	{
         height = cameraLayer->getViewRect().height();
     }
 
@@ -628,10 +630,10 @@ bool Editor::importBitmapImage( QString filePath )
 	auto layer = static_cast<LayerBitmap*>( layers()->currentLayer() );
 
 	QImage img( reader.size(), QImage::Format_ARGB32_Premultiplied );
-  if ( img.isNull() )
-  {
-    return false;
-  }
+	if ( img.isNull() )
+	{
+		return false;
+	}
 
 	while ( reader.read( &img ) )
 	{

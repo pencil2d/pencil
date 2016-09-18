@@ -3,12 +3,9 @@
 
 #include <QString>
 
-
-
 class Status
 {
 public:
-
     enum ErrorCode
     {
         OK = 0,
@@ -25,13 +22,16 @@ public:
         ERROR_INVALID_XML_FILE,
         ERROR_INVALID_PENCIL_FILE,
 
-        //
+        // General
         ERROR_INVALID_LAYER_TYPE,
         ERROR_INVALID_FRAME_NUMBER,
         ERROR_LOAD_IMAGE_FAIL,
 
         // Sound
         ERROR_LOAD_SOUND_FILE,
+
+		// Export
+		ERROR_FFMPEG_NOT_FOUND,
     };
 
 

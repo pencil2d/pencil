@@ -71,7 +71,7 @@ GNU General Public License for more details.
 #include "exportmoviedialog.h"
 #include "shortcutfilter.h"
 #include "filedialogex.h"
-
+#include "movieexporter.h"
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -709,6 +709,7 @@ void MainWindow2::importMovie()
 
 void MainWindow2::exportMovie()
 {
+	/*
     FileDialog fileDialog( this );
     QString strMoviePath = fileDialog.saveFile( EFile::MOVIE_EXPORT );
 
@@ -738,13 +739,19 @@ void MainWindow2::exportMovie()
     {
         return;
     }
+	*/
+	ExportMovieDesc desc;
+	desc.sFileName = "C:/Users/Mat/Desktop/a.mp4";
+	MovieExporter ex;
+	ex.run( mEditor->object(), desc );
 
+	/*
     QSize exportSize = QSize( 10, 10 );
     QTransform view; // = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     view = mScribbleArea->getView() * view;
-    /*
-    int projectLength = layers()->projectLength();
-    int fps = playback()->fps();
+
+    int projectLength = mEditor->layers()->projectLength();
+    int fps = mEditor->playback()->fps();
 
     ExportMovieParameters par;
     par.startFrame = 1;
@@ -756,10 +763,8 @@ void MainWindow2::exportMovie()
     par.fps = fps;
     par.exportFps = exportMovieDialog_fpsBox->value();
     par.exportFormat = exportMovieDialog_format->currentText();
-    mObject->exportMovie( par );
-
-    return true;
-    */
+    mEditor->object()->exportMovie( par );
+	*/
 }
 
 void MainWindow2::exportImageSequence()

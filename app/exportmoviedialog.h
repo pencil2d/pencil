@@ -19,6 +19,7 @@ public:
     void updateResolutionCombo( int index );
 
 
+
 private:
     Ui::ExportMovieDialog* ui = nullptr;
 };

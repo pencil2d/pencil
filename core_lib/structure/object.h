@@ -120,6 +120,7 @@ public:
 
     Layer* getLayer( int i );
     int  getLayerCount();
+	std::vector< Layer* > getLayersByType( Layer::LAYER_TYPE );
     bool moveLayer( int i, int j );
     void deleteLayer( int i );
     void deleteLayer( Layer* );

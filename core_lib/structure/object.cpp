@@ -510,9 +510,11 @@ bool Object::exportFrames( int frameStart, int frameEnd,
     {
         filePath.chop( extension.size() );
     }
-    //qDebug() << "format =" << format << "extension = " << extension;
-
-    qDebug() << "Exporting frames from " << frameStart << "to" << frameEnd << "at size " << exportSize;
+   
+    qDebug() << "Exporting frames from " 
+			 << frameStart << "to" 
+			 << frameEnd 
+		     << "at size " << exportSize;
 
     for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
     {
@@ -566,8 +568,6 @@ void convertNFrames( int fps, int exportFps, int* frameRepeat, int* frameReminde
     }
     qDebug() << "-->convertedNFrames";
 }
-
-
 
 bool Object::exportFrames1( ExportFrames1Parameters par )
 {
@@ -795,6 +795,19 @@ bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize e
 int Object::getLayerCount()
 {
     return mLayers.size();
+}
+
+std::vector<Layer*> Object::getLayersByType( Layer::LAYER_TYPE type )
+{
+	std::vector<Layer*> vec;
+	for ( Layer* layer : mLayers )
+	{
+		if ( layer->type() == type )
+		{
+			vec.push_back( layer );
+		}
+	}
+	return std::move( vec );
 }
 
 EditorState* Object::editorState()
