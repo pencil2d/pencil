@@ -78,19 +78,21 @@ QString MovieExporter::error()
 void MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 {
 	// Quicktime assemble call
-	int endFrame = 20;
+	int startFrame = mDesc.startFrame;
+	int endFrame = mDesc.endFrame;
+	int fps = mDesc.fps;
 	
-	QDir sampledir;
-	const QString strAudioFile( "a.wav" );
+	Q_ASSERT( endFrame > 0 );
+	Q_ASSERT( startFrame >= 0 );
 
-	int fps = 12;
-	qDebug() << "test mic:" << sampledir.filePath( strAudioFile );
-	
-	int32_t audioDataSize = 44100 * 2 * 2 * (endFrame - 1) / fps;
+	int32_t lengthInSec = ( endFrame - startFrame ) / (float)fps;
+	int32_t audioDataSize = 44100 * 2 * 2 * lengthInSec;
 
-	std::vector<int16_t> audioData( audioDataSize );
+	std::vector<int16_t> audioData( audioDataSize / sizeof( int16_t ) );
 
 	bool audioDataValid = false;
+
+	WavFileHeader outputHeader;
 
 	QFileInfo info( mDesc.sFileName );
 	QDir dir( info.absolutePath() + "/tempaudio" );
@@ -148,11 +150,6 @@ void MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 				qDebug() << "ERROR: Could not execute FFmpeg.";
 			}
 
-			//int frame = ((LayerSound*)layer)->getFramePositionAt(l) - 1; // FIXME: bad API
-			int frame = 0;
-			
-			float fframe = (float)frame / (float)fps;
-
 			qDebug() << "audio file: " + tempAudioPath;
 
 			// Read wav file header
@@ -166,35 +163,39 @@ void MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 			qDebug() << "audio len " << audioSize;
 
 			// before calling malloc should check: audioSize < max credible value
-			std::vector< int16_t > data( audioSize / sizeof int16_t );
+			std::vector< int16_t > data( audioSize / sizeof( int16_t ) );
 			file.read( (char*)data.data(), audioSize );
 			audioDataValid = true;
 
+			float fframe = (float)clip->pos() / (float)fps;
 			int delta = fframe * 44100 * 2;
 			qDebug() << "audio delta " << delta;
 			
 			int indexMax = std::min( audioSize / 2, audioDataSize / 2 - delta );
+
 			// audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
-			for ( int index = 0; index < indexMax; index++ )
+			for ( int i = 0; i < indexMax; i++ )
 			{
-				audioData[ index + delta ] = safeSumInt16( audioData[ index + delta ], data[ index ] );
+				audioData[ i + delta ] = safeSumInt16( audioData[ i + delta ], data[ i ] );
 			}
 			
 			file.close();
+
+			outputHeader = header;
 		}
 	}
 	if ( audioDataValid )
 	{
 		// save mixed audio file ( will be used as audio stream )
-		/*
-		QFile file( tempPath + "tmpaudio.wav" );
+		
+		QFile file( tempAudioPath + "tmpaudio.wav" );
 		file.open( QIODevice::WriteOnly );
-		header1[ 20 ]=audioDataSize % 65536;
-		header1[ 21 ]=audioDataSize / 65536;
-		file.write( (char*)header1, sizeof( header1 ) );
-		file.write( (char*)audioData, audioDataSize );
+		
+		outputHeader.dataSize = audioDataSize;
+
+		file.write( (char*)&outputHeader, sizeof( outputHeader ) );
+		file.write( (char*)audioData.data(), audioDataSize );
 		file.close();
-		*/
 	}
 }
 

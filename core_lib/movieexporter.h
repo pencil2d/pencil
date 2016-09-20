@@ -13,8 +13,9 @@ struct ExportMovieDesc
 	int     startFrame = 0;
 	int     endFrame   = 0;
 	QSize   exportSize;
-	int     videoFps = 30;
+	int     videoFps   = 30;
 	QString sFormat;
+	int     fps        = 12;
 };
 
 class MovieExporter

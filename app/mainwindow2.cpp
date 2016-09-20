@@ -742,6 +742,10 @@ void MainWindow2::exportMovie()
 	*/
 	ExportMovieDesc desc;
 	desc.sFileName = "C:/Users/Mat/Desktop/a.mp4";
+	desc.startFrame = 0;
+	desc.endFrame = 120;
+	desc.fps = 12;
+
 	MovieExporter ex;
 	ex.run( mEditor->object(), desc );
 
