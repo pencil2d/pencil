@@ -120,13 +120,24 @@ public:
 
     Layer* getLayer( int i );
     int  getLayerCount();
-	std::vector< Layer* > getLayersByType( Layer::LAYER_TYPE );
-    bool moveLayer( int i, int j );
+	bool moveLayer( int i, int j );
     void deleteLayer( int i );
     void deleteLayer( Layer* );
-
-    //void playSoundIfAny( int frame, int fps );
-    //void stopSoundIfAny();
+	
+	template< typename T >
+	std::vector< T* > getLayersByType()
+	{
+		std::vector< T* > result;
+		for ( Layer* layer : mLayers )
+		{
+			T* t = dynamic_cast<T*>( layer );
+			if ( t )
+			{
+				result.push_back( t );
+			}
+		}
+		return result;
+	}
 
     // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool transparency, bool antialiasing, QProgressDialog* progress, int progressMax );

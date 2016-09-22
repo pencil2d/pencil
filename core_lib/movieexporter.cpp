@@ -75,7 +75,7 @@ QString MovieExporter::error()
 	return QString();
 }
 
-void MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
+Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 {
 	// Quicktime assemble call
 	int startFrame = mDesc.startFrame;
@@ -98,21 +98,27 @@ void MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 	QDir dir( info.absolutePath() + "/tempaudio" );
 	if ( dir.exists() )
 	{
-		dir.removeRecursively();
+		bool bOK = dir.removeRecursively();
+		if ( !bOK )
+		{
+			return Status::FAIL;
+		}
 	}
+
 	bool bOK = dir.mkdir( "." );
-	Q_ASSERT( bOK );
+	if ( !bOK )
+	{
+		return Status::FAIL;
+	}
 
 	QString tempAudioPath = dir.absolutePath() + "/tmpaudio0.wav";
 	qDebug() << tempAudioPath;
 
-	std::vector< Layer* > allSoundLayers = obj->getLayersByType( Layer::SOUND );
-	for ( Layer* layer : allSoundLayers )
+	std::vector< LayerSound* > allSoundLayers = obj->getLayersByType<LayerSound>();
+	for ( LayerSound* layer : allSoundLayers )
 	{
-		LayerSound* soundLayer = static_cast<LayerSound*>( layer );
-
 		std::vector< SoundClip* > allSoundClips;
-		soundLayer->foreachKeyFrame( [&allSoundClips]( KeyFrame* key ) 
+		layer->foreachKeyFrame( [&allSoundClips]( KeyFrame* key )
 		{
 			allSoundClips.push_back( static_cast< SoundClip* >( key ) );
 		} );
@@ -187,7 +193,6 @@ void MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 	if ( audioDataValid )
 	{
 		// save mixed audio file ( will be used as audio stream )
-		
 		QFile file( tempAudioPath + "tmpaudio.wav" );
 		file.open( QIODevice::WriteOnly );
 		

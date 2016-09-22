@@ -797,19 +797,6 @@ int Object::getLayerCount()
     return mLayers.size();
 }
 
-std::vector<Layer*> Object::getLayersByType( Layer::LAYER_TYPE type )
-{
-	std::vector<Layer*> vec;
-	for ( Layer* layer : mLayers )
-	{
-		if ( layer->type() == type )
-		{
-			vec.push_back( layer );
-		}
-	}
-	return std::move( vec );
-}
-
 EditorState* Object::editorState()
 {
     Q_ASSERT( mEditorState != nullptr );

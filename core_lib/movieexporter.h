@@ -27,7 +27,7 @@ public:
 	QString error();
 
 private:
-	void assembleAudio( Object* obj, QString ffmpegPath );
+	Status assembleAudio( Object* obj, QString ffmpegPath );
 
 	QString mStrWorkDir;
 	ExportMovieDesc mDesc;
