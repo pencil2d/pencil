@@ -689,8 +689,8 @@ bool Editor::importBitmapImage( QString filePath )
 		QRect boundaries = img.rect();
 		boundaries.moveTopLeft( mScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
 
-		BitmapImage* importedBitmapImage = new BitmapImage( boundaries, img );
-		bitmapImage->paste( importedBitmapImage );
+        BitmapImage importedBitmapImage{boundaries, img};
+        bitmapImage->paste(&importedBitmapImage);
 
 		scrubTo( currentFrame() + 1 );
 	}
@@ -712,12 +712,12 @@ bool Editor::importVectorImage( QString filePath )
 		addNewKey();
 		vectorImage = ( (LayerVector*)layer )->getVectorImageAtFrame( currentFrame() );
 	}
-	VectorImage* importedVectorImage = new VectorImage;
-	bool ok = importedVectorImage->read( filePath );
+    VectorImage importedVectorImage;
+    bool ok = importedVectorImage.read( filePath );
 	if ( ok )
 	{
-		importedVectorImage->selectAll();
-		vectorImage->paste( *importedVectorImage );
+        importedVectorImage.selectAll();
+        vectorImage->paste(importedVectorImage);
 	}
 	/*
 	else

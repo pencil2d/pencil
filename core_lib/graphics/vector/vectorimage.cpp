@@ -38,15 +38,15 @@ bool VectorImage::read(QString filePath)
 		return false;
 	}
 
-    QFile* file = new QFile(filePath);
-    if (!file->open(QFile::ReadOnly))
+    QFile file{filePath};
+    if (!file.open(QFile::ReadOnly))
     {
         //QMessageBox::warning(this, "Warning", "Cannot read file");
         return false;
     }
 
     QDomDocument doc;
-    if (!doc.setContent(file)) return false; // this is not a XML file
+    if (!doc.setContent(&file)) return false; // this is not a XML file
     QDomDocumentType type = doc.doctype();
     if (type.name() != "PencilVectorImage") return false; // this is not a Pencil document
 
@@ -64,15 +64,15 @@ bool VectorImage::read(QString filePath)
 
 bool VectorImage::write(QString filePath, QString format)
 {
-    QFile* file = new QFile(filePath);
-    bool result = file->open(QIODevice::WriteOnly);
+    QFile file{filePath};
+    bool result = file.open(QIODevice::WriteOnly);
     if (!result)
     {
         //QMessageBox::warning(this, "Warning", "Cannot write file");
-        qDebug() << "VectorImage - Cannot write file" << filePath << file->error();
+        qDebug() << "VectorImage - Cannot write file" << filePath << file.error();
         return false;
     }
-    QTextStream out(file);
+    QTextStream out(&file);
 
     if (format == "VEC")
     {
@@ -87,12 +87,10 @@ bool VectorImage::write(QString filePath, QString format)
         qDebug() << "--- Starting to write XML file...";
         doc.save(out, IndentSize);
         qDebug() << "--- Writing XML file done.";
-        file->close();
         return true;
     }
     else
     {
-        file->close();
         qDebug() << "--- Not the VEC format!";
         return false;
     }
