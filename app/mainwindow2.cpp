@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -747,7 +747,7 @@ void MainWindow2::exportMovie()
 	desc.fps = 12;
 	desc.videoFps = 30;
 	desc.exportSize = QSize( 1024, 768 );
-	desc.strCameraName = QString::fromStdWString( std::wstring( L"¬Û¾÷¼h" ) );
+	desc.strCameraName = QString::fromStdWString( std::wstring( L"ç›¸æ©Ÿå±¤" ) );
 
 	MovieExporter ex;
 	ex.run( mEditor->object(), desc );
