@@ -375,19 +375,19 @@ void MainWindow2::setOpacity( int opacity )
 
 bool MainWindow2::isTitleMarkedUnsaved()
 {
-    return QApplication::activeWindow()->windowTitle().startsWith(QString("* "));
+    return windowTitle().startsWith(QString("* "));
 }
 
 void MainWindow2::markTitleUnsaved()
 {
     if (!isTitleMarkedUnsaved())
-        setWindowTitle( QString("* ") + QApplication::activeWindow()->windowTitle() );
+        setWindowTitle( QString("* ") + windowTitle() );
 }
 
 void MainWindow2::markTitleSaved()
 {
     if (isTitleMarkedUnsaved())
-        setWindowTitle( QApplication::activeWindow()->windowTitle().remove(0, 2) );
+        setWindowTitle( windowTitle().remove(0, 2) );
 }
 
 void MainWindow2::updateTitleSaveState()
@@ -396,7 +396,8 @@ void MainWindow2::updateTitleSaveState()
     {
         markTitleSaved();
     }
-    else {
+    else
+	{
         markTitleUnsaved();
     }
 }
