@@ -744,7 +744,7 @@ void MainWindow2::exportMovie()
 	ExportMovieDesc desc;
 	desc.strFileName = "C:/Users/Mat/Desktop/a.mp4";
 	desc.startFrame = 1;
-	desc.endFrame = 120;
+	desc.endFrame = 40;
 	desc.fps = 12;
 	desc.videoFps = 30;
 	desc.exportSize = QSize( 1024, 768 );

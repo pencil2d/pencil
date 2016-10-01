@@ -98,6 +98,8 @@ Status MovieExporter::run(Object* obj, const ExportMovieDesc& desc)
 		return st;
 	}
 
+	combineVideoAndAudio( ffmpegPath );
+
 	return Status::OK;
 }
 
@@ -277,5 +279,46 @@ Status MovieExporter::generateVideo( Object* obj )
 	}
 
 	return Status::OK;
+}
+
+Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
+{
+	int exportFps = mDesc.videoFps;
+	const QString strOutputFile = mDesc.strFileName;
+	const QString imgPath = mTempWorkDir + "/test_img_%5d.png";
+	const QString tempAudioPath = mTempWorkDir + "/tmpaudio0.wav";
+
+	QString strCmd = ffmpegPath;
+	//strCmd += QString( " -vcodec libx264" );
+	strCmd += QString( " -r %1" ).arg( exportFps );
+	strCmd += QString( " -i \"%1\" " ).arg( imgPath );
+	strCmd += QString( " -i \"%1\" " ).arg( tempAudioPath );
+	strCmd += " -y ";
+	strCmd += QString(" \"%1\"" ).arg( strOutputFile );
+	qDebug() << strCmd;
+
+	QProcess ffmpeg;
+	ffmpeg.start( strCmd );
+	
+	if ( ffmpeg.waitForStarted() == true )
+	{
+		if ( ffmpeg.waitForFinished() == true )
+		{
+			qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
+			qDebug() << "stderr: " + ffmpeg.readAllStandardError();
+
+			qDebug() << "VIDEO export done.";
+		}
+		else
+		{
+			qDebug() << "ERROR: FFmpeg did not finish executing.";
+		}
+	}
+	else
+	{
+		qDebug() << "ERROR: Could not execute FFmpeg.";
+	}
+
+	return Status();
 }
 

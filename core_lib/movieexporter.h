@@ -30,6 +30,7 @@ public:
 private:
 	Status assembleAudio( Object* obj, QString ffmpegPath );
 	Status generateVideo( Object* obj );
+	Status combineVideoAndAudio( QString ffmpegPath ); 
 
 	QString mTempWorkDir;
 	ExportMovieDesc mDesc;
