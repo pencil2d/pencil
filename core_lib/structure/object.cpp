@@ -224,6 +224,22 @@ Layer* Object::getLayer( int i )
     return mLayers.at( i );
 }
 
+Layer* Object::findLayerByName( QString strName, Layer::LAYER_TYPE type )
+{
+	bool bCheckType = ( type != Layer::UNDEFINED );
+
+	for ( Layer* layer : mLayers )
+	{
+		bool bTypeMatch = ( bCheckType ) ? ( type == layer->type() ): true ;
+
+		if ( layer->name() == strName && bTypeMatch )
+		{
+			return layer;
+		}
+	}
+	return nullptr;
+}
+
 bool Object::moveLayer( int i, int j )
 {
     if ( i< 0 || i >= mLayers.size() )

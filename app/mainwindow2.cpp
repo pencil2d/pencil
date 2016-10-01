@@ -741,10 +741,13 @@ void MainWindow2::exportMovie()
     }
 	*/
 	ExportMovieDesc desc;
-	desc.sFileName = "C:/Users/Mat/Desktop/a.mp4";
-	desc.startFrame = 0;
+	desc.strFileName = "C:/Users/Mat/Desktop/a.mp4";
+	desc.startFrame = 1;
 	desc.endFrame = 120;
 	desc.fps = 12;
+	desc.videoFps = 30;
+	desc.exportSize = QSize( 1024, 768 );
+	desc.strCameraName = QString::fromStdWString( std::wstring( L"¬Û¾÷¼h" ) );
 
 	MovieExporter ex;
 	ex.run( mEditor->object(), desc );

@@ -7,6 +7,7 @@
 #include <QProcess>
 #include <QApplication>
 #include "object.h"
+#include "layercamera.h"
 #include "layersound.h"
 #include "soundclip.h"
 
@@ -32,25 +33,24 @@ int16_t safeSumInt16( int16_t a, int16_t b )
 	int32_t a32 = static_cast<int32_t>( a );
 	int32_t b32 = static_cast<int32_t>( b );
 
-	if ( ( a32 + b32 ) > 32767 )
+	if ( ( a32 + b32 ) > INT16_MAX )
 	{
-		return 32767;
+		return INT16_MAX;
 	}
-	if ( ( a32 + b32 ) < -32768 )
+	else if ( ( a32 + b32 ) < INT16_MIN )
 	{
-		return -32768;
+		return INT16_MIN;
 	}
 	return a + b;
 }
 
 MovieExporter::MovieExporter()
 {
-
 }
 
 Status MovieExporter::run(Object* obj, const ExportMovieDesc& desc)
 {
-	if ( desc.sFileName.isEmpty() )
+	if ( desc.strFileName.isEmpty() )
 	{
 		return Status::INVALID_ARGUMENT;
 	}
@@ -63,9 +63,40 @@ Status MovieExporter::run(Object* obj, const ExportMovieDesc& desc)
 		return Status::ERROR_FFMPEG_NOT_FOUND;
 	}
 	
+	Q_ASSERT( desc.startFrame > 0 );
+
 	mDesc = desc;
 
-	assembleAudio( obj, ffmpegPath );
+	// Setup temporary folder
+	QFileInfo info( mDesc.strFileName );
+	QDir dir( info.absolutePath() + "/temp_pencil2d" );
+	if ( dir.exists() )
+	{
+		bool bOK = dir.removeRecursively();
+		if ( !bOK )
+		{
+			return Status::FAIL;
+		}
+	}
+	QThread::msleep( 5 );
+	bool bOK = dir.mkdir( "." );
+	if ( !bOK )
+	{
+		return Status::FAIL;
+	}
+	mTempWorkDir = dir.absolutePath();
+
+	Status stAudioOK = assembleAudio( obj, ffmpegPath );
+	if ( !stAudioOK.ok() )
+	{
+		return stAudioOK;
+	}
+
+	Status st = generateVideo( obj );
+	if ( !st.ok() )
+	{
+		return st;
+	}
 
 	return Status::OK;
 }
@@ -86,6 +117,8 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 	Q_ASSERT( startFrame >= 0 );
 
 	int32_t lengthInSec = ( endFrame - startFrame ) / (float)fps;
+	qDebug() << "Audio Length = " << lengthInSec << " seconds";
+
 	int32_t audioDataSize = 44100 * 2 * 2 * lengthInSec;
 
 	std::vector<int16_t> audioData( audioDataSize / sizeof( int16_t ) );
@@ -94,24 +127,10 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 
 	WavFileHeader outputHeader;
 
-	QFileInfo info( mDesc.sFileName );
-	QDir dir( info.absolutePath() + "/tempaudio" );
-	if ( dir.exists() )
-	{
-		bool bOK = dir.removeRecursively();
-		if ( !bOK )
-		{
-			return Status::FAIL;
-		}
-	}
+	QDir dir( mTempWorkDir );
+	Q_ASSERT( dir.exists() );
 
-	bool bOK = dir.mkdir( "." );
-	if ( !bOK )
-	{
-		return Status::FAIL;
-	}
-
-	QString tempAudioPath = dir.absolutePath() + "/tmpaudio0.wav";
+	QString tempAudioPath = mTempWorkDir + "/tmpaudio0.wav";
 	qDebug() << tempAudioPath;
 
 	std::vector< LayerSound* > allSoundLayers = obj->getLayersByType<LayerSound>();
@@ -190,17 +209,73 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 			outputHeader = header;
 		}
 	}
-	if ( audioDataValid )
-	{
-		// save mixed audio file ( will be used as audio stream )
-		QFile file( tempAudioPath + "tmpaudio.wav" );
-		file.open( QIODevice::WriteOnly );
-		
-		outputHeader.dataSize = audioDataSize;
 
-		file.write( (char*)&outputHeader, sizeof( outputHeader ) );
-		file.write( (char*)audioData.data(), audioDataSize );
-		file.close();
+	if ( !audioDataValid )
+	{
+		return Status::FAIL;
 	}
+
+	// save mixed audio file ( will be used as audio stream )
+	QFile file( tempAudioPath + "tmpaudio.wav" );
+	file.open( QIODevice::WriteOnly );
+		
+	outputHeader.dataSize = audioDataSize;
+
+	file.write( (char*)&outputHeader, sizeof( outputHeader ) );
+	file.write( (char*)audioData.data(), audioDataSize );
+	file.close();
+	
+	return Status::OK;
+}
+
+Status MovieExporter::generateVideo( Object* obj )
+{
+	int frameStart        = mDesc.startFrame;
+	int frameEnd          = mDesc.endFrame;
+	QSize exportSize      = mDesc.exportSize;
+	bool transparency     = false;
+	QString strCameraName = mDesc.strCameraName;
+
+	auto cameraLayer = (LayerCamera*)obj->findLayerByName( strCameraName, Layer::CAMERA );
+	Q_ASSERT( cameraLayer );
+
+	for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
+	{
+		//if ( progress != NULL ) progress->setValue( ( currentFrame - frameStart )*progressMax / ( frameEnd - frameStart ) );
+		QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
+		QColor bgColor = Qt::white;
+		if ( transparency )
+		{
+			bgColor.setAlpha( 0 );
+		}
+		imageToExport.fill( bgColor );
+
+		QPainter painter( &imageToExport );
+
+		QTransform view = cameraLayer->getViewAtFrame( currentFrame );
+		
+		QSize camSize = cameraLayer->getViewSize();
+		QTransform centralizeCamera;
+		centralizeCamera.translate( camSize.width() / 2, camSize.height() / 2 );
+
+		painter.setWorldTransform( view * centralizeCamera );
+
+		painter.setWindow( QRect( 0, 0, camSize.width(), camSize.height() ) );
+		
+		//qDebug() << painter.worldTransform();
+
+		obj->paintImage( painter, currentFrame, false, true );
+
+		QString filePath = mTempWorkDir + "/test_img_";
+		QString extension = ".png";
+		QString frameNumberString = QString("%1").arg( currentFrame, 5, 10, QChar('0') );
+
+		QString strImgPath = filePath + frameNumberString + extension;
+		qDebug() << "Save img to: " <<strImgPath;
+		bool bSave = imageToExport.save( strImgPath );
+		Q_ASSERT( bSave );
+	}
+
+	return Status::OK;
 }
 

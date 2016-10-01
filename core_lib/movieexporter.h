@@ -9,13 +9,14 @@ class Object;
 
 struct ExportMovieDesc
 {
-	QString sFileName;
+	QString strFileName;
 	int     startFrame = 0;
 	int     endFrame   = 0;
-	QSize   exportSize;
 	int     videoFps   = 30;
-	QString sFormat;
 	int     fps        = 12;
+	QSize   exportSize;
+	QString strFormat;
+	QString strCameraName;
 };
 
 class MovieExporter
@@ -28,8 +29,9 @@ public:
 
 private:
 	Status assembleAudio( Object* obj, QString ffmpegPath );
+	Status generateVideo( Object* obj );
 
-	QString mStrWorkDir;
+	QString mTempWorkDir;
 	ExportMovieDesc mDesc;
 };
 

@@ -118,8 +118,11 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
+	int  getLayerCount();
+
     Layer* getLayer( int i );
-    int  getLayerCount();
+	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED );
+
 	bool moveLayer( int i, int j );
     void deleteLayer( int i );
     void deleteLayer( Layer* );
