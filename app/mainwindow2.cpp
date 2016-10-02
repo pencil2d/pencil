@@ -744,9 +744,9 @@ void MainWindow2::exportMovie()
 	ExportMovieDesc desc;
 	desc.strFileName = "C:/Users/Mat/Desktop/a.mp4";
 	desc.startFrame = 1;
-	desc.endFrame = 40;
+	desc.endFrame = 60;
 	desc.fps = 12;
-	desc.videoFps = 30;
+	desc.videoFps = 25;
 	desc.exportSize = QSize( 1024, 768 );
 	desc.strCameraName = QString::fromStdWString( std::wstring( L"相機層" ) );
 

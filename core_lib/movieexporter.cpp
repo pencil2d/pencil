@@ -11,9 +11,11 @@
 #include "layersound.h"
 #include "soundclip.h"
 
+#define IMAGE_FILENAME "/test_img_%05d.png"
+
 struct WavFileHeader
 {
-	char    Riff[ 4 ];
+	char    riff[ 4 ];
 	int32_t chuckSize;
 	char    format[ 4 ];
 	char    fmtID[ 4 ];
@@ -22,10 +24,28 @@ struct WavFileHeader
 	int16_t numChannels;
 	int32_t sampleRate;
 	int32_t byteRate;
-	int16_t dummy;
+	int16_t blockAlign;
 	int16_t bitsPerSample;
-	char    datChuckID[ 4 ];
+	char    dataChuckID[ 4 ];
 	int32_t dataSize;
+
+	void InitWithDefaultValues()
+	{
+		strncpy( riff, "RIFF", 4 );
+		chuckSize = 0;
+		strncpy( format, "WAVE", 4 );
+		strncpy( fmtID, "fmt ", 4 );
+		fmtChuckSize = 16;
+		audioFormat = 1; // 1 means PCM
+		numChannels = 2; // stereo
+		sampleRate = 44100;
+		bitsPerSample = 16;
+		blockAlign = ( bitsPerSample * numChannels ) / 8;
+		byteRate = ( sampleRate * bitsPerSample * numChannels ) / 8;
+
+		strncpy( dataChuckID, "data", 4 );
+		dataSize = 0;
+	}
 };
 
 int16_t safeSumInt16( int16_t a, int16_t b )
@@ -127,8 +147,6 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 
 	bool audioDataValid = false;
 
-	WavFileHeader outputHeader;
-
 	QDir dir( mTempWorkDir );
 	Q_ASSERT( dir.exists() );
 
@@ -207,21 +225,22 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 			}
 			
 			file.close();
-
-			outputHeader = header;
 		}
 	}
 
 	if ( !audioDataValid )
 	{
-		return Status::FAIL;
+		return Status::SAFE;
 	}
 
 	// save mixed audio file ( will be used as audio stream )
 	QFile file( mTempWorkDir + "/tmpaudio.wav" );
 	file.open( QIODevice::WriteOnly );
-		
+	
+	WavFileHeader outputHeader;
+	outputHeader.InitWithDefaultValues();
 	outputHeader.dataSize = audioDataSize;
+	outputHeader.chuckSize = 36 + audioDataSize;
 
 	file.write( (char*)&outputHeader, sizeof( outputHeader ) );
 	file.write( (char*)audioData.data(), audioDataSize );
@@ -239,7 +258,10 @@ Status MovieExporter::generateVideo( Object* obj )
 	QString strCameraName = mDesc.strCameraName;
 
 	auto cameraLayer = (LayerCamera*)obj->findLayerByName( strCameraName, Layer::CAMERA );
-	Q_ASSERT( cameraLayer );
+	if ( cameraLayer == nullptr )
+	{
+		cameraLayer = obj->getLayersByType< LayerCamera >().front();
+	}
 
 	for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
 	{
@@ -268,12 +290,10 @@ Status MovieExporter::generateVideo( Object* obj )
 
 		obj->paintImage( painter, currentFrame, false, true );
 
-		QString filePath = mTempWorkDir + "/test_img_";
-		QString extension = ".png";
-		QString frameNumberString = QString("%1").arg( currentFrame, 5, 10, QChar('0') );
+		QString imageFileWithFrameNumber = QString().sprintf( IMAGE_FILENAME,  currentFrame );
 
-		QString strImgPath = filePath + frameNumberString + extension;
-		qDebug() << "Save img to: " <<strImgPath;
+		QString strImgPath = mTempWorkDir + imageFileWithFrameNumber;
+		qDebug() << "Save img to: " << strImgPath;
 		bool bSave = imageToExport.save( strImgPath );
 		Q_ASSERT( bSave );
 	}
@@ -283,17 +303,25 @@ Status MovieExporter::generateVideo( Object* obj )
 
 Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 {
-	int exportFps = mDesc.videoFps;
+	//int exportFps = mDesc.videoFps;
 	const QString strOutputFile = mDesc.strFileName;
-	const QString imgPath = mTempWorkDir + "/test_img_%5d.png";
+	const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
 	const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 
 	QString strCmd = ffmpegPath;
 	//strCmd += QString( " -vcodec libx264" );
-	strCmd += QString( " -r %1" ).arg( exportFps );
+	strCmd += QString( " -f image2");
+	strCmd += QString( " -framerate 12" );
+	//strCmd += QString( " -r %1" ).arg( exportFps );
 	strCmd += QString( " -i \"%1\" " ).arg( imgPath );
-	strCmd += QString( " -i \"%1\" " ).arg( tempAudioPath );
-	strCmd += " -y ";
+
+	if ( QFile::exists( tempAudioPath ) )
+	{
+		strCmd += QString( " -i \"%1\" " ).arg( tempAudioPath );
+	}
+
+	strCmd += QString( " -s 320x480" );
+	strCmd += " -y";
 	strCmd += QString(" \"%1\"" ).arg( strOutputFile );
 	qDebug() << strCmd;
 
