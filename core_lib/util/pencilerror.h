@@ -39,7 +39,7 @@ public:
     Status( ErrorCode eCode ) { mCode = eCode; }
 
     ErrorCode code() { return mCode; }
-    bool      ok() const { return mCode == OK; }
+    bool      ok() const { return ( mCode == OK ) || ( mCode == SAFE ); }
     QString   msg();
 
     bool operator==( ErrorCode code );
