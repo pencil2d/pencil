@@ -13,6 +13,10 @@
 
 #define IMAGE_FILENAME "/test_img_%05d.png"
 
+// refs
+// http://www.topherlee.com/software/pcm-tut-wavformat.html
+// http://soundfile.sapp.org/doc/WaveFormat/
+//
 struct WavFileHeader
 {
 	char    riff[ 4 ];
