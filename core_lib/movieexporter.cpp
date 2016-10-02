@@ -218,7 +218,7 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 	}
 
 	// save mixed audio file ( will be used as audio stream )
-	QFile file( tempAudioPath + "tmpaudio.wav" );
+	QFile file( mTempWorkDir + "/tmpaudio.wav" );
 	file.open( QIODevice::WriteOnly );
 		
 	outputHeader.dataSize = audioDataSize;
@@ -286,7 +286,7 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	int exportFps = mDesc.videoFps;
 	const QString strOutputFile = mDesc.strFileName;
 	const QString imgPath = mTempWorkDir + "/test_img_%5d.png";
-	const QString tempAudioPath = mTempWorkDir + "/tmpaudio0.wav";
+	const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 
 	QString strCmd = ffmpegPath;
 	//strCmd += QString( " -vcodec libx264" );
