@@ -2,7 +2,6 @@
 
 #include <utility>
 #include "object.h"
-#include "editorstate.h"
 
 static float gZoomingList[] = {
     .01f, .02f, .04f, .06f, .08f, .12f, .16f, .25f, .33f, .5f, .75f,
@@ -18,16 +17,23 @@ bool ViewManager::init()
     return true;
 }
 
-Status ViewManager::onObjectLoaded( Object* o )
+Status ViewManager::load( Object* o )
 {
-    mView = o->editorState()->mCurrentView;
+    mView = o->data()->getCurrentView();
 
     if ( mView.isIdentity() )
     {
         translate( 0, 0 );
     }
+	createViewTransform();
 
     return Status::OK;
+}
+
+Status ViewManager::save( Object* o )
+{
+	o->data()->setCurrentView( mView );
+	return Status();
 }
 
 QPointF ViewManager::mapCanvasToScreen( QPointF p )

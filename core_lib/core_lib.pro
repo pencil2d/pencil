@@ -69,7 +69,7 @@ HEADERS +=  \
     structure/keyframefactory.h \
     structure/soundclip.h \
     structure/object.h \
-    structure/editorstate.h \
+    structure/objectdata.h \
     structure/filemanager.h \
     tool/basetool.h \
     tool/brushtool.h \
@@ -135,7 +135,7 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     structure/object.cpp \
     structure/keyframefactory.cpp \
     structure/soundclip.cpp \
-    structure/editorstate.cpp \
+    structure/objectdata.cpp \
     structure/filemanager.cpp \
     tool/basetool.cpp \
     tool/brushtool.cpp \

@@ -36,7 +36,7 @@ GNU General Public License for more details.
 #include <QDropEvent>
 
 #include "object.h"
-#include "editorstate.h"
+#include "objectdata.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
@@ -491,7 +491,7 @@ Status Editor::setObject( Object* newObject )
 
     for ( BaseManager* m : mAllManagers )
     {
-        m->onObjectLoaded( mObject.get() );
+        m->load( mObject.get() );
     }
 
 	g_clipboardVectorImage.setObject( newObject );
@@ -503,10 +503,10 @@ Status Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    scrubTo( mObject->editorState()->mCurrentFrame );
+    scrubTo( mObject->data()->getCurrentFrame() );
     if (layers() != NULL)
     {
-      layers()->setCurrentLayer( mObject->editorState()->mCurrentLayer );
+		layers()->setCurrentLayer( mObject->data()->getCurrentLayer() );
     }
 
 	clearUndoStack();

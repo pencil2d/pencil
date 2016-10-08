@@ -19,7 +19,7 @@ bool SoundManager::init()
     return true;
 }
 
-Status SoundManager::onObjectLoaded( Object* obj )
+Status SoundManager::load( Object* obj )
 {
     int count = obj->getLayerCount();
     for ( int i = 0; i < count; ++i )
@@ -41,6 +41,11 @@ Status SoundManager::onObjectLoaded( Object* obj )
         } );
     }
     return Status::OK;
+}
+
+Status SoundManager::save( Object* )
+{
+	return Status::OK;
 }
 
 Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile )

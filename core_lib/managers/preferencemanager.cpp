@@ -18,9 +18,14 @@ bool PreferenceManager::init()
     return true;
 }
 
-Status PreferenceManager::onObjectLoaded( Object* )
+Status PreferenceManager::load( Object* )
 {
     return Status::OK;
+}
+
+Status PreferenceManager::save( Object * )
+{
+	return Status::OK;
 }
 
 void PreferenceManager::loadPrefs()

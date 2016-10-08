@@ -25,13 +25,14 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "pencilerror.h"
 #include "pencildef.h"
+#include "objectdata.h"
 
 class QProgressDialog;
 class LayerBitmap;
 class LayerVector;
 class LayerCamera;
 class LayerSound;
-class EditorState;
+class ObjectData;
 
 
 struct ExportMovieParameters
@@ -156,8 +157,8 @@ public:
 
     int getUniqueLayerID();
 
-    EditorState* editorState();
-    void setEditorData( EditorState* );
+    ObjectData* data();
+    void setData( ObjectData* );
 
     void setLayerUpdated(int layerId);
 
@@ -177,7 +178,7 @@ private:
 
     QList< ColourRef > mPalette;
 
-    std::unique_ptr< EditorState > mEditorState;
+    std::unique_ptr< ObjectData > mEditorState;
 };
 
 

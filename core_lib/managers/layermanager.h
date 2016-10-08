@@ -18,7 +18,8 @@ public:
     LayerManager( QObject* pParant );
     ~LayerManager();
     bool init() override;
-    Status onObjectLoaded( Object* ) override;
+    Status load( Object* ) override;
+	Status save( Object* ) override;
 
     // Layer Management
     Layer* currentLayer();

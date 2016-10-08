@@ -31,7 +31,6 @@ GNU General Public License for more details.
 #include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
-#include "editorstate.h"
 #include "fileformat.h"
 
 // ******* Mac-specific: ******** (please comment (or reimplement) the lines below to compile on Windows or Linux
@@ -40,7 +39,7 @@ GNU General Public License for more details.
 
 Object::Object( QObject* parent ) : QObject( parent )
 {
-    setEditorData( new EditorState() );
+    setData( new ObjectData() );
 }
 
 Object::~Object()
@@ -53,7 +52,7 @@ Object::~Object()
 
 void Object::init()
 {
-    mEditorState.reset( new EditorState );
+    mEditorState.reset( new ObjectData );
 
     createWorkingDir();
 
@@ -813,13 +812,13 @@ int Object::getLayerCount()
     return mLayers.size();
 }
 
-EditorState* Object::editorState()
+ObjectData* Object::data()
 {
     Q_ASSERT( mEditorState != nullptr );
     return mEditorState.get();
 }
 
-void Object::setEditorData( EditorState* d )
+void Object::setData( ObjectData* d )
 {
     Q_ASSERT( d != nullptr );
     mEditorState.reset( d );
