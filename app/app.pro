@@ -80,7 +80,7 @@ FORMS += \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
     ui/displayoption.ui \
-    exportmoviedialog.ui
+    ui/exportmoviedialog.ui
 
 DEPENDPATH += .
 
