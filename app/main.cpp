@@ -54,7 +54,7 @@ void installTranslator( PencilApplication& app )
     qDebug() << "Install translation = " << b;
 }
 
-int handleArguments( PencilApplication & app, MainWindow2 & mainWindow )
+int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
 {
     QStringList args = app.arguments();
     QString inputPath;
@@ -288,6 +288,13 @@ int handleArguments( PencilApplication & app, MainWindow2 & mainWindow )
     return 0;
 }
 
+bool isGUIMode(int argc, char* argv[] )
+{
+	bool b = false;
+	b |= ( argc == 1 );
+	b |= ( argc <= 3 ) && QString( argv[ 1 ] ) == "-NSDocumentRevisionsDebugMode";
+	return b;
+}
 
 int main(int argc, char* argv[])
 {
@@ -302,7 +309,7 @@ int main(int argc, char* argv[])
     //QObject::connect(&app, SIGNAL(openFileRequested(QString)), &mainWindow, SLOT(openDocument(QString)));
     app.emitOpenFileRequest();
 
-    if ( argc == 1 || ( ( argc == 2 || argc == 3 ) && QString(argv[1]) == "-NSDocumentRevisionsDebugMode" ) )
+    if ( isGUIMode( argc, argv ) )
     {
         mainWindow.show();
         return app.exec();
