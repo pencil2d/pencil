@@ -24,7 +24,8 @@ class MovieExporter
 {
 public:
     MovieExporter();
-
+	~MovieExporter();
+	
 	Status run( const Object* obj, 
 				const ExportMovieDesc& desc, 
 				std::function<void(float)> progress );

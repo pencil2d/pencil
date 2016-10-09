@@ -86,6 +86,15 @@ MovieExporter::MovieExporter()
 {
 }
 
+MovieExporter::~MovieExporter()
+{
+	QDir dir( mTempWorkDir );
+	if ( dir.exists() )
+	{
+		dir.removeRecursively();
+	}
+}
+
 Status MovieExporter::run(const Object* obj, 
 						  const ExportMovieDesc& desc,
 						  std::function<void( float )> progress )
@@ -197,8 +206,8 @@ Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 			// convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
 			// supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
 			QString strCmd;
-			strCmd += ffmpegPath + " -i ";
-			strCmd += QString( "\"%1\" " ).arg( clip->fileName() );
+			strCmd += QString("\"%1\"").arg( ffmpegPath );
+			strCmd += QString( " -i \"%1\" " ).arg( clip->fileName() );
 			strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
 			strCmd += QString( "\"%1\"" ).arg( tempAudioPath );
 
