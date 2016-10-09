@@ -68,6 +68,20 @@ int16_t safeSumInt16( int16_t a, int16_t b )
 	return a + b;
 }
 
+void skipUselessChucks( WavFileHeader& header, QFile& file )
+{
+	// We only care about the 'data' chuck
+	while ( memcmp( header.dataChuckID, "data", 4 ) != 0 )
+	{
+		int skipByteCount = header.dataSize;
+		std::vector<char> skipData( skipByteCount );
+		file.read( skipData.data(), skipByteCount );
+
+		file.read( (char*)&header.dataChuckID, 4 );
+		file.read( (char*)&header.dataSize, 4 );
+	}
+}
+
 MovieExporter::MovieExporter()
 {
 }
@@ -146,7 +160,7 @@ Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 	Q_ASSERT( endFrame > 0 );
 	Q_ASSERT( startFrame >= 0 );
 
-	int32_t lengthInSec = ( endFrame - startFrame ) / (float)fps;
+	float lengthInSec = ( endFrame - startFrame ) / (float)fps;
 	qDebug() << "Audio Length = " << lengthInSec << " seconds";
 
 	int32_t audioDataSize = 44100 * 2 * 2 * lengthInSec;
@@ -176,11 +190,11 @@ Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 			// supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
 			QString strCmd;
 			strCmd += ffmpegPath + " -i ";
-			strCmd += "\"" + clip->fileName() + "\" ";
+			strCmd += QString( "\"%1\" " ).arg( clip->fileName() );
 			strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
-			strCmd += "\"" + tempAudioPath +"\"";
+			strCmd += QString( "\"%1\"" ).arg( tempAudioPath );
 
-			qDebug() << "Run ffmpeg convert";
+			qDebug() << "ffmpeg convert:";
 			qDebug() << strCmd;
 
 			QProcess ffmpeg;
@@ -210,6 +224,8 @@ Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 			QFile file( tempAudioPath );
 			file.open( QIODevice::ReadOnly );
 			file.read( (char*)&header, sizeof( WavFileHeader ) );
+
+			skipUselessChucks( header, file );
 
 			int32_t audioSize = header.dataSize;
 
@@ -358,4 +374,3 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 
 	return Status::OK;
 }
-
