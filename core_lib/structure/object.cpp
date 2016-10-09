@@ -31,7 +31,6 @@ GNU General Public License for more details.
 #include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
-#include "editorstate.h"
 #include "fileformat.h"
 
 // ******* Mac-specific: ******** (please comment (or reimplement) the lines below to compile on Windows or Linux
@@ -40,7 +39,7 @@ GNU General Public License for more details.
 
 Object::Object( QObject* parent ) : QObject( parent )
 {
-    setEditorData( new EditorState() );
+    setData( new ObjectData() );
 }
 
 Object::~Object()
@@ -53,7 +52,7 @@ Object::~Object()
 
 void Object::init()
 {
-    mEditorState.reset( new EditorState );
+    mEditorState.reset( new ObjectData );
 
     createWorkingDir();
 
@@ -214,7 +213,7 @@ int Object::getUniqueLayerID()
     return 1 + getMaxLayerID();
 }
 
-Layer* Object::getLayer( int i )
+Layer* Object::getLayer( int i ) const
 {
     if ( i < 0 || i >= getLayerCount() )
     {
@@ -222,6 +221,22 @@ Layer* Object::getLayer( int i )
     }
 
     return mLayers.at( i );
+}
+
+Layer* Object::findLayerByName( QString strName, Layer::LAYER_TYPE type ) const
+{
+	bool bCheckType = ( type != Layer::UNDEFINED );
+
+	for ( Layer* layer : mLayers )
+	{
+		bool bTypeMatch = ( bCheckType ) ? ( type == layer->type() ): true ;
+
+		if ( layer->name() == strName && bTypeMatch )
+		{
+			return layer;
+		}
+	}
+	return nullptr;
 }
 
 bool Object::moveLayer( int i, int j )
@@ -411,7 +426,7 @@ void Object::loadDefaultPalette()
 
 void Object::paintImage( QPainter& painter, int frameNumber,
                          bool background,
-                         bool antialiasing )
+                         bool antialiasing ) const
 {
     painter.setRenderHint( QPainter::Antialiasing, true );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, true );
@@ -510,9 +525,11 @@ bool Object::exportFrames( int frameStart, int frameEnd,
     {
         filePath.chop( extension.size() );
     }
-    //qDebug() << "format =" << format << "extension = " << extension;
-
-    qDebug() << "Exporting frames from " << frameStart << "to" << frameEnd << "at size " << exportSize;
+   
+    qDebug() << "Exporting frames from " 
+			 << frameStart << "to" 
+			 << frameEnd 
+		     << "at size " << exportSize;
 
     for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
     {
@@ -566,8 +583,6 @@ void convertNFrames( int fps, int exportFps, int* frameRepeat, int* frameReminde
     }
     qDebug() << "-->convertedNFrames";
 }
-
-
 
 bool Object::exportFrames1( ExportFrames1Parameters par )
 {
@@ -792,18 +807,18 @@ bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize e
     return false;
 }
 
-int Object::getLayerCount()
+int Object::getLayerCount() const
 {
     return mLayers.size();
 }
 
-EditorState* Object::editorState()
+ObjectData* Object::data()
 {
     Q_ASSERT( mEditorState != nullptr );
     return mEditorState.get();
 }
 
-void Object::setEditorData( EditorState* d )
+void Object::setData( ObjectData* d )
 {
     Q_ASSERT( d != nullptr );
     mEditorState.reset( d );

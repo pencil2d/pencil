@@ -54,7 +54,8 @@ public:
     ~PreferenceManager();
 
     virtual bool init() override;
-    Status onObjectLoaded( Object* ) override;
+    Status load( Object* ) override;
+	Status save( Object* ) override;
 
     void loadPrefs();
     void set(SETTING option, QString value );

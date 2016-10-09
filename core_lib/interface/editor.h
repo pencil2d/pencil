@@ -73,6 +73,7 @@ public:
 
     Object* object() const { return mObject.get(); }
     Status setObject( Object* object );
+	void updateObject();
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
@@ -131,8 +132,6 @@ public: //slots
 
     void moveFrameForward();
     void moveFrameBackward();
-
-    void updateObject();
 
     void setCurrentLayer( int layerNumber );
     void switchVisibilityOfLayer( int layerNumber );
@@ -197,11 +196,6 @@ private:
 
     // clipboard
     bool clipboardBitmapOk, clipboardVectorOk;
-
-    // dialogs
-    // FIXME: doesn't make sense to create dialog here, must move to other place.
-    void createExportMovieSizeBox();
-    void createExportMovieDialog();
 };
 
 #endif

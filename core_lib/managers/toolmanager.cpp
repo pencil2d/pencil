@@ -45,9 +45,14 @@ bool ToolManager::init()
     return true;
 }
 
-Status ToolManager::onObjectLoaded( Object* )
+Status ToolManager::load( Object* )
 {
     return Status::OK;
+}
+
+Status ToolManager::save( Object* )
+{
+	return Status::OK;
 }
 
 BaseTool* ToolManager::getTool(ToolType eToolType)

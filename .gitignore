@@ -66,3 +66,4 @@ debug
 ipch
 *.VC.db
 
+*.opendb

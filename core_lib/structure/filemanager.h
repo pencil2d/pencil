@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include "colourref.h"
 
 class Object;
-class EditorState;
+class ObjectData;
 
 
 class FileManager : public QObject
@@ -59,9 +59,9 @@ private:
     Object* cleanUpWithErrorCode( Status );
     
     bool loadPalette( Object* );
-    EditorState* loadEditorState( QDomElement element );
+    ObjectData* loadEditorState( QDomElement element );
 
-    void extractEditorStateData( const QDomElement& element, EditorState* data );
+    void extractEditorStateData( const QDomElement& element, ObjectData* data );
 
     Status mError = Status::OK;
     QString mstrLastTempFolder;

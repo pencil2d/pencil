@@ -129,7 +129,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     Camera* camera1 = static_cast< Camera* >( getLastKeyFrameAtPosition( frameNumber ) );
 
     int nextFrame = getNextKeyFramePosition( frameNumber );
-    Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
+	Camera* camera2 = static_cast< Camera* >( getLastKeyFrameAtPosition( nextFrame ) );
 
     if (camera1 == NULL && camera2 == NULL)
     {
@@ -143,6 +143,11 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     {
         return camera1->view;
     }
+
+	if ( camera1 == camera2 )
+	{
+		return camera1->view;
+	}
 
     int frame1 = camera1->pos();
     int frame2 = camera2->pos();
@@ -171,6 +176,11 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
+
+QSize LayerCamera::getViewSize()
+{
+    return viewRect.size();
+}
 
 void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
 {

@@ -5,20 +5,21 @@
 #include "pencilerror.h"
 
 class Editor;
-
+class QWidget;
 
 class ActionCommands : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ActionCommands(QObject* parent = 0);
+    explicit ActionCommands( QWidget* parent = 0 );
     virtual ~ActionCommands();
 
     void setCore( Editor* e ) { mEditor = e; }
     
     // file 
     Status importSound();
+	Status exportMovie();
 
     // edit
 
@@ -49,7 +50,8 @@ public:
     Status addNewSoundLayer();
 
 private:
-    Editor* mEditor = nullptr;
+    Editor* mEditor  = nullptr;
+	QWidget* mParent = nullptr;
 };
 
 #endif // COMMANDCENTER_H

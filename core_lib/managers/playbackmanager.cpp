@@ -5,7 +5,6 @@
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
-#include "editorstate.h"
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "soundclip.h"
@@ -22,17 +21,28 @@ bool PlaybackManager::init()
     return true;
 }
 
-Status PlaybackManager::onObjectLoaded( Object* o )
+Status PlaybackManager::load( Object* o )
 {
-    const EditorState* e = o->editorState();
+    const ObjectData* e = o->data();
     
-    mIsLooping        = e->mIsLoop;
-    mIsRangedPlayback = e->mIsRangedPlayback;
-    mMarkInFrame      = e->mMarkInFrame;
-    mMarkOutFrame     = e->mMarkOutFrame;
-    mFps              = e->mFps;
+    mIsLooping        = e->isLooping();
+    mIsRangedPlayback = e->isRangedPlayback();
+    mMarkInFrame      = e->getMarkInFrameNumber();
+    mMarkOutFrame     = e->getMarkOutFrameNumber();
+    mFps              = e->getFrameRate();
 
     return Status::OK;
+}
+
+Status PlaybackManager::save( Object* o )
+{
+	ObjectData* data = o->data();
+	data->setLooping( mIsLooping );
+	data->setRangedPlayback( mIsRangedPlayback );
+	data->setMarkInFrameNumber( mMarkInFrame );
+	data->setMarkOutFrameNumber( mMarkOutFrame );
+	data->setFrameRate( mFps );
+	return Status::OK;
 }
 
 bool PlaybackManager::isPlaying()

@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -68,7 +68,10 @@ GNU General Public License for more details.
 #include "recentfilemenu.h"
 
 #include "exportimageseqdialog.h"
+#include "exportmoviedialog.h"
 #include "shortcutfilter.h"
+#include "filedialogex.h"
+#include "movieexporter.h"
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -230,7 +233,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
     connect( ui->actionExport_Image, &QAction::triggered, this, &MainWindow2::exportImage );
     connect( ui->actionExport_ImageSeq, &QAction::triggered, this, &MainWindow2::exportImageSequence );
-    connect( ui->actionExport_Movie, &QAction::triggered, this, &MainWindow2::exportMovie );
+    connect( ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie );
 
     connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
 
@@ -372,19 +375,19 @@ void MainWindow2::setOpacity( int opacity )
 
 bool MainWindow2::isTitleMarkedUnsaved()
 {
-    return QApplication::activeWindow()->windowTitle().startsWith(QString("* "));
+    return windowTitle().startsWith(QString("* "));
 }
 
 void MainWindow2::markTitleUnsaved()
 {
     if (!isTitleMarkedUnsaved())
-        setWindowTitle( QString("* ") + QApplication::activeWindow()->windowTitle() );
+        setWindowTitle( QString("* ") + windowTitle() );
 }
 
 void MainWindow2::markTitleSaved()
 {
     if (isTitleMarkedUnsaved())
-        setWindowTitle( QApplication::activeWindow()->windowTitle().remove(0, 2) );
+        setWindowTitle( windowTitle().remove(0, 2) );
 }
 
 void MainWindow2::updateTitleSaveState()
@@ -393,7 +396,8 @@ void MainWindow2::updateTitleSaveState()
     {
         markTitleSaved();
     }
-    else {
+    else
+	{
         markTitleUnsaved();
     }
 }
@@ -704,11 +708,6 @@ void MainWindow2::importMovie()
     settings.setValue( "lastExportPath", filePath );
 }
 
-void MainWindow2::exportMovie()
-{
-
-}
-
 void MainWindow2::exportImageSequence()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
@@ -717,7 +716,6 @@ void MainWindow2::exportImageSequence()
     int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
-
 
     // Options
     auto dialog =  new ExportImageSeqDialog( this );

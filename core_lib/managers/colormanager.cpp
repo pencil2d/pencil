@@ -3,8 +3,6 @@
 
 #include "object.h"
 #include "editor.h"
-#include "editorstate.h"
-
 
 
 ColorManager::ColorManager( QObject* parent ) : BaseManager( parent )
@@ -20,9 +18,15 @@ bool ColorManager::init()
     return true;
 }
 
-Status ColorManager::onObjectLoaded( Object* o )
+Status ColorManager::load( Object* o )
 {
     return Status::OK;
+}
+
+Status ColorManager::save( Object* o )
+{
+	o->data()->setCurrentColor( mCurrentFrontColor );
+	return Status::OK;
 }
 
 QColor ColorManager::frontColor()
