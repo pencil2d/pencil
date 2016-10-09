@@ -77,7 +77,6 @@ public:
     void exportImageSequence();
 
     void importMovie();
-    void exportMovie();
 
     void preferences();
     void helpBox();

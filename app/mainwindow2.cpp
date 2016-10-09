@@ -708,10 +708,6 @@ void MainWindow2::importMovie()
     settings.setValue( "lastExportPath", filePath );
 }
 
-void MainWindow2::exportMovie()
-{
-}
-
 void MainWindow2::exportImageSequence()
 {
     QSettings settings( PENCIL2D, PENCIL2D );

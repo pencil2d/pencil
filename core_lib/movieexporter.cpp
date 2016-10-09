@@ -315,11 +315,12 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	const QString strOutputFile = mDesc.strFileName;
 	const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
 	const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
+	const QSize exportSize = mDesc.exportSize;
 
-	QString strCmd = ffmpegPath;
-	//strCmd += QString( " -vcodec libx264" );
+	QString strCmd = QString("\"%1\"").arg( ffmpegPath );
 	strCmd += QString( " -f image2");
-	strCmd += QString( " -framerate 12" );
+	strCmd += QString( " -framerate %1" ).arg( mDesc.fps );
+	strCmd += QString( " -start_number %1" ).arg( mDesc.startFrame );
 	//strCmd += QString( " -r %1" ).arg( exportFps );
 	strCmd += QString( " -i \"%1\" " ).arg( imgPath );
 
@@ -328,7 +329,7 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 		strCmd += QString( " -i \"%1\" " ).arg( tempAudioPath );
 	}
 
-	strCmd += QString( " -s 320x480" );
+	strCmd += QString( " -s %1x%2" ).arg( exportSize.width() ).arg( exportSize.height() );
 	strCmd += " -y";
 	strCmd += QString(" \"%1\"" ).arg( strOutputFile );
 	qDebug() << strCmd;
@@ -355,6 +356,6 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 		qDebug() << "ERROR: Could not execute FFmpeg.";
 	}
 
-	return Status();
+	return Status::OK;
 }
 
