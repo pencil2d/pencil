@@ -128,19 +128,27 @@ Status MovieExporter::run(const Object* obj,
 	}
 	mTempWorkDir = dir.absolutePath();
 
+	progress( 0.03f );
+
 	Status stAudioOK = assembleAudio( obj, ffmpegPath );
 	if ( !stAudioOK.ok() )
 	{
 		return stAudioOK;
 	}
 
-	Status st = generateVideo( obj );
+	progress( 0.10f );
+
+	Status st = generateVideo( obj, progress );
 	if ( !st.ok() )
 	{
 		return st;
 	}
 
+	progress( 0.99f );
+
 	combineVideoAndAudio( ffmpegPath );
+
+	progress( 1.0f );
 
 	return Status::OK;
 }
@@ -273,7 +281,8 @@ Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 	return Status::OK;
 }
 
-Status MovieExporter::generateVideo( const Object* obj )
+Status MovieExporter::generateVideo( const Object* obj,
+									 std::function<void(float)>  progress )
 {
 	int frameStart        = mDesc.startFrame;
 	int frameEnd          = mDesc.endFrame;
@@ -309,8 +318,6 @@ Status MovieExporter::generateVideo( const Object* obj )
 		painter.setWorldTransform( view * centralizeCamera );
 
 		painter.setWindow( QRect( 0, 0, camSize.width(), camSize.height() ) );
-		
-		//qDebug() << painter.worldTransform();
 
 		obj->paintImage( painter, currentFrame, false, true );
 
@@ -320,6 +327,9 @@ Status MovieExporter::generateVideo( const Object* obj )
 		qDebug() << "Save img to: " << strImgPath;
 		bool bSave = imageToExport.save( strImgPath );
 		Q_ASSERT( bSave );
+
+		float fProgressValue = ( currentFrame / (float)( frameEnd - frameStart ) );
+		progress( 0.1f + ( fProgressValue * 0.99f ) );
 	}
 
 	return Status::OK;

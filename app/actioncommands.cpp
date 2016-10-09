@@ -1,9 +1,11 @@
 #include "actioncommands.h"
 
-#include <QPushButton>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QProgressDialog>
+#include <QApplication>
+#include <QDesktopServices>
 
 #include "pencildef.h"
 #include "editor.h"
@@ -137,10 +139,30 @@ Status ActionCommands::exportMovie()
 	desc.exportSize    = exportDialog.getExportSize();
 	desc.strCameraName = exportDialog.getSelectedCameraName();
 
-	MovieExporter ex;
-	ex.run( mEditor->object(), desc, []( float f ) {} );
+	QProgressDialog progressDlg;
+	progressDlg.setWindowModality( Qt::WindowModal );
+	progressDlg.setLabelText( tr("Exporting movie...") );
+	progressDlg.show();
 
-	return Status::OK;
+	MovieExporter ex;
+	ex.run( mEditor->object(), desc, [ &progressDlg ]( float f )
+	{
+		progressDlg.setValue( (int)(f * 100.f) );
+		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
+	} );
+
+	if ( QFile::exists( strMoviePath ) )
+	{
+		auto btn = QMessageBox::question( mParent, 
+                                          "Pencil2D", 
+	                                      tr( "Finished. Open movie now?" ) );
+		if ( btn == QMessageBox::Yes )
+		{
+			QDesktopServices::openUrl( strMoviePath );
+		}
+	}
+
+	return Status::OK; 
 }
 
 void ActionCommands::ZoomIn()
