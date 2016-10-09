@@ -72,8 +72,12 @@ MovieExporter::MovieExporter()
 {
 }
 
-Status MovieExporter::run(Object* obj, const ExportMovieDesc& desc)
+Status MovieExporter::run(const Object* obj, 
+						  const ExportMovieDesc& desc,
+						  std::function<void( float )> progress )
 {
+	progress( 0.f );
+
 	if ( desc.strFileName.isEmpty() )
 	{
 		return Status::INVALID_ARGUMENT;
@@ -132,7 +136,7 @@ QString MovieExporter::error()
 	return QString();
 }
 
-Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
+Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 {
 	// Quicktime assemble call
 	int startFrame = mDesc.startFrame;
@@ -253,7 +257,7 @@ Status MovieExporter::assembleAudio( Object* obj, QString ffmpegPath )
 	return Status::OK;
 }
 
-Status MovieExporter::generateVideo( Object* obj )
+Status MovieExporter::generateVideo( const Object* obj )
 {
 	int frameStart        = mDesc.startFrame;
 	int frameEnd          = mDesc.endFrame;

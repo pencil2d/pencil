@@ -92,7 +92,7 @@ public:
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element );
 
-    void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
+    void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing ) const;
 
     QString copyFileToDataFolder( QString strFilePath );
 
@@ -119,17 +119,17 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
-	int  getLayerCount();
+	int  getLayerCount() const ;
 
-    Layer* getLayer( int i );
-	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED );
+    Layer* getLayer( int i ) const;
+	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED ) const;
 
 	bool moveLayer( int i, int j );
     void deleteLayer( int i );
     void deleteLayer( Layer* );
 	
 	template< typename T >
-	std::vector< T* > getLayersByType()
+	std::vector< T* > getLayersByType() const
 	{
 		std::vector< T* > result;
 		for ( Layer* layer : mLayers )

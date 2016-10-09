@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>301</width>
-    <height>347</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,29 +17,6 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Format</string>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
-      <item>
-       <widget class="QComboBox" name="formatCombo">
-        <item>
-         <property name="text">
-          <string>MP4</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>AVI</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">

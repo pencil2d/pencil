@@ -5,8 +5,9 @@
 
 #include "pencildef.h"
 
-FileDialog::FileDialog( QObject* parent ) : QObject( parent )
+FileDialog::FileDialog( QWidget* parent ) : QObject( parent )
 {
+	mRoot = parent;
 }
 
 FileDialog::~FileDialog()

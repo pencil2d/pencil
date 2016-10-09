@@ -1,6 +1,7 @@
 #ifndef MOVIEEXPORTER_H
 #define MOVIEEXPORTER_H
 
+#include <functional>
 #include <QString>
 #include <QSize>
 #include "pencilerror.h"
@@ -24,12 +25,14 @@ class MovieExporter
 public:
     MovieExporter();
 
-	Status run( Object* obj, const ExportMovieDesc& desc );
+	Status run( const Object* obj, 
+				const ExportMovieDesc& desc, 
+				std::function<void(float)> progress );
 	QString error();
 
 private:
-	Status assembleAudio( Object* obj, QString ffmpegPath );
-	Status generateVideo( Object* obj );
+	Status assembleAudio( const Object* obj, QString ffmpegPath );
+	Status generateVideo( const Object* obj );
 	Status combineVideoAndAudio( QString ffmpegPath ); 
 
 	QString mTempWorkDir;

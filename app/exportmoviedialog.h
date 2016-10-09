@@ -18,7 +18,13 @@ public:
     void setCamerasInfo( std::vector< std::pair< QString, QSize > > );
     void updateResolutionCombo( int index );
 
+	void setDefaultRange( int startFrame, int endFrame );
 
+	QString getSelectedCameraName();
+	QSize getExportSize();
+
+	int getStartFrame();
+	int getEndFrame();
 
 private:
     Ui::ExportMovieDialog* ui = nullptr;

@@ -42,3 +42,29 @@ void ExportMovieDialog::updateResolutionCombo( int index )
     ui->widthSpinBox->setValue( camSize.width() );
     ui->heightSpinBox->setValue( camSize.height() );
 }
+
+void ExportMovieDialog::setDefaultRange( int startFrame, int endFrame )
+{
+	ui->startSpinbox->setValue( startFrame );
+	ui->endSpinBox->setValue( endFrame );
+}
+
+QString ExportMovieDialog::getSelectedCameraName()
+{
+	return ui->cameraCombo->currentText();
+}
+
+QSize ExportMovieDialog::getExportSize()
+{
+	return QSize( ui->widthSpinBox->value(), ui->heightSpinBox->value() );
+}
+
+int ExportMovieDialog::getStartFrame()
+{
+	return ui->startSpinbox->value();
+}
+
+int ExportMovieDialog::getEndFrame()
+{
+	return ui->endSpinBox->value();
+}

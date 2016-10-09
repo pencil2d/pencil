@@ -196,11 +196,6 @@ private:
 
     // clipboard
     bool clipboardBitmapOk, clipboardVectorOk;
-
-    // dialogs
-    // FIXME: doesn't make sense to create dialog here, must move to other place.
-    void createExportMovieSizeBox();
-    void createExportMovieDialog();
 };
 
 #endif

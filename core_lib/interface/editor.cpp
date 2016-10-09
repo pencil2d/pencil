@@ -519,64 +519,6 @@ void Editor::updateObject()
     emit updateLayerCount();
 }
 
-void Editor::createExportMovieSizeBox()
-{
-	/*
-	exportMovieDialog_format = new QComboBox();
-	exportMovieDialog_format->addItem( "AUTO" );
-	exportMovieDialog_format->addItem( "MOV" );
-	exportMovieDialog_format->addItem( "MPEG2/AVI" );
-	exportMovieDialog_format->addItem( "MPEG4/AVI" );
-	exportMovieDialog_format->addItem( "MPEG4/MP4" );
-	exportMovieDialog_fpsBox = new QSpinBox( mMainWindow );
-	exportMovieDialog_fpsBox->setMinimum( 1 );
-	exportMovieDialog_fpsBox->setMaximum( 60 );
-	exportMovieDialog_fpsBox->setValue( defaultFps );
-	exportMovieDialog_fpsBox->setFixedWidth( 40 );
-	*/
-}
-
-void Editor::createExportMovieDialog()
-{
-    /*
-	exportMovieDialog = new QDialog( mMainWindow, Qt::Dialog );
-	QGridLayout* mainLayout = new QGridLayout;
-
-	QGroupBox* resolutionBox = new QGroupBox( tr( "Resolution" ) );
-	if ( !exportMovieDialog_hBox || !exportMovieDialog_vBox )
-	{
-	createExportMovieSizeBox();
-	}
-	QGridLayout* resolutionLayout = new QGridLayout;
-	resolutionLayout->addWidget( exportMovieDialog_hBox, 0, 0 );
-	resolutionLayout->addWidget( exportMovieDialog_vBox, 0, 1 );
-	resolutionBox->setLayout( resolutionLayout );
-
-	QGroupBox* formatBox = new QGroupBox( tr( "Format" ) );
-	QGridLayout* formatLayout = new QGridLayout;
-	QLabel* label1 = new QLabel( "Save as" );
-	formatLayout->addWidget( label1, 0, 0 );
-	formatLayout->addWidget( exportMovieDialog_format, 0, 1 );
-	QLabel* label2 = new QLabel( "Fps" );
-	formatLayout->addWidget( label2, 0, 2 );
-	formatLayout->addWidget( exportMovieDialog_fpsBox, 0, 3 );
-	formatBox->setLayout( formatLayout );
-
-	QDialogButtonBox* buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
-	connect( buttonBox, SIGNAL( accepted() ), exportMovieDialog, SLOT( accept() ) );
-	connect( buttonBox, SIGNAL( rejected() ), exportMovieDialog, SLOT( reject() ) );
-
-	mainLayout->addWidget( resolutionBox, 0, 0 );
-	mainLayout->addWidget( formatBox, 1, 0 );
-	mainLayout->addWidget( buttonBox, 2, 0 );
-	exportMovieDialog->setLayout( mainLayout );
-	exportMovieDialog->setWindowTitle( tr( "Options" ) );
-	exportMovieDialog->setModal( true );
-    */
-}
-
-
-
 bool Editor::exportSeqCLI( QString filePath, QString format, int width, int height, bool transparency, bool antialias )
 {
     // Get the camera layer

@@ -213,7 +213,7 @@ int Object::getUniqueLayerID()
     return 1 + getMaxLayerID();
 }
 
-Layer* Object::getLayer( int i )
+Layer* Object::getLayer( int i ) const
 {
     if ( i < 0 || i >= getLayerCount() )
     {
@@ -223,7 +223,7 @@ Layer* Object::getLayer( int i )
     return mLayers.at( i );
 }
 
-Layer* Object::findLayerByName( QString strName, Layer::LAYER_TYPE type )
+Layer* Object::findLayerByName( QString strName, Layer::LAYER_TYPE type ) const
 {
 	bool bCheckType = ( type != Layer::UNDEFINED );
 
@@ -426,7 +426,7 @@ void Object::loadDefaultPalette()
 
 void Object::paintImage( QPainter& painter, int frameNumber,
                          bool background,
-                         bool antialiasing )
+                         bool antialiasing ) const
 {
     painter.setRenderHint( QPainter::Antialiasing, true );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, true );
@@ -807,7 +807,7 @@ bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize e
     return false;
 }
 
-int Object::getLayerCount()
+int Object::getLayerCount() const
 {
     return mLayers.size();
 }

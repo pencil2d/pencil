@@ -233,7 +233,7 @@ void MainWindow2::createMenus()
     //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
     connect( ui->actionExport_Image, &QAction::triggered, this, &MainWindow2::exportImage );
     connect( ui->actionExport_ImageSeq, &QAction::triggered, this, &MainWindow2::exportImageSequence );
-    connect( ui->actionExport_Movie, &QAction::triggered, this, &MainWindow2::exportMovie );
+    connect( ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie );
 
     connect( ui->actionExport_Palette, &QAction::triggered, this, &MainWindow2::exportPalette );
 
@@ -710,69 +710,6 @@ void MainWindow2::importMovie()
 
 void MainWindow2::exportMovie()
 {
-	/*
-    FileDialog fileDialog( this );
-    QString strMoviePath = fileDialog.saveFile( EFile::MOVIE_EXPORT );
-
-    if ( strMoviePath.isEmpty() )
-    {
-        return;
-    }
-
-    ExportMovieDialog exportMovieDialog( this );
-    
-    std::vector< std::pair<QString, QSize > > camerasInfo;
-    auto layersMgr = mEditor->layers();
-    for ( int i = 0; i < layersMgr->count(); ++i )
-    {
-        Layer* layer = layersMgr->getLayer( i );
-        if ( layer->type() != Layer::CAMERA )
-        {
-            continue;
-        }
-        auto layerCam = static_cast< LayerCamera* >( layer );
-        camerasInfo.push_back( std::make_pair( layerCam->name(), layerCam->getViewSize() ) );
-    }
-    exportMovieDialog.setCamerasInfo( camerasInfo );
-
-    exportMovieDialog.exec();
-    if ( exportMovieDialog.result() == QDialog::Rejected )
-    {
-        return;
-    }
-	*/
-	ExportMovieDesc desc;
-	desc.strFileName = "C:/Users/Mat/Desktop/a.mp4";
-	desc.startFrame = 1;
-	desc.endFrame = 60;
-	desc.fps = 12;
-	desc.videoFps = 25;
-	desc.exportSize = QSize( 1024, 768 );
-	desc.strCameraName = QString::fromStdWString( std::wstring( L"相機層" ) );
-
-	MovieExporter ex;
-	ex.run( mEditor->object(), desc );
-
-	/*
-    QSize exportSize = QSize( 10, 10 );
-    QTransform view; // = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-    view = mScribbleArea->getView() * view;
-
-    int projectLength = mEditor->layers()->projectLength();
-    int fps = mEditor->playback()->fps();
-
-    ExportMovieParameters par;
-    par.startFrame = 1;
-    par.endFrame = projectLength;
-    par.view = view;
-    par.currentLayer = layers()->currentLayer();
-    par.exportSize = exportSize;
-    par.filePath = filePath;
-    par.fps = fps;
-    par.exportFps = exportMovieDialog_fpsBox->value();
-    par.exportFormat = exportMovieDialog_format->currentText();
-    mEditor->object()->exportMovie( par );
-	*/
 }
 
 void MainWindow2::exportImageSequence()
