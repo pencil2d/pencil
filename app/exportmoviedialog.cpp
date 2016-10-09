@@ -7,6 +7,10 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
     ui(new Ui::ExportMovieDialog)
 {
     ui->setupUi(this);
+	ui->rangeGroupBox->hide();
+
+	Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint;
+	setWindowFlags( eFlags );
 }
 
 ExportMovieDialog::~ExportMovieDialog()
