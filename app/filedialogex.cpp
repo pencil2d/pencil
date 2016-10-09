@@ -72,7 +72,7 @@ QString FileDialog::fileFilters( EFile fileType )
     switch ( fileType )
     {
         case EFile::SOUND: return tr( "Sounds(*.wav *.mp3);;WAV(*.wav);;MP3(*.mp3)" );
-        case EFile::MOVIE_EXPORT: return tr( "MP4(*.mp4);;AVI(*.avi)" );
+		case EFile::MOVIE_EXPORT: return tr( "MP4(*.mp4);;AVI(*.avi);;GIF(*.gif)" );
         default: Q_ASSERT( false );
     }
     return "";
