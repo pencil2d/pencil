@@ -142,6 +142,8 @@ Status ActionCommands::exportMovie()
 	QProgressDialog progressDlg;
 	progressDlg.setWindowModality( Qt::WindowModal );
 	progressDlg.setLabelText( tr("Exporting movie...") );
+	Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint;
+	progressDlg.setWindowFlags( eFlags );
 	progressDlg.show();
 
 	MovieExporter ex;
