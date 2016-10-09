@@ -147,13 +147,19 @@ Status ActionCommands::exportMovie()
 	progressDlg.show();
 
 	MovieExporter ex;
-	ex.run( mEditor->object(), desc, [ &progressDlg ]( float f )
+
+	connect( &progressDlg, &QProgressDialog::canceled, [&ex]
+	{
+		ex.cancel();
+	} );
+
+	Status st = ex.run( mEditor->object(), desc, [ &progressDlg ]( float f )
 	{
 		progressDlg.setValue( (int)(f * 100.f) );
 		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
 	} );
 
-	if ( QFile::exists( strMoviePath ) )
+	if ( st.ok() && QFile::exists( strMoviePath ) )
 	{
 		auto btn = QMessageBox::question( mParent, 
                                           "Pencil2D", 

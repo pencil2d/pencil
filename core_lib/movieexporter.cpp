@@ -119,35 +119,19 @@ Status MovieExporter::run(const Object* obj,
 	mDesc = desc;
 
 	// Setup temporary folder
-	QFileInfo info( mDesc.strFileName );
-	QDir dir( info.absolutePath() + "/temp_pencil2d" );
-	if ( dir.exists() )
-	{
-		bool bOK = dir.removeRecursively();
-		if ( !bOK )
-		{
-			return Status::FAIL;
-		}
-	}
-	QThread::msleep( 5 );
-	bool bOK = dir.mkdir( "." );
-	if ( !bOK )
-	{
-		return Status::FAIL;
-	}
-	mTempWorkDir = dir.absolutePath();
+	mTempWorkDir = setupTempWorkDir( mDesc.strFileName );
 
 	progress( 0.03f );
 
-	Status stAudioOK = assembleAudio( obj, ffmpegPath );
-	if ( !stAudioOK.ok() )
+	Status st = assembleAudio( obj, ffmpegPath, progress );
+	if ( !st.ok() )
 	{
-		return stAudioOK;
+		return st;
 	}
 
 	progress( 0.10f );
 
-	Status st = generateVideo( obj, progress );
+	st = generateVideo( obj, progress );
 	if ( !st.ok() )
 	{
 		return st;
@@ -167,17 +151,19 @@ QString MovieExporter::error()
 	return QString();
 }
 
-Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
+Status MovieExporter::assembleAudio( const Object* obj, 
+									 QString ffmpegPath,
+									 std::function<void( float )> progress )
 {
 	// Quicktime assemble call
 	int startFrame = mDesc.startFrame;
 	int endFrame = mDesc.endFrame;
 	int fps = mDesc.fps;
 	
-	Q_ASSERT( endFrame > 0 );
 	Q_ASSERT( startFrame >= 0 );
+	Q_ASSERT( endFrame > startFrame );
 
-	float lengthInSec = ( endFrame - startFrame ) / (float)fps;
+	float lengthInSec = ( endFrame - startFrame + 1 ) / (float)fps;
 	qDebug() << "Audio Length = " << lengthInSec << " seconds";
 
 	int32_t audioDataSize = 44100 * 2 * 2 * lengthInSec;
@@ -190,83 +176,95 @@ Status MovieExporter::assembleAudio( const Object* obj, QString ffmpegPath )
 	Q_ASSERT( dir.exists() );
 
 	QString tempAudioPath = mTempWorkDir + "/tmpaudio0.wav";
-	qDebug() << tempAudioPath;
+	qDebug() << "TempAudio=" << tempAudioPath;
+
+	std::vector< SoundClip* > allSoundClips;
 
 	std::vector< LayerSound* > allSoundLayers = obj->getLayersByType<LayerSound>();
 	for ( LayerSound* layer : allSoundLayers )
 	{
-		std::vector< SoundClip* > allSoundClips;
 		layer->foreachKeyFrame( [&allSoundClips]( KeyFrame* key )
 		{
-			allSoundClips.push_back( static_cast< SoundClip* >( key ) );
+			allSoundClips.push_back( static_cast<SoundClip*>( key ) );
 		} );
+	}
 
-		for ( SoundClip* clip : allSoundClips )
+	int clipCount = 0;
+
+	for ( SoundClip* clip : allSoundClips )
+	{
+		if ( mCanceled )
 		{
-			// convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
-			// supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-			QString strCmd;
-			strCmd += QString("\"%1\"").arg( ffmpegPath );
-			strCmd += QString( " -i \"%1\" " ).arg( clip->fileName() );
-			strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
-			strCmd += QString( "\"%1\"" ).arg( tempAudioPath );
+			return Status::CANCELED;
+		}
 
-			qDebug() << "ffmpeg convert:";
-			qDebug() << strCmd;
+		// convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
+		// supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
+		QString strCmd;
+		strCmd += QString("\"%1\"").arg( ffmpegPath );
+		strCmd += QString( " -i \"%1\" " ).arg( clip->fileName() );
+		strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
+		strCmd += QString( "\"%1\"" ).arg( tempAudioPath );
 
-			QProcess ffmpeg;
-			ffmpeg.start( strCmd );
-			if ( ffmpeg.waitForStarted() == true )
+		qDebug() << "ffmpeg convert:";
+		qDebug() << strCmd;
+
+		QProcess ffmpeg;
+		ffmpeg.start( strCmd );
+		if ( ffmpeg.waitForStarted() == true )
+		{
+			if ( ffmpeg.waitForFinished() == true )
 			{
-				if ( ffmpeg.waitForFinished() == true )
-				{
-					qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
-					qDebug() << "stderr: " + ffmpeg.readAllStandardError();
-					qDebug() << "AUDIO conversion done. ( file: " << clip->fileName() << ")";
-				}
-				else
-				{
-					qDebug() << "ERROR: FFmpeg did not finish executing.";
-				}
+				qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
+				qDebug() << "stderr: " + ffmpeg.readAllStandardError();
+				qDebug() << "AUDIO conversion done. ( file: " << clip->fileName() << ")";
 			}
 			else
 			{
-				qDebug() << "ERROR: Could not execute FFmpeg.";
+				qDebug() << "ERROR: FFmpeg did not finish executing.";
 			}
-
-			qDebug() << "audio file: " + tempAudioPath;
-
-			// Read wav file header
-			WavFileHeader header;
-			QFile file( tempAudioPath );
-			file.open( QIODevice::ReadOnly );
-			file.read( (char*)&header, sizeof( WavFileHeader ) );
-
-			skipUselessChucks( header, file );
-
-			int32_t audioSize = header.dataSize;
-
-			qDebug() << "audio len " << audioSize;
-
-			// before calling malloc should check: audioSize < max credible value
-			std::vector< int16_t > data( audioSize / sizeof( int16_t ) );
-			file.read( (char*)data.data(), audioSize );
-			audioDataValid = true;
-
-			float fframe = (float)clip->pos() / (float)fps;
-			int delta = fframe * 44100 * 2;
-			qDebug() << "audio delta " << delta;
-			
-			int indexMax = std::min( audioSize / 2, audioDataSize / 2 - delta );
-
-			// audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
-			for ( int i = 0; i < indexMax; i++ )
-			{
-				audioData[ i + delta ] = safeSumInt16( audioData[ i + delta ], data[ i ] );
-			}
-			
-			file.close();
 		}
+		else
+		{
+			qDebug() << "ERROR: Could not execute FFmpeg.";
+		}
+
+		qDebug() << "audio file: " + tempAudioPath;
+
+		// Read wav file header
+		WavFileHeader header;
+		QFile file( tempAudioPath );
+		file.open( QIODevice::ReadOnly );
+		file.read( (char*)&header, sizeof( WavFileHeader ) );
+
+		skipUselessChucks( header, file );
+
+		int32_t audioSize = header.dataSize;
+
+		qDebug() << "audio len " << audioSize;
+
+		// before calling malloc should check: audioSize < max credible value
+		std::vector< int16_t > data( audioSize / sizeof( int16_t ) );
+		file.read( (char*)data.data(), audioSize );
+		audioDataValid = true;
+
+		float fframe = (float)clip->pos() / (float)fps;
+		int delta = fframe * 44100 * 2;
+		qDebug() << "audio delta " << delta;
+			
+		int indexMax = std::min( audioSize / 2, audioDataSize / 2 - delta );
+
+		// audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
+		for ( int i = 0; i < indexMax; i++ )
+		{
+			audioData[ i + delta ] = safeSumInt16( audioData[ i + delta ], data[ i ] );
+		}
+			
+		file.close();
+
+		float p = ( (float)clipCount / allSoundClips.size() );
+		progress( p * 0.1f );
+		clipCount++;
 	}
 
 	if ( !audioDataValid )
@@ -307,7 +305,11 @@ Status MovieExporter::generateVideo( const Object* obj,
 
 	for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
 	{
-		//if ( progress != NULL ) progress->setValue( ( currentFrame - frameStart )*progressMax / ( frameEnd - frameStart ) );
+		if ( mCanceled )
+		{
+			return Status::CANCELED;
+		}
+
 		QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
 		QColor bgColor = Qt::white;
 		if ( transparency )
@@ -346,6 +348,11 @@ Status MovieExporter::generateVideo( const Object* obj,
 
 Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 {
+	if ( mCanceled )
+	{
+		return Status::CANCELED;
+	}
+
 	//int exportFps = mDesc.videoFps;
 	const QString strOutputFile = mDesc.strFileName;
 	const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
@@ -392,4 +399,25 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	}
 
 	return Status::OK;
+}
+
+QString MovieExporter::setupTempWorkDir( const QString& strOutFile )
+{
+	QFileInfo info( strOutFile );
+	QDir dir( info.absolutePath() + "/temp_pencil2d" );
+	if ( dir.exists() )
+	{
+		bool bOK = dir.removeRecursively();
+		if ( !bOK )
+		{
+			return "";
+		}
+	}
+	QThread::msleep( 5 );
+	bool bOK = dir.mkdir( "." );
+	if ( !bOK )
+	{
+		return "";
+	}
+	return dir.absolutePath();
 }

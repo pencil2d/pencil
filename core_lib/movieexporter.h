@@ -34,9 +34,11 @@ public:
 	void cancel() { mCanceled = true; }
 
 private:
-	Status assembleAudio( const Object* obj, QString ffmpegPath );
+	Status assembleAudio( const Object* obj, QString ffmpegPath, std::function<void( float )> progress );
 	Status generateVideo( const Object* obj, std::function<void(float)> progress );
 	Status combineVideoAndAudio( QString ffmpegPath ); 
+
+	QString setupTempWorkDir( const QString& strOutFile );
 
 	QString mTempWorkDir;
 	ExportMovieDesc mDesc;
