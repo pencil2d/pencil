@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QColor>
-#include <QMap>
 #include <QString>
 #include <QCursor>
 #include <QMouseEvent>

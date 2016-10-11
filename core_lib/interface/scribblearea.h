@@ -168,7 +168,6 @@ public:
     void drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true );
-    void drawEraser( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
 

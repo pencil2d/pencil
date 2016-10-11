@@ -1,5 +1,7 @@
-#include "editor.h"
 #include "basetool.h"
+
+#include <unordered_map>
+#include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
@@ -12,25 +14,24 @@ bool BaseTool::isAdjusting = false;
 
 QString BaseTool::TypeName( ToolType type )
 {
-    static QMap<ToolType, QString>* map = NULL;
+    static std::unordered_map<ToolType, QString> map;
 
-    if ( map == NULL )
+    if ( map.size() == 0 )
     {
-        map = new QMap<ToolType, QString>();
-        map->insert( PENCIL, "Pencil" );
-        map->insert( ERASER, "Eraser" );
-        map->insert( SELECT, "Select" );
-        map->insert( MOVE, "Move" );
-        map->insert( HAND, "Hand" );
-        map->insert( SMUDGE, "Smudge" );
-        map->insert( PEN, "Pen" );
-        map->insert( POLYLINE, "Polyline" );
-        map->insert( BUCKET, "Bucket" );
-        map->insert( EYEDROPPER, "Eyedropper" );
-        map->insert( BRUSH, "Brush" );
+        map.emplace( PENCIL, "Pencil" );
+        map.emplace( ERASER, "Eraser" );
+        map.emplace( SELECT, "Select" );
+        map.emplace( MOVE, "Move" );
+        map.emplace( HAND, "Hand" );
+        map.emplace( SMUDGE, "Smudge" );
+        map.emplace( PEN, "Pen" );
+        map.emplace( POLYLINE, "Polyline" );
+        map.emplace( BUCKET, "Bucket" );
+        map.emplace( EYEDROPPER, "Eyedropper" );
+        map.emplace( BRUSH, "Brush" );
     }
 
-    return map->value( type );
+    return map.at( type );
 }
 
 BaseTool::BaseTool( QObject *parent ) : QObject( parent )

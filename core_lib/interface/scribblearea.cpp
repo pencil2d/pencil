@@ -53,7 +53,7 @@ mLog( "ScribbleArea" )
 
 ScribbleArea::~ScribbleArea()
 {
-
+	delete mBufferImg;
 }
 
 bool ScribbleArea::init()
