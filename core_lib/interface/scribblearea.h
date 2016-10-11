@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <cstdint>
 #include <ctime>
 #include <deque>
+#include <memory>
 
 #include <QColor>
 #include <QTransform>
@@ -106,7 +107,7 @@ public:
     void setTemporaryTool( ToolType eToolMode );
     void setPrevTool();
 
-    StrokeManager *getStrokeManager() const { return mStrokeManager; }
+    StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
 
     //PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
@@ -183,9 +184,6 @@ public:
 
 private:
     void drawCanvas( int frame, QRect rect );
-    void drawAxis( QPainter& );
-    void drawGrid( QPainter& );
-
     void settingUpdated(SETTING setting);
 
     MoveMode mMoveMode = MIDDLE;
@@ -195,7 +193,7 @@ private:
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
     bool isTransforming = false;
 
-    StrokeManager* mStrokeManager = nullptr;
+    std::unique_ptr< StrokeManager > mStrokeManager;
 
     Editor* mEditor = nullptr;
 

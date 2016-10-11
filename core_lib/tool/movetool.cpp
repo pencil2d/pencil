@@ -130,7 +130,7 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
     }
 }
 
-void MoveTool::mouseReleaseEvent( QMouseEvent *event )
+void MoveTool::mouseReleaseEvent( QMouseEvent* )
 {
     mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
 

@@ -48,7 +48,7 @@ mLog( "ScribbleArea" )
     // and don't change when the widget is resized.
     setAttribute( Qt::WA_StaticContents );
 
-    mStrokeManager = new StrokeManager();
+    mStrokeManager.reset( new StrokeManager );
 }
 
 ScribbleArea::~ScribbleArea()
