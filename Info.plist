@@ -2,137 +2,107 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-        <key>CFBundleDevelopmentRegion</key>
-        <string>en-US</string>
-
-        <key>CFBundleDisplayName</key>
-        <string>Pencil</string>
-
-        <key>CFBundleDocumentTypes</key>
-        <array>
-                <dict>
-                        <key>CFBundleTypeExtensions</key>
-                        <array>
-                                <string>pcl</string>
-                        </array>
-
-                        <key>CFBundleTypeIconFile</key>
-                        <string>mac_pcl_icon.icns</string>
-
-                        <key>CFBundleTypeName</key>
-                        <string>Pencil Animation File</string>
-
-                        <key>CFBundleTypeRole</key>
-                        <string>Editor</string>
-
-                        <key>LSItemContentTypes</key>
-                        <array>
-                            <string>org.pencil2d.pcl</string>
-                        </array>
-
-                        <key>LSHandlerRank</key>
-                        <string>Owner</string>
-                </dict>
-                <dict>
-                        <key>CFBundleTypeExtensions</key>
-                        <array>
-                                <string>pclx</string>
-                        </array>
-
-                        <key>CFBundleTypeIconFile</key>
-                        <string>mac_pclx_icon.icns</string>
-
-                        <key>CFBundleTypeName</key>
-                        <string>New Pencil Animation File</string>
-
-                        <key>CFBundleTypeRole</key>
-                        <string>Editor</string>
-
-                        <key>LSItemContentTypes</key>
-                        <array>
-                            <string>org.pencil2d.pclx</string>
-                        </array>
-
-                        <key>LSHandlerRank</key>
-                        <string>Owner</string>
-                </dict>
-        </array>
-
-        <key>CFBundleExecutable</key>
-        <string>@EXECUTABLE@</string>
-
-        <key>CFBundleIconFile</key>
-        <string>@ICON@</string>
-
-        <key>CFBundleIdentifier</key>
-        <string>org.pencil2d.Pencil2D</string>
-
-        <key>CFBundleInfoDictionaryVersion</key>
-        <string>6.0</string>
-
-        <key>CFBundleName</key>
-        <string>Pencil2D</string>
-
-        <key>CFBundlePackageType</key>
-        <string>APPL</string>
-
-        <key>CFBundleShortVersionString</key>
-        <string>@SHORT_VERSION@</string>
-
-        <key>CFBundleSignature</key>
-        <string>@TYPEINFO@</string>
-
-        <key>CFBundleVersion</key>
-        <string>@FULL_VERSION@</string>
-
-        <key>UTExportedTypeDeclarations</key>
-        <array>
-            <dict>
-                <key>UTTypeIdentifier</key>
-                <string>org.pencil2d.pcl</string>
-
-                <key>UTTypeTagSpecification</key>
-                <dict>
-                    <key>public.filename-extension</key>
-                    <array>
-                        <string>pcl</string>
-                    </array>
-                </dict>
-
-                <key>UTTypeConformsTo</key>
-                <array>
-                    <string>public.xml</string>
-                </array>
-
-                <key>UTTypeIconFile</key>
-                <string>mac_pcl_icon.icns</string>
-
-                <key>UTTypeDescription</key>
-                <string>Pencil Animation File</string>
-            </dict>
-            <dict>
-                <key>UTTypeIdentifier</key>
-                <string>org.pencil2d.pclx</string>
-
-                <key>UTTypeTagSpecification</key>
-                <dict>
-                    <key>public.filename-extension</key>
-                    <array>
-                        <string>pclx</string>
-                    </array>
-                </dict>
-
-                <key>UTTypeConformsTo</key>
-                <array>
-                    <string>public.zip-archive</string>
-                </array>
-
-                <key>UTTypeIconFile</key>
-                <string>mac_pclx_icon.icns</string>
-
-                <key>UTTypeDescription</key>
-                <string>New Pencil Animation File</string>
-            </dict>
-        </array>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en-US</string>
+	<key>CFBundleDisplayName</key>
+	<string>Pencil2D</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pcl</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>mac_pcl_icon.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>Pencil Animation File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.pencil2d.pcl</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pclx</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>mac_pclx_icon.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>New Pencil Animation File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.pencil2d.pclx</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundleIconFile</key>
+	<string>@ICON@</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Pencil2D</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>@SHORT_VERSION@</string>
+	<key>CFBundleSignature</key>
+	<string>@TYPEINFO@</string>
+	<key>CFBundleVersion</key>
+	<string>@FULL_VERSION@</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.xml</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Pencil Animation File</string>
+			<key>UTTypeIconFile</key>
+			<string>mac_pcl_icon.icns</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.pencil2d.pcl</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pcl</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.zip-archive</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>New Pencil Animation File</string>
+			<key>UTTypeIconFile</key>
+			<string>mac_pclx_icon.icns</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.pencil2d.pclx</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>pclx</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
