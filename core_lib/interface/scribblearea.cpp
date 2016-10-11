@@ -791,26 +791,23 @@ void ScribbleArea::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter
 
 void ScribbleArea::refreshBitmap( const QRectF& rect, int rad )
 {
-    // TODO: temp disable
-    //QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
-    //update( updatedRect.toRect() );
-
-    update();
+    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    update( updatedRect.toRect() );
 }
 
 void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 {
-    // Does not work
-//    QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
-//    update( updatedRect.toRect() );
+    rad += 1;
+    //QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
+    update( rect.normalized().adjusted( -rad, -rad, +rad, +rad ).toRect() );
 
-    update();
+	//qDebug() << "Logical:  " << rect;
+	//qDebug() << "Physical: " << mEditor->view()->mapCanvasToScreen( rect.normalized() );
+    //update();
 }
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
-    //qCDebug( mLog ) << "Paint event!" << QDateTime::currentDateTime() << event->rect();
-
     if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND )
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
@@ -844,7 +841,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
     //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
 
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
-
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -959,9 +955,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             {
                 painter.setWorldMatrixEnabled( false );
             }
-
-            //qCDebug( mLog ) << "BufferRect" << mBufferImg->bounds();
-
             mBufferImg->paintImage( painter );
         }
 
@@ -1091,22 +1084,21 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
 {
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    BitmapImage* tempBitmapImage = new BitmapImage;
+    BitmapImage tempBitmapImage;
     if (usingFeather==true)
     {
         QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
         setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
-        tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, radialGrad,
+        tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, radialGrad,
                                    QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
     }
     else
     {
-        tempBitmapImage->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
+        tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
                                    QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
     }
-    mBufferImg->paste( tempBitmapImage );
-    delete tempBitmapImage;
+    mBufferImg->paste( &tempBitmapImage );
 }
 
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_ )
