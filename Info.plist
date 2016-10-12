@@ -46,9 +46,9 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>@ICON@</string>
+	<string>pencil.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
