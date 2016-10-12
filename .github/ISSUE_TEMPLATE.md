@@ -23,17 +23,14 @@ Please use the SEARCH function before opening a new issue and look for your prob
 + Pencil2D Version:
 > _(Write your Pencil2D VERSION here)_
 
-+ Operative System:
++ Operating System:
 > _(Write your OS here)_
 
 + RAM Size:
 > _(Write your size in GigaBytes here)_
 
 + CPU:
->_(Write your CPU MODEL and SPEED here)_
-
-+ Graphics Card:
-> _(Optional) (Write your MODEL here)_
+>_(Write your CPU MODEL here)_
 
 + Graphics Tablet:
 > _(Optional) (Write your MODEL and DRIVER VERSION here)_
