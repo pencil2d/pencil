@@ -82,17 +82,23 @@ void skipUselessChucks( WavFileHeader& header, QFile& file )
 	}
 }
 
+QString ffmpegLocation()
+{
+#ifdef _WIN32
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
+#elif __APPLE__
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
+#else
+    return "";// TODO: linux
+#endif
+}
+
 MovieExporter::MovieExporter()
 {
 }
 
 MovieExporter::~MovieExporter()
 {
-	QDir dir( mTempWorkDir );
-	if ( dir.exists() )
-	{
-		dir.removeRecursively();
-	}
 }
 
 Status MovieExporter::run(const Object* obj, 
@@ -106,7 +112,7 @@ Status MovieExporter::run(const Object* obj,
 		return Status::INVALID_ARGUMENT;
 	}
 
-	QString ffmpegPath = QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
+	QString ffmpegPath = ffmpegLocation();
 	qDebug() << ffmpegPath;
 	if ( !QFile::exists( ffmpegPath ) )
 	{
@@ -118,9 +124,18 @@ Status MovieExporter::run(const Object* obj,
 
 	mDesc = desc;
 
-	// Setup temporary folder
-	mTempWorkDir = setupTempWorkDir( mDesc.strFileName );
+    qDebug() << "OutFile: " << mDesc.strFileName;
 
+	// Setup temporary folder
+    if ( mTempDir.isValid() )
+    {
+        mTempWorkDir = mTempDir.path();
+    }
+    else
+    {
+        Q_ASSERT( false && "Cannot create temp folder." );
+        return Status::FAIL;
+    }
 	progress( 0.03f );
 
 	Status st = assembleAudio( obj, ffmpegPath, progress );
@@ -139,8 +154,15 @@ Status MovieExporter::run(const Object* obj,
 
 	progress( 0.99f );
 
-	combineVideoAndAudio( ffmpegPath );
-
+#ifdef __APPLE__
+    QString strTempVideo = mTempWorkDir + "/Temp1.mp4";
+    qDebug() << strTempVideo;
+    combineVideoAndAudio(ffmpegPath, strTempVideo );
+    secondPassEncoding(ffmpegPath, strTempVideo, mDesc.strFileName );
+#else
+	combineVideoAndAudio( ffmpegPath, mDesc.strFilName );
+#endif
+    
 	progress( 1.0f );
 
 	return Status::OK;
@@ -346,7 +368,7 @@ Status MovieExporter::generateVideo( const Object* obj,
 	return Status::OK;
 }
 
-Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
+Status MovieExporter::combineVideoAndAudio( QString ffmpegPath, QString strOutputFile )
 {
 	if ( mCanceled )
 	{
@@ -354,7 +376,6 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	}
 
 	//int exportFps = mDesc.videoFps;
-	const QString strOutputFile = mDesc.strFileName;
 	const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
 	const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 	const QSize exportSize = mDesc.exportSize;
@@ -362,6 +383,7 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	QString strCmd = QString("\"%1\"").arg( ffmpegPath );
 	strCmd += QString( " -f image2");
 	strCmd += QString( " -framerate %1" ).arg( mDesc.fps );
+    strCmd += QString( " -pix_fmt yuv420p" );
 	strCmd += QString( " -start_number %1" ).arg( mDesc.startFrame );
 	//strCmd += QString( " -r %1" ).arg( exportFps );
 	strCmd += QString( " -i \"%1\" " ).arg( imgPath );
@@ -401,23 +423,38 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	return Status::OK;
 }
 
-QString MovieExporter::setupTempWorkDir( const QString& strOutFile )
+Status MovieExporter::secondPassEncoding( QString ffmpegPath, QString strIn, QString strOut )
 {
-	QFileInfo info( strOutFile );
-	QDir dir( info.absolutePath() + "/temp_pencil2d" );
-	if ( dir.exists() )
-	{
-		bool bOK = dir.removeRecursively();
-		if ( !bOK )
-		{
-			return "";
-		}
-	}
-	QThread::msleep( 5 );
-	bool bOK = dir.mkdir( "." );
-	if ( !bOK )
-	{
-		return "";
-	}
-	return dir.absolutePath();
+    QString strCmd = QString("\"%1\"").arg( ffmpegPath );
+    strCmd += QString( " -i \"%1\" " ).arg( strIn );
+    strCmd += QString( " -pix_fmt yuv420p" );
+    strCmd += " -y";
+    strCmd += QString(" \"%1\"" ).arg( strOut );
+    qDebug() << strCmd;
+    
+    QProcess ffmpeg;
+    ffmpeg.start( strCmd );
+    
+    if ( ffmpeg.waitForStarted() == true )
+    {
+        if ( ffmpeg.waitForFinished() == true )
+        {
+            qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
+            qDebug() << "stderr: " + ffmpeg.readAllStandardError();
+            
+            qDebug() << "VIDEO export done.";
+        }
+        else
+        {
+            qDebug() << "ERROR: FFmpeg did not finish executing.";
+        }
+    }
+    else
+    {
+        qDebug() << "ERROR: Could not execute FFmpeg.";
+    }
+    
+    return Status::OK;
+
 }
+
