@@ -160,7 +160,7 @@ Status MovieExporter::run(const Object* obj,
     combineVideoAndAudio(ffmpegPath, strTempVideo );
     secondPassEncoding(ffmpegPath, strTempVideo, mDesc.strFileName );
 #else
-	combineVideoAndAudio( ffmpegPath, mDesc.strFilName );
+	combineVideoAndAudio( ffmpegPath, mDesc.strFileName );
 #endif
     
 	progress( 1.0f );
