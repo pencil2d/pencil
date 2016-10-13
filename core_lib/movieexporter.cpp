@@ -266,8 +266,9 @@ Status MovieExporter::assembleAudio( const Object* obj,
 	return Status::OK;
 }
 
-Status MovieExporter::generateImageSequence( const Object* obj,
-									 std::function<void(float)>  progress )
+Status MovieExporter::generateImageSequence( 
+	const Object* obj,
+	std::function<void(float)>  progress )
 {
 	int frameStart        = mDesc.startFrame;
 	int frameEnd          = mDesc.endFrame;
@@ -387,7 +388,6 @@ Status MovieExporter::convertVideoAgain( QString ffmpegPath, QString strIn, QStr
     
 	STATUS_CHECK( executeFFMpegCommand( strCmd ) );
     return Status::OK;
-
 }
 
 Status MovieExporter::convertToGif( QString ffmpeg, QString strIn, QString strOut )
