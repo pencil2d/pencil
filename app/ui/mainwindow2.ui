@@ -77,9 +77,9 @@ background: #B6DBEA;
      </property>
      <addaction name="separator"/>
      <addaction name="actionExport_X_sheet"/>
+     <addaction name="actionExport_Movie"/>
      <addaction name="actionExport_ImageSeq"/>
      <addaction name="actionExport_Image"/>
-     <addaction name="actionExport_Movie"/>
      <addaction name="actionExport_Svg_Image"/>
      <addaction name="separator"/>
      <addaction name="actionExport_Palette"/>
@@ -307,7 +307,7 @@ background: #B6DBEA;
     <string>Movie...</string>
    </property>
    <property name="visible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionExport_Palette">

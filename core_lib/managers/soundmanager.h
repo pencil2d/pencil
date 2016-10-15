@@ -18,7 +18,8 @@ public:
     ~SoundManager();
     
     bool init() override;
-    Status onObjectLoaded( Object* ) override;
+    Status load( Object* ) override;
+	Status save( Object* ) override;
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
     Status loadSound( SoundClip* soundClip, QString strSoundFile );

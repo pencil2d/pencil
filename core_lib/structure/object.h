@@ -25,13 +25,14 @@ GNU General Public License for more details.
 #include "colourref.h"
 #include "pencilerror.h"
 #include "pencildef.h"
+#include "objectdata.h"
 
 class QProgressDialog;
 class LayerBitmap;
 class LayerVector;
 class LayerCamera;
 class LayerSound;
-class EditorState;
+class ObjectData;
 
 
 struct ExportMovieParameters
@@ -91,7 +92,7 @@ public:
     QDomElement saveXML( QDomDocument& doc );
     bool loadXML( QDomElement element );
 
-    void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing );
+    void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing ) const;
 
     QString copyFileToDataFolder( QString strFilePath );
 
@@ -118,14 +119,29 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
-    Layer* getLayer( int i );
-    int  getLayerCount();
-    bool moveLayer( int i, int j );
+	int  getLayerCount() const ;
+
+    Layer* getLayer( int i ) const;
+	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED ) const;
+
+	bool moveLayer( int i, int j );
     void deleteLayer( int i );
     void deleteLayer( Layer* );
-
-    //void playSoundIfAny( int frame, int fps );
-    //void stopSoundIfAny();
+	
+	template< typename T >
+	std::vector< T* > getLayersByType() const
+	{
+		std::vector< T* > result;
+		for ( Layer* layer : mLayers )
+		{
+			T* t = dynamic_cast<T*>( layer );
+			if ( t )
+			{
+				result.push_back( t );
+			}
+		}
+		return result;
+	}
 
     // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool transparency, bool antialiasing, QProgressDialog* progress, int progressMax );
@@ -141,8 +157,8 @@ public:
 
     int getUniqueLayerID();
 
-    EditorState* editorState();
-    void setEditorData( EditorState* );
+    ObjectData* data();
+    void setData( ObjectData* );
 
     void setLayerUpdated(int layerId);
 
@@ -162,7 +178,7 @@ private:
 
     QList< ColourRef > mPalette;
 
-    std::unique_ptr< EditorState > mEditorState;
+    std::unique_ptr< ObjectData > mEditorState;
 };
 
 

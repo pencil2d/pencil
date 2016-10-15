@@ -36,7 +36,7 @@ GNU General Public License for more details.
 #include <QDropEvent>
 
 #include "object.h"
-#include "editorstate.h"
+#include "objectdata.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
@@ -491,7 +491,7 @@ Status Editor::setObject( Object* newObject )
 
     for ( BaseManager* m : mAllManagers )
     {
-        m->onObjectLoaded( mObject.get() );
+        m->load( mObject.get() );
     }
 
 	g_clipboardVectorImage.setObject( newObject );
@@ -503,10 +503,10 @@ Status Editor::setObject( Object* newObject )
 
 void Editor::updateObject()
 {
-    scrubTo( mObject->editorState()->mCurrentFrame );
+    scrubTo( mObject->data()->getCurrentFrame() );
     if (layers() != NULL)
     {
-      layers()->setCurrentLayer( mObject->editorState()->mCurrentLayer );
+		layers()->setCurrentLayer( mObject->data()->getCurrentLayer() );
     }
 
 	clearUndoStack();
@@ -519,74 +519,18 @@ void Editor::updateObject()
     emit updateLayerCount();
 }
 
-void Editor::createExportMovieSizeBox()
-{
-	/*
-	exportMovieDialog_format = new QComboBox();
-	exportMovieDialog_format->addItem( "AUTO" );
-	exportMovieDialog_format->addItem( "MOV" );
-	exportMovieDialog_format->addItem( "MPEG2/AVI" );
-	exportMovieDialog_format->addItem( "MPEG4/AVI" );
-	exportMovieDialog_format->addItem( "MPEG4/MP4" );
-	exportMovieDialog_fpsBox = new QSpinBox( mMainWindow );
-	exportMovieDialog_fpsBox->setMinimum( 1 );
-	exportMovieDialog_fpsBox->setMaximum( 60 );
-	exportMovieDialog_fpsBox->setValue( defaultFps );
-	exportMovieDialog_fpsBox->setFixedWidth( 40 );
-	*/
-}
-
-void Editor::createExportMovieDialog()
-{
-	/*
-	exportMovieDialog = new QDialog( mMainWindow, Qt::Dialog );
-	QGridLayout* mainLayout = new QGridLayout;
-
-	QGroupBox* resolutionBox = new QGroupBox( tr( "Resolution" ) );
-	if ( !exportMovieDialog_hBox || !exportMovieDialog_vBox )
-	{
-	createExportMovieSizeBox();
-	}
-	QGridLayout* resolutionLayout = new QGridLayout;
-	resolutionLayout->addWidget( exportMovieDialog_hBox, 0, 0 );
-	resolutionLayout->addWidget( exportMovieDialog_vBox, 0, 1 );
-	resolutionBox->setLayout( resolutionLayout );
-
-	QGroupBox* formatBox = new QGroupBox( tr( "Format" ) );
-	QGridLayout* formatLayout = new QGridLayout;
-	QLabel* label1 = new QLabel( "Save as" );
-	formatLayout->addWidget( label1, 0, 0 );
-	formatLayout->addWidget( exportMovieDialog_format, 0, 1 );
-	QLabel* label2 = new QLabel( "Fps" );
-	formatLayout->addWidget( label2, 0, 2 );
-	formatLayout->addWidget( exportMovieDialog_fpsBox, 0, 3 );
-	formatBox->setLayout( formatLayout );
-
-	QDialogButtonBox* buttonBox = new QDialogButtonBox( QDialogButtonBox::Ok | QDialogButtonBox::Cancel );
-	connect( buttonBox, SIGNAL( accepted() ), exportMovieDialog, SLOT( accept() ) );
-	connect( buttonBox, SIGNAL( rejected() ), exportMovieDialog, SLOT( reject() ) );
-
-	mainLayout->addWidget( resolutionBox, 0, 0 );
-	mainLayout->addWidget( formatBox, 1, 0 );
-	mainLayout->addWidget( buttonBox, 2, 0 );
-	exportMovieDialog->setLayout( mainLayout );
-	exportMovieDialog->setWindowTitle( tr( "Options" ) );
-	exportMovieDialog->setModal( true );
-	*/
-}
-
-
-
 bool Editor::exportSeqCLI( QString filePath, QString format, int width, int height, bool transparency, bool antialias )
 {
     // Get the camera layer
     int cameraLayerId = mLayerManager->getLastCameraLayer();
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mObject->getLayer(cameraLayerId));
 
-    if(width < 0) {
+	if ( width < 0 )
+	{
         width = cameraLayer->getViewRect().width();
     }
-    if(height < 0) {
+	if ( height < 0 )
+	{
         height = cameraLayer->getViewRect().height();
     }
 
@@ -618,51 +562,6 @@ QString Editor::workingDir() const
     return mObject->workingDir();
 }
 
-/*
-bool Editor::exportMov()
-{
-QSettings settings( PENCIL2D, PENCIL2D );
-QString initialPath = settings.value( "lastExportPath", QVariant( QDir::homePath() ) ).toString();
-if ( initialPath.isEmpty() ) initialPath = QDir::homePath() + "/untitled.avi";
-//  QString filePath = QFileDialog::getSaveFileName(this, tr("Export As"),initialPath);
-QString filePath = QFileDialog::getSaveFileName( mMainWindow, tr( "Export Movie As..." ), initialPath, tr( "AVI (*.avi);;MOV(*.mov);;WMV(*.wmv)" ) );
-if ( filePath.isEmpty() )
-{
-return false;
-}
-else
-{
-settings.setValue( "lastExportPath", QVariant( filePath ) );
-if ( !exportMovieDialog ) createExportMovieDialog();
-exportMovieDialog_hBox->setValue( mScribbleArea->getViewRect().toRect().width() );
-exportMovieDialog_vBox->setValue( mScribbleArea->getViewRect().toRect().height() );
-exportMovieDialog->exec();
-if ( exportMovieDialog->result() == QDialog::Rejected ) return false;
-
-QSize exportSize = QSize( exportMovieDialog_hBox->value(), exportMovieDialog_vBox->value() );
-QTransform view = map( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-view = mScribbleArea->getView() * view;
-
-int projectLength = layers()->projectLength();
-int fps = playback()->fps();
-
-ExportMovieParameters par;
-par.startFrame = 1;
-par.endFrame = projectLength;
-par.view = view;
-par.currentLayer = layers()->currentLayer();
-par.exportSize = exportSize;
-par.filePath = filePath;
-par.fps = fps;
-par.exportFps = exportMovieDialog_fpsBox->value();
-par.exportFormat = exportMovieDialog_format->currentText();
-mObject->exportMovie( par );
-
-return true;
-}
-}
-*/
-
 bool Editor::importBitmapImage( QString filePath )
 {
 	backup( tr( "ImportImg" ) );
@@ -673,10 +572,10 @@ bool Editor::importBitmapImage( QString filePath )
 	auto layer = static_cast<LayerBitmap*>( layers()->currentLayer() );
 
 	QImage img( reader.size(), QImage::Format_ARGB32_Premultiplied );
-  if ( img.isNull() )
-  {
-    return false;
-  }
+	if ( img.isNull() )
+	{
+		return false;
+	}
 
 	while ( reader.read( &img ) )
 	{
@@ -689,8 +588,8 @@ bool Editor::importBitmapImage( QString filePath )
 		QRect boundaries = img.rect();
 		boundaries.moveTopLeft( mScribbleArea->getCentralPoint().toPoint() - QPoint( boundaries.width() / 2, boundaries.height() / 2 ) );
 
-		BitmapImage* importedBitmapImage = new BitmapImage( boundaries, img );
-		bitmapImage->paste( importedBitmapImage );
+        BitmapImage importedBitmapImage{boundaries, img};
+        bitmapImage->paste(&importedBitmapImage);
 
 		scrubTo( currentFrame() + 1 );
 	}
@@ -712,12 +611,12 @@ bool Editor::importVectorImage( QString filePath )
 		addNewKey();
 		vectorImage = ( (LayerVector*)layer )->getVectorImageAtFrame( currentFrame() );
 	}
-	VectorImage* importedVectorImage = new VectorImage;
-	bool ok = importedVectorImage->read( filePath );
+    VectorImage importedVectorImage;
+    bool ok = importedVectorImage.read( filePath );
 	if ( ok )
 	{
-		importedVectorImage->selectAll();
-		vectorImage->paste( *importedVectorImage );
+        importedVectorImage.selectAll();
+        vectorImage->paste(importedVectorImage);
 	}
 	/*
 	else

@@ -17,6 +17,7 @@ Remove-Item -Recurse $FolderName -ErrorAction SilentlyContinue
 New-Item -ItemType Directory $FolderName
 
 Copy-Item $SrcExePath $FolderName\Pencil2D.exe
+Copy-Item "app\release\plugins" $FolderName
 
 # Run windeployqt
 $deployqt = $env:QTDIR + "\bin\windeployqt.exe"
@@ -25,8 +26,9 @@ Write-Host $deployqt
 & $deployqt $FolderName\Pencil2D.exe
 
 # attach VS2013 runtime
-Copy-Item $env:windir\system32\msvcp120.dll $FolderName
-Copy-Item $env:windir\system32\msvcr120.dll $FolderName
+Copy-Item $env:windir\system32\msvcp140.dll $FolderName
+Copy-Item $env:windir\system32\vcruntime140.dll $FolderName
+Copy-Item $env:windir\system32\ucrtbase.dll $FolderName
 
 $ZipName = $FolderName + ".zip"
 

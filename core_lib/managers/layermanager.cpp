@@ -2,7 +2,6 @@
 
 #include "object.h"
 #include "editor.h"
-#include "editorstate.h"
 
 #include "layersound.h"
 #include "layerbitmap.h"
@@ -23,12 +22,18 @@ bool LayerManager::init()
     return true;
 }
 
-Status LayerManager::onObjectLoaded( Object* o )
+Status LayerManager::load( Object* o )
 {
     connect( o, &Object::layerChanged, this, &LayerManager::layerUpdated );
 
-    mCurrentLayerIndex = o->editorState()->mCurrentLayer;
+    mCurrentLayerIndex = o->data()->getCurrentLayer();
     return Status::OK;
+}
+
+Status LayerManager::save( Object* o )
+{
+	o->data()->setCurrentLayer( mCurrentLayerIndex );
+	return Status::OK;
 }
 
 // Layer management
@@ -47,6 +52,13 @@ Layer* LayerManager::currentLayer( int incr )
     Q_ASSERT( editor()->object() != NULL );
 
     return editor()->object()->getLayer( mCurrentLayerIndex + incr );
+}
+
+Layer* LayerManager::getLayer( int index )
+{
+    Q_ASSERT( editor()->object() != NULL );
+    
+    return editor()->object()->getLayer( index );
 }
 
 int LayerManager::currentLayerIndex()

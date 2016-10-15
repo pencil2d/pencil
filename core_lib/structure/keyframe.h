@@ -34,6 +34,8 @@ public:
     void addEventListener( KeyFrameEventListener* );
     void removeEventListner( KeyFrameEventListener* );
 
+	virtual bool isNull() { return false; }
+
 private:
     int mFrame       = -1;
     int mLength      =  1;
@@ -60,6 +62,9 @@ class NullKeyFrame : public KeyFrame
 {
 public:
     static NullKeyFrame* get();
+
+	bool isNull() override { return true; }
+
 private:
     NullKeyFrame() {}
     NullKeyFrame( const NullKeyFrame& ) {}
