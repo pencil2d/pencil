@@ -1005,7 +1005,7 @@ void MainWindow2::setupKeyboardShortcuts()
 void MainWindow2::clearKeyboardShortcuts()
 {
     QList<QAction*> actionList = this->findChildren<QAction*>();
-    foreach( QAction* action, actionList )
+    for( QAction* action : actionList )
     {
         action->setShortcut( QKeySequence( 0 ) );
     }

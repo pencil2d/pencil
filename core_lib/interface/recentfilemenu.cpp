@@ -9,8 +9,9 @@ QMenu( title, parent )
 {
 }
 
-void RecentFileMenu::clear(){
-    foreach( QString filename, mRecentFiles )
+void RecentFileMenu::clear()
+{
+    for( QString filename : mRecentFiles )
     {
         removeRecentFile( filename );
     }
@@ -22,7 +23,7 @@ void RecentFileMenu::clear(){
 void RecentFileMenu::setRecentFiles( QStringList filenames )
 {
     clear();
-    foreach( QString filename, filenames )
+    for( QString filename : filenames )
     {
         if ( filename != "" ) {
             addRecentFile( filename );
@@ -33,12 +34,12 @@ void RecentFileMenu::setRecentFiles( QStringList filenames )
 bool RecentFileMenu::loadFromDisk()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
-    QVariant _recent = settings.value( "RecentFiles" );
-    if ( _recent.isNull() )
+    QVariant recent = settings.value( "RecentFiles" );
+    if ( recent.isNull() )
     {
         return false;
     }
-    QList<QString> recentFileList = _recent.toStringList();
+    QList<QString> recentFileList = recent.toStringList();
     setRecentFiles( recentFileList );
     return true;
 }
@@ -69,7 +70,7 @@ void RecentFileMenu::addRecentFile( QString filename )
 
     QObject::connect( action, SIGNAL( triggered() ), this, SLOT( onRecentFileTriggered() ) );
 
-    mRecentActions.insert( filename, action );
+    mRecentActions.emplace( filename, action );
     if ( mRecentFiles.size() == 1 )
     {
         addAction( action );
@@ -86,9 +87,10 @@ void RecentFileMenu::removeRecentFile( QString filename )
 {
     if ( mRecentFiles.contains( filename ) )
     {
-        QAction *action = mRecentActions[ filename ];
+        QAction *action = mRecentActions.at( filename );
         removeAction( action );
-        mRecentActions.remove( filename );
+
+        mRecentActions.erase( filename );
         mRecentFiles.removeOne( filename );
         delete action;
     }
@@ -96,7 +98,7 @@ void RecentFileMenu::removeRecentFile( QString filename )
 
 void RecentFileMenu::onRecentFileTriggered()
 {
-    QAction*action = ( QAction* )QObject::sender();
+    QAction* action = ( QAction* )QObject::sender();
     QString filePath = action->data().toString();
 
     if ( !filePath.isEmpty() )
