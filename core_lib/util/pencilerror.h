@@ -48,4 +48,8 @@ private:
     ErrorCode mCode = OK;
 };
 
+#ifndef STATUS_CHECK 
+#define STATUS_CHECK( x )\
+	{ Status st = (x); if ( !st.ok() ) { return st; } }
+#endif
 #endif // PENCILERROR_H

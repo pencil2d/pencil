@@ -166,7 +166,7 @@ Status ActionCommands::exportMovie()
 	                                      tr( "Finished. Open movie now?" ) );
 		if ( btn == QMessageBox::Yes )
 		{
-			QDesktopServices::openUrl( strMoviePath );
+            QDesktopServices::openUrl( QUrl::fromLocalFile( strMoviePath ) );
 		}
 	}
 

@@ -4,6 +4,7 @@
 #include <functional>
 #include <QString>
 #include <QSize>
+#include <QTemporaryDir>
 #include "pencilerror.h"
 
 class Object;
@@ -16,7 +17,6 @@ struct ExportMovieDesc
 	//int     videoFps   = 30;
 	int     fps        = 12;
 	QSize   exportSize{ 0, 0 };
-	QString strFormat;
 	QString strCameraName;
 };
 
@@ -35,11 +35,17 @@ public:
 
 private:
 	Status assembleAudio( const Object* obj, QString ffmpegPath, std::function<void( float )> progress );
-	Status generateVideo( const Object* obj, std::function<void(float)> progress );
-	Status combineVideoAndAudio( QString ffmpegPath ); 
+	Status generateImageSequence( const Object* obj, std::function<void(float)> progress );
+	Status combineVideoAndAudio( QString ffmpegPath, QString strOutputFile );
 
-	QString setupTempWorkDir( const QString& strOutFile );
+	Status twoPassEncoding( QString ffmpeg, QString strOutputFile );
+    Status convertVideoAgain( QString ffmpeg, QString strIn, QString strOut );
+	Status convertToGif( QString ffmpeg, QString strIn, QString strOut );
 
+	Status executeFFMpegCommand( QString strCmd );
+	Status checkInputParameters( const ExportMovieDesc&  );
+
+    QTemporaryDir mTempDir;
 	QString mTempWorkDir;
 	ExportMovieDesc mDesc;
 	bool mCanceled = false;

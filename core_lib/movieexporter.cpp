@@ -82,17 +82,23 @@ void skipUselessChucks( WavFileHeader& header, QFile& file )
 	}
 }
 
+QString ffmpegLocation()
+{
+#ifdef _WIN32
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
+#elif __APPLE__
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
+#else
+    return "";// TODO: linux
+#endif
+}
+
 MovieExporter::MovieExporter()
 {
 }
 
 MovieExporter::~MovieExporter()
 {
-	QDir dir( mTempWorkDir );
-	if ( dir.exists() )
-	{
-		dir.removeRecursively();
-	}
 }
 
 Status MovieExporter::run(const Object* obj, 
@@ -101,12 +107,7 @@ Status MovieExporter::run(const Object* obj,
 {
 	progress( 0.f );
 
-	if ( desc.strFileName.isEmpty() )
-	{
-		return Status::INVALID_ARGUMENT;
-	}
-
-	QString ffmpegPath = QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
+	QString ffmpegPath = ffmpegLocation();
 	qDebug() << ffmpegPath;
 	if ( !QFile::exists( ffmpegPath ) )
 	{
@@ -114,33 +115,32 @@ Status MovieExporter::run(const Object* obj,
 		return Status::ERROR_FFMPEG_NOT_FOUND;
 	}
 	
-	Q_ASSERT( desc.startFrame > 0 );
-
+	STATUS_CHECK( checkInputParameters( desc ) );
 	mDesc = desc;
 
-	// Setup temporary folder
-	mTempWorkDir = setupTempWorkDir( mDesc.strFileName );
+    qDebug() << "OutFile: " << mDesc.strFileName;
 
+	// Setup temporary folder
+	if ( !mTempDir.isValid() )
+	{
+		Q_ASSERT( false && "Cannot create temp folder." );
+		return Status::FAIL;
+	}
+    
+	mTempWorkDir = mTempDir.path();
 	progress( 0.03f );
 
-	Status st = assembleAudio( obj, ffmpegPath, progress );
-	if ( !st.ok() )
+	if ( !desc.strFileName.endsWith( "gif" ) )
 	{
-		return st;
+		STATUS_CHECK( assembleAudio( obj, ffmpegPath, progress ) );
 	}
-
 	progress( 0.10f );
 
-	st = generateVideo( obj, progress );
-	if ( !st.ok() )
-	{
-		return st;
-	}
-
+	STATUS_CHECK( generateImageSequence( obj, progress ) );
 	progress( 0.99f );
 
-	combineVideoAndAudio( ffmpegPath );
-
+	twoPassEncoding( ffmpegPath, desc.strFileName );
+    
 	progress( 1.0f );
 
 	return Status::OK;
@@ -206,29 +206,7 @@ Status MovieExporter::assembleAudio( const Object* obj,
 		strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
 		strCmd += QString( "\"%1\"" ).arg( tempAudioPath );
 
-		qDebug() << "ffmpeg convert:";
-		qDebug() << strCmd;
-
-		QProcess ffmpeg;
-		ffmpeg.start( strCmd );
-		if ( ffmpeg.waitForStarted() == true )
-		{
-			if ( ffmpeg.waitForFinished() == true )
-			{
-				qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
-				qDebug() << "stderr: " + ffmpeg.readAllStandardError();
-				qDebug() << "AUDIO conversion done. ( file: " << clip->fileName() << ")";
-			}
-			else
-			{
-				qDebug() << "ERROR: FFmpeg did not finish executing.";
-			}
-		}
-		else
-		{
-			qDebug() << "ERROR: Could not execute FFmpeg.";
-		}
-
+		executeFFMpegCommand( strCmd );
 		qDebug() << "audio file: " + tempAudioPath;
 
 		// Read wav file header
@@ -288,8 +266,9 @@ Status MovieExporter::assembleAudio( const Object* obj,
 	return Status::OK;
 }
 
-Status MovieExporter::generateVideo( const Object* obj,
-									 std::function<void(float)>  progress )
+Status MovieExporter::generateImageSequence( 
+	const Object* obj,
+	std::function<void(float)>  progress )
 {
 	int frameStart        = mDesc.startFrame;
 	int frameEnd          = mDesc.endFrame;
@@ -327,7 +306,6 @@ Status MovieExporter::generateVideo( const Object* obj,
 		centralizeCamera.translate( camSize.width() / 2, camSize.height() / 2 );
 
 		painter.setWorldTransform( view * centralizeCamera );
-
 		painter.setWindow( QRect( 0, 0, camSize.width(), camSize.height() ) );
 
 		obj->paintImage( painter, currentFrame, false, true );
@@ -335,9 +313,10 @@ Status MovieExporter::generateVideo( const Object* obj,
 		QString imageFileWithFrameNumber = QString().sprintf( IMAGE_FILENAME,  currentFrame );
 
 		QString strImgPath = mTempWorkDir + imageFileWithFrameNumber;
-		qDebug() << "Save img to: " << strImgPath;
 		bool bSave = imageToExport.save( strImgPath );
 		Q_ASSERT( bSave );
+		
+		qDebug() << "Save img to: " << strImgPath;
 
 		float fProgressValue = ( currentFrame / (float)( frameEnd - frameStart ) );
 		progress( 0.1f + ( fProgressValue * 0.99f ) );
@@ -346,7 +325,7 @@ Status MovieExporter::generateVideo( const Object* obj,
 	return Status::OK;
 }
 
-Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
+Status MovieExporter::combineVideoAndAudio( QString ffmpegPath, QString strOutputFile )
 {
 	if ( mCanceled )
 	{
@@ -354,7 +333,6 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	}
 
 	//int exportFps = mDesc.videoFps;
-	const QString strOutputFile = mDesc.strFileName;
 	const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
 	const QString tempAudioPath = mTempWorkDir + "/tmpaudio.wav";
 	const QSize exportSize = mDesc.exportSize;
@@ -362,6 +340,7 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	QString strCmd = QString("\"%1\"").arg( ffmpegPath );
 	strCmd += QString( " -f image2");
 	strCmd += QString( " -framerate %1" ).arg( mDesc.fps );
+    strCmd += QString( " -pix_fmt yuv420p" );
 	strCmd += QString( " -start_number %1" ).arg( mDesc.startFrame );
 	//strCmd += QString( " -r %1" ).arg( exportFps );
 	strCmd += QString( " -i \"%1\" " ).arg( imgPath );
@@ -374,50 +353,105 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath )
 	strCmd += QString( " -s %1x%2" ).arg( exportSize.width() ).arg( exportSize.height() );
 	strCmd += " -y";
 	strCmd += QString(" \"%1\"" ).arg( strOutputFile );
+
+	STATUS_CHECK( executeFFMpegCommand( strCmd ) );
+
+	return Status::OK;
+}
+
+Status MovieExporter::twoPassEncoding( QString ffmpeg, QString strOutputFile )
+{
+	QString strTempVideo = mTempWorkDir + "/Temp1.mp4";
+	qDebug() << "TempVideo=" << strTempVideo;
+
+	combineVideoAndAudio( ffmpeg, strTempVideo );
+	
+	if ( strOutputFile.endsWith( "gif" ) )
+	{
+		STATUS_CHECK( convertToGif( ffmpeg, strTempVideo, strOutputFile ) );
+	}
+	else
+	{
+		STATUS_CHECK( convertVideoAgain( ffmpeg, strTempVideo, strOutputFile ) );
+	}
+
+	return Status::OK;
+}
+
+Status MovieExporter::convertVideoAgain( QString ffmpegPath, QString strIn, QString strOut )
+{
+    QString strCmd = QString("\"%1\"").arg( ffmpegPath );
+    strCmd += QString( " -i \"%1\" " ).arg( strIn );
+    strCmd += QString( " -pix_fmt yuv420p" );
+    strCmd += " -y";
+    strCmd += QString(" \"%1\"" ).arg( strOut );
+    
+	STATUS_CHECK( executeFFMpegCommand( strCmd ) );
+    return Status::OK;
+}
+
+Status MovieExporter::convertToGif( QString ffmpeg, QString strIn, QString strOut )
+{
+	// http://superuser.com/questions/556029/
+	// generate a palette
+	QString strGifPalette = mTempWorkDir + "/palette.png";
+	QString strCmd1 = QString( "\"%1\"" ).arg( ffmpeg );
+	strCmd1 += " -y";
+	strCmd1 += QString( " -i \"%1\"" ).arg( strIn );
+	strCmd1 += " -vf scale=320:-1:flags=lanczos,palettegen";
+	strCmd1 += QString( " \"%1\"" ).arg( strGifPalette );
+
+	STATUS_CHECK( executeFFMpegCommand( strCmd1 ) );
+
+	// Output the GIF using the palette:
+	QString strCmd2 = QString( "\"%1\"" ).arg( ffmpeg );
+	strCmd2 += " -y";
+	strCmd2 += QString( " -i \"%1\"" ).arg( strIn );
+	strCmd2 += QString( " -i \"%1\"" ).arg( strGifPalette );
+	strCmd2 += " -filter_complex \"scale=-1:-1:flags=lanczos[x];[x][1:v]paletteuse\"";
+	strCmd2 += QString( " \"%1\"" ).arg( strOut );
+
+	STATUS_CHECK( executeFFMpegCommand( strCmd2 ) );
+
+	return Status::OK;
+}
+
+Status MovieExporter::executeFFMpegCommand( QString strCmd )
+{
 	qDebug() << strCmd;
 
 	QProcess ffmpeg;
 	ffmpeg.start( strCmd );
-	
 	if ( ffmpeg.waitForStarted() == true )
 	{
 		if ( ffmpeg.waitForFinished() == true )
 		{
 			qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
 			qDebug() << "stderr: " + ffmpeg.readAllStandardError();
-
-			qDebug() << "VIDEO export done.";
 		}
 		else
 		{
 			qDebug() << "ERROR: FFmpeg did not finish executing.";
+			return Status::FAIL;
 		}
 	}
 	else
 	{
 		qDebug() << "ERROR: Could not execute FFmpeg.";
+		return Status::FAIL;
 	}
-
 	return Status::OK;
 }
 
-QString MovieExporter::setupTempWorkDir( const QString& strOutFile )
+Status MovieExporter::checkInputParameters( const ExportMovieDesc& desc )
 {
-	QFileInfo info( strOutFile );
-	QDir dir( info.absolutePath() + "/temp_pencil2d" );
-	if ( dir.exists() )
-	{
-		bool bOK = dir.removeRecursively();
-		if ( !bOK )
-		{
-			return "";
-		}
-	}
-	QThread::msleep( 5 );
-	bool bOK = dir.mkdir( "." );
-	if ( !bOK )
-	{
-		return "";
-	}
-	return dir.absolutePath();
+	bool b = true; 
+	b &= ( !desc.strFileName.isEmpty() );
+	b &= ( desc.startFrame > 0 );
+	b &= ( desc.endFrame > desc.startFrame );
+	b &= ( desc.fps > 0 );
+	b &= ( !desc.strCameraName.isEmpty() );
+	
+	return b ? Status::OK : Status::INVALID_ARGUMENT;
 }
+
