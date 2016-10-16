@@ -122,7 +122,7 @@ enum BackgroundStyle
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
 
 // Save / Export
-#define LAST_FILE_PATH          "LastFilePath"
+#define LAST_PCLX_PATH          "LastFilePath"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
