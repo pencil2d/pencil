@@ -143,7 +143,10 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
         if ( element.tagName() == "object" )
         {
             qCDebug( mLog ) << "Load object";
-            isOK = object->loadXML( element );
+			isOK = object->loadXML( element, [this] ( float f )
+			{
+				emit progressUpdated( f );
+			} );
         }
         else if ( element.tagName() == "editor" )
         {
@@ -163,7 +166,10 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
 
 bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root )
 {
-    return object->loadXML( root );
+	return object->loadXML( root, [this]( float f )
+	{
+		emit progressUpdated( f );
+	} );
 }
 
 bool FileManager::isOldForamt( const QString& fileName )

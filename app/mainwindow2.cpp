@@ -72,6 +72,7 @@ GNU General Public License for more details.
 #include "shortcutfilter.h"
 #include "filedialogex.h"
 #include "movieexporter.h"
+#include "app_util.h"
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -521,9 +522,11 @@ void MainWindow2::openFile( QString filename )
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
-    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
+    
+	// Don't show progress bar if running without a GUI (aka. when rendering from command line)
     if ( this->isVisible() )
     {
+		hideQuestionMark( progress );
         progress.setWindowModality( Qt::WindowModal );
         progress.show();
     }
@@ -531,6 +534,13 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setCurrentLayer( 0 );
 
     FileManager fm( this );
+	connect( &fm, &FileManager::progressUpdated, [&progress]( float f )
+	{
+		progress.setValue( (int)( f * 100.f ) );
+		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
+		
+	} );
+
     Object* object = fm.load( strFilePath );
 
     if ( object == nullptr || !fm.error().ok() )
@@ -546,7 +556,6 @@ bool MainWindow2::openObject( QString strFilePath )
     mRecentFileMenu->addRecentFile( object->filePath() );
     mRecentFileMenu->saveToDisk();
 
-    //qDebug() << "Current File Path=" << object->filePath();
     setWindowTitle( object->filePath() );
 
     // Refresh the Palette
