@@ -21,7 +21,7 @@ class Properties
 public:
     qreal width       = 1.f;
     qreal feather     = 1.f;
-    int pressure      = 1;
+    bool pressure      = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
     bool bezier_state = false;
