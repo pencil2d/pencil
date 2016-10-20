@@ -70,3 +70,6 @@ ipch
 
 tests/tests
 bin/*
+
+# Doxygen
+docs
