@@ -8,7 +8,7 @@
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
-   QObject::tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" )
+   QObject::tr( "Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)" )
 
 
 enum ToolType

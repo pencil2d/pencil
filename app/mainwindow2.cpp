@@ -684,13 +684,15 @@ void MainWindow2::importImageSequence()
     QStringList files = w.getOpenFileNames( this,
                                             "Select one or more files to open",
                                             initialPath,
-                                            "Images (*.png *.jpg *.jpeg *.bmp)" );
+                                            "Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)" );
 
     for ( QString strImgFile : files )
     {
         if ( strImgFile.endsWith( ".png" ) ||
              strImgFile.endsWith( ".jpg" ) ||
              strImgFile.endsWith( ".jpeg" ) ||
+             strImgFile.endsWith(".tif") ||
+             strImgFile.endsWith(".tiff") ||
              strImgFile.endsWith( ".bmp" ) )
         {
             mEditor->importImage( strImgFile );
