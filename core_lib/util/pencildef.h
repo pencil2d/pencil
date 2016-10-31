@@ -11,7 +11,7 @@
    QObject::tr( "Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)" )
 
 
-enum ToolType
+enum ToolType : int
 {
     INVALID_TOOL = -1,
     PENCIL = 0,
@@ -24,7 +24,8 @@ enum ToolType
     POLYLINE,
     BUCKET,
     EYEDROPPER,
-    BRUSH
+    BRUSH,
+    TOOL_TYPE_COUNT
 };
 
 enum ToolPropertyType

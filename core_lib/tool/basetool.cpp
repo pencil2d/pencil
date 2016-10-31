@@ -1,6 +1,6 @@
 #include "basetool.h"
 
-#include <unordered_map>
+#include <array>
 #include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
@@ -12,23 +12,24 @@ ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
 qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
 bool BaseTool::isAdjusting = false;
 
+
 QString BaseTool::TypeName( ToolType type )
 {
-    static std::unordered_map<ToolType, QString> map;
-
-    if ( map.size() == 0 )
+    static std::array< QString, TOOL_TYPE_COUNT > map;
+    
+    if ( map[ 0 ].isEmpty() )
     {
-        map.emplace( PENCIL, "Pencil" );
-        map.emplace( ERASER, "Eraser" );
-        map.emplace( SELECT, "Select" );
-        map.emplace( MOVE, "Move" );
-        map.emplace( HAND, "Hand" );
-        map.emplace( SMUDGE, "Smudge" );
-        map.emplace( PEN, "Pen" );
-        map.emplace( POLYLINE, "Polyline" );
-        map.emplace( BUCKET, "Bucket" );
-        map.emplace( EYEDROPPER, "Eyedropper" );
-        map.emplace( BRUSH, "Brush" );
+        map[ PENCIL ] = "Pencil";
+        map[ ERASER ] = "Eraser";
+        map[ SELECT ] = "Select";
+        map[ MOVE ] = "Move";
+        map[ HAND ] = "Hand";
+        map[ SMUDGE ] = "Smudge";
+        map[ PEN ] = "Pen";
+        map[ POLYLINE ] = "Polyline";
+        map[ BUCKET ] = "Bucket";
+        map[ EYEDROPPER ] = "Eyedropper";
+        map[ BRUSH ] = "Brush";
     }
 
     return map.at( type );

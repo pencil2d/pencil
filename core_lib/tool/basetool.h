@@ -2,13 +2,11 @@
 #define BASETOOL_H
 
 #include <QObject>
-#include <QColor>
 #include <QString>
 #include <QCursor>
 #include <QMouseEvent>
-#include "pencildef.h"
-
 #include <QPointF>
+#include "pencildef.h"
 
 class Editor;
 class ScribbleArea;

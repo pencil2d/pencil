@@ -2,6 +2,7 @@
 #define PENCILTOOL_H
 
 #include "stroketool.h"
+#include <QColor>
 
 class PencilTool : public StrokeTool
 {
