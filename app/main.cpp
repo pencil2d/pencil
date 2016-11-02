@@ -17,6 +17,8 @@ GNU General Public License for more details.
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QDir>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 #include "editor.h"
 #include "mainwindow2.h"
 #include "pencilapplication.h"
@@ -61,11 +63,7 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
     QStringList outputPaths;
     int width = -1, height = -1;
     bool transparency = false;
-    qDebug() << "Hey";
 
-#if QT_VERSION >= QT_VERSION_CHECK( 5, 2, 0 )
-#include <QCommandLineParser>
-#include <QCommandLineOption>
     QCommandLineParser parser;
     // TODO: Ignore -NSDocumentRevisionsDebugMode
 
@@ -124,108 +122,6 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         }
     }
     transparency = parser.isSet( transparencyOption );
-#else // For backwards compatibility with QT4, remove when QT5 is required for this project
-    // Extracting options
-    bool showUsage = false, help = false;
-    for ( int i = 1; i < args.length(); i++ )
-    {
-        if ( args[i] == "-NSDocumentRevisionsDebugMode")
-        {
-            // Ignore the next option
-            i++;
-        }
-        else if ( args[i] == "-o" || args[i] == "--export-sequence" )
-        {
-            if( ++i < args.length() )
-            {
-                // Output path is at args[i]
-                outputPaths.append(args[i]);
-            }
-            else
-            {
-                // Error, no output path specified
-                qDebug() << PencilApplication::tr( "Error: no output path specified" );
-                showUsage = true;
-            }
-        }
-        else if ( args[i] == "-h" || args[i] == "--help" )
-        {
-            help = true;
-        }
-        else if ( args[i] == "-v" || args[i] == "--version" )
-        {
-            std::cout << app.applicationName() << " " << app.applicationVersion() << std::endl;
-            return 0;
-        }
-        else if ( args[i] == "--width" )
-        {
-            if( ++i < args.length() )
-            {
-                bool ok = false;
-                width = args[i].toInt( &ok );
-                if ( !ok )
-                {
-                    qDebug() << "Warning: width value" << args[i] << "is not an integer, ignoring.";
-                    width = -1;
-                }
-            }
-            else
-            {
-                qDebug() << PencilApplication::tr( "Error: no width value specified" );
-                showUsage = true;
-            }
-        }
-        else if ( args[i] == "--height" )
-        {
-            if( ++i < args.length() )
-            {
-                bool ok = false;
-                height = args[i].toInt( &ok );
-                if ( !ok )
-                {
-                    qDebug() << "Warning: height value" << args[i] << "is not an integer, ignoring.";
-                    height = -1;
-                }
-            }
-            else
-            {
-                qDebug() << PencilApplication::tr( "Error: no width value specified" );
-                showUsage = true;
-            }
-        }
-        else if ( args[i] == "--transparency" )
-        {
-            transparency = true;
-        }
-        else if ( args[i].startsWith( "-" ) )
-        {
-            qDebug() << "Error: Unknown option" << args[i];
-            showUsage = true;
-        }
-        else if ( inputPath.isEmpty() )
-        {
-            // Positional argument: input file path
-            inputPath = args[i];
-        }
-    }
-
-    if ( showUsage || help ) {
-        std::cout << "Usage: ./Pencil2D [options] input" << std::endl
-                 << "Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics." << std::endl
-                 << std::endl
-                 << "Options:" << std::endl
-                 << "  -h, --help                                 " << PencilApplication::tr( "Displays this help." ) << std::endl
-                 << "  -v, --version                              " << PencilApplication::tr( "Displays version information." ) << std::endl
-                 << "  -o, --export-sequence <output_path>        " << PencilApplication::tr( "Render the file to <output_path>" ) << std::endl
-                 << "  --width <integer>                          " << PencilApplication::tr( "Width of the output frames" ) << std::endl
-                 << "  --height <integer>                         " << PencilApplication::tr( "Height of the output frames" ) << std::endl
-                 << "  --transparency                             " << PencilApplication::tr( "Render transparency when possible" ) << std::endl
-                 << std::endl
-                 << "Arguments:" << std::endl
-                 << "  input                                Path to the input pencil file." << std::endl;
-        return showUsage;
-    }
-#endif
 
     // If there are no output paths, open up the GUI (to the input path if there is one)
     if ( outputPaths.isEmpty() )
