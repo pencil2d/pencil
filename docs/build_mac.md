@@ -38,13 +38,9 @@ Go to the [QT Downloads](https://www.qt.io/download-open-source/) and download t
 
 #### Command-line method
 
-Pencil2D can be built with either Qt 4 or Qt 5. Qt 5 is recommended as support for Qt 4 may be dropped as it becomes outdated. To install Qt 5, run this command:
+Pencil2D must be built with the Qt 5 framework. To install Qt 5, run this command:
 
     brew install qt5
-
-Or if you want to use Qt 4 instead:
-
-    brew install qt
 
 If you want to install QT Creator (recommended), then also run the following commands:
 
