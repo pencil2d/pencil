@@ -89,7 +89,7 @@ QString ffmpegLocation()
 #elif __APPLE__
     return QApplication::applicationDirPath() + "/plugins/ffmpeg";
 #else
-    return "";// TODO: linux
+    return "/usr/bin/ffmpeg"; // ffmpeg is a standalone project.
 #endif
 }
 
