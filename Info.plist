@@ -65,6 +65,10 @@
 	<string>0.5.6.1</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+        <key>NSPrincipalClass</key>
+        <string>NSApplication</string>
+        <key>NSHighResolutionCapable</key>
+        <string>True</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
