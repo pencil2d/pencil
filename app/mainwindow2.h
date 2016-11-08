@@ -40,6 +40,9 @@ class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
 
+#define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
+
+
 namespace Ui
 {
 class MainWindow2;
@@ -50,22 +53,21 @@ class MainWindow2 : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow2(QWidget* parent = 0);
+	explicit MainWindow2( QWidget* parent = 0 );
     ~MainWindow2();
 
     Editor* mEditor = nullptr;
 
 public slots:
-    void undoActSetText(void);
-    void undoActSetEnabled(void);
-    void openDocument(const QString &fileName);
-    void updateTitleSaveState(void);
+    void undoActSetText();
+    void undoActSetEnabled();
+	void updateTitleSaveState();
 
 public:
     void setOpacity(int opacity);
     void newDocument();
-    void openDocumentDialog();
-    void saveDocument();
+	void openDocument();
+	void saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
 
@@ -82,7 +84,7 @@ public:
     void helpBox();
     void aboutPencil();
 
-    void openFile(QString filename);
+	void openFile( QString filename );
 
 protected:
     void tabletEvent( QTabletEvent* ) override;

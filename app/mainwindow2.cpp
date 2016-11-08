@@ -225,7 +225,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
-    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocumentDialog );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
     connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
     connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
@@ -439,7 +439,7 @@ void MainWindow2::newDocument()
     }
 }
 
-void MainWindow2::openDocumentDialog()
+void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
@@ -450,19 +450,10 @@ void MainWindow2::openDocumentDialog()
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
-		openDocument( fileName );
-    }
-}
-
-void MainWindow2::openDocument(const QString &fileName)
-{
-    if ( maybeSave() )
-    {
         if ( fileName.isEmpty() )
         {
             return;
         }
-
         QFileInfo fileInfo( fileName );
         if ( fileInfo.isDir() )
         {
@@ -470,7 +461,6 @@ void MainWindow2::openDocument(const QString &fileName)
         }
 
         bool ok = openObject( fileName );
-
         if ( !ok )
         {
             QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
@@ -510,7 +500,6 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile( QString filename )
 {
-    qDebug() << "open recent file" << filename;
     bool ok = openObject( filename );
     if ( !ok )
     {
@@ -859,7 +848,7 @@ void MainWindow2::preferences()
     connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
     connect( prefDialog, &PreferencesDialog::finished, [ &]
     { 
-        qDebug() << "Preference dialog closed!";
+        //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
@@ -879,7 +868,7 @@ void MainWindow2::dockAllSubWidgets()
 
 void MainWindow2::readSettings()
 {
-    qDebug( "Restore last windows layout." );
+    //qDebug( "Restore last windows layout." );
 
     QSettings settings( PENCIL2D, PENCIL2D );
     restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );

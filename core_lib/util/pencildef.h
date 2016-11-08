@@ -1,9 +1,6 @@
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
-
-#define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
-
 #define PENCIL_MOVIE_EXT \
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 

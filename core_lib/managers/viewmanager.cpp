@@ -3,7 +3,8 @@
 #include <utility>
 #include "object.h"
 
-static float gZoomingList[] = {
+static float gZoomingList[] = 
+{
     .01f, .02f, .04f, .06f, .08f, .12f, .16f, .25f, .33f, .5f, .75f,
     1.f, 1.5f, 2.f, 3.f, 4.f, 5.f, 6.f, 8.f, 16.f, 32.f, 48.f, 64.f, 96.f
 };
