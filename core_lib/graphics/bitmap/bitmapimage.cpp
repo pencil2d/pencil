@@ -19,20 +19,20 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage = new QImage(); // null image
+    mImage = std::make_shared< QImage >(); // null image
     mBounds = QRect( 0, 0, 0, 0 );
 }
 
 BitmapImage::BitmapImage( const BitmapImage& a )
 {
     mBounds = a.mBounds;
-    mImage = new QImage( *a.mImage );
+    mImage = std::make_shared< QImage >( *a.mImage );
 }
 
 BitmapImage::BitmapImage( const QRect& rectangle, const QColor& colour)
 {
     mBounds = rectangle;
-    mImage = new QImage( mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    mImage = std::make_shared< QImage >( mBounds.size(), QImage::Format_ARGB32_Premultiplied);
     mImage->fill(colour.rgba());
 }
 
@@ -40,7 +40,7 @@ BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image )
 {
     mBounds = rectangle.normalized();
     mExtendable = true;
-    mImage = new QImage(image);
+    mImage = std::make_shared< QImage >(image);
     if ( mImage->width() != rectangle.width() || mImage->height() != rectangle.height())
     {
         qDebug() << "Error instancing bitmapImage.";
@@ -49,7 +49,7 @@ BitmapImage::BitmapImage( const QRect& rectangle, const QImage& image )
 
 BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft )
 {
-    mImage = new QImage(path);
+    mImage = std::make_shared< QImage >(path);
     if ( mImage->isNull() )
     {
         qDebug() << "ERROR: Image " << path << " not loaded";
@@ -59,21 +59,18 @@ BitmapImage::BitmapImage( const QString& path, const QPoint& topLeft )
 
 BitmapImage::~BitmapImage()
 {
-    SAFE_RELEASE( mImage );
 }
 
 void BitmapImage::setImage( QImage* img )
 {
     Q_CHECK_PTR( img );
-    SAFE_RELEASE( mImage );
-    mImage = img;
+    mImage.reset( img );
 }
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
-    SAFE_RELEASE( mImage );
     mBounds = a.mBounds;
-    mImage = new QImage( *a.mImage );
+    mImage = std::make_shared< QImage >( *a.mImage );
     return *this;
 }
 
@@ -109,7 +106,6 @@ void BitmapImage::paste(BitmapImage* bitmapImage)
 
 void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
 {
-    QImage* image2 = bitmapImage->mImage;
     QRect newBoundaries;
     if ( mImage->width() == 0 || mImage->height() == 0 )
     {
@@ -120,7 +116,10 @@ void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
         newBoundaries = mBounds.united( bitmapImage->mBounds );
     }
     extend( newBoundaries );
-    QPainter painter(mImage);
+
+    QImage* image2 = bitmapImage->image();
+    
+    QPainter painter( mImage.get() );
     painter.setCompositionMode(cm);
     painter.drawImage( bitmapImage->mBounds.topLeft() - mBounds.topLeft(), *image2);
     painter.end();
@@ -128,7 +127,8 @@ void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
 
 void BitmapImage::add(BitmapImage* bitmapImage)
 {
-    QImage* image2 = bitmapImage->mImage;
+    QImage* image2 = bitmapImage->image();
+
     QRect newBoundaries;
     if ( mImage->width() == 0 || mImage->height() == 0 )
     {
@@ -140,49 +140,10 @@ void BitmapImage::add(BitmapImage* bitmapImage)
     }
     extend( newBoundaries );
     QPoint offset = bitmapImage->mBounds.topLeft() - mBounds.topLeft();
-    for(int y=0; y<image2->height(); y++)
+    for (int y = 0; y < image2->height(); y++)
     {
-        for(int x=0; x<image2->width(); x++)
+        for (int x = 0; x < image2->width(); x++)
         {
-            /*QRgb p2 = image2->pixel(x,y);
-            int r2 = qRed(p2);
-            int g2 = qGreen(p2);
-            int b2 = qBlue(p2);
-            int a2 = qAlpha(p2);
-            int r, g, b, a;
-            r=0; g=0; b=0; a=0;
-            for(int u=0; u<1; u++) {
-                for(int v=0; v<1;v++) {
-                  if (boundaries.contains(  bitmapImage->boundaries.topLeft() + QPoint(x+u,y+v) )) {
-                        QRgb p1  = image->pixel(offset.x()+x+u,offset.y()+y+v);
-                        int r1 = qRed(p1);
-                        int g1 = qGreen(p1);
-                        int b1 = qBlue(p1);
-                        int a1 = qAlpha(p1);
-                        r = r + r1;
-                        g = g + g1;
-                        b = b + b1;
-                        a = a + a1;
-                    }
-                }
-            }
-            r = r/1;
-            g = g/1;
-            b = b/1;
-            a = a/1;
-            //r = 255;
-            //g = 0;
-            //b = 0;
-            a = 255;
-                    QRgb p1  = image->pixel(offset.x()+x,offset.y()+y);
-                    int r1 = qRed(p1);
-                    int g1 = qGreen(p1);
-                    int b1 = qBlue(p1);
-                    int a1 = qAlpha(p1);
-            r = (r1*(255-r2) + r2*r)/255;
-            g = (g1*(255-g2) + g2*g)/255;
-            b = (b1*(255-b2) + b2*b)/255;
-            a = (a1*(255-a2) + a2*a)/255;*/
             QRgb p1  = mImage->pixel(offset.x()+x,offset.y()+y);
             QRgb p2 = image2->pixel(x,y);
 
@@ -195,61 +156,25 @@ void BitmapImage::add(BitmapImage* bitmapImage)
             int b1 = qBlue(p1);
             int b2 = qBlue(p2);
 
-            /*qreal a1 = qAlpha(p1); qreal a2 = qAlpha(p2);
-            qreal r1 = qRed(p1);   qreal r2 = qRed(p2); // remember that the bitmap format is RGB32 Premultiplied
-            qreal g1 = qGreen(p1); qreal g2 = qGreen(p2);
-            qreal b1 = qBlue(p1);  qreal b2 = qBlue(p2);*/
-
             // unite
             int a = qMax(a1, a2);
             int r = qMax(r1, r2);
             int g = qMax(g1, g2);
             int b = qMax(b1, b2);
 
-            // blend
-            /*int a = a2 + a1*(255-a2)/255;
-            int r = r2 + r1*(255-a2)/255;
-            int g = g2 + g1*(255-a2)/255;
-            int b = b2 + b1*(255-a2)/255;*/
-
-            // source
-            /*int a = a2;
-            int r = r2;
-            int g = g2;
-            int b = b2;*/
-
-            /*int a = qRound(a1+a2);
-            int r = qRound((a1+a2)*((r1+0.)/a1+(r2+0.)/a2)/1);
-            int g = qRound((a1+a2)*((g1+0.)/a1+(g2+0.)/a2)/1);
-            int b = qRound((a1+a2)*((b1+0.)/a1+(b2+0.)/a2)/1);*/
-
-            // add
-            /*int a = qMin(255, qRound(1.0*(a1+a2)));
-            int r = qMin(255, qRound(0.5*(r1+r2)));
-            int g = qMin(255, qRound(0.5*(g1+g2)));
-            int b = qMin(255, qRound(0.5*(b1+b2)));*/
-
-            /*int a = qMin(255, qRound((1.0*a1+0.32*a2)));
-            int r = qMin(255, qRound((1.0*r1+0.32*r2)));
-            int g = qMin(255, qRound((1.0*g1+0.32*g2)));
-            int b = qMin(255, qRound((1.0*b1+0.32*b2)));*/
-
             QRgb mix = qRgba(r, g, b, a);
-            /*qDebug() << "------";
-            qDebug() << r1 << g1 << b1 << a1;
-            qDebug() << r2 << g2 << b2 << a2;
-            qDebug() << r << g << b << a;
-            qDebug() << qRed(mix) << qGreen(mix) << qBlue(mix) << qAlpha(mix);*/
-            //QRgb mix = qRgba(r2, g2, b2, a);
             if (a2 != 0)
+            {
                 mImage->setPixel(offset.x()+x,offset.y()+y, mix);
+            }
         }
     }
 }
 
 void BitmapImage::compareAlpha(BitmapImage* bitmapImage) // this function picks the greater alpha value
 {
-    QImage* image2 = bitmapImage->mImage;
+    QImage* image2 = bitmapImage->image();
+
     QRect newBoundaries;
     if ( mImage->width() == 0 || mImage->height() == 0 )
     {
@@ -261,9 +186,9 @@ void BitmapImage::compareAlpha(BitmapImage* bitmapImage) // this function picks 
     }
     extend( newBoundaries );
     QPoint offset = bitmapImage->mBounds.topLeft() - mBounds.topLeft();
-    for(int y=0; y<image2->height(); y++)
+    for (int y = 0; y < image2->height(); y++)
     {
-        for(int x=0; x<image2->width(); x++)
+        for (int x = 0; x < image2->width(); x++)
         {
             QRgb p1  = mImage->pixel(offset.x()+x,offset.y()+y);
             QRgb p2 = image2->pixel(x,y);
@@ -287,22 +212,18 @@ void BitmapImage::moveTopLeft(QPoint point)
 
 void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 {
-    //if (boundaries != newBoundaries)
-    //{
-        mBounds = newBoundaries;
-        newBoundaries.moveTopLeft( QPoint(0,0) );
-        QImage* newImage = new QImage( mBounds.size(), QImage::Format_ARGB32_Premultiplied);
-        //newImage->fill(QColor(255,255,255).rgb());
-        QPainter painter(newImage);
-        painter.setRenderHint(QPainter::SmoothPixmapTransform, smoothTransform);
-        painter.setCompositionMode(QPainter::CompositionMode_Source);
-        painter.fillRect( newImage->rect(), QColor(0,0,0,0) );
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        painter.drawImage(newBoundaries, *mImage );
-        painter.end();
-        //if (image != NULL) delete image;
-        mImage = newImage;
-        //}
+    mBounds = newBoundaries;
+    newBoundaries.moveTopLeft( QPoint(0,0) );
+    QImage* newImage = new QImage( mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    //newImage->fill(QColor(255,255,255).rgb());
+    QPainter painter(newImage);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform, smoothTransform);
+    painter.setCompositionMode(QPainter::CompositionMode_Source);
+    painter.fillRect( newImage->rect(), QColor(0,0,0,0) );
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.drawImage(newBoundaries, *mImage );
+    painter.end();
+    mImage.reset( newImage );
 }
 
 BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool smoothTransform)
@@ -312,10 +233,12 @@ BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool
     // Get the transformed image
     //
     QImage transformedImage;
-    if (smoothTransform) {
+    if (smoothTransform)
+    {
         transformedImage = selectedPart.image()->transformed(transform, Qt::SmoothTransformation);
     }
-    else {
+    else
+    {
         transformedImage = selectedPart.image()->transformed(transform);
     }
 
@@ -325,7 +248,7 @@ BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool
 BitmapImage BitmapImage::transformed(QRect newBoundaries, bool smoothTransform)
 {
     BitmapImage transformedImage(newBoundaries, QColor(0,0,0,0));
-    QPainter painter(transformedImage.mImage);
+    QPainter painter(transformedImage.image());
     painter.setRenderHint(QPainter::SmoothPixmapTransform, smoothTransform);
     newBoundaries.moveTopLeft( QPoint(0,0) );
     painter.drawImage(newBoundaries, *mImage );
@@ -366,8 +289,7 @@ void BitmapImage::extend(QRect rectangle)
             painter.drawImage(mBounds.topLeft() - newBoundaries.topLeft(), *mImage);
             painter.end();
         }
-        if (mImage != NULL) delete mImage;
-        mImage = newImage;
+        mImage.reset( newImage );
         mBounds = newBoundaries;
     }
 }
@@ -392,7 +314,8 @@ void BitmapImage::setPixel(int x, int y, QRgb colour)
 void BitmapImage::setPixel(QPoint P, QRgb colour)
 {
     extend( P );
-    if ( mBounds.contains(P) ) mImage->setPixel(P-topLeft(), colour);
+    if ( mBounds.contains(P) )
+        mImage->setPixel(P-topLeft(), colour);
     //drawLine( QPointF(P), QPointF(P), QPen(QColor(colour)), QPainter::CompositionMode_SourceOver, false);
 }
 
@@ -403,7 +326,7 @@ void BitmapImage::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::Composit
     extend( QRect(P1.toPoint(), P2.toPoint()).normalized().adjusted(-width,-width,width,width) );
     if (mImage != NULL && !mImage->isNull() )
     {
-        QPainter painter(mImage);
+        QPainter painter( mImage.get() );
         painter.setCompositionMode(cm);
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
@@ -422,15 +345,13 @@ void BitmapImage::drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::
         gradient->setCenter( gradient->center() - topLeft() );
         gradient->setFocalPoint( gradient->focalPoint() - topLeft() );
     }
-    if (mImage != NULL && !mImage->isNull() )
+    if ( mImage && !mImage->isNull() )
     {
-        QPainter painter(mImage);
+        QPainter painter( mImage.get() );
         painter.setCompositionMode(cm);
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
-        //painter.fillRect( rectangle.translated(-topLeft()), brush );
-        //painter.fillRect( rectangle.translated(-topLeft()), QColor(255,0,0) );
         painter.drawRect( rectangle.translated(-topLeft()) );
         painter.end();
     }
@@ -446,9 +367,9 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
         gradient->setCenter( gradient->center() - topLeft() );
         gradient->setFocalPoint( gradient->focalPoint() - topLeft() );
     }
-    if (mImage != NULL && !mImage->isNull() )
+    if ( mImage && !mImage->isNull() )
     {
-        QPainter painter(mImage);
+        QPainter painter( mImage.get() );
 
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
@@ -462,7 +383,8 @@ void BitmapImage::drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainte
     }
 }
 
-void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
+void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush,
+                            QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = pen.width();
     qreal inc = 1.0 + width / 20.0; // qreal?
@@ -471,7 +393,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
 
     if ( mImage != NULL && !mImage->isNull() )
     {
-        QPainter painter(mImage);
+        QPainter painter( mImage.get() );
         painter.setCompositionMode(cm);
         painter.setRenderHint( QPainter::Antialiasing, antialiasing );
         painter.setPen(pen);
@@ -480,7 +402,6 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
         painter.setMatrixEnabled(true);
         if (path.length() > 0)
         {
-            
             for ( int pt = 0; pt < path.elementCount() - 1; pt++ )
             {
                 qreal dx = path.elementAt(pt+1).x - path.elementAt(pt).x;
@@ -509,9 +430,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter:
 
 void BitmapImage::clear()
 {
-    if (mImage != NULL) delete mImage;
-
-    mImage = new QImage(); // null image
+    mImage = std::make_shared< QImage >(); // null image
     mBounds = QRect(0,0,0,0);
 }
 
@@ -519,7 +438,8 @@ void BitmapImage::clear(QRect rectangle)
 {
     QRect clearRectangle = mBounds.intersected( rectangle );
     clearRectangle.moveTopLeft( clearRectangle.topLeft() - topLeft() );
-    QPainter painter(mImage);
+    
+    QPainter painter( mImage.get() );
     painter.setCompositionMode(QPainter::CompositionMode_Clear);
     painter.fillRect( clearRectangle, QColor(0,0,0,0) );
     painter.end();
@@ -541,7 +461,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
     int j, k;
     bool condition;
-    BitmapImage* replaceImage;
+    BitmapImage* replaceImage = nullptr;
     if (extendFillImage)
     {
         replaceImage = new BitmapImage(targetImage->mBounds.united(fillImage->mBounds), QColor(0,0,0,0));
@@ -552,9 +472,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
         replaceImage = new BitmapImage(fillImage->mBounds, QColor(0,0,0,0));
         replaceImage->mExtendable = false;
     }
-    //QPainter painter1(replaceImage->image);
-    //QPainter painter2(fillImage->image);
-    //painter1.setPen( QColor(replacementColour) );
+   
     QPen myPen;
     myPen = QPen( QColor(replacementColour) , 1.0, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin);
 

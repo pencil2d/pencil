@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #ifndef BITMAP_IMAGE_H
 #define BITMAP_IMAGE_H
 
+#include <memory>
 #include <QtXml>
 #include <QPainter>
 #include "keyframe.h"
@@ -37,7 +38,7 @@ public:
     void paintImage( QPainter& painter );
     void outputImage( QImage* image, QSize size, QTransform myView );
 
-    QImage* image() { return mImage; }
+    QImage* image() { return mImage.get(); }
     void    setImage( QImage* pImg );
 
     BitmapImage copy();
@@ -90,7 +91,7 @@ public:
     QRect& bounds() { return mBounds; }
 
 private:
-    QImage* mImage = nullptr;
+    std::shared_ptr< QImage > mImage;
     QRect   mBounds;
     bool    mExtendable = true;
 };
