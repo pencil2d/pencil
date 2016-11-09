@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QProcess>
 #include <QApplication>
+#include <QStandardPaths>
 #include "object.h"
 #include "layercamera.h"
 #include "layersound.h"
@@ -87,9 +88,9 @@ QString ffmpegLocation()
 #ifdef _WIN32
     return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
 #elif __APPLE__
-    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
+    return QApplication::applicationDirPath() + "/ffmpeg";
 #else
-    return "/usr/bin/ffmpeg"; // ffmpeg is a standalone project.
+    return QStandardPaths::findExecutable( "ffmpeg" ); // ffmpeg is a standalone project.
 #endif
 }
 
