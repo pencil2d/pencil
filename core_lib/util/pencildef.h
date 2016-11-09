@@ -1,17 +1,14 @@
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
-
-#define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
-
 #define PENCIL_MOVIE_EXT \
     QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
-   QObject::tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" )
+   QObject::tr( "Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)" )
 
 
-enum ToolType
+enum ToolType : int
 {
     INVALID_TOOL = -1,
     PENCIL = 0,
@@ -24,7 +21,8 @@ enum ToolType
     POLYLINE,
     BUCKET,
     EYEDROPPER,
-    BRUSH
+    BRUSH,
+    TOOL_TYPE_COUNT
 };
 
 enum ToolPropertyType
@@ -122,7 +120,7 @@ enum BackgroundStyle
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
 
 // Save / Export
-#define LAST_FILE_PATH          "LastFilePath"
+#define LAST_PCLX_PATH          "LastFilePath"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"

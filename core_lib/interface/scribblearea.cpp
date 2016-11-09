@@ -53,7 +53,7 @@ mLog( "ScribbleArea" )
 
 ScribbleArea::~ScribbleArea()
 {
-
+	delete mBufferImg;
 }
 
 bool ScribbleArea::init()
@@ -142,7 +142,6 @@ void ScribbleArea::settingUpdated(SETTING setting)
 
 void ScribbleArea::updateToolCursor()
 {
-    this->setFocus();
     setCursor( currentTool()->cursor() );
     updateAllFrames();
 }

@@ -17,7 +17,7 @@ signals:
     void openFileRequested(QString filename);
 
 private:
-    QString startPath_;
+    QString mStartPath;
 };
 
 #endif // PENCILAPPLICATION_H

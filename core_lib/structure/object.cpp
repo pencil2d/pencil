@@ -82,7 +82,7 @@ QDomElement Object::saveXML( QDomDocument& doc )
     return tag;
 }
 
-bool Object::loadXML( QDomElement docElem )
+bool Object::loadXML( QDomElement docElem, ProgressCallback progress )
 {
     if ( docElem.isNull() )
     {
@@ -92,8 +92,14 @@ bool Object::loadXML( QDomElement docElem )
     
     const QString dataDirPath = mDataDirPath;
 
+	int allNodesCount = docElem.childNodes().count();
+	int processedNodeCount = 0;
+
     for ( QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling() )
     {
+		processedNodeCount += 1;
+		progress( (float)processedNodeCount / allNodesCount );
+
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if ( element.tagName() == "layer" )
         {

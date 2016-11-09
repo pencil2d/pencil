@@ -1,5 +1,7 @@
-#include "editor.h"
 #include "basetool.h"
+
+#include <array>
+#include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
@@ -10,27 +12,27 @@ ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
 qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
 bool BaseTool::isAdjusting = false;
 
+
 QString BaseTool::TypeName( ToolType type )
 {
-    static QMap<ToolType, QString>* map = NULL;
-
-    if ( map == NULL )
+    static std::array< QString, TOOL_TYPE_COUNT > map;
+    
+    if ( map[ 0 ].isEmpty() )
     {
-        map = new QMap<ToolType, QString>();
-        map->insert( PENCIL, "Pencil" );
-        map->insert( ERASER, "Eraser" );
-        map->insert( SELECT, "Select" );
-        map->insert( MOVE, "Move" );
-        map->insert( HAND, "Hand" );
-        map->insert( SMUDGE, "Smudge" );
-        map->insert( PEN, "Pen" );
-        map->insert( POLYLINE, "Polyline" );
-        map->insert( BUCKET, "Bucket" );
-        map->insert( EYEDROPPER, "Eyedropper" );
-        map->insert( BRUSH, "Brush" );
+        map[ PENCIL ] = "Pencil";
+        map[ ERASER ] = "Eraser";
+        map[ SELECT ] = "Select";
+        map[ MOVE ] = "Move";
+        map[ HAND ] = "Hand";
+        map[ SMUDGE ] = "Smudge";
+        map[ PEN ] = "Pen";
+        map[ POLYLINE ] = "Polyline";
+        map[ BUCKET ] = "Bucket";
+        map[ EYEDROPPER ] = "Eyedropper";
+        map[ BRUSH ] = "Brush";
     }
 
-    return map->value( type );
+    return map.at( type );
 }
 
 BaseTool::BaseTool( QObject *parent ) : QObject( parent )

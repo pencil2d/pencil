@@ -120,6 +120,8 @@ Object* FileManager::load( QString strFileName )
         return cleanUpWithErrorCode( Status::ERROR_INVALID_PENCIL_FILE );
     }
     
+    verifyObject( obj );
+    
     return obj;
 }
 
@@ -143,7 +145,10 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
         if ( element.tagName() == "object" )
         {
             qCDebug( mLog ) << "Load object";
-            isOK = object->loadXML( element );
+			isOK = object->loadXML( element, [this] ( float f )
+			{
+				emit progressUpdated( f );
+			} );
         }
         else if ( element.tagName() == "editor" )
         {
@@ -163,7 +168,10 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
 
 bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root )
 {
-    return object->loadXML( root );
+	return object->loadXML( root, [this]( float f )
+	{
+		emit progressUpdated( f );
+	} );
 }
 
 bool FileManager::isOldForamt( const QString& fileName )
@@ -302,16 +310,16 @@ ObjectData* FileManager::loadEditorState( QDomElement docElem )
         {
             continue;
         }
-
-     
         
+        extractObjectData( element, data );
+     
         tag = tag.nextSibling();
     }
     return data;
 }
 
 
-void FileManager::extractEditorStateData( const QDomElement& element, ObjectData* data )
+void FileManager::extractObjectData( const QDomElement& element, ObjectData* data )
 {
     Q_ASSERT( data );
 
@@ -406,4 +414,17 @@ QList<ColourRef> FileManager::loadPaletteFile( QString strFilename )
 
     // TODO: Load Palette.
     return QList<ColourRef>();
+}
+
+Status FileManager::verifyObject( Object* obj )
+{
+    // check current layer.
+    int curLayer = obj->data()->getCurrentLayer();
+    int maxLayer = obj->getLayerCount();
+    if ( curLayer >= maxLayer )
+    {
+        obj->data()->setCurrentLayer(maxLayer - 1);
+    }
+    
+    return Status::OK;
 }

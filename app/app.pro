@@ -47,7 +47,8 @@ HEADERS += \
     filedialogex.h \
     displayoptionwidget.h \
     pencilapplication.h \
-    exportmoviedialog.h
+    exportmoviedialog.h \
+    app_util.h
     # popupcolorpalettewidget.h
 
 SOURCES += \

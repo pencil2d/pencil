@@ -16,7 +16,7 @@ Download the [nightly builds][3]!
 [2]: http://goo.gl/BP40t
 [3]: http://www.pencil2d.org/forums/topic/pencil2d-nightly-builds-2015/ "Pencil2D nightly builds"
 
-[![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=dev)](https://travis-ci.org/chchwy/pencil2d)
+[![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=master)](https://travis-ci.org/chchwy/pencil2d)
 
 ### Links ###
 

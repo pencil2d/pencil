@@ -34,6 +34,8 @@ class LayerCamera;
 class LayerSound;
 class ObjectData;
 
+#define ProgressCallback std::function<void(float)>
+
 
 struct ExportMovieParameters
 {
@@ -90,7 +92,7 @@ public:
     void    setMainXMLFile( QString file ){ mMainXMLFile = file; }
 
     QDomElement saveXML( QDomDocument& doc );
-    bool loadXML( QDomElement element );
+	bool loadXML( QDomElement element, ProgressCallback progress = [] (float){} );
 
     void paintImage( QPainter& painter, int frameNumber, bool background, bool antialiasing ) const;
 

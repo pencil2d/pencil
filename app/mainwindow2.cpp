@@ -72,6 +72,7 @@ GNU General Public License for more details.
 #include "shortcutfilter.h"
 #include "filedialogex.h"
 #include "movieexporter.h"
+#include "app_util.h"
 
 MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 {
@@ -224,7 +225,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
-    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocumentDialog );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
     connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
     connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
@@ -346,7 +347,7 @@ void MainWindow2::createMenus()
         winMenu->addAction( action );
     }
 
-    /// --- Help Menu ---
+    // -------------- Help Menu ---------------
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
 
@@ -375,13 +376,13 @@ void MainWindow2::setOpacity( int opacity )
 
 bool MainWindow2::isTitleMarkedUnsaved()
 {
-    return windowTitle().startsWith(QString("* "));
+    return windowTitle().startsWith(QString("*"));
 }
 
 void MainWindow2::markTitleUnsaved()
 {
     if (!isTitleMarkedUnsaved())
-        setWindowTitle( QString("* ") + windowTitle() );
+        setWindowTitle( QString("*") + windowTitle() );
 }
 
 void MainWindow2::markTitleSaved()
@@ -438,30 +439,21 @@ void MainWindow2::newDocument()
     }
 }
 
-void MainWindow2::openDocumentDialog()
+void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
         QSettings settings( PENCIL2D, PENCIL2D );
 
-        QString strLastOpenPath = settings.value( LAST_FILE_PATH, QDir::homePath() ).toString();
+        QString strLastOpenPath = settings.value( LAST_PCLX_PATH, QDir::homePath() ).toString();
         QString fileName = QFileDialog::getOpenFileName( this,
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
-        openDocument(fileName);
-    }
-}
-
-void MainWindow2::openDocument(const QString &fileName)
-{
-    if ( maybeSave() )
-    {
         if ( fileName.isEmpty() )
         {
             return;
         }
-
         QFileInfo fileInfo( fileName );
         if ( fileInfo.isDir() )
         {
@@ -469,7 +461,6 @@ void MainWindow2::openDocument(const QString &fileName)
         }
 
         bool ok = openObject( fileName );
-
         if ( !ok )
         {
             QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
@@ -482,7 +473,7 @@ bool MainWindow2::saveAsNewDocument()
 {
     QSettings settings( PENCIL2D, PENCIL2D );
 
-    QString strLastFolder = settings.value( LAST_FILE_PATH, QDir::homePath() ).toString();
+    QString strLastFolder = settings.value( LAST_PCLX_PATH, QDir::homePath() ).toString();
     if ( strLastFolder.isEmpty() || !QDir(strLastFolder).exists() )
     {
         strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
@@ -501,7 +492,7 @@ bool MainWindow2::saveAsNewDocument()
     {
         fileName = fileName + PFF_EXTENSION;
     }
-    settings.setValue( LAST_FILE_PATH, QVariant( fileName ) );
+    settings.setValue( LAST_PCLX_PATH, QVariant( fileName ) );
 
     return saveObject( fileName );
 
@@ -509,7 +500,6 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile( QString filename )
 {
-    qDebug() << "open recent file" << filename;
     bool ok = openObject( filename );
     if ( !ok )
     {
@@ -521,9 +511,11 @@ void MainWindow2::openFile( QString filename )
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
-    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
+    
+	// Don't show progress bar if running without a GUI (aka. when rendering from command line)
     if ( this->isVisible() )
     {
+		hideQuestionMark( progress );
         progress.setWindowModality( Qt::WindowModal );
         progress.show();
     }
@@ -531,6 +523,13 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setCurrentLayer( 0 );
 
     FileManager fm( this );
+	connect( &fm, &FileManager::progressUpdated, [&progress]( float f )
+	{
+		progress.setValue( (int)( f * 100.f ) );
+		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
+		
+	} );
+
     Object* object = fm.load( strFilePath );
 
     if ( object == nullptr || !fm.error().ok() )
@@ -541,12 +540,11 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setObject( object );
 
     QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue( LAST_FILE_PATH, object->filePath() );
+    settings.setValue( LAST_PCLX_PATH, object->filePath() );
 
     mRecentFileMenu->addRecentFile( object->filePath() );
     mRecentFileMenu->saveToDisk();
 
-    //qDebug() << "Current File Path=" << object->filePath();
     setWindowTitle( object->filePath() );
 
     // Refresh the Palette
@@ -578,7 +576,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     }
 
     QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue( LAST_FILE_PATH, strSavedFileName );
+    settings.setValue( LAST_PCLX_PATH, strSavedFileName );
 
     mRecentFileMenu->addRecentFile( strSavedFileName );
     mRecentFileMenu->saveToDisk();
@@ -675,13 +673,15 @@ void MainWindow2::importImageSequence()
     QStringList files = w.getOpenFileNames( this,
                                             "Select one or more files to open",
                                             initialPath,
-                                            "Images (*.png *.jpg *.jpeg *.bmp)" );
+                                            "Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)" );
 
     for ( QString strImgFile : files )
     {
         if ( strImgFile.endsWith( ".png" ) ||
              strImgFile.endsWith( ".jpg" ) ||
              strImgFile.endsWith( ".jpeg" ) ||
+             strImgFile.endsWith(".tif") ||
+             strImgFile.endsWith(".tiff") ||
              strImgFile.endsWith( ".bmp" ) )
         {
             mEditor->importImage( strImgFile );
@@ -848,7 +848,7 @@ void MainWindow2::preferences()
     connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
     connect( prefDialog, &PreferencesDialog::finished, [ &]
     { 
-        qDebug() << "Preference dialog closed!";
+        //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
@@ -868,13 +868,13 @@ void MainWindow2::dockAllSubWidgets()
 
 void MainWindow2::readSettings()
 {
-    qDebug( "Restore last windows layout." );
+    //qDebug( "Restore last windows layout." );
 
     QSettings settings( PENCIL2D, PENCIL2D );
     restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
     restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
 
-    QString myPath = settings.value( LAST_FILE_PATH, QVariant( QDir::homePath() ) ).toString();
+    QString myPath = settings.value( LAST_PCLX_PATH, QVariant( QDir::homePath() ) ).toString();
     mRecentFileMenu->addRecentFile( myPath );
 
     int opacity = mEditor->preference()->getInt(SETTING::WINDOW_OPACITY);
@@ -1005,7 +1005,7 @@ void MainWindow2::setupKeyboardShortcuts()
 void MainWindow2::clearKeyboardShortcuts()
 {
     QList<QAction*> actionList = this->findChildren<QAction*>();
-    foreach( QAction* action, actionList )
+    for( QAction* action : actionList )
     {
         action->setShortcut( QKeySequence( 0 ) );
     }
