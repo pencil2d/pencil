@@ -71,6 +71,7 @@ void PreferenceManager::loadPrefs()
     //
     set( SETTING::PREV_ONION,               settings.value( SETTING_PREV_ONION,             false ).toBool() );
     set( SETTING::NEXT_ONION,               settings.value( SETTING_NEXT_ONION,             false ).toBool() );
+    set( SETTING::MULTILAYER_ONION,         settings.value( SETTING_MULTILAYER_ONION,       false ).toBool() );
     set( SETTING::ONION_BLUE,               settings.value( SETTING_ONION_BLUE,             false ).toBool() );
     set( SETTING::ONION_RED,                settings.value( SETTING_ONION_RED,              false ).toBool() );
 
@@ -239,6 +240,9 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::NEXT_ONION:
         settings.setValue ( SETTING_NEXT_ONION, value );
+        break;
+    case SETTING::MULTILAYER_ONION:
+        settings.setValue( SETTING_MULTILAYER_ONION, value);
         break;
     case SETTING::AXIS:
         settings.setValue ( SETTING_AXIS, value );
