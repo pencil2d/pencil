@@ -273,7 +273,7 @@ void ColorWheel::drawSquareImage(const int &hue)
     // region of the widget
     int w = qMin(width(), height());
     // radius of outer circle
-    qreal r = w / 2;
+    qreal r = w / 2.0;
     // radius of inner circle
     qreal ir = r - m_wheelThickness;
 
