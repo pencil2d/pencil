@@ -86,8 +86,8 @@ void StrokeManager::mousePressEvent(QMouseEvent* event)
     mCurrentPixel = getEventPosition( event );
 
     mStrokeStarted = true;
-    singleshotTime.start();
-    previousTime = singleshotTime.elapsed();
+    mSingleshotTime.start();
+    previousTime = mSingleshotTime.elapsed();
 
 }
 
@@ -143,7 +143,7 @@ QList<QPointF> StrokeManager::interpolateStroke()
 {
     QList<QPointF> result;
 
-    int time = singleshotTime.elapsed();
+    int time = mSingleshotTime.elapsed();
     static const qreal smoothness = 1.f;
     QLineF line( mLastPixel, mCurrentPixel);
 

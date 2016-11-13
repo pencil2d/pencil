@@ -108,7 +108,7 @@ void PenTool::mousePressEvent( QMouseEvent *event )
     }
 
     startStroke();
-    lastBrushPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
 }
 
 void PenTool::mouseReleaseEvent( QMouseEvent *event )
@@ -185,7 +185,7 @@ void PenTool::drawStroke()
 
         BlitRect rect;
 
-        QPointF a = lastBrushPoint;
+        QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
         qreal distance = 4 * QLineF( b, a ).length();
@@ -193,7 +193,7 @@ void PenTool::drawStroke()
 
         for ( int i = 0; i < steps; i++ )
         {
-            QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
+            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - mLastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
             mScribbleArea->drawPen( point,
                                     brushWidth,
@@ -202,7 +202,7 @@ void PenTool::drawStroke()
 
             if ( i == ( steps - 1 ) )
             {
-                lastBrushPoint = point;
+                mLastBrushPoint = point;
             }
         }
 

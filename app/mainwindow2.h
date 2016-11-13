@@ -144,12 +144,12 @@ private:
 
 private:
     ActionCommands* mCommands              = nullptr;
-
-    Ui::MainWindow2* ui                   = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
     BackgroundWidget* mBackground;
 
     QIcon mStartIcon, mStopIcon;
+
+	Ui::MainWindow2* ui = nullptr;
 };
 
 #endif // MAINWINDOW2_H

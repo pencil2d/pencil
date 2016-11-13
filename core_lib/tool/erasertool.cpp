@@ -13,8 +13,8 @@
 #include "erasertool.h"
 
 
-EraserTool::EraserTool( QObject *parent ) :
-StrokeTool( parent )
+EraserTool::EraserTool( QObject *parent ) 
+	: StrokeTool( parent )
 {
 }
 
@@ -119,7 +119,7 @@ void EraserTool::mousePressEvent( QMouseEvent *event )
     }
 
     startStroke();
-    lastBrushPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
 }
 
 void EraserTool::mouseReleaseEvent( QMouseEvent *event )
@@ -208,7 +208,7 @@ void EraserTool::drawStroke()
 
         BlitRect rect;
 
-        QPointF a = lastBrushPoint;
+        QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
         qreal distance = 4 * QLineF( b, a ).length();
@@ -216,7 +216,7 @@ void EraserTool::drawStroke()
 
         for ( int i = 0; i < steps; i++ )
         {
-            QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
+            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - mLastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
             mScribbleArea->drawBrush( point,
                                       brushWidth,
@@ -226,7 +226,7 @@ void EraserTool::drawStroke()
 
             if ( i == ( steps - 1 ) )
             {
-                lastBrushPoint = point;
+                mLastBrushPoint = point;
             }
         }
 
