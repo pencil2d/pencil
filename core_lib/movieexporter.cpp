@@ -162,7 +162,7 @@ Status MovieExporter::assembleAudio( const Object* obj,
 	int fps = mDesc.fps;
 	
 	Q_ASSERT( startFrame >= 0 );
-	Q_ASSERT( endFrame > startFrame );
+    Q_ASSERT( endFrame >= startFrame );
 
 	float lengthInSec = ( endFrame - startFrame + 1 ) / (float)fps;
 	qDebug() << "Audio Length = " << lengthInSec << " seconds";
@@ -449,7 +449,7 @@ Status MovieExporter::checkInputParameters( const ExportMovieDesc& desc )
 	bool b = true; 
 	b &= ( !desc.strFileName.isEmpty() );
 	b &= ( desc.startFrame > 0 );
-	b &= ( desc.endFrame > desc.startFrame );
+    b &= ( desc.endFrame >= desc.startFrame );
 	b &= ( desc.fps > 0 );
 	b &= ( !desc.strCameraName.isEmpty() );
 	
