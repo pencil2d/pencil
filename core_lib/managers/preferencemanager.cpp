@@ -279,6 +279,7 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::DRAW_LABEL:
         settings.setValue ( SETTING_DRAW_LABEL, value );
+        break;
     case SETTING::QUICK_SIZING:
         settings.setValue ( SETTING_QUICK_SIZING, value );
         break;
