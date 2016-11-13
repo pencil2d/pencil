@@ -91,11 +91,11 @@ QColor ColorWheel::pickColor(const QPoint& point)
         QPoint center(width() / 2, height() / 2);
 
         QPoint diff = point - center;
-        strDebug += QString(" Atan2=%1").arg(qAtan2(diff.x(), diff.y()));
+        strDebug += QString(" Atan2=%1").arg(qAtan2(diff.y(), diff.x()));
 
-        hue = qAtan2( diff.x(), diff.y() ) / M_PI * 180;
+        hue = qAtan2( -diff.y(), diff.x() ) / M_PI * 180;
 
-        hue = hue + 180; // shift -180~180 to 0~360
+        hue = fmod((hue + 360), 360); // shift -180~180 to 0~360
 
         strDebug += QString(" Hue=%1").arg(hue);
         //qDebug() << strDebug;
@@ -251,7 +251,6 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QBrush brush(conicalGradient);
     painter.setPen(Qt::NoPen);
     painter.setBrush(brush);
-    painter.rotate( -90 );
     painter.drawEllipse(QPoint(0, 0), r/2, r/2);
 
     /* inner circle */
@@ -319,7 +318,7 @@ void ColorWheel::drawHueIndicator(const int &hue)
     painter.setPen(pen);
     qreal r = qMin(height(), width());
     painter.translate(width() / 2, height() / 2);
-    painter.rotate( -hue - 90 );
+    painter.rotate( -hue );
 
     r = r / 2.0 - m_wheelThickness/2;
     painter.drawEllipse(QPointF(r, 0), 7, 7);
