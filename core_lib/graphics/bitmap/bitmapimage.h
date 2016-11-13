@@ -40,7 +40,6 @@ public:
     void loadDomElement( QDomElement element, QString filePath );
 
     void paintImage( QPainter& painter );
-    void outputImage( QImage* image, QSize size, QTransform myView );
 
     QImage* image() { return mImage; }
     void    setImage( QImage* pImg );

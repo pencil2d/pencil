@@ -110,13 +110,6 @@ void BitmapImage::paintImage(QPainter& painter)
     painter.drawImage(topLeft(), *mImage);
 }
 
-void outputImage(QImage* image, QSize size, QTransform myView)
-{
-    Q_UNUSED(image);
-    Q_UNUSED(size);
-    Q_UNUSED(myView);
-}
-
 BitmapImage BitmapImage::copy()
 {
     return BitmapImage(mBounds, QImage(*mImage));
