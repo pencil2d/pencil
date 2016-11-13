@@ -215,39 +215,37 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
 	{
 		if ( layer->type() == Layer::BITMAP )
 		{
-			BackupBitmapElement* element = new BackupBitmapElement();
-			element->layer = backupLayer;
-			element->frame = backupFrame;
-			element->undoText = undoText;
-			element->somethingSelected = this->getScribbleArea()->somethingSelected;
-			element->mySelection = this->getScribbleArea()->mySelection;
-			element->myTransformedSelection = this->getScribbleArea()->myTransformedSelection;
-			element->myTempTransformedSelection = this->getScribbleArea()->myTempTransformedSelection;
-			BitmapImage* bitmapImage = ( (LayerBitmap*)layer )->getLastBitmapImageAtFrame( backupFrame, 0 );
-			if ( bitmapImage != NULL )
-			{
-				element->bitmapImage = bitmapImage->copy();  // copy the image
-				mBackupList.append( element );
+            BitmapImage* bitmapImage = ( (LayerBitmap*)layer )->getLastBitmapImageAtFrame( backupFrame, 0 );
+            if ( bitmapImage != NULL )
+            {
+                BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
+                element->layer = backupLayer;
+                element->frame = backupFrame;
+                element->undoText = undoText;
+                element->somethingSelected = this->getScribbleArea()->somethingSelected;
+                element->mySelection = this->getScribbleArea()->mySelection;
+                element->myTransformedSelection = this->getScribbleArea()->myTransformedSelection;
+                element->myTempTransformedSelection = this->getScribbleArea()->myTempTransformedSelection;
+                mBackupList.append( element );
                 mBackupIndex++;
-			}
-		}
-		if ( layer->type() == Layer::VECTOR )
+            }
+        }
+        else if ( layer->type() == Layer::VECTOR )
 		{
-			BackupVectorElement* element = new BackupVectorElement();
-			element->layer = backupLayer;
-			element->frame = backupFrame;
-			element->undoText = undoText;
-			element->somethingSelected = this->getScribbleArea()->somethingSelected;
-			element->mySelection = this->getScribbleArea()->mySelection;
-			element->myTransformedSelection = this->getScribbleArea()->myTransformedSelection;
-			element->myTempTransformedSelection = this->getScribbleArea()->myTempTransformedSelection;
-			VectorImage* vectorImage = ( (LayerVector*)layer )->getLastVectorImageAtFrame( backupFrame, 0 );
-			if ( vectorImage != NULL )
-			{
-				element->vectorImage = *vectorImage;  // copy the image (that works but I should also provide a copy() method)
-				mBackupList.append( element );
+            VectorImage* vectorImage = ( (LayerVector*)layer )->getLastVectorImageAtFrame( backupFrame, 0 );
+            if ( vectorImage != NULL )
+            {
+                BackupVectorElement* element = new BackupVectorElement(vectorImage);
+                element->layer = backupLayer;
+                element->frame = backupFrame;
+                element->undoText = undoText;
+                element->somethingSelected = this->getScribbleArea()->somethingSelected;
+                element->mySelection = this->getScribbleArea()->mySelection;
+                element->myTransformedSelection = this->getScribbleArea()->myTransformedSelection;
+                element->myTempTransformedSelection = this->getScribbleArea()->myTempTransformedSelection;
+                mBackupList.append( element );
                 mBackupIndex++;
-			}
+            }
 		}
 	}
     emit updateBackup();
