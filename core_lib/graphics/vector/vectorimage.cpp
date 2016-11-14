@@ -812,7 +812,7 @@ void VectorImage::deleteSelectedPoints()
     modification();
 }
 
-void VectorImage::paste(VectorImage vectorImage)
+void VectorImage::paste(VectorImage& vectorImage)
 {
     selectionRect = QRect(0,0,0,0);
     int n = m_curves.size();

@@ -59,8 +59,8 @@ void PolylineTool::setFeather( const qreal feather )
 QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
 {
     if ( isAdjusting ) { // being dynamically resized
-        return QCursor( this->circleCursors() ); // two circles cursor
         qDebug() << "adjusting";
+        return QCursor( this->circleCursors() ); // two circles cursor
     }
     return Qt::CrossCursor;
 }

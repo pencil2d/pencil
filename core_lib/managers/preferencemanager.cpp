@@ -46,6 +46,7 @@ void PreferenceManager::loadPrefs()
     //
     set( SETTING::ANTIALIAS,                settings.value( SETTING_ANTIALIAS,              true ).toBool() );
     set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
+    set( SETTING::DOTTED_CURSOR,            settings.value( SETTING_DOTTED_CURSOR,          true ).toBool() );
     set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
     set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
     set( SETTING::QUICK_SIZING,             settings.value( SETTING_QUICK_SIZING,           true ).toBool() );
@@ -268,6 +269,9 @@ void PreferenceManager::set( SETTING option, bool value )
     case SETTING::TOOL_CURSOR:
         settings.setValue ( SETTING_TOOL_CURSOR, value );
         break;
+    case SETTING::DOTTED_CURSOR:
+        settings.setValue ( SETTING_DOTTED_CURSOR, value );
+        break;
     case SETTING::HIGH_RESOLUTION:
         settings.setValue ( SETTING_HIGH_RESOLUTION, value );
         break;
@@ -279,6 +283,7 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::DRAW_LABEL:
         settings.setValue ( SETTING_DRAW_LABEL, value );
+        break;
     case SETTING::QUICK_SIZING:
         settings.setValue ( SETTING_QUICK_SIZING, value );
         break;
