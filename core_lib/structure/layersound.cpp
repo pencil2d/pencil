@@ -29,37 +29,6 @@ LayerSound::~LayerSound()
 {
 }
 
-void LayerSound::paintImages(QPainter& painter,
-                             TimeLineCells* cells,
-                             int x, int y,
-                             int width, int height,
-                             bool selected, int frameSize)
-{
-    Q_UNUSED( cells );
-    Q_UNUSED( width );
-    Q_UNUSED( selected );
-
-    // TODO: re-write here.
-    /*
-    for (int i = 0; i < sound.size(); i++)
-    {
-    qreal h = x + (framesPosition.at(i)-1)*frameSize+2;
-    if (framesSelected.at(i))
-    {
-    painter.setBrush(QColor(60,60,60));
-    h = h + frameOffset*frameSize;
-    }
-    else
-    {
-    painter.setBrush(QColor(125,125,125));
-    }
-    QPointF points[3] = { QPointF(h, y+4), QPointF(h, y+height-4), QPointF(h+15, y+0.5*height) };
-    painter.drawPolygon( points, 3 );
-    painter.drawText(QPoint( h + 20, y+(2*height)/3), framesFilename.at(i) );
-    }
-    */
-}
-
 Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
 {
     if ( !QFile::exists( strFilePath ) )
@@ -67,91 +36,76 @@ Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
         return Status::FILE_NOT_FOUND;
     }
     
-    QMediaPlayer* pPlayer = new QMediaPlayer( this );
-    pPlayer->setMedia( QUrl::fromLocalFile( strFilePath ) );
-
-    if ( pPlayer->error() != QMediaPlayer::NoError )
+    QFileInfo info( strFilePath );
+    if ( !info.isFile() )
     {
-        return Status::ERROR_LOAD_SOUND_FILE;
+        strFilePath = "";
     }
+
+    SoundClip* clip = new SoundClip;
+    clip->init( strFilePath );
+    clip->setPos( frameNumber );
+    loadKey( clip );
     return Status::OK;
-}
-
-bool LayerSound::saveImage( int index, QString path, int layerNumber )
-{
-    /*
-    Q_UNUSED(layerNumber);
-
-    QFile originalFile( soundFilepath.at(index) );
-    originalFile.copy( path + "/" + framesFilename.at(index) );
-    framesModified[index] = false;
-    */
-    return true;
-}
-
-void LayerSound::playSound( int frame )
-{
-    if ( keyExists( frame ) )
-    {
-    }
-}
-
-void LayerSound::stopSound()
-{
-    /*
-    for(int i=0; i < sound.size(); i++)
-    {
-    Q_ASSERT( sound[i] );
-    sound[i]->stop();
-    }
-    */
 }
 
 QDomElement LayerSound::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement( "layer" );
-    /*
-    layerTag.setAttribute("id",id);
-    layerTag.setAttribute("name", name);
-    layerTag.setAttribute("visibility", visible);
-    layerTag.setAttribute("type", type());
-    for (int index=0; index < framesPosition.size() ; index++)
+    
+    layerTag.setAttribute( "id", id() );
+    layerTag.setAttribute( "name", name() );
+    layerTag.setAttribute( "visibility", visible() );
+    layerTag.setAttribute( "type", type() );
+
+    foreachKeyFrame( [ &doc, &layerTag ]( KeyFrame* pKeyFrame )
     {
-    QDomElement soundTag = doc.createElement("sound");
-    soundTag.setAttribute("position", framesPosition.at(index));
-    soundTag.setAttribute("src", framesFilename.at(index));
-    layerTag.appendChild(soundTag);
-    }
-    */
+        QDomElement imageTag = doc.createElement( "sound" );
+        imageTag.setAttribute( "frame", pKeyFrame->pos() );
+
+        QFileInfo info( pKeyFrame->fileName() );
+        qDebug() << "Save=" << info.fileName();
+        imageTag.setAttribute( "src", info.fileName() );
+        layerTag.appendChild( imageTag );
+    } );
+    
     return layerTag;
 }
 
 void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
-{
-    /*
-    if (!element.attribute("id").isNull()) id = element.attribute("id").toInt();
-    name = element.attribute("name");
-    visible = (element.attribute("visibility") == "1");
+{   
+    if ( !element.attribute( "id" ).isNull() )
+    {
+        int myId = element.attribute( "id" ).toInt();
+        setId( myId );
+    }
+    mName = element.attribute( "name" );
+    mVisible = ( element.attribute( "visibility" ).toInt() == 1 );
 
     QDomNode soundTag = element.firstChild();
-    while (!soundTag.isNull())
+    while ( !soundTag.isNull() )
     {
-    QDomElement soundElement = soundTag.toElement();
-    if (!soundElement.isNull())
-    {
-    if (soundElement.tagName() == "sound")
-    {
-    QString path = dataDirPath + "/" + soundElement.attribute("src"); // the file is supposed to be in the data directory
-    //qDebug() << "LAY_SOUND  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
-    QFileInfo fi(path);
-    if (!fi.exists()) path = soundElement.attribute("src");
-    int position = soundElement.attribute("position").toInt();
-    loadSoundAtFrame( path, position );
+        QDomElement soundElement = soundTag.toElement();
+        if ( soundElement.isNull() )
+        {
+            continue;
+        }
+
+        if ( soundElement.tagName() == "sound" )
+        {
+            QString soundFile = soundElement.attribute( "src" );
+
+            // the file is supposed to be in the data directory
+            QString fullPath = QDir( dataDirPath ).filePath( soundFile );
+            qDebug() << "Load Sound path = " << fullPath;  //added for debugging puproses
+
+            int position = soundElement.attribute( "frame" ).toInt();
+            Status st = loadSoundAtFrame( fullPath, position );
+            Q_ASSERT( st.ok() );
+        }
+        
+        soundTag = soundTag.nextSibling();
     }
-    }
-    soundTag = soundTag.nextSibling();
-    }
-    */
 }
 
 bool LayerSound::saveKeyFrame( KeyFrame*, QString path )

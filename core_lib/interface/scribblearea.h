@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <cstdint>
 #include <ctime>
 #include <deque>
+#include <memory>
 
 #include <QColor>
 #include <QTransform>
@@ -106,7 +107,7 @@ public:
     void setTemporaryTool( ToolType eToolMode );
     void setPrevTool();
 
-    StrokeManager *getStrokeManager() const { return mStrokeManager; }
+    StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
 
     //PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
 
@@ -167,7 +168,6 @@ public:
     void drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true );
-    void drawEraser( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
     void liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
 
@@ -183,9 +183,6 @@ public:
 
 private:
     void drawCanvas( int frame, QRect rect );
-    void drawAxis( QPainter& );
-    void drawGrid( QPainter& );
-
     void settingUpdated(SETTING setting);
 
     MoveMode mMoveMode = MIDDLE;
@@ -195,7 +192,7 @@ private:
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
     bool isTransforming = false;
 
-    StrokeManager* mStrokeManager = nullptr;
+    std::unique_ptr< StrokeManager > mStrokeManager;
 
     Editor* mEditor = nullptr;
 

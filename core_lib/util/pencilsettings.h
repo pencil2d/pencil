@@ -5,7 +5,7 @@
 #include <QSettings>
 #include "pencildef.h"
 
-QSettings* pencilSettings();
+QSettings& pencilSettings();
 void restoreToDefaultSetting();
 
 void restoreShortcutsToDefault();

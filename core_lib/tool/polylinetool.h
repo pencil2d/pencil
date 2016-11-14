@@ -26,7 +26,7 @@ public:
     void setFeather( const qreal feather ) override;
 
 private:
-    QList<QPointF> points;
+    QList<QPointF> mPoints;
 };
 
 #endif // POLYLINETOOL_H

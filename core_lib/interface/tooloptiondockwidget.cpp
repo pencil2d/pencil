@@ -9,6 +9,7 @@
 #include "toolmanager.h"
 #include "tooloptiondockwidget.h"
 #include "editor.h"
+#include "util.h"
 
 ToolOptionWidget::ToolOptionWidget( QWidget* parent ) : BaseDockWidget( parent )
 {
@@ -59,7 +60,7 @@ void ToolOptionWidget::createUI()
     pLayout->setMargin( 8 );
     pLayout->setSpacing( 8 );
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     mSizeSlider = new SpinSlider( tr( "Brush" ), SpinSlider::EXPONENT, SpinSlider::INTEGER, 1, 200, this );
     mSizeSlider->setValue( settings.value( "brushWidth" ).toDouble() );
@@ -171,36 +172,36 @@ void ToolOptionWidget::onToolChanged( ToolType )
 
 void ToolOptionWidget::setPenWidth( qreal width )
 {
-    QSignalBlocker b( mSizeSlider );
+    SignalBlocker b( mSizeSlider );
     mSizeSlider->setEnabled( true );
     mSizeSlider->setValue( width );
 
-    QSignalBlocker b2( mBrushSpinBox );
+    SignalBlocker b2( mBrushSpinBox );
     mBrushSpinBox->setEnabled( true );
     mBrushSpinBox->setValue( width );
 }
 
 void ToolOptionWidget::setPenFeather( qreal featherValue )
 {
-    QSignalBlocker b( mFeatherSlider );
+    SignalBlocker b( mFeatherSlider );
     mFeatherSlider->setEnabled( true );
     mFeatherSlider->setValue( featherValue );
     
-    QSignalBlocker b2( mFeatherSpinBox );
+    SignalBlocker b2( mFeatherSpinBox );
     mFeatherSpinBox->setEnabled( true );
     mFeatherSpinBox->setValue( featherValue );
 }
 
 void ToolOptionWidget::setPenInvisibility( int x )
 {
-    QSignalBlocker b( mMakeInvisibleBox );
+    SignalBlocker b( mMakeInvisibleBox );
     mMakeInvisibleBox->setEnabled( true );
     mMakeInvisibleBox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setPressure( int x )
 {
-    QSignalBlocker b( mUsePressureBox );
+    SignalBlocker b( mUsePressureBox );
     mUsePressureBox->setEnabled( true );
     mUsePressureBox->setChecked( x > 0 );
 }
@@ -209,7 +210,7 @@ void ToolOptionWidget::setPreserveAlpha( int x )
 {
     qDebug() << "Setting - Preserve Alpha=" << x;
 
-    QSignalBlocker b( mPreserveAlphaBox );
+    SignalBlocker b( mPreserveAlphaBox );
     mPreserveAlphaBox->setEnabled( true );
     mPreserveAlphaBox->setChecked( x > 0 );
 }

@@ -26,12 +26,8 @@ public:
     void setFeather( const qreal feather );
     void setPressure( const bool pressure );
 
-signals:
-    
-public slots:
-
-protected:
-    QPointF lastBrushPoint;
+private:
+    QPointF mLastBrushPoint;
 };
 
 #endif // SMUDGETOOL_H

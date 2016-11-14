@@ -495,7 +495,7 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
     int n = vertex.size();
     normalVec = QPointF(-(c1.at(0) - origin).y(), (c1.at(0) - origin).x());
     normalise(normalVec);
-    if (usePressure) width2 = width * pressure.at(0);
+    if (usePressure) width2 = width * 0.5 * pressure.at(0);
     if (n==1 && width2 == 0.0)  width2 = 0.15 * width;
     path.moveTo(origin + width2*normalVec);
     for(int i=0; i<n; i++)
@@ -529,7 +529,7 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
     normalise(tangentVec);
     path.cubicTo(vertex.at(n-1) + width2*(normalVec+1.8*tangentVec), vertex.at(n-1) + width2*(-normalVec+1.8*tangentVec), vertex.at(n-1) - width2*normalVec);
 
-    for(int i=n-2; i>-1; i--)
+    for(int i=n-2; i>=0; i--)
     {
         normalVec2_1 = QPointF((vertex.at(i) - c1.at(i+1)).y(), -(vertex.at(i) - c1.at(i+1)).x());
         normalise(normalVec2_1);
@@ -547,6 +547,11 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
     if (usePressure) width2 = width * 0.5 * pressure.at(0);
     if (n==1 && width2 == 0.0)  width2 = 0.15 * width;
     path.cubicTo(c2.at(0) - width2*normalVec, c1.at(0) - width2*normalVec2, origin - width2*normalVec2);
+
+    tangentVec = (origin-c1.at(0));
+    normalise(tangentVec);
+    path.cubicTo(origin + width2*(-normalVec+1.8*tangentVec), origin + width2*(normalVec+1.8*tangentVec), origin + width2*normalVec);
+
     path.closeSubpath();
     return path;
 }

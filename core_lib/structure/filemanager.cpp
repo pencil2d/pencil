@@ -21,8 +21,6 @@ GNU General Public License for more details.
 #include "JlCompress.h"
 #include "fileformat.h"
 #include "object.h"
-#include "editorstate.h"
-
 
 
 FileManager::FileManager( QObject *parent ) : QObject( parent ),
@@ -122,6 +120,8 @@ Object* FileManager::load( QString strFileName )
         return cleanUpWithErrorCode( Status::ERROR_INVALID_PENCIL_FILE );
     }
     
+    verifyObject( obj );
+    
     return obj;
 }
 
@@ -145,12 +145,15 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
         if ( element.tagName() == "object" )
         {
             qCDebug( mLog ) << "Load object";
-            isOK = object->loadXML( element );
+			isOK = object->loadXML( element, [this] ( float f )
+			{
+				emit progressUpdated( f );
+			} );
         }
         else if ( element.tagName() == "editor" )
         {
-            EditorState* editorData = loadEditorState( element );
-            object->setEditorData( editorData );
+            ObjectData* editorData = loadEditorState( element );
+            object->setData( editorData );
         }
         else
         {
@@ -165,7 +168,10 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
 
 bool FileManager::loadObjectOldWay( Object* object, const QDomElement& root )
 {
-    return object->loadXML( root );
+	return object->loadXML( root, [this]( float f )
+	{
+		emit progressUpdated( f );
+	} );
 }
 
 bool FileManager::isOldForamt( const QString& fileName )
@@ -287,9 +293,9 @@ Status FileManager::save( Object* object, QString strFileName )
     return Status::OK;
 }
 
-EditorState* FileManager::loadEditorState( QDomElement docElem )
+ObjectData* FileManager::loadEditorState( QDomElement docElem )
 {
-    EditorState* data = new EditorState;
+    ObjectData* data = new ObjectData;
     if ( docElem.isNull() )
     {
         return data;
@@ -304,23 +310,23 @@ EditorState* FileManager::loadEditorState( QDomElement docElem )
         {
             continue;
         }
-
-     
         
+        extractObjectData( element, data );
+     
         tag = tag.nextSibling();
     }
     return data;
 }
 
 
-void FileManager::extractEditorStateData( const QDomElement& element, EditorState* data )
+void FileManager::extractObjectData( const QDomElement& element, ObjectData* data )
 {
     Q_ASSERT( data );
 
     QString strName = element.tagName();
     if ( strName == "currentFrame" )
     {
-        data->mCurrentFrame = element.attribute( "value" ).toInt();
+        data->setCurrentFrame( element.attribute( "value" ).toInt() );
     }
     else  if ( strName == "currentColor" )
     {
@@ -329,11 +335,11 @@ void FileManager::extractEditorStateData( const QDomElement& element, EditorStat
         int b = element.attribute( "b", "255" ).toInt();
         int a = element.attribute( "a", "255" ).toInt();
 
-        data->mCurrentColor = QColor( r, g, b, a );;
+        data->setCurrentColor( QColor( r, g, b, a ) );
     }
     else if ( strName == "currentLayer" )
     {
-        data->mCurrentLayer =  element.attribute( "value", "0" ).toInt();
+        data->setCurrentLayer( element.attribute( "value", "0" ).toInt() );
     }
     else if ( strName == "currentView" )
     {
@@ -344,27 +350,27 @@ void FileManager::extractEditorStateData( const QDomElement& element, EditorStat
         double dx = element.attribute( "dx", "0" ).toDouble();
         double dy = element.attribute( "dy", "0" ).toDouble();
         
-        data->mCurrentView = QTransform( m11, m12, m21, m22, dx, dy );
+        data->setCurrentView( QTransform( m11, m12, m21, m22, dx, dy ) );
     }
     else if ( strName == "fps" )
     {
-        data->mFps = element.attribute( "value", "12" ).toInt();
+        data->setFrameRate( element.attribute( "value", "12" ).toInt() );
     }
     else if ( strName == "isLoop" )
     {
-        data->mIsLoop = ( element.attribute( "value", "false" ) == "true" );
+        data->setLooping ( element.attribute( "value", "false" ) == "true" );
     }
     else if ( strName == "isRangedPlayback" )
     {
-        data->mIsRangedPlayback = ( element.attribute( "value", "false" ) == "true" );
+        data->setRangedPlayback( ( element.attribute( "value", "false" ) == "true" ) );
     }
     else if ( strName == "markInFrame" )
     {
-        data->mMarkInFrame = element.attribute( "value", "0" ).toInt();
+        data->setMarkInFrameNumber( element.attribute( "value", "0" ).toInt() );
     }
     else if ( strName == "markOutFrame" )
     {
-        data->mMarkInFrame = element.attribute( "value", "15" ).toInt();
+        data->setMarkOutFrameNumber( element.attribute( "value", "15" ).toInt() );
     }
 }
 
@@ -408,4 +414,17 @@ QList<ColourRef> FileManager::loadPaletteFile( QString strFilename )
 
     // TODO: Load Palette.
     return QList<ColourRef>();
+}
+
+Status FileManager::verifyObject( Object* obj )
+{
+    // check current layer.
+    int curLayer = obj->data()->getCurrentLayer();
+    int maxLayer = obj->getLayerCount();
+    if ( curLayer >= maxLayer )
+    {
+        obj->data()->setCurrentLayer(maxLayer - 1);
+    }
+    
+    return Status::OK;
 }

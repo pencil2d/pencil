@@ -224,25 +224,6 @@ bool Object::exportMovie( ExportMovieParameters exportParams )
         file.close();
     }
 
-    /*QString soundDelay = "";
-    for(int i = 0; i < this->getLayerCount() ; i++)
-    {
-    Layer* layer = this->getLayer(i);
-    if (layer->type() == Layer::SOUND)
-    {
-    int lmax = ((LayerSound*)layer)->getSoundSize() ;
-    for (int l = 0; l < ((LayerSound*)layer)->getSoundSize() ; l++)
-    {
-    if (((LayerSound*)layer)->soundIsNotNull(l))
-    {
-    int frame = ((LayerSound*)layer)->getFramePositionAt(l)-1;
-    float fframe = (float)frame/(float)fps;
-    soundDelay.append("-itsoffset "+QString::number(fframe)+" -i \""+((LayerSound*)layer)->getSoundFilepathAt(l)+"\" ");
-    }
-    }
-    }
-    }*/
-
     // video input:  frame sequence ( -i tmp%03d.png )
     //               frame rate     ( -r fps )
     // audio input:                 ( -i tmpaudio.wav )
@@ -300,7 +281,7 @@ bool Object::exportMovie( ExportMovieParameters exportParams )
 void Editor::importMovie( QString filePath, int fps )
 {
     int i;
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     qDebug() << "-------IMPORT VIDEO------" << filePath;
 

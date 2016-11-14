@@ -1,9 +1,10 @@
 #ifndef RECENTFILEMENU_H
 #define RECENTFILEMENU_H
 
+#include <map>
 #include <QMenu>
-#include <QMap>
 #include <QStringList>
+#include "pencildef.h"
 
 class QAction;
 class ListItemModel;
@@ -37,10 +38,9 @@ signals:
 protected slots:
     void onRecentFileTriggered();
 
-protected:
-
+private:
     QStringList mRecentFiles;
-    QMap<QString, QAction*> mRecentActions;
+    std::map<QString, QAction*> mRecentActions;
 };
 
 #endif // RECENTFILEMENU_H

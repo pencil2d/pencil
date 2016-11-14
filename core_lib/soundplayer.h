@@ -22,9 +22,13 @@ public:
 
     void play();
     void stop();
+    
+    int64_t duration();
+    SoundClip* clip() { return mSoundClip; }
 
 Q_SIGNALS:
     void corruptedSoundFile( SoundClip* );
+    void durationChanged( SoundPlayer*, int64_t duration );
 
 private:
     void makeConnections();

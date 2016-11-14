@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include "colourref.h"
 
 class Object;
-class EditorState;
+class ObjectData;
 
 
 class FileManager : public QObject
@@ -39,30 +39,28 @@ public:
     FileManager( QObject* parent = 0 );
 
     Object* load( QString strFilenNme );
-    Status  save( Object* pObject, QString strFileName );
+    Status  save( Object*, QString strFileName );
 
     QList<ColourRef> loadPaletteFile( QString strFilename );
-
     Status error() { return mError; }
-
+    Status verifyObject( Object* obj );
+    
 Q_SIGNALS:
     void progressUpdated( float );
 
 private:
-    bool loadObject( Object*, const QDomElement& root );
-    bool loadObjectOldWay( Object*, const QDomElement& root );
-
-    bool isOldForamt( const QString& fileName );
-
     void unzip( const QString& strZipFile, const QString& strUnzipTarget );
     
-    Object* cleanUpWithErrorCode( Status );
-    
+    bool loadObject( Object*, const QDomElement& root );
+    bool loadObjectOldWay( Object*, const QDomElement& root );
+    bool isOldForamt( const QString& fileName );
     bool loadPalette( Object* );
-    EditorState* loadEditorState( QDomElement element );
+    ObjectData* loadEditorState( QDomElement element );
+    void extractObjectData( const QDomElement& element, ObjectData* data );
+    
+    Object* cleanUpWithErrorCode( Status );
 
-    void extractEditorStateData( const QDomElement& element, EditorState* data );
-
+private:
     Status mError = Status::OK;
     QString mstrLastTempFolder;
 

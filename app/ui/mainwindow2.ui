@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="font">
@@ -65,7 +65,7 @@ background: #B6DBEA;
      </property>
      <addaction name="separator"/>
      <addaction name="actionImport_Image"/>
-     <addaction name="actionImport_Image_Sequence"/>
+     <addaction name="actionImport_ImageSeq"/>
      <addaction name="actionImport_Movie"/>
      <addaction name="actionImport_Sound"/>
      <addaction name="separator"/>
@@ -77,9 +77,9 @@ background: #B6DBEA;
      </property>
      <addaction name="separator"/>
      <addaction name="actionExport_X_sheet"/>
-     <addaction name="actionExport_Image_Sequence"/>
-     <addaction name="actionExport_Image"/>
      <addaction name="actionExport_Movie"/>
+     <addaction name="actionExport_ImageSeq"/>
+     <addaction name="actionExport_Image"/>
      <addaction name="actionExport_Svg_Image"/>
      <addaction name="separator"/>
      <addaction name="actionExport_Palette"/>
@@ -292,7 +292,7 @@ background: #B6DBEA;
     <bool>false</bool>
    </property>
   </action>
-  <action name="actionExport_Image_Sequence">
+  <action name="actionExport_ImageSeq">
    <property name="text">
     <string>Image Sequence...</string>
    </property>
@@ -307,7 +307,7 @@ background: #B6DBEA;
     <string>Movie...</string>
    </property>
    <property name="visible">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </action>
   <action name="actionExport_Palette">
@@ -331,7 +331,7 @@ background: #B6DBEA;
     <string>Image...</string>
    </property>
   </action>
-  <action name="actionImport_Image_Sequence">
+  <action name="actionImport_ImageSeq">
    <property name="text">
     <string>Image Sequence...</string>
    </property>
@@ -785,7 +785,7 @@ background: #B6DBEA;
     </iconset>
    </property>
    <property name="text">
-    <string>Next_KeyFrame</string>
+    <string>Next KeyFrame</string>
    </property>
    <property name="toolTip">
     <string>Next KeyFrame</string>
@@ -798,7 +798,7 @@ background: #B6DBEA;
     </iconset>
    </property>
    <property name="text">
-    <string>Prev_KeyFrame</string>
+    <string>Previous KeyFrame</string>
    </property>
    <property name="toolTip">
     <string>Previous KeyFrame</string>
@@ -812,7 +812,7 @@ background: #B6DBEA;
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayerOnionSkin</string>
+    <string>MultiLayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">
@@ -820,10 +820,10 @@ background: #B6DBEA;
     <bool>true</bool>
    </property>
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>loopcontrol</string>
+    <string>Range</string>
    </property>
   </action>
   <action name="actionToolsWidget">
@@ -898,6 +898,7 @@ background: #B6DBEA;
  <resources>
   <include location="../../pencil.qrc"/>
   <include location="../resource/app.qrc"/>
+  <include location="../../pencil.qrc"/>
  </resources>
  <connections/>
 </ui>

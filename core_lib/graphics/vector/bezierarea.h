@@ -36,15 +36,15 @@ public:
     void loadDomElement(QDomElement element);
 
     VertexRef getVertexRef(int i);
-    int getColourNumber() { return colourNumber; }
-    void decreaseColourNumber() { colourNumber--; }
+    int getColourNumber() { return mColourNumber; }
+    void decreaseColourNumber() { mColourNumber--; }
     void setSelected(bool YesOrNo);
     bool isSelected() const { return selected; }
-    void setColourNumber(int cn) { colourNumber = cn; }
+    void setColourNumber(int cn) { mColourNumber = cn; }
 
-    QList<VertexRef> vertex;
-    QPainterPath path;
-    int colourNumber;
+    QList<VertexRef> mVertex;
+    QPainterPath mPath;
+    int mColourNumber;
 
 private:
     //VectorImage* picture;

@@ -40,7 +40,7 @@ private:
     float pressure = 1.0f; // last pressure
     std::deque<QPointF> strokeQueue;
 
-    QTime singleshotTime;
+    QTime mSingleshotTime;
     QPointF mLastPressPixel2 = { 0, 0 };
     QPointF mLastPressPixel = { 0, 0 };
     QPointF mCurrentPixel   = { 0, 0 };

@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
+#include "pencildef.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -269,7 +270,7 @@ void Editor::importMovie (QString filePath, int fps)
 {
 
     int i;
-    QSettings settings("Pencil","Pencil");
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     qDebug() << "-------IMPORT VIDEO------" << filePath;
 

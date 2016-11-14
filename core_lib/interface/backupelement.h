@@ -26,8 +26,7 @@ class BackupBitmapElement : public BackupElement
 {
     Q_OBJECT
 public:
-    BackupBitmapElement();
-    ~BackupBitmapElement();
+    BackupBitmapElement(BitmapImage* bi) { bitmapImage = bi->copy(); }
 
     int layer, frame;
     BitmapImage bitmapImage;
@@ -40,7 +39,7 @@ class BackupVectorElement : public BackupElement
 {
     Q_OBJECT
 public:
-    BackupVectorElement() : vectorImage() {}
+    BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
     int layer, frame;
     VectorImage vectorImage;
 

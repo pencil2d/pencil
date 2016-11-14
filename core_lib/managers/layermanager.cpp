@@ -2,7 +2,6 @@
 
 #include "object.h"
 #include "editor.h"
-#include "editorstate.h"
 
 #include "layersound.h"
 #include "layerbitmap.h"
@@ -20,18 +19,25 @@ LayerManager::~LayerManager()
 
 bool LayerManager::init()
 {
+    lastCameraLayer = 0;
     return true;
 }
 
-Status LayerManager::onObjectLoaded( Object* o )
+Status LayerManager::load( Object* o )
 {
     connect( o, &Object::layerChanged, this, &LayerManager::layerUpdated );
 
-    mCurrentLayerIndex = o->editorState()->mCurrentLayer;
+    mCurrentLayerIndex = o->data()->getCurrentLayer();
+    lastCameraLayer = 0;
     return Status::OK;
 }
 
-// Layer management
+Status LayerManager::save( Object* o )
+{
+	o->data()->setCurrentLayer( mCurrentLayerIndex );
+	return Status::OK;
+}
+
 int LayerManager::getLastCameraLayer()
 {
     return lastCameraLayer;
@@ -49,6 +55,13 @@ Layer* LayerManager::currentLayer( int incr )
     return editor()->object()->getLayer( mCurrentLayerIndex + incr );
 }
 
+Layer* LayerManager::getLayer( int index )
+{
+    Q_ASSERT( editor()->object() != NULL );
+    
+    return editor()->object()->getLayer( index );
+}
+
 int LayerManager::currentLayerIndex()
 {
     return mCurrentLayerIndex;
@@ -56,12 +69,21 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
+    Object* o = editor()->object();
+    
+    if ( layerIndex >= o->getLayerCount() )
+    {
+        Q_ASSERT( false );
+        return;
+    }
+
     if ( mCurrentLayerIndex != layerIndex )
     {
         mCurrentLayerIndex = layerIndex;
         Q_EMIT currentLayerChanged( mCurrentLayerIndex );
     }
-    if ( editor()->object()!=nullptr )
+
+    if ( editor()->object() )
     {
         if ( editor()->object()->getLayer( layerIndex )->type() == Layer::CAMERA )
         {
@@ -201,6 +223,7 @@ int LayerManager::count()
 
 bool LayerManager::deleteCurrentLayer()
 {
+    // FIXME: 
     if ( currentLayer()->type() == Layer::CAMERA )
     {
         return false;
@@ -237,16 +260,4 @@ int LayerManager::projectLength()
 void LayerManager::layerUpdated(int layerId)
 {
     emit currentLayerChanged(layerId);
-}
-
-void LayerManager::gotoLastKeyFrame()
-{
-    int nFrame = lastKeyFrameIndex();
-    editor()->scrubTo( nFrame );
-}
-
-void LayerManager::gotoFirstKeyFrame()
-{
-    int nFrame = firstKeyFrameIndex();
-    editor()->scrubTo( nFrame );
 }

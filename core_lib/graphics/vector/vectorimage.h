@@ -70,7 +70,7 @@ public:
     void deleteSelectedPoints();
     void removeVertex(int i, int m);
 
-    void paste(VectorImage);
+    void paste(VectorImage&);
 
     QColor getColour(int i);
     int  getColourNumber(QPointF point);

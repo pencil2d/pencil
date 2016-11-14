@@ -16,15 +16,14 @@ void SoundPlayer::init( SoundClip* clip )
     Q_ASSERT( clip != nullptr );
     mSoundClip = clip;
 
-    QMediaPlayer* mediaPlayer = new QMediaPlayer( this );
-    mediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
-
-    qDebug() << mediaPlayer->mediaStatus();
+    mMediaPlayer = new QMediaPlayer( this );
+    mMediaPlayer->setMedia( QUrl::fromLocalFile( clip->fileName() ) );
+    makeConnections();
 
     clip->attachPlayer( this );
+    //mMediaPlayer->play();
 
-    mMediaPlayer = mediaPlayer;
-    mMediaPlayer->play();
+    qDebug() << "Seekable = " << mMediaPlayer->isSeekable();
 }
 
 void SoundPlayer::onKeyFrameDestroy( KeyFrame* keyFrame )
@@ -56,27 +55,26 @@ void SoundPlayer::stop()
     }
 }
 
+int64_t SoundPlayer::duration()
+{
+    if ( mMediaPlayer )
+    {
+        return mMediaPlayer->duration();
+    }
+    return 0;
+}
+
 void SoundPlayer::makeConnections()
 {   
-    QObject::connect( mMediaPlayer, &QMediaPlayer::mediaStatusChanged, this, [ this ]( QMediaPlayer::MediaStatus s )
+    auto errorSignal = static_cast< void ( QMediaPlayer::* )( QMediaPlayer::Error ) >( &QMediaPlayer::error );
+    connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error err )
     {
-        // WARNING :
-        // This call is not supported in QT 5.3. Is it necessary?
-        //
-        QMediaPlayer* mediaPlayer = ( QMediaPlayer* )QObject::sender();
-        qDebug() << "MediaStatus: " << s;
-        qDebug() << "Duration:" << mediaPlayer->duration();
-
-        switch ( s )
-        {
-            case QMediaPlayer::BufferedMedia:
-                break;
-        }
+        qDebug() << "MediaPlayer Error: " << err;
     } );
 
-    auto errorSignal = static_cast< void ( QMediaPlayer::* )( QMediaPlayer::Error ) >( &QMediaPlayer::error );
-    connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error error )
+    connect( mMediaPlayer, &QMediaPlayer::durationChanged, [ this ]( qint64 duration ) 
     {
-        qDebug() << "MediaPlayer Error: " << error;
+        qDebug() << "MediaPlayer durationChanged :" << duration;
+        emit durationChanged( this, duration );
     } );
 }

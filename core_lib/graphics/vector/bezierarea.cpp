@@ -25,22 +25,22 @@ BezierArea::BezierArea()
 
 BezierArea::BezierArea(QList<VertexRef> vertexList, int colour)
 {
-    vertex = vertexList;
-    colourNumber = colour;
+    mVertex = vertexList;
+    mColourNumber = colour;
     selected = false;
 }
 
 VertexRef BezierArea::getVertexRef(int i)
 {
-    while (i >= vertex.size() )
+    while (i >= mVertex.size() )
     {
-        i = i - vertex.size();
+        i = i - mVertex.size();
     }
     while (i < 0 )
     {
-        i = i + vertex.size();
+        i = i + mVertex.size();
     }
-    return vertex[i];
+    return mVertex[i];
 }
 
 void BezierArea::setSelected(bool YesOrNo)
@@ -51,13 +51,13 @@ void BezierArea::setSelected(bool YesOrNo)
 QDomElement BezierArea::createDomElement(QDomDocument& doc)
 {
     QDomElement areaTag = doc.createElement("area");
-    areaTag.setAttribute("colourNumber", colourNumber);
+    areaTag.setAttribute("colourNumber", mColourNumber);
 
-    for(int i=0; i < vertex.size() ; i++)
+    for(int i=0; i < mVertex.size() ; i++)
     {
         QDomElement vertexTag = doc.createElement("vertex");
-        vertexTag.setAttribute("curve", vertex.at(i).curveNumber);
-        vertexTag.setAttribute("vertex", vertex.at(i).vertexNumber);
+        vertexTag.setAttribute("curve", mVertex.at(i).curveNumber);
+        vertexTag.setAttribute("vertex", mVertex.at(i).vertexNumber);
         areaTag.appendChild(vertexTag);
     }
     return areaTag;
@@ -65,7 +65,7 @@ QDomElement BezierArea::createDomElement(QDomDocument& doc)
 
 void BezierArea::loadDomElement(QDomElement element)
 {
-    colourNumber = element.attribute("colourNumber").toInt();
+    mColourNumber = element.attribute("colourNumber").toInt();
 
     QDomNode vertexTag = element.firstChild();
     while (!vertexTag.isNull())
@@ -75,7 +75,7 @@ void BezierArea::loadDomElement(QDomElement element)
         {
             if (vertexElement.tagName() == "vertex")
             {
-                vertex.append( VertexRef(vertexElement.attribute("curve").toInt() , vertexElement.attribute("vertex").toInt() )  );
+                mVertex.append( VertexRef(vertexElement.attribute("curve").toInt() , vertexElement.attribute("vertex").toInt() )  );
             }
         }
         vertexTag = vertexTag.nextSibling();

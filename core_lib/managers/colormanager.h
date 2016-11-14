@@ -14,7 +14,8 @@ public:
     ~ColorManager();
     
     bool init() override;
-    Status onObjectLoaded( Object* ) override;
+    Status load( Object* ) override;
+	Status save( Object* ) override;
 
     QColor frontColor();
     int frontColorNumber();

@@ -25,7 +25,7 @@ void PolylineTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[BEZIER] = true;
 
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "polyLineWidth" ).toDouble();
     properties.feather = -1;
@@ -46,7 +46,7 @@ void PolylineTool::setWidth(const qreal width)
     properties.width = width;
 
     // Update settings
-    QSettings settings( "Pencil", "Pencil" );
+    QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("polyLineWidth", width);
     settings.sync();
 }
@@ -59,15 +59,15 @@ void PolylineTool::setFeather( const qreal feather )
 QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
 {
     if ( isAdjusting ) { // being dynamically resized
-        return QCursor( this->circleCursors() ); // two circles cursor
         qDebug() << "adjusting";
+        return QCursor( this->circleCursors() ); // two circles cursor
     }
     return Qt::CrossCursor;
 }
 
 void PolylineTool::clear()
 {
-    points.clear();
+    mPoints.clear();
 }
 
 void PolylineTool::mousePressEvent( QMouseEvent *event )
@@ -78,7 +78,7 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
-            if ( points.size() == 0 )
+            if ( mPoints.size() == 0 )
             {
                 mEditor->backup( tr( "Line" ) );
             }
@@ -91,7 +91,7 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
                     mScribbleArea->toggleThinLines();
                 }
             }
-            points << getCurrentPoint();
+            mPoints << getCurrentPoint();
             mScribbleArea->setAllDirty();
         }
     }
@@ -109,7 +109,7 @@ void PolylineTool::mouseMoveEvent( QMouseEvent *event )
 
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {
-        mScribbleArea->drawPolyline( points, getCurrentPoint() );
+        mScribbleArea->drawPolyline( mPoints, getCurrentPoint() );
     }
 }
 
@@ -118,7 +118,7 @@ void PolylineTool::mouseDoubleClickEvent( QMouseEvent *event )
     // XXX highres position ??
     if ( BezierCurve::eLength( m_pStrokeManager->getLastPressPixel() - event->pos() ) < 2.0 )
     {
-        mScribbleArea->endPolyline( points );
+        mScribbleArea->endPolyline( mPoints );
         clear();
     }
 }
@@ -127,16 +127,16 @@ bool PolylineTool::keyPressEvent( QKeyEvent *event )
 {
     switch ( event->key() ) {
     case Qt::Key_Return:
-        if ( points.size() > 0 )
+        if ( mPoints.size() > 0 )
         {
-            mScribbleArea->endPolyline( points );
+            mScribbleArea->endPolyline( mPoints );
             clear();
             return true;
         }
         break;
 
     case Qt::Key_Escape:
-        if ( points.size() > 0 ) {
+        if ( mPoints.size() > 0 ) {
             clear();
             return true;
         }

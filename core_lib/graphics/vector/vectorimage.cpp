@@ -38,15 +38,15 @@ bool VectorImage::read(QString filePath)
 		return false;
 	}
 
-    QFile* file = new QFile(filePath);
-    if (!file->open(QFile::ReadOnly))
+    QFile file{filePath};
+    if (!file.open(QFile::ReadOnly))
     {
         //QMessageBox::warning(this, "Warning", "Cannot read file");
         return false;
     }
 
     QDomDocument doc;
-    if (!doc.setContent(file)) return false; // this is not a XML file
+    if (!doc.setContent(&file)) return false; // this is not a XML file
     QDomDocumentType type = doc.doctype();
     if (type.name() != "PencilVectorImage") return false; // this is not a Pencil document
 
@@ -64,15 +64,15 @@ bool VectorImage::read(QString filePath)
 
 bool VectorImage::write(QString filePath, QString format)
 {
-    QFile* file = new QFile(filePath);
-    bool result = file->open(QIODevice::WriteOnly);
+    QFile file{filePath};
+    bool result = file.open(QIODevice::WriteOnly);
     if (!result)
     {
         //QMessageBox::warning(this, "Warning", "Cannot write file");
-        qDebug() << "VectorImage - Cannot write file" << filePath << file->error();
+        qDebug() << "VectorImage - Cannot write file" << filePath << file.error();
         return false;
     }
-    QTextStream out(file);
+    QTextStream out(&file);
 
     if (format == "VEC")
     {
@@ -87,12 +87,10 @@ bool VectorImage::write(QString filePath, QString format)
         qDebug() << "--- Starting to write XML file...";
         doc.save(out, IndentSize);
         qDebug() << "--- Writing XML file done.";
-        file->close();
         return true;
     }
     else
     {
-        file->close();
         qDebug() << "--- Not the VEC format!";
         return false;
     }
@@ -150,31 +148,31 @@ void VectorImage::addPoint(int curveNumber, int vertexNumber, qreal t)
     for(int j=0; j < area.size(); j++)
     {
         // shift the references of all the points beyond the new point
-        for(int k=0; k< area.at(j).vertex.size(); k++)
+        for(int k=0; k< area.at(j).mVertex.size(); k++)
         {
             if (area[j].getVertexRef(k).curveNumber == curveNumber)
             {
                 if (area[j].getVertexRef(k).vertexNumber >= vertexNumber)
                 {
-                    area[j].vertex[k].vertexNumber++;
+                    area[j].mVertex[k].vertexNumber++;
                 }
             }
         }
         // insert the new point in the area if necessary
-        for(int k=1; k< area.at(j).vertex.size(); k++)
+        for(int k=1; k< area.at(j).mVertex.size(); k++)
         {
-            if ( VertexRef(curveNumber, vertexNumber+1) == area.at(j).vertex.at(k) )   // area[j].vertex[k] == VertexRef(curveNumber, vertexNumber+1)
+            if ( VertexRef(curveNumber, vertexNumber+1) == area.at(j).mVertex.at(k) )   // area[j].vertex[k] == VertexRef(curveNumber, vertexNumber+1)
             {
-                if ( VertexRef(curveNumber, vertexNumber-1) == area.at(j).vertex.at(k-1) )
+                if ( VertexRef(curveNumber, vertexNumber-1) == area.at(j).mVertex.at(k-1) )
                 {
-                    area[j].vertex.insert(k, VertexRef(curveNumber, vertexNumber) );
+                    area[j].mVertex.insert(k, VertexRef(curveNumber, vertexNumber) );
                 }
             }
-            if ( VertexRef(curveNumber, vertexNumber-1) == area.at(j).vertex.at(k) )
+            if ( VertexRef(curveNumber, vertexNumber-1) == area.at(j).mVertex.at(k) )
             {
-                if ( VertexRef(curveNumber, vertexNumber+1) == area.at(j).vertex.at(k-1) )
+                if ( VertexRef(curveNumber, vertexNumber+1) == area.at(j).mVertex.at(k-1) )
                 {
-                    area[j].vertex.insert(k, VertexRef(curveNumber, vertexNumber) );
+                    area[j].mVertex.insert(k, VertexRef(curveNumber, vertexNumber) );
                 }
             }
         }
@@ -186,9 +184,9 @@ void VectorImage::removeCurveAt(int i)
     // first change the curve numbers in the areas
     for(int j=0; j < area.size(); j++)
     {
-        for(int k=0; k< area.at(j).vertex.size(); k++)
+        for(int k=0; k< area.at(j).mVertex.size(); k++)
         {
-            if (area.at(j).vertex[k].curveNumber > i) { area[j].vertex[k].curveNumber--; }
+            if (area.at(j).mVertex[k].curveNumber > i) { area[j].mVertex[k].curveNumber--; }
         }
     }
     // then remove curve
@@ -227,10 +225,10 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
         //
         for(int i=0; i < area.size(); i++)
         {
-            for(int j=0; j< area.at(i).vertex.size(); j++)
+            for(int j=0; j< area.at(i).mVertex.size(); j++)
             {
-                if (area.at(i).vertex[j].curveNumber >= position) {
-                    area[i].vertex[j].curveNumber++;
+                if (area.at(i).mVertex[j].curveNumber >= position) {
+                    area[i].mVertex[j].curveNumber++;
                 }
             }
         }
@@ -510,7 +508,7 @@ void VectorImage::select(QRectF rectangle)
     }
     for(int i=0; i< area.size(); i++)
     {
-        if ( rectangle.contains(area[i].path.boundingRect()) )
+        if ( rectangle.contains(area[i].mPath.boundingRect()) )
         {
             setAreaSelected(i, true);
         }
@@ -561,7 +559,7 @@ void VectorImage::setSelected(QList<VertexRef> vertexList, bool YesOrNo)
 void VectorImage::setAreaSelected(int areaNumber, bool YesOrNo)
 {
     area[areaNumber].setSelected(YesOrNo);
-    if (YesOrNo) selectionRect |= area[areaNumber].path.boundingRect();
+    if (YesOrNo) selectionRect |= area[areaNumber].mPath.boundingRect();
     modification();
 }
 
@@ -692,10 +690,10 @@ void VectorImage::deleteSelection()
             for(int j=0; j < area.size(); j++)
             {
                 bool toBeDeleted = false;
-                for(int k=0; k< area.at(j).vertex.size(); k++)
+                for(int k=0; k< area.at(j).mVertex.size(); k++)
                 {
-                    if (area.at(j).vertex[k].curveNumber == i) { toBeDeleted = true; }
-                    if (area.at(j).vertex[k].curveNumber > i) { area[j].vertex[k].curveNumber = area[j].vertex[k].curveNumber - 1; }
+                    if (area.at(j).mVertex[k].curveNumber == i) { toBeDeleted = true; }
+                    if (area.at(j).mVertex[k].curveNumber > i) { area[j].mVertex[k].curveNumber = area[j].mVertex[k].curveNumber - 1; }
                 }
                 if (toBeDeleted)
                 {
@@ -724,9 +722,9 @@ void VectorImage::removeVertex(int i, int m)   // curve number i and vertex numb
     for(int j=0; j < area.size(); j++)
     {
         bool toBeDeleted = false;
-        for(int k=0; k< area.at(j).vertex.size(); k++)
+        for(int k=0; k< area.at(j).mVertex.size(); k++)
         {
-            if (area.at(j).vertex[k].curveNumber == i && area.at(j).vertex[k].vertexNumber == m) { toBeDeleted = true; }
+            if (area.at(j).mVertex[k].curveNumber == i && area.at(j).mVertex[k].vertexNumber == m) { toBeDeleted = true; }
             //if (area.at(j).vertex[k].curveNumber > i) { area[j].vertex[k].curveNumber = area[j].vertex[k].curveNumber - 1; }
         }
         if (toBeDeleted)
@@ -750,9 +748,9 @@ void VectorImage::removeVertex(int i, int m)   // curve number i and vertex numb
             // we also need to update the areas
             for(int j=0; j < area.size(); j++)
             {
-                for(int k=0; k< area.at(j).vertex.size(); k++)
+                for(int k=0; k< area.at(j).mVertex.size(); k++)
                 {
-                    if (area.at(j).vertex[k].curveNumber == i && area.at(j).vertex[k].vertexNumber > m) { area[j].vertex[k].vertexNumber--; }
+                    if (area.at(j).mVertex[k].curveNumber == i && area.at(j).mVertex[k].vertexNumber > m) { area[j].mVertex[k].vertexNumber--; }
                 }
             }
         }
@@ -773,12 +771,12 @@ void VectorImage::removeVertex(int i, int m)   // curve number i and vertex numb
             // we also need to update the areas
             for(int j=0; j < area.size(); j++)
             {
-                for(int k=0; k< area.at(j).vertex.size(); k++)
+                for(int k=0; k< area.at(j).mVertex.size(); k++)
                 {
-                    if (area.at(j).vertex[k].curveNumber == i && area.at(j).vertex[k].vertexNumber > m)
+                    if (area.at(j).mVertex[k].curveNumber == i && area.at(j).mVertex[k].vertexNumber > m)
                     {
-                        area[j].vertex[k].curveNumber = m_curves.size()-1;
-                        area[j].vertex[k].vertexNumber = area[j].vertex[k].vertexNumber-m-1;
+                        area[j].mVertex[k].curveNumber = m_curves.size()-1;
+                        area[j].mVertex[k].vertexNumber = area[j].mVertex[k].vertexNumber-m-1;
                     }
                 }
             }
@@ -814,7 +812,7 @@ void VectorImage::deleteSelectedPoints()
     modification();
 }
 
-void VectorImage::paste(VectorImage vectorImage)
+void VectorImage::paste(VectorImage& vectorImage)
 {
     selectionRect = QRect(0,0,0,0);
     int n = m_curves.size();
@@ -837,16 +835,16 @@ void VectorImage::paste(VectorImage vectorImage)
     {
         BezierArea newArea = vectorImage.area.at(i);
         bool ok = true;
-        for(int j=0; j < newArea.vertex.size(); j++)
+        for(int j=0; j < newArea.mVertex.size(); j++)
         {
-            int curveNumber = newArea.vertex.at(j).curveNumber;
-            int vertexNumber = newArea.vertex.at(j).vertexNumber;
+            int curveNumber = newArea.mVertex.at(j).curveNumber;
+            int vertexNumber = newArea.mVertex.at(j).vertexNumber;
 
             // If nothing is selected, paste everything
             //
             if ( !hasSelection || vectorImage.m_curves.at(curveNumber).isSelected() )
             {
-                newArea.vertex[j] = VertexRef( selectedCurves.indexOf(curveNumber) + n, vertexNumber );
+                newArea.mVertex[j] = VertexRef( selectedCurves.indexOf(curveNumber) + n, vertexNumber );
             }
             else
             {
@@ -870,7 +868,7 @@ int VectorImage::getColourNumber(QPointF point)
     int areaNumber = getLastAreaNumber(point);
     if (areaNumber != -1)
     {
-        result = area[areaNumber].colourNumber;
+        result = area[areaNumber].mColourNumber;
     }
     return result;
 }
@@ -879,7 +877,7 @@ bool VectorImage::usesColour(int index)
 {
     for(int i=0; i< area.size(); i++)
     {
-        if (area[i].colourNumber == index) return true;
+        if (area[i].mColourNumber == index) return true;
     }
     for(int i=0; i< m_curves.size(); i++)
     {
@@ -922,7 +920,7 @@ void VectorImage::paintImage(QPainter& painter,
             updateArea( area[i] ); // to do: if selected
 
             // --- fill areas ---- //
-            QColor colour = getColour(area[i].colourNumber);
+            QColor colour = getColour(area[i].mColourNumber);
 
             painter.save();
             painter.setWorldMatrixEnabled( false );
@@ -936,7 +934,7 @@ void VectorImage::paintImage(QPainter& painter,
                 painter.setBrush( QBrush( colour, Qt::SolidPattern ));
             }
 
-            painter.drawPath( painter.transform().map( area[ i ].path ) );
+            painter.drawPath( painter.transform().map( area[ i ].mPath ) );
             painter.restore();
             painter.setWorldMatrixEnabled( true );
 
@@ -1598,7 +1596,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
     // We don't want to create another area.
     //
     int areaNum = getLastAreaNumber(point);
-    if (areaNum > -1 && area[areaNum].colourNumber == colour) {
+    if (areaNum > -1 && area[areaNum].mColourNumber == colour) {
         return;
     }
 
@@ -1735,9 +1733,9 @@ int VectorImage::getFirstAreaNumber(QPointF point)
     int result = -1;
     for(int i=0; i<area.size() && result==-1; i++)
     {
-        if ( area[i].path.controlPointRect().contains( point ) )
+        if ( area[i].mPath.controlPointRect().contains( point ) )
         {
-            if ( area[i].path.contains( point ) )
+            if ( area[i].mPath.contains( point ) )
             {
                 result = i;
             }
@@ -1756,9 +1754,9 @@ int VectorImage::getLastAreaNumber(QPointF point, int maxAreaNumber)
     int result = -1;
     for(int i=maxAreaNumber; i>-1 && result==-1; i--)
     {
-        if ( area[i].path.controlPointRect().contains( point ) )
+        if ( area[i].mPath.controlPointRect().contains( point ) )
         {
-            if ( area[i].path.contains( point ) )
+            if ( area[i].mPath.contains( point ) )
             {
                 result = i;
             }
@@ -1780,9 +1778,9 @@ void VectorImage::removeArea(QPointF point)
 void VectorImage::updateArea(BezierArea& bezierArea)
 {
     QPainterPath newPath;
-    for(int i=0; i<bezierArea.vertex.size(); i++)
+    for(int i=0; i<bezierArea.mVertex.size(); i++)
     {
-        QPointF myPoint = getVertex(bezierArea.vertex[i]);
+        QPointF myPoint = getVertex(bezierArea.mVertex[i]);
         QPointF myC1;
         QPointF myC2;
 
@@ -1792,23 +1790,23 @@ void VectorImage::updateArea(BezierArea& bezierArea)
         }
         else
         {
-            if (bezierArea.vertex[i-1].curveNumber == bezierArea.vertex[i].curveNumber )   // the two points are on the same curve
+            if (bezierArea.mVertex[i-1].curveNumber == bezierArea.mVertex[i].curveNumber )   // the two points are on the same curve
             {
-                if (bezierArea.vertex[i-1].vertexNumber < bezierArea.vertex[i].vertexNumber )   // the points follow the curve progression
+                if (bezierArea.mVertex[i-1].vertexNumber < bezierArea.mVertex[i].vertexNumber )   // the points follow the curve progression
                 {
-                    myC1 =  getC1(bezierArea.vertex[i]);
-                    myC2 =  getC2(bezierArea.vertex[i]);
+                    myC1 =  getC1(bezierArea.mVertex[i]);
+                    myC2 =  getC2(bezierArea.mVertex[i]);
                 }
                 else
                 {
-                    myC1 = getC2(bezierArea.vertex[i-1]);
-                    myC2 = getC1(bezierArea.vertex[i-1]);
+                    myC1 = getC2(bezierArea.mVertex[i-1]);
+                    myC2 = getC1(bezierArea.mVertex[i-1]);
                 }
                 newPath.cubicTo(myC1, myC2, myPoint);
             }
             else      // the two points are not the same curve
             {
-                if ( bezierArea.vertex[i].vertexNumber == -1)   // the current point is the first point in the new curve
+                if ( bezierArea.mVertex[i].vertexNumber == -1)   // the current point is the first point in the new curve
                 {
                     newPath.lineTo( myPoint );
                 }
@@ -1820,8 +1818,8 @@ void VectorImage::updateArea(BezierArea& bezierArea)
         }
     }
     newPath.closeSubpath();
-    bezierArea.path = newPath;
-    bezierArea.path.setFillRule( Qt::WindingFill );
+    bezierArea.mPath = newPath;
+    bezierArea.mPath.setFillRule( Qt::WindingFill );
 }
 
 qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)

@@ -1,17 +1,14 @@
 #ifndef PENCILDEF_H
 #define PENCILDEF_H
 
-
-#define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
-
 #define PENCIL_MOVIE_EXT \
-    tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
+    QObject::tr( "AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)" )
 
 #define PENCIL_IMAGE_FILTER \
-   tr( "PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tiff);;TIF(*.tif);;BMP(*.bmp);;GIF(*.gif)" )
+   QObject::tr( "Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)" )
 
 
-enum ToolType
+enum ToolType : int
 {
     INVALID_TOOL = -1,
     PENCIL = 0,
@@ -24,7 +21,8 @@ enum ToolType
     POLYLINE,
     BUCKET,
     EYEDROPPER,
-    BRUSH
+    BRUSH,
+    TOOL_TYPE_COUNT
 };
 
 enum ToolPropertyType
@@ -122,7 +120,7 @@ enum BackgroundStyle
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
 
 // Save / Export
-#define LAST_FILE_PATH          "LastFilePath"
+#define LAST_PCLX_PATH          "LastFilePath"
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
@@ -130,6 +128,7 @@ enum BackgroundStyle
 #define SETTING_AUTO_SAVE           "AutoSave"
 #define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
 #define SETTING_TOOL_CURSOR         "ToolCursors"
+#define SETTING_DOTTED_CURSOR       "DottedCursors"
 #define SETTING_HIGH_RESOLUTION     "HighResPosition"
 #define SETTING_BACKGROUND_STYLE    "Background"
 #define SETTING_WINDOW_OPACITY      "WindowOpacity"
@@ -144,27 +143,30 @@ enum BackgroundStyle
 #define SETTING_DRAW_LABEL          "DrawLabel"
 #define SETTING_QUICK_SIZING        "QuickSizing"
 
-#define SETTING_ANTIALIAS       "Antialiasing"
-#define SETTING_SHOW_GRID       "ShowGrid"
-#define SETTING_COUNT           "Count"
-#define SETTING_SHADOW          "Shadow"
-#define SETTING_PREV_ONION      "PrevOnion"
-#define SETTING_NEXT_ONION      "NextOnion"
-#define SETTING_AXIS            "Axis"
-#define SETTING_CAMERABORDER    "CameraBorder"
-#define SETTING_INVISIBLE_LINES "InvisibleLines"
-#define SETTING_OUTLINES        "Outlines"
-#define SETTING_ONION_BLUE      "OnionBlue"
-#define SETTING_ONION_RED       "OnionRed"
-#define SETTING_MIRROR_H        "MirrorH"
-#define SETTING_MIRROR_V        "MirrorV"
+#define SETTING_ANTIALIAS        "Antialiasing"
+#define SETTING_SHOW_GRID        "ShowGrid"
+#define SETTING_COUNT            "Count"
+#define SETTING_SHADOW           "Shadow"
+#define SETTING_PREV_ONION       "PrevOnion"
+#define SETTING_NEXT_ONION       "NextOnion"
+#define SETTING_MULTILAYER_ONION "MultilayerOnion"
+#define SETTING_AXIS             "Axis"
+#define SETTING_CAMERABORDER     "CameraBorder"
+#define SETTING_INVISIBLE_LINES  "InvisibleLines"
+#define SETTING_OUTLINES         "Outlines"
+#define SETTING_ONION_BLUE       "OnionBlue"
+#define SETTING_ONION_RED        "OnionRed"
+#define SETTING_MIRROR_H         "MirrorH"
+#define SETTING_MIRROR_V         "MirrorV"
 
-#define SETTING_GRID_SIZE       "GridSize"
+#define SETTING_GRID_SIZE        "GridSize"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
 #define SETTING_ONION_PREV_FRAMES_NUM   "OnionPrevFramesNum"
 #define SETTING_ONION_NEXT_FRAMES_NUM   "OnionNextFramesNum"
 #define SETTING_ONION_TYPE              "OnionType"
+
+#define SETTING_LANGUAGE        "Language"
 
 #endif // PENCILDEF_H

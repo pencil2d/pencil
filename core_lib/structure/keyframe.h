@@ -17,13 +17,14 @@ public:
 
     int  pos() { return mFrame; }
     void setPos( int position ) { mFrame = position; }
-    int  length() { return mLength; }
+
+    int length() { return mLength; }
+    void setLength( int len )  { mLength = len; }
     
     void modification() { mIsModified = true; }
     void setModified( bool b ) { mIsModified = b; }
     bool isModified() { return mIsModified; };
    
-    
     void setSelected( bool b ) { mIsSelected = b; }
     bool isSelected() { return mIsSelected; }
 
@@ -32,6 +33,8 @@ public:
 
     void addEventListener( KeyFrameEventListener* );
     void removeEventListner( KeyFrameEventListener* );
+
+	virtual bool isNull() { return false; }
 
 private:
     int mFrame       = -1;
@@ -59,6 +62,9 @@ class NullKeyFrame : public KeyFrame
 {
 public:
     static NullKeyFrame* get();
+
+	bool isNull() override { return true; }
+
 private:
     NullKeyFrame() {}
     NullKeyFrame( const NullKeyFrame& ) {}

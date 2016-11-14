@@ -4,19 +4,27 @@
 # http://docs.travis-ci.com/user/build-configuration/
 
 language: cpp
-compiler: g++
-	  
-before_install:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-add-repository ppa:ubuntu-sdk-team/ppa -y
-  - sudo apt-get update -qq
+compiler: g++4.9
+sudo: required
+dist: trusty
 
-install:
-  - sudo apt-get install g++-4.9 -qq
-  - export CXX="g++-4.9"
-  - sudo apt-get install build-essential libgl1-mesa-dev
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - ubuntu-sdk-team
+    packages:
+    - g++-4.9
+    - build-essential
+    - qt5-default
+    - qttools5-dev-tools
+    - qtbase5-dev
+    - qtmultimedia5-dev
+    - libqt5svg5-dev 
+    - libqt5xmlpatterns5-dev
+before_script:
+  - qmake --version
 
 script:
-  - qmake --version
-  - qmake "QMAKE_CXX=$CXX"
+  - qmake
   - make

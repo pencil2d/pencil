@@ -9,11 +9,6 @@ SelectTool::SelectTool()
 {
 }
 
-ToolType SelectTool::type()
-{
-    return SELECT;
-}
-
 void SelectTool::loadSettings()
 {
     properties.width = -1;

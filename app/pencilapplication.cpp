@@ -1,7 +1,7 @@
 #include <QFileOpenEvent>
 #include <QIcon>
 
-#include "PencilApplication.h"
+#include "pencilapplication.h"
 
 PencilApplication::PencilApplication(int& argc, char** argv) :
     QApplication(argc, argv)
@@ -21,20 +21,19 @@ PencilApplication::PencilApplication(int& argc, char** argv) :
 
 bool PencilApplication::event(QEvent* event)
 {
-    if(event->type() == QEvent::FileOpen)
+    if (event->type() == QEvent::FileOpen)
     {
-        startPath_ = static_cast<QFileOpenEvent*>(event)->file();
-        emit openFileRequested(startPath_);
+        mStartPath = static_cast<QFileOpenEvent*>(event)->file();
+        emit openFileRequested(mStartPath);
         return true;
     }
-
     return QApplication::event(event);
 }
 
 void PencilApplication::emitOpenFileRequest()
 {
-    if(startPath_.size() != 0)
+    if (mStartPath.size() != 0)
     {
-        emit openFileRequested(startPath_);
+        emit openFileRequested(mStartPath);
     }
 }

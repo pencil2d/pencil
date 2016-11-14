@@ -14,8 +14,8 @@
 
 # Qt-es
 
-/.qmake.cache
-/.qmake.stash
+.qmake.cache
+.qmake.stash
 *.pro.user
 *.pro.user.*
 *.moc
@@ -24,7 +24,6 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *-build-*
-*.qm
 .moc
 
 Makefile
@@ -33,19 +32,24 @@ Makefile.Release
 qrc_pencil.cpp
 pencil-buildroot.amd64
 pencil-buildroot.i386
-Pencil.app
-
+Pencil2D.app
+*.zip
 
 # QtCreator
 
 *.autosave
-
+build-pencil-Desktop-Debug/*
 
 # Mac stuff
 
 .DS_Store
 *.pbproj
 *.xcodeproj
+*.xcworkspace
+xcshareddata
+*.pbxproj
+*.mak
+*.app
 
 # Visual Studio
 
@@ -60,6 +64,8 @@ Pencil.app
 release
 debug
 ipch
+*.VC.db
+*.opendb
 
-app/Pencil2D
-tests/
+tests/tests
+
