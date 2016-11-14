@@ -29,6 +29,9 @@ Status LayerManager::load( Object* o )
 
     mCurrentLayerIndex = o->data()->getCurrentLayer();
     lastCameraLayer = 0;
+
+    emit layerCountChanged(o->getLayerCount());
+
     return Status::OK;
 }
 
