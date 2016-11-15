@@ -39,14 +39,14 @@ void installTranslator( PencilApplication& app )
 
     QString strQtLocale  = strUserLocale;
     strQtLocale.replace( "-", "_" );
-    QTranslator* qtTranslator = new QTranslator;
+    QTranslator* qtTranslator = new QTranslator(&app);
     qtTranslator->load( "qt_" + strUserLocale, QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     app.installTranslator( qtTranslator );
 
     strUserLocale.replace( "_", "-" );
     qDebug() << "Detect locale =" << strUserLocale;
 
-    QTranslator* pencil2DTranslator = new QTranslator;
+    QTranslator* pencil2DTranslator = new QTranslator(&app);
     bool b = pencil2DTranslator->load( ":/qm/Language." + strUserLocale );
     
     qDebug() << "Load translation = " << b;
