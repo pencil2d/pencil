@@ -8,7 +8,8 @@
 
 #include "movetool.h"
 
-MoveTool::MoveTool()
+MoveTool::MoveTool(QObject *parent) :
+    BaseTool(parent)
 {
 }
 

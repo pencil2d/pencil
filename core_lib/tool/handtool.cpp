@@ -9,7 +9,8 @@
 #include "scribblearea.h"
 
 
-HandTool::HandTool()
+HandTool::HandTool(QObject *parent) :
+    BaseTool(parent)
 {
 }
 
