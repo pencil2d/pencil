@@ -5,7 +5,8 @@
 #include "toolmanager.h"
 #include "selecttool.h"
 
-SelectTool::SelectTool()
+SelectTool::SelectTool(QObject *parent) :
+    BaseTool(parent)
 {
 }
 

@@ -1,10 +1,13 @@
 #include "shortcutfilter.h"
 
-ShortcutFilter::ShortcutFilter( ScribbleArea* _mScribbleArea ){
+ShortcutFilter::ShortcutFilter(ScribbleArea* _mScribbleArea , QObject *parent) :
+    QObject(parent)
+{
     mScribbleArea = _mScribbleArea;
 }
 
-bool ShortcutFilter::eventFilter(QObject *obj, QEvent *event){
+bool ShortcutFilter::eventFilter(QObject *obj, QEvent *event)
+{
     if (mScribbleArea->isMouseInUse() )
     {
         return true;

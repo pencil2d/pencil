@@ -957,7 +957,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Backward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_BACKWARD ) );
     ui->actionMove_Frame_Forward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_FORWARD ) );
 
-    ShortcutFilter* shortcutfilter = new ShortcutFilter( mScribbleArea );
+    ShortcutFilter* shortcutfilter = new ShortcutFilter( mScribbleArea, this );
     ui->actionMove->setShortcut( cmdKeySeq( CMD_TOOL_MOVE ) );
     ui->actionSelect->setShortcut( cmdKeySeq( CMD_TOOL_SELECT ) );
     ui->actionBrush->setShortcut( cmdKeySeq( CMD_TOOL_BRUSH ) );

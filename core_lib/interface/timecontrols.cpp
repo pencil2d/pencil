@@ -73,8 +73,6 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     QLabel* separator = new QLabel();
     separator->setPixmap(QPixmap(":icons/controls/separator.png"));
     separator->setFixedSize(QSize(37,31));
-    QLabel* spacingLabel = new QLabel("");
-    spacingLabel->setIndent(6);
 
     QIcon loopIcon(":icons/controls/loop.png");
     QIcon soundIcon(":icons/controls/sound.png");
