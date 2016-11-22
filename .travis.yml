@@ -2,9 +2,12 @@
 #
 # Configuration manual:
 # http://docs.travis-ci.com/user/build-configuration/
-
+#
+# How to use TravisCI with C++ (Qt Test, C++11):
+# https://github.com/richelbilderbeek/travis_qmake_gcc_cpp11_qt_qtests
+#
 language: cpp
-compiler: g++4.9
+compiler: g++
 sudo: required
 dist: trusty
 
@@ -14,7 +17,7 @@ addons:
     - ubuntu-toolchain-r-test
     - ubuntu-sdk-team
     packages:
-    - g++-4.9
+    - g++-5
     - build-essential
     - qt5-default
     - qttools5-dev-tools
@@ -22,9 +25,18 @@ addons:
     - qtmultimedia5-dev
     - libqt5svg5-dev 
     - libqt5xmlpatterns5-dev
+
 before_script:
   - qmake --version
-
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+  
 script:
   - qmake
   - make
+
+after_script:
+  - pwd
+  - ./tests/tests
+
