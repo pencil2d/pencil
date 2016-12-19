@@ -34,6 +34,7 @@ private:
     void setPenInvisibility( int );
     void setPressure( int );
     void setPreserveAlpha( int );
+    void setVectorMergeEnabled( int );
 
     void disableAllOptions();
     void createUI();
@@ -43,6 +44,7 @@ private:
     QCheckBox* mUseFeatherBox    = nullptr;
     QCheckBox* mMakeInvisibleBox = nullptr;
     QCheckBox* mPreserveAlphaBox = nullptr;
+    QCheckBox* mVectorMergeBox   = nullptr;
     QSpinBox* mBrushSpinBox      = nullptr;
     QSpinBox* mFeatherSpinBox    = nullptr;
     SpinSlider* mSizeSlider      = nullptr;

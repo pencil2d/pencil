@@ -10,6 +10,8 @@
 #include "tooloptiondockwidget.h"
 #include "editor.h"
 #include "util.h"
+#include "layer.h"
+#include "layermanager.h"
 
 ToolOptionWidget::ToolOptionWidget( QWidget* parent ) : BaseDockWidget( parent )
 {
@@ -42,6 +44,13 @@ void ToolOptionWidget::updateUI()
     mMakeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
     mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
 
+    auto currentLayerType = editor()->layers()->currentLayer()->type();
+
+    if(currentLayerType == Layer::VECTOR)
+    {
+        mVectorMergeBox->setVisible( currentTool->isPropertyEnabled( VECTORMERGE) );
+    }
+
     const Properties& p = currentTool->properties;
 
     setPenWidth( p.width );
@@ -49,6 +58,7 @@ void ToolOptionWidget::updateUI()
     setPressure( p.pressure );
     setPenInvisibility( p.invisibility );
     setPreserveAlpha( p.preserveAlpha );
+    setVectorMergeEnabled( p.vectorMergeEnabled );
 }
 
 void ToolOptionWidget::createUI()
@@ -103,6 +113,11 @@ void ToolOptionWidget::createUI()
     mPreserveAlphaBox->setFont( QFont( "Helvetica", 10 ) );
     mPreserveAlphaBox->setChecked( false );
 
+    mVectorMergeBox = new QCheckBox( tr( "Merge" ) );
+    mVectorMergeBox->setToolTip( tr( "Merge vector lines when they are close together" ) );
+    mVectorMergeBox->setFont( QFont( "Helvetica", 10 ) );
+    mVectorMergeBox->setChecked( false );
+
     pLayout->addWidget( mSizeSlider, 8, 0, 1, 2 );
     pLayout->addWidget( mBrushSpinBox, 8, 10, 1, 2);
     pLayout->addWidget( mFeatherSlider, 9, 0, 1, 2 );
@@ -112,8 +127,9 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mPreserveAlphaBox, 12, 0, 1, 2 );
     pLayout->addWidget( mUseFeatherBox, 13, 0, 1, 2 );
     pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
+    pLayout->addWidget( mVectorMergeBox, 15, 0, 1, 2 );
 
-    pLayout->setRowStretch( 15, 1 );
+    pLayout->setRowStretch( 16, 1 );
 
     optionGroup->setLayout( pLayout );
 
@@ -136,6 +152,8 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mFeatherSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setFeather );
 
     connect( mUseFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather );
+
+    connect( mVectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled );
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -161,6 +179,9 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
             break;
         case PRESERVEALPHA:
             setPreserveAlpha( p.preserveAlpha );
+            break;
+        case VECTORMERGE:
+            setVectorMergeEnabled(p.vectorMergeEnabled);
             break;
     }
 }
@@ -215,6 +236,15 @@ void ToolOptionWidget::setPreserveAlpha( int x )
     mPreserveAlphaBox->setChecked( x > 0 );
 }
 
+void ToolOptionWidget::setVectorMergeEnabled(int x)
+{
+    qDebug() << "Setting - Vector Merge Enabled=" << x;
+
+    SignalBlocker b( mVectorMergeBox );
+    mVectorMergeBox->setEnabled( true );
+    mVectorMergeBox->setChecked( x > 0 );
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     mSizeSlider->hide();
@@ -226,4 +256,5 @@ void ToolOptionWidget::disableAllOptions()
     mUsePressureBox->hide();
     mMakeInvisibleBox->hide();
     mPreserveAlphaBox->hide();
+    mVectorMergeBox->hide();
 }

@@ -43,6 +43,7 @@ public slots:
     void setUseFeather( bool );
     void setInvisibility( bool );
     void setPreserveAlpha( bool );
+    void setVectorMergeEnabled( bool );
     void setBezier( bool );
     void setPressure( bool );
 
