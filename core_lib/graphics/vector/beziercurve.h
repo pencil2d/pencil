@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QPainter>
 
 class Object;
+class Status;
 
 struct Intersection
 {
@@ -34,7 +35,7 @@ public:
     BezierCurve(QList<QPointF> pointList);
     BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, double tol);
 
-    QDomElement createDomElement(QDomDocument& doc);
+    Status createDomElement(QXmlStreamWriter &xmlStream);
     void loadDomElement(QDomElement element);
 
     qreal getWidth() const { return width; }

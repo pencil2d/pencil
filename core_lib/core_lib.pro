@@ -161,6 +161,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     managers/soundmanager.cpp \
     movieexporter.cpp
 
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 win32 {
     CONFIG -= flat
 	CONFIG += grouped

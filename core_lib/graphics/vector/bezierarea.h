@@ -22,6 +22,8 @@ GNU General Public License for more details.
 
 #include "vertexref.h"
 
+class Status;
+
 //class BezierArea : public QObject
 class BezierArea
 {
@@ -32,7 +34,7 @@ public:
     //BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage);
     BezierArea(QList<VertexRef> vertexList, int colour);
 
-    QDomElement createDomElement(QDomDocument& doc);
+    Status createDomElement(QXmlStreamWriter &xmlStream);
     void loadDomElement(QDomElement element);
 
     VertexRef getVertexRef(int i);
