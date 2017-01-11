@@ -575,7 +575,11 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     {
         QDateTime dt = QDateTime::currentDateTime();
         dt.setTimeSpec( Qt::UTC );
+#if QT_VERSION >= 0x050400
         QDir errorLogFolder( QStandardPaths::writableLocation( QStandardPaths::AppLocalDataLocation ) );
+#else
+        QDir errorLogFolder( QStandardPaths::writableLocation( QStandardPaths::DataLocation ) );
+#endif
         errorLogFolder.mkpath( "./logs" );
         errorLogFolder.cd( "logs" );
         QFile eLog( errorLogFolder.absoluteFilePath( QString( "error-%1.txt" ).arg( dt.toString( Qt::ISODate ) ) ) );
