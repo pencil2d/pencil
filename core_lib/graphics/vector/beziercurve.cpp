@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QList>
 #include "beziercurve.h"
 #include "object.h"
+#include "pencilerror.h"
 
 BezierCurve::BezierCurve()
 {
@@ -73,30 +74,61 @@ BezierCurve::BezierCurve(QList<QPointF> pointList, QList<qreal> pressureList, do
 }
 
 
-QDomElement BezierCurve::createDomElement(QDomDocument& doc)
+Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
 {
-    QDomElement curveTag = doc.createElement("curve");
-    curveTag.setAttribute("width", width);
-    curveTag.setAttribute("variableWidth", variableWidth);
-    if (feather>0) curveTag.setAttribute("feather", feather);
-    curveTag.setAttribute("invisible", invisible);
-    curveTag.setAttribute("colourNumber", colourNumber);
-    curveTag.setAttribute("originX", origin.x());
-    curveTag.setAttribute("originY", origin.y());
-    curveTag.setAttribute("originPressure", pressure.at(0));
-    for(int i=0; i < c1.size() ; i++)
+    xmlStream.writeStartElement( "curve" );
+    xmlStream.writeAttribute( "width", QString::number( width ) );
+    xmlStream.writeAttribute( "variableWidth", variableWidth ? "true" : "false" );
+    if (feather>0) xmlStream.writeAttribute( "feather", QString::number( feather ) );
+    xmlStream.writeAttribute( "invisible", invisible ? "true" : "false" );
+    xmlStream.writeAttribute( "colourNumber", QString::number( colourNumber ) );
+    xmlStream.writeAttribute( "originX", QString::number( origin.x() ) );
+    xmlStream.writeAttribute( "originY", QString::number( origin.y() ) );
+    xmlStream.writeAttribute( "originPressure", QString::number( pressure.at(0) ) );
+
+    int errorLocation = -1;
+    for ( int i = 0; i < c1.size() ; i++ )
     {
-        QDomElement segementTag = doc.createElement("segment");
-        segementTag.setAttribute("c1x", c1.at(i).x());
-        segementTag.setAttribute("c1y", c1.at(i).y());
-        segementTag.setAttribute("c2x", c2.at(i).x());
-        segementTag.setAttribute("c2y", c2.at(i).y());
-        segementTag.setAttribute("vx", vertex.at(i).x());
-        segementTag.setAttribute("vy", vertex.at(i).y());
-        segementTag.setAttribute("pressure", pressure.at(i+1));
-        curveTag.appendChild(segementTag);
+        xmlStream.writeEmptyElement( "segment" );
+        xmlStream.writeAttribute( "c1x", QString::number( c1.at( i ).x() ) );
+        xmlStream.writeAttribute( "c1y", QString::number( c1.at( i ).y() ) );
+        xmlStream.writeAttribute( "c2x", QString::number( c2.at( i ).x() ) );
+        xmlStream.writeAttribute( "c2y", QString::number( c2.at( i ).y() ) );
+        xmlStream.writeAttribute( "vx", QString::number( vertex.at( i ).x() ) );
+        xmlStream.writeAttribute( "vy", QString::number( vertex.at( i ).y() ) );
+        xmlStream.writeAttribute( "pressure", QString::number( pressure.at( i + 1 ) ) );
+        if ( errorLocation < 0 && xmlStream.hasError() )
+        {
+            errorLocation = i;
+        }
     }
-    return curveTag;
+
+    xmlStream.writeEndElement(); // Close curve element
+
+    if ( xmlStream.hasError() && errorLocation >= 0 )
+    {
+        QStringList debugInfo = QStringList() << "BezierCurve::createDomElement"
+                                              << QString( "width = %1" ).arg( width )
+                                              << QString( "variableWidth = %1" ).arg( "variableWidth" )
+                                              << QString( "feather = %1" ).arg( feather )
+                                              << QString( "invisible = %1" ).arg( invisible )
+                                              << QString( "colourNumber = %1" ).arg( colourNumber )
+                                              << QString( "originX = %1" ).arg( origin.x() )
+                                              << QString( "originY = %1" ).arg( origin.y() )
+                                              << QString( "originPressure = %1" ).arg( pressure.at( 0 ) )
+                                              << QString( "- segmentTag[%1] has failed to write" ).arg( errorLocation )
+                                              << QString( "&nbsp;&nbsp;c1x = %1" ).arg( c1.at( errorLocation ).x() )
+                                              << QString( "&nbsp;&nbsp;c1y = %1" ).arg( c1.at( errorLocation ).y() )
+                                              << QString( "&nbsp;&nbsp;c2x = %1" ).arg( c2.at( errorLocation ).x() )
+                                              << QString( "&nbsp;&nbsp;c2y = %1" ).arg( c2.at( errorLocation ).y() )
+                                              << QString( "&nbsp;&nbsp;vx = %1" ).arg( vertex.at( errorLocation ).x() )
+                                              << QString( "&nbsp;&nbsp;vy = %1" ).arg( vertex.at( errorLocation ).y() )
+                                              << QString( "&nbsp;&nbsp;pressure = %1" ).arg( pressure.at( errorLocation + 1 ) );
+
+        return Status( Status::FAIL, debugInfo );
+    }
+
+    return Status::OK;
 }
 
 void BezierCurve::loadDomElement(QDomElement element)

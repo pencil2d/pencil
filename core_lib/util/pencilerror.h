@@ -2,6 +2,7 @@
 #define PENCILERROR_H
 
 #include <QString>
+#include <QStringList>
 
 class Status
 {
@@ -36,16 +37,26 @@ public:
 
 
     Status() {}
-    Status( ErrorCode eCode ) { mCode = eCode; }
+    Status( ErrorCode eCode, QStringList detailsList = QStringList(), QString title = QString(), QString description = QString() );
 
-    ErrorCode code() { return mCode; }
-    bool      ok() const { return ( mCode == OK ) || ( mCode == SAFE ); }
-    QString   msg();
+    ErrorCode   code() { return mCode; }
+    bool        ok() const { return ( mCode == OK ) || ( mCode == SAFE ); }
+    QString     msg();
+    QString     title() { return !mTitle.isEmpty() ? mTitle : msg(); }
+    QString     description() { return mDescription; }
+    QString     details();
+    QStringList detailsList() { return mDetails; }
+
+    void setTitle( QString title ) { mTitle = title; }
+    void setDescription( QString description ) { mDescription = description; }
+    void setDetailsList( QStringList detailsList ) { mDetails = detailsList; }
 
     bool operator==( ErrorCode code );
 
 private:
     ErrorCode mCode = OK;
+    QString mTitle, mDescription;
+    QStringList mDetails;
 };
 
 #ifndef STATUS_CHECK 

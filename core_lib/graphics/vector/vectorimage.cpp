@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <cmath>
 #include <QImage>
+#include <QStringList>
 #include "object.h"
 #include "util.h"
 #include "vectorimage.h"
@@ -62,55 +63,83 @@ bool VectorImage::read(QString filePath)
     return true;
 }
 
-bool VectorImage::write(QString filePath, QString format)
+Status VectorImage::write(QString filePath, QString format)
 {
+    QStringList debugInfo = QStringList() << "VectorImage::write" << QString( "filePath = " ).append( filePath ) << QString( "format = " ).append( format );
     QFile file{filePath};
     bool result = file.open(QIODevice::WriteOnly);
     if (!result)
     {
         //QMessageBox::warning(this, "Warning", "Cannot write file");
         qDebug() << "VectorImage - Cannot write file" << filePath << file.error();
-        return false;
+        return Status( Status::FAIL, debugInfo << QString("file.error() = ").append( file.errorString() ) );
     }
-    QTextStream out(&file);
 
     if (format == "VEC")
     {
-        QDomDocument doc("PencilVectorImage");
-        //QDomElement root = doc.createElement("vectorImage");
-        //doc.appendChild(root);
+        QXmlStreamWriter xmlStream( &file );
+        xmlStream.setAutoFormatting( true);
+        xmlStream.writeStartDocument();
+        xmlStream.writeDTD( "<!DOCTYPE PencilVectorImage>" );
 
-        QDomElement imageTag = createDomElement(doc);
-        doc.appendChild(imageTag);
+        xmlStream.writeStartElement( "image" );
+        xmlStream.writeAttribute( "type", "vector" );
+        Status st = createDomElement( xmlStream );
+        if( !st.ok() )
+        {
+            QStringList xmlDetails = st.detailsList();
+            for ( QString detail : xmlDetails )
+            {
+                detail.prepend( "&nbsp;&nbsp;" );
+            }
+            return Status( Status::FAIL, debugInfo << "- xml creation failed" << xmlDetails );
+        }
 
-        int IndentSize = 2;
-        qDebug() << "--- Starting to write XML file...";
-        doc.save(out, IndentSize);
-        qDebug() << "--- Writing XML file done.";
-        return true;
+        xmlStream.writeEndElement(); // Close image element
+        xmlStream.writeEndDocument();
+
+        return Status::OK;
     }
     else
     {
         qDebug() << "--- Not the VEC format!";
-        return false;
+        return Status( Status::FAIL, debugInfo << "Unrecognized format" );
     }
 }
 
-QDomElement VectorImage::createDomElement(QDomDocument& doc)
+Status VectorImage::createDomElement( QXmlStreamWriter& xmlStream )
 {
-    QDomElement imageTag = doc.createElement("image");
-    imageTag.setAttribute("type", "vector");
-    for(int i=0; i < m_curves.size() ; i++)
+    QStringList debugInfo = QStringList() << "VectorImage::createDomElement";
+    bool isOkay = true;
+    for ( int i = 0; i < m_curves.size(); i++ )
     {
-        QDomElement curveTag = m_curves[i].createDomElement(doc);
-        imageTag.appendChild(curveTag);
+        Status st = m_curves[ i ].createDomElement( xmlStream );
+        if ( !st.ok() )
+        {
+            isOkay = false;
+            QStringList curveDetails = st.detailsList();
+            for ( QString detail : curveDetails )
+            {
+                detail.prepend( "&nbsp;&nbsp;" );
+            }
+            return Status( Status::FAIL, debugInfo << QString( "- m_curves[%1] failed to write" ).arg( i ) << curveDetails );
+        }
     }
-    for(int i=0; i < area.size() ; i++)
+    for ( int i = 0; i < area.size(); i++ )
     {
-        QDomElement areaTag = area[i].createDomElement(doc);
-        imageTag.appendChild(areaTag);
+        Status st = area[ i ].createDomElement( xmlStream );
+        if ( !st.ok() )
+        {
+            isOkay = false;
+            QStringList areaDetails = st.detailsList();
+            for ( QString detail : areaDetails )
+            {
+                detail.prepend( "&nbsp;&nbsp;" );
+            }
+            return Status( Status::FAIL, debugInfo << QString( "- area[%1] failed to write" ).arg( i ) << areaDetails );
+        }
     }
-    return imageTag;
+    return Status::OK;
 }
 
 void VectorImage::loadDomElement(QDomElement element)

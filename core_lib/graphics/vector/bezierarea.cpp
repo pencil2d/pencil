@@ -17,6 +17,8 @@ GNU General Public License for more details.
 
 #include "bezierarea.h"
 
+#include "pencilerror.h"
+
 BezierArea::BezierArea()
 {
     selected = false;
@@ -48,19 +50,38 @@ void BezierArea::setSelected(bool YesOrNo)
     selected = YesOrNo;
 }
 
-QDomElement BezierArea::createDomElement(QDomDocument& doc)
+Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )
 {
-    QDomElement areaTag = doc.createElement("area");
-    areaTag.setAttribute("colourNumber", mColourNumber);
+    xmlStream.writeStartElement( "area" );
+    xmlStream.writeAttribute( "colourNumber", QString::number( mColourNumber ) );
 
-    for(int i=0; i < mVertex.size() ; i++)
+    int errorLocation = -1;
+    for ( int i = 0; i < mVertex.size(); i++ )
     {
-        QDomElement vertexTag = doc.createElement("vertex");
-        vertexTag.setAttribute("curve", mVertex.at(i).curveNumber);
-        vertexTag.setAttribute("vertex", mVertex.at(i).vertexNumber);
-        areaTag.appendChild(vertexTag);
+        xmlStream.writeEmptyElement( "vertex" );
+        xmlStream.writeAttribute( "curve", QString::number( mVertex.at( i ).curveNumber ) );
+        xmlStream.writeAttribute( "vertex", QString::number( mVertex.at( i ).vertexNumber ) );
+
+        if ( errorLocation < 0 && xmlStream.hasError() )
+        {
+            errorLocation = i;
+        }
     }
-    return areaTag;
+
+    xmlStream.writeEndElement(); // Close area element
+
+    if ( xmlStream.hasError() && errorLocation >= 0 )
+    {
+        QStringList debugInfo = QStringList() << "BezierArea::createDomElement"
+                                              << QString( "colourNumber = %1" ).arg( mColourNumber )
+                                              << QString( "- mVertex[%1] has failed to write" ).arg( errorLocation )
+                                              << QString( "&nbsp;&nbsp;curve = %1" ).arg( mVertex.at( errorLocation ).curveNumber )
+                                              << QString( "&nbsp;&nbsp;vertex = %1 " ).arg( mVertex.at( errorLocation ).vertexNumber );
+
+        return Status( Status::FAIL, debugInfo );
+    }
+
+    return Status::OK;
 }
 
 void BezierArea::loadDomElement(QDomElement element)

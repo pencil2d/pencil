@@ -40,7 +40,7 @@ public:
 
     qreal getOpacity() { return mOpacity; }
 protected:
-    bool saveKeyFrame( KeyFrame*, QString strPath ) override;
+    Status saveKeyFrame( KeyFrame*, QString strPath ) override;
     qreal mOpacity;
 private:
     QString fileName( int index );

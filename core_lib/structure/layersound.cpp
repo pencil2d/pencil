@@ -108,7 +108,7 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
     }
 }
 
-bool LayerSound::saveKeyFrame( KeyFrame*, QString path )
+Status LayerSound::saveKeyFrame( KeyFrame*, QString path )
 {
-    return true;
+    return Status::OK;
 }

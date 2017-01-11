@@ -48,7 +48,8 @@ HEADERS += \
     displayoptionwidget.h \
     pencilapplication.h \
     exportmoviedialog.h \
-    app_util.h
+    app_util.h \
+    errordialog.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -70,7 +71,8 @@ SOURCES += \
     filedialogex.cpp \
     displayoptionwidget.cpp \
     pencilapplication.cpp \
-    exportmoviedialog.cpp
+    exportmoviedialog.cpp \
+    errordialog.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -81,11 +83,11 @@ FORMS += \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
     ui/displayoption.ui \
-    ui/exportmoviedialog.ui
+    ui/exportmoviedialog.ui \
+    ui/errordialog.ui
 
 DEPENDPATH += .
 
-VERSION = 0.5.4
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 macx {
