@@ -54,12 +54,12 @@ QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
 
 QRectF ViewManager::mapCanvasToScreen( const QRectF& rect )
 {
-    return std::move( mView.mapRect( rect ) );
+    return mView.mapRect( rect ) ;
 }
 
 QRectF ViewManager::mapScreenToCanvas( const QRectF& rect )
 {
-    return std::move( mView.inverted().mapRect( rect ) );
+    return  mView.inverted().mapRect( rect ) ;
 }
 
 QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )

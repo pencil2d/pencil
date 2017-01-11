@@ -25,7 +25,6 @@ public:
 
 private:
     std::shared_ptr< SoundPlayer > mPlayer;
-    uint64_t m_soundSize = 0;
 };
 
 #endif // SOUNDCLIP_H

@@ -5,11 +5,11 @@
 #include <QSysInfo>
 #include "pencildef.h"
 
-Status::Status(Status::ErrorCode eCode, QStringList detailsList, QString title, QString description) :
-    mCode( eCode ),
-    mTitle( title ),
-    mDescription( description ),
-    mDetails( detailsList )
+Status::Status(Status::ErrorCode eCode, QStringList detailsList, QString title, QString description)
+    : mCode( eCode )
+    , mTitle( title )
+    , mDescription( description )
+    , mDetails( detailsList )
 {
 }
 
@@ -46,6 +46,7 @@ QString Status::details()
                                mDescription )
                     );
     details.append("<br><br>");
+#if QT_VERSION >= 0x050400
     details.append( QString(
                         "System Info<br>"
                         "Pencil version: %1<br>"
@@ -58,6 +59,7 @@ QString Status::details()
                                QSysInfo::kernelVersion(),
                                QSysInfo::prettyProductName() )
                     );
+#endif
     return details;
 }
 
