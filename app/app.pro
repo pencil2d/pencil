@@ -88,6 +88,7 @@ FORMS += \
 
 DEPENDPATH += .
 
+VERSION = 0.5.4
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 macx {

@@ -28,8 +28,6 @@ core_lib.depends = quazip
 app.depends      = core_lib
 tests.depends    = core_lib
 
-VERSION = 0.5.4
-
 TRANSLATIONS += translations/Language.cs.ts \
                 translations/Language.da.ts \
                 translations/Language.de.ts \
