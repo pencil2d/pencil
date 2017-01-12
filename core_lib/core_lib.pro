@@ -161,6 +161,7 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     managers/soundmanager.cpp \
     movieexporter.cpp
 
+VERSION = 0.5.4
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
