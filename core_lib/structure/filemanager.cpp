@@ -207,7 +207,7 @@ Status FileManager::save( Object* object, QString strFileName )
 
         strTempWorkingFolder = object->workingDir();
         Q_ASSERT( QDir( strTempWorkingFolder ).exists() );
-        debugDetails << QString("strTempWorkingFolder = ").append(strTempWorkingFolder);
+        debugDetails << QString( "strTempWorkingFolder = " ).append( strTempWorkingFolder );
 
         qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
         strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
@@ -221,7 +221,7 @@ Status FileManager::save( Object* object, QString strFileName )
         // creates a directory with the same name +".data"
         if( !dir.mkpath( strDataFolder ) )
         {
-            debugDetails << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
+            debugDetails << QString( "dir.absolutePath() = %1" ).arg( dir.absolutePath() );
             if( isOldFile ) {
                 return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot create the data directory at \"%1\". Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pclx format." ).arg( strDataFolder ) );
             }
@@ -283,7 +283,7 @@ Status FileManager::save( Object* object, QString strFileName )
         }
         if( !isOkay )
         {
-            return Status( Status::FAIL, debugDetails, tr( "Internal Error" ), tr( "An interal error occured while trying to save the file. Some or all of your file may not have saved." ) );
+            return Status( Status::FAIL, debugDetails, tr( "Internal Error" ), tr( "An internal error occurred while trying to save the file. Some or all of your file may not have saved." ) );
         }
     }
 
