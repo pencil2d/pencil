@@ -22,6 +22,8 @@ GNU General Public License for more details.
 
 #include "vertexref.h"
 
+class Status;
+
 //class BezierArea : public QObject
 class BezierArea
 {
@@ -32,19 +34,19 @@ public:
     //BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage);
     BezierArea(QList<VertexRef> vertexList, int colour);
 
-    QDomElement createDomElement(QDomDocument& doc);
+    Status createDomElement(QXmlStreamWriter &xmlStream);
     void loadDomElement(QDomElement element);
 
     VertexRef getVertexRef(int i);
-    int getColourNumber() { return colourNumber; }
-    void decreaseColourNumber() { colourNumber--; }
+    int getColourNumber() { return mColourNumber; }
+    void decreaseColourNumber() { mColourNumber--; }
     void setSelected(bool YesOrNo);
     bool isSelected() const { return selected; }
-    void setColourNumber(int cn) { colourNumber = cn; }
+    void setColourNumber(int cn) { mColourNumber = cn; }
 
-    QList<VertexRef> vertex;
-    QPainterPath path;
-    int colourNumber;
+    QList<VertexRef> mVertex;
+    QPainterPath mPath;
+    int mColourNumber;
 
 private:
     //VectorImage* picture;

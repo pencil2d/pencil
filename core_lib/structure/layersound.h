@@ -41,7 +41,7 @@ public:
     // These functions will be removed.
 
 protected:
-    bool saveKeyFrame( KeyFrame*, QString path ) override;
+    Status saveKeyFrame( KeyFrame*, QString path ) override;
 };
 
 #endif

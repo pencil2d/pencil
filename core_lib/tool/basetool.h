@@ -97,7 +97,7 @@ protected:
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;
-    qreal adjustmentStep = 0.0f;
+    qreal mAdjustmentStep = 0.0f;
 };
 
 #endif // BASETOOL_H

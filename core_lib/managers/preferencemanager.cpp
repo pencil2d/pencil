@@ -46,6 +46,7 @@ void PreferenceManager::loadPrefs()
     //
     set( SETTING::ANTIALIAS,                settings.value( SETTING_ANTIALIAS,              true ).toBool() );
     set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
+    set( SETTING::DOTTED_CURSOR,            settings.value( SETTING_DOTTED_CURSOR,          true ).toBool() );
     set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
     set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
     set( SETTING::QUICK_SIZING,             settings.value( SETTING_QUICK_SIZING,           true ).toBool() );
@@ -71,6 +72,7 @@ void PreferenceManager::loadPrefs()
     //
     set( SETTING::PREV_ONION,               settings.value( SETTING_PREV_ONION,             false ).toBool() );
     set( SETTING::NEXT_ONION,               settings.value( SETTING_NEXT_ONION,             false ).toBool() );
+    set( SETTING::MULTILAYER_ONION,         settings.value( SETTING_MULTILAYER_ONION,       false ).toBool() );
     set( SETTING::ONION_BLUE,               settings.value( SETTING_ONION_BLUE,             false ).toBool() );
     set( SETTING::ONION_RED,                settings.value( SETTING_ONION_RED,              false ).toBool() );
 
@@ -240,6 +242,9 @@ void PreferenceManager::set( SETTING option, bool value )
     case SETTING::NEXT_ONION:
         settings.setValue ( SETTING_NEXT_ONION, value );
         break;
+    case SETTING::MULTILAYER_ONION:
+        settings.setValue( SETTING_MULTILAYER_ONION, value);
+        break;
     case SETTING::AXIS:
         settings.setValue ( SETTING_AXIS, value );
         break;
@@ -264,6 +269,9 @@ void PreferenceManager::set( SETTING option, bool value )
     case SETTING::TOOL_CURSOR:
         settings.setValue ( SETTING_TOOL_CURSOR, value );
         break;
+    case SETTING::DOTTED_CURSOR:
+        settings.setValue ( SETTING_DOTTED_CURSOR, value );
+        break;
     case SETTING::HIGH_RESOLUTION:
         settings.setValue ( SETTING_HIGH_RESOLUTION, value );
         break;
@@ -275,6 +283,7 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::DRAW_LABEL:
         settings.setValue ( SETTING_DRAW_LABEL, value );
+        break;
     case SETTING::QUICK_SIZING:
         settings.setValue ( SETTING_QUICK_SIZING, value );
         break;

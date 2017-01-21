@@ -140,7 +140,7 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
             mEditor->backup(typeName());
             mScribbleArea->setAllDirty();
             startStroke();
-            lastBrushPoint = getCurrentPoint();
+            mLastBrushPoint = getCurrentPoint();
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -263,7 +263,7 @@ void SmudgeTool::drawStroke()
     //brushWidth = brushWidth * opacity;
 
     BlitRect rect;
-    QPointF a = lastBrushPoint;
+    QPointF a = mLastBrushPoint;
     QPointF b = getCurrentPoint();
 
 
@@ -274,10 +274,10 @@ void SmudgeTool::drawStroke()
         int steps = qRound(distance / brushStep);
         int rad = qRound(brushWidth / 2.0) + 2;
 
-        QPointF sourcePoint = lastBrushPoint;
+        QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+            QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
             mScribbleArea->liquifyBrush( targetImage,
                                                 sourcePoint,
@@ -288,7 +288,7 @@ void SmudgeTool::drawStroke()
 
             if (i == (steps - 1))
             {
-                lastBrushPoint = targetPoint;
+                mLastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
             mScribbleArea->refreshBitmap(rect, rad);
@@ -302,10 +302,10 @@ void SmudgeTool::drawStroke()
         int steps = qRound(distance / brushStep);
         int rad = qRound(brushWidth / 2.0) + 2;
 
-        QPointF sourcePoint = lastBrushPoint;
+        QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            QPointF targetPoint = lastBrushPoint + (i + 1) * (brushStep) * (b - lastBrushPoint) / distance;
+            QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
             mScribbleArea->blurBrush( targetImage,
                                                 sourcePoint,
@@ -316,7 +316,7 @@ void SmudgeTool::drawStroke()
 
             if (i == (steps - 1))
             {
-                lastBrushPoint = targetPoint;
+                mLastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
             mScribbleArea->refreshBitmap(rect, rad);

@@ -25,6 +25,7 @@ class TimeLineCells : public QWidget
 
 public:
     TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
+    ~TimeLineCells();
     int getLayerNumber(int y);
     int getLayerY(int layerNumber);
     int getFrameNumber(int x);

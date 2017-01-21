@@ -18,10 +18,6 @@ public:
     void mouseReleaseEvent( QMouseEvent * ) override;
 
     void drawStroke();
-
-signals:
-
-    public slots :
 };
 
 #endif // BUCKETTOOL_H

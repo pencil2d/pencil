@@ -48,15 +48,20 @@ void LayerBitmap::loadImageAtFrame( QString path, QPoint topLeft, int frameNumbe
     loadKey( pKeyFrame );
 }
 
-bool LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
+Status LayerBitmap::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
+    QStringList debugInfo = QStringList() << "LayerBitmap::saveKeyFrame" << QString( "pKeyFrame.pos() = %1" ).arg( pKeyFrame->pos() ) << QString( "path = %1" ).arg( path );
     BitmapImage* pBitmapImage = static_cast< BitmapImage* >( pKeyFrame );
 
     QString theFileName = fileName( pKeyFrame->pos() );
     QString strFilePath = QDir( path ).filePath( theFileName );
-    pBitmapImage->image()->save( strFilePath );
+    debugInfo << QString( "strFilePath = " ).arg( strFilePath );
+    if ( !pBitmapImage->image()->save( strFilePath ) && !pBitmapImage->image()->isNull() )
+    {
+        return Status( Status::FAIL, debugInfo << QString( "pBitmapImage could not be saved" ) );
+    }
 
-    return true;
+    return Status::OK;
 }
 
 QString LayerBitmap::fileName( int frame )

@@ -25,7 +25,7 @@ public:
     void setPressure( const bool pressure ) override;
 
 private:
-    QPointF lastBrushPoint;
+    QPointF mLastBrushPoint;
 };
 
 #endif // PENTOOL_H

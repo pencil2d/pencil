@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>301</width>
-    <height>210</height>
+    <height>232</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -134,7 +134,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="startSpinbox"/>
+       <widget class="QSpinBox" name="startSpinbox">
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QLabel" name="label_4">
@@ -144,7 +148,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="endSpinBox"/>
+       <widget class="QSpinBox" name="endSpinBox">
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

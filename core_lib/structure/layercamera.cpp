@@ -194,11 +194,11 @@ void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
 }
 
 
-bool LayerCamera::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
+Status LayerCamera::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
     Q_UNUSED( path );
     Q_UNUSED( pKeyFrame );
-    return true;
+    return Status::OK;
 }
 
 

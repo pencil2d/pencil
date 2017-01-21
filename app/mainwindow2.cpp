@@ -59,6 +59,7 @@ GNU General Public License for more details.
 #include "toolbox.h"
 #include "preview.h"
 #include "timeline2.h"
+#include "errordialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -225,7 +226,7 @@ void MainWindow2::createMenus()
 {
     // ---------- File Menu -------------
     connect( ui->actionNew, &QAction::triggered, this, &MainWindow2::newDocument );
-    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocumentDialog );
+    connect( ui->actionOpen, &QAction::triggered, this, &MainWindow2::openDocument );
     connect( ui->actionSave_as, &QAction::triggered, this, &MainWindow2::saveAsNewDocument );
     connect( ui->actionSave, &QAction::triggered, this, &MainWindow2::saveDocument );
     connect( ui->actionExit, &QAction::triggered, this, &MainWindow2::close );
@@ -376,7 +377,7 @@ void MainWindow2::setOpacity( int opacity )
 
 bool MainWindow2::isTitleMarkedUnsaved()
 {
-    return windowTitle().startsWith(QString("*"));
+    return windowTitle().startsWith(QChar('*'));
 }
 
 void MainWindow2::markTitleUnsaved()
@@ -387,8 +388,8 @@ void MainWindow2::markTitleUnsaved()
 
 void MainWindow2::markTitleSaved()
 {
-    if (isTitleMarkedUnsaved())
-        setWindowTitle( windowTitle().remove(0, 2) );
+    if (isTitleMarkedUnsaved() && windowTitle().startsWith(QChar('*')))
+        setWindowTitle( windowTitle().remove(0, 1).trimmed() );
 }
 
 void MainWindow2::updateTitleSaveState()
@@ -439,7 +440,7 @@ void MainWindow2::newDocument()
     }
 }
 
-void MainWindow2::openDocumentDialog()
+void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
@@ -450,19 +451,10 @@ void MainWindow2::openDocumentDialog()
                                                          tr( "Open File..." ),
                                                          strLastOpenPath,
                                                          tr( PFF_OPEN_ALL_FILE_FILTER ) );
-		openDocument( fileName );
-    }
-}
-
-void MainWindow2::openDocument(const QString &fileName)
-{
-    if ( maybeSave() )
-    {
         if ( fileName.isEmpty() )
         {
             return;
         }
-
         QFileInfo fileInfo( fileName );
         if ( fileInfo.isDir() )
         {
@@ -470,7 +462,6 @@ void MainWindow2::openDocument(const QString &fileName)
         }
 
         bool ok = openObject( fileName );
-
         if ( !ok )
         {
             QMessageBox::warning( this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import.") );
@@ -510,7 +501,6 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openFile( QString filename )
 {
-    qDebug() << "open recent file" << filename;
     bool ok = openObject( filename );
     if ( !ok )
     {
@@ -583,6 +573,24 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     
     if ( !st.ok() )
     {
+        QDateTime dt = QDateTime::currentDateTime();
+        dt.setTimeSpec( Qt::UTC );
+#if QT_VERSION >= 0x050400
+        QDir errorLogFolder( QStandardPaths::writableLocation( QStandardPaths::AppLocalDataLocation ) );
+#else
+        QDir errorLogFolder( QStandardPaths::writableLocation( QStandardPaths::DataLocation ) );
+#endif
+        errorLogFolder.mkpath( "./logs" );
+        errorLogFolder.cd( "logs" );
+        QFile eLog( errorLogFolder.absoluteFilePath( QString( "error-%1.txt" ).arg( dt.toString( Qt::ISODate ) ) ) );
+        if ( eLog.open( QIODevice::WriteOnly | QIODevice::Text ) )
+        {
+            QTextStream out( &eLog );
+            out << st.details().replace( "<br>", "\n", Qt::CaseInsensitive );
+        }
+
+        ErrorDialog errorDialog( st.title(), st.description().append( "<br><br>An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>Please be sure to include the following details in your issue:" ), st.details() );
+        errorDialog.exec();
         return false;
     }
 
@@ -859,7 +867,7 @@ void MainWindow2::preferences()
     connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
     connect( prefDialog, &PreferencesDialog::finished, [ &]
     { 
-        qDebug() << "Preference dialog closed!";
+        //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
@@ -879,7 +887,7 @@ void MainWindow2::dockAllSubWidgets()
 
 void MainWindow2::readSettings()
 {
-    qDebug( "Restore last windows layout." );
+    //qDebug( "Restore last windows layout." );
 
     QSettings settings( PENCIL2D, PENCIL2D );
     restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
@@ -968,7 +976,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Backward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_BACKWARD ) );
     ui->actionMove_Frame_Forward->setShortcut( cmdKeySeq( CMD_MOVE_FRAME_FORWARD ) );
 
-    ShortcutFilter* shortcutfilter = new ShortcutFilter( mScribbleArea );
+    ShortcutFilter* shortcutfilter = new ShortcutFilter( mScribbleArea, this );
     ui->actionMove->setShortcut( cmdKeySeq( CMD_TOOL_MOVE ) );
     ui->actionSelect->setShortcut( cmdKeySeq( CMD_TOOL_SELECT ) );
     ui->actionBrush->setShortcut( cmdKeySeq( CMD_TOOL_BRUSH ) );

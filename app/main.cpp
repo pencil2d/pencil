@@ -39,14 +39,14 @@ void installTranslator( PencilApplication& app )
 
     QString strQtLocale  = strUserLocale;
     strQtLocale.replace( "-", "_" );
-    QTranslator* qtTranslator = new QTranslator;
+    QTranslator* qtTranslator = new QTranslator(&app);
     qtTranslator->load( "qt_" + strUserLocale, QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     app.installTranslator( qtTranslator );
 
     strUserLocale.replace( "_", "-" );
     qDebug() << "Detect locale =" << strUserLocale;
 
-    QTranslator* pencil2DTranslator = new QTranslator;
+    QTranslator* pencil2DTranslator = new QTranslator(&app);
     bool b = pencil2DTranslator->load( ":/qm/Language." + strUserLocale );
     
     qDebug() << "Load translation = " << b;
@@ -199,10 +199,9 @@ int main(int argc, char* argv[])
     installTranslator( app );
 
     MainWindow2 mainWindow;
-    mainWindow.setWindowTitle( QString("Pencil2D - Nightly Build %1").arg( __DATE__ ) );
+    mainWindow.setWindowTitle( PENCIL_WINDOW_TITLE );
 
-    QObject::connect(&app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openDocument);
-    //QObject::connect(&app, SIGNAL(openFileRequested(QString)), &mainWindow, SLOT(openDocument(QString)));
+	QObject::connect( &app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile );
     app.emitOpenFileRequest();
 
     if ( isGUIMode( argc, argv ) )

@@ -56,13 +56,19 @@
 	<key>CFBundleName</key>
 	<string>Pencil2D</string>
 	<key>CFBundlePackageType</key>
-	<string>APPL</string>
+	<string>BNDL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>@SHORT_VERSION@</string>
+	<string>0.5.5</string>
 	<key>CFBundleSignature</key>
-	<string>@TYPEINFO@</string>
+	<string>PC2D</string>
 	<key>CFBundleVersion</key>
-	<string>@FULL_VERSION@</string>
+	<string>0.5.5.1</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.graphics-design</string>
+	<key>NSHighResolutionCapable</key>
+	<string>True</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

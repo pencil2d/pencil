@@ -305,14 +305,30 @@ bool Layer::loadKey( KeyFrame* pKey )
     return true;
 }
 
-bool Layer::save( QString strDataFolder )
+Status Layer::save( QString strDataFolder )
 {
+    QStringList debugInfo = QStringList() << "Layer::save" << QString( "strDataFolder = " ).append( strDataFolder );
+    bool isOkay = true;
 	for ( auto pair : mKeyFrames )
 	{
 		KeyFrame* pKeyFrame = pair.second;
-		saveKeyFrame( pKeyFrame, strDataFolder );
+        Status st = saveKeyFrame( pKeyFrame, strDataFolder );
+        if( !st.ok() )
+        {
+            isOkay = false;
+            QStringList keyFrameDetails = st.detailsList();
+            for ( QString detail : keyFrameDetails )
+            {
+                detail.prepend( "&nbsp;&nbsp;" );
+            }
+            debugInfo << QString( "- Keyframe[%1] failed to save" ).arg( pKeyFrame->pos() ) << keyFrameDetails;
+        }
 	}
-    return false;
+    if( !isOkay )
+    {
+        return Status( Status::FAIL, debugInfo );
+    }
+    return Status::OK;
 }
 
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )

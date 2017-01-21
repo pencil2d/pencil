@@ -178,6 +178,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     mLanguageCombo->addItem( tr( "German" ), "de" );
     mLanguageCombo->addItem( tr( "Spanish" ), "es" );
     mLanguageCombo->addItem( tr( "French" ), "fr" );
+    mLanguageCombo->addItem( tr( "Hungarian" ), "hu" );
     mLanguageCombo->addItem( tr( "Italian" ), "it" );
     mLanguageCombo->addItem( tr( "Japanese" ), "ja" );
     mLanguageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );

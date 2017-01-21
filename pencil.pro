@@ -28,12 +28,13 @@ core_lib.depends = quazip
 app.depends      = core_lib
 tests.depends    = core_lib
 
-
 TRANSLATIONS += translations/Language.cs.ts \
                 translations/Language.da.ts \
                 translations/Language.de.ts \
                 translations/Language.es.ts \
                 translations/Language.fr.ts \
+                #translations/Language.hu-HU.ts \ # hu-HU identifies the Hungarian language on linux (same format is used for other languages/countries)
+                translations/Language.hu.ts \     # so if we use only 'hu' in the name of the translation file it will not be found when system language is selected
                 translations/Language.it.ts \
                 translations/Language.ja.ts \
                 translations/Language.pt-BR.ts \

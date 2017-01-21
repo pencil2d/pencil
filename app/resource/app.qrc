@@ -9,5 +9,6 @@
         <file>icons/mirror.png</file>
         <file>icons/mirrorV.png</file>
         <file>icons/cameraBorder.png</file>
+        <file>icons/dialog-error.svg</file>
     </qresource>
 </RCC>

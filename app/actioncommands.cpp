@@ -120,6 +120,8 @@ Status ActionCommands::exportMovie()
 			return p.first == strName;
 		} );
 
+        Q_ASSERT(it != camerasInfo.end());
+
 		std::swap( camerasInfo[ 0 ], *it );
 	}
 

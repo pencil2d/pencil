@@ -153,9 +153,9 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
         mScribbleArea->setAllDirty();
     }
 
-    mouseDownPoint = getCurrentPoint();
+    mMouseDownPoint = getCurrentPoint();
 
-    lastBrushPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
     startStroke();
 
 }
@@ -168,9 +168,9 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint()==mouseDownPoint)
+            if (getCurrentPoint()==mMouseDownPoint)
             {
-                paintAt(mouseDownPoint);
+                paintAt(mMouseDownPoint);
             }
             else
             {
@@ -277,7 +277,7 @@ void BrushTool::drawStroke()
 
         BlitRect rect;
 
-        QPointF a = lastBrushPoint;
+        QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
         qreal distance = 4 * QLineF( b, a ).length();
@@ -285,7 +285,7 @@ void BrushTool::drawStroke()
 
         for ( int i = 0; i < steps; i++ )
         {
-            QPointF point = lastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - lastBrushPoint ) / distance;
+            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - mLastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
             mScribbleArea->drawBrush( point,
                                       brushWidth,
@@ -296,7 +296,7 @@ void BrushTool::drawStroke()
 
             if ( i == ( steps - 1 ) )
             {
-                lastBrushPoint = point;
+                mLastBrushPoint = point;
             }
         }
 

@@ -191,7 +191,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
 {
     isAdjusting = true;
     assistedSettingType = argSettingType;
-    adjustmentStep = argStep;
+    mAdjustmentStep = argStep;
     if ( argSettingType == WIDTH )
     {
         OriginalSettingValue = properties.width;
@@ -206,7 +206,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
 void BaseTool::stopAdjusting()
 {
     isAdjusting = false;
-    adjustmentStep = 0;
+    mAdjustmentStep = 0;
     OriginalSettingValue = 0;
     mEditor->getScribbleArea()->setCursor( cursor() );
 }
@@ -224,10 +224,10 @@ void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx
     }
 
     newValue = pow( newValue, 2 ) / 100;
-    if ( adjustmentStep > 0 )
+    if ( mAdjustmentStep > 0 )
     {
-        int tempValue = ( int )( newValue / adjustmentStep ); // + 0.5 ?
-        newValue = tempValue * adjustmentStep;
+        int tempValue = ( int )( newValue / mAdjustmentStep ); // + 0.5 ?
+        newValue = tempValue * mAdjustmentStep;
     }
     if ( newValue < min ) // can be optimized for size: min(200,max(0.2,newValueX))
     {

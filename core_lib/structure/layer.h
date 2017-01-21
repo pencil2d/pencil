@@ -26,6 +26,7 @@ class QMouseEvent;
 class KeyFrame;
 class Object;
 class TimeLineCells;
+class Status;
 
 class Layer : public QObject
 {
@@ -66,7 +67,7 @@ public:
     int getMaxKeyFramePosition();
     int firstKeyFramePosition();
 
-    virtual bool saveKeyFrame( KeyFrame*, QString path ) = 0;
+    virtual Status saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
     
@@ -102,7 +103,7 @@ public:
 
     bool moveSelectedFrames( int offset );
     
-    bool save( QString dataFolder );
+    Status save( QString dataFolder );
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);

@@ -43,6 +43,11 @@ TimeLineCells::TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TY
     connect( mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting );
 }
 
+TimeLineCells::~TimeLineCells()
+{
+    if ( m_pCache ) delete m_pCache;
+}
+
 void TimeLineCells::loadSetting(SETTING setting)
 {
     switch (setting)

@@ -1479,7 +1479,7 @@ void ScribbleArea::displaySelectionProperties()
             int selectedArea = vectorImage->getFirstSelectedArea();
             if ( selectedArea != -1 )
             {
-                mEditor->color()->setColorNumber( vectorImage->area[ selectedArea ].colourNumber );
+                mEditor->color()->setColorNumber( vectorImage->area[ selectedArea ].mColourNumber );
             }
         }
     }
