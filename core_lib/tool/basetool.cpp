@@ -1,5 +1,7 @@
-#include "editor.h"
 #include "basetool.h"
+
+#include <array>
+#include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
@@ -10,27 +12,27 @@ ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
 qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
 bool BaseTool::isAdjusting = false;
 
+
 QString BaseTool::TypeName( ToolType type )
 {
-    static QMap<ToolType, QString>* map = NULL;
-
-    if ( map == NULL )
+    static std::array< QString, TOOL_TYPE_COUNT > map;
+    
+    if ( map[ 0 ].isEmpty() )
     {
-        map = new QMap<ToolType, QString>();
-        map->insert( PENCIL, "Pencil" );
-        map->insert( ERASER, "Eraser" );
-        map->insert( SELECT, "Select" );
-        map->insert( MOVE, "Move" );
-        map->insert( HAND, "Hand" );
-        map->insert( SMUDGE, "Smudge" );
-        map->insert( PEN, "Pen" );
-        map->insert( POLYLINE, "Polyline" );
-        map->insert( BUCKET, "Bucket" );
-        map->insert( EYEDROPPER, "Eyedropper" );
-        map->insert( BRUSH, "Brush" );
+        map[ PENCIL ] = "Pencil";
+        map[ ERASER ] = "Eraser";
+        map[ SELECT ] = "Select";
+        map[ MOVE ] = "Move";
+        map[ HAND ] = "Hand";
+        map[ SMUDGE ] = "Smudge";
+        map[ PEN ] = "Pen";
+        map[ POLYLINE ] = "Polyline";
+        map[ BUCKET ] = "Bucket";
+        map[ EYEDROPPER ] = "Eyedropper";
+        map[ BRUSH ] = "Brush";
     }
 
-    return map->value( type );
+    return map.at( type );
 }
 
 BaseTool::BaseTool( QObject *parent ) : QObject( parent )
@@ -189,7 +191,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
 {
     isAdjusting = true;
     assistedSettingType = argSettingType;
-    adjustmentStep = argStep;
+    mAdjustmentStep = argStep;
     if ( argSettingType == WIDTH )
     {
         OriginalSettingValue = properties.width;
@@ -204,7 +206,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
 void BaseTool::stopAdjusting()
 {
     isAdjusting = false;
-    adjustmentStep = 0;
+    mAdjustmentStep = 0;
     OriginalSettingValue = 0;
     mEditor->getScribbleArea()->setCursor( cursor() );
 }
@@ -222,10 +224,10 @@ void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx
     }
 
     newValue = pow( newValue, 2 ) / 100;
-    if ( adjustmentStep > 0 )
+    if ( mAdjustmentStep > 0 )
     {
-        int tempValue = ( int )( newValue / adjustmentStep ); // + 0.5 ?
-        newValue = tempValue * adjustmentStep;
+        int tempValue = ( int )( newValue / mAdjustmentStep ); // + 0.5 ?
+        newValue = tempValue * mAdjustmentStep;
     }
     if ( newValue < min ) // can be optimized for size: min(200,max(0.2,newValueX))
     {

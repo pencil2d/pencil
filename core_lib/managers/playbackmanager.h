@@ -13,7 +13,8 @@ public:
     explicit PlaybackManager( QObject* parent );
 
     bool init() override;
-    Status onObjectLoaded( Object* ) override;
+    Status load( Object* ) override;
+	Status save( Object* ) override;
 
     bool isPlaying();
     bool isLooping() { return mIsLooping; }
@@ -39,11 +40,14 @@ Q_SIGNALS:
     void fpsChanged( int fps );
     void loopStateChanged( bool b );
     void rangedPlaybackStateChanged( bool b );
+    void playStateChanged( bool isPlaying );
 
 private:
     void timerTick();
-    void playSoundIfAny( int frame );
     
+    void playSounds( int frame );
+    void stopSounds();
+
     int mStartFrame = 1;
     int mEndFrame = 60;
 

@@ -1,40 +1,55 @@
 
+
 cd $PSScriptRoot
 cd ..
 
-if ( !( Test-Path app\release\Pencil2D.exe ) )
-{
-    Write-Host "Can't find Pencil2D.exe!!"
-    exit( 1 );
-}
-$SrcExePath = "app\release\Pencil2D.exe"
+$msvc14_dir = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"
+Push-Location $msvc14_dir
+Invoke-BatchFile "vcvars64.bat"
+Pop-Location
 
+$env:Path += ";$env:QTDIR\bin";
+
+& "qmake" ("-tp","vc","-r")
+
+$Solution    = "pencil.sln"
+$BuildType   = "/t:Rebuild"
+$BuildTarget = "/p:Configuration=Release;Platform=x64"
+$Quiet       = "/verbosity:minimal"
+& "msbuild" $Solution, $BuildType, $BuildTarget $Quiet
+
+# Create nightly build folder
 $today = Get-Date -Format "yyyyMMdd";
 Write-Host "today is $today"
 
-$FolderName = "Pencil2D-win-$today"
-Remove-Item -Recurse $FolderName -ErrorAction SilentlyContinue
-New-Item -ItemType Directory $FolderName
+$TheFolder = "Pencil2D-win64-$today"
+if ( Test-Path $TheFolder )
+{
+    Remove-Item -Recurse $TheFolder -ErrorAction Continue
+}
+New-Item -ItemType Directory $TheFolder
 
-Copy-Item $SrcExePath $FolderName\Pencil2D.exe
+# Copy exe
+$AppExe = "app\release\Pencil2D.exe"
+Copy-Item $AppExe $TheFolder\Pencil2D.exe
 
-# Run windeployqt
-$deployqt = $env:QTDIR + "\bin\windeployqt.exe"
-Write-Host $deployqt
+# Copy plugins
+New-Item -ItemType Directory "$TheFolder\plugins"
+Copy-Item "C:\Bin\ffmpeg.exe" "$TheFolder\plugins\"
 
-& $deployqt $FolderName\Pencil2D.exe
+# Run windeployqt 
+& "windeployqt.exe" $TheFolder\Pencil2D.exe
 
-# attach VS2013 runtime
-Copy-Item $env:windir\system32\msvcp120.dll $FolderName
-Copy-Item $env:windir\system32\msvcr120.dll $FolderName
+# attach VS2015 runtime
+Copy-Item $env:windir\system32\msvcp140.dll $TheFolder
+Copy-Item $env:windir\system32\vcruntime140.dll $TheFolder
+Copy-Item $env:windir\system32\ucrtbase.dll $TheFolder
 
-Copy-Item .\resources\translations\*.qm  $FolderName\translations
+# Compress
+$TheZip = "..\" + $TheFolder + ".zip"
+[string]$7z = "C:\Program Files\7-zip\7z.exe";
+[Array]$arguments = "a", "-tzip", $TheZip, $TheFolder;
 
-$ZipName = $FolderName + ".zip"
+& $7z $arguments
 
-[string]$ZipExe = "C:\Program Files\7-zip\7z.exe";
-[Array]$arguments = "a", "-tzip", $ZipName, $FolderName;
-
-& $ZipExe $arguments
-
-Remove-Item -Recurse $FolderName
+Remove-Item -Recurse $TheFolder

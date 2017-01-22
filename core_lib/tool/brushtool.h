@@ -28,12 +28,12 @@ public:
     void setPressure( const bool pressure ) override;
 
 protected:
-    QPointF lastBrushPoint;
+    QPointF mLastBrushPoint;
 
-    QPointF mouseDownPoint;
+    QPointF mMouseDownPoint;
 
-    BitmapImage img;
-    QColor currentPressuredColor;
+    BitmapImage mImg;
+    QColor mCurrentPressuredColor;
     qreal mOpacity;
 };
 

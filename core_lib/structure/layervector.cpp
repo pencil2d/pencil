@@ -14,6 +14,7 @@ GNU General Public License for more details.
 
 */
 #include "layervector.h"
+#include "vectorimage.h"
 #include <QtDebug>
 
 LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
@@ -84,7 +85,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
     if ( keyExists( frameNumber ) )
     {
-        removeKeyFrame( frameNumber, false );
+        removeKeyFrame( frameNumber );
     }
     VectorImage* vecImg = new VectorImage;
     vecImg->setPos( frameNumber );
@@ -93,15 +94,27 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
     addKeyFrame( frameNumber, vecImg );
 }
 
-bool LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
+Status LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
 {
+    QStringList debugInfo = QStringList() << "LayerVector::saveKeyFrame" << QString( "pKeyFrame.pos() = %1" ).arg( pKeyFrame->pos() ) << QString( "path = " ).append( path );
     VectorImage* pVecImage = static_cast< VectorImage* >( pKeyFrame );
 
     QString theFileName = fileName( pKeyFrame->pos() );
     QString strFilePath = QDir( path ).filePath( theFileName );
-    pVecImage->write( strFilePath, "VEC" );
+    debugInfo << QString( "strFilePath = " ).append( strFilePath );
+    Status st = pVecImage->write( strFilePath, "VEC" );
+    if ( !st.ok() )
+    {
+        QStringList vecImageDetails = st.detailsList();
+        for ( QString detail : vecImageDetails )
+        {
+            detail.prepend( "&nbsp;&nbsp;" );
+        }
+        debugInfo << QString( "- VectorImage failed to write" ) << vecImageDetails;
+        return Status( Status::FAIL, debugInfo );
+    }
 
-    return true;
+    return Status::OK;
 }
 
 QString LayerVector::fileName( int frame )

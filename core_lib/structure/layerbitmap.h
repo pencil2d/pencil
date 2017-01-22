@@ -17,10 +17,7 @@ GNU General Public License for more details.
 #ifndef LAYERBITMAP_H
 #define LAYERBITMAP_H
 
-#include <QImage>
-#include <QString>
-#include "layerimage.h"
-
+#include "layer.h"
 
 class BitmapImage;
 
@@ -43,7 +40,7 @@ public:
 
     qreal getOpacity() { return mOpacity; }
 protected:
-    bool saveKeyFrame( KeyFrame*, QString strPath ) override;
+    Status saveKeyFrame( KeyFrame*, QString strPath ) override;
     qreal mOpacity;
 private:
     QString fileName( int index );

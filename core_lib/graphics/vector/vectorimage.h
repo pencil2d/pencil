@@ -37,9 +37,9 @@ public:
     void setObject( Object* pObj ) { myParent = pObj; }
 
     bool read(QString filePath);
-    bool write(QString filePath, QString format);
+    Status write(QString filePath, QString format);
 
-    QDomElement createDomElement(QDomDocument& doc);
+    Status createDomElement(QXmlStreamWriter& doc);
     void loadDomElement(QDomElement element);
 
     void insertCurve(int position, BezierCurve& newCurve, qreal factor, bool interacts);
@@ -70,7 +70,7 @@ public:
     void deleteSelectedPoints();
     void removeVertex(int i, int m);
 
-    void paste(VectorImage);
+    void paste(VectorImage&);
 
     QColor getColour(int i);
     int  getColourNumber(QPointF point);

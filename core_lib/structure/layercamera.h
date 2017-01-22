@@ -16,17 +16,12 @@ GNU General Public License for more details.
 #ifndef LAYERCAMERA_H
 #define LAYERCAMERA_H
 
-#include <QDialog>
 #include <QList>
-#include <QString>
-#include <QPainter>
-#include "layerimage.h"
-#include "bitmapimage.h"
-
+#include <QDialog>
+#include "layer.h"
 
 class QLineEdit;
 class QSpinBox;
-class KeyFrame;
 class Camera;
 
 class CameraPropertiesDialog : public QDialog
@@ -69,9 +64,10 @@ public:
     QTransform getViewAtFrame(int frameNumber);
 
     QRect getViewRect();
+    QSize getViewSize();
 
 protected:
-    bool saveKeyFrame( KeyFrame*, QString path ) override;
+    Status saveKeyFrame( KeyFrame*, QString path ) override;
 
     QRect viewRect;
     CameraPropertiesDialog* dialog;

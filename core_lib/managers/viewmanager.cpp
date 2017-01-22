@@ -2,8 +2,12 @@
 
 #include <utility>
 #include "object.h"
-#include "editorstate.h"
 
+static float gZoomingList[] = 
+{
+    .01f, .02f, .04f, .06f, .08f, .12f, .16f, .25f, .33f, .5f, .75f,
+    1.f, 1.5f, 2.f, 3.f, 4.f, 5.f, 6.f, 8.f, 16.f, 32.f, 48.f, 64.f, 96.f
+};
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 {
@@ -14,10 +18,23 @@ bool ViewManager::init()
     return true;
 }
 
-Status ViewManager::onObjectLoaded( Object* o )
+Status ViewManager::load( Object* o )
 {
-    mView = o->editorState()->mCurrentView;
+    mView = o->data()->getCurrentView();
+
+    if ( mView.isIdentity() )
+    {
+        translate( 0, 0 );
+    }
+	createViewTransform();
+
     return Status::OK;
+}
+
+Status ViewManager::save( Object* o )
+{
+	o->data()->setCurrentView( mView );
+	return Status();
 }
 
 QPointF ViewManager::mapCanvasToScreen( QPointF p )
@@ -37,12 +54,12 @@ QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
 
 QRectF ViewManager::mapCanvasToScreen( const QRectF& rect )
 {
-    return std::move( mView.mapRect( rect ) );
+    return mView.mapRect( rect ) ;
 }
 
 QRectF ViewManager::mapScreenToCanvas( const QRectF& rect )
 {
-    return std::move( mView.inverted().mapRect( rect ) );
+    return  mView.inverted().mapRect( rect ) ;
 }
 
 QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )
@@ -92,6 +109,38 @@ void ViewManager::rotate(float degree)
     mRotate += degree;
     mView = createViewTransform();
     Q_EMIT viewChanged();
+}
+
+void ViewManager::scaleUp()
+{
+    int listLength = sizeof(gZoomingList)/sizeof(float);
+    for(int i = 0; i < listLength; i++)
+    {
+        if (mScale < gZoomingList[i])
+        {
+            scale(gZoomingList[i]);
+            return;
+        }
+    }
+
+    // scale is not in the list.
+    scale(mScale * 2.0f);
+}
+
+void ViewManager::scaleDown()
+{
+    int listLength = sizeof(gZoomingList)/sizeof(float);
+    for(int i = listLength-1; i > 0; i--)
+    {
+        if (mScale > gZoomingList[i])
+        {
+            scale(gZoomingList[i]);
+            return;
+        }
+    }
+
+    // scale is not in the list.
+    scale(mScale * 0.8333f);
 }
 
 void ViewManager::scale(float scaleValue)

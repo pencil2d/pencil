@@ -13,8 +13,9 @@ public:
     explicit ViewManager( QObject* parent = 0 );
 
     bool init() override;
-    Status onObjectLoaded( Object* ) override;
-    
+    Status load( Object* ) override;
+	Status save( Object* ) override;
+
     QTransform getView();
     void resetView();
 
@@ -36,6 +37,8 @@ public:
 
     float scaling() { return mScale; }
     void scale( float scaleValue );
+    void scaleUp();
+    void scaleDown();
 
     void flipHorizontal( bool b );
     void flipVertical( bool b );

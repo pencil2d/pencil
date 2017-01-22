@@ -49,21 +49,28 @@ HEADERS +=  \
     interface/timelinecells.h \
     interface/toolbox.h \
     interface/tooloptiondockwidget.h \
+    interface/basedockwidget.h \
+    interface/backgroundwidget.h \
     managers/basemanager.h \
     managers/colormanager.h \
     managers/layermanager.h \
     managers/toolmanager.h \
     managers/playbackmanager.h \
     managers/viewmanager.h \
+    managers/preferencemanager.h \
+    managers/soundmanager.h \
     structure/camera.h \
     structure/keyframe.h \
     structure/layer.h \
     structure/layerbitmap.h \
     structure/layercamera.h \
-    structure/layerimage.h \
     structure/layersound.h \
     structure/layervector.h \
+    structure/keyframefactory.h \
+    structure/soundclip.h \
     structure/object.h \
+    structure/objectdata.h \
+    structure/filemanager.h \
     tool/basetool.h \
     tool/brushtool.h \
     tool/buckettool.h \
@@ -84,17 +91,10 @@ HEADERS +=  \
     util/pencilerror.h \
     util/pencilsettings.h \
     util/util.h \
-    interface/basedockwidget.h \
     util/log.h \
     canvasrenderer.h \
-    managers/preferencemanager.h \
     soundplayer.h \
-    structure/keyframefactory.h \
-    structure/soundclip.h \
-    managers/soundmanager.h \
-    interface/backgroundwidget.h \
-    structure/editorstate.h \
-    structure/filemanager.h
+    movieexporter.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -116,19 +116,27 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/timelinecells.cpp \
     interface/toolbox.cpp \
     interface/tooloptiondockwidget.cpp \
+    interface/basedockwidget.cpp \
+    interface/backgroundwidget.cpp \
     managers/basemanager.cpp \
     managers/colormanager.cpp \
     managers/layermanager.cpp \
     managers/toolmanager.cpp \
+    managers/preferencemanager.cpp \
+    managers/playbackmanager.cpp \
+    managers/viewmanager.cpp \
     structure/camera.cpp \
     structure/keyframe.cpp \
     structure/layer.cpp \
     structure/layerbitmap.cpp \
     structure/layercamera.cpp \
-    structure/layerimage.cpp \
     structure/layersound.cpp \
     structure/layervector.cpp \
     structure/object.cpp \
+    structure/keyframefactory.cpp \
+    structure/soundclip.cpp \
+    structure/objectdata.cpp \
+    structure/filemanager.cpp \
     tool/basetool.cpp \
     tool/brushtool.cpp \
     tool/buckettool.cpp \
@@ -147,19 +155,14 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/fileformat.cpp \
     util/pencilerror.cpp \
     util/pencilsettings.cpp \
-    interface/basedockwidget.cpp \
-    managers/playbackmanager.cpp \
-    managers/viewmanager.cpp \
     util/util.cpp \
     canvasrenderer.cpp \
-    managers/preferencemanager.cpp \
     soundplayer.cpp \
-    structure/keyframefactory.cpp \
-    structure/soundclip.cpp \
     managers/soundmanager.cpp \
-    interface/backgroundwidget.cpp \
-    structure/editorstate.cpp \
-    structure/filemanager.cpp
+    movieexporter.cpp
+
+VERSION = 0.5.4
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
     CONFIG -= flat

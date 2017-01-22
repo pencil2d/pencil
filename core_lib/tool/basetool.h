@@ -2,14 +2,11 @@
 #define BASETOOL_H
 
 #include <QObject>
-#include <QColor>
-#include <QMap>
 #include <QString>
 #include <QCursor>
 #include <QMouseEvent>
-#include "pencildef.h"
-
 #include <QPointF>
+#include "pencildef.h"
 
 class Editor;
 class ScribbleArea;
@@ -21,7 +18,7 @@ class Properties
 public:
     qreal width       = 1.f;
     qreal feather     = 1.f;
-    int pressure      = 1;
+    bool pressure      = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
     bool bezier_state = false;
@@ -100,7 +97,7 @@ protected:
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;
-    qreal adjustmentStep = 0.0f;
+    qreal mAdjustmentStep = 0.0f;
 };
 
 #endif // BASETOOL_H

@@ -23,17 +23,17 @@ bool ToolManager::init()
 {
     mIsSwitchedToEraser = false;
 
-    mToolSetHash.insert( PEN, new PenTool );
-    mToolSetHash.insert( PENCIL, new PencilTool );
-    mToolSetHash.insert( BRUSH, new BrushTool );
-    mToolSetHash.insert( ERASER, new EraserTool );
-    mToolSetHash.insert( BUCKET, new BucketTool );
-    mToolSetHash.insert( EYEDROPPER, new EyedropperTool );
-    mToolSetHash.insert( HAND, new HandTool );
-    mToolSetHash.insert( MOVE, new MoveTool );
-    mToolSetHash.insert( POLYLINE, new PolylineTool );
-    mToolSetHash.insert( SELECT, new SelectTool );
-    mToolSetHash.insert( SMUDGE, new SmudgeTool );
+    mToolSetHash.insert( PEN, new PenTool( parent() ) );
+    mToolSetHash.insert( PENCIL, new PencilTool( parent() ) );
+    mToolSetHash.insert( BRUSH, new BrushTool( parent() ) );
+    mToolSetHash.insert( ERASER, new EraserTool( parent() ) );
+    mToolSetHash.insert( BUCKET, new BucketTool( parent() ) );
+    mToolSetHash.insert( EYEDROPPER, new EyedropperTool( parent() ) );
+    mToolSetHash.insert( HAND, new HandTool( parent() ) );
+    mToolSetHash.insert( MOVE, new MoveTool( parent() ) );
+    mToolSetHash.insert( POLYLINE, new PolylineTool( parent() ) );
+    mToolSetHash.insert( SELECT, new SelectTool( parent() ) );
+    mToolSetHash.insert( SMUDGE, new SmudgeTool( parent() ) );
 
     foreach( BaseTool* pTool, mToolSetHash.values() )
     {
@@ -45,9 +45,14 @@ bool ToolManager::init()
     return true;
 }
 
-Status ToolManager::onObjectLoaded( Object* )
+Status ToolManager::load( Object* )
 {
     return Status::OK;
+}
+
+Status ToolManager::save( Object* )
+{
+	return Status::OK;
 }
 
 BaseTool* ToolManager::getTool(ToolType eToolType)

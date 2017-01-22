@@ -18,9 +18,14 @@ bool PreferenceManager::init()
     return true;
 }
 
-Status PreferenceManager::onObjectLoaded( Object* )
+Status PreferenceManager::load( Object* )
 {
     return Status::OK;
+}
+
+Status PreferenceManager::save( Object * )
+{
+	return Status::OK;
 }
 
 void PreferenceManager::loadPrefs()
@@ -28,7 +33,6 @@ void PreferenceManager::loadPrefs()
     QSettings settings( PENCIL2D, PENCIL2D );
 
     // Display
-    //
     set( SETTING::GRID,                     settings.value( SETTING_SHOW_GRID,              false ).toBool() );
     set( SETTING::INVISIBLE_LINES,          settings.value( SETTING_INVISIBLE_LINES,        false ).toBool() );
     set( SETTING::OUTLINES,                 settings.value( SETTING_OUTLINES,               false ).toBool() );
@@ -42,6 +46,7 @@ void PreferenceManager::loadPrefs()
     //
     set( SETTING::ANTIALIAS,                settings.value( SETTING_ANTIALIAS,              true ).toBool() );
     set( SETTING::TOOL_CURSOR,              settings.value( SETTING_TOOL_CURSOR,            true ).toBool() );
+    set( SETTING::DOTTED_CURSOR,            settings.value( SETTING_DOTTED_CURSOR,          true ).toBool() );
     set( SETTING::HIGH_RESOLUTION,          settings.value( SETTING_HIGH_RESOLUTION,        true ).toBool() );
     set( SETTING::SHADOW,                   settings.value( SETTING_SHADOW,                 false ).toBool() );
     set( SETTING::QUICK_SIZING,             settings.value( SETTING_QUICK_SIZING,           true ).toBool() );
@@ -67,6 +72,7 @@ void PreferenceManager::loadPrefs()
     //
     set( SETTING::PREV_ONION,               settings.value( SETTING_PREV_ONION,             false ).toBool() );
     set( SETTING::NEXT_ONION,               settings.value( SETTING_NEXT_ONION,             false ).toBool() );
+    set( SETTING::MULTILAYER_ONION,         settings.value( SETTING_MULTILAYER_ONION,       false ).toBool() );
     set( SETTING::ONION_BLUE,               settings.value( SETTING_ONION_BLUE,             false ).toBool() );
     set( SETTING::ONION_RED,                settings.value( SETTING_ONION_RED,              false ).toBool() );
 
@@ -76,15 +82,14 @@ void PreferenceManager::loadPrefs()
     set( SETTING::ONION_NEXT_FRAMES_NUM,    settings.value( SETTING_ONION_NEXT_FRAMES_NUM,  5 ).toInt() );
     set( SETTING::ONION_TYPE,               settings.value( SETTING_ONION_TYPE,             "relative" ).toString() );
 
-
+    set( SETTING::LANGUAGE,                 settings.value( SETTING_LANGUAGE ).toString() );
+    
     set( SETTING::AXIS, false );
 //#define DRAW_AXIS
 #ifdef DRAW_AXIS
     set( SETTING::AXIS, true );
 #endif
 }
-
-
 
 void PreferenceManager::turnOn( SETTING option )
 {
@@ -111,12 +116,13 @@ int PreferenceManager::getInt( SETTING option )
 QString PreferenceManager::getString( SETTING option )
 {
     int optionId = static_cast< int >( option );
-    if (mIntegerSet.contains(optionId)) {
-        return QString::number(mIntegerSet.value(optionId, -1));
-    }
-    else if (mBooleanSet.contains(optionId) )
+    if ( mIntegerSet.contains( optionId ) )
     {
-        if (mBooleanSet.value(optionId, false))
+        return QString::number( mIntegerSet.value( optionId, -1 ) );
+    }
+    else if ( mBooleanSet.contains( optionId ) )
+    {
+        if ( mBooleanSet.value( optionId, false ) )
         {
             return "true";
         }
@@ -141,6 +147,9 @@ void PreferenceManager::set(SETTING option, QString value)
         break;
     case SETTING::ONION_TYPE:
         settings.setValue( SETTING_ONION_TYPE, value );
+        break;
+    case SETTING::LANGUAGE:
+        settings.setValue( SETTING_LANGUAGE, value );
         break;
     default:
         break;
@@ -171,11 +180,12 @@ void PreferenceManager::set( SETTING option, int value )
         settings.setValue ( SETTING_AUTO_SAVE_NUMBER, value );
         break;
     case SETTING::FRAME_SIZE:
-        if (value < 12) { value = 12; }
+        if (value < 4) { value = 4; }
+        else if (value > 20) { value = 20; }
         settings.setValue ( SETTING_FRAME_SIZE, value );
         break;
     case SETTING::TIMELINE_SIZE:
-        if (value < 20) { value = 20; }
+        if (value < 2) { value = 2; }
         settings.setValue ( SETTING_TIMELINE_SIZE, value );
         break;
     case SETTING::LABEL_FONT_SIZE:
@@ -198,6 +208,7 @@ void PreferenceManager::set( SETTING option, int value )
         settings.setValue ( SETTING_GRID_SIZE, value );
         break;
     default:
+        Q_ASSERT( false );
         break;
     }
 
@@ -231,6 +242,9 @@ void PreferenceManager::set( SETTING option, bool value )
     case SETTING::NEXT_ONION:
         settings.setValue ( SETTING_NEXT_ONION, value );
         break;
+    case SETTING::MULTILAYER_ONION:
+        settings.setValue( SETTING_MULTILAYER_ONION, value);
+        break;
     case SETTING::AXIS:
         settings.setValue ( SETTING_AXIS, value );
         break;
@@ -255,6 +269,9 @@ void PreferenceManager::set( SETTING option, bool value )
     case SETTING::TOOL_CURSOR:
         settings.setValue ( SETTING_TOOL_CURSOR, value );
         break;
+    case SETTING::DOTTED_CURSOR:
+        settings.setValue ( SETTING_DOTTED_CURSOR, value );
+        break;
     case SETTING::HIGH_RESOLUTION:
         settings.setValue ( SETTING_HIGH_RESOLUTION, value );
         break;
@@ -266,10 +283,12 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::DRAW_LABEL:
         settings.setValue ( SETTING_DRAW_LABEL, value );
+        break;
     case SETTING::QUICK_SIZING:
         settings.setValue ( SETTING_QUICK_SIZING, value );
         break;
     default:
+        Q_ASSERT( false );
         break;
     }
 

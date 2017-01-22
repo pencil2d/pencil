@@ -17,15 +17,9 @@ GNU General Public License for more details.
 #define LAYERVECTOR_H
 
 #include <QImage>
-#include <QSize>
-#include <QList>
-#include <QString>
-#include <QPainter>
-#include "layerimage.h"
-#include "vectorimage.h"
+#include "layer.h"
 
-class KeyFrame;
-
+class VectorImage;
 
 class LayerVector : public Layer
 {
@@ -48,7 +42,7 @@ public:
     void removeColour(int index);
 
 protected:
-    bool saveKeyFrame( KeyFrame*, QString path ) override;
+    Status saveKeyFrame( KeyFrame*, QString path ) override;
     QString fileName( int index );
 };
 

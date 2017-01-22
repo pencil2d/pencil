@@ -25,24 +25,30 @@ class TimeLineCells : public QWidget
 
 public:
     TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
+    ~TimeLineCells();
     int getLayerNumber(int y);
     int getLayerY(int layerNumber);
     int getFrameNumber(int x);
     int getFrameX(int frameNumber);
     int getMouseMoveY() { return mouseMoveY; }
+    int getOffsetX() { return m_offsetX; }
     int getOffsetY() { return m_offsetY; }
     int getLayerHeight() { return layerHeight; }
     int getFrameLength() {return frameLength;}
+    int getFrameSize() { return frameSize; }
+    void clearCache() { if ( m_pCache ) delete m_pCache; m_pCache = new QPixmap( size() ); }
 
 Q_SIGNALS:
     void mouseMovedY(int);
+    void lengthChanged(int);
+    void offsetChanged(int);
 
 public slots:
     void updateContent();
     void updateFrame(int frameNumber);
     void hScrollChange(int);
     void vScrollChange(int);
-    void setMouseMoveY(int x) { mouseMoveY = x;}
+    void setMouseMoveY(int x);
 
 protected:
     void drawContent();
@@ -77,8 +83,9 @@ private:
     int startY, endY, startLayerNumber;
     int startFrameNumber;
     int lastFrameNumber = -1;
-    int mouseMoveY;
+    int mouseMoveY, mouseMoveX;
     int frameOffset, layerOffset;
+    Qt::MouseButton primaryButton = Qt::NoButton;
 
     bool canMoveFrame   = false;
     bool movingFrames   = false;

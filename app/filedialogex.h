@@ -3,18 +3,23 @@
 
 #include <QObject>
 
+class QWidget;
+
 enum class EFile
 {
-    SOUND
+    SOUND,
+    MOVIE_EXPORT
 };
 
-class FileDialogEx : public QObject
+class FileDialog : public QObject
 {
+    Q_OBJECT
 public:
-    FileDialogEx( QObject* parent );
-    ~FileDialogEx();
+    FileDialog( QWidget* parent );
+    ~FileDialog();
 
     QString openFile( EFile fileType );
+    QString saveFile( EFile fileType );
 
 private:
     QString dialogTitle( EFile fileType );

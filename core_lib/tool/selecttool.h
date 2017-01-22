@@ -7,9 +7,10 @@
 class SelectTool : public BaseTool
 {
     Q_OBJECT
+
 public:
-    SelectTool();
-    ToolType type() override;
+    explicit SelectTool( QObject* parent = 0 );
+	ToolType type() override { return SELECT; }
     void loadSettings() override;
     QCursor cursor() override;
 

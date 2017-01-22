@@ -14,8 +14,9 @@ TARGET = Pencil2D
 CONFIG += qt
 
 RESOURCES += \
-    ../pencil.qrc \
-    resource/app.qrc
+    resource/app.qrc \
+    ../translations/translations.qrc\
+    ../pencil.qrc
 
 INCLUDEPATH += \
     ../core_lib/graphics \
@@ -45,7 +46,10 @@ HEADERS += \
     colorwheel.h \
     filedialogex.h \
     displayoptionwidget.h \
-    pencilapplication.h
+    pencilapplication.h \
+    exportmoviedialog.h \
+    app_util.h \
+    errordialog.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -66,7 +70,9 @@ SOURCES += \
     colorwheel.cpp \
     filedialogex.cpp \
     displayoptionwidget.cpp \
-    pencilapplication.cpp
+    pencilapplication.cpp \
+    exportmoviedialog.cpp \
+    errordialog.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -76,7 +82,9 @@ FORMS += \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
-    ui/displayoption.ui
+    ui/displayoption.ui \
+    ui/exportmoviedialog.ui \
+    ui/errordialog.ui
 
 DEPENDPATH += .
 
@@ -84,8 +92,6 @@ VERSION = 0.5.4
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 macx {
-    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-    LIBS += -lobjc -framework AppKit -framework Carbon
     RC_FILE = ../pencil.icns
 
     # Use custom Info.plist
