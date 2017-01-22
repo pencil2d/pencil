@@ -228,7 +228,7 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Form</source>
-        <translation>Ürlap</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="35"/>
@@ -316,7 +316,7 @@
     <message>
         <location filename="../app/ui/errordialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation>Párbeszéd</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/errordialog.ui" line="52"/>
@@ -343,7 +343,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Párbeszéd</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="20"/>
@@ -464,12 +464,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="189"/>
         <source>The file path you have specified (&quot;%1&quot;) points to a directory, so the file cannot be saved.</source>
-        <translation type="unfinished"></translation>
+        <translation>A megadott fájlútvonal (%1) egy könyvtárra mutat, ezért a fájl nem menthető.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="190"/>
         <source>The file path you have specified (&quot;%1&quot;) cannot be written to, so the file cannot be saved. Please make sure that you have sufficent permissions to save to that location and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>A megadott fájlútvonal (%1) nem írható, ezért a fájl nem menthető. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="226"/>
@@ -480,7 +480,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="226"/>
         <source>Cannot create the data directory at &quot;%1&quot;. Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pclx format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az adatkönyvtár nem hozható létre: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pclx formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="229"/>
@@ -492,22 +492,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="229"/>
         <source>Cannot create the data directory at temporary location &quot;%1&quot;. Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pcl format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az adatkönyvtár nem hozható létre az ideiglenes útvonalon: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pcl formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="237"/>
         <source>Cannot use the path &quot;%1&quot; as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az útvonal nem használható adatkönyvtárként, mert az egy fájlra mutat: &quot;%1&quot;. Helyezze át vagy törölje ezt a fájlt és próbálja újra. Esetleg próbájon pclx formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="240"/>
         <source>Cannot use the data directory at temporary location &quot;%1&quot; since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az útvonal nem használható adatkönyvtárként, mert az egy fájlra mutat: &quot;%1&quot;. Helyezze át vagy törölje ezt a fájlt és próbálja újra. Esetleg próbájon pcl formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="286"/>
         <source>An internal error occurred while trying to save the file. Some or all of your file may not have saved.</source>
-        <translation type="unfinished"></translation>
+        <translation>Belső hiba keletkezett a fájl mentése közben. Egy vagy talán az összes fájl mentése meghiúsult.</translation>
     </message>
 </context>
 <context>
@@ -679,7 +679,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="267"/>
         <source>Tablet high-resolution position</source>
-        <translation type="unfinished"></translation>
+        <translation>Nagy pontosságú pozicionálás táblagépen</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="345"/>
@@ -1036,7 +1036,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="815"/>
         <source>MultiLayer Onion Skin</source>
-        <translation type="unfinished">Többrétegű képfóliák</translation>
+        <translation>Többrétegű képfóliák</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="826"/>
@@ -1723,7 +1723,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Ürlap</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="47"/>
