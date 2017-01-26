@@ -1859,6 +1859,11 @@ p, li { white-space: pre-wrap; }
         <translation>Rétegek:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation>Idővonal</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Réteg</translation>

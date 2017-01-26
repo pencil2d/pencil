@@ -1854,6 +1854,11 @@ Přejete si uložit změny.</translation>
         <translation>Vrstvy:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation type="unfinished">Časová osa</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Vrstva</translation>

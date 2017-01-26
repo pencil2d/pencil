@@ -1749,6 +1749,11 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TimeLine</name>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="79"/>
         <source>Layers:</source>
         <translation type="unfinished"></translation>

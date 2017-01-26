@@ -1833,6 +1833,11 @@ p, li { white-space: pre-wrap; }
         <translation>Lag:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation type="unfinished">Tidslinje</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Lag</translation>

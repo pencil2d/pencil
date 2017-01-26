@@ -1827,6 +1827,11 @@ p, li { white-space: pre-wrap; }
         <translation>Livelli:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Livello</translation>

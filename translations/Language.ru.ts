@@ -1834,6 +1834,11 @@ p, li { white-space: pre-wrap; }
         <translation>Слои:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation type="unfinished">Временная шкала</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Layer</translation>

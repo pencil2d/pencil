@@ -1854,6 +1854,11 @@ Deseja salvar suas alterações?</translation>
         <translation>Camadas:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
+        <translation type="unfinished">Linha do tempo</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Camada</translation>
