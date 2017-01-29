@@ -45,7 +45,7 @@ void TimeLine::initUI()
 {
     Q_ASSERT( editor() != nullptr );
 
-    setWindowTitle( "Timeline" );
+    setWindowTitle( tr( "Timeline" ) );
 
     QWidget* timeLineContent = new QWidget( this );
 

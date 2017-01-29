@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>ActionCommands</name>
     <message>
         <location filename="../app/actioncommands.cpp" line="50"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
-        <translation>Es existiert keine Sound-Ebene als Ziel für diesen Import. Neue Ebene erstellen?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="51"/>
         <source>Create sound layer</source>
-        <translation>Sound-Ebene erstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="52"/>
         <source>Don&apos;t create layer</source>
-        <translation>Keine Ebene erstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="62"/>
@@ -25,7 +25,7 @@
         <location filename="../app/actioncommands.cpp" line="326"/>
         <location filename="../app/actioncommands.cpp" line="341"/>
         <source>Layer Properties</source>
-        <translation>Ebenen-Eigenschaften</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="63"/>
@@ -34,7 +34,13 @@
         <location filename="../app/actioncommands.cpp" line="327"/>
         <location filename="../app/actioncommands.cpp" line="342"/>
         <source>Layer name:</source>
-        <translation>Name der Ebene:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/actioncommands.cpp" line="64"/>
+        <location filename="../app/actioncommands.cpp" line="343"/>
+        <source>Sound Layer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="83"/>
@@ -54,23 +60,17 @@
     <message>
         <location filename="../app/actioncommands.cpp" line="301"/>
         <source>Bitmap Layer</source>
-        <translation>Rasterbild-Ebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="314"/>
         <source>Vector Layer</source>
-        <translation>Vector-Ebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="328"/>
         <source>Camera Layer</source>
-        <translation>Kamera-Ebene</translation>
-    </message>
-    <message>
-        <location filename="../app/actioncommands.cpp" line="64"/>
-        <location filename="../app/actioncommands.cpp" line="343"/>
-        <source>Sound Layer</source>
-        <translation>Sound-Ebene</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -78,45 +78,45 @@
     <message>
         <location filename="../core_lib/structure/layercamera.cpp" line="29"/>
         <source>Camera name:</source>
-        <translation>Name der Kamera:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/layercamera.cpp" line="36"/>
         <source>Camera size:</source>
-        <translation>Größe der Kamera:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/layercamera.cpp" line="50"/>
         <source>Ok</source>
-        <translation>Ok</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ColorGridItem</name>
     <message>
-        <location filename="../app/colorgriditem.cpp" line="29"/>
-        <source>Cancel</source>
-        <translation>Abbrechen</translation>
-    </message>
-    <message>
         <location filename="../app/colorgriditem.cpp" line="26"/>
         <source>Pick</source>
-        <translation>Auswählen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorgriditem.cpp" line="27"/>
         <source>Tint</source>
-        <translation>Einfärben</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorgriditem.cpp" line="28"/>
         <source>Clear</source>
-        <translation>Löschen</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorgriditem.cpp" line="29"/>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -124,52 +124,52 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="44"/>
         <source>HSV</source>
-        <translation>HSV</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="51"/>
         <source>RGB</source>
-        <translation>RGB</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="68"/>
         <location filename="../app/colorinspector.cpp" line="106"/>
         <source>Red</source>
-        <translation>Rot</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="82"/>
         <location filename="../app/colorinspector.cpp" line="107"/>
         <source>Green</source>
-        <translation>Grün</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="96"/>
         <location filename="../app/colorinspector.cpp" line="108"/>
         <source>Blue</source>
-        <translation>Blau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="110"/>
         <location filename="../app/colorinspector.cpp" line="88"/>
         <location filename="../app/colorinspector.cpp" line="109"/>
         <source>Alpha</source>
-        <translation>Alpha</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorinspector.cpp" line="85"/>
         <source>Hue</source>
-        <translation>Farbton</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorinspector.cpp" line="86"/>
         <source>Saturation</source>
-        <translation>Sättigung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorinspector.cpp" line="87"/>
         <source>Value</source>
-        <translation>Helligkeit</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -177,17 +177,17 @@
     <message>
         <location filename="../app/ui/colorpalette.ui" line="14"/>
         <source>Color Palette</source>
-        <translation>Farbpalette</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="35"/>
         <source>Add Color</source>
-        <translation>Farbe hinzufügen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/colorpalette.ui" line="49"/>
         <source>Remove Color</source>
-        <translation>Farbe entfernen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -196,31 +196,24 @@
         <location filename="../app/colorpalettewidget.cpp" line="36"/>
         <source>Color Palette</source>
         <comment>Window title of color palette.</comment>
-        <translation>Farbpalette</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorpalettewidget.cpp" line="145"/>
         <location filename="../app/colorpalettewidget.cpp" line="174"/>
         <source>Colour name</source>
-        <translation>Name der Farbe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorpalettewidget.cpp" line="146"/>
         <location filename="../app/colorpalettewidget.cpp" line="175"/>
         <source>Colour name:</source>
-        <translation>Name der Farbe:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/colorpalettewidget.cpp" line="177"/>
         <source>Colour %1</source>
-        <translation>Farbe %1</translation>
-    </message>
-</context>
-<context>
-    <name>Dialog</name>
-    <message>
-        <source>Export Image Sequence</source>
-        <translation type="vanished">Exportiere Bild Sequenz</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -228,12 +221,12 @@
     <message>
         <location filename="../app/ui/displayoption.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="35"/>
         <source>Horizontal flip</source>
-        <translation>Horizontal spiegeln</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="52"/>
@@ -245,46 +238,46 @@
         <location filename="../app/ui/displayoption.ui" line="304"/>
         <location filename="../app/ui/displayoption.ui" line="341"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="72"/>
         <location filename="../app/ui/displayoption.ui" line="75"/>
         <source>Onion skin previous frame</source>
-        <translation>Onion Skin voriges Bild</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="121"/>
         <source>Show invisible lines</source>
-        <translation>Unsichtbare Linien zeigen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="164"/>
         <location filename="../app/ui/displayoption.ui" line="167"/>
         <source>Onion skin color: blue</source>
-        <translation>Onion Skin Farbe: Blau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="207"/>
         <location filename="../app/ui/displayoption.ui" line="210"/>
         <source>Onion skin next frame</source>
-        <translation>Onion Skin nächstes Bild</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="247"/>
         <location filename="../app/ui/displayoption.ui" line="250"/>
         <source>Onion skin color: red</source>
-        <translation>Onion Skin Farbe: Rot</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="287"/>
         <source>Show outlines only</source>
-        <translation>Nur Outlines anzeigen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="324"/>
         <source>Vertical flip</source>
-        <translation>Vertikal spiegeln</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -293,7 +286,7 @@
         <location filename="../app/displayoptionwidget.cpp" line="16"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
-        <translation>Anzeige</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -302,13 +295,13 @@
         <location filename="../core_lib/interface/editor.cpp" line="384"/>
         <location filename="../core_lib/interface/editor.cpp" line="404"/>
         <source>Paste</source>
-        <translation>Einfügen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/editor.cpp" line="565"/>
         <location filename="../core_lib/interface/editor.cpp" line="602"/>
         <source>ImportImg</source>
-        <translation>ImportiereBild</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -316,7 +309,7 @@
     <message>
         <location filename="../app/ui/errordialog.ui" line="20"/>
         <source>Dialog</source>
-        <translation type="unfinished">Dialog</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/errordialog.ui" line="52"/>
@@ -343,37 +336,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialog</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="20"/>
         <source>Resolution (Set by the Camera)</source>
-        <translation>Auflösung (Durch Kamera gesetzt)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="61"/>
         <source>Format</source>
-        <translation>Format</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="68"/>
         <source>PNG</source>
-        <translation>PNG</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="73"/>
         <source>JPG</source>
-        <translation>JPG</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="78"/>
         <source>BMP</source>
-        <translation>BMP</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageseqdialog.ui" line="86"/>
         <source>Transparency</source>
-        <translation>Transparenz</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -411,12 +404,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/exportmoviedialog.ui" line="132"/>
         <source>Start</source>
-        <translation type="unfinished">Start</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/exportmoviedialog.ui" line="146"/>
         <source>End</source>
-        <translation type="unfinished">Ende</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -424,7 +417,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/filedialogex.cpp" line="63"/>
         <source>Import sound...</source>
-        <translation type="unfinished">Ton importieren...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/filedialogex.cpp" line="64"/>
@@ -440,13 +433,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../app/filedialogex.cpp" line="75"/>
         <source>MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>FileDialogEx</name>
-    <message>
-        <source>Import sound...</source>
-        <translation type="vanished">Ton importieren...</translation>
     </message>
 </context>
 <context>
@@ -511,41 +497,21 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="531"/>
         <source>Autosave documents</source>
-        <translation>Dokumente automatisch speichern</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="532"/>
         <source>Enable autosave</source>
-        <translation>Automatisches Speichern erlauben</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="533"/>
         <source>Number of modifications before autosaving:</source>
-        <translation>Anzahl der Änderungen, bevor automatisch gespeichert wird:</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>GeneralPage</name>
-    <message>
-        <source>Window opacity</source>
-        <translation type="vanished">Fenstertransparenz</translation>
-    </message>
-    <message>
-        <source>Background</source>
-        <translation type="vanished">Hintergrund</translation>
-    </message>
-    <message>
-        <source>Appearance</source>
-        <translation type="vanished">Darstellung</translation>
-    </message>
-    <message>
-        <source>Rendering</source>
-        <translation type="vanished">Rendering</translation>
-    </message>
-    <message>
-        <source>Editing</source>
-        <translation type="vanished">Bearbeitung</translation>
-    </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="166"/>
         <source>Language</source>
@@ -556,31 +522,31 @@ p, li { white-space: pre-wrap; }
         <location filename="../app/preferencesdialog.cpp" line="167"/>
         <source>Window opacity</source>
         <comment>GroupBox title in Preference</comment>
-        <translation type="unfinished">Fenstertransparenz</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="168"/>
         <source>Background</source>
         <comment>GroupBox title in Preference</comment>
-        <translation type="unfinished">Hintergrund</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="169"/>
         <source>Appearance</source>
         <comment>GroupBox title in Preference</comment>
-        <translation type="unfinished">Darstellung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="170"/>
         <source>Rendering</source>
         <comment>GroupBox title in Preference</comment>
-        <translation type="unfinished">Rendering</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="171"/>
         <source>Editing</source>
         <comment>GroupBox title in Preference</comment>
-        <translation type="unfinished">Bearbeitung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="174"/>
@@ -650,37 +616,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="188"/>
         <source>Opacity</source>
-        <translation>Transparenz</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="236"/>
         <source>Shadows</source>
-        <translation>Schatten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="237"/>
         <source>Tool Cursors</source>
-        <translation>Werkzeug als Zeiger</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="238"/>
         <source>Antialiasing</source>
-        <translation>Kantenglättung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="239"/>
         <source>Dotted Cursor</source>
-        <translation>Gepunkteter Zeiger</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="260"/>
         <source>Vector curve smoothing</source>
-        <translation>Vektorkurvenglättung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="267"/>
         <source>Tablet high-resolution position</source>
-        <translation>Hochauflösende Tablet-Position</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="345"/>
@@ -698,25 +664,25 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="410"/>
         <source>Grid Size</source>
-        <translation>Größe des Rasters</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Layer</name>
     <message>
+        <location filename="../core_lib/structure/layer.cpp" line="40"/>
+        <source>Undefined Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/structure/layer.cpp" line="478"/>
         <source>Layer Properties</source>
-        <translation>Ebeneneigenschaften</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/layer.cpp" line="479"/>
         <source>Layer name:</source>
-        <translation>Name der Ebene</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/structure/layer.cpp" line="40"/>
-        <source>Undefined Layer</source>
-        <translation>Undefinierte Ebene</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -724,7 +690,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/layerbitmap.cpp" line="24"/>
         <source>Bitmap Layer</source>
-        <translation>Rasterebene</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -732,7 +698,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/layercamera.cpp" line="103"/>
         <source>Camera Layer</source>
-        <translation>Kameraebene</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -740,7 +706,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/layersound.cpp" line="25"/>
         <source>Sound Layer</source>
-        <translation>Soundebene</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -748,424 +714,412 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/layervector.cpp" line="22"/>
         <source>Vector Layer</source>
-        <translation>Vektorebene</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>MainWindow2</name>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="866"/>
-        <source>Color Palette</source>
-        <translation>Farbpalette</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="399"/>
-        <source>Paste</source>
-        <translation>Einfügen</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="14"/>
         <source>MainWindow</source>
-        <translation>Hauptfenster</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="60"/>
         <source>File</source>
-        <translation>Datei</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="64"/>
         <location filename="../app/mainwindow2.cpp" line="1094"/>
         <source>Import</source>
-        <translation>Importieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="76"/>
         <source>Export</source>
-        <translation>Exportieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="104"/>
         <source>Edit</source>
-        <translation>Bearbeiten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="108"/>
         <source>Selection</source>
-        <translation>Auswahl</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="130"/>
         <source>View</source>
-        <translation>Ansicht</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="134"/>
         <source>Onion Skin</source>
-        <translation>Zwiebelhaut</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="160"/>
         <source>Animation</source>
-        <translation>Animation</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="166"/>
-        <source>Tools</source>
-        <comment>Window title of tool box.</comment>
-        <translation>Werkzeuge</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="180"/>
         <location filename="../app/ui/mainwindow2.ui" line="834"/>
         <source>Tools</source>
-        <translation type="unfinished">Werkzeuge</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="200"/>
         <source>Layer</source>
-        <translation>Ebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="211"/>
         <location filename="../app/ui/mainwindow2.ui" line="757"/>
         <source>Help</source>
-        <translation>Hilfe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="218"/>
         <source>Windows</source>
-        <translation>Fenster</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="236"/>
         <source>New</source>
-        <translation>Neu</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="245"/>
         <source>Open</source>
-        <translation>Öffnen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="254"/>
         <source>Save</source>
-        <translation>Speichern</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="263"/>
         <source>Save As ..</source>
-        <translation>Speichern unter...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="272"/>
         <source>Print</source>
-        <translation>Drucken</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="281"/>
         <source>Exit</source>
-        <translation>Beenden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="289"/>
         <source>X-sheet ...</source>
-        <translation>X-Sheet...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="297"/>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
         <source>Image Sequence...</source>
-        <translation>Bildsequenz...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="302"/>
         <location filename="../app/ui/mainwindow2.ui" line="331"/>
         <source>Image...</source>
-        <translation>Bild...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="307"/>
         <location filename="../app/ui/mainwindow2.ui" line="341"/>
         <source>Movie...</source>
-        <translation>Film...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="315"/>
         <location filename="../app/ui/mainwindow2.ui" line="354"/>
         <source>Palette...</source>
-        <translation>Palette...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="323"/>
         <source>Svg Image...</source>
-        <translation>SVG-Bild...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="349"/>
         <source>Sound...</source>
-        <translation>Sound</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="363"/>
         <location filename="../app/mainwindow2.cpp" line="1037"/>
         <source>Undo</source>
-        <translation>Rückgängig</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="372"/>
         <location filename="../app/mainwindow2.cpp" line="1059"/>
         <source>Redo</source>
-        <translation>Wiederholen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="381"/>
         <source>Cut</source>
-        <translation>Ausschneiden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="390"/>
         <source>Copy</source>
-        <translation>Kopieren</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="399"/>
+        <source>Paste</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="404"/>
         <source>Crop</source>
-        <translation>Zuschneiden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="409"/>
         <source>Crop To Selection</source>
-        <translation>Auf Auswahl zuscheiden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="414"/>
         <source>Select All</source>
-        <translation>Alles auswählen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="419"/>
         <source>Deselect All</source>
-        <translation>Nichts auswählen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="428"/>
         <location filename="../app/ui/mainwindow2.ui" line="621"/>
         <source>Clear Frame</source>
-        <translation>Frame zurücksetzen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="433"/>
         <source>Preferences</source>
-        <translation>Einstellungen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="438"/>
         <source>Reset Windows</source>
-        <translation>Fenster Zurücksetzen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="447"/>
         <source>Zoom In</source>
-        <translation>Hineinzoomen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="456"/>
         <source>Zoom Out</source>
-        <translation>Herauszoomen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="461"/>
         <source>Rotate Clockwise</source>
-        <translation>Im Uhrzeigersinn rotieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="466"/>
         <source>Rotate AntiClosewise</source>
-        <translation>Gegen den Uhrzeigersinn rotieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="471"/>
         <source>Reset Zoom/Rotate</source>
-        <translation>Zoom/Drehung zurücksetzen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="480"/>
         <source>Horizontal Flip</source>
-        <translation>Horizontal spiegeln</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="489"/>
         <source>Vertical Flip</source>
-        <translation>Vertikal spiegeln</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="494"/>
         <source>Preview</source>
-        <translation>Vorschau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="502"/>
         <source>Grid</source>
-        <translation>Raster</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
         <source>Previous</source>
-        <translation>Zurück</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="517"/>
         <source>Show previous onion skin</source>
-        <translation>Zeige vorige Onion Skin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Next</source>
-        <translation>Vor</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="532"/>
         <source>Show next onion skin</source>
-        <translation>Zeige nächste Onion Skin</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
         <location filename="../app/mainwindow2.cpp" line="1239"/>
         <source>Play</source>
-        <translation>Abspielen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="553"/>
         <source>Loop</source>
-        <translation>Wiederholen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Next Frame</source>
-        <translation>Nächster Frame</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="571"/>
         <source>Previous Frame</source>
-        <translation>Vorheriger Frame</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="576"/>
         <source>Extend Frame</source>
-        <translation>Frame erweitern</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="585"/>
         <source>Add Frame</source>
-        <translation>Frame hinzufügen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="594"/>
         <source>Duplicate Frame</source>
-        <translation>Frame duplizieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="603"/>
         <source>Remove Frame</source>
-        <translation>Frame entfernen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="612"/>
         <source>Move</source>
-        <translation>Verschieben</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="630"/>
         <source>Select</source>
-        <translation>Auswählen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="639"/>
         <source>Brush</source>
-        <translation>Pinsel
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Polyline</source>
-        <translation>Poly-Linie</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Smudge</source>
-        <translation>Verschmieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Pen</source>
-        <translation>Stift</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Hand</source>
-        <translation>Hand</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Pencil</source>
-        <translation>Bleistift</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>Bucket</source>
-        <translation>Farbeimer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>Eyedropper</source>
-        <translation>Pipette</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>Eraser</source>
-        <translation>Radierer</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>New Bitmap Layer</source>
-        <translation>Neue Rasterebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>New Vector Layer</source>
-        <translation>Neue Vektorebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>New Sound Layer</source>
-        <translation>Neue Soundebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>New Camera Layer</source>
-        <translation>Neue Kameraebene</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="752"/>
         <source>Delete Current Layer</source>
-        <translation>Aktuelle Ebene löschen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="762"/>
         <source>About</source>
-        <translation>Über</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="770"/>
         <source>Toggle palette</source>
-        <translation>Palette an/aus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="775"/>
         <location filename="../app/ui/mainwindow2.ui" line="778"/>
         <source>Reset to default</source>
-        <translation>Auf Standard zurücksetzen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="788"/>
@@ -1192,23 +1146,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="842"/>
         <source>Timeline</source>
-        <translation>Zeitleiste</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Options</source>
-        <translation>Optionen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="858"/>
         <location filename="../app/mainwindow2.cpp" line="152"/>
         <source>Color Wheel</source>
-        <translation>Farbrad</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="866"/>
+        <source>Color Palette</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="874"/>
         <source>Display Options</source>
-        <translation>Anzeige-Optionen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="879"/>
@@ -1233,17 +1192,23 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/mainwindow2.cpp" line="153"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
-        <translation>Farbpalette: &lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;An Zeigerposition umschalten</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="166"/>
+        <source>Tools</source>
+        <comment>Window title of tool box.</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="356"/>
         <source>Open Recent</source>
-        <translation>Zuletzt geöffnet</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="451"/>
         <source>Open File...</source>
-        <translation>Datei öffnen...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="467"/>
@@ -1252,34 +1217,34 @@ p, li { white-space: pre-wrap; }
         <location filename="../app/mainwindow2.cpp" line="668"/>
         <location filename="../app/mainwindow2.cpp" line="852"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="467"/>
         <location filename="../app/mainwindow2.cpp" line="507"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
-        <translation>Pencil kann die Datei nicht lesen. Wenn Sie Bilder importieren möchten, benutzen sie die Importfunktion.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="484"/>
         <source>Save As...</source>
-        <translation>Speichern unter</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="514"/>
         <source>Opening document...</source>
-        <translation>Dokument wird geöffnet...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="514"/>
         <location filename="../app/mainwindow2.cpp" line="565"/>
         <source>Abort</source>
-        <translation>Abbruch</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="565"/>
         <source>Saving document...</source>
-        <translation>Dokument wird gespeichert</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="628"/>
@@ -1320,17 +1285,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/mainwindow2.cpp" line="1042"/>
         <source>Undo   </source>
-        <translation>Rückgängig</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="1051"/>
         <source>Redo   </source>
-        <translation>Wiederherstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="1078"/>
         <source>Export As</source>
-        <translation>Exportieren als</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="1235"/>
@@ -1343,134 +1308,130 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/tool/movetool.cpp" line="43"/>
         <source>Move</source>
-        <translation>Verschieben</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="408"/>
-        <source>Red</source>
-        <translation>Rot</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/structure/object.cpp" line="414"/>
-        <source>Green</source>
-        <translation>Grün</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/structure/object.cpp" line="418"/>
-        <source>Blue</source>
-        <translation>Blau</translation>
-    </message>
-    <message>
         <location filename="../core_lib/structure/object.cpp" line="407"/>
         <source>Black</source>
-        <translation>Schwarz</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/structure/object.cpp" line="408"/>
+        <source>Red</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="409"/>
         <source>Dark Red</source>
-        <translation>Dunkelrot</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="410"/>
         <source>Orange</source>
-        <translation>Orange</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="411"/>
         <source>Dark Orange</source>
-        <translation>Dunkelorange
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="412"/>
         <source>Yellow</source>
-        <translation>Gelb</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="413"/>
         <source>Dark Yellow</source>
-        <translation>Dunkelgelb
-</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/structure/object.cpp" line="414"/>
+        <source>Green</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="415"/>
         <source>Dark Green</source>
-        <translation>Dunkelgrün</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="416"/>
         <source>Cyan</source>
-        <translation>Zyan
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="417"/>
         <source>Dark Cyan</source>
-        <translation>Dunkelzyan</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/structure/object.cpp" line="418"/>
+        <source>Blue</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="419"/>
         <source>Dark Blue</source>
-        <translation>Dunkelblau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="420"/>
         <source>White</source>
-        <translation>Weiss</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="421"/>
         <source>Very Light Grey</source>
-        <translation>Sehr hellgrau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="422"/>
         <source>Light Grey</source>
-        <translation>Hellgrau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Grey</source>
-        <translation>Grau</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Dark Grey</source>
-        <translation>Dunkelgrau
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Light Skin</source>
-        <translation>Helle Hautfarbe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Light Skin - shade</source>
-        <translation>Helle Hautfarbe - Schatten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Skin</source>
-        <translation>Hautfarbe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Skin - shade</source>
-        <translation>Hautfarbe - Schatten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Skin</source>
-        <translation>Dunkler Hautton</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Dark Skin - shade</source>
-        <translation>Dunkle Haut - Schatten</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1527,7 +1488,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/tool/polylinetool.cpp" line="83"/>
         <source>Line</source>
-        <translation>Linie</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1535,7 +1496,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="23"/>
         <source>Preferences</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="74"/>
@@ -1551,7 +1512,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="113"/>
         <source>Grid</source>
-        <translation type="unfinished">Raster</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="119"/>
@@ -1561,12 +1522,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="125"/>
         <source>Timeline</source>
-        <translation type="unfinished">Zeitleiste</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="131"/>
         <source>Tools</source>
-        <translation type="unfinished">Werkzeuge</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="137"/>
@@ -1666,7 +1627,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/recentfilemenu.h" line="20"/>
         <source>Open Recent</source>
-        <translation>Zuletzt geöffnet</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1674,12 +1635,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/scribblearea.cpp" line="547"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/scribblearea.cpp" line="548"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation>Sie zeichnen auf einer ausgeblendeten Ebene. Bitte andere Ebene auswählen (oder aktuelle Ebene einblenden)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/scribblearea.cpp" line="1634"/>
@@ -1703,62 +1664,36 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="14"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="47"/>
         <source>Action:</source>
-        <translation>Aktion:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="54"/>
         <source>None</source>
-        <translation>keine</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="61"/>
         <source>Shortcuts:</source>
-        <translation>Tastenkürzel</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>clear</source>
-        <translation>löschen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="100"/>
         <source>Restore Default Shortcuts</source>
-        <translation>Standard-Tastenkürzel wiederherstellen</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>TimeControls</name>
-    <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
-        <source>Play</source>
-        <translation>Abspielen</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
-        <source>Loop</source>
-        <translation>Schleife</translation>
-    </message>
-    <message>
-        <source>Start of loop</source>
-        <translation type="vanished">Start der Schleife</translation>
-    </message>
-    <message>
-        <source>End of loop</source>
-        <translation type="vanished">Ende  der Schleife</translation>
-    </message>
-    <message>
-        <source>Loop control</source>
-        <translation type="vanished">Schleifensteuerung</translation>
-    </message>
-    <message>
-        <source>Fps: </source>
-        <translation type="vanished">FPS:</translation>
-    </message>
     <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="50"/>
         <source>Start of playback loop</source>
@@ -1780,20 +1715,30 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
+        <source>Play</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
+        <source>Loop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="91"/>
         <source>Sound on/off</source>
-        <translation>Sound an/aus</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="92"/>
         <source>End</source>
-        <translation>Ende</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="93"/>
         <location filename="../core_lib/interface/timecontrols.cpp" line="193"/>
         <source>Start</source>
-        <translation>Start</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="189"/>
@@ -1804,49 +1749,34 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="103"/>
-        <source>New Bitmap Layer</source>
-        <translation>Neue Rasterebene</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="104"/>
-        <source>New Vector Layer</source>
-        <translation>Neue Vektorebene</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="105"/>
-        <source>New Sound Layer</source>
-        <translation>Neue Soundebene</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="106"/>
-        <source>New Camera Layer</source>
-        <translation>Neue Kameraebene</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="154"/>
-        <source>Onion skin:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="308"/>
-        <source>Warning</source>
-        <translation type="unfinished">Warnung</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="309"/>
-        <source>Are you sure you want to delete layer: </source>
+        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <source>Timeline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timeline.cpp" line="79"/>
         <source>Layers:</source>
-        <translation>Ebenen:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
-        <source>Timeline</source>
-        <translation type="unfinished">Zeitleiste</translation>
+        <location filename="../core_lib/interface/timeline.cpp" line="103"/>
+        <source>New Bitmap Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="104"/>
+        <source>New Vector Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="105"/>
+        <source>New Sound Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="106"/>
+        <source>New Camera Layer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
@@ -1856,7 +1786,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/timeline.cpp" line="126"/>
         <source>Keys:</source>
-        <translation>Keys:</translation>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="154"/>
+        <source>Onion skin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="308"/>
+        <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="309"/>
+        <source>Are you sure you want to delete layer: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1864,7 +1809,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/ui/timeline2.ui" line="14"/>
         <source>Timeline</source>
-        <translation type="unfinished">Zeitleiste</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/ui/timeline2.ui" line="54"/>
@@ -1875,7 +1820,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../app/ui/timeline2.ui" line="68"/>
         <location filename="../app/ui/timeline2.ui" line="82"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1883,12 +1828,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="447"/>
         <source>Timeline</source>
-        <translation>Zeitleiste</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="448"/>
         <source>Draw timeline labels</source>
-        <translation>Beschriftungen auf Zeitleiste anzeigen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="450"/>
@@ -1896,18 +1841,14 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Frame size in Pixels</source>
-        <translation type="vanished">Breite eines Frames in Pixeln</translation>
-    </message>
-    <message>
         <location filename="../app/preferencesdialog.cpp" line="452"/>
         <source>Timeline size in Frames</source>
-        <translation>Länge der Zeitleiste in Frames</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="458"/>
         <source>Short scrub</source>
-        <translation>Kurzer Positionszeiger</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2039,13 +1980,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="16"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
-        <translation type="unfinished">Optionen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="65"/>
         <source>Brush</source>
-        <translation type="unfinished">Pinsel
-</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="67"/>
@@ -2105,7 +2045,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
         <source>Alpha</source>
-        <translation type="unfinished">Alpha</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
@@ -2118,7 +2058,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="576"/>
         <source>Onion skin</source>
-        <translation>Zwiebelhaut</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="578"/>
