@@ -21,6 +21,7 @@ public:
     bool pressure      = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
+    bool vectorMergeEnabled = false;
     bool bezier_state = false;
     bool useFeather   = true;
 };
@@ -77,6 +78,7 @@ public:
     virtual void setPressure( const bool pressure );
     virtual void setUseFeather( const bool usingFeather );
     virtual void setPreserveAlpha( const bool preserveAlpha );
+    virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
     Properties properties;

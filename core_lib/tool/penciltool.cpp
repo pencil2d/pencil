@@ -24,6 +24,7 @@ void PencilTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
+    m_enabledProperties[VECTORMERGE] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
@@ -169,7 +170,7 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
             VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-            vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ) );
+            vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ), properties.vectorMergeEnabled );
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }

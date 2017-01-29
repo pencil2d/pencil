@@ -1172,6 +1172,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
 
+    connect( pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

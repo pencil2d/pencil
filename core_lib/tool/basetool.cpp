@@ -322,3 +322,7 @@ void BaseTool::setPreserveAlpha( const bool preserveAlpha )
     properties.preserveAlpha = preserveAlpha;
 }
 
+void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
+{
+    properties.vectorMergeEnabled = vectorMergeEnabled;
+}

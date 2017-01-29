@@ -33,7 +33,8 @@ enum ToolPropertyType
     INVISIBILITY,
     PRESERVEALPHA,
     BEZIER,
-    USEFEATHER
+    USEFEATHER,
+    VECTORMERGE
 };
 
 enum BackgroundStyle
