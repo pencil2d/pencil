@@ -78,6 +78,7 @@ public:
 
     void init();
     void createWorkingDir();
+    void deleteWorkingDir() const;
 
     QString filePath() const { return mFilePath; }
     void    setFilePath( QString strFileName ) { mFilePath = strFileName; }

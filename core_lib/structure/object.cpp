@@ -48,6 +48,12 @@ Object::~Object()
     {
         delete mLayers.takeLast();
     }
+
+    // Delete the working directory if this is not a "New" project.
+    if(!filePath().isEmpty())
+    {
+        deleteWorkingDir();
+    }
 }
 
 void Object::init()
@@ -199,6 +205,12 @@ void Object::createWorkingDir()
     dataDir.mkpath( "." );
 
     mDataDirPath = dataDir.absolutePath();
+}
+
+void Object::deleteWorkingDir() const
+{
+    QDir dataDir(mWorkingDirPath);
+    dataDir.removeRecursively();
 }
 
 int Object::getMaxLayerID()
