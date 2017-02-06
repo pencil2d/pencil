@@ -162,6 +162,7 @@ protected:
 public:
     void drawPolyline( QList<QPointF> points, QPointF lastPoint );
     void endPolyline( QList<QPointF> points );
+    void cancelPolyline( QList<QPointF> points );
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm );
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm );
