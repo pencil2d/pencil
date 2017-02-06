@@ -59,6 +59,19 @@ void SoundClip::play()
     }
 }
 
+void SoundClip::playFromPosition(int frameNumber, int fps)
+{
+    int framesIntoSound = frameNumber - pos();
+    int msPerFrame = 1000/fps;
+    int msIntoSound = framesIntoSound * msPerFrame;
+
+    if ( mPlayer )
+    {
+        mPlayer->setMediaPlayerPosition(msIntoSound);
+        mPlayer->play();
+    }
+}
+
 void SoundClip::stop()
 {
     if ( mPlayer )

@@ -61,6 +61,8 @@ private:
     int mFps = 12;
 
     QTimer* mTimer = nullptr;
+
+    bool mCheckForSoundsHalfway = false;
 };
 
 #endif // PLAYBACKMANAGER_H

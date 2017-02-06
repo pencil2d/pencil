@@ -21,6 +21,7 @@ public:
     SoundPlayer* player() { return mPlayer.get(); }
 
     void play();
+    void playFromPosition(int frameNumber, int fps);
     void stop();
 
 private:
