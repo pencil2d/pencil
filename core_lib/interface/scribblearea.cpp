@@ -1066,7 +1066,7 @@ void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColou
     qreal offset = 64;
 
     QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
-    setGaussianGradient( radialGrad, fillColour, opacity/2, offset );
+    setGaussianGradient( radialGrad, fillColour, opacity, offset );
 
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
@@ -1076,7 +1076,7 @@ void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColou
 
 void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    drawBrush(thePoint, brushWidth, 50, fillColour, opacity / 5);
+    drawBrush(thePoint, brushWidth, 50, fillColour, opacity);
 }
 
 void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather )
