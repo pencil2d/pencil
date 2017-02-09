@@ -101,6 +101,8 @@ macx {
     FILE_ICONS.files = ../icons/mac_pcl_icon.icns ../icons/mac_pclx_icon.icns
     FILE_ICONS.path = Contents/Resources
     QMAKE_BUNDLE_DATA += FILE_ICONS
+
+    QMAKE_MACOSX_DEPLOYMENT_TARGET = 10.3
 }
 
 win32 {
