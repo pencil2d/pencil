@@ -14,8 +14,78 @@
    <string>Color Palette</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>1</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>1</number>
+   </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>1</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="addColorButton">
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Add Color</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../pencil.qrc">
+         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="removeColorButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>20</width>
+         <height>20</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Remove Color</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="../../pencil.qrc">
+         <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -30,30 +100,39 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="addColorButton">
-       <property name="toolTip">
-        <string>Add Color</string>
+      <widget class="QToolButton" name="palettePref">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
        </property>
        <property name="text">
-        <string/>
+        <string>... </string>
        </property>
-       <property name="icon">
-        <iconset resource="../../pencil.qrc">
-         <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+       <property name="iconSize">
+        <size>
+         <width>15</width>
+         <height>10</height>
+        </size>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="removeColorButton">
-       <property name="toolTip">
-        <string>Remove Color</string>
+       <property name="checkable">
+        <bool>false</bool>
        </property>
-       <property name="text">
-        <string/>
+       <property name="popupMode">
+        <enum>QToolButton::InstantPopup</enum>
        </property>
-       <property name="icon">
-        <iconset resource="../../pencil.qrc">
-         <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+       <property name="autoRaise">
+        <bool>false</bool>
+       </property>
+       <property name="arrowType">
+        <enum>Qt::NoArrow</enum>
        </property>
       </widget>
      </item>
@@ -63,8 +142,32 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QListWidget" name="colorListWidget">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="autoScrollMargin">
+        <number>16</number>
+       </property>
+       <property name="resizeMode">
+        <enum>QListView::Fixed</enum>
+       </property>
+       <property name="layoutMode">
+        <enum>QListView::SinglePass</enum>
+       </property>
+       <property name="viewMode">
+        <enum>QListView::ListMode</enum>
        </property>
       </widget>
      </item>
@@ -73,6 +176,7 @@
   </layout>
  </widget>
  <resources>
+  <include location="../../pencil.qrc"/>
   <include location="../../pencil.qrc"/>
  </resources>
  <connections/>
