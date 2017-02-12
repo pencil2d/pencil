@@ -28,7 +28,7 @@ void PencilTool::loadSettings()
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
-    properties.feather = 50;
+    properties.feather = 1;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
@@ -202,7 +202,11 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        qreal opacity = mCurrentPressure * mCurrentPressure;
+        qreal opacity = 1.0f;
+        if (properties.pressure == true)
+        {
+            opacity = mCurrentPressure / 2;
+        }
 
         mCurrentWidth = properties.width * mCurrentPressure;
         qreal brushWidth = mCurrentWidth;
