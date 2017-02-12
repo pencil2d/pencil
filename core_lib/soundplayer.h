@@ -26,6 +26,8 @@ public:
     int64_t duration();
     SoundClip* clip() { return mSoundClip; }
 
+    void setMediaPlayerPosition( qint64 pos );
+
 Q_SIGNALS:
     void corruptedSoundFile( SoundClip* );
     void durationChanged( SoundPlayer*, int64_t duration );

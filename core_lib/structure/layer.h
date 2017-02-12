@@ -88,6 +88,8 @@ public:
     bool loadKey( KeyFrame* );
     KeyFrame* getKeyFrameAt( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
+    bool keyExistsWhichCovers(int frameNumber);
+    KeyFrame *getKeyFrameWhichCovers(int frameNumber);
 
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
 
