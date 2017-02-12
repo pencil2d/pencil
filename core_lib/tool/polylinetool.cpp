@@ -137,6 +137,7 @@ bool PolylineTool::keyPressEvent( QKeyEvent *event )
 
     case Qt::Key_Escape:
         if ( mPoints.size() > 0 ) {
+            mScribbleArea->cancelPolyline( mPoints );
             clear();
             return true;
         }

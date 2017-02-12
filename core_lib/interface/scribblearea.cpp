@@ -1216,6 +1216,13 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
     }
 }
 
+void ScribbleArea::cancelPolyline(QList<QPointF> points)
+{
+    // Clear the in-progress polyline from the bitmap buffer.
+    clearBitmapBuffer();
+    updateCurrentFrame();
+}
+
 void ScribbleArea::endPolyline( QList<QPointF> points )
 {
     if ( !areLayersSane() )
