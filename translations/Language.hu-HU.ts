@@ -180,14 +180,19 @@
         <translation>Színpaletta</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="35"/>
+        <location filename="../app/ui/colorpalette.ui" line="46"/>
         <source>Add Color</source>
         <translation>Szín hozzáadása</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="49"/>
+        <location filename="../app/ui/colorpalette.ui" line="75"/>
         <source>Remove Color</source>
         <translation>Szín eltávolítása</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="117"/>
+        <source>... </source>
+        <translation>... </translation>
     </message>
 </context>
 <context>
@@ -199,19 +204,69 @@
         <translation>Színpaletta</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="145"/>
-        <location filename="../app/colorpalettewidget.cpp" line="174"/>
+        <location filename="../app/colorpalettewidget.cpp" line="153"/>
+        <location filename="../app/colorpalettewidget.cpp" line="310"/>
         <source>Colour name</source>
         <translation>Szín neve</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="146"/>
-        <location filename="../app/colorpalettewidget.cpp" line="175"/>
+        <location filename="../app/colorpalettewidget.cpp" line="154"/>
+        <location filename="../app/colorpalettewidget.cpp" line="311"/>
         <source>Colour name:</source>
         <translation>Szín neve:</translation>
     </message>
     <message>
+        <location filename="../app/colorpalettewidget.cpp" line="169"/>
+        <source>List mode</source>
+        <translation>Lista mód</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="170"/>
+        <source>Show palette as a list</source>
+        <translation>Paletta megjelenítése listaként</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="176"/>
+        <source>Grid mode</source>
+        <translation>Rács mód</translation>
+    </message>
+    <message>
         <location filename="../app/colorpalettewidget.cpp" line="177"/>
+        <source>Show palette as icons</source>
+        <translation>Paletta megjelenítése ikonokkal</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="184"/>
+        <source>Small swatch</source>
+        <translation>Kicsi méret</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="185"/>
+        <source>Sets swatch size to: 16x16px</source>
+        <translation>Nézet méretének beállítása: 16x16px</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="190"/>
+        <source>Medium swatch</source>
+        <translation>Közepes méret</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="191"/>
+        <source>Sets swatch size to: 26x26px</source>
+        <translation>Nézet méretének beállítása: 26x26px</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="196"/>
+        <source>Large swatch</source>
+        <translation>Nagy méret</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="198"/>
+        <source>Sets swatch size to: 36x36px</source>
+        <translation>Nézet méretének beállítása: 36x36px</translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="313"/>
         <source>Colour %1</source>
         <translation>%1 szín</translation>
     </message>
@@ -1050,7 +1105,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1239"/>
+        <location filename="../app/mainwindow2.cpp" line="1240"/>
         <source>Play</source>
         <translation>Lejátszás</translation>
     </message>
@@ -1353,7 +1408,7 @@ p, li { white-space: pre-wrap; }
         <translation>Exportálás másként</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1235"/>
+        <location filename="../app/mainwindow2.cpp" line="1236"/>
         <source>Stop</source>
         <translation>Megállítás</translation>
     </message>
@@ -1369,122 +1424,122 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="408"/>
+        <location filename="../core_lib/structure/object.cpp" line="420"/>
         <source>Red</source>
         <translation>Piros</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="414"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Green</source>
         <translation>Zöld</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="418"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Blue</source>
         <translation>Kék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="407"/>
+        <location filename="../core_lib/structure/object.cpp" line="419"/>
         <source>Black</source>
         <translation>Fekete</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="409"/>
+        <location filename="../core_lib/structure/object.cpp" line="421"/>
         <source>Dark Red</source>
         <translation>Sötét vörös</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="410"/>
+        <location filename="../core_lib/structure/object.cpp" line="422"/>
         <source>Orange</source>
         <translation>Narancs</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="411"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Dark Orange</source>
         <translation>Sötét narancs</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="412"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Yellow</source>
         <translation>Sárga</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="413"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Yellow</source>
         <translation>Sötét sárga</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="415"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Green</source>
         <translation>Sötét zöld</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="416"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Cyan</source>
         <translation>Cián</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="417"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Cyan</source>
         <translation>Sötét cián</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="419"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Blue</source>
         <translation>Sötét kék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>White</source>
         <translation>Fehér</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Very Light Grey</source>
         <translation>Halvány szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Light Grey</source>
         <translation>Világos szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Grey</source>
         <translation>Szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>Dark Grey</source>
         <translation>Sötét szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Light Skin</source>
         <translation>Világos bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Skin - shade</source>
         <translation>Világos bőr - árnyék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Skin</source>
         <translation>Bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Skin - shade</source>
         <translation>Bőr - árnyék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Dark Skin</source>
         <translation>Sötét bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Dark Skin - shade</source>
         <translation>Sötét bőr - árnyék</translation>
     </message>
@@ -1702,18 +1757,18 @@ p, li { white-space: pre-wrap; }
         <translation>Most egy láthatatlan rétegre rajzol! Válasszon egy másik réteget (vagy tegye láthatóvá az aktuális réteget).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1634"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1641"/>
         <source>DeleteSel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1648"/>
         <location filename="../core_lib/interface/scribblearea.cpp" line="1655"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1662"/>
         <source>ClearImg</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1698"/>
         <source>Flood fill error</source>
         <translation>Kitöltési hiba</translation>
     </message>
@@ -2056,80 +2111,90 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="111"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="65"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
         <source>Brush</source>
         <translation>Ecset</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="16"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="18"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="67"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="77"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Toll szélessége &lt;br&gt;&lt;b&gt;[SHIFT]+húzás&lt;/b&gt;&lt;br&gt;használatával változtatható</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="73"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="83"/>
         <source>Feather</source>
         <translation>Feather</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="85"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Toll lágyítása &lt;br&gt;&lt;b&gt;[CTRL]+húzás&lt;/b&gt;&lt;br&gt;használatával változtatható</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="81"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
         <source>Use Feather?</source>
         <translation>Szélek lágyítása?</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
         <source>Enable or disable feathering</source>
         <translation>Szélek lágyításának be- és kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="86"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
         <source>Bezier</source>
         <translation>Bezier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="87"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
         <source>Bezier curve fitting</source>
         <translation>Bezier görbéhez igazítva</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
         <source>Pressure</source>
         <translation>Nyomás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
         <source>Size with pressure</source>
         <translation>Méretezés nyomással</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="106"/>
         <source>Invisible</source>
         <translation>Láthatatlan</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="107"/>
         <source>Make invisible</source>
         <translation>Legyen láthatatlan</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="112"/>
         <source>Preserve Alpha</source>
         <translation>Alfa megtartása</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="116"/>
+        <source>Merge</source>
+        <translation>Egyesítés</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="117"/>
+        <source>Merge vector lines when they are close together</source>
+        <translation>Vektorvonalak egyesítése ha azok szorosan egymás mellet vannak</translation>
     </message>
 </context>
 <context>

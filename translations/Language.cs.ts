@@ -180,14 +180,19 @@
         <translation>Paleta barev</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="35"/>
+        <location filename="../app/ui/colorpalette.ui" line="46"/>
         <source>Add Color</source>
         <translation>Přidat barvu</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="49"/>
+        <location filename="../app/ui/colorpalette.ui" line="75"/>
         <source>Remove Color</source>
         <translation>Odebrat barvu</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="117"/>
+        <source>... </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -199,19 +204,69 @@
         <translation>Paleta barev</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="145"/>
-        <location filename="../app/colorpalettewidget.cpp" line="174"/>
+        <location filename="../app/colorpalettewidget.cpp" line="153"/>
+        <location filename="../app/colorpalettewidget.cpp" line="310"/>
         <source>Colour name</source>
         <translation>Název barvy</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="146"/>
-        <location filename="../app/colorpalettewidget.cpp" line="175"/>
+        <location filename="../app/colorpalettewidget.cpp" line="154"/>
+        <location filename="../app/colorpalettewidget.cpp" line="311"/>
         <source>Colour name:</source>
         <translation>Název barvy:</translation>
     </message>
     <message>
+        <location filename="../app/colorpalettewidget.cpp" line="169"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="170"/>
+        <source>Show palette as a list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="176"/>
+        <source>Grid mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/colorpalettewidget.cpp" line="177"/>
+        <source>Show palette as icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="184"/>
+        <source>Small swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="185"/>
+        <source>Sets swatch size to: 16x16px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="190"/>
+        <source>Medium swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="191"/>
+        <source>Sets swatch size to: 26x26px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="196"/>
+        <source>Large swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="198"/>
+        <source>Sets swatch size to: 36x36px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="313"/>
         <source>Colour %1</source>
         <translation>Barva %1</translation>
     </message>
@@ -1035,7 +1090,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1239"/>
+        <location filename="../app/mainwindow2.cpp" line="1240"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -1353,7 +1408,7 @@ Přejete si uložit změny.</translation>
         <translation>Exportovat jako</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1235"/>
+        <location filename="../app/mainwindow2.cpp" line="1236"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1369,122 +1424,122 @@ Přejete si uložit změny.</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="408"/>
+        <location filename="../core_lib/structure/object.cpp" line="420"/>
         <source>Red</source>
         <translation>Červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="414"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Green</source>
         <translation>Zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="418"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Blue</source>
         <translation>Modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="407"/>
+        <location filename="../core_lib/structure/object.cpp" line="419"/>
         <source>Black</source>
         <translation>Černá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="409"/>
+        <location filename="../core_lib/structure/object.cpp" line="421"/>
         <source>Dark Red</source>
         <translation>Tmavě červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="410"/>
+        <location filename="../core_lib/structure/object.cpp" line="422"/>
         <source>Orange</source>
         <translation>Oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="411"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Dark Orange</source>
         <translation>Tmavě oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="412"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Yellow</source>
         <translation>Žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="413"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Yellow</source>
         <translation>Tmavě žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="415"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Green</source>
         <translation>Tmavě zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="416"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Cyan</source>
         <translation>Tyrkysová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="417"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Cyan</source>
         <translation>Tmavě tyrkysová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="419"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Blue</source>
         <translation>Tmavě modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>White</source>
         <translation>Bílá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Very Light Grey</source>
         <translation>Velmi světle šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Light Grey</source>
         <translation>Světle šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Grey</source>
         <translation>Šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>Dark Grey</source>
         <translation>Tmavě šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Light Skin</source>
         <translation>Světle tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Skin - shade</source>
         <translation>Světle tělová - odstín</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Skin</source>
         <translation>Tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Skin - shade</source>
         <translation>Tělová - odstín</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Dark Skin</source>
         <translation>Tmavá tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Dark Skin - shade</source>
         <translation>Tmavě tělová - odstín</translation>
     </message>
@@ -1702,18 +1757,18 @@ Přejete si uložit změny.</translation>
         <translation>Kreslíte na skrytou vrstvu! Vyberte, prosím, jinou vrstvu (nebo nynější vrstvu udělejte viditelnou).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1634"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1641"/>
         <source>DeleteSel</source>
         <translation>Smazat výběr</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1648"/>
         <location filename="../core_lib/interface/scribblearea.cpp" line="1655"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1662"/>
         <source>ClearImg</source>
         <translation>Smazat obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1698"/>
         <source>Flood fill error</source>
         <translation>Chyba výplně</translation>
     </message>
@@ -2056,80 +2111,90 @@ Přejete si uložit změny.</translation>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="111"/>
         <source>Alpha</source>
         <translation>Alfa kanál</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="65"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
         <source>Brush</source>
         <translation>Štětec</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="16"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="18"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Možnosti</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="67"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="77"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Nastavit tloušťku pera &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="73"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="83"/>
         <source>Feather</source>
         <translation>Stopa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="85"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Nastavit stopu pera &lt;br&gt;&lt;b&gt;[SHIFT]+táhnutí&lt;/b&gt;&lt;br&gt;pro rychlé nastavení</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="81"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
         <source>Use Feather?</source>
         <translation>Použít stopu?</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
         <source>Enable or disable feathering</source>
         <translation>Vypnout nebo zapnout stopu</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="86"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
         <source>Bezier</source>
         <translation>Bezier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="87"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
         <source>Bezier curve fitting</source>
         <translation>Umístění Beziérovy křivky</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
         <source>Pressure</source>
         <translation>Tlak</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
         <source>Size with pressure</source>
         <translation>Velikost s tlakem</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="106"/>
         <source>Invisible</source>
         <translation>Neviditelný</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="107"/>
         <source>Make invisible</source>
         <translation>Nastavit neviditelné</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="112"/>
         <source>Preserve Alpha</source>
         <translation>Zachovat alfa kanál</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="116"/>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="117"/>
+        <source>Merge vector lines when they are close together</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

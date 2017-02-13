@@ -180,13 +180,18 @@
         <translation type="unfinished">Палитра</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="35"/>
+        <location filename="../app/ui/colorpalette.ui" line="46"/>
         <source>Add Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="49"/>
+        <location filename="../app/ui/colorpalette.ui" line="75"/>
         <source>Remove Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="117"/>
+        <source>... </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -199,19 +204,69 @@
         <translation type="unfinished">Палитра</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="145"/>
-        <location filename="../app/colorpalettewidget.cpp" line="174"/>
+        <location filename="../app/colorpalettewidget.cpp" line="153"/>
+        <location filename="../app/colorpalettewidget.cpp" line="310"/>
         <source>Colour name</source>
         <translation>Параметры образца</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="146"/>
-        <location filename="../app/colorpalettewidget.cpp" line="175"/>
+        <location filename="../app/colorpalettewidget.cpp" line="154"/>
+        <location filename="../app/colorpalettewidget.cpp" line="311"/>
         <source>Colour name:</source>
         <translation>Имя образца:</translation>
     </message>
     <message>
+        <location filename="../app/colorpalettewidget.cpp" line="169"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="170"/>
+        <source>Show palette as a list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="176"/>
+        <source>Grid mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/colorpalettewidget.cpp" line="177"/>
+        <source>Show palette as icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="184"/>
+        <source>Small swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="185"/>
+        <source>Sets swatch size to: 16x16px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="190"/>
+        <source>Medium swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="191"/>
+        <source>Sets swatch size to: 26x26px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="196"/>
+        <source>Large swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="198"/>
+        <source>Sets swatch size to: 36x36px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="313"/>
         <source>Colour %1</source>
         <translation>Цвет%1</translation>
     </message>
@@ -1017,7 +1072,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1239"/>
+        <location filename="../app/mainwindow2.cpp" line="1240"/>
         <source>Play</source>
         <translation>Воспроизведение</translation>
     </message>
@@ -1327,7 +1382,7 @@ p, li { white-space: pre-wrap; }
         <translation>Экспортировать как</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1235"/>
+        <location filename="../app/mainwindow2.cpp" line="1236"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1343,122 +1398,122 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="408"/>
+        <location filename="../core_lib/structure/object.cpp" line="420"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="414"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="418"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="407"/>
+        <location filename="../core_lib/structure/object.cpp" line="419"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="409"/>
+        <location filename="../core_lib/structure/object.cpp" line="421"/>
         <source>Dark Red</source>
         <translation>Тёмно-красный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="410"/>
+        <location filename="../core_lib/structure/object.cpp" line="422"/>
         <source>Orange</source>
         <translation>Оранжевый</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="411"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Dark Orange</source>
         <translation>Тёмно-оранжевый</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="412"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="413"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Yellow</source>
         <translation>Тёмно-жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="415"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Green</source>
         <translation>Тёмно-зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="416"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Cyan</source>
         <translation>Сине-зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="417"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Cyan</source>
         <translation>Тёмный сине-зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="419"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Blue</source>
         <translation>Тёмно-синий</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>White</source>
         <translation>Белый</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Very Light Grey</source>
         <translation>Серый 12%</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Light Grey</source>
         <translation>Серый 25%</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Grey</source>
         <translation>Серый 37%</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>Dark Grey</source>
         <translation>Серый 50%</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Light Skin</source>
         <translation>Цвет кожи, светлый</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Skin - shade</source>
         <translation>Цвет кожи, светлый с тенью</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Skin</source>
         <translation>Цвет кожи</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Skin - shade</source>
         <translation>Цвет кожи, с тенью</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Dark Skin</source>
         <translation>Цвет кожи, тёмный</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Dark Skin - shade</source>
         <translation>Цвет кожи, тёмный с тенью</translation>
     </message>
@@ -1672,18 +1727,18 @@ p, li { white-space: pre-wrap; }
         <translation>Вы рисуете на скрытом слое! Пожалуйста, выберите другой слой или сделайте текущий видимым.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1634"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1641"/>
         <source>DeleteSel</source>
         <translation>Очистка выделения</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1648"/>
         <location filename="../core_lib/interface/scribblearea.cpp" line="1655"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1662"/>
         <source>ClearImg</source>
         <translation>Очистка слоя</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1698"/>
         <source>Flood fill error</source>
         <translation>Ошибка заливки</translation>
     </message>
@@ -2026,79 +2081,89 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="16"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="18"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation type="unfinished">Параметры</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="65"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
         <source>Brush</source>
         <translation type="unfinished">Кисть</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="67"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="77"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="73"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="83"/>
         <source>Feather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="85"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="81"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
         <source>Use Feather?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
         <source>Enable or disable feathering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="86"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
         <source>Bezier</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="87"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
         <source>Bezier curve fitting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
         <source>Pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
         <source>Size with pressure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="106"/>
         <source>Invisible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="107"/>
         <source>Make invisible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="111"/>
         <source>Alpha</source>
         <translation type="unfinished">Альфа-канал</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="112"/>
         <source>Preserve Alpha</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="116"/>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="117"/>
+        <source>Merge vector lines when they are close together</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
