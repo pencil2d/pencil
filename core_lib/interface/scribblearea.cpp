@@ -427,8 +427,14 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
     //qDebug() << "Device" << event->device() << "Pointer type" << event->pointerType();
     mStrokeManager->tabletEvent( event );
 
-    currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
+    // Some tablets return "NoDevice" and Cursor.
+    if (event->device() == QTabletEvent::NoDevice) {
+        currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
+                                                      false );
+    } else {
+        currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
                                                       event->pointerType() == QTabletEvent::Cursor );
+    }
 
     if ( event->pointerType() == QTabletEvent::Eraser )
     {
