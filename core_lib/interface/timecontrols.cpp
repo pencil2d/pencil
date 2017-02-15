@@ -38,7 +38,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
     mFpsBox->setSuffix(" fps");
-    mFpsBox->setToolTip("Frames per second");
+    mFpsBox->setToolTip( tr("Frames per second") );
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
 
     mLoopStartSpinBox = new QSpinBox();

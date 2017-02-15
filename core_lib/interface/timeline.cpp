@@ -82,12 +82,12 @@ void TimeLine::initUI()
 
     QToolButton* addLayerButton = new QToolButton( this );
     addLayerButton->setIcon( QIcon( ":icons/add.png" ) );
-    addLayerButton->setToolTip( "Add Layer" );
+    addLayerButton->setToolTip( tr("Add Layer") );
     addLayerButton->setFixedSize( 24, 24 );
 
     QToolButton* removeLayerButton = new QToolButton( this );
     removeLayerButton->setIcon( QIcon( ":icons/remove.png" ) );
-    removeLayerButton->setToolTip( "Remove Layer" );
+    removeLayerButton->setToolTip( tr("Remove Layer") );
     removeLayerButton->setFixedSize( 24, 24 );
 
     layerButtons->addWidget( layerLabel );
@@ -129,17 +129,17 @@ void TimeLine::initUI()
 
     QToolButton* addKeyButton = new QToolButton( this );
     addKeyButton->setIcon( QIcon( ":icons/add.png" ) );
-    addKeyButton->setToolTip( "Add Frame" );
+    addKeyButton->setToolTip( tr("Add Frame") );
     addKeyButton->setFixedSize( 24, 24 );
 
     QToolButton* removeKeyButton = new QToolButton( this );
     removeKeyButton->setIcon( QIcon( ":icons/remove.png" ) );
-    removeKeyButton->setToolTip( "Remove Frame" );
+    removeKeyButton->setToolTip( tr("Remove Frame") );
     removeKeyButton->setFixedSize( 24, 24 );
 
     QToolButton* duplicateKeyButton = new QToolButton( this );
     duplicateKeyButton->setIcon( QIcon( ":icons/controls/duplicate.png" ) );
-    duplicateKeyButton->setToolTip( "Duplicate Frame" );
+    duplicateKeyButton->setToolTip( tr("Duplicate Frame") );
     duplicateKeyButton->setFixedSize( 24, 24 );
 
     keyButtons->addWidget( keyLabel );
@@ -158,7 +158,7 @@ void TimeLine::initUI()
 
     QToolButton* onionTypeButton = new QToolButton( this );
     onionTypeButton->setIcon( QIcon( ":icons/onion_type.png" ) );
-    onionTypeButton->setToolTip( "Toggle match keyframes" );
+    onionTypeButton->setToolTip( tr("Toggle match keyframes") );
     onionTypeButton->setFixedSize( 24, 24 );
 
     onionButtons->addWidget( onionLabel );

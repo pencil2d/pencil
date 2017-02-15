@@ -1805,6 +1805,17 @@ p, li { white-space: pre-wrap; }
         <source>Restore Default Shortcuts</source>
         <translation>Alapértelmezett billentyűparancsok visszaállítása</translation>
     </message>
+    <message>
+        <location filename="../app/shortcutspage.cpp" line="79"/>
+        <source>Shortcut Conflict!</source>
+        <translation>Ütköző billentyűparancsok!</translation>
+    </message>
+    <message>
+        <location filename="../app/shortcutspage.cpp" line="80"/>
+        <source>%1 is already used, overwrite?</source>
+        <translatorcomment>%1 már használatban van. Felülírás?</translatorcomment>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>TimeControls</name>

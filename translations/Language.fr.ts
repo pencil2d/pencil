@@ -1782,6 +1782,16 @@ p, li { white-space: pre-wrap; }
         <source>Restore Default Shortcuts</source>
         <translation>Restaurer les raccourcis par défaut</translation>
     </message>
+    <message>
+        <location filename="../app/shortcutspage.cpp" line="79"/>
+        <source>Shortcut Conflict!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/shortcutspage.cpp" line="80"/>
+        <source>%1 is already used, overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TimeControls</name>
