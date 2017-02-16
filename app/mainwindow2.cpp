@@ -59,6 +59,7 @@ GNU General Public License for more details.
 #include "toolbox.h"
 #include "preview.h"
 #include "timeline2.h"
+#include "errordialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -572,6 +573,24 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     
     if ( !st.ok() )
     {
+        QDateTime dt = QDateTime::currentDateTime();
+        dt.setTimeSpec( Qt::UTC );
+#if QT_VERSION >= 0x050400
+        QDir errorLogFolder( QStandardPaths::writableLocation( QStandardPaths::AppLocalDataLocation ) );
+#else
+        QDir errorLogFolder( QStandardPaths::writableLocation( QStandardPaths::DataLocation ) );
+#endif
+        errorLogFolder.mkpath( "./logs" );
+        errorLogFolder.cd( "logs" );
+        QFile eLog( errorLogFolder.absoluteFilePath( QString( "error-%1.txt" ).arg( dt.toString( Qt::ISODate ) ) ) );
+        if ( eLog.open( QIODevice::WriteOnly | QIODevice::Text ) )
+        {
+            QTextStream out( &eLog );
+            out << st.details().replace( "<br>", "\n", Qt::CaseInsensitive );
+        }
+
+        ErrorDialog errorDialog( st.title(), st.description().append( "<br><br>An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>Please be sure to include the following details in your issue:" ), st.details() );
+        errorDialog.exec();
         return false;
     }
 
@@ -1153,6 +1172,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
 
+    connect( pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

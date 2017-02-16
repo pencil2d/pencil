@@ -64,6 +64,10 @@ void PlaybackManager::play()
 
     mTimer->setInterval( 1000.0f / mFps );
     mTimer->start();
+
+    // Check for any sounds we should start playing part-way through.
+    mCheckForSoundsHalfway = true;
+
     emit playStateChanged(true);
 }
 
@@ -97,7 +101,22 @@ void PlaybackManager::playSounds( int frame )
 
     for ( LayerSound* layer : kSoundLayers )
     {
-        if ( layer->keyExists( frame ) )
+        if (mCheckForSoundsHalfway)
+        {
+            // Check for sounds which we should start playing from part-way through.
+            if ( layer->keyExistsWhichCovers( frame ) )
+            {
+                KeyFrame* key = layer->getKeyFrameWhichCovers( frame );
+                SoundClip* clip = static_cast< SoundClip* >( key );
+
+                clip->playFromPosition(frame, mFps);
+            }
+
+            // Set flag to false, since this check should only be done when
+            // starting play-back.
+            mCheckForSoundsHalfway = false;
+        }
+        else if ( layer->keyExists( frame ) )
         {
             KeyFrame* key = layer->getKeyFrameAt( frame );
             SoundClip* clip = static_cast< SoundClip* >( key );

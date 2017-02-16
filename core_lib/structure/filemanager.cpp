@@ -182,10 +182,12 @@ bool FileManager::isOldForamt( const QString& fileName )
 
 Status FileManager::save( Object* object, QString strFileName )
 {
-    if ( object == nullptr ) { return Status::INVALID_ARGUMENT; }
+    QStringList debugDetails = QStringList() << "FileManager::save" << QString( "strFileName = " ).append( strFileName );
+    if ( object == nullptr ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "object parameter is null" ); }
 
     QFileInfo fileInfo( strFileName );
-    if ( fileInfo.isDir() ) { return Status::INVALID_ARGUMENT; }
+    if ( fileInfo.isDir() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a directory", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") points to a directory, so the file cannot be saved." ).arg( fileInfo.absoluteFilePath() ) ); }
+    if ( fileInfo.exists() && !fileInfo.isWritable() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a file that is not writable", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") cannot be written to, so the file cannot be saved. Please make sure that you have sufficent permissions to save to that location and try again." ).arg( fileInfo.absoluteFilePath() ) ); }
 
     QString strTempWorkingFolder;
     QString strMainXMLFile;
@@ -205,6 +207,7 @@ Status FileManager::save( Object* object, QString strFileName )
 
         strTempWorkingFolder = object->workingDir();
         Q_ASSERT( QDir( strTempWorkingFolder ).exists() );
+        debugDetails << QString( "strTempWorkingFolder = " ).append( strTempWorkingFolder );
 
         qCDebug( mLog ) << "Temp Folder=" << strTempWorkingFolder;
         strMainXMLFile = QDir( strTempWorkingFolder ).filePath( PFF_XML_FILE_NAME );
@@ -215,13 +218,35 @@ Status FileManager::save( Object* object, QString strFileName )
     if ( !dataInfo.exists() )
     {
         QDir dir( strDataFolder ); // the directory where filePath is or will be saved
-        dir.mkpath( strDataFolder ); // creates a directory with the same name +".data"
+        // creates a directory with the same name +".data"
+        if( !dir.mkpath( strDataFolder ) )
+        {
+            debugDetails << QString( "dir.absolutePath() = %1" ).arg( dir.absolutePath() );
+            if( isOldFile ) {
+                return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot create the data directory at \"%1\". Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pclx format." ).arg( strDataFolder ) );
+            }
+            else {
+                return Status( Status::FAIL, debugDetails, tr("Internal Error"), tr( "Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pcl format." ).arg( strDataFolder ) );
+            }
+        }
+    }
+    if( !dataInfo.isDir() )
+    {
+        debugDetails << QString( "dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
+        if( isOldFile ) {
+            return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot use the path \"%1\" as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format." ).arg( dataInfo.absoluteFilePath() ) );
+        }
+        else {
+            return Status( Status::FAIL, debugDetails, tr( "Internal Error" ), tr( "Cannot use the data directory at temporary location \"%1\" since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format." ).arg( dataInfo.absoluteFilePath() ) );
+        }
     }
 
     // save data
     int layerCount = object->getLayerCount();
+    debugDetails << QString("layerCount = %1").arg(layerCount);
     qCDebug( mLog ) << QString( "Total layers = %1" ).arg( layerCount );
 
+    bool isOkay = true;
     for ( int i = 0; i < layerCount; ++i )
     {
         Layer* layer = object->getLayer( i );
@@ -229,19 +254,36 @@ Status FileManager::save( Object* object, QString strFileName )
 
         //progressValue = (i * 100) / nLayers;
         //progress.setValue( progressValue );
+        debugDetails << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg( i ).arg( layer->id() ).arg( layer->name() ).arg( layer->type() );
         switch ( layer->type() )
         {
         case Layer::BITMAP:
         case Layer::VECTOR:
         case Layer::SOUND:
-            layer->save( strDataFolder );
+        {
+            Status st = layer->save( strDataFolder );
+            if( !st.ok() )
+            {
+                isOkay = false;
+                QStringList layerDetails = st.detailsList();
+                for ( QString detail : layerDetails )
+                {
+                    detail.prepend( "&nbsp;&nbsp;" );
+                }
+                debugDetails << QString( "- Layer[%1] failed to save" ).arg( i ) << layerDetails;
+            }
             break;
+        }
         case Layer::CAMERA:
             break;
         case Layer::UNDEFINED:
         case Layer::MOVIE:
             Q_ASSERT( false );
             break;
+        }
+        if( !isOkay )
+        {
+            return Status( Status::FAIL, debugDetails, tr( "Internal Error" ), tr( "An internal error occurred while trying to save the file. Some or all of your file may not have saved." ) );
         }
     }
 

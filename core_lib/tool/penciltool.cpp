@@ -24,10 +24,11 @@ void PencilTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
+    m_enabledProperties[VECTORMERGE] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
-    properties.feather = 50;
+    properties.feather = 1;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
@@ -169,7 +170,7 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
             VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-            vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ) );
+            vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ), properties.vectorMergeEnabled );
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();
         }
@@ -201,7 +202,11 @@ void PencilTool::drawStroke()
 
     if ( layer->type() == Layer::BITMAP )
     {
-        qreal opacity = mCurrentPressure * mCurrentPressure;
+        qreal opacity = 1.0f;
+        if (properties.pressure == true)
+        {
+            opacity = mCurrentPressure / 2;
+        }
 
         mCurrentWidth = properties.width * mCurrentPressure;
         qreal brushWidth = mCurrentWidth;

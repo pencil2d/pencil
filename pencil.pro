@@ -28,12 +28,12 @@ core_lib.depends = quazip
 app.depends      = core_lib
 tests.depends    = core_lib
 
-
 TRANSLATIONS += translations/Language.cs.ts \
                 translations/Language.da.ts \
                 translations/Language.de.ts \
                 translations/Language.es.ts \
                 translations/Language.fr.ts \
+                translations/Language.hu-HU.ts \
                 translations/Language.it.ts \
                 translations/Language.ja.ts \
                 translations/Language.pt-BR.ts \

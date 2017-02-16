@@ -43,7 +43,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     general->setManager( mPrefManager );
     general->updateValues();
     //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
-    
+
     GridPage* grid = new GridPage( this );
     grid->setManager( mPrefManager );
     grid->updateValues();
@@ -59,7 +59,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     ToolsPage* tools = new ToolsPage( this );
     tools->setManager( mPrefManager );
     tools->updateValues();
-    
+
     ShortcutsPage* shortcuts = new ShortcutsPage( this );
     shortcuts->setManager( mPrefManager );
 
@@ -178,6 +178,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     mLanguageCombo->addItem( tr( "German" ), "de" );
     mLanguageCombo->addItem( tr( "Spanish" ), "es" );
     mLanguageCombo->addItem( tr( "French" ), "fr" );
+    mLanguageCombo->addItem( tr( "Hungarian" ), "hu-HU" );
     mLanguageCombo->addItem( tr( "Italian" ), "it" );
     mLanguageCombo->addItem( tr( "Japanese" ), "ja" );
     mLanguageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );
@@ -314,7 +315,7 @@ void GeneralPage::updateValues()
     mToolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
     mAntialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
     mDottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
-    
+
     mHighResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
@@ -341,7 +342,7 @@ void GeneralPage::languageChanged( int i )
     mManager->set( SETTING::LANGUAGE, strLocale );
 
     QMessageBox::warning( this,
-                          tr( "Restart Required" ), 
+                          tr( "Restart Required" ),
                           tr( "The language change will take effect after a restart of Pencil2D" ) );
 }
 
@@ -573,7 +574,7 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
     QVBoxLayout* lay = new QVBoxLayout();
 
     QGroupBox* onionSkinBox = new QGroupBox(tr("Onion skin"));
-    
+
     QLabel* onionMaxOpacityLabel = new QLabel(tr("Maximum onion opacity %"));
     mOnionMaxOpacityBox = new QSpinBox();
     QLabel* onionMinOpacityLabel = new QLabel(tr("Minimum onion opacity %"));

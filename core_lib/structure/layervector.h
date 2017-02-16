@@ -42,7 +42,7 @@ public:
     void removeColour(int index);
 
 protected:
-    bool saveKeyFrame( KeyFrame*, QString path ) override;
+    Status saveKeyFrame( KeyFrame*, QString path ) override;
     QString fileName( int index );
 };
 

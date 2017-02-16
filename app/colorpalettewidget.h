@@ -25,6 +25,8 @@ class QListWidgetItem;
 class Object;
 class Editor;
 class ColorBox;
+class QActionGroup;
+class QMenu;
 
 namespace Ui
 {
@@ -49,6 +51,9 @@ public slots:
     void setColor(QColor);
     void refreshColorList();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
@@ -60,9 +65,29 @@ private slots:
     void changeColourName(QListWidgetItem*);
     void clickAddColorButton();
     void clickRemoveColorButton();
+    void palettePreferences();
+    void setListMode();
+    void setGridMode();
+    void setSwatchSizeSmall();
+    void setSwatchSizeMedium();
+    void setSwatchSizeLarge();
+    void updateGridUI();
 
 private:
     Ui::ColorPalette* ui = nullptr;
+    QActionGroup *layoutModes;
+    QAction *listMode;
+    QAction *gridMode;
+    QActionGroup *iconSizes;
+    QAction *smallSwatch;
+    QAction *mediumSwatch;
+    QAction *largeSwatch;
+    QAction *separator;
+    QSize iconSize;
+    QPixmap colourSwatch;
+    QMenu *toolMenu;
+    int stepper;
+
 };
 
 #endif

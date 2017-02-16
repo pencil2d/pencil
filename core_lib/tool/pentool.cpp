@@ -20,6 +20,7 @@ void PenTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
+    m_enabledProperties[VECTORMERGE] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -141,7 +142,7 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
 
             auto pLayerVector = static_cast< LayerVector* >( layer );
             VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-            vectorImage->addCurve( curve, mEditor->view()->scaling() );
+            vectorImage->addCurve( curve, mEditor->view()->scaling(), properties.vectorMergeEnabled );
 
             mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
             mScribbleArea->setAllDirty();

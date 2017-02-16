@@ -209,11 +209,11 @@ bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 
 bool Layer::removeKeyFrame( int position )
 {
-    auto it = mKeyFrames.find( position );
-    if ( it != mKeyFrames.end() )
+    auto frame = getKeyFrameWhichCovers(position);
+    if(frame)
     {
-        delete it->second;
-        mKeyFrames.erase( it );
+        mKeyFrames.erase(frame->pos());
+        delete frame;
     }
 
     return true;
@@ -305,14 +305,30 @@ bool Layer::loadKey( KeyFrame* pKey )
     return true;
 }
 
-bool Layer::save( QString strDataFolder )
+Status Layer::save( QString strDataFolder )
 {
+    QStringList debugInfo = QStringList() << "Layer::save" << QString( "strDataFolder = " ).append( strDataFolder );
+    bool isOkay = true;
 	for ( auto pair : mKeyFrames )
 	{
 		KeyFrame* pKeyFrame = pair.second;
-		saveKeyFrame( pKeyFrame, strDataFolder );
+        Status st = saveKeyFrame( pKeyFrame, strDataFolder );
+        if( !st.ok() )
+        {
+            isOkay = false;
+            QStringList keyFrameDetails = st.detailsList();
+            for ( QString detail : keyFrameDetails )
+            {
+                detail.prepend( "&nbsp;&nbsp;" );
+            }
+            debugInfo << QString( "- Keyframe[%1] failed to save" ).arg( pKeyFrame->pos() ) << keyFrameDetails;
+        }
 	}
-    return false;
+    if( !isOkay )
+    {
+        return Status( Status::FAIL, debugInfo );
+    }
+    return Status::OK;
 }
 
 void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
@@ -486,19 +502,29 @@ void Layer::setModified( int position, bool )
 
 bool Layer::isFrameSelected(int position)
 {
-    return mSelectedFrames_byLast.contains(position);
+    KeyFrame *keyFrame = getKeyFrameWhichCovers(position);
+    if(keyFrame)
+    {
+        return mSelectedFrames_byLast.contains(keyFrame->pos());
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void Layer::setFrameSelected(int position, bool isSelected)
 {
-    KeyFrame *keyFrame = getKeyFrameAt(position);
+    KeyFrame *keyFrame = getKeyFrameWhichCovers(position);
     if (keyFrame != nullptr) {
-        if (isSelected && !mSelectedFrames_byLast.contains(position)) {
+        int startPosition = keyFrame->pos();
+
+        if (isSelected && !mSelectedFrames_byLast.contains(startPosition)) {
 
             // Add the selected frame to the lists
             //
-            mSelectedFrames_byLast.insert(0, position);
-            mSelectedFrames_byPosition.append(position);
+            mSelectedFrames_byLast.insert(0, startPosition);
+            mSelectedFrames_byPosition.append(startPosition);
 
             // We need to keep the list of selected frames sorted
             // in order to easily handle their movement
@@ -510,10 +536,10 @@ void Layer::setFrameSelected(int position, bool isSelected)
 
             // Remove the selected frame from the lists
             //
-            int iLast = mSelectedFrames_byLast.indexOf(position);
+            int iLast = mSelectedFrames_byLast.indexOf(startPosition);
             mSelectedFrames_byLast.removeAt(iLast);
 
-            int iPos = mSelectedFrames_byPosition.indexOf(position);
+            int iPos = mSelectedFrames_byPosition.indexOf(startPosition);
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
@@ -688,4 +714,24 @@ bool isLayerPaintable( Layer* layer )
             break;
     }
     return false;
+}
+
+bool Layer::keyExistsWhichCovers(int frameNumber)
+{
+    return getKeyFrameWhichCovers(frameNumber) != nullptr;
+}
+
+KeyFrame *Layer::getKeyFrameWhichCovers(int frameNumber)
+{
+    auto keyFrame = getLastKeyFrameAtPosition(frameNumber);
+
+    if( keyFrame != nullptr )
+    {
+        if(keyFrame->pos() + keyFrame->length() > frameNumber)
+        {
+            return keyFrame;
+        }
+    }
+
+    return nullptr;
 }

@@ -151,6 +151,12 @@ void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
 }
 
+void ToolManager::setVectorMergeEnabled(bool isVectorMergeEnabled)
+{
+    currentTool()->setVectorMergeEnabled(isVectorMergeEnabled);
+    Q_EMIT toolPropertyChanged( currentTool()->type(), VECTORMERGE );
+}
+
 void ToolManager::setBezier( bool isBezierOn )
 {
     currentTool()->setBezier( isBezierOn );
