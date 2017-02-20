@@ -35,6 +35,7 @@ private:
     void setPressure( int );
     void setPreserveAlpha( int );
     void setVectorMergeEnabled( int );
+    void setAA( int );
 
     void disableAllOptions();
     void createUI();
@@ -49,6 +50,7 @@ private:
     QSpinBox* mFeatherSpinBox    = nullptr;
     SpinSlider* mSizeSlider      = nullptr;
     SpinSlider* mFeatherSlider   = nullptr;
+    QCheckBox* mUseAABox         = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

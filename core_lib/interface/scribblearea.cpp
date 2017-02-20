@@ -1061,22 +1061,17 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, mainColorAlpha - alphaAdded ) );
 }
 
-void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
+void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity, bool useAA )
 {
-    qreal offset = 64;
-
-    QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
-    setGaussianGradient( radialGrad, fillColour, opacity, offset );
-
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    mBufferImg->drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                             QPainter::CompositionMode_SourceOver, mPrefs->isOn( SETTING::ANTIALIAS ) );
+    mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
+                               QPainter::CompositionMode_Source, useAA );
 }
 
 void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity )
 {
-    drawBrush(thePoint, brushWidth, 50, fillColour, opacity);
+    drawBrush(thePoint, brushWidth, 50, fillColour, opacity, true);
 }
 
 void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather )
@@ -1090,12 +1085,12 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
         setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
         tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                                   QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
+                                   QPainter::CompositionMode_Source, false );
     }
     else
     {
-        tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
-                                   QPainter::CompositionMode_Source, mPrefs->isOn( SETTING::ANTIALIAS ) );
+        mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
+                                   QPainter::CompositionMode_Source, true );
     }
     mBufferImg->paste( &tempBitmapImage );
 }

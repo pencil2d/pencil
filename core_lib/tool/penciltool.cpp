@@ -66,7 +66,7 @@ void PencilTool::setInvisibility( const bool )
 }
 
 void PencilTool::setPressure( const bool pressure )
-{   
+{
     // Set current property
     properties.pressure = pressure;
 
@@ -125,6 +125,9 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
             }
         }
     }
+
+    mMouseDownPoint = getCurrentPoint();
+    mLastBrushPoint = getCurrentPoint();
 }
 
 void PencilTool::mouseMoveEvent( QMouseEvent *event )
@@ -147,13 +150,21 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
-            drawStroke();
+            if (getCurrentPoint()==mMouseDownPoint)
+            {
+                paintAt(mMouseDownPoint);
+            }
+            else
+            {
+                drawStroke();
+            }
         }
 
         if ( layer->type() == Layer::BITMAP )
         {
             mScribbleArea->paintBitmapBuffer();
             mScribbleArea->setAllDirty();
+            mScribbleArea->clearBitmapBuffer();
         }
         else if ( layer->type() == Layer::VECTOR &&  mStrokePoints.size() > -1 )
         {
@@ -192,6 +203,35 @@ void PencilTool::adjustPressureSensitiveProperties( qreal pressure, bool mouseDe
         mCurrentPressure = 1.0;
     }
 }
+
+// draw a single paint dab at the given location
+void PencilTool::paintAt( QPointF point )
+{
+    qDebug() << "Made a single dab at " << point;
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer->type() == Layer::BITMAP )
+    {
+        qreal opacity = 1.0f;
+        if (properties.pressure == true)
+        {
+            opacity = mCurrentPressure / 2;
+        }
+        mCurrentWidth = properties.width;
+        qreal brushWidth = mCurrentWidth;
+
+        BlitRect rect;
+
+        rect.extend( point.toPoint() );
+        mScribbleArea->drawPencil(point,
+                                  brushWidth,
+                                  mEditor->color()->frontColor(),
+                                  opacity);
+
+        int rad = qRound( brushWidth ) / 2 + 2;
+        mScribbleArea->refreshBitmap( rect, rad );
+    }
+}
+
 
 void PencilTool::drawStroke()
 {

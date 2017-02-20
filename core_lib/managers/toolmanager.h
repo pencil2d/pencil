@@ -46,6 +46,7 @@ public slots:
     void setVectorMergeEnabled( bool );
     void setBezier( bool );
     void setPressure( bool );
+    void setAA( bool );
 
 private:
     BaseTool* mCurrentTool       = nullptr;
