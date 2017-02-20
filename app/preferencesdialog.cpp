@@ -21,6 +21,8 @@ GNU General Public License for more details.
 PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
 {
     setWindowTitle(tr("Preferences"));
+    setMaximumWidth(600);
+    setMaximumHeight(680);
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -37,16 +39,12 @@ void PreferencesDialog::init( PreferenceManager* m )
     contentsWidget->setIconSize( QSize( 96, 84 ) );
     contentsWidget->setMovement( QListView::Static );
     contentsWidget->setMaximumWidth( 128 );
-    contentsWidget->setSpacing( 12 );
+    contentsWidget->setSpacing( 5 );
 
     GeneralPage* general = new GeneralPage( this );
     general->setManager( mPrefManager );
     general->updateValues();
     //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
-
-    GridPage* grid = new GridPage( this );
-    grid->setManager( mPrefManager );
-    grid->updateValues();
 
     FilesPage* file = new FilesPage( this );
     file->setManager( mPrefManager );
@@ -64,8 +62,9 @@ void PreferencesDialog::init( PreferenceManager* m )
     shortcuts->setManager( mPrefManager );
 
     pagesWidget = new QStackedWidget;
+    pagesWidget->setMinimumHeight(40);
+
     pagesWidget->addWidget( general );
-    pagesWidget->addWidget( grid );
     pagesWidget->addWidget( file );
     pagesWidget->addWidget( timeline );
     pagesWidget->addWidget( tools );
@@ -88,7 +87,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     QVBoxLayout* mainLayout = new QVBoxLayout;
     mainLayout->addLayout( horizontalLayout );
     mainLayout->addStretch( 1 );
-    mainLayout->addSpacing( 12 );
+    mainLayout->addSpacing( 5 );
     mainLayout->addLayout( buttonsLayout );
     setLayout( mainLayout );
 
@@ -107,12 +106,6 @@ void PreferencesDialog::createIcons()
     generalButton->setText(tr("General"));
     generalButton->setTextAlignment(Qt::AlignHCenter);
     generalButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
-    QListWidgetItem* gridButton = new QListWidgetItem(contentsWidget);
-    gridButton->setIcon(QIcon(":icons/prefspencil.png")); /* this needs its own icon sometime! */
-    gridButton->setText(tr("Grid"));
-    gridButton->setTextAlignment(Qt::AlignHCenter);
-    gridButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     QListWidgetItem* filesButton = new QListWidgetItem(contentsWidget);
     filesButton->setIcon(QIcon(":icons/prefs-files.png"));
@@ -161,14 +154,18 @@ void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* pr
 GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 {
     QSettings settings( PENCIL2D, PENCIL2D );
-    QVBoxLayout* lay = new QVBoxLayout();
+    contents = new QWidget();
+    QVBoxLayout* outerLay = new QVBoxLayout(this);
+    QVBoxLayout* lay = new QVBoxLayout(contents);
+    scrollArea = new QScrollArea;
 
     QGroupBox* languageBox = new QGroupBox( tr("Language", "GroupBox title in Preference") );
     QGroupBox* windowOpacityBox = new QGroupBox( tr( "Window opacity", "GroupBox title in Preference" ) );
     QGroupBox* backgroundBox = new QGroupBox( tr( "Background", "GroupBox title in Preference" ) );
     QGroupBox* appearanceBox = new QGroupBox( tr( "Appearance", "GroupBox title in Preference" ) );
-    QGroupBox* displayBox = new QGroupBox( tr( "Rendering", "GroupBox title in Preference" ) );
+    QGroupBox* displayBox = new QGroupBox( tr( "Canvas", "GroupBox title in Preference" ) );
     QGroupBox* editingBox = new QGroupBox( tr( "Editing", "GroupBox title in Preference" ) );
+    QGroupBox* gridBox = new QGroupBox(tr("Grid", "groupBox title in Preference") );
 
     mLanguageCombo = new QComboBox;
     mLanguageCombo->addItem( tr( "<System-Language>" ), "" );
@@ -242,6 +239,18 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     languageBox->setLayout( langLayout );
     langLayout->addWidget( mLanguageCombo );
 
+
+    mGridCheckBox = new QCheckBox(tr("Enable Grid"));
+
+    mGridSizeInput = new QSpinBox();
+    mGridSizeInput->setMinimum(1);
+    mGridSizeInput->setMaximum(512);
+    mGridSizeInput->setFixedWidth(80);
+    gridSize = settings.value("gridSize").toInt();
+    mGridSizeInput->setValue( gridSize );
+
+    connect( mGridSizeInput, SIGNAL(valueChanged(int)), this, SLOT(gridSizeChange(int)));
+
     QGridLayout* windowOpacityLayout = new QGridLayout();
     windowOpacityBox->setLayout(windowOpacityLayout);
     windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
@@ -256,6 +265,11 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGridLayout* displayLayout = new QGridLayout();
     displayBox->setLayout(displayLayout);
     displayLayout->addWidget(mAntialiasingBox, 0, 0);
+
+    QGridLayout* gridLayout = new QGridLayout();
+    gridBox->setLayout(gridLayout);
+    gridLayout->addWidget(mGridSizeInput, 0, 0);
+    gridLayout->addWidget(mGridCheckBox, 0, 10);
 
     QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
     mCurveSmoothingLevel = new QSlider(Qt::Horizontal);
@@ -273,12 +287,23 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     editingLayout->addWidget(mCurveSmoothingLevel, 1, 0);
     editingLayout->addWidget(mHighResBox, 2, 0);
 
+    outerLay->addWidget(scrollArea);
+    outerLay->addStretch(1);
+
     lay->addWidget( languageBox );
     lay->addWidget( windowOpacityBox );
     lay->addWidget( appearanceBox );
     lay->addWidget( backgroundBox );
     lay->addWidget( displayBox );
     lay->addWidget( editingBox );
+    lay->addWidget( gridBox );
+
+    scrollArea->setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+    scrollArea->setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+    scrollArea->setMaximumWidth(400);
+    scrollArea->setMinimumWidth(128);
+    scrollArea->setWidgetResizable (true);
+    scrollArea->setWidget(contents);
 
     PreferencesDialog* preference = qobject_cast< PreferencesDialog* >( parent );
 
@@ -293,8 +318,22 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     connect( mCurveSmoothingLevel, &QSlider::valueChanged,  this, &GeneralPage::curveSmoothingChange );
     connect( mHighResBox,         &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged );
     connect( mDottedCursorBox,    &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged );
+    connect( mGridSizeInput, SIGNAL(valueChanged(int)), this, SLOT(gridSizeChange(int)));
+    connect( mGridCheckBox,    &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged );
 
     setLayout(lay);
+}
+
+void GeneralPage::resizeEvent(QResizeEvent *event)
+{
+    int size = 0;
+    if (this->height() < 560 ) {
+       size = this->height();
+    } else if (this->height() >= 560) {
+        size = 560;
+    }
+    scrollArea->setMinimumHeight(size);
+    QWidget::resizeEvent(event);
 }
 
 
@@ -315,6 +354,8 @@ void GeneralPage::updateValues()
     mToolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
     mAntialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
     mDottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
+    mGridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
+    mGridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
 
     mHighResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
@@ -401,41 +442,14 @@ void GeneralPage::dottedCursorCheckboxStateChanged(bool b)
     mManager->set( SETTING::DOTTED_CURSOR, b );
 }
 
-
-GridPage::GridPage(QWidget* parent) : QWidget(parent)
-{
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QVBoxLayout* lay = new QVBoxLayout();
-
-    QGroupBox* gridSizeBox = new QGroupBox(tr("Grid Size"));
-
-    mGridSizeInput = new QSpinBox();
-    mGridSizeInput->setMinimum(1);
-    mGridSizeInput->setMaximum(512);
-    mGridSizeInput->setFixedWidth(80);
-    int gridSize = settings.value("gridSize").toInt();
-    mGridSizeInput->setValue( gridSize );
-
-    connect( mGridSizeInput, SIGNAL(valueChanged(int)), this, SLOT(gridSizeChange(int)));
-
-    QGridLayout* gridSizeLayout = new QGridLayout();
-    gridSizeBox->setLayout(gridSizeLayout);
-    gridSizeLayout->addWidget(mGridSizeInput, 0, 0);
-
-    lay->addWidget(gridSizeBox);
-
-
-    setLayout(lay);
-}
-
-void GridPage::updateValues()
-{
-    mGridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
-}
-
-void GridPage::gridSizeChange(int value)
+void GeneralPage::gridSizeChange(int value)
 {
     mManager->set(SETTING::GRID_SIZE, value);
+}
+
+void GeneralPage::gridCheckBoxStateChanged(bool b)
+{
+    mManager->set(SETTING::GRID, b);
 }
 
 TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
