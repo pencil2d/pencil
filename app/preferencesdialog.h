@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include <QRadioButton>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QScrollArea>
 #include <QLabel>
 #include <QPushButton>
 
@@ -68,6 +69,7 @@ private:
 
     QListWidget* contentsWidget = nullptr;
     QStackedWidget* pagesWidget = nullptr;
+    QScrollArea* scrollArea = nullptr;
 
     PreferenceManager* mPrefManager = nullptr;
 };
@@ -83,6 +85,10 @@ public:
 
 public slots:
     void updateValues();
+    void gridSizeChange(int value);
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     void languageChanged( int i );
@@ -91,10 +97,13 @@ private:
     void toolCursorsCheckboxStateChanged( bool b );
     void dottedCursorCheckboxStateChanged( bool b );
     void highResCheckboxStateChanged(bool b);
+    void gridCheckBoxStateChanged(bool b);
     void curveSmoothingChange(int value);
     void backgroundChange(int value);
 
     PreferenceManager* mManager = nullptr;
+    QScrollArea* scrollArea;
+    QWidget* contents;
 
     QComboBox* mLanguageCombo = nullptr;
     QSlider* mWindowOpacityLevel;
@@ -105,29 +114,12 @@ private:
     QCheckBox* mHighResBox;
     QButtonGroup *mBackgroundButtons;
     QCheckBox* mDottedCursorBox;
-
-};
-
-class GridPage : public QWidget
-{
-    Q_OBJECT
-public:
-    GridPage(QWidget* parent = 0);
-    void setManager( PreferenceManager* p ) { mManager = p; }
-
-
-public slots:
-    void updateValues();
-    void gridSizeChange(int value);
-
-private:
-
-    PreferenceManager* mManager = nullptr;
-
     QSpinBox* mGridSizeInput;
+    QCheckBox* mGridCheckBox;
+
+    int gridSize;
 
 };
-
 
 class TimelinePage : public QWidget
 {
