@@ -131,11 +131,11 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mFeatherSpinBox, 9, 10, 1, 2 );
     pLayout->addWidget( mUseBezierBox, 10, 0, 1, 2 );
     pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
-    pLayout->addWidget( mUseAABox, 14, 0, 1, 2);
+    pLayout->addWidget( mUseAABox, 12, 0, 1, 2);
     pLayout->addWidget( mPreserveAlphaBox, 13, 0, 1, 2 );
-    pLayout->addWidget( mUseFeatherBox, 12, 0, 1, 2 );
-    pLayout->addWidget( mMakeInvisibleBox, 15, 0, 1, 2 );
-    pLayout->addWidget( mVectorMergeBox, 16, 0, 1, 2 );
+    pLayout->addWidget( mUseFeatherBox, 13, 0, 1, 2 );
+    pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
+    pLayout->addWidget( mVectorMergeBox, 15, 0, 1, 2 );
 
     pLayout->setRowStretch( 16, 1 );
 
