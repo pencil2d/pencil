@@ -1356,6 +1356,11 @@ p, li { white-space: pre-wrap; }
         <translation>Salvando documento...</translation>
     </message>
     <message>
+        <location filename="../app/mainwindow2.cpp" line="592"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/mainwindow2.cpp" line="628"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
@@ -1371,6 +1376,16 @@ Deseja salvar suas alterações?</translation>
         <location filename="../app/mainwindow2.cpp" line="669"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Impossível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma camada Bitmap para importar bitmaps.</translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="693"/>
+        <source>Select one or more files to open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="695"/>
+        <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="718"/>
@@ -1850,6 +1865,11 @@ Deseja salvar suas alterações?</translation>
         <translation type="vanished">FPS: </translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="41"/>
+        <source>Frames per second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="50"/>
         <source>Start of playback loop</source>
         <translation type="unfinished"></translation>
@@ -1924,6 +1944,16 @@ Deseja salvar suas alterações?</translation>
         <translation type="unfinished">Linha do tempo</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="85"/>
+        <source>Add Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="90"/>
+        <source>Remove Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Camada</translation>
@@ -1934,9 +1964,29 @@ Deseja salvar suas alterações?</translation>
         <translation>Chaves:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="132"/>
+        <source>Add Frame</source>
+        <translation type="unfinished">Adicionar Quadro</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="137"/>
+        <source>Remove Frame</source>
+        <translation type="unfinished">Remover Quadro</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="142"/>
+        <source>Duplicate Frame</source>
+        <translation type="unfinished">Duplicar Quadro</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="154"/>
         <source>Onion skin:</source>
         <translation>Transparência:</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="161"/>
+        <source>Toggle match keyframes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timeline.cpp" line="309"/>

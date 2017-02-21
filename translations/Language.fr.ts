@@ -1338,6 +1338,11 @@ p, li { white-space: pre-wrap; }
         <translation>Enregistrement d&apos;un document...</translation>
     </message>
     <message>
+        <location filename="../app/mainwindow2.cpp" line="592"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/mainwindow2.cpp" line="628"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
@@ -1351,6 +1356,16 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/mainwindow2.cpp" line="669"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="693"/>
+        <source>Select one or more files to open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="695"/>
+        <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1822,6 +1837,11 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Fps: </translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="41"/>
+        <source>Frames per second</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="50"/>
         <source>Start of playback loop</source>
         <translation type="unfinished"></translation>
@@ -1886,8 +1906,28 @@ p, li { white-space: pre-wrap; }
         <translation>Nouveau calque Caméra</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="132"/>
+        <source>Add Frame</source>
+        <translation type="unfinished">Ajouter un cadre</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="137"/>
+        <source>Remove Frame</source>
+        <translation type="unfinished">Enlever un cadre</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="142"/>
+        <source>Duplicate Frame</source>
+        <translation type="unfinished">Dupliquer un cadre</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="154"/>
         <source>Onion skin:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="161"/>
+        <source>Toggle match keyframes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1909,6 +1949,16 @@ p, li { white-space: pre-wrap; }
         <location filename="../core_lib/interface/timeline.cpp" line="48"/>
         <source>Timeline</source>
         <translation type="unfinished">Chronologie</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="85"/>
+        <source>Add Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="90"/>
+        <source>Remove Layer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
