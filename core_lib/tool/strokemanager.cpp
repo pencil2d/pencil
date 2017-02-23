@@ -114,10 +114,10 @@ void StrokeManager::tabletEvent(QTabletEvent* event)
 void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
     QPointF pos = getEventPosition(event);
-    QPointF smoothPos = QPointF( ( pos.x() + mLastPixel.x() ) / 2.0, ( pos.y() + mLastPixel.y() ) / 2.0 );
+    QPointF newPos = QPointF( ( pos.x()), ( pos.y() ));
 
     mLastPixel = mCurrentPixel;
-    mCurrentPixel = smoothPos;
+    mCurrentPixel = newPos;
 
 	if ( !mStrokeStarted )
 	{
@@ -135,7 +135,7 @@ void StrokeManager::mouseMoveEvent(QMouseEvent* event)
         strokeQueue.pop_front();
     }
 
-    strokeQueue.push_back( smoothPos );
+    strokeQueue.push_back( newPos );
 
 }
 
@@ -162,7 +162,7 @@ QList<QPointF> StrokeManager::interpolateStroke()
         //qDebug() << "previous tangent" << m_previousTangent;
         QLineF _line(QPointF(0,0), m_previousTangent);
         // don't bother for small tangents, as they can induce single pixel wobbliness
-        if (_line.length() < 2) 
+        if (_line.length() < 2)
 		{
             m_previousTangent = QPointF(0,0);
         }

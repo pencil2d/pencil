@@ -24,6 +24,7 @@ void PolylineTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[BEZIER] = true;
+    m_enabledProperties[ANTI_ALIASING] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -32,6 +33,7 @@ void PolylineTool::loadSettings()
     properties.pressure = 0;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
+    properties.useAA = settings.value( "brushAA").toBool();
 
     // First run
     if ( properties.width <= 0 )
@@ -54,6 +56,17 @@ void PolylineTool::setWidth(const qreal width)
 void PolylineTool::setFeather( const qreal feather )
 {
     properties.feather = -1;
+}
+
+void PolylineTool::setAA( const bool AA )
+{
+    // Set current property
+    properties.useAA = AA;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("brushAA", AA);
+    settings.sync();
 }
 
 QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
