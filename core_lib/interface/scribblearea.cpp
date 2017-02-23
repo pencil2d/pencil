@@ -1190,6 +1190,10 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
         }
         tempPath.lineTo( endPoint );
 
+        QRectF updateRect = mEditor->view()->mapCanvasToScreen( tempPath.boundingRect().toRect() ).adjusted( -1, -1, 1, 1);
+
+        // Update region outside updateRect
+        QRectF boundingRect = updateRect.adjusted(-width(),-height(), width(),height());
         if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
         {
             tempPath = mEditor->view()->mapCanvasToScreen( tempPath );
@@ -1204,6 +1208,8 @@ void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
             }
         }
         mBufferImg->clear();
+        mBufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, getTool( POLYLINE )->properties.useAA);
+        update( boundingRect.toRect());
     }
 }
 
