@@ -561,7 +561,18 @@ bool Object::exportFrames( int frameStart, int frameEnd,
 
         QPainter painter( &imageToExport );
 
-        QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
+        QRect viewRect;
+        if(currentLayer != nullptr)
+        {
+            viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
+        }
+        else
+        {
+            // Some old .PCL files may not have a camera layer.
+            // In that case, use a default size.
+            viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
+        }
+
         QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
 //        mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
         painter.setWorldTransform( mapView );

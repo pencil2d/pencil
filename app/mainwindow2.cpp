@@ -740,7 +740,14 @@ void MainWindow2::exportImageSequence()
     auto dialog =  new ExportImageSeqDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
-    dialog->setExportSize( cameraLayer->getViewRect().size() );
+    if(cameraLayer != nullptr)
+    {
+        dialog->setExportSize( cameraLayer->getViewRect().size() );
+    }
+    else
+    {
+        dialog->setExportSize( QSize(640,480) );
+    }
     dialog->exec();
 
     QSize exportSize = dialog->getExportSize();
@@ -803,7 +810,14 @@ void MainWindow2::exportImage()
     auto dialog =  new ExportImageSeqDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
-    dialog->setExportSize( cameraLayer->getViewRect().size() );
+    if(cameraLayer != nullptr)
+    {
+        dialog->setExportSize(cameraLayer->getViewRect().size());
+    }
+    else
+    {
+        dialog->setExportSize(QSize(640, 480));
+    }
     dialog->exec();
 
     QSize exportSize = dialog->getExportSize();
