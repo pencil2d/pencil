@@ -28,6 +28,10 @@ public:
 
 private:
     QList<QPointF> mPoints;
+
+    void drawPolyline(QList<QPointF> points, QPointF endPoint);
+    void cancelPolyline();
+    void endPolyline( QList<QPointF> points );
 };
 
 #endif // POLYLINETOOL_H

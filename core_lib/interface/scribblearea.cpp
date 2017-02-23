@@ -1165,95 +1165,16 @@ void ScribbleArea::liquifyBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPo
     delete bmiTmpClip;
 }
 
-void ScribbleArea::drawPolyline( QList<QPointF> points, QPointF endPoint )
+void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 {
-    if ( !areLayersSane() )
-    {
-        return;
-    }
+    QRectF updateRect = mEditor->view()->mapCanvasToScreen( path.boundingRect().toRect() ).adjusted( -1, -1, 1, 1);
 
-    if ( points.size() > 0 )
-    {
-        QPen pen2( mEditor->color()->frontColor(),
-                   getTool( POLYLINE )->properties.width,
-                   Qt::SolidLine,
-                   Qt::RoundCap,
-                   Qt::RoundJoin );
-        QPainterPath tempPath;
-        if ( currentTool()->properties.bezier_state )
-        {
-            tempPath = BezierCurve( points ).getSimplePath();
-        }
-        else
-        {
-            tempPath = BezierCurve( points ).getStraightPath();
-        }
-        tempPath.lineTo( endPoint );
-
-        QRectF updateRect = mEditor->view()->mapCanvasToScreen( tempPath.boundingRect().toRect() ).adjusted( -1, -1, 1, 1);
-
-        // Update region outside updateRect
-        QRectF boundingRect = updateRect.adjusted(-width(),-height(), width(),height());
-        if ( mEditor->layers()->currentLayer()->type() == Layer::VECTOR )
-        {
-            tempPath = mEditor->view()->mapCanvasToScreen( tempPath );
-            if ( mMakeInvisible )
-            {
-                pen2.setWidth( 0 );
-                pen2.setStyle( Qt::DotLine );
-            }
-            else
-            {
-                pen2.setWidth( getTool( POLYLINE )->properties.width * mEditor->view()->scaling() );
-            }
-        }
-        mBufferImg->clear();
-        mBufferImg->drawPath( tempPath, pen2, Qt::NoBrush, QPainter::CompositionMode_SourceOver, getTool( POLYLINE )->properties.useAA);
-        update( boundingRect.toRect());
-    }
-}
-
-void ScribbleArea::cancelPolyline(QList<QPointF> points)
-{
-    // Clear the in-progress polyline from the bitmap buffer.
-    clearBitmapBuffer();
-    updateCurrentFrame();
-}
-
-void ScribbleArea::endPolyline( QList<QPointF> points )
-{
-    if ( !areLayersSane() )
-    {
-        return;
-    }
-
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    if ( layer->type() == Layer::VECTOR )
-    {
-        BezierCurve curve = BezierCurve( points );
-        if ( mMakeInvisible )
-        {
-            curve.setWidth( 0 );
-        }
-        else
-        {
-            curve.setWidth( getTool( POLYLINE )->properties.width );
-        }
-        curve.setColourNumber( mEditor->color()->frontColorNumber() );
-        curve.setVariableWidth( false );
-        curve.setInvisibility( mMakeInvisible );
-        //curve.setSelected(true);
-        ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
-    }
-    if ( layer->type() == Layer::BITMAP )
-    {
-        drawPolyline( points, points.last() );
-        BitmapImage *bitmapImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-        bitmapImage->paste( mBufferImg );
-    }
+    // Update region outside updateRect
+    QRectF boundingRect = updateRect.adjusted(-width(),-height(), width(),height());
     mBufferImg->clear();
-    setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+    mBufferImg->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
+    update( boundingRect.toRect());
+
 }
 
 /************************************************************************************/
