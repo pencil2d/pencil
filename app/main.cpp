@@ -107,7 +107,7 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         width = parser.value( widthOption ).toInt( &ok );
         if ( !ok )
         {
-            qDebug() << "Warning: width value" << parser.value( widthOption ) << "is not an integer, ignoring.";
+            qDebug() << QString(PencilApplication::tr( "Warning: width value %1 is not an integer, ignoring." )).arg(parser.value( widthOption ));
             width = -1;
         }
     }
@@ -117,7 +117,7 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         height = parser.value( heightOption ).toInt( &ok );
         if ( !ok )
         {
-            qDebug() << "Warning: height value" << parser.value( heightOption ) << "is not an integer, ignoring.";
+            qDebug() << QString(PencilApplication::tr( "Warning: height value %1 is not an integer, ignoring." )).arg(parser.value( heightOption ));
             height = -1;
         }
     }
@@ -140,16 +140,16 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         return 1;
     }
 
-    std::cout << "Exporting image sequence..." << std::endl;
+    std::cout << PencilApplication::tr( "Exporting image sequence..." ).constData() << std::endl;
 
     QFileInfo inputFileInfo(inputPath);
     if(!inputFileInfo.exists()) {
-        qDebug() << "Error: the input file at '" << inputPath << "' does not exist";
+        qDebug() << QString(PencilApplication::tr( "Error: the input file at '%1' does not exist" )).arg(inputPath);
         return 1;
     }
     if ( !inputFileInfo.isFile() )
     {
-        qDebug() << "Error: the input path '" << inputPath << "' is not a file";
+        qDebug() << QString(PencilApplication::tr( "Error: the input path '%1' is not a file" )).arg(inputPath);
         return 1;
     }
 
@@ -173,13 +173,13 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
             format = extensionMapping[extension];
         }
         else {
-            qDebug() << "Warning: Output format is not specified or unsupported. Using PNG.";
+            qDebug() << PencilApplication::tr( "Warning: Output format is not specified or unsupported. Using PNG." );
             format = "PNG";
         }
 
         mainWindow.mEditor->exportSeqCLI( outputPaths[i], format, width, height, transparency );
     }
-    qDebug() << "Done.";
+    qDebug() << PencilApplication::tr( "Done." );
 
     return 0;
 }

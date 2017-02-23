@@ -1644,7 +1644,7 @@ void ScribbleArea::deleteSelection()
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if ( layer == NULL ) { return; }
-        mEditor->backup( tr( "DeleteSel" ) );
+        mEditor->backup( tr( "Delete Selection" ) );
         mClosestCurves.clear();
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deleteSelection(); }
         if ( layer->type() == Layer::BITMAP ) { ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 )->clear( mySelection ); }
@@ -1658,14 +1658,14 @@ void ScribbleArea::clearImage()
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
-        mEditor->backup( tr( "ClearImg" ) ); // undo: only before change (just before)
+        mEditor->backup( tr( "Clear Image" ) ); // undo: only before change (just before)
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->clear();
         mClosestCurves.clear();
         mClosestVertices.clear();
     }
     else if ( layer->type() == Layer::BITMAP )
     {
-        mEditor->backup( tr( "ClearImg" ) );
+        mEditor->backup( tr( "Clear Image" ) );
         ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 )->clear();
     }
     else
@@ -1693,14 +1693,14 @@ void ScribbleArea::paletteColorChanged(QColor color)
 void ScribbleArea::floodFillError( int errorType )
 {
     QString message, error;
-    if ( errorType == 1 ) { message = "There is a gap in your drawing (or maybe you have zoomed too much)."; }
-    if ( errorType == 2 || errorType == 3 ) message = "Sorry! This doesn't always work."
+    if ( errorType == 1 ) { message = tr( "There is a gap in your drawing (or maybe you have zoomed too much)." ); }
+    if ( errorType == 2 || errorType == 3 ) message = tr( "Sorry! This doesn't always work."
             "Please try again (zoom a bit, click at another location... )<br>"
-            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.).";
+            "if it doesn't work, zoom a bit and check that your paths are connected by pressing F1.)." );
 
-    if ( errorType == 1 ) { error = "Out of bound."; }
-    if ( errorType == 2 ) { error = "Could not find a closed path."; }
-    if ( errorType == 3 ) { error = "Could not find the root index."; }
-    QMessageBox::warning( this, tr( "Flood fill error" ), message + "<br><br>Error: " + error, QMessageBox::Ok, QMessageBox::Ok );
+    if ( errorType == 1 ) { error = tr( "Out of bound." ); }
+    if ( errorType == 2 ) { error = tr( "Could not find a closed path." ); }
+    if ( errorType == 3 ) { error = tr( "Could not find the root index." ); }
+    QMessageBox::warning( this, tr( "Flood fill error" ), QString(tr("%1<br><br>Error: %2")).arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok );
     deselectAll();
 }
