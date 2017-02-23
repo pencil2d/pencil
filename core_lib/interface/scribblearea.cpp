@@ -1701,6 +1701,6 @@ void ScribbleArea::floodFillError( int errorType )
     if ( errorType == 1 ) { error = tr( "Out of bound." ); }
     if ( errorType == 2 ) { error = tr( "Could not find a closed path." ); }
     if ( errorType == 3 ) { error = tr( "Could not find the root index." ); }
-    QMessageBox::warning( this, tr( "Flood fill error" ), QString(tr("%1<br><br>Error: %2")).arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok );
+    QMessageBox::warning( this, tr( "Flood fill error" ), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok );
     deselectAll();
 }

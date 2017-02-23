@@ -911,7 +911,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="64"/>
-        <location filename="../app/mainwindow2.cpp" line="1094"/>
+        <location filename="../app/mainwindow2.cpp" line="1092"/>
         <source>Import</source>
         <translation>Importálás</translation>
     </message>
@@ -1050,7 +1050,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="372"/>
-        <location filename="../app/mainwindow2.cpp" line="1059"/>
+        <location filename="../app/mainwindow2.cpp" line="1057"/>
         <source>Redo</source>
         <translation>Újra</translation>
     </message>
@@ -1182,7 +1182,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1240"/>
+        <location filename="../app/mainwindow2.cpp" line="1238"/>
         <source>Play</source>
         <translation>Lejátszás</translation>
     </message>
@@ -1486,21 +1486,29 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="1042"/>
+        <source>Undo   %1 %2</source>
+        <translation>Visszavonás (%1):   %2</translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="1050"/>
+        <source>Redo   %1 %2</source>
+        <translation>Újra (%1):   %2</translation>
+    </message>
+    <message>
         <source>Undo   </source>
-        <translation>Visszavonás:   </translation>
+        <translation type="vanished">Visszavonás:   </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1051"/>
         <source>Redo   </source>
-        <translation>Újra:   </translation>
+        <translation type="vanished">Újra:   </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1078"/>
+        <location filename="../app/mainwindow2.cpp" line="1076"/>
         <source>Export As</source>
         <translation>Exportálás másként</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1236"/>
+        <location filename="../app/mainwindow2.cpp" line="1234"/>
         <source>Stop</source>
         <translation>Megállítás</translation>
     </message>

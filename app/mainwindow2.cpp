@@ -1039,19 +1039,17 @@ void MainWindow2::undoActSetText( void )
     }
     else
     {
-        ui->actionUndo->setText( tr("Undo   ")
-                                + QString::number( this->mEditor->mBackupIndex + 1 )
-                                + " "
-                                + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText );
+        ui->actionUndo->setText( tr("Undo   %1 %2")
+                                .arg(QString::number( this->mEditor->mBackupIndex + 1 ))
+                                .arg(this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText ));
         ui->actionUndo->setEnabled( true );
     }
 
     if ( this->mEditor->mBackupIndex + 2 < this->mEditor->mBackupList.size() )
     {
-        ui->actionRedo->setText( tr("Redo   ")
-                                + QString::number( this->mEditor->mBackupIndex + 2 )
-                                + " "
-                                + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText );
+        ui->actionRedo->setText( tr("Redo   %1 %2")
+                                .arg(QString::number( this->mEditor->mBackupIndex + 2 ))
+                                .arg(this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText ));
         ui->actionRedo->setEnabled( true );
     }
     else

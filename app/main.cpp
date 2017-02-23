@@ -107,7 +107,7 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         width = parser.value( widthOption ).toInt( &ok );
         if ( !ok )
         {
-            qDebug() << QString(PencilApplication::tr( "Warning: width value %1 is not an integer, ignoring." )).arg(parser.value( widthOption ));
+            qDebug() << PencilApplication::tr( "Warning: width value %1 is not an integer, ignoring." ).arg(parser.value( widthOption ));
             width = -1;
         }
     }
@@ -117,7 +117,7 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         height = parser.value( heightOption ).toInt( &ok );
         if ( !ok )
         {
-            qDebug() << QString(PencilApplication::tr( "Warning: height value %1 is not an integer, ignoring." )).arg(parser.value( heightOption ));
+            qDebug() << PencilApplication::tr( "Warning: height value %1 is not an integer, ignoring." ).arg(parser.value( heightOption ));
             height = -1;
         }
     }
@@ -144,12 +144,12 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
 
     QFileInfo inputFileInfo(inputPath);
     if(!inputFileInfo.exists()) {
-        qDebug() << QString(PencilApplication::tr( "Error: the input file at '%1' does not exist" )).arg(inputPath);
+        qDebug() << PencilApplication::tr( "Error: the input file at '%1' does not exist" ).arg(inputPath);
         return 1;
     }
     if ( !inputFileInfo.isFile() )
     {
-        qDebug() << QString(PencilApplication::tr( "Error: the input path '%1' is not a file" )).arg(inputPath);
+        qDebug() << PencilApplication::tr( "Error: the input path '%1' is not a file" ).arg(inputPath);
         return 1;
     }
 
