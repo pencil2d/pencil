@@ -77,7 +77,7 @@ void ShortcutsPage::keyCapLineEditTextChanged(QKeySequence keySeqence)
     {
         QMessageBox msgBox;
         msgBox.setText( tr("Shortcut Conflict!"));
-        msgBox.setInformativeText( QString( tr("%1 is already used, overwrite?") ).arg(keySeqence.toString(QKeySequence::NativeText)) );
+        msgBox.setInformativeText( tr("%1 is already used, overwrite?").arg(keySeqence.toString(QKeySequence::NativeText)) );
         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox.setDefaultButton(QMessageBox::No);
         msgBox.setIcon( QMessageBox::Warning );
