@@ -483,7 +483,7 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
                       Qt::MiterJoin );
             painter.setPen( pen );
             painter.setBrush( Qt::NoBrush );
-            painter.drawRect( cameraRect.adjusted(-1,-1,1,1) );
+            painter.drawRect( cameraRect.adjusted( -1, -1, 1, 1) );
         }
     }
 }
