@@ -114,7 +114,7 @@ void StrokeManager::tabletEvent(QTabletEvent* event)
 void StrokeManager::mouseMoveEvent(QMouseEvent* event)
 {
     QPointF pos = getEventPosition(event);
-    QPointF newPos = QPointF( ( pos.x()), ( pos.y() ));
+    QPointF newPos = QPointF( pos.x(), pos.y() );
 
     mLastPixel = mCurrentPixel;
     mCurrentPixel = newPos;
