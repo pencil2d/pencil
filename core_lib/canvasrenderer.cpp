@@ -476,9 +476,14 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
 
             painter.setClipping(false);
 
-            painter.setPen( Qt::black );
+            QPen pen( Qt::black,
+                      2,
+                      Qt::SolidLine,
+                      Qt::FlatCap,
+                      Qt::MiterJoin );
+            painter.setPen( pen );
             painter.setBrush( Qt::NoBrush );
-            painter.drawRect( cameraRect );
+            painter.drawRect( cameraRect.adjusted( -1, -1, 1, 1) );
         }
     }
 }
