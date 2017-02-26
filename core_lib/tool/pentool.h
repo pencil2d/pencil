@@ -17,15 +17,17 @@ public:
     void mouseReleaseEvent( QMouseEvent* ) override;
 
     void drawStroke();
+    void paintAt( QPointF point );
 
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
     void setWidth( const qreal width ) override;
-    void setFeather( const qreal feather ) override;
     void setPressure( const bool pressure ) override;
+    void setAA( const bool AA ) override;
 
 private:
     QPointF mLastBrushPoint;
+    QPointF mMouseDownPoint;
 };
 
 #endif // PENTOOL_H

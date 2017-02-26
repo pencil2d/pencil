@@ -18,12 +18,13 @@ class Properties
 public:
     qreal width       = 1.f;
     qreal feather     = 1.f;
-    bool pressure      = 1;
+    bool pressure     = 1;
     int invisibility  = 0;
     int preserveAlpha = 0;
     bool vectorMergeEnabled = false;
     bool bezier_state = false;
     bool useFeather   = true;
+    bool useAA        = true;
 };
 
 const int ON = 1;
@@ -79,6 +80,7 @@ public:
     virtual void setUseFeather( const bool usingFeather );
     virtual void setPreserveAlpha( const bool preserveAlpha );
     virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
+    virtual void setAA ( const bool useAA );
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
     Properties properties;

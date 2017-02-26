@@ -21,14 +21,15 @@ void PenTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[VECTORMERGE] = true;
+    m_enabledProperties[ANTI_ALIASING] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
     properties.width = settings.value( "penWidth" ).toDouble();
-    properties.feather = 80;
     properties.pressure = settings.value( "penPressure" ).toBool();
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
+    properties.useAA = settings.value( "brushAA").toBool();
 
     // First run
     if ( properties.width <= 0 )
@@ -51,17 +52,6 @@ void PenTool::setWidth(const qreal width)
     settings.sync();
 }
 
-void PenTool::setFeather( const qreal feather )
-{
-    // Set current property
-    properties.feather = feather;
-
-    // Update settings
-    QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue("penFeather", feather);
-    settings.sync();
-}
-
 void PenTool::setPressure( const bool pressure )
 {
     // Set current property
@@ -73,15 +63,30 @@ void PenTool::setPressure( const bool pressure )
     settings.sync();
 }
 
+void PenTool::setAA( const bool AA )
+{
+    // Set current property
+    properties.useAA = AA;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("brushAA", AA);
+    settings.sync();
+}
+
 QCursor PenTool::cursor()
 {
     if ( isAdjusting ) // being dynamically resized
     {
-        return QCursor( circleCursors() ); // two circles cursor
+        return circleCursors(); // two circles cursor
+    }
+    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        return dottedCursor(); // preview stroke size cursor
     }
     if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
-        return QCursor( QPixmap( ":icons/pen.png" ), 7, 0 );
+        return QCursor( QPixmap( ":icons/pen.png" ), 2, 22 );
     }
     return Qt::CrossCursor;
 }
@@ -108,8 +113,10 @@ void PenTool::mousePressEvent( QMouseEvent *event )
         mScribbleArea->setAllDirty();
     }
 
-    startStroke();
+    mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
+
+    startStroke();
 }
 
 void PenTool::mouseReleaseEvent( QMouseEvent *event )
@@ -120,13 +127,21 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( isLayerPaintable( layer ) )
         {
-            drawStroke();
+            if (getCurrentPoint()==mMouseDownPoint)
+            {
+                paintAt(mMouseDownPoint);
+            }
+            else
+            {
+                drawStroke();
+            }
         }
 
         if ( layer->type() == Layer::BITMAP )
         {
             mScribbleArea->paintBitmapBuffer();
             mScribbleArea->setAllDirty();
+            mScribbleArea->clearBitmapBuffer();
         }
         else if ( layer->type() == Layer::VECTOR && mStrokePoints.size() > -1 )
         {
@@ -135,7 +150,6 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
             qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
             BezierCurve curve( mStrokePoints, mStrokePressures, tol );
             curve.setWidth( properties.width );
-            curve.setFeather( properties.feather );
             curve.setInvisibility( false );
             curve.setVariableWidth( properties.pressure );
             curve.setColourNumber( mEditor->color()->frontColorNumber() );
@@ -165,6 +179,35 @@ void PenTool::mouseMoveEvent( QMouseEvent *event )
     }
 }
 
+// draw a single paint dab at the given location
+void PenTool::paintAt( QPointF point )
+{
+    qDebug() << "Made a single dab at " << point;
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer->type() == Layer::BITMAP )
+    {
+        qreal opacity = 1.0f;
+        if (properties.pressure == true)
+        {
+            opacity = mCurrentPressure / 2;
+        }
+        mCurrentWidth = properties.width;
+        qreal brushWidth = mCurrentWidth;
+
+        BlitRect rect;
+
+        rect.extend( point.toPoint() );
+        mScribbleArea->drawPen( point,
+                                brushWidth,
+                                mEditor->color()->frontColor(),
+                                opacity,
+                                properties.useAA);
+
+        int rad = qRound( brushWidth ) / 2 + 2;
+        mScribbleArea->refreshBitmap( rect, rad );
+    }
+}
+
 void PenTool::drawStroke()
 {
     StrokeTool::drawStroke();
@@ -181,7 +224,10 @@ void PenTool::drawStroke()
 
         qreal opacity = 1.0;
         qreal brushWidth = mCurrentPressure * mCurrentWidth;
-        qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
+
+        // TODO: Make popup widget for less important properties,
+        // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
+        qreal brushStep = (0.5 * brushWidth) - (0.3 * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
         BlitRect rect;
@@ -199,7 +245,8 @@ void PenTool::drawStroke()
             mScribbleArea->drawPen( point,
                                     brushWidth,
                                     mEditor->color()->frontColor(),
-                                    opacity );
+                                    opacity,
+                                    properties.useAA );
 
             if ( i == ( steps - 1 ) )
             {

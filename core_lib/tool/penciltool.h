@@ -16,6 +16,7 @@ public:
     void mousePressEvent( QMouseEvent* ) override;
     void mouseMoveEvent( QMouseEvent* ) override;
     void mouseReleaseEvent( QMouseEvent* ) override;
+    void paintAt( QPointF point );
 
     void drawStroke();
 
@@ -31,6 +32,7 @@ private:
     QColor mCurrentPressuredColor { 0, 0, 0, 255 };
     QPointF mLastBrushPoint { 0, 0 };
     qreal mOpacity = 1.0f;
+    QPointF mMouseDownPoint;
 };
 
 #endif // PENCILTOOL_H

@@ -43,6 +43,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
     m_enabledProperties.insert( INVISIBILITY,   false  );
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
     m_enabledProperties.insert( BEZIER,         false  );
+    m_enabledProperties.insert( ANTI_ALIASING,  false  );
 }
 
 QCursor BaseTool::cursor()
@@ -326,3 +327,9 @@ void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
 {
     properties.vectorMergeEnabled = vectorMergeEnabled;
 }
+
+void BaseTool::setAA(const bool useAA)
+{
+    properties.useAA = useAA;
+}
+

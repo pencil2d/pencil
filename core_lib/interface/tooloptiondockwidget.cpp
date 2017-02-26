@@ -43,6 +43,7 @@ void ToolOptionWidget::updateUI()
     mUsePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
     mMakeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
     mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
+    mUseAABox->setVisible(currentTool->isPropertyEnabled(ANTI_ALIASING ) );
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
 
@@ -59,6 +60,7 @@ void ToolOptionWidget::updateUI()
     setPenInvisibility( p.invisibility );
     setPreserveAlpha( p.preserveAlpha );
     setVectorMergeEnabled( p.vectorMergeEnabled );
+    setAA(p.useAA);
 }
 
 void ToolOptionWidget::createUI()
@@ -88,7 +90,7 @@ void ToolOptionWidget::createUI()
     mFeatherSpinBox->setRange(2,64);
     mFeatherSpinBox->setValue(settings.value( "brushFeather" ).toDouble() );
 
-    mUseFeatherBox = new QCheckBox( tr( "Use Feather?" ) );
+    mUseFeatherBox = new QCheckBox( tr( "Use Feather" ) );
     mUseFeatherBox->setToolTip( tr( "Enable or disable feathering" ) );
     mUseFeatherBox->setFont( QFont( "Helvetica", 10 ) );
     mUseFeatherBox->setChecked( settings.value( "brushUseFeather" ).toBool() );
@@ -102,6 +104,11 @@ void ToolOptionWidget::createUI()
     mUsePressureBox->setToolTip( tr( "Size with pressure" ) );
     mUsePressureBox->setFont( QFont( "Helvetica", 10 ) );
     mUsePressureBox->setChecked( true );
+
+    mUseAABox = new QCheckBox( tr( "Anti-Aliasing" ) );
+    mUseAABox->setToolTip( tr( "Enable Anti-Aliasing" ) );
+    mUseAABox->setFont( QFont( "Helvetica", 10 ) );
+    mUseAABox->setChecked( true );
 
     mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
     mMakeInvisibleBox->setToolTip( tr( "Make invisible" ) );
@@ -124,7 +131,8 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mFeatherSpinBox, 9, 10, 1, 2 );
     pLayout->addWidget( mUseBezierBox, 10, 0, 1, 2 );
     pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
-    pLayout->addWidget( mPreserveAlphaBox, 12, 0, 1, 2 );
+    pLayout->addWidget( mUseAABox, 12, 0, 1, 2);
+    pLayout->addWidget( mPreserveAlphaBox, 13, 0, 1, 2 );
     pLayout->addWidget( mUseFeatherBox, 13, 0, 1, 2 );
     pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
     pLayout->addWidget( mVectorMergeBox, 15, 0, 1, 2 );
@@ -154,6 +162,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mUseFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather );
 
     connect( mVectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled );
+    connect( mUseAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA );
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -182,6 +191,9 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
             break;
         case VECTORMERGE:
             setVectorMergeEnabled(p.vectorMergeEnabled);
+            break;
+        case ANTI_ALIASING:
+            setAA(p.useAA);
             break;
     }
 }
@@ -245,6 +257,15 @@ void ToolOptionWidget::setVectorMergeEnabled(int x)
     mVectorMergeBox->setChecked( x > 0 );
 }
 
+void ToolOptionWidget::setAA(int x)
+{
+    qDebug() << "Setting - Pen AA Enabled=" << x;
+
+    SignalBlocker b( mUseAABox );
+    mUseAABox->setEnabled( true );
+    mUseAABox->setChecked( x > 0 );
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     mSizeSlider->hide();
@@ -257,4 +278,5 @@ void ToolOptionWidget::disableAllOptions()
     mMakeInvisibleBox->hide();
     mPreserveAlphaBox->hide();
     mVectorMergeBox->hide();
+    mUseAABox->hide();
 }

@@ -34,7 +34,8 @@ enum ToolPropertyType
     PRESERVEALPHA,
     BEZIER,
     USEFEATHER,
-    VECTORMERGE
+    VECTORMERGE,
+    ANTI_ALIASING
 };
 
 enum BackgroundStyle

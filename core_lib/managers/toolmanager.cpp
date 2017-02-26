@@ -169,6 +169,12 @@ void ToolManager::setPressure( bool isPressureOn )
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESSURE );
 }
 
+void ToolManager::setAA( bool usingAA )
+{
+    currentTool()->setAA( usingAA );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
+}
+
 void ToolManager::tabletSwitchToEraser()
 {
     if (!mIsSwitchedToEraser)

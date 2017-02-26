@@ -160,13 +160,10 @@ protected:
     void resizeEvent( QResizeEvent* ) override;
 
 public:
-    void drawPolyline( QList<QPointF> points, QPointF lastPoint );
-    void endPolyline( QList<QPointF> points );
-    void cancelPolyline( QList<QPointF> points );
-
+    void drawPolyline(QPainterPath path, QPen pen, bool useAA );
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm );
     void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm );
-    void drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
+    void drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity, bool useAA = true );
     void drawPencil( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity );
     void drawBrush( QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true );
     void blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_ );
