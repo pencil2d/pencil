@@ -5,6 +5,10 @@
 #include "toolmanager.h"
 #include "selecttool.h"
 
+// Store selection origin so we can calculate
+// the selection rectangle in mousePressEvent.
+static QPointF gSelectionOrigin;
+
 SelectTool::SelectTool(QObject *parent) :
     BaseTool(parent)
 {
@@ -30,6 +34,8 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
 
     if ( event->button() == Qt::LeftButton )
     {
+        gSelectionOrigin = getLastPoint();  // Store original click position for help with selection rectangle.
+
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
             if ( layer->type() == Layer::VECTOR )
@@ -75,7 +81,7 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
             {
                 mScribbleArea->mySelection.setTopLeft( getLastPoint() );
                 mScribbleArea->mySelection.setBottomRight( getLastPoint() );
-                mScribbleArea->setSelection( mScribbleArea->mySelection, true );
+                mScribbleArea->setSelection( mScribbleArea->mySelection, true );                
             }
             mScribbleArea->update();
         }
@@ -126,9 +132,39 @@ void SelectTool::mouseMoveEvent( QMouseEvent *event )
     {
         switch ( mScribbleArea->getMoveMode() )
         {
-        case ScribbleArea::NONE:
-            mScribbleArea->mySelection.setBottomRight( getCurrentPoint() );
+        case ScribbleArea::NONE:            
+        {
+            // Resize the selection rectangle so it goes from the origin point
+            // (i.e. where the mouse was clicked) to the current mouse
+            // position.
+            int mouseX = getCurrentPoint().x();
+            int mouseY = getCurrentPoint().y();
+            QRectF & selectRect = mScribbleArea->mySelection;
+
+            if(mouseX < gSelectionOrigin.x())
+            {
+                selectRect.setLeft(mouseX);
+                selectRect.setRight(gSelectionOrigin.x());
+            }
+            else
+            {
+                selectRect.setLeft(gSelectionOrigin.x());
+                selectRect.setRight(mouseX);                
+            }
+
+            if(mouseY < gSelectionOrigin.y())
+            {                
+                selectRect.setTop(mouseY);
+                selectRect.setBottom(gSelectionOrigin.y());
+            }
+            else
+            {
+                selectRect.setTop(gSelectionOrigin.y());
+                selectRect.setBottom(mouseY);
+            }
+
             break;
+        }
 
         case ScribbleArea::TOPLEFT:
             mScribbleArea->mySelection.setTopLeft( getCurrentPoint() );
