@@ -562,7 +562,7 @@ QString Editor::workingDir() const
 
 bool Editor::importBitmapImage( QString filePath )
 {
-	backup( tr( "ImportImg" ) );
+    backup( tr( "Import Image" ) );
 
 	QImageReader reader( filePath );
 
@@ -599,7 +599,7 @@ bool Editor::importVectorImage( QString filePath )
 {
 	Q_ASSERT( layers()->currentLayer()->type() == Layer::VECTOR );
 
-	backup( tr( "ImportImg" ) );
+    backup( tr( "Import Image" ) );
 
 	auto layer = static_cast<LayerVector*>( layers()->currentLayer() );
 

@@ -74,6 +74,64 @@
     </message>
 </context>
 <context>
+    <name>BaseTool</name>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="22"/>
+        <source>Pencil</source>
+        <translation type="unfinished">Lápis</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="23"/>
+        <source>Eraser</source>
+        <translation type="unfinished">Borracha</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="24"/>
+        <source>Select</source>
+        <translation type="unfinished">Selecionar</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="25"/>
+        <source>Move</source>
+        <translation type="unfinished">Mover</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="26"/>
+        <source>Hand</source>
+        <translation type="unfinished">Mão</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="27"/>
+        <source>Smudge</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="28"/>
+        <source>Pen</source>
+        <translation type="unfinished">Caneta</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="29"/>
+        <source>Polyline</source>
+        <translation type="unfinished">Polilinha</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="30"/>
+        <source>Bucket</source>
+        <translation type="unfinished">Balde</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="31"/>
+        <source>Eyedropper</source>
+        <translation type="unfinished">Conta-gotas</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/basetool.cpp" line="32"/>
+        <source>Brush</source>
+        <translation type="unfinished">Pincel</translation>
+    </message>
+</context>
+<context>
     <name>CameraPropertiesDialog</name>
     <message>
         <location filename="../core_lib/structure/layercamera.cpp" line="29"/>
@@ -180,14 +238,19 @@
         <translation>Paleta de Cores</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="35"/>
+        <location filename="../app/ui/colorpalette.ui" line="46"/>
         <source>Add Color</source>
         <translation>Adicionar Cor</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="49"/>
+        <location filename="../app/ui/colorpalette.ui" line="75"/>
         <source>Remove Color</source>
         <translation>Remover Cor</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="117"/>
+        <source>... </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -199,19 +262,69 @@
         <translation>Paleta de Cores</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="145"/>
-        <location filename="../app/colorpalettewidget.cpp" line="174"/>
+        <location filename="../app/colorpalettewidget.cpp" line="153"/>
+        <location filename="../app/colorpalettewidget.cpp" line="310"/>
         <source>Colour name</source>
         <translation>Nome da cor</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="146"/>
-        <location filename="../app/colorpalettewidget.cpp" line="175"/>
+        <location filename="../app/colorpalettewidget.cpp" line="154"/>
+        <location filename="../app/colorpalettewidget.cpp" line="311"/>
         <source>Colour name:</source>
         <translation>Nome da cor:</translation>
     </message>
     <message>
+        <location filename="../app/colorpalettewidget.cpp" line="169"/>
+        <source>List mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="170"/>
+        <source>Show palette as a list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="176"/>
+        <source>Grid mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/colorpalettewidget.cpp" line="177"/>
+        <source>Show palette as icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="184"/>
+        <source>Small swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="185"/>
+        <source>Sets swatch size to: 16x16px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="190"/>
+        <source>Medium swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="191"/>
+        <source>Sets swatch size to: 26x26px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="196"/>
+        <source>Large swatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="198"/>
+        <source>Sets swatch size to: 36x36px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/colorpalettewidget.cpp" line="313"/>
         <source>Colour %1</source>
         <translation>Cor %1</translation>
     </message>
@@ -307,8 +420,12 @@
     <message>
         <location filename="../core_lib/interface/editor.cpp" line="565"/>
         <location filename="../core_lib/interface/editor.cpp" line="602"/>
+        <source>Import Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>ImportImg</source>
-        <translation>ImportImg</translation>
+        <translation type="vanished">ImportImg</translation>
     </message>
 </context>
 <context>
@@ -513,17 +630,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FilesPage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="531"/>
+        <location filename="../app/preferencesdialog.cpp" line="545"/>
         <source>Autosave documents</source>
         <translation>Salvar documentos automaticamente</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="532"/>
+        <location filename="../app/preferencesdialog.cpp" line="546"/>
         <source>Enable autosave</source>
         <translation>Ligar salvamento automático</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="533"/>
+        <location filename="../app/preferencesdialog.cpp" line="547"/>
         <source>Number of modifications before autosaving:</source>
         <translation>Número de modificações antes de salvar automaticamente:</translation>
     </message>
@@ -551,148 +668,164 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Edição</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="166"/>
+        <location filename="../app/preferencesdialog.cpp" line="162"/>
         <source>Language</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="167"/>
+        <location filename="../app/preferencesdialog.cpp" line="163"/>
         <source>Window opacity</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished">Opacidade da janela</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="168"/>
+        <location filename="../app/preferencesdialog.cpp" line="164"/>
         <source>Background</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished">Plano de fundo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="169"/>
+        <location filename="../app/preferencesdialog.cpp" line="165"/>
         <source>Appearance</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished">Aparência</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="170"/>
         <source>Rendering</source>
         <comment>GroupBox title in Preference</comment>
-        <translation type="unfinished">Renderização</translation>
+        <translation type="obsolete">Renderização</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="171"/>
+        <location filename="../app/preferencesdialog.cpp" line="166"/>
+        <source>Canvas</source>
+        <comment>GroupBox title in Preference</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/preferencesdialog.cpp" line="167"/>
         <source>Editing</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished">Edição</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="174"/>
+        <location filename="../app/preferencesdialog.cpp" line="168"/>
+        <source>Grid</source>
+        <comment>groupBox title in Preference</comment>
+        <translation type="unfinished">Grade</translation>
+    </message>
+    <message>
+        <location filename="../app/preferencesdialog.cpp" line="171"/>
         <source>&lt;System-Language&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="175"/>
+        <location filename="../app/preferencesdialog.cpp" line="172"/>
         <source>Czech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="176"/>
+        <location filename="../app/preferencesdialog.cpp" line="173"/>
         <source>Danish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="177"/>
+        <location filename="../app/preferencesdialog.cpp" line="174"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="178"/>
+        <location filename="../app/preferencesdialog.cpp" line="175"/>
         <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="179"/>
+        <location filename="../app/preferencesdialog.cpp" line="176"/>
         <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="180"/>
+        <location filename="../app/preferencesdialog.cpp" line="177"/>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="181"/>
+        <location filename="../app/preferencesdialog.cpp" line="178"/>
         <source>Hungarian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="182"/>
+        <location filename="../app/preferencesdialog.cpp" line="179"/>
         <source>Italian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="183"/>
+        <location filename="../app/preferencesdialog.cpp" line="180"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="184"/>
+        <location filename="../app/preferencesdialog.cpp" line="181"/>
         <source>Portuguese - Brazil</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="185"/>
+        <location filename="../app/preferencesdialog.cpp" line="182"/>
         <source>Russian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="186"/>
+        <location filename="../app/preferencesdialog.cpp" line="183"/>
         <source>Chinese - Taiwan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="188"/>
+        <location filename="../app/preferencesdialog.cpp" line="185"/>
         <source>Opacity</source>
         <translation>Opacidade</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="236"/>
+        <location filename="../app/preferencesdialog.cpp" line="233"/>
         <source>Shadows</source>
         <translation>Sombras</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="237"/>
+        <location filename="../app/preferencesdialog.cpp" line="234"/>
         <source>Tool Cursors</source>
         <translation>Cursores de ferramenta</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="238"/>
+        <location filename="../app/preferencesdialog.cpp" line="235"/>
         <source>Antialiasing</source>
         <translation>Antisserrilhamento</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="239"/>
+        <location filename="../app/preferencesdialog.cpp" line="236"/>
         <source>Dotted Cursor</source>
         <translation>Cursor Pontilhado</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="260"/>
+        <location filename="../app/preferencesdialog.cpp" line="243"/>
+        <source>Enable Grid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/preferencesdialog.cpp" line="274"/>
         <source>Vector curve smoothing</source>
         <translation>Suavização da camada vetorial</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="267"/>
+        <location filename="../app/preferencesdialog.cpp" line="281"/>
         <source>Tablet high-resolution position</source>
         <translation>Posição de alta resolução do tablet</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="345"/>
+        <location filename="../app/preferencesdialog.cpp" line="386"/>
         <source>Restart Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="346"/>
+        <location filename="../app/preferencesdialog.cpp" line="387"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation type="unfinished"></translation>
     </message>
@@ -700,9 +833,8 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GridPage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="410"/>
         <source>Grid Size</source>
-        <translation>Tamanho da Grade</translation>
+        <translation type="vanished">Tamanho da Grade</translation>
     </message>
 </context>
 <context>
@@ -779,7 +911,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="64"/>
-        <location filename="../app/mainwindow2.cpp" line="1094"/>
+        <location filename="../app/mainwindow2.cpp" line="1092"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
@@ -918,7 +1050,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="372"/>
-        <location filename="../app/mainwindow2.cpp" line="1059"/>
+        <location filename="../app/mainwindow2.cpp" line="1057"/>
         <source>Redo</source>
         <translation>Refazer</translation>
     </message>
@@ -1035,7 +1167,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1239"/>
+        <location filename="../app/mainwindow2.cpp" line="1238"/>
         <source>Play</source>
         <translation>Reproduzir</translation>
     </message>
@@ -1301,6 +1433,11 @@ p, li { white-space: pre-wrap; }
         <translation>Salvando documento...</translation>
     </message>
     <message>
+        <location filename="../app/mainwindow2.cpp" line="592"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/mainwindow2.cpp" line="628"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
@@ -1316,6 +1453,16 @@ Deseja salvar suas alterações?</translation>
         <location filename="../app/mainwindow2.cpp" line="669"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Impossível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma camada Bitmap para importar bitmaps.</translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="693"/>
+        <source>Select one or more files to open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="695"/>
+        <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="718"/>
@@ -1339,21 +1486,29 @@ Deseja salvar suas alterações?</translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="1042"/>
+        <source>Undo   %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="1050"/>
+        <source>Redo   %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Undo   </source>
-        <translation>Desfazer </translation>
+        <translation type="vanished">Desfazer </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1051"/>
         <source>Redo   </source>
-        <translation>Refazer </translation>
+        <translation type="vanished">Refazer </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1078"/>
+        <location filename="../app/mainwindow2.cpp" line="1076"/>
         <source>Export As</source>
         <translation>Exportar como</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1235"/>
+        <location filename="../app/mainwindow2.cpp" line="1234"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1369,122 +1524,122 @@ Deseja salvar suas alterações?</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="408"/>
+        <location filename="../core_lib/structure/object.cpp" line="420"/>
         <source>Red</source>
         <translation>Vermelho</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="414"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Green</source>
         <translation>Verde</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="418"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Blue</source>
         <translation>Azul</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="407"/>
+        <location filename="../core_lib/structure/object.cpp" line="419"/>
         <source>Black</source>
         <translation>Preto</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="409"/>
+        <location filename="../core_lib/structure/object.cpp" line="421"/>
         <source>Dark Red</source>
         <translation>Vermelho escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="410"/>
+        <location filename="../core_lib/structure/object.cpp" line="422"/>
         <source>Orange</source>
         <translation>Laranja</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="411"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Dark Orange</source>
         <translation>Laranja escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="412"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Yellow</source>
         <translation>Amarelo</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="413"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Yellow</source>
         <translation>Amarelo escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="415"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Green</source>
         <translation>Verde escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="416"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Cyan</source>
         <translation>Ciano</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="417"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Cyan</source>
         <translation>Ciano escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="419"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Blue</source>
         <translation>Azul escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>White</source>
         <translation>Branco</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Very Light Grey</source>
         <translation>Cinza muito claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Light Grey</source>
         <translation>Cinza claro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Grey</source>
         <translation>Cinza</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>Dark Grey</source>
         <translation>Cinza escuro</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Light Skin</source>
         <translation>Pele clara</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Skin - shade</source>
         <translation>Pele clara - sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Skin</source>
         <translation>Pele</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Skin - shade</source>
         <translation>Pele - sombra</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Dark Skin</source>
         <translation>Pele escura</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Dark Skin - shade</source>
         <translation>Pele escura - sombra</translation>
     </message>
@@ -1533,23 +1688,62 @@ Deseja salvar suas alterações?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../app/main.cpp" line="110"/>
+        <source>Warning: width value %1 is not an integer, ignoring.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/main.cpp" line="120"/>
+        <source>Warning: height value %1 is not an integer, ignoring.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/main.cpp" line="139"/>
         <source>Error: No input file specified.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/main.cpp" line="143"/>
+        <source>Exporting image sequence...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/main.cpp" line="147"/>
+        <source>Error: the input file at &apos;%1&apos; does not exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/main.cpp" line="152"/>
+        <source>Error: the input path &apos;%1&apos; is not a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/main.cpp" line="176"/>
+        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/main.cpp" line="182"/>
+        <source>Done.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PolylineTool</name>
     <message>
-        <location filename="../core_lib/tool/polylinetool.cpp" line="83"/>
         <source>Line</source>
-        <translation>Linha</translation>
+        <translation type="vanished">Linha</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/polylinetool.cpp" line="83"/>
+        <source>Polyline</source>
+        <translation type="unfinished">Polilinha</translation>
     </message>
 </context>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="131"/>
+        <location filename="../app/preferencesdialog.cpp" line="124"/>
         <source>Tools</source>
         <translation>Ferramentas</translation>
     </message>
@@ -1559,33 +1753,32 @@ Deseja salvar suas alterações?</translation>
         <translation>Preferências</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="113"/>
         <source>Grid</source>
-        <translation>Grade</translation>
+        <translation type="vanished">Grade</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="125"/>
+        <location filename="../app/preferencesdialog.cpp" line="118"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="74"/>
+        <location filename="../app/preferencesdialog.cpp" line="73"/>
         <source>Close</source>
         <comment>Close button of preference dialog.</comment>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="107"/>
+        <location filename="../app/preferencesdialog.cpp" line="106"/>
         <source>General</source>
         <translation>Geral</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="119"/>
+        <location filename="../app/preferencesdialog.cpp" line="112"/>
         <source>Files</source>
         <translation>Arquivos</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="137"/>
+        <location filename="../app/preferencesdialog.cpp" line="130"/>
         <source>Shortcuts</source>
         <translation>Atalhos</translation>
     </message>
@@ -1692,28 +1885,66 @@ Deseja salvar suas alterações?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="547"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="553"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="548"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="554"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Você está desenhando em uma camada oculta! Por favor, selecione outra camada (ou torne a camada atual visível).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1634"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1647"/>
+        <source>Delete Selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1661"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1668"/>
+        <source>Clear Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1696"/>
+        <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1697"/>
+        <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1701"/>
+        <source>Out of bound.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1702"/>
+        <source>Could not find a closed path.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1703"/>
+        <source>Could not find the root index.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1704"/>
+        <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>DeleteSel</source>
-        <translation>DeleteSel</translation>
+        <translation type="vanished">DeleteSel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1648"/>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1655"/>
         <source>ClearImg</source>
-        <translation>ClearImg</translation>
+        <translation type="vanished">ClearImg</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1691"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1704"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
@@ -1750,6 +1981,16 @@ Deseja salvar suas alterações?</translation>
         <source>Restore Default Shortcuts</source>
         <translation>Restaurar atalhos padrão</translation>
     </message>
+    <message>
+        <location filename="../app/shortcutspage.cpp" line="79"/>
+        <source>Shortcut Conflict!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/shortcutspage.cpp" line="80"/>
+        <source>%1 is already used, overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>TimeControls</name>
@@ -1783,6 +2024,11 @@ Deseja salvar suas alterações?</translation>
     <message>
         <source>Fps: </source>
         <translation type="vanished">FPS: </translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="41"/>
+        <source>Frames per second</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timecontrols.cpp" line="50"/>
@@ -1859,6 +2105,16 @@ Deseja salvar suas alterações?</translation>
         <translation type="unfinished">Linha do tempo</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="85"/>
+        <source>Add Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="90"/>
+        <source>Remove Layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="108"/>
         <source>&amp;Layer</source>
         <translation>&amp;Camada</translation>
@@ -1869,9 +2125,29 @@ Deseja salvar suas alterações?</translation>
         <translation>Chaves:</translation>
     </message>
     <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="132"/>
+        <source>Add Frame</source>
+        <translation type="unfinished">Adicionar Quadro</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="137"/>
+        <source>Remove Frame</source>
+        <translation type="unfinished">Remover Quadro</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="142"/>
+        <source>Duplicate Frame</source>
+        <translation type="unfinished">Duplicar Quadro</translation>
+    </message>
+    <message>
         <location filename="../core_lib/interface/timeline.cpp" line="154"/>
         <source>Onion skin:</source>
         <translation>Transparência:</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/timeline.cpp" line="161"/>
+        <source>Toggle match keyframes</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/interface/timeline.cpp" line="309"/>
@@ -1901,17 +2177,17 @@ Deseja salvar suas alterações?</translation>
 <context>
     <name>TimelinePage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="447"/>
+        <location filename="../app/preferencesdialog.cpp" line="461"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="448"/>
+        <location filename="../app/preferencesdialog.cpp" line="462"/>
         <source>Draw timeline labels</source>
         <translation>Desenhar etiquetas na linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="450"/>
+        <location filename="../app/preferencesdialog.cpp" line="464"/>
         <source>Frame size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1920,12 +2196,12 @@ Deseja salvar suas alterações?</translation>
         <translation type="vanished">Tamanho do quadro em Pixels</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="452"/>
+        <location filename="../app/preferencesdialog.cpp" line="466"/>
         <source>Timeline size in Frames</source>
         <translation>Tamanho da linha do tempo em Quadros</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="458"/>
+        <location filename="../app/preferencesdialog.cpp" line="472"/>
         <source>Short scrub</source>
         <translation>Indicador pequeno</translation>
     </message>
@@ -2056,116 +2332,126 @@ Deseja salvar suas alterações?</translation>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="111"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="65"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
         <source>Brush</source>
         <translation>Pincel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="16"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="18"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Opções</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="67"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="77"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Ajustar Largura da Caneta &lt;br&gt;&lt;b&gt;[SHIFT]+arrastar&lt;/b&gt;&lt;br&gt;para ajuste rápido</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="73"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="83"/>
         <source>Feather</source>
         <translation>Suavização</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="85"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Ajustar suavização da Caneta &lt;br&gt;&lt;b&gt;[CTRL]+arrastar&lt;/b&gt;&lt;br&gt;para ajuste rápido</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="81"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
         <source>Use Feather?</source>
         <translation>Usar suavização?</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
         <source>Enable or disable feathering</source>
         <translation>Ligar ou desligar suavização</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="86"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
         <source>Bezier</source>
         <translation>Bézier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="87"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
         <source>Bezier curve fitting</source>
         <translation>Ajuste à curva bézier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
         <source>Pressure</source>
         <translation>Pressão</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
         <source>Size with pressure</source>
         <translation>Tamanho com pressão</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="106"/>
         <source>Invisible</source>
         <translation>Invisível</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="107"/>
         <source>Make invisible</source>
         <translation>Tornar invisivel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="112"/>
         <source>Preserve Alpha</source>
         <translation>Preservar Alfa</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="116"/>
+        <source>Merge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="117"/>
+        <source>Merge vector lines when they are close together</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ToolsPage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="576"/>
+        <location filename="../app/preferencesdialog.cpp" line="590"/>
         <source>Onion skin</source>
         <translation>Transparência</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="578"/>
+        <location filename="../app/preferencesdialog.cpp" line="592"/>
         <source>Maximum onion opacity %</source>
         <translation>Opacidade máxima da transparência (%)</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="580"/>
+        <location filename="../app/preferencesdialog.cpp" line="594"/>
         <source>Minimum onion opacity %</source>
         <translation>Opacidade mínima da transparência (%)</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="582"/>
+        <location filename="../app/preferencesdialog.cpp" line="596"/>
         <source>Number of previous onion frames shown</source>
         <translation>Número de transparências de quadros anteriores a serem mostradas</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="584"/>
+        <location filename="../app/preferencesdialog.cpp" line="598"/>
         <source>Number of next onion frames shown</source>
         <translation>Número de transparências de próximos quadros a serem mostradas</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="620"/>
+        <location filename="../app/preferencesdialog.cpp" line="634"/>
         <source>Brush Tools</source>
         <translation>Ferramentas do Pincel</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="621"/>
+        <location filename="../app/preferencesdialog.cpp" line="635"/>
         <source>Use Quick Sizing</source>
         <translation>Usar dimensionamento rápido</translation>
     </message>

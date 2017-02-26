@@ -589,7 +589,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
             out << st.details().replace( "<br>", "\n", Qt::CaseInsensitive );
         }
 
-        ErrorDialog errorDialog( st.title(), st.description().append( "<br><br>An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>Please be sure to include the following details in your issue:" ), st.details() );
+        ErrorDialog errorDialog( st.title(), st.description().append( tr("<br><br>An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>Please be sure to include the following details in your issue:") ), st.details() );
         errorDialog.exec();
         return false;
     }
@@ -690,9 +690,9 @@ void MainWindow2::importImageSequence()
         initialPath = QDir::homePath();
     }
     QStringList files = w.getOpenFileNames( this,
-                                            "Select one or more files to open",
+                                            tr("Select one or more files to open"),
                                             initialPath,
-                                            "Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)" );
+                                            tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)") );
 
     for ( QString strImgFile : files )
     {
@@ -1039,19 +1039,17 @@ void MainWindow2::undoActSetText( void )
     }
     else
     {
-        ui->actionUndo->setText( tr("Undo   ")
-                                + QString::number( this->mEditor->mBackupIndex + 1 )
-                                + " "
-                                + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText );
+        ui->actionUndo->setText( tr("Undo   %1 %2")
+                                .arg(QString::number( this->mEditor->mBackupIndex + 1 ))
+                                .arg(this->mEditor->mBackupList.at( this->mEditor->mBackupIndex )->undoText ));
         ui->actionUndo->setEnabled( true );
     }
 
     if ( this->mEditor->mBackupIndex + 2 < this->mEditor->mBackupList.size() )
     {
-        ui->actionRedo->setText( tr("Redo   ")
-                                + QString::number( this->mEditor->mBackupIndex + 2 )
-                                + " "
-                                + this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText );
+        ui->actionRedo->setText( tr("Redo   %1 %2")
+                                .arg(QString::number( this->mEditor->mBackupIndex + 2 ))
+                                .arg(this->mEditor->mBackupList.at( this->mEditor->mBackupIndex + 1 )->undoText ));
         ui->actionRedo->setEnabled( true );
     }
     else
