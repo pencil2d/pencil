@@ -13,6 +13,8 @@ TARGET = Pencil2D
 
 CONFIG += qt
 
+DESTDIR = ../bin
+
 RESOURCES += \
     resource/app.qrc \
     ../translations/translations.qrc\
