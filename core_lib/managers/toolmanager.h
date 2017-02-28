@@ -38,6 +38,11 @@ Q_SIGNALS:
 public slots:
     void resetAllTools();
 
+    void noInpolSelected() { setInpolLevel( 0 ); }
+    void SimplepolSelected() { setInpolLevel( 1 ); }
+    void StrongpolSelected() { setInpolLevel( 2 ); }
+    void ExtremepolSelected() { setInpolLevel( 3 ); }
+
     void setWidth( float );
     void setFeather( float );
     void setUseFeather( bool );
@@ -47,6 +52,7 @@ public slots:
     void setBezier( bool );
     void setPressure( bool );
     void setAA( bool );
+    void setInpolLevel (int );
 
 private:
     BaseTool* mCurrentTool       = nullptr;

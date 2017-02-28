@@ -20,12 +20,14 @@ public:
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
     void drawStroke();
-
     void paintAt( QPointF point );
+    void removeVectorPaint();
+    void updateStrokes();
 
     void setWidth( const qreal width ) override;
     void setFeather( const qreal feather ) override;
     void setPressure( const bool pressure ) override;
+    void setInpolLevel(const int level) override;
 
 protected:
     QPointF mLastBrushPoint;

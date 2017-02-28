@@ -25,6 +25,7 @@ void PencilTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[VECTORMERGE] = true;
+    m_enabledProperties[INTERPOLATION] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
@@ -32,6 +33,7 @@ void PencilTool::loadSettings()
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.invisibility = 1;
     properties.preserveAlpha = 0;
+    properties.inpolLevel = 0;
 
     if ( properties.width <= 0 )
     {
@@ -82,6 +84,14 @@ void PencilTool::setPreserveAlpha( const bool preserveAlpha )
     properties.preserveAlpha = 0;
 }
 
+void PencilTool::setInpolLevel(const int level)
+{
+    properties.inpolLevel = level;
+
+    QSettings settings( PENCIL2D, PENCIL2D);
+    settings.setValue("lineInpol", level);
+    settings.sync();
+}
 
 QCursor PencilTool::cursor()
 {
@@ -138,17 +148,18 @@ void PencilTool::mouseMoveEvent( QMouseEvent *event )
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
+            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
+                m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+            }
         }
     }
 }
 
 void PencilTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-
     if ( event->button() == Qt::LeftButton )
     {
-        if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
+        if ( mScribbleArea->isLayerPaintable() )
         {
             if (getCurrentPoint()==mMouseDownPoint)
             {
@@ -159,32 +170,7 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
                 drawStroke();
             }
         }
-
-        if ( layer->type() == Layer::BITMAP )
-        {
-            mScribbleArea->paintBitmapBuffer();
-            mScribbleArea->setAllDirty();
-            mScribbleArea->clearBitmapBuffer();
-        }
-        else if ( layer->type() == Layer::VECTOR &&  mStrokePoints.size() > -1 )
-        {
-            // Clear the temporary pixel path
-            mScribbleArea->clearBitmapBuffer();
-            qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-            qDebug() << "pressures " << mStrokePressures;
-            BezierCurve curve( mStrokePoints, mStrokePressures, tol );
-
-            curve.setWidth( 0 );
-            curve.setFeather( 0 );
-            curve.setInvisibility( true );
-            curve.setVariableWidth( false );
-            curve.setColourNumber( mEditor->color()->frontColorNumber() );
-            VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-
-            vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ), properties.vectorMergeEnabled );
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-            mScribbleArea->setAllDirty();
-        }
+        paintVectorStroke();
     }
 
     endStroke();
@@ -243,12 +229,11 @@ void PencilTool::drawStroke()
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-            opacity = mCurrentPressure / 2;
+        if (properties.pressure == true) {
+            opacity = m_pStrokeManager->getPressure() / 2;
         }
 
-        mCurrentWidth = properties.width * mCurrentPressure;
+        mCurrentWidth = properties.width * m_pStrokeManager->getPressure();
         qreal brushWidth = mCurrentWidth;
 
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
@@ -300,5 +285,36 @@ void PencilTool::drawStroke()
             mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
             mScribbleArea->refreshVector( path.boundingRect().toRect(), rad );
         }
+    }
+}
+
+void PencilTool::paintVectorStroke()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+
+    if ( layer->type() == Layer::BITMAP )
+    {
+        mScribbleArea->paintBitmapBuffer();
+        mScribbleArea->setAllDirty();
+        mScribbleArea->clearBitmapBuffer();
+    }
+    else if ( layer->type() == Layer::VECTOR &&  mStrokePoints.size() > -1 )
+    {
+        // Clear the temporary pixel path
+        mScribbleArea->clearBitmapBuffer();
+        qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
+
+        BezierCurve curve( mStrokePoints, mStrokePressures, tol );
+
+        curve.setWidth( 0 );
+        curve.setFeather( 0 );
+        curve.setInvisibility( true );
+        curve.setVariableWidth( false );
+        curve.setColourNumber( mEditor->color()->frontColorNumber() );
+        VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+
+        vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ), properties.vectorMergeEnabled );
+        mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+        mScribbleArea->setAllDirty();
     }
 }

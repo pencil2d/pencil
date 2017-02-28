@@ -35,7 +35,8 @@ enum ToolPropertyType
     BEZIER,
     USEFEATHER,
     VECTORMERGE,
-    ANTI_ALIASING
+    ANTI_ALIASING,
+    INTERPOLATION
 };
 
 enum BackgroundStyle

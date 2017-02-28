@@ -103,6 +103,7 @@ void ToolManager::resetAllTools()
     getTool( BRUSH )->properties.feather = 200.0;
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
+    getTool( BRUSH )->properties.inpolLevel = -1;
 
     // todo: add all the default settings
 
@@ -173,6 +174,12 @@ void ToolManager::setAA( bool usingAA )
 {
     currentTool()->setAA( usingAA );
     Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
+}
+
+void ToolManager::setInpolLevel(int level)
+{
+    currentTool()->setInpolLevel( level );
+    Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION );
 }
 
 void ToolManager::tabletSwitchToEraser()

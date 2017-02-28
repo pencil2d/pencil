@@ -29,8 +29,11 @@ void StrokeTool::startStroke()
     mFirstDraw = true;
     mLastPixel = getCurrentPixel();
     
-	mStrokePoints.clear();
-    mStrokePoints << mEditor->view()->mapScreenToCanvas( mLastPixel );
+    mStrokePoints.clear();
+
+    //Experimental
+    QPointF startStrokes =  m_pStrokeManager->interpolateStart(mLastPixel);
+    mStrokePoints << mEditor->view()->mapScreenToCanvas( startStrokes );
 
     mStrokePressures.clear();
     mStrokePressures << m_pStrokeManager->getPressure();
@@ -56,9 +59,10 @@ bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
     return true;
 }
 
-
 void StrokeTool::endStroke()
 {
+    m_pStrokeManager->interpolateEnd();
+    mStrokePressures << m_pStrokeManager->getPressure();
     mStrokePoints.clear();
     mStrokePressures.clear();
 
@@ -70,9 +74,12 @@ void StrokeTool::drawStroke()
     QPointF pixel = getCurrentPixel();
     if ( pixel != mLastPixel || !mFirstDraw )
     {
-        mLastPixel = pixel;
-        mStrokePoints << mEditor->view()->mapScreenToCanvas( pixel );
+
+        // get last pixel before interpolation initializes
+        QPointF startStrokes =  m_pStrokeManager->interpolateStart(getLastPixel());
+        mStrokePoints << mEditor->view()->mapScreenToCanvas( startStrokes );
         mStrokePressures << m_pStrokeManager->getPressure();
+
     }
     else
     {

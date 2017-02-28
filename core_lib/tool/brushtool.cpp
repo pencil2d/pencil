@@ -33,6 +33,8 @@ void BrushTool::loadSettings()
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[FEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
+    m_enabledProperties[INVISIBILITY] = true;
+    m_enabledProperties[INTERPOLATION] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -40,8 +42,9 @@ void BrushTool::loadSettings()
     properties.feather = settings.value( "brushFeather", 15.0 ).toDouble();
     properties.useFeather = settings.value( "brushUseFeather", true ).toBool();
     properties.pressure = settings.value( "brushPressure", true ).toBool();
-    properties.invisibility = DISABLED;
+    properties.invisibility = settings.value("brushInvisibility", true).toBool();
     properties.preserveAlpha = OFF;
+    properties.inpolLevel = 0;
 
     // First run
     //
@@ -89,6 +92,16 @@ void BrushTool::setFeather( const qreal feather )
     settings.sync();
 }
 
+void BrushTool::setInvisibility( const bool invisibility )
+{
+    // force value
+    properties.invisibility = invisibility;
+
+    QSettings settings ( PENCIL2D, PENCIL2D );
+    settings.setValue("brushInvisibility",invisibility);
+    settings.sync();
+}
+
 void BrushTool::setPressure( const bool pressure )
 {
     // Set current property
@@ -97,6 +110,15 @@ void BrushTool::setPressure( const bool pressure )
     // Update settings
     QSettings settings( PENCIL2D, PENCIL2D );
     settings.setValue("brushPressure", pressure);
+    settings.sync();
+}
+
+void BrushTool::setInpolLevel(const int level)
+{
+    properties.inpolLevel = level;
+
+    QSettings settings( PENCIL2D, PENCIL2D);
+    settings.setValue("lineInpol", level);
     settings.sync();
 }
 
@@ -158,17 +180,20 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
     mLastBrushPoint = getCurrentPoint();
     startStroke();
 
+    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    {
+        mScribbleArea->toggleThinLines();
+    }
+
 }
 
 void BrushTool::mouseReleaseEvent( QMouseEvent *event )
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-
     if ( event->button() == Qt::LeftButton )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint()==mMouseDownPoint)
+            if (getCurrentPoint() == mMouseDownPoint)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -178,31 +203,7 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
             }
         }
 
-        if ( layer->type() == Layer::BITMAP )
-        {
-            mScribbleArea->paintBitmapBuffer();
-            mScribbleArea->setAllDirty();
-            mScribbleArea->clearBitmapBuffer();
-        }
-        else if ( layer->type() == Layer::VECTOR && mStrokePoints.size() > -1 )
-        {
-            // Clear the temporary pixel path
-            mScribbleArea->clearBitmapBuffer();
-            qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-            BezierCurve curve( mStrokePoints, mStrokePressures, tol );
-            curve.setWidth( properties.width );
-            curve.setFeather( properties.feather );
-            curve.setInvisibility( false );
-            curve.setVariableWidth( properties.pressure );
-            curve.setColourNumber( mEditor->color()->frontColorNumber() );
-
-            auto pLayerVector = static_cast< LayerVector* >( layer );
-            VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-            vectorImage->insertCurve( 0, curve, mEditor->view()->scaling(), false );
-
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-            mScribbleArea->setAllDirty();
-        }
+        paintVectorStroke();
     }
 
     endStroke();
@@ -217,6 +218,9 @@ void BrushTool::mouseMoveEvent( QMouseEvent *event )
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
+            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
+                m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+            }
         }
     }
 }
@@ -264,11 +268,12 @@ void BrushTool::drawStroke()
         {
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
+
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-        opacity = mCurrentPressure / 2;
+        if (properties.pressure == true) {
+            opacity = m_pStrokeManager->getPressure() / 2;
         }
+
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
@@ -285,7 +290,8 @@ void BrushTool::drawStroke()
 
         for ( int i = 0; i < steps; i++ )
         {
-            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep )* ( b - mLastBrushPoint ) / distance;
+            QPointF point = mLastBrushPoint + ( i + 1 ) * ( brushStep ) * ( b - mLastBrushPoint ) / distance;
+
             rect.extend( point.toPoint() );
             mScribbleArea->drawBrush( point,
                                       brushWidth,
@@ -303,10 +309,32 @@ void BrushTool::drawStroke()
         int rad = qRound( brushWidth ) / 2 + 2;
 
         mScribbleArea->refreshBitmap( rect, rad );
+
+          // Line visualizer
+          // for debugging
+//        QPainterPath tempPath;
+
+//        QPointF mappedMousePos = mEditor->view()->mapScreenToCanvas(m_pStrokeManager->getMousePos());
+//        tempPath.moveTo(getCurrentPoint());
+//        tempPath.lineTo(mappedMousePos);
+
+//        QPen pen( Qt::black,
+//                   1,
+//                   Qt::SolidLine,
+//                   Qt::RoundCap,
+//                   Qt::RoundJoin );
+//        mScribbleArea->drawPolyline(tempPath, pen, true);
+
     }
     else if ( layer->type() == Layer::VECTOR )
     {
-        qreal brushWidth = properties.width * mCurrentPressure;
+        qreal brushWidth = 0;
+        if (properties.pressure ) {
+            brushWidth = properties.width * m_pStrokeManager->getPressure();
+        }
+        else {
+            brushWidth = properties.width;
+        }
 
         int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
@@ -322,8 +350,46 @@ void BrushTool::drawStroke()
             path.cubicTo( p[ 1 ],
                           p[ 2 ],
                           p[ 3 ] );
+
             mScribbleArea->drawPath( path, pen, Qt::NoBrush, QPainter::CompositionMode_Source );
             mScribbleArea->refreshVector( path.boundingRect().toRect(), rad );
         }
+    }
+}
+
+// This function uses the points from DrawStroke
+// and turns them into vector lines.
+void BrushTool::paintVectorStroke()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+
+    if ( layer->type() == Layer::BITMAP )
+    {
+        mScribbleArea->paintBitmapBuffer();
+        mScribbleArea->setAllDirty();
+        mScribbleArea->clearBitmapBuffer();
+    }
+    else if ( layer->type() == Layer::VECTOR && mStrokePoints.size() > -1 )
+    {
+
+        // Clear the temporary pixel path
+        mScribbleArea->clearBitmapBuffer();
+        qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
+
+        mStrokePressures.append(0.01);
+
+        BezierCurve curve( mStrokePoints, mStrokePressures, tol );
+                    curve.setWidth( properties.width );
+                    curve.setFeather( properties.feather );
+                    curve.setInvisibility( properties.invisibility );
+                    curve.setVariableWidth( properties.pressure );
+                    curve.setColourNumber( mEditor->color()->frontColorNumber() );
+
+        auto pLayerVector = static_cast< LayerVector* >( layer );
+        VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+        vectorImage->insertCurve( 0, curve, mEditor->view()->scaling(), false );
+
+        mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+        mScribbleArea->setAllDirty();
     }
 }

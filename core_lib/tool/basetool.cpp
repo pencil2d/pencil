@@ -44,6 +44,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
     m_enabledProperties.insert( BEZIER,         false  );
     m_enabledProperties.insert( ANTI_ALIASING,  false  );
+    m_enabledProperties.insert( INTERPOLATION,  false  );
 }
 
 QCursor BaseTool::cursor()
@@ -333,3 +334,7 @@ void BaseTool::setAA(const bool useAA)
     properties.useAA = useAA;
 }
 
+void BaseTool::setInpolLevel (const int level)
+{
+    properties.inpolLevel = level;
+}
