@@ -36,7 +36,7 @@ public:
     void smoothMousePos(QPointF pos);
     QList<QPointF> meanInpolOp( QList<QPointF> points, qreal x, qreal y, qreal pressure );
     QList<QPointF> noInpolOp(QList<QPointF> points);
-    QList<QPointF> tangentInpolOp(QList<QPointF> points, qreal pressure);
+    QList<QPointF> tangentInpolOp(QList<QPointF> points);
 
     QPointF getLastPressPixel() const { return mLastPressPixel; }
     QPointF getCurrentPixel() const { return mCurrentPixel; }

@@ -24,7 +24,7 @@ public:
 
     void setWidth( const qreal width ) override;
     void setFeather( const qreal feather ) override;
-    void setAA( const bool AA ) override;
+    void setAA( const int AA ) override;
 
 private:
     QList<QPointF> mPoints;

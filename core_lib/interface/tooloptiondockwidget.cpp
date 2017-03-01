@@ -319,12 +319,23 @@ void ToolOptionWidget::setAA(int x)
 
     SignalBlocker b( mUseAABox );
     mUseAABox->setEnabled( true );
+
+    if (x == -1) {
+        mUseAABox->setEnabled(false);
+        mUseAABox->hide();
+    } else {
+        mUseAABox->show();
+    }
     mUseAABox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setInpolLevel(int x)
 {
     qDebug() << "Setting - Interpolation level:" << x;
+
+    SignalBlocker b( mNoInpol );
+    SignalBlocker c( mSimpleInpol );
+    SignalBlocker d( mStrongInpol );
     if (x == 0) {
         mNoInpol->setChecked(true);
     }

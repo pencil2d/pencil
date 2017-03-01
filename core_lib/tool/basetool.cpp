@@ -329,7 +329,7 @@ void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
     properties.vectorMergeEnabled = vectorMergeEnabled;
 }
 
-void BaseTool::setAA(const bool useAA)
+void BaseTool::setAA(const int useAA)
 {
     properties.useAA = useAA;
 }

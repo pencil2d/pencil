@@ -230,7 +230,7 @@ void PencilTool::drawStroke()
     {
         qreal opacity = 1.0f;
         if (properties.pressure == true) {
-            opacity = m_pStrokeManager->getPressure() / 2;
+            opacity = mCurrentPressure / 2;
         }
 
         mCurrentWidth = properties.width * m_pStrokeManager->getPressure();

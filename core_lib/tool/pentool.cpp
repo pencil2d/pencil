@@ -65,7 +65,7 @@ void PenTool::setPressure( const bool pressure )
     settings.sync();
 }
 
-void PenTool::setAA( const bool AA )
+void PenTool::setAA(const int AA )
 {
     // Set current property
     properties.useAA = AA;

@@ -136,8 +136,13 @@ void ToolManager::setFeather( float newFeather )
 
 void ToolManager::setUseFeather( bool usingFeather )
 {
+    int usingAA = currentTool()->properties.useAA;
+    int value = propertySwitch(usingFeather, usingAA);
+
+    currentTool()->setAA(value);
     currentTool()->setUseFeather( usingFeather );
     Q_EMIT toolPropertyChanged( currentTool()->type(), USEFEATHER );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
 }
 
 void ToolManager::setInvisibility( bool isInvisible )
@@ -170,7 +175,7 @@ void ToolManager::setPressure( bool isPressureOn )
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESSURE );
 }
 
-void ToolManager::setAA( bool usingAA )
+void ToolManager::setAA( int usingAA )
 {
     currentTool()->setAA( usingAA );
     Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
@@ -180,6 +185,30 @@ void ToolManager::setInpolLevel(int level)
 {
     currentTool()->setInpolLevel( level );
     Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION );
+}
+
+
+// Switches on/off two actions
+// eg. if x = true, then y = false
+int ToolManager::propertySwitch(bool condition, int tool)
+{
+    int value = 0;
+    int newValue = 0;
+
+    if (condition == true){
+        value = -1;
+        newValue = oldValue;
+        oldValue = tool;
+    }
+
+    if (condition == false) {
+        if (newValue == 1) {
+            value = 1;
+        } else {
+            value = oldValue;
+        }
+    }
+    return value;
 }
 
 void ToolManager::tabletSwitchToEraser()

@@ -24,7 +24,7 @@ public:
 
     void setWidth( const qreal width ) override;
     void setPressure( const bool pressure ) override;
-    void setAA( const bool AA ) override;
+    void setAA( const int AA ) override;
     void setInpolLevel(const int level) override;
 
 private:

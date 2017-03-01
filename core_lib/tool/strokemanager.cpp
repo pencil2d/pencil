@@ -260,7 +260,7 @@ QList<QPointF> StrokeManager::interpolateStroke()
 
     if (mInpolLevel == 1) {
 
-        result = tangentInpolOp(result,pressure);
+        result = tangentInpolOp(result);
 
     }
     else if (mInpolLevel == 2){
@@ -288,7 +288,7 @@ QList<QPointF> StrokeManager::noInpolOp(QList<QPointF> points)
     return points;
 }
 
-QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points, qreal pressure)
+QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
 {
     int time = mSingleshotTime.elapsed();
     static const qreal smoothness = 1.f;

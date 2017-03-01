@@ -8,7 +8,6 @@
 
 class ScribbleArea;
 
-
 class ToolManager : public BaseManager
 {
     Q_OBJECT
@@ -27,6 +26,7 @@ public:
 
     void      tabletSwitchToEraser();
     void      tabletRestorePrevTool();
+    int propertySwitch( bool condition, int property );
 
 Q_SIGNALS:
     void penWidthValueChanged( float );
@@ -51,7 +51,7 @@ public slots:
     void setVectorMergeEnabled( bool );
     void setBezier( bool );
     void setPressure( bool );
-    void setAA( bool );
+    void setAA(int );
     void setInpolLevel (int );
 
 private:
@@ -59,6 +59,8 @@ private:
     ToolType  meTabletBackupTool = PENCIL;
     bool mIsSwitchedToEraser     = false;
     QHash<ToolType, BaseTool*> mToolSetHash;
+
+    int oldValue = 0;
 
 };
 

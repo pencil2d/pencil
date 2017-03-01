@@ -59,7 +59,7 @@ void PolylineTool::setFeather( const qreal feather )
     properties.feather = -1;
 }
 
-void PolylineTool::setAA( const bool AA )
+void PolylineTool::setAA( const int AA )
 {
     // Set current property
     properties.useAA = AA;

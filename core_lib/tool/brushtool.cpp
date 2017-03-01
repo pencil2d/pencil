@@ -35,6 +35,7 @@ void BrushTool::loadSettings()
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[INVISIBILITY] = true;
     m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[ANTI_ALIASING] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
 
@@ -45,6 +46,11 @@ void BrushTool::loadSettings()
     properties.invisibility = settings.value("brushInvisibility", true).toBool();
     properties.preserveAlpha = OFF;
     properties.inpolLevel = 0;
+    properties.useAA = 1;
+
+    if (properties.useFeather == true) {
+        properties.useAA = -1;
+    }
 
     // First run
     //
@@ -122,6 +128,16 @@ void BrushTool::setInpolLevel(const int level)
     settings.sync();
 }
 
+void BrushTool::setAA( const int AA )
+{
+    // Set current property
+    properties.useAA = AA;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("brushAA", AA);
+    settings.sync();
+}
 
 QCursor BrushTool::cursor()
 {
@@ -271,7 +287,7 @@ void BrushTool::drawStroke()
 
         qreal opacity = 1.0f;
         if (properties.pressure == true) {
-            opacity = m_pStrokeManager->getPressure() / 2;
+            opacity = mCurrentPressure / 2;
         }
 
         mCurrentWidth = properties.width;
@@ -298,7 +314,8 @@ void BrushTool::drawStroke()
                                       properties.feather,
                                       mEditor->color()->frontColor(),
                                       opacity,
-                                      properties.useFeather );
+                                      properties.useFeather,
+                                      properties.useAA );
 
             if ( i == ( steps - 1 ) )
             {
