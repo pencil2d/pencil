@@ -20,6 +20,7 @@ void HandTool::loadSettings()
     properties.feather = -1;
     properties.useFeather = -1;
     properties.inpolLevel = -1;
+    properties.useAA = -1;
 }
 
 QCursor HandTool::cursor()

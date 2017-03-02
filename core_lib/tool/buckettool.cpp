@@ -31,6 +31,7 @@ void BucketTool::loadSettings()
     properties.width = 4;
     properties.feather = 10;
     properties.inpolLevel = -1;
+    properties.useAA = -1;
 }
 
 QCursor BucketTool::cursor()

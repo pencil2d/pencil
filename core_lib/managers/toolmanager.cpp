@@ -94,16 +94,18 @@ void ToolManager::resetAllTools()
     // Betatesters should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
     getTool( PEN )->properties.width = 1.5; // not supposed to use feather
+    getTool( PEN )->properties.inpolLevel = -1;
     getTool( POLYLINE )->properties.width = 1.5; // PEN dependent
     getTool( PENCIL )->properties.width = 1.0;
     getTool( PENCIL )->properties.feather = -1.0; // locks feather usage (can be changed)
+    getTool( PENCIL )->properties.inpolLevel = -1;
     getTool( ERASER )->properties.width = 25.0;
     getTool( ERASER )->properties.feather = 50.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
+    getTool( BRUSH )->properties.inpolLevel = -1;
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
-    getTool( BRUSH )->properties.inpolLevel = -1;
 
     // todo: add all the default settings
 
