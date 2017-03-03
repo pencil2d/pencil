@@ -25,8 +25,8 @@ void ImageSeqDialog::init()
     sequenceBoxLabel->setText(tr("Import an image every # frame"));
 
     mSequenceSpaceBox = new QSpinBox(this);
-    mSequenceSpaceBox->setRange(0,64);
-    mSequenceSpaceBox->setValue(0 );
+    mSequenceSpaceBox->setRange(1,64);
+    mSequenceSpaceBox->setValue( 1 );
 
     QGridLayout* gridLayout = new QGridLayout();
     sequenceBox->setLayout(gridLayout);
@@ -58,7 +58,7 @@ void ImageSeqDialog::seqNumber(QString strImgFile, Editor *mEditor)
     int number = mSequenceSpaceBox->value();
 
     mEditor->importImage( strImgFile );
-    for (int i = 0; i < number; i++)
+    for (int i = 1; i < number; i++)
     {
         mEditor->scrubForward();
     }
