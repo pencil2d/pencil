@@ -5,6 +5,7 @@
 
 #include "imageseqdialog.h"
 #include "editor.h"
+#include "util.h"
 
 ImageSeqDialog::ImageSeqDialog(QWidget* parent ) : QDialog(parent)
 {
@@ -49,7 +50,7 @@ void ImageSeqDialog::init()
 
 void ImageSeqDialog::setSeqValue(int number)
 {
-    QSignalBlocker b1( mSequenceSpaceBox );
+    SignalBlocker b1( mSequenceSpaceBox );
     mSequenceSpaceBox->setValue(number);
 }
 
