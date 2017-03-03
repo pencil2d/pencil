@@ -60,6 +60,7 @@ GNU General Public License for more details.
 #include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
+#include "imageseqdialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -694,6 +695,10 @@ void MainWindow2::importImageSequence()
                                             initialPath,
                                             tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)") );
 
+    ImageSeqDialog* imageSeqDialog = new ImageSeqDialog( this );
+
+    imageSeqDialog->init();
+    imageSeqDialog->exec();
     for ( QString strImgFile : files )
     {
         if ( strImgFile.endsWith( ".png" ) ||
@@ -703,8 +708,8 @@ void MainWindow2::importImageSequence()
              strImgFile.endsWith(".tiff") ||
              strImgFile.endsWith( ".bmp" ) )
         {
-            mEditor->importImage( strImgFile );
-            mEditor->scrubForward();
+            if (imageSeqDialog->result() == QDialog::Accepted)
+                imageSeqDialog->seqNumber(strImgFile, mEditor);
         }
     }
 }
