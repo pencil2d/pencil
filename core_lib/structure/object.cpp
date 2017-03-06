@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QTextStream>
 #include <QMessageBox>
 #include <QProgressDialog>
+#include <QApplication>
 
 #include "object.h"
 #include "layer.h"
@@ -551,7 +552,21 @@ bool Object::exportFrames( int frameStart, int frameEnd,
 
     for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
     {
-        if ( progress != NULL ) progress->setValue( ( currentFrame - frameStart )*progressMax / ( frameEnd - frameStart ) );
+        if ( progress != NULL )
+        {
+            int totalFramesToExport = ( frameEnd - frameStart ) + 1;
+            if ( totalFramesToExport != 0 ) // Avoid dividing by zero.
+            {
+                progress->setValue( ( currentFrame - frameStart + 1 )*progressMax / totalFramesToExport );
+                QApplication::processEvents();  // Required to make progress bar update on-screen.
+            }
+
+            if(progress->wasCanceled())
+            {
+                break;
+            }
+        }
+
         QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
         QColor bgColor = Qt::white;
         if (transparency) {

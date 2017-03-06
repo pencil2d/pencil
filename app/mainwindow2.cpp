@@ -782,6 +782,13 @@ void MainWindow2::exportImageSequence()
 
 
     int projectLength = mEditor->layers()->projectLength();
+
+    // Show a progress dialog, as this can take a while if you have lots of frames.
+    QProgressDialog progress( tr( "Exporting image sequence..." ), tr( "Abort" ), 0, 100, this );
+    hideQuestionMark(progress);
+    progress.setWindowModality( Qt::WindowModal );
+    progress.show();
+
     mEditor->object()->exportFrames( 1,
                                      projectLength,
                                      cameraLayer,
@@ -791,8 +798,11 @@ void MainWindow2::exportImageSequence()
                                      -1,
                                      useTranparency,
                                      true,
-                                     NULL,
-                                     0 );
+                                     &progress,
+                                     100 );
+
+    progress.close();
+
     //return true;
 }
 
