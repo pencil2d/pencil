@@ -105,6 +105,8 @@ Q_SIGNALS:
 
     void currentFrameChanged( int n );
 
+    void fpsUpdateForSpinBox( int value );
+
     // save
     void needSave();
     void fileLoaded();

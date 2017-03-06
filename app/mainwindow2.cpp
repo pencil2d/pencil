@@ -1168,6 +1168,8 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
 
+    connect( pEditor, &Editor::fpsUpdateForSpinBox, pTimeline, &TimeLine::updateFpsNoSignal );
+
     connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey );
     

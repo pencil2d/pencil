@@ -73,6 +73,9 @@ Q_SIGNALS:
     void onionPrevClick();
     void onionNextClick();
 
+public slots:
+    void updateFpsNoSignal( int value );
+
 public:
     bool scrubbing = false;
 

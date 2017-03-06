@@ -394,7 +394,7 @@ void FileManager::extractObjectData( const QDomElement& element, ObjectData* dat
         
         data->setCurrentView( QTransform( m11, m12, m21, m22, dx, dy ) );
     }
-    else if ( strName == "fps" )
+    else if ( strName == "fps" || strName == "currentFps" )
     {
         data->setFrameRate( element.attribute( "value", "12" ).toInt() );
     }
