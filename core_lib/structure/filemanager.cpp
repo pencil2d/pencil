@@ -187,7 +187,7 @@ Status FileManager::save( Object* object, QString strFileName )
 
     QFileInfo fileInfo( strFileName );
     if ( fileInfo.isDir() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a directory", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") points to a directory, so the file cannot be saved." ).arg( fileInfo.absoluteFilePath() ) ); }
-    if ( fileInfo.exists() && !fileInfo.isWritable() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a file that is not writable", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") cannot be written to, so the file cannot be saved. Please make sure that you have sufficent permissions to save to that location and try again." ).arg( fileInfo.absoluteFilePath() ) ); }
+    if ( fileInfo.exists() && !fileInfo.isWritable() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a file that is not writable", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again." ).arg( fileInfo.absoluteFilePath() ) ); }
 
     QString strTempWorkingFolder;
     QString strMainXMLFile;
@@ -223,10 +223,10 @@ Status FileManager::save( Object* object, QString strFileName )
         {
             debugDetails << QString( "dir.absolutePath() = %1" ).arg( dir.absolutePath() );
             if( isOldFile ) {
-                return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot create the data directory at \"%1\". Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pclx format." ).arg( strDataFolder ) );
+                return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot create the data directory at \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format." ).arg( strDataFolder ) );
             }
             else {
-                return Status( Status::FAIL, debugDetails, tr("Internal Error"), tr( "Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pcl format." ).arg( strDataFolder ) );
+                return Status( Status::FAIL, debugDetails, tr("Internal Error"), tr( "Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format." ).arg( strDataFolder ) );
             }
         }
     }
