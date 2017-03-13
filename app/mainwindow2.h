@@ -39,6 +39,7 @@ class ColorBox;
 class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
+class ImageSeqDialog;
 
 #define PENCIL_WINDOW_TITLE QString("Pencil2D - Nightly Build %1").arg( __DATE__ )
 

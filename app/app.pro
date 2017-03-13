@@ -49,7 +49,8 @@ HEADERS += \
     pencilapplication.h \
     exportmoviedialog.h \
     app_util.h \
-    errordialog.h
+    errordialog.h \
+    imageseqdialog.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -72,7 +73,8 @@ SOURCES += \
     displayoptionwidget.cpp \
     pencilapplication.cpp \
     exportmoviedialog.cpp \
-    errordialog.cpp
+    errordialog.cpp \
+    imageseqdialog.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
