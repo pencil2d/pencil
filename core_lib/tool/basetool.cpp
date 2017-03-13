@@ -44,6 +44,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
     m_enabledProperties.insert( BEZIER,         false  );
     m_enabledProperties.insert( ANTI_ALIASING,  false  );
+    m_enabledProperties.insert( INTERPOLATION,  false  );
 }
 
 QCursor BaseTool::cursor()
@@ -328,8 +329,12 @@ void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
     properties.vectorMergeEnabled = vectorMergeEnabled;
 }
 
-void BaseTool::setAA(const bool useAA)
+void BaseTool::setAA(const int useAA)
 {
     properties.useAA = useAA;
 }
 
+void BaseTool::setInpolLevel (const int level)
+{
+    properties.inpolLevel = level;
+}

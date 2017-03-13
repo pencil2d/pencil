@@ -34,6 +34,7 @@ void PolylineTool::loadSettings()
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value( "brushAA").toBool();
+    properties.inpolLevel = -1;
 
     // First run
     if ( properties.width <= 0 )
@@ -58,7 +59,7 @@ void PolylineTool::setFeather( const qreal feather )
     properties.feather = -1;
 }
 
-void PolylineTool::setAA( const bool AA )
+void PolylineTool::setAA( const int AA )
 {
     // Set current property
     properties.useAA = AA;
@@ -93,7 +94,7 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
         {
             if ( mPoints.size() == 0 )
             {
-                mEditor->backup( tr( "Polyline" ) );
+                mEditor->backup( tr( "Line" ) );
             }
 
             if ( layer->type() == Layer::VECTOR )

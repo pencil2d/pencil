@@ -24,7 +24,8 @@ public:
     bool vectorMergeEnabled = false;
     bool bezier_state = false;
     bool useFeather   = true;
-    bool useAA        = true;
+    int useAA        = 0;
+    int inpolLevel    = 0;
 };
 
 const int ON = 1;
@@ -80,9 +81,11 @@ public:
     virtual void setUseFeather( const bool usingFeather );
     virtual void setPreserveAlpha( const bool preserveAlpha );
     virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
-    virtual void setAA ( const bool useAA );
+    virtual void setAA(const int useAA );
+    virtual void setInpolLevel( const int level );
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
+
     Properties properties;
 
     QPointF getCurrentPixel();

@@ -94,13 +94,16 @@ void ToolManager::resetAllTools()
     // Betatesters should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
     getTool( PEN )->properties.width = 1.5; // not supposed to use feather
+    getTool( PEN )->properties.inpolLevel = -1;
     getTool( POLYLINE )->properties.width = 1.5; // PEN dependent
     getTool( PENCIL )->properties.width = 1.0;
     getTool( PENCIL )->properties.feather = -1.0; // locks feather usage (can be changed)
+    getTool( PENCIL )->properties.inpolLevel = -1;
     getTool( ERASER )->properties.width = 25.0;
     getTool( ERASER )->properties.feather = 50.0;
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
+    getTool( BRUSH )->properties.inpolLevel = -1;
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
 
@@ -135,8 +138,13 @@ void ToolManager::setFeather( float newFeather )
 
 void ToolManager::setUseFeather( bool usingFeather )
 {
+    int usingAA = currentTool()->properties.useAA;
+    int value = propertySwitch(usingFeather, usingAA);
+
+    currentTool()->setAA(value);
     currentTool()->setUseFeather( usingFeather );
     Q_EMIT toolPropertyChanged( currentTool()->type(), USEFEATHER );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
 }
 
 void ToolManager::setInvisibility( bool isInvisible )
@@ -169,10 +177,40 @@ void ToolManager::setPressure( bool isPressureOn )
     Q_EMIT toolPropertyChanged( currentTool()->type(), PRESSURE );
 }
 
-void ToolManager::setAA( bool usingAA )
+void ToolManager::setAA( int usingAA )
 {
     currentTool()->setAA( usingAA );
     Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
+}
+
+void ToolManager::setInpolLevel(int level)
+{
+    currentTool()->setInpolLevel( level );
+    Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION );
+}
+
+
+// Switches on/off two actions
+// eg. if x = true, then y = false
+int ToolManager::propertySwitch(bool condition, int tool)
+{
+    int value = 0;
+    int newValue = 0;
+
+    if (condition == true){
+        value = -1;
+        newValue = oldValue;
+        oldValue = tool;
+    }
+
+    if (condition == false) {
+        if (newValue == 1) {
+            value = 1;
+        } else {
+            value = oldValue;
+        }
+    }
+    return value;
 }
 
 void ToolManager::tabletSwitchToEraser()

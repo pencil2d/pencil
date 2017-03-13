@@ -28,7 +28,7 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     mSlider = new QSlider(Qt::Horizontal, this);
     mSlider->setMinimum( 0 );
     mSlider->setMaximum( 100 );
-    mSlider->setMaximumWidth( 70 );
+    mSlider->setMaximumWidth( 500 );
 
     QGridLayout* layout = new QGridLayout();
     layout->setMargin( 2 );

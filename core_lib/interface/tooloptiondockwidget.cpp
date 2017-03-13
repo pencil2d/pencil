@@ -3,6 +3,8 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QGridLayout>
+#include <QGroupBox>
+#include <QRadioButton>
 #include <QSettings>
 #include <QDebug>
 #include "spinslider.h"
@@ -43,7 +45,8 @@ void ToolOptionWidget::updateUI()
     mUsePressureBox->setVisible( currentTool->isPropertyEnabled( PRESSURE ) );
     mMakeInvisibleBox->setVisible( currentTool->isPropertyEnabled( INVISIBILITY ) );
     mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
-    mUseAABox->setVisible(currentTool->isPropertyEnabled(ANTI_ALIASING ) );
+    mUseAABox->setVisible(currentTool->isPropertyEnabled( ANTI_ALIASING ) );
+    mInpolLevelsBox->setVisible(currentTool->isPropertyEnabled( INTERPOLATION ) );
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
 
@@ -61,11 +64,13 @@ void ToolOptionWidget::updateUI()
     setPreserveAlpha( p.preserveAlpha );
     setVectorMergeEnabled( p.vectorMergeEnabled );
     setAA(p.useAA);
+    setInpolLevel(p.inpolLevel);
 }
 
 void ToolOptionWidget::createUI()
 {
     setMinimumWidth( 115 );
+    setMaximumWidth(300);
 
     QFrame* optionGroup = new QFrame();
     QGridLayout* pLayout = new QGridLayout();
@@ -110,6 +115,47 @@ void ToolOptionWidget::createUI()
     mUseAABox->setFont( QFont( "Helvetica", 10 ) );
     mUseAABox->setChecked( true );
 
+    mInpolLevelsBox = new QGroupBox ( tr( "Stabilization level" ) );
+    mInpolLevelsBox->setFlat(true);
+    mInpolLevelsBox->setFont(QFont( "Helvetica", 10 ) );
+    mInpolLevelsBox->setStyleSheet(
+                                    "QGroupBox"
+                                    "{"
+                                        "margin-top: 1.0em"
+                                    "}"
+                                    "QGroupBox::title"
+                                    "{"
+                                        "subcontrol-origin: margin;"
+                                        "left: 5px;"
+                                        "padding: 0.7em 3px 0 3px;"
+                                    "}");
+
+    mNoInpol = new QRadioButton ( tr( "" ) );
+    mNoInpol->setToolTip( tr( "No line interpolation" ) );
+    mNoInpol->setFont( QFont( "Helvetica", 10) );
+    mNoInpol->setChecked ( true );
+
+    mSimpleInpol = new QRadioButton (tr( "" ) );
+    mSimpleInpol->setToolTip( tr( "Simple line interpolation" ) );
+    mSimpleInpol->setChecked ( false );
+
+    mStrongInpol = new QRadioButton (tr( "" ) );
+    mStrongInpol->setToolTip( tr( "Strong line interpolation" ) );
+    mStrongInpol->setChecked ( false );
+
+//    mExtremeInpol = new QRadioButton (tr( "" ) );
+//    mExtremeInpol->setToolTip( tr( "Extreme line interpolation" ) );
+//    mExtremeInpol->setFont( QFont( "Helvetica", 10) );
+//    mExtremeInpol->setChecked ( false );
+
+    QGridLayout* inpolLayout = new QGridLayout();
+    inpolLayout->addWidget( mNoInpol, 16, 0, 2, 1 );
+    inpolLayout->addWidget( mSimpleInpol, 16, 1, 2, 1 );
+    inpolLayout->addWidget( mStrongInpol, 16, 2, 2, 1 );
+//    inpolLayout->addWidget( mExtremeInpol, 16, 3, 2, 1 );
+    mInpolLevelsBox->setLayout(inpolLayout);
+    inpolLayout->setSpacing(2);
+
     mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
     mMakeInvisibleBox->setToolTip( tr( "Make invisible" ) );
     mMakeInvisibleBox->setFont( QFont( "Helvetica", 10 ) );
@@ -125,19 +171,20 @@ void ToolOptionWidget::createUI()
     mVectorMergeBox->setFont( QFont( "Helvetica", 10 ) );
     mVectorMergeBox->setChecked( false );
 
-    pLayout->addWidget( mSizeSlider, 8, 0, 1, 2 );
-    pLayout->addWidget( mBrushSpinBox, 8, 10, 1, 2);
-    pLayout->addWidget( mFeatherSlider, 9, 0, 1, 2 );
-    pLayout->addWidget( mFeatherSpinBox, 9, 10, 1, 2 );
-    pLayout->addWidget( mUseBezierBox, 10, 0, 1, 2 );
-    pLayout->addWidget( mUsePressureBox, 11, 0, 1, 2 );
-    pLayout->addWidget( mUseAABox, 12, 0, 1, 2);
-    pLayout->addWidget( mPreserveAlphaBox, 13, 0, 1, 2 );
-    pLayout->addWidget( mUseFeatherBox, 13, 0, 1, 2 );
-    pLayout->addWidget( mMakeInvisibleBox, 14, 0, 1, 2 );
-    pLayout->addWidget( mVectorMergeBox, 15, 0, 1, 2 );
+    pLayout->addWidget( mSizeSlider, 1, 0, 1, 2 );
+    pLayout->addWidget( mBrushSpinBox, 1, 2, 1, 2);
+    pLayout->addWidget( mFeatherSlider, 2, 0, 1, 2 );
+    pLayout->addWidget( mFeatherSpinBox, 2, 2, 1, 2 );
+    pLayout->addWidget( mUseFeatherBox, 3, 0, 1, 2 );
+    pLayout->addWidget( mUseBezierBox, 4, 0, 1, 2 );
+    pLayout->addWidget( mUsePressureBox, 5, 0, 1, 2 );
+    pLayout->addWidget( mUseAABox, 6, 0, 1, 2);
+    pLayout->addWidget( mPreserveAlphaBox, 7, 0, 1, 2 );
+    pLayout->addWidget( mMakeInvisibleBox, 8, 0, 1, 2 );
+    pLayout->addWidget( mVectorMergeBox, 9, 0, 1, 2 );
+    pLayout->addWidget( mInpolLevelsBox, 10, 0, 1, 4);
 
-    pLayout->setRowStretch( 16, 1 );
+    pLayout->setRowStretch( 17, 1 );
 
     optionGroup->setLayout( pLayout );
 
@@ -163,6 +210,12 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 
     connect( mVectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled );
     connect( mUseAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA );
+
+    connect( mNoInpol, &QRadioButton::clicked, toolManager, &ToolManager::noInpolSelected);
+    connect( mSimpleInpol, &QRadioButton::clicked, toolManager, &ToolManager::SimplepolSelected);
+    connect( mStrongInpol, &QRadioButton::clicked, toolManager, &ToolManager::StrongpolSelected);
+    connect( mExtremeInpol, &QRadioButton::clicked, toolManager, &ToolManager::ExtremepolSelected);
+
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -194,6 +247,9 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
             break;
         case ANTI_ALIASING:
             setAA(p.useAA);
+            break;
+        case INTERPOLATION:
+            setInpolLevel(p.inpolLevel);
             break;
     }
 }
@@ -263,7 +319,35 @@ void ToolOptionWidget::setAA(int x)
 
     SignalBlocker b( mUseAABox );
     mUseAABox->setEnabled( true );
+
+    if (x == -1) {
+        mUseAABox->setEnabled(false);
+        mUseAABox->hide();
+    } else {
+        mUseAABox->show();
+    }
     mUseAABox->setChecked( x > 0 );
+}
+
+void ToolOptionWidget::setInpolLevel(int x)
+{
+    qDebug() << "Setting - Interpolation level:" << x;
+
+    SignalBlocker b( mNoInpol );
+    SignalBlocker c( mSimpleInpol );
+    SignalBlocker d( mStrongInpol );
+    if (x == 0) {
+        mNoInpol->setChecked(true);
+    }
+    else if (x == 1) {
+        mSimpleInpol->setChecked(true);
+    } else if (x == 2) {
+        mStrongInpol->setChecked(true);
+    } else if (x == 3) {
+        mExtremeInpol->setChecked(true);
+    } else if (x == -1) {
+        mNoInpol->setChecked(true);
+    }
 }
 
 void ToolOptionWidget::disableAllOptions()
@@ -279,4 +363,5 @@ void ToolOptionWidget::disableAllOptions()
     mPreserveAlphaBox->hide();
     mVectorMergeBox->hide();
     mUseAABox->hide();
+    mInpolLevelsBox->hide();
 }

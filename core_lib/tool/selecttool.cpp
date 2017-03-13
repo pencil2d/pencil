@@ -18,6 +18,8 @@ void SelectTool::loadSettings()
 {
     properties.width = -1;
     properties.feather = -1;
+    properties.inpolLevel = -1;
+    properties.useAA = -1;
 }
 
 QCursor SelectTool::cursor()

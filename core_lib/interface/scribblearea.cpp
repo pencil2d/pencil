@@ -1080,7 +1080,7 @@ void ScribbleArea::drawPencil( QPointF thePoint, qreal brushWidth, QColor fillCo
     drawBrush(thePoint, brushWidth, 50, fillColour, opacity, true);
 }
 
-void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather )
+void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColour, qreal opacity, bool usingFeather, int useAA )
 {
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
@@ -1096,7 +1096,7 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
     else
     {
         mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
-                                   QPainter::CompositionMode_Source, true );
+                                   QPainter::CompositionMode_Source, useAA );
     }
     mBufferImg->paste( &tempBitmapImage );
 }
