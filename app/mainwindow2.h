@@ -62,7 +62,7 @@ public:
 public slots:
     void undoActSetText();
     void undoActSetEnabled();
-	void updateTitleSaveState();
+    void updateSaveState();
 
 public:
     void setOpacity(int opacity);
@@ -121,10 +121,6 @@ private:
     void makeConnections( Editor*, ToolOptionWidget*);
 
     void bindActionWithSetting( QAction*, SETTING );
-
-    bool isTitleMarkedUnsaved();
-    void markTitleSaved();
-    void markTitleUnsaved();
 
     // UI: central Drawing Area
     ScribbleArea* mScribbleArea                = nullptr;
