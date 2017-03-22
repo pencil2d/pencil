@@ -584,9 +584,8 @@ p, li { white-space: pre-wrap; }
         <translation>A megadott fájlútvonal (%1) egy könyvtárra mutat, ezért a fájl nem menthető.</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="190"/>
         <source>The file path you have specified (&quot;%1&quot;) cannot be written to, so the file cannot be saved. Please make sure that you have sufficent permissions to save to that location and try again.</source>
-        <translation>A megadott fájlútvonal (%1) nem írható, ezért a fájl nem menthető. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra.</translation>
+        <translation type="vanished">A megadott fájlútvonal (%1) nem írható, ezért a fájl nem menthető. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="226"/>
@@ -595,9 +594,8 @@ p, li { white-space: pre-wrap; }
         <translation>Az adatkönyvtár nem hozható létre</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="226"/>
         <source>Cannot create the data directory at &quot;%1&quot;. Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pclx format.</source>
-        <translation>Az adatkönyvtár nem hozható létre: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pclx formátumban menteni.</translation>
+        <translation type="vanished">Az adatkönyvtár nem hozható létre: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pclx formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="229"/>
@@ -607,9 +605,23 @@ p, li { white-space: pre-wrap; }
         <translation>Belső hiba</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="229"/>
         <source>Cannot create the data directory at temporary location &quot;%1&quot;. Please make sure that you have sufficent permissions to save to that location and try again. Alternatively try saving as pcl format.</source>
-        <translation>Az adatkönyvtár nem hozható létre az ideiglenes útvonalon: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pcl formátumban menteni.</translation>
+        <translation type="vanished">Az adatkönyvtár nem hozható létre az ideiglenes útvonalon: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pcl formátumban menteni.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/structure/filemanager.cpp" line="190"/>
+        <source>The file path you have specified (&quot;%1&quot;) cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/structure/filemanager.cpp" line="226"/>
+        <source>Cannot create the data directory at &quot;%1&quot;. Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/structure/filemanager.cpp" line="229"/>
+        <source>Cannot create the data directory at temporary location &quot;%1&quot;. Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="237"/>
@@ -838,6 +850,29 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>ImageSeqDialog</name>
+    <message>
+        <location filename="../app/imageseqdialog.cpp" line="12"/>
+        <source>Image Sequence Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/imageseqdialog.cpp" line="19"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/imageseqdialog.cpp" line="20"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Mégse</translation>
+    </message>
+    <message>
+        <location filename="../app/imageseqdialog.cpp" line="26"/>
+        <source>Import an image every # frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Layer</name>
     <message>
         <location filename="../core_lib/structure/layer.cpp" line="478"/>
@@ -911,7 +946,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="64"/>
-        <location filename="../app/mainwindow2.cpp" line="1092"/>
+        <location filename="../app/mainwindow2.cpp" line="1121"/>
         <source>Import</source>
         <translation>Importálás</translation>
     </message>
@@ -946,7 +981,7 @@ p, li { white-space: pre-wrap; }
         <translation>Animáció</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="166"/>
+        <location filename="../app/mainwindow2.cpp" line="167"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>Eszközök</translation>
@@ -1044,13 +1079,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="363"/>
-        <location filename="../app/mainwindow2.cpp" line="1037"/>
+        <location filename="../app/mainwindow2.cpp" line="1066"/>
         <source>Undo</source>
         <translation>Visszavonás</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="372"/>
-        <location filename="../app/mainwindow2.cpp" line="1057"/>
+        <location filename="../app/mainwindow2.cpp" line="1086"/>
         <source>Redo</source>
         <translation>Újra</translation>
     </message>
@@ -1182,7 +1217,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1238"/>
+        <location filename="../app/mainwindow2.cpp" line="1267"/>
         <source>Play</source>
         <translation>Lejátszás</translation>
     </message>
@@ -1352,7 +1387,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="858"/>
-        <location filename="../app/mainwindow2.cpp" line="152"/>
+        <location filename="../app/mainwindow2.cpp" line="153"/>
         <source>Color Wheel</source>
         <translation>Színkerék</translation>
     </message>
@@ -1382,115 +1417,121 @@ p, li { white-space: pre-wrap; }
         <translation>Képkocka mozgatása hátra</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="153"/>
+        <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Színpaletta:&lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;lenyomásával&lt;br&gt;átváltás a kurzornál</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="356"/>
+        <location filename="../app/mainwindow2.cpp" line="357"/>
         <source>Open Recent</source>
         <translation>Legutóbbi megnyitása</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="451"/>
+        <location filename="../app/mainwindow2.cpp" line="452"/>
         <source>Open File...</source>
         <translation>Fájl megnyitása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="467"/>
-        <location filename="../app/mainwindow2.cpp" line="507"/>
-        <location filename="../app/mainwindow2.cpp" line="627"/>
-        <location filename="../app/mainwindow2.cpp" line="668"/>
-        <location filename="../app/mainwindow2.cpp" line="852"/>
+        <location filename="../app/mainwindow2.cpp" line="468"/>
+        <location filename="../app/mainwindow2.cpp" line="508"/>
+        <location filename="../app/mainwindow2.cpp" line="628"/>
+        <location filename="../app/mainwindow2.cpp" line="669"/>
+        <location filename="../app/mainwindow2.cpp" line="881"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="467"/>
-        <location filename="../app/mainwindow2.cpp" line="507"/>
+        <location filename="../app/mainwindow2.cpp" line="468"/>
+        <location filename="../app/mainwindow2.cpp" line="508"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>A Pencil nem tudja olvasni ezt a fájlt. Képek beemeléséhez az &quot;Importálás&quot; művelet használható.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="484"/>
+        <location filename="../app/mainwindow2.cpp" line="485"/>
         <source>Save As...</source>
         <translation>Mentés másként...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="514"/>
+        <location filename="../app/mainwindow2.cpp" line="515"/>
         <source>Opening document...</source>
         <translation>Dokumentum megnyitása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="565"/>
+        <location filename="../app/mainwindow2.cpp" line="515"/>
+        <location filename="../app/mainwindow2.cpp" line="566"/>
+        <location filename="../app/mainwindow2.cpp" line="792"/>
         <source>Abort</source>
         <translation>Névjegy</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="565"/>
+        <location filename="../app/mainwindow2.cpp" line="566"/>
         <source>Saving document...</source>
         <translation>Dokumentum mentése...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="592"/>
+        <location filename="../app/mainwindow2.cpp" line="593"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Hiba történt, ami miatt valószínűleg a fájl mentése sem sikerült. Ha úgy gondolja, hogy az esemény a Pencil2D programban található hibára vezethető vissza, kérjük jelentse a következő helyen:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Mindenképpen mellékelje az alábbi részleteket is a bejelentéshez:</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="628"/>
+        <location filename="../app/mainwindow2.cpp" line="629"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Ez az animáció meg lett változtatva.
  Szeretné menteni a változásokat?</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="651"/>
+        <location filename="../app/mainwindow2.cpp" line="652"/>
         <source>Import image...</source>
         <translation>Kép importálása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="669"/>
+        <location filename="../app/mainwindow2.cpp" line="670"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>A kép nem importálható.&lt;br&gt;&lt;b&gt;TIPP:&lt;/b&gt; Képek importálásához bitkép réteget kell használni.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="693"/>
+        <location filename="../app/mainwindow2.cpp" line="694"/>
         <source>Select one or more files to open</source>
         <translation>Egy vagy több fájl kiválasztása megnyitásra</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="695"/>
+        <location filename="../app/mainwindow2.cpp" line="696"/>
         <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
         <translation>Képek (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="718"/>
+        <location filename="../app/mainwindow2.cpp" line="723"/>
         <source>Import movie</source>
         <translation>Videó importálása</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="762"/>
+        <location filename="../app/mainwindow2.cpp" line="774"/>
         <source>Save Image Sequence</source>
         <translation>Képsorozat mentése</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="827"/>
+        <location filename="../app/mainwindow2.cpp" line="792"/>
+        <source>Exporting image sequence...</source>
+        <translation type="unfinished">Képsorozat exportálása...</translation>
+    </message>
+    <message>
+        <location filename="../app/mainwindow2.cpp" line="856"/>
         <source>Save Image</source>
         <translation>Kép mentése</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="853"/>
+        <location filename="../app/mainwindow2.cpp" line="882"/>
         <source>Unable to export image.</source>
         <translation>A kép nem exportálható.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1042"/>
+        <location filename="../app/mainwindow2.cpp" line="1071"/>
         <source>Undo   %1 %2</source>
         <translation>Visszavonás (%1):   %2</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1050"/>
+        <location filename="../app/mainwindow2.cpp" line="1079"/>
         <source>Redo   %1 %2</source>
         <translation>Újra (%1):   %2</translation>
     </message>
@@ -1503,12 +1544,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Újra:   </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1076"/>
+        <location filename="../app/mainwindow2.cpp" line="1105"/>
         <source>Export As</source>
         <translation>Exportálás másként</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1234"/>
+        <location filename="../app/mainwindow2.cpp" line="1263"/>
         <source>Stop</source>
         <translation>Megállítás</translation>
     </message>
@@ -1516,7 +1557,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="43"/>
+        <location filename="../core_lib/tool/movetool.cpp" line="45"/>
         <source>Move</source>
         <translation>Mozgatás</translation>
     </message>
@@ -1524,122 +1565,122 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="421"/>
         <source>Red</source>
         <translation>Piros</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Green</source>
         <translation>Zöld</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Blue</source>
         <translation>Kék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="419"/>
+        <location filename="../core_lib/structure/object.cpp" line="420"/>
         <source>Black</source>
         <translation>Fekete</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="422"/>
         <source>Dark Red</source>
         <translation>Sötét vörös</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Orange</source>
         <translation>Narancs</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Dark Orange</source>
         <translation>Sötét narancs</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Yellow</source>
         <translation>Sárga</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Dark Yellow</source>
         <translation>Sötét sárga</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Dark Green</source>
         <translation>Sötét zöld</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Cyan</source>
         <translation>Cián</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Dark Cyan</source>
         <translation>Sötét cián</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="431"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>Dark Blue</source>
         <translation>Sötét kék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="432"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>White</source>
         <translation>Fehér</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="433"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Very Light Grey</source>
         <translation>Halvány szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="434"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Light Grey</source>
         <translation>Világos szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="435"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>Grey</source>
         <translation>Szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="436"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Dark Grey</source>
         <translation>Sötét szürke</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="437"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Skin</source>
         <translation>Világos bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="438"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Light Skin - shade</source>
         <translation>Világos bőr - árnyék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="439"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Skin</source>
         <translation>Bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="440"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Skin - shade</source>
         <translation>Bőr - árnyék</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="441"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Dark Skin</source>
         <translation>Sötét bőr</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="442"/>
+        <location filename="../core_lib/structure/object.cpp" line="443"/>
         <source>Dark Skin - shade</source>
         <translation>Sötét bőr - árnyék</translation>
     </message>
@@ -1731,13 +1772,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PolylineTool</name>
     <message>
+        <location filename="../core_lib/tool/polylinetool.cpp" line="97"/>
         <source>Line</source>
-        <translation type="vanished">Vonal</translation>
+        <translation>Vonal</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/polylinetool.cpp" line="83"/>
         <source>Polyline</source>
-        <translation>Vonallánc</translation>
+        <translation type="vanished">Vonallánc</translation>
     </message>
 </context>
 <context>
@@ -1895,48 +1936,48 @@ p, li { white-space: pre-wrap; }
         <translation>Most egy láthatatlan rétegre rajzol! Válasszon egy másik réteget (vagy tegye láthatóvá az aktuális réteget).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1647"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1565"/>
         <source>Delete Selection</source>
         <translation>Kijelölés törlése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1661"/>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1668"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1579"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1586"/>
         <source>Clear Image</source>
         <translation>Kép kiürítése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1696"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1614"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Egy rés van a rajzon (vagy túlságosan fel van nagyítva).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1697"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1615"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Elnézést! Ez nem mindig működik. Próbáld újra (egy kis nagyítással vagy máshová kattintva...)&lt;br&gt;Ha nem működik nagyíts egy kicsit és az F1 lenyomásával ellenőrizd, hogy az útvonalak összeérnek-e.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1701"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1619"/>
         <source>Out of bound.</source>
         <translation>Tartományon kívül.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1702"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1620"/>
         <source>Could not find a closed path.</source>
         <translation>Nem található zárt útvonal.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1703"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1621"/>
         <source>Could not find the root index.</source>
         <translation>Nem található a gyökér index.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1704"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1622"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Hiba: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1704"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1622"/>
         <source>Flood fill error</source>
         <translation>Kitöltési hiba</translation>
     </message>
@@ -2325,88 +2366,122 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="111"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="164"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="75"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
         <source>Brush</source>
         <translation>Ecset</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="18"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="20"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="77"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="84"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Toll szélessége &lt;br&gt;&lt;b&gt;[SHIFT]+húzás&lt;/b&gt;&lt;br&gt;használatával változtatható</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="83"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="90"/>
         <source>Feather</source>
         <translation>Feather</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="85"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Toll lágyítása &lt;br&gt;&lt;b&gt;[CTRL]+húzás&lt;/b&gt;&lt;br&gt;használatával változtatható</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="91"/>
         <source>Use Feather?</source>
-        <translation>Szélek lágyítása?</translation>
+        <translation type="vanished">Szélek lágyítása?</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="98"/>
+        <source>Use Feather</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="99"/>
         <source>Enable or disable feathering</source>
         <translation>Szélek lágyításának be- és kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="96"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="103"/>
         <source>Bezier</source>
         <translation>Bezier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="97"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="104"/>
         <source>Bezier curve fitting</source>
         <translation>Bezier görbéhez igazítva</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="101"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="108"/>
         <source>Pressure</source>
         <translation>Nyomás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="102"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="109"/>
         <source>Size with pressure</source>
         <translation>Méretezés nyomással</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="106"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="113"/>
+        <source>Anti-Aliasing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="114"/>
+        <source>Enable Anti-Aliasing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="118"/>
+        <source>Stabilization level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="134"/>
+        <source>No line interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="139"/>
+        <source>Simple line interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="143"/>
+        <source>Strong line interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="159"/>
         <source>Invisible</source>
         <translation>Láthatatlan</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="107"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="160"/>
         <source>Make invisible</source>
         <translation>Legyen láthatatlan</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="112"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="165"/>
         <source>Preserve Alpha</source>
         <translation>Alfa megtartása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="116"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="169"/>
         <source>Merge</source>
         <translation>Egyesítés</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="117"/>
+        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="170"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Vektorvonalak egyesítése ha azok szorosan egymás mellet vannak</translation>
     </message>
