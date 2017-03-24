@@ -39,7 +39,7 @@
     <message>
         <location filename="../app/actioncommands.cpp" line="83"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
-        <translation>Egy hang már el lett helyezve itt. Válasszon másik pozíciót vagy réteget!</translation>
+        <translation>Egy hang már el lett helyezve ezen a képkockán. Válasszon másik pozíciót vagy réteget!</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="146"/>
@@ -611,17 +611,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="190"/>
         <source>The file path you have specified (&quot;%1&quot;) cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>A megadott fájlútvonal (%1) nem írható, ezért a fájl nem menthető. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="226"/>
         <source>Cannot create the data directory at &quot;%1&quot;. Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az adatkönyvtár nem hozható létre: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pclx formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="229"/>
         <source>Cannot create the data directory at temporary location &quot;%1&quot;. Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az adatkönyvtár nem hozható létre az ideiglenes útvonalon: &quot;%1&quot;. Ellenőrizze, hogy rendelkezik-e a szükséges jogosultságokkal az adott helyre történő mentéshez és próbálja újra. Esetleg próbájon pcl formátumban menteni.</translation>
     </message>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="237"/>
@@ -854,22 +854,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/imageseqdialog.cpp" line="12"/>
         <source>Image Sequence Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Képsorozat párbeszéd</translation>
     </message>
     <message>
         <location filename="../app/imageseqdialog.cpp" line="19"/>
         <source>OK</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../app/imageseqdialog.cpp" line="20"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../app/imageseqdialog.cpp" line="26"/>
         <source>Import an image every # frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Képek importálása # képkockánként</translation>
     </message>
 </context>
 <context>
@@ -1513,7 +1513,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/mainwindow2.cpp" line="792"/>
         <source>Exporting image sequence...</source>
-        <translation type="unfinished">Képsorozat exportálása...</translation>
+        <translation>Képsorozat exportálása...</translation>
     </message>
     <message>
         <location filename="../app/mainwindow2.cpp" line="856"/>
@@ -2389,7 +2389,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="90"/>
         <source>Feather</source>
-        <translation>Feather</translation>
+        <translation>Lágyítás</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
@@ -2403,7 +2403,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="98"/>
         <source>Use Feather</source>
-        <translation type="unfinished"></translation>
+        <translation>Szélek lágyítása</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="99"/>
@@ -2433,32 +2433,32 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="113"/>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished"></translation>
+        <translation>Élsimítás</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="114"/>
         <source>Enable Anti-Aliasing</source>
-        <translation type="unfinished"></translation>
+        <translation>Élsimítás engedélyezése</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="118"/>
         <source>Stabilization level</source>
-        <translation type="unfinished"></translation>
+        <translation>Stabilizálás mértéke</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="134"/>
         <source>No line interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>Nincs vonaligazítás</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="139"/>
         <source>Simple line interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyszerű vonaligazítás</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="143"/>
         <source>Strong line interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>Erős vonaligazítás</translation>
     </message>
     <message>
         <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="159"/>
