@@ -524,7 +524,7 @@ bool MainWindow2::openObject( QString strFilePath )
     mRecentFileMenu->addRecentFile( object->filePath() );
     mRecentFileMenu->saveToDisk();
 
-    setWindowTitle( object->filePath() );
+    setWindowTitle( object->filePath().append("[*]") );
     setWindowModified( false );
     setWindowIcon( QFileIconProvider().icon(strFilePath) );
 
@@ -582,7 +582,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     mTimeLine->updateContent();
 
-    setWindowTitle( strSavedFileName );
+    setWindowTitle( strSavedFileName.append("[*]") );
     mBackupAtSave = mEditor->currentBackup();
 
     return true;
