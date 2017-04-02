@@ -74,7 +74,7 @@ after_success:
       zip -r "pencil2d-linux-$(date +"%Y-%m-%d").zip" app/;
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      zip -r "pencil2d-osx-$(date +"%Y-%m-%d").zip" app/;
+      zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" app/;
     fi'
   - echo "zipping done"
   - ls
@@ -89,12 +89,10 @@ after_success:
     fi'
 
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    echo "linux found";
     python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencil2d-linux-$(date +"%Y-%m-%d").zip;
   fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    echo "osx found";
-    python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencid-osx-$(date +"%Y-%m-%d").zip;
+    python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencil2d-mac-$(date +"%Y-%m-%d").zip;
   fi'
   - echo "Operation done"
 
