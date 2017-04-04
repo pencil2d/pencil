@@ -82,17 +82,17 @@ after_success:
   # Upload to google drive
   - echo "Initiate deployment on Google Drive"
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      cd /Users/travis/build/chchwy/pencil2d;
+      cd /home/travis/build/chchwy/pencil2d/util;
     fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       cd /Users/travis/build/chchwy/pencil2d/util;
     fi'
 
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencil2d-linux-$(date +"%Y-%m-%d").zip;
+    python nightly-build-upload.py 0BxdcdOiOmg-CcU1WOFpCOFBvVXc /home/travis/build/chchwy/pencil2d/build/pencil2d-linux-$(date +"%Y-%m-%d").zip;
   fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencil2d-mac-$(date +"%Y-%m-%d").zip;
+    python nightly-build-upload.py 0BxdcdOiOmg-CeVpTY294cXdLZ2c /Users/travis/build/chchwy/pencil2d/build/pencil2d-mac-$(date +"%Y-%m-%d").zip;
   fi'
   - echo "Operation done"
 
