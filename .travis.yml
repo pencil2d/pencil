@@ -1,4 +1,4 @@
-# Travis-CI configuration file for SuperTuxKart
+# Travis-CI configuration file for SuperTuxKart modified by CandyFace for Pencil2D
 #
 # Configuration manual:
 # http://docs.travis-ci.com/user/build-configuration/
@@ -10,7 +10,13 @@ language: cpp
 compiler: g++
 sudo: required
 dist: trusty
+osx_sdk: macosx10.12
+os:
+  - linux
+  - osx
 
+python:
+ - "3.4"
 addons:
   apt:
     sources:
@@ -26,17 +32,70 @@ addons:
     - libqt5svg5-dev 
     - libqt5xmlpatterns5-dev
 
+
+before_install:
+  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then 
+    brew update;
+    brew install python3;
+    brew install qt5;
+    brew link qt5 --force;
+  fi'
+
+install:
+  - pip freeze > requirements.txt
+  - pip install -r requirements.txt
+  - pip install -U setuptools
+  - pip install -U virtualenvwrapper
+  - pip install -U google-api-python-client
+  - python3 -V
+  - pip -V
+
 before_script:
   - qmake --version
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    export DISPLAY=:99.0;
+    sh -e /etc/init.d/xvfb start;
+    echo "give xvfb some time to start";
+    sleep 3;
+  fi'
+
   
 script:
-  - qmake
+  - mkdir "build" && cd build 
+  - qmake ../
   - make
+
+after_success:
+  - echo "look for build folder and zip file"
+  - ls
+  - echo "cleaning..."
+  - make clean
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      zip -r "pencil2d-linux-$(date +"%Y-%m-%d").zip" app/;
+     fi'
+  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" app/;
+    fi'
+  - echo "zipping done"
+  - ls
+
+  # Upload to google drive
+  - echo "Initiate deployment on Google Drive"
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      /Users/travis/build/chchwy/pencil2d;
+    fi'
+  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      cd /Users/travis/build/chchwy/pencil2d/util;
+    fi'
+
+  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencil2d-linux-$(date +"%Y-%m-%d").zip;
+  fi'
+  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    python nightly-build-upload.py 0BxdcdOiOmg-CcWhLazdKR1oydHM /home/travis/build/chchwy/pencil2d/build/pencil2d-mac-$(date +"%Y-%m-%d").zip;
+  fi'
+  - echo "Operation done"
 
 after_script:
   - pwd
   - ./tests/tests
-
