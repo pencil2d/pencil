@@ -82,7 +82,7 @@ after_success:
   # Upload to google drive
   - echo "Initiate deployment on Google Drive"
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      /Users/travis/build/chchwy/pencil2d;
+      cd /Users/travis/build/chchwy/pencil2d;
     fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       cd /Users/travis/build/chchwy/pencil2d/util;
