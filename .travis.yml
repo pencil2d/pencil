@@ -38,8 +38,8 @@ before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update;
     brew install python3;
-    brew install qt5;
-    brew link qt5 --force;
+    brew install qt@5.7;
+    brew link qt@5.7 --force;
   fi'
 
 install:
