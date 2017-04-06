@@ -71,9 +71,20 @@ after_success:
   - echo "cleaning..."
   - make clean
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      cd app;
+      echo "Removing Makefile";
+      rm Makefile;
+      cd..;
+      echo "Zipping...";
       zip -r "pencil2d-linux-$(date +"%Y-%m-%d").zip" app/;
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      echo "Copying necessary Qt frameworks";
+      cd app && macdeployqt Pencil2D.app;
+      echo "Removing Makefile";
+      rm Makefile;
+      cd..;
+      echo "Zipping...";
       zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" app/;
     fi'
   - echo "zipping done"
