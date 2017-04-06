@@ -29,16 +29,17 @@ addons:
     - qttools5-dev-tools
     - qtbase5-dev
     - qtmultimedia5-dev
-    - libqt5svg5-dev 
+    - libqt5svg5-dev
     - libqt5xmlpatterns5-dev
+    - bsdtar
 
 
 before_install:
-  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then 
+  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update;
     brew install python3;
-    brew install qt5;
-    brew link qt5 --force;
+    brew install qt@5.7;
+    brew link qt@5.7 --force;
   fi'
 
 install:
@@ -59,9 +60,9 @@ before_script:
     sleep 3;
   fi'
 
-  
+
 script:
-  - mkdir "build" && cd build 
+  - mkdir "build" && cd build
   - qmake ../
   - make
 
@@ -71,10 +72,23 @@ after_success:
   - echo "cleaning..."
   - make clean
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      zip -r "pencil2d-linux-$(date +"%Y-%m-%d").zip" app/;
+      mv app Pencil2D;
+      cd Pencil2D;
+      echo "Removing Makefile";
+      rm Makefile;
+      cd ..;
+      echo "Archiving...";
+      bsdtar cvzfs "pencil2d-linux-$(date +"%Y-%m-%d").tar.gz" "/Pencil2D/pencil2d-linux-$(date +"%Y-%m-%d")/" Pencil2D;
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" app/;
+      echo "Copying necessary Qt frameworks";
+      mv app Pencil2D;
+      cd Pencil2D && macdeployqt Pencil2D.app;
+      echo "Removing Makefile";
+      rm Makefile;
+      cd ..;
+      echo "Zipping...";
+      zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" Pencil2D/;
     fi'
   - echo "zipping done"
   - ls
