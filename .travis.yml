@@ -76,7 +76,7 @@ after_success:
       rm Makefile;
       cd ..;
       echo "Zipping...";
-      zip -r "pencil2d-linux-$(date +"%Y-%m-%d").zip" app/;
+      tar -zcvf "pencil2d-linux-$(date +"%Y-%m-%d").tar.gz" app/;
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       echo "Copying necessary Qt frameworks";
