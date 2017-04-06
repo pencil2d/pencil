@@ -74,7 +74,7 @@ after_success:
       cd app;
       echo "Removing Makefile";
       rm Makefile;
-      cd..;
+      cd ..;
       echo "Zipping...";
       zip -r "pencil2d-linux-$(date +"%Y-%m-%d").zip" app/;
      fi'
@@ -83,7 +83,7 @@ after_success:
       cd app && macdeployqt Pencil2D.app;
       echo "Removing Makefile";
       rm Makefile;
-      cd..;
+      cd ..;
       echo "Zipping...";
       zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" app/;
     fi'
