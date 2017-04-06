@@ -29,12 +29,13 @@ addons:
     - qttools5-dev-tools
     - qtbase5-dev
     - qtmultimedia5-dev
-    - libqt5svg5-dev 
+    - libqt5svg5-dev
     - libqt5xmlpatterns5-dev
+    - bsdtar
 
 
 before_install:
-  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then 
+  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update;
     brew install python3;
     brew install qt5;
@@ -59,9 +60,9 @@ before_script:
     sleep 3;
   fi'
 
-  
+
 script:
-  - mkdir "build" && cd build 
+  - mkdir "build" && cd build
   - qmake ../
   - make
 
@@ -76,8 +77,8 @@ after_success:
       echo "Removing Makefile";
       rm Makefile;
       cd ..;
-      echo "Zipping...";
-      tar -zcvf "pencil2d-linux-$(date +"%Y-%m-%d").tar.gz" -C pencil2d-linux-$(date +"%Y-%m-%d") Pencil2D/;
+      echo "Archiving...";
+      bsdtar cvzfs "pencil2d-linux-$(date +"%Y-%m-%d").tar.gz" "/Pencil2D/pencil2d-linux-$(date +"%Y-%m-%d")/" Pencil2D;
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       echo "Copying necessary Qt frameworks";
