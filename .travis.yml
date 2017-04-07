@@ -106,5 +106,6 @@ after_success:
   - echo "Operation done"
 
 after_script:
+  - cd "$TRAVIS_BUILD_DIR/build"
   - pwd
   - ./tests/tests
