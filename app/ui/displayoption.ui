@@ -34,20 +34,6 @@
      <property name="toolTip">
       <string>Horizontal flip</string>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
-     </property>
      <property name="text">
       <string>...</string>
      </property>
@@ -77,20 +63,6 @@ border:1px solid #555555;
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
-     </property>
      <property name="text">
       <string>...</string>
      </property>
@@ -119,20 +91,6 @@ border:1px solid #555555;
      </property>
      <property name="toolTip">
       <string>Show invisible lines</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
      </property>
      <property name="text">
       <string>...</string>
@@ -169,20 +127,6 @@ border:1px solid #555555;
      <property name="autoFillBackground">
       <bool>false</bool>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
-     </property>
      <property name="text">
       <string>...</string>
      </property>
@@ -208,20 +152,6 @@ border:1px solid #555555;
      </property>
      <property name="statusTip">
       <string>Onion skin next frame</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
      </property>
      <property name="text">
       <string>...</string>
@@ -249,20 +179,6 @@ border:1px solid #555555;
      <property name="statusTip">
       <string>Onion skin color: red</string>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
-     </property>
      <property name="text">
       <string>...</string>
      </property>
@@ -286,20 +202,6 @@ border:1px solid #555555;
      <property name="toolTip">
       <string>Show outlines only</string>
      </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
-     </property>
      <property name="text">
       <string>...</string>
      </property>
@@ -322,20 +224,6 @@ border:1px solid #555555;
     <widget class="QToolButton" name="mirrorVButton">
      <property name="toolTip">
       <string>Vertical flip</string>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QToolButton { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.0851364, y2:0.278, stop:0 rgba(216, 216, 216, 255), stop:1 rgba(250, 250, 250, 255));
-
-/*border:1px solid #555555;*/
-
-border-radius:5px;
-}
-
-QToolButton:pressed, QToolButton:checked { 
-background-color: qlineargradient(spread:pad, x1:0.187818, y1:0.949, x2:0.085, y2:0.0791364, stop:0 rgba(246, 252, 255, 255), stop:1 rgba(204, 217, 250, 255));
-border:1px solid #555555;
-}</string>
      </property>
      <property name="text">
       <string>...</string>
