@@ -37,6 +37,7 @@ addons:
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
     brew update;
+    brew install p7zip;
     brew install python3;
     brew install qt@5.7;
     brew link qt@5.7 --force;
@@ -81,9 +82,9 @@ after_success:
       bsdtar cvzfs "pencil2d-linux-$(date +"%Y-%m-%d").tar.gz" "/Pencil2D/pencil2d-linux-$(date +"%Y-%m-%d")/" Pencil2D;
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      echo "Copying necessary Qt frameworks";
       mv app Pencil2D;
       echo "Fixing info.plist";
+      cd Pencil2D;
       plutil -replace CFBundleExecutable -string Pencil2D Pencil2D.app/Contents/Info.plist;
       plutil -replace CFBundleIdentifier -string org.pencil2d.Pencil2D Pencil2D.app/Contents/Info.plist;
 
@@ -93,7 +94,8 @@ after_success:
       7z x Pencil2D.app/Contents/MacOS/plugins/ffmpeg-3.2.4.7z -o"Pencil2D.app/Contents/MacOS/plugins";
       rm Pencil2D.app/Contents/MacOs/plugins/ffmpeg-3.2.4.7z;
       
-      cd Pencil2D && macdeployqt Pencil2D.app;
+      echo "Copying necessary Qt frameworks";
+      macdeployqt Pencil2D.app;
       echo "Removing Makefile";
       rm Makefile;
       cd ..;
