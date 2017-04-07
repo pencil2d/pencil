@@ -37,7 +37,7 @@ Status SoundManager::load( Object* obj )
             SoundClip* clip = dynamic_cast< SoundClip* >( key );
             Q_ASSERT( clip );
 
-            createMeidaPlayer( clip );
+            createMediaPlayer( clip );
         } );
     }
     return Status::OK;
@@ -45,7 +45,7 @@ Status SoundManager::load( Object* obj )
 
 Status SoundManager::save( Object* )
 {
-	return Status::OK;
+    return Status::OK;
 }
 
 Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile )
@@ -65,14 +65,14 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     {
         return Status::FILE_NOT_FOUND;
     }
-    
+
     KeyFrame* key = soundLayer->getKeyFrameAt( frameNumber );
     if ( key == nullptr )
     {
         key = new SoundClip;
         soundLayer->addKeyFrame( frameNumber, key );
     }
-    
+
     if ( !key->fileName().isEmpty() )
     {
         return Status::FAIL;
@@ -84,7 +84,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
     soundClip->init( strCopyFile );
 
-    Status st = createMeidaPlayer( soundClip );
+    Status st = createMediaPlayer( soundClip );
     if ( !st.ok() )
     {
         delete soundClip;
@@ -113,13 +113,13 @@ Status SoundManager::loadSound( SoundClip* soundClip, QString strSoundFile )
 
     soundClip->init( strCopyFile );
 
-    Status st = createMeidaPlayer( soundClip );
+    Status st = createMediaPlayer( soundClip );
     if ( !st.ok() )
     {
         delete soundClip;
         return st;
     }
-    
+
     return Status::OK;
 }
 
@@ -135,7 +135,7 @@ void SoundManager::onDurationChanged( SoundPlayer* player, int64_t duration )
     emit soundClipDurationChanged();
 }
 
-Status SoundManager::createMeidaPlayer( SoundClip* clip )
+Status SoundManager::createMediaPlayer( SoundClip* clip )
 {
     SoundPlayer* newPlayer = new SoundPlayer();
     newPlayer->init( clip );
