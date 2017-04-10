@@ -415,6 +415,7 @@ void MainWindow2::newDocument()
         mEditor->color()->setColorNumber(0);
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
+        updateSaveState();
     }
 }
 
@@ -584,6 +585,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     setWindowTitle( strSavedFileName.prepend("[*]") );
     mBackupAtSave = mEditor->currentBackup();
+    updateSaveState();
 
     return true;
 }
