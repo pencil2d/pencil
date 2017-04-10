@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include <QGraphicsDropShadowEffect>
 #include <QStatusBar>
+#include <QFileIconProvider>
 
 #include "pencildef.h"
 #include "pencilsettings.h"
@@ -376,33 +377,9 @@ void MainWindow2::setOpacity( int opacity )
     setWindowOpacity( opacity / 100.0 );
 }
 
-bool MainWindow2::isTitleMarkedUnsaved()
+void MainWindow2::updateSaveState()
 {
-    return windowTitle().startsWith(QChar('*'));
-}
-
-void MainWindow2::markTitleUnsaved()
-{
-    if (!isTitleMarkedUnsaved())
-        setWindowTitle( QString("*") + windowTitle() );
-}
-
-void MainWindow2::markTitleSaved()
-{
-    if (isTitleMarkedUnsaved() && windowTitle().startsWith(QChar('*')))
-        setWindowTitle( windowTitle().remove(0, 1).trimmed() );
-}
-
-void MainWindow2::updateTitleSaveState()
-{
-    if( mEditor->currentBackup() == mBackupAtSave )
-    {
-        markTitleSaved();
-    }
-    else
-	{
-        markTitleUnsaved();
-    }
+    setWindowModified( mEditor->currentBackup() != mBackupAtSave );
 }
 
 void MainWindow2::closeEvent( QCloseEvent* event )
@@ -438,6 +415,7 @@ void MainWindow2::newDocument()
         mEditor->color()->setColorNumber(0);
 
         setWindowTitle( PENCIL_WINDOW_TITLE );
+        updateSaveState();
     }
 }
 
@@ -547,7 +525,9 @@ bool MainWindow2::openObject( QString strFilePath )
     mRecentFileMenu->addRecentFile( object->filePath() );
     mRecentFileMenu->saveToDisk();
 
-    setWindowTitle( object->filePath() );
+    setWindowTitle( object->filePath().prepend("[*]") );
+    setWindowModified( false );
+    setWindowIcon( QFileIconProvider().icon(strFilePath) );
 
     // Refresh the Palette
     mColorPalette->refreshColorList();
@@ -603,8 +583,9 @@ bool MainWindow2::saveObject( QString strSavedFileName )
 
     mTimeLine->updateContent();
 
-    setWindowTitle( strSavedFileName );
+    setWindowTitle( strSavedFileName.prepend("[*]") );
     mBackupAtSave = mEditor->currentBackup();
+    updateSaveState();
 
     return true;
 }
@@ -623,7 +604,7 @@ void MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if ( isTitleMarkedUnsaved() )
+    if ( mEditor->currentBackup() != mBackupAtSave )
     {
         int ret = QMessageBox::warning( this, tr( "Warning" ),
                                         tr( "This animation has been modified.\n Do you want to save your changes?" ),
@@ -1150,7 +1131,7 @@ void MainWindow2::helpBox()
 
 void MainWindow2::makeConnections( Editor* editor )
 {
-    connect( editor, &Editor::updateBackup, this, &MainWindow2::updateTitleSaveState );
+    connect( editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState );
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
