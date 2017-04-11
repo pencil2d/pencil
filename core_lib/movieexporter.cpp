@@ -88,7 +88,7 @@ QString ffmpegLocation()
 #ifdef _WIN32
     return QApplication::applicationDirPath() + "/plugins/ffmpeg.exe";
 #elif __APPLE__
-    return QApplication::applicationDirPath() + "/ffmpeg";
+    return QApplication::applicationDirPath() + "/plugins/ffmpeg";
 #else
     return QStandardPaths::findExecutable( "ffmpeg" ); // ffmpeg is a standalone project.
 #endif
@@ -112,7 +112,13 @@ Status MovieExporter::run(const Object* obj,
 	qDebug() << ffmpegPath;
 	if ( !QFile::exists( ffmpegPath ) )
 	{
+    #ifdef _WIN32
 		qDebug() << "Please place ffmpeg.exe in " << ffmpegPath << " directory";
+    #elif __APPLE__
+        qDebug() << "Please place ffmpeg in " << ffmpegPath << " directory";
+    #else
+        qDebug() << "Please place ffmpeg in " << ffmpegPath << " directory";
+    #endif
 		return Status::ERROR_FFMPEG_NOT_FOUND;
 	}
 	
