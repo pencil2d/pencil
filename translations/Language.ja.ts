@@ -342,53 +342,53 @@
         <translation>水平反転</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="52"/>
-        <location filename="../app/ui/displayoption.ui" line="95"/>
-        <location filename="../app/ui/displayoption.ui" line="138"/>
-        <location filename="../app/ui/displayoption.ui" line="187"/>
-        <location filename="../app/ui/displayoption.ui" line="227"/>
-        <location filename="../app/ui/displayoption.ui" line="267"/>
-        <location filename="../app/ui/displayoption.ui" line="304"/>
-        <location filename="../app/ui/displayoption.ui" line="341"/>
+        <location filename="../app/ui/displayoption.ui" line="38"/>
+        <location filename="../app/ui/displayoption.ui" line="67"/>
+        <location filename="../app/ui/displayoption.ui" line="96"/>
+        <location filename="../app/ui/displayoption.ui" line="131"/>
+        <location filename="../app/ui/displayoption.ui" line="157"/>
+        <location filename="../app/ui/displayoption.ui" line="183"/>
+        <location filename="../app/ui/displayoption.ui" line="206"/>
+        <location filename="../app/ui/displayoption.ui" line="229"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="72"/>
-        <location filename="../app/ui/displayoption.ui" line="75"/>
+        <location filename="../app/ui/displayoption.ui" line="58"/>
+        <location filename="../app/ui/displayoption.ui" line="61"/>
         <source>Onion skin previous frame</source>
         <translation>前フレームのオニオンスキンを表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="121"/>
+        <location filename="../app/ui/displayoption.ui" line="93"/>
         <source>Show invisible lines</source>
         <translation>透明な線を表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="164"/>
-        <location filename="../app/ui/displayoption.ui" line="167"/>
+        <location filename="../app/ui/displayoption.ui" line="122"/>
+        <location filename="../app/ui/displayoption.ui" line="125"/>
         <source>Onion skin color: blue</source>
         <translation>オニオンスキンの色：青</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="207"/>
-        <location filename="../app/ui/displayoption.ui" line="210"/>
+        <location filename="../app/ui/displayoption.ui" line="151"/>
+        <location filename="../app/ui/displayoption.ui" line="154"/>
         <source>Onion skin next frame</source>
         <translation>次フレームのオニオンスキンを表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="247"/>
-        <location filename="../app/ui/displayoption.ui" line="250"/>
+        <location filename="../app/ui/displayoption.ui" line="177"/>
+        <location filename="../app/ui/displayoption.ui" line="180"/>
         <source>Onion skin color: red</source>
         <translation>オニオンスキンの色：赤</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="287"/>
+        <location filename="../app/ui/displayoption.ui" line="203"/>
         <source>Show outlines only</source>
         <translation>輪郭線のみを表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="324"/>
+        <location filename="../app/ui/displayoption.ui" line="226"/>
         <source>Vertical flip</source>
         <translation>垂直反転</translation>
     </message>
@@ -859,83 +859,83 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow2</name>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="684"/>
+        <location filename="../app/ui/mainwindow2.ui" line="651"/>
         <source>Pencil</source>
         <translation>鉛筆</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="711"/>
+        <location filename="../app/ui/mainwindow2.ui" line="678"/>
         <source>Eraser</source>
         <translation>消しゴム</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="630"/>
+        <location filename="../app/ui/mainwindow2.ui" line="597"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="180"/>
-        <location filename="../app/ui/mainwindow2.ui" line="834"/>
+        <location filename="../app/ui/mainwindow2.ui" line="147"/>
+        <location filename="../app/ui/mainwindow2.ui" line="801"/>
         <source>Tools</source>
         <translation type="unfinished">ツール</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="612"/>
+        <location filename="../app/ui/mainwindow2.ui" line="579"/>
         <source>Move</source>
         <translation>移動</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="675"/>
+        <location filename="../app/ui/mainwindow2.ui" line="642"/>
         <source>Hand</source>
         <translation>手のひら</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="657"/>
+        <location filename="../app/ui/mainwindow2.ui" line="624"/>
         <source>Smudge</source>
         <translation>指先</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="666"/>
+        <location filename="../app/ui/mainwindow2.ui" line="633"/>
         <source>Pen</source>
         <translation>ペン</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="648"/>
+        <location filename="../app/ui/mainwindow2.ui" line="615"/>
         <source>Polyline</source>
         <translation>折れ線</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="693"/>
+        <location filename="../app/ui/mainwindow2.ui" line="660"/>
         <source>Bucket</source>
         <translation>バケツ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="702"/>
+        <location filename="../app/ui/mainwindow2.ui" line="669"/>
         <source>Eyedropper</source>
         <translation>スポイト</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="639"/>
+        <location filename="../app/ui/mainwindow2.ui" line="606"/>
         <source>Brush</source>
         <translation>ブラシ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="866"/>
+        <location filename="../app/ui/mainwindow2.ui" line="833"/>
         <source>Color Palette</source>
         <translation>カラーパレット</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="399"/>
+        <location filename="../app/ui/mainwindow2.ui" line="366"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="502"/>
+        <location filename="../app/ui/mainwindow2.ui" line="469"/>
         <source>Grid</source>
         <translation>グリッド</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="60"/>
+        <location filename="../app/ui/mainwindow2.ui" line="30"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
@@ -945,521 +945,521 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="64"/>
-        <location filename="../app/mainwindow2.cpp" line="1121"/>
+        <location filename="../app/ui/mainwindow2.ui" line="34"/>
+        <location filename="../app/mainwindow2.cpp" line="1102"/>
         <source>Import</source>
         <translation>インポート</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="76"/>
+        <location filename="../app/ui/mainwindow2.ui" line="46"/>
         <source>Export</source>
         <translation>エクスポート</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="104"/>
+        <location filename="../app/ui/mainwindow2.ui" line="71"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="108"/>
+        <location filename="../app/ui/mainwindow2.ui" line="75"/>
         <source>Selection</source>
         <translation>選択範囲</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="130"/>
+        <location filename="../app/ui/mainwindow2.ui" line="97"/>
         <source>View</source>
         <translation>表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="134"/>
+        <location filename="../app/ui/mainwindow2.ui" line="101"/>
         <source>Onion Skin</source>
         <translation>オニオンスキン</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="160"/>
+        <location filename="../app/ui/mainwindow2.ui" line="127"/>
         <source>Animation</source>
         <translation>アニメーション</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="167"/>
+        <location filename="../app/mainwindow2.cpp" line="168"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>ツール</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="200"/>
+        <location filename="../app/ui/mainwindow2.ui" line="167"/>
         <source>Layer</source>
         <translation>レイヤー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="211"/>
-        <location filename="../app/ui/mainwindow2.ui" line="757"/>
+        <location filename="../app/ui/mainwindow2.ui" line="178"/>
+        <location filename="../app/ui/mainwindow2.ui" line="724"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="218"/>
+        <location filename="../app/ui/mainwindow2.ui" line="185"/>
         <source>Windows</source>
         <translation>ウィンドウ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="236"/>
+        <location filename="../app/ui/mainwindow2.ui" line="203"/>
         <source>New</source>
         <translation>新規</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="245"/>
+        <location filename="../app/ui/mainwindow2.ui" line="212"/>
         <source>Open</source>
         <translation>開く</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="254"/>
+        <location filename="../app/ui/mainwindow2.ui" line="221"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="263"/>
+        <location filename="../app/ui/mainwindow2.ui" line="230"/>
         <source>Save As ..</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="272"/>
+        <location filename="../app/ui/mainwindow2.ui" line="239"/>
         <source>Print</source>
         <translation>印刷</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="281"/>
+        <location filename="../app/ui/mainwindow2.ui" line="248"/>
         <source>Exit</source>
         <translation>終了</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="289"/>
+        <location filename="../app/ui/mainwindow2.ui" line="256"/>
         <source>X-sheet ...</source>
         <translation>タイムシート...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="297"/>
-        <location filename="../app/ui/mainwindow2.ui" line="336"/>
+        <location filename="../app/ui/mainwindow2.ui" line="264"/>
+        <location filename="../app/ui/mainwindow2.ui" line="303"/>
         <source>Image Sequence...</source>
         <translation>連番画像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="302"/>
-        <location filename="../app/ui/mainwindow2.ui" line="331"/>
+        <location filename="../app/ui/mainwindow2.ui" line="269"/>
+        <location filename="../app/ui/mainwindow2.ui" line="298"/>
         <source>Image...</source>
         <translation>画像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="307"/>
-        <location filename="../app/ui/mainwindow2.ui" line="341"/>
+        <location filename="../app/ui/mainwindow2.ui" line="274"/>
+        <location filename="../app/ui/mainwindow2.ui" line="308"/>
         <source>Movie...</source>
         <translation>動画...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="315"/>
-        <location filename="../app/ui/mainwindow2.ui" line="354"/>
+        <location filename="../app/ui/mainwindow2.ui" line="282"/>
+        <location filename="../app/ui/mainwindow2.ui" line="321"/>
         <source>Palette...</source>
         <translation>パレット...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="323"/>
+        <location filename="../app/ui/mainwindow2.ui" line="290"/>
         <source>Svg Image...</source>
         <translation>SVG 画像...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="349"/>
+        <location filename="../app/ui/mainwindow2.ui" line="316"/>
         <source>Sound...</source>
         <translation>音声...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="363"/>
-        <location filename="../app/mainwindow2.cpp" line="1066"/>
+        <location filename="../app/ui/mainwindow2.ui" line="330"/>
+        <location filename="../app/mainwindow2.cpp" line="1047"/>
         <source>Undo</source>
         <translation>元に戻す</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="372"/>
-        <location filename="../app/mainwindow2.cpp" line="1086"/>
+        <location filename="../app/ui/mainwindow2.ui" line="339"/>
+        <location filename="../app/mainwindow2.cpp" line="1067"/>
         <source>Redo</source>
         <translation>やり直す</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="381"/>
+        <location filename="../app/ui/mainwindow2.ui" line="348"/>
         <source>Cut</source>
         <translation>切り取り</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="390"/>
+        <location filename="../app/ui/mainwindow2.ui" line="357"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="404"/>
+        <location filename="../app/ui/mainwindow2.ui" line="371"/>
         <source>Crop</source>
         <translation>切り抜き</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="409"/>
+        <location filename="../app/ui/mainwindow2.ui" line="376"/>
         <source>Crop To Selection</source>
         <translation>選択範囲でクロップ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="414"/>
+        <location filename="../app/ui/mainwindow2.ui" line="381"/>
         <source>Select All</source>
         <translation>すべて選択</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="419"/>
+        <location filename="../app/ui/mainwindow2.ui" line="386"/>
         <source>Deselect All</source>
         <translation>すべての選択を解除</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="428"/>
-        <location filename="../app/ui/mainwindow2.ui" line="621"/>
+        <location filename="../app/ui/mainwindow2.ui" line="395"/>
+        <location filename="../app/ui/mainwindow2.ui" line="588"/>
         <source>Clear Frame</source>
         <translation>フレームをクリア</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="433"/>
+        <location filename="../app/ui/mainwindow2.ui" line="400"/>
         <source>Preferences</source>
         <translation>詳細設定</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="438"/>
+        <location filename="../app/ui/mainwindow2.ui" line="405"/>
         <source>Reset Windows</source>
         <translation>ウィンドウをリセット</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="447"/>
+        <location filename="../app/ui/mainwindow2.ui" line="414"/>
         <source>Zoom In</source>
         <translation>ズームイン</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="456"/>
+        <location filename="../app/ui/mainwindow2.ui" line="423"/>
         <source>Zoom Out</source>
         <translation>ズームアウト</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="461"/>
+        <location filename="../app/ui/mainwindow2.ui" line="428"/>
         <source>Rotate Clockwise</source>
         <translation>時計回りに回転</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="466"/>
+        <location filename="../app/ui/mainwindow2.ui" line="433"/>
         <source>Rotate AntiClosewise</source>
         <translation>反時計回りに回転</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="471"/>
+        <location filename="../app/ui/mainwindow2.ui" line="438"/>
         <source>Reset Zoom/Rotate</source>
         <translation>ズームと回転をリセット</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="480"/>
+        <location filename="../app/ui/mainwindow2.ui" line="447"/>
         <source>Horizontal Flip</source>
         <translation>水平反転</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="489"/>
+        <location filename="../app/ui/mainwindow2.ui" line="456"/>
         <source>Vertical Flip</source>
         <translation>垂直反転</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="461"/>
         <source>Preview</source>
         <translation>プレビュー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="514"/>
+        <location filename="../app/ui/mainwindow2.ui" line="481"/>
         <source>Previous</source>
         <translation>前</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="517"/>
+        <location filename="../app/ui/mainwindow2.ui" line="484"/>
         <source>Show previous onion skin</source>
         <translation>前のフレームのオニオンスキンを表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="529"/>
+        <location filename="../app/ui/mainwindow2.ui" line="496"/>
         <source>Next</source>
         <translation>次</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="532"/>
+        <location filename="../app/ui/mainwindow2.ui" line="499"/>
         <source>Show next onion skin</source>
         <translation>次のフレームのオニオンスキンを表示</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1267"/>
+        <location filename="../app/ui/mainwindow2.ui" line="508"/>
+        <location filename="../app/mainwindow2.cpp" line="1248"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="553"/>
+        <location filename="../app/ui/mainwindow2.ui" line="520"/>
         <source>Loop</source>
         <translation>ループ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="562"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Next Frame</source>
         <translation>次のフレーム</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="571"/>
+        <location filename="../app/ui/mainwindow2.ui" line="538"/>
         <source>Previous Frame</source>
         <translation>前のフレーム</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="576"/>
+        <location filename="../app/ui/mainwindow2.ui" line="543"/>
         <source>Extend Frame</source>
         <translation>フレーム</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="585"/>
+        <location filename="../app/ui/mainwindow2.ui" line="552"/>
         <source>Add Frame</source>
         <translation>フレームを追加</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="594"/>
+        <location filename="../app/ui/mainwindow2.ui" line="561"/>
         <source>Duplicate Frame</source>
         <translation>フレームを複製</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="603"/>
+        <location filename="../app/ui/mainwindow2.ui" line="570"/>
         <source>Remove Frame</source>
         <translation>フレームを削除</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="720"/>
+        <location filename="../app/ui/mainwindow2.ui" line="687"/>
         <source>New Bitmap Layer</source>
         <translation>新しいビットマップレイヤー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="729"/>
+        <location filename="../app/ui/mainwindow2.ui" line="696"/>
         <source>New Vector Layer</source>
         <translation>新しいベクターレイヤー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="738"/>
+        <location filename="../app/ui/mainwindow2.ui" line="705"/>
         <source>New Sound Layer</source>
         <translation>新しい音声レイヤー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="747"/>
+        <location filename="../app/ui/mainwindow2.ui" line="714"/>
         <source>New Camera Layer</source>
         <translation>新しいカメラレイヤー</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="752"/>
+        <location filename="../app/ui/mainwindow2.ui" line="719"/>
         <source>Delete Current Layer</source>
         <translation>現在のレイヤーを削除</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="762"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="770"/>
+        <location filename="../app/ui/mainwindow2.ui" line="737"/>
         <source>Toggle palette</source>
         <translation>パレットを切り替え</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="775"/>
-        <location filename="../app/ui/mainwindow2.ui" line="778"/>
+        <location filename="../app/ui/mainwindow2.ui" line="742"/>
+        <location filename="../app/ui/mainwindow2.ui" line="745"/>
         <source>Reset to default</source>
         <translation>初期状態に戻す</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="788"/>
-        <location filename="../app/ui/mainwindow2.ui" line="791"/>
+        <location filename="../app/ui/mainwindow2.ui" line="755"/>
+        <location filename="../app/ui/mainwindow2.ui" line="758"/>
         <source>Next KeyFrame</source>
         <translation>次のキーフレーム</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="801"/>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="768"/>
+        <location filename="../app/ui/mainwindow2.ui" line="771"/>
         <source>Previous KeyFrame</source>
         <translation>前のキーフレーム</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="815"/>
+        <location filename="../app/ui/mainwindow2.ui" line="782"/>
         <source>MultiLayer Onion Skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="826"/>
+        <location filename="../app/ui/mainwindow2.ui" line="793"/>
         <source>Range</source>
         <translation type="unfinished">範囲</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="842"/>
+        <location filename="../app/ui/mainwindow2.ui" line="809"/>
         <source>Timeline</source>
         <translation>タイムライン</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="850"/>
+        <location filename="../app/ui/mainwindow2.ui" line="817"/>
         <source>Options</source>
         <translation>オプション</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="858"/>
-        <location filename="../app/mainwindow2.cpp" line="153"/>
+        <location filename="../app/ui/mainwindow2.ui" line="825"/>
+        <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>Color Wheel</source>
         <translation>カラーホイール</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="874"/>
+        <location filename="../app/ui/mainwindow2.ui" line="841"/>
         <source>Display Options</source>
         <translation>表示オプション</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="879"/>
+        <location filename="../app/ui/mainwindow2.ui" line="846"/>
         <source>Flip X</source>
         <translation>水平反転</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="884"/>
+        <location filename="../app/ui/mainwindow2.ui" line="851"/>
         <source>Flip Y</source>
         <translation>垂直反転</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="889"/>
+        <location filename="../app/ui/mainwindow2.ui" line="856"/>
         <source>Move Frame Forward</source>
         <translation>次のフレームに移動</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="894"/>
+        <location filename="../app/ui/mainwindow2.ui" line="861"/>
         <source>Move Frame Backward</source>
         <translation>前のフレームに移動</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="154"/>
+        <location filename="../app/mainwindow2.cpp" line="155"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="357"/>
+        <location filename="../app/mainwindow2.cpp" line="358"/>
         <source>Open Recent</source>
         <translation>最近使ったファイル</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="452"/>
+        <location filename="../app/mainwindow2.cpp" line="430"/>
         <source>Open File...</source>
         <translation>ファイルを開く...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="468"/>
-        <location filename="../app/mainwindow2.cpp" line="508"/>
-        <location filename="../app/mainwindow2.cpp" line="628"/>
-        <location filename="../app/mainwindow2.cpp" line="669"/>
-        <location filename="../app/mainwindow2.cpp" line="881"/>
+        <location filename="../app/mainwindow2.cpp" line="446"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="609"/>
+        <location filename="../app/mainwindow2.cpp" line="650"/>
+        <location filename="../app/mainwindow2.cpp" line="862"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="468"/>
-        <location filename="../app/mainwindow2.cpp" line="508"/>
+        <location filename="../app/mainwindow2.cpp" line="446"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>読み込みエラーです。画像をインポートする場合はインポートコマンドを使用して下さい。</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="463"/>
         <source>Save As...</source>
         <translation>名前を付けて保存...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="515"/>
+        <location filename="../app/mainwindow2.cpp" line="493"/>
         <source>Opening document...</source>
         <translation>ドキュメントを開いています...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="515"/>
-        <location filename="../app/mainwindow2.cpp" line="566"/>
-        <location filename="../app/mainwindow2.cpp" line="792"/>
+        <location filename="../app/mainwindow2.cpp" line="493"/>
+        <location filename="../app/mainwindow2.cpp" line="546"/>
+        <location filename="../app/mainwindow2.cpp" line="773"/>
         <source>Abort</source>
         <translation>中断</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="566"/>
+        <location filename="../app/mainwindow2.cpp" line="546"/>
         <source>Saving document...</source>
         <translation>ドキュメントを保存しています...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="593"/>
+        <location filename="../app/mainwindow2.cpp" line="573"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="629"/>
+        <location filename="../app/mainwindow2.cpp" line="610"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>ファイルの変更があります。
 これらの変更を保存しますか？</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="652"/>
+        <location filename="../app/mainwindow2.cpp" line="633"/>
         <source>Import image...</source>
         <translation>画像をインポート...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="670"/>
+        <location filename="../app/mainwindow2.cpp" line="651"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>画像がインポートできません。&lt;br&gt;&lt;b&gt;ヒント:&lt;/b&gt; ビットマップファイルはビットマップレイヤーにインポートして下さい。</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="694"/>
+        <location filename="../app/mainwindow2.cpp" line="675"/>
         <source>Select one or more files to open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="696"/>
+        <location filename="../app/mainwindow2.cpp" line="677"/>
         <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="723"/>
+        <location filename="../app/mainwindow2.cpp" line="704"/>
         <source>Import movie</source>
         <translation>動画をインポート</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="774"/>
+        <location filename="../app/mainwindow2.cpp" line="755"/>
         <source>Save Image Sequence</source>
         <translation>連番画像を保存</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="792"/>
+        <location filename="../app/mainwindow2.cpp" line="773"/>
         <source>Exporting image sequence...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="856"/>
+        <location filename="../app/mainwindow2.cpp" line="837"/>
         <source>Save Image</source>
         <translation>画像を保存</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="882"/>
+        <location filename="../app/mainwindow2.cpp" line="863"/>
         <source>Unable to export image.</source>
         <translation>画像のエクスポートに失敗しました。</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1071"/>
+        <location filename="../app/mainwindow2.cpp" line="1052"/>
         <source>Undo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1079"/>
+        <location filename="../app/mainwindow2.cpp" line="1060"/>
         <source>Redo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1105"/>
+        <location filename="../app/mainwindow2.cpp" line="1086"/>
         <source>Export As</source>
         <translation>...でエクスポート</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1263"/>
+        <location filename="../app/mainwindow2.cpp" line="1244"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1683,8 +1683,8 @@ p, li { white-space: pre-wrap; }
     <name>PolylineTool</name>
     <message>
         <location filename="../core_lib/tool/polylinetool.cpp" line="97"/>
-        <source>Line</source>
-        <translation type="unfinished"></translation>
+        <source>Polyline</source>
+        <translation type="unfinished">折れ線</translation>
     </message>
 </context>
 <context>

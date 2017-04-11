@@ -66,6 +66,7 @@ debug
 ipch
 *.VC.db
 *.opendb
+.vs
 
 tests/tests
 

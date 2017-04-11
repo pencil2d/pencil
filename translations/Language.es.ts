@@ -342,53 +342,53 @@
         <translation>Volteo horizontal</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="52"/>
-        <location filename="../app/ui/displayoption.ui" line="95"/>
-        <location filename="../app/ui/displayoption.ui" line="138"/>
-        <location filename="../app/ui/displayoption.ui" line="187"/>
-        <location filename="../app/ui/displayoption.ui" line="227"/>
-        <location filename="../app/ui/displayoption.ui" line="267"/>
-        <location filename="../app/ui/displayoption.ui" line="304"/>
-        <location filename="../app/ui/displayoption.ui" line="341"/>
+        <location filename="../app/ui/displayoption.ui" line="38"/>
+        <location filename="../app/ui/displayoption.ui" line="67"/>
+        <location filename="../app/ui/displayoption.ui" line="96"/>
+        <location filename="../app/ui/displayoption.ui" line="131"/>
+        <location filename="../app/ui/displayoption.ui" line="157"/>
+        <location filename="../app/ui/displayoption.ui" line="183"/>
+        <location filename="../app/ui/displayoption.ui" line="206"/>
+        <location filename="../app/ui/displayoption.ui" line="229"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="72"/>
-        <location filename="../app/ui/displayoption.ui" line="75"/>
+        <location filename="../app/ui/displayoption.ui" line="58"/>
+        <location filename="../app/ui/displayoption.ui" line="61"/>
         <source>Onion skin previous frame</source>
         <translation>Papel de cebolla del fotograma anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="121"/>
+        <location filename="../app/ui/displayoption.ui" line="93"/>
         <source>Show invisible lines</source>
         <translation>Mostrar líneas invisibles</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="164"/>
-        <location filename="../app/ui/displayoption.ui" line="167"/>
+        <location filename="../app/ui/displayoption.ui" line="122"/>
+        <location filename="../app/ui/displayoption.ui" line="125"/>
         <source>Onion skin color: blue</source>
         <translation>Color del papel cebolla: Azul</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="207"/>
-        <location filename="../app/ui/displayoption.ui" line="210"/>
+        <location filename="../app/ui/displayoption.ui" line="151"/>
+        <location filename="../app/ui/displayoption.ui" line="154"/>
         <source>Onion skin next frame</source>
         <translation>Papel cebolla del siguiente fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="247"/>
-        <location filename="../app/ui/displayoption.ui" line="250"/>
+        <location filename="../app/ui/displayoption.ui" line="177"/>
+        <location filename="../app/ui/displayoption.ui" line="180"/>
         <source>Onion skin color: red</source>
         <translation>Color del papel cebolla: Rojo</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="287"/>
+        <location filename="../app/ui/displayoption.ui" line="203"/>
         <source>Show outlines only</source>
         <translation>Mostrar sólo contornos</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="324"/>
+        <location filename="../app/ui/displayoption.ui" line="226"/>
         <source>Vertical flip</source>
         <translation>Volteo vertical</translation>
     </message>
@@ -859,78 +859,78 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow2</name>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="684"/>
+        <location filename="../app/ui/mainwindow2.ui" line="651"/>
         <source>Pencil</source>
         <translation>Lápiz</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="711"/>
+        <location filename="../app/ui/mainwindow2.ui" line="678"/>
         <source>Eraser</source>
         <translation>Borrador</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="630"/>
+        <location filename="../app/ui/mainwindow2.ui" line="597"/>
         <source>Select</source>
         <translation>Seleccionar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="180"/>
-        <location filename="../app/ui/mainwindow2.ui" line="834"/>
+        <location filename="../app/ui/mainwindow2.ui" line="147"/>
+        <location filename="../app/ui/mainwindow2.ui" line="801"/>
         <source>Tools</source>
         <translation type="unfinished">Herramientas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="612"/>
+        <location filename="../app/ui/mainwindow2.ui" line="579"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="675"/>
+        <location filename="../app/ui/mainwindow2.ui" line="642"/>
         <source>Hand</source>
         <translation>Mano</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="657"/>
+        <location filename="../app/ui/mainwindow2.ui" line="624"/>
         <source>Smudge</source>
         <translation>Dedo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="666"/>
+        <location filename="../app/ui/mainwindow2.ui" line="633"/>
         <source>Pen</source>
         <translation>Pluma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="648"/>
+        <location filename="../app/ui/mainwindow2.ui" line="615"/>
         <source>Polyline</source>
         <translation>Polilinea</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="693"/>
+        <location filename="../app/ui/mainwindow2.ui" line="660"/>
         <source>Bucket</source>
         <translation>Bote de pintura</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="702"/>
+        <location filename="../app/ui/mainwindow2.ui" line="669"/>
         <source>Eyedropper</source>
         <translation>Pipeta</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="639"/>
+        <location filename="../app/ui/mainwindow2.ui" line="606"/>
         <source>Brush</source>
         <translation>Pincel</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="866"/>
+        <location filename="../app/ui/mainwindow2.ui" line="833"/>
         <source>Color Palette</source>
         <translation>Paleta de Color</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="399"/>
+        <location filename="../app/ui/mainwindow2.ui" line="366"/>
         <source>Paste</source>
         <translation>Pegar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="502"/>
+        <location filename="../app/ui/mainwindow2.ui" line="469"/>
         <source>Grid</source>
         <translation>Cuadricula</translation>
     </message>
@@ -940,526 +940,526 @@ p, li { white-space: pre-wrap; }
         <translation>VentanaPrincipal</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="60"/>
+        <location filename="../app/ui/mainwindow2.ui" line="30"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="64"/>
-        <location filename="../app/mainwindow2.cpp" line="1121"/>
+        <location filename="../app/ui/mainwindow2.ui" line="34"/>
+        <location filename="../app/mainwindow2.cpp" line="1102"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="76"/>
+        <location filename="../app/ui/mainwindow2.ui" line="46"/>
         <source>Export</source>
         <translation>Exportar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="104"/>
+        <location filename="../app/ui/mainwindow2.ui" line="71"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="108"/>
+        <location filename="../app/ui/mainwindow2.ui" line="75"/>
         <source>Selection</source>
         <translation>Selección</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="130"/>
+        <location filename="../app/ui/mainwindow2.ui" line="97"/>
         <source>View</source>
         <translation>Vista</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="134"/>
+        <location filename="../app/ui/mainwindow2.ui" line="101"/>
         <source>Onion Skin</source>
         <translation>Papel Cebolla</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="160"/>
+        <location filename="../app/ui/mainwindow2.ui" line="127"/>
         <source>Animation</source>
         <translation>Animación</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="167"/>
+        <location filename="../app/mainwindow2.cpp" line="168"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>Herramientas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="200"/>
+        <location filename="../app/ui/mainwindow2.ui" line="167"/>
         <source>Layer</source>
         <translation>Capa</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="211"/>
-        <location filename="../app/ui/mainwindow2.ui" line="757"/>
+        <location filename="../app/ui/mainwindow2.ui" line="178"/>
+        <location filename="../app/ui/mainwindow2.ui" line="724"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="218"/>
+        <location filename="../app/ui/mainwindow2.ui" line="185"/>
         <source>Windows</source>
         <translation>Ventanas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="236"/>
+        <location filename="../app/ui/mainwindow2.ui" line="203"/>
         <source>New</source>
         <translation>Nuevo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="245"/>
+        <location filename="../app/ui/mainwindow2.ui" line="212"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="254"/>
+        <location filename="../app/ui/mainwindow2.ui" line="221"/>
         <source>Save</source>
         <translation>Guardar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="263"/>
+        <location filename="../app/ui/mainwindow2.ui" line="230"/>
         <source>Save As ..</source>
         <translation>Guardar como ...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="272"/>
+        <location filename="../app/ui/mainwindow2.ui" line="239"/>
         <source>Print</source>
         <translation>Imprimir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="281"/>
+        <location filename="../app/ui/mainwindow2.ui" line="248"/>
         <source>Exit</source>
         <translation>Salir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="289"/>
+        <location filename="../app/ui/mainwindow2.ui" line="256"/>
         <source>X-sheet ...</source>
         <translation>Carta de Rodaje ...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="297"/>
-        <location filename="../app/ui/mainwindow2.ui" line="336"/>
+        <location filename="../app/ui/mainwindow2.ui" line="264"/>
+        <location filename="../app/ui/mainwindow2.ui" line="303"/>
         <source>Image Sequence...</source>
         <translation>Secuencia de Imagenes...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="302"/>
-        <location filename="../app/ui/mainwindow2.ui" line="331"/>
+        <location filename="../app/ui/mainwindow2.ui" line="269"/>
+        <location filename="../app/ui/mainwindow2.ui" line="298"/>
         <source>Image...</source>
         <translation>Imagen...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="307"/>
-        <location filename="../app/ui/mainwindow2.ui" line="341"/>
+        <location filename="../app/ui/mainwindow2.ui" line="274"/>
+        <location filename="../app/ui/mainwindow2.ui" line="308"/>
         <source>Movie...</source>
         <translation>Película...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="315"/>
-        <location filename="../app/ui/mainwindow2.ui" line="354"/>
+        <location filename="../app/ui/mainwindow2.ui" line="282"/>
+        <location filename="../app/ui/mainwindow2.ui" line="321"/>
         <source>Palette...</source>
         <translation>Paleta...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="323"/>
+        <location filename="../app/ui/mainwindow2.ui" line="290"/>
         <source>Svg Image...</source>
         <translation>Imagen SVG...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="349"/>
+        <location filename="../app/ui/mainwindow2.ui" line="316"/>
         <source>Sound...</source>
         <translation>Sonido...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="363"/>
-        <location filename="../app/mainwindow2.cpp" line="1066"/>
+        <location filename="../app/ui/mainwindow2.ui" line="330"/>
+        <location filename="../app/mainwindow2.cpp" line="1047"/>
         <source>Undo</source>
         <translation>Deshacer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="372"/>
-        <location filename="../app/mainwindow2.cpp" line="1086"/>
+        <location filename="../app/ui/mainwindow2.ui" line="339"/>
+        <location filename="../app/mainwindow2.cpp" line="1067"/>
         <source>Redo</source>
         <translation>Rehacer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="381"/>
+        <location filename="../app/ui/mainwindow2.ui" line="348"/>
         <source>Cut</source>
         <translation>Cortar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="390"/>
+        <location filename="../app/ui/mainwindow2.ui" line="357"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="404"/>
+        <location filename="../app/ui/mainwindow2.ui" line="371"/>
         <source>Crop</source>
         <translation>Recortar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="409"/>
+        <location filename="../app/ui/mainwindow2.ui" line="376"/>
         <source>Crop To Selection</source>
         <translation>Recortar por Selección</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="414"/>
+        <location filename="../app/ui/mainwindow2.ui" line="381"/>
         <source>Select All</source>
         <translation>Seleccionar Todo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="419"/>
+        <location filename="../app/ui/mainwindow2.ui" line="386"/>
         <source>Deselect All</source>
         <translation>Deseleccionar Todo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="428"/>
-        <location filename="../app/ui/mainwindow2.ui" line="621"/>
+        <location filename="../app/ui/mainwindow2.ui" line="395"/>
+        <location filename="../app/ui/mainwindow2.ui" line="588"/>
         <source>Clear Frame</source>
         <translation>Limpiar Fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="433"/>
+        <location filename="../app/ui/mainwindow2.ui" line="400"/>
         <source>Preferences</source>
         <translation>Preferencias</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="438"/>
+        <location filename="../app/ui/mainwindow2.ui" line="405"/>
         <source>Reset Windows</source>
         <translation>Restaurar Ventanas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="447"/>
+        <location filename="../app/ui/mainwindow2.ui" line="414"/>
         <source>Zoom In</source>
         <translation>Acercar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="456"/>
+        <location filename="../app/ui/mainwindow2.ui" line="423"/>
         <source>Zoom Out</source>
         <translation>Alejar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="461"/>
+        <location filename="../app/ui/mainwindow2.ui" line="428"/>
         <source>Rotate Clockwise</source>
         <translation>Rotar Derecha</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="466"/>
+        <location filename="../app/ui/mainwindow2.ui" line="433"/>
         <source>Rotate AntiClosewise</source>
         <translation>Rotar Izquierda</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="471"/>
+        <location filename="../app/ui/mainwindow2.ui" line="438"/>
         <source>Reset Zoom/Rotate</source>
         <translation>Restaurar Zoom/Rotación</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="480"/>
+        <location filename="../app/ui/mainwindow2.ui" line="447"/>
         <source>Horizontal Flip</source>
         <translation>Voltear Horizontalmente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="489"/>
+        <location filename="../app/ui/mainwindow2.ui" line="456"/>
         <source>Vertical Flip</source>
         <translation>Voltear Verticalmente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="461"/>
         <source>Preview</source>
         <translation>Vista Previa</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="514"/>
+        <location filename="../app/ui/mainwindow2.ui" line="481"/>
         <source>Previous</source>
         <translation>Anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="517"/>
+        <location filename="../app/ui/mainwindow2.ui" line="484"/>
         <source>Show previous onion skin</source>
         <translation>Mostrar papel cebolla previo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="529"/>
+        <location filename="../app/ui/mainwindow2.ui" line="496"/>
         <source>Next</source>
         <translation>Siguiente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="532"/>
+        <location filename="../app/ui/mainwindow2.ui" line="499"/>
         <source>Show next onion skin</source>
         <translation>Mostrar próximo papel cebolla</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/mainwindow2.cpp" line="1267"/>
+        <location filename="../app/ui/mainwindow2.ui" line="508"/>
+        <location filename="../app/mainwindow2.cpp" line="1248"/>
         <source>Play</source>
         <translation>Reproducir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="553"/>
+        <location filename="../app/ui/mainwindow2.ui" line="520"/>
         <source>Loop</source>
         <translation>Ciclo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="562"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Next Frame</source>
         <translation>Fotograma Siguiente</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="571"/>
+        <location filename="../app/ui/mainwindow2.ui" line="538"/>
         <source>Previous Frame</source>
         <translation>Fotograma Anterior</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="576"/>
+        <location filename="../app/ui/mainwindow2.ui" line="543"/>
         <source>Extend Frame</source>
         <translation>Extender Fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="585"/>
+        <location filename="../app/ui/mainwindow2.ui" line="552"/>
         <source>Add Frame</source>
         <translation>Agregar Fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="594"/>
+        <location filename="../app/ui/mainwindow2.ui" line="561"/>
         <source>Duplicate Frame</source>
         <translation>Duplicar Fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="603"/>
+        <location filename="../app/ui/mainwindow2.ui" line="570"/>
         <source>Remove Frame</source>
         <translation>Remover Fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="720"/>
+        <location filename="../app/ui/mainwindow2.ui" line="687"/>
         <source>New Bitmap Layer</source>
         <translation>Nueva Capa Bitmap</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="729"/>
+        <location filename="../app/ui/mainwindow2.ui" line="696"/>
         <source>New Vector Layer</source>
         <translation>Nueva Capa Vector</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="738"/>
+        <location filename="../app/ui/mainwindow2.ui" line="705"/>
         <source>New Sound Layer</source>
         <translation>Nueva Capa Sonido</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="747"/>
+        <location filename="../app/ui/mainwindow2.ui" line="714"/>
         <source>New Camera Layer</source>
         <translation>Nueva Capa Camara</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="752"/>
+        <location filename="../app/ui/mainwindow2.ui" line="719"/>
         <source>Delete Current Layer</source>
         <translation>Eliminar Capa Actual</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="762"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>About</source>
         <translation>Acerca De</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="770"/>
+        <location filename="../app/ui/mainwindow2.ui" line="737"/>
         <source>Toggle palette</source>
         <translation>Alternar Paleta</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="775"/>
-        <location filename="../app/ui/mainwindow2.ui" line="778"/>
+        <location filename="../app/ui/mainwindow2.ui" line="742"/>
+        <location filename="../app/ui/mainwindow2.ui" line="745"/>
         <source>Reset to default</source>
         <translation>Restaurar Predeterminado</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="788"/>
-        <location filename="../app/ui/mainwindow2.ui" line="791"/>
+        <location filename="../app/ui/mainwindow2.ui" line="755"/>
+        <location filename="../app/ui/mainwindow2.ui" line="758"/>
         <source>Next KeyFrame</source>
         <translation>Próximo fotograma clave</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="801"/>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="768"/>
+        <location filename="../app/ui/mainwindow2.ui" line="771"/>
         <source>Previous KeyFrame</source>
         <translation>Previo fotograma clave</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="815"/>
+        <location filename="../app/ui/mainwindow2.ui" line="782"/>
         <source>MultiLayer Onion Skin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="826"/>
+        <location filename="../app/ui/mainwindow2.ui" line="793"/>
         <source>Range</source>
         <translation type="unfinished">alcance</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="842"/>
+        <location filename="../app/ui/mainwindow2.ui" line="809"/>
         <source>Timeline</source>
         <translation>Linea de Tiempo</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="850"/>
+        <location filename="../app/ui/mainwindow2.ui" line="817"/>
         <source>Options</source>
         <translation>Opciones</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="858"/>
-        <location filename="../app/mainwindow2.cpp" line="153"/>
+        <location filename="../app/ui/mainwindow2.ui" line="825"/>
+        <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>Color Wheel</source>
         <translation>Rueda de Color</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="874"/>
+        <location filename="../app/ui/mainwindow2.ui" line="841"/>
         <source>Display Options</source>
         <translation>Opciones de Visualización</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="879"/>
+        <location filename="../app/ui/mainwindow2.ui" line="846"/>
         <source>Flip X</source>
         <translation>Girar eje X</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="884"/>
+        <location filename="../app/ui/mainwindow2.ui" line="851"/>
         <source>Flip Y</source>
         <translation>Girar eje Y</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="889"/>
+        <location filename="../app/ui/mainwindow2.ui" line="856"/>
         <source>Move Frame Forward</source>
         <translation>Avanzar un fotograma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="894"/>
+        <location filename="../app/ui/mainwindow2.ui" line="861"/>
         <source>Move Frame Backward</source>
         <translation>Retroceder un fotograma</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="154"/>
+        <location filename="../app/mainwindow2.cpp" line="155"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta de Color:&lt;br&gt;Utilice &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;para alternar sobre cursor</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="357"/>
+        <location filename="../app/mainwindow2.cpp" line="358"/>
         <source>Open Recent</source>
         <translation>Abrir Reciente</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="452"/>
+        <location filename="../app/mainwindow2.cpp" line="430"/>
         <source>Open File...</source>
         <translation>Abir Archivo...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="468"/>
-        <location filename="../app/mainwindow2.cpp" line="508"/>
-        <location filename="../app/mainwindow2.cpp" line="628"/>
-        <location filename="../app/mainwindow2.cpp" line="669"/>
-        <location filename="../app/mainwindow2.cpp" line="881"/>
+        <location filename="../app/mainwindow2.cpp" line="446"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="609"/>
+        <location filename="../app/mainwindow2.cpp" line="650"/>
+        <location filename="../app/mainwindow2.cpp" line="862"/>
         <source>Warning</source>
         <translation>Advertencia</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="468"/>
-        <location filename="../app/mainwindow2.cpp" line="508"/>
+        <location filename="../app/mainwindow2.cpp" line="446"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil no puede leer este archivo. Si desea importar imágenes, utilice el comando importar.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="463"/>
         <source>Save As...</source>
         <translation>Guardar Como...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="515"/>
+        <location filename="../app/mainwindow2.cpp" line="493"/>
         <source>Opening document...</source>
         <translation>Abriendo Documento...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="515"/>
-        <location filename="../app/mainwindow2.cpp" line="566"/>
-        <location filename="../app/mainwindow2.cpp" line="792"/>
+        <location filename="../app/mainwindow2.cpp" line="493"/>
+        <location filename="../app/mainwindow2.cpp" line="546"/>
+        <location filename="../app/mainwindow2.cpp" line="773"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="566"/>
+        <location filename="../app/mainwindow2.cpp" line="546"/>
         <source>Saving document...</source>
         <translation>Guardando Documento...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="593"/>
+        <location filename="../app/mainwindow2.cpp" line="573"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="629"/>
+        <location filename="../app/mainwindow2.cpp" line="610"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Esta animación ha sido modificada.
 ¿Desea guardar sus cambios?</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="652"/>
+        <location filename="../app/mainwindow2.cpp" line="633"/>
         <source>Import image...</source>
         <translation>Importar Imagen...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="670"/>
+        <location filename="../app/mainwindow2.cpp" line="651"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Imposible importar imagen&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use una capa Bitmap para importar bitmaps.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="694"/>
+        <location filename="../app/mainwindow2.cpp" line="675"/>
         <source>Select one or more files to open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="696"/>
+        <location filename="../app/mainwindow2.cpp" line="677"/>
         <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="723"/>
+        <location filename="../app/mainwindow2.cpp" line="704"/>
         <source>Import movie</source>
         <translation>Importar película</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="774"/>
+        <location filename="../app/mainwindow2.cpp" line="755"/>
         <source>Save Image Sequence</source>
         <translation>Guardar secuencia de imágenes</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="792"/>
+        <location filename="../app/mainwindow2.cpp" line="773"/>
         <source>Exporting image sequence...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="856"/>
+        <location filename="../app/mainwindow2.cpp" line="837"/>
         <source>Save Image</source>
         <translation>Guardar imagen</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="882"/>
+        <location filename="../app/mainwindow2.cpp" line="863"/>
         <source>Unable to export image.</source>
         <translation>Imposible exportar imagen</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1071"/>
+        <location filename="../app/mainwindow2.cpp" line="1052"/>
         <source>Undo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1079"/>
+        <location filename="../app/mainwindow2.cpp" line="1060"/>
         <source>Redo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1105"/>
+        <location filename="../app/mainwindow2.cpp" line="1086"/>
         <source>Export As</source>
         <translation>Exportar Como</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1263"/>
+        <location filename="../app/mainwindow2.cpp" line="1244"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1682,9 +1682,13 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PolylineTool</name>
     <message>
-        <location filename="../core_lib/tool/polylinetool.cpp" line="97"/>
         <source>Line</source>
-        <translation>Linea</translation>
+        <translation type="vanished">Linea</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/tool/polylinetool.cpp" line="97"/>
+        <source>Polyline</source>
+        <translation type="unfinished">Polilinea</translation>
     </message>
 </context>
 <context>

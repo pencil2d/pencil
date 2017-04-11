@@ -25,37 +25,7 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>800</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Trebuchet MS</family>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QMenuBar {
-background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(245, 245, 245, 255), stop:1 rgba(233, 233, 233, 255));
-border-bottom:1px solid #cccccc;
-}
-
-QMenuBar::item {
-background: transparent;
-}
-
-QMenuBar::item:selected {
-background: #B6DBEA;
-}</string>
-   </property>
    <widget class="QMenu" name="menuFile">
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
     <property name="title">
      <string>File</string>
     </property>
@@ -97,9 +67,6 @@ background: #B6DBEA;
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
-    <property name="styleSheet">
-     <string notr="true">b</string>
-    </property>
     <property name="title">
      <string>Edit</string>
     </property>
