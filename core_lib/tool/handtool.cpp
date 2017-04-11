@@ -25,13 +25,15 @@ void HandTool::loadSettings()
 
 QCursor HandTool::cursor()
 {
-    return QPixmap( ":icons/hand.png" );
+    return buttonsDown > 0 ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
 void HandTool::mousePressEvent( QMouseEvent* )
 {
     mLastPixel = getLastPressPixel();
     mCurrentRotation = 0;
+    ++buttonsDown;
+    mScribbleArea->updateToolCursor();
 }
 
 void HandTool::mouseReleaseEvent( QMouseEvent* event )
@@ -42,6 +44,8 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
         qDebug( "[HandTool] Stop Hand Tool" );
         mScribbleArea->setPrevTool();
     }
+    --buttonsDown;
+    mScribbleArea->updateToolCursor();
 }
 
 void HandTool::mouseMoveEvent( QMouseEvent* evt )
