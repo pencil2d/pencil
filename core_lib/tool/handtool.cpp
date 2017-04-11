@@ -31,6 +31,7 @@ QCursor HandTool::cursor()
 void HandTool::mousePressEvent( QMouseEvent* )
 {
     mLastPixel = getLastPressPixel();
+    mCurrentRotation = 0;
 }
 
 void HandTool::mouseReleaseEvent( QMouseEvent* event )
@@ -64,13 +65,15 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
     else if ( isRotate )
     {
         QPoint centralPixel( mScribbleArea->width() / 2, mScribbleArea->height() / 2 );
-        QVector2D v1( getLastPressPixel() - centralPixel );
-        QVector2D v2( getCurrentPixel() - centralPixel );
+        QVector2D startV( getLastPressPixel() - centralPixel );
+        QVector2D curV( getCurrentPixel() - centralPixel );
 
-        float angle = acos( QVector2D::dotProduct( v1, v2 ) / ( v1.length() * v2.length() ) );
-        //angle = angle * 180.0 / M_PI;
-
-        mEditor->view()->rotate( angle );
+        float angle = ( atan2( curV.y(), curV.x() ) - atan2( startV.y(), startV.x() ) ) * 180.0 / M_PI;
+        if ( angle != mCurrentRotation )
+        {
+            mEditor->view()->rotate( angle - mCurrentRotation );
+            mCurrentRotation = angle;
+        }
     }
     else if ( isScale )
     {

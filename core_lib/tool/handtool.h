@@ -20,6 +20,7 @@ public:
 
 private:
     QPointF mLastPixel;
+    float mCurrentRotation;
 };
 
 #endif
