@@ -96,7 +96,14 @@ after_success:
 
       echo "Copying necessary Qt frameworks";
       macdeployqt Pencil2D.app;
-      echo "Removing Makefile";
+
+      echo "applying macdeployqt fix";
+      wget https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip;
+      unzip -x master.zip;
+      python $TRAVIS_BUILD_DIR/build/Pencil2D/macdeployqtfix-master/macdeployqtfix.py $TRAVIS_BUILD_DIR/build/Pencil2D/Pencil2D.app/Contents/MacOS/Pencil2D /usr/local/Cellar/qt@5.7/5.7.1/;
+      echo "Removing files";
+      rm -rf macdeployqtfix-master;
+      rm master.zip;
       rm Makefile;
       cd ..;
       echo "Zipping...";
