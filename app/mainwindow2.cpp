@@ -62,6 +62,7 @@ GNU General Public License for more details.
 #include "timeline2.h"
 #include "errordialog.h"
 #include "imageseqdialog.h"
+#include "aboutdialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -1111,14 +1112,10 @@ void MainWindow2::importPalette()
 
 void MainWindow2::aboutPencil()
 {
-    QFile aboutFile( ":resources/about.html" );
-    bool isOpenOK = aboutFile.open( QIODevice::ReadOnly | QIODevice::Text );
+    AboutDialog* about = new AboutDialog( this );
 
-    if ( isOpenOK )
-    {
-        QString strAboutText = QTextStream( &aboutFile ).readAll();
-        QMessageBox::about( this, PENCIL_WINDOW_TITLE, strAboutText );
-    }
+    about->init();
+    about->exec();
 }
 
 void MainWindow2::helpBox()
