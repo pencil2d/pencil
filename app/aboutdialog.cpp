@@ -36,13 +36,6 @@ void AboutDialog::init()
                                                         "<br>Thanks to: Qt Framework <a href=\"http://qt-project.org\">qt-project.org</a></>"
                                                         "<br>Distributed under the <a href=\"http://www.gnu.org/copyleft/gpl.html\">GPL License</a></>"));
 
-    devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
-                                        "border-style: solid; border-width: 1px; border-color: gray;}");
-    devInfoText->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    devInfoText->setFixedHeight(60);
-    devInfoText->setAlignment(Qt::AlignCenter);
-    devInfoText->setText(tr("commit: " GIT_CURRENT_SHA1 /*"<br> version: " APP_VERSION*/ "<br> date: " GIT_TIMESTAMP));
-
     connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
 
     buttonsLayout->addWidget(okButton);
@@ -50,7 +43,17 @@ void AboutDialog::init()
     lay->addWidget(logo);
     lay->addWidget(logoText);
     lay->addWidget(aboutText);
+
+#ifdef GIT_EXISTS
+    devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
+                                        "border-style: solid; border-width: 1px; border-color: gray;}");
+    devInfoText->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    devInfoText->setFixedHeight(60);
+    devInfoText->setAlignment(Qt::AlignCenter);
+    devInfoText->setText(tr("commit: " GIT_CURRENT_SHA1 /*"<br> version: " APP_VERSION*/ "<br> date: " GIT_TIMESTAMP));
     lay->addWidget(devInfoText);
+#endif
+
 
     lay->addLayout(buttonsLayout);
 
