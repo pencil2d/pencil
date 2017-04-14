@@ -95,7 +95,7 @@ DEPENDPATH += .
 VERSION = 0.5.4 #FIXME: use build number from git
 DEFINES += APP_VERSION=\\\"$$VERSION\\\" \
            GIT_CURRENT_SHA1="\\\"$$system(git --git-dir $$_PRO_FILE_PWD_/../.git --work-tree $$_PRO_FILE_PWD_/../ rev-parse HEAD)\\\"" \
-           GIT_TIMESTAMP='"\\\"$$system(git --git-dir $$_PRO_FILE_PWD_/../.git --work-tree $$_PRO_FILE_PWD_/../ --no-pager show --format=%ad --name-only)\\\""'
+           GIT_TIMESTAMP='"\\\"$$system(git --git-dir $$_PRO_FILE_PWD_/../.git --work-tree $$_PRO_FILE_PWD_/../ log -1 --format=%cd --date=local)\\\""'
 
 
 macx {

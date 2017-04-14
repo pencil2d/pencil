@@ -30,6 +30,7 @@ void AboutDialog::init()
 
     logoText->setText(tr("<b>Pencil2D</b>"));
     aboutText->setTextInteractionFlags(Qt::TextBrowserInteraction); //FIXME: links clickable but doesn't open browser.
+    aboutText->setWordWrap(true);
     aboutText->setText(tr("Official site: <a href=\"http://pencil2d.org\">pencil2d.org</a>"
                                                         "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus</b></>"
                                                         "<br>Thanks to: Qt Framework <a href=\"http://qt-project.org\">qt-project.org</a></>"
