@@ -94,7 +94,7 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
         {
             if ( mPoints.size() == 0 )
             {
-                mEditor->backup( tr( "Line" ) );
+                mEditor->backup( tr( "Polyline" ) );
             }
 
             if ( layer->type() == Layer::VECTOR )
