@@ -30,7 +30,7 @@ signals:
 private:
     void onDurationChanged( SoundPlayer* player, int64_t duration );
 
-    Status createMeidaPlayer( SoundClip* );
+    Status createMediaPlayer( SoundClip* );
 };
 
 #endif // SOUNDMANAGER_H
