@@ -74,7 +74,6 @@ KeyFrame* Layer::getKeyFrameAt( int position )
     auto it = mKeyFrames.find( position );
     if ( it == mKeyFrames.end() )
     {
-        //return NullKeyFrame::get();
         return nullptr;
     }
     return it->second;
@@ -89,7 +88,7 @@ KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
     auto it = mKeyFrames.lower_bound( position );
     if ( it == mKeyFrames.end() )
     {
-        return NullKeyFrame::get();
+        return nullptr;
     }
     return it->second;
 }

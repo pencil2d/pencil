@@ -48,27 +48,10 @@ private:
 
 typedef std::shared_ptr< KeyFrame > KeyFramePtr;
 
-
-
 class KeyFrameEventListener
 {
 public:
     virtual void onKeyFrameDestroy( KeyFrame* ) = 0;
-};
-
-
-
-class NullKeyFrame : public KeyFrame
-{
-public:
-    static NullKeyFrame* get();
-
-	bool isNull() override { return true; }
-
-private:
-    NullKeyFrame() {}
-    NullKeyFrame( const NullKeyFrame& ) {}
-    void operator=( const NullKeyFrame& ) {}
 };
 
 #endif // KeyFrame_H

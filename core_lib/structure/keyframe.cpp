@@ -30,10 +30,3 @@ void KeyFrame::removeEventListner( KeyFrameEventListener* listener )
         mEventListeners.erase( it );
     }
 }
-
-NullKeyFrame* NullKeyFrame::get()
-{
-    static NullKeyFrame* pTheOnlyOne = new NullKeyFrame;
-
-    return pTheOnlyOne;
-}
