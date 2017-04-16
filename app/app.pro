@@ -11,8 +11,7 @@ QT += core widgets gui xml multimedia svg
 TEMPLATE = app
 TARGET = Pencil2D
 
-CONFIG += qt \
-          GIT_EXISTS
+CONFIG += qt
 
 RESOURCES += \
     resource/app.qrc \
