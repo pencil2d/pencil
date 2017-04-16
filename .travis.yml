@@ -67,7 +67,7 @@ script:
   - echo "Does GIT EXIST?"
   - 'if git --version &> /dev/null; then
       echo "YES";
-      qmake ../ CONFIG += GIT;
+      qmake ../ CONFIG+=GIT;
     else
       echo "NO";
       qmake ../;
