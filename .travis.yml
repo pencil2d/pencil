@@ -117,10 +117,10 @@ after_success:
   - cd "$TRAVIS_BUILD_DIR/util"
 
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    python nightly-build-upload.py 0BxdcdOiOmg-CcU1WOFpCOFBvVXc "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").tar.gz";
+    python nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").tar.gz";
   fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    python nightly-build-upload.py 0BxdcdOiOmg-CeVpTY294cXdLZ2c "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
+    python nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
   fi'
   - echo "Operation done"
 
