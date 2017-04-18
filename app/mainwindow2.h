@@ -41,7 +41,11 @@ class Timeline2;
 class ActionCommands;
 class ImageSeqDialog;
 
+#ifdef GIT_TIMESTAMP
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( GIT_TIMESTAMP )
+#else
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( __DATE__ )
+#endif
 
 
 namespace Ui
