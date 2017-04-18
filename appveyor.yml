@@ -1,4 +1,4 @@
-configuration: 
+configuration:
   - Release
 
 environment:
@@ -75,9 +75,9 @@ after_build:
     call 7z.exe l "pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
-    call %PYTHON%\\python.exe nightly-build-upload.py 0BxdcdOiOmg-CcUEwS1R0WFhwM0E "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
+    call %PYTHON%\\python.exe nightly-build-upload.py "%WIN32_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
     echo "32 Bit deployed" )
-  
+
   - if %PLATFORM_%==amd64 (
     echo "----- Deploying 64 Bit Version -----" &
     echo "rename and zip folder" &
@@ -100,5 +100,5 @@ after_build:
     call 7z.exe l "pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
-    call %PYTHON%\\python.exe nightly-build-upload.py 0BxdcdOiOmg-CSVlqc3JNQV9hVGs "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
+    call %PYTHON%\\python.exe nightly-build-upload.py "%WIN64_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
     echo "64 Bit Deployed" )
