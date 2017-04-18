@@ -52,7 +52,8 @@ HEADERS += \
     exportmoviedialog.h \
     app_util.h \
     errordialog.h \
-    imageseqdialog.h
+    imageseqdialog.h \
+    aboutdialog.h
     # popupcolorpalettewidget.h
 
 SOURCES += \
@@ -76,7 +77,8 @@ SOURCES += \
     pencilapplication.cpp \
     exportmoviedialog.cpp \
     errordialog.cpp \
-    imageseqdialog.cpp
+    imageseqdialog.cpp \
+    aboutdialog.cpp
     # spopupcolorpalettewidget.cpp
 
 FORMS += \
@@ -92,8 +94,14 @@ FORMS += \
 
 DEPENDPATH += .
 
-VERSION = 0.5.4
+VERSION = 0.5.4 #FIXME: use build number from git
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
+GIT {
+    DEFINES += GIT_EXISTS GIT_CURRENT_SHA1="\\\"$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ rev-parse HEAD)\\\"" \
+    GIT_TIMESTAMP='"\\\"$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ log -1 --format=%cd --date=local)\\\""'
+}
+
 
 macx {
     RC_FILE = ../pencil.icns
