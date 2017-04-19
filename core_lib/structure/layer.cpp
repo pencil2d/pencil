@@ -474,11 +474,23 @@ void Layer::mouseRelease( QMouseEvent* event, int frameNumber )
 void Layer::editProperties()
 {
     bool ok;
+    QString replace;
     QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                           tr( "Layer name:" ), QLineEdit::Normal,
                                           mName, &ok );
     if ( ok && !text.isEmpty() )
     {
+        for (int i = 0; i < text.size(); ++i)
+        {
+            QChar check = text.at(i);
+            unsigned char c = *(unsigned char*)(&check);
+            if (c >= 127) {
+                replace.append("?");
+            } else if (QChar(check).isPrint()) {
+                replace.append(QChar(c));
+            }
+        }
+        text = replace;
         mName = text;
         setUpdated();
     }
