@@ -44,13 +44,18 @@ void AboutDialog::init()
     lay->addWidget(logoText);
     lay->addWidget(aboutText);
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
+#define S__GIT_COMMIT_HASH__ TOSTRING(GIT_CURRENT_SHA1)
+
 #ifdef GIT_EXISTS
     devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
                                         "border-style: solid; border-width: 1px; border-color: gray;}");
     devInfoText->setTextInteractionFlags(Qt::TextSelectableByMouse);
     devInfoText->setFixedHeight(60);
     devInfoText->setAlignment(Qt::AlignCenter);
-    devInfoText->setText(tr("commit: " GIT_CURRENT_SHA1 /*"<br> version: " APP_VERSION*/ "<br> date: " GIT_TIMESTAMP));
+    devInfoText->setText(tr("commit: " S__GIT_COMMIT_HASH__ /*"<br> version: " APP_VERSION*/ "<br> date: " S__GIT_TIMESTAMP__)) ;
     lay->addWidget(devInfoText);
 #endif
 
