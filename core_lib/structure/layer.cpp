@@ -473,24 +473,25 @@ void Layer::mouseRelease( QMouseEvent* event, int frameNumber )
 
 void Layer::editProperties()
 {
+    QStringList illegalChars;
+    illegalChars << "\uFFFE" << "\uFFFF" << "\uFFFD" << "\uFFFC" << "\uFFFB"
+                 << "\uFFFA" << "\uFFF9" << "\uFFF8" << "\uFFF7" << "\uFFF6" << "\uFFF5"
+                 << "\uFFF4" << "\uFFF3" << "\uFFF2" << "\uFFF1" << "\uFFF0" << "\uFFEF";
+    QRegExp regex("([\uFFEF-\uFFFF])+");
+
     bool ok;
-    QString replace;
     QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                           tr( "Layer name:" ), QLineEdit::Normal,
                                           mName, &ok );
     if ( ok && !text.isEmpty() )
     {
-        for (int i = 0; i < text.size(); ++i)
+        if (text.contains(regex))
         {
-            QChar check = text.at(i);
-            unsigned char c = *(unsigned char*)(&check);
-            if (c >= 127) {
-                replace.append("?");
-            } else if (QChar(check).isPrint()) {
-                replace.append(QChar(c));
+            for (int i = 0; i < illegalChars.size(); i++)
+            {
+                text.replace(illegalChars[i], "");
             }
         }
-        text = replace;
         mName = text;
         setUpdated();
     }

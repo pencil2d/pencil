@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <map>
 #include <functional>
 #include <QString>
+#include <QStringList>
 #include <QPainter>
 #include <QtXml>
 
@@ -129,6 +130,7 @@ private:
     LAYER_TYPE meType = UNDEFINED;
     Object* mObject   = nullptr;
     int mId           = 0;
+    static QStringList illegalChars;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 
