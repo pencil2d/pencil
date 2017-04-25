@@ -70,17 +70,17 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     mJumpToEndButton= new QPushButton();
     mJumpToStartButton= new QPushButton();
 
-    QIcon loopIcon(":icons/controls/loop.png");
-    QIcon soundIcon(":icons/controls/sound.png");
-    QIcon JumpToEndButton(":icons/controls/endplay.png");
-    QIcon JumpToStartButton(":icons/controls/startplay.png");
+    mLoopIcon = QIcon(":icons/controls/loop.png");
+    mSoundIcon = QIcon(":icons/controls/sound.png");
+    mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
+    mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
     mPlayButton->setIcon(mStartIcon);
-    mLoopButton->setIcon(loopIcon);
-    mSoundButton->setIcon(soundIcon);
-    mJumpToEndButton->setIcon(JumpToEndButton);
-    mJumpToStartButton->setIcon(JumpToStartButton);
+    mLoopButton->setIcon(mLoopIcon);
+    mSoundButton->setIcon(mSoundIcon);
+    mJumpToEndButton->setIcon(mJumpToEndIcon);
+    mJumpToStartButton->setIcon(mJumpToStartIcon);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));

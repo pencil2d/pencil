@@ -69,7 +69,7 @@ void TimeLine::initUI()
 
     // --- left widget ---
     // --------- layer buttons ---------
-    QToolBar* T_LayerButtons = new QToolBar( this );
+    QToolBar* layerButtons = new QToolBar( this );
     QLabel* layerLabel = new QLabel( tr( "Layers:" ) );
     layerLabel->setIndent( 5 );
     layerLabel->setFont( QFont( "Helvetica", 10 ) );
@@ -84,14 +84,14 @@ void TimeLine::initUI()
     removeLayerButton->setToolTip( tr("Remove Layer") );
     removeLayerButton->setFixedSize( 24, 24 );
 
-    T_LayerButtons->addWidget( layerLabel );
-    T_LayerButtons->addWidget( addLayerButton );
-    T_LayerButtons->addWidget( removeLayerButton );
-    T_LayerButtons->setFixedHeight(30);
+    layerButtons->addWidget( layerLabel );
+    layerButtons->addWidget( addLayerButton );
+    layerButtons->addWidget( removeLayerButton );
+    layerButtons->setFixedHeight(30);
 
     QHBoxLayout* leftToolBarLayout = new QHBoxLayout();
     leftToolBarLayout->setMargin( 0 );
-    leftToolBarLayout->addWidget( T_LayerButtons );
+    leftToolBarLayout->addWidget( layerButtons );
     leftToolBar->setLayout( leftToolBarLayout );
 
     QAction* newBitmapLayerAct = new QAction( QIcon( ":icons/layer-bitmap.png" ), tr( "New Bitmap Layer" ), this );
@@ -116,7 +116,7 @@ void TimeLine::initUI()
 
     // --- right widget ---
     // --------- key buttons ---------
-    QToolBar* T_timelineButtons = new QToolBar( this );
+    QToolBar* timelineButtons = new QToolBar( this );
     QLabel* keyLabel = new QLabel( tr( "Keys:" ) );
     keyLabel->setFont( QFont( "Helvetica", 10 ) );
     keyLabel->setIndent( 5 );
@@ -144,15 +144,15 @@ void TimeLine::initUI()
     onionTypeButton->setToolTip( tr("Toggle match keyframes") );
     onionTypeButton->setFixedSize( 24, 24 );
 
-    T_timelineButtons->addWidget( keyLabel );
-    T_timelineButtons->addWidget( addKeyButton );
-    T_timelineButtons->addWidget( removeKeyButton );
-    T_timelineButtons->addWidget( duplicateKeyButton );
-    T_timelineButtons->addSeparator();
-    T_timelineButtons->addWidget( onionLabel );
-    T_timelineButtons->addWidget( onionTypeButton );
-    T_timelineButtons->addSeparator();
-    T_timelineButtons->setFixedHeight(30);
+    timelineButtons->addWidget( keyLabel );
+    timelineButtons->addWidget( addKeyButton );
+    timelineButtons->addWidget( removeKeyButton );
+    timelineButtons->addWidget( duplicateKeyButton );
+    timelineButtons->addSeparator();
+    timelineButtons->addWidget( onionLabel );
+    timelineButtons->addWidget( onionTypeButton );
+    timelineButtons->addSeparator();
+    timelineButtons->setFixedHeight(30);
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
@@ -162,7 +162,7 @@ void TimeLine::initUI()
     updateLength();
 
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
-    rightToolBarLayout->addWidget( T_timelineButtons );
+    rightToolBarLayout->addWidget( timelineButtons );
     rightToolBarLayout->setAlignment(Qt::AlignLeft);
     rightToolBarLayout->addWidget( mTimeControls );
     rightToolBarLayout->setMargin( 0 );

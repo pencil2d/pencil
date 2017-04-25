@@ -77,6 +77,11 @@ private:
 
     QIcon mStartIcon;
     QIcon mStopIcon;
+    QIcon mLoopIcon;
+    QIcon mSoundIcon;
+    QIcon mJumpToEndIcon;
+    QIcon mJumpToStartIcon;
+
 
     Editor* mEditor = nullptr;
 };
