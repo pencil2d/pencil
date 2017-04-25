@@ -33,7 +33,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mFpsBox = new QSpinBox();
     mFpsBox->setFont( QFont("Helvetica", 10) );
-    mFpsBox->setFixedHeight(22);
+    mFpsBox->setFixedHeight(24);
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
@@ -43,7 +43,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mLoopStartSpinBox = new QSpinBox();
     mLoopStartSpinBox->setFont( QFont("Helvetica", 10) );
-    mLoopStartSpinBox->setFixedHeight(22);
+    mLoopStartSpinBox->setFixedHeight(24);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
     mLoopStartSpinBox->setMaximum(parent->getFrameLength() - 1);
@@ -52,7 +52,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mLoopEndSpinBox= new QSpinBox();
     mLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
-    mLoopEndSpinBox->setFixedHeight(22);
+    mLoopEndSpinBox->setFixedHeight(24);
     mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
     mLoopEndSpinBox->setMinimum(mLoopStartSpinBox->value() + 1);
     mLoopEndSpinBox->setMaximum(parent->getFrameLength());
@@ -61,7 +61,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
     mPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
-    mPlaybackRangeCheckBox->setFixedHeight(26);
+    mPlaybackRangeCheckBox->setFixedHeight(24);
     mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
     mPlayButton = new QPushButton( this );
@@ -70,21 +70,17 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     mJumpToEndButton= new QPushButton();
     mJumpToStartButton= new QPushButton();
 
-    QLabel* separator = new QLabel();
-    separator->setPixmap(QPixmap(":icons/controls/separator.png"));
-    separator->setFixedSize(QSize(37,31));
-
     QIcon loopIcon(":icons/controls/loop.png");
     QIcon soundIcon(":icons/controls/sound.png");
-    QIcon endplayIcon(":icons/controls/endplay.png");
-    QIcon startplayIcon(":icons/controls/startplay.png");
+    QIcon JumpToEndButton(":icons/controls/endplay.png");
+    QIcon JumpToStartButton(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
     mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(loopIcon);
     mSoundButton->setIcon(soundIcon);
-    mJumpToEndButton->setIcon(endplayIcon);
-    mJumpToStartButton->setIcon(startplayIcon);
+    mJumpToEndButton->setIcon(JumpToEndButton);
+    mJumpToStartButton->setIcon(JumpToStartButton);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
@@ -96,7 +92,6 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     mSoundButton->setCheckable(true);
     mSoundButton->setChecked(true);
 
-    addWidget(separator);
     addWidget(mJumpToStartButton);
     addWidget(mPlayButton);
     addWidget(mJumpToEndButton);
