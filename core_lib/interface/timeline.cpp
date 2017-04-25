@@ -119,6 +119,7 @@ void TimeLine::initUI()
     QToolBar* T_timelineButtons = new QToolBar( this );
     QLabel* keyLabel = new QLabel( tr( "Keys:" ) );
     keyLabel->setFont( QFont( "Helvetica", 10 ) );
+    keyLabel->setIndent( 5 );
 
     QToolButton* addKeyButton = new QToolButton( this );
     addKeyButton->setIcon( QIcon( ":icons/add.png" ) );
