@@ -49,14 +49,8 @@ void TimeLine::initUI()
 
     QWidget* timeLineContent = new QWidget( this );
 
-    connect( editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame );
-
     mLayerList = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Layers );
     mTracks = new TimeLineCells( this, editor(), TIMELINE_CELL_TYPE::Tracks );
-
-    connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
-    connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
-    connect (mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength );
 
     mHScrollbar = new QScrollBar( Qt::Horizontal );
     mVScrollbar = new QScrollBar( Qt::Vertical );
@@ -69,9 +63,9 @@ void TimeLine::initUI()
     QWidget* rightWidget = new QWidget();
 
     QWidget* leftToolBar = new QWidget();
-    leftToolBar->setFixedHeight( 31 );
+    leftToolBar->setFixedHeight( 30 );
     QWidget* rightToolBar = new QWidget();
-    rightToolBar->setFixedHeight( 31 );
+    rightToolBar->setFixedHeight( 30 );
 
     // --- left widget ---
     // --------- layer buttons ---------
@@ -93,9 +87,9 @@ void TimeLine::initUI()
     layerButtons->addWidget( layerLabel );
     layerButtons->addWidget( addLayerButton );
     layerButtons->addWidget( removeLayerButton );
+    layerButtons->setFixedHeight(30);
 
     QHBoxLayout* leftToolBarLayout = new QHBoxLayout();
-    leftToolBarLayout->setAlignment( Qt::AlignLeft );
     leftToolBarLayout->setMargin( 0 );
     leftToolBarLayout->addWidget( layerButtons );
     leftToolBar->setLayout( leftToolBarLayout );
@@ -122,7 +116,7 @@ void TimeLine::initUI()
 
     // --- right widget ---
     // --------- key buttons ---------
-    QToolBar* keyButtons = new QToolBar( this );
+    QToolBar* timelineButtons = new QToolBar( this );
     QLabel* keyLabel = new QLabel( tr( "Keys:" ) );
     keyLabel->setFont( QFont( "Helvetica", 10 ) );
     keyLabel->setIndent( 5 );
@@ -142,39 +136,34 @@ void TimeLine::initUI()
     duplicateKeyButton->setToolTip( tr("Duplicate Frame") );
     duplicateKeyButton->setFixedSize( 24, 24 );
 
-    keyButtons->addWidget( keyLabel );
-    keyButtons->addWidget( addKeyButton );
-    keyButtons->addWidget( removeKeyButton );
-    keyButtons->addWidget( duplicateKeyButton );
-
-
-
-    QToolBar* onionButtons = new QToolBar( this );
-
     QLabel* onionLabel = new QLabel( tr( "Onion skin:" ) );
     onionLabel->setFont( QFont( "Helvetica", 10 ) );
-    onionLabel->setIndent( 5 );
-
 
     QToolButton* onionTypeButton = new QToolButton( this );
     onionTypeButton->setIcon( QIcon( ":icons/onion_type.png" ) );
     onionTypeButton->setToolTip( tr("Toggle match keyframes") );
     onionTypeButton->setFixedSize( 24, 24 );
 
-    onionButtons->addWidget( onionLabel );
-    onionButtons->addWidget( onionTypeButton );
+    timelineButtons->addWidget( keyLabel );
+    timelineButtons->addWidget( addKeyButton );
+    timelineButtons->addWidget( removeKeyButton );
+    timelineButtons->addWidget( duplicateKeyButton );
+    timelineButtons->addSeparator();
+    timelineButtons->addWidget( onionLabel );
+    timelineButtons->addWidget( onionTypeButton );
+    timelineButtons->addSeparator();
+    timelineButtons->setFixedHeight(30);
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
     mTimeControls->setCore( editor() );
     mTimeControls->initUI();
+    mTimeControls->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
     updateLength();
-    
+
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
-    rightToolBarLayout->addWidget( keyButtons );
-    rightToolBarLayout->addStretch( 1 );
-    rightToolBarLayout->addWidget( onionButtons );
-    rightToolBarLayout->addStretch( 1 );
+    rightToolBarLayout->addWidget( timelineButtons );
+    rightToolBarLayout->setAlignment(Qt::AlignLeft);
     rightToolBarLayout->addWidget( mTimeControls );
     rightToolBarLayout->setMargin( 0 );
     rightToolBarLayout->setSpacing( 0 );
@@ -232,7 +221,13 @@ void TimeLine::initUI()
     connect( newSoundLayerAct, &QAction::triggered, this, &TimeLine::newSoundLayer );
     connect( newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer );
     connect( removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer );
-    
+
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY );
+    connect( mLayerList, &TimeLineCells::mouseMovedY, mTracks,    &TimeLineCells::setMouseMoveY );
+    connect (mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength );
+
+    connect( editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame );
+
     LayerManager* layer = editor()->layers();
     connect( layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber );
 
