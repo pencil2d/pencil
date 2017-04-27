@@ -325,6 +325,9 @@ void BrushTool::drawStroke()
 
         int rad = qRound( brushWidth ) / 2 + 2;
 
+        //continously update buffer to update stroke behind grid.
+        mScribbleArea->paintBitmapBufferRect(rect);
+
         mScribbleArea->refreshBitmap( rect, rad );
 
           // Line visualizer

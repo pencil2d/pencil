@@ -97,9 +97,6 @@ bool ScribbleArea::init()
 
     mNeedUpdateAll = false;
 
-    // color wheel popup
-    //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
-
     return true;
 }
 
@@ -229,12 +226,6 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
 
     updateAllFrames();
 }
-
-void ScribbleArea::togglePopupPalette()
-{
-    //m_popupPaletteWidget->popup();
-}
-
 
 /************************************************************************/
 /* key event handlers                                                   */

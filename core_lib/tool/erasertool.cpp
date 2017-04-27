@@ -216,6 +216,10 @@ void EraserTool::drawStroke()
         }
 
         int rad = qRound( brushWidth ) / 2 + 2;
+
+        //continously update buffer to update stroke behind grid.
+        mScribbleArea->paintBitmapBufferRect(rect);
+
         mScribbleArea->refreshBitmap( rect, rad );
     }
     else if ( layer->type() == Layer::VECTOR )

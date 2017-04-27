@@ -54,7 +54,6 @@ HEADERS += \
     errordialog.h \
     imageseqdialog.h \
     aboutdialog.h
-    # popupcolorpalettewidget.h
 
 SOURCES += \
     main.cpp \
@@ -79,7 +78,6 @@ SOURCES += \
     errordialog.cpp \
     imageseqdialog.cpp \
     aboutdialog.cpp
-    # spopupcolorpalettewidget.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
