@@ -33,8 +33,6 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
-//#include "popupcolorpalettewidget.h"
-
 
 #define round(f) ((int)(f + 0.5))
 
@@ -96,9 +94,6 @@ bool ScribbleArea::init()
     QPixmapCache::setCacheLimit( 100 * 1024 );
 
     mNeedUpdateAll = false;
-
-    // color wheel popup
-    //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
     return true;
 }
@@ -229,12 +224,6 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
 
     updateAllFrames();
 }
-
-void ScribbleArea::togglePopupPalette()
-{
-    //m_popupPaletteWidget->popup();
-}
-
 
 /************************************************************************/
 /* key event handlers                                                   */

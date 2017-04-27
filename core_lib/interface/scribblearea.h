@@ -47,7 +47,6 @@ class Editor;
 class BaseTool;
 class StrokeManager;
 class ColorManager;
-//class PopupColorPaletteWidget;
 
 
 class ScribbleArea : public QWidget
@@ -109,8 +108,6 @@ public:
 
     StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
 
-    //PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
-
     Editor* editor() { return mEditor; }
 
     void floodFillError( int errorType );
@@ -141,8 +138,6 @@ public slots:
     void toggleOutlines();
     void toggleShowAllLayers();
     void escape();
-
-    void togglePopupPalette();
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
@@ -193,8 +188,6 @@ private:
     std::unique_ptr< StrokeManager > mStrokeManager;
 
     Editor* mEditor = nullptr;
-
-    //PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
 
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
