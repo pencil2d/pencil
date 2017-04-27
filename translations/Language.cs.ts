@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="11"/>
+        <source>About</source>
+        <translation type="unfinished">O programu</translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="18"/>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="31"/>
+        <source>&lt;b&gt;Pencil2D&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="34"/>
+        <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/copyleft/gpl.html&quot;&gt;GPL License&lt;/a&gt;&lt;/&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="53"/>
+        <source>commit: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ActionCommands</name>
     <message>
         <location filename="../app/actioncommands.cpp" line="50"/>
@@ -809,12 +837,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="478"/>
+        <location filename="../core_lib/structure/layer.cpp" line="477"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="479"/>
+        <location filename="../core_lib/structure/layer.cpp" line="478"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
@@ -946,7 +974,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="34"/>
-        <location filename="../app/mainwindow2.cpp" line="1102"/>
+        <location filename="../app/mainwindow2.cpp" line="1103"/>
         <source>Import</source>
         <translation>Importovat</translation>
     </message>
@@ -981,7 +1009,7 @@ p, li { white-space: pre-wrap; }
         <translation>Animace</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="168"/>
+        <location filename="../app/mainwindow2.cpp" line="169"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>Nástroje</translation>
@@ -1073,13 +1101,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="330"/>
-        <location filename="../app/mainwindow2.cpp" line="1047"/>
+        <location filename="../app/mainwindow2.cpp" line="1048"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="339"/>
-        <location filename="../app/mainwindow2.cpp" line="1067"/>
+        <location filename="../app/mainwindow2.cpp" line="1068"/>
         <source>Redo</source>
         <translation>Znovu</translation>
     </message>
@@ -1191,7 +1219,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="508"/>
-        <location filename="../app/mainwindow2.cpp" line="1248"/>
+        <location filename="../app/mainwindow2.cpp" line="1245"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -1305,7 +1333,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="825"/>
-        <location filename="../app/mainwindow2.cpp" line="154"/>
+        <location filename="../app/mainwindow2.cpp" line="155"/>
         <source>Color Wheel</source>
         <translation>Kolo barev</translation>
     </message>
@@ -1335,131 +1363,131 @@ p, li { white-space: pre-wrap; }
         <translation>Posunout snímek vzad</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="155"/>
+        <location filename="../app/mainwindow2.cpp" line="156"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta barev:&lt;br&gt;použijte přepínač &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;na pozici kurzoru</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="358"/>
+        <location filename="../app/mainwindow2.cpp" line="359"/>
         <source>Open Recent</source>
         <translation>Otevřít nedávné</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="430"/>
+        <location filename="../app/mainwindow2.cpp" line="431"/>
         <source>Open File...</source>
         <translation>Otevřít soubor...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="446"/>
-        <location filename="../app/mainwindow2.cpp" line="486"/>
-        <location filename="../app/mainwindow2.cpp" line="609"/>
-        <location filename="../app/mainwindow2.cpp" line="650"/>
-        <location filename="../app/mainwindow2.cpp" line="862"/>
+        <location filename="../app/mainwindow2.cpp" line="447"/>
+        <location filename="../app/mainwindow2.cpp" line="487"/>
+        <location filename="../app/mainwindow2.cpp" line="610"/>
+        <location filename="../app/mainwindow2.cpp" line="651"/>
+        <location filename="../app/mainwindow2.cpp" line="863"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="446"/>
-        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="447"/>
+        <location filename="../app/mainwindow2.cpp" line="487"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil není schopen přečíst tento soubor. Pokud chcete imporovat obrázky, použijte příkaz importovat.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="463"/>
+        <location filename="../app/mainwindow2.cpp" line="464"/>
         <source>Save As...</source>
         <translation>Uložit jako...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="493"/>
+        <location filename="../app/mainwindow2.cpp" line="494"/>
         <source>Opening document...</source>
         <translation>Otevírám dokument...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="493"/>
-        <location filename="../app/mainwindow2.cpp" line="546"/>
-        <location filename="../app/mainwindow2.cpp" line="773"/>
+        <location filename="../app/mainwindow2.cpp" line="494"/>
+        <location filename="../app/mainwindow2.cpp" line="547"/>
+        <location filename="../app/mainwindow2.cpp" line="774"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="546"/>
+        <location filename="../app/mainwindow2.cpp" line="547"/>
         <source>Saving document...</source>
         <translation>Ukládám dokument...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="573"/>
+        <location filename="../app/mainwindow2.cpp" line="574"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="610"/>
+        <location filename="../app/mainwindow2.cpp" line="611"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Animace byla změněna.
 Přejete si uložit změny.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="633"/>
+        <location filename="../app/mainwindow2.cpp" line="634"/>
         <source>Import image...</source>
         <translation>Importovat obrázek...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="651"/>
+        <location filename="../app/mainwindow2.cpp" line="652"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Obrázek nelze importovat.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Na import bitmap použijte bitmapovou vrstvu.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="675"/>
+        <location filename="../app/mainwindow2.cpp" line="676"/>
         <source>Select one or more files to open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="677"/>
+        <location filename="../app/mainwindow2.cpp" line="678"/>
         <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="704"/>
+        <location filename="../app/mainwindow2.cpp" line="705"/>
         <source>Import movie</source>
         <translation>Importovat video</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="755"/>
+        <location filename="../app/mainwindow2.cpp" line="756"/>
         <source>Save Image Sequence</source>
         <translation>Importovat sérii obrázků</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="773"/>
+        <location filename="../app/mainwindow2.cpp" line="774"/>
         <source>Exporting image sequence...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="837"/>
+        <location filename="../app/mainwindow2.cpp" line="838"/>
         <source>Save Image</source>
         <translation>Uložit obrázek</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="863"/>
+        <location filename="../app/mainwindow2.cpp" line="864"/>
         <source>Unable to export image.</source>
         <translation>Obrázek nelze exportovat.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1052"/>
+        <location filename="../app/mainwindow2.cpp" line="1053"/>
         <source>Undo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1060"/>
+        <location filename="../app/mainwindow2.cpp" line="1061"/>
         <source>Redo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1086"/>
+        <location filename="../app/mainwindow2.cpp" line="1087"/>
         <source>Export As</source>
         <translation>Exportovat jako</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1244"/>
+        <location filename="../app/mainwindow2.cpp" line="1241"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
