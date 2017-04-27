@@ -54,7 +54,6 @@ GNU General Public License for more details.
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
 #include "tooloptiondockwidget.h"
-//#include "popupcolorpalettewidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"

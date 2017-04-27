@@ -33,8 +33,6 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
-//#include "popupcolorpalettewidget.h"
-
 
 #define round(f) ((int)(f + 0.5))
 
