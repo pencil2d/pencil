@@ -299,6 +299,8 @@ Status FileManager::save( Object* object, QString strFileName )
 
     QDomDocument xmlDoc( "PencilDocument" );
     QDomElement root = xmlDoc.createElement( "document" );
+    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+    xmlDoc.appendChild( encoding );
     xmlDoc.appendChild( root );
 
     // save editor information
