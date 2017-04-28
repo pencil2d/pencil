@@ -1,4 +1,6 @@
-### v0.5.4 - July 26 2013
+### Pencil2D v0.6 - 2017
+
+### Pencil2D v0.5.4 - July 26 2013
 
 - Customize keyboard shortcuts (Preferences->Shoftcuts)
 - Interactive brush resizing. SHIFT + Mouse Drag to change brush size, CTRL + Mouse Drag for FEATHER, CTRL+SHIFT applies brush size to the eraser and temporarily selects it.
@@ -7,13 +9,17 @@
 - Code refactoring.
 - Misc bug fixes.
 
-### v0.5.3 - June 28 2013
+--------------------
+
+### Pencil2D v0.5.3 - June 28 2013
 
 - Bug fixed: brush cannot change color in 0.5.2
 - Upgrade to Qt 4.8.4
 - ToolSet code refactoring.
 - Menubar code refactoring.
 - Color Palette code refactoring.
+
+----------------
 
 ### Pencil Animation v0.5 beta (Morevna Branch) ### - September 15th 2010
 
