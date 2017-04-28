@@ -360,20 +360,14 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-
-    bool isCamera = false;
-    if (mObject->getLayer(mLayerIndex)->type() == Layer::CAMERA) { isCamera = true;}
-    else {
-        isCamera = false;
-    }
-
+    bool isCamera = mObject->getLayer(mLayerIndex)->type() == Layer::CAMERA;
     for ( int i = 0; i < mObject->getLayerCount(); ++i )
     {
         Layer* layer = mObject->getLayer( i );
         if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
         {
             painter.setOpacity( 1.0 );
-        } else if (isCamera != true) {
+        } else if ( isCamera != true ) {
 
             painter.setOpacity( 0.8 );
         }
