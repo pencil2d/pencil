@@ -53,7 +53,7 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
-#include "tooloptiondockwidget.h"
+#include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"

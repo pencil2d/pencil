@@ -32,7 +32,6 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "editor.h"
 #include "layermanager.h"
-#include "toolbox.h"
 #include "timecontrols.h"
 #include "timelinecells.h"
 

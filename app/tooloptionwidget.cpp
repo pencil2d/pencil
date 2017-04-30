@@ -9,7 +9,7 @@
 #include <QDebug>
 #include "spinslider.h"
 #include "toolmanager.h"
-#include "tooloptiondockwidget.h"
+#include "tooloptionwidget.h"
 #include "editor.h"
 #include "util.h"
 #include "layer.h"
