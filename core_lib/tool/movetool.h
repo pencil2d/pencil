@@ -3,6 +3,7 @@
 
 #include "basetool.h"
 
+class Layer;
 
 class MoveTool : public BaseTool
 {
@@ -25,6 +26,12 @@ public:
 private:
     void cancelChanges();
     void applyChanges();
+    void whichTransformationPoint();
+    void transformSelection(qreal offsetX, qreal offsetY);
+    void pressOperation(QMouseEvent* event, Layer *layer);
+    void actionOnVector(QMouseEvent *event, Layer *layer);
+    void onHoverOutlineStroke(Layer* layer);
+    QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
 };
 
 #endif
