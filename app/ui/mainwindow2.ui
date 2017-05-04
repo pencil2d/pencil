@@ -25,6 +25,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
@@ -157,8 +165,6 @@
     <addaction name="actionBucket"/>
     <addaction name="actionEyedropper"/>
     <addaction name="actionEraser"/>
-    <addaction name="separator"/>
-    <addaction name="actionTogglePalette"/>
     <addaction name="separator"/>
     <addaction name="actionResetToolsDefault"/>
    </widget>
@@ -729,14 +735,6 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionTogglePalette">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Toggle palette</string>
-   </property>
-  </action>
   <action name="actionResetToolsDefault">
    <property name="text">
     <string>Reset to default</string>
@@ -863,8 +861,8 @@
   </action>
  </widget>
  <resources>
-  <include location="../../pencil.qrc"/>
   <include location="../resource/app.qrc"/>
+  <include location="../../pencil.qrc"/>
   <include location="../../pencil.qrc"/>
  </resources>
  <connections/>

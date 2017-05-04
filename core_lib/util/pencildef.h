@@ -106,7 +106,6 @@ enum BackgroundStyle
 #define CMD_TOOL_BUCKET "CmdToolBucket"
 #define CMD_TOOL_EYEDROPPER "CmdToolEyedropper"
 #define CMD_TOOL_ERASER "CmdToolEraser"
-#define CMD_TOGGLE_PALETTE "CmdTogglePalette"
 #define CMD_NEW_BITMAP_LAYER "CmdNewBitmapLayer"
 #define CMD_NEW_VECTOR_LAYER "CmdNewVectorLayer"
 #define CMD_NEW_SOUND_LAYER "CmdNewSoundLayer"
