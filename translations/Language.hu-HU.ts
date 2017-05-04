@@ -2,6 +2,34 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="hu_HU">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="11"/>
+        <source>About</source>
+        <translation>Névjegy</translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="18"/>
+        <source>OK</source>
+        <translation>Oké</translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="31"/>
+        <source>&lt;b&gt;Pencil2D&lt;/b&gt;</source>
+        <translation>&lt;b&gt;Pencil2D&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="34"/>
+        <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/copyleft/gpl.html&quot;&gt;GPL License&lt;/a&gt;&lt;/&gt;</source>
+        <translation>Hivatalos weblap: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Fejlesztők: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Köszönet: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;A terjesztés &lt;a href=&quot;http://www.gnu.org/copyleft/gpl.html&quot;&gt;GPL Licenc&lt;/a&gt; alatt történik.&lt;/&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/aboutdialog.cpp" line="58"/>
+        <source>commit: </source>
+        <translation>Feljlesztési lépés: </translation>
+    </message>
+</context>
+<context>
     <name>ActionCommands</name>
     <message>
         <location filename="../app/actioncommands.cpp" line="50"/>
@@ -875,12 +903,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="478"/>
+        <location filename="../core_lib/structure/layer.cpp" line="479"/>
         <source>Layer Properties</source>
         <translation>Réteg tulajdonságai</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="479"/>
+        <location filename="../core_lib/structure/layer.cpp" line="480"/>
         <source>Layer name:</source>
         <translation>Réteg neve:</translation>
     </message>
@@ -925,12 +953,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MainWindow2</name>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="833"/>
+        <location filename="../app/ui/mainwindow2.ui" line="831"/>
         <source>Color Palette</source>
         <translation>Színpaletta</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="366"/>
+        <location filename="../app/ui/mainwindow2.ui" line="372"/>
         <source>Paste</source>
         <translation>Beillesztés</translation>
     </message>
@@ -940,43 +968,43 @@ p, li { white-space: pre-wrap; }
         <translation>Főablak</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="30"/>
+        <location filename="../app/ui/mainwindow2.ui" line="38"/>
         <source>File</source>
         <translation>Fájl</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="34"/>
-        <location filename="../app/mainwindow2.cpp" line="1102"/>
+        <location filename="../app/ui/mainwindow2.ui" line="42"/>
+        <location filename="../app/mainwindow2.cpp" line="1098"/>
         <source>Import</source>
         <translation>Importálás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="46"/>
+        <location filename="../app/ui/mainwindow2.ui" line="54"/>
         <source>Export</source>
         <translation>Exportálás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="71"/>
+        <location filename="../app/ui/mainwindow2.ui" line="79"/>
         <source>Edit</source>
         <translation>Szerkesztés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="75"/>
+        <location filename="../app/ui/mainwindow2.ui" line="83"/>
         <source>Selection</source>
         <translation>Kijelölés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="97"/>
+        <location filename="../app/ui/mainwindow2.ui" line="105"/>
         <source>View</source>
         <translation>Nézet</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="101"/>
+        <location filename="../app/ui/mainwindow2.ui" line="109"/>
         <source>Onion Skin</source>
         <translation>Képfólia</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="127"/>
+        <location filename="../app/ui/mainwindow2.ui" line="135"/>
         <source>Animation</source>
         <translation>Animáció</translation>
     </message>
@@ -987,363 +1015,362 @@ p, li { white-space: pre-wrap; }
         <translation>Eszközök</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="147"/>
-        <location filename="../app/ui/mainwindow2.ui" line="801"/>
+        <location filename="../app/ui/mainwindow2.ui" line="155"/>
+        <location filename="../app/ui/mainwindow2.ui" line="799"/>
         <source>Tools</source>
         <translation>Eszközök</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="167"/>
+        <location filename="../app/ui/mainwindow2.ui" line="173"/>
         <source>Layer</source>
         <translation>Réteg</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="178"/>
-        <location filename="../app/ui/mainwindow2.ui" line="724"/>
+        <location filename="../app/ui/mainwindow2.ui" line="184"/>
+        <location filename="../app/ui/mainwindow2.ui" line="730"/>
         <source>Help</source>
         <translation>Súgó</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="185"/>
+        <location filename="../app/ui/mainwindow2.ui" line="191"/>
         <source>Windows</source>
         <translation>Ablakok</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="203"/>
+        <location filename="../app/ui/mainwindow2.ui" line="209"/>
         <source>New</source>
         <translation>Új</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="212"/>
+        <location filename="../app/ui/mainwindow2.ui" line="218"/>
         <source>Open</source>
         <translation>Megnyitás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="221"/>
+        <location filename="../app/ui/mainwindow2.ui" line="227"/>
         <source>Save</source>
         <translation>Mentés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="230"/>
+        <location filename="../app/ui/mainwindow2.ui" line="236"/>
         <source>Save As ..</source>
         <translation>Mentés másként ..</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="239"/>
+        <location filename="../app/ui/mainwindow2.ui" line="245"/>
         <source>Print</source>
         <translation>Nyomtatás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="248"/>
+        <location filename="../app/ui/mainwindow2.ui" line="254"/>
         <source>Exit</source>
         <translation>Kilépés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="256"/>
+        <location filename="../app/ui/mainwindow2.ui" line="262"/>
         <source>X-sheet ...</source>
         <translation>X-sheet ...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="264"/>
-        <location filename="../app/ui/mainwindow2.ui" line="303"/>
+        <location filename="../app/ui/mainwindow2.ui" line="270"/>
+        <location filename="../app/ui/mainwindow2.ui" line="309"/>
         <source>Image Sequence...</source>
         <translation>Képsorozat...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="269"/>
-        <location filename="../app/ui/mainwindow2.ui" line="298"/>
+        <location filename="../app/ui/mainwindow2.ui" line="275"/>
+        <location filename="../app/ui/mainwindow2.ui" line="304"/>
         <source>Image...</source>
         <translation>Kép...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="274"/>
-        <location filename="../app/ui/mainwindow2.ui" line="308"/>
+        <location filename="../app/ui/mainwindow2.ui" line="280"/>
+        <location filename="../app/ui/mainwindow2.ui" line="314"/>
         <source>Movie...</source>
         <translation>Videó...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="282"/>
-        <location filename="../app/ui/mainwindow2.ui" line="321"/>
+        <location filename="../app/ui/mainwindow2.ui" line="288"/>
+        <location filename="../app/ui/mainwindow2.ui" line="327"/>
         <source>Palette...</source>
         <translation>Paletta...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="290"/>
+        <location filename="../app/ui/mainwindow2.ui" line="296"/>
         <source>Svg Image...</source>
         <translation>Svg kép...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="316"/>
+        <location filename="../app/ui/mainwindow2.ui" line="322"/>
         <source>Sound...</source>
         <translation>Hang...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="330"/>
-        <location filename="../app/mainwindow2.cpp" line="1047"/>
+        <location filename="../app/ui/mainwindow2.ui" line="336"/>
+        <location filename="../app/mainwindow2.cpp" line="1043"/>
         <source>Undo</source>
         <translation>Visszavonás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="339"/>
-        <location filename="../app/mainwindow2.cpp" line="1067"/>
+        <location filename="../app/ui/mainwindow2.ui" line="345"/>
+        <location filename="../app/mainwindow2.cpp" line="1063"/>
         <source>Redo</source>
         <translation>Újra</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="348"/>
+        <location filename="../app/ui/mainwindow2.ui" line="354"/>
         <source>Cut</source>
         <translation>Kivágás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="357"/>
+        <location filename="../app/ui/mainwindow2.ui" line="363"/>
         <source>Copy</source>
         <translation>Másolás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="371"/>
+        <location filename="../app/ui/mainwindow2.ui" line="377"/>
         <source>Crop</source>
         <translation>Csonkítás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="376"/>
+        <location filename="../app/ui/mainwindow2.ui" line="382"/>
         <source>Crop To Selection</source>
         <translation>Csonkítás kijelölésre</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="381"/>
+        <location filename="../app/ui/mainwindow2.ui" line="387"/>
         <source>Select All</source>
         <translation>Minden kijelölése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="386"/>
+        <location filename="../app/ui/mainwindow2.ui" line="392"/>
         <source>Deselect All</source>
         <translation>Kijelölés megszüntetése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="395"/>
-        <location filename="../app/ui/mainwindow2.ui" line="588"/>
+        <location filename="../app/ui/mainwindow2.ui" line="401"/>
+        <location filename="../app/ui/mainwindow2.ui" line="594"/>
         <source>Clear Frame</source>
         <translation>Képkocka kiürítése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="400"/>
+        <location filename="../app/ui/mainwindow2.ui" line="406"/>
         <source>Preferences</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="405"/>
+        <location filename="../app/ui/mainwindow2.ui" line="411"/>
         <source>Reset Windows</source>
         <translation>Ablakok visszaállítása</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="414"/>
+        <location filename="../app/ui/mainwindow2.ui" line="420"/>
         <source>Zoom In</source>
         <translation>Nagyítás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="423"/>
+        <location filename="../app/ui/mainwindow2.ui" line="429"/>
         <source>Zoom Out</source>
         <translation>Kicsinyítés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="428"/>
+        <location filename="../app/ui/mainwindow2.ui" line="434"/>
         <source>Rotate Clockwise</source>
         <translation>Forgatás jobbra</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="433"/>
+        <location filename="../app/ui/mainwindow2.ui" line="439"/>
         <source>Rotate AntiClosewise</source>
         <translation>Forgatás balra</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="438"/>
+        <location filename="../app/ui/mainwindow2.ui" line="444"/>
         <source>Reset Zoom/Rotate</source>
         <translation>Nagyítás/Elforgatás visszaállítása</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="447"/>
+        <location filename="../app/ui/mainwindow2.ui" line="453"/>
         <source>Horizontal Flip</source>
         <translation>Vízszintes tükrözés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="456"/>
+        <location filename="../app/ui/mainwindow2.ui" line="462"/>
         <source>Vertical Flip</source>
         <translation>Függőleges tükrözés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="461"/>
+        <location filename="../app/ui/mainwindow2.ui" line="467"/>
         <source>Preview</source>
         <translation>Előnézet</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="469"/>
+        <location filename="../app/ui/mainwindow2.ui" line="475"/>
         <source>Grid</source>
         <translation>Rács</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="481"/>
+        <location filename="../app/ui/mainwindow2.ui" line="487"/>
         <source>Previous</source>
         <translation>Előző</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="484"/>
+        <location filename="../app/ui/mainwindow2.ui" line="490"/>
         <source>Show previous onion skin</source>
         <translation>Előző képfólia megjelenítése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="499"/>
+        <location filename="../app/ui/mainwindow2.ui" line="505"/>
         <source>Show next onion skin</source>
         <translation>Következő képfólia megjelenítése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="543"/>
+        <location filename="../app/ui/mainwindow2.ui" line="549"/>
         <source>Extend Frame</source>
         <translation>Képkocka kiterjesztése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="782"/>
+        <location filename="../app/ui/mainwindow2.ui" line="780"/>
         <source>MultiLayer Onion Skin</source>
         <translation>Többrétegű képfóliák</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="793"/>
+        <location filename="../app/ui/mainwindow2.ui" line="791"/>
         <source>Range</source>
         <translation>Tartomány</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="496"/>
+        <location filename="../app/ui/mainwindow2.ui" line="502"/>
         <source>Next</source>
         <translation>Következő</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="508"/>
-        <location filename="../app/mainwindow2.cpp" line="1248"/>
+        <location filename="../app/ui/mainwindow2.ui" line="514"/>
+        <location filename="../app/mainwindow2.cpp" line="1240"/>
         <source>Play</source>
         <translation>Lejátszás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="520"/>
+        <location filename="../app/ui/mainwindow2.ui" line="526"/>
         <source>Loop</source>
         <translation>Ismétlés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="529"/>
+        <location filename="../app/ui/mainwindow2.ui" line="535"/>
         <source>Next Frame</source>
         <translation>Következő képkocka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="538"/>
+        <location filename="../app/ui/mainwindow2.ui" line="544"/>
         <source>Previous Frame</source>
         <translation>Előző képkocka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="552"/>
+        <location filename="../app/ui/mainwindow2.ui" line="558"/>
         <source>Add Frame</source>
         <translation>Képkocka hozzáadása</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="561"/>
+        <location filename="../app/ui/mainwindow2.ui" line="567"/>
         <source>Duplicate Frame</source>
         <translation>Képkocka kétszerezése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="570"/>
+        <location filename="../app/ui/mainwindow2.ui" line="576"/>
         <source>Remove Frame</source>
         <translation>Képkocka eltávolítása</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="579"/>
+        <location filename="../app/ui/mainwindow2.ui" line="585"/>
         <source>Move</source>
         <translation>Mozgatás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="597"/>
+        <location filename="../app/ui/mainwindow2.ui" line="603"/>
         <source>Select</source>
         <translation>Kijelölés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="606"/>
+        <location filename="../app/ui/mainwindow2.ui" line="612"/>
         <source>Brush</source>
         <translation>Ecset</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="615"/>
+        <location filename="../app/ui/mainwindow2.ui" line="621"/>
         <source>Polyline</source>
         <translation>Vonallánc</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="624"/>
+        <location filename="../app/ui/mainwindow2.ui" line="630"/>
         <source>Smudge</source>
         <translation>Maszatolás</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="633"/>
+        <location filename="../app/ui/mainwindow2.ui" line="639"/>
         <source>Pen</source>
         <translation>Toll</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="642"/>
+        <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Hand</source>
         <translation>Kéz</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="651"/>
+        <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Pencil</source>
         <translation>Ceruza</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="660"/>
+        <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Bucket</source>
         <translation>Vödör</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="669"/>
+        <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Eyedropper</source>
         <translation>Szemcseppentő</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="678"/>
+        <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Eraser</source>
         <translation>Radír</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="687"/>
+        <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>New Bitmap Layer</source>
         <translation>Új bitkép réteg</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="696"/>
+        <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>New Vector Layer</source>
         <translation>Új vektor réteg</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="705"/>
+        <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>New Sound Layer</source>
         <translation>Új hang réteg</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="714"/>
+        <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>New Camera Layer</source>
         <translation>Új kamera réteg</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="719"/>
+        <location filename="../app/ui/mainwindow2.ui" line="725"/>
         <source>Delete Current Layer</source>
         <translation>Aktuális réteg törlése</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="729"/>
+        <location filename="../app/ui/mainwindow2.ui" line="735"/>
         <source>About</source>
         <translation>Névjegy</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="737"/>
         <source>Toggle palette</source>
-        <translation>Paletta be- és kikapcsolása</translation>
+        <translation type="vanished">Paletta be- és kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="742"/>
-        <location filename="../app/ui/mainwindow2.ui" line="745"/>
+        <location filename="../app/ui/mainwindow2.ui" line="740"/>
+        <location filename="../app/ui/mainwindow2.ui" line="743"/>
         <source>Reset to default</source>
         <translation>Alapértékek visszaállítása</translation>
     </message>
@@ -1352,8 +1379,8 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Next_KeyFrame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="755"/>
-        <location filename="../app/ui/mainwindow2.ui" line="758"/>
+        <location filename="../app/ui/mainwindow2.ui" line="753"/>
+        <location filename="../app/ui/mainwindow2.ui" line="756"/>
         <source>Next KeyFrame</source>
         <translation>Következő kulcsképkocka</translation>
     </message>
@@ -1362,8 +1389,8 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Prev_KeyFrame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="768"/>
-        <location filename="../app/ui/mainwindow2.ui" line="771"/>
+        <location filename="../app/ui/mainwindow2.ui" line="766"/>
+        <location filename="../app/ui/mainwindow2.ui" line="769"/>
         <source>Previous KeyFrame</source>
         <translation>Előző kulcsképkocka</translation>
     </message>
@@ -1376,43 +1403,43 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">loopcontrol</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="809"/>
+        <location filename="../app/ui/mainwindow2.ui" line="807"/>
         <source>Timeline</source>
         <translation>Idővonal</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="817"/>
+        <location filename="../app/ui/mainwindow2.ui" line="815"/>
         <source>Options</source>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="825"/>
+        <location filename="../app/ui/mainwindow2.ui" line="823"/>
         <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>Color Wheel</source>
         <translation>Színkerék</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="841"/>
+        <location filename="../app/ui/mainwindow2.ui" line="839"/>
         <source>Display Options</source>
         <translation>Megjelenítés beállításai</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="846"/>
+        <location filename="../app/ui/mainwindow2.ui" line="844"/>
         <source>Flip X</source>
         <translation>X tükrözés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="851"/>
+        <location filename="../app/ui/mainwindow2.ui" line="849"/>
         <source>Flip Y</source>
         <translation>Y tükrözés</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="856"/>
+        <location filename="../app/ui/mainwindow2.ui" line="854"/>
         <source>Move Frame Forward</source>
         <translation>Képkocka mozgatása előre</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="861"/>
+        <location filename="../app/ui/mainwindow2.ui" line="859"/>
         <source>Move Frame Backward</source>
         <translation>Képkocka mozgatása hátra</translation>
     </message>
@@ -1422,116 +1449,116 @@ p, li { white-space: pre-wrap; }
         <translation>Színpaletta:&lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;lenyomásával&lt;br&gt;átváltás a kurzornál</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="358"/>
+        <location filename="../app/mainwindow2.cpp" line="357"/>
         <source>Open Recent</source>
         <translation>Legutóbbi megnyitása</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="430"/>
+        <location filename="../app/mainwindow2.cpp" line="429"/>
         <source>Open File...</source>
         <translation>Fájl megnyitása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="446"/>
-        <location filename="../app/mainwindow2.cpp" line="486"/>
-        <location filename="../app/mainwindow2.cpp" line="609"/>
-        <location filename="../app/mainwindow2.cpp" line="650"/>
-        <location filename="../app/mainwindow2.cpp" line="862"/>
+        <location filename="../app/mainwindow2.cpp" line="445"/>
+        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="608"/>
+        <location filename="../app/mainwindow2.cpp" line="649"/>
+        <location filename="../app/mainwindow2.cpp" line="861"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="446"/>
-        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="445"/>
+        <location filename="../app/mainwindow2.cpp" line="485"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>A Pencil nem tudja olvasni ezt a fájlt. Képek beemeléséhez az &quot;Importálás&quot; művelet használható.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="463"/>
+        <location filename="../app/mainwindow2.cpp" line="462"/>
         <source>Save As...</source>
         <translation>Mentés másként...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="493"/>
+        <location filename="../app/mainwindow2.cpp" line="492"/>
         <source>Opening document...</source>
         <translation>Dokumentum megnyitása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="493"/>
-        <location filename="../app/mainwindow2.cpp" line="546"/>
-        <location filename="../app/mainwindow2.cpp" line="773"/>
+        <location filename="../app/mainwindow2.cpp" line="492"/>
+        <location filename="../app/mainwindow2.cpp" line="545"/>
+        <location filename="../app/mainwindow2.cpp" line="772"/>
         <source>Abort</source>
         <translation>Névjegy</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="546"/>
+        <location filename="../app/mainwindow2.cpp" line="545"/>
         <source>Saving document...</source>
         <translation>Dokumentum mentése...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="573"/>
+        <location filename="../app/mainwindow2.cpp" line="572"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Hiba történt, ami miatt valószínűleg a fájl mentése sem sikerült. Ha úgy gondolja, hogy az esemény a Pencil2D programban található hibára vezethető vissza, kérjük jelentse a következő helyen:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Mindenképpen mellékelje az alábbi részleteket is a bejelentéshez:</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="610"/>
+        <location filename="../app/mainwindow2.cpp" line="609"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Ez az animáció meg lett változtatva.
  Szeretné menteni a változásokat?</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="633"/>
+        <location filename="../app/mainwindow2.cpp" line="632"/>
         <source>Import image...</source>
         <translation>Kép importálása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="651"/>
+        <location filename="../app/mainwindow2.cpp" line="650"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>A kép nem importálható.&lt;br&gt;&lt;b&gt;TIPP:&lt;/b&gt; Képek importálásához bitkép réteget kell használni.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="675"/>
+        <location filename="../app/mainwindow2.cpp" line="674"/>
         <source>Select one or more files to open</source>
         <translation>Egy vagy több fájl kiválasztása megnyitásra</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="677"/>
+        <location filename="../app/mainwindow2.cpp" line="676"/>
         <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
         <translation>Képek (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="704"/>
+        <location filename="../app/mainwindow2.cpp" line="703"/>
         <source>Import movie</source>
         <translation>Videó importálása</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="755"/>
+        <location filename="../app/mainwindow2.cpp" line="754"/>
         <source>Save Image Sequence</source>
         <translation>Képsorozat mentése</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="773"/>
+        <location filename="../app/mainwindow2.cpp" line="772"/>
         <source>Exporting image sequence...</source>
         <translation>Képsorozat exportálása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="837"/>
+        <location filename="../app/mainwindow2.cpp" line="836"/>
         <source>Save Image</source>
         <translation>Kép mentése</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="863"/>
+        <location filename="../app/mainwindow2.cpp" line="862"/>
         <source>Unable to export image.</source>
         <translation>A kép nem exportálható.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1052"/>
+        <location filename="../app/mainwindow2.cpp" line="1048"/>
         <source>Undo   %1 %2</source>
         <translation>Visszavonás (%1):   %2</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1060"/>
+        <location filename="../app/mainwindow2.cpp" line="1056"/>
         <source>Redo   %1 %2</source>
         <translation>Újra (%1):   %2</translation>
     </message>
@@ -1544,12 +1571,12 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Újra:   </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1086"/>
+        <location filename="../app/mainwindow2.cpp" line="1082"/>
         <source>Export As</source>
         <translation>Exportálás másként</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1244"/>
+        <location filename="../app/mainwindow2.cpp" line="1236"/>
         <source>Stop</source>
         <translation>Megállítás</translation>
     </message>
@@ -1557,7 +1584,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="45"/>
+        <location filename="../core_lib/tool/movetool.cpp" line="48"/>
         <source>Move</source>
         <translation>Mozgatás</translation>
     </message>
@@ -1926,58 +1953,58 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="553"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="542"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="554"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="543"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Most egy láthatatlan rétegre rajzol! Válasszon egy másik réteget (vagy tegye láthatóvá az aktuális réteget).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1565"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1554"/>
         <source>Delete Selection</source>
         <translation>Kijelölés törlése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1579"/>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1586"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1568"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1575"/>
         <source>Clear Image</source>
         <translation>Kép kiürítése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1614"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1603"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Egy rés van a rajzon (vagy túlságosan fel van nagyítva).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1615"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1604"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Elnézést! Ez nem mindig működik. Próbáld újra (egy kis nagyítással vagy máshová kattintva...)&lt;br&gt;Ha nem működik nagyíts egy kicsit és az F1 lenyomásával ellenőrizd, hogy az útvonalak összeérnek-e.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1619"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1608"/>
         <source>Out of bound.</source>
         <translation>Tartományon kívül.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1620"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1609"/>
         <source>Could not find a closed path.</source>
         <translation>Nem található zárt útvonal.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1621"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1610"/>
         <source>Could not find the root index.</source>
         <translation>Nem található a gyökér index.</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1622"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1611"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Hiba: %2</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1622"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1611"/>
         <source>Flood fill error</source>
         <translation>Kitöltési hiba</translation>
     </message>
@@ -2029,12 +2056,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="85"/>
         <source>Play</source>
         <translation>Lejátszás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="86"/>
         <source>Loop</source>
         <translation>Ismétlés</translation>
     </message>
@@ -2080,23 +2107,23 @@ p, li { white-space: pre-wrap; }
         <translation>Lejátszandó tartomány</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="91"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
         <source>Sound on/off</source>
         <translation>Hang be/ki</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="92"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
         <source>End</source>
         <translation>Befejezés</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="93"/>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="193"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="188"/>
         <source>Start</source>
         <translation>Indítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="189"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="184"/>
         <source>Stop</source>
         <translation>Megállítás</translation>
     </message>
@@ -2104,87 +2131,87 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="103"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="96"/>
         <source>New Bitmap Layer</source>
         <translation>Új bitkép réteg</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="104"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="97"/>
         <source>New Vector Layer</source>
         <translation>Új vektor réteg</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="105"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="98"/>
         <source>New Sound Layer</source>
         <translation>Új hang réteg</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="106"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="99"/>
         <source>New Camera Layer</source>
         <translation>Új kamera réteg</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="154"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="138"/>
         <source>Onion skin:</source>
         <translation>Képfólia:</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="308"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="302"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="79"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="72"/>
         <source>Layers:</source>
         <translation>Rétegek:</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="47"/>
         <source>Timeline</source>
         <translation>Idővonal</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="85"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="78"/>
         <source>Add Layer</source>
         <translation>Réteg hozzáadása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="90"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="83"/>
         <source>Remove Layer</source>
         <translation>Réteg eltávolítása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="108"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="101"/>
         <source>&amp;Layer</source>
         <translation>&amp;Réteg</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="126"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="119"/>
         <source>Keys:</source>
         <translation>Kulcsképkockák:</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="132"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="125"/>
         <source>Add Frame</source>
         <translation>Képkocka hozzáadása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="137"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="130"/>
         <source>Remove Frame</source>
         <translation>Képkocka eltávolítása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="142"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="135"/>
         <source>Duplicate Frame</source>
         <translation>Képkocka kétszerezése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="161"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="143"/>
         <source>Toggle match keyframes</source>
         <translation>Érintkező kulcsképkocka be- és kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="309"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="303"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Biztosan törölni akarja a következő réteget: </translation>
     </message>
@@ -2243,122 +2270,122 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ToolBoxWidget</name>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="36"/>
+        <location filename="../app/toolbox.cpp" line="35"/>
         <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
         <translation>Ceruza eszköz &lt;b&gt;(N)&lt;/b&gt;: Rajzolás ceruzával</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="37"/>
+        <location filename="../app/toolbox.cpp" line="36"/>
         <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
         <translation>Kijelölés eszköz &lt;b&gt;(V)&lt;/b&gt;: Egy elem kijelölése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="38"/>
+        <location filename="../app/toolbox.cpp" line="37"/>
         <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
         <translation>Mozgatás eszköz &lt;b&gt;(Q)&lt;/b&gt;: Egy elem mozgatása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="39"/>
+        <location filename="../app/toolbox.cpp" line="38"/>
         <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
         <translation>Kéz eszköz &lt;b&gt;(H)&lt;/b&gt;: Rajzvászon mozgatása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="40"/>
+        <location filename="../app/toolbox.cpp" line="39"/>
         <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
         <translation>Toll eszköz &lt;b&gt;(P)&lt;/b&gt;: Rajzolás tollal</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="41"/>
+        <location filename="../app/toolbox.cpp" line="40"/>
         <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
         <translation>Radír eszköz &lt;b&gt;(E)&lt;/b&gt;: Radírozás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="42"/>
+        <location filename="../app/toolbox.cpp" line="41"/>
         <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
         <translation>Vonallánc eszköz &lt;b&gt;(Y)&lt;/b&gt;: Vonalak/Görbék létrehozása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="43"/>
+        <location filename="../app/toolbox.cpp" line="42"/>
         <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
         <translation>Festékes vödör eszköz &lt;b&gt;(K)&lt;/b&gt;: Kijelölt terület kitöltése színnel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="44"/>
+        <location filename="../app/toolbox.cpp" line="43"/>
         <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
         <translation>Ecset eszköz &lt;b&gt;(B)&lt;/b&gt;: Finom vonalak rajzolása ecsettel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="45"/>
+        <location filename="../app/toolbox.cpp" line="44"/>
         <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
         <translation>Szemcseppentő eszköz &lt;b&gt;(I)&lt;/b&gt;: Szín választása egy tetszőleges helyről&lt;br&gt;&lt;b&gt;[ALT] lenyomásával azonnal aktíválható</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="46"/>
+        <location filename="../app/toolbox.cpp" line="45"/>
         <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
         <translation>Képkocka törlése &lt;b&gt;(Ctrl+D)&lt;/b&gt;: A kijelölt képkocka tartalmának törlése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="47"/>
+        <location filename="../app/toolbox.cpp" line="46"/>
         <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
         <translation>Maszatolás eszköz &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Vonalláncok/Görbék szerkesztése&lt;br&gt;Kép pontjainak elmosása&lt;br&gt;&lt;b&gt;+[ALT]&lt;/b&gt;: Finomítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="49"/>
+        <location filename="../app/toolbox.cpp" line="48"/>
         <source>Pencil Tool (N)</source>
         <translation>Ceruza eszköz (N)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="50"/>
+        <location filename="../app/toolbox.cpp" line="49"/>
         <source>Select Tool (V)</source>
         <translation>Kijelölés eszköz (V)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="51"/>
+        <location filename="../app/toolbox.cpp" line="50"/>
         <source>Move Tool (Q)</source>
         <translation>Mozgatás eszköz (Q)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="52"/>
+        <location filename="../app/toolbox.cpp" line="51"/>
         <source>Hand Tool (H)</source>
         <translation>Kéz eszköz (H)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="53"/>
+        <location filename="../app/toolbox.cpp" line="52"/>
         <source>Pen Tool (P)</source>
         <translation>Toll eszköz (P)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="54"/>
+        <location filename="../app/toolbox.cpp" line="53"/>
         <source>Eraser Tool (E)</source>
         <translation>Radír eszköz (E)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="55"/>
+        <location filename="../app/toolbox.cpp" line="54"/>
         <source>Polyline Tool (Y)</source>
         <translation>Vonallánc eszköz (Y)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="56"/>
+        <location filename="../app/toolbox.cpp" line="55"/>
         <source>Paint Bucket Tool(K)</source>
         <translation>Festékes vödör eszköz (K)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="57"/>
+        <location filename="../app/toolbox.cpp" line="56"/>
         <source>Brush Tool(B)</source>
         <translation>Ecset eszköz (B)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="58"/>
+        <location filename="../app/toolbox.cpp" line="57"/>
         <source>Eyedropper Tool (I)</source>
         <translation>Szemcseppentő eszköz (I)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="59"/>
+        <location filename="../app/toolbox.cpp" line="58"/>
         <source>Clear Tool</source>
         <translation>Törlés eszköz</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="60"/>
+        <location filename="../app/toolbox.cpp" line="59"/>
         <source>Smudge Tool (A)</source>
         <translation>Maszatolás eszköz (A)</translation>
     </message>
@@ -2366,33 +2393,33 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="164"/>
+        <location filename="../app/tooloptionwidget.cpp" line="164"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
+        <location filename="../app/tooloptionwidget.cpp" line="82"/>
         <source>Brush</source>
         <translation>Ecset</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="20"/>
+        <location filename="../app/tooloptionwidget.cpp" line="20"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Beállítások</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="84"/>
+        <location filename="../app/tooloptionwidget.cpp" line="84"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Toll szélessége &lt;br&gt;&lt;b&gt;[SHIFT]+húzás&lt;/b&gt;&lt;br&gt;használatával változtatható</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="90"/>
+        <location filename="../app/tooloptionwidget.cpp" line="90"/>
         <source>Feather</source>
         <translation>Lágyítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../app/tooloptionwidget.cpp" line="92"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Toll lágyítása &lt;br&gt;&lt;b&gt;[CTRL]+húzás&lt;/b&gt;&lt;br&gt;használatával változtatható</translation>
     </message>
@@ -2401,87 +2428,87 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Szélek lágyítása?</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="98"/>
+        <location filename="../app/tooloptionwidget.cpp" line="98"/>
         <source>Use Feather</source>
         <translation>Szélek lágyítása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="99"/>
+        <location filename="../app/tooloptionwidget.cpp" line="99"/>
         <source>Enable or disable feathering</source>
         <translation>Szélek lágyításának be- és kikapcsolása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="103"/>
+        <location filename="../app/tooloptionwidget.cpp" line="103"/>
         <source>Bezier</source>
         <translation>Bezier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="104"/>
+        <location filename="../app/tooloptionwidget.cpp" line="104"/>
         <source>Bezier curve fitting</source>
         <translation>Bezier görbéhez igazítva</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="108"/>
+        <location filename="../app/tooloptionwidget.cpp" line="108"/>
         <source>Pressure</source>
         <translation>Nyomás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="109"/>
+        <location filename="../app/tooloptionwidget.cpp" line="109"/>
         <source>Size with pressure</source>
         <translation>Méretezés nyomással</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="113"/>
+        <location filename="../app/tooloptionwidget.cpp" line="113"/>
         <source>Anti-Aliasing</source>
         <translation>Élsimítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="114"/>
+        <location filename="../app/tooloptionwidget.cpp" line="114"/>
         <source>Enable Anti-Aliasing</source>
         <translation>Élsimítás engedélyezése</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="118"/>
+        <location filename="../app/tooloptionwidget.cpp" line="118"/>
         <source>Stabilization level</source>
         <translation>Stabilizálás mértéke</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="134"/>
+        <location filename="../app/tooloptionwidget.cpp" line="134"/>
         <source>No line interpolation</source>
         <translation>Nincs vonaligazítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="139"/>
+        <location filename="../app/tooloptionwidget.cpp" line="139"/>
         <source>Simple line interpolation</source>
         <translation>Egyszerű vonaligazítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="143"/>
+        <location filename="../app/tooloptionwidget.cpp" line="143"/>
         <source>Strong line interpolation</source>
         <translation>Erős vonaligazítás</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="159"/>
+        <location filename="../app/tooloptionwidget.cpp" line="159"/>
         <source>Invisible</source>
         <translation>Láthatatlan</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="160"/>
+        <location filename="../app/tooloptionwidget.cpp" line="160"/>
         <source>Make invisible</source>
         <translation>Legyen láthatatlan</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="165"/>
+        <location filename="../app/tooloptionwidget.cpp" line="165"/>
         <source>Preserve Alpha</source>
         <translation>Alfa megtartása</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="169"/>
+        <location filename="../app/tooloptionwidget.cpp" line="169"/>
         <source>Merge</source>
         <translation>Egyesítés</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="170"/>
+        <location filename="../app/tooloptionwidget.cpp" line="170"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Vektorvonalak egyesítése ha azok szorosan egymás mellet vannak</translation>
     </message>
