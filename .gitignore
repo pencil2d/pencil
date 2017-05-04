@@ -69,4 +69,4 @@ ipch
 .vs
 
 tests/tests
-
+bin/*

@@ -53,8 +53,7 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
-#include "tooloptiondockwidget.h"
-//#include "popupcolorpalettewidget.h"
+#include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
@@ -329,7 +328,6 @@ void MainWindow2::createMenus()
     connect(ui->actionBucket, &QAction::triggered, mToolBox, &ToolBoxWidget::bucketOn );
     connect(ui->actionEyedropper, &QAction::triggered, mToolBox, &ToolBoxWidget::eyedropperOn );
     connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn );
-    connect(ui->actionTogglePalette, &QAction::triggered, mScribbleArea,&ScribbleArea::togglePopupPalette );
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools );
 
     /// --- Window Menu ---
@@ -1012,10 +1010,6 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionBucket->installEventFilter( shortcutfilter );
     ui->actionEyedropper->installEventFilter( shortcutfilter );
     ui->actionEraser->installEventFilter( shortcutfilter );
-
-    ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
-    //mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
-    //mScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
 
     ui->actionNew_Bitmap_Layer->setShortcut( cmdKeySeq( CMD_NEW_BITMAP_LAYER ) );
     ui->actionNew_Vector_Layer->setShortcut( cmdKeySeq( CMD_NEW_VECTOR_LAYER ) );

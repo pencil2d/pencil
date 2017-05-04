@@ -53,8 +53,9 @@ HEADERS += \
     app_util.h \
     errordialog.h \
     imageseqdialog.h \
-    aboutdialog.h
-    # popupcolorpalettewidget.h
+    aboutdialog.h \
+    toolbox.h \
+    tooloptionwidget.h
 
 SOURCES += \
     main.cpp \
@@ -78,8 +79,9 @@ SOURCES += \
     exportmoviedialog.cpp \
     errordialog.cpp \
     imageseqdialog.cpp \
-    aboutdialog.cpp
-    # spopupcolorpalettewidget.cpp
+    aboutdialog.cpp \
+    toolbox.cpp \
+    tooloptionwidget.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -98,9 +100,9 @@ VERSION = 0.5.4 #FIXME: use build number from git
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 GIT {
-    DEFINES += GIT_EXISTS \
-    "GIT_CURRENT_SHA1=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ rev-parse HEAD)" \
-    "GIT_TIMESTAMP=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ log -n 1 --pretty=format:"%cd" --date=format:"%Y-%m-%d_%H:%M:%S")"
+    #DEFINES += GIT_EXISTS \
+    #"GIT_CURRENT_SHA1=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ rev-parse HEAD)" \
+    #"GIT_TIMESTAMP=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ log -n 1 --pretty=format:"%cd" --date=format:"%Y-%m-%d_%H:%M:%S")"
 }
 
 

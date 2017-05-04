@@ -1494,7 +1494,7 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="45"/>
+        <location filename="../core_lib/tool/movetool.cpp" line="48"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
@@ -2016,87 +2016,87 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="97"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="96"/>
         <source>New Bitmap Layer</source>
         <translation>Nova camada Bitmap</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="98"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="97"/>
         <source>New Vector Layer</source>
         <translation>Nova camada Vetorial</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="99"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="98"/>
         <source>New Sound Layer</source>
         <translation>Nova camada de Som</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="100"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="99"/>
         <source>New Camera Layer</source>
         <translation>Nova camada de Câmera</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="303"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="302"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="73"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="72"/>
         <source>Layers:</source>
         <translation>Camadas:</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="48"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="47"/>
         <source>Timeline</source>
         <translation type="unfinished">Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="79"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="78"/>
         <source>Add Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="84"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="83"/>
         <source>Remove Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="102"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="101"/>
         <source>&amp;Layer</source>
         <translation>&amp;Camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="120"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="119"/>
         <source>Keys:</source>
         <translation>Chaves:</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="126"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="125"/>
         <source>Add Frame</source>
         <translation type="unfinished">Adicionar Quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="131"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="130"/>
         <source>Remove Frame</source>
         <translation type="unfinished">Remover Quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="136"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="135"/>
         <source>Duplicate Frame</source>
         <translation type="unfinished">Duplicar Quadro</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="139"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="138"/>
         <source>Onion skin:</source>
         <translation>Transparência:</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="144"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="143"/>
         <source>Toggle match keyframes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timeline.cpp" line="304"/>
+        <location filename="../core_lib/interface/timeline.cpp" line="303"/>
         <source>Are you sure you want to delete layer: </source>
         <translation>Você tem certeza de que deseja apagar a camada: </translation>
     </message>
@@ -2151,122 +2151,122 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>ToolBoxWidget</name>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="36"/>
+        <location filename="../app/toolbox.cpp" line="35"/>
         <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
         <translation>Ferramenta Lápis &lt;b&gt;(N)&lt;/b&gt;: Desenha a lápis</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="37"/>
+        <location filename="../app/toolbox.cpp" line="36"/>
         <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
         <translation>Ferramenta Selecionar &lt;b&gt;(V)&lt;/b&gt;: Seleciona um objeto</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="38"/>
+        <location filename="../app/toolbox.cpp" line="37"/>
         <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
         <translation>Ferramenta Mover &lt;b&gt;(Q)&lt;/b&gt;: Move um objeto</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="39"/>
+        <location filename="../app/toolbox.cpp" line="38"/>
         <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
         <translation>Ferramenta Mão &lt;b&gt;(H)&lt;/b&gt;: Move a tela</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="40"/>
+        <location filename="../app/toolbox.cpp" line="39"/>
         <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
         <translation>Ferramenta Caneta &lt;b&gt;(P)&lt;/b&gt;: Esboça com caneta</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="41"/>
+        <location filename="../app/toolbox.cpp" line="40"/>
         <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
         <translation>Ferramenta Borracha &lt;b&gt;(E)&lt;/b&gt;: Apaga</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="42"/>
+        <location filename="../app/toolbox.cpp" line="41"/>
         <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
         <translation>Ferramenta Polilinha &lt;b&gt;(Y)&lt;/b&gt;: Cria linhas/curvas</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="43"/>
+        <location filename="../app/toolbox.cpp" line="42"/>
         <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
         <translation>Ferramenta Balde de Tinta &lt;b&gt;(K)&lt;/b&gt;: Preenche a área selecionada com uma cor</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="44"/>
+        <location filename="../app/toolbox.cpp" line="43"/>
         <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
         <translation>Feramenta Pincel &lt;b&gt;(B)&lt;/b&gt;: Pinta traços suaves com um pincel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="45"/>
+        <location filename="../app/toolbox.cpp" line="44"/>
         <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
         <translation>Ferramenta Conta-gotas &lt;b&gt;(I)&lt;/b&gt;: Ajusta a cor a partir de uma cena.&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; para acesso instantâneo</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="46"/>
+        <location filename="../app/toolbox.cpp" line="45"/>
         <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
         <translation>Limpar Quadro &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Apaga o conteúdo do quadro selecionado</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="47"/>
+        <location filename="../app/toolbox.cpp" line="46"/>
         <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
         <translation>Ferramenta Borrar &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edita polilinhas/curvas&lt;br&gt;Liquifica pixels de bitmap&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Suave</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="49"/>
+        <location filename="../app/toolbox.cpp" line="48"/>
         <source>Pencil Tool (N)</source>
         <translation>Lápis (N)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="50"/>
+        <location filename="../app/toolbox.cpp" line="49"/>
         <source>Select Tool (V)</source>
         <translation>Selecionar (V)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="51"/>
+        <location filename="../app/toolbox.cpp" line="50"/>
         <source>Move Tool (Q)</source>
         <translation>Mover (Q)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="52"/>
+        <location filename="../app/toolbox.cpp" line="51"/>
         <source>Hand Tool (H)</source>
         <translation>Mão (H)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="53"/>
+        <location filename="../app/toolbox.cpp" line="52"/>
         <source>Pen Tool (P)</source>
         <translation>Caneta (P)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="54"/>
+        <location filename="../app/toolbox.cpp" line="53"/>
         <source>Eraser Tool (E)</source>
         <translation>Borracha (E)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="55"/>
+        <location filename="../app/toolbox.cpp" line="54"/>
         <source>Polyline Tool (Y)</source>
         <translation>Polilinha (Y)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="56"/>
+        <location filename="../app/toolbox.cpp" line="55"/>
         <source>Paint Bucket Tool(K)</source>
         <translation>Balde de Tinta (K)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="57"/>
+        <location filename="../app/toolbox.cpp" line="56"/>
         <source>Brush Tool(B)</source>
         <translation>Pincel (B)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="58"/>
+        <location filename="../app/toolbox.cpp" line="57"/>
         <source>Eyedropper Tool (I)</source>
         <translation>Conta-gotas (I)</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="59"/>
+        <location filename="../app/toolbox.cpp" line="58"/>
         <source>Clear Tool</source>
         <translation>Limpar</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/toolbox.cpp" line="60"/>
+        <location filename="../app/toolbox.cpp" line="59"/>
         <source>Smudge Tool (A)</source>
         <translation>Borrar (A)</translation>
     </message>
@@ -2274,118 +2274,118 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="82"/>
+        <location filename="../app/tooloptionwidget.cpp" line="82"/>
         <source>Brush</source>
         <translation>Pincel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="164"/>
+        <location filename="../app/tooloptionwidget.cpp" line="164"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="20"/>
+        <location filename="../app/tooloptionwidget.cpp" line="20"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Opções</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="84"/>
+        <location filename="../app/tooloptionwidget.cpp" line="84"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Ajustar Largura da Caneta &lt;br&gt;&lt;b&gt;[SHIFT]+arrastar&lt;/b&gt;&lt;br&gt;para ajuste rápido</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="90"/>
+        <location filename="../app/tooloptionwidget.cpp" line="90"/>
         <source>Feather</source>
         <translation>Suavização</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="92"/>
+        <location filename="../app/tooloptionwidget.cpp" line="92"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Ajustar suavização da Caneta &lt;br&gt;&lt;b&gt;[CTRL]+arrastar&lt;/b&gt;&lt;br&gt;para ajuste rápido</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="98"/>
+        <location filename="../app/tooloptionwidget.cpp" line="98"/>
         <source>Use Feather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="99"/>
+        <location filename="../app/tooloptionwidget.cpp" line="99"/>
         <source>Enable or disable feathering</source>
         <translation>Ligar ou desligar suavização</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="103"/>
+        <location filename="../app/tooloptionwidget.cpp" line="103"/>
         <source>Bezier</source>
         <translation>Bézier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="104"/>
+        <location filename="../app/tooloptionwidget.cpp" line="104"/>
         <source>Bezier curve fitting</source>
         <translation>Ajuste à curva bézier</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="108"/>
+        <location filename="../app/tooloptionwidget.cpp" line="108"/>
         <source>Pressure</source>
         <translation>Pressão</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="109"/>
+        <location filename="../app/tooloptionwidget.cpp" line="109"/>
         <source>Size with pressure</source>
         <translation>Ajustar tamanho usando pressão</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="113"/>
+        <location filename="../app/tooloptionwidget.cpp" line="113"/>
         <source>Anti-Aliasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="114"/>
+        <location filename="../app/tooloptionwidget.cpp" line="114"/>
         <source>Enable Anti-Aliasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="118"/>
+        <location filename="../app/tooloptionwidget.cpp" line="118"/>
         <source>Stabilization level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="134"/>
+        <location filename="../app/tooloptionwidget.cpp" line="134"/>
         <source>No line interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="139"/>
+        <location filename="../app/tooloptionwidget.cpp" line="139"/>
         <source>Simple line interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="143"/>
+        <location filename="../app/tooloptionwidget.cpp" line="143"/>
         <source>Strong line interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="159"/>
+        <location filename="../app/tooloptionwidget.cpp" line="159"/>
         <source>Invisible</source>
         <translation>Invisível</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="160"/>
+        <location filename="../app/tooloptionwidget.cpp" line="160"/>
         <source>Make invisible</source>
         <translation>Tornar invisivel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="165"/>
+        <location filename="../app/tooloptionwidget.cpp" line="165"/>
         <source>Preserve Alpha</source>
         <translation>Preservar Alfa</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="169"/>
+        <location filename="../app/tooloptionwidget.cpp" line="169"/>
         <source>Merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/tooloptiondockwidget.cpp" line="170"/>
+        <location filename="../app/tooloptionwidget.cpp" line="170"/>
         <source>Merge vector lines when they are close together</source>
         <translation type="unfinished"></translation>
     </message>

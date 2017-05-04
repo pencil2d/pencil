@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include <QGridLayout>
 
 #include "spinslider.h"
-#include "tooloptiondockwidget.h"
 #include "toolbox.h"
 #include "editor.h"
 #include "toolmanager.h"
