@@ -158,6 +158,7 @@ void MainWindow2::createDockWidgets()
 
     mColorPalette = new ColorPaletteWidget( this );
     mColorPalette->setObjectName( "ColorPalette" );
+    mColorPalette->init( mEditor->preference() );
 
     mDisplayOptionWidget = new DisplayOptionWidget( this );
     mDisplayOptionWidget->setObjectName( "DisplayOption" );

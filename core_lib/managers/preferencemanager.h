@@ -42,6 +42,7 @@ enum class SETTING
     QUICK_SIZING,
     MULTILAYER_ONION,
     LANGUAGE,
+    COLOR_PALETTE_BACKGROUND_STYLE,
     COUNT, // COUNT must always be the last one.
 };
 

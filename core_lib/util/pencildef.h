@@ -172,4 +172,6 @@ enum BackgroundStyle
 
 #define SETTING_LANGUAGE        "Language"
 
+#define SETTING_COLOR_PALETTE_BACKGROUND_STYLE  "ColorPaletteBackground"
+
 #endif // PENCILDEF_H

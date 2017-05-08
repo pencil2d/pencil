@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "colorpalettewidget.h"
 #include "ui_colorpalette.h"
+#include "preferencemanager.h"
 
 
 ColorPaletteWidget::ColorPaletteWidget( QWidget* pParent ) : BaseDockWidget( pParent, Qt::Tool )
@@ -54,6 +55,14 @@ ColorPaletteWidget::ColorPaletteWidget( QWidget* pParent ) : BaseDockWidget( pPa
     connect( ui->palettePref, &QToolButton::clicked, this, &ColorPaletteWidget::palettePreferences );
 
     ui->colorListWidget->setStyleSheet(QString("QListWidget { background-image: url(:/background/checkerboard.png); } "));
+}
+
+void ColorPaletteWidget::init(PreferenceManager *prefs)
+{
+    mPrefs = prefs;
+    connect(mPrefs, &PreferenceManager::optionChanged, this, &ColorPaletteWidget::settingUpdated);
+    loadBackgroundStyle();
+    update();
 }
 
 void ColorPaletteWidget::initUI()
@@ -286,6 +295,34 @@ void ColorPaletteWidget::updateGridUI()
         ui->colorListWidget->setGridSize(QSize(-1,-1));
     }
     ui->colorListWidget->setIconSize(iconSize);
+}
+
+void ColorPaletteWidget::settingUpdated(SETTING setting)
+{
+    switch ( setting )
+    {
+    case SETTING::COLOR_PALETTE_BACKGROUND_STYLE:
+        loadBackgroundStyle();
+        update();
+        break;
+
+    default:
+        break;
+    }
+}
+
+void ColorPaletteWidget::loadBackgroundStyle()
+{
+    QString bgName = mPrefs->getString(SETTING::COLOR_PALETTE_BACKGROUND_STYLE);
+
+    if ( bgName == "white" )
+    {
+        ui->colorListWidget->setStyleSheet(QString("QListWidget { background-color:white; } "));
+    }
+    else if ( bgName == "checkerboard" )
+    {
+        ui->colorListWidget->setStyleSheet(QString("QListWidget { background-image: url(:/background/checkerboard.png); } "));
+    }
 }
 
 void ColorPaletteWidget::clickAddColorButton()
