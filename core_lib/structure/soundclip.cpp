@@ -4,9 +4,10 @@
 #include <QMediaPlayer>
 #include "soundplayer.h"
 
-SoundClip::SoundClip()
+SoundClip::SoundClip() :
+    mDuration(0)
 {
-    int kk = 0;
+
 }
 
 SoundClip::~SoundClip()
@@ -78,4 +79,19 @@ void SoundClip::stop()
     {
         mPlayer->stop();
     }
+}
+
+int64_t SoundClip::duration() const
+{
+    return mDuration;
+}
+
+void SoundClip::setDuration(const int64_t &duration)
+{
+    mDuration = duration;
+}
+
+void SoundClip::updateLength(int fps)
+{
+    setLength(mDuration * fps / 1000.0);
 }

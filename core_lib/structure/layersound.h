@@ -32,6 +32,8 @@ public:
 
     Status loadSoundAtFrame( QString filePathString, int frame );
 
+    void updateFrameLengths(int fps);
+
     // These functions will be removed later.
     // Don't use them!!
     int getSoundSize() { return 0; }

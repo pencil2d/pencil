@@ -28,6 +28,7 @@ void SoundPlayer::init( SoundClip* clip )
 
 void SoundPlayer::onKeyFrameDestroy( KeyFrame* keyFrame )
 {
+    Q_UNUSED(keyFrame)
 }
 
 bool SoundPlayer::isValid()

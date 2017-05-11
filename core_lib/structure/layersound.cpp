@@ -49,6 +49,15 @@ Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
     return Status::OK;
 }
 
+void LayerSound::updateFrameLengths(int fps)
+{
+    foreachKeyFrame( [&fps] (KeyFrame* pKeyFrame)
+    {
+        auto soundClip = dynamic_cast<SoundClip *>(pKeyFrame);
+        soundClip->updateLength(fps);
+    } );
+}
+
 QDomElement LayerSound::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement( "layer" );
@@ -110,5 +119,7 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
 
 Status LayerSound::saveKeyFrame( KeyFrame*, QString path )
 {
+    Q_UNUSED(path)
+
     return Status::OK;
 }
