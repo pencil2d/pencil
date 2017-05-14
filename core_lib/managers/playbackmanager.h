@@ -34,7 +34,7 @@ public:
     void enableRangedPlayback( bool b );
     void setRangedStartFrame( int frame ) { mMarkInFrame = frame; }
     void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
-    void enbaleSound( bool b ) { mIsPlaySound = b; }
+    void enbaleSound( bool b );
 
 Q_SIGNALS:
     void fpsChanged( int fps );
@@ -52,7 +52,7 @@ private:
     int mEndFrame = 60;
 
     bool mIsLooping = false;
-    bool mIsPlaySound = false;
+    bool mIsPlaySound = true;
     
     bool mIsRangedPlayback = false;
     int mMarkInFrame = 1;

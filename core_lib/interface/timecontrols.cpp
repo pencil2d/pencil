@@ -117,6 +117,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled );
 
     connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
+    connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon );
     connect( mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick );
 }
 
@@ -237,6 +238,18 @@ void TimeControls::preLoopStartClick(int i) {
     mLoopEndSpinBox->setMinimum( i + 1 );
 
     emit loopStartClick(i);
+}
+
+void TimeControls::updateSoundIcon(bool soundEnabled)
+{
+    if(soundEnabled)
+    {
+        mSoundButton->setIcon( QIcon(":icons/controls/sound.png") );
+    }
+    else
+    {
+        mSoundButton->setIcon( QIcon(":icons/controls/sound-disabled.png") );
+    }
 }
 
 void TimeControls::updateLength(int frameLength) {
