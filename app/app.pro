@@ -124,6 +124,21 @@ win32 {
     RC_FILE = $$PWD/../pencil.rc
 }
 
+linux {
+    target.path = $${PREFIX}/bin
+
+    mimepackage.files = ../pencil2d.xml
+    mimepackage.path = $${PREFIX}/share/mime/packages
+
+    desktopentry.files = ../pencil2d.desktop
+    desktopentry.path = $${PREFIX}/share/applications
+
+    icon.files = ../pencil2d.png
+    icon.path = $${PREFIX}/share/icons/hicolor/128x128/apps
+
+    INSTALLS += target mimepackage desktopentry icon
+}
+
 
 
 # --- core_lib ---

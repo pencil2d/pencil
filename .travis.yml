@@ -72,13 +72,11 @@ after_success:
   - echo "cleaning..."
   - make clean
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      mv bin Pencil2D;
+      make INSTALL_ROOT="${PWD}/Pencil2D" install;
       echo "Creating AppImage...";
-      cp "$TRAVIS_BUILD_DIR/pencil2d.desktop" Pencil2D/pencil2d.desktop;
-      cp "$TRAVIS_BUILD_DIR/pencil2d.png" Pencil2D/pencil2d.png;
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
-      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/pencil2d.desktop -appimage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/share/applications/pencil2d.desktop -appimage;
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
