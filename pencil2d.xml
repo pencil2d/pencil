@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-pencil2d-pcl">
+    <comment>Pencil Animation File</comment>
+    <glob pattern="*.pcl"/>
+    <magic priority="90">
+      <match type="string" offset="0" value="&lt;!DOCTYPE PencilDocument&gt;"/>
+    </magic>
+  </mime-type>
+  <mime-type type="application/x-pencil2d-pclx">
+    <comment>New Pencil Animation File</comment>
+    <glob pattern="*.pclx"/>
+  </mime-type>
+</mime-info>

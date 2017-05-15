@@ -5,5 +5,6 @@ Name=Pencil2D
 GenericName=Animation Software
 Comment=Create traditional hand-drawn animation using both bitmap and vector graphics
 Icon=pencil2d
-Exec=Pencil2D
+Exec=Pencil2D %f
+MimeTypes=application/x-pencil-pcl;application/x-pencil-pclx;
 Categories=AudioVideo;AudioVideoEditing;Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;
