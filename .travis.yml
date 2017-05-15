@@ -63,14 +63,7 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - echo "Does GIT EXIST?"
-  - 'if git --version &> /dev/null; then
-      echo "YES";
-      qmake ../ CONFIG+=GIT;
-    else
-      echo "NO";
-      qmake ../;
-    fi'
+  - qmake ../ CONFIG+=GIT
   - make;
 
 after_success:
