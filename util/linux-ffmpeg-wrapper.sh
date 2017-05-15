@@ -4,4 +4,4 @@
 
 prefix="$(dirname $(dirname $(readlink -e $0)))"
 export LD_LIBRARY_PATH="${prefix}/lib:${LD_LIBRARY_PATH}"
-"${prefix}/plugins/ffmpeg.bin" $@
+exec "${prefix}/plugins/ffmpeg.bin" $@
