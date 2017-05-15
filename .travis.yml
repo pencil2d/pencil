@@ -22,6 +22,7 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     - ubuntu-sdk-team
+    - trusty-media
     packages:
     - g++-5
     - build-essential
@@ -32,6 +33,7 @@ addons:
     - libqt5svg5-dev
     - libqt5xmlpatterns5-dev
     - bsdtar
+    - ffmpeg
 
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -75,9 +77,10 @@ after_success:
       make INSTALL_ROOT="${PWD}/Pencil2D" install;
       rm -rf Pencil2D/usr/lib;
       echo "Creating AppImage...";
+      install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg;
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
-      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -appimage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -appimage;
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
