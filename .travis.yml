@@ -71,8 +71,6 @@ script:
 after_success:
   - echo "look for build folder and zip file"
   - ls
-  - echo "cleaning..."
-  - make clean
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
       make INSTALL_ROOT="${PWD}/Pencil2D" install;
       rm -rf Pencil2D/usr/lib;
@@ -84,6 +82,8 @@ after_success:
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      echo "cleaning...";
+      make clean;
       mv bin Pencil2D;
       echo "Fixing info.plist";
       cd Pencil2D;
