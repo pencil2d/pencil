@@ -63,7 +63,7 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - qmake ../ CONFIG+=GIT
+  - qmake ../ PREFIX=/usr CONFIG+=GIT
   - make;
 
 after_success:
@@ -73,10 +73,11 @@ after_success:
   - make clean
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
       make INSTALL_ROOT="${PWD}/Pencil2D" install;
+      rm -rf Pencil2D/usr/lib;
       echo "Creating AppImage...";
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
-      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/share/applications/pencil2d.desktop -appimage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -appimage;
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
