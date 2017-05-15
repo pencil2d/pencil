@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.1
+Type=Application
+Name=Pencil2D
+GenericName=Animation Software
+Comment=Create traditional hand-drawn animation using both bitmap and vector graphics
+Icon=pencil2d
+Exec=Pencil2D
+Categories=AudioVideo;AudioVideoEditing;Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;
