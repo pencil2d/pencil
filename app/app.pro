@@ -93,9 +93,9 @@ FORMS += \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
     ui/displayoption.ui \
-    ui/exportmoviedialog.ui \
     ui/errordialog.ui \
-    ui/importexportdialog.ui
+    ui/importexportdialog.ui \
+    ui/exportmovieoptions.ui
 
 DEPENDPATH += .
 
