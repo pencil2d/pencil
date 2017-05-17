@@ -13,4 +13,11 @@
     <comment xml:lang="de">Neue Pencil2D-Animationsdatei</comment>
     <glob pattern="*.pclx"/>
   </mime-type>
+  <mime-type type="application/x-pencil2d-palette">
+    <comment>Pencil2D Palette File</comment>
+    <comment xml:lang="de">Pencil2D-Palettendatei</comment>
+    <magic priority="90">
+      <match type="string" offset="0" value="&lt;!DOCTYPE PencilPalette&gt;"/>
+    </magic>
+  </mime-type>
 </mime-info>
