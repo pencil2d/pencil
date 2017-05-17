@@ -89,7 +89,8 @@ QString FileDialog::getLastSavePath( FileType fileType )
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup( "LastSavePath" );
 
-    return setting.value( toSettingKey( fileType ), QDir::homePath() ).toString();
+    return setting.value( toSettingKey( fileType ),
+                          QDir::homePath() + "/" + defaultFileName( fileType) ).toString();
 }
 
 void FileDialog::setLastSavePath( FileType fileType, QString savePath )
@@ -139,7 +140,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
         case FileType::MOVIE: return PENCIL_MOVIE_EXT;
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
-        case FileType::PALETTE: return QString();
+        case FileType::PALETTE: return tr( "Palette (*.xml)" );
         default: Q_ASSERT( false );
     }
     return "";
@@ -154,7 +155,23 @@ QString FileDialog::saveFileFilters( FileType fileType )
         case FileType::IMAGE_SEQUENCE: return QString();
         case FileType::MOVIE: return tr( "MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)" );
         case FileType::SOUND: return QString();
-        case FileType::PALETTE: return QString();
+        case FileType::PALETTE: return tr( "Palette (*.xml)" );
+        default: Q_ASSERT( false );
+    }
+    return "";
+}
+
+QString FileDialog::defaultFileName( FileType fileType )
+{
+
+    switch ( fileType )
+    {
+        case FileType::DOCUMENT: return tr( PFF_DEFAULT_FILENAME );
+        case FileType::IMAGE: return tr( "untitled.png" );
+        case FileType::IMAGE_SEQUENCE: return tr( "untitled.png" );
+        case FileType::MOVIE: return tr( "untitled.mp4" );
+        case FileType::SOUND: return tr( "untitled.wav" );
+        case FileType::PALETTE: return tr( "untitled.xml" );
         default: Q_ASSERT( false );
     }
     return "";

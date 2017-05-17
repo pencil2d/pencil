@@ -34,6 +34,7 @@ private:
     QString saveDialogTitle( FileType fileType );
     QString openFileFilters( FileType fileType );
     QString saveFileFilters( FileType fileType );
+    QString defaultFileName( FileType fileType );
 
     QString toSettingKey( FileType fileType);
 

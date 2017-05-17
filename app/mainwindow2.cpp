@@ -703,14 +703,14 @@ void MainWindow2::exportImageSequence()
     }
 
     // Path
+    FileDialog fileDialog( this );
     /* TODO: adapt this to filedialogex
-    QString strInitPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+    QString strInitPath = fileDialog.getLastSavePath( FileType::IMAGE_SEQUENCE );
 
     QFileInfo info( strInitPath );
     strInitPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
     */
 
-    FileDialog fileDialog( this );
     QString strFilePath = fileDialog.saveFile( FileType::IMAGE_SEQUENCE );
     if ( strFilePath.isEmpty() )
     {
@@ -784,16 +784,16 @@ void MainWindow2::exportImage()
 
 
     // Path
+    FileDialog fileDialog( this );
     /* TODO: adapt this part to filedialogex
-    QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+    QString initPath = fileDialog.getLastSavePath( FileType::IMAGE );
 
     QFileInfo info( initPath );
     initPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
     */
 
 
-    FileDialog FileDialog( this );
-    QString filePath = FileDialog.saveFile( FileType::IMAGE );
+    QString filePath = fileDialog.saveFile( FileType::IMAGE );
     if ( filePath.isEmpty() )
     {
         qDebug() << "empty file";
