@@ -5,7 +5,7 @@
 
 enum class FileType
 {
-    DOCUMENT,
+    ANIMATION,
     IMAGE,
     IMAGE_SEQUENCE,
     MOVIE,

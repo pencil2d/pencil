@@ -105,7 +105,7 @@ QString FileDialog::openDialogTitle( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::DOCUMENT: return tr( "Open document" );
+        case FileType::ANIMATION: return tr( "Open animation" );
         case FileType::IMAGE: return tr( "Import image" );
         case FileType::IMAGE_SEQUENCE: return tr( "Import image sequence" );
         case FileType::MOVIE: return tr( "Import movie" );
@@ -120,7 +120,7 @@ QString FileDialog::saveDialogTitle( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::DOCUMENT: return tr( "Save document" );
+        case FileType::ANIMATION: return tr( "Save animation" );
         case FileType::IMAGE: return tr( "Export image" );
         case FileType::IMAGE_SEQUENCE: return tr( "Export image sequence" );
         case FileType::MOVIE: return tr( "Export movie" );
@@ -135,7 +135,7 @@ QString FileDialog::openFileFilters( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::DOCUMENT: return tr( PFF_OPEN_ALL_FILE_FILTER );
+        case FileType::ANIMATION: return tr( PFF_OPEN_ALL_FILE_FILTER );
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
         case FileType::MOVIE: return PENCIL_MOVIE_EXT;
@@ -150,7 +150,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::DOCUMENT: return tr( PFF_SAVE_ALL_FILE_FILTER );
+        case FileType::ANIMATION: return tr( PFF_SAVE_ALL_FILE_FILTER );
         case FileType::IMAGE: return QString();
         case FileType::IMAGE_SEQUENCE: return QString();
         case FileType::MOVIE: return tr( "MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)" );
@@ -166,7 +166,7 @@ QString FileDialog::defaultFileName( FileType fileType )
 
     switch ( fileType )
     {
-        case FileType::DOCUMENT: return tr( PFF_DEFAULT_FILENAME );
+        case FileType::ANIMATION: return tr( PFF_DEFAULT_FILENAME );
         case FileType::IMAGE: return tr( "untitled.png" );
         case FileType::IMAGE_SEQUENCE: return tr( "untitled.png" );
         case FileType::MOVIE: return tr( "untitled.mp4" );
@@ -181,7 +181,7 @@ QString FileDialog::toSettingKey( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::DOCUMENT: return "Document";
+        case FileType::ANIMATION: return "Animation";
         case FileType::IMAGE: return "Image";
         case FileType::IMAGE_SEQUENCE: return "ImageSequence";
         case FileType::MOVIE: return "Movie";

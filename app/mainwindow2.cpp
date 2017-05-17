@@ -422,7 +422,7 @@ void MainWindow2::openDocument()
     if ( maybeSave() )
     {
         FileDialog fileDialog( this );
-        QString fileName = fileDialog.openFile( FileType::DOCUMENT );
+        QString fileName = fileDialog.openFile( FileType::ANIMATION );
         if ( fileName.isEmpty() )
         {
             return;
@@ -445,7 +445,7 @@ void MainWindow2::openDocument()
 bool MainWindow2::saveAsNewDocument()
 {
     FileDialog fileDialog( this );
-    QString fileName = fileDialog.saveFile( FileType::DOCUMENT );
+    QString fileName = fileDialog.saveFile( FileType::ANIMATION );
     if ( fileName.isEmpty() )
     {
         return false;
