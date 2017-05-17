@@ -1,13 +1,13 @@
 #ifndef EXPORTIMAGESEQDIALOG_H
 #define EXPORTIMAGESEQDIALOG_H
 
-#include <QDialog>
+#include "importexportdialog.h"
 
 namespace Ui {
-class ExportImageSeqDialog;
+class ExportImageSeqOptions;
 }
 
-class ExportImageSeqDialog : public QDialog
+class ExportImageSeqDialog : public ImportExportDialog
 {
     Q_OBJECT
 
@@ -22,8 +22,15 @@ public:
 
     QString getExportFormat();
 
+protected:
+    Mode getMode();
+    FileType getFileType();
+
+private slots:
+    void formatChanged(QString format);
+
 private:
-    Ui::ExportImageSeqDialog* ui;
+    Ui::ExportImageSeqOptions* ui;
 };
 
 #endif // EXPORTIMAGESEQDIALOG_H

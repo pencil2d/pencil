@@ -672,8 +672,6 @@ void MainWindow2::importMovie()
 
 void MainWindow2::exportImageSequence()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
     // Get the camera layer
     int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
@@ -693,28 +691,13 @@ void MainWindow2::exportImageSequence()
     }
     dialog->exec();
 
+    QString strFilePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
 
     if ( dialog->result() == QDialog::Rejected )
     {
-        return; // false;
-    }
-
-    // Path
-    FileDialog fileDialog( this );
-    /* TODO: adapt this to filedialogex
-    QString strInitPath = fileDialog.getLastSavePath( FileType::IMAGE_SEQUENCE );
-
-    QFileInfo info( strInitPath );
-    strInitPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
-    */
-
-    QString strFilePath = fileDialog.saveFile( FileType::IMAGE_SEQUENCE );
-    if ( strFilePath.isEmpty() )
-    {
-        // TODO:
         return; // false;
     }
 

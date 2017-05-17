@@ -87,7 +87,6 @@ SOURCES += \
 
 FORMS += \
     ui/mainwindow2.ui \
-    ui/exportimageseqdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
@@ -95,7 +94,8 @@ FORMS += \
     ui/displayoption.ui \
     ui/errordialog.ui \
     ui/importexportdialog.ui \
-    ui/exportmovieoptions.ui
+    ui/exportmovieoptions.ui \
+    ui/exportimageseqoptions.ui
 
 DEPENDPATH += .
 

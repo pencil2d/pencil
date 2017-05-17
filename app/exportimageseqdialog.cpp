@@ -1,16 +1,16 @@
 #include "exportimageseqdialog.h"
-#include "ui_exportimageseqdialog.h"
+#include "ui_exportimageseqoptions.h"
 
 ExportImageSeqDialog::ExportImageSeqDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ExportImageSeqDialog)
+    ImportExportDialog(parent),
+    ui(new Ui::ExportImageSeqOptions)
 {
-    ui->setupUi(this);
+    ui->setupUi( getOptionsGroupBox() );
+    init();
+    setWindowTitle( tr( "Export image sequence" ) );
 
-    connect( ui->buttonBox, &QDialogButtonBox::accepted, [=]
-    {
-
-    });
+    connect( ui->formatComboBox, &QComboBox::currentTextChanged, this, &ExportImageSeqDialog::formatChanged );
+    formatChanged( getExportFormat() ); // Make sure file extension matches format combobox
 }
 
 ExportImageSeqDialog::~ExportImageSeqDialog()
@@ -37,4 +37,19 @@ bool ExportImageSeqDialog::getTransparency()
 QString ExportImageSeqDialog::getExportFormat()
 {
     return ui->formatComboBox->currentText();
+}
+
+ImportExportDialog::Mode ExportImageSeqDialog::getMode()
+{
+    return ImportExportDialog::Export;
+}
+
+FileType ExportImageSeqDialog::getFileType()
+{
+    return FileType::IMAGE_SEQUENCE;
+}
+
+void ExportImageSeqDialog::formatChanged(QString format)
+{
+    setFileExtension( format.toLower() );
 }

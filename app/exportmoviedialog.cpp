@@ -1,6 +1,6 @@
 #include "exportmoviedialog.h"
-#include "ui_importexportdialog.h"
 #include "ui_exportmovieoptions.h"
+#include "util.h"
 
 ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
     ImportExportDialog(parent),
