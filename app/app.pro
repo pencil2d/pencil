@@ -51,12 +51,12 @@ HEADERS += \
     exportmoviedialog.h \
     app_util.h \
     errordialog.h \
-    imageseqdialog.h \
     aboutdialog.h \
     toolbox.h \
     tooloptionwidget.h \
     importexportdialog.h \
-    exportimagedialog.h
+    exportimagedialog.h \
+    importimageseqdialog.h
 
 SOURCES += \
     main.cpp \
@@ -78,12 +78,12 @@ SOURCES += \
     pencilapplication.cpp \
     exportmoviedialog.cpp \
     errordialog.cpp \
-    imageseqdialog.cpp \
     aboutdialog.cpp \
     toolbox.cpp \
     tooloptionwidget.cpp \
     importexportdialog.cpp \
-    exportimagedialog.cpp
+    exportimagedialog.cpp \
+    importimageseqdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -95,7 +95,8 @@ FORMS += \
     ui/errordialog.ui \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \
-    ui/exportimageoptions.ui
+    ui/exportimageoptions.ui \
+    ui/importimageseqoptions.ui
 
 DEPENDPATH += .
 

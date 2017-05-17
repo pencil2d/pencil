@@ -59,7 +59,7 @@ GNU General Public License for more details.
 #include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
-#include "imageseqdialog.h"
+#include "importimageseqdialog.h"
 #include "aboutdialog.h"
 
 #include "colorbox.h"
@@ -637,24 +637,29 @@ void MainWindow2::importImage()
 
 void MainWindow2::importImageSequence()
 {
-    FileDialog fileDialog( this );
-    QStringList files = fileDialog.openFiles( FileType::IMAGE_SEQUENCE );
-
-    ImageSeqDialog* imageSeqDialog = new ImageSeqDialog( this );
-
-    imageSeqDialog->init();
+    auto imageSeqDialog = new ImportImageSeqDialog( this );
     imageSeqDialog->exec();
+    if ( imageSeqDialog->result() == QDialog::Rejected )
+    {
+        return;
+    }
+
+    QStringList files = imageSeqDialog->getFilePaths();
+    int number = imageSeqDialog->getSpace();
     for ( QString strImgFile : files )
     {
         if ( strImgFile.endsWith( ".png" ) ||
              strImgFile.endsWith( ".jpg" ) ||
              strImgFile.endsWith( ".jpeg" ) ||
-             strImgFile.endsWith(".tif") ||
-             strImgFile.endsWith(".tiff") ||
+             strImgFile.endsWith( ".tif" ) ||
+             strImgFile.endsWith( ".tiff" ) ||
              strImgFile.endsWith( ".bmp" ) )
         {
-            if (imageSeqDialog->result() == QDialog::Accepted)
-                imageSeqDialog->seqNumber(strImgFile, mEditor);
+            mEditor->importImage( strImgFile );
+            for ( int i = 1; i < number; i++ )
+            {
+                mEditor->scrubForward();
+            }
         }
     }
 }
