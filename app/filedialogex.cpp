@@ -18,7 +18,7 @@ QString FileDialog::openFile(FileType fileType)
 {
     QString strTitle = openDialogTitle( fileType );
     QString strInitialFilePath = getLastOpenPath( fileType );
-    QString strFilter = saveFileFilters( fileType );
+    QString strFilter = openFileFilters( fileType );
 
     QString filePath = QFileDialog::getOpenFileName( mRoot,
                                                      strTitle,
@@ -30,6 +30,24 @@ QString FileDialog::openFile(FileType fileType)
     }
 
     return filePath;
+}
+
+QStringList FileDialog::openFiles(FileType fileType)
+{
+    QString strTitle = openDialogTitle( fileType );
+    QString strInitialFilePath = getLastOpenPath( fileType );
+    QString strFilter = openFileFilters( fileType );
+
+    QStringList filePaths = QFileDialog::getOpenFileNames( mRoot,
+                                                           strTitle,
+                                                           strInitialFilePath,
+                                                           strFilter );
+    if ( !filePaths.isEmpty() && !filePaths.first().isEmpty() )
+    {
+        setLastOpenPath( fileType, filePaths.first() );
+    }
+
+    return filePaths;
 }
 
 QString FileDialog::saveFile( FileType fileType )
@@ -118,7 +136,7 @@ QString FileDialog::openFileFilters( FileType fileType )
     {
         case FileType::DOCUMENT: return tr( PFF_OPEN_ALL_FILE_FILTER );
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
-        case FileType::IMAGE_SEQUENCE: return tr( "Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)" );
+        case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
         case FileType::MOVIE: return PENCIL_MOVIE_EXT;
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
         case FileType::PALETTE: return QString();

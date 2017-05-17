@@ -21,6 +21,7 @@ public:
     ~FileDialog();
 
     QString openFile( FileType fileType );
+    QStringList openFiles( FileType fileType );
     QString saveFile( FileType fileType );
 
     QString getLastOpenPath( FileType fileType );
