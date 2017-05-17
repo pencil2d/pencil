@@ -34,7 +34,6 @@ INCLUDEPATH += \
 HEADERS += \
     mainwindow2.h \
     shortcutfilter.h \
-    exportimageseqdialog.h \
     timeline2.h \
     actioncommands.h \
     preferencesdialog.h \
@@ -56,13 +55,13 @@ HEADERS += \
     aboutdialog.h \
     toolbox.h \
     tooloptionwidget.h \
-    importexportdialog.h
+    importexportdialog.h \
+    exportimagedialog.h
 
 SOURCES += \
     main.cpp \
     mainwindow2.cpp \
     shortcutfilter.cpp \
-    exportimageseqdialog.cpp \
     timeline2.cpp \
     actioncommands.cpp \
     preferencesdialog.cpp \
@@ -83,7 +82,8 @@ SOURCES += \
     aboutdialog.cpp \
     toolbox.cpp \
     tooloptionwidget.cpp \
-    importexportdialog.cpp
+    importexportdialog.cpp \
+    exportimagedialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -95,7 +95,7 @@ FORMS += \
     ui/errordialog.ui \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \
-    ui/exportimageseqoptions.ui
+    ui/exportimageoptions.ui
 
 DEPENDPATH += .
 

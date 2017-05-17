@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ExportImageSeqOptions</class>
- <widget class="QGroupBox" name="ExportImageSeqOptions">
+ <class>ExportImageOptions</class>
+ <widget class="QGroupBox" name="ExportImageOptions">
   <property name="sizePolicy">
    <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
     <horstretch>0</horstretch>

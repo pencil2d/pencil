@@ -1,19 +1,19 @@
-#ifndef EXPORTIMAGESEQDIALOG_H
-#define EXPORTIMAGESEQDIALOG_H
+#ifndef EXPORTIMAGEDIALOG_H
+#define EXPORTIMAGEDIALOG_H
 
 #include "importexportdialog.h"
 
 namespace Ui {
-class ExportImageSeqOptions;
+class ExportImageOptions;
 }
 
-class ExportImageSeqDialog : public ImportExportDialog
+class ExportImageDialog : public ImportExportDialog
 {
     Q_OBJECT
 
 public:
-    explicit ExportImageSeqDialog(QWidget* parent = 0);
-    ~ExportImageSeqDialog();
+    explicit ExportImageDialog(QWidget* parent = 0, bool seq = false);
+    ~ExportImageDialog();
 
     void  setExportSize( QSize size );
     QSize getExportSize();
@@ -30,7 +30,9 @@ private slots:
     void formatChanged(QString format);
 
 private:
-    Ui::ExportImageSeqOptions* ui;
+    Ui::ExportImageOptions* ui;
+
+    FileType m_fileType;
 };
 
-#endif // EXPORTIMAGESEQDIALOG_H
+#endif // EXPORTIMAGEDIALOG_H

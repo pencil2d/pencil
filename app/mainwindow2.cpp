@@ -69,7 +69,7 @@ GNU General Public License for more details.
 #include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
 
-#include "exportimageseqdialog.h"
+#include "exportimagedialog.h"
 #include "exportmoviedialog.h"
 #include "shortcutfilter.h"
 #include "filedialogex.h"
@@ -678,7 +678,7 @@ void MainWindow2::exportImageSequence()
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
 
     // Options
-    auto dialog =  new ExportImageSeqDialog( this );
+    auto dialog =  new ExportImageDialog( this, true );
     OnScopeExit( dialog->deleteLater() );
 
     if(cameraLayer != nullptr)
@@ -743,7 +743,7 @@ void MainWindow2::exportImage()
 
 
     // Options
-    auto dialog =  new ExportImageSeqDialog( this );
+    auto dialog =  new ExportImageDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
     if(cameraLayer != nullptr)
@@ -756,6 +756,7 @@ void MainWindow2::exportImage()
     }
     dialog->exec();
 
+    QString filePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
@@ -763,24 +764,6 @@ void MainWindow2::exportImage()
     if ( dialog->result() == QDialog::Rejected )
     {
         return; // false;
-    }
-
-
-    // Path
-    FileDialog fileDialog( this );
-    /* TODO: adapt this part to filedialogex
-    QString initPath = fileDialog.getLastSavePath( FileType::IMAGE );
-
-    QFileInfo info( initPath );
-    initPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
-    */
-
-
-    QString filePath = fileDialog.saveFile( FileType::IMAGE );
-    if ( filePath.isEmpty() )
-    {
-        qDebug() << "empty file";
-        return;// false;
     }
 
 
