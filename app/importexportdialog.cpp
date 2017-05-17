@@ -64,23 +64,30 @@ void ImportExportDialog::setFileExtension(QString extension)
 
 void ImportExportDialog::browse()
 {
+    QStringList filePaths;
     switch (getMode())
     {
         case Import:
             if (getFileType() == FileType::IMAGE_SEQUENCE)
             {
-                m_filePaths = m_fileDialog->openFiles( FileType::IMAGE_SEQUENCE );
+                filePaths = m_fileDialog->openFiles( FileType::IMAGE_SEQUENCE );
                 break;
             }
 
-            m_filePaths = QStringList(m_fileDialog->openFile(getFileType()));
+            filePaths = QStringList(m_fileDialog->openFile(getFileType()));
             break;
         case Export:
-            m_filePaths = QStringList(m_fileDialog->saveFile(getFileType()));
+            filePaths = QStringList(m_fileDialog->saveFile(getFileType()));
             break;
         default:
             Q_ASSERT(false);
     }
 
-    ui->fileEdit->setText("\"" + m_filePaths.join("\" \"") + "\"");
+    if (filePaths.isEmpty() || filePaths.first().isEmpty())
+    {
+        return;
+    }
+
+    m_filePaths = filePaths;
+    ui->fileEdit->setText("\"" + filePaths.join("\" \"") + "\"");
 }
