@@ -3,7 +3,6 @@
 
 #include <QDialog>
 #include <QGroupBox>
-#include "util.h"
 #include "filedialogex.h"
 
 namespace Ui {
@@ -19,10 +18,12 @@ public:
     ~ImportExportDialog();
 
     QString getFilePath();
+    QStringList getFilePaths();
 
 protected:
     void init();
     QGroupBox *getOptionsGroupBox();
+    void setFileExtension(QString extension);
 
     enum Mode { Import, Export };
     virtual Mode getMode() = 0;
@@ -37,6 +38,7 @@ private:
     Ui::ImportExportDialog *ui;
 
     FileDialog *m_fileDialog;
+    QStringList m_filePaths;
 };
 
 #endif // IMPORTEXPORTDIALOG_H
