@@ -85,7 +85,7 @@ Status ActionCommands::importSound()
     }
 
     FileDialog fileDialog( mParent );
-    QString strSoundFile = fileDialog.openFile( EFile::SOUND );
+    QString strSoundFile = fileDialog.openFile( FileType::SOUND );
 
     Status st = mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
 
@@ -95,7 +95,7 @@ Status ActionCommands::importSound()
 Status ActionCommands::exportMovie()
 {
 	FileDialog fileDialog( mParent );
-	QString strMoviePath = fileDialog.saveFile( EFile::MOVIE_EXPORT );
+	QString strMoviePath = fileDialog.saveFile( FileType::MOVIE );
 	if ( strMoviePath.isEmpty() )
 	{
 		return Status::SAFE;
@@ -263,7 +263,7 @@ void ActionCommands::addNewKey()
     if ( clip )
     {
         FileDialog fileDialog( mParent );
-        QString strSoundFile = fileDialog.openFile( EFile::SOUND );
+        QString strSoundFile = fileDialog.openFile( FileType::SOUND );
 
         if ( strSoundFile.isEmpty() )
         {

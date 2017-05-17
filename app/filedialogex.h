@@ -3,12 +3,14 @@
 
 #include <QObject>
 
-class QWidget;
-
-enum class EFile
+enum class FileType
 {
+    DOCUMENT,
+    IMAGE,
+    IMAGE_SEQUENCE,
+    MOVIE,
     SOUND,
-    MOVIE_EXPORT
+    PALETTE
 };
 
 class FileDialog : public QObject
@@ -18,13 +20,21 @@ public:
     FileDialog( QWidget* parent );
     ~FileDialog();
 
-    QString openFile( EFile fileType );
-    QString saveFile( EFile fileType );
+    QString openFile( FileType fileType );
+    QString saveFile( FileType fileType );
+
+    QString getLastOpenPath( FileType fileType );
+    void setLastOpenPath( FileType fileType, QString openPath );
+    QString getLastSavePath( FileType fileType );
+    void setLastSavePath( FileType fileType, QString savePath );
 
 private:
-    QString dialogTitle( EFile fileType );
-    QString fileFilters( EFile fileType );
-    QString toSettingKey( EFile fileType );
+    QString openDialogTitle( FileType fileType );
+    QString saveDialogTitle( FileType fileType );
+    QString openFileFilters( FileType fileType );
+    QString saveFileFilters( FileType fileType );
+
+    QString toSettingKey( FileType fileType);
 
     QWidget* mRoot = nullptr;
 };
