@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QScopedPointer>
 #include <QMessageBox>
-#include <QFileDialog>
 #include <QProgressDialog>
 #include <QDesktopWidget>
 #include <QDesktopServices>
@@ -136,7 +135,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->updateObject();
     mEditor->color()->setColorNumber(0);
-    
+
     connect( mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel );
 }
 
@@ -422,13 +421,8 @@ void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
-        QSettings settings( PENCIL2D, PENCIL2D );
-
-        QString strLastOpenPath = settings.value( LAST_PCLX_PATH, QDir::homePath() ).toString();
-        QString fileName = QFileDialog::getOpenFileName( this,
-                                                         tr( "Open File..." ),
-                                                         strLastOpenPath,
-                                                         tr( PFF_OPEN_ALL_FILE_FILTER ) );
+        FileDialog fileDialog( this );
+        QString fileName = fileDialog.openFile( FileType::ANIMATION );
         if ( fileName.isEmpty() )
         {
             return;
@@ -450,18 +444,8 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QString strLastFolder = settings.value( LAST_PCLX_PATH, QDir::homePath() ).toString();
-    if ( strLastFolder.isEmpty() || !QDir(strLastFolder).exists() )
-    {
-        strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
-    }
-
-    QString fileName = QFileDialog::getSaveFileName( this,
-                                                     tr( "Save As..." ),
-                                                     strLastFolder,
-                                                     tr( PFF_SAVE_ALL_FILE_FILTER ) );
+    FileDialog fileDialog( this );
+    QString fileName = fileDialog.saveFile( FileType::ANIMATION );
     if ( fileName.isEmpty() )
     {
         return false;
@@ -471,7 +455,6 @@ bool MainWindow2::saveAsNewDocument()
     {
         fileName = fileName + PFF_EXTENSION;
     }
-    settings.setValue( LAST_PCLX_PATH, QVariant( fileName ) );
 
     return saveObject( fileName );
 
@@ -490,11 +473,11 @@ void MainWindow2::openFile( QString filename )
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
-    
-	// Don't show progress bar if running without a GUI (aka. when rendering from command line)
+
+    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
     if ( this->isVisible() )
     {
-		hideQuestionMark( progress );
+        hideQuestionMark( progress );
         progress.setWindowModality( Qt::WindowModal );
         progress.show();
     }
@@ -502,12 +485,12 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setCurrentLayer( 0 );
 
     FileManager fm( this );
-	connect( &fm, &FileManager::progressUpdated, [&progress]( float f )
-	{
-		progress.setValue( (int)( f * 100.f ) );
-		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
-		
-	} );
+    connect( &fm, &FileManager::progressUpdated, [&progress]( float f )
+    {
+        progress.setValue( (int)( f * 100.f ) );
+        QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
+
+    } );
 
     Object* object = fm.load( strFilePath );
 
@@ -550,7 +533,7 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     Status st = fm->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
-    
+
     if ( !st.ok() )
     {
         QDateTime dt = QDateTime::currentDateTime();
@@ -625,13 +608,8 @@ bool MainWindow2::maybeSave()
 
 void MainWindow2::importImage()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initPath = settings.value( "lastImportPath", QDir::homePath() ).toString();
-
-    QString strFilePath = QFileDialog::getOpenFileName( this,
-                                                        tr( "Import image..." ),
-                                                        initPath,
-                                                        PENCIL_IMAGE_FILTER );
+    FileDialog fileDialog( this );
+    QString strFilePath = fileDialog.openFile( FileType::IMAGE );
     if ( strFilePath.isEmpty() )
     {
         return;
@@ -653,27 +631,14 @@ void MainWindow2::importImage()
         return;
     }
 
-    settings.setValue( "lastImportPath", strFilePath );
-
     mScribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
 }
 
 void MainWindow2::importImageSequence()
 {
-    QFileDialog w;
-    w.setFileMode( QFileDialog::AnyFile );
-
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath();
-    }
-    QStringList files = w.getOpenFileNames( this,
-                                            tr("Select one or more files to open"),
-                                            initialPath,
-                                            tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)") );
+    FileDialog fileDialog( this );
+    QStringList files = fileDialog.openFiles( FileType::IMAGE_SEQUENCE );
 
     ImageSeqDialog* imageSeqDialog = new ImageSeqDialog( this );
 
@@ -696,20 +661,13 @@ void MainWindow2::importImageSequence()
 
 void MainWindow2::importMovie()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QString initialPath = settings.value( "lastExportPath", QDir::homePath() ).toString();
-    QString filePath = QFileDialog::getOpenFileName( this,
-                                                     tr( "Import movie" ),
-                                                     initialPath,
-                                                     PENCIL_MOVIE_EXT );
+    FileDialog fileDialog( this );
+    QString filePath = fileDialog.openFile( FileType::MOVIE );
     if ( filePath.isEmpty() )
     {
         return;
     }
     mEditor->importMovie( filePath, mEditor->playback()->fps() );
-
-    settings.setValue( "lastExportPath", filePath );
 }
 
 void MainWindow2::exportImageSequence()
@@ -745,20 +703,20 @@ void MainWindow2::exportImageSequence()
     }
 
     // Path
-    QString strInitPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+    FileDialog fileDialog( this );
+    /* TODO: adapt this to filedialogex
+    QString strInitPath = fileDialog.getLastSavePath( FileType::IMAGE_SEQUENCE );
 
     QFileInfo info( strInitPath );
     strInitPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
+    */
 
-    QString strFilePath = QFileDialog::getSaveFileName( this,
-                                                        tr( "Save Image Sequence" ),
-                                                        strInitPath);
+    QString strFilePath = fileDialog.saveFile( FileType::IMAGE_SEQUENCE );
     if ( strFilePath.isEmpty() )
     {
         // TODO:
         return; // false;
     }
-    settings.setValue( "lastExportPath", strFilePath );
 
 
     // Export
@@ -826,21 +784,21 @@ void MainWindow2::exportImage()
 
 
     // Path
-    QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
+    FileDialog fileDialog( this );
+    /* TODO: adapt this part to filedialogex
+    QString initPath = fileDialog.getLastSavePath( FileType::IMAGE );
 
     QFileInfo info( initPath );
     initPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
+    */
 
 
-    QString filePath = QFileDialog::getSaveFileName( this,
-                                                     tr( "Save Image" ),
-                                                     initPath);
+    QString filePath = fileDialog.saveFile( FileType::IMAGE );
     if ( filePath.isEmpty() )
     {
         qDebug() << "empty file";
         return;// false;
     }
-    settings.setValue( "lastExportPath", QVariant( filePath ) );
 
 
     // Export
@@ -875,12 +833,12 @@ void MainWindow2::preferences()
 
     connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
     connect( prefDialog, &PreferencesDialog::finished, [ &]
-    { 
+    {
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
-    
+
     prefDialog->show();
 }
 
@@ -1073,35 +1031,23 @@ void MainWindow2::undoActSetEnabled( void )
 
 void MainWindow2::exportPalette()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath() + "/untitled.xml";
-    }
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Export As" ), initialPath );
+    FileDialog FileDialog( this );
+    QString filePath = FileDialog.saveFile( FileType::PALETTE );
     if ( !filePath.isEmpty() )
     {
         mEditor->object()->exportPalette( filePath );
-        settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
 
 void MainWindow2::importPalette()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath() + "/untitled.xml";
-    }
-    QString filePath = QFileDialog::getOpenFileName( this, tr( "Import" ), initialPath );
+    FileDialog fileDialog( this );
+    QString filePath = fileDialog.openFile( FileType::PALETTE );
     if ( !filePath.isEmpty() )
     {
         mEditor->object()->importPalette( filePath );
         mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
-        settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
 
@@ -1158,7 +1104,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey );
-    
+
     connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer );
     connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer );
     connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer );
