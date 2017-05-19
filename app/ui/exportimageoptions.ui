@@ -12,7 +12,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Resolution (Set by the Camera)</string>
+      <string>Resolution</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
