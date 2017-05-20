@@ -90,6 +90,16 @@ QString ffmpegLocation()
 #elif __APPLE__
     return QApplication::applicationDirPath() + "/plugins/ffmpeg";
 #else
+    QString ffmpegPath = QStandardPaths::findExecutable(
+        "ffmpeg",
+        QStringList()
+            << QApplication::applicationDirPath() + "/plugins"
+            << QApplication::applicationDirPath() + "/../plugins" // linuxdeployqt in FHS-like mode
+    );
+    if ( !ffmpegPath.isEmpty() )
+    {
+        return ffmpegPath;
+    }
     return QStandardPaths::findExecutable( "ffmpeg" ); // ffmpeg is a standalone project.
 #endif
 }
@@ -102,7 +112,7 @@ MovieExporter::~MovieExporter()
 {
 }
 
-Status MovieExporter::run(const Object* obj, 
+Status MovieExporter::run(const Object* obj,
 						  const ExportMovieDesc& desc,
 						  std::function<void( float )> progress )
 {
@@ -121,7 +131,7 @@ Status MovieExporter::run(const Object* obj,
     #endif
 		return Status::ERROR_FFMPEG_NOT_FOUND;
 	}
-	
+
 	STATUS_CHECK( checkInputParameters( desc ) );
 	mDesc = desc;
 
@@ -133,7 +143,7 @@ Status MovieExporter::run(const Object* obj,
 		Q_ASSERT( false && "Cannot create temp folder." );
 		return Status::FAIL;
 	}
-    
+
 	mTempWorkDir = mTempDir.path();
 	progress( 0.03f );
 
@@ -147,7 +157,7 @@ Status MovieExporter::run(const Object* obj,
 	progress( 0.99f );
 
 	twoPassEncoding( ffmpegPath, desc.strFileName );
-    
+
 	progress( 1.0f );
 
 	return Status::OK;
@@ -166,7 +176,7 @@ Status MovieExporter::assembleAudio( const Object* obj,
 	int startFrame = mDesc.startFrame;
 	int endFrame = mDesc.endFrame;
 	int fps = mDesc.fps;
-	
+
 	Q_ASSERT( startFrame >= 0 );
     Q_ASSERT( endFrame >= startFrame );
 
@@ -236,7 +246,7 @@ Status MovieExporter::assembleAudio( const Object* obj,
 		float fframe = (float)clip->pos() / (float)fps;
 		int delta = fframe * 44100 * 2;
 		qDebug() << "audio delta " << delta;
-			
+
 		int indexMax = std::min( audioSize / 2, audioDataSize / 2 - delta );
 
 		// audio files 'mixing': 'higher' sound layers overwrite 'lower' sound layers
@@ -244,7 +254,7 @@ Status MovieExporter::assembleAudio( const Object* obj,
 		{
 			audioData[ i + delta ] = safeSumInt16( audioData[ i + delta ], data[ i ] );
 		}
-			
+
 		file.close();
 
 		float p = ( (float)clipCount / allSoundClips.size() );
@@ -260,7 +270,7 @@ Status MovieExporter::assembleAudio( const Object* obj,
 	// save mixed audio file ( will be used as audio stream )
 	QFile file( mTempWorkDir + "/tmpaudio.wav" );
 	file.open( QIODevice::WriteOnly );
-	
+
 	WavFileHeader outputHeader;
 	outputHeader.InitWithDefaultValues();
 	outputHeader.dataSize = audioDataSize;
@@ -269,11 +279,11 @@ Status MovieExporter::assembleAudio( const Object* obj,
 	file.write( (char*)&outputHeader, sizeof( outputHeader ) );
 	file.write( (char*)audioData.data(), audioDataSize );
 	file.close();
-	
+
 	return Status::OK;
 }
 
-Status MovieExporter::generateImageSequence( 
+Status MovieExporter::generateImageSequence(
 	const Object* obj,
 	std::function<void(float)>  progress )
 {
@@ -307,7 +317,7 @@ Status MovieExporter::generateImageSequence(
 		QPainter painter( &imageToExport );
 
 		QTransform view = cameraLayer->getViewAtFrame( currentFrame );
-		
+
 		QSize camSize = cameraLayer->getViewSize();
 		QTransform centralizeCamera;
 		centralizeCamera.translate( camSize.width() / 2, camSize.height() / 2 );
@@ -322,7 +332,7 @@ Status MovieExporter::generateImageSequence(
 		QString strImgPath = mTempWorkDir + imageFileWithFrameNumber;
 		bool bSave = imageToExport.save( strImgPath );
 		Q_ASSERT( bSave );
-		
+
 		qDebug() << "Save img to: " << strImgPath;
 
 		float fProgressValue = ( currentFrame / (float)( frameEnd - frameStart ) );
@@ -372,7 +382,7 @@ Status MovieExporter::twoPassEncoding( QString ffmpeg, QString strOutputFile )
 	qDebug() << "TempVideo=" << strTempVideo;
 
 	combineVideoAndAudio( ffmpeg, strTempVideo );
-	
+
 	if ( strOutputFile.endsWith( "gif" ) )
 	{
 		STATUS_CHECK( convertToGif( ffmpeg, strTempVideo, strOutputFile ) );
@@ -392,7 +402,7 @@ Status MovieExporter::convertVideoAgain( QString ffmpegPath, QString strIn, QStr
     strCmd += QString( " -pix_fmt yuv420p" );
     strCmd += " -y";
     strCmd += QString(" \"%1\"" ).arg( strOut );
-    
+
 	STATUS_CHECK( executeFFMpegCommand( strCmd ) );
     return Status::OK;
 }
@@ -458,7 +468,6 @@ Status MovieExporter::checkInputParameters( const ExportMovieDesc& desc )
     b &= ( desc.endFrame >= desc.startFrame );
 	b &= ( desc.fps > 0 );
 	b &= ( !desc.strCameraName.isEmpty() );
-	
+
 	return b ? Status::OK : Status::INVALID_ARGUMENT;
 }
-
