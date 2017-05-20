@@ -93,13 +93,6 @@ Status ActionCommands::importSound()
 
 Status ActionCommands::exportMovie()
 {
-    FileDialog fileDialog( mParent );
-    QString strMoviePath = fileDialog.saveFile( FileType::MOVIE );
-    if ( strMoviePath.isEmpty() )
-    {
-        return Status::SAFE;
-    }
-
     ExportMovieDialog exportDialog( mParent );
 
     std::vector< std::pair<QString, QSize > > camerasInfo;
@@ -131,6 +124,7 @@ Status ActionCommands::exportMovie()
     {
         return Status::SAFE;
     }
+	QString strMoviePath = exportDialog.getFilePath();
 
     ExportMovieDesc desc;
     desc.strFileName   = strMoviePath;

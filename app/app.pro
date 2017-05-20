@@ -34,7 +34,6 @@ INCLUDEPATH += \
 HEADERS += \
     mainwindow2.h \
     shortcutfilter.h \
-    exportimageseqdialog.h \
     timeline2.h \
     actioncommands.h \
     preferencesdialog.h \
@@ -52,16 +51,17 @@ HEADERS += \
     exportmoviedialog.h \
     app_util.h \
     errordialog.h \
-    imageseqdialog.h \
     aboutdialog.h \
     toolbox.h \
-    tooloptionwidget.h
+    tooloptionwidget.h \
+    importexportdialog.h \
+    exportimagedialog.h \
+    importimageseqdialog.h
 
 SOURCES += \
     main.cpp \
     mainwindow2.cpp \
     shortcutfilter.cpp \
-    exportimageseqdialog.cpp \
     timeline2.cpp \
     actioncommands.cpp \
     preferencesdialog.cpp \
@@ -78,21 +78,25 @@ SOURCES += \
     pencilapplication.cpp \
     exportmoviedialog.cpp \
     errordialog.cpp \
-    imageseqdialog.cpp \
     aboutdialog.cpp \
     toolbox.cpp \
-    tooloptionwidget.cpp
+    tooloptionwidget.cpp \
+    importexportdialog.cpp \
+    exportimagedialog.cpp \
+    importimageseqdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
-    ui/exportimageseqdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
     ui/displayoption.ui \
-    ui/exportmoviedialog.ui \
-    ui/errordialog.ui
+    ui/errordialog.ui \
+    ui/importexportdialog.ui \
+    ui/exportmovieoptions.ui \
+    ui/exportimageoptions.ui \
+    ui/importimageseqoptions.ui
 
 DEPENDPATH += .
 

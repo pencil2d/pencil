@@ -73,7 +73,8 @@ QString FileDialog::getLastOpenPath( FileType fileType )
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup( "LastOpenPath" );
 
-    return setting.value( toSettingKey( fileType ), QDir::homePath() ).toString();
+    return setting.value( toSettingKey( fileType ),
+                          QDir::homePath() + "/" + defaultFileName( fileType) ).toString();
 }
 
 void FileDialog::setLastOpenPath( FileType fileType, QString openPath )

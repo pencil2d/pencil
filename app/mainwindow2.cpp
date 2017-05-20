@@ -59,7 +59,7 @@ GNU General Public License for more details.
 #include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
-#include "imageseqdialog.h"
+#include "importimageseqdialog.h"
 #include "aboutdialog.h"
 
 #include "colorbox.h"
@@ -69,7 +69,7 @@ GNU General Public License for more details.
 #include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
 
-#include "exportimageseqdialog.h"
+#include "exportimagedialog.h"
 #include "exportmoviedialog.h"
 #include "shortcutfilter.h"
 #include "filedialogex.h"
@@ -637,24 +637,29 @@ void MainWindow2::importImage()
 
 void MainWindow2::importImageSequence()
 {
-    FileDialog fileDialog( this );
-    QStringList files = fileDialog.openFiles( FileType::IMAGE_SEQUENCE );
-
-    ImageSeqDialog* imageSeqDialog = new ImageSeqDialog( this );
-
-    imageSeqDialog->init();
+    auto imageSeqDialog = new ImportImageSeqDialog( this );
     imageSeqDialog->exec();
+    if ( imageSeqDialog->result() == QDialog::Rejected )
+    {
+        return;
+    }
+
+    QStringList files = imageSeqDialog->getFilePaths();
+    int number = imageSeqDialog->getSpace();
     for ( QString strImgFile : files )
     {
         if ( strImgFile.endsWith( ".png" ) ||
              strImgFile.endsWith( ".jpg" ) ||
              strImgFile.endsWith( ".jpeg" ) ||
-             strImgFile.endsWith(".tif") ||
-             strImgFile.endsWith(".tiff") ||
+             strImgFile.endsWith( ".tif" ) ||
+             strImgFile.endsWith( ".tiff" ) ||
              strImgFile.endsWith( ".bmp" ) )
         {
-            if (imageSeqDialog->result() == QDialog::Accepted)
-                imageSeqDialog->seqNumber(strImgFile, mEditor);
+            mEditor->importImage( strImgFile );
+            for ( int i = 1; i < number; i++ )
+            {
+                mEditor->scrubForward();
+            }
         }
     }
 }
@@ -672,15 +677,13 @@ void MainWindow2::importMovie()
 
 void MainWindow2::exportImageSequence()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
     // Get the camera layer
     int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
 
     // Options
-    auto dialog =  new ExportImageSeqDialog( this );
+    auto dialog =  new ExportImageDialog( this, true );
     OnScopeExit( dialog->deleteLater() );
 
     if(cameraLayer != nullptr)
@@ -693,28 +696,13 @@ void MainWindow2::exportImageSequence()
     }
     dialog->exec();
 
+    QString strFilePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
 
     if ( dialog->result() == QDialog::Rejected )
     {
-        return; // false;
-    }
-
-    // Path
-    FileDialog fileDialog( this );
-    /* TODO: adapt this to filedialogex
-    QString strInitPath = fileDialog.getLastSavePath( FileType::IMAGE_SEQUENCE );
-
-    QFileInfo info( strInitPath );
-    strInitPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
-    */
-
-    QString strFilePath = fileDialog.saveFile( FileType::IMAGE_SEQUENCE );
-    if ( strFilePath.isEmpty() )
-    {
-        // TODO:
         return; // false;
     }
 
@@ -760,7 +748,7 @@ void MainWindow2::exportImage()
 
 
     // Options
-    auto dialog =  new ExportImageSeqDialog( this );
+    auto dialog =  new ExportImageDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
     if(cameraLayer != nullptr)
@@ -773,6 +761,7 @@ void MainWindow2::exportImage()
     }
     dialog->exec();
 
+    QString filePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
@@ -780,24 +769,6 @@ void MainWindow2::exportImage()
     if ( dialog->result() == QDialog::Rejected )
     {
         return; // false;
-    }
-
-
-    // Path
-    FileDialog fileDialog( this );
-    /* TODO: adapt this part to filedialogex
-    QString initPath = fileDialog.getLastSavePath( FileType::IMAGE );
-
-    QFileInfo info( initPath );
-    initPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
-    */
-
-
-    QString filePath = fileDialog.saveFile( FileType::IMAGE );
-    if ( filePath.isEmpty() )
-    {
-        qDebug() << "empty file";
-        return;// false;
     }
 
 
