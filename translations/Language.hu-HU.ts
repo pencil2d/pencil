@@ -32,71 +32,71 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/actioncommands.cpp" line="50"/>
+        <location filename="../app/actioncommands.cpp" line="49"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Nincs hang réteg a betöltendő állomány számára. Létrehoz egy új hang réteget?</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="51"/>
+        <location filename="../app/actioncommands.cpp" line="50"/>
         <source>Create sound layer</source>
         <translation>Hang réteg létrehozása</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="52"/>
+        <location filename="../app/actioncommands.cpp" line="51"/>
         <source>Don&apos;t create layer</source>
         <translation>Ne legyen réteg létrehozva</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="62"/>
-        <location filename="../app/actioncommands.cpp" line="299"/>
-        <location filename="../app/actioncommands.cpp" line="312"/>
-        <location filename="../app/actioncommands.cpp" line="326"/>
-        <location filename="../app/actioncommands.cpp" line="341"/>
+        <location filename="../app/actioncommands.cpp" line="61"/>
+        <location filename="../app/actioncommands.cpp" line="292"/>
+        <location filename="../app/actioncommands.cpp" line="305"/>
+        <location filename="../app/actioncommands.cpp" line="319"/>
+        <location filename="../app/actioncommands.cpp" line="334"/>
         <source>Layer Properties</source>
         <translation>Réteg tulajdonságai</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="63"/>
-        <location filename="../app/actioncommands.cpp" line="300"/>
-        <location filename="../app/actioncommands.cpp" line="313"/>
-        <location filename="../app/actioncommands.cpp" line="327"/>
-        <location filename="../app/actioncommands.cpp" line="342"/>
+        <location filename="../app/actioncommands.cpp" line="62"/>
+        <location filename="../app/actioncommands.cpp" line="293"/>
+        <location filename="../app/actioncommands.cpp" line="306"/>
+        <location filename="../app/actioncommands.cpp" line="320"/>
+        <location filename="../app/actioncommands.cpp" line="335"/>
         <source>Layer name:</source>
         <translation>Réteg neve:</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="83"/>
+        <location filename="../app/actioncommands.cpp" line="82"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
         <translation>Egy hang már el lett helyezve ezen a képkockán. Válasszon másik pozíciót vagy réteget!</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="146"/>
+        <location filename="../app/actioncommands.cpp" line="139"/>
         <source>Exporting movie...</source>
         <translation>Videó exportálása...</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="168"/>
+        <location filename="../app/actioncommands.cpp" line="161"/>
         <source>Finished. Open movie now?</source>
         <translation>Kész. Videó megnyitása most?</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="301"/>
+        <location filename="../app/actioncommands.cpp" line="294"/>
         <source>Bitmap Layer</source>
         <translation>Bitkép réteg</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="314"/>
+        <location filename="../app/actioncommands.cpp" line="307"/>
         <source>Vector Layer</source>
         <translation>Vektor réteg</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="328"/>
+        <location filename="../app/actioncommands.cpp" line="321"/>
         <source>Camera Layer</source>
         <translation>Kamera réteg</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="64"/>
-        <location filename="../app/actioncommands.cpp" line="343"/>
+        <location filename="../app/actioncommands.cpp" line="63"/>
+        <location filename="../app/actioncommands.cpp" line="336"/>
         <source>Sound Layer</source>
         <translation>Hang réteg</translation>
     </message>
@@ -484,107 +484,262 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>ExportImageSeqDialog</name>
+    <name>ExportImageDialog</name>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation>Párbeszéd</translation>
+        <location filename="../app/exportimagedialog.cpp" line="13"/>
+        <source>Export image sequence</source>
+        <translation>Képsorozat exportálása</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="20"/>
-        <source>Resolution (Set by the Camera)</source>
-        <translation>Felbontás (Kamera által beállítva)</translation>
+        <location filename="../app/exportimagedialog.cpp" line="17"/>
+        <source>Export image</source>
+        <translation>Kép exportálása</translation>
+    </message>
+</context>
+<context>
+    <name>ExportImageOptions</name>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="15"/>
+        <source>Resolution</source>
+        <translation>Felbontás</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="61"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="56"/>
         <source>Format</source>
         <translation>Formátum</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="68"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="63"/>
         <source>PNG</source>
         <translation>PNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="73"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="68"/>
         <source>JPG</source>
         <translation>JPG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="78"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="73"/>
         <source>BMP</source>
         <translation>BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="86"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="81"/>
         <source>Transparency</source>
         <translation>Átlátszóság</translation>
     </message>
 </context>
 <context>
+    <name>ExportImageSeqDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="vanished">Párbeszéd</translation>
+    </message>
+    <message>
+        <source>Resolution (Set by the Camera)</source>
+        <translation type="vanished">Felbontás (Kamera által beállítva)</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="vanished">Formátum</translation>
+    </message>
+    <message>
+        <source>PNG</source>
+        <translation type="vanished">PNG</translation>
+    </message>
+    <message>
+        <source>JPG</source>
+        <translation type="vanished">JPG</translation>
+    </message>
+    <message>
+        <source>BMP</source>
+        <translation type="vanished">BMP</translation>
+    </message>
+    <message>
+        <source>Transparency</source>
+        <translation type="vanished">Átlátszóság</translation>
+    </message>
+</context>
+<context>
     <name>ExportMovieDialog</name>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="20"/>
+        <location filename="../app/exportmoviedialog.cpp" line="11"/>
         <source>Export Movie</source>
         <translation>Videó exportálása</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="32"/>
+        <source>Camera</source>
+        <translation type="vanished">Kamera</translation>
+    </message>
+    <message>
+        <source>Resolution</source>
+        <translation type="vanished">Felbontás</translation>
+    </message>
+    <message>
+        <source>Width</source>
+        <translation type="vanished">Szélesség</translation>
+    </message>
+    <message>
+        <source>Height</source>
+        <translation type="vanished">Magasság</translation>
+    </message>
+    <message>
+        <source>Range</source>
+        <translation type="vanished">Tartomány</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="vanished">Indítás</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="vanished">Befejezés</translation>
+    </message>
+</context>
+<context>
+    <name>ExportMovieOptions</name>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="15"/>
         <source>Camera</source>
         <translation>Kamera</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="44"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="27"/>
         <source>Resolution</source>
         <translation>Felbontás</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="62"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="45"/>
         <source>Width</source>
         <translation>Szélesség</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="91"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="74"/>
         <source>Height</source>
         <translation>Magasság</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="126"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="109"/>
         <source>Range</source>
         <translation>Tartomány</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="132"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="115"/>
         <source>Start</source>
-        <translation>Indítás</translation>
+        <translation type="unfinished">Kezdés</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="146"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="129"/>
         <source>End</source>
-        <translation>Befejezés</translation>
+        <translation type="unfinished">Befejezés</translation>
     </message>
 </context>
 <context>
     <name>FileDialog</name>
     <message>
-        <location filename="../app/filedialogex.cpp" line="63"/>
         <source>Import sound...</source>
-        <translation>Hang importálása...</translation>
+        <translation type="vanished">Hang importálása...</translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="64"/>
         <source>Export movie as ...</source>
-        <translation>Videó exportálása másként ...</translation>
+        <translation type="vanished">Videó exportálása másként ...</translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="74"/>
+        <location filename="../app/filedialogex.cpp" line="109"/>
+        <source>Open animation</source>
+        <translation>Animáció megnyitása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="110"/>
+        <source>Import image</source>
+        <translation>Kép importálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="111"/>
+        <source>Import image sequence</source>
+        <translation>Képsorozat importálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="112"/>
+        <source>Import movie</source>
+        <translation>Videó importálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="113"/>
+        <source>Import sound</source>
+        <translation>Hang importálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="114"/>
+        <source>Import palette</source>
+        <translation>Paletta importálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="124"/>
+        <source>Save animation</source>
+        <translation>Animáció mentése</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="125"/>
+        <source>Export image</source>
+        <translation>Kép exportálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="126"/>
+        <source>Export image sequence</source>
+        <translation>Képsorozat exportálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="127"/>
+        <source>Export movie</source>
+        <translation>Videó exportálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="128"/>
+        <source>Export sound</source>
+        <translation>Hang exportálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="129"/>
+        <source>Export palette</source>
+        <translation>Paletta exportálása</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="143"/>
         <source>Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</source>
         <translation>Hangok (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="75"/>
+        <location filename="../app/filedialogex.cpp" line="144"/>
+        <location filename="../app/filedialogex.cpp" line="159"/>
+        <source>Palette (*.xml)</source>
+        <translation>Paletta (*.xml)</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="157"/>
         <source>MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)</source>
         <translation>MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="171"/>
+        <location filename="../app/filedialogex.cpp" line="172"/>
+        <source>untitled.png</source>
+        <translation>névtelen.png</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="173"/>
+        <source>untitled.mp4</source>
+        <translation>névtelen.mp4</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="174"/>
+        <source>untitled.wav</source>
+        <translation>névtelen.wav</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="175"/>
+        <source>untitled.xml</source>
+        <translation>névtelen.xml</translation>
     </message>
 </context>
 <context>
@@ -880,22 +1035,48 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ImageSeqDialog</name>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="12"/>
         <source>Image Sequence Dialog</source>
-        <translation>Képsorozat párbeszéd</translation>
+        <translation type="vanished">Képsorozat párbeszéd</translation>
     </message>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="19"/>
-        <source>OK</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../app/imageseqdialog.cpp" line="20"/>
         <source>Cancel</source>
-        <translation>Mégse</translation>
+        <translation type="vanished">Mégse</translation>
     </message>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="26"/>
+        <source>Import an image every # frame</source>
+        <translation type="vanished">Képek importálása # képkockánként</translation>
+    </message>
+</context>
+<context>
+    <name>ImportExportDialog</name>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="24"/>
+        <source>File</source>
+        <translation>Fájl</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="40"/>
+        <source>Browse...</source>
+        <translation>Tallózás...</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="50"/>
+        <source>Options</source>
+        <translation>Beállítások</translation>
+    </message>
+</context>
+<context>
+    <name>ImportImageSeqDialog</name>
+    <message>
+        <location filename="../app/importimageseqdialog.cpp" line="11"/>
+        <source>Import image sequence</source>
+        <translation>Képsorozat importálása</translation>
+    </message>
+</context>
+<context>
+    <name>ImportImageSeqOptions</name>
+    <message>
+        <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
         <source>Import an image every # frame</source>
         <translation>Képek importálása # képkockánként</translation>
     </message>
@@ -974,7 +1155,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="42"/>
-        <location filename="../app/mainwindow2.cpp" line="1098"/>
         <source>Import</source>
         <translation>Importálás</translation>
     </message>
@@ -1009,7 +1189,7 @@ p, li { white-space: pre-wrap; }
         <translation>Animáció</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="168"/>
+        <location filename="../app/mainwindow2.cpp" line="167"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>Eszközök</translation>
@@ -1107,13 +1287,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="1043"/>
+        <location filename="../app/mainwindow2.cpp" line="972"/>
         <source>Undo</source>
         <translation>Visszavonás</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="1063"/>
+        <location filename="../app/mainwindow2.cpp" line="992"/>
         <source>Redo</source>
         <translation>Újra</translation>
     </message>
@@ -1245,7 +1425,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1240"/>
+        <location filename="../app/mainwindow2.cpp" line="1157"/>
         <source>Play</source>
         <translation>Lejátszás</translation>
     </message>
@@ -1414,7 +1594,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="823"/>
-        <location filename="../app/mainwindow2.cpp" line="154"/>
+        <location filename="../app/mainwindow2.cpp" line="153"/>
         <source>Color Wheel</source>
         <translation>Színkerék</translation>
     </message>
@@ -1444,121 +1624,113 @@ p, li { white-space: pre-wrap; }
         <translation>Képkocka mozgatása hátra</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="155"/>
+        <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Színpaletta:&lt;br&gt;&lt;b&gt;(C)&lt;/b&gt;lenyomásával&lt;br&gt;átváltás a kurzornál</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="357"/>
+        <location filename="../app/mainwindow2.cpp" line="356"/>
         <source>Open Recent</source>
         <translation>Legutóbbi megnyitása</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="429"/>
         <source>Open File...</source>
-        <translation>Fájl megnyitása...</translation>
+        <translation type="vanished">Fájl megnyitása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="445"/>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
-        <location filename="../app/mainwindow2.cpp" line="608"/>
-        <location filename="../app/mainwindow2.cpp" line="649"/>
-        <location filename="../app/mainwindow2.cpp" line="861"/>
+        <location filename="../app/mainwindow2.cpp" line="439"/>
+        <location filename="../app/mainwindow2.cpp" line="468"/>
+        <location filename="../app/mainwindow2.cpp" line="591"/>
+        <location filename="../app/mainwindow2.cpp" line="627"/>
+        <location filename="../app/mainwindow2.cpp" line="790"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="445"/>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="439"/>
+        <location filename="../app/mainwindow2.cpp" line="468"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>A Pencil nem tudja olvasni ezt a fájlt. Képek beemeléséhez az &quot;Importálás&quot; művelet használható.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="462"/>
         <source>Save As...</source>
-        <translation>Mentés másként...</translation>
+        <translation type="vanished">Mentés másként...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="492"/>
+        <location filename="../app/mainwindow2.cpp" line="475"/>
         <source>Opening document...</source>
         <translation>Dokumentum megnyitása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="492"/>
-        <location filename="../app/mainwindow2.cpp" line="545"/>
-        <location filename="../app/mainwindow2.cpp" line="772"/>
+        <location filename="../app/mainwindow2.cpp" line="475"/>
+        <location filename="../app/mainwindow2.cpp" line="528"/>
+        <location filename="../app/mainwindow2.cpp" line="718"/>
         <source>Abort</source>
         <translation>Névjegy</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="545"/>
+        <location filename="../app/mainwindow2.cpp" line="528"/>
         <source>Saving document...</source>
         <translation>Dokumentum mentése...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="572"/>
+        <location filename="../app/mainwindow2.cpp" line="555"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Hiba történt, ami miatt valószínűleg a fájl mentése sem sikerült. Ha úgy gondolja, hogy az esemény a Pencil2D programban található hibára vezethető vissza, kérjük jelentse a következő helyen:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Mindenképpen mellékelje az alábbi részleteket is a bejelentéshez:</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="609"/>
+        <location filename="../app/mainwindow2.cpp" line="592"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Ez az animáció meg lett változtatva.
  Szeretné menteni a változásokat?</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="632"/>
         <source>Import image...</source>
-        <translation>Kép importálása...</translation>
+        <translation type="vanished">Kép importálása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="650"/>
+        <location filename="../app/mainwindow2.cpp" line="628"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>A kép nem importálható.&lt;br&gt;&lt;b&gt;TIPP:&lt;/b&gt; Képek importálásához bitkép réteget kell használni.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="674"/>
         <source>Select one or more files to open</source>
-        <translation>Egy vagy több fájl kiválasztása megnyitásra</translation>
+        <translation type="vanished">Egy vagy több fájl kiválasztása megnyitásra</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="676"/>
         <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
-        <translation>Képek (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</translation>
+        <translation type="vanished">Képek (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="703"/>
         <source>Import movie</source>
-        <translation>Videó importálása</translation>
+        <translation type="vanished">Videó importálása</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="754"/>
         <source>Save Image Sequence</source>
-        <translation>Képsorozat mentése</translation>
+        <translation type="vanished">Képsorozat mentése</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="772"/>
+        <location filename="../app/mainwindow2.cpp" line="718"/>
         <source>Exporting image sequence...</source>
         <translation>Képsorozat exportálása...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="836"/>
         <source>Save Image</source>
-        <translation>Kép mentése</translation>
+        <translation type="vanished">Kép mentése</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="862"/>
+        <location filename="../app/mainwindow2.cpp" line="791"/>
         <source>Unable to export image.</source>
         <translation>A kép nem exportálható.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1048"/>
+        <location filename="../app/mainwindow2.cpp" line="977"/>
         <source>Undo   %1 %2</source>
         <translation>Visszavonás (%1):   %2</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1056"/>
+        <location filename="../app/mainwindow2.cpp" line="985"/>
         <source>Redo   %1 %2</source>
         <translation>Újra (%1):   %2</translation>
     </message>
@@ -1571,12 +1743,11 @@ p, li { white-space: pre-wrap; }
         <translation type="vanished">Újra:   </translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1082"/>
         <source>Export As</source>
-        <translation>Exportálás másként</translation>
+        <translation type="vanished">Exportálás másként</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1236"/>
+        <location filename="../app/mainwindow2.cpp" line="1153"/>
         <source>Stop</source>
         <translation>Megállítás</translation>
     </message>

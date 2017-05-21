@@ -32,71 +32,71 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/actioncommands.cpp" line="50"/>
+        <location filename="../app/actioncommands.cpp" line="49"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Votre piste son ne peut pas être importée car aucune piste de son n&apos;existe. Créer une nouvelle piste de son ?</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="51"/>
+        <location filename="../app/actioncommands.cpp" line="50"/>
         <source>Create sound layer</source>
         <translation>Créer un calque de son</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="52"/>
+        <location filename="../app/actioncommands.cpp" line="51"/>
         <source>Don&apos;t create layer</source>
         <translation>Ne pas créer le calque</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="62"/>
-        <location filename="../app/actioncommands.cpp" line="299"/>
-        <location filename="../app/actioncommands.cpp" line="312"/>
-        <location filename="../app/actioncommands.cpp" line="326"/>
-        <location filename="../app/actioncommands.cpp" line="341"/>
+        <location filename="../app/actioncommands.cpp" line="61"/>
+        <location filename="../app/actioncommands.cpp" line="292"/>
+        <location filename="../app/actioncommands.cpp" line="305"/>
+        <location filename="../app/actioncommands.cpp" line="319"/>
+        <location filename="../app/actioncommands.cpp" line="334"/>
         <source>Layer Properties</source>
         <translation>Propriétés du calque</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="63"/>
-        <location filename="../app/actioncommands.cpp" line="300"/>
-        <location filename="../app/actioncommands.cpp" line="313"/>
-        <location filename="../app/actioncommands.cpp" line="327"/>
-        <location filename="../app/actioncommands.cpp" line="342"/>
+        <location filename="../app/actioncommands.cpp" line="62"/>
+        <location filename="../app/actioncommands.cpp" line="293"/>
+        <location filename="../app/actioncommands.cpp" line="306"/>
+        <location filename="../app/actioncommands.cpp" line="320"/>
+        <location filename="../app/actioncommands.cpp" line="335"/>
         <source>Layer name:</source>
         <translation>Nom du calque:</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="83"/>
+        <location filename="../app/actioncommands.cpp" line="82"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="146"/>
+        <location filename="../app/actioncommands.cpp" line="139"/>
         <source>Exporting movie...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="168"/>
+        <location filename="../app/actioncommands.cpp" line="161"/>
         <source>Finished. Open movie now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="301"/>
+        <location filename="../app/actioncommands.cpp" line="294"/>
         <source>Bitmap Layer</source>
         <translation>couche bitmap</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="314"/>
+        <location filename="../app/actioncommands.cpp" line="307"/>
         <source>Vector Layer</source>
         <translation>couche vecteur</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="328"/>
+        <location filename="../app/actioncommands.cpp" line="321"/>
         <source>Camera Layer</source>
         <translation>couche caméra</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="64"/>
-        <location filename="../app/actioncommands.cpp" line="343"/>
+        <location filename="../app/actioncommands.cpp" line="63"/>
+        <location filename="../app/actioncommands.cpp" line="336"/>
         <source>Sound Layer</source>
         <translation>couche son</translation>
     </message>
@@ -474,82 +474,136 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>ExportImageDialog</name>
+    <message>
+        <location filename="../app/exportimagedialog.cpp" line="13"/>
+        <source>Export image sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/exportimagedialog.cpp" line="17"/>
+        <source>Export image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExportImageOptions</name>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="15"/>
+        <source>Resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="56"/>
+        <source>Format</source>
+        <translation type="unfinished">Formater</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="63"/>
+        <source>PNG</source>
+        <translation type="unfinished">PNG</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="68"/>
+        <source>JPG</source>
+        <translation type="unfinished">JPG</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="73"/>
+        <source>BMP</source>
+        <translation type="unfinished">BMP</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="81"/>
+        <source>Transparency</source>
+        <translation type="unfinished">Transparence</translation>
+    </message>
+</context>
+<context>
     <name>ExportImageSeqDialog</name>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialogue</translation>
+        <translation type="vanished">Dialogue</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="20"/>
         <source>Resolution (Set by the Camera)</source>
-        <translation>Résolution (Définie par la caméra)</translation>
+        <translation type="vanished">Résolution (Définie par la caméra)</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="61"/>
         <source>Format</source>
-        <translation>Formater</translation>
+        <translation type="vanished">Formater</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="68"/>
         <source>PNG</source>
-        <translation>PNG</translation>
+        <translation type="vanished">PNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="73"/>
         <source>JPG</source>
-        <translation>JPG</translation>
+        <translation type="vanished">JPG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="78"/>
         <source>BMP</source>
-        <translation>BMP</translation>
+        <translation type="vanished">BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="86"/>
         <source>Transparency</source>
-        <translation>Transparence</translation>
+        <translation type="vanished">Transparence</translation>
     </message>
 </context>
 <context>
     <name>ExportMovieDialog</name>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="20"/>
+        <location filename="../app/exportmoviedialog.cpp" line="11"/>
         <source>Export Movie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="32"/>
+        <source>Range</source>
+        <translation type="obsolete">Portée</translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="obsolete">Début</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="obsolete">Fin</translation>
+    </message>
+</context>
+<context>
+    <name>ExportMovieOptions</name>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="15"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="44"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="27"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="62"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="45"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="91"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="74"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="126"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="109"/>
         <source>Range</source>
         <translation type="unfinished">Portée</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="132"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="115"/>
         <source>Start</source>
         <translation type="unfinished">Début</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="146"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="129"/>
         <source>End</source>
         <translation type="unfinished">Fin</translation>
     </message>
@@ -557,23 +611,100 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FileDialog</name>
     <message>
-        <location filename="../app/filedialogex.cpp" line="63"/>
-        <source>Import sound...</source>
+        <location filename="../app/filedialogex.cpp" line="109"/>
+        <source>Open animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="64"/>
-        <source>Export movie as ...</source>
+        <location filename="../app/filedialogex.cpp" line="110"/>
+        <source>Import image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="74"/>
+        <location filename="../app/filedialogex.cpp" line="111"/>
+        <source>Import image sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="112"/>
+        <source>Import movie</source>
+        <translation type="unfinished">Importer film</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="113"/>
+        <source>Import sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="114"/>
+        <source>Import palette</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="124"/>
+        <source>Save animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="125"/>
+        <source>Export image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="126"/>
+        <source>Export image sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="127"/>
+        <source>Export movie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="128"/>
+        <source>Export sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="129"/>
+        <source>Export palette</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="143"/>
         <source>Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="75"/>
+        <location filename="../app/filedialogex.cpp" line="144"/>
+        <location filename="../app/filedialogex.cpp" line="159"/>
+        <source>Palette (*.xml)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="157"/>
         <source>MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="171"/>
+        <location filename="../app/filedialogex.cpp" line="172"/>
+        <source>untitled.png</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="173"/>
+        <source>untitled.mp4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="174"/>
+        <source>untitled.wav</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="175"/>
+        <source>untitled.xml</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -815,22 +946,40 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ImageSeqDialog</name>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="12"/>
-        <source>Image Sequence Dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/imageseqdialog.cpp" line="19"/>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/imageseqdialog.cpp" line="20"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>ImportExportDialog</name>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="24"/>
+        <source>File</source>
+        <translation type="unfinished">Fichier</translation>
     </message>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="26"/>
+        <location filename="../app/ui/importexportdialog.ui" line="40"/>
+        <source>Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="50"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
+    </message>
+</context>
+<context>
+    <name>ImportImageSeqDialog</name>
+    <message>
+        <location filename="../app/importimageseqdialog.cpp" line="11"/>
+        <source>Import image sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ImportImageSeqOptions</name>
+    <message>
+        <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
         <source>Import an image every # frame</source>
         <translation type="unfinished"></translation>
     </message>
@@ -975,7 +1124,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="42"/>
-        <location filename="../app/mainwindow2.cpp" line="1098"/>
         <source>Import</source>
         <translation>Import</translation>
     </message>
@@ -1010,7 +1158,7 @@ p, li { white-space: pre-wrap; }
         <translation>Animation</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="168"/>
+        <location filename="../app/mainwindow2.cpp" line="167"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>Outils</translation>
@@ -1102,13 +1250,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="1043"/>
+        <location filename="../app/mainwindow2.cpp" line="972"/>
         <source>Undo</source>
         <translation>Undo</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="1063"/>
+        <location filename="../app/mainwindow2.cpp" line="992"/>
         <source>Redo</source>
         <translation>Redo</translation>
     </message>
@@ -1220,7 +1368,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1240"/>
+        <location filename="../app/mainwindow2.cpp" line="1157"/>
         <source>Play</source>
         <translation>Play</translation>
     </message>
@@ -1333,7 +1481,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="823"/>
-        <location filename="../app/mainwindow2.cpp" line="154"/>
+        <location filename="../app/mainwindow2.cpp" line="153"/>
         <source>Color Wheel</source>
         <translation>Roue Couleurs</translation>
     </message>
@@ -1363,131 +1511,114 @@ p, li { white-space: pre-wrap; }
         <translation>Reculer l&apos;image</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="155"/>
+        <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>palette de couleurs :&lt;br&gt;utiliser &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;bascule à curseur</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="357"/>
+        <location filename="../app/mainwindow2.cpp" line="356"/>
         <source>Open Recent</source>
         <translation>Ouvrir fichier récent</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="429"/>
         <source>Open File...</source>
-        <translation>Ouvrir fichier...</translation>
+        <translation type="vanished">Ouvrir fichier...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="445"/>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
-        <location filename="../app/mainwindow2.cpp" line="608"/>
-        <location filename="../app/mainwindow2.cpp" line="649"/>
-        <location filename="../app/mainwindow2.cpp" line="861"/>
+        <location filename="../app/mainwindow2.cpp" line="439"/>
+        <location filename="../app/mainwindow2.cpp" line="468"/>
+        <location filename="../app/mainwindow2.cpp" line="591"/>
+        <location filename="../app/mainwindow2.cpp" line="627"/>
+        <location filename="../app/mainwindow2.cpp" line="790"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="445"/>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="439"/>
+        <location filename="../app/mainwindow2.cpp" line="468"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil ne peut pas lire ce fichier. Si vous voulez import des images, utilisez la commande import.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="462"/>
         <source>Save As...</source>
-        <translation>Sauver comme...</translation>
+        <translation type="vanished">Sauver comme...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="492"/>
+        <location filename="../app/mainwindow2.cpp" line="475"/>
         <source>Opening document...</source>
         <translation>Document de démarrage...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="492"/>
-        <location filename="../app/mainwindow2.cpp" line="545"/>
-        <location filename="../app/mainwindow2.cpp" line="772"/>
+        <location filename="../app/mainwindow2.cpp" line="475"/>
+        <location filename="../app/mainwindow2.cpp" line="528"/>
+        <location filename="../app/mainwindow2.cpp" line="718"/>
         <source>Abort</source>
         <translation>Abandonner</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="545"/>
+        <location filename="../app/mainwindow2.cpp" line="528"/>
         <source>Saving document...</source>
         <translation>Enregistrement d&apos;un document...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="572"/>
+        <location filename="../app/mainwindow2.cpp" line="555"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="609"/>
+        <location filename="../app/mainwindow2.cpp" line="592"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Cette animation a été modifiée.
 Voulez vous sauvegarder vos modifications ?</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="632"/>
         <source>Import image...</source>
-        <translation>Importer image...</translation>
+        <translation type="vanished">Importer image...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="650"/>
+        <location filename="../app/mainwindow2.cpp" line="628"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Impossible d&apos;importer l&apos;image.&lt;br&gt;&lt;b&gt;ASTUCE:&lt;/b&gt; Utilisez un calque &quot;Bitmap&quot; pour importer des bitmaps.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="674"/>
-        <source>Select one or more files to open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="676"/>
-        <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="703"/>
         <source>Import movie</source>
-        <translation>Importer film</translation>
+        <translation type="vanished">Importer film</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="754"/>
         <source>Save Image Sequence</source>
-        <translation>Sauvegarder la séquence d&apos;images</translation>
+        <translation type="vanished">Sauvegarder la séquence d&apos;images</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="772"/>
+        <location filename="../app/mainwindow2.cpp" line="718"/>
         <source>Exporting image sequence...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="836"/>
         <source>Save Image</source>
-        <translation>Sauvegarder Image</translation>
+        <translation type="vanished">Sauvegarder Image</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="862"/>
+        <location filename="../app/mainwindow2.cpp" line="791"/>
         <source>Unable to export image.</source>
         <translation>Impossible d&apos;exporter l&apos;image.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1048"/>
+        <location filename="../app/mainwindow2.cpp" line="977"/>
         <source>Undo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1056"/>
+        <location filename="../app/mainwindow2.cpp" line="985"/>
         <source>Redo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1082"/>
         <source>Export As</source>
-        <translation>Exporter comme</translation>
+        <translation type="vanished">Exporter comme</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1236"/>
+        <location filename="../app/mainwindow2.cpp" line="1153"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
