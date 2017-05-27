@@ -136,7 +136,8 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint()==mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -179,7 +180,7 @@ void PenTool::paintAt( QPointF point )
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
-            mCurrentWidth = properties.width * mCurrentPressure;
+            mCurrentWidth = properties.width;
         }
         qreal brushWidth = mCurrentWidth;
 

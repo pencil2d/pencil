@@ -161,7 +161,8 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint()==mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -198,11 +199,6 @@ void PencilTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-            opacity = mCurrentPressure / 2;
-            mCurrentWidth = properties.width * mCurrentPressure;
-        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 

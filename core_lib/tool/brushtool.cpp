@@ -209,7 +209,8 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint() == mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -249,10 +250,6 @@ void BrushTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-            opacity = mCurrentPressure / 2;
-        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
@@ -264,7 +261,8 @@ void BrushTool::paintAt( QPointF point )
                                   properties.feather,
                                   mEditor->color()->frontColor(),
                                   opacity,
-                                  properties.useFeather );
+                                  properties.useFeather,
+                                  properties.useAA );
 
         int rad = qRound( brushWidth ) / 2 + 2;
         mScribbleArea->refreshBitmap( rect, rad );
