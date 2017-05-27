@@ -176,11 +176,11 @@ void PenTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
+        mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
-            opacity = m_pStrokeManager->getPressure() / 2;
+            mCurrentWidth = properties.width * mCurrentPressure;
         }
-        mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
         BlitRect rect;
@@ -212,7 +212,12 @@ void PenTool::drawStroke()
         }
 
         qreal opacity = 1.0;
-        qreal brushWidth = m_pStrokeManager->getPressure() * mCurrentWidth;
+        mCurrentWidth = properties.width;
+        if (properties.pressure == true)
+        {
+            mCurrentWidth = properties.width * mCurrentPressure;
+        }
+        qreal brushWidth = mCurrentWidth;
 
         // TODO: Make popup widget for less important properties,
         // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
@@ -253,11 +258,9 @@ void PenTool::drawStroke()
     else if ( layer->type() == Layer::VECTOR )
     {
         qreal brushWidth = 0;
-        if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
-        }
-        else {
-            brushWidth = properties.width;
+        brushWidth = properties.width;
+        if (properties.pressure == true) {
+            brushWidth = properties.width * mCurrentPressure;
         }
 
         int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
@@ -296,8 +299,6 @@ void PenTool::paintVectorStroke()
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-        mStrokePressures.append(0.01);
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
                     curve.setWidth( properties.width );

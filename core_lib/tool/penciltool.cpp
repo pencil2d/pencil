@@ -201,6 +201,7 @@ void PencilTool::paintAt( QPointF point )
         if (properties.pressure == true)
         {
             opacity = mCurrentPressure / 2;
+            mCurrentWidth = properties.width * mCurrentPressure;
         }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
@@ -229,11 +230,11 @@ void PencilTool::drawStroke()
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
+        mCurrentWidth = properties.width;
         if (properties.pressure == true) {
             opacity = mCurrentPressure / 2;
+            mCurrentWidth = properties.width * mCurrentPressure;
         }
-
-        mCurrentWidth = properties.width * m_pStrokeManager->getPressure();
         qreal brushWidth = mCurrentWidth;
 
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);

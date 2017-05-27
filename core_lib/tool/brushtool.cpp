@@ -350,7 +350,7 @@ void BrushTool::drawStroke()
     {
         qreal brushWidth = 0;
         if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
+            brushWidth = properties.width * mCurrentPressure;
         }
         else {
             brushWidth = properties.width;
@@ -395,8 +395,6 @@ void BrushTool::paintVectorStroke()
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-        mStrokePressures.append(0.01);
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
                     curve.setWidth( properties.width );
