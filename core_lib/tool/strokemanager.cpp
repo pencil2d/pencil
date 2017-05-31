@@ -281,7 +281,7 @@ QList<QPointF> StrokeManager::noInpolOp(QList<QPointF> points)
 
     points << mLastPixel << mLastPixel << mCurrentPixel << mCurrentPixel;
 
-    // Set lastPixel non CurrentPixel
+    // Set lastPixel to CurrentPixel
     // new interpolated pixel
     mLastPixel = mCurrentPixel;
 
@@ -293,7 +293,6 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
     int time = mSingleshotTime.elapsed();
     static const qreal smoothness = 1.f;
     QLineF line( mLastPixel, mCurrentPixel);
-
 
     qreal scaleFactor = line.length() * 3.f;
 
@@ -344,8 +343,8 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
         m_previousTangent = newTangent;
     }
 
-    return points;
     previousTime = time;
+    return points;
 
 }
 
@@ -366,9 +365,6 @@ QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal 
     // Use our interpolated points
     QPointF mNewInterpolated = mLastInterpolated;
     mNewInterpolated = QPointF(x,y);
-
-    //save our new pressure value
-    setPressure(pressure);
 
     points << mLastPixel << mLastInterpolated << mNewInterpolated << mCurrentPixel;
 
