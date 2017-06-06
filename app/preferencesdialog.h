@@ -158,6 +158,7 @@ public slots:
     void updateValues();
     void autosaveChange(bool b);
     void autosaveNumberChange(int number);
+    void clearRecentFilesList(bool b);
 
 private:
     PreferenceManager* mManager = nullptr;

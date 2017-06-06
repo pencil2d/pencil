@@ -72,6 +72,7 @@ public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
+    void clearRecentFilesList();
 
 public:
     void setOpacity(int opacity);

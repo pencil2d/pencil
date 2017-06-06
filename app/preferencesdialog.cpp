@@ -540,29 +540,43 @@ void TimelinePage::scrubChange(bool value)
 
 FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
 {
-    QVBoxLayout* lay = new QVBoxLayout();
+    QVBoxLayout *lay = new QVBoxLayout();
 
-    QGroupBox* autosaveBox = new QGroupBox(tr("Autosave documents"));
+    QVBoxLayout *clearRecentChangesLay = new QVBoxLayout();
+
+    QGroupBox *autosaveBox = new QGroupBox(tr("Autosave documents"));
     mAutosaveCheckBox = new QCheckBox(tr("Enable autosave"));
-    QLabel* autosaveNumberLabel = new QLabel(tr("Number of modifications before autosaving:"));
+    QLabel *autosaveNumberLabel = new QLabel(tr("Number of modifications before autosaving:"));
+    mAutosaveNumberBox = new QSpinBox();
+
+    QGroupBox *clearRecentFilesBox = new QGroupBox(tr("Clear recent files list"));
+    QLabel *clearRecentFilesLbl = new QLabel(tr("This will clear your list of recently opened files"));
+    QPushButton *clearRecentFilesBtn = new QPushButton(tr("Clear"));
+
     mAutosaveNumberBox = new QSpinBox();
 
     mAutosaveNumberBox->setMinimum(5);
     mAutosaveNumberBox->setMaximum(200);
     mAutosaveNumberBox->setFixedWidth(50);
 
-    connect( mAutosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange );
+    connect(mAutosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
     connect(mAutosaveNumberBox, SIGNAL(valueChanged(int)), this, SLOT(autosaveNumberChange(int)));
+    connect(clearRecentFilesBtn, SIGNAL(clicked(bool)), this, SLOT(clearRecentFilesList(bool)));
 
     lay->addWidget(mAutosaveCheckBox);
     lay->addWidget(autosaveNumberLabel);
     lay->addWidget(mAutosaveNumberBox);
     autosaveBox->setLayout(lay);
 
-    QVBoxLayout* lay2 = new QVBoxLayout();
-    lay2->addWidget(autosaveBox);
-    lay2->addStretch(1);
-    setLayout(lay2);
+    clearRecentChangesLay->addWidget(clearRecentFilesLbl);
+    clearRecentChangesLay->addWidget(clearRecentFilesBtn);
+    clearRecentFilesBox->setLayout(clearRecentChangesLay);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout();
+    mainLayout->addWidget(autosaveBox);
+    mainLayout->addWidget(clearRecentFilesBox);
+    mainLayout->addStretch(1);
+    setLayout(mainLayout);
 }
 
 void FilesPage::updateValues()
@@ -579,6 +593,11 @@ void FilesPage::autosaveChange(bool b)
 void FilesPage::autosaveNumberChange(int number)
 {
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
+}
+
+void FilesPage::clearRecentFilesList(bool b)
+{
+    mManager->set(SETTING::CLEAR_RECENT_FILES_LIST, b);
 }
 
 ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)

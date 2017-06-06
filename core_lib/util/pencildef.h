@@ -129,6 +129,7 @@ enum BackgroundStyle
 #define SHORTCUTS_GROUP             "Shortcuts"
 #define SETTING_AUTO_SAVE           "AutoSave"
 #define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
+#define SETTING_RECENT_FILES_LIST   "ClearRecentFilesList"
 #define SETTING_TOOL_CURSOR         "ToolCursors"
 #define SETTING_DOTTED_CURSOR       "DottedCursors"
 #define SETTING_HIGH_RESOLUTION     "HighResPosition"

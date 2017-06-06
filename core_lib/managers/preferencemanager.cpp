@@ -59,6 +59,7 @@ void PreferenceManager::loadPrefs()
     // Files
     set( SETTING::AUTO_SAVE,                settings.value( SETTING_AUTO_SAVE,              true ).toBool() );
     set( SETTING::AUTO_SAVE_NUMBER,         settings.value( SETTING_AUTO_SAVE_NUMBER,       20 ).toInt() );
+    set( SETTING::CLEAR_RECENT_FILES_LIST,  settings.value( SETTING_RECENT_FILES_LIST,      true ).toBool() );
 
     // Timeline
     //
@@ -277,6 +278,10 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::AUTO_SAVE:
         settings.setValue ( SETTING_AUTO_SAVE, value );
+        break;
+    case SETTING::CLEAR_RECENT_FILES_LIST:
+        settings.setValue( SETTING_RECENT_FILES_LIST, value );
+        emit optionChanged( SETTING::CLEAR_RECENT_FILES_LIST );
         break;
     case SETTING::SHORT_SCRUB:
         settings.setValue ( SETTING_SHORT_SCRUB, value );

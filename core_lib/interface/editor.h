@@ -103,6 +103,8 @@ Q_SIGNALS:
     void selectAll();
     void changeThinLinesButton( bool );
 
+    void clearRecentFilesList();
+
     void currentFrameChanged( int n );
 
     // save
