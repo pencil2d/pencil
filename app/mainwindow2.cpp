@@ -69,6 +69,7 @@ GNU General Public License for more details.
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
+#include "preferencesdialog.h"
 
 #include "exportimagedialog.h"
 #include "exportmoviedialog.h"
@@ -383,9 +384,11 @@ void MainWindow2::updateSaveState()
 
 void MainWindow2::clearRecentFilesList()
 {
-    mRecentFileMenu->clear();
-    InformativeDialog *informDialog = new InformativeDialog("Notice!", "You have sucessfully cleared the list");
-    informDialog->exec();
+    if (!mRecentFileMenu->getRecentFiles().isEmpty()) {
+        mRecentFileMenu->clear();
+    }
+    QMessageBox *confirmBox = new QMessageBox;
+    confirmBox->information(this, 0, tr("\n\n You have sucessfully cleared the list"), QMessageBox::Ok);
 }
 
 void MainWindow2::closeEvent( QCloseEvent* event )
@@ -1052,7 +1055,7 @@ void MainWindow2::helpBox()
 void MainWindow2::makeConnections( Editor* editor )
 {
     connect( editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState );
-    connect( editor, &Editor::clearRecentFilesList, this, &MainWindow2::clearRecentFilesList);
+    connect( mFilesPage, &FilesPage::clearRecentList, this, &MainWindow2::clearRecentFilesList);
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )

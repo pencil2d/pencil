@@ -6,8 +6,6 @@ InformativeDialog::InformativeDialog( QString title, QString description, QWidge
     ui(new Ui::InformativeDialog)
 {
     ui->setupUi( this );
-    ui->horizontalLayout->setSpacing(0);
-
     this->setWindowTitle( title );
     ui->title->setText( QString( "<h3>%1</h3>" ).arg( title ) );
     ui->description->setText( description );

@@ -551,7 +551,7 @@ FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
 
     QGroupBox *clearRecentFilesBox = new QGroupBox(tr("Clear recent files list"));
     QLabel *clearRecentFilesLbl = new QLabel(tr("This will clear your list of recently opened files"));
-    QPushButton *clearRecentFilesBtn = new QPushButton(tr("Clear"));
+    mClearRecentFilesBtn = new QPushButton(tr("Clear"));
 
     mAutosaveNumberBox = new QSpinBox();
 
@@ -561,7 +561,7 @@ FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
 
     connect(mAutosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
     connect(mAutosaveNumberBox, SIGNAL(valueChanged(int)), this, SLOT(autosaveNumberChange(int)));
-    connect(clearRecentFilesBtn, SIGNAL(clicked(bool)), this, SLOT(clearRecentFilesList(bool)));
+    connect(mClearRecentFilesBtn, SIGNAL(clicked(bool)), this, SLOT(clearRecentFilesList()));
 
     lay->addWidget(mAutosaveCheckBox);
     lay->addWidget(autosaveNumberLabel);
@@ -569,7 +569,7 @@ FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
     autosaveBox->setLayout(lay);
 
     clearRecentChangesLay->addWidget(clearRecentFilesLbl);
-    clearRecentChangesLay->addWidget(clearRecentFilesBtn);
+    clearRecentChangesLay->addWidget(mClearRecentFilesBtn);
     clearRecentFilesBox->setLayout(clearRecentChangesLay);
 
     QVBoxLayout* mainLayout = new QVBoxLayout();
@@ -583,6 +583,15 @@ void FilesPage::updateValues()
 {
     mAutosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     mAutosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+
+    QSettings settings( PENCIL2D, PENCIL2D );
+    QVariant recent = settings.value( "RecentFiles" );
+    RecentFileMenu *recentFileMenu = new RecentFileMenu;
+
+    if (!recent.isNull()) {
+        mClearRecentFilesBtn->setEnabled(false);
+        mClearRecentFilesBtn->setText("List is empty");
+    }
 }
 
 void FilesPage::autosaveChange(bool b)
@@ -595,9 +604,23 @@ void FilesPage::autosaveNumberChange(int number)
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
 }
 
-void FilesPage::clearRecentFilesList(bool b)
+void FilesPage::clearRecentFilesList()
 {
-    mManager->set(SETTING::CLEAR_RECENT_FILES_LIST, b);
+    QSettings settings( PENCIL2D, PENCIL2D );
+    QVariant recent = settings.value( "RecentFiles" );
+    RecentFileMenu *recentFileMenu = new RecentFileMenu;
+    QStringList recentFilesList = recent.toStringList();
+
+    emit clearRecentList();
+//    if (recentFilesList.empty()) {
+//        mClearRecentFilesBtn->setEnabled(false);
+//        mClearRecentFilesBtn->setText("List is empty");
+//    } else {
+//        qDebug() << "???";
+//        Editor *mEditor = new Editor();
+//        mEditor->clearRecentFilesList();
+//        updateValues();
+//    }
 }
 
 ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)

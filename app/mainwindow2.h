@@ -40,6 +40,7 @@ class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
+class FilesPage;
 
 
 #define STRINGIFY(x) #x
@@ -143,6 +144,7 @@ private:
     ToolBoxWidget*        mToolBox             = nullptr;
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
+    FilesPage*            mFilesPage           = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 

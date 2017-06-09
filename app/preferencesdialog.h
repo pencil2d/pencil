@@ -36,6 +36,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "shortcutspage.h"
 #include "preferencemanager.h"
+#include "recentfilemenu.h"
 
 class QListWidget;
 class QListWidgetItem;
@@ -151,19 +152,23 @@ class FilesPage : public QWidget
     Q_OBJECT
 
 public:
-    FilesPage(QWidget* parent = 0);
+    FilesPage(QWidget *parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
     void updateValues();
     void autosaveChange(bool b);
     void autosaveNumberChange(int number);
-    void clearRecentFilesList(bool b);
+    void clearRecentFilesList();
+
+Q_SIGNALS:
+    void clearRecentList();
 
 private:
-    PreferenceManager* mManager = nullptr;
-    QCheckBox* mAutosaveCheckBox;
-    QSpinBox* mAutosaveNumberBox;
+    PreferenceManager *mManager = nullptr;
+    QCheckBox *mAutosaveCheckBox;
+    QSpinBox *mAutosaveNumberBox;
+    QPushButton *mClearRecentFilesBtn;
 
 };
 
