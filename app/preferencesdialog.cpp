@@ -49,6 +49,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     FilesPage* file = new FilesPage( this );
     file->setManager( mPrefManager );
     file->updateValues();
+    makeConnections(file);
 
     TimelinePage* timeline = new TimelinePage( this );
     timeline->setManager( mPrefManager );
@@ -90,13 +91,11 @@ void PreferencesDialog::init( PreferenceManager* m )
     mainLayout->addSpacing( 5 );
     mainLayout->addLayout( buttonsLayout );
     setLayout( mainLayout );
-
-    makeConnections();
 }
 
-void PreferencesDialog::makeConnections()
+void PreferencesDialog::makeConnections(FilesPage *file)
 {
-
+    connect(file, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
 }
 
 void PreferencesDialog::createIcons()

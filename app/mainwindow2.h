@@ -130,7 +130,7 @@ private:
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
-    void makeConnections( FilesPage*);
+    void makeConnections( PreferencesDialog*);
 
     void bindActionWithSetting( QAction*, SETTING );
 
@@ -145,7 +145,7 @@ private:
     ToolBoxWidget*        mToolBox             = nullptr;
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
-    FilesPage*            mFilesPage           = nullptr;
+    PreferencesDialog*    mPrefDialog          = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 

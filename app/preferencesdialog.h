@@ -43,6 +43,7 @@ class QListWidgetItem;
 class QStackedWidget;
 class QComboBox;
 class PreferenceManager;
+class FilesPage;
 
 
 class PreferencesDialog : public QDialog
@@ -60,13 +61,14 @@ public:
 Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
+    void clearRecentList();
 
 protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
     void createIcons();
-    void makeConnections();
+    void makeConnections(FilesPage *file);
 
     QListWidget* contentsWidget = nullptr;
     QStackedWidget* pagesWidget = nullptr;
