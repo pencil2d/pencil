@@ -130,6 +130,7 @@ private:
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
+    void makeConnections( FilesPage*);
 
     void bindActionWithSetting( QAction*, SETTING );
 
