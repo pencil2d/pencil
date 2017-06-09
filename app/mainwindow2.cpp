@@ -116,6 +116,9 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
 
+    mFilesPage = new FilesPage( this );
+    makeConnections( mEditor, mFilesPage);
+
     mCommands = new ActionCommands( this );
     mCommands->setCore( mEditor );
 
@@ -1056,6 +1059,11 @@ void MainWindow2::makeConnections( Editor* editor )
 {
     connect( editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState );
     connect( mFilesPage, &FilesPage::clearRecentList, this, &MainWindow2::clearRecentFilesList);
+}
+
+void MainWindow2::makeConnections( Editor* editor, FilesPage *filesPage )
+{
+    connect( filesPage, &FilesPage::clearRecentList, this, &MainWindow2::clearRecentFilesList);
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
