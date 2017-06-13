@@ -97,6 +97,11 @@ public:
 
     void openFile( QString filename );
 
+    PreferencesDialog *getPrefDialog() {return mPrefDialog;}
+
+Q_SIGNALS:
+    void updateRecentFilesList(bool b);
+
 protected:
     void tabletEvent( QTabletEvent* ) override;
     void closeEvent( QCloseEvent* ) override;
@@ -143,6 +148,7 @@ private:
     ToolBoxWidget*        mToolBox             = nullptr;
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
+    PreferencesDialog     *mPrefDialog         = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 

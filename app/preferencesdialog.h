@@ -42,6 +42,7 @@ class QListWidgetItem;
 class QStackedWidget;
 class QComboBox;
 class PreferenceManager;
+class FilesPage;
 
 
 class PreferencesDialog : public QDialog
@@ -55,23 +56,26 @@ public:
     void init( PreferenceManager* m );
     
     void changePage(QListWidgetItem* current, QListWidgetItem* previous);
+    void updateRecentListBtn(bool isEmpty);
 
 Q_SIGNALS:
     void windowOpacityChange(int);
     void curveOpacityChange(int);
+    void clearRecentList();
+    void updateRecentFileListBtn();
 
 protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
     void createIcons();
-    void makeConnections();
 
     QListWidget* contentsWidget = nullptr;
     QStackedWidget* pagesWidget = nullptr;
     QScrollArea* scrollArea = nullptr;
 
     PreferenceManager* mPrefManager = nullptr;
+    FilesPage* mFilesPage = nullptr;
 };
 
 
@@ -151,19 +155,25 @@ class FilesPage : public QWidget
     Q_OBJECT
 
 public:
-    FilesPage(QWidget* parent = 0);
+    FilesPage(QWidget *parent = 0);
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
     void updateValues();
     void autosaveChange(bool b);
     void autosaveNumberChange(int number);
-    void clearRecentFilesList(bool b);
+    void clearRecentFilesList();
+    QPushButton *getClearRecentFilesBtn() { return mClearRecentFilesBtn; }
+    void updateClearRecentListButton();
+
+Q_SIGNALS:
+    void clearRecentList();
 
 private:
-    PreferenceManager* mManager = nullptr;
-    QCheckBox* mAutosaveCheckBox;
-    QSpinBox* mAutosaveNumberBox;
+    PreferenceManager *mManager = nullptr;
+    QCheckBox *mAutosaveCheckBox;
+    QSpinBox *mAutosaveNumberBox;
+    QPushButton *mClearRecentFilesBtn;
 
 };
 

@@ -56,8 +56,7 @@ HEADERS += \
     tooloptionwidget.h \
     importexportdialog.h \
     exportimagedialog.h \
-    importimageseqdialog.h \
-    informativedialog.h
+    importimageseqdialog.h
 
 SOURCES += \
     main.cpp \
@@ -84,8 +83,7 @@ SOURCES += \
     tooloptionwidget.cpp \
     importexportdialog.cpp \
     exportimagedialog.cpp \
-    importimageseqdialog.cpp \
-    informativedialog.cpp
+    importimageseqdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -98,8 +96,7 @@ FORMS += \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \
     ui/exportimageoptions.ui \
-    ui/importimageseqoptions.ui \
-    ui/informativedialog.ui
+    ui/importimageseqoptions.ui
 
 DEPENDPATH += .
 

@@ -170,9 +170,6 @@ void Editor::settingUpdated(SETTING setting)
         mScribbleArea->updateAllFrames();
         emit updateTimeLine();
         break;
-    case SETTING::CLEAR_RECENT_FILES_LIST:
-        emit clearRecentFilesList();
-        break;
     default:
         break;
     }
