@@ -61,7 +61,6 @@ GNU General Public License for more details.
 #include "errordialog.h"
 #include "importimageseqdialog.h"
 #include "aboutdialog.h"
-#include "informativedialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -69,7 +68,6 @@ GNU General Public License for more details.
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
-#include "preferencesdialog.h"
 
 #include "exportimagedialog.h"
 #include "exportmoviedialog.h"
@@ -115,9 +113,6 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->setScribbleArea( mScribbleArea );
     makeConnections( mEditor, mScribbleArea );
-
-    mPrefDialog = new PreferencesDialog( this );
-    makeConnections( mPrefDialog );
 
     mCommands = new ActionCommands( this );
     mCommands->setCore( mEditor );
@@ -387,11 +382,16 @@ void MainWindow2::updateSaveState()
 
 void MainWindow2::clearRecentFilesList()
 {
-    if (!mRecentFileMenu->getRecentFiles().isEmpty()) {
+    QStringList recentFilesList = mRecentFileMenu->getRecentFiles();
+    if (!recentFilesList.isEmpty()) {
         mRecentFileMenu->clear();
+
+        QMessageBox *confirmBox = new QMessageBox;
+        confirmBox->information(this, 0,
+                                tr("\n\n You have sucessfully cleared the list"),
+                                QMessageBox::Ok);
     }
-    QMessageBox *confirmBox = new QMessageBox;
-    confirmBox->information(this, 0, tr("\n\n You have sucessfully cleared the list"), QMessageBox::Ok);
+    getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
 }
 
 void MainWindow2::closeEvent( QCloseEvent* event )
@@ -815,19 +815,20 @@ void MainWindow2::exportImage()
 
 void MainWindow2::preferences()
 {
-    PreferencesDialog* prefDialog = new PreferencesDialog( this );
-    prefDialog->setAttribute( Qt::WA_DeleteOnClose );
-    prefDialog->init( mEditor->preference() );
+    mPrefDialog = new PreferencesDialog( this );
+    mPrefDialog->setAttribute( Qt::WA_DeleteOnClose );
+    mPrefDialog->init( mEditor->preference() );
 
-    connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( prefDialog, &PreferencesDialog::finished, [ &]
+    connect( mPrefDialog, &PreferencesDialog::clearRecentList, this, &MainWindow2::clearRecentFilesList);
+    connect( mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( mPrefDialog, &PreferencesDialog::finished, [ &]
     {
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
 
-    prefDialog->show();
+    mPrefDialog->show();
 }
 
 void MainWindow2::dockAllSubWidgets()
@@ -1058,11 +1059,6 @@ void MainWindow2::helpBox()
 void MainWindow2::makeConnections( Editor* editor )
 {
     connect( editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState );
-}
-
-void MainWindow2::makeConnections( PreferencesDialog *prefDialog )
-{
-    connect( prefDialog, &PreferencesDialog::clearRecentList, this, &MainWindow2::clearRecentFilesList);
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )

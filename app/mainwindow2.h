@@ -40,7 +40,6 @@ class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
-class FilesPage;
 
 
 #define STRINGIFY(x) #x
@@ -98,6 +97,11 @@ public:
 
     void openFile( QString filename );
 
+    PreferencesDialog *getPrefDialog() {return mPrefDialog;}
+
+Q_SIGNALS:
+    void updateRecentFilesList(bool b);
+
 protected:
     void tabletEvent( QTabletEvent* ) override;
     void closeEvent( QCloseEvent* ) override;
@@ -130,7 +134,6 @@ private:
     void makeConnections( Editor*, TimeLine* );
     void makeConnections( Editor*, DisplayOptionWidget* );
     void makeConnections( Editor*, ToolOptionWidget*);
-    void makeConnections( PreferencesDialog*);
 
     void bindActionWithSetting( QAction*, SETTING );
 
@@ -145,7 +148,7 @@ private:
     ToolBoxWidget*        mToolBox             = nullptr;
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
-    PreferencesDialog*    mPrefDialog          = nullptr;
+    PreferencesDialog     *mPrefDialog         = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 

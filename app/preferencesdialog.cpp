@@ -46,10 +46,12 @@ void PreferencesDialog::init( PreferenceManager* m )
     general->updateValues();
     //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
 
-    FilesPage* file = new FilesPage( this );
-    file->setManager( mPrefManager );
-    file->updateValues();
-    makeConnections(file);
+    mFilesPage = new FilesPage( this );
+    mFilesPage->setManager( mPrefManager );
+    mFilesPage->updateValues();
+
+    connect(mFilesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
+    connect(this, &PreferencesDialog::updateRecentFileListBtn, mFilesPage, &FilesPage::updateClearRecentListButton);
 
     TimelinePage* timeline = new TimelinePage( this );
     timeline->setManager( mPrefManager );
@@ -66,7 +68,7 @@ void PreferencesDialog::init( PreferenceManager* m )
     pagesWidget->setMinimumHeight(40);
 
     pagesWidget->addWidget( general );
-    pagesWidget->addWidget( file );
+    pagesWidget->addWidget( mFilesPage );
     pagesWidget->addWidget( timeline );
     pagesWidget->addWidget( tools );
     pagesWidget->addWidget( shortcuts );
@@ -91,11 +93,6 @@ void PreferencesDialog::init( PreferenceManager* m )
     mainLayout->addSpacing( 5 );
     mainLayout->addLayout( buttonsLayout );
     setLayout( mainLayout );
-}
-
-void PreferencesDialog::makeConnections(FilesPage *file)
-{
-    connect(file, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
 }
 
 void PreferencesDialog::createIcons()
@@ -148,6 +145,14 @@ void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* pr
         current = previous;
 
     pagesWidget->setCurrentIndex(contentsWidget->row(current));
+}
+
+void PreferencesDialog::updateRecentListBtn(bool isEmpty)
+{
+    if (isEmpty == true)
+    {
+        emit updateRecentFileListBtn();
+    }
 }
 
 GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
@@ -582,15 +587,12 @@ void FilesPage::updateValues()
 {
     mAutosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     mAutosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+}
 
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QVariant recent = settings.value( "RecentFiles" );
-    RecentFileMenu *recentFileMenu = new RecentFileMenu;
-
-    if (!recent.isNull()) {
-        mClearRecentFilesBtn->setEnabled(false);
-        mClearRecentFilesBtn->setText("List is empty");
-    }
+void FilesPage::updateClearRecentListButton()
+{
+    mClearRecentFilesBtn->setEnabled(false);
+    mClearRecentFilesBtn->setText("List is empty");
 }
 
 void FilesPage::autosaveChange(bool b)
@@ -605,21 +607,7 @@ void FilesPage::autosaveNumberChange(int number)
 
 void FilesPage::clearRecentFilesList()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QVariant recent = settings.value( "RecentFiles" );
-    RecentFileMenu *recentFileMenu = new RecentFileMenu;
-    QStringList recentFilesList = recent.toStringList();
-
     emit clearRecentList();
-//    if (recentFilesList.empty()) {
-//        mClearRecentFilesBtn->setEnabled(false);
-//        mClearRecentFilesBtn->setText("List is empty");
-//    } else {
-//        qDebug() << "???";
-//        Editor *mEditor = new Editor();
-//        mEditor->clearRecentFilesList();
-//        updateValues();
-//    }
 }
 
 ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
