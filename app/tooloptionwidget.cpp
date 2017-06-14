@@ -53,8 +53,11 @@ void ToolOptionWidget::updateUI()
 
     if(currentLayerType == Layer::VECTOR)
     {
-        mVectorMergeBox->setVisible( currentTool->isPropertyEnabled( VECTORMERGE) );
+        // TODO: implement merge behavior
+//        mVectorMergeBox->setVisible( currentTool->isPropertyEnabled( VECTORMERGE) );
+        mToleranceSlider->setVisible(false);
     }
+
 
     const Properties& p = currentTool->properties;
 
