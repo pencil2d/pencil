@@ -120,5 +120,6 @@ void Editor::importMovie (QString filePath, int fps)
     QStringList entries = dir.entryList(filtername,QDir::Files,QDir::Type);
     for(int i=0; i<entries.size(); i++)
         dir.remove(entries[i]);
-
 }
+
+} // extern "C"
