@@ -830,27 +830,6 @@ bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize expo
     return imageToExport.save( filePath, format.toStdString().c_str() );
 }
 
-bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression )
-{
-    Q_UNUSED( exportSize );
-    Q_UNUSED( startFrame );
-    Q_UNUSED( endFrame );
-    Q_UNUSED( view );
-    Q_UNUSED( fps );
-    Q_UNUSED( compression );
-
-    if ( !filePath.endsWith( ".swf", Qt::CaseInsensitive ) )
-    {
-        filePath = filePath + ".swf";
-    }
-
-    // ************* Requires the MING Library ***************
-    // Flash::exportFlash(this, startFrame, endFrame, view, exportSize, filePath, fps, compression);
-    // **********************************************
-
-    return false;
-}
-
 int Object::getLayerCount() const
 {
     return mLayers.size();
