@@ -47,6 +47,7 @@ void ToolOptionWidget::updateUI()
     mPreserveAlphaBox->setVisible( currentTool->isPropertyEnabled( PRESERVEALPHA ) );
     mUseAABox->setVisible(currentTool->isPropertyEnabled( ANTI_ALIASING ) );
     mInpolLevelsBox->setVisible(currentTool->isPropertyEnabled( INTERPOLATION ) );
+    mToleranceSlider->setVisible(currentTool->isPropertyEnabled( TOLERANCE ) );
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
 
@@ -65,6 +66,7 @@ void ToolOptionWidget::updateUI()
     setVectorMergeEnabled( p.vectorMergeEnabled );
     setAA(p.useAA);
     setInpolLevel(p.inpolLevel);
+    setTolerance(p.tolerance);
 }
 
 void ToolOptionWidget::createUI()
@@ -156,6 +158,10 @@ void ToolOptionWidget::createUI()
     mInpolLevelsBox->setLayout(inpolLayout);
     inpolLayout->setSpacing(2);
 
+    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::EXPONENT, SpinSlider::FLOAT, 1, 220, this );
+    mToleranceSlider->setValue( settings.value( "Tolerance" ).toFloat() );
+    mToleranceSlider->setToolTip( tr( "Set Fill tolerance" ) );
+
     mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
     mMakeInvisibleBox->setToolTip( tr( "Make invisible" ) );
     mMakeInvisibleBox->setFont( QFont( "Helvetica", 10 ) );
@@ -183,6 +189,7 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mMakeInvisibleBox, 8, 0, 1, 2 );
     pLayout->addWidget( mVectorMergeBox, 9, 0, 1, 2 );
     pLayout->addWidget( mInpolLevelsBox, 10, 0, 1, 4);
+    pLayout->addWidget( mToleranceSlider, 1, 0, 1, 4);
 
     pLayout->setRowStretch( 17, 1 );
 
@@ -215,6 +222,8 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mSimpleInpol, &QRadioButton::clicked, toolManager, &ToolManager::SimplepolSelected);
     connect( mStrongInpol, &QRadioButton::clicked, toolManager, &ToolManager::StrongpolSelected);
     connect( mExtremeInpol, &QRadioButton::clicked, toolManager, &ToolManager::ExtremepolSelected);
+
+    connect( mToleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
 
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
@@ -250,6 +259,11 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
             break;
         case INTERPOLATION:
             setInpolLevel(p.inpolLevel);
+            break;
+        case TOLERANCE:
+            setTolerance(p.tolerance);
+            break;
+        default:
             break;
     }
 }
@@ -350,6 +364,17 @@ void ToolOptionWidget::setInpolLevel(int x)
     }
 }
 
+void ToolOptionWidget::setTolerance(qreal tolerance)
+{
+    SignalBlocker b( mToleranceSlider );
+    mToleranceSlider->setEnabled( true );
+    mToleranceSlider->setValue( tolerance );
+
+//    SignalBlocker b2( mBrushSpinBox );
+//    mTole->setEnabled( true );
+//    mBrushSpinBox->setValue( width );
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     mSizeSlider->hide();
@@ -364,4 +389,5 @@ void ToolOptionWidget::disableAllOptions()
     mVectorMergeBox->hide();
     mUseAABox->hide();
     mInpolLevelsBox->hide();
+    mToleranceSlider->hide();
 }

@@ -334,7 +334,12 @@ void BaseTool::setAA(const int useAA)
     properties.useAA = useAA;
 }
 
-void BaseTool::setInpolLevel (const int level)
+void BaseTool::setInpolLevel(const int level)
 {
     properties.inpolLevel = level;
+}
+
+void BaseTool::setTolerance(const qreal tolerance)
+{
+    properties.tolerance = tolerance;
 }

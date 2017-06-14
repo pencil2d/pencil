@@ -438,17 +438,20 @@ void BitmapImage::clear(QRect rectangle)
     painter.end();
 }
 
-int BitmapImage::sqr(int n)   // square of a number
+int BitmapImage::pow(int n)   // pow of a number
 {
     return n*n;
 }
 
+// Euclidean Color distance
 int BitmapImage::rgbDistance(QRgb rgba1, QRgb rgba2)
 {
-    int result = sqr(qRed(rgba1)-qRed(rgba2)) + sqr(qGreen(rgba1)-qGreen(rgba2)) + sqr(qBlue(rgba1)-qBlue(rgba2)) + sqr(qAlpha(rgba1)-qAlpha(rgba2));
-    return result;
+    int result = pow(qRed(rgba1)-qRed(rgba2)) + pow(qGreen(rgba1)-qGreen(rgba2)) + pow(qBlue(rgba1)-qBlue(rgba2)) + pow(qAlpha(rgba1)-qAlpha(rgba2));
+    return sqrt(result);
 }
 
+// ----- Queue based flood fill
+// ----- http://lodev.org/cgtutor/floodfill.html
 void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance, bool extendFillImage)
 {
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
@@ -470,11 +473,8 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     myPen = QPen( QColor(replacementColour) , 1.0, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin);
 
     targetColour = targetImage->pixel(point.x(), point.y());
-    //if (  rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) > tolerance ) return;
     queue.append( point );
-    // ----- flood fill
-    // ----- from the standard flood fill algorithm
-    // ----- http://en.wikipedia.org/wiki/Flood_fill
+
     j = -1;
     k = 1;
     for(int i=0; i< queue.size(); i++ )
@@ -502,16 +502,10 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
                 if (!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
             }
 
-            //painter1.drawLine( point.x()+j, point.y(), point.x()+k+1, point.y() );
-
             replaceImage->drawLine( QPointF(point.x()+j, point.y()), QPointF(point.x()+k, point.y()), myPen, QPainter::CompositionMode_SourceOver, false);
-            //for(int l=0; l<=k-j+1 ; l++) {
-            //	replaceImage->setPixel( point.x()+j, point.y(), replacementColour );
-            //}
 
             for(int x = j+1; x < k; x++)
             {
-                //replaceImage->setPixel( point.x()+x, point.y(), replacementColour);
                 condition = point.y() - 1 > targetImage->top();
                 if (!extendFillImage) condition = condition && (point.y() - 1 > replaceImage->top());
                 if ( condition && queue.size() < targetImage->height() * targetImage->width() )
@@ -547,15 +541,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
             }
         }
     }
-    //painter2.drawImage( QPoint(0,0), *replaceImage );
-    //bool memo = fillImage->mExtendable;
-    //fillImage->mExtendable = false;
     fillImage->paste(replaceImage);
-    //fillImage->mExtendable = memo;
-    //replaceImage->fill(qRgba(0,0,0,0));
-    //painter1.end();
-    //painter2.end();
     delete replaceImage;
-    //update();
 }
 
