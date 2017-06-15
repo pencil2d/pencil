@@ -57,6 +57,7 @@ void ToolOptionWidget::updateUI()
         // TODO: implement merge behavior
 //        mVectorMergeBox->setVisible( currentTool->isPropertyEnabled( VECTORMERGE) );
         mToleranceSlider->setVisible(false);
+        mToleranceSpinBox->setVisible(false);
     }
 
 

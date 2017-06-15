@@ -122,15 +122,7 @@ void BucketTool::paintBitmap(Layer* layer)
     BitmapImage *sourceImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
     Layer *targetLayer = layer; // by default
     int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
-    if ( mEditor->layers()->currentLayerIndex() > 0 )
-    {
-        Layer *layer2 = mEditor->layers()->currentLayer( -1 );
-        if ( layer2->type() == Layer::BITMAP )
-        {
-            targetLayer = layer2;
-            layerNumber = layerNumber - 1;
-        }
-    }
+
     BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
 
     BitmapImage::floodFill( sourceImage,
