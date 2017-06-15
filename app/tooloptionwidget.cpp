@@ -376,8 +376,6 @@ void ToolOptionWidget::setInpolLevel(int x)
 
 void ToolOptionWidget::setTolerance(int tolerance)
 {
-    // TODO: Slider offset from actual pos
-    // other sliders has stopped working.
     tolerance *= 0.454645;
     SignalBlocker b( mToleranceSlider );
     mToleranceSlider->setEnabled( true );
