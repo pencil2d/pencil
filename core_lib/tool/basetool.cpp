@@ -339,7 +339,7 @@ void BaseTool::setInpolLevel(const int level)
     properties.inpolLevel = level;
 }
 
-void BaseTool::setTolerance(const qreal tolerance)
+void BaseTool::setTolerance(const int tolerance)
 {
     properties.tolerance = tolerance;
 }

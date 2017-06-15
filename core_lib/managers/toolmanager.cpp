@@ -191,16 +191,16 @@ void ToolManager::setInpolLevel(int level)
 }
 
 
-void ToolManager::setTolerance( qreal newTolerance )
+void ToolManager::setTolerance( int newTolerance )
 {
     if ( std::isnan( newTolerance ) || newTolerance < 0 )
     {
         newTolerance = 1.f;
     }
 
-    currentTool()->setTolerance(newTolerance);
-    emit toleranceValueChanged( newTolerance );
-    emit toolPropertyChanged( currentTool()->type(), TOLERANCE );
+    currentTool()->setTolerance( newTolerance );
+    Q_EMIT toleranceValueChanged( newTolerance );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), TOLERANCE );
 }
 
 

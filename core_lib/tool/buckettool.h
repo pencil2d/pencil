@@ -19,7 +19,7 @@ public:
     void mouseMoveEvent( QMouseEvent * ) override;
     void mouseReleaseEvent( QMouseEvent * ) override;
 
-    void setTolerance(const qreal tolerance) override;
+    void setTolerance(const int tolerance) override;
 
     void paintBitmap(Layer *layer);
     void paintVector(QMouseEvent *event, Layer *layer);

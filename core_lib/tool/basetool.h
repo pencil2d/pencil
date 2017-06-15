@@ -84,7 +84,7 @@ public:
     virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
     virtual void setAA(const int useAA );
     virtual void setInpolLevel( const int level );
-    virtual void setTolerance(const qreal tolerance);
+    virtual void setTolerance(const int tolerance);
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
 

@@ -55,7 +55,7 @@ QCursor BucketTool::cursor()
     }
 }
 
-void BucketTool::setTolerance(const qreal tolerance)
+void BucketTool::setTolerance(const int tolerance)
 {
     // Set current property
     properties.tolerance = tolerance;

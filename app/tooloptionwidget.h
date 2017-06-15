@@ -39,7 +39,7 @@ private:
     void setVectorMergeEnabled( int );
     void setAA( int );
     void setInpolLevel( int );
-    void setTolerance( qreal );
+    void setTolerance( int );
 
     void disableAllOptions();
     void createUI();
@@ -61,6 +61,7 @@ private:
     QRadioButton* mExtremeInpol  = nullptr;
     QGroupBox* mInpolLevelsBox   = nullptr;
     SpinSlider* mToleranceSlider = nullptr;
+    QSpinBox* mToleranceSpinBox  = nullptr;
 
 };
 

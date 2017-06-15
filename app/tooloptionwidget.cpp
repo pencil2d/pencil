@@ -48,6 +48,7 @@ void ToolOptionWidget::updateUI()
     mUseAABox->setVisible(currentTool->isPropertyEnabled( ANTI_ALIASING ) );
     mInpolLevelsBox->setVisible(currentTool->isPropertyEnabled( INTERPOLATION ) );
     mToleranceSlider->setVisible(currentTool->isPropertyEnabled( TOLERANCE ) );
+    mToleranceSpinBox->setVisible(currentTool->isPropertyEnabled( TOLERANCE ) );
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
 
@@ -161,9 +162,14 @@ void ToolOptionWidget::createUI()
     mInpolLevelsBox->setLayout(inpolLayout);
     inpolLayout->setSpacing(2);
 
-    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::EXPONENT, SpinSlider::FLOAT, 1, 220, this );
+    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::LINEAR, SpinSlider::FLOAT, 1, 220, this );
     mToleranceSlider->setValue( settings.value( "Tolerance" ).toFloat() );
     mToleranceSlider->setToolTip( tr( "Set Fill tolerance" ) );
+    mToleranceSlider->setPixelPos(0,220, settings.value( "Tolerance" ).toFloat(),220,false);
+
+    mToleranceSpinBox = new QSpinBox(this);
+    mToleranceSpinBox->setRange(1,220);
+    mToleranceSpinBox->setValue(settings.value( "Tolerance" ).toFloat() );
 
     mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
     mMakeInvisibleBox->setToolTip( tr( "Make invisible" ) );
@@ -192,7 +198,8 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mMakeInvisibleBox, 8, 0, 1, 2 );
     pLayout->addWidget( mVectorMergeBox, 9, 0, 1, 2 );
     pLayout->addWidget( mInpolLevelsBox, 10, 0, 1, 4);
-    pLayout->addWidget( mToleranceSlider, 1, 0, 1, 4);
+    pLayout->addWidget( mToleranceSlider, 1, 0, 1, 2);
+    pLayout->addWidget( mToleranceSpinBox, 1, 2, 1, 2);
 
     pLayout->setRowStretch( 17, 1 );
 
@@ -227,7 +234,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mExtremeInpol, &QRadioButton::clicked, toolManager, &ToolManager::ExtremepolSelected);
 
     connect( mToleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
-
+    connect( mToleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -367,15 +374,19 @@ void ToolOptionWidget::setInpolLevel(int x)
     }
 }
 
-void ToolOptionWidget::setTolerance(qreal tolerance)
+void ToolOptionWidget::setTolerance(int tolerance)
 {
+    // TODO: Slider offset from actual pos
+    // other sliders has stopped working.
+    tolerance *= 0.454645;
     SignalBlocker b( mToleranceSlider );
     mToleranceSlider->setEnabled( true );
     mToleranceSlider->setValue( tolerance );
+    mToleranceSlider->setPixelPos(0,220, tolerance,220,false);
 
-//    SignalBlocker b2( mBrushSpinBox );
-//    mTole->setEnabled( true );
-//    mBrushSpinBox->setValue( width );
+    SignalBlocker b2( mToleranceSpinBox );
+    mToleranceSpinBox->setEnabled( true );
+    mToleranceSpinBox->setValue( tolerance );
 }
 
 void ToolOptionWidget::disableAllOptions()
@@ -393,4 +404,5 @@ void ToolOptionWidget::disableAllOptions()
     mUseAABox->hide();
     mInpolLevelsBox->hide();
     mToleranceSlider->hide();
+    mToleranceSpinBox->hide();
 }

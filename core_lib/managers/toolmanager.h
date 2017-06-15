@@ -54,7 +54,7 @@ public slots:
     void setPressure( bool );
     void setAA( int );
     void setInpolLevel ( int );
-    void setTolerance ( qreal );
+    void setTolerance ( int );
 
 private:
     BaseTool* mCurrentTool       = nullptr;
