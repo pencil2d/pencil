@@ -163,13 +163,12 @@ void ToolOptionWidget::createUI()
     mInpolLevelsBox->setLayout(inpolLayout);
     inpolLayout->setSpacing(2);
 
-    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::LINEAR, SpinSlider::FLOAT, 1, 220, this );
+    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::LINEAR, SpinSlider::FLOAT, 1, 100, this );
     mToleranceSlider->setValue( settings.value( "Tolerance" ).toFloat() );
     mToleranceSlider->setToolTip( tr( "Set Fill tolerance" ) );
-    mToleranceSlider->setPixelPos(0,220, settings.value( "Tolerance" ).toFloat(),220,false);
 
     mToleranceSpinBox = new QSpinBox(this);
-    mToleranceSpinBox->setRange(1,220);
+    mToleranceSpinBox->setRange(1,100);
     mToleranceSpinBox->setValue(settings.value( "Tolerance" ).toFloat() );
 
     mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
@@ -377,11 +376,9 @@ void ToolOptionWidget::setInpolLevel(int x)
 
 void ToolOptionWidget::setTolerance(int tolerance)
 {
-    tolerance *= 0.454645;
     SignalBlocker b( mToleranceSlider );
     mToleranceSlider->setEnabled( true );
     mToleranceSlider->setValue( tolerance );
-    mToleranceSlider->setPixelPos(0,220, tolerance,220,false);
 
     SignalBlocker b2( mToleranceSpinBox );
     mToleranceSpinBox->setEnabled( true );

@@ -32,7 +32,7 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.inpolLevel = -1;
     properties.useAA = -1;
-    properties.tolerance = 220;
+    properties.tolerance = 100;
 
     m_enabledProperties[TOLERANCE] = true;
 }
@@ -59,7 +59,7 @@ void BucketTool::setTolerance(const int tolerance)
 
     // Update settings
     QSettings settings( PENCIL2D, PENCIL2D );
-    settings.setValue("tolerance", tolerance);
+    settings.setValue("tolerance", tolerance );
     settings.sync();
 }
 
@@ -119,7 +119,7 @@ void BucketTool::paintBitmap(Layer* layer)
                             getLastPoint().toPoint(),
                             qRgba( 0, 0, 0, 0 ),
                             mEditor->color()->frontColor().rgba(),
-                            properties.tolerance,
+                            properties.tolerance * 2.2,
                             true );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
