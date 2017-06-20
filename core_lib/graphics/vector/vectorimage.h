@@ -37,7 +37,7 @@ public:
     VectorImage();
     virtual ~VectorImage();
 
-    void setObject( Object* pObj ) { myParent = pObj; }
+    void setObject( Object* pObj ) { mObject = pObj; }
 
     bool read(QString filePath);
     Status write(QString filePath, QString format);
@@ -66,7 +66,7 @@ public:
     int getFirstSelectedArea();
     void selectAll();
     void deselectAll();
-    QRectF getSelectionRect() { return selectionRect; }
+    QRectF getSelectionRect() { return mSelectionRect; }
     void setSelectionRect(QRectF rectange);
     void calculateSelectionRect();
     void deleteSelection();
@@ -131,17 +131,17 @@ public:
 
 private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
+	
+	void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
+	void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 
-    Object* myParent = nullptr;
+	QList<QPointF> getfillContourPoints(QPoint point);
+	void updateImageSize(BezierCurve& updatedCurve);
 
-    QRectF selectionRect;
-    QTransform selectionTransformation;
-
-    void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
-    void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
-
-    QList<QPointF> getfillContourPoints(QPoint point);
-    void updateImageSize(BezierCurve& updatedCurve);
+private:
+    Object* mObject = nullptr;
+    QRectF mSelectionRect;
+    QTransform mSelectionTransformation;
     QSize mSize;
 };
 

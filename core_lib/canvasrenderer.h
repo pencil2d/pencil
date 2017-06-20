@@ -61,7 +61,6 @@ public:
     void setCanvas( QPixmap* canvas );
     void setViewTransform( QTransform viewTransform );
     void setOptions( RenderOptions p ) { mOptions = p; }
-    void setBackgroundBrush(QBrush brush);
     void setTransformedSelection( QRect selection, QTransform transform );
     void ignoreTransformedSelection();
 

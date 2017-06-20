@@ -7,12 +7,15 @@
 #include <QStyleOptionViewItem>
 #include "colorwheel.h"
 
+static const int gridWidth = 16;
+
+
 ColorGridItem::ColorGridItem(int id, QWidget *parent) :
     QWidget(parent),
-    gridId_(id),
+    mGridId(id),
     menu(this),
-    color_(Qt::transparent),
-    hovered_(false),
+    mColor(Qt::transparent),
+    mHovered(false),
     picker(QPixmap("iconset/ui/picker-cursor.png"))
 {
     setContentsMargins(0,0,0,0);
@@ -31,9 +34,9 @@ void ColorGridItem::initMenu()
 
 void ColorGridItem::drawTransparent()
 {
-    backgroundImg = QPixmap(gridWidth,gridWidth);
-    backgroundImg.fill(Qt::white);
-    QPainter painter(&backgroundImg);
+    mBackgroundImg = QPixmap(gridWidth,gridWidth);
+    mBackgroundImg.fill(Qt::white);
+    QPainter painter(&mBackgroundImg);
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(224, 224, 224));
     int k = gridWidth/2;
@@ -54,31 +57,31 @@ void ColorGridItem::paintEvent(QPaintEvent *)
     painter.setPen(Qt::NoPen);
     painter.fillRect(0,0,gridWidth, gridWidth, QBrush(Qt::white));
     painter.restore();
-    if(color_ == QColor(Qt::transparent)){
-        painter.drawPixmap(0,0,backgroundImg);
+    if(mColor == QColor(Qt::transparent)){
+        painter.drawPixmap(0,0,mBackgroundImg);
     }else{
         painter.save();
-        painter.setBrush(color_);
+        painter.setBrush(mColor);
         painter.setPen(Qt::NoPen);
         painter.drawRect(0,0,gridWidth, gridWidth);
         painter.restore();
     }
-    if(hovered_){
+    if(mHovered){
         painter.setPen(borderPen);
         painter.drawRect(0, 0, gridWidth-1, gridWidth-1);
     }
 }
 
-void ColorGridItem::enterEvent(QEvent *)
+void ColorGridItem::enterEvent(QEvent* )
 {
-    hovered_ = true;
+    mHovered = true;
     setCursor(picker);
     update();
 }
 
-void ColorGridItem::leaveEvent(QEvent *)
+void ColorGridItem::leaveEvent(QEvent* )
 {
-    hovered_ = false;
+    mHovered = false;
     unsetCursor();
     update();
 }
@@ -95,23 +98,23 @@ void ColorGridItem::mousePressEvent(QMouseEvent *event)
 
 QColor ColorGridItem::color()
 {
-    return color_;
+    return mColor;
 }
 
 void ColorGridItem::setColor(const QColor& color)
 {
-    color_ = color;
+    mColor = color;
     update();
 }
 
 void ColorGridItem::onColorPicked()
 {
-    emit colorPicked(this->gridId_, this->color_);
+    emit colorPicked(this->mGridId, this->mColor);
 }
 
 void ColorGridItem::onColorDroped()
 {
-    emit colorDroped(this->gridId_);
+    emit colorDroped(this->mGridId);
 }
 
 void ColorGridItem::onColorCleared()

@@ -548,7 +548,7 @@ void VectorImage::select(QRectF rectangle)
 void VectorImage::setSelected(int curveNumber, bool YesOrNo)
 {
     m_curves[curveNumber].setSelected(YesOrNo);
-    if (YesOrNo) selectionRect |= m_curves[curveNumber].getBoundingRect();
+    if (YesOrNo) mSelectionRect |= m_curves[curveNumber].getBoundingRect();
     modification();
 }
 
@@ -556,7 +556,7 @@ void VectorImage::setSelected(int curveNumber, int vertexNumber, bool YesOrNo)
 {
     m_curves[curveNumber].setSelected(vertexNumber, YesOrNo);
     QPointF vertex = getVertex(curveNumber, vertexNumber);
-    if (YesOrNo) selectionRect |= QRectF(vertex.x(), vertex.y(), 0.0, 0.0);
+    if (YesOrNo) mSelectionRect |= QRectF(vertex.x(), vertex.y(), 0.0, 0.0);
     modification();
 }
 
@@ -584,7 +584,7 @@ void VectorImage::setSelected(QList<VertexRef> vertexList, bool YesOrNo)
 void VectorImage::setAreaSelected(int areaNumber, bool YesOrNo)
 {
     area[areaNumber].setSelected(YesOrNo);
-    if (YesOrNo) selectionRect |= area[areaNumber].mPath.boundingRect();
+    if (YesOrNo) mSelectionRect |= area[areaNumber].mPath.boundingRect();
     modification();
 }
 
@@ -655,7 +655,7 @@ void VectorImage::selectAll()
         //curve[i].setSelected(true);
         setSelected(i, true);
     }
-    selectionTransformation.reset();
+    mSelectionTransformation.reset();
     //modification();
 }
 
@@ -669,29 +669,29 @@ void VectorImage::deselectAll()
     {
         area[i].setSelected(false);
     }
-    selectionRect = QRectF(0,0,0,0);
-    selectionTransformation.reset();
+    mSelectionRect = QRectF(0,0,0,0);
+    mSelectionTransformation.reset();
     modification();
 }
 
 void VectorImage::setSelectionRect(QRectF rectangle)
 {
-    selectionRect = rectangle;
+    mSelectionRect = rectangle;
     select(rectangle);
 }
 
 void VectorImage::calculateSelectionRect()
 {
-    selectionRect = QRectF(0,0,0,0);
+    mSelectionRect = QRectF(0,0,0,0);
     for(int i=0; i< m_curves.size(); i++)
     {
-        if ( m_curves.at(i).isPartlySelected()) selectionRect |= m_curves[i].getBoundingRect();
+        if ( m_curves.at(i).isPartlySelected()) mSelectionRect |= m_curves[i].getBoundingRect();
     }
 }
 
 void VectorImage::setSelectionTransformation(QTransform transform)
 {
-    selectionTransformation = transform;
+    mSelectionTransformation = transform;
     modification();
 }
 
@@ -839,7 +839,7 @@ void VectorImage::deleteSelectedPoints()
 
 void VectorImage::paste(VectorImage& vectorImage)
 {
-    selectionRect = QRect(0,0,0,0);
+    mSelectionRect = QRect(0,0,0,0);
     int n = m_curves.size();
     QList<int> selectedCurves;
 
@@ -853,7 +853,7 @@ void VectorImage::paste(VectorImage& vectorImage)
         {
             m_curves.append( vectorImage.m_curves.at(i) );
             selectedCurves << i;
-            selectionRect |= vectorImage.m_curves[i].getBoundingRect();
+            mSelectionRect |= vectorImage.m_curves[i].getBoundingRect();
         }
     }
     for(int i=0; i < vectorImage.area.size() ; i++)
@@ -974,7 +974,7 @@ void VectorImage::paintImage(QPainter& painter,
     //painter.setClipping(true);
     for ( BezierCurve curve : m_curves )
     {
-        curve.drawPath( painter, myParent, selectionTransformation, simplified, showThinCurves );
+        curve.drawPath( painter, mObject, mSelectionTransformation, simplified, showThinCurves );
         painter.setClipping(false);
     }
 }
@@ -1008,7 +1008,7 @@ void VectorImage::clean()
 
 void VectorImage::applySelectionTransformation()
 {
-    applySelectionTransformation(selectionTransformation);
+    applySelectionTransformation(mSelectionTransformation);
 }
 
 void VectorImage::applySelectionTransformation(QTransform transf)
@@ -1020,7 +1020,7 @@ void VectorImage::applySelectionTransformation(QTransform transf)
         }
     }
     calculateSelectionRect();
-    selectionTransformation.reset();
+    mSelectionTransformation.reset();
     modification();
 }
 
@@ -1199,7 +1199,7 @@ QPointF VectorImage::getVertex(int curveNumber, int vertexNumber)
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(selectionTransformation);
+        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
         if ( vertexNumber > -2 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getVertex(vertexNumber);
@@ -1219,7 +1219,7 @@ QPointF VectorImage::getC1(int curveNumber, int vertexNumber)
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(selectionTransformation);
+        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
         if ( vertexNumber > -1 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getC1(vertexNumber);
@@ -1239,7 +1239,7 @@ QPointF VectorImage::getC2(int curveNumber, int vertexNumber)
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(selectionTransformation);
+        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
         if ( vertexNumber > -1 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getC2(vertexNumber);
