@@ -343,3 +343,8 @@ void BaseTool::setTolerance(const int tolerance)
 {
     properties.tolerance = tolerance;
 }
+
+void BaseTool::setUseFillContour(const bool useFillContour)
+{
+    properties.useFillContour = useFillContour;
+}

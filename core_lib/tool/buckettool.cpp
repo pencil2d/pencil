@@ -139,9 +139,8 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
             vectorImage->fill( getLastPoint(),
                                mEditor->color()->frontColorNumber(),
                                3.0 / mEditor->view()->scaling() );
-        }
-        else {
-            vectorImage->fill( path,
+        } else {
+            vectorImage->fillPath( path,
                                mEditor->color()->frontColorNumber(),
                                10.0 / mEditor->view()->scaling() );
         }

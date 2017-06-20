@@ -37,7 +37,8 @@ enum ToolPropertyType
     VECTORMERGE,
     ANTI_ALIASING,
     INTERPOLATION,
-    TOLERANCE
+    TOLERANCE,
+    FILLCONTOUR
 };
 
 enum BackgroundStyle

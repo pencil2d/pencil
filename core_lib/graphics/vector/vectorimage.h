@@ -19,14 +19,17 @@ GNU General Public License for more details.
 
 #include <QtXml>
 #include <QTransform>
+#include <QDebug>
+#include <QImage>
+#include <QStringList>
+
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
 #include "keyframe.h"
 
-class Object;  // forward declaration
+class Object;
 class QPainter;
-
 
 class VectorImage : public KeyFrame
 {
@@ -91,9 +94,8 @@ public:
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fill(QList<QPointF> contourPath, int colour, float tolerance);
+    void fillPath(QList<QPointF> contourPath, int colour, float tolerance);
     void fill(QPointF point, int colour, float tolerance);
-    void fill(int curveNumber, int colour);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);

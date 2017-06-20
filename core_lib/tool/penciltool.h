@@ -29,6 +29,7 @@ public:
     void setPressure( const bool pressure ) override;
     void setPreserveAlpha( const bool preserveAlpha ) override;
     void setInpolLevel(const int level) override;
+    void setUseFillContour(const bool useFillContour) override;
 
 private:
     QColor mCurrentPressuredColor { 0, 0, 0, 255 };

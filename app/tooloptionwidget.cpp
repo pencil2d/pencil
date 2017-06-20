@@ -49,6 +49,7 @@ void ToolOptionWidget::updateUI()
     mInpolLevelsBox->setVisible(currentTool->isPropertyEnabled( INTERPOLATION ) );
     mToleranceSlider->setVisible(currentTool->isPropertyEnabled( TOLERANCE ) );
     mToleranceSpinBox->setVisible(currentTool->isPropertyEnabled( TOLERANCE ) );
+    mFillContour->setVisible( currentTool->isPropertyEnabled( FILLCONTOUR ) );
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
 
@@ -58,6 +59,19 @@ void ToolOptionWidget::updateUI()
 //        mVectorMergeBox->setVisible( currentTool->isPropertyEnabled( VECTORMERGE) );
         mToleranceSlider->setVisible(false);
         mToleranceSpinBox->setVisible(false);
+        mUseAABox->setVisible(false);
+
+        if (currentTool->type() == PENCIL)
+        {
+            mSizeSlider->setVisible(false);
+            mBrushSpinBox->setVisible(false);
+            mUsePressureBox->setVisible(false);
+        }
+    } else {
+        if (currentTool->type() == PENCIL)
+        {
+            mFillContour->setVisible(false);
+        }
     }
 
 
@@ -72,6 +86,7 @@ void ToolOptionWidget::updateUI()
     setAA(p.useAA);
     setInpolLevel(p.inpolLevel);
     setTolerance(p.tolerance);
+    setFillContour(p.useFillContour);
 }
 
 void ToolOptionWidget::createUI()
@@ -121,6 +136,11 @@ void ToolOptionWidget::createUI()
     mUseAABox->setToolTip( tr( "Enable Anti-Aliasing" ) );
     mUseAABox->setFont( QFont( "Helvetica", 10 ) );
     mUseAABox->setChecked( true );
+
+    mFillContour = new QCheckBox( tr( "Fill Contour" ) );
+    mFillContour->setToolTip( tr( "Contour will be filled" ) );
+    mFillContour->setFont( QFont( "Helvetica", 10 ) );
+    mFillContour->setChecked( true );
 
     mInpolLevelsBox = new QGroupBox ( tr( "Stabilization level" ) );
     mInpolLevelsBox->setFlat(true);
@@ -200,6 +220,7 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mInpolLevelsBox, 10, 0, 1, 4);
     pLayout->addWidget( mToleranceSlider, 1, 0, 1, 2);
     pLayout->addWidget( mToleranceSpinBox, 1, 2, 1, 2);
+    pLayout->addWidget( mFillContour, 1, 0, 1, 2);
 
     pLayout->setRowStretch( 17, 1 );
 
@@ -235,6 +256,8 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
 
     connect( mToleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
     connect( mToleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
+
+    connect( mFillContour, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour );
 
     connect( toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged );
     connect( toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged );
@@ -272,6 +295,9 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
             break;
         case TOLERANCE:
             setTolerance(p.tolerance);
+            break;
+        case FILLCONTOUR:
+            setFillContour(p.useFillContour);
             break;
         default:
             break;
@@ -343,14 +369,20 @@ void ToolOptionWidget::setAA(int x)
 
     SignalBlocker b( mUseAABox );
     mUseAABox->setEnabled( true );
+    mUseAABox->setVisible( false );
 
-    if (x == -1) {
-        mUseAABox->setEnabled(false);
-        mUseAABox->hide();
-    } else {
-        mUseAABox->show();
+    auto layerType = editor()->layers()->currentLayer()->type();
+
+    if (layerType == Layer::BITMAP)
+    {
+        if (x == -1) {
+            mUseAABox->setEnabled(false);
+            mUseAABox->setVisible(false);
+        } else {
+            mUseAABox->setVisible(true);
+        }
+        mUseAABox->setChecked( x > 0 );
     }
-    mUseAABox->setChecked( x > 0 );
 }
 
 void ToolOptionWidget::setInpolLevel(int x)
@@ -385,6 +417,13 @@ void ToolOptionWidget::setTolerance(int tolerance)
     mToleranceSpinBox->setValue( tolerance );
 }
 
+void ToolOptionWidget::setFillContour(int useFill)
+{
+    SignalBlocker b( mFillContour );
+    mFillContour->setEnabled(true);
+    mFillContour->setChecked(useFill > 0);
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     mSizeSlider->hide();
@@ -401,4 +440,5 @@ void ToolOptionWidget::disableAllOptions()
     mInpolLevelsBox->hide();
     mToleranceSlider->hide();
     mToleranceSpinBox->hide();
+    mFillContour->hide();
 }

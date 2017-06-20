@@ -24,16 +24,20 @@ void PencilTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[VECTORMERGE] = true;
+    m_enabledProperties[VECTORMERGE] = false;
     m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[FILLCONTOUR] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
     properties.feather = 1;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
-    properties.invisibility = 1;
-    properties.preserveAlpha = 0;
     properties.inpolLevel = 0;
+    properties.useAA = -1;
+    properties.useFillContour = false;
+
+    //    properties.invisibility = 1;
+    //    properties.preserveAlpha = 0;
 
     if ( properties.width <= 0 )
     {
@@ -90,6 +94,15 @@ void PencilTool::setInpolLevel(const int level)
 
     QSettings settings( PENCIL2D, PENCIL2D);
     settings.setValue("lineInpol", level);
+    settings.sync();
+}
+
+void PencilTool::setUseFillContour(const bool useFillContour)
+{
+    properties.useFillContour = useFillContour;
+
+    QSettings settings( PENCIL2D, PENCIL2D);
+    settings.setValue("FillContour", useFillContour);
     settings.sync();
 }
 
@@ -306,7 +319,6 @@ void PencilTool::paintVectorStroke()
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
-
         curve.setWidth( 0 );
         curve.setFeather( 0 );
         curve.setInvisibility( true );
@@ -315,6 +327,13 @@ void PencilTool::paintVectorStroke()
         VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
         vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ), properties.vectorMergeEnabled );
+
+        if (properties.useFillContour == true)
+        {
+            vectorImage->fillPath( mStrokePoints,
+                               mEditor->color()->frontColorNumber(),
+                               10.0 / mEditor->view()->scaling() );
+        }
         mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
         mScribbleArea->setAllDirty();
     }

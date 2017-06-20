@@ -53,8 +53,9 @@ public slots:
     void setBezier( bool );
     void setPressure( bool );
     void setAA( int );
-    void setInpolLevel ( int );
-    void setTolerance ( int );
+    void setInpolLevel( int );
+    void setTolerance( int );
+    void setUseFillContour( bool );
 
 private:
     BaseTool* mCurrentTool       = nullptr;

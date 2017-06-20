@@ -40,6 +40,7 @@ private:
     void setAA( int );
     void setInpolLevel( int );
     void setTolerance( int );
+    void setFillContour( int );
 
     void disableAllOptions();
     void createUI();
@@ -62,6 +63,7 @@ private:
     QGroupBox* mInpolLevelsBox   = nullptr;
     SpinSlider* mToleranceSlider = nullptr;
     QSpinBox* mToleranceSpinBox  = nullptr;
+    QCheckBox* mFillContour      = nullptr;
 
 };
 
