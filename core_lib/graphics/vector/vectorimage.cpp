@@ -883,7 +883,7 @@ void VectorImage::paste(VectorImage& vectorImage)
 
 QColor VectorImage::getColour(int colourNumber)
 {
-    return myParent->getColour(colourNumber).colour;
+    return mObject->getColour(colourNumber).colour;
 }
 
 int VectorImage::getColourNumber(QPointF point)
@@ -1092,7 +1092,7 @@ QList<int> VectorImage::getCurvesCloseTo(QPointF P1, qreal maxDistance)
     {
         BezierCurve myCurve;
         if (m_curves[j].isPartlySelected()) {
-            myCurve = m_curves[j].transformed(selectionTransformation);
+            myCurve = m_curves[j].transformed(mSelectionTransformation);
         } else {
             myCurve = m_curves[j];
         }
