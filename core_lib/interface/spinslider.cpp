@@ -5,6 +5,7 @@
 #include <QGridLayout>
 #include <QLocale>
 #include <QDebug>
+#include <QStyle>
 #include "spinslider.h"
 
 
@@ -89,6 +90,11 @@ void SpinSlider::setValue( qreal v )
 
     changeValue( v );
     mSlider->setSliderPosition( value2 );
+}
+
+void SpinSlider::setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown)
+{
+    mSlider->setSliderPosition(QStyle::sliderValueFromPosition(min, max, val,space, upsideDown));
 }
 
 void SpinSlider::setExponent( const qreal exp )

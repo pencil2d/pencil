@@ -39,6 +39,8 @@ private:
     void setVectorMergeEnabled( int );
     void setAA( int );
     void setInpolLevel( int );
+    void setTolerance( int );
+    void setFillContour( int );
 
     void disableAllOptions();
     void createUI();
@@ -59,6 +61,9 @@ private:
     QRadioButton* mStrongInpol   = nullptr;
     QRadioButton* mExtremeInpol  = nullptr;
     QGroupBox* mInpolLevelsBox   = nullptr;
+    SpinSlider* mToleranceSlider = nullptr;
+    QSpinBox* mToleranceSpinBox  = nullptr;
+    QCheckBox* mFillContour      = nullptr;
 
 };
 

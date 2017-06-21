@@ -106,6 +106,7 @@ void ToolManager::resetAllTools()
     getTool( BRUSH )->properties.inpolLevel = -1;
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
+    getTool( BUCKET )->properties.tolerance = 100.0;
 
     // todo: add all the default settings
 
@@ -187,6 +188,25 @@ void ToolManager::setInpolLevel(int level)
 {
     currentTool()->setInpolLevel( level );
     Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION );
+}
+
+
+void ToolManager::setTolerance( int newTolerance )
+{
+    if ( std::isnan( newTolerance ) || newTolerance < 0 )
+    {
+        newTolerance = 1.f;
+    }
+
+    currentTool()->setTolerance( newTolerance );
+    Q_EMIT toleranceValueChanged( newTolerance );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), TOLERANCE );
+}
+
+void ToolManager::setUseFillContour(bool useFillContour)
+{
+    currentTool()->setUseFillContour( useFillContour );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), FILLCONTOUR);
 }
 
 

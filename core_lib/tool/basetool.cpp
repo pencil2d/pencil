@@ -334,7 +334,17 @@ void BaseTool::setAA(const int useAA)
     properties.useAA = useAA;
 }
 
-void BaseTool::setInpolLevel (const int level)
+void BaseTool::setInpolLevel(const int level)
 {
     properties.inpolLevel = level;
+}
+
+void BaseTool::setTolerance(const int tolerance)
+{
+    properties.tolerance = tolerance;
+}
+
+void BaseTool::setUseFillContour(const bool useFillContour)
+{
+    properties.useFillContour = useFillContour;
 }

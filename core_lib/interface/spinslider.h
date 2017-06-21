@@ -5,6 +5,7 @@
 
 class QLabel;
 class QSlider;
+class QStyle;
 
 
 class SpinSlider : public QWidget
@@ -26,6 +27,7 @@ public:
 
     SpinSlider( QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max, QWidget* parent = 0 );
     void setValue( qreal );
+    void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
     void setExponent( const qreal );
     
 signals:
