@@ -193,9 +193,9 @@ void ToolManager::setInpolLevel(int level)
 
 void ToolManager::setTolerance( int newTolerance )
 {
-    if ( std::isnan( newTolerance ) || newTolerance < 0 )
+    if ( newTolerance < 0 )
     {
-        newTolerance = 1.f;
+        newTolerance = 1;
     }
 
     currentTool()->setTolerance( newTolerance );
