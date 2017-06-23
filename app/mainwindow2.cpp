@@ -388,7 +388,7 @@ void MainWindow2::clearRecentFilesList()
 
         QMessageBox *confirmBox = new QMessageBox;
         confirmBox->information(this, 0,
-                                tr("\n\n You have sucessfully cleared the list"),
+                                tr("\n\n You have successfully cleared the list"),
                                 QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
