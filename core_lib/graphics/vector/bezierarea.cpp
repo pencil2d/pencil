@@ -21,15 +21,13 @@ GNU General Public License for more details.
 
 BezierArea::BezierArea()
 {
-    selected = false;
-    // nothing;
 }
 
 BezierArea::BezierArea(QList<VertexRef> vertexList, int colour)
 {
     mVertex = vertexList;
     mColourNumber = colour;
-    selected = false;
+    mSelected = false;
 }
 
 VertexRef BezierArea::getVertexRef(int i)
@@ -47,7 +45,7 @@ VertexRef BezierArea::getVertexRef(int i)
 
 void BezierArea::setSelected(bool YesOrNo)
 {
-    selected = YesOrNo;
+    mSelected = YesOrNo;
 }
 
 Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )

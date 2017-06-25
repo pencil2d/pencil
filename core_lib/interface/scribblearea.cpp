@@ -418,10 +418,10 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
 
     // Some tablets return "NoDevice" and Cursor.
     if (event->device() == QTabletEvent::NoDevice) {
-        currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
+        currentTool()->adjustPressureSensitiveProperties( mStrokeManager->getPressure(),
                                                       false );
     } else {
-        currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
+        currentTool()->adjustPressureSensitiveProperties( mStrokeManager->getPressure(),
                                                       event->pointerType() == QTabletEvent::Cursor );
     }
 

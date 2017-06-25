@@ -209,7 +209,8 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint() == mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -249,10 +250,6 @@ void BrushTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-            opacity = mCurrentPressure / 2;
-        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
@@ -264,7 +261,8 @@ void BrushTool::paintAt( QPointF point )
                                   properties.feather,
                                   mEditor->color()->frontColor(),
                                   opacity,
-                                  properties.useFeather );
+                                  properties.useFeather,
+                                  properties.useAA );
 
         int rad = qRound( brushWidth ) / 2 + 2;
         mScribbleArea->refreshBitmap( rect, rad );
@@ -350,7 +348,7 @@ void BrushTool::drawStroke()
     {
         qreal brushWidth = 0;
         if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
+            brushWidth = properties.width * mCurrentPressure;
         }
         else {
             brushWidth = properties.width;
@@ -395,8 +393,6 @@ void BrushTool::paintVectorStroke()
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-        mStrokePressures.append(0.01);
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
                     curve.setWidth( properties.width );

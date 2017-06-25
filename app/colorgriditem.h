@@ -26,18 +26,18 @@ public slots:
 protected:
     void drawTransparent();
     void paintEvent(QPaintEvent *);
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
+    void enterEvent(QEvent* event);
+    void leaveEvent(QEvent* event);
     void mousePressEvent(QMouseEvent *event);
     void initMenu();
-    int gridId_;
+
+private:
+    int mGridId;
     QMenu menu;
-    QColor color_;
-    QPixmap backgroundImg;
-    bool hovered_;
-//    ColorWheel * wheel_;
+    QColor mColor;
+    QPixmap mBackgroundImg;
+    bool mHovered;
     QCursor picker;
-    static const int gridWidth = 16;
 };
 
 #endif // COLORGRIDITEM_H

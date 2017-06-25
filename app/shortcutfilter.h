@@ -10,7 +10,7 @@ class ShortcutFilter : public QObject
     public:
         ShortcutFilter( ScribbleArea* _mScribbleArea, QObject* parent = 0 );
     protected:
-        bool eventFilter(QObject *obj, QEvent *event);
+        bool eventFilter(QObject* obj, QEvent* event);
         ScribbleArea* mScribbleArea;
 };
 

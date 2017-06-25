@@ -27,7 +27,7 @@ BezierCurve::BezierCurve()
 BezierCurve::BezierCurve(QList<QPointF> pointList)
 {
     QList<qreal> pressureList;
-    for(int i=0; i< pointList.size(); i++)
+	for (int i = 0; i < pointList.size(); i++)
     {
         pressureList << 0.5; // default pressure
     }
