@@ -312,7 +312,7 @@ void MainWindow2::createMenus()
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame );
     connect(ui->actionPrev_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mEditor, &Editor::duplicateKey );
-    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward ); //HERE
+    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward );
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mEditor, &Editor::moveFrameBackward );
 
     /// --- Tool Menu ---
@@ -380,6 +380,20 @@ void MainWindow2::updateSaveState()
     setWindowModified( mEditor->currentBackup() != mBackupAtSave );
 }
 
+void MainWindow2::clearRecentFilesList()
+{
+    QStringList recentFilesList = mRecentFileMenu->getRecentFiles();
+    if (!recentFilesList.isEmpty()) {
+        mRecentFileMenu->clear();
+
+        QMessageBox *confirmBox = new QMessageBox;
+        confirmBox->information(this, 0,
+                                tr("\n\n You have successfully cleared the list"),
+                                QMessageBox::Ok);
+    }
+    getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
+}
+
 void MainWindow2::closeEvent( QCloseEvent* event )
 {
     if ( maybeSave() )
@@ -400,13 +414,12 @@ void MainWindow2::tabletEvent( QTabletEvent* event )
 
 void MainWindow2::newDocument()
 {
-    if ( maybeSave() )
-    {
+    if (maybeSave()) {
         Object* object = new Object();
         object->init();
         mEditor->setObject( object );
         mEditor->scrubTo( 0 );
-        //mEditor->view()->resetView();
+        mEditor->view()->resetView();
 
         // Refresh the palette
         mColorPalette->refreshColorList();
@@ -552,7 +565,11 @@ bool MainWindow2::saveObject( QString strSavedFileName )
             out << st.details().replace( "<br>", "\n", Qt::CaseInsensitive );
         }
 
-        ErrorDialog errorDialog( st.title(), st.description().append( tr("<br><br>An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>Please be sure to include the following details in your issue:") ), st.details() );
+        ErrorDialog errorDialog( st.title(),
+                                 st.description().append( tr("<br><br>An error has occurred and your file may not have saved successfully."
+                                                             "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
+                                                             "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
+                                                             "Please be sure to include the following details in your issue:") ), st.details() );
         errorDialog.exec();
         return false;
     }
@@ -798,19 +815,20 @@ void MainWindow2::exportImage()
 
 void MainWindow2::preferences()
 {
-    PreferencesDialog* prefDialog = new PreferencesDialog( this );
-    prefDialog->setAttribute( Qt::WA_DeleteOnClose );
-    prefDialog->init( mEditor->preference() );
+    mPrefDialog = new PreferencesDialog( this );
+    mPrefDialog->setAttribute( Qt::WA_DeleteOnClose );
+    mPrefDialog->init( mEditor->preference() );
 
-    connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( prefDialog, &PreferencesDialog::finished, [ &]
+    connect( mPrefDialog, &PreferencesDialog::clearRecentList, this, &MainWindow2::clearRecentFilesList);
+    connect( mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( mPrefDialog, &PreferencesDialog::finished, [ &]
     {
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
 
-    prefDialog->show();
+    mPrefDialog->show();
 }
 
 void MainWindow2::dockAllSubWidgets()

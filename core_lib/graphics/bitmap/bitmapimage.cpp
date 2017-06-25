@@ -438,29 +438,32 @@ void BitmapImage::clear(QRect rectangle)
     painter.end();
 }
 
-int BitmapImage::sqr(int n)   // square of a number
+int BitmapImage::pow(int n)   // pow of a number
 {
     return n*n;
 }
 
+// Euclidean Color distance
 int BitmapImage::rgbDistance(QRgb rgba1, QRgb rgba2)
 {
-    int result = sqr(qRed(rgba1)-qRed(rgba2)) + sqr(qGreen(rgba1)-qGreen(rgba2)) + sqr(qBlue(rgba1)-qBlue(rgba2)) + sqr(qAlpha(rgba1)-qAlpha(rgba2));
-    return result;
+    int result = pow(qRed(rgba1)-qRed(rgba2))
+               + pow(qGreen(rgba1)-qGreen(rgba2))
+               + pow(qBlue(rgba1)-qBlue(rgba2))
+               + pow(qAlpha(rgba1)-qAlpha(rgba2));
+    return sqrt(result);
 }
 
+// ----- Queue based flood fill
+// ----- http://lodev.org/cgtutor/floodfill.html
 void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance, bool extendFillImage)
 {
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
     int j, k;
     bool condition;
     BitmapImage* replaceImage = nullptr;
-    if (extendFillImage)
-    {
+    if (extendFillImage) {
         replaceImage = new BitmapImage(targetImage->mBounds.united(fillImage->mBounds), QColor(0,0,0,0));
-    }
-    else
-    {
+    } else {
         targetImage->extend(fillImage->mBounds); // not necessary - here just to prevent some bug when we draw outside the targetImage - to be fixed
         replaceImage = new BitmapImage(fillImage->mBounds, QColor(0,0,0,0));
         replaceImage->mExtendable = false;
@@ -470,92 +473,75 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
     myPen = QPen( QColor(replacementColour) , 1.0, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin);
 
     targetColour = targetImage->pixel(point.x(), point.y());
-    //if (  rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) > tolerance ) return;
     queue.append( point );
-    // ----- flood fill
-    // ----- from the standard flood fill algorithm
-    // ----- http://en.wikipedia.org/wiki/Flood_fill
+
     j = -1;
     k = 1;
-    for(int i=0; i< queue.size(); i++ )
-    {
+    for(int i=0; i< queue.size(); i++ ) {
         point = queue.at(i);
-        if (  replaceImage->pixel(point.x(), point.y()) != replacementColour  && rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) < tolerance )
-        {
+
+        if( replaceImage->pixel(point.x(), point.y()) != replacementColour
+            && rgbDistance(targetImage->pixel(point.x(), point.y()), targetColour) < tolerance ) {
+
             j = -1;
             condition =  (point.x() + j > targetImage->left());
-            if (!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
-            while ( replaceImage->pixel(point.x()+j, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance && condition)
-            {
+
+            if(!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
+
+            while( replaceImage->pixel(point.x()+j, point.y()) != replacementColour
+                   && rgbDistance(targetImage->pixel( point.x()+j, point.y() ), targetColour) < tolerance
+                   && condition) {
                 j = j - 1;
                 condition =  (point.x() + j > targetImage->left());
-                if (!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
+                if(!extendFillImage) condition = condition && (point.x() + j > replaceImage->left());
             }
 
             k = 1;
             condition = ( point.x() + k < targetImage->right()-1);
-            if (!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
-            while ( replaceImage->pixel(point.x()+k, point.y()) != replacementColour  && rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance && condition)
-            {
+            if(!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
+
+            while( replaceImage->pixel(point.x()+k, point.y()) != replacementColour
+                   && rgbDistance(targetImage->pixel( point.x()+k, point.y() ), targetColour) < tolerance
+                   && condition) {
                 k = k + 1;
                 condition = ( point.x() + k < targetImage->right()-1);
-                if (!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
+                if(!extendFillImage) condition = condition && (point.x() + k < replaceImage->right()-1);
             }
 
-            //painter1.drawLine( point.x()+j, point.y(), point.x()+k+1, point.y() );
-
-            replaceImage->drawLine( QPointF(point.x()+j, point.y()), QPointF(point.x()+k, point.y()), myPen, QPainter::CompositionMode_SourceOver, false);
-            //for(int l=0; l<=k-j+1 ; l++) {
-            //	replaceImage->setPixel( point.x()+j, point.y(), replacementColour );
-            //}
-
-            for(int x = j+1; x < k; x++)
-            {
-                //replaceImage->setPixel( point.x()+x, point.y(), replacementColour);
+            for(int x = j+1; x < k; x++) {
                 condition = point.y() - 1 > targetImage->top();
-                if (!extendFillImage) condition = condition && (point.y() - 1 > replaceImage->top());
-                if ( condition && queue.size() < targetImage->height() * targetImage->width() )
-                {
-                    if ( replaceImage->pixel(point.x()+x, point.y()-1) != replacementColour)
-                    {
-                        if (rgbDistance(targetImage->pixel( point.x()+x, point.y() - 1), targetColour) < tolerance)
-                        {
+                if(!extendFillImage) condition = condition && (point.y() - 1 > replaceImage->top());
+
+                if( condition && queue.size() < targetImage->height() * targetImage->width() ) {
+                    if( replaceImage->pixel(point.x()+x, point.y()-1) != replacementColour) {
+                        if( rgbDistance(targetImage->pixel( point.x()+x, point.y() - 1), targetColour) < tolerance) {
                             queue.append( point + QPoint(x,-1) );
-                        }
-                        else
-                        {
+                        } else {
                             replaceImage->setPixel( point.x()+x, point.y()-1, replacementColour);
                         }
                     }
                 }
                 condition = point.y() + 1 < targetImage->bottom();
                 if (!extendFillImage) condition = condition && (point.y() + 1 < replaceImage->bottom());
-                if ( condition && queue.size() < targetImage->height() * targetImage->width() )
-                {
-                    if ( replaceImage->pixel(point.x()+x, point.y()+1) != replacementColour)
-                    {
-                        if (rgbDistance(targetImage->pixel( point.x()+x, point.y() + 1), targetColour) < tolerance)
-                        {
+
+                if( condition && queue.size() < targetImage->height() * targetImage->width() ) {
+                    if( replaceImage->pixel(point.x()+x, point.y()+1) != replacementColour) {
+                        if( rgbDistance(targetImage->pixel( point.x()+x, point.y() + 1), targetColour) < tolerance) {
                             queue.append( point + QPoint(x, 1) );
-                        }
-                        else
-                        {
+                        } else {
                             replaceImage->setPixel( point.x()+x, point.y()+1, replacementColour);
                         }
                     }
                 }
             }
+            replaceImage->drawLine( QPointF(point.x()+j, point.y()),
+                                    QPointF(point.x()+k, point.y()),
+                                    myPen,
+                                    QPainter::CompositionMode_SourceOver,
+                                    false);
         }
     }
-    //painter2.drawImage( QPoint(0,0), *replaceImage );
-    //bool memo = fillImage->mExtendable;
-    //fillImage->mExtendable = false;
     fillImage->paste(replaceImage);
-    //fillImage->mExtendable = memo;
-    //replaceImage->fill(qRgba(0,0,0,0));
-    //painter1.end();
-    //painter2.end();
     delete replaceImage;
-    //update();
 }
 

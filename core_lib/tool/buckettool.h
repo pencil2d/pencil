@@ -3,6 +3,8 @@
 
 #include "stroketool.h"
 
+class Layer;
+
 
 class BucketTool : public StrokeTool
 {
@@ -17,6 +19,10 @@ public:
     void mouseMoveEvent( QMouseEvent * ) override;
     void mouseReleaseEvent( QMouseEvent * ) override;
 
+    void setTolerance(const int tolerance) override;
+
+    void paintBitmap(Layer *layer);
+    void paintVector(QMouseEvent *event, Layer *layer);
     void drawStroke();
 };
 

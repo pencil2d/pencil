@@ -32,12 +32,14 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.inpolLevel = -1;
     properties.useAA = -1;
+    properties.tolerance = 100;
+
+    m_enabledProperties[TOLERANCE] = true;
 }
 
 QCursor BucketTool::cursor()
 {
-    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
-    {
+    if( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) {
         QPixmap pixmap( ":icons/bucketTool.png" );
         QPainter painter( &pixmap );
         painter.setPen( Qt::blue );   // FIXME: need to get current color
@@ -45,19 +47,26 @@ QCursor BucketTool::cursor()
         painter.end();
 
         return QCursor( pixmap, 4, 20 );
-    }
-    else
-    {
+    } else {
         return Qt::CrossCursor;
     }
 }
 
+void BucketTool::setTolerance(const int tolerance)
+{
+    // Set current property
+    properties.tolerance = tolerance;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("tolerance", tolerance );
+    settings.sync();
+}
+
+
 void BucketTool::mousePressEvent( QMouseEvent *event )
 {
-    mCurrentWidth = 10;
-
-    if ( event->button() == Qt::LeftButton )
-    {
+    if( event->button() == Qt::LeftButton ) {
         mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
     }
@@ -70,60 +79,12 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }
 
-    if ( event->button() == Qt::LeftButton )
-    {
-        if ( layer->type() == Layer::BITMAP )
-        {
-            BitmapImage *sourceImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-            Layer *targetLayer = layer; // by default
-            int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
-            if ( mEditor->layers()->currentLayerIndex() > 0 )
-            {
-                Layer *layer2 = mEditor->layers()->currentLayer( -1 );
-                if ( layer2->type() == Layer::BITMAP )
-                {
-                    targetLayer = layer2;
-                    layerNumber = layerNumber - 1;
-                }
-            }
-            BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-
-            BitmapImage::floodFill( sourceImage,
-                                    targetImage,
-                                    getLastPoint().toPoint(),
-                                    qRgba( 0, 0, 0, 0 ),
-                                    mEditor->color()->frontColor().rgba(),
-                                    10 * 10,
-                                    true );
-
-            mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
-            mScribbleArea->setAllDirty();
+    if ( event->button() == Qt::LeftButton ) {
+        if ( layer->type() == Layer::BITMAP ) {
+            paintBitmap(layer);
         }
-        else if ( layer->type() == Layer::VECTOR )
-        {
-            mScribbleArea->clearBitmapBuffer();
-            VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-
-            if ( event->modifiers() == Qt::AltModifier )
-            {
-                vectorImage->removeArea( getLastPoint() );
-            }
-            else
-            {
-                QList<QPointF> path = mStrokePoints;
-                if (path.size() < 10) {
-                    vectorImage->fill( getLastPoint(),
-                                       mEditor->color()->frontColorNumber(),
-                                       3.0 / mEditor->view()->scaling() );
-                }
-                else {
-                    vectorImage->fill( path,
-                                       mEditor->color()->frontColorNumber(),
-                                       10.0 / mEditor->view()->scaling() );
-                }
-            }
-            mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-            mScribbleArea->setAllDirty();
+        else if( layer->type() == Layer::VECTOR ) {
+            paintVector(event, layer);
         }
     }
     endStroke();
@@ -135,16 +96,57 @@ void BucketTool::mouseMoveEvent( QMouseEvent *event )
     if ( layer->type() == Layer::BITMAP) {
         Q_UNUSED( event );
     }
-    else if (layer->type() == Layer::VECTOR )
-    {
-        if ( event->buttons() & Qt::LeftButton )
-        {
+    else if(layer->type() == Layer::VECTOR ) {
+        if( event->buttons() & Qt::LeftButton ) {
             drawStroke();
             qDebug() << "DrawStroke" << event->pos() ;
         }
     }
 
     Q_UNUSED( event );
+}
+
+void BucketTool::paintBitmap(Layer* layer)
+{
+    BitmapImage *sourceImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+    Layer *targetLayer = layer; // by default
+    int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
+
+    BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+
+    BitmapImage::floodFill( sourceImage,
+                            targetImage,
+                            getLastPoint().toPoint(),
+                            qRgba( 0, 0, 0, 0 ),
+                            mEditor->color()->frontColor().rgba(),
+                            properties.tolerance * 2.2,
+                            true );
+
+    mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
+    mScribbleArea->setAllDirty();
+}
+
+void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
+{
+    mScribbleArea->clearBitmapBuffer();
+    VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+
+    if( event->modifiers() == Qt::AltModifier ) {
+        vectorImage->removeArea( getLastPoint() );
+    } else {
+        QList<QPointF> path = mStrokePoints;
+        if (path.size() < 10) {
+            vectorImage->fill( getLastPoint(),
+                               mEditor->color()->frontColorNumber(),
+                               3.0 / mEditor->view()->scaling() );
+        } else {
+            vectorImage->fillPath( path,
+                               mEditor->color()->frontColorNumber(),
+                               10.0 / mEditor->view()->scaling() );
+        }
+    }
+    mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
+    mScribbleArea->setAllDirty();
 }
 
 void BucketTool::drawStroke()
@@ -154,12 +156,10 @@ void BucketTool::drawStroke()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if ( layer->type() == Layer::BITMAP )
-    {
+    if( layer->type() == Layer::BITMAP ) {
         // No stroke in Bitmap layer
     }
-    else if ( layer->type() == Layer::VECTOR )
-    {
+    else if( layer->type() == Layer::VECTOR ) {
         int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         QColor pathColor = mEditor->color()->frontColor();
@@ -171,8 +171,7 @@ void BucketTool::drawStroke()
                   Qt::RoundCap,
                   Qt::RoundJoin );
 
-        if ( p.size() == 4 )
-        {
+        if( p.size() == 4 ) {
             QPainterPath path( p[ 0 ] );
             path.cubicTo( p[ 1 ],
                           p[ 2 ],

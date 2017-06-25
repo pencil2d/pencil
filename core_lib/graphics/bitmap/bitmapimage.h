@@ -67,7 +67,7 @@ public:
     void clear( QRect rectangle );
     void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }
 
-    static int sqr( int );
+    static int pow( int );
     static int rgbDistance( QRgb rgba1, QRgb rgba2 );
     static void floodFill( BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance, bool extendFillImage );
 

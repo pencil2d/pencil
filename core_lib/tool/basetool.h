@@ -26,6 +26,8 @@ public:
     bool useFeather   = true;
     int useAA        = 0;
     int inpolLevel    = 0;
+    qreal tolerance = 0;
+    bool useFillContour = 0;
 };
 
 const int ON = 1;
@@ -83,6 +85,9 @@ public:
     virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
     virtual void setAA(const int useAA );
     virtual void setInpolLevel( const int level );
+    virtual void setTolerance(const int tolerance);
+    virtual void setUseFillContour(const bool useFillContour);
+
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
 

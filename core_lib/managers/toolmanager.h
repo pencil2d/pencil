@@ -31,6 +31,7 @@ public:
 Q_SIGNALS:
     void penWidthValueChanged( float );
     void penFeatherValueChanged( float );
+    void toleranceValueChanged( qreal );
 
     void toolChanged( ToolType );
     void toolPropertyChanged( ToolType, ToolPropertyType );
@@ -51,8 +52,10 @@ public slots:
     void setVectorMergeEnabled( bool );
     void setBezier( bool );
     void setPressure( bool );
-    void setAA(int );
-    void setInpolLevel (int );
+    void setAA( int );
+    void setInpolLevel( int );
+    void setTolerance( int );
+    void setUseFillContour( bool );
 
 private:
     BaseTool* mCurrentTool       = nullptr;
