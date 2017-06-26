@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "toolbox.h"
 #include "editor.h"
 #include "toolmanager.h"
+#include "pencilsettings.h"
 
 // ----------------------------------------------------------------------------------
 
@@ -32,31 +33,76 @@ ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
 {
     QGridLayout* layout = new QGridLayout();
 
-    pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ), tr( "Pencil Tool <b>(N)</b>: Sketch with pencil" ) );
-    selectButton = newToolButton( QIcon( ":icons/select.png" ), tr( "Select Tool <b>(V)</b>: Select an object" ) );
-    moveButton = newToolButton( QIcon( ":icons/arrow.png" ), tr( "Move Tool <b>(Q)</b>: Move an object" ) );
-    handButton = newToolButton( QIcon( ":icons/hand.png" ), tr( "Hand Tool <b>(H)</b>: Move the canvas" ) );
-    penButton = newToolButton( QIcon( ":icons/pen.png" ), tr( "Pen Tool <b>(P)</b>: Sketch with pen" ) );
-    eraserButton = newToolButton( QIcon( ":icons/eraser.png" ), tr( "Eraser Tool <b>(E)</b>: Erase" ) );
-    polylineButton = newToolButton( QIcon( ":icons/polyline.png" ), tr( "Polyline Tool <b>(Y)</b>: Create line/curves" ) );
-    bucketButton = newToolButton( QIcon( ":icons/bucket.png" ), tr( "Paint Bucket Tool <b>(K)</b>: Fill selected area with a color" ) );
-    colouringButton = newToolButton( QIcon( ":icons/brush.png" ), tr( "Brush Tool <b>(B)</b>: Paint smooth stroke with a brush" ) );
-    eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ), tr( "Eyedropper Tool <b>(I)</b>: Set color from the stage<br><b>[ALT]</b> for instant access" ) );
-    clearButton = newToolButton( QIcon( ":icons/clear.png" ), tr( "Clear Frame <b>(Ctrl+D)</b>: Erases content of selected frame" ) );
-    smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ), tr( "Smudge Tool <b>(A)</b>:<br>Edit polyline/curves<br>Liquify bitmap pixels<br><b>+[Alt]</b>: Smooth" ) );
+    auto cmdKeySeq = []( QString strCommandName ) -> QKeySequence
+    {
+        strCommandName = QString( "shortcuts/" ) + strCommandName;
+        QKeySequence keySequence( pencilSettings().value( strCommandName ).toString() );
+        return keySequence;
+    };
 
-    pencilButton->setWhatsThis( tr( "Pencil Tool (N)" ) );
-    selectButton->setWhatsThis( tr( "Select Tool (V)" ) );
-    moveButton->setWhatsThis( tr( "Move Tool (Q)" ) );
-    handButton->setWhatsThis( tr( "Hand Tool (H)" ) );
-    penButton->setWhatsThis( tr( "Pen Tool (P)" ) );
-    eraserButton->setWhatsThis( tr( "Eraser Tool (E)" ) );
-    polylineButton->setWhatsThis( tr( "Polyline Tool (Y)" ) );
-    bucketButton->setWhatsThis( tr( "Paint Bucket Tool(K)" ) );
-    colouringButton->setWhatsThis( tr( "Brush Tool(B)" ) );
-    eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (I)" ) );
-    clearButton->setWhatsThis( tr( "Clear Tool" ) );
-    smudgeButton->setWhatsThis( tr( "Smudge Tool (A)" ) );
+    pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ),
+                                  tr( "Pencil Tool <b> (%1) </b>: Sketch with pencil" )
+                                  .arg( cmdKeySeq( CMD_TOOL_PENCIL ).toString() ));
+    selectButton = newToolButton( QIcon( ":icons/select.png" ),
+                                  tr( "Select Tool <b>(%1)</b>: Select an object" )
+                                  .arg( cmdKeySeq( CMD_TOOL_SELECT ).toString() ));
+    moveButton = newToolButton( QIcon( ":icons/arrow.png" ),
+                                tr( "Move Tool <b>(%1)</b>: Move an object" )
+                                .arg( cmdKeySeq( CMD_TOOL_MOVE ).toString() ));
+    handButton = newToolButton( QIcon( ":icons/hand.png" ),
+                                tr( "Hand Tool <b>(%1)</b>: Move the canvas" )
+                                .arg( cmdKeySeq( CMD_TOOL_HAND ).toString() ));
+    penButton = newToolButton( QIcon( ":icons/pen.png" ),
+                               tr( "Pen Tool <b>(%1)</b>: Sketch with pen" )
+                               .arg( cmdKeySeq( CMD_TOOL_PEN ).toString() ));
+    eraserButton = newToolButton( QIcon( ":icons/eraser.png" ),
+                                  tr( "Eraser Tool <b>(%1)</b>: Erase" )
+                                  .arg( cmdKeySeq( CMD_TOOL_ERASER ).toString() ));
+    polylineButton = newToolButton( QIcon( ":icons/polyline.png" ),
+                                    tr( "Polyline Tool <b>(%1)</b>: Create line/curves" )
+                                    .arg( cmdKeySeq( CMD_TOOL_POLYLINE ).toString() ));
+    bucketButton = newToolButton( QIcon( ":icons/bucket.png" ),
+                                  tr( "Paint Bucket Tool <b>(%1)</b>: Fill selected area with a color" )
+                                  .arg( cmdKeySeq( CMD_TOOL_BUCKET ).toString() ));
+    colouringButton = newToolButton( QIcon( ":icons/brush.png" ),
+                                     tr( "Brush Tool <b>(%1)</b>: Paint smooth stroke with a brush" )
+                                     .arg( cmdKeySeq( CMD_TOOL_BRUSH ).toString() ));
+    eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ),
+                                      tr( "Eyedropper Tool <b>(%1)</b>: "
+                                          "Set color from the stage<br><b>[ALT]</b> for instant access" )
+                                      .arg( cmdKeySeq( CMD_TOOL_EYEDROPPER ).toString() ));
+    clearButton = newToolButton( QIcon( ":icons/clear.png" ),
+                                 tr( "Clear Frame <b>(%1)</b>: Erases content of selected frame" )
+                                 .arg( cmdKeySeq( CMD_CLEAR_FRAME ).toString() ));
+    smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ),
+                                  tr( "Smudge Tool <b>(%1)</b>:<br>Edit polyline/curves<br>"
+                                      "Liquify bitmap pixels<br> <b>(%1)+[Alt]</b>: Smooth" )
+                                  .arg( cmdKeySeq( CMD_TOOL_SMUDGE ).toString() ));
+
+    pencilButton->setWhatsThis( tr( "Pencil Tool (%1)" )
+                                .arg( cmdKeySeq( CMD_TOOL_PENCIL ).toString() ));
+    selectButton->setWhatsThis( tr( "Select Tool (%1)" )
+                                .arg( cmdKeySeq( CMD_TOOL_SELECT ).toString() ));
+    moveButton->setWhatsThis( tr( "Move Tool (%1)" )
+                              .arg( cmdKeySeq( CMD_TOOL_MOVE ).toString() ));
+    handButton->setWhatsThis( tr( "Hand Tool (%1)" )
+                              .arg( cmdKeySeq( CMD_TOOL_HAND ).toString() ));
+    penButton->setWhatsThis( tr( "Pen Tool (%1)" )
+                             .arg( cmdKeySeq( CMD_TOOL_PEN ).toString() ));
+    eraserButton->setWhatsThis( tr( "Eraser Tool (%1)" )
+                                .arg( cmdKeySeq( CMD_TOOL_ERASER ).toString() ));
+    polylineButton->setWhatsThis( tr( "Polyline Tool (%1)" )
+                                  .arg( cmdKeySeq( CMD_TOOL_POLYLINE ).toString() ));
+    bucketButton->setWhatsThis( tr( "Paint Bucket Tool (%1)" )
+                                .arg( cmdKeySeq( CMD_TOOL_BUCKET ).toString() ));
+    colouringButton->setWhatsThis( tr( "Brush Tool (%1)" )
+                                   .arg( cmdKeySeq( CMD_TOOL_BRUSH ).toString() ));
+    eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (%1)" )
+                                    .arg( cmdKeySeq( CMD_TOOL_EYEDROPPER ).toString() ));
+    clearButton->setWhatsThis( tr( "Clear Tool (%1)" )
+                               .arg( cmdKeySeq( CMD_CLEAR_FRAME ).toString() ));
+    smudgeButton->setWhatsThis( tr( "Smudge Tool (%1)" )
+                                .arg( cmdKeySeq( CMD_TOOL_SMUDGE ).toString() ));
 
     pencilButton->setCheckable( true );
     penButton->setCheckable( true );
