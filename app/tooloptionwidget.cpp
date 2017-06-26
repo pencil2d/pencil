@@ -51,29 +51,7 @@ void ToolOptionWidget::updateUI()
     mToleranceSpinBox->setVisible(currentTool->isPropertyEnabled( TOLERANCE ) );
     mFillContour->setVisible( currentTool->isPropertyEnabled( FILLCONTOUR ) );
 
-    auto currentLayerType = editor()->layers()->currentLayer()->type();
-
-    if(currentLayerType == Layer::VECTOR)
-    {
-        // TODO: implement merge behavior
-//        mVectorMergeBox->setVisible( currentTool->isPropertyEnabled( VECTORMERGE) );
-        mToleranceSlider->setVisible(false);
-        mToleranceSpinBox->setVisible(false);
-        mUseAABox->setVisible(false);
-
-        if (currentTool->type() == PENCIL)
-        {
-            mSizeSlider->setVisible(false);
-            mBrushSpinBox->setVisible(false);
-            mUsePressureBox->setVisible(false);
-        }
-    } else {
-        if (currentTool->type() == PENCIL)
-        {
-            mFillContour->setVisible(false);
-        }
-    }
-
+    visibilityOnLayer();
 
     const Properties& p = currentTool->properties;
 
@@ -183,13 +161,13 @@ void ToolOptionWidget::createUI()
     mInpolLevelsBox->setLayout(inpolLayout);
     inpolLayout->setSpacing(2);
 
-    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::LINEAR, SpinSlider::FLOAT, 1, 100, this );
-    mToleranceSlider->setValue( settings.value( "Tolerance" ).toFloat() );
+    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100, this );
+    mToleranceSlider->setValue( settings.value( "Tolerance" ).toInt() );
     mToleranceSlider->setToolTip( tr( "Set Fill tolerance" ) );
 
     mToleranceSpinBox = new QSpinBox(this);
     mToleranceSpinBox->setRange(1,100);
-    mToleranceSpinBox->setValue(settings.value( "Tolerance" ).toFloat() );
+    mToleranceSpinBox->setValue(settings.value( "Tolerance" ).toInt() );
 
     mMakeInvisibleBox = new QCheckBox( tr( "Invisible" ) );
     mMakeInvisibleBox->setToolTip( tr( "Make invisible" ) );
@@ -301,6 +279,41 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
             break;
         default:
             break;
+    }
+}
+
+void ToolOptionWidget::visibilityOnLayer()
+{
+    auto currentLayerType = editor()->layers()->currentLayer()->type();
+    auto propertyType = editor()->tools()->currentTool()->type();
+
+    if (currentLayerType == Layer::VECTOR)
+    {
+        switch (propertyType)
+        {
+            case PENCIL:
+                mSizeSlider->setVisible(false);
+                mBrushSpinBox->setVisible(false);
+                mUsePressureBox->setVisible(false);
+                break;
+            default:
+                mToleranceSlider->setVisible(false);
+                mToleranceSpinBox->setVisible(false);
+                mUseAABox->setVisible(false);
+                break;
+        }
+    }
+    else
+    {
+        switch (propertyType)
+        {
+            case PENCIL:
+                mFillContour->setVisible(false);
+                break;
+            default:
+                break;
+
+        }
     }
 }
 
