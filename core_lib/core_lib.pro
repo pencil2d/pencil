@@ -162,7 +162,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
     CONFIG -= flat
-	CONFIG += grouped
+	#CONFIG += grouped
 
     INCLUDEPATH += external/win32
     SOURCES += external/win32/win32.cpp
