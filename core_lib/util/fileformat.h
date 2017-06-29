@@ -26,8 +26,8 @@ GNU General Public License for more details.
 #define PFF_EXTENSION				    ".pclx"
 #define PFF_BIG_LETTER_EXTENSION	    "PCLX"
 
-#define PFF_OPEN_ALL_FILE_FILTER	tr( "All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)" )
-#define PFF_SAVE_ALL_FILE_FILTER	tr( "Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)" )
+#define PFF_OPEN_ALL_FILE_FILTER	QObject::tr( "All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)" )
+#define PFF_SAVE_ALL_FILE_FILTER	QObject::tr( "Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)" )
 
 
 #define PFF_OLD_DATA_DIR 		"data"

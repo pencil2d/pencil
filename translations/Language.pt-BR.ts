@@ -710,31 +710,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="551"/>
         <source>Autosave documents</source>
-        <translation>Salvar documentos automaticamente</translation>
+        <comment>Preference</comment>
+        <translation type="unfinished">Salvar documentos automaticamente</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="552"/>
         <source>Enable autosave</source>
-        <translation>Ligar salvamento automático</translation>
+        <comment>Preference</comment>
+        <translation type="unfinished">Ligar salvamento automático</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="553"/>
         <source>Number of modifications before autosaving:</source>
-        <translation>Número de modificações antes de salvar automaticamente:</translation>
+        <comment>Preference</comment>
+        <translation type="unfinished">Número de modificações antes de salvar automaticamente:</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="556"/>
         <source>Clear recent files list</source>
+        <comment>Clear Recent Files (Preference)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="557"/>
         <source>This will clear your list of recently opened files</source>
+        <comment>Clear Recent Files (Preference)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="558"/>
         <source>Clear</source>
+        <comment>Clear Recent Files (Preference)</comment>
         <translation type="unfinished">Limpar</translation>
     </message>
 </context>
@@ -1850,6 +1856,16 @@ Você deseja salvar suas alterações?</translation>
         <source>The file is not valid pencil document.</source>
         <translation>O arquivo não é um documento Pencil válido.</translation>
     </message>
+    <message>
+        <location filename="../core_lib/util/fileformat.h" line="29"/>
+        <source>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/util/fileformat.h" line="30"/>
+        <source>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QuaGzipFile</name>
@@ -2330,6 +2346,12 @@ Você deseja salvar suas alterações?</translation>
         <translation>Pincel</translation>
     </message>
     <message>
+        <location filename="../app/tooloptionwidget.cpp" line="134"/>
+        <source>Fill Contour</source>
+        <comment>ToolOptions</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/tooloptionwidget.cpp" line="193"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
@@ -2393,11 +2415,6 @@ Você deseja salvar suas alterações?</translation>
     <message>
         <location filename="../app/tooloptionwidget.cpp" line="130"/>
         <source>Enable Anti-Aliasing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/tooloptionwidget.cpp" line="134"/>
-        <source>Fill Contour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

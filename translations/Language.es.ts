@@ -710,31 +710,37 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/preferencesdialog.cpp" line="551"/>
         <source>Autosave documents</source>
-        <translation>Autoguardar documentos</translation>
+        <comment>Preference</comment>
+        <translation type="unfinished">Autoguardar documentos</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="552"/>
         <source>Enable autosave</source>
-        <translation>Habilitar autoguardado</translation>
+        <comment>Preference</comment>
+        <translation type="unfinished">Habilitar autoguardado</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="553"/>
         <source>Number of modifications before autosaving:</source>
-        <translation>Número de modificaciones antes de autoguardar:</translation>
+        <comment>Preference</comment>
+        <translation type="unfinished">Número de modificaciones antes de autoguardar:</translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="556"/>
         <source>Clear recent files list</source>
+        <comment>Clear Recent Files (Preference)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="557"/>
         <source>This will clear your list of recently opened files</source>
+        <comment>Clear Recent Files (Preference)</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/preferencesdialog.cpp" line="558"/>
         <source>Clear</source>
+        <comment>Clear Recent Files (Preference)</comment>
         <translation type="unfinished">Limpiar</translation>
     </message>
 </context>
@@ -1850,6 +1856,16 @@ p, li { white-space: pre-wrap; }
         <source>The file is not valid pencil document.</source>
         <translation>El archivo no es un documento válido de Pencil</translation>
     </message>
+    <message>
+        <location filename="../core_lib/util/fileformat.h" line="29"/>
+        <source>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/util/fileformat.h" line="30"/>
+        <source>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QuaGzipFile</name>
@@ -2330,6 +2346,12 @@ p, li { white-space: pre-wrap; }
         <translation>Pincel</translation>
     </message>
     <message>
+        <location filename="../app/tooloptionwidget.cpp" line="134"/>
+        <source>Fill Contour</source>
+        <comment>ToolOptions</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/tooloptionwidget.cpp" line="193"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
@@ -2393,11 +2415,6 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../app/tooloptionwidget.cpp" line="130"/>
         <source>Enable Anti-Aliasing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/tooloptionwidget.cpp" line="134"/>
-        <source>Fill Contour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
