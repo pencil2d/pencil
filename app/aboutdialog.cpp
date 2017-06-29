@@ -5,7 +5,7 @@ Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -50,7 +50,7 @@ void AboutDialog::init()
     aboutText->setText(tr("Official site: <a href=\"http://pencil2d.org\">pencil2d.org</a>"
                                                         "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus</b></>"
                                                         "<br>Thanks to: Qt Framework <a href=\"http://qt-project.org\">qt-project.org</a></>"
-                                                        "<br>Distributed under the <a href=\"http://www.gnu.org/copyleft/gpl.html\">GPL License</a></>"));
+                                                        "<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a></>"));
 
     connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
 

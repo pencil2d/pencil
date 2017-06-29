@@ -6,7 +6,7 @@ Copyright (C) 2013-2017 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -131,7 +131,7 @@ void ToolOptionWidget::createUI()
     mUseAABox->setFont( QFont( "Helvetica", 10 ) );
     mUseAABox->setChecked( true );
 
-    mFillContour = new QCheckBox( tr( "Fill Contour" ) );
+    mFillContour = new QCheckBox( tr( "Fill Contour", "ToolOptions" ) );
     mFillContour->setToolTip( tr( "Contour will be filled" ) );
     mFillContour->setFont( QFont( "Helvetica", 10 ) );
     mFillContour->setChecked( true );

@@ -6,7 +6,7 @@ Copyright (C) 2013-2017 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -548,14 +548,14 @@ FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
 
     QVBoxLayout *clearRecentChangesLay = new QVBoxLayout();
 
-    QGroupBox *autosaveBox = new QGroupBox(tr("Autosave documents"));
-    mAutosaveCheckBox = new QCheckBox(tr("Enable autosave"));
-    QLabel *autosaveNumberLabel = new QLabel(tr("Number of modifications before autosaving:"));
+	QGroupBox *autosaveBox = new QGroupBox( tr( "Autosave documents", "Preference" ) );
+    mAutosaveCheckBox = new QCheckBox(tr("Enable autosave", "Preference" ));
+	QLabel *autosaveNumberLabel = new QLabel( tr( "Number of modifications before autosaving:", "Preference" ) );
     mAutosaveNumberBox = new QSpinBox();
 
-    QGroupBox *clearRecentFilesBox = new QGroupBox(tr("Clear recent files list"));
-    QLabel *clearRecentFilesLbl = new QLabel(tr("This will clear your list of recently opened files"));
-    mClearRecentFilesBtn = new QPushButton(tr("Clear"));
+    QGroupBox *clearRecentFilesBox = new QGroupBox(tr("Clear recent files list", "Clear Recent Files (Preference)" ));
+    QLabel *clearRecentFilesLbl = new QLabel(tr("This will clear your list of recently opened files", "Clear Recent Files (Preference)" ));
+	mClearRecentFilesBtn = new QPushButton( tr( "Clear", "Clear Recent Files (Preference)" ) );
 
     mAutosaveNumberBox = new QSpinBox();
 
