@@ -4,27 +4,27 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="11"/>
+        <location filename="../app/aboutdialog.cpp" line="27"/>
         <source>About</source>
         <translation type="unfinished">Sobre</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="18"/>
+        <location filename="../app/aboutdialog.cpp" line="34"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="31"/>
+        <location filename="../app/aboutdialog.cpp" line="47"/>
         <source>&lt;b&gt;Pencil2D&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="34"/>
-        <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/copyleft/gpl.html&quot;&gt;GPL License&lt;/a&gt;&lt;/&gt;</source>
+        <location filename="../app/aboutdialog.cpp" line="50"/>
+        <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;&lt;/&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="58"/>
+        <location filename="../app/aboutdialog.cpp" line="74"/>
         <source>commit: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -32,71 +32,71 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/actioncommands.cpp" line="50"/>
+        <location filename="../app/actioncommands.cpp" line="65"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Não há uma camada de som para importar. Criar uma nova?</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="51"/>
+        <location filename="../app/actioncommands.cpp" line="66"/>
         <source>Create sound layer</source>
         <translation>Criar camada de som</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="52"/>
+        <location filename="../app/actioncommands.cpp" line="67"/>
         <source>Don&apos;t create layer</source>
         <translation>Não criar camada</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="62"/>
-        <location filename="../app/actioncommands.cpp" line="299"/>
-        <location filename="../app/actioncommands.cpp" line="312"/>
-        <location filename="../app/actioncommands.cpp" line="326"/>
-        <location filename="../app/actioncommands.cpp" line="341"/>
+        <location filename="../app/actioncommands.cpp" line="77"/>
+        <location filename="../app/actioncommands.cpp" line="308"/>
+        <location filename="../app/actioncommands.cpp" line="321"/>
+        <location filename="../app/actioncommands.cpp" line="335"/>
+        <location filename="../app/actioncommands.cpp" line="350"/>
         <source>Layer Properties</source>
         <translation>Propriedades da camada</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="63"/>
-        <location filename="../app/actioncommands.cpp" line="300"/>
-        <location filename="../app/actioncommands.cpp" line="313"/>
-        <location filename="../app/actioncommands.cpp" line="327"/>
-        <location filename="../app/actioncommands.cpp" line="342"/>
+        <location filename="../app/actioncommands.cpp" line="78"/>
+        <location filename="../app/actioncommands.cpp" line="309"/>
+        <location filename="../app/actioncommands.cpp" line="322"/>
+        <location filename="../app/actioncommands.cpp" line="336"/>
+        <location filename="../app/actioncommands.cpp" line="351"/>
         <source>Layer name:</source>
         <translation>Nome da camada:</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="83"/>
+        <location filename="../app/actioncommands.cpp" line="98"/>
         <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="146"/>
+        <location filename="../app/actioncommands.cpp" line="155"/>
         <source>Exporting movie...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="168"/>
+        <location filename="../app/actioncommands.cpp" line="177"/>
         <source>Finished. Open movie now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="301"/>
+        <location filename="../app/actioncommands.cpp" line="310"/>
         <source>Bitmap Layer</source>
         <translation>Camada Bitmap</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="314"/>
+        <location filename="../app/actioncommands.cpp" line="323"/>
         <source>Vector Layer</source>
         <translation>Camada Vetorial</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="328"/>
+        <location filename="../app/actioncommands.cpp" line="337"/>
         <source>Camera Layer</source>
         <translation>Camada de Câmera</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="64"/>
-        <location filename="../app/actioncommands.cpp" line="343"/>
+        <location filename="../app/actioncommands.cpp" line="79"/>
+        <location filename="../app/actioncommands.cpp" line="352"/>
         <source>Sound Layer</source>
         <translation>Camada de Som</translation>
     </message>
@@ -104,57 +104,57 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="22"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="39"/>
         <source>Pencil</source>
         <translation type="unfinished">Lápis</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="23"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="40"/>
         <source>Eraser</source>
         <translation type="unfinished">Borracha</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="24"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="41"/>
         <source>Select</source>
         <translation type="unfinished">Selecionar</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="25"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="42"/>
         <source>Move</source>
         <translation type="unfinished">Mover</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="26"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="43"/>
         <source>Hand</source>
         <translation type="unfinished">Mão</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="27"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="44"/>
         <source>Smudge</source>
         <translation type="unfinished">Borrar</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="28"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="45"/>
         <source>Pen</source>
         <translation type="unfinished">Caneta</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="29"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="46"/>
         <source>Polyline</source>
         <translation type="unfinished">Polilinha</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="30"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="47"/>
         <source>Bucket</source>
         <translation type="unfinished">Balde</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="31"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="48"/>
         <source>Eyedropper</source>
         <translation type="unfinished">Conta-gotas</translation>
     </message>
     <message>
-        <location filename="../core_lib/tool/basetool.cpp" line="32"/>
+        <location filename="../core_lib/tool/basetool.cpp" line="49"/>
         <source>Brush</source>
         <translation type="unfinished">Pincel</translation>
     </message>
@@ -162,22 +162,22 @@
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="29"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="30"/>
         <source>Camera name:</source>
         <translation>Nome da câmera:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="36"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="37"/>
         <source>Camera size:</source>
         <translation>Tamanho da câmera:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="50"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -185,22 +185,22 @@
 <context>
     <name>ColorGridItem</name>
     <message>
-        <location filename="../app/colorgriditem.cpp" line="29"/>
+        <location filename="../app/colorgriditem.cpp" line="47"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../app/colorgriditem.cpp" line="26"/>
+        <location filename="../app/colorgriditem.cpp" line="44"/>
         <source>Pick</source>
         <translation>Escolher</translation>
     </message>
     <message>
-        <location filename="../app/colorgriditem.cpp" line="27"/>
+        <location filename="../app/colorgriditem.cpp" line="45"/>
         <source>Tint</source>
         <translation>Tintura</translation>
     </message>
     <message>
-        <location filename="../app/colorgriditem.cpp" line="28"/>
+        <location filename="../app/colorgriditem.cpp" line="46"/>
         <source>Clear</source>
         <translation>Limpar</translation>
     </message>
@@ -219,41 +219,41 @@
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="68"/>
-        <location filename="../app/colorinspector.cpp" line="106"/>
+        <location filename="../app/colorinspector.cpp" line="121"/>
         <source>Red</source>
         <translation>Vermelho</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="82"/>
-        <location filename="../app/colorinspector.cpp" line="107"/>
+        <location filename="../app/colorinspector.cpp" line="122"/>
         <source>Green</source>
         <translation>Verde</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="96"/>
-        <location filename="../app/colorinspector.cpp" line="108"/>
+        <location filename="../app/colorinspector.cpp" line="123"/>
         <source>Blue</source>
         <translation>Azul</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="110"/>
-        <location filename="../app/colorinspector.cpp" line="88"/>
-        <location filename="../app/colorinspector.cpp" line="109"/>
+        <location filename="../app/colorinspector.cpp" line="103"/>
+        <location filename="../app/colorinspector.cpp" line="124"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../app/colorinspector.cpp" line="85"/>
+        <location filename="../app/colorinspector.cpp" line="100"/>
         <source>Hue</source>
         <translation>Matiz</translation>
     </message>
     <message>
-        <location filename="../app/colorinspector.cpp" line="86"/>
+        <location filename="../app/colorinspector.cpp" line="101"/>
         <source>Saturation</source>
         <translation>Saturação</translation>
     </message>
     <message>
-        <location filename="../app/colorinspector.cpp" line="87"/>
+        <location filename="../app/colorinspector.cpp" line="102"/>
         <source>Value</source>
         <translation>Valor</translation>
     </message>
@@ -424,7 +424,7 @@
 <context>
     <name>DisplayOptionWidget</name>
     <message>
-        <location filename="../app/displayoptionwidget.cpp" line="16"/>
+        <location filename="../app/displayoptionwidget.cpp" line="31"/>
         <source>Display</source>
         <comment>Window title of display options like .</comment>
         <translation>Tela</translation>
@@ -473,82 +473,93 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
-    <name>ExportImageSeqDialog</name>
+    <name>ExportImageDialog</name>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="14"/>
-        <source>Dialog</source>
-        <translation>Diálogo</translation>
+        <location filename="../app/exportimagedialog.cpp" line="30"/>
+        <source>Export image sequence</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="20"/>
-        <source>Resolution (Set by the Camera)</source>
-        <translation>Resolução (Ajustada pela Câmera)</translation>
+        <location filename="../app/exportimagedialog.cpp" line="34"/>
+        <source>Export image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ExportImageOptions</name>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="15"/>
+        <source>Resolution</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="61"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="56"/>
         <source>Format</source>
-        <translation>Formato</translation>
+        <translation type="unfinished">Formato</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="68"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="63"/>
         <source>PNG</source>
-        <translation>PNG</translation>
+        <translation type="unfinished">PNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="73"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="68"/>
         <source>JPG</source>
-        <translation>JPG</translation>
+        <translation type="unfinished">JPG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="78"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="73"/>
         <source>BMP</source>
-        <translation>BMP</translation>
+        <translation type="unfinished">BMP</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageseqdialog.ui" line="86"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="81"/>
         <source>Transparency</source>
-        <translation>Transparência</translation>
+        <translation type="unfinished">Transparência</translation>
     </message>
 </context>
 <context>
     <name>ExportMovieDialog</name>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="20"/>
+        <location filename="../app/exportmoviedialog.cpp" line="28"/>
         <source>Export Movie</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ExportMovieOptions</name>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="32"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="15"/>
         <source>Camera</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="44"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="27"/>
         <source>Resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="62"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="45"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="91"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="74"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="126"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="109"/>
         <source>Range</source>
         <translation type="unfinished">Intervalo</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="132"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="115"/>
         <source>Start</source>
         <translation type="unfinished">Início</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmoviedialog.ui" line="146"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="129"/>
         <source>End</source>
         <translation type="unfinished">Fim</translation>
     </message>
@@ -556,23 +567,84 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FileDialog</name>
     <message>
-        <location filename="../app/filedialogex.cpp" line="63"/>
-        <source>Import sound...</source>
+        <location filename="../app/filedialogex.cpp" line="126"/>
+        <source>Open animation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="64"/>
-        <source>Export movie as ...</source>
+        <location filename="../app/filedialogex.cpp" line="127"/>
+        <source>Import image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="74"/>
+        <location filename="../app/filedialogex.cpp" line="128"/>
+        <source>Import image sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="129"/>
+        <source>Import movie</source>
+        <translation type="unfinished">Importar filme</translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="130"/>
+        <source>Import sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="131"/>
+        <source>Import palette</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="141"/>
+        <source>Save animation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="142"/>
+        <source>Export image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="143"/>
+        <source>Export image sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="144"/>
+        <source>Export movie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="145"/>
+        <source>Export sound</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="146"/>
+        <source>Export palette</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="160"/>
         <source>Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/filedialogex.cpp" line="75"/>
+        <location filename="../app/filedialogex.cpp" line="161"/>
+        <location filename="../app/filedialogex.cpp" line="176"/>
+        <source>Palette (*.xml)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="174"/>
         <source>MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/filedialogex.cpp" line="187"/>
+        <source>MyAnimation.pclx</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -636,200 +708,226 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FilesPage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="545"/>
+        <location filename="../app/preferencesdialog.cpp" line="551"/>
         <source>Autosave documents</source>
         <translation>Salvar documentos automaticamente</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="546"/>
+        <location filename="../app/preferencesdialog.cpp" line="552"/>
         <source>Enable autosave</source>
         <translation>Ligar salvamento automático</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="547"/>
+        <location filename="../app/preferencesdialog.cpp" line="553"/>
         <source>Number of modifications before autosaving:</source>
         <translation>Número de modificações antes de salvar automaticamente:</translation>
+    </message>
+    <message>
+        <location filename="../app/preferencesdialog.cpp" line="556"/>
+        <source>Clear recent files list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/preferencesdialog.cpp" line="557"/>
+        <source>This will clear your list of recently opened files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/preferencesdialog.cpp" line="558"/>
+        <source>Clear</source>
+        <translation type="unfinished">Limpar</translation>
     </message>
 </context>
 <context>
     <name>GeneralPage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="162"/>
+        <location filename="../app/preferencesdialog.cpp" line="166"/>
         <source>Language</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="163"/>
+        <location filename="../app/preferencesdialog.cpp" line="167"/>
         <source>Window opacity</source>
         <comment>GroupBox title in Preference</comment>
         <translation>Opacidade da janela</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="164"/>
+        <location filename="../app/preferencesdialog.cpp" line="168"/>
         <source>Background</source>
         <comment>GroupBox title in Preference</comment>
         <translation>Plano de fundo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="165"/>
+        <location filename="../app/preferencesdialog.cpp" line="169"/>
         <source>Appearance</source>
         <comment>GroupBox title in Preference</comment>
         <translation>Aparência</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="166"/>
+        <location filename="../app/preferencesdialog.cpp" line="170"/>
         <source>Canvas</source>
         <comment>GroupBox title in Preference</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="167"/>
+        <location filename="../app/preferencesdialog.cpp" line="171"/>
         <source>Editing</source>
         <comment>GroupBox title in Preference</comment>
         <translation>Edição</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="168"/>
+        <location filename="../app/preferencesdialog.cpp" line="172"/>
         <source>Grid</source>
         <comment>groupBox title in Preference</comment>
         <translation type="unfinished">Grade</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="171"/>
+        <location filename="../app/preferencesdialog.cpp" line="175"/>
         <source>&lt;System-Language&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="172"/>
+        <location filename="../app/preferencesdialog.cpp" line="176"/>
         <source>Czech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="173"/>
+        <location filename="../app/preferencesdialog.cpp" line="177"/>
         <source>Danish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="174"/>
+        <location filename="../app/preferencesdialog.cpp" line="178"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="175"/>
+        <location filename="../app/preferencesdialog.cpp" line="179"/>
         <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="176"/>
+        <location filename="../app/preferencesdialog.cpp" line="180"/>
         <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="177"/>
+        <location filename="../app/preferencesdialog.cpp" line="181"/>
         <source>French</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="178"/>
+        <location filename="../app/preferencesdialog.cpp" line="182"/>
         <source>Hungarian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="179"/>
+        <location filename="../app/preferencesdialog.cpp" line="183"/>
         <source>Italian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="180"/>
+        <location filename="../app/preferencesdialog.cpp" line="184"/>
         <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="181"/>
+        <location filename="../app/preferencesdialog.cpp" line="185"/>
         <source>Portuguese - Brazil</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="182"/>
+        <location filename="../app/preferencesdialog.cpp" line="186"/>
         <source>Russian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="183"/>
+        <location filename="../app/preferencesdialog.cpp" line="187"/>
         <source>Chinese - Taiwan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="185"/>
+        <location filename="../app/preferencesdialog.cpp" line="189"/>
         <source>Opacity</source>
         <translation>Opacidade</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="233"/>
+        <location filename="../app/preferencesdialog.cpp" line="237"/>
         <source>Shadows</source>
         <translation>Sombras</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="234"/>
+        <location filename="../app/preferencesdialog.cpp" line="238"/>
         <source>Tool Cursors</source>
         <translation>Cursores de ferramenta</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="235"/>
+        <location filename="../app/preferencesdialog.cpp" line="239"/>
         <source>Antialiasing</source>
         <translation>Antisserrilhado</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="236"/>
+        <location filename="../app/preferencesdialog.cpp" line="240"/>
         <source>Dotted Cursor</source>
         <translation>Cursor Pontilhado</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="243"/>
+        <location filename="../app/preferencesdialog.cpp" line="247"/>
         <source>Enable Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="274"/>
+        <location filename="../app/preferencesdialog.cpp" line="278"/>
         <source>Vector curve smoothing</source>
         <translation>Suavização da camada vetorial</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="281"/>
+        <location filename="../app/preferencesdialog.cpp" line="285"/>
         <source>Tablet high-resolution position</source>
         <translation>Posição de alta resolução do tablet</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="386"/>
+        <location filename="../app/preferencesdialog.cpp" line="390"/>
         <source>Restart Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="387"/>
+        <location filename="../app/preferencesdialog.cpp" line="391"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>ImageSeqDialog</name>
+    <name>ImportExportDialog</name>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="12"/>
-        <source>Image Sequence Dialog</source>
+        <location filename="../app/ui/importexportdialog.ui" line="24"/>
+        <source>File</source>
+        <translation type="unfinished">Arquivo</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="40"/>
+        <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="19"/>
-        <source>OK</source>
+        <location filename="../app/ui/importexportdialog.ui" line="50"/>
+        <source>Options</source>
+        <translation type="unfinished">Opções</translation>
+    </message>
+</context>
+<context>
+    <name>ImportImageSeqDialog</name>
+    <message>
+        <location filename="../app/importimageseqdialog.cpp" line="28"/>
+        <source>Import image sequence</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>ImportImageSeqOptions</name>
     <message>
-        <location filename="../app/imageseqdialog.cpp" line="20"/>
-        <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
-    </message>
-    <message>
-        <location filename="../app/imageseqdialog.cpp" line="26"/>
+        <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
         <source>Import an image every # frame</source>
         <translation type="unfinished"></translation>
     </message>
@@ -837,17 +935,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="479"/>
+        <location filename="../core_lib/structure/layer.cpp" line="480"/>
         <source>Layer Properties</source>
         <translation>Propriedades da camada</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="480"/>
+        <location filename="../core_lib/structure/layer.cpp" line="481"/>
         <source>Layer name:</source>
         <translation>Nome da camada:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="40"/>
+        <location filename="../core_lib/structure/layer.cpp" line="41"/>
         <source>Undefined Layer</source>
         <translation>Camada indefinida</translation>
     </message>
@@ -855,7 +953,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LayerBitmap</name>
     <message>
-        <location filename="../core_lib/structure/layerbitmap.cpp" line="24"/>
+        <location filename="../core_lib/structure/layerbitmap.cpp" line="25"/>
         <source>Bitmap Layer</source>
         <translation>Camada Bitmap</translation>
     </message>
@@ -863,7 +961,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="103"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="104"/>
         <source>Camera Layer</source>
         <translation>Camada de Câmera</translation>
     </message>
@@ -871,7 +969,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LayerSound</name>
     <message>
-        <location filename="../core_lib/structure/layersound.cpp" line="25"/>
+        <location filename="../core_lib/structure/layersound.cpp" line="26"/>
         <source>Sound Layer</source>
         <translation>Camada de Som</translation>
     </message>
@@ -879,7 +977,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LayerVector</name>
     <message>
-        <location filename="../core_lib/structure/layervector.cpp" line="22"/>
+        <location filename="../core_lib/structure/layervector.cpp" line="23"/>
         <source>Vector Layer</source>
         <translation>Camada Vetorial</translation>
     </message>
@@ -974,7 +1072,6 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="42"/>
-        <location filename="../app/mainwindow2.cpp" line="1098"/>
         <source>Import</source>
         <translation>Importar</translation>
     </message>
@@ -1009,7 +1106,7 @@ p, li { white-space: pre-wrap; }
         <translation>Animação</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="168"/>
+        <location filename="../app/mainwindow2.cpp" line="167"/>
         <source>Tools</source>
         <comment>Window title of tool box.</comment>
         <translation>Ferramentas</translation>
@@ -1101,13 +1198,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="1043"/>
+        <location filename="../app/mainwindow2.cpp" line="990"/>
         <source>Undo</source>
         <translation>Desfazer</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="1063"/>
+        <location filename="../app/mainwindow2.cpp" line="1010"/>
         <source>Redo</source>
         <translation>Refazer</translation>
     </message>
@@ -1219,7 +1316,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1240"/>
+        <location filename="../app/mainwindow2.cpp" line="1175"/>
         <source>Play</source>
         <translation>Reproduzir</translation>
     </message>
@@ -1289,10 +1386,6 @@ p, li { white-space: pre-wrap; }
         <translation>Sobre</translation>
     </message>
     <message>
-        <source>Toggle palette</source>
-        <translation type="vanished">Alternar paleta</translation>
-    </message>
-    <message>
         <location filename="../app/ui/mainwindow2.ui" line="740"/>
         <location filename="../app/ui/mainwindow2.ui" line="743"/>
         <source>Reset to default</source>
@@ -1332,7 +1425,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="823"/>
-        <location filename="../app/mainwindow2.cpp" line="154"/>
+        <location filename="../app/mainwindow2.cpp" line="153"/>
         <source>Color Wheel</source>
         <translation>Roda de Cores</translation>
     </message>
@@ -1362,60 +1455,57 @@ p, li { white-space: pre-wrap; }
         <translation>Mover Quadro para Trás</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="155"/>
+        <location filename="../app/mainwindow2.cpp" line="154"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta de cores:&lt;br&gt;Use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;para alternar no cursor</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="357"/>
+        <location filename="../app/mainwindow2.cpp" line="356"/>
         <source>Open Recent</source>
         <translation>Abrir Recente</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="429"/>
-        <source>Open File...</source>
-        <translation>Abrir Arquivo...</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="445"/>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="452"/>
+        <location filename="../app/mainwindow2.cpp" line="481"/>
         <location filename="../app/mainwindow2.cpp" line="608"/>
-        <location filename="../app/mainwindow2.cpp" line="649"/>
-        <location filename="../app/mainwindow2.cpp" line="861"/>
+        <location filename="../app/mainwindow2.cpp" line="644"/>
+        <location filename="../app/mainwindow2.cpp" line="807"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="445"/>
-        <location filename="../app/mainwindow2.cpp" line="485"/>
+        <location filename="../app/mainwindow2.cpp" line="452"/>
+        <location filename="../app/mainwindow2.cpp" line="481"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil não consegue ler este arquivo. Se você quiser importar imagens, use o comando Importar.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="462"/>
-        <source>Save As...</source>
-        <translation>Salvar como...</translation>
+        <location filename="../app/mainwindow2.cpp" line="391"/>
+        <source>
+
+ You have successfully cleared the list</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="492"/>
+        <location filename="../app/mainwindow2.cpp" line="488"/>
         <source>Opening document...</source>
         <translation>Abrindo documento...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="492"/>
-        <location filename="../app/mainwindow2.cpp" line="545"/>
-        <location filename="../app/mainwindow2.cpp" line="772"/>
+        <location filename="../app/mainwindow2.cpp" line="488"/>
+        <location filename="../app/mainwindow2.cpp" line="541"/>
+        <location filename="../app/mainwindow2.cpp" line="735"/>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="545"/>
+        <location filename="../app/mainwindow2.cpp" line="541"/>
         <source>Saving document...</source>
         <translation>Salvando documento...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="572"/>
-        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <location filename="../app/mainwindow2.cpp" line="569"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1426,67 +1516,32 @@ p, li { white-space: pre-wrap; }
 Você deseja salvar suas alterações?</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="632"/>
-        <source>Import image...</source>
-        <translation>Importar imagem...</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="650"/>
+        <location filename="../app/mainwindow2.cpp" line="645"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Impossível importar imagem. &lt;br&gt;&lt;b&gt;DICA:&lt;/b&gt; Use uma camada Bitmap para importar bitmaps.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="674"/>
-        <source>Select one or more files to open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="676"/>
-        <source>Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="703"/>
-        <source>Import movie</source>
-        <translation>Importar filme</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="754"/>
-        <source>Save Image Sequence</source>
-        <translation>Salvar sequência de imagens</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="772"/>
+        <location filename="../app/mainwindow2.cpp" line="735"/>
         <source>Exporting image sequence...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="836"/>
-        <source>Save Image</source>
-        <translation>Salvar Imagem</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="862"/>
+        <location filename="../app/mainwindow2.cpp" line="808"/>
         <source>Unable to export image.</source>
         <translation>Impossível exportar imagem.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1048"/>
+        <location filename="../app/mainwindow2.cpp" line="995"/>
         <source>Undo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1056"/>
+        <location filename="../app/mainwindow2.cpp" line="1003"/>
         <source>Redo   %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1082"/>
-        <source>Export As</source>
-        <translation>Exportar como</translation>
-    </message>
-    <message>
-        <location filename="../app/mainwindow2.cpp" line="1236"/>
+        <location filename="../app/mainwindow2.cpp" line="1171"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1494,7 +1549,7 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="48"/>
+        <location filename="../core_lib/tool/movetool.cpp" line="65"/>
         <source>Move</source>
         <translation>Mover</translation>
     </message>
@@ -1709,11 +1764,7 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>PolylineTool</name>
     <message>
-        <source>Line</source>
-        <translation type="vanished">Linha</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/tool/polylinetool.cpp" line="97"/>
+        <location filename="../core_lib/tool/polylinetool.cpp" line="114"/>
         <source>Polyline</source>
         <translation type="unfinished">Polilinha</translation>
     </message>
@@ -1721,7 +1772,7 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="124"/>
+        <location filename="../app/preferencesdialog.cpp" line="120"/>
         <source>Tools</source>
         <translation>Ferramentas</translation>
     </message>
@@ -1731,28 +1782,28 @@ Você deseja salvar suas alterações?</translation>
         <translation>Preferências</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="118"/>
+        <location filename="../app/preferencesdialog.cpp" line="114"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="73"/>
+        <location filename="../app/preferencesdialog.cpp" line="76"/>
         <source>Close</source>
         <comment>Close button of preference dialog.</comment>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="106"/>
+        <location filename="../app/preferencesdialog.cpp" line="102"/>
         <source>General</source>
         <translation>Geral</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="112"/>
+        <location filename="../app/preferencesdialog.cpp" line="108"/>
         <source>Files</source>
         <translation>Arquivos</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="130"/>
+        <location filename="../app/preferencesdialog.cpp" line="126"/>
         <source>Shortcuts</source>
         <translation>Atalhos</translation>
     </message>
@@ -1760,12 +1811,12 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core_lib/util/pencildef.h" line="5"/>
+        <location filename="../core_lib/util/pencildef.h" line="22"/>
         <source>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</source>
         <translation>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</translation>
     </message>
     <message>
-        <location filename="../core_lib/util/pencildef.h" line="8"/>
+        <location filename="../core_lib/util/pencildef.h" line="25"/>
         <source>Images (*.png *.jpg *.jpeg *.tiff *.tif *.bmp *.gif);;PNG (*.png);;JPG(*.jpg *.jpeg);;TIFF(*.tif *.tiff);;BMP(*.bmp);;GIF(*.gif)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1847,7 +1898,7 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>RecentFileMenu</name>
     <message>
-        <location filename="../core_lib/interface/recentfilemenu.h" line="20"/>
+        <location filename="../core_lib/interface/recentfilemenu.h" line="38"/>
         <source>Open Recent</source>
         <translation>Abrir Recente</translation>
     </message>
@@ -1855,58 +1906,58 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="542"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="543"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="543"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="544"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Você está desenhando em uma camada oculta! Por favor, selecione outra camada (ou torne a camada atual visível).</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1554"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1555"/>
         <source>Delete Selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1568"/>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1575"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1569"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1576"/>
         <source>Clear Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1603"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1604"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1604"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1605"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1608"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1609"/>
         <source>Out of bound.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1609"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1610"/>
         <source>Could not find a closed path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1610"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1611"/>
         <source>Could not find the root index.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1611"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1612"/>
         <source>Flood fill error</source>
         <translation>Erro de preenchimento</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1611"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1612"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1944,12 +1995,12 @@ Você deseja salvar suas alterações?</translation>
         <translation>Restaurar atalhos padrão</translation>
     </message>
     <message>
-        <location filename="../app/shortcutspage.cpp" line="79"/>
+        <location filename="../app/shortcutspage.cpp" line="95"/>
         <source>Shortcut Conflict!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/shortcutspage.cpp" line="80"/>
+        <location filename="../app/shortcutspage.cpp" line="96"/>
         <source>%1 is already used, overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2123,27 +2174,27 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>TimelinePage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="461"/>
+        <location filename="../app/preferencesdialog.cpp" line="465"/>
         <source>Timeline</source>
         <translation>Linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="462"/>
+        <location filename="../app/preferencesdialog.cpp" line="466"/>
         <source>Draw timeline labels</source>
         <translation>Desenhar etiquetas na linha do tempo</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="464"/>
+        <location filename="../app/preferencesdialog.cpp" line="468"/>
         <source>Frame size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="466"/>
+        <location filename="../app/preferencesdialog.cpp" line="470"/>
         <source>Timeline size in Frames</source>
         <translation>Tamanho da linha do tempo em Quadros</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="472"/>
+        <location filename="../app/preferencesdialog.cpp" line="476"/>
         <source>Short scrub</source>
         <translation>Indicador pequeno</translation>
     </message>
@@ -2151,241 +2202,261 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>ToolBoxWidget</name>
     <message>
-        <location filename="../app/toolbox.cpp" line="35"/>
-        <source>Pencil Tool &lt;b&gt;(N)&lt;/b&gt;: Sketch with pencil</source>
-        <translation>Ferramenta Lápis &lt;b&gt;(N)&lt;/b&gt;: Desenha a lápis</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="36"/>
-        <source>Select Tool &lt;b&gt;(V)&lt;/b&gt;: Select an object</source>
-        <translation>Ferramenta Selecionar &lt;b&gt;(V)&lt;/b&gt;: Seleciona um objeto</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="37"/>
-        <source>Move Tool &lt;b&gt;(Q)&lt;/b&gt;: Move an object</source>
-        <translation>Ferramenta Mover &lt;b&gt;(Q)&lt;/b&gt;: Move um objeto</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="38"/>
-        <source>Hand Tool &lt;b&gt;(H)&lt;/b&gt;: Move the canvas</source>
-        <translation>Ferramenta Mão &lt;b&gt;(H)&lt;/b&gt;: Move a tela</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="39"/>
-        <source>Pen Tool &lt;b&gt;(P)&lt;/b&gt;: Sketch with pen</source>
-        <translation>Ferramenta Caneta &lt;b&gt;(P)&lt;/b&gt;: Esboça com caneta</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="40"/>
-        <source>Eraser Tool &lt;b&gt;(E)&lt;/b&gt;: Erase</source>
-        <translation>Ferramenta Borracha &lt;b&gt;(E)&lt;/b&gt;: Apaga</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="41"/>
-        <source>Polyline Tool &lt;b&gt;(Y)&lt;/b&gt;: Create line/curves</source>
-        <translation>Ferramenta Polilinha &lt;b&gt;(Y)&lt;/b&gt;: Cria linhas/curvas</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="42"/>
-        <source>Paint Bucket Tool &lt;b&gt;(K)&lt;/b&gt;: Fill selected area with a color</source>
-        <translation>Ferramenta Balde de Tinta &lt;b&gt;(K)&lt;/b&gt;: Preenche a área selecionada com uma cor</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="43"/>
-        <source>Brush Tool &lt;b&gt;(B)&lt;/b&gt;: Paint smooth stroke with a brush</source>
-        <translation>Feramenta Pincel &lt;b&gt;(B)&lt;/b&gt;: Pinta traços suaves com um pincel</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="44"/>
-        <source>Eyedropper Tool &lt;b&gt;(I)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
-        <translation>Ferramenta Conta-gotas &lt;b&gt;(I)&lt;/b&gt;: Ajusta a cor a partir de uma cena.&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; para acesso instantâneo</translation>
-    </message>
-    <message>
         <location filename="../app/toolbox.cpp" line="45"/>
-        <source>Clear Frame &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Erases content of selected frame</source>
-        <translation>Limpar Quadro &lt;b&gt;(Ctrl+D)&lt;/b&gt;: Apaga o conteúdo do quadro selecionado</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="46"/>
-        <source>Smudge Tool &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Smooth</source>
-        <translation>Ferramenta Borrar &lt;b&gt;(A)&lt;/b&gt;:&lt;br&gt;Edita polilinhas/curvas&lt;br&gt;Liquifica pixels de bitmap&lt;br&gt;&lt;b&gt;+[Alt]&lt;/b&gt;: Suave</translation>
+        <source>Pencil Tool &lt;b&gt; (%1) &lt;/b&gt;: Sketch with pencil</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/toolbox.cpp" line="48"/>
-        <source>Pencil Tool (N)</source>
-        <translation>Lápis (N)</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="49"/>
-        <source>Select Tool (V)</source>
-        <translation>Selecionar (V)</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="50"/>
-        <source>Move Tool (Q)</source>
-        <translation>Mover (Q)</translation>
+        <source>Select Tool &lt;b&gt;(%1)&lt;/b&gt;: Select an object</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/toolbox.cpp" line="51"/>
-        <source>Hand Tool (H)</source>
-        <translation>Mão (H)</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="52"/>
-        <source>Pen Tool (P)</source>
-        <translation>Caneta (P)</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="53"/>
-        <source>Eraser Tool (E)</source>
-        <translation>Borracha (E)</translation>
+        <source>Move Tool &lt;b&gt;(%1)&lt;/b&gt;: Move an object</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/toolbox.cpp" line="54"/>
-        <source>Polyline Tool (Y)</source>
-        <translation>Polilinha (Y)</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="55"/>
-        <source>Paint Bucket Tool(K)</source>
-        <translation>Balde de Tinta (K)</translation>
-    </message>
-    <message>
-        <location filename="../app/toolbox.cpp" line="56"/>
-        <source>Brush Tool(B)</source>
-        <translation>Pincel (B)</translation>
+        <source>Hand Tool &lt;b&gt;(%1)&lt;/b&gt;: Move the canvas</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/toolbox.cpp" line="57"/>
-        <source>Eyedropper Tool (I)</source>
-        <translation>Conta-gotas (I)</translation>
+        <source>Pen Tool &lt;b&gt;(%1)&lt;/b&gt;: Sketch with pen</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="58"/>
-        <source>Clear Tool</source>
-        <translation>Limpar</translation>
+        <location filename="../app/toolbox.cpp" line="60"/>
+        <source>Eraser Tool &lt;b&gt;(%1)&lt;/b&gt;: Erase</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="59"/>
-        <source>Smudge Tool (A)</source>
-        <translation>Borrar (A)</translation>
+        <location filename="../app/toolbox.cpp" line="63"/>
+        <source>Polyline Tool &lt;b&gt;(%1)&lt;/b&gt;: Create line/curves</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="66"/>
+        <source>Paint Bucket Tool &lt;b&gt;(%1)&lt;/b&gt;: Fill selected area with a color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="69"/>
+        <source>Brush Tool &lt;b&gt;(%1)&lt;/b&gt;: Paint smooth stroke with a brush</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="72"/>
+        <source>Eyedropper Tool &lt;b&gt;(%1)&lt;/b&gt;: Set color from the stage&lt;br&gt;&lt;b&gt;[ALT]&lt;/b&gt; for instant access</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="76"/>
+        <source>Clear Frame &lt;b&gt;(%1)&lt;/b&gt;: Erases content of selected frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="79"/>
+        <source>Smudge Tool &lt;b&gt;(%1)&lt;/b&gt;:&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; &lt;b&gt;(%1)+[Alt]&lt;/b&gt;: Smooth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="83"/>
+        <source>Pencil Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="85"/>
+        <source>Select Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="87"/>
+        <source>Move Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="89"/>
+        <source>Hand Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="91"/>
+        <source>Pen Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="93"/>
+        <source>Eraser Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="95"/>
+        <source>Polyline Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="97"/>
+        <source>Paint Bucket Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="99"/>
+        <source>Brush Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="101"/>
+        <source>Eyedropper Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="103"/>
+        <source>Clear Tool (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/toolbox.cpp" line="105"/>
+        <source>Smudge Tool (%1)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="82"/>
+        <location filename="../app/tooloptionwidget.cpp" line="98"/>
         <source>Brush</source>
         <translation>Pincel</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="164"/>
+        <location filename="../app/tooloptionwidget.cpp" line="193"/>
         <source>Alpha</source>
         <translation>Alfa</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="20"/>
+        <location filename="../app/tooloptionwidget.cpp" line="36"/>
         <source>Options</source>
         <comment>Window title of tool options like pen width, feather etc..</comment>
         <translation>Opções</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="84"/>
+        <location filename="../app/tooloptionwidget.cpp" line="100"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Ajustar Largura da Caneta &lt;br&gt;&lt;b&gt;[SHIFT]+arrastar&lt;/b&gt;&lt;br&gt;para ajuste rápido</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="90"/>
+        <location filename="../app/tooloptionwidget.cpp" line="106"/>
         <source>Feather</source>
         <translation>Suavização</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="92"/>
+        <location filename="../app/tooloptionwidget.cpp" line="108"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Ajustar suavização da Caneta &lt;br&gt;&lt;b&gt;[CTRL]+arrastar&lt;/b&gt;&lt;br&gt;para ajuste rápido</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="98"/>
+        <location filename="../app/tooloptionwidget.cpp" line="114"/>
         <source>Use Feather</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="99"/>
+        <location filename="../app/tooloptionwidget.cpp" line="115"/>
         <source>Enable or disable feathering</source>
         <translation>Ligar ou desligar suavização</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="103"/>
+        <location filename="../app/tooloptionwidget.cpp" line="119"/>
         <source>Bezier</source>
         <translation>Bézier</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="104"/>
+        <location filename="../app/tooloptionwidget.cpp" line="120"/>
         <source>Bezier curve fitting</source>
         <translation>Ajuste à curva bézier</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="108"/>
+        <location filename="../app/tooloptionwidget.cpp" line="124"/>
         <source>Pressure</source>
         <translation>Pressão</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="109"/>
+        <location filename="../app/tooloptionwidget.cpp" line="125"/>
         <source>Size with pressure</source>
         <translation>Ajustar tamanho usando pressão</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="113"/>
+        <location filename="../app/tooloptionwidget.cpp" line="129"/>
         <source>Anti-Aliasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="114"/>
+        <location filename="../app/tooloptionwidget.cpp" line="130"/>
         <source>Enable Anti-Aliasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="118"/>
-        <source>Stabilization level</source>
+        <location filename="../app/tooloptionwidget.cpp" line="134"/>
+        <source>Fill Contour</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="134"/>
-        <source>No line interpolation</source>
+        <location filename="../app/tooloptionwidget.cpp" line="135"/>
+        <source>Contour will be filled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/tooloptionwidget.cpp" line="139"/>
+        <source>Stabilization level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/tooloptionwidget.cpp" line="155"/>
+        <source>No line interpolation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/tooloptionwidget.cpp" line="160"/>
         <source>Simple line interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="143"/>
+        <location filename="../app/tooloptionwidget.cpp" line="164"/>
         <source>Strong line interpolation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="159"/>
+        <location filename="../app/tooloptionwidget.cpp" line="180"/>
+        <source>Tolerance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/tooloptionwidget.cpp" line="182"/>
+        <source>Set Fill tolerance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/tooloptionwidget.cpp" line="188"/>
         <source>Invisible</source>
         <translation>Invisível</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="160"/>
+        <location filename="../app/tooloptionwidget.cpp" line="189"/>
         <source>Make invisible</source>
         <translation>Tornar invisivel</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="165"/>
+        <location filename="../app/tooloptionwidget.cpp" line="194"/>
         <source>Preserve Alpha</source>
         <translation>Preservar Alfa</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="169"/>
+        <location filename="../app/tooloptionwidget.cpp" line="198"/>
         <source>Merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="170"/>
+        <location filename="../app/tooloptionwidget.cpp" line="199"/>
         <source>Merge vector lines when they are close together</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2393,37 +2464,37 @@ Você deseja salvar suas alterações?</translation>
 <context>
     <name>ToolsPage</name>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="590"/>
+        <location filename="../app/preferencesdialog.cpp" line="619"/>
         <source>Onion skin</source>
         <translation>Transparência</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="592"/>
+        <location filename="../app/preferencesdialog.cpp" line="621"/>
         <source>Maximum onion opacity %</source>
         <translation>Opacidade máxima da transparência (%)</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="594"/>
+        <location filename="../app/preferencesdialog.cpp" line="623"/>
         <source>Minimum onion opacity %</source>
         <translation>Opacidade mínima da transparência (%)</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="596"/>
+        <location filename="../app/preferencesdialog.cpp" line="625"/>
         <source>Number of previous onion frames shown</source>
         <translation>Número de transparências de quadros anteriores a serem mostradas</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="598"/>
+        <location filename="../app/preferencesdialog.cpp" line="627"/>
         <source>Number of next onion frames shown</source>
         <translation>Número de transparências de próximos quadros a serem mostradas</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="634"/>
+        <location filename="../app/preferencesdialog.cpp" line="663"/>
         <source>Brush Tools</source>
         <translation>Ferramentas do Pincel</translation>
     </message>
     <message>
-        <location filename="../app/preferencesdialog.cpp" line="635"/>
+        <location filename="../app/preferencesdialog.cpp" line="664"/>
         <source>Use Quick Sizing</source>
         <translation>Usar dimensionamento rápido</translation>
     </message>
