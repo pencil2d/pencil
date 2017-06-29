@@ -42,42 +42,42 @@ ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
     };
 
     pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ),
-                                  tr( "Pencil Tool <b> (%1) </b>: Sketch with pencil" )
+                                  tr( "Pencil Tool (%1): Sketch with pencil" )
                                   .arg( cmdKeySeq( CMD_TOOL_PENCIL ).toString() ));
     selectButton = newToolButton( QIcon( ":icons/select.png" ),
-                                  tr( "Select Tool <b>(%1)</b>: Select an object" )
+                                  tr( "Select Tool (%1): Select an object" )
                                   .arg( cmdKeySeq( CMD_TOOL_SELECT ).toString() ));
     moveButton = newToolButton( QIcon( ":icons/arrow.png" ),
-                                tr( "Move Tool <b>(%1)</b>: Move an object" )
+                                tr( "Move Tool (%1): Move an object" )
                                 .arg( cmdKeySeq( CMD_TOOL_MOVE ).toString() ));
     handButton = newToolButton( QIcon( ":icons/hand.png" ),
-                                tr( "Hand Tool <b>(%1)</b>: Move the canvas" )
+                                tr( "Hand Tool (%1): Move the canvas" )
                                 .arg( cmdKeySeq( CMD_TOOL_HAND ).toString() ));
     penButton = newToolButton( QIcon( ":icons/pen.png" ),
-                               tr( "Pen Tool <b>(%1)</b>: Sketch with pen" )
+                               tr( "Pen Tool (%1): Sketch with pen" )
                                .arg( cmdKeySeq( CMD_TOOL_PEN ).toString() ));
     eraserButton = newToolButton( QIcon( ":icons/eraser.png" ),
-                                  tr( "Eraser Tool <b>(%1)</b>: Erase" )
+                                  tr( "Eraser Tool (%1): Erase" )
                                   .arg( cmdKeySeq( CMD_TOOL_ERASER ).toString() ));
     polylineButton = newToolButton( QIcon( ":icons/polyline.png" ),
-                                    tr( "Polyline Tool <b>(%1)</b>: Create line/curves" )
+                                    tr( "Polyline Tool (%1): Create line/curves" )
                                     .arg( cmdKeySeq( CMD_TOOL_POLYLINE ).toString() ));
     bucketButton = newToolButton( QIcon( ":icons/bucket.png" ),
-                                  tr( "Paint Bucket Tool <b>(%1)</b>: Fill selected area with a color" )
+                                  tr( "Paint Bucket Tool (%1): Fill selected area with a color" )
                                   .arg( cmdKeySeq( CMD_TOOL_BUCKET ).toString() ));
     colouringButton = newToolButton( QIcon( ":icons/brush.png" ),
-                                     tr( "Brush Tool <b>(%1)</b>: Paint smooth stroke with a brush" )
+                                     tr( "Brush Tool (%1): Paint smooth stroke with a brush" )
                                      .arg( cmdKeySeq( CMD_TOOL_BRUSH ).toString() ));
     eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ),
-                                      tr( "Eyedropper Tool <b>(%1)</b>: "
-                                          "Set color from the stage<br><b>[ALT]</b> for instant access" )
+                                      tr( "Eyedropper Tool (%1): "
+                                          "Set color from the stage<br>[ALT] for instant access" )
                                       .arg( cmdKeySeq( CMD_TOOL_EYEDROPPER ).toString() ));
     clearButton = newToolButton( QIcon( ":icons/clear.png" ),
-                                 tr( "Clear Frame <b>(%1)</b>: Erases content of selected frame" )
+                                 tr( "Clear Frame (%1): Erases content of selected frame" )
                                  .arg( cmdKeySeq( CMD_CLEAR_FRAME ).toString() ));
     smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ),
-                                  tr( "Smudge Tool <b>(%1)</b>:<br>Edit polyline/curves<br>"
-                                      "Liquify bitmap pixels<br> <b>(%1)+[Alt]</b>: Smooth" )
+                                  tr( "Smudge Tool (%1):<br>Edit polyline/curves<br>"
+                                      "Liquify bitmap pixels<br> (%1)+[Alt]: Smooth" )
                                   .arg( cmdKeySeq( CMD_TOOL_SMUDGE ).toString() ));
 
     pencilButton->setWhatsThis( tr( "Pencil Tool (%1)" )
