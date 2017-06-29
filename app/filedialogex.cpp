@@ -153,7 +153,7 @@ QString FileDialog::openFileFilters( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::ANIMATION: return tr( PFF_OPEN_ALL_FILE_FILTER );
+        case FileType::ANIMATION: return PFF_OPEN_ALL_FILE_FILTER;
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
         case FileType::MOVIE: return PENCIL_MOVIE_EXT;
@@ -168,7 +168,7 @@ QString FileDialog::saveFileFilters( FileType fileType )
 {
     switch ( fileType )
     {
-        case FileType::ANIMATION: return tr( PFF_SAVE_ALL_FILE_FILTER );
+        case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
         case FileType::IMAGE: return QString();
         case FileType::IMAGE_SEQUENCE: return QString();
         case FileType::MOVIE: return tr( "MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)" );
@@ -184,12 +184,12 @@ QString FileDialog::defaultFileName( FileType fileType )
 
     switch ( fileType )
     {
-        case FileType::ANIMATION: return tr( PFF_DEFAULT_FILENAME );
-        case FileType::IMAGE: return tr( "untitled.png" );
-        case FileType::IMAGE_SEQUENCE: return tr( "untitled.png" );
-        case FileType::MOVIE: return tr( "untitled.mp4" );
-        case FileType::SOUND: return tr( "untitled.wav" );
-        case FileType::PALETTE: return tr( "untitled.xml" );
+        case FileType::ANIMATION: return tr( "MyAnimation.pclx" );
+        case FileType::IMAGE: return "untitled.png";
+        case FileType::IMAGE_SEQUENCE: return "untitled.png";
+        case FileType::MOVIE: return "untitled.mp4";
+        case FileType::SOUND: return "untitled.wav";
+        case FileType::PALETTE: return "untitled.xml";
         default: Q_ASSERT( false );
     }
     return "";

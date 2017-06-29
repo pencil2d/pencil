@@ -131,7 +131,7 @@ void ToolOptionWidget::createUI()
     mUseAABox->setFont( QFont( "Helvetica", 10 ) );
     mUseAABox->setChecked( true );
 
-    mFillContour = new QCheckBox( tr( "Fill Contour" ) );
+    mFillContour = new QCheckBox( tr( "Fill Contour", "ToolOptions" ) );
     mFillContour->setToolTip( tr( "Contour will be filled" ) );
     mFillContour->setFont( QFont( "Helvetica", 10 ) );
     mFillContour->setChecked( true );
