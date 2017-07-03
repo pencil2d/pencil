@@ -167,6 +167,12 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget( this );
     mToolBox->setObjectName( "ToolBox" );
 
+	/*
+	mTimeline2 = new Timeline2;
+	mTimeline2->setObjectName( "Timeline2" );
+	mDockWidgets.append( mTimeline2 );
+	*/
+
     mDockWidgets
         << mTimeLine
         << mColorWheel
@@ -178,28 +184,25 @@ void MainWindow2::createDockWidgets()
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
-    /*
-    mTimeline2 = new Timeline2;
-    mTimeline2->setObjectName( "Timeline2" );
-    mDockWidgets.append( mTimeline2 );
-    */
-    addDockWidget(Qt::RightDockWidgetArea,  mColorWheel);
-    addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
-    addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
-    addDockWidget(Qt::LeftDockWidgetArea,   mToolOptions);
-    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
-    //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
-
     for ( BaseDockWidget* pWidget : mDockWidgets )
     {
-        pWidget->setEditor( mEditor );
-        pWidget->initUI();
-        pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
-        pWidget->setFocusPolicy( Qt::NoFocus );
+		pWidget->setAllowedAreas( Qt::AllDockWidgetAreas );
+		pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
+		pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init Dock widget: " << pWidget->objectName();
+		pWidget->setEditor( mEditor );
+		pWidget->initUI();
+		pWidget->show();
+		qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
+
+	addDockWidget( Qt::RightDockWidgetArea, mColorWheel );
+	addDockWidget( Qt::RightDockWidgetArea, mColorPalette );
+	addDockWidget( Qt::RightDockWidgetArea, mDisplayOptionWidget );
+	addDockWidget( Qt::LeftDockWidgetArea, mToolBox );
+	addDockWidget( Qt::LeftDockWidgetArea, mToolOptions );
+	addDockWidget( Qt::BottomDockWidgetArea, mTimeLine );
+	//addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
     /*
     mPreview = new PreviewWidget( this );
@@ -219,6 +222,7 @@ void MainWindow2::createDockWidgets()
     for ( BaseDockWidget* w : mDockWidgets )
     {
         w->updateUI();
+		w->setFloating( false );
     }
 }
 
@@ -843,11 +847,13 @@ void MainWindow2::dockAllSubWidgets()
 
 void MainWindow2::readSettings()
 {
-    //qDebug( "Restore last windows layout." );
-
     QSettings settings( PENCIL2D, PENCIL2D );
-    restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
-    restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
+
+	QVariant winGeometry = settings.value( SETTING_WINDOW_GEOMETRY );
+	restoreGeometry( winGeometry.toByteArray() );
+    
+	QVariant winState = settings.value( SETTING_WINDOW_STATE );
+	restoreState( winState.toByteArray() );
 
     QString myPath = settings.value( LAST_PCLX_PATH, QVariant( QDir::homePath() ) ).toString();
     mRecentFileMenu->addRecentFile( myPath );
