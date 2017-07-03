@@ -40,7 +40,7 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    explicit ColorPaletteWidget( QWidget* pParent );
+    explicit ColorPaletteWidget( QWidget* parent );
 
     void initUI() override;
     void updateUI() override;

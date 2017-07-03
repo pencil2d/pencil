@@ -150,7 +150,7 @@ void MainWindow2::createDockWidgets()
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
 
-    mColorWheel = new ColorBox( tr("Color Wheel"), this );
+    mColorWheel = new ColorBox( this );
     mColorWheel->setToolTip( tr( "color palette:<br>use <b>(C)</b><br>toggle at cursor" ) );
     mColorWheel->setObjectName( "ColorWheel" );
     mColorWheel->setMaximumHeight(390);
@@ -164,7 +164,7 @@ void MainWindow2::createDockWidgets()
     mToolOptions = new ToolOptionWidget( this );
     mToolOptions->setObjectName( "ToolOption" );
 
-    mToolBox = new ToolBoxWidget( tr( "Tools", "Window title of tool box." ), this );
+    mToolBox = new ToolBoxWidget( this );
     mToolBox->setObjectName( "ToolBox" );
 
     mDockWidgets
@@ -193,7 +193,7 @@ void MainWindow2::createDockWidgets()
 
     for ( BaseDockWidget* pWidget : mDockWidgets )
     {
-        pWidget->setCore( mEditor );
+        pWidget->setEditor( mEditor );
         pWidget->initUI();
         pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
         pWidget->setFocusPolicy( Qt::NoFocus );

@@ -31,7 +31,7 @@ GNU General Public License for more details.
 #include "ui_colorpalette.h"
 
 
-ColorPaletteWidget::ColorPaletteWidget( QWidget* pParent ) : BaseDockWidget( pParent, Qt::Tool )
+ColorPaletteWidget::ColorPaletteWidget( QWidget* parent ) : BaseDockWidget( parent )
 {
     setWindowTitle( tr( "Color Palette", "Window title of color palette." ) );
 

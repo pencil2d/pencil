@@ -37,147 +37,148 @@ QString GetToolTips( QString strCommandName )
 }
 
 
-ToolBoxWidget::ToolBoxWidget(const QString title, QWidget* pParent ) :
-    BaseDockWidget( title, pParent, Qt::Tool )
+ToolBoxWidget::ToolBoxWidget( QWidget* parent ) : BaseDockWidget( parent )
 {
-    QGridLayout* layout = new QGridLayout();
-
-    pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ),
-                                  tr( "Pencil Tool (%1): Sketch with pencil" )
-                                  .arg( GetToolTips( CMD_TOOL_PENCIL ) ) );
-    selectButton = newToolButton( QIcon( ":icons/select.png" ),
-                                  tr( "Select Tool (%1): Select an object" )
-                                  .arg( GetToolTips( CMD_TOOL_SELECT ) ));
-    moveButton = newToolButton( QIcon( ":icons/arrow.png" ),
-                                tr( "Move Tool (%1): Move an object" )
-                                .arg( GetToolTips( CMD_TOOL_MOVE ) ));
-    handButton = newToolButton( QIcon( ":icons/hand.png" ),
-                                tr( "Hand Tool (%1): Move the canvas" )
-                                .arg( GetToolTips( CMD_TOOL_HAND ) ));
-    penButton = newToolButton( QIcon( ":icons/pen.png" ),
-                               tr( "Pen Tool (%1): Sketch with pen" )
-                               .arg( GetToolTips( CMD_TOOL_PEN ) ));
-    eraserButton = newToolButton( QIcon( ":icons/eraser.png" ),
-                                  tr( "Eraser Tool (%1): Erase" )
-                                  .arg( GetToolTips( CMD_TOOL_ERASER ) ));
-    polylineButton = newToolButton( QIcon( ":icons/polyline.png" ),
-                                    tr( "Polyline Tool (%1): Create line/curves" )
-                                    .arg( GetToolTips( CMD_TOOL_POLYLINE ) ));
-    bucketButton = newToolButton( QIcon( ":icons/bucket.png" ),
-                                  tr( "Paint Bucket Tool (%1): Fill selected area with a color" )
-                                  .arg( GetToolTips( CMD_TOOL_BUCKET ) ));
-    colouringButton = newToolButton( QIcon( ":icons/brush.png" ),
-                                     tr( "Brush Tool (%1): Paint smooth stroke with a brush" )
-                                     .arg( GetToolTips( CMD_TOOL_BRUSH ) ));
-    eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ),
-                                      tr( "Eyedropper Tool (%1): "
-                                          "Set color from the stage<br>[ALT] for instant access" )
-                                      .arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ));
-    clearButton = newToolButton( QIcon( ":icons/clear.png" ),
-                                 tr( "Clear Frame (%1): Erases content of selected frame" )
-                                 .arg( GetToolTips( CMD_CLEAR_FRAME ) ));
-    smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ),
-                                  tr( "Smudge Tool (%1):<br>Edit polyline/curves<br>"
-                                      "Liquify bitmap pixels<br> (%1)+[Alt]: Smooth" )
-                                  .arg( GetToolTips( CMD_TOOL_SMUDGE ) ));
-
-    pencilButton->setWhatsThis( tr( "Pencil Tool (%1)" )
-                                .arg( GetToolTips( CMD_TOOL_PENCIL ) ));
-    selectButton->setWhatsThis( tr( "Select Tool (%1)" )
-                                .arg( GetToolTips( CMD_TOOL_SELECT ) ));
-    moveButton->setWhatsThis( tr( "Move Tool (%1)" )
-                              .arg( GetToolTips( CMD_TOOL_MOVE ) ));
-    handButton->setWhatsThis( tr( "Hand Tool (%1)" )
-                              .arg( GetToolTips( CMD_TOOL_HAND ) ));
-    penButton->setWhatsThis( tr( "Pen Tool (%1)" )
-                             .arg( GetToolTips( CMD_TOOL_PEN ) ));
-    eraserButton->setWhatsThis( tr( "Eraser Tool (%1)" )
-                                .arg( GetToolTips( CMD_TOOL_ERASER ) ));
-    polylineButton->setWhatsThis( tr( "Polyline Tool (%1)" )
-                                  .arg( GetToolTips( CMD_TOOL_POLYLINE ) ));
-    bucketButton->setWhatsThis( tr( "Paint Bucket Tool (%1)" )
-                                .arg( GetToolTips( CMD_TOOL_BUCKET ) ));
-    colouringButton->setWhatsThis( tr( "Brush Tool (%1)" )
-                                   .arg( GetToolTips( CMD_TOOL_BRUSH ) ));
-    eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (%1)" )
-                                    .arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ));
-    clearButton->setWhatsThis( tr( "Clear Tool (%1)" )
-                               .arg( GetToolTips( CMD_CLEAR_FRAME ) ));
-    smudgeButton->setWhatsThis( tr( "Smudge Tool (%1)" )
-                                .arg( GetToolTips( CMD_TOOL_SMUDGE ) ));
-
-    pencilButton->setCheckable( true );
-    penButton->setCheckable( true );
-    polylineButton->setCheckable( true );
-    bucketButton->setCheckable( true );
-    colouringButton->setCheckable( true );
-    smudgeButton->setCheckable( true );
-    eyedropperButton->setCheckable( true );
-    selectButton->setCheckable( true );
-    moveButton->setCheckable( true );
-    handButton->setCheckable( true );
-    eraserButton->setCheckable( true );
-    pencilButton->setChecked( true );
-
-    layout->setMargin( 2 );
-    layout->setSpacing( 0 );
-
-    layout->addWidget( moveButton, 0, 0 );
-    layout->setAlignment( moveButton, Qt::AlignRight );
-    layout->addWidget( clearButton, 0, 1 );
-    layout->setAlignment( clearButton, Qt::AlignLeft );
-
-    layout->addWidget( selectButton, 1, 0 );
-    layout->setAlignment( selectButton, Qt::AlignRight );
-    layout->addWidget( colouringButton, 1, 1 );
-    layout->setAlignment( colouringButton, Qt::AlignLeft );
-
-    layout->addWidget( polylineButton, 2, 0 );
-    layout->setAlignment( polylineButton, Qt::AlignRight );
-    layout->addWidget( smudgeButton, 2, 1 );
-    layout->setAlignment( smudgeButton, Qt::AlignLeft );
-
-    layout->addWidget( penButton, 3, 0 );
-    layout->setAlignment( penButton, Qt::AlignRight );
-    layout->addWidget( handButton, 3, 1 );
-    layout->setAlignment( handButton, Qt::AlignLeft );
-
-    layout->addWidget( pencilButton, 4, 0 );
-    layout->setAlignment( pencilButton, Qt::AlignRight );
-    layout->addWidget( bucketButton, 4, 1 );
-    layout->setAlignment( bucketButton, Qt::AlignLeft );
-
-    layout->addWidget( eyedropperButton, 5, 0 );
-    layout->setAlignment( eyedropperButton, Qt::AlignRight );
-    layout->addWidget( eraserButton, 5, 1 );
-    layout->setAlignment( eraserButton, Qt::AlignLeft );
-
-    QFrame* toolGroup = new QFrame();
-    setWidget( toolGroup );
-    toolGroup->setLayout( layout );
-    toolGroup->setMaximumHeight( 6 * 32 + 1 );
-
-    setMaximumHeight( 200 );
-
-    connect( pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn );
-    connect( eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn );
-    connect( selectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn );
-    connect( moveButton, &QToolButton::clicked, this, &ToolBoxWidget::moveOn );
-    connect( penButton, &QToolButton::clicked, this, &ToolBoxWidget::penOn );
-    connect( handButton, &QToolButton::clicked, this, &ToolBoxWidget::handOn );
-    connect( polylineButton, &QToolButton::clicked, this, &ToolBoxWidget::polylineOn );
-    connect( bucketButton, &QToolButton::clicked, this, &ToolBoxWidget::bucketOn );
-    connect( eyedropperButton, &QToolButton::clicked, this, &ToolBoxWidget::eyedropperOn );
-    connect( colouringButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn );
-    connect( smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn );
-
-    // pass to editor
-    connect( clearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked );
+	setWindowTitle( tr( "Tools", "Window title of tool box" ) );
 }
 
 
 void ToolBoxWidget::initUI()
 {
+	
+	QGridLayout* layout = new QGridLayout();
+
+	pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ),
+		tr( "Pencil Tool (%1): Sketch with pencil" )
+		.arg( GetToolTips( CMD_TOOL_PENCIL ) ) );
+	selectButton = newToolButton( QIcon( ":icons/select.png" ),
+		tr( "Select Tool (%1): Select an object" )
+		.arg( GetToolTips( CMD_TOOL_SELECT ) ) );
+	moveButton = newToolButton( QIcon( ":icons/arrow.png" ),
+		tr( "Move Tool (%1): Move an object" )
+		.arg( GetToolTips( CMD_TOOL_MOVE ) ) );
+	handButton = newToolButton( QIcon( ":icons/hand.png" ),
+		tr( "Hand Tool (%1): Move the canvas" )
+		.arg( GetToolTips( CMD_TOOL_HAND ) ) );
+	penButton = newToolButton( QIcon( ":icons/pen.png" ),
+		tr( "Pen Tool (%1): Sketch with pen" )
+		.arg( GetToolTips( CMD_TOOL_PEN ) ) );
+	eraserButton = newToolButton( QIcon( ":icons/eraser.png" ),
+		tr( "Eraser Tool (%1): Erase" )
+		.arg( GetToolTips( CMD_TOOL_ERASER ) ) );
+	polylineButton = newToolButton( QIcon( ":icons/polyline.png" ),
+		tr( "Polyline Tool (%1): Create line/curves" )
+		.arg( GetToolTips( CMD_TOOL_POLYLINE ) ) );
+	bucketButton = newToolButton( QIcon( ":icons/bucket.png" ),
+		tr( "Paint Bucket Tool (%1): Fill selected area with a color" )
+		.arg( GetToolTips( CMD_TOOL_BUCKET ) ) );
+	colouringButton = newToolButton( QIcon( ":icons/brush.png" ),
+		tr( "Brush Tool (%1): Paint smooth stroke with a brush" )
+		.arg( GetToolTips( CMD_TOOL_BRUSH ) ) );
+	eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ),
+		tr( "Eyedropper Tool (%1): "
+			"Set color from the stage<br>[ALT] for instant access" )
+		.arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
+	clearButton = newToolButton( QIcon( ":icons/clear.png" ),
+		tr( "Clear Frame (%1): Erases content of selected frame" )
+		.arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
+	smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ),
+		tr( "Smudge Tool (%1):<br>Edit polyline/curves<br>"
+			"Liquify bitmap pixels<br> (%1)+[Alt]: Smooth" )
+		.arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
+
+	pencilButton->setWhatsThis( tr( "Pencil Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_PENCIL ) ) );
+	selectButton->setWhatsThis( tr( "Select Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_SELECT ) ) );
+	moveButton->setWhatsThis( tr( "Move Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_MOVE ) ) );
+	handButton->setWhatsThis( tr( "Hand Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_HAND ) ) );
+	penButton->setWhatsThis( tr( "Pen Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_PEN ) ) );
+	eraserButton->setWhatsThis( tr( "Eraser Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_ERASER ) ) );
+	polylineButton->setWhatsThis( tr( "Polyline Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_POLYLINE ) ) );
+	bucketButton->setWhatsThis( tr( "Paint Bucket Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_BUCKET ) ) );
+	colouringButton->setWhatsThis( tr( "Brush Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_BRUSH ) ) );
+	eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
+	clearButton->setWhatsThis( tr( "Clear Tool (%1)" )
+		.arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
+	smudgeButton->setWhatsThis( tr( "Smudge Tool (%1)" )
+		.arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
+
+	pencilButton->setCheckable( true );
+	penButton->setCheckable( true );
+	polylineButton->setCheckable( true );
+	bucketButton->setCheckable( true );
+	colouringButton->setCheckable( true );
+	smudgeButton->setCheckable( true );
+	eyedropperButton->setCheckable( true );
+	selectButton->setCheckable( true );
+	moveButton->setCheckable( true );
+	handButton->setCheckable( true );
+	eraserButton->setCheckable( true );
+	pencilButton->setChecked( true );
+
+	layout->setMargin( 2 );
+	layout->setSpacing( 0 );
+
+	layout->addWidget( moveButton, 0, 0 );
+	layout->setAlignment( moveButton, Qt::AlignRight );
+	layout->addWidget( clearButton, 0, 1 );
+	layout->setAlignment( clearButton, Qt::AlignLeft );
+
+	layout->addWidget( selectButton, 1, 0 );
+	layout->setAlignment( selectButton, Qt::AlignRight );
+	layout->addWidget( colouringButton, 1, 1 );
+	layout->setAlignment( colouringButton, Qt::AlignLeft );
+
+	layout->addWidget( polylineButton, 2, 0 );
+	layout->setAlignment( polylineButton, Qt::AlignRight );
+	layout->addWidget( smudgeButton, 2, 1 );
+	layout->setAlignment( smudgeButton, Qt::AlignLeft );
+
+	layout->addWidget( penButton, 3, 0 );
+	layout->setAlignment( penButton, Qt::AlignRight );
+	layout->addWidget( handButton, 3, 1 );
+	layout->setAlignment( handButton, Qt::AlignLeft );
+
+	layout->addWidget( pencilButton, 4, 0 );
+	layout->setAlignment( pencilButton, Qt::AlignRight );
+	layout->addWidget( bucketButton, 4, 1 );
+	layout->setAlignment( bucketButton, Qt::AlignLeft );
+
+	layout->addWidget( eyedropperButton, 5, 0 );
+	layout->setAlignment( eyedropperButton, Qt::AlignRight );
+	layout->addWidget( eraserButton, 5, 1 );
+	layout->setAlignment( eraserButton, Qt::AlignLeft );
+
+	QWidget* toolGroup = new QWidget();
+	setWidget( toolGroup );
+	toolGroup->setLayout( layout );
+	toolGroup->setMaximumHeight( 6 * 32 + 1 );
+
+	setMaximumHeight( 200 );
+
+	connect( pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn );
+	connect( eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn );
+	connect( selectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn );
+	connect( moveButton, &QToolButton::clicked, this, &ToolBoxWidget::moveOn );
+	connect( penButton, &QToolButton::clicked, this, &ToolBoxWidget::penOn );
+	connect( handButton, &QToolButton::clicked, this, &ToolBoxWidget::handOn );
+	connect( polylineButton, &QToolButton::clicked, this, &ToolBoxWidget::polylineOn );
+	connect( bucketButton, &QToolButton::clicked, this, &ToolBoxWidget::bucketOn );
+	connect( eyedropperButton, &QToolButton::clicked, this, &ToolBoxWidget::eyedropperOn );
+	connect( colouringButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn );
+	connect( smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn );
+
+	// pass to editor
+	connect( clearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked );
 
 }
 
