@@ -35,8 +35,6 @@ public:
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
 
-    bool keyPressEvent(QKeyEvent *event) override;
-
     void leavingThisTool() override;
     void switchingLayers() override;
 
