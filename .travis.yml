@@ -15,6 +15,10 @@ os:
   - linux
   - osx
 
+branches:
+  only:
+  - master
+  
 python:
  - "3.4"
 addons:
