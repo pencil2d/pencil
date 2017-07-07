@@ -192,6 +192,7 @@ public slots:
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
     void quickSizingChange(bool);
+    void colorPaletteBackgroundChange(int value);
 private:
     PreferenceManager* mManager = nullptr;
     QSpinBox* mOnionMaxOpacityBox;
@@ -199,6 +200,7 @@ private:
     QSpinBox* mOnionPrevFramesNumBox;
     QSpinBox* mOnionNextFramesNumBox;
     QCheckBox * mUseQuickSizingBox;
+    QButtonGroup *mColorPaletteBackgroundButtons;
 };
 
 #endif

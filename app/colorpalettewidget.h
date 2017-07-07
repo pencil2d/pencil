@@ -34,6 +34,8 @@ namespace Ui
 class ColorPalette;
 }
 
+class PreferenceManager;
+enum class SETTING;
 
 class ColorPaletteWidget : public BaseDockWidget
 {
@@ -42,6 +44,7 @@ class ColorPaletteWidget : public BaseDockWidget
 public:
     explicit ColorPaletteWidget( QWidget* parent );
 
+    void init(PreferenceManager * prefs);
     void initUI() override;
     void updateUI() override;
 
@@ -73,6 +76,7 @@ private slots:
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
     void updateGridUI();
+    void settingUpdated(SETTING setting);
 
 private:
     Ui::ColorPalette* ui = nullptr;
@@ -87,7 +91,9 @@ private:
     QSize iconSize;
     QMenu *toolMenu;
     int stepper;
+    PreferenceManager * mPrefs = nullptr;
 
+    void loadBackgroundStyle();
 };
 
 #endif

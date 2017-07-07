@@ -106,6 +106,10 @@ void PreferenceManager::loadPrefs()
 #ifdef DRAW_AXIS
     set( SETTING::AXIS, true );
 #endif
+
+    // Color Palette
+    //
+    set( SETTING::COLOR_PALETTE_BACKGROUND_STYLE,   settings.value( SETTING_COLOR_PALETTE_BACKGROUND_STYLE,"white" ).toString() );
 }
 
 void PreferenceManager::turnOn( SETTING option )
@@ -167,6 +171,9 @@ void PreferenceManager::set(SETTING option, QString value)
         break;
     case SETTING::LANGUAGE:
         settings.setValue( SETTING_LANGUAGE, value );
+        break;
+    case SETTING::COLOR_PALETTE_BACKGROUND_STYLE:
+        settings.setValue( SETTING_COLOR_PALETTE_BACKGROUND_STYLE, value );
         break;
     default:
         break;

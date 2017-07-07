@@ -670,9 +670,39 @@ ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
     brushBox->setLayout(brushBoxLayout);
 
 
+    QGroupBox* colorPaletteBackgroundBox = new QGroupBox( tr( "Color Palette Background", "GroupBox title in Preference" ) );
+
+    mColorPaletteBackgroundButtons = new QButtonGroup();
+    QRadioButton* checkerBackgroundButton = new QRadioButton();
+    QRadioButton* whiteBackgroundButton = new QRadioButton();
+
+    QPixmap previewCheckerboard( ":background/checkerboard.png" );
+    QPixmap previewWhite(32,32);
+
+    previewWhite.fill( Qt::white );
+
+    checkerBackgroundButton->setIcon( previewCheckerboard.scaled(32, 32) );
+    whiteBackgroundButton->setIcon( previewWhite );
+
+    mColorPaletteBackgroundButtons->addButton(checkerBackgroundButton);
+    mColorPaletteBackgroundButtons->addButton(whiteBackgroundButton);
+
+    mColorPaletteBackgroundButtons->setId(checkerBackgroundButton, 1);
+    mColorPaletteBackgroundButtons->setId(whiteBackgroundButton, 2);
+
+    auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
+    connect( mColorPaletteBackgroundButtons, kButtonClicked, this, &ToolsPage::colorPaletteBackgroundChange );
+
+    QHBoxLayout* colorPaletteBackgroundLayout = new QHBoxLayout();
+    colorPaletteBackgroundBox->setLayout(colorPaletteBackgroundLayout);
+    colorPaletteBackgroundLayout->addWidget(checkerBackgroundButton);
+    colorPaletteBackgroundLayout->addWidget(whiteBackgroundButton);
+
+
     QVBoxLayout* lay2 = new QVBoxLayout();
     lay2->addWidget(onionSkinBox);
     lay2->addWidget(brushBox);
+    lay2->addWidget(colorPaletteBackgroundBox);
     lay2->addStretch(1);
     setLayout(lay2);
 }
@@ -684,6 +714,14 @@ void ToolsPage::updateValues()
     mOnionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
     mOnionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
     mUseQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
+
+    QString bgName = mManager->getString(SETTING::COLOR_PALETTE_BACKGROUND_STYLE);
+    if (bgName == "checkerboard") {
+        mColorPaletteBackgroundButtons->button(1)->setChecked(true);
+    }
+    if (bgName == "white") {
+        mColorPaletteBackgroundButtons->button(2)->setChecked(true);
+    }
 }
 
 void ToolsPage::onionMaxOpacityChange(int value)
@@ -694,6 +732,22 @@ void ToolsPage::onionMaxOpacityChange(int value)
 void ToolsPage::quickSizingChange( bool b )
 {
     mManager->set(SETTING::QUICK_SIZING, b);
+}
+
+void ToolsPage::colorPaletteBackgroundChange(int value)
+{
+    QString brushName = "white";
+    switch (value) {
+    case 1:
+        brushName = "checkerboard";
+        break;
+    case 2:
+        brushName = "white";
+        break;
+    default:
+        break;
+    }
+    mManager->set(SETTING::COLOR_PALETTE_BACKGROUND_STYLE, brushName);
 }
 
 void ToolsPage::onionMinOpacityChange(int value)
