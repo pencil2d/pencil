@@ -15,10 +15,6 @@ os:
   - linux
   - osx
 
-branches:
-  only:
-  - master
-  
 python:
  - "3.4"
 addons:
@@ -115,16 +111,17 @@ after_success:
   - ls
 
   # Upload to google drive
-  - echo "Initiate deployment on Google Drive"
-  - cd "$TRAVIS_BUILD_DIR/util"
-
-  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    python nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
+  - 'if [ "$TRAVIS_BRANCH" == "master" -o "$FORCE_NIGHTLY_UPLOAD" == "yes" ]; then
+    echo "Initiate deployment on Google Drive";
+    cd "$TRAVIS_BUILD_DIR/util";
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      python nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
+    fi;
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      python nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
+    fi;
+    echo "Operation done";
   fi'
-  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    python nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
-  fi'
-  - echo "Operation done"
 
 after_script:
   - cd "$TRAVIS_BUILD_DIR/build"
