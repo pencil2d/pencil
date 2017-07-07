@@ -75,6 +75,8 @@ private slots:
     void updateGridUI();
 
 private:
+    QString getDefaultColorName(QColor c);
+
     Ui::ColorPalette* ui = nullptr;
     QActionGroup *layoutModes;
     QAction *listMode;
