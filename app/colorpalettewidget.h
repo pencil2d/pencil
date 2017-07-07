@@ -85,7 +85,6 @@ private:
     QAction *largeSwatch;
     QAction *separator;
     QSize iconSize;
-    QPixmap colourSwatch;
     QMenu *toolMenu;
     int stepper;
 

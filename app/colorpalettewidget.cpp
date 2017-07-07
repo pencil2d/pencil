@@ -52,8 +52,6 @@ ColorPaletteWidget::ColorPaletteWidget( QWidget* parent ) : BaseDockWidget( pare
     connect( ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton );
     connect( ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton );
     connect( ui->palettePref, &QToolButton::clicked, this, &ColorPaletteWidget::palettePreferences );
-
-    ui->colorListWidget->setStyleSheet(QString("QListWidget { background-image: url(:/background/checkerboard.png); } "));
 }
 
 void ColorPaletteWidget::initUI()
@@ -104,6 +102,12 @@ void ColorPaletteWidget::refreshColorList()
         ui->colorListWidget->clear();
     }
 
+    QPixmap originalColourSwatch( iconSize );
+    QPainter swatchPainter( &originalColourSwatch );
+    swatchPainter.drawTiledPixmap( 0, 0, iconSize.width(), iconSize.height(), QPixmap( ":/background/checkerboard.png" ) );
+    swatchPainter.end();
+    QPixmap colourSwatch;
+
     QListWidgetItem* colourItem;
     ColourRef colourRef;
     for (int i = 0; i < editor()->object()->getColourCount(); i++)
@@ -115,8 +119,10 @@ void ColorPaletteWidget::refreshColorList()
         if ( ui->colorListWidget->viewMode() != QListView::IconMode){
             colourItem->setText( colourRef.name );
         }
-        colourSwatch = QPixmap(iconSize);
-        colourSwatch.fill( colourRef.colour );
+        colourSwatch = originalColourSwatch;
+        swatchPainter.begin( &colourSwatch );
+        swatchPainter.fillRect( 0, 0, iconSize.width(), iconSize.height(), colourRef.colour );
+        swatchPainter.end();
         colourItem->setIcon( colourSwatch );
 
         ui->colorListWidget->addItem( colourItem );
@@ -351,8 +357,10 @@ void ColorPaletteWidget::clickRemoveColorButton()
 
 void ColorPaletteWidget::updateItemColor( int itemIndex, QColor newColor )
 {
-    colourSwatch = QPixmap(iconSize);
-    colourSwatch.fill( newColor );
+    QPixmap colourSwatch( iconSize );
+    QPainter swatchPainter( &colourSwatch );
+    swatchPainter.drawTiledPixmap( 0, 0, iconSize.width(), iconSize.height(), QPixmap( ":/background/checkerboard.png" ) );
+    swatchPainter.fillRect( 0, 0, iconSize.width(), iconSize.height(), newColor );
     ui->colorListWidget->item( itemIndex )->setIcon( colourSwatch );
 
     // Make sure to update grid in grid mode
