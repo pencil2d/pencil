@@ -323,16 +323,32 @@ QString ColorPaletteWidget::getDefaultColorName(QColor c)
                 v = 200 * ( f( y/yn ) - f( z/zn ) );
 
     // Find closest color match in colorDict to the luv values
-    qreal minDist = pow(colorDict[0][0] - l, 2) + pow(colorDict[0][1] - u, 2) + pow(colorDict[0][2] - v, 2);
     int minLoc = 0;
-    qreal curDist;
-    for ( int i = 1; i < dictSize; i++)
-    {
-        curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
-        if ( curDist < minDist )
+    if(u < 0.01 && u > -0.01 && v < 0.01 && v > -0.01) {
+        // The color is grayscale so only compare to gray centroids so there is no 'false hue'
+        qreal minDist = pow(colorDict[dictSize-5][0] - l, 2) + pow(colorDict[dictSize-5][1] - u, 2) + pow(colorDict[dictSize-5][2] - v, 2);
+        qreal curDist;
+        for ( int i = dictSize-4; i < dictSize; i++)
         {
-            minDist = curDist;
-            minLoc = i;
+            curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
+            if ( curDist < minDist )
+            {
+                minDist = curDist;
+                minLoc = i;
+            }
+        }
+    }
+    else {
+        qreal minDist = pow(colorDict[0][0] - l, 2) + pow(colorDict[0][1] - u, 2) + pow(colorDict[0][2] - v, 2);
+        qreal curDist;
+        for ( int i = 1; i < dictSize; i++)
+        {
+            curDist = pow(colorDict[i][0] - l, 2) + pow(colorDict[i][1] - u, 2) + pow(colorDict[i][2] - v, 2);
+            if ( curDist < minDist )
+            {
+                minDist = curDist;
+                minLoc = i;
+            }
         }
     }
     return QString( nameDict[minLoc].c_str() );
