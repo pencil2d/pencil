@@ -514,6 +514,9 @@ void Editor::updateObject()
 		mScribbleArea->updateAllFrames();
 	}
 
+    // Load the FPS setting.
+    emit fpsUpdateForSpinBox( mObject->data()->getFrameRate() );
+
     emit updateLayerCount();
 }
 
