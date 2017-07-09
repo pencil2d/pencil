@@ -189,6 +189,12 @@ void TimeControls::updatePlayState()
     }
 }
 
+void TimeControls::updateFpsNoSignal(int value)
+{
+    SignalBlocker blocker(mFpsBox);
+    mFpsBox->setValue(value);
+}
+
 void TimeControls::jumpToStartButtonClicked()
 {
     if ( mPlaybackRangeCheckBox->isChecked() )

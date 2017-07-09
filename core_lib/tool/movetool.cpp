@@ -284,20 +284,6 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     }
 }
 
-bool MoveTool::keyPressEvent(QKeyEvent *event)
-{
-    switch ( event->key() ) {
-    case Qt::Key_Escape:
-        cancelChanges();
-        break;
-    default:
-        break;
-    }
-
-    // Follow the generic behaviour anyway
-    return false;
-}
-
 void MoveTool::cancelChanges()
 {
     mScribbleArea->cancelTransformedSelection();
