@@ -10,6 +10,8 @@ CONFIG += staticlib
 
 INCLUDEPATH += ../zlib
 
+QMAKE_CXXFLAGS += -std=c++11
+
 # Input
 include(quazip.pri)
 
