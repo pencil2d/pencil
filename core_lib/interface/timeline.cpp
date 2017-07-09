@@ -36,7 +36,7 @@ GNU General Public License for more details.
 #include "timelinecells.h"
 
 
-TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent, Qt::Tool )
+TimeLine::TimeLine( QWidget* parent ) : BaseDockWidget( parent )
 {
 }
 

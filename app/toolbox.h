@@ -33,7 +33,7 @@ class ToolBoxWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    ToolBoxWidget(const QString title, QWidget* pParent );
+    ToolBoxWidget( QWidget* parent );
 
     void initUI() override;
     void updateUI() override;
@@ -58,18 +58,18 @@ private:
     QToolButton* newToolButton(const QIcon&, QString);
     void deselectAllTools();
 
-    QToolButton* pencilButton;
-    QToolButton* selectButton;
-    QToolButton* moveButton;
-    QToolButton* handButton;
-    QToolButton* eraserButton;
-    QToolButton* penButton;
-    QToolButton* polylineButton;
-    QToolButton* bucketButton;
-    QToolButton* colouringButton;
-    QToolButton* eyedropperButton;
-    QToolButton* smudgeButton;
-    QToolButton* clearButton;
+    QToolButton* pencilButton = nullptr;
+    QToolButton* selectButton = nullptr;
+    QToolButton* moveButton = nullptr;
+    QToolButton* handButton = nullptr;
+    QToolButton* eraserButton = nullptr;
+    QToolButton* penButton = nullptr;
+    QToolButton* polylineButton = nullptr;
+    QToolButton* bucketButton = nullptr;
+    QToolButton* colouringButton = nullptr;
+    QToolButton* eyedropperButton = nullptr;
+    QToolButton* smudgeButton = nullptr;
+    QToolButton* clearButton = nullptr;
 };
 
 #endif

@@ -19,8 +19,10 @@ GNU General Public License for more details.
 #include "colorinspector.h"
 #include "colorbox.h"
 
-ColorBox::ColorBox( const QString& strTitle, QWidget* parent ) : BaseDockWidget( strTitle, parent )
+ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
 {
+	setWindowTitle( tr( "Color Wheel", "Color Wheel's window title" ) );
+
     QVBoxLayout* layout = new QVBoxLayout();
 
     mColorWheel = new ColorWheel(this);
