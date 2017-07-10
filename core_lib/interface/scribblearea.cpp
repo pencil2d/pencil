@@ -74,7 +74,6 @@ bool ScribbleArea::init()
     mShowAllLayers = 1;
 
     mBufferImg = new BitmapImage;
-//    mBitmapSelection = new BitmapImage;
 
     QRect newSelection( QPoint( 0, 0 ), QSize( 0, 0 ) );
     mySelection = newSelection;
@@ -92,7 +91,10 @@ bool ScribbleArea::init()
 
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
 
-    QPixmapCache::setCacheLimit( 100 * 1024 );
+    QPixmapCache::setCacheLimit( 100 * 1024 ); // unit is kb, so it's 100MB cache
+
+	int nLength = mEditor->layers()->projectLength();
+	mPixmapCacheKeys.resize( std::max( nLength, 240 ) );
 
     mNeedUpdateAll = false;
 
@@ -165,7 +167,14 @@ void ScribbleArea::updateCurrentFrame()
 void ScribbleArea::updateFrame( int frame )
 {
     int frameNumber = mEditor->layers()->LastFrameAtFrame( frame );
-    QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
+
+	if ( mPixmapCacheKeys.size() <= frame )
+	{
+		mPixmapCacheKeys.resize( frame + 10 ); // a buffer
+	}
+
+	QPixmapCache::remove( mPixmapCacheKeys[ frameNumber ] );
+	mPixmapCacheKeys[ frameNumber] = QPixmapCache::Key();
 
     update();
 }
@@ -173,6 +182,8 @@ void ScribbleArea::updateFrame( int frame )
 void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
+	std::fill( mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key() );
+
     update();
     mNeedUpdateAll = false;
 }
@@ -721,7 +732,10 @@ void ScribbleArea::paintBitmapBuffer( )
     layer->setModified( mEditor->currentFrame(), true );
     emit modification();
 
-    QPixmapCache::remove( "frame" + QString::number( mEditor->currentFrame() ) );
+	int frameNumber = mEditor->currentFrame();
+	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+
     drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
@@ -766,7 +780,10 @@ void ScribbleArea::paintBitmapBufferRect( QRect rect )
     layer->setModified( mEditor->currentFrame(), true );
     emit modification();
 
-    QPixmapCache::remove( "frame" + QString::number( mEditor->currentFrame() ) );
+    int frameNumber = mEditor->currentFrame();
+	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+
     drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
@@ -811,12 +828,15 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         int curIndex = mEditor->currentFrame();
         int frameNumber = mEditor->layers()->LastFrameAtFrame( curIndex );
 
-        QString strCachedFrameKey = "frame" + QString::number( frameNumber );
-        if ( !QPixmapCache::find( strCachedFrameKey, mCanvas ) )
+		QPixmapCache::Key cachedKey = mPixmapCacheKeys[frameNumber];
+
+        if ( !QPixmapCache::find( cachedKey, &mCanvas ) )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
-            QPixmapCache::insert( strCachedFrameKey, mCanvas );
-            //qDebug() << "Repaint canvas!";
+            
+			mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
+            
+			//qDebug() << "Repaint canvas!";
         }
     }
 
