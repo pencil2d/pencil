@@ -19,7 +19,6 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QVariant>
 #include <QDebug>
-#include <QApplication>
 
 #include "recentfilemenu.h"
 
@@ -29,7 +28,7 @@ QMenu( title, parent )
     mClearSeparator = new QAction();
     mClearSeparator->setSeparator( true );
 
-    mClearAction = new QAction( tr("Clear Menu") );
+    mClearAction = new QAction( tr("Clear") ); // share the same translation
 }
 
 void RecentFileMenu::clear()
