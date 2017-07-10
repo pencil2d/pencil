@@ -35,15 +35,14 @@ class TimeControls : public QToolBar
 public:
     TimeControls(TimeLine* parent = 0 );
     void initUI();
-    
-    void setFps ( int value );
+    void updateUI();
+
+    void setFps( int value );
     void setCore( Editor* editor );
     void updateLength(int frameLength);
     void updatePlayState();
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
-
-    void updateFpsNoSignal( int value );
 
 Q_SIGNALS:
     void soundClick( bool );

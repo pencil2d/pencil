@@ -47,6 +47,8 @@ public:
     int getRangeLower();
     int getRangeUpper();
 
+    void onObjectLoaded();
+
 Q_SIGNALS:
     void modification();
     void lengthChange( QString );
@@ -72,9 +74,6 @@ Q_SIGNALS:
     void fpsClick( int );
     void onionPrevClick();
     void onionNextClick();
-
-public slots:
-    void updateFpsNoSignal( int value );
 
 public:
     bool scrubbing = false;

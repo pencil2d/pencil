@@ -36,6 +36,7 @@ bool ColorManager::init()
 
 Status ColorManager::load( Object* o )
 {
+    mCurrentFrontColor = o->data()->getCurrentColor();
     return Status::OK;
 }
 
