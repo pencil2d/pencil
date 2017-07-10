@@ -38,6 +38,7 @@ install:
   - set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;C:\MinGW\bin
 
 before_build:
+  - qmake --version
   - md build
   - cd build
   - call "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
