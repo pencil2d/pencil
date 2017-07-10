@@ -122,20 +122,21 @@ void TimeControls::initUI()
 
 void TimeControls::updateUI()
 {
-    auto playback = mEditor->playback();
+    PlaybackManager* playback = mEditor->playback();
 
-    SignalBlocker b( mLoopStartSpinBox );
+    mPlaybackRangeCheckBox->setChecked( playback->isRangedPlaybackOn() ); // don't block this signal
+
+    SignalBlocker b1( mLoopStartSpinBox );
     mLoopStartSpinBox->setValue( playback->markInFrame() );
 
     SignalBlocker b2( mLoopEndSpinBox );
     mLoopEndSpinBox->setValue( playback->markOutFrame() );
 
-    mPlaybackRangeCheckBox->setChecked( false );
-    mLoopStartSpinBox->setEnabled( false );
-    mLoopEndSpinBox->setEnabled( false );
-
     SignalBlocker b3( mFpsBox );
     mFpsBox->setValue( playback->fps() );
+
+    SignalBlocker b4( mLoopButton );
+    mLoopButton->setChecked( playback->isLooping() );
 }
 
 void TimeControls::setFps( int value )
