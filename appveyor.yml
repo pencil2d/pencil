@@ -54,6 +54,9 @@ build_script:
   - if %PLATFORM_%==amd64     call msbuild %SOLUTIONFILE64% %BUILDTYPE% %BUILDTARGET64%
 
 after_build:
+  - set upload=no
+  - if %APPVEYOR_REPO_BRANCH%==master set upload=yes
+  - if "%FORCE_NIGHTLY_UPLOAD%"==yes set upload=yes
   - if %PLATFORM_%==x86 (
     echo "-----Deploying 32 Bit Version-----" &
     dir /s &
@@ -73,10 +76,11 @@ after_build:
     echo "zipping done" &
     echo "what's inside?" &
     call 7z.exe l "pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
+    if %upload%==yes (
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
     call %PYTHON%\\python.exe nightly-build-upload.py "%WIN32_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win32-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    echo "32 Bit deployed" )
+    echo "32 Bit deployed" ) )
 
   - if %PLATFORM_%==amd64 (
     echo "----- Deploying 64 Bit Version -----" &
@@ -98,7 +102,8 @@ after_build:
     echo "zipping done" &
     echo "what's inside?" &
     call 7z.exe l "pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
+    if %upload%==yes (
     echo "deploying to google drive" &
     cd %APPVEYOR_BUILD_FOLDER%\util &
     call %PYTHON%\\python.exe nightly-build-upload.py "%WIN64_NIGHTLY_PARENT%" "%APPVEYOR_BUILD_FOLDER%\build\pencil2d-win64-%date:~-4,4%"-"%date:~-10,2%"-"%date:~7,2%.zip" &
-    echo "64 Bit Deployed" )
+    echo "64 Bit Deployed" ) )
