@@ -25,10 +25,10 @@ GNU General Public License for more details.
 RecentFileMenu::RecentFileMenu( QString title, QWidget *parent ) :
 QMenu( title, parent )
 {
-    mClearSeparator = new QAction();
+    mClearSeparator = new QAction( this );
     mClearSeparator->setSeparator( true );
 
-    mClearAction = new QAction( tr("Clear") ); // share the same translation
+    mClearAction = new QAction( tr("Clear"), this ); // share the same translation
 }
 
 void RecentFileMenu::clear()
