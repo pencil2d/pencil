@@ -376,7 +376,7 @@ int TimeLine::getRangeUpper()
     return mTimeControls->getRangeUpper();
 }
 
-void TimeLine::updateFpsNoSignal(int value)
+void TimeLine::onObjectLoaded()
 {
-    mTimeControls->updateFpsNoSignal(value);
+    mTimeControls->updateUI();
 }

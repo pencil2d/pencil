@@ -26,11 +26,9 @@ GNU General Public License for more details.
 
 #include <QColor>
 #include <QTransform>
-#include <QImage>
 #include <QPoint>
 #include <QWidget>
-#include <QFrame>
-#include <QHash>
+#include <QPixmapCache>
 
 #include "log.h"
 #include "pencildef.h"
@@ -206,7 +204,6 @@ private:
   
 
 private: 
-
     bool mKeyboardInUse = false;
     bool mMouseInUse    = false;
     QPointF mLastPixel;
@@ -229,6 +226,9 @@ private:
 
     QPixmap mCanvas;
     CanvasRenderer mCanvasRenderer;
+
+	// Pixmap Cache keys
+	std::vector<QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
     QRectF mDebugRect;

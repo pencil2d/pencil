@@ -73,7 +73,8 @@ public:
 
     Object* object() const { return mObject.get(); }
     Status setObject( Object* object );
-	void updateObject();
+    void updateObject();
+    void prepareSave();
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
@@ -100,17 +101,13 @@ Q_SIGNALS:
     void updateLayerCount();
     void updateBackup();
 
+    void objectLoaded();
+
     void selectAll();
     void changeThinLinesButton( bool );
-
-
     void currentFrameChanged( int n );
 
-    void fpsUpdateForSpinBox( int value );
-
-    // save
     void needSave();
-    void fileLoaded();
 
 public: //slots
     void clearCurrentFrame();

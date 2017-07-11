@@ -117,24 +117,31 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
 void TimeControls::initUI()
 {
-    auto playback = mEditor->playback();
-    
-    SignalBlocker b( mLoopStartSpinBox );
-    mLoopStartSpinBox->setValue( playback->markInFrame() );
-    
-    SignalBlocker b2( mLoopEndSpinBox );
-    mLoopEndSpinBox->setValue( playback->markOutFrame() );
-    
-    mPlaybackRangeCheckBox->setChecked( false );
-    mLoopStartSpinBox->setEnabled( false );
-    mLoopEndSpinBox->setEnabled( false );
-    
-    SignalBlocker b3( mFpsBox );
-    mFpsBox->setValue( playback->fps() );
+    updateUI();
 }
 
-void TimeControls::setFps ( int value )
+void TimeControls::updateUI()
 {
+    PlaybackManager* playback = mEditor->playback();
+
+    mPlaybackRangeCheckBox->setChecked( playback->isRangedPlaybackOn() ); // don't block this signal
+
+    SignalBlocker b1( mLoopStartSpinBox );
+    mLoopStartSpinBox->setValue( playback->markInFrame() );
+
+    SignalBlocker b2( mLoopEndSpinBox );
+    mLoopEndSpinBox->setValue( playback->markOutFrame() );
+
+    SignalBlocker b3( mFpsBox );
+    mFpsBox->setValue( playback->fps() );
+
+    SignalBlocker b4( mLoopButton );
+    mLoopButton->setChecked( playback->isLooping() );
+}
+
+void TimeControls::setFps( int value )
+{
+    SignalBlocker blocker( mFpsBox );
     mFpsBox->setValue(value);
 }
 
@@ -183,16 +190,11 @@ void TimeControls::updatePlayState()
         mPlayButton->setIcon(mStopIcon);
         mPlayButton->setToolTip(tr("Stop"));
     }
-    else {
+    else
+    {
         mPlayButton->setIcon(mStartIcon);
         mPlayButton->setToolTip(tr("Start"));
     }
-}
-
-void TimeControls::updateFpsNoSignal(int value)
-{
-    SignalBlocker blocker(mFpsBox);
-    mFpsBox->setValue(value);
 }
 
 void TimeControls::jumpToStartButtonClicked()

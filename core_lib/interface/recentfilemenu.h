@@ -41,8 +41,6 @@ public:
 
     QStringList getRecentFiles() { return mRecentFiles; }
     void setRecentFiles(QStringList filenames);
-    void clear();
-    ListItemModel *getRecentFilesModel();
 
     void addRecentFile(QString filename);
     void removeRecentFile(QString filename);
@@ -53,12 +51,17 @@ public:
 signals:
     void loadRecentFile(QString filename);
 
+public slots:
+    void clear();
+
 protected slots:
     void onRecentFileTriggered();
 
 private:
     QStringList mRecentFiles;
     std::map<QString, QAction*> mRecentActions;
+	QAction* mClearAction = nullptr;
+	QAction* mClearSeparator = nullptr;
 };
 
 #endif // RECENTFILEMENU_H

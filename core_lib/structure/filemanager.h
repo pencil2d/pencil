@@ -55,9 +55,14 @@ private:
     bool loadObjectOldWay( Object*, const QDomElement& root );
     bool isOldForamt( const QString& fileName );
     bool loadPalette( Object* );
-    ObjectData* loadEditorState( QDomElement element );
-    void extractObjectData( const QDomElement& element, ObjectData* data );
     
+    ObjectData* loadProjectData( const QDomElement& element );
+    QDomElement saveProjectData( ObjectData*, QDomDocument& xmlDoc );
+
+    void extractProjectData( const QDomElement& element, ObjectData* data );
+
+
+
     Object* cleanUpWithErrorCode( Status );
 
 private:

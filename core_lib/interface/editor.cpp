@@ -496,6 +496,8 @@ Status Editor::setObject( Object* newObject )
     
     updateObject();
 
+    emit objectLoaded();
+
     return Status::OK;
 }
 
@@ -513,9 +515,6 @@ void Editor::updateObject()
 	{
 		mScribbleArea->updateAllFrames();
 	}
-
-    // Load the FPS setting.
-    emit fpsUpdateForSpinBox( mObject->data()->getFrameRate() );
 
     emit updateLayerCount();
 }
@@ -849,6 +848,14 @@ void Editor::moveLayer( int i, int j )
 	}
 	emit updateTimeLine();
 	mScribbleArea->updateAllFrames();
+}
+
+void Editor::prepareSave()
+{
+    for ( auto mgr : mAllManagers )
+    {
+        mgr->save( mObject.get() );
+    }
 }
 
 void Editor::clearCurrentFrame()

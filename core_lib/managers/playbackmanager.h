@@ -43,6 +43,7 @@ public:
     int startFrame() { return mStartFrame; }
     int endFrame() { return mEndFrame; }
     
+    bool isRangedPlaybackOn() { return mIsRangedPlayback; }
     int markInFrame() { return mMarkInFrame; }
     int markOutFrame() { return mMarkOutFrame; }
     

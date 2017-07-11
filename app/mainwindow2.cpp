@@ -546,6 +546,8 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
+    mEditor->prepareSave();
+
     FileManager* fm = new FileManager( this );
     Status st = fm->save( mEditor->object(), strSavedFileName );
 
@@ -1097,8 +1099,6 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
 
-    connect( pEditor, &Editor::fpsUpdateForSpinBox, pTimeline, &TimeLine::updateFpsNoSignal );
-
     connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey );
 
@@ -1109,11 +1109,12 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType );
 
-
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );
     connect( pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI );
-    connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
+
+    connect( pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded );
+    connect( pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI );
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
@@ -1128,10 +1129,9 @@ void MainWindow2::makeConnections( Editor* editor, ToolOptionWidget* toolOptions
     toolOptions->makeConnectionToEditor( editor );
 }
 
-
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {
-    connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
+    connect( pEditor, &Editor::objectLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
 
     ColorManager* pColorManager = pEditor->color();
     ScribbleArea* pScribbleArea = pEditor->getScribbleArea();
