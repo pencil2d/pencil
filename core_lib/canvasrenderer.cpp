@@ -91,6 +91,12 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 
     paintBackground( painter );
     paintOnionSkin( painter );
+
+    if ( mOptions.bGrid )
+    {
+        paintGrid( painter );
+    }
+
     paintCurrentFrame( painter );
     paintCameraBorder( painter );
 
@@ -98,11 +104,6 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     if ( mOptions.bAxis )
     {
         paintAxis( painter );
-    }
-
-    if ( mOptions.bGrid )
-    {
-        paintGrid( painter );
     }
 }
 
