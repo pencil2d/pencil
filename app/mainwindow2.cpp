@@ -1183,4 +1183,5 @@ void MainWindow2::changePlayState( bool isPlaying )
         ui->actionPlay->setText(tr("Play"));
         ui->actionPlay->setIcon(mStartIcon);
     }
+    update();
 }

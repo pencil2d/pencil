@@ -975,6 +975,8 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             mBufferImg->paintImage( painter );
         }
 
+        mCanvasRenderer.renderGrid(painter);
+
         // paints the selection outline
         if ( somethingSelected && ( myTempTransformedSelection.isValid() || mMoveMode == ROTATION ) ) // @revise
         {
@@ -1096,13 +1098,13 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
 {
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    BitmapImage tempBitmapImage;
+    BitmapImage gradientImg;
     if (usingFeather==true)
     {
         QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
         setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
-        tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, radialGrad,
+        gradientImg.drawEllipse( rectangle, Qt::NoPen, radialGrad,
                                    QPainter::CompositionMode_Source, false );
     }
     else
@@ -1110,7 +1112,7 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
         mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
                                    QPainter::CompositionMode_Source, useAA );
     }
-    mBufferImg->paste( &tempBitmapImage );
+    mBufferImg->paste( &gradientImg );
 }
 
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_ )

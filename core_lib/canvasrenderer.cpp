@@ -92,11 +92,6 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     paintBackground( painter );
     paintOnionSkin( painter );
 
-    if ( mOptions.bGrid )
-    {
-        paintGrid( painter );
-    }
-
     paintCurrentFrame( painter );
     paintCameraBorder( painter );
 
@@ -433,6 +428,15 @@ void CanvasRenderer::paintGrid( QPainter& painter )
         painter.drawLine( left, y, right, y );
     }
     painter.setRenderHints(previous_renderhints);
+}
+
+void CanvasRenderer::renderGrid(QPainter& painter)
+{
+    if ( mOptions.bGrid )
+    {
+        painter.setWorldTransform( mViewTransform );
+        paintGrid( painter );
+    }
 }
 
 void CanvasRenderer::paintCameraBorder(QPainter &painter)
