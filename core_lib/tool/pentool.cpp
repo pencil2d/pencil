@@ -217,6 +217,7 @@ void PenTool::paintAt( QPointF point )
                                 properties.useAA);
 
         int rad = qRound( brushWidth ) / 2 + 2;
+
         mScribbleArea->refreshBitmap( rect, rad );
     }
 }
@@ -274,6 +275,7 @@ void PenTool::drawStroke()
 
         int rad = qRound( brushWidth ) / 2 + 2;
 
+        mScribbleArea->paintBitmapBufferRect( rect );
         mScribbleArea->refreshBitmap( rect, rad );
     }
     else if ( layer->type() == Layer::VECTOR )

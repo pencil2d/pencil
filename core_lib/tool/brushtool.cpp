@@ -342,6 +342,7 @@ void BrushTool::drawStroke()
 
         int rad = qRound( brushWidth  / 2 + 2);
 
+        mScribbleArea->paintBitmapBufferRect( rect );
         mScribbleArea->refreshBitmap( rect, rad );
 
           // Line visualizer
