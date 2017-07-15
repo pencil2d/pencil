@@ -352,6 +352,14 @@ void MainWindow2::createMenus()
         winMenu->addAction( action );
     }
 
+    winMenu->addSeparator();
+    QAction *lockWidgets = new QAction( tr( "Lock Windows" ), winMenu );
+    lockWidgets->setCheckable( true );
+    winMenu->addAction( lockWidgets );
+    connect( lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets );
+    bindActionWithSetting( lockWidgets, SETTING::LAYOUT_LOCK );
+
+
     // -------------- Help Menu ---------------
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
@@ -696,6 +704,18 @@ void MainWindow2::importMovie()
         return;
     }
     mEditor->importMovie( filePath, mEditor->playback()->fps() );
+}
+
+void MainWindow2::lockWidgets(bool shouldLock)
+{
+    QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
+
+    mColorWheel->setFeatures(feat);
+    mColorPalette->setFeatures(feat);
+    mDisplayOptionWidget->setFeatures(feat);
+    mToolOptions->setFeatures(feat);
+    mToolBox->setFeatures(feat);
+    mTimeLine->setFeatures(feat);
 }
 
 void MainWindow2::exportImageSequence()

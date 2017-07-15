@@ -73,6 +73,8 @@ void PreferenceManager::loadPrefs()
 
     set( SETTING::BACKGROUND_STYLE,         settings.value( SETTING_BACKGROUND_STYLE,       "white" ).toString() );
 
+    set( SETTING::LAYOUT_LOCK,              settings.value( SETTING_LAYOUT_LOCK,            false ).toBool() );
+
     // Files
     set( SETTING::AUTO_SAVE,                settings.value( SETTING_AUTO_SAVE,              true ).toBool() );
     set( SETTING::AUTO_SAVE_NUMBER,         settings.value( SETTING_AUTO_SAVE_NUMBER,       20 ).toInt() );
@@ -303,6 +305,9 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::QUICK_SIZING:
         settings.setValue ( SETTING_QUICK_SIZING, value );
+        break;
+    case SETTING::LAYOUT_LOCK:
+        settings.setValue( SETTING_LAYOUT_LOCK, value );
         break;
     default:
         Q_ASSERT( false );
