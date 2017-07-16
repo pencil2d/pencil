@@ -31,6 +31,12 @@ QMenu( title, parent )
     mClearAction = new QAction( tr("Clear"), this ); // share the same translation
 }
 
+RecentFileMenu::~RecentFileMenu()
+{
+    delete mClearSeparator;
+    delete mClearAction;
+}
+
 void RecentFileMenu::clear()
 {
     for( QString filename : mRecentFiles )
