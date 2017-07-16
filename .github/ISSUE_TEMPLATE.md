@@ -21,19 +21,16 @@ Please use the SEARCH function before opening a new issue and look for your prob
 
 ### --System Information--
 + Pencil2D Version:
-<!-- _(Write your Pencil2D VERSION here)_ -->
+<!-- _(Write your Pencil2D VERSION here, e.g., 0.5.4 or Nightly build 02 June 2017)_ -->
 
 + Operating System:
-<!-- _(Write your OS here)_ -->
+<!-- _(Write your OS here, e.g., Windows10, macOS 10.12, Ubuntu 16.04 )_ -->
 
 + RAM Size:
-<!-- _(Write your size in GigaBytes here)_ -->
-
-+ CPU:
-<!-- _(Write your CPU MODEL here)_ -->
+<!-- _(4GB, 8GB etc.)_ -->
 
 + Graphics Tablet:
-<!-- _(Optional) (Write your MODEL and DRIVER VERSION here)_ -->
+<!-- _(Optional) (Write your MODEL, e.g., WACOM Intuos 2 )_ -->
 
 ---
 <!--

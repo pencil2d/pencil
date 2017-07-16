@@ -1,12 +1,11 @@
 /*
 
 Pencil - Traditional Animation Software
-Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -360,19 +359,17 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-
+    bool isCamera = mObject->getLayer(mLayerIndex)->type() == Layer::CAMERA;
     for ( int i = 0; i < mObject->getLayerCount(); ++i )
     {
         Layer* layer = mObject->getLayer( i );
-
         if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
         {
             painter.setOpacity( 1.0 );
-        }
-        else {
+        } else if ( isCamera != true ) {
+
             painter.setOpacity( 0.8 );
         }
-
 
         if ( i == mLayerIndex || mOptions.nShowAllLayers > 0 ) {
             switch ( layer->type() )

@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -150,10 +150,10 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
 				emit progressUpdated( f );
 			} );
         }
-        else if ( element.tagName() == "editor" )
+        else if ( element.tagName() == "editor" || element.tagName() == "projectdata" )
         {
-            ObjectData* editorData = loadEditorState( element );
-            object->setData( editorData );
+            ObjectData* projectData = loadProjectData( element );
+            object->setData( projectData );
         }
         else
         {
@@ -299,17 +299,19 @@ Status FileManager::save( Object* object, QString strFileName )
 
     QDomDocument xmlDoc( "PencilDocument" );
     QDomElement root = xmlDoc.createElement( "document" );
+    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+    xmlDoc.appendChild( encoding );
     xmlDoc.appendChild( root );
 
     // save editor information
-    //QDomElement editorElement = createDomElement( xmlDoc );
-    //root.appendChild( editorElement );
-    qCDebug( mLog ) << "Save Editor Node.";
+    QDomElement projectDataElement = saveProjectData( object->data(), xmlDoc );
+    root.appendChild( projectDataElement );
+    qCDebug( mLog ) << "Save Project Data";
 
     // save object
     QDomElement objectElement = object->saveXML( xmlDoc );
     root.appendChild( objectElement );
-    qCDebug( mLog ) << "Save Object Node.";
+    qCDebug( mLog ) << "Save Object Node";
 
     const int IndentSize = 2;
 
@@ -335,7 +337,7 @@ Status FileManager::save( Object* object, QString strFileName )
     return Status::OK;
 }
 
-ObjectData* FileManager::loadEditorState( QDomElement docElem )
+ObjectData* FileManager::loadProjectData( const QDomElement& docElem )
 {
     ObjectData* data = new ObjectData;
     if ( docElem.isNull() )
@@ -353,7 +355,7 @@ ObjectData* FileManager::loadEditorState( QDomElement docElem )
             continue;
         }
         
-        extractObjectData( element, data );
+        extractProjectData( element, data );
      
         tag = tag.nextSibling();
     }
@@ -361,7 +363,69 @@ ObjectData* FileManager::loadEditorState( QDomElement docElem )
 }
 
 
-void FileManager::extractObjectData( const QDomElement& element, ObjectData* data )
+QDomElement FileManager::saveProjectData( ObjectData* data, QDomDocument& xmlDoc )
+{
+	QDomElement rootTag = xmlDoc.createElement( "projectdata" );
+
+	// Current Frame
+	QDomElement currentFrameTag = xmlDoc.createElement( "currentFrame" );
+	currentFrameTag.setAttribute( "value", data->getCurrentFrame() );
+	rootTag.appendChild( currentFrameTag );
+	
+	// Current Colour
+	QDomElement currentColorTag = xmlDoc.createElement( "currentColor" );
+	QColor color = data->getCurrentColor();
+	currentColorTag.setAttribute( "r", color.red() );
+	currentColorTag.setAttribute( "g", color.green() );
+	currentColorTag.setAttribute( "b", color.blue() );
+	currentColorTag.setAttribute( "a", color.alpha() );
+	rootTag.appendChild( currentColorTag );
+
+	// Current Layer
+	QDomElement currentLayerTag = xmlDoc.createElement( "currentLayer" );
+	currentLayerTag.setAttribute( "value", data->getCurrentLayer() );
+	rootTag.appendChild( currentLayerTag );
+
+	// Current View
+	QDomElement currentViewTag = xmlDoc.createElement( "currentColor" );
+	QTransform view = data->getCurrentView();
+	currentViewTag.setAttribute( "m11", view.m11() );
+	currentViewTag.setAttribute( "m12", view.m12() );
+	currentViewTag.setAttribute( "m21", view.m21() );
+	currentViewTag.setAttribute( "m22", view.m22() );
+	currentViewTag.setAttribute( "dx", view.dx() );
+	currentViewTag.setAttribute( "dy", view.dy() );
+	rootTag.appendChild( currentViewTag );
+
+	// Fps
+	QDomElement fpsTag = xmlDoc.createElement( "fps" );
+	fpsTag.setAttribute( "value", data->getFrameRate() );
+	rootTag.appendChild( fpsTag );
+
+	// Current Layer
+	QDomElement tagIsLoop = xmlDoc.createElement( "isLoop" );
+	tagIsLoop.setAttribute( "value", data->isLooping() ? "true" : "false" );
+	rootTag.appendChild( tagIsLoop );
+
+	// Current Layer
+	QDomElement tagRangedPlayback = xmlDoc.createElement( "isRangedPlayback" );
+	tagRangedPlayback.setAttribute( "value", data->isRangedPlayback() ? "true" : "false" );
+	rootTag.appendChild( tagRangedPlayback );
+
+	// Current Layer
+	QDomElement tagMarkInFrame = xmlDoc.createElement( "markInFrame" );
+	tagMarkInFrame.setAttribute( "value", data->getMarkInFrameNumber() );
+	rootTag.appendChild( tagMarkInFrame );
+
+	// Current Layer
+	QDomElement tagMarkOutFrame = xmlDoc.createElement( "markOutFrame" );
+	tagMarkOutFrame.setAttribute( "value", data->getMarkOutFrameNumber() );
+	rootTag.appendChild( tagMarkOutFrame );
+
+	return rootTag;
+}
+
+void FileManager::extractProjectData( const QDomElement& element, ObjectData* data )
 {
     Q_ASSERT( data );
 
@@ -394,7 +458,7 @@ void FileManager::extractObjectData( const QDomElement& element, ObjectData* dat
         
         data->setCurrentView( QTransform( m11, m12, m21, m22, dx, dy ) );
     }
-    else if ( strName == "fps" )
+    else if ( strName == "fps" || strName == "currentFps" )
     {
         data->setFrameRate( element.attribute( "value", "12" ).toInt() );
     }

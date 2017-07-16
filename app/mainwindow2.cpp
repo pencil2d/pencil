@@ -3,11 +3,11 @@
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2011-2015 Matt Chiawen Chang
+Copyright (C) 2011-2017 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QScopedPointer>
 #include <QMessageBox>
-#include <QFileDialog>
 #include <QProgressDialog>
 #include <QDesktopWidget>
 #include <QDesktopServices>
@@ -53,15 +52,15 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "colorpalettewidget.h"
 #include "displayoptionwidget.h"
-#include "tooloptiondockwidget.h"
-//#include "popupcolorpalettewidget.h"
+#include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
 #include "preview.h"
 #include "timeline2.h"
 #include "errordialog.h"
-#include "imageseqdialog.h"
+#include "importimageseqdialog.h"
+#include "aboutdialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -70,7 +69,7 @@ GNU General Public License for more details.
 #include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
 
-#include "exportimageseqdialog.h"
+#include "exportimagedialog.h"
 #include "exportmoviedialog.h"
 #include "shortcutfilter.h"
 #include "filedialogex.h"
@@ -136,7 +135,7 @@ MainWindow2::MainWindow2( QWidget *parent ) : QMainWindow( parent )
 
     mEditor->updateObject();
     mEditor->color()->setColorNumber(0);
-    
+
     connect( mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel );
 }
 
@@ -151,7 +150,7 @@ void MainWindow2::createDockWidgets()
     mTimeLine = new TimeLine( this );
     mTimeLine->setObjectName( "TimeLine" );
 
-    mColorWheel = new ColorBox( tr("Color Wheel"), this );
+    mColorWheel = new ColorBox( this );
     mColorWheel->setToolTip( tr( "color palette:<br>use <b>(C)</b><br>toggle at cursor" ) );
     mColorWheel->setObjectName( "ColorWheel" );
     mColorWheel->setMaximumHeight(390);
@@ -165,8 +164,14 @@ void MainWindow2::createDockWidgets()
     mToolOptions = new ToolOptionWidget( this );
     mToolOptions->setObjectName( "ToolOption" );
 
-    mToolBox = new ToolBoxWidget( tr( "Tools", "Window title of tool box." ), this );
+    mToolBox = new ToolBoxWidget( this );
     mToolBox->setObjectName( "ToolBox" );
+
+	/*
+	mTimeline2 = new Timeline2;
+	mTimeline2->setObjectName( "Timeline2" );
+	mDockWidgets.append( mTimeline2 );
+	*/
 
     mDockWidgets
         << mTimeLine
@@ -179,28 +184,25 @@ void MainWindow2::createDockWidgets()
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
 
-    /*
-    mTimeline2 = new Timeline2;
-    mTimeline2->setObjectName( "Timeline2" );
-    mDockWidgets.append( mTimeline2 );
-    */
-    addDockWidget(Qt::RightDockWidgetArea,  mColorWheel);
-    addDockWidget(Qt::RightDockWidgetArea,  mColorPalette);
-    addDockWidget(Qt::RightDockWidgetArea,  mDisplayOptionWidget);
-    addDockWidget(Qt::LeftDockWidgetArea,   mToolBox);
-    addDockWidget(Qt::LeftDockWidgetArea,   mToolOptions);
-    addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
-    //addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
-
     for ( BaseDockWidget* pWidget : mDockWidgets )
     {
-        pWidget->setCore( mEditor );
-        pWidget->initUI();
-        pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
-        pWidget->setFocusPolicy( Qt::NoFocus );
+		pWidget->setAllowedAreas( Qt::AllDockWidgetAreas );
+		pWidget->setFeatures( QDockWidget::AllDockWidgetFeatures );
+		pWidget->setFocusPolicy( Qt::NoFocus );
 
-        qDebug() << "Init Dock widget: " << pWidget->objectName();
+		pWidget->setEditor( mEditor );
+		pWidget->initUI();
+		pWidget->show();
+		qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
+
+	addDockWidget( Qt::RightDockWidgetArea, mColorWheel );
+	addDockWidget( Qt::RightDockWidgetArea, mColorPalette );
+	addDockWidget( Qt::RightDockWidgetArea, mDisplayOptionWidget );
+	addDockWidget( Qt::LeftDockWidgetArea, mToolBox );
+	addDockWidget( Qt::LeftDockWidgetArea, mToolOptions );
+	addDockWidget( Qt::BottomDockWidgetArea, mTimeLine );
+	//addDockWidget( Qt::BottomDockWidgetArea, mTimeline2);
 
     /*
     mPreview = new PreviewWidget( this );
@@ -220,6 +222,7 @@ void MainWindow2::createDockWidgets()
     for ( BaseDockWidget* w : mDockWidgets )
     {
         w->updateUI();
+		w->setFloating( false );
     }
 }
 
@@ -313,7 +316,7 @@ void MainWindow2::createMenus()
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame );
     connect(ui->actionPrev_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevKeyFrame );
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mEditor, &Editor::duplicateKey );
-    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward ); //HERE
+    connect(ui->actionMove_Frame_Forward, &QAction::triggered, mEditor, &Editor::moveFrameForward );
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mEditor, &Editor::moveFrameBackward );
 
     /// --- Tool Menu ---
@@ -328,7 +331,6 @@ void MainWindow2::createMenus()
     connect(ui->actionBucket, &QAction::triggered, mToolBox, &ToolBoxWidget::bucketOn );
     connect(ui->actionEyedropper, &QAction::triggered, mToolBox, &ToolBoxWidget::eyedropperOn );
     connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn );
-    connect(ui->actionTogglePalette, &QAction::triggered, mScribbleArea,&ScribbleArea::togglePopupPalette );
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools );
 
     /// --- Window Menu ---
@@ -382,6 +384,20 @@ void MainWindow2::updateSaveState()
     setWindowModified( mEditor->currentBackup() != mBackupAtSave );
 }
 
+void MainWindow2::clearRecentFilesList()
+{
+    QStringList recentFilesList = mRecentFileMenu->getRecentFiles();
+    if (!recentFilesList.isEmpty()) {
+        mRecentFileMenu->clear();
+
+        QMessageBox *confirmBox = new QMessageBox;
+        confirmBox->information(this, 0,
+                                tr("\n\n You have successfully cleared the list"),
+                                QMessageBox::Ok);
+    }
+    getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
+}
+
 void MainWindow2::closeEvent( QCloseEvent* event )
 {
     if ( maybeSave() )
@@ -402,13 +418,12 @@ void MainWindow2::tabletEvent( QTabletEvent* event )
 
 void MainWindow2::newDocument()
 {
-    if ( maybeSave() )
-    {
+    if (maybeSave()) {
         Object* object = new Object();
         object->init();
         mEditor->setObject( object );
         mEditor->scrubTo( 0 );
-        //mEditor->view()->resetView();
+        mEditor->view()->resetView();
 
         // Refresh the palette
         mColorPalette->refreshColorList();
@@ -423,13 +438,8 @@ void MainWindow2::openDocument()
 {
     if ( maybeSave() )
     {
-        QSettings settings( PENCIL2D, PENCIL2D );
-
-        QString strLastOpenPath = settings.value( LAST_PCLX_PATH, QDir::homePath() ).toString();
-        QString fileName = QFileDialog::getOpenFileName( this,
-                                                         tr( "Open File..." ),
-                                                         strLastOpenPath,
-                                                         tr( PFF_OPEN_ALL_FILE_FILTER ) );
+        FileDialog fileDialog( this );
+        QString fileName = fileDialog.openFile( FileType::ANIMATION );
         if ( fileName.isEmpty() )
         {
             return;
@@ -451,18 +461,8 @@ void MainWindow2::openDocument()
 
 bool MainWindow2::saveAsNewDocument()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QString strLastFolder = settings.value( LAST_PCLX_PATH, QDir::homePath() ).toString();
-    if ( strLastFolder.isEmpty() || !QDir(strLastFolder).exists() )
-    {
-        strLastFolder = QDir( QDir::homePath() ).filePath( PFF_DEFAULT_FILENAME );
-    }
-
-    QString fileName = QFileDialog::getSaveFileName( this,
-                                                     tr( "Save As..." ),
-                                                     strLastFolder,
-                                                     tr( PFF_SAVE_ALL_FILE_FILTER ) );
+    FileDialog fileDialog( this );
+    QString fileName = fileDialog.saveFile( FileType::ANIMATION );
     if ( fileName.isEmpty() )
     {
         return false;
@@ -472,7 +472,6 @@ bool MainWindow2::saveAsNewDocument()
     {
         fileName = fileName + PFF_EXTENSION;
     }
-    settings.setValue( LAST_PCLX_PATH, QVariant( fileName ) );
 
     return saveObject( fileName );
 
@@ -491,11 +490,11 @@ void MainWindow2::openFile( QString filename )
 bool MainWindow2::openObject( QString strFilePath )
 {
     QProgressDialog progress( tr("Opening document..."), tr("Abort"), 0, 100, this );
-    
-	// Don't show progress bar if running without a GUI (aka. when rendering from command line)
+
+    // Don't show progress bar if running without a GUI (aka. when rendering from command line)
     if ( this->isVisible() )
     {
-		hideQuestionMark( progress );
+        hideQuestionMark( progress );
         progress.setWindowModality( Qt::WindowModal );
         progress.show();
     }
@@ -503,12 +502,12 @@ bool MainWindow2::openObject( QString strFilePath )
     mEditor->setCurrentLayer( 0 );
 
     FileManager fm( this );
-	connect( &fm, &FileManager::progressUpdated, [&progress]( float f )
-	{
-		progress.setValue( (int)( f * 100.f ) );
-		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
-		
-	} );
+    connect( &fm, &FileManager::progressUpdated, [&progress]( float f )
+    {
+        progress.setValue( (int)( f * 100.f ) );
+        QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
+
+    } );
 
     Object* object = fm.load( strFilePath );
 
@@ -547,11 +546,13 @@ bool MainWindow2::saveObject( QString strSavedFileName )
     progress.setWindowModality( Qt::WindowModal );
     progress.show();
 
+    mEditor->prepareSave();
+
     FileManager* fm = new FileManager( this );
     Status st = fm->save( mEditor->object(), strSavedFileName );
 
     progress.setValue( 100 );
-    
+
     if ( !st.ok() )
     {
         QDateTime dt = QDateTime::currentDateTime();
@@ -570,7 +571,11 @@ bool MainWindow2::saveObject( QString strSavedFileName )
             out << st.details().replace( "<br>", "\n", Qt::CaseInsensitive );
         }
 
-        ErrorDialog errorDialog( st.title(), st.description().append( tr("<br><br>An error has occurred and your file may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>Please be sure to include the following details in your issue:") ), st.details() );
+        ErrorDialog errorDialog( st.title(),
+                                 st.description().append( tr("<br><br>An error has occurred and your file may not have saved successfully."
+                                                             "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
+                                                             "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
+                                                             "Please be sure to include the following details in your issue:") ), st.details() );
         errorDialog.exec();
         return false;
     }
@@ -626,13 +631,8 @@ bool MainWindow2::maybeSave()
 
 void MainWindow2::importImage()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initPath = settings.value( "lastImportPath", QDir::homePath() ).toString();
-
-    QString strFilePath = QFileDialog::getOpenFileName( this,
-                                                        tr( "Import image..." ),
-                                                        initPath,
-                                                        PENCIL_IMAGE_FILTER );
+    FileDialog fileDialog( this );
+    QString strFilePath = fileDialog.openFile( FileType::IMAGE );
     if ( strFilePath.isEmpty() )
     {
         return;
@@ -654,76 +654,59 @@ void MainWindow2::importImage()
         return;
     }
 
-    settings.setValue( "lastImportPath", strFilePath );
-
     mScribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
 }
 
 void MainWindow2::importImageSequence()
 {
-    QFileDialog w;
-    w.setFileMode( QFileDialog::AnyFile );
-
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastImportPath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath();
-    }
-    QStringList files = w.getOpenFileNames( this,
-                                            tr("Select one or more files to open"),
-                                            initialPath,
-                                            tr("Images (*.png *.jpg *.jpeg *.tif *.tiff *.bmp)") );
-
-    ImageSeqDialog* imageSeqDialog = new ImageSeqDialog( this );
-
-    imageSeqDialog->init();
+    auto imageSeqDialog = new ImportImageSeqDialog( this );
     imageSeqDialog->exec();
+    if ( imageSeqDialog->result() == QDialog::Rejected )
+    {
+        return;
+    }
+
+    QStringList files = imageSeqDialog->getFilePaths();
+    int number = imageSeqDialog->getSpace();
     for ( QString strImgFile : files )
     {
         if ( strImgFile.endsWith( ".png" ) ||
              strImgFile.endsWith( ".jpg" ) ||
              strImgFile.endsWith( ".jpeg" ) ||
-             strImgFile.endsWith(".tif") ||
-             strImgFile.endsWith(".tiff") ||
+             strImgFile.endsWith( ".tif" ) ||
+             strImgFile.endsWith( ".tiff" ) ||
              strImgFile.endsWith( ".bmp" ) )
         {
-            if (imageSeqDialog->result() == QDialog::Accepted)
-                imageSeqDialog->seqNumber(strImgFile, mEditor);
+            mEditor->importImage( strImgFile );
+            for ( int i = 1; i < number; i++ )
+            {
+                mEditor->scrubForward();
+            }
         }
     }
 }
 
 void MainWindow2::importMovie()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QString initialPath = settings.value( "lastExportPath", QDir::homePath() ).toString();
-    QString filePath = QFileDialog::getOpenFileName( this,
-                                                     tr( "Import movie" ),
-                                                     initialPath,
-                                                     PENCIL_MOVIE_EXT );
+    FileDialog fileDialog( this );
+    QString filePath = fileDialog.openFile( FileType::MOVIE );
     if ( filePath.isEmpty() )
     {
         return;
     }
     mEditor->importMovie( filePath, mEditor->playback()->fps() );
-
-    settings.setValue( "lastExportPath", filePath );
 }
 
 void MainWindow2::exportImageSequence()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-
     // Get the camera layer
     int cameraLayerId = mEditor->layers()->getLastCameraLayer();
 
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
 
     // Options
-    auto dialog =  new ExportImageSeqDialog( this );
+    auto dialog =  new ExportImageDialog( this, true );
     OnScopeExit( dialog->deleteLater() );
 
     if(cameraLayer != nullptr)
@@ -736,6 +719,7 @@ void MainWindow2::exportImageSequence()
     }
     dialog->exec();
 
+    QString strFilePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
@@ -744,22 +728,6 @@ void MainWindow2::exportImageSequence()
     {
         return; // false;
     }
-
-    // Path
-    QString strInitPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
-
-    QFileInfo info( strInitPath );
-    strInitPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
-
-    QString strFilePath = QFileDialog::getSaveFileName( this,
-                                                        tr( "Save Image Sequence" ),
-                                                        strInitPath);
-    if ( strFilePath.isEmpty() )
-    {
-        // TODO:
-        return; // false;
-    }
-    settings.setValue( "lastExportPath", strFilePath );
 
 
     // Export
@@ -803,7 +771,7 @@ void MainWindow2::exportImage()
 
 
     // Options
-    auto dialog =  new ExportImageSeqDialog( this );
+    auto dialog =  new ExportImageDialog( this );
     OnScopeExit( dialog->deleteLater() );
 
     if(cameraLayer != nullptr)
@@ -816,6 +784,7 @@ void MainWindow2::exportImage()
     }
     dialog->exec();
 
+    QString filePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
@@ -824,24 +793,6 @@ void MainWindow2::exportImage()
     {
         return; // false;
     }
-
-
-    // Path
-    QString initPath = settings.value( "lastExportPath", QDir::homePath() + "/untitled.png" ).toString();
-
-    QFileInfo info( initPath );
-    initPath = info.path() + "/" + info.baseName() + "." + exportFormat.toLower();
-
-
-    QString filePath = QFileDialog::getSaveFileName( this,
-                                                     tr( "Save Image" ),
-                                                     initPath);
-    if ( filePath.isEmpty() )
-    {
-        qDebug() << "empty file";
-        return;// false;
-    }
-    settings.setValue( "lastExportPath", QVariant( filePath ) );
 
 
     // Export
@@ -870,19 +821,20 @@ void MainWindow2::exportImage()
 
 void MainWindow2::preferences()
 {
-    PreferencesDialog* prefDialog = new PreferencesDialog( this );
-    prefDialog->setAttribute( Qt::WA_DeleteOnClose );
-    prefDialog->init( mEditor->preference() );
+    mPrefDialog = new PreferencesDialog( this );
+    mPrefDialog->setAttribute( Qt::WA_DeleteOnClose );
+    mPrefDialog->init( mEditor->preference() );
 
-    connect( prefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( prefDialog, &PreferencesDialog::finished, [ &]
-    { 
+    connect( mPrefDialog, &PreferencesDialog::clearRecentList, this, &MainWindow2::clearRecentFilesList);
+    connect( mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
+    connect( mPrefDialog, &PreferencesDialog::finished, [ &]
+    {
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
     } );
-    
-    prefDialog->show();
+
+    mPrefDialog->show();
 }
 
 void MainWindow2::dockAllSubWidgets()
@@ -897,11 +849,13 @@ void MainWindow2::dockAllSubWidgets()
 
 void MainWindow2::readSettings()
 {
-    //qDebug( "Restore last windows layout." );
-
     QSettings settings( PENCIL2D, PENCIL2D );
-    restoreGeometry( settings.value( SETTING_WINDOW_GEOMETRY ).toByteArray() );
-    restoreState( settings.value( SETTING_WINDOW_STATE ).toByteArray() );
+
+	QVariant winGeometry = settings.value( SETTING_WINDOW_GEOMETRY );
+	restoreGeometry( winGeometry.toByteArray() );
+    
+	QVariant winState = settings.value( SETTING_WINDOW_STATE );
+	restoreState( winState.toByteArray() );
 
     QString myPath = settings.value( LAST_PCLX_PATH, QVariant( QDir::homePath() ) ).toString();
     mRecentFileMenu->addRecentFile( myPath );
@@ -1012,14 +966,11 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEyedropper->installEventFilter( shortcutfilter );
     ui->actionEraser->installEventFilter( shortcutfilter );
 
-    ui->actionTogglePalette->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
-    //mScribbleArea->getPopupPalette()->closeButton->setText( tr("close/toggle (") + pencilSettings()->value( QString( "shortcuts/" ) + CMD_TOGGLE_PALETTE ).toString() + ")" );
-    //mScribbleArea->getPopupPalette()->closeButton->setShortcut( cmdKeySeq( CMD_TOGGLE_PALETTE ) );
-
     ui->actionNew_Bitmap_Layer->setShortcut( cmdKeySeq( CMD_NEW_BITMAP_LAYER ) );
     ui->actionNew_Vector_Layer->setShortcut( cmdKeySeq( CMD_NEW_VECTOR_LAYER ) );
     ui->actionNew_Camera_Layer->setShortcut( cmdKeySeq( CMD_NEW_CAMERA_LAYER ) );
     ui->actionNew_Sound_Layer->setShortcut( cmdKeySeq( CMD_NEW_SOUND_LAYER ) );
+    ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
 
     mToolBox->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOLBOX ) );
     mToolOptions->toggleViewAction()->setShortcut( cmdKeySeq( CMD_TOGGLE_TOOL_OPTIONS ) );
@@ -1077,48 +1028,32 @@ void MainWindow2::undoActSetEnabled( void )
 
 void MainWindow2::exportPalette()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath() + "/untitled.xml";
-    }
-    QString filePath = QFileDialog::getSaveFileName( this, tr( "Export As" ), initialPath );
+    FileDialog FileDialog( this );
+    QString filePath = FileDialog.saveFile( FileType::PALETTE );
     if ( !filePath.isEmpty() )
     {
         mEditor->object()->exportPalette( filePath );
-        settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
 
 void MainWindow2::importPalette()
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
-    QString initialPath = settings.value( "lastPalettePath", QVariant( QDir::homePath() ) ).toString();
-    if ( initialPath.isEmpty() )
-    {
-        initialPath = QDir::homePath() + "/untitled.xml";
-    }
-    QString filePath = QFileDialog::getOpenFileName( this, tr( "Import" ), initialPath );
+    FileDialog fileDialog( this );
+    QString filePath = fileDialog.openFile( FileType::PALETTE );
     if ( !filePath.isEmpty() )
     {
         mEditor->object()->importPalette( filePath );
         mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
-        settings.setValue( "lastPalettePath", QVariant( filePath ) );
     }
 }
 
 void MainWindow2::aboutPencil()
 {
-    QFile aboutFile( ":resources/about.html" );
-    bool isOpenOK = aboutFile.open( QIODevice::ReadOnly | QIODevice::Text );
+    AboutDialog* about = new AboutDialog( this );
 
-    if ( isOpenOK )
-    {
-        QString strAboutText = QTextStream( &aboutFile ).readAll();
-        QMessageBox::about( this, PENCIL_WINDOW_TITLE, strAboutText );
-    }
+    about->init();
+    about->exec();
 }
 
 void MainWindow2::helpBox()
@@ -1166,7 +1101,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
     connect( pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey );
-    
+
     connect( pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer );
     connect( pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer );
     connect( pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer );
@@ -1174,11 +1109,12 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
 
     connect( pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType );
 
-
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI );
     connect( pEditor->layers(), &LayerManager::layerCountChanged,   pTimeline, &TimeLine::updateUI );
     connect( pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI );
-    connect( pEditor, &Editor::updateTimeLine,   pTimeline, &TimeLine::updateUI );
+
+    connect( pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded );
+    connect( pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI );
 
     connect( pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
@@ -1193,10 +1129,9 @@ void MainWindow2::makeConnections( Editor* editor, ToolOptionWidget* toolOptions
     toolOptions->makeConnectionToEditor( editor );
 }
 
-
 void MainWindow2::makeConnections( Editor* pEditor, ColorPaletteWidget* pColorPalette )
 {
-    connect( pEditor, &Editor::fileLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
+    connect( pEditor, &Editor::objectLoaded, pColorPalette, &ColorPaletteWidget::updateUI );
 
     ColorManager* pColorManager = pEditor->color();
     ScribbleArea* pScribbleArea = pEditor->getScribbleArea();

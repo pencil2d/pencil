@@ -1,3 +1,20 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #ifndef BASETOOL_H
 #define BASETOOL_H
 
@@ -26,6 +43,8 @@ public:
     bool useFeather   = true;
     int useAA        = 0;
     int inpolLevel    = 0;
+    qreal tolerance = 0;
+    bool useFillContour = 0;
 };
 
 const int ON = 1;
@@ -83,6 +102,9 @@ public:
     virtual void setVectorMergeEnabled( const bool vectorMergeEnabled );
     virtual void setAA(const int useAA );
     virtual void setInpolLevel( const int level );
+    virtual void setTolerance(const int tolerance);
+    virtual void setUseFillContour(const bool useFillContour);
+
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
 

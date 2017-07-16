@@ -2,10 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -74,7 +75,6 @@ KeyFrame* Layer::getKeyFrameAt( int position )
     auto it = mKeyFrames.find( position );
     if ( it == mKeyFrames.end() )
     {
-        //return NullKeyFrame::get();
         return nullptr;
     }
     return it->second;
@@ -89,7 +89,7 @@ KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
     auto it = mKeyFrames.lower_bound( position );
     if ( it == mKeyFrames.end() )
     {
-        return NullKeyFrame::get();
+        return nullptr;
     }
     return it->second;
 }
@@ -474,12 +474,15 @@ void Layer::mouseRelease( QMouseEvent* event, int frameNumber )
 
 void Layer::editProperties()
 {
+    QRegExp regex("([\uFFEF-\uFFFF])+");
+
     bool ok;
     QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
                                           tr( "Layer name:" ), QLineEdit::Normal,
                                           mName, &ok );
     if ( ok && !text.isEmpty() )
     {
+        text.replace(regex, "");
         mName = text;
         setUpdated();
     }

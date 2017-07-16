@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -628,144 +628,6 @@ void convertNFrames( int fps, int exportFps, int* frameRepeat, int* frameReminde
     qDebug() << "-->convertedNFrames";
 }
 
-bool Object::exportFrames1( ExportFrames1Parameters par )
-{
-    int frameStart = par.frameStart;
-    int frameEnd = par.frameEnd;
-    QTransform view = par.view;
-    Layer* currentLayer = par.currentLayer;
-    QSize exportSize = par.exportSize;
-    QString filePath = par.filePath;
-    const char* format = par.format;
-    int quality = par.quality;
-    bool background = par.background;
-    bool antialiasing = par.antialiasing;
-    QProgressDialog* progress = par.progress;
-    int progressMax = par.progressMax;
-    int fps = par.fps;
-    int exportFps = par.exportFps;
-
-    int frameRepeat;
-    int frameReminder, frameReminder1;
-    int framePutEvery, framePutEvery1;
-    int frameSkipEvery, frameSkipEvery1;
-    int frameNumber;
-    int framePerSecond;
-
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    QString extension = "";
-    QString formatStr = format;
-    if ( formatStr == "PNG" || formatStr == "png" )
-    {
-        format = "PNG";
-        extension = ".png";
-    }
-    if ( formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG" )
-    {
-        format = "JPG";
-        extension = ".jpg";
-        background = true; // JPG doesn't support transparency so we have to include the background
-    }
-    if ( filePath.endsWith( extension, Qt::CaseInsensitive ) )
-    {
-        filePath.chop( extension.size() );
-    }
-    //qDebug() << "format =" << format << "extension = " << extension;
-
-    qDebug() << "Exporting frames from " << frameStart << "to" << frameEnd << "at size " << exportSize;
-    convertNFrames( fps, exportFps, &frameRepeat, &frameReminder, &framePutEvery, &frameSkipEvery );
-    qDebug() << "fps " << fps << " exportFps " << exportFps << " frameRepeat " << frameRepeat << " frameReminder " << frameReminder << " framePutEvery " << framePutEvery << " frameSkipEvery " << frameSkipEvery;
-    frameNumber = 0;
-    framePerSecond = 0;
-    frameReminder1 = frameReminder;
-    framePutEvery1 = framePutEvery;
-    frameSkipEvery1 = frameSkipEvery;
-    for ( int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++ )
-    {
-        if ( progress != NULL ) progress->setValue( ( currentFrame - frameStart )*progressMax / ( frameEnd - frameStart ) );
-        QImage tempImage( exportSize, QImage::Format_ARGB32_Premultiplied );
-        QPainter painter( &tempImage );
-
-        // Make sure that old frame is erased before exporting a new one
-        tempImage.fill( 0x00000000 );
-
-        if ( currentLayer->type() == Layer::CAMERA )
-        {
-            QRect viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-            QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
-            mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
-            painter.setWorldTransform( mapView );
-        }
-        else
-        {
-            painter.setTransform( view );
-        }
-        paintImage( painter, currentFrame, background, antialiasing );
-
-        frameNumber++;
-        framePerSecond++;
-        QString frameNumberString = QString::number( frameNumber );
-        while ( frameNumberString.length() < 4 ) frameNumberString.prepend( "0" );
-
-        tempImage.save( filePath + frameNumberString + extension, format, quality );
-        int delta = 0;
-        if ( framePutEvery )
-        {
-            framePutEvery1--;
-            qDebug() << "-->framePutEvery1" << framePutEvery1;
-            if ( framePutEvery1 )
-            {
-                delta = 0;
-            }
-            else
-            {
-                delta = 1; framePutEvery1 = framePutEvery;
-            }
-        }
-        if ( frameSkipEvery )
-        {
-            frameSkipEvery1--;
-            qDebug() << "-->frameSkipEvery1" << frameSkipEvery1;
-            if ( frameSkipEvery1 )
-            {
-                delta = 1;
-            }
-            else
-            {
-                delta = 0; frameSkipEvery1 = frameSkipEvery;
-            }
-        }
-        if ( frameReminder1 )
-        {
-            frameReminder1 -= delta;
-        }
-        else
-        {
-            delta = 0;
-        }
-        for ( int i = 0; ( i < frameRepeat - 1 + delta ) && ( framePerSecond < exportFps ); i++ )
-        {
-            frameNumber++;
-            framePerSecond++;
-            QString frameNumberLink = QString::number( frameNumber );
-            while ( frameNumberLink.length() < 4 ) frameNumberLink.prepend( "0" );
-            tempImage.save( filePath + frameNumberLink + extension, format, quality );
-        }
-        if ( framePerSecond == exportFps )
-        {
-            framePerSecond = 0;
-            frameReminder1 = frameReminder;
-            framePutEvery1 = framePutEvery;
-            frameSkipEvery1 = frameSkipEvery;
-        }
-    }
-
-    // XXX no error handling yet
-    return true;
-}
-
-
 
 bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing )
 {
@@ -812,9 +674,6 @@ bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize expor
 bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency )
 {
     Q_UNUSED( frameEnd );
-
-
-
     QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
 
     QColor bgColor = Qt::white;
@@ -828,27 +687,6 @@ bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize expo
     paintImage( painter, frameStart, false, antialiasing );
 
     return imageToExport.save( filePath, format.toStdString().c_str() );
-}
-
-bool Object::exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression )
-{
-    Q_UNUSED( exportSize );
-    Q_UNUSED( startFrame );
-    Q_UNUSED( endFrame );
-    Q_UNUSED( view );
-    Q_UNUSED( fps );
-    Q_UNUSED( compression );
-
-    if ( !filePath.endsWith( ".swf", Qt::CaseInsensitive ) )
-    {
-        filePath = filePath + ".swf";
-    }
-
-    // ************* Requires the MING Library ***************
-    // Flash::exportFlash(this, startFrame, endFrame, view, exportSize, filePath, fps, compression);
-    // **********************************************
-
-    return false;
 }
 
 int Object::getLayerCount() const

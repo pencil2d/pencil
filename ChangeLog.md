@@ -1,4 +1,53 @@
-### Pencil Animation v0.5 beta (Morevna Branch) ### - September 15th 2010
+## Pencil2D v0.6 - 2017
+
+### Features ###
+
+User Interface:
+* New graphic Colour Wheel
+* Grid Panel Display (G)
+* Coloured Onion-Skin capability (blue, red). Basically can be used for making a differentiation between “previous frames” and “next frames” (Improved)
+* Implementation of relative/absolute Onion Skin functionality (allowing matching frames or keyframes)
+
+Timeline keyframe manipulation:
+* To select/deselect a single frame (LMB)
+* To select a range of frames (Shift + LMB). It needs to be improved (buggy)
+* To select/deselect individual frames (Ctrl +LMB)
+* To select a frame and all the frames after it (Alt + LMB)
+* To move a single frame (LMB Selected + Drag)
+* To move a frame and all the frames at its right (Alt + LMB +Drag)
+
+Other Improvements:
+* Fast HandTool (keep pressing SpaceBar). Shortcut (H) works as a fix Hand
+* Dynamic Control Size (Shift + Drag Left/Right)
+* Fast Eyedropper (Alt). Shortcut (I) works as a fix Eyedropper
+* Rotate within a selection (CTRL + Drag Left/Right): Left rotate anticlockwise, right rotate clockwise. The Movetool(Q) should be selected before applying this hotkey
+* Smudge Hard (A). For creating colouring effects similar to oil painting. Bitmap only.
+* Smudge Smooth (keep pressing Alt). The Smudge-tool (A) should be selected before applying this hotkey
+* Added Alpha Channel to colour palette
+* The standard Shortcut list can be found in: Edit -> Preferences -> Shortcuts.
+
+## Pencil2D v0.5.4 - July 26 2013
+
+- Customize keyboard shortcuts (Preferences->Shoftcuts)
+- Interactive brush resizing. SHIFT + Mouse Drag to change brush size, CTRL + Mouse Drag for FEATHER, CTRL+SHIFT applies brush size to the eraser and temporarily selects it.
+- Smoother brush stroke on Mac OS X.
+- Saving/loading project is stable now.
+- Code refactoring.
+- Misc bug fixes.
+
+--------------------
+
+## Pencil2D v0.5.3 - June 28 2013
+
+- Bug fixed: brush cannot change color in 0.5.2
+- Upgrade to Qt 4.8.4
+- ToolSet code refactoring.
+- Menubar code refactoring.
+- Color Palette code refactoring.
+
+----------------
+
+## Pencil Animation v0.5 beta (Morevna Branch) ### - September 15th 2010
 
 Changes by Konstantin Dmitriev:
 
@@ -28,7 +77,7 @@ Changes by davidefa:
 
 ----------------------------------------------------------------
 
-### Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009 ###
+## Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009 ###
 
 
 Added export AVI/OGG
@@ -40,7 +89,7 @@ http://tinyurl.com/pencilanimation/
 
 ----------------------------------------------------------------
 
-### Pencil Animation 0.4.5b -rev4 - Source Code - January 24th, 2009 ###
+## Pencil Animation 0.4.5b -rev4 - Source Code - January 24th, 2009 ###
 
 
 Added Duplicate Frame functionality
@@ -61,7 +110,7 @@ http://konsolscript.sourceforge.net/developers/creek23/pencil/
 
 ---------
 
-### Pencil 0.4.3b - Source Code - July 1st, 2007 ###
+## Pencil 0.4.3b - Source Code - July 1st, 2007 ###
 
 Source code has been unified for Mac, Windows and Linux.
 Now available on sourceforge SVN repository.
@@ -74,7 +123,7 @@ http://www.les-stooges.org/pascal/pencil/
 
 ---------
 
-### Pencil 0.4b - Source Code - January 4th, 2007 ###
+## Pencil 0.4b - Source Code - January 4th, 2007 ###
 
 Added many things, notably vector graphics.
 PLEASE NOTE:
@@ -87,7 +136,7 @@ http://www.les-stooges.org/pascal/pencil/
 
 ---------
 
-### Pencil 0.2b - Source Code ###
+## Pencil 0.2b - Source Code ###
 
 PLEASE NOTE:
 This source code is optimized for compiling on Mac OSX.

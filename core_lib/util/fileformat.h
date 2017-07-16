@@ -2,10 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,15 +23,12 @@ GNU General Public License for more details.
 //PFF - acronym for "Pencil File Format"
 #define PFF_OLD_EXTENSION				".pcl"
 #define PFF_OLD_BIG_LETTER_EXTENSION	"PCL"
-#define PFF_OLD_SINGLE_FILTER			"Pencil Animation File (*.pcl)"
 #define PFF_EXTENSION				    ".pclx"
 #define PFF_BIG_LETTER_EXTENSION	    "PCLX"
-#define PFF_SINGLE_FILTER			    "New Pencil Animation File (*.pclx)"
 
-#define PFF_OPEN_ALL_FILE_FILTER	"All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)"
-#define PFF_SAVE_ALL_FILE_FILTER	"Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)"
+#define PFF_OPEN_ALL_FILE_FILTER	QObject::tr( "All Pencil Files PCLX & PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)" )
+#define PFF_SAVE_ALL_FILE_FILTER	QObject::tr( "Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)" )
 
-#define PFF_DEFAULT_FILENAME	    "MyAnimation.pclx"
 
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"

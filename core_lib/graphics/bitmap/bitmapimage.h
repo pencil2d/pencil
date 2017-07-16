@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2015 Matthew Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -67,7 +67,7 @@ public:
     void clear( QRect rectangle );
     void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }
 
-    static int sqr( int );
+    static int pow( int );
     static int rgbDistance( QRgb rgba1, QRgb rgba2 );
     static void floodFill( BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance, bool extendFillImage );
 

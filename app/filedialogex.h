@@ -1,14 +1,33 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2017 Matt Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #ifndef FILEDIALOGEX_H
 #define FILEDIALOGEX_H
 
 #include <QObject>
 
-class QWidget;
-
-enum class EFile
+enum class FileType
 {
+    ANIMATION,
+    IMAGE,
+    IMAGE_SEQUENCE,
+    MOVIE,
     SOUND,
-    MOVIE_EXPORT
+    PALETTE
 };
 
 class FileDialog : public QObject
@@ -18,13 +37,23 @@ public:
     FileDialog( QWidget* parent );
     ~FileDialog();
 
-    QString openFile( EFile fileType );
-    QString saveFile( EFile fileType );
+    QString openFile( FileType fileType );
+    QStringList openFiles( FileType fileType );
+    QString saveFile( FileType fileType );
+
+    QString getLastOpenPath( FileType fileType );
+    void setLastOpenPath( FileType fileType, QString openPath );
+    QString getLastSavePath( FileType fileType );
+    void setLastSavePath( FileType fileType, QString savePath );
 
 private:
-    QString dialogTitle( EFile fileType );
-    QString fileFilters( EFile fileType );
-    QString toSettingKey( EFile fileType );
+    QString openDialogTitle( FileType fileType );
+    QString saveDialogTitle( FileType fileType );
+    QString openFileFilters( FileType fileType );
+    QString saveFileFilters( FileType fileType );
+    QString defaultFileName( FileType fileType );
+
+    QString toSettingKey( FileType fileType);
 
     QWidget* mRoot = nullptr;
 };

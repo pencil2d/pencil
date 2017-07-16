@@ -2,10 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2017 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,7 +40,7 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    explicit ColorPaletteWidget( QWidget* pParent );
+    explicit ColorPaletteWidget( QWidget* parent );
 
     void initUI() override;
     void updateUI() override;
@@ -74,6 +75,8 @@ private slots:
     void updateGridUI();
 
 private:
+    QString getDefaultColorName(QColor c);
+
     Ui::ColorPalette* ui = nullptr;
     QActionGroup *layoutModes;
     QAction *listMode;
@@ -84,7 +87,6 @@ private:
     QAction *largeSwatch;
     QAction *separator;
     QSize iconSize;
-    QPixmap colourSwatch;
     QMenu *toolMenu;
     int stepper;
 

@@ -1,3 +1,20 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #include <QSettings>
 #include <QPixmap>
 #include <QMouseEvent>
@@ -24,16 +41,20 @@ void PencilTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[PRESSURE] = true;
-    m_enabledProperties[VECTORMERGE] = true;
+    m_enabledProperties[VECTORMERGE] = false;
     m_enabledProperties[INTERPOLATION] = true;
+    m_enabledProperties[FILLCONTOUR] = true;
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
     properties.feather = 1;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
-    properties.invisibility = 1;
-    properties.preserveAlpha = 0;
     properties.inpolLevel = 0;
+    properties.useAA = -1;
+    properties.useFillContour = false;
+
+    //    properties.invisibility = 1;
+    //    properties.preserveAlpha = 0;
 
     if ( properties.width <= 0 )
     {
@@ -90,6 +111,15 @@ void PencilTool::setInpolLevel(const int level)
 
     QSettings settings( PENCIL2D, PENCIL2D);
     settings.setValue("lineInpol", level);
+    settings.sync();
+}
+
+void PencilTool::setUseFillContour(const bool useFillContour)
+{
+    properties.useFillContour = useFillContour;
+
+    QSettings settings( PENCIL2D, PENCIL2D);
+    settings.setValue("FillContour", useFillContour);
     settings.sync();
 }
 
@@ -161,7 +191,8 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint()==mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -198,10 +229,6 @@ void PencilTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-            opacity = mCurrentPressure / 2;
-        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
@@ -229,11 +256,11 @@ void PencilTool::drawStroke()
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
+        mCurrentWidth = properties.width;
         if (properties.pressure == true) {
             opacity = mCurrentPressure / 2;
+            mCurrentWidth = properties.width * mCurrentPressure;
         }
-
-        mCurrentWidth = properties.width * m_pStrokeManager->getPressure();
         qreal brushWidth = mCurrentWidth;
 
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
@@ -263,6 +290,10 @@ void PencilTool::drawStroke()
         }
 
         int rad = qRound( brushWidth ) / 2 + 2;
+
+        //continously update buffer to update stroke behind grid.
+        mScribbleArea->paintBitmapBufferRect(rect);
+
         mScribbleArea->refreshBitmap( rect, rad );
 
     }
@@ -305,7 +336,6 @@ void PencilTool::paintVectorStroke()
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
-
         curve.setWidth( 0 );
         curve.setFeather( 0 );
         curve.setInvisibility( true );
@@ -314,6 +344,13 @@ void PencilTool::paintVectorStroke()
         VectorImage* vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
         vectorImage->addCurve( curve, qAbs( mEditor->view()->scaling() ), properties.vectorMergeEnabled );
+
+        if (properties.useFillContour == true)
+        {
+            vectorImage->fillPath( mStrokePoints,
+                               mEditor->color()->frontColorNumber(),
+                               10.0 / mEditor->view()->scaling() );
+        }
         mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
         mScribbleArea->setAllDirty();
     }

@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -73,7 +73,8 @@ public:
 
     Object* object() const { return mObject.get(); }
     Status setObject( Object* object );
-	void updateObject();
+    void updateObject();
+    void prepareSave();
 
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
@@ -100,14 +101,13 @@ Q_SIGNALS:
     void updateLayerCount();
     void updateBackup();
 
+    void objectLoaded();
+
     void selectAll();
     void changeThinLinesButton( bool );
-
     void currentFrameChanged( int n );
 
-    // save
     void needSave();
-    void fileLoaded();
 
 public: //slots
     void clearCurrentFrame();

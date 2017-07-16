@@ -1,3 +1,19 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 
 #include "pentool.h"
 #include "penciltool.h"
@@ -106,6 +122,7 @@ void ToolManager::resetAllTools()
     getTool( BRUSH )->properties.inpolLevel = -1;
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
+    getTool( BUCKET )->properties.tolerance = 100.0;
 
     // todo: add all the default settings
 
@@ -187,6 +204,25 @@ void ToolManager::setInpolLevel(int level)
 {
     currentTool()->setInpolLevel( level );
     Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION );
+}
+
+
+void ToolManager::setTolerance( int newTolerance )
+{
+    if ( newTolerance < 0 )
+    {
+        newTolerance = 1;
+    }
+
+    currentTool()->setTolerance( newTolerance );
+    Q_EMIT toleranceValueChanged( newTolerance );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), TOLERANCE );
+}
+
+void ToolManager::setUseFillContour(bool useFillContour)
+{
+    currentTool()->setUseFillContour( useFillContour );
+    Q_EMIT toolPropertyChanged( currentTool()->type(), FILLCONTOUR);
 }
 
 

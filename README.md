@@ -3,18 +3,35 @@
 **Pencil2D** is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics. Pencil is free and open source.
 
 ### Download ###
+#### Nightly build
+Nightly builds are the bleedig edge (most up to date) versions of Pencil2D, which contains the most recent fixes and features.
 
-* [Pencil2D 0.5.4 beta for Windows][0]
-* [Pencil2D 0.5.4 beta for Mac OS X][1]
-* [Pencil2D 0.5.4 beta for Linux][2]
+| Windows 32 bit   | Windows 64 bit    | Mac             | Linux             |
+| :--------------: | :---------------: | :-------------: | :---------------: |
+| [Download][0]    | [Download][1]     | [Download][2]   | [Download][3]     |
 
-Wanna try the bleeding edge version of Pencil2D?
-Download the [nightly builds][3]!
+[0]: https://goo.gl/0rbHu6
+[1]: https://goo.gl/5pZXED
+[2]: https://goo.gl/PXsLCI
+[3]: https://goo.gl/NQuJYr
 
-[0]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip
-[1]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip
-[2]: http://goo.gl/BP40t
-[3]: http://www.pencil2d.org/forums/topic/pencil2d-nightly-builds-2015/ "Pencil2D nightly builds"
+#### Pencil2D 0.5.4 (Deprecated)
+Old, unstable and no longer supported! Download it at your own risk. 
+**These versions WILL NOT work for Windows 8+ or MAC OSX releases below 10.9 (Mavericks)**
+
+| Windows 32 bit   | Mac             | Linux             |
+| :--------------: | :-------------: | :---------------: |
+| [Download][4]    | [Download][5]   | [Download][6]     |
+
+[4]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-win.zip
+[5]: https://bitbucket.org/chchwy/pencil2d/downloads/Pencil2D-dev-0.5.4b-mac.zip
+[6]: http://goo.gl/BP40t
+
+##### Debian & Ubuntu
+Command line:
+```
+sudo apt-get install pencil2d
+```
 
 [![Build Status](https://travis-ci.org/chchwy/pencil2d.svg?branch=master)](https://travis-ci.org/chchwy/pencil2d)
 

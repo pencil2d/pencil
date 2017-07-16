@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang 
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -148,11 +148,8 @@ public:
 
     // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, Layer* currentLayer, QSize exportSize, QString filePath, const char* format, int quality, bool transparency, bool antialiasing, QProgressDialog* progress, int progressMax );
-    bool exportFrames1( ExportFrames1Parameters parameters );
-    bool exportMovie( ExportMovieParameters parameters );
     bool exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
     bool exportIm(int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, QString format, bool antialiasing , bool transparency);
-    bool exportFlash( int startFrame, int endFrame, QTransform view, QSize exportSize, QString filePath, int fps, int compression );
 
     void modification() { modified = true; }
     bool isModified() { return modified; }

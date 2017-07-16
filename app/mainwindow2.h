@@ -7,7 +7,7 @@ Copyright (C) 2011-2015 Matt Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -39,9 +39,18 @@ class ColorBox;
 class RecentFileMenu;
 class Timeline2;
 class ActionCommands;
-class ImageSeqDialog;
+class ImportImageSeqDialog;
 
+
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
+
+#ifdef GIT_TIMESTAMP
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( S__GIT_TIMESTAMP__ )
+#else
 #define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( __DATE__ )
+#endif
 
 
 namespace Ui
@@ -54,7 +63,7 @@ class MainWindow2 : public QMainWindow
     Q_OBJECT
 
 public:
-	explicit MainWindow2( QWidget* parent = 0 );
+    explicit MainWindow2( QWidget* parent = 0 );
     ~MainWindow2();
 
     Editor* mEditor = nullptr;
@@ -63,12 +72,13 @@ public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
+    void clearRecentFilesList();
 
 public:
     void setOpacity(int opacity);
     void newDocument();
-	void openDocument();
-	void saveDocument();
+    void openDocument();
+    void saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
 
@@ -85,7 +95,12 @@ public:
     void helpBox();
     void aboutPencil();
 
-	void openFile( QString filename );
+    void openFile( QString filename );
+
+    PreferencesDialog *getPrefDialog() {return mPrefDialog;}
+
+Q_SIGNALS:
+    void updateRecentFilesList(bool b);
 
 protected:
     void tabletEvent( QTabletEvent* ) override;
@@ -103,7 +118,7 @@ private:
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
-    
+
     void importPalette();
     void exportPalette();
 
@@ -133,6 +148,7 @@ private:
     ToolBoxWidget*        mToolBox             = nullptr;
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
+    PreferencesDialog     *mPrefDialog         = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 
@@ -146,7 +162,7 @@ private:
 
     QIcon mStartIcon, mStopIcon;
 
-	Ui::MainWindow2* ui = nullptr;
+    Ui::MainWindow2* ui = nullptr;
 };
 
 #endif // MAINWINDOW2_H

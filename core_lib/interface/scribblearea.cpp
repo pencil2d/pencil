@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
 #include "scribblearea.h"
 
 #include <cmath>
@@ -33,8 +34,6 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
-//#include "popupcolorpalettewidget.h"
-
 
 #define round(f) ((int)(f + 0.5))
 
@@ -75,7 +74,6 @@ bool ScribbleArea::init()
     mShowAllLayers = 1;
 
     mBufferImg = new BitmapImage;
-//    mBitmapSelection = new BitmapImage;
 
     QRect newSelection( QPoint( 0, 0 ), QSize( 0, 0 ) );
     mySelection = newSelection;
@@ -93,12 +91,12 @@ bool ScribbleArea::init()
 
     setSizePolicy( QSizePolicy( QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding ) );
 
-    QPixmapCache::setCacheLimit( 100 * 1024 );
+    QPixmapCache::setCacheLimit( 100 * 1024 ); // unit is kb, so it's 100MB cache
+
+	int nLength = mEditor->layers()->projectLength();
+	mPixmapCacheKeys.resize( std::max( nLength, 240 ) );
 
     mNeedUpdateAll = false;
-
-    // color wheel popup
-    //m_popupPaletteWidget = new PopupColorPaletteWidget( this );
 
     return true;
 }
@@ -169,7 +167,14 @@ void ScribbleArea::updateCurrentFrame()
 void ScribbleArea::updateFrame( int frame )
 {
     int frameNumber = mEditor->layers()->LastFrameAtFrame( frame );
-    QPixmapCache::remove( "frame" + QString::number( frameNumber ) );
+
+	if ( mPixmapCacheKeys.size() <= frame )
+	{
+		mPixmapCacheKeys.resize( frame + 10 ); // a buffer
+	}
+
+	QPixmapCache::remove( mPixmapCacheKeys[ frameNumber ] );
+	mPixmapCacheKeys[ frameNumber] = QPixmapCache::Key();
 
     update();
 }
@@ -177,6 +182,8 @@ void ScribbleArea::updateFrame( int frame )
 void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
+	std::fill( mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key() );
+
     update();
     mNeedUpdateAll = false;
 }
@@ -229,12 +236,6 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
 
     updateAllFrames();
 }
-
-void ScribbleArea::togglePopupPalette()
-{
-    //m_popupPaletteWidget->popup();
-}
-
 
 /************************************************************************/
 /* key event handlers                                                   */
@@ -335,6 +336,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Return:
             if ( somethingSelected )
             {
+                applyTransformedSelection();
                 paintTransformedSelection();
                 deselectAll();
             }
@@ -347,6 +349,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
             if ( somethingSelected )
             {
                 escape();
+                applyTransformedSelection();
             }
             break;
         case Qt::Key_Backspace:
@@ -429,10 +432,10 @@ void ScribbleArea::tabletEvent( QTabletEvent *event )
 
     // Some tablets return "NoDevice" and Cursor.
     if (event->device() == QTabletEvent::NoDevice) {
-        currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
+        currentTool()->adjustPressureSensitiveProperties( mStrokeManager->getPressure(),
                                                       false );
     } else {
-        currentTool()->adjustPressureSensitiveProperties( pow( ( float )mStrokeManager->getPressure(), 2.0f ),
+        currentTool()->adjustPressureSensitiveProperties( mStrokeManager->getPressure(),
                                                       event->pointerType() == QTabletEvent::Cursor );
     }
 
@@ -729,7 +732,10 @@ void ScribbleArea::paintBitmapBuffer( )
     layer->setModified( mEditor->currentFrame(), true );
     emit modification();
 
-    QPixmapCache::remove( "frame" + QString::number( mEditor->currentFrame() ) );
+	int frameNumber = mEditor->currentFrame();
+	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+
     drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
@@ -774,7 +780,10 @@ void ScribbleArea::paintBitmapBufferRect( QRect rect )
     layer->setModified( mEditor->currentFrame(), true );
     emit modification();
 
-    QPixmapCache::remove( "frame" + QString::number( mEditor->currentFrame() ) );
+    int frameNumber = mEditor->currentFrame();
+	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+
     drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
@@ -819,12 +828,15 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         int curIndex = mEditor->currentFrame();
         int frameNumber = mEditor->layers()->LastFrameAtFrame( curIndex );
 
-        QString strCachedFrameKey = "frame" + QString::number( frameNumber );
-        if ( !QPixmapCache::find( strCachedFrameKey, mCanvas ) )
+		QPixmapCache::Key cachedKey = mPixmapCacheKeys[frameNumber];
+
+        if ( !QPixmapCache::find( cachedKey, &mCanvas ) )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
-            QPixmapCache::insert( strCachedFrameKey, mCanvas );
-            //qDebug() << "Repaint canvas!";
+            
+			mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
+            
+			//qDebug() << "Repaint canvas!";
         }
     }
 
