@@ -37,7 +37,8 @@ void RecentFileMenu::clear()
     {
         removeRecentFile( filename );
     }
-    QMenu::clear();
+    removeAction( mClearSeparator );
+    removeAction( mClearAction );
     mRecentFiles.clear();
     mRecentActions.clear();
 }
