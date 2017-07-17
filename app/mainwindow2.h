@@ -91,6 +91,8 @@ public:
 
     void importMovie();
 
+    void lockWidgets( bool shouldLock );
+
     void preferences();
     void helpBox();
     void aboutPencil();
