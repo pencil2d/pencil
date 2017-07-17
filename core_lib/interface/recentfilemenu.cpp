@@ -31,13 +31,20 @@ QMenu( title, parent )
     mClearAction = new QAction( tr("Clear"), this ); // share the same translation
 }
 
+RecentFileMenu::~RecentFileMenu()
+{
+    delete mClearSeparator;
+    delete mClearAction;
+}
+
 void RecentFileMenu::clear()
 {
     for( QString filename : mRecentFiles )
     {
         removeRecentFile( filename );
     }
-    QMenu::clear();
+    removeAction( mClearSeparator );
+    removeAction( mClearAction );
     mRecentFiles.clear();
     mRecentActions.clear();
 }
