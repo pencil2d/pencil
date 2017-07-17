@@ -59,6 +59,7 @@ enum class SETTING
     QUICK_SIZING,
     MULTILAYER_ONION,
     LANGUAGE,
+    LAYOUT_LOCK,
     COUNT, // COUNT must always be the last one.
 };
 
