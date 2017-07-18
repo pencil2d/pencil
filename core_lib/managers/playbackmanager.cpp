@@ -209,7 +209,7 @@ void PlaybackManager::enableRangedPlayback( bool b )
     }
 }
 
-void PlaybackManager::enbaleSound(bool b)
+void PlaybackManager::enableSound(bool b)
 {
     mIsPlaySound = b;
 
