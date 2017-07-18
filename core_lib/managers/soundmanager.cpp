@@ -148,6 +148,7 @@ void SoundManager::onDurationChanged( SoundPlayer* player, int64_t duration )
 
     double frameLength = duration * fps / 1000.0;
     clip->setLength( frameLength );
+    clip->setDuration( duration );
 
     emit soundClipDurationChanged();
 }

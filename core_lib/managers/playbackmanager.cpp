@@ -100,6 +100,18 @@ void PlaybackManager::setFps( int fps )
     {
         mFps = fps;
         emit fpsChanged( mFps );
+
+        // Update key-frame lengths of sound layers,
+        // since the length depends on fps.
+        for ( int i = 0; i < object()->getLayerCount(); ++i )
+        {
+            Layer* layer = object()->getLayer( i );
+            if ( layer->type() == Layer::SOUND )
+            {
+                auto soundLayer = dynamic_cast<LayerSound *>(layer);
+                soundLayer->updateFrameLengths(mFps);
+            }
+        }
     }
 }
 

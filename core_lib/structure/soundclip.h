@@ -41,8 +41,17 @@ public:
     void playFromPosition(int frameNumber, int fps);
     void stop();
 
+    int64_t duration() const;
+    void setDuration(const int64_t &duration);
+
+    void updateLength(int fps);
+
 private:
     std::shared_ptr< SoundPlayer > mPlayer;
+
+    // Duration in seconds. This is stored to update the length of the
+    // frame when the FPS changes.
+    int64_t mDuration;
 };
 
 #endif // SOUNDCLIP_H
