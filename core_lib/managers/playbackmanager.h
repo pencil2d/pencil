@@ -1,3 +1,20 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #ifndef PLAYBACKMANAGER_H
 #define PLAYBACKMANAGER_H
 
@@ -26,6 +43,7 @@ public:
     int startFrame() { return mStartFrame; }
     int endFrame() { return mEndFrame; }
     
+    bool isRangedPlaybackOn() { return mIsRangedPlayback; }
     int markInFrame() { return mMarkInFrame; }
     int markOutFrame() { return mMarkOutFrame; }
     
@@ -34,7 +52,7 @@ public:
     void enableRangedPlayback( bool b );
     void setRangedStartFrame( int frame ) { mMarkInFrame = frame; }
     void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
-    void enbaleSound( bool b ) { mIsPlaySound = b; }
+    void enbaleSound( bool b );
 
 Q_SIGNALS:
     void fpsChanged( int fps );
@@ -52,7 +70,7 @@ private:
     int mEndFrame = 60;
 
     bool mIsLooping = false;
-    bool mIsPlaySound = false;
+    bool mIsPlaySound = true;
     
     bool mIsRangedPlayback = false;
     int mMarkInFrame = 1;

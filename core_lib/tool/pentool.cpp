@@ -1,3 +1,20 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #include <QPixmap>
 
 #include "layervector.h"
@@ -136,7 +153,8 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint()==mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -176,11 +194,11 @@ void PenTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
+        mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
-            opacity = m_pStrokeManager->getPressure() / 2;
+            mCurrentWidth = properties.width;
         }
-        mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
         BlitRect rect;
@@ -212,7 +230,12 @@ void PenTool::drawStroke()
         }
 
         qreal opacity = 1.0;
-        qreal brushWidth = m_pStrokeManager->getPressure() * mCurrentWidth;
+        mCurrentWidth = properties.width;
+        if (properties.pressure == true)
+        {
+            mCurrentWidth = properties.width * mCurrentPressure;
+        }
+        qreal brushWidth = mCurrentWidth;
 
         // TODO: Make popup widget for less important properties,
         // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
@@ -244,16 +267,18 @@ void PenTool::drawStroke()
         }
 
         int rad = qRound( brushWidth ) / 2 + 2;
+
+        //continously update buffer to update stroke behind grid.
+        mScribbleArea->paintBitmapBufferRect(rect);
+
         mScribbleArea->refreshBitmap( rect, rad );
     }
     else if ( layer->type() == Layer::VECTOR )
     {
         qreal brushWidth = 0;
-        if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
-        }
-        else {
-            brushWidth = properties.width;
+        brushWidth = properties.width;
+        if (properties.pressure == true) {
+            brushWidth = properties.width * mCurrentPressure;
         }
 
         int rad = qRound( ( brushWidth / 2 + 2 ) * mEditor->view()->scaling() );
@@ -292,8 +317,6 @@ void PenTool::paintVectorStroke()
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-        mStrokePressures.append(0.01);
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
                     curve.setWidth( properties.width );

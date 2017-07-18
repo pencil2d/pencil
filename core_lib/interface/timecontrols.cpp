@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,7 +33,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mFpsBox = new QSpinBox();
     mFpsBox->setFont( QFont("Helvetica", 10) );
-    mFpsBox->setFixedHeight(22);
+    mFpsBox->setFixedHeight(24);
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
@@ -43,7 +43,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mLoopStartSpinBox = new QSpinBox();
     mLoopStartSpinBox->setFont( QFont("Helvetica", 10) );
-    mLoopStartSpinBox->setFixedHeight(22);
+    mLoopStartSpinBox->setFixedHeight(24);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
     mLoopStartSpinBox->setMaximum(parent->getFrameLength() - 1);
@@ -52,7 +52,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mLoopEndSpinBox= new QSpinBox();
     mLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
-    mLoopEndSpinBox->setFixedHeight(22);
+    mLoopEndSpinBox->setFixedHeight(24);
     mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
     mLoopEndSpinBox->setMinimum(mLoopStartSpinBox->value() + 1);
     mLoopEndSpinBox->setMaximum(parent->getFrameLength());
@@ -61,7 +61,7 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     mPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
     mPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
-    mPlaybackRangeCheckBox->setFixedHeight(26);
+    mPlaybackRangeCheckBox->setFixedHeight(24);
     mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
     mPlayButton = new QPushButton( this );
@@ -70,21 +70,17 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     mJumpToEndButton= new QPushButton();
     mJumpToStartButton= new QPushButton();
 
-    QLabel* separator = new QLabel();
-    separator->setPixmap(QPixmap(":icons/controls/separator.png"));
-    separator->setFixedSize(QSize(37,31));
-
-    QIcon loopIcon(":icons/controls/loop.png");
-    QIcon soundIcon(":icons/controls/sound.png");
-    QIcon endplayIcon(":icons/controls/endplay.png");
-    QIcon startplayIcon(":icons/controls/startplay.png");
+    mLoopIcon = QIcon(":icons/controls/loop.png");
+    mSoundIcon = QIcon(":icons/controls/sound.png");
+    mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
+    mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
     mPlayButton->setIcon(mStartIcon);
-    mLoopButton->setIcon(loopIcon);
-    mSoundButton->setIcon(soundIcon);
-    mJumpToEndButton->setIcon(endplayIcon);
-    mJumpToStartButton->setIcon(startplayIcon);
+    mLoopButton->setIcon(mLoopIcon);
+    mSoundButton->setIcon(mSoundIcon);
+    mJumpToEndButton->setIcon(mJumpToEndIcon);
+    mJumpToStartButton->setIcon(mJumpToStartIcon);
 
     mPlayButton->setToolTip(tr("Play"));
     mLoopButton->setToolTip(tr("Loop"));
@@ -96,7 +92,6 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     mSoundButton->setCheckable(true);
     mSoundButton->setChecked(true);
 
-    addWidget(separator);
     addWidget(mJumpToStartButton);
     addWidget(mPlayButton);
     addWidget(mJumpToEndButton);
@@ -117,29 +112,37 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
     connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled );
 
     connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
+    connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon );
     connect( mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick );
 }
 
 void TimeControls::initUI()
 {
-    auto playback = mEditor->playback();
-    
-    SignalBlocker b( mLoopStartSpinBox );
-    mLoopStartSpinBox->setValue( playback->markInFrame() );
-    
-    SignalBlocker b2( mLoopEndSpinBox );
-    mLoopEndSpinBox->setValue( playback->markOutFrame() );
-    
-    mPlaybackRangeCheckBox->setChecked( false );
-    mLoopStartSpinBox->setEnabled( false );
-    mLoopEndSpinBox->setEnabled( false );
-    
-    SignalBlocker b3( mFpsBox );
-    mFpsBox->setValue( playback->fps() );
+    updateUI();
 }
 
-void TimeControls::setFps ( int value )
+void TimeControls::updateUI()
 {
+    PlaybackManager* playback = mEditor->playback();
+
+    mPlaybackRangeCheckBox->setChecked( playback->isRangedPlaybackOn() ); // don't block this signal
+
+    SignalBlocker b1( mLoopStartSpinBox );
+    mLoopStartSpinBox->setValue( playback->markInFrame() );
+
+    SignalBlocker b2( mLoopEndSpinBox );
+    mLoopEndSpinBox->setValue( playback->markOutFrame() );
+
+    SignalBlocker b3( mFpsBox );
+    mFpsBox->setValue( playback->fps() );
+
+    SignalBlocker b4( mLoopButton );
+    mLoopButton->setChecked( playback->isLooping() );
+}
+
+void TimeControls::setFps( int value )
+{
+    SignalBlocker blocker( mFpsBox );
     mFpsBox->setValue(value);
 }
 
@@ -188,7 +191,8 @@ void TimeControls::updatePlayState()
         mPlayButton->setIcon(mStopIcon);
         mPlayButton->setToolTip(tr("Stop"));
     }
-    else {
+    else
+    {
         mPlayButton->setIcon(mStartIcon);
         mPlayButton->setToolTip(tr("Start"));
     }
@@ -237,6 +241,18 @@ void TimeControls::preLoopStartClick(int i) {
     mLoopEndSpinBox->setMinimum( i + 1 );
 
     emit loopStartClick(i);
+}
+
+void TimeControls::updateSoundIcon(bool soundEnabled)
+{
+    if(soundEnabled)
+    {
+        mSoundButton->setIcon( QIcon(":icons/controls/sound.png") );
+    }
+    else
+    {
+        mSoundButton->setIcon( QIcon(":icons/controls/sound-disabled.png") );
+    }
 }
 
 void TimeControls::updateLength(int frameLength) {

@@ -2,10 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,24 +25,20 @@ GNU General Public License for more details.
 
 class Status;
 
-//class BezierArea : public QObject
 class BezierArea
 {
-    //Q_OBJECT
-
 public:
     BezierArea();
-    //BezierArea(QList<QList<int> > pointList, VectorImage* vectorImage);
     BezierArea(QList<VertexRef> vertexList, int colour);
 
-    Status createDomElement(QXmlStreamWriter &xmlStream);
+    Status createDomElement(QXmlStreamWriter& xmlStream);
     void loadDomElement(QDomElement element);
 
     VertexRef getVertexRef(int i);
     int getColourNumber() { return mColourNumber; }
     void decreaseColourNumber() { mColourNumber--; }
     void setSelected(bool YesOrNo);
-    bool isSelected() const { return selected; }
+    bool isSelected() const { return mSelected; }
     void setColourNumber(int cn) { mColourNumber = cn; }
 
     QList<VertexRef> mVertex;
@@ -49,8 +46,7 @@ public:
     int mColourNumber;
 
 private:
-    //VectorImage* picture;
-    bool selected;
+    bool mSelected = false;
 };
 
 #endif

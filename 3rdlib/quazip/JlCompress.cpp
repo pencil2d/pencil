@@ -25,6 +25,7 @@ see quazip/(un)zip.h files for details. Basically it's the zlib license.
 
 #include "JlCompress.h"
 #include <QDebug>
+#include <cassert>
 
 static bool copyData(QIODevice &inFile, QIODevice &outFile)
 {
@@ -462,6 +463,7 @@ QStringList JlCompress::extractDir(QString fileCompressed, QString dir) {
     }
     do {
         QString name = zip.getCurrentFileName();
+		qDebug() << "Name=" << name;
         QString absFilePath = directory.absoluteFilePath(name);
         if (!extractFile(&zip, "", absFilePath)) {
             removeFile(extracted);
@@ -476,6 +478,8 @@ QStringList JlCompress::extractDir(QString fileCompressed, QString dir) {
         removeFile(extracted);
         return QStringList();
     }
+
+	assert(zip.getZipError() == UNZ_OK);
 
     return extracted;
 }

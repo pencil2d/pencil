@@ -34,7 +34,6 @@ INCLUDEPATH += \
 HEADERS += \
     mainwindow2.h \
     shortcutfilter.h \
-    exportimageseqdialog.h \
     timeline2.h \
     actioncommands.h \
     preferencesdialog.h \
@@ -52,14 +51,17 @@ HEADERS += \
     exportmoviedialog.h \
     app_util.h \
     errordialog.h \
-    imageseqdialog.h
-    # popupcolorpalettewidget.h
+    aboutdialog.h \
+    toolbox.h \
+    tooloptionwidget.h \
+    importexportdialog.h \
+    exportimagedialog.h \
+    importimageseqdialog.h
 
 SOURCES += \
     main.cpp \
     mainwindow2.cpp \
     shortcutfilter.cpp \
-    exportimageseqdialog.cpp \
     timeline2.cpp \
     actioncommands.cpp \
     preferencesdialog.cpp \
@@ -76,24 +78,37 @@ SOURCES += \
     pencilapplication.cpp \
     exportmoviedialog.cpp \
     errordialog.cpp \
-    imageseqdialog.cpp
-    # spopupcolorpalettewidget.cpp
+    aboutdialog.cpp \
+    toolbox.cpp \
+    tooloptionwidget.cpp \
+    importexportdialog.cpp \
+    exportimagedialog.cpp \
+    importimageseqdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
-    ui/exportimageseqdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
     ui/displayoption.ui \
-    ui/exportmoviedialog.ui \
-    ui/errordialog.ui
+    ui/errordialog.ui \
+    ui/importexportdialog.ui \
+    ui/exportmovieoptions.ui \
+    ui/exportimageoptions.ui \
+    ui/importimageseqoptions.ui
 
 DEPENDPATH += .
 
-VERSION = 0.5.4
+VERSION = 0.5.4 #FIXME: use build number from git
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
+GIT {
+    DEFINES += GIT_EXISTS \
+    "GIT_CURRENT_SHA1=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ rev-parse HEAD)" \
+    "GIT_TIMESTAMP=$$system(git --git-dir=.git --work-tree=. -C $$_PRO_FILE_PWD_/../ log -n 1 --pretty=format:"%cd" --date=format:"%Y-%m-%d_%H:%M:%S")"
+}
+
 
 macx {
     RC_FILE = ../pencil.icns
@@ -111,6 +126,21 @@ win32 {
     CONFIG -= flat
     CONFIG += grouped
     RC_FILE = $$PWD/../pencil.rc
+}
+
+linux {
+    target.path = $${PREFIX}/bin
+
+    mimepackage.files = ../pencil2d.xml
+    mimepackage.path = $${PREFIX}/share/mime/packages
+
+    desktopentry.files = ../pencil2d.desktop
+    desktopentry.path = $${PREFIX}/share/applications
+
+    icon.files = ../pencil2d.png
+    icon.path = $${PREFIX}/share/icons/hicolor/128x128/apps
+
+    INSTALLS += target mimepackage desktopentry icon
 }
 
 

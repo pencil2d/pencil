@@ -22,6 +22,7 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     - ubuntu-sdk-team
+    - trusty-media
     packages:
     - g++-5
     - build-essential
@@ -32,7 +33,7 @@ addons:
     - libqt5svg5-dev
     - libqt5xmlpatterns5-dev
     - bsdtar
-
+    - ffmpeg
 
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -64,25 +65,26 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - qmake ../
-  - make
+  - qmake ../ PREFIX=/usr CONFIG+=GIT
+  - make;
 
 after_success:
   - echo "look for build folder and zip file"
   - ls
-  - echo "cleaning..."
-  - make clean
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      mv app Pencil2D;
-      cd Pencil2D;
-      echo "Removing Makefile";
-      rm Makefile;
-      cd ..;
-      echo "Archiving...";
-      bsdtar cvzfs "pencil2d-linux-$(date +"%Y-%m-%d").tar.gz" "/Pencil2D/pencil2d-linux-$(date +"%Y-%m-%d")/" Pencil2D;
+      make INSTALL_ROOT="${PWD}/Pencil2D" install;
+      rm -rf Pencil2D/usr/lib;
+      echo "Creating AppImage...";
+      install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg;
+      curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
+      chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -appimage;
+      mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-      mv app Pencil2D;
+      echo "cleaning...";
+      make clean;
+      mv bin Pencil2D;
       echo "Fixing info.plist";
       cd Pencil2D;
       plutil -replace CFBundleExecutable -string Pencil2D Pencil2D.app/Contents/Info.plist;
@@ -96,8 +98,11 @@ after_success:
 
       echo "Copying necessary Qt frameworks";
       macdeployqt Pencil2D.app;
-      echo "Removing Makefile";
-      rm Makefile;
+      echo "applying macdeployqt fix";
+      wget https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip; unzip -x master.zip; python $TRAVIS_BUILD_DIR/build/Pencil2D/macdeployqtfix-master/macdeployqtfix.py $TRAVIS_BUILD_DIR/build/Pencil2D/Pencil2D.app/Contents/MacOS/Pencil2D /usr/local/Cellar/qt@5.7/5.7.1/; 
+      echo "Removing files";
+      rm -rf macdeployqtfix-master;
+      rm master.zip;
       cd ..;
       echo "Zipping...";
       zip -r "pencil2d-mac-$(date +"%Y-%m-%d").zip" Pencil2D/;
@@ -106,16 +111,17 @@ after_success:
   - ls
 
   # Upload to google drive
-  - echo "Initiate deployment on Google Drive"
-  - cd "$TRAVIS_BUILD_DIR/util"
-
-  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    python nightly-build-upload.py 0BxdcdOiOmg-CcU1WOFpCOFBvVXc "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").tar.gz";
+  - 'if [ "$TRAVIS_BRANCH" == "master" -o "$FORCE_NIGHTLY_UPLOAD" == "yes" ]; then
+    echo "Initiate deployment on Google Drive";
+    cd "$TRAVIS_BUILD_DIR/util";
+    if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+      python nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
+    fi;
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      python nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
+    fi;
+    echo "Operation done";
   fi'
-  - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    python nightly-build-upload.py 0BxdcdOiOmg-CeVpTY294cXdLZ2c "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
-  fi'
-  - echo "Operation done"
 
 after_script:
   - cd "$TRAVIS_BUILD_DIR/build"

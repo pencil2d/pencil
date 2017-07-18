@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -496,6 +496,8 @@ Status Editor::setObject( Object* newObject )
     
     updateObject();
 
+    emit objectLoaded();
+
     return Status::OK;
 }
 
@@ -846,6 +848,14 @@ void Editor::moveLayer( int i, int j )
 	}
 	emit updateTimeLine();
 	mScribbleArea->updateAllFrames();
+}
+
+void Editor::prepareSave()
+{
+    for ( auto mgr : mAllManagers )
+    {
+        mgr->save( mObject.get() );
+    }
 }
 
 void Editor::clearCurrentFrame()

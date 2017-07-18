@@ -1,3 +1,19 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 
 #include "brushtool.h"
 
@@ -209,7 +225,8 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
-            if (getCurrentPoint() == mMouseDownPoint)
+            qreal distance = QLineF( getCurrentPoint(), mMouseDownPoint ).length();
+            if (distance < 1)
             {
                 paintAt(mMouseDownPoint);
             }
@@ -249,10 +266,6 @@ void BrushTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0f;
-        if (properties.pressure == true)
-        {
-            opacity = mCurrentPressure / 2;
-        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 
@@ -264,7 +277,8 @@ void BrushTool::paintAt( QPointF point )
                                   properties.feather,
                                   mEditor->color()->frontColor(),
                                   opacity,
-                                  properties.useFeather );
+                                  properties.useFeather,
+                                  properties.useAA );
 
         int rad = qRound( brushWidth ) / 2 + 2;
         mScribbleArea->refreshBitmap( rect, rad );
@@ -325,6 +339,9 @@ void BrushTool::drawStroke()
 
         int rad = qRound( brushWidth ) / 2 + 2;
 
+        //continously update buffer to update stroke behind grid.
+        mScribbleArea->paintBitmapBufferRect(rect);
+
         mScribbleArea->refreshBitmap( rect, rad );
 
           // Line visualizer
@@ -347,7 +364,7 @@ void BrushTool::drawStroke()
     {
         qreal brushWidth = 0;
         if (properties.pressure ) {
-            brushWidth = properties.width * m_pStrokeManager->getPressure();
+            brushWidth = properties.width * mCurrentPressure;
         }
         else {
             brushWidth = properties.width;
@@ -392,8 +409,6 @@ void BrushTool::paintVectorStroke()
         // Clear the temporary pixel path
         mScribbleArea->clearBitmapBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
-
-        mStrokePressures.append(0.01);
 
         BezierCurve curve( mStrokePoints, mStrokePressures, tol );
                     curve.setWidth( properties.width );

@@ -1,3 +1,20 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #include "preferencemanager.h"
 
 #include <QSettings>
@@ -55,6 +72,8 @@ void PreferenceManager::loadPrefs()
     set( SETTING::CURVE_SMOOTHING,          settings.value( SETTING_CURVE_SMOOTHING,        20 ).toInt() );
 
     set( SETTING::BACKGROUND_STYLE,         settings.value( SETTING_BACKGROUND_STYLE,       "white" ).toString() );
+
+    set( SETTING::LAYOUT_LOCK,              settings.value( SETTING_LAYOUT_LOCK,            false ).toBool() );
 
     // Files
     set( SETTING::AUTO_SAVE,                settings.value( SETTING_AUTO_SAVE,              true ).toBool() );
@@ -286,6 +305,9 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::QUICK_SIZING:
         settings.setValue ( SETTING_QUICK_SIZING, value );
+        break;
+    case SETTING::LAYOUT_LOCK:
+        settings.setValue( SETTING_LAYOUT_LOCK, value );
         break;
     default:
         Q_ASSERT( false );

@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,6 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
+
 #ifndef SCRIBBLEAREA_H
 #define SCRIBBLEAREA_H
 
@@ -24,11 +26,9 @@ GNU General Public License for more details.
 
 #include <QColor>
 #include <QTransform>
-#include <QImage>
 #include <QPoint>
 #include <QWidget>
-#include <QFrame>
-#include <QHash>
+#include <QPixmapCache>
 
 #include "log.h"
 #include "pencildef.h"
@@ -47,7 +47,6 @@ class Editor;
 class BaseTool;
 class StrokeManager;
 class ColorManager;
-//class PopupColorPaletteWidget;
 
 
 class ScribbleArea : public QWidget
@@ -109,8 +108,6 @@ public:
 
     StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
 
-    //PopupColorPaletteWidget *getPopupPalette() const { return m_popupPaletteWidget; }
-
     Editor* editor() { return mEditor; }
 
     void floodFillError( int errorType );
@@ -141,8 +138,6 @@ public slots:
     void toggleOutlines();
     void toggleShowAllLayers();
     void escape();
-
-    void togglePopupPalette();
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
@@ -194,8 +189,6 @@ private:
 
     Editor* mEditor = nullptr;
 
-    //PopupColorPaletteWidget* m_popupPaletteWidget; // color palette popup (may be enhanced with tools)
-
     bool mIsSimplified  = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
@@ -211,7 +204,6 @@ private:
   
 
 private: 
-
     bool mKeyboardInUse = false;
     bool mMouseInUse    = false;
     QPointF mLastPixel;
@@ -234,6 +226,9 @@ private:
 
     QPixmap mCanvas;
     CanvasRenderer mCanvasRenderer;
+
+	// Pixmap Cache keys
+	std::vector<QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
     QRectF mDebugRect;

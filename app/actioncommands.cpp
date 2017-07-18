@@ -1,8 +1,23 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #include "actioncommands.h"
 
 #include <QInputDialog>
 #include <QMessageBox>
-#include <QFileDialog>
 #include <QProgressDialog>
 #include <QApplication>
 #include <QDesktopServices>
@@ -33,7 +48,7 @@
 
 ActionCommands::ActionCommands( QWidget* parent ) : QObject( parent )
 {
-	mParent = parent;
+    mParent = parent;
 }
 
 ActionCommands::~ActionCommands() {}
@@ -50,7 +65,7 @@ Status ActionCommands::importSound()
         msg.setText( tr( "No sound layer exists as a destination for your import. Create a new sound layer?" ) );
         msg.addButton( tr( "Create sound layer" ), QMessageBox::AcceptRole );
         msg.addButton( tr( "Don't create layer" ), QMessageBox::RejectRole );
-        
+
         int buttonClicked = msg.exec();
         if ( buttonClicked != QMessageBox::AcceptRole )
         {
@@ -78,14 +93,14 @@ Status ActionCommands::importSound()
 
     if ( layer->keyExists( mEditor->currentFrame() ) )
     {
-        QMessageBox::warning( nullptr, 
+        QMessageBox::warning( nullptr,
                               "",
                               tr( "A sound clip already exists on this frame! Please select another frame or layer." ) );
         return Status::SAFE;
     }
 
     FileDialog fileDialog( mParent );
-    QString strSoundFile = fileDialog.openFile( EFile::SOUND );
+    QString strSoundFile = fileDialog.openFile( FileType::SOUND );
 
     Status st = mEditor->sound()->loadSound( layer, mEditor->currentFrame(), strSoundFile );
 
@@ -94,85 +109,79 @@ Status ActionCommands::importSound()
 
 Status ActionCommands::exportMovie()
 {
-	FileDialog fileDialog( mParent );
-	QString strMoviePath = fileDialog.saveFile( EFile::MOVIE_EXPORT );
-	if ( strMoviePath.isEmpty() )
-	{
-		return Status::SAFE;
-	}
+    ExportMovieDialog exportDialog( mParent );
 
-	ExportMovieDialog exportDialog( mParent );
+    std::vector< std::pair<QString, QSize > > camerasInfo;
+    auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
+    for ( LayerCamera* i : cameraLayers )
+    {
+        camerasInfo.push_back( std::make_pair( i->name(), i->getViewSize() ) );
+    }
 
-	std::vector< std::pair<QString, QSize > > camerasInfo;
-	auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
-	for ( LayerCamera* i : cameraLayers )
-	{
-		camerasInfo.push_back( std::make_pair( i->name(), i->getViewSize() ) );
-	}
-
-	auto currLayer = mEditor->layers()->currentLayer();
-	if ( currLayer->type() == Layer::CAMERA )
-	{
-		QString strName = currLayer->name();
-		auto it = std::find_if( camerasInfo.begin(), camerasInfo.end(), 
-			[strName] ( std::pair<QString, QSize> p )
-		{
-			return p.first == strName;
-		} );
+    auto currLayer = mEditor->layers()->currentLayer();
+    if ( currLayer->type() == Layer::CAMERA )
+    {
+        QString strName = currLayer->name();
+        auto it = std::find_if( camerasInfo.begin(), camerasInfo.end(),
+            [strName] ( std::pair<QString, QSize> p )
+        {
+            return p.first == strName;
+        } );
 
         Q_ASSERT(it != camerasInfo.end());
 
-		std::swap( camerasInfo[ 0 ], *it );
-	}
+        std::swap( camerasInfo[ 0 ], *it );
+    }
 
-	exportDialog.setCamerasInfo( camerasInfo );
-	exportDialog.setDefaultRange( 1, mEditor->layers()->projectLength() );
-	exportDialog.exec();
-	if ( exportDialog.result() == QDialog::Rejected )
-	{
-		return Status::SAFE;
-	}
+    exportDialog.setCamerasInfo( camerasInfo );
+    exportDialog.setDefaultRange( 1, mEditor->layers()->projectLength() );
+    exportDialog.exec();
+    if ( exportDialog.result() == QDialog::Rejected )
+    {
+        return Status::SAFE;
+    }
+	QString strMoviePath = exportDialog.getFilePath();
 
-	ExportMovieDesc desc;
-	desc.strFileName   = strMoviePath;
-	desc.startFrame    = exportDialog.getStartFrame();
-	desc.endFrame      = exportDialog.getEndFrame();
-	desc.fps           = mEditor->playback()->fps();
-	desc.exportSize    = exportDialog.getExportSize();
-	desc.strCameraName = exportDialog.getSelectedCameraName();
+    ExportMovieDesc desc;
+    desc.strFileName   = strMoviePath;
+    desc.startFrame    = exportDialog.getStartFrame();
+    desc.endFrame      = exportDialog.getEndFrame();
+    desc.fps           = mEditor->playback()->fps();
+    desc.exportSize    = exportDialog.getExportSize();
+    desc.strCameraName = exportDialog.getSelectedCameraName();
 
-	QProgressDialog progressDlg;
-	progressDlg.setWindowModality( Qt::WindowModal );
-	progressDlg.setLabelText( tr("Exporting movie...") );
-	Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint;
-	progressDlg.setWindowFlags( eFlags );
-	progressDlg.show();
+    QProgressDialog progressDlg;
+    progressDlg.setWindowModality( Qt::WindowModal );
+    progressDlg.setLabelText( tr("Exporting movie...") );
+    Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint;
+    progressDlg.setWindowFlags( eFlags );
+    progressDlg.show();
 
-	MovieExporter ex;
+    MovieExporter ex;
 
-	connect( &progressDlg, &QProgressDialog::canceled, [&ex]
-	{
-		ex.cancel();
-	} );
+    connect( &progressDlg, &QProgressDialog::canceled, [&ex]
+    {
+        ex.cancel();
+    } );
 
-	Status st = ex.run( mEditor->object(), desc, [ &progressDlg ]( float f )
-	{
-		progressDlg.setValue( (int)(f * 100.f) );
-		QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
-	} );
+    Status st = ex.run( mEditor->object(), desc, [ &progressDlg ]( float f )
+    {
+        progressDlg.setValue( (int)(f * 100.f) );
+        QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
+    } );
 
-	if ( st.ok() && QFile::exists( strMoviePath ) )
-	{
-		auto btn = QMessageBox::question( mParent, 
-                                          "Pencil2D", 
-	                                      tr( "Finished. Open movie now?" ) );
-		if ( btn == QMessageBox::Yes )
-		{
+    if ( st.ok() && QFile::exists( strMoviePath ) )
+    {
+        auto btn = QMessageBox::question( mParent,
+                                          "Pencil2D",
+                                          tr( "Finished. Open movie now?" ) );
+        if ( btn == QMessageBox::Yes )
+        {
             QDesktopServices::openUrl( QUrl::fromLocalFile( strMoviePath ) );
-		}
-	}
+        }
+    }
 
-	return Status::OK; 
+    return Status::OK;
 }
 
 void ActionCommands::ZoomIn()
@@ -263,7 +272,7 @@ void ActionCommands::addNewKey()
     if ( clip )
     {
         FileDialog fileDialog( mParent );
-        QString strSoundFile = fileDialog.openFile( EFile::SOUND );
+        QString strSoundFile = fileDialog.openFile( FileType::SOUND );
 
         if ( strSoundFile.isEmpty() )
         {
@@ -330,7 +339,7 @@ Status ActionCommands::addNewCameraLayer()
     {
         mEditor->layers()->createCameraLayer( text );
     }
-    
+
     return Status::OK;
 
 }

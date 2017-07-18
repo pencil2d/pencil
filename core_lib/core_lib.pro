@@ -47,8 +47,6 @@ HEADERS +=  \
     interface/timecontrols.h \
     interface/timeline.h \
     interface/timelinecells.h \
-    interface/toolbox.h \
-    interface/tooloptiondockwidget.h \
     interface/basedockwidget.h \
     interface/backgroundwidget.h \
     managers/basemanager.h \
@@ -114,8 +112,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/timecontrols.cpp \
     interface/timeline.cpp \
     interface/timelinecells.cpp \
-    interface/toolbox.cpp \
-    interface/tooloptiondockwidget.cpp \
     interface/basedockwidget.cpp \
     interface/backgroundwidget.cpp \
     managers/basemanager.cpp \
@@ -166,7 +162,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
     CONFIG -= flat
-	CONFIG += grouped
+	#CONFIG += grouped
 
     INCLUDEPATH += external/win32
     SOURCES += external/win32/win32.cpp

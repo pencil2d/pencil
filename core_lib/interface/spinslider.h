@@ -1,3 +1,21 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
+
 #ifndef SPINSLIDER_H
 #define SPINSLIDER_H
 
@@ -5,6 +23,7 @@
 
 class QLabel;
 class QSlider;
+class QStyle;
 
 
 class SpinSlider : public QWidget
@@ -26,6 +45,7 @@ public:
 
     SpinSlider( QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max, QWidget* parent = 0 );
     void setValue( qreal );
+    void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
     void setExponent( const qreal );
     
 signals:

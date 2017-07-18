@@ -2,10 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,12 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QDebug>
 #include <cmath>
-#include <QImage>
-#include <QStringList>
 #include "object.h"
-#include "util.h"
 #include "vectorimage.h"
 
 
@@ -552,7 +549,7 @@ void VectorImage::select(QRectF rectangle)
 void VectorImage::setSelected(int curveNumber, bool YesOrNo)
 {
     m_curves[curveNumber].setSelected(YesOrNo);
-    if (YesOrNo) selectionRect |= m_curves[curveNumber].getBoundingRect();
+    if (YesOrNo) mSelectionRect |= m_curves[curveNumber].getBoundingRect();
     modification();
 }
 
@@ -560,7 +557,7 @@ void VectorImage::setSelected(int curveNumber, int vertexNumber, bool YesOrNo)
 {
     m_curves[curveNumber].setSelected(vertexNumber, YesOrNo);
     QPointF vertex = getVertex(curveNumber, vertexNumber);
-    if (YesOrNo) selectionRect |= QRectF(vertex.x(), vertex.y(), 0.0, 0.0);
+    if (YesOrNo) mSelectionRect |= QRectF(vertex.x(), vertex.y(), 0.0, 0.0);
     modification();
 }
 
@@ -588,7 +585,7 @@ void VectorImage::setSelected(QList<VertexRef> vertexList, bool YesOrNo)
 void VectorImage::setAreaSelected(int areaNumber, bool YesOrNo)
 {
     area[areaNumber].setSelected(YesOrNo);
-    if (YesOrNo) selectionRect |= area[areaNumber].mPath.boundingRect();
+    if (YesOrNo) mSelectionRect |= area[areaNumber].mPath.boundingRect();
     modification();
 }
 
@@ -659,7 +656,7 @@ void VectorImage::selectAll()
         //curve[i].setSelected(true);
         setSelected(i, true);
     }
-    selectionTransformation.reset();
+    mSelectionTransformation.reset();
     //modification();
 }
 
@@ -673,29 +670,29 @@ void VectorImage::deselectAll()
     {
         area[i].setSelected(false);
     }
-    selectionRect = QRectF(0,0,0,0);
-    selectionTransformation.reset();
+    mSelectionRect = QRectF(0,0,0,0);
+    mSelectionTransformation.reset();
     modification();
 }
 
 void VectorImage::setSelectionRect(QRectF rectangle)
 {
-    selectionRect = rectangle;
+    mSelectionRect = rectangle;
     select(rectangle);
 }
 
 void VectorImage::calculateSelectionRect()
 {
-    selectionRect = QRectF(0,0,0,0);
+    mSelectionRect = QRectF(0,0,0,0);
     for(int i=0; i< m_curves.size(); i++)
     {
-        if ( m_curves.at(i).isPartlySelected()) selectionRect |= m_curves[i].getBoundingRect();
+        if ( m_curves.at(i).isPartlySelected()) mSelectionRect |= m_curves[i].getBoundingRect();
     }
 }
 
 void VectorImage::setSelectionTransformation(QTransform transform)
 {
-    selectionTransformation = transform;
+    mSelectionTransformation = transform;
     modification();
 }
 
@@ -843,7 +840,7 @@ void VectorImage::deleteSelectedPoints()
 
 void VectorImage::paste(VectorImage& vectorImage)
 {
-    selectionRect = QRect(0,0,0,0);
+    mSelectionRect = QRect(0,0,0,0);
     int n = m_curves.size();
     QList<int> selectedCurves;
 
@@ -857,7 +854,7 @@ void VectorImage::paste(VectorImage& vectorImage)
         {
             m_curves.append( vectorImage.m_curves.at(i) );
             selectedCurves << i;
-            selectionRect |= vectorImage.m_curves[i].getBoundingRect();
+            mSelectionRect |= vectorImage.m_curves[i].getBoundingRect();
         }
     }
     for(int i=0; i < vectorImage.area.size() ; i++)
@@ -887,8 +884,7 @@ void VectorImage::paste(VectorImage& vectorImage)
 
 QColor VectorImage::getColour(int colourNumber)
 {
-    return myParent->getColour(colourNumber).colour;
-    //return Qt::blue;
+    return mObject->getColour(colourNumber).colour;
 }
 
 int VectorImage::getColourNumber(QPointF point)
@@ -939,7 +935,7 @@ void VectorImage::paintImage(QPainter& painter,
     QTransform painterMatrix = painter.transform();
 
     QRect mappedViewRect = QRect(0,0, painter.device()->width(), painter.device()->height() );
-    QRectF viewRect = painterMatrix.inverted().mapRect( mappedViewRect );
+    painterMatrix.inverted().mapRect( mappedViewRect );
 
     // --- draw filled areas ----
     if (!simplified)
@@ -979,16 +975,16 @@ void VectorImage::paintImage(QPainter& painter,
     //painter.setClipping(true);
     for ( BezierCurve curve : m_curves )
     {
-        curve.drawPath( painter, myParent, selectionTransformation, simplified, showThinCurves );
+        curve.drawPath( painter, mObject, mSelectionTransformation, simplified, showThinCurves );
         painter.setClipping(false);
     }
 }
 
 void VectorImage::outputImage(QImage* image,
-							  QTransform myView,
-							  bool simplified,
+                              QTransform myView,
+                              bool simplified,
                               bool showThinCurves,
-							  bool antialiasing)
+                              bool antialiasing)
 {
 	image->fill(qRgba(0,0,0,0));
     QPainter painter( image );
@@ -1013,7 +1009,7 @@ void VectorImage::clean()
 
 void VectorImage::applySelectionTransformation()
 {
-    applySelectionTransformation(selectionTransformation);
+    applySelectionTransformation(mSelectionTransformation);
 }
 
 void VectorImage::applySelectionTransformation(QTransform transf)
@@ -1022,11 +1018,10 @@ void VectorImage::applySelectionTransformation(QTransform transf)
     {
         if ( m_curves.at(i).isPartlySelected()) {
             m_curves[i].transform(transf);
-
         }
     }
     calculateSelectionRect();
-    selectionTransformation.reset();
+    mSelectionTransformation.reset();
     modification();
 }
 
@@ -1084,7 +1079,9 @@ void VectorImage::applyVariableWidthToSelection(bool YesOrNo)
 {
     for(int i=0; i< m_curves.size(); i++)
     {
-        if ( m_curves.at(i).isSelected()) m_curves[i].setVariableWidth(YesOrNo);
+        if ( m_curves.at(i).isSelected()) {
+            m_curves[i].setVariableWidth(YesOrNo);
+        }
     }
     modification();
 }
@@ -1095,10 +1092,12 @@ QList<int> VectorImage::getCurvesCloseTo(QPointF P1, qreal maxDistance)
     for(int j=0; j<m_curves.size(); j++)
     {
         BezierCurve myCurve;
-        if (m_curves[j].isPartlySelected()) { myCurve = m_curves[j].transformed(selectionTransformation); }
-        else { myCurve = m_curves[j]; }
-        if ( myCurve.intersects(P1, maxDistance) )
-        {
+        if (m_curves[j].isPartlySelected()) {
+            myCurve = m_curves[j].transformed(mSelectionTransformation);
+        } else {
+            myCurve = m_curves[j];
+        }
+        if ( myCurve.intersects(P1, maxDistance) ) {
             result.append( j );
         }
     }
@@ -1201,7 +1200,7 @@ QPointF VectorImage::getVertex(int curveNumber, int vertexNumber)
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(selectionTransformation);
+        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
         if ( vertexNumber > -2 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getVertex(vertexNumber);
@@ -1221,7 +1220,7 @@ QPointF VectorImage::getC1(int curveNumber, int vertexNumber)
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(selectionTransformation);
+        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
         if ( vertexNumber > -1 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getC1(vertexNumber);
@@ -1241,7 +1240,7 @@ QPointF VectorImage::getC2(int curveNumber, int vertexNumber)
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(selectionTransformation);
+        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
         if ( vertexNumber > -1 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getC2(vertexNumber);
@@ -1300,7 +1299,7 @@ int VectorImage::getCurveSize(int curveNumber)
     }
 }
 
-void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
+void VectorImage::fillPath(QList<QPointF> contourPath, int colour, float tolerance)
 {
     QList<VertexRef> vertexPath;
 
@@ -1316,13 +1315,11 @@ void VectorImage::fill(QList<QPointF> contourPath, int colour, float tolerance)
     modification();
 }
 
-
 QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
 {
     int error = -1;
 
     // We get the contour points from a bitmap version of the vector layer as it is much faster to process
-    //
     QImage* image = new QImage( mSize, QImage::Format_ARGB32_Premultiplied );
     image->fill(Qt::white);
     QPainter painter( image );
@@ -1331,9 +1328,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
     QTransform translate;
     translate.translate( mSize.width() / 2.f , mSize.height() / 2.f );
     painter.setTransform( translate );
-
     paintImage( painter, true, true, false );
-
 
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
     QList<QPointF> contourPoints; // refs of points near the contour pixels
@@ -1346,44 +1341,39 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
 
     // Convert point to image coordinates as the image doesn't have the same coordinates origin as the
     // QWidget view
-    //
     QPointF startPoint((maxWidth / 2) + point.x(), (maxHeight / 2) + point.y());
     queue.append( startPoint.toPoint() );
 
-
     // Check the colour of the clicked point
-    QRgb colouFrom = image->pixel(startPoint.x(), startPoint.y());
+    QRgb colourFrom = image->pixel(startPoint.x(), startPoint.y());
     QRgb colourTo = Qt::green;
 
+    QPoint currentPoint;
+
+    int leftX, rightX;
+    bool foundLeftBound, foundRightBound;
 
     // ----- flood fill and remember the contour pixels -> contourPixels
     // ----- from the standard flood fill algorithm
     // ----- http://en.wikipedia.org/wiki/Flood_fill
-    //
-    while ( queue.size() > 0 )
-    {
-        // Get the first point in the queue
-        QPoint currentPoint = queue.at(0);
+    while ( queue.size() > 0 ) {
 
-        // Remove this point from the queue as we process it.
+        // Get the first point in the queue and remove it afterwards
+        currentPoint = queue.at(0);
         queue.removeAt(0);
 
         // Inspect a line from edge to edge
+        if (image->pixel(currentPoint.x(), currentPoint.y()) == colourFrom) {
+            leftX = currentPoint.x();
+            rightX = currentPoint.x();
 
-        if (image->pixel(currentPoint.x(), currentPoint.y()) == colouFrom) {
-
-            int leftX = currentPoint.x();
-            int rightX = currentPoint.x();
-
-            bool foundLeftBound = false;
-            bool foundRightBound = false;
-
+            foundLeftBound = false;
+            foundRightBound = false;
 
             while (!foundLeftBound) {
                 leftX--;
 
                 // Are we getting to the end of the document ?
-                //
                 if ( leftX < 1) {
                     error = 1;
                     qWarning() << " Out of bound left ";
@@ -1394,8 +1384,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 QPoint leftPoint = QPoint(leftX, currentPoint.y());
 
                 // Are we getting to a curve ?
-                //
-                if ( image->pixel(leftPoint.x(), leftPoint.y()) != colouFrom &&
+                if ( image->pixel(leftPoint.x(), leftPoint.y()) != colourFrom &&
                      image->pixel(leftPoint.x(), leftPoint.y()) != colourTo ) {
 
                     foundLeftBound = true;
@@ -1404,7 +1393,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                     QPointF contourPoint( leftPoint.x() - (maxWidth / 2), leftPoint.y() - (maxHeight / 2));
 
                     // Check if the left bound is just a line crossing the main shape
-                    //
                     bool foundFillAfter = false;
                     int increment = 1;
 
@@ -1415,17 +1403,15 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                             foundFillAfter = true;
                         }
 
-                        increment ++;
+                        increment++;
                     }
 
-
+                    // If the bound is not a contour, we must ignore it
                     if (foundFillAfter) {
 
                         // If the bound is not a contour, we must ignore it
-                        //
                         contourPoints.removeOne(contourPoint);
-                    }
-                    else {
+                    } else {
                         contourPoints.append(contourPoint);
                     }
                 }
@@ -1435,7 +1421,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 rightX++;
 
                 // Are we getting to the end of the document ?
-                //
                 if ( rightX > maxWidth - 1 ) {
                     error = 1;
                     qWarning() << " Out of bound right ";
@@ -1446,8 +1431,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 QPoint rightPoint = QPoint(rightX, currentPoint.y());
 
                 // Are we getting to a curve ?
-                //
-                if ( image->pixel(rightPoint.x(), rightPoint.y()) != colouFrom &&
+                if ( image->pixel(rightPoint.x(), rightPoint.y()) != colourFrom &&
                      image->pixel(rightPoint.x(), rightPoint.y()) != colourTo) {
 
                     foundRightBound = true;
@@ -1455,9 +1439,7 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                     // Convert point to view coordinates
                     QPointF contourPoint( rightPoint.x() - (maxWidth / 2), rightPoint.y() - (maxHeight / 2));
 
-
                     // Check if the left bound is just a line crossing the main shape
-                    //
                     bool foundFillAfter = false;
                     int increment = 1;
 
@@ -1468,17 +1450,14 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                             foundFillAfter = true;
                         }
 
-                        increment ++;
+                        increment++;
                     }
-
 
                     if (foundFillAfter) {
 
                         // If the bound is not a contour, we must ignore it
-                        //
                         contourPoints.removeOne(contourPoint);
-                    }
-                    else {
+                    } else {
                         contourPoints.append(contourPoint);
                     }
                 }
@@ -1495,28 +1474,21 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                 return emptylist;
             }
 
-            // Check if top point relative to left point is to be filled
-            //
             for (int x = leftX + 1; x < rightX; x++) {
 
                 // The current line point is checked (Coloured)
-                //
                 QPoint linePoint = QPoint(x, lineY);
                 image->setPixel(linePoint.x(), linePoint.y(), colourTo);
 
-                // Top point
-                //
                 QPoint topPoint = QPoint(x, topY);
 
-                if ( image->pixel(topPoint.x(), topPoint.y()) != colouFrom &&
+                if ( image->pixel(topPoint.x(), topPoint.y()) != colourFrom &&
                      image->pixel(topPoint.x(), topPoint.y()) != colourTo) {
 
                     // Convert point to view coordinates
                     QPointF contourPoint( topPoint.x() - (maxWidth / 2), topPoint.y() - (maxHeight / 2));
 
-
                     // Check if the left bound is just a line crossing the main shape
-                    //
                     bool foundFillAfter = false;
                     int increment = 1;
 
@@ -1526,36 +1498,29 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                         if (image->pixel(pointAfter.x(), pointAfter.y()) == colourTo) {
                             foundFillAfter = true;
                         }
-
                         increment ++;
                     }
 
 
                     if (foundFillAfter) {
+
                         // If the bound is not a contour, we must ignore it
-                        //
                         contourPoints.removeOne(contourPoint);
-                    }
-                    else {
+                    } else {
                         contourPoints.append(contourPoint);
                     }
-                }
-                else {
+                } else {
                     queue.append(topPoint);
                 }
 
-                // Bottom point
-                //
                 QPoint bottomPoint = QPoint(x, bottomY);
 
-                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colouFrom &&
+                if ( image->pixel(bottomPoint.x(), bottomPoint.y()) != colourFrom &&
                      image->pixel(bottomPoint.x(), bottomPoint.y()) != colourTo ) {
 
-                    // Convert point to view coordinates
                     QPointF contourPoint( bottomPoint.x() - (maxWidth / 2), bottomPoint.y() - (maxHeight / 2));
 
                     // Check if the left bound is just a line crossing the main shape
-                    //
                     bool foundFillAfter = false;
                     int increment = 1;
 
@@ -1566,14 +1531,12 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                             foundFillAfter = true;
                         }
 
-                        increment ++;
+                        increment++;
                     }
-
 
                     if (foundFillAfter) {
 
                         // If the bound is not a contour, we must ignore it
-                        //
                         contourPoints.removeOne(contourPoint);
                     }
                     else {
@@ -1581,38 +1544,32 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
                         // Keep track of the highest Y position (lowest point) at the beginning of the list
                         // so that we can parse the list from a point that is a real extremity.
                         // of the area.
-                        //
                         if (highestY < bottomY) {
 
                             highestY = bottomY;
                             contourPoints.insert(0, contourPoint);
-                        }
-                        else {
+                        } else {
                             contourPoints.append(contourPoint);
                         }
                     }
 
-                }
-                else {
+                } else {
                     queue.append(bottomPoint);
                 }
             }
         }
     }
-
     return contourPoints;
 }
 
 void VectorImage::fill(QPointF point, int colour, float tolerance)
 {
     // Check if we clicked on a curve. In that case, we change its color.
-    //
     QList<int> closestCurves = getCurvesCloseTo( point, tolerance );
 
     if (closestCurves.size() > 0) // the user click on one or more curves
     {
         // For each clicked curves, we change the color if requiered
-        //
         for (int i = 0; i < closestCurves.size(); i++) {
             int curveNumber = closestCurves[i];
             m_curves[curveNumber].setColourNumber(colour);
@@ -1623,19 +1580,16 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
 
     // Check if we clicked on an area of the same color.
     // We don't want to create another area.
-    //
     int areaNum = getLastAreaNumber(point);
     if (areaNum > -1 && area[areaNum].mColourNumber == colour) {
         return;
     }
 
     // Get the contour points
-    //
     QList<QPointF> contourPoints = getfillContourPoints(point.toPoint());
 
     // Make a path from the external contour points.
     // Put the points in the right order.
-    //
     QList<QPointF> mainContourPath;
     QPointF currentPoint;
 
@@ -1683,7 +1637,6 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
         }
 
         // Check if we have looped
-        //
         if (!foundNextPoint) {
 
             qreal deltaX = currentPoint.x() - mainContourPath[0].x();
@@ -1714,19 +1667,15 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
         foundError = ( (contourPoints.size() < 1 && !completedPath) || !foundNextPoint );
     }
 
-
     // Add exclude paths
 
-
     // Fill the path if we have one.
-    //
     if (completedPath) {
-        fill(mainContourPath, colour, 3.0);
+        fillPath(mainContourPath, colour, 10.0);
     }
     else {
         // Check if we clicked on an area in this position and as we couldn't create one,
         // we update this one. It may be an area drawn from a stroke path.
-        //
         int areaNum = getLastAreaNumber(point);
         if (areaNum > -1) {
 
@@ -1737,18 +1686,7 @@ void VectorImage::fill(QPointF point, int colour, float tolerance)
             }
         }
     }
-
-
 }
-
-// Creates an area based on the contour of a curve
-//
-void VectorImage::fill(int curveNumber, int colour)
-{
-    BezierArea bezierArea(getCurveVertices(curveNumber), colour);
-    addArea(bezierArea);
-}
-
 
 void VectorImage::addArea(BezierArea bezierArea)
 {
@@ -1833,7 +1771,7 @@ void VectorImage::updateArea(BezierArea& bezierArea)
                 }
                 newPath.cubicTo(myC1, myC2, myPoint);
             }
-            else      // the two points are not the same curve
+            else // the two points are not the same curve
             {
                 if ( bezierArea.mVertex[i].vertexNumber == -1)   // the current point is the first point in the new curve
                 {
@@ -1853,8 +1791,7 @@ void VectorImage::updateArea(BezierArea& bezierArea)
 
 qreal VectorImage::getDistance(VertexRef r1, VertexRef r2)
 {
-    qreal dist = BezierCurve::eLength(getVertex(r1)-getVertex(r2));
-    return dist;
+    return BezierCurve::eLength(getVertex(r1)-getVertex(r2));
 }
 
 void VectorImage::updateImageSize(BezierCurve& updatedCurve) {

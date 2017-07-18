@@ -2,10 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,14 +20,17 @@ GNU General Public License for more details.
 
 #include <QtXml>
 #include <QTransform>
+#include <QDebug>
+#include <QImage>
+#include <QStringList>
+
 #include "bezierarea.h"
 #include "beziercurve.h"
 #include "vertexref.h"
 #include "keyframe.h"
 
-class Object;  // forward declaration
+class Object;
 class QPainter;
-
 
 class VectorImage : public KeyFrame
 {
@@ -34,7 +38,7 @@ public:
     VectorImage();
     virtual ~VectorImage();
 
-    void setObject( Object* pObj ) { myParent = pObj; }
+    void setObject( Object* pObj ) { mObject = pObj; }
 
     bool read(QString filePath);
     Status write(QString filePath, QString format);
@@ -63,7 +67,7 @@ public:
     int getFirstSelectedArea();
     void selectAll();
     void deselectAll();
-    QRectF getSelectionRect() { return selectionRect; }
+    QRectF getSelectionRect() { return mSelectionRect; }
     void setSelectionRect(QRectF rectange);
     void calculateSelectionRect();
     void deleteSelection();
@@ -91,9 +95,8 @@ public:
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fill(QList<QPointF> contourPath, int colour, float tolerance);
+    void fillPath(QList<QPointF> contourPath, int colour, float tolerance);
     void fill(QPointF point, int colour, float tolerance);
-    void fill(int curveNumber, int colour);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);
@@ -129,17 +132,17 @@ public:
 
 private:
     void addPoint( int curveNumber, int vertexNumber, qreal t );
+	
+	void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
+	void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 
-    Object* myParent = nullptr;
+	QList<QPointF> getfillContourPoints(QPoint point);
+	void updateImageSize(BezierCurve& updatedCurve);
 
-    QRectF selectionRect;
-    QTransform selectionTransformation;
-
-    void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
-    void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
-
-    QList<QPointF> getfillContourPoints(QPoint point);
-    void updateImageSize(BezierCurve& updatedCurve);
+private:
+    Object* mObject = nullptr;
+    QRectF mSelectionRect;
+    QTransform mSelectionTransformation;
     QSize mSize;
 };
 

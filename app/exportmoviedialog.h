@@ -1,33 +1,54 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2013-2017 Matt Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+
 #ifndef EXPORTMOVIEDIALOG_H
 #define EXPORTMOVIEDIALOG_H
 
-#include <QDialog>
+#include "importexportdialog.h"
 
 namespace Ui {
-class ExportMovieDialog;
+class ExportMovieOptions;
 }
 
-class ExportMovieDialog : public QDialog
+class ExportMovieDialog : public ImportExportDialog
 {
     Q_OBJECT
 
 public:
     explicit ExportMovieDialog(QWidget* parent = 0);
     ~ExportMovieDialog();
-    
+
     void setCamerasInfo( std::vector< std::pair< QString, QSize > > );
     void updateResolutionCombo( int index );
 
-	void setDefaultRange( int startFrame, int endFrame );
+    void setDefaultRange( int startFrame, int endFrame );
 
-	QString getSelectedCameraName();
-	QSize getExportSize();
+    QString getSelectedCameraName();
+    QSize getExportSize();
 
-	int getStartFrame();
-	int getEndFrame();
+    int getStartFrame();
+    int getEndFrame();
+
+protected:
+    Mode getMode();
+    FileType getFileType();
 
 private:
-    Ui::ExportMovieDialog* ui = nullptr;
+    Ui::ExportMovieOptions* ui = nullptr;
 };
 
 #endif // EXPORTMOVIEDIALOG_H

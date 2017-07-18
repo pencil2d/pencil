@@ -1,3 +1,18 @@
+/*
+
+Pencil - Traditional Animation Software
+Copyright (C) 2012-2017 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #ifndef COLORGRIDITEM_H
 #define COLORGRIDITEM_H
 
@@ -26,18 +41,18 @@ public slots:
 protected:
     void drawTransparent();
     void paintEvent(QPaintEvent *);
-    void enterEvent(QEvent *event);
-    void leaveEvent(QEvent *event);
+    void enterEvent(QEvent* event);
+    void leaveEvent(QEvent* event);
     void mousePressEvent(QMouseEvent *event);
     void initMenu();
-    int gridId_;
+
+private:
+    int mGridId;
     QMenu menu;
-    QColor color_;
-    QPixmap backgroundImg;
-    bool hovered_;
-//    ColorWheel * wheel_;
+    QColor mColor;
+    QPixmap mBackgroundImg;
+    bool mHovered;
     QCursor picker;
-    static const int gridWidth = 16;
 };
 
 #endif // COLORGRIDITEM_H

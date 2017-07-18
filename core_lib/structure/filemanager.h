@@ -2,11 +2,11 @@
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2014 Matt Chiawen Chang
+Copyright (C) 2012-2017 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation;
+as published by the Free Software Foundation; version 2 of the License.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -55,9 +55,14 @@ private:
     bool loadObjectOldWay( Object*, const QDomElement& root );
     bool isOldForamt( const QString& fileName );
     bool loadPalette( Object* );
-    ObjectData* loadEditorState( QDomElement element );
-    void extractObjectData( const QDomElement& element, ObjectData* data );
     
+    ObjectData* loadProjectData( const QDomElement& element );
+    QDomElement saveProjectData( ObjectData*, QDomDocument& xmlDoc );
+
+    void extractProjectData( const QDomElement& element, ObjectData* data );
+
+
+
     Object* cleanUpWithErrorCode( Status );
 
 private:
