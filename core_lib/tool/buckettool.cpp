@@ -130,11 +130,14 @@ void BucketTool::paintBitmap(Layer* layer)
     int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
 
     BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+    QRgb oldColor = sourceImage->pixel(getLastPoint().toPoint().x(), getLastPoint().toPoint().y());
 
-    BitmapImage::floodFill( sourceImage,
-                            targetImage,
-                            getLastPoint().toPoint(),
-                            qRgba( 0, 0, 0, 0 ),
+    QPoint point = getLastPoint().toPoint();
+
+    BitmapImage bitmapImage;
+    bitmapImage.floodFill( targetImage,
+                            point,
+                            oldColor,
                             mEditor->color()->frontColor().rgba(),
                             properties.tolerance * 2.2,
                             true );
