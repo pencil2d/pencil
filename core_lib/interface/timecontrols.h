@@ -65,6 +65,9 @@ private:
     void playbackRangeClicked( bool bChecked );
     void preLoopStartClick(int);
 
+private slots:
+    void updateSoundIcon( bool soundEnabled );
+
 private:
     QPushButton* mPlayButton = nullptr;
     QPushButton* mJumpToEndButton = nullptr;

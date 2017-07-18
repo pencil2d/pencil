@@ -105,6 +105,12 @@ void PlaybackManager::setFps( int fps )
 
 void PlaybackManager::playSounds( int frame )
 {
+    // If sound is turned off, don't play anything.
+    if(!mIsPlaySound)
+    {
+        return;
+    }
+
     std::vector< LayerSound* > kSoundLayers;
     for ( int i = 0; i < object()->getLayerCount(); ++i )
     {
@@ -200,6 +206,20 @@ void PlaybackManager::enableRangedPlayback( bool b )
     {
         mIsRangedPlayback = b;
         emit rangedPlaybackStateChanged( mIsRangedPlayback );
+    }
+}
+
+void PlaybackManager::enbaleSound(bool b)
+{
+    mIsPlaySound = b;
+
+    if(!mIsPlaySound)
+    {
+        stopSounds();
+
+        // If, during playback, the sound is turned on again,
+        // check for sounds partway through.
+        mCheckForSoundsHalfway = true;
     }
 }
 
