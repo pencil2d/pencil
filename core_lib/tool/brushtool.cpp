@@ -48,6 +48,7 @@ void BrushTool::loadSettings()
 {
     m_enabledProperties[WIDTH] = true;
     m_enabledProperties[FEATHER] = true;
+    m_enabledProperties[USEFEATHER] = true;
     m_enabledProperties[PRESSURE] = true;
     m_enabledProperties[INVISIBILITY] = true;
     m_enabledProperties[INTERPOLATION] = true;
@@ -58,7 +59,7 @@ void BrushTool::loadSettings()
     properties.width = settings.value( "brushWidth" ).toDouble();
     properties.feather = settings.value( "brushFeather", 15.0 ).toDouble();
     properties.useFeather = settings.value( "brushUseFeather", true ).toBool();
-    properties.pressure = settings.value( "brushPressure", true ).toBool();
+    properties.pressure = settings.value( "brushPressure", false ).toBool();
     properties.invisibility = settings.value("brushInvisibility", true).toBool();
     properties.preserveAlpha = OFF;
     properties.inpolLevel = 0;

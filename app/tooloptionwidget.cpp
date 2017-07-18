@@ -73,6 +73,7 @@ void ToolOptionWidget::updateUI()
 
     setPenWidth( p.width );
     setPenFeather( p.feather );
+    setUseFeather( p.useFeather );
     setPressure( p.pressure );
     setPenInvisibility( p.invisibility );
     setPreserveAlpha( p.preserveAlpha );
@@ -269,6 +270,9 @@ void ToolOptionWidget::onToolPropertyChanged( ToolType, ToolPropertyType eProper
         case FEATHER:
             setPenFeather( p.feather );
             break;
+        case USEFEATHER:
+            setUseFeather( p.useFeather );
+            break;
         case PRESSURE:
             setPressure( p.pressure );
             break;
@@ -327,6 +331,7 @@ void ToolOptionWidget::visibilityOnLayer()
                 mFillContour->setVisible(false);
                 break;
             default:
+                mMakeInvisibleBox->setVisible(false);
                 break;
 
         }
@@ -358,6 +363,13 @@ void ToolOptionWidget::setPenFeather( qreal featherValue )
     SignalBlocker b2( mFeatherSpinBox );
     mFeatherSpinBox->setEnabled( true );
     mFeatherSpinBox->setValue( featherValue );
+}
+
+void ToolOptionWidget::setUseFeather( bool useFeather)
+{
+    SignalBlocker b( mUseFeatherBox );
+    mUseFeatherBox->setEnabled(true);
+    mUseFeatherBox->setChecked(useFeather);
 }
 
 void ToolOptionWidget::setPenInvisibility( int x )

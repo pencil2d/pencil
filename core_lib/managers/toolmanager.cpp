@@ -120,6 +120,7 @@ void ToolManager::resetAllTools()
     getTool( BRUSH )->properties.width = 15.0;
     getTool( BRUSH )->properties.feather = 200.0;
     getTool( BRUSH )->properties.inpolLevel = -1;
+    getTool( BRUSH )->properties.useFeather = false;
     getTool( SMUDGE )->properties.width = 25.0;
     getTool( SMUDGE )->properties.feather = 200.0;
     getTool( BUCKET )->properties.tolerance = 100.0;
