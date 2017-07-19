@@ -1195,11 +1195,13 @@ void MainWindow2::updateZoomLabel()
 
 void MainWindow2::changePlayState( bool isPlaying )
 {
-    if( isPlaying ) {
+    if( isPlaying )
+    {
         ui->actionPlay->setText(tr("Stop"));
         ui->actionPlay->setIcon(mStopIcon);
     }
-    else {
+    else
+    {
         ui->actionPlay->setText(tr("Play"));
         ui->actionPlay->setIcon(mStartIcon);
     }

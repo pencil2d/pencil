@@ -493,13 +493,16 @@ QString Object::copyFileToDataFolder( QString strFilePath )
 {
     if ( !QFile::exists( strFilePath ) )
     {
+        qDebug() << "[Object] sound file doesn't exist: " << strFilePath;
         return "";
     }
 
-    QFileInfo kInfo( strFilePath );
+    QString sNewFileName = "sound_";
+    sNewFileName += QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss_zzz.");
+    sNewFileName += QFileInfo( strFilePath ).suffix();
 
     QString srcFile = strFilePath;
-    QString destFile = QDir( mDataDirPath ).filePath( kInfo.fileName() );
+    QString destFile = QDir( mDataDirPath ).filePath( sNewFileName );
 
     if ( QFile::exists( destFile ) )
     {
@@ -509,6 +512,7 @@ QString Object::copyFileToDataFolder( QString strFilePath )
     bool bCopyOK = QFile::copy( srcFile, destFile );
     if ( !bCopyOK )
     {
+        qDebug() << "[Object] couldn't copy sound file to data folder: " << strFilePath;
         return "";
     }
 
