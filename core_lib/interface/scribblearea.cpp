@@ -742,7 +742,7 @@ void ScribbleArea::paintBitmapBuffer( )
 
 void ScribbleArea::paintBitmapBufferRect( QRect rect )
 {
-    if ( currentTool()->type() == SMUDGE || mEditor->playback()->isPlaying() ) {
+    if ( currentTool()->type() == SMUDGE || currentTool()->type() == BRUSH || mEditor->playback()->isPlaying() ) {
         Layer* layer = mEditor->layers()->currentLayer();
 
         // ---- checks ------
@@ -1107,12 +1107,12 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
         setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
         gradientImg.drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                                   QPainter::CompositionMode_Source, false );
+                                   QPainter::CompositionMode_SourceOver, false );
     }
     else
     {
         mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
-                                   QPainter::CompositionMode_Source, useAA );
+                                   QPainter::CompositionMode_SourceOver, useAA );
     }
     mBufferImg->paste( &gradientImg );
 }
