@@ -64,6 +64,7 @@ public:
     QRgb pixel( QPoint P );
     void setPixel( int x, int y, QRgb colour );
     void setPixel( QPoint P, QRgb colour );
+    void scanLine( int x, int y, QRgb colour);
     void clear();
     void clear( QRect rectangle );
     void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }

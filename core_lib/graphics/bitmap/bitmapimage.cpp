@@ -428,6 +428,21 @@ void BitmapImage::clear()
     mBounds = QRect(0,0,0,0);
 }
 
+void BitmapImage::scanLine(int x, int y, QRgb colour)
+{
+//    extend( P );
+    if( mBounds.contains(QPoint(x,y) ) ) {
+
+        // setting pixels directly requires to multiply wihh alpha and div 255
+        // manually for premultiplied images.
+        *( (QRgb*) mImage->scanLine(y - topLeft().y()) + x - topLeft().x() ) =
+                qRgba( qRed ( colour ) * qAlpha( colour ) / 255,
+                       qGreen ( colour ) * qAlpha( colour ) / 255,
+                       qBlue ( colour ) * qAlpha( colour ) / 255,
+                       qAlpha ( colour ) );
+    }
+}
+
 void BitmapImage::clear(QRect rectangle)
 {
     QRect clearRectangle = mBounds.intersected( rectangle );
@@ -463,7 +478,7 @@ bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
     int diffBlue = abs( blue2 - blue1 );
     int diffAlpha = abs( alpha2 - alpha1 );
 
-    qDebug() << diffRed << " " << diffGreen << " " << diffBlue << " " << diffAlpha << " " << tolerance;
+//    qDebug() << diffRed << " " << diffGreen << " " << diffBlue << " " << diffAlpha << " " << tolerance;
 
     if ( diffRed > tolerance ||
          diffGreen > tolerance ||
@@ -517,10 +532,10 @@ void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QP
         spanLeft = spanRight = false;
         while (yTemp < fillImage->height() &&
                compareColor(fillImage->pixel(point.x(), yTemp), oldColor, tolerance) ) {
-//            fillImage->setPixel(point.x(), yTemp, qRgb(qRed(newColor), qGreen(newColor), qBlue(newColor)));
-              fillImage->setPixel(point.x(), yTemp, newColor);
+//            fillImage->setPixel(point.x(), yTemp, qRgba(qRed(newColor) * qAlpha(newColor) / 255, qGreen(newColor) * qAlpha(newColor) / 255, qBlue(newColor) * qAlpha(newColor) / 255, qAlpha(newColor )));
+//              fillImage->setPixel(point.x(), yTemp, newColor);
+            fillImage->scanLine(point.x(), yTemp, newColor);
 
-//            fillImage->image()->scanLine((yTemp)+point.x()); // figure out how scanline works
             if (!spanLeft && (point.x() > fillImage->left() || point.x() < fillImage->right()) &&
                     compareColor(fillImage->pixel(point.x() - 1, yTemp), oldColor, tolerance)) {
                 queue.append(QPoint(point.x() - 1, yTemp));
