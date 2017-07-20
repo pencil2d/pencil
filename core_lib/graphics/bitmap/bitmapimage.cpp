@@ -275,8 +275,8 @@ void BitmapImage::extend(QRect rectangle)
     else
     {
         QRect newBoundaries = mBounds.united(rectangle).normalized();
-        QImage* newImage = new QImage( newBoundaries.size(), QImage::Format_ARGB32);
-        newImage->fill(qRgba(0,0,0,0));
+        QImage* newImage = new QImage( newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
+        newImage->fill(Qt::transparent);
         if (!newImage->isNull())
         {
             QPainter painter(newImage);
@@ -444,21 +444,44 @@ int BitmapImage::pow(int n)   // pow of a number
     return n*n;
 }
 
-// Euclidean Color distance
-int BitmapImage::rgbDistance(QRgb rgba1, QRgb rgba2)
+bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
 {
-    int result = pow(qRed(rgba1)-qRed(rgba2))
-               + pow(qGreen(rgba1)-qGreen(rgba2))
-               + pow(qBlue(rgba1)-qBlue(rgba2))
-               + pow(qAlpha(rgba1)-qAlpha(rgba2));
-    return sqrt(result);
+    if (color1 == color2) return true;
+
+    int red1 = qRed(color1);
+    int green1 = qGreen(color1);
+    int blue1 = qBlue(color1);
+    int alpha1 = qAlpha(color1);
+
+    int red2 = qRed(color2);
+    int green2 = qGreen(color2);
+    int blue2 = qBlue(color2);
+    int alpha2 = qAlpha(color2);
+
+    int diffRed = abs( red2 - red1 );
+    int diffGreen = abs( green2 - green1 );
+    int diffBlue = abs( blue2 - blue1 );
+    int diffAlpha = abs( alpha2 - alpha1 );
+
+    qDebug() << diffRed << " " << diffGreen << " " << diffBlue << " " << diffAlpha << " " << tolerance;
+
+    if ( diffRed > tolerance ||
+         diffGreen > tolerance ||
+         diffBlue > tolerance ||
+         diffAlpha > tolerance )
+    {
+        return false;
+    }
+
+    return true;
 }
 
-// ----- Queue based flood fill
+// Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-void BitmapImage::floodFill(BitmapImage* fillImage, QPoint point, QRgb oldColor, QRgb replacementColour, int tolerance, bool extendFillImage)
+void BitmapImage::floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb oldColor, QRgb newColor, int tolerance, bool extendFillImage)
 {
-    if (oldColor == replacementColour) return;
+    if (oldColor == newColor) return;
+
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
 
@@ -469,10 +492,10 @@ void BitmapImage::floodFill(BitmapImage* fillImage, QPoint point, QRgb oldColor,
     bool spanLeft, spanRight;
 
     if (extendFillImage) {
-        replaceImage = new BitmapImage(fillImage->mBounds, QColor(0,0,0,0));
+        replaceImage = new BitmapImage(targetImage->mBounds.united(fillImage->mBounds), Qt::transparent);
     } else {
-        fillImage->extend(fillImage->mBounds); // not necessary - here just to prevent some bug when we draw outside the targetImage - to be fixed
-        replaceImage = new BitmapImage(fillImage->mBounds, QColor(0,0,0,0));
+//        targetImage->extend(fillImage->mBounds); // not necessary - here just to prevent some bug when we draw outside the targetImage - to be fixed
+        replaceImage = new BitmapImage(fillImage->mBounds, Qt::transparent);
         replaceImage->mExtendable = false;
     }
 
@@ -486,30 +509,39 @@ void BitmapImage::floodFill(BitmapImage* fillImage, QPoint point, QRgb oldColor,
         point.setY(tempPoint.y());
 
         yTemp = point.y();
-        while (yTemp >= fillImage->topLeft().y() && fillImage->pixel(QPoint(point.x(), yTemp)) == oldColor && rgbDistance(fillImage->pixel(point.x(), yTemp), oldColor) < tolerance)  yTemp--;
+
+        while (yTemp >= fillImage->topLeft().y() &&
+               compareColor(fillImage->pixel(point.x(), yTemp), oldColor, tolerance)) yTemp--;
         yTemp++;
 
         spanLeft = spanRight = false;
-        while (yTemp < fillImage->height() && fillImage->pixel(QPoint(point.x(), yTemp)) == oldColor && rgbDistance(fillImage->pixel(point.x(), yTemp), oldColor) < tolerance) {
-            fillImage->setPixel(point.x(), yTemp, replacementColour);
-//            fillImage->image()->scanLine((yTemp)+point.x()); // figure out how scanline works
+        while (yTemp < fillImage->height() &&
+               compareColor(fillImage->pixel(point.x(), yTemp), oldColor, tolerance) ) {
+//            fillImage->setPixel(point.x(), yTemp, qRgb(qRed(newColor), qGreen(newColor), qBlue(newColor)));
+              fillImage->setPixel(point.x(), yTemp, newColor);
 
-            if (!spanLeft && point.x() > fillImage->left() && point.x() < fillImage->right() && fillImage->pixel(QPoint(point.x() - 1, yTemp)) == oldColor && rgbDistance(fillImage->pixel(point.x() - 1, yTemp), oldColor) < tolerance) {
+//            fillImage->image()->scanLine((yTemp)+point.x()); // figure out how scanline works
+            if (!spanLeft && (point.x() > fillImage->left() || point.x() < fillImage->right()) &&
+                    compareColor(fillImage->pixel(point.x() - 1, yTemp), oldColor, tolerance)) {
                 queue.append(QPoint(point.x() - 1, yTemp));
                 spanLeft = true;
 //                qDebug() << "left" << point.x();
-            } else if(spanLeft && point.x() > fillImage->left() && point.x() < fillImage->right() && fillImage->pixel(QPoint(point.x() - 1, yTemp)) != oldColor && rgbDistance(fillImage->pixel(point.x() - 1, yTemp), oldColor) < tolerance) {
+            } else if(spanLeft && (point.x() > fillImage->left() || point.x() < fillImage->right()) &&
+                      !compareColor(fillImage->pixel(point.x() - 1, yTemp), oldColor, tolerance)) {
                 spanLeft = false;
 
 //                qDebug() << "Left false" << point.x();
             }
 
-            if (!spanRight && point.x() < (fillImage->width() - 1) && fillImage->pixel(QPoint(point.x() + 1, yTemp)) == oldColor && rgbDistance(fillImage->pixel(point.x() + 1, yTemp), oldColor) < tolerance) {
+            if (!spanRight && point.x() < (fillImage->width() - 1) &&
+                    compareColor(fillImage->pixel(point.x() + 1, yTemp), oldColor, tolerance)) {
                 queue.append(QPoint((point.x()) + 1, yTemp));
                 spanRight = true;
+//                qDebug() << compareColor(fillImage->pixel(point.x() + 1, yTemp), oldColor) << " tolerance "<< tolerance;
 
 //                qDebug() << "Right" << point.x();
-            } else if(spanRight && point.x() < (fillImage->width() - 1) && fillImage->pixel(QPoint(point.x() + 1, yTemp)) != oldColor && rgbDistance(fillImage->pixel(point.x() + 1, yTemp), oldColor) < tolerance) {
+            } else if(spanRight && point.x() < (fillImage->width() - 1) &&
+                      !compareColor(fillImage->pixel(point.x() + 1, yTemp), oldColor, tolerance)) {
                 spanRight = false;
 //                qDebug() << "Right false" << point.x();
             }
@@ -517,9 +549,17 @@ void BitmapImage::floodFill(BitmapImage* fillImage, QPoint point, QRgb oldColor,
         }
     }
 
-//    QPainter painter( mImage.get() );
-//    painter.setRenderHint(QPainter::Antialiasing, true);
-//    painter.drawImage( point, *fillImage->image());
+//    QImage temp( fillImage->image()->size(), QImage::Format_ARGB32_Premultiplied);
+//    temp.fill(Qt::transparent);
+
+//    QPainter painter( fillImage->image() );
+//    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+//    painter.drawImage(replaceImage->topLeft() - fillImage->bounds().topLeft(), *replaceImage->image());
+//    painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+//    painter.fillRect(temp.rect(), QColor(0, 0, 0, qAlpha(newColor)));
+//    painter.end();
+
+//    replaceImage->setImage(&temp);
     fillImage->paste(replaceImage);
 
     delete replaceImage;

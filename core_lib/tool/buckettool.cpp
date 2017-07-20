@@ -134,13 +134,13 @@ void BucketTool::paintBitmap(Layer* layer)
 
     QPoint point = getLastPoint().toPoint();
 
-    BitmapImage bitmapImage;
-    bitmapImage.floodFill( targetImage,
+    BitmapImage::floodFill( sourceImage,
+                            targetImage,
                             point,
                             oldColor,
                             mEditor->color()->frontColor().rgba(),
-                            properties.tolerance * 2.2,
-                            true );
+                            properties.tolerance * 2.55,
+                            false );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
     mScribbleArea->setAllDirty();

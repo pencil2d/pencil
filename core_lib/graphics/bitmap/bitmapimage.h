@@ -68,9 +68,9 @@ public:
     void clear( QRect rectangle );
     void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }
 
-    int pow( int );
-    int rgbDistance( QRgb rgba1, QRgb rgba2 );
-    void floodFill(BitmapImage* fillImage, QPoint point, QRgb oldColor, QRgb replacementColour, int tolerance, bool extendFillImage );
+    static int pow( int );
+    static bool compareColor(QRgb color1, QRgb color2, int tolerance);
+    static void floodFill(BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb oldColor, QRgb newColor, int tolerance, bool extendFillImage );
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing );
     void drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing );
