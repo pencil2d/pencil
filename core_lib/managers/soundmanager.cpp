@@ -98,8 +98,11 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     QString strCopyFile = soundLayer->object()->copyFileToDataFolder( strSoundFile );
     Q_ASSERT( !strCopyFile.isEmpty() );
 
+    QString sOriginalName = QFileInfo( strSoundFile ).fileName();
+
     SoundClip* soundClip = dynamic_cast< SoundClip* >( key );
     soundClip->init( strCopyFile );
+    soundClip->setSoundClipName( sOriginalName );
 
     Status st = createMediaPlayer( soundClip );
     if ( !st.ok() )
@@ -129,6 +132,7 @@ Status SoundManager::loadSound( SoundClip* soundClip, QString strSoundFile )
     Q_ASSERT( !strCopyFile.isEmpty() );
 
     soundClip->init( strCopyFile );
+    soundClip->setSoundClipName( QFileInfo( strSoundFile ).fileName() );
 
     Status st = createMediaPlayer( soundClip );
     if ( !st.ok() )
@@ -148,6 +152,7 @@ void SoundManager::onDurationChanged( SoundPlayer* player, int64_t duration )
 
     double frameLength = duration * fps / 1000.0;
     clip->setLength( frameLength );
+    clip->setDuration( duration );
 
     emit soundClipDurationChanged();
 }

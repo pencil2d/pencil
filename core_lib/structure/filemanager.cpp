@@ -183,11 +183,28 @@ bool FileManager::isOldForamt( const QString& fileName )
 Status FileManager::save( Object* object, QString strFileName )
 {
     QStringList debugDetails = QStringList() << "FileManager::save" << QString( "strFileName = " ).append( strFileName );
-    if ( object == nullptr ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "object parameter is null" ); }
+    if ( object == nullptr )
+    {
+        return Status( Status::INVALID_ARGUMENT, debugDetails << "object parameter is null" );
+    }
 
     QFileInfo fileInfo( strFileName );
-    if ( fileInfo.isDir() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a directory", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") points to a directory, so the file cannot be saved." ).arg( fileInfo.absoluteFilePath() ) ); }
-    if ( fileInfo.exists() && !fileInfo.isWritable() ) { return Status( Status::INVALID_ARGUMENT, debugDetails << "strFileName points to a file that is not writable", tr( "Invalid Save Path" ), tr( "The file path you have specified (\"%1\") cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again." ).arg( fileInfo.absoluteFilePath() ) ); }
+    if ( fileInfo.isDir() )
+    { 
+        debugDetails << "strFileName points to a directory";
+        return Status( Status::INVALID_ARGUMENT,
+                       debugDetails,
+                       tr( "Invalid Save Path" ),
+                       tr( "The file path you have specified (\"%1\") points to a directory, so the file cannot be saved." ).arg( fileInfo.absoluteFilePath() ) );
+    }
+    if ( fileInfo.exists() && !fileInfo.isWritable() )
+    {
+        debugDetails << "strFileName points to a file that is not writable";
+        return Status( Status::INVALID_ARGUMENT,
+                       debugDetails ,
+                       tr( "Invalid Save Path" ),
+                       tr( "The file path you have specified (\"%1\") cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again." ).arg( fileInfo.absoluteFilePath() ) );
+    }
 
     QString strTempWorkingFolder;
     QString strMainXMLFile;
@@ -218,6 +235,7 @@ Status FileManager::save( Object* object, QString strFileName )
     if ( !dataInfo.exists() )
     {
         QDir dir( strDataFolder ); // the directory where filePath is or will be saved
+        
         // creates a directory with the same name +".data"
         if( !dir.mkpath( strDataFolder ) )
         {
@@ -233,10 +251,12 @@ Status FileManager::save( Object* object, QString strFileName )
     if( !dataInfo.isDir() )
     {
         debugDetails << QString( "dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
-        if( isOldFile ) {
+        if( isOldFile )
+        {
             return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot use the path \"%1\" as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format." ).arg( dataInfo.absoluteFilePath() ) );
         }
-        else {
+        else
+        {
             return Status( Status::FAIL, debugDetails, tr( "Internal Error" ), tr( "Cannot use the data directory at temporary location \"%1\" since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format." ).arg( dataInfo.absoluteFilePath() ) );
         }
     }
@@ -387,7 +407,7 @@ QDomElement FileManager::saveProjectData( ObjectData* data, QDomDocument& xmlDoc
 	rootTag.appendChild( currentLayerTag );
 
 	// Current View
-	QDomElement currentViewTag = xmlDoc.createElement( "currentColor" );
+	QDomElement currentViewTag = xmlDoc.createElement( "currentView" );
 	QTransform view = data->getCurrentView();
 	currentViewTag.setAttribute( "m11", view.m11() );
 	currentViewTag.setAttribute( "m12", view.m12() );

@@ -31,7 +31,9 @@ public:
     QDomElement createDomElement(QDomDocument& doc) override;
     void loadDomElement(QDomElement element, QString dataDirPath) override;
 
-    Status loadSoundAtFrame( QString filePathString, int frame );
+    Status loadSoundClipAtFrame( const QString& sSoundClipName, const QString& filePathString, int frame );
+
+    void updateFrameLengths(int fps);
 
     // These functions will be removed later.
     // Don't use them!!

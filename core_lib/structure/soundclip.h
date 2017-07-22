@@ -33,6 +33,9 @@ public:
     Status init( const QString& strSoundFile );
     bool isValid();
 
+    void setSoundClipName( const QString& sName ) { mOriginalSoundClipName = sName; }
+    QString soundClipName() { return mOriginalSoundClipName; }
+
     void attachPlayer( SoundPlayer* player );
     void detachPlayer();
     SoundPlayer* player() { return mPlayer.get(); }
@@ -41,8 +44,19 @@ public:
     void playFromPosition(int frameNumber, int fps);
     void stop();
 
+    int64_t duration() const;
+    void setDuration(const int64_t &duration);
+
+    void updateLength(int fps);
+
 private:
     std::shared_ptr< SoundPlayer > mPlayer;
+
+    QString mOriginalSoundClipName;
+
+    // Duration in seconds. This is stored to update the length of the
+    // frame when the FPS changes.
+    int64_t mDuration = 0;
 };
 
 #endif // SOUNDCLIP_H

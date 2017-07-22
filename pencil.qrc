@@ -61,5 +61,6 @@
         <file>background/checkerboard.png</file>
         <file>icons/onion_type.png</file>
         <file>icons/controls/stop.png</file>
+        <file>icons/controls/sound-disabled.png</file>
     </qresource>
 </RCC>

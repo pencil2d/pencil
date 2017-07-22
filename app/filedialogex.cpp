@@ -18,7 +18,9 @@ GNU General Public License for more details.
 #include "filedialogex.h"
 
 #include <QSettings>
+#include <QFileInfo>
 #include <QFileDialog>
+
 #include "fileformat.h"
 #include "pencildef.h"
 
@@ -90,8 +92,7 @@ QString FileDialog::getLastOpenPath( FileType fileType )
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup( "LastOpenPath" );
 
-    return setting.value( toSettingKey( fileType ),
-                          QDir::homePath() + "/" + defaultFileName( fileType) ).toString();
+    return setting.value( toSettingKey( fileType ), QDir::homePath() ).toString();
 }
 
 void FileDialog::setLastOpenPath( FileType fileType, QString openPath )
@@ -99,7 +100,7 @@ void FileDialog::setLastOpenPath( FileType fileType, QString openPath )
     QSettings setting( PENCIL2D, PENCIL2D );
     setting.beginGroup( "LastOpenPath" );
 
-    setting.setValue( toSettingKey( fileType ), openPath );
+    setting.setValue( toSettingKey( fileType ), QFileInfo( openPath ).absolutePath() );
 }
 
 QString FileDialog::getLastSavePath( FileType fileType )

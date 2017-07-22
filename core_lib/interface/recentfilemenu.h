@@ -36,6 +36,7 @@ class RecentFileMenu : public QMenu
                  WRITE setRecentFiles )
 public:
     explicit RecentFileMenu(QString title = tr("Open Recent"), QWidget *parent = 0);
+    ~RecentFileMenu();
 
     static const int MAX_RECENT_FILES = 10;
 
@@ -60,8 +61,8 @@ protected slots:
 private:
     QStringList mRecentFiles;
     std::map<QString, QAction*> mRecentActions;
-	QAction* mClearAction = nullptr;
-	QAction* mClearSeparator = nullptr;
+    QAction* mClearAction = nullptr;
+    QAction* mClearSeparator = nullptr;
 };
 
 #endif // RECENTFILEMENU_H
