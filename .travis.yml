@@ -23,15 +23,15 @@ addons:
     - ubuntu-toolchain-r-test
     - ubuntu-sdk-team
     - trusty-media
+    - sourceline: 'ppa:beineri/opt-qt591-trusty'
     packages:
     - g++-5
     - build-essential
-    - qt5-default
-    - qttools5-dev-tools
-    - qtbase5-dev
-    - qtmultimedia5-dev
-    - libqt5svg5-dev
-    - libqt5xmlpatterns5-dev
+    - qt59tools
+    - qt59base
+    - qt59multimedia
+    - qt59svg
+    - qt59xmlpatterns
     - bsdtar
     - ffmpeg
 
@@ -40,8 +40,8 @@ before_install:
     brew update;
     brew install p7zip;
     brew install python3;
-    brew install qt@5.7;
-    brew link qt@5.7 --force;
+    brew install qt@5.9;
+    brew link qt@5.9 --force;
   fi'
 
 install:
@@ -54,13 +54,14 @@ install:
   - pip -V
 
 before_script:
-  - qmake --version
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
     sh -e /etc/init.d/xvfb start;
     echo "give xvfb some time to start";
     sleep 3;
   fi'
+  - qmake --version
 
 
 script:
@@ -99,7 +100,7 @@ after_success:
       echo "Copying necessary Qt frameworks";
       macdeployqt Pencil2D.app;
       echo "applying macdeployqt fix";
-      wget https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip; unzip -x master.zip; python $TRAVIS_BUILD_DIR/build/Pencil2D/macdeployqtfix-master/macdeployqtfix.py $TRAVIS_BUILD_DIR/build/Pencil2D/Pencil2D.app/Contents/MacOS/Pencil2D /usr/local/Cellar/qt@5.7/5.7.1/; 
+      wget https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip; unzip -x master.zip; python $TRAVIS_BUILD_DIR/build/Pencil2D/macdeployqtfix-master/macdeployqtfix.py $TRAVIS_BUILD_DIR/build/Pencil2D/Pencil2D.app/Contents/MacOS/Pencil2D /usr/local/Cellar/qt/5.9.1/;
       echo "Removing files";
       rm -rf macdeployqtfix-master;
       rm master.zip;
