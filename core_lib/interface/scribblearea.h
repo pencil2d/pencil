@@ -88,6 +88,7 @@ public:
 
     QTransform getView();
     QRectF getViewRect();
+    QRectF getCameraRect();
     QPointF getCentralPoint();
 
     void updateCurrentFrame();

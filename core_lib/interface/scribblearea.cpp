@@ -1233,6 +1233,11 @@ QRectF ScribbleArea::getViewRect()
     }
 }
 
+QRectF ScribbleArea::getCameraRect()
+{
+    return mCanvasRenderer.getCameraRect();
+}
+
 QPointF ScribbleArea::getCentralPoint()
 {
     return mEditor->view()->mapScreenToCanvas( QPointF( width() / 2, height() / 2 ) );

@@ -125,22 +125,21 @@ void BucketTool::mouseMoveEvent( QMouseEvent *event )
 
 void BucketTool::paintBitmap(Layer* layer)
 {
-    BitmapImage *sourceImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
     Layer *targetLayer = layer; // by default
     int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
 
     BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-    QRgb oldColor = sourceImage->pixel(getLastPoint().toPoint().x(), getLastPoint().toPoint().y());
 
     QPoint point = getLastPoint().toPoint();
 
-    BitmapImage::floodFill( sourceImage,
-                            targetImage,
+    QRect cameraRect = mScribbleArea->getCameraRect().toRect();
+
+    BitmapImage::floodFill( targetImage,
+                            cameraRect,
                             point,
-                            oldColor,
-                            mEditor->color()->frontColor().rgba(),
-                            properties.tolerance * 2.55,
-                            false );
+                            Qt::transparent,
+                            qPremultiply(mEditor->color()->frontColor().rgba()),
+                            properties.tolerance * 2.55 );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
