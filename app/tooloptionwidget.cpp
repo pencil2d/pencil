@@ -177,9 +177,9 @@ void ToolOptionWidget::createUI()
     mInpolLevelsBox->setLayout(inpolLayout);
     inpolLayout->setSpacing(2);
 
-    mToleranceSlider = new SpinSlider( tr( "Tolerance" ), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100, this );
+    mToleranceSlider = new SpinSlider( tr( "Color Tolerance" ), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100, this );
     mToleranceSlider->setValue( settings.value( "Tolerance" ).toInt() );
-    mToleranceSlider->setToolTip( tr( "Set Fill tolerance" ) );
+    mToleranceSlider->setToolTip( tr( "The extend to which the color variation will be treated as being equal" ) );
 
     mToleranceSpinBox = new QSpinBox(this);
     mToleranceSpinBox->setRange(1,100);

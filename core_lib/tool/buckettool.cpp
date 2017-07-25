@@ -49,7 +49,7 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.inpolLevel = -1;
     properties.useAA = -1;
-    properties.tolerance = 100;
+    properties.tolerance = 10;
 
     m_enabledProperties[TOLERANCE] = true;
 }
@@ -59,8 +59,6 @@ QCursor BucketTool::cursor()
     if( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) {
         QPixmap pixmap( ":icons/bucketTool.png" );
         QPainter painter( &pixmap );
-        painter.setPen( Qt::blue );   // FIXME: need to get current color
-        painter.drawLine( QPoint( 5, 16 ), QPoint( 5, 18 ) );
         painter.end();
 
         return QCursor( pixmap, 4, 20 );
@@ -138,7 +136,7 @@ void BucketTool::paintBitmap(Layer* layer)
                             cameraRect,
                             point,
                             Qt::transparent,
-                            qPremultiply(mEditor->color()->frontColor().rgba()),
+                            qPremultiply( mEditor->color()->frontColor().rgba() ),
                             properties.tolerance * 2.55 );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
