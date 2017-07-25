@@ -112,7 +112,7 @@ void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
     extend( newBoundaries );
 
     QImage* image2 = bitmapImage->image();
-    
+
     QPainter painter( mImage.get() );
     painter.setCompositionMode(cm);
     painter.drawImage( bitmapImage->mBounds.topLeft() - mBounds.topLeft(), *image2);
@@ -410,7 +410,7 @@ void BitmapImage::drawPath( QPainterPath path, QPen pen, QBrush brush,
                     painter.drawPoint( QPointF( x, y ) );
                 }
             }
-            
+
             //painter.drawPath( path );
         }
         else
@@ -429,9 +429,9 @@ void BitmapImage::clear()
 }
 
 QRgb BitmapImage::constScanLine(int x, int y) {
-    QRgb result = qRgba(0,0,0,0);
-    if ( mBounds.contains( QPoint(x,y) ) ) {
-        result = *(reinterpret_cast< const QRgb* >(mImage->constScanLine( y - topLeft().y() ) )+ x - topLeft().x());
+    QRgb result = qRgba( 0, 0, 0, 0 );
+    if ( mBounds.contains( QPoint( x, y ) ) ) {
+        result = *( reinterpret_cast< const QRgb* >( mImage->constScanLine( y - topLeft().y() ) ) + x - topLeft().x() );
     }
 
     return result;
@@ -439,11 +439,11 @@ QRgb BitmapImage::constScanLine(int x, int y) {
 
 void BitmapImage::scanLine(int x, int y, QRgb colour)
 {
-    extend( QPoint(x,y) );
-    if( mBounds.contains(QPoint(x,y) ) ) {
+    extend( QPoint( x, y ) );
+    if( mBounds.contains( QPoint( x, y ) ) ) {
 
         // Make sure color is premultiplied before calling
-        *(reinterpret_cast< QRgb* >(mImage->scanLine(y - topLeft().y())) + x - topLeft().x()) =
+        *( reinterpret_cast< QRgb* >( mImage->scanLine( y - topLeft().y() ) ) + x - topLeft().x() ) =
                  qRgba(
                        qRed( colour ),
                        qGreen( colour ),
@@ -456,7 +456,7 @@ void BitmapImage::clear(QRect rectangle)
 {
     QRect clearRectangle = mBounds.intersected( rectangle );
     clearRectangle.moveTopLeft( clearRectangle.topLeft() - topLeft() );
-    
+
     QPainter painter( mImage.get() );
     painter.setCompositionMode(QPainter::CompositionMode_Clear);
     painter.fillRect( clearRectangle, QColor(0,0,0,0) );
@@ -470,17 +470,17 @@ int BitmapImage::pow(int n)   // pow of a number
 
 bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
 {
-    if (color1 == color2) return true;
+    if ( color1 == color2 ) return true;
 
-    int red1 = qRed(color1);
-    int green1 = qGreen(color1);
-    int blue1 = qBlue(color1);
-    int alpha1 = qAlpha(color1);
+    int red1 = qRed( color1 );
+    int green1 = qGreen( color1 );
+    int blue1 = qBlue( color1 );
+    int alpha1 = qAlpha( color1 );
 
-    int red2 = qRed(color2);
-    int green2 = qGreen(color2);
-    int blue2 = qBlue(color2);
-    int alpha2 = qAlpha(color2);
+    int red2 = qRed( color2 );
+    int green2 = qGreen( color2 );
+    int blue2 = qBlue( color2 );
+    int alpha2 = qAlpha( color2 );
 
     int diffRed = abs( red2 - red1 );
     int diffGreen = abs( green2 - green1 );
@@ -507,7 +507,7 @@ void BitmapImage::floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint p
     }
 
     oldColor = targetImage->pixel( point );
-    oldColor = qRgba( qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor) );
+    oldColor = qRgba( qRed( oldColor ), qGreen( oldColor ), qBlue( oldColor ), qAlpha( oldColor ) );
 
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
@@ -521,12 +521,12 @@ void BitmapImage::floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint p
 
     // Extend to size of Camera
     targetImage->extend( cameraRect );
-    replaceImage = new BitmapImage(cameraRect, Qt::transparent);
+    replaceImage = new BitmapImage( cameraRect, Qt::transparent );
 
     queue.append( point );
     // Preparations END
 
-    while ( !queue.empty() ) {
+    while( !queue.empty() ) {
         tempPoint = queue.takeFirst();
 
         point.setX( tempPoint.x() );
@@ -534,43 +534,43 @@ void BitmapImage::floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint p
 
         xTemp = point.x();
 
-        newPlacedColor = replaceImage->constScanLine(xTemp, point.y() );
-        while ( xTemp >= targetImage->topLeft().x() &&
-               compareColor( targetImage->constScanLine(xTemp, point.y()) , oldColor, tolerance) ) xTemp--;
+        newPlacedColor = replaceImage->constScanLine( xTemp, point.y() );
+        while( xTemp >= targetImage->topLeft().x() &&
+               compareColor( targetImage->constScanLine( xTemp, point.y() ), oldColor, tolerance) ) xTemp--;
         xTemp++;
 
         spanLeft = spanRight = false;
-        while ( xTemp <= targetImage->right() &&
-               compareColor( targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance) &&
+        while( xTemp <= targetImage->right() &&
+               compareColor( targetImage->constScanLine( xTemp, point.y() ), oldColor, tolerance ) &&
                newPlacedColor != newColor ) {
 
             // Set pixel color
             replaceImage->scanLine( xTemp, point.y(), newColor );
 
-            if ( !spanLeft && (point.y() > targetImage->top() ) &&
-                    compareColor( targetImage->constScanLine( xTemp, point.y() -1 ), oldColor, tolerance) ) {
+            if( !spanLeft && (point.y() > targetImage->top() ) &&
+                    compareColor( targetImage->constScanLine( xTemp, point.y() - 1 ), oldColor, tolerance ) ) {
                 queue.append( QPoint( xTemp, point.y() - 1) );
                 spanLeft = true;
-            } else if( spanLeft && (point.y() > targetImage->top() ) &&
-                      !compareColor( targetImage->constScanLine( xTemp, point.y() - 1 ), oldColor, tolerance) ) {
+            } else if( spanLeft && ( point.y() > targetImage->top() ) &&
+                      !compareColor( targetImage->constScanLine( xTemp, point.y() - 1 ), oldColor, tolerance ) ) {
                 spanLeft = false;
             }
 
-            if (!spanRight && point.y() < targetImage->bottom() &&
-                    compareColor( targetImage->constScanLine( xTemp, point.y() + 1 ), oldColor, tolerance) ) {
+            if( !spanRight && point.y() < targetImage->bottom() &&
+                    compareColor( targetImage->constScanLine( xTemp, point.y() + 1 ), oldColor, tolerance ) ) {
                 queue.append( QPoint( xTemp, point.y() + 1 ) );
                 spanRight = true;
 
             } else if( spanRight && point.y() < targetImage->bottom() &&
-                      !compareColor( targetImage->constScanLine( xTemp, point.y() + 1 ), oldColor, tolerance) ) {
+                      !compareColor( targetImage->constScanLine( xTemp, point.y() + 1 ), oldColor, tolerance ) ) {
                 spanRight = false;
             }
 
-            Q_ASSERT( queue.count() < (targetImage->width() * targetImage->height() ) );
+            Q_ASSERT( queue.count() < ( targetImage->width() * targetImage->height() ) );
             xTemp++;
         }
     }
 
-    targetImage->paste(replaceImage);
+    targetImage->paste( replaceImage );
     delete replaceImage;
 }
