@@ -49,7 +49,7 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.inpolLevel = 0;
     properties.useAA = -1;
-    properties.tolerance = 100;
+    properties.tolerance = 10;
 
     m_enabledProperties[TOLERANCE] = true;
 }
@@ -59,8 +59,6 @@ QCursor BucketTool::cursor()
     if( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) {
         QPixmap pixmap( ":icons/bucketTool.png" );
         QPainter painter( &pixmap );
-        painter.setPen( Qt::blue );   // FIXME: need to get current color
-        painter.drawLine( QPoint( 5, 16 ), QPoint( 5, 18 ) );
         painter.end();
 
         return QCursor( pixmap, 4, 20 );
@@ -140,19 +138,21 @@ void BucketTool::mouseMoveEvent( QMouseEvent *event )
 
 void BucketTool::paintBitmap(Layer* layer)
 {
-    BitmapImage *sourceImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
     Layer *targetLayer = layer; // by default
     int layerNumber = mEditor->layers()->currentLayerIndex(); // by default
 
     BitmapImage *targetImage = ( ( LayerBitmap * )targetLayer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
 
-    BitmapImage::floodFill( sourceImage,
-                            targetImage,
-                            getLastPoint().toPoint(),
-                            qRgba( 0, 0, 0, 0 ),
-                            mEditor->color()->frontColor().rgba(),
-                            properties.tolerance * 2.2,
-                            true );
+    QPoint point = getLastPoint().toPoint();
+
+    QRect cameraRect = mScribbleArea->getCameraRect().toRect();
+
+    BitmapImage::floodFill( targetImage,
+                            cameraRect,
+                            point,
+                            Qt::transparent,
+                            qPremultiply( mEditor->color()->frontColor().rgba() ),
+                            properties.tolerance * 2.55 );
 
     mScribbleArea->setModified( layerNumber, mEditor->currentFrame() );
     mScribbleArea->setAllDirty();

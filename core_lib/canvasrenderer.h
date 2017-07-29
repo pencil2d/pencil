@@ -63,6 +63,7 @@ public:
     void setOptions( RenderOptions p ) { mOptions = p; }
     void setTransformedSelection( QRect selection, QTransform transform );
     void ignoreTransformedSelection();
+    QRect getCameraRect();
 
     void paint( Object* object, int layer, int frame, QRect rect );
 
@@ -83,6 +84,7 @@ private:
     QPixmap* mCanvas = nullptr;
     Object* mObject = nullptr;
     QTransform mViewTransform;
+    QRect mCameraRect;
 
     int mLayerIndex = 0;
     int mFrameNumber = 0;
