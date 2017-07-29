@@ -44,6 +44,7 @@ public:
     BitmapImage copy( QRect rectangle );
     void paste( BitmapImage* );
     void paste( BitmapImage*, QPainter::CompositionMode cm );
+
     void add( BitmapImage* );
     void compareAlpha( BitmapImage* );
     void moveTopLeft( QPoint point );
@@ -63,13 +64,15 @@ public:
     QRgb pixel( QPoint P );
     void setPixel( int x, int y, QRgb colour );
     void setPixel( QPoint P, QRgb colour );
+    QRgb constScanLine(int x, int y);
+    void scanLine( int x, int y, QRgb colour);
     void clear();
     void clear( QRect rectangle );
     void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }
 
     static int pow( int );
-    static int rgbDistance( QRgb rgba1, QRgb rgba2 );
-    static void floodFill( BitmapImage* targetImage, BitmapImage* fillImage, QPoint point, QRgb targetColour, QRgb replacementColour, int tolerance, bool extendFillImage );
+    static bool compareColor(QRgb color1, QRgb color2, int tolerance);
+    static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb oldColor, QRgb newColor, int tolerance );
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing );
     void drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing );
