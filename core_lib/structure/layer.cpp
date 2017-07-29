@@ -346,7 +346,7 @@ void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, i
         painter.setPen( QPen( QBrush( QColor( 100, 100, 100 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
         painter.drawRect( x, y - 1, width, height );
 
-        paintFrames( painter, cells, x, y, width, height, selected, frameSize );
+        paintFrames( painter, cells, y, height, selected, frameSize );
 
         // changes the apparence if selected
         if ( selected )
@@ -362,7 +362,7 @@ void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, i
     }
 }
 
-void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize )
+void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize )
 {
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
 
@@ -474,7 +474,7 @@ void Layer::mouseRelease( QMouseEvent* event, int frameNumber )
 
 void Layer::editProperties()
 {
-    QRegExp regex("([\uFFEF-\uFFFF])+");
+    QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
     bool ok;
     QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),

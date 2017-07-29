@@ -200,6 +200,9 @@ void SelectTool::mouseMoveEvent( QMouseEvent *event )
         case ScribbleArea::BOTTOMRIGHT:
             mScribbleArea->mySelection.setBottomRight( getCurrentPoint() );
             break;
+
+        default:
+            break;
         }
 
         mScribbleArea->myTransformedSelection = mScribbleArea->mySelection.adjusted( 0, 0, 0, 0 );

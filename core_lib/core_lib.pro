@@ -102,7 +102,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     graphics/vector/vectorimage.cpp \
     graphics/vector/vectorselection.cpp \
     graphics/vector/vertexref.cpp \
-    interface/backupelement.cpp \
     interface/editor.cpp \
     interface/flowlayout.cpp \
     interface/keycapturelineedit.cpp \

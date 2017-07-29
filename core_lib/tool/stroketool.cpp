@@ -73,6 +73,7 @@ bool StrokeTool::keyPressEvent(QKeyEvent *event)
 
 bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
 {
+    Q_UNUSED(event);
     return true;
 }
 

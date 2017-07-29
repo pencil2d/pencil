@@ -83,13 +83,14 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bAntiAlias );
     painter.setRenderHint( QPainter::Antialiasing, true );
 
-    // Don't set clip rect, paint whole canvas.
+    // Don't set clip rect, paint whole canvas. `rect` therefore unused.
+    Q_UNUSED(rect);
     //painter.setClipRect( rect );
     //painter.setClipping( true );
 
     painter.setWorldMatrixEnabled( true );
 
-    paintBackground( painter );
+    paintBackground();
     paintOnionSkin( painter );
     paintCurrentFrame( painter );
     paintCameraBorder( painter );
@@ -106,7 +107,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     }
 }
 
-void CanvasRenderer::paintBackground( QPainter& painter )
+void CanvasRenderer::paintBackground()
 {
     mCanvas->fill( Qt::transparent );
 }
@@ -404,8 +405,6 @@ void CanvasRenderer::paintGrid( QPainter& painter )
 
     QRectF rect = painter.viewport();
     QRectF boundingRect = mViewTransform.inverted().mapRect( rect );
-    int w = boundingRect.width();
-    int h = boundingRect.height();
 
     //qDebug() << mViewTransform;
     //qDebug() << mViewTransform.inverted();

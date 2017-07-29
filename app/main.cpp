@@ -56,9 +56,9 @@ void installTranslator( PencilApplication& app )
     qDebug() << "Install translation = " << b;
 }
 
-int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
+int handleArguments( MainWindow2 & mainWindow )
 {
-    QStringList args = app.arguments();
+    QStringList args = PencilApplication::arguments();
     QString inputPath;
     QStringList outputPaths;
     int width = -1, height = -1;
@@ -131,7 +131,7 @@ int handleArguments( PencilApplication& app, MainWindow2 & mainWindow )
         {
             mainWindow.openFile(inputPath);
         }
-        return app.exec();
+        return PencilApplication::exec();
     }
     else if ( inputPath.isEmpty() )
     {
@@ -210,5 +210,5 @@ int main(int argc, char* argv[])
         return app.exec();
     }
 
-    return handleArguments( app, mainWindow );
+    return handleArguments( mainWindow );
 }

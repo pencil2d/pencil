@@ -267,6 +267,8 @@ void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx
         case WIDTH:
             mEditor->tools()->setWidth( newValue );
             break;
+        default:
+            break;
     };
 }
 
