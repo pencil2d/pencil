@@ -457,14 +457,14 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
 
             LayerCamera* cameraLayer = dynamic_cast< LayerCamera* >( layer );
 
-            QRect cameraRect = cameraLayer->getViewRect();
+            mCameraRect = cameraLayer->getViewRect();
 
             painter.setWorldMatrixEnabled( true );
             painter.setPen( Qt::NoPen );
             painter.setBrush( QColor( 0, 0, 0, 160 ) );
 
             QRegion rg1(boundingRect);
-            QRegion rg2(cameraRect);
+            QRegion rg2(mCameraRect);
             QRegion rg3=rg1.subtracted(rg2);
 
             painter.setClipRegion(rg3);
@@ -480,7 +480,12 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
                       Qt::MiterJoin );
             painter.setPen( pen );
             painter.setBrush( Qt::NoBrush );
-            painter.drawRect( cameraRect.adjusted( -1, -1, 1, 1) );
+            painter.drawRect( mCameraRect.adjusted( -1, -1, 1, 1) );
         }
     }
+}
+
+QRect CanvasRenderer::getCameraRect()
+{
+    return mCameraRect;
 }
