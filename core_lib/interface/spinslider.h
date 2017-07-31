@@ -53,8 +53,6 @@ signals:
 
 private:
     void onSliderValueChanged( int );
-    void sliderReleased();
-    void sliderMoved( int );
     void changeValue( qreal );
 
 private:

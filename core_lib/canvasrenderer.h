@@ -68,7 +68,7 @@ public:
     void paint( Object* object, int layer, int frame, QRect rect );
 
 private:
-    void paintBackground( QPainter& painter );
+    void paintBackground();
     void paintOnionSkin( QPainter& painter );
     void paintCurrentFrame( QPainter& painter );
 

@@ -138,7 +138,6 @@ QDomElement LayerVector::createDomElement(QDomDocument& doc)
 
     foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
     {
-        VectorImage* pImg = static_cast< VectorImage* >( pKeyFrame );
         //QDomElement imageTag = framesVector[index]->createDomElement(doc); // if we want to embed the data
         QDomElement imageTag = doc.createElement( "image" );
         imageTag.setAttribute( "frame", pKeyFrame->pos() );

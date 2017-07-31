@@ -107,13 +107,11 @@ Status VectorImage::write(QString filePath, QString format)
 Status VectorImage::createDomElement( QXmlStreamWriter& xmlStream )
 {
     QStringList debugInfo = QStringList() << "VectorImage::createDomElement";
-    bool isOkay = true;
     for ( int i = 0; i < m_curves.size(); i++ )
     {
         Status st = m_curves[ i ].createDomElement( xmlStream );
         if ( !st.ok() )
         {
-            isOkay = false;
             QStringList curveDetails = st.detailsList();
             for ( QString detail : curveDetails )
             {
@@ -127,7 +125,6 @@ Status VectorImage::createDomElement( QXmlStreamWriter& xmlStream )
         Status st = area[ i ].createDomElement( xmlStream );
         if ( !st.ok() )
         {
-            isOkay = false;
             QStringList areaDetails = st.detailsList();
             for ( QString detail : areaDetails )
             {
@@ -1317,8 +1314,6 @@ void VectorImage::fillPath(QList<QPointF> contourPath, int colour, float toleran
 
 QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
 {
-    int error = -1;
-
     // We get the contour points from a bitmap version of the vector layer as it is much faster to process
     QImage* image = new QImage( mSize, QImage::Format_ARGB32_Premultiplied );
     image->fill(Qt::white);
@@ -1375,7 +1370,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
 
                 // Are we getting to the end of the document ?
                 if ( leftX < 1) {
-                    error = 1;
                     qWarning() << " Out of bound left ";
                     QList<QPointF> emptylist;
                     return emptylist;
@@ -1422,7 +1416,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
 
                 // Are we getting to the end of the document ?
                 if ( rightX > maxWidth - 1 ) {
-                    error = 1;
                     qWarning() << " Out of bound right ";
                     QList<QPointF> emptylist;
                     return emptylist;
@@ -1468,7 +1461,6 @@ QList<QPointF> VectorImage::getfillContourPoints(QPoint point)
             int bottomY = lineY + 1;
 
             if ( topY < 1 || bottomY > maxHeight - 1 ) {
-                error = 1;
                 qWarning() << " Out of bound top / bottom ";
                 QList<QPointF> emptylist;
                 return emptylist;

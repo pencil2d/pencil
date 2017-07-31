@@ -53,8 +53,8 @@ public:
     SignalBlocker( QObject* o );
     ~SignalBlocker();
 private:
-    bool mBlocked = false;
     QObject* mObject = nullptr;
+    bool mBlocked = false;
 };
 
 
