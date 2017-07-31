@@ -73,6 +73,7 @@ void PolylineTool::setWidth(const qreal width)
 
 void PolylineTool::setFeather( const qreal feather )
 {
+    Q_UNUSED( feather );
     properties.feather = -1;
 }
 

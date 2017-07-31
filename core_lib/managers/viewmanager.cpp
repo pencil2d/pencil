@@ -93,20 +93,20 @@ QTransform ViewManager::createViewTransform()
 {
     QTransform c;
     c.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
-    
+
     QTransform t;
     t.translate( mTranslate.x(), mTranslate.y() );
 
     QTransform r;
     r.rotate( mRotate );
-    
+
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
     float flipY = mIsFlipVertical ? -1.f : 1.f;
 
     QTransform s;
     s.scale( mScale * flipX, mScale * flipY );
 
-    return std::move( t * s * r * c );
+    return t * s * r * c;
 }
 
 void ViewManager::translate(float dx, float dy)

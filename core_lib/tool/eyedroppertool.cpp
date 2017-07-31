@@ -40,7 +40,7 @@ void EyedropperTool::loadSettings()
 {
     properties.width = -1;
     properties.feather = -1;
-    properties.useFeather = -1;
+    properties.useFeather = false;
     properties.useAA = -1;
 }
 

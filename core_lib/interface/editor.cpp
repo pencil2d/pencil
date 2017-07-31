@@ -149,9 +149,8 @@ void Editor::dropEvent( QDropEvent* event )
 			QString filePath = url.toLocalFile();
 			if ( filePath.endsWith( ".png" ) || filePath.endsWith( ".jpg" ) || filePath.endsWith( ".jpeg" ) )
 				importImage( filePath );
-			if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
+			//if ( filePath.endsWith( ".aif" ) || filePath.endsWith( ".mp3" ) || filePath.endsWith( ".wav" ) )
 				//importSound( filePath );
-				nullptr;
 		}
 	}
 }
@@ -537,7 +536,7 @@ bool Editor::exportSeqCLI( QString filePath, QString format, int width, int heig
 	QSize exportSize = QSize( width, height );
 	QByteArray exportFormat( format.toLatin1() );
 
-	QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+	//QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
     //view = mScribbleArea->getView() * view;
 
     int projectLength = mLayerManager->projectLength();
