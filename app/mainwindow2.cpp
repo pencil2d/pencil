@@ -398,10 +398,9 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty()) {
         mRecentFileMenu->clear();
 
-        QMessageBox *confirmBox = new QMessageBox;
-        confirmBox->information(this, 0,
-                                tr("\n\n You have successfully cleared the list"),
-                                QMessageBox::Ok);
+        QMessageBox::information(this, 0,
+                                 tr("\n\n You have successfully cleared the list"),
+                                 QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
 }
@@ -751,7 +750,7 @@ void MainWindow2::exportImageSequence()
 
 
     // Export
-    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+//    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
 //    view = mScribbleArea->getView() * view;
 
 

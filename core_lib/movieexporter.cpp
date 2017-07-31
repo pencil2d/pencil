@@ -346,8 +346,7 @@ Status MovieExporter::generateImageSequence(
 		QString imageFileWithFrameNumber = QString().sprintf( IMAGE_FILENAME,  currentFrame );
 
 		QString strImgPath = mTempWorkDir + imageFileWithFrameNumber;
-		bool bSave = imageToExport.save( strImgPath );
-		Q_ASSERT( bSave );
+		Q_ASSERT( imageToExport.save( strImgPath ) );
 
 		qDebug() << "Save img to: " << strImgPath;
 

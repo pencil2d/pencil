@@ -59,8 +59,6 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     setSizePolicy( QSizePolicy::Preferred, QSizePolicy::Fixed );
 
     connect( mSlider, &QSlider::valueChanged,   this, &SpinSlider::onSliderValueChanged );
-    connect( mSlider, &QSlider::sliderReleased, this, &SpinSlider::sliderReleased );
-    connect( mSlider, &QSlider::sliderMoved,    this, &SpinSlider::sliderMoved );
 }
 
 void SpinSlider::changeValue(qreal value)
@@ -117,12 +115,4 @@ void SpinSlider::setPixelPos(qreal min, qreal max, int val, int space, bool upsi
 void SpinSlider::setExponent( const qreal exp )
 {
     mExp = exp;
-}
-
-void SpinSlider::sliderReleased()
-{
-}
-
-void SpinSlider::sliderMoved(int value)
-{
 }
