@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QVBoxLayout>
 #include <QInputDialog>
 #include <QColorDialog>
-#include <QKeyEvent>
 
 #include "colourref.h"
 #include "object.h"
@@ -278,14 +277,6 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent *event)
 
     refreshColorList();
     QWidget::resizeEvent(event);
-}
-
-void ColorPaletteWidget::keyPressEvent(QKeyEvent *event)
-{
-    if (event->key() == Qt::Key_Enter)
-    {
-        event->accept();
-    }
 }
 
 void ColorPaletteWidget::setSwatchSizeSmall()
