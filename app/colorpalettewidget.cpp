@@ -119,6 +119,9 @@ void ColorPaletteWidget::refreshColorList()
         if ( ui->colorListWidget->viewMode() != QListView::IconMode){
             colourItem->setText( colourRef.name );
         }
+        else {
+            colourItem->setToolTip( colourRef.name );
+        }
         colourSwatch = originalColourSwatch;
         swatchPainter.begin( &colourSwatch );
         swatchPainter.fillRect( 0, 0, iconSize.width(), iconSize.height(), colourRef.colour );
