@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QVBoxLayout>
 #include <QInputDialog>
 #include <QColorDialog>
+#include <QKeyEvent>
 
 #include "colourref.h"
 #include "object.h"
@@ -46,8 +47,8 @@ ColorPaletteWidget::ColorPaletteWidget( QWidget* parent ) : BaseDockWidget( pare
     connect( ui->colorListWidget, SIGNAL( itemClicked( QListWidgetItem* ) ),
              this, SLOT( clickColorListItem( QListWidgetItem* ) ) );
 
-    connect( ui->colorListWidget, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), this,
-             SLOT( changeColourName( QListWidgetItem* ) ) );
+    connect( ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName );
+    connect( ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange );
 
     connect( ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton );
     connect( ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton );
@@ -127,10 +128,44 @@ void ColorPaletteWidget::refreshColorList()
         swatchPainter.fillRect( 0, 0, iconSize.width(), iconSize.height(), colourRef.colour );
         swatchPainter.end();
         colourItem->setIcon( colourSwatch );
+        colourItem->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable );
 
         ui->colorListWidget->addItem( colourItem );
     }
     update();
+}
+
+void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
+{
+    Q_ASSERT( item != NULL );
+
+    if( ui->colorListWidget->viewMode() == QListView::IconMode )
+    {
+        int colorNumber = ui->colorListWidget->row( item );
+        if (colorNumber > -1)
+        {
+            bool ok;
+            QString text = QInputDialog::getText(this,
+                                                 tr("Colour name"),
+                                                 tr("Colour name:"),
+                                                 QLineEdit::Normal,
+                                                 editor()->object()->getColour(colorNumber).name,
+                                                 &ok );
+            if (ok && !text.isEmpty())
+            {
+                editor()->object()->renameColour(colorNumber, text);
+                refreshColorList();
+            }
+        }
+    }
+}
+
+void ColorPaletteWidget::onActiveColorNameChange(QString name)
+{
+    if ( !name.isNull() )
+    {
+        editor()->object()->renameColour(ui->colorListWidget->currentRow(), name);
+    }
 }
 
 void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -148,28 +183,6 @@ void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
     //m_pEditor->selectAndApplyColour( colorIndex );
 
     emit colorNumberChanged( colorIndex );
-}
-
-void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
-{
-    Q_ASSERT( item != NULL );
-
-    int colorNumber = ui->colorListWidget->row( item );
-    if (colorNumber > -1)
-    {
-        bool ok;
-        QString text = QInputDialog::getText(this,
-            tr("Colour name"),
-            tr("Colour name:"),
-            QLineEdit::Normal,
-            editor()->object()->getColour(colorNumber).name,
-            &ok );
-        if (ok && !text.isEmpty())
-        {
-            editor()->object()->renameColour(colorNumber, text);
-            refreshColorList();
-        }
-    }
 }
 
 void ColorPaletteWidget::palettePreferences()
@@ -258,6 +271,14 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent *event)
 
     refreshColorList();
     QWidget::resizeEvent(event);
+}
+
+void ColorPaletteWidget::keyPressEvent(QKeyEvent *event)
+{
+    if (event->key() == Qt::Key_Enter)
+    {
+        event->accept();
+    }
 }
 
 void ColorPaletteWidget::setSwatchSizeSmall()
