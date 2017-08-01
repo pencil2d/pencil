@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QVBoxLayout>
 #include <QInputDialog>
 #include <QColorDialog>
+#include <QModelIndex>
 
 #include "colourref.h"
 #include "object.h"
@@ -48,6 +49,8 @@ ColorPaletteWidget::ColorPaletteWidget( QWidget* parent ) : BaseDockWidget( pare
 
     connect( ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName );
     connect( ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange );
+
+    connect( ui->colorListWidget->model(), &QAbstractItemModel::rowsMoved, this, &ColorPaletteWidget::onItemMoved );
 
     connect( ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton );
     connect( ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton );
@@ -127,10 +130,11 @@ void ColorPaletteWidget::refreshColorList()
         swatchPainter.fillRect( 0, 0, iconSize.width(), iconSize.height(), colourRef.colour );
         swatchPainter.end();
         colourItem->setIcon( colourSwatch );
-        colourItem->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable );
+        colourItem->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled );
 
         ui->colorListWidget->addItem( colourItem );
     }
+    ui->colorListWidget->setDragDropMode( ui->colorListWidget->viewMode() == QListView::IconMode ? QAbstractItemView::NoDragDrop : QAbstractItemView::InternalMove );
     update();
 }
 
@@ -268,7 +272,6 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent *event)
 
         ui->colorListWidget->setIconSize(QSize(tempSize.width(),iconSize.height()));
         ui->colorListWidget->setGridSize(QSize(tempSize.width(),iconSize.height()));
-        iconSize.setWidth(iconSize.width());
     }
     else {
         ui->colorListWidget->setIconSize(iconSize);
@@ -277,6 +280,47 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent *event)
 
     refreshColorList();
     QWidget::resizeEvent(event);
+}
+
+void ColorPaletteWidget::onItemMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
+{
+    Q_UNUSED(parent)
+    Q_UNUSED(end)
+    Q_UNUSED(destination)
+
+    // Skip if nothing's changed
+    if ( start == row )
+    {
+        return;
+    }
+
+    Object *obj = editor()->object();
+    QQueue<ColourRef> colorQueue;
+
+    // Remove old color after adding to queue
+    colorQueue.append( obj->getColour( start ) );
+    obj->removeColour( start );
+
+    // If the old position is before the new position, then we need to subtract one from the new position because we deleted an item before it
+    if ( start < row )
+    {
+        row--;
+    }
+
+    // Add to queue and remove all colors >= new position
+    while ( row < obj->getColourCount() )
+    {
+        colorQueue.append( obj->getColour( row ) );
+        obj->removeColour( row );
+    }
+
+    // Add colors from queue back in order
+    for ( ColourRef cref : colorQueue )
+    {
+        obj->addColour( cref );
+    }
+
+    refreshColorList();
 }
 
 void ColorPaletteWidget::setSwatchSizeSmall()

@@ -160,6 +160,12 @@
        <property name="autoScrollMargin">
         <number>16</number>
        </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::InternalMove</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::MoveAction</enum>
+       </property>
        <property name="resizeMode">
         <enum>QListView::Fixed</enum>
        </property>

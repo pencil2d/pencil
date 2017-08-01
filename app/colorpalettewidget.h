@@ -29,6 +29,7 @@ class ColorBox;
 class QActionGroup;
 class QMenu;
 class QString;
+class QModelIndex;
 
 namespace Ui
 {
@@ -75,6 +76,7 @@ private slots:
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
     void updateGridUI();
+    void onItemMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
 
 private:
     QString getDefaultColorName(QColor c);
