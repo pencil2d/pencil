@@ -41,7 +41,7 @@ ColorPaletteWidget::ColorPaletteWidget( QWidget* parent ) : BaseDockWidget( pare
     ui->setupUi( pWidget );
     setWidget( pWidget );
 
-    connect( ui->colorListWidget, &QListWidget::currentItemChanged, 
+    connect( ui->colorListWidget, &QListWidget::currentItemChanged,
              this, &ColorPaletteWidget::colorListCurrentItemChanged );
 
     connect( ui->colorListWidget, SIGNAL( itemClicked( QListWidgetItem* ) ),
@@ -256,18 +256,25 @@ void ColorPaletteWidget::setGridMode()
 
 void ColorPaletteWidget::resizeEvent(QResizeEvent *event)
 {
-    // Find the value to divivde with
-    for (int i = 1; i < 75; i++) {
-        int size = (ui->colorListWidget->width()-18) / i; // subtract scrollbar width
+    if ( ui->colorListWidget->viewMode() == QListView::IconMode )
+    {
+        // Find the value to divivde with
+        for (int i = 1; i < 75; i++) {
+            int size = (ui->colorListWidget->width()-18) / i; // subtract scrollbar width
             if (size >= iconSize.width() && size <= iconSize.width() + 8){
                 stepper = size;
             }
-    }
-    QSize tempSize = QSize(stepper,iconSize.height());
+        }
+        QSize tempSize = QSize(stepper,iconSize.height());
 
-    ui->colorListWidget->setIconSize(QSize(tempSize.width(),iconSize.height()));
-    ui->colorListWidget->setGridSize(QSize(tempSize.width(),iconSize.height()));
-    iconSize.setWidth(iconSize.width());
+        ui->colorListWidget->setIconSize(QSize(tempSize.width(),iconSize.height()));
+        ui->colorListWidget->setGridSize(QSize(tempSize.width(),iconSize.height()));
+        iconSize.setWidth(iconSize.width());
+    }
+    else {
+        ui->colorListWidget->setIconSize(iconSize);
+        ui->colorListWidget->setGridSize( QSize( -1, -1 ) );
+    }
 
     refreshColorList();
     QWidget::resizeEvent(event);
