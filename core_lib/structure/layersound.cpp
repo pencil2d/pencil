@@ -30,7 +30,9 @@ LayerSound::~LayerSound()
 {
 }
 
-Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
+Status LayerSound::loadSoundClipAtFrame( const QString& sSoundClipName,
+                                     const QString& strFilePath,
+                                     int frameNumber )
 {
     if ( !QFile::exists( strFilePath ) )
     {
@@ -40,14 +42,24 @@ Status LayerSound::loadSoundAtFrame( QString strFilePath, int frameNumber )
     QFileInfo info( strFilePath );
     if ( !info.isFile() )
     {
-        strFilePath = "";
+        return Status::ERROR_LOAD_SOUND_FILE;
     }
 
     SoundClip* clip = new SoundClip;
+    clip->setSoundClipName( sSoundClipName );
     clip->init( strFilePath );
     clip->setPos( frameNumber );
     loadKey( clip );
     return Status::OK;
+}
+
+void LayerSound::updateFrameLengths(int fps)
+{
+    foreachKeyFrame( [&fps] (KeyFrame* pKeyFrame)
+    {
+        auto soundClip = dynamic_cast<SoundClip *>(pKeyFrame);
+        soundClip->updateLength(fps);
+    } );
 }
 
 QDomElement LayerSound::createDomElement( QDomDocument& doc )
@@ -61,11 +73,14 @@ QDomElement LayerSound::createDomElement( QDomDocument& doc )
 
     foreachKeyFrame( [ &doc, &layerTag ]( KeyFrame* pKeyFrame )
     {
-        QDomElement imageTag = doc.createElement( "sound" );
-        imageTag.setAttribute( "frame", pKeyFrame->pos() );
+        SoundClip* clip = static_cast<SoundClip*>(pKeyFrame);
 
-        QFileInfo info( pKeyFrame->fileName() );
-        qDebug() << "Save=" << info.fileName();
+        QDomElement imageTag = doc.createElement( "sound" );
+        imageTag.setAttribute( "frame", clip->pos() );
+        imageTag.setAttribute( "name", clip->soundClipName() );
+
+        QFileInfo info( clip->fileName() );
+        //qDebug() << "Save=" << info.fileName();
         imageTag.setAttribute( "src", info.fileName() );
         layerTag.appendChild( imageTag );
     } );
@@ -94,14 +109,14 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
 
         if ( soundElement.tagName() == "sound" )
         {
-            QString soundFile = soundElement.attribute( "src" );
+            const QString soundFile = soundElement.attribute( "src" );
+            const QString sSoundClipName = soundElement.attribute( "name", "My Sound Clip" );
 
             // the file is supposed to be in the data directory
-            QString fullPath = QDir( dataDirPath ).filePath( soundFile );
-            qDebug() << "Load Sound path = " << fullPath;  //added for debugging puproses
+            const QString sFullPath = QDir( dataDirPath ).filePath( soundFile );
 
             int position = soundElement.attribute( "frame" ).toInt();
-            Status st = loadSoundAtFrame( fullPath, position );
+            Status st = loadSoundClipAtFrame( sSoundClipName, sFullPath, position );
             Q_ASSERT( st.ok() );
         }
         
@@ -111,5 +126,7 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
 
 Status LayerSound::saveKeyFrame( KeyFrame*, QString path )
 {
+    Q_UNUSED(path)
+
     return Status::OK;
 }

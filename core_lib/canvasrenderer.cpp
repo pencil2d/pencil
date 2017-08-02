@@ -83,13 +83,14 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bAntiAlias );
     painter.setRenderHint( QPainter::Antialiasing, true );
 
-    // Don't set clip rect, paint whole canvas.
+    // Don't set clip rect, paint whole canvas. `rect` therefore unused.
+    Q_UNUSED(rect);
     //painter.setClipRect( rect );
     //painter.setClipping( true );
 
     painter.setWorldMatrixEnabled( true );
 
-    paintBackground( painter );
+    paintBackground();
     paintOnionSkin( painter );
 
     paintCurrentFrame( painter );
@@ -102,7 +103,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     }
 }
 
-void CanvasRenderer::paintBackground( QPainter& painter )
+void CanvasRenderer::paintBackground()
 {
     mCanvas->fill( Qt::transparent );
 }
@@ -400,8 +401,6 @@ void CanvasRenderer::paintGrid( QPainter& painter )
 
     QRectF rect = painter.viewport();
     QRectF boundingRect = mViewTransform.inverted().mapRect( rect );
-    int w = boundingRect.width();
-    int h = boundingRect.height();
 
     //qDebug() << mViewTransform;
     //qDebug() << mViewTransform.inverted();
@@ -462,14 +461,14 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
 
             LayerCamera* cameraLayer = dynamic_cast< LayerCamera* >( layer );
 
-            QRect cameraRect = cameraLayer->getViewRect();
+            mCameraRect = cameraLayer->getViewRect();
 
             painter.setWorldMatrixEnabled( true );
             painter.setPen( Qt::NoPen );
             painter.setBrush( QColor( 0, 0, 0, 160 ) );
 
             QRegion rg1(boundingRect);
-            QRegion rg2(cameraRect);
+            QRegion rg2(mCameraRect);
             QRegion rg3=rg1.subtracted(rg2);
 
             painter.setClipRegion(rg3);
@@ -485,7 +484,12 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
                       Qt::MiterJoin );
             painter.setPen( pen );
             painter.setBrush( Qt::NoBrush );
-            painter.drawRect( cameraRect.adjusted( -1, -1, 1, 1) );
+            painter.drawRect( mCameraRect.adjusted( -1, -1, 1, 1) );
         }
     }
+}
+
+QRect CanvasRenderer::getCameraRect()
+{
+    return mCameraRect;
 }

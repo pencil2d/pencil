@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 SoundClip::SoundClip()
 {
-    int kk = 0;
+
 }
 
 SoundClip::~SoundClip()
@@ -37,7 +37,6 @@ Status SoundClip::init( const QString& strSoundFile )
     {
         return Status::FAIL;
     }
-
     setFileName( strSoundFile );
     return Status::OK;
 }
@@ -79,7 +78,7 @@ void SoundClip::play()
 void SoundClip::playFromPosition(int frameNumber, int fps)
 {
     int framesIntoSound = frameNumber - pos();
-    int msPerFrame = 1000/fps;
+    int msPerFrame = 1000 / fps;
     int msIntoSound = framesIntoSound * msPerFrame;
 
     if ( mPlayer )
@@ -95,4 +94,19 @@ void SoundClip::stop()
     {
         mPlayer->stop();
     }
+}
+
+int64_t SoundClip::duration() const
+{
+    return mDuration;
+}
+
+void SoundClip::setDuration(const int64_t &duration)
+{
+    mDuration = duration;
+}
+
+void SoundClip::updateLength(int fps)
+{
+    setLength(mDuration * fps / 1000.0);
 }

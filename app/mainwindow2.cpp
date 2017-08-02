@@ -352,6 +352,14 @@ void MainWindow2::createMenus()
         winMenu->addAction( action );
     }
 
+    winMenu->addSeparator();
+    QAction *lockWidgets = new QAction( tr( "Lock Windows" ), winMenu );
+    lockWidgets->setCheckable( true );
+    winMenu->addAction( lockWidgets );
+    connect( lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets );
+    bindActionWithSetting( lockWidgets, SETTING::LAYOUT_LOCK );
+
+
     // -------------- Help Menu ---------------
     connect( ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
     connect( ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil );
@@ -390,10 +398,9 @@ void MainWindow2::clearRecentFilesList()
     if (!recentFilesList.isEmpty()) {
         mRecentFileMenu->clear();
 
-        QMessageBox *confirmBox = new QMessageBox;
-        confirmBox->information(this, 0,
-                                tr("\n\n You have successfully cleared the list"),
-                                QMessageBox::Ok);
+        QMessageBox::information(this, 0,
+                                 tr("\n\n You have successfully cleared the list"),
+                                 QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
 }
@@ -698,6 +705,18 @@ void MainWindow2::importMovie()
     mEditor->importMovie( filePath, mEditor->playback()->fps() );
 }
 
+void MainWindow2::lockWidgets(bool shouldLock)
+{
+    QDockWidget::DockWidgetFeature feat = shouldLock ? QDockWidget::DockWidgetClosable : QDockWidget::AllDockWidgetFeatures;
+
+    mColorWheel->setFeatures(feat);
+    mColorPalette->setFeatures(feat);
+    mDisplayOptionWidget->setFeatures(feat);
+    mToolOptions->setFeatures(feat);
+    mToolBox->setFeatures(feat);
+    mTimeLine->setFeatures(feat);
+}
+
 void MainWindow2::exportImageSequence()
 {
     // Get the camera layer
@@ -731,7 +750,7 @@ void MainWindow2::exportImageSequence()
 
 
     // Export
-    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+//    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
 //    view = mScribbleArea->getView() * view;
 
 
@@ -1096,7 +1115,7 @@ void MainWindow2::makeConnections( Editor* pEditor, TimeLine* pTimeline )
     connect( pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame );
     connect( pTimeline, &TimeLine::loopEndClick, pPlaybackManager, &PlaybackManager::setRangedEndFrame );
 
-    connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enbaleSound );
+    connect( pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound );
     connect( pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps );
 
     connect( pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey );
@@ -1175,11 +1194,13 @@ void MainWindow2::updateZoomLabel()
 
 void MainWindow2::changePlayState( bool isPlaying )
 {
-    if( isPlaying ) {
+    if( isPlaying )
+    {
         ui->actionPlay->setText(tr("Stop"));
         ui->actionPlay->setIcon(mStopIcon);
     }
-    else {
+    else
+    {
         ui->actionPlay->setText(tr("Play"));
         ui->actionPlay->setIcon(mStartIcon);
     }

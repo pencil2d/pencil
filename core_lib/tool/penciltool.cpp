@@ -102,6 +102,7 @@ void PencilTool::setPressure( const bool pressure )
 void PencilTool::setPreserveAlpha( const bool preserveAlpha )
 {
     // force value
+    Q_UNUSED( preserveAlpha );
     properties.preserveAlpha = 0;
 }
 

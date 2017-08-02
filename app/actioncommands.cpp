@@ -298,6 +298,8 @@ void ActionCommands::removeKey()
             case Layer::CAMERA:
                 layer->addNewEmptyKeyAt( 1 );
                 break;
+            default:
+                break;
         }
     }
 }

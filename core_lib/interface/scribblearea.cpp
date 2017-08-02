@@ -168,7 +168,8 @@ void ScribbleArea::updateFrame( int frame )
 {
     int frameNumber = mEditor->layers()->LastFrameAtFrame( frame );
 
-	if ( mPixmapCacheKeys.size() <= frame )
+    Q_ASSERT( frame >= 0 );
+	if ( mPixmapCacheKeys.size() <= static_cast< unsigned >( frame ) )
 	{
 		mPixmapCacheKeys.resize( frame + 10 ); // a buffer
 	}
@@ -958,6 +959,11 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                     }
                     break;
                 }
+
+                default:
+                {
+                    break;
+                }
             } // end siwtch
         }
 
@@ -1083,7 +1089,7 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     gradient.setColorAt( 1.0 - (mOffset/100.0), QColor( r, g, b, mainColorAlpha - alphaAdded ) );
 }
 
-void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, qreal opacity, bool useAA )
+void ScribbleArea::drawPen( QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA )
 {
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
@@ -1235,6 +1241,11 @@ QRectF ScribbleArea::getViewRect()
     {
         return rect;
     }
+}
+
+QRectF ScribbleArea::getCameraRect()
+{
+    return mCanvasRenderer.getCameraRect();
 }
 
 QPointF ScribbleArea::getCentralPoint()
@@ -1620,6 +1631,7 @@ void ScribbleArea::setPrevTool()
 
 void ScribbleArea::paletteColorChanged(QColor color)
 {
+    Q_UNUSED(color);
     updateAllVectorLayersAtCurrentFrame();
 }
 

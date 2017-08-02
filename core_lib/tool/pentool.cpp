@@ -199,7 +199,6 @@ void PenTool::paintAt( QPointF point )
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer->type() == Layer::BITMAP )
     {
-        qreal opacity = 1.0;
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
@@ -213,7 +212,6 @@ void PenTool::paintAt( QPointF point )
         mScribbleArea->drawPen( QPoint( qRound(point.x() ), qRound(point.y() )),
                                 brushWidth,
                                 mEditor->color()->frontColor(),
-                                opacity,
                                 properties.useAA);
 
         int rad = qRound( brushWidth ) / 2 + 2;
@@ -236,7 +234,6 @@ void PenTool::drawStroke()
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        qreal opacity = 1.0;
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
@@ -264,7 +261,6 @@ void PenTool::drawStroke()
             mScribbleArea->drawPen( QPoint( qRound(point.x() ), qRound(point.y() )),
                                     brushWidth,
                                     mEditor->color()->frontColor(),
-                                    opacity,
                                     properties.useAA );
 
             if ( i == ( steps - 1 ) )
