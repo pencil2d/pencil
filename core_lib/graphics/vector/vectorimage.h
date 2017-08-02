@@ -122,6 +122,8 @@ public:
     QList<VertexRef> getAllVertices();
     int getCurveSize(int curveNumber);
 
+    QPainterPath getStrokedPath() { return mGetStrokedPath;}
+
     QList<BezierCurve> m_curves;
     QList<BezierArea> area;
     QList<int> m_curveDisplayOrders;
@@ -138,6 +140,7 @@ private:
 
 	QList<QPointF> getfillContourPoints(QPoint point);
 	void updateImageSize(BezierCurve& updatedCurve);
+        QPainterPath mGetStrokedPath;
 
 private:
     Object* mObject = nullptr;

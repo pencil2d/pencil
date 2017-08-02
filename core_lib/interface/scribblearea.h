@@ -56,6 +56,7 @@ class ScribbleArea : public QWidget
     friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
+    friend class BucketTool;
 
 public:
     ScribbleArea( QWidget *parent );

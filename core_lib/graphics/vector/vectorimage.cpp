@@ -1099,6 +1099,9 @@ QList<int> VectorImage::getCurvesCloseTo(QPointF P1, qreal maxDistance)
         }
         if ( myCurve.intersects(P1, maxDistance) ) {
             result.append( j );
+
+            // store stroke for later use.
+            mGetStrokedPath = myCurve.getStrokedPath(1.0,true);
         }
     }
     return result;

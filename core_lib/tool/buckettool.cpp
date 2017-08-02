@@ -47,7 +47,7 @@ void BucketTool::loadSettings()
 {
     properties.width = 4;
     properties.feather = 10;
-    properties.inpolLevel = -1;
+    properties.inpolLevel = 0;
     properties.useAA = -1;
     properties.tolerance = 100;
 
@@ -91,6 +91,20 @@ void BucketTool::mousePressEvent( QMouseEvent *event )
     startStroke();
 }
 
+void BucketTool::getCurve(Layer* layer)
+{
+    vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
+    mScribbleArea->mClosestCurves = vectorImage->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
+    QList<int> closestCurve = mScribbleArea->mClosestCurves;
+
+    if ( closestCurve.size() > 0 ) {
+        if ( !vectorImage->isSelected( closestCurve ) ) {
+            mVectorPath = vectorImage->getStrokedPath();
+            qDebug() << "stroke found";
+        }
+    }
+}
+
 void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -118,6 +132,7 @@ void BucketTool::mouseMoveEvent( QMouseEvent *event )
             drawStroke();
             qDebug() << "DrawStroke" << event->pos() ;
         }
+        getCurve( layer );
     }
 
     Q_UNUSED( event );
@@ -151,24 +166,40 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
     if( event->modifiers() == Qt::AltModifier ) {
         vectorImage->removeArea( getLastPoint() );
     } else {
-        QList<QPointF> path = mStrokePoints;
-        if (path.size() < 10) {
-            vectorImage->fill( getLastPoint(),
-                               mEditor->color()->frontColorNumber(),
-                               3.0 / mEditor->view()->scaling() );
-        } else {
-            vectorImage->fillPath( path,
-                               mEditor->color()->frontColorNumber(),
-                               10.0 / mEditor->view()->scaling() );
-        }
+            QList<QPointF> path;
+
+            for (int i = 0; i < mVectorPath.elementCount(); i++) {
+                path.append(mVectorPath.elementAt(i));
+            }
+
+            // TODO: only fill when selected
+            if (vectorImage->isSelected(mScribbleArea->mClosestCurves)) {
+                vectorImage->fillPath(path, mEditor->color()->frontColorNumber(), 10.0 / mEditor->view()->scaling());
+            }
+//        } else {
+//            vectorImage->fillPath( path,
+//                               mEditor->color()->frontColorNumber(),
+//                               10.0 / mEditor->view()->scaling() );
+//        }
+          applyChanges();
     }
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
 }
 
+void BucketTool::applyChanges()
+{
+    mScribbleArea->applyTransformedSelection();
+}
+
 void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
+
+    if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
+        m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+    }
+
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -177,6 +208,7 @@ void BucketTool::drawStroke()
         // No stroke in Bitmap layer
     }
     else if( layer->type() == Layer::VECTOR ) {
+        mCurrentWidth = 10;
         int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         QColor pathColor = mEditor->color()->frontColor();
