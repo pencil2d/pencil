@@ -1,6 +1,6 @@
 # Building Pencil2D on macOS
 
-These are instructions for building Pencil2D on a Mac. If you are using Windows go {here} (coming soon), and if you are using Linux go {here} (coming soon).
+These are instructions for building Pencil2D on a Mac. If you are using Windows go {here} (coming soon), and if you are using Linux go [here](build_linux.md).
 
 This guide is primarily targeted towards developers. If you just want to use the bleeding edge you can just download one of our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Lion (10.7) and up.
 
