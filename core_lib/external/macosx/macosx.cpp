@@ -41,7 +41,8 @@ bool gIsMouseCoalecing = false;
 
 void detectElCapitan()
 {
-    if ( QSysInfo::macVersion() == QSysInfo::MV_10_11 )
+    QOperatingSystemVersion current = QOperatingSystemVersion::current();
+    if ( current >= QOperatingSystemVersion::OSXYosemite )
     {
         gIsMouseCoalecing = true;
     }
