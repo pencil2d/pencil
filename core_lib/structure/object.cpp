@@ -315,6 +315,20 @@ void Object::addColour( QColor colour )
     addColour( ColourRef( colour, "Colour " + QString::number( mPalette.size() ) ) );
 }
 
+void Object::moveColor(int startIndex, int endIndex)
+{
+    mPalette.move( startIndex, endIndex );
+
+    for ( int i = 0; i < getLayerCount(); i++ )
+    {
+        Layer* layer = getLayer( i );
+        if ( layer->type() == Layer::VECTOR )
+        {
+            static_cast< LayerVector* >(layer)->moveColour( startIndex, endIndex );
+        }
+    }
+}
+
 bool Object::removeColour( int index )
 {
     for ( int i = 0; i < getLayerCount(); i++ )

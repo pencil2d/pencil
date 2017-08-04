@@ -908,6 +908,18 @@ bool VectorImage::usesColour(int index)
     return false;
 }
 
+void VectorImage::moveColour(int startIndex, int endIndex)
+{
+    for(int i=0; i< area.size(); i++)
+    {
+        if (area[i].getColourNumber() == startIndex) area[i].setColourNumber( endIndex );
+    }
+    for(int i=0; i< m_curves.size(); i++)
+    {
+        if (m_curves[i].getColourNumber() == startIndex) m_curves[i].setColourNumber( endIndex );
+    }
+}
+
 void VectorImage::removeColour(int index)
 {
     for(int i=0; i< area.size(); i++)

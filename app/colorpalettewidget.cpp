@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QVBoxLayout>
 #include <QInputDialog>
 #include <QColorDialog>
+#include <QModelIndex>
 
 #include "colourref.h"
 #include "object.h"
@@ -40,14 +41,16 @@ ColorPaletteWidget::ColorPaletteWidget( QWidget* parent ) : BaseDockWidget( pare
     ui->setupUi( pWidget );
     setWidget( pWidget );
 
-    connect( ui->colorListWidget, &QListWidget::currentItemChanged, 
+    connect( ui->colorListWidget, &QListWidget::currentItemChanged,
              this, &ColorPaletteWidget::colorListCurrentItemChanged );
 
     connect( ui->colorListWidget, SIGNAL( itemClicked( QListWidgetItem* ) ),
              this, SLOT( clickColorListItem( QListWidgetItem* ) ) );
 
-    connect( ui->colorListWidget, SIGNAL( itemDoubleClicked( QListWidgetItem* ) ), this,
-             SLOT( changeColourName( QListWidgetItem* ) ) );
+    connect( ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName );
+    connect( ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange );
+
+    connect( ui->colorListWidget->model(), &QAbstractItemModel::rowsMoved, this, &ColorPaletteWidget::onItemMoved );
 
     connect( ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton );
     connect( ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton );
@@ -119,15 +122,53 @@ void ColorPaletteWidget::refreshColorList()
         if ( ui->colorListWidget->viewMode() != QListView::IconMode){
             colourItem->setText( colourRef.name );
         }
+        else {
+            colourItem->setToolTip( colourRef.name );
+        }
         colourSwatch = originalColourSwatch;
         swatchPainter.begin( &colourSwatch );
         swatchPainter.fillRect( 0, 0, iconSize.width(), iconSize.height(), colourRef.colour );
         swatchPainter.end();
         colourItem->setIcon( colourSwatch );
+        colourItem->setFlags( Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsDragEnabled );
 
         ui->colorListWidget->addItem( colourItem );
     }
+    ui->colorListWidget->setDragDropMode( ui->colorListWidget->viewMode() == QListView::IconMode ? QAbstractItemView::NoDragDrop : QAbstractItemView::InternalMove );
     update();
+}
+
+void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
+{
+    Q_ASSERT( item != NULL );
+
+    if( ui->colorListWidget->viewMode() == QListView::IconMode )
+    {
+        int colorNumber = ui->colorListWidget->row( item );
+        if (colorNumber > -1)
+        {
+            bool ok;
+            QString text = QInputDialog::getText(this,
+                                                 tr("Colour name"),
+                                                 tr("Colour name:"),
+                                                 QLineEdit::Normal,
+                                                 editor()->object()->getColour(colorNumber).name,
+                                                 &ok );
+            if (ok && !text.isEmpty())
+            {
+                editor()->object()->renameColour(colorNumber, text);
+                refreshColorList();
+            }
+        }
+    }
+}
+
+void ColorPaletteWidget::onActiveColorNameChange(QString name)
+{
+    if ( !name.isNull() )
+    {
+        editor()->object()->renameColour(ui->colorListWidget->currentRow(), name);
+    }
 }
 
 void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, QListWidgetItem* previous)
@@ -145,28 +186,6 @@ void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
     //m_pEditor->selectAndApplyColour( colorIndex );
 
     emit colorNumberChanged( colorIndex );
-}
-
-void ColorPaletteWidget::changeColourName( QListWidgetItem* item )
-{
-    Q_ASSERT( item != NULL );
-
-    int colorNumber = ui->colorListWidget->row( item );
-    if (colorNumber > -1)
-    {
-        bool ok;
-        QString text = QInputDialog::getText(this,
-            tr("Colour name"),
-            tr("Colour name:"),
-            QLineEdit::Normal,
-            editor()->object()->getColour(colorNumber).name,
-            &ok );
-        if (ok && !text.isEmpty())
-        {
-            editor()->object()->renameColour(colorNumber, text);
-            refreshColorList();
-        }
-    }
 }
 
 void ColorPaletteWidget::palettePreferences()
@@ -240,21 +259,44 @@ void ColorPaletteWidget::setGridMode()
 
 void ColorPaletteWidget::resizeEvent(QResizeEvent *event)
 {
-    // Find the value to divivde with
-    for (int i = 1; i < 75; i++) {
-        int size = (ui->colorListWidget->width()-18) / i; // subtract scrollbar width
+    if ( ui->colorListWidget->viewMode() == QListView::IconMode )
+    {
+        // Find the value to divivde with
+        for (int i = 1; i < 75; i++) {
+            int size = (ui->colorListWidget->width()-18) / i; // subtract scrollbar width
             if (size >= iconSize.width() && size <= iconSize.width() + 8){
                 stepper = size;
             }
-    }
-    QSize tempSize = QSize(stepper,iconSize.height());
+        }
+        QSize tempSize = QSize(stepper,iconSize.height());
 
-    ui->colorListWidget->setIconSize(QSize(tempSize.width(),iconSize.height()));
-    ui->colorListWidget->setGridSize(QSize(tempSize.width(),iconSize.height()));
-    iconSize.setWidth(iconSize.width());
+        ui->colorListWidget->setIconSize(QSize(tempSize.width(),iconSize.height()));
+        ui->colorListWidget->setGridSize(QSize(tempSize.width(),iconSize.height()));
+    }
+    else {
+        ui->colorListWidget->setIconSize(iconSize);
+        ui->colorListWidget->setGridSize( QSize( -1, -1 ) );
+    }
 
     refreshColorList();
     QWidget::resizeEvent(event);
+}
+
+void ColorPaletteWidget::onItemMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
+{
+    Q_UNUSED(parent)
+    Q_UNUSED(end)
+    Q_UNUSED(destination)
+
+    // Skip if nothing's changed
+    if ( start == row )
+    {
+        return;
+    }
+
+    editor()->object()->moveColor( start, row );
+
+    refreshColorList();
 }
 
 void ColorPaletteWidget::setSwatchSizeSmall()

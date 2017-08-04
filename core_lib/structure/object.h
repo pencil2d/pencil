@@ -108,6 +108,7 @@ public:
     }
     void addColour( QColor );
     void addColour( ColourRef newColour ) { mPalette.append( newColour ); }
+    void moveColor( int startIndex, int endIndex );
     bool removeColour( int index );
     void renameColour( int i, QString text );
     int getColourCount() { return mPalette.size(); }
