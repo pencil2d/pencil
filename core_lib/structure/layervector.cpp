@@ -73,6 +73,15 @@ bool LayerVector::usesColour(int colorIndex)
     return bUseColor;
 }
 
+void LayerVector::moveColour(int startIndex, int endIndex)
+{
+    foreachKeyFrame( [=]( KeyFrame* pKeyFrame )
+    {
+        auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
+        pVecImage->moveColour( startIndex, endIndex );
+    } );
+}
+
 void LayerVector::removeColour( int colorIndex )
 {
     foreachKeyFrame( [=]( KeyFrame* pKeyFrame )

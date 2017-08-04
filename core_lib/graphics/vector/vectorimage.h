@@ -79,6 +79,7 @@ public:
     QColor getColour(int i);
     int  getColourNumber(QPointF point);
     bool usesColour(int index);
+    void moveColour(int startIndex, int endIndex);
     void removeColour(int index);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);

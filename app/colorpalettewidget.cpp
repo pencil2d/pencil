@@ -294,31 +294,7 @@ void ColorPaletteWidget::onItemMoved(const QModelIndex &parent, int start, int e
         return;
     }
 
-    Object *obj = editor()->object();
-    QQueue<ColourRef> colorQueue;
-
-    // Remove old color after adding to queue
-    colorQueue.append( obj->getColour( start ) );
-    obj->removeColour( start );
-
-    // If the old position is before the new position, then we need to subtract one from the new position because we deleted an item before it
-    if ( start < row )
-    {
-        row--;
-    }
-
-    // Add to queue and remove all colors >= new position
-    while ( row < obj->getColourCount() )
-    {
-        colorQueue.append( obj->getColour( row ) );
-        obj->removeColour( row );
-    }
-
-    // Add colors from queue back in order
-    for ( ColourRef cref : colorQueue )
-    {
-        obj->addColour( cref );
-    }
+    editor()->object()->moveColor( start, row );
 
     refreshColorList();
 }

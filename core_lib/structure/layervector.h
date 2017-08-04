@@ -40,6 +40,7 @@ public:
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment);
 
     bool usesColour(int index);
+    void moveColour(int startIndex, int endIndex);
     void removeColour(int index);
 
 protected:

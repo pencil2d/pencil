@@ -64,4 +64,5 @@ public:
     void restore(Editor*);
 };
 
+
 #endif // BACKUPELEMENT_H
