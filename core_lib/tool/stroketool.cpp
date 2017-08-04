@@ -23,13 +23,13 @@ GNU General Public License for more details.
 
 #ifdef Q_OS_MAC
 extern "C" {
-    void detectElCapitan();
+    void detectWhichOSX();
     void disableCoalescing();
     void enableCoalescing();
 }
 #else
 extern "C" {
-    void detectElCapitan() {}
+    void detectWhichOSX() {}
     void disableCoalescing() {}
     void enableCoalescing() {}
 }
@@ -38,7 +38,7 @@ extern "C" {
 StrokeTool::StrokeTool( QObject *parent ) :
 BaseTool( parent )
 {
-    detectElCapitan();
+    detectWhichOSX();
 }
 
 void StrokeTool::startStroke()

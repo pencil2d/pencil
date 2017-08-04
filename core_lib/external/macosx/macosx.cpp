@@ -39,9 +39,10 @@ extern "C" {
 
 bool gIsMouseCoalecing = false;
 
-void detectElCapitan()
+void detectWhichOSX()
 {
-    if ( QSysInfo::macVersion() == QSysInfo::MV_10_11 )
+    QOperatingSystemVersion current = QOperatingSystemVersion::current();
+    if ( current >= QOperatingSystemVersion::OSXElCapitan )
     {
         gIsMouseCoalecing = true;
     }
