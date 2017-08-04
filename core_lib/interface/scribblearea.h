@@ -138,7 +138,6 @@ public slots:
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
-    void escape();
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
