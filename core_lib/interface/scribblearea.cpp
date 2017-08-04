@@ -242,11 +242,6 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
 /* key event handlers                                                   */
 /************************************************************************/
 
-void ScribbleArea::escape()
-{
-    deselectAll();
-}
-
 void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
     // Don't handle this event on auto repeat
@@ -349,7 +344,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Escape:
             if ( somethingSelected )
             {
-                escape();
+                deselectAll();
                 applyTransformedSelection();
             }
             break;
@@ -357,6 +352,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
             if ( somethingSelected )
             {
                 deleteSelection();
+                deselectAll();
             }
             break;
         case Qt::Key_Space:
@@ -1555,7 +1551,7 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
         }
         else if ( currentTool()->type() == POLYLINE )
         {
-            escape();
+            deselectAll();
         }
     }
 
