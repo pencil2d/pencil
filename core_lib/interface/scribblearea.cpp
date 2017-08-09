@@ -418,7 +418,6 @@ void ScribbleArea::wheelEvent( QWheelEvent* event )
             mEditor->view()->scaleUp();
         }
     }
-
     event->accept();
 }
 
@@ -520,8 +519,8 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
         if ( ( event->modifiers() == ( Qt::ShiftModifier | Qt::AltModifier ) ) && ( currentTool()->properties.width > -1 ) )
         {
             //adjust width if not locked
-            currentTool()->startAdjusting( WIDTH, 0 );
-            return;
+            //currentTool()->startAdjusting( WIDTH, 0 );
+            //return;
         }
         if ( ( event->modifiers() == ( Qt::ControlModifier | Qt::AltModifier ) ) && ( currentTool()->properties.feather > -1 ) )
         {
