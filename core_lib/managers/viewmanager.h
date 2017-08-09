@@ -71,9 +71,10 @@ private:
     const float mMinScale = 0.01f;
     const float mMaxScale = 100.f;
 
-    QTransform createViewTransform();
+    void updateViewTransform();
 
     QTransform mView;
+    QTransform mInvertView;
     QTransform mCentre;
 
     QPointF mTranslate;
