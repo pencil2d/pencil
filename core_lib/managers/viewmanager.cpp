@@ -43,7 +43,7 @@ Status ViewManager::load( Object* o )
     {
         translate( 0, 0 );
     }
-	createViewTransform();
+	updateViewTransform();
 
     return Status::OK;
 }
@@ -61,7 +61,7 @@ QPointF ViewManager::mapCanvasToScreen( QPointF p )
 
 QPointF ViewManager::mapScreenToCanvas(QPointF p)
 {
-    return mView.inverted().map( p );
+    return mViewInverse.map( p );
 }
 
 QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
@@ -76,12 +76,12 @@ QRectF ViewManager::mapCanvasToScreen( const QRectF& rect )
 
 QRectF ViewManager::mapScreenToCanvas( const QRectF& rect )
 {
-    return  mView.inverted().mapRect( rect ) ;
+    return mViewInverse.mapRect( rect ) ;
 }
 
 QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )
 {
-    return mView.inverted().map( path );
+    return mViewInverse.map( path );
 }
 
 QTransform ViewManager::getView()
@@ -89,7 +89,7 @@ QTransform ViewManager::getView()
     return mView;
 }
 
-QTransform ViewManager::createViewTransform()
+void ViewManager::updateViewTransform()
 {
     QTransform c;
     c.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
@@ -106,13 +106,14 @@ QTransform ViewManager::createViewTransform()
     QTransform s;
     s.scale( mScale * flipX, mScale * flipY );
 
-    return t * s * r * c;
+    mView = t * s * r * c;
+    mViewInverse = mView.inverted();
 }
 
 void ViewManager::translate(float dx, float dy)
 {
     mTranslate = QPointF( dx, dy );
-    mView = createViewTransform();
+    updateViewTransform();
     Q_EMIT viewChanged();
 }
 
@@ -124,7 +125,7 @@ void ViewManager::translate(QPointF offset)
 void ViewManager::rotate(float degree)
 {
     mRotate += degree;
-    mView = createViewTransform();
+    updateViewTransform();
     Q_EMIT viewChanged();
 }
 
@@ -175,7 +176,7 @@ void ViewManager::scale(float scaleValue)
         return;
     }
     mScale = scaleValue;
-    mView = createViewTransform();
+    updateViewTransform();
     Q_EMIT viewChanged();
 }
 
@@ -184,7 +185,7 @@ void ViewManager::flipHorizontal( bool b )
     if ( b != mIsFlipHorizontal )
     {
         mIsFlipHorizontal = b;
-        mView = createViewTransform();
+        updateViewTransform();
         Q_EMIT viewChanged();
     }
 }
@@ -194,7 +195,7 @@ void ViewManager::flipVertical( bool b )
     if ( b != mIsFlipVertical )
     {
         mIsFlipVertical = b;
-        mView = createViewTransform();
+        updateViewTransform();
         Q_EMIT viewChanged();
     }
 }
@@ -202,7 +203,7 @@ void ViewManager::flipVertical( bool b )
 void ViewManager::setCanvasSize( QSize size )
 {
     mCanvasSize = size;
-    mView = createViewTransform();
+    updateViewTransform();
     Q_EMIT viewChanged();
 }
 
