@@ -78,9 +78,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
 
     if ( isTranslate )
     {
-        QPointF d = getCurrentPoint() - getLastPoint();
-        QPointF offset = editor()->view()->translation() + d;
-        //qDebug() << "d=" << d << ", offset=" << offset;
+        QPointF offset = getCurrentPixel() - getLastPixel();
         editor()->view()->translate( offset );
     }
     else if ( isRotate )

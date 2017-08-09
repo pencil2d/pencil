@@ -34,8 +34,6 @@ public:
     void init();
 
 private:
-    void createIcons();
-
     QSpinBox *mSequenceSpaceBox;
     QLabel *aboutText;
     QLabel *logo;
