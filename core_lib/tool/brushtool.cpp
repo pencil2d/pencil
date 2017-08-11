@@ -157,15 +157,7 @@ void BrushTool::setAA( const int AA )
 
 QCursor BrushTool::cursor()
 {
-    if ( isAdjusting ) // being dynamically resized
-    {
-        return circleCursors(); // two circles cursor
-    }
-    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
-    {
-        return dottedCursor(); // preview stroke size cursor
-    }
-    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) ) // doesn't need else
+    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
         return QCursor( QPixmap( ":icons/brush.png" ), 0, 13 );
     }

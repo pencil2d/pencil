@@ -113,97 +113,100 @@ void BaseTool::mouseDoubleClickEvent( QMouseEvent *event )
     mousePressEvent( event );
 }
 
-QCursor BaseTool::circleCursors() // Todo: only one instance required: make fn static?
+/**
+ * @brief precision circular cursor: used for drawing a cursor within scribble area.
+ * @return QPixmap
+ */
+QPixmap BaseTool::canvasCursor() // Todo: only one instance required: make fn static?
 {
-    Q_ASSERT( mEditor->getScribbleArea() );
+        Q_ASSERT( mEditor->getScribbleArea() );
 
-    qreal zoomFactor = editor()->view()->scaling(); //scale factor
+        propWidth = properties.width;
+        propFeather = properties.feather;
+        cursorWidth = propWidth + 0.5 * propFeather;
 
-    //qDebug() << "--->" << zoomFactor;
-    qreal propWidth = properties.width * zoomFactor;
-    qreal propFeather = properties.feather * zoomFactor;
-    qreal width = propWidth + 0.5 * propFeather;
+        if ( cursorWidth < 1 ) { cursorWidth = 1; }
+        radius = cursorWidth / 2;
+        xyA = 1 + propFeather / 2;
+        xyB = 1 + propFeather / 8;
+        whA = qMax( 0, propWidth - xyA - 1 );
+        whB = qMax( 0, cursorWidth - propFeather / 4 - 2 );
+        cursorPixmap = QPixmap( cursorWidth, cursorWidth );
+        if ( !cursorPixmap.isNull() )
+        {
+            cursorPixmap.fill( QColor( 255, 255, 255, 0 ) );
+            QPainter cursorPainter( &cursorPixmap );
+            cursorPen = cursorPainter.pen();
+            cursorPainter.translate(-1,-1); // cursor is slightly offset
 
-    if ( width < 1 ) { width = 1; }
-    qreal radius = width / 2;
-    qreal xyA = 1 + propFeather / 2;
-    qreal xyB = 1 + propFeather / 8;
-    qreal whA = qMax( 0.0, propWidth - xyA - 1 );
-    qreal whB = qMax( 0.0, width - propFeather / 4 - 2 );
-    QPixmap pixmap( width, width );
-    if ( !pixmap.isNull() )
-    {
-        pixmap.fill( QColor( 255, 255, 255, 0 ) );
-        QPainter painter( &pixmap );
-        painter.setPen( QColor( 0, 0, 0, 255 ) );
-        painter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
-        painter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
-        painter.setRenderHints( QPainter::Antialiasing, true );
-        painter.setPen( QColor( 0, 0, 0, 0 ) );
-        painter.setBrush( QColor( 0, 255, 127, 64 ) );
-        painter.setCompositionMode( QPainter::CompositionMode_Exclusion );
-        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) ); // outside circle
-        painter.setBrush( QColor( 255, 64, 0, 255 ) );
-        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) ); // inside circle
-        painter.end();
-    }
-    return QCursor( pixmap );
+            // Draw cross in center
+            cursorPen.setStyle( Qt::SolidLine );
+            cursorPen.setColor( QColor( 0, 0, 0, 127 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
+            cursorPainter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
+
+            // Draw outer circle
+            cursorPen.setStyle( Qt::DotLine );
+            cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+            cursorPen.setDashOffset( 4 );
+            cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+
+            // Draw inner circle
+            cursorPen.setStyle( Qt::DotLine );
+            cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+            cursorPen.setDashOffset( 4 );
+            cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+
+            cursorPainter.end();
+        }
+        return cursorPixmap;
 }
 
-QCursor BaseTool::dottedCursor() // Todo: only one instance required: make fn static?
+/**
+ * @brief precision circular cursor: used for drawing stroke size while adjusting
+ * @return QPixmap
+ */
+QPixmap BaseTool::quickSizeCursor() // Todo: only one instance required: make fn static?
 {
     Q_ASSERT( mEditor->getScribbleArea() );
 
-    qreal zoomFactor = editor()->view()->scaling(); //scale factor
+    propWidth = properties.width;
+    propFeather = properties.feather;
+    cursorWidth = propWidth + 0.5 * propFeather;
 
-    //qDebug() << "--->" << zoomFactor;
-    qreal propWidth = properties.width * zoomFactor;
-    qreal propFeather = properties.feather * zoomFactor;
-    qreal width = propWidth + 0.5 * propFeather;
-
-    if ( width < 1 ) { width = 1; }
-    qreal radius = width / 2;
-    qreal xyA = 1 + propFeather / 2;
-    qreal xyB = 1 + propFeather / 8;
-    qreal whA = qMax( 0.0, propWidth - xyA - 1 );
-    qreal whB = qMax( 0.0, width - propFeather / 4 - 2 );
-    QPixmap pixmap( width, width );
-    if ( !pixmap.isNull() )
+    if ( cursorWidth < 1 ) { cursorWidth = 1; }
+    radius = cursorWidth / 2;
+    xyA = 1 + propFeather / 2;
+    xyB = 1 + propFeather / 8;
+    whA = qMax( 0, propWidth - xyA - 1 );
+    whB = qMax( 0, cursorWidth - propFeather / 4 - 2 );
+    cursorPixmap = QPixmap( cursorWidth, cursorWidth );
+    if ( !cursorPixmap.isNull() )
     {
-        pixmap.fill( QColor( 255, 255, 255, 0 ) );
-        QPainter painter( &pixmap );
-        QPen pen = painter.pen();
-
-        // Draw cross in center
-        pen.setStyle( Qt::SolidLine );
-        pen.setColor( QColor( 0, 0, 0, 127 ) );
-        painter.setPen(pen);
-        painter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
-        painter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
-
-        // Draw outer circle
-        pen.setStyle( Qt::DotLine );
-        pen.setColor( QColor( 0, 0, 0, 255 ) );
-        painter.setPen(pen);
-        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
-        pen.setDashOffset( 4 );
-        pen.setColor( QColor( 255, 255, 255, 255 ) );
-        painter.setPen(pen);
-        painter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
-
-        // Draw inner circle
-        pen.setStyle( Qt::DotLine );
-        pen.setColor( QColor( 0, 0, 0, 255 ) );
-        painter.setPen(pen);
-        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
-        pen.setDashOffset( 4 );
-        pen.setColor( QColor( 255, 255, 255, 255 ) );
-        painter.setPen(pen);
-        painter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
-
-        painter.end();
+        cursorPixmap.fill( QColor( 255, 255, 255, 0 ) );
+        QPainter cursorPainter( &cursorPixmap );
+        cursorPainter.setPen( QColor( 0, 0, 0, 255 ) );
+        cursorPainter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
+        cursorPainter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
+        cursorPainter.setRenderHints( QPainter::Antialiasing, true );
+        cursorPainter.setPen( QColor( 0, 0, 0, 0 ) );
+        cursorPainter.setBrush( QColor( 0, 255, 127, 64 ) );
+        cursorPainter.setCompositionMode( QPainter::CompositionMode_Exclusion );
+        cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) ); // outside circle
+        cursorPainter.setBrush( QColor( 255, 64, 0, 255 ) );
+        cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) ); // inside circle
+        cursorPainter.end();
     }
-    return QCursor( pixmap );
+    return cursorPixmap;
 }
 
 void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
@@ -219,7 +222,7 @@ void BaseTool::startAdjusting( ToolPropertyType argSettingType, qreal argStep )
     {
         OriginalSettingValue = properties.feather;
     }
-    mEditor->getScribbleArea()->setCursor( cursor() ); // cursor() changes in brushtool, erasertool, ...
+    mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
 void BaseTool::stopAdjusting()
@@ -227,7 +230,7 @@ void BaseTool::stopAdjusting()
     isAdjusting = false;
     mAdjustmentStep = 0;
     OriginalSettingValue = 0;
-    mEditor->getScribbleArea()->setCursor( cursor() );
+    mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
 void BaseTool::adjustCursor( qreal argOffsetX, ToolPropertyType type ) //offsetx x-lastx ...

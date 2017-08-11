@@ -851,6 +851,7 @@ void MainWindow2::preferences()
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
+        mScribbleArea->updateCanvasCursor();
     } );
 
     mPrefDialog->show();

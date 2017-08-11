@@ -96,18 +96,10 @@ void SmudgeTool::setPressure( const bool pressure )
 QCursor SmudgeTool::cursor()
 {
     qDebug() << "smudge tool";
-    if (isAdjusting) // being dynamically resized
-    {
-        return circleCursors(); // two circles cursor
-    }
-    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
-    {
-        return dottedCursor(); // preview stroke size cursor
-    }
     if ( toolMode == 0 ) { //normal mode
-        return QCursor(QPixmap(":icons/smudge.png"),3 ,16);
+        return QCursor(QPixmap(":icons/smudge.png"),0 ,16);
     } else { // blured mode
-        return QCursor(QPixmap(":icons/liquify.png"),3,16);
+        return QCursor(QPixmap(":icons/liquify.png"),-4,16);
     }
 }
 

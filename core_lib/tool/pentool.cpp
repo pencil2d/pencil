@@ -104,17 +104,9 @@ void PenTool::setInpolLevel(const int level)
 
 QCursor PenTool::cursor()
 {
-    if ( isAdjusting ) // being dynamically resized
-    {
-        return circleCursors(); // two circles cursor
-    }
-    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
-    {
-        return dottedCursor(); // preview stroke size cursor
-    }
     if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
     {
-        return QCursor( QPixmap( ":icons/pen.png" ), 2, 22 );
+        return QCursor( QPixmap( ":icons/pen.png" ), -5, 0 );
     }
     return Qt::CrossCursor;
 }

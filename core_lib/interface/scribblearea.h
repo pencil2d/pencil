@@ -167,13 +167,18 @@ public:
 
     void paintBitmapBuffer();
     void paintBitmapBufferRect( QRect rect );
+    void paintCanvasCursor( QPainter& painter );
     void clearBitmapBuffer();
     void refreshBitmap( const QRectF& rect, int rad );
     void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
+    void updateCanvasCursor();
+
     BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
     BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
+
+    QPixmap mCursorImg;
 
 private:
     void drawCanvas( int frame, QRect rect );
