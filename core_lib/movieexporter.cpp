@@ -348,7 +348,7 @@ Status MovieExporter::generateImageSequence(
 		QString strImgPath = mTempWorkDir + imageFileWithFrameNumber;
         bool bSave = imageToExport.save( strImgPath );
         Q_ASSERT(bSave);
-        qDebug() << "Save img to: " << strImgPath << ", " << bSave;
+        qDebug() << "Save img to: " << strImgPath << ", Success=" << bSave;
 
 		float fProgressValue = ( currentFrame / (float)( frameEnd - frameStart ) );
 		progress( 0.1f + ( fProgressValue * 0.99f ) );
