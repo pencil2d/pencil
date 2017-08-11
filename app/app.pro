@@ -11,7 +11,7 @@ QT += core widgets gui xml multimedia svg
 TEMPLATE = app
 TARGET = Pencil2D
 
-CONFIG += qt console
+CONFIG += qt
 
 DESTDIR = ../bin
 
