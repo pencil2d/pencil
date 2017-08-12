@@ -50,6 +50,7 @@ public slots:
 private:
     void setPenWidth( qreal );
     void setPenFeather( qreal );
+    void setUseFeather( bool );
     void setPenInvisibility( int );
     void setPressure( int );
     void setPreserveAlpha( int );

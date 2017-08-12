@@ -38,6 +38,7 @@ public:
 
     void drawStroke();
     void paintVectorStroke();
+    void paintBitmapStroke();
     void paintAt( QPointF point );
 
     void setWidth( const qreal width ) override;

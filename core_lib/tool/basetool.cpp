@@ -56,6 +56,7 @@ BaseTool::BaseTool( QObject *parent ) : QObject( parent )
 {
     m_enabledProperties.insert( WIDTH,          false  );
     m_enabledProperties.insert( FEATHER,        false  );
+    m_enabledProperties.insert( USEFEATHER,     false  );
     m_enabledProperties.insert( PRESSURE,       false  );
     m_enabledProperties.insert( INVISIBILITY,   false  );
     m_enabledProperties.insert( PRESERVEALPHA,  false  );
