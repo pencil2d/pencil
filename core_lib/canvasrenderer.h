@@ -66,6 +66,7 @@ public:
     QRect getCameraRect();
 
     void paint( Object* object, int layer, int frame, QRect rect );
+    void renderGrid(QPainter& painter);
 
 private:
     void paintBackground();

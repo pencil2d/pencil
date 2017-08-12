@@ -26,6 +26,7 @@ void restoreToDefaultSetting() // TODO: finish reset list
     s.setValue("eraserWidth", 10.0);
     s.setValue("brushWidth", 15.0);
     s.setValue("brushFeather", 15.0);
+    s.setValue("brushUseFeather", true);
 
     s.setValue(SETTING_AUTO_SAVE_NUMBER, 15);
     s.setValue(SETTING_TOOL_CURSOR, true);

@@ -738,50 +738,52 @@ void ScribbleArea::paintBitmapBuffer( )
 
 void ScribbleArea::paintBitmapBufferRect( QRect rect )
 {
-    Layer* layer = mEditor->layers()->currentLayer();
+    if ( currentTool()->type() == SMUDGE || currentTool()->type() == BRUSH || mEditor->playback()->isPlaying() ) {
+        Layer* layer = mEditor->layers()->currentLayer();
 
-    // ---- checks ------
-    Q_ASSERT( layer );
-    if ( layer == NULL ) { return; } // TODO: remove in future.
+        // ---- checks ------
+        Q_ASSERT( layer );
+        if ( layer == NULL ) { return; } // TODO: remove in future.
 
-    BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-    // Clear the temporary pixel path
-    if ( targetImage != NULL )
-    {
-        QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
-        switch ( currentTool()->type() )
+        BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+        // Clear the temporary pixel path
+        if ( targetImage != NULL )
         {
-            case ERASER:
-                cm = QPainter::CompositionMode_DestinationOut;
-                break;
-            case BRUSH:
-            case PEN:
-            case PENCIL:
-                if ( getTool( currentTool()->type() )->properties.preserveAlpha )
-                {
-                    cm = QPainter::CompositionMode_SourceAtop;
-                }
-                break;
-            default: //nothing
-                break;
+            QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
+            switch ( currentTool()->type() )
+            {
+                case ERASER:
+                    cm = QPainter::CompositionMode_DestinationOut;
+                    break;
+                case BRUSH:
+                case PEN:
+                case PENCIL:
+                    if ( getTool( currentTool()->type() )->properties.preserveAlpha )
+                    {
+                        cm = QPainter::CompositionMode_SourceAtop;
+                    }
+                    break;
+                default: //nothing
+                    break;
+            }
+            targetImage->paste( mBufferImg, cm );
         }
-        targetImage->paste( mBufferImg, cm );
+
+        qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
+
+        // Clear the buffer
+        mBufferImg->clear();
+
+        layer->setModified( mEditor->currentFrame(), true );
+        emit modification();
+
+        int frameNumber = mEditor->currentFrame();
+        QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+        mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+
+        drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
+        update( rect );
     }
-
-    qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
-
-    // Clear the buffer
-    mBufferImg->clear();
-
-    layer->setModified( mEditor->currentFrame(), true );
-    emit modification();
-
-    int frameNumber = mEditor->currentFrame();
-	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
-	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
-
-    drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
-    update( rect );
 }
 
 void ScribbleArea::clearBitmapBuffer()
@@ -976,6 +978,8 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             mBufferImg->paintImage( painter );
         }
 
+        mCanvasRenderer.renderGrid(painter);
+
         // paints the selection outline
         if ( somethingSelected && ( myTempTransformedSelection.isValid() || mMoveMode == ROTATION ) ) // @revise
         {
@@ -1097,21 +1101,21 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
 {
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    BitmapImage tempBitmapImage;
+    BitmapImage gradientImg;
     if (usingFeather==true)
     {
         QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
         setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
-        tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                                   QPainter::CompositionMode_Source, false );
+        gradientImg.drawEllipse( rectangle, Qt::NoPen, radialGrad,
+                                   QPainter::CompositionMode_SourceOver, false );
     }
     else
     {
         mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
-                                   QPainter::CompositionMode_Source, useAA );
+                                   QPainter::CompositionMode_SourceOver, useAA );
     }
-    mBufferImg->paste( &tempBitmapImage );
+    mBufferImg->paste( &gradientImg );
 }
 
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_ )

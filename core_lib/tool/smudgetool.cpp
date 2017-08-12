@@ -203,7 +203,6 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
         if (layer->type() == Layer::BITMAP)
         {
             drawStroke();
-            mScribbleArea->paintBitmapBuffer();
             mScribbleArea->setAllDirty();
             endStroke();
         }
@@ -309,8 +308,8 @@ void SmudgeTool::drawStroke()
                 mLastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
+            mScribbleArea->paintBitmapBufferRect( rect );
             mScribbleArea->refreshBitmap(rect, rad);
-            mScribbleArea->paintBitmapBuffer();
         }
     }
     else // liquify smooth
@@ -337,8 +336,8 @@ void SmudgeTool::drawStroke()
                 mLastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
+            mScribbleArea->paintBitmapBufferRect( rect );
             mScribbleArea->refreshBitmap(rect, rad);
-            mScribbleArea->paintBitmapBuffer();
         }
     }
 }

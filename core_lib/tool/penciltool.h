@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include "stroketool.h"
 #include <QColor>
 
+class Layer;
+
 class PencilTool : public StrokeTool
 {
     Q_OBJECT
@@ -36,7 +38,8 @@ public:
 
     void drawStroke();
     void paintAt( QPointF point );
-    void paintVectorStroke();
+    void paintVectorStroke(Layer* layer);
+    void paintBitmapStroke();
 
     void adjustPressureSensitiveProperties( qreal pressure, bool mouseDevice ) override;
 
