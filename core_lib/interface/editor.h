@@ -149,6 +149,7 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
+    void flipSelection(bool flipVertical);
 
     void toogleOnionSkinType();
 

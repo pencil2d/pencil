@@ -196,20 +196,16 @@ void ActionCommands::ZoomOut()
     mEditor->view()->scale( newScaleValue );
 }
 
-void ActionCommands::flipX()
+void ActionCommands::flipSelectionX()
 {
-    auto view = mEditor->view();
-
-    bool b = view->isFlipHorizontal();
-    view->flipHorizontal( !b );
+   bool flipVertical = false;
+   mEditor->flipSelection(flipVertical);
 }
 
-void ActionCommands::flipY()
+void ActionCommands::flipSelectionY()
 {
-    auto view = mEditor->view();
-
-    bool b = view->isFlipVertical();
-    view->flipVertical( !b );
+    bool flipVertical = true;
+    mEditor->flipSelection(flipVertical);
 }
 
 void ActionCommands::rotateClockwise()

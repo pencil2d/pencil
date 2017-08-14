@@ -411,6 +411,11 @@ void Editor::paste()
 	mScribbleArea->updateCurrentFrame();
 }
 
+void Editor::flipSelection(bool flipVertical)
+{
+    mScribbleArea->flipSelection(flipVertical);
+}
+
 void Editor::deselectAll()
 {
 	mScribbleArea->deselectAll();

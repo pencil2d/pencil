@@ -260,8 +260,8 @@ void MainWindow2::createMenus()
     connect( ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy );
     connect( ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste );
     connect( ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame );
-    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipX );
-    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipY );
+    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX );
+    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY );
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
