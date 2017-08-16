@@ -75,6 +75,10 @@ public:
     bool areLayersSane() const;
     bool isLayerPaintable() const;
 
+    void flipSelection(bool flipVertical);
+
+    QVector<QPoint> calcSelectionCenterPoints();
+
     void setEffect( SETTING e, bool isOn );
 
     int showAllLayers() const { return mShowAllLayers; }

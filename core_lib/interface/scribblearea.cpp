@@ -1156,6 +1156,32 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
     mBufferImg->paste( &gradientImg );
 }
 
+/**
+ * @brief ScribbleArea::flipSelectionX
+ * flip selection along the X or Y axis
+*/
+void ScribbleArea::flipSelection(bool flipVertical)
+{
+    int scaleX = myTempTransformedSelection.width() / mySelection.width();
+    int scaleY = myTempTransformedSelection.height() / mySelection.height();
+    QVector<QPoint> centerPoints = calcSelectionCenterPoints();
+
+    QTransform translate = QTransform::fromTranslate( centerPoints[0].x(), centerPoints[0].y() );
+    QTransform _translate = QTransform::fromTranslate( -centerPoints[1].x(), -centerPoints[1].y() );
+    QTransform scale = QTransform::fromScale( -scaleX, 1.0 );
+    if (flipVertical == true)
+    {
+       scale = QTransform::fromScale( 1.0, -scaleY );
+    }
+
+    // reset transformation for vector selections
+    selectionTransformation.reset();
+    selectionTransformation = selectionTransformation * _translate * scale * translate;
+
+    paintTransformedSelection();
+    applyTransformedSelection(); // TODO: apply shouldn't deselect;
+}
+
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_ )
 {
     QRadialGradient radialGrad( thePoint_, 0.5 * brushWidth_ );
@@ -1302,13 +1328,33 @@ void ScribbleArea::calculateSelectionRect()
     }
 }
 
+/**
+ * @brief ScribbleArea::calculateSelectionCenter
+ * @return QPoint of tempTransformSelection center at [0] and selection center at [1]
+ */
+QVector<QPoint> ScribbleArea::calcSelectionCenterPoints()
+{
+    QVector<QPoint> centerPoints;
+    float selectionCenterX,
+          selectionCenterY,
+          tempSelectionCenterX,
+          tempSelectionCenterY;
+
+    tempSelectionCenterX = 0.5 * ( myTempTransformedSelection.left() +
+                                   myTempTransformedSelection.right() );
+    tempSelectionCenterY = 0.5 * ( myTempTransformedSelection.top() +
+                                   myTempTransformedSelection.bottom() );
+    selectionCenterX = 0.5 * ( mySelection.left() + mySelection.right() );
+    selectionCenterY = 0.5 * ( mySelection.top() + mySelection.bottom() );
+    centerPoints.append( QPoint( tempSelectionCenterX, tempSelectionCenterY ) );
+    centerPoints.append( QPoint( selectionCenterX, selectionCenterY ) );
+    return centerPoints;
+}
+
 void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 {
-    qreal c1x, c1y, c2x, c2y, scaleX, scaleY;
-    c1x = 0.5 * ( myTempTransformedSelection.left() + myTempTransformedSelection.right() );
-    c1y = 0.5 * ( myTempTransformedSelection.top() + myTempTransformedSelection.bottom() );
-    c2x = 0.5 * ( mySelection.left() + mySelection.right() );
-    c2y = 0.5 * ( mySelection.top() + mySelection.bottom() );
+    float scaleX, scaleY;
+    QVector<QPoint> centerPoints = calcSelectionCenterPoints();
 
     if ( mySelection.width() == 0 )
     {
@@ -1329,10 +1375,10 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     }
 
     selectionTransformation.reset();
-    selectionTransformation.translate( c1x, c1y );
+    selectionTransformation.translate( centerPoints[0].x(), centerPoints[0].y() );
     selectionTransformation.rotate(myRotatedAngle);
     selectionTransformation.scale( scaleX, scaleY );
-    selectionTransformation.translate( -c2x, -c2y );
+    selectionTransformation.translate( -centerPoints[1].x(), -centerPoints[1].y() );
 
     //modification();
 }

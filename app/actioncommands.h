@@ -43,8 +43,8 @@ public:
     // view
     void ZoomIn();
     void ZoomOut();
-    void flipX();
-    void flipY();
+    void flipSelectionX();
+    void flipSelectionY();
     void rotateClockwise();
     void rotateCounterClockwise();
 
@@ -67,7 +67,7 @@ public:
 
 private:
     Editor* mEditor  = nullptr;
-	QWidget* mParent = nullptr;
+    QWidget* mParent = nullptr;
 };
 
 #endif // COMMANDCENTER_H
