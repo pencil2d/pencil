@@ -67,6 +67,7 @@ public:
     void deleteSelection();
     void setSelection( QRectF rect, bool );
     void displaySelectionProperties();
+    void resetSelectionProperties();
     QRectF getSelection() const { return mySelection; }
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;

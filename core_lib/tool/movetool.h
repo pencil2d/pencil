@@ -41,6 +41,8 @@ public:
 private:
     void cancelChanges();
     void applyChanges();
+    void resetSelectionProperties();
+    void paintTransformedSelection();
     void whichTransformationPoint();
     void transformSelection(qreal offsetX, qreal offsetY);
     void pressOperation(QMouseEvent* event, Layer *layer);

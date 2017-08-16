@@ -1119,7 +1119,7 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
 }
 
 /**
- * @brief ScribbleArea::flipSelectionX
+ * @brief ScribbleArea::flipSelection
  * flip selection along the X or Y axis
 */
 void ScribbleArea::flipSelection(bool flipVertical)
@@ -1130,18 +1130,21 @@ void ScribbleArea::flipSelection(bool flipVertical)
 
     QTransform translate = QTransform::fromTranslate( centerPoints[0].x(), centerPoints[0].y() );
     QTransform _translate = QTransform::fromTranslate( -centerPoints[1].x(), -centerPoints[1].y() );
-    QTransform scale = QTransform::fromScale( -scaleX, 1.0 );
+    QTransform scale = QTransform::fromScale( -scaleX, scaleY );
+
     if (flipVertical == true)
     {
-       scale = QTransform::fromScale( 1.0, -scaleY );
+       scale = QTransform::fromScale( scaleX, -scaleY );
     }
 
     // reset transformation for vector selections
     selectionTransformation.reset();
-    selectionTransformation = selectionTransformation * _translate * scale * translate;
+    selectionTransformation *= _translate *
+                                scale *
+                                translate;
 
     paintTransformedSelection();
-    applyTransformedSelection(); // TODO: apply shouldn't deselect;
+    applyTransformedSelection();
 }
 
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_ )
@@ -1337,12 +1340,13 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     }
 
     selectionTransformation.reset();
+
     selectionTransformation.translate( centerPoints[0].x(), centerPoints[0].y() );
     selectionTransformation.rotate(myRotatedAngle);
     selectionTransformation.scale( scaleX, scaleY );
     selectionTransformation.translate( -centerPoints[1].x(), -centerPoints[1].y() );
 
-    //modification();
+//    modification();
 }
 
 
@@ -1405,7 +1409,6 @@ void ScribbleArea::applyTransformedSelection()
         }
 
         setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-        deselectAll();
     }
 
     updateCurrentFrame();
@@ -1515,12 +1518,21 @@ void ScribbleArea::selectAll()
     updateCurrentFrame();
 }
 
-void ScribbleArea::deselectAll()
+/**
+ * @brief ScribbleArea::resetSelectionProperties
+ * should be used whenever translate, rotate, transform, scale
+ * has been applied to a selection, but don't want to reset size nor position
+ */
+void ScribbleArea::resetSelectionProperties()
 {
-    mOffset.setX( 0 );
-    mOffset.setY( 0 );
+    mOffset = QPoint(0,0);
     myRotatedAngle = 0;
     selectionTransformation.reset();
+}
+
+void ScribbleArea::deselectAll()
+{
+    resetSelectionProperties();
     mySelection.setRect( 10, 10, 20, 20 );
     myTransformedSelection.setRect( 10, 10, 20, 20 );
     myTempTransformedSelection.setRect( 10, 10, 20, 20 );
