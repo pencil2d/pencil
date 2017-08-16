@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include <QCursor>
 #include <QMouseEvent>
 #include <QPointF>
+#include <QPixmap>
+#include <QPen>
 #include "pencildef.h"
 
 class Editor;
@@ -89,8 +91,8 @@ public:
     virtual void clear() {}
 
     static bool isAdjusting;
-    QCursor circleCursors(); //precision circular cursor: used for assisted cursor adjustment (wysiwyg)
-    QCursor dottedCursor(); //precision circular cursor: used for seeing stroke size before it happens (wysiwyg)
+    QPixmap canvasCursor();
+    QPixmap quickSizeCursor();
 
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
@@ -127,6 +129,20 @@ protected:
     ScribbleArea* mScribbleArea = nullptr;
     StrokeManager* m_pStrokeManager = nullptr;
     qreal mAdjustmentStep = 0.0f;
+
+private:
+    int propWidth;
+    int propFeather;
+    int width;
+    int cursorWidth;
+
+    int radius;
+    int xyA;
+    int xyB;
+    int whA;
+    int whB;
+    QPixmap cursorPixmap;
+    QPen cursorPen;
 };
 
 #endif // BASETOOL_H

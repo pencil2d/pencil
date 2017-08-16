@@ -83,6 +83,8 @@ bool ScribbleArea::init()
     mOffset.setY( 0 );
     selectionTransformation.reset();
 
+    updateCanvasCursor();
+
     tol = 7.0;
 
     setMouseTracking( true ); // reacts to mouse move events, even if the button is not pressed
@@ -141,6 +143,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
 void ScribbleArea::updateToolCursor()
 {
     setCursor( currentTool()->cursor() );
+    updateCanvasCursor();
     updateAllFrames();
 }
 
@@ -600,6 +603,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
             ToolPropertyType tool_type;
             tool_type = event->modifiers() & Qt::ControlModifier ? FEATHER : WIDTH;
             currentTool()->adjustCursor( mOffset.x(), tool_type ); //updates cursors given org width or feather and x
+            updateCanvasCursor();
             return;
         }
     }
@@ -611,6 +615,9 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseMoveEvent( event );
+
+    // used to clear and update canvas cursor
+    update();
 
 #ifdef DEBUG_FPS
     // debug fps count.
@@ -818,6 +825,33 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
     //update();
 }
 
+void ScribbleArea::paintCanvasCursor( QPainter& painter )
+{
+    QPoint center( 0,0 );
+    center.setX( ( mCursorImg.width() ) / 2 );
+    center.setY( ( mCursorImg.height() ) / 2 );
+    QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
+    painter.drawPixmap( QPoint( mousePos.x() - center.x(),
+                                mousePos.y() - center.y() ),
+                                mCursorImg );
+}
+
+void ScribbleArea::updateCanvasCursor()
+{
+    if ( currentTool()->isAdjusting )
+    {
+        mCursorImg = currentTool()->quickSizeCursor();
+    }
+    else if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        mCursorImg = currentTool()->canvasCursor();
+    } else
+    {
+        // if above does not comply, delocate image
+        mCursorImg = QPixmap();
+    }
+}
+
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
     if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND )
@@ -975,7 +1009,11 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             {
                 painter.setWorldMatrixEnabled( false );
             }
+
+            // TODO: move to above if vector statement
             mBufferImg->paintImage( painter );
+
+            paintCanvasCursor( painter );
         }
 
         mCanvasRenderer.renderGrid(painter);
@@ -1562,6 +1600,7 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
 
     // --- change cursor ---
     setCursor( currentTool()->cursor() );
+    updateCanvasCursor();
     qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 

@@ -88,12 +88,8 @@ void PolylineTool::setAA( const int AA )
     settings.sync();
 }
 
-QCursor PolylineTool::cursor() //Not working this one, any guru to fix it?
+QCursor PolylineTool::cursor()
 {
-    if ( isAdjusting ) { // being dynamically resized
-        qDebug() << "adjusting";
-        return QCursor( this->circleCursors() ); // two circles cursor
-    }
     return Qt::CrossCursor;
 }
 
