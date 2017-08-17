@@ -2,7 +2,11 @@
 
 These are instructions for building Pencil2D on a Mac. If you are using Windows go {here} (coming soon), and if you are using Linux go [here](build_linux.md).
 
-This guide is primarily targeted towards developers. If you just want to use the bleeding edge you can just download one of our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Lion (10.7) and up.
+This guide is primarily targeted towards developers. If you just want to use the latest version, download it from our [nightly builds](https://drive.google.com/drive/folders/0BxdcdOiOmg-CcWhLazdKR1oydHM). This tutorial was made with macOS Sierra (10.12) in mind, however this will probably work with all versions Lion (10.7) and up.
+
+## TL;DR
+
+If you are an *experienced Qt developer*, compiling Pencil2D will be an extremely easy task. Just open `pencil.pro` and press build, that's it.
 
 ## Installing Dependencies
 
@@ -10,9 +14,9 @@ There are a few things that must be installed in order to build Pencil2d. In thi
 
 ### Xcode
 
-#### Graphical method
+#### Graphical method (Recommended)
 
-Click on [this link](https://itunes.apple.com/ca/app/xcode/id497799835) and click the *View in Mac App Store* button. This should open up the official page for Xcode in your App Store application. Now press the install button and wait for the installation to complete. The program takes up multiple GB, so it normally takes quite a while to install. Once installed open up Xcode, either with the button in the App Store or by navigating to `/Applications/Xcode.app`. From the menu bar select *Xcode* > *Preferences...* to open up the Preferences dialog. Go to the Locations tab and click the button next to Command Line Tools. Once that is finished loading you can quit Xcode.
+Firstly, install **Xcode** from App Store. Click on [this link](https://itunes.apple.com/ca/app/xcode/id497799835) and click the *View in Mac App Store* button. Now press the install button in your App Store application and wait for the installation to complete. At the moment the package size of Xcode 8 is 4.3GB, so it normally takes quite a while to install. Once installed open up Xcode, either with the button in the App Store or by navigating to `/Applications/Xcode.app`.
 
 #### Command-line method
 
@@ -30,11 +34,11 @@ This step is only necessary if you are installing with the command-line method; 
 
 ### Qt
 
-Pencil2D relies on the Qt application framework so you must install it before you can successfully build the program.
+Pencil2D relies on the Qt framework so you must install it before you can compile the program.
 
 #### Graphical method
 
-Go to the [QT Downloads](https://www.qt.io/download-open-source/) and download the *Qt Online Installer for OS X*. Opening the file will mount the disk image, and will result in a Finder window appearing with a single file. The file is the Qt installer application, so go ahead and open it. Click continue. I will give you the option to log in with your Qt developer account. You can skip this if you don't have an account and do not want to register. Next specify a location for Qt, put it somewhere you can find it in case you ever need to navigate to the Qt files manually. Next you can select the components you wish to install. At the very least you should have OS X selected under the latest Qt version. Also make sure Qt Creator under the Tools section is being installed (at the time of writing there is no option to uncheck this, but it's worth double checking!). Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press Done and it will launch Qt Creator for you.
+Go to the [QT Downloads](https://www.qt.io/download-open-source/) and download the *Qt Online Installer for OS X*. Opening the file will mount the disk image, and will result in a Finder window appearing with a single file. The file is the Qt installer application, so go ahead and open it. Click continue. It will give you the option to log in with your Qt developer account. You can skip this if you don't have an account and do not want to register. Next specify a location for Qt, put it somewhere you can find it in case you ever need to navigate to the Qt files manually. Next you can select the components you wish to install. At the very least you should have OS X selected under the latest Qt version. Also make sure Qt Creator under the Tools section is being installed (at the time of writing there is no option to uncheck this, but it's worth double checking!). Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press Done and it will launch Qt Creator for you.
 
 #### Command-line method
 
