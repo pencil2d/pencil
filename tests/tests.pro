@@ -35,7 +35,8 @@ HEADERS += \
     test_layermanager.h \
     test_object.h \
     test_filemanager.h \
-    test_bitmapimage.h
+    test_bitmapimage.h \
+    test_viewmanager.h
 
 SOURCES += \
     main.cpp \
@@ -43,7 +44,8 @@ SOURCES += \
     test_layermanager.cpp \
     test_object.cpp \
     test_filemanager.cpp \
-    test_bitmapimage.cpp
+    test_bitmapimage.cpp \
+    test_viewmanager.cpp
 
 linux-* {
     LIBS += -lz
