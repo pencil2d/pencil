@@ -186,14 +186,12 @@ Status ActionCommands::exportMovie()
 
 void ActionCommands::ZoomIn()
 {
-    float newScaleValue = mEditor->view()->scaling() * 1.2;
-    mEditor->view()->scale( newScaleValue );
+    mEditor->view()->scale( 1.15 );
 }
 
 void ActionCommands::ZoomOut()
 {
-    float newScaleValue = mEditor->view()->scaling() * 0.8333;
-    mEditor->view()->scale( newScaleValue );
+    mEditor->view()->scale( ( 1.0 / 1.15 ) );
 }
 
 void ActionCommands::flipSelectionX()

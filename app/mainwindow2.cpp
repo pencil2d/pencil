@@ -935,6 +935,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionDeselect_All->setShortcut( cmdKeySeq( CMD_DESELECT_ALL ) );
     ui->actionPreference->setShortcut( cmdKeySeq( CMD_PREFERENCE ) );
 
+    // View menu
     ui->actionReset_Windows->setShortcut( cmdKeySeq( CMD_RESET_WINDOWS ) );
     ui->actionReset_View->setShortcut( cmdKeySeq( CMD_RESET_ZOOM_ROTATE ) );
     ui->actionZoom_In->setShortcut( cmdKeySeq( CMD_ZOOM_IN ) );
