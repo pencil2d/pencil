@@ -58,6 +58,69 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
     }
 }
 
+void MoveTool::mouseReleaseEvent( QMouseEvent* )
+{
+    // update selection position
+    mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
+
+    // make sure transform is correct
+    mScribbleArea->calculateSelectionTransformation();
+
+    // paint and apply
+    paintTransformedSelection();
+    applyChanges();
+
+    // set selection again to avoid scaling issues.
+    mScribbleArea->setSelection( mScribbleArea->myTransformedSelection, true );
+    resetSelectionProperties();
+}
+
+void MoveTool::mouseMoveEvent( QMouseEvent *event )
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if ( layer == NULL ) {
+        return;
+    }
+
+    if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
+    {
+        return;
+    }
+
+    if ( event->buttons() & Qt::LeftButton )   // the user is also pressing the mouse (dragging)
+    {
+        if( mScribbleArea->somethingSelected )
+        {
+            QPointF offset = QPointF(mScribbleArea->mOffset.x(),
+                                     mScribbleArea->mOffset.y());
+
+            if ( event->modifiers() == Qt::ShiftModifier )    // maintain aspect ratio
+            {
+                offset = maintainAspectRatio(offset.x(), offset.y());
+            }
+
+            transformSelection(offset.x(), offset.y());
+
+            mScribbleArea->calculateSelectionTransformation();
+            paintTransformedSelection();
+        }
+        else // there is nothing selected
+        {
+            mScribbleArea->deselectAll();
+            mScribbleArea->mMoveMode = ScribbleArea::NONE;
+        }
+    }
+    else // the user is moving the mouse without pressing it
+    {
+        if ( layer->type() == Layer::VECTOR )
+        {
+            onHoverOutlineStroke(layer);
+        }
+        mScribbleArea->update();
+    }
+}
+
+
 void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 {
     if ( (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR) )
@@ -68,10 +131,20 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
         if ( mScribbleArea->somethingSelected ) // there is an area selection
         {
             whichTransformationPoint();
+
+            // calculate new transformation in case click only
+            mScribbleArea->calculateSelectionTransformation();
+
+            paintTransformedSelection();
+            applyChanges();
+
+            mScribbleArea->setSelection( mScribbleArea->myTransformedSelection, true );
+            resetSelectionProperties();
         }
 
         if ( mScribbleArea->getMoveMode() == ScribbleArea::MIDDLE )
         {
+
             if ( event->modifiers() == Qt::ControlModifier ) // --- rotation
             {
                 mScribbleArea->setMoveMode( ScribbleArea::ROTATION );
@@ -158,7 +231,8 @@ void MoveTool::transformSelection(qreal offsetX, qreal offsetY)
     case ScribbleArea::MIDDLE:
         if ( QLineF( getLastPressPixel(), getCurrentPixel() ).length() > 4 )
         {
-            mScribbleArea->myTempTransformedSelection = mScribbleArea->myTransformedSelection.translated( QPointF(offsetX, offsetY) );
+            mScribbleArea->myTempTransformedSelection =
+            mScribbleArea->myTransformedSelection.translated( QPointF(offsetX, offsetY) );
         }
         break;
 
@@ -229,61 +303,6 @@ void MoveTool::onHoverOutlineStroke(Layer* layer)
     mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
 }
 
-void MoveTool::mouseReleaseEvent( QMouseEvent* )
-{
-    mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
-    // Don't do anything more on mouse release.
-    // The modifications are only applied on deselect or press enter.
-}
-
-void MoveTool::mouseMoveEvent( QMouseEvent *event )
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if ( layer == NULL ) {
-        return;
-    }
-
-    if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
-    {
-        return;
-    }
-
-    if ( event->buttons() & Qt::LeftButton )   // the user is also pressing the mouse (dragging)
-    {
-        if( mScribbleArea->somethingSelected )
-        {
-            QPointF offset = QPointF(mScribbleArea->mOffset.x(),
-                                     mScribbleArea->mOffset.y());
-
-            if ( event->modifiers() == Qt::ShiftModifier )    // maintain aspect ratio
-            {
-                offset = maintainAspectRatio(offset.x(), offset.y());
-            }
-
-            transformSelection(offset.x(), offset.y());
-
-            mScribbleArea->calculateSelectionTransformation();
-
-            mScribbleArea->paintTransformedSelection();
-        }
-        else // there is nothing selected
-        {
-            // we switch to the select tool
-            //mEditor->tools()->setCurrentTool( SELECT );
-            mScribbleArea->deselectAll();
-            mScribbleArea->mMoveMode = ScribbleArea::NONE;
-        }
-    }
-    else // the user is moving the mouse without pressing it
-    {
-        if ( layer->type() == Layer::VECTOR )
-        {
-            onHoverOutlineStroke(layer);
-        }
-        mScribbleArea->update();
-    }
-}
-
 void MoveTool::cancelChanges()
 {
     mScribbleArea->cancelTransformedSelection();
@@ -294,10 +313,24 @@ void MoveTool::applyChanges()
     mScribbleArea->applyTransformedSelection();
 }
 
-void MoveTool::leavingThisTool(){
+void MoveTool::paintTransformedSelection()
+{
+    mScribbleArea->paintTransformedSelection();
+}
+
+void MoveTool::leavingThisTool()
+{
+    // make sure correct transformation is applied
+    // before leaving
+    mScribbleArea->calculateSelectionTransformation();
     applyChanges();
 }
 
 void MoveTool::switchingLayers(){
     applyChanges();
+}
+
+void MoveTool::resetSelectionProperties()
+{
+    mScribbleArea->resetSelectionProperties();
 }
