@@ -80,3 +80,28 @@ void TestViewManager::testScaling2Times()
     QCOMPARE(v.mapCanvasToScreen(QPointF(1, 1)), QPointF(6, 6));
     QCOMPARE(v.scaling(), 6.0f);
 }
+
+void TestViewManager::testMaxScalingValue()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    v.scale(10000);
+    QCOMPARE(v.mapCanvasToScreen(QPointF(1, 1)), QPointF(100, 100));
+}
+
+void TestViewManager::testMinScalingValue()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    v.scale(0.0005f);
+
+    QPointF p1 = v.mapCanvasToScreen(QPointF(1, 1));
+    QPointF p2 = QPointF(0.01, 0.01);
+
+    QVERIFY(std::abs(p1.x() - p2.x()) < 0.000001);
+    QVERIFY(std::abs(p1.y() - p2.y()) < 0.000001);
+}

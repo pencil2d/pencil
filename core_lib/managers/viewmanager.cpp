@@ -17,6 +17,10 @@ GNU General Public License for more details.
 
 #include "viewmanager.h"
 #include "object.h"
+#include <QVector2D>
+
+const static float mMinScale = 0.01f;
+const static float mMaxScale = 100.0f;
 
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
@@ -132,22 +136,23 @@ void ViewManager::scale(float scaleValue)
 
     if (newScale < mMinScale)
     {
-        newScale = mMinScale;
+        scaleValue = mMinScale / mScale;
     }
     else if (newScale > mMaxScale)
     {
-        newScale = mMaxScale;
+        scaleValue = mMaxScale / mScale;
     }
     else if (newScale == mMinScale || newScale == mMaxScale)
     {
         return;
     }
 
-    mScale = newScale;
-
     QTransform s = QTransform::fromScale( scaleValue, scaleValue );
     mView = mView * s;
-  
+
+    QPointF p1 = mView.map(QPointF(1, 0));
+    mScale = QVector2D(p1).length();
+
     updateViewTransforms();
 
     Q_EMIT viewChanged();

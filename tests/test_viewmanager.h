@@ -25,6 +25,9 @@ private slots: // test cases
     void testScaling2();
     void testScaling2Times();
 
+    void testMaxScalingValue();
+    void testMinScalingValue();
+
 private:
     Editor* mEditor = nullptr;
 };
