@@ -216,6 +216,7 @@ private:
 private: 
     bool mKeyboardInUse = false;
     bool mMouseInUse    = false;
+    bool mMouseRightButtonInUse = false;
     QPointF mLastPixel;
     QPointF mCurrentPixel;
     QPointF mLastPoint;

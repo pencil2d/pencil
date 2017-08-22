@@ -42,14 +42,14 @@ void HandTool::loadSettings()
 
 QCursor HandTool::cursor()
 {
-    return buttonsDown > 0 ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
+    return mButtonsDown > 0 ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
 }
 
 void HandTool::mousePressEvent( QMouseEvent* )
 {
     mLastPixel = getLastPressPixel();
     mCurrentRotation = 0;
-    ++buttonsDown;
+    ++mButtonsDown;
     mScribbleArea->updateToolCursor();
 }
 
@@ -61,7 +61,7 @@ void HandTool::mouseReleaseEvent( QMouseEvent* event )
         qDebug( "[HandTool] Stop Hand Tool" );
         mScribbleArea->setPrevTool();
     }
-    --buttonsDown;
+    --mButtonsDown;
     mScribbleArea->updateToolCursor();
 }
 
@@ -97,8 +97,7 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
     else if ( isScale )
     {
         float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f ;
-        float scaleValue = mEditor->view()->scaling() * ( 1.f + delta );
-
+        float scaleValue = ( 1.f + delta );
         mEditor->view()->scale( scaleValue );
     }
 

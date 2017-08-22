@@ -573,6 +573,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
 
     if ( event->button() == Qt::RightButton )
     {
+        mMouseRightButtonInUse = true;
         getTool( HAND )->mousePressEvent( event );
         return;
     }
@@ -655,6 +656,7 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     if ( event->button() == Qt::RightButton )
     {
         getTool( HAND )->mouseReleaseEvent( event );
+        mMouseRightButtonInUse = false;
         return;
     }
 
@@ -854,7 +856,7 @@ void ScribbleArea::updateCanvasCursor()
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
-    if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND )
+    if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
@@ -867,7 +869,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             drawCanvas( mEditor->currentFrame(), event->rect() );
             
 			mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
-            
 			//qDebug() << "Repaint canvas!";
         }
     }

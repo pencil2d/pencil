@@ -38,7 +38,7 @@ public:
 private:
     QPointF mLastPixel;
     float mCurrentRotation;
-    int buttonsDown = 0;
+    int mButtonsDown = 0;
 };
 
 #endif
