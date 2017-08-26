@@ -829,10 +829,17 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 
 void ScribbleArea::paintCanvasCursor( QPainter& painter )
 {
+    Layer* layer = mEditor->layers()->currentLayer();
     QPoint center( 0,0 );
     center.setX( ( mCursorImg.width() ) / 2 );
     center.setY( ( mCursorImg.height() ) / 2 );
     QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
+    if (layer->type() == Layer::VECTOR)
+    {
+        QTransform view = mEditor->view()->getView();
+        view.map(mousePos);
+        painter.setTransform(view);
+    }
     painter.drawPixmap( QPoint( mousePos.x() - center.x(),
                                 mousePos.y() - center.y() ),
                                 mCursorImg );
