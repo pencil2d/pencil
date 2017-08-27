@@ -617,9 +617,6 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
 
     currentTool()->mouseMoveEvent( event );
 
-    // used to clear and update canvas cursor
-    update();
-
 #ifdef DEBUG_FPS
     // debug fps count.
     clock_t curTime = clock();
@@ -834,15 +831,18 @@ void ScribbleArea::paintCanvasCursor( QPainter& painter )
     center.setX( ( mCursorImg.width() ) / 2 );
     center.setY( ( mCursorImg.height() ) / 2 );
     QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
+    QTransform view = mEditor->view()->getView();
+    QPoint transformedPos = view.map( mousePos );
     if ( layer->type() == Layer::VECTOR )
     {
-        QTransform view = mEditor->view()->getView();
-        view.map( mousePos );
         painter.setTransform( view );
     }
     painter.drawPixmap( QPoint( mousePos.x() - center.x(),
                                 mousePos.y() - center.y() ),
                                 mCursorImg );
+    // clear and update cursor rect
+    update( mCursorImg.rect().translated( transformedPos.x() - center.x(),
+                                        transformedPos.y() - center.y() ) );
 }
 
 void ScribbleArea::updateCanvasCursor()
