@@ -828,11 +828,13 @@ void ScribbleArea::paintCanvasCursor( QPainter& painter )
 {
     Layer* layer = mEditor->layers()->currentLayer();
     QPoint center( 0,0 );
-    center.setX( ( mCursorImg.width() ) / 2 );
-    center.setY( ( mCursorImg.height() ) / 2 );
-    QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
     QTransform view = mEditor->view()->getView();
+    QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
     QPoint transformedPos = view.map( mousePos );
+    QPixmap transCursorImg = mCursorImg.transformed(view);
+    int centerCal = mCursorImg.width() / 2;
+    center.setX( centerCal );
+    center.setY( centerCal );
     if ( layer->type() == Layer::VECTOR )
     {
         painter.setTransform( view );
@@ -840,9 +842,16 @@ void ScribbleArea::paintCanvasCursor( QPainter& painter )
     painter.drawPixmap( QPoint( mousePos.x() - center.x(),
                                 mousePos.y() - center.y() ),
                                 mCursorImg );
+
+    // update center of transformed img for rect only
+    centerCal = transCursorImg.width() / 2;
+    center.setX( centerCal );
+    center.setY( centerCal );
+
     // clear and update cursor rect
-    update( mCursorImg.rect().translated( transformedPos.x() - center.x(),
-                                        transformedPos.y() - center.y() ) );
+    update( transCursorImg.rect().adjusted( -1, -1, 1, 1 )
+            .translated( transformedPos.x() - center.x(),
+                         transformedPos.y() - center.y() ) );
 }
 
 void ScribbleArea::updateCanvasCursor()
