@@ -76,10 +76,14 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
     bool isRotate = evt->modifiers() & Qt::AltModifier;
     bool isScale = ( evt->modifiers() & Qt::ControlModifier ) || ( evt->buttons() & Qt::RightButton );
 
+
+    ViewManager* viewMgr = mEditor->view();
+
     if ( isTranslate )
     {
-        QPointF offset = getCurrentPixel() - getLastPixel();
-        editor()->view()->translate( offset );
+        QPointF d = getCurrentPoint() - getLastPoint();
+        QPointF offset = viewMgr->translation() + d;
+        viewMgr->translate( offset );
     }
     else if ( isRotate )
     {
@@ -90,15 +94,15 @@ void HandTool::mouseMoveEvent( QMouseEvent* evt )
         float angle = ( atan2( curV.y(), curV.x() ) - atan2( startV.y(), startV.x() ) ) * 180.0 / M_PI;
         if ( angle != mCurrentRotation )
         {
-            mEditor->view()->rotate( angle - mCurrentRotation );
+            viewMgr->rotate( angle - mCurrentRotation );
             mCurrentRotation = angle;
         }
     }
     else if ( isScale )
     {
         float delta = ( getCurrentPixel().y() - mLastPixel.y() ) / 100.f ;
-        float scaleValue = ( 1.f + delta );
-        mEditor->view()->scale( scaleValue );
+        float scaleValue = viewMgr->scaling() * (1.f + delta);
+        viewMgr->scale(scaleValue);
     }
 
     mLastPixel = getCurrentPixel();

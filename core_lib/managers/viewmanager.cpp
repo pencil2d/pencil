@@ -88,6 +88,23 @@ QTransform ViewManager::getView()
 
 void ViewManager::updateViewTransforms()
 {
+    QTransform t;
+    t.translate(mTranslate.x(), mTranslate.y());
+
+    QTransform r;
+    r.rotate(mRotate);
+
+    float flipX = mIsFlipHorizontal ? -1.f : 1.f;
+    float flipY = mIsFlipVertical ? -1.f : 1.f;
+
+    QTransform s;
+    s.scale(mScale * flipX, mScale * flipY);
+
+    QTransform c;
+    c.translate(mCanvasSize.width() / 2.f, mCanvasSize.height() / 2.f);
+
+    mView = t * s * r;
+
     mViewInverse = mView.inverted();
     mViewCanvas = mView * mCentre;
     mViewCanvasInverse = mViewCanvas.inverted();
@@ -95,12 +112,9 @@ void ViewManager::updateViewTransforms()
 
 void ViewManager::translate(float dx, float dy)
 {
-    QTransform t;
-    t.translate(dx, dy);
-
-    mView = mView * t;
+    mTranslate = QPointF(dx, dy);
     updateViewTransforms();
-    
+
     Q_EMIT viewChanged();
 }
 
@@ -111,10 +125,7 @@ void ViewManager::translate(QPointF offset)
 
 void ViewManager::rotate(float degree)
 {
-    QTransform r;
-    r.rotate(degree);
-    mView = mView * r;
-
+    mRotate += degree;
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -122,37 +133,29 @@ void ViewManager::rotate(float degree)
 
 void ViewManager::scaleUp()
 {
-    scale(1.18f);
+    scale(mScale * 1.18f);
 }
 
 void ViewManager::scaleDown()
 {
-    scale(0.8333f);
+    scale(mScale * 0.8333f);
 }
 
 void ViewManager::scale(float scaleValue)
 {
-    float newScale = mScale * scaleValue;
-
-    if (newScale < mMinScale)
+    if (scaleValue < mMinScale)
     {
-        scaleValue = mMinScale / mScale;
+        scaleValue = mMinScale;
     }
-    else if (newScale > mMaxScale)
+    else if (scaleValue > mMaxScale)
     {
-        scaleValue = mMaxScale / mScale;
+        scaleValue = mMaxScale;
     }
-    else if (newScale == mMinScale || newScale == mMaxScale)
+    else if (scaleValue == mMinScale || scaleValue == mMaxScale)
     {
         return;
     }
-
-    QTransform s = QTransform::fromScale( scaleValue, scaleValue );
-    mView = mView * s;
-
-    QPointF p1 = mView.map(QPointF(1, 0));
-    mScale = QVector2D(p1).length();
-
+    mScale = scaleValue;
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -163,11 +166,8 @@ void ViewManager::flipHorizontal( bool b )
     if ( b != mIsFlipHorizontal )
     {
         mIsFlipHorizontal = b;
-        
-        QTransform s = QTransform::fromScale(-1.0, 1.0);
-        mView = mView * s;
-        
         updateViewTransforms();
+
         Q_EMIT viewChanged();
     }
 }
@@ -177,11 +177,8 @@ void ViewManager::flipVertical( bool b )
     if ( b != mIsFlipVertical )
     {
         mIsFlipVertical = b;
-
-        QTransform s = QTransform::fromScale(1.0, -1.0);
-        mView = mView * s;
-
         updateViewTransforms();
+
         Q_EMIT viewChanged();
     }
 }
@@ -189,9 +186,6 @@ void ViewManager::flipVertical( bool b )
 void ViewManager::setCanvasSize( QSize size )
 {
     mCanvasSize = size;
-    
-    QTransform c;
-
     mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2.f, mCanvasSize.height() / 2.f);
 
     updateViewTransforms();
@@ -201,11 +195,6 @@ void ViewManager::setCanvasSize( QSize size )
 void ViewManager::resetView()
 {
     mScale = 1.f;
-    mView = QTransform();
-    
-    mViewInverse = mView.inverted();
-    mViewCanvas = mView * mCentre;
-    mViewCanvasInverse = mViewCanvas.inverted();
-
-    Q_EMIT viewChanged();
+    mRotate = 0.f;
+    translate(0.f, 0.f); // this fucntion will emit ViewChanged signal, no need to emit again.
 }

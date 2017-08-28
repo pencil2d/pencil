@@ -724,7 +724,7 @@ void ScribbleArea::paintBitmapBuffer( )
         targetImage->paste( mBufferImg, cm );
     }
 
-    qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
+    //qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
 
     QRect rect = mEditor->view()->getView().mapRect( mBufferImg->bounds() );
 
@@ -775,7 +775,7 @@ void ScribbleArea::paintBitmapBufferRect( QRect rect )
             targetImage->paste( mBufferImg, cm );
         }
 
-        qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
+        //qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
 
         // Clear the buffer
         mBufferImg->clear();
@@ -827,7 +827,7 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 void ScribbleArea::paintCanvasCursor( QPainter& painter )
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    QPoint center( 0,0 );
+    QPoint center(0, 0);
     QTransform view = mEditor->view()->getView();
     QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
     QPoint transformedPos = view.map( mousePos );
@@ -849,7 +849,7 @@ void ScribbleArea::paintCanvasCursor( QPainter& painter )
     center.setY( centerCal );
 
     // clear and update cursor rect
-    update( transCursorImg.rect().adjusted( -1, -1, 1, 1 )
+    update( transCursorImg.rect().adjusted( -3, -3, 3, 3 )
             .translated( transformedPos.x() - center.x(),
                          transformedPos.y() - center.y() ) );
 }

@@ -45,11 +45,11 @@ public:
     QPainterPath mapCanvasToScreen( const QPainterPath& path );
     QPainterPath mapScreenToCanvas( const QPainterPath& path );
 
-    //QPointF translation() { return mTranslate; }
+    QPointF translation() { return mTranslate; }
     void translate( float dx, float dy );
     void translate( QPointF offset );
 
-    //float rotation() { return mRotate; }
+    float rotation() { return mRotate; }
     void rotate( float degree );
 
     float scaling() { return mScale; }
@@ -76,8 +76,8 @@ private:
     QTransform mViewCanvasInverse;
     QTransform mCentre;
 
-    //QPointF mTranslate;
-    //float mRotate = 0.f;
+    QPointF mTranslate;
+    float mRotate = 0.f;
     float mScale = 1.f;
 
     QSize mCanvasSize = { 1, 1 };
