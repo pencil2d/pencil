@@ -189,9 +189,9 @@ void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
     {
         removeKeyFrame( frameNumber );
     }
-    Camera* camera = new Camera( view );
-    camera->setPos( frameNumber );
-    addKeyFrame( frameNumber, camera );
+    //Camera* camera = new Camera( view );
+    //camera->setPos( frameNumber );
+    //addKeyFrame( frameNumber, camera );
 }
 
 

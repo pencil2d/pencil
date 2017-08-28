@@ -1299,7 +1299,6 @@ QTransform ScribbleArea::getView()
     if ( layer->type() == Layer::CAMERA )
     {
         return ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
-        //qDebug() << "viewCamera" << ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
     }
     else
     {

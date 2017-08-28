@@ -20,12 +20,38 @@ Camera::Camera()
 {
 }
 
-Camera::Camera( const QTransform& viewMatrix )
+Camera::Camera(QPointF translation, float rotation, float scaling)
 {
-    view = viewMatrix;
+    //view = viewMatrix;
+    mTranslate = translation;
+    mRotate = rotation;
+    mScale = scaling;
+    updateViewTransform();
 }
 
 Camera::~Camera()
 {
+}
+
+void Camera::setViewTransform(QPointF translation, float rotation, float scaling)
+{
+    mTranslate = translation;
+    mRotate = rotation;
+    mScale = scaling;
+    updateViewTransform();
+}
+
+void Camera::updateViewTransform()
+{
+    QTransform t;
+    t.translate(mTranslate.x(), mTranslate.y());
+
+    QTransform r;
+    r.rotate(mRotate);
+
+    QTransform s;
+    s.scale(mScale, mScale);
+
+    view = t * s * r;
 }
 

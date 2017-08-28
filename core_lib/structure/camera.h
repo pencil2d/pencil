@@ -25,10 +25,23 @@ class Camera : public KeyFrame
 {
 public:
     Camera();
-    Camera( const QTransform& );
+    Camera(QPointF translation, float rotation, float scaling);
     ~Camera();
 
+    void setViewTransform(QPointF translation, float rotation, float scaling);
+
+    QPointF translation() { return mTranslate; }
+    float rotation() { return mRotate; }
+    float scaling() { return mScale; }
+
     QTransform view;
+
+private:
+    void updateViewTransform();
+
+    QPointF mTranslate;
+    float mRotate = 0.f;
+    float mScale = 1.f;
 };
 
 #endif // CAMERA_H
