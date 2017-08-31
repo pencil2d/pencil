@@ -75,6 +75,7 @@ private:
     bool mIsRangedPlayback = false;
     int mMarkInFrame = 1;
     int mMarkOutFrame = 10;
+    int mActiveSoundFrame = 0;
 
     int mFps = 12;
 

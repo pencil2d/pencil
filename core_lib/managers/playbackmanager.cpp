@@ -147,7 +147,7 @@ void PlaybackManager::playSounds( int frame )
             }
 
             // Set flag to false, since this check should only be done when
-            // starting play-back.
+            // starting play-back, or when looping.
             mCheckForSoundsHalfway = false;
         }
         else if ( layer->keyExists( frame ) )
@@ -156,6 +156,16 @@ void PlaybackManager::playSounds( int frame )
             SoundClip* clip = static_cast< SoundClip* >( key );
 
             clip->play();
+
+            // save the position of our active sound frame
+            mActiveSoundFrame = frame;
+        }
+
+        if ( frame >= mEndFrame )
+        {
+            KeyFrame* key = layer->getKeyFrameWhichCovers( mActiveSoundFrame );
+            SoundClip* clip = static_cast< SoundClip* >( key );
+            clip->stop();
         }
     }
 }
@@ -191,6 +201,7 @@ void PlaybackManager::timerTick()
         if ( mIsLooping )
         {
             editor()->scrubTo( mStartFrame );
+            mCheckForSoundsHalfway = true;
         }
         else
         {
