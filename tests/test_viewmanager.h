@@ -21,10 +21,10 @@ private slots: // test cases
     void testTranslation2Times();
 
     void testRotation90();
+    void testRotation180();
 
     void testScaling2();
     void testScaling2Times();
-
     void testMaxScalingValue();
     void testMinScalingValue();
 
