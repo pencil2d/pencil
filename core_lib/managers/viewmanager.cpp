@@ -30,7 +30,7 @@ ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 
 bool ViewManager::init()
 {
-    mEditorCamera = new Camera;
+    mDefaultEditorCamera = new Camera;
     return true;
 }
 
@@ -65,7 +65,7 @@ QPointF ViewManager::mapScreenToCanvas(QPointF p)
 
 QPointF ViewManager::translation()
 {
-    return mEditorCamera->translation();
+    return mDefaultEditorCamera->translation();
 }
 
 QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
@@ -106,8 +106,8 @@ void ViewManager::updateViewTransforms()
 
     mView = t * r * s;
     */
-    mEditorCamera->updateViewTransform();
-    mView = mEditorCamera->getView();
+    mDefaultEditorCamera->updateViewTransform();
+    mView = mDefaultEditorCamera->getView();
     mViewInverse = mView.inverted();
 
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
@@ -120,7 +120,7 @@ void ViewManager::updateViewTransforms()
 
 void ViewManager::translate(float dx, float dy)
 {
-    mEditorCamera->translate(dx, dy);
+    mDefaultEditorCamera->translate(dx, dy);
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -133,12 +133,12 @@ void ViewManager::translate(QPointF offset)
 
 float ViewManager::rotation()
 {
-    return mEditorCamera->rotation();
+    return mDefaultEditorCamera->rotation();
 }
 
 void ViewManager::rotate(float degree)
 {
-    mEditorCamera->rotate(degree);
+    mDefaultEditorCamera->rotate(degree);
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -146,7 +146,7 @@ void ViewManager::rotate(float degree)
 
 float ViewManager::scaling()
 {
-    return mEditorCamera->scaling();
+    return mDefaultEditorCamera->scaling();
 }
 
 void ViewManager::scaleUp()
@@ -174,7 +174,7 @@ void ViewManager::scale(float scaleValue)
         return;
     }
     //mScale = scaleValue;
-    mEditorCamera->scale(scaleValue);
+    mDefaultEditorCamera->scale(scaleValue);
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -224,7 +224,7 @@ void ViewManager::setCameraLayer(Layer* layer)
 
 void ViewManager::resetView()
 {
-    mEditorCamera->reset();
+    mDefaultEditorCamera->reset();
     mScale = 1.f;
     mRotate = 0.f;
     translate(0.f, 0.f); // this function will emit ViewChanged signal, no need to emit again.

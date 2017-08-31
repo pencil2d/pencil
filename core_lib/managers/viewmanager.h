@@ -81,7 +81,7 @@ private:
     QTransform mViewCanvasInverse;
     QTransform mCentre;
 
-    Camera* mEditorCamera = nullptr;
+    Camera* mDefaultEditorCamera = nullptr;
     QPointF mTranslate;
     float mRotate = 0.f;
     float mScale = 1.f;

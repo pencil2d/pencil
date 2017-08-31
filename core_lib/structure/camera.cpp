@@ -22,7 +22,6 @@ Camera::Camera()
 
 Camera::Camera(QPointF translation, float rotation, float scaling)
 {
-    //view = viewMatrix;
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
@@ -42,22 +41,28 @@ void Camera::reset()
 
 void Camera::updateViewTransform()
 {
-    QTransform t;
-    t.translate(mTranslate.x(), mTranslate.y());
+    if (mNeedUpdateView)
+    {
+        QTransform t;
+        t.translate(mTranslate.x(), mTranslate.y());
 
-    QTransform r;
-    r.rotate(mRotate);
+        QTransform r;
+        r.rotate(mRotate);
 
-    QTransform s;
-    s.scale(mScale, mScale);
+        QTransform s;
+        s.scale(mScale, mScale);
 
-    view = t * r * s;
+        view = t * r * s;
+    }
+    mNeedUpdateView = false;
 }
 
 void Camera::translate(float dx, float dy)
 {
     mTranslate.setX(dx);
     mTranslate.setY(dy);
+
+    mNeedUpdateView = true;
 }
 
 void Camera::rotate(float degree)
@@ -72,9 +77,13 @@ void Camera::rotate(float degree)
         mRotate = mRotate + 360.f;
     }
     mRotate = degree;
+
+    mNeedUpdateView = true;
 }
 
 void Camera::scale(float scaleValue)
 {
     mScale = scaleValue;
+
+    mNeedUpdateView = true;
 }

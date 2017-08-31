@@ -28,6 +28,7 @@ public:
     Camera(QPointF translation, float rotation, float scaling);
     ~Camera();
 
+    QTransform getView() { return view; }
     void reset();
     void updateViewTransform();
 
@@ -40,14 +41,13 @@ public:
     void scale(float scaleValue);
     float scaling() { return mScale; }
 
-    QTransform getView() { return view; }
-
     QTransform view;
 
 private:
     QPointF mTranslate;
     float mRotate = 0.f;
     float mScale = 1.f;
+    bool mNeedUpdateView = true;
 };
 
 #endif // CAMERA_H
