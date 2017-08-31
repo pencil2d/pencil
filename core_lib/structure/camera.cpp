@@ -33,12 +33,11 @@ Camera::~Camera()
 {
 }
 
-void Camera::setViewTransform(QPointF translation, float rotation, float scaling)
+void Camera::reset()
 {
-    mTranslate = translation;
-    mRotate = rotation;
-    mScale = scaling;
-    updateViewTransform();
+    mTranslate = QPointF(0, 0);
+    mRotate = 0.f;
+    mScale = 1.f;
 }
 
 void Camera::updateViewTransform()
@@ -52,6 +51,30 @@ void Camera::updateViewTransform()
     QTransform s;
     s.scale(mScale, mScale);
 
-    view = t * s * r;
+    view = t * r * s;
 }
 
+void Camera::translate(float dx, float dy)
+{
+    mTranslate.setX(dx);
+    mTranslate.setY(dy);
+}
+
+void Camera::rotate(float degree)
+{
+    mRotate = degree;
+    if (mRotate > 360.f)
+    {
+        mRotate = mRotate - 360.f;
+    }
+    else if (mRotate < 0.f)
+    {
+        mRotate = mRotate + 360.f;
+    }
+    mRotate = degree;
+}
+
+void Camera::scale(float scaleValue)
+{
+    mScale = scaleValue;
+}

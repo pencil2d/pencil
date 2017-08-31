@@ -21,6 +21,10 @@ GNU General Public License for more details.
 #include <QTransform>
 #include "basemanager.h"
 
+class Layer;
+class LayerCamera;
+class Camera;
+
 
 class ViewManager : public BaseManager
 {
@@ -45,14 +49,14 @@ public:
     QPainterPath mapCanvasToScreen( const QPainterPath& path );
     QPainterPath mapScreenToCanvas( const QPainterPath& path );
 
-    QPointF translation() { return mTranslate; }
+    QPointF translation();
     void translate( float dx, float dy );
     void translate( QPointF offset );
 
-    float rotation() { return mRotate; }
+    float rotation();
     void rotate( float degree );
 
-    float scaling() { return mScale; }
+    float scaling();
     void scale( float scaleValue );
     void scaleUp();
     void scaleDown();
@@ -63,7 +67,8 @@ public:
     bool isFlipHorizontal() { return mIsFlipHorizontal; }
     bool isFlipVertical() { return mIsFlipVertical; }
 
-    void setCanvasSize( QSize size );
+    void setCanvasSize(QSize size);
+    void setCameraLayer(Layer* layer);
 
     Q_SIGNAL void viewChanged();
 
@@ -76,6 +81,7 @@ private:
     QTransform mViewCanvasInverse;
     QTransform mCentre;
 
+    Camera* mEditorCamera = nullptr;
     QPointF mTranslate;
     float mRotate = 0.f;
     float mScale = 1.f;
@@ -84,6 +90,8 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+
+    LayerCamera* m_pCameraLayer = nullptr;
 };
 
 #endif // VIEWMANAGER_H

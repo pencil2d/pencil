@@ -28,17 +28,23 @@ public:
     Camera(QPointF translation, float rotation, float scaling);
     ~Camera();
 
-    void setViewTransform(QPointF translation, float rotation, float scaling);
+    void reset();
+    void updateViewTransform();
 
+    void translate(float dx, float dy);
     QPointF translation() { return mTranslate; }
+
+    void rotate(float degree);
     float rotation() { return mRotate; }
+
+    void scale(float scaleValue);
     float scaling() { return mScale; }
+
+    QTransform getView() { return view; }
 
     QTransform view;
 
 private:
-    void updateViewTransform();
-
     QPointF mTranslate;
     float mRotate = 0.f;
     float mScale = 1.f;
