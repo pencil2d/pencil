@@ -208,12 +208,14 @@ void ActionCommands::flipSelectionY()
 
 void ActionCommands::rotateClockwise()
 {
-    mEditor->view()->rotate( 15 );
+    float currentRotation = mEditor->view()->rotation();
+    mEditor->view()->rotate(currentRotation + 15.f);
 }
 
 void ActionCommands::rotateCounterClockwise()
 {
-    mEditor->view()->rotate( -15 );
+    float currentRotation = mEditor->view()->rotation();
+    mEditor->view()->rotate(currentRotation - 15.f);
 }
 
 void ActionCommands::showGrid( bool bShow )

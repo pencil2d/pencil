@@ -125,7 +125,16 @@ void ViewManager::translate(QPointF offset)
 
 void ViewManager::rotate(float degree)
 {
-    mRotate += degree;
+    mRotate = degree;
+    if (mRotate > 360.f)
+    {
+        mRotate = mRotate - 360.f;
+    }
+    else if (mRotate < 0.f)
+    {
+        mRotate = mRotate + 360.f;
+    }
+
     updateViewTransforms();
 
     Q_EMIT viewChanged();
