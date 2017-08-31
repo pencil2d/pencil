@@ -51,9 +51,6 @@ public:
     LayerCamera(Object* object);
     ~LayerCamera();
 
-    // method from layerImage
-    QImage* getImageAtIndex(int index);
-
     void loadImageAtFrame(int, QTransform);
     
     void editProperties() override;
