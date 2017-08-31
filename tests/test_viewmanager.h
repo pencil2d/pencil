@@ -19,14 +19,18 @@ private slots: // test cases
 
     void testTranslation10();
     void testTranslation2Times();
+    void testTranslationQPointF();
 
     void testRotation90();
     void testRotation180();
+    void testRotationTwice();
 
     void testScaling2();
     void testScaling2Times();
     void testMaxScalingValue();
     void testMinScalingValue();
+
+    void testTranslateAndRotate();
 
 private:
     Editor* mEditor = nullptr;
