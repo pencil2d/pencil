@@ -15,6 +15,12 @@ os:
   - linux
   - osx
 
+env:
+  global:
+    - DOXYFILE: $TRAVIS_BUILD_DIR/util/Doxyfile-Travis
+    - GH_REPO_REF: github.com/pencil2d/pencil.git
+    - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
+
 python:
  - "3.4"
 addons:
@@ -34,6 +40,11 @@ addons:
     - qt59xmlpatterns
     - bsdtar
     - ffmpeg
+    - doxygen
+    - doxygen-doc
+    - doxygen-latex
+    - doxygen-gui
+    - graphviz
 
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -123,6 +134,12 @@ after_success:
     fi;
     echo "Operation done";
   fi'
+
+  # Deploy doxygen documentation to github pages
+  - 'if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_OS_NAME" == "linux" ]; then
+      cd "$TRAVIS_BUILD_DIR/util";
+      ./documentation-deploy.sh;
+    fi'
 
 after_script:
   - cd "$TRAVIS_BUILD_DIR/build"
