@@ -1,6 +1,9 @@
 #include "test_viewmanager.h"
 #include "viewmanager.h"
 #include "object.h"
+#include "camera.h"
+#include "layercamera.h"
+
 
 TestViewManager::TestViewManager()
 {
@@ -173,5 +176,22 @@ void TestViewManager::testResetView()
 
     QCOMPARE(v.mapCanvasToScreen(QPointF(10, 10)), QPointF(10, 10));
     QCOMPARE(v.mapScreenToCanvas(QPointF(10, 10)), QPointF(10, 10));
+}
+
+void TestViewManager::testCameraLayer()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
+    QVERIFY(layerCam != nullptr);
+
+    auto k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
+    k->translate(100, 0);
+
+    v.setCameraLayer(layerCam);
+
+    QCOMPARE(k->getView(), v.getView());
 }
 

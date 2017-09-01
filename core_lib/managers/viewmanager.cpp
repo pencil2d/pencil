@@ -210,6 +210,10 @@ void ViewManager::setCameraLayer(Layer* layer)
     }
 
     mCameraLayer = static_cast<LayerCamera*>(layer);
+
+    int frame = editor()->currentFrame();
+    mCurrentCamera = mCameraLayer->getLastCameraAtFrame(frame, 0);
+    updateViewTransforms();
 }
 
 void ViewManager::resetView()

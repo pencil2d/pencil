@@ -195,6 +195,7 @@ bool Layer::addNewEmptyKeyAt( int position )
 
 bool Layer::addKeyFrame( int position, KeyFrame* pKeyFrame )
 {
+    Q_ASSERT(position > 0);
     auto it = mKeyFrames.find( position );
     if ( it != mKeyFrames.end() )
     {

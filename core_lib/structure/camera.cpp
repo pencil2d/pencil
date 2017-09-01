@@ -32,6 +32,13 @@ Camera::~Camera()
 {
 }
 
+QTransform Camera::getView()
+{
+    if (mNeedUpdateView)
+        updateViewTransform();
+    return view;
+}
+
 void Camera::reset()
 {
     mTranslate = QPointF(0, 0);
@@ -87,4 +94,13 @@ void Camera::scale(float scaleValue)
     mScale = scaleValue;
 
     mNeedUpdateView = true;
+}
+
+bool Camera::operator==(const Camera& rhs) const
+{
+    bool b = (mTranslate == rhs.mTranslate)
+        && qFuzzyCompare(mRotate, rhs.mRotate)
+        && qFuzzyCompare(mScale, rhs.mScale);
+
+    return b;
 }
