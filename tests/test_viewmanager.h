@@ -32,6 +32,8 @@ private slots: // test cases
 
     void testTranslateAndRotate();
 
+    void testResetView();
+
 private:
     Editor* mEditor = nullptr;
 };

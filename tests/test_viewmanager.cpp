@@ -160,3 +160,18 @@ void TestViewManager::testTranslateAndRotate()
     // (11, 1) => rotate 90 deg => (-1, 11)
     QCOMPARE(v.mapCanvasToScreen(QPointF(1, 1)), QPointF(-1, 11));
 }
+
+void TestViewManager::testResetView()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    v.translate(15, 25);
+    v.scale(3.25);
+    v.resetView();
+
+    QCOMPARE(v.mapCanvasToScreen(QPointF(10, 10)), QPointF(10, 10));
+    QCOMPARE(v.mapScreenToCanvas(QPointF(10, 10)), QPointF(10, 10));
+}
+

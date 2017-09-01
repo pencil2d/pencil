@@ -82,16 +82,14 @@ private:
     QTransform mCentre;
 
     Camera* mDefaultEditorCamera = nullptr;
-    QPointF mTranslate;
-    float mRotate = 0.f;
-    float mScale = 1.f;
+    Camera* mCurrentCamera = nullptr;
 
     QSize mCanvasSize = { 1, 1 };
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
 
-    LayerCamera* m_pCameraLayer = nullptr;
+    LayerCamera* mCameraLayer = nullptr;
 };
 
 #endif // VIEWMANAGER_H

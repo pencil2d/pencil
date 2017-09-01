@@ -26,11 +26,12 @@ const static float mMaxScale = 100.0f;
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 {
+    mDefaultEditorCamera = new Camera;
+    mCurrentCamera = mDefaultEditorCamera;
 }
 
 bool ViewManager::init()
 {
-    mDefaultEditorCamera = new Camera;
     return true;
 }
 
@@ -65,7 +66,7 @@ QPointF ViewManager::mapScreenToCanvas(QPointF p)
 
 QPointF ViewManager::translation()
 {
-    return mDefaultEditorCamera->translation();
+    return mCurrentCamera->translation();
 }
 
 QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
@@ -95,19 +96,8 @@ QTransform ViewManager::getView()
 
 void ViewManager::updateViewTransforms()
 {
-    /*
-    QTransform t;
-    t.translate(mTranslate.x(), mTranslate.y());
-
-    QTransform r;
-    r.rotate(mRotate);
-
-    QTransform s = QTransform::fromScale(mScale, mScale);
-
-    mView = t * r * s;
-    */
-    mDefaultEditorCamera->updateViewTransform();
-    mView = mDefaultEditorCamera->getView();
+    mCurrentCamera->updateViewTransform();
+    mView = mCurrentCamera->getView();
     mViewInverse = mView.inverted();
 
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
@@ -120,7 +110,7 @@ void ViewManager::updateViewTransforms()
 
 void ViewManager::translate(float dx, float dy)
 {
-    mDefaultEditorCamera->translate(dx, dy);
+    mCurrentCamera->translate(dx, dy);
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -133,12 +123,12 @@ void ViewManager::translate(QPointF offset)
 
 float ViewManager::rotation()
 {
-    return mDefaultEditorCamera->rotation();
+    return mCurrentCamera->rotation();
 }
 
 void ViewManager::rotate(float degree)
 {
-    mDefaultEditorCamera->rotate(degree);
+    mCurrentCamera->rotate(degree);
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -146,17 +136,17 @@ void ViewManager::rotate(float degree)
 
 float ViewManager::scaling()
 {
-    return mDefaultEditorCamera->scaling();
+    return mCurrentCamera->scaling();
 }
 
 void ViewManager::scaleUp()
 {
-    scale(mScale * 1.18f);
+    scale(scaling() * 1.18f);
 }
 
 void ViewManager::scaleDown()
 {
-    scale(mScale * 0.8333f);
+    scale(scaling() * 0.8333f);
 }
 
 void ViewManager::scale(float scaleValue)
@@ -174,7 +164,7 @@ void ViewManager::scale(float scaleValue)
         return;
     }
     //mScale = scaleValue;
-    mDefaultEditorCamera->scale(scaleValue);
+    mCurrentCamera->scale(scaleValue);
     updateViewTransforms();
 
     Q_EMIT viewChanged();
@@ -219,13 +209,12 @@ void ViewManager::setCameraLayer(Layer* layer)
         return;
     }
 
-    m_pCameraLayer = static_cast<LayerCamera*>(layer);
+    mCameraLayer = static_cast<LayerCamera*>(layer);
 }
 
 void ViewManager::resetView()
 {
-    mDefaultEditorCamera->reset();
-    mScale = 1.f;
-    mRotate = 0.f;
-    translate(0.f, 0.f); // this function will emit ViewChanged signal, no need to emit again.
+    mCurrentCamera->reset();
+    updateViewTransforms();
+    Q_EMIT viewChanged();
 }

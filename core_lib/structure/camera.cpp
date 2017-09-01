@@ -37,6 +37,7 @@ void Camera::reset()
     mTranslate = QPointF(0, 0);
     mRotate = 0.f;
     mScale = 1.f;
+    mNeedUpdateView = true;
 }
 
 void Camera::updateViewTransform()
