@@ -90,6 +90,8 @@ public:
     KeyFrame* getKeyFrameAt( int position );
     KeyFrame* getLastKeyFrameAtPosition( int position );
     bool keyExistsWhichCovers(int frameNumber);
+    bool hasReachedEndOfTrack(int frameNumber);
+    bool isTrackOverlapping(int currentFrame);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber);
 
     void foreachKeyFrame( std::function<void( KeyFrame* )> );
@@ -139,6 +141,8 @@ private:
     //
     QList<int> mSelectedFrames_byLast; // Used to hadle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
+
+    bool mSaveFrame = false;
 };
 
 bool isLayerPaintable( Layer* );

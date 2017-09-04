@@ -80,8 +80,10 @@ private:
     int mFps = 12;
 
     QTimer* mTimer = nullptr;
+    QElapsedTimer* mElapsedTimer = nullptr;
 
     bool mCheckForSoundsHalfway = false;
+    bool mReachedEndOfSound = false;
 };
 
 #endif // PLAYBACKMANAGER_H
