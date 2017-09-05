@@ -178,7 +178,7 @@ void TestViewManager::testResetView()
     QCOMPARE(v.mapScreenToCanvas(QPointF(10, 10)), QPointF(10, 10));
 }
 
-void TestViewManager::testCameraLayer()
+void TestViewManager::testEmptyCameraLayer()
 {
     ViewManager v(mEditor);
     v.setEditor(mEditor);
@@ -195,3 +195,4 @@ void TestViewManager::testCameraLayer()
     QCOMPARE(k->getView(), v.getView());
 }
 
+//void TestViewManager::test
