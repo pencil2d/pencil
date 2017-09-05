@@ -22,6 +22,7 @@ Camera::Camera()
 
 Camera::Camera(QPointF translation, float rotation, float scaling)
 {
+    Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;

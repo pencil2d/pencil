@@ -68,7 +68,7 @@ protected:
     Status saveKeyFrame( KeyFrame*, QString path ) override;
 
     QRect viewRect;
-    CameraPropertiesDialog* dialog;
+    CameraPropertiesDialog* dialog = nullptr;
 };
 
 #endif

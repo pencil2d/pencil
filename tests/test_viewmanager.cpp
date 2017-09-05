@@ -175,7 +175,7 @@ void TestViewManager::testResetView()
     v.resetView();
 
     QCOMPARE(v.mapCanvasToScreen(QPointF(10, 10)), QPointF(10, 10));
-    QCOMPARE(v.mapScreenToCanvas(QPointF(10, 10)), QPointF(10, 10));
+    QCOMPARE(v.mapScreenToCanvas(QPointF(99, 10)), QPointF(99, 10));
 }
 
 void TestViewManager::testEmptyCameraLayer()
@@ -193,6 +193,23 @@ void TestViewManager::testEmptyCameraLayer()
     v.setCameraLayer(layerCam);
 
     QCOMPARE(k->getView(), v.getView());
+    QCOMPARE(v.translation(), QPointF(100, 0));
 }
 
-//void TestViewManager::test
+void TestViewManager::testCameraLayerWithTwoKeys()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
+    layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1));
+
+    v.setCameraLayer(layerCam);
+
+    mEditor->scrubTo(10);
+
+    QTransform t = v.getView();
+    QCOMPARE(t.dx(), 100.0);
+    QCOMPARE(v.mapCanvasToScreen(QPointF(1, 5)), QPointF(101, 5));
+}

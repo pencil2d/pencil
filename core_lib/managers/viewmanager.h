@@ -72,6 +72,8 @@ public:
 
     Q_SIGNAL void viewChanged();
 
+    void onCurrentFrameChanged();
+
 private:
     void updateViewTransforms();
 

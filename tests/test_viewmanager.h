@@ -35,6 +35,7 @@ private slots: // test cases
     void testResetView();
 
     void testEmptyCameraLayer();
+    void testCameraLayerWithTwoKeys();
 
 private:
     Editor* mEditor = nullptr;
