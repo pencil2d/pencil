@@ -213,3 +213,22 @@ void TestViewManager::testCameraLayerWithTwoKeys()
     QCOMPARE(t.dx(), 100.0);
     QCOMPARE(v.mapCanvasToScreen(QPointF(1, 5)), QPointF(101, 5));
 }
+
+void TestViewManager::testSetCameraLayerAndRemoveIt()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    v.translate(0, 100);
+
+    // set a camera layer and then remove it
+    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
+    auto k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
+    k->translate(100, 0);
+
+    v.setCameraLayer(layerCam);
+    v.setCameraLayer(nullptr);
+
+    QCOMPARE(v.translation(), QPointF(0, 100));
+}

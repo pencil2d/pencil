@@ -164,7 +164,7 @@ void ViewManager::scale(float scaleValue)
     {
         return;
     }
-    //mScale = scaleValue;
+
     mCurrentCamera->scale(scaleValue);
     updateViewTransforms();
 
@@ -204,16 +204,24 @@ void ViewManager::setCanvasSize( QSize size )
 
 void ViewManager::setCameraLayer(Layer* layer)
 {
-    if (layer->type() != Layer::CAMERA)
+    if (layer != nullptr)
     {
-        Q_ASSERT(false && "Only camera layers allowed pls");
-        return;
+        if (layer->type() != Layer::CAMERA)
+        {
+            Q_ASSERT(false && "Only camera layers allowed pls");
+            return;
+        }
+
+        mCameraLayer = static_cast<LayerCamera*>(layer);
+
+        int frame = editor()->currentFrame();
+        mCurrentCamera = mCameraLayer->getLastCameraAtFrame(frame, 0);
     }
-
-    mCameraLayer = static_cast<LayerCamera*>(layer);
-
-    int frame = editor()->currentFrame();
-    mCurrentCamera = mCameraLayer->getLastCameraAtFrame(frame, 0);
+    else
+    {
+        mCurrentCamera = mDefaultEditorCamera;
+    }
+    
     updateViewTransforms();
 }
 
