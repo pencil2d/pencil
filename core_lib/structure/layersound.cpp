@@ -117,7 +117,7 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
 
             int position = soundElement.attribute( "frame" ).toInt();
             Status st = loadSoundClipAtFrame( sSoundClipName, sFullPath, position );
-//            Q_ASSERT( st.ok() );
+            Q_ASSERT( st.ok() );
         }
         
         soundTag = soundTag.nextSibling();

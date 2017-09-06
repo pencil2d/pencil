@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 
 #include <QTimer>
-#include <QElapsedTimer>
 #include "object.h"
 #include "editor.h"
 #include "layersound.h"
@@ -33,7 +32,6 @@ PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 
 bool PlaybackManager::init()
 {
-    mElapsedTimer = new QElapsedTimer();
     mTimer = new QTimer( this );
     connect( mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
     return true;
@@ -75,23 +73,18 @@ void PlaybackManager::play()
     mStartFrame = ( mIsRangedPlayback ) ? mMarkInFrame : 1;
     mEndFrame = ( mIsRangedPlayback ) ? mMarkOutFrame : projectLength;
 
-    qDebug() << mReachedEndOfSound;
-
-    if ( ( editor()->currentFrame() >= mEndFrame && mReachedEndOfSound ) ||
+    if ( ( editor()->currentFrame() >= mEndFrame ) ||
          ( editor()->currentFrame() >= mEndFrame && mIsRangedPlayback ) )
     {
-        qDebug() << "play again?";
         editor()->scrubTo( mStartFrame );
     }
 
     // TODO: make proper timer for counting the timeline.. Qtimer is not accurate for such a task
     mTimer->setInterval( 1000.0f / mFps );
     mTimer->start();
-    mElapsedTimer->start();
 
     // Check for any sounds we should start playing part-way through.
     mCheckForSoundsHalfway = true;
-    mReachedEndOfSound = false;
 
     emit playStateChanged(true);
 }
@@ -169,24 +162,14 @@ void PlaybackManager::playSounds( int frame )
             // save the position of our active sound frame
             mActiveSoundFrame = frame;
         }
-        qDebug() << "sound layer:" << layer->name();
-        qDebug() << "overlapping: " << layer->isTrackOverlapping(frame);
-        qDebug() << "reached end: " << layer->hasReachedEndOfTrack(frame);
-//        qDebug() << "end: " << mEndFrame;
 
-        // TODO: currently we have no way to check a frame after it's been overlapped by another.
-        if ( frame >= mEndFrame && layer->hasReachedEndOfTrack(frame) && !layer->isTrackOverlapping(frame) )
+        if ( frame >= mEndFrame )
         {
-            qDebug() << "--------- stop sound -----------";
-            mReachedEndOfSound = true;
-//            qDebug() << "does it reach?";
             if (layer->keyExists(mActiveSoundFrame)){
                 KeyFrame* key = layer->getKeyFrameWhichCovers( mActiveSoundFrame );
                 SoundClip* clip = static_cast< SoundClip* >( key );
                 clip->stop();
             }
-
-
         }
     }
 }
@@ -213,29 +196,24 @@ void PlaybackManager::stopSounds()
     }
 }
 
-// TODO: if two sound samples are within each other,
-// when the second sound has been reached, playback will reset
-// even if the first sound wasn't done playing.
 void PlaybackManager::timerTick()
 {
-    playSounds( editor()->currentFrame() );
     int currentFrame = editor()->currentFrame();
+    playSounds( currentFrame );
 
-    if ( ( currentFrame >= mEndFrame && mReachedEndOfSound ) ||
-//         ( editor()->currentFrame() >= mEndFrame && mIsLooping && mReachedEndOfSound ) ||
+    if ( ( currentFrame >= mEndFrame ) ||
          ( currentFrame >= mEndFrame && mIsRangedPlayback ) )
     {
         if ( mIsLooping )
         {
+            // make sure to stop all sounds before scrubbing to start again
+            stopSounds();
             editor()->scrubTo( mStartFrame );
             mCheckForSoundsHalfway = true;
-            mReachedEndOfSound = false;
-//            qDebug() << "is looping";
         }
         else
         {
             stop();
-//            qDebug() << "stopped";
         }
     }
     else
