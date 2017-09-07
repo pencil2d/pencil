@@ -203,13 +203,13 @@ void TimeControls::jumpToStartButtonClicked()
     if ( mPlaybackRangeCheckBox->isChecked() )
     {
         mEditor->scrubTo( mLoopStartSpinBox->value() );
+        mEditor->playback()->setCheckForSoundsHalfway( true );
     }
     else
     {
         mEditor->scrubTo( mEditor->layers()->firstKeyFrameIndex() );
     }
     mEditor->playback()->stopSounds();
-    mEditor->playback()->clearListOfActiveSoundFrames();
 }
 
 void TimeControls::jumpToEndButtonClicked()

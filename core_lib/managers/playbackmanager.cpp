@@ -139,23 +139,26 @@ void PlaybackManager::playSounds( int frame )
     {
         KeyFrame* key = layer->getLastKeyFrameAtPosition( frame );
 
-        if (key != nullptr) {
-
+        if ( key != nullptr )
+        {
             // add keyframe position to list
             if ( key->pos() <= frame)
             {
-                if ( !mListOfActiveSoundFrames.contains( key->pos() ) ) {
+                if ( !mListOfActiveSoundFrames.contains( key->pos() ) )
+                {
                     mListOfActiveSoundFrames.append( key->pos() );
                 }
             }
         }
 
         // remove frames from list that are not used anymore
-        if ( !mListOfActiveSoundFrames.isEmpty() ){
+        if ( !mListOfActiveSoundFrames.isEmpty() )
+        {
             for ( int i = 0; i < mListOfActiveSoundFrames.count(); i++ )
             {
                 if ( key != nullptr ) {
-                    if ( frame < mListOfActiveSoundFrames.at(i) ) {
+                    if ( frame < mListOfActiveSoundFrames.at(i) )
+                    {
                         mListOfActiveSoundFrames.takeLast();
                         stopSounds();
                     }

@@ -35,6 +35,7 @@ public:
 
     bool isPlaying();
     bool isLooping() { return mIsLooping; }
+    void setCheckForSoundsHalfway( bool newCheck ) { mCheckForSoundsHalfway = newCheck; }
 
     void play();
     void stop();
