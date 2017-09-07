@@ -54,6 +54,9 @@ public:
     void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
     void enableSound( bool b );
 
+    void clearListOfActiveSoundFrames();
+    void stopSounds();
+
 Q_SIGNALS:
     void fpsChanged( int fps );
     void loopStateChanged( bool b );
@@ -64,7 +67,6 @@ private:
     void timerTick();
     
     void playSounds( int frame );
-    void stopSounds();
 
     int mStartFrame = 1;
     int mEndFrame = 60;
@@ -82,6 +84,7 @@ private:
     QTimer* mTimer = nullptr;
 
     bool mCheckForSoundsHalfway = false;
+    QList<int> mListOfActiveSoundFrames;
 };
 
 #endif // PLAYBACKMANAGER_H

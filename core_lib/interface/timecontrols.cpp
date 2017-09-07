@@ -208,6 +208,8 @@ void TimeControls::jumpToStartButtonClicked()
     {
         mEditor->scrubTo( mEditor->layers()->firstKeyFrameIndex() );
     }
+    mEditor->playback()->stopSounds();
+    mEditor->playback()->clearListOfActiveSoundFrames();
 }
 
 void TimeControls::jumpToEndButtonClicked()

@@ -137,20 +137,49 @@ void PlaybackManager::playSounds( int frame )
 
     for ( LayerSound* layer : kSoundLayers )
     {
-        if (mCheckForSoundsHalfway)
+        KeyFrame* key = layer->getLastKeyFrameAtPosition( frame );
+
+        if (key != nullptr) {
+
+            // add keyframe position to list
+            if ( key->pos() <= frame)
+            {
+                if ( !mListOfActiveSoundFrames.contains( key->pos() ) ) {
+                    mListOfActiveSoundFrames.append( key->pos() );
+                }
+            }
+        }
+
+        // remove frames from list that are not used anymore
+        if ( !mListOfActiveSoundFrames.isEmpty() ){
+            for ( int i = 0; i < mListOfActiveSoundFrames.count(); i++ )
+            {
+                if ( key != nullptr ) {
+                    if ( frame < mListOfActiveSoundFrames.at(i) ) {
+                        mListOfActiveSoundFrames.takeLast();
+                        stopSounds();
+                    }
+                    else if ( mListOfActiveSoundFrames.last() + key->length() < frame )
+                    {
+                        mListOfActiveSoundFrames.takeLast();
+                    }
+                }
+            }
+        }
+
+        if ( mCheckForSoundsHalfway )
         {
             // Check for sounds which we should start playing from part-way through.
-            if ( layer->keyExistsWhichCovers( frame ) )
+            for (int i = 0; i < mListOfActiveSoundFrames.count(); i++)
             {
-                KeyFrame* key = layer->getKeyFrameWhichCovers( frame );
-                SoundClip* clip = static_cast< SoundClip* >( key );
-
-                clip->playFromPosition(frame, mFps);
+                if ( layer->keyExistsWhichCovers( mListOfActiveSoundFrames.at(i) ) )
+                {
+                    KeyFrame* key = layer->getKeyFrameWhichCovers( mListOfActiveSoundFrames.at(i) );
+                    SoundClip* clip = static_cast< SoundClip* >( key );
+                    clip->playFromPosition( frame, mFps );
+                }
             }
 
-            // Set flag to false, since this check should only be done when
-            // starting play-back, or when looping.
-            mCheckForSoundsHalfway = false;
         }
         else if ( layer->keyExists( frame ) )
         {
@@ -172,6 +201,10 @@ void PlaybackManager::playSounds( int frame )
             }
         }
     }
+
+    // Set flag to false, since this check should only be done when
+    // starting play-back, or when looping.
+    mCheckForSoundsHalfway = false;
 }
 
 void PlaybackManager::stopSounds()
@@ -209,6 +242,7 @@ void PlaybackManager::timerTick()
             // make sure to stop all sounds before scrubbing to start again
             stopSounds();
             editor()->scrubTo( mStartFrame );
+            mListOfActiveSoundFrames.clear();
             mCheckForSoundsHalfway = true;
         }
         else
@@ -237,6 +271,13 @@ void PlaybackManager::enableRangedPlayback( bool b )
     {
         mIsRangedPlayback = b;
         emit rangedPlaybackStateChanged( mIsRangedPlayback );
+    }
+}
+
+void PlaybackManager::clearListOfActiveSoundFrames()
+{
+    if ( !mListOfActiveSoundFrames.isEmpty() ) {
+        mListOfActiveSoundFrames.clear();
     }
 }
 
