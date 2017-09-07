@@ -286,6 +286,8 @@ int LayerManager::projectLength()
                     maxFrame = lastFramePos + keyFrame->length();
                 }
 
+                // in cases where the previous frame length is longer and further away
+                // than the last frame length
                 if ( prevKFrame->pos() + prevKFrame->length() > keyFrame->pos() + keyFrame->length() )
                 {
                     maxFrame = prevFramePos + prevKFrame->length();
