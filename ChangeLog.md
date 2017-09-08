@@ -1,6 +1,6 @@
 ## Pencil2D v0.6 - 2017
 
-### Features ###
+### Features
 
 User Interface:
 * New graphic Colour Wheel
@@ -26,7 +26,7 @@ Other Improvements:
 * Added Alpha Channel to colour palette
 * The standard Shortcut list can be found in: Edit -> Preferences -> Shortcuts.
 
-## Pencil2D v0.5.4 - July 26 2013
+## Pencil2D v0.5.4 - July 26th 2013
 
 - Customize keyboard shortcuts (Preferences->Shoftcuts)
 - Interactive brush resizing. SHIFT + Mouse Drag to change brush size, CTRL + Mouse Drag for FEATHER, CTRL+SHIFT applies brush size to the eraser and temporarily selects it.
@@ -37,7 +37,7 @@ Other Improvements:
 
 --------------------
 
-## Pencil2D v0.5.3 - June 28 2013
+## Pencil2D v0.5.3 -  28 June 2013
 
 - Bug fixed: brush cannot change color in 0.5.2
 - Upgrade to Qt 4.8.4
@@ -47,7 +47,7 @@ Other Improvements:
 
 ----------------
 
-## Pencil Animation v0.5 beta (Morevna Branch) ### - September 15th 2010
+## Pencil Animation v0.5 beta (Morevna Branch) - 15 September 2010
 
 Changes by Konstantin Dmitriev:
 
@@ -74,43 +74,30 @@ Changes by davidefa:
 * Compiles fine with min 0.4.x on linux
 * Other minor fixes ( moving selection on bitmap layers, moving layers... )
 
-
 ----------------------------------------------------------------
 
-## Pencil Animation 0.4.5b -rev5 - Source Code - February 6th, 2009 ###
+## Pencil Animation 0.4.5b - 6 February 2009
 
+### rev5
 
 Added export AVI/OGG
 Added some more icons
 
-Creek23
-
-http://tinyurl.com/pencilanimation/
-
-----------------------------------------------------------------
-
-## Pencil Animation 0.4.5b -rev4 - Source Code - January 24th, 2009 ###
-
+### rev4 - 24 January 2009
 
 Added Duplicate Frame functionality
 Added Tools menu and fixed shortcut key bugs
 
-Creek23
-
-http://tinyurl.com/pencilanimation/
-
----------
-### Pencil Animation 0.4.5b -rev3 - Source Code - December 7th, 2008 ###
+### rev3 - 7 December 2008
 
 Making it look like a Flash clone (Tools, Shortcuts, Panel names)
 
 Creek23
 
-http://konsolscript.sourceforge.net/developers/creek23/pencil/
 
 ---------
 
-## Pencil 0.4.3b - Source Code - July 1st, 2007 ###
+## Pencil 0.4.3b - 1 July 2007
 
 Source code has been unified for Mac, Windows and Linux.
 Now available on sourceforge SVN repository.
@@ -123,7 +110,7 @@ http://www.les-stooges.org/pascal/pencil/
 
 ---------
 
-## Pencil 0.4b - Source Code - January 4th, 2007 ###
+## Pencil 0.4b - 4 January 2007
 
 Added many things, notably vector graphics.
 PLEASE NOTE:
@@ -136,7 +123,7 @@ http://www.les-stooges.org/pascal/pencil/
 
 ---------
 
-## Pencil 0.2b - Source Code ###
+## Pencil 0.2b
 
 PLEASE NOTE:
 This source code is optimized for compiling on Mac OSX.
