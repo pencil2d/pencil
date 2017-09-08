@@ -47,7 +47,7 @@ if [ ! $GH_TEMP_DIR ]; then
   GH_TEMP_DIR="gh-pages"
 fi
 
-# Clone the current gh-pages branch into the
+# Clone the current master branch into the
 git clone https://git@$GH_REPO_REF "$GH_TEMP_DIR"
 cd "$GH_TEMP_DIR"
 
