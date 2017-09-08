@@ -10,6 +10,7 @@ language: cpp
 compiler: g++
 sudo: required
 dist: trusty
+group: deprecated-2017Q3
 osx_sdk: macosx10.12
 os:
   - linux
