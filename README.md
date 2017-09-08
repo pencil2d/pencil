@@ -31,13 +31,13 @@ Old, unstable and no longer supported! Download it at your own risk.
     
     sudo apt-get install pencil2d
 
-### Links
+## Links
 
 * Pencil2D HomePage: [http://pencil2d.github.io/](http://pencil2d.github.io/)
 * [Report Bugs, Request Features](https://github.com/pencil2d/pencil/issues)
 * You can help translate Pencil2D on [OneSky](http://osjoq5e.oneskyapp.com/collaboration)!
 
-### Source code
+## Source code
 
 * Github: [https://github.com/pencil2d/pencil](https://github.com/pencil2d/pencil)
 * Bitbucket: [https://bitbucket.org/chchwy/pencil2d](https://bitbucket.org/chchwy/pencil2d)
