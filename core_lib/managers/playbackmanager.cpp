@@ -79,6 +79,12 @@ void PlaybackManager::play()
         editor()->scrubTo( mStartFrame );
     }
 
+    // clear list before playing
+    if ( !mListOfActiveSoundFrames.isEmpty() )
+    {
+        mListOfActiveSoundFrames.clear();
+    }
+
     // TODO: make proper timer for counting the timeline.. Qtimer is not accurate for such a task
     mTimer->setInterval( 1000.0f / mFps );
     mTimer->start();
@@ -135,9 +141,10 @@ void PlaybackManager::playSounds( int frame )
         }
     }
 
+    KeyFrame* key;
     for ( LayerSound* layer : kSoundLayers )
     {
-        KeyFrame* key = layer->getLastKeyFrameAtPosition( frame );
+        key = layer->getLastKeyFrameAtPosition( frame );
 
         if ( key != nullptr )
         {
@@ -151,12 +158,14 @@ void PlaybackManager::playSounds( int frame )
             }
         }
 
+
         // remove frames from list that are not used anymore
         if ( !mListOfActiveSoundFrames.isEmpty() )
         {
             for ( int i = 0; i < mListOfActiveSoundFrames.count(); i++ )
             {
-                if ( key != nullptr ) {
+                if ( key != nullptr )
+                {
                     if ( frame < mListOfActiveSoundFrames.at(i) )
                     {
                         mListOfActiveSoundFrames.takeLast();
@@ -170,24 +179,26 @@ void PlaybackManager::playSounds( int frame )
             }
         }
 
+        KeyFrame* key;
+        SoundClip* clip;
         if ( mCheckForSoundsHalfway )
         {
             // Check for sounds which we should start playing from part-way through.
             for (int i = 0; i < mListOfActiveSoundFrames.count(); i++)
             {
-                if ( layer->keyExistsWhichCovers( mListOfActiveSoundFrames.at(i) ) )
+                int listPosition = mListOfActiveSoundFrames.at(i);
+                if ( layer->keyExistsWhichCovers( listPosition ) )
                 {
-                    KeyFrame* key = layer->getKeyFrameWhichCovers( mListOfActiveSoundFrames.at(i) );
-                    SoundClip* clip = static_cast< SoundClip* >( key );
+                    key = layer->getKeyFrameWhichCovers( listPosition );
+                    clip = static_cast< SoundClip* >( key );
                     clip->playFromPosition( frame, mFps );
                 }
             }
-
         }
         else if ( layer->keyExists( frame ) )
         {
-            KeyFrame* key = layer->getKeyFrameAt( frame );
-            SoundClip* clip = static_cast< SoundClip* >( key );
+            key = layer->getKeyFrameAt( frame );
+            clip = static_cast< SoundClip* >( key );
 
             clip->play();
 
@@ -198,8 +209,8 @@ void PlaybackManager::playSounds( int frame )
         if ( frame >= mEndFrame )
         {
             if (layer->keyExists(mActiveSoundFrame)){
-                KeyFrame* key = layer->getKeyFrameWhichCovers( mActiveSoundFrame );
-                SoundClip* clip = static_cast< SoundClip* >( key );
+                key = layer->getKeyFrameWhichCovers( mActiveSoundFrame );
+                clip = static_cast< SoundClip* >( key );
                 clip->stop();
             }
         }
@@ -213,9 +224,10 @@ void PlaybackManager::playSounds( int frame )
 void PlaybackManager::stopSounds()
 {
     std::vector< LayerSound* > kSoundLayers;
+    Layer* layer;
     for ( int i = 0; i < object()->getLayerCount(); ++i )
     {
-        Layer* layer = object()->getLayer( i );
+        layer = object()->getLayer( i );
         if ( layer->type() == Layer::SOUND )
         {
             kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
@@ -242,10 +254,7 @@ void PlaybackManager::timerTick()
     {
         if ( mIsLooping )
         {
-            // make sure to stop all sounds before scrubbing to start again
-            stopSounds();
             editor()->scrubTo( mStartFrame );
-            mListOfActiveSoundFrames.clear();
             mCheckForSoundsHalfway = true;
         }
         else
@@ -274,13 +283,6 @@ void PlaybackManager::enableRangedPlayback( bool b )
     {
         mIsRangedPlayback = b;
         emit rangedPlaybackStateChanged( mIsRangedPlayback );
-    }
-}
-
-void PlaybackManager::clearListOfActiveSoundFrames()
-{
-    if ( !mListOfActiveSoundFrames.isEmpty() ) {
-        mListOfActiveSoundFrames.clear();
     }
 }
 

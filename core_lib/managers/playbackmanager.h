@@ -55,7 +55,6 @@ public:
     void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
     void enableSound( bool b );
 
-    void clearListOfActiveSoundFrames();
     void stopSounds();
 
 Q_SIGNALS:
