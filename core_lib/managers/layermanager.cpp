@@ -280,7 +280,7 @@ int LayerManager::projectLength()
             KeyFrame* prevKFrame = pObject->getLayer( i )->getKeyFrameWhichCovers(prevFramePos);
 
             if ( keyFrame != nullptr && prevKFrame != nullptr ) {
-                if ( keyFrame->length() > 1 &&
+                if ( keyFrame->length() >= 1 &&
                      keyFrame->pos() + keyFrame->length() > maxFrame )
                 {
                     maxFrame = lastFramePos + keyFrame->length();
