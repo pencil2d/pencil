@@ -48,7 +48,7 @@ if [ ! $GH_TEMP_DIR ]; then
 fi
 
 # Clone the current gh-pages branch into the
-git clone -b gh-pages https://git@$GH_REPO_REF "$GH_TEMP_DIR"
+git clone https://git@$GH_REPO_REF "$GH_TEMP_DIR"
 cd "$GH_TEMP_DIR"
 
 ##### Configure git.

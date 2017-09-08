@@ -18,7 +18,7 @@ os:
 env:
   global:
     - DOXYFILE: $TRAVIS_BUILD_DIR/util/Doxyfile-Travis
-    - GH_REPO_REF: github.com/pencil2d/pencil.git
+    - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
     - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
 python:
