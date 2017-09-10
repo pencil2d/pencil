@@ -74,8 +74,9 @@ void PlaybackManager::play()
     mStartFrame = ( mIsRangedPlayback ) ? mMarkInFrame : 1;
     mEndFrame = ( mIsRangedPlayback ) ? mMarkOutFrame : projectLength;
 
-    if ( ( editor()->currentFrame() >= mEndFrame ) ||
-         ( editor()->currentFrame() >= mEndFrame && mIsRangedPlayback ) )
+    int frame = editor()->currentFrame();
+    if ( ( frame >= mEndFrame ) ||
+         ( frame >= mEndFrame && mIsRangedPlayback ) )
     {
         editor()->scrubTo( mStartFrame );
     }
@@ -83,10 +84,28 @@ void PlaybackManager::play()
     // start counting frames
     mFrameTimer->start();
 
-    // clear list before playing
+    // check list content before playing
     if ( !mListOfActiveSoundFrames.isEmpty() )
     {
-        mListOfActiveSoundFrames.clear();
+        for ( int i = 0; i < object()->getLayerCount(); ++i )
+        {
+            Layer* layer = object()->getLayer( i );
+            if ( layer->type() == Layer::SOUND )
+            {
+                KeyFrame* key = layer->getKeyFrameWhichCovers( frame );
+                if ( key != nullptr )
+                {
+                    if ( key->pos() + key->length() >= frame )
+                    {
+                        mListOfActiveSoundFrames.takeLast();
+                    }
+                }
+                else if ( frame < mListOfActiveSoundFrames.count() )
+                {
+                    mListOfActiveSoundFrames.clear();
+                }
+            }
+        }
     }
 
     mTimer->setInterval( 10 ); // 100 fps
@@ -145,6 +164,7 @@ void PlaybackManager::playSounds( int frame )
     }
 
     KeyFrame* key;
+    SoundClip* clip;
     for ( LayerSound* layer : kSoundLayers )
     {
         key = layer->getLastKeyFrameAtPosition( frame );
@@ -152,38 +172,21 @@ void PlaybackManager::playSounds( int frame )
         if ( key != nullptr )
         {
             // add keyframe position to list
-            if ( key->pos() <= frame)
+            if ( key->pos() + key->length() >= frame )
             {
                 if ( !mListOfActiveSoundFrames.contains( key->pos() ) )
                 {
                     mListOfActiveSoundFrames.append( key->pos() );
                 }
             }
-        }
 
-
-        // remove frames from list that are not used anymore
-        if ( !mListOfActiveSoundFrames.isEmpty() )
-        {
-            for ( int i = 0; i < mListOfActiveSoundFrames.count(); i++ )
+            // stop sounds if frame hasn't reached any of the items
+            if ( frame < mListOfActiveSoundFrames.count() )
             {
-                if ( key != nullptr )
-                {
-                    if ( frame < mListOfActiveSoundFrames.at(i) )
-                    {
-                        mListOfActiveSoundFrames.takeLast();
-                        stopSounds();
-                    }
-                    else if ( mListOfActiveSoundFrames.last() + key->length() < frame )
-                    {
-                        mListOfActiveSoundFrames.takeLast();
-                    }
-                }
+                stopSounds();
             }
         }
 
-        KeyFrame* key;
-        SoundClip* clip;
         if ( mCheckForSoundsHalfway )
         {
             // Check for sounds which we should start playing from part-way through.
@@ -215,6 +218,11 @@ void PlaybackManager::playSounds( int frame )
                 key = layer->getKeyFrameWhichCovers( mActiveSoundFrame );
                 clip = static_cast< SoundClip* >( key );
                 clip->stop();
+
+                // make sure list is cleared on end
+                if ( !mListOfActiveSoundFrames.isEmpty() ) {
+                    mListOfActiveSoundFrames.clear();
+                }
             }
         }
     }
