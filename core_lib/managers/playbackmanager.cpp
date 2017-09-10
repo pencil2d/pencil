@@ -33,6 +33,7 @@ PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
 bool PlaybackManager::init()
 {
     mTimer = new QTimer( this );
+    mFrameTimer = new QElapsedTimer( );
     connect( mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
     return true;
 }
@@ -79,14 +80,16 @@ void PlaybackManager::play()
         editor()->scrubTo( mStartFrame );
     }
 
+    // start counting frames
+    mFrameTimer->start();
+
     // clear list before playing
     if ( !mListOfActiveSoundFrames.isEmpty() )
     {
         mListOfActiveSoundFrames.clear();
     }
 
-    // TODO: make proper timer for counting the timeline.. Qtimer is not accurate for such a task
-    mTimer->setInterval( 1000.0f / mFps );
+    mTimer->setInterval( 10 ); // 100 fps
     mTimer->start();
 
     // Check for any sounds we should start playing part-way through.
@@ -264,7 +267,12 @@ void PlaybackManager::timerTick()
     }
     else
     {
-        editor()->scrubForward();
+        int ms = mFrameTimer->elapsed() * 1.10;
+        if ( ms >= ( 1000/mFps ) )
+        {
+            editor()->scrubForward();
+            mFrameTimer->restart();
+        }
     }
 }
 

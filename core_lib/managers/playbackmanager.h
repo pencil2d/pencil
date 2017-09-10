@@ -82,6 +82,7 @@ private:
     int mFps = 12;
 
     QTimer* mTimer = nullptr;
+    QElapsedTimer* mFrameTimer = nullptr;
 
     bool mCheckForSoundsHalfway = false;
     QList<int> mListOfActiveSoundFrames;

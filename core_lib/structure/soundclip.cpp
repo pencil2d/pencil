@@ -77,9 +77,12 @@ void SoundClip::play()
 
 void SoundClip::playFromPosition(int frameNumber, int fps)
 {
-    int framesIntoSound = frameNumber - pos();
-    int msPerFrame = 1000 / fps;
-    int msIntoSound = framesIntoSound * msPerFrame;
+    int framesIntoSound = frameNumber;
+    if ( pos() > 1 ) {
+        framesIntoSound = frameNumber - pos();
+    }
+    float msPerFrame = ( 1000 / fps );
+    float msIntoSound = framesIntoSound * msPerFrame;
 
     if ( mPlayer )
     {
