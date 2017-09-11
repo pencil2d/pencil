@@ -232,3 +232,9 @@ void TestViewManager::testSetCameraLayerAndRemoveIt()
 
     QCOMPARE(v.translation(), QPointF(0, 100));
 }
+
+void TestViewManager::testTwoCamerasInterpolation()
+{
+
+}
+

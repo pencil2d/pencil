@@ -177,7 +177,6 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
-
 QSize LayerCamera::getViewSize()
 {
     return viewRect.size();

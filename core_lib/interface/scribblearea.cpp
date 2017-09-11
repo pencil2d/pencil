@@ -1735,8 +1735,6 @@ void ScribbleArea::setPrevTool()
     instantTool = false;
 }
 
-/* Render Canvas */
-
 void ScribbleArea::paletteColorChanged(QColor color)
 {
     Q_UNUSED(color);

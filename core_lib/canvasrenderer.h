@@ -78,7 +78,7 @@ private:
 
     void paintTransformedSelection( QPainter& painter );
     void paintGrid( QPainter& painter );
-    void paintCameraBorder(QPainter &painter);
+    void paintCameraBorder(QPainter& painter);
     void paintAxis( QPainter& painter );
 
 private:
@@ -87,7 +87,7 @@ private:
     QTransform mViewTransform;
     QRect mCameraRect;
 
-    int mLayerIndex = 0;
+    int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
 
     bool bMultiLayerOnionSkin = false;

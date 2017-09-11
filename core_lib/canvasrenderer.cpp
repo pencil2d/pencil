@@ -50,16 +50,15 @@ void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transfo
 {
     // Make sure that the selection is not empty
     //
-    if (selection.width() > 0 && selection.height() > 0) {
-
+    if (selection.width() > 0 && selection.height() > 0)
+    {
         mSelection = selection;
         mSelectionTransform = transform;
         mRenderTransform = true;
     }
-    else {
-
+    else
+    {
         // Otherwise we shouldn't be in transformation mode
-        //
         ignoreTransformedSelection();
     }
 }
@@ -74,7 +73,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     Q_ASSERT( object );
     mObject = object;
 
-    mLayerIndex = layer;
+    mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
     QPainter painter( mCanvas );
@@ -110,7 +109,7 @@ void CanvasRenderer::paintBackground()
 
 void CanvasRenderer::paintOnionSkin( QPainter& painter )
 {
-    Layer* layer = mObject->getLayer( mLayerIndex );
+    Layer* layer = mObject->getLayer( mCurrentLayerIndex );
 
     if ( layer->keyFrameCount() == 0 )
     {
@@ -123,7 +122,6 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     if ( mOptions.bPrevOnionSkin && mFrameNumber > 1 )
     {
         // Paint onion skin before current frame.
-        //
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nPrevOnionSkinCount;
         qreal opacity = maxOpacity;
 
@@ -136,14 +134,13 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
 
             switch ( layer->type() )
             {
-                case Layer::BITMAP: { paintBitmapFrame( painter, mLayerIndex, onionFrameNumber, mOptions.bColorizePrevOnion, false ); break; }
-                case Layer::VECTOR: { paintVectorFrame( painter, mLayerIndex, onionFrameNumber, mOptions.bColorizePrevOnion, false ); break; }
+                case Layer::BITMAP: { paintBitmapFrame( painter, mCurrentLayerIndex, onionFrameNumber, mOptions.bColorizePrevOnion, false ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, mCurrentLayerIndex, onionFrameNumber, mOptions.bColorizePrevOnion, false ); break; }
                 case Layer::CAMERA: break;
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
             }
             opacity = opacity - prevOpacityIncrement;
-
 
             onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
             onionPosition++;
@@ -153,7 +150,6 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
     if ( mOptions.bNextOnionSkin )
     {
         // Paint onion skin after current frame.
-        //
         qreal nextOpacityIncrement = (maxOpacity - minOpacity) / mOptions.nNextOnionSkinCount;
         qreal opacity = maxOpacity;
 
@@ -166,13 +162,12 @@ void CanvasRenderer::paintOnionSkin( QPainter& painter )
 
             switch ( layer->type() )
             {
-                case Layer::BITMAP: { paintBitmapFrame( painter, mLayerIndex, onionFrameNumber, mOptions.bColorizeNextOnion, false ); break; }
-                case Layer::VECTOR: { paintVectorFrame( painter, mLayerIndex, onionFrameNumber, mOptions.bColorizeNextOnion, false ); break; }
+                case Layer::BITMAP: { paintBitmapFrame( painter, mCurrentLayerIndex, onionFrameNumber, mOptions.bColorizeNextOnion, false ); break; }
+                case Layer::VECTOR: { paintVectorFrame( painter, mCurrentLayerIndex, onionFrameNumber, mOptions.bColorizeNextOnion, false ); break; }
                 case Layer::CAMERA: break;
                 case Layer::SOUND: break;
                 default: Q_ASSERT( false ); break;
             }
-
             opacity = opacity - nextOpacityIncrement;
 
             onionFrameNumber = layer->getNextFrameNumber(onionFrameNumber, mOptions.bIsOnionAbsolute);
@@ -203,10 +198,12 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
 
     qCDebug( mLog ) << "Paint Onion skin bitmap, Frame = " << nFrame;
     BitmapImage* bitmapImage;
-    if (useLastKeyFrame) {
+    if (useLastKeyFrame)
+    {
         bitmapImage = bitmapLayer->getLastBitmapImageAtFrame( nFrame, 0 );
     }
-    else {
+    else
+    {
         bitmapImage = bitmapLayer->getBitmapImageAtFrame( nFrame );
     }
 
@@ -240,14 +237,16 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
 
     // If the current frame on the current layer has a transformation, we apply it.
     //
-    if (mRenderTransform && nFrame == mFrameNumber && layerId == mLayerIndex ) {
+    if (mRenderTransform && nFrame == mFrameNumber && layerId == mCurrentLayerIndex )
+    {
         tempBitmapImage->clear(mSelection);
         paintTransformedSelection(painter);
     }
 
     painter.setWorldMatrixEnabled( true );
 
-    if (mRenderTransform && nFrame) {
+    if (mRenderTransform && nFrame)
+    {
         painter.setOpacity( bitmapLayer->getOpacity() );
     }
 
@@ -336,7 +335,7 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
         return;
     }
 
-    Layer* layer = mObject->getLayer( mLayerIndex );
+    Layer* layer = mObject->getLayer( mCurrentLayerIndex );
 
     if (layer->type() == Layer::BITMAP) {
 
@@ -356,19 +355,21 @@ void CanvasRenderer::paintTransformedSelection( QPainter& painter )
 
 void CanvasRenderer::paintCurrentFrame( QPainter& painter )
 {
-    bool isCamera = mObject->getLayer(mLayerIndex)->type() == Layer::CAMERA;
+    bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
     for ( int i = 0; i < mObject->getLayerCount(); ++i )
     {
         Layer* layer = mObject->getLayer( i );
-        if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
+        if ( i == mCurrentLayerIndex || mOptions.nShowAllLayers != 1 )
         {
             painter.setOpacity( 1.0 );
-        } else if ( isCamera != true ) {
-
+        }
+        else if ( isCamera != true )
+        {
             painter.setOpacity( 0.8 );
         }
 
-        if ( i == mLayerIndex || mOptions.nShowAllLayers > 0 ) {
+        if ( i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0 )
+        {
             switch ( layer->type() )
             {
                 case Layer::BITMAP: { paintBitmapFrame( painter, i, mFrameNumber ); break; }
@@ -445,19 +446,19 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
     {
         Layer* layer = mObject->getLayer( i );
 
-        if ( layer->type() == Layer::CAMERA && (i == mLayerIndex || mOptions.nShowAllLayers > 0) && layer->visible() ) {
-
-            if ( i == mLayerIndex || mOptions.nShowAllLayers != 1 )
+        if ( layer->type() == Layer::CAMERA && (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0) && layer->visible() )
+        {
+            if ( i == mCurrentLayerIndex || mOptions.nShowAllLayers != 1 )
             {
                 painter.setOpacity( 1.0 );
             }
-            else {
+            else
+            {
                 painter.setOpacity( 0.8 );
             }
 
             QRectF viewRect = painter.viewport();
             QRect boundingRect = mViewTransform.inverted().mapRect( viewRect ).toRect();
-
 
             LayerCamera* cameraLayer = dynamic_cast< LayerCamera* >( layer );
 
@@ -469,10 +470,9 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
 
             QRegion rg1(boundingRect);
             QRegion rg2(mCameraRect);
-            QRegion rg3=rg1.subtracted(rg2);
+            QRegion rg3 = rg1.subtracted(rg2);
 
             painter.setClipRegion(rg3);
-
             painter.drawRect( boundingRect );
 
             painter.setClipping(false);

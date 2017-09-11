@@ -37,6 +37,7 @@ private slots: // test cases
     void testEmptyCameraLayer();
     void testCameraLayerWithTwoKeys();
     void testSetCameraLayerAndRemoveIt();
+    void testTwoCamerasInterpolation();
 
 private:
     Editor* mEditor = nullptr;

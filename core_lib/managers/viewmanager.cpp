@@ -32,7 +32,7 @@ ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 
 bool ViewManager::init()
 {
-    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
+    //connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
     return true;
 }
 
@@ -227,7 +227,6 @@ void ViewManager::setCameraLayer(Layer* layer)
 
 void ViewManager::onCurrentFrameChanged()
 {
-
     int frame = editor()->currentFrame();
     mCurrentCamera = mCameraLayer->getLastCameraAtFrame(frame, 0);
     updateViewTransforms();
