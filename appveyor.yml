@@ -27,12 +27,11 @@ environment:
 
 skip_commits:
   files:
-    - '*.md'
-    - dir/*.md
-    - dir/*.sh
-    - dir/*.py
-    - dir/*.ps1
-    - '*.yml'
+    - '**/*.md'
+    - '**/*.sh'
+    - '**/*.py'
+    - '**/*.ps1'
+    - '**/*.yml'
 
 install:
   - set PYTHON3="%PYTHON%\python.exe"

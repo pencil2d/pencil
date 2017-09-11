@@ -13,10 +13,10 @@ PY=".py"
 PS1=".ps1"
 
 for CHANGED_FILE in $CHANGED_FILES; do
-  if ! [[ $CHANGED_FILE =~ $MD && 
-  		  $CHANGED_FILE =~ $YAML && 
-  		  $CHANGED_FILE =~ $SH && 
-  		  $CHANGED_FILE =~ $PY &&
+  if ! [[ $CHANGED_FILE =~ $MD || 
+  		  $CHANGED_FILE =~ $YAML || 
+  		  $CHANGED_FILE =~ $SH || 
+  		  $CHANGED_FILE =~ $PY ||
   		  $CHANGED_FILE =~ $PS1 ]] ; then
     ONLY_READMES=False
     break
