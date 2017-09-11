@@ -2,7 +2,9 @@
 
 set -e
 
-CHANGED_FILES=`git diff --name-only master..${TRAVIS_COMMIT}`
+git remote set-branches --add origin master
+git fetch
+CHANGED_FILES=`git diff --name-only origin/master...${TRAVIS_COMMIT}`
 ONLY_READMES=True
 MD=".md"
 YAML=".yml"
@@ -26,5 +28,6 @@ if [[ $ONLY_READMES == True ]]; then
   travis_terminate 0
   exit 1
 else
+  echo `git diff --name-only origin/master...${TRAVIS_COMMIT}`
   echo "source code changes found, continuing with build."
 fi
