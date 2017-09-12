@@ -441,52 +441,47 @@ void CanvasRenderer::renderGrid(QPainter& painter)
 
 void CanvasRenderer::paintCameraBorder(QPainter &painter)
 {
-
-    for ( int i = 0; i < mObject->getLayerCount(); ++i )
+    LayerCamera* currentCamLayer = nullptr;
+    for (int i = 0; i < mObject->getLayerCount(); ++i)
     {
-        Layer* layer = mObject->getLayer( i );
-
-        if ( layer->type() == Layer::CAMERA && (i == mCurrentLayerIndex || mOptions.nShowAllLayers > 0) && layer->visible() )
+        Layer* layer = mObject->getLayer(i);
+        if (layer->type() == Layer::CAMERA && layer->visible())
         {
-            if ( i == mCurrentLayerIndex || mOptions.nShowAllLayers != 1 )
-            {
-                painter.setOpacity( 1.0 );
-            }
-            else
-            {
-                painter.setOpacity( 0.8 );
-            }
-
-            QRectF viewRect = painter.viewport();
-            QRect boundingRect = mViewTransform.inverted().mapRect( viewRect ).toRect();
-
-            LayerCamera* cameraLayer = dynamic_cast< LayerCamera* >( layer );
-
-            mCameraRect = cameraLayer->getViewRect();
-
-            painter.setWorldMatrixEnabled( true );
-            painter.setPen( Qt::NoPen );
-            painter.setBrush( QColor( 0, 0, 0, 160 ) );
-
-            QRegion rg1(boundingRect);
-            QRegion rg2(mCameraRect);
-            QRegion rg3 = rg1.subtracted(rg2);
-
-            painter.setClipRegion(rg3);
-            painter.drawRect( boundingRect );
-
-            painter.setClipping(false);
-
-            QPen pen( Qt::black,
-                      2,
-                      Qt::SolidLine,
-                      Qt::FlatCap,
-                      Qt::MiterJoin );
-            painter.setPen( pen );
-            painter.setBrush( Qt::NoBrush );
-            painter.drawRect( mCameraRect.adjusted( -1, -1, 1, 1) );
+            currentCamLayer = static_cast<LayerCamera*>(layer);
         }
     }
+    qDebug() << "Draw!";
+    painter.setOpacity(1.0);
+
+    QRectF viewRect = painter.viewport();
+    qDebug() << viewRect;
+    QRect boundingRect = mViewTransform.inverted().mapRect(viewRect).toRect();
+
+    mCameraRect = currentCamLayer->getViewRect();
+
+    painter.setWorldMatrixEnabled(true);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(QColor(0, 0, 0, 120));
+
+    QRegion rg1(boundingRect);
+    QRegion rg2(mCameraRect);
+    QRegion rg3 = rg1.subtracted(rg2);
+
+    painter.setClipRegion(rg3);
+    painter.drawRect(boundingRect);
+
+    /*
+    painter.setClipping(false);
+
+    QPen pen( Qt::black,
+                2,
+                Qt::SolidLine,
+                Qt::FlatCap,
+                Qt::MiterJoin );
+    painter.setPen( pen );
+    painter.setBrush( Qt::NoBrush );
+    painter.drawRect( mCameraRect.adjusted( -1, -1, 1, 1) );
+    */
 }
 
 QRect CanvasRenderer::getCameraRect()
