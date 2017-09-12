@@ -10,31 +10,26 @@ If you are an *experienced Qt developer*, compiling Pencil2D would be extremely 
 
 ## Installing Dependencies
 
-There are 2 things that must be installed before compiling Pencil2d. In this section we will go over the installation of each of these components in detail. We describe both graphical and command-line methods of installation, choose whichever one you feel more comfortable with (and if you don't know the difference, choose **graphical**).
+There are 2 things that must be installed before compiling Pencil2d: **Xcode** and **Qt SDK** . In this section we will go over the installation of each component in detail.
 
 ### 1. Xcode
 
-#### Graphical method (Recommended)
+#### From App Store (Recommended)
 
 Firstly, install **Xcode** from App Store. 
 
 - Click on [this link](https://itunes.apple.com/ca/app/xcode/id497799835) and click the *View in Mac App Store* button.
-- Now press the install button in your App Store application and wait for the installation to complete. At the moment the package size of Xcode 8 is 4.3GB, so it normally takes quite a while to install.
-- Once installed open up Xcode, either with the button in the App Store or by navigating to `/Applications/Xcode.app`.
+- Press the `install` button in your App Store application and wait for the installation to complete. At the moment the  Xcode 8 package size is 4.3GB, so it normally takes quite a while to install.
+- Once installed, you can find Xcode in Launchpad or by navigating to `/Applications/Xcode.app`.
 
 #### Command-line method
 
-Run the following command in Terminal:
+If you prefer to install Xcode by command-line, run the following command in Terminal:
 
     xcode-select --install
 
 A dialog should pop up asking if you want to install the command line developer tools. Click *Install* and wait for the installation to complete.
 
-#### Homebrew (command-line only)
-
-This step is only necessary if you are installing with the command-line method; if you are using the graphical method you can skip to the next step. Homebrew is a command-line package manger for Mac. To install Homebrew, open up Terminal and run the follow command:
-
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 ### 2. Qt SDK
 
