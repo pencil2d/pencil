@@ -441,23 +441,28 @@ void CanvasRenderer::renderGrid(QPainter& painter)
 
 void CanvasRenderer::paintCameraBorder(QPainter &painter)
 {
-    LayerCamera* currentCamLayer = nullptr;
+    LayerCamera* cameraLayer = nullptr;
+    bool isCameraMode = false;
+
     for (int i = 0; i < mObject->getLayerCount(); ++i)
     {
         Layer* layer = mObject->getLayer(i);
         if (layer->type() == Layer::CAMERA && layer->visible())
         {
-            currentCamLayer = static_cast<LayerCamera*>(layer);
+            cameraLayer = static_cast<LayerCamera*>(layer);
+            isCameraMode = (i == mCurrentLayerIndex);
+            break;
         }
     }
+
     qDebug() << "Draw!";
     painter.setOpacity(1.0);
 
     QRectF viewRect = painter.viewport();
     qDebug() << viewRect;
     QRect boundingRect = mViewTransform.inverted().mapRect(viewRect).toRect();
-
-    mCameraRect = currentCamLayer->getViewRect();
+    qDebug() << "BoudingRect:" << boundingRect;
+    mCameraRect = cameraLayer->getViewRect();
 
     painter.setWorldMatrixEnabled(true);
     painter.setPen(Qt::NoPen);
