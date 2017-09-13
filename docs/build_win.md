@@ -16,7 +16,7 @@ If you are an *experienced Qt developer*, compiling Pencil2D would be extremely 
 
 ## Install Qt SDK
 
-Pencil2D is built upon Qt, so you have to installit before you can compile the program.
+Pencil2D is built upon Qt, so you have to install it before you can compile the program.
 
 ### Official Qt Installer (Recommended)
 
@@ -29,7 +29,8 @@ Pencil2D is built upon Qt, so you have to installit before you can compile the p
 ## Get the source code
 
 - You can simply download the Pencil2D source [here](https://github.com/pencil2d/pencil/archive/master.zip).
-- Or get the source via the [Git](https://github.com/pencil2d/pencil.git) If you plan to contribute to the Pencil2D project.
+- Or get the source via [Git](https://github.com/pencil2d/pencil.git) if you plan to contribute to the Pencil2D project.
+
 ## Building the application
 
 Now it's time to build the application.
