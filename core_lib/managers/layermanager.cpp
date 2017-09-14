@@ -261,6 +261,10 @@ bool LayerManager::deleteCurrentLayer()
     return true;
 }
 
+/**
+ * @brief LayerManager::projectLength
+ * @return int: position of the last key frame in the timeline + its length
+ */
 int LayerManager::projectLength()
 {
     int maxFrame = -1;
@@ -268,10 +272,31 @@ int LayerManager::projectLength()
     Object* pObject = editor()->object();
     for ( int i = 0; i < pObject->getLayerCount(); i++ )
     {
-        int frame = pObject->getLayer( i )->getMaxKeyFramePosition();
-        if ( frame > maxFrame )
+        int lastFramePos = pObject->getLayer( i )->getMaxKeyFramePosition();
+        int prevFramePos = pObject->getLayer( i )->getPreviousKeyFramePosition(lastFramePos);
+
+        if (pObject->getLayer(i)->type() == Layer::SOUND) {
+            KeyFrame* keyFrame = pObject->getLayer( i )->getKeyFrameWhichCovers(lastFramePos);
+            KeyFrame* prevKFrame = pObject->getLayer( i )->getKeyFrameWhichCovers(prevFramePos);
+
+            if ( keyFrame != nullptr && prevKFrame != nullptr ) {
+                if ( keyFrame->length() >= 1 &&
+                     keyFrame->pos() + keyFrame->length() > maxFrame )
+                {
+                    maxFrame = lastFramePos + keyFrame->length();
+                }
+
+                // in cases where the previous frame length is longer and further away
+                // than the last frame length
+                if ( prevKFrame->pos() + prevKFrame->length() > keyFrame->pos() + keyFrame->length() )
+                {
+                    maxFrame = prevFramePos + prevKFrame->length();
+                }
+            }
+        }
+        else if ( lastFramePos > maxFrame )
         {
-            maxFrame = frame;
+            maxFrame = lastFramePos;
         }
     }
     return maxFrame;
