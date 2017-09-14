@@ -188,7 +188,7 @@ private:
     int autosaveNumber = 12;
 
     void makeConnections();
-    KeyFrame* addKeyFame( int layerNumber, int frameNumber );
+    KeyFrame* addKeyFrame( int layerNumber, int frameNumber );
 
     // backup
     void clearUndoStack();
@@ -196,7 +196,7 @@ private:
     int lastModifiedLayer;
 
     // clipboard
-    bool clipboardBitmapOk, clipboardVectorOk;
+    bool clipboardBitmapOk, clipboardVectorOk, clipboardSoundClipOk;
 };
 
 #endif
