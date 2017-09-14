@@ -35,7 +35,6 @@ bool PlaybackManager::init()
     mTimer = new QTimer( this );
     mFrameTimer = new QElapsedTimer( );
     connect( mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
-    emit playStateChanged(true);
     return true;
 }
 
