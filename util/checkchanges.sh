@@ -25,7 +25,6 @@ done
 
 if [[ $ONLY_READMES == True ]]; then
   echo "Only non source code files found, exiting."
-  travis_terminate 0
   exit 1
 else
   echo `git diff --name-only origin/master...${TRAVIS_COMMIT}`
