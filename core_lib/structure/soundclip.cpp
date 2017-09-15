@@ -33,7 +33,7 @@ SoundClip::~SoundClip()
 
 Status SoundClip::init( const QString& strSoundFile )
 {
-    if ( !fileName().isEmpty() )
+    if ( strSoundFile.isEmpty() )
     {
         return Status::FAIL;
     }

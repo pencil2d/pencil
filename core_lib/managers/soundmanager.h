@@ -40,6 +40,7 @@ public:
 
     Status loadSound( Layer* soundLayer, int frameNumber, QString strSoundFile );
     Status loadSound( SoundClip* soundClip, QString strSoundFile );
+    Status pasteSound( SoundClip* soundClip, QString strSoundFile );
 
 signals:
     void soundClipDurationChanged();
