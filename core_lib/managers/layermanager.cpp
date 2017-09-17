@@ -302,6 +302,34 @@ int LayerManager::projectLength()
     return maxFrame;
 }
 
+/**
+ * @brief LayerManager::lastPaintedFrame
+ * @return
+ */
+void LayerManager::lastPaintedFrame( bool useFrameLength )
+{
+    int layerCount = editor()->object()->getLayerCount();
+    int projectLen = projectLength();
+    if ( useFrameLength )
+    {
+        int maxPosition = 0;
+        Layer* layer;
+        for(int i = 0; i < layerCount; i++)
+        {
+            layer = getLayer( i );
+            if ( layer->isLayerPaintable( layer->type() ) )
+            {
+                maxPosition = layer->getMaxKeyFramePosition();
+            }
+        }
+        emit updateRange( maxPosition );
+    }
+    else
+    {
+        emit updateRange( projectLen );
+    }
+}
+
 void LayerManager::layerUpdated(int layerId)
 {
     emit currentLayerChanged(layerId);

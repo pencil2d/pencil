@@ -107,37 +107,13 @@ Status ActionCommands::importSound()
     return st;
 }
 
-void ActionCommands::updateFrameEnd()
-{
-    int layerCount = mEditor->object()->getLayerCount();
-    int projectLength = mEditor->layers()->projectLength();
-    if ( mExportMovieDialog->useKeyFrameLength() )
-    {
-        int maxPosition = 0;
-        Layer* layer;
-        for(int i = 0; i < layerCount; i++)
-        {
-            layer = mEditor->layers()->getLayer( i );
-
-            if ( layer->isLayerPaintable( layer->type() ) )
-            {
-                maxPosition = layer->getMaxKeyFramePosition();
-            }
-        }
-        mExportMovieDialog->setEndFrame( maxPosition );
-    }
-    else
-    {
-        mExportMovieDialog->setEndFrame( projectLength );
-    }
-}
-
 Status ActionCommands::exportMovie()
 {
     mExportMovieDialog = new ExportMovieDialog( mParent );
 
     QCheckBox* frameCheckBox = mExportMovieDialog->getFrameCheckBox();
-    connect( frameCheckBox, &QCheckBox::stateChanged, this, &ActionCommands::updateFrameEnd );
+    connect( frameCheckBox, &QCheckBox::stateChanged, mEditor->layers(), &LayerManager::lastPaintedFrame );
+    connect( mEditor->layers(), &LayerManager::updateRange, mExportMovieDialog, &ExportMovieDialog::setEndFrame );
 
     std::vector< std::pair<QString, QSize > > camerasInfo;
     auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
@@ -163,9 +139,10 @@ Status ActionCommands::exportMovie()
 
     mExportMovieDialog->setCamerasInfo( camerasInfo );
 
-    mExportMovieDialog->setDefaultRange( 1, mEditor->layers()->projectLength() );
+    int projectLen = mEditor->layers()->projectLength();
+    mExportMovieDialog->setDefaultRange( 1, projectLen );
 
-    if (!mExportMovieDialog->isVisible())
+    if ( !mExportMovieDialog->isVisible() )
     {
         mExportMovieDialog->exec();
     }

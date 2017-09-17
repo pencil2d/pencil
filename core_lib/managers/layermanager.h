@@ -59,17 +59,19 @@ public:
     LayerSound*  createSoundLayer( const QString& strLayerName );
     
     // KeyFrame Management
-    int  LastFrameAtFrame( int frameIndex );
-    int  firstKeyFrameIndex();
-    int  lastKeyFrameIndex();
+    int LastFrameAtFrame( int frameIndex );
+    int firstKeyFrameIndex();
+    int lastKeyFrameIndex();
 
-    int  projectLength();
+    int projectLength();
 
     void layerUpdated( int layerId );
+    void lastPaintedFrame( bool useFrameLength );
 
 Q_SIGNALS:
     void currentLayerChanged( int n );
     void layerCountChanged( int count );
+    void updateRange( int endFrame );
 
 private:
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
