@@ -26,13 +26,9 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include <QFile>
-#include <QScopedPointer>
 #include <QMessageBox>
 #include <QProgressDialog>
-#include <QDesktopWidget>
 #include <QDesktopServices>
-#include <QGraphicsDropShadowEffect>
-#include <QStatusBar>
 #include <QFileIconProvider>
 
 #include "pencildef.h"
@@ -513,7 +509,6 @@ bool MainWindow2::openObject( QString strFilePath )
     {
         progress.setValue( (int)( f * 100.f ) );
         QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
-
     } );
 
     Object* object = fm.load( strFilePath );
