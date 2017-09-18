@@ -22,8 +22,7 @@ GNU General Public License for more details.
 ImportExportDialog::ImportExportDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ImportExportDialog),
-    m_fileDialog(new FileDialog(this)),
-    m_filePaths(QStringList())
+    m_fileDialog(new FileDialog(this))
 {
     ui->setupUi(this);
 
