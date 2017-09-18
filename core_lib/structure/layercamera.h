@@ -51,7 +51,7 @@ public:
     LayerCamera(Object* object);
     ~LayerCamera();
 
-    void loadImageAtFrame(int, QTransform);
+    void loadImageAtFrame(int frame, float dx, float dy, float rotate, float scale);
     
     void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) override;

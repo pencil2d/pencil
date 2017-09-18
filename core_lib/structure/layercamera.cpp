@@ -182,15 +182,15 @@ QSize LayerCamera::getViewSize()
     return viewRect.size();
 }
 
-void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
+void LayerCamera::loadImageAtFrame( int frameNumber, float dx, float dy, float rotate, float scale)
 {
     if ( keyExists( frameNumber ) )
     {
         removeKeyFrame( frameNumber );
     }
-    //Camera* camera = new Camera( view );
-    //camera->setPos( frameNumber );
-    //addKeyFrame( frameNumber, camera );
+    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
+    camera->setPos( frameNumber );
+    loadKey(camera);
 }
 
 
@@ -237,12 +237,10 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
         QDomElement keyTag = doc.createElement("camera");
         keyTag.setAttribute( "frame", camera->pos() );
 
-        keyTag.setAttribute( "m11", camera->view.m11() );
-        keyTag.setAttribute( "m12", camera->view.m12() );
-        keyTag.setAttribute( "m21", camera->view.m21() );
-        keyTag.setAttribute( "m22", camera->view.m22() );
-        keyTag.setAttribute( "dx",  camera->view.dx() );
-        keyTag.setAttribute( "dy",  camera->view.dy() );
+        keyTag.setAttribute( "r", camera->rotation() );
+        keyTag.setAttribute( "s", camera->scaling() );
+        keyTag.setAttribute( "dx",  camera->translation().x() );
+        keyTag.setAttribute( "dy",  camera->translation().y() );
         layerTag.appendChild( keyTag );
     } );
     
@@ -270,14 +268,12 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
             {
                 int frame = imageElement.attribute("frame").toInt();
 
-                qreal m11 = imageElement.attribute("m11").toDouble();
-                qreal m12 = imageElement.attribute("m12").toDouble();
-                qreal m21 = imageElement.attribute("m21").toDouble();
-                qreal m22 = imageElement.attribute("m22").toDouble();
-                qreal dx = imageElement.attribute("dx").toDouble();
-                qreal dy = imageElement.attribute("dy").toDouble();
+                qreal rotate = imageElement.attribute("r", "0").toDouble();
+                qreal scale = imageElement.attribute("s", "1").toDouble();
+                qreal dx = imageElement.attribute("dx", "0").toDouble();
+                qreal dy = imageElement.attribute("dy", "0").toDouble();
 
-                loadImageAtFrame( frame, QTransform( m11, m12, m21, m22, dx, dy ) );
+                loadImageAtFrame( frame, dx, dy, rotate, scale );
             }
         }
         imageTag = imageTag.nextSibling();
