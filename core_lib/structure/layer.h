@@ -122,8 +122,7 @@ public:
     virtual void editProperties();
 
     void setUpdated();
-
-    bool isLayerPaintable( LAYER_TYPE );
+    bool isPaintable();
 
 protected:
     void setId( int LayerId ) { mId = LayerId; }

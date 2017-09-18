@@ -312,7 +312,7 @@ void LayerManager::lastPaintedFrame( bool useFrameLength )
         for (int i = 0; i < layerCount; i++)
         {
             layer = getLayer( i );
-            if ( layer->isLayerPaintable( layer->type() ) )
+            if ( layer->isPaintable() )
             {
                 maxPosition = layer->getMaxKeyFramePosition();
             }

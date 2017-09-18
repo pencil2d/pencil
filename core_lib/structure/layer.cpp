@@ -704,9 +704,9 @@ bool Layer::moveSelectedFrames(int offset)
 
 }
 
-bool Layer::isLayerPaintable( Layer::LAYER_TYPE type )
+bool Layer::isPaintable()
 {
-    switch ( type )
+    switch ( type() )
     {
         case Layer::BITMAP:
         case Layer::VECTOR:
