@@ -63,15 +63,13 @@ public:
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
-    int projectLength();
+    int projectLength(bool includeSounds = true);
 
     void layerUpdated( int layerId );
-    void lastPaintedFrame( bool useFrameLength );
 
 Q_SIGNALS:
     void currentLayerChanged( int n );
     void layerCountChanged( int count );
-    void updateRange( int endFrame );
 
 private:
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed

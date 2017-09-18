@@ -265,7 +265,7 @@ bool LayerManager::deleteCurrentLayer()
  * @brief LayerManager::projectLength
  * @return int: the position of the last key frame in the timeline + its length
  */
-int LayerManager::projectLength()
+int LayerManager::projectLength(bool includeSounds)
 {
     int maxFrame = -1;
 
@@ -274,6 +274,9 @@ int LayerManager::projectLength()
     {
         if (pObject->getLayer(i)->type() == Layer::SOUND)
         {
+            if (!includeSounds)
+                continue;
+
             Layer* soundLayer = pObject->getLayer(i);
             soundLayer->foreachKeyFrame([&maxFrame](KeyFrame* keyFrame)
             {
@@ -295,34 +298,6 @@ int LayerManager::projectLength()
     }
     //qDebug() << "Project Length:" << maxFrame;
     return maxFrame;
-}
-
-/**
- * @brief LayerManager::lastPaintedFrame
- * @return
- */
-void LayerManager::lastPaintedFrame( bool useFrameLength )
-{
-    int layerCount = editor()->object()->getLayerCount();
-    int projectLen = projectLength();
-    if ( useFrameLength )
-    {
-        int maxPosition = 0;
-        Layer* layer = nullptr;
-        for (int i = 0; i < layerCount; i++)
-        {
-            layer = getLayer( i );
-            if ( layer->isPaintable() )
-            {
-                maxPosition = layer->getMaxKeyFramePosition();
-            }
-        }
-        emit updateRange( maxPosition );
-    }
-    else
-    {
-        emit updateRange( projectLen );
-    }
 }
 
 void LayerManager::layerUpdated(int layerId)

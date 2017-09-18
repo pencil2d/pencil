@@ -111,15 +111,11 @@ Status ActionCommands::exportMovie()
 {
     mExportMovieDialog = new ExportMovieDialog( mParent );
 
-    QCheckBox* frameCheckBox = mExportMovieDialog->getFrameCheckBox();
-    connect( frameCheckBox, &QCheckBox::stateChanged, mEditor->layers(), &LayerManager::lastPaintedFrame );
-    connect( mEditor->layers(), &LayerManager::updateRange, mExportMovieDialog, &ExportMovieDialog::setEndFrame );
-
-    std::vector< std::pair<QString, QSize > > camerasInfo;
+    std::vector< std::pair<QString, QSize> > camerasInfo;
     auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
-    for ( LayerCamera* i : cameraLayers )
+    for (LayerCamera* i : cameraLayers)
     {
-        camerasInfo.push_back( std::make_pair( i->name(), i->getViewSize() ) );
+        camerasInfo.push_back(std::make_pair(i->name(), i->getViewSize()));
     }
 
     auto currLayer = mEditor->layers()->currentLayer();
@@ -139,8 +135,10 @@ Status ActionCommands::exportMovie()
 
     mExportMovieDialog->setCamerasInfo( camerasInfo );
 
-    int projectLen = mEditor->layers()->projectLength();
-    mExportMovieDialog->setDefaultRange( 1, projectLen );
+    int projectLenWithSounds = mEditor->layers()->projectLength(true);
+    int projectLen = mEditor->layers()->projectLength(false);
+
+    mExportMovieDialog->setDefaultRange( 1, projectLen, projectLenWithSounds);
 
     if ( !mExportMovieDialog->isVisible() )
     {

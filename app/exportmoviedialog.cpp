@@ -33,11 +33,6 @@ ExportMovieDialog::~ExportMovieDialog()
     delete ui;
 }
 
-QCheckBox* ExportMovieDialog::getFrameCheckBox()
-{
-    return ui->frameCheckBox;
-}
-
 void ExportMovieDialog::setCamerasInfo( std::vector< std::pair< QString, QSize > > camerasInfo )
 {
     if ( ui->cameraCombo->count() > 0 )
@@ -67,13 +62,18 @@ void ExportMovieDialog::updateResolutionCombo( int index )
     ui->heightSpinBox->setValue( camSize.height() );
 }
 
-void ExportMovieDialog::setDefaultRange( int startFrame, int endFrame )
+void ExportMovieDialog::setDefaultRange(int startFrame, int endFrame, int endFrameWithSounds)
 {
+    mEndFrame = endFrame;
+    mEndFrameWithSounds = endFrameWithSounds;
+
     SignalBlocker b1( ui->startSpinBox );
     SignalBlocker b2( ui->endSpinBox );
 
     ui->startSpinBox->setValue( startFrame );
     ui->endSpinBox->setValue( endFrame );
+
+    connect(ui->frameCheckBox, &QCheckBox::clicked, this, &ExportMovieDialog::frameCheckboxClicked);
 }
 
 QString ExportMovieDialog::getSelectedCameraName()
@@ -96,17 +96,6 @@ int ExportMovieDialog::getEndFrame()
     return ui->endSpinBox->value();
 }
 
-void ExportMovieDialog::setEndFrame(int newEndFrame)
-{
-    SignalBlocker b1( ui->endSpinBox );
-    ui->endSpinBox->setValue(newEndFrame);
-}
-
-bool ExportMovieDialog::useKeyFrameLength()
-{
-    return ui->frameCheckBox->isChecked();
-}
-
 ImportExportDialog::Mode ExportMovieDialog::getMode()
 {
     return ImportExportDialog::Export;
@@ -115,4 +104,10 @@ ImportExportDialog::Mode ExportMovieDialog::getMode()
 FileType ExportMovieDialog::getFileType()
 {
     return FileType::MOVIE;
+}
+
+void ExportMovieDialog::frameCheckboxClicked(bool checked)
+{
+    int e = (checked) ? mEndFrameWithSounds : mEndFrame;
+    ui->endSpinBox->setValue(e);
 }

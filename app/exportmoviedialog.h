@@ -36,23 +36,24 @@ public:
     void setCamerasInfo( std::vector< std::pair< QString, QSize > > );
     void updateResolutionCombo( int index );
 
-    void setDefaultRange( int startFrame, int endFrame );
-    void setEndFrame( int newEndFrame );
+    void setDefaultRange( int startFrame, int endFrame, int endFrameWithSounds );
 
     QString getSelectedCameraName();
     QSize getExportSize();
 
     int getStartFrame();
     int getEndFrame();
-    bool useKeyFrameLength();
-
-    QCheckBox *getFrameCheckBox();
 
 protected:
-    Mode getMode();
-    FileType getFileType();
+    Mode getMode() override;
+    FileType getFileType() override;
 
 private:
+    void frameCheckboxClicked(bool checked);
+    
+    int mEndFrameWithSounds = 0;
+    int mEndFrame = 0;
+
     Ui::ExportMovieOptions* ui = nullptr;
 };
 
