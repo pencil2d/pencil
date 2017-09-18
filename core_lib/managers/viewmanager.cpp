@@ -32,19 +32,17 @@ ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 
 bool ViewManager::init()
 {
-    //connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
     return true;
 }
 
 Status ViewManager::load( Object* o )
 {
-    //mView = o->data()->getCurrentView();
+    mCameraLayer = nullptr;
 
-    //if ( mView.isIdentity() )
-    {
-        //translate( 0, 0 );
-    }
+    resetView();
 	updateViewTransforms();
+
+    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
 
     return Status::OK;
 }
@@ -63,11 +61,6 @@ QPointF ViewManager::mapCanvasToScreen( QPointF p )
 QPointF ViewManager::mapScreenToCanvas(QPointF p)
 {
     return mViewCanvasInverse.map( p );
-}
-
-QPointF ViewManager::translation()
-{
-    return mCurrentCamera->translation();
 }
 
 QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
@@ -97,8 +90,31 @@ QTransform ViewManager::getView()
 
 void ViewManager::updateViewTransforms()
 {
-    mCurrentCamera->updateViewTransform();
-    mView = mCurrentCamera->getView();
+    if (mCameraLayer)
+    {
+        int frame = editor()->currentFrame();
+        mCurrentCamera = mCameraLayer->getCameraAtFrame(frame);
+        qDebug() << "frame:" << frame;
+        if (mCurrentCamera)
+        {
+            mCurrentCamera->updateViewTransform();
+            mView = mCurrentCamera->getView();
+            qDebug() << "dx=" << mView.dx();
+        }
+        else
+        {
+            mView = mCameraLayer->getViewAtFrame(frame);
+            qDebug() << "dx=" << mView.dx();
+        }
+    }
+    else
+    {
+        mCurrentCamera = mDefaultEditorCamera;
+        mCurrentCamera->updateViewTransform();
+
+        mView = mCurrentCamera->getView();
+    }
+ 
     mViewInverse = mView.inverted();
 
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
@@ -107,14 +123,27 @@ void ViewManager::updateViewTransforms()
 
     mViewCanvas = mView * f * mCentre;
     mViewCanvasInverse = mViewCanvas.inverted();
+    qDebug() << "viewCanvas=" << mViewCanvas.dx();
+}
+
+QPointF ViewManager::translation()
+{
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->translation();
+    }
+    return QPointF(0, 0);
 }
 
 void ViewManager::translate(float dx, float dy)
 {
-    mCurrentCamera->translate(dx, dy);
-    updateViewTransforms();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->translate(dx, dy);
+        updateViewTransforms();
 
-    Q_EMIT viewChanged();
+        Q_EMIT viewChanged();
+    }
 }
 
 void ViewManager::translate(QPointF offset)
@@ -124,20 +153,31 @@ void ViewManager::translate(QPointF offset)
 
 float ViewManager::rotation()
 {
-    return mCurrentCamera->rotation();
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->rotation();
+    }
+    return 0.0f;
 }
 
 void ViewManager::rotate(float degree)
 {
-    mCurrentCamera->rotate(degree);
-    updateViewTransforms();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->rotate(degree);
+        updateViewTransforms();
 
-    Q_EMIT viewChanged();
+        Q_EMIT viewChanged();
+    }
 }
 
 float ViewManager::scaling()
 {
-    return mCurrentCamera->scaling();
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->scaling();
+    }
+    return 0.0f;
 }
 
 void ViewManager::scaleUp()
@@ -165,10 +205,13 @@ void ViewManager::scale(float scaleValue)
         return;
     }
 
-    mCurrentCamera->scale(scaleValue);
-    updateViewTransforms();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->scale(scaleValue);
+        updateViewTransforms();
 
-    Q_EMIT viewChanged();
+        Q_EMIT viewChanged();
+    }
 }
 
 void ViewManager::flipHorizontal( bool b )
@@ -211,15 +254,11 @@ void ViewManager::setCameraLayer(Layer* layer)
             Q_ASSERT(false && "Only camera layers allowed pls");
             return;
         }
-
         mCameraLayer = static_cast<LayerCamera*>(layer);
-
-        int frame = editor()->currentFrame();
-        mCurrentCamera = mCameraLayer->getLastCameraAtFrame(frame, 0);
     }
     else
     {
-        mCurrentCamera = mDefaultEditorCamera;
+        mCameraLayer = nullptr;
     }
     
     updateViewTransforms();
@@ -227,14 +266,18 @@ void ViewManager::setCameraLayer(Layer* layer)
 
 void ViewManager::onCurrentFrameChanged()
 {
-    int frame = editor()->currentFrame();
-    mCurrentCamera = mCameraLayer->getLastCameraAtFrame(frame, 0);
-    updateViewTransforms();
+    if (mCameraLayer)
+    {
+        updateViewTransforms();
+    }
 }
 
 void ViewManager::resetView()
 {
-    mCurrentCamera->reset();
-    updateViewTransforms();
-    Q_EMIT viewChanged();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->reset();
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
 }

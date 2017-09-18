@@ -102,7 +102,7 @@ void CameraPropertiesDialog::setHeight(int height)
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     mName = QString(tr("Camera Layer"));
-    viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
+    viewRect = QRect(QPoint(-320, -240), QSize(640, 480));
     dialog = NULL;
 }
 
@@ -156,7 +156,6 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     // linear interpolation
     qreal c2 = ( frameNumber - frame1 + 0.0 ) / ( frame2 - frame1 );
     qreal c1 = 1.0 - c2;
-    //qDebug() << ">> -- " << c1 << c2;
 
     auto interpolation = [=]( double f1, double f2 ) -> double
     {

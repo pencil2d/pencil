@@ -883,6 +883,8 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             
 			mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
 			//qDebug() << "Repaint canvas!";
+
+            qDebug() << "draw dx=" << mEditor->view()->getView().dx();
         }
     }
 
@@ -901,8 +903,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     // paints the canvas
     painter.setWorldMatrixEnabled( false );
-    //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
-
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
 
     Layer* layer = mEditor->layers()->currentLayer();

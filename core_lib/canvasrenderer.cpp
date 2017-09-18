@@ -455,12 +455,12 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
         }
     }
 
-    qDebug() << "Draw!";
+    //qDebug() << "Draw!";
     painter.setOpacity(1.0);
 
     QRectF viewRect = painter.viewport();
-    qDebug() << "Viewpor=" << viewRect;
-    qDebug() << "Window=" << painter.window();
+    //qDebug() << "Viewport=" << viewRect;
+    //qDebug() << "Window=" << painter.window();
     QRect boundingRect;
     
     mCameraRect = cameraLayer->getViewRect();
@@ -471,16 +471,16 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
         boundingRect = viewRect.toRect();
-        qDebug() << "Before" << mCameraRect;
+        //qDebug() << "Before" << mCameraRect;
         mCameraRect = center.mapRect(mCameraRect);
-        qDebug() << "After" << mCameraRect;
+        //qDebug() << "After" << mCameraRect;
     }
     else
     {
         painter.setWorldMatrixEnabled(true);
         boundingRect = mViewTransform.inverted().mapRect(viewRect).toRect();
     }
-    qDebug() << "BoudingRect:" << boundingRect;
+    //qDebug() << "BoudingRect:" << boundingRect;
 
     painter.setPen(Qt::NoPen);
     painter.setBrush(QColor(0, 0, 0, 120));

@@ -1082,7 +1082,8 @@ void MainWindow2::helpBox()
 
 void MainWindow2::makeConnections( Editor* editor )
 {
-    connect( editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState );
+    connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
@@ -1202,4 +1203,17 @@ void MainWindow2::changePlayState( bool isPlaying )
         ui->actionPlay->setIcon(mStartIcon);
     }
     update();
+}
+
+void MainWindow2::currentLayerChanged()
+{
+    Layer* currLayer = mEditor->layers()->currentLayer();
+    if (currLayer->type() == Layer::CAMERA)
+    {
+        mEditor->view()->setCameraLayer(currLayer);
+    }
+    else
+    {
+        mEditor->view()->setCameraLayer(nullptr);
+    }
 }

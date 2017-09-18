@@ -128,6 +128,7 @@ private:
     void writeSettings();
 
     void changePlayState( bool isPlaying );
+    void currentLayerChanged();
 
     void makeConnections( Editor* );
     void makeConnections( Editor*, ColorBox* );
