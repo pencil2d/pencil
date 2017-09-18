@@ -7,12 +7,13 @@ $regex='(\.md)|(\.yml)|(\.sh)|(\.py)|(\.ps1)'
 
 foreach ($CHANGED_FILE in $CHANGED_FILES) {
   if ( !($CHANGED_FILE -match $regex )) {
-    $script:ONLY_READMES=$false
+    $Global:ONLY_READMES=$false
+    Write-Host "README STATE: $ONLY_READMES"
     break
   }
 }
 
-if ( $script:ONLY_READMES -eq $true ) {
+if ( $Global:ONLY_READMES -eq $true ) {
   Write-Host "Only non source code files found, exiting."
   $host.setshouldexit(1)
 } else {
