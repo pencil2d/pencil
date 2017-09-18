@@ -263,7 +263,7 @@ bool LayerManager::deleteCurrentLayer()
 
 /**
  * @brief LayerManager::projectLength
- * @return int: position of the last key frame in the timeline + its length
+ * @return int: the position of the last key frame in the timeline + its length
  */
 int LayerManager::projectLength()
 {
@@ -272,33 +272,28 @@ int LayerManager::projectLength()
     Object* pObject = editor()->object();
     for ( int i = 0; i < pObject->getLayerCount(); i++ )
     {
-        int lastFramePos = pObject->getLayer( i )->getMaxKeyFramePosition();
-        int prevFramePos = pObject->getLayer( i )->getPreviousKeyFramePosition(lastFramePos);
-
-        if (pObject->getLayer(i)->type() == Layer::SOUND) {
-            KeyFrame* keyFrame = pObject->getLayer( i )->getKeyFrameWhichCovers(lastFramePos);
-            KeyFrame* prevKFrame = pObject->getLayer( i )->getKeyFrameWhichCovers(prevFramePos);
-
-            if ( keyFrame != nullptr && prevKFrame != nullptr ) {
-                if ( keyFrame->length() >= 1 &&
-                     keyFrame->pos() + keyFrame->length() > maxFrame )
+        if (pObject->getLayer(i)->type() == Layer::SOUND)
+        {
+            Layer* soundLayer = pObject->getLayer(i);
+            soundLayer->foreachKeyFrame([&maxFrame](KeyFrame* keyFrame)
+            {
+                int endPosition = keyFrame->pos() + (keyFrame->length() - 1);
+                if (endPosition > maxFrame)
                 {
-                    maxFrame = lastFramePos + keyFrame->length();
+                    maxFrame = endPosition;
                 }
-
-                // in cases where the previous frame length is longer and further away
-                // than the last frame length
-                if ( prevKFrame->pos() + prevKFrame->length() > keyFrame->pos() + keyFrame->length() )
-                {
-                    maxFrame = prevFramePos + prevKFrame->length();
-                }
+            });
+        }
+        else
+        {
+            int lastFramePos = pObject->getLayer(i)->getMaxKeyFramePosition();
+            if (lastFramePos > maxFrame)
+            {
+                maxFrame = lastFramePos;
             }
         }
-        else if ( lastFramePos > maxFrame )
-        {
-            maxFrame = lastFramePos;
-        }
     }
+    //qDebug() << "Project Length:" << maxFrame;
     return maxFrame;
 }
 
@@ -313,8 +308,8 @@ void LayerManager::lastPaintedFrame( bool useFrameLength )
     if ( useFrameLength )
     {
         int maxPosition = 0;
-        Layer* layer;
-        for(int i = 0; i < layerCount; i++)
+        Layer* layer = nullptr;
+        for (int i = 0; i < layerCount; i++)
         {
             layer = getLayer( i );
             if ( layer->isLayerPaintable( layer->type() ) )
