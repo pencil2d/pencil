@@ -26,12 +26,16 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
     ui->setupUi(getOptionsGroupBox());
     init();
     setWindowTitle(tr("Export Movie"));
-    ui->rangeGroupBox->hide();
 }
 
 ExportMovieDialog::~ExportMovieDialog()
 {
     delete ui;
+}
+
+QCheckBox* ExportMovieDialog::getFrameCheckBox()
+{
+    return ui->frameCheckBox;
 }
 
 void ExportMovieDialog::setCamerasInfo( std::vector< std::pair< QString, QSize > > camerasInfo )
@@ -65,7 +69,10 @@ void ExportMovieDialog::updateResolutionCombo( int index )
 
 void ExportMovieDialog::setDefaultRange( int startFrame, int endFrame )
 {
-    ui->startSpinbox->setValue( startFrame );
+    SignalBlocker b1( ui->startSpinBox );
+    SignalBlocker b2( ui->endSpinBox );
+
+    ui->startSpinBox->setValue( startFrame );
     ui->endSpinBox->setValue( endFrame );
 }
 
@@ -81,12 +88,23 @@ QSize ExportMovieDialog::getExportSize()
 
 int ExportMovieDialog::getStartFrame()
 {
-    return ui->startSpinbox->value();
+    return ui->startSpinBox->value();
 }
 
 int ExportMovieDialog::getEndFrame()
 {
     return ui->endSpinBox->value();
+}
+
+void ExportMovieDialog::setEndFrame(int newEndFrame)
+{
+    SignalBlocker b1( ui->endSpinBox );
+    ui->endSpinBox->setValue(newEndFrame);
+}
+
+bool ExportMovieDialog::useKeyFrameLength()
+{
+    return ui->frameCheckBox->isChecked();
 }
 
 ImportExportDialog::Mode ExportMovieDialog::getMode()

@@ -704,11 +704,9 @@ bool Layer::moveSelectedFrames(int offset)
 
 }
 
-bool isLayerPaintable( Layer* layer )
+bool Layer::isLayerPaintable( Layer::LAYER_TYPE type )
 {
-    Q_ASSERT( layer != nullptr );
-
-    switch ( layer->type() )
+    switch ( type )
     {
         case Layer::BITMAP:
         case Layer::VECTOR:
