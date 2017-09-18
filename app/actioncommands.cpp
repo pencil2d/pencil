@@ -109,13 +109,13 @@ Status ActionCommands::importSound()
 
 Status ActionCommands::exportMovie()
 {
-    ExportMovieDialog exportDialog( mParent );
+    mExportMovieDialog = new ExportMovieDialog( mParent );
 
-    std::vector< std::pair<QString, QSize > > camerasInfo;
+    std::vector< std::pair<QString, QSize> > camerasInfo;
     auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
-    for ( LayerCamera* i : cameraLayers )
+    for (LayerCamera* i : cameraLayers)
     {
-        camerasInfo.push_back( std::make_pair( i->name(), i->getViewSize() ) );
+        camerasInfo.push_back(std::make_pair(i->name(), i->getViewSize()));
     }
 
     auto currLayer = mEditor->layers()->currentLayer();
@@ -133,22 +133,30 @@ Status ActionCommands::exportMovie()
         std::swap( camerasInfo[ 0 ], *it );
     }
 
-    exportDialog.setCamerasInfo( camerasInfo );
-    exportDialog.setDefaultRange( 1, mEditor->layers()->projectLength() );
-    exportDialog.exec();
-    if ( exportDialog.result() == QDialog::Rejected )
+    mExportMovieDialog->setCamerasInfo( camerasInfo );
+
+    int projectLenWithSounds = mEditor->layers()->projectLength(true);
+    int projectLen = mEditor->layers()->projectLength(false);
+
+    mExportMovieDialog->setDefaultRange( 1, projectLen, projectLenWithSounds);
+
+    if ( !mExportMovieDialog->isVisible() )
+    {
+        mExportMovieDialog->exec();
+    }
+    if ( mExportMovieDialog->result() == QDialog::Rejected )
     {
         return Status::SAFE;
     }
-	QString strMoviePath = exportDialog.getFilePath();
+    QString strMoviePath = mExportMovieDialog->getFilePath();
 
     ExportMovieDesc desc;
     desc.strFileName   = strMoviePath;
-    desc.startFrame    = exportDialog.getStartFrame();
-    desc.endFrame      = exportDialog.getEndFrame();
+    desc.startFrame    = mExportMovieDialog->getStartFrame();
+    desc.endFrame      = mExportMovieDialog->getEndFrame();
     desc.fps           = mEditor->playback()->fps();
-    desc.exportSize    = exportDialog.getExportSize();
-    desc.strCameraName = exportDialog.getSelectedCameraName();
+    desc.exportSize    = mExportMovieDialog->getExportSize();
+    desc.strCameraName = mExportMovieDialog->getSelectedCameraName();
 
     QProgressDialog progressDlg;
     progressDlg.setWindowModality( Qt::WindowModal );
@@ -180,7 +188,7 @@ Status ActionCommands::exportMovie()
             QDesktopServices::openUrl( QUrl::fromLocalFile( strMoviePath ) );
         }
     }
-
+    delete mExportMovieDialog;
     return Status::OK;
 }
 

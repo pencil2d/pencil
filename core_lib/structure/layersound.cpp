@@ -130,3 +130,9 @@ Status LayerSound::saveKeyFrame( KeyFrame*, QString path )
 
     return Status::OK;
 }
+
+SoundClip* LayerSound::getSoundClipWhichCovers( int frameNumber )
+{
+    KeyFrame* key = getKeyFrameWhichCovers( frameNumber );
+    return static_cast< SoundClip* >( key );
+}

@@ -38,6 +38,8 @@ install:
   - set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;C:\MinGW\bin
 
 before_build:
+  - echo "are changes related to source code?"
+  - ps: . $env:APPVEYOR_BUILD_FOLDER\util\checkchanges-win.ps1
   - qmake --version
   - md build
   - cd build

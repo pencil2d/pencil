@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "keyframe.h"
 #include "layer.h"
 
+class SoundClip;
 class LayerSound : public Layer
 {
     Q_OBJECT
@@ -42,6 +43,8 @@ public:
     QString getSoundFilepathAt( int ) { return ""; }
     bool isEmpty() { return true; }
     // These functions will be removed.
+
+    SoundClip* getSoundClipWhichCovers(int frameNumber);
 
 protected:
     Status saveKeyFrame( KeyFrame*, QString path ) override;

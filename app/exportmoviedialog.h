@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define EXPORTMOVIEDIALOG_H
 
 #include "importexportdialog.h"
+#include <QCheckBox>
 
 namespace Ui {
 class ExportMovieOptions;
@@ -35,7 +36,7 @@ public:
     void setCamerasInfo( std::vector< std::pair< QString, QSize > > );
     void updateResolutionCombo( int index );
 
-    void setDefaultRange( int startFrame, int endFrame );
+    void setDefaultRange( int startFrame, int endFrame, int endFrameWithSounds );
 
     QString getSelectedCameraName();
     QSize getExportSize();
@@ -44,10 +45,15 @@ public:
     int getEndFrame();
 
 protected:
-    Mode getMode();
-    FileType getFileType();
+    Mode getMode() override;
+    FileType getFileType() override;
 
 private:
+    void frameCheckboxClicked(bool checked);
+    
+    int mEndFrameWithSounds = 0;
+    int mEndFrame = 0;
+
     Ui::ExportMovieOptions* ui = nullptr;
 };
 

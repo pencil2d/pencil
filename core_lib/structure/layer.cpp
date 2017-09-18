@@ -340,7 +340,7 @@ void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, i
         QColor col;
         if ( type() == BITMAP ) col = QColor( 151, 176, 244 );
         if ( type() == VECTOR ) col = QColor( 150, 242, 150 );
-        if ( type() == SOUND ) col = QColor( 237, 147, 147 );
+        if ( type() == SOUND ) col = QColor( 237, 147, 147, 100 );
         if ( type() == CAMERA ) col = QColor( 239, 232, 148 );
 
         painter.setBrush( col );
@@ -705,11 +705,9 @@ bool Layer::moveSelectedFrames(int offset)
 
 }
 
-bool isLayerPaintable( Layer* layer )
+bool Layer::isPaintable()
 {
-    Q_ASSERT( layer != nullptr );
-
-    switch ( layer->type() )
+    switch ( type() )
     {
         case Layer::BITMAP:
         case Layer::VECTOR:

@@ -90,7 +90,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         soundLayer->addKeyFrame( frameNumber, key );
     }
 
-    if ( !key->fileName().isEmpty() )
+    if ( key->fileName().isEmpty() )
     {
         return Status::FAIL;
     }
@@ -114,6 +114,32 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     return Status::OK;
 }
 
+Status SoundManager::pasteSound( SoundClip* soundClip, QString strSoundFile)
+{
+    Q_ASSERT( soundClip );
+
+    if ( !QFile::exists( strSoundFile ) )
+    {
+        return Status::FILE_NOT_FOUND;
+    }
+
+    if ( strSoundFile.isEmpty() )
+    {
+        return Status::FAIL;
+    }
+
+    soundClip->init( strSoundFile );
+
+    Status st = createMediaPlayer( soundClip );
+    if ( !st.ok() )
+    {
+        delete soundClip;
+        return st;
+    }
+
+    return Status::OK;
+}
+
 Status SoundManager::loadSound( SoundClip* soundClip, QString strSoundFile )
 {
     Q_ASSERT( soundClip );
@@ -123,7 +149,7 @@ Status SoundManager::loadSound( SoundClip* soundClip, QString strSoundFile )
         return Status::FILE_NOT_FOUND;
     }
 
-    if ( !soundClip->fileName().isEmpty() )
+    if ( strSoundFile.isEmpty() )
     {
         return Status::FAIL;
     }

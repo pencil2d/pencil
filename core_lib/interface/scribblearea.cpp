@@ -395,19 +395,16 @@ void ScribbleArea::keyReleaseEvent( QKeyEvent *event )
 // mouse and tablet event handlers
 void ScribbleArea::wheelEvent( QWheelEvent* event )
 {
-    QPoint pixels = event->pixelDelta();
-    QPoint angle = event->angleDelta();
+    const QPoint pixels = event->pixelDelta();
+    const QPoint angle = event->angleDelta();
+    //qDebug() <<"angle"<<angle<<"pixels"<<pixels;
+    
     if ( !pixels.isNull() )
     {
         float delta = pixels.y();
-        if(delta < 0)
-        {
-            mEditor->view()->scaleDown();
-        }
-        else
-        {
-            mEditor->view()->scaleUp();
-        }
+        float currentScale = mEditor->view()->scaling();
+        float newScale = currentScale * (1.f + (delta * 0.01f));
+        mEditor->view()->scale(newScale);
     }
     else if ( !angle.isNull() )
     {
