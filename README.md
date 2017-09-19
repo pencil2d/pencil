@@ -4,6 +4,7 @@
 
 ## Download ###
 ### Nightly build
+
 Nightly builds are the bleedig edge (most up to date) versions of Pencil2D, which contains the most recent fixes and features.
 
 | Windows 32 bit   | Windows 64 bit    | Mac             | Linux             |
@@ -16,6 +17,7 @@ Nightly builds are the bleedig edge (most up to date) versions of Pencil2D, whic
 [3]: https://goo.gl/NQuJYr
 
 ### Pencil2D 0.5.4 (Deprecated)
+
 Old, unstable and no longer supported! Download it at your own risk. 
 **These versions WILL NOT work for Windows 8+ or MAC OSX releases below 10.9 (Mavericks)**
 
@@ -36,6 +38,7 @@ Old, unstable and no longer supported! Download it at your own risk.
 * Pencil2D HomePage: [http://pencil2d.github.io/](http://pencil2d.github.io/)
 * [Report Bugs, Request Features](https://github.com/pencil2d/pencil/issues)
 * You can help translate Pencil2D on [OneSky](http://osjoq5e.oneskyapp.com/collaboration)!
+* [Developer Guide](https://github.com/pencil2d/pencil/wiki)
 
 ## Source code
 
