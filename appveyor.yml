@@ -25,6 +25,12 @@ environment:
       PYTHON: "C:\\Python35"
       PLATFORM_: "amd64"
 
+skip_commits:
+  files:
+    - '*.md'
+    - docs/*
+    - util/*
+
 install:
   - set PYTHON3="%PYTHON%\python.exe"
   - set UseEnv=true
@@ -38,8 +44,6 @@ install:
   - set PATH=%PATH%;%QTDIR%;%QTDIR%\bin;C:\MinGW\bin
 
 before_build:
-  - echo "are changes related to source code?"
-  - ps: . $env:APPVEYOR_BUILD_FOLDER\util\checkchanges-win.ps1
   - qmake --version
   - md build
   - cd build

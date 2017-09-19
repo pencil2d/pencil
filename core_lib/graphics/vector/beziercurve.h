@@ -25,7 +25,8 @@ class Status;
 struct Intersection
 {
     QPointF point;
-    qreal t1, t2;
+    qreal t1 = 0.0;
+    qreal t2 = 0.0;
 };
 
 class BezierCurve
@@ -104,11 +105,11 @@ private:
     QList<QPointF> c2;
     QList<QPointF> vertex;
     QList<float> pressure; // this list has one more element than the other list (the first element is for the origin)
-    int colourNumber;
-    float width;
-    float feather;
-    bool variableWidth;
-    bool invisible;
+    int colourNumber = 0;
+    float width = 0.f;
+    float feather = 0.f;
+    bool variableWidth = 0.f;
+    bool invisible = false;
     QList<bool> selected; // this list has one more element than the other list (the first element is for the origin)
 };
 

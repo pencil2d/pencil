@@ -43,7 +43,7 @@ public:
 
     QList<VertexRef> mVertex;
     QPainterPath mPath;
-    int mColourNumber;
+    int mColourNumber = 0;
 
 private:
     bool mSelected = false;
