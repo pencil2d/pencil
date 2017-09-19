@@ -78,6 +78,7 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
 
     QPainter painter( mCanvas );
 
+    painter.setWorldMatrixEnabled(true);
     painter.setWorldTransform( mViewTransform );
     painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bAntiAlias );
     painter.setRenderHint( QPainter::Antialiasing, true );
@@ -86,8 +87,6 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     Q_UNUSED(rect);
     //painter.setClipRect( rect );
     //painter.setClipping( true );
-
-    painter.setWorldMatrixEnabled( true );
 
     paintBackground();
     paintOnionSkin( painter );
@@ -355,7 +354,7 @@ void CanvasRenderer::paintCurrentFrame( QPainter& painter )
         {
             painter.setOpacity( 1.0 );
         }
-        else if ( isCamera != true )
+        else if ( !isCamera )
         {
             painter.setOpacity( 0.8 );
         }
@@ -436,6 +435,7 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
 
+    // Find the first visiable camera layers
     for (int i = 0; i < mObject->getLayerCount(); ++i)
     {
         Layer* layer = mObject->getLayer(i);
@@ -447,35 +447,33 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
         }
     }
 
-    //qDebug() << "Draw!";
-    painter.setOpacity(1.0);
+    if (cameraLayer == nullptr) { return; }
 
     QRectF viewRect = painter.viewport();
-    //qDebug() << "Viewport=" << viewRect;
-    //qDebug() << "Window=" << painter.window();
     QRect boundingRect;
-    
     mCameraRect = cameraLayer->getViewRect();
-    //qDebug() << "CameraRect=" << mCameraRect;
 
     if (isCameraMode)
     {
         painter.setWorldMatrixEnabled(false);
         QTransform center = QTransform::fromTranslate(viewRect.width() / 2.0, viewRect.height() / 2.0);
         boundingRect = viewRect.toRect();
-        //qDebug() << "Before" << mCameraRect;
         mCameraRect = center.mapRect(mCameraRect);
-        //qDebug() << "After" << mCameraRect;
     }
     else
     {
         painter.setWorldMatrixEnabled(true);
-        boundingRect = mViewTransform.inverted().mapRect(viewRect).toRect();
-    }
-    //qDebug() << "BoudingRect:" << boundingRect;
+        QTransform viewInverse = mViewTransform.inverted();
+        boundingRect = viewInverse.mapRect(viewRect).toRect();
 
+        QTransform camTransform = cameraLayer->getViewAtFrame(mFrameNumber);
+        mCameraRect = camTransform.inverted().mapRect(mCameraRect);
+
+    }
+
+    painter.setOpacity(1.0);
     painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(0, 0, 0, 120));
+    painter.setBrush(QColor(0, 0, 0, 80));
 
     QRegion rg1(boundingRect);
     QRegion rg2(mCameraRect);
