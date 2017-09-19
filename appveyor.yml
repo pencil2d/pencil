@@ -27,7 +27,7 @@ environment:
 
 skip_commits:
   files:
-    - *.md
+    - '*.md'
     - docs/*
     - util/*
 
