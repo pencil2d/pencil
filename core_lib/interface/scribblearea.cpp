@@ -474,6 +474,16 @@ bool ScribbleArea::areLayersSane() const
     return true;
 }
 
+bool ScribbleArea::allowSmudging()
+{
+    ToolType toolType = currentTool()->type();
+    if ( toolType == SMUDGE )
+    {
+        return true;
+    }
+    return false;
+}
+
 void ScribbleArea::mousePressEvent( QMouseEvent* event )
 {
     mMouseInUse = true;
@@ -613,6 +623,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseMoveEvent( event );
+    updateCanvasCursor();
 
 #ifdef DEBUG_FPS
     // debug fps count.
@@ -691,11 +702,16 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 void ScribbleArea::paintBitmapBuffer( )
 {
     Layer* layer = mEditor->layers()->currentLayer();
+    int frameNumber = mEditor->currentFrame();
 
     // ---- checks ------
     Q_ASSERT( layer );
     if ( layer == NULL ) { return; } // TODO: remove in future.
 
+    if ( layer->getKeyFrameAt(frameNumber) == nullptr ) {
+        updateCurrentFrame();
+        return;
+    }
 
     // Clear the temporary pixel path
     BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
@@ -728,20 +744,21 @@ void ScribbleArea::paintBitmapBuffer( )
     // Clear the buffer
     mBufferImg->clear();
 
-    layer->setModified( mEditor->currentFrame(), true );
+    layer->setModified( frameNumber, true );
     emit modification();
 
-	int frameNumber = mEditor->currentFrame();
-	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
-	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+    QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+    mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
 
-    drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
+    drawCanvas( frameNumber, rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
 
 void ScribbleArea::paintBitmapBufferRect( QRect rect )
 {
-    if ( currentTool()->type() == SMUDGE || currentTool()->type() == BRUSH || mEditor->playback()->isPlaying() ) {
+    int frameNumber = mEditor->currentFrame();
+    if ( allowSmudging() || mEditor->playback()->isPlaying() )
+    {
         Layer* layer = mEditor->layers()->currentLayer();
 
         // ---- checks ------
@@ -750,6 +767,7 @@ void ScribbleArea::paintBitmapBufferRect( QRect rect )
 
         BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
         // Clear the temporary pixel path
+
         if ( targetImage != NULL )
         {
             QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
@@ -772,19 +790,16 @@ void ScribbleArea::paintBitmapBufferRect( QRect rect )
             targetImage->paste( mBufferImg, cm );
         }
 
-        //qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
-
         // Clear the buffer
         mBufferImg->clear();
 
-        layer->setModified( mEditor->currentFrame(), true );
+        layer->setModified( frameNumber, true );
         emit modification();
 
-        int frameNumber = mEditor->currentFrame();
         QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
         mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
 
-        drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
+        drawCanvas( frameNumber, rect.adjusted( -1, -1, 1, 1 ) );
         update( rect );
     }
 }
@@ -824,31 +839,26 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
 void ScribbleArea::paintCanvasCursor( QPainter& painter )
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    QPoint center(0, 0);
     QTransform view = mEditor->view()->getView();
     QPoint mousePos = currentTool()->getCurrentPoint().toPoint();
-    QPoint transformedPos = view.map( mousePos );
-    QPixmap transCursorImg = mCursorImg.transformed(view);
+    transformedCursorPos = view.map( mousePos );
     int centerCal = mCursorImg.width() / 2;
-    center.setX( centerCal );
-    center.setY( centerCal );
+    mCursorCenterPos.setX( centerCal );
+    mCursorCenterPos.setY( centerCal );
     if ( layer->type() == Layer::VECTOR )
     {
         painter.setTransform( view );
     }
-    painter.drawPixmap( QPoint( mousePos.x() - center.x(),
-                                mousePos.y() - center.y() ),
+
+    painter.drawPixmap( QPoint( mousePos.x() - mCursorCenterPos.x(),
+                                mousePos.y() - mCursorCenterPos.y() ),
                                 mCursorImg );
 
     // update center of transformed img for rect only
-    centerCal = transCursorImg.width() / 2;
-    center.setX( centerCal );
-    center.setY( centerCal );
-
-    // clear and update cursor rect
-    update( transCursorImg.rect().adjusted( -3, -3, 3, 3 )
-            .translated( transformedPos.x() - center.x(),
-                         transformedPos.y() - center.y() ) );
+    mTransCursImg = mCursorImg.transformed(view);
+    centerCal = mTransCursImg.width() / 2;
+    mCursorCenterPos.setX( centerCal );
+    mCursorCenterPos.setY( centerCal );
 }
 
 void ScribbleArea::updateCanvasCursor()
@@ -865,6 +875,12 @@ void ScribbleArea::updateCanvasCursor()
         // if above does not comply, delocate image
         mCursorImg = QPixmap();
     }
+
+    // update cursor rect
+    QPoint translatedPos = QPoint(transformedCursorPos.x() - mCursorCenterPos.x(),
+                                  transformedCursorPos.y() - mCursorCenterPos.y() );
+    update( mTransCursImg.rect().adjusted( -1, -1, 1, 1 )
+            .translated( translatedPos ));
 }
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
@@ -1107,6 +1123,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
+
     mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame, rect );
 
     return;

@@ -75,6 +75,7 @@ public:
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;
+    bool allowSmudging();
 
     void flipSelection(bool flipVertical);
 
@@ -183,6 +184,7 @@ public:
     BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
 
     QPixmap mCursorImg;
+    QPixmap mTransCursImg;
 
 private:
     void drawCanvas( int frame, QRect rect );
@@ -226,6 +228,9 @@ private:
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
+    QPoint mCursorCenterPos;
+    int mCursorWidth;
+    QPoint transformedCursorPos;
 
     //instant tool (temporal eg. eraser)
     bool instantTool = false; //whether or not using temporal tool
