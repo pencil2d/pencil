@@ -1114,12 +1114,9 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
 void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal mOffset )
 {
-    if (mOffset < 0) {
-        mOffset = 0;
-    }
-    if (mOffset > 100) {
-        mOffset = 100;
-    }
+    if (mOffset < 0) { mOffset = 0; }
+    if (mOffset > 100) { mOffset = 100; }
+
     int r = colour.red();
     int g = colour.green();
     int b = colour.blue();
@@ -1128,7 +1125,6 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     int mainColorAlpha = qRound( a * 255 * opacity );
 
     // the more feather (offset), the more softness (opacity)
-    //
     int alphaAdded = qRound((mainColorAlpha * mOffset) / 100);
 
     gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );

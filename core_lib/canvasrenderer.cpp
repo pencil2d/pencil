@@ -212,8 +212,8 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
         return;
     }
 
-    BitmapImage* tempBitmapImage = new BitmapImage;
-    tempBitmapImage->paste(bitmapImage);
+    BitmapImage tempBitmapImage;
+    tempBitmapImage.paste(bitmapImage);
 
     if ( colorize )
     {
@@ -228,31 +228,23 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
             colorBrush = QBrush(Qt::blue);
         }
 
-        tempBitmapImage->drawRect(  bitmapImage->bounds(),
-                                    Qt::NoPen,
-                                    colorBrush,
-                                    QPainter::CompositionMode_SourceIn,
-                                    false);
+        tempBitmapImage.drawRect(bitmapImage->bounds(),
+                                 Qt::NoPen,
+                                 colorBrush,
+                                 QPainter::CompositionMode_SourceIn,
+                                 false);
     }
 
     // If the current frame on the current layer has a transformation, we apply it.
-    //
     if (mRenderTransform && nFrame == mFrameNumber && layerId == mCurrentLayerIndex )
     {
-        tempBitmapImage->clear(mSelection);
+        tempBitmapImage.clear(mSelection);
         paintTransformedSelection(painter);
     }
 
     painter.setWorldMatrixEnabled( true );
 
-    if (mRenderTransform && nFrame)
-    {
-        painter.setOpacity( bitmapLayer->getOpacity() );
-    }
-
-    tempBitmapImage->paintImage( painter );
-
-    delete tempBitmapImage;
+    tempBitmapImage.paintImage( painter );
 }
 
 void CanvasRenderer::paintVectorFrame( QPainter& painter,
