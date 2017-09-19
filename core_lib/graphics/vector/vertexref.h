@@ -27,8 +27,9 @@ public:
     VertexRef prevVertex();
     bool operator==(VertexRef vertexRef1);
     bool operator!=(VertexRef vertexRef1);
-    int curveNumber;
-    int vertexNumber;
+
+    int curveNumber = -1;
+    int vertexNumber = -1;
 };
 
 #endif
