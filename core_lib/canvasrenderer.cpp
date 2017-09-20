@@ -80,7 +80,6 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     QPainter painter( mCanvas );
 
     painter.setWorldTransform( mViewTransform );
-    painter.setRenderHint( QPainter::SmoothPixmapTransform, mOptions.bAntiAlias );
     painter.setRenderHint( QPainter::Antialiasing, true );
 
     // Don't set clip rect, paint whole canvas. `rect` therefore unused.
