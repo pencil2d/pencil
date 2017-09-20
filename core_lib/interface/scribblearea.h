@@ -172,7 +172,7 @@ public:
 
     void paintBitmapBuffer();
     void paintBitmapBufferRect( QRect rect );
-    void paintCanvasCursor( QPainter& painter );
+    void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
     void refreshBitmap( const QRectF& rect, int rad );
     void refreshVector( const QRectF& rect, int rad );
@@ -230,7 +230,7 @@ private:
     QPointF mOffset;
     QPoint mCursorCenterPos;
     int mCursorWidth;
-    QPoint transformedCursorPos;
+    QPointF transformedCursorPos;
 
     //instant tool (temporal eg. eraser)
     bool instantTool = false; //whether or not using temporal tool
