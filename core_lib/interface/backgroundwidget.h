@@ -30,8 +30,6 @@ public:
 
     void init(PreferenceManager* prefs);
 
-signals:
-
 public slots:
 
 protected:
