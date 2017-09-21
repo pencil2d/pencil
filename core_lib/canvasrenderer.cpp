@@ -394,9 +394,6 @@ void CanvasRenderer::paintGrid( QPainter& painter )
     QRectF rect = painter.viewport();
     QRectF boundingRect = mViewTransform.inverted().mapRect( rect );
 
-    //qDebug() << mViewTransform;
-    //qDebug() << mViewTransform.inverted();
-
     int left = round100( boundingRect.left(), gridSize ) - gridSize;
     int right = round100( boundingRect.right(), gridSize ) + gridSize;
     int top = round100( boundingRect.top(), gridSize ) - gridSize;

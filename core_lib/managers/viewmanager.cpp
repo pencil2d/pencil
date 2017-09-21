@@ -94,17 +94,14 @@ void ViewManager::updateViewTransforms()
     {
         int frame = editor()->currentFrame();
         mCurrentCamera = mCameraLayer->getCameraAtFrame(frame);
-        qDebug() << "frame:" << frame;
         if (mCurrentCamera)
         {
             mCurrentCamera->updateViewTransform();
             mView = mCurrentCamera->getView();
-            qDebug() << "dx=" << mView.dx();
         }
         else
         {
             mView = mCameraLayer->getViewAtFrame(frame);
-            qDebug() << "dx=" << mView.dx();
         }
     }
     else
@@ -123,7 +120,6 @@ void ViewManager::updateViewTransforms()
 
     mViewCanvas = mView * f * mCentre;
     mViewCanvasInverse = mViewCanvas.inverted();
-    qDebug() << "viewCanvas=" << mViewCanvas.dx();
 }
 
 QPointF ViewManager::translation()

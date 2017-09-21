@@ -883,8 +883,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             
 			mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
 			//qDebug() << "Repaint canvas!";
-
-            qDebug() << "draw dx=" << mEditor->view()->getView().dx();
         }
     }
 
