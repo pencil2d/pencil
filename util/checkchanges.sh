@@ -4,7 +4,18 @@ set -e
 
 git remote set-branches --add origin master
 git fetch
-CHANGED_FILES=`git diff --name-only origin/master...${TRAVIS_COMMIT}`
+
+commit=$TRAVIS_COMMIT
+branch=$TRAVIS_BRANCH
+CHANGED_FILES=`git diff --name-only origin/master...${commit}`
+
+if [[ $branch == "master" ]]; then
+  CHANGED_FILES=`git diff --name-only HEAD^ HEAD`
+fi
+
+echo "check against: $CHANGED_FILES"
+echo "branch is: $branch"
+
 ONLY_READMES=True
 MD=".md"
 YAML=".yml"
