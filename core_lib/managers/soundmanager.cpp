@@ -78,7 +78,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         return Status::ERROR_INVALID_FRAME_NUMBER;
     }
 
-    if ( !QFile::exists( strSoundFile ) )
+    if (!QFile::exists(strSoundFile))
     {
         return Status::FILE_NOT_FOUND;
     }
@@ -90,8 +90,10 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
         soundLayer->addKeyFrame( frameNumber, key );
     }
 
-    if ( key->fileName().isEmpty() )
+    if (!key->fileName().isEmpty())
     {
+        // file path should be empty.
+        // we can only load a audio clip to an empty key! 
         return Status::FAIL;
     }
 
@@ -114,7 +116,7 @@ Status SoundManager::loadSound( Layer* soundLayer, int frameNumber, QString strS
     return Status::OK;
 }
 
-Status SoundManager::pasteSound( SoundClip* soundClip, QString strSoundFile)
+Status SoundManager::pasteSound(SoundClip* soundClip, QString strSoundFile)
 {
     Q_ASSERT( soundClip );
 
