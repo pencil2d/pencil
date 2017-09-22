@@ -299,6 +299,7 @@ void ActionCommands::removeKey()
         {
             case Layer::BITMAP:
             case Layer::VECTOR:
+            case Layer::SOUND:
             case Layer::CAMERA:
                 layer->addNewEmptyKeyAt( 1 );
                 break;
