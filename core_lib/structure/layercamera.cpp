@@ -102,7 +102,7 @@ void CameraPropertiesDialog::setHeight(int height)
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     mName = QString(tr("Camera Layer"));
-    viewRect = QRect(QPoint(-320, -240), QSize(640, 480));
+    viewRect = QRect(QPoint(-400, -300), QSize(800, 600));
     dialog = NULL;
 }
 
@@ -150,11 +150,11 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
 		return camera1->view;
 	}
 
-    int frame1 = camera1->pos();
-    int frame2 = camera2->pos();
+    double frame1 = camera1->pos();
+    double frame2 = camera2->pos();
     
     // linear interpolation
-    qreal c2 = ( frameNumber - frame1 + 0.0 ) / ( frame2 - frame1 );
+    qreal c2 = ( frameNumber - frame1) / ( frame2 - frame1 );
     qreal c1 = 1.0 - c2;
 
     auto interpolation = [=]( double f1, double f2 ) -> double
@@ -169,6 +169,55 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
                        interpolation( camera1->view.dx(),  camera2->view.dx() ),
                        interpolation( camera1->view.dy(),  camera2->view.dy() ) );
    
+}
+
+void LayerCamera::LinearInterpolateTransform(Camera* cam)
+{
+    Q_ASSERT(keyFrameCount() > 0);
+    
+    int frameNumber = cam->pos();
+    Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
+
+    int nextFrame = getNextKeyFramePosition(frameNumber);
+    Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+
+    if (camera1 == NULL && camera2 == NULL)
+    {
+        return; // do nothing
+    }
+    else if (camera1 == NULL && camera2 != NULL)
+    {
+        return cam->assign(*camera2);
+    }
+    else if (camera2 == NULL && camera1 != NULL)
+    {
+        return cam->assign(*camera1);
+    }
+
+    if (camera1 == camera2)
+    {
+        return cam->assign(*camera1);
+    }
+
+    double frame1 = camera1->pos();
+    double frame2 = camera2->pos();
+
+    // linear interpolation
+    double c2 = (frameNumber - frame1) / (frame2 - frame1);
+
+    auto lerp = [](double f1, double f2, double ratio) -> double
+    {
+        return f1 * (1.0 - ratio) + f2 * ratio;
+    };
+
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), c2);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), c2);
+    double r = lerp(camera1->rotation(), camera2->rotation(), c2);
+    double s = lerp(camera1->scaling(), camera2->scaling(), c2);
+
+    cam->translate(dx, dy);
+    cam->rotate(r);
+    cam->scale(s);
 }
 
 QRect LayerCamera::getViewRect()

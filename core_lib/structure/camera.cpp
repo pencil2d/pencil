@@ -33,6 +33,14 @@ Camera::~Camera()
 {
 }
 
+void Camera::assign(const Camera& rhs)
+{
+    mTranslate = rhs.mTranslate;
+    mRotate = rhs.mRotate;
+    mScale = rhs.mScale;
+    updateViewTransform();
+}
+
 QTransform Camera::getView()
 {
     if (mNeedUpdateView)
@@ -72,6 +80,11 @@ void Camera::translate(float dx, float dy)
     mTranslate.setY(dy);
 
     mNeedUpdateView = true;
+}
+
+void Camera::translate(const QPointF pt)
+{
+    translate(pt.x(), pt.y());
 }
 
 void Camera::rotate(float degree)

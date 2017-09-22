@@ -31,8 +31,10 @@ public:
     QTransform getView();
     void reset();
     void updateViewTransform();
+    void assign(const Camera& rhs);
 
     void translate(float dx, float dy);
+    void translate(const QPointF);
     QPointF translation() { return mTranslate; }
 
     void rotate(float degree);

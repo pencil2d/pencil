@@ -60,6 +60,7 @@ public:
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber);
+    void LinearInterpolateTransform(Camera*);
 
     QRect getViewRect();
     QSize getViewSize();

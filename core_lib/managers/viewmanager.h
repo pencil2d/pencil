@@ -74,9 +74,9 @@ public:
 
     void onCurrentFrameChanged();
 
-private:
     void updateViewTransforms();
 
+private:
     QTransform mView;
     QTransform mViewInverse;
     QTransform mViewCanvas;
