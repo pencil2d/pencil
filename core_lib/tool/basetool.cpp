@@ -122,8 +122,9 @@ QPixmap BaseTool::canvasCursor() // Todo: only one instance required: make fn st
 {
         Q_ASSERT( mEditor->getScribbleArea() );
 
-        propWidth = properties.width;
-        propFeather = properties.feather;
+        float scalingFac = mEditor->view()->scaling();
+        propWidth = properties.width * scalingFac;
+        propFeather = properties.feather * scalingFac;
         cursorWidth = propWidth + 0.5 * propFeather;
 
         if ( cursorWidth < 1 ) { cursorWidth = 1; }
@@ -138,7 +139,7 @@ QPixmap BaseTool::canvasCursor() // Todo: only one instance required: make fn st
             cursorPixmap.fill( QColor( 255, 255, 255, 0 ) );
             QPainter cursorPainter( &cursorPixmap );
             cursorPen = cursorPainter.pen();
-            cursorPainter.translate(-1,-1); // cursor is slightly offset
+            cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
             // Draw cross in center
             cursorPen.setStyle( Qt::SolidLine );
@@ -180,8 +181,9 @@ QPixmap BaseTool::quickSizeCursor() // Todo: only one instance required: make fn
 {
     Q_ASSERT( mEditor->getScribbleArea() );
 
-    propWidth = properties.width;
-    propFeather = properties.feather;
+    float scalingFac = mEditor->view()->scaling();
+    propWidth = properties.width * scalingFac;
+    propFeather = properties.feather * scalingFac;
     cursorWidth = propWidth + 0.5 * propFeather;
 
     if ( cursorWidth < 1 ) { cursorWidth = 1; }

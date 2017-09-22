@@ -25,7 +25,7 @@ foreach ($CHANGED_FILE in $CHANGED_FILES) {
   break
 }
 
-if ( $script:ONLY_READMES -eq $true ) {
+if ( $Global:ONLY_READMES -eq $true ) {
   Write-Host "Only non source code files found, exiting."
   $host.setshouldexit(1)
 } else {
