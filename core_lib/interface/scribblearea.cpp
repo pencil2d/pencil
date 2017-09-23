@@ -83,7 +83,7 @@ bool ScribbleArea::init()
     mOffset.setY( 0 );
     selectionTransformation.reset();
 
-    tol = 7.0;
+    selectionTolerance = 20.0;
 
     setMouseTracking( true ); // reacts to mouse move events, even if the button is not pressed
 
@@ -949,11 +949,11 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                             myCurve.transform( selectionTransformation );
                         }
                         QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
-                        mBufferImg->drawPath( mEditor->view()->mapCanvasToScreen( path ),
-                                              pen2,
-                                              colour,
-                                              QPainter::CompositionMode_SourceOver,
-                                              mPrefs->isOn( SETTING::ANTIALIAS ) );
+//                        mBufferImg->drawPath( mEditor->view()->mapCanvasToScreen( path ),
+//                                              pen2,
+//                                              colour,
+//                                              QPainter::CompositionMode_SourceOver,
+//                                              mPrefs->isOn( SETTING::ANTIALIAS ) );
                     }
                     break;
                 }

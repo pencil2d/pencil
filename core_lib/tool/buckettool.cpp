@@ -89,10 +89,16 @@ void BucketTool::mousePressEvent( QMouseEvent *event )
     startStroke();
 }
 
+/**
+ * @brief BucketTool::getCurve
+ * @param layer
+ * This function gets the most recent vector curve
+ */
 void BucketTool::getCurve(Layer* layer)
 {
     vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-    mScribbleArea->mClosestCurves = vectorImage->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
+    mScribbleArea->mClosestCurves = vectorImage->getCurvesCloseTo( getCurrentPoint(),
+                                                                   mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
     QList<int> closestCurve = mScribbleArea->mClosestCurves;
 
     if ( closestCurve.size() > 0 ) {
@@ -122,6 +128,7 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 void BucketTool::mouseMoveEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
+    getCurve( layer );
     if ( layer->type() == Layer::BITMAP) {
         Q_UNUSED( event );
     }
@@ -130,7 +137,6 @@ void BucketTool::mouseMoveEvent( QMouseEvent *event )
             drawStroke();
             qDebug() << "DrawStroke" << event->pos() ;
         }
-        getCurve( layer );
     }
 
     Q_UNUSED( event );
@@ -163,6 +169,7 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
     mScribbleArea->clearBitmapBuffer();
     VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
+    // TODO: does this work? what does removeArea do?
     if( event->modifiers() == Qt::AltModifier ) {
         vectorImage->removeArea( getLastPoint() );
     } else {
@@ -174,7 +181,7 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
 
             // TODO: only fill when selected
             if (vectorImage->isSelected(mScribbleArea->mClosestCurves)) {
-                vectorImage->fillPath(path, mEditor->color()->frontColorNumber(), 10.0 / mEditor->view()->scaling());
+                vectorImage->fillPath(path, mEditor->color()->frontColorNumber(), mScribbleArea->selectionTolerance / mEditor->view()->scaling());
             }
 //        } else {
 //            vectorImage->fillPath( path,
@@ -204,15 +211,13 @@ void BucketTool::drawStroke()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if( layer->type() == Layer::BITMAP ) {
-        // No stroke in Bitmap layer
-    }
-    else if( layer->type() == Layer::VECTOR ) {
+
+    if( layer->type() == Layer::VECTOR ) {
         mCurrentWidth = 10;
         int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
-        QColor pathColor = mEditor->color()->frontColor();
-        pathColor.setAlpha(50);
+        QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
+//        pathColor.setAlpha(255);
 
         QPen pen( pathColor,
                   mCurrentWidth * mEditor->view()->scaling(),

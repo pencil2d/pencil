@@ -226,7 +226,8 @@ void MoveTool::onHoverOutlineStroke(Layer* layer)
 {
     auto layerVector = static_cast< LayerVector* >( layer );
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-    mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
+    mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(),
+                                                               mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
 }
 
 void MoveTool::mouseReleaseEvent( QMouseEvent* )
@@ -243,7 +244,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
         return;
     }
 
-    if ( layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR )
+    if ( !mScribbleArea->isLayerPaintable() )
     {
         return;
     }

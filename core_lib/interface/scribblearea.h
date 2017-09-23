@@ -213,7 +213,7 @@ private:
     QPointF mLastPoint;
     QPointF mCurrentPoint;
 
-    qreal tol;
+    qreal selectionTolerance;
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;

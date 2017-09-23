@@ -1109,13 +1109,13 @@ VertexRef VectorImage::getClosestVertexTo(QPointF P1, qreal maxDistance)
 {
     VertexRef result;
     result = VertexRef(-1, -1);  // result = [-1, -1]
+
     //qreal distance = image.width()*image.width(); // initial big value
     qreal distance = 400.0*400.0; // initial big value
     for(int j=0; j<m_curves.size(); j++)
     {
         for(int k=-1; k<m_curves.at(j).getVertexSize(); k++)
         {
-            //QPointF P2 = selectionTransformation.map( getVertex(j, k) );
             QPointF P2 = getVertex(j, k);
             qreal distance2 = (P1.x()-P2.x())*(P1.x()-P2.x()) + (P1.y()-P2.y())*(P1.y()-P2.y());
             if ( distance2 < distance  && distance2 < maxDistance*maxDistance)
@@ -1196,11 +1196,15 @@ QList<VertexRef> VectorImage::getAndRemoveVerticesCloseTo(VertexRef P1Ref, qreal
 
 QPointF VectorImage::getVertex(int curveNumber, int vertexNumber)
 {
-    QPointF result = QPointF(11.11, 11.11); // bogus point
+    QPointF result = QPointF(0,0);
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
-        if ( myCurve.isPartlySelected() ) myCurve = myCurve.transformed(mSelectionTransformation);
+        if ( myCurve.isPartlySelected() )
+        {
+            myCurve = myCurve.transformed(mSelectionTransformation);
+        }
+
         if ( vertexNumber > -2 && vertexNumber < myCurve.getVertexSize())
         {
             result = myCurve.getVertex(vertexNumber);
@@ -1216,7 +1220,7 @@ QPointF VectorImage::getVertex(VertexRef vertexRef)
 
 QPointF VectorImage::getC1(int curveNumber, int vertexNumber)
 {
-    QPointF result = QPointF(11.11, 11.11); // bogus point
+    QPointF result = QPointF(0,0);
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
@@ -1236,7 +1240,7 @@ QPointF VectorImage::getC1(VertexRef vertexRef)
 
 QPointF VectorImage::getC2(int curveNumber, int vertexNumber)
 {
-    QPointF result = QPointF(11.11, 11.11); // bogus point
+    QPointF result = QPointF(0, 0);
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
         BezierCurve myCurve = m_curves.at(curveNumber);
