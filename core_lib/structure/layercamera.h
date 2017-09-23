@@ -51,7 +51,7 @@ public:
     LayerCamera(Object* object);
     ~LayerCamera();
 
-    void loadImageAtFrame(int, QTransform);
+    void loadImageAtFrame(int frame, float dx, float dy, float rotate, float scale);
     
     void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) override;
@@ -60,6 +60,7 @@ public:
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
     QTransform getViewAtFrame(int frameNumber);
+    void LinearInterpolateTransform(Camera*);
 
     QRect getViewRect();
     QSize getViewSize();
@@ -68,7 +69,7 @@ protected:
     Status saveKeyFrame( KeyFrame*, QString path ) override;
 
     QRect viewRect;
-    CameraPropertiesDialog* dialog;
+    CameraPropertiesDialog* dialog = nullptr;
 };
 
 #endif

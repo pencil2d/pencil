@@ -32,6 +32,13 @@ private slots: // test cases
 
     void testTranslateAndRotate();
 
+    void testResetView();
+
+    void testEmptyCameraLayer();
+    void testCameraLayerWithTwoKeys();
+    void testSetCameraLayerAndRemoveIt();
+    void testTwoCamerasInterpolation();
+
 private:
     Editor* mEditor = nullptr;
 };

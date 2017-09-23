@@ -23,7 +23,6 @@ GNU General Public License for more details.
 LayerBitmap::LayerBitmap( Object* object ) : Layer( object, Layer::BITMAP )
 {
     mName = QString( tr( "Bitmap Layer" ) );
-    mOpacity = 1.0;
 }
 
 LayerBitmap::~LayerBitmap()

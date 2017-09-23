@@ -70,8 +70,8 @@ Editor::Editor( QObject* parent ) : QObject( parent )
 {
 	mBackupIndex = -1;
 	clipboardBitmapOk = false;
-        clipboardVectorOk = false;
-        clipboardSoundClipOk = false;
+    clipboardVectorOk = false;
+    clipboardSoundClipOk = false;
 }
 
 Editor::~Editor()
@@ -783,16 +783,7 @@ bool Editor::importVectorImage( QString filePath )
         importedVectorImage.selectAll();
         vectorImage->paste(importedVectorImage);
     }
-    /*
-    else
-    {
-    QMessageBox::warning( mMainWindow,
-    tr( "Warning" ),
-    tr( "Unable to load vector image.<br><b>TIP:</b> Use Vector layer to import vectors." ),
-    QMessageBox::Ok,
-    QMessageBox::Ok );
-    }
-    */
+
     return ok;
 }
 
@@ -800,19 +791,19 @@ bool Editor::importImage( QString filePath )
 {
 	Layer* layer = layers()->currentLayer();
 
-	switch ( layer->type() )
-	{
-            case Layer::BITMAP:
-                return importBitmapImage( filePath );
+    switch ( layer->type() )
+    {
+        case Layer::BITMAP:
+            return importBitmapImage( filePath );
 
-            case Layer::VECTOR:
-                return importVectorImage( filePath );
+        case Layer::VECTOR:
+            return importVectorImage( filePath );
 
-            default:
-            {
-                //mLastError = Status::ERROR_INVALID_LAYER_TYPE;
-                return false;
-            }
+        default:
+        {
+            //mLastError = Status::ERROR_INVALID_LAYER_TYPE;
+            return false;
+        }
 	}
 }
 
@@ -872,8 +863,8 @@ void Editor::moveFrameForward()
     {
         if ( layer->moveKeyFrameForward( currentFrame() ) )
         {
-                mScribbleArea->updateAllFrames();
-                scrubForward();
+            mScribbleArea->updateAllFrames();
+            scrubForward();
         }
     }
 }
@@ -955,8 +946,7 @@ KeyFrame* Editor::addKeyFrame( int layerNumber, int frameIndex )
 
     if ( isOK )
     {
-    scrubTo( frameIndex ); // currentFrameChanged() emit inside.
-    //getScribbleArea()->updateCurrentFrame();
+        scrubTo( frameIndex ); // currentFrameChanged() emit inside.
     }
 
     return keyFrame;

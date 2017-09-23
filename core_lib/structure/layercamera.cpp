@@ -102,7 +102,7 @@ void CameraPropertiesDialog::setHeight(int height)
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
     mName = QString(tr("Camera Layer"));
-    viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
+    viewRect = QRect(QPoint(-400, -300), QSize(800, 600));
     dialog = NULL;
 }
 
@@ -150,13 +150,12 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
 		return camera1->view;
 	}
 
-    int frame1 = camera1->pos();
-    int frame2 = camera2->pos();
+    double frame1 = camera1->pos();
+    double frame2 = camera2->pos();
     
     // linear interpolation
-    qreal c2 = ( frameNumber - frame1 + 0.0 ) / ( frame2 - frame1 );
+    qreal c2 = ( frameNumber - frame1) / ( frame2 - frame1 );
     qreal c1 = 1.0 - c2;
-    //qDebug() << ">> -- " << c1 << c2;
 
     auto interpolation = [=]( double f1, double f2 ) -> double
     {
@@ -172,26 +171,74 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
    
 }
 
+void LayerCamera::LinearInterpolateTransform(Camera* cam)
+{
+    Q_ASSERT(keyFrameCount() > 0);
+    
+    int frameNumber = cam->pos();
+    Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
+
+    int nextFrame = getNextKeyFramePosition(frameNumber);
+    Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+
+    if (camera1 == NULL && camera2 == NULL)
+    {
+        return; // do nothing
+    }
+    else if (camera1 == NULL && camera2 != NULL)
+    {
+        return cam->assign(*camera2);
+    }
+    else if (camera2 == NULL && camera1 != NULL)
+    {
+        return cam->assign(*camera1);
+    }
+
+    if (camera1 == camera2)
+    {
+        return cam->assign(*camera1);
+    }
+
+    double frame1 = camera1->pos();
+    double frame2 = camera2->pos();
+
+    // linear interpolation
+    double c2 = (frameNumber - frame1) / (frame2 - frame1);
+
+    auto lerp = [](double f1, double f2, double ratio) -> double
+    {
+        return f1 * (1.0 - ratio) + f2 * ratio;
+    };
+
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), c2);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), c2);
+    double r = lerp(camera1->rotation(), camera2->rotation(), c2);
+    double s = lerp(camera1->scaling(), camera2->scaling(), c2);
+
+    cam->translate(dx, dy);
+    cam->rotate(r);
+    cam->scale(s);
+}
+
 QRect LayerCamera::getViewRect()
 {
     return viewRect;
 }
-
 
 QSize LayerCamera::getViewSize()
 {
     return viewRect.size();
 }
 
-void LayerCamera::loadImageAtFrame( int frameNumber, QTransform view )
+void LayerCamera::loadImageAtFrame( int frameNumber, float dx, float dy, float rotate, float scale)
 {
     if ( keyExists( frameNumber ) )
     {
         removeKeyFrame( frameNumber );
     }
-    //Camera* camera = new Camera( view );
-    //camera->setPos( frameNumber );
-    //addKeyFrame( frameNumber, camera );
+    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
+    camera->setPos( frameNumber );
+    loadKey(camera);
 }
 
 
@@ -238,12 +285,10 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
         QDomElement keyTag = doc.createElement("camera");
         keyTag.setAttribute( "frame", camera->pos() );
 
-        keyTag.setAttribute( "m11", camera->view.m11() );
-        keyTag.setAttribute( "m12", camera->view.m12() );
-        keyTag.setAttribute( "m21", camera->view.m21() );
-        keyTag.setAttribute( "m22", camera->view.m22() );
-        keyTag.setAttribute( "dx",  camera->view.dx() );
-        keyTag.setAttribute( "dy",  camera->view.dy() );
+        keyTag.setAttribute( "r", camera->rotation() );
+        keyTag.setAttribute( "s", camera->scaling() );
+        keyTag.setAttribute( "dx",  camera->translation().x() );
+        keyTag.setAttribute( "dy",  camera->translation().y() );
         layerTag.appendChild( keyTag );
     } );
     
@@ -271,14 +316,12 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
             {
                 int frame = imageElement.attribute("frame").toInt();
 
-                qreal m11 = imageElement.attribute("m11").toDouble();
-                qreal m12 = imageElement.attribute("m12").toDouble();
-                qreal m21 = imageElement.attribute("m21").toDouble();
-                qreal m22 = imageElement.attribute("m22").toDouble();
-                qreal dx = imageElement.attribute("dx").toDouble();
-                qreal dy = imageElement.attribute("dy").toDouble();
+                qreal rotate = imageElement.attribute("r", "0").toDouble();
+                qreal scale = imageElement.attribute("s", "1").toDouble();
+                qreal dx = imageElement.attribute("dx", "0").toDouble();
+                qreal dy = imageElement.attribute("dy", "0").toDouble();
 
-                loadImageAtFrame( frame, QTransform( m11, m12, m21, m22, dx, dy ) );
+                loadImageAtFrame( frame, dx, dy, rotate, scale );
             }
         }
         imageTag = imageTag.nextSibling();

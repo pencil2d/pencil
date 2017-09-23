@@ -22,7 +22,7 @@ Camera::Camera()
 
 Camera::Camera(QPointF translation, float rotation, float scaling)
 {
-    //view = viewMatrix;
+    Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
@@ -33,25 +33,88 @@ Camera::~Camera()
 {
 }
 
-void Camera::setViewTransform(QPointF translation, float rotation, float scaling)
+void Camera::assign(const Camera& rhs)
 {
-    mTranslate = translation;
-    mRotate = rotation;
-    mScale = scaling;
+    mTranslate = rhs.mTranslate;
+    mRotate = rhs.mRotate;
+    mScale = rhs.mScale;
     updateViewTransform();
+}
+
+QTransform Camera::getView()
+{
+    if (mNeedUpdateView)
+        updateViewTransform();
+    return view;
+}
+
+void Camera::reset()
+{
+    mTranslate = QPointF(0, 0);
+    mRotate = 0.f;
+    mScale = 1.f;
+    mNeedUpdateView = true;
 }
 
 void Camera::updateViewTransform()
 {
-    QTransform t;
-    t.translate(mTranslate.x(), mTranslate.y());
+    if (mNeedUpdateView)
+    {
+        QTransform t;
+        t.translate(mTranslate.x(), mTranslate.y());
 
-    QTransform r;
-    r.rotate(mRotate);
+        QTransform r;
+        r.rotate(mRotate);
 
-    QTransform s;
-    s.scale(mScale, mScale);
+        QTransform s;
+        s.scale(mScale, mScale);
 
-    view = t * s * r;
+        view = t * r * s;
+    }
+    mNeedUpdateView = false;
 }
 
+void Camera::translate(float dx, float dy)
+{
+    mTranslate.setX(dx);
+    mTranslate.setY(dy);
+
+    mNeedUpdateView = true;
+}
+
+void Camera::translate(const QPointF pt)
+{
+    translate(pt.x(), pt.y());
+}
+
+void Camera::rotate(float degree)
+{
+    mRotate = degree;
+    if (mRotate > 360.f)
+    {
+        mRotate = mRotate - 360.f;
+    }
+    else if (mRotate < 0.f)
+    {
+        mRotate = mRotate + 360.f;
+    }
+    mRotate = degree;
+
+    mNeedUpdateView = true;
+}
+
+void Camera::scale(float scaleValue)
+{
+    mScale = scaleValue;
+
+    mNeedUpdateView = true;
+}
+
+bool Camera::operator==(const Camera& rhs) const
+{
+    bool b = (mTranslate == rhs.mTranslate)
+        && qFuzzyCompare(mRotate, rhs.mRotate)
+        && qFuzzyCompare(mScale, rhs.mScale);
+
+    return b;
+}

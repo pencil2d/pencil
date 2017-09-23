@@ -21,6 +21,10 @@ GNU General Public License for more details.
 #include <QTransform>
 #include "basemanager.h"
 
+class Layer;
+class LayerCamera;
+class Camera;
+
 
 class ViewManager : public BaseManager
 {
@@ -45,14 +49,14 @@ public:
     QPainterPath mapCanvasToScreen( const QPainterPath& path );
     QPainterPath mapScreenToCanvas( const QPainterPath& path );
 
-    QPointF translation() { return mTranslate; }
+    QPointF translation();
     void translate( float dx, float dy );
     void translate( QPointF offset );
 
-    float rotation() { return mRotate; }
+    float rotation();
     void rotate( float degree );
 
-    float scaling() { return mScale; }
+    float scaling();
     void scale( float scaleValue );
     void scaleUp();
     void scaleDown();
@@ -63,27 +67,31 @@ public:
     bool isFlipHorizontal() { return mIsFlipHorizontal; }
     bool isFlipVertical() { return mIsFlipVertical; }
 
-    void setCanvasSize( QSize size );
+    void setCanvasSize(QSize size);
+    void setCameraLayer(Layer* layer);
 
     Q_SIGNAL void viewChanged();
 
-private:
+    void onCurrentFrameChanged();
+
     void updateViewTransforms();
 
+private:
     QTransform mView;
     QTransform mViewInverse;
     QTransform mViewCanvas;
     QTransform mViewCanvasInverse;
     QTransform mCentre;
 
-    QPointF mTranslate;
-    float mRotate = 0.f;
-    float mScale = 1.f;
+    Camera* mDefaultEditorCamera = nullptr;
+    Camera* mCurrentCamera = nullptr;
 
     QSize mCanvasSize = { 1, 1 };
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+
+    LayerCamera* mCameraLayer = nullptr;
 };
 
 #endif // VIEWMANAGER_H

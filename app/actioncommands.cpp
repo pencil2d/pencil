@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
+#include "camera.h"
 
 #include "movieexporter.h"
 #include "filedialogex.h"
@@ -272,11 +273,11 @@ void ActionCommands::addNewKey()
 {
     KeyFrame* key = mEditor->addNewKey();
 
-    SoundClip* clip = dynamic_cast< SoundClip* >( key );
+    SoundClip* clip = dynamic_cast<SoundClip*>(key);
     if ( clip )
     {
         FileDialog fileDialog( mParent );
-        QString strSoundFile = fileDialog.openFile( FileType::SOUND );
+        QString strSoundFile = fileDialog.openFile(FileType::SOUND);
 
         if ( strSoundFile.isEmpty() )
         {
@@ -285,6 +286,16 @@ void ActionCommands::addNewKey()
         }
         Status st = mEditor->sound()->loadSound( clip, strSoundFile );
         Q_ASSERT( st.ok() );
+    }
+
+    Camera* cam = dynamic_cast<Camera*>(key);
+    if (cam)
+    {
+        auto camLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+        Q_ASSERT(camLayer);
+
+        camLayer->LinearInterpolateTransform(cam);
+        mEditor->view()->updateViewTransforms();
     }
 }
 

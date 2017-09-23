@@ -28,20 +28,30 @@ public:
     Camera(QPointF translation, float rotation, float scaling);
     ~Camera();
 
-    void setViewTransform(QPointF translation, float rotation, float scaling);
+    QTransform getView();
+    void reset();
+    void updateViewTransform();
+    void assign(const Camera& rhs);
 
+    void translate(float dx, float dy);
+    void translate(const QPointF);
     QPointF translation() { return mTranslate; }
+
+    void rotate(float degree);
     float rotation() { return mRotate; }
+
+    void scale(float scaleValue);
     float scaling() { return mScale; }
 
     QTransform view;
 
-private:
-    void updateViewTransform();
+    bool operator==(const Camera& rhs) const;
 
+private:
     QPointF mTranslate;
     float mRotate = 0.f;
     float mScale = 1.f;
+    bool mNeedUpdateView = true;
 };
 
 #endif // CAMERA_H

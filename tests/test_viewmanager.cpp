@@ -1,6 +1,9 @@
 #include "test_viewmanager.h"
 #include "viewmanager.h"
 #include "object.h"
+#include "camera.h"
+#include "layercamera.h"
+
 
 TestViewManager::TestViewManager()
 {
@@ -160,3 +163,78 @@ void TestViewManager::testTranslateAndRotate()
     // (11, 1) => rotate 90 deg => (-1, 11)
     QCOMPARE(v.mapCanvasToScreen(QPointF(1, 1)), QPointF(-1, 11));
 }
+
+void TestViewManager::testResetView()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    v.translate(15, 25);
+    v.scale(3.25);
+    v.resetView();
+
+    QCOMPARE(v.mapCanvasToScreen(QPointF(10, 10)), QPointF(10, 10));
+    QCOMPARE(v.mapScreenToCanvas(QPointF(99, 10)), QPointF(99, 10));
+}
+
+void TestViewManager::testEmptyCameraLayer()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
+    QVERIFY(layerCam != nullptr);
+
+    auto k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
+    k->translate(100, 0);
+
+    v.setCameraLayer(layerCam);
+
+    QCOMPARE(k->getView(), v.getView());
+    QCOMPARE(v.translation(), QPointF(100, 0));
+}
+
+void TestViewManager::testCameraLayerWithTwoKeys()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
+    layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1));
+
+    v.setCameraLayer(layerCam);
+
+    mEditor->scrubTo(10);
+
+    QTransform t = v.getView();
+    QCOMPARE(t.dx(), 100.0);
+    QCOMPARE(v.mapCanvasToScreen(QPointF(1, 5)), QPointF(101, 5));
+}
+
+void TestViewManager::testSetCameraLayerAndRemoveIt()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+    v.translate(0, 100);
+
+    // set a camera layer and then remove it
+    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
+    auto k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
+    k->translate(100, 0);
+
+    v.setCameraLayer(layerCam);
+    v.setCameraLayer(nullptr);
+
+    QCOMPARE(v.translation(), QPointF(0, 100));
+}
+
+void TestViewManager::testTwoCamerasInterpolation()
+{
+
+}
+
