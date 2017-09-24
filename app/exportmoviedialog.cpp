@@ -26,7 +26,6 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
     ui->setupUi(getOptionsGroupBox());
     init();
     setWindowTitle(tr("Export Movie"));
-    ui->rangeGroupBox->hide();
 }
 
 ExportMovieDialog::~ExportMovieDialog()
@@ -63,10 +62,18 @@ void ExportMovieDialog::updateResolutionCombo( int index )
     ui->heightSpinBox->setValue( camSize.height() );
 }
 
-void ExportMovieDialog::setDefaultRange( int startFrame, int endFrame )
+void ExportMovieDialog::setDefaultRange(int startFrame, int endFrame, int endFrameWithSounds)
 {
-    ui->startSpinbox->setValue( startFrame );
+    mEndFrame = endFrame;
+    mEndFrameWithSounds = endFrameWithSounds;
+
+    SignalBlocker b1( ui->startSpinBox );
+    SignalBlocker b2( ui->endSpinBox );
+
+    ui->startSpinBox->setValue( startFrame );
     ui->endSpinBox->setValue( endFrame );
+
+    connect(ui->frameCheckBox, &QCheckBox::clicked, this, &ExportMovieDialog::frameCheckboxClicked);
 }
 
 QString ExportMovieDialog::getSelectedCameraName()
@@ -81,7 +88,7 @@ QSize ExportMovieDialog::getExportSize()
 
 int ExportMovieDialog::getStartFrame()
 {
-    return ui->startSpinbox->value();
+    return ui->startSpinBox->value();
 }
 
 int ExportMovieDialog::getEndFrame()
@@ -97,4 +104,10 @@ ImportExportDialog::Mode ExportMovieDialog::getMode()
 FileType ExportMovieDialog::getFileType()
 {
     return FileType::MOVIE;
+}
+
+void ExportMovieDialog::frameCheckboxClicked(bool checked)
+{
+    int e = (checked) ? mEndFrameWithSounds : mEndFrame;
+    ui->endSpinBox->setValue(e);
 }

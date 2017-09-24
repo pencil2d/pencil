@@ -31,15 +31,14 @@ class StrokeTool : public BaseTool
     Q_OBJECT
 
 public:
-    explicit StrokeTool(QObject *parent = 0);
+    explicit StrokeTool(QObject* parent = 0);
     
     void startStroke();
     void drawStroke();
     void endStroke();
 
-    bool keyPressEvent(QKeyEvent *event) override;
-
-    bool keyReleaseEvent(QKeyEvent *event) override;
+    bool keyPressEvent(QKeyEvent* event) override;
+    bool keyReleaseEvent(QKeyEvent* event) override;
 
 protected:
     bool mFirstDraw = false;
@@ -47,8 +46,8 @@ protected:
     QList<QPointF> mStrokePoints;
     QList<qreal> mStrokePressures;
 
-    qreal mCurrentWidth;
-    qreal mCurrentPressure;
+    qreal mCurrentWidth    = 0.0;
+    qreal mCurrentPressure = 0.5;
 
 private:
 	QPointF mLastPixel = { 0, 0 };

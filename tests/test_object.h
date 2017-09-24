@@ -7,6 +7,7 @@ class Object;
 class TestObject : public QObject
 {
     Q_OBJECT
+
 public:
     TestObject();
 

@@ -47,13 +47,13 @@ public:
     int getLayerY(int layerNumber);
     int getFrameNumber(int x);
     int getFrameX(int frameNumber);
-    int getMouseMoveY() { return mouseMoveY; }
-    int getOffsetX() { return m_offsetX; }
-    int getOffsetY() { return m_offsetY; }
-    int getLayerHeight() { return layerHeight; }
-    int getFrameLength() {return frameLength;}
-    int getFrameSize() { return frameSize; }
-    void clearCache() { if ( m_pCache ) delete m_pCache; m_pCache = new QPixmap( size() ); }
+    int getMouseMoveY() { return mMouseMoveY; }
+    int getOffsetX() { return mOffsetX; }
+    int getOffsetY() { return mOffsetY; }
+    int getLayerHeight() { return mLayerHeight; }
+    int getFrameLength() {return mFrameLength;}
+    int getFrameSize() { return mFrameSize; }
+    void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
 
 Q_SIGNALS:
     void mouseMovedY(int);
@@ -85,33 +85,38 @@ private:
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
 
-    TIMELINE_CELL_TYPE m_eType;
+    TIMELINE_CELL_TYPE mType;
 
-    QPixmap* m_pCache;
-    bool drawFrameNumber;
-    bool shortScrub;
-    int frameLength;
-    int frameSize;
-    int fontSize;
-    bool scrubbing;
-    int layerHeight;
-    const static int m_offsetX = 0;
-    const static int m_offsetY = 20;
-    int startY, endY, startLayerNumber;
-    int startFrameNumber;
-    int lastFrameNumber = -1;
-    int mouseMoveY, mouseMoveX;
-    int frameOffset, layerOffset;
+    QPixmap* mCache = nullptr;
+    bool mDrawFrameNumber = true;
+    bool mbShortScrub = false;
+    int mFrameLength = 1;
+    int mFrameSize = 0;
+    int mFontSize = 10;
+    bool mScrubbing = false;
+    int mLayerHeight = 20;
+    int mStartY = 0;
+    int mEndY   = 0;
+
+    int mStartLayerNumber = -1;
+    int mStartFrameNumber = 0;
+    int mLastFrameNumber = -1;
+    int mMouseMoveY = 0;
+    int mMouseMoveX = 0;
+    int mFrameOffset = 0;
+    int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
 
-    bool canMoveFrame   = false;
-    bool movingFrames   = false;
+    bool mCanMoveFrame   = false;
+    bool mMovingFrames   = false;
 
-    bool canBoxSelect   = false;
-    bool boxSelecting   = false;
+    bool mCanBoxSelect   = false;
+    bool mBoxSelecting   = false;
 
-    bool clickSelecting = false;
+    bool mClickSelecting = false;
 
+    const static int mOffsetX = 0;
+    const static int mOffsetY = 20;
 };
 
 #endif // TIMELINECELLS_H

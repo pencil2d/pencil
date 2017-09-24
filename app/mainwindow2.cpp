@@ -26,13 +26,9 @@ GNU General Public License for more details.
 #include <QList>
 #include <QMenu>
 #include <QFile>
-#include <QScopedPointer>
 #include <QMessageBox>
 #include <QProgressDialog>
-#include <QDesktopWidget>
 #include <QDesktopServices>
-#include <QGraphicsDropShadowEffect>
-#include <QStatusBar>
 #include <QFileIconProvider>
 
 #include "pencildef.h"
@@ -260,8 +256,8 @@ void MainWindow2::createMenus()
     connect( ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy );
     connect( ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste );
     connect( ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame );
-    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipX );
-    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipY );
+    connect( ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX );
+    connect( ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY );
     connect( ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll );
     connect( ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll );
     connect( ui->actionPreference, &QAction::triggered, [=] { preferences(); } );
@@ -513,7 +509,6 @@ bool MainWindow2::openObject( QString strFilePath )
     {
         progress.setValue( (int)( f * 100.f ) );
         QApplication::processEvents( QEventLoop::ExcludeUserInputEvents );
-
     } );
 
     Object* object = fm.load( strFilePath );
@@ -851,6 +846,7 @@ void MainWindow2::preferences()
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
+        mScribbleArea->updateCanvasCursor();
     } );
 
     mPrefDialog->show();
@@ -934,6 +930,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionDeselect_All->setShortcut( cmdKeySeq( CMD_DESELECT_ALL ) );
     ui->actionPreference->setShortcut( cmdKeySeq( CMD_PREFERENCE ) );
 
+    // View menu
     ui->actionReset_Windows->setShortcut( cmdKeySeq( CMD_RESET_WINDOWS ) );
     ui->actionReset_View->setShortcut( cmdKeySeq( CMD_RESET_ZOOM_ROTATE ) );
     ui->actionZoom_In->setShortcut( cmdKeySeq( CMD_ZOOM_IN ) );
@@ -1085,7 +1082,8 @@ void MainWindow2::helpBox()
 
 void MainWindow2::makeConnections( Editor* editor )
 {
-    connect( editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState );
+    connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
 }
 
 void MainWindow2::makeConnections( Editor* editor, ColorBox* colorBox )
@@ -1203,5 +1201,19 @@ void MainWindow2::changePlayState( bool isPlaying )
     {
         ui->actionPlay->setText(tr("Play"));
         ui->actionPlay->setIcon(mStartIcon);
+    }
+    update();
+}
+
+void MainWindow2::currentLayerChanged()
+{
+    Layer* currLayer = mEditor->layers()->currentLayer();
+    if (currLayer->type() == Layer::CAMERA)
+    {
+        mEditor->view()->setCameraLayer(currLayer);
+    }
+    else
+    {
+        mEditor->view()->setCameraLayer(nullptr);
     }
 }

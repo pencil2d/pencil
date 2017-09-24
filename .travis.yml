@@ -10,10 +10,17 @@ language: cpp
 compiler: g++
 sudo: required
 dist: trusty
+group: deprecated-2017Q3
 osx_sdk: macosx10.12
 os:
   - linux
   - osx
+
+env:
+  global:
+    - DOXYFILE: $TRAVIS_BUILD_DIR/util/Doxyfile-Travis
+    - GH_REPO_REF: github.com/pencil2d/pencil-docs.git
+    - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
 python:
  - "3.4"
@@ -34,6 +41,11 @@ addons:
     - qt59xmlpatterns
     - bsdtar
     - ffmpeg
+    - doxygen
+    - doxygen-doc
+    - doxygen-latex
+    - doxygen-gui
+    - graphviz
 
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -54,6 +66,8 @@ install:
   - pip -V
 
 before_script:
+  - echo "are changes related to source code?"
+  - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
@@ -123,6 +137,12 @@ after_success:
     fi;
     echo "Operation done";
   fi'
+
+  # Deploy doxygen documentation to github pages
+  - 'if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_OS_NAME" == "linux" ]; then
+      cd "$TRAVIS_BUILD_DIR/util";
+      ./documentation-deploy.sh;
+    fi'
 
 after_script:
   - cd "$TRAVIS_BUILD_DIR/build"

@@ -25,6 +25,12 @@ environment:
       PYTHON: "C:\\Python35"
       PLATFORM_: "amd64"
 
+skip_commits:
+  files:
+    - '*.md'
+    - docs/*
+    - util/*
+
 install:
   - set PYTHON3="%PYTHON%\python.exe"
   - set UseEnv=true

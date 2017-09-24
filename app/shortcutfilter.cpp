@@ -25,7 +25,7 @@ ShortcutFilter::ShortcutFilter(ScribbleArea* _mScribbleArea , QObject *parent) :
 
 bool ShortcutFilter::eventFilter(QObject *obj, QEvent* event)
 {
-    if (mScribbleArea->isMouseInUse() )
+    if (mScribbleArea->isMouseInUse())
     {
         return true;
     }

@@ -122,6 +122,7 @@ public:
     virtual void editProperties();
 
     void setUpdated();
+    bool isPaintable();
 
 protected:
     void setId( int LayerId ) { mId = LayerId; }
@@ -140,7 +141,5 @@ private:
     QList<int> mSelectedFrames_byLast; // Used to hadle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
 };
-
-bool isLayerPaintable( Layer* );
 
 #endif

@@ -66,9 +66,9 @@ Object* FileManager::load( QString strFileName )
         strDataFolder  = QDir( obj->workingDir() ).filePath( PFF_DATA_DIR );
     }
 
-    qDebug() << "XML=" << strMainXMLFile;
-    qDebug() << "Data Folder=" << strDataFolder;
-    qDebug() << "Working Folder=" << obj->workingDir();
+    qDebug() << "  XML=" << strMainXMLFile;
+    qDebug() << "  Data Folder=" << strDataFolder;
+    qDebug() << "  Working Folder=" << obj->workingDir();
 
     obj->setDataDir( strDataFolder );
     obj->setMainXMLFile( strMainXMLFile );
@@ -79,10 +79,10 @@ Object* FileManager::load( QString strFileName )
         return cleanUpWithErrorCode( Status::ERROR_FILE_CANNOT_OPEN );
     }
 
-    qCDebug( mLog ) << "Checking main XML file...";
     QDomDocument xmlDoc;
     if ( !xmlDoc.setContent( &file ) )
     {
+        qCDebug(mLog) << "Couldn't open the main XML file.";
         return cleanUpWithErrorCode( Status::ERROR_INVALID_XML_FILE );
     }
 
@@ -99,8 +99,6 @@ Object* FileManager::load( QString strFileName )
     }
     
     // Create object.
-    qCDebug( mLog ) << "Start to load object..";
-
     loadPalette( obj );
 
     bool ok = true;
@@ -144,11 +142,13 @@ bool FileManager::loadObject( Object* object, const QDomElement& root )
 
         if ( element.tagName() == "object" )
         {
-            qCDebug( mLog ) << "Load object";
 			isOK = object->loadXML( element, [this] ( float f )
 			{
 				emit progressUpdated( f );
 			} );
+
+            if (!isOK) qCDebug(mLog) << "Failed to Load object";
+
         }
         else if ( element.tagName() == "editor" || element.tagName() == "projectdata" )
         {

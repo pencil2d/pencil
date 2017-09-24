@@ -52,7 +52,7 @@ mLog( "ScribbleArea" )
 
 ScribbleArea::~ScribbleArea()
 {
-	delete mBufferImg;
+        delete mBufferImg;
 }
 
 bool ScribbleArea::init()
@@ -82,8 +82,8 @@ bool ScribbleArea::init()
     mOffset.setX( 0 );
     mOffset.setY( 0 );
     selectionTransformation.reset();
-
     selectionTolerance = 20.0;
+    updateCanvasCursor();
 
     setMouseTracking( true ); // reacts to mouse move events, even if the button is not pressed
 
@@ -93,8 +93,8 @@ bool ScribbleArea::init()
 
     QPixmapCache::setCacheLimit( 100 * 1024 ); // unit is kb, so it's 100MB cache
 
-	int nLength = mEditor->layers()->projectLength();
-	mPixmapCacheKeys.resize( std::max( nLength, 240 ) );
+        int nLength = mEditor->layers()->projectLength();
+        mPixmapCacheKeys.resize( std::max( nLength, 240 ) );
 
     mNeedUpdateAll = false;
 
@@ -141,6 +141,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
 void ScribbleArea::updateToolCursor()
 {
     setCursor( currentTool()->cursor() );
+    updateCanvasCursor();
     updateAllFrames();
 }
 
@@ -169,13 +170,13 @@ void ScribbleArea::updateFrame( int frame )
     int frameNumber = mEditor->layers()->LastFrameAtFrame( frame );
 
     Q_ASSERT( frame >= 0 );
-	if ( mPixmapCacheKeys.size() <= static_cast< unsigned >( frame ) )
-	{
-		mPixmapCacheKeys.resize( frame + 10 ); // a buffer
-	}
+        if ( mPixmapCacheKeys.size() <= static_cast< unsigned >( frame ) )
+        {
+                mPixmapCacheKeys.resize( frame + 10 ); // a buffer
+        }
 
-	QPixmapCache::remove( mPixmapCacheKeys[ frameNumber ] );
-	mPixmapCacheKeys[ frameNumber] = QPixmapCache::Key();
+        QPixmapCache::remove( mPixmapCacheKeys[ frameNumber ] );
+        mPixmapCacheKeys[ frameNumber] = QPixmapCache::Key();
 
     update();
 }
@@ -183,7 +184,7 @@ void ScribbleArea::updateFrame( int frame )
 void ScribbleArea::updateAllFrames()
 {
     QPixmapCache::clear();
-	std::fill( mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key() );
+        std::fill( mPixmapCacheKeys.begin(), mPixmapCacheKeys.end(), QPixmapCache::Key() );
 
     update();
     mNeedUpdateAll = false;
@@ -241,11 +242,6 @@ void ScribbleArea::setModified( int layerNumber, int frameNumber )
 /************************************************************************/
 /* key event handlers                                                   */
 /************************************************************************/
-
-void ScribbleArea::escape()
-{
-    deselectAll();
-}
 
 void ScribbleArea::keyPressEvent( QKeyEvent *event )
 {
@@ -349,7 +345,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
         case Qt::Key_Escape:
             if ( somethingSelected )
             {
-                escape();
+                deselectAll();
                 applyTransformedSelection();
             }
             break;
@@ -357,6 +353,7 @@ void ScribbleArea::keyPressEvent( QKeyEvent *event )
             if ( somethingSelected )
             {
                 deleteSelection();
+                deselectAll();
             }
             break;
         case Qt::Key_Space:
@@ -396,19 +393,16 @@ void ScribbleArea::keyReleaseEvent( QKeyEvent *event )
 // mouse and tablet event handlers
 void ScribbleArea::wheelEvent( QWheelEvent* event )
 {
-    QPoint pixels = event->pixelDelta();
-    QPoint angle = event->angleDelta();
+    const QPoint pixels = event->pixelDelta();
+    const QPoint angle = event->angleDelta();
+    //qDebug() <<"angle"<<angle<<"pixels"<<pixels;
+
     if ( !pixels.isNull() )
     {
         float delta = pixels.y();
-        if(delta < 0)
-        {
-            mEditor->view()->scaleDown();
-        }
-        else
-        {
-            mEditor->view()->scaleUp();
-        }
+        float currentScale = mEditor->view()->scaling();
+        float newScale = currentScale * (1.f + (delta * 0.01f));
+        mEditor->view()->scale(newScale);
     }
     else if ( !angle.isNull() )
     {
@@ -422,7 +416,7 @@ void ScribbleArea::wheelEvent( QWheelEvent* event )
             mEditor->view()->scaleUp();
         }
     }
-
+    updateCanvasCursor();
     event->accept();
 }
 
@@ -479,6 +473,16 @@ bool ScribbleArea::areLayersSane() const
     return true;
 }
 
+bool ScribbleArea::allowSmudging()
+{
+    ToolType toolType = currentTool()->type();
+    if ( toolType == SMUDGE )
+    {
+        return true;
+    }
+    return false;
+}
+
 void ScribbleArea::mousePressEvent( QMouseEvent* event )
 {
     mMouseInUse = true;
@@ -524,8 +528,8 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
         if ( ( event->modifiers() == ( Qt::ShiftModifier | Qt::AltModifier ) ) && ( currentTool()->properties.width > -1 ) )
         {
             //adjust width if not locked
-            currentTool()->startAdjusting( WIDTH, 0 );
-            return;
+            //currentTool()->startAdjusting( WIDTH, 0 );
+            //return;
         }
         if ( ( event->modifiers() == ( Qt::ControlModifier | Qt::AltModifier ) ) && ( currentTool()->properties.feather > -1 ) )
         {
@@ -575,6 +579,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
 
     if ( event->button() == Qt::RightButton )
     {
+        mMouseRightButtonInUse = true;
         getTool( HAND )->mousePressEvent( event );
         return;
     }
@@ -605,6 +610,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
             ToolPropertyType tool_type;
             tool_type = event->modifiers() & Qt::ControlModifier ? FEATHER : WIDTH;
             currentTool()->adjustCursor( mOffset.x(), tool_type ); //updates cursors given org width or feather and x
+            updateCanvasCursor();
             return;
         }
     }
@@ -616,6 +622,7 @@ void ScribbleArea::mouseMoveEvent( QMouseEvent *event )
     }
 
     currentTool()->mouseMoveEvent( event );
+    updateCanvasCursor();
 
 #ifdef DEBUG_FPS
     // debug fps count.
@@ -653,6 +660,7 @@ void ScribbleArea::mouseReleaseEvent( QMouseEvent *event )
     if ( event->button() == Qt::RightButton )
     {
         getTool( HAND )->mouseReleaseEvent( event );
+        mMouseRightButtonInUse = false;
         return;
     }
 
@@ -693,11 +701,16 @@ void ScribbleArea::resizeEvent( QResizeEvent *event )
 void ScribbleArea::paintBitmapBuffer( )
 {
     Layer* layer = mEditor->layers()->currentLayer();
+    int frameNumber = mEditor->currentFrame();
 
     // ---- checks ------
     Q_ASSERT( layer );
     if ( layer == NULL ) { return; } // TODO: remove in future.
 
+    if ( layer->getKeyFrameAt(frameNumber) == nullptr ) {
+        updateCurrentFrame();
+        return;
+    }
 
     // Clear the temporary pixel path
     BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
@@ -723,70 +736,71 @@ void ScribbleArea::paintBitmapBuffer( )
         targetImage->paste( mBufferImg, cm );
     }
 
-    qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
+    //qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
 
     QRect rect = mEditor->view()->getView().mapRect( mBufferImg->bounds() );
 
     // Clear the buffer
     mBufferImg->clear();
 
-    layer->setModified( mEditor->currentFrame(), true );
+    layer->setModified( frameNumber, true );
     emit modification();
 
-	int frameNumber = mEditor->currentFrame();
-	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
-	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+    QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+    mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
 
-    drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
+    drawCanvas( frameNumber, rect.adjusted( -1, -1, 1, 1 ) );
     update( rect );
 }
 
 void ScribbleArea::paintBitmapBufferRect( QRect rect )
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    // ---- checks ------
-    Q_ASSERT( layer );
-    if ( layer == NULL ) { return; } // TODO: remove in future.
-
-    BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
-    // Clear the temporary pixel path
-    if ( targetImage != NULL )
-    {
-        QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
-        switch ( currentTool()->type() )
-        {
-            case ERASER:
-                cm = QPainter::CompositionMode_DestinationOut;
-                break;
-            case BRUSH:
-            case PEN:
-            case PENCIL:
-                if ( getTool( currentTool()->type() )->properties.preserveAlpha )
-                {
-                    cm = QPainter::CompositionMode_SourceAtop;
-                }
-                break;
-            default: //nothing
-                break;
-        }
-        targetImage->paste( mBufferImg, cm );
-    }
-
-    qCDebug( mLog ) << "Paste Rect" << mBufferImg->bounds();
-
-    // Clear the buffer
-    mBufferImg->clear();
-
-    layer->setModified( mEditor->currentFrame(), true );
-    emit modification();
-
     int frameNumber = mEditor->currentFrame();
-	QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
-	mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+    if ( allowSmudging() || mEditor->playback()->isPlaying() )
+    {
+        Layer* layer = mEditor->layers()->currentLayer();
 
-    drawCanvas( mEditor->currentFrame(), rect.adjusted( -1, -1, 1, 1 ) );
-    update( rect );
+        // ---- checks ------
+        Q_ASSERT( layer );
+        if ( layer == NULL ) { return; } // TODO: remove in future.
+
+        BitmapImage *targetImage = ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 );
+        // Clear the temporary pixel path
+
+        if ( targetImage != NULL )
+        {
+            QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
+            switch ( currentTool()->type() )
+            {
+                case ERASER:
+                    cm = QPainter::CompositionMode_DestinationOut;
+                    break;
+                case BRUSH:
+                case PEN:
+                case PENCIL:
+                    if ( getTool( currentTool()->type() )->properties.preserveAlpha )
+                    {
+                        cm = QPainter::CompositionMode_SourceAtop;
+                    }
+                    break;
+                default: //nothing
+                    break;
+            }
+            targetImage->paste( mBufferImg, cm );
+        }
+
+        // Clear the buffer
+        mBufferImg->clear();
+
+        layer->setModified( frameNumber, true );
+        emit modification();
+
+        QPixmapCache::remove( mPixmapCacheKeys[frameNumber] );
+        mPixmapCacheKeys[frameNumber] = QPixmapCache::Key();
+
+        drawCanvas( frameNumber, rect.adjusted( -1, -1, 1, 1 ) );
+        update( rect );
+    }
 }
 
 void ScribbleArea::clearBitmapBuffer()
@@ -816,28 +830,77 @@ void ScribbleArea::refreshVector( const QRectF& rect, int rad )
     //QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
     update( rect.normalized().adjusted( -rad, -rad, +rad, +rad ).toRect() );
 
-	//qDebug() << "Logical:  " << rect;
-	//qDebug() << "Physical: " << mEditor->view()->mapCanvasToScreen( rect.normalized() );
+        //qDebug() << "Logical:  " << rect;
+        //qDebug() << "Physical: " << mEditor->view()->mapCanvasToScreen( rect.normalized() );
     //update();
+}
+
+void ScribbleArea::paintCanvasCursor( QPainter& painter )
+{
+    QTransform view = mEditor->view()->getView();
+    QPointF mousePos = currentTool()->getCurrentPoint();
+    int centerCal = mCursorImg.width() / 2;
+
+    transformedCursorPos = view.map(mousePos);
+
+    // reset matrix
+    view.reset();
+
+    painter.setTransform(view);
+    mCursorCenterPos.setX( centerCal );
+    mCursorCenterPos.setY( centerCal );
+
+    painter.drawPixmap( QPoint( transformedCursorPos.x() - mCursorCenterPos.x(),
+                                transformedCursorPos.y() - mCursorCenterPos.y() ),
+                                mCursorImg );
+
+    // update center of transformed img for rect only
+    mTransCursImg = mCursorImg.transformed(view);
+
+    mCursorCenterPos.setX( centerCal );
+    mCursorCenterPos.setY( centerCal );
+}
+
+void ScribbleArea::updateCanvasCursor()
+{
+    if ( currentTool()->isAdjusting )
+    {
+        mCursorImg = currentTool()->quickSizeCursor();
+    }
+    else if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
+    {
+        mCursorImg = currentTool()->canvasCursor();
+    } else
+    {
+        // if above does not comply, delocate image
+        mCursorImg = QPixmap();
+    }
+
+    // update cursor rect
+    QPoint translatedPos = QPoint(transformedCursorPos.x() - mCursorCenterPos.x(),
+                                  transformedCursorPos.y() - mCursorCenterPos.y() );
+
+    update( mTransCursImg.rect().adjusted( -1, -1, 1, 1 )
+        .translated( translatedPos ));
+
 }
 
 void ScribbleArea::paintEvent( QPaintEvent* event )
 {
-    if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND )
+    if ( !mMouseInUse || currentTool()->type() == MOVE || currentTool()->type() == HAND || mMouseRightButtonInUse)
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
         int curIndex = mEditor->currentFrame();
         int frameNumber = mEditor->layers()->LastFrameAtFrame( curIndex );
 
-		QPixmapCache::Key cachedKey = mPixmapCacheKeys[frameNumber];
+                QPixmapCache::Key cachedKey = mPixmapCacheKeys[frameNumber];
 
         if ( !QPixmapCache::find( cachedKey, &mCanvas ) )
         {
             drawCanvas( mEditor->currentFrame(), event->rect() );
-            
-			mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
-            
-			//qDebug() << "Repaint canvas!";
+
+                        mPixmapCacheKeys[frameNumber] = QPixmapCache::insert( mCanvas );
+                        //qDebug() << "Repaint canvas!";
         }
     }
 
@@ -856,8 +919,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
 
     // paints the canvas
     painter.setWorldMatrixEnabled( false );
-    //painter.setTransform( transMatrix ); // FIXME: drag canvas by hand
-
     painter.drawPixmap( QPoint( 0, 0 ), mCanvas );
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -978,8 +1039,14 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
             {
                 painter.setWorldMatrixEnabled( false );
             }
+
+            // TODO: move to above if vector statement
             mBufferImg->paintImage( painter );
+
+            paintCanvasCursor( painter );
         }
+
+        mCanvasRenderer.renderGrid(painter);
 
         // paints the selection outline
         if ( somethingSelected && ( myTempTransformedSelection.isValid() || mMoveMode == ROTATION ) ) // @revise
@@ -1056,6 +1123,7 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
     mCanvasRenderer.setCanvas( &mCanvas );
     mCanvasRenderer.setViewTransform( mEditor->view()->getView() );
+
     mCanvasRenderer.paint( object, mEditor->layers()->currentLayerIndex(), frame, rect );
 
     return;
@@ -1063,12 +1131,9 @@ void ScribbleArea::drawCanvas( int frame, QRect rect )
 
 void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal mOffset )
 {
-    if (mOffset < 0) {
-        mOffset = 0;
-    }
-    if (mOffset > 100) {
-        mOffset = 100;
-    }
+    if (mOffset < 0) { mOffset = 0; }
+    if (mOffset > 100) { mOffset = 100; }
+
     int r = colour.red();
     int g = colour.green();
     int b = colour.blue();
@@ -1077,7 +1142,6 @@ void ScribbleArea::setGaussianGradient( QGradient &gradient, QColor colour, qrea
     int mainColorAlpha = qRound( a * 255 * opacity );
 
     // the more feather (offset), the more softness (opacity)
-    //
     int alphaAdded = qRound((mainColorAlpha * mOffset) / 100);
 
     gradient.setColorAt( 0.0, QColor( r, g, b, mainColorAlpha - alphaAdded ) );
@@ -1102,21 +1166,50 @@ void ScribbleArea::drawBrush( QPointF thePoint, qreal brushWidth, qreal mOffset,
 {
     QRectF rectangle( thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth );
 
-    BitmapImage tempBitmapImage;
+    BitmapImage gradientImg;
     if (usingFeather==true)
     {
         QRadialGradient radialGrad( thePoint, 0.5 * brushWidth );
         setGaussianGradient( radialGrad, fillColour, opacity, mOffset );
 
-        tempBitmapImage.drawEllipse( rectangle, Qt::NoPen, radialGrad,
-                                   QPainter::CompositionMode_Source, false );
+        gradientImg.drawEllipse( rectangle, Qt::NoPen, radialGrad,
+                                   QPainter::CompositionMode_SourceOver, false );
     }
     else
     {
         mBufferImg->drawEllipse( rectangle, Qt::NoPen, QBrush(fillColour, Qt::SolidPattern),
-                                   QPainter::CompositionMode_Source, useAA );
+                                   QPainter::CompositionMode_SourceOver, useAA );
     }
-    mBufferImg->paste( &tempBitmapImage );
+    mBufferImg->paste( &gradientImg );
+}
+
+/**
+ * @brief ScribbleArea::flipSelection
+ * flip selection along the X or Y axis
+*/
+void ScribbleArea::flipSelection(bool flipVertical)
+{
+    int scaleX = myTempTransformedSelection.width() / mySelection.width();
+    int scaleY = myTempTransformedSelection.height() / mySelection.height();
+    QVector<QPoint> centerPoints = calcSelectionCenterPoints();
+
+    QTransform translate = QTransform::fromTranslate( centerPoints[0].x(), centerPoints[0].y() );
+    QTransform _translate = QTransform::fromTranslate( -centerPoints[1].x(), -centerPoints[1].y() );
+    QTransform scale = QTransform::fromScale( -scaleX, scaleY );
+
+    if (flipVertical == true)
+    {
+       scale = QTransform::fromScale( scaleX, -scaleY );
+    }
+
+    // reset transformation for vector selections
+    selectionTransformation.reset();
+    selectionTransformation *= _translate *
+                                scale *
+                                translate;
+
+    paintTransformedSelection();
+    applyTransformedSelection();
 }
 
 void ScribbleArea::blurBrush( BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_ )
@@ -1216,7 +1309,6 @@ QTransform ScribbleArea::getView()
     if ( layer->type() == Layer::CAMERA )
     {
         return ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
-        //qDebug() << "viewCamera" << ( ( LayerCamera * )layer )->getViewAtFrame( mEditor->currentFrame() );
     }
     else
     {
@@ -1265,13 +1357,33 @@ void ScribbleArea::calculateSelectionRect()
     }
 }
 
+/**
+ * @brief ScribbleArea::calculateSelectionCenter
+ * @return QPoint of tempTransformSelection center at [0] and selection center at [1]
+ */
+QVector<QPoint> ScribbleArea::calcSelectionCenterPoints()
+{
+    QVector<QPoint> centerPoints;
+    float selectionCenterX,
+          selectionCenterY,
+          tempSelectionCenterX,
+          tempSelectionCenterY;
+
+    tempSelectionCenterX = 0.5 * ( myTempTransformedSelection.left() +
+                                   myTempTransformedSelection.right() );
+    tempSelectionCenterY = 0.5 * ( myTempTransformedSelection.top() +
+                                   myTempTransformedSelection.bottom() );
+    selectionCenterX = 0.5 * ( mySelection.left() + mySelection.right() );
+    selectionCenterY = 0.5 * ( mySelection.top() + mySelection.bottom() );
+    centerPoints.append( QPoint( tempSelectionCenterX, tempSelectionCenterY ) );
+    centerPoints.append( QPoint( selectionCenterX, selectionCenterY ) );
+    return centerPoints;
+}
+
 void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
 {
-    qreal c1x, c1y, c2x, c2y, scaleX, scaleY;
-    c1x = 0.5 * ( myTempTransformedSelection.left() + myTempTransformedSelection.right() );
-    c1y = 0.5 * ( myTempTransformedSelection.top() + myTempTransformedSelection.bottom() );
-    c2x = 0.5 * ( mySelection.left() + mySelection.right() );
-    c2y = 0.5 * ( mySelection.top() + mySelection.bottom() );
+    float scaleX, scaleY;
+    QVector<QPoint> centerPoints = calcSelectionCenterPoints();
 
     if ( mySelection.width() == 0 )
     {
@@ -1292,12 +1404,13 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     }
 
     selectionTransformation.reset();
-    selectionTransformation.translate( c1x, c1y );
+
+    selectionTransformation.translate( centerPoints[0].x(), centerPoints[0].y() );
     selectionTransformation.rotate(myRotatedAngle);
     selectionTransformation.scale( scaleX, scaleY );
-    selectionTransformation.translate( -c2x, -c2y );
+    selectionTransformation.translate( -centerPoints[1].x(), -centerPoints[1].y() );
 
-    //modification();
+//    modification();
 }
 
 
@@ -1360,7 +1473,6 @@ void ScribbleArea::applyTransformedSelection()
         }
 
         setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
-        deselectAll();
     }
 
     updateCurrentFrame();
@@ -1470,12 +1582,21 @@ void ScribbleArea::selectAll()
     updateCurrentFrame();
 }
 
-void ScribbleArea::deselectAll()
+/**
+ * @brief ScribbleArea::resetSelectionProperties
+ * should be used whenever translate, rotate, transform, scale
+ * has been applied to a selection, but don't want to reset size nor position
+ */
+void ScribbleArea::resetSelectionProperties()
 {
-    mOffset.setX( 0 );
-    mOffset.setY( 0 );
+    mOffset = QPoint(0,0);
     myRotatedAngle = 0;
     selectionTransformation.reset();
+}
+
+void ScribbleArea::deselectAll()
+{
+    resetSelectionProperties();
     mySelection.setRect( 10, 10, 20, 20 );
     myTransformedSelection.setRect( 10, 10, 20, 20 );
     myTempTransformedSelection.setRect( 10, 10, 20, 20 );
@@ -1555,7 +1676,7 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
         }
         else if ( currentTool()->type() == POLYLINE )
         {
-            escape();
+            deselectAll();
         }
     }
 
@@ -1563,6 +1684,7 @@ void ScribbleArea::setCurrentTool( ToolType eToolMode )
 
     // --- change cursor ---
     setCursor( currentTool()->cursor() );
+    updateCanvasCursor();
     qDebug() << "fn: setCurrentTool " << "call: setCursor()" << "current tool" << currentTool()->typeName();
 }
 
@@ -1622,8 +1744,6 @@ void ScribbleArea::setPrevTool()
     editor()->tools()->setCurrentTool( mPrevTemporalToolType );
     instantTool = false;
 }
-
-/* Render Canvas */
 
 void ScribbleArea::paletteColorChanged(QColor color)
 {

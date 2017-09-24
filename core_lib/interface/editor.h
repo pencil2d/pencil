@@ -118,6 +118,8 @@ public: //slots
 
     bool importImage( QString filePath );
     void updateFrame( int frameNumber );
+    void restoreKey();
+
     void updateFrameAndVector( int frameNumber );
     void updateCurrentFrame();
 
@@ -149,6 +151,7 @@ public: //slots
     void toggleMirror();
     void toggleMirrorV();
     void toggleShowAllLayers();
+    void flipSelection(bool flipVertical);
 
     void toogleOnionSkinType();
 
@@ -187,7 +190,7 @@ private:
     int autosaveNumber = 12;
 
     void makeConnections();
-    KeyFrame* addKeyFame( int layerNumber, int frameNumber );
+    KeyFrame* addKeyFrame( int layerNumber, int frameNumber );
 
     // backup
     void clearUndoStack();
@@ -195,7 +198,7 @@ private:
     int lastModifiedLayer;
 
     // clipboard
-    bool clipboardBitmapOk, clipboardVectorOk;
+    bool clipboardBitmapOk, clipboardVectorOk, clipboardSoundClipOk;
 };
 
 #endif

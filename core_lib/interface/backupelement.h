@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QObject>
 #include "vectorimage.h"
 #include "bitmapimage.h"
-
+#include "soundclip.h"
 
 class Editor;
 
@@ -29,7 +29,7 @@ class BackupElement : public QObject
 {
     Q_OBJECT
 public:
-    enum types { UNDEFINED, BITMAP_MODIF, VECTOR_MODIF };
+    enum types { UNDEFINED, BITMAP_MODIF, VECTOR_MODIF, SOUND_MODIF };
 
     QString undoText;
     bool somethingSelected;
@@ -47,7 +47,6 @@ public:
 
     int layer, frame;
     BitmapImage bitmapImage;
-    //BackupBitmapElement() { type = BackupElement::BITMAP_MODIF; }
     int type() { return BackupElement::BITMAP_MODIF; }
     void restore(Editor*);
 };
@@ -62,6 +61,19 @@ public:
 
     int type() { return BackupElement::VECTOR_MODIF; }
     void restore(Editor*);
+};
+
+class BackupSoundElement : public BackupElement
+{
+    Q_OBJECT
+public:
+    BackupSoundElement(SoundClip* sound) { clip = *sound; }
+    int layer, frame;
+    SoundClip clip;
+    QString fileName;
+
+    int type() { return BackupElement::SOUND_MODIF; }
+    void restore( Editor* );
 };
 
 #endif // BACKUPELEMENT_H

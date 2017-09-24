@@ -112,18 +112,6 @@ void EraserTool::setInpolLevel(const int level)
 
 QCursor EraserTool::cursor()
 {
-    if ( isAdjusting ) // being dynamically resized
-    {
-        return circleCursors(); // two circles cursor
-    }
-    if ( mEditor->preference()->isOn( SETTING::DOTTED_CURSOR ) )
-    {
-        return dottedCursor(); // preview stroke size cursor
-    }
-    if ( mEditor->preference()->isOn( SETTING::TOOL_CURSOR ) )
-    {
-        return circleCursors();
-    }
     return Qt::CrossCursor;
 }
 

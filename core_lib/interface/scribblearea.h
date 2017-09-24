@@ -68,6 +68,7 @@ public:
     void deleteSelection();
     void setSelection( QRectF rect, bool );
     void displaySelectionProperties();
+    void resetSelectionProperties();
     QRectF getSelection() const { return mySelection; }
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
@@ -75,6 +76,11 @@ public:
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;
+    bool allowSmudging();
+
+    void flipSelection(bool flipVertical);
+
+    QVector<QPoint> calcSelectionCenterPoints();
 
     void setEffect( SETTING e, bool isOn );
 
@@ -139,7 +145,6 @@ public slots:
     void toggleThinLines();
     void toggleOutlines();
     void toggleShowAllLayers();
-    void escape();
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
@@ -168,13 +173,19 @@ public:
 
     void paintBitmapBuffer();
     void paintBitmapBufferRect( QRect rect );
+    void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
     void refreshBitmap( const QRectF& rect, int rad );
     void refreshVector( const QRectF& rect, int rad );
     void setGaussianGradient( QGradient &gradient, QColor colour, qreal opacity, qreal offset );
 
+    void updateCanvasCursor();
+
     BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
     BitmapImage* mStrokeImg = nullptr; // used for brush strokes before they are finalized
+
+    QPixmap mCursorImg;
+    QPixmap mTransCursImg;
 
 private:
     void drawCanvas( int frame, QRect rect );
@@ -208,6 +219,7 @@ private:
 private: 
     bool mKeyboardInUse = false;
     bool mMouseInUse    = false;
+    bool mMouseRightButtonInUse = false;
     QPointF mLastPixel;
     QPointF mCurrentPixel;
     QPointF mLastPoint;
@@ -217,6 +229,9 @@ private:
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
+    QPoint mCursorCenterPos;
+    int mCursorWidth;
+    QPointF transformedCursorPos;
 
     //instant tool (temporal eg. eraser)
     bool instantTool = false; //whether or not using temporal tool

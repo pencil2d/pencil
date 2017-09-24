@@ -45,6 +45,7 @@ HEADERS += \
     colorinspector.h \
     colorpalettewidget.h \
     colorwheel.h \
+	colordictionary.h \
     filedialogex.h \
     displayoptionwidget.h \
     pencilapplication.h \

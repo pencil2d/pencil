@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 class Editor;
 class QWidget;
+class ExportMovieDialog;
 
 class ActionCommands : public QObject
 {
@@ -43,8 +44,8 @@ public:
     // view
     void ZoomIn();
     void ZoomOut();
-    void flipX();
-    void flipY();
+    void flipSelectionX();
+    void flipSelectionY();
     void rotateClockwise();
     void rotateCounterClockwise();
 
@@ -58,6 +59,7 @@ public:
     void GotoPrevKeyFrame();
     void addNewKey();
     void removeKey();
+    void updateFrameEnd();
 
     // Layer
     Status addNewBitmapLayer();
@@ -67,7 +69,8 @@ public:
 
 private:
     Editor* mEditor  = nullptr;
-	QWidget* mParent = nullptr;
+    QWidget* mParent = nullptr;
+    ExportMovieDialog* mExportMovieDialog = nullptr;
 };
 
 #endif // COMMANDCENTER_H

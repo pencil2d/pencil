@@ -332,7 +332,7 @@ void BitmapImage::drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::Composit
 void BitmapImage::drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing)
 {
     int width = pen.width();
-    extend( rectangle.adjusted(-width,-width,width,width).toRect() );
+    extend(rectangle.adjusted(-width, -width, width, width).toRect());
     if (brush.style() == Qt::RadialGradientPattern)
     {
         QRadialGradient* gradient = (QRadialGradient*)brush.gradient();

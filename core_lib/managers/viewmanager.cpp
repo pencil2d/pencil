@@ -16,18 +16,18 @@ GNU General Public License for more details.
 */
 
 #include "viewmanager.h"
-
-#include <utility>
 #include "object.h"
+#include "camera.h"
+#include "layercamera.h"
 
-static float gZoomingList[] = 
-{
-    .01f, .02f, .04f, .06f, .08f, .12f, .16f, .25f, .33f, .5f, .75f,
-    1.f, 1.5f, 2.f, 3.f, 4.f, 5.f, 6.f, 8.f, 16.f, 32.f, 48.f, 64.f, 96.f
-};
+const static float mMinScale = 0.01f;
+const static float mMaxScale = 100.0f;
+
 
 ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 {
+    mDefaultEditorCamera = new Camera;
+    mCurrentCamera = mDefaultEditorCamera;
 }
 
 bool ViewManager::init()
@@ -37,13 +37,12 @@ bool ViewManager::init()
 
 Status ViewManager::load( Object* o )
 {
-    mView = o->data()->getCurrentView();
+    mCameraLayer = nullptr;
 
-    if ( mView.isIdentity() )
-    {
-        translate( 0, 0 );
-    }
-	createViewTransform();
+    resetView();
+	updateViewTransforms();
+
+    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
 
     return Status::OK;
 }
@@ -56,64 +55,91 @@ Status ViewManager::save( Object* o )
 
 QPointF ViewManager::mapCanvasToScreen( QPointF p )
 {
-    return mView.map( p );
+    return mViewCanvas.map( p );
 }
 
 QPointF ViewManager::mapScreenToCanvas(QPointF p)
 {
-    return mView.inverted().map( p );
+    return mViewCanvasInverse.map( p );
 }
 
 QPainterPath ViewManager::mapCanvasToScreen( const QPainterPath& path )
 {
-    return mView.map( path );
+    return mViewCanvas.map( path );
 }
 
 QRectF ViewManager::mapCanvasToScreen( const QRectF& rect )
 {
-    return mView.mapRect( rect ) ;
+    return mViewCanvas.mapRect( rect ) ;
 }
 
 QRectF ViewManager::mapScreenToCanvas( const QRectF& rect )
 {
-    return  mView.inverted().mapRect( rect ) ;
+    return mViewCanvasInverse.mapRect( rect ) ;
 }
 
 QPainterPath ViewManager::mapScreenToCanvas( const QPainterPath& path )
 {
-    return mView.inverted().map( path );
+    return mViewCanvasInverse.map( path );
 }
 
 QTransform ViewManager::getView()
 {
-    return mView;
+    return mViewCanvas;
 }
 
-QTransform ViewManager::createViewTransform()
+void ViewManager::updateViewTransforms()
 {
-    QTransform c;
-    c.translate( mCanvasSize.width() / 2.f , mCanvasSize.height() / 2.f );
+    if (mCameraLayer)
+    {
+        int frame = editor()->currentFrame();
+        mCurrentCamera = mCameraLayer->getCameraAtFrame(frame);
+        if (mCurrentCamera)
+        {
+            mCurrentCamera->updateViewTransform();
+            mView = mCurrentCamera->getView();
+        }
+        else
+        {
+            mView = mCameraLayer->getViewAtFrame(frame);
+        }
+    }
+    else
+    {
+        mCurrentCamera = mDefaultEditorCamera;
+        mCurrentCamera->updateViewTransform();
 
-    QTransform t;
-    t.translate( mTranslate.x(), mTranslate.y() );
-
-    QTransform r;
-    r.rotate( mRotate );
+        mView = mCurrentCamera->getView();
+    }
+ 
+    mViewInverse = mView.inverted();
 
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
     float flipY = mIsFlipVertical ? -1.f : 1.f;
+    QTransform f = QTransform::fromScale(flipX, flipY);
 
-    QTransform s;
-    s.scale( mScale * flipX, mScale * flipY );
+    mViewCanvas = mView * f * mCentre;
+    mViewCanvasInverse = mViewCanvas.inverted();
+}
 
-    return t * s * r * c;
+QPointF ViewManager::translation()
+{
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->translation();
+    }
+    return QPointF(0, 0);
 }
 
 void ViewManager::translate(float dx, float dy)
 {
-    mTranslate = QPointF( dx, dy );
-    mView = createViewTransform();
-    Q_EMIT viewChanged();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->translate(dx, dy);
+        updateViewTransforms();
+
+        Q_EMIT viewChanged();
+    }
 }
 
 void ViewManager::translate(QPointF offset)
@@ -121,62 +147,67 @@ void ViewManager::translate(QPointF offset)
     translate( offset.x(), offset.y() );
 }
 
+float ViewManager::rotation()
+{
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->rotation();
+    }
+    return 0.0f;
+}
+
 void ViewManager::rotate(float degree)
 {
-    mRotate += degree;
-    mView = createViewTransform();
-    Q_EMIT viewChanged();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->rotate(degree);
+        updateViewTransforms();
+
+        Q_EMIT viewChanged();
+    }
+}
+
+float ViewManager::scaling()
+{
+    if (mCurrentCamera)
+    {
+        return mCurrentCamera->scaling();
+    }
+    return 0.0f;
 }
 
 void ViewManager::scaleUp()
 {
-    int listLength = sizeof(gZoomingList)/sizeof(float);
-    for(int i = 0; i < listLength; i++)
-    {
-        if (mScale < gZoomingList[i])
-        {
-            scale(gZoomingList[i]);
-            return;
-        }
-    }
-
-    // scale is not in the list.
-    scale(mScale * 2.0f);
+    scale(scaling() * 1.18f);
 }
 
 void ViewManager::scaleDown()
 {
-    int listLength = sizeof(gZoomingList)/sizeof(float);
-    for(int i = listLength-1; i > 0; i--)
-    {
-        if (mScale > gZoomingList[i])
-        {
-            scale(gZoomingList[i]);
-            return;
-        }
-    }
-
-    // scale is not in the list.
-    scale(mScale * 0.8333f);
+    scale(scaling() * 0.8333f);
 }
 
 void ViewManager::scale(float scaleValue)
 {
-    if( scaleValue < mMinScale )
+    if (scaleValue < mMinScale)
     {
         scaleValue = mMinScale;
     }
-    else if( scaleValue > mMaxScale)
+    else if (scaleValue > mMaxScale)
     {
         scaleValue = mMaxScale;
     }
-    else if( scaleValue == mMinScale || scaleValue == mMaxScale  )
+    else if (scaleValue == mMinScale || scaleValue == mMaxScale)
     {
         return;
     }
-    mScale = scaleValue;
-    mView = createViewTransform();
-    Q_EMIT viewChanged();
+
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->scale(scaleValue);
+        updateViewTransforms();
+
+        Q_EMIT viewChanged();
+    }
 }
 
 void ViewManager::flipHorizontal( bool b )
@@ -184,7 +215,8 @@ void ViewManager::flipHorizontal( bool b )
     if ( b != mIsFlipHorizontal )
     {
         mIsFlipHorizontal = b;
-        mView = createViewTransform();
+        updateViewTransforms();
+
         Q_EMIT viewChanged();
     }
 }
@@ -194,7 +226,8 @@ void ViewManager::flipVertical( bool b )
     if ( b != mIsFlipVertical )
     {
         mIsFlipVertical = b;
-        mView = createViewTransform();
+        updateViewTransforms();
+
         Q_EMIT viewChanged();
     }
 }
@@ -202,14 +235,45 @@ void ViewManager::flipVertical( bool b )
 void ViewManager::setCanvasSize( QSize size )
 {
     mCanvasSize = size;
-    mView = createViewTransform();
+    mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2.f, mCanvasSize.height() / 2.f);
+
+    updateViewTransforms();
     Q_EMIT viewChanged();
+}
+
+void ViewManager::setCameraLayer(Layer* layer)
+{
+    if (layer != nullptr)
+    {
+        if (layer->type() != Layer::CAMERA)
+        {
+            Q_ASSERT(false && "Only camera layers allowed pls");
+            return;
+        }
+        mCameraLayer = static_cast<LayerCamera*>(layer);
+    }
+    else
+    {
+        mCameraLayer = nullptr;
+    }
+    
+    updateViewTransforms();
+}
+
+void ViewManager::onCurrentFrameChanged()
+{
+    if (mCameraLayer)
+    {
+        updateViewTransforms();
+    }
 }
 
 void ViewManager::resetView()
 {
-    mRotate = 0.f;
-    mScale = 1.f;
-    translate(0, 0);
-    Q_EMIT viewChanged();
+    if (mCurrentCamera)
+    {
+        mCurrentCamera->reset();
+        updateViewTransforms();
+        Q_EMIT viewChanged();
+    }
 }

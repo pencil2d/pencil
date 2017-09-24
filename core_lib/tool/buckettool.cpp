@@ -93,6 +93,7 @@ void BucketTool::mousePressEvent( QMouseEvent *event )
  * @brief BucketTool::getCurve
  * @param layer
  * This function gets the most recent vector curve
+ * and stores it in mVectorPath
  */
 void BucketTool::getCurve(Layer* layer)
 {

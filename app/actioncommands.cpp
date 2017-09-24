@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
+#include "camera.h"
 
 #include "movieexporter.h"
 #include "filedialogex.h"
@@ -109,13 +110,13 @@ Status ActionCommands::importSound()
 
 Status ActionCommands::exportMovie()
 {
-    ExportMovieDialog exportDialog( mParent );
+    mExportMovieDialog = new ExportMovieDialog( mParent );
 
-    std::vector< std::pair<QString, QSize > > camerasInfo;
+    std::vector< std::pair<QString, QSize> > camerasInfo;
     auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
-    for ( LayerCamera* i : cameraLayers )
+    for (LayerCamera* i : cameraLayers)
     {
-        camerasInfo.push_back( std::make_pair( i->name(), i->getViewSize() ) );
+        camerasInfo.push_back(std::make_pair(i->name(), i->getViewSize()));
     }
 
     auto currLayer = mEditor->layers()->currentLayer();
@@ -133,22 +134,30 @@ Status ActionCommands::exportMovie()
         std::swap( camerasInfo[ 0 ], *it );
     }
 
-    exportDialog.setCamerasInfo( camerasInfo );
-    exportDialog.setDefaultRange( 1, mEditor->layers()->projectLength() );
-    exportDialog.exec();
-    if ( exportDialog.result() == QDialog::Rejected )
+    mExportMovieDialog->setCamerasInfo( camerasInfo );
+
+    int projectLenWithSounds = mEditor->layers()->projectLength(true);
+    int projectLen = mEditor->layers()->projectLength(false);
+
+    mExportMovieDialog->setDefaultRange( 1, projectLen, projectLenWithSounds);
+
+    if ( !mExportMovieDialog->isVisible() )
+    {
+        mExportMovieDialog->exec();
+    }
+    if ( mExportMovieDialog->result() == QDialog::Rejected )
     {
         return Status::SAFE;
     }
-	QString strMoviePath = exportDialog.getFilePath();
+    QString strMoviePath = mExportMovieDialog->getFilePath();
 
     ExportMovieDesc desc;
     desc.strFileName   = strMoviePath;
-    desc.startFrame    = exportDialog.getStartFrame();
-    desc.endFrame      = exportDialog.getEndFrame();
+    desc.startFrame    = mExportMovieDialog->getStartFrame();
+    desc.endFrame      = mExportMovieDialog->getEndFrame();
     desc.fps           = mEditor->playback()->fps();
-    desc.exportSize    = exportDialog.getExportSize();
-    desc.strCameraName = exportDialog.getSelectedCameraName();
+    desc.exportSize    = mExportMovieDialog->getExportSize();
+    desc.strCameraName = mExportMovieDialog->getSelectedCameraName();
 
     QProgressDialog progressDlg;
     progressDlg.setWindowModality( Qt::WindowModal );
@@ -180,46 +189,42 @@ Status ActionCommands::exportMovie()
             QDesktopServices::openUrl( QUrl::fromLocalFile( strMoviePath ) );
         }
     }
-
+    delete mExportMovieDialog;
     return Status::OK;
 }
 
 void ActionCommands::ZoomIn()
 {
-    float newScaleValue = mEditor->view()->scaling() * 1.2;
-    mEditor->view()->scale( newScaleValue );
+    mEditor->view()->scaleUp();
 }
 
 void ActionCommands::ZoomOut()
 {
-    float newScaleValue = mEditor->view()->scaling() * 0.8333;
-    mEditor->view()->scale( newScaleValue );
+    mEditor->view()->scaleDown();
 }
 
-void ActionCommands::flipX()
+void ActionCommands::flipSelectionX()
 {
-    auto view = mEditor->view();
-
-    bool b = view->isFlipHorizontal();
-    view->flipHorizontal( !b );
+   bool flipVertical = false;
+   mEditor->flipSelection(flipVertical);
 }
 
-void ActionCommands::flipY()
+void ActionCommands::flipSelectionY()
 {
-    auto view = mEditor->view();
-
-    bool b = view->isFlipVertical();
-    view->flipVertical( !b );
+    bool flipVertical = true;
+    mEditor->flipSelection(flipVertical);
 }
 
 void ActionCommands::rotateClockwise()
 {
-    mEditor->view()->rotate( 15 );
+    float currentRotation = mEditor->view()->rotation();
+    mEditor->view()->rotate(currentRotation + 15.f);
 }
 
 void ActionCommands::rotateCounterClockwise()
 {
-    mEditor->view()->rotate( -15 );
+    float currentRotation = mEditor->view()->rotation();
+    mEditor->view()->rotate(currentRotation - 15.f);
 }
 
 void ActionCommands::showGrid( bool bShow )
@@ -268,11 +273,11 @@ void ActionCommands::addNewKey()
 {
     KeyFrame* key = mEditor->addNewKey();
 
-    SoundClip* clip = dynamic_cast< SoundClip* >( key );
+    SoundClip* clip = dynamic_cast<SoundClip*>(key);
     if ( clip )
     {
         FileDialog fileDialog( mParent );
-        QString strSoundFile = fileDialog.openFile( FileType::SOUND );
+        QString strSoundFile = fileDialog.openFile(FileType::SOUND);
 
         if ( strSoundFile.isEmpty() )
         {
@@ -281,6 +286,16 @@ void ActionCommands::addNewKey()
         }
         Status st = mEditor->sound()->loadSound( clip, strSoundFile );
         Q_ASSERT( st.ok() );
+    }
+
+    Camera* cam = dynamic_cast<Camera*>(key);
+    if (cam)
+    {
+        auto camLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+        Q_ASSERT(camLayer);
+
+        camLayer->LinearInterpolateTransform(cam);
+        mEditor->view()->updateViewTransforms();
     }
 }
 
@@ -295,6 +310,7 @@ void ActionCommands::removeKey()
         {
             case Layer::BITMAP:
             case Layer::VECTOR:
+            case Layer::SOUND:
             case Layer::CAMERA:
                 layer->addNewEmptyKeyAt( 1 );
                 break;

@@ -50,23 +50,6 @@ struct ExportMovieParameters
     QString exportFormat;
 };
 
-struct ExportFrames1Parameters
-{
-    int         frameStart;
-    int         frameEnd;
-    QTransform  view;
-    Layer*      currentLayer;
-    QSize       exportSize;
-    QString     filePath;
-    const char* format;
-    int         quality;
-    bool        background;
-    bool        antialiasing;
-    QProgressDialog* progress;
-    int         progressMax;
-    int         fps;
-    int         exportFps;
-};
 
 class Object : public QObject
 {
@@ -139,9 +122,7 @@ public:
 		{
 			T* t = dynamic_cast<T*>( layer );
 			if ( t )
-			{
-				result.push_back( t );
-			}
+			    result.push_back( t );
 		}
 		return result;
 	}
@@ -173,12 +154,12 @@ private:
     QString mDataDirPath;    //< the folder which contains all bitmap & vector image & sound files.
     QString mMainXMLFile;    //< the location of main.xml
 
-    QList< Layer* > mLayers;
+    QList<Layer*> mLayers;
     bool modified = false;
 
-    QList< ColourRef > mPalette;
+    QList<ColourRef> mPalette;
 
-    std::unique_ptr< ObjectData > mEditorState;
+    std::unique_ptr<ObjectData> mEditorState;
 };
 
 

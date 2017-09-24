@@ -19,8 +19,6 @@ GNU General Public License for more details.
 
 VertexRef::VertexRef()
 {
-    curveNumber = -1;
-    vertexNumber = -1;
 }
 
 VertexRef::VertexRef(int curveN, int vertexN)

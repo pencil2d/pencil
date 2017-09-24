@@ -20,9 +20,9 @@ int main(int argc, char *argv[])
         qDebug() << "\n==== SOME TESTS FAILED ====\n";
     }
 
-#ifdef WIN32
+#ifdef _MSC_VER 
     system("PAUSE");
 #endif
-    
+
     return ret;
 }

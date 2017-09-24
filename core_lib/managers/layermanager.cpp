@@ -261,19 +261,42 @@ bool LayerManager::deleteCurrentLayer()
     return true;
 }
 
-int LayerManager::projectLength()
+/**
+ * @brief LayerManager::projectLength
+ * @return int: the position of the last key frame in the timeline + its length
+ */
+int LayerManager::projectLength(bool includeSounds)
 {
     int maxFrame = -1;
 
     Object* pObject = editor()->object();
     for ( int i = 0; i < pObject->getLayerCount(); i++ )
     {
-        int frame = pObject->getLayer( i )->getMaxKeyFramePosition();
-        if ( frame > maxFrame )
+        if (pObject->getLayer(i)->type() == Layer::SOUND)
         {
-            maxFrame = frame;
+            if (!includeSounds)
+                continue;
+
+            Layer* soundLayer = pObject->getLayer(i);
+            soundLayer->foreachKeyFrame([&maxFrame](KeyFrame* keyFrame)
+            {
+                int endPosition = keyFrame->pos() + (keyFrame->length() - 1);
+                if (endPosition > maxFrame)
+                {
+                    maxFrame = endPosition;
+                }
+            });
+        }
+        else
+        {
+            int lastFramePos = pObject->getLayer(i)->getMaxKeyFramePosition();
+            if (lastFramePos > maxFrame)
+            {
+                maxFrame = lastFramePos;
+            }
         }
     }
+    //qDebug() << "Project Length:" << maxFrame;
     return maxFrame;
 }
 
