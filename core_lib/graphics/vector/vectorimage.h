@@ -72,7 +72,7 @@ public:
     void calculateSelectionRect();
     void deleteSelection();
     void deleteSelectedPoints();
-    void removeVertex(int i, int m);
+    void removeVertex(int curve, int vertex);
 
     void paste(VectorImage&);
 
@@ -89,23 +89,31 @@ public:
     void setSelectionTransformation(QTransform transform);
     void applySelectionTransformation();
     void applySelectionTransformation(QTransform transform);
-    void applyColourToSelection(int colourNumber);
+    void applyColourToSelectedCurve(int colourNumber);
     void applyWidthToSelection(qreal width);
     void applyFeatherToSelection(qreal feather);
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fillPath(QList<QPointF> contourPath, int colour, float tolerance);
-    void fill(QPointF point, int colour, float tolerance);
+    void fillContour(QList<QPointF> contourPath, int colour);
+    void fillSelectedPath(QPointF currentPoint, int colour);
+//    void fill(QPointF point, int colour, float tolerance);
     void addArea(BezierArea bezierArea);
+    void drawCurve(QPainter& painter, QPainterPath path, QPen pen, QColor colour, bool antialiasing);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point, int maxAreaNumber);
+    int getLastCurveNumber();
+    BezierCurve getLastCurve();
     void removeArea(QPointF point);
+    void removeAreaInCurve(BezierArea& bezierArea);
     void updateArea(BezierArea& bezierArea);
 
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
-    VertexRef getClosestVertexTo(QPointF thisPoint, qreal maxDistance);
+    BezierCurve getSelectedCurve();
+    int getSelectedCurveNumber();
+    BezierArea getSelectedArea(QPointF currentPoint);
+    VertexRef getClosestVertexTo(BezierCurve curve, int curveNum, QPointF thisPoint);
     QList<VertexRef> getCurveVertices(int curveNumber);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance, QList<VertexRef>* listOfPoints);
@@ -130,6 +138,8 @@ public:
 
     qreal getDistance(VertexRef r1, VertexRef r2);
 
+    int mStrokeWidth = 0;
+
     QSize getSize() {return mSize;}
 
 private:
@@ -138,7 +148,7 @@ private:
 	void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
 	void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 
-	QList<QPointF> getfillContourPoints(QPoint point);
+//	QList<QPointF> getfillContourPoints(QPoint point);
 	void updateImageSize(BezierCurve& updatedCurve);
         QPainterPath mGetStrokedPath;
 

@@ -343,9 +343,8 @@ void PencilTool::paintVectorStroke(Layer* layer)
 
     if (properties.useFillContour == true)
     {
-        vectorImage->fillPath( mStrokePoints,
-                           mEditor->color()->frontColorNumber(),
-                           10.0 / mEditor->view()->scaling() );
+        vectorImage->fillContour( mStrokePoints,
+                           mEditor->color()->frontColorNumber() );
     }
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();

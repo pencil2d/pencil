@@ -38,16 +38,16 @@ public:
     void mouseReleaseEvent( QMouseEvent * ) override;
 
     void setTolerance(const int tolerance) override;
+    void setWidth(const qreal width) override;
 
     void paintBitmap(Layer *layer);
     void paintVector(QMouseEvent *event, Layer *layer);
     void drawStroke();
-    void getCurve(Layer* layer);
+    void getBrushWidth();
 
     void applyChanges();
 
 private:
-    QPainterPath mVectorPath;
     VectorImage* vectorImage = nullptr;
 };
 

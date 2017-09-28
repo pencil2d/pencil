@@ -52,6 +52,7 @@ void BucketTool::loadSettings()
     properties.tolerance = 10;
 
     m_enabledProperties[TOLERANCE] = true;
+    m_enabledProperties[WIDTH] = true;
 }
 
 QCursor BucketTool::cursor()
@@ -65,6 +66,22 @@ QCursor BucketTool::cursor()
     } else {
         return Qt::CrossCursor;
     }
+}
+
+/**
+ * @brief BrushTool::setWidth
+ * @param width
+ * set fill thickness
+ */
+void BucketTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("fillThickness", width);
+    settings.sync();
 }
 
 void BucketTool::setTolerance(const int tolerance)
@@ -89,27 +106,6 @@ void BucketTool::mousePressEvent( QMouseEvent *event )
     startStroke();
 }
 
-/**
- * @brief BucketTool::getCurve
- * @param layer
- * This function gets the most recent vector curve
- * and stores it in mVectorPath
- */
-void BucketTool::getCurve(Layer* layer)
-{
-    vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-    mScribbleArea->mClosestCurves = vectorImage->getCurvesCloseTo( getCurrentPoint(),
-                                                                   mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
-    QList<int> closestCurve = mScribbleArea->mClosestCurves;
-
-    if ( closestCurve.size() > 0 ) {
-        if ( !vectorImage->isSelected( closestCurve ) ) {
-            mVectorPath = vectorImage->getStrokedPath();
-            qDebug() << "stroke found";
-        }
-    }
-}
-
 void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -129,12 +125,13 @@ void BucketTool::mouseReleaseEvent( QMouseEvent *event )
 void BucketTool::mouseMoveEvent( QMouseEvent *event )
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    getCurve( layer );
     if ( layer->type() == Layer::BITMAP) {
         Q_UNUSED( event );
     }
-    else if(layer->type() == Layer::VECTOR ) {
-        if( event->buttons() & Qt::LeftButton ) {
+    else if(layer->type() == Layer::VECTOR )
+    {
+        if( event->buttons() & Qt::LeftButton )
+        {
             drawStroke();
             qDebug() << "DrawStroke" << event->pos() ;
         }
@@ -173,23 +170,19 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
     // TODO: does this work? what does removeArea do?
     if( event->modifiers() == Qt::AltModifier ) {
         vectorImage->removeArea( getLastPoint() );
-    } else {
-            QList<QPointF> path;
+    }
+    else
+    {
 
-            for (int i = 0; i < mVectorPath.elementCount(); i++) {
-                path.append(mVectorPath.elementAt(i));
-            }
+        // store width for painter...
+        vectorImage->mStrokeWidth = properties.width;
 
-            // TODO: only fill when selected
-            if (vectorImage->isSelected(mScribbleArea->mClosestCurves)) {
-                vectorImage->fillPath(path, mEditor->color()->frontColorNumber(), mScribbleArea->selectionTolerance / mEditor->view()->scaling());
-            }
-//        } else {
-//            vectorImage->fillPath( path,
-//                               mEditor->color()->frontColorNumber(),
-//                               10.0 / mEditor->view()->scaling() );
-//        }
-          applyChanges();
+        vectorImage->fillSelectedPath(getCurrentPoint(),
+                              mEditor->color()->frontColorNumber());
+
+        vectorImage->applyWidthToSelection(properties.width);
+        vectorImage->applyColourToSelectedCurve(mEditor->color()->frontColorNumber());
+        applyChanges();
     }
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
@@ -214,7 +207,7 @@ void BucketTool::drawStroke()
 
 
     if( layer->type() == Layer::VECTOR ) {
-        mCurrentWidth = 10;
+        mCurrentWidth = 30;
         int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
         QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
@@ -222,7 +215,7 @@ void BucketTool::drawStroke()
 
         QPen pen( pathColor,
                   mCurrentWidth * mEditor->view()->scaling(),
-                  Qt::SolidLine,
+                  Qt::NoPen,
                   Qt::RoundCap,
                   Qt::RoundJoin );
 
