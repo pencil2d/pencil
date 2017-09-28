@@ -40,8 +40,8 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     mMin = min;
     mMax = max;
 
-    QLabel* label = new QLabel(text+": ");
-    label->setFont( QFont( "Helvetica", 10 ) );
+    mLabel = new QLabel(text+": ");
+    mLabel->setFont( QFont( "Helvetica", 10 ) );
 
     mSlider = new QSlider(Qt::Horizontal, this);
     mSlider->setMinimum( 0 );
@@ -52,7 +52,7 @@ SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qre
     layout->setMargin( 2 );
     layout->setSpacing( 2 );
 
-    layout->addWidget( label, 0, 0, 1, 1 );
+    layout->addWidget( mLabel, 0, 0, 1, 1 );
     layout->addWidget( mSlider, 1, 0, 1, 2 );
 
     setLayout( layout );
@@ -84,6 +84,12 @@ void SpinSlider::onSliderValueChanged( int v )
     }
     changeValue( value2 );
 }
+
+void SpinSlider::setLabel( QString newText )
+{
+    mLabel->setText(newText);
+}
+
 
 void SpinSlider::setValue( qreal v )
 {

@@ -928,7 +928,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
         if ( layer->type() == Layer::VECTOR )
         {
             VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-
             switch ( currentTool()->type() )
             {
                 case SMUDGE:
@@ -985,40 +984,6 @@ void ScribbleArea::paintEvent( QPaintEvent* event )
                     painter.restore();
                     break;
                 }
-
-                case MOVE:
-                {
-                    // ----- paints the closest curves
-                    mBufferImg->clear();
-                    QColor colour = QColor( 100, 100, 255, 50 );
-                    QPen pen2( colour, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin );
-
-
-                    for ( int k = 0; k < mClosestCurves.size(); k++ )
-                    {
-                        float scale = mEditor->view()->scaling(); // FIXME: check whether it's correct (det = area?)
-
-                        int idx = mClosestCurves[ k ];
-                        if ( vectorImage->m_curves.size() <= idx )
-                        {
-                            // safety check
-                            continue;
-                        }
-                        BezierCurve myCurve = vectorImage->m_curves[ mClosestCurves[ k ] ];
-                        if ( myCurve.isPartlySelected() )
-                        {
-                            myCurve.transform( selectionTransformation );
-                        }
-                        QPainterPath path = myCurve.getStrokedPath( 1.2 / scale, false );
-//                        mBufferImg->drawPath( mEditor->view()->mapCanvasToScreen( path ),
-//                                              pen2,
-//                                              colour,
-//                                              QPainter::CompositionMode_SourceOver,
-//                                              mPrefs->isOn( SETTING::ANTIALIAS ) );
-                    }
-                    break;
-                }
-
                 default:
                 {
                     break;

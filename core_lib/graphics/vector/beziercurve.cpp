@@ -457,7 +457,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
     if (!simplified)
     {
         // highlight the selected elements
-        colour = QColor(100,100,255);  // highlight colour
+        colour = QColor(100,150,255);  // highlight colour
         painter.setBrush(Qt::NoBrush);
         qreal lineWidth = 1.5/painter.matrix().m11();
         painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
@@ -468,7 +468,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
         {
             if (isSelected(i))
             {
-                //painter.fillRect(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth, colour);
+//                painter.fillRect(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth, colour);
 
                 //painter.fillRect(QRectF(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth), colour);
 
@@ -519,13 +519,15 @@ QPainterPath BezierCurve::getStrokedPath(qreal width)
     return getStrokedPath(width, true);
 }
 
+// this function is a mess and outputs buggy results randomly...
 QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
 {
     QPainterPath path;
     QPointF tangentVec, normalVec, normalVec2, normalVec2_1, normalVec2_2;
     qreal width2 = width;
-    path.setFillRule(Qt::WindingFill);
     int n = vertex.size();
+    path.setFillRule(Qt::WindingFill);
+
     normalVec = QPointF(-(c1.at(0) - origin).y(), (c1.at(0) - origin).x());
     normalise(normalVec);
     if (usePressure) width2 = width * 0.5 * pressure.at(0);

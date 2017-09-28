@@ -73,6 +73,7 @@ public:
     bool somethingSelected;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
+    QList<int> mClosestCurves;
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;
@@ -226,7 +227,6 @@ private:
     QPointF mCurrentPoint;
 
     qreal selectionTolerance;
-    QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
     QPoint mCursorCenterPos;

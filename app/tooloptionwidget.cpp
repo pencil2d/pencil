@@ -213,8 +213,8 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget( mMakeInvisibleBox, 8, 0, 1, 2 );
     pLayout->addWidget( mVectorMergeBox, 9, 0, 1, 2 );
     pLayout->addWidget( mInpolLevelsBox, 10, 0, 1, 4);
-    pLayout->addWidget( mToleranceSlider, 1, 0, 1, 2);
-    pLayout->addWidget( mToleranceSpinBox, 1, 2, 1, 2);
+    pLayout->addWidget( mToleranceSlider, 2, 0, 1, 2);
+    pLayout->addWidget( mToleranceSpinBox, 2, 2, 1, 2);
     pLayout->addWidget( mFillContour, 1, 0, 1, 2);
 
     pLayout->setRowStretch( 17, 1 );
@@ -311,12 +311,26 @@ void ToolOptionWidget::visibilityOnLayer()
     {
         switch (propertyType)
         {
+            case SMUDGE:
+                mSizeSlider->setVisible(false);
+                mBrushSpinBox->setVisible(false);
+                mUsePressureBox->setVisible(false);
+                mFeatherSlider->setVisible(false);
+                mFeatherSpinBox->setVisible(false);
+                mUseFeatherBox->setVisible(false);
+                break;
             case PENCIL:
                 mSizeSlider->setVisible(false);
                 mBrushSpinBox->setVisible(false);
                 mUsePressureBox->setVisible(false);
                 break;
+            case BUCKET:
+                mSizeSlider->setLabel(tr("Stroke Thickness"));
+                mToleranceSlider->setVisible(false);
+                mToleranceSpinBox->setVisible(false);
+                break;
             default:
+                mSizeSlider->setLabel(tr("Width"));
                 mToleranceSlider->setVisible(false);
                 mToleranceSpinBox->setVisible(false);
                 mUseAABox->setVisible(false);
@@ -329,6 +343,10 @@ void ToolOptionWidget::visibilityOnLayer()
         {
             case PENCIL:
                 mFillContour->setVisible(false);
+                break;
+            case BUCKET:
+                mBrushSpinBox->setVisible(false);
+                mSizeSlider->setVisible(false);
                 break;
             default:
                 mMakeInvisibleBox->setVisible(false);

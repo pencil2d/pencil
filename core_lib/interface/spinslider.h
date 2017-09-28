@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #define SPINSLIDER_H
 
 #include <QWidget>
+#include <QLabel>
 
 class QLabel;
 class QSlider;
@@ -47,6 +48,7 @@ public:
     void setValue( qreal );
     void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
     void setExponent( const qreal );
+    void setLabel( QString newText );
     
 signals:
     void valueChanged(qreal);
@@ -61,6 +63,9 @@ private:
     qreal mMin   = 0.1;
     qreal mMax   = 100.0;
     qreal mExp   = 2.0;
+    QString mText = "";
+
+    QLabel* mLabel;
 
     GROWTH_TYPE mGrowthType = LINEAR;
     VALUE_TYPE  mValueType  = INTEGER;
