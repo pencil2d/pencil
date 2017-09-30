@@ -144,7 +144,7 @@ public:
     QSize getSize() {return mSize;}
 
 private:
-    void addPoint( int curveNumber, int vertexNumber, qreal t );
+    void addPoint(int curveNumber, int vertexNumber, qreal fraction );
 	
 	void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
 	void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);

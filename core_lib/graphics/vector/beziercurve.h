@@ -50,7 +50,7 @@ public:
     QPointF getC1(int i) const { return c1.at(i); }
     QPointF getC2(int i) const { return c2.at(i); }
     qreal getPressure(int i) const { return pressure.at(i); }
-    bool isSelected(int i) const { return selected.at(i+1); }
+    bool isSelected(int vertex) const { return selected.at(vertex+1); }
     bool isSelected() const { bool result=true; for(int i=0; i<selected.size(); i++) result = result && selected[i]; return result; }
     bool isPartlySelected() const { bool result=false; for(int i=0; i<selected.size(); i++) result = result || selected[i]; return result; }
     bool isInvisible() const { return invisible; }
@@ -76,7 +76,7 @@ public:
 
     void appendCubic(const QPointF& c1Point, const QPointF& c2Point, const QPointF& vertexPoint, qreal pressureValue);
     void addPoint(int position, const QPointF point);
-    void addPoint(int position, const qreal t);
+    void addPoint(int position, const qreal fraction);
     QPointF getPointOnCubic(int i, qreal t);
     void removeVertex(int i);
     QPainterPath getStraightPath();

@@ -337,7 +337,7 @@ void BezierCurve::addPoint(int position, const QPointF point)
     }
 }
 
-void BezierCurve::addPoint(int position, const qreal t)    // t is the fraction where to split the bezier curve (ex: t=0.5)
+void BezierCurve::addPoint(int position, const qreal fraction) // fraction is where to split the bezier curve (ex: fraction=0.5)
 {
     // de Casteljau's method is used
     // http://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm
@@ -348,12 +348,12 @@ void BezierCurve::addPoint(int position, const qreal t)    // t is the fraction 
         QPointF vB = getVertex(position);
         QPointF c1o = getC1(position);
         QPointF c2o = getC2(position);
-        QPointF c12 = (1-t)*c1o + t*c2o;
-        QPointF cA1 = (1-t)*vA + t*c1o;
-        QPointF cB2 = (1-t)*c2o + t*vB;
-        QPointF cA2 = (1-t)*cA1 + t*c12;
-        QPointF cB1 = (1-t)*c12 + t*cB2;
-        QPointF vM = (1-t)*cA2 + t*cB1;
+        QPointF c12 = (1-fraction)*c1o + fraction*c2o;
+        QPointF cA1 = (1-fraction)*vA + fraction*c1o;
+        QPointF cB2 = (1-fraction)*c2o + fraction*vB;
+        QPointF cA2 = (1-fraction)*cA1 + fraction*c12;
+        QPointF cB1 = (1-fraction)*c12 + fraction*cB2;
+        QPointF vM = (1-fraction)*cA2 + fraction*cB1;
 
         setC1(position, cB1);
         setC2(position, cB2);
