@@ -346,6 +346,15 @@ void PencilTool::paintVectorStroke(Layer* layer)
         vectorImage->fillContour( mStrokePoints,
                            mEditor->color()->frontColorNumber() );
     }
+
+    if (vectorImage->isAnyCurveSelected()) {
+        vectorImage->deselectAll();
+    }
+
+    // select last/newest curve
+    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
+
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
+
 }

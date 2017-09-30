@@ -414,7 +414,12 @@ void BrushTool::paintVectorStroke()
 
         auto pLayerVector = static_cast< LayerVector* >( layer );
         VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-        vectorImage->insertCurve( 0, curve, mEditor->view()->scaling(), false );
+        vectorImage->addCurve( curve, mEditor->view()->scaling(), false );
+
+        if (vectorImage->isAnyCurveSelected()) {
+            vectorImage->deselectAll();
+        }
+        vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
         mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
         mScribbleArea->setAllDirty();

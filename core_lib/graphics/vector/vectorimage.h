@@ -60,6 +60,7 @@ public:
     bool isSelected(VertexRef vertexRef);
     bool isSelected(QList<int> curveList);
     bool isSelected(QList<VertexRef> vertexList);
+    bool isAnyCurveSelected();
     void setAreaSelected(int areaNumber, bool YesOrNo);
     bool isAreaSelected(int areaNumber);
 

@@ -663,8 +663,22 @@ void VectorImage::selectAll()
     //modification();
 }
 
+/**
+ * @brief VectorImage::isAnyCurveSelected
+ * @return true if any curve in the list is selected, otherwise false
+ */
+bool VectorImage::isAnyCurveSelected()
+{
+    if (m_curves.isEmpty()) return false;
+    for(int curve = 0; curve < m_curves.size(); curve++)
+    {
+        if (m_curves[curve].isSelected()) return true;
+    }
+    return false;
+}
 void VectorImage::deselectAll()
 {
+    if (m_curves.empty()) return;
     for(int i=0; i< m_curves.size(); i++)
     {
         m_curves[i].setSelected(false);
