@@ -82,7 +82,7 @@ bool ScribbleArea::init()
     mOffset.setX( 0 );
     mOffset.setY( 0 );
     selectionTransformation.reset();
-    selectionTolerance = 20.0;
+    selectionTolerance = 5.0;
     updateCanvasCursor();
 
     setMouseTracking( true ); // reacts to mouse move events, even if the button is not pressed

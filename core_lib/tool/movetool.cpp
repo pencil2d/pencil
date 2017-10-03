@@ -60,6 +60,9 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
 
 void MoveTool::mouseReleaseEvent( QMouseEvent* )
 {
+    if ( !mScribbleArea->somethingSelected )
+        return;
+
     // update selection position
     mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
 
@@ -114,7 +117,7 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::VECTOR )
         {
-            onHoverOutlineStroke(layer);
+            storeClosestVectorCurve();
         }
         mScribbleArea->update();
     }
@@ -299,8 +302,13 @@ QPointF MoveTool::maintainAspectRatio(qreal offsetX, qreal offsetY)
     return QPointF(offsetX,offsetY);
 }
 
-void MoveTool::onHoverOutlineStroke(Layer* layer)
+/**
+ * @brief MoveTool::storeClosestVectorCurve
+ * stores the curves closest to the mouse position in mClosestCurves
+ */
+void MoveTool::storeClosestVectorCurve()
 {
+    Layer* layer = mEditor->layers()->currentLayer();
     auto layerVector = static_cast< LayerVector* >( layer );
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
     mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(),

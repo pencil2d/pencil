@@ -70,7 +70,7 @@ public:
     void displaySelectionProperties();
     void resetSelectionProperties();
     QRectF getSelection() const { return mySelection; }
-    bool somethingSelected;
+    bool somethingSelected = false;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
     QList<int> mClosestCurves;
