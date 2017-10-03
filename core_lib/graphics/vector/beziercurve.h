@@ -56,6 +56,7 @@ public:
     bool isInvisible() const { return invisible; }
     bool intersects(QPointF point, qreal distance);
     bool intersects(QRectF rectangle);
+    bool isFilled() const { return mFilled; }
 
     void setOrigin(const QPointF& point);
     void setOrigin(const QPointF& point, const qreal& pressureValue, const bool& trueOrFalse);
@@ -70,6 +71,7 @@ public:
     void setColourNumber(int colourNumber) { this->colourNumber = colourNumber; }
     void setSelected(bool YesOrNo) { for(int i=0; i<selected.size(); i++) { selected[i] = YesOrNo; } }
     void setSelected(int i, bool YesOrNo);
+    void setFilled(bool yesOrNo);
 
     BezierCurve transformed(QTransform transformation);
     void transform(QTransform transformation);
@@ -110,6 +112,7 @@ private:
     float feather = 0.f;
     bool variableWidth = 0.f;
     bool invisible = false;
+    bool mFilled = false;
     QList<bool> selected; // this list has one more element than the other list (the first element is for the origin)
 };
 

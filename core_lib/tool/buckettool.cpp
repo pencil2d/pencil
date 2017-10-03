@@ -167,23 +167,17 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
     mScribbleArea->clearBitmapBuffer();
     VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-    // TODO: does this work? what does removeArea do?
-    if( event->modifiers() == Qt::AltModifier ) {
-        vectorImage->removeArea( getLastPoint() );
-    }
-    else
+    if ( !vectorImage->isPathFilled() )
     {
-
-        // store width for painter...
-        vectorImage->mStrokeWidth = properties.width;
-
-        vectorImage->fillSelectedPath(getCurrentPoint(),
-                              mEditor->color()->frontColorNumber());
-
-        vectorImage->applyWidthToSelection(properties.width);
-        vectorImage->applyColourToSelectedCurve(mEditor->color()->frontColorNumber());
-        applyChanges();
+        vectorImage->fillSelectedPath( mEditor->color()->frontColorNumber() );
     }
+
+    vectorImage->applyWidthToSelection( properties.width );
+    vectorImage->applyColourToSelectedCurve( mEditor->color()->frontColorNumber() );
+    vectorImage->applyColourToSelectedArea( mEditor->color()->frontColorNumber() );
+
+    applyChanges();
+
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
 }

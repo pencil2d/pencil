@@ -63,9 +63,11 @@ public:
     bool isAnyCurveSelected();
     void setAreaSelected(int areaNumber, bool YesOrNo);
     bool isAreaSelected(int areaNumber);
+    bool isPathFilled();
 
     int getFirstSelectedCurve();
     int getFirstSelectedArea();
+    int getNumOfCurvesSelected();
     void selectAll();
     void deselectAll();
     QRectF getSelectionRect() { return mSelectionRect; }
@@ -91,28 +93,28 @@ public:
     void applySelectionTransformation();
     void applySelectionTransformation(QTransform transform);
     void applyColourToSelectedCurve(int colourNumber);
+    void applyColourToSelectedArea(int colourNumber);
     void applyWidthToSelection(qreal width);
     void applyFeatherToSelection(qreal feather);
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
     void fillContour(QList<QPointF> contourPath, int colour);
-    void fillSelectedPath(QPointF currentPoint, int colour);
+    void fillSelectedPath(int colour);
 //    void fill(QPointF point, int colour, float tolerance);
     void addArea(BezierArea bezierArea);
-    void drawCurve(QPainter& painter, QPainterPath path, QPen pen, QColor colour, bool antialiasing);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point, int maxAreaNumber);
     int getLastCurveNumber();
     BezierCurve getLastCurve();
     void removeArea(QPointF point);
-    void removeAreaInCurve(BezierArea& bezierArea);
+    void removeAreaInCurve(int curve, int areaNumber);
     void updateArea(BezierArea& bezierArea);
 
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
-    BezierCurve getSelectedCurve();
-    int getSelectedCurveNumber();
+    QList<BezierCurve> getSelectedCurves();
+    QList<int> getSelectedCurveNumbers();
     BezierArea getSelectedArea(QPointF currentPoint);
     VertexRef getClosestVertexTo(BezierCurve curve, int curveNum, QPointF thisPoint);
     QList<VertexRef> getCurveVertices(int curveNumber);
@@ -138,8 +140,6 @@ public:
     QList<int> m_curveDisplayOrders;
 
     qreal getDistance(VertexRef r1, VertexRef r2);
-
-    int mStrokeWidth = 0;
 
     QSize getSize() {return mSize;}
 

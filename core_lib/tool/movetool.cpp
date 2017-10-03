@@ -120,16 +120,19 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     }
 }
 
-
 void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 {
-    if ( (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR) )
+    if ( layer->isPaintable() )
     {
         mEditor->backup( tr( "Move" ) );
         mScribbleArea->setMoveMode( ScribbleArea::MIDDLE ); // was MIDDLE
 
+        QRectF selectionRect = mScribbleArea->myTransformedSelection;
         if ( mScribbleArea->somethingSelected ) // there is an area selection
         {
+            if ( event->modifiers() != Qt::ShiftModifier && !selectionRect.contains( getCurrentPoint() ) )
+                mScribbleArea->deselectAll();
+
             whichTransformationPoint();
 
             // calculate new transformation in case click only

@@ -47,6 +47,7 @@ public:
 
 private:
     bool mSelected = false;
+    bool mIsFilled = false;
 };
 
 #endif

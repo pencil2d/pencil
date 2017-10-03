@@ -82,6 +82,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
     xmlStream.writeAttribute( "variableWidth", variableWidth ? "true" : "false" );
     if (feather>0) xmlStream.writeAttribute( "feather", QString::number( feather ) );
     xmlStream.writeAttribute( "invisible", invisible ? "true" : "false" );
+    xmlStream.writeAttribute( "filled", mFilled ? "true" : "false" );
     xmlStream.writeAttribute( "colourNumber", QString::number( colourNumber ) );
     xmlStream.writeAttribute( "originX", QString::number( origin.x() ) );
     xmlStream.writeAttribute( "originY", QString::number( origin.y() ) );
@@ -113,6 +114,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
                                               << QString( "variableWidth = %1" ).arg( "variableWidth" )
                                               << QString( "feather = %1" ).arg( feather )
                                               << QString( "invisible = %1" ).arg( invisible )
+                                              << QString( "filled = %1" ).arg( mFilled )
                                               << QString( "colourNumber = %1" ).arg( colourNumber )
                                               << QString( "originX = %1" ).arg( origin.x() )
                                               << QString( "originY = %1" ).arg( origin.y() )
@@ -138,6 +140,7 @@ void BezierCurve::loadDomElement(QDomElement element)
     variableWidth = (element.attribute("variableWidth") == "1");
     feather = element.attribute("feather").toDouble();
     invisible = (element.attribute("invisible") == "1");
+    mFilled = (element.attribute("filled") == "1");
     if (width == 0) invisible = true;
     colourNumber = element.attribute("colourNumber").toInt();
     origin = QPointF( element.attribute("originX").toFloat(), element.attribute("originY").toFloat() );
@@ -252,6 +255,17 @@ void BezierCurve::setInvisibility(bool YesOrNo)
 void BezierCurve::setSelected(int i, bool YesOrNo)
 {
     selected[i+1] = YesOrNo;
+}
+
+/**
+ * @brief BezierCurve::setFilled
+ * @param YesOrNo: bool
+ * setFilled doesn't do anything on its own, but we use it
+ * to see if a curve has been filled with an BezierArea.
+ */
+void BezierCurve::setFilled(bool YesOrNo)
+{
+    mFilled = YesOrNo;
 }
 
 BezierCurve BezierCurve::transformed(QTransform transformation)

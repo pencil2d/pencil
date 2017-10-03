@@ -1562,9 +1562,9 @@ void ScribbleArea::resetSelectionProperties()
 void ScribbleArea::deselectAll()
 {
     resetSelectionProperties();
-    mySelection.setRect( 10, 10, 20, 20 );
-    myTransformedSelection.setRect( 10, 10, 20, 20 );
-    myTempTransformedSelection.setRect( 10, 10, 20, 20 );
+    mySelection = QRectF();
+    myTransformedSelection = QRectF();
+    myTempTransformedSelection = QRectF();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer == NULL ) { return; }

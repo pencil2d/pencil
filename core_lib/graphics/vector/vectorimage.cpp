@@ -300,24 +300,6 @@ void VectorImage::insertCurve(int position, BezierCurve& newCurve, qreal factor,
 }
 
 /**
- * @brief VectorImage::drawCurve
- * @param painter: QPainter&
- * @param path: QPainterPath
- * @param pen: QPen
- * @param colour: QColor
- * @param AA: bool
- */
-void VectorImage::drawCurve(QPainter& painter, QPainterPath path, QPen pen, QColor colour, bool AA)
-{
-    pen.setColor(colour);
-    painter.setPen(pen);
-    painter.setRenderHint(QPainter::Antialiasing, AA);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.drawPath(path);
-    painter.setClipping(false);
-}
-
-/**
  * @brief VectorImage::addCurve
  * @param newCurve: The curve you want added
  * @param factor: selection factor
@@ -698,6 +680,21 @@ void VectorImage::setAreaSelected(int areaNumber, bool YesOrNo)
 bool VectorImage::isAreaSelected(int areaNumber)
 {
     return area[areaNumber].isSelected();
+}
+
+/**
+ * @brief VectorImage::isPathFilled
+ * @return true if the path is filled, otherwise false
+ */
+bool VectorImage::isPathFilled()
+{
+    for (int curve = 0; curve < m_curves.size(); curve++) {
+        if (m_curves[curve].isFilled() )
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -1162,14 +1159,10 @@ void VectorImage::paintImage(QPainter& painter,
 
             if (area[i].isSelected())
             {
-                //highlight color
-                colour.setRgba(qRgba(127,127,127,255));
-
-                painter.setBrush( QBrush( qPremultiply(colour.rgba()), Qt::SolidPattern) );
+                painter.setBrush( QBrush( qPremultiply(colour.rgba()), Qt::Dense2Pattern) );
             }
             else
             {
-                // TODO: stroke width affects all curves... not just the highligted
                 painter.setPen(QPen(QBrush(colour), 1, Qt::NoPen, Qt::RoundCap,Qt::RoundJoin));
                 painter.setBrush( QBrush( colour, Qt::SolidPattern ));
             }
@@ -1261,7 +1254,7 @@ void VectorImage::applySelectionTransformation(QTransform transf)
 
 /**
  * @brief VectorImage::applyColourToSelectedCurve
- * @param int colourNumber
+ * @param colourNumber: int
  * Changes the color of the curve
  */
 void VectorImage::applyColourToSelectedCurve(int colourNumber)
@@ -1270,6 +1263,15 @@ void VectorImage::applyColourToSelectedCurve(int colourNumber)
     {
         if ( m_curves.at(i).isSelected()) m_curves[i].setColourNumber(colourNumber);
     }
+    modification();
+}
+
+/**
+ * @brief VectorImage::applyColourToSelectedArea
+ * @param colourNumber: int
+ */
+void VectorImage::applyColourToSelectedArea(int colourNumber)
+{
     for (int i = 0; i < area.size(); i++)
     {
         if ( area.at(i).isSelected()) area[i].setColourNumber(colourNumber);
@@ -1615,7 +1617,7 @@ QList<VertexRef> VectorImage::getCurveVertices(int curveNumber)
 
     if (curveNumber > -1 && curveNumber < m_curves.size())
     {
-        BezierCurve myCurve = m_curves.at(curveNumber);
+        BezierCurve myCurve = m_curves[curveNumber];
 
         for(int k=-1; k<myCurve.getVertexSize(); k++)
         {
@@ -1665,35 +1667,53 @@ int VectorImage::getCurveSize(int curveNumber)
 
 /**
  * @brief VectorImage::getSelectedCurve
- * @return BezierCurve
+ * @return List of BezierCurve
  */
-BezierCurve VectorImage::getSelectedCurve()
+QList<BezierCurve> VectorImage::getSelectedCurves()
 {
+    QList<BezierCurve> curves;
     for (int curve = 0; curve < m_curves.size(); curve++)
     {
-        if ( m_curves.at(curve).isSelected())
+        if ( m_curves[curve].isSelected())
         {
-           return m_curves.at(curve);
+           curves.append(m_curves[curve]);
         }
     }
-    return BezierCurve();
+    return curves;
 }
 
 /**
  * @brief VectorImage::getSelectedCurveNumber
- * @return int
+ * @return List of int of selected curve numbers
  */
-int VectorImage::getSelectedCurveNumber()
+QList<int> VectorImage::getSelectedCurveNumbers()
 {
-    int curveNum = 0;
+    QList<int> result;
     for (int curve = 0; curve < m_curves.size(); curve++)
     {
-        if ( m_curves.at(curve).isSelected())
+        if ( m_curves[curve].isSelected())
         {
-           curveNum = curve;
+           result.append(curve);
         }
     }
-    return curveNum;
+    return result;
+}
+
+/**
+ * @brief VectorImage::numOfCurvesSelected
+ * @return int of number of curves selected
+ */
+int VectorImage::getNumOfCurvesSelected()
+{
+    int count = 0;
+    for (int curve = 0; curve < m_curves.size(); curve++)
+    {
+        if ( m_curves[curve].isSelected())
+        {
+            count++;
+        }
+    }
+    return count;
 }
 
 /**
@@ -1719,47 +1739,48 @@ BezierArea VectorImage::getSelectedArea(QPointF currentPoint)
  * @param int colour
  * fills the selected path with a given color
  */
-void VectorImage::fillSelectedPath(QPointF currentPoint, int colour)
+void VectorImage::fillSelectedPath(int colour)
 {
     QList<VertexRef> vertexPath;
-    QList<QPointF> path;
-
-    BezierCurve selectedCurve = getSelectedCurve();
-
-    for (int i = 0; i < selectedCurve.getSimplePath().elementCount(); i++)
-    {
-        path.append(selectedCurve.getSimplePath().elementAt(i));
-    }
-
-    // the list should have more than one point
-    // to be valid for fill.
-    if (path.size() <= 1)
-    {
-        return;
-    }
-
+    QList<int> curveNumbers = getSelectedCurveNumbers();
+    QList<BezierCurve> curves = getSelectedCurves();
+    QList<VertexRef> vertexList;
     VertexRef vertex;
-    int curveNum = getSelectedCurveNumber();
-    for (QPointF point : path)
+    for (int curve = 0; curve < getNumOfCurvesSelected(); curve++)
     {
-        vertex = getClosestVertexTo(selectedCurve, curveNum, point);
-        if (vertex.curveNumber != -1 && !vertexPath.contains(vertex)) {
-            vertexPath.append(vertex);
+        vertexList = getCurveVertices(curveNumbers[curve]);
+        for (int i = 0; i < vertexList.size(); i++)
+        {
+            QPointF point = getVertex(vertexList[i]);
+            vertex = getClosestVertexTo(curves[curve], curveNumbers[curve], point);
+
+            if (vertex.curveNumber != -1 && !vertexPath.contains(vertex))
+            {
+                vertexPath.append(vertex);
+            }
         }
-    }
 
-    BezierArea bezierArea(vertexPath, colour);
-    BezierArea selectedArea = getSelectedArea(currentPoint);
-
-    if (!area.isEmpty())
-    {
-        // remove area if one exists
-        if (selectedArea.isSelected()){
-            removeAreaInCurve(bezierArea);
+        BezierArea bezierArea(vertexPath, colour);
+        if (!area.isEmpty())
+        {
+            // remove area if one exists
+            for (int num = 0; num < area.size(); num++)
+            {
+                if (isSelected(curve))
+                {
+                    removeAreaInCurve(curve, num);
+                }
+            }
         }
-    }
 
-    addArea( bezierArea );
+        addArea( bezierArea );
+
+        // set selected curves as filled
+        m_curves[curve].setFilled(true);
+
+        // clear path for next area
+        vertexPath.clear();
+    }
 
     modification();
 }
@@ -2262,9 +2283,9 @@ void VectorImage::removeArea(QPointF point)
  * @param BezierArea& bezierArea&
  * remove the area in a curve
  */
-void VectorImage::removeAreaInCurve(BezierArea& bezierArea)
+void VectorImage::removeAreaInCurve(int curve, int areaNumber)
 {
-    QPointF areaPoint = getVertex(bezierArea.mVertex[0]);
+    QPointF areaPoint = getVertex(curve, areaNumber);
     removeArea(areaPoint);
 }
 
