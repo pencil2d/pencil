@@ -688,13 +688,21 @@ bool VectorImage::isAreaSelected(int areaNumber)
  */
 bool VectorImage::isPathFilled()
 {
-    for (int curve = 0; curve < m_curves.size(); curve++) {
-        if (m_curves[curve].isFilled() )
-        {
-            return true;
+    bool filled = false;
+    QList<int> curveNumbers = getSelectedCurveNumbers();
+    for (int curveNum : curveNumbers) {
+        qDebug() << m_curves[curveNum].isFilled();
+        if (m_curves[curveNum].isSelected()) {
+            if (m_curves[curveNum].isFilled() )
+            {
+                filled = true;
+            } else {
+                filled = false;
+            }
+
         }
     }
-    return false;
+    return filled;
 }
 
 /**
@@ -1761,22 +1769,10 @@ void VectorImage::fillSelectedPath(int colour)
         }
 
         BezierArea bezierArea(vertexPath, colour);
-        if (!area.isEmpty())
-        {
-            // remove area if one exists
-            for (int num = 0; num < area.size(); num++)
-            {
-                if (isSelected(curve))
-                {
-                    removeAreaInCurve(curve, num);
-                }
-            }
-        }
-
         addArea( bezierArea );
 
         // set selected curves as filled
-        m_curves[curve].setFilled(true);
+        m_curves[curveNumbers[curve]].setFilled(true);
 
         // clear path for next area
         vertexPath.clear();
