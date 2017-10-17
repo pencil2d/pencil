@@ -310,13 +310,21 @@ void PenTool::paintVectorStroke(Layer* layer)
     BezierCurve curve( mStrokePoints, mStrokePressures, tol );
                 curve.setWidth( properties.width );
                 curve.setFeather( properties.feather );
+                curve.setFilled( false );
                 curve.setInvisibility( properties.invisibility );
                 curve.setVariableWidth( properties.pressure );
                 curve.setColourNumber( mEditor->color()->frontColorNumber() );
 
     auto pLayerVector = static_cast< LayerVector* >( layer );
     VectorImage* vectorImage = pLayerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-    vectorImage->insertCurve( 0, curve, mEditor->view()->scaling(), false );
+    vectorImage->addCurve( curve, mEditor->view()->scaling(), false );
+
+    if (vectorImage->isAnyCurveSelected() || mScribbleArea->somethingSelected) {
+        mScribbleArea->deselectAll();
+    }
+
+    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
+    mScribbleArea->somethingSelected = true;
 
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();

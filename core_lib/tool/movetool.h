@@ -47,7 +47,7 @@ private:
     void transformSelection(qreal offsetX, qreal offsetY);
     void pressOperation(QMouseEvent* event, Layer *layer);
     void actionOnVector(QMouseEvent *event, Layer *layer);
-    void onHoverOutlineStroke(Layer* layer);
+    void storeClosestVectorCurve();
     QPointF maintainAspectRatio(qreal offsetX, qreal offsetY);
 };
 

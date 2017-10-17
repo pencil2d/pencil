@@ -60,6 +60,9 @@ void MoveTool::mousePressEvent( QMouseEvent *event )
 
 void MoveTool::mouseReleaseEvent( QMouseEvent* )
 {
+    if ( !mScribbleArea->somethingSelected )
+        return;
+
     // update selection position
     mScribbleArea->myTransformedSelection = mScribbleArea->myTempTransformedSelection;
 
@@ -114,22 +117,25 @@ void MoveTool::mouseMoveEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::VECTOR )
         {
-            onHoverOutlineStroke(layer);
+            storeClosestVectorCurve();
         }
         mScribbleArea->update();
     }
 }
 
-
 void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 {
-    if ( (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR) )
+    if ( layer->isPaintable() )
     {
         mEditor->backup( tr( "Move" ) );
         mScribbleArea->setMoveMode( ScribbleArea::MIDDLE ); // was MIDDLE
 
+        QRectF selectionRect = mScribbleArea->myTransformedSelection;
         if ( mScribbleArea->somethingSelected ) // there is an area selection
         {
+            if ( event->modifiers() != Qt::ShiftModifier && !selectionRect.contains( getCurrentPoint() ) )
+                mScribbleArea->deselectAll();
+
             whichTransformationPoint();
 
             // calculate new transformation in case click only
@@ -296,11 +302,17 @@ QPointF MoveTool::maintainAspectRatio(qreal offsetX, qreal offsetY)
     return QPointF(offsetX,offsetY);
 }
 
-void MoveTool::onHoverOutlineStroke(Layer* layer)
+/**
+ * @brief MoveTool::storeClosestVectorCurve
+ * stores the curves closest to the mouse position in mClosestCurves
+ */
+void MoveTool::storeClosestVectorCurve()
 {
+    Layer* layer = mEditor->layers()->currentLayer();
     auto layerVector = static_cast< LayerVector* >( layer );
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
-    mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(), mScribbleArea->tol / mEditor->view()->scaling() );
+    mScribbleArea->mClosestCurves = pVecImg->getCurvesCloseTo( getCurrentPoint(),
+                                                               mScribbleArea->selectionTolerance / mEditor->view()->scaling() );
 }
 
 void MoveTool::cancelChanges()

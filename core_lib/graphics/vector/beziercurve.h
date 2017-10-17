@@ -50,12 +50,13 @@ public:
     QPointF getC1(int i) const { return c1.at(i); }
     QPointF getC2(int i) const { return c2.at(i); }
     qreal getPressure(int i) const { return pressure.at(i); }
-    bool isSelected(int i) const { return selected.at(i+1); }
+    bool isSelected(int vertex) const { return selected.at(vertex+1); }
     bool isSelected() const { bool result=true; for(int i=0; i<selected.size(); i++) result = result && selected[i]; return result; }
     bool isPartlySelected() const { bool result=false; for(int i=0; i<selected.size(); i++) result = result || selected[i]; return result; }
     bool isInvisible() const { return invisible; }
     bool intersects(QPointF point, qreal distance);
     bool intersects(QRectF rectangle);
+    bool isFilled() const { return mFilled; }
 
     void setOrigin(const QPointF& point);
     void setOrigin(const QPointF& point, const qreal& pressureValue, const bool& trueOrFalse);
@@ -70,13 +71,14 @@ public:
     void setColourNumber(int colourNumber) { this->colourNumber = colourNumber; }
     void setSelected(bool YesOrNo) { for(int i=0; i<selected.size(); i++) { selected[i] = YesOrNo; } }
     void setSelected(int i, bool YesOrNo);
+    void setFilled(bool yesOrNo);
 
     BezierCurve transformed(QTransform transformation);
     void transform(QTransform transformation);
 
     void appendCubic(const QPointF& c1Point, const QPointF& c2Point, const QPointF& vertexPoint, qreal pressureValue);
     void addPoint(int position, const QPointF point);
-    void addPoint(int position, const qreal t);
+    void addPoint(int position, const qreal fraction);
     QPointF getPointOnCubic(int i, qreal t);
     void removeVertex(int i);
     QPainterPath getStraightPath();
@@ -110,6 +112,7 @@ private:
     float feather = 0.f;
     bool variableWidth = 0.f;
     bool invisible = false;
+    bool mFilled = false;
     QList<bool> selected; // this list has one more element than the other list (the first element is for the origin)
 };
 

@@ -334,6 +334,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
     BezierCurve curve( mStrokePoints, mStrokePressures, tol );
     curve.setWidth( 0 );
     curve.setFeather( 0 );
+    curve.setFilled( false );
     curve.setInvisibility( true );
     curve.setVariableWidth( false );
     curve.setColourNumber( mEditor->color()->frontColorNumber() );
@@ -343,10 +344,21 @@ void PencilTool::paintVectorStroke(Layer* layer)
 
     if (properties.useFillContour == true)
     {
-        vectorImage->fillPath( mStrokePoints,
-                           mEditor->color()->frontColorNumber(),
-                           10.0 / mEditor->view()->scaling() );
+        vectorImage->fillContour( mStrokePoints,
+                           mEditor->color()->frontColorNumber() );
     }
+
+    if (vectorImage->isAnyCurveSelected() || mScribbleArea->somethingSelected) {
+        mScribbleArea->deselectAll();
+    }
+
+    // select last/newest curve
+    vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
+
+    // TODO: selection doesn't apply on enter or escape
+    mScribbleArea->somethingSelected = true;
+
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
+
 }

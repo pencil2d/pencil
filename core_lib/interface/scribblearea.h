@@ -56,6 +56,7 @@ class ScribbleArea : public QWidget
     friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
+    friend class BucketTool;
 
 public:
     ScribbleArea( QWidget *parent );
@@ -69,9 +70,10 @@ public:
     void displaySelectionProperties();
     void resetSelectionProperties();
     QRectF getSelection() const { return mySelection; }
-    bool somethingSelected;
+    bool somethingSelected = false;
     QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
     qreal myRotatedAngle;
+    QList<int> mClosestCurves;
 
     bool areLayersSane() const;
     bool isLayerPaintable() const;
@@ -224,8 +226,7 @@ private:
     QPointF mLastPoint;
     QPointF mCurrentPoint;
 
-    qreal tol;
-    QList<int> mClosestCurves;
+    qreal selectionTolerance;
     QList<VertexRef> mClosestVertices;
     QPointF mOffset;
     QPoint mCursorCenterPos;

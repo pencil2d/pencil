@@ -60,11 +60,14 @@ public:
     bool isSelected(VertexRef vertexRef);
     bool isSelected(QList<int> curveList);
     bool isSelected(QList<VertexRef> vertexList);
+    bool isAnyCurveSelected();
     void setAreaSelected(int areaNumber, bool YesOrNo);
     bool isAreaSelected(int areaNumber);
+    bool isPathFilled();
 
     int getFirstSelectedCurve();
     int getFirstSelectedArea();
+    int getNumOfCurvesSelected();
     void selectAll();
     void deselectAll();
     QRectF getSelectionRect() { return mSelectionRect; }
@@ -72,7 +75,7 @@ public:
     void calculateSelectionRect();
     void deleteSelection();
     void deleteSelectedPoints();
-    void removeVertex(int i, int m);
+    void removeVertex(int curve, int vertex);
 
     void paste(VectorImage&);
 
@@ -89,23 +92,31 @@ public:
     void setSelectionTransformation(QTransform transform);
     void applySelectionTransformation();
     void applySelectionTransformation(QTransform transform);
-    void applyColourToSelection(int colourNumber);
+    void applyColourToSelectedCurve(int colourNumber);
+    void applyColourToSelectedArea(int colourNumber);
     void applyWidthToSelection(qreal width);
     void applyFeatherToSelection(qreal feather);
     void applyOpacityToSelection(qreal opacity);
     void applyInvisibilityToSelection(bool YesOrNo);
     void applyVariableWidthToSelection(bool YesOrNo);
-    void fillPath(QList<QPointF> contourPath, int colour, float tolerance);
-    void fill(QPointF point, int colour, float tolerance);
+    void fillContour(QList<QPointF> contourPath, int colour);
+    void fillSelectedPath(int colour);
+//    void fill(QPointF point, int colour, float tolerance);
     void addArea(BezierArea bezierArea);
     int  getFirstAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point);
     int  getLastAreaNumber(QPointF point, int maxAreaNumber);
+    int getLastCurveNumber();
+    BezierCurve getLastCurve();
     void removeArea(QPointF point);
+    void removeAreaInCurve(int curve, int areaNumber);
     void updateArea(BezierArea& bezierArea);
 
     QList<int> getCurvesCloseTo(QPointF thisPoint, qreal maxDistance);
-    VertexRef getClosestVertexTo(QPointF thisPoint, qreal maxDistance);
+    QList<BezierCurve> getSelectedCurves();
+    QList<int> getSelectedCurveNumbers();
+    BezierArea getSelectedArea(QPointF currentPoint);
+    VertexRef getClosestVertexTo(BezierCurve curve, int curveNum, QPointF thisPoint);
     QList<VertexRef> getCurveVertices(int curveNumber);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance);
     QList<VertexRef> getVerticesCloseTo(QPointF thisPoint, qreal maxDistance, QList<VertexRef>* listOfPoints);
@@ -122,6 +133,8 @@ public:
     QList<VertexRef> getAllVertices();
     int getCurveSize(int curveNumber);
 
+    QPainterPath getStrokedPath() { return mGetStrokedPath;}
+
     QList<BezierCurve> m_curves;
     QList<BezierArea> area;
     QList<int> m_curveDisplayOrders;
@@ -131,13 +144,14 @@ public:
     QSize getSize() {return mSize;}
 
 private:
-    void addPoint( int curveNumber, int vertexNumber, qreal t );
+    void addPoint(int curveNumber, int vertexNumber, qreal fraction );
 	
 	void checkCurveExtremity(BezierCurve& newCurve, qreal tolerance);
 	void checkCurveIntersections(BezierCurve& newCurve, qreal tolerance);
 
-	QList<QPointF> getfillContourPoints(QPoint point);
+//	QList<QPointF> getfillContourPoints(QPoint point);
 	void updateImageSize(BezierCurve& updatedCurve);
+        QPainterPath mGetStrokedPath;
 
 private:
     Object* mObject = nullptr;

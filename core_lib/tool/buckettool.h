@@ -19,9 +19,10 @@ GNU General Public License for more details.
 #define BUCKETTOOL_H
 
 #include "stroketool.h"
+#include "qpainterpath.h"
 
 class Layer;
-
+class VectorImage;
 
 class BucketTool : public StrokeTool
 {
@@ -37,10 +38,17 @@ public:
     void mouseReleaseEvent( QMouseEvent * ) override;
 
     void setTolerance(const int tolerance) override;
+    void setWidth(const qreal width) override;
 
     void paintBitmap(Layer *layer);
     void paintVector(QMouseEvent *event, Layer *layer);
     void drawStroke();
+    void getBrushWidth();
+
+    void applyChanges();
+
+private:
+    VectorImage* vectorImage = nullptr;
 };
 
 #endif // BUCKETTOOL_H

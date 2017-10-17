@@ -82,6 +82,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
     xmlStream.writeAttribute( "variableWidth", variableWidth ? "true" : "false" );
     if (feather>0) xmlStream.writeAttribute( "feather", QString::number( feather ) );
     xmlStream.writeAttribute( "invisible", invisible ? "true" : "false" );
+    xmlStream.writeAttribute( "filled", mFilled ? "true" : "false" );
     xmlStream.writeAttribute( "colourNumber", QString::number( colourNumber ) );
     xmlStream.writeAttribute( "originX", QString::number( origin.x() ) );
     xmlStream.writeAttribute( "originY", QString::number( origin.y() ) );
@@ -113,6 +114,7 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
                                               << QString( "variableWidth = %1" ).arg( "variableWidth" )
                                               << QString( "feather = %1" ).arg( feather )
                                               << QString( "invisible = %1" ).arg( invisible )
+                                              << QString( "filled = %1" ).arg( mFilled )
                                               << QString( "colourNumber = %1" ).arg( colourNumber )
                                               << QString( "originX = %1" ).arg( origin.x() )
                                               << QString( "originY = %1" ).arg( origin.y() )
@@ -138,6 +140,7 @@ void BezierCurve::loadDomElement(QDomElement element)
     variableWidth = (element.attribute("variableWidth") == "1");
     feather = element.attribute("feather").toDouble();
     invisible = (element.attribute("invisible") == "1");
+    mFilled = (element.attribute("filled") == "1");
     if (width == 0) invisible = true;
     colourNumber = element.attribute("colourNumber").toInt();
     origin = QPointF( element.attribute("originX").toFloat(), element.attribute("originY").toFloat() );
@@ -254,6 +257,17 @@ void BezierCurve::setSelected(int i, bool YesOrNo)
     selected[i+1] = YesOrNo;
 }
 
+/**
+ * @brief BezierCurve::setFilled
+ * @param YesOrNo: bool
+ * setFilled doesn't do anything on its own, but we use it
+ * to see if a curve has been filled with an BezierArea.
+ */
+void BezierCurve::setFilled(bool YesOrNo)
+{
+    mFilled = YesOrNo;
+}
+
 BezierCurve BezierCurve::transformed(QTransform transformation)
 {
     BezierCurve transformedCurve = *this; // copy the curve
@@ -337,7 +351,7 @@ void BezierCurve::addPoint(int position, const QPointF point)
     }
 }
 
-void BezierCurve::addPoint(int position, const qreal t)    // t is the fraction where to split the bezier curve (ex: t=0.5)
+void BezierCurve::addPoint(int position, const qreal fraction) // fraction is where to split the bezier curve (ex: fraction=0.5)
 {
     // de Casteljau's method is used
     // http://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm
@@ -348,12 +362,12 @@ void BezierCurve::addPoint(int position, const qreal t)    // t is the fraction 
         QPointF vB = getVertex(position);
         QPointF c1o = getC1(position);
         QPointF c2o = getC2(position);
-        QPointF c12 = (1-t)*c1o + t*c2o;
-        QPointF cA1 = (1-t)*vA + t*c1o;
-        QPointF cB2 = (1-t)*c2o + t*vB;
-        QPointF cA2 = (1-t)*cA1 + t*c12;
-        QPointF cB1 = (1-t)*c12 + t*cB2;
-        QPointF vM = (1-t)*cA2 + t*cB1;
+        QPointF c12 = (1-fraction)*c1o + fraction*c2o;
+        QPointF cA1 = (1-fraction)*vA + fraction*c1o;
+        QPointF cB2 = (1-fraction)*c2o + fraction*vB;
+        QPointF cA2 = (1-fraction)*cA1 + fraction*c12;
+        QPointF cB1 = (1-fraction)*c12 + fraction*cB2;
+        QPointF vM = (1-fraction)*cA2 + fraction*cB1;
 
         setC1(position, cB1);
         setC2(position, cB2);
@@ -457,7 +471,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
     if (!simplified)
     {
         // highlight the selected elements
-        colour = QColor(100,100,255);  // highlight colour
+        colour = QColor(100,150,255);  // highlight colour
         painter.setBrush(Qt::NoBrush);
         qreal lineWidth = 1.5/painter.matrix().m11();
         painter.setPen(QPen(QBrush(colour), lineWidth, Qt::SolidLine, Qt::RoundCap,Qt::RoundJoin));
@@ -468,7 +482,7 @@ void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transfo
         {
             if (isSelected(i))
             {
-                //painter.fillRect(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth, colour);
+//                painter.fillRect(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth, colour);
 
                 //painter.fillRect(QRectF(myCurve.getVertex(i).x()-0.5*squareWidth, myCurve.getVertex(i).y()-0.5*squareWidth, squareWidth, squareWidth), colour);
 
@@ -519,13 +533,15 @@ QPainterPath BezierCurve::getStrokedPath(qreal width)
     return getStrokedPath(width, true);
 }
 
+// this function is a mess and outputs buggy results randomly...
 QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
 {
     QPainterPath path;
     QPointF tangentVec, normalVec, normalVec2, normalVec2_1, normalVec2_2;
     qreal width2 = width;
-    path.setFillRule(Qt::WindingFill);
     int n = vertex.size();
+    path.setFillRule(Qt::WindingFill);
+
     normalVec = QPointF(-(c1.at(0) - origin).y(), (c1.at(0) - origin).x());
     normalise(normalVec);
     if (usePressure) width2 = width * 0.5 * pressure.at(0);

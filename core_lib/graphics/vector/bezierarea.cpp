@@ -53,6 +53,7 @@ Status BezierArea::createDomElement( QXmlStreamWriter& xmlStream )
 {
     xmlStream.writeStartElement( "area" );
     xmlStream.writeAttribute( "colourNumber", QString::number( mColourNumber ) );
+    xmlStream.writeAttribute("filled", QString::number( mIsFilled ) );
 
     int errorLocation = -1;
     for ( int i = 0; i < mVertex.size(); i++ )

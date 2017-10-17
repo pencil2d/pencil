@@ -47,11 +47,12 @@ void BucketTool::loadSettings()
 {
     properties.width = 4;
     properties.feather = 10;
-    properties.inpolLevel = -1;
+    properties.inpolLevel = 0;
     properties.useAA = -1;
     properties.tolerance = 10;
 
     m_enabledProperties[TOLERANCE] = true;
+    m_enabledProperties[WIDTH] = true;
 }
 
 QCursor BucketTool::cursor()
@@ -65,6 +66,22 @@ QCursor BucketTool::cursor()
     } else {
         return Qt::CrossCursor;
     }
+}
+
+/**
+ * @brief BrushTool::setWidth
+ * @param width
+ * set fill thickness
+ */
+void BucketTool::setWidth(const qreal width)
+{
+    // Set current property
+    properties.width = width;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("fillThickness", width);
+    settings.sync();
 }
 
 void BucketTool::setTolerance(const int tolerance)
@@ -111,8 +128,10 @@ void BucketTool::mouseMoveEvent( QMouseEvent *event )
     if ( layer->type() == Layer::BITMAP) {
         Q_UNUSED( event );
     }
-    else if(layer->type() == Layer::VECTOR ) {
-        if( event->buttons() & Qt::LeftButton ) {
+    else if(layer->type() == Layer::VECTOR )
+    {
+        if( event->buttons() & Qt::LeftButton )
+        {
             drawStroke();
             qDebug() << "DrawStroke" << event->pos() ;
         }
@@ -148,43 +167,49 @@ void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
     mScribbleArea->clearBitmapBuffer();
     VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 
-    if( event->modifiers() == Qt::AltModifier ) {
-        vectorImage->removeArea( getLastPoint() );
-    } else {
-        QList<QPointF> path = mStrokePoints;
-        if (path.size() < 10) {
-            vectorImage->fill( getLastPoint(),
-                               mEditor->color()->frontColorNumber(),
-                               3.0 / mEditor->view()->scaling() );
-        } else {
-            vectorImage->fillPath( path,
-                               mEditor->color()->frontColorNumber(),
-                               10.0 / mEditor->view()->scaling() );
-        }
+    if ( !vectorImage->isPathFilled() )
+    {
+        vectorImage->fillSelectedPath( mEditor->color()->frontColorNumber() );
     }
+
+    vectorImage->applyWidthToSelection( properties.width );
+    vectorImage->applyColourToSelectedCurve( mEditor->color()->frontColorNumber() );
+    vectorImage->applyColourToSelectedArea( mEditor->color()->frontColorNumber() );
+
+    applyChanges();
+
     mScribbleArea->setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
     mScribbleArea->setAllDirty();
+}
+
+void BucketTool::applyChanges()
+{
+    mScribbleArea->applyTransformedSelection();
 }
 
 void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
+
+    if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
+        m_pStrokeManager->setInpolLevel(properties.inpolLevel);
+    }
+
     QList<QPointF> p = m_pStrokeManager->interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    if( layer->type() == Layer::BITMAP ) {
-        // No stroke in Bitmap layer
-    }
-    else if( layer->type() == Layer::VECTOR ) {
+
+    if( layer->type() == Layer::VECTOR ) {
+        mCurrentWidth = 30;
         int rad = qRound( ( mCurrentWidth / 2 + 2 ) * mEditor->view()->scaling() );
 
-        QColor pathColor = mEditor->color()->frontColor();
-        pathColor.setAlpha(50);
+        QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
+//        pathColor.setAlpha(255);
 
         QPen pen( pathColor,
                   mCurrentWidth * mEditor->view()->scaling(),
-                  Qt::SolidLine,
+                  Qt::NoPen,
                   Qt::RoundCap,
                   Qt::RoundJoin );
 
