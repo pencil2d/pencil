@@ -183,7 +183,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     mLanguageCombo->addItem( tr( "Italian" ), "it" );
     mLanguageCombo->addItem( tr( "Japanese" ), "ja" );
     mLanguageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );
-    mLanguageCombo->addItem( tr( "Russian" ), "ja" );
+    mLanguageCombo->addItem( tr( "Russian" ), "ru" );
     mLanguageCombo->addItem( tr( "Chinese - Taiwan" ), "zh-TW" );
 
     QLabel* windowOpacityLabel = new QLabel(tr("Opacity"));
