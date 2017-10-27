@@ -37,6 +37,7 @@ public:
     // file 
     Status importSound();
 	Status exportMovie();
+	Status exportImageSequence();
 
     // edit
 
@@ -59,7 +60,6 @@ public:
     void GotoPrevKeyFrame();
     void addNewKey();
     void removeKey();
-    void updateFrameEnd();
 
     // Layer
     Status addNewBitmapLayer();

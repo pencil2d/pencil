@@ -50,9 +50,9 @@ private slots:
     void browse();
 
 private:
-    Ui::ImportExportDialog* ui;
+    Ui::ImportExportDialog* ui = nullptr;
 
-    FileDialog* m_fileDialog;
+    FileDialog* m_fileDialog = nullptr;
     QStringList m_filePaths;
 };
 

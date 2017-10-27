@@ -47,7 +47,7 @@ private slots:
     void formatChanged(QString format);
 
 private:
-    Ui::ExportImageOptions* ui;
+    Ui::ExportImageOptions* ui = nullptr;
 
     FileType m_fileType;
 };

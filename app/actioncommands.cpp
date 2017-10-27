@@ -31,9 +31,8 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "util.h"
+#include "app_util.h"
 
-//#include "layerbitmap.h"
-//#include "layervector.h"
 #include "layercamera.h"
 #include "layersound.h"
 #include "bitmapimage.h"
@@ -44,7 +43,7 @@ GNU General Public License for more details.
 #include "movieexporter.h"
 #include "filedialogex.h"
 #include "exportmoviedialog.h"
-
+#include "exportimagedialog.h"
 
 
 ActionCommands::ActionCommands( QWidget* parent ) : QObject( parent )
@@ -191,6 +190,66 @@ Status ActionCommands::exportMovie()
     }
     delete mExportMovieDialog;
     return Status::OK;
+}
+
+Status ActionCommands::exportImageSequence()
+{
+	// Get the camera layer
+	int cameraLayerId = mEditor->layers()->getLastCameraLayer();
+
+	LayerCamera *cameraLayer = dynamic_cast<LayerCamera*>(mEditor->object()->getLayer(cameraLayerId));
+
+	// Options
+	auto dialog = new ExportImageDialog(mParent, true);
+	OnScopeExit(dialog->deleteLater());
+
+	if (cameraLayer != nullptr)
+	{
+		dialog->setExportSize(cameraLayer->getViewRect().size());
+	}
+	else
+	{
+		dialog->setExportSize(QSize(640, 480));
+	}
+	dialog->exec();
+
+	QString strFilePath = dialog->getFilePath();
+	QSize exportSize = dialog->getExportSize();
+	QString exportFormat = dialog->getExportFormat();
+	bool useTranparency = dialog->getTransparency();
+
+	if (dialog->result() == QDialog::Rejected)
+	{
+		return Status::SAFE;
+	}
+
+	// Export
+	//    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
+	//    view = mScribbleArea->getView() * view;
+
+	int projectLength = mEditor->layers()->projectLength();
+
+	// Show a progress dialog, as this can take a while if you have lots of frames.
+	QProgressDialog progress(tr("Exporting image sequence..."), tr("Abort"), 0, 100, mParent);
+	hideQuestionMark(progress);
+	progress.setWindowModality(Qt::WindowModal);
+	progress.show();
+
+	mEditor->object()->exportFrames(1,
+		projectLength,
+		cameraLayer,
+		exportSize,
+		strFilePath,
+		exportFormat.toStdString().c_str(),
+		-1,
+		useTranparency,
+		true,
+		&progress,
+		100);
+
+	progress.close();
+
+	return Status::OK;
 }
 
 void ActionCommands::ZoomIn()

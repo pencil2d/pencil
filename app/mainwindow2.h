@@ -87,8 +87,6 @@ public:
     void exportImage();
 
     void importImageSequence();
-    void exportImageSequence();
-
     void importMovie();
 
     void lockWidgets( bool shouldLock );
