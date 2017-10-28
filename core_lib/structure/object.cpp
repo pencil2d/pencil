@@ -603,30 +603,6 @@ bool Object::exportFrames( int frameStart, int frameEnd,
     return true;
 }
 
-
-void convertNFrames( int fps, int exportFps, int* frameRepeat, int* frameReminder, int* framePutEvery, int* frameSkipEvery )
-{
-    /// --- simple conversion ---
-    *frameRepeat = exportFps / fps;     // identic frames to export per frame
-    *frameReminder = exportFps % fps;   // additional frames to export in an fps cycle (= 1 second)
-
-    /// --- modulo frames and their redistribution in time ---
-    if ( *frameReminder == 0 )                            /// frames left = 0 -> no need to add extra frames
-    {
-        *framePutEvery = 0; *frameSkipEvery = 0;
-    }        //  so, frameSkipEvery and framePutEvery will not be used.
-    else if ( *frameReminder > ( fps - *frameReminder ) )   /// frames to add > frames to skip -> frameSkipEvery will be used.
-    {
-        *frameSkipEvery = fps / ( fps - *frameReminder ); *framePutEvery = 0;
-    }
-    else                                                /// Frames to add < frames to skip -> framePutEvery will be used.
-    {
-        *framePutEvery = fps / *frameReminder; *frameSkipEvery = 0;
-    }
-    qDebug() << "-->convertedNFrames";
-}
-
-
 bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing )
 {
     QSettings settings( PENCIL2D, PENCIL2D );
