@@ -33,7 +33,7 @@ public:
     explicit ExportMovieDialog(QWidget* parent = 0);
     ~ExportMovieDialog();
 
-    void setCamerasInfo( std::vector< std::pair< QString, QSize > > );
+    void setCamerasInfo(const std::vector<std::pair<QString, QSize>>);
     void updateResolutionCombo( int index );
 
     void setDefaultRange( int startFrame, int endFrame, int endFrameWithSounds );

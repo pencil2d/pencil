@@ -33,14 +33,14 @@ ExportMovieDialog::~ExportMovieDialog()
     delete ui;
 }
 
-void ExportMovieDialog::setCamerasInfo( std::vector< std::pair< QString, QSize > > camerasInfo )
+void ExportMovieDialog::setCamerasInfo(const std::vector<std::pair<QString, QSize>> camerasInfo)
 {
     if ( ui->cameraCombo->count() > 0 )
     {
         ui->cameraCombo->clear();
     }
 
-    for ( std::pair< QString, QSize >& camera : camerasInfo )
+	for (const std::pair<QString, QSize>& camera : camerasInfo)
     {
         ui->cameraCombo->addItem( camera.first, camera.second );
     }

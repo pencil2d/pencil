@@ -194,29 +194,38 @@ Status ActionCommands::exportMovie()
 
 Status ActionCommands::exportImageSequence()
 {
-	// Get the camera layer
-	int cameraLayerId = mEditor->layers()->getLastCameraLayer();
-
-	LayerCamera *cameraLayer = dynamic_cast<LayerCamera*>(mEditor->object()->getLayer(cameraLayerId));
-
 	// Options
 	auto dialog = new ExportImageDialog(mParent, true);
 	OnScopeExit(dialog->deleteLater());
 
-	if (cameraLayer != nullptr)
+	std::vector< std::pair<QString, QSize> > camerasInfo;
+	auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
+	for (LayerCamera* i : cameraLayers)
 	{
-		dialog->setExportSize(cameraLayer->getViewRect().size());
+		camerasInfo.push_back(std::make_pair(i->name(), i->getViewSize()));
 	}
-	else
+
+	auto currLayer = mEditor->layers()->currentLayer();
+	if (currLayer->type() == Layer::CAMERA)
 	{
-		dialog->setExportSize(QSize(640, 480));
+		QString strName = currLayer->name();
+		auto it = std::find_if(camerasInfo.begin(), camerasInfo.end(),
+			[strName](std::pair<QString, QSize> p)
+		{
+			return p.first == strName;
+		});
+
+		Q_ASSERT(it != camerasInfo.end());
+		std::swap(camerasInfo[0], *it);
 	}
+	dialog->setCamerasInfo(camerasInfo);
+
 	dialog->exec();
 
-	QString strFilePath = dialog->getFilePath();
-	QSize exportSize = dialog->getExportSize();
+	QString strFilePath =  dialog->getFilePath();
+	QSize exportSize =     dialog->getExportSize();
 	QString exportFormat = dialog->getExportFormat();
-	bool useTranparency = dialog->getTransparency();
+	bool useTranparency =  dialog->getTransparency();
 
 	if (dialog->result() == QDialog::Rejected)
 	{
@@ -237,7 +246,7 @@ Status ActionCommands::exportImageSequence()
 
 	mEditor->object()->exportFrames(1,
 		projectLength,
-		cameraLayer,
+		nullptr,
 		exportSize,
 		strFilePath,
 		exportFormat.toStdString().c_str(),

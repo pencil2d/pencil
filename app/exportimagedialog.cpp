@@ -21,10 +21,11 @@ GNU General Public License for more details.
 ExportImageDialog::ExportImageDialog(QWidget *parent, bool seq) :
     ImportExportDialog(parent),
     ui(new Ui::ExportImageOptions),
-    m_fileType(seq ? FileType::IMAGE_SEQUENCE : FileType::IMAGE)
+    mFileType(seq ? FileType::IMAGE_SEQUENCE : FileType::IMAGE)
 {
     ui->setupUi( getOptionsGroupBox() );
     init();
+
     if (seq)
     {
         setWindowTitle( tr( "Export image sequence" ) );
@@ -41,6 +42,22 @@ ExportImageDialog::ExportImageDialog(QWidget *parent, bool seq) :
 ExportImageDialog::~ExportImageDialog()
 {
     delete ui;
+}
+
+void ExportImageDialog::setCamerasInfo(const std::vector<std::pair<QString, QSize>> cameraInfo)
+{
+	Q_ASSERT(ui->cameraCombo);
+
+	ui->cameraCombo->clear();
+	for (const std::pair<QString, QSize> it : cameraInfo)
+	{
+		ui->cameraCombo->addItem(it.first, it.second);
+	}
+
+	auto indexChanged = static_cast<void(QComboBox::*)(int i)>(&QComboBox::currentIndexChanged);
+	connect(ui->cameraCombo, indexChanged, this, &ExportImageDialog::cameraComboChanged);
+
+	cameraComboChanged(0);
 }
 
 void ExportImageDialog::setExportSize(QSize size)
@@ -71,10 +88,18 @@ ImportExportDialog::Mode ExportImageDialog::getMode()
 
 FileType ExportImageDialog::getFileType()
 {
-    return m_fileType;
+    return mFileType;
 }
 
 void ExportImageDialog::formatChanged(QString format)
 {
     setFileExtension( format.toLower() );
+}
+
+void ExportImageDialog::cameraComboChanged(int index)
+{
+	QSize cameraSize = ui->cameraCombo->itemData(index).toSize();
+
+	ui->imgWidthSpinBox->setValue(cameraSize.width());
+	ui->imgHeightSpinBox->setValue(cameraSize.height());
 }
