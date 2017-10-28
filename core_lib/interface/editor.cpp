@@ -700,17 +700,12 @@ bool Editor::exportSeqCLI( QString filePath, QString format, int width, int heig
     }
 
     QSize exportSize = QSize( width, height );
-    QByteArray exportFormat( format.toLatin1() );
-
     int projectLength = mLayerManager->projectLength();
-
-    mObject->exportFrames( 1,
-                           projectLength,
+    mObject->exportFrames( 1, projectLength,
                            cameraLayer,
                            exportSize,
                            filePath,
-                           exportFormat,
-                           -1,
+		                   format,
                            transparency,
                            antialias,
                            NULL,
