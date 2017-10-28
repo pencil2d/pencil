@@ -590,9 +590,6 @@ bool Object::exportFrames( int frameStart, int frameEnd,
 		painter.setWorldTransform(view * centralizeCamera);
 		painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
 
-        //QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
-        //painter.setWorldTransform( mapView );
-
         paintImage( painter, currentFrame, false, antialiasing );
 
         QString frameNumberString = QString::number( currentFrame );
@@ -672,19 +669,24 @@ bool Object::exportX( int frameStart, int frameEnd, QTransform view, QSize expor
     return true;
 }
 
-bool Object::exportIm( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency )
+bool Object::exportIm( int frameStart, QTransform view, QSize cameraSize, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency )
 {
-    Q_UNUSED( frameEnd );
     QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
 
     QColor bgColor = Qt::white;
-    if (transparency) {
+    if (transparency)
+	{
         bgColor.setAlpha(0);
     }
     imageToExport.fill(bgColor);
 
-    QPainter painter( &imageToExport );
-    painter.setWorldTransform( view );
+	QTransform centralizeCamera;
+	centralizeCamera.translate(cameraSize.width() / 2, cameraSize.height() / 2);
+
+	QPainter painter(&imageToExport);
+	painter.setWorldTransform(view * centralizeCamera);
+	painter.setWindow(QRect(0, 0, cameraSize.width(), cameraSize.height()));
+
     paintImage( painter, frameStart, false, antialiasing );
 
     return imageToExport.save( filePath, format.toStdString().c_str() );

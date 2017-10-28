@@ -259,6 +259,70 @@ Status ActionCommands::exportImageSequence()
 	return Status::OK;
 }
 
+Status ActionCommands::exportImage()
+{
+	// Options
+	auto dialog = new ExportImageDialog(mParent);
+	OnScopeExit(dialog->deleteLater());
+
+	std::vector< std::pair<QString, QSize> > camerasInfo;
+	auto cameraLayers = mEditor->object()->getLayersByType< LayerCamera >();
+	for (LayerCamera* i : cameraLayers)
+	{
+		camerasInfo.push_back(std::make_pair(i->name(), i->getViewSize()));
+	}
+
+	auto currLayer = mEditor->layers()->currentLayer();
+	if (currLayer->type() == Layer::CAMERA)
+	{
+		QString strName = currLayer->name();
+		auto it = std::find_if(camerasInfo.begin(), camerasInfo.end(),
+			[strName](std::pair<QString, QSize> p)
+		{
+			return p.first == strName;
+		});
+
+		Q_ASSERT(it != camerasInfo.end());
+		std::swap(camerasInfo[0], *it);
+	}
+	dialog->setCamerasInfo(camerasInfo);
+
+	dialog->exec();
+
+	if (dialog->result() == QDialog::Rejected)
+	{
+		return Status::SAFE;
+	}
+
+	QString filePath = dialog->getFilePath();
+	QSize exportSize = dialog->getExportSize();
+	QString exportFormat = dialog->getExportFormat();
+	bool useTranparency = dialog->getTransparency();
+
+	// Export
+	QString sCameraLayerName = dialog->getCameraLayerName();
+	LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->getLayerByName(sCameraLayerName);
+
+	QTransform view = cameraLayer->getCameraAtFrame(mEditor->currentFrame())->getView();
+
+	if (!mEditor->object()->exportIm(mEditor->currentFrame(),
+		view,
+		cameraLayer->getViewSize(),
+		exportSize,
+		filePath,
+		exportFormat,
+		true,
+		useTranparency))
+	{
+		QMessageBox::warning(mParent,
+			tr("Warning"),
+			tr("Unable to export image."),
+			QMessageBox::Ok);
+		return Status::FAIL;
+	}
+	return Status::OK;
+}
+
 void ActionCommands::ZoomIn()
 {
     mEditor->view()->scaleUp();

@@ -234,7 +234,7 @@ void MainWindow2::createMenus()
 
     /// --- Export Menu ---
     //connect( ui->actionExport_X_sheet, &QAction::triggered, mEditor, &Editor::exportX );
-    connect( ui->actionExport_Image, &QAction::triggered, this, &MainWindow2::exportImage );
+    connect( ui->actionExport_Image, &QAction::triggered, mCommands, &ActionCommands::exportImage );
     connect( ui->actionExport_ImageSeq, &QAction::triggered, mCommands, &ActionCommands::exportImageSequence );
     connect( ui->actionExport_Movie, &QAction::triggered, mCommands, &ActionCommands::exportMovie );
 
@@ -710,63 +710,6 @@ void MainWindow2::lockWidgets(bool shouldLock)
     mToolOptions->setFeatures(feat);
     mToolBox->setFeatures(feat);
     mTimeLine->setFeatures(feat);
-}
-
-void MainWindow2::exportImage()
-{
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    // Get the camera layer
-    int cameraLayerId = mEditor->layers()->getLastCameraLayer();
-
-    LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
-
-    // Options
-    auto dialog =  new ExportImageDialog( this );
-    OnScopeExit( dialog->deleteLater() );
-
-    if(cameraLayer != nullptr)
-    {
-        dialog->setExportSize(cameraLayer->getViewRect().size());
-    }
-    else
-    {
-        dialog->setExportSize(QSize(640, 480));
-    }
-    dialog->exec();
-
-    QString filePath = dialog->getFilePath();
-    QSize exportSize = dialog->getExportSize();
-    QString exportFormat = dialog->getExportFormat();
-    bool useTranparency = dialog->getTransparency();
-
-    if ( dialog->result() == QDialog::Rejected )
-    {
-        return; // false;
-    }
-
-
-    // Export
-    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-
-    int projectLength = mEditor->layers()->projectLength();
-    if ( !mEditor->object()->exportIm( mEditor->currentFrame(),
-                                       projectLength,
-                                       view,
-                                       exportSize,
-                                       filePath,
-                                       exportFormat,
-                                       true,
-                                       useTranparency ) )
-    {
-        QMessageBox::warning( this,
-                              tr( "Warning" ),
-                              tr( "Unable to export image." ),
-                              QMessageBox::Ok,
-                              QMessageBox::Ok );
-        return;// false;
-    }
-    return; // true;
 }
 
 void MainWindow2::preferences()

@@ -38,6 +38,7 @@ public:
     Status importSound();
 	Status exportMovie();
 	Status exportImageSequence();
+	Status exportImage();
 
     // edit
 

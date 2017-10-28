@@ -130,7 +130,7 @@ public:
     // these functions need to be moved to somewhere...
     bool exportFrames( int frameStart, int frameEnd, LayerCamera* cameraLayer, QSize exportSize, QString filePath, const char* format, int quality, bool transparency, bool antialiasing, QProgressDialog* progress, int progressMax );
     bool exportX( int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing );
-    bool exportIm(int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, QString format, bool antialiasing , bool transparency);
+    bool exportIm(int frameStart, QTransform view, QSize cameraSize, QSize exportSize, QString filePath, QString format, bool antialiasing , bool transparency);
 
     void modification() { modified = true; }
     bool isModified() { return modified; }
