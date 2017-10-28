@@ -81,6 +81,11 @@ QString ExportImageDialog::getExportFormat()
     return ui->formatComboBox->currentText();
 }
 
+QString ExportImageDialog::getCameraLayerName()
+{
+	return ui->cameraCombo->currentText();
+}
+
 ImportExportDialog::Mode ExportImageDialog::getMode()
 {
     return ImportExportDialog::Export;

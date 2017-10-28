@@ -42,6 +42,7 @@ public:
     Layer* currentLayer();
     Layer* currentLayer( int offset );
     Layer* getLayer( int index );
+	Layer* getLayerByName(QString sName);
     int    getLastCameraLayer();
     int    currentLayerIndex();
     void   setCurrentLayer( int nIndex );

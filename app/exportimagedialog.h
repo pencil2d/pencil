@@ -38,6 +38,7 @@ public:
     QSize getExportSize();
     bool getTransparency();
     QString getExportFormat();
+	QString getCameraLayerName();
 
 protected:
     Mode getMode();

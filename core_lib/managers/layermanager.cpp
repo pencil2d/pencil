@@ -82,6 +82,19 @@ Layer* LayerManager::getLayer( int index )
     return editor()->object()->getLayer( index );
 }
 
+Layer* LayerManager::getLayerByName(QString sName)
+{
+	auto obj = editor()->object();
+	for (int i = 0; i < obj->getLayerCount(); ++i)
+	{
+		if (obj->getLayer(i)->name() == sName)
+		{
+			return obj->getLayer(i);
+		}
+	}
+	return nullptr;
+}
+
 int LayerManager::currentLayerIndex()
 {
     return mCurrentLayerIndex;

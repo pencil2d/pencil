@@ -222,21 +222,20 @@ Status ActionCommands::exportImageSequence()
 
 	dialog->exec();
 
-	QString strFilePath =  dialog->getFilePath();
-	QSize exportSize =     dialog->getExportSize();
-	QString exportFormat = dialog->getExportFormat();
-	bool useTranparency =  dialog->getTransparency();
-
 	if (dialog->result() == QDialog::Rejected)
 	{
 		return Status::SAFE;
 	}
 
-	// Export
-	//    QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-	//    view = mScribbleArea->getView() * view;
+	QString strFilePath = dialog->getFilePath();
+	QSize exportSize = dialog->getExportSize();
+	QString exportFormat = dialog->getExportFormat();
+	bool useTranparency = dialog->getTransparency();
 
 	int projectLength = mEditor->layers()->projectLength();
+
+	QString sCameraLayerName = dialog->getCameraLayerName();
+	LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->getLayerByName(sCameraLayerName);
 
 	// Show a progress dialog, as this can take a while if you have lots of frames.
 	QProgressDialog progress(tr("Exporting image sequence..."), tr("Abort"), 0, 100, mParent);
@@ -244,9 +243,8 @@ Status ActionCommands::exportImageSequence()
 	progress.setWindowModality(Qt::WindowModal);
 	progress.show();
 
-	mEditor->object()->exportFrames(1,
-		projectLength,
-		nullptr,
+	mEditor->object()->exportFrames(1, projectLength,
+		cameraLayer,
 		exportSize,
 		strFilePath,
 		exportFormat.toStdString().c_str(),

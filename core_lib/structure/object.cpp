@@ -520,7 +520,7 @@ QString Object::copyFileToDataFolder( QString strFilePath )
 }
 
 bool Object::exportFrames( int frameStart, int frameEnd,
-                           Layer* currentLayer,
+                           LayerCamera* cameraLayer,
                            QSize exportSize, QString filePath,
                            const char* format,
                            int quality,
@@ -529,6 +529,8 @@ bool Object::exportFrames( int frameStart, int frameEnd,
                            QProgressDialog* progress = NULL,
                            int progressMax = 50 )
 {
+	Q_ASSERT(cameraLayer);
+
     QSettings settings( PENCIL2D, PENCIL2D );
 
     QString extension = "";
@@ -573,28 +575,23 @@ bool Object::exportFrames( int frameStart, int frameEnd,
 
         QImage imageToExport( exportSize, QImage::Format_ARGB32_Premultiplied );
         QColor bgColor = Qt::white;
-        if (transparency) {
+        if (transparency)
             bgColor.setAlpha(0);
-        }
+
         imageToExport.fill(bgColor);
 
-        QPainter painter( &imageToExport );
+		QTransform view = cameraLayer->getViewAtFrame(currentFrame);
 
-        QRect viewRect;
-        if(currentLayer != nullptr)
-        {
-            viewRect = ( ( LayerCamera* )currentLayer )->getViewRect();
-        }
-        else
-        {
-            // Some old .PCL files may not have a camera layer.
-            // In that case, use a default size.
-            viewRect = QRect( QPoint(-320,-240), QSize(640,480) );
-        }
+		QSize camSize = cameraLayer->getViewSize();
+		QTransform centralizeCamera;
+		centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
 
-        QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
-//        mapView = ( ( LayerCamera* )currentLayer )->getViewAtFrame( currentFrame ) * mapView;
-        painter.setWorldTransform( mapView );
+		QPainter painter(&imageToExport);
+		painter.setWorldTransform(view * centralizeCamera);
+		painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
+
+        //QTransform mapView = RectMapTransform( viewRect, QRectF( QPointF( 0, 0 ), exportSize ) );
+        //painter.setWorldTransform( mapView );
 
         paintImage( painter, currentFrame, false, antialiasing );
 

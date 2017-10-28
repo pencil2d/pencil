@@ -721,7 +721,6 @@ void MainWindow2::exportImage()
 
     LayerCamera *cameraLayer = dynamic_cast< LayerCamera* >(mEditor->object()->getLayer(cameraLayerId));
 
-
     // Options
     auto dialog =  new ExportImageDialog( this );
     OnScopeExit( dialog->deleteLater() );
@@ -749,7 +748,6 @@ void MainWindow2::exportImage()
 
     // Export
     QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-//    view = mScribbleArea->getView() * view;
 
     int projectLength = mEditor->layers()->projectLength();
     if ( !mEditor->object()->exportIm( mEditor->currentFrame(),
@@ -1012,8 +1010,6 @@ void MainWindow2::aboutPencil()
 
 void MainWindow2::helpBox()
 {
-    //qDebug() << "Open help manual.";
-
     QString url = "http://www.pencil2d.org/documentation/";
     QDesktopServices::openUrl( QUrl(url) );
 }

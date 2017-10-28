@@ -702,9 +702,6 @@ bool Editor::exportSeqCLI( QString filePath, QString format, int width, int heig
     QSize exportSize = QSize( width, height );
     QByteArray exportFormat( format.toLatin1() );
 
-    //QTransform view = RectMapTransform( mScribbleArea->getViewRect(), QRectF( QPointF( 0, 0 ), exportSize ) );
-    //view = mScribbleArea->getView() * view;
-
     int projectLength = mLayerManager->projectLength();
 
     mObject->exportFrames( 1,
