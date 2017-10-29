@@ -302,7 +302,7 @@ Status ActionCommands::exportImage()
 	QString sCameraLayerName = dialog->getCameraLayerName();
 	LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->getLayerByName(sCameraLayerName);
 
-	QTransform view = cameraLayer->getCameraAtFrame(mEditor->currentFrame())->getView();
+	QTransform view = cameraLayer->getViewAtFrame(mEditor->currentFrame());
 
 	if (!mEditor->object()->exportIm(mEditor->currentFrame(),
 		view,
