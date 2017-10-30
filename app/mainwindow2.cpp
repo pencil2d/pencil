@@ -714,7 +714,14 @@ void MainWindow2::lockWidgets(bool shouldLock)
 
 void MainWindow2::preferences()
 {
+	if (mPrefDialog)
+	{
+		mPrefDialog->activateWindow();
+		mPrefDialog->raise();
+		return;
+	}
     mPrefDialog = new PreferencesDialog( this );
+	mPrefDialog->setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
     mPrefDialog->setAttribute( Qt::WA_DeleteOnClose );
     mPrefDialog->init( mEditor->preference() );
 

@@ -147,7 +147,7 @@ private:
     ToolBoxWidget*        mToolBox             = nullptr;
     Timeline2*            mTimeline2           = nullptr;
     RecentFileMenu*       mRecentFileMenu      = nullptr;
-    PreferencesDialog     *mPrefDialog         = nullptr;
+    PreferencesDialog*    mPrefDialog         = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 
@@ -156,7 +156,7 @@ private:
 
 private:
     ActionCommands* mCommands              = nullptr;
-    QList< BaseDockWidget* > mDockWidgets;
+	QList< BaseDockWidget* > mDockWidgets;
     BackgroundWidget* mBackground;
 
     QIcon mStartIcon, mStopIcon;
