@@ -55,7 +55,7 @@ class ImportImageSeqDialog;
 
 namespace Ui
 {
-class MainWindow2;
+    class MainWindow2;
 }
 
 class MainWindow2 : public QMainWindow
@@ -63,12 +63,12 @@ class MainWindow2 : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow2( QWidget* parent = 0 );
+    explicit MainWindow2(QWidget* parent = 0);
     ~MainWindow2();
 
     Editor* mEditor = nullptr;
 
-public slots:
+    public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
@@ -87,32 +87,32 @@ public:
     void importImageSequence();
     void importMovie();
 
-    void lockWidgets( bool shouldLock );
+    void lockWidgets(bool shouldLock);
 
     void preferences();
     void helpBox();
     void aboutPencil();
 
-    void openFile( QString filename );
+    void openFile(QString filename);
 
-    PreferencesDialog *getPrefDialog() {return mPrefDialog;}
+    PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 
 Q_SIGNALS:
     void updateRecentFilesList(bool b);
 
 protected:
-    void tabletEvent( QTabletEvent* ) override;
-    void closeEvent( QCloseEvent* ) override;
+    void tabletEvent(QTabletEvent*) override;
+    void closeEvent(QCloseEvent*) override;
 
 private:
-    bool openObject( QString strFilename );
-    bool saveObject( QString strFileName );
+    bool openObject(QString strFilename);
+    bool saveObject(QString strFileName);
 
     void dockAllSubWidgets();
 
     void createDockWidgets();
     void createMenus();
-    void setMenuActionChecked( QAction*, bool bChecked );
+    void setMenuActionChecked(QAction*, bool bChecked);
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     void updateZoomLabel();
@@ -123,30 +123,30 @@ private:
     void readSettings();
     void writeSettings();
 
-    void changePlayState( bool isPlaying );
+    void changePlayState(bool isPlaying);
 
-    void makeConnections( Editor* );
-    void makeConnections( Editor*, ColorBox* );
-    void makeConnections( Editor*, ScribbleArea* );
-    void makeConnections( Editor*, ColorPaletteWidget* );
-    void makeConnections( Editor*, TimeLine* );
-    void makeConnections( Editor*, DisplayOptionWidget* );
-    void makeConnections( Editor*, ToolOptionWidget*);
+    void makeConnections(Editor*);
+    void makeConnections(Editor*, ColorBox*);
+    void makeConnections(Editor*, ScribbleArea*);
+    void makeConnections(Editor*, ColorPaletteWidget*);
+    void makeConnections(Editor*, TimeLine*);
+    void makeConnections(Editor*, DisplayOptionWidget*);
+    void makeConnections(Editor*, ToolOptionWidget*);
 
-    void bindActionWithSetting( QAction*, SETTING );
+    void bindActionWithSetting(QAction*, SETTING);
 
     // UI: central Drawing Area
-    ScribbleArea* mScribbleArea                = nullptr;
+    ScribbleArea* mScribbleArea = nullptr;
 
     // UI: Dock widgets
-    ColorBox*             mColorWheel          = nullptr;
-    ColorPaletteWidget*   mColorPalette        = nullptr;
+    ColorBox*             mColorWheel = nullptr;
+    ColorPaletteWidget*   mColorPalette = nullptr;
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
-    ToolOptionWidget*     mToolOptions         = nullptr;
-    ToolBoxWidget*        mToolBox             = nullptr;
-    Timeline2*            mTimeline2           = nullptr;
-    RecentFileMenu*       mRecentFileMenu      = nullptr;
-    PreferencesDialog*    mPrefDialog         = nullptr;
+    ToolOptionWidget*     mToolOptions = nullptr;
+    ToolBoxWidget*        mToolBox = nullptr;
+    Timeline2*            mTimeline2 = nullptr;
+    RecentFileMenu*       mRecentFileMenu = nullptr;
+    PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine; // be public temporary
 
@@ -154,8 +154,8 @@ private:
     BackupElement* mBackupAtSave = nullptr;
 
 private:
-    ActionCommands* mCommands              = nullptr;
-	QList< BaseDockWidget* > mDockWidgets;
+    ActionCommands* mCommands = nullptr;
+    QList< BaseDockWidget* > mDockWidgets;
     BackgroundWidget* mBackground;
 
     QIcon mStartIcon, mStopIcon;
