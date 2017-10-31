@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 #include <cmath>
-#include <QScopedPointer>
 #include <QMessageBox>
 #include <QPixmapCache>
 

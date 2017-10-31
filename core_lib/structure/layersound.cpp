@@ -124,10 +124,23 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
     }
 }
 
-Status LayerSound::saveKeyFrame( KeyFrame*, QString path )
+Status LayerSound::saveKeyFrame( KeyFrame* key, QString path )
 {
-    Q_UNUSED(path)
+	SoundClip* clip = dynamic_cast<SoundClip*>(key);
+	Q_ASSERT(key);
 
+	QFileInfo info(key->fileName());
+	QString sDestFileLocation = QDir(path).filePath(info.fileName());
+
+	if (sDestFileLocation != key->fileName())
+	{
+		bool bOK = QFile::copy(key->fileName(), sDestFileLocation);
+		Q_ASSERT(bOK);
+		if (!bOK)
+		{
+			return Status::FAIL;
+		}
+	}
     return Status::OK;
 }
 

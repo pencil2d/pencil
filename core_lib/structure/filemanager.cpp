@@ -240,12 +240,10 @@ Status FileManager::save( Object* object, QString strFileName )
         if( !dir.mkpath( strDataFolder ) )
         {
             debugDetails << QString( "dir.absolutePath() = %1" ).arg( dir.absolutePath() );
-            if( isOldFile ) {
+            if( isOldFile )
                 return Status( Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr( "Cannot Create Data Directory" ), tr( "Cannot create the data directory at \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format." ).arg( strDataFolder ) );
-            }
-            else {
+            else
                 return Status( Status::FAIL, debugDetails, tr("Internal Error"), tr( "Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format." ).arg( strDataFolder ) );
-            }
         }
     }
     if( !dataInfo.isDir() )
@@ -311,7 +309,7 @@ Status FileManager::save( Object* object, QString strFileName )
     object->savePalette( strDataFolder );
 
     // -------- save main XML file -----------
-    QScopedPointer<QFile> file( new QFile( strMainXMLFile ) );
+    std::shared_ptr<QFile> file = std::make_shared<QFile>( strMainXMLFile );
     if ( !file->open( QFile::WriteOnly | QFile::Text ) )
     {
         return Status::ERROR_FILE_CANNOT_OPEN;
@@ -335,7 +333,7 @@ Status FileManager::save( Object* object, QString strFileName )
 
     const int IndentSize = 2;
 
-    QTextStream out( file.data() );
+    QTextStream out( file.get() );
     xmlDoc.save( out, IndentSize );
 
     if ( !isOldFile )
