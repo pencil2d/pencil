@@ -79,8 +79,11 @@ public:
     void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
-    int  currentFrame();
-    int  fps();
+    int currentFrame();
+    int fps();
+
+	int  currentLayerIndex() { return mCurrentLayerIndex; }
+	void setCurrentLayerIndex(int i);
 
     void scrubTo( int frameNumber );
 
@@ -170,6 +173,7 @@ private:
     std::shared_ptr<Object> mObject = nullptr;
 
     int mFrame = 1; // current frame number.
+	int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
 
     ScribbleArea* mScribbleArea = nullptr;
 

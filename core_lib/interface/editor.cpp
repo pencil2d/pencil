@@ -814,6 +814,11 @@ void Editor::updateCurrentFrame()
     mScribbleArea->updateCurrentFrame();
 }
 
+void Editor::setCurrentLayerIndex(int i)
+{
+	mCurrentLayerIndex = i;
+}
+
 void Editor::scrubTo( int frame )
 {
     if ( frame < 1 )

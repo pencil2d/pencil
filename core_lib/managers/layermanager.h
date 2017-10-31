@@ -73,7 +73,6 @@ Q_SIGNALS:
     void layerCountChanged( int count );
 
 private:
-    int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
     int mLastCameraLayer = 0;
 };
 
