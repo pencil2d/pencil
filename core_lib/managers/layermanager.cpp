@@ -36,7 +36,7 @@ LayerManager::~LayerManager()
 
 bool LayerManager::init()
 {
-    lastCameraLayer = 0;
+    mLastCameraLayer = 0;
     return true;
 }
 
@@ -45,7 +45,7 @@ Status LayerManager::load( Object* o )
     connect( o, &Object::layerChanged, this, &LayerManager::layerUpdated );
 
     mCurrentLayerIndex = o->data()->getCurrentLayer();
-    lastCameraLayer = 0;
+    mLastCameraLayer = 0;
 
     emit layerCountChanged(o->getLayerCount());
 
@@ -60,7 +60,7 @@ Status LayerManager::save( Object* o )
 
 int LayerManager::getLastCameraLayer()
 {
-    return lastCameraLayer;
+    return mLastCameraLayer;
 }
 
 Layer* LayerManager::currentLayer()
@@ -120,7 +120,7 @@ void LayerManager::setCurrentLayer( int layerIndex )
     {
         if ( editor()->object()->getLayer( layerIndex )->type() == Layer::CAMERA )
         {
-            lastCameraLayer = layerIndex;
+            mLastCameraLayer = layerIndex;
         }
     }
 }

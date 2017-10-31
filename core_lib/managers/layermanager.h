@@ -74,7 +74,7 @@ Q_SIGNALS:
 
 private:
     int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
-    int lastCameraLayer = 0;
+    int mLastCameraLayer = 0;
 };
 
 #endif
