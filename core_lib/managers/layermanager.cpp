@@ -40,14 +40,14 @@ bool LayerManager::init()
     return true;
 }
 
-Status LayerManager::load( Object* o )
+Status LayerManager::load(Object* o)
 {
     connect( o, &Object::layerChanged, this, &LayerManager::layerUpdated );
     emit layerCountChanged(o->getLayerCount());
     return Status::OK;
 }
 
-Status LayerManager::save( Object* o )
+Status LayerManager::save(Object*)
 {
 	//o->data()->setCurrentLayer( mCurrentLayerIndex );
 	return Status::OK;

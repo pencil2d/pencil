@@ -35,7 +35,7 @@ bool ViewManager::init()
     return true;
 }
 
-Status ViewManager::load( Object* o )
+Status ViewManager::load( Object* )
 {
     mCameraLayer = nullptr;
 
@@ -51,6 +51,18 @@ Status ViewManager::save( Object* o )
 {
 	o->data()->setCurrentView( mView );
 	return Status();
+}
+
+void ViewManager::currentLayerChanged(Layer* layer)
+{
+	if (layer->type() == Layer::CAMERA)
+	{
+		setCameraLayer(layer);
+	}
+	else
+	{
+		setCameraLayer(nullptr);
+	}
 }
 
 QPointF ViewManager::mapCanvasToScreen( QPointF p )
