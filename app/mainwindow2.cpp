@@ -391,9 +391,9 @@ void MainWindow2::updateSaveState()
 void MainWindow2::clearRecentFilesList()
 {
     QStringList recentFilesList = mRecentFileMenu->getRecentFiles();
-    if (!recentFilesList.isEmpty()) {
+    if (!recentFilesList.isEmpty())
+    {
         mRecentFileMenu->clear();
-
         QMessageBox::information(this, 0,
             tr("\n\n You have successfully cleared the list"),
             QMessageBox::Ok);
@@ -421,7 +421,8 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument()
 {
-    if (maybeSave()) {
+    if (maybeSave())
+    {
         Object* object = new Object();
         object->init();
         mEditor->setObject(object);
@@ -600,13 +601,9 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 void MainWindow2::saveDocument()
 {
     if (!mEditor->object()->filePath().isEmpty())
-    {
         saveObject(mEditor->object()->filePath());
-    }
     else
-    {
         saveAsNewDocument();
-    }
 }
 
 bool MainWindow2::maybeSave()
@@ -635,15 +632,9 @@ void MainWindow2::importImage()
 {
     FileDialog fileDialog(this);
     QString strFilePath = fileDialog.openFile(FileType::IMAGE);
-    if (strFilePath.isEmpty())
-    {
-        return;
-    }
-
-    if (!QFile::exists(strFilePath))
-    {
-        return;
-    }
+    
+    if (strFilePath.isEmpty()) { return; }
+    if (!QFile::exists(strFilePath)) { return; }
 
     bool ok = mEditor->importImage(strFilePath);
     if (!ok)

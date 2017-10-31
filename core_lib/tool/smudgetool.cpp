@@ -208,7 +208,7 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
             for (int k = 0; k < mScribbleArea->vectorSelection.curve.size(); k++)
             {
                 int curveNumber = mScribbleArea->vectorSelection.curve.at(k);
-                vectorImage->m_curves[curveNumber].smoothCurve();
+                vectorImage->mCurves[curveNumber].smoothCurve();
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }

@@ -1499,17 +1499,17 @@ void ScribbleArea::displaySelectionProperties()
             int selectedCurve = vectorImage->getFirstSelectedCurve();
             if ( selectedCurve != -1 )
             {
-                mEditor->tools()->setWidth( vectorImage->m_curves[ selectedCurve ].getWidth() );
-                mEditor->tools()->setFeather( vectorImage->m_curves[ selectedCurve ].getFeather() );
-                mEditor->tools()->setInvisibility( vectorImage->m_curves[ selectedCurve ].isInvisible() );
-                mEditor->tools()->setPressure( vectorImage->m_curves[ selectedCurve ].getVariableWidth() );
-                mEditor->color()->setColorNumber( vectorImage->m_curves[ selectedCurve ].getColourNumber() );
+                mEditor->tools()->setWidth( vectorImage->mCurves[ selectedCurve ].getWidth() );
+                mEditor->tools()->setFeather( vectorImage->mCurves[ selectedCurve ].getFeather() );
+                mEditor->tools()->setInvisibility( vectorImage->mCurves[ selectedCurve ].isInvisible() );
+                mEditor->tools()->setPressure( vectorImage->mCurves[ selectedCurve ].getVariableWidth() );
+                mEditor->color()->setColorNumber( vectorImage->mCurves[ selectedCurve ].getColourNumber() );
             }
 
             int selectedArea = vectorImage->getFirstSelectedArea();
             if ( selectedArea != -1 )
             {
-                mEditor->color()->setColorNumber( vectorImage->area[ selectedArea ].mColourNumber );
+                mEditor->color()->setColorNumber( vectorImage->mArea[ selectedArea ].mColourNumber );
             }
         }
     }

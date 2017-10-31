@@ -135,9 +135,9 @@ public:
 
     QPainterPath getStrokedPath() { return mGetStrokedPath; }
 
-    QList<BezierCurve> m_curves;
-    QList<BezierArea> area;
-    QList<int> m_curveDisplayOrders;
+    QList<BezierCurve> mCurves;
+    QList<BezierArea> mArea;
+    QList<int> mCurveDisplayOrders;
 
     qreal getDistance(VertexRef r1, VertexRef r2);
 
