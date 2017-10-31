@@ -727,12 +727,13 @@ void MainWindow2::preferences()
 
     connect( mPrefDialog, &PreferencesDialog::clearRecentList, this, &MainWindow2::clearRecentFilesList);
     connect( mPrefDialog, &PreferencesDialog::windowOpacityChange, this, &MainWindow2::setOpacity );
-    connect( mPrefDialog, &PreferencesDialog::finished, [ &]
+    connect( mPrefDialog, &PreferencesDialog::finished, [&]
     {
         //qDebug() << "Preference dialog closed!";
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
         mScribbleArea->updateCanvasCursor();
+		mPrefDialog = nullptr;
     } );
 
     mPrefDialog->show();

@@ -128,10 +128,7 @@ void PreferencesDialog::createIcons()
     shortcutsButton->setFlags((Qt::ItemIsSelectable | Qt::ItemIsEnabled));
 
     auto onCurrentItemChanged = static_cast< void ( QListWidget::* )( QListWidgetItem*, QListWidgetItem* ) >( &QListWidget::currentItemChanged );
-    connect(contentsWidget,
-            onCurrentItemChanged,
-            this,
-            &PreferencesDialog::changePage);
+    connect(contentsWidget, onCurrentItemChanged, this, &PreferencesDialog::changePage);
 }
 
 void PreferencesDialog::closeEvent(QCloseEvent *)
@@ -284,7 +281,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
 
     mHighResBox = new QCheckBox(tr("Tablet high-resolution position"));
 
-
     QGridLayout* editingLayout = new QGridLayout();
     editingBox->setLayout(editingLayout);
     editingLayout->addWidget(curveSmoothingLabel, 0, 0);
@@ -328,7 +324,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     setLayout(lay);
 }
 
-void GeneralPage::resizeEvent(QResizeEvent *event)
+void GeneralPage::resizeEvent(QResizeEvent* event)
 {
     int size = 0;
     if (this->height() < 560 ) {
@@ -394,7 +390,8 @@ void GeneralPage::languageChanged( int i )
 void GeneralPage::backgroundChange(int value)
 {
     QString brushName = "white";
-    switch (value) {
+    switch (value)
+	{
     case 1:
         brushName = "checkerboard";
         break;
