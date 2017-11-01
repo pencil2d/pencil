@@ -73,12 +73,16 @@ void ColorPaletteWidget::updateUI()
     updateGridUI();
 }
 
-void ColorPaletteWidget::setColor(QColor newColor)
+void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
 {
-    int colorIndex = currentColourNumber();
-    updateItemColor(colorIndex, newColor);
+    QSignalBlocker b(ui->colorListWidget);
+    ui->colorListWidget->setCurrentRow(colorIndex);
 
-    emit colorChanged(newColor);
+    if (colorIndex > 0)
+    {
+        updateItemColor(colorIndex, newColor);
+        emit colorChanged(newColor);
+    }
 }
 
 void ColorPaletteWidget::selectColorNumber(int colorNumber)

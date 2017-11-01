@@ -655,6 +655,7 @@ Status Editor::setObject( Object* newObject )
     for ( BaseManager* m : mAllManagers )
     {
         m->load( mObject.get() );
+        m->currentLayerChanged(mObject->getLayer(0));
     }
 
 	g_clipboardVectorImage.setObject( newObject );
@@ -817,6 +818,11 @@ void Editor::updateCurrentFrame()
 void Editor::setCurrentLayerIndex(int i)
 {
 	mCurrentLayerIndex = i;
+
+    for (auto mgr : mAllManagers)
+    {
+        mgr->currentLayerChanged(mObject->getLayer(i));
+    }
 }
 
 void Editor::scrubTo( int frame )

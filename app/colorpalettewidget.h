@@ -47,19 +47,18 @@ public:
 
     int currentColourNumber();
 
-    public slots:
     void selectColorNumber(int);
-    void setColor(QColor);
+    void setColor(QColor, int);
     void refreshColorList();
-
-protected:
-    void resizeEvent(QResizeEvent *event) override;
 
 signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
-    private slots:
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
+private: // slots:
     void updateItemColor(int, QColor);
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
