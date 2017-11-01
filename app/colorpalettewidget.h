@@ -31,7 +31,7 @@ class QMenu;
 
 namespace Ui
 {
-class ColorPalette;
+    class ColorPalette;
 }
 
 
@@ -40,14 +40,14 @@ class ColorPaletteWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    explicit ColorPaletteWidget( QWidget* parent );
+    explicit ColorPaletteWidget(QWidget* parent);
 
     void initUI() override;
     void updateUI() override;
 
     int currentColourNumber();
 
-public slots:
+    public slots:
     void selectColorNumber(int);
     void setColor(QColor);
     void refreshColorList();
@@ -59,7 +59,7 @@ signals:
     void colorChanged(QColor);
     void colorNumberChanged(int);
 
-private slots:
+    private slots:
     void updateItemColor(int, QColor);
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
@@ -78,17 +78,18 @@ private:
     QString getDefaultColorName(QColor c);
 
     Ui::ColorPalette* ui = nullptr;
-    QActionGroup *layoutModes;
-    QAction *listMode;
-    QAction *gridMode;
-    QActionGroup *iconSizes;
-    QAction *smallSwatch;
-    QAction *mediumSwatch;
-    QAction *largeSwatch;
-    QAction *separator;
-    QSize iconSize;
-    QMenu *toolMenu;
-    int stepper;
+    QActionGroup* mLayoutModeActionGroup = nullptr;
+    QAction* mListModeAction = nullptr;
+    QAction* mGridModeAction = nullptr;
+    QActionGroup* mIconSizesActionGroup = nullptr;
+    QAction* mSmallSwatchAction = nullptr;
+    QAction* mMediumSwatchAction = nullptr;
+    QAction* mLargeSwatchAction = nullptr;
+    QAction* mSeparator;
+
+    QSize mIconSize{ 34, 34 };
+    QMenu* mToolMenu = nullptr;
+    int stepper = 0;
 
 };
 
