@@ -137,11 +137,12 @@ Status BezierCurve::createDomElement( QXmlStreamWriter& xmlStream )
 void BezierCurve::loadDomElement(QDomElement element)
 {
     width = element.attribute("width").toDouble();
-    variableWidth = (element.attribute("variableWidth") == "1");
+    variableWidth = (element.attribute("variableWidth") == "1") || (element.attribute("variableWidth") == "true");
     feather = element.attribute("feather").toDouble();
-    invisible = (element.attribute("invisible") == "1");
-    mFilled = (element.attribute("filled") == "1");
+    invisible = (element.attribute("invisible") == "1") || (element.attribute("invisible") == "true");
+    mFilled = (element.attribute("filled") == "1") || (element.attribute("filled") == "true");
     if (width == 0) invisible = true;
+
     colourNumber = element.attribute("colourNumber").toInt();
     origin = QPointF( element.attribute("originX").toFloat(), element.attribute("originY").toFloat() );
     pressure.append( element.attribute("originPressure").toFloat() );
