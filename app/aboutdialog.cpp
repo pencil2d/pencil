@@ -26,37 +26,27 @@ AboutDialog::AboutDialog(QWidget* parent ) : QDialog(parent)
 {
     setWindowTitle(tr("About"));
     setFixedSize(450,450);
+    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 }
 
 void AboutDialog::init()
 {
-    QVBoxLayout* lay = new QVBoxLayout;
-    QPushButton* okButton = new QPushButton(tr("OK"));
-
-    QHBoxLayout* buttonsLayout = new QHBoxLayout;
-
-    devInfoText = new QLabel(this);
-    aboutText = new QLabel(this);
-    logo = new QLabel(this);
-    logoText = new QLabel(this);
+    QLabel* logo = new QLabel(this);
+    QLabel* logoText = new QLabel(this);
+    QLabel* aboutText = new QLabel(this);
 
     logo->setPixmap(QPixmap(":icons/logo.png"));
     logo->setAlignment(Qt::AlignCenter);
     logoText->setAlignment(Qt::AlignCenter);
-
     logoText->setText(tr("<b>Pencil2D</b>"));
     aboutText->setTextInteractionFlags(Qt::TextBrowserInteraction);
     aboutText->setWordWrap(true);
     aboutText->setOpenExternalLinks(true);
     aboutText->setText(tr("Official site: <a href=\"http://pencil2d.github.io\">pencil2d.github.io</a>"
-                                                        "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang</b></>"
-                                                        "<br>Thanks to: Qt Framework <a href=\"https://www.qt.io/\">https://www.qt.io/</a></>"
-                                                        "<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a></>"));
-
-    connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
-
-    buttonsLayout->addWidget(okButton);
-
+                          "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang</b>"
+                          "<br>Thanks to: Qt Framework <a href=\"https://www.qt.io/\">https://www.qt.io/</a>"
+                          "<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a>"));
+    QVBoxLayout* lay = new QVBoxLayout;
     lay->addWidget(logo);
     lay->addWidget(logoText);
     lay->addWidget(aboutText);
@@ -67,6 +57,7 @@ void AboutDialog::init()
 #define S__GIT_COMMIT_HASH__ TOSTRING(GIT_CURRENT_SHA1)
 
 #ifdef GIT_EXISTS
+    QLabel* devInfoText = new QLabel(this);
     devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
                                         "border-style: solid; border-width: 1px; border-color: gray;}");
     devInfoText->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -76,8 +67,12 @@ void AboutDialog::init()
     lay->addWidget(devInfoText);
 #endif
 
+    QPushButton* okButton = new QPushButton(tr("OK"));
+    connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
+
+    QHBoxLayout* buttonsLayout = new QHBoxLayout;
+    buttonsLayout->addWidget(okButton);
 
     lay->addLayout(buttonsLayout);
-
     setLayout(lay);
 }
