@@ -62,7 +62,6 @@ void SelectTool::mousePressEvent( QMouseEvent *event )
                 ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
             }
             mScribbleArea->setMoveMode( ScribbleArea::NONE );
-            mEditor->backup( typeName() );
 
             if ( mScribbleArea->somethingSelected )      // there is something selected
             {

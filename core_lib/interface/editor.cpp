@@ -114,9 +114,6 @@ bool Editor::init()
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
     autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
 
-    //onionPrevFramesNum = mPreferenceManager->getInt(SETTING::ONION_PREV_FRAMES_NUM);
-    //onionNextFramesNum = mPreferenceManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
-
 	return true;
 }
 
@@ -301,6 +298,13 @@ void Editor::backup( int backupLayer, int backupFrame, QString undoText )
                 }
             }
         }
+    }
+
+    autosaveCounter++;
+    if (autosaveCounter >= autosaveNumber)
+    {
+        autosaveCounter = 0;
+        emit needSave();
     }
     emit updateBackup();
 }
@@ -525,6 +529,7 @@ void Editor::paste()
         if ( layer->type() == Layer::BITMAP && g_clipboardBitmapImage.image() != NULL )
         {
             backup( tr( "Paste" ) );
+
             BitmapImage tobePasted = g_clipboardBitmapImage.copy();
             qDebug() << "to be pasted --->" << tobePasted.image()->size();
             if ( mScribbleArea->somethingSelected )
@@ -721,8 +726,6 @@ QString Editor::workingDir() const
 
 bool Editor::importBitmapImage( QString filePath )
 {
-    backup( tr( "Import Image" ) );
-
     QImageReader reader( filePath );
 
     Q_ASSERT( layers()->currentLayer()->type() == Layer::BITMAP );
@@ -749,6 +752,8 @@ bool Editor::importBitmapImage( QString filePath )
         bitmapImage->paste(&importedBitmapImage);
 
 		scrubTo( currentFrame() + 1 );
+
+        backup(tr("Import Image"));
 	}
 
 	return true;
@@ -757,8 +762,6 @@ bool Editor::importBitmapImage( QString filePath )
 bool Editor::importVectorImage( QString filePath )
 {
     Q_ASSERT( layers()->currentLayer()->type() == Layer::VECTOR );
-
-    backup( tr( "Import Image" ) );
 
     auto layer = static_cast<LayerVector*>( layers()->currentLayer() );
 
@@ -775,6 +778,8 @@ bool Editor::importVectorImage( QString filePath )
     {
         importedVectorImage.selectAll();
         vectorImage->paste(importedVectorImage);
+
+        backup(tr("Import Image"));
     }
 
     return ok;
@@ -892,14 +897,14 @@ KeyFrame* Editor::addNewKey()
 
 void Editor::duplicateKey()
 {
-    Layer* layer = mObject->getLayer( layers()->currentLayerIndex() );
+    Layer* layer = mObject->getLayer( currentLayerIndex() );
     if ( layer != NULL )
     {
         if ( layer->type() == Layer::VECTOR || layer->type() == Layer::BITMAP )
         {
             // Will copy the selection if any or the entire image if there is none
-            //
-            if(!mScribbleArea->somethingSelected) {
+            if(!mScribbleArea->somethingSelected)
+            {
                 mScribbleArea->selectAll();
             }
 
@@ -913,7 +918,8 @@ void Editor::duplicateKey()
         if ( layer->type() == Layer::SOUND )
         {
             // TODO: get frame which is selected by mouse
-            if ( layer->isFrameSelected( currentFrame() ) ) {
+            if ( layer->isFrameSelected( currentFrame() ) )
+            {
                 copy();
                 paste();
             }

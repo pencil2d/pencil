@@ -196,7 +196,6 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
 {
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
     }
 
@@ -212,7 +211,7 @@ void BrushTool::mousePressEvent( QMouseEvent *event )
 
 }
 
-void BrushTool::mouseReleaseEvent( QMouseEvent *event )
+void BrushTool::mouseReleaseEvent( QMouseEvent* event )
 {
     if ( event->button() == Qt::LeftButton )
     {
@@ -230,27 +229,25 @@ void BrushTool::mouseReleaseEvent( QMouseEvent *event )
             }
         }
 
-        if ( layer->type() == Layer::BITMAP ) {
+        if ( layer->type() == Layer::BITMAP )
             paintBitmapStroke();
-        }
         else if (layer->type() == Layer::VECTOR )
-        {
             paintVectorStroke();
-        }
+
+        mEditor->backup(typeName());
     }
     endStroke();
 }
 
-void BrushTool::mouseMoveEvent( QMouseEvent *event )
+void BrushTool::mouseMoveEvent( QMouseEvent* event )
 {
     if ( mScribbleArea->isLayerPaintable() )
     {
         if ( event->buttons() & Qt::LeftButton )
         {
             drawStroke();
-            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel()) {
+            if (properties.inpolLevel != m_pStrokeManager->getInpolLevel())
                 m_pStrokeManager->setInpolLevel(properties.inpolLevel);
-            }
         }
     }
 }

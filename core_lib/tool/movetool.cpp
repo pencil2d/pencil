@@ -127,7 +127,6 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 {
     if ( layer->isPaintable() )
     {
-        mEditor->backup( tr( "Move" ) );
         mScribbleArea->setMoveMode( ScribbleArea::MIDDLE ); // was MIDDLE
 
         QRectF selectionRect = mScribbleArea->myTransformedSelection;
@@ -150,7 +149,6 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 
         if ( mScribbleArea->getMoveMode() == ScribbleArea::MIDDLE )
         {
-
             if ( event->modifiers() == Qt::ControlModifier ) // --- rotation
             {
                 mScribbleArea->setMoveMode( ScribbleArea::ROTATION );
@@ -177,7 +175,6 @@ void MoveTool::actionOnVector(QMouseEvent* event, Layer* layer)
     VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
     if ( mScribbleArea->mClosestCurves.size() > 0 ) // the user clicks near a curve
     {
-        // editor->backup();
         if ( !vectorImage->isSelected( mScribbleArea->mClosestCurves ) )
         {
             if ( event->modifiers() != Qt::ShiftModifier )
@@ -323,6 +320,7 @@ void MoveTool::cancelChanges()
 void MoveTool::applyChanges()
 {
     mScribbleArea->applyTransformedSelection();
+    mEditor->backup(typeName());
 }
 
 void MoveTool::paintTransformedSelection()
@@ -338,7 +336,8 @@ void MoveTool::leavingThisTool()
     applyChanges();
 }
 
-void MoveTool::switchingLayers(){
+void MoveTool::switchingLayers()
+{
     applyChanges();
 }
 

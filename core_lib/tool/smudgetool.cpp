@@ -147,7 +147,6 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
     {
         if (layer->type() == Layer::BITMAP)
         {
-            mEditor->backup(typeName());
             mScribbleArea->setAllDirty();
             startStroke();
             mLastBrushPoint = getCurrentPoint();
@@ -164,7 +163,6 @@ void SmudgeTool::mousePressEvent(QMouseEvent *event)
             if (mScribbleArea->mClosestVertices.size() > 0 || mScribbleArea->mClosestCurves.size() > 0)      // the user clicks near a vertex or a curve
             {
                 //qDebug() << "closestCurves:" << closestCurves << " | closestVertices" << closestVertices;
-                mEditor->backup(typeName());
                 VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 
                 if (event->modifiers() != Qt::ShiftModifier && !vectorImage->isSelected(mScribbleArea->mClosestVertices))
@@ -212,6 +210,8 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }
+
+        mEditor->backup(typeName());
     }
 }
 

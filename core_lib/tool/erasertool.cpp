@@ -131,7 +131,6 @@ void EraserTool::mousePressEvent( QMouseEvent *event )
 {
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
     }
 
@@ -141,17 +140,16 @@ void EraserTool::mousePressEvent( QMouseEvent *event )
 
 void EraserTool::mouseReleaseEvent( QMouseEvent *event )
 {
-
     if ( event->button() == Qt::LeftButton )
     {
         if ( mScribbleArea->isLayerPaintable() )
         {
             drawStroke();
         }
-
         removeVectorPaint();
-    }
 
+        mEditor->backup(typeName());
+    }
     endStroke();
 }
 

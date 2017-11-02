@@ -129,7 +129,6 @@ void PenTool::mousePressEvent( QMouseEvent *event )
 {
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup( typeName() );
         mScribbleArea->setAllDirty();
     }
 
@@ -157,13 +156,15 @@ void PenTool::mouseReleaseEvent( QMouseEvent *event )
             }
         }
 
-        if ( layer->type() == Layer::BITMAP ) {
+        if ( layer->type() == Layer::BITMAP )
+        {
             paintBitmapStroke();
         }
         else if (layer->type() == Layer::VECTOR )
         {
             paintVectorStroke( layer );
         }
+        mEditor->backup(typeName());
     }
     endStroke();
 }

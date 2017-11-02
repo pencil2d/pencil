@@ -1671,11 +1671,13 @@ void ScribbleArea::deleteSelection()
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if ( layer == NULL ) { return; }
-        mEditor->backup( tr( "Delete Selection" ) );
+        
         mClosestCurves.clear();
         if ( layer->type() == Layer::VECTOR ) { ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deleteSelection(); }
         if ( layer->type() == Layer::BITMAP ) { ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 )->clear( mySelection ); }
         updateAllFrames();
+
+        mEditor->backup(tr("Delete Selection"));
     }
 }
 
@@ -1685,21 +1687,19 @@ void ScribbleArea::clearImage()
     if ( layer == NULL ) { return; }
     if ( layer->type() == Layer::VECTOR )
     {
-        mEditor->backup( tr( "Clear Image" ) ); // undo: only before change (just before)
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->clear();
         mClosestCurves.clear();
         mClosestVertices.clear();
     }
     else if ( layer->type() == Layer::BITMAP )
     {
-        mEditor->backup( tr( "Clear Image" ) );
-        ( ( LayerBitmap * )layer )->getLastBitmapImageAtFrame( mEditor->currentFrame(), 0 )->clear();
+        ((LayerBitmap *)layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0)->clear();
     }
     else
     {
         return; // skip updates when nothing changes
     }
-
+    mEditor->backup(tr("Clear Image", "Undo step text"));
     setModified( mEditor->layers()->currentLayerIndex(), mEditor->currentFrame() );
 }
 

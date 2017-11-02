@@ -106,11 +106,6 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     {
         if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
         {
-            if ( mPoints.size() == 0 )
-            {
-                mEditor->backup( tr( "Polyline" ) );
-            }
-
             if ( layer->type() == Layer::VECTOR )
             {
                 ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->deselectAll();
@@ -125,35 +120,33 @@ void PolylineTool::mousePressEvent( QMouseEvent *event )
     }
 }
 
-void PolylineTool::mouseReleaseEvent( QMouseEvent *event )
-{
-    Q_UNUSED( event );
-}
+void PolylineTool::mouseReleaseEvent(QMouseEvent*)
+{}
 
-void PolylineTool::mouseMoveEvent( QMouseEvent *event )
+void PolylineTool::mouseMoveEvent(QMouseEvent*)
 {
-    Q_UNUSED( event );
     Layer* layer = mEditor->layers()->currentLayer();
-
     if ( layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR )
     {
        drawPolyline( mPoints, getCurrentPoint() );
     }
 }
 
-void PolylineTool::mouseDoubleClickEvent( QMouseEvent *event )
+void PolylineTool::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    // XXX highres position ??
     if ( BezierCurve::eLength( m_pStrokeManager->getLastPressPixel() - event->pos() ) < 2.0 )
     {
         endPolyline( mPoints );
         clear();
+
+        mEditor->backup(typeName());
     }
 }
 
-bool PolylineTool::keyPressEvent( QKeyEvent *event )
+bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {
-    switch ( event->key() ) {
+    switch ( event->key() )
+    {
     case Qt::Key_Return:
         if ( mPoints.size() > 0 )
         {
@@ -164,7 +157,8 @@ bool PolylineTool::keyPressEvent( QKeyEvent *event )
         break;
 
     case Qt::Key_Escape:
-        if ( mPoints.size() > 0 ) {
+        if ( mPoints.size() > 0 )
+        {
             cancelPolyline( );
             clear();
             return true;
@@ -259,7 +253,7 @@ void PolylineTool::endPolyline( QList<QPointF> points )
         curve.setColourNumber( mEditor->color()->frontColorNumber() );
         curve.setVariableWidth( false );
         curve.setInvisibility( mScribbleArea->makeInvisible() );
-        //curve.setSelected(true);
+
         ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 )->addCurve( curve, mEditor->view()->scaling() );
     }
     if ( layer->type() == Layer::BITMAP )

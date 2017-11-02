@@ -139,12 +139,8 @@ void PencilTool::mousePressEvent( QMouseEvent *event )
 
     if ( event->button() == Qt::LeftButton )
     {
-        mEditor->backup( typeName() );
-
         mScribbleArea->setAllDirty();
         startStroke(); //start and appends first stroke
-
-        //Layer *layer = m_pEditor->getCurrentLayer();
 
         if ( mEditor->layers()->currentLayer()->type() == Layer::BITMAP ) // in case of bitmap, first pixel(mouseDown) is drawn
         {
@@ -196,13 +192,16 @@ void PencilTool::mouseReleaseEvent( QMouseEvent *event )
             }
         }
 
-        if ( layer->type() == Layer::BITMAP ) {
+        if ( layer->type() == Layer::BITMAP )
+        {
             paintBitmapStroke();
         }
         else if (layer->type() == Layer::VECTOR )
         {
             paintVectorStroke( layer );
         }
+
+        mEditor->backup(typeName());
     }
     endStroke();
 }

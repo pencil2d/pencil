@@ -192,6 +192,7 @@ private:
 
     bool mIsAutosave   = true;
     int autosaveNumber = 12;
+    int autosaveCounter = 0;
 
     void makeConnections();
     KeyFrame* addKeyFrame( int layerNumber, int frameNumber );
