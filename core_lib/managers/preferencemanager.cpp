@@ -53,8 +53,6 @@ void PreferenceManager::loadPrefs()
     set( SETTING::GRID,                     settings.value( SETTING_SHOW_GRID,              false ).toBool() );
     set( SETTING::INVISIBLE_LINES,          settings.value( SETTING_INVISIBLE_LINES,        false ).toBool() );
     set( SETTING::OUTLINES,                 settings.value( SETTING_OUTLINES,               false ).toBool() );
-    set( SETTING::MIRROR_H,                 false ); // Always off by default
-    set( SETTING::MIRROR_V,                 false ); // Always off by default
 
     // Grid
     set( SETTING::GRID_SIZE,                settings.value( SETTING_GRID_SIZE,               50 ).toInt() );
@@ -278,12 +276,6 @@ void PreferenceManager::set( SETTING option, bool value )
         break;
     case SETTING::ONION_RED:
         settings.setValue ( SETTING_ONION_RED, value );
-        break;
-    case SETTING::MIRROR_H:
-        settings.setValue ( SETTING_MIRROR_H, value );
-        break;
-    case SETTING::MIRROR_V:
-        settings.setValue ( SETTING_MIRROR_V, value );
         break;
     case SETTING::TOOL_CURSOR:
         settings.setValue ( SETTING_TOOL_CURSOR, value );

@@ -279,8 +279,8 @@ void MainWindow2::createMenus()
     connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
     connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
-    connect(ui->actionHorizontal_Flip, &QAction::triggered, mEditor, &Editor::toggleMirror);
-    connect(ui->actionVertical_Flip, &QAction::triggered, mEditor, &Editor::toggleMirrorV);
+    connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
+    connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
     ui->actionPreview->setEnabled(false);
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view

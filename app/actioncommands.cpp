@@ -358,6 +358,18 @@ void ActionCommands::rotateCounterClockwise()
     mEditor->view()->rotate(currentRotation - 15.f);
 }
 
+void ActionCommands::toggleMirror()
+{
+    bool flipX = mEditor->view()->isFlipHorizontal();
+    mEditor->view()->flipHorizontal(!flipX);
+}
+
+void ActionCommands::toggleMirrorV()
+{
+    bool flipY = mEditor->view()->isFlipVertical();
+    mEditor->view()->flipVertical(!flipY);
+}
+
 void ActionCommands::showGrid(bool bShow)
 {
     auto prefs = mEditor->preference();

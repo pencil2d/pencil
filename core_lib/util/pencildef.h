@@ -178,8 +178,6 @@ enum BackgroundStyle
 #define SETTING_OUTLINES         "Outlines"
 #define SETTING_ONION_BLUE       "OnionBlue"
 #define SETTING_ONION_RED        "OnionRed"
-#define SETTING_MIRROR_H         "MirrorH"
-#define SETTING_MIRROR_V         "MirrorV"
 
 #define SETTING_GRID_SIZE        "GridSize"
 

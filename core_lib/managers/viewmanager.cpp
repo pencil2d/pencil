@@ -230,6 +230,7 @@ void ViewManager::flipHorizontal( bool b )
         updateViewTransforms();
 
         Q_EMIT viewChanged();
+        Q_EMIT viewFlipped();
     }
 }
 
@@ -241,6 +242,7 @@ void ViewManager::flipVertical( bool b )
         updateViewTransforms();
 
         Q_EMIT viewChanged();
+        Q_EMIT viewFlipped();
     }
 }
 
@@ -287,5 +289,6 @@ void ViewManager::resetView()
         mCurrentCamera->reset();
         updateViewTransforms();
         Q_EMIT viewChanged();
+        Q_EMIT viewFlipped();
     }
 }

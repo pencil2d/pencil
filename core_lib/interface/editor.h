@@ -46,23 +46,23 @@ class Editor : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY( ColorManager*    color    READ color )
-    Q_PROPERTY( ToolManager*     tools    READ tools )
-    Q_PROPERTY( LayerManager*    layers   READ layers )
-    Q_PROPERTY( PlaybackManager* playback READ playback )
-    Q_PROPERTY( ViewManager*     view     READ view )
-    Q_PROPERTY( PreferenceManager* preference READ preference )
-    Q_PROPERTY( SoundManager*    sound    READ sound )
+        Q_PROPERTY(ColorManager*    color    READ color)
+        Q_PROPERTY(ToolManager*     tools    READ tools)
+        Q_PROPERTY(LayerManager*    layers   READ layers)
+        Q_PROPERTY(PlaybackManager* playback READ playback)
+        Q_PROPERTY(ViewManager*     view     READ view)
+        Q_PROPERTY(PreferenceManager* preference READ preference)
+        Q_PROPERTY(SoundManager*    sound    READ sound)
 
 public:
-    explicit Editor( QObject* parent = nullptr );
+    explicit Editor(QObject* parent = nullptr);
     virtual ~Editor();
 
     bool init();
 
     /************************************************************************/
     /* Managers                                                             */
-    /************************************************************************/ 
+    /************************************************************************/
     ColorManager*      color() const { return mColorManager; }
     ToolManager*       tools() const { return mToolManager; }
     LayerManager*      layers() const { return mLayerManager; }
@@ -72,27 +72,27 @@ public:
     SoundManager*      sound() const { return mSoundManager; }
 
     Object* object() const { return mObject.get(); }
-    Status setObject( Object* object );
+    Status setObject(Object* object);
     void updateObject();
     void prepareSave();
 
-    void setScribbleArea( ScribbleArea* pScirbbleArea ) { mScribbleArea = pScirbbleArea; }
+    void setScribbleArea(ScribbleArea* pScirbbleArea) { mScribbleArea = pScirbbleArea; }
     ScribbleArea* getScribbleArea() { return mScribbleArea; }
 
     int currentFrame();
     int fps();
 
-	int  currentLayerIndex() { return mCurrentLayerIndex; }
-	void setCurrentLayerIndex(int i);
+    int  currentLayerIndex() { return mCurrentLayerIndex; }
+    void setCurrentLayerIndex(int i);
 
-    void scrubTo( int frameNumber );
+    void scrubTo(int frameNumber);
 
     int  allLayers();
-    bool exportSeqCLI( QString filePath, QString format = "PNG", int width = -1, int height = -1, bool transparency = false, bool antialias = true );
-    
+    bool exportSeqCLI(QString filePath, QString format = "PNG", int width = -1, int height = -1, bool transparency = false, bool antialias = true);
+
     QString workingDir() const;
 
-    void importMovie( QString filePath, int fps );
+    void importMovie(QString filePath, int fps);
 
     // backup
     int mBackupIndex;
@@ -107,8 +107,8 @@ Q_SIGNALS:
     void objectLoaded();
 
     void selectAll();
-    void changeThinLinesButton( bool );
-    void currentFrameChanged( int n );
+    void changeThinLinesButton(bool);
+    void currentFrameChanged(int n);
 
     void needSave();
 
@@ -116,14 +116,14 @@ public: //slots
     void clearCurrentFrame();
 
     void cut();
-    
+
     void deselectAll();
 
-    bool importImage( QString filePath );
-    void updateFrame( int frameNumber );
+    bool importImage(QString filePath);
+    void updateFrame(int frameNumber);
     void restoreKey();
 
-    void updateFrameAndVector( int frameNumber );
+    void updateFrameAndVector(int frameNumber);
     void updateCurrentFrame();
 
     void scrubNextKeyFrame();
@@ -138,21 +138,18 @@ public: //slots
     void moveFrameForward();
     void moveFrameBackward();
 
-    void setCurrentLayer( int layerNumber );
-    void switchVisibilityOfLayer( int layerNumber );
-    void moveLayer( int i, int j );
+    void setCurrentLayer(int layerNumber);
+    void switchVisibilityOfLayer(int layerNumber);
+    void moveLayer(int i, int j);
 
-    void backup( QString undoText );
-    void backup( int layerNumber, int frameNumber, QString undoText );
+    void backup(QString undoText);
+    void backup(int layerNumber, int frameNumber, QString undoText);
     void undo();
     void redo();
     void copy();
 
     void paste();
     void clipboardChanged();
-
-    void toggleMirror();
-    void toggleMirrorV();
     void toggleShowAllLayers();
     void flipSelection(bool flipVertical);
 
@@ -162,40 +159,40 @@ public: //slots
 
 protected:
     // Need to move to somewhere...
-    void dragEnterEvent( QDragEnterEvent* event );
-    void dropEvent( QDropEvent* event );
+    void dragEnterEvent(QDragEnterEvent*);
+    void dropEvent(QDropEvent*);
 
 private:
-    bool importBitmapImage( QString );
-    bool importVectorImage( QString );
+    bool importBitmapImage(QString);
+    bool importVectorImage(QString);
 
     // the object to be edited by the editor
     std::shared_ptr<Object> mObject = nullptr;
 
     int mFrame = 1; // current frame number.
-	int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
+    int mCurrentLayerIndex = 0; // the current layer to be edited/displayed
 
     ScribbleArea* mScribbleArea = nullptr;
 
-    ColorManager*      mColorManager      = nullptr;
-    ToolManager*       mToolManager       = nullptr;
-    LayerManager*      mLayerManager      = nullptr;
-    PlaybackManager*   mPlaybackManager   = nullptr;
-    ViewManager*       mViewManager       = nullptr;
+    ColorManager*      mColorManager = nullptr;
+    ToolManager*       mToolManager = nullptr;
+    LayerManager*      mLayerManager = nullptr;
+    PlaybackManager*   mPlaybackManager = nullptr;
+    ViewManager*       mViewManager = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
-    SoundManager*      mSoundManager      = nullptr;
+    SoundManager*      mSoundManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 
     bool m_isAltPressed = false;
     int numberOfModifications = 0;
 
-    bool mIsAutosave   = true;
+    bool mIsAutosave = true;
     int autosaveNumber = 12;
     int autosaveCounter = 0;
 
     void makeConnections();
-    KeyFrame* addKeyFrame( int layerNumber, int frameNumber );
+    KeyFrame* addKeyFrame(int layerNumber, int frameNumber);
 
     // backup
     void clearUndoStack();

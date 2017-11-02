@@ -31,7 +31,7 @@ class DisplayOptionWidget : public BaseDockWidget
 {
     Q_OBJECT
 public:
-    explicit DisplayOptionWidget( QWidget* parent );
+    explicit DisplayOptionWidget(QWidget* parent);
     virtual ~DisplayOptionWidget();
 
     void initUI() override;
@@ -39,10 +39,12 @@ public:
 
     void makeConnectionToEditor(Editor* editor);
 private:
-    void onionPrevButtonClicked( bool );
-    void onionNextButtonClicked( bool );
-    void onionBlueButtonClicked( bool );
-    void onionRedButtonClicked( bool );
+    void onionPrevButtonClicked(bool);
+    void onionNextButtonClicked(bool);
+    void onionBlueButtonClicked(bool);
+    void onionRedButtonClicked(bool);
+    void toggleMirror(bool);
+    void toggleMirrorV(bool);
 
     Ui::DisplayOption* ui = nullptr;
 };

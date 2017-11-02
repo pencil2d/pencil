@@ -50,7 +50,8 @@ public:
     void flipSelectionY();
     void rotateClockwise();
     void rotateCounterClockwise();
-
+    void toggleMirror();
+    void toggleMirrorV();
     void showGrid(bool bShow);
 
     // Animation
