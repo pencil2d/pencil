@@ -29,16 +29,16 @@ class AboutDialog : public QDialog
     Q_OBJECT
 
 public:
-    AboutDialog(QWidget *parent);
+    AboutDialog(QWidget* parent);
 
     void init();
 
 private:
-    QSpinBox *mSequenceSpaceBox;
-    QLabel *aboutText;
-    QLabel *logo;
-    QLabel *logoText;
-    QLabel *devInfoText;
+    QSpinBox* mSequenceSpaceBox;
+    QLabel* aboutText;
+    QLabel* logo;
+    QLabel* logoText;
+    QLabel* devInfoText;
 };
 
 #endif // ABOUTDIALOG_H

@@ -31,7 +31,7 @@ AboutDialog::AboutDialog(QWidget* parent ) : QDialog(parent)
 void AboutDialog::init()
 {
     QVBoxLayout* lay = new QVBoxLayout;
-    QPushButton *okButton = new QPushButton(tr("OK"));
+    QPushButton* okButton = new QPushButton(tr("OK"));
 
     QHBoxLayout* buttonsLayout = new QHBoxLayout;
 
@@ -45,11 +45,12 @@ void AboutDialog::init()
     logoText->setAlignment(Qt::AlignCenter);
 
     logoText->setText(tr("<b>Pencil2D</b>"));
-    aboutText->setTextInteractionFlags(Qt::TextBrowserInteraction); //FIXME: links clickable but doesn't open browser.
+    aboutText->setTextInteractionFlags(Qt::TextBrowserInteraction);
     aboutText->setWordWrap(true);
-    aboutText->setText(tr("Official site: <a href=\"http://pencil2d.org\">pencil2d.org</a>"
-                                                        "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus</b></>"
-                                                        "<br>Thanks to: Qt Framework <a href=\"http://qt-project.org\">qt-project.org</a></>"
+    aboutText->setOpenExternalLinks(true);
+    aboutText->setText(tr("Official site: <a href=\"http://pencil2d.github.io\">pencil2d.github.io</a>"
+                                                        "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang</b></>"
+                                                        "<br>Thanks to: Qt Framework <a href=\"https://www.qt.io/\">https://www.qt.io/</a></>"
                                                         "<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a></>"));
 
     connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
