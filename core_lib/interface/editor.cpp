@@ -648,7 +648,6 @@ Status Editor::setObject(Object* newObject)
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
-        m->currentLayerChanged(mObject->getLayer(0));
     }
 
     g_clipboardVectorImage.setObject(newObject);
