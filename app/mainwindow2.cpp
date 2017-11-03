@@ -970,7 +970,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
     connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
@@ -1000,14 +1000,14 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
 
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
+    connect(pEditor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
+    connect(pEditor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

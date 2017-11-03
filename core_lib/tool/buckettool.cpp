@@ -160,6 +160,7 @@ void BucketTool::paintBitmap(Layer* layer)
 
 void BucketTool::paintVector(QMouseEvent *event, Layer* layer)
 {
+    Q_UNUSED(event);
     mScribbleArea->clearBitmapBuffer();
     VectorImage *vectorImage = ( ( LayerVector * )layer )->getLastVectorImageAtFrame( mEditor->currentFrame(), 0 );
 

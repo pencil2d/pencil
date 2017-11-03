@@ -44,11 +44,9 @@ ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) : BaseDockWidget(parent)
     connect(ui->colorListWidget, &QListWidget::currentItemChanged,
         this, &ColorPaletteWidget::colorListCurrentItemChanged);
 
-    connect(ui->colorListWidget, SIGNAL(itemClicked(QListWidgetItem*)),
-        this, SLOT(clickColorListItem(QListWidgetItem*)));
+    connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
 
-    connect(ui->colorListWidget, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this,
-        SLOT(changeColourName(QListWidgetItem*)));
+    connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
 
     connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
     connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
