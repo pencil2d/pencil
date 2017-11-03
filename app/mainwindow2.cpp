@@ -598,12 +598,12 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     return true;
 }
 
-void MainWindow2::saveDocument()
+bool MainWindow2::saveDocument()
 {
     if (!mEditor->object()->filePath().isEmpty())
-        saveObject(mEditor->object()->filePath());
+        return saveObject(mEditor->object()->filePath());
     else
-        saveAsNewDocument();
+        return saveAsNewDocument();
 }
 
 bool MainWindow2::maybeSave()
@@ -617,8 +617,7 @@ bool MainWindow2::maybeSave()
             QMessageBox::Cancel | QMessageBox::Escape);
         if (ret == QMessageBox::Yes)
         {
-            saveDocument();
-            return true;
+            return saveDocument();
         }
         else if (ret == QMessageBox::Cancel)
         {
