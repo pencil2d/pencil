@@ -7,6 +7,8 @@ CONFIG   += staticlib
 
 # include(zlib.pri)
 
+QMAKE_CFLAGS += -w
+
 HEADERS += \
     $$PWD/crc32.h \
     $$PWD/deflate.h \
