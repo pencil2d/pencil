@@ -203,8 +203,8 @@ void ToolManager::setAA( int usingAA )
 
 void ToolManager::setInpolLevel(int level)
 {
-    currentTool()->setInpolLevel( level );
-    Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION );
+    currentTool()->setInpolLevel(level);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION);
 }
 
 

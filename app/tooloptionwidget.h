@@ -22,7 +22,7 @@ GNU General Public License for more details.
 class QToolButton;
 class SpinSlider;
 class QCheckBox;
-class QRadioButton;
+class QComboBox;
 class QSpinBox;
 class QGroupBox;
 class Editor;
@@ -74,10 +74,7 @@ private:
     SpinSlider* mSizeSlider      = nullptr;
     SpinSlider* mFeatherSlider   = nullptr;
     QCheckBox* mUseAABox         = nullptr;
-    QRadioButton* mNoInpol       = nullptr;
-    QRadioButton* mSimpleInpol   = nullptr;
-    QRadioButton* mStrongInpol   = nullptr;
-    QRadioButton* mExtremeInpol  = nullptr;
+    QComboBox* mInpol            = nullptr;
     QGroupBox* mInpolLevelsBox   = nullptr;
     SpinSlider* mToleranceSlider = nullptr;
     QSpinBox* mToleranceSpinBox  = nullptr;
