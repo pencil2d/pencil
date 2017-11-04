@@ -92,7 +92,7 @@ void SoundPlayer::setMediaPlayerPosition(qint64 pos)
 void SoundPlayer::makeConnections()
 {   
     auto errorSignal = static_cast< void ( QMediaPlayer::* )( QMediaPlayer::Error ) >( &QMediaPlayer::error );
-    connect( mMediaPlayer, errorSignal, this, [ this ]( QMediaPlayer::Error err )
+    connect( mMediaPlayer, errorSignal, this, []( QMediaPlayer::Error err )
     {
         qDebug() << "MediaPlayer Error: " << err;
     } );
