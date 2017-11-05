@@ -17,10 +17,10 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QToolButton>
 #include <QCheckBox>
+#include <QComboBox>
 #include <QSpinBox>
 #include <QGridLayout>
 #include <QGroupBox>
-#include <QRadioButton>
 #include <QSettings>
 #include <QDebug>
 #include "spinslider.h"
@@ -152,31 +152,14 @@ void ToolOptionWidget::createUI()
                                         "padding: 0.7em 3px 0 3px;"
                                     "}");
 
-    mNoInpol = new QRadioButton ( tr( "" ) );
-    mNoInpol->setToolTip( tr( "No line interpolation" ) );
-    mNoInpol->setFont( QFont( "Helvetica", 10) );
-    mNoInpol->setChecked ( true );
+    mInpol = new QComboBox();
+    mInpol->addItems(QStringList() << tr("No line interpolation") << tr("Simple line interpolation") << tr("Strong line interpolation"));
+    mInpol->setFont(QFont( "Helvetica", 10));
 
-    mSimpleInpol = new QRadioButton (tr( "" ) );
-    mSimpleInpol->setToolTip( tr( "Simple line interpolation" ) );
-    mSimpleInpol->setChecked ( false );
-
-    mStrongInpol = new QRadioButton (tr( "" ) );
-    mStrongInpol->setToolTip( tr( "Strong line interpolation" ) );
-    mStrongInpol->setChecked ( false );
-
-//    mExtremeInpol = new QRadioButton (tr( "" ) );
-//    mExtremeInpol->setToolTip( tr( "Extreme line interpolation" ) );
-//    mExtremeInpol->setFont( QFont( "Helvetica", 10) );
-//    mExtremeInpol->setChecked ( false );
-
-    QGridLayout* inpolLayout = new QGridLayout();
-    inpolLayout->addWidget( mNoInpol, 16, 0, 2, 1 );
-    inpolLayout->addWidget( mSimpleInpol, 16, 1, 2, 1 );
-    inpolLayout->addWidget( mStrongInpol, 16, 2, 2, 1 );
-//    inpolLayout->addWidget( mExtremeInpol, 16, 3, 2, 1 );
-    mInpolLevelsBox->setLayout(inpolLayout);
+    QVBoxLayout *inpolLayout = new QVBoxLayout();
+    inpolLayout->addWidget(mInpol);
     inpolLayout->setSpacing(2);
+    mInpolLevelsBox->setLayout(inpolLayout);
 
     mToleranceSlider = new SpinSlider( tr( "Color Tolerance" ), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100, this );
     mToleranceSlider->setValue( settings.value( "Tolerance" ).toInt() );
@@ -244,10 +227,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mVectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled );
     connect( mUseAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA );
 
-    connect( mNoInpol, &QRadioButton::clicked, toolManager, &ToolManager::noInpolSelected);
-    connect( mSimpleInpol, &QRadioButton::clicked, toolManager, &ToolManager::SimplepolSelected);
-    connect( mStrongInpol, &QRadioButton::clicked, toolManager, &ToolManager::StrongpolSelected);
-    connect( mExtremeInpol, &QRadioButton::clicked, toolManager, &ToolManager::ExtremepolSelected);
+    connect( mInpol, QOverload<int>::of(&QComboBox::activated), toolManager, &ToolManager::setInpolLevel);
 
     connect( mToleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
     connect( mToleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
@@ -448,21 +428,7 @@ void ToolOptionWidget::setInpolLevel(int x)
 {
     qDebug() << "Setting - Interpolation level:" << x;
 
-    SignalBlocker b( mNoInpol );
-    SignalBlocker c( mSimpleInpol );
-    SignalBlocker d( mStrongInpol );
-    if (x == 0) {
-        mNoInpol->setChecked(true);
-    }
-    else if (x == 1) {
-        mSimpleInpol->setChecked(true);
-    } else if (x == 2) {
-        mStrongInpol->setChecked(true);
-    } else if (x == 3) {
-        mExtremeInpol->setChecked(true);
-    } else if (x == -1) {
-        mNoInpol->setChecked(true);
-    }
+    mInpol->setCurrentIndex(qBound(0, x, mInpol->count()));
 }
 
 void ToolOptionWidget::setTolerance(int tolerance)
