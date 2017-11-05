@@ -68,6 +68,8 @@ public:
 
     void layerUpdated( int layerId );
 
+    using BaseManager::currentLayerChanged;
+
 Q_SIGNALS:
     void currentLayerChanged( int n );
     void layerCountChanged( int count );

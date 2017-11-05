@@ -78,7 +78,7 @@ public:
     void setOpacity(int opacity);
     void newDocument();
     void openDocument();
-    void saveDocument();
+    bool saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
 

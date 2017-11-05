@@ -598,12 +598,12 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     return true;
 }
 
-void MainWindow2::saveDocument()
+bool MainWindow2::saveDocument()
 {
     if (!mEditor->object()->filePath().isEmpty())
-        saveObject(mEditor->object()->filePath());
+        return saveObject(mEditor->object()->filePath());
     else
-        saveAsNewDocument();
+        return saveAsNewDocument();
 }
 
 bool MainWindow2::maybeSave()
@@ -617,8 +617,7 @@ bool MainWindow2::maybeSave()
             QMessageBox::Cancel | QMessageBox::Escape);
         if (ret == QMessageBox::Yes)
         {
-            saveDocument();
-            return true;
+            return saveDocument();
         }
         else if (ret == QMessageBox::Cancel)
         {
@@ -970,7 +969,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
     connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
@@ -1000,14 +999,14 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
 
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
+    connect(pEditor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
+    connect(pEditor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

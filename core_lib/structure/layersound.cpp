@@ -126,7 +126,7 @@ void LayerSound::loadDomElement( QDomElement element, QString dataDirPath )
 
 Status LayerSound::saveKeyFrame( KeyFrame* key, QString path )
 {
-	SoundClip* clip = dynamic_cast<SoundClip*>(key);
+    //SoundClip* clip = dynamic_cast<SoundClip*>(key);
 	Q_ASSERT(key);
 
 	QFileInfo info(key->fileName());
