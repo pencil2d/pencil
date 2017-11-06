@@ -1,5 +1,5 @@
 [Desktop Entry]
-Version=1.1
+Version=1.0
 Type=Application
 Name=Pencil2D
 GenericName=Animation Software
@@ -10,5 +10,3 @@ Icon=pencil2d
 Exec=Pencil2D %f
 MimeType=application/x-pencil-pcl;application/x-pencil-pclx;
 Categories=AudioVideo;AudioVideoEditing;Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;
-Keywords=picture;drawing;vector;bitmap;cartoon;
-Keywords[de]=Bild;Zeichnen;Vektor;Raster;Zeichentrick;
