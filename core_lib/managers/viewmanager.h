@@ -36,7 +36,7 @@ public:
     bool init() override;
     Status load( Object* ) override;
 	Status save( Object* ) override;
-	void currentLayerChanged(Layer* layer) override;
+	void workingLayerChanged(Layer* layer) override;
 
     QTransform getView();
     void resetView();

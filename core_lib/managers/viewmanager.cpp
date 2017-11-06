@@ -53,7 +53,7 @@ Status ViewManager::save( Object* o )
 	return Status();
 }
 
-void ViewManager::currentLayerChanged(Layer* layer)
+void ViewManager::workingLayerChanged(Layer* layer)
 {
 	if (layer->type() == Layer::CAMERA)
 	{

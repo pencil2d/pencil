@@ -47,12 +47,12 @@ Status ColorManager::save(Object* o)
     return Status::OK;
 }
 
-void ColorManager::currentLayerChanged(Layer* layer)
+void ColorManager::workingLayerChanged(Layer* layer)
 {
     mIsWorkingOnVectorLayer = (layer->type() == Layer::VECTOR);
     if (mIsWorkingOnVectorLayer)
     {
-        mCurrentFrontColor = editor()->object()->getColour(mCurrentColorIndex).colour;
+        mCurrentFrontColor = object()->getColour(mCurrentColorIndex).colour;
         emit colorChanged(mCurrentFrontColor, mCurrentColorIndex);
     }
 }
@@ -60,7 +60,7 @@ void ColorManager::currentLayerChanged(Layer* layer)
 QColor ColorManager::frontColor()
 {
     if (mIsWorkingOnVectorLayer)
-        return editor()->object()->getColour(mCurrentColorIndex).colour;
+        return object()->getColour(mCurrentColorIndex).colour;
     else
         return mCurrentFrontColor;
 }
@@ -71,7 +71,7 @@ void ColorManager::setColorNumber(int n)
 
     mCurrentColorIndex = n;
 
-    QColor currentColor = editor()->object()->getColour(mCurrentColorIndex).colour;
+    QColor currentColor = object()->getColour(mCurrentColorIndex).colour;
     emit colorNumberChanged(mCurrentColorIndex);
     emit colorChanged(currentColor, mCurrentColorIndex);
 }
@@ -83,7 +83,7 @@ void ColorManager::setColor(const QColor& newColor)
         mCurrentFrontColor = newColor;
         
         if ( mIsWorkingOnVectorLayer )
-            editor()->object()->setColour(mCurrentColorIndex, newColor);
+            object()->setColour(mCurrentColorIndex, newColor);
 
         emit colorChanged(newColor, (mIsWorkingOnVectorLayer) ? mCurrentColorIndex : -1);
     }

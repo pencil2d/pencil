@@ -813,7 +813,7 @@ void Editor::setCurrentLayerIndex(int i)
 
     for (auto mgr : mAllManagers)
     {
-        mgr->currentLayerChanged(mObject->getLayer(i));
+        mgr->workingLayerChanged(mObject->getLayer(i));
     }
 }
 

@@ -19,9 +19,9 @@ GNU General Public License for more details.
 #include "QPainter"
 #include "backgroundwidget.h"
 
-BackgroundWidget::BackgroundWidget(QWidget *parent) : QWidget(parent)
+BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent)
 {
-    setObjectName( "BackgroundWidget" );
+    setObjectName("BackgroundWidget");
 
     // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
     // and don't change when the widget is resized.
@@ -30,7 +30,6 @@ BackgroundWidget::BackgroundWidget(QWidget *parent) : QWidget(parent)
 
 BackgroundWidget::~BackgroundWidget()
 {
-
 }
 
 void BackgroundWidget::init(PreferenceManager *prefs)
@@ -72,9 +71,8 @@ void BackgroundWidget::paintEvent(QPaintEvent *)
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
-    if (mHasShadow) {
+    if (mHasShadow)
         drawShadow(painter);
-    }
 }
 
 void BackgroundWidget::loadBackgroundStyle()
@@ -126,7 +124,6 @@ void BackgroundWidget::drawShadow( QPainter& painter )
     qreal a = colour.alphaF();
     shadow.setColorAt( 0.0, QColor( r, g, b, qRound( a * 255 * opacity ) ) );
     shadow.setColorAt( 1.0, QColor( r, g, b, 0 ) );
-
 
     painter.setPen( Qt::NoPen );
     painter.setBrush( shadow );

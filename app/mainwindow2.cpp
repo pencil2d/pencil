@@ -94,8 +94,9 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 
     // Central widget
     setCentralWidget(mBackground);
-
-
+    
+    // Initialize order
+    // 1. object 2. editor 3. scribble area 4. other widgets
     Object* object = new Object();
     object->init();
 
@@ -123,14 +124,9 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
     //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
-
-    mEditor->setCurrentLayer(mEditor->object()->getLayerCount() - 1);
     mEditor->tools()->setDefaultTool();
-
     mBackground->init(mEditor->preference());
-
     mEditor->updateObject();
-    mEditor->color()->setColorNumber(0);
 
     connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 }
@@ -139,7 +135,6 @@ MainWindow2::~MainWindow2()
 {
     delete ui;
 }
-
 
 void MainWindow2::createDockWidgets()
 {
@@ -221,7 +216,6 @@ void MainWindow2::createDockWidgets()
         w->setFloating(false);
     }
 }
-
 
 void MainWindow2::createMenus()
 {
@@ -354,7 +348,6 @@ void MainWindow2::createMenus()
     winMenu->addAction(lockWidgets);
     connect(lockWidgets, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
-
 
     // -------------- Help Menu ---------------
     connect(ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
@@ -969,7 +962,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), scribbleArea, &ScribbleArea::updateAllFrames);
+    connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::updateAllFrames);
 
     connect(editor, &Editor::currentFrameChanged, scribbleArea, &ScribbleArea::updateFrame);
     connect(editor, &Editor::selectAll, scribbleArea, &ScribbleArea::selectAll);
@@ -999,14 +992,14 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pTimeline, &TimeLine::toogleAbsoluteOnionClick, pEditor, &Editor::toogleOnionSkinType);
 
-    connect(pEditor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), pTimeline, &TimeLine::updateUI);
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
-    connect(pEditor->layers(), QOverload<int>::of(&LayerManager::currentLayerChanged), mToolOptions, &ToolOptionWidget::updateUI);
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)

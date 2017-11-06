@@ -32,47 +32,45 @@ class LayerManager : public BaseManager
     Q_OBJECT
 
 public:
-    LayerManager( QObject* pParant );
+    LayerManager(QObject* pParant);
     ~LayerManager();
     bool init() override;
-    Status load( Object* ) override;
-	Status save( Object* ) override;
+    Status load(Object*) override;
+    Status save(Object*) override;
 
     // Layer Management
     Layer* currentLayer();
-    Layer* currentLayer( int offset );
-    Layer* getLayer( int index );
-	Layer* getLayerByName(QString sName);
+    Layer* currentLayer(int offset);
+    Layer* getLayer(int index);
+    Layer* getLayerByName(QString sName);
     int    getLastCameraLayer();
     int    currentLayerIndex();
-    void   setCurrentLayer( int nIndex );
-    void   setCurrentLayer( Layer* layer );
+    void   setCurrentLayer(int nIndex);
+    void   setCurrentLayer(Layer* layer);
     int    count();
 
     bool   deleteCurrentLayer();
 
     void gotoNextLayer();
     void gotoPreviouslayer();
-    
-    LayerBitmap* createBitmapLayer( const QString& strLayerName );
-    LayerVector* createVectorLayer( const QString& strLayerName );
-    LayerCamera* createCameraLayer( const QString& strLayerName );
-    LayerSound*  createSoundLayer( const QString& strLayerName );
-    
+
+    LayerBitmap* createBitmapLayer(const QString& strLayerName);
+    LayerVector* createVectorLayer(const QString& strLayerName);
+    LayerCamera* createCameraLayer(const QString& strLayerName);
+    LayerSound*  createSoundLayer(const QString& strLayerName);
+
     // KeyFrame Management
-    int LastFrameAtFrame( int frameIndex );
+    int LastFrameAtFrame(int frameIndex);
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
     int projectLength(bool includeSounds = true);
 
-    void layerUpdated( int layerId );
-
-    using BaseManager::currentLayerChanged;
+    void layerUpdated(int layerId);
 
 Q_SIGNALS:
-    void currentLayerChanged( int n );
-    void layerCountChanged( int count );
+    void currentLayerChanged(int n);
+    void layerCountChanged(int count);
 
 private:
     int mLastCameraLayer = 0;

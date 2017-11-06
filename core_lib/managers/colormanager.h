@@ -33,7 +33,7 @@ public:
     bool init() override;
     Status load(Object*) override;
     Status save(Object*) override;
-    void currentLayerChanged(Layer*) override;
+    void workingLayerChanged(Layer*) override;
 
     QColor frontColor();
     int frontColorNumber();
