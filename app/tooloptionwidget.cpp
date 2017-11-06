@@ -217,7 +217,7 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mVectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled );
     connect( mUseAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA );
 
-    connect( mInpol, QOverload<int>::of(&QComboBox::activated), toolManager, &ToolManager::setInpolLevel);
+    connect( mInpol, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setInpolLevel);
 
     connect( mToleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
     connect( mToleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
