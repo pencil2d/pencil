@@ -197,7 +197,7 @@ Status FileManager::save( Object* object, QString strFileName )
                        tr( "Invalid Save Path" ),
                        tr( "The file path you have specified (\"%1\") points to a directory, so the file cannot be saved." ).arg( fileInfo.absoluteFilePath() ) );
     }
-    if ( !fileInfo.isWritable() )
+    if ( fileInfo.exists() && !fileInfo.isWritable() )
     {
         debugDetails << "strFileName points to a location that is not writable";
         return Status( Status::INVALID_ARGUMENT,
