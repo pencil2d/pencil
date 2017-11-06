@@ -62,13 +62,9 @@ GNU General Public License for more details.
 #include "util.h"
 
 #include "fileformat.h"     //contains constants used by Pencil File Format
-#include "JlCompress.h"     //compress and decompress New Pencil File Format
 #include "recentfilemenu.h"
 
-#include "exportimagedialog.h"
-#include "exportmoviedialog.h"
 #include "shortcutfilter.h"
-#include "filedialogex.h"
 #include "movieexporter.h"
 #include "app_util.h"
 
