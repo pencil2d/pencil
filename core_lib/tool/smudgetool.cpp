@@ -192,6 +192,8 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
 
     if (event->button() == Qt::LeftButton)
     {
+        mEditor->backup(typeName());
+
         if (layer->type() == Layer::BITMAP)
         {
             drawStroke();
@@ -210,8 +212,6 @@ void SmudgeTool::mouseReleaseEvent(QMouseEvent *event)
             }
             mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }
-
-        mEditor->backup(typeName());
     }
 }
 

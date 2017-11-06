@@ -137,23 +137,13 @@ void ToolOptionWidget::createUI()
     mFillContour->setFont( QFont( "Helvetica", 10 ) );
     mFillContour->setChecked( true );
 
-    mInpolLevelsBox = new QGroupBox ( tr( "Stabilization level" ) );
+    mInpolLevelsBox = new QGroupBox ( tr( "Stabilization" ) );
     mInpolLevelsBox->setFlat(true);
     mInpolLevelsBox->setFont(QFont( "Helvetica", 10 ) );
-    mInpolLevelsBox->setStyleSheet(
-                                    "QGroupBox"
-                                    "{"
-                                        "margin-top: 1.0em"
-                                    "}"
-                                    "QGroupBox::title"
-                                    "{"
-                                        "subcontrol-origin: margin;"
-                                        "left: 5px;"
-                                        "padding: 0.7em 3px 0 3px;"
-                                    "}");
+    //mInpolLevelsBox->setStyleSheet();
 
     mInpol = new QComboBox();
-    mInpol->addItems(QStringList() << tr("No line interpolation") << tr("Simple line interpolation") << tr("Strong line interpolation"));
+    mInpol->addItems(QStringList() << tr("No interpolation") << tr("Simple line interpolation") << tr("Strong line interpolation"));
     mInpol->setFont(QFont( "Helvetica", 10));
 
     QVBoxLayout *inpolLayout = new QVBoxLayout();

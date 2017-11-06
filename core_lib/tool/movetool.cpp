@@ -319,8 +319,8 @@ void MoveTool::cancelChanges()
 
 void MoveTool::applyChanges()
 {
-    mScribbleArea->applyTransformedSelection();
     mEditor->backup(typeName());
+    mScribbleArea->applyTransformedSelection();
 }
 
 void MoveTool::paintTransformedSelection()

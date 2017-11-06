@@ -113,12 +113,12 @@ void BucketTool::mouseReleaseEvent(QMouseEvent* event)
 
     if ( event->button() == Qt::LeftButton )
     {
+        mEditor->backup(typeName());
+
         if ( layer->type() == Layer::BITMAP )
             paintBitmap(layer);
         else if( layer->type() == Layer::VECTOR )
             paintVector(event, layer);
-
-        mEditor->backup(typeName());
     }
     endStroke();
 }

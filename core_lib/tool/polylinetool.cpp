@@ -134,12 +134,12 @@ void PolylineTool::mouseMoveEvent(QMouseEvent*)
 
 void PolylineTool::mouseDoubleClickEvent(QMouseEvent* event)
 {
+    mEditor->backup(typeName());
+
     if ( BezierCurve::eLength( m_pStrokeManager->getLastPressPixel() - event->pos() ) < 2.0 )
     {
         endPolyline( mPoints );
         clear();
-
-        mEditor->backup(typeName());
     }
 }
 
