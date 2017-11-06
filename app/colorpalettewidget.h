@@ -28,6 +28,7 @@ class Editor;
 class ColorBox;
 class QActionGroup;
 class QMenu;
+class QString;
 
 namespace Ui
 {
@@ -63,6 +64,7 @@ private: // slots:
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
+    void onActiveColorNameChange(QString name);
     void clickAddColorButton();
     void clickRemoveColorButton();
     void palettePreferences();
