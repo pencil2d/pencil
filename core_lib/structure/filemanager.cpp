@@ -197,7 +197,16 @@ Status FileManager::save( Object* object, QString strFileName )
                        tr( "Invalid Save Path" ),
                        tr( "The file path you have specified (\"%1\") points to a directory, so the file cannot be saved." ).arg( fileInfo.absoluteFilePath() ) );
     }
-    if ( fileInfo.exists() && !fileInfo.isWritable() )
+    QFileInfo parentDirInfo( fileInfo.dir().absolutePath() );
+    if ( !parentDirInfo.exists() )
+    {
+        debugDetails << "the parent directory of strFileName does not exist";
+        return Status( Status::INVALID_ARGUMENT,
+                       debugDetails,
+                       tr("Invalid Save Path"),
+                       tr("The file path you have specified (\"%1\") is in a directory (\"%2\") which does not exist. Please save your file in a valid location.").arg(fileInfo.absoluteFilePath(), parentDirInfo.absoluteFilePath()));
+    }
+    if ( (fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable() )
     {
         debugDetails << "strFileName points to a location that is not writable";
         return Status( Status::INVALID_ARGUMENT,
