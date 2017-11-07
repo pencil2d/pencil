@@ -24,6 +24,14 @@ void TestViewManager::cleanupTestCase()
     delete mEditor;
 }
 
+void TestViewManager::testInit()
+{
+    auto v = std::make_shared< ViewManager >();
+
+    QCOMPARE(v->getView(), QTransform());
+    QVERIFY(v->getView().isIdentity());
+}
+
 void TestViewManager::testTranslation10()
 {
     ViewManager v(mEditor);
@@ -233,8 +241,63 @@ void TestViewManager::testSetCameraLayerAndRemoveIt()
     QCOMPARE(v.translation(), QPointF(0, 100));
 }
 
-void TestViewManager::testTwoCamerasInterpolation()
+void TestViewManager::testCanvasSize()
 {
+	auto v = std::make_shared<ViewManager>();
+	v->setCanvasSize( QSize( 100, 200 ) );
 
+	QTransform t = v->getView();
+
+	QCOMPARE( t.dx(), 50.0 );
+	QCOMPARE( t.dy(), 100.0 );
+	QCOMPARE( t.isRotating(), false );
+	QCOMPARE( t.isScaling(), false );
 }
 
+void TestViewManager::testLoadViewFromObject1()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+	
+    v.setCanvasSize( QSize( 100, 100 ) );
+	QTransform t = v.getView();
+	QCOMPARE( t.dx(), 50.0 );
+	QCOMPARE( t.dy(), 50.0 );
+}
+
+void TestViewManager::testLoadViewFromObject2()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+
+	v.setCanvasSize( QSize( 100, 100 ) );
+	QTransform t0;
+    mEditor->object()->data()->setCurrentView( t0.translate( 50.0, 80.0 ) );
+	
+	// view manager will grab the view matrix in mObj->data();
+	v.load(mEditor->object());
+
+	QTransform t1 = v.getView();
+	QCOMPARE( t1.dx(), 50.0 );
+	QCOMPARE( t1.dy(), 80.0 );
+}
+
+void TestViewManager::testSetCameraKey()
+{
+    ViewManager v(mEditor);
+    v.setEditor(mEditor);
+    v.init();
+	v.setCanvasSize( QSize( 100, 100 ) );
+
+	// add a keyframe into camera layer whenever view change.  
+	auto camLayer = mEditor->object()->getLayersByType<LayerCamera>()[ 0 ];
+	v.setCameraLayer( camLayer );
+	v.translate( 20, 20 );
+
+	QTransform t0 = v.getView();
+
+	Camera* c = dynamic_cast<Camera*>( camLayer->getKeyFrameAt( 1 ) );
+	QCOMPARE( t0, c->view );
+}
