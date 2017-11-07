@@ -65,7 +65,7 @@ void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> action )
     }
 }
 
-bool Layer::keyExists( int position )
+bool Layer::keyExists( int position ) const
 {
     return ( mKeyFrames.find( position ) != mKeyFrames.end() );
 }
@@ -170,7 +170,7 @@ int Layer::firstKeyFramePosition()
     return 0;
 }
 
-int Layer::getMaxKeyFramePosition()
+int Layer::getMaxKeyFramePosition() const
 {
     if ( !mKeyFrames.empty() )
     {
@@ -712,6 +712,9 @@ bool Layer::isPaintable()
         case Layer::BITMAP:
         case Layer::VECTOR:
             return true;
+        case Layer::CAMERA:
+        case Layer::SOUND:
+            return false;
         default:
             break;
     }

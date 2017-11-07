@@ -159,7 +159,7 @@ private:
 
     QList<ColourRef> mPalette;
 
-    std::unique_ptr<ObjectData> mEditorState;
+    std::unique_ptr<ObjectData> mData;
 };
 
 

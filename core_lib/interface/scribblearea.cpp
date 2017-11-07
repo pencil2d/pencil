@@ -555,7 +555,7 @@ void ScribbleArea::mousePressEvent( QMouseEvent* event )
         Q_CHECK_PTR( bitmapImage );
     }
 
-    if ( !layer->mVisible && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
+    if ( !layer->visible() && currentTool()->type() != HAND && ( event->button() != Qt::RightButton ) )
     {
         QMessageBox::warning( this, tr( "Warning" ),
                               tr( "You are drawing on a hidden layer! Please select another layer (or make the current layer visible)." ),

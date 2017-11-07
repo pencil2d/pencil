@@ -29,7 +29,6 @@ public:
     LayerBitmap( Object* object );
     ~LayerBitmap();
 
-    // method from layerImage
     void loadImageAtFrame( QString strFilePath, QPoint topLeft, int frameNumber );
 
     QDomElement createDomElement( QDomDocument& doc ) override;
@@ -42,7 +41,7 @@ protected:
     Status saveKeyFrame( KeyFrame*, QString strPath ) override;
 
 private:
-    QString fileName( int index );
+    QString fileName( int index ) const;
 };
 
 #endif

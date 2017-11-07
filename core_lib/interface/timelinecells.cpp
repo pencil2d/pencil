@@ -493,7 +493,7 @@ void TimeLineCells::mousePressEvent( QMouseEvent* event )
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
                         previousLayer->deselectAll();
 
-                        mEditor->setCurrentLayer( layerNumber );
+                        mEditor->layers()->setCurrentLayer( layerNumber );
                     }
 
                     Layer *currentLayer = mEditor->object()->getLayer(layerNumber);

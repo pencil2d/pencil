@@ -268,7 +268,7 @@ Status FileManager::save( Object* object, QString strFileName )
     for ( int i = 0; i < layerCount; ++i )
     {
         Layer* layer = object->getLayer( i );
-        qCDebug( mLog ) << QString( "Saving Layer %1" ).arg( i ).arg( layer->mName );
+        qCDebug( mLog ) << QString( "Saving Layer %1" ).arg( i ).arg( layer->name() );
 
         //progressValue = (i * 100) / nLayers;
         //progress.setValue( progressValue );

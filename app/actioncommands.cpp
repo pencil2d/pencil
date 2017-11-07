@@ -305,13 +305,13 @@ Status ActionCommands::exportImage()
     QTransform view = cameraLayer->getViewAtFrame(mEditor->currentFrame());
 
     bool bOK = mEditor->object()->exportIm(mEditor->currentFrame(),
-        view,
-        cameraLayer->getViewSize(),
-        exportSize,
-        filePath,
-        exportFormat,
-        true,
-        useTranparency);
+                                           view,
+                                           cameraLayer->getViewSize(),
+                                           exportSize,
+                                           filePath,
+                                           exportFormat,
+                                           true,
+                                           useTranparency);
 
     if (!bOK)
     {

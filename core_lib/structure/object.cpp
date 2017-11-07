@@ -59,7 +59,7 @@ Object::~Object()
 
 void Object::init()
 {
-    mEditorState.reset( new ObjectData );
+    mData.reset( new ObjectData );
 
     createWorkingDir();
 
@@ -205,13 +205,15 @@ void Object::createWorkingDir()
     QDir dataDir( strWorkingDir + PFF_DATA_DIR );
     dataDir.mkpath( "." );
 
+    qDebug() << "Working dir created at: " << workingDir();
+
     mDataDirPath = dataDir.absolutePath();
 }
 
 void Object::deleteWorkingDir() const
 {
-    QDir dataDir(mWorkingDirPath);
-    dataDir.removeRecursively();
+    QDir dir(mWorkingDirPath);
+    dir.removeRecursively();
 }
 
 int Object::getMaxLayerID()
@@ -466,7 +468,7 @@ void Object::paintImage( QPainter& painter, int frameNumber,
     for ( int i = 0; i < getLayerCount(); i++ )
     {
         Layer* layer = getLayer( i );
-        if ( layer->mVisible )
+        if ( layer->visible() )
         {
             painter.setOpacity( 1.0 );
 
@@ -659,14 +661,14 @@ int Object::getLayerCount() const
 
 ObjectData* Object::data()
 {
-    Q_ASSERT( mEditorState != nullptr );
-    return mEditorState.get();
+    Q_ASSERT( mData != nullptr );
+    return mData.get();
 }
 
 void Object::setData( ObjectData* d )
 {
     Q_ASSERT( d != nullptr );
-    mEditorState.reset( d );
+    mData.reset( d );
 }
 
 void Object::setLayerUpdated(int layerId)
