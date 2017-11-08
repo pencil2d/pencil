@@ -127,9 +127,15 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
 {
     if ( layer->isPaintable() )
     {
+
         mScribbleArea->setMoveMode( ScribbleArea::MIDDLE ); // was MIDDLE
 
         QRectF selectionRect = mScribbleArea->myTransformedSelection;
+        if (!selectionRect.isEmpty())
+        {
+            mEditor->backup(typeName());
+        }
+
         if ( mScribbleArea->somethingSelected ) // there is an area selection
         {
             if ( event->modifiers() != Qt::ShiftModifier && !selectionRect.contains( getCurrentPoint() ) )
@@ -162,7 +168,8 @@ void MoveTool::pressOperation(QMouseEvent* event, Layer* layer)
             {
                 actionOnVector(event, layer);
             }
-            if ( !(mScribbleArea->myTransformedSelection.contains( getLastPoint() )) )    // click is outside the transformed selection with the MOVE tool
+            if (!(mScribbleArea->myTransformedSelection.isEmpty()) 
+                && !(mScribbleArea->myTransformedSelection.contains( getLastPoint() )) )    // click is outside the transformed selection with the MOVE tool
             {
                 applyChanges();
             }
@@ -289,12 +296,8 @@ QPointF MoveTool::maintainAspectRatio(qreal offsetX, qreal offsetY)
         qreal absY = offsetY;
         if (absY < 0) {absY = -absY;}
 
-        if (absX > absY) {
-            offsetY = 0;
-        }
-        if (absY > absX) {
-            offsetX = 0;
-        }
+        if (absX > absY) { offsetY = 0; }
+        if (absY > absX) { offsetX = 0; }
     }
     return QPointF(offsetX,offsetY);
 }
@@ -319,7 +322,6 @@ void MoveTool::cancelChanges()
 
 void MoveTool::applyChanges()
 {
-    mEditor->backup(typeName());
     mScribbleArea->applyTransformedSelection();
 }
 
