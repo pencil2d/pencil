@@ -189,21 +189,21 @@ BackupElement* Editor::currentBackup()
 void Editor::backup(QString undoText)
 {
     KeyFrame* frame = nullptr;
-    if (lastModifiedLayer > -1 && lastModifiedFrame > 0)
+    if (mLastModifiedLayer > -1 && mLastModifiedFrame > 0)
     {
         if (layers()->currentLayer()->type() == Layer::SOUND)
         {
-            frame = layers()->currentLayer()->getKeyFrameWhichCovers(lastModifiedFrame);
+            frame = layers()->currentLayer()->getKeyFrameWhichCovers(mLastModifiedFrame);
             if (frame != nullptr) {
-                backup(lastModifiedLayer, frame->pos(), undoText);
+                backup(mLastModifiedLayer, frame->pos(), undoText);
             }
         }
         else
         {
-            backup(lastModifiedLayer, lastModifiedFrame, undoText);
+            backup(mLastModifiedLayer, mLastModifiedFrame, undoText);
         }
     }
-    if (lastModifiedLayer != layers()->currentLayerIndex() || lastModifiedFrame != currentFrame())
+    if (mLastModifiedLayer != layers()->currentLayerIndex() || mLastModifiedFrame != currentFrame())
     {
         if (layers()->currentLayer()->type() == Layer::SOUND)
         {
@@ -475,8 +475,8 @@ void Editor::clearUndoStack()
     {
         delete mBackupList.takeLast();
     }
-    lastModifiedLayer = -1;
-    lastModifiedFrame = -1;
+    mLastModifiedLayer = -1;
+    mLastModifiedFrame = -1;
 }
 
 void Editor::updateAutoSaveCounter()
@@ -484,10 +484,10 @@ void Editor::updateAutoSaveCounter()
     if (mIsAutosave == false)
         return;
 
-    autosaveCounter++;
-    if (autosaveCounter >= autosaveNumber)
+    mAutosaveCounter++;
+    if (mAutosaveCounter >= autosaveNumber)
     {
-        autosaveCounter = 0;
+        mAutosaveCounter = 0;
         emit needSave();
     }
 }
