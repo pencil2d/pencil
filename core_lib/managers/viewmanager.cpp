@@ -38,9 +38,9 @@ bool ViewManager::init()
 Status ViewManager::load( Object* )
 {
     mCameraLayer = nullptr;
-
-    resetView();
-	updateViewTransforms();
+    mCurrentCamera = mDefaultEditorCamera;
+    mCurrentCamera->reset();
+    updateViewTransforms();
 
     connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
 
