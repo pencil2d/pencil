@@ -196,8 +196,9 @@ private:
 
     // backup
     void clearUndoStack();
-    int lastModifiedFrame;
-    int lastModifiedLayer;
+    void updateAutoSaveCounter();
+    int lastModifiedFrame = -1;
+    int lastModifiedLayer = -1;
 
     // clipboard
     bool clipboardBitmapOk, clipboardVectorOk, clipboardSoundClipOk;

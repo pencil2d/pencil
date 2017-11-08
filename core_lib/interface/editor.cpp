@@ -300,12 +300,8 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
         }
     }
 
-    autosaveCounter++;
-    if (autosaveCounter >= autosaveNumber)
-    {
-        autosaveCounter = 0;
-        emit needSave();
-    }
+    updateAutoSaveCounter();
+
     emit updateBackup();
 }
 
@@ -481,6 +477,19 @@ void Editor::clearUndoStack()
     }
     lastModifiedLayer = -1;
     lastModifiedFrame = -1;
+}
+
+void Editor::updateAutoSaveCounter()
+{
+    if (mIsAutosave == false)
+        return;
+
+    autosaveCounter++;
+    if (autosaveCounter >= autosaveNumber)
+    {
+        autosaveCounter = 0;
+        emit needSave();
+    }
 }
 
 void Editor::cut()
