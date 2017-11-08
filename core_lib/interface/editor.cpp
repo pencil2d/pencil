@@ -112,7 +112,7 @@ bool Editor::init()
     makeConnections();
 
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
-    autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+    mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
 
     return true;
 }
@@ -163,7 +163,7 @@ void Editor::settingUpdated(SETTING setting)
         mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
         break;
     case SETTING::AUTO_SAVE_NUMBER:
-        autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+        mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
         mScribbleArea->updateAllFrames();
@@ -477,6 +477,8 @@ void Editor::clearUndoStack()
     }
     mLastModifiedLayer = -1;
     mLastModifiedFrame = -1;
+
+    mAutosaveCounter = 0;
 }
 
 void Editor::updateAutoSaveCounter()
@@ -485,7 +487,7 @@ void Editor::updateAutoSaveCounter()
         return;
 
     mAutosaveCounter++;
-    if (mAutosaveCounter >= autosaveNumber)
+    if (mAutosaveCounter >= mAutosaveNumber)
     {
         mAutosaveCounter = 0;
         emit needSave();

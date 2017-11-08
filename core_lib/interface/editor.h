@@ -187,7 +187,7 @@ private:
     bool mIsAltPressed = false;
 
     bool mIsAutosave = true;
-    int autosaveNumber = 12;
+    int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
 
     void makeConnections();
