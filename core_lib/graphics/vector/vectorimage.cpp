@@ -14,9 +14,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "vectorimage.h"
+
 #include <cmath>
 #include "object.h"
-#include "vectorimage.h"
 
 
 VectorImage::VectorImage()

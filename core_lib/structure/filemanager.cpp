@@ -15,8 +15,8 @@ GNU General Public License for more details.
 
 */
 
-
 #include "filemanager.h"
+
 #include "pencildef.h"
 #include "JlCompress.h"
 #include "fileformat.h"

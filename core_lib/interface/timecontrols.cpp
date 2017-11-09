@@ -15,9 +15,11 @@ GNU General Public License for more details.
 
 */
 
+#include "timecontrols.h"
+
 #include <QtGui>
 #include <QLabel>
-#include "timecontrols.h"
+
 #include "editor.h"
 #include "playbackmanager.h"
 #include "layermanager.h"

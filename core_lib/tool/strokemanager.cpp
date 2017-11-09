@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "strokemanager.h"
 
 #include <cmath>
 #include <limits>
 #include <QDebug>
 #include <QLineF>
 #include <QPainterPath>
-#include "strokemanager.h"
 #include "object.h"
 
 

@@ -21,11 +21,12 @@ GNU General Public License for more details.
 #include <QWidget>
 #include "preferencemanager.h"
 
+
 class BackgroundWidget : public QWidget
 {
     Q_OBJECT
 public:
-    BackgroundWidget( QWidget *parent );
+    BackgroundWidget( QWidget* parent );
     ~BackgroundWidget();
 
     void init(PreferenceManager* prefs);
@@ -43,7 +44,7 @@ private slots:
 
 private:
 
-    void drawShadow(QPainter &painter);
+    void drawShadow(QPainter& painter);
     void loadBackgroundStyle();
 
     PreferenceManager* mPrefs = nullptr;

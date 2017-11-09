@@ -15,12 +15,12 @@ GNU General Public License for more details.
 
 */
 
+#include "recentfilemenu.h"
 
 #include <QSettings>
 #include <QVariant>
 #include <QDebug>
 
-#include "recentfilemenu.h"
 
 RecentFileMenu::RecentFileMenu( QString title, QWidget *parent ) :
 QMenu( title, parent )

@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "layercamera.h"
 
 #include <QLineEdit>
 #include <QSpinBox>
@@ -22,7 +23,7 @@ GNU General Public License for more details.
 #include <QHBoxLayout>
 #include <QtDebug>
 #include "camera.h"
-#include "layercamera.h"
+
 
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()

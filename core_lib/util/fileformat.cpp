@@ -15,8 +15,8 @@ GNU General Public License for more details.
 
 */
 
-#include <QDir>
 #include "fileformat.h"
+#include <QDir>
 
 bool removePFFTmpDirectory (const QString& dirName)
 {

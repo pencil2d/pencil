@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "penciltool.h"
 
 #include <QSettings>
 #include <QPixmap>
@@ -29,8 +30,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "pencilsettings.h"
 #include "blitrect.h"
-
-#include "penciltool.h"
 
 PencilTool::PencilTool( QObject* parent ) : StrokeTool( parent )
 {

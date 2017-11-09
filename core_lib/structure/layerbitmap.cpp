@@ -14,10 +14,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QtDebug>
+#include "layerbitmap.h"
+
+#include <QDebug>
 #include "keyframe.h"
 #include "bitmapimage.h"
-#include "layerbitmap.h"
+
 
 
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)

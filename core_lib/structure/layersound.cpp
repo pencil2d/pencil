@@ -14,10 +14,11 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "layersound.h"
+
 #include <QtDebug>
 #include <QMediaPlayer>
 #include "object.h"
-#include "layersound.h"
 #include "soundclip.h"
 
 

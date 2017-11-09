@@ -15,9 +15,10 @@ GNU General Public License for more details.
 
 */
 
+#include "beziercurve.h"
+
 #include <cmath>
 #include <QList>
-#include "beziercurve.h"
 #include "object.h"
 #include "pencilerror.h"
 

@@ -14,20 +14,19 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "erasertool.h"
 
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
 
 #include "scribblearea.h"
-
 #include "pencilsettings.h"
 #include "strokemanager.h"
 #include "layermanager.h"
 #include "editor.h"
 #include "blitrect.h"
 #include "layervector.h"
-#include "erasertool.h"
 
 
 EraserTool::EraserTool( QObject *parent ) 

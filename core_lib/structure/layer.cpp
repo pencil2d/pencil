@@ -14,15 +14,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "layer.h"
 
-#include <climits>
 #include <cassert>
-#include <QtDebug>
+#include <QDebug>
 #include <QInputDialog>
 #include <QLineEdit>
 #include "keyframe.h"
 #include "keyframefactory.h"
-#include "layer.h"
 #include "object.h"
 #include "timeline.h"
 #include "timelinecells.h"

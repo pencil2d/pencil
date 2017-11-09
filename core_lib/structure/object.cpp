@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "object.h"
 
 #include <QDomDocument>
 #include <QTextStream>
@@ -21,7 +22,6 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QApplication>
 
-#include "object.h"
 #include "layer.h"
 #include "layerbitmap.h"
 #include "layervector.h"

@@ -15,8 +15,9 @@ GNU General Public License for more details.
 
 */
 #include "layervector.h"
+
 #include "vectorimage.h"
-#include <QtDebug>
+
 
 LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
 {

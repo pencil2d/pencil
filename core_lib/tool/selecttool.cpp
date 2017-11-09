@@ -14,13 +14,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "selecttool.h"
 
 #include "editor.h"
 #include "layervector.h"
 #include "scribblearea.h"
 #include "layermanager.h"
 #include "toolmanager.h"
-#include "selecttool.h"
+
 
 // Store selection origin so we can calculate
 // the selection rectangle in mousePressEvent.

@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "handtool.h"
+
 #include <cmath>
 #include <QPixmap>
 #include <QVector2D>

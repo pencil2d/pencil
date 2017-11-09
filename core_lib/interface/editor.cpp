@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "editor.h"
+
 #include <memory>
 #include <iostream>
 #include <QApplication>

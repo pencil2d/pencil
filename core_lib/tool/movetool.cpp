@@ -15,13 +15,14 @@ GNU General Public License for more details.
 
 */
 
+#include "movetool.h"
+
 #include "editor.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
 
-#include "movetool.h"
 
 MoveTool::MoveTool(QObject *parent) :
     BaseTool(parent)
