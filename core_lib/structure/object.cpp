@@ -367,12 +367,15 @@ bool Object::exportPalette( QString filePath )
     doc.appendChild( root );
     for ( int i = 0; i < mPalette.size(); i++ )
     {
+        ColourRef ref = mPalette.at(i);
         QDomElement tag = doc.createElement( "Colour" );
-        tag.setAttribute( "name", mPalette.at( i ).name );
-        tag.setAttribute( "red", mPalette.at( i ).colour.red() );
-        tag.setAttribute( "green", mPalette.at( i ).colour.green() );
-        tag.setAttribute( "blue", mPalette.at( i ).colour.blue() );
+        tag.setAttribute( "name", ref.name );
+        tag.setAttribute( "red", ref.colour.red() );
+        tag.setAttribute( "green", ref.colour.green() );
+        tag.setAttribute( "blue", ref.colour.blue() );
+        tag.setAttribute("alpha", ref.colour.alpha());
         root.appendChild( tag );
+        qDebug() << i << "Alpha:" << ref.colour.alpha();
         //QDomText t = doc.createTextNode( myPalette.at(i).name );
         //tag.appendChild(t);
     }
@@ -388,7 +391,6 @@ bool Object::importPalette( QString filePath )
     QFile* file = new QFile( filePath );
     if ( !file->open( QFile::ReadOnly ) )
     {
-        //QMessageBox::warning(this, "Warning", "Cannot read file");
         return false;
     }
 
@@ -407,8 +409,8 @@ bool Object::importPalette( QString filePath )
             int r = e.attribute( "red" ).toInt();
             int g = e.attribute( "green" ).toInt();
             int b = e.attribute( "blue" ).toInt();
-            mPalette.append( ColourRef( QColor( r, g, b ), name ) );
-            //qDebug() << name << r << g << b << endl; // the node really is an element.
+            int a = e.attribute("alpha", "255").toInt();
+            mPalette.append( ColourRef( QColor( r, g, b, a ), name ) );
         }
         tag = tag.nextSibling();
     }
