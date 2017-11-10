@@ -28,6 +28,8 @@ private slots:
 
     void testLoadXML();
 
+    void testExportColorPalette();
+
 private:
 };
 
