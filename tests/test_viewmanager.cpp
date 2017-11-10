@@ -273,15 +273,13 @@ void TestViewManager::testLoadViewFromObject2()
     v.init();
 
 	v.setCanvasSize( QSize( 100, 100 ) );
-	QTransform t0;
-    mEditor->object()->data()->setCurrentView( t0.translate( 50.0, 80.0 ) );
-	
-	// view manager will grab the view matrix in mObj->data();
+	//QTransform t0;
+    //mEditor->object()->data()->setCurrentView( t0.translate( 50.0, 80.0 ) );
 	v.load(mEditor->object());
 
 	QTransform t1 = v.getView();
 	QCOMPARE( t1.dx(), 50.0 );
-	QCOMPARE( t1.dy(), 80.0 );
+	QCOMPARE( t1.dy(), 50.0 ); // center of canvas
 }
 
 void TestViewManager::testSetCameraKey()
