@@ -12,6 +12,14 @@ TestViewManager::TestViewManager()
 
 void TestViewManager::initTestCase()
 {
+}
+
+void TestViewManager::cleanupTestCase()
+{
+}
+
+void TestViewManager::init()
+{
     Object* object = new Object();
     object->init();
 
@@ -19,9 +27,10 @@ void TestViewManager::initTestCase()
     mEditor->setObject(object);
 }
 
-void TestViewManager::cleanupTestCase()
+void TestViewManager::cleanup()
 {
     delete mEditor;
+    mEditor = nullptr;
 }
 
 void TestViewManager::testInit()
@@ -297,5 +306,7 @@ void TestViewManager::testSetCameraKey()
 	QTransform t0 = v.getView();
 
 	Camera* c = dynamic_cast<Camera*>( camLayer->getKeyFrameAt( 1 ) );
-	QCOMPARE( t0, c->view );
+
+    QTransform canvasShift = QTransform::fromTranslate(50, 50);
+	QCOMPARE( t0, c->view * canvasShift);
 }

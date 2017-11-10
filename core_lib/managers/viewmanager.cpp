@@ -33,6 +33,7 @@ ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 
 bool ViewManager::init()
 {
+    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
     return true;
 }
 
@@ -42,8 +43,6 @@ Status ViewManager::load( Object* )
     mCurrentCamera = mDefaultEditorCamera;
     mCurrentCamera->reset();
     updateViewTransforms();
-
-    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
 
     return Status::OK;
 }

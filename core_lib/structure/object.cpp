@@ -205,7 +205,7 @@ void Object::createWorkingDir()
     QDir dataDir(strWorkingDir + PFF_DATA_DIR);
     dataDir.mkpath(".");
 
-    qDebug() << "Working dir created at: " << workingDir();
+    //qDebug() << "Working dir created at: " << workingDir();
 
     mDataDirPath = dataDir.absolutePath();
 }

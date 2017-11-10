@@ -17,6 +17,9 @@ private slots: // test cases
     void initTestCase();
     void cleanupTestCase();
 
+    void init();
+    void cleanup();
+
     void testInit();
 
     void testTranslation10();
