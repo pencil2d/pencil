@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
         qDebug() << "\n==== SOME TESTS FAILED ====\n";
     }
 
-#ifdef _MSC_VER 
+#ifdef _MSC_VER
     system("PAUSE");
 #endif
 
