@@ -354,13 +354,13 @@ bool Object::savePalette(QString filePath)
 
 bool Object::exportPalette(QString filePath)
 {
-    QFile* file = new QFile(filePath);
-    if (!file->open(QFile::WriteOnly | QFile::Text))
+    QFile file(filePath);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        //QMessageBox::warning(this, "Warning", "Cannot write file");
+        qDebug("Error: cannot export palette");
         return false;
     }
-    QTextStream out(file);
+    QTextStream out(&file);
 
     QDomDocument doc("PencilPalette");
     QDomElement root = doc.createElement("palette");
@@ -379,23 +379,24 @@ bool Object::exportPalette(QString filePath)
         //QDomText t = doc.createTextNode( myPalette.at(i).name );
         //tag.appendChild(t);
     }
-    //QString xml = doc.toString();
 
     int IndentSize = 2;
     doc.save(out, IndentSize);
+
+    file.close();
     return true;
 }
 
 bool Object::importPalette(QString filePath)
 {
-    QFile* file = new QFile(filePath);
-    if (!file->open(QFile::ReadOnly))
+    QFile file(filePath);
+    if (!file.open(QFile::ReadOnly))
     {
         return false;
     }
 
     QDomDocument doc;
-    doc.setContent(file);
+    doc.setContent(&file);
 
     mPalette.clear();
     QDomElement docElem = doc.documentElement();
@@ -414,6 +415,7 @@ bool Object::importPalette(QString filePath)
         }
         tag = tag.nextSibling();
     }
+    file.close();
     return true;
 }
 

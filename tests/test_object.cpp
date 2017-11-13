@@ -154,7 +154,7 @@ void TestObject::testExportColorPalette()
     QTemporaryDir dir;
     if (dir.isValid())
     {
-        QString sOutPath = dir.filePath("testPalette.xml");
+        QString sOutPath = dir.path() + "/testPalette.xml";
         QVERIFY(obj->exportPalette(sOutPath));
         QVERIFY(obj->importPalette(sOutPath));
 
