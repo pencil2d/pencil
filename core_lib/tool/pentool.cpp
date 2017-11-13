@@ -191,7 +191,7 @@ void PenTool::paintAt( QPointF point )
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
-            mCurrentWidth = properties.width;
+            mCurrentWidth *= mCurrentPressure;
         }
         qreal brushWidth = mCurrentWidth;
 

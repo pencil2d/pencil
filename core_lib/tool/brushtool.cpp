@@ -260,6 +260,10 @@ void BrushTool::paintAt( QPointF point )
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0;
+        if (properties.pressure)
+        {
+            opacity = mCurrentPressure / 2;
+        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 

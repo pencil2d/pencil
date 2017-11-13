@@ -224,6 +224,11 @@ void PencilTool::paintAt( QPointF point )
     {
         qreal opacity = 1.0;
         mCurrentWidth = properties.width;
+        if (properties.pressure)
+        {
+            opacity = mCurrentPressure / 2;
+            mCurrentWidth *= mCurrentPressure;
+        }
         qreal brushWidth = mCurrentWidth;
 
         BlitRect rect;
