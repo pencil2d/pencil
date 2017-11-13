@@ -375,9 +375,6 @@ bool Object::exportPalette(QString filePath)
         tag.setAttribute("blue", ref.colour.blue());
         tag.setAttribute("alpha", ref.colour.alpha());
         root.appendChild(tag);
-        qDebug() << i << "Alpha:" << ref.colour.alpha();
-        //QDomText t = doc.createTextNode( myPalette.at(i).name );
-        //tag.appendChild(t);
     }
 
     int IndentSize = 2;
@@ -455,8 +452,6 @@ void Object::paintImage(QPainter& painter, int frameNumber,
 {
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-    //painter.setTransform(matrix);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     // paints the background

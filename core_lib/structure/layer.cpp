@@ -366,8 +366,6 @@ void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int y, int hei
 {
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
 
-    //qDebug() << "LayerType:" << ( int )( meType );
-
     for ( auto pair : mKeyFrames )
     {
         int framePos = pair.first;
