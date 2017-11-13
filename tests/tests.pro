@@ -30,6 +30,7 @@ INCLUDEPATH += \
     ../core_lib/managers
 
 HEADERS += \
+    catch.hpp \
     AutoTest.h \
     test_layer.h \
     test_layermanager.h \
