@@ -194,7 +194,9 @@ void EraserTool::paintAt( QPointF point )
                                   brushWidth,
                                   properties.feather,
                                   QColor(255, 255, 255, 255),
-                                  opacity );
+                                  opacity,
+                                  properties.useFeather,
+                                  properties.useAA );
 
         int rad = qRound( brushWidth ) / 2 + 2;
 
@@ -242,7 +244,9 @@ void EraserTool::drawStroke()
                                       brushWidth,
                                       properties.feather,
                                       QColor(255, 255, 255, 255),
-                                      opacity );
+                                      opacity,
+                                      properties.useFeather,
+                                      properties.useAA );
 
             if ( i == ( steps - 1 ) )
             {
