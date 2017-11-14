@@ -183,7 +183,7 @@ TEST_CASE("Test Layer::firstKeyFramePosition()")
         REQUIRE(layer->firstKeyFramePosition() == 1);
 
         layer->moveKeyFrameForward(1);
-        REQUIRE(layer->firstKeyFramePosition() == 2);
+        REQUIRE(layer->firstKeyFramePosition() == 1); // always has a key at 1
     }
 }
 
