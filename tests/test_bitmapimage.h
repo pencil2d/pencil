@@ -1,6 +1,7 @@
 #ifndef TESTBITMAPIMAGE_H
 #define TESTBITMAPIMAGE_H
 
+/*
 #include "AutoTest.h"
 
 class TestBitmapImage : public QObject
@@ -16,5 +17,6 @@ private slots:
 };
 
 DECLARE_TEST( TestBitmapImage );
+*/
 
 #endif // TESTBITMAPIMAGE_H

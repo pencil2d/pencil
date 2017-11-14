@@ -36,7 +36,6 @@ HEADERS += \
     test_layermanager.h \
     test_object.h \
     test_filemanager.h \
-    test_bitmapimage.h \
     test_viewmanager.h
 
 SOURCES += \
