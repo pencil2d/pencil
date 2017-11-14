@@ -48,6 +48,7 @@ public:
 
 protected:
     QPointF mLastBrushPoint;
+    QPointF mMouseDownPoint;
 };
 
 #endif // ERASERTOOL_H
