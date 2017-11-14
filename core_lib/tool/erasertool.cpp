@@ -182,10 +182,15 @@ void EraserTool::paintAt( QPointF point )
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer->type() == Layer::BITMAP )
     {
-        qreal opacity = m_pStrokeManager->getPressure();
+        qreal opacity = 1.0;
         mCurrentWidth = properties.width;
+        if (properties.pressure == true)
+        {
+            opacity = m_pStrokeManager->getPressure();
+            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+        }
 
-        qreal brushWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+        qreal brushWidth = mCurrentWidth;
 
         BlitRect rect;
 
@@ -221,10 +226,15 @@ void EraserTool::drawStroke()
             p[ i ] = mEditor->view()->mapScreenToCanvas( p[ i ] );
         }
 
-        qreal opacity = m_pStrokeManager->getPressure();
+        qreal opacity = 1.0;
         mCurrentWidth = properties.width;
+        if (properties.pressure == true)
+        {
+            opacity = m_pStrokeManager->getPressure();
+            mCurrentWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+        }
 
-        qreal brushWidth = (mCurrentWidth + ( m_pStrokeManager->getPressure() * mCurrentWidth)) * 0.5;
+        qreal brushWidth = mCurrentWidth;
         qreal brushStep = (0.5 * brushWidth) - ((properties.feather/100.0) * brushWidth * 0.5);
         brushStep = qMax( 1.0, brushStep );
 
