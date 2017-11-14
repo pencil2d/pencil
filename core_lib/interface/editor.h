@@ -157,6 +157,9 @@ public: //slots
 
     void settingUpdated(SETTING);
 
+    void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
+    bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+
 protected:
     // Need to move to somewhere...
     void dragEnterEvent(QDragEnterEvent*);
@@ -189,6 +192,7 @@ private:
     bool mIsAutosave = true;
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
+    bool mAutosaveNerverAskAgain = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);

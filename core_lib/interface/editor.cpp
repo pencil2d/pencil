@@ -478,8 +478,6 @@ void Editor::clearUndoStack()
     }
     mLastModifiedLayer = -1;
     mLastModifiedFrame = -1;
-
-    mAutosaveCounter = 0;
 }
 
 void Editor::updateAutoSaveCounter()
@@ -680,6 +678,9 @@ void Editor::updateObject()
     }
 
     clearUndoStack();
+
+    mAutosaveCounter = 0;
+    mAutosaveNerverAskAgain = false;
 
     if (mScribbleArea)
     {

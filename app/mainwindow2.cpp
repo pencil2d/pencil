@@ -116,7 +116,7 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 
     readSettings();
 
-    connect(mEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
+    connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
     //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
@@ -450,6 +450,7 @@ void MainWindow2::openDocument()
             newDocument();
         }
     }
+    updateSaveState();
 }
 
 bool MainWindow2::saveAsNewDocument()
@@ -609,6 +610,38 @@ bool MainWindow2::maybeSave()
             return false;
     }
     return true;
+}
+
+bool MainWindow2::autoSave()
+{
+    if (!mEditor->object()->filePath().isEmpty())
+    {
+        return saveDocument();
+    }
+
+    if (mEditor->autoSaveNeverAskAgain())
+        return false;
+
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowTitle("AutoSave Reminder");
+    msgBox.setText(tr("The animation is not saved yet.\n Do you want to save now?"));
+    msgBox.addButton(tr("Never ask again", "AutoSave reminder button"), QMessageBox::RejectRole);
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+
+    int ret = msgBox.exec();
+    qDebug() << "ret=" << ret;
+    if (ret == QMessageBox::Yes)
+    {
+        return saveDocument();
+    }
+    else if (ret != QMessageBox::No) // Never ask again
+    {
+        mEditor->dontAskAutoSave(true);
+    }
+
+    return false;
 }
 
 void MainWindow2::importImage()

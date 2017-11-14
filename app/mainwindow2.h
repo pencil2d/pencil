@@ -81,6 +81,7 @@ public:
     bool saveDocument();
     bool saveAsNewDocument();
     bool maybeSave();
+    bool autoSave();
 
     // import
     void importImage();
@@ -156,9 +157,10 @@ private:
 private:
     ActionCommands* mCommands = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
-    BackgroundWidget* mBackground;
+    BackgroundWidget* mBackground = nullptr;;
 
-    QIcon mStartIcon, mStopIcon;
+    QIcon mStartIcon;
+    QIcon mStopIcon;
 
     Ui::MainWindow2* ui = nullptr;
 };
