@@ -1170,9 +1170,7 @@ void ScribbleArea::flipSelection(bool flipVertical)
 
     // reset transformation for vector selections
     selectionTransformation.reset();
-    selectionTransformation *= _translate *
-        scale *
-        translate;
+    selectionTransformation *= _translate * scale * translate;
 
     paintTransformedSelection();
     applyTransformedSelection();
@@ -1375,8 +1373,6 @@ void ScribbleArea::calculateSelectionTransformation() // Vector layer transform
     selectionTransformation.rotate(myRotatedAngle);
     selectionTransformation.scale(scaleX, scaleY);
     selectionTransformation.translate(-centerPoints[1].x(), -centerPoints[1].y());
-
-    //    modification();
 }
 
 
@@ -1397,8 +1393,8 @@ void ScribbleArea::paintTransformedSelection()
         else if (layer->type() == Layer::VECTOR)
         {
             // vector transformation
-            LayerVector *layerVector = (LayerVector *)layer;
-            VectorImage *vectorImage = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            LayerVector* layerVector = (LayerVector*)layer;
+            VectorImage* vectorImage = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             vectorImage->setSelectionTransformation(selectionTransformation);
 
         }
@@ -1421,21 +1417,19 @@ void ScribbleArea::applyTransformedSelection()
     {
         if (layer->type() == Layer::BITMAP)
         {
-            BitmapImage* bitmapImage = dynamic_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+            if (!mySelection.isEmpty())
+            {
+                BitmapImage* bitmapImage = dynamic_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+                BitmapImage transformedImage = bitmapImage->transformed(mySelection.toRect(), selectionTransformation, true);
 
-            BitmapImage* transformedImage = new BitmapImage(bitmapImage->transformed(mySelection.toRect(), selectionTransformation, mPrefs->isOn(SETTING::ANTIALIAS)));
-
-            bitmapImage->clear(mySelection);
-            bitmapImage->paste(transformedImage, QPainter::CompositionMode_SourceOver);
-
-            delete transformedImage;
+                bitmapImage->clear(mySelection);
+                bitmapImage->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
+            }
         }
         else if (layer->type() == Layer::VECTOR)
         {
-
             VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             vectorImage->applySelectionTransformation();
-
         }
 
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());

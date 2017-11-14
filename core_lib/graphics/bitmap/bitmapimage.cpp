@@ -223,10 +223,11 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 
 BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool smoothTransform)
 {
+    Q_ASSERT(!selection.isEmpty());
+
     BitmapImage selectedPart = copy(selection);
 
     // Get the transformed image
-    //
     QImage transformedImage;
     if (smoothTransform)
     {
