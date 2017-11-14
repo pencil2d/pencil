@@ -95,21 +95,7 @@ void BaseTool::initialize( Editor* editor )
     loadSettings();
 }
 
-/*
-void BaseTool::mousePressEvent( QMouseEvent* )
-{
-}
-
-void BaseTool::mouseMoveEvent( QMouseEvent* )
-{
-}
-
-void BaseTool::mouseReleaseEvent( QMouseEvent* )
-{
-}
-*/
-
-void BaseTool::mouseDoubleClickEvent( QMouseEvent *event )
+void BaseTool::mouseDoubleClickEvent( QMouseEvent* event )
 {
     mousePressEvent( event );
 }
