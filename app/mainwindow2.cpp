@@ -601,17 +601,12 @@ bool MainWindow2::maybeSave()
     {
         int ret = QMessageBox::warning(this, tr("Warning"),
                                        tr("This animation has been modified.\n Do you want to save your changes?"),
-                                       QMessageBox::Yes | QMessageBox::Default,
-                                       QMessageBox::No,
-                                       QMessageBox::Cancel | QMessageBox::Escape);
-        if (ret == QMessageBox::Yes)
-        {
+                                       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+                                       QMessageBox::Save);
+        if (ret == QMessageBox::Save)
             return saveDocument();
-        }
         else if (ret == QMessageBox::Cancel)
-        {
             return false;
-        }
     }
     return true;
 }
