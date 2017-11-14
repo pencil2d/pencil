@@ -170,7 +170,7 @@ TEST_CASE("Test Layer::keyExists()", "[Layer]")
     delete obj;
 }
 
-TEST_CASE("Test Layer::firstKeyFramePosition()")
+TEST_CASE("Layer::firstKeyFramePosition()")
 {
     Object* obj = new Object;
     
@@ -185,35 +185,38 @@ TEST_CASE("Test Layer::firstKeyFramePosition()")
         layer->moveKeyFrameForward(1);
         REQUIRE(layer->firstKeyFramePosition() == 1); // always has a key at 1
     }
+
+    delete obj;
+}
+
+TEST_CASE("Layer::getMaxKeyFramePosition()")
+{
+    Object* obj = new Object;
+
+    SECTION("Test")
+    {
+        Layer* layer = obj->addNewBitmapLayer();;
+
+        // 1 at beginning.
+        REQUIRE(layer->getMaxKeyFramePosition() == 1);
+
+        CHECK(layer->addNewEmptyKeyAt(3));
+        REQUIRE(layer->getMaxKeyFramePosition() == 3);
+
+        CHECK(layer->addNewEmptyKeyAt(8));
+        REQUIRE(layer->getMaxKeyFramePosition() == 8);
+
+        CHECK(layer->addNewEmptyKeyAt(100));
+        REQUIRE(layer->getMaxKeyFramePosition() == 100);
+
+        CHECK(layer->addNewEmptyKeyAt(80));
+        REQUIRE(layer->getMaxKeyFramePosition() == 100);
+    }
+
+    delete obj;
 }
 
 /*
-
-void TestLayer::testGetFirstFramePosition()
-{
-
-}
-
-void TestLayer::testGetMaxFramePosition()
-{
-    Layer* layer = m_pObject->addNewBitmapLayer();;
-    OnScopeExit( m_pObject->deleteLayer( layer ) );
-
-    // 1 at beginning.
-    QCOMPARE( layer->getMaxKeyFramePosition(), 1 );
-
-    QVERIFY( layer->addNewEmptyKeyAt( 3 ) );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 3 );
-
-    QVERIFY( layer->addNewEmptyKeyAt( 8 ) );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 8 );
-
-    QVERIFY( layer->addNewEmptyKeyAt( 100 ) );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 100 );
-
-    QVERIFY( layer->addNewEmptyKeyAt( 80 ) );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 100 );
-}
 
 void TestLayer::testRemoveKeyFrame()
 {
