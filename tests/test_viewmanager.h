@@ -17,6 +17,11 @@ private slots: // test cases
     void initTestCase();
     void cleanupTestCase();
 
+    void init();
+    void cleanup();
+
+    void testInit();
+
     void testTranslation10();
     void testTranslation2Times();
     void testTranslationQPointF();
@@ -37,7 +42,11 @@ private slots: // test cases
     void testEmptyCameraLayer();
     void testCameraLayerWithTwoKeys();
     void testSetCameraLayerAndRemoveIt();
-    void testTwoCamerasInterpolation();
+
+	void testCanvasSize();
+	void testLoadViewFromObject1();
+	void testLoadViewFromObject2();
+    void testSetCameraKey();
 
 private:
     Editor* mEditor = nullptr;

@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 
 #include <CoreFoundation/CoreFoundation.h>
-#include <Carbon/Carbon.h>
+
 
 extern "C" {
 // this is not declared in Carbon.h anymore, but it's in the framework
@@ -41,15 +41,12 @@ bool gIsMouseCoalecing = false;
 
 void detectWhichOSX()
 {
+ #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     QOperatingSystemVersion current = QOperatingSystemVersion::current();
-    if ( current >= QOperatingSystemVersion::OSXElCapitan )
-    {
-        gIsMouseCoalecing = true;
-    }
-    else
-    {
-        gIsMouseCoalecing = false;
-    }
+    gIsMouseCoalecing = ( current >= QOperatingSystemVersion::OSXElCapitan );
+#else
+    gIsMouseCoalecing = false;
+#endif
 }
 
 void disableCoalescing()

@@ -15,12 +15,13 @@ GNU General Public License for more details.
 
 */
 #include "layervector.h"
-#include "vectorimage.h"
-#include <QtDebug>
 
-LayerVector::LayerVector(Object* object) : Layer( object, Layer::VECTOR )
+#include "vectorimage.h"
+
+
+LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
 {
-    mName = QString(tr("Vector Layer"));
+    setName(tr("Vector Layer"));
 }
 
 LayerVector::~LayerVector()
@@ -63,100 +64,100 @@ QImage* LayerVector::getImageAtIndex( int index,
 bool LayerVector::usesColour(int colorIndex)
 {
     bool bUseColor = false;
-    foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
+    foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
-        auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
+        auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
 
-        bUseColor = bUseColor || pVecImage->usesColour( colorIndex );
-    } );
+        bUseColor = bUseColor || pVecImage->usesColour(colorIndex);
+    });
 
     return bUseColor;
 }
 
-void LayerVector::removeColour( int colorIndex )
+void LayerVector::removeColour(int colorIndex)
 {
-    foreachKeyFrame( [=]( KeyFrame* pKeyFrame )
+    foreachKeyFrame([=](KeyFrame* pKeyFrame)
     {
-        auto pVecImage = static_cast< VectorImage* >( pKeyFrame );
-        pVecImage->removeColour( colorIndex );
-    } );
+        auto pVecImage = static_cast<VectorImage*>(pKeyFrame);
+        pVecImage->removeColour(colorIndex);
+    });
 }
 
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
-    if ( keyExists( frameNumber ) )
+    if (keyExists(frameNumber))
     {
-        removeKeyFrame( frameNumber );
+        removeKeyFrame(frameNumber);
     }
     VectorImage* vecImg = new VectorImage;
-    vecImg->setPos( frameNumber );
-    vecImg->setObject( object() );
-    vecImg->read( path );
-    addKeyFrame( frameNumber, vecImg );
+    vecImg->setPos(frameNumber);
+    vecImg->setObject(object());
+    vecImg->read(path);
+    addKeyFrame(frameNumber, vecImg);
 }
 
-Status LayerVector::saveKeyFrame( KeyFrame* pKeyFrame, QString path )
+Status LayerVector::saveKeyFrame(KeyFrame* pKeyFrame, QString path)
 {
-    QStringList debugInfo = QStringList() << "LayerVector::saveKeyFrame" << QString( "pKeyFrame.pos() = %1" ).arg( pKeyFrame->pos() ) << QString( "path = " ).append( path );
-    VectorImage* pVecImage = static_cast< VectorImage* >( pKeyFrame );
+    QStringList debugInfo = QStringList() << "LayerVector::saveKeyFrame" << QString("pKeyFrame.pos() = %1").arg(pKeyFrame->pos()) << QString("path = ").append(path);
+    VectorImage* pVecImage = static_cast<VectorImage*>(pKeyFrame);
 
-    QString theFileName = fileName( pKeyFrame->pos() );
-    QString strFilePath = QDir( path ).filePath( theFileName );
-    debugInfo << QString( "strFilePath = " ).append( strFilePath );
-    Status st = pVecImage->write( strFilePath, "VEC" );
-    if ( !st.ok() )
+    QString theFileName = fileName(pKeyFrame->pos());
+    QString strFilePath = QDir(path).filePath(theFileName);
+    debugInfo << QString("strFilePath = ").append(strFilePath);
+    Status st = pVecImage->write(strFilePath, "VEC");
+    if (!st.ok())
     {
         QStringList vecImageDetails = st.detailsList();
-        for ( QString detail : vecImageDetails )
+        for (QString detail : vecImageDetails)
         {
-            detail.prepend( "&nbsp;&nbsp;" );
+            detail.prepend("&nbsp;&nbsp;");
         }
-        debugInfo << QString( "- VectorImage failed to write" ) << vecImageDetails;
-        return Status( Status::FAIL, debugInfo );
+        debugInfo << QString("- VectorImage failed to write") << vecImageDetails;
+        return Status(Status::FAIL, debugInfo);
     }
 
     return Status::OK;
 }
 
-QString LayerVector::fileName( int frame )
+QString LayerVector::fileName(int frame)
 {
-    QString layerNumberString = QString::number( id() );
+    QString layerNumberString = QString::number(id());
     QString frameNumberString = QString::number(frame);
-    while ( layerNumberString.length() < 3) layerNumberString.prepend("0");
-    while ( frameNumberString.length() < 3) frameNumberString.prepend("0");
-    return layerNumberString+"."+frameNumberString+".vec";
+    while (layerNumberString.length() < 3) layerNumberString.prepend("0");
+    while (frameNumberString.length() < 3) frameNumberString.prepend("0");
+    return layerNumberString + "." + frameNumberString + ".vec";
 }
 
 QDomElement LayerVector::createDomElement(QDomDocument& doc)
 {
     QDomElement layerTag = doc.createElement("layer");
 
-    layerTag.setAttribute( "id", id() );
-    layerTag.setAttribute( "name", mName );
-    layerTag.setAttribute( "visibility", mVisible );
-    layerTag.setAttribute( "type", type() );
+    layerTag.setAttribute("id", id());
+    layerTag.setAttribute("name", name());
+    layerTag.setAttribute("visibility", visible());
+    layerTag.setAttribute("type", type());
 
-    foreachKeyFrame( [&] ( KeyFrame* pKeyFrame )
+    foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
         //QDomElement imageTag = framesVector[index]->createDomElement(doc); // if we want to embed the data
-        QDomElement imageTag = doc.createElement( "image" );
-        imageTag.setAttribute( "frame", pKeyFrame->pos() );
-        imageTag.setAttribute( "src", fileName( pKeyFrame->pos() ) );
-        layerTag.appendChild( imageTag );
-    } );
+        QDomElement imageTag = doc.createElement("image");
+        imageTag.setAttribute("frame", pKeyFrame->pos());
+        imageTag.setAttribute("src", fileName(pKeyFrame->pos()));
+        layerTag.appendChild(imageTag);
+    });
 
     return layerTag;
 }
 
 void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
 {
-    if ( !element.attribute( "id" ).isNull() )
+    if (!element.attribute("id").isNull())
     {
-        int id = element.attribute( "id" ).toInt();
-        setId( id );
+        int id = element.attribute("id").toInt();
+        setId(id);
     }
-    mName = element.attribute("name");
-    mVisible = (element.attribute("visibility") == "1");
+    setName(element.attribute("name"));
+    setVisible(element.attribute("visibility") == "1");
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -168,17 +169,17 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
             {
                 if (!imageElement.attribute("src").isNull())
                 {
-                    QString path =  dataDirPath +"/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
+                    QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
                     QFileInfo fi(path);
                     if (!fi.exists()) path = imageElement.attribute("src");
                     int position = imageElement.attribute("frame").toInt();
-                    loadImageAtFrame( path, position );
+                    loadImageAtFrame(path, position);
                 }
                 else
                 {
                     int frame = imageElement.attribute("frame").toInt();
-                    addNewEmptyKeyAt( frame );
-                    getVectorImageAtFrame( frame )->loadDomElement(imageElement);
+                    addNewEmptyKeyAt(frame);
+                    getVectorImageAtFrame(frame)->loadDomElement(imageElement);
                 }
             }
         }
@@ -186,13 +187,13 @@ void LayerVector::loadDomElement(QDomElement element, QString dataDirPath)
     }
 }
 
-VectorImage* LayerVector::getVectorImageAtFrame( int frameNumber )
+VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber)
 {
-    return static_cast< VectorImage* >( getKeyFrameAt( frameNumber ) );
+    return static_cast<VectorImage*>(getKeyFrameAt(frameNumber));
 }
 
-VectorImage* LayerVector::getLastVectorImageAtFrame( int frameNumber, int increment )
+VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment)
 {
-    return static_cast< VectorImage* >( getLastKeyFrameAtPosition( frameNumber + increment ) );
+    return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 

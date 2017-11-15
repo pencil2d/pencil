@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "layercamera.h"
 
 #include <QLineEdit>
 #include <QSpinBox>
@@ -22,7 +23,7 @@ GNU General Public License for more details.
 #include <QHBoxLayout>
 #include <QtDebug>
 #include "camera.h"
-#include "layercamera.h"
+
 
 
 CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()
@@ -101,7 +102,7 @@ void CameraPropertiesDialog::setHeight(int height)
 
 LayerCamera::LayerCamera( Object* object ) : Layer( object, Layer::CAMERA )
 {
-    mName = QString(tr("Camera Layer"));
+    setName(tr("Camera Layer"));
     viewRect = QRect(QPoint(-400, -300), QSize(800, 600));
     dialog = NULL;
 }
@@ -254,15 +255,15 @@ void LayerCamera::editProperties()
 {
     if ( dialog == NULL )
     {
-        dialog = new CameraPropertiesDialog( mName, viewRect.width(), viewRect.height() );
+        dialog = new CameraPropertiesDialog( name(), viewRect.width(), viewRect.height() );
     }
-    dialog->setName(mName);
+    dialog->setName( name() );
     dialog->setWidth(viewRect.width());
     dialog->setHeight(viewRect.height());
     int result = dialog->exec();
     if (result == QDialog::Accepted)
     {
-        mName = dialog->getName();
+        setName( dialog->getName() );
         viewRect = QRect(-dialog->getWidth()/2, -dialog->getHeight()/2, dialog->getWidth(), dialog->getHeight());
 
         setUpdated();
@@ -273,8 +274,8 @@ QDomElement LayerCamera::createDomElement( QDomDocument& doc )
 {
     QDomElement layerTag = doc.createElement("layer");
     
-    layerTag.setAttribute("name", mName);
-    layerTag.setAttribute("visibility", mVisible);
+    layerTag.setAttribute("name", name());
+    layerTag.setAttribute("visibility", visible());
     layerTag.setAttribute("type", type());
     layerTag.setAttribute("width", viewRect.width());
     layerTag.setAttribute("height", viewRect.height());
@@ -299,8 +300,8 @@ void LayerCamera::loadDomElement(QDomElement element, QString dataDirPath)
 {
     Q_UNUSED(dataDirPath);
 
-    mName = element.attribute("name");
-    mVisible = true;
+    setName( element.attribute("name") );
+    setVisible( true );
 
     int width = element.attribute( "width" ).toInt();
     int height = element.attribute( "height" ).toInt();

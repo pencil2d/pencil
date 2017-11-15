@@ -157,6 +157,9 @@ public: //slots
 
     void settingUpdated(SETTING);
 
+    void dontAskAutoSave(bool b) { mAutosaveNerverAskAgain = b; }
+    bool autoSaveNeverAskAgain() { return mAutosaveNerverAskAgain; }
+
 protected:
     // Need to move to somewhere...
     void dragEnterEvent(QDragEnterEvent*);
@@ -184,23 +187,26 @@ private:
 
     std::vector< BaseManager* > mAllManagers;
 
-    bool m_isAltPressed = false;
-    int numberOfModifications = 0;
+    bool mIsAltPressed = false;
 
     bool mIsAutosave = true;
-    int autosaveNumber = 12;
-    int autosaveCounter = 0;
+    int mAutosaveNumber = 12;
+    int mAutosaveCounter = 0;
+    bool mAutosaveNerverAskAgain = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);
 
     // backup
     void clearUndoStack();
-    int lastModifiedFrame;
-    int lastModifiedLayer;
+    void updateAutoSaveCounter();
+    int mLastModifiedFrame = -1;
+    int mLastModifiedLayer = -1;
 
     // clipboard
-    bool clipboardBitmapOk, clipboardVectorOk, clipboardSoundClipOk;
+    bool clipboardBitmapOk = true;
+    bool clipboardVectorOk = true;
+    bool clipboardSoundClipOk = true;
 };
 
 #endif

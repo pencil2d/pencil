@@ -255,11 +255,15 @@ void BrushTool::mouseMoveEvent( QMouseEvent* event )
 // draw a single paint dab at the given location
 void BrushTool::paintAt( QPointF point )
 {
-    qDebug() << "Made a single dab at " << point;
+    //qDebug() << "Made a single dab at " << point;
     Layer* layer = mEditor->layers()->currentLayer();
     if ( layer->type() == Layer::BITMAP )
     {
         qreal opacity = 1.0;
+        if (properties.pressure)
+        {
+            opacity = mCurrentPressure / 2;
+        }
         mCurrentWidth = properties.width;
         qreal brushWidth = mCurrentWidth;
 

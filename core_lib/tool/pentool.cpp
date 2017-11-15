@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "pentool.h"
 
 #include <QPixmap>
 
@@ -25,8 +26,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 #include "blitrect.h"
-
-#include "pentool.h"
 
 
 PenTool::PenTool( QObject *parent ) : StrokeTool( parent )
@@ -192,7 +191,7 @@ void PenTool::paintAt( QPointF point )
         mCurrentWidth = properties.width;
         if (properties.pressure == true)
         {
-            mCurrentWidth = properties.width;
+            mCurrentWidth *= mCurrentPressure;
         }
         qreal brushWidth = mCurrentWidth;
 

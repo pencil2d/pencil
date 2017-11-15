@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "smudgetool.h"
 
 #include <QPixmap>
 #include "editor.h"
@@ -25,8 +26,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "strokemanager.h"
 #include "blitrect.h"
-
-#include "smudgetool.h"
 
 SmudgeTool::SmudgeTool(QObject *parent) :
     StrokeTool(parent)

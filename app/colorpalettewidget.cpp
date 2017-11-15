@@ -100,6 +100,7 @@ int ColorPaletteWidget::currentColourNumber()
 
 void ColorPaletteWidget::refreshColorList()
 {
+    QSignalBlocker b(ui->colorListWidget);
 
     if (ui->colorListWidget->count() > 0)
     {
@@ -124,7 +125,8 @@ void ColorPaletteWidget::refreshColorList()
         {
             colourItem->setText(colourRef.name);
         }
-        else {
+        else
+        {
             colourItem->setToolTip(colourRef.name);
         }
         colourSwatch = originalColourSwatch;
@@ -184,7 +186,6 @@ void ColorPaletteWidget::colorListCurrentItemChanged(QListWidgetItem* current, Q
 void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
 {
     int colorIndex = ui->colorListWidget->row(currentItem);
-    //m_pEditor->selectAndApplyColour( colorIndex );
 
     emit colorNumberChanged(colorIndex);
 }
@@ -283,7 +284,7 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
         ui->colorListWidget->setGridSize(QSize(-1, -1));
     }
 
-    refreshColorList();
+    //refreshColorList();
     QWidget::resizeEvent(event);
 }
 

@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "viewmanager.h"
+
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"
@@ -32,17 +33,16 @@ ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
 
 bool ViewManager::init()
 {
+    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
     return true;
 }
 
 Status ViewManager::load( Object* )
 {
     mCameraLayer = nullptr;
-
-    resetView();
-	updateViewTransforms();
-
-    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
+    mCurrentCamera = mDefaultEditorCamera;
+    mCurrentCamera->reset();
+    updateViewTransforms();
 
     return Status::OK;
 }

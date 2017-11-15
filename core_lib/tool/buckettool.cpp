@@ -14,6 +14,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "buckettool.h"
 
 #include <QPixmap>
 #include <QPainter>
@@ -30,7 +31,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 
-#include "buckettool.h"
 
 BucketTool::BucketTool( QObject *parent ) :
 StrokeTool( parent )

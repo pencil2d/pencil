@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "eyedroppertool.h"
+
 #include <QPainter>
 #include <QPixmap>
 #include <QBitmap>

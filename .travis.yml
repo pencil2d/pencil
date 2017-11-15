@@ -91,6 +91,7 @@ script:
   - mkdir "build" && cd build
   - qmake ../ PREFIX=/usr CONFIG+=GIT
   - make;
+  - "$TRAVIS_BUILD_DIR/build/tests/tests"
 
 after_success:
   - echo "look for build folder and zip file"
@@ -152,8 +153,3 @@ after_success:
       cd "$TRAVIS_BUILD_DIR/util";
       ./documentation-deploy.sh;
     fi'
-
-after_script:
-  - cd "$TRAVIS_BUILD_DIR/build"
-  - pwd
-  - ./tests/tests

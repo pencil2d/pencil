@@ -15,10 +15,11 @@ GNU General Public License for more details.
 
 */
 
+#include "keycapturelineedit.h"
 
 #include <QKeyEvent>
 #include <QDebug>
-#include "keycapturelineedit.h"
+
 
 KeyCaptureLineEdit::KeyCaptureLineEdit(QWidget *parent) :
     QLineEdit(parent)

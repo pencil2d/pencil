@@ -36,16 +36,13 @@ QString GetToolTips( QString strCommandName )
 	return QString("<b>%1</b>").arg( keySequence.toString() ); // don't tr() this string.
 }
 
-
 ToolBoxWidget::ToolBoxWidget( QWidget* parent ) : BaseDockWidget( parent )
 {
 	setWindowTitle( tr( "Tools", "Window title of tool box" ) );
 }
 
-
 void ToolBoxWidget::initUI()
 {
-	
 	QGridLayout* layout = new QGridLayout();
 
 	pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ),
@@ -184,7 +181,6 @@ void ToolBoxWidget::initUI()
 
 void ToolBoxWidget::updateUI()
 {
-
 }
 
 QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)

@@ -3,6 +3,7 @@
 #include <memory>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QTemporaryDir>
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -142,4 +143,28 @@ void TestObject::testLoadXML()
 
     QVERIFY( obj->loadXML( e ) );
     
+}
+
+void TestObject::testExportColorPalette()
+{
+    std::shared_ptr< Object > obj = std::make_shared<Object>();
+
+    obj->addColour(ColourRef(QColor(255, 254, 253, 100), "TestColor1"));
+
+    QTemporaryDir dir;
+    if (dir.isValid())
+    {
+        QString sOutPath = dir.path() + "/testPalette.xml";
+        QVERIFY(obj->exportPalette(sOutPath));
+        QVERIFY(obj->importPalette(sOutPath));
+
+        ColourRef c = obj->getColour(0);
+
+        QVERIFY(c.name == "TestColor1");
+        QCOMPARE(c.colour.red(), 255);
+        QCOMPARE(c.colour.green(), 254);
+        QCOMPARE(c.colour.blue(), 253);
+        QCOMPARE(c.colour.alpha(), 100);
+    }
+
 }

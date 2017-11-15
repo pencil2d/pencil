@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 
+#include "spinslider.h"
 
 #include <cmath>
 #include <QLabel>
@@ -23,7 +24,6 @@ GNU General Public License for more details.
 #include <QLocale>
 #include <QDebug>
 #include <QStyle>
-#include "spinslider.h"
 
 
 SpinSlider::SpinSlider( QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max, QWidget* parent ) : QWidget( parent )

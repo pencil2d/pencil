@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 
 #include "canvasrenderer.h"
+
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"

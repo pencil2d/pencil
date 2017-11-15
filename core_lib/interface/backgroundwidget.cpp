@@ -15,9 +15,11 @@ GNU General Public License for more details.
 
 */
 
-#include "QStyleOption"
-#include "QPainter"
 #include "backgroundwidget.h"
+
+#include <QStyleOption>
+#include <QPainter>
+
 
 BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent)
 {

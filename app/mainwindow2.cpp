@@ -90,7 +90,7 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 
     // Central widget
     setCentralWidget(mBackground);
-    
+
     // Initialize order
     // 1. object 2. editor 3. scribble area 4. other widgets
     Object* object = new Object();
@@ -116,7 +116,7 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 
     readSettings();
 
-    connect(mEditor, &Editor::needSave, this, &MainWindow2::saveDocument);
+    connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
     //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
@@ -384,8 +384,8 @@ void MainWindow2::clearRecentFilesList()
     {
         mRecentFileMenu->clear();
         QMessageBox::information(this, 0,
-            tr("\n\n You have successfully cleared the list"),
-            QMessageBox::Ok);
+                                 tr("\n\n You have successfully cleared the list"),
+                                 QMessageBox::Ok);
     }
     getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
 }
@@ -450,6 +450,7 @@ void MainWindow2::openDocument()
             newDocument();
         }
     }
+    updateSaveState();
 }
 
 bool MainWindow2::saveAsNewDocument()
@@ -564,10 +565,10 @@ bool MainWindow2::saveObject(QString strSavedFileName)
         }
 
         ErrorDialog errorDialog(st.title(),
-            st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
-                "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
-                "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
-                "Please be sure to include the following details in your issue:")), st.details());
+                                st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
+                                                           "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
+                                                           "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
+                                                           "Please be sure to include the following details in your issue:")), st.details());
         errorDialog.exec();
         return false;
     }
@@ -600,27 +601,54 @@ bool MainWindow2::maybeSave()
     if (mEditor->currentBackup() != mBackupAtSave)
     {
         int ret = QMessageBox::warning(this, tr("Warning"),
-            tr("This animation has been modified.\n Do you want to save your changes?"),
-            QMessageBox::Yes | QMessageBox::Default,
-            QMessageBox::No,
-            QMessageBox::Cancel | QMessageBox::Escape);
-        if (ret == QMessageBox::Yes)
-        {
+                                       tr("This animation has been modified.\n Do you want to save your changes?"),
+                                       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+                                       QMessageBox::Save);
+        if (ret == QMessageBox::Save)
             return saveDocument();
-        }
         else if (ret == QMessageBox::Cancel)
-        {
             return false;
-        }
     }
     return true;
+}
+
+bool MainWindow2::autoSave()
+{
+    if (!mEditor->object()->filePath().isEmpty())
+    {
+        return saveDocument();
+    }
+
+    if (mEditor->autoSaveNeverAskAgain())
+        return false;
+
+    QMessageBox msgBox(this);
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setWindowTitle("AutoSave Reminder");
+    msgBox.setText(tr("The animation is not saved yet.\n Do you want to save now?"));
+    msgBox.addButton(tr("Never ask again", "AutoSave reminder button"), QMessageBox::RejectRole);
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+
+    int ret = msgBox.exec();
+    qDebug() << "ret=" << ret;
+    if (ret == QMessageBox::Yes)
+    {
+        return saveDocument();
+    }
+    else if (ret != QMessageBox::No) // Never ask again
+    {
+        mEditor->dontAskAutoSave(true);
+    }
+
+    return false;
 }
 
 void MainWindow2::importImage()
 {
     FileDialog fileDialog(this);
     QString strFilePath = fileDialog.openFile(FileType::IMAGE);
-    
+
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
@@ -628,10 +656,10 @@ void MainWindow2::importImage()
     if (!ok)
     {
         QMessageBox::warning(this,
-            tr("Warning"),
-            tr("Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
-            QMessageBox::Ok,
-            QMessageBox::Ok);
+                             tr("Warning"),
+                             tr("Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
+                             QMessageBox::Ok,
+                             QMessageBox::Ok);
         return;
     }
 
@@ -882,16 +910,16 @@ void MainWindow2::undoActSetText(void)
     else
     {
         ui->actionUndo->setText(tr("Undo   %1 %2")
-            .arg(QString::number(this->mEditor->mBackupIndex + 1))
-            .arg(this->mEditor->mBackupList.at(this->mEditor->mBackupIndex)->undoText));
+                                .arg(QString::number(this->mEditor->mBackupIndex + 1))
+                                .arg(this->mEditor->mBackupList.at(this->mEditor->mBackupIndex)->undoText));
         ui->actionUndo->setEnabled(true);
     }
 
     if (this->mEditor->mBackupIndex + 2 < this->mEditor->mBackupList.size())
     {
         ui->actionRedo->setText(tr("Redo   %1 %2")
-            .arg(QString::number(this->mEditor->mBackupIndex + 2))
-            .arg(this->mEditor->mBackupList.at(this->mEditor->mBackupIndex + 1)->undoText));
+                                .arg(QString::number(this->mEditor->mBackupIndex + 2))
+                                .arg(this->mEditor->mBackupList.at(this->mEditor->mBackupIndex + 1)->undoText));
         ui->actionRedo->setEnabled(true);
     }
     else

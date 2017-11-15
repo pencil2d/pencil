@@ -14,8 +14,9 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <cmath>
 #include "bitmapimage.h"
+
+#include <cmath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
@@ -222,10 +223,11 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 
 BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool smoothTransform)
 {
+    Q_ASSERT(!selection.isEmpty());
+
     BitmapImage selectedPart = copy(selection);
 
     // Get the transformed image
-    //
     QImage transformedImage;
     if (smoothTransform)
     {

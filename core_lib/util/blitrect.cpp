@@ -15,9 +15,8 @@ GNU General Public License for more details.
 
 */
 
-#include <QDebug>
-
 #include "blitrect.h"
+#include <QDebug>
 
 BlitRect::BlitRect() :
     QRect()

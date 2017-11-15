@@ -39,7 +39,7 @@ public:
         UNDEFINED = 0,
         BITMAP    = 1,
         VECTOR    = 2,
-        MOVIE     = 3,
+        MOVIE     = 3, // not supported yet
         SOUND     = 4,
         CAMERA    = 5,
 
@@ -49,36 +49,34 @@ public:
     explicit Layer(Object*, LAYER_TYPE);
     virtual ~Layer();
 
-    QString mName;
-    bool mVisible = true;
+    int id() const { return mId; }
 
-    int id() { return mId; }
-
-    LAYER_TYPE type() { return meType; }
-    Object* object() { return mObject; }
+    LAYER_TYPE type() const { return meType; }
+    Object* object() const { return mObject; }
 
     void setName( QString name ) { mName = name; }
-    QString name() { return mName; }
+    QString name() const { return mName; }
 
     void switchVisibility() { mVisible = !mVisible; }
 
-    bool visible() { return mVisible; }
+    bool visible() const { return mVisible; }
+    void setVisible( bool b ) { mVisible = b; }
 
     // KeyFrame interface
-    int getMaxKeyFramePosition();
+    int getMaxKeyFramePosition() const;
     int firstKeyFramePosition();
 
     virtual Status saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
     
-    bool keyExists( int position );
+    bool keyExists( int position ) const;
     int  getPreviousKeyFramePosition( int position );
     int  getNextKeyFramePosition( int position );
     int  getPreviousFrameNumber( int position, bool isAbsolute );
     int  getNextFrameNumber( int position, bool isAbsolute );
 
-    int keyFrameCount() { return static_cast< int >( mKeyFrames.size() ); }
+    int keyFrameCount() const { return static_cast< int >( mKeyFrames.size() ); }
 
     bool addNewEmptyKeyAt( int position );
     bool addKeyFrame( int position, KeyFrame* );
@@ -128,9 +126,11 @@ protected:
     void setId( int LayerId ) { mId = LayerId; }
 
 private:
-    LAYER_TYPE meType = UNDEFINED;
-    Object* mObject   = nullptr;
-    int mId           = 0;
+    LAYER_TYPE meType   = UNDEFINED;
+    Object*    mObject  = nullptr;
+    int        mId      = 0;
+    bool       mVisible = true;
+    QString    mName;
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 

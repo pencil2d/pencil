@@ -14,15 +14,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "layer.h"
 
-#include <climits>
 #include <cassert>
-#include <QtDebug>
+#include <QDebug>
 #include <QInputDialog>
 #include <QLineEdit>
 #include "keyframe.h"
 #include "keyframefactory.h"
-#include "layer.h"
 #include "object.h"
 #include "timeline.h"
 #include "timelinecells.h"
@@ -65,7 +64,7 @@ void Layer::foreachKeyFrame( std::function<void( KeyFrame* )> action )
     }
 }
 
-bool Layer::keyExists( int position )
+bool Layer::keyExists( int position ) const
 {
     return ( mKeyFrames.find( position ) != mKeyFrames.end() );
 }
@@ -170,7 +169,7 @@ int Layer::firstKeyFramePosition()
     return 0;
 }
 
-int Layer::getMaxKeyFramePosition()
+int Layer::getMaxKeyFramePosition() const
 {
     if ( !mKeyFrames.empty() )
     {
@@ -366,8 +365,6 @@ void Layer::paintTrack( QPainter& painter, TimeLineCells* cells, int x, int y, i
 void Layer::paintFrames( QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize )
 {
     painter.setPen( QPen( QBrush( QColor( 40, 40, 40 ) ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin ) );
-
-    //qDebug() << "LayerType:" << ( int )( meType );
 
     for ( auto pair : mKeyFrames )
     {
@@ -712,6 +709,9 @@ bool Layer::isPaintable()
         case Layer::BITMAP:
         case Layer::VECTOR:
             return true;
+        case Layer::CAMERA:
+        case Layer::SOUND:
+            return false;
         default:
             break;
     }

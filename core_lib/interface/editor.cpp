@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "editor.h"
+
 #include <memory>
 #include <iostream>
 #include <QApplication>
@@ -112,7 +113,7 @@ bool Editor::init()
     makeConnections();
 
     mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
-    autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+    mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
 
     return true;
 }
@@ -163,7 +164,7 @@ void Editor::settingUpdated(SETTING setting)
         mIsAutosave = mPreferenceManager->isOn(SETTING::AUTO_SAVE);
         break;
     case SETTING::AUTO_SAVE_NUMBER:
-        autosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
+        mAutosaveNumber = mPreferenceManager->getInt(SETTING::AUTO_SAVE_NUMBER);
         break;
     case SETTING::ONION_TYPE:
         mScribbleArea->updateAllFrames();
@@ -189,21 +190,21 @@ BackupElement* Editor::currentBackup()
 void Editor::backup(QString undoText)
 {
     KeyFrame* frame = nullptr;
-    if (lastModifiedLayer > -1 && lastModifiedFrame > 0)
+    if (mLastModifiedLayer > -1 && mLastModifiedFrame > 0)
     {
         if (layers()->currentLayer()->type() == Layer::SOUND)
         {
-            frame = layers()->currentLayer()->getKeyFrameWhichCovers(lastModifiedFrame);
+            frame = layers()->currentLayer()->getKeyFrameWhichCovers(mLastModifiedFrame);
             if (frame != nullptr) {
-                backup(lastModifiedLayer, frame->pos(), undoText);
+                backup(mLastModifiedLayer, frame->pos(), undoText);
             }
         }
         else
         {
-            backup(lastModifiedLayer, lastModifiedFrame, undoText);
+            backup(mLastModifiedLayer, mLastModifiedFrame, undoText);
         }
     }
-    if (lastModifiedLayer != layers()->currentLayerIndex() || lastModifiedFrame != currentFrame())
+    if (mLastModifiedLayer != layers()->currentLayerIndex() || mLastModifiedFrame != currentFrame())
     {
         if (layers()->currentLayer()->type() == Layer::SOUND)
         {
@@ -300,12 +301,8 @@ void Editor::backup(int backupLayer, int backupFrame, QString undoText)
         }
     }
 
-    autosaveCounter++;
-    if (autosaveCounter >= autosaveNumber)
-    {
-        autosaveCounter = 0;
-        emit needSave();
-    }
+    updateAutoSaveCounter();
+
     emit updateBackup();
 }
 
@@ -479,8 +476,21 @@ void Editor::clearUndoStack()
     {
         delete mBackupList.takeLast();
     }
-    lastModifiedLayer = -1;
-    lastModifiedFrame = -1;
+    mLastModifiedLayer = -1;
+    mLastModifiedFrame = -1;
+}
+
+void Editor::updateAutoSaveCounter()
+{
+    if (mIsAutosave == false)
+        return;
+
+    mAutosaveCounter++;
+    if (mAutosaveCounter >= mAutosaveNumber)
+    {
+        mAutosaveCounter = 0;
+        emit needSave();
+    }
 }
 
 void Editor::cut()
@@ -669,6 +679,9 @@ void Editor::updateObject()
 
     clearUndoStack();
 
+    mAutosaveCounter = 0;
+    mAutosaveNerverAskAgain = false;
+
     if (mScribbleArea)
     {
         mScribbleArea->updateAllFrames();
@@ -826,8 +839,8 @@ void Editor::scrubTo(int frame)
     int oldFrame = mFrame;
     mFrame = frame;
 
-    Q_EMIT currentFrameChanged(frame);
     Q_EMIT currentFrameChanged(oldFrame);
+    Q_EMIT currentFrameChanged(frame);
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
