@@ -9,22 +9,21 @@
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="34"/>
+        <location filename="../app/aboutdialog.cpp" line="70"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="47"/>
+        <location filename="../app/aboutdialog.cpp" line="41"/>
         <source>&lt;b&gt;Pencil2D&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="50"/>
-        <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;&lt;/&gt;</source>
+    <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;&lt;/&gt;</source>
         <translation>Officielle hjemmeside: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Udviklet af: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Tak til: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Fordelt under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU Generelle publicerede licens, udgave 2&lt;/a&gt;&lt;/&gt;</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="74"/>
+        <location filename="../app/aboutdialog.cpp" line="66"/>
         <source>commit: </source>
         <translation>commit: </translation>
     </message>
@@ -37,16 +36,16 @@
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Abort</source>
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
-        <location filename="../app/mainwindow2.cpp" line="613"/>
-        <location filename="../app/mainwindow2.cpp" line="643"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
+        <location filename="../app/mainwindow2.cpp" line="603"/>
+        <location filename="../app/mainwindow2.cpp" line="659"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
@@ -263,13 +262,13 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="891"/>
+        <location filename="../app/mainwindow2.cpp" line="907"/>
         <source>Undo</source>
         <translation>Fortryd</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="911"/>
+        <location filename="../app/mainwindow2.cpp" line="927"/>
         <source>Redo</source>
         <translation>Gentag</translation>
     </message>
@@ -371,7 +370,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1076"/>
+        <location filename="../app/mainwindow2.cpp" line="1092"/>
         <source>Play</source>
         <translation>Afspil</translation>
     </message>
@@ -452,28 +451,28 @@
         <translation>Vis instillinger</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="150"/>
+        <location filename="../app/mainwindow2.cpp" line="141"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>farve palet:&lt;br&gt;tryk på &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;Slå til/fra ved markøren</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="364"/>
+        <location filename="../app/mainwindow2.cpp" line="353"/>
         <source>Open Recent</source>
         <translation>Åben Seneste</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil kan ikke læse denne fil. hvis du vil importere billeder, brug kommandoen importer.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
         <source>Opening document...</source>
         <translation>Åbner dokument...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Saving document...</source>
         <translation>Gemmer dokument...</translation>
     </message>
@@ -497,19 +496,19 @@
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="77"/>
-        <location filename="../app/actioncommands.cpp" line="457"/>
-        <location filename="../app/actioncommands.cpp" line="470"/>
-        <location filename="../app/actioncommands.cpp" line="484"/>
-        <location filename="../app/actioncommands.cpp" line="499"/>
+        <location filename="../app/actioncommands.cpp" line="469"/>
+        <location filename="../app/actioncommands.cpp" line="482"/>
+        <location filename="../app/actioncommands.cpp" line="496"/>
+        <location filename="../app/actioncommands.cpp" line="511"/>
         <source>Layer Properties</source>
         <translation>Lag Præferencer</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="78"/>
-        <location filename="../app/actioncommands.cpp" line="458"/>
-        <location filename="../app/actioncommands.cpp" line="471"/>
-        <location filename="../app/actioncommands.cpp" line="485"/>
-        <location filename="../app/actioncommands.cpp" line="500"/>
+        <location filename="../app/actioncommands.cpp" line="470"/>
+        <location filename="../app/actioncommands.cpp" line="483"/>
+        <location filename="../app/actioncommands.cpp" line="497"/>
+        <location filename="../app/actioncommands.cpp" line="512"/>
         <source>Layer name:</source>
         <translation>Lag navn:</translation>
     </message>
@@ -529,23 +528,23 @@
         <translation>Færdig. Afspil film nu?</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="459"/>
+        <location filename="../app/actioncommands.cpp" line="471"/>
         <source>Bitmap Layer</source>
         <translation>Bitmap Lag</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="472"/>
+        <location filename="../app/actioncommands.cpp" line="484"/>
         <source>Vector Layer</source>
         <translation>Vector Lag</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="486"/>
+        <location filename="../app/actioncommands.cpp" line="498"/>
         <source>Camera Layer</source>
         <translation>Kamera Lag</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="79"/>
-        <location filename="../app/actioncommands.cpp" line="501"/>
+        <location filename="../app/actioncommands.cpp" line="513"/>
         <source>Sound Layer</source>
         <translation>Lyd Lag</translation>
     </message>
@@ -553,17 +552,17 @@
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="481"/>
+        <location filename="../core_lib/structure/layer.cpp" line="478"/>
         <source>Layer Properties</source>
         <translation>Lagegenskaber</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="482"/>
+        <location filename="../core_lib/structure/layer.cpp" line="479"/>
         <source>Layer name:</source>
         <translation>Lag navn:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="41"/>
+        <location filename="../core_lib/structure/layer.cpp" line="40"/>
         <source>Undefined Layer</source>
         <translation>Udefineret Lag</translation>
     </message>
@@ -571,12 +570,12 @@
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="560"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="562"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Du tegner på et usynligt lag!, Vær venlig at vælge et andet lag (eller lav det nuværende lag synligt).</translation>
     </message>
@@ -589,7 +588,7 @@
 <context>
     <name>LayerBitmap</name>
     <message>
-        <location filename="../core_lib/structure/layerbitmap.cpp" line="25"/>
+        <location filename="../core_lib/structure/layerbitmap.cpp" line="27"/>
         <source>Bitmap Layer</source>
         <translation>Bitmap Lag</translation>
     </message>
@@ -597,7 +596,7 @@
 <context>
     <name>LayerVector</name>
     <message>
-        <location filename="../core_lib/structure/layervector.cpp" line="23"/>
+        <location filename="../core_lib/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
         <translation>Vector Lag</translation>
     </message>
@@ -605,7 +604,7 @@
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="104"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="105"/>
         <source>Camera Layer</source>
         <translation>Kamera Lag</translation>
     </message>
@@ -613,7 +612,7 @@
 <context>
     <name>LayerSound</name>
     <message>
-        <location filename="../core_lib/structure/layersound.cpp" line="26"/>
+        <location filename="../core_lib/structure/layersound.cpp" line="27"/>
         <source>Sound Layer</source>
         <translation>Lyd Lag</translation>
     </message>
@@ -679,30 +678,29 @@
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="130"/>
-        <source>Move</source>
+    <source>Move</source>
         <translation>Flyt</translation>
     </message>
 </context>
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="30"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="31"/>
         <source>Camera name:</source>
         <translation>Kamera navn:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="37"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="38"/>
         <source>Camera size:</source>
         <translation>Kamera størrelse:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="53"/>
         <source>Cancel</source>
         <translation>Annuller</translation>
     </message>
@@ -786,122 +784,122 @@
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Red</source>
         <translation>Rød</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Green</source>
         <translation>Grøn</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="431"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Blue</source>
         <translation>Blå</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Black</source>
         <translation>Sort</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Red</source>
         <translation>Mørkerød</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Orange</source>
         <translation>Mørke Orange</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Yellow</source>
         <translation>Gul</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Yellow</source>
         <translation>Mørkegul</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Green</source>
         <translation>Mørkegrøn</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>Cyan</source>
         <translation>Turkis</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Dark Cyan</source>
         <translation>Mørke turkis</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="432"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Dark Blue</source>
         <translation>Mørkeblå</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="433"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>White</source>
         <translation>Hvid</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="434"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Very Light Grey</source>
         <translation>Meget Lysegrå</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="435"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Grey</source>
         <translation>Lysegrå</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="436"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Grey</source>
         <translation>Grå</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="437"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Dark Grey</source>
         <translation>Mørkegrå</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="438"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Light Skin</source>
         <translation>Lys hud</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="439"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Light Skin - shade</source>
         <translation>Lys hyd - skygge</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="440"/>
+        <location filename="../core_lib/structure/object.cpp" line="443"/>
         <source>Skin</source>
         <translation>Hud</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="441"/>
+        <location filename="../core_lib/structure/object.cpp" line="444"/>
         <source>Skin - shade</source>
         <translation>Hud - skygge</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="442"/>
+        <location filename="../core_lib/structure/object.cpp" line="445"/>
         <source>Dark Skin</source>
         <translation>Mørk Hud</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="443"/>
+        <location filename="../core_lib/structure/object.cpp" line="446"/>
         <source>Dark Skin - shade</source>
         <translation>Mørk Hud - skygge</translation>
     </message>
@@ -932,13 +930,13 @@
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="165"/>
+        <location filename="../app/colorpalettewidget.cpp" line="155"/>
+        <location filename="../app/colorpalettewidget.cpp" line="156"/>
         <source>Colour name</source>
         <translation>Farve navn</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="166"/>
-        <source>Colour name:</source>
+    <source>Colour name:</source>
         <translation>Farve navn:</translation>
     </message>
 </context>
@@ -978,8 +976,8 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/interface/editor.cpp" line="527"/>
-        <location filename="../core_lib/interface/editor.cpp" line="547"/>
+        <location filename="../core_lib/interface/editor.cpp" line="541"/>
+        <location filename="../core_lib/interface/editor.cpp" line="562"/>
         <source>Paste</source>
         <translation>Indsæt</translation>
     </message>
@@ -1077,28 +1075,28 @@
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="85"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
         <source>Play</source>
         <translation>Afspil</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="86"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
         <source>Loop</source>
         <translation>Lykke</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
         <source>Sound on/off</source>
         <translation>Lyd til/fra</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
         <source>End</source>
         <translation>Ende</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="197"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="91"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="199"/>
         <source>Start</source>
         <translation>Start</translation>
     </message>

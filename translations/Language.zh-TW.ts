@@ -9,16 +9,16 @@
         <translation>關於</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Abort</source>
         <translation>中止</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
-        <location filename="../app/mainwindow2.cpp" line="613"/>
-        <location filename="../app/mainwindow2.cpp" line="643"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
+        <location filename="../app/mainwindow2.cpp" line="603"/>
+        <location filename="../app/mainwindow2.cpp" line="659"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
@@ -235,13 +235,13 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="891"/>
+        <location filename="../app/mainwindow2.cpp" line="907"/>
         <source>Undo</source>
         <translation>復原</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="911"/>
+        <location filename="../app/mainwindow2.cpp" line="927"/>
         <source>Redo</source>
         <translation>重做</translation>
     </message>
@@ -348,7 +348,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1076"/>
+        <location filename="../app/mainwindow2.cpp" line="1092"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
@@ -461,28 +461,28 @@
         <translation>影格後移</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="364"/>
+        <location filename="../app/mainwindow2.cpp" line="353"/>
         <source>Open Recent</source>
         <translation>最近開啟的</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil 無法讀取這個檔案。如果您想要匯入影像，請使用指令匯入。</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
         <source>Opening document...</source>
         <translation>開啟文件...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Saving document...</source>
         <translation>儲存文件...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="614"/>
+        <location filename="../app/mainwindow2.cpp" line="604"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>動畫已經修改。你想要儲存檔案嗎?</translation>
@@ -507,40 +507,40 @@
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="77"/>
-        <location filename="../app/actioncommands.cpp" line="457"/>
-        <location filename="../app/actioncommands.cpp" line="470"/>
-        <location filename="../app/actioncommands.cpp" line="484"/>
-        <location filename="../app/actioncommands.cpp" line="499"/>
+        <location filename="../app/actioncommands.cpp" line="469"/>
+        <location filename="../app/actioncommands.cpp" line="482"/>
+        <location filename="../app/actioncommands.cpp" line="496"/>
+        <location filename="../app/actioncommands.cpp" line="511"/>
         <source>Layer Properties</source>
         <translation>圖層屬性</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="78"/>
-        <location filename="../app/actioncommands.cpp" line="458"/>
-        <location filename="../app/actioncommands.cpp" line="471"/>
-        <location filename="../app/actioncommands.cpp" line="485"/>
-        <location filename="../app/actioncommands.cpp" line="500"/>
+        <location filename="../app/actioncommands.cpp" line="470"/>
+        <location filename="../app/actioncommands.cpp" line="483"/>
+        <location filename="../app/actioncommands.cpp" line="497"/>
+        <location filename="../app/actioncommands.cpp" line="512"/>
         <source>Layer name:</source>
         <translation>圖層名稱:</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="459"/>
+        <location filename="../app/actioncommands.cpp" line="471"/>
         <source>Bitmap Layer</source>
         <translation>點陣圖層</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="472"/>
+        <location filename="../app/actioncommands.cpp" line="484"/>
         <source>Vector Layer</source>
         <translation>向量圖層:</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="486"/>
+        <location filename="../app/actioncommands.cpp" line="498"/>
         <source>Camera Layer</source>
         <translation>相機層:</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="79"/>
-        <location filename="../app/actioncommands.cpp" line="501"/>
+        <location filename="../app/actioncommands.cpp" line="513"/>
         <source>Sound Layer</source>
         <translation>音效層</translation>
     </message>
@@ -548,17 +548,17 @@
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="481"/>
+        <location filename="../core_lib/structure/layer.cpp" line="478"/>
         <source>Layer Properties</source>
         <translation>圖層屬性</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="482"/>
+        <location filename="../core_lib/structure/layer.cpp" line="479"/>
         <source>Layer name:</source>
         <translation>圖層名稱：</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="41"/>
+        <location filename="../core_lib/structure/layer.cpp" line="40"/>
         <source>Undefined Layer</source>
         <translation>未定義圖層</translation>
     </message>
@@ -566,12 +566,12 @@
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="560"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="562"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>您在隱藏的圖層上繪製！請選擇其他圖層（或使目前圖層可看見）。</translation>
     </message>
@@ -637,7 +637,7 @@
 <context>
     <name>LayerBitmap</name>
     <message>
-        <location filename="../core_lib/structure/layerbitmap.cpp" line="25"/>
+        <location filename="../core_lib/structure/layerbitmap.cpp" line="27"/>
         <source>Bitmap Layer</source>
         <translation>點陣圖層</translation>
     </message>
@@ -645,7 +645,7 @@
 <context>
     <name>LayerVector</name>
     <message>
-        <location filename="../core_lib/structure/layervector.cpp" line="23"/>
+        <location filename="../core_lib/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
         <translation>向量圖層</translation>
     </message>
@@ -653,7 +653,7 @@
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="104"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="105"/>
         <source>Camera Layer</source>
         <translation>相機層</translation>
     </message>
@@ -661,7 +661,7 @@
 <context>
     <name>LayerSound</name>
     <message>
-        <location filename="../core_lib/structure/layersound.cpp" line="26"/>
+        <location filename="../core_lib/structure/layersound.cpp" line="27"/>
         <source>Sound Layer</source>
         <translation>音效層</translation>
     </message>
@@ -702,8 +702,7 @@
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="130"/>
-        <source>Move</source>
+    <source>Move</source>
         <translation>移動</translation>
     </message>
 </context>
@@ -715,7 +714,7 @@
         <translation>筆刷</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="194"/>
+        <location filename="../app/tooloptionwidget.cpp" line="167"/>
         <source>Alpha</source>
         <translation>Alpha</translation>
     </message>
@@ -767,12 +766,12 @@
         <translation>感壓</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="189"/>
+        <location filename="../app/tooloptionwidget.cpp" line="162"/>
         <source>Invisible</source>
         <translation>隱藏</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="190"/>
+        <location filename="../app/tooloptionwidget.cpp" line="163"/>
         <source>Make invisible</source>
         <translation>隱藏</translation>
     </message>
@@ -780,22 +779,22 @@
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="30"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="31"/>
         <source>Camera name:</source>
         <translation>攝影機名稱：</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="37"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="38"/>
         <source>Camera size:</source>
         <translation>攝影機大小：</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
         <source>Ok</source>
         <translation>確定</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="53"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -879,112 +878,112 @@
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Red</source>
         <translation>紅色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Green</source>
         <translation>綠色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="431"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Blue</source>
         <translation>藍色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Black</source>
         <translation>黑色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Red</source>
         <translation>深紅色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Orange</source>
         <translation>橙色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Orange</source>
         <translation>深橙色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Yellow</source>
         <translation>黃色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Yellow</source>
         <translation>深黃色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Green</source>
         <translation>深綠色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>Cyan</source>
         <translation>青色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Dark Cyan</source>
         <translation>深青色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="432"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Dark Blue</source>
         <translation>深藍色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="433"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>White</source>
         <translation>白色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="434"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Very Light Grey</source>
         <translation>很淺灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="435"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Grey</source>
         <translation>淺灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="436"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Grey</source>
         <translation>灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="437"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Dark Grey</source>
         <translation>深灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="438"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Light Skin</source>
         <translation>淺膚色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="440"/>
+        <location filename="../core_lib/structure/object.cpp" line="443"/>
         <source>Skin</source>
         <translation>膚色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="442"/>
+        <location filename="../core_lib/structure/object.cpp" line="445"/>
         <source>Dark Skin</source>
         <translation>深膚色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="443"/>
+        <location filename="../core_lib/structure/object.cpp" line="446"/>
         <source>Dark Skin - shade</source>
         <translation>線</translation>
     </message>
@@ -1017,13 +1016,13 @@
         <translation>調色盤</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="165"/>
+        <location filename="../app/colorpalettewidget.cpp" line="155"/>
+        <location filename="../app/colorpalettewidget.cpp" line="156"/>
         <source>Colour name</source>
         <translation>顏色名稱</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="166"/>
-        <source>Colour name:</source>
+    <source>Colour name:</source>
         <translation>顏色名稱：</translation>
     </message>
 </context>
@@ -1123,8 +1122,8 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/interface/editor.cpp" line="527"/>
-        <location filename="../core_lib/interface/editor.cpp" line="547"/>
+        <location filename="../core_lib/interface/editor.cpp" line="541"/>
+        <location filename="../core_lib/interface/editor.cpp" line="562"/>
         <source>Paste</source>
         <translation>貼上</translation>
     </message>
@@ -1132,33 +1131,33 @@
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="62"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="64"/>
         <source>Range</source>
         <translation>範圍</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="85"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
         <source>Play</source>
         <translation>播放</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="86"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
         <source>Loop</source>
         <translation>循環</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
         <source>Sound on/off</source>
         <translation>聲音開/關</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
         <source>End</source>
         <translation>結束</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="197"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="91"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="199"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>

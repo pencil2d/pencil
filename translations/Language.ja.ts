@@ -9,18 +9,17 @@
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="34"/>
+        <location filename="../app/aboutdialog.cpp" line="70"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="47"/>
+        <location filename="../app/aboutdialog.cpp" line="41"/>
         <source>&lt;b&gt;Pencil2D&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/aboutdialog.cpp" line="50"/>
-        <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;&lt;/&gt;</source>
+    <source>Official site: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Developed by: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;Thanks to: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;&lt;/&gt;</source>
         <translation>公式サイト: &lt;a href=&quot;http://pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;デベロッパー: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang, Cirus&lt;/b&gt;&lt;/&gt;&lt;br&gt;感謝: Qt Framework &lt;a href=&quot;http://qt-project.org&quot;&gt;qt-project.org&lt;/a&gt;&lt;/&gt;&lt;br&gt;本ソフトは以下のライセンスにより配布されています: &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;&lt;/&gt;</translation>
     </message>
 </context>
@@ -32,16 +31,16 @@
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Abort</source>
         <translation>中断</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
-        <location filename="../app/mainwindow2.cpp" line="613"/>
-        <location filename="../app/mainwindow2.cpp" line="643"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
+        <location filename="../app/mainwindow2.cpp" line="603"/>
+        <location filename="../app/mainwindow2.cpp" line="659"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
@@ -268,13 +267,13 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="891"/>
+        <location filename="../app/mainwindow2.cpp" line="907"/>
         <source>Undo</source>
         <translation>元に戻す</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="911"/>
+        <location filename="../app/mainwindow2.cpp" line="927"/>
         <source>Redo</source>
         <translation>やり直す</translation>
     </message>
@@ -386,7 +385,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1076"/>
+        <location filename="../app/mainwindow2.cpp" line="1092"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
@@ -504,62 +503,62 @@
         <translation>前のフレームに移動</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="364"/>
+        <location filename="../app/mainwindow2.cpp" line="353"/>
         <source>Open Recent</source>
         <translation>最近使ったファイル</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="398"/>
+        <location filename="../app/mainwindow2.cpp" line="387"/>
         <source>
 
  You have successfully cleared the list</source>
         <translation>リストは正常に削除されました</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>読み込みエラーです。画像を読み込む場合は「読み込む」コマンドを使用して下さい。</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
         <source>Opening document...</source>
         <translation>ドキュメントを開いています...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Saving document...</source>
         <translation>ドキュメントを保存しています...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="578"/>
+        <location filename="../app/mainwindow2.cpp" line="568"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;エラーによってファイルが正常に保存されなかった可能性があります。もしこのエラーがPencil2Dによって起こったと推測される場合は, &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;にアクセスして新しい&quot;issue&quot;として報告してください。ご報告の際は、以下の詳細を追記してください:</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="614"/>
+        <location filename="../app/mainwindow2.cpp" line="604"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>ファイルの変更があります。
 これらの変更を保存しますか？</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="644"/>
+        <location filename="../app/mainwindow2.cpp" line="660"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>画像が読み込めません。&lt;br&gt;&lt;b&gt;ヒント:&lt;/b&gt; ビットマップファイルはビットマップレイヤーに読み込んでください。</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="896"/>
+        <location filename="../app/mainwindow2.cpp" line="912"/>
         <source>Undo   %1 %2</source>
         <translation>やり直し %1 %2</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="904"/>
+        <location filename="../app/mainwindow2.cpp" line="920"/>
         <source>Redo   %1 %2</source>
         <translation>繰り返し %1 %2</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="1071"/>
+        <location filename="../app/mainwindow2.cpp" line="1087"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
@@ -583,19 +582,19 @@
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="77"/>
-        <location filename="../app/actioncommands.cpp" line="457"/>
-        <location filename="../app/actioncommands.cpp" line="470"/>
-        <location filename="../app/actioncommands.cpp" line="484"/>
-        <location filename="../app/actioncommands.cpp" line="499"/>
+        <location filename="../app/actioncommands.cpp" line="469"/>
+        <location filename="../app/actioncommands.cpp" line="482"/>
+        <location filename="../app/actioncommands.cpp" line="496"/>
+        <location filename="../app/actioncommands.cpp" line="511"/>
         <source>Layer Properties</source>
         <translation>レイヤーのプロパティ</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="78"/>
-        <location filename="../app/actioncommands.cpp" line="458"/>
-        <location filename="../app/actioncommands.cpp" line="471"/>
-        <location filename="../app/actioncommands.cpp" line="485"/>
-        <location filename="../app/actioncommands.cpp" line="500"/>
+        <location filename="../app/actioncommands.cpp" line="470"/>
+        <location filename="../app/actioncommands.cpp" line="483"/>
+        <location filename="../app/actioncommands.cpp" line="497"/>
+        <location filename="../app/actioncommands.cpp" line="512"/>
         <source>Layer name:</source>
         <translation>レイヤー名:</translation>
     </message>
@@ -615,23 +614,23 @@
         <translation>動画の書き出しが完了しました。動画を再生しますか？</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="459"/>
+        <location filename="../app/actioncommands.cpp" line="471"/>
         <source>Bitmap Layer</source>
         <translation>ビットマップレイヤー</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="472"/>
+        <location filename="../app/actioncommands.cpp" line="484"/>
         <source>Vector Layer</source>
         <translation>ベクターレイヤー</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="486"/>
+        <location filename="../app/actioncommands.cpp" line="498"/>
         <source>Camera Layer</source>
         <translation>カメラレイヤー</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="79"/>
-        <location filename="../app/actioncommands.cpp" line="501"/>
+        <location filename="../app/actioncommands.cpp" line="513"/>
         <source>Sound Layer</source>
         <translation>音声レイヤー</translation>
     </message>
@@ -639,17 +638,17 @@
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="481"/>
+        <location filename="../core_lib/structure/layer.cpp" line="478"/>
         <source>Layer Properties</source>
         <translation>レイヤーのプロパティ</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="482"/>
+        <location filename="../core_lib/structure/layer.cpp" line="479"/>
         <source>Layer name:</source>
         <translation>レイヤー名:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="41"/>
+        <location filename="../core_lib/structure/layer.cpp" line="40"/>
         <source>Undefined Layer</source>
         <translation>未定義のレイヤー</translation>
     </message>
@@ -741,24 +740,26 @@
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="560"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="562"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>選択中のレイヤーは非表示に設定されています。このレイヤーを表示するか他のレイヤーを選択して下さい。</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1674"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1671"/>
         <source>Delete Selection</source>
         <translation>選択範囲を消去</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="1688"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="1687"/>
         <location filename="../core_lib/interface/scribblearea.cpp" line="1695"/>
-        <source>Clear Image</source>
+        <extracomment>Undo step text</extracomment>
+<source>Clear Image</source>
+        <comment>Undo step text</comment>
         <translation>画像をクリア</translation>
     </message>
     <message>
@@ -873,7 +874,7 @@
 <context>
     <name>LayerBitmap</name>
     <message>
-        <location filename="../core_lib/structure/layerbitmap.cpp" line="25"/>
+        <location filename="../core_lib/structure/layerbitmap.cpp" line="27"/>
         <source>Bitmap Layer</source>
         <translation>ビットマップレイヤー</translation>
     </message>
@@ -881,7 +882,7 @@
 <context>
     <name>LayerVector</name>
     <message>
-        <location filename="../core_lib/structure/layervector.cpp" line="23"/>
+        <location filename="../core_lib/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
         <translation>ベクターレイヤー</translation>
     </message>
@@ -889,7 +890,7 @@
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="104"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="105"/>
         <source>Camera Layer</source>
         <translation>カメラレイヤー</translation>
     </message>
@@ -897,7 +898,7 @@
 <context>
     <name>LayerSound</name>
     <message>
-        <location filename="../core_lib/structure/layersound.cpp" line="26"/>
+        <location filename="../core_lib/structure/layersound.cpp" line="27"/>
         <source>Sound Layer</source>
         <translation>音声レイヤー</translation>
     </message>
@@ -963,16 +964,14 @@
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="130"/>
-        <source>Move</source>
+    <source>Move</source>
         <translation>移動</translation>
     </message>
 </context>
 <context>
     <name>PolylineTool</name>
     <message>
-        <location filename="../core_lib/tool/polylinetool.cpp" line="111"/>
-        <source>Polyline</source>
+    <source>Polyline</source>
         <translation>折れ線</translation>
     </message>
 </context>
@@ -984,7 +983,7 @@
         <translation>ブラシ</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="194"/>
+        <location filename="../app/tooloptionwidget.cpp" line="167"/>
         <source>Alpha</source>
         <translation>透過度</translation>
     </message>
@@ -1058,47 +1057,45 @@
         <translation>輪郭線が塗りつぶされます</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="140"/>
-        <source>Stabilization level</source>
+    <source>Stabilization level</source>
         <translation>手ブレ補正レベル</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="156"/>
-        <source>No line interpolation</source>
+    <source>No line interpolation</source>
         <translation>線の自動補間を使用しない</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="161"/>
+        <location filename="../app/tooloptionwidget.cpp" line="146"/>
         <source>Simple line interpolation</source>
         <translation>軽度な線の自動補間</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="165"/>
+        <location filename="../app/tooloptionwidget.cpp" line="146"/>
         <source>Strong line interpolation</source>
         <translation>線の自動補間を使用しない</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="189"/>
+        <location filename="../app/tooloptionwidget.cpp" line="162"/>
         <source>Invisible</source>
         <translation>透明な線</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="190"/>
+        <location filename="../app/tooloptionwidget.cpp" line="163"/>
         <source>Make invisible</source>
         <translation>透明な線で描く</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="195"/>
+        <location filename="../app/tooloptionwidget.cpp" line="168"/>
         <source>Preserve Alpha</source>
         <translation>ピクセルの不透明度を保護</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="199"/>
+        <location filename="../app/tooloptionwidget.cpp" line="172"/>
         <source>Merge</source>
         <translation>つなげる</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="200"/>
+        <location filename="../app/tooloptionwidget.cpp" line="173"/>
         <source>Merge vector lines when they are close together</source>
         <translation>近接したベクターラインをつなげる</translation>
     </message>
@@ -1106,22 +1103,22 @@
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="30"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="31"/>
         <source>Camera name:</source>
         <translation>カメラの名前:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="37"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="38"/>
         <source>Camera size:</source>
         <translation>カメラのサイズ:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="53"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -1240,122 +1237,122 @@
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Red</source>
         <translation>赤</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Green</source>
         <translation>緑</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="431"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Blue</source>
         <translation>青</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Black</source>
         <translation>黒</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Red</source>
         <translation>暗い赤</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Orange</source>
         <translation>オレンジ</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Orange</source>
         <translation>暗いオレンジ</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Yellow</source>
         <translation>黄色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Yellow</source>
         <translation>暗い黄色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Green</source>
         <translation>暗い緑</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>Cyan</source>
         <translation>シアン</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Dark Cyan</source>
         <translation>暗いシアン</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="432"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Dark Blue</source>
         <translation>暗い青</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="433"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>White</source>
         <translation>白</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="434"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Very Light Grey</source>
         <translation>非常に明るい灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="435"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Grey</source>
         <translation>明るい灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="436"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Grey</source>
         <translation>灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="437"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Dark Grey</source>
         <translation>暗い灰色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="438"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Light Skin</source>
         <translation>明るい肌色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="439"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Light Skin - shade</source>
         <translation>明るい肌色 (陰)</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="440"/>
+        <location filename="../core_lib/structure/object.cpp" line="443"/>
         <source>Skin</source>
         <translation>肌色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="441"/>
+        <location filename="../core_lib/structure/object.cpp" line="444"/>
         <source>Skin - shade</source>
         <translation>肌色 (陰)</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="442"/>
+        <location filename="../core_lib/structure/object.cpp" line="445"/>
         <source>Dark Skin</source>
         <translation>暗い肌色</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="443"/>
+        <location filename="../core_lib/structure/object.cpp" line="446"/>
         <source>Dark Skin - shade</source>
         <translation>暗い肌色 (陰)</translation>
     </message>
@@ -1388,62 +1385,62 @@
         <translation>カラーパレット</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="165"/>
+        <location filename="../app/colorpalettewidget.cpp" line="155"/>
+        <location filename="../app/colorpalettewidget.cpp" line="156"/>
         <source>Colour name</source>
         <translation>色名</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="166"/>
-        <source>Colour name:</source>
+    <source>Colour name:</source>
         <translation>色名:</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="181"/>
+        <location filename="../app/colorpalettewidget.cpp" line="196"/>
         <source>List mode</source>
         <translation>リスト表示</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="182"/>
+        <location filename="../app/colorpalettewidget.cpp" line="197"/>
         <source>Show palette as a list</source>
         <translation>パレットをリスト表示</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="188"/>
+        <location filename="../app/colorpalettewidget.cpp" line="203"/>
         <source>Grid mode</source>
         <translation>パレットをグリッド表示</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="189"/>
+        <location filename="../app/colorpalettewidget.cpp" line="204"/>
         <source>Show palette as icons</source>
         <translation>パレットをアイコン表示</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="196"/>
+        <location filename="../app/colorpalettewidget.cpp" line="211"/>
         <source>Small swatch</source>
         <translation>色見本：小</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="197"/>
+        <location filename="../app/colorpalettewidget.cpp" line="212"/>
         <source>Sets swatch size to: 16x16px</source>
         <translation>色見本サイズ：16x16ピクセル</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="202"/>
+        <location filename="../app/colorpalettewidget.cpp" line="217"/>
         <source>Medium swatch</source>
         <translation>色見本：中</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="203"/>
+        <location filename="../app/colorpalettewidget.cpp" line="218"/>
         <source>Sets swatch size to: 26x26px</source>
         <translation>色見本サイズ：26x26ピクセル</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="208"/>
+        <location filename="../app/colorpalettewidget.cpp" line="223"/>
         <source>Large swatch</source>
         <translation>色見本：大</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="210"/>
+        <location filename="../app/colorpalettewidget.cpp" line="225"/>
         <source>Sets swatch size to: 36x36px</source>
         <translation>色見本サイズ：36x36ピクセル</translation>
     </message>
@@ -1539,14 +1536,14 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/interface/editor.cpp" line="527"/>
-        <location filename="../core_lib/interface/editor.cpp" line="547"/>
+        <location filename="../core_lib/interface/editor.cpp" line="541"/>
+        <location filename="../core_lib/interface/editor.cpp" line="562"/>
         <source>Paste</source>
         <translation>貼り付け</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/editor.cpp" line="724"/>
-        <location filename="../core_lib/interface/editor.cpp" line="761"/>
+        <location filename="../core_lib/interface/editor.cpp" line="756"/>
+        <location filename="../core_lib/interface/editor.cpp" line="782"/>
         <source>Import Image</source>
         <translation>イメージを読み込む</translation>
     </message>
@@ -1738,58 +1735,58 @@
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="62"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="64"/>
         <source>Range</source>
         <translation>範囲</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="85"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
         <source>Play</source>
         <translation>再生</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="86"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
         <source>Loop</source>
         <translation>ループ</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="192"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="194"/>
         <source>Stop</source>
         <translation>停止</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="41"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="43"/>
         <source>Frames per second</source>
         <translation>フレームレート</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="50"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="52"/>
         <source>Start of playback loop</source>
         <translation>ループ再生の始点</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="59"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="61"/>
         <source>End of playback loop</source>
         <translation>ループ再生の終点</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="65"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="67"/>
         <source>Playback range</source>
         <translation>再生範囲</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
         <source>Sound on/off</source>
         <translation>音声オン/オフ</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
         <source>End</source>
         <translation>最後のフレームに移動</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="197"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="91"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="199"/>
         <source>Start</source>
         <translation>最初のフレームに移動</translation>
     </message>
@@ -1806,7 +1803,8 @@
     <name>FileManager</name>
     <message>
         <location filename="../core_lib/structure/filemanager.cpp" line="197"/>
-        <location filename="../core_lib/structure/filemanager.cpp" line="205"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="206"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="214"/>
         <source>Invalid Save Path</source>
         <translation>セーブ先が不正です</translation>
     </message>
@@ -1816,45 +1814,45 @@
         <translation>指定されたファイルパス (&quot;%1&quot;) はフォルダを示しています。ファイルの保存ができません。</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="206"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="215"/>
         <source>The file path you have specified (&quot;%1&quot;) cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again.</source>
         <translation>ファイルパス&quot;%1&quot;への書き込みができません。よってファイルの保存ができません。この場所へのアクセス権限があるか確認してください。</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="244"/>
-        <location filename="../core_lib/structure/filemanager.cpp" line="254"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="253"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="263"/>
         <source>Cannot Create Data Directory</source>
         <translation>データフォルダーが作成できません</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="244"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="253"/>
         <source>Cannot create the data directory at &quot;%1&quot;. Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format.</source>
         <translation>&quot;%1&quot;にデータフォルダを作成できません。この場所へのアクセス権限があるか確認してください。またはpclxフォーマットで保存してみてください。</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="246"/>
-        <location filename="../core_lib/structure/filemanager.cpp" line="258"/>
-        <location filename="../core_lib/structure/filemanager.cpp" line="304"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="255"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="267"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="313"/>
         <source>Internal Error</source>
         <translation>内部エラー</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="255"/>
         <source>Cannot create the data directory at temporary location &quot;%1&quot;. Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format.</source>
         <translation>一時保存場所&quot;%1&quot;にデータフォルダを作成できません。この場所へのアクセス権限があるか確認してください。またはpclフォーマットで保存してみてください。</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="254"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="263"/>
         <source>Cannot use the path &quot;%1&quot; as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format.</source>
         <translation>パス &quot;%1&quot;はファイルを示しているため、ディレクトリとして使用することはできません。このファイルを移動または削除してから再度実行してください。またはPCLX形式で保存してください。</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="258"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="267"/>
         <source>Cannot use the data directory at temporary location &quot;%1&quot; since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format.</source>
         <translation>一時的保存場所&quot;%1&quot;上の指定されたパスはファイルであるため、データディレクトリとして使用することはできません。このファイルを移動または削除してから再度実行してください。またはPCL形式で保存してください。</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="304"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="313"/>
         <source>An internal error occurred while trying to save the file. Some or all of your file may not have saved.</source>
         <translation>保存中に内部エラーが発生しました。ファイルの一部及び全体の保存に失敗しました。</translation>
     </message>
@@ -2246,62 +2244,62 @@
 <context>
     <name>ToolBoxWidget</name>
     <message>
-        <location filename="../app/toolbox.cpp" line="90"/>
+        <location filename="../app/toolbox.cpp" line="87"/>
         <source>Pencil Tool (%1)</source>
         <translation>鉛筆ツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="92"/>
+        <location filename="../app/toolbox.cpp" line="89"/>
         <source>Select Tool (%1)</source>
         <translation>選択ツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="94"/>
+        <location filename="../app/toolbox.cpp" line="91"/>
         <source>Move Tool (%1)</source>
         <translation>移動ツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="96"/>
+        <location filename="../app/toolbox.cpp" line="93"/>
         <source>Hand Tool (%1)</source>
         <translation>手のひらツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="98"/>
+        <location filename="../app/toolbox.cpp" line="95"/>
         <source>Pen Tool (%1)</source>
         <translation>ペンツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="100"/>
+        <location filename="../app/toolbox.cpp" line="97"/>
         <source>Eraser Tool (%1)</source>
         <translation>消しゴムツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="102"/>
+        <location filename="../app/toolbox.cpp" line="99"/>
         <source>Polyline Tool (%1)</source>
         <translation>折れ線ツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="104"/>
+        <location filename="../app/toolbox.cpp" line="101"/>
         <source>Paint Bucket Tool (%1)</source>
         <translation>バケツツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="106"/>
+        <location filename="../app/toolbox.cpp" line="103"/>
         <source>Brush Tool (%1)</source>
         <translation>ブラシツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="108"/>
+        <location filename="../app/toolbox.cpp" line="105"/>
         <source>Eyedropper Tool (%1)</source>
         <translation>スポイトツール (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="110"/>
+        <location filename="../app/toolbox.cpp" line="107"/>
         <source>Clear Tool (%1)</source>
         <translation>フレームをクリア (%1)</translation>
     </message>
     <message>
-        <location filename="../app/toolbox.cpp" line="112"/>
+        <location filename="../app/toolbox.cpp" line="109"/>
         <source>Smudge Tool (%1)</source>
         <translation>指先ツール (%1)</translation>
     </message>

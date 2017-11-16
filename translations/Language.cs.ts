@@ -9,16 +9,16 @@
         <translation>O programu</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
-        <location filename="../app/mainwindow2.cpp" line="613"/>
-        <location filename="../app/mainwindow2.cpp" line="643"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
+        <location filename="../app/mainwindow2.cpp" line="603"/>
+        <location filename="../app/mainwindow2.cpp" line="659"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -240,13 +240,13 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="336"/>
-        <location filename="../app/mainwindow2.cpp" line="891"/>
+        <location filename="../app/mainwindow2.cpp" line="907"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <location filename="../app/mainwindow2.cpp" line="911"/>
+        <location filename="../app/mainwindow2.cpp" line="927"/>
         <source>Redo</source>
         <translation>Znovu</translation>
     </message>
@@ -358,7 +358,7 @@
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="514"/>
-        <location filename="../app/mainwindow2.cpp" line="1076"/>
+        <location filename="../app/mainwindow2.cpp" line="1092"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -471,40 +471,40 @@
         <translation>Posunout snímek vzad</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="150"/>
+        <location filename="../app/mainwindow2.cpp" line="141"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta barev:&lt;br&gt;použijte přepínač &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;na pozici kurzoru</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="364"/>
+        <location filename="../app/mainwindow2.cpp" line="353"/>
         <source>Open Recent</source>
         <translation>Otevřít nedávné</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="460"/>
-        <location filename="../app/mainwindow2.cpp" line="489"/>
+        <location filename="../app/mainwindow2.cpp" line="449"/>
+        <location filename="../app/mainwindow2.cpp" line="479"/>
         <source>Pencil cannot read this file. If you want to import images, use the command import.</source>
         <translation>Pencil není schopen přečíst tento soubor. Pokud chcete imporovat obrázky, použijte příkaz importovat.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="496"/>
+        <location filename="../app/mainwindow2.cpp" line="486"/>
         <source>Opening document...</source>
         <translation>Otevírám dokument...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="548"/>
+        <location filename="../app/mainwindow2.cpp" line="538"/>
         <source>Saving document...</source>
         <translation>Ukládám dokument...</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="614"/>
+        <location filename="../app/mainwindow2.cpp" line="604"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Animace byla změněna.
 Přejete si uložit změny.</translation>
     </message>
     <message>
-        <location filename="../app/mainwindow2.cpp" line="644"/>
+        <location filename="../app/mainwindow2.cpp" line="660"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Obrázek nelze importovat.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Na import bitmap použijte bitmapovou vrstvu.</translation>
     </message>
@@ -528,19 +528,19 @@ Přejete si uložit změny.</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="77"/>
-        <location filename="../app/actioncommands.cpp" line="457"/>
-        <location filename="../app/actioncommands.cpp" line="470"/>
-        <location filename="../app/actioncommands.cpp" line="484"/>
-        <location filename="../app/actioncommands.cpp" line="499"/>
+        <location filename="../app/actioncommands.cpp" line="469"/>
+        <location filename="../app/actioncommands.cpp" line="482"/>
+        <location filename="../app/actioncommands.cpp" line="496"/>
+        <location filename="../app/actioncommands.cpp" line="511"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="78"/>
-        <location filename="../app/actioncommands.cpp" line="458"/>
-        <location filename="../app/actioncommands.cpp" line="471"/>
-        <location filename="../app/actioncommands.cpp" line="485"/>
-        <location filename="../app/actioncommands.cpp" line="500"/>
+        <location filename="../app/actioncommands.cpp" line="470"/>
+        <location filename="../app/actioncommands.cpp" line="483"/>
+        <location filename="../app/actioncommands.cpp" line="497"/>
+        <location filename="../app/actioncommands.cpp" line="512"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
@@ -555,23 +555,23 @@ Přejete si uložit změny.</translation>
         <translation>Dokončeno. Otevřít video?</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="459"/>
+        <location filename="../app/actioncommands.cpp" line="471"/>
         <source>Bitmap Layer</source>
         <translation>Bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="472"/>
+        <location filename="../app/actioncommands.cpp" line="484"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/actioncommands.cpp" line="486"/>
+        <location filename="../app/actioncommands.cpp" line="498"/>
         <source>Camera Layer</source>
         <translation>Vrstva kamery</translation>
     </message>
     <message>
         <location filename="../app/actioncommands.cpp" line="79"/>
-        <location filename="../app/actioncommands.cpp" line="501"/>
+        <location filename="../app/actioncommands.cpp" line="513"/>
         <source>Sound Layer</source>
         <translation>Zvuková vrstva</translation>
     </message>
@@ -579,17 +579,17 @@ Přejete si uložit změny.</translation>
 <context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="481"/>
+        <location filename="../core_lib/structure/layer.cpp" line="478"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="482"/>
+        <location filename="../core_lib/structure/layer.cpp" line="479"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layer.cpp" line="41"/>
+        <location filename="../core_lib/structure/layer.cpp" line="40"/>
         <source>Undefined Layer</source>
         <translation>Nedefinovaná vrstva</translation>
     </message>
@@ -597,12 +597,12 @@ Přejete si uložit změny.</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="560"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/scribblearea.cpp" line="561"/>
+        <location filename="../core_lib/interface/scribblearea.cpp" line="562"/>
         <source>You are drawing on a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Kreslíte na skrytou vrstvu! Vyberte, prosím, jinou vrstvu (nebo nynější vrstvu udělejte viditelnou).</translation>
     </message>
@@ -668,7 +668,7 @@ Přejete si uložit změny.</translation>
 <context>
     <name>LayerBitmap</name>
     <message>
-        <location filename="../core_lib/structure/layerbitmap.cpp" line="25"/>
+        <location filename="../core_lib/structure/layerbitmap.cpp" line="27"/>
         <source>Bitmap Layer</source>
         <translation>Bitmapová vrstva</translation>
     </message>
@@ -676,7 +676,7 @@ Přejete si uložit změny.</translation>
 <context>
     <name>LayerVector</name>
     <message>
-        <location filename="../core_lib/structure/layervector.cpp" line="23"/>
+        <location filename="../core_lib/structure/layervector.cpp" line="24"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
@@ -684,7 +684,7 @@ Přejete si uložit změny.</translation>
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="104"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="105"/>
         <source>Camera Layer</source>
         <translation>Vrstva kamery</translation>
     </message>
@@ -692,7 +692,7 @@ Přejete si uložit změny.</translation>
 <context>
     <name>LayerSound</name>
     <message>
-        <location filename="../core_lib/structure/layersound.cpp" line="26"/>
+        <location filename="../core_lib/structure/layersound.cpp" line="27"/>
         <source>Sound Layer</source>
         <translation>Zvuková vrstva</translation>
     </message>
@@ -700,8 +700,7 @@ Přejete si uložit změny.</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/tool/movetool.cpp" line="130"/>
-        <source>Move</source>
+    <source>Move</source>
         <translation>Přesun</translation>
     </message>
 </context>
@@ -713,7 +712,7 @@ Přejete si uložit změny.</translation>
         <translation>Štětec</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="194"/>
+        <location filename="../app/tooloptionwidget.cpp" line="167"/>
         <source>Alpha</source>
         <translation>Alfa kanál</translation>
     </message>
@@ -765,17 +764,17 @@ Přejete si uložit změny.</translation>
         <translation>Velikost s tlakem</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="189"/>
+        <location filename="../app/tooloptionwidget.cpp" line="162"/>
         <source>Invisible</source>
         <translation>Neviditelný</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="190"/>
+        <location filename="../app/tooloptionwidget.cpp" line="163"/>
         <source>Make invisible</source>
         <translation>Nastavit neviditelné</translation>
     </message>
     <message>
-        <location filename="../app/tooloptionwidget.cpp" line="195"/>
+        <location filename="../app/tooloptionwidget.cpp" line="168"/>
         <source>Preserve Alpha</source>
         <translation>Zachovat alfa kanál</translation>
     </message>
@@ -783,22 +782,22 @@ Přejete si uložit změny.</translation>
 <context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="30"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="31"/>
         <source>Camera name:</source>
         <translation>Název kamery:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="37"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="38"/>
         <source>Camera size:</source>
         <translation>Velikost kamery:</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="51"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
         <source>Ok</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/layercamera.cpp" line="52"/>
+        <location filename="../core_lib/structure/layercamera.cpp" line="53"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -882,122 +881,122 @@ Přejete si uložit změny.</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="421"/>
+        <location filename="../core_lib/structure/object.cpp" line="424"/>
         <source>Red</source>
         <translation>Červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="427"/>
+        <location filename="../core_lib/structure/object.cpp" line="430"/>
         <source>Green</source>
         <translation>Zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="431"/>
+        <location filename="../core_lib/structure/object.cpp" line="434"/>
         <source>Blue</source>
         <translation>Modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="420"/>
+        <location filename="../core_lib/structure/object.cpp" line="423"/>
         <source>Black</source>
         <translation>Černá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="422"/>
+        <location filename="../core_lib/structure/object.cpp" line="425"/>
         <source>Dark Red</source>
         <translation>Tmavě červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="423"/>
+        <location filename="../core_lib/structure/object.cpp" line="426"/>
         <source>Orange</source>
         <translation>Oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="424"/>
+        <location filename="../core_lib/structure/object.cpp" line="427"/>
         <source>Dark Orange</source>
         <translation>Tmavě oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="425"/>
+        <location filename="../core_lib/structure/object.cpp" line="428"/>
         <source>Yellow</source>
         <translation>Žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="426"/>
+        <location filename="../core_lib/structure/object.cpp" line="429"/>
         <source>Dark Yellow</source>
         <translation>Tmavě žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="428"/>
+        <location filename="../core_lib/structure/object.cpp" line="431"/>
         <source>Dark Green</source>
         <translation>Tmavě zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="429"/>
+        <location filename="../core_lib/structure/object.cpp" line="432"/>
         <source>Cyan</source>
         <translation>Tyrkysová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="430"/>
+        <location filename="../core_lib/structure/object.cpp" line="433"/>
         <source>Dark Cyan</source>
         <translation>Tmavě tyrkysová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="432"/>
+        <location filename="../core_lib/structure/object.cpp" line="435"/>
         <source>Dark Blue</source>
         <translation>Tmavě modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="433"/>
+        <location filename="../core_lib/structure/object.cpp" line="436"/>
         <source>White</source>
         <translation>Bílá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="434"/>
+        <location filename="../core_lib/structure/object.cpp" line="437"/>
         <source>Very Light Grey</source>
         <translation>Velmi světle šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="435"/>
+        <location filename="../core_lib/structure/object.cpp" line="438"/>
         <source>Light Grey</source>
         <translation>Světle šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="436"/>
+        <location filename="../core_lib/structure/object.cpp" line="439"/>
         <source>Grey</source>
         <translation>Šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="437"/>
+        <location filename="../core_lib/structure/object.cpp" line="440"/>
         <source>Dark Grey</source>
         <translation>Tmavě šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="438"/>
+        <location filename="../core_lib/structure/object.cpp" line="441"/>
         <source>Light Skin</source>
         <translation>Světle tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="439"/>
+        <location filename="../core_lib/structure/object.cpp" line="442"/>
         <source>Light Skin - shade</source>
         <translation>Světle tělová - odstín</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="440"/>
+        <location filename="../core_lib/structure/object.cpp" line="443"/>
         <source>Skin</source>
         <translation>Tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="441"/>
+        <location filename="../core_lib/structure/object.cpp" line="444"/>
         <source>Skin - shade</source>
         <translation>Tělová - odstín</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="442"/>
+        <location filename="../core_lib/structure/object.cpp" line="445"/>
         <source>Dark Skin</source>
         <translation>Tmavá tělová</translation>
     </message>
     <message>
-        <location filename="../core_lib/structure/object.cpp" line="443"/>
+        <location filename="../core_lib/structure/object.cpp" line="446"/>
         <source>Dark Skin - shade</source>
         <translation>Tmavě tělová - odstín</translation>
     </message>
@@ -1030,22 +1029,22 @@ Přejete si uložit změny.</translation>
         <translation>Paleta barev</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="165"/>
+        <location filename="../app/colorpalettewidget.cpp" line="155"/>
+        <location filename="../app/colorpalettewidget.cpp" line="156"/>
         <source>Colour name</source>
         <translation>Název barvy</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="166"/>
-        <source>Colour name:</source>
+    <source>Colour name:</source>
         <translation>Název barvy:</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="182"/>
+        <location filename="../app/colorpalettewidget.cpp" line="197"/>
         <source>Show palette as a list</source>
         <translation>Zobrazit paletu jako seznam</translation>
     </message>
     <message>
-        <location filename="../app/colorpalettewidget.cpp" line="188"/>
+        <location filename="../app/colorpalettewidget.cpp" line="203"/>
         <source>Grid mode</source>
         <translation>Mřížka</translation>
     </message>
@@ -1179,8 +1178,8 @@ Přejete si uložit změny.</translation>
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/interface/editor.cpp" line="527"/>
-        <location filename="../core_lib/interface/editor.cpp" line="547"/>
+        <location filename="../core_lib/interface/editor.cpp" line="541"/>
+        <location filename="../core_lib/interface/editor.cpp" line="562"/>
         <source>Paste</source>
         <translation>Vložit</translation>
     </message>
@@ -1201,33 +1200,33 @@ Přejete si uložit změny.</translation>
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="62"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="64"/>
         <source>Range</source>
         <translation>Rozsah</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="85"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="86"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
         <source>Loop</source>
         <translation>Smyčka</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="87"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
         <source>Sound on/off</source>
         <translation>Zvuk zapnuto/vypnuto</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="90"/>
         <source>End</source>
         <translation>Konec</translation>
     </message>
     <message>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="89"/>
-        <location filename="../core_lib/interface/timecontrols.cpp" line="197"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="91"/>
+        <location filename="../core_lib/interface/timecontrols.cpp" line="199"/>
         <source>Start</source>
         <translation>Začátek</translation>
     </message>
@@ -1248,9 +1247,9 @@ Přejete si uložit změny.</translation>
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/structure/filemanager.cpp" line="246"/>
-        <location filename="../core_lib/structure/filemanager.cpp" line="258"/>
-        <location filename="../core_lib/structure/filemanager.cpp" line="304"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="255"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="267"/>
+        <location filename="../core_lib/structure/filemanager.cpp" line="313"/>
         <source>Internal Error</source>
         <translation>Interní chyba</translation>
     </message>
