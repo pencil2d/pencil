@@ -238,7 +238,8 @@ bool Layer::moveKeyFrameBackward( int position )
 
 bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, need to refresh the swapped cels
 {
-    bool keyPosition1 = false, keyPosition2 = false;
+    bool keyPosition1 = false;
+    bool keyPosition2 = false;
     KeyFrame* pFirstFrame  = nullptr;
     KeyFrame* pSecondFrame = nullptr;
 
@@ -248,9 +249,6 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
         pFirstFrame = firstFrame->second;
 
         mKeyFrames.erase( position1 );
-
-        //pFirstFrame = getKeyFrameAt( position1 );
-        //removeKeyFrame( position1 );
 
         keyPosition1 = true;
     }
@@ -262,15 +260,11 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
 
         mKeyFrames.erase( position2 );
 
-        //pSecondFrame = getKeyFrameAt( position2 );
-        //removeKeyFrame( position2 );
-
         keyPosition2 = true;
     }
 
     if ( keyPosition2 )
     {
-        //addKeyFrame( position1, pSecondFrame );
         pSecondFrame->setPos( position1 );
         mKeyFrames.insert( std::make_pair( position1, pSecondFrame ) );
     } 
@@ -281,7 +275,6 @@ bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, n
 
     if ( keyPosition1 )
     {
-        //addKeyFrame( position2, pFirstFrame );
         pFirstFrame->setPos( position2 );
         mKeyFrames.insert( std::make_pair( position2, pFirstFrame ) );
     } 

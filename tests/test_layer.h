@@ -1,7 +1,7 @@
 
 #ifndef TEST_LAYER_H
 #define TEST_LAYER_H
-
+/*
 
 #include <QString>
 #include <QtTest>
@@ -41,5 +41,5 @@ private:
 };
 
 DECLARE_TEST( TestLayer )
-
+*/
 #endif // TEST_LAYER_H
