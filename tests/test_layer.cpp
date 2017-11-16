@@ -193,7 +193,7 @@ TEST_CASE("Layer::getMaxKeyFramePosition()")
 {
     Object* obj = new Object;
 
-    SECTION("Test")
+    SECTION("Bitmap")
     {
         Layer* layer = obj->addNewBitmapLayer();;
 
@@ -216,74 +216,85 @@ TEST_CASE("Layer::getMaxKeyFramePosition()")
     delete obj;
 }
 
-/*
 
-void TestLayer::testRemoveKeyFrame()
+TEST_CASE("Layer::removeKeyFrame()")
 {
-    Layer* layer = m_pObject->addNewBitmapLayer();;
-    OnScopeExit( m_pObject->deleteLayer( layer ) );
-
-    layer->removeKeyFrame( 1 );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 0 ); 
-
-    for ( int i = 2; i <= 20; ++i )
+    Object* obj = new Object;
+    SECTION("Bitmap")
     {
-        QVERIFY( layer->addNewEmptyKeyAt( i ) );
+        Layer* layer = obj->addNewBitmapLayer();;
+
+        // there is always a key at position 1 at beginning
+        CHECK(layer->removeKeyFrame(1));
+        REQUIRE(layer->getMaxKeyFramePosition() == 0);
+
+        for (int i = 2; i <= 20; ++i)
+        {
+            CHECK(layer->addNewEmptyKeyAt(i));
+        }
+
+        REQUIRE(layer->keyExists(20) == true);
+        layer->removeKeyFrame(20); // after deleting it, the key will no longer exist.
+        REQUIRE(layer->keyExists(20) == false);
+
+        REQUIRE(layer->keyExists(8) == true);
+        layer->removeKeyFrame(8);
+        REQUIRE(layer->keyExists(8) == false);
+
+        REQUIRE(layer->keyExists(19) == true);
+        layer->removeKeyFrame(19);
+        REQUIRE(layer->keyExists(19) == false);
+        REQUIRE(layer->getMaxKeyFramePosition() == 18); // also decrease the max position if we delete the last key.
+
+        layer->removeKeyFrame(18);
+        REQUIRE(layer->getMaxKeyFramePosition() == 17);
     }
-
-    QCOMPARE( layer->keyExists( 20 ), true );
-    layer->removeKeyFrame( 20 );
-    QCOMPARE( layer->keyExists( 20 ), false );
-
-    QCOMPARE( layer->keyExists( 8 ), true );
-    layer->removeKeyFrame( 8 );
-    QCOMPARE( layer->keyExists( 8 ), false );
-
-    QCOMPARE( layer->keyExists( 19 ), true );
-
-    layer->removeKeyFrame( 19 );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 18 );
-
-    layer->removeKeyFrame( 18 );
-    QCOMPARE( layer->getMaxKeyFramePosition(), 17 );
+    delete obj;
 }
 
-void TestLayer::testPreviousKeyFramePosition()
+TEST_CASE("Layer::getPreviousKeyFramePosition()")
 {
-    Layer* pLayer = m_pObject->addNewBitmapLayer();;
-    OnScopeExit( m_pObject->deleteLayer( pLayer ) );
+    Object* obj = new Object;
+    SECTION("Bitmap")
+    {
+        Layer* layer = obj->addNewBitmapLayer();;
 
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 1 ), 1 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 10 ), 1 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 100 ), 1 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 1000 ), 1 );
+        REQUIRE(layer->getPreviousKeyFramePosition(1) == 1);
+        REQUIRE(layer->getPreviousKeyFramePosition(10) == 1);
+        REQUIRE(layer->getPreviousKeyFramePosition(100) == 1);
+        REQUIRE(layer->getPreviousKeyFramePosition(1000) == 1);
 
-    pLayer->addNewEmptyKeyAt( 2 );
-    pLayer->addNewEmptyKeyAt( 8 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 2 ), 1 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 8 ), 2 );
+        layer->addNewEmptyKeyAt(2);
+        layer->addNewEmptyKeyAt(8);
+        REQUIRE(layer->getPreviousKeyFramePosition(2) == 1);
+        REQUIRE(layer->getPreviousKeyFramePosition(8) == 2);
 
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( -5 ), 1 );
+        REQUIRE(layer->getPreviousKeyFramePosition(-5) == 1);
 
-    pLayer->addNewEmptyKeyAt( 15 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 16 ), 15 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 17 ), 15 );
+        layer->addNewEmptyKeyAt(15);
+        REQUIRE(layer->getPreviousKeyFramePosition(16) == 15);
+        REQUIRE(layer->getPreviousKeyFramePosition(17) == 15);
 
-    pLayer->removeKeyFrame( 15 );
-    QCOMPARE( pLayer->getPreviousKeyFramePosition( 16 ), 8 );
+        layer->removeKeyFrame(15);
+        REQUIRE(layer->getPreviousKeyFramePosition(16) == 8);
+    }
+    delete obj;
 }
 
-void TestLayer::testNextKeyFramePosition()
+TEST_CASE("Layer::getNextKeyFramePosition()")
 {
-    Layer* pLayer = m_pObject->addNewBitmapLayer();;
-    OnScopeExit( m_pObject->deleteLayer( pLayer ) );
+    Object* obj = new Object;
+    SECTION("Bitmap")
+    {
+        Layer* layer = obj->addNewBitmapLayer();;
 
-    QCOMPARE( pLayer->getNextKeyFramePosition( 1 ), 1 );
-    QCOMPARE( pLayer->getNextKeyFramePosition( 10 ), 1 );
-    QCOMPARE( pLayer->getNextKeyFramePosition( 100 ), 1 );
+        REQUIRE(layer->getNextKeyFramePosition(1) == 1);
+        REQUIRE(layer->getNextKeyFramePosition(10) == 1);
+        REQUIRE(layer->getNextKeyFramePosition(100) == 1);
 
-    pLayer->addNewEmptyKeyAt( 5 );
-    QCOMPARE( pLayer->getNextKeyFramePosition( 1 ), 5 );
-    QCOMPARE( pLayer->getNextKeyFramePosition( 2 ), 5 );
+        CHECK(layer->addNewEmptyKeyAt(5));
+        REQUIRE(layer->getNextKeyFramePosition(1) == 5);
+        REQUIRE(layer->getNextKeyFramePosition(2) == 5);
+    }
+    delete obj;
 }
-*/
