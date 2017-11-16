@@ -1,4 +1,3 @@
-//#include "test_bitmapimage.h"
 #include "bitmapimage.h"
 #include "catch.hpp"
 

@@ -1,6 +1,4 @@
-#include "test_layer.h"
 
-#include <memory>
 #include "catch.hpp"
 
 #include "layer.h"
