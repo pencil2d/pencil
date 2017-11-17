@@ -970,7 +970,7 @@ void Editor::removeKey()
         return;
     }
 
-    backup(tr("backup frame"));
+    backup(tr("Remove frame"));
     if (layer != NULL)
     {
         layer->removeKeyFrame(currentFrame());
