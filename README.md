@@ -23,7 +23,7 @@
 
 Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features.
 
-| Windows 32 bit   | Windows 64 bit    | Mac             | Linux             |
+| Windows 64 bit   | Windows 32 bit    | Mac             | Linux             |
 | :--------------: | :---------------: | :-------------: | :---------------: |
 | [Download][0]    | [Download][1]     | [Download][2]   | [Download][3]     |
 
