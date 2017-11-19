@@ -47,7 +47,7 @@ before_build:
   - qmake --version
   - md build
   - cd build
-  - call "%VS120COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
+  - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
   - qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" CONFIG+=GIT
   - echo %PLATFORM_%
 
