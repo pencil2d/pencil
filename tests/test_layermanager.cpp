@@ -1,29 +1,76 @@
-#include "test_layermanager.h"
+
+#include "catch.hpp"
 #include "object.h"
 #include "editor.h"
 #include "layermanager.h"
+#include "pencilerror.h"
 
 
-void TestLayerManager::initTestCase()
+TEST_CASE("LayerManager::init()")
 {
-    Object* object = new Object();
-    object->init();
+    Object* object = new Object;
+    Editor* editor = new Editor;
+    editor->setObject(object);
 
-    mEditor = new Editor();
-    mEditor->setObject( object );
-    
-    mLayerManager = new LayerManager( mEditor );
-    mLayerManager->setEditor( mEditor );
-    mLayerManager->init();
+    SECTION("Test initial state")
+    {
+        LayerManager* layerMgr = new LayerManager(editor);
+        layerMgr->setEditor(editor);
+        layerMgr->init();
+
+        object->init(); // create default 3 layers
+
+        REQUIRE(layerMgr->count() == 3);
+        REQUIRE(layerMgr->currentLayerIndex() == 0);
+        REQUIRE(layerMgr->getLayer(0)->type() == Layer::CAMERA);
+        REQUIRE(layerMgr->getLayer(1)->type() == Layer::VECTOR);
+        REQUIRE(layerMgr->getLayer(2)->type() == Layer::BITMAP);
+    }
+    delete editor;
 }
 
-void TestLayerManager::cleanupTestCase()
+TEST_CASE("LayerManager::deleteLayer()")
 {
-    delete mEditor;
-}
+    Object* object = new Object;
+    Editor* editor = new Editor;
+    editor->setObject(object);
 
-void TestLayerManager::testNewLayerManager()
-{
-    QCOMPARE( mLayerManager->count(), 3 );
-    QCOMPARE( mLayerManager->currentLayerIndex(), 0 );
+    SECTION("delete layers")
+    {
+        LayerManager* layerMgr = new LayerManager(editor);
+        layerMgr->setEditor(editor);
+        layerMgr->init();
+
+        object->init(); // create 3 default layers
+
+        REQUIRE(layerMgr->count() == 3);
+        layerMgr->deleteLayer(2);
+        REQUIRE(layerMgr->count() == 2);
+        layerMgr->deleteLayer(1);
+        REQUIRE(layerMgr->count() == 1);
+    }
+
+    SECTION("delete camera layers")
+    {
+        LayerManager* layerMgr = new LayerManager(editor);
+        layerMgr->setEditor(editor);
+        layerMgr->init();
+
+        // create 2 camera layers
+        REQUIRE(layerMgr->count() == 0);
+        layerMgr->createCameraLayer("Camera1");
+        REQUIRE(layerMgr->count() == 1);
+        layerMgr->createCameraLayer("Camera2");
+        REQUIRE(layerMgr->count() == 2);
+
+        // delete one of them, ok.
+        layerMgr->deleteLayer(1);
+        REQUIRE(layerMgr->count() == 1);
+
+        // delete the second, no, cant do it.
+        Status st = layerMgr->deleteLayer(0);
+        REQUIRE(layerMgr->count() == 1);
+        REQUIRE((st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER));
+    }
+    delete editor;
 }

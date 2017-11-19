@@ -97,8 +97,9 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-    Object* o = editor()->object();
-    
+    Q_ASSERT(layerIndex > 0);
+
+    Object* o = object();
     if ( layerIndex >= o->getLayerCount() )
     {
         Q_ASSERT( false );
@@ -231,9 +232,9 @@ int LayerManager::lastKeyFrameIndex()
 {
     int maxPosition = 0;
 
-    for ( int i = 0; i < editor()->object()->getLayerCount(); ++i )
+    for ( int i = 0; i < object()->getLayerCount(); ++i )
     {
-        Layer* pLayer = editor()->object()->getLayer( i );
+        Layer* pLayer = object()->getLayer( i );
 
         int position = pLayer->getMaxKeyFramePosition();
         if ( position > maxPosition )
@@ -246,7 +247,7 @@ int LayerManager::lastKeyFrameIndex()
 
 int LayerManager::count()
 {
-    return editor()->object()->getLayerCount();
+    return object()->getLayerCount();
 }
 
 Status LayerManager::deleteLayer(int index)
@@ -261,7 +262,9 @@ Status LayerManager::deleteLayer(int index)
 
     editor()->object()->deleteLayer( layer );
 
-    if (index == editor()->object()->getLayerCount())
+    // current layer is the last layer && we are deleting it
+    if (index == object()->getLayerCount() &&
+        index == currentLayerIndex())
     {
         setCurrentLayer( currentLayerIndex() - 1 );
     }
