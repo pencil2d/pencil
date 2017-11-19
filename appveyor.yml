@@ -9,9 +9,9 @@ environment:
     - arch:       win32
       bitsize:    x86
       platform:   x86
-      qt:         5.6\msvc2013
-      suffix:     msvc2013
-      generator:  "Visual Studio 2013"
+      qt:         5.9.2\msvc2015
+      suffix:     msvc2015
+      generator:  "Visual Studio 2015"
       PYTHON: "C:\\Python35"
       PLATFORM_: "x86"
 
@@ -19,9 +19,9 @@ environment:
     - arch:       win32
       bitsize:    x64
       platform:   amd64
-      qt:         5.6\msvc2013_64
-      suffix:     msvc2013
-      generator:  "Visual Studio 2013 Win64"
+      qt:         5.9.2\msvc2015_64
+      suffix:     msvc2015
+      generator:  "Visual Studio 2015 Win64"
       PYTHON: "C:\\Python35"
       PLATFORM_: "amd64"
 
