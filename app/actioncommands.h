@@ -68,6 +68,7 @@ public:
     Status addNewVectorLayer();
     Status addNewCameraLayer();
     Status addNewSoundLayer();
+    Status deleteCurrentLayer();
 
 private:
     Editor* mEditor = nullptr;

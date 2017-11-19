@@ -296,16 +296,22 @@ void TimeLine::wheelEvent(QWheelEvent* event)
 
 void TimeLine::deleteCurrentLayer()
 {
-    QString strLayerName = editor()->layers()->currentLayer()->name();
+    LayerManager* layerMgr = editor()->layers();
+    QString strLayerName = layerMgr->currentLayer()->name();
 
     int ret = QMessageBox::warning( this,
-                                    tr( "Warning" ),
+                                    tr( "Delete Layer", "Windows title of Delete current layer pop-up." ),
                                     tr( "Are you sure you want to delete layer: " ) + strLayerName + " ?",
                                     QMessageBox::Ok | QMessageBox::Cancel,
                                     QMessageBox::Ok );
     if ( ret == QMessageBox::Ok )
     {
-        editor()->layers()->deleteCurrentLayer();
+        Status st = layerMgr->deleteLayer(editor()->currentLayerIndex());
+        if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
+        {
+            QMessageBox::information(this, "",
+                                     tr("Please keep at least one camera layer in project"));
+        }
     }
 }
 

@@ -249,24 +249,26 @@ int LayerManager::count()
     return editor()->object()->getLayerCount();
 }
 
-bool LayerManager::deleteCurrentLayer()
+Status LayerManager::deleteLayer(int index)
 {
-    // FIXME: 
-    if ( currentLayer()->type() == Layer::CAMERA )
+    Layer* layer = object()->getLayer(index);
+    if (layer->type() == Layer::CAMERA)
     {
-        return false;
+        std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
+        if ( camLayers.size() == 1 )
+            return Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER;
     }
 
-    editor()->object()->deleteLayer( currentLayerIndex() );
+    editor()->object()->deleteLayer( layer );
 
-    if ( currentLayerIndex() == editor()->object()->getLayerCount() )
+    if (index == editor()->object()->getLayerCount())
     {
         setCurrentLayer( currentLayerIndex() - 1 );
     }
 
     Q_EMIT layerCountChanged( count() );
 
-    return true;
+    return Status::OK;
 }
 
 /**
