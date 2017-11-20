@@ -97,7 +97,7 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-    Q_ASSERT(layerIndex > 0);
+    Q_ASSERT(layerIndex >= 0);
 
     Object* o = object();
     if ( layerIndex >= o->getLayerCount() )
