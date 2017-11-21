@@ -51,8 +51,8 @@ public:
     void setFps( int fps );
     void setLooping( bool isLoop );
     void enableRangedPlayback( bool b );
-    void setRangedStartFrame( int frame ) { mMarkInFrame = frame; }
-    void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
+    void setRangedStartFrame( int frame );
+    void setRangedEndFrame( int frame );
     void enableSound( bool b );
 
     void stopSounds();
@@ -70,6 +70,9 @@ private:
 
     int mStartFrame = 1;
     int mEndFrame = 60;
+
+    void updateStartFrame();
+    void updateEndFrame();
 
     bool mIsLooping = false;
     bool mIsPlaySound = true;

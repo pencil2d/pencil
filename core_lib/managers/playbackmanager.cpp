@@ -69,11 +69,6 @@ bool PlaybackManager::isPlaying()
 
 void PlaybackManager::play()
 {
-    int projectLength = editor()->layers()->projectLength();
-
-    mStartFrame = ( mIsRangedPlayback ) ? mMarkInFrame : 1;
-    mEndFrame = ( mIsRangedPlayback ) ? mMarkOutFrame : projectLength;
-
     int frame = editor()->currentFrame();
     if ( ( frame >= mEndFrame ) ||
          ( frame >= mEndFrame && mIsRangedPlayback ) )
@@ -299,8 +294,35 @@ void PlaybackManager::enableRangedPlayback( bool b )
     if ( mIsRangedPlayback != b )
     {
         mIsRangedPlayback = b;
+
+        updateStartFrame();
+        updateEndFrame();
+
         emit rangedPlaybackStateChanged( mIsRangedPlayback );
     }
+}
+
+void PlaybackManager::setRangedStartFrame( int frame )
+{
+    mMarkInFrame = frame;
+    updateStartFrame();
+}
+
+void PlaybackManager::setRangedEndFrame( int frame )
+{
+    mMarkOutFrame = frame;
+    updateEndFrame();
+}
+
+void PlaybackManager::updateStartFrame()
+{
+    mStartFrame = ( mIsRangedPlayback ) ? mMarkInFrame : 1;
+}
+
+void PlaybackManager::updateEndFrame()
+{
+    int projectLength = editor()->layers()->projectLength();
+    mEndFrame = ( mIsRangedPlayback ) ? mMarkOutFrame : projectLength;
 }
 
 void PlaybackManager::enableSound(bool b)
