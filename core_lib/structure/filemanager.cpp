@@ -159,8 +159,6 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         {
             Q_ASSERT(false);
         }
-        //progress = std::min( progress + 10, 100 );
-        //emit progressValueChanged( progress );
     }
 
     return isOK;
@@ -250,9 +248,17 @@ Status FileManager::save(Object* object, QString strFileName)
         {
             debugDetails << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
             if (isOldFile)
-                return Status(Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr("Cannot Create Data Directory"), tr("Cannot create the data directory at \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format.").arg(strDataFolder));
+            {
+                return Status(Status::ERROR_FILE_CANNOT_OPEN, debugDetails,
+                              tr("Cannot Create Data Directory"),
+                              tr("Cannot create the data directory at \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format.").arg(strDataFolder));
+            }
             else
-                return Status(Status::FAIL, debugDetails, tr("Internal Error"), tr("Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format.").arg(strDataFolder));
+            {
+                return Status(Status::FAIL, debugDetails,
+                              tr("Internal Error"),
+                              tr("Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format.").arg(strDataFolder));
+            }
         }
     }
     if (!dataInfo.isDir())
@@ -260,11 +266,16 @@ Status FileManager::save(Object* object, QString strFileName)
         debugDetails << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
         if (isOldFile)
         {
-            return Status(Status::ERROR_FILE_CANNOT_OPEN, debugDetails, tr("Cannot Create Data Directory"), tr("Cannot use the path \"%1\" as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format.").arg(dataInfo.absoluteFilePath()));
+            return Status(Status::ERROR_FILE_CANNOT_OPEN, 
+                          debugDetails, 
+                          tr("Cannot Create Data Directory"),
+                          tr("Cannot use the path \"%1\" as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format.").arg(dataInfo.absoluteFilePath()));
         }
         else
         {
-            return Status(Status::FAIL, debugDetails, tr("Internal Error"), tr("Cannot use the data directory at temporary location \"%1\" since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format.").arg(dataInfo.absoluteFilePath()));
+            return Status(Status::FAIL, debugDetails,
+                          tr("Internal Error"),
+                          tr("Cannot use the data directory at temporary location \"%1\" since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format.").arg(dataInfo.absoluteFilePath()));
         }
     }
 
