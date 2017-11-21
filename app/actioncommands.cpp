@@ -467,6 +467,7 @@ Status ActionCommands::addNewKey()
         camLayer->LinearInterpolateTransform(cam);
         mEditor->view()->updateViewTransforms();
     }
+    return Status::OK;
 }
 
 void ActionCommands::removeKey()
