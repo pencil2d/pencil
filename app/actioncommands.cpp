@@ -74,9 +74,9 @@ Status ActionCommands::importSound()
 
         // Create new sound layer.
         bool ok = false;
-        QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties"),
-            tr("Layer name:"), QLineEdit::Normal,
-            tr("Sound Layer"), &ok);
+        QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
+                                                     tr("Layer name:"), QLineEdit::Normal,
+                                                     tr("Sound Layer", "Default name on creating a sound layer"), &ok);
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -90,19 +90,42 @@ Status ActionCommands::importSound()
     }
 
     layer = mEditor->layers()->currentLayer();
+    Q_ASSERT(layer->type() == Layer::SOUND);
 
-    if (layer->keyExists(mEditor->currentFrame()))
+
+    int currentFrame = mEditor->currentFrame();
+    SoundClip* key = nullptr;
+
+    if (layer->keyExists(currentFrame))
     {
-        QMessageBox::warning(nullptr,
-            "",
-            tr("A sound clip already exists on this frame! Please select another frame or layer."));
-        return Status::SAFE;
+        key = static_cast<SoundClip*>(layer->getKeyFrameAt(currentFrame));
+        if (!key->fileName().isEmpty())
+        {
+            QMessageBox::warning(nullptr, "",
+                                 tr("A sound clip already exists on this frame! Please select another frame or layer."));
+            return Status::SAFE;
+        }
+    }
+    else
+    {
+        key = new SoundClip;
+        layer->addKeyFrame(currentFrame, key);
     }
 
     FileDialog fileDialog(mParent);
     QString strSoundFile = fileDialog.openFile(FileType::SOUND);
 
-    Status st = mEditor->sound()->loadSound(layer, mEditor->currentFrame(), strSoundFile);
+    if (strSoundFile.isEmpty())
+    {
+        return Status::SAFE;
+    }
+
+    Status st = mEditor->sound()->loadSound(key, strSoundFile);
+
+    if (!st.ok())
+    {
+        layer->removeKeyFrame(currentFrame);
+    }
 
     return st;
 }
@@ -412,7 +435,7 @@ void ActionCommands::GotoPrevKeyFrame()
     mEditor->scrubPreviousKeyFrame();
 }
 
-void ActionCommands::addNewKey()
+Status ActionCommands::addNewKey()
 {
     KeyFrame* key = mEditor->addNewKey();
 
@@ -424,11 +447,15 @@ void ActionCommands::addNewKey()
 
         if (strSoundFile.isEmpty())
         {
-            mEditor->removeKey();
-            return;
+            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
+            return Status::SAFE;
         }
         Status st = mEditor->sound()->loadSound(clip, strSoundFile);
-        Q_ASSERT(st.ok());
+        if (!st.ok())
+        {
+            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
+            return Status::ERROR_LOAD_SOUND_FILE;
+        }
     }
 
     Camera* cam = dynamic_cast<Camera*>(key);

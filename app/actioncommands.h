@@ -60,7 +60,7 @@ public:
     void GotoPrevFrame();
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
-    void addNewKey();
+    Status addNewKey();
     void removeKey();
 
     // Layer
