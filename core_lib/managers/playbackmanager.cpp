@@ -53,6 +53,9 @@ Status PlaybackManager::load(Object* o)
     mMarkOutFrame = e->getMarkOutFrameNumber();
     mFps = e->getFrameRate();
 
+    updateStartFrame();
+    updateEndFrame();
+
     return Status::OK;
 }
 
@@ -74,9 +77,11 @@ bool PlaybackManager::isPlaying()
 
 void PlaybackManager::play()
 {
+    updateStartFrame();
+    updateEndFrame();
+
     int frame = editor()->currentFrame();
-    if ((frame >= mEndFrame) ||
-        (frame >= mEndFrame && mIsRangedPlayback))
+    if (frame >= mEndFrame)
     {
         editor()->scrubTo(mStartFrame);
     }
@@ -219,9 +224,8 @@ void PlaybackManager::playSounds(int frame)
                 clip->stop();
 
                 // make sure list is cleared on end
-                if (!mListOfActiveSoundFrames.isEmpty()) {
+                if (!mListOfActiveSoundFrames.isEmpty()) 
                     mListOfActiveSoundFrames.clear();
-                }
             }
         }
     }
@@ -259,8 +263,7 @@ void PlaybackManager::timerTick()
     int currentFrame = editor()->currentFrame();
     playSounds(currentFrame);
 
-    if ((currentFrame >= mEndFrame) ||
-        (currentFrame >= mEndFrame && mIsRangedPlayback))
+    if (currentFrame >= mEndFrame)
     {
         if (mIsLooping)
         {
