@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 
+static auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
 
 TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 {
@@ -106,7 +107,6 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     makeConnections();
 
-    auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
     connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::preLoopStartClick );
     connect( mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
 
@@ -162,6 +162,9 @@ void TimeControls::setCore( Editor* editor )
 {
     Q_ASSERT( editor != nullptr );
     mEditor = editor;
+
+    connect( mLoopStartSpinBox, spinBoxValueChanged, mEditor->playback(), &PlaybackManager::setRangedStartFrame );
+    connect( mLoopEndSpinBox, spinBoxValueChanged, mEditor->playback(), &PlaybackManager::setRangedEndFrame );
 }
 
 void TimeControls::makeConnections()
