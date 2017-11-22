@@ -30,48 +30,51 @@ GNU General Public License for more details.
 
 static auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
 
-TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
+TimeControls::TimeControls(TimeLine* parent ) : QToolBar( parent )
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
+    mTimeline = parent;
+}
 
-    mFpsBox = new QSpinBox();
-    mFpsBox->setFont( QFont("Helvetica", 10) );
+void TimeControls::initUI()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    mFpsBox = new QSpinBox(this);
+    mFpsBox->setFont(QFont("Helvetica", 10));
     mFpsBox->setFixedHeight(24);
     mFpsBox->setValue(settings.value("fps").toInt());
     mFpsBox->setMinimum(1);
     mFpsBox->setMaximum(90);
     mFpsBox->setSuffix(" fps");
-    mFpsBox->setToolTip( tr("Frames per second") );
+    mFpsBox->setToolTip(tr("Frames per second"));
     mFpsBox->setFocusPolicy(Qt::WheelFocus);
 
-    mLoopStartSpinBox = new QSpinBox();
-    mLoopStartSpinBox->setFont( QFont("Helvetica", 10) );
+    mLoopStartSpinBox = new QSpinBox(this);
+    mLoopStartSpinBox->setFont(QFont("Helvetica", 10));
     mLoopStartSpinBox->setFixedHeight(24);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
     mLoopStartSpinBox->setMinimum(1);
-    mLoopStartSpinBox->setMaximum(parent->getFrameLength() - 1);
     mLoopStartSpinBox->setToolTip(tr("Start of playback loop"));
     mLoopStartSpinBox->setFocusPolicy(Qt::WheelFocus);
 
-    mLoopEndSpinBox= new QSpinBox();
-    mLoopEndSpinBox->setFont( QFont("Helvetica", 10) );
+    mLoopEndSpinBox = new QSpinBox(this);
+    mLoopEndSpinBox->setFont(QFont("Helvetica", 10));
     mLoopEndSpinBox->setFixedHeight(24);
-    mLoopEndSpinBox->setValue( settings.value( "loopEnd" ).toInt() );
-    mLoopEndSpinBox->setMinimum(mLoopStartSpinBox->value() + 1);
-    mLoopEndSpinBox->setMaximum(parent->getFrameLength());
+    mLoopEndSpinBox->setValue(settings.value("loopEnd").toInt());
+    mLoopEndSpinBox->setMinimum(2);
     mLoopEndSpinBox->setToolTip(tr("End of playback loop"));
     mLoopEndSpinBox->setFocusPolicy(Qt::WheelFocus);
 
-    mPlaybackRangeCheckBox = new QCheckBox( tr("Range") );
-    mPlaybackRangeCheckBox->setFont( QFont("Helvetica", 10) );
+    mPlaybackRangeCheckBox = new QCheckBox(tr("Range"));
+    mPlaybackRangeCheckBox->setFont(QFont("Helvetica", 10));
     mPlaybackRangeCheckBox->setFixedHeight(24);
     mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
-    mPlayButton = new QPushButton( this );
+    mPlayButton = new QPushButton(this);
     mLoopButton = new QPushButton();
     mSoundButton = new QPushButton();
-    mJumpToEndButton= new QPushButton();
-    mJumpToStartButton= new QPushButton();
+    mJumpToEndButton = new QPushButton();
+    mJumpToStartButton = new QPushButton();
 
     mLoopIcon = QIcon(":icons/controls/loop.png");
     mSoundIcon = QIcon(":icons/controls/sound.png");
@@ -107,19 +110,6 @@ TimeControls::TimeControls(TimeLine *parent ) : QToolBar( parent )
 
     makeConnections();
 
-    connect( mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::preLoopStartClick );
-    connect( mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndClick );
-
-    connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled );
-    connect( mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled );
-
-    connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick );
-    connect( mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon );
-    connect( mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick );
-}
-
-void TimeControls::initUI()
-{
     updateUI();
 }
 
@@ -162,9 +152,6 @@ void TimeControls::setCore( Editor* editor )
 {
     Q_ASSERT( editor != nullptr );
     mEditor = editor;
-
-    connect( mLoopStartSpinBox, spinBoxValueChanged, mEditor->playback(), &PlaybackManager::setRangedStartFrame );
-    connect( mLoopEndSpinBox, spinBoxValueChanged, mEditor->playback(), &PlaybackManager::setRangedEndFrame );
 }
 
 void TimeControls::makeConnections()
@@ -174,6 +161,18 @@ void TimeControls::makeConnections()
     connect( mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked );
     connect( mLoopButton,        &QPushButton::clicked, this, &TimeControls::loopButtonClicked );
     connect( mPlaybackRangeCheckBox, &QCheckBox::clicked, this, &TimeControls::playbackRangeClicked );
+
+    connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartValueChanged);
+    connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndValueChanged);
+
+    connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopStartSpinBox, &QSpinBox::setEnabled);
+    connect(mPlaybackRangeCheckBox, &QCheckBox::toggled, mLoopEndSpinBox, &QSpinBox::setEnabled);
+
+    connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::soundClick);
+    connect(mSoundButton, &QPushButton::clicked, this, &TimeControls::updateSoundIcon);
+    connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsClick);
+
+
 }
 
 void TimeControls::playButtonClicked()
@@ -237,17 +236,25 @@ void TimeControls::loopButtonClicked( bool bChecked )
 void TimeControls::playbackRangeClicked( bool bChecked )
 {
     mEditor->playback()->enableRangedPlayback( bChecked );
-    emit rangeStateChange();
+    mTimeline->updateLength();
 }
 
-void TimeControls::preLoopStartClick(int i) {
-    if( i >= mLoopEndSpinBox->value() )
+void TimeControls::loopStartValueChanged(int i)
+{
+    if (i >= mLoopEndSpinBox->value())
     {
-        mLoopEndSpinBox->setValue( i + 1 );
+        mLoopEndSpinBox->setValue(i + 1);
     }
-    mLoopEndSpinBox->setMinimum( i + 1 );
+    mLoopEndSpinBox->setMinimum(i + 1);
 
-    emit loopStartClick(i);
+    mEditor->playback()->setRangedStartFrame(i);
+    mTimeline->updateLength();
+}
+
+void TimeControls::loopEndValueChanged(int i)
+{
+    mEditor->playback()->setRangedEndFrame(i);
+    mTimeline->updateLength();
 }
 
 void TimeControls::updateSoundIcon(bool soundEnabled)
@@ -262,7 +269,8 @@ void TimeControls::updateSoundIcon(bool soundEnabled)
     }
 }
 
-void TimeControls::updateLength(int frameLength) {
+void TimeControls::updateLength(int frameLength)
+{
     mLoopStartSpinBox->setMaximum(frameLength - 1);
     mLoopEndSpinBox->setMaximum(frameLength);
 }

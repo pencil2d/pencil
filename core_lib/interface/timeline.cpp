@@ -205,12 +205,6 @@ void TimeLine::initUI()
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
     connect( onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick );
 
-    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::loopStartClick );
-    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::loopEndClick );
-    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::updateLength );
-    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::updateLength );
-    connect( mTimeControls, &TimeControls::rangeStateChange, this, &TimeLine::updateLength );
-
     connect( mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick );
     connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick );
     connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::updateLength );

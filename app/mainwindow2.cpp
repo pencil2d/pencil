@@ -1000,9 +1000,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     PlaybackManager* pPlaybackManager = pEditor->playback();
     connect(pTimeline, &TimeLine::duplicateKeyClick, pEditor, &Editor::duplicateKey);
 
-    connect(pTimeline, &TimeLine::loopStartClick, pPlaybackManager, &PlaybackManager::setRangedStartFrame);
-    connect(pTimeline, &TimeLine::loopEndClick, pPlaybackManager, &PlaybackManager::setRangedEndFrame);
-
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
     connect(pTimeline, &TimeLine::fpsClick, pPlaybackManager, &PlaybackManager::setFps);
 

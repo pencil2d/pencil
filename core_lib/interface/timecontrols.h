@@ -33,7 +33,7 @@ class TimeControls : public QToolBar
     Q_OBJECT
 
 public:
-    TimeControls(TimeLine* parent = 0 );
+    TimeControls(TimeLine* parent = 0);
     void initUI();
     void updateUI();
 
@@ -47,10 +47,7 @@ public:
 Q_SIGNALS:
     void soundClick( bool );
     void fpsClick(int);
-
-    void loopStartClick(int);
-    void loopEndClick(int);
-    void rangeStateChange();
+    
 
 public slots:
     void toggleLoop(bool);
@@ -58,16 +55,16 @@ public slots:
 
 private:
     void makeConnections();
+
     void playButtonClicked();
     void jumpToStartButtonClicked();
     void jumpToEndButtonClicked();
     void loopButtonClicked( bool bChecked );
     void playbackRangeClicked( bool bChecked );
-    void preLoopStartClick(int);
-
-private slots:
+    void loopStartValueChanged(int);
+    void loopEndValueChanged(int);
     void updateSoundIcon( bool soundEnabled );
-
+    
 private:
     QPushButton* mPlayButton = nullptr;
     QPushButton* mJumpToEndButton = nullptr;
@@ -86,7 +83,7 @@ private:
     QIcon mJumpToEndIcon;
     QIcon mJumpToStartIcon;
 
-
+    TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
 };
 
