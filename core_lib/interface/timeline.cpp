@@ -155,7 +155,7 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
-    mTimeControls->setCore( editor() );
+    mTimeControls->setEditor( editor() );
     mTimeControls->initUI();
     mTimeControls->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
     updateLength();
