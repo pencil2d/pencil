@@ -44,6 +44,7 @@ GNU General Public License for more details.
 #include "filedialogex.h"
 #include "exportmoviedialog.h"
 #include "exportimagedialog.h"
+#include "aboutdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -568,4 +569,31 @@ Status ActionCommands::deleteCurrentLayer()
         }
     }
     return Status::OK;
+}
+
+
+void ActionCommands::help()
+{
+    QString url = "http://www.pencil2d.org/documentation/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::website()
+{
+    QString url = "http://pencil2d.github.io/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::reportbug()
+{
+    QString url = "https://github.com/pencil2d/pencil/issues";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::about()
+{
+    AboutDialog* aboutBox = new AboutDialog(mParent);
+    aboutBox->setAttribute(Qt::WA_DeleteOnClose);
+    aboutBox->init();
+    aboutBox->exec();
 }

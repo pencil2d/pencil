@@ -70,6 +70,12 @@ public:
     Status addNewSoundLayer();
     Status deleteCurrentLayer();
 
+    // Help
+    void about();
+    void help();
+    void website();
+    void reportbug();
+
 private:
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;

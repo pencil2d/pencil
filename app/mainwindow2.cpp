@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include <QFile>
 #include <QMessageBox>
 #include <QProgressDialog>
-#include <QDesktopServices>
 #include <QFileIconProvider>
 
 #include "pencildef.h"
@@ -56,7 +55,6 @@ GNU General Public License for more details.
 #include "timeline2.h"
 #include "errordialog.h"
 #include "importimageseqdialog.h"
-#include "aboutdialog.h"
 
 #include "colorbox.h"
 #include "util.h"
@@ -346,8 +344,10 @@ void MainWindow2::createMenus()
     bindActionWithSetting(lockWidgets, SETTING::LAYOUT_LOCK);
 
     // -------------- Help Menu ---------------
-    connect(ui->actionHelp, &QAction::triggered, this, &MainWindow2::helpBox);
-    connect(ui->actionAbout, &QAction::triggered, this, &MainWindow2::aboutPencil);
+    connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
+    connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
+    connect(ui->actionWebstie, &QAction::triggered, mCommands, &ActionCommands::website);
+    connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
 
     // --------------- Menus ------------------
     mRecentFileMenu = new RecentFileMenu(tr("Open Recent"), this);
@@ -356,8 +356,8 @@ void MainWindow2::createMenus()
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
 
-    connect(ui->menuEdit, SIGNAL(aboutToShow()), this, SLOT(undoActSetText()));
-    connect(ui->menuEdit, SIGNAL(aboutToHide()), this, SLOT(undoActSetEnabled()));
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
+    connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
@@ -955,20 +955,6 @@ void MainWindow2::importPalette()
         mColorPalette->refreshColorList();
         mEditor->color()->setColorNumber(0);
     }
-}
-
-void MainWindow2::aboutPencil()
-{
-    AboutDialog* about = new AboutDialog(this);
-
-    about->init();
-    about->exec();
-}
-
-void MainWindow2::helpBox()
-{
-    QString url = "http://www.pencil2d.org/documentation/";
-    QDesktopServices::openUrl(QUrl(url));
 }
 
 void MainWindow2::makeConnections(Editor* editor)

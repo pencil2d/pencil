@@ -91,9 +91,7 @@ public:
     void lockWidgets(bool shouldLock);
 
     void preferences();
-    void helpBox();
-    void aboutPencil();
-
+    
     void openFile(QString filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }

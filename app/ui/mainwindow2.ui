@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -184,6 +184,10 @@
      <string>Help</string>
     </property>
     <addaction name="actionHelp"/>
+    <addaction name="separator"/>
+    <addaction name="actionWebstie"/>
+    <addaction name="actionReport_Bug"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuWindows">
@@ -857,6 +861,16 @@
   <action name="actionMove_Frame_Backward">
    <property name="text">
     <string>Move Frame Backward</string>
+   </property>
+  </action>
+  <action name="actionWebstie">
+   <property name="text">
+    <string>Pencil2D Webstie</string>
+   </property>
+  </action>
+  <action name="actionReport_Bug">
+   <property name="text">
+    <string>Report a Bug</string>
    </property>
   </action>
  </widget>
