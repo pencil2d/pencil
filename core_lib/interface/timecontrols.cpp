@@ -28,9 +28,9 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 
-static auto spinBoxValueChanged = static_cast< void ( QSpinBox::* )( int ) >( &QSpinBox::valueChanged );
+static auto spinBoxValueChanged = static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged);
 
-TimeControls::TimeControls(TimeLine* parent ) : QToolBar( parent )
+TimeControls::TimeControls(TimeLine* parent) : QToolBar(parent)
 {
     mTimeline = parent;
 }
@@ -117,24 +117,24 @@ void TimeControls::updateUI()
 {
     PlaybackManager* playback = mEditor->playback();
 
-    mPlaybackRangeCheckBox->setChecked( playback->isRangedPlaybackOn() ); // don't block this signal
+    mPlaybackRangeCheckBox->setChecked(playback->isRangedPlaybackOn()); // don't block this signal
 
-    SignalBlocker b1( mLoopStartSpinBox );
-    mLoopStartSpinBox->setValue( playback->markInFrame() );
+    SignalBlocker b1(mLoopStartSpinBox);
+    mLoopStartSpinBox->setValue(playback->markInFrame());
 
-    SignalBlocker b2( mLoopEndSpinBox );
-    mLoopEndSpinBox->setValue( playback->markOutFrame() );
+    SignalBlocker b2(mLoopEndSpinBox);
+    mLoopEndSpinBox->setValue(playback->markOutFrame());
 
-    SignalBlocker b3( mFpsBox );
-    mFpsBox->setValue( playback->fps() );
+    SignalBlocker b3(mFpsBox);
+    mFpsBox->setValue(playback->fps());
 
-    SignalBlocker b4( mLoopButton );
-    mLoopButton->setChecked( playback->isLooping() );
+    SignalBlocker b4(mLoopButton);
+    mLoopButton->setChecked(playback->isLooping());
 }
 
-void TimeControls::setFps( int value )
+void TimeControls::setFps(int value)
 {
-    SignalBlocker blocker( mFpsBox );
+    SignalBlocker blocker(mFpsBox);
     mFpsBox->setValue(value);
 }
 
@@ -148,19 +148,19 @@ void TimeControls::toggleLoopControl(bool checked)
     mPlaybackRangeCheckBox->setChecked(checked);
 }
 
-void TimeControls::setCore( Editor* editor )
+void TimeControls::setEditor(Editor* editor)
 {
-    Q_ASSERT( editor != nullptr );
+    Q_ASSERT(editor != nullptr);
     mEditor = editor;
 }
 
 void TimeControls::makeConnections()
 {
-    connect( mPlayButton,        &QPushButton::clicked, this, &TimeControls::playButtonClicked );
-    connect( mJumpToEndButton,   &QPushButton::clicked, this, &TimeControls::jumpToEndButtonClicked );
-    connect( mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked );
-    connect( mLoopButton,        &QPushButton::clicked, this, &TimeControls::loopButtonClicked );
-    connect( mPlaybackRangeCheckBox, &QCheckBox::clicked, this, &TimeControls::playbackRangeClicked );
+    connect(mPlayButton, &QPushButton::clicked, this, &TimeControls::playButtonClicked);
+    connect(mJumpToEndButton, &QPushButton::clicked, this, &TimeControls::jumpToEndButtonClicked);
+    connect(mJumpToStartButton, &QPushButton::clicked, this, &TimeControls::jumpToStartButtonClicked);
+    connect(mLoopButton, &QPushButton::clicked, this, &TimeControls::loopButtonClicked);
+    connect(mPlaybackRangeCheckBox, &QCheckBox::clicked, this, &TimeControls::playbackRangeClicked);
 
     connect(mLoopStartSpinBox, spinBoxValueChanged, this, &TimeControls::loopStartValueChanged);
     connect(mLoopEndSpinBox, spinBoxValueChanged, this, &TimeControls::loopEndValueChanged);
@@ -177,7 +177,7 @@ void TimeControls::makeConnections()
 
 void TimeControls::playButtonClicked()
 {
-    if ( mEditor->playback()->isPlaying() )
+    if (mEditor->playback()->isPlaying())
     {
         mEditor->playback()->stop();
     }
@@ -190,7 +190,7 @@ void TimeControls::playButtonClicked()
 
 void TimeControls::updatePlayState()
 {
-    if( mEditor->playback()->isPlaying() )
+    if (mEditor->playback()->isPlaying())
     {
         mPlayButton->setIcon(mStopIcon);
         mPlayButton->setToolTip(tr("Stop"));
@@ -204,38 +204,38 @@ void TimeControls::updatePlayState()
 
 void TimeControls::jumpToStartButtonClicked()
 {
-    if ( mPlaybackRangeCheckBox->isChecked() )
+    if (mPlaybackRangeCheckBox->isChecked())
     {
-        mEditor->scrubTo( mLoopStartSpinBox->value() );
-        mEditor->playback()->setCheckForSoundsHalfway( true );
+        mEditor->scrubTo(mLoopStartSpinBox->value());
+        mEditor->playback()->setCheckForSoundsHalfway(true);
     }
     else
     {
-        mEditor->scrubTo( mEditor->layers()->firstKeyFrameIndex() );
+        mEditor->scrubTo(mEditor->layers()->firstKeyFrameIndex());
     }
     mEditor->playback()->stopSounds();
 }
 
 void TimeControls::jumpToEndButtonClicked()
 {
-    if ( mPlaybackRangeCheckBox->isChecked() )
+    if (mPlaybackRangeCheckBox->isChecked())
     {
-        mEditor->scrubTo( mLoopEndSpinBox->value() );
+        mEditor->scrubTo(mLoopEndSpinBox->value());
     }
     else
     {
-        mEditor->scrubTo( mEditor->layers()->lastKeyFrameIndex() );
+        mEditor->scrubTo(mEditor->layers()->lastKeyFrameIndex());
     }
 }
 
-void TimeControls::loopButtonClicked( bool bChecked )
+void TimeControls::loopButtonClicked(bool bChecked)
 {
-    mEditor->playback()->setLooping( bChecked );
+    mEditor->playback()->setLooping(bChecked);
 }
 
-void TimeControls::playbackRangeClicked( bool bChecked )
+void TimeControls::playbackRangeClicked(bool bChecked)
 {
-    mEditor->playback()->enableRangedPlayback( bChecked );
+    mEditor->playback()->enableRangedPlayback(bChecked);
     mTimeline->updateLength();
 }
 
@@ -259,13 +259,13 @@ void TimeControls::loopEndValueChanged(int i)
 
 void TimeControls::updateSoundIcon(bool soundEnabled)
 {
-    if(soundEnabled)
+    if (soundEnabled)
     {
-        mSoundButton->setIcon( QIcon(":icons/controls/sound.png") );
+        mSoundButton->setIcon(QIcon(":icons/controls/sound.png"));
     }
     else
     {
-        mSoundButton->setIcon( QIcon(":icons/controls/sound-disabled.png") );
+        mSoundButton->setIcon(QIcon(":icons/controls/sound-disabled.png"));
     }
 }
 

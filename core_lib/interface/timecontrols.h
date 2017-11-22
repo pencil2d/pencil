@@ -37,17 +37,16 @@ public:
     void initUI();
     void updateUI();
 
-    void setFps( int value );
-    void setCore( Editor* editor );
+    void setFps(int value);
+    void setEditor(Editor* editor);
     void updateLength(int frameLength);
     void updatePlayState();
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
 Q_SIGNALS:
-    void soundClick( bool );
+    void soundClick(bool);
     void fpsClick(int);
-    
 
 public slots:
     void toggleLoop(bool);
@@ -59,12 +58,12 @@ private:
     void playButtonClicked();
     void jumpToStartButtonClicked();
     void jumpToEndButtonClicked();
-    void loopButtonClicked( bool bChecked );
-    void playbackRangeClicked( bool bChecked );
+    void loopButtonClicked(bool bChecked);
+    void playbackRangeClicked(bool bChecked);
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
-    void updateSoundIcon( bool soundEnabled );
-    
+    void updateSoundIcon(bool soundEnabled);
+
 private:
     QPushButton* mPlayButton = nullptr;
     QPushButton* mJumpToEndButton = nullptr;
