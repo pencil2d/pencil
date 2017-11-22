@@ -26,40 +26,45 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "soundplayer.h"
 
-PlaybackManager::PlaybackManager( QObject* parent ) : BaseManager( parent )
+PlaybackManager::PlaybackManager(QObject* parent) : BaseManager(parent)
 {
+}
+
+PlaybackManager::~PlaybackManager()
+{
+    delete mFrameTimer;
 }
 
 bool PlaybackManager::init()
 {
-    mTimer = new QTimer( this );
-    mFrameTimer = new QElapsedTimer( );
-    connect( mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick );
+    mTimer = new QTimer(this);
+    mFrameTimer = new QElapsedTimer;
+    connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
     return true;
 }
 
-Status PlaybackManager::load( Object* o )
+Status PlaybackManager::load(Object* o)
 {
     const ObjectData* e = o->data();
-    
-    mIsLooping        = e->isLooping();
+
+    mIsLooping = e->isLooping();
     mIsRangedPlayback = e->isRangedPlayback();
-    mMarkInFrame      = e->getMarkInFrameNumber();
-    mMarkOutFrame     = e->getMarkOutFrameNumber();
-    mFps              = e->getFrameRate();
+    mMarkInFrame = e->getMarkInFrameNumber();
+    mMarkOutFrame = e->getMarkOutFrameNumber();
+    mFps = e->getFrameRate();
 
     return Status::OK;
 }
 
-Status PlaybackManager::save( Object* o )
+Status PlaybackManager::save(Object* o)
 {
-	ObjectData* data = o->data();
-	data->setLooping( mIsLooping );
-	data->setRangedPlayback( mIsRangedPlayback );
-	data->setMarkInFrameNumber( mMarkInFrame );
-	data->setMarkOutFrameNumber( mMarkOutFrame );
-	data->setFrameRate( mFps );
-	return Status::OK;
+    ObjectData* data = o->data();
+    data->setLooping(mIsLooping);
+    data->setRangedPlayback(mIsRangedPlayback);
+    data->setMarkInFrameNumber(mMarkInFrame);
+    data->setMarkOutFrameNumber(mMarkOutFrame);
+    data->setFrameRate(mFps);
+    return Status::OK;
 }
 
 bool PlaybackManager::isPlaying()
@@ -70,46 +75,46 @@ bool PlaybackManager::isPlaying()
 void PlaybackManager::play()
 {
     int frame = editor()->currentFrame();
-    if ( ( frame >= mEndFrame ) ||
-         ( frame >= mEndFrame && mIsRangedPlayback ) )
+    if ((frame >= mEndFrame) ||
+        (frame >= mEndFrame && mIsRangedPlayback))
     {
-        editor()->scrubTo( mStartFrame );
+        editor()->scrubTo(mStartFrame);
     }
 
     // start counting frames
     mFrameTimer->start();
 
     // get keyframe from layer
-    KeyFrame* key;
-    if ( !mListOfActiveSoundFrames.isEmpty() )
+    KeyFrame* key = nullptr;
+    if (!mListOfActiveSoundFrames.isEmpty())
     {
-        for ( int i = 0; i < object()->getLayerCount(); ++i )
+        for (int i = 0; i < object()->getLayerCount(); ++i)
         {
-            Layer* layer = object()->getLayer( i );
-            if ( layer->type() == Layer::SOUND )
+            Layer* layer = object()->getLayer(i);
+            if (layer->type() == Layer::SOUND)
             {
-                key = layer->getKeyFrameWhichCovers( frame );
+                key = layer->getKeyFrameWhichCovers(frame);
             }
         }
     }
 
     // check list content before playing
-    for ( int pos = 0; pos < mListOfActiveSoundFrames.count(); pos++ )
+    for (int pos = 0; pos < mListOfActiveSoundFrames.count(); pos++)
     {
-        if ( key != nullptr )
+        if (key != nullptr)
         {
-            if ( key->pos() + key->length() >= frame )
+            if (key->pos() + key->length() >= frame)
             {
                 mListOfActiveSoundFrames.takeLast();
             }
         }
-        else if ( frame < mListOfActiveSoundFrames.at( pos ) )
+        else if (frame < mListOfActiveSoundFrames.at(pos))
         {
             mListOfActiveSoundFrames.clear();
         }
     }
 
-    mTimer->setInterval( 10 ); // 100 fps
+    mTimer->setInterval(10); // 100 fps
     mTimer->start();
 
     // Check for any sounds we should start playing part-way through.
@@ -125,19 +130,19 @@ void PlaybackManager::stop()
     emit playStateChanged(false);
 }
 
-void PlaybackManager::setFps( int fps )
+void PlaybackManager::setFps(int fps)
 {
-    if ( mFps != fps )
+    if (mFps != fps)
     {
         mFps = fps;
-        emit fpsChanged( mFps );
+        emit fpsChanged(mFps);
 
         // Update key-frame lengths of sound layers,
         // since the length depends on fps.
-        for ( int i = 0; i < object()->getLayerCount(); ++i )
+        for (int i = 0; i < object()->getLayerCount(); ++i)
         {
-            Layer* layer = object()->getLayer( i );
-            if ( layer->type() == Layer::SOUND )
+            Layer* layer = object()->getLayer(i);
+            if (layer->type() == Layer::SOUND)
             {
                 auto soundLayer = dynamic_cast<LayerSound *>(layer);
                 soundLayer->updateFrameLengths(mFps);
@@ -146,60 +151,58 @@ void PlaybackManager::setFps( int fps )
     }
 }
 
-void PlaybackManager::playSounds( int frame )
+void PlaybackManager::playSounds(int frame)
 {
     // If sound is turned off, don't play anything.
-    if(!mIsPlaySound)
+    if (!mIsPlaySound)
     {
         return;
     }
 
     std::vector< LayerSound* > kSoundLayers;
-    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    for (int i = 0; i < object()->getLayerCount(); ++i)
     {
-        Layer* layer = object()->getLayer( i );
-        if ( layer->type() == Layer::SOUND )
+        Layer* layer = object()->getLayer(i);
+        if (layer->type() == Layer::SOUND)
         {
-            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
+            kSoundLayers.push_back(static_cast<LayerSound*>(layer));
         }
     }
 
-    KeyFrame* key;
-    SoundClip* clip;
-    for ( LayerSound* layer : kSoundLayers )
+    for (LayerSound* layer : kSoundLayers)
     {
-        key = layer->getLastKeyFrameAtPosition( frame );
+        KeyFrame* key = layer->getLastKeyFrameAtPosition(frame);
 
-        if ( key != nullptr )
+        if (key != nullptr)
         {
             // add keyframe position to list
-            if ( key->pos() + key->length() >= frame )
+            if (key->pos() + key->length() >= frame)
             {
-                if ( !mListOfActiveSoundFrames.contains( key->pos() ) )
+                if (!mListOfActiveSoundFrames.contains(key->pos()))
                 {
-                    mListOfActiveSoundFrames.append( key->pos() );
+                    mListOfActiveSoundFrames.append(key->pos());
                 }
             }
         }
 
-        if ( mCheckForSoundsHalfway )
+        if (mCheckForSoundsHalfway)
         {
             // Check for sounds which we should start playing from part-way through.
-            for ( int i = 0; i < mListOfActiveSoundFrames.count(); i++ )
+            for (int i = 0; i < mListOfActiveSoundFrames.count(); i++)
             {
                 int listPosition = mListOfActiveSoundFrames.at(i);
-                if ( layer->keyExistsWhichCovers( listPosition ) )
+                if (layer->keyExistsWhichCovers(listPosition))
                 {
-                    key = layer->getKeyFrameWhichCovers( listPosition );
-                    clip = static_cast< SoundClip* >( key );
-                    clip->playFromPosition( frame, mFps );
+                    key = layer->getKeyFrameWhichCovers(listPosition);
+                    SoundClip* clip = static_cast<SoundClip*>(key);
+                    clip->playFromPosition(frame, mFps);
                 }
             }
         }
-        else if ( layer->keyExists( frame ) )
+        else if (layer->keyExists(frame))
         {
-            key = layer->getKeyFrameAt( frame );
-            clip = static_cast< SoundClip* >( key );
+            key = layer->getKeyFrameAt(frame);
+            SoundClip* clip = static_cast<SoundClip*>(key);
 
             clip->play();
 
@@ -207,16 +210,16 @@ void PlaybackManager::playSounds( int frame )
             mActiveSoundFrame = frame;
         }
 
-        if ( frame >= mEndFrame )
+        if (frame >= mEndFrame)
         {
-            if ( layer->keyExists(mActiveSoundFrame ) )
+            if (layer->keyExists(mActiveSoundFrame))
             {
-                key = layer->getKeyFrameWhichCovers( mActiveSoundFrame );
-                clip = static_cast< SoundClip* >( key );
+                key = layer->getKeyFrameWhichCovers(mActiveSoundFrame);
+                SoundClip* clip = static_cast<SoundClip*>(key);
                 clip->stop();
 
                 // make sure list is cleared on end
-                if ( !mListOfActiveSoundFrames.isEmpty() ) {
+                if (!mListOfActiveSoundFrames.isEmpty()) {
                     mListOfActiveSoundFrames.clear();
                 }
             }
@@ -230,38 +233,38 @@ void PlaybackManager::playSounds( int frame )
 
 void PlaybackManager::stopSounds()
 {
-    std::vector< LayerSound* > kSoundLayers;
-    Layer* layer;
-    for ( int i = 0; i < object()->getLayerCount(); ++i )
+    std::vector<LayerSound*> kSoundLayers;
+    
+    for (int i = 0; i < object()->getLayerCount(); ++i)
     {
-        layer = object()->getLayer( i );
-        if ( layer->type() == Layer::SOUND )
+        Layer* layer = object()->getLayer(i);
+        if (layer->type() == Layer::SOUND)
         {
-            kSoundLayers.push_back( static_cast< LayerSound* >( layer ) );
+            kSoundLayers.push_back(static_cast<LayerSound*>(layer));
         }
     }
 
-    for ( LayerSound* layer : kSoundLayers )
+    for (LayerSound* layer : kSoundLayers)
     {
-        layer->foreachKeyFrame( []( KeyFrame* key )
+        layer->foreachKeyFrame([](KeyFrame* key)
         {
-            SoundClip* clip = static_cast< SoundClip* >( key );
+            SoundClip* clip = static_cast<SoundClip*>(key);
             clip->stop();
-        } );
+        });
     }
 }
 
 void PlaybackManager::timerTick()
 {
     int currentFrame = editor()->currentFrame();
-    playSounds( currentFrame );
+    playSounds(currentFrame);
 
-    if ( ( currentFrame >= mEndFrame ) ||
-         ( currentFrame >= mEndFrame && mIsRangedPlayback ) )
+    if ((currentFrame >= mEndFrame) ||
+        (currentFrame >= mEndFrame && mIsRangedPlayback))
     {
-        if ( mIsLooping )
+        if (mIsLooping)
         {
-            editor()->scrubTo( mStartFrame );
+            editor()->scrubTo(mStartFrame);
             mCheckForSoundsHalfway = true;
         }
         else
@@ -272,7 +275,7 @@ void PlaybackManager::timerTick()
     else
     {
         int ms = mFrameTimer->elapsed() * 1.10;
-        if ( ms >= ( 1000/mFps ) )
+        if (ms >= (1000 / mFps))
         {
             editor()->scrubForward();
             mFrameTimer->restart();
@@ -280,35 +283,35 @@ void PlaybackManager::timerTick()
     }
 }
 
-void PlaybackManager::setLooping( bool isLoop )
+void PlaybackManager::setLooping(bool isLoop)
 {
-    if ( mIsLooping != isLoop )
+    if (mIsLooping != isLoop)
     {
         mIsLooping = isLoop;
-        emit loopStateChanged( mIsLooping );
+        emit loopStateChanged(mIsLooping);
     }
 }
 
-void PlaybackManager::enableRangedPlayback( bool b )
+void PlaybackManager::enableRangedPlayback(bool b)
 {
-    if ( mIsRangedPlayback != b )
+    if (mIsRangedPlayback != b)
     {
         mIsRangedPlayback = b;
 
         updateStartFrame();
         updateEndFrame();
 
-        emit rangedPlaybackStateChanged( mIsRangedPlayback );
+        emit rangedPlaybackStateChanged(mIsRangedPlayback);
     }
 }
 
-void PlaybackManager::setRangedStartFrame( int frame )
+void PlaybackManager::setRangedStartFrame(int frame)
 {
     mMarkInFrame = frame;
     updateStartFrame();
 }
 
-void PlaybackManager::setRangedEndFrame( int frame )
+void PlaybackManager::setRangedEndFrame(int frame)
 {
     mMarkOutFrame = frame;
     updateEndFrame();
@@ -316,20 +319,20 @@ void PlaybackManager::setRangedEndFrame( int frame )
 
 void PlaybackManager::updateStartFrame()
 {
-    mStartFrame = ( mIsRangedPlayback ) ? mMarkInFrame : 1;
+    mStartFrame = (mIsRangedPlayback) ? mMarkInFrame : 1;
 }
 
 void PlaybackManager::updateEndFrame()
 {
     int projectLength = editor()->layers()->projectLength();
-    mEndFrame = ( mIsRangedPlayback ) ? mMarkOutFrame : projectLength;
+    mEndFrame = (mIsRangedPlayback) ? mMarkOutFrame : projectLength;
 }
 
 void PlaybackManager::enableSound(bool b)
 {
     mIsPlaySound = b;
 
-    if(!mIsPlaySound)
+    if (!mIsPlaySound)
     {
         stopSounds();
 
