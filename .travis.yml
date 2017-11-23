@@ -89,7 +89,7 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - qmake ../ PREFIX=/usr CONFIG+=GIT
+  - qmake ../ PREFIX=/usr CONFIG+=release
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
 
