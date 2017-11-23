@@ -63,6 +63,7 @@ build_script:
 after_build:
   - set upload=no
   - if %APPVEYOR_REPO_BRANCH%==master set upload=yes
+  - if %APPVEYOR_REPO_BRANCH%==release set upload=yes
   - if "%FORCE_NIGHTLY_UPLOAD%"=="yes" set upload=yes
   - if %PLATFORM_%==x86 (
     echo "-----Deploying 32 Bit Version-----" &
