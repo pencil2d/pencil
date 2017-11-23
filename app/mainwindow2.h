@@ -47,9 +47,9 @@ class ImportImageSeqDialog;
 #define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
 
 #ifdef GIT_TIMESTAMP
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( S__GIT_TIMESTAMP__ )
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D").arg( S__GIT_TIMESTAMP__ )
 #else
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( __DATE__ )
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D").arg( __DATE__ )
 #endif
 
 
