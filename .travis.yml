@@ -76,7 +76,7 @@ install:
 
 before_script:
   - echo "are changes related to source code?"
-  - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh
+# - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
