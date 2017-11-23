@@ -62,6 +62,7 @@ public:
     void init();
     void createWorkingDir();
     void deleteWorkingDir() const;
+    void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }
     void    setFilePath( QString strFileName ) { mFilePath = strFileName; }

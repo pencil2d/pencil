@@ -93,6 +93,7 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
     // 1. object 2. editor 3. scribble area 4. other widgets
     Object* object = new Object();
     object->init();
+    object->createDefaultLayers();
 
     mEditor = new Editor(this);
     mEditor->setScribbleArea(mScribbleArea);
@@ -414,6 +415,7 @@ void MainWindow2::newDocument()
     {
         Object* object = new Object();
         object->init();
+        object->createDefaultLayers();
         mEditor->setObject(object);
         mEditor->scrubTo(0);
         mEditor->view()->resetView();

@@ -63,11 +63,6 @@ void Object::init()
 
     createWorkingDir();
 
-    // default layers
-    addNewCameraLayer();
-    addNewVectorLayer();
-    addNewBitmapLayer();
-
     // default palette
     loadDefaultPalette();
 }
@@ -214,6 +209,14 @@ void Object::deleteWorkingDir() const
 {
     QDir dir(mWorkingDirPath);
     dir.removeRecursively();
+}
+
+void Object::createDefaultLayers()
+{
+    // default layers
+    addNewCameraLayer();
+    addNewVectorLayer();
+    addNewBitmapLayer();
 }
 
 int Object::getMaxLayerID()
