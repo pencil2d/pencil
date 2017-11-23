@@ -17,7 +17,6 @@ echo "branch is: $branch"
 
 ONLY_READMES=True
 MD=".md"
-YAML=".yml"
 SH=".sh"
 PY=".py"
 PS1=".ps1"
@@ -28,9 +27,8 @@ printf "=============\n"
 
 for CHANGED_FILE in $CHANGED_FILES; do
   printf "Check ${CHANGED_FILES}"
-  if ! [[ $CHANGED_FILE =~ $MD || 
-  		  $CHANGED_FILE =~ $YAML || 
-  		  $CHANGED_FILE =~ $SH || 
+  if ! [[ $CHANGED_FILE =~ $MD ||
+  		  $CHANGED_FILE =~ $SH ||
   		  $CHANGED_FILE =~ $PY ||
   		  $CHANGED_FILE =~ $PS1 ]] ; then
     ONLY_READMES=False

@@ -18,8 +18,8 @@ TEST_CASE("LayerManager::init()")
         layerMgr->setEditor(editor);
         layerMgr->init();
 
-        object->init(); // create default 3 layers
-
+        object->init(); 
+        object->createDefaultLayers(); // create default 3 layers
         REQUIRE(layerMgr->count() == 3);
         REQUIRE(layerMgr->currentLayerIndex() == 0);
         REQUIRE(layerMgr->getLayer(0)->type() == Layer::CAMERA);
@@ -41,8 +41,14 @@ TEST_CASE("LayerManager::deleteLayer()")
         layerMgr->setEditor(editor);
         layerMgr->init();
 
-        object->init(); // create 3 default layers
+        object->init();
 
+        REQUIRE(layerMgr->count() == 0);
+        layerMgr->createCameraLayer("Camera1");
+        REQUIRE(layerMgr->count() == 1);
+        layerMgr->createVectorLayer("Vector2");
+        REQUIRE(layerMgr->count() == 2);
+        layerMgr->createBitmapLayer("Bitmap3");
         REQUIRE(layerMgr->count() == 3);
         layerMgr->deleteLayer(2);
         REQUIRE(layerMgr->count() == 2);
