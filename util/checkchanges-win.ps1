@@ -6,13 +6,13 @@ $branch=$env:APPVEYOR_REPO_BRANCH
 $CHANGED_FILES=$(git diff --name-only origin/master...${commit})
 
 if ($branch -eq "master") {
-  $CHANGED_FILES=$(git diff --name-only HEAD^ HEAD) 
+  $CHANGED_FILES=$(git diff --name-only HEAD^ HEAD)
 }
 Write-Host "check against: $CHANGED_FILES"
 Write-Host "branch is $branch"
 $ONLY_READMES=$true
 
-$regex='(\.md)|(\.yml)|(\.sh)|(\.py)|(\.ps1)'
+$regex='(\.md)|(\.sh)|(\.py)|(\.ps1)'
 $code='(\.cpp)|(\.h)'
 
 foreach ($CHANGED_FILE in $CHANGED_FILES) {

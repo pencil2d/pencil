@@ -46,6 +46,7 @@ addons:
     - doxygen-latex
     - doxygen-gui
     - graphviz
+    - squashfs-tools
 
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -64,15 +65,6 @@ install:
   - pip install -U google-api-python-client
   - python3 -V
   - pip -V
-  - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-    curl -fsSLO http://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz;
-    bsdtar xf desktop-file-utils-0.23.tar.xz;
-    pushd desktop-file-utils-0.23;
-    ./configure;
-    make;
-    export "PATH=$PWD/src:$PATH";
-    popd;
-  fi'
 
 before_script:
   - echo "are changes related to source code?"
@@ -103,7 +95,18 @@ after_success:
       install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg;
       curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage;
       chmod 755 linuxdeployqt-continuous-x86_64.AppImage;
-      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-continuous-x86_64.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -appimage;
+      ./linuxdeployqt-continuous-x86_64.AppImage --appimage-extract;
+      curl -fsSLO http://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.23.tar.xz;
+      bsdtar xf desktop-file-utils-0.23.tar.xz;
+      cd desktop-file-utils-0.23;
+      ./configure;
+      make;
+      cd ../;
+      cp desktop-file-utils-0.23/src/desktop-file-validate squashfs-root/usr/bin/desktop-file-validate;
+      curl -fsSLO https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage;
+      chmod a+x appimagetool-x86_64.AppImage;
+      ./appimagetool-x86_64.AppImage squashfs-root linuxdeployqt-fixed.AppImage;
+      LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/x86_64-linux-gnu/pulseaudio" ./linuxdeployqt-fixed.AppImage Pencil2D/usr/share/applications/pencil2d.desktop -executable=Pencil2D/usr/plugins/ffmpeg -appimage;
       mv "Pencil2D-x86_64.AppImage" "pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
      fi'
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
