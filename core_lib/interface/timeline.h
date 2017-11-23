@@ -67,9 +67,6 @@ Q_SIGNALS:
     void newSoundLayer();
     void newCameraLayer();
 
-    void loopStartClick(int);
-    void loopEndClick(int);
-
     void soundClick( bool );
     void fpsClick( int );
     void onionPrevClick();

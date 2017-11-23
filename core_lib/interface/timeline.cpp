@@ -155,7 +155,7 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls( this );
-    mTimeControls->setCore( editor() );
+    mTimeControls->setEditor( editor() );
     mTimeControls->initUI();
     mTimeControls->setSizePolicy(QSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding));
     updateLength();
@@ -204,12 +204,6 @@ void TimeLine::initUI()
     connect( removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick );
     connect( duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick );
     connect( onionTypeButton, &QToolButton::clicked, this, &TimeLine::toogleAbsoluteOnionClick );
-
-    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::loopStartClick );
-    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::loopEndClick );
-    connect( mTimeControls, &TimeControls::loopStartClick, this, &TimeLine::updateLength );
-    connect( mTimeControls, &TimeControls::loopEndClick, this, &TimeLine::updateLength );
-    connect( mTimeControls, &TimeControls::rangeStateChange, this, &TimeLine::updateLength );
 
     connect( mTimeControls, &TimeControls::soundClick, this, &TimeLine::soundClick );
     connect( mTimeControls, &TimeControls::fpsClick, this, &TimeLine::fpsClick );
@@ -296,16 +290,22 @@ void TimeLine::wheelEvent(QWheelEvent* event)
 
 void TimeLine::deleteCurrentLayer()
 {
-    QString strLayerName = editor()->layers()->currentLayer()->name();
+    LayerManager* layerMgr = editor()->layers();
+    QString strLayerName = layerMgr->currentLayer()->name();
 
     int ret = QMessageBox::warning( this,
-                                    tr( "Warning" ),
+                                    tr( "Delete Layer", "Windows title of Delete current layer pop-up." ),
                                     tr( "Are you sure you want to delete layer: " ) + strLayerName + " ?",
                                     QMessageBox::Ok | QMessageBox::Cancel,
                                     QMessageBox::Ok );
     if ( ret == QMessageBox::Ok )
     {
-        editor()->layers()->deleteCurrentLayer();
+        Status st = layerMgr->deleteLayer(editor()->currentLayerIndex());
+        if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
+        {
+            QMessageBox::information(this, "",
+                                     tr("Please keep at least one camera layer in project"));
+        }
     }
 }
 

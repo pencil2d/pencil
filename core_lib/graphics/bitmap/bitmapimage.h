@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #define BITMAP_IMAGE_H
 
 #include <memory>
-#include <QtXml>
 #include <QPainter>
 #include "keyframe.h"
 

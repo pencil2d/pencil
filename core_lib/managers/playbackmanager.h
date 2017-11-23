@@ -27,15 +27,16 @@ class PlaybackManager : public BaseManager
 {
     Q_OBJECT
 public:
-    explicit PlaybackManager( QObject* parent );
+    explicit PlaybackManager(QObject* parent);
+    ~PlaybackManager();
 
     bool init() override;
-    Status load( Object* ) override;
-	Status save( Object* ) override;
+    Status load(Object*) override;
+    Status save(Object*) override;
 
     bool isPlaying();
     bool isLooping() { return mIsLooping; }
-    void setCheckForSoundsHalfway( bool newCheck ) { mCheckForSoundsHalfway = newCheck; }
+    void setCheckForSoundsHalfway(bool newCheck) { mCheckForSoundsHalfway = newCheck; }
 
     void play();
     void stop();
@@ -43,37 +44,40 @@ public:
     int fps() { return mFps; }
     int startFrame() { return mStartFrame; }
     int endFrame() { return mEndFrame; }
-    
+
     bool isRangedPlaybackOn() { return mIsRangedPlayback; }
     int markInFrame() { return mMarkInFrame; }
     int markOutFrame() { return mMarkOutFrame; }
-    
-    void setFps( int fps );
-    void setLooping( bool isLoop );
-    void enableRangedPlayback( bool b );
-    void setRangedStartFrame( int frame ) { mMarkInFrame = frame; }
-    void setRangedEndFrame( int frame ) { mMarkOutFrame = frame; }
-    void enableSound( bool b );
+
+    void setFps(int fps);
+    void setLooping(bool isLoop);
+    void enableRangedPlayback(bool b);
+    void setRangedStartFrame(int frame);
+    void setRangedEndFrame(int frame);
+    void enableSound(bool b);
 
     void stopSounds();
 
 Q_SIGNALS:
-    void fpsChanged( int fps );
-    void loopStateChanged( bool b );
-    void rangedPlaybackStateChanged( bool b );
-    void playStateChanged( bool isPlaying );
+    void fpsChanged(int fps);
+    void loopStateChanged(bool b);
+    void rangedPlaybackStateChanged(bool b);
+    void playStateChanged(bool isPlaying);
 
 private:
     void timerTick();
-    
-    void playSounds( int frame );
+
+    void playSounds(int frame);
 
     int mStartFrame = 1;
     int mEndFrame = 60;
 
+    void updateStartFrame();
+    void updateEndFrame();
+
     bool mIsLooping = false;
     bool mIsPlaySound = true;
-    
+
     bool mIsRangedPlayback = false;
     int mMarkInFrame = 1;
     int mMarkOutFrame = 10;

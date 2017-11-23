@@ -97,8 +97,9 @@ int LayerManager::currentLayerIndex()
 
 void LayerManager::setCurrentLayer( int layerIndex )
 {
-    Object* o = editor()->object();
-    
+    Q_ASSERT(layerIndex >= 0);
+
+    Object* o = object();
     if ( layerIndex >= o->getLayerCount() )
     {
         Q_ASSERT( false );
@@ -231,9 +232,9 @@ int LayerManager::lastKeyFrameIndex()
 {
     int maxPosition = 0;
 
-    for ( int i = 0; i < editor()->object()->getLayerCount(); ++i )
+    for ( int i = 0; i < object()->getLayerCount(); ++i )
     {
-        Layer* pLayer = editor()->object()->getLayer( i );
+        Layer* pLayer = object()->getLayer( i );
 
         int position = pLayer->getMaxKeyFramePosition();
         if ( position > maxPosition )
@@ -246,27 +247,31 @@ int LayerManager::lastKeyFrameIndex()
 
 int LayerManager::count()
 {
-    return editor()->object()->getLayerCount();
+    return object()->getLayerCount();
 }
 
-bool LayerManager::deleteCurrentLayer()
+Status LayerManager::deleteLayer(int index)
 {
-    // FIXME: 
-    if ( currentLayer()->type() == Layer::CAMERA )
+    Layer* layer = object()->getLayer(index);
+    if (layer->type() == Layer::CAMERA)
     {
-        return false;
+        std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
+        if ( camLayers.size() == 1 )
+            return Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER;
     }
 
-    editor()->object()->deleteLayer( currentLayerIndex() );
+    editor()->object()->deleteLayer( layer );
 
-    if ( currentLayerIndex() == editor()->object()->getLayerCount() )
+    // current layer is the last layer && we are deleting it
+    if (index == object()->getLayerCount() &&
+        index == currentLayerIndex())
     {
         setCurrentLayer( currentLayerIndex() - 1 );
     }
 
     Q_EMIT layerCountChanged( count() );
 
-    return true;
+    return Status::OK;
 }
 
 /**

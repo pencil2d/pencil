@@ -60,7 +60,7 @@ public:
     void GotoPrevFrame();
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
-    void addNewKey();
+    Status addNewKey();
     void removeKey();
 
     // Layer
@@ -68,6 +68,13 @@ public:
     Status addNewVectorLayer();
     Status addNewCameraLayer();
     Status addNewSoundLayer();
+    Status deleteCurrentLayer();
+
+    // Help
+    void about();
+    void help();
+    void website();
+    void reportbug();
 
 private:
     Editor* mEditor = nullptr;

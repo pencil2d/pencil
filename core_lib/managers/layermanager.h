@@ -49,7 +49,7 @@ public:
     void   setCurrentLayer(Layer* layer);
     int    count();
 
-    bool   deleteCurrentLayer();
+    Status deleteLayer(int index);
 
     void gotoNextLayer();
     void gotoPreviouslayer();

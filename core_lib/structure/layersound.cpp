@@ -127,8 +127,12 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
 
 Status LayerSound::saveKeyFrame(KeyFrame* key, QString path)
 {
-    //SoundClip* clip = dynamic_cast<SoundClip*>(key);
     Q_ASSERT(key);
+
+    if (key->fileName().isEmpty())
+    {
+        return Status::SAFE;
+    }
 
     QFileInfo info(key->fileName());
     QString sDestFileLocation = QDir(path).filePath(info.fileName());

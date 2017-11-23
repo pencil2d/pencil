@@ -101,7 +101,7 @@ FORMS += \
 
 DEPENDPATH += .
 
-VERSION = 0.5.4 #FIXME: use build number from git
+VERSION = "0.6.0"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 GIT {

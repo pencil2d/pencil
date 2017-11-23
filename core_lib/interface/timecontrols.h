@@ -33,24 +33,20 @@ class TimeControls : public QToolBar
     Q_OBJECT
 
 public:
-    TimeControls(TimeLine* parent = 0 );
+    TimeControls(TimeLine* parent = 0);
     void initUI();
     void updateUI();
 
-    void setFps( int value );
-    void setCore( Editor* editor );
+    void setFps(int value);
+    void setEditor(Editor* editor);
     void updateLength(int frameLength);
     void updatePlayState();
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
 Q_SIGNALS:
-    void soundClick( bool );
+    void soundClick(bool);
     void fpsClick(int);
-
-    void loopStartClick(int);
-    void loopEndClick(int);
-    void rangeStateChange();
 
 public slots:
     void toggleLoop(bool);
@@ -58,15 +54,15 @@ public slots:
 
 private:
     void makeConnections();
+
     void playButtonClicked();
     void jumpToStartButtonClicked();
     void jumpToEndButtonClicked();
-    void loopButtonClicked( bool bChecked );
-    void playbackRangeClicked( bool bChecked );
-    void preLoopStartClick(int);
-
-private slots:
-    void updateSoundIcon( bool soundEnabled );
+    void loopButtonClicked(bool bChecked);
+    void playbackRangeClicked(bool bChecked);
+    void loopStartValueChanged(int);
+    void loopEndValueChanged(int);
+    void updateSoundIcon(bool soundEnabled);
 
 private:
     QPushButton* mPlayButton = nullptr;
@@ -86,7 +82,7 @@ private:
     QIcon mJumpToEndIcon;
     QIcon mJumpToStartIcon;
 
-
+    TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
 };
 

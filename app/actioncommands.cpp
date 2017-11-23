@@ -44,6 +44,7 @@ GNU General Public License for more details.
 #include "filedialogex.h"
 #include "exportmoviedialog.h"
 #include "exportimagedialog.h"
+#include "aboutdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -74,9 +75,9 @@ Status ActionCommands::importSound()
 
         // Create new sound layer.
         bool ok = false;
-        QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties"),
-            tr("Layer name:"), QLineEdit::Normal,
-            tr("Sound Layer"), &ok);
+        QString strLayerName = QInputDialog::getText(mParent, tr("Layer Properties", "Dialog title on creating a sound layer"),
+                                                     tr("Layer name:"), QLineEdit::Normal,
+                                                     tr("Sound Layer", "Default name on creating a sound layer"), &ok);
         if (ok && !strLayerName.isEmpty())
         {
             Layer* newLayer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -90,19 +91,42 @@ Status ActionCommands::importSound()
     }
 
     layer = mEditor->layers()->currentLayer();
+    Q_ASSERT(layer->type() == Layer::SOUND);
 
-    if (layer->keyExists(mEditor->currentFrame()))
+
+    int currentFrame = mEditor->currentFrame();
+    SoundClip* key = nullptr;
+
+    if (layer->keyExists(currentFrame))
     {
-        QMessageBox::warning(nullptr,
-            "",
-            tr("A sound clip already exists on this frame! Please select another frame or layer."));
-        return Status::SAFE;
+        key = static_cast<SoundClip*>(layer->getKeyFrameAt(currentFrame));
+        if (!key->fileName().isEmpty())
+        {
+            QMessageBox::warning(nullptr, "",
+                                 tr("A sound clip already exists on this frame! Please select another frame or layer."));
+            return Status::SAFE;
+        }
+    }
+    else
+    {
+        key = new SoundClip;
+        layer->addKeyFrame(currentFrame, key);
     }
 
     FileDialog fileDialog(mParent);
     QString strSoundFile = fileDialog.openFile(FileType::SOUND);
 
-    Status st = mEditor->sound()->loadSound(layer, mEditor->currentFrame(), strSoundFile);
+    if (strSoundFile.isEmpty())
+    {
+        return Status::SAFE;
+    }
+
+    Status st = mEditor->sound()->loadSound(key, strSoundFile);
+
+    if (!st.ok())
+    {
+        layer->removeKeyFrame(currentFrame);
+    }
 
     return st;
 }
@@ -412,7 +436,7 @@ void ActionCommands::GotoPrevKeyFrame()
     mEditor->scrubPreviousKeyFrame();
 }
 
-void ActionCommands::addNewKey()
+Status ActionCommands::addNewKey()
 {
     KeyFrame* key = mEditor->addNewKey();
 
@@ -424,11 +448,15 @@ void ActionCommands::addNewKey()
 
         if (strSoundFile.isEmpty())
         {
-            mEditor->removeKey();
-            return;
+            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
+            return Status::SAFE;
         }
         Status st = mEditor->sound()->loadSound(clip, strSoundFile);
-        Q_ASSERT(st.ok());
+        if (!st.ok())
+        {
+            mEditor->layers()->currentLayer()->removeKeyFrame(clip->pos());
+            return Status::ERROR_LOAD_SOUND_FILE;
+        }
     }
 
     Camera* cam = dynamic_cast<Camera*>(key);
@@ -440,6 +468,7 @@ void ActionCommands::addNewKey()
         camLayer->LinearInterpolateTransform(cam);
         mEditor->view()->updateViewTransforms();
     }
+    return Status::OK;
 }
 
 void ActionCommands::removeKey()
@@ -467,8 +496,8 @@ Status ActionCommands::addNewBitmapLayer()
 {
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
-        tr("Layer name:"), QLineEdit::Normal,
-        tr("Bitmap Layer"), &ok);
+                                         tr("Layer name:"), QLineEdit::Normal,
+                                         tr("Bitmap Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
@@ -480,8 +509,8 @@ Status ActionCommands::addNewVectorLayer()
 {
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
-        tr("Layer name:"), QLineEdit::Normal,
-        tr("Vector Layer"), &ok);
+                                         tr("Layer name:"), QLineEdit::Normal,
+                                         tr("Vector Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
@@ -494,23 +523,22 @@ Status ActionCommands::addNewCameraLayer()
 {
     bool ok;
     QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
-        tr("Layer name:"), QLineEdit::Normal,
-        tr("Camera Layer"), &ok);
+                                         tr("Layer name:"), QLineEdit::Normal,
+                                         tr("Camera Layer"), &ok);
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createCameraLayer(text);
     }
 
     return Status::OK;
-
 }
 
 Status ActionCommands::addNewSoundLayer()
 {
     bool ok = false;
     QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
-        tr("Layer name:"), QLineEdit::Normal,
-        tr("Sound Layer"), &ok);
+                                                 tr("Layer name:"), QLineEdit::Normal,
+                                                 tr("Sound Layer"), &ok);
     if (ok && !strLayerName.isEmpty())
     {
         Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
@@ -519,4 +547,53 @@ Status ActionCommands::addNewSoundLayer()
         return Status::OK;
     }
     return Status::FAIL;
+}
+
+Status ActionCommands::deleteCurrentLayer()
+{
+    LayerManager* layerMgr = mEditor->layers();
+    QString strLayerName = layerMgr->currentLayer()->name();
+
+    int ret = QMessageBox::warning(mParent,
+                                   tr("Delete Layer", "Windows title of Delete current layer pop-up."),
+                                   tr("Are you sure you want to delete layer: ") + strLayerName + " ?",
+                                   QMessageBox::Ok | QMessageBox::Cancel,
+                                   QMessageBox::Ok);
+    if (ret == QMessageBox::Ok)
+    {
+        Status st = layerMgr->deleteLayer(mEditor->currentLayerIndex());
+        if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
+        {
+            QMessageBox::information(mParent, "",
+                                     tr("Please keep at least one camera layer in project", "text when failed to delete camera layer"));
+        }
+    }
+    return Status::OK;
+}
+
+
+void ActionCommands::help()
+{
+    QString url = "http://www.pencil2d.org/documentation/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::website()
+{
+    QString url = "http://pencil2d.github.io/";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::reportbug()
+{
+    QString url = "https://github.com/pencil2d/pencil/issues";
+    QDesktopServices::openUrl(QUrl(url));
+}
+
+void ActionCommands::about()
+{
+    AboutDialog* aboutBox = new AboutDialog(mParent);
+    aboutBox->setAttribute(Qt::WA_DeleteOnClose);
+    aboutBox->init();
+    aboutBox->exec();
 }

@@ -1,40 +1,30 @@
-#include "test_bitmapimage.h"
 #include "bitmapimage.h"
+#include "catch.hpp"
 
-void TestBitmapImage::initTestCase()
+
+TEST_CASE("BitmapImage")
 {
+    SECTION("Init an Bitmap Image")
+    {
+        std::shared_ptr<BitmapImage> b = std::make_shared<BitmapImage>();
+        REQUIRE(b->image()->isNull());
 
-}
+        REQUIRE(b->width() == 0);
+        REQUIRE(b->height() == 0);
+        REQUIRE(b->top() == 0);
+        REQUIRE(b->left() == 0);
+    }
 
-void TestBitmapImage::cleanupTestCase()
-{
+    SECTION("Init with color and boundary")
+    {
+        std::shared_ptr<BitmapImage> b = std::make_shared<BitmapImage>(QRect(10, 20, 30, 40), Qt::red);
 
-}
+        REQUIRE(b->left() == 10);
+        REQUIRE(b->top() == 20);
+        REQUIRE(b->width() == 30);
+        REQUIRE(b->height() == 40);
 
-void TestBitmapImage::testInitImage()
-{
-    BitmapImage* b = new BitmapImage;
-    std::shared_ptr< BitmapImage > sp(b);
-}
-
-void TestBitmapImage::testInitSize()
-{
-    BitmapImage* b = new BitmapImage;
-    std::shared_ptr< BitmapImage > sp(b);
-
-    QCOMPARE(b->width(), 0);
-    QCOMPARE(b->height(), 0);
-    QCOMPARE(b->top(), 0);
-    QCOMPARE(b->left(), 0);
-}
-
-void TestBitmapImage::testInitWithColorAndBoundary()
-{
-    BitmapImage* b = new BitmapImage(QRect(10, 20, 30, 40), Qt::red);
-    std::shared_ptr< BitmapImage > sp(b);
-
-    QCOMPARE(b->left(), 10);
-    QCOMPARE(b->top(), 20);
-    QCOMPARE(b->width(), 30);
-    QCOMPARE(b->height(), 40);
+        QRgb rgb = b->image()->pixel(0, 0);
+        REQUIRE(rgb == qRgb(255, 0, 0));
+    }
 }
