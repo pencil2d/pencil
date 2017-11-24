@@ -14,19 +14,17 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+
+#include <iostream>
+#include <cstring>
 #include <QTranslator>
 #include <QLibraryInfo>
-#include <QDir>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include "editor.h"
 #include "mainwindow2.h"
 #include "pencilapplication.h"
-#include <iostream>
-#include <cstring>
 
-using std::cout;
-using std::endl;
 
 void installTranslator( PencilApplication& app )
 {
@@ -143,7 +141,8 @@ int handleArguments( MainWindow2 & mainWindow )
     std::cout << PencilApplication::tr( "Exporting image sequence..." ).constData() << std::endl;
 
     QFileInfo inputFileInfo(inputPath);
-    if(!inputFileInfo.exists()) {
+    if(!inputFileInfo.exists())
+    {
         qDebug() << PencilApplication::tr( "Error: the input file at '%1' does not exist" ).arg(inputPath);
         return 1;
     }
@@ -172,7 +171,8 @@ int handleArguments( MainWindow2 & mainWindow )
         {
             format = extensionMapping[extension];
         }
-        else {
+        else
+        {
             qDebug() << PencilApplication::tr( "Warning: Output format is not specified or unsupported. Using PNG." );
             format = "PNG";
         }
@@ -199,7 +199,6 @@ int main(int argc, char* argv[])
     installTranslator( app );
 
     MainWindow2 mainWindow;
-    mainWindow.setWindowTitle( PENCIL_WINDOW_TITLE );
 
 	QObject::connect( &app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile );
     app.emitOpenFileRequest();

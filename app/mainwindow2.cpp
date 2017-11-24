@@ -66,6 +66,24 @@ GNU General Public License for more details.
 #include "movieexporter.h"
 #include "app_util.h"
 
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
+
+#ifdef GIT_TIMESTAMP
+#define BUILD_DATE S__GIT_TIMESTAMP__
+#else
+#define BUILD_DATE __DATE__
+#endif
+
+#ifdef NIGHTLY_BUILD
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D - Nightly Build %1").arg( BUILD_DATE )
+#else
+#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
+#endif
+
+
+
 MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 {
     ui = new Ui::MainWindow2;
@@ -117,13 +135,14 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
+    connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
     //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
     mEditor->tools()->setDefaultTool();
     mBackground->init(mEditor->preference());
     mEditor->updateObject();
 
-    connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
+    setWindowTitle(PENCIL_WINDOW_TITLE);
 }
 
 MainWindow2::~MainWindow2()
