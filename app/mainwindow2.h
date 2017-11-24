@@ -42,16 +42,6 @@ class ActionCommands;
 class ImportImageSeqDialog;
 
 
-#define STRINGIFY(x) #x
-#define TOSTRING(x) STRINGIFY(x)
-#define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
-
-#ifdef GIT_TIMESTAMP
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D").arg( S__GIT_TIMESTAMP__ )
-#else
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D").arg( __DATE__ )
-#endif
-
 
 namespace Ui
 {

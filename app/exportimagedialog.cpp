@@ -49,7 +49,7 @@ void ExportImageDialog::setCamerasInfo(const std::vector<std::pair<QString, QSiz
 	Q_ASSERT(ui->cameraCombo);
 
 	ui->cameraCombo->clear();
-	for (const std::pair<QString, QSize> it : cameraInfo)
+	for (const std::pair<QString, QSize>& it : cameraInfo)
 	{
 		ui->cameraCombo->addItem(it.first, it.second);
 	}
