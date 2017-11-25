@@ -5,11 +5,11 @@
         <file>Language.de.qm</file>
         <file>Language.es.qm</file>
         <file>Language.fr.qm</file>
-        <file>Language.hu-HU.qm</file>
+        <file>Language.hu_HU.qm</file>
         <file>Language.it.qm</file>
         <file>Language.ja.qm</file>
-        <file>Language.pt-BR.qm</file>
+        <file>Language.pt_BR.qm</file>
         <file>Language.ru.qm</file>
-        <file>Language.zh-TW.qm</file>
+        <file>Language.zh_TW.qm</file>
     </qresource>
 </RCC>

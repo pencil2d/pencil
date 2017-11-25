@@ -1,0 +1,14 @@
+[main]
+host = https://www.transifex.com
+
+[pencil2d.pencil]
+source_file = translations/pencil.ts
+source_lang = en
+type = QT
+file_filter = translations/Language.<lang>.ts
+
+[pencil2d.desktop-entry]
+source_file = pencil2d.desktop
+source_lang = en
+type = DESKTOP
+trans.en = pencil2d.desktop

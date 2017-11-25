@@ -34,9 +34,9 @@ TRANSLATIONS += translations/pencil.ts \
                 translations/Language.de.ts \
                 translations/Language.es.ts \
                 translations/Language.fr.ts \
-                translations/Language.hu-HU.ts \
+                translations/Language.hu_HU.ts \
                 translations/Language.it.ts \
                 translations/Language.ja.ts \
-                translations/Language.pt-BR.ts \
+                translations/Language.pt_BR.ts \
                 translations/Language.ru.ts \
-                translations/Language.zh-TW.ts
+                translations/Language.zh_TW.ts
