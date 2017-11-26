@@ -81,7 +81,7 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - qmake ../ PREFIX=/usr CONFIG+=release
+  - qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
 
