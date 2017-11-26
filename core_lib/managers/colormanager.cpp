@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "editor.h"
 
 
-ColorManager::ColorManager(QObject* parent) : BaseManager(parent)
+ColorManager::ColorManager(Editor* editor) : BaseManager(editor)
 {
 }
 

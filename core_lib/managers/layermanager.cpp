@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 
-LayerManager::LayerManager( QObject* pParent ) : BaseManager( pParent )
+LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
 {
 }
 

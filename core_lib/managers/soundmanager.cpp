@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "soundplayer.h"
 
-SoundManager::SoundManager(QObject* parnet) : BaseManager(parnet)
+SoundManager::SoundManager(Editor* editor) : BaseManager(editor)
 {
 }
 

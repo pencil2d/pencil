@@ -105,7 +105,6 @@ bool Editor::init()
 
     for (BaseManager* pManager : mAllManagers)
     {
-        pManager->setEditor(this);
         pManager->init();
     }
     //setAcceptDrops( true ); // TODO: drop event

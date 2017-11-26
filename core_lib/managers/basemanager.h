@@ -22,15 +22,14 @@ GNU General Public License for more details.
 
 class Object;
 class Layer;
+class Editor;
 
 class BaseManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit BaseManager(QObject* parent = 0);
+    explicit BaseManager(Editor* editor = 0);
     virtual ~BaseManager();
-
-    void setEditor(Editor*);
 
     Editor* editor() { return mEditor; }
     Object* object() { return mEditor->object(); }

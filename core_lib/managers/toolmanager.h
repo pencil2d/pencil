@@ -29,7 +29,7 @@ class ToolManager : public BaseManager
 {
     Q_OBJECT
 public:
-    explicit ToolManager( QObject* parent );
+    explicit ToolManager(Editor* editor);
     
     bool init() override;
     Status load( Object* ) override;

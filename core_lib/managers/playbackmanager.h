@@ -27,7 +27,7 @@ class PlaybackManager : public BaseManager
 {
     Q_OBJECT
 public:
-    explicit PlaybackManager(QObject* parent);
+    explicit PlaybackManager(Editor* editor);
     ~PlaybackManager();
 
     bool init() override;

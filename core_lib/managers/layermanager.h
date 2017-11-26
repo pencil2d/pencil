@@ -32,7 +32,7 @@ class LayerManager : public BaseManager
     Q_OBJECT
 
 public:
-    LayerManager(QObject* pParant);
+    explicit LayerManager(Editor* editor);
     ~LayerManager();
     bool init() override;
     Status load(Object*) override;

@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "soundplayer.h"
 
-PlaybackManager::PlaybackManager(QObject* parent) : BaseManager(parent)
+PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor)
 {
 }
 

@@ -31,7 +31,7 @@ class SoundManager : public BaseManager
     Q_OBJECT
 public:
 
-    SoundManager(QObject* parent);
+    explicit SoundManager(Editor* editor);
     ~SoundManager();
 
     bool init() override;

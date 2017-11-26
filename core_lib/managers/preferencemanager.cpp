@@ -20,8 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 
 
-PreferenceManager::PreferenceManager( QObject* parent )
-    : BaseManager( parent )
+PreferenceManager::PreferenceManager(Editor* editor) : BaseManager(editor)
 {
 }
 

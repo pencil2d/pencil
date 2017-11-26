@@ -31,7 +31,7 @@ class ViewManager : public BaseManager
     Q_OBJECT
 
 public:
-    explicit ViewManager( QObject* parent = 0 );
+    explicit ViewManager(Editor* editor);
 
     bool init() override;
     Status load( Object* ) override;

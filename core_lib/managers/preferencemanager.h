@@ -66,7 +66,7 @@ class PreferenceManager : public BaseManager
     Q_OBJECT
 
 public:
-    PreferenceManager( QObject* parent );
+    explicit PreferenceManager(Editor* editor);
     ~PreferenceManager();
 
     virtual bool init() override;
@@ -81,11 +81,6 @@ public:
     void turnOn(SETTING option );
     void turnOff(SETTING option );
     bool isOn(SETTING option );
-    
-    void setOnionPrevFramesCount( int n );
-    int  getOnionPrevFramesCount();
-    void setOnionNextFramesCount( int n );
-    int  getOnionNextFramesCount();
 
     QString getString(SETTING option);
     int     getInt(SETTING option);

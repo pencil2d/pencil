@@ -15,7 +15,6 @@ TEST_CASE("LayerManager::init()")
     SECTION("Test initial state")
     {
         LayerManager* layerMgr = new LayerManager(editor);
-        layerMgr->setEditor(editor);
         layerMgr->init();
 
         object->init(); 
@@ -38,7 +37,6 @@ TEST_CASE("LayerManager::deleteLayer()")
     SECTION("delete layers")
     {
         LayerManager* layerMgr = new LayerManager(editor);
-        layerMgr->setEditor(editor);
         layerMgr->init();
 
         object->init();
@@ -59,7 +57,6 @@ TEST_CASE("LayerManager::deleteLayer()")
     SECTION("delete camera layers")
     {
         LayerManager* layerMgr = new LayerManager(editor);
-        layerMgr->setEditor(editor);
         layerMgr->init();
 
         // create 2 camera layers

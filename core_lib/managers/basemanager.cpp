@@ -18,17 +18,13 @@ GNU General Public License for more details.
 #include "basemanager.h"
 #include "editor.h"
 
-BaseManager::BaseManager(QObject* parent) : QObject(parent)
+BaseManager::BaseManager(Editor* editor) : QObject(editor)
 {
+    Q_ASSERT(editor != nullptr);
+    mEditor = editor;
 }
 
 BaseManager::~BaseManager()
 {
     mEditor = nullptr;
-}
-
-void BaseManager::setEditor(Editor* editor)
-{
-    Q_ASSERT_X( editor != nullptr, "BaseManager", "Editor is null." );
-    mEditor = editor;
 }

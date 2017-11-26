@@ -25,7 +25,7 @@ const static float mMinScale = 0.01f;
 const static float mMaxScale = 100.0f;
 
 
-ViewManager::ViewManager(QObject *parent) : BaseManager(parent)
+ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
 {
     mDefaultEditorCamera = new Camera;
     mCurrentCamera = mDefaultEditorCamera;

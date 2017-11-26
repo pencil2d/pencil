@@ -31,7 +31,7 @@ GNU General Public License for more details.
 #include "pencilsettings.h"
 
 
-ToolManager::ToolManager(QObject* parent ) : BaseManager( parent )
+ToolManager::ToolManager(Editor* editor) : BaseManager(editor)
 {
 }
 
@@ -39,17 +39,17 @@ bool ToolManager::init()
 {
     mIsSwitchedToEraser = false;
 
-    mToolSetHash.insert( PEN, new PenTool( parent() ) );
-    mToolSetHash.insert( PENCIL, new PencilTool( parent() ) );
-    mToolSetHash.insert( BRUSH, new BrushTool( parent() ) );
-    mToolSetHash.insert( ERASER, new EraserTool( parent() ) );
-    mToolSetHash.insert( BUCKET, new BucketTool( parent() ) );
-    mToolSetHash.insert( EYEDROPPER, new EyedropperTool( parent() ) );
-    mToolSetHash.insert( HAND, new HandTool( parent() ) );
-    mToolSetHash.insert( MOVE, new MoveTool( parent() ) );
-    mToolSetHash.insert( POLYLINE, new PolylineTool( parent() ) );
-    mToolSetHash.insert( SELECT, new SelectTool( parent() ) );
-    mToolSetHash.insert( SMUDGE, new SmudgeTool( parent() ) );
+    mToolSetHash.insert( PEN, new PenTool(this) );
+    mToolSetHash.insert( PENCIL, new PencilTool(this) );
+    mToolSetHash.insert( BRUSH, new BrushTool(this) );
+    mToolSetHash.insert( ERASER, new EraserTool(this) );
+    mToolSetHash.insert( BUCKET, new BucketTool(this) );
+    mToolSetHash.insert( EYEDROPPER, new EyedropperTool(this) );
+    mToolSetHash.insert( HAND, new HandTool(this) );
+    mToolSetHash.insert( MOVE, new MoveTool(this) );
+    mToolSetHash.insert( POLYLINE, new PolylineTool(this) );
+    mToolSetHash.insert( SELECT, new SelectTool(this) );
+    mToolSetHash.insert( SMUDGE, new SmudgeTool(this) );
 
     foreach( BaseTool* pTool, mToolSetHash.values() )
     {
