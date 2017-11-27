@@ -89,6 +89,7 @@ public:
 
     int  allLayers();
     bool exportSeqCLI(QString filePath, QString format = "PNG", int width = -1, int height = -1, bool transparency = false, bool antialias = true);
+    bool exportMovieCLI(QString filePath, int width = -1, int height = -1);
 
     QString workingDir() const;
 

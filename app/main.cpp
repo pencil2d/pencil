@@ -15,8 +15,6 @@ GNU General Public License for more details.
 
 */
 
-#include <iostream>
-#include <cstring>
 #include <QTranslator>
 #include <QLibraryInfo>
 #include <QCommandLineParser>
@@ -54,8 +52,10 @@ void installTranslator( PencilApplication& app )
     qDebug() << "Install translation = " << b;
 }
 
-int handleArguments( MainWindow2 & mainWindow )
+int handleArguments( PencilApplication& app )
 {
+    QTextStream out( stdout );
+    QTextStream err( stderr );
     QStringList args = PencilApplication::arguments();
     QString inputPath;
     QStringList outputPaths;
@@ -63,17 +63,17 @@ int handleArguments( MainWindow2 & mainWindow )
     bool transparency = false;
 
     QCommandLineParser parser;
-    // TODO: Ignore -NSDocumentRevisionsDebugMode
+    args.removeOne("-NSDocumentRevisionsDebugMode");
 
     parser.setApplicationDescription( PencilApplication::tr("Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.") );
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument( "input", PencilApplication::tr( "Path to the input pencil file." ) );
 
-    QCommandLineOption exportSeqOption( QStringList() << "o" << "export-sequence",
+    QCommandLineOption exportOutOption( QStringList() << "o" << "export-sequence" << "export-movie",
                                         PencilApplication::tr( "Render the file to <output_path>" ),
                                         PencilApplication::tr( "output_path" ) );
-    parser.addOption( exportSeqOption );
+    parser.addOption( exportOutOption );
 
     QCommandLineOption widthOption( QStringList() << "width",
                                     PencilApplication::tr( "Width of the output frames" ),
@@ -97,7 +97,7 @@ int handleArguments( MainWindow2 & mainWindow )
         inputPath = posArgs.at(0);
     }
 
-    outputPaths = parser.values( exportSeqOption );
+    outputPaths = parser.values( exportOutOption );
 
     if ( !parser.value( widthOption ).isEmpty() )
     {
@@ -105,7 +105,7 @@ int handleArguments( MainWindow2 & mainWindow )
         width = parser.value( widthOption ).toInt( &ok );
         if ( !ok )
         {
-            qDebug() << PencilApplication::tr( "Warning: width value %1 is not an integer, ignoring." ).arg(parser.value( widthOption ));
+            err << PencilApplication::tr( "Warning: width value %1 is not an integer, ignoring." ).arg(parser.value( widthOption )) << endl;
             width = -1;
         }
     }
@@ -115,11 +115,38 @@ int handleArguments( MainWindow2 & mainWindow )
         height = parser.value( heightOption ).toInt( &ok );
         if ( !ok )
         {
-            qDebug() << PencilApplication::tr( "Warning: height value %1 is not an integer, ignoring." ).arg(parser.value( heightOption ));
+            err << PencilApplication::tr( "Warning: height value %1 is not an integer, ignoring." ).arg(parser.value( heightOption )) << endl;
             height = -1;
         }
     }
     transparency = parser.isSet( transparencyOption );
+
+    if ( !outputPaths.isEmpty() )
+    {
+        if ( inputPath.isEmpty() )
+        {
+            // Error if there are output paths without an input path
+            err << PencilApplication::tr( "Error: No input file specified." ) << endl;
+            return 1;
+        }
+
+        QFileInfo inputFileInfo(inputPath);
+        if(!inputFileInfo.exists())
+        {
+            err << PencilApplication::tr( "Error: the input file at '%1' does not exist" ).arg(inputPath) << endl;
+            return 1;
+        }
+        if ( !inputFileInfo.isFile() )
+        {
+            err << PencilApplication::tr( "Error: the input path '%1' is not a file" ).arg(inputPath) << endl;
+            return 1;
+        }
+    }
+
+    // Now that all possible user errors are handled, the actual program can be initialized
+    MainWindow2 mainWindow;
+    QObject::connect( &app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile );
+    app.emitOpenFileRequest();
 
     // If there are no output paths, open up the GUI (to the input path if there is one)
     if ( outputPaths.isEmpty() )
@@ -130,26 +157,6 @@ int handleArguments( MainWindow2 & mainWindow )
             mainWindow.openFile(inputPath);
         }
         return PencilApplication::exec();
-    }
-    else if ( inputPath.isEmpty() )
-    {
-        // Error if there are output paths without an input path
-        qDebug() << PencilApplication::tr( "Error: No input file specified." );
-        return 1;
-    }
-
-    std::cout << PencilApplication::tr( "Exporting image sequence..." ).constData() << std::endl;
-
-    QFileInfo inputFileInfo(inputPath);
-    if(!inputFileInfo.exists())
-    {
-        qDebug() << PencilApplication::tr( "Error: the input file at '%1' does not exist" ).arg(inputPath);
-        return 1;
-    }
-    if ( !inputFileInfo.isFile() )
-    {
-        qDebug() << PencilApplication::tr( "Error: the input path '%1' is not a file" ).arg(inputPath);
-        return 1;
     }
 
     for ( int i = 0; i < outputPaths.length(); i++ )
@@ -165,31 +172,45 @@ int handleArguments( MainWindow2 & mainWindow )
         extensionMapping[ "tif" ] = "TIF";
         extensionMapping[ "tiff" ] = "TIF";
         extensionMapping[ "bmp" ] = "BMP";
+        extensionMapping[ "mp4" ] = "MP4";
+        extensionMapping[ "avi" ] = "AVI";
+        extensionMapping[ "gif" ] = "GIF";
         QString extension = outputPaths[i].mid( outputPaths[i].lastIndexOf( "." ) + 1 ).toLower();
-        //qDebug() << "Ext: " << outputPaths[i].lastIndexOf(".") << " " << extension << " " << outputPaths[i];
         if ( inputPath.contains(".") && extensionMapping.contains( extension ) )
         {
             format = extensionMapping[extension];
         }
         else
         {
-            qDebug() << PencilApplication::tr( "Warning: Output format is not specified or unsupported. Using PNG." );
+            err << PencilApplication::tr( "Warning: Output format is not specified or unsupported. Using PNG." ) << endl;
             format = "PNG";
         }
 
+        bool asMovie;
+        QMap<QString, bool> formatMapping;
+        formatMapping[ "PNG" ] = false;
+        formatMapping[ "JPG" ] = false;
+        formatMapping[ "TIF" ] = false;
+        formatMapping[ "BMP" ] = false;
+        formatMapping[ "MP4" ] = true;
+        formatMapping[ "AVI" ] = true;
+        formatMapping[ "GIF" ] = true;
+        asMovie = formatMapping[format];
+
+        if ( asMovie )
+        {
+            out << PencilApplication::tr( "Exporting movie..." ) << endl;
+            mainWindow.mEditor->exportMovieCLI( outputPaths[i], width, height );
+            out << PencilApplication::tr( "Done." ) << endl;
+            continue;
+        }
+
+        out << PencilApplication::tr( "Exporting image sequence..." ) << endl;
         mainWindow.mEditor->exportSeqCLI( outputPaths[i], format, width, height, transparency );
+        out << PencilApplication::tr( "Done." ) << endl;
     }
-    qDebug() << PencilApplication::tr( "Done." );
 
     return 0;
-}
-
-bool isGUIMode(int argc, char* argv[] )
-{
-	bool b = false;
-	b |= ( argc == 1 );
-	b |= ( argc <= 3 ) && QString( argv[ 1 ] ) == "-NSDocumentRevisionsDebugMode";
-	return b;
 }
 
 int main(int argc, char* argv[])
@@ -198,16 +219,5 @@ int main(int argc, char* argv[])
 
     installTranslator( app );
 
-    MainWindow2 mainWindow;
-
-	QObject::connect( &app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile );
-    app.emitOpenFileRequest();
-
-    if ( isGUIMode( argc, argv ) )
-    {
-        mainWindow.show();
-        return app.exec();
-    }
-
-    return handleArguments( mainWindow );
+    return handleArguments( app );
 }
