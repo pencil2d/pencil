@@ -234,7 +234,7 @@ void PencilTool::paintAt( QPointF point )
         BlitRect rect;
 
         rect.extend( point.toPoint() );
-        mScribbleArea->drawPencil( QPoint( qRound(point.x() ), qRound(point.y() )),
+        mScribbleArea->drawPencil(point,
                                   brushWidth,
                                   mEditor->color()->frontColor(),
                                   opacity);
