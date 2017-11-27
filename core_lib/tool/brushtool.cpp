@@ -270,7 +270,7 @@ void BrushTool::paintAt( QPointF point )
         BlitRect rect;
 
         rect.extend( point.toPoint() );
-        mScribbleArea->drawBrush( QPoint( qRound(point.x() ), qRound(point.y() )),
+        mScribbleArea->drawBrush( point,
                                   brushWidth,
                                   properties.feather,
                                   mEditor->color()->frontColor(),
@@ -321,7 +321,7 @@ void BrushTool::drawStroke()
             QPointF point = mLastBrushPoint + ( i + 1 ) * brushStep * ( getCurrentPoint() - mLastBrushPoint ) / distance;
 
             rect.extend( point.toPoint() );
-            mScribbleArea->drawBrush( QPoint( qRound(point.x() ),qRound(point.y() )),
+            mScribbleArea->drawBrush( point,
                                       brushWidth,
                                       properties.feather,
                                       mEditor->color()->frontColor(),

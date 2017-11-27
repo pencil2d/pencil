@@ -195,7 +195,7 @@ void EraserTool::paintAt( QPointF point )
         BlitRect rect;
 
         rect.extend( point.toPoint() );
-        mScribbleArea->drawBrush( QPoint( qRound(point.x() ), qRound(point.y() )),
+        mScribbleArea->drawBrush( point,
                                   brushWidth,
                                   properties.feather,
                                   QColor(255, 255, 255, 255),

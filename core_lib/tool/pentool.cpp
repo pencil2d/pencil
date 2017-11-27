@@ -198,7 +198,7 @@ void PenTool::paintAt( QPointF point )
         BlitRect rect;
 
         rect.extend( point.toPoint() );
-        mScribbleArea->drawPen( QPoint( qRound(point.x() ), qRound(point.y() )),
+        mScribbleArea->drawPen( point,
                                 brushWidth,
                                 mEditor->color()->frontColor(),
                                 properties.useAA);
@@ -247,7 +247,7 @@ void PenTool::drawStroke()
         {
             QPointF point = mLastBrushPoint + ( i + 1 ) * brushStep * ( getCurrentPoint() - mLastBrushPoint ) / distance;
             rect.extend( point.toPoint() );
-            mScribbleArea->drawPen( QPoint( qRound(point.x() ), qRound(point.y() )),
+            mScribbleArea->drawPen( point,
                                     brushWidth,
                                     mEditor->color()->frontColor(),
                                     properties.useAA );
