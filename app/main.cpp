@@ -41,7 +41,6 @@ void installTranslator( PencilApplication& app )
     qtTranslator->load( "qt_" + strUserLocale, QLibraryInfo::location( QLibraryInfo::TranslationsPath ) );
     app.installTranslator( qtTranslator );
 
-    strUserLocale.replace( "_", "-" );
     qDebug() << "Detect locale =" << strUserLocale;
 
     QTranslator* pencil2DTranslator = new QTranslator(&app);
