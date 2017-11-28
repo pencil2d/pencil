@@ -44,9 +44,9 @@ void installTranslator( PencilApplication& app )
 
     QTranslator* pencil2DTranslator = new QTranslator(&app);
     bool b = pencil2DTranslator->load( ":/qm/Language." + strUserLocale );
-    
+
     qDebug() << "Load translation = " << b;
-    
+
     b = app.installTranslator( pencil2DTranslator );
 
     qDebug() << "Install translation = " << b;
@@ -70,10 +70,17 @@ int handleArguments( PencilApplication& app )
     parser.addVersionOption();
     parser.addPositionalArgument( "input", PencilApplication::tr( "Path to the input pencil file." ) );
 
-    QCommandLineOption exportOutOption( QStringList() << "o" << "export-sequence" << "export-movie",
+    QCommandLineOption exportOutOption( QStringList() << "o" << "export",
                                         PencilApplication::tr( "Render the file to <output_path>" ),
                                         PencilApplication::tr( "output_path" ) );
     parser.addOption( exportOutOption );
+
+    // for backwards compatibility
+    QCommandLineOption exportSeqOption( QStringList() << "export-sequence",
+                                        PencilApplication::tr( "Render the file to <output_path>" ),
+                                        PencilApplication::tr( "output_path" ) );
+    exportSeqOption.setFlags( QCommandLineOption::HiddenFromHelp );
+    parser.addOption( exportSeqOption );
 
     QCommandLineOption widthOption( QStringList() << "width",
                                     PencilApplication::tr( "Width of the output frames" ),
@@ -97,7 +104,7 @@ int handleArguments( PencilApplication& app )
         inputPath = posArgs.at(0);
     }
 
-    outputPaths = parser.values( exportOutOption );
+    outputPaths = parser.values( exportOutOption ) << parser.values( exportSeqOption );
 
     if ( !parser.value( widthOption ).isEmpty() )
     {
