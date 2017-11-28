@@ -58,6 +58,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "timeline.h"
 #include "util.h"
+#include "movieexporter.h"
 
 #define MIN(a,b) ((a)>(b)?(b):(a))
 
@@ -689,6 +690,9 @@ void Editor::updateObject()
     emit updateLayerCount();
 }
 
+/* TODO: Export absolutely does not belong here, but due to the messed up project structure
+ * there isn't really any better place atm. Once we do have a proper structure in place, this
+ * should go somewhere else */
 bool Editor::exportSeqCLI(QString filePath, QString format, int width, int height, bool transparency, bool antialias)
 {
     // Get the camera layer
@@ -715,6 +719,37 @@ bool Editor::exportSeqCLI(QString filePath, QString format, int width, int heigh
                           antialias,
                           NULL,
                           0);
+    return true;
+}
+
+bool Editor::exportMovieCLI(QString filePath, int width, int height)
+{
+    // Get the camera layer
+    int cameraLayerId = mLayerManager->getLastCameraLayer();
+    LayerCamera *cameraLayer = dynamic_cast<LayerCamera*>(mObject->getLayer(cameraLayerId));
+
+    if (width < 0)
+    {
+        width = cameraLayer->getViewRect().width();
+    }
+    if (height < 0)
+    {
+        height = cameraLayer->getViewRect().height();
+    }
+
+    QSize exportSize = QSize(width, height);
+    int projectLength = mLayerManager->projectLength();
+
+    ExportMovieDesc desc;
+    desc.strFileName = filePath;
+    desc.startFrame = 1;
+    desc.endFrame = projectLength;
+    desc.fps = playback()->fps();
+    desc.exportSize = exportSize;
+    desc.strCameraName = cameraLayer->name();
+
+    MovieExporter ex;
+    ex.run(object(), desc, [](float){});
     return true;
 }
 
