@@ -200,42 +200,59 @@ TEST_CASE("ViewManager::ResetView()")
     delete editor;
 }
 
-/*
-
-void TestViewManager::testEmptyCameraLayer()
+TEST_CASE("ViewManager with camera layers")
 {
-    ViewManager v(mEditor);
-    v.setEditor(mEditor);
-    v.init();
+    Object* object = new Object;
+    Editor* editor = new Editor;
+    editor->setObject(object);
 
-    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
-    QVERIFY(layerCam != nullptr);
+    SECTION("Empty Camera Layer")
+    {
+        ViewManager v(editor);
+        v.init();
 
-    auto k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
-    k->translate(100, 0);
+        LayerCamera* layerCam = editor->object()->addNewCameraLayer();
+        REQUIRE(layerCam != nullptr);
 
-    v.setCameraLayer(layerCam);
+        Camera* k = static_cast<Camera*>(layerCam->getKeyFrameAt(1));
+        k->translate(100, 0);
+        v.setCameraLayer(layerCam);
 
-    REQUIRE(k->getView(), v.getView());
-    REQUIRE(v.translation(), QPointF(100, 0));
+        REQUIRE(k->getView() == v.getView());
+        REQUIRE(v.translation() == QPointF(100, 0));
+
+        editor->object()->deleteLayer(0);
+    }
+
+    SECTION("Camera Layer with 2 keys")
+    {
+        ViewManager v(editor);
+        v.init();
+
+        // a default key at frame 0
+        // 2nd key at frame 10
+        LayerCamera* layerCam = editor->object()->addNewCameraLayer();
+        layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1));
+
+        v.setCameraLayer(layerCam);
+        editor->scrubTo(10);
+
+        // get the view matrix from camera layer at frame 10
+        QTransform t = v.getView();
+        REQUIRE(t.dx() == 100.0);
+        REQUIRE(t.dy() == 0);
+        REQUIRE(v.mapCanvasToScreen(QPointF(1, 5)) == QPointF(101, 5));
+
+        editor->object()->deleteLayer(0);
+    }
+
+    delete editor;
 }
 
+/*
 void TestViewManager::testCameraLayerWithTwoKeys()
 {
-    ViewManager v(mEditor);
-    v.setEditor(mEditor);
-    v.init();
-
-    LayerCamera* layerCam = mEditor->object()->getLayersByType<LayerCamera>()[0];
-    layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1));
-
-    v.setCameraLayer(layerCam);
-
-    mEditor->scrubTo(10);
-
-    QTransform t = v.getView();
-    REQUIRE(t.dx(), 100.0);
-    REQUIRE(v.mapCanvasToScreen(QPointF(1, 5)), QPointF(101, 5));
+    
 }
 
 void TestViewManager::testSetCameraLayerAndRemoveIt()
