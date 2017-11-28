@@ -280,6 +280,10 @@ int handleArguments( PencilApplication& app )
 
         if ( asMovie )
         {
+            if ( transparency )
+            {
+                err << PencilApplication::tr( "Warning: Transparency is not currenty supported in movie files" ) << endl;
+            }
             out << PencilApplication::tr( "Exporting movie..." ) << endl;
             mainWindow.mEditor->exportMovieCLI( outputPaths[i], cameraLayer, width, height, startFrame, endFrame );
             out << PencilApplication::tr( "Done." ) << endl;
