@@ -44,7 +44,6 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layersound.h"
-#include "layercamera.h"
 #include "keyframefactory.h"
 
 #include "colormanager.h"
@@ -693,12 +692,8 @@ void Editor::updateObject()
 /* TODO: Export absolutely does not belong here, but due to the messed up project structure
  * there isn't really any better place atm. Once we do have a proper structure in place, this
  * should go somewhere else */
-bool Editor::exportSeqCLI(QString filePath, QString format, int width, int height, int startFrame, int endFrame, bool transparency, bool antialias)
+bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString format, int width, int height, int startFrame, int endFrame, bool transparency, bool antialias)
 {
-    // Get the camera layer
-    int cameraLayerId = mLayerManager->getLastCameraLayer();
-    LayerCamera *cameraLayer = dynamic_cast<LayerCamera*>(mObject->getLayer(cameraLayerId));
-
     if (width < 0)
     {
         width = cameraLayer->getViewRect().width();
@@ -734,12 +729,8 @@ bool Editor::exportSeqCLI(QString filePath, QString format, int width, int heigh
     return true;
 }
 
-bool Editor::exportMovieCLI(QString filePath, int width, int height, int startFrame, int endFrame)
+bool Editor::exportMovieCLI(QString filePath, LayerCamera *cameraLayer, int width, int height, int startFrame, int endFrame)
 {
-    // Get the camera layer
-    int cameraLayerId = mLayerManager->getLastCameraLayer();
-    LayerCamera *cameraLayer = dynamic_cast<LayerCamera*>(mObject->getLayer(cameraLayerId));
-
     if (width < 0)
     {
         width = cameraLayer->getViewRect().width();

@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "pencilapplication.h"
 #include "layermanager.h"
+#include "object.h"
 
 
 void installTranslator( PencilApplication& app )
@@ -60,6 +61,7 @@ int handleArguments( PencilApplication& app )
     QStringList args = PencilApplication::arguments();
     QString inputPath;
     QStringList outputPaths;
+    LayerCamera* cameraLayer = nullptr;
     int width = -1, height = -1, startFrame = 1, endFrame = -1;
     bool transparency = false;
 
@@ -82,6 +84,11 @@ int handleArguments( PencilApplication& app )
                                         PencilApplication::tr( "output_path" ) );
     exportSeqOption.setFlags( QCommandLineOption::HiddenFromHelp );
     parser.addOption( exportSeqOption );
+
+    QCommandLineOption cameraOption( QStringList() << "camera",
+                                     PencilApplication::tr( "Name of the camera layer to use" ),
+                                     PencilApplication::tr( "layer_name" ) );
+    parser.addOption( cameraOption );
 
     QCommandLineOption widthOption( QStringList() << "width",
                                     PencilApplication::tr( "Width of the output frames" ),
@@ -204,7 +211,7 @@ int handleArguments( PencilApplication& app )
         }
     }
 
-    // Now that all possible user errors are handled, the actual program can be initialized
+    // Now that (almost) all possible user errors are handled, the actual program can be initialized
     MainWindow2 mainWindow;
     QObject::connect( &app, &PencilApplication::openFileRequested, &mainWindow, &MainWindow2::openFile );
     app.emitOpenFileRequest();
@@ -220,10 +227,23 @@ int handleArguments( PencilApplication& app )
         return PencilApplication::exec();
     }
 
+    mainWindow.openFile( inputPath );
+
+    if ( !parser.value( cameraOption ).isEmpty() )
+    {
+        cameraLayer = dynamic_cast<LayerCamera*>( mainWindow.mEditor->object()->findLayerByName( parser.value( cameraOption ), Layer::CAMERA ) );
+        if ( cameraLayer == nullptr )
+        {
+            err << PencilApplication::tr("Warning: the specified camera layer %1 was not found, ignoring.").arg( parser.value( cameraOption ) ) << endl;
+        }
+    }
+    if ( cameraLayer == nullptr ) {
+        int cameraLayerId = mainWindow.mEditor->layers()->getLastCameraLayer();
+        cameraLayer = dynamic_cast<LayerCamera*>( mainWindow.mEditor->object()->getLayer( cameraLayerId ) );
+    }
+
     for ( int i = 0; i < outputPaths.length(); i++ )
     {
-        mainWindow.openFile( inputPath );
-
         // Detect format
         QString format;
         QMap<QString, QString> extensionMapping;
@@ -261,13 +281,13 @@ int handleArguments( PencilApplication& app )
         if ( asMovie )
         {
             out << PencilApplication::tr( "Exporting movie..." ) << endl;
-            mainWindow.mEditor->exportMovieCLI( outputPaths[i], width, height, startFrame, endFrame );
+            mainWindow.mEditor->exportMovieCLI( outputPaths[i], cameraLayer, width, height, startFrame, endFrame );
             out << PencilApplication::tr( "Done." ) << endl;
             continue;
         }
 
         out << PencilApplication::tr( "Exporting image sequence..." ) << endl;
-        mainWindow.mEditor->exportSeqCLI( outputPaths[i], format, width, height, startFrame, endFrame, transparency );
+        mainWindow.mEditor->exportSeqCLI( outputPaths[i], cameraLayer, format, width, height, startFrame, endFrame, transparency );
         out << PencilApplication::tr( "Done." ) << endl;
     }
 
