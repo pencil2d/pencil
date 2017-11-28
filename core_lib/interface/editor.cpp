@@ -693,7 +693,7 @@ void Editor::updateObject()
 /* TODO: Export absolutely does not belong here, but due to the messed up project structure
  * there isn't really any better place atm. Once we do have a proper structure in place, this
  * should go somewhere else */
-bool Editor::exportSeqCLI(QString filePath, QString format, int width, int height, bool transparency, bool antialias)
+bool Editor::exportSeqCLI(QString filePath, QString format, int width, int height, int startFrame, int endFrame, bool transparency, bool antialias)
 {
     // Get the camera layer
     int cameraLayerId = mLayerManager->getLastCameraLayer();
@@ -707,10 +707,22 @@ bool Editor::exportSeqCLI(QString filePath, QString format, int width, int heigh
     {
         height = cameraLayer->getViewRect().height();
     }
+    if (startFrame < 1)
+    {
+        startFrame = 1;
+    }
+    if (endFrame < -1)
+    {
+        endFrame = mLayerManager->projectLength();
+    }
+    if (endFrame < 0)
+    {
+        endFrame = mLayerManager->projectLength(false);
+    }
 
     QSize exportSize = QSize(width, height);
-    int projectLength = mLayerManager->projectLength();
-    mObject->exportFrames(1, projectLength,
+    mObject->exportFrames(startFrame,
+                          endFrame,
                           cameraLayer,
                           exportSize,
                           filePath,
@@ -722,7 +734,7 @@ bool Editor::exportSeqCLI(QString filePath, QString format, int width, int heigh
     return true;
 }
 
-bool Editor::exportMovieCLI(QString filePath, int width, int height)
+bool Editor::exportMovieCLI(QString filePath, int width, int height, int startFrame, int endFrame)
 {
     // Get the camera layer
     int cameraLayerId = mLayerManager->getLastCameraLayer();
@@ -736,14 +748,25 @@ bool Editor::exportMovieCLI(QString filePath, int width, int height)
     {
         height = cameraLayer->getViewRect().height();
     }
+    if (startFrame < 1)
+    {
+        startFrame = 1;
+    }
+    if (endFrame < -1)
+    {
+        endFrame = mLayerManager->projectLength();
+    }
+    if (endFrame < 0)
+    {
+        endFrame = mLayerManager->projectLength(false);
+    }
 
     QSize exportSize = QSize(width, height);
-    int projectLength = mLayerManager->projectLength();
 
     ExportMovieDesc desc;
     desc.strFileName = filePath;
-    desc.startFrame = 1;
-    desc.endFrame = projectLength;
+    desc.startFrame = startFrame;
+    desc.endFrame = endFrame;
     desc.fps = playback()->fps();
     desc.exportSize = exportSize;
     desc.strCameraName = cameraLayer->name();

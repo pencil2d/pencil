@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "mainwindow2.h"
 #include "pencilapplication.h"
+#include "layermanager.h"
 
 
 void installTranslator( PencilApplication& app )
@@ -59,7 +60,7 @@ int handleArguments( PencilApplication& app )
     QStringList args = PencilApplication::arguments();
     QString inputPath;
     QStringList outputPaths;
-    int width = -1, height = -1;
+    int width = -1, height = -1, startFrame = 1, endFrame = -1;
     bool transparency = false;
 
     QCommandLineParser parser;
@@ -91,6 +92,18 @@ int handleArguments( PencilApplication& app )
                                      PencilApplication::tr( "Height of the output frames" ),
                                      PencilApplication::tr( "integer" ) );
     parser.addOption( heightOption );
+
+    QCommandLineOption startOption( QStringList() << "start",
+                                    PencilApplication::tr( "The first frame you want to include in the exported movie" ),
+                                    PencilApplication::tr( "frame" ) );
+    parser.addOption( startOption );
+
+    QCommandLineOption endOption( QStringList() << "end",
+                                  PencilApplication::tr( "The last frame you want to include in the exported movie. "
+                                                         "Can also be last or last-sound to automatically use the last "
+                                                         "frame containing animation or sound, respectively"),
+                                  PencilApplication::tr( "frame" ) );
+    parser.addOption( endOption );
 
     QCommandLineOption transparencyOption( QStringList() << "transparency",
                                            PencilApplication::tr( "Render transparency when possible" ) );
@@ -124,6 +137,47 @@ int handleArguments( PencilApplication& app )
         {
             err << PencilApplication::tr( "Warning: height value %1 is not an integer, ignoring." ).arg(parser.value( heightOption )) << endl;
             height = -1;
+        }
+    }
+    if ( !parser.value( startOption ).isEmpty() )
+    {
+        bool ok = false;
+        startFrame = parser.value( startOption ).toInt( &ok );
+        if ( !ok )
+        {
+            err << PencilApplication::tr( "Warning: start value %1 is not an integer, ignoring." ).arg(parser.value( startOption )) << endl;
+            startFrame = 1;
+        }
+        if ( startFrame < 1 )
+        {
+            err << PencilApplication::tr( "Warning: start value must be at least 1, ignoring." ) << endl;
+            startFrame = 1;
+        }
+    }
+    if ( !parser.value( endOption ).isEmpty() )
+    {
+        if ( parser.value( endOption ) == "last" )
+        {
+            endFrame = -1;
+        }
+        else if ( parser.value( endOption) == "last-sound" )
+        {
+            endFrame = -2;
+        }
+        else
+        {
+            bool ok = false;
+            endFrame = parser.value( endOption ).toInt( &ok );
+            if ( !ok )
+            {
+                err << PencilApplication::tr( "Warning: end value %1 is not an integer, last or last-sound, ignoring." ).arg(parser.value( endOption )) << endl;
+                endFrame = -1;
+            }
+        }
+        if (endFrame > -1 && endFrame < startFrame)
+        {
+            err << PencilApplication::tr( "Warning: end value %1 is smaller than start value %2, ignoring." ).arg(endFrame).arg(startFrame) << endl;
+            endFrame = startFrame;
         }
     }
     transparency = parser.isSet( transparencyOption );
@@ -207,13 +261,13 @@ int handleArguments( PencilApplication& app )
         if ( asMovie )
         {
             out << PencilApplication::tr( "Exporting movie..." ) << endl;
-            mainWindow.mEditor->exportMovieCLI( outputPaths[i], width, height );
+            mainWindow.mEditor->exportMovieCLI( outputPaths[i], width, height, startFrame, endFrame );
             out << PencilApplication::tr( "Done." ) << endl;
             continue;
         }
 
         out << PencilApplication::tr( "Exporting image sequence..." ) << endl;
-        mainWindow.mEditor->exportSeqCLI( outputPaths[i], format, width, height, transparency );
+        mainWindow.mEditor->exportSeqCLI( outputPaths[i], format, width, height, startFrame, endFrame, transparency );
         out << PencilApplication::tr( "Done." ) << endl;
     }
 
