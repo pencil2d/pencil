@@ -69,7 +69,7 @@ QColor ColorBox::color()
 
 void ColorBox::setColor(const QColor& newColor)
 {
-    if ( newColor != mColorWheel->color() )
+    if ( newColor.toHsv() != mColorWheel->color() )
     {
         mColorWheel->setColor(newColor);
         mColorInspector->setColor(newColor);
@@ -80,7 +80,7 @@ void ColorBox::setColor(const QColor& newColor)
 
 void ColorBox::onSpinboxChange(const QColor& color)
 {
-    if ( mColorWheel->color() != color )
+    if ( mColorWheel->color() != color.toHsv() )
     {
         mColorWheel->setColor(color);
         emit colorChanged(color);
