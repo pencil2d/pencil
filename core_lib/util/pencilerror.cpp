@@ -63,7 +63,7 @@ QString Status::details()
     return details;
 }
 
-bool Status::operator==( Status::ErrorCode code )
+bool Status::operator==( Status::ErrorCode code ) const
 {
     return ( mCode == code );
 }

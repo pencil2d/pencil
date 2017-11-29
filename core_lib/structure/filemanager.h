@@ -61,8 +61,6 @@ private:
 
     void extractProjectData( const QDomElement& element, ObjectData* data );
 
-
-
     Object* cleanUpWithErrorCode( Status );
 
 private:

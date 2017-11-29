@@ -71,7 +71,7 @@ public:
     void setDescription( QString description ) { mDescription = description; }
     void setDetailsList( QStringList detailsList ) { mDetails = detailsList; }
 
-    bool operator==( ErrorCode code );
+    bool operator==( ErrorCode code ) const;
 
 private:
     ErrorCode mCode = OK;
