@@ -32,8 +32,7 @@ INCLUDEPATH += \
 HEADERS += \
     catch.hpp \
     AutoTest.h \
-    test_object.h \
-    test_filemanager.h
+    test_object.h
 
 SOURCES += \
     main.cpp \

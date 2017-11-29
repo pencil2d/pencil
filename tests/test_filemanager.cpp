@@ -1,72 +1,76 @@
 
-#include "test_filemanager.h"
+
 
 #include <QTemporaryDir>
 #include <QTemporaryFile>
-#include <QScopedPointer>
 #include <QImage>
-#include "JlCompress.h"
 #include "fileformat.h"
 #include "filemanager.h"
 #include "util.h"
 #include "object.h"
+#include "catch.hpp"
 
-typedef std::shared_ptr< FileManager > FileManagerPtr;
-
-
-void TestFileManager::testCase1()
+TEST_CASE("FileManager Initial Test")
 {
-    FileManagerPtr fm = std::make_shared< FileManager >();
-    QVERIFY(fm->error() == Status::OK);
+    SECTION("Initial error code")
+    {
+        FileManager f;
+        REQUIRE(f.error() == Status::OK);
+    }
 }
 
-void TestFileManager::testNotExistFile()
+TEST_CASE("FileManager invalid operations")
 {
-    FileManager fm;
+    SECTION("Open a non-existing file")
+    {
+        FileManager fm;
 
-    QString strDummyPath = "hahaha_blala.pcl";
-    Object* obj = fm.load(strDummyPath);
+        QString strDummyPath = "hahaha_blala.pcl";
+        Object* obj = fm.load(strDummyPath);
 
-    QVERIFY2(obj == NULL, "File doesn't exist.");
-    QVERIFY2(fm.error().code() == Status::FILE_NOT_FOUND, "");
+        REQUIRE(obj == nullptr);
+        REQUIRE(fm.error().code() == Status::FILE_NOT_FOUND);
+    }
+
+    SECTION("Bad XML")
+    {
+        QString strBadXMLPath = QDir::tempPath() + "/bad.pcl";
+
+        // make a fake xml.
+        QFile badXMLFile(strBadXMLPath);
+        badXMLFile.open(QIODevice::WriteOnly);
+
+        QTextStream fout(&badXMLFile);
+        fout << "%% haha, this is not a xml file.";
+        badXMLFile.close();
+
+        FileManager fm;
+        Object* pObj = fm.load(strBadXMLPath);
+
+        REQUIRE(pObj == NULL);
+        REQUIRE(fm.error().code() == Status::ERROR_INVALID_XML_FILE);
+    }
+
+    SECTION("A valid xml, but doesn't follow pencil2d's rule")
+    {
+        QString strBadXMLPath = QDir::tempPath() + "/bad.pcl";
+
+        QFile badXMLFile(strBadXMLPath);
+        badXMLFile.open(QIODevice::WriteOnly);
+
+        QTextStream fout(&badXMLFile);
+        fout << "<!DOCTYPE BlahBlahRoot><document></document>";
+        badXMLFile.close();
+
+        FileManager fm;
+        Object* pObj = fm.load(strBadXMLPath);
+
+        REQUIRE(pObj == NULL);
+        REQUIRE(fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE);
+    }
 }
 
-void TestFileManager::testInvalidXML()
-{
-    QString strBadXMLPath = QDir::tempPath() + "/bad.pcl";
-
-    // make a fake xml.
-    QFile badXMLFile(strBadXMLPath);
-    badXMLFile.open(QIODevice::WriteOnly);
-
-    QTextStream fout(&badXMLFile);
-    fout << "%% haha, this is not a xml file.";
-    badXMLFile.close();
-
-    FileManager fm;
-    Object* pObj = fm.load(strBadXMLPath);
-
-    QVERIFY(pObj == NULL);
-    QVERIFY(fm.error().code() == Status::ERROR_INVALID_XML_FILE);
-}
-
-void TestFileManager::testInvalidPencilDocument()
-{
-    QString strBadXMLPath = QDir::tempPath() + "/bad.pcl";
-
-    QFile badXMLFile(strBadXMLPath);
-    badXMLFile.open(QIODevice::WriteOnly);
-
-    QTextStream fout(&badXMLFile);
-    fout << "<!DOCTYPE NotPencilDocument><document></document>";
-    badXMLFile.close();
-
-    FileManager fm;
-    Object* pObj = fm.load(strBadXMLPath);
-
-    QVERIFY(pObj == NULL);
-    QVERIFY(fm.error().code() == Status::ERROR_INVALID_PENCIL_FILE);
-}
+/*
 
 void TestFileManager::testMinimalOldPencilDocument()
 {
@@ -272,3 +276,5 @@ void TestFileManager::testLoadPCLX()
     QVERIFY(layer->name() == "MyBitmapLayer");
     QVERIFY(layer->id() == 5);
 }
+
+*/
