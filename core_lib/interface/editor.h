@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include <memory>
 #include <QList>
+#include "layercamera.h"
 #include "backupelement.h"
 #include "pencilerror.h"
 
@@ -88,8 +89,8 @@ public:
     void scrubTo(int frameNumber);
 
     int  allLayers();
-    bool exportSeqCLI(QString filePath, QString format = "PNG", int width = -1, int height = -1, bool transparency = false, bool antialias = true);
-    bool exportMovieCLI(QString filePath, int width = -1, int height = -1);
+    bool exportSeqCLI(QString filePath, LayerCamera* cameraLayer, QString format = "PNG", int width = -1, int height = -1, int startFrame = 1, int endFrame = -1, bool transparency = false, bool antialias = true);
+    bool exportMovieCLI(QString filePath, LayerCamera* cameraLayer, int width = -1, int height = -1, int startFrame = 1, int endFrame = -1);
 
     QString workingDir() const;
 
