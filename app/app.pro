@@ -99,7 +99,10 @@ FORMS += \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
+    ui/aboutdialog.ui \
     doubleprogressdialog.ui
+
+
 
 DEPENDPATH += .
 
