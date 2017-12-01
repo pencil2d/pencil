@@ -11,6 +11,12 @@
     <height>152</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>500</width>
+    <height>152</height>
+   </size>
+  </property>
   <property name="baseSize">
    <size>
     <width>0</width>
@@ -171,5 +177,74 @@
   <tabstop>AlphaspinBox</tabstop>
  </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>RedspinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ColorInspector</receiver>
+   <slot>onColorChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GreenspinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ColorInspector</receiver>
+   <slot>onColorChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>78</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>BluespinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ColorInspector</receiver>
+   <slot>onColorChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rgb</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ColorInspector</receiver>
+   <slot>onModeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>94</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>63</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onColorChanged()</slot>
+  <slot>onModeChanged()</slot>
+ </slots>
 </ui>

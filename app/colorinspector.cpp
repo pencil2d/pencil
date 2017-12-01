@@ -25,20 +25,6 @@ ColorInspector::ColorInspector(QWidget *parent) :
     noColorUpdate(false)
 {
     ui->setupUi(this);
-
-    //We constrain the widget, as the layout should have a stretch limit.
-    parent->setMaximumSize(500,height());
-
-    connect(ui->RedspinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->GreenspinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->BluespinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->AlphaspinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->rgb, SIGNAL(toggled(bool)),
-        this, SLOT(onModeChanged()));
 }
 
 ColorInspector::~ColorInspector()
