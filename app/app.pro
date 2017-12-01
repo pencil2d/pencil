@@ -96,7 +96,8 @@ FORMS += \
     ui/exportmovieoptions.ui \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
-    ui/tooloptions.ui
+    ui/tooloptions.ui \
+    ui/aboutdialog.ui
 
 DEPENDPATH += .
 
