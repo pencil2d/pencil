@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FilesPage</class>
+ <widget class="QWidget" name="FilesPage">
+  <layout class="QVBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QGroupBox" name="autosaveBox">
+     <property name="title">
+      <string comment="Preference">Autosave documents</string>
+     </property>
+     <layout class="QVBoxLayout" name="lay">
+      <item>
+       <widget class="QCheckBox" name="autosaveCheckBox">
+        <property name="text">
+         <string comment="Preference">Enable autosave</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="autosaveNumberLabel">
+        <property name="text">
+         <string comment="Preference">Number of modifications before autosaving:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="autosaveNumberBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="minimum">
+         <number>5</number>
+        </property>
+        <property name="maximum">
+         <number>200</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="clearRecentFilesBox">
+     <property name="title">
+      <string comment="Clear Recent Files (Preference)">Clear recent files list</string>
+     </property>
+     <layout class="QVBoxLayout" name="clearRecentChangesLay">
+      <item>
+       <widget class="QLabel" name="clearRecentFilesLbl">
+        <property name="text">
+         <string comment="Clear Recent Files (Preference)">This will clear your list of recently opened files</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="clearRecentFilesBtn">
+        <property name="text">
+         <string comment="Clear Recent Files (Preference)">Clear</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>autosaveCheckBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>FilesPage</receiver>
+   <slot>autosaveChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>41</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>autosaveNumberBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>FilesPage</receiver>
+   <slot>autosaveNumberChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>105</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearRecentFilesBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>FilesPage</receiver>
+   <slot>clearRecentFilesList()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>autosaveChange(int)</slot>
+  <slot>autosaveNumberChange(int)</slot>
+  <slot>clearRecentFilesList()</slot>
+ </slots>
+</ui>

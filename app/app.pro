@@ -103,7 +103,8 @@ FORMS += \
     doubleprogressdialog.ui \
     ui/preferencesdialog.ui \
     ui/generalpage.ui \
-    ui/timelinepage.ui
+    ui/timelinepage.ui \
+    ui/filespage.ui
 
 
 
