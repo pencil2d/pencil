@@ -46,6 +46,7 @@ class FilesPage;
 
 namespace Ui {
 class PreferencesDialog;
+class GeneralPage;
 }
 
 class PreferencesDialog : public QDialog
@@ -84,6 +85,7 @@ class GeneralPage : public QWidget
     Q_OBJECT
 public:
     GeneralPage(QWidget* parent = 0);
+    ~GeneralPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 
@@ -91,35 +93,27 @@ public slots:
     void updateValues();
     void gridSizeChange(int value);
 
+signals:
+    void windowOpacityChange(int value);
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
-private:
+private slots:
     void languageChanged( int i );
-    void shadowsCheckboxStateChanged(bool b);
-    void antiAliasCheckboxStateChanged( bool b );
-    void toolCursorsCheckboxStateChanged( bool b );
-    void dottedCursorCheckboxStateChanged( bool b );
-    void highResCheckboxStateChanged(bool b);
-    void gridCheckBoxStateChanged(bool b);
+    void shadowsCheckboxStateChanged(int b);
+    void antiAliasCheckboxStateChanged( int b );
+    void toolCursorsCheckboxStateChanged( int b );
+    void dottedCursorCheckboxStateChanged( int b );
+    void highResCheckboxStateChanged(int b);
+    void gridCheckBoxStateChanged(int b);
     void curveSmoothingChange(int value);
     void backgroundChange(int value);
 
-    PreferenceManager* mManager = nullptr;
-    QScrollArea* scrollArea;
-    QWidget* contents;
+private:
+    Ui::GeneralPage* ui = nullptr;
 
-    QComboBox* mLanguageCombo = nullptr;
-    QSlider* mWindowOpacityLevel;
-    QSlider* mCurveSmoothingLevel;
-    QCheckBox* mShadowsBox;
-    QCheckBox* mToolCursorsBox;
-    QCheckBox* mAntialiasingBox;
-    QCheckBox* mHighResBox;
-    QButtonGroup *mBackgroundButtons;
-    QCheckBox* mDottedCursorBox;
-    QSpinBox* mGridSizeInput;
-    QCheckBox* mGridCheckBox;
+    PreferenceManager* mManager = nullptr;
 
     int gridSize;
 

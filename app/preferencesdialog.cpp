@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
+#include "ui_generalpage.h"
 #include <QComboBox>
 #include <QMessageBox>
 
@@ -38,6 +39,7 @@ void PreferencesDialog::init( PreferenceManager* m )
 
     ui->general->setManager( mPrefManager );
     ui->general->updateValues();
+    connect( ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange );
     //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
 
     ui->filesPage->setManager( mPrefManager );
@@ -76,50 +78,29 @@ void PreferencesDialog::updateRecentListBtn(bool isEmpty)
     }
 }
 
-GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
+GeneralPage::GeneralPage(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::GeneralPage)
 {
+    ui->setupUi(this);
+
     QSettings settings( PENCIL2D, PENCIL2D );
-    contents = new QWidget();
-    QVBoxLayout* outerLay = new QVBoxLayout(this);
-    QVBoxLayout* lay = new QVBoxLayout(contents);
-    scrollArea = new QScrollArea;
 
-    QGroupBox* languageBox = new QGroupBox( tr("Language", "GroupBox title in Preference") );
-    QGroupBox* windowOpacityBox = new QGroupBox( tr( "Window opacity", "GroupBox title in Preference" ) );
-    QGroupBox* backgroundBox = new QGroupBox( tr( "Background", "GroupBox title in Preference" ) );
-    QGroupBox* appearanceBox = new QGroupBox( tr( "Appearance", "GroupBox title in Preference" ) );
-    QGroupBox* displayBox = new QGroupBox( tr( "Canvas", "GroupBox title in Preference" ) );
-    QGroupBox* editingBox = new QGroupBox( tr( "Editing", "GroupBox title in Preference" ) );
-    QGroupBox* gridBox = new QGroupBox(tr("Grid", "groupBox title in Preference") );
+    ui->languageCombo->addItem( tr( "Czech" ), "cs" );
+    ui->languageCombo->addItem( tr( "Danish" ), "da" );
+    ui->languageCombo->addItem( tr( "English" ), "en" );
+    ui->languageCombo->addItem( tr( "German" ), "de" );
+    ui->languageCombo->addItem( tr( "Spanish" ), "es" );
+    ui->languageCombo->addItem( tr( "French" ), "fr" );
+    ui->languageCombo->addItem( tr( "Hungarian" ), "hu-HU" );
+    ui->languageCombo->addItem( tr( "Italian" ), "it" );
+    ui->languageCombo->addItem( tr( "Japanese" ), "ja" );
+    ui->languageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );
+    ui->languageCombo->addItem( tr( "Russian" ), "ru" );
+    ui->languageCombo->addItem( tr( "Chinese - Taiwan" ), "zh-TW" );
 
-    mLanguageCombo = new QComboBox;
-    mLanguageCombo->addItem( tr( "[System-Language]" ), "First item of the language list" );
-    mLanguageCombo->addItem( tr( "Czech" ), "cs" );
-    mLanguageCombo->addItem( tr( "Danish" ), "da" );
-    mLanguageCombo->addItem( tr( "English" ), "en" );
-    mLanguageCombo->addItem( tr( "German" ), "de" );
-    mLanguageCombo->addItem( tr( "Spanish" ), "es" );
-    mLanguageCombo->addItem( tr( "French" ), "fr" );
-    mLanguageCombo->addItem( tr( "Hungarian" ), "hu-HU" );
-    mLanguageCombo->addItem( tr( "Italian" ), "it" );
-    mLanguageCombo->addItem( tr( "Japanese" ), "ja" );
-    mLanguageCombo->addItem( tr( "Portuguese - Brazil" ), "pt-BR" );
-    mLanguageCombo->addItem( tr( "Russian" ), "ru" );
-    mLanguageCombo->addItem( tr( "Chinese - Taiwan" ), "zh-TW" );
-
-    QLabel* windowOpacityLabel = new QLabel(tr("Opacity"));
-    mWindowOpacityLevel = new QSlider(Qt::Horizontal);
-    mWindowOpacityLevel->setMinimum(30);
-    mWindowOpacityLevel->setMaximum(100);
     int value = settings.value("windowOpacity").toInt();
-    mWindowOpacityLevel->setValue( 100 - value );
-
-    mBackgroundButtons = new QButtonGroup();
-    QRadioButton* checkerBackgroundButton = new QRadioButton();
-    QRadioButton* whiteBackgroundButton = new QRadioButton();
-    QRadioButton* greyBackgroundButton = new QRadioButton();
-    QRadioButton* dotsBackgroundButton = new QRadioButton();
-    QRadioButton* weaveBackgroundButton = new QRadioButton();
+    ui->windowOpacityLevel->setValue( 100 - value );
 
     QPixmap previewCheckerboard( ":background/checkerboard.png" );
     QPixmap previewWhite(32,32);
@@ -128,124 +109,31 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QPixmap previewWeave( ":background/weave.jpg" );
 
     previewWhite.fill( Qt::white );
-
     previewGrey.fill( Qt:: lightGray );
 
-    checkerBackgroundButton->setIcon( previewCheckerboard.scaled(32, 32) );
-    whiteBackgroundButton->setIcon( previewWhite );
-    greyBackgroundButton->setIcon( previewGrey );
-    dotsBackgroundButton->setIcon( previewDots.scaled(32, 32) );
-    weaveBackgroundButton->setIcon( previewWeave.scaled(32, 32) );
-    mBackgroundButtons->addButton(checkerBackgroundButton);
-    mBackgroundButtons->addButton(whiteBackgroundButton);
-    mBackgroundButtons->addButton(greyBackgroundButton);
-    mBackgroundButtons->addButton(dotsBackgroundButton);
-    mBackgroundButtons->addButton(weaveBackgroundButton);
-    mBackgroundButtons->setId(checkerBackgroundButton, 1);
-    mBackgroundButtons->setId(whiteBackgroundButton, 2);
-    mBackgroundButtons->setId(greyBackgroundButton, 3);
-    mBackgroundButtons->setId(dotsBackgroundButton, 4);
-    mBackgroundButtons->setId(weaveBackgroundButton, 5);
+    ui->checkerBackgroundButton->setIcon( previewCheckerboard.scaled(32, 32) );
+    ui->whiteBackgroundButton->setIcon( previewWhite );
+    ui->greyBackgroundButton->setIcon( previewGrey );
+    ui->dotsBackgroundButton->setIcon( previewDots.scaled(32, 32) );
+    ui->weaveBackgroundButton->setIcon( previewWeave.scaled(32, 32) );
+    ui->backgroundButtons->setId(ui->checkerBackgroundButton, 1);
+    ui->backgroundButtons->setId(ui->whiteBackgroundButton, 2);
+    ui->backgroundButtons->setId(ui->greyBackgroundButton, 3);
+    ui->backgroundButtons->setId(ui->dotsBackgroundButton, 4);
+    ui->backgroundButtons->setId(ui->weaveBackgroundButton, 5);
 
-    QHBoxLayout* backgroundLayout = new QHBoxLayout();
-    backgroundBox->setLayout(backgroundLayout);
-    backgroundLayout->addWidget(checkerBackgroundButton);
-    backgroundLayout->addWidget(whiteBackgroundButton);
-    backgroundLayout->addWidget(greyBackgroundButton);
-    backgroundLayout->addWidget(dotsBackgroundButton);
-    backgroundLayout->addWidget(weaveBackgroundButton);
-
-    mShadowsBox = new QCheckBox(tr("Shadows"));
-    mToolCursorsBox = new QCheckBox(tr("Tool Cursors"));
-    mAntialiasingBox = new QCheckBox(tr("Antialiasing"));
-    mDottedCursorBox = new QCheckBox(tr("Dotted Cursor"));
-
-    QGridLayout* langLayout = new QGridLayout;
-    languageBox->setLayout( langLayout );
-    langLayout->addWidget( mLanguageCombo );
-
-
-    mGridCheckBox = new QCheckBox(tr("Enable Grid"));
-
-    mGridSizeInput = new QSpinBox();
-    mGridSizeInput->setMinimum(1);
-    mGridSizeInput->setMaximum(512);
-    mGridSizeInput->setFixedWidth(80);
     gridSize = settings.value("gridSize").toInt();
-    mGridSizeInput->setValue( gridSize );
+    ui->gridSizeInput->setValue( gridSize );
 
-    connect( mGridSizeInput, SIGNAL(valueChanged(int)), this, SLOT(gridSizeChange(int)));
-
-    QGridLayout* windowOpacityLayout = new QGridLayout();
-    windowOpacityBox->setLayout(windowOpacityLayout);
-    windowOpacityLayout->addWidget(windowOpacityLabel, 0, 0);
-    windowOpacityLayout->addWidget(mWindowOpacityLevel, 0, 1);
-
-    QVBoxLayout* appearanceLayout = new QVBoxLayout();
-    appearanceBox->setLayout(appearanceLayout);
-    appearanceLayout->addWidget(mShadowsBox);
-    appearanceLayout->addWidget(mToolCursorsBox);
-    appearanceLayout->addWidget(mDottedCursorBox);
-
-    QGridLayout* displayLayout = new QGridLayout();
-    displayBox->setLayout(displayLayout);
-    displayLayout->addWidget(mAntialiasingBox, 0, 0);
-
-    QGridLayout* gridLayout = new QGridLayout();
-    gridBox->setLayout(gridLayout);
-    gridLayout->addWidget(mGridSizeInput, 0, 0);
-    gridLayout->addWidget(mGridCheckBox, 0, 10);
-
-    QLabel* curveSmoothingLabel = new QLabel(tr("Vector curve smoothing"));
-    mCurveSmoothingLevel = new QSlider(Qt::Horizontal);
-    mCurveSmoothingLevel->setMinimum(1);
-    mCurveSmoothingLevel->setMaximum(100);
     value = settings.value("curveSmoothing").toInt();
-    mCurveSmoothingLevel->setValue( value );
+    ui->curveSmoothingLevel->setValue( value );
 
-    mHighResBox = new QCheckBox(tr("Tablet high-resolution position"));
+    connect( ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange );
+}
 
-    QGridLayout* editingLayout = new QGridLayout();
-    editingBox->setLayout(editingLayout);
-    editingLayout->addWidget(curveSmoothingLabel, 0, 0);
-    editingLayout->addWidget(mCurveSmoothingLevel, 1, 0);
-    editingLayout->addWidget(mHighResBox, 2, 0);
-
-    outerLay->addWidget(scrollArea);
-    outerLay->addStretch(1);
-
-    lay->addWidget( languageBox );
-    lay->addWidget( windowOpacityBox );
-    lay->addWidget( appearanceBox );
-    lay->addWidget( backgroundBox );
-    lay->addWidget( displayBox );
-    lay->addWidget( editingBox );
-    lay->addWidget( gridBox );
-
-    scrollArea->setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
-    scrollArea->setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
-    scrollArea->setMaximumWidth(400);
-    scrollArea->setMinimumWidth(128);
-    scrollArea->setWidgetResizable (true);
-    scrollArea->setWidget(contents);
-
-    PreferencesDialog* preference = qobject_cast< PreferencesDialog* >( parent );
-
-    auto kButtonClicked = static_cast< void (QButtonGroup::* )( int ) >( &QButtonGroup::buttonClicked );
-    auto kCurIndexChagned = static_cast< void( QComboBox::* )( int ) >( &QComboBox::currentIndexChanged );
-    connect( mLanguageCombo,      kCurIndexChagned,         this, &GeneralPage::languageChanged );
-    connect( mWindowOpacityLevel, &QSlider::valueChanged,   preference, &PreferencesDialog::windowOpacityChange );
-    connect( mBackgroundButtons,  kButtonClicked,           this, &GeneralPage::backgroundChange );
-    connect( mShadowsBox,         &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged );
-    connect( mToolCursorsBox,     &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged );
-    connect( mAntialiasingBox,    &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged );
-    connect( mCurveSmoothingLevel, &QSlider::valueChanged,  this, &GeneralPage::curveSmoothingChange );
-    connect( mHighResBox,         &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged );
-    connect( mDottedCursorBox,    &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged );
-    connect( mGridSizeInput, SIGNAL(valueChanged(int)), this, SLOT(gridSizeChange(int)));
-    connect( mGridCheckBox,    &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged );
-
-    setLayout(lay);
+GeneralPage::~GeneralPage()
+{
+    delete ui;
 }
 
 void GeneralPage::resizeEvent(QResizeEvent* event)
@@ -256,54 +144,54 @@ void GeneralPage::resizeEvent(QResizeEvent* event)
     } else if (this->height() >= 560) {
         size = 560;
     }
-    scrollArea->setMinimumHeight(size);
+    ui->scrollArea->setMinimumHeight(size);
     QWidget::resizeEvent(event);
 }
 
 
 void GeneralPage::updateValues()
 {
-    int index = mLanguageCombo->findData( mManager->getString( SETTING::LANGUAGE ) );
+    int index = ui->languageCombo->findData( mManager->getString( SETTING::LANGUAGE ) );
 
     if ( index >= 0 )
     {
-        mLanguageCombo->blockSignals( true );
-        mLanguageCombo->setCurrentIndex( index );
-        mLanguageCombo->blockSignals( false );
+        ui->languageCombo->blockSignals( true );
+        ui->languageCombo->setCurrentIndex( index );
+        ui->languageCombo->blockSignals( false );
     }
 
-    mCurveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
-    mWindowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
-    mShadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
-    mToolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
-    mAntialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
-    mDottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
-    mGridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
-    mGridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
+    ui->curveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
+    ui->windowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
+    ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
+    ui->toolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
+    ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
+    ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
+    ui->gridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
+    ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
 
-    mHighResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
+    ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
     if (bgName == "checkerboard") {
-        mBackgroundButtons->button(1)->setChecked(true);
+        ui->backgroundButtons->button(1)->setChecked(true);
     }
     if (bgName == "white") {
-        mBackgroundButtons->button(2)->setChecked(true);
+        ui->backgroundButtons->button(2)->setChecked(true);
     }
     if (bgName == "grey") {
-        mBackgroundButtons->button(3)->setChecked(true);
+        ui->backgroundButtons->button(3)->setChecked(true);
     }
     if (bgName == "dots") {
-        mBackgroundButtons->button(4)->setChecked(true);
+        ui->backgroundButtons->button(4)->setChecked(true);
     }
     if (bgName == "weave") {
-        mBackgroundButtons->button(5)->setChecked(true);
+        ui->backgroundButtons->button(5)->setChecked(true);
     }
 }
 
 void GeneralPage::languageChanged( int i )
 {
-    QString strLocale = mLanguageCombo->itemData( i ).toString();
+    QString strLocale = ui->languageCombo->itemData( i ).toString();
     mManager->set( SETTING::LANGUAGE, strLocale );
 
     QMessageBox::warning( this,
@@ -342,29 +230,29 @@ void GeneralPage::curveSmoothingChange(int value)
     mManager->set(SETTING::CURVE_SMOOTHING, value);
 }
 
-void GeneralPage::highResCheckboxStateChanged( bool b )
+void GeneralPage::highResCheckboxStateChanged( int b )
 {
-    mManager->set( SETTING::HIGH_RESOLUTION, b );
+    mManager->set( SETTING::HIGH_RESOLUTION, b != Qt::Unchecked );
 }
 
-void GeneralPage::shadowsCheckboxStateChanged( bool b )
+void GeneralPage::shadowsCheckboxStateChanged( int b )
 {
-    mManager->set( SETTING::SHADOW, b );
+    mManager->set( SETTING::SHADOW, b != Qt::Unchecked );
 }
 
-void GeneralPage::antiAliasCheckboxStateChanged( bool b )
+void GeneralPage::antiAliasCheckboxStateChanged( int b )
 {
-    mManager->set( SETTING::ANTIALIAS, b );
+    mManager->set( SETTING::ANTIALIAS, b != Qt::Unchecked );
 }
 
-void GeneralPage::toolCursorsCheckboxStateChanged(bool b)
+void GeneralPage::toolCursorsCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::TOOL_CURSOR, b );
+    mManager->set( SETTING::TOOL_CURSOR, b != Qt::Unchecked );
 }
 
-void GeneralPage::dottedCursorCheckboxStateChanged(bool b)
+void GeneralPage::dottedCursorCheckboxStateChanged(int b)
 {
-    mManager->set( SETTING::DOTTED_CURSOR, b );
+    mManager->set( SETTING::DOTTED_CURSOR, b != Qt::Unchecked );
 }
 
 void GeneralPage::gridSizeChange(int value)
@@ -372,9 +260,9 @@ void GeneralPage::gridSizeChange(int value)
     mManager->set(SETTING::GRID_SIZE, value);
 }
 
-void GeneralPage::gridCheckBoxStateChanged(bool b)
+void GeneralPage::gridCheckBoxStateChanged(int b)
 {
-    mManager->set(SETTING::GRID, b);
+    mManager->set(SETTING::GRID, b != Qt::Unchecked);
 }
 
 TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
