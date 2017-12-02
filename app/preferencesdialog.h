@@ -48,6 +48,7 @@ namespace Ui {
 class PreferencesDialog;
 class GeneralPage;
 class TimelinePage;
+class FilesPage;
 }
 
 class PreferencesDialog : public QDialog
@@ -149,24 +150,22 @@ class FilesPage : public QWidget
 
 public:
     FilesPage(QWidget *parent = 0);
+    ~FilesPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
     void updateValues();
-    void autosaveChange(bool b);
+    void autosaveChange(int b);
     void autosaveNumberChange(int number);
     void clearRecentFilesList();
-    QPushButton *getClearRecentFilesBtn() { return mClearRecentFilesBtn; }
     void updateClearRecentListButton();
 
 Q_SIGNALS:
     void clearRecentList();
 
 private:
+    Ui::FilesPage *ui = nullptr;
     PreferenceManager *mManager = nullptr;
-    QCheckBox *mAutosaveCheckBox;
-    QSpinBox *mAutosaveNumberBox;
-    QPushButton *mClearRecentFilesBtn;
 
 };
 

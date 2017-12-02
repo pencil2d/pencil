@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
+#include "ui_filespage.h"
 #include <QComboBox>
 #include <QMessageBox>
 
@@ -317,62 +318,33 @@ void TimelinePage::scrubChange(int value)
     mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
 }
 
-FilesPage::FilesPage(QWidget* parent) : QWidget(parent)
+FilesPage::FilesPage(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::FilesPage)
 {
-    QVBoxLayout *lay = new QVBoxLayout();
+    ui->setupUi(this);
+}
 
-    QVBoxLayout *clearRecentChangesLay = new QVBoxLayout();
-
-	QGroupBox *autosaveBox = new QGroupBox( tr( "Autosave documents", "Preference" ) );
-    mAutosaveCheckBox = new QCheckBox(tr("Enable autosave", "Preference" ));
-	QLabel *autosaveNumberLabel = new QLabel( tr( "Number of modifications before autosaving:", "Preference" ) );
-    mAutosaveNumberBox = new QSpinBox();
-
-    QGroupBox *clearRecentFilesBox = new QGroupBox(tr("Clear recent files list", "Clear Recent Files (Preference)" ));
-    QLabel *clearRecentFilesLbl = new QLabel(tr("This will clear your list of recently opened files", "Clear Recent Files (Preference)" ));
-	mClearRecentFilesBtn = new QPushButton( tr( "Clear", "Clear Recent Files (Preference)" ) );
-
-    mAutosaveNumberBox = new QSpinBox();
-
-    mAutosaveNumberBox->setMinimum(5);
-    mAutosaveNumberBox->setMaximum(200);
-    mAutosaveNumberBox->setFixedWidth(50);
-
-    connect(mAutosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autosaveChange);
-    connect(mAutosaveNumberBox, SIGNAL(valueChanged(int)), this, SLOT(autosaveNumberChange(int)));
-    connect(mClearRecentFilesBtn, SIGNAL(clicked(bool)), this, SLOT(clearRecentFilesList()));
-
-    lay->addWidget(mAutosaveCheckBox);
-    lay->addWidget(autosaveNumberLabel);
-    lay->addWidget(mAutosaveNumberBox);
-    autosaveBox->setLayout(lay);
-
-    clearRecentChangesLay->addWidget(clearRecentFilesLbl);
-    clearRecentChangesLay->addWidget(mClearRecentFilesBtn);
-    clearRecentFilesBox->setLayout(clearRecentChangesLay);
-
-    QVBoxLayout* mainLayout = new QVBoxLayout();
-    mainLayout->addWidget(autosaveBox);
-    mainLayout->addWidget(clearRecentFilesBox);
-    mainLayout->addStretch(1);
-    setLayout(mainLayout);
+FilesPage::~FilesPage()
+{
+    delete ui;
 }
 
 void FilesPage::updateValues()
 {
-    mAutosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
-    mAutosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+    ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
+    ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
 }
 
 void FilesPage::updateClearRecentListButton()
 {
-    mClearRecentFilesBtn->setEnabled(false);
-    mClearRecentFilesBtn->setText("List is empty");
+    ui->clearRecentFilesBtn->setEnabled(false);
+    ui->clearRecentFilesBtn->setText(tr("List is empty"));
 }
 
-void FilesPage::autosaveChange(bool b)
+void FilesPage::autosaveChange(int b)
 {
-    mManager->set(SETTING::AUTO_SAVE, b);
+    mManager->set(SETTING::AUTO_SAVE, b != Qt::Unchecked);
 }
 
 void FilesPage::autosaveNumberChange(int number)
