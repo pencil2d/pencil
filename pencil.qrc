@@ -62,5 +62,48 @@
         <file>icons/onion_type.png</file>
         <file>icons/controls/stop.png</file>
         <file>icons/controls/sound-disabled.png</file>
+        <file>icons/new/arrow.png</file>
+        <file>icons/new/brush_detailed.png</file>
+        <file>icons/new/brush_flat_outlined.png</file>
+        <file>icons/new/bucket_detailed.png</file>
+        <file>icons/new/bucket_flat_outlined.png</file>
+        <file>icons/new/eraser_detailed.png</file>
+        <file>icons/new/eraser_flat_outlined.png</file>
+        <file>icons/new/eyedropper_detailed.png</file>
+        <file>icons/new/eyedropper_flat_outlined.png</file>
+        <file>icons/new/hand_detailed.png</file>
+        <file>icons/new/hand_flat_outlined.png</file>
+        <file>icons/new/line.png</file>
+        <file>icons/new/pen_detailed.png</file>
+        <file>icons/new/pen_flat_outlined.png</file>
+        <file>icons/new/pencil_detailed.png</file>
+        <file>icons/new/pencil_flat_outlined.png</file>
+        <file>icons/new/selection.png</file>
+        <file>icons/new/smudge_detailed.png</file>
+        <file>icons/new/smudge_flat_outlined.png</file>
+        <file>icons/new/trash_detailed.png</file>
+        <file>icons/new/trash_flat_outlined.png</file>
+        <file>icons/new/svg/arrow.svg</file>
+        <file>icons/new/svg/brush_detailed.svg</file>
+        <file>icons/new/svg/brush_flat_outlined.svg</file>
+        <file>icons/new/svg/bucket_detailed.svg</file>
+        <file>icons/new/svg/bucket_flat_outlined.svg</file>
+        <file>icons/new/svg/eraser_detailed.svg</file>
+        <file>icons/new/svg/eraser_flat_outlined.svg</file>
+        <file>icons/new/svg/eyedropper_detailed.svg</file>
+        <file>icons/new/svg/eyedropper_flat_outlined.svg</file>
+        <file>icons/new/svg/hand_detailed.svg</file>
+        <file>icons/new/svg/hand_flat_outlined.svg</file>
+        <file>icons/new/svg/line.svg</file>
+        <file>icons/new/svg/pen_detailed.svg</file>
+        <file>icons/new/svg/pen_flat_outlined.svg</file>
+        <file>icons/new/svg/pen_pattern_detailed.svg</file>
+        <file>icons/new/svg/pencil_detailed.svg</file>
+        <file>icons/new/svg/pencil_flat_outlined.svg</file>
+        <file>icons/new/svg/selection.svg</file>
+        <file>icons/new/svg/smudge_detailed.svg</file>
+        <file>icons/new/svg/smudge_flat_outlined.svg</file>
+        <file>icons/new/svg/trash_detailed.svg</file>
+        <file>icons/new/svg/trash_flat_outlined.svg</file>
     </qresource>
 </RCC>
