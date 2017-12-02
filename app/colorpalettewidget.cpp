@@ -32,26 +32,16 @@ GNU General Public License for more details.
 #include "colormanager.h"
 
 
-ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) : BaseDockWidget(parent)
+ColorPaletteWidget::ColorPaletteWidget(QWidget* parent) :
+    BaseDockWidget(parent),
+    ui(new Ui::ColorPalette)
 {
-    setWindowTitle(tr("Color Palette", "Window title of color palette."));
+    ui->setupUi(this);
+}
 
-    QWidget* pWidget = new QWidget(this);
-    ui = new Ui::ColorPalette;
-    ui->setupUi(pWidget);
-    setWidget(pWidget);
-
-    connect(ui->colorListWidget, &QListWidget::currentItemChanged,
-            this, &ColorPaletteWidget::colorListCurrentItemChanged);
-
-    connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
-
-    connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
-    connect(ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange);
-
-    connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
-    connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
-    connect(ui->palettePref, &QToolButton::clicked, this, &ColorPaletteWidget::palettePreferences);
+ColorPaletteWidget::~ColorPaletteWidget()
+{
+    delete ui;
 }
 
 void ColorPaletteWidget::initUI()
@@ -192,41 +182,6 @@ void ColorPaletteWidget::clickColorListItem(QListWidgetItem* currentItem)
 
 void ColorPaletteWidget::palettePreferences()
 {
-    mLayoutModeActionGroup = new QActionGroup(this);
-    mListModeAction = new QAction(tr("List mode"), this);
-    mListModeAction->setStatusTip(tr("Show palette as a list"));
-    mListModeAction->setCheckable(true);
-    mListModeAction->setChecked(true);
-    mLayoutModeActionGroup->addAction(mListModeAction);
-    connect(mListModeAction, &QAction::triggered, this, &ColorPaletteWidget::setListMode);
-
-    mGridModeAction = new QAction(tr("Grid mode"), this);
-    mGridModeAction->setStatusTip(tr("Show palette as icons"));
-    mGridModeAction->setCheckable(true);
-    mLayoutModeActionGroup->addAction(mGridModeAction);
-    connect(mGridModeAction, &QAction::triggered, this, &ColorPaletteWidget::setGridMode);
-
-    // Swatch size control
-    mIconSizesActionGroup = new QActionGroup(this);
-    mSmallSwatchAction = new QAction(tr("Small swatch"), this);
-    mSmallSwatchAction->setStatusTip(tr("Sets swatch size to: 16x16px"));
-    mSmallSwatchAction->setCheckable(true);
-    mIconSizesActionGroup->addAction(mSmallSwatchAction);
-    connect(mSmallSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeSmall);
-
-    mMediumSwatchAction = new QAction(tr("Medium swatch"), this);
-    mMediumSwatchAction->setStatusTip(tr("Sets swatch size to: 26x26px"));
-    mMediumSwatchAction->setCheckable(true);
-    mIconSizesActionGroup->addAction(mMediumSwatchAction);
-    connect(mMediumSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeMedium);
-
-    mLargeSwatchAction = new QAction(tr("Large swatch"), this);
-    mLargeSwatchAction->setCheckable(true);
-    mLargeSwatchAction->setStatusTip(tr("Sets swatch size to: 36x36px"));
-    mIconSizesActionGroup->addAction(mLargeSwatchAction);
-    mLargeSwatchAction->setChecked(true);
-    connect(mLargeSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeLarge);
-
     ui->colorListWidget->setMinimumWidth(ui->colorListWidget->sizeHintForColumn(0));
 
     // Let's pretend this button is a separator
@@ -234,12 +189,12 @@ void ColorPaletteWidget::palettePreferences()
     mSeparator->setSeparator(true);
 
     // Add to UI
-    ui->palettePref->addAction(mListModeAction);
-    ui->palettePref->addAction(mGridModeAction);
+    ui->palettePref->addAction(ui->listModeAction);
+    ui->palettePref->addAction(ui->gridModeAction);
     ui->palettePref->addAction(mSeparator);
-    ui->palettePref->addAction(mSmallSwatchAction);
-    ui->palettePref->addAction(mMediumSwatchAction);
-    ui->palettePref->addAction(mLargeSwatchAction);
+    ui->palettePref->addAction(ui->smallSwatchAction);
+    ui->palettePref->addAction(ui->mediumSwatchAction);
+    ui->palettePref->addAction(ui->largeSwatchAction);
 }
 
 void ColorPaletteWidget::setListMode()

@@ -42,6 +42,7 @@ class ColorPaletteWidget : public BaseDockWidget
 
 public:
     explicit ColorPaletteWidget(QWidget* parent);
+    ~ColorPaletteWidget();
 
     void initUI() override;
     void updateUI() override;
@@ -59,8 +60,7 @@ signals:
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
-private: // slots:
-    void updateItemColor(int, QColor);
+private slots:
     void colorListCurrentItemChanged(QListWidgetItem*, QListWidgetItem*);
     void clickColorListItem(QListWidgetItem*);
     void changeColourName(QListWidgetItem*);
@@ -73,9 +73,11 @@ private: // slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
-    void updateGridUI();
 
 private:
+    void updateItemColor(int, QColor);
+    void updateGridUI();
+
     QString getDefaultColorName(QColor c);
 
     Ui::ColorPalette* ui = nullptr;
