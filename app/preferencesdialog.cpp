@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include "ui_generalpage.h"
 #include "ui_timelinepage.h"
 #include "ui_filespage.h"
+#include "ui_toolspage.h"
 #include <QComboBox>
 #include <QMessageBox>
 #include "util.h"
@@ -352,80 +353,25 @@ void FilesPage::clearRecentFilesList()
     emit clearRecentList();
 }
 
-ToolsPage::ToolsPage(QWidget* parent) : QWidget(parent)
+ToolsPage::ToolsPage(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::ToolsPage)
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
+    ui->setupUi(this);
+}
 
-    QVBoxLayout* lay = new QVBoxLayout();
-
-    QGroupBox* onionSkinBox = new QGroupBox(tr("Onion skin"));
-
-    QLabel* onionMaxOpacityLabel = new QLabel(tr("Maximum onion opacity %"));
-    mOnionMaxOpacityBox = new QSpinBox();
-    QLabel* onionMinOpacityLabel = new QLabel(tr("Minimum onion opacity %"));
-    mOnionMinOpacityBox = new QSpinBox();
-    QLabel* onionPrevFramesNumLabel = new QLabel(tr("Number of previous onion frames shown"));
-    mOnionPrevFramesNumBox = new QSpinBox();
-    QLabel* onionNextFramesNumLabel = new QLabel(tr("Number of next onion frames shown"));
-    mOnionNextFramesNumBox = new QSpinBox();
-
-    mOnionMaxOpacityBox->setMinimum(0);
-    mOnionMaxOpacityBox->setMaximum(100);
-    mOnionMaxOpacityBox->setFixedWidth(50);
-    mOnionMinOpacityBox->setMinimum(0);
-    mOnionMinOpacityBox->setMaximum(100);
-    mOnionMinOpacityBox->setFixedWidth(50);
-    mOnionPrevFramesNumBox->setMinimum(1);
-    mOnionPrevFramesNumBox->setMaximum(60);
-    mOnionPrevFramesNumBox->setFixedWidth(50);
-    mOnionNextFramesNumBox->setMinimum(1);
-    mOnionNextFramesNumBox->setMaximum(60);
-    mOnionNextFramesNumBox->setFixedWidth(50);
-
-    mOnionMaxOpacityBox->setValue(settings.value( SETTING_ONION_MAX_OPACITY ).toInt());
-    mOnionMinOpacityBox->setValue(settings.value( SETTING_ONION_MIN_OPACITY ).toInt());
-    mOnionPrevFramesNumBox->setValue(settings.value( SETTING_ONION_PREV_FRAMES_NUM).toInt());
-    mOnionNextFramesNumBox->setValue(settings.value( SETTING_ONION_NEXT_FRAMES_NUM ).toInt());
-
-    connect(mOnionMaxOpacityBox, SIGNAL(valueChanged(int)), this, SLOT(onionMaxOpacityChange(int)));
-    connect(mOnionMinOpacityBox, SIGNAL(valueChanged(int)), this, SLOT(onionMinOpacityChange(int)));
-    connect(mOnionPrevFramesNumBox, SIGNAL(valueChanged(int)), this, SLOT(onionPrevFramesNumChange(int)));
-    connect(mOnionNextFramesNumBox, SIGNAL(valueChanged(int)), this, SLOT(onionNextFramesNumChange(int)));
-
-    lay->addWidget(onionMaxOpacityLabel);
-    lay->addWidget(mOnionMaxOpacityBox);
-    lay->addWidget(onionMinOpacityLabel);
-    lay->addWidget(mOnionMinOpacityBox);
-    lay->addWidget(onionPrevFramesNumLabel);
-    lay->addWidget(mOnionPrevFramesNumBox);
-    lay->addWidget(onionNextFramesNumLabel);
-    lay->addWidget(mOnionNextFramesNumBox);
-    onionSkinBox->setLayout(lay);
-
-    QGroupBox* brushBox = new QGroupBox(tr("Brush Tools"));
-    mUseQuickSizingBox = new QCheckBox(tr("Use Quick Sizing"));
-    QVBoxLayout* brushBoxLayout = new QVBoxLayout();
-    brushBoxLayout->addWidget(mUseQuickSizingBox);
-
-    connect( mUseQuickSizingBox, &QCheckBox::stateChanged, this, &ToolsPage::quickSizingChange );
-
-    brushBox->setLayout(brushBoxLayout);
-
-
-    QVBoxLayout* lay2 = new QVBoxLayout();
-    lay2->addWidget(onionSkinBox);
-    lay2->addWidget(brushBox);
-    lay2->addStretch(1);
-    setLayout(lay2);
+ToolsPage::~ToolsPage()
+{
+    delete ui;
 }
 
 void ToolsPage::updateValues()
 {
-    mOnionMaxOpacityBox->setValue(mManager->getInt(SETTING::ONION_MAX_OPACITY));
-    mOnionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
-    mOnionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
-    mOnionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
-    mUseQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
+    ui->onionMaxOpacityBox->setValue(mManager->getInt(SETTING::ONION_MAX_OPACITY));
+    ui->onionMinOpacityBox->setValue(mManager->getInt(SETTING::ONION_MIN_OPACITY));
+    ui->onionPrevFramesNumBox->setValue(mManager->getInt(SETTING::ONION_PREV_FRAMES_NUM));
+    ui->onionNextFramesNumBox->setValue(mManager->getInt(SETTING::ONION_NEXT_FRAMES_NUM));
+    ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
 }
 
 void ToolsPage::onionMaxOpacityChange(int value)
@@ -433,9 +379,9 @@ void ToolsPage::onionMaxOpacityChange(int value)
     mManager->set(SETTING::ONION_MAX_OPACITY, value);
 }
 
-void ToolsPage::quickSizingChange( bool b )
+void ToolsPage::quickSizingChange( int b )
 {
-    mManager->set(SETTING::QUICK_SIZING, b);
+    mManager->set(SETTING::QUICK_SIZING, b != Qt::Unchecked);
 }
 
 void ToolsPage::onionMinOpacityChange(int value)
