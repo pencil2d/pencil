@@ -63,6 +63,9 @@ void AboutDialog::init()
     devInfoText->setFixedHeight(60);
     devInfoText->setAlignment(Qt::AlignCenter);
     QString devText = QString("Version: %1").arg(APP_VERSION);
+#if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
+    devText += "<br>commit: " S__GIT_COMMIT_HASH__ "<br> date: " S__GIT_TIMESTAMP__ "<br>";
+#endif
 
     devInfoText->setText(devText);
     lay->addWidget(devInfoText);

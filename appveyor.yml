@@ -48,7 +48,8 @@ before_build:
   - md build
   - cd build
   - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
-  - qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" DEFINES+=QT_NO_DEBUG_OUTPUT
+  - if %APPVEYOR_REPO_BRANCH%!=release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" CONFIG+=GIT CONFIG+=NIGHTLY
+  - if %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" DEFINES+=QT_NO_DEBUG_OUTPUT
   - echo %PLATFORM_%
 
 build_script:
