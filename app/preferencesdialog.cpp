@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
 #include "ui_generalpage.h"
+#include "ui_timelinepage.h"
 #include <QComboBox>
 #include <QMessageBox>
 #include "util.h"
@@ -260,64 +261,29 @@ void GeneralPage::gridCheckBoxStateChanged(int b)
     mManager->set(SETTING::GRID, b != Qt::Unchecked);
 }
 
-TimelinePage::TimelinePage(QWidget* parent) : QWidget(parent)
+TimelinePage::TimelinePage(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::TimelinePage)
 {
-    QSettings settings( PENCIL2D, PENCIL2D );
+    ui->setupUi(this);
 
-    QVBoxLayout* lay = new QVBoxLayout();
-
-    QGroupBox* timeLineBox = new QGroupBox(tr("Timeline"));
-    mDrawLabel = new QCheckBox(tr("Draw timeline labels"));
-    mFontSize = new QSpinBox();
-    QLabel* frameSizeLabel = new QLabel(tr("Frame size"));
-    mFrameSize = new QSlider(Qt::Horizontal, this);
-    QLabel* lengthSizeLabel = new QLabel(tr("Timeline size in Frames"));
-    mLengthSize = new QLineEdit(this);
     QIntValidator* lengthSizeValidator = new QIntValidator(this);
     lengthSizeValidator->setBottom(2);
-    mLengthSize->setValidator( lengthSizeValidator );
+    ui->lengthSize->setValidator( lengthSizeValidator );
+}
 
-    mScrubBox = new QCheckBox(tr("Short scrub"));
-
-    mFontSize->setRange(4, 20);
-    mFrameSize->setRange(4, 20);
-
-    mFontSize->setFixedWidth(50);
-    mLengthSize->setFixedWidth(50);
-
-
-    mFrameSize->setValue(settings.value("frameSize").toInt());
-    if (settings.value("labelFontSize").toInt()==0) mFontSize->setValue(12);
-    if (settings.value("frameSize").toInt()==0) mFrameSize->setValue(6);
-    mLengthSize->setText(settings.value("length").toString());
-    if (settings.value("length").toInt()==0) mLengthSize->setText("240");
-
-    connect(mFontSize, SIGNAL(valueChanged(int)), this, SLOT(fontSizeChange(int)));
-    connect(mFrameSize, SIGNAL(valueChanged(int)), this, SLOT(frameSizeChange(int)));
-    connect(mLengthSize, SIGNAL(textChanged(QString)), this, SLOT(lengthSizeChange(QString)));
-    connect( mDrawLabel, &QCheckBox::stateChanged, this, &TimelinePage::labelChange );
-    connect( mScrubBox, &QCheckBox::stateChanged, this, &TimelinePage::scrubChange );
-
-    lay->addWidget(frameSizeLabel);
-    lay->addWidget(mFrameSize);
-    lay->addWidget(lengthSizeLabel);
-    lay->addWidget(mLengthSize);
-    lay->addWidget(mScrubBox);
-    timeLineBox->setLayout(lay);
-
-    QVBoxLayout* lay2 = new QVBoxLayout();
-    lay2->addWidget(timeLineBox);
-    lay2->addStretch(1);
-    setLayout(lay2);
+TimelinePage::~TimelinePage()
+{
+    delete ui;
 }
 
 void TimelinePage::updateValues()
 {
-    mScrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
-    mDrawLabel->setChecked(mManager->isOn(SETTING::DRAW_LABEL));
-    mFontSize->setValue(mManager->getInt(SETTING::LABEL_FONT_SIZE));
-    mFrameSize->setValue(mManager->getInt(SETTING::FRAME_SIZE));
-    mLengthSize->setText(mManager->getString(SETTING::TIMELINE_SIZE));
+    ui->scrubBox->setChecked(mManager->isOn(SETTING::SHORT_SCRUB));
+    ui->frameSize->setValue(mManager->getInt(SETTING::FRAME_SIZE));
+    if (mManager->getString(SETTING::FRAME_SIZE).toInt()==0) ui->frameSize->setValue(6);
+    ui->lengthSize->setText(mManager->getString(SETTING::TIMELINE_SIZE));
+    if (mManager->getString(SETTING::TIMELINE_SIZE).toInt()==0) ui->lengthSize->setText("240");
 }
 
 void TimelinePage::lengthSizeChange(QString value)
@@ -341,9 +307,9 @@ void TimelinePage::labelChange(bool value)
     mManager->set(SETTING::DRAW_LABEL, value);
 }
 
-void TimelinePage::scrubChange(bool value)
+void TimelinePage::scrubChange(int value)
 {
-    mManager->set(SETTING::SHORT_SCRUB, value);
+    mManager->set(SETTING::SHORT_SCRUB, value != Qt::Unchecked);
 }
 
 FilesPage::FilesPage(QWidget* parent) : QWidget(parent)

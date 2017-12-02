@@ -47,6 +47,7 @@ class FilesPage;
 namespace Ui {
 class PreferencesDialog;
 class GeneralPage;
+class TimelinePage;
 }
 
 class PreferencesDialog : public QDialog
@@ -121,6 +122,8 @@ class TimelinePage : public QWidget
     Q_OBJECT
 public:
     TimelinePage(QWidget* parent = 0);
+    ~TimelinePage();
+
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
@@ -130,15 +133,11 @@ public slots:
     void fontSizeChange(int);
     void frameSizeChange(int);
     void labelChange(bool);
-    void scrubChange(bool);
+    void scrubChange(int);
 
 private:
+    Ui::TimelinePage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
-    QCheckBox* mDrawLabel;
-    QSpinBox* mFontSize;
-    QSlider* mFrameSize;
-    QLineEdit* mLengthSize;
-    QCheckBox* mScrubBox;
 };
 
 class FilesPage : public QWidget
