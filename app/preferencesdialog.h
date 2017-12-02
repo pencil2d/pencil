@@ -49,6 +49,7 @@ class PreferencesDialog;
 class GeneralPage;
 class TimelinePage;
 class FilesPage;
+class ToolsPage;
 }
 
 class PreferencesDialog : public QDialog
@@ -175,6 +176,7 @@ class ToolsPage : public QWidget
     Q_OBJECT
 public:
     ToolsPage(QWidget* parent = 0);
+    ~ToolsPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
@@ -183,14 +185,10 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
-    void quickSizingChange(bool);
+    void quickSizingChange(int);
 private:
+    Ui::ToolsPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
-    QSpinBox* mOnionMaxOpacityBox;
-    QSpinBox* mOnionMinOpacityBox;
-    QSpinBox* mOnionPrevFramesNumBox;
-    QSpinBox* mOnionNextFramesNumBox;
-    QCheckBox * mUseQuickSizingBox;
 };
 
 #endif

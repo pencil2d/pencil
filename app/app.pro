@@ -102,7 +102,8 @@ FORMS += \
     ui/preferencesdialog.ui \
     ui/generalpage.ui \
     ui/timelinepage.ui \
-    ui/filespage.ui
+    ui/filespage.ui \
+    ui/toolspage.ui
 
 DEPENDPATH += .
 
