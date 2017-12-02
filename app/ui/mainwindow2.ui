@@ -16,12 +16,36 @@
   <property name="styleSheet">
    <string notr="true">this-&gt;setStyleSheet(&quot;background-color:yellow;&quot;);</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
+  <widget class="BackgroundWidget" name="background">
    <property name="font">
     <font>
      <family>Trebuchet MS</family>
     </font>
    </property>
+   <layout class="QVBoxLayout" name="layout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="ScribbleArea" name="scribbleArea" native="true">
+      <property name="focusPolicy">
+       <enum>Qt::StrongFocus</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
@@ -307,6 +331,9 @@
    </property>
   </action>
   <action name="actionRedo">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../../pencil.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
@@ -375,6 +402,9 @@
    <property name="text">
     <string>Preferences</string>
    </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
   </action>
   <action name="actionReset_Windows">
    <property name="text">
@@ -433,6 +463,9 @@
    </property>
   </action>
   <action name="actionPreview">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Preview</string>
    </property>
@@ -840,10 +873,79 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BackgroundWidget</class>
+   <extends>QWidget</extends>
+   <header>backgroundwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ScribbleArea</class>
+   <extends>QWidget</extends>
+   <header>scribblearea.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../pencil.qrc"/>
+  <include location="../resource/app.qrc"/>
   <include location="../../pencil.qrc"/>
   <include location="../resource/app.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionReset_Windows</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow2</receiver>
+   <slot>dockAllSubWidgets()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menuEdit</sender>
+   <signal>aboutToHide()</signal>
+   <receiver>MainWindow2</receiver>
+   <slot>undoActSetEnabled()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>menuEdit</sender>
+   <signal>aboutToShow()</signal>
+   <receiver>MainWindow2</receiver>
+   <slot>undoActSetText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>dockAllSubWidgets()</slot>
+  <slot>undoActSetText()</slot>
+  <slot>undoActSetEnabled()</slot>
+ </slots>
 </ui>
