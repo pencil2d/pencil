@@ -101,7 +101,8 @@ FORMS += \
     ui/tooloptions.ui \
     ui/aboutdialog.ui \
     doubleprogressdialog.ui \
-    ui/preferencesdialog.ui
+    ui/preferencesdialog.ui \
+    ui/generalpage.ui
 
 
 
