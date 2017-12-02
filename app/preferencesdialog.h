@@ -44,6 +44,9 @@ class QComboBox;
 class PreferenceManager;
 class FilesPage;
 
+namespace Ui {
+class PreferencesDialog;
+}
 
 class PreferencesDialog : public QDialog
 {
@@ -54,9 +57,11 @@ public:
     ~PreferencesDialog();
 
     void init( PreferenceManager* m );
-    
-    void changePage(QListWidgetItem* current, QListWidgetItem* previous);
+
     void updateRecentListBtn(bool isEmpty);
+
+public slots:
+    void changePage(QListWidgetItem* current, QListWidgetItem* previous);
 
 Q_SIGNALS:
     void windowOpacityChange(int);
@@ -68,14 +73,9 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
-    void createIcons();
-
-    QListWidget* contentsWidget = nullptr;
-    QStackedWidget* pagesWidget = nullptr;
-    QScrollArea* scrollArea = nullptr;
+    Ui::PreferencesDialog* ui = nullptr;
 
     PreferenceManager* mPrefManager = nullptr;
-    FilesPage* mFilesPage = nullptr;
 };
 
 

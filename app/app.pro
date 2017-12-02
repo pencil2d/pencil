@@ -98,7 +98,8 @@ FORMS += \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
     ui/aboutdialog.ui \
-    ui/colorbox.ui
+    ui/colorbox.ui \
+    ui/preferencesdialog.ui
 
 DEPENDPATH += .
 
