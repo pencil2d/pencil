@@ -22,7 +22,6 @@ ErrorDialog::ErrorDialog( QString title, QString description, QString details, Q
     ui(new Ui::ErrorDialog)
 {
     ui->setupUi( this );
-    ui->horizontalLayout_2->setSpacing(0);
 
     this->setWindowTitle( title );
     ui->title->setText( QString( "<h3>%1</h3>" ).arg( title ) );
