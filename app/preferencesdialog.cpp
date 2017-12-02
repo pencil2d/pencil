@@ -15,18 +15,20 @@ GNU General Public License for more details.
 
 */
 #include "preferencesdialog.h"
+#include "ui_preferencesdialog.h"
 #include <QComboBox>
 #include <QMessageBox>
 
-PreferencesDialog::PreferencesDialog( QWidget* parent ) : QDialog(parent)
+PreferencesDialog::PreferencesDialog( QWidget* parent ) :
+    QDialog(parent),
+    ui(new Ui::PreferencesDialog)
 {
-    setWindowTitle(tr("Preferences"));
-    setMaximumWidth(600);
-    setMaximumHeight(680);
+    ui->setupUi(this);
 }
 
 PreferencesDialog::~PreferencesDialog()
 {
+    delete ui;
 }
 
 void PreferencesDialog::init( PreferenceManager* m )
@@ -34,101 +36,23 @@ void PreferencesDialog::init( PreferenceManager* m )
     Q_ASSERT( m != nullptr );
     mPrefManager = m;
 
-    contentsWidget = new QListWidget;
-    contentsWidget->setViewMode( QListView::IconMode );
-    contentsWidget->setIconSize( QSize( 96, 84 ) );
-    contentsWidget->setMovement( QListView::Static );
-    contentsWidget->setMaximumWidth( 128 );
-    contentsWidget->setSpacing( 5 );
-
-    GeneralPage* general = new GeneralPage( this );
-    general->setManager( mPrefManager );
-    general->updateValues();
+    ui->general->setManager( mPrefManager );
+    ui->general->updateValues();
     //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
 
-    mFilesPage = new FilesPage( this );
-    mFilesPage->setManager( mPrefManager );
-    mFilesPage->updateValues();
+    ui->filesPage->setManager( mPrefManager );
+    ui->filesPage->updateValues();
 
-    connect(mFilesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
-    connect(this, &PreferencesDialog::updateRecentFileListBtn, mFilesPage, &FilesPage::updateClearRecentListButton);
+    connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
+    connect(this, &PreferencesDialog::updateRecentFileListBtn, ui->filesPage, &FilesPage::updateClearRecentListButton);
 
-    TimelinePage* timeline = new TimelinePage( this );
-    timeline->setManager( mPrefManager );
-    timeline->updateValues();
+    ui->timeline->setManager( mPrefManager );
+    ui->timeline->updateValues();
 
-    ToolsPage* tools = new ToolsPage( this );
-    tools->setManager( mPrefManager );
-    tools->updateValues();
+    ui->tools->setManager( mPrefManager );
+    ui->tools->updateValues();
 
-    ShortcutsPage* shortcuts = new ShortcutsPage( this );
-    shortcuts->setManager( mPrefManager );
-
-    pagesWidget = new QStackedWidget;
-    pagesWidget->setMinimumHeight(40);
-
-    pagesWidget->addWidget( general );
-    pagesWidget->addWidget( mFilesPage );
-    pagesWidget->addWidget( timeline );
-    pagesWidget->addWidget( tools );
-    pagesWidget->addWidget( shortcuts );
-
-    QPushButton* closeButton = new QPushButton( tr( "Close", "Close button of preference dialog." ) );
-    connect( closeButton, &QPushButton::clicked, this, &PreferencesDialog::close );
-
-    createIcons();
-    contentsWidget->setCurrentRow( 0 );
-
-    QHBoxLayout* horizontalLayout = new QHBoxLayout;
-    horizontalLayout->addWidget( contentsWidget );
-    horizontalLayout->addWidget( pagesWidget, 1 );
-
-    QHBoxLayout* buttonsLayout = new QHBoxLayout;
-    buttonsLayout->addStretch( 1 );
-    buttonsLayout->addWidget( closeButton );
-
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    mainLayout->addLayout( horizontalLayout );
-    mainLayout->addStretch( 1 );
-    mainLayout->addSpacing( 5 );
-    mainLayout->addLayout( buttonsLayout );
-    setLayout( mainLayout );
-}
-
-void PreferencesDialog::createIcons()
-{
-    QListWidgetItem* generalButton = new QListWidgetItem(contentsWidget);
-    generalButton->setIcon(QIcon(":icons/prefspencil.png"));
-    generalButton->setText(tr("General"));
-    generalButton->setTextAlignment(Qt::AlignHCenter);
-    generalButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
-    QListWidgetItem* filesButton = new QListWidgetItem(contentsWidget);
-    filesButton->setIcon(QIcon(":icons/prefs-files.png"));
-    filesButton->setText(tr("Files"));
-    filesButton->setTextAlignment(Qt::AlignHCenter);
-    filesButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
-    QListWidgetItem* timelineButton = new QListWidgetItem(contentsWidget);
-    timelineButton->setIcon(QIcon(":icons/prefstimeline.png"));
-    timelineButton->setText(tr("Timeline"));
-    timelineButton->setTextAlignment(Qt::AlignHCenter);
-    timelineButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
-    QListWidgetItem* toolsButton = new QListWidgetItem(contentsWidget);
-    toolsButton->setIcon(QIcon(":/icons/prefs-files.png"));
-    toolsButton->setText(tr("Tools"));
-    toolsButton->setTextAlignment(Qt::AlignHCenter);
-    toolsButton->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-
-    QListWidgetItem* shortcutsButton = new QListWidgetItem(contentsWidget);
-    shortcutsButton->setIcon(QIcon(":/icons/prefs-shortcuts.png"));
-    shortcutsButton->setText(tr("Shortcuts"));
-    shortcutsButton->setTextAlignment(Qt::AlignHCenter);
-    shortcutsButton->setFlags((Qt::ItemIsSelectable | Qt::ItemIsEnabled));
-
-    auto onCurrentItemChanged = static_cast< void ( QListWidget::* )( QListWidgetItem*, QListWidgetItem* ) >( &QListWidget::currentItemChanged );
-    connect(contentsWidget, onCurrentItemChanged, this, &PreferencesDialog::changePage);
+    ui->shortcuts->setManager( mPrefManager );
 }
 
 void PreferencesDialog::closeEvent(QCloseEvent *)
@@ -141,7 +65,7 @@ void PreferencesDialog::changePage(QListWidgetItem* current, QListWidgetItem* pr
     if (!current)
         current = previous;
 
-    pagesWidget->setCurrentIndex(contentsWidget->row(current));
+    ui->pagesWidget->setCurrentIndex(ui->contentsWidget->row(current));
 }
 
 void PreferencesDialog::updateRecentListBtn(bool isEmpty)

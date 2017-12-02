@@ -100,7 +100,8 @@ FORMS += \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
     ui/aboutdialog.ui \
-    doubleprogressdialog.ui
+    doubleprogressdialog.ui \
+    ui/preferencesdialog.ui
 
 
 
