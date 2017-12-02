@@ -38,7 +38,7 @@ public:
     void updateUI() override;
 
     void makeConnectionToEditor(Editor* editor);
-private:
+private slots:
     void onionPrevButtonClicked(bool);
     void onionNextButtonClicked(bool);
     void onionBlueButtonClicked(bool);
@@ -46,6 +46,7 @@ private:
     void toggleMirror(bool);
     void toggleMirrorV(bool);
 
+private:
     Ui::DisplayOption* ui = nullptr;
 };
 

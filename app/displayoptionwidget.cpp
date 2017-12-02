@@ -26,19 +26,17 @@ GNU General Public License for more details.
 #include "util.h"
 
 
-DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) : BaseDockWidget(parent)
+DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
+    BaseDockWidget(parent),
+    ui(new Ui::DisplayOption)
 {
-    setWindowTitle(tr("Display", "Window title of display options like ."));
 
-    QWidget* innerWidget = new QWidget;
-    setWidget(innerWidget);
-
-    ui = new Ui::DisplayOption;
-    ui->setupUi(innerWidget);
+    ui->setupUi(this);
 }
 
 DisplayOptionWidget::~DisplayOptionWidget()
 {
+    delete ui;
 }
 
 void DisplayOptionWidget::initUI()
@@ -62,12 +60,6 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
     connect(ui->outLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOutlines);
-    connect(ui->onionPrevButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionPrevButtonClicked);
-    connect(ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked);
-    connect(ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked);
-    connect(ui->onionRedButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked);
-    connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
-    connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
 
     connect(prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
 
