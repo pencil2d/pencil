@@ -93,11 +93,12 @@ protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
 
+private slots:
+    void dockAllSubWidgets();
+
 private:
     bool openObject(QString strFilename);
     bool saveObject(QString strFileName);
-
-    void dockAllSubWidgets();
 
     void createDockWidgets();
     void createMenus();
@@ -124,9 +125,6 @@ private:
 
     void bindActionWithSetting(QAction*, SETTING);
 
-    // UI: central Drawing Area
-    ScribbleArea* mScribbleArea = nullptr;
-
     // UI: Dock widgets
     ColorBox*             mColorWheel = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
@@ -145,7 +143,6 @@ private:
 private:
     ActionCommands* mCommands = nullptr;
     QList< BaseDockWidget* > mDockWidgets;
-    BackgroundWidget* mBackground = nullptr;;
 
     QIcon mStartIcon;
     QIcon mStopIcon;

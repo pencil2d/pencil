@@ -84,28 +84,11 @@ GNU General Public License for more details.
 
 
 
-MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
+MainWindow2::MainWindow2(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow2)
 {
-    ui = new Ui::MainWindow2;
     ui->setupUi(this);
-
-    mBackground = new BackgroundWidget(this);
-
-    mScribbleArea = new ScribbleArea(mBackground);
-    mScribbleArea->setFocusPolicy(Qt::StrongFocus);
-
-    // Show the UI over the background
-    //
-    QVBoxLayout* layout = new QVBoxLayout();
-    layout->setSpacing(0);
-    layout->setMargin(0);
-    layout->setContentsMargins(0, 0, 0, 0);
-    layout->addWidget(mScribbleArea);
-
-    mBackground->setLayout(layout);
-
-    // Central widget
-    setCentralWidget(mBackground);
 
     // Initialize order
     // 1. object 2. editor 3. scribble area 4. other widgets
@@ -114,15 +97,15 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
     object->createDefaultLayers();
 
     mEditor = new Editor(this);
-    mEditor->setScribbleArea(mScribbleArea);
+    mEditor->setScribbleArea(ui->scribbleArea);
     mEditor->init();
     mEditor->setObject(object);
 
-    mScribbleArea->setCore(mEditor);
-    mScribbleArea->init();
+    ui->scribbleArea->setCore(mEditor);
+    ui->scribbleArea->init();
 
-    mEditor->setScribbleArea(mScribbleArea);
-    makeConnections(mEditor, mScribbleArea);
+    mEditor->setScribbleArea(ui->scribbleArea);
+    makeConnections(mEditor, ui->scribbleArea);
 
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
@@ -139,7 +122,7 @@ MainWindow2::MainWindow2(QWidget *parent) : QMainWindow(parent)
 
     //connect( mScribbleArea, &ScribbleArea::refreshPreview, mPreview, &PreviewWidget::updateImage );
     mEditor->tools()->setDefaultTool();
-    mBackground->init(mEditor->preference());
+    ui->background->init(mEditor->preference());
     mEditor->updateObject();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
@@ -269,9 +252,6 @@ void MainWindow2::createMenus()
     connect(ui->actionSelect_All, &QAction::triggered, mEditor, &Editor::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mEditor, &Editor::deselectAll);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
-    ui->actionPreference->setMenuRole(QAction::PreferencesRole);
-
-    ui->actionRedo->setEnabled(false);
 
     /// --- Layer Menu ---
     connect(ui->actionNew_Bitmap_Layer, &QAction::triggered, mCommands, &ActionCommands::addNewBitmapLayer);
@@ -285,12 +265,10 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
     connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
-    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
 
-    ui->actionPreview->setEnabled(false);
     //# connect(previewAct, SIGNAL(triggered()), editor, SLOT(getCameraLayer()));//TODO: Preview view
 
     setMenuActionChecked(ui->actionGrid, mEditor->preference()->isOn(SETTING::GRID));
@@ -375,9 +353,6 @@ void MainWindow2::createMenus()
     ui->menuFile->insertMenu(ui->actionSave, mRecentFileMenu);
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
-
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
-    connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
@@ -713,7 +688,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    mScribbleArea->updateCurrentFrame();
+    ui->scribbleArea->updateCurrentFrame();
     mTimeLine->updateContent();
 }
 
@@ -789,7 +764,7 @@ void MainWindow2::preferences()
     {
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
-        mScribbleArea->updateCanvasCursor();
+        ui->scribbleArea->updateCanvasCursor();
         mPrefDialog = nullptr;
     });
 
@@ -897,7 +872,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
 
-    ShortcutFilter* shortcutfilter = new ShortcutFilter(mScribbleArea, this);
+    ShortcutFilter* shortcutfilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));
