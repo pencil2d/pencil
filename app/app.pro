@@ -100,7 +100,8 @@ FORMS += \
     ui/aboutdialog.ui \
     ui/colorbox.ui \
     ui/preferencesdialog.ui \
-    ui/generalpage.ui
+    ui/generalpage.ui \
+    ui/timelinepage.ui
 
 DEPENDPATH += .
 
