@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 #include "layercamera.h"
+#include "ui_camerapropertiesdialog.h"
 
 #include <QLineEdit>
 #include <QSpinBox>
@@ -25,77 +26,50 @@ GNU General Public License for more details.
 #include "camera.h"
 
 
-
-CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) : QDialog()
+CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) :
+    QDialog(),
+    ui(new Ui::CameraPropertiesDialog)
 {
-    QLabel* nameLabel = new QLabel(tr("Camera name:"));
-    nameBox = new QLineEdit();
-    nameBox->setText(name);
-    QHBoxLayout* nameLayout = new QHBoxLayout();
-    nameLayout->addWidget(nameLabel);
-    nameLayout->addWidget(nameBox);
+    ui->setupUi(this);
 
-    QLabel* sizeLabel = new QLabel(tr("Camera size:"));
-    widthBox = new QSpinBox();
-    heightBox = new QSpinBox();
-    widthBox->setValue(width);
-    heightBox->setValue(height);
-    widthBox->setMaximum(10000);
-    heightBox->setMaximum(10000);
-    widthBox->setMinimum(1);
-    heightBox->setMinimum(1);
-    QHBoxLayout* sizeLayout = new QHBoxLayout();
-    sizeLayout->addWidget(sizeLabel);
-    sizeLayout->addWidget(widthBox);
-    sizeLayout->addWidget(heightBox);
-
-    QPushButton* okButton = new QPushButton(tr("Ok"));
-    QPushButton* cancelButton = new QPushButton(tr("Cancel"));
-    QHBoxLayout* buttonLayout = new QHBoxLayout();
-    buttonLayout->addWidget(okButton);
-    buttonLayout->addWidget(cancelButton);
-
-    QGridLayout* layout = new QGridLayout();
-    layout->addLayout(nameLayout, 0, 0);
-    layout->addLayout(sizeLayout, 1, 0);
-    layout->addLayout(buttonLayout, 2, 0);
-    setLayout(layout);
-    connect(okButton, SIGNAL(pressed()), this, SLOT(accept()));
-    connect(cancelButton, SIGNAL(pressed()), this, SLOT(reject()));
+    ui->nameBox->setText(name);
+    ui->widthBox->setValue(width);
+    ui->heightBox->setValue(height);
 }
 
 CameraPropertiesDialog::~CameraPropertiesDialog()
 {
+    delete ui;
 }
 
 QString CameraPropertiesDialog::getName()
 {
-    return nameBox->text();
+    return ui->nameBox->text();
 }
 
 void CameraPropertiesDialog::setName(QString name)
 {
-    nameBox->setText(name);
+    ui->nameBox->setText(name);
 }
 
 int CameraPropertiesDialog::getWidth()
 {
-    return widthBox->value();
+    return ui->widthBox->value();
 }
 
 void CameraPropertiesDialog::setWidth(int width)
 {
-    widthBox->setValue(width);
+    ui->widthBox->setValue(width);
 }
 
 int CameraPropertiesDialog::getHeight()
 {
-    return heightBox->value();
+    return ui->heightBox->value();
 }
 
 void CameraPropertiesDialog::setHeight(int height)
 {
-    heightBox->setValue(height);
+    ui->heightBox->setValue(height);
 }
 
 // ------

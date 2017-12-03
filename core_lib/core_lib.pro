@@ -174,3 +174,6 @@ unix:!macx {
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
 }
+
+FORMS += \
+    ui/camerapropertiesdialog.ui
