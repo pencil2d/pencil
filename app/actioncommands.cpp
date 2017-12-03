@@ -350,12 +350,12 @@ Status ActionCommands::exportImage()
 
 void ActionCommands::ZoomIn()
 {
-    mEditor->view()->scaleUp();
+    mEditor->view()->snapScale(1);
 }
 
 void ActionCommands::ZoomOut()
 {
-    mEditor->view()->scaleDown();
+    mEditor->view()->snapScale(-1);
 }
 
 void ActionCommands::flipSelectionX()

@@ -59,6 +59,7 @@ public:
 
     float scaling();
     void scale( float scaleValue );
+    void snapScale( int direction );
     void scaleUp();
     void scaleDown();
 
@@ -93,6 +94,10 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+
+    const float mZoomLevels[8] = { 0.25, 0.5, 0.75, 1.0,
+                                   1.25, 1.5, 1.75, 2.0 };
+    const int mZoomLevelCount = 8;
 
     LayerCamera* mCameraLayer = nullptr;
 };
