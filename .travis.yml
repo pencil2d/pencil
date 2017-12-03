@@ -68,7 +68,9 @@ install:
 
 before_script:
   - echo "are changes related to source code?"
-  - bash $TRAVIS_BUILD_DIR/util/checkchanges.sh
+  - 'if [ "$TRAVIS_BRANCH" != "release" ]; then
+    bash $TRAVIS_BUILD_DIR/util/checkchanges.sh;
+  fi'
   - 'if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     . /opt/qt59/bin/qt59-env.sh;
     export DISPLAY=:99.0;
@@ -81,7 +83,11 @@ before_script:
 
 script:
   - mkdir "build" && cd build
-  - qmake ../ PREFIX=/usr CONFIG+=GIT CONFIG+=NIGHTLY
+  - 'if [ "$TRAVIS_BRANCH" == "release" ]; then
+    qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT;
+  else
+    qmake ../ PREFIX=/usr CONFIG+=GIT CONFIG+=NIGHTLY;
+  fi'
   - make;
   - "$TRAVIS_BUILD_DIR/build/tests/tests"
 
@@ -139,7 +145,7 @@ after_success:
   - ls
 
   # Upload to google drive
-  - 'if [ "$TRAVIS_BRANCH" == "master" -o "$FORCE_NIGHTLY_UPLOAD" == "yes" ]; then
+  - 'if [ \( "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_BRANCH" == "release" \) -o "$FORCE_NIGHTLY_UPLOAD" == "yes" ]; then
     echo "Initiate deployment on Google Drive";
     cd "$TRAVIS_BUILD_DIR/util";
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then

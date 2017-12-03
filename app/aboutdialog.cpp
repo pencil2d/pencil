@@ -56,7 +56,6 @@ void AboutDialog::init()
 #define S__GIT_TIMESTAMP__ TOSTRING(GIT_TIMESTAMP)
 #define S__GIT_COMMIT_HASH__ TOSTRING(GIT_CURRENT_SHA1)
 
-
     QLabel* devInfoText = new QLabel(this);
     devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
                                         "border-style: solid; border-width: 1px; border-color: gray;}");
@@ -64,9 +63,10 @@ void AboutDialog::init()
     devInfoText->setFixedHeight(60);
     devInfoText->setAlignment(Qt::AlignCenter);
     QString devText = QString("Version: %1").arg(APP_VERSION);
-#ifdef GIT_EXISTS
+#if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
     devText += "<br>commit: " S__GIT_COMMIT_HASH__ "<br> date: " S__GIT_TIMESTAMP__ "<br>";
 #endif
+
     devInfoText->setText(devText);
     lay->addWidget(devInfoText);
 

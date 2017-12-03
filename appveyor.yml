@@ -48,7 +48,8 @@ before_build:
   - md build
   - cd build
   - call "%VS140COMNTOOLS%\..\..\VC\vcvarsall.bat" %PLATFORM_%
-  - qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" CONFIG+=GIT CONFIG+=NIGHTLY
+  - if %APPVEYOR_REPO_BRANCH%!=release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" CONFIG+=GIT CONFIG+=NIGHTLY
+  - if %APPVEYOR_REPO_BRANCH%==release call qmake ..\ -tp vc -r "%APPVEYOR_BUILD_FOLDER%\pencil.pro" DEFINES+=QT_NO_DEBUG_OUTPUT
   - echo %PLATFORM_%
 
 build_script:
@@ -57,12 +58,13 @@ build_script:
   - set SOLUTIONFILE64="%APPVEYOR_BUILD_FOLDER%\build\pencil.sln"
   - set BUILDTARGET32="/p:Configuration=Release,Platform=Win32"
   - set BUILDTARGET64="/p:Configuration=Release,Platform=x64"
-  - if %PLATFORM_%==x86 call msbuild %SOLUTIONFILE32% %BUILDTYPE% %BUILDTARGET32%
-  - if %PLATFORM_%==amd64     call msbuild %SOLUTIONFILE64% %BUILDTYPE% %BUILDTARGET64%
+  - if %PLATFORM_%==x86   call msbuild %SOLUTIONFILE32% %BUILDTYPE% %BUILDTARGET32%
+  - if %PLATFORM_%==amd64 call msbuild %SOLUTIONFILE64% %BUILDTYPE% %BUILDTARGET64%
 
 after_build:
   - set upload=no
   - if %APPVEYOR_REPO_BRANCH%==master set upload=yes
+  - if %APPVEYOR_REPO_BRANCH%==release set upload=yes
   - if "%FORCE_NIGHTLY_UPLOAD%"=="yes" set upload=yes
   - if %PLATFORM_%==x86 (
     echo "-----Deploying 32 Bit Version-----" &

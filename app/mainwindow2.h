@@ -42,6 +42,7 @@ class ActionCommands;
 class ImportImageSeqDialog;
 
 
+
 namespace Ui
 {
     class MainWindow2;
