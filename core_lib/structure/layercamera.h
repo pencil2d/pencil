@@ -25,6 +25,10 @@ class QLineEdit;
 class QSpinBox;
 class Camera;
 
+namespace Ui {
+class CameraPropertiesDialog;
+}
+
 class CameraPropertiesDialog : public QDialog
 {
     Q_OBJECT
@@ -37,9 +41,8 @@ public:
     void setWidth(int);
     int getHeight();
     void setHeight(int);
-protected:
-    QLineEdit* nameBox;
-    QSpinBox* widthBox, *heightBox;
+private:
+    Ui::CameraPropertiesDialog* ui = nullptr;
 };
 
 class LayerCamera : public Layer
