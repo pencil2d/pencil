@@ -23,7 +23,7 @@ env:
     - DOXYGEN_OUTPUT_DIR: $TRAVIS_BUILD_DIR/docs
 
 python:
- - "3.4"
+  - "3.4"
 addons:
   apt:
     sources:
@@ -58,13 +58,13 @@ before_install:
   fi'
 
 install:
-  - pip freeze > requirements.txt
-  - pip install -r requirements.txt
-  - pip install -U setuptools
-  - pip install -U virtualenvwrapper
-  - pip install -U google-api-python-client
+  - pip3 freeze > requirements.txt
+  - pip3 install -r requirements.txt
+  - pip3 install -U setuptools
+  - pip3 install -U virtualenvwrapper
+  - pip3 install -U google-api-python-client
   - python3 -V
-  - pip -V
+  - pip3 -V
 
 before_script:
   - echo "are changes related to source code?"
