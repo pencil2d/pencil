@@ -28,6 +28,9 @@ class DisplayOptionWidget;
 class ToolOptionWidget;
 class Editor;
 
+namespace Ui {
+class ToolBoxWidget;
+}
 
 class ToolBoxWidget : public BaseDockWidget
 {
@@ -62,23 +65,9 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private:
-    QToolButton * newToolButton(const QIcon&, QString);
     void deselectAllTools();
 
-    QGridLayout* mGridLayout;
-
-    QToolButton* mPencilButton = nullptr;
-    QToolButton* mSelectButton = nullptr;
-    QToolButton* mMoveButton = nullptr;
-    QToolButton* mHandButton = nullptr;
-    QToolButton* mEraserButton = nullptr;
-    QToolButton* mPenButton = nullptr;
-    QToolButton* mPolylineButton = nullptr;
-    QToolButton* mBucketButton = nullptr;
-    QToolButton* mBrushButton = nullptr;
-    QToolButton* mEyedropperButton = nullptr;
-    QToolButton* mSmudgeButton = nullptr;
-    QToolButton* mClearButton = nullptr;
+    Ui::ToolBoxWidget* ui = nullptr;
 
     Qt::DockWidgetArea mAreaLocation;
 
