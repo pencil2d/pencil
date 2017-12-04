@@ -203,7 +203,7 @@ void ViewManager::snapScale(int direction = 0)
     // find the nearest zoom level to snap to
     int nearestZoomLevel = -1;
     float leastZoomDistance = 0;
-    for (int i = 0; i < mZoomLevelCount; i++)
+    for (int i = 0; i < mZoomLevels.length(); i++)
     {
         float thisZoomLevel = mZoomLevels[i];
         if (nearestZoomLevel == -1 || qAbs(scaling() - thisZoomLevel) < leastZoomDistance)
@@ -221,7 +221,7 @@ void ViewManager::snapScale(int direction = 0)
 
     // now increase/decrease zoom by direction
     int newZoomLevel = nearestZoomLevel + direction;
-    if (newZoomLevel >= 0 && newZoomLevel < mZoomLevelCount)
+    if (newZoomLevel >= 0 && newZoomLevel < mZoomLevels.length())
     {
         scale(mZoomLevels[newZoomLevel]);
     }
