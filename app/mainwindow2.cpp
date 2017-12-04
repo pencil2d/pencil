@@ -412,14 +412,24 @@ void MainWindow2::clearRecentFilesList()
 
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
-    if (maybeSave())
+
+    if (openedPopup) {
+        QGuiApplication::exit(0);
+    }
+
+    int popupId = maybeSave();
+
+    if (popupId == QMessageBox::Save)
     {
         writeSettings();
         event->accept();
     }
-    else
+    else if (popupId == QMessageBox::Cancel)
     {
         event->ignore();
+    } else {
+        event->accept();
+        openedPopup = true;
     }
 }
 
@@ -430,7 +440,8 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument()
 {
-    if (maybeSave())
+    int popupId = maybeSave();
+    if (popupId == QMessageBox::Save || popupId == QMessageBox::Discard)
     {
         Object* object = new Object();
         object->init();
@@ -445,12 +456,15 @@ void MainWindow2::newDocument()
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
+    } else {
+
     }
 }
 
 void MainWindow2::openDocument()
 {
-    if (maybeSave())
+    int popupId = maybeSave();
+    if (popupId == QMessageBox::Save || popupId == QMessageBox::Discard)
     {
         FileDialog fileDialog(this);
         QString fileName = fileDialog.openFile(FileType::ANIMATION);
@@ -470,6 +484,8 @@ void MainWindow2::openDocument()
             QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
             newDocument();
         }
+    } else {
+
     }
     updateSaveState();
 }
@@ -617,20 +633,21 @@ bool MainWindow2::saveDocument()
         return saveAsNewDocument();
 }
 
-bool MainWindow2::maybeSave()
+int MainWindow2::maybeSave()
 {
     if (mEditor->currentBackup() != mBackupAtSave)
     {
         int ret = QMessageBox::warning(this, tr("Warning"),
                                        tr("This animation has been modified.\n Do you want to save your changes?"),
-                                       QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
-                                       QMessageBox::Save);
+                                       QMessageBox::Discard | QMessageBox::Save | QMessageBox::Cancel);
         if (ret == QMessageBox::Save)
-            return saveDocument();
+            return saveDocument() ? QMessageBox::Save : QMessageBox::Ignore;
         else if (ret == QMessageBox::Cancel)
-            return false;
+            return QMessageBox::Cancel;
+        else if (ret == QMessageBox::Discard)
+            return QMessageBox::Discard;
     }
-    return true;
+    return QMessageBox::Ignore;
 }
 
 bool MainWindow2::autoSave()

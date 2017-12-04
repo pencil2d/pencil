@@ -70,8 +70,9 @@ public:
     void openDocument();
     bool saveDocument();
     bool saveAsNewDocument();
-    bool maybeSave();
+    int maybeSave();
     bool autoSave();
+    bool openedPopup;
 
     // import
     void importImage();
