@@ -1,6 +1,11 @@
-## Pencil2D v0.6 - 2017
+## Pencil2D 0.6.1 - 4 December (WIP)
+* Fixed an issue that would make it impossible to type correct values into HSV and RGB boxes.
+* Re-added zoom levels, now available via View->Zoom in/out or their respective shortcuts.
+* Fixed dialog related issues
+  * save dialog would appear twice on OSX when quitting from dock
+  * "Cancel" button being ignored.
 
-### Features
+## Pencil2D v0.6 - 2017
 
 User Interface:
 * New graphic Colour Wheel
@@ -16,15 +21,49 @@ Timeline keyframe manipulation:
 * To move a single frame (LMB Selected + Drag)
 * To move a frame and all the frames at its right (Alt + LMB +Drag)
 
-Other Improvements:
-* Fast HandTool (keep pressing SpaceBar). Shortcut (H) works as a fix Hand
-* Dynamic Control Size (Shift + Drag Left/Right)
-* Fast Eyedropper (Alt). Shortcut (I) works as a fix Eyedropper
-* Rotate within a selection (CTRL + Drag Left/Right): Left rotate anticlockwise, right rotate clockwise. The Movetool(Q) should be selected before applying this hotkey
-* Smudge Hard (A). For creating colouring effects similar to oil painting. Bitmap only.
-* Smudge Smooth (keep pressing Alt). The Smudge-tool (A) should be selected before applying this hotkey
-* Added Alpha Channel to colour palette
-* The standard Shortcut list can be found in: Edit -> Preferences -> Shortcuts.
+Drawing Tool Improvements:
+
+* Brush quick-sizing (Shift + Drag Left/Right)
+* Brush feather quick-sizing (Ctrl + Drag Left/Right)
+* Fast Hand Tool (holding Space bar).
+* Fast Eyedropper (Alt).
+* Move tool can rotate selection area by Ctrl + Drag Left/Right.
+* Smudge tool is now working on bitmap layers for creating oil painting-like effects. Hold Alt to get liquify effects.
+* 3-level stroke stablizer.
+* Dotted Cursor available in prefrences.
+* Improved Fill Tool bitmap algorithm and added a threshold slider.
+* Removed Fill Tool bleeding into other layers.
+
+More Features and Improvements:
+
+* Added alpha channel to color palette.
+* Added .pcl/.pclx file associations and icons on mac OS.
+* Added command line interface (run with the -h flag for details)
+* Color selection behavior was separated Bitmap & Vector Layers (Using the color wheel on bitmap layers will only affect the active color and not the Color Palette swatches. In Vector Layers, changing any swatch will affect only vector colors)
+* Implemented canvas “freehand” rotation. (ALT + RMB and drag)
+* Implemented persistent camera frame (“passepartout”) to preview canvas & export size (Can be hidden by hiding the camera layer)
+* Implemented selection horizontal & vertical mirroring (“Flipping”)
+* Export movies in a given range.
+
+Fixes:
+
+* Re-implemented Camera Motion Interpolation (“tweening”).
+* Removed unused gradient background option from preferences.
+* Fixed sound import and timeline playback.
+* Fixed auto-save feature.
+* Fixed shortcut mappings.
+* Misc bug fixes.
+
+Known Issues:
+
+* Vector Engine is being reworked, the functionalities are limited and it’s not yet ready for production use.
+* You will be able to undo a “delete frame”, but cannot redo it.
+* Smudge tool (Bitmap) fills the background with white color, which should be fully transparent. Plus you cannot undo it’s behavior properly, yet.
+* Polyline Tool: Bezier mode is experimental and does not create proper splines in Bitmap Layers. In vector layers, it’s working by default and cannot be disabled.
+* Preview mode is currently disabled since it’s pending implementation.
+* Multi-Layer Onion Skin option is not working, pending implementation.
+* The original Pencil PDF manual has been removed. We will work to create a new online user manual accessible for everyone.
+
 
 ## Pencil2D v0.5.4 - July 26th 2013
 
