@@ -17,7 +17,6 @@
      </g>
      <g transform="matrix(1.33735,-1.42249,1.54595,1.64437,-7.32409,205.079)">
       <g transform="matrix(0.373875,0.323425,-0.351497,0.304067,135.829,25.0162)">
-       <use xlink:href="#_Image4" transform="matrix(0.945664,0,0,0.947218,0,0)" y="6.069" x="11.734" height="5.683px" width="5.674px"/>
       </g>
      </g>
      <g transform="matrix(0.974018,-1.03603,1.43324,1.52449,46.6927,155.405)">
@@ -117,7 +116,6 @@
    <stop style="stop-color:rgb(24,24,24);stop-opacity:0.686275" offset="0.4"/>
    <stop style="stop-color:rgb(75,75,75);stop-opacity:0" offset="1.0"/>
   </linearGradient>
-  <image xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAcElEQVQImU3NKwoCYQBF4W8GX8lgGBAEm2BwF65AbEZxA3bBzQgmd2BzAzYRk4jhBtdgmfDfes7hSrJMcrg/XjPFaiywG4+G1/fnuy/BCX1MBr3OMckWKkiywhldPDGvoWmaCzb4tfW6Kg+TTFvh9gc9iB1iqxRlzwAAAABJRU5ErkJggg==" id="_Image4" height="6px" width="6px"/>
   <linearGradient y2="0" gradientTransform="matrix(-0.0379099,-3.27825,4.82387,-0.0257632,138.055,34.3564)" x2="1" y1="0" id="_Linear5" x1="0" gradientUnits="userSpaceOnUse">
    <stop style="stop-color:rgb(58,67,72);stop-opacity:1" offset="0.0"/>
    <stop style="stop-color:rgb(209,216,220);stop-opacity:1" offset="1.0"/>
