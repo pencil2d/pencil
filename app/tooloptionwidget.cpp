@@ -100,7 +100,7 @@ void ToolOptionWidget::createUI()
     mSizeSlider->setValue( settings.value( "brushWidth" ).toDouble() );
     mSizeSlider->setToolTip( tr( "Set Pen Width <br><b>[SHIFT]+drag</b><br>for quick adjustment" ) );
 
-    mBrushSpinBox = new QSpinBox(this);
+    mBrushSpinBox = new QDoubleSpinBox(this);
     mBrushSpinBox->setRange(1,200);
     mBrushSpinBox->setValue(settings.value( "brushWidth" ).toDouble() );
 
@@ -108,7 +108,7 @@ void ToolOptionWidget::createUI()
     mFeatherSlider->setValue( settings.value( "brushFeather" ).toDouble() );
     mFeatherSlider->setToolTip( tr( "Set Pen Feather <br><b>[CTRL]+drag</b><br>for quick adjustment" ) );
 
-    mFeatherSpinBox = new QSpinBox(this);
+    mFeatherSpinBox = new QDoubleSpinBox(this);
     mFeatherSpinBox->setRange(2,64);
     mFeatherSpinBox->setValue(settings.value( "brushFeather" ).toDouble() );
 
@@ -209,8 +209,9 @@ void ToolOptionWidget::makeConnectionToEditor( Editor* editor )
     connect( mSizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth );
     connect( mFeatherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather );
 
-    connect( mBrushSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setWidth );
-    connect( mFeatherSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setFeather );
+    auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
+    connect( mBrushSpinBox, spinboxValueChanged, toolManager, &ToolManager::setWidth );
+    connect( mFeatherSpinBox, spinboxValueChanged, toolManager, &ToolManager::setFeather );
 
     connect( mUseFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather );
 
@@ -321,7 +322,6 @@ void ToolOptionWidget::visibilityOnLayer()
             default:
                 mMakeInvisibleBox->setVisible(false);
                 break;
-
         }
     }
 }
@@ -404,10 +404,13 @@ void ToolOptionWidget::setAA(int x)
 
     if (layerType == Layer::BITMAP)
     {
-        if (x == -1) {
+        if (x == -1)
+        {
             mUseAABox->setEnabled(false);
             mUseAABox->setVisible(false);
-        } else {
+        }
+        else
+        {
             mUseAABox->setVisible(true);
         }
         mUseAABox->setChecked( x > 0 );

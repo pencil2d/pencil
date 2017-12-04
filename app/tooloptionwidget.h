@@ -19,15 +19,16 @@ GNU General Public License for more details.
 
 #include "basedockwidget.h"
 #include "pencildef.h"
+
 class QToolButton;
 class SpinSlider;
 class QCheckBox;
 class QComboBox;
 class QSpinBox;
+class QDoubleSpinBox;
 class QGroupBox;
 class Editor;
 class BaseTool;
-
 
 
 class ToolOptionWidget : public BaseDockWidget
@@ -69,8 +70,8 @@ private:
     QCheckBox* mMakeInvisibleBox = nullptr;
     QCheckBox* mPreserveAlphaBox = nullptr;
     QCheckBox* mVectorMergeBox   = nullptr;
-    QSpinBox* mBrushSpinBox      = nullptr;
-    QSpinBox* mFeatherSpinBox    = nullptr;
+    QDoubleSpinBox* mBrushSpinBox      = nullptr;
+    QDoubleSpinBox* mFeatherSpinBox    = nullptr;
     SpinSlider* mSizeSlider      = nullptr;
     SpinSlider* mFeatherSlider   = nullptr;
     QCheckBox* mUseAABox         = nullptr;
