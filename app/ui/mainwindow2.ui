@@ -583,7 +583,7 @@
   <action name="actionMove">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/move.png</normaloff>:/icons/move.png</iconset>
+     <normaloff>:/icons/new/svg/arrow.svg</normaloff>:/icons/new/svg/arrow.svg</iconset>
    </property>
    <property name="text">
     <string>Move</string>
@@ -601,7 +601,7 @@
   <action name="actionSelect">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/select.png</normaloff>:/icons/select.png</iconset>
+     <normaloff>:/icons/new/svg/selection.svg</normaloff>:/icons/new/svg/selection.svg</iconset>
    </property>
    <property name="text">
     <string>Select</string>
@@ -610,7 +610,7 @@
   <action name="actionBrush">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/brush.png</normaloff>:/icons/brush.png</iconset>
+     <normaloff>:/icons/new/svg/brush_detailed.svg</normaloff>:/icons/new/svg/brush_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Brush</string>
@@ -619,7 +619,7 @@
   <action name="actionPolyline">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/polyline.png</normaloff>:/icons/polyline.png</iconset>
+     <normaloff>:/icons/new/svg/line.svg</normaloff>:/icons/new/svg/line.svg</iconset>
    </property>
    <property name="text">
     <string>Polyline</string>
@@ -628,7 +628,7 @@
   <action name="actionSmudge">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/smudge.png</normaloff>:/icons/smudge.png</iconset>
+     <normaloff>:/icons/new/svg/smudge_detailed.svg</normaloff>:/icons/new/svg/smudge_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Smudge</string>
@@ -637,7 +637,7 @@
   <action name="actionPen">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/pen.png</normaloff>:/icons/pen.png</iconset>
+     <normaloff>:/icons/new/svg/pen_detailed.svg</normaloff>:/icons/new/svg/pen_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Pen</string>
@@ -646,7 +646,7 @@
   <action name="actionHand">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/hand.png</normaloff>:/icons/hand.png</iconset>
+     <normaloff>:/icons/new/svg/hand_detailed.svg</normaloff>:/icons/new/svg/hand_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Hand</string>
@@ -655,7 +655,7 @@
   <action name="actionPencil">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/pencil2.png</normaloff>:/icons/pencil2.png</iconset>
+     <normaloff>:/icons/new/svg/pencil_detailed.svg</normaloff>:/icons/new/svg/pencil_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Pencil</string>
@@ -664,7 +664,7 @@
   <action name="actionBucket">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/bucket.png</normaloff>:/icons/bucket.png</iconset>
+     <normaloff>:/icons/new/svg/bucket_detailed.svg</normaloff>:/icons/new/svg/bucket_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Bucket</string>
@@ -673,7 +673,7 @@
   <action name="actionEyedropper">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/eyedropper.png</normaloff>:/icons/eyedropper.png</iconset>
+     <normaloff>:/icons/new/svg/eyedropper_detailed.svg</normaloff>:/icons/new/svg/eyedropper_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Eyedropper</string>
@@ -682,7 +682,7 @@
   <action name="actionEraser">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/eraser.png</normaloff>:/icons/eraser.png</iconset>
+     <normaloff>:/icons/new/svg/eraser_detailed.svg</normaloff>:/icons/new/svg/eraser_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>
@@ -875,9 +875,9 @@
   </action>
  </widget>
  <resources>
+  <include location="../../pencil.qrc"/>
+  <include location="../../pencil.qrc"/>
   <include location="../resource/app.qrc"/>
-  <include location="../../pencil.qrc"/>
-  <include location="../../pencil.qrc"/>
  </resources>
  <connections/>
 </ui>
