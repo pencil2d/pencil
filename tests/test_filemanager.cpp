@@ -97,7 +97,7 @@ TEST_CASE("FileManager Loading Test 1")
         }
     }
 
-    SECTION("Xml with one layer")
+    SECTION("Xml with one bitmap layer")
     {
         QTemporaryFile tmpFile;
         if (!tmpFile.open())
@@ -125,50 +125,44 @@ TEST_CASE("FileManager Loading Test 1")
 
         delete obj;
     }
+
+    SECTION("xml with one bitmap layer and one key")
+    {
+        QTemporaryFile tmpFile;
+        if (!tmpFile.open())
+        {
+            REQUIRE(false);
+        }
+        QFile theXML(tmpFile.fileName());
+        theXML.open(QIODevice::WriteOnly);
+
+        QTextStream fout(&theXML);
+        fout << "<!DOCTYPE PencilDocument><document>";
+        fout << "  <object>";
+        fout << "    <layer name='GoodLayer' id='5' visibility='0' type='1' >";
+        fout << "      <image frame='1' topLeftY='0' src='003.001.png' topLeftX='0' />";
+        fout << "    </layer>";
+        fout << "  </object>";
+        fout << "</document>";
+        theXML.close();
+
+        FileManager fm;
+        Object* obj = fm.load(theXML.fileName());
+
+        Layer* layer = obj->getLayer(0);
+        REQUIRE(layer->name() == "GoodLayer");
+        REQUIRE(layer->id() == 5);
+        REQUIRE(layer->visible() == false);
+        REQUIRE(layer->type() == Layer::BITMAP);
+
+        REQUIRE(layer->getKeyFrameAt(1) != nullptr);
+        REQUIRE(layer->keyFrameCount() == 1);
+
+        delete obj;
+    }
 }
 
 /*
-
-
-
-void TestFileManager::testOneLayerInFile()
-{
-
-}
-
-void TestFileManager::testBitmapLayer()
-{
-    QTemporaryFile tmpFile;
-    if (!tmpFile.open())
-    {
-        QFAIL("temp file");
-    }
-    QFile theXML(tmpFile.fileName());
-    theXML.open(QIODevice::WriteOnly);
-
-    QTextStream fout(&theXML);
-    fout << "<!DOCTYPE PencilDocument><document>";
-    fout << "  <object>";
-    fout << "    <layer name='MyLayer' id='5' visibility='1' type='1' >";
-    fout << "      <image frame='1' topLeftY='0' src='003.001.png' topLeftX='0' />";
-    fout << "    </layer>";
-    fout << "  </object>";
-    fout << "</document>";
-    theXML.close();
-
-    FileManager fm;
-    Object* obj = fm.load(theXML.fileName());
-    OnScopeExit(delete obj);
-
-    Layer* layer = obj->getLayer(0);
-    QVERIFY2(layer->name() == "MyLayer", "LayerName is different");
-    QCOMPARE(layer->id(), 5);
-    QCOMPARE(layer->visible(), true);
-    QCOMPARE(layer->type(), Layer::BITMAP);
-
-    QVERIFY(layer->getKeyFrameAt(1) != nullptr);
-
-}
 
 void TestFileManager::testBitmapLayer2()
 {
