@@ -91,8 +91,8 @@ public:
     virtual void clear() {}
 
     static bool isAdjusting;
-    static QPixmap canvasCursor(float scalingFac, int windowWidth);
-    static QPixmap quickSizeCursor(float scalingFac);
+    static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
+    static QPixmap quickSizeCursor(float brushWidth, float brushFeather, float scalingFac);
 
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
@@ -110,7 +110,7 @@ public:
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
 
-    static Properties properties;
+    Properties properties;
 
     QPointF getCurrentPixel();
     QPointF getCurrentPoint();

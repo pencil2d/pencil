@@ -28,7 +28,6 @@ GNU General Public License for more details.
 ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
 qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
 bool BaseTool::isAdjusting = false;
-Properties BaseTool::properties;
 
 
 QString BaseTool::TypeName( ToolType type )
@@ -105,12 +104,32 @@ void BaseTool::mouseDoubleClickEvent( QMouseEvent* event )
  * @brief precision circular cursor: used for drawing a cursor within scribble area.
  * @return QPixmap
  */
-QPixmap BaseTool::canvasCursor(float scalingFac, int windowWidth)
+QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, float scalingFac, int windowWidth)
 {
 
-    float propWidth = properties.width * scalingFac;
-    float propFeather = properties.feather * scalingFac;
-    float cursorWidth = propWidth + 0.5 * propFeather;
+    float propWidth = width * scalingFac;
+    float propFeather = feather * scalingFac;
+
+    float cursorWidth = 0.0f;
+    float xyA = 0.0f;
+    float xyB = 0.0f;
+    float whA = 0.0f;
+    float whB = 0.0f;
+
+    if (useFeather) {
+        cursorWidth = propWidth + 0.5 * propFeather;
+        xyA = 1 + propFeather / 2;
+        xyB = 1 + propFeather / 8;
+        whA = qMax<float>( 0, propWidth - xyA - 1 );
+        whB = qMax<float>( 0, cursorWidth - propFeather / 4 - 2 );
+    } else {
+
+        cursorWidth = (propWidth + 0.5);
+        whA = qMax<float>( 0, propWidth - 1 );
+        whB = qMax<float>( 0, cursorWidth / 4 - 2 );
+    }
+
+    float radius = cursorWidth / 2;
 
     // delocate when cursor width gets some value larger than the widget
     if (cursorWidth > windowWidth * 2) {
@@ -118,11 +137,7 @@ QPixmap BaseTool::canvasCursor(float scalingFac, int windowWidth)
     }
 
     if ( cursorWidth < 1 ) { cursorWidth = 1; }
-    float radius = cursorWidth / 2;
-    float xyA = 1 + propFeather / 2;
-    float xyB = 1 + propFeather / 8;
-    float whA = qMax<float>( 0, propWidth - xyA - 1 );
-    float whB = qMax<float>( 0, cursorWidth - propFeather / 4 - 2 );
+
     QPixmap cursorPixmap = QPixmap( cursorWidth, cursorWidth );
     if ( !cursorPixmap.isNull() )
     {
@@ -139,14 +154,16 @@ QPixmap BaseTool::canvasCursor(float scalingFac, int windowWidth)
         cursorPainter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
 
         // Draw outer circle
-        cursorPen.setStyle( Qt::DotLine );
-        cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
-        cursorPainter.setPen(cursorPen);
-        cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
-        cursorPen.setDashOffset( 4 );
-        cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
-        cursorPainter.setPen(cursorPen);
-        cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+        if (useFeather) {
+            cursorPen.setStyle( Qt::DotLine );
+            cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+            cursorPen.setDashOffset( 4 );
+            cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
+            cursorPainter.setPen(cursorPen);
+            cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+        }
 
         // Draw inner circle
         cursorPen.setStyle( Qt::DotLine );
@@ -167,10 +184,10 @@ QPixmap BaseTool::canvasCursor(float scalingFac, int windowWidth)
  * @brief precision circular cursor: used for drawing stroke size while adjusting
  * @return QPixmap
  */
-QPixmap BaseTool::quickSizeCursor(float scalingFac)
+QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float scalingFac)
 {
-    float propWidth = properties.width * scalingFac;
-    float propFeather = properties.feather * scalingFac;
+    float propWidth = brushWidth * scalingFac;
+    float propFeather = brushFeather * scalingFac;
     float cursorWidth = propWidth + 0.5 * propFeather;
 
     if ( cursorWidth < 1 ) { cursorWidth = 1; }
