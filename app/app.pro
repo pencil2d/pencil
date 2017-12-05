@@ -40,8 +40,6 @@ HEADERS += \
     shortcutspage.h \
     preview.h \
     colorbox.h \
-    colorgrid.h \
-    colorgriditem.h \
     colorinspector.h \
     colorpalettewidget.h \
     colorwheel.h \
@@ -69,8 +67,6 @@ SOURCES += \
     shortcutspage.cpp \
     preview.cpp \
     colorbox.cpp \
-    colorgrid.cpp \
-    colorgriditem.cpp \
     colorinspector.cpp \
     colorpalettewidget.cpp \
     colorwheel.cpp \
