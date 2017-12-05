@@ -70,59 +70,70 @@ TEST_CASE("FileManager invalid operations")
     }
 }
 
-/*
-
-void TestFileManager::testMinimalOldPencilDocument()
+TEST_CASE("FileManager Loading Test 1")
 {
-    QTemporaryFile minimalDoc;
-    if (minimalDoc.open())
+    SECTION("Minimal working xml")
     {
-        QFile minXML(minimalDoc.fileName());
-        minXML.open(QIODevice::WriteOnly);
+        QTemporaryFile minimalDoc;
+        if (minimalDoc.open())
+        {
+            QFile minXML(minimalDoc.fileName());
+            minXML.open(QIODevice::WriteOnly);
 
-        QTextStream fout(&minXML);
+            QTextStream fout(&minXML);
+            fout << "<!DOCTYPE PencilDocument><document>";
+            fout << "  <object></object>";
+            fout << "</document>";
+            minXML.close();
+
+            FileManager fm;
+            Object* o = fm.load(minimalDoc.fileName());
+
+            REQUIRE(o != nullptr);
+            REQUIRE(fm.error().ok());
+            REQUIRE(o->getLayerCount() == 0);
+
+            delete o;
+        }
+    }
+
+    SECTION("Xml with one layer")
+    {
+        QTemporaryFile tmpFile;
+        if (!tmpFile.open())
+        {
+            REQUIRE(false);
+        }
+        QFile theXML(tmpFile.fileName());
+        theXML.open(QIODevice::WriteOnly);
+
+        QTextStream fout(&theXML);
         fout << "<!DOCTYPE PencilDocument><document>";
-        fout << "  <object></object>";
+        fout << "  <object>";
+        fout << "    <layer name='MyLayer' id='5' visibility='1' type='1'></layer>";
+        fout << "  </object>";
         fout << "</document>";
-        minXML.close();
+        theXML.close();
 
         FileManager fm;
-        Object* o = fm.load(minimalDoc.fileName());
-        OnScopeExit(delete o);
+        Object* obj = fm.load(theXML.fileName());
+        REQUIRE(obj->getLayerCount() == 1);
+        REQUIRE(obj->getLayer(0)->name() == "MyLayer");
+        REQUIRE(obj->getLayer(0)->id() == 5);
+        REQUIRE(obj->getLayer(0)->visible() == true);
+        REQUIRE(obj->getLayer(0)->type() == Layer::BITMAP);
 
-        QVERIFY(o != nullptr);
-        QVERIFY(fm.error().ok());
-        QVERIFY(o->getLayerCount() == 0);
-    }
-    else
-    {
-        QFAIL("Can't open temp file.");
+        delete obj;
     }
 }
 
+/*
+
+
+
 void TestFileManager::testOneLayerInFile()
 {
-    QTemporaryFile tmpFile;
-    if (!tmpFile.open())
-    {
-        QFAIL("temp file");
-    }
-    QFile theXML(tmpFile.fileName());
-    theXML.open(QIODevice::WriteOnly);
 
-    QTextStream fout(&theXML);
-    fout << "<!DOCTYPE PencilDocument><document>";
-    fout << "  <object>";
-    fout << "    <layer name='MyLayer' id='5' visibility='1' type='1'></layer>";
-    fout << "  </object>";
-    fout << "</document>";
-    theXML.close();
-
-    FileManager fm;
-    Object* obj = fm.load(theXML.fileName());
-    OnScopeExit(delete obj);
-
-    QVERIFY(obj->getLayerCount() == 1);
 }
 
 void TestFileManager::testBitmapLayer()
