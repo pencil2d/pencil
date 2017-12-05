@@ -28,6 +28,7 @@ GNU General Public License for more details.
 ToolPropertyType BaseTool::assistedSettingType; // setting beeing changed
 qreal BaseTool::OriginalSettingValue;  // start value (width, feather ..)
 bool BaseTool::isAdjusting = false;
+Properties BaseTool::properties;
 
 
 QString BaseTool::TypeName( ToolType type )
@@ -104,81 +105,81 @@ void BaseTool::mouseDoubleClickEvent( QMouseEvent* event )
  * @brief precision circular cursor: used for drawing a cursor within scribble area.
  * @return QPixmap
  */
-QPixmap BaseTool::canvasCursor() // Todo: only one instance required: make fn static?
+QPixmap BaseTool::canvasCursor(float scalingFac, int windowWidth)
 {
-        Q_ASSERT( mEditor->getScribbleArea() );
 
-        float scalingFac = mEditor->view()->scaling();
-        propWidth = properties.width * scalingFac;
-        propFeather = properties.feather * scalingFac;
-        cursorWidth = propWidth + 0.5 * propFeather;
+    float propWidth = properties.width * scalingFac;
+    float propFeather = properties.feather * scalingFac;
+    float cursorWidth = propWidth + 0.5 * propFeather;
 
-        if ( cursorWidth < 1 ) { cursorWidth = 1; }
-        radius = cursorWidth / 2;
-        xyA = 1 + propFeather / 2;
-        xyB = 1 + propFeather / 8;
-        whA = qMax( 0, propWidth - xyA - 1 );
-        whB = qMax( 0, cursorWidth - propFeather / 4 - 2 );
-        cursorPixmap = QPixmap( cursorWidth, cursorWidth );
-        if ( !cursorPixmap.isNull() )
-        {
-            cursorPixmap.fill( QColor( 255, 255, 255, 0 ) );
-            QPainter cursorPainter( &cursorPixmap );
-            cursorPen = cursorPainter.pen();
-            cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    // delocate when cursor width gets some value larger than the widget
+    if (cursorWidth > windowWidth * 2) {
+        return QPixmap(0,0);
+    }
 
-            // Draw cross in center
-            cursorPen.setStyle( Qt::SolidLine );
-            cursorPen.setColor( QColor( 0, 0, 0, 127 ) );
-            cursorPainter.setPen(cursorPen);
-            cursorPainter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
-            cursorPainter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
+    if ( cursorWidth < 1 ) { cursorWidth = 1; }
+    float radius = cursorWidth / 2;
+    float xyA = 1 + propFeather / 2;
+    float xyB = 1 + propFeather / 8;
+    float whA = qMax<float>( 0, propWidth - xyA - 1 );
+    float whB = qMax<float>( 0, cursorWidth - propFeather / 4 - 2 );
+    QPixmap cursorPixmap = QPixmap( cursorWidth, cursorWidth );
+    if ( !cursorPixmap.isNull() )
+    {
+        cursorPixmap.fill( QColor( 255, 255, 255, 0 ) );
+        QPainter cursorPainter( &cursorPixmap );
+        QPen cursorPen = cursorPainter.pen();
+        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
-            // Draw outer circle
-            cursorPen.setStyle( Qt::DotLine );
-            cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
-            cursorPainter.setPen(cursorPen);
-            cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
-            cursorPen.setDashOffset( 4 );
-            cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
-            cursorPainter.setPen(cursorPen);
-            cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+        // Draw cross in center
+        cursorPen.setStyle( Qt::SolidLine );
+        cursorPen.setColor( QColor( 0, 0, 0, 127 ) );
+        cursorPainter.setPen(cursorPen);
+        cursorPainter.drawLine( QPointF( radius - 2, radius ), QPointF( radius + 2, radius ) );
+        cursorPainter.drawLine( QPointF( radius, radius - 2 ), QPointF( radius, radius + 2 ) );
 
-            // Draw inner circle
-            cursorPen.setStyle( Qt::DotLine );
-            cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
-            cursorPainter.setPen(cursorPen);
-            cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
-            cursorPen.setDashOffset( 4 );
-            cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
-            cursorPainter.setPen(cursorPen);
-            cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+        // Draw outer circle
+        cursorPen.setStyle( Qt::DotLine );
+        cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
+        cursorPainter.setPen(cursorPen);
+        cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
+        cursorPen.setDashOffset( 4 );
+        cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
+        cursorPainter.setPen(cursorPen);
+        cursorPainter.drawEllipse( QRectF( xyB, xyB, whB, whB ) );
 
-            cursorPainter.end();
-        }
-        return cursorPixmap;
+        // Draw inner circle
+        cursorPen.setStyle( Qt::DotLine );
+        cursorPen.setColor( QColor( 0, 0, 0, 255 ) );
+        cursorPainter.setPen(cursorPen);
+        cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+        cursorPen.setDashOffset( 4 );
+        cursorPen.setColor( QColor( 255, 255, 255, 255 ) );
+        cursorPainter.setPen(cursorPen);
+        cursorPainter.drawEllipse( QRectF( xyA, xyA, whA, whA ) );
+
+        cursorPainter.end();
+    }
+    return cursorPixmap;
 }
 
 /**
  * @brief precision circular cursor: used for drawing stroke size while adjusting
  * @return QPixmap
  */
-QPixmap BaseTool::quickSizeCursor() // Todo: only one instance required: make fn static?
+QPixmap BaseTool::quickSizeCursor(float scalingFac)
 {
-    Q_ASSERT( mEditor->getScribbleArea() );
-
-    float scalingFac = mEditor->view()->scaling();
-    propWidth = properties.width * scalingFac;
-    propFeather = properties.feather * scalingFac;
-    cursorWidth = propWidth + 0.5 * propFeather;
+    float propWidth = properties.width * scalingFac;
+    float propFeather = properties.feather * scalingFac;
+    float cursorWidth = propWidth + 0.5 * propFeather;
 
     if ( cursorWidth < 1 ) { cursorWidth = 1; }
-    radius = cursorWidth / 2;
-    xyA = 1 + propFeather / 2;
-    xyB = 1 + propFeather / 8;
-    whA = qMax( 0, propWidth - xyA - 1 );
-    whB = qMax( 0, cursorWidth - propFeather / 4 - 2 );
-    cursorPixmap = QPixmap( cursorWidth, cursorWidth );
+    float radius = cursorWidth / 2;
+    float xyA = 1 + propFeather / 2;
+    float xyB = 1 + propFeather / 8;
+    float whA = qMax<float>( 0, propWidth - xyA - 1 );
+    float whB = qMax<float>( 0, cursorWidth - propFeather / 4 - 2 );
+    QPixmap cursorPixmap = QPixmap( cursorWidth, cursorWidth );
     if ( !cursorPixmap.isNull() )
     {
         cursorPixmap.fill( QColor( 255, 255, 255, 0 ) );

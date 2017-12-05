@@ -863,13 +863,14 @@ void ScribbleArea::paintCanvasCursor(QPainter& painter)
 
 void ScribbleArea::updateCanvasCursor()
 {
+    float scalingFac = mEditor->view()->scaling();
     if (currentTool()->isAdjusting)
     {
-        mCursorImg = currentTool()->quickSizeCursor();
+        mCursorImg = currentTool()->quickSizeCursor(scalingFac);
     }
     else if (mEditor->preference()->isOn(SETTING::DOTTED_CURSOR))
     {
-        mCursorImg = currentTool()->canvasCursor();
+        mCursorImg = currentTool()->canvasCursor(scalingFac, width());
     }
     else
     {

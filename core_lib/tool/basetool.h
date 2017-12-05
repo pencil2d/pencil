@@ -91,8 +91,8 @@ public:
     virtual void clear() {}
 
     static bool isAdjusting;
-    QPixmap canvasCursor();
-    QPixmap quickSizeCursor();
+    static QPixmap canvasCursor(float scalingFac, int windowWidth);
+    static QPixmap quickSizeCursor(float scalingFac);
 
     virtual void setWidth( const qreal width );
     virtual void setFeather( const qreal feather );
@@ -110,7 +110,7 @@ public:
     virtual void leavingThisTool(){}
     virtual void switchingLayers(){}
 
-    Properties properties;
+    static Properties properties;
 
     QPointF getCurrentPixel();
     QPointF getCurrentPoint();
@@ -131,18 +131,6 @@ protected:
     qreal mAdjustmentStep = 0.0f;
 
 private:
-    int propWidth;
-    int propFeather;
-    int width;
-    int cursorWidth;
-
-    int radius;
-    int xyA;
-    int xyB;
-    int whA;
-    int whB;
-    QPixmap cursorPixmap;
-    QPen cursorPen;
 };
 
 #endif // BASETOOL_H
