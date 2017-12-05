@@ -40,6 +40,7 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "camera.h"
 
+#include "keyframefactory.h"
 #include "movieexporter.h"
 #include "filedialogex.h"
 #include "exportmoviedialog.h"
@@ -340,9 +341,9 @@ Status ActionCommands::exportImage()
     if (!bOK)
     {
         QMessageBox::warning(mParent,
-            tr("Warning"),
-            tr("Unable to export image."),
-            QMessageBox::Ok);
+                             tr("Warning"),
+                             tr("Unable to export image."),
+                             QMessageBox::Ok);
         return Status::FAIL;
     }
     return Status::OK;
@@ -488,6 +489,44 @@ void ActionCommands::removeKey()
             break;
         default:
             break;
+        }
+    }
+}
+
+void ActionCommands::duplicateKey()
+{
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer == NULL) return;
+
+    KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
+    if (key == nullptr) return;
+
+    KeyFrame* dupKey = key->clone();
+
+    int nextEmptyFrame = mEditor->currentFrame() + 1;
+    while (layer->keyExists(nextEmptyFrame))
+    {
+        nextEmptyFrame += 1;
+    }
+
+    layer->addKeyFrame(nextEmptyFrame, dupKey);
+
+    if (layer->type() == Layer::VECTOR || layer->type() == Layer::BITMAP)
+    {
+        //copy();
+        //addNewKey();
+        //paste();
+
+        //mScribbleArea->setModified(layers()->currentLayerIndex(), currentFrame());
+        //mScribbleArea->update();
+    }
+    if (layer->type() == Layer::SOUND)
+    {
+        // TODO: get frame which is selected by mouse
+        //if (layer->isFrameSelected(currentFrame()))
+        {
+            //copy();
+            //paste();
         }
     }
 }

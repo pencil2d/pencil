@@ -34,6 +34,8 @@ public:
     ~BitmapImage();
     BitmapImage& operator=( const BitmapImage& a );
 
+    BitmapImage* clone() override;
+
     void paintImage( QPainter& painter );
 
     QImage* image() { return mImage.get(); }

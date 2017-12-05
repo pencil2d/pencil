@@ -26,7 +26,7 @@ BitmapImage::BitmapImage()
     mBounds = QRect( 0, 0, 0, 0 );
 }
 
-BitmapImage::BitmapImage( const BitmapImage& a )
+BitmapImage::BitmapImage( const BitmapImage& a ) : KeyFrame(a)
 {
     mBounds = a.mBounds;
     mImage = std::make_shared< QImage >( *a.mImage );
@@ -75,6 +75,11 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     mBounds = a.mBounds;
     mImage = std::make_shared< QImage >( *a.mImage );
     return *this;
+}
+
+BitmapImage* BitmapImage::clone()
+{
+    return new BitmapImage(*this);
 }
 
 void BitmapImage::paintImage(QPainter& painter)

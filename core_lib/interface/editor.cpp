@@ -945,34 +945,6 @@ KeyFrame* Editor::addNewKey()
 
 void Editor::duplicateKey()
 {
-    Layer* layer = mObject->getLayer(currentLayerIndex());
-    if (layer != NULL)
-    {
-        if (layer->type() == Layer::VECTOR || layer->type() == Layer::BITMAP)
-        {
-            // Will copy the selection if any or the entire image if there is none
-            if (!mScribbleArea->somethingSelected)
-            {
-                mScribbleArea->selectAll();
-            }
-
-            copy();
-            addNewKey();
-            paste();
-
-            mScribbleArea->setModified(layers()->currentLayerIndex(), currentFrame());
-            mScribbleArea->update();
-        }
-        if (layer->type() == Layer::SOUND)
-        {
-            // TODO: get frame which is selected by mouse
-            if (layer->isFrameSelected(currentFrame()))
-            {
-                copy();
-                paste();
-            }
-        }
-    }
 }
 
 KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)

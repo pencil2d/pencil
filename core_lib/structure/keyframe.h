@@ -29,7 +29,8 @@ class KeyFrameEventListener;
 class KeyFrame
 {
 public:
-    KeyFrame();
+    explicit KeyFrame();
+    explicit KeyFrame(const KeyFrame& k2);
     virtual ~KeyFrame();
 
     int  pos() { return mFrame; }
@@ -52,6 +53,7 @@ public:
     void removeEventListner( KeyFrameEventListener* );
 
 	virtual bool isNull() { return false; }
+    virtual KeyFrame* clone() { return nullptr; }
 
 private:
     int mFrame       = -1;
