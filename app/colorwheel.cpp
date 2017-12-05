@@ -24,13 +24,7 @@ GNU General Public License for more details.
 
 #include "colorwheel.h"
 
-ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent),
-    m_initSize(200, 200),
-    m_wheelThickness(20),
-    m_currentColor(Qt::red),
-    m_isInWheel(false),
-    m_isInSquare(false)
-
+ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent)
 {
     m_currentColor = m_currentColor.toHsv();
 }
@@ -47,18 +41,15 @@ void ColorWheel::changeColor(const QColor &color)
         return;
     }
 
-    if (color.spec() == QColor::Spec::Rgb) {
+    if (color.spec() == QColor::Spec::Rgb)
         changeRgbColors(color);
-    } else {
+    else
         changeHsvColors(color);
-    }
 
     if (color.alpha() != m_currentColor.alpha())
     {
         alphaChanged(color.alpha());
     }
-
-//    emit colorChanged(color);
     update();
 }
 
@@ -69,12 +60,14 @@ void ColorWheel::setColor(const QColor &color)
         return;
     }
 
-    if (color.spec() == QColor::Spec::Rgb) {
-        drawSquareImage(color.hue());
+    if (color.spec() == QColor::Spec::Rgb)
         changeRgbColors(color);
-    } else {
+    else if (color.spec() == QColor::Spec::Hsv)
         changeHsvColors(color);
-    }
+    else
+        Q_ASSERT(false);
+
+    drawSquareImage(color.hue());
 
     if ( color.alpha() != m_currentColor.alpha() )
     {
@@ -85,7 +78,8 @@ void ColorWheel::setColor(const QColor &color)
     emit colorSelected(color);
 }
 
-void ColorWheel::changeRgbColors(const QColor &color) {
+void ColorWheel::changeRgbColors(const QColor &color)
+{
     if (color.red() != m_currentColor.red())
     {
         redChanged(color.red());
@@ -102,7 +96,8 @@ void ColorWheel::changeRgbColors(const QColor &color) {
     }
 }
 
-void ColorWheel::changeHsvColors(const QColor &color) {
+void ColorWheel::changeHsvColors(const QColor &color)
+{
     if (color.hue() != m_currentColor.hue())
     {
         hueChanged(color.hue());
@@ -275,8 +270,6 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QBrush backgroundBrush = option.palette.window();
 
     m_wheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
-
-    //m_wheelImage.fill(background.color());  // Only in 4.8
 
     QPainter painter(&m_wheelImage);
     painter.setRenderHint(QPainter::Antialiasing);

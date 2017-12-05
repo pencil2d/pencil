@@ -41,11 +41,11 @@ ColorBox::ColorBox( QWidget* parent ) : BaseDockWidget( parent )
     connect( mColorInspector, &ColorInspector::colorChanged, this, &ColorBox::onSpinboxChange );
     connect( mColorWheel, &ColorWheel::colorSelected, this, &ColorBox::onWheelRelease );
 
-    mColorWheel->setColor(Qt::black);
-    mColorInspector->setColor(Qt::black);
+    QColor defaultColor;
+    defaultColor.setHsv(0, 0, 0);
+    mColorWheel->setColor(defaultColor);
+    mColorInspector->setColor(defaultColor);
     mColorWheel->setMinimumSize(100,100);
-
-
 }
 
 ColorBox::~ColorBox()
