@@ -26,17 +26,17 @@ GNU General Public License for more details.
 
 ColorWheel::ColorWheel(QWidget *parent) : QWidget(parent)
 {
-    m_currentColor = m_currentColor.toHsv();
+    mCurrentColor = mCurrentColor.toHsv();
 }
 
 QColor ColorWheel::color()
 {
-    return m_currentColor;
+    return mCurrentColor;
 }
 
 void ColorWheel::changeColor(const QColor &color)
 {
-    if (color.toHsv() == m_currentColor)
+    if (color.toHsv() == mCurrentColor)
     {
         return;
     }
@@ -46,7 +46,7 @@ void ColorWheel::changeColor(const QColor &color)
     else
         changeHsvColors(color);
 
-    if (color.alpha() != m_currentColor.alpha())
+    if (color.alpha() != mCurrentColor.alpha())
     {
         alphaChanged(color.alpha());
     }
@@ -55,7 +55,7 @@ void ColorWheel::changeColor(const QColor &color)
 
 void ColorWheel::setColor(const QColor &color)
 {
-    if (color.toHsv() == m_currentColor)
+    if (color.toHsv() == mCurrentColor)
     {
         return;
     }
@@ -69,7 +69,7 @@ void ColorWheel::setColor(const QColor &color)
 
     drawSquareImage(color.hue());
 
-    if ( color.alpha() != m_currentColor.alpha() )
+    if ( color.alpha() != mCurrentColor.alpha() )
     {
         alphaChanged(color.alpha());
     }
@@ -80,17 +80,17 @@ void ColorWheel::setColor(const QColor &color)
 
 void ColorWheel::changeRgbColors(const QColor &color)
 {
-    if (color.red() != m_currentColor.red())
+    if (color.red() != mCurrentColor.red())
     {
         redChanged(color.red());
     }
 
-    if (color.green() != m_currentColor.green())
+    if (color.green() != mCurrentColor.green())
     {
         greenChanged(color.green());
     }
 
-    if (color.blue() != m_currentColor.blue())
+    if (color.blue() != mCurrentColor.blue())
     {
         blueChanged(color.blue());
     }
@@ -98,17 +98,17 @@ void ColorWheel::changeRgbColors(const QColor &color)
 
 void ColorWheel::changeHsvColors(const QColor &color)
 {
-    if (color.hue() != m_currentColor.hue())
+    if (color.hue() != mCurrentColor.hue())
     {
         hueChanged(color.hue());
     }
 
-    if (color.saturation() != m_currentColor.saturation())
+    if (color.saturation() != mCurrentColor.saturation())
     {
         saturationChanged(color.saturation());
     }
 
-    if (color.value() != m_currentColor.value())
+    if (color.value() != mCurrentColor.value())
     {
         valueChanged(color.value());
     }
@@ -116,11 +116,11 @@ void ColorWheel::changeHsvColors(const QColor &color)
 
 QColor ColorWheel::pickColor(const QPoint& point)
 {
-    if ( ! m_wheelPixmap.rect().contains(point) )
+    if ( ! mWheelPixmap.rect().contains(point) )
     {
         return QColor();
     }
-    if (m_isInWheel)
+    if (mIsInWheel)
     {
         qreal hue = 0;
         int r = qMin(width(), height()) / 2;
@@ -143,18 +143,18 @@ QColor ColorWheel::pickColor(const QPoint& point)
         hue = (hue < 0) ? 0 : hue;
 
         return QColor::fromHsv(hue,
-            m_currentColor.saturation(),
-            m_currentColor.value());
+            mCurrentColor.saturation(),
+            mCurrentColor.value());
     }
-    else if (m_isInSquare)
+    else if (mIsInSquare)
     {
-        QRect rect = m_squareRegion.boundingRect();
+        QRect rect = mSquareRegion.boundingRect();
         QPoint p = point - rect.topLeft();
         //qDebug("TopRight(%d, %d) Point(%d, %d)", rect.topRight().x(), rect.topRight().y(), point.x(), point.y());
         QSizeF regionSize = rect.size() - QSizeF(1, 1);
 
         //qDebug("p(%d, %d), Region(%.1f, %.1f)", p.x(), p.y(), regionSize.width(), regionSize.height());
-        return QColor::fromHsvF( m_currentColor.hueF(),
+        return QColor::fromHsvF( mCurrentColor.hueF(),
             p.x() / regionSize.width(),
             1.0 - (p.y() / regionSize.height()));
     }
@@ -163,30 +163,30 @@ QColor ColorWheel::pickColor(const QPoint& point)
 
 QSize ColorWheel::sizeHint () const
 {
-    return m_initSize;
+    return mInitSize;
 }
 
 QSize ColorWheel::minimumSizeHint () const
 {
-    return m_initSize;
+    return mInitSize;
 }
 
 void ColorWheel::mousePressEvent(QMouseEvent *event)
 {
     QPoint lastPos = event->pos();
-    if (m_squareRegion.contains(lastPos))
+    if (mSquareRegion.contains(lastPos))
     {
-        m_isInWheel = false;
-        m_isInSquare = true;
+        mIsInWheel = false;
+        mIsInSquare = true;
         QColor color = pickColor(lastPos);
         saturationChanged(color.saturation());
         valueChanged(color.value());
 
     }
-    else if (m_wheelRegion.contains(lastPos))
+    else if (mWheelRegion.contains(lastPos))
     {
-        m_isInWheel = true;
-        m_isInSquare = false;
+        mIsInWheel = true;
+        mIsInSquare = false;
         QColor color = pickColor(lastPos);
         hueChanged(color.hue());
     }
@@ -199,9 +199,9 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
     {
         return;
     }
-    if (m_isInSquare)
+    if (mIsInSquare)
     {
-        QRect rect = m_squareRegion.boundingRect();
+        QRect rect = mSquareRegion.boundingRect();
 
         if ( lastPos.x() < rect.topLeft().x() )
         {
@@ -225,7 +225,7 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
         saturationChanged(color.saturation());
         valueChanged(color.value());
     }
-    else if (m_wheelRegion.contains(lastPos) && m_isInWheel)
+    else if (mWheelRegion.contains(lastPos) && mIsInWheel)
     {
         QColor color = pickColor(lastPos);
         hueChanged(color.hue());
@@ -234,17 +234,17 @@ void ColorWheel::mouseMoveEvent(QMouseEvent* event)
 
 void ColorWheel::mouseReleaseEvent(QMouseEvent *)
 {
-    m_isInWheel = false;
-    m_isInSquare = false;
-    emit colorSelected(m_currentColor);
+    mIsInWheel = false;
+    mIsInSquare = false;
+    emit colorSelected(mCurrentColor);
 }
 
 void ColorWheel::resizeEvent(QResizeEvent *event)
 {
-    m_wheelPixmap = QPixmap(event->size());
-    m_wheelPixmap.fill(palette().background().color());
+    mWheelPixmap = QPixmap(event->size());
+    mWheelPixmap.fill(palette().background().color());
     drawWheelImage(event->size());
-    drawSquareImage(m_currentColor.hue());
+    drawSquareImage(mCurrentColor.hue());
     update();
 }
 
@@ -253,10 +253,10 @@ void ColorWheel::paintEvent(QPaintEvent *)
     QPainter painter(this);
     QStyleOption opt;
     opt.initFrom(this);
-    composeWheel(m_wheelPixmap);
+    composeWheel(mWheelPixmap);
     painter.translate(width() / 2, height() / 2);
-    painter.translate(-m_wheelPixmap.width() / 2,-m_wheelPixmap.height() / 2);
-    painter.drawPixmap(0, 0, m_wheelPixmap);
+    painter.translate(-mWheelPixmap.width() / 2,-mWheelPixmap.height() / 2);
+    painter.drawPixmap(0, 0, mWheelPixmap);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 }
 
@@ -269,12 +269,12 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
 
     QBrush backgroundBrush = option.palette.window();
 
-    m_wheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
+    mWheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
 
-    QPainter painter(&m_wheelImage);
+    QPainter painter(&mWheelImage);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    painter.fillRect(m_wheelImage.rect(), backgroundBrush);
+    painter.fillRect(mWheelImage.rect(), backgroundBrush);
 
     QConicalGradient conicalGradient(0, 0, 0);
 
@@ -283,7 +283,7 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
         conicalGradient.setColorAt( hue / 360.0,  QColor::fromHsv(hue, 255, 255));
     }
 
-    qreal ir = r - m_wheelThickness;
+    qreal ir = r - mWheelThickness;
 
     /* outer circle */
     painter.translate(width() / 2, height() / 2);
@@ -295,17 +295,17 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
 
     /* inner circle */
     painter.setBrush(backgroundBrush);
-    painter.drawEllipse(QPoint(0, 0), r/2 - m_wheelThickness, r/2 - m_wheelThickness);
+    painter.drawEllipse(QPoint(0, 0), r/2 - mWheelThickness, r/2 - mWheelThickness);
 
     // Center of wheel
-    qreal m1 = (m_wheelPixmap.width() / 2) - (ir / qSqrt(2));
-    qreal m2 = (m_wheelPixmap.height() / 2) - (ir / qSqrt(2));
+    qreal m1 = (mWheelPixmap.width() / 2) - (ir / qSqrt(2));
+    qreal m2 = (mWheelPixmap.height() / 2) - (ir / qSqrt(2));
 
     // Calculate size of wheel width
     qreal wheelWidth = 2 * ir / qSqrt(2);
 
     // Caculate wheel region
-    m_wheelRegion = QRegion(m1, m2, wheelWidth, wheelWidth);
+    mWheelRegion = QRegion(m1, m2, wheelWidth, wheelWidth);
 }
 
 void ColorWheel::drawSquareImage(const int &hue)
@@ -315,7 +315,7 @@ void ColorWheel::drawSquareImage(const int &hue)
     // radius of outer circle
     qreal r = w / 2.0;
     // radius of inner circle
-    qreal ir = r - m_wheelThickness;
+    qreal ir = r - mWheelThickness;
 
     // center of square
     qreal m1 = (width() / 2) - (ir / qSqrt(2));
@@ -335,13 +335,13 @@ void ColorWheel::drawSquareImage(const int &hue)
     }
 
     qreal SquareWidth =  2 * ir / qSqrt(2.1);
-    m_squareImage = square.scaled(SquareWidth, SquareWidth);
-    m_squareRegion = QRegion(m1, m2, SquareWidth, SquareWidth);
+    mSquareImage = square.scaled(SquareWidth, SquareWidth);
+    mSquareRegion = QRegion(m1, m2, SquareWidth, SquareWidth);
 }
 
 void ColorWheel::drawHueIndicator(const int &hue)
 {
-    QPainter painter(&m_wheelPixmap);
+    QPainter painter(&mWheelPixmap);
     painter.setRenderHint(QPainter::Antialiasing);
     if(hue > 20 && hue < 200)
     {
@@ -360,20 +360,20 @@ void ColorWheel::drawHueIndicator(const int &hue)
     painter.translate(width() / 2, height() / 2);
     painter.rotate( -hue );
 
-    r = r / 2.0 - m_wheelThickness/2;
+    r = r / 2.0 - mWheelThickness/2;
     painter.drawEllipse(QPointF(r, 0), 7, 7);
 }
 
 void ColorWheel::drawPicker(const QColor &color)
 {
-    QPainter painter(&m_wheelPixmap);
+    QPainter painter(&mWheelPixmap);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    QPoint squareTopLeft = m_squareRegion.boundingRect().topLeft();
+    QPoint squareTopLeft = mSquareRegion.boundingRect().topLeft();
 
     painter.translate(squareTopLeft.x(), squareTopLeft.y());
 
-    QSize squareSize = m_squareRegion.boundingRect().size();
+    QSize squareSize = mSquareRegion.boundingRect().size();
 
     qreal S = color.saturationF() * squareSize.width();
     qreal V = squareSize.height() - (color.valueF() * squareSize.height());
@@ -392,22 +392,22 @@ void ColorWheel::drawPicker(const QColor &color)
 void ColorWheel::composeWheel( QPixmap& pixmap )
 {
     QPainter composePainter(&pixmap);
-    composePainter.drawImage(0, 0, m_wheelImage);
+    composePainter.drawImage(0, 0, mWheelImage);
     composePainter.translate(width() / 2, height() / 2); //Move to center of widget
-    composePainter.translate(-m_squareImage.width() / 2, -m_squareImage.height() / 2); //move to center of image
-    composePainter.drawImage(0, 0, m_squareImage);
+    composePainter.translate(-mSquareImage.width() / 2, -mSquareImage.height() / 2); //move to center of image
+    composePainter.drawImage(0, 0, mSquareImage);
     composePainter.end();
-    drawHueIndicator(m_currentColor.hue());
-    drawPicker(m_currentColor);
+    drawHueIndicator(mCurrentColor.hue());
+    drawPicker(mCurrentColor);
 }
 
 void ColorWheel::redChanged(const int &red)
 {
-    int g = m_currentColor.green();
-    int b = m_currentColor.blue();
-    int a = m_currentColor.alpha();
+    int g = mCurrentColor.green();
+    int b = mCurrentColor.blue();
+    int a = mCurrentColor.alpha();
 
-    m_currentColor.setRgb(red, g, b, a);
+    mCurrentColor.setRgb(red, g, b, a);
 
     if(!isVisible())
     {
@@ -415,16 +415,16 @@ void ColorWheel::redChanged(const int &red)
     }
 
     update();
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
 
 void ColorWheel::greenChanged(const int &green)
 {
-    int r = m_currentColor.red();
-    int b = m_currentColor.blue();
-    int a = m_currentColor.alpha();
+    int r = mCurrentColor.red();
+    int b = mCurrentColor.blue();
+    int a = mCurrentColor.alpha();
 
-    m_currentColor.setRgb(r, green, b, a);
+    mCurrentColor.setRgb(r, green, b, a);
 
     if(!isVisible())
     {
@@ -432,16 +432,16 @@ void ColorWheel::greenChanged(const int &green)
     }
 
     update();
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
 
 void ColorWheel::blueChanged(const int &blue)
 {
-    int r = m_currentColor.red();
-    int g = m_currentColor.green();
-    int a = m_currentColor.alpha();
+    int r = mCurrentColor.red();
+    int g = mCurrentColor.green();
+    int a = mCurrentColor.alpha();
 
-    m_currentColor.setRgb(r, g, blue, a);
+    mCurrentColor.setRgb(r, g, blue, a);
 
     if(!isVisible())
     {
@@ -449,7 +449,7 @@ void ColorWheel::blueChanged(const int &blue)
     }
 
     update();
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
 
 
@@ -459,11 +459,11 @@ void ColorWheel::hueChanged(const int &hue)
     {
         return;
     }
-    int s = m_currentColor.saturation();
-    int v = m_currentColor.value();
-    int a = m_currentColor.alpha();
+    int s = mCurrentColor.saturation();
+    int v = mCurrentColor.value();
+    int a = mCurrentColor.alpha();
 
-    m_currentColor.setHsv(hue, s, v, a);
+    mCurrentColor.setHsv(hue, s, v, a);
 
     if(!isVisible())
     {
@@ -473,40 +473,40 @@ void ColorWheel::hueChanged(const int &hue)
     drawSquareImage(hue);
 
     update();
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
 
 void ColorWheel::saturationChanged(const int &sat)
 {
-    int hue = m_currentColor.hue();
-    int value = m_currentColor.value();
-    int alpha = m_currentColor.alpha();
+    int hue = mCurrentColor.hue();
+    int value = mCurrentColor.value();
+    int alpha = mCurrentColor.alpha();
 
-    m_currentColor.setHsv(hue, sat, value, alpha);
+    mCurrentColor.setHsv(hue, sat, value, alpha);
 
     update();
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
 
 void ColorWheel::valueChanged(const int &value)
 {
-    int hue = m_currentColor.hue();
-    int sat = m_currentColor.saturation();
-    int alpha = m_currentColor.alpha();
-    m_currentColor.setHsv(hue, sat, value, alpha);
+    int hue = mCurrentColor.hue();
+    int sat = mCurrentColor.saturation();
+    int alpha = mCurrentColor.alpha();
+    mCurrentColor.setHsv(hue, sat, value, alpha);
 
     update();
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
 
 void ColorWheel::alphaChanged(const int &alpha)
 {
-    m_currentColor.setAlpha(alpha);
+    mCurrentColor.setAlpha(alpha);
 
     if(!isVisible())
     {
         return;
     }
 
-    emit colorChanged(m_currentColor);
+    emit colorChanged(mCurrentColor);
 }
