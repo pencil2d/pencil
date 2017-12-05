@@ -1,19 +1,23 @@
-## Pencil2D 0.6.1 - 4 December (WIP)
+## Pencil2D 0.6.1 - (WIP)
+
 * Fixed an issue that would make it impossible to type correct values into HSV and RGB boxes.
 * Re-added zoom levels, now available via View->Zoom in/out or their respective shortcuts.
 * Fixed dialog related issues
   * save dialog would appear twice on OSX when quitting from dock
   * "Cancel" button being ignored.
 
-## Pencil2D v0.6 - 2017
+## Pencil2D v0.6 - 1 December 2017
 
 User Interface:
+
 * New graphic Colour Wheel
+* Show palette as a grid, with 3 sizes of the swatches.
+* Coloured Onion-Skin capability (blue, red). Basically can be used for making a differentiation between "previous frames" and "next frames".
+* Implementation of relative/absolute Onion Skin functionality (allowing matching frames or keyframes).
 * Grid Panel Display (G)
-* Coloured Onion-Skin capability (blue, red). Basically can be used for making a differentiation between “previous frames” and “next frames” (Improved)
-* Implementation of relative/absolute Onion Skin functionality (allowing matching frames or keyframes)
 
 Timeline keyframe manipulation:
+
 * To select/deselect a single frame (LMB)
 * To select a range of frames (Shift + LMB). It needs to be improved (buggy)
 * To select/deselect individual frames (Ctrl +LMB)
@@ -47,6 +51,7 @@ More Features and Improvements:
 
 Fixes:
 
+* Export animations to mp4, avi, wmv, and animated gif.
 * Re-implemented Camera Motion Interpolation (“tweening”).
 * Removed unused gradient background option from preferences.
 * Fixed sound import and timeline playback.
