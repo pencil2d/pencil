@@ -70,9 +70,8 @@ public:
     void openDocument();
     bool saveDocument();
     bool saveAsNewDocument();
-    int maybeSave();
+    bool maybeSave();
     bool autoSave();
-    bool openedPopup;
 
     // import
     void importImage();
@@ -151,6 +150,9 @@ private:
     QIcon mStartIcon;
     QIcon mStopIcon;
 
+    // a hack for MacOS because closeEvent fires twice
+    bool m2ndCloseEvent = false;
+    
     Ui::MainWindow2* ui = nullptr;
 };
 

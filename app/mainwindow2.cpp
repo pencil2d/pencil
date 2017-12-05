@@ -1,4 +1,4 @@
-﻿/*
+/*
 
 Pencil - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -412,24 +412,22 @@ void MainWindow2::clearRecentFilesList()
 
 void MainWindow2::closeEvent(QCloseEvent* event)
 {
-
-    if (openedPopup) {
-        QGuiApplication::exit(0);
+    if (m2ndCloseEvent)
+    {
+        // https://bugreports.qt.io/browse/QTBUG-43344
+        event->accept();
+        return;
     }
 
-    int popupId = maybeSave();
-
-    if (popupId == QMessageBox::Save)
+    if (maybeSave())
     {
         writeSettings();
         event->accept();
+        m2ndCloseEvent = true;
     }
-    else if (popupId == QMessageBox::Cancel)
+    else
     {
         event->ignore();
-    } else {
-        event->accept();
-        openedPopup = true;
     }
 }
 
@@ -440,8 +438,7 @@ void MainWindow2::tabletEvent(QTabletEvent* event)
 
 void MainWindow2::newDocument()
 {
-    int popupId = maybeSave();
-    if (popupId == QMessageBox::Save || popupId == QMessageBox::Discard)
+    if (maybeSave())
     {
         Object* object = new Object();
         object->init();
@@ -456,15 +453,12 @@ void MainWindow2::newDocument()
 
         setWindowTitle(PENCIL_WINDOW_TITLE);
         updateSaveState();
-    } else {
-
     }
 }
 
 void MainWindow2::openDocument()
 {
-    int popupId = maybeSave();
-    if (popupId == QMessageBox::Save || popupId == QMessageBox::Discard)
+    if (maybeSave())
     {
         FileDialog fileDialog(this);
         QString fileName = fileDialog.openFile(FileType::ANIMATION);
@@ -484,8 +478,6 @@ void MainWindow2::openDocument()
             QMessageBox::warning(this, tr("Warning"), tr("Pencil cannot read this file. If you want to import images, use the command import."));
             newDocument();
         }
-    } else {
-
     }
     updateSaveState();
 }
@@ -503,9 +495,7 @@ bool MainWindow2::saveAsNewDocument()
     {
         fileName = fileName + PFF_EXTENSION;
     }
-
     return saveObject(fileName);
-
 }
 
 void MainWindow2::openFile(QString filename)
@@ -633,7 +623,7 @@ bool MainWindow2::saveDocument()
         return saveAsNewDocument();
 }
 
-int MainWindow2::maybeSave()
+bool MainWindow2::maybeSave()
 {
     if (mEditor->currentBackup() != mBackupAtSave)
     {
@@ -641,13 +631,13 @@ int MainWindow2::maybeSave()
                                        tr("This animation has been modified.\n Do you want to save your changes?"),
                                        QMessageBox::Discard | QMessageBox::Save | QMessageBox::Cancel);
         if (ret == QMessageBox::Save)
-            return saveDocument() ? QMessageBox::Save : QMessageBox::Ignore;
-        else if (ret == QMessageBox::Cancel)
-            return QMessageBox::Cancel;
+            return saveDocument();
         else if (ret == QMessageBox::Discard)
-            return QMessageBox::Discard;
+            return true;
+        else
+            return false;
     }
-    return QMessageBox::Ignore;
+    return true;
 }
 
 bool MainWindow2::autoSave()
@@ -669,7 +659,6 @@ bool MainWindow2::autoSave()
     msgBox.setDefaultButton(QMessageBox::Yes);
 
     int ret = msgBox.exec();
-    qDebug() << "ret=" << ret;
     if (ret == QMessageBox::Yes)
     {
         return saveDocument();
