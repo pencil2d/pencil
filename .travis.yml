@@ -149,7 +149,7 @@ after_success:
     echo "Initiate deployment on Google Drive";
     cd "$TRAVIS_BUILD_DIR/util";
     if [ "$TRAVIS_OS_NAME" == "linux" ]; then
-      python nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
+      python3 nightly-build-upload.py "$LINUX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-linux-$(date +"%Y-%m-%d").AppImage";
     fi;
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
       python3 nightly-build-upload.py "$OSX_NIGHTLY_PARENT" "$TRAVIS_BUILD_DIR/build/pencil2d-mac-$(date +"%Y-%m-%d").zip";
