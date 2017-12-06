@@ -45,6 +45,7 @@ public:
 
     void setWidth( const qreal width ) override;
     void setFeather( const qreal feather ) override;
+    void setUseFeather( const bool useFeather ) override;
     void setInvisibility( const bool invisibility ) override;
     void setPressure( const bool pressure ) override;
     void setPreserveAlpha( const bool preserveAlpha ) override;

@@ -46,10 +46,11 @@ void PencilTool::loadSettings()
 
     QSettings settings( PENCIL2D, PENCIL2D );
     properties.width = settings.value( "pencilWidth" ).toDouble();
-    properties.feather = 1;
+    properties.feather = 50;
     properties.pressure = settings.value( "pencilPressure" ).toBool();
     properties.inpolLevel = 0;
     properties.useAA = -1;
+    properties.useFeather = true;
     properties.useFillContour = false;
 
     //    properties.invisibility = 1;
@@ -80,6 +81,18 @@ void PencilTool::setFeather( const qreal feather )
 {
     properties.feather = feather;
 }
+
+void PencilTool::setUseFeather( const bool usingFeather )
+{
+    // Set current property
+    properties.useFeather = usingFeather;
+
+    // Update settings
+    QSettings settings( PENCIL2D, PENCIL2D );
+    settings.setValue("brushUseFeather", usingFeather);
+    settings.sync();
+}
+
 
 void PencilTool::setInvisibility( const bool )
 {
@@ -230,12 +243,14 @@ void PencilTool::paintAt( QPointF point )
             mCurrentWidth *= mCurrentPressure;
         }
         qreal brushWidth = mCurrentWidth;
+        qreal fixedBrushFeather = properties.feather;
 
         BlitRect rect;
 
         rect.extend( point.toPoint() );
         mScribbleArea->drawPencil(point,
                                   brushWidth,
+                                  fixedBrushFeather,
                                   mEditor->color()->frontColor(),
                                   opacity);
 
@@ -261,6 +276,7 @@ void PencilTool::drawStroke()
             mCurrentWidth = properties.width * mCurrentPressure;
         }
         qreal brushWidth = mCurrentWidth;
+        qreal fixedBrushFeather = properties.feather;
 
         qreal brushStep = (0.5 * brushWidth);
         brushStep = qMax( 1.0, brushStep );
@@ -279,6 +295,7 @@ void PencilTool::drawStroke()
             rect.extend( point.toPoint() );
             mScribbleArea->drawPencil(point,
                                       brushWidth,
+                                      fixedBrushFeather,
                                       mEditor->color()->frontColor(),
                                       opacity );
 
@@ -296,6 +313,8 @@ void PencilTool::drawStroke()
     }
     else if ( layer->type() == Layer::VECTOR )
     {
+        properties.useFeather = false;
+        properties.width = 0;
         QPen pen( mEditor->color()->frontColor(),
                   1,
                   Qt::DotLine,
