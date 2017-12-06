@@ -45,41 +45,41 @@ void ToolBoxWidget::initUI()
 {
 	QGridLayout* layout = new QGridLayout();
 
-	pencilButton = newToolButton( QIcon( ":icons/pencil2.png" ),
+    pencilButton = newToolButton( QIcon( ":icons/new/svg/pencil_detailed.svg" ),
 		tr( "Pencil Tool (%1): Sketch with pencil" )
 		.arg( GetToolTips( CMD_TOOL_PENCIL ) ) );
-	selectButton = newToolButton( QIcon( ":icons/select.png" ),
+    selectButton = newToolButton( QIcon( ":icons/new/svg/selection.svg" ),
 		tr( "Select Tool (%1): Select an object" )
 		.arg( GetToolTips( CMD_TOOL_SELECT ) ) );
-	moveButton = newToolButton( QIcon( ":icons/arrow.png" ),
+    moveButton = newToolButton( QIcon( ":icons/new/svg/arrow.svg" ),
 		tr( "Move Tool (%1): Move an object" )
 		.arg( GetToolTips( CMD_TOOL_MOVE ) ) );
-	handButton = newToolButton( QIcon( ":icons/hand.png" ),
+    handButton = newToolButton( QIcon( ":icons/new/svg/hand_detailed.svg" ),
 		tr( "Hand Tool (%1): Move the canvas" )
 		.arg( GetToolTips( CMD_TOOL_HAND ) ) );
-	penButton = newToolButton( QIcon( ":icons/pen.png" ),
+    penButton = newToolButton( QIcon( ":icons/new/svg/pen_detailed.svg" ),
 		tr( "Pen Tool (%1): Sketch with pen" )
 		.arg( GetToolTips( CMD_TOOL_PEN ) ) );
-	eraserButton = newToolButton( QIcon( ":icons/eraser.png" ),
+    eraserButton = newToolButton( QIcon( ":icons/new/svg/eraser_detailed.svg" ),
 		tr( "Eraser Tool (%1): Erase" )
 		.arg( GetToolTips( CMD_TOOL_ERASER ) ) );
-	polylineButton = newToolButton( QIcon( ":icons/polyline.png" ),
+    polylineButton = newToolButton( QIcon( ":icons/new/svg/line.svg" ),
 		tr( "Polyline Tool (%1): Create line/curves" )
 		.arg( GetToolTips( CMD_TOOL_POLYLINE ) ) );
-	bucketButton = newToolButton( QIcon( ":icons/bucket.png" ),
+    bucketButton = newToolButton( QIcon( ":icons/new/svg/bucket_detailed.svg" ),
 		tr( "Paint Bucket Tool (%1): Fill selected area with a color" )
 		.arg( GetToolTips( CMD_TOOL_BUCKET ) ) );
-	colouringButton = newToolButton( QIcon( ":icons/brush.png" ),
+    colouringButton = newToolButton( QIcon( ":icons/new/svg/brush_detailed.svg" ),
 		tr( "Brush Tool (%1): Paint smooth stroke with a brush" )
 		.arg( GetToolTips( CMD_TOOL_BRUSH ) ) );
-	eyedropperButton = newToolButton( QIcon( ":icons/eyedropper.png" ),
+    eyedropperButton = newToolButton( QIcon( ":icons/new/svg/eyedropper_detailed.svg" ),
 		tr( "Eyedropper Tool (%1): "
 			"Set color from the stage<br>[ALT] for instant access" )
 		.arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
-	clearButton = newToolButton( QIcon( ":icons/clear.png" ),
+    clearButton = newToolButton( QIcon( ":icons/new/svg/trash_detailed.svg" ),
 		tr( "Clear Frame (%1): Erases content of selected frame" )
 		.arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
-	smudgeButton = newToolButton( QIcon( ":icons/smudge.png" ),
+    smudgeButton = newToolButton( QIcon( ":icons/new/svg/smudge_detailed.svg" ),
 		tr( "Smudge Tool (%1):<br>Edit polyline/curves<br>"
 			"Liquify bitmap pixels<br> (%1)+[Alt]: Smooth" )
 		.arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
