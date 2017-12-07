@@ -50,6 +50,7 @@ public:
     int    count();
 
     Status deleteLayer(int index);
+    Status renameLayer(Layer*, const QString& newName);
 
     void gotoNextLayer();
     void gotoPreviouslayer();
@@ -73,6 +74,8 @@ Q_SIGNALS:
     void layerCountChanged(int count);
 
 private:
+    int getIndex(Layer*) const;
+
     int mLastCameraLayer = 0;
 };
 

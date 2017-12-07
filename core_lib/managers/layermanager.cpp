@@ -60,31 +60,29 @@ int LayerManager::getLastCameraLayer()
 
 Layer* LayerManager::currentLayer()
 {
-    return currentLayer( 0 );
+    return currentLayer(0);
 }
 
 Layer* LayerManager::currentLayer( int incr )
 {
-    Q_ASSERT( editor()->object() != NULL );
-
-    return editor()->object()->getLayer( editor()->currentLayerIndex() + incr );
+    Q_ASSERT( object() != NULL );
+    return object()->getLayer(editor()->currentLayerIndex() + incr);
 }
 
 Layer* LayerManager::getLayer( int index )
 {
-    Q_ASSERT( editor()->object() != NULL );
-    
-    return editor()->object()->getLayer( index );
+    Q_ASSERT(object() != NULL);
+    return object()->getLayer(index);
 }
 
 Layer* LayerManager::getLayerByName(QString sName)
 {
-	auto obj = editor()->object();
-	for (int i = 0; i < obj->getLayerCount(); ++i)
+	auto o = object();
+	for (int i = 0; i < o->getLayerCount(); ++i)
 	{
-		if (obj->getLayer(i)->name() == sName)
+		if (o->getLayer(i)->name() == sName)
 		{
-			return obj->getLayer(i);
+			return o->getLayer(i);
 		}
 	}
 	return nullptr;
@@ -112,32 +110,23 @@ void LayerManager::setCurrentLayer( int layerIndex )
         Q_EMIT currentLayerChanged(layerIndex);
     }
 
-    if ( editor()->object() )
+    if ( object() )
     {
-        if ( editor()->object()->getLayer( layerIndex )->type() == Layer::CAMERA )
+        if ( object()->getLayer( layerIndex )->type() == Layer::CAMERA )
         {
             mLastCameraLayer = layerIndex;
         }
     }
 }
 
-void LayerManager::setCurrentLayer( Layer* layer )
+void LayerManager::setCurrentLayer(Layer* layer)
 {
-    Object* o = editor()->object();
-
-    for ( int i = 0; i < o->getLayerCount(); ++i )
-    {
-        if ( layer == o->getLayer( i ) )
-        {
-            setCurrentLayer( i );
-            return;
-        }
-    }
+    setCurrentLayer(getIndex(layer));
 }
 
 void LayerManager::gotoNextLayer()
 {
-    if (editor()->currentLayerIndex() < editor()->object()->getLayerCount() - 1 )
+    if (editor()->currentLayerIndex() < object()->getLayerCount() - 1 )
     {
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
 		Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
@@ -155,7 +144,7 @@ void LayerManager::gotoPreviouslayer()
 
 LayerBitmap* LayerManager::createBitmapLayer( const QString& strLayerName )
 {
-    LayerBitmap* layer = editor()->object()->addNewBitmapLayer();
+    LayerBitmap* layer = object()->addNewBitmapLayer();
     layer->setName( strLayerName );
     
     Q_EMIT layerCountChanged( count() );
@@ -165,7 +154,7 @@ LayerBitmap* LayerManager::createBitmapLayer( const QString& strLayerName )
 
 LayerVector* LayerManager::createVectorLayer( const QString& strLayerName )
 {
-    LayerVector* layer = editor()->object()->addNewVectorLayer();
+    LayerVector* layer = object()->addNewVectorLayer();
     layer->setName( strLayerName );
     
     Q_EMIT layerCountChanged( count() );
@@ -175,7 +164,7 @@ LayerVector* LayerManager::createVectorLayer( const QString& strLayerName )
 
 LayerCamera* LayerManager::createCameraLayer( const QString& strLayerName )
 {
-    LayerCamera* layer = editor()->object()->addNewCameraLayer();
+    LayerCamera* layer = object()->addNewCameraLayer();
     layer->setName( strLayerName );
     
     Q_EMIT layerCountChanged( count() );
@@ -185,7 +174,7 @@ LayerCamera* LayerManager::createCameraLayer( const QString& strLayerName )
 
 LayerSound* LayerManager::createSoundLayer( const QString& strLayerName )
 {
-    LayerSound* layer = editor()->object()->addNewSoundLayer();
+    LayerSound* layer = object()->addNewSoundLayer();
     layer->setName( strLayerName );
     
     Q_EMIT layerCountChanged( count() );
@@ -195,12 +184,12 @@ LayerSound* LayerManager::createSoundLayer( const QString& strLayerName )
 
 int LayerManager::LastFrameAtFrame( int frameIndex )
 {
-    Object* pObj = editor()->object();
+    Object* o = object();
     for ( int i = frameIndex; i >= 0; i -= 1 )
     {
-        for ( int layerIndex = 0; layerIndex < pObj->getLayerCount(); ++layerIndex )
+        for ( int layerIndex = 0; layerIndex < o->getLayerCount(); ++layerIndex )
         {
-            auto pLayer = pObj->getLayer( layerIndex );
+            auto pLayer = o->getLayer( layerIndex );
             if ( pLayer->keyExists( i ) )
             {
                 return i;
@@ -214,10 +203,10 @@ int LayerManager::firstKeyFrameIndex()
 {
     int minPosition = INT_MAX;
 
-    Object* pObj = editor()->object();
-    for ( int i = 0; i < pObj->getLayerCount(); ++i )
+    Object* o = object();
+    for ( int i = 0; i < o->getLayerCount(); ++i )
     {
-        Layer* pLayer = pObj->getLayer( i );
+        Layer* pLayer = o->getLayer( i );
 
         int position = pLayer->firstKeyFramePosition();
         if ( position < minPosition )
@@ -260,7 +249,7 @@ Status LayerManager::deleteLayer(int index)
             return Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER;
     }
 
-    editor()->object()->deleteLayer( layer );
+    object()->deleteLayer( layer );
 
     // current layer is the last layer && we are deleting it
     if (index == object()->getLayerCount() &&
@@ -274,6 +263,15 @@ Status LayerManager::deleteLayer(int index)
     return Status::OK;
 }
 
+Status LayerManager::renameLayer(Layer* layer, const QString& newName)
+{
+    if (newName.isEmpty()) return Status::FAIL;
+
+    layer->setName(newName);
+    currentLayerChanged(getIndex(layer));
+    return Status::OK;
+}
+
 /**
  * @brief LayerManager::projectLength
  * @return int: the position of the last key frame in the timeline + its length
@@ -282,15 +280,15 @@ int LayerManager::projectLength(bool includeSounds)
 {
     int maxFrame = -1;
 
-    Object* pObject = editor()->object();
-    for ( int i = 0; i < pObject->getLayerCount(); i++ )
+    Object* o = object();
+    for ( int i = 0; i < o->getLayerCount(); i++ )
     {
-        if (pObject->getLayer(i)->type() == Layer::SOUND)
+        if (o->getLayer(i)->type() == Layer::SOUND)
         {
             if (!includeSounds)
                 continue;
 
-            Layer* soundLayer = pObject->getLayer(i);
+            Layer* soundLayer = o->getLayer(i);
             soundLayer->foreachKeyFrame([&maxFrame](KeyFrame* keyFrame)
             {
                 int endPosition = keyFrame->pos() + (keyFrame->length() - 1);
@@ -302,18 +300,28 @@ int LayerManager::projectLength(bool includeSounds)
         }
         else
         {
-            int lastFramePos = pObject->getLayer(i)->getMaxKeyFramePosition();
+            int lastFramePos = o->getLayer(i)->getMaxKeyFramePosition();
             if (lastFramePos > maxFrame)
             {
                 maxFrame = lastFramePos;
             }
         }
     }
-    //qDebug() << "Project Length:" << maxFrame;
     return maxFrame;
 }
 
 void LayerManager::layerUpdated(int layerId)
 {
     emit currentLayerChanged(layerId);
+}
+
+int LayerManager::getIndex(Layer* layer) const
+{
+    const Object* o = object();
+    for (int i = 0; i < o->getLayerCount(); ++i)
+    {
+        if (layer == o->getLayer(i))
+            return i;
+    }
+    return -1;
 }
