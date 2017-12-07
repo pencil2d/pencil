@@ -510,16 +510,8 @@ void ActionCommands::duplicateKey()
     }
 
     layer->addKeyFrame(nextEmptyFrame, dupKey);
-
-    if (layer->type() == Layer::VECTOR || layer->type() == Layer::BITMAP)
-    {
-        //copy();
-        //addNewKey();
-        //paste();
-
-        //mScribbleArea->setModified(layers()->currentLayerIndex(), currentFrame());
-        //mScribbleArea->update();
-    }
+    mEditor->scrubTo(nextEmptyFrame);
+    
     if (layer->type() == Layer::SOUND)
     {
         // TODO: get frame which is selected by mouse
