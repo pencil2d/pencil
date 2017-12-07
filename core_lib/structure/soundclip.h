@@ -27,8 +27,11 @@ class SoundPlayer;
 class SoundClip : public KeyFrame
 {
 public:
-    SoundClip();
+    explicit SoundClip();
+    explicit SoundClip(const SoundClip&);
     ~SoundClip();
+
+    SoundClip* clone() override;
 
     Status init( const QString& strSoundFile );
     bool isValid();

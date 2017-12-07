@@ -23,7 +23,11 @@ GNU General Public License for more details.
 
 SoundClip::SoundClip()
 {
+}
 
+SoundClip::SoundClip(const SoundClip& s2) : KeyFrame(s2)
+{
+    mOriginalSoundClipName = s2.mOriginalSoundClipName;
 }
 
 SoundClip::~SoundClip()
@@ -31,7 +35,12 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
-Status SoundClip::init( const QString& strSoundFile )
+SoundClip* SoundClip::clone()
+{
+    return new SoundClip(*this);
+}
+
+Status SoundClip::init(const QString& strSoundFile)
 {
     if ( strSoundFile.isEmpty() )
     {
