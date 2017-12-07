@@ -672,8 +672,3 @@ void Object::setData(ObjectData* d)
     Q_ASSERT(d != nullptr);
     mData.reset(d);
 }
-
-void Object::setLayerUpdated(int layerId)
-{
-    emit layerChanged(layerId);
-}
