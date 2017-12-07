@@ -142,9 +142,6 @@ public:
     ObjectData* data();
     void setData( ObjectData* );
 
-Q_SIGNALS:
-    void layerChanged( int layerId );
-
 private:
     int getMaxLayerID();
 

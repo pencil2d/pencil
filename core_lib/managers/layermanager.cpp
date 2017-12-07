@@ -42,7 +42,6 @@ bool LayerManager::init()
 
 Status LayerManager::load(Object* o)
 {
-    connect( o, &Object::layerChanged, this, &LayerManager::layerUpdated );
     emit layerCountChanged(o->getLayerCount());
     return Status::OK;
 }
