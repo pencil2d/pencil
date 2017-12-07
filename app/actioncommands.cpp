@@ -504,7 +504,7 @@ void ActionCommands::duplicateKey()
     KeyFrame* dupKey = key->clone();
 
     int nextEmptyFrame = mEditor->currentFrame() + 1;
-    while (layer->keyExists(nextEmptyFrame))
+    while (layer->keyExistsWhichCovers(nextEmptyFrame))
     {
         nextEmptyFrame += 1;
     }
@@ -514,12 +514,7 @@ void ActionCommands::duplicateKey()
     
     if (layer->type() == Layer::SOUND)
     {
-        // TODO: get frame which is selected by mouse
-        //if (layer->isFrameSelected(currentFrame()))
-        {
-            //copy();
-            //paste();
-        }
+        mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
     }
 }
 

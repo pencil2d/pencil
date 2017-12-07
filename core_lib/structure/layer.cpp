@@ -694,7 +694,6 @@ bool Layer::keyExistsWhichCovers(int frameNumber)
 KeyFrame *Layer::getKeyFrameWhichCovers(int frameNumber)
 {
     auto keyFrame = getLastKeyFrameAtPosition(frameNumber);
-
     if (keyFrame != nullptr)
     {
         if (keyFrame->pos() + keyFrame->length() > frameNumber)
