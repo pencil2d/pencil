@@ -271,8 +271,13 @@ Status LayerManager::renameLayer(Layer* layer, const QString& newName)
     return Status::OK;
 }
 
+void LayerManager::notifyLayerChanged(Layer* layer)
+{
+    emit currentLayerChanged(getIndex(layer));
+}
+
 /**
- * @brief LayerManager::projectLength
+ * @brief Get the length of current project
  * @return int: the position of the last key frame in the timeline + its length
  */
 int LayerManager::projectLength(bool includeSounds)
@@ -307,11 +312,6 @@ int LayerManager::projectLength(bool includeSounds)
         }
     }
     return maxFrame;
-}
-
-void LayerManager::layerUpdated(int layerId)
-{
-    emit currentLayerChanged(layerId);
 }
 
 int LayerManager::getIndex(Layer* layer) const

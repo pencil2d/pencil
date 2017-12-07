@@ -51,6 +51,7 @@ public:
 
     Status deleteLayer(int index);
     Status renameLayer(Layer*, const QString& newName);
+    void notifyLayerChanged(Layer*);
 
     void gotoNextLayer();
     void gotoPreviouslayer();
@@ -66,8 +67,6 @@ public:
     int lastKeyFrameIndex();
 
     int projectLength(bool includeSounds = true);
-
-    void layerUpdated(int layerId);
 
 Q_SIGNALS:
     void currentLayerChanged(int n);
