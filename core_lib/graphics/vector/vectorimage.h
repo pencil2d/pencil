@@ -36,7 +36,10 @@ class VectorImage : public KeyFrame
 {
 public:
     VectorImage();
+    VectorImage(const VectorImage&);
     virtual ~VectorImage();
+
+    VectorImage* clone() override;
 
     void setObject(Object* pObj) { mObject = pObj; }
 

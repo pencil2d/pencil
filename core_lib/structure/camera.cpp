@@ -29,8 +29,21 @@ Camera::Camera(QPointF translation, float rotation, float scaling)
     updateViewTransform();
 }
 
+Camera::Camera(const Camera& c2) : KeyFrame(c2)
+{
+    mTranslate = c2.mTranslate;
+    mRotate = c2.mRotate;
+    mScale = c2.mScale;
+    mNeedUpdateView = true;
+}
+
 Camera::~Camera()
 {
+}
+
+Camera* Camera::clone()
+{
+    return new Camera(*this);
 }
 
 void Camera::assign(const Camera& rhs)

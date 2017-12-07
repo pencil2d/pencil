@@ -146,29 +146,21 @@ Status SoundManager::loadSound(SoundClip* soundClip, QString strSoundFile)
     return Status::OK;
 }
 
-Status SoundManager::pasteSound(SoundClip* soundClip, QString strSoundFile)
+Status SoundManager::processSound(SoundClip* soundClip)
 {
     Q_ASSERT(soundClip);
 
-    if (!QFile::exists(strSoundFile))
+    if (!QFile::exists(soundClip->fileName()))
     {
         return Status::FILE_NOT_FOUND;
     }
-
-    if (strSoundFile.isEmpty())
-    {
-        return Status::FAIL;
-    }
-
-    soundClip->init(strSoundFile);
+    soundClip->init(soundClip->fileName());
 
     Status st = createMediaPlayer(soundClip);
     if (!st.ok())
     {
-        delete soundClip;
         return st;
     }
-
     return Status::OK;
 }
 

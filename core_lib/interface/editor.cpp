@@ -64,7 +64,6 @@ GNU General Public License for more details.
 
 static BitmapImage g_clipboardBitmapImage;
 static VectorImage g_clipboardVectorImage;
-static SoundClip g_clipboardSoundClip;
 
 
 Editor::Editor(QObject* parent) : QObject(parent)
@@ -347,8 +346,8 @@ void Editor::restoreKey()
                 return;
             }
             else {
-                Status st = sound()->pasteSound(clip, strSoundFile);
-                Q_ASSERT(st.ok());
+                //Status st = sound()->pasteSound(clip, strSoundFile);
+                //Q_ASSERT(st.ok());
             }
         }
     }
@@ -522,11 +521,6 @@ void Editor::copy()
             clipboardVectorOk = true;
             g_clipboardVectorImage = *(((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0));  // copy the image
         }
-        if (layer->type() == Layer::SOUND)
-        {
-            clipboardSoundClipOk = true;
-            g_clipboardSoundClip = *(((LayerSound*)layer)->getSoundClipWhichCovers(currentFrame())); // copy sound clip
-        }
     }
 }
 
@@ -563,24 +557,6 @@ void Editor::paste()
             VectorImage* vectorImage = ((LayerVector*)layer)->getLastVectorImageAtFrame(currentFrame(), 0);
             vectorImage->paste(g_clipboardVectorImage);  // paste the clipboard
             mScribbleArea->setSelection(vectorImage->getSelectionRect(), true);
-        }
-        else if (layer->type() == Layer::SOUND && clipboardSoundClipOk)
-        {
-            backup(tr("Paste sound"));
-            KeyFrame* key = addNewKey();
-
-            SoundClip* clip = dynamic_cast<SoundClip*>(key);
-            if (clip)
-            {
-                QString strSoundFile = g_clipboardSoundClip.fileName();
-
-                if (strSoundFile.isEmpty())
-                {
-                    removeKey();
-                }
-                Status st = sound()->pasteSound(clip, strSoundFile);
-                Q_ASSERT(st.ok());
-            }
         }
     }
     mScribbleArea->updateCurrentFrame();
@@ -945,34 +921,6 @@ KeyFrame* Editor::addNewKey()
 
 void Editor::duplicateKey()
 {
-    Layer* layer = mObject->getLayer(currentLayerIndex());
-    if (layer != NULL)
-    {
-        if (layer->type() == Layer::VECTOR || layer->type() == Layer::BITMAP)
-        {
-            // Will copy the selection if any or the entire image if there is none
-            if (!mScribbleArea->somethingSelected)
-            {
-                mScribbleArea->selectAll();
-            }
-
-            copy();
-            addNewKey();
-            paste();
-
-            mScribbleArea->setModified(layers()->currentLayerIndex(), currentFrame());
-            mScribbleArea->update();
-        }
-        if (layer->type() == Layer::SOUND)
-        {
-            // TODO: get frame which is selected by mouse
-            if (layer->isFrameSelected(currentFrame()))
-            {
-                copy();
-                paste();
-            }
-        }
-    }
 }
 
 KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)

@@ -37,11 +37,11 @@ public:
     enum LAYER_TYPE
     {
         UNDEFINED = 0,
-        BITMAP    = 1,
-        VECTOR    = 2,
-        MOVIE     = 3, // not supported yet
-        SOUND     = 4,
-        CAMERA    = 5,
+        BITMAP = 1,
+        VECTOR = 2,
+        MOVIE = 3, // not supported yet
+        SOUND = 4,
+        CAMERA = 5,
 
         //PAINTABLE = 
     };
@@ -54,61 +54,61 @@ public:
     LAYER_TYPE type() const { return meType; }
     Object* object() const { return mObject; }
 
-    void setName( QString name ) { mName = name; }
+    void setName(QString name) { mName = name; }
     QString name() const { return mName; }
 
     void switchVisibility() { mVisible = !mVisible; }
 
     bool visible() const { return mVisible; }
-    void setVisible( bool b ) { mVisible = b; }
+    void setVisible(bool b) { mVisible = b; }
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;
-    int firstKeyFramePosition();
+    int firstKeyFramePosition() const;
 
-    virtual Status saveKeyFrame( KeyFrame*, QString path ) = 0;
-    virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
-    virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
-    
-    bool keyExists( int position ) const;
-    int  getPreviousKeyFramePosition( int position );
-    int  getNextKeyFramePosition( int position );
-    int  getPreviousFrameNumber( int position, bool isAbsolute );
-    int  getNextFrameNumber( int position, bool isAbsolute );
+    virtual Status saveKeyFrame(KeyFrame*, QString path) = 0;
+    virtual void loadDomElement(QDomElement element, QString dataDirPath) = 0;
+    virtual QDomElement createDomElement(QDomDocument& doc) = 0;
 
-    int keyFrameCount() const { return static_cast< int >( mKeyFrames.size() ); }
+    bool keyExists(int position) const;
+    int  getPreviousKeyFramePosition(int position) const;
+    int  getNextKeyFramePosition(int position) const;
+    int  getPreviousFrameNumber(int position, bool isAbsolute) const;
+    int  getNextFrameNumber(int position, bool isAbsolute) const;
 
-    bool addNewEmptyKeyAt( int position );
-    bool addKeyFrame( int position, KeyFrame* );
+    int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
+
+    bool addNewEmptyKeyAt(int position);
+    bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
-    bool swapKeyFrames( int position1, int position2 );
-    bool moveKeyFrameForward( int position );
-    bool moveKeyFrameBackward( int position );
-    bool loadKey( KeyFrame* );
-    KeyFrame* getKeyFrameAt( int position );
-    KeyFrame* getLastKeyFrameAtPosition( int position );
+    bool swapKeyFrames(int position1, int position2);
+    bool moveKeyFrameForward(int position);
+    bool moveKeyFrameBackward(int position);
+    bool loadKey(KeyFrame*);
+    KeyFrame* getKeyFrameAt(int position) const;
+    KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber);
 
-    void foreachKeyFrame( std::function<void( KeyFrame* )> );
+    void foreachKeyFrame(std::function<void(KeyFrame*)>);
 
-    void setModified( int position, bool isModified );
+    void setModified(int position, bool isModified);
 
     // Handle selection
-    bool isFrameSelected( int position );
-    void setFrameSelected( int position, bool isSelected);
-    void toggleFrameSelected( int position, bool allowMultiple = false );
-    void extendSelectionTo( int position );
-    void selectAllFramesAfter( int position );
+    bool isFrameSelected(int position);
+    void setFrameSelected(int position, bool isSelected);
+    void toggleFrameSelected(int position, bool allowMultiple = false);
+    void extendSelectionTo(int position);
+    void selectAllFramesAfter(int position);
     void deselectAll();
 
-    bool moveSelectedFrames( int offset );
-    
-    Status save( QString dataFolder );
+    bool moveSelectedFrames(int offset);
+
+    Status save(QString dataFolder);
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-    void paintFrames( QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize );
+    void paintFrames(QPainter& painter, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
     void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, int allLayers);
     virtual void paintSelection(QPainter& painter, int x, int y, int height, int width);
 
@@ -119,16 +119,15 @@ public:
 
     virtual void editProperties();
 
-    void setUpdated();
     bool isPaintable();
 
 protected:
-    void setId( int LayerId ) { mId = LayerId; }
+    void setId(int LayerId) { mId = LayerId; }
 
 private:
-    LAYER_TYPE meType   = UNDEFINED;
-    Object*    mObject  = nullptr;
-    int        mId      = 0;
+    LAYER_TYPE meType = UNDEFINED;
+    Object*    mObject = nullptr;
+    int        mId = 0;
     bool       mVisible = true;
     QString    mName;
 

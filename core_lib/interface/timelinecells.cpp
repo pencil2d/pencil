@@ -20,6 +20,8 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QResizeEvent>
 #include <QMouseEvent>
+#include <QInputDialog>
+
 #include "object.h"
 #include "editor.h"
 #include "timeline.h"
@@ -693,8 +695,24 @@ void TimeLineCells::mouseDoubleClickEvent( QMouseEvent* event )
         }
         else if ( mType == TIMELINE_CELL_TYPE::Layers )
         {
-            layer->editProperties();
-            update();
+            if (layer->type() == Layer::CAMERA)
+            {
+                layer->editProperties();
+            }
+            else
+            {
+                QRegExp regex("([\\xFFEF-\\xFFFF])+");
+
+                bool ok;
+                QString text = QInputDialog::getText(NULL, tr("Layer Properties"),
+                                                     tr("Layer name:"), QLineEdit::Normal,
+                                                     layer->name(), &ok);
+                if (ok && !text.isEmpty())
+                {
+                    text.replace(regex, "");
+                    mEditor->layers()->renameLayer(layer, text);
+                }
+            }
         }
     }
 }

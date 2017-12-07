@@ -22,6 +22,15 @@ KeyFrame::KeyFrame()
 {
 }
 
+KeyFrame::KeyFrame(const KeyFrame& k2)
+{
+    mFrame = k2.mFrame;
+    mLength = k2.mLength;
+    mIsModified = k2.mIsModified;
+    mIsSelected = k2.mIsSelected;
+    mAttachedFileName = k2.mAttachedFileName;
+}
+
 KeyFrame::~KeyFrame()
 {
     for ( KeyFrameEventListener* listener : mEventListeners )

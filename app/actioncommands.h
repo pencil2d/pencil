@@ -62,6 +62,7 @@ public:
     void GotoPrevKeyFrame();
     Status addNewKey();
     void removeKey();
+    void duplicateKey();
 
     // Layer
     Status addNewBitmapLayer();

@@ -6,7 +6,7 @@ TEST_CASE("BitmapImage")
 {
     SECTION("Init an Bitmap Image")
     {
-        std::shared_ptr<BitmapImage> b = std::make_shared<BitmapImage>();
+        auto b = std::make_shared<BitmapImage>();
         REQUIRE(b->image()->isNull());
 
         REQUIRE(b->width() == 0);
@@ -17,7 +17,7 @@ TEST_CASE("BitmapImage")
 
     SECTION("Init with color and boundary")
     {
-        std::shared_ptr<BitmapImage> b = std::make_shared<BitmapImage>(QRect(10, 20, 30, 40), Qt::red);
+        auto b = std::make_shared<BitmapImage>(QRect(10, 20, 30, 40), Qt::red);
 
         REQUIRE(b->left() == 10);
         REQUIRE(b->top() == 20);
@@ -26,5 +26,24 @@ TEST_CASE("BitmapImage")
 
         QRgb rgb = b->image()->pixel(0, 0);
         REQUIRE(rgb == qRgb(255, 0, 0));
+    }
+
+    SECTION("Clone a BitmapImage")
+    {
+        auto b = std::make_shared<BitmapImage>(QRect(20, 20, 100, 100), Qt::red);
+        auto b2 = b->clone();
+
+        REQUIRE(b->pos() == b2->pos());
+        REQUIRE(b->length() == b2->length());
+        
+        REQUIRE(b->left() == b2->left());
+        REQUIRE(b->right() == b2->right());
+        REQUIRE(b->width() == b2->width());
+        REQUIRE(b->height() == b2->height());
+        
+        QImage* img1 = b->image();
+        QImage* img2 = b2->image();
+        REQUIRE(img1 != img2);
+        REQUIRE((*img1) == (*img2));
     }
 }

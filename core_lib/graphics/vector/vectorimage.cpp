@@ -25,13 +25,26 @@ VectorImage::VectorImage()
     deselectAll();
 }
 
+VectorImage::VectorImage(const VectorImage& v2) : KeyFrame(v2)
+{
+    deselectAll();
+    mObject = v2.mObject;
+    mCurves = v2.mCurves;
+    mArea = v2.mArea;
+}
+
 VectorImage::~VectorImage()
 {
 }
 
+VectorImage* VectorImage::clone()
+{
+    return new VectorImage(*this);
+}
+
 /**
  * @brief VectorImage::read
- * @return True if file was read succesfully from path
+ * @return True if file was read successfully from path
  */
 bool VectorImage::read(QString filePath)
 {
@@ -1213,7 +1226,12 @@ void VectorImage::clean()
 {
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves.at(i).getVertexSize() == 0) { qDebug() << "CLEAN " << i; mCurves.removeAt(i); i--; }
+        if (mCurves.at(i).getVertexSize() == 0)
+        {
+            qDebug() << "CLEAN " << i;
+            mCurves.removeAt(i);
+            i--;
+        }
     }
 }
 
@@ -1349,15 +1367,17 @@ QList<int> VectorImage::getCurvesCloseTo(QPointF P1, qreal maxDistance)
     for (int j = 0; j < mCurves.size(); j++)
     {
         BezierCurve myCurve;
-        if (mCurves[j].isPartlySelected()) {
+        if (mCurves[j].isPartlySelected())
+        {
             myCurve = mCurves[j].transformed(mSelectionTransformation);
         }
-        else {
+        else
+        {
             myCurve = mCurves[j];
         }
-        if (myCurve.intersects(P1, maxDistance)) {
+        if (myCurve.intersects(P1, maxDistance))
+        {
             result.append(j);
-
             // store stroke for later use.
             mGetStrokedPath = myCurve.getStrokedPath(1.0, true);
         }
