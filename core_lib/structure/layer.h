@@ -119,7 +119,6 @@ public:
 
     virtual void editProperties();
 
-    void setUpdated();
     bool isPaintable();
 
 protected:

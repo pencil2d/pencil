@@ -465,23 +465,6 @@ void Layer::mouseRelease( QMouseEvent* event, int frameNumber )
 
 void Layer::editProperties()
 {
-    QRegExp regex("([\\xFFEF-\\xFFFF])+");
-
-    bool ok;
-    QString text = QInputDialog::getText( NULL, tr( "Layer Properties" ),
-                                          tr( "Layer name:" ), QLineEdit::Normal,
-                                          mName, &ok );
-    if ( ok && !text.isEmpty() )
-    {
-        text.replace(regex, "");
-        mName = text;
-        setUpdated();
-    }
-}
-
-void Layer::setUpdated()
-{
-    mObject->setLayerUpdated(mId);
 }
 
 void Layer::setModified( int position, bool )
