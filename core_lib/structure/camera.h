@@ -24,9 +24,12 @@ GNU General Public License for more details.
 class Camera : public KeyFrame
 {
 public:
-    Camera();
-    Camera(QPointF translation, float rotation, float scaling);
+    explicit Camera();
+    explicit Camera(QPointF translation, float rotation, float scaling);
+    explicit Camera(const Camera&);
     ~Camera();
+
+    Camera* clone() override;
 
     QTransform getView();
     void reset();
