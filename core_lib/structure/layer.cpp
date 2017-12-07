@@ -69,7 +69,7 @@ bool Layer::keyExists( int position ) const
     return ( mKeyFrames.find( position ) != mKeyFrames.end() );
 }
 
-KeyFrame* Layer::getKeyFrameAt( int position )
+KeyFrame* Layer::getKeyFrameAt( int position ) const
 {
     auto it = mKeyFrames.find( position );
     if ( it == mKeyFrames.end() )
@@ -79,7 +79,7 @@ KeyFrame* Layer::getKeyFrameAt( int position )
     return it->second;
 }
 
-KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
+KeyFrame* Layer::getLastKeyFrameAtPosition( int position ) const
 {
     if ( position < 1 )
     {
@@ -93,7 +93,7 @@ KeyFrame* Layer::getLastKeyFrameAtPosition( int position )
     return it->second;
 }
 
-int Layer::getPreviousKeyFramePosition( int position )
+int Layer::getPreviousKeyFramePosition( int position ) const
 {
     auto it = mKeyFrames.upper_bound( position );
     if ( it == mKeyFrames.end() )
@@ -103,7 +103,7 @@ int Layer::getPreviousKeyFramePosition( int position )
     return it->first;
 }
 
-int Layer::getNextKeyFramePosition( int position )
+int Layer::getNextKeyFramePosition( int position ) const
 {
     auto it = mKeyFrames.lower_bound( position );
     if ( it == mKeyFrames.end() )
@@ -118,16 +118,14 @@ int Layer::getNextKeyFramePosition( int position )
     return it->first;
 }
 
-int Layer::getPreviousFrameNumber( int position, bool isAbsolute )
+int Layer::getPreviousFrameNumber( int position, bool isAbsolute ) const
 {
     int prevNumber;
 
-    if (isAbsolute) {
+    if (isAbsolute)
         prevNumber = getPreviousKeyFramePosition(position);
-    }
-    else {
+    else
         prevNumber = position - 1;
-    }
 
 
     if (prevNumber == position)
@@ -140,27 +138,22 @@ int Layer::getPreviousFrameNumber( int position, bool isAbsolute )
     }
 }
 
-int Layer::getNextFrameNumber( int position, bool isAbsolute )
+int Layer::getNextFrameNumber( int position, bool isAbsolute ) const
 {
     int nextNumber;
 
-    if (isAbsolute) {
+    if (isAbsolute)
         nextNumber = getNextKeyFramePosition(position);
-    }
-    else {
+    else
         nextNumber = position + 1;
-    }
 
-
-    if (nextNumber == position) {
+    if (nextNumber == position)
         return -1; // There is no next keyframe
-    }
-    else {
-        return nextNumber;
-    }
+    
+    return nextNumber;
 }
 
-int Layer::firstKeyFramePosition()
+int Layer::firstKeyFramePosition() const
 {
     if ( !mKeyFrames.empty() )
     {
@@ -215,7 +208,6 @@ bool Layer::removeKeyFrame( int position )
         mKeyFrames.erase(frame->pos());
         delete frame;
     }
-
     return true;
 }
 
@@ -230,10 +222,7 @@ bool Layer::moveKeyFrameBackward( int position )
     {
         return swapKeyFrames( position, position - 1 );
     }
-    else
-    {
-        return true;
-    }
+    return true;
 }
 
 bool Layer::swapKeyFrames( int position1, int position2 ) //Current behaviour, need to refresh the swapped cels
@@ -493,11 +482,12 @@ bool Layer::isFrameSelected(int position)
 void Layer::setFrameSelected(int position, bool isSelected)
 {
     KeyFrame *keyFrame = getKeyFrameWhichCovers(position);
-    if (keyFrame != nullptr) {
+    if (keyFrame != nullptr)
+    {
         int startPosition = keyFrame->pos();
 
-        if (isSelected && !mSelectedFrames_byLast.contains(startPosition)) {
-
+        if (isSelected && !mSelectedFrames_byLast.contains(startPosition))
+        {
             // Add the selected frame to the lists
             //
             mSelectedFrames_byLast.insert(0, startPosition);
@@ -506,11 +496,11 @@ void Layer::setFrameSelected(int position, bool isSelected)
             // We need to keep the list of selected frames sorted
             // in order to easily handle their movement
             //
-            qSort(mSelectedFrames_byPosition.begin(), mSelectedFrames_byPosition.end(), sortAsc);
+            std::sort(mSelectedFrames_byPosition.begin(), mSelectedFrames_byPosition.end(), sortAsc);
 
         }
-        else if (!isSelected){
-
+        else if (!isSelected)
+        {
             // Remove the selected frame from the lists
             //
             int iLast = mSelectedFrames_byLast.indexOf(startPosition);
@@ -536,22 +526,26 @@ void Layer::toggleFrameSelected(int position, bool allowMultiple)
 
 void Layer::extendSelectionTo(int position)
 {
-    if (mSelectedFrames_byLast.count() > 0 ) {
+    if (mSelectedFrames_byLast.count() > 0 )
+    {
         int lastSelected = mSelectedFrames_byLast[0];
         int startPos;
         int endPos;
 
-        if (lastSelected < position) {
+        if (lastSelected < position)
+        {
             startPos = lastSelected;
             endPos = position;
         }
-        else {
+        else
+        {
             startPos = position;
             endPos = lastSelected;
         }
 
         int i = startPos;
-        while (i <= endPos) {
+        while (i <= endPos)
+        {
             setFrameSelected(i, true);
             i++;
         }
@@ -563,11 +557,13 @@ void Layer::selectAllFramesAfter( int position )
     int startPosition = position;
     int endPosition = getMaxKeyFramePosition();
 
-    if (!keyExists(startPosition)) {
+    if (!keyExists(startPosition))
+    {
         startPosition = getNextKeyFramePosition(startPosition);
     }
 
-    if (startPosition > 0 && startPosition <= endPosition ) {
+    if (startPosition > 0 && startPosition <= endPosition )
+    {
         deselectAll();
         setFrameSelected(startPosition, true);
         extendSelectionTo(endPosition);
@@ -588,35 +584,33 @@ void Layer::deselectAll()
 bool Layer::moveSelectedFrames(int offset)
 {
 
-    if (offset != 0 && mSelectedFrames_byPosition.count() > 0) {
-
+    if (offset != 0 && mSelectedFrames_byPosition.count() > 0)
+    {
         // If we are moving to the right we start moving selected frames from the highest (right) to the lowest (left)
         int indexInSelection = mSelectedFrames_byPosition.count() - 1;
         int step = -1;
 
-        if (offset < 0) {
-
+        if (offset < 0)
+        {
             // If we are moving to the left we start moving selected frames from the lowest (left) to the highest (right)
             indexInSelection = 0;
             step = 1;
 
             // Check if we are not moving out of the timeline
-            if (mSelectedFrames_byPosition[0] + offset < 1) {
-                return false;
-            }
+            if (mSelectedFrames_byPosition[0] + offset < 1) return false;
         }
 
 
-        while ( indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count() ) {
-
+        while ( indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count() )
+        {
             int fromPos = mSelectedFrames_byPosition[indexInSelection];
             int toPos = fromPos + offset;
 
             // Get the frame to move
             KeyFrame *selectedFrame = getKeyFrameAt(fromPos);
 
-            if (selectedFrame != nullptr) {
-
+            if (selectedFrame != nullptr)
+            {
                 mKeyFrames.erase(fromPos);
 
                 // Slide back every frame between fromPos to toPos
@@ -625,13 +619,14 @@ bool Layer::moveSelectedFrames(int offset)
                 bool isBetween = true;
                 int targetPosition = fromPos;
 
-                while (isBetween) {
-
+                while (isBetween)
+                {
                     int framePosition = targetPosition - step;
 
                     KeyFrame *frame = getKeyFrameAt(framePosition);
 
-                    if (frame != nullptr) {
+                    if (frame != nullptr)
+                    {
                         mKeyFrames.erase(framePosition);
 
                         frame->setPos(targetPosition);
@@ -639,16 +634,15 @@ bool Layer::moveSelectedFrames(int offset)
                     }
 
                     targetPosition = targetPosition - step;
-                    if (fromPos < toPos && (targetPosition < fromPos || targetPosition >= toPos)) {
+                    if (fromPos < toPos && (targetPosition < fromPos || targetPosition >= toPos))
                         isBetween = false;
-                    }
-                    if (fromPos > toPos && (targetPosition > fromPos || targetPosition <= toPos)) {
+                    if (fromPos > toPos && (targetPosition > fromPos || targetPosition <= toPos))
                         isBetween = false;
-                    }
                 }
 
                 // If the first frame is moving, we need to create a new first frame
-                if (fromPos == 1) {
+                if (fromPos == 1)
+                {
                     addNewEmptyKeyAt(1);
                 }
 
@@ -656,26 +650,24 @@ bool Layer::moveSelectedFrames(int offset)
                 selectedFrame->setPos(toPos);
                 mKeyFrames.insert( std::make_pair( toPos, selectedFrame ) );
             }
-
             indexInSelection = indexInSelection + step;
         }
 
 
         // Update selection lists
         //
-        for (int i=0; i<mSelectedFrames_byPosition.count(); i++) {
+        for (int i=0; i<mSelectedFrames_byPosition.count(); i++)
+        {
             mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
         }
-        for (int i=0; i<mSelectedFrames_byLast.count(); i++) {
+        for (int i=0; i<mSelectedFrames_byLast.count(); i++)
+        {
             mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
         }
 
         return true;
     }
-    else {
-        return false;
-    }
-
+    return false;
 }
 
 bool Layer::isPaintable()
@@ -710,6 +702,5 @@ KeyFrame *Layer::getKeyFrameWhichCovers(int frameNumber)
             return keyFrame;
         }
     }
-
     return nullptr;
 }

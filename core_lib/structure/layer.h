@@ -64,17 +64,17 @@ public:
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;
-    int firstKeyFramePosition();
+    int firstKeyFramePosition() const;
 
     virtual Status saveKeyFrame( KeyFrame*, QString path ) = 0;
     virtual void loadDomElement( QDomElement element, QString dataDirPath ) = 0;
     virtual QDomElement createDomElement( QDomDocument& doc ) = 0;
     
-    bool keyExists( int position ) const;
-    int  getPreviousKeyFramePosition( int position );
-    int  getNextKeyFramePosition( int position );
-    int  getPreviousFrameNumber( int position, bool isAbsolute );
-    int  getNextFrameNumber( int position, bool isAbsolute );
+    bool keyExists(int position) const;
+    int  getPreviousKeyFramePosition( int position ) const;
+    int  getNextKeyFramePosition( int position ) const;
+    int  getPreviousFrameNumber( int position, bool isAbsolute ) const;
+    int  getNextFrameNumber( int position, bool isAbsolute ) const;
 
     int keyFrameCount() const { return static_cast< int >( mKeyFrames.size() ); }
 
@@ -85,8 +85,8 @@ public:
     bool moveKeyFrameForward( int position );
     bool moveKeyFrameBackward( int position );
     bool loadKey( KeyFrame* );
-    KeyFrame* getKeyFrameAt( int position );
-    KeyFrame* getLastKeyFrameAtPosition( int position );
+    KeyFrame* getKeyFrameAt( int position ) const;
+    KeyFrame* getLastKeyFrameAtPosition( int position ) const;
     bool keyExistsWhichCovers(int frameNumber);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber);
 
