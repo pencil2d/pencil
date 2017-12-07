@@ -113,12 +113,15 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
             const QString soundFile = soundElement.attribute("src");
             const QString sSoundClipName = soundElement.attribute("name", "My Sound Clip");
 
-            // the file is supposed to be in the data directory
-            const QString sFullPath = QDir(dataDirPath).filePath(soundFile);
+            if (!soundFile.isEmpty())
+            {
+                // the file is supposed to be in the data directory
+                const QString sFullPath = QDir(dataDirPath).filePath(soundFile);
 
-            int position = soundElement.attribute("frame").toInt();
-            Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
-            Q_ASSERT(st.ok());
+                int position = soundElement.attribute("frame").toInt();
+                Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
+                Q_ASSERT(st.ok());
+            }
         }
 
         soundTag = soundTag.nextSibling();
