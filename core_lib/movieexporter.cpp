@@ -139,11 +139,11 @@ Status MovieExporter::run(const Object* obj,
 	if ( !QFile::exists( ffmpegPath ) )
 	{
     #ifdef _WIN32
-		qDebug() << "Please place ffmpeg.exe in " << ffmpegPath << " directory";
+		qCritical() << "Please place ffmpeg.exe in " << ffmpegPath << " directory";
     #elif __APPLE__
-        qDebug() << "Please place ffmpeg in " << ffmpegPath << " directory";
+        qCritical() << "Please place ffmpeg in " << ffmpegPath << " directory";
     #else
-        qDebug() << "Please place ffmpeg in " << ffmpegPath << " directory";
+        qCritical() << "Please place ffmpeg in " << ffmpegPath << " directory";
     #endif
 		return Status::ERROR_FFMPEG_NOT_FOUND;
 	}
