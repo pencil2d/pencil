@@ -20,11 +20,10 @@ GNU General Public License for more details.
 #include "util.h"
 
 ExportMovieDialog::ExportMovieDialog(QWidget *parent) :
-    ImportExportDialog(parent),
+    ImportExportDialog(parent, ImportExportDialog::Export, FileType::MOVIE),
     ui(new Ui::ExportMovieOptions)
 {
     ui->setupUi(getOptionsGroupBox());
-    init();
     setWindowTitle(tr("Export Movie"));
 }
 
@@ -94,16 +93,6 @@ int ExportMovieDialog::getStartFrame()
 int ExportMovieDialog::getEndFrame()
 {
     return ui->endSpinBox->value();
-}
-
-ImportExportDialog::Mode ExportMovieDialog::getMode()
-{
-    return ImportExportDialog::Export;
-}
-
-FileType ExportMovieDialog::getFileType()
-{
-    return FileType::MOVIE;
 }
 
 void ExportMovieDialog::frameCheckboxClicked(bool checked)
