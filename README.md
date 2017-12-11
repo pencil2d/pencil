@@ -6,6 +6,8 @@
 
 ### Pencil2D 0.6  (1 December 2017)
 
+[What's new?](https://pencil2d.github.io/2017/12/introducing-pencil2d-0.6.html)
+
 | Windows 64 bit   | Windows 32 bit    | Mac             | Linux             |
 | :--------------: | :---------------: | :-------------: | :---------------: |
 | [Download][0]    | [Download][1]     | [Download][2]   | [Download][3]     |
@@ -16,12 +18,21 @@
 [3]: https://github.com/pencil2d/pencil/releases/download/0.6.0/pencil2d-linux-amd64-0.6.0.AppImage
 
 ### Debian & Ubuntu
-    
-    sudo apt-get install pencil2d
+
+```bash    
+sudo apt-get install pencil2d
+```
+
+### Homebrew Cask (macOS)
+
+```bash
+brew cask install pencil2d
+```
 
 ### Nightly build
 
 Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features.
+The link will direct you to Google Drive, please right-click a file and select Download. The filename is pencil2d-OS-year-month-date.
 
 | Windows 64 bit   | Windows 32 bit    | Mac             | Linux             |
 | :--------------: | :---------------: | :-------------: | :---------------: |
