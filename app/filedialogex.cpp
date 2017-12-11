@@ -45,7 +45,7 @@ QString FileDialog::openFile(FileType fileType)
                                                      strFilter );
     if ( !filePath.isEmpty() )
     {
-        setLastOpenPath( fileType, filePath );
+        setLastOpenPath(fileType, filePath);
     }
 
     return filePath;
@@ -157,7 +157,7 @@ QString FileDialog::openFileFilters( FileType fileType )
         case FileType::ANIMATION: return PFF_OPEN_ALL_FILE_FILTER;
         case FileType::IMAGE: return PENCIL_IMAGE_FILTER;
         case FileType::IMAGE_SEQUENCE: return PENCIL_IMAGE_FILTER;
-        case FileType::MOVIE: return PENCIL_MOVIE_EXT;
+        case FileType::MOVIE: { Q_ASSERT(false); return PENCIL_MOVIE_EXT; } // currently not supported
         case FileType::SOUND: return tr( "Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)" );
         case FileType::PALETTE: return tr( "Palette (*.xml)" );
         default: Q_ASSERT( false );
@@ -170,10 +170,10 @@ QString FileDialog::saveFileFilters( FileType fileType )
     switch ( fileType )
     {
         case FileType::ANIMATION: return PFF_SAVE_ALL_FILE_FILTER;
-        case FileType::IMAGE: return QString();
-        case FileType::IMAGE_SEQUENCE: return QString();
-        case FileType::MOVIE: return tr( "MP4 (*.mp4);;AVI (*.avi);;GIF (*.gif)" );
-        case FileType::SOUND: return QString();
+        case FileType::IMAGE: return "";
+        case FileType::IMAGE_SEQUENCE: return "";
+        case FileType::MOVIE: return tr( "MP4 (*.mp4);;AVI (*.avi);; WebM (*.webm);; GIF (*.gif)" );
+        case FileType::SOUND: return "";
         case FileType::PALETTE: return tr( "Palette (*.xml)" );
         default: Q_ASSERT( false );
     }
@@ -182,7 +182,6 @@ QString FileDialog::saveFileFilters( FileType fileType )
 
 QString FileDialog::defaultFileName( FileType fileType )
 {
-
     switch ( fileType )
     {
         case FileType::ANIMATION: return tr( "MyAnimation.pclx" );

@@ -20,11 +20,11 @@ GNU General Public License for more details.
 #include "util.h"
 
 ImportImageSeqDialog::ImportImageSeqDialog(QWidget* parent) :
-    ImportExportDialog(parent),
-    ui(new Ui::ImportImageSeqOptions)
+    ImportExportDialog(parent, ImportExportDialog::Import, FileType::IMAGE_SEQUENCE)
 {
+    ui = new Ui::ImportImageSeqOptions;
     ui->setupUi(getOptionsGroupBox());
-    init();
+
     setWindowTitle(tr("Import image sequence"));
     connect(ui->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
 }

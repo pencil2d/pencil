@@ -43,11 +43,7 @@ public:
 
     int getStartFrame();
     int getEndFrame();
-
-protected:
-    Mode getMode() override;
-    FileType getFileType() override;
-
+    
 private:
     void frameCheckboxClicked(bool checked);
     

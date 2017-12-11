@@ -19,12 +19,14 @@ GNU General Public License for more details.
 #include "ui_importexportdialog.h"
 #include <QFileInfo>
 
-ImportExportDialog::ImportExportDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ImportExportDialog),
-    m_fileDialog(new FileDialog(this))
+ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFileType) : QDialog(parent)
 {
+    mMode = eMode;
+    mFileType = eFileType;
+
+    ui = new Ui::ImportExportDialog;
     ui->setupUi(this);
+    m_fileDialog = new FileDialog(this);
 
     connect(ui->browseButton, &QPushButton::clicked, this, &ImportExportDialog::browse);
 
@@ -49,13 +51,13 @@ QStringList ImportExportDialog::getFilePaths()
 
 void ImportExportDialog::init()
 {
-    switch (getMode())
+    switch (mMode)
     {
         case Import:
-            m_filePaths = QStringList(m_fileDialog->getLastOpenPath(getFileType()));
+            m_filePaths = QStringList(m_fileDialog->getLastOpenPath(mFileType));
             break;
         case Export:
-            m_filePaths = QStringList(m_fileDialog->getLastSavePath(getFileType()));
+            m_filePaths = QStringList(m_fileDialog->getLastSavePath(mFileType));
             break;
         default:
             Q_ASSERT(false);
@@ -63,7 +65,7 @@ void ImportExportDialog::init()
     ui->fileEdit->setText("\"" + m_filePaths.first() + "\"");
 }
 
-QGroupBox *ImportExportDialog::getOptionsGroupBox()
+QGroupBox* ImportExportDialog::getOptionsGroupBox()
 {
     return ui->optionsGroupBox;
 }
@@ -81,19 +83,18 @@ void ImportExportDialog::setFileExtension(QString extension)
 void ImportExportDialog::browse()
 {
     QStringList filePaths;
-    switch (getMode())
+    switch (mMode)
     {
         case Import:
-            if (getFileType() == FileType::IMAGE_SEQUENCE)
+            if (mFileType == FileType::IMAGE_SEQUENCE)
             {
                 filePaths = m_fileDialog->openFiles( FileType::IMAGE_SEQUENCE );
                 break;
             }
-
-            filePaths = QStringList(m_fileDialog->openFile(getFileType()));
+            filePaths = QStringList(m_fileDialog->openFile(mFileType));
             break;
         case Export:
-            filePaths = QStringList(m_fileDialog->saveFile(getFileType()));
+            filePaths = QStringList(m_fileDialog->saveFile(mFileType));
             break;
         default:
             Q_ASSERT(false);

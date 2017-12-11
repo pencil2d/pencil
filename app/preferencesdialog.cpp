@@ -169,7 +169,7 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGroupBox* gridBox = new QGroupBox(tr("Grid", "groupBox title in Preference") );
 
     mLanguageCombo = new QComboBox;
-    mLanguageCombo->addItem( tr( "<System-Language>" ), "" );
+    mLanguageCombo->addItem( tr( "[System-Language]" ), "First item of the language list" );
     mLanguageCombo->addItem( tr( "Czech" ), "cs" );
     mLanguageCombo->addItem( tr( "Danish" ), "da" );
     mLanguageCombo->addItem( tr( "English" ), "en" );

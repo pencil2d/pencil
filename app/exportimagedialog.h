@@ -29,7 +29,7 @@ class ExportImageDialog : public ImportExportDialog
     Q_OBJECT
 
 public:
-    explicit ExportImageDialog(QWidget* parent = 0, bool seq = false);
+    explicit ExportImageDialog(QWidget* parent, FileType eType);
     ~ExportImageDialog();
 
 	void setCamerasInfo(const std::vector<std::pair<QString, QSize>>);
@@ -40,17 +40,12 @@ public:
     QString getExportFormat();
 	QString getCameraLayerName();
 
-protected:
-    Mode getMode();
-    FileType getFileType();
-
 private slots:
     void formatChanged(QString format);
 	void cameraComboChanged(int index);
 
 private:
     Ui::ExportImageOptions* ui = nullptr;
-    FileType mFileType;
 };
 
 #endif // EXPORTIMAGEDIALOG_H

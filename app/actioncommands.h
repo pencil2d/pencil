@@ -80,7 +80,6 @@ public:
 private:
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
-    ExportMovieDialog* mExportMovieDialog = nullptr;
 };
 
 #endif // COMMANDCENTER_H

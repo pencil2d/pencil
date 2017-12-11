@@ -18,15 +18,12 @@ GNU General Public License for more details.
 #include "exportimagedialog.h"
 #include "ui_exportimageoptions.h"
 
-ExportImageDialog::ExportImageDialog(QWidget *parent, bool seq) :
-    ImportExportDialog(parent),
-    ui(new Ui::ExportImageOptions),
-    mFileType(seq ? FileType::IMAGE_SEQUENCE : FileType::IMAGE)
+ExportImageDialog::ExportImageDialog(QWidget *parent, FileType eFileType) :
+    ImportExportDialog(parent, ImportExportDialog::Export, eFileType),
+    ui(new Ui::ExportImageOptions)
 {
     ui->setupUi( getOptionsGroupBox() );
-    init();
-
-    if (seq)
+    if (eFileType == FileType::IMAGE_SEQUENCE)
     {
         setWindowTitle( tr( "Export image sequence" ) );
     }
@@ -84,16 +81,6 @@ QString ExportImageDialog::getExportFormat()
 QString ExportImageDialog::getCameraLayerName()
 {
 	return ui->cameraCombo->currentText();
-}
-
-ImportExportDialog::Mode ExportImageDialog::getMode()
-{
-    return ImportExportDialog::Export;
-}
-
-FileType ExportImageDialog::getFileType()
-{
-    return mFileType;
 }
 
 void ExportImageDialog::formatChanged(QString format)

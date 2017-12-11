@@ -31,20 +31,18 @@ class ImportExportDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ImportExportDialog(QWidget* parent = 0);
+    enum Mode { Import, Export };
+
+    explicit ImportExportDialog(QWidget* parent, Mode eMode, FileType eFileType);
     ~ImportExportDialog();
 
+    void init();
     QString getFilePath();
     QStringList getFilePaths();
 
 protected:
-    void init();
     QGroupBox* getOptionsGroupBox();
     void setFileExtension(QString extension);
-
-    enum Mode { Import, Export };
-    virtual Mode getMode() = 0;
-    virtual FileType getFileType() = 0;
 
 private slots:
     void browse();
@@ -54,6 +52,9 @@ private:
 
     FileDialog* m_fileDialog = nullptr;
     QStringList m_filePaths;
+
+    FileType mFileType = FileType::ANIMATION;
+    Mode mMode = Import;
 };
 
 #endif // IMPORTEXPORTDIALOG_H

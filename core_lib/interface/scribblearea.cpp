@@ -1672,7 +1672,7 @@ void ScribbleArea::deleteSelection()
         Layer* layer = mEditor->layers()->currentLayer();
         if (layer == NULL) { return; }
 
-        mEditor->backup(tr("Delete Selection"));
+        mEditor->backup(tr("Delete Selection", "Undo Step: clear the selection area."));
 
         mClosestCurves.clear();
         if (layer->type() == Layer::VECTOR) { ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deleteSelection(); }
