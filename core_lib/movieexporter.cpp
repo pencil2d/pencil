@@ -372,7 +372,7 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath, QString strOutpu
 	QString strCmd = QString("\"%1\"").arg( ffmpegPath );
 	strCmd += QString( " -f image2");
 	strCmd += QString( " -framerate %1" ).arg( mDesc.fps );
-    strCmd += QString( " -pix_fmt yuv420p" );
+
 	strCmd += QString( " -start_number %1" ).arg( mDesc.startFrame );
 	//strCmd += QString( " -r %1" ).arg( exportFps );
 	strCmd += QString( " -i \"%1\" " ).arg( imgPath );
@@ -383,7 +383,12 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath, QString strOutpu
 	}
 
 	strCmd += QString( " -s %1x%2" ).arg( exportSize.width() ).arg( exportSize.height() );
-	strCmd += " -y";
+
+    if (strOutputFile.endsWith("mp4", Qt::CaseInsensitive))
+    {
+        strCmd += QString(" -pix_fmt yuv420p");
+    }
+    strCmd += " -y";
 	strCmd += QString(" \"%1\"" ).arg( strOutputFile );
 
 	STATUS_CHECK( executeFFMpegCommand( strCmd ) );
@@ -393,20 +398,23 @@ Status MovieExporter::combineVideoAndAudio( QString ffmpegPath, QString strOutpu
 
 Status MovieExporter::twoPassEncoding( QString ffmpeg, QString strOutputFile )
 {
-	QString strTempVideo = mTempWorkDir + "/Temp1.mp4";
-	qDebug() << "TempVideo=" << strTempVideo;
+    // atm only gif use two passes encoding.
+    QString strTempVideo;
+    if (strOutputFile.endsWith("gif", Qt::CaseInsensitive))
+    {
+        strTempVideo = mTempWorkDir + "/Temp1.mp4";
+    }
+    else
+    {
+        strTempVideo = strOutputFile;
+    }
 
 	combineVideoAndAudio( ffmpeg, strTempVideo );
 
-	if ( strOutputFile.endsWith( "gif" ) )
+    if (strOutputFile.endsWith("gif", Qt::CaseInsensitive))
 	{
 		STATUS_CHECK( convertToGif( ffmpeg, strTempVideo, strOutputFile ) );
 	}
-	else
-	{
-		STATUS_CHECK( convertVideoAgain( ffmpeg, strTempVideo, strOutputFile ) );
-	}
-
 	return Status::OK;
 }
 
@@ -458,8 +466,14 @@ Status MovieExporter::executeFFMpegCommand( QString strCmd )
 	{
 		if ( ffmpeg.waitForFinished() == true )
 		{
-			qDebug() << "stdout: " + ffmpeg.readAllStandardOutput();
-			qDebug() << "stderr: " + ffmpeg.readAllStandardError();
+			qDebug() << "stdout:" << QString(ffmpeg.readAllStandardOutput());
+            qDebug() << "stderr:";
+			QString stdErrMsg(ffmpeg.readAllStandardError());
+            QStringList sList = stdErrMsg.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+            for (const QString& s : sList)
+            {
+                qDebug() << s;
+            }
 		}
 		else
 		{
