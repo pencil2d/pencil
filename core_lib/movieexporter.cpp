@@ -170,7 +170,7 @@ Status MovieExporter::run(const Object* obj,
     progress(0.10f);
 
     STATUS_CHECK(generateImageSequence(obj, progress));
-    progress(0.99f);
+    progress(0.9f);
 
     twoPassEncoding(ffmpegPath, desc.strFileName);
 
@@ -351,7 +351,7 @@ Status MovieExporter::generateImageSequence(
         qDebug() << "Save img to: " << strImgPath << ", Success=" << bSave;
 
         float fProgressValue = (currentFrame / (float)(frameEnd - frameStart));
-        progress(0.1f + (fProgressValue * 0.99f));
+        progress(0.1f + (fProgressValue * 0.9f));
     }
 
     return Status::OK;
