@@ -438,7 +438,7 @@ Status MovieExporter::convertToGif(QString ffmpeg, QString strIn, QString strOut
     QString strCmd1 = QString("\"%1\"").arg(ffmpeg);
     strCmd1 += " -y";
     strCmd1 += QString(" -i \"%1\"").arg(strIn);
-    strCmd1 += " -vf scale=320:-1:flags=lanczos,palettegen";
+    strCmd1 += " -vf scale=-1:-1:flags=lanczos,palettegen";
     strCmd1 += QString(" \"%1\"").arg(strGifPalette);
 
     STATUS_CHECK(executeFFMpegCommand(strCmd1));
