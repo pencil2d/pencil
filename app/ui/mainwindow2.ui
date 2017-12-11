@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -54,11 +54,9 @@
       <string>Export</string>
      </property>
      <addaction name="separator"/>
-     <addaction name="actionExport_X_sheet"/>
      <addaction name="actionExport_Movie"/>
      <addaction name="actionExport_ImageSeq"/>
      <addaction name="actionExport_Image"/>
-     <addaction name="actionExport_Svg_Image"/>
      <addaction name="separator"/>
      <addaction name="actionExport_Palette"/>
     </widget>
@@ -70,7 +68,6 @@
     <addaction name="menuImport"/>
     <addaction name="menuExport"/>
     <addaction name="separator"/>
-    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -240,15 +237,6 @@
     <string>Save As ..</string>
    </property>
   </action>
-  <action name="actionPrint">
-   <property name="icon">
-    <iconset resource="../../pencil.qrc">
-     <normaloff>:/icons/printer3.png</normaloff>:/icons/printer3.png</iconset>
-   </property>
-   <property name="text">
-    <string>Print</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="icon">
     <iconset resource="../../pencil.qrc">
@@ -256,17 +244,6 @@
    </property>
    <property name="text">
     <string>Exit</string>
-   </property>
-  </action>
-  <action name="actionExport_X_sheet">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>X-sheet ...</string>
-   </property>
-   <property name="visible">
-    <bool>false</bool>
    </property>
   </action>
   <action name="actionExport_ImageSeq">
@@ -290,17 +267,6 @@
   <action name="actionExport_Palette">
    <property name="text">
     <string>Palette...</string>
-   </property>
-  </action>
-  <action name="actionExport_Svg_Image">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Svg Image...</string>
-   </property>
-   <property name="visible">
-    <bool>false</bool>
    </property>
   </action>
   <action name="actionImport_Image">

@@ -824,7 +824,6 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionOpen->setShortcut(cmdKeySeq(CMD_OPEN_FILE));
     ui->actionSave->setShortcut(cmdKeySeq(CMD_SAVE_FILE));
     ui->actionSave_as->setShortcut(cmdKeySeq(CMD_SAVE_AS));
-    ui->actionPrint->setShortcut(cmdKeySeq(CMD_PRINT));
 
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
@@ -836,8 +835,6 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionExport_ImageSeq->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE_SEQ));
     ui->actionExport_Movie->setShortcut(cmdKeySeq(CMD_EXPORT_MOVIE));
     ui->actionExport_Palette->setShortcut(cmdKeySeq(CMD_EXPORT_PALETTE));
-    ui->actionExport_Svg_Image->setShortcut(cmdKeySeq(CMD_EXPORT_SVG));
-    ui->actionExport_X_sheet->setShortcut(cmdKeySeq(CMD_EXPORT_XSHEET));
 
     // edit menu
     ui->actionUndo->setShortcut(cmdKeySeq(CMD_UNDO));

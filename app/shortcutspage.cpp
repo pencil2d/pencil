@@ -177,7 +177,7 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
         QString strKeySequence = settings.value(strCmdName).toString();
 
         //convert to native format
-        strKeySequence = QKeySequence(strKeySequence).toString( QKeySequence::NativeText );
+        strKeySequence = QKeySequence(strKeySequence).toString(QKeySequence::NativeText);
 
         // strip the first 3 chars "Cmd"
         QStringRef strHumanReadCmdName (&strCmdName, 3, strCmdName.size() - 3);
