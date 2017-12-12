@@ -84,7 +84,7 @@ before_script:
 script:
   - mkdir "build" && cd build
   - 'if [ "$TRAVIS_BRANCH" == "release" ]; then
-    qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT;
+    qmake ../ PREFIX=/usr CONFIG+=release DEFINES+=QT_NO_DEBUG_OUTPUT DEFINES+=PENCIL2D_RELEASE;
   else
     qmake ../ PREFIX=/usr CONFIG+=GIT CONFIG+=NIGHTLY;
   fi'

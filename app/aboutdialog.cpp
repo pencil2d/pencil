@@ -32,19 +32,23 @@ AboutDialog::AboutDialog(QWidget* parent ) : QDialog(parent)
 void AboutDialog::init()
 {
     QLabel* logo = new QLabel(this);
-    QLabel* logoText = new QLabel(this);
-    QLabel* aboutText = new QLabel(this);
-
+    logo->setFont(QFont("Helvetica", 10));
     logo->setPixmap(QPixmap(":icons/logo.png"));
     logo->setAlignment(Qt::AlignCenter);
+
+    QLabel* logoText = new QLabel(this);
+    logoText->setFont(QFont("Helvetica", 10));
     logoText->setAlignment(Qt::AlignCenter);
     logoText->setText(tr("<b>Pencil2D</b>"));
+
+    QLabel* aboutText = new QLabel(this);
+    aboutText->setFont(QFont("Helvetica", 10));
     aboutText->setTextInteractionFlags(Qt::TextBrowserInteraction);
     aboutText->setWordWrap(true);
     aboutText->setOpenExternalLinks(true);
     aboutText->setText(tr("Official site: <a href=\"http://pencil2d.github.io\">pencil2d.github.io</a>"
                           "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang</b>"
-                          "<br>Thanks to: Qt Framework <a href=\"https://www.qt.io/\">https://www.qt.io/</a>"
+                          "<br>Thanks to Qt Framework <a href=\"https://www.qt.io/\">https://www.qt.io/</a>"
                           "<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a>"));
     QVBoxLayout* lay = new QVBoxLayout;
     lay->addWidget(logo);
@@ -57,6 +61,7 @@ void AboutDialog::init()
 #define S__GIT_COMMIT_HASH__ TOSTRING(GIT_CURRENT_SHA1)
 
     QLabel* devInfoText = new QLabel(this);
+    devInfoText->setFont(QFont("Helvetica", 10));
     devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
                                         "border-style: solid; border-width: 1px; border-color: gray;}");
     devInfoText->setTextInteractionFlags(Qt::TextSelectableByMouse);
@@ -66,7 +71,9 @@ void AboutDialog::init()
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
     devText += "<br>commit: " S__GIT_COMMIT_HASH__ "<br> date: " S__GIT_TIMESTAMP__ "<br>";
 #endif
-
+#if !defined(PENCIL2D_RELEASE)
+    devText += " Development build";
+#endif
     devInfoText->setText(devText);
     lay->addWidget(devInfoText);
 
