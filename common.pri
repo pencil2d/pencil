@@ -1,4 +1,7 @@
 
+VERSION = 0.6.0
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
 CONFIG += c++11
 
 win32-g++ {
