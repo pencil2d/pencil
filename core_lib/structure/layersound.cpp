@@ -144,10 +144,11 @@ Status LayerSound::saveKeyFrame(KeyFrame* key, QString path)
     {
         bool bOK = QFile::copy(key->fileName(), sDestFileLocation);
         Q_ASSERT(bOK);
-        if (!bOK)
-        {
+
+        if (bOK)
+            key->setFileName(sDestFileLocation);
+        else
             return Status::FAIL;
-        }
     }
     return Status::OK;
 }
