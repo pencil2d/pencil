@@ -28,15 +28,10 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layercamera.h"
 
-//#include "flash.h"
 #include "util.h"
 #include "editor.h"
 #include "bitmapimage.h"
 #include "fileformat.h"
-
-// ******* Mac-specific: ******** (please comment (or reimplement) the lines below to compile on Windows or Linux
-//#include <CoreFoundation/CoreFoundation.h>
-// ******************************
 
 Object::Object(QObject* parent) : QObject(parent)
 {
