@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "mainwindow2.h"
 #include "pencilapplication.h"
 #include "layermanager.h"
-#include "object.h"
 
 
 void installTranslator( PencilApplication& app )
@@ -230,15 +229,15 @@ int handleArguments( PencilApplication& app )
 
     if ( !parser.value( cameraOption ).isEmpty() )
     {
-        cameraLayer = dynamic_cast<LayerCamera*>( mainWindow.mEditor->object()->findLayerByName( parser.value( cameraOption ), Layer::CAMERA ) );
+        cameraLayer = dynamic_cast<LayerCamera*>( mainWindow.mEditor->layers()->findLayerByName( parser.value( cameraOption ), Layer::CAMERA ) );
         if ( cameraLayer == nullptr )
         {
             err << PencilApplication::tr("Warning: the specified camera layer %1 was not found, ignoring.").arg( parser.value( cameraOption ) ) << endl;
         }
     }
-    if ( cameraLayer == nullptr ) {
-        int cameraLayerId = mainWindow.mEditor->layers()->getLastCameraLayer();
-        cameraLayer = dynamic_cast<LayerCamera*>( mainWindow.mEditor->object()->getLayer( cameraLayerId ) );
+    if ( cameraLayer == nullptr )
+    {
+        cameraLayer = dynamic_cast<LayerCamera*>(mainWindow.mEditor->layers()->getLastCameraLayer());
     }
 
     for ( int i = 0; i < outputPaths.length(); i++ )

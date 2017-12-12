@@ -42,8 +42,8 @@ public:
     Layer* currentLayer();
     Layer* currentLayer(int offset);
     Layer* getLayer(int index);
-    Layer* getLayerByName(QString sName);
-    int    getLastCameraLayer();
+    Layer* findLayerByName(QString sName, Layer::LAYER_TYPE type = Layer::UNDEFINED);
+    Layer* getLastCameraLayer();
     int    currentLayerIndex();
     void   setCurrentLayer(int nIndex);
     void   setCurrentLayer(Layer* layer);
@@ -75,7 +75,7 @@ Q_SIGNALS:
 private:
     int getIndex(Layer*) const;
 
-    int mLastCameraLayer = 0;
+    int mLastCameraLayerIdx = 0;
 };
 
 #endif

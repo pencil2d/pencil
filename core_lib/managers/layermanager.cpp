@@ -36,12 +36,12 @@ LayerManager::~LayerManager()
 
 bool LayerManager::init()
 {
-    mLastCameraLayer = 0;
     return true;
 }
 
 Status LayerManager::load(Object* o)
 {
+    mLastCameraLayerIdx = 0;
     emit layerCountChanged(o->getLayerCount());
     return Status::OK;
 }
@@ -52,9 +52,21 @@ Status LayerManager::save(Object*)
 	return Status::OK;
 }
 
-int LayerManager::getLastCameraLayer()
+Layer* LayerManager::getLastCameraLayer()
 {
-    return mLastCameraLayer;
+    Layer* layer = object()->getLayer(mLastCameraLayerIdx);
+    if (layer->type() == Layer::CAMERA)
+    {
+        return layer;
+    }
+    
+    // it's not a camera layer
+    std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
+    if (camLayers.size() > 0)
+    {
+        return camLayers[0];
+    }
+    return nullptr;
 }
 
 Layer* LayerManager::currentLayer()
@@ -74,17 +86,9 @@ Layer* LayerManager::getLayer( int index )
     return object()->getLayer(index);
 }
 
-Layer* LayerManager::getLayerByName(QString sName)
+Layer* LayerManager::findLayerByName(QString sName, Layer::LAYER_TYPE type)
 {
-	auto o = object();
-	for (int i = 0; i < o->getLayerCount(); ++i)
-	{
-		if (o->getLayer(i)->name() == sName)
-		{
-			return o->getLayer(i);
-		}
-	}
-	return nullptr;
+    return object()->findLayerByName(sName, type);
 }
 
 int LayerManager::currentLayerIndex()
@@ -113,7 +117,7 @@ void LayerManager::setCurrentLayer( int layerIndex )
     {
         if ( object()->getLayer( layerIndex )->type() == Layer::CAMERA )
         {
-            mLastCameraLayer = layerIndex;
+            mLastCameraLayerIdx = layerIndex;
         }
     }
 }
