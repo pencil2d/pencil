@@ -250,12 +250,10 @@ Layer* Object::getLayer(int i) const
 Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
 {
     bool bCheckType = (type != Layer::UNDEFINED);
-
     for (Layer* layer : mLayers)
     {
-        bool bTypeMatch = (bCheckType) ? (type == layer->type()) : true;
-
-        if (layer->name() == strName && bTypeMatch)
+        bool isTypeMatch = (bCheckType) ? (type == layer->type()) : true;
+        if (isTypeMatch && layer->name() == strName)
         {
             return layer;
         }
