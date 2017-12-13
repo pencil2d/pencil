@@ -54,9 +54,8 @@ private:
     Status generateImageSequence(const Object* obj, std::function<void(float)> progress);
     Status combineVideoAndAudio(QString ffmpegPath, QString strOutputFile);
 
-    Status twoPassEncoding(QString ffmpeg, QString strOutputFile);
     Status convertVideoAgain(QString ffmpeg, QString strIn, QString strOut);
-    Status convertToGif(QString ffmpeg, QString strIn, QString strOut);
+    Status convertToGif(QString ffmpeg, QString strOut);
 
     Status executeFFMpegCommand(QString strCmd);
     Status checkInputParameters(const ExportMovieDesc&);
