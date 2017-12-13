@@ -172,7 +172,14 @@ Status MovieExporter::run(const Object* obj,
     STATUS_CHECK(generateImageSequence(obj, progress));
     progress(0.9f);
 
-    twoPassEncoding(ffmpegPath, desc.strFileName);
+    if (desc.strFileName.endsWith("gif", Qt::CaseInsensitive))
+    {
+        STATUS_CHECK(convertToGif(ffmpegPath, desc.strFileName));
+    }
+    else
+    {
+        combineVideoAndAudio(ffmpegPath, desc.strFileName);
+    }
 
     progress(1.0f);
 
@@ -396,28 +403,6 @@ Status MovieExporter::combineVideoAndAudio(QString ffmpegPath, QString strOutput
     return Status::OK;
 }
 
-Status MovieExporter::twoPassEncoding(QString ffmpeg, QString strOutputFile)
-{
-    // atm only gif use two passes encoding.
-    QString strTempVideo;
-    if (strOutputFile.endsWith("gif", Qt::CaseInsensitive))
-    {
-        strTempVideo = mTempWorkDir + "/Temp1.mp4";
-    }
-    else
-    {
-        strTempVideo = strOutputFile;
-    }
-
-    combineVideoAndAudio(ffmpeg, strTempVideo);
-
-    if (strOutputFile.endsWith("gif", Qt::CaseInsensitive))
-    {
-        STATUS_CHECK(convertToGif(ffmpeg, strTempVideo, strOutputFile));
-    }
-    return Status::OK;
-}
-
 Status MovieExporter::convertVideoAgain(QString ffmpegPath, QString strIn, QString strOut)
 {
     QString strCmd = QString("\"%1\"").arg(ffmpegPath);
@@ -430,25 +415,41 @@ Status MovieExporter::convertVideoAgain(QString ffmpegPath, QString strIn, QStri
     return Status::OK;
 }
 
-Status MovieExporter::convertToGif(QString ffmpeg, QString strIn, QString strOut)
+Status MovieExporter::convertToGif(QString ffmpeg, QString strOut)
 {
+
+    if (mCanceled)
+    {
+        return Status::CANCELED;
+    }
+
+    const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
+    const QSize exportSize = mDesc.exportSize;
+
+    QString strCmd = QString("\"%1\"").arg(ffmpeg);
+    strCmd += QString(" -framerate %1").arg(mDesc.fps);
+
+    strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
+    strCmd += QString(" -i \"%1\"").arg(imgPath);
+
+    strCmd += " -y";
+
     // http://superuser.com/questions/556029/
     // generate a palette
     QString strGifPalette = mTempWorkDir + "/palette.png";
-    QString strCmd1 = QString("\"%1\"").arg(ffmpeg);
-    strCmd1 += " -y";
-    strCmd1 += QString(" -i \"%1\"").arg(strIn);
-    strCmd1 += " -vf scale=-1:-1:flags=lanczos,palettegen";
+    QString strCmd1(strCmd);
+    strCmd1 += " -vf palettegen";
     strCmd1 += QString(" \"%1\"").arg(strGifPalette);
 
     STATUS_CHECK(executeFFMpegCommand(strCmd1));
 
     // Output the GIF using the palette:
-    QString strCmd2 = QString("\"%1\"").arg(ffmpeg);
-    strCmd2 += " -y";
-    strCmd2 += QString(" -i \"%1\"").arg(strIn);
+    QString strCmd2(strCmd);
     strCmd2 += QString(" -i \"%1\"").arg(strGifPalette);
-    strCmd2 += " -filter_complex \"scale=-1:-1:flags=lanczos[x];[x][1:v]paletteuse\"";
+
+    strCmd2 += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
+
+    strCmd2 += " -filter_complex \"paletteuse\"";
     strCmd2 += QString(" \"%1\"").arg(strOut);
 
     STATUS_CHECK(executeFFMpegCommand(strCmd2));
