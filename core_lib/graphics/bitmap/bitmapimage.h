@@ -72,7 +72,6 @@ public:
     void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }
 
     static int pow( int );
-    static bool compareColor(QRgb color1, QRgb color2, int tolerance);
     static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance );
 
     void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing );
@@ -94,6 +93,8 @@ public:
     QRect& bounds() { return mBounds; }
 
 private:
+    static bool floodFillCompareColor(QRgb color1, QRgb color2, int tolerance, QHash<QRgb, bool> *cache);
+
     std::shared_ptr< QImage > mImage;
     QRect   mBounds;
     bool    mExtendable = true;
