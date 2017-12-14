@@ -508,13 +508,9 @@ bool BitmapImage::compareColor(QRgb color1, QRgb color2, int tolerance)
 
 // Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-void BitmapImage::floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb oldColor, QRgb newColor, int tolerance)
+void BitmapImage::floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance)
 {
-    if ( oldColor == newColor ){
-        return;
-    }
-
-    oldColor = targetImage->pixel( point );
+    QRgb oldColor = targetImage->pixel( point );
     oldColor = qRgba( qRed( oldColor ), qGreen( oldColor ), qBlue( oldColor ), qAlpha( oldColor ) );
 
     // Preparations

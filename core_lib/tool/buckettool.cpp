@@ -150,7 +150,6 @@ void BucketTool::paintBitmap(Layer* layer)
     BitmapImage::floodFill( targetImage,
                             cameraRect,
                             point,
-                            Qt::transparent,
                             qPremultiply( mEditor->color()->frontColor().rgba() ),
                             properties.tolerance * 2.55 );
 
