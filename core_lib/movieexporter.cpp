@@ -381,8 +381,9 @@ Status MovieExporter::combineVideoAndAudio(QString ffmpegPath, QString strOutput
     strCmd += QString(" -framerate %1").arg(mDesc.fps);
 
     strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
-    //strCmd += QString( " -r %1" ).arg( exportFps );
-    strCmd += QString(" -i \"%1\" ").arg(imgPath);
+    //strCmd += QString( " -r %1").arg( exportFps );
+    strCmd += QString(" -i \"%1\"").arg(imgPath);
+    strCmd += QString(" -threads %1").arg(QThread::idealThreadCount() == 1 ? 0 : QThread::idealThreadCount());
 
     if (QFile::exists(tempAudioPath))
     {
