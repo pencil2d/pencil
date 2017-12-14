@@ -35,6 +35,7 @@ public:
     BitmapImage& operator=( const BitmapImage& a );
 
     void paintImage( QPainter& painter );
+    void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
 
     QImage* image() { return mImage.get(); }
     void    setImage( QImage* pImg );
