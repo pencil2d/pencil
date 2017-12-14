@@ -37,6 +37,7 @@ public:
     BitmapImage* clone() override;
 
     void paintImage( QPainter& painter );
+    void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
 
     QImage* image() { return mImage.get(); }
     void    setImage( QImage* pImg );

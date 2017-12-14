@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
+#include "viewmanager.h"
 
 
 
@@ -69,7 +70,7 @@ void CanvasRenderer::ignoreTransformedSelection()
     mRenderTransform = false;
 }
 
-void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
+void CanvasRenderer::paint(Object* object, int layer, int frame, QRect rect )
 {
     Q_ASSERT( object );
     mObject = object;
@@ -77,20 +78,20 @@ void CanvasRenderer::paint( Object* object, int layer, int frame, QRect rect )
     mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
+    QRectF mappedInvCanvas = mView->mapScreenToCanvas(mCanvas->rect());
+    QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
+    QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
     QPainter painter( mCanvas );
 
     painter.setWorldMatrixEnabled(true);
     painter.setWorldTransform( mViewTransform );
-    painter.setRenderHint( QPainter::Antialiasing, true );
 
-    // Don't set clip rect, paint whole canvas. `rect` therefore unused.
     Q_UNUSED(rect);
-    //painter.setClipRect( rect );
-    //painter.setClipping( true );
 
     paintBackground();
     paintOnionSkin( painter );
 
+    painter.setClipRect(aligned);
     paintCurrentFrame( painter );
     paintCameraBorder( painter );
 
@@ -196,23 +197,23 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
     }
 
     qCDebug( mLog ) << "Paint Onion skin bitmap, Frame = " << nFrame;
-    BitmapImage* bitmapImage;
+    BitmapImage* paintedImage;
     if (useLastKeyFrame)
     {
-        bitmapImage = bitmapLayer->getLastBitmapImageAtFrame( nFrame, 0 );
+        paintedImage = bitmapLayer->getLastBitmapImageAtFrame( nFrame, 0 );
     }
     else
     {
-        bitmapImage = bitmapLayer->getBitmapImageAtFrame( nFrame );
+        paintedImage = bitmapLayer->getBitmapImageAtFrame( nFrame );
     }
 
-    if ( bitmapImage == nullptr )
+    if ( paintedImage == nullptr )
     {
         return;
     }
 
-    BitmapImage tempBitmapImage;
-    tempBitmapImage.paste(bitmapImage);
+    BitmapImage paintToImage;
+    paintToImage.paste(paintedImage);
 
     if ( colorize )
     {
@@ -227,7 +228,7 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
             colorBrush = QBrush(Qt::blue);
         }
 
-        tempBitmapImage.drawRect(bitmapImage->bounds(),
+        paintToImage.drawRect(paintedImage->bounds(),
                                  Qt::NoPen,
                                  colorBrush,
                                  QPainter::CompositionMode_SourceIn,
@@ -237,13 +238,36 @@ void CanvasRenderer::paintBitmapFrame( QPainter& painter,
     // If the current frame on the current layer has a transformation, we apply it.
     if (mRenderTransform && nFrame == mFrameNumber && layerId == mCurrentLayerIndex )
     {
-        tempBitmapImage.clear(mSelection);
+        paintToImage.clear(mSelection);
         paintTransformedSelection(painter);
     }
 
     painter.setWorldMatrixEnabled( true );
 
-    tempBitmapImage.paintImage( painter );
+    prescale(painter, &paintToImage);
+
+    paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
+}
+
+
+void CanvasRenderer::prescale(QPainter& painter, BitmapImage* bitmapImage)
+{
+
+    QImage origImage = bitmapImage->image()->copy();
+
+    // copy content of our unmodified qimage
+    // to our (not yet) scaled bitmap
+    mScaledBitmap = origImage.copy();
+
+    // map to correct matrix
+    QRectF mappedOrigImage = mView->mapCanvasToScreen(QRectF(origImage.rect()).toRect());
+
+    if (mView->scaling() >= 1.0) {
+        // TODO: Qt doesn't handle huge upscaled qimages well...
+        // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
+    } else {
+        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.toRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
 }
 
 void CanvasRenderer::paintVectorFrame( QPainter& painter,

@@ -27,6 +27,8 @@ GNU General Public License for more details.
 
 class Object;
 class Layer;
+class BitmapImage;
+class ViewManager;
 
 
 struct RenderOptions
@@ -60,17 +62,19 @@ public:
 
     void setCanvas( QPixmap* canvas );
     void setViewTransform( QTransform viewTransform );
+    void setView( ViewManager* view ) {mView = view; }
     void setOptions( RenderOptions p ) { mOptions = p; }
     void setTransformedSelection( QRect selection, QTransform transform );
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    void paint( Object* object, int layer, int frame, QRect rect );
+    void paint(Object* object, int layer, int frame, QRect rect);
     void renderGrid(QPainter& painter);
 
 private:
     void paintBackground();
     void paintOnionSkin( QPainter& painter );
+
     void paintCurrentFrame( QPainter& painter );
 
     void paintBitmapFrame( QPainter&, int layerId, int nFrame, bool colorize = false , bool useLastKeyFrame = true );
@@ -80,15 +84,20 @@ private:
     void paintGrid( QPainter& painter );
     void paintCameraBorder(QPainter& painter);
     void paintAxis( QPainter& painter );
+    void prescale(QPainter &painter, BitmapImage* bitmapImage);
 
 private:
     QPixmap* mCanvas = nullptr;
     Object* mObject = nullptr;
+    ViewManager* mView = nullptr;
     QTransform mViewTransform;
+
     QRect mCameraRect;
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
+
+    QImage mScaledBitmap;
 
     bool bMultiLayerOnionSkin = false;
     

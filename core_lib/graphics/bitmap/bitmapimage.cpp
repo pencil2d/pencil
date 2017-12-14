@@ -87,6 +87,13 @@ void BitmapImage::paintImage(QPainter& painter)
     painter.drawImage(topLeft(), *mImage);
 }
 
+void BitmapImage::paintImage(QPainter& painter, QImage& image,QRect sourceRect, QRect destRect)
+{
+    painter.drawImage(QRect(QPoint(topLeft()), destRect.size()),
+                      image,
+                      sourceRect);
+}
+
 BitmapImage BitmapImage::copy()
 {
     return BitmapImage(mBounds, QImage(*mImage));
