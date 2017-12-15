@@ -1,7 +1,7 @@
 <!--
-This template utilizes the Markdown language for styling.
-To style your comment please refer to Github's Markdown Guide https://guides.github.com/features/mastering-markdown/
-Please use the SEARCH function before opening a new issue and look for your problem to avoid duplicates!
+Use Markdown language for styling.
+Github's Markdown Guide https://guides.github.com/features/mastering-markdown/
+Please use the SEARCH function before opening a new issue!
 -->
 
 ### --Issue Summary--
