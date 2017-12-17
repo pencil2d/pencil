@@ -404,18 +404,6 @@ Status MovieExporter::combineVideoAndAudio(QString ffmpegPath, QString strOutput
     return Status::OK;
 }
 
-Status MovieExporter::convertVideoAgain(QString ffmpegPath, QString strIn, QString strOut)
-{
-    QString strCmd = QString("\"%1\"").arg(ffmpegPath);
-    strCmd += QString(" -i \"%1\" ").arg(strIn);
-    strCmd += QString(" -pix_fmt yuv420p");
-    strCmd += " -y";
-    strCmd += QString(" \"%1\"").arg(strOut);
-
-    STATUS_CHECK(executeFFMpegCommand(strCmd));
-    return Status::OK;
-}
-
 Status MovieExporter::convertToGif(QString ffmpeg, QString strOut)
 {
 
