@@ -38,7 +38,7 @@ GNU General Public License for more details.
 #include "vectorselection.h"
 #include "colormanager.h"
 #include "viewmanager.h"
-#include "canvasrenderer.h"
+#include "canvaspainter.h"
 #include "preferencemanager.h"
 
 
@@ -242,7 +242,7 @@ private:
     PreferenceManager *mPrefs = nullptr;
 
     QPixmap mCanvas;
-    CanvasRenderer mCanvasRenderer;
+    CanvasPainter mCanvasPainter;
 
 	// Pixmap Cache keys
 	std::vector<QPixmapCache::Key> mPixmapCacheKeys;

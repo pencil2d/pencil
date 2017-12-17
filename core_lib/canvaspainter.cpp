@@ -14,7 +14,7 @@ GNU General Public License for more details.
 
 */
 
-#include "canvasrenderer.h"
+#include "canvaspainter.h"
 
 #include "object.h"
 #include "layerbitmap.h"
@@ -26,29 +26,29 @@ GNU General Public License for more details.
 
 
 
-CanvasRenderer::CanvasRenderer(QObject* parent) : QObject(parent)
+CanvasPainter::CanvasPainter(QObject* parent) : QObject(parent)
 , mLog("CanvasRenderer")
 {
     ENABLE_DEBUG_LOG(mLog, false);
 }
 
-CanvasRenderer::~CanvasRenderer()
+CanvasPainter::~CanvasPainter()
 {
 }
 
-void CanvasRenderer::setCanvas(QPixmap* canvas)
+void CanvasPainter::setCanvas(QPixmap* canvas)
 {
     Q_ASSERT(canvas);
     mCanvas = canvas;
 }
 
-void CanvasRenderer::setViewTransform(const QTransform view, const QTransform viewInverse)
+void CanvasPainter::setViewTransform(const QTransform view, const QTransform viewInverse)
 {
     mViewTransform = view;
     mViewInverse = viewInverse;
 }
 
-void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transform)
+void CanvasPainter::setTransformedSelection(QRect selection, QTransform transform)
 {
     // Make sure that the selection is not empty
     if (selection.width() > 0 && selection.height() > 0)
@@ -64,12 +64,12 @@ void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transfo
     }
 }
 
-void CanvasRenderer::ignoreTransformedSelection()
+void CanvasPainter::ignoreTransformedSelection()
 {
     mRenderTransform = false;
 }
 
-void CanvasRenderer::paint(Object* object, int layer, int frame, QRect rect)
+void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect)
 {
     Q_ASSERT(object);
     mObject = object;
@@ -101,12 +101,12 @@ void CanvasRenderer::paint(Object* object, int layer, int frame, QRect rect)
     }
 }
 
-void CanvasRenderer::paintBackground()
+void CanvasPainter::paintBackground()
 {
     mCanvas->fill(Qt::transparent);
 }
 
-void CanvasRenderer::paintOnionSkin(QPainter& painter)
+void CanvasPainter::paintOnionSkin(QPainter& painter)
 {
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
 
@@ -175,7 +175,7 @@ void CanvasRenderer::paintOnionSkin(QPainter& painter)
     }
 }
 
-void CanvasRenderer::paintBitmapFrame(QPainter& painter,
+void CanvasPainter::paintBitmapFrame(QPainter& painter,
                                       int layerId,
                                       int nFrame,
                                       bool colorize,
@@ -243,15 +243,14 @@ void CanvasRenderer::paintBitmapFrame(QPainter& painter,
 
     painter.setWorldMatrixEnabled(true);
 
-    prescale(painter, &paintToImage);
+    prescale(&paintToImage);
 
     paintToImage.paintImage(painter, mScaledBitmap, mScaledBitmap.rect(), paintToImage.bounds());
 }
 
 
-void CanvasRenderer::prescale(QPainter& painter, BitmapImage* bitmapImage)
+void CanvasPainter::prescale(BitmapImage* bitmapImage)
 {
-
     QImage origImage = bitmapImage->image()->copy();
 
     // copy content of our unmodified qimage
@@ -271,7 +270,7 @@ void CanvasRenderer::prescale(QPainter& painter, BitmapImage* bitmapImage)
     }
 }
 
-void CanvasRenderer::paintVectorFrame(QPainter& painter,
+void CanvasPainter::paintVectorFrame(QPainter& painter,
                                       int layerId,
                                       int nFrame,
                                       bool colorize,
@@ -343,7 +342,7 @@ void CanvasRenderer::paintVectorFrame(QPainter& painter,
     delete tempBitmapImage;
 }
 
-void CanvasRenderer::paintTransformedSelection(QPainter& painter)
+void CanvasPainter::paintTransformedSelection(QPainter& painter)
 {
     // Make sure there is something selected
     //
@@ -369,7 +368,7 @@ void CanvasRenderer::paintTransformedSelection(QPainter& painter)
     }
 }
 
-void CanvasRenderer::paintCurrentFrame(QPainter& painter)
+void CanvasPainter::paintCurrentFrame(QPainter& painter)
 {
     bool isCamera = mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA;
     for (int i = 0; i < mObject->getLayerCount(); ++i)
@@ -398,7 +397,7 @@ void CanvasRenderer::paintCurrentFrame(QPainter& painter)
     }
 }
 
-void CanvasRenderer::paintAxis(QPainter& painter)
+void CanvasPainter::paintAxis(QPainter& painter)
 {
     painter.setPen(Qt::green);
     painter.drawLine(QLineF(0, -500, 0, 500));
@@ -412,7 +411,7 @@ int round100(double f, int gridSize)
     return static_cast<int>(f) / gridSize * gridSize;
 }
 
-void CanvasRenderer::paintGrid(QPainter& painter)
+void CanvasPainter::paintGrid(QPainter& painter)
 {
     int gridSize = mOptions.nGridSize;
 
@@ -443,7 +442,7 @@ void CanvasRenderer::paintGrid(QPainter& painter)
     painter.setRenderHints(previous_renderhints);
 }
 
-void CanvasRenderer::renderGrid(QPainter& painter)
+void CanvasPainter::renderGrid(QPainter& painter)
 {
     if (mOptions.bGrid)
     {
@@ -452,7 +451,7 @@ void CanvasRenderer::renderGrid(QPainter& painter)
     }
 }
 
-void CanvasRenderer::paintCameraBorder(QPainter &painter)
+void CanvasPainter::paintCameraBorder(QPainter &painter)
 {
     LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
@@ -518,7 +517,7 @@ void CanvasRenderer::paintCameraBorder(QPainter &painter)
     */
 }
 
-QRect CanvasRenderer::getCameraRect()
+QRect CanvasPainter::getCameraRect()
 {
     return mCameraRect;
 }

@@ -1016,7 +1016,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
             paintCanvasCursor(painter);
         }
 
-        mCanvasRenderer.renderGrid(painter);
+        mCanvasPainter.renderGrid(painter);
 
         // paints the selection outline
         if (somethingSelected && (myTempTransformedSelection.isValid() || mMoveMode == ROTATION)) // @revise
@@ -1069,32 +1069,32 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
 
-    RenderOptions options;
-    options.bPrevOnionSkin = mPrefs->isOn(SETTING::PREV_ONION);
-    options.bNextOnionSkin = mPrefs->isOn(SETTING::NEXT_ONION);
-    options.bColorizePrevOnion = mPrefs->isOn(SETTING::ONION_RED);
-    options.bColorizeNextOnion = mPrefs->isOn(SETTING::ONION_BLUE);
-    options.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
-    options.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
-    options.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
-    options.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
-    options.bAntiAlias = mPrefs->isOn(SETTING::ANTIALIAS);
-    options.bGrid = mPrefs->isOn(SETTING::GRID);
-    options.nGridSize = mPrefs->getInt(SETTING::GRID_SIZE);
-    options.bAxis = mPrefs->isOn(SETTING::AXIS);
-    options.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
-    options.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
-    options.nShowAllLayers = mShowAllLayers;
-    options.bIsOnionAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
-    options.scaling = mEditor->view()->scaling();
-    mCanvasRenderer.setOptions(options);
+    CanvasPainterOptions o;
+    o.bPrevOnionSkin       = mPrefs->isOn(SETTING::PREV_ONION);
+    o.bNextOnionSkin       = mPrefs->isOn(SETTING::NEXT_ONION);
+    o.bColorizePrevOnion   = mPrefs->isOn(SETTING::ONION_RED);
+    o.bColorizeNextOnion   = mPrefs->isOn(SETTING::ONION_BLUE);
+    o.nPrevOnionSkinCount  = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    o.nNextOnionSkinCount  = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    o.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    o.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+    o.bAntiAlias           = mPrefs->isOn(SETTING::ANTIALIAS);
+    o.bGrid                = mPrefs->isOn(SETTING::GRID);
+    o.nGridSize            = mPrefs->getInt(SETTING::GRID_SIZE);
+    o.bAxis                = mPrefs->isOn(SETTING::AXIS);
+    o.bThinLines           = mPrefs->isOn(SETTING::INVISIBLE_LINES);
+    o.bOutlines            = mPrefs->isOn(SETTING::OUTLINES);
+    o.nShowAllLayers       = mShowAllLayers;
+    o.bIsOnionAbsolute     = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    o.scaling              = mEditor->view()->scaling();
+    mCanvasPainter.setOptions(o);
 
-    mCanvasRenderer.setCanvas(&mCanvas);
+    mCanvasPainter.setCanvas(&mCanvas);
 
     ViewManager* vm = mEditor->view();
-    mCanvasRenderer.setViewTransform(vm->getView(), vm->getViewInverse());
+    mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
 
-    mCanvasRenderer.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
+    mCanvasPainter.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
 
     return;
 }
@@ -1301,7 +1301,7 @@ QRectF ScribbleArea::getViewRect()
 
 QRectF ScribbleArea::getCameraRect()
 {
-    return mCanvasRenderer.getCameraRect();
+    return mCanvasPainter.getCameraRect();
 }
 
 QPointF ScribbleArea::getCentralPoint()
@@ -1392,7 +1392,7 @@ void ScribbleArea::paintTransformedSelection()
     {
         if (layer->type() == Layer::BITMAP)
         {
-            mCanvasRenderer.setTransformedSelection(mySelection.toRect(), selectionTransformation);
+            mCanvasPainter.setTransformedSelection(mySelection.toRect(), selectionTransformation);
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -1409,7 +1409,7 @@ void ScribbleArea::paintTransformedSelection()
 
 void ScribbleArea::applyTransformedSelection()
 {
-    mCanvasRenderer.ignoreTransformedSelection();
+    mCanvasPainter.ignoreTransformedSelection();
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == NULL)
@@ -1444,7 +1444,7 @@ void ScribbleArea::applyTransformedSelection()
 
 void ScribbleArea::cancelTransformedSelection()
 {
-    mCanvasRenderer.ignoreTransformedSelection();
+    mCanvasPainter.ignoreTransformedSelection();
 
     if (somethingSelected) {
 

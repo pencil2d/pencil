@@ -90,7 +90,7 @@ HEADERS +=  \
     util/pencilsettings.h \
     util/util.h \
     util/log.h \
-    canvasrenderer.h \
+    canvaspainter.h \
     soundplayer.h \
     movieexporter.h
 
@@ -151,7 +151,7 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     util/pencilerror.cpp \
     util/pencilsettings.cpp \
     util/util.cpp \
-    canvasrenderer.cpp \
+    canvaspainter.cpp \
     soundplayer.cpp \
     managers/soundmanager.cpp \
     movieexporter.cpp

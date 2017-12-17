@@ -14,8 +14,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef CANVASRENDERER_H
-#define CANVASRENDERER_H
+#ifndef CANVASPAINTER_H
+#define CANVASPAINTER_H
 
 
 #include <QObject>
@@ -30,8 +30,7 @@ class Layer;
 class BitmapImage;
 class ViewManager;
 
-
-struct RenderOptions
+struct CanvasPainterOptions
 {
     bool  bPrevOnionSkin = false;
     bool  bNextOnionSkin = false;
@@ -53,22 +52,22 @@ struct RenderOptions
 };
 
 
-class CanvasRenderer : public QObject
+class CanvasPainter : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit CanvasRenderer(QObject* parent = 0);
-    virtual ~CanvasRenderer();
+    explicit CanvasPainter(QObject* parent = 0);
+    virtual ~CanvasPainter();
 
     void setCanvas(QPixmap* canvas);
     void setViewTransform(const QTransform view, const QTransform viewInverse);
-    void setOptions(RenderOptions p) { mOptions = p; }
+    void setOptions(const CanvasPainterOptions& p) { mOptions = p; }
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    void paint(Object* object, int layer, int frame, QRect rect);
+    void paint(const Object* object, int layer, int frame, QRect rect);
     void renderGrid(QPainter& painter);
 
 private:
@@ -84,11 +83,11 @@ private:
     void paintGrid(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
-    void prescale(QPainter &painter, BitmapImage* bitmapImage);
+    void prescale(BitmapImage* bitmapImage);
 
 private:
+    const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
-    Object* mObject = nullptr;
     QTransform mViewTransform;
     QTransform mViewInverse;
 
@@ -101,7 +100,7 @@ private:
 
     bool bMultiLayerOnionSkin = false;
 
-    RenderOptions mOptions;
+    CanvasPainterOptions mOptions;
 
     // Handle selection transformation
     //
