@@ -195,41 +195,31 @@ float ViewManager::scaling()
 
 void ViewManager::scaleUp()
 {
+    for (size_t i = 0; i < mZoomLevels.size(); i++)
+    {
+        if (mZoomLevels[i] > scaling())
+        {
+            scale(mZoomLevels[i]);
+            return;
+        }
+    }
+    
+    // out of pre-defined zoom levels
     scale(scaling() * 1.18f);
 }
 
 void ViewManager::scaleDown()
 {
-    scale(scaling() * 0.8333f);
-}
-
-void ViewManager::snapScale(int direction = 0)
-{
-    // find the nearest zoom level to snap to
-    int nearestZoomLevel = -1;
-    float leastZoomDistance = 0;
-    for (int i = 0; i < mZoomLevels.length(); i++)
+    for (size_t i = mZoomLevels.size() - 1; i >= 0; --i)
     {
-        float thisZoomLevel = mZoomLevels[i];
-        if (nearestZoomLevel == -1 || qAbs(scaling() - thisZoomLevel) < leastZoomDistance)
+        if (mZoomLevels[i] < scaling())
         {
-            leastZoomDistance = qAbs(scaling() - thisZoomLevel);
-            nearestZoomLevel = i;
+            qDebug() << "mZoomLevels=" << mZoomLevels[i];
+            scale(mZoomLevels[i]);
+            return;
         }
     }
-    // if snapping zooms in the right direction, then don't do anything else
-    if ( (mZoomLevels[nearestZoomLevel] > scaling() && direction == 1) ||
-         (mZoomLevels[nearestZoomLevel] < scaling() && direction == -1) )
-    {
-        direction = 0;
-    }
-
-    // now increase/decrease zoom by direction
-    int newZoomLevel = nearestZoomLevel + direction;
-    if (newZoomLevel >= 0 && newZoomLevel < mZoomLevels.length())
-    {
-        scale(mZoomLevels[newZoomLevel]);
-    }
+    scale(scaling() * 0.8333f);
 }
 
 void ViewManager::scale(float scaleValue)
@@ -241,10 +231,6 @@ void ViewManager::scale(float scaleValue)
     else if (scaleValue > mMaxScale)
     {
         scaleValue = mMaxScale;
-    }
-    else if (scaleValue == mMinScale || scaleValue == mMaxScale)
-    {
-        return;
     }
 
     if (mCurrentCamera)
