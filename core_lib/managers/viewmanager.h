@@ -34,32 +34,32 @@ public:
     explicit ViewManager(Editor* editor);
 
     bool init() override;
-    Status load( Object* ) override;
-	Status save( Object* ) override;
-	void workingLayerChanged(Layer* layer) override;
+    Status load(Object*) override;
+    Status save(Object*) override;
+    void workingLayerChanged(Layer* layer) override;
 
     QTransform getView();
     QTransform getViewInverse();
     void resetView();
 
-    QPointF mapCanvasToScreen( QPointF p );
-    QPointF mapScreenToCanvas( QPointF p );
+    QPointF mapCanvasToScreen(QPointF p);
+    QPointF mapScreenToCanvas(QPointF p);
 
-    QRectF mapCanvasToScreen( const QRectF& rect );
-    QRectF mapScreenToCanvas( const QRectF& rect );
+    QRectF mapCanvasToScreen(const QRectF& rect);
+    QRectF mapScreenToCanvas(const QRectF& rect);
 
-    QPainterPath mapCanvasToScreen( const QPainterPath& path );
-    QPainterPath mapScreenToCanvas( const QPainterPath& path );
+    QPainterPath mapCanvasToScreen(const QPainterPath& path);
+    QPainterPath mapScreenToCanvas(const QPainterPath& path);
 
     QPointF translation();
-    void translate( float dx, float dy );
-    void translate( QPointF offset );
+    void translate(float dx, float dy);
+    void translate(QPointF offset);
 
     float rotation();
-    void rotate( float degree );
+    void rotate(float degree);
 
     float scaling();
-    void scale( float scaleValue );
+    void scale(float scaleValue);
     void scaleUp();
     void scaleDown();
 
