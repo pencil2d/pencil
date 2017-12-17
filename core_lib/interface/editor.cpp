@@ -919,10 +919,6 @@ KeyFrame* Editor::addNewKey()
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());
 }
 
-void Editor::duplicateKey()
-{
-}
-
 KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 {
     Layer* layer = mObject->getLayer(layerNumber);

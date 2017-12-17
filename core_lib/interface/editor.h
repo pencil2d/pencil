@@ -134,7 +134,6 @@ public: //slots
     void scrubBackward();
 
     KeyFrame* addNewKey();
-    void duplicateKey();
     void removeKey();
 
     void moveFrameForward();
