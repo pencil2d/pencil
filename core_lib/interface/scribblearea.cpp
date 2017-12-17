@@ -1086,14 +1086,13 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     options.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
     options.nShowAllLayers = mShowAllLayers;
     options.bIsOnionAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
-
+    options.scaling = mEditor->view()->scaling();
     mCanvasRenderer.setOptions(options);
 
-    //qDebug() << "Antialias=" << options.bAntiAlias;
-
     mCanvasRenderer.setCanvas(&mCanvas);
-    mCanvasRenderer.setView(mEditor->view());
-    mCanvasRenderer.setViewTransform(mEditor->view()->getView());
+
+    ViewManager* vm = mEditor->view();
+    mCanvasRenderer.setViewTransform(vm->getView(), vm->getViewInverse());
 
     mCanvasRenderer.paint(object, mEditor->layers()->currentLayerIndex(), frame, rect);
 

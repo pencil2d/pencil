@@ -49,6 +49,7 @@ struct RenderOptions
     bool  bOutlines = false;
     int   nShowAllLayers = 3;
     bool  bIsOnionAbsolute = false;
+    float scaling = 1.0f;
 };
 
 
@@ -61,8 +62,7 @@ public:
     virtual ~CanvasRenderer();
 
     void setCanvas( QPixmap* canvas );
-    void setViewTransform( QTransform viewTransform );
-    void setView( ViewManager* view ) {mView = view; }
+    void setViewTransform(const QTransform view, const QTransform viewInverse);
     void setOptions( RenderOptions p ) { mOptions = p; }
     void setTransformedSelection( QRect selection, QTransform transform );
     void ignoreTransformedSelection();
@@ -89,8 +89,8 @@ private:
 private:
     QPixmap* mCanvas = nullptr;
     Object* mObject = nullptr;
-    ViewManager* mView = nullptr;
     QTransform mViewTransform;
+    QTransform mViewInverse;
 
     QRect mCameraRect;
 

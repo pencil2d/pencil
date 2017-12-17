@@ -100,6 +100,11 @@ QTransform ViewManager::getView()
     return mViewCanvas;
 }
 
+QTransform ViewManager::getViewInverse()
+{
+    return mViewCanvasInverse;
+}
+
 void ViewManager::updateViewTransforms()
 {
     if (mCameraLayer)

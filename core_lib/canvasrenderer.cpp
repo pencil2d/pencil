@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 #include "util.h"
-#include "viewmanager.h"
 
 
 
@@ -43,15 +42,15 @@ void CanvasRenderer::setCanvas( QPixmap* canvas )
     mCanvas = canvas;
 }
 
-void CanvasRenderer::setViewTransform( QTransform viewTransform )
+void CanvasRenderer::setViewTransform(const QTransform view, const QTransform viewInverse)
 {
-    mViewTransform = viewTransform;
+    mViewTransform = view;
+    mViewInverse = viewInverse;
 }
 
 void CanvasRenderer::setTransformedSelection(QRect selection, QTransform transform)
 {
     // Make sure that the selection is not empty
-    //
     if (selection.width() > 0 && selection.height() > 0)
     {
         mSelection = selection;
@@ -78,13 +77,13 @@ void CanvasRenderer::paint(Object* object, int layer, int frame, QRect rect )
     mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
-    QRectF mappedInvCanvas = mView->mapScreenToCanvas(mCanvas->rect());
+    QRectF mappedInvCanvas = mViewInverse.mapRect(mCanvas->rect());
     QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
     QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
     QPainter painter( mCanvas );
 
     painter.setWorldMatrixEnabled(true);
-    painter.setWorldTransform( mViewTransform );
+    painter.setWorldTransform(mViewTransform);
 
     Q_UNUSED(rect);
 
@@ -260,13 +259,14 @@ void CanvasRenderer::prescale(QPainter& painter, BitmapImage* bitmapImage)
     mScaledBitmap = origImage.copy();
 
     // map to correct matrix
-    QRectF mappedOrigImage = mView->mapCanvasToScreen(QRectF(origImage.rect()).toRect());
+    QRectF mappedOrigImage = mViewInverse.mapRect(QRectF(origImage.rect()));
 
-    if (mView->scaling() >= 1.0) {
+    if (mOptions.scaling >= 1.0) {
         // TODO: Qt doesn't handle huge upscaled qimages well...
         // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
     } else {
-        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.toRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size().toSize(),
+                                             Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
 }
 

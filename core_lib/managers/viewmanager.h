@@ -39,6 +39,7 @@ public:
 	void workingLayerChanged(Layer* layer) override;
 
     QTransform getView();
+    QTransform getViewInverse();
     void resetView();
 
     QPointF mapCanvasToScreen( QPointF p );
