@@ -41,18 +41,21 @@ media = MediaFileUpload(file)
 file = drive_service.files().create(body=file_metadata, media_body=media).execute()
 
 # delete files older than 90 days
-response = drive_service.files().list(q="mimeType='application/zip'", spaces='drive').execute()
+check_date = datetime.datetime.now() + datetime.timedelta(-90)
+filter = "name contains 'pencil2d'"
+filter += " and createdTime < '{}'".format(check_date.strftime("%Y-%m-%dT%H:%M:%S"))
+
+print('filter=', filter)
+print('List files older than 90 days')
+
+response = drive_service.files().list(q=filter, spaces='drive').execute()
 
 for f in response.get('files'):
+
   s = f.get('name').split('.')[0]
   s = s.split('-')
-  upload_date = datetime.datetime(int(s[2]), int(s[3]), int(s[4]))
-
-  check_date = datetime.datetime.now() + datetime.timedelta(-90)
-
-  if upload_date < check_date:
-    print("Found a file older than 90 days")
-    print("File ID:", f.get('id'))
-    print("File Name:", f.get('name'))
-    print("Upload date:", upload_date)
-    drive_service.files().delete(fileId=f.get('id')).execute()
+  print('-------')
+  print('Deleting...')
+  print("File ID:", f.get('id'))
+  print("File Name:", f.get('name'))
+  drive_service.files().delete(fileId=f.get('id')).execute()

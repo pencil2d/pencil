@@ -14,12 +14,12 @@ GNU General Public License for more details.
 
 */
 
+#include "aboutdialog.h"
+
 #include <QtWidgets>
 #include <QSpinBox>
 #include <QGridLayout>
 #include <QGroupBox>
-
-#include "aboutdialog.h"
 
 
 AboutDialog::AboutDialog(QWidget* parent ) : QDialog(parent)
