@@ -10,7 +10,6 @@ language: cpp
 compiler: g++
 sudo: required
 dist: trusty
-group: deprecated-2017Q3
 osx_sdk: macosx10.12
 os:
   - linux
@@ -24,29 +23,31 @@ env:
 
 python:
   - "3.4"
+
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
-    - ubuntu-sdk-team
-    - trusty-media
-    - sourceline: 'ppa:beineri/opt-qt591-trusty'
+      - ubuntu-toolchain-r-test
+      - ubuntu-sdk-team
+      - trusty-media
+      - sourceline: 'ppa:beineri/opt-qt591-trusty'
     packages:
-    - g++-5
-    - build-essential
-    - qt59tools
-    - qt59base
-    - qt59multimedia
-    - qt59svg
-    - qt59xmlpatterns
-    - bsdtar
-    - ffmpeg
-    - doxygen
-    - doxygen-doc
-    - doxygen-latex
-    - doxygen-gui
-    - graphviz
-    - squashfs-tools
+      - build-essential
+      - qt59tools
+      - qt59base
+      - qt59multimedia
+      - qt59svg
+      - qt59xmlpatterns
+      - bsdtar
+      - ffmpeg
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
+      - squashfs-tools
+      - python3
+      - python3-pip
 
 before_install:
   - 'if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -60,9 +61,7 @@ before_install:
 install:
   - pip3 freeze > requirements.txt
   - pip3 install -r requirements.txt
-  - pip3 install -U setuptools
-  - pip3 install -U virtualenvwrapper
-  - pip3 install -U google-api-python-client
+  - sudo pip3 install google-api-python-client
   - python3 -V
   - pip3 -V
 

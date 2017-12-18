@@ -5,6 +5,9 @@
 # Drive is required and the environment variable GOOGLE_PRIVATE_KEY must
 # contain the private key of the service account in JSON format.
 
+# Google Drive API v3 Reference:
+# https://developers.google.com/resources/api-libraries/documentation/drive/v3/python/latest/index.html
+
 import json
 import os
 import sys

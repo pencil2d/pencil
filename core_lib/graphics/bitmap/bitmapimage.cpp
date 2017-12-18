@@ -250,7 +250,6 @@ BitmapImage BitmapImage::transformed(QRect selection, QTransform transform, bool
     {
         transformedImage = selectedPart.image()->transformed(transform);
     }
-
     return BitmapImage(transform.mapRect(selection), transformedImage);
 }
 
@@ -268,13 +267,9 @@ BitmapImage BitmapImage::transformed(QRect newBoundaries, bool smoothTransform)
 
 void BitmapImage::extend(QPoint P)
 {
-    if (mBounds.contains( P ))
+    if (!mBounds.contains(P))
     {
-        // nothing
-    }
-    else
-    {
-        extend( QRect(P, QSize(0,0)) ); // can we set QSize(0,0) ?
+        extend( QRect(P, QSize(1,1)) );
     }
 }
 
