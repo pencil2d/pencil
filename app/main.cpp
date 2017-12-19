@@ -80,7 +80,9 @@ int handleArguments( PencilApplication& app )
     QCommandLineOption exportSeqOption( QStringList() << "export-sequence",
                                         PencilApplication::tr( "Render the file to <output_path>" ),
                                         PencilApplication::tr( "output_path" ) );
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
     exportSeqOption.setFlags( QCommandLineOption::HiddenFromHelp );
+#endif
     parser.addOption( exportSeqOption );
 
     QCommandLineOption cameraOption( QStringList() << "camera",
