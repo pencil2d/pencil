@@ -77,7 +77,7 @@ void CanvasPainter::paint(const Object* object, int layer, int frame, QRect rect
     mCurrentLayerIndex = layer;
     mFrameNumber = frame;
 
-    QRectF mappedInvCanvas = mViewInverse.mapRect(mCanvas->rect());
+    QRectF mappedInvCanvas = mViewInverse.mapRect(QRectF(mCanvas->rect()));
     QSizeF croppedPainter = QSizeF(mappedInvCanvas.size());
     QRectF aligned = QRectF(QPointF(mappedInvCanvas.topLeft()), croppedPainter);
     QPainter painter(mCanvas);
@@ -257,14 +257,14 @@ void CanvasPainter::prescale(BitmapImage* bitmapImage)
     // to our (not yet) scaled bitmap
     mScaledBitmap = origImage.copy();
 
-    // map to correct matrix
-    QRectF mappedOrigImage = mViewInverse.mapRect(QRectF(origImage.rect()));
-
     if (mOptions.scaling >= 1.0) {
         // TODO: Qt doesn't handle huge upscaled qimages well...
         // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
     }
     else {
+
+        // map to correct matrix
+        QRectF mappedOrigImage = mViewTransform.mapRect(QRectF(origImage.rect()));
         mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size().toSize(),
                                              Qt::KeepAspectRatio, Qt::SmoothTransformation);
     }
