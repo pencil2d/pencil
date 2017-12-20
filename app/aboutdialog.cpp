@@ -20,7 +20,9 @@ GNU General Public License for more details.
 #include <QSpinBox>
 #include <QGridLayout>
 #include <QGroupBox>
-
+#include <QSysInfo>
+#include <QApplication>
+#include <QClipboard>
 
 AboutDialog::AboutDialog(QWidget* parent ) : QDialog(parent)
 {
@@ -65,23 +67,33 @@ void AboutDialog::init()
     devInfoText->setStyleSheet("QLabel { background-color: #ffffff;"
                                         "border-style: solid; border-width: 1px; border-color: gray;}");
     devInfoText->setTextInteractionFlags(Qt::TextSelectableByMouse);
-    devInfoText->setFixedHeight(60);
+
     devInfoText->setAlignment(Qt::AlignCenter);
-    QString devText = QString("Version: %1").arg(APP_VERSION);
+	QStringList devText;
+	devText << QString("Version: %1").arg(APP_VERSION);
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
-    devText += "<br>commit: " S__GIT_COMMIT_HASH__ "<br> date: " S__GIT_TIMESTAMP__ "<br>";
+    devText << "commit: " S__GIT_COMMIT_HASH__ ;
+	devText << "date: " S__GIT_TIMESTAMP__ ;
 #endif
 #if !defined(PENCIL2D_RELEASE)
-    devText += " Development build";
+    devText << "Development build";
 #endif
-    devInfoText->setText(devText);
+	devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName());
+	devText << QString("Cpu Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
+    devInfoText->setText(devText.join("<br>"));
     lay->addWidget(devInfoText);
 
+	QPushButton* copyToClipboardButton = new QPushButton(tr("Copy to clipboard"));
+	connect(copyToClipboardButton, &QPushButton::clicked, this, [devText] 
+	{
+		QApplication::clipboard()->setText(devText.join("\n"));
+	});
 
     QPushButton* okButton = new QPushButton(tr("OK"));
     connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
 
     QHBoxLayout* buttonsLayout = new QHBoxLayout;
+	buttonsLayout->addWidget(copyToClipboardButton);
     buttonsLayout->addWidget(okButton);
 
     lay->addLayout(buttonsLayout);
