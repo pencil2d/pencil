@@ -9,6 +9,6 @@ Comment[de]=Traditionelle handgezeichnete Animation sowohl mit Raster- als auch 
 Icon=pencil2d
 Exec=Pencil2D %f
 MimeType=application/x-pencil-pcl;application/x-pencil-pclx;
-Categories=AudioVideo;AudioVideoEditing;Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;
+Categories=Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;AudioVideo;Video
 Keywords=picture;drawing;vector;bitmap;cartoon;
 Keywords[de]=Bild;Zeichnen;Vektor;Raster;Zeichentrick;
