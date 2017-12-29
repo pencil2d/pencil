@@ -366,7 +366,7 @@ void MainWindow2::createMenus()
     // -------------- Help Menu ---------------
     connect(ui->actionHelp, &QAction::triggered, mCommands, &ActionCommands::help);
     connect(ui->actionAbout, &QAction::triggered, mCommands, &ActionCommands::about);
-    connect(ui->actionWebstie, &QAction::triggered, mCommands, &ActionCommands::website);
+    connect(ui->actionWebsite, &QAction::triggered, mCommands, &ActionCommands::website);
     connect(ui->actionReport_Bug, &QAction::triggered, mCommands, &ActionCommands::reportbug);
 
     // --------------- Menus ------------------

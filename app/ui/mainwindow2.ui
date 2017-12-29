@@ -182,7 +182,7 @@
     </property>
     <addaction name="actionHelp"/>
     <addaction name="separator"/>
-    <addaction name="actionWebstie"/>
+    <addaction name="actionWebsite"/>
     <addaction name="actionReport_Bug"/>
     <addaction name="separator"/>
     <addaction name="actionAbout"/>
@@ -829,9 +829,9 @@
     <string>Move Frame Backward</string>
    </property>
   </action>
-  <action name="actionWebstie">
+  <action name="actionWebsite">
    <property name="text">
-    <string>Pencil2D Webstie</string>
+    <string>Pencil2D Website</string>
    </property>
   </action>
   <action name="actionReport_Bug">
