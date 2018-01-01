@@ -38,6 +38,8 @@ PlaybackManager::~PlaybackManager()
 bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
+	mTimer->setTimerType(Qt::PreciseTimer);
+
     mFrameTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
     return true;
@@ -86,9 +88,6 @@ void PlaybackManager::play()
         editor()->scrubTo(mStartFrame);
     }
 
-    // start counting frames
-    mFrameTimer->start();
-
     // get keyframe from layer
     KeyFrame* key = nullptr;
     if (!mListOfActiveSoundFrames.isEmpty())
@@ -119,8 +118,11 @@ void PlaybackManager::play()
         }
     }
 
-    mTimer->setInterval(10); // 100 fps
+    mTimer->setInterval(1000.f / mFps); // 100 fps
     mTimer->start();
+
+	// start counting frames
+	mFrameTimer->start();
 
     // Check for any sounds we should start playing part-way through.
     mCheckForSoundsHalfway = true;
@@ -263,6 +265,7 @@ void PlaybackManager::timerTick()
     int currentFrame = editor()->currentFrame();
     playSounds(currentFrame);
 
+	// reach the end
     if (currentFrame >= mEndFrame)
     {
         if (mIsLooping)
@@ -274,16 +277,12 @@ void PlaybackManager::timerTick()
         {
             stop();
         }
+		return;
     }
-    else
-    {
-        int ms = mFrameTimer->elapsed() * 1.10;
-        if (ms >= (1000 / mFps))
-        {
-            editor()->scrubForward();
-            mFrameTimer->restart();
-        }
-    }
+
+	// keep going 
+	editor()->scrubForward();
+	//qDebug() << mFrameTimer->elapsed() << "ms";
 }
 
 void PlaybackManager::setLooping(bool isLoop)
