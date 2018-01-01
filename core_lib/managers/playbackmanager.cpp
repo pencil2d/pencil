@@ -32,15 +32,15 @@ PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor)
 
 PlaybackManager::~PlaybackManager()
 {
-    delete mFrameTimer;
+    delete mElapsedTimer;
 }
 
 bool PlaybackManager::init()
 {
     mTimer = new QTimer(this);
-	mTimer->setTimerType(Qt::PreciseTimer);
+    mTimer->setTimerType(Qt::PreciseTimer);
 
-    mFrameTimer = new QElapsedTimer;
+    mElapsedTimer = new QElapsedTimer;
     connect(mTimer, &QTimer::timeout, this, &PlaybackManager::timerTick);
     return true;
 }
@@ -121,8 +121,8 @@ void PlaybackManager::play()
     mTimer->setInterval(1000.f / mFps);
     mTimer->start();
 
-	// start counting frames
-	mFrameTimer->start();
+    // start counting frames
+    mElapsedTimer->start();
 
     // Check for any sounds we should start playing part-way through.
     mCheckForSoundsHalfway = true;
@@ -226,7 +226,7 @@ void PlaybackManager::playSounds(int frame)
                 clip->stop();
 
                 // make sure list is cleared on end
-                if (!mListOfActiveSoundFrames.isEmpty()) 
+                if (!mListOfActiveSoundFrames.isEmpty())
                     mListOfActiveSoundFrames.clear();
             }
         }
@@ -244,22 +244,22 @@ void PlaybackManager::playSounds(int frame)
  */
 bool PlaybackManager::skipFrame()
 {
-	// uncomment these debug output to see what happens
-	//float expectedTime = (editor()->currentFrame() - mStartFrame + 1) * (1000.f / mFps);
-	//qDebug("Expected: %.2fms", expectedTime);
-	//qDebug("Actual:   %dms", mFrameTimer->elapsed());
+    // uncomment these debug output to see what happens
+    //float expectedTime = (editor()->currentFrame() - mStartFrame + 1) * (1000.f / mFps);
+    //qDebug("Expected: %.2fms", expectedTime);
+    //qDebug("Actual:   %dms", mFrameTimer->elapsed());
 
-	int t = qRound((editor()->currentFrame() - mStartFrame) * (1000.f / mFps));
-	if (mFrameTimer->elapsed() < t)
-		return true;
+    int t = qRound((editor()->currentFrame() - mStartFrame) * (1000.f / mFps));
+    if (mElapsedTimer->elapsed() < t)
+        return true;
 
-	return false;
+    return false;
 }
 
 void PlaybackManager::stopSounds()
 {
     std::vector<LayerSound*> kSoundLayers;
-    
+
     for (int i = 0; i < object()->getLayerCount(); ++i)
     {
         Layer* layer = object()->getLayer(i);
@@ -284,7 +284,7 @@ void PlaybackManager::timerTick()
     int currentFrame = editor()->currentFrame();
     playSounds(currentFrame);
 
-	// reach the end
+    // reach the end
     if (currentFrame >= mEndFrame)
     {
         if (mIsLooping)
@@ -296,14 +296,14 @@ void PlaybackManager::timerTick()
         {
             stop();
         }
-		return;
+        return;
     }
 
-	if (skipFrame())
-		return;
+    if (skipFrame())
+        return;
 
-	// keep going 
-	editor()->scrubForward();
+    // keep going 
+    editor()->scrubForward();
 }
 
 void PlaybackManager::setLooping(bool isLoop)
