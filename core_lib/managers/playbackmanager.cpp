@@ -118,7 +118,7 @@ void PlaybackManager::play()
         }
     }
 
-    mTimer->setInterval(1000.f / mFps); // 100 fps
+    mTimer->setInterval(1000.f / mFps);
     mTimer->start();
 
 	// start counting frames
@@ -237,6 +237,25 @@ void PlaybackManager::playSounds(int frame)
     mCheckForSoundsHalfway = false;
 }
 
+/**
+ * @brief PlaybackManager::skipFrame()
+ * Small errors will accumulate while playing animation
+ * If the error time is larger than a frame interval, skip a frame.
+ */
+bool PlaybackManager::skipFrame()
+{
+	// uncomment these debug output to see what happens
+	//float expectedTime = (editor()->currentFrame() - mStartFrame + 1) * (1000.f / mFps);
+	//qDebug("Expected: %.2fms", expectedTime);
+	//qDebug("Actual:   %dms", mFrameTimer->elapsed());
+
+	int t = qRound((editor()->currentFrame() - mStartFrame) * (1000.f / mFps));
+	if (mFrameTimer->elapsed() < t)
+		return true;
+
+	return false;
+}
+
 void PlaybackManager::stopSounds()
 {
     std::vector<LayerSound*> kSoundLayers;
@@ -280,9 +299,11 @@ void PlaybackManager::timerTick()
 		return;
     }
 
+	if (skipFrame())
+		return;
+
 	// keep going 
 	editor()->scrubForward();
-	//qDebug() << mFrameTimer->elapsed() << "ms";
 }
 
 void PlaybackManager::setLooping(bool isLoop)
