@@ -24,9 +24,9 @@ GNU General Public License for more details.
 
 
 FileManager::FileManager(QObject *parent) : QObject(parent),
-mLog("SaveLoader")
+mLog("FileManager")
 {
-    ENABLE_DEBUG_LOG(mLog, true);
+    ENABLE_DEBUG_LOG(mLog, false);
 }
 
 Object* FileManager::load(QString strFileName)
@@ -66,9 +66,9 @@ Object* FileManager::load(QString strFileName)
         strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
     }
 
-    qDebug() << "  XML=" << strMainXMLFile;
-    qDebug() << "  Data Folder=" << strDataFolder;
-    qDebug() << "  Working Folder=" << obj->workingDir();
+    qCDebug(mLog) << "  XML=" << strMainXMLFile;
+    qCDebug(mLog) << "  Data Folder=" << strDataFolder;
+    qCDebug(mLog) << "  Working Folder=" << obj->workingDir();
 
     obj->setDataDir(strDataFolder);
     obj->setMainXMLFile(strMainXMLFile);

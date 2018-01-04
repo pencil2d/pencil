@@ -4,6 +4,7 @@
 #include <QTemporaryDir>
 #include <QTemporaryFile>
 #include <QImage>
+#include "JlCompress.h"
 #include "fileformat.h"
 #include "filemanager.h"
 #include "util.h"
@@ -196,45 +197,48 @@ TEST_CASE("FileManager Loading Test 1")
     }
 }
 
-/*
-void TestFileManager::testGeneratePCLX()
+TEST_CASE("FileManager Saving Test 1")
 {
-    QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-    if (!testDir.isValid())
+    SECTION("Save a PCLX")
     {
-        QFAIL("bad.");
+        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
+        if (!testDir.isValid())
+        {
+            REQUIRE(false);
+        }
+
+        QString strMainXMLPath = testDir.path() + "/" + PFF_XML_FILE_NAME;
+
+        QFile theXML(strMainXMLPath);
+        theXML.open(QIODevice::WriteOnly);
+
+        QTextStream fout(&theXML);
+        fout << "<!DOCTYPE PencilDocument><document>";
+        fout << "  <object>";
+        fout << "    <layer name='MyLayer' id='5' visibility='1' type='1' >";
+        fout << "      <image frame='1' topLeftY='0' src='003.001.png' topLeftX='0' />";
+        fout << "    </layer>";
+        fout << "  </object>";
+        fout << "</document>";
+        theXML.close();
+
+        QDir dir(testDir.path());
+        if (dir.mkdir(PFF_DATA_DIR))
+        {
+            dir.cd(PFF_DATA_DIR);
+        }
+        QImage img(10, 10, QImage::Format_ARGB32_Premultiplied);
+        img.save(dir.path() + "/003.001.png");
+
+        QTemporaryFile tmpPCLX("PENCIL_TEST_XXXXXXXX.pclx");
+        tmpPCLX.open();
+
+        bool ok = JlCompress::compressDir(tmpPCLX.fileName(), testDir.path());
+        REQUIRE(ok);
     }
-
-    QString strMainXMLPath = testDir.path() + "/" + PFF_XML_FILE_NAME;
-
-    QFile theXML(strMainXMLPath);
-    theXML.open(QIODevice::WriteOnly);
-
-    QTextStream fout(&theXML);
-    fout << "<!DOCTYPE PencilDocument><document>";
-    fout << "  <object>";
-    fout << "    <layer name='MyLayer' id='5' visibility='1' type='1' >";
-    fout << "      <image frame='1' topLeftY='0' src='003.001.png' topLeftX='0' />";
-    fout << "    </layer>";
-    fout << "  </object>";
-    fout << "</document>";
-    theXML.close();
-
-    QDir dir(testDir.path());
-    if (dir.mkdir(PFF_DATA_DIR))
-    {
-        dir.cd(PFF_DATA_DIR);
-    }
-    QImage img(10, 10, QImage::Format_ARGB32_Premultiplied);
-    img.save(dir.path() + "/003.001.png");
-
-    QTemporaryFile tmpPCLX("PENCIL_TEST_XXXXXXXX.pclx");
-    tmpPCLX.open();
-
-    bool ok = JlCompress::compressDir(tmpPCLX.fileName(), testDir.path());
-    QVERIFY(ok);
 }
 
+/*
 void TestFileManager::testLoadPCLX()
 {
     QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
