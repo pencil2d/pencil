@@ -92,7 +92,8 @@ HEADERS +=  \
     util/log.h \
     canvaspainter.h \
     soundplayer.h \
-    movieexporter.h
+    movieexporter.h \
+    miniz.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -154,11 +155,11 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     canvaspainter.cpp \
     soundplayer.cpp \
     managers/soundmanager.cpp \
-    movieexporter.cpp
+    movieexporter.cpp \
+    miniz.cpp
 
 win32 {
     CONFIG -= flat
-	#CONFIG += grouped
 
     INCLUDEPATH += external/win32
     SOURCES += external/win32/win32.cpp
