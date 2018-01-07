@@ -93,7 +93,8 @@ HEADERS +=  \
     canvaspainter.h \
     soundplayer.h \
     movieexporter.h \
-    miniz.h
+    miniz.h \
+    qminiz.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -156,7 +157,8 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     soundplayer.cpp \
     managers/soundmanager.cpp \
     movieexporter.cpp \
-    miniz.cpp
+    miniz.cpp \
+    qminiz.cpp
 
 win32 {
     CONFIG -= flat
