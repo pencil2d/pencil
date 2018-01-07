@@ -3,12 +3,54 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
+#include <QDirIterator>
 #include "miniz.h"
 #include "util.h"
 
 
 bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
 {
+    mz_zip_archive* mz = new mz_zip_archive;
+    OnScopeExit(delete mz);
+    mz_zip_zero_struct(mz);
+
+    bool b = mz_zip_writer_init_file(mz, sZipFilePath.toUtf8().data(), 0);
+    qDebug("Writer init ok = %d", b);
+
+    QDirIterator it(sSrcPath, QDirIterator::Subdirectories);
+    while (it.hasNext())
+    {
+        QString sFullPath = it.next();
+
+        //if (sFullPath.endsWith(".")) // skip . and ..
+        //    continue;
+
+        if (it.fileInfo().isDir())
+        {
+            qDebug() << "skip " << it.fileName();
+            continue;
+        }
+
+        QString sRelativePath = sFullPath;
+        sRelativePath.replace(sSrcPath, "");
+        qDebug() << "  Add: " << it.fileName();
+
+        if (sFullPath.endsWith("main.xml"))
+        {
+            qDebug() << "Got it!";
+        }
+
+        b = mz_zip_writer_add_file(mz,
+                                   sRelativePath.toUtf8().data(),
+                                   sFullPath.toUtf8().data(),
+                                   "", 0, MZ_DEFAULT_COMPRESSION);
+
+        qDebug("Writer add file ok = %d", b);
+    }
+    b = mz_zip_writer_finalize_archive(mz);
+    qDebug("Writer finalize = %d", b);
+    mz_zip_writer_end(mz);
+
     return true;
 }
 

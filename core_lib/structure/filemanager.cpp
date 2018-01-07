@@ -330,8 +330,8 @@ Status FileManager::save(Object* object, QString strFileName)
     object->savePalette(strDataFolder);
 
     // -------- save main XML file -----------
-    std::shared_ptr<QFile> file = std::make_shared<QFile>(strMainXMLFile);
-    if (!file->open(QFile::WriteOnly | QFile::Text))
+    QFile file(strMainXMLFile);
+    if (!file.open(QFile::WriteOnly | QFile::Text))
     {
         return Status::ERROR_FILE_CANNOT_OPEN;
     }
@@ -354,14 +354,16 @@ Status FileManager::save(Object* object, QString strFileName)
 
     const int IndentSize = 2;
 
-    QTextStream out(file.get());
+    QTextStream out(&file);
     xmlDoc.save(out, IndentSize);
+    out.flush();
+    file.close();
 
     if (!isOldFile)
     {
         qCDebug(mLog) << "Now compressing data to PFF - PCLX ...";
 
-        bool ok = JlCompress::compressDir(strFileName, strTempWorkingFolder);
+        bool ok = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
         if (!ok)
         {
             return Status::FAIL;
