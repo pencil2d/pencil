@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 #include "JlCompress.h"
+#include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
 
@@ -542,8 +543,9 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     // --removes an old decompression directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
 
-    // --creates a new decompression directory
-    JlCompress::extractDir(strZipFile, strUnzipTarget);
+    bool bOK = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
+    Q_ASSERT(bOK);
+    //JlCompress::extractDir(strZipFile, strUnzipTarget);
 
     mstrLastTempFolder = strUnzipTarget;
 }
