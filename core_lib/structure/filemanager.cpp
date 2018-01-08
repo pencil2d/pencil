@@ -15,10 +15,18 @@ GNU General Public License for more details.
 
 */
 
+//#define QUAZIP
+
 #include "filemanager.h"
 
 #include "pencildef.h"
+
+#ifdef QUAZIP
+#include "JlCompress.h"
+#else
 #include "qminiz.h"
+#endif
+
 #include "fileformat.h"
 #include "object.h"
 
@@ -174,7 +182,12 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
 
 bool FileManager::isOldForamt(const QString& fileName)
 {
-    return MiniZ::isZip(fileName);
+#ifdef QUAZIP
+    QStringList zippedFileList = JlCompress::getFileList(fileName);
+    return (zippedFileList.empty());
+#else
+    return !MiniZ::isZip(fileName);
+#endif
 }
 
 Status FileManager::save(Object* object, QString strFileName)
@@ -361,7 +374,15 @@ Status FileManager::save(Object* object, QString strFileName)
     {
         qCDebug(mLog) << "Now compressing data to PFF - PCLX ...";
 
+        clock_t t1 = clock();
+#ifdef QUAZIP
+        bool ok = JlCompress::compressDir(strFileName, strTempWorkingFolder);
+#else
         bool ok = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
+#endif
+        float sec = float(clock() - t1) / CLOCKS_PER_SEC;
+        qDebug("Time: %.3f", sec);
+
         if (!ok)
         {
             return Status::FAIL;
@@ -543,9 +564,15 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     // --removes an old decompression directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
 
+    clock_t t1 = clock();
+#ifdef QUAZIP
+    JlCompress::extractDir(strZipFile, strUnzipTarget);
+#else
     bool bOK = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
     Q_ASSERT(bOK);
-    //JlCompress::extractDir(strZipFile, strUnzipTarget);
+#endif
+    float sec = float(clock() - t1) / CLOCKS_PER_SEC;
+    qDebug("Time: %.3f", sec);
 
     mstrLastTempFolder = strUnzipTarget;
 }

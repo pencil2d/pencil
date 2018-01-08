@@ -30,7 +30,7 @@ bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
     mz_zip_zero_struct(mz);
 
     bool b = mz_zip_writer_init_file(mz, sZipFilePath.toUtf8().data(), 0);
-    qDebug("Writer init ok = %d", b);
+    //qDebug("Writer init ok = %d", b);
 
     QDirIterator it(sSrcPath, QDirIterator::Subdirectories);
     while (it.hasNext())
@@ -39,25 +39,20 @@ bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
 
         if (it.fileInfo().isDir())
         {
-            qDebug() << "skip " << it.fileName();
+            //qDebug() << "skip " << it.fileName();
             continue;
         }
 
         QString sRelativePath = sFullPath;
         sRelativePath.replace(sSrcPath, "");
-        qDebug() << "  Add: " << it.fileName();
-
-        if (sFullPath.endsWith("main.xml"))
-        {
-            qDebug() << "Got it!";
-        }
+        //qDebug() << "  Add: " << it.fileName();
 
         b = mz_zip_writer_add_file(mz,
                                    sRelativePath.toUtf8().data(),
                                    sFullPath.toUtf8().data(),
                                    "", 0, MZ_DEFAULT_COMPRESSION);
 
-        qDebug("Writer add file ok = %d", b);
+        //qDebug("Writer add file ok = %d", b);
     }
     b = mz_zip_writer_finalize_archive(mz);
     qDebug("Writer finalize = %d", b);
@@ -100,7 +95,7 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
     for (int i = 0; i < num; ++i)
     {
         ok = mz_zip_reader_file_stat(mz, i, stat);
-        qDebug(" item=%s\n", stat->m_filename);
+        //qDebug(" item=%s\n", stat->m_filename);
         if (!ok) break;
 
         if (stat->m_is_directory)
@@ -108,14 +103,14 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
             QString sFolderPath = QString::fromUtf8(stat->m_filename);
 
             ok = baseDir.mkpath(sFolderPath);
-            qDebug() << "mkdirOK=" << ok;
+            //qDebug() << "mkdirOK=" << ok;
             if (!ok) break;
         }
         else
         {
             QString sFullPath = baseDir.filePath(QString::fromUtf8(stat->m_filename));
             ok = mz_zip_reader_extract_to_file(mz, i, sFullPath.toUtf8(), 0);
-            qDebug("extract ok=%d\n", ok);
+            //qDebug("extract ok=%d\n", ok);
             if (!ok) break;
         }
     }
