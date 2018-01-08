@@ -6,7 +6,7 @@
 namespace MiniZ
 {
     bool isZip(const QString& sZipFilePath);
-    bool compressFolder(const QString& sZipFilePath, const QString& sSrcPath);
-    bool uncompressFolder(const QString& sZipFilePath, const QString& sDestPath);
+    bool compressFolder(QString sZipFilePath, QString sSrcPath);
+    bool uncompressFolder(QString sZipFilePath, QString sDestPath);
 }
 #endif
