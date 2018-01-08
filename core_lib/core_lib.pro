@@ -176,9 +176,3 @@ unix:!macx {
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
 }
-
-
-INCLUDEPATH += $$PWD/../3rdlib/quazip
-DEPENDPATH += $$PWD/../3rdlib/quazip
-
-INCLUDEPATH += $$PWD/../3rdlib/zlib
