@@ -4,7 +4,7 @@
 #include <QTemporaryDir>
 #include <QTemporaryFile>
 #include <QImage>
-#include "JlCompress.h"
+#include "qminiz.h"
 #include "fileformat.h"
 #include "filemanager.h"
 #include "util.h"
@@ -233,7 +233,7 @@ TEST_CASE("FileManager Saving Test 1")
         QTemporaryFile tmpPCLX("PENCIL_TEST_XXXXXXXX.pclx");
         tmpPCLX.open();
 
-        bool ok = JlCompress::compressDir(tmpPCLX.fileName(), testDir.path());
+        bool ok = MiniZ::compressFolder(tmpPCLX.fileName(), testDir.path());
         REQUIRE(ok);
     }
 }
@@ -275,7 +275,7 @@ TEST_CASE("FileManager Load-zip Test")
         QTemporaryFile tmpPCLX("PENCIL_TEST_XXXXXXXX.pclx");
         tmpPCLX.open();
 
-        JlCompress::compressDir(tmpPCLX.fileName(), testDir.path());
+        MiniZ::compressFolder(tmpPCLX.fileName(), testDir.path());
 
         FileManager fm;
         Object* o = fm.load(tmpPCLX.fileName());
