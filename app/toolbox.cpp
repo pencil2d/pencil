@@ -44,6 +44,7 @@ ToolBoxWidget::ToolBoxWidget( QWidget* parent ) : BaseDockWidget( parent )
 
 void ToolBoxWidget::initUI()
 {
+
     layout = new QGridLayout();
 
     pencilButton = newToolButton( QIcon( ":icons/new/svg/pencil_detailed.svg" ),
@@ -146,9 +147,6 @@ void ToolBoxWidget::initUI()
 
     QSettings settings(PENCIL2D, PENCIL2D);
     this->restoreGeometry(settings.value( "ToolBoxGeom" ).toByteArray());
-
-    QSize buttonSize = clearButton->size(); // all buttons share same size
-    setMinimumSize(buttonSize + QSize(1, 1));
 }
 
 void ToolBoxWidget::updateUI()
@@ -162,7 +160,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
     // Vertical layout
     if (geom.width() < geom.height()) {
-        if (geom.width() > buttonSize.width()*3) {
+        if (geom.width() > buttonSize.width()*5) {
             layout->addWidget( clearButton, 0, 0 );
             layout->addWidget( moveButton, 0, 1 );
 
@@ -180,7 +178,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
             layout->addWidget( eyedropperButton, 3, 1 );
             layout->addWidget( eraserButton, 3, 2 );
-        } else if (geom.width() > buttonSize.width()*2) {
+        } else if (geom.width() > buttonSize.width()*3) {
             layout->addWidget( clearButton, 0, 0 );
             layout->addWidget( moveButton, 0, 1 );
 
@@ -229,7 +227,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             layout->addWidget( clearButton, 0, 0 );
             layout->addWidget( moveButton, 1, 0 );
 
-            layout->addWidget( selectButton, 2, 0 );
+            layout->addWidget( selectButton, 0, 3 );
             layout->addWidget( colouringButton, 0, 1 );
 
             layout->addWidget( polylineButton, 1, 1 );
@@ -239,7 +237,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             layout->addWidget( handButton, 1, 2 );
 
             layout->addWidget( pencilButton, 2, 2 );
-            layout->addWidget( bucketButton, 0, 3 );
+            layout->addWidget( bucketButton, 2, 0 );
 
             layout->addWidget( eyedropperButton, 1, 3 );
             layout->addWidget( eraserButton, 2, 3 );
