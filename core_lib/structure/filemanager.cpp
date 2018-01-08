@@ -15,18 +15,10 @@ GNU General Public License for more details.
 
 */
 
-//#define QUAZIP
-
 #include "filemanager.h"
 
 #include "pencildef.h"
-
-#ifdef QUAZIP
-#include "JlCompress.h"
-#else
 #include "qminiz.h"
-#endif
-
 #include "fileformat.h"
 #include "object.h"
 
@@ -182,12 +174,7 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
 
 bool FileManager::isOldForamt(const QString& fileName)
 {
-#ifdef QUAZIP
-    QStringList zippedFileList = JlCompress::getFileList(fileName);
-    return (zippedFileList.empty());
-#else
-    return !MiniZ::isZip(fileName);
-#endif
+    return (MiniZ::isZip(fileName) == false);
 }
 
 Status FileManager::save(Object* object, QString strFileName)
@@ -205,7 +192,7 @@ Status FileManager::save(Object* object, QString strFileName)
         return Status(Status::INVALID_ARGUMENT,
                       debugDetails,
                       tr("Invalid Save Path"),
-                      tr("The file path you have specified (\"%1\") points to a directory, so the file cannot be saved.").arg(fileInfo.absoluteFilePath()));
+                      tr("The file path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
     }
     QFileInfo parentDirInfo(fileInfo.dir().absolutePath());
     if (!parentDirInfo.exists())
@@ -214,7 +201,7 @@ Status FileManager::save(Object* object, QString strFileName)
         return Status(Status::INVALID_ARGUMENT,
                       debugDetails,
                       tr("Invalid Save Path"),
-                      tr("The file path you have specified (\"%1\") is in a directory (\"%2\") which does not exist. Please save your file in a valid location.").arg(fileInfo.absoluteFilePath(), parentDirInfo.absoluteFilePath()));
+                      tr("The file path (\"%1\") is in a directory (\"%2\") which does not exist.").arg(fileInfo.absoluteFilePath(), parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
@@ -222,7 +209,7 @@ Status FileManager::save(Object* object, QString strFileName)
         return Status(Status::INVALID_ARGUMENT,
                       debugDetails,
                       tr("Invalid Save Path"),
-                      tr("The file path you have specified (\"%1\") cannot be written to, so the file cannot be saved. Please make sure that you have sufficient permissions to save to that location and try again.").arg(fileInfo.absoluteFilePath()));
+                      tr("The file path (\"%1\") cannot be written to.").arg(fileInfo.absoluteFilePath()));
     }
 
     QString strTempWorkingFolder;
@@ -263,13 +250,13 @@ Status FileManager::save(Object* object, QString strFileName)
             {
                 return Status(Status::ERROR_FILE_CANNOT_OPEN, debugDetails,
                               tr("Cannot Create Data Directory"),
-                              tr("Cannot create the data directory at \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pclx format.").arg(strDataFolder));
+                              tr("Cannot Create Data directory at \"%1\". Please make sure that you have sufficient permissions.").arg(strDataFolder));
             }
             else
             {
                 return Status(Status::FAIL, debugDetails,
                               tr("Internal Error"),
-                              tr("Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions to save to that location and try again. Alternatively try saving as pcl format.").arg(strDataFolder));
+                              tr("Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions.").arg(strDataFolder));
             }
         }
     }
@@ -281,13 +268,13 @@ Status FileManager::save(Object* object, QString strFileName)
             return Status(Status::ERROR_FILE_CANNOT_OPEN, 
                           debugDetails, 
                           tr("Cannot Create Data Directory"),
-                          tr("Cannot use the path \"%1\" as a data directory since that currently points to a file. Please move or delete that file and try again. Alternatively try saving with the pclx format.").arg(dataInfo.absoluteFilePath()));
+                          tr("The path \"%1\" points to a file. Please move or delete that file and try again.").arg(dataInfo.absoluteFilePath()));
         }
         else
         {
             return Status(Status::FAIL, debugDetails,
                           tr("Internal Error"),
-                          tr("Cannot use the data directory at temporary location \"%1\" since it is a file. Please move or delete that file and try again. Alternatively try saving with the pcl format.").arg(dataInfo.absoluteFilePath()));
+                          tr("Cannot open the directory \"%1\" since it is a file.").arg(dataInfo.absoluteFilePath()));
         }
     }
 
@@ -302,8 +289,6 @@ Status FileManager::save(Object* object, QString strFileName)
         Layer* layer = object->getLayer(i);
         qCDebug(mLog) << QString("Saving Layer %1").arg(i).arg(layer->name());
 
-        //progressValue = (i * 100) / nLayers;
-        //progress.setValue( progressValue );
         debugDetails << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
         switch (layer->type())
         {
@@ -356,12 +341,10 @@ Status FileManager::save(Object* object, QString strFileName)
     // save editor information
     QDomElement projectDataElement = saveProjectData(object->data(), xmlDoc);
     root.appendChild(projectDataElement);
-    qCDebug(mLog) << "Save Project Data";
 
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
-    qCDebug(mLog) << "Save Object Node";
 
     const int IndentSize = 2;
 
@@ -372,22 +355,11 @@ Status FileManager::save(Object* object, QString strFileName)
 
     if (!isOldFile)
     {
-        qCDebug(mLog) << "Now compressing data to PFF - PCLX ...";
-
-        clock_t t1 = clock();
-#ifdef QUAZIP
-        bool ok = JlCompress::compressDir(strFileName, strTempWorkingFolder);
-#else
         bool ok = MiniZ::compressFolder(strFileName, strTempWorkingFolder);
-#endif
-        float sec = float(clock() - t1) / CLOCKS_PER_SEC;
-        qDebug("Time: %.3f", sec);
-
         if (!ok)
         {
             return Status::FAIL;
         }
-
         qCDebug(mLog) << "Compressed. File saved.";
     }
 
@@ -561,18 +533,11 @@ bool FileManager::loadPalette(Object* obj)
 
 void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
 {
-    // --removes an old decompression directory first  - better approach
+    // removes the previous directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
 
-    clock_t t1 = clock();
-#ifdef QUAZIP
-    JlCompress::extractDir(strZipFile, strUnzipTarget);
-#else
     bool bOK = MiniZ::uncompressFolder(strZipFile, strUnzipTarget);
     Q_ASSERT(bOK);
-#endif
-    float sec = float(clock() - t1) / CLOCKS_PER_SEC;
-    qDebug("Time: %.3f", sec);
 
     mstrLastTempFolder = strUnzipTarget;
 }
