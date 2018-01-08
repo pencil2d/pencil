@@ -8,6 +8,21 @@
 #include "util.h"
 
 
+bool MiniZ::isZip(const QString& sZipFilePath)
+{
+    mz_zip_archive* mz = new mz_zip_archive;
+    OnScopeExit(delete mz);
+    mz_zip_zero_struct(mz);
+
+    mz_bool ok = mz_zip_reader_init_file(mz, sZipFilePath.toUtf8().data(), 0);
+    if (!ok) return false;
+
+    int num = mz_zip_reader_get_num_files(mz);
+
+    mz_zip_reader_end(mz);
+    return (num > 0);
+}
+
 bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
 {
     mz_zip_archive* mz = new mz_zip_archive;
@@ -21,9 +36,6 @@ bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
     while (it.hasNext())
     {
         QString sFullPath = it.next();
-
-        //if (sFullPath.endsWith(".")) // skip . and ..
-        //    continue;
 
         if (it.fileInfo().isDir())
         {
@@ -89,7 +101,7 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
     {
         ok = mz_zip_reader_file_stat(mz, i, stat);
         qDebug(" item=%s\n", stat->m_filename);
-        if (!ok) return false;
+        if (!ok) break;
 
         if (stat->m_is_directory)
         {
@@ -97,15 +109,22 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
 
             ok = baseDir.mkpath(sFolderPath);
             qDebug() << "mkdirOK=" << ok;
-            if (!ok) return false;
+            if (!ok) break;
         }
         else
         {
             QString sFullPath = baseDir.filePath(QString::fromUtf8(stat->m_filename));
             ok = mz_zip_reader_extract_to_file(mz, i, sFullPath.toUtf8(), 0);
             qDebug("extract ok=%d\n", ok);
-            if (!ok) return false;
+            if (!ok) break;
         }
     }
-    return true;
+
+    mz_zip_reader_end(mz);
+
+    if (!ok)
+    {
+        qDebug() << "Unzip error!";
+    }
+    return ok;
 }

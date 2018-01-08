@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "filemanager.h"
 
 #include "pencildef.h"
-#include "JlCompress.h"
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
@@ -175,8 +174,7 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
 
 bool FileManager::isOldForamt(const QString& fileName)
 {
-    QStringList zippedFileList = JlCompress::getFileList(fileName);
-    return (zippedFileList.empty());
+    return MiniZ::isZip(fileName);
 }
 
 Status FileManager::save(Object* object, QString strFileName)
