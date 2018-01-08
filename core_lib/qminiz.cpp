@@ -29,8 +29,7 @@ bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
 
-    bool b = mz_zip_writer_init_file(mz, sZipFilePath.toUtf8().data(), 0);
-    //qDebug("Writer init ok = %d", b);
+    bool ok = mz_zip_writer_init_file(mz, sZipFilePath.toUtf8().data(), 0);
 
     QDirIterator it(sSrcPath, QDirIterator::Subdirectories);
     while (it.hasNext())
@@ -39,26 +38,21 @@ bool MiniZ::compressFolder(const QString& sZipFilePath, const QString& sSrcPath)
 
         if (it.fileInfo().isDir())
         {
-            //qDebug() << "skip " << it.fileName();
             continue;
         }
 
         QString sRelativePath = sFullPath;
         sRelativePath.replace(sSrcPath, "");
-        //qDebug() << "  Add: " << it.fileName();
 
-        b = mz_zip_writer_add_file(mz,
-                                   sRelativePath.toUtf8().data(),
-                                   sFullPath.toUtf8().data(),
-                                   "", 0, MZ_DEFAULT_COMPRESSION);
-
-        //qDebug("Writer add file ok = %d", b);
+        ok = mz_zip_writer_add_file(mz,
+                                    sRelativePath.toUtf8().data(),
+                                    sFullPath.toUtf8().data(),
+                                    "", 0, MZ_DEFAULT_COMPRESSION);
     }
-    b = mz_zip_writer_finalize_archive(mz);
-    qDebug("Writer finalize = %d", b);
+    ok = mz_zip_writer_finalize_archive(mz);
     mz_zip_writer_end(mz);
 
-    return true;
+    return ok;
 }
 
 bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPath)
@@ -83,11 +77,9 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_reader_init_file(mz, sZipFilePath.toUtf8().data(), 0);
-    qDebug("Open ok=%d\n", ok);
     if (!ok) return false;
 
     int num = mz_zip_reader_get_num_files(mz);
-    qDebug("num=%d\n", num);
 
     mz_zip_archive_file_stat* stat = new mz_zip_archive_file_stat;
     OnScopeExit(delete stat);
@@ -95,7 +87,6 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
     for (int i = 0; i < num; ++i)
     {
         ok = mz_zip_reader_file_stat(mz, i, stat);
-        //qDebug(" item=%s\n", stat->m_filename);
         if (!ok) break;
 
         if (stat->m_is_directory)
@@ -103,14 +94,12 @@ bool MiniZ::uncompressFolder(const QString& sZipFilePath, const QString& sDestPa
             QString sFolderPath = QString::fromUtf8(stat->m_filename);
 
             ok = baseDir.mkpath(sFolderPath);
-            //qDebug() << "mkdirOK=" << ok;
             if (!ok) break;
         }
         else
         {
             QString sFullPath = baseDir.filePath(QString::fromUtf8(stat->m_filename));
             ok = mz_zip_reader_extract_to_file(mz, i, sFullPath.toUtf8(), 0);
-            //qDebug("extract ok=%d\n", ok);
             if (!ok) break;
         }
     }

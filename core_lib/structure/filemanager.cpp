@@ -265,8 +265,8 @@ Status FileManager::save(Object* object, QString strFileName)
         debugDetails << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
         if (isOldFile)
         {
-            return Status(Status::ERROR_FILE_CANNOT_OPEN, 
-                          debugDetails, 
+            return Status(Status::ERROR_FILE_CANNOT_OPEN,
+                          debugDetails,
                           tr("Cannot Create Data Directory"),
                           tr("The path \"%1\" points to a file. Please move or delete that file and try again.").arg(dataInfo.absoluteFilePath()));
         }
