@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 
 class QToolButton;
+class QGridLayout;
 class QIcon;
 class SpinSlider;
 class DisplayOptionWidget;
@@ -58,6 +59,8 @@ private:
     QToolButton* newToolButton(const QIcon&, QString);
     void deselectAllTools();
 
+    QGridLayout* layout;
+
     QToolButton* pencilButton = nullptr;
     QToolButton* selectButton = nullptr;
     QToolButton* moveButton = nullptr;
@@ -70,6 +73,9 @@ private:
     QToolButton* eyedropperButton = nullptr;
     QToolButton* smudgeButton = nullptr;
     QToolButton* clearButton = nullptr;
+
+protected:
+    void resizeEvent(QResizeEvent* event) override;
 };
 
 #endif
