@@ -5,8 +5,6 @@
 TEMPLATE = subdirs
 
 SUBDIRS = \ # sub-project names
-    zlib \
-    quazip \
     core_lib \
     app \
     tests
@@ -15,16 +13,11 @@ SUBDIRS = \ # sub-project names
 CONFIG += ordered
 
 # where to find the sub projects - give the folders
-zlib.subdir     = 3rdlib/zlib
-quazip.subdir   = 3rdlib/quazip
 core_lib.subdir = core_lib
 app.subdir      = app
 tests.subdir    = tests
-#l10n.subdir     = translations
 
 # what subproject depends on others
-quazip.depends   = zlib
-core_lib.depends = quazip
 app.depends      = core_lib
 tests.depends    = core_lib
 

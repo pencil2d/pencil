@@ -92,7 +92,9 @@ HEADERS +=  \
     util/log.h \
     canvaspainter.h \
     soundplayer.h \
-    movieexporter.h
+    movieexporter.h \
+    miniz.h \
+    qminiz.h
 
 
 SOURCES +=  graphics/bitmap/bitmapimage.cpp \
@@ -154,11 +156,12 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     canvaspainter.cpp \
     soundplayer.cpp \
     managers/soundmanager.cpp \
-    movieexporter.cpp
+    movieexporter.cpp \
+    miniz.cpp \
+    qminiz.cpp
 
 win32 {
     CONFIG -= flat
-	#CONFIG += grouped
 
     INCLUDEPATH += external/win32
     SOURCES += external/win32/win32.cpp
@@ -173,9 +176,3 @@ unix:!macx {
     INCLUDEPATH += external/linux
     SOURCES += external/linux/linux.cpp
 }
-
-
-INCLUDEPATH += $$PWD/../3rdlib/quazip
-DEPENDPATH += $$PWD/../3rdlib/quazip
-
-INCLUDEPATH += $$PWD/../3rdlib/zlib

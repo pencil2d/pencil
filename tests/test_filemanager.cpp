@@ -4,7 +4,7 @@
 #include <QTemporaryDir>
 #include <QTemporaryFile>
 #include <QImage>
-#include "JlCompress.h"
+#include "qminiz.h"
 #include "fileformat.h"
 #include "filemanager.h"
 #include "util.h"
@@ -197,59 +197,21 @@ TEST_CASE("FileManager Loading XML Tests")
     }
 }
 
-TEST_CASE("FileManager Saving Test 1")
-{
-    SECTION("Save a PCLX")
-    {
-        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-        if (!testDir.isValid())
-        {
-            REQUIRE(false);
-        }
-
-        QString strMainXMLPath = testDir.path() + "/" + PFF_XML_FILE_NAME;
-
-        QFile theXML(strMainXMLPath);
-        theXML.open(QIODevice::WriteOnly);
-
-        QTextStream fout(&theXML);
-        fout << "<!DOCTYPE PencilDocument><document>";
-        fout << "  <object>";
-        fout << "    <layer name='MyLayer' id='5' visibility='1' type='1' >";
-        fout << "      <image frame='1' topLeftY='0' src='003.001.png' topLeftX='0' />";
-        fout << "    </layer>";
-        fout << "  </object>";
-        fout << "</document>";
-        theXML.close();
-
-        QDir dir(testDir.path());
-        if (dir.mkdir(PFF_DATA_DIR))
-        {
-            dir.cd(PFF_DATA_DIR);
-        }
-        QImage img(10, 10, QImage::Format_ARGB32_Premultiplied);
-        img.save(dir.path() + "/003.001.png");
-
-        QTemporaryFile tmpPCLX("PENCIL_TEST_XXXXXXXX.pclx");
-        tmpPCLX.open();
-
-        bool ok = JlCompress::compressDir(tmpPCLX.fileName(), testDir.path());
-        REQUIRE(ok);
-    }
-}
-
-TEST_CASE("FileManager Load-zip Test")
+TEST_CASE("FileManager Load-a-zip Test")
 {
     SECTION("Load a PCLX zip file")
     {
         QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
-        if (!testDir.isValid())
-        {
-            REQUIRE(false);
-            return;
-        }
+        REQUIRE(testDir.isValid());
 
-        QString strMainXMLPath = testDir.path() + "/" + PFF_XML_FILE_NAME;
+        // manually build a working project
+        // and use filemanager to load it.
+        QString sWorkFolderPath = testDir.path() + "/project_x";
+        QDir workDir(sWorkFolderPath);
+        REQUIRE(workDir.makeAbsolute());
+        REQUIRE(workDir.mkpath("."));
+
+        QString strMainXMLPath = workDir.filePath(PFF_XML_FILE_NAME);
 
         QFile theXML(strMainXMLPath);
         theXML.open(QIODevice::WriteOnly);
@@ -264,21 +226,16 @@ TEST_CASE("FileManager Load-zip Test")
         fout << "</document>";
         theXML.close();
 
-        QDir dir(testDir.path());
-        if (dir.mkdir(PFF_DATA_DIR))
-        {
-            dir.cd(PFF_DATA_DIR);
-        }
+        REQUIRE(workDir.mkdir(PFF_DATA_DIR));
+       
         QImage img(10, 10, QImage::Format_ARGB32_Premultiplied);
-        img.save(dir.path() + "/005.001.png");
+        REQUIRE(img.save(workDir.absolutePath() + "/" PFF_DATA_DIR "/005.001.png"));
 
-        QTemporaryFile tmpPCLX("PENCIL_TEST_XXXXXXXX.pclx");
-        tmpPCLX.open();
-
-        JlCompress::compressDir(tmpPCLX.fileName(), testDir.path());
+        QString pclxFile = QDir(testDir.path()).filePath("test-animation.pclx");
+        REQUIRE(MiniZ::compressFolder(pclxFile, workDir.absolutePath()));
 
         FileManager fm;
-        Object* o = fm.load(tmpPCLX.fileName());
+        Object* o = fm.load(pclxFile);
 
         REQUIRE(fm.error().ok());
 

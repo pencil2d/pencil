@@ -36,32 +36,32 @@ class FileManager : public QObject
     Q_OBJECT
 
 public:
-    FileManager( QObject* parent = 0 );
+    FileManager(QObject* parent = 0);
 
-    Object* load( QString strFilenNme );
-    Status  save( Object*, QString strFileName );
+    Object* load(QString strFilenNme);
+    Status  save(Object*, QString strFileName);
 
-    QList<ColourRef> loadPaletteFile( QString strFilename );
+    QList<ColourRef> loadPaletteFile(QString strFilename);
     Status error() { return mError; }
-    Status verifyObject( Object* obj );
-    
+    Status verifyObject(Object* obj);
+
 Q_SIGNALS:
-    void progressUpdated( float );
+    void progressUpdated(float);
 
 private:
-    void unzip( const QString& strZipFile, const QString& strUnzipTarget );
-    
-    bool loadObject( Object*, const QDomElement& root );
-    bool loadObjectOldWay( Object*, const QDomElement& root );
-    bool isOldForamt( const QString& fileName );
-    bool loadPalette( Object* );
-    
-    ObjectData* loadProjectData( const QDomElement& element );
-    QDomElement saveProjectData( ObjectData*, QDomDocument& xmlDoc );
+    void unzip(const QString& strZipFile, const QString& strUnzipTarget);
 
-    void extractProjectData( const QDomElement& element, ObjectData* data );
+    bool loadObject(Object*, const QDomElement& root);
+    bool loadObjectOldWay(Object*, const QDomElement& root);
+    bool isOldForamt(const QString& fileName);
+    bool loadPalette(Object*);
 
-    Object* cleanUpWithErrorCode( Status );
+    ObjectData* loadProjectData(const QDomElement& element);
+    QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);
+
+    void extractProjectData(const QDomElement& element, ObjectData* data);
+
+    Object* cleanUpWithErrorCode(Status);
 
 private:
     Status mError = Status::OK;
