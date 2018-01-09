@@ -9,7 +9,7 @@
 QT += core widgets gui xml xmlpatterns multimedia svg
 
 TEMPLATE = lib
-CONFIG += qt staticlib console
+CONFIG += qt staticlib
 
 RESOURCES += ../pencil.qrc
 

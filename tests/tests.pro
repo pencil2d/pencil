@@ -43,10 +43,6 @@ SOURCES += \
     test_bitmapimage.cpp \
     test_viewmanager.cpp
 
-linux-* {
-    LIBS += -lz
-}
-
 # --- CoreLib ---
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../core_lib/release/ -lcore_lib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../core_lib/debug/ -lcore_lib
