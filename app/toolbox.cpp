@@ -253,8 +253,8 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             mGridLayout->addWidget(mPenButton, 0, 3);
             mGridLayout->addWidget(mHandButton, 1, 3);
 
-            mGridLayout->addWidget( pencilButton, 0, 4 );
-            mGridLayout->addWidget( bucketButton, 1, 4 );
+            mGridLayout->addWidget(mPencilButton, 0, 4);
+            mGridLayout->addWidget(mBucketButton, 1, 4);
 
             mGridLayout->addWidget(mEyedropperButton, 0, 5);
             mGridLayout->addWidget(mEraserButton, 1, 5);
