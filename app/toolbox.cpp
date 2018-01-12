@@ -293,23 +293,16 @@ QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
 {
     QToolButton* toolButton = new QToolButton(this);
     toolButton->setAutoRaise(true);
-    toolButton->setIconSize( QSize(24,24) );
+    toolButton->setIconSize(QSize(24, 24));
     toolButton->setFixedSize(32, 32);
-    toolButton->setStyleSheet("QToolButton {"
-                              "border: 0px;"
-                                "}"
-
-                              "QToolButton:pressed {"
-                                "border: 1px solid #ADADAD;"
-                                "border-radius: 2px;"
-                                "background-color: #D5D5D5;"
-                              "}"
-
-                              "QToolButton:checked {"
-                                "border: 1px solid #ADADAD;"
-                                "border-radius: 2px;"
-                                "background-color: #D5D5D5;"
-                              "}");
+#ifdef __APPLE__
+    // Only Mac needs this. ToolButton is naturally borderless on Win/Linux.
+    QString sStyle =
+        "QToolButton { border: 0px; }"
+        "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+        "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+    toolButton->setStyleSheet(sStyle);
+#endif
     toolButton->setIcon(icon);
     toolButton->setToolTip(strToolTip);
 
