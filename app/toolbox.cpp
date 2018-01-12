@@ -44,7 +44,6 @@ ToolBoxWidget::ToolBoxWidget( QWidget* parent ) : BaseDockWidget( parent )
 
 void ToolBoxWidget::initUI()
 {
-
     layout = new QGridLayout();
 
     pencilButton = newToolButton( QIcon( ":icons/new/svg/pencil_detailed.svg" ),
@@ -147,6 +146,9 @@ void ToolBoxWidget::initUI()
 
     QSettings settings(PENCIL2D, PENCIL2D);
     this->restoreGeometry(settings.value( "ToolBoxGeom" ).toByteArray());
+
+    QSize buttonSize = clearButton->size(); // all buttons share same size
+    setMinimumSize(buttonSize + QSize(1, 1));
 }
 
 void ToolBoxWidget::updateUI()
@@ -196,7 +198,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
             layout->addWidget( eyedropperButton, 5, 0 );
             layout->addWidget( eraserButton, 5, 1 );
-        } else if (geom.width() > buttonSize.width()) {
+        } else {
 
             layout->addWidget( clearButton, 0, 0 );
 
@@ -223,7 +225,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             layout->addWidget( eraserButton, 11, 0 );
         }
     } else { // Horizontal
-        if (geom.height() > buttonSize.height()*3) {
+        if (geom.height() > buttonSize.height()*5) {
             layout->addWidget( clearButton, 0, 0 );
             layout->addWidget( moveButton, 1, 0 );
 
@@ -241,7 +243,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
             layout->addWidget( eyedropperButton, 1, 3 );
             layout->addWidget( eraserButton, 2, 3 );
-        } else if (geom.height() > buttonSize.height()*2) {
+        } else if (geom.height() > buttonSize.height()*3) {
             layout->addWidget( clearButton, 0, 0 );
             layout->addWidget( moveButton, 1, 0 );
 
@@ -260,7 +262,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             layout->addWidget( eyedropperButton, 0, 5 );
             layout->addWidget( eraserButton, 1, 5 );
 
-        } else if (geom.height() > buttonSize.height()) {
+        } else {
             layout->addWidget( clearButton, 0, 0 );
             layout->addWidget( moveButton, 0, 1 );
 
@@ -281,12 +283,10 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
         }
     }
 
-    setMinimumSize(buttonSize+QSize(1,1));
     QWidget::resizeEvent(event);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("ToolBoxGeom", this->saveGeometry());
-
 }
 
 QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
