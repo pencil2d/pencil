@@ -1,4 +1,5 @@
-#include "test_object.h"
+
+#include "catch.hpp"
 
 #include <memory>
 #include <QDomDocument>
@@ -10,38 +11,28 @@
 #include "layersound.h"
 
 
-TestObject::TestObject()
+TEST_CASE("Object")
 {
+    Object* obj = new Object;
+    SECTION("Init an Object")
+    {
+        obj->init();
+        REQUIRE(obj->getLayerCount() == 0);
+        REQUIRE(obj->getColourCount() > 0);
+    }
+
+    SECTION("Add a bitmap layer")
+    {
+        REQUIRE(obj->getLayerCount() == 0);
+        obj->addNewBitmapLayer();
+        REQUIRE(obj->getLayerCount() == 1);
+
+        REQUIRE(obj->getLayer(0)->type() == Layer::BITMAP);
+    }
+    delete obj;
 }
 
-void TestObject::initTestCase()
-{
-}
-
-void TestObject::cleanupTestCase()
-{
-}
-
-void TestObject::testCase1()
-{
-    std::unique_ptr< Object > obj( new Object );
-
-    QCOMPARE( obj->getLayerCount(), 0 );
-    obj->init();
-    QCOMPARE( obj->getLayerCount(), 3 );
-}
-
-void TestObject::testAddBitmapLayer()
-{
-    std::unique_ptr< Object > obj( new Object );
-
-    QCOMPARE( obj->getLayerCount(), 0 );
-    obj->addNewBitmapLayer();
-    QCOMPARE( obj->getLayerCount(), 1 );
-
-    Layer* layer = obj->getLayer( 0 );
-    QCOMPARE( layer->type(), Layer::BITMAP );
-}
+/*
 
 void TestObject::testAddVectorLayer()
 {
@@ -168,3 +159,4 @@ void TestObject::testExportColorPalette()
     }
 
 }
+*/

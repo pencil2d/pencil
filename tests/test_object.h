@@ -1,6 +1,7 @@
 #ifndef TESTOBJECT_H
 #define TESTOBJECT_H
 
+/*
 #include "AutoTest.h"
 class Object;
 
@@ -35,5 +36,7 @@ private:
 
 
 DECLARE_TEST( TestObject )
+
+*/
 
 #endif // TESTOBJECT_H
