@@ -11,9 +11,10 @@
 #include "layersound.h"
 
 
-TEST_CASE("Object")
+TEST_CASE("Object::addXXXLayer()")
 {
     Object* obj = new Object;
+
     SECTION("Init an Object")
     {
         obj->init();
@@ -29,65 +30,64 @@ TEST_CASE("Object")
 
         REQUIRE(obj->getLayer(0)->type() == Layer::BITMAP);
     }
+
+    SECTION("Add a vector layer")
+    {
+        REQUIRE(obj->getLayerCount() == 0);
+        obj->addNewVectorLayer();
+        REQUIRE(obj->getLayerCount() == 1);
+
+        REQUIRE(obj->getLayer(0)->type() == Layer::VECTOR);
+    }
+
+    SECTION("Add a camera layer")
+    {
+        REQUIRE(obj->getLayerCount() == 0);
+        obj->addNewCameraLayer();
+        REQUIRE(obj->getLayerCount() == 1);
+
+        REQUIRE(obj->getLayer(0)->type() == Layer::CAMERA);
+    }
+
+    SECTION("Add a sound layer")
+    {
+        REQUIRE(obj->getLayerCount() == 0);
+        obj->addNewSoundLayer();
+        REQUIRE(obj->getLayerCount() == 1);
+        REQUIRE(obj->getLayer(0)->type() == Layer::SOUND);
+    }
+
+    SECTION("Add 3 layers")
+    {
+        REQUIRE(obj->getLayerCount() == 0);
+
+        obj->addNewSoundLayer();
+        REQUIRE(obj->getLayerCount() == 1);
+        REQUIRE(obj->getLayer(0)->type() == Layer::SOUND);
+
+        obj->addNewCameraLayer();
+        REQUIRE(obj->getLayerCount() == 2);
+        REQUIRE(obj->getLayer(1)->type() == Layer::CAMERA);
+
+        obj->addNewBitmapLayer();
+        REQUIRE(obj->getLayerCount() == 3);
+        REQUIRE(obj->getLayer(2)->type() == Layer::BITMAP);
+    }
+
+    SECTION("Add 500 layers")
+    {
+        REQUIRE(obj->getLayerCount() == 0);
+        for (int i = 0; i < 500; ++i)
+        {
+            obj->addNewBitmapLayer();
+        }
+        REQUIRE(obj->getLayerCount() == 500);
+    }
+
     delete obj;
 }
 
 /*
-
-void TestObject::testAddVectorLayer()
-{
-    std::unique_ptr< Object > obj( new Object );
-    
-    QCOMPARE( obj->getLayerCount(), 0 );
-    obj->addNewVectorLayer();
-    QCOMPARE( obj->getLayerCount(), 1 );
-    
-    Layer* layer = obj->getLayer( 0 );
-    QCOMPARE( layer->type(), Layer::VECTOR );
-}
-
-void TestObject::testAddCameraLayer()
-{
-    std::unique_ptr< Object > obj( new Object );
-    
-    QCOMPARE( obj->getLayerCount(), 0 );
-    obj->addNewCameraLayer();
-    QCOMPARE( obj->getLayerCount(), 1 );
-    
-    Layer* layer = obj->getLayer( 0 );
-    QCOMPARE( layer->type(), Layer::CAMERA );
-}
-
-void TestObject::testAddSoundLayer()
-{
-    std::unique_ptr< Object > obj( new Object );
-    
-    QCOMPARE( obj->getLayerCount(), 0 );
-    obj->addNewSoundLayer();
-    QCOMPARE( obj->getLayerCount(), 1 );
-    
-    Layer* layer = obj->getLayer( 0 );
-    QCOMPARE( layer->type(), Layer::SOUND );
-}
-
-
-void TestObject::testAddMoreLayers()
-{
-    std::unique_ptr< Object > obj( new Object );
-    QCOMPARE( obj->getLayerCount(), 0 );
-
-    obj->addNewSoundLayer();
-    QCOMPARE( obj->getLayerCount(), 1 );
-    QCOMPARE( obj->getLayer( 0 )->type(), Layer::SOUND );
-
-    obj->addNewCameraLayer();
-    QCOMPARE( obj->getLayerCount(), 2 );
-    QCOMPARE( obj->getLayer( 1 )->type(), Layer::CAMERA );
-
-    obj->addNewBitmapLayer();
-    QCOMPARE( obj->getLayerCount(), 3 );
-    QCOMPARE( obj->getLayer( 2 )->type(), Layer::BITMAP );
-}
 
 void TestObject::testLayerID()
 {
