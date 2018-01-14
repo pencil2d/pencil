@@ -14,6 +14,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "tooloptionwidget.h"
+
 #include <QLabel>
 #include <QToolButton>
 #include <QCheckBox>
@@ -23,9 +25,9 @@ GNU General Public License for more details.
 #include <QGroupBox>
 #include <QSettings>
 #include <QDebug>
+
 #include "spinslider.h"
 #include "toolmanager.h"
-#include "tooloptionwidget.h"
 #include "editor.h"
 #include "util.h"
 #include "layer.h"
@@ -50,7 +52,7 @@ void ToolOptionWidget::updateUI()
     BaseTool* currentTool = editor()->tools()->currentTool();
     Q_ASSERT(currentTool);
 
-    disableAllOptions();
+    //disableAllOptions();
 
     mSizeSlider->setVisible(currentTool->isPropertyEnabled(WIDTH));
     mBrushSpinBox->setVisible(currentTool->isPropertyEnabled(WIDTH));
@@ -67,7 +69,7 @@ void ToolOptionWidget::updateUI()
     mToleranceSpinBox->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
     mFillContour->setVisible(currentTool->isPropertyEnabled(FILLCONTOUR));
 
-    visibilityOnLayer();
+    //visibilityOnLayer();
 
     const Properties& p = currentTool->properties;
 
@@ -86,13 +88,17 @@ void ToolOptionWidget::updateUI()
 
 void ToolOptionWidget::createUI()
 {
-    setMinimumWidth(115);
-    setMaximumWidth(300);
+    setMinimumWidth(10);
+    setMaximumWidth(500);
 
-    QFrame* optionGroup = new QFrame();
-    QGridLayout* pLayout = new QGridLayout();
-    pLayout->setMargin(8);
-    pLayout->setSpacing(8);
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+
+    QFrame* optionGroup = new QFrame;
+    QGridLayout* pLayout = new QGridLayout;
+    pLayout->setMargin(4);
+    pLayout->setSpacing(4);
+    optionGroup->setLayout(mainLayout);
+    mainLayout->addLayout(pLayout);
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -114,39 +120,31 @@ void ToolOptionWidget::createUI()
 
     mUseFeatherBox = new QCheckBox(tr("Use Feather"));
     mUseFeatherBox->setToolTip(tr("Enable or disable feathering"));
-    mUseFeatherBox->setFont(QFont("Helvetica", 10));
     mUseFeatherBox->setChecked(settings.value("brushUseFeather").toBool());
 
     mUseBezierBox = new QCheckBox(tr("Bezier"));
     mUseBezierBox->setToolTip(tr("Bezier curve fitting"));
-    mUseBezierBox->setFont(QFont("Helvetica", 10));
     mUseBezierBox->setChecked(false);
 
     mUsePressureBox = new QCheckBox(tr("Pressure"));
     mUsePressureBox->setToolTip(tr("Size with pressure"));
-    mUsePressureBox->setFont(QFont("Helvetica", 10));
     mUsePressureBox->setChecked(true);
 
     mUseAABox = new QCheckBox(tr("Anti-Aliasing"));
     mUseAABox->setToolTip(tr("Enable Anti-Aliasing"));
-    mUseAABox->setFont(QFont("Helvetica", 10));
     mUseAABox->setChecked(true);
 
     mFillContour = new QCheckBox(tr("Fill Contour", "ToolOptions"));
     mFillContour->setToolTip(tr("Contour will be filled"));
-    mFillContour->setFont(QFont("Helvetica", 10));
     mFillContour->setChecked(true);
 
     mInpolLevelsBox = new QGroupBox(tr("Stabilization"));
     mInpolLevelsBox->setFlat(true);
-    mInpolLevelsBox->setFont(QFont("Helvetica", 10));
-    //mInpolLevelsBox->setStyleSheet();
 
     mInpol = new QComboBox();
     mInpol->addItems(QStringList() << tr("No interpolation") << tr("Simple line interpolation") << tr("Strong line interpolation"));
-    mInpol->setFont(QFont("Helvetica", 10));
 
-    QVBoxLayout *inpolLayout = new QVBoxLayout();
+    QVBoxLayout* inpolLayout = new QVBoxLayout();
     inpolLayout->addWidget(mInpol);
     inpolLayout->setSpacing(2);
     mInpolLevelsBox->setLayout(inpolLayout);
@@ -161,17 +159,14 @@ void ToolOptionWidget::createUI()
 
     mMakeInvisibleBox = new QCheckBox(tr("Invisible"));
     mMakeInvisibleBox->setToolTip(tr("Make invisible"));
-    mMakeInvisibleBox->setFont(QFont("Helvetica", 10));
     mMakeInvisibleBox->setChecked(false);
 
     mPreserveAlphaBox = new QCheckBox(tr("Alpha"));
     mPreserveAlphaBox->setToolTip(tr("Preserve Alpha"));
-    mPreserveAlphaBox->setFont(QFont("Helvetica", 10));
     mPreserveAlphaBox->setChecked(false);
 
     mVectorMergeBox = new QCheckBox(tr("Merge"));
     mVectorMergeBox->setToolTip(tr("Merge vector lines when they are close together"));
-    mVectorMergeBox->setFont(QFont("Helvetica", 10));
     mVectorMergeBox->setChecked(false);
 
     pLayout->addWidget(mSizeSlider, 1, 0, 1, 2);
@@ -191,8 +186,6 @@ void ToolOptionWidget::createUI()
     pLayout->addWidget(mFillContour, 1, 0, 1, 2);
 
     pLayout->setRowStretch(17, 1);
-
-    optionGroup->setLayout(pLayout);
 
     setWidget(optionGroup);
 }
