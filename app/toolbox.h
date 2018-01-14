@@ -35,6 +35,7 @@ class ToolBoxWidget : public BaseDockWidget
 
 public:
     ToolBoxWidget(QWidget* parent);
+    ~ToolBoxWidget();
 
     void initUI() override;
     void updateUI() override;
@@ -80,6 +81,12 @@ private:
     QToolButton* mClearButton = nullptr;
 
     Qt::DockWidgetArea mAreaLocation;
+
+    // hack:
+    // isFloating is not set until resizeEvent has been executed.
+    // and is therefore true initially, which causes some UI resize problems.
+    bool mIsFloating = false;
+    bool mHasResizedOnce = false;
 };
 
 #endif
