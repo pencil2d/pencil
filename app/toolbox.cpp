@@ -41,9 +41,18 @@ ToolBoxWidget::ToolBoxWidget(QWidget* parent) : BaseDockWidget(parent)
     setWindowIcon(QIcon());
 }
 
+ToolBoxWidget::~ToolBoxWidget()
+{
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ToolBoxGeom", this->saveGeometry());
+    settings.setValue("toolBoxDockLocation", (int)mAreaLocation);
+    settings.setValue("isToolBoxFloating", isFloating());
+}
+
 void ToolBoxWidget::initUI()
 {
-    mGridLayout = new QGridLayout(this);
+    mGridLayout = new QGridLayout();
 
     mPencilButton = newToolButton(QIcon(":icons/new/svg/pencil_detailed.svg"),
                                   tr("Pencil Tool (%1): Sketch with pencil")
@@ -143,8 +152,13 @@ void ToolBoxWidget::initUI()
     connect(mSmudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
     connect(mClearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked);
 
+    connect(this, &QDockWidget::dockLocationChanged, this, &ToolBoxWidget::getDockLocation);
+
     QSettings settings(PENCIL2D, PENCIL2D);
     this->restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
+    mAreaLocation = (Qt::DockWidgetArea)settings.value("toolBoxDockLocation").toInt();
+    mIsFloating = settings.value("isToolBoxFloating").toBool();
+
 }
 
 void ToolBoxWidget::updateUI()
@@ -158,7 +172,24 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
     QRect geom = geometry();
     QSize buttonSize = mClearButton->size(); // all buttons share same size
 
-    // Vertical layout
+    if (mIsFloating)
+    {
+        mAreaLocation = Qt::AllDockWidgetAreas;
+    }
+
+    // disable certain areas when width is >= number of buttons.
+    int NUMOFBUTTONS = 12;
+    if (geometry().width() >= buttonSize.width()*NUMOFBUTTONS)
+    {
+        setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+    }
+    else
+    { // otherwise allow all areas
+        setAllowedAreas(Qt::AllDockWidgetAreas);
+    }
+
+
+    // Horizontal Layout
     if (geom.width() < geom.height())
     {
         if (geom.width() > buttonSize.width() * 5)
@@ -181,7 +212,9 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             mGridLayout->addWidget(mEyedropperButton, 3, 1);
             mGridLayout->addWidget(mEraserButton, 3, 2);
         }
-        else if (geom.width() > buttonSize.width() * 3)
+        else if (geom.width() > buttonSize.width() * 3
+                 || mAreaLocation == Qt::TopDockWidgetArea
+                 || mAreaLocation == Qt::BottomDockWidgetArea )
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
             mGridLayout->addWidget(mMoveButton, 0, 1);
@@ -200,8 +233,11 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
             mGridLayout->addWidget(mEyedropperButton, 5, 0);
             mGridLayout->addWidget(mEraserButton, 5, 1);
+
         }
-        else
+        else if (mAreaLocation != Qt::TopDockWidgetArea
+                 || mAreaLocation != Qt::BottomDockWidgetArea
+                 || mIsFloating)
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
             mGridLayout->addWidget(mMoveButton, 1, 0);
@@ -218,7 +254,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
         }
     }
     else
-    { // Horizontal
+    { // Vertical
         if (geom.height() > buttonSize.height() * 5)
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
@@ -239,7 +275,9 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             mGridLayout->addWidget(mEyedropperButton, 1, 3);
             mGridLayout->addWidget(mEraserButton, 2, 3);
         }
-        else if (geom.height() > buttonSize.height() * 3)
+        else if (geom.height() > buttonSize.height() * 3 ||
+                 mAreaLocation == Qt::LeftDockWidgetArea
+                 || mAreaLocation == Qt::RightDockWidgetArea)
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
             mGridLayout->addWidget(mMoveButton, 1, 0);
@@ -259,7 +297,9 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             mGridLayout->addWidget(mEyedropperButton, 0, 5);
             mGridLayout->addWidget(mEraserButton, 1, 5);
         }
-        else
+        else if (mAreaLocation != Qt::LeftDockWidgetArea
+                 || mAreaLocation != Qt::RightDockWidgetArea
+                 || mIsFloating)
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
             mGridLayout->addWidget(mMoveButton, 0, 1);
@@ -275,9 +315,15 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
             mGridLayout->addWidget(mEraserButton, 0, 11);
         }
     }
-    
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("ToolBoxGeom", this->saveGeometry());
+
+    if (mHasResizedOnce)
+    {
+        mIsFloating = isFloating();
+    }
+    else
+    {
+        mHasResizedOnce = true;
+    }
 }
 
 QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
@@ -298,6 +344,11 @@ QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
     toolButton->setToolTip(strToolTip);
 
     return toolButton;
+}
+
+void ToolBoxWidget::getDockLocation(Qt::DockWidgetArea area)
+{
+    mAreaLocation = area;
 }
 
 void ToolBoxWidget::pencilOn()
