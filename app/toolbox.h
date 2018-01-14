@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 
 class QToolButton;
+class QGridLayout;
 class QIcon;
 class SpinSlider;
 class DisplayOptionWidget;
@@ -33,7 +34,7 @@ class ToolBoxWidget : public BaseDockWidget
     Q_OBJECT
 
 public:
-    ToolBoxWidget( QWidget* parent );
+    ToolBoxWidget(QWidget* parent);
 
     void initUI() override;
     void updateUI() override;
@@ -54,22 +55,27 @@ public slots:
 signals:
     void clearButtonClicked();
 
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+
 private:
-    QToolButton* newToolButton(const QIcon&, QString);
+    QToolButton * newToolButton(const QIcon&, QString);
     void deselectAllTools();
 
-    QToolButton* pencilButton = nullptr;
-    QToolButton* selectButton = nullptr;
-    QToolButton* moveButton = nullptr;
-    QToolButton* handButton = nullptr;
-    QToolButton* eraserButton = nullptr;
-    QToolButton* penButton = nullptr;
-    QToolButton* polylineButton = nullptr;
-    QToolButton* bucketButton = nullptr;
-    QToolButton* colouringButton = nullptr;
-    QToolButton* eyedropperButton = nullptr;
-    QToolButton* smudgeButton = nullptr;
-    QToolButton* clearButton = nullptr;
+    QGridLayout* mGridLayout;
+
+    QToolButton* mPencilButton = nullptr;
+    QToolButton* mSelectButton = nullptr;
+    QToolButton* mMoveButton = nullptr;
+    QToolButton* mHandButton = nullptr;
+    QToolButton* mEraserButton = nullptr;
+    QToolButton* mPenButton = nullptr;
+    QToolButton* mPolylineButton = nullptr;
+    QToolButton* mBucketButton = nullptr;
+    QToolButton* mBrushButton = nullptr;
+    QToolButton* mEyedropperButton = nullptr;
+    QToolButton* mSmudgeButton = nullptr;
+    QToolButton* mClearButton = nullptr;
 };
 
 #endif

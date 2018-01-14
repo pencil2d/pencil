@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include <cmath>
 
-#include <QFrame>
 #include <QToolButton>
 #include <QGridLayout>
 #include <QKeySequence>
@@ -29,166 +28,272 @@ GNU General Public License for more details.
 #include "pencilsettings.h"
 
 // ----------------------------------------------------------------------------------
-QString GetToolTips( QString strCommandName )
+QString GetToolTips(QString strCommandName)
 {
-	strCommandName = QString( "shortcuts/" ) + strCommandName;
-	QKeySequence keySequence( pencilSettings().value( strCommandName ).toString() );
-	return QString("<b>%1</b>").arg( keySequence.toString() ); // don't tr() this string.
+    strCommandName = QString("shortcuts/") + strCommandName;
+    QKeySequence keySequence(pencilSettings().value(strCommandName).toString());
+    return QString("<b>%1</b>").arg(keySequence.toString()); // don't tr() this string.
 }
 
-ToolBoxWidget::ToolBoxWidget( QWidget* parent ) : BaseDockWidget( parent )
+ToolBoxWidget::ToolBoxWidget(QWidget* parent) : BaseDockWidget(parent)
 {
-	setWindowTitle( tr( "Tools", "Window title of tool box" ) );
+    setWindowTitle(tr("Tools", "Window title of tool box"));
+    setWindowIcon(QIcon());
 }
 
 void ToolBoxWidget::initUI()
 {
-	QGridLayout* layout = new QGridLayout();
+    mGridLayout = new QGridLayout(this);
 
-    pencilButton = newToolButton( QIcon( ":icons/new/svg/pencil_detailed.svg" ),
-		tr( "Pencil Tool (%1): Sketch with pencil" )
-		.arg( GetToolTips( CMD_TOOL_PENCIL ) ) );
-    selectButton = newToolButton( QIcon( ":icons/new/svg/selection.svg" ),
-		tr( "Select Tool (%1): Select an object" )
-		.arg( GetToolTips( CMD_TOOL_SELECT ) ) );
-    moveButton = newToolButton( QIcon( ":icons/new/svg/arrow.svg" ),
-		tr( "Move Tool (%1): Move an object" )
-		.arg( GetToolTips( CMD_TOOL_MOVE ) ) );
-    handButton = newToolButton( QIcon( ":icons/new/svg/hand_detailed.svg" ),
-		tr( "Hand Tool (%1): Move the canvas" )
-		.arg( GetToolTips( CMD_TOOL_HAND ) ) );
-    penButton = newToolButton( QIcon( ":icons/new/svg/pen_detailed.svg" ),
-		tr( "Pen Tool (%1): Sketch with pen" )
-		.arg( GetToolTips( CMD_TOOL_PEN ) ) );
-    eraserButton = newToolButton( QIcon( ":icons/new/svg/eraser_detailed.svg" ),
-		tr( "Eraser Tool (%1): Erase" )
-		.arg( GetToolTips( CMD_TOOL_ERASER ) ) );
-    polylineButton = newToolButton( QIcon( ":icons/new/svg/line.svg" ),
-		tr( "Polyline Tool (%1): Create line/curves" )
-		.arg( GetToolTips( CMD_TOOL_POLYLINE ) ) );
-    bucketButton = newToolButton( QIcon( ":icons/new/svg/bucket_detailed.svg" ),
-		tr( "Paint Bucket Tool (%1): Fill selected area with a color" )
-		.arg( GetToolTips( CMD_TOOL_BUCKET ) ) );
-    colouringButton = newToolButton( QIcon( ":icons/new/svg/brush_detailed.svg" ),
-		tr( "Brush Tool (%1): Paint smooth stroke with a brush" )
-		.arg( GetToolTips( CMD_TOOL_BRUSH ) ) );
-    eyedropperButton = newToolButton( QIcon( ":icons/new/svg/eyedropper_detailed.svg" ),
-		tr( "Eyedropper Tool (%1): "
-			"Set color from the stage<br>[ALT] for instant access" )
-		.arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
-    clearButton = newToolButton( QIcon( ":icons/new/svg/trash_detailed.svg" ),
-		tr( "Clear Frame (%1): Erases content of selected frame" )
-		.arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
-    smudgeButton = newToolButton( QIcon( ":icons/new/svg/smudge_detailed.svg" ),
-		tr( "Smudge Tool (%1):<br>Edit polyline/curves<br>"
-			"Liquify bitmap pixels<br> (%1)+[Alt]: Smooth" )
-		.arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
+    mPencilButton = newToolButton(QIcon(":icons/new/svg/pencil_detailed.svg"),
+                                  tr("Pencil Tool (%1): Sketch with pencil")
+                                  .arg(GetToolTips(CMD_TOOL_PENCIL)));
+    mSelectButton = newToolButton(QIcon(":icons/new/svg/selection.svg"),
+                                  tr("Select Tool (%1): Select an object")
+                                  .arg(GetToolTips(CMD_TOOL_SELECT)));
+    mMoveButton = newToolButton(QIcon(":icons/new/svg/arrow.svg"),
+                                tr("Move Tool (%1): Move an object")
+                                .arg(GetToolTips(CMD_TOOL_MOVE)));
+    mHandButton = newToolButton(QIcon(":icons/new/svg/hand_detailed.svg"),
+                                tr("Hand Tool (%1): Move the canvas")
+                                .arg(GetToolTips(CMD_TOOL_HAND)));
+    mPenButton = newToolButton(QIcon(":icons/new/svg/pen_detailed.svg"),
+                               tr("Pen Tool (%1): Sketch with pen")
+                               .arg(GetToolTips(CMD_TOOL_PEN)));
+    mEraserButton = newToolButton(QIcon(":icons/new/svg/eraser_detailed.svg"),
+                                  tr("Eraser Tool (%1): Erase")
+                                  .arg(GetToolTips(CMD_TOOL_ERASER)));
+    mPolylineButton = newToolButton(QIcon(":icons/new/svg/line.svg"),
+                                    tr("Polyline Tool (%1): Create line/curves")
+                                    .arg(GetToolTips(CMD_TOOL_POLYLINE)));
+    mBucketButton = newToolButton(QIcon(":icons/new/svg/bucket_detailed.svg"),
+                                  tr("Paint Bucket Tool (%1): Fill selected area with a color")
+                                  .arg(GetToolTips(CMD_TOOL_BUCKET)));
+    mBrushButton = newToolButton(QIcon(":icons/new/svg/brush_detailed.svg"),
+                                 tr("Brush Tool (%1): Paint smooth stroke with a brush")
+                                 .arg(GetToolTips(CMD_TOOL_BRUSH)));
+    mEyedropperButton = newToolButton(QIcon(":icons/new/svg/eyedropper_detailed.svg"),
+                                      tr("Eyedropper Tool (%1): "
+                                         "Set color from the stage<br>[ALT] for instant access")
+                                      .arg(GetToolTips(CMD_TOOL_EYEDROPPER)));
+    mClearButton = newToolButton(QIcon(":icons/new/svg/trash_detailed.svg"),
+                                 tr("Clear Frame (%1): Erases content of selected frame")
+                                 .arg(GetToolTips(CMD_CLEAR_FRAME)));
+    mSmudgeButton = newToolButton(QIcon(":icons/new/svg/smudge_detailed.svg"),
+                                  tr("Smudge Tool (%1):<br>Edit polyline/curves<br>"
+                                     "Liquify bitmap pixels<br> (%1)+[Alt]: Smooth")
+                                  .arg(GetToolTips(CMD_TOOL_SMUDGE)));
 
-	pencilButton->setWhatsThis( tr( "Pencil Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_PENCIL ) ) );
-	selectButton->setWhatsThis( tr( "Select Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_SELECT ) ) );
-	moveButton->setWhatsThis( tr( "Move Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_MOVE ) ) );
-	handButton->setWhatsThis( tr( "Hand Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_HAND ) ) );
-	penButton->setWhatsThis( tr( "Pen Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_PEN ) ) );
-	eraserButton->setWhatsThis( tr( "Eraser Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_ERASER ) ) );
-	polylineButton->setWhatsThis( tr( "Polyline Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_POLYLINE ) ) );
-	bucketButton->setWhatsThis( tr( "Paint Bucket Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_BUCKET ) ) );
-	colouringButton->setWhatsThis( tr( "Brush Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_BRUSH ) ) );
-	eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
-	clearButton->setWhatsThis( tr( "Clear Tool (%1)" )
-		.arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
-	smudgeButton->setWhatsThis( tr( "Smudge Tool (%1)" )
-		.arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
+    mPencilButton->setWhatsThis(tr("Pencil Tool (%1)")
+                                .arg(GetToolTips(CMD_TOOL_PENCIL)));
+    mSelectButton->setWhatsThis(tr("Select Tool (%1)")
+                                .arg(GetToolTips(CMD_TOOL_SELECT)));
+    mMoveButton->setWhatsThis(tr("Move Tool (%1)")
+                              .arg(GetToolTips(CMD_TOOL_MOVE)));
+    mHandButton->setWhatsThis(tr("Hand Tool (%1)")
+                              .arg(GetToolTips(CMD_TOOL_HAND)));
+    mPenButton->setWhatsThis(tr("Pen Tool (%1)")
+                             .arg(GetToolTips(CMD_TOOL_PEN)));
+    mEraserButton->setWhatsThis(tr("Eraser Tool (%1)")
+                                .arg(GetToolTips(CMD_TOOL_ERASER)));
+    mPolylineButton->setWhatsThis(tr("Polyline Tool (%1)")
+                                  .arg(GetToolTips(CMD_TOOL_POLYLINE)));
+    mBucketButton->setWhatsThis(tr("Paint Bucket Tool (%1)")
+                                .arg(GetToolTips(CMD_TOOL_BUCKET)));
+    mBrushButton->setWhatsThis(tr("Brush Tool (%1)")
+                               .arg(GetToolTips(CMD_TOOL_BRUSH)));
+    mEyedropperButton->setWhatsThis(tr("Eyedropper Tool (%1)")
+                                    .arg(GetToolTips(CMD_TOOL_EYEDROPPER)));
+    mClearButton->setWhatsThis(tr("Clear Tool (%1)")
+                               .arg(GetToolTips(CMD_CLEAR_FRAME)));
+    mSmudgeButton->setWhatsThis(tr("Smudge Tool (%1)")
+                                .arg(GetToolTips(CMD_TOOL_SMUDGE)));
 
-	pencilButton->setCheckable( true );
-	penButton->setCheckable( true );
-	polylineButton->setCheckable( true );
-	bucketButton->setCheckable( true );
-	colouringButton->setCheckable( true );
-	smudgeButton->setCheckable( true );
-	eyedropperButton->setCheckable( true );
-	selectButton->setCheckable( true );
-	moveButton->setCheckable( true );
-	handButton->setCheckable( true );
-	eraserButton->setCheckable( true );
-	pencilButton->setChecked( true );
+    mPencilButton->setCheckable(true);
+    mPenButton->setCheckable(true);
+    mPolylineButton->setCheckable(true);
+    mBucketButton->setCheckable(true);
+    mBrushButton->setCheckable(true);
+    mSmudgeButton->setCheckable(true);
+    mEyedropperButton->setCheckable(true);
+    mSelectButton->setCheckable(true);
+    mMoveButton->setCheckable(true);
+    mHandButton->setCheckable(true);
+    mEraserButton->setCheckable(true);
+    mPencilButton->setChecked(true);
 
-	layout->setMargin( 2 );
-	layout->setSpacing( 0 );
+    mGridLayout->setMargin(0);
+    mGridLayout->setSpacing(0);
 
-	layout->addWidget( moveButton, 0, 0 );
-	layout->setAlignment( moveButton, Qt::AlignRight );
-	layout->addWidget( clearButton, 0, 1 );
-	layout->setAlignment( clearButton, Qt::AlignLeft );
+    QWidget* toolGroup = new QWidget(this);
 
-	layout->addWidget( selectButton, 1, 0 );
-	layout->setAlignment( selectButton, Qt::AlignRight );
-	layout->addWidget( colouringButton, 1, 1 );
-	layout->setAlignment( colouringButton, Qt::AlignLeft );
+    setWidget(toolGroup);
+    toolGroup->setLayout(mGridLayout);
 
-	layout->addWidget( polylineButton, 2, 0 );
-	layout->setAlignment( polylineButton, Qt::AlignRight );
-	layout->addWidget( smudgeButton, 2, 1 );
-	layout->setAlignment( smudgeButton, Qt::AlignLeft );
+    connect(mPencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn);
+    connect(mEraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn);
+    connect(mSelectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn);
+    connect(mMoveButton, &QToolButton::clicked, this, &ToolBoxWidget::moveOn);
+    connect(mPenButton, &QToolButton::clicked, this, &ToolBoxWidget::penOn);
+    connect(mHandButton, &QToolButton::clicked, this, &ToolBoxWidget::handOn);
+    connect(mPolylineButton, &QToolButton::clicked, this, &ToolBoxWidget::polylineOn);
+    connect(mBucketButton, &QToolButton::clicked, this, &ToolBoxWidget::bucketOn);
+    connect(mEyedropperButton, &QToolButton::clicked, this, &ToolBoxWidget::eyedropperOn);
+    connect(mBrushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
+    connect(mSmudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
+    connect(mClearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked);
 
-	layout->addWidget( penButton, 3, 0 );
-	layout->setAlignment( penButton, Qt::AlignRight );
-	layout->addWidget( handButton, 3, 1 );
-	layout->setAlignment( handButton, Qt::AlignLeft );
-
-	layout->addWidget( pencilButton, 4, 0 );
-	layout->setAlignment( pencilButton, Qt::AlignRight );
-	layout->addWidget( bucketButton, 4, 1 );
-	layout->setAlignment( bucketButton, Qt::AlignLeft );
-
-	layout->addWidget( eyedropperButton, 5, 0 );
-	layout->setAlignment( eyedropperButton, Qt::AlignRight );
-	layout->addWidget( eraserButton, 5, 1 );
-	layout->setAlignment( eraserButton, Qt::AlignLeft );
-
-	QWidget* toolGroup = new QWidget();
-	setWidget( toolGroup );
-	toolGroup->setLayout( layout );
-	toolGroup->setMaximumHeight( 6 * 32 + 1 );
-
-	setMaximumHeight( 200 );
-
-	connect( pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn );
-	connect( eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn );
-	connect( selectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn );
-	connect( moveButton, &QToolButton::clicked, this, &ToolBoxWidget::moveOn );
-	connect( penButton, &QToolButton::clicked, this, &ToolBoxWidget::penOn );
-	connect( handButton, &QToolButton::clicked, this, &ToolBoxWidget::handOn );
-	connect( polylineButton, &QToolButton::clicked, this, &ToolBoxWidget::polylineOn );
-	connect( bucketButton, &QToolButton::clicked, this, &ToolBoxWidget::bucketOn );
-	connect( eyedropperButton, &QToolButton::clicked, this, &ToolBoxWidget::eyedropperOn );
-	connect( colouringButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn );
-	connect( smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn );
-
-	// pass to editor
-	connect( clearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked );
-
+    QSettings settings(PENCIL2D, PENCIL2D);
+    this->restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
 }
 
 void ToolBoxWidget::updateUI()
 {
 }
 
+void ToolBoxWidget::resizeEvent(QResizeEvent* event)
+{
+    QWidget::resizeEvent(event);
+
+    QRect geom = geometry();
+    QSize buttonSize = mClearButton->size(); // all buttons share same size
+
+    // Vertical layout
+    if (geom.width() < geom.height())
+    {
+        if (geom.width() > buttonSize.width() * 5)
+        {
+            mGridLayout->addWidget(mClearButton, 0, 0);
+            mGridLayout->addWidget(mMoveButton, 0, 1);
+
+            mGridLayout->addWidget(mSelectButton, 0, 2);
+            mGridLayout->addWidget(mBrushButton, 1, 0);
+
+            mGridLayout->addWidget(mPolylineButton, 1, 1);
+            mGridLayout->addWidget(mSmudgeButton, 1, 2);
+
+            mGridLayout->addWidget(mPenButton, 2, 0);
+            mGridLayout->addWidget(mHandButton, 2, 1);
+
+            mGridLayout->addWidget(mPencilButton, 2, 2);
+            mGridLayout->addWidget(mBucketButton, 3, 0);
+
+            mGridLayout->addWidget(mEyedropperButton, 3, 1);
+            mGridLayout->addWidget(mEraserButton, 3, 2);
+        }
+        else if (geom.width() > buttonSize.width() * 3)
+        {
+            mGridLayout->addWidget(mClearButton, 0, 0);
+            mGridLayout->addWidget(mMoveButton, 0, 1);
+
+            mGridLayout->addWidget(mSelectButton, 1, 0);
+            mGridLayout->addWidget(mBrushButton, 1, 1);
+
+            mGridLayout->addWidget(mPolylineButton, 2, 0);
+            mGridLayout->addWidget(mSmudgeButton, 2, 1);
+
+            mGridLayout->addWidget(mPenButton, 3, 0);
+            mGridLayout->addWidget(mHandButton, 3, 1);
+
+            mGridLayout->addWidget(mPencilButton, 4, 0);
+            mGridLayout->addWidget(mBucketButton, 4, 1);
+
+            mGridLayout->addWidget(mEyedropperButton, 5, 0);
+            mGridLayout->addWidget(mEraserButton, 5, 1);
+        }
+        else
+        {
+            mGridLayout->addWidget(mClearButton, 0, 0);
+            mGridLayout->addWidget(mMoveButton, 1, 0);
+            mGridLayout->addWidget(mSelectButton, 2, 0);
+            mGridLayout->addWidget(mBrushButton, 3, 0);
+            mGridLayout->addWidget(mPolylineButton, 4, 0);
+            mGridLayout->addWidget(mSmudgeButton, 5, 0);
+            mGridLayout->addWidget(mPenButton, 6, 0);
+            mGridLayout->addWidget(mHandButton, 7, 0);
+            mGridLayout->addWidget(mPencilButton, 8, 0);
+            mGridLayout->addWidget(mBucketButton, 9, 0);
+            mGridLayout->addWidget(mEyedropperButton, 10, 0);
+            mGridLayout->addWidget(mEraserButton, 11, 0);
+        }
+    }
+    else
+    { // Horizontal
+        if (geom.height() > buttonSize.height() * 5)
+        {
+            mGridLayout->addWidget(mClearButton, 0, 0);
+            mGridLayout->addWidget(mMoveButton, 1, 0);
+
+            mGridLayout->addWidget(mSelectButton, 2, 0);
+            mGridLayout->addWidget(mBrushButton, 0, 1);
+
+            mGridLayout->addWidget(mPolylineButton, 1, 1);
+            mGridLayout->addWidget(mSmudgeButton, 2, 1);
+
+            mGridLayout->addWidget(mPenButton, 0, 2);
+            mGridLayout->addWidget(mHandButton, 1, 2);
+
+            mGridLayout->addWidget(mPencilButton, 2, 2);
+            mGridLayout->addWidget(mBucketButton, 0, 3);
+
+            mGridLayout->addWidget(mEyedropperButton, 1, 3);
+            mGridLayout->addWidget(mEraserButton, 2, 3);
+        }
+        else if (geom.height() > buttonSize.height() * 3)
+        {
+            mGridLayout->addWidget(mClearButton, 0, 0);
+            mGridLayout->addWidget(mMoveButton, 1, 0);
+
+            mGridLayout->addWidget(mSelectButton, 0, 1);
+            mGridLayout->addWidget(mBrushButton, 1, 1);
+
+            mGridLayout->addWidget(mPolylineButton, 0, 2);
+            mGridLayout->addWidget(mSmudgeButton, 1, 2);
+
+            mGridLayout->addWidget(mPenButton, 0, 3);
+            mGridLayout->addWidget(mHandButton, 1, 3);
+
+            mGridLayout->addWidget(mPencilButton, 0, 4);
+            mGridLayout->addWidget(mBucketButton, 1, 4);
+
+            mGridLayout->addWidget(mEyedropperButton, 0, 5);
+            mGridLayout->addWidget(mEraserButton, 1, 5);
+        }
+        else
+        {
+            mGridLayout->addWidget(mClearButton, 0, 0);
+            mGridLayout->addWidget(mMoveButton, 0, 1);
+            mGridLayout->addWidget(mSelectButton, 0, 2);
+            mGridLayout->addWidget(mBrushButton, 0, 3);
+            mGridLayout->addWidget(mPolylineButton, 0, 4);
+            mGridLayout->addWidget(mSmudgeButton, 0, 5);
+            mGridLayout->addWidget(mPenButton, 0, 6);
+            mGridLayout->addWidget(mHandButton, 0, 7);
+            mGridLayout->addWidget(mPencilButton, 0, 8);
+            mGridLayout->addWidget(mBucketButton, 0, 9);
+            mGridLayout->addWidget(mEyedropperButton, 0, 10);
+            mGridLayout->addWidget(mEraserButton, 0, 11);
+        }
+    }
+    
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ToolBoxGeom", this->saveGeometry());
+}
+
 QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
 {
     QToolButton* toolButton = new QToolButton(this);
     toolButton->setAutoRaise(true);
-    toolButton->setIconSize( QSize(24,24) );
+    toolButton->setIconSize(QSize(24, 24));
     toolButton->setFixedSize(32, 32);
+#ifdef __APPLE__
+    // Only Mac needs this. ToolButton is naturally borderless on Win/Linux.
+    QString sStyle =
+        "QToolButton { border: 0px; }"
+        "QToolButton:pressed { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }"
+        "QToolButton:checked { border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+    toolButton->setStyleSheet(sStyle);
+#endif
     toolButton->setIcon(icon);
     toolButton->setToolTip(strToolTip);
 
@@ -197,103 +302,103 @@ QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
 
 void ToolBoxWidget::pencilOn()
 {
-    editor()->tools()->setCurrentTool( PENCIL );
+    editor()->tools()->setCurrentTool(PENCIL);
 
     deselectAllTools();
-    pencilButton->setChecked(true);
+    mPencilButton->setChecked(true);
 }
 
 void ToolBoxWidget::eraserOn()
 {
-    editor()->tools()->setCurrentTool( ERASER );
+    editor()->tools()->setCurrentTool(ERASER);
 
     deselectAllTools();
-    eraserButton->setChecked(true);
+    mEraserButton->setChecked(true);
 }
 
 void ToolBoxWidget::selectOn()
 {
-    editor()->tools()->setCurrentTool( SELECT );
+    editor()->tools()->setCurrentTool(SELECT);
 
     deselectAllTools();
-    selectButton->setChecked(true);
+    mSelectButton->setChecked(true);
 }
 
 void ToolBoxWidget::moveOn()
 {
-    editor()->tools()->setCurrentTool( MOVE );
+    editor()->tools()->setCurrentTool(MOVE);
 
     deselectAllTools();
-    moveButton->setChecked(true);
+    mMoveButton->setChecked(true);
 }
 
 void ToolBoxWidget::penOn()
 {
-    editor()->tools()->setCurrentTool( PEN );
+    editor()->tools()->setCurrentTool(PEN);
 
     deselectAllTools();
-    penButton->setChecked(true);
+    mPenButton->setChecked(true);
 }
 
 void ToolBoxWidget::handOn()
 {
-    editor()->tools()->setCurrentTool( HAND );
-    
+    editor()->tools()->setCurrentTool(HAND);
+
     deselectAllTools();
-    handButton->setChecked(true);
+    mHandButton->setChecked(true);
 }
 
 void ToolBoxWidget::polylineOn()
 {
-    editor()->tools()->setCurrentTool( POLYLINE );
+    editor()->tools()->setCurrentTool(POLYLINE);
 
     deselectAllTools();
-    polylineButton->setChecked(true);
+    mPolylineButton->setChecked(true);
 }
 
 void ToolBoxWidget::bucketOn()
 {
-    editor()->tools()->setCurrentTool( BUCKET );
+    editor()->tools()->setCurrentTool(BUCKET);
 
     deselectAllTools();
-    bucketButton->setChecked(true);
+    mBucketButton->setChecked(true);
 }
 
 void ToolBoxWidget::eyedropperOn()
 {
-    editor()->tools()->setCurrentTool( EYEDROPPER );
+    editor()->tools()->setCurrentTool(EYEDROPPER);
 
     deselectAllTools();
-    eyedropperButton->setChecked(true);
+    mEyedropperButton->setChecked(true);
 }
 
 void ToolBoxWidget::brushOn()
 {
-    editor()->tools()->setCurrentTool( BRUSH );
-  
+    editor()->tools()->setCurrentTool(BRUSH);
+
     deselectAllTools();
-    colouringButton->setChecked(true);
+    mBrushButton->setChecked(true);
 }
 
 void ToolBoxWidget::smudgeOn()
 {
-    editor()->tools()->setCurrentTool( SMUDGE );
+    editor()->tools()->setCurrentTool(SMUDGE);
 
     deselectAllTools();
-    smudgeButton->setChecked(true);
+    mSmudgeButton->setChecked(true);
 }
 
 void ToolBoxWidget::deselectAllTools()
 {
-    pencilButton->setChecked(false);
-    eraserButton->setChecked(false);
-    selectButton->setChecked(false);
-    moveButton->setChecked(false);
-    handButton->setChecked(false);
-    penButton->setChecked(false);
-    polylineButton->setChecked(false);
-    bucketButton->setChecked(false);
-    eyedropperButton->setChecked(false);
-    colouringButton->setChecked(false);
-    smudgeButton->setChecked(false);
+    mPencilButton->setChecked(false);
+    mEraserButton->setChecked(false);
+    mSelectButton->setChecked(false);
+    mMoveButton->setChecked(false);
+    mHandButton->setChecked(false);
+    mPenButton->setChecked(false);
+    mPolylineButton->setChecked(false);
+    mBucketButton->setChecked(false);
+    mEyedropperButton->setChecked(false);
+    mBrushButton->setChecked(false);
+    mSmudgeButton->setChecked(false);
 }

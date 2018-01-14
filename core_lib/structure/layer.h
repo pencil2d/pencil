@@ -89,6 +89,7 @@ public:
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber);
+    bool getVisibility() { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>);
 

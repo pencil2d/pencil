@@ -30,9 +30,7 @@ INCLUDEPATH += \
     ../core_lib/managers
 
 HEADERS += \
-    catch.hpp \
-    AutoTest.h \
-    test_object.h
+    catch.hpp
 
 SOURCES += \
     main.cpp \

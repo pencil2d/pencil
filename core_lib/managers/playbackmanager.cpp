@@ -180,6 +180,11 @@ void PlaybackManager::playSounds(int frame)
     {
         KeyFrame* key = layer->getLastKeyFrameAtPosition(frame);
 
+        if (!layer->getVisibility())
+        {
+            continue;
+        }
+
         if (key != nullptr)
         {
             // add keyframe position to list

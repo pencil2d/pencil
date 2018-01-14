@@ -13,6 +13,23 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QToolButton {
+	border: 0px;
+}
+
+QToolButton:pressed {
+	border: 1px solid #ADADAD;
+	border-radius: 2px;
+	background-color: #D5D5D5;
+}
+
+QToolButton:checked {
+	border: 1px solid #ADADAD;
+	border-radius: 2px;
+	background-color: #D5D5D5;
+}</string>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
     <number>4</number>
