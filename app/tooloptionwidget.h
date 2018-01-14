@@ -43,7 +43,7 @@ public:
 
     void makeConnectionToEditor(Editor* editor);
 
-    public slots:
+public slots:
     void onToolPropertyChanged(ToolType, ToolPropertyType);
     void onToolChanged(ToolType);
     void visibilityOnLayer();

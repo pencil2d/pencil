@@ -54,6 +54,7 @@ void ToolOptionWidget::updateUI()
 
     //disableAllOptions();
 
+    /*
     mSizeSlider->setVisible(currentTool->isPropertyEnabled(WIDTH));
     mBrushSpinBox->setVisible(currentTool->isPropertyEnabled(WIDTH));
     mFeatherSlider->setVisible(currentTool->isPropertyEnabled(FEATHER));
@@ -68,7 +69,7 @@ void ToolOptionWidget::updateUI()
     mToleranceSlider->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
     mToleranceSpinBox->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
     mFillContour->setVisible(currentTool->isPropertyEnabled(FILLCONTOUR));
-
+    */
     //visibilityOnLayer();
 
     const Properties& p = currentTool->properties;
@@ -94,11 +95,7 @@ void ToolOptionWidget::createUI()
     QVBoxLayout* mainLayout = new QVBoxLayout;
 
     QFrame* optionGroup = new QFrame;
-    QGridLayout* pLayout = new QGridLayout;
-    pLayout->setMargin(4);
-    pLayout->setSpacing(4);
     optionGroup->setLayout(mainLayout);
-    mainLayout->addLayout(pLayout);
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -169,23 +166,24 @@ void ToolOptionWidget::createUI()
     mVectorMergeBox->setToolTip(tr("Merge vector lines when they are close together"));
     mVectorMergeBox->setChecked(false);
 
-    pLayout->addWidget(mSizeSlider, 1, 0, 1, 2);
-    pLayout->addWidget(mBrushSpinBox, 1, 2, 1, 2);
-    pLayout->addWidget(mFeatherSlider, 2, 0, 1, 2);
-    pLayout->addWidget(mFeatherSpinBox, 2, 2, 1, 2);
-    pLayout->addWidget(mUseFeatherBox, 3, 0, 1, 2);
-    pLayout->addWidget(mUseBezierBox, 4, 0, 1, 2);
-    pLayout->addWidget(mUsePressureBox, 5, 0, 1, 2);
-    pLayout->addWidget(mUseAABox, 6, 0, 1, 2);
-    pLayout->addWidget(mPreserveAlphaBox, 7, 0, 1, 2);
-    pLayout->addWidget(mMakeInvisibleBox, 8, 0, 1, 2);
-    pLayout->addWidget(mVectorMergeBox, 9, 0, 1, 2);
-    pLayout->addWidget(mInpolLevelsBox, 10, 0, 1, 4);
-    pLayout->addWidget(mToleranceSlider, 2, 0, 1, 2);
-    pLayout->addWidget(mToleranceSpinBox, 2, 2, 1, 2);
-    pLayout->addWidget(mFillContour, 1, 0, 1, 2);
+    mainLayout->addWidget(mSizeSlider);
+    mainLayout->addWidget(mBrushSpinBox);
+    mainLayout->addWidget(mFeatherSlider);
+    mainLayout->addWidget(mFeatherSpinBox);
+    mainLayout->addWidget(mUseFeatherBox);
 
-    pLayout->setRowStretch(17, 1);
+    mainLayout->addWidget(mFillContour);
+    mainLayout->addWidget(mToleranceSlider);
+    mainLayout->addWidget(mToleranceSpinBox);
+    
+    mainLayout->addWidget(mUseBezierBox);
+    mainLayout->addWidget(mUsePressureBox);
+    mainLayout->addWidget(mUseAABox);
+    mainLayout->addWidget(mPreserveAlphaBox);
+    mainLayout->addWidget(mMakeInvisibleBox);
+    mainLayout->addWidget(mVectorMergeBox);
+    mainLayout->addWidget(mInpolLevelsBox);
+    mainLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     setWidget(optionGroup);
 }
