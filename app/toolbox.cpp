@@ -143,6 +143,8 @@ void ToolBoxWidget::initUI()
     connect(mSmudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
     connect(mClearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked);
 
+    connect(this, &QDockWidget::dockLocationChanged, this, &ToolBoxWidget::getDockLocation);
+
     QSettings settings(PENCIL2D, PENCIL2D);
     this->restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
 }
@@ -158,7 +160,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
     QRect geom = geometry();
     QSize buttonSize = mClearButton->size(); // all buttons share same size
 
-    // Vertical layout
+    // Horizontal mGridLayout
     if (geom.width() < geom.height())
     {
         if (geom.width() > buttonSize.width() * 5)
@@ -200,8 +202,9 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
             mGridLayout->addWidget(mEyedropperButton, 5, 0);
             mGridLayout->addWidget(mEraserButton, 5, 1);
+
         }
-        else
+        else if (mAreaLocation != Qt::BottomDockWidgetArea || isFloating())
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
             mGridLayout->addWidget(mMoveButton, 1, 0);
@@ -218,7 +221,7 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
         }
     }
     else
-    { // Horizontal
+    { // Vertical
         if (geom.height() > buttonSize.height() * 5)
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
@@ -258,8 +261,9 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 
             mGridLayout->addWidget(mEyedropperButton, 0, 5);
             mGridLayout->addWidget(mEraserButton, 1, 5);
+
         }
-        else
+        else if (mAreaLocation == Qt::TopDockWidgetArea || isFloating())
         {
             mGridLayout->addWidget(mClearButton, 0, 0);
             mGridLayout->addWidget(mMoveButton, 0, 1);
@@ -298,6 +302,11 @@ QToolButton* ToolBoxWidget::newToolButton(const QIcon& icon, QString strToolTip)
     toolButton->setToolTip(strToolTip);
 
     return toolButton;
+}
+
+void ToolBoxWidget::getDockLocation(Qt::DockWidgetArea area)
+{
+    mAreaLocation = area;
 }
 
 void ToolBoxWidget::pencilOn()

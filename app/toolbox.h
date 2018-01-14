@@ -52,6 +52,8 @@ public slots:
     void brushOn();
     void smudgeOn();
 
+    void getDockLocation(Qt::DockWidgetArea area);
+
 signals:
     void clearButtonClicked();
 
@@ -76,6 +78,8 @@ private:
     QToolButton* mEyedropperButton = nullptr;
     QToolButton* mSmudgeButton = nullptr;
     QToolButton* mClearButton = nullptr;
+
+    Qt::DockWidgetArea mAreaLocation;
 };
 
 #endif
