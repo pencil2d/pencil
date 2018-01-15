@@ -64,9 +64,9 @@ void ToolOptionWidget::updateUI()
     BaseTool* currentTool = editor()->tools()->currentTool();
     Q_ASSERT(currentTool);
 
-    //disableAllOptions();
+    disableAllOptions();
     
-    visibilityOnLayer(currentTool);
+    setVisibility(currentTool);
 
     const Properties& p = currentTool->properties;
 
@@ -162,7 +162,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     }
 }
 
-void ToolOptionWidget::visibilityOnLayer(BaseTool* currentTool)
+void ToolOptionWidget::setVisibility(BaseTool* currentTool)
 {
     ui->sizeSlider->setVisible(currentTool->isPropertyEnabled(WIDTH));
     ui->brushSpinBox->setVisible(currentTool->isPropertyEnabled(WIDTH));
