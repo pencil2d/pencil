@@ -30,52 +30,52 @@ class ToolManager : public BaseManager
     Q_OBJECT
 public:
     explicit ToolManager(Editor* editor);
-    
+
     bool init() override;
-    Status load( Object* ) override;
-	Status save( Object* ) override;
+    Status load(Object*) override;
+    Status save(Object*) override;
 
     BaseTool* currentTool() { return mCurrentTool; }
-    BaseTool* getTool( ToolType eToolType );
-    void      setDefaultTool();
-    void      setCurrentTool( ToolType eToolType );
-    void      cleanupAllToolsData();
+    BaseTool* getTool(ToolType eToolType);
+    void setDefaultTool();
+    void setCurrentTool(ToolType eToolType);
+    void cleanupAllToolsData();
 
-    void      tabletSwitchToEraser();
-    void      tabletRestorePrevTool();
-    int propertySwitch( bool condition, int property );
+    void tabletSwitchToEraser();
+    void tabletRestorePrevTool();
+    int propertySwitch(bool condition, int property);
 
 Q_SIGNALS:
-    void penWidthValueChanged( float );
-    void penFeatherValueChanged( float );
-    void toleranceValueChanged( qreal );
+    void penWidthValueChanged(float);
+    void penFeatherValueChanged(float);
+    void toleranceValueChanged(qreal);
 
-    void toolChanged( ToolType );
-    void toolPropertyChanged( ToolType, ToolPropertyType );
+    void toolChanged(ToolType);
+    void toolPropertyChanged(ToolType, ToolPropertyType);
 
 public slots:
     void resetAllTools();
 
-    void setWidth( float );
-    void setFeather( float );
-    void setUseFeather( bool );
-    void setInvisibility( bool );
-    void setPreserveAlpha( bool );
-    void setVectorMergeEnabled( bool );
-    void setBezier( bool );
-    void setPressure( bool );
-    void setAA( int );
-    void setInpolLevel( int );
-    void setTolerance( int );
-    void setUseFillContour( bool );
+    void setWidth(float);
+    void setFeather(float);
+    void setUseFeather(bool);
+    void setInvisibility(bool);
+    void setPreserveAlpha(bool);
+    void setVectorMergeEnabled(bool);
+    void setBezier(bool);
+    void setPressure(bool);
+    void setAA(int);
+    void setInpolLevel(int);
+    void setTolerance(int);
+    void setUseFillContour(bool);
 
 private:
-    BaseTool* mCurrentTool       = nullptr;
+    BaseTool * mCurrentTool = nullptr;
     ToolType  meTabletBackupTool = PENCIL;
-    bool mIsSwitchedToEraser     = false;
+    bool mIsSwitchedToEraser = false;
     QHash<ToolType, BaseTool*> mToolSetHash;
 
-    int oldValue = 0;
+    int mOldValue = 0;
 
 };
 
