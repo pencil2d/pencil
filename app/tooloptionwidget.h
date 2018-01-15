@@ -20,6 +20,10 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 #include "pencildef.h"
 
+namespace Ui
+{
+    class ToolOptions;
+}
 class QToolButton;
 class SpinSlider;
 class QCheckBox;
@@ -35,7 +39,7 @@ class ToolOptionWidget : public BaseDockWidget
 {
     Q_OBJECT
 public:
-    explicit ToolOptionWidget( QWidget* parent );
+    explicit ToolOptionWidget(QWidget* parent);
     virtual ~ToolOptionWidget();
 
     void initUI() override;
@@ -44,43 +48,28 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 public slots:
-    void onToolPropertyChanged( ToolType, ToolPropertyType );
-    void onToolChanged( ToolType );
-    void visibilityOnLayer( );
+    void onToolPropertyChanged(ToolType, ToolPropertyType);
+    void onToolChanged(ToolType);
+    void setVisibility(BaseTool*);
 
 private:
-    void setPenWidth( qreal );
-    void setPenFeather( qreal );
-    void setUseFeather( bool );
-    void setPenInvisibility( int );
-    void setPressure( int );
-    void setPreserveAlpha( int );
-    void setVectorMergeEnabled( int );
-    void setAA( int );
-    void setInpolLevel( int );
-    void setTolerance( int );
-    void setFillContour( int );
+    void setPenWidth(qreal);
+    void setPenFeather(qreal);
+    void setUseFeather(bool);
+    void setPenInvisibility(int);
+    void setPressure(int);
+    void setPreserveAlpha(int);
+    void setVectorMergeEnabled(int);
+    void setAA(int);
+    void setInpolLevel(int);
+    void setTolerance(int);
+    void setFillContour(int);
 
     void disableAllOptions();
     void createUI();
 
-    QCheckBox* mUseBezierBox     = nullptr;
-    QCheckBox* mUsePressureBox   = nullptr;
-    QCheckBox* mUseFeatherBox    = nullptr;
-    QCheckBox* mMakeInvisibleBox = nullptr;
-    QCheckBox* mPreserveAlphaBox = nullptr;
-    QCheckBox* mVectorMergeBox   = nullptr;
-    QDoubleSpinBox* mBrushSpinBox      = nullptr;
-    QDoubleSpinBox* mFeatherSpinBox    = nullptr;
-    SpinSlider* mSizeSlider      = nullptr;
-    SpinSlider* mFeatherSlider   = nullptr;
-    QCheckBox* mUseAABox         = nullptr;
-    QComboBox* mInpol            = nullptr;
-    QGroupBox* mInpolLevelsBox   = nullptr;
-    SpinSlider* mToleranceSlider = nullptr;
-    QSpinBox* mToleranceSpinBox  = nullptr;
-    QCheckBox* mFillContour      = nullptr;
-
+private:
+    Ui::ToolOptions* ui = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

@@ -39,21 +39,21 @@ bool ToolManager::init()
 {
     mIsSwitchedToEraser = false;
 
-    mToolSetHash.insert( PEN, new PenTool(this) );
-    mToolSetHash.insert( PENCIL, new PencilTool(this) );
-    mToolSetHash.insert( BRUSH, new BrushTool(this) );
-    mToolSetHash.insert( ERASER, new EraserTool(this) );
-    mToolSetHash.insert( BUCKET, new BucketTool(this) );
-    mToolSetHash.insert( EYEDROPPER, new EyedropperTool(this) );
-    mToolSetHash.insert( HAND, new HandTool(this) );
-    mToolSetHash.insert( MOVE, new MoveTool(this) );
-    mToolSetHash.insert( POLYLINE, new PolylineTool(this) );
-    mToolSetHash.insert( SELECT, new SelectTool(this) );
-    mToolSetHash.insert( SMUDGE, new SmudgeTool(this) );
+    mToolSetHash.insert(PEN, new PenTool(this));
+    mToolSetHash.insert(PENCIL, new PencilTool(this));
+    mToolSetHash.insert(BRUSH, new BrushTool(this));
+    mToolSetHash.insert(ERASER, new EraserTool(this));
+    mToolSetHash.insert(BUCKET, new BucketTool(this));
+    mToolSetHash.insert(EYEDROPPER, new EyedropperTool(this));
+    mToolSetHash.insert(HAND, new HandTool(this));
+    mToolSetHash.insert(MOVE, new MoveTool(this));
+    mToolSetHash.insert(POLYLINE, new PolylineTool(this));
+    mToolSetHash.insert(SELECT, new SelectTool(this));
+    mToolSetHash.insert(SMUDGE, new SmudgeTool(this));
 
-    foreach( BaseTool* pTool, mToolSetHash.values() )
+    foreach(BaseTool* pTool, mToolSetHash.values())
     {
-        pTool->initialize( editor() );
+        pTool->initialize(editor());
     }
 
     setDefaultTool();
@@ -61,19 +61,19 @@ bool ToolManager::init()
     return true;
 }
 
-Status ToolManager::load( Object* )
+Status ToolManager::load(Object*)
 {
     return Status::OK;
 }
 
-Status ToolManager::save( Object* )
+Status ToolManager::save(Object*)
 {
-	return Status::OK;
+    return Status::OK;
 }
 
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
-    return mToolSetHash[ eToolType ];
+    return mToolSetHash[eToolType];
 }
 
 void ToolManager::setDefaultTool()
@@ -86,19 +86,19 @@ void ToolManager::setDefaultTool()
     meTabletBackupTool = defaultToolType;
 }
 
-void ToolManager::setCurrentTool( ToolType eToolType )
+void ToolManager::setCurrentTool(ToolType eToolType)
 {
     if (mCurrentTool != NULL)
     {
         mCurrentTool->leavingThisTool();
     }
-    mCurrentTool = getTool( eToolType );
-    Q_EMIT toolChanged( eToolType );
+    mCurrentTool = getTool(eToolType);
+    Q_EMIT toolChanged(eToolType);
 }
 
 void ToolManager::cleanupAllToolsData()
 {
-    foreach ( BaseTool* pTool, mToolSetHash.values() )
+    foreach(BaseTool* pTool, mToolSetHash.values())
     {
         pTool->clear();
     }
@@ -107,98 +107,98 @@ void ToolManager::cleanupAllToolsData()
 void ToolManager::resetAllTools()
 {
     // Reset can be useful to solve some pencil settings problems.
-    // Betatesters should be recommended to reset before sending tool related issues.
+    // Beta-testers should be recommended to reset before sending tool related issues.
     // This can prevent from users to stop working on their project.
-    getTool( PEN )->properties.width = 1.5; // not supposed to use feather
-    getTool( PEN )->properties.inpolLevel = -1;
-    getTool( POLYLINE )->properties.width = 1.5; // PEN dependent
-    getTool( PENCIL )->properties.width = 1.0;
-    getTool( PENCIL )->properties.feather = -1.0; // locks feather usage (can be changed)
-    getTool( PENCIL )->properties.inpolLevel = -1;
-    getTool( ERASER )->properties.width = 25.0;
-    getTool( ERASER )->properties.feather = 50.0;
-    getTool( BRUSH )->properties.width = 15.0;
-    getTool( BRUSH )->properties.feather = 200.0;
-    getTool( BRUSH )->properties.inpolLevel = -1;
-    getTool( BRUSH )->properties.useFeather = false;
-    getTool( SMUDGE )->properties.width = 25.0;
-    getTool( SMUDGE )->properties.feather = 200.0;
-    getTool( BUCKET )->properties.tolerance = 10.0;
+    getTool(PEN)->properties.width = 1.5; // not supposed to use feather
+    getTool(PEN)->properties.inpolLevel = -1;
+    getTool(POLYLINE)->properties.width = 1.5; // PEN dependent
+    getTool(PENCIL)->properties.width = 1.0;
+    getTool(PENCIL)->properties.feather = -1.0; // locks feather usage (can be changed)
+    getTool(PENCIL)->properties.inpolLevel = -1;
+    getTool(ERASER)->properties.width = 25.0;
+    getTool(ERASER)->properties.feather = 50.0;
+    getTool(BRUSH)->properties.width = 15.0;
+    getTool(BRUSH)->properties.feather = 200.0;
+    getTool(BRUSH)->properties.inpolLevel = -1;
+    getTool(BRUSH)->properties.useFeather = false;
+    getTool(SMUDGE)->properties.width = 25.0;
+    getTool(SMUDGE)->properties.feather = 200.0;
+    getTool(BUCKET)->properties.tolerance = 10.0;
 
     // todo: add all the default settings
 
-    qDebug( "tools restored to default settings" );
+    qDebug("tools restored to default settings");
 }
 
-void ToolManager::setWidth( float newWidth )
+void ToolManager::setWidth(float newWidth)
 {
-    if ( std::isnan( newWidth ) || newWidth < 0 )
+    if (std::isnan(newWidth) || newWidth < 0)
     {
         newWidth = 1.f;
     }
 
     currentTool()->setWidth(newWidth);
-    Q_EMIT penWidthValueChanged( newWidth );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), WIDTH );
+    Q_EMIT penWidthValueChanged(newWidth);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), WIDTH);
 }
 
-void ToolManager::setFeather( float newFeather )
+void ToolManager::setFeather(float newFeather)
 {
-    if ( std::isnan( newFeather ) || newFeather < 0 )
+    if (std::isnan(newFeather) || newFeather < 0)
     {
         newFeather = 0.f;
     }
 
     currentTool()->setFeather(newFeather);
-    Q_EMIT penFeatherValueChanged( newFeather );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), FEATHER );
+    Q_EMIT penFeatherValueChanged(newFeather);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), FEATHER);
 }
 
-void ToolManager::setUseFeather( bool usingFeather )
+void ToolManager::setUseFeather(bool usingFeather)
 {
     int usingAA = currentTool()->properties.useAA;
     int value = propertySwitch(usingFeather, usingAA);
 
     currentTool()->setAA(value);
-    currentTool()->setUseFeather( usingFeather );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), USEFEATHER );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
+    currentTool()->setUseFeather(usingFeather);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), USEFEATHER);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
-void ToolManager::setInvisibility( bool isInvisible )
+void ToolManager::setInvisibility(bool isInvisible)
 {
     currentTool()->setInvisibility(isInvisible);
-    Q_EMIT toolPropertyChanged( currentTool()->type(), INVISIBILITY );
+    Q_EMIT toolPropertyChanged(currentTool()->type(), INVISIBILITY);
 }
 
-void ToolManager::setPreserveAlpha( bool isPreserveAlpha )
+void ToolManager::setPreserveAlpha(bool isPreserveAlpha)
 {
     currentTool()->setPreserveAlpha(isPreserveAlpha);
-    Q_EMIT toolPropertyChanged( currentTool()->type(), PRESERVEALPHA );
+    Q_EMIT toolPropertyChanged(currentTool()->type(), PRESERVEALPHA);
 }
 
 void ToolManager::setVectorMergeEnabled(bool isVectorMergeEnabled)
 {
     currentTool()->setVectorMergeEnabled(isVectorMergeEnabled);
-    Q_EMIT toolPropertyChanged( currentTool()->type(), VECTORMERGE );
+    Q_EMIT toolPropertyChanged(currentTool()->type(), VECTORMERGE);
 }
 
-void ToolManager::setBezier( bool isBezierOn )
+void ToolManager::setBezier(bool isBezierOn)
 {
-    currentTool()->setBezier( isBezierOn );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), BEZIER );
+    currentTool()->setBezier(isBezierOn);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), BEZIER);
 }
 
-void ToolManager::setPressure( bool isPressureOn )
+void ToolManager::setPressure(bool isPressureOn)
 {
-    currentTool()->setPressure( isPressureOn );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), PRESSURE );
+    currentTool()->setPressure(isPressureOn);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), PRESSURE);
 }
 
-void ToolManager::setAA( int usingAA )
+void ToolManager::setAA(int usingAA)
 {
-    currentTool()->setAA( usingAA );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), ANTI_ALIASING );
+    currentTool()->setAA(usingAA);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
 void ToolManager::setInpolLevel(int level)
@@ -207,23 +207,22 @@ void ToolManager::setInpolLevel(int level)
     Q_EMIT toolPropertyChanged(currentTool()->type(), INTERPOLATION);
 }
 
-
-void ToolManager::setTolerance( int newTolerance )
+void ToolManager::setTolerance(int newTolerance)
 {
-    if ( newTolerance < 0 )
+    if (newTolerance < 0)
     {
         newTolerance = 1;
     }
 
-    currentTool()->setTolerance( newTolerance );
-    Q_EMIT toleranceValueChanged( newTolerance );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), TOLERANCE );
+    currentTool()->setTolerance(newTolerance);
+    Q_EMIT toleranceValueChanged(newTolerance);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), TOLERANCE);
 }
 
 void ToolManager::setUseFillContour(bool useFillContour)
 {
-    currentTool()->setUseFillContour( useFillContour );
-    Q_EMIT toolPropertyChanged( currentTool()->type(), FILLCONTOUR);
+    currentTool()->setUseFillContour(useFillContour);
+    Q_EMIT toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
 
@@ -234,17 +233,18 @@ int ToolManager::propertySwitch(bool condition, int tool)
     int value = 0;
     int newValue = 0;
 
-    if (condition == true){
+    if (condition == true) {
         value = -1;
-        newValue = oldValue;
-        oldValue = tool;
+        newValue = mOldValue;
+        mOldValue = tool;
     }
 
     if (condition == false) {
         if (newValue == 1) {
             value = 1;
-        } else {
-            value = oldValue;
+        }
+        else {
+            value = mOldValue;
         }
     }
     return value;
@@ -257,19 +257,19 @@ void ToolManager::tabletSwitchToEraser()
         mIsSwitchedToEraser = true;
 
         meTabletBackupTool = mCurrentTool->type();
-        setCurrentTool( ERASER );
+        setCurrentTool(ERASER);
     }
 }
 
 void ToolManager::tabletRestorePrevTool()
 {
-    if ( mIsSwitchedToEraser )
+    if (mIsSwitchedToEraser)
     {
         mIsSwitchedToEraser = false;
-        if ( meTabletBackupTool == INVALID_TOOL )
+        if (meTabletBackupTool == INVALID_TOOL)
         {
             meTabletBackupTool = PENCIL;
         }
-        setCurrentTool( meTabletBackupTool );
+        setCurrentTool(meTabletBackupTool);
     }
 }

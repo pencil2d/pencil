@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #define SPINSLIDER_H
 
 #include <QWidget>
-#include <QLabel>
 
 class QLabel;
 class QSlider;
@@ -43,32 +42,31 @@ public:
         INTEGER,
         FLOAT,
     };
-
-    SpinSlider( QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max, QWidget* parent = 0 );
-    void setValue( qreal );
+    SpinSlider(QWidget* parent = nullptr);
+    void init(QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max);
+    void setValue(qreal);
     void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
-    void setExponent( const qreal );
-    void setLabel( QString newText );
-    
+    void setExponent(const qreal);
+    void setLabel(QString newText);
+
 signals:
     void valueChanged(qreal);
 
 private:
-    void onSliderValueChanged( int );
-    void changeValue( qreal );
+    void onSliderValueChanged(int);
+    void changeValue(qreal);
 
 private:
-    QSlider* mSlider     = nullptr;
+    QSlider* mSlider = nullptr;
     qreal mValue = 50.0;
-    qreal mMin   = 0.1;
-    qreal mMax   = 100.0;
-    qreal mExp   = 2.0;
+    qreal mMin = 0.1;
+    qreal mMax = 100.0;
+    qreal mExp = 2.0;
     QString mText = "";
-
-    QLabel* mLabel;
+    QLabel* mLabel = nullptr;
 
     GROWTH_TYPE mGrowthType = LINEAR;
-    VALUE_TYPE  mValueType  = INTEGER;
+    VALUE_TYPE  mValueType = INTEGER;
 };
 
 #endif // SPINSLIDER_H

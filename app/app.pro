@@ -43,7 +43,7 @@ HEADERS += \
     colorinspector.h \
     colorpalettewidget.h \
     colorwheel.h \
-	colordictionary.h \
+    colordictionary.h \
     filedialogex.h \
     displayoptionwidget.h \
     pencilapplication.h \
@@ -55,7 +55,8 @@ HEADERS += \
     tooloptionwidget.h \
     importexportdialog.h \
     exportimagedialog.h \
-    importimageseqdialog.h
+    importimageseqdialog.h \
+    spinslider.h
 
 SOURCES += \
     main.cpp \
@@ -80,7 +81,8 @@ SOURCES += \
     tooloptionwidget.cpp \
     importexportdialog.cpp \
     exportimagedialog.cpp \
-    importimageseqdialog.cpp
+    importimageseqdialog.cpp \
+    spinslider.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -93,7 +95,8 @@ FORMS += \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \
     ui/exportimageoptions.ui \
-    ui/importimageseqoptions.ui
+    ui/importimageseqoptions.ui \
+    ui/tooloptions.ui
 
 DEPENDPATH += .
 
