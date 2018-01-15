@@ -56,7 +56,6 @@ void ToolOptionWidget::initUI()
     ui->toleranceSlider->init(tr("Color Tolerance"), SpinSlider::LINEAR, SpinSlider::INTEGER, 1, 100);
     ui->toleranceSlider->setValue(settings.value("Tolerance", "50").toInt());
     ui->toleranceSpinBox->setValue(settings.value("Tolerance", "50").toInt());
-
 }
 
 void ToolOptionWidget::updateUI()
@@ -124,60 +123,39 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
 
     switch (ePropertyType)
     {
-    case WIDTH:
-        setPenWidth(p.width);
-        break;
-    case FEATHER:
-        setPenFeather(p.feather);
-        break;
-    case USEFEATHER:
-        setUseFeather(p.useFeather);
-        break;
-    case PRESSURE:
-        setPressure(p.pressure);
-        break;
-    case INVISIBILITY:
-        setPenInvisibility(p.invisibility);
-        break;
-    case PRESERVEALPHA:
-        setPreserveAlpha(p.preserveAlpha);
-        break;
-    case VECTORMERGE:
-        setVectorMergeEnabled(p.vectorMergeEnabled);
-        break;
-    case ANTI_ALIASING:
-        setAA(p.useAA);
-        break;
-    case INTERPOLATION:
-        setInpolLevel(p.inpolLevel);
-        break;
-    case TOLERANCE:
-        setTolerance(p.tolerance);
-        break;
-    case FILLCONTOUR:
-        setFillContour(p.useFillContour);
-        break;
+    case WIDTH: setPenWidth(p.width); break;
+    case FEATHER: setPenFeather(p.feather); break;
+    case USEFEATHER: setUseFeather(p.useFeather); break;
+    case PRESSURE: setPressure(p.pressure); break;
+    case INVISIBILITY: setPenInvisibility(p.invisibility); break;
+    case PRESERVEALPHA: setPreserveAlpha(p.preserveAlpha); break;
+    case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
+    case ANTI_ALIASING: setAA(p.useAA); break;
+    case INTERPOLATION: setInpolLevel(p.inpolLevel); break;
+    case TOLERANCE: setTolerance(p.tolerance); break;
+    case FILLCONTOUR: setFillContour(p.useFillContour); break;
     default:
+        Q_ASSERT(false);
         break;
     }
 }
 
-void ToolOptionWidget::setVisibility(BaseTool* currentTool)
+void ToolOptionWidget::setVisibility(BaseTool* tool)
 {
-    ui->sizeSlider->setVisible(currentTool->isPropertyEnabled(WIDTH));
-    ui->brushSpinBox->setVisible(currentTool->isPropertyEnabled(WIDTH));
-    ui->featherSlider->setVisible(currentTool->isPropertyEnabled(FEATHER));
-    ui->useFeatherBox->setVisible(currentTool->isPropertyEnabled(FEATHER));
-    ui->featherSpinBox->setVisible(currentTool->isPropertyEnabled(FEATHER));
-    ui->useBezierBox->setVisible(currentTool->isPropertyEnabled(BEZIER));
-    ui->usePressureBox->setVisible(currentTool->isPropertyEnabled(PRESSURE));
-    ui->makeInvisibleBox->setVisible(currentTool->isPropertyEnabled(INVISIBILITY));
-    ui->preserveAlphaBox->setVisible(currentTool->isPropertyEnabled(PRESERVEALPHA));
-    ui->useAABox->setVisible(currentTool->isPropertyEnabled(ANTI_ALIASING));
-    ui->inpolLevelsCombo->setVisible(currentTool->isPropertyEnabled(INTERPOLATION));
-    ui->toleranceSlider->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
-    ui->toleranceSpinBox->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
-    ui->fillContourBox->setVisible(currentTool->isPropertyEnabled(FILLCONTOUR));
+    ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
+    ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));
+    ui->featherSlider->setVisible(tool->isPropertyEnabled(FEATHER));
+    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(FEATHER));
+    ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
+    ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
+    ui->usePressureBox->setVisible(tool->isPropertyEnabled(PRESSURE));
+    ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
+    ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
+    ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
+    ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(INTERPOLATION));
+    ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
+    ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));
+    ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -317,9 +295,7 @@ void ToolOptionWidget::setAA(int x)
 
 void ToolOptionWidget::setInpolLevel(int x)
 {
-    qDebug() << "Setting - Interpolation level:" << x;
-
-    ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count()));
+    ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
 }
 
 void ToolOptionWidget::setTolerance(int tolerance)
