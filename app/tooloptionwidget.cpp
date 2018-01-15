@@ -65,24 +65,8 @@ void ToolOptionWidget::updateUI()
     Q_ASSERT(currentTool);
 
     //disableAllOptions();
-
-    /*
-    ui->sizeSlider->setVisible(currentTool->isPropertyEnabled(WIDTH));
-    ui->brushSpinBox->setVisible(currentTool->isPropertyEnabled(WIDTH));
-    ui->featherSlider->setVisible(currentTool->isPropertyEnabled(FEATHER));
-    ui->useFeatherBox->setVisible(currentTool->isPropertyEnabled(FEATHER));
-    ui->featherSpinBox->setVisible(currentTool->isPropertyEnabled(FEATHER));
-    mUseBezierBox->setVisible(currentTool->isPropertyEnabled(BEZIER));
-    ui->usePressureBox->setVisible(currentTool->isPropertyEnabled(PRESSURE));
-    ui->makeInvisibleBox->setVisible(currentTool->isPropertyEnabled(INVISIBILITY));
-    ui->preserveAlphaBox->setVisible(currentTool->isPropertyEnabled(PRESERVEALPHA));
-    ui->useAABox->setVisible(currentTool->isPropertyEnabled(ANTI_ALIASING));
-    mInpolLevelsBox->setVisible(currentTool->isPropertyEnabled(INTERPOLATION));
-    mToleranceSlider->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
-    mToleranceSpinBox->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
-    mFillContour->setVisible(currentTool->isPropertyEnabled(FILLCONTOUR));
-    */
-    //visibilityOnLayer();
+    
+    visibilityOnLayer(currentTool);
 
     const Properties& p = currentTool->properties;
 
@@ -178,8 +162,23 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     }
 }
 
-void ToolOptionWidget::visibilityOnLayer()
+void ToolOptionWidget::visibilityOnLayer(BaseTool* currentTool)
 {
+    ui->sizeSlider->setVisible(currentTool->isPropertyEnabled(WIDTH));
+    ui->brushSpinBox->setVisible(currentTool->isPropertyEnabled(WIDTH));
+    ui->featherSlider->setVisible(currentTool->isPropertyEnabled(FEATHER));
+    ui->useFeatherBox->setVisible(currentTool->isPropertyEnabled(FEATHER));
+    ui->featherSpinBox->setVisible(currentTool->isPropertyEnabled(FEATHER));
+    ui->useBezierBox->setVisible(currentTool->isPropertyEnabled(BEZIER));
+    ui->usePressureBox->setVisible(currentTool->isPropertyEnabled(PRESSURE));
+    ui->makeInvisibleBox->setVisible(currentTool->isPropertyEnabled(INVISIBILITY));
+    ui->preserveAlphaBox->setVisible(currentTool->isPropertyEnabled(PRESERVEALPHA));
+    ui->useAABox->setVisible(currentTool->isPropertyEnabled(ANTI_ALIASING));
+    ui->inpolLevelsCombo->setVisible(currentTool->isPropertyEnabled(INTERPOLATION));
+    ui->toleranceSlider->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
+    ui->toleranceSpinBox->setVisible(currentTool->isPropertyEnabled(TOLERANCE));
+    ui->fillContourBox->setVisible(currentTool->isPropertyEnabled(FILLCONTOUR));
+
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
 
