@@ -152,6 +152,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
     ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
     ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
+    ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(INTERPOLATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(INTERPOLATION));
     ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));

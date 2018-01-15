@@ -181,7 +181,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="stabilizerLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
          <horstretch>0</horstretch>
