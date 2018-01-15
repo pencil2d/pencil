@@ -43,7 +43,6 @@ HEADERS +=  \
     interface/keycapturelineedit.h \
     interface/recentfilemenu.h \
     interface/scribblearea.h \
-    interface/spinslider.h \
     interface/timecontrols.h \
     interface/timeline.h \
     interface/timelinecells.h \
@@ -109,7 +108,6 @@ SOURCES +=  graphics/bitmap/bitmapimage.cpp \
     interface/keycapturelineedit.cpp \
     interface/recentfilemenu.cpp \
     interface/scribblearea.cpp \
-    interface/spinslider.cpp \
     interface/timecontrols.cpp \
     interface/timeline.cpp \
     interface/timelinecells.cpp \
