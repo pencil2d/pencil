@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>toolOptionPanel</class>
- <widget class="QWidget" name="toolOptionPanel">
+ <class>ToolOptions</class>
+ <widget class="QWidget" name="ToolOptions">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -37,6 +37,15 @@
          <height>0</height>
         </size>
        </property>
+       <property name="minimum">
+        <double>0.500000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>200.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.500000000000000</double>
+       </property>
       </widget>
      </item>
     </layout>
@@ -64,6 +73,15 @@
          <height>0</height>
         </size>
        </property>
+       <property name="minimum">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>80.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>5.000000000000000</double>
+       </property>
       </widget>
      </item>
     </layout>
@@ -74,7 +92,7 @@
       <string>Enable or disable feathering</string>
      </property>
      <property name="text">
-      <string>Feather</string>
+      <string>Use Feather</string>
      </property>
     </widget>
    </item>
@@ -89,23 +107,21 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
      <item>
-      <widget class="QWidget" name="toleranceSlider" native="true"/>
+      <widget class="SpinSlider" name="toleranceSlider" native="true">
+       <property name="toolTip">
+        <string>The extend to which the color variation will be treated as being equal</string>
+       </property>
+      </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="toleranceSpinBox">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
+      <widget class="QSpinBox" name="toleranceSpinBox">
+       <property name="maximum">
+        <number>100</number>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>0</height>
-        </size>
+       <property name="value">
+        <number>50</number>
        </property>
       </widget>
      </item>
@@ -178,7 +194,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="inpolLevelsBox">
+      <widget class="QComboBox" name="inpolLevelsCombo">
        <item>
         <property name="text">
          <string>None</string>

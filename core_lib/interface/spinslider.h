@@ -42,8 +42,8 @@ public:
         INTEGER,
         FLOAT,
     };
-
-    SpinSlider(QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max, QWidget* parent = 0);
+    SpinSlider(QWidget* parent = nullptr);
+    void init(QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max);
     void setValue(qreal);
     void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
     void setExponent(const qreal);

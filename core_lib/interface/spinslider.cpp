@@ -26,7 +26,10 @@ GNU General Public License for more details.
 #include <QStyle>
 
 
-SpinSlider::SpinSlider(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max, QWidget* parent) : QWidget(parent)
+SpinSlider::SpinSlider(QWidget* parent) : QWidget(parent)
+{}
+
+void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max)
 {
     if (type == LOG)
     {

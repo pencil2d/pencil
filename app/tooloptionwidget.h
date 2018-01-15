@@ -20,6 +20,10 @@ GNU General Public License for more details.
 #include "basedockwidget.h"
 #include "pencildef.h"
 
+namespace Ui
+{
+    class ToolOptions;
+}
 class QToolButton;
 class SpinSlider;
 class QCheckBox;
@@ -64,23 +68,8 @@ private:
     void disableAllOptions();
     void createUI();
 
-    QCheckBox* mUseBezierBox = nullptr;
-    QCheckBox* mUsePressureBox = nullptr;
-    QCheckBox* mUseFeatherBox = nullptr;
-    QCheckBox* mMakeInvisibleBox = nullptr;
-    QCheckBox* mPreserveAlphaBox = nullptr;
-    QCheckBox* mVectorMergeBox = nullptr;
-    QDoubleSpinBox* mBrushSpinBox = nullptr;
-    QDoubleSpinBox* mFeatherSpinBox = nullptr;
-    SpinSlider* mSizeSlider = nullptr;
-    SpinSlider* mFeatherSlider = nullptr;
-    QCheckBox* mUseAABox = nullptr;
-    QComboBox* mInpol = nullptr;
-    QGroupBox* mInpolLevelsBox = nullptr;
-    SpinSlider* mToleranceSlider = nullptr;
-    QSpinBox* mToleranceSpinBox = nullptr;
-    QCheckBox* mFillContour = nullptr;
-
+private:
+    Ui::ToolOptions* ui = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H
