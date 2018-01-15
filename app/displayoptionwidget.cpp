@@ -44,6 +44,15 @@ DisplayOptionWidget::~DisplayOptionWidget()
 void DisplayOptionWidget::initUI()
 {
     updateUI();
+
+#ifdef __APPLE__
+    // Mac only style. ToolButtons are naturally borderless on Win/Linux.
+    QString stylesheet =
+        "QToolButton { border: 0px; } "
+        "QToolButton:pressed{ border: 1px solid #FFADAD; border-radius: 2px; background-color: #D5D5D5; }"
+        "QToolButton:checked{ border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
+    setStyleSheet(stylesheet);
+#endif
 }
 
 void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
@@ -67,7 +76,6 @@ void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
 
     updateUI();
 
-    //connect( ui->cameraBorderButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleCameraBorder);
     //connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
     //connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 }
