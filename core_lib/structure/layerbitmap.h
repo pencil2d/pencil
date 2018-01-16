@@ -26,22 +26,22 @@ class LayerBitmap : public Layer
     Q_OBJECT
 
 public:
-    LayerBitmap( Object* object );
+    LayerBitmap(Object* object);
     ~LayerBitmap();
 
-    void loadImageAtFrame( QString strFilePath, QPoint topLeft, int frameNumber );
+    void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber);
 
-    QDomElement createDomElement( QDomDocument& doc ) override;
-    void loadDomElement( QDomElement element, QString dataDirPath ) override;
+    QDomElement createDomElement(QDomDocument& doc) override;
+    void loadDomElement(QDomElement element, QString dataDirPath) override;
 
-    BitmapImage* getBitmapImageAtFrame( int frameNumber );
-    BitmapImage* getLastBitmapImageAtFrame( int frameNumber, int increment );
+    BitmapImage* getBitmapImageAtFrame(int frameNumber);
+    BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment);
 
 protected:
-    Status saveKeyFrame( KeyFrame*, QString strPath ) override;
+    Status saveKeyFrame(KeyFrame*, QString strPath) override;
 
 private:
-    QString fileName( int index ) const;
+    QString fileName(int index) const;
 };
 
 #endif

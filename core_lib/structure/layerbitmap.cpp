@@ -121,7 +121,6 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath)
             if (imageElement.tagName() == "image")
             {
                 QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-                //qDebug() << "LAY_BITMAP  dataDirPath=" << dataDirPath << "   ;path=" << path;  //added for debugging puproses
                 QFileInfo fi(path);
                 if (!fi.exists()) path = imageElement.attribute("src");
                 int position = imageElement.attribute("frame").toInt();

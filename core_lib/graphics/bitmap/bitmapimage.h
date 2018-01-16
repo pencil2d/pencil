@@ -26,60 +26,60 @@ class BitmapImage : public KeyFrame
 {
 public:
     BitmapImage();
-    BitmapImage( const BitmapImage& );
-    BitmapImage( const QRect& boundaries, const QColor& colour );
-    BitmapImage( const QRect& boundaries, const QImage& image );
-    BitmapImage( const QString& path, const QPoint& topLeft );
+    BitmapImage(const BitmapImage&);
+    BitmapImage(const QRect& boundaries, const QColor& colour);
+    BitmapImage(const QRect& boundaries, const QImage& image);
+    BitmapImage(const QString& path, const QPoint& topLeft);
 
     ~BitmapImage();
-    BitmapImage& operator=( const BitmapImage& a );
+    BitmapImage& operator=(const BitmapImage& a);
 
     BitmapImage* clone() override;
 
-    void paintImage( QPainter& painter );
+    void paintImage(QPainter& painter);
     void paintImage(QPainter &painter, QImage &image, QRect sourceRect, QRect destRect);
 
     QImage* image() { return mImage.get(); }
-    void    setImage( QImage* pImg );
+    void    setImage(QImage* pImg);
 
     BitmapImage copy();
-    BitmapImage copy( QRect rectangle );
-    void paste( BitmapImage* );
-    void paste( BitmapImage*, QPainter::CompositionMode cm );
+    BitmapImage copy(QRect rectangle);
+    void paste(BitmapImage*);
+    void paste(BitmapImage*, QPainter::CompositionMode cm);
 
-    void add( BitmapImage* );
-    void compareAlpha( BitmapImage* );
-    void moveTopLeft( QPoint point );
-    void moveTopLeft( QPointF point ) { moveTopLeft( point.toPoint() ); }
-    void transform( QRect rectangle, bool smoothTransform );
-    void transform( QRectF rectangle, bool smoothTransform )  { transform( rectangle.toRect(), smoothTransform ); }
-    BitmapImage transformed( QRect selection, QTransform transform, bool smoothTransform );
-    BitmapImage transformed( QRect rectangle, bool smoothTransform );
-    BitmapImage transformed( QRectF rectangle, bool smoothTransform ) { return transformed( rectangle.toRect(), smoothTransform ); }
+    void add(BitmapImage*);
+    void compareAlpha(BitmapImage*);
+    void moveTopLeft(QPoint point);
+    void moveTopLeft(QPointF point) { moveTopLeft(point.toPoint()); }
+    void transform(QRect rectangle, bool smoothTransform);
+    void transform(QRectF rectangle, bool smoothTransform) { transform(rectangle.toRect(), smoothTransform); }
+    BitmapImage transformed(QRect selection, QTransform transform, bool smoothTransform);
+    BitmapImage transformed(QRect rectangle, bool smoothTransform);
+    BitmapImage transformed(QRectF rectangle, bool smoothTransform) { return transformed(rectangle.toRect(), smoothTransform); }
 
-    bool contains( QPoint P ) { return mBounds.contains( P ); }
-    bool contains( QPointF P ) { return contains( P.toPoint() ); }
-    void extend( QPoint P );
-    void extend( QRect rectangle );
+    bool contains(QPoint P) { return mBounds.contains(P); }
+    bool contains(QPointF P) { return contains(P.toPoint()); }
+    void extend(QPoint P);
+    void extend(QRect rectangle);
 
-    QRgb pixel( int x, int y );
-    QRgb pixel( QPoint P );
-    void setPixel( int x, int y, QRgb colour );
-    void setPixel( QPoint P, QRgb colour );
+    QRgb pixel(int x, int y);
+    QRgb pixel(QPoint P);
+    void setPixel(int x, int y, QRgb colour);
+    void setPixel(QPoint P, QRgb colour);
     QRgb constScanLine(int x, int y);
-    void scanLine( int x, int y, QRgb colour);
+    void scanLine(int x, int y, QRgb colour);
     void clear();
-    void clear( QRect rectangle );
-    void clear( QRectF rectangle ) { clear( rectangle.toRect() ); }
+    void clear(QRect rectangle);
+    void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
-    static int pow( int );
+    static int pow(int);
     static bool compareColor(QRgb color1, QRgb color2, int tolerance);
-    static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb oldColor, QRgb newColor, int tolerance );
+    static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb oldColor, QRgb newColor, int tolerance);
 
-    void drawLine( QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing );
-    void drawRect( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing );
-    void drawEllipse( QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing );
-    void drawPath( QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing );
+    void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
+    void drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
+    void drawEllipse(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
+    void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
 
     QPoint topLeft() { return mBounds.topLeft(); }
     QPoint topRight() { return mBounds.topRight(); }
