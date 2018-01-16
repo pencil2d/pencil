@@ -283,7 +283,7 @@ bool Layer::loadKey(KeyFrame* pKey)
         delete it->second;
         mKeyFrames.erase(it);
     }
-    mKeyFrames.insert(std::make_pair(pKey->pos(), pKey));
+    mKeyFrames.emplace(pKey->pos(), pKey);
     return true;
 }
 

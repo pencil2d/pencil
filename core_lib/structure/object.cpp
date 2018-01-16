@@ -100,30 +100,16 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progress)
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
-            if (element.attribute("type").toInt() == Layer::BITMAP)
+            switch (element.attribute("type").toInt() )
             {
-                addNewBitmapLayer();
-                layerNumber++;
-                getLayer(layerNumber)->loadDomElement(element, dataDirPath);
+            case Layer::BITMAP: addNewBitmapLayer(); break;
+            case Layer::VECTOR: addNewVectorLayer(); break;
+            case Layer::SOUND:  addNewSoundLayer();  break;
+            case Layer::CAMERA: addNewCameraLayer(); break;
+            default: Q_ASSERT(false); break;
             }
-            else if (element.attribute("type").toInt() == Layer::VECTOR)
-            {
-                addNewVectorLayer();
-                layerNumber++;
-                getLayer(layerNumber)->loadDomElement(element, dataDirPath);
-            }
-            else if (element.attribute("type").toInt() == Layer::SOUND)
-            {
-                addNewSoundLayer();
-                layerNumber++;
-                getLayer(layerNumber)->loadDomElement(element, dataDirPath);
-            }
-            else if (element.attribute("type").toInt() == Layer::CAMERA)
-            {
-                addNewCameraLayer();
-                layerNumber++;
-                getLayer(layerNumber)->loadDomElement(element, dataDirPath);
-            }
+            layerNumber++;
+            getLayer(layerNumber)->loadDomElement(element, dataDirPath);
         }
     }
     return true;

@@ -98,7 +98,6 @@ Object* FileManager::load(QString strFileName)
         return cleanUpWithErrorCode(Status::ERROR_INVALID_PENCIL_FILE);
     }
 
-    // Create object.
     loadPalette(obj);
 
     bool ok = true;
