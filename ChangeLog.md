@@ -1,10 +1,28 @@
 ## Pencil2D 0.6.1 - (WIP)
 
-* Fixed an issue that would make it impossible to type correct values into HSV and RGB boxes.
+* Brand new tool icons.
+* Allowing nested dock panels.
+* The layout of tool buttons will change automatically by its width and height.
 * Re-added zoom levels, now available via View->Zoom in/out or their respective shortcuts.
-* Fixed dialog related issues
-  * save dialog would appear twice on OSX when quitting from dock
-  * "Cancel" button being ignored.
+* Be able to set the pen width to 2 decimal places.
+* #836 Improved the canvas quality when the zoom level is greater than 100%.
+* #810 Export video via command line.
+* #818 Improved Gif exporting quality.
+* #288 Added `webm` format for video exporting.
+* #434 Give more information in about dialog.
+* #530 Migrate the internal zip engine from Quazip to Miniz.
+* #747 Can turn each sound layer on/off separately by switching visibility.
+
+Fixes:
+
+* #816 Not able to type correct values into HSV and RGB boxes.
+* The save dialog showed twice on OSX when quitting from dock.
+* "Cancel" button of save dialog was ignored.
+* #814 Duplicate key wasn't working in some cases.
+* #831 App crashed when duplicating a sound key.
+* #830 Can't save .pcl multiple times after importing sound layers.
+* #845 The framerate wasn't accurate when playing animation. 
+* #828 The app stalled when using dotted cursor and zooming-in very much.
 
 ## Pencil2D v0.6 - 1 December 2017
 
