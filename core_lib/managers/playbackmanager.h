@@ -87,6 +87,7 @@ private:
 
     QTimer* mTimer = nullptr;
     QElapsedTimer* mElapsedTimer = nullptr;
+    int mPlayingFrameCounter = 0; // how many frames has passed after pressing play
 
     bool mCheckForSoundsHalfway = false;
     QList<int> mListOfActiveSoundFrames;

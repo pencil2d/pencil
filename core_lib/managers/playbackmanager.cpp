@@ -121,7 +121,8 @@ void PlaybackManager::play()
     mTimer->setInterval(1000.f / mFps);
     mTimer->start();
 
-    // start counting frames
+    // for error correction, please ref skipFrame()
+    mPlayingFrameCounter = 1;
     mElapsedTimer->start();
 
     // Check for any sounds we should start playing part-way through.
@@ -250,14 +251,18 @@ void PlaybackManager::playSounds(int frame)
 bool PlaybackManager::skipFrame()
 {
     // uncomment these debug output to see what happens
-    //float expectedTime = (editor()->currentFrame() - mStartFrame + 1) * (1000.f / mFps);
-    //qDebug("Expected: %.2fms", expectedTime);
-    //qDebug("Actual:   %dms", mFrameTimer->elapsed());
-
-    int t = qRound((editor()->currentFrame() - mStartFrame) * (1000.f / mFps));
+    //float expectedTime = (mPlayingFrameCounter) * (1000.f / mFps);
+    //qDebug("Expected:  %.2f ms", expectedTime);
+    //qDebug("Actual:    %d   ms", mElapsedTimer->elapsed());
+    
+    int t = qRound((mPlayingFrameCounter - 1) * (1000.f / mFps));
     if (mElapsedTimer->elapsed() < t)
+    {
+        qDebug() << "skip";
         return true;
-
+    }
+    
+    ++mPlayingFrameCounter;
     return false;
 }
 
