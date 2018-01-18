@@ -182,12 +182,16 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
                                      bool colorize,
                                      bool useLastKeyFrame)
 {
+#ifdef _DEBUG
     LayerBitmap* bitmapLayer = dynamic_cast<LayerBitmap*>(layer);
     if (bitmapLayer == nullptr)
     {
         Q_ASSERT(bitmapLayer);
         return;
     }
+#else
+    LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(layer);
+#endif
 
     qCDebug(mLog) << "Paint Onion skin bitmap, Frame = " << nFrame;
     BitmapImage* paintedImage;
@@ -270,15 +274,19 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
                                      bool colorize,
                                      bool useLastKeyFrame)
 {
+#ifdef _DEBUG
     LayerVector* vectorLayer = dynamic_cast<LayerVector*>(layer);
     if (vectorLayer == nullptr)
     {
         Q_ASSERT(vectorLayer);
         return;
     }
+#else
+    LayerVector* vectorLayer = static_cast<LayerVector*>(layer);
+#endif
 
     qCDebug(mLog) << "Paint Onion skin vector, Frame = " << nFrame;
-    VectorImage* vectorImage;
+    VectorImage* vectorImage = nullptr;
     if (useLastKeyFrame)
     {
         vectorImage = vectorLayer->getLastVectorImageAtFrame(nFrame, 0);
