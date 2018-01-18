@@ -136,9 +136,7 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
             {
             case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOptions.bColorizePrevOnion, false); break; }
             case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOptions.bColorizePrevOnion, false); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT(false); break;
+            default: break;
             }
             opacity = opacity - prevOpacityIncrement;
 
@@ -164,9 +162,7 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
             {
             case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOptions.bColorizeNextOnion, false); break; }
             case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOptions.bColorizeNextOnion, false); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT(false); break;
+            default: break;
             }
             opacity = opacity - nextOpacityIncrement;
 
@@ -374,9 +370,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter)
             {
             case Layer::BITMAP: { paintBitmapFrame(painter, layer, mFrameNumber, false, true); break; }
             case Layer::VECTOR: { paintVectorFrame(painter, layer, mFrameNumber, false, true); break; }
-            case Layer::CAMERA: break;
-            case Layer::SOUND: break;
-            default: Q_ASSERT(false); break;
+            default: break;
             }
         }
     }
