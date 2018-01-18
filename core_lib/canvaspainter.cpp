@@ -297,8 +297,8 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
 
     //painter.drawImage( QPoint( 0, 0 ), *pImage );
     // Go through a Bitmap image to paint the onion skin colour
-    BitmapImage* tempBitmapImage = new BitmapImage();
-    tempBitmapImage->setImage(pImage);
+    BitmapImage tempBitmapImage;
+    tempBitmapImage.setImage(pImage);
 
     if (colorize)
     {
@@ -312,18 +312,13 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
         {
             colorBrush = QBrush(Qt::blue);
         }
-
-        tempBitmapImage->drawRect(pImage->rect(),
-                                  Qt::NoPen,
-                                  colorBrush,
-                                  QPainter::CompositionMode_SourceIn,
-                                  false);
+        tempBitmapImage.drawRect(pImage->rect(),
+                                 Qt::NoPen, colorBrush,
+                                 QPainter::CompositionMode_SourceIn, false);
     }
 
-    painter.setWorldMatrixEnabled(false); //Don't tranform the image here as we used the viewTransform in the image output
-    tempBitmapImage->paintImage(painter);
-
-    delete tempBitmapImage;
+    painter.setWorldMatrixEnabled(false); // Don't transform the image here as we used the viewTransform in the image output
+    tempBitmapImage.paintImage(painter);
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter)
