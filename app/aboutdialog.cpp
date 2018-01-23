@@ -26,8 +26,8 @@ GNU General Public License for more details.
 
 AboutDialog::AboutDialog(QWidget* parent ) : QDialog(parent)
 {
-    setWindowTitle(tr("About"));
-    setFixedSize(450,450);
+    setWindowTitle(tr("About", "About Dialog Window Title"));
+    setFixedSize(450, 450);
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 }
 
@@ -41,17 +41,21 @@ void AboutDialog::init()
     QLabel* logoText = new QLabel(this);
     logoText->setFont(QFont("Helvetica", 10));
     logoText->setAlignment(Qt::AlignCenter);
-    logoText->setText(tr("<b>Pencil2D</b>"));
+    logoText->setText("<b>Pencil2D</b>");
 
     QLabel* aboutText = new QLabel(this);
     aboutText->setFont(QFont("Helvetica", 10));
     aboutText->setTextInteractionFlags(Qt::TextBrowserInteraction);
     aboutText->setWordWrap(true);
     aboutText->setOpenExternalLinks(true);
-    aboutText->setText(tr("Official site: <a href=\"http://pencil2d.github.io\">pencil2d.github.io</a>"
-                          "<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang</b>"
-                          "<br>Thanks to Qt Framework <a href=\"https://www.qt.io/\">https://www.qt.io/</a>"
-                          "<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a>"));
+    QString sText;
+    sText += tr("Official site: <a href=\"http://pencil2d.github.io\">pencil2d.github.io</a>");
+    sText += tr("<br>Developed by: <b>Pascal Naidon, Patrick Corrieri, Matt Chang</b>");
+    sText += tr("<br>Thanks to Qt Framework <a href=\"https://www.qt.io/download\">https://www.qt.io/</a>");
+    sText += tr("<br>miniz: <a href=\"https://github.com/richgel999/miniz\">https://github.com/richgel999/miniz</a>");
+    sText += tr("<br>Distributed under the <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">GNU General Public License, version 2</a>");
+    aboutText->setText(sText);
+
     QVBoxLayout* lay = new QVBoxLayout;
     lay->addWidget(logo);
     lay->addWidget(logoText);
@@ -70,7 +74,7 @@ void AboutDialog::init()
 
     devInfoText->setAlignment(Qt::AlignCenter);
 	QStringList devText;
-	devText << QString("Version: %1").arg(APP_VERSION);
+	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
 #if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
     devText << "commit: " S__GIT_COMMIT_HASH__ ;
 	devText << "date: " S__GIT_TIMESTAMP__ ;
@@ -79,11 +83,11 @@ void AboutDialog::init()
     devText << "Development build";
 #endif
 	devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName());
-	devText << QString("Cpu Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
+	devText << QString("CPU Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
     devInfoText->setText(devText.join("<br>"));
     lay->addWidget(devInfoText);
 
-	QPushButton* copyToClipboardButton = new QPushButton(tr("Copy to clipboard"));
+	QPushButton* copyToClipboardButton = new QPushButton(tr("Copy to clipboard", "Copy system info from About Dialog"));
 	connect(copyToClipboardButton, &QPushButton::clicked, this, [devText] 
 	{
 		QApplication::clipboard()->setText(devText.join("\n"));
