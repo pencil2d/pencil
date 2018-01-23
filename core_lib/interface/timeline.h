@@ -51,11 +51,6 @@ public:
 
 Q_SIGNALS:
     void modification();
-    void lengthChange( QString );
-    void frameSizeChange( int );
-    void fontSizeChange( int );
-    void labelChange( int );
-    void scrubChange( int );
 
     void addKeyClick();
     void removeKeyClick();
