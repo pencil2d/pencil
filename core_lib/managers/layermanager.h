@@ -66,11 +66,13 @@ public:
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
-    int projectLength(bool includeSounds = true);
+    int animationLength(bool includeSounds = true);
+    void notifyAnimationLengthChanged();
 
 Q_SIGNALS:
     void currentLayerChanged(int n);
     void layerCountChanged(int count);
+    void animationLengthChanged(int length);
 
 private:
     int getIndex(Layer*) const;

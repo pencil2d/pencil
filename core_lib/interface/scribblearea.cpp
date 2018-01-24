@@ -92,7 +92,7 @@ bool ScribbleArea::init()
 
     QPixmapCache::setCacheLimit(100 * 1024); // unit is kb, so it's 100MB cache
 
-    int nLength = mEditor->layers()->projectLength();
+    int nLength = mEditor->layers()->animationLength();
     mPixmapCacheKeys.resize(std::max(nLength, 240));
 
     mNeedUpdateAll = false;

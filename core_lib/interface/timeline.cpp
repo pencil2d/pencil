@@ -244,6 +244,16 @@ void TimeLine::setLength(int frame)
     updateLength();
 }
 
+void TimeLine::extendLength(int frame)
+{
+    int extendFrame = frame + 10;
+    if (extendFrame > mTracks->getFrameLength())
+    {
+        mTracks->setFrameLength(extendFrame);
+        updateLength();
+    }
+}
+
 void TimeLine::resizeEvent(QResizeEvent*)
 {
     updateLayerView();

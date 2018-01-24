@@ -357,7 +357,7 @@ void PlaybackManager::updateStartFrame()
 
 void PlaybackManager::updateEndFrame()
 {
-    int projectLength = editor()->layers()->projectLength();
+    int projectLength = editor()->layers()->animationLength();
     mEndFrame = (mIsRangedPlayback) ? mMarkOutFrame : projectLength;
 }
 

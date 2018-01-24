@@ -684,11 +684,11 @@ bool Editor::exportSeqCLI(QString filePath, LayerCamera *cameraLayer, QString fo
     }
     if (endFrame < -1)
     {
-        endFrame = mLayerManager->projectLength();
+        endFrame = mLayerManager->animationLength();
     }
     if (endFrame < 0)
     {
-        endFrame = mLayerManager->projectLength(false);
+        endFrame = mLayerManager->animationLength(false);
     }
 
     QSize exportSize = QSize(width, height);
@@ -721,11 +721,11 @@ bool Editor::exportMovieCLI(QString filePath, LayerCamera *cameraLayer, int widt
     }
     if (endFrame < -1)
     {
-        endFrame = mLayerManager->projectLength();
+        endFrame = mLayerManager->animationLength();
     }
     if (endFrame < 0)
     {
-        endFrame = mLayerManager->projectLength(false);
+        endFrame = mLayerManager->animationLength(false);
     }
 
     QSize exportSize = QSize(width, height);

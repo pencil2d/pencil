@@ -514,7 +514,7 @@ bool MainWindow2::openObject(QString strFilePath)
     QProgressDialog progress(tr("Opening document..."), tr("Abort"), 0, 100, this);
 
     // Don't show progress bar if running without a GUI (aka. when rendering from command line)
-    if (this->isVisible())
+    if (isVisible())
     {
         hideQuestionMark(progress);
         progress.setWindowModality(Qt::WindowModal);
@@ -526,7 +526,8 @@ bool MainWindow2::openObject(QString strFilePath)
     FileManager fm(this);
     connect(&fm, &FileManager::progressUpdated, [&progress](float f)
     {
-        progress.setValue((int)(f * 100.f));
+        progress.setValue(int(f * 99.f));
+        qDebug() << int(f * 99);
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     });
 
@@ -556,6 +557,7 @@ bool MainWindow2::openObject(QString strFilePath)
     // Reset view
     mEditor->scrubTo(0);
     mEditor->view()->resetView();
+    mEditor->layers()->notifyAnimationLengthChanged();
 
     progress.setValue(100);
     return true;
@@ -591,6 +593,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
             QTextStream out(&eLog);
             out << st.details().replace("<br>", "\n", Qt::CaseInsensitive);
         }
+        eLog.close();
 
         ErrorDialog errorDialog(st.title(),
                                 st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
@@ -1026,6 +1029,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
+    connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);

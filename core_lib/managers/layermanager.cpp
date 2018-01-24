@@ -284,7 +284,7 @@ void LayerManager::notifyLayerChanged(Layer* layer)
  * @brief Get the length of current project
  * @return int: the position of the last key frame in the timeline + its length
  */
-int LayerManager::projectLength(bool includeSounds)
+int LayerManager::animationLength(bool includeSounds)
 {
     int maxFrame = -1;
 
@@ -316,6 +316,11 @@ int LayerManager::projectLength(bool includeSounds)
         }
     }
     return maxFrame;
+}
+
+void LayerManager::notifyAnimationLengthChanged()
+{
+    emit animationLengthChanged(animationLength(false));
 }
 
 int LayerManager::getIndex(Layer* layer) const

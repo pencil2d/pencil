@@ -163,10 +163,10 @@ Status ActionCommands::exportMovie()
 
     dialog->setCamerasInfo(camerasInfo);
 
-    int projectLenWithSounds = mEditor->layers()->projectLength(true);
-    int projectLen = mEditor->layers()->projectLength(false);
+    int lengthWithSounds = mEditor->layers()->animationLength(true);
+    int length = mEditor->layers()->animationLength(false);
 
-    dialog->setDefaultRange(1, projectLen, projectLenWithSounds);
+    dialog->setDefaultRange(1, length, lengthWithSounds);
     dialog->exec();
     
     if (dialog->result() == QDialog::Rejected)
@@ -256,7 +256,7 @@ Status ActionCommands::exportImageSequence()
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
 
-    int projectLength = mEditor->layers()->projectLength();
+    int totalLength = mEditor->layers()->animationLength();
 
     QString sCameraLayerName = dialog->getCameraLayerName();
     LayerCamera* cameraLayer = (LayerCamera*)mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA);
@@ -267,7 +267,7 @@ Status ActionCommands::exportImageSequence()
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    mEditor->object()->exportFrames(1, projectLength,
+    mEditor->object()->exportFrames(1, totalLength,
                                     cameraLayer,
                                     exportSize,
                                     strFilePath,
@@ -470,6 +470,9 @@ Status ActionCommands::addNewKey()
         camLayer->LinearInterpolateTransform(cam);
         mEditor->view()->updateViewTransforms();
     }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
+
     return Status::OK;
 }
 
@@ -517,6 +520,8 @@ void ActionCommands::duplicateKey()
     {
         mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
     }
+
+    mEditor->layers()->notifyAnimationLengthChanged();
 }
 
 Status ActionCommands::addNewBitmapLayer()

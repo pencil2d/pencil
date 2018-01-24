@@ -46,6 +46,7 @@ public:
     
     int  getLength();
     void setLength(int frame);
+    void extendLength(int frame);
 
     int getRangeLower();
     int getRangeUpper();
