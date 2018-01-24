@@ -5,6 +5,7 @@
 * The layout of tool buttons will change automatically by its width and height.
 * Re-added zoom levels, now available via View->Zoom in/out or their respective shortcuts.
 * Be able to set the pen width to 2 decimal places.
+* Auto extend Timeline length when users reach the end of Timeline.
 * #836 Improved the canvas quality when the zoom level is greater than 100%.
 * #810 Export video via command line.
 * #818 Improved Gif exporting quality.
