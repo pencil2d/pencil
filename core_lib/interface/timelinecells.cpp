@@ -162,7 +162,7 @@ void TimeLineCells::drawContent()
 
     Object* object = mEditor->object();
 
-    Q_ASSERT_X( object != nullptr, "", "" );
+    Q_ASSERT(object != nullptr);
 
     Layer* layer = object->getLayer( mEditor->layers()->currentLayerIndex() );
     if ( layer == NULL ) return;

@@ -233,9 +233,15 @@ void TimeLine::updateUI()
     mLayerList->update();
 }
 
-int TimeLine::getFrameLength()
+int TimeLine::getLength()
 {
     return mTracks->getFrameLength();
+}
+
+void TimeLine::setLength(int frame)
+{
+    mTracks->setFrameLength(frame);
+    updateLength();
 }
 
 void TimeLine::resizeEvent(QResizeEvent*)
@@ -252,39 +258,6 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     else
     {
         mVScrollbar->event(event);
-        /*QPoint numPixels = event->pixelDelta();
-        QPoint numDegrees = event->angleDelta() / 8;
-        int isForward =0;
-        if ( !numPixels.isNull() )
-        {
-            if ( numPixels.ry() > 0 )
-                isForward =1;
-            else if ( numPixels.ry() < 0 )
-                isForward =-1;
-        }
-        else if (!numDegrees.isNull())
-        {
-            if ( numDegrees.ry() > 0 )
-                isForward =1;
-            else if ( numDegrees.ry() < 0 )
-                isForward =-1;
-        }
-
-        if ( isForward > 0 )
-        {
-            mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepAdd );
-        }
-        else if ( isForward < 0 )
-        {
-            mVScrollbar->triggerAction( QAbstractSlider::SliderSingleStepSub );
-        }
-        else
-        {
-            //Do nothing we've had a wheel event where we are neither going forward or backward
-            //which should never happen?
-        }
-
-        event->accept();*/
     }
 }
 
@@ -337,7 +310,7 @@ void TimeLine::updateLayerNumber(int numberOfLayers)
 
 void TimeLine::updateLength()
 {
-    int frameLength = getFrameLength();
+    int frameLength = getLength();
     mHScrollbar->setMaximum( qMax( 0, frameLength - mTracks->width() / mTracks->getFrameSize() ) );
     mTimeControls->updateLength(frameLength);
     update();

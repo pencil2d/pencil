@@ -43,7 +43,10 @@ public:
     void setLoop( bool loop );
     void setRangeState( bool range );
     void setPlaying( bool isPlaying );
-    int getFrameLength();
+    
+    int  getLength();
+    void setLength(int frame);
+
     int getRangeLower();
     int getRangeUpper();
 
