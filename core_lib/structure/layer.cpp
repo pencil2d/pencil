@@ -456,13 +456,12 @@ void Layer::editProperties()
 {
 }
 
-void Layer::setModified(int position, bool)
+void Layer::setModified(int position, bool modified)
 {
-    auto it = mKeyFrames.find(position);
-    if (it != mKeyFrames.end())
+    KeyFrame* key = getKeyFrameAt(position);
+    if (key)
     {
-        //KeyFrame* pKeyFrame = it->second;
-        //pKeyFrame->
+        key->setModified(modified);
     }
 }
 
@@ -473,10 +472,7 @@ bool Layer::isFrameSelected(int position)
     {
         return mSelectedFrames_byLast.contains(keyFrame->pos());
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
 
 void Layer::setFrameSelected(int position, bool isSelected)
@@ -495,14 +491,12 @@ void Layer::setFrameSelected(int position, bool isSelected)
 
             // We need to keep the list of selected frames sorted
             // in order to easily handle their movement
-            //
             std::sort(mSelectedFrames_byPosition.begin(), mSelectedFrames_byPosition.end(), sortAsc);
 
         }
         else if (!isSelected)
         {
             // Remove the selected frame from the lists
-            //
             int iLast = mSelectedFrames_byLast.indexOf(startPosition);
             mSelectedFrames_byLast.removeAt(iLast);
 
@@ -583,7 +577,6 @@ void Layer::deselectAll()
 
 bool Layer::moveSelectedFrames(int offset)
 {
-
     if (offset != 0 && mSelectedFrames_byPosition.count() > 0)
     {
         // If we are moving to the right we start moving selected frames from the highest (right) to the lowest (left)
@@ -664,7 +657,6 @@ bool Layer::moveSelectedFrames(int offset)
         {
             mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
         }
-
         return true;
     }
     return false;

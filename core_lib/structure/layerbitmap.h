@@ -35,7 +35,7 @@ public:
     void loadDomElement(QDomElement element, QString dataDirPath) override;
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
-    BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment);
+    BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
 
 protected:
     Status saveKeyFrame(KeyFrame*, QString strPath) override;
