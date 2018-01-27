@@ -105,7 +105,6 @@ public:
     LayerCamera* addNewCameraLayer();
 
 	int  getLayerCount() const ;
-
     Layer* getLayer( int i ) const;
 	Layer* findLayerByName( QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED ) const;
 
@@ -139,6 +138,8 @@ public:
 
     ObjectData* data();
     void setData( ObjectData* );
+
+    int totalKeyFrameCount();
 
 private:
     int getMaxLayerID();

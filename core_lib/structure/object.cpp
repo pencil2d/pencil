@@ -639,3 +639,13 @@ void Object::setData(ObjectData* d)
     Q_ASSERT(d != nullptr);
     mData.reset(d);
 }
+
+int Object::totalKeyFrameCount()
+{
+    int sum = 0;
+    for (Layer* layer : mLayers)
+    {
+        sum += layer->keyFrameCount();
+    }
+    return sum;
+}

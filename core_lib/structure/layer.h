@@ -106,7 +106,7 @@ public:
 
     bool moveSelectedFrames(int offset);
 
-    Status save(QString dataFolder);
+    Status save(QString dataFolder, ProgressCallback progressStep);
 
     // graphic representation -- could be put in another class
     void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);

@@ -282,7 +282,7 @@ bool Layer::loadKey(KeyFrame* pKey)
     return true;
 }
 
-Status Layer::save(QString strDataFolder)
+Status Layer::save(QString strDataFolder, ProgressCallback progressStep)
 {
     QStringList debugInfo;
     debugInfo << "Layer::save";
@@ -304,6 +304,7 @@ Status Layer::save(QString strDataFolder)
             }
             debugInfo << QString("- Keyframe[%1] failed to save").arg(pKeyFrame->pos()) << keyFrameDetails;
         }
+        progressStep();
     }
     if (!isOkay)
     {

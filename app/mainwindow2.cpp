@@ -527,12 +527,10 @@ bool MainWindow2::openObject(QString strFilePath)
     connect(&fm, &FileManager::progressChanged, [&progress](int p)
     {
         progress.setValue(p);
-        qDebug() << "Progress=" << p;
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     });
     connect(&fm, &FileManager::progressRangeChanged, [&progress](int max)
     {
-        qDebug() << "Progress Max=" << max;
         progress.setRange(0, max + 3);
     });
 
@@ -581,15 +579,22 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
     mEditor->prepareSave();
 
-    FileManager* fm = new FileManager(this);
-    Status st = fm->save(mEditor->object(), strSavedFileName);
+    FileManager fm(this);
 
-    progress.setValue(100);
+    connect(&fm, &FileManager::progressChanged, [&progress](int p)
+    {
+        progress.setValue(p);
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    });
+    connect(&fm, &FileManager::progressRangeChanged, [&progress](int max)
+    {
+        progress.setRange(0, max + 3);
+    });
+
+    Status st = fm.save(mEditor->object(), strSavedFileName);
 
     if (!st.ok())
     {
-        QDateTime dt = QDateTime::currentDateTime();
-        dt.setTimeSpec(Qt::UTC);
 #if QT_VERSION >= 0x050400
         QDir errorLogFolder(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation));
 #else
@@ -597,6 +602,9 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 #endif
         errorLogFolder.mkpath("./logs");
         errorLogFolder.cd("logs");
+
+        QDateTime dt = QDateTime::currentDateTime();
+        dt.setTimeSpec(Qt::UTC);
         QFile eLog(errorLogFolder.absoluteFilePath(QString("error-%1.txt").arg(dt.toString(Qt::ISODate))));
         if (eLog.open(QIODevice::WriteOnly | QIODevice::Text))
         {
@@ -625,6 +633,8 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     setWindowTitle(strSavedFileName.prepend("[*]"));
     mBackupAtSave = mEditor->currentBackup();
     updateSaveState();
+
+    progress.setValue(progress.maximum());
 
     return true;
 }

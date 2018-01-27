@@ -58,6 +58,7 @@ BitmapImage::BitmapImage(const QString& path, const QPoint& topLeft)
         qDebug() << "ERROR: Image " << path << " not loaded";
     }
     mBounds = QRect(topLeft, mImage->size());
+    setModified(false);
 }
 
 BitmapImage::~BitmapImage()
