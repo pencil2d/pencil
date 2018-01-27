@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "spinslider.h"
+#include "ui_spinslider.h"
 
 #include <cmath>
 #include <QLabel>
@@ -26,8 +27,17 @@ GNU General Public License for more details.
 #include <QStyle>
 
 
-SpinSlider::SpinSlider(QWidget* parent) : QWidget(parent)
-{}
+SpinSlider::SpinSlider(QWidget* parent) :
+    QWidget(parent),
+    ui(new Ui::SpinSlider)
+{
+    ui->setupUi(this);
+}
+
+SpinSlider::~SpinSlider()
+{
+    delete ui;
+}
 
 void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max)
 {
@@ -43,24 +53,7 @@ void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal
     mMin = min;
     mMax = max;
 
-    mLabel = new QLabel(text + ": ");
-
-    mSlider = new QSlider(Qt::Horizontal, this);
-    mSlider->setMinimum(0);
-    mSlider->setMaximum(100);
-    mSlider->setMaximumWidth(500);
-
-    QGridLayout* layout = new QGridLayout();
-    layout->setMargin(2);
-    layout->setSpacing(2);
-
-    layout->addWidget(mLabel, 0, 0, 1, 1);
-    layout->addWidget(mSlider, 1, 0, 1, 2);
-
-    setLayout(layout);
-    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-
-    connect(mSlider, &QSlider::valueChanged, this, &SpinSlider::onSliderValueChanged);
+    ui->label->setText(text + ": ");
 }
 
 void SpinSlider::changeValue(qreal value)
@@ -74,21 +67,21 @@ void SpinSlider::onSliderValueChanged(int v)
     qreal value2 = 0.0;
     if (mGrowthType == LINEAR)
     {
-        value2 = mMin + v * (mMax - mMin) / mSlider->maximum();
+        value2 = mMin + v * (mMax - mMin) / ui->slider->maximum();
     }
     else if (mGrowthType == LOG)
     {
-        value2 = mMin * std::exp(v * std::log(mMax / mMin) / mSlider->maximum());
+        value2 = mMin * std::exp(v * std::log(mMax / mMin) / ui->slider->maximum());
     }
     else if (mGrowthType == EXPONENT) {
-        value2 = mMin + std::pow(v, mExp) * (mMax - mMin) / std::pow(mSlider->maximum(), mExp);
+        value2 = mMin + std::pow(v, mExp) * (mMax - mMin) / std::pow(ui->slider->maximum(), mExp);
     }
     changeValue(value2);
 }
 
 void SpinSlider::setLabel(QString newText)
 {
-    mLabel->setText(newText);
+    ui->label->setText(newText);
 }
 
 void SpinSlider::setValue(qreal v)
@@ -96,24 +89,24 @@ void SpinSlider::setValue(qreal v)
     int value2 = 0;
     if (mGrowthType == LINEAR)
     {
-        value2 = std::round(mSlider->maximum() * (v - mMin) / (mMax - mMin));
+        value2 = std::round(ui->slider->maximum() * (v - mMin) / (mMax - mMin));
     }
     else if (mGrowthType == LOG)
     {
-        value2 = std::round(std::log(v / mMin) * mSlider->maximum() / std::log(mMax / mMin));
+        value2 = std::round(std::log(v / mMin) * ui->slider->maximum() / std::log(mMax / mMin));
     }
     else if (mGrowthType == EXPONENT)
     {
-        value2 = std::round(std::pow((v - mMin) * std::pow(mSlider->maximum(), mExp) / (mMax - mMin), 1 / mExp));
+        value2 = std::round(std::pow((v - mMin) * std::pow(ui->slider->maximum(), mExp) / (mMax - mMin), 1 / mExp));
     }
 
     changeValue(v);
-    mSlider->setSliderPosition(value2);
+    ui->slider->setSliderPosition(value2);
 }
 
 void SpinSlider::setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown)
 {
-    mSlider->setSliderPosition(QStyle::sliderValueFromPosition(min, max, val, space, upsideDown));
+    ui->slider->setSliderPosition(QStyle::sliderValueFromPosition(min, max, val, space, upsideDown));
 }
 
 void SpinSlider::setExponent(const qreal exp)

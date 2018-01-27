@@ -21,10 +21,10 @@ GNU General Public License for more details.
 
 #include <QWidget>
 
-class QLabel;
-class QSlider;
-class QStyle;
 
+namespace Ui {
+    class SpinSlider;
+}
 
 class SpinSlider : public QWidget
 {
@@ -43,6 +43,7 @@ public:
         FLOAT,
     };
     SpinSlider(QWidget* parent = nullptr);
+    ~SpinSlider();
     void init(QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max);
     void setValue(qreal);
     void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
@@ -52,18 +53,20 @@ public:
 signals:
     void valueChanged(qreal);
 
-private:
+private slots:
     void onSliderValueChanged(int);
+
+private:
     void changeValue(qreal);
 
 private:
-    QSlider* mSlider = nullptr;
+    Ui::SpinSlider* ui = nullptr;
+
     qreal mValue = 50.0;
     qreal mMin = 0.1;
     qreal mMax = 100.0;
     qreal mExp = 2.0;
     QString mText = "";
-    QLabel* mLabel = nullptr;
 
     GROWTH_TYPE mGrowthType = LINEAR;
     VALUE_TYPE  mValueType = INTEGER;

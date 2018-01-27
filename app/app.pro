@@ -104,7 +104,8 @@ FORMS += \
     ui/timelinepage.ui \
     ui/filespage.ui \
     ui/toolspage.ui \
-    ui/toolboxwidget.ui
+    ui/toolboxwidget.ui \
+    ui/spinslider.ui
 
 DEPENDPATH += .
 
