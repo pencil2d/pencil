@@ -22,9 +22,6 @@ GNU General Public License for more details.
 #include <QTransform>
 
 
-#define SAFE_RELEASE( p ) if ( p ) { delete p; p = nullptr; }
-#define SAFE_QT_RELEASE( p ) if ( p ) { p->deleteLater(); p = nullptr; }
-
 QTransform RectMapTransform( QRectF source, QRectF target );
 
 class ScopeGuard
