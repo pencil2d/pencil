@@ -16,18 +16,15 @@ GNU General Public License for more details.
 */
 #include "layer.h"
 
-#include <cassert>
 #include <QDebug>
-#include <QInputDialog>
-#include <QLineEdit>
 #include "keyframe.h"
 #include "keyframefactory.h"
 #include "object.h"
 #include "timeline.h"
 #include "timelinecells.h"
 
+
 // Used to sort the selected frames list
-//
 bool sortAsc(int left, int right)
 {
     return left < right;
@@ -35,22 +32,20 @@ bool sortAsc(int left, int right)
 
 Layer::Layer(Object* pObject, LAYER_TYPE eType) : QObject(pObject)
 {
+    Q_ASSERT(eType != UNDEFINED);
+
     mObject = pObject;
     meType = eType;
     mName = QString(tr("Undefined Layer"));
 
     mId = pObject->getUniqueLayerID();
-
-    //addNewEmptyKeyAt( 1 );
-
-    Q_ASSERT(eType != UNDEFINED);
 }
 
 Layer::~Layer()
 {
-    for (auto pair : mKeyFrames)
+    for (auto it : mKeyFrames)
     {
-        KeyFrame* pKeyFrame = pair.second;
+        KeyFrame* pKeyFrame = it.second;
         delete pKeyFrame;
     }
     mKeyFrames.clear();
@@ -289,7 +284,10 @@ bool Layer::loadKey(KeyFrame* pKey)
 
 Status Layer::save(QString strDataFolder)
 {
-    QStringList debugInfo = QStringList() << "Layer::save" << QString("strDataFolder = ").append(strDataFolder);
+    QStringList debugInfo;
+    debugInfo << "Layer::save";
+    debugInfo << QString("strDataFolder = ").append(strDataFolder);
+
     bool isOkay = true;
     for (auto pair : mKeyFrames)
     {
@@ -298,6 +296,7 @@ Status Layer::save(QString strDataFolder)
         if (!st.ok())
         {
             isOkay = false;
+
             QStringList keyFrameDetails = st.detailsList();
             for (QString detail : keyFrameDetails)
             {

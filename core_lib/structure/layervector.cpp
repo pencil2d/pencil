@@ -98,12 +98,17 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 
 Status LayerVector::saveKeyFrame(KeyFrame* pKeyFrame, QString path)
 {
-    QStringList debugInfo = QStringList() << "LayerVector::saveKeyFrame" << QString("pKeyFrame.pos() = %1").arg(pKeyFrame->pos()) << QString("path = ").append(path);
+    QStringList debugInfo;
+    debugInfo << "LayerVector::saveKeyFrame";
+    debugInfo << QString("pKeyFrame.pos() = %1").arg(pKeyFrame->pos());
+    debugInfo << QString("path = ").append(path);
+
     VectorImage* pVecImage = static_cast<VectorImage*>(pKeyFrame);
 
     QString theFileName = fileName(pKeyFrame->pos());
     QString strFilePath = QDir(path).filePath(theFileName);
     debugInfo << QString("strFilePath = ").append(strFilePath);
+
     Status st = pVecImage->write(strFilePath, "VEC");
     if (!st.ok())
     {

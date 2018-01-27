@@ -187,28 +187,28 @@ Status FileManager::save(Object* object, QString strFileName)
     QFileInfo fileInfo(strFileName);
     if (fileInfo.isDir())
     {
-        debugDetails << "strFileName points to a directory";
+        debugDetails << "FileName points to a directory";
         return Status(Status::INVALID_ARGUMENT,
                       debugDetails,
                       tr("Invalid Save Path"),
-                      tr("The file path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
+                      tr("The path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
     }
     QFileInfo parentDirInfo(fileInfo.dir().absolutePath());
     if (!parentDirInfo.exists())
     {
-        debugDetails << "the parent directory of strFileName does not exist";
+        debugDetails << "The parent directory of strFileName does not exist";
         return Status(Status::INVALID_ARGUMENT,
                       debugDetails,
                       tr("Invalid Save Path"),
-                      tr("The file path (\"%1\") is in a directory (\"%2\") which does not exist.").arg(fileInfo.absoluteFilePath(), parentDirInfo.absoluteFilePath()));
+                      tr("The directory (\"%1\") does not exist.").arg(parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
-        debugDetails << "strFileName points to a location that is not writable";
+        debugDetails << "Filename points to a location that is not writable";
         return Status(Status::INVALID_ARGUMENT,
                       debugDetails,
                       tr("Invalid Save Path"),
-                      tr("The file path (\"%1\") cannot be written to.").arg(fileInfo.absoluteFilePath()));
+                      tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
     }
 
     QString strTempWorkingFolder;
@@ -218,14 +218,14 @@ Status FileManager::save(Object* object, QString strFileName)
     bool isOldFile = strFileName.endsWith(PFF_OLD_EXTENSION);
     if (isOldFile)
     {
-        qCDebug(mLog) << "Save in Old Pencil File Format (*.pcl) !";
+        qCDebug(mLog) << "Old Pencil File Format (*.pcl) !";
 
         strMainXMLFile = strFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        qCDebug(mLog) << "Save in New zipped Pencil File Format (*.pclx) !";
+        qCDebug(mLog) << "New zipped Pencil File Format (*.pclx) !";
 
         strTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(strTempWorkingFolder).exists());
@@ -239,56 +239,36 @@ Status FileManager::save(Object* object, QString strFileName)
     QFileInfo dataInfo(strDataFolder);
     if (!dataInfo.exists())
     {
-        QDir dir(strDataFolder); // the directory where filePath is or will be saved
+        QDir dir(strDataFolder); // the directory where all key frames will be saved
 
-        // creates a directory with the same name +".data"
         if (!dir.mkpath(strDataFolder))
         {
             debugDetails << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
-            if (isOldFile)
-            {
-                return Status(Status::ERROR_FILE_CANNOT_OPEN, debugDetails,
-                              tr("Cannot Create Data Directory"),
-                              tr("Cannot Create Data directory at \"%1\". Please make sure that you have sufficient permissions.").arg(strDataFolder));
-            }
-            else
-            {
-                return Status(Status::FAIL, debugDetails,
-                              tr("Internal Error"),
-                              tr("Cannot create the data directory at temporary location \"%1\". Please make sure that you have sufficient permissions.").arg(strDataFolder));
-            }
+
+            return Status(Status::FAIL, debugDetails,
+                          tr("Cannot Create Data Directory"),
+                          tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(strDataFolder));
         }
     }
     if (!dataInfo.isDir())
     {
         debugDetails << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
-        if (isOldFile)
-        {
-            return Status(Status::ERROR_FILE_CANNOT_OPEN,
-                          debugDetails,
-                          tr("Cannot Create Data Directory"),
-                          tr("The path \"%1\" points to a file. Please move or delete that file and try again.").arg(dataInfo.absoluteFilePath()));
-        }
-        else
-        {
-            return Status(Status::FAIL, debugDetails,
-                          tr("Internal Error"),
-                          tr("Cannot open the directory \"%1\" since it is a file.").arg(dataInfo.absoluteFilePath()));
-        }
+        return Status(Status::FAIL,
+                      debugDetails,
+                      tr("Cannot Create Data Directory"),
+                      tr("\"%1\" is a file. Please delete the file and try again.").arg(dataInfo.absoluteFilePath()));
     }
 
     // save data
     int layerCount = object->getLayerCount();
     debugDetails << QString("layerCount = %1").arg(layerCount);
-    qCDebug(mLog) << QString("Total layers = %1").arg(layerCount);
 
     bool isOkay = true;
     for (int i = 0; i < layerCount; ++i)
     {
         Layer* layer = object->getLayer(i);
-        qCDebug(mLog) << QString("Saving Layer %1").arg(i).arg(layer->name());
-
         debugDetails << QString("layer[%1] = Layer[id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        
         switch (layer->type())
         {
         case Layer::BITMAP:
@@ -317,7 +297,10 @@ Status FileManager::save(Object* object, QString strFileName)
         }
         if (!isOkay)
         {
-            return Status(Status::FAIL, debugDetails, tr("Internal Error"), tr("An internal error occurred while trying to save the file. Some or all of your file may not have saved."));
+            return Status(Status::FAIL, 
+                          debugDetails,
+                          tr("Internal Error"),
+                          tr("An internal error occurred. Your file may not be saved successfully."));
         }
     }
 
