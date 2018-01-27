@@ -29,6 +29,9 @@ class Object;
 class TimeLineCells;
 class Status;
 
+#define ProgressCallback std::function<void()>
+
+
 class Layer : public QObject
 {
     Q_OBJECT
@@ -42,8 +45,6 @@ public:
         MOVIE = 3, // not supported yet
         SOUND = 4,
         CAMERA = 5,
-
-        //PAINTABLE = 
     };
 
     explicit Layer(Object*, LAYER_TYPE);
@@ -67,7 +68,7 @@ public:
     int firstKeyFramePosition() const;
 
     virtual Status saveKeyFrame(KeyFrame*, QString path) = 0;
-    virtual void loadDomElement(QDomElement element, QString dataDirPath) = 0;
+    virtual void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) = 0;
 
     bool keyExists(int position) const;

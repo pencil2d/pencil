@@ -89,7 +89,7 @@ QDomElement LayerSound::createDomElement(QDomDocument& doc)
     return layerTag;
 }
 
-void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
+void LayerSound::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
 {
     if (!element.attribute("id").isNull())
     {
@@ -122,6 +122,7 @@ void LayerSound::loadDomElement(QDomElement element, QString dataDirPath)
                 Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
                 Q_ASSERT(st.ok());
             }
+            progressStep();
         }
 
         soundTag = soundTag.nextSibling();

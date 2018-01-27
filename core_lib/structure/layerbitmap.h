@@ -32,7 +32,7 @@ public:
     void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber);
 
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath) override;
+    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);

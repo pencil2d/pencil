@@ -64,22 +64,18 @@ void Object::init()
 
 QDomElement Object::saveXML(QDomDocument& doc)
 {
-    qDebug() << dataDir();
-    qDebug() << workingDir();
-    qDebug() << mainXMLFile();
-
-    QDomElement tag = doc.createElement("object");
+    QDomElement objectTag = doc.createElement("object");
 
     for (int i = 0; i < getLayerCount(); i++)
     {
         Layer* layer = getLayer(i);
         QDomElement layerTag = layer->createDomElement(doc);
-        tag.appendChild(layerTag);
+        objectTag.appendChild(layerTag);
     }
-    return tag;
+    return objectTag;
 }
 
-bool Object::loadXML(QDomElement docElem, ProgressCallback progress)
+bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
 {
     if (docElem.isNull())
     {
@@ -89,14 +85,8 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progress)
 
     const QString dataDirPath = mDataDirPath;
 
-    int allNodesCount = docElem.childNodes().count();
-    int processedNodeCount = 0;
-
     for (QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling())
     {
-        processedNodeCount += 1;
-        progress((float)processedNodeCount / allNodesCount);
-
         QDomElement element = node.toElement(); // try to convert the node to an element.
         if (element.tagName() == "layer")
         {
@@ -109,7 +99,7 @@ bool Object::loadXML(QDomElement docElem, ProgressCallback progress)
             default: Q_ASSERT(false); break;
             }
             layerNumber++;
-            getLayer(layerNumber)->loadDomElement(element, dataDirPath);
+            getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
         }
     }
     return true;
@@ -180,8 +170,6 @@ void Object::createWorkingDir()
 
     QDir dataDir(strWorkingDir + PFF_DATA_DIR);
     dataDir.mkpath(".");
-
-    //qDebug() << "Working dir created at: " << workingDir();
 
     mDataDirPath = dataDir.absolutePath();
 }

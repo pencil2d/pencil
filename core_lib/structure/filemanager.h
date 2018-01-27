@@ -46,7 +46,8 @@ public:
     Status verifyObject(Object* obj);
 
 Q_SIGNALS:
-    void progressUpdated(float);
+    void progressChanged(int progress);
+    void progressRangeChanged(int maxValue);
 
 private:
     void unzip(const QString& strZipFile, const QString& strUnzipTarget);
@@ -63,9 +64,14 @@ private:
 
     Object* cleanUpWithErrorCode(Status);
 
+    void progressForward();
+
 private:
     Status mError = Status::OK;
     QString mstrLastTempFolder;
+
+    int mCurrentProgress = 0;
+    int mMaxProgressValue = 100;
 
     QLoggingCategory mLog;
 };

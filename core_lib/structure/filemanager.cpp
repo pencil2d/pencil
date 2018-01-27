@@ -37,7 +37,7 @@ Object* FileManager::load(QString strFileName)
         return cleanUpWithErrorCode(Status::FILE_NOT_FOUND);
     }
 
-    emit progressUpdated(0.f);
+    progressForward();
 
     Object* obj = new Object;
     obj->setFilePath(strFileName);
@@ -72,6 +72,10 @@ Object* FileManager::load(QString strFileName)
 
     obj->setDataDir(strDataFolder);
     obj->setMainXMLFile(strMainXMLFile);
+
+    int totalFileCount = QDir(strDataFolder).entryList(QDir::Files).size();
+    mMaxProgressValue = totalFileCount;
+    emit progressRangeChanged(mMaxProgressValue);
 
     QFile file(strMainXMLFile);
     if (!file.open(QFile::ReadOnly))
@@ -141,10 +145,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 
         if (element.tagName() == "object")
         {
-            isOK = object->loadXML(element, [this](float f)
-            {
-                emit progressUpdated(f);
-            });
+            isOK = object->loadXML(element, [this]{ progressForward(); });
 
             if (!isOK) qCDebug(mLog) << "Failed to Load object";
 
@@ -165,10 +166,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 
 bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
 {
-    return object->loadXML(root, [this](float f)
-    {
-        emit progressUpdated(f);
-    });
+    return object->loadXML(root, [this] { progressForward(); });
 }
 
 bool FileManager::isOldForamt(const QString& fileName)
@@ -499,6 +497,12 @@ Object* FileManager::cleanUpWithErrorCode(Status error)
     mError = error;
     removePFFTmpDirectory(mstrLastTempFolder);
     return nullptr;
+}
+
+void FileManager::progressForward()
+{
+    mCurrentProgress++;
+    emit progressChanged(mCurrentProgress);
 }
 
 bool FileManager::loadPalette(Object* obj)

@@ -524,11 +524,16 @@ bool MainWindow2::openObject(QString strFilePath)
     mEditor->setCurrentLayer(0);
 
     FileManager fm(this);
-    connect(&fm, &FileManager::progressUpdated, [&progress](float f)
+    connect(&fm, &FileManager::progressChanged, [&progress](int p)
     {
-        progress.setValue(int(f * 99.f));
-        qDebug() << int(f * 99);
+        progress.setValue(p);
+        qDebug() << "Progress=" << p;
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
+    });
+    connect(&fm, &FileManager::progressRangeChanged, [&progress](int max)
+    {
+        qDebug() << "Progress Max=" << max;
+        progress.setRange(0, max + 3);
     });
 
     Object* object = fm.load(strFilePath);
@@ -550,16 +555,21 @@ bool MainWindow2::openObject(QString strFilePath)
     setWindowModified(false);
     setWindowIcon(QFileIconProvider().icon(strFilePath));
 
+    progress.setValue(progress.value() + 1);
+
     // Refresh the Palette
     mColorPalette->refreshColorList();
     mEditor->color()->setColorNumber(0);
+
+    progress.setValue(progress.value() + 1);
 
     // Reset view
     mEditor->scrubTo(0);
     mEditor->view()->resetView();
     mEditor->layers()->notifyAnimationLengthChanged();
 
-    progress.setValue(100);
+    progress.setValue(progress.maximum());
+
     return true;
 }
 

@@ -55,7 +55,7 @@ public:
     
     void editProperties() override;
     QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath) override;
+    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
