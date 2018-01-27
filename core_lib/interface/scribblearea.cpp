@@ -206,34 +206,15 @@ void ScribbleArea::updateAllVectorLayersAt(int frameNumber)
     updateFrame(mEditor->currentFrame());
 }
 
-void ScribbleArea::updateAllVectorLayers()
-{
-    for (int i = 0; i < mEditor->object()->getLayerCount(); i++)
-    {
-        Layer *layer = mEditor->object()->getLayer(i);
-        if (layer->type() == Layer::VECTOR)
-        {
-            //( ( LayerVector * )layer )->setModified( true );
-        }
-    }
-    updateAllFrames();
-}
-
 void ScribbleArea::setModified(int layerNumber, int frameNumber)
 {
     Layer *layer = mEditor->object()->getLayer(layerNumber);
-    if (layer->type() == Layer::VECTOR)
+    if (layer)
     {
         layer->setModified(frameNumber, true);
+        emit modification(layerNumber);
+        updateAllFrames();
     }
-    else if (layer->type() == Layer::BITMAP)
-    {
-        layer->setModified(frameNumber, true);
-    }
-
-    emit modification(layerNumber);
-
-    updateAllFrames();
 }
 
 /************************************************************************/

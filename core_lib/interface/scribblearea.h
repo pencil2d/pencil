@@ -104,7 +104,6 @@ public:
     void updateAllFrames();
     void updateAllVectorLayersAtCurrentFrame();
     void updateAllVectorLayersAt( int frame );
-    void updateAllVectorLayers();
 
     bool shouldUpdateAll() const { return mNeedUpdateAll; }
     void setAllDirty() { mNeedUpdateAll = true; }
