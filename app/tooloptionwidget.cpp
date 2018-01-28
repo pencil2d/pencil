@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 #include "tooloptionwidget.h"
-#include "ui_tooloptions.h"
+#include "ui_tooloptionwidget.h"
 
 #include <QSettings>
 #include <QDebug>
@@ -27,18 +27,16 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 
-ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
+ToolOptionWidget::ToolOptionWidget(QWidget* parent) :
+    BaseDockWidget(parent),
+    ui(new Ui::ToolOptionWidget)
 {
-    setWindowTitle(tr("Options", "Window title of tool option panel like pen width, feather etc.."));
-    
-    QWidget* innerWidget = new QWidget;
-    setWidget(innerWidget);
-    ui = new Ui::ToolOptions;
-    ui->setupUi(innerWidget);
+    ui->setupUi(this);
 }
 
 ToolOptionWidget::~ToolOptionWidget()
 {
+    delete ui;
 }
 
 void ToolOptionWidget::initUI()
@@ -64,7 +62,7 @@ void ToolOptionWidget::updateUI()
     Q_ASSERT(currentTool);
 
     disableAllOptions();
-    
+
     setVisibility(currentTool);
 
     const Properties& p = currentTool->properties;
@@ -83,7 +81,7 @@ void ToolOptionWidget::updateUI()
 }
 
 void ToolOptionWidget::createUI()
-{} 
+{}
 
 void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 {
