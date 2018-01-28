@@ -130,9 +130,13 @@ MovieExporter::~MovieExporter()
 
 Status MovieExporter::run(const Object* obj,
                           const ExportMovieDesc& desc,
-                          std::function<void(float)> progress)
+                          std::function<void(float, float)> majorProgress,
+                          std::function<void(float)> minorProgress,
+                          std::function<void(const char *)> progressMessage)
 {
-    progress(0.f);
+    majorProgress(0.f, 0.03f);
+    minorProgress(0.f);
+    progressMessage("Checking environment...");
 
     QString ffmpegPath = ffmpegLocation();
     qDebug() << ffmpegPath;
@@ -161,27 +165,47 @@ Status MovieExporter::run(const Object* obj,
     }
 
     mTempWorkDir = mTempDir.path();
-    progress(0.03f);
+    majorProgress(0.03f, 0.1f);
 
     if (!desc.strFileName.endsWith("gif"))
     {
-        STATUS_CHECK(assembleAudio(obj, ffmpegPath, progress));
+        progressMessage("Assembling audio...");
+        minorProgress(0.f);
+        STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress));
+        minorProgress(1.f);
     }
-    progress(0.10f);
+    majorProgress(0.1f, 0.5f);
+    qDebug() << "Time:" << clock();
+    progressMessage("Generating frames...");
+    minorProgress(0.f);
 
-    STATUS_CHECK(generateImageSequence(obj, progress));
-    progress(0.9f);
+    STATUS_CHECK(generateImageSequence(obj, minorProgress));
+    qDebug() << "Time:" << clock();
+    minorProgress(1.f);
 
+    minorProgress(0.f);
     if (desc.strFileName.endsWith("gif", Qt::CaseInsensitive))
     {
-        STATUS_CHECK(convertToGif(ffmpegPath, desc.strFileName));
+        progressMessage("Generating palette...");
+        majorProgress(0.5f, 0.7f);
+        STATUS_CHECK(generatePalette(ffmpegPath, minorProgress));
+        minorProgress(1.f);
+
+        progressMessage("Combining...");
+        majorProgress(0.7f, 1.f);
+        minorProgress(0.f);
+        STATUS_CHECK(convertToGif(ffmpegPath, desc.strFileName, minorProgress));
     }
     else
     {
-        combineVideoAndAudio(ffmpegPath, desc.strFileName);
+        progressMessage("Combining...");
+        majorProgress(0.5f, 1.f);
+        combineVideoAndAudio(ffmpegPath, desc.strFileName, minorProgress);
     }
-
-    progress(1.0f);
+    qDebug() << "Time:" << clock();
+    minorProgress(1.f);
+    majorProgress(1.f, 1.f);
+    progressMessage("Done");
 
     return Status::OK;
 }
@@ -246,7 +270,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
         strCmd += "-ar 44100 -acodec pcm_s16le -ac 2 -y ";
         strCmd += QString("\"%1\"").arg(tempAudioPath);
 
-        executeFFMpegCommand(strCmd);
+        executeFFMpegCommand(strCmd, [](float){});
         qDebug() << "audio file: " + tempAudioPath;
 
         // Read wav file header
@@ -280,8 +304,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
         file.close();
 
-        float p = ((float)clipCount / allSoundClips.size());
-        progress(p * 0.1f);
+        progress((float)clipCount / allSoundClips.size());
         clipCount++;
     }
 
@@ -308,7 +331,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
 
 Status MovieExporter::generateImageSequence(
     const Object* obj,
-    std::function<void(float)>  progress)
+    std::function<void(float)> progress)
 {
     int frameStart = mDesc.startFrame;
     int frameEnd = mDesc.endFrame;
@@ -357,14 +380,16 @@ Status MovieExporter::generateImageSequence(
         Q_ASSERT(bSave);
         qDebug() << "Save img to: " << strImgPath << ", Success=" << bSave;
 
-        float fProgressValue = (currentFrame / (float)(frameEnd - frameStart));
-        progress(0.1f + (fProgressValue * 0.9f));
+        progress(currentFrame / (float)(frameEnd - frameStart));
     }
 
     return Status::OK;
 }
 
-Status MovieExporter::combineVideoAndAudio(QString ffmpegPath, QString strOutputFile)
+Status MovieExporter::combineVideoAndAudio(
+        QString ffmpegPath,
+        QString strOutputFile,
+        std::function<void(float)>  progress)
 {
     if (mCanceled)
     {
@@ -399,12 +424,40 @@ Status MovieExporter::combineVideoAndAudio(QString ffmpegPath, QString strOutput
     strCmd += " -y";
     strCmd += QString(" \"%1\"").arg(strOutputFile);
 
-    STATUS_CHECK(executeFFMpegCommand(strCmd));
+    STATUS_CHECK(executeFFMpegCommand(strCmd, progress));
 
     return Status::OK;
 }
 
-Status MovieExporter::convertToGif(QString ffmpeg, QString strOut)
+Status MovieExporter::generatePalette(QString ffmpeg, std::function<void(float)> progress)
+{
+    if (mCanceled)
+    {
+        return Status::CANCELED;
+    }
+
+    const QString imgPath = mTempWorkDir + IMAGE_FILENAME;
+
+    QString strCmd = QString("\"%1\"").arg(ffmpeg);
+    strCmd += QString(" -framerate %1").arg(mDesc.fps);
+
+    strCmd += QString(" -start_number %1").arg(mDesc.startFrame);
+    strCmd += QString(" -i \"%1\"").arg(imgPath);
+
+    strCmd += " -y";
+
+    // http://superuser.com/questions/556029/
+    // generate a palette
+    QString strGifPalette = mTempWorkDir + "/palette.png";
+    strCmd += " -vf palettegen";
+    strCmd += QString(" \"%1\"").arg(strGifPalette);
+
+    STATUS_CHECK(executeFFMpegCommand(strCmd, progress));
+
+    return Status::OK;
+}
+
+Status MovieExporter::convertToGif(QString ffmpeg, QString strOut, std::function<void(float)> progress)
 {
 
     if (mCanceled)
@@ -423,52 +476,59 @@ Status MovieExporter::convertToGif(QString ffmpeg, QString strOut)
 
     strCmd += " -y";
 
-    // http://superuser.com/questions/556029/
-    // generate a palette
-    QString strGifPalette = mTempWorkDir + "/palette.png";
-    QString strCmd1(strCmd);
-    strCmd1 += " -vf palettegen";
-    strCmd1 += QString(" \"%1\"").arg(strGifPalette);
-
-    STATUS_CHECK(executeFFMpegCommand(strCmd1));
-
     // Output the GIF using the palette:
-    QString strCmd2(strCmd);
-    strCmd2 += QString(" -i \"%1\"").arg(strGifPalette);
+    strCmd += QString(" -i \"%1\"").arg(mTempWorkDir + "/palette.png");
 
-    strCmd2 += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
+    strCmd += QString(" -s %1x%2").arg(exportSize.width()).arg(exportSize.height());
 
-    strCmd2 += " -filter_complex \"paletteuse\"";
-    strCmd2 += QString(" \"%1\"").arg(strOut);
+    strCmd += " -filter_complex \"paletteuse\"";
+    strCmd += QString(" \"%1\"").arg(strOut);
 
-    STATUS_CHECK(executeFFMpegCommand(strCmd2));
+    STATUS_CHECK(executeFFMpegCommand(strCmd, progress));
 
     return Status::OK;
 }
 
-Status MovieExporter::executeFFMpegCommand(QString strCmd)
+Status MovieExporter::executeFFMpegCommand(QString strCmd, std::function<void(float)> progress)
 {
     qDebug() << strCmd;
 
     QProcess ffmpeg;
+    ffmpeg.setReadChannel(QProcess::StandardOutput);
+    // FFmpeg writes to stderr only for some reason, so we just read both channels together
+    ffmpeg.setProcessChannelMode(QProcess::MergedChannels);
     ffmpeg.start(strCmd);
     if (ffmpeg.waitForStarted() == true)
     {
-        if (ffmpeg.waitForFinished() == true)
+        while(ffmpeg.state() == QProcess::Running)
         {
-            qDebug() << "stdout:" << QString(ffmpeg.readAllStandardOutput());
-            qDebug() << "stderr:";
-            QString stdErrMsg(ffmpeg.readAllStandardError());
-            QStringList sList = stdErrMsg.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
-            for (const QString& s : sList)
+            if(!ffmpeg.waitForReadyRead()) break;
+
+            qDebug() << "Running!";
+
+            QString output(ffmpeg.readAll());
+            qDebug() << output;
+
+            if(output.startsWith("frame="))
             {
-                qDebug() << s;
+                QString frame = output.mid(6, output.indexOf(' '));
+
+                progress(frame.toInt() / (float)(mDesc.endFrame - mDesc.startFrame));
             }
         }
-        else
+
+        QString output(ffmpeg.readAll());
+        QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+        for (const QString& s : sList)
         {
-            qDebug() << "ERROR: FFmpeg did not finish executing.";
-            return Status::FAIL;
+            qDebug() << "[stdout]" << s;
+        }
+
+        QString stdErrMsg(ffmpeg.readAllStandardError());
+        sList = stdErrMsg.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+        for (const QString& s : sList)
+        {
+            qDebug() << "[stderr]" << s;
         }
     }
     else

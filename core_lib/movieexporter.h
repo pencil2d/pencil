@@ -44,18 +44,20 @@ public:
 
     Status run(const Object* obj,
                const ExportMovieDesc& desc,
-               std::function<void(float)> progress);
+               std::function<void(float, float)> majorProgress,
+               std::function<void(float)> minorProgress,
+               std::function<void(const char *)> progressMessage);
     QString error();
 
     void cancel() { mCanceled = true; }
-
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
     Status generateImageSequence(const Object* obj, std::function<void(float)> progress);
-    Status combineVideoAndAudio(QString ffmpegPath, QString strOutputFile);
-    Status convertToGif(QString ffmpeg, QString strOut);
+    Status combineVideoAndAudio(QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
+    Status generatePalette(QString ffmpeg, std::function<void (float)> progress);
+    Status convertToGif(QString ffmpeg, QString strOut, std::function<void(float)>  progress);
 
-    Status executeFFMpegCommand(QString strCmd);
+    Status executeFFMpegCommand(QString strCmd, std::function<void(float)> progress);
     Status checkInputParameters(const ExportMovieDesc&);
 
 private:

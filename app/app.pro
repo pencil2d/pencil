@@ -56,7 +56,8 @@ HEADERS += \
     importexportdialog.h \
     exportimagedialog.h \
     importimageseqdialog.h \
-    spinslider.h
+    spinslider.h \
+    doubleprogressdialog.h
 
 SOURCES += \
     main.cpp \
@@ -82,7 +83,8 @@ SOURCES += \
     importexportdialog.cpp \
     exportimagedialog.cpp \
     importimageseqdialog.cpp \
-    spinslider.cpp
+    spinslider.cpp \
+    doubleprogressdialog.cpp
 
 FORMS += \
     ui/mainwindow2.ui \
@@ -96,7 +98,8 @@ FORMS += \
     ui/exportmovieoptions.ui \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
-    ui/tooloptions.ui
+    ui/tooloptions.ui \
+    doubleprogressdialog.ui
 
 DEPENDPATH += .
 
