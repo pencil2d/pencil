@@ -725,6 +725,7 @@ void MainWindow2::importImageSequence()
             }
         }
     }
+    mEditor->layers()->notifyAnimationLengthChanged();
 }
 
 void MainWindow2::importMovie()
