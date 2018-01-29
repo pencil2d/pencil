@@ -478,7 +478,7 @@ Status MovieExporter::combineVideoAndAudio(
                 continue;
             }
 
-            while(currentFrame - frameStart <= framesProcessed + 10)
+            while(currentFrame - frameStart <= framesProcessed + 10 && currentFrame <= frameEnd)
             {
                 QImage imageToExport(exportSize, QImage::Format_ARGB32_Premultiplied);
                 QColor bgColor = Qt::white;
