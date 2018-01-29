@@ -46,6 +46,7 @@ GNU General Public License for more details.
 #include "exportmoviedialog.h"
 #include "exportimagedialog.h"
 #include "aboutdialog.h"
+#include "doubleprogressdialog.h"
 
 
 ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
@@ -183,25 +184,45 @@ Status ActionCommands::exportMovie()
     desc.exportSize = dialog->getExportSize();
     desc.strCameraName = dialog->getSelectedCameraName();
 
-    QProgressDialog progressDlg;
+    DoubleProgressDialog progressDlg;
     progressDlg.setWindowModality(Qt::WindowModal);
-    progressDlg.setLabelText(tr("Exporting movie..."));
+    progressDlg.setWindowTitle(tr("Exporting movie"));
     Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint;
     progressDlg.setWindowFlags(eFlags);
     progressDlg.show();
 
     MovieExporter ex;
 
-    connect(&progressDlg, &QProgressDialog::canceled, [&ex]
+    connect(&progressDlg, &DoubleProgressDialog::canceled, [&ex]
     {
         ex.cancel();
     });
 
-    Status st = ex.run(mEditor->object(), desc, [&progressDlg](float f)
-    {
-        progressDlg.setValue((int)(f * 100.f));
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-    });
+    // The start points and length for the current minor operation segment on the major progress bar
+    float minorStart, minorLength;
+
+    Status st = ex.run(mEditor->object(), desc,
+        [&progressDlg, &minorStart, &minorLength](float f, float final)
+        {
+            progressDlg.major->setValue(f);
+
+            minorStart = f;
+            minorLength = qMax(0.f, final - minorStart);
+
+            QApplication::processEvents();
+        },
+        [&progressDlg, &minorStart, &minorLength](float f) {
+            progressDlg.minor->setValue(f);
+
+            progressDlg.major->setValue(minorStart + f * minorLength);
+
+            QApplication::processEvents();
+        },
+        [&progressDlg](QString s) {
+            progressDlg.setStatus(s);
+            QApplication::processEvents();
+        }
+    );
 
     if (st.ok() && QFile::exists(strMoviePath))
     {

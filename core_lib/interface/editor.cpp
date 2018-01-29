@@ -739,7 +739,7 @@ bool Editor::exportMovieCLI(QString filePath, LayerCamera *cameraLayer, int widt
     desc.strCameraName = cameraLayer->name();
 
     MovieExporter ex;
-    ex.run(object(), desc, [](float){});
+    ex.run(object(), desc, [](float,float){}, [](float){}, [](QString){});
     return true;
 }
 
