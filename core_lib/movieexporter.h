@@ -53,7 +53,7 @@ public:
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
     Status generateImageSequence(const Object* obj, std::function<void(float)> progress);
-    Status combineVideoAndAudio(QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
+    Status combineVideoAndAudio(const Object *obj, QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
     Status generatePalette(QString ffmpeg, std::function<void (float)> progress);
     Status convertToGif(QString ffmpeg, QString strOut, std::function<void(float)>  progress);
 
