@@ -507,7 +507,11 @@ Status MovieExporter::executeFFMpegCommand(QString strCmd, std::function<void(fl
             qDebug() << "Running!";
 
             QString output(ffmpeg.readAll());
-            qDebug() << output;
+            QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+            for (const QString& s : sList)
+            {
+                qDebug() << "[stdout]" << s;
+            }
 
             if(output.startsWith("frame="))
             {
@@ -523,7 +527,6 @@ Status MovieExporter::executeFFMpegCommand(QString strCmd, std::function<void(fl
         {
             qDebug() << "[stdout]" << s;
         }
-
         QString stdErrMsg(ffmpeg.readAllStandardError());
         sList = stdErrMsg.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
         for (const QString& s : sList)
