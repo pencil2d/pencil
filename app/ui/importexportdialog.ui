@@ -105,5 +105,24 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>browseButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ImportExportDialog</receiver>
+   <slot>browse()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>394</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>86</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>browse()</slot>
+ </slots>
 </ui>

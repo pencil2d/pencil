@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TimelinePage</class>
+ <widget class="QWidget" name="TimelinePage">
+  <layout class="QVBoxLayout" name="lay2">
+   <item>
+    <widget class="QGroupBox" name="timeLineBox">
+     <property name="title">
+      <string>Timeline</string>
+     </property>
+     <layout class="QVBoxLayout" name="lay">
+      <item>
+       <widget class="QLabel" name="frameSizeLabel">
+        <property name="text">
+         <string>Frame size</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSlider" name="frameSize">
+        <property name="minimum">
+         <number>4</number>
+        </property>
+        <property name="maximum">
+         <number>20</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lengthSizeLabel">
+        <property name="text">
+         <string>Timeline size in Frames</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lengthSize">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="scrubBox">
+        <property name="text">
+         <string>Short scrub</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>frameSize</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>TimelinePage</receiver>
+   <slot>frameSizeChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lengthSize</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>TimelinePage</receiver>
+   <slot>lengthSizeChange(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>scrubBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>TimelinePage</receiver>
+   <slot>scrubChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>frameSizeChange(int)</slot>
+  <slot>lengthSizeChange(QString)</slot>
+  <slot>scrubChange(int)</slot>
+ </slots>
+</ui>

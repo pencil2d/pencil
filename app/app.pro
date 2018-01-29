@@ -96,7 +96,16 @@ FORMS += \
     ui/exportmovieoptions.ui \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
-    ui/tooloptions.ui
+    ui/aboutdialog.ui \
+    ui/colorbox.ui \
+    ui/preferencesdialog.ui \
+    ui/generalpage.ui \
+    ui/timelinepage.ui \
+    ui/filespage.ui \
+    ui/toolspage.ui \
+    ui/toolboxwidget.ui \
+    ui/spinslider.ui \
+    ui/tooloptionwidget.ui
 
 DEPENDPATH += .
 

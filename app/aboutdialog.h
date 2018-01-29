@@ -19,10 +19,9 @@ GNU General Public License for more details.
 
 #include <QDialog>
 
-class QSpinBox;
-class QLabel;
-class QGridLayout;
-class QGroupBox;
+namespace Ui {
+class AboutDialog;
+}
 
 class AboutDialog : public QDialog
 {
@@ -30,8 +29,11 @@ class AboutDialog : public QDialog
 
 public:
     explicit AboutDialog(QWidget* parent);
+    ~AboutDialog();
     void init();
+
+private:
+    Ui::AboutDialog* ui = nullptr;
 };
 
 #endif // ABOUTDIALOG_H
-

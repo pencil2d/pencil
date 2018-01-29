@@ -22,7 +22,7 @@ GNU General Public License for more details.
 
 namespace Ui
 {
-    class ToolOptions;
+    class ToolOptionWidget;
 }
 class QToolButton;
 class SpinSlider;
@@ -69,7 +69,7 @@ private:
     void createUI();
 
 private:
-    Ui::ToolOptions* ui = nullptr;
+    Ui::ToolOptionWidget* ui = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

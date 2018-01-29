@@ -28,8 +28,6 @@ ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFi
     ui->setupUi(this);
     m_fileDialog = new FileDialog(this);
 
-    connect(ui->browseButton, &QPushButton::clicked, this, &ImportExportDialog::browse);
-
     Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint;
     setWindowFlags(eFlags);
 }

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ColorBox</class>
+ <widget class="QDockWidget" name="ColorBox">
+  <property name="windowTitle">
+   <string comment="Color Wheel's window title">Color Wheel</string>
+  </property>
+  <widget class="QWidget" name="mainWidget">
+   <layout class="QVBoxLayout" name="layout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMinAndMaxSize</enum>
+    </property>
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="topMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <item>
+     <widget class="ColorWheel" name="colorWheel" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>100</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="ColorInspector" name="colorInspector" native="true"/>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ColorWheel</class>
+   <extends>QWidget</extends>
+   <header>colorwheel.h</header>
+   <container>1</container>
+   <slots>
+    <signal>colorChanged(QColor)</signal>
+    <signal>colorSelected(QColor)</signal>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>ColorInspector</class>
+   <extends>QWidget</extends>
+   <header>colorinspector.h</header>
+   <container>1</container>
+   <slots>
+    <signal>colorChanged(QColor)</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>colorWheel</sender>
+   <signal>colorChanged(QColor)</signal>
+   <receiver>ColorBox</receiver>
+   <slot>onWheelMove(QColor)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorWheel</sender>
+   <signal>colorSelected(QColor)</signal>
+   <receiver>ColorBox</receiver>
+   <slot>onWheelRelease(QColor)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>79</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>colorInspector</sender>
+   <signal>colorChanged(QColor)</signal>
+   <receiver>ColorBox</receiver>
+   <slot>onSpinboxChange(QColor)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>75</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onSpinboxChange(QColor)</slot>
+  <slot>onWheelMove(QColor)</slot>
+  <slot>onWheelRelease(QColor)</slot>
+ </slots>
+</ui>

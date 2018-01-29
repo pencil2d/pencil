@@ -46,11 +46,6 @@ ShortcutsPage::ShortcutsPage( QWidget* parent ) : QWidget(parent),
 
     ui->treeView->setModel(m_treeModel);
     ui->treeView->resizeColumnToContents(0);
-
-    connect( ui->treeView, &QTreeView::clicked, this, &ShortcutsPage::tableItemClicked );
-    connect( ui->keySeqLineEdit, &KeyCaptureLineEdit::keyCaptured, this, &ShortcutsPage::keyCapLineEditTextChanged );
-    connect( ui->restoreShortcutsButton, &QPushButton::clicked, this, &ShortcutsPage::restoreShortcutsButtonClicked );
-    connect( ui->clearButton, &QPushButton::clicked, this, &ShortcutsPage::clearButtonClicked );
 }
 
 void ShortcutsPage::tableItemClicked( const QModelIndex& modelIndex )

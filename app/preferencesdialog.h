@@ -44,6 +44,13 @@ class QComboBox;
 class PreferenceManager;
 class FilesPage;
 
+namespace Ui {
+class PreferencesDialog;
+class GeneralPage;
+class TimelinePage;
+class FilesPage;
+class ToolsPage;
+}
 
 class PreferencesDialog : public QDialog
 {
@@ -54,9 +61,11 @@ public:
     ~PreferencesDialog();
 
     void init( PreferenceManager* m );
-    
-    void changePage(QListWidgetItem* current, QListWidgetItem* previous);
+
     void updateRecentListBtn(bool isEmpty);
+
+public slots:
+    void changePage(QListWidgetItem* current, QListWidgetItem* previous);
 
 Q_SIGNALS:
     void windowOpacityChange(int);
@@ -68,14 +77,9 @@ protected:
     void closeEvent( QCloseEvent* ) override;
 
 private:
-    void createIcons();
-
-    QListWidget* contentsWidget = nullptr;
-    QStackedWidget* pagesWidget = nullptr;
-    QScrollArea* scrollArea = nullptr;
+    Ui::PreferencesDialog* ui = nullptr;
 
     PreferenceManager* mPrefManager = nullptr;
-    FilesPage* mFilesPage = nullptr;
 };
 
 
@@ -84,6 +88,7 @@ class GeneralPage : public QWidget
     Q_OBJECT
 public:
     GeneralPage(QWidget* parent = 0);
+    ~GeneralPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 
@@ -91,35 +96,27 @@ public slots:
     void updateValues();
     void gridSizeChange(int value);
 
+signals:
+    void windowOpacityChange(int value);
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
 
-private:
+private slots:
     void languageChanged( int i );
-    void shadowsCheckboxStateChanged(bool b);
-    void antiAliasCheckboxStateChanged( bool b );
-    void toolCursorsCheckboxStateChanged( bool b );
-    void dottedCursorCheckboxStateChanged( bool b );
-    void highResCheckboxStateChanged(bool b);
-    void gridCheckBoxStateChanged(bool b);
+    void shadowsCheckboxStateChanged(int b);
+    void antiAliasCheckboxStateChanged( int b );
+    void toolCursorsCheckboxStateChanged( int b );
+    void dottedCursorCheckboxStateChanged( int b );
+    void highResCheckboxStateChanged(int b);
+    void gridCheckBoxStateChanged(int b);
     void curveSmoothingChange(int value);
     void backgroundChange(int value);
 
-    PreferenceManager* mManager = nullptr;
-    QScrollArea* scrollArea;
-    QWidget* contents;
+private:
+    Ui::GeneralPage* ui = nullptr;
 
-    QComboBox* mLanguageCombo = nullptr;
-    QSlider* mWindowOpacityLevel;
-    QSlider* mCurveSmoothingLevel;
-    QCheckBox* mShadowsBox;
-    QCheckBox* mToolCursorsBox;
-    QCheckBox* mAntialiasingBox;
-    QCheckBox* mHighResBox;
-    QButtonGroup *mBackgroundButtons;
-    QCheckBox* mDottedCursorBox;
-    QSpinBox* mGridSizeInput;
-    QCheckBox* mGridCheckBox;
+    PreferenceManager* mManager = nullptr;
 
     int gridSize;
 
@@ -130,6 +127,8 @@ class TimelinePage : public QWidget
     Q_OBJECT
 public:
     TimelinePage(QWidget* parent = 0);
+    ~TimelinePage();
+
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
@@ -139,15 +138,11 @@ public slots:
     void fontSizeChange(int);
     void frameSizeChange(int);
     void labelChange(bool);
-    void scrubChange(bool);
+    void scrubChange(int);
 
 private:
+    Ui::TimelinePage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
-    QCheckBox* mDrawLabel;
-    QSpinBox* mFontSize;
-    QSlider* mFrameSize;
-    QLineEdit* mLengthSize;
-    QCheckBox* mScrubBox;
 };
 
 class FilesPage : public QWidget
@@ -156,24 +151,22 @@ class FilesPage : public QWidget
 
 public:
     FilesPage(QWidget *parent = 0);
+    ~FilesPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
     void updateValues();
-    void autosaveChange(bool b);
+    void autosaveChange(int b);
     void autosaveNumberChange(int number);
     void clearRecentFilesList();
-    QPushButton *getClearRecentFilesBtn() { return mClearRecentFilesBtn; }
     void updateClearRecentListButton();
 
 Q_SIGNALS:
     void clearRecentList();
 
 private:
+    Ui::FilesPage *ui = nullptr;
     PreferenceManager *mManager = nullptr;
-    QCheckBox *mAutosaveCheckBox;
-    QSpinBox *mAutosaveNumberBox;
-    QPushButton *mClearRecentFilesBtn;
 
 };
 
@@ -183,6 +176,7 @@ class ToolsPage : public QWidget
     Q_OBJECT
 public:
     ToolsPage(QWidget* parent = 0);
+    ~ToolsPage();
     void setManager( PreferenceManager* p ) { mManager = p; }
 
 public slots:
@@ -191,14 +185,10 @@ public slots:
     void onionMinOpacityChange(int);
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
-    void quickSizingChange(bool);
+    void quickSizingChange(int);
 private:
+    Ui::ToolsPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
-    QSpinBox* mOnionMaxOpacityBox;
-    QSpinBox* mOnionMinOpacityBox;
-    QSpinBox* mOnionPrevFramesNumBox;
-    QSpinBox* mOnionNextFramesNumBox;
-    QCheckBox * mUseQuickSizingBox;
 };
 
 #endif

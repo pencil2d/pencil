@@ -18,9 +18,9 @@ GNU General Public License for more details.
 
 #include "basedockwidget.h"
 
-class ColorWheel;
-class ColorInspector;
-
+namespace Ui {
+class ColorBox;
+}
 
 class ColorBox : public BaseDockWidget
 {
@@ -40,12 +40,12 @@ Q_SIGNALS:
     void colorChanged(const QColor&);
 
 private:
+    Ui::ColorBox* ui = nullptr;
+
+private slots:
     void onSpinboxChange(const QColor&);
     void onWheelMove(const QColor&);
     void onWheelRelease(const QColor&);
-
-    ColorWheel* mColorWheel = nullptr;
-    ColorInspector* mColorInspector = nullptr;
 };
 
 #endif // COLORBOX_H

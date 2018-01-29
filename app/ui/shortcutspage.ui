@@ -110,8 +110,82 @@
    <class>KeyCaptureLineEdit</class>
    <extends>QLineEdit</extends>
    <header>keycapturelineedit.h</header>
+   <slots>
+    <signal>keyCaptured(QKeySequence)</signal>
+   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>treeView</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>ShortcutsPage</receiver>
+   <slot>tableItemClicked(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>179</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>keySeqLineEdit</sender>
+   <signal>keyCaptured(QKeySequence)</signal>
+   <receiver>ShortcutsPage</receiver>
+   <slot>keyCapLineEditTextChanged(QKeySequence)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>175</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>restoreShortcutsButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ShortcutsPage</receiver>
+   <slot>restoreShortcutsButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>252</x>
+     <y>356</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ShortcutsPage</receiver>
+   <slot>clearButtonClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>298</x>
+     <y>301</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>tableItemClicked(QModelIndex)</slot>
+  <slot>keyCapLineEditTextChanged(QKeySequence)</slot>
+  <slot>restoreShortcutsButtonClicked()</slot>
+  <slot>clearButtonClicked()</slot>
+ </slots>
 </ui>

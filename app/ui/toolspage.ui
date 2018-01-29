@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ToolsPage</class>
+ <widget class="QWidget" name="ToolsPage">
+  <layout class="QVBoxLayout" name="lay2">
+   <item>
+    <widget class="QGroupBox" name="onionSkinBox">
+     <property name="title">
+      <string>Onion skin</string>
+     </property>
+     <layout class="QVBoxLayout" name="lay">
+      <item>
+       <widget class="QLabel" name="onionMaxOpacityLabel">
+        <property name="text">
+         <string>Maximum onion opacity %</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionMaxOpacityBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="onionMinOpacityLabel">
+        <property name="text">
+         <string>Minimum onion opacity %</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionMinOpacityBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="onionPrevFramesNumLabel">
+        <property name="text">
+         <string>Number of previous onion frames shown</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionPrevFramesNumBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="onionNextFramesNumLabel">
+        <property name="text">
+         <string>Number of next onion frames shown</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="onionNextFramesNumBox">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>60</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="brushBox">
+     <property name="title">
+      <string>Brush Tools</string>
+     </property>
+     <layout class="QVBoxLayout" name="brushBoxLayout">
+      <item>
+       <widget class="QCheckBox" name="useQuickSizingBox">
+        <property name="text">
+         <string>Use Quick Sizing</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>onionMaxOpacityBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ToolsPage</receiver>
+   <slot>onionMaxOpacityChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>onionMinOpacityBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ToolsPage</receiver>
+   <slot>onionMinOpacityChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>onionPrevFramesNumBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ToolsPage</receiver>
+   <slot>onionPrevFramesNumChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>onionNextFramesNumBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ToolsPage</receiver>
+   <slot>onionNextFramesNumChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>useQuickSizingBox</sender>
+   <signal>stateChanged(int)</signal>
+   <receiver>ToolsPage</receiver>
+   <slot>quickSizingChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>149</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>onionMaxOpacityChange(int)</slot>
+  <slot>onionMinOpacityChange(int)</slot>
+  <slot>onionPrevFramesNumChange(int)</slot>
+  <slot>onionNextFramesNumChange(int)</slot>
+  <slot>quickSizingChange(int)</slot>
+ </slots>
+</ui>
