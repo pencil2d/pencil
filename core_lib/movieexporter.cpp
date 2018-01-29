@@ -132,11 +132,11 @@ Status MovieExporter::run(const Object* obj,
                           const ExportMovieDesc& desc,
                           std::function<void(float, float)> majorProgress,
                           std::function<void(float)> minorProgress,
-                          std::function<void(const char *)> progressMessage)
+                          std::function<void(QString)> progressMessage)
 {
     majorProgress(0.f, 0.03f);
     minorProgress(0.f);
-    progressMessage("Checking environment...");
+    progressMessage(QApplication::tr("Checking environment..."));
 
     QString ffmpegPath = ffmpegLocation();
     qDebug() << ffmpegPath;
@@ -169,14 +169,14 @@ Status MovieExporter::run(const Object* obj,
 
     if (!desc.strFileName.endsWith("gif"))
     {
-        progressMessage("Assembling audio...");
+        progressMessage(QApplication::tr("Assembling audio..."));
         minorProgress(0.f);
         STATUS_CHECK(assembleAudio(obj, ffmpegPath, minorProgress));
         minorProgress(1.f);
     }
     majorProgress(0.1f, 0.5f);
     qDebug() << "Time:" << clock();
-    progressMessage("Generating frames...");
+    progressMessage(QApplication::tr("Generating frames..."));
     minorProgress(0.f);
 
     STATUS_CHECK(generateImageSequence(obj, minorProgress));
@@ -186,26 +186,26 @@ Status MovieExporter::run(const Object* obj,
     minorProgress(0.f);
     if (desc.strFileName.endsWith("gif", Qt::CaseInsensitive))
     {
-        progressMessage("Generating palette...");
+        progressMessage(QApplication::tr("Generating palette..."));
         majorProgress(0.5f, 0.7f);
         STATUS_CHECK(generatePalette(ffmpegPath, minorProgress));
         minorProgress(1.f);
 
-        progressMessage("Combining...");
+        progressMessage(QApplication::tr("Combining..."));
         majorProgress(0.7f, 1.f);
         minorProgress(0.f);
         STATUS_CHECK(convertToGif(ffmpegPath, desc.strFileName, minorProgress));
     }
     else
     {
-        progressMessage("Combining...");
+        progressMessage(QApplication::tr("Combining..."));
         majorProgress(0.5f, 1.f);
         combineVideoAndAudio(ffmpegPath, desc.strFileName, minorProgress);
     }
     qDebug() << "Time:" << clock();
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
-    progressMessage("Done");
+    progressMessage(QApplication::tr("Done"));
 
     return Status::OK;
 }

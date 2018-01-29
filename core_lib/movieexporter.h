@@ -46,7 +46,7 @@ public:
                const ExportMovieDesc& desc,
                std::function<void(float, float)> majorProgress,
                std::function<void(float)> minorProgress,
-               std::function<void(const char *)> progressMessage);
+               std::function<void(QString)> progressMessage);
     QString error();
 
     void cancel() { mCanceled = true; }

@@ -218,8 +218,8 @@ Status ActionCommands::exportMovie()
 
             QApplication::processEvents();
         },
-        [&progressDlg](const char *s) {
-            progressDlg.setStatus(tr(s));
+        [&progressDlg](QString s) {
+            progressDlg.setStatus(s);
             QApplication::processEvents();
         }
     );
