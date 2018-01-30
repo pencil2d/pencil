@@ -197,7 +197,9 @@ Status MovieExporter::run(const Object* obj,
     {
         majorProgress(0.1f, 1.f);
         progressMessage("Combining...");
+        qDebug() << "Start:" << clock();
         combineVideoAndAudio(obj, ffmpegPath, desc.strFileName, minorProgress);
+        qDebug() << "End:" << clock();
     }
     minorProgress(1.f);
     majorProgress(1.f, 1.f);
@@ -447,6 +449,7 @@ Status MovieExporter::combineVideoAndAudio(
     ffmpeg.start(strCmd);
     if (ffmpeg.waitForStarted() == true)
     {
+        int failCounter = 0;
         while(ffmpeg.state() == QProcess::Running)
         {
             if (mCanceled)
@@ -457,10 +460,17 @@ Status MovieExporter::combineVideoAndAudio(
 
             // Check FFmpeg progress
 
-            ffmpeg.waitForReadyRead();
+            if(!ffmpeg.waitForReadyRead(100))
+            {
+                failCounter++;
+            }
             QString output(ffmpeg.readAll());
             int framesProcessed = 0;
-            qDebug() << output;
+            QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+            for (const QString& s : sList)
+            {
+                qDebug() << "[ffmpeg]" << s;
+            }
             if(output.startsWith("frame="))
             {
                 framesProcessed = output.mid(6, output.indexOf(' ')).toInt();
@@ -478,7 +488,7 @@ Status MovieExporter::combineVideoAndAudio(
                 continue;
             }
 
-            while(currentFrame - frameStart <= framesProcessed + 10 && currentFrame <= frameEnd)
+            while((currentFrame - frameStart <= framesProcessed + 10 || failCounter > 10) && currentFrame <= frameEnd)
             {
                 QImage imageToExport(exportSize, QImage::Format_ARGB32_Premultiplied);
                 QColor bgColor = Qt::white;
@@ -508,6 +518,7 @@ Status MovieExporter::combineVideoAndAudio(
                 ffmpeg.write(imgData);
 
                 currentFrame++;
+                failCounter = 0;
             }
         }
 
@@ -597,8 +608,6 @@ Status MovieExporter::executeFFMpegCommand(QString strCmd, std::function<void(fl
         {
             if(!ffmpeg.waitForReadyRead()) break;
 
-            qDebug() << "Running!";
-
             QString output(ffmpeg.readAll());
             qDebug() << output;
 
@@ -614,14 +623,7 @@ Status MovieExporter::executeFFMpegCommand(QString strCmd, std::function<void(fl
         QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
         for (const QString& s : sList)
         {
-            qDebug() << "[stdout]" << s;
-        }
-
-        QString stdErrMsg(ffmpeg.readAllStandardError());
-        sList = stdErrMsg.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
-        for (const QString& s : sList)
-        {
-            qDebug() << "[stderr]" << s;
+            qDebug() << "[ffmpeg]" << s;
         }
     }
     else
