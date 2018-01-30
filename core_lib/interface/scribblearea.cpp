@@ -662,8 +662,6 @@ void ScribbleArea::resizeEvent(QResizeEvent *event)
     mCanvas = QPixmap(size());
     mCanvas.fill(Qt::transparent);
 
-    this->setStyleSheet("background-color:yellow;");
-
     mEditor->view()->setCanvasSize(size());
     updateAllFrames();
 }
