@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 
 class Object;
+class QProcess;
 
 struct ExportMovieDesc
 {
@@ -52,12 +53,11 @@ public:
     void cancel() { mCanceled = true; }
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
-    Status generateImageSequence(const Object* obj, std::function<void(float)> progress);
-    Status combineVideoAndAudio(const Object *obj, QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
-    Status generatePalette(QString ffmpeg, std::function<void (float)> progress);
-    Status convertToGif(QString ffmpeg, QString strOut, std::function<void(float)>  progress);
+    Status generateMovie(const Object *obj, QString ffmpegPath, QString strOutputFile, std::function<void(float)> progress);
+    Status generateGif(const Object *obj, QString ffmpeg, QString strOut, std::function<void(float)>  progress);
 
-    Status executeFFMpegCommand(QString strCmd, std::function<void(float)> progress);
+    Status executeFFMpeg(QString strCmd, std::function<void(float)> progress);
+    Status executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<float(QProcess&,int)> writeFrame);
     Status checkInputParameters(const ExportMovieDesc&);
 
 private:
