@@ -315,7 +315,7 @@ Status MovieExporter::generateMovie(
         const Object* obj,
         QString ffmpegPath,
         QString strOutputFile,
-        std::function<void(float)>  progress)
+        std::function<void(float)> progress)
 {
     if (mCanceled)
     {
@@ -352,7 +352,6 @@ Status MovieExporter::generateMovie(
     centralizeCamera.translate(camSize.width() / 2, camSize.height() / 2);
 
     int failCounter = 0;
-    float prevProgress = 0;
 
     // Build FFmpeg command
 
@@ -386,15 +385,15 @@ Status MovieExporter::generateMovie(
 
     STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
-        if(currentFrame > frameEnd)
-        {
-            ffmpeg.closeWriteChannel();
-            return -1.f;
-        }
-
         if(framesProcessed < 0)
         {
             failCounter++;
+        }
+
+        if(currentFrame > frameEnd)
+        {
+            ffmpeg.closeWriteChannel();
+            return false;
         }
 
         if((currentFrame - frameStart <= framesProcessed + 10 || failCounter > 10) && currentFrame <= frameEnd)
@@ -417,17 +416,10 @@ Status MovieExporter::generateMovie(
 
             currentFrame++;
             failCounter = 0;
-        }
-        else if (framesProcessed < 0)
-        {
-            return prevProgress;
-        }
-        {
-            return -1.f;
+            return true;
         }
 
-        prevProgress = ((currentFrame - frameStart) / (float)(currentFrame - frameEnd)) / 2 + (framesProcessed / (float)      (frameEnd - frameStart)) / 2;
-        return prevProgress;
+        return false;
     }));
 
     return Status::OK;
@@ -494,39 +486,32 @@ Status MovieExporter::generateGif(
 
     STATUS_CHECK(executeFFMpegPipe(strCmd, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
+        Q_UNUSED(framesProcessed);
         if(currentFrame > frameEnd)
         {
             ffmpeg.closeWriteChannel();
-            return -1.f;
+            return false;
         }
 
-        if(currentFrame <= frameEnd)
-        {
-            QImage imageToExport = imageToExportBase.copy();
-            QPainter painter(&imageToExport);
+        QImage imageToExport = imageToExportBase.copy();
+        QPainter painter(&imageToExport);
 
-            painter.setWorldTransform(view * centralizeCamera);
-            painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
+        painter.setWorldTransform(view * centralizeCamera);
+        painter.setWindow(QRect(0, 0, camSize.width(), camSize.height()));
 
-            obj->paintImage(painter, currentFrame, false, true);
+        obj->paintImage(painter, currentFrame, false, true);
 
-            QByteArray imgData;
-            QBuffer buffer(&imgData);
-            bool bSave = imageToExport.save(&buffer, "BMP", 100);
-            Q_ASSERT(bSave);
-            ffmpeg.write(imgData);
+        QByteArray imgData;
+        QBuffer buffer(&imgData);
+        bool bSave = imageToExport.save(&buffer, "BMP", 100);
+        Q_ASSERT(bSave);
+        ffmpeg.write(imgData);
 
-            qDebug() << "Current frame" << currentFrame;
+        qDebug() << "Current frame" << currentFrame;
 
-            currentFrame++;
-        }
-        else
-        {
-            ffmpeg.closeWriteChannel();
-            return -1.f;
-        }
+        currentFrame++;
 
-        return ((currentFrame - frameStart) / (float)(currentFrame - frameEnd)) / 2 + (framesProcessed / (float)(frameEnd - frameStart)) / 2;
+        return true;
     }));
 
     return Status::OK;
@@ -573,7 +558,7 @@ Status MovieExporter::executeFFMpeg(QString strCmd, std::function<void(float)> p
     return Status::OK;
 }
 
-Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<float(QProcess&,int)> writeFrame)
+Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<bool(QProcess&, int)> writeFrame)
 {
     qDebug() << strCmd;
 
@@ -584,6 +569,10 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
     ffmpeg.start(strCmd);
     if (ffmpeg.waitForStarted())
     {
+        int framesGenerated = 0;
+        int lastFrameProcessed = 0;
+        const int frameStart = mDesc.startFrame;
+        const int frameEnd = mDesc.endFrame;
         while(ffmpeg.state() == QProcess::Running)
         {
             if (mCanceled)
@@ -605,7 +594,7 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
                 }
                 if(output.startsWith("frame="))
                 {
-                    framesProcessed = output.mid(6, output.indexOf(' ')).toInt();
+                    lastFrameProcessed = framesProcessed = output.mid(6, output.indexOf(' ')).toInt();
                 }
             }
 
@@ -614,13 +603,17 @@ Status MovieExporter::executeFFMpegPipe(QString strCmd, std::function<void(float
                 continue;
             }
 
-            float prog = writeFrame(ffmpeg, framesProcessed);
-            while(prog >= 0)
+            while(writeFrame(ffmpeg, framesProcessed))
             {
-                progress(prog);
+                framesGenerated++;
 
-                prog = writeFrame(ffmpeg, framesProcessed);
+                const float percentGenerated = framesGenerated / (float)(frameEnd - frameStart);
+                const float percentConverted = lastFrameProcessed / (float)(frameEnd - frameStart);
+                progress((percentGenerated + percentConverted) / 2);
             }
+            const float percentGenerated = framesGenerated / (float)(frameEnd - frameStart);
+            const float percentConverted = lastFrameProcessed / (float)(frameEnd - frameStart);
+            progress((percentGenerated + percentConverted) / 2);
         }
 
         QString output(ffmpeg.readAll());

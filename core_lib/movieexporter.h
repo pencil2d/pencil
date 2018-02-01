@@ -57,7 +57,7 @@ private:
     Status generateGif(const Object *obj, QString ffmpeg, QString strOut, std::function<void(float)>  progress);
 
     Status executeFFMpeg(QString strCmd, std::function<void(float)> progress);
-    Status executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<float(QProcess&,int)> writeFrame);
+    Status executeFFMpegPipe(QString strCmd, std::function<void(float)> progress, std::function<bool(QProcess&,int)> writeFrame);
     Status checkInputParameters(const ExportMovieDesc&);
 
 private:
