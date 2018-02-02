@@ -49,11 +49,18 @@ void ColorPaletteWidget::initUI()
     // "Remove color" feature is disabled because
     // vector strokes that are linked to palette
     // colors don't handle color removal from palette
-    //
     mIconSize = QSize(34, 34);
     ui->removeColorButton->hide();
     updateUI();
     palettePreferences();
+
+    connect(ui->colorListWidget, &QListWidget::currentItemChanged, this, &ColorPaletteWidget::colorListCurrentItemChanged);
+    connect(ui->colorListWidget, &QListWidget::itemClicked, this, &ColorPaletteWidget::clickColorListItem);
+    connect(ui->colorListWidget, &QListWidget::itemDoubleClicked, this, &ColorPaletteWidget::changeColourName);
+    connect(ui->colorListWidget, &QListWidget::currentTextChanged, this, &ColorPaletteWidget::onActiveColorNameChange);
+
+    connect(ui->addColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickAddColorButton);
+    connect(ui->removeColorButton, &QPushButton::clicked, this, &ColorPaletteWidget::clickRemoveColorButton);
 }
 
 void ColorPaletteWidget::updateUI()
@@ -195,6 +202,12 @@ void ColorPaletteWidget::palettePreferences()
     ui->palettePref->addAction(ui->smallSwatchAction);
     ui->palettePref->addAction(ui->mediumSwatchAction);
     ui->palettePref->addAction(ui->largeSwatchAction);
+
+    connect(ui->listModeAction, &QAction::triggered, this, &ColorPaletteWidget::setListMode);
+    connect(ui->gridModeAction, &QAction::triggered, this, &ColorPaletteWidget::setGridMode);
+    connect(ui->smallSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeSmall);
+    connect(ui->mediumSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeMedium);
+    connect(ui->largeSwatchAction, &QAction::triggered, this, &ColorPaletteWidget::setSwatchSizeLarge);
 }
 
 void ColorPaletteWidget::setListMode()
@@ -218,7 +231,7 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
 {
     if (ui->colorListWidget->viewMode() == QListView::IconMode)
     {
-        // Find the value to divivde with
+        // Find the value to divide with
         for (int i = 1; i < 75; i++)
         {
             int size = (ui->colorListWidget->width() - 18) / i; // subtract scrollbar width
@@ -238,8 +251,6 @@ void ColorPaletteWidget::resizeEvent(QResizeEvent* event)
         ui->colorListWidget->setIconSize(mIconSize);
         ui->colorListWidget->setGridSize(QSize(-1, -1));
     }
-
-    //refreshColorList();
     QWidget::resizeEvent(event);
 }
 
