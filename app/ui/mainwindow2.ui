@@ -54,7 +54,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -893,56 +893,7 @@
   <include location="../../pencil.qrc"/>
   <include location="../resource/app.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>actionReset_Windows</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow2</receiver>
-   <slot>dockAllSubWidgets()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>menuEdit</sender>
-   <signal>aboutToHide()</signal>
-   <receiver>MainWindow2</receiver>
-   <slot>undoActSetEnabled()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>95</x>
-     <y>205</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>menuEdit</sender>
-   <signal>aboutToShow()</signal>
-   <receiver>MainWindow2</receiver>
-   <slot>undoActSetText()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>95</x>
-     <y>205</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>dockAllSubWidgets()</slot>
   <slot>undoActSetText()</slot>

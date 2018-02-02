@@ -265,6 +265,7 @@ void MainWindow2::createMenus()
     connect(ui->actionZoom_Out, &QAction::triggered, mCommands, &ActionCommands::ZoomOut);
     connect(ui->actionRotate_Clockwise, &QAction::triggered, mCommands, &ActionCommands::rotateClockwise);
     connect(ui->actionRotate_Anticlosewise, &QAction::triggered, mCommands, &ActionCommands::rotateCounterClockwise);
+    connect(ui->actionReset_Windows, &QAction::triggered, this, &MainWindow2::dockAllSubWidgets);
     connect(ui->actionReset_View, &QAction::triggered, mEditor->view(), &ViewManager::resetView);
     connect(ui->actionHorizontal_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirror);
     connect(ui->actionVertical_Flip, &QAction::triggered, mCommands, &ActionCommands::toggleMirrorV);
@@ -353,6 +354,9 @@ void MainWindow2::createMenus()
     ui->menuFile->insertMenu(ui->actionSave, mRecentFileMenu);
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
+
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
+    connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
 void MainWindow2::setMenuActionChecked(QAction* action, bool bChecked)
