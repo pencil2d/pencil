@@ -96,9 +96,6 @@ public slots:
 signals:
     void windowOpacityChange(int value);
 
-protected:
-    void resizeEvent(QResizeEvent *event) override;
-
 private slots:
     void languageChanged( int i );
     void shadowsCheckboxStateChanged(int b);

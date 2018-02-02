@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include "ui_generalpage.h"
 #include <QComboBox>
 #include <QMessageBox>
+#include "util.h"
 
 PreferencesDialog::PreferencesDialog( QWidget* parent ) :
     QDialog(parent),
@@ -32,29 +33,29 @@ PreferencesDialog::~PreferencesDialog()
     delete ui;
 }
 
-void PreferencesDialog::init( PreferenceManager* m )
+void PreferencesDialog::init(PreferenceManager* m)
 {
-    Q_ASSERT( m != nullptr );
+    Q_ASSERT(m != nullptr);
     mPrefManager = m;
 
-    ui->general->setManager( mPrefManager );
+    ui->general->setManager(mPrefManager);
     ui->general->updateValues();
-    //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
 
-    ui->filesPage->setManager( mPrefManager );
+    ui->filesPage->setManager(mPrefManager);
     ui->filesPage->updateValues();
 
-    ui->timeline->setManager( mPrefManager );
+    ui->timeline->setManager(mPrefManager);
     ui->timeline->updateValues();
 
-    ui->tools->setManager( mPrefManager );
+    ui->tools->setManager(mPrefManager);
     ui->tools->updateValues();
 
-    ui->shortcuts->setManager( mPrefManager );
-    connect( ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange );
+    ui->shortcuts->setManager(mPrefManager);
+
+    connect(ui->general, &GeneralPage::windowOpacityChange, this, &PreferencesDialog::windowOpacityChange);
     connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
-    connect(this, &PreferencesDialog::updateRecentFileListBtn, ui->filesPage, &FilesPage::updateClearRecentListButton);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::close);
+    connect(this, &PreferencesDialog::updateRecentFileListBtn, ui->filesPage, &FilesPage::updateClearRecentListButton);
 
     auto onCurrentItemChanged = static_cast<void (QListWidget::*)(QListWidgetItem*, QListWidgetItem*)>(&QListWidget::currentItemChanged);
     connect(ui->contentsWidget, onCurrentItemChanged, this, &PreferencesDialog::changePage);
@@ -125,13 +126,7 @@ GeneralPage::GeneralPage(QWidget* parent) :
     ui->backgroundButtons->setId(ui->dotsBackgroundButton, 4);
     ui->backgroundButtons->setId(ui->weaveBackgroundButton, 5);
 
-    gridSize = settings.value("gridSize").toInt();
-    ui->gridSizeInput->setValue( gridSize );
-
-    value = settings.value("curveSmoothing").toInt();
-    ui->curveSmoothingLevel->setValue( value );
-
-    connect( ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange );
+    connect(ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange);
 }
 
 GeneralPage::~GeneralPage()
@@ -139,17 +134,6 @@ GeneralPage::~GeneralPage()
     delete ui;
 }
 
-void GeneralPage::resizeEvent(QResizeEvent* event)
-{
-    int size = 0;
-    if (this->height() < 560 ) {
-       size = this->height();
-    } else if (this->height() >= 560) {
-        size = 560;
-    }
-    ui->scrollArea->setMinimumHeight(size);
-    QWidget::resizeEvent(event);
-}
 
 
 void GeneralPage::updateValues()
@@ -158,38 +142,46 @@ void GeneralPage::updateValues()
 
     if ( index >= 0 )
     {
+        SignalBlocker b(ui->languageCombo);
         ui->languageCombo->blockSignals( true );
         ui->languageCombo->setCurrentIndex( index );
         ui->languageCombo->blockSignals( false );
     }
 
+    SignalBlocker b1(ui->curveSmoothingLevel);
     ui->curveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
+    SignalBlocker b2(ui->windowOpacityLevel);
     ui->windowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
+    SignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
+    SignalBlocker b4(ui->toolCursorsBox);
     ui->toolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
+    SignalBlocker b5(ui->antialiasingBox);
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
+    SignalBlocker b6(ui->dottedCursorBox);
     ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
+    SignalBlocker b7(ui->gridSizeInput);
     ui->gridSizeInput->setValue(mManager->getInt(SETTING::GRID_SIZE));
+    SignalBlocker b8(ui->gridCheckBox);
     ui->gridCheckBox->setChecked(mManager->isOn(SETTING::GRID));
 
+    SignalBlocker b9(ui->highResBox);
     ui->highResBox->setChecked(mManager->isOn(SETTING::HIGH_RESOLUTION));
 
+    SignalBlocker b10(ui->backgroundButtons);
     QString bgName = mManager->getString(SETTING::BACKGROUND_STYLE);
-    if (bgName == "checkerboard") {
+    if (bgName == "checkerboard")
         ui->backgroundButtons->button(1)->setChecked(true);
-    }
-    if (bgName == "white") {
+    else if (bgName == "white")
         ui->backgroundButtons->button(2)->setChecked(true);
-    }
-    if (bgName == "grey") {
+    else if (bgName == "grey")
         ui->backgroundButtons->button(3)->setChecked(true);
-    }
-    if (bgName == "dots") {
+    else if (bgName == "dots")
         ui->backgroundButtons->button(4)->setChecked(true);
-    }
-    if (bgName == "weave") {
+    else if (bgName == "weave")
         ui->backgroundButtons->button(5)->setChecked(true);
-    }
+    else
+        Q_ASSERT(false);
 }
 
 void GeneralPage::languageChanged( int i )

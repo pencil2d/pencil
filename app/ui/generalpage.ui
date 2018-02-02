@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>GeneralPage</class>
  <widget class="QWidget" name="GeneralPage">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>369</width>
+    <height>377</height>
+   </rect>
+  </property>
   <layout class="QVBoxLayout" name="outerLay">
    <item>
     <widget class="QScrollArea" name="scrollArea">
@@ -27,6 +35,14 @@
       <bool>true</bool>
      </property>
      <widget class="QWidget" name="contents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>332</width>
+        <height>510</height>
+       </rect>
+      </property>
       <layout class="QVBoxLayout" name="lay">
        <item>
         <widget class="QGroupBox" name="groupBox">
@@ -169,6 +185,19 @@
         </widget>
        </item>
        <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <widget class="QGroupBox" name="editingBox">
          <property name="title">
           <string comment="GroupBox title in Preference">Editing</string>
@@ -245,13 +274,6 @@
       </layout>
      </widget>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </spacer>
    </item>
   </layout>
  </widget>
