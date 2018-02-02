@@ -20,25 +20,16 @@ GNU General Public License for more details.
 
 ColorInspector::ColorInspector(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::ColorInspector),
-    isRgbColors(true),
-    noColorUpdate(false)
+    ui(new Ui::ColorInspector)
 {
     ui->setupUi(this);
 
-    //We constrain the widget, as the layout should have a stretch limit.
-    parent->setMaximumSize(500,height());
-
-    connect(ui->RedspinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->GreenspinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->BluespinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->AlphaspinBox, SIGNAL(valueChanged(int)),
-        this, SLOT(onColorChanged()));
-    connect(ui->rgb, SIGNAL(toggled(bool)),
-        this, SLOT(onModeChanged()));
+    auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
+    connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    connect(ui->BluespinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    connect(ui->AlphaspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
+    connect(ui->rgb, &QRadioButton::toggled, this, &ColorInspector::onModeChanged);
 }
 
 ColorInspector::~ColorInspector()

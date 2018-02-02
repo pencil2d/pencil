@@ -42,9 +42,9 @@ private slots:
     void onColorChanged();
     
 private:
-    Ui::ColorInspector *ui;
-    bool isRgbColors;
-    bool noColorUpdate;
+    Ui::ColorInspector* ui = nullptr;
+    bool isRgbColors = true;
+    bool noColorUpdate = false;
     QColor m_color;
 };
 
