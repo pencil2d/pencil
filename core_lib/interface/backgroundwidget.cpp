@@ -107,6 +107,8 @@ void BackgroundWidget::loadBackgroundStyle()
         mStyle = "background-image: url(:background/grid.jpg); background-repeat: repeat-xy; border: 1px solid lightGrey;";
     }
 
+    mStyle = QString("BackgroundWidget { %1 }").arg(mStyle);
+
     setStyleSheet(mStyle);
 }
 
