@@ -30,7 +30,6 @@ DisplayOptionWidget::DisplayOptionWidget(QWidget *parent) :
     BaseDockWidget(parent),
     ui(new Ui::DisplayOption)
 {
-
     ui->setupUi(this);
 }
 
@@ -42,6 +41,7 @@ DisplayOptionWidget::~DisplayOptionWidget()
 void DisplayOptionWidget::initUI()
 {
     updateUI();
+    makeConnections();
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
@@ -53,23 +53,24 @@ void DisplayOptionWidget::initUI()
 #endif
 }
 
-void DisplayOptionWidget::makeConnectionToEditor(Editor* editor)
+void DisplayOptionWidget::makeConnections()
 {
-    PreferenceManager* prefs = editor->preference();
-    ScribbleArea* pScriArea = editor->getScribbleArea();
+    connect(ui->onionPrevButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionPrevButtonClicked);
+    connect(ui->onionNextButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionNextButtonClicked);
+    connect(ui->onionBlueButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionBlueButtonClicked);
+    connect(ui->onionRedButton, &QToolButton::clicked, this, &DisplayOptionWidget::onionRedButtonClicked);
+    connect(ui->mirrorButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirror);
+    connect(ui->mirrorVButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleMirrorV);
+
+    PreferenceManager* prefs = editor()->preference();
+    ScribbleArea* pScriArea = editor()->getScribbleArea();
 
     connect(ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
     connect(ui->outLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOutlines);
-
     connect(prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
 
-    ViewManager* view = editor->view();
+    ViewManager* view = editor()->view();
     connect(view, &ViewManager::viewFlipped, this, &DisplayOptionWidget::updateUI);
-
-    updateUI();
-
-    //connect(gridAButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleGridA);
-    //connect(multiLayerOnionSkinButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleMultiLayerOnionSkin);
 }
 
 void DisplayOptionWidget::updateUI()

@@ -222,7 +222,6 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mTimeLine);
     makeConnections(mEditor, mColorWheel);
     makeConnections(mEditor, mColorPalette);
-    makeConnections(mEditor, mDisplayOptionWidget);
     makeConnections(mEditor, mToolOptions);
 
     for (BaseDockWidget* w : mDockWidgets)
@@ -1059,9 +1058,8 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
-void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* display)
+void MainWindow2::makeConnections(Editor*, DisplayOptionWidget*)
 {
-    display->makeConnectionToEditor(editor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ToolOptionWidget* toolOptions)

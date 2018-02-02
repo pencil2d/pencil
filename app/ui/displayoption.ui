@@ -2,18 +2,18 @@
 <ui version="4.0">
  <class>DisplayOption</class>
  <widget class="QDockWidget" name="DisplayOption">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>152</width>
+    <height>140</height>
+   </rect>
+  </property>
   <property name="windowTitle">
    <string comment="Window title of display options like .">Display</string>
   </property>
   <widget class="QWidget" name="innerWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>156</width>
-     <height>123</height>
-    </rect>
-   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>2</number>
@@ -297,104 +297,7 @@
  <resources>
   <include location="../resource/app.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>onionPrevButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>DisplayOption</receiver>
-   <slot>onionPrevButtonClicked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>90</x>
-     <y>46</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onionRedButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>DisplayOption</receiver>
-   <slot>onionRedButtonClicked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>125</x>
-     <y>46</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onionBlueButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>DisplayOption</receiver>
-   <slot>onionBlueButtonClicked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>125</x>
-     <y>82</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>onionNextButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>DisplayOption</receiver>
-   <slot>onionNextButtonClicked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>90</x>
-     <y>83</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mirrorButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>DisplayOption</receiver>
-   <slot>toggleMirror(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>46</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mirrorVButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>DisplayOption</receiver>
-   <slot>toggleMirrorV(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>83</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>72</x>
-     <y>52</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>onionPrevButtonClicked(bool)</slot>
   <slot>onionNextButtonClicked(bool)</slot>
