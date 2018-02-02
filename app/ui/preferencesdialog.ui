@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>PreferencesDialog</class>
  <widget class="QDialog" name="PreferencesDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>469</width>
+    <height>445</height>
+   </rect>
+  </property>
   <property name="maximumSize">
    <size>
     <width>600</width>
@@ -182,40 +190,7 @@
   <include location="../../pencil.qrc"/>
   <include location="../../pencil.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>PreferencesDialog</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>contentsWidget</sender>
-   <signal>currentItemChanged(QListWidgetItem*,QListWidgetItem*)</signal>
-   <receiver>PreferencesDialog</receiver>
-   <slot>changePage(QListWidgetItem*,QListWidgetItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>73</x>
-     <y>126</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>199</x>
-     <y>149</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <signal>clearRecentList()</signal>
   <slot>changePage(QListWidgetItem*,QListWidgetItem*)</slot>

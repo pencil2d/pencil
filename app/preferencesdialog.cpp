@@ -38,13 +38,9 @@ void PreferencesDialog::init( PreferenceManager* m )
 
     ui->general->setManager( mPrefManager );
     ui->general->updateValues();
-    //connect(mPrefManager, &PreferenceManager::effectChanged, general, &GeneralPage::updateValues);
 
     ui->filesPage->setManager( mPrefManager );
     ui->filesPage->updateValues();
-
-    connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
-    connect(this, &PreferencesDialog::updateRecentFileListBtn, ui->filesPage, &FilesPage::updateClearRecentListButton);
 
     ui->timeline->setManager( mPrefManager );
     ui->timeline->updateValues();
@@ -53,6 +49,13 @@ void PreferencesDialog::init( PreferenceManager* m )
     ui->tools->updateValues();
 
     ui->shortcuts->setManager( mPrefManager );
+
+    connect(ui->filesPage, &FilesPage::clearRecentList, this, &PreferencesDialog::clearRecentList);
+    connect(this, &PreferencesDialog::updateRecentFileListBtn, ui->filesPage, &FilesPage::updateClearRecentListButton);
+    connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &PreferencesDialog::close);
+
+    auto onCurrentItemChanged = static_cast<void (QListWidget::*)(QListWidgetItem*, QListWidgetItem*)>(&QListWidget::currentItemChanged);
+    connect(ui->contentsWidget, onCurrentItemChanged, this, &PreferencesDialog::changePage);
 }
 
 void PreferencesDialog::closeEvent(QCloseEvent *)
@@ -163,7 +166,6 @@ GeneralPage::GeneralPage(QWidget* parent) : QWidget(parent)
     QGridLayout* langLayout = new QGridLayout;
     languageBox->setLayout( langLayout );
     langLayout->addWidget( mLanguageCombo );
-
 
     mGridCheckBox = new QCheckBox(tr("Enable Grid"));
 
